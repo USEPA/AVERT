@@ -4,11 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RegionalLoad extends Model
+class LoadBinEdge extends Model
 {
-    protected $table = 'regional_load';
+    protected $table = 'load_bin_edges';
 
-    protected $fillable = ['hour_of_year','year','month','day','hour','regional_load_mw'];
+    protected $fillable = ['edge','edge_value_mw'];
 
     public $timestamps = false;
 
@@ -18,5 +18,9 @@ class RegionalLoad extends Model
 
     public function region() {
         return $this->belongsTo('App\Region','region_id');
+    }
+
+    public function median() {
+        return $this->hasMany('App\LoadBinMedian','edge_id');
     }
 }

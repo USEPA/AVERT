@@ -15,4 +15,8 @@ class Run extends Model
     public function loads() {
         return $this->hasMany('App\RegionalLoad','run_id');
     }
+
+    public function edges() {
+        return $this->hasMany('App\LoadBinEdge','run_id');
+    }
 }
