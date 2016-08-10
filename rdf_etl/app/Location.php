@@ -13,4 +13,8 @@ class Location extends Model
     public function region() {
         return $this->belongsTo('App\Region','region_id');
     }
+
+    public function medians() {
+        return $this->hasMany('App\LoadBinMedian','location_id');
+    }
 }

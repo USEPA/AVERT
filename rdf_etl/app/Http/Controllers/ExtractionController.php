@@ -22,7 +22,8 @@ class ExtractionController extends Controller
         set_time_limit(300);
 
         $filePath = '/resources/assets/excel/';
-        $file = $filePath . 'AVERT RDF 2015 EPABase (California) - tabbed.xlsx';
+        $file = $filePath . '';
+//        $file = $filePath . 'AVERT RDF 2015 EPABase (California) - tabbed.xlsx';
 //        $file = $filePath . 'AVERT RDF 2015 EPABase (Northeast) - tabbed.xlsx';
         $sheetNames = [
             'Metadata',
@@ -52,8 +53,8 @@ class ExtractionController extends Controller
 //        $nox_not = $this->extractMedian($file,$sheetNames[7],$region,$run,$edges,'nox_not','Lbs');
 //        $co2     = $this->extractMedian($file,$sheetNames[8],$region,$run,$edges,'co2','Tons');
 //        $co2_not = $this->extractMedian($file,$sheetNames[9],$region,$run,$edges,'co2_not','Tons');
-        $heat    = $this->extractMedian($file,$sheetNames[10],$region,$run,$edges,'heat','MMBTU');
-        $heat_not = $this->extractMedian($file,$sheetNames[11],$region,$run,$edges,'heat_not','MMBTU');
+//        $heat    = $this->extractMedian($file,$sheetNames[10],$region,$run,$edges,'heat','MMBTU');
+//        $heat_not = $this->extractMedian($file,$sheetNames[11],$region,$run,$edges,'heat_not','MMBTU');
 
         return view('load');
     }

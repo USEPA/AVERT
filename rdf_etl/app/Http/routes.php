@@ -16,3 +16,10 @@ Route::get('/', function () {
 });
 
 Route::get('load','ExtractionController@showExtraction');
+
+Route::group(['prefix'=>'api/v1'],function(){
+    Route::get('region','RegionController@listRegions');
+    Route::get('region/{name}','RegionController@getRuns');
+    Route::get('region/{name}/year/{year}','RegionController@getYear');
+    Route::get('region/{name}/year/{year}/data/{data_type}','RegionController@getData');
+});
