@@ -1,0 +1,40 @@
+{
+  "name": "AVERT",
+  "version": "1.0.0",
+  "description": "AVoided Emissions and geneRation Tool",
+  "private": true,
+  "author": "Courtney Myers <courtney.myers@erg.com>",
+  "license": "MIT",
+  "scripts": {
+    "setup":     "mkdir public",
+    "preclean":  "mkdir \"public/temp\"",
+    "clean":     "rm -r public/*",
+    "postclean": "(mkdir \"public/css\") && (mkdir \"public/js\") && (mkdir \"public/img\")",
+    "build:markup":     "cp                                          source/*.html             public/",
+    "build:images":     "cp                                          source/img/*              public/img/",
+    "build:styles":     "node-sass --output-style=compressed         source/sass/global.scss > public/css/global.css",
+    "postbuild:styles": "postcss   --use autoprefixer --replace                                public/css/global.css",
+    "build:scripts":    "browserify -t [ babelify --presets [ es2015 ] ] source/js/global.js > public/js/global.js",
+    "build": "(npm run build:markup -s) & (npm run build:images -s) & (npm run build:styles -s) & (npm run build:scripts -s)",
+    "server:start":  "browser-sync start  --server public",
+    "server:reload": "browser-sync reload --files  public",
+    "start": "(npm run clean -s) && (npm run build -s) && (sh tab.sh \"npm run watch\") && (npm run server:start)",
+    "test":  "mocha --reporter spec --ui bdd",
+    "watch:markup":  "nodemon -w source -e html            -x \"(npm run build:markup)  && (npm run server:reload)\"",
+    "watch:images":  "nodemon -w source -e svg,png,jpg,gif -x \"(npm run build:images)  && (npm run server:reload)\"",
+    "watch:styles":  "nodemon -w source -e scss            -x \"(npm run build:styles)  && (npm run server:reload)\"",
+    "watch:scripts": "nodemon -w source -e js              -x \"(npm run build:scripts) && (npm run server:reload)\"",
+    "watch": "(sh tab.sh \"npm run watch:scripts -s\") && (sh tab.sh \"npm run watch:styles -s\") && (sh tab.sh \"npm run watch:images -s\") && (npm run watch:markup -s)"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.2.3",
+    "babel-preset-es2015": "^6.5.0",
+    "babelify": "^7.2.0",
+    "browser-sync": "^2.10.0",
+    "browserify": "^12.0.1",
+    "mocha": "^2.4.5",
+    "node-sass": "^3.4.2",
+    "nodemon": "^1.8.1",
+    "postcss-cli": "^2.3.3"
+  }
+}

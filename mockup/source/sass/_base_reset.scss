@@ -1,0 +1,19 @@
+@import 'https://fonts.googleapis.com/css?family=Open+Sans:400,700';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1;
+  // prevent iOS from resizing text
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: white;
+}
