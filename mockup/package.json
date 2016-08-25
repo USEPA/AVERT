@@ -6,10 +6,9 @@
   "author": "Courtney Myers <courtney.myers@erg.com>",
   "license": "MIT",
   "scripts": {
-    "setup":     "mkdir public",
-    "preclean":  "mkdir \"public/temp\"",
+    "setup":     "mkdir public/temp",
     "clean":     "rm -r public/*",
-    "postclean": "(mkdir \"public/css\") && (mkdir \"public/js\") && (mkdir \"public/img\")",
+    "postclean": "mkdir public/{css,js,img}",
     "build:markup":     "cp                                          source/*.html             public/",
     "build:images":     "cp                                          source/img/*              public/img/",
     "build:styles":     "node-sass --output-style=compressed         source/sass/global.scss > public/css/global.css",
@@ -18,13 +17,13 @@
     "build": "(npm run build:markup -s) & (npm run build:images -s) & (npm run build:styles -s) & (npm run build:scripts -s)",
     "server:start":  "browser-sync start  --server public",
     "server:reload": "browser-sync reload --files  public",
-    "start": "(npm run clean -s) && (npm run build -s) && (sh tab.sh \"npm run watch\") && (npm run server:start)",
+    "start": "(npm run clean -s) & (npm run build -s) & (npm run server:start) & (npm run watch)",
     "test":  "mocha --reporter spec --ui bdd",
     "watch:markup":  "nodemon -w source -e html            -x \"(npm run build:markup)  && (npm run server:reload)\"",
     "watch:images":  "nodemon -w source -e svg,png,jpg,gif -x \"(npm run build:images)  && (npm run server:reload)\"",
     "watch:styles":  "nodemon -w source -e scss            -x \"(npm run build:styles)  && (npm run server:reload)\"",
     "watch:scripts": "nodemon -w source -e js              -x \"(npm run build:scripts) && (npm run server:reload)\"",
-    "watch": "(sh tab.sh \"npm run watch:scripts -s\") && (sh tab.sh \"npm run watch:styles -s\") && (sh tab.sh \"npm run watch:images -s\") && (npm run watch:markup -s)"
+    "watch": "(npm run watch:scripts -s) & (npm run watch:styles -s) & (npm run watch:images -s) & (npm run watch:markup -s)"
   },
   "devDependencies": {
     "autoprefixer": "^6.2.3",
