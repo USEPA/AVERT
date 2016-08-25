@@ -1,11 +1,12 @@
 .avert-app {
   margin: 2rem 0;
-  box-shadow: 0 0 0.25rem rgba(black, 0.33);
 }
 
 
 .avert-nav {
   overflow: hidden;
+  margin-bottom: 2rem;
+  box-shadow: 0 0 0.25rem rgba(black, 0.33);
 
   ol {
     margin: 0;
@@ -40,6 +41,11 @@
       background-color: lighten($avert-blue, 5%);
     }
   }
+}
+
+
+.avert-steps {
+  box-shadow: 0 0 0.25rem rgba(black, 0.33);
 }
 
 
