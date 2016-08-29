@@ -5,8 +5,7 @@
 
 .avert-nav {
   overflow: hidden;
-  margin-bottom: 2rem;
-  box-shadow: 0 0 0.25rem rgba(black, 0.33);
+  margin-bottom: 1rem;
 
   ol {
     margin: 0;
@@ -16,32 +15,33 @@
 
   li {
     float: left;
-    width: calc(100% / 3);
+    margin-right: 0.5rem;
+    width: calc((100% - 1rem) / 3);
 
-    &:first-of-type {
-      border-left: 1px solid darken($avert-blue, 10%);
+    &:last-of-type {
+      margin-right: 0;
     }
   }
 
   a {
     display: block;
     padding: 0.75rem;
-    border-top:    1px solid darken($avert-blue, 10%);
-    border-right:  1px solid darken($avert-blue, 10%);
-    border-bottom: 2px solid darken($avert-blue, 5%);
+    border: 1px solid $grey9;
     line-height: 1;
     font-weight: bold;
     text-align: center;
     text-shadow: 0 0 5px rgba(black, 0.25);
     color: white;
-    background-color: darken($avert-blue, 5%);
+    background-color: $greyc;
     cursor: default;
 
     &[data-active="true"] {
+      border-color: $avert-blue;
       background-color: lighten($avert-blue, 5%);
     }
   }
 }
+
 
 
 .avert-steps {
