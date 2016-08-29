@@ -72,6 +72,8 @@ fieldset {
 }
 .avert-heading-two {
   margin-bottom: 1rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 2px solid currentColor;
   font-size: 1.25rem; // 20px
   color: $avert-blue;
 }
