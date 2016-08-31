@@ -28,3 +28,19 @@
     font-weight: bold;
   }
 }
+
+
+.avert-form-gap {
+  float: left;
+  width: 2rem;
+
+  p {
+    margin-top: 1.125rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-align: center;
+  }
+}
+.avert-form-field-narrow {
+  width: calc(50% - 1.5rem);
+}
