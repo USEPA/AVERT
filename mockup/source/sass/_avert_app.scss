@@ -167,6 +167,16 @@
     background-color: lighten($avert-blue, 5%);
   }
 }
+.avert-reset-button {
+  background-color: $red;
+
+  &:hover {
+    background-color: lighten($red, 5%);
+  }
+
+  // hide right arrow
+  &::after { display: none; }
+}
 
 
 .avert-input-group {
