@@ -21,8 +21,8 @@
   background-position: 0 0;
 
   position: relative;
-  left: 2px;
-  bottom: -3px;
+  vertical-align: bottom;
+  transform: scale(0.75);
 
   // hide text;
   text-indent: 400%;
@@ -59,11 +59,8 @@
   }
 
   p {
-    font-size: 0.875rem;
-  }
-
-  h4 {
     margin-top: 0;
+    font-size: 0.875rem;
   }
 
   .avert-modal-close {
