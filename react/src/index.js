@@ -1,9 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Calculations from './app/Calculations';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import avertApp from './app/reducers';
+import App from './app/components/App';
 import './index.css';
 
+let store = createStore(avertApp);
+
 ReactDOM.render(
-  <Calculations />,
-  document.getElementById('root')
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('root')
 );
