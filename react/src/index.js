@@ -1,12 +1,26 @@
+import thunkMiddleware from 'redux-thunk';
+import createLogger from 'redux-logger';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import { selectRegion, fetchRegion } from './app/actions';
 import avertApp from './app/reducers';
 import App from './app/components/App';
 import './index.css';
 
-let store = createStore(avertApp);
+const loggerMiddleware = createLogger();
+let store = createStore(
+	avertApp, 
+	applyMiddleware(
+		thunkMiddleware,
+		loggerMiddleware
+));
+
+store.dispatch(selectRegion('javascript'));
+store.dispatch(fetchRegion('javascript')).then(() =>
+	console.log('- fetchRegion','store.dispatch',store.getState())
+)
 
 ReactDOM.render(
     <Provider store={store}>

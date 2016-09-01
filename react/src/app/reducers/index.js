@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
-import rdfs from './rdfs';
+import regions from './regions';
 
 const avertApp = combineReducers({
-	rdfs
+	regions	
 });
+
+
 
 export default avertApp;
