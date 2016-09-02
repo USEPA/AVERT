@@ -168,14 +168,25 @@
   }
 }
 .avert-reset-button {
-  background-color: $red;
+  background-color: $green;
 
   &:hover {
-    background-color: lighten($red, 5%);
+    background-color: lighten($green, 5%);
   }
 
-  // hide right arrow
+  // hide next icon
   &::after { display: none; }
+  // reset icon
+  &:before {
+    content: '';
+    display: inline-block;
+    margin-right: 0.375rem;
+    width: 0.625rem; // 10px
+    height: 0.625rem; // 10px
+    background-image: url('../img/icons.svg');
+    background-size: 400px 200px;
+    background-position: -56px -10px;
+  }
 }
 
 
@@ -189,7 +200,12 @@
   }
 
   p {
-    margin-top: 0.5rem;
+    margin-top: 0;
+  }
+
+  .avert-input-group-heading {
+    margin-left: 0.25rem;
+    font-weight: bold;
   }
 }
 
