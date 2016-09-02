@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import { selectRegion, fetchRegion } from './app/actions';
+// import { selectRegion, fetchRegion } from './app/actions';
 import avertApp from './app/reducers';
 import App from './app/components/App';
 import './index.css';
@@ -17,10 +17,10 @@ let store = createStore(
 		loggerMiddleware
 ));
 
-store.dispatch(selectRegion('javascript'));
-store.dispatch(fetchRegion('javascript')).then(() =>
-	console.log('- fetchRegion','store.dispatch',store.getState())
-)
+// store.dispatch(selectRegion('javascript'));
+// store.dispatch(fetchRegion('javascript')).then(() =>
+// 	console.log(store.getState())
+// )
 
 ReactDOM.render(
     <Provider store={store}>
