@@ -29,7 +29,7 @@
           <ol>
             <li class="avert-tab1"><a href="#region" data-active="true">1. Select Region</a></li>
             <li class="avert-tab2"><a href="#parameters" data-active="false">2. Set EE/RE Impacts</a></li>
-            <li class="avert-tab3"><a href="#results" data-active="false">3. Results</a></li>
+            <li class="avert-tab3"><a href="#results" data-active="false">3. Get Results</a></li>
           </ul>
         </nav>
 
@@ -221,7 +221,7 @@
 
             <div class="avert-step-footer">
               <p class="avert-centered">
-                <a class="avert-button avert-next" data-nav="parameters" href="#parameters">Enter EERE Parameters</a>
+                <a class="avert-button avert-next" data-nav="parameters" href="#parameters">Set EE/RE Impacts</a>
               </p>
             </div>
           </section>
@@ -233,13 +233,13 @@
           <section class="avert-step" id="parameters" data-active="false">
             <div class="avert-step-body">
               <h2 class="avert-heading-two">Set Energy Efficiency and Renewable Energy Impacts</h2>
-              <p>AAVERT quantifies avoided emissions and electricity generation displaced by EE/RE policies and programs. Specify the impacts of EE/RE programs below, and AVERT will use these inputs to generate results. Multiple values can be entered, and produce cumulative effects, except when noted. For more information about inputs, please consult the <a href="https://www.epa.gov/statelocalclimate/avert-user-manual-0">AVERT user manual</a>.</p>
+              <p>AVERT quantifies avoided emissions and electricity generation displaced by EE/RE policies and programs. Specify the impacts of EE/RE programs below, and AVERT will use these inputs to generate results. Multiple values can be entered, and produce cumulative effects, except when noted. For more information about inputs, please consult the <a href="https://www.epa.gov/statelocalclimate/avert-user-manual-0">AVERT user manual</a>.</p>
 
               <fieldset class="avert-input-group">
-                <p class="avert-input-group-heading">Reduce generation by a specified percent in some or all hours:</p>
+                <p class="avert-input-group-heading">Reduce generation by a specified percent in some or all hours: <a href="#info-1" class="avert-modal-link">info</a></p>
 
                 <div class="avert-form-field">
-                  <label for="f1">Percentage of top hours to apply reduction <a href="#info-1" class="avert-modal-link">info</a></label>
+                  <label for="f1">Percentage of top hours to apply reduction</label>
                   <input id="f1" type="text">
                 </div>
 
@@ -277,13 +277,13 @@
 
                 <div class="avert-modal" id="info-2" data-active="false">
                   <a href="#" class="avert-modal-close">×</a>
-                  <p>Reduce generation by annual GWh” simply distributes those savings evenly over all hours of the year. The user inputs a total number of GWh expected to be saved in a single year. An industrial or refrigeration efficiency program may be well represented by a constant reduction across most hours of the year.</p>
-                  <p>Reduce Each our by a constant MW is identical in effect to the annual load reduction by total GWh. The user enters a constant reduction for every hour of the year in MW.</p>
+                  <p>“Reduce generation by annual GWh” simply distributes those savings evenly over all hours of the year. The user inputs a total number of GWh expected to be saved in a single year. An industrial or refrigeration efficiency program may be well represented by a constant reduction across most hours of the year.</p>
+                  <p>“Reduce each hour by a constant MW” is identical in effect to the annual load reduction by total GWh. The user enters a constant reduction for every hour of the year in MW.</p>
                 </div>
               </fieldset>
 
               <fieldset class="avert-input-group">
-                <p class="avert-input-group-heading">Enter annual capacity of renewable energy resources:</p>
+                <p class="avert-input-group-heading">Enter annual capacity of renewable energy resources: <a href="#info-3" class="avert-modal-link">info</a></p>
 
                 <div class="avert-form-field avert-form-third">
                   <label for="f5">Wind capacity (MW)</label>
@@ -296,7 +296,7 @@
                 </div>
 
                 <div class="avert-form-field avert-form-third">
-                  <label for="f7">Rooftop solar photovoltaic capacity (MW) <a href="#info-3" class="avert-modal-link">info</a></label>
+                  <label for="f7">Rooftop solar photovoltaic capacity (MW)</label>
                   <input id="f7" type="text">
                 </div>
 
@@ -334,8 +334,8 @@
                   <tr>
                     <th>&nbsp;</th>
                     <th>Original</th>
-                    <th>Post-EERE</th>
-                    <th>EERE Impacts</th>
+                    <th>Post-EE/RE</th>
+                    <th>EE/RE Impacts</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -399,8 +399,8 @@
                 <thead>
                   <tr>
                     <th>State</th>
-                    <th>NO<sub>X</sub> (lbs)</th>
                     <th>SO<sub>2</sub> (lbs)</th>
+                    <th>NO<sub>X</sub> (lbs)</th>
                     <th>CO<sub>2</sub> (tons)</th>
                   </tr>
                 </thead>
@@ -418,13 +418,31 @@
                     <td>&nbsp;</td>
                   </tr>
                   <tr>
+                    <td>ME</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
                     <td>NH</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                   </tr>
                   <tr>
+                    <td>NJ</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
                     <td>NY</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td>RI</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
@@ -487,8 +505,8 @@
 
             <div class="avert-step-footer">
               <p class="avert-centered">
-                <a class="avert-button avert-prev" data-nav="parameters" href="#parameters">Back to EERE Parameters</a>
-                <a class="avert-button avert-reset-button avert-next" data-nav="region" href="#region">Reset to Region</a>
+                <a class="avert-button avert-prev" data-nav="parameters" href="#parameters">Back to EE/RE Impacts</a>
+                <a class="avert-button avert-reset-button avert-next" data-nav="region" href="#region">Reset Region</a>
               </p>
             </div>
           </section>
