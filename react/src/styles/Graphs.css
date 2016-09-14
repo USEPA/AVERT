@@ -1,8 +1,7 @@
-.eere-load-output {
+.graph-container {
     float:left;
-    width: 29%;
+    width:29%;
     height: 500px;
-    overflow: auto;
     border-left: 5px solid #337ab7;
     padding-left: 2em;
 }

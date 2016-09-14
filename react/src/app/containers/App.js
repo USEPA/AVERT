@@ -7,9 +7,12 @@ import { store } from '../store';
 import { updateYear, submitCalculation } from '../actions';
 import EereProfile from './EereProfile';
 import EereLoadOutput from '../components/EereLoadOutput';
+import Graphs from './Graphs';
 import RegionList from '../components/RegionList';
 import YearSelector from '../components/YearSelector';
 import Submit from '../components/Submit';
+
+// Styles
 import '../../styles/EereLoadProfile.css';
 
 class App extends Component {
@@ -25,6 +28,7 @@ class App extends Component {
                     <Submit label="Calculate" submitted={ this.props.calculating } onClick={(e) => this.props.onCalculate()} />
                 </div>
                 <EereLoadOutput />
+                <Graphs />
             </div>
         )
     }
