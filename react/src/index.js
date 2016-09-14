@@ -1,9 +1,14 @@
+// Deps
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+
+// App
+import Root from './app/containers/Root';
+
+// Styles
 import './index.css';
 
 ReactDOM.render(
-  <App />,
-  document.getElementById('root')
+    <Root />,
+    document.getElementById('root')
 );
