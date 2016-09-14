@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import { store } from '../store';
 
 // App
-import { updateYear, submitParams } from '../actions';
+import { updateYear, submitCalculation } from '../actions';
 import EereProfile from './EereProfile';
+import EereLoadOutput from '../components/EereLoadOutput';
 import RegionList from '../components/RegionList';
-import TextInput from '../components/TextInput';
+import YearSelector from '../components/YearSelector';
 import Submit from '../components/Submit';
-
+import '../../styles/EereLoadProfile.css';
 
 class App extends Component {
     render() {
@@ -17,10 +18,13 @@ class App extends Component {
             <div>
                 <h2>AVERT</h2>
 
-                <RegionList />
-                <TextInput label="Year" value={ this.props.year } onChange={(e) => this.props.onYearChange(e.target.value) } />
-                <EereProfile />
-                <Submit submitted={ this.props.submitted } onClick={(e) => this.props.onSubmit()} />
+                <div className="eere-load-profile">
+                    <RegionList />
+                    <YearSelector label="Year" value={ this.props.year } onChange={(e) => this.props.onYearChange(e.target.value) } />
+                    <EereProfile />
+                    <Submit label="Calculate" submitted={ this.props.calculating } onClick={(e) => this.props.onCalculate()} />
+                </div>
+                <EereLoadOutput />
             </div>
         )
     }
@@ -30,6 +34,7 @@ const mapStateToProps = (state) => {
     return {
         year: state.regions.options.year,
         submitted: state.eere.submitted,
+        calculating: state.eere.calculating,
     }
 }
 
@@ -38,8 +43,8 @@ const mapDispatchToProps = (dispatch) => {
         onYearChange: (year) => {
             store.dispatch(updateYear(year));
         },
-        onSubmit: () => {
-            store.dispatch(submitParams());
+        onCalculate: () => {
+            store.dispatch(submitCalculation());
         },
     }
 }

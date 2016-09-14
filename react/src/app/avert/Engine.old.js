@@ -1,9 +1,12 @@
+// Deps
 import _ from 'lodash';
 import math from 'mathjs';
 import stats from 'stats-lite'
-import RegionEnum from './RegionEnum';
-import GasesEnum from './GasesEnum';
-import YearsEnum from './YearsEnum';
+
+// Engine
+import RegionEnum from './utils/RegionEnum';
+import GasesEnum from './utils/GasesEnum';
+import YearsEnum from './utils/YearsEnum';
 
 // Temporary
 import northeast from '../../assets/data/rdf_northeast_2015.json';
@@ -12,36 +15,47 @@ import california from '../../assets/data/rdf_california_2015.json';
 class Engine {
 
     constructor(params) {
-        this.setRegion(params.region);
-        this.setGases(params.gases);
-        this.years = params.years || ['2007','2008','2009','2010','2011','2012','2013','2014','2015'];
-        this.loadCell = params.loadCell || [];
-        this.dateRange = params.dateRange || { start: 'January 1, 2015', end: 'December 31, 2015' };
-        this.scaleType = params.scaleType || 'peak';
-        this.setData(params.data);
-        this.setProfile(params.profile);
+        this.value = 0;
+        // this.setRegion(params.region);
+        // this.setGases(params.gases);
+        // this.years = params.years || ['2007','2008','2009','2010','2011','2012','2013','2014','2015'];
+        // this.loadCell = params.loadCell || [];
+        // this.dateRange = params.dateRange || { start: 'January 1, 2015', end: 'December 31, 2015' };
+        // this.scaleType = params.scaleType || 'peak';
+        // this.setData(params.data);
+        // this.setProfile(params.profile);
     }
 
-    /**
-     * @param {string|array|undefined}
-     */
-    setRegion(regions) {
-        if ( ! regions) this.regions = '';
-        
-        if (typeof regions === 'string') this.region = RegionEnum[regions];
-
-        if (Array.isArray(regions)) {
-            this.region = regions.map(function(region){
-                return RegionEnum[region];
-            }); 
+    setRegion(region) {
+        switch (region) {
+            case 1:
+                this.region = 'NE';
+                break;
+            case 2:
+                this.region = 'CA'
+                break;
+            default:
+                this.region = false;
+                break;
         }
         
         return this;
     }
 
-    /**
-     * @param {string|array|undefined}
-     */
+    getRegion(){
+        return this.region;
+    }
+
+    setYear(year) {
+        this.year = year;
+
+        return this;
+    }
+
+    getYear() {
+        return this.year;
+    }
+
     setGases(gases) {
         if ( ! gases) this.gases = '';
         
@@ -56,9 +70,6 @@ class Engine {
         return this;
     }
 
-    /**
-     * @param {int|array|undefined}
-     */
     setYears(years) {
         if ( ! years) this.years = '';
         

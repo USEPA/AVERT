@@ -11,8 +11,8 @@ class RegionList extends Component {
     render() {
         return(
             <ul>
-                <Region region="Northeast" selected={ this.props.region === 1 } onClick={() => this.props.onRegionClick(1) } />
-                <Region region="California" selected={ this.props.region === 2 } onClick={() => this.props.onRegionClick(2) } />
+                <Region region="California" selected={ this.props.region === 1 } onClick={() => this.props.onRegionClick(1) } />
+                <Region region="Northeast" selected={ this.props.region === 3 } onClick={() => this.props.onRegionClick(3) } />
             </ul>
         )
     }

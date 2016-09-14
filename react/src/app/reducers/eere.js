@@ -7,9 +7,11 @@ import {
     UPDATE_EERE_UTILITY_SOLAR,
     UPDATE_EERE_ROOFTOP_SOLAR,
     SUBMIT_PARAMS,
+    SUBMIT_CALCULATION,
+    COMPLETE_CALCULATION,
 } from '../actions';
 
-const eere = (state = {}, action) => {
+const eere = (state = { topHours: '', reduction: '', annualGwh: '', constantMw: '', capacity: '', utilitySolar: '', rooftopSolar: '', hourlyEere: [] }, action) => {
 	switch (action.type) {
 		case UPDATE_EERE_TOP_HOURS:
 			return Object.assign({}, state, {
@@ -41,7 +43,16 @@ const eere = (state = {}, action) => {
             });
         case SUBMIT_PARAMS:
             return Object.assign({}, state, {
-                submitted: true
+                submitted: true,
+            });
+        case SUBMIT_CALCULATION:
+            return Object.assign({}, state, {
+                calculating: true
+            });
+        case COMPLETE_CALCULATION:
+            return Object.assign({}, state, {
+                calculating: false,
+                hourlyEere: action.hourlyEere
             });
 		default:
 			return state;
