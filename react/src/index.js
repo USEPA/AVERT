@@ -1,30 +1,14 @@
-import thunkMiddleware from 'redux-thunk';
-import createLogger from 'redux-logger';
+// Deps
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-// import { selectRegion, fetchRegion } from './app/actions';
-import avertApp from './app/reducers';
-import App from './app/components/App';
+
+// App
+import Root from './app/containers/Root';
+
+// Styles
 import './index.css';
 
-const loggerMiddleware = createLogger();
-let store = createStore(
-	avertApp, 
-	applyMiddleware(
-		thunkMiddleware,
-		loggerMiddleware
-));
-
-// store.dispatch(selectRegion('javascript'));
-// store.dispatch(fetchRegion('javascript')).then(() =>
-// 	console.log(store.getState())
-// )
-
 ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
+    <Root />,
     document.getElementById('root')
 );

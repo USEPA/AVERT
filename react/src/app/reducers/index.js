@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 import regions from './regions';
+import eere from './eere';
 
 const avertApp = combineReducers({
-	regions	
+	eere,
+    regions,
 });
 
 
