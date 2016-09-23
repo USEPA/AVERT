@@ -8,12 +8,16 @@ import RegionEnum from './enums/RegionEnum';
 import GasesEnum from './enums/GasesEnum';
 import YearsEnum from './enums/YearsEnum';
 import RdfEnum from './enums/RdfEnum';
+// import EereEngine from './EereEngine';
+import AnnualDisplacementEngine from './AnnualDisplacementEngine';
+import StateEmissionsEngine from './StateEmissionsEngine';
+import MonthlyEmissionsEngine from './MonthlyEmissionsEngine';
 
 // App
 import { store } from '../store';
 import { 
     completeCalculation, 
-    completeGeneration, 
+    completeAnnual, 
     completeStateEmissions, 
     completeMonthlyEmissions 
 } from '../actions';
@@ -51,26 +55,14 @@ class Engine {
         this.eereProfile = eereProfile;
     }
 
-    calculateGeneration() {
-        console.warn('- calculateGeneration',this.rdf);
+    calculateDisplacement() {
+        const annualDisplacement = new AnnualDisplacementEngine(this.rdf);
+        const stateEmissions = new StateEmissionsEngine();
+        const monthlyEmissions = new MonthlyEmissionsEngine();
 
-        store.dispatch(completeGeneration([1,2,3]));
-
-        setTimeout(() => {
-            this.calculateStateEmissions();
-        },50)
-
-        setTimeout(() => {
-            this.calculateMonthlyEmissions();
-        },50)
-    }
-
-    calculateStateEmissions() {
-        store.dispatch(completeStateEmissions([4,5,6]))
-    }
-
-    calculateMonthlyEmissions() {
-        store.dispatch(completeMonthlyEmissions([7,8,9]));
+        store.dispatch(completeAnnual(annualDisplacement.output));
+        store.dispatch(completeStateEmissions(stateEmissions.emissions));
+        store.dispatch(completeMonthlyEmissions(monthlyEmissions.emissions));
     }
 
     calculateEereLoad(){

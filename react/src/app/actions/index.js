@@ -18,8 +18,8 @@ export const UPDATE_EERE_ROOFTOP_SOLAR = 'UPDATE_EERE_ROOFTOP_SOLAR';
 export const SUBMIT_PARAMS = 'SUBMIT_PARAMS';
 export const SUBMIT_CALCULATION = 'SUBMIT_CALCULATION';
 export const COMPLETE_CALCULATION = "COMPLETE_CALCULATION";
-export const START_GENERATION = 'START_GENERATION';
-export const COMPLETE_GENERATION = 'COMPLETE_GENERATION';
+export const START_DISPLACEMENT = 'START_DISPLACEMENT';
+export const COMPLETE_ANNUAL = 'COMPLETE_ANNUAL';
 export const COMPLETE_MONTHLY = 'COMPLETE_MONTHLY';
 export const COMPLETE_STATE = 'COMPLETE_STATE';
 export const INVALIDATE_REGION = 'INVALIDATE_REGION';
@@ -135,15 +135,15 @@ export function calculateEereProfile() {
 	},50)
 }
 
-function startGeneration() {
+function startDisplacement() {
 	return {
-		type: START_GENERATION,
+		type: START_DISPLACEMENT,
 	}
 }
 
-export function completeGeneration(data) {
+export function completeAnnual(data) {
 	return {
-		type: COMPLETE_GENERATION,
+		type: COMPLETE_ANNUAL,
 		data
 	}
 }
@@ -162,11 +162,11 @@ export function completeStateEmissions(data) {
 	}
 }
 
-export function calculateGeneration() {
-	store.dispatch(startGeneration());
+export function calculateDisplacement() {
+	store.dispatch(startDisplacement());
 	
 	setTimeout(() => {
-		avert.calculateGeneration();
+		avert.calculateDisplacement();
 	},50);
 }
 
