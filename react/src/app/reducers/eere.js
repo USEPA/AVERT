@@ -11,7 +11,7 @@ import {
     COMPLETE_CALCULATION,
 } from '../actions';
 
-const eere = (state = { topHours: '', reduction: '', annualGwh: '', constantMw: '', capacity: '', utilitySolar: '', rooftopSolar: '', hourlyEere: [] }, action) => {
+const eere = (state = { status: 'not_started', topHours: '', reduction: '', annualGwh: '', constantMw: '', capacity: '', utilitySolar: '', rooftopSolar: '', hourlyEere: [] }, action) => {
 	switch (action.type) {
 		case UPDATE_EERE_TOP_HOURS:
 			return Object.assign({}, state, {
@@ -47,11 +47,11 @@ const eere = (state = { topHours: '', reduction: '', annualGwh: '', constantMw: 
             });
         case SUBMIT_CALCULATION:
             return Object.assign({}, state, {
-                calculating: true
+                status: 'started'
             });
         case COMPLETE_CALCULATION:
             return Object.assign({}, state, {
-                calculating: false,
+                status: 'complete',
                 hourlyEere: action.hourlyEere
             });
 		default:

@@ -3,20 +3,34 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // App
+import { statusEnum } from '../utils/statusEnum';
+
+// Styles
 import '../../styles/EereLoadOutput.css';
 
 class EereLoadOutput extends Component {
     render() {
-        const statusIndicator = this.props.calculating ? "Calculating..." : "Not calculating";
+        const statusIndicator = statusEnum[this.props.status].lang;
         const { hourlyEere } = this.props;
         return(
             <div className="eere-load-output">
                 { statusIndicator }
-                <ul>
-                    {hourlyEere.map((item,index) =>
-                            <li key={index}>{item.current_load_mw}: {item.final_mw}</li>
-                    )}
-                </ul>
+                <table className="eere-table">
+                    <thead>
+                        <tr>
+                            <th>Current Load (MW)</th>
+                            <th>Final (MW)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {hourlyEere.map((item,index) =>
+                            <tr key={index}>
+                                <td>{item.current_load_mw}</td>
+                                <td>{item.final_mw}</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
             </div>
         )
     }
@@ -25,7 +39,7 @@ class EereLoadOutput extends Component {
 const mapStateToProps = (state) => {
 
     return {
-        calculating: state.eere.calculating,
+        status: state.eere.status,
         hourlyEere: state.eere.hourlyEere,
     }
 }

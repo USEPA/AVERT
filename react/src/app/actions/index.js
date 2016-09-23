@@ -18,6 +18,10 @@ export const UPDATE_EERE_ROOFTOP_SOLAR = 'UPDATE_EERE_ROOFTOP_SOLAR';
 export const SUBMIT_PARAMS = 'SUBMIT_PARAMS';
 export const SUBMIT_CALCULATION = 'SUBMIT_CALCULATION';
 export const COMPLETE_CALCULATION = "COMPLETE_CALCULATION";
+export const START_GENERATION = 'START_GENERATION';
+export const COMPLETE_GENERATION = 'COMPLETE_GENERATION';
+export const COMPLETE_MONTHLY = 'COMPLETE_MONTHLY';
+export const COMPLETE_STATE = 'COMPLETE_STATE';
 export const INVALIDATE_REGION = 'INVALIDATE_REGION';
 export const REQUEST_REGION = 'REQUEST_REGION';
 export const RECEIVE_REGION = 'RECEIVE_REGION';
@@ -110,9 +114,7 @@ export function submitParams() {
 	}
 }
 
-export function submitCalculation() {
-	avert.calculateEereLoad();
-
+function submitCalculation() {
 	return {
 		type: SUBMIT_CALCULATION
 	}
@@ -123,6 +125,49 @@ export function completeCalculation(hourlyEere) {
 		type: COMPLETE_CALCULATION,
 		hourlyEere
 	}
+}
+
+export function calculateEereProfile() {
+	store.dispatch(submitCalculation());
+
+	setTimeout(() => {
+		avert.calculateEereLoad();
+	},50)
+}
+
+function startGeneration() {
+	return {
+		type: START_GENERATION,
+	}
+}
+
+export function completeGeneration(data) {
+	return {
+		type: COMPLETE_GENERATION,
+		data
+	}
+}
+
+export function completeMonthlyEmissions(data) {
+	return {
+		type: COMPLETE_MONTHLY,
+		data
+	}
+}
+
+export function completeStateEmissions(data) {
+	return {
+		type: COMPLETE_STATE,
+		data
+	}
+}
+
+export function calculateGeneration() {
+	store.dispatch(startGeneration());
+	
+	setTimeout(() => {
+		avert.calculateGeneration();
+	},50);
 }
 
 export function invalidateRegion(region) {

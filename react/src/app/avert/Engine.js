@@ -11,7 +11,12 @@ import RdfEnum from './enums/RdfEnum';
 
 // App
 import { store } from '../store';
-import { completeCalculation } from '../actions';
+import { 
+    completeCalculation, 
+    completeGeneration, 
+    completeStateEmissions, 
+    completeMonthlyEmissions 
+} from '../actions';
 
 class Engine {
 
@@ -46,35 +51,58 @@ class Engine {
         this.eereProfile = eereProfile;
     }
 
-    calculateEereLoad(){
-        const _this = this;
-        const data = this.rdf;
-        const regionalLoad = _.map(data.regional_load,'regional_load_mw');
-        const k = 1 - (this.eereProfile.topHours / 100);
-        const top_percentile = stats.percentile(regionalLoad, k);
-        const resulting_hourly_mw_reduction = math.chain(this.eereProfile.annualGwh).multiply(1000).divide(regionalLoad.length).done();
-        const manual_eere_entry = math.zeros(regionalLoad.length);
-        const hourly_eere = _.map(regionalLoad, function(load, index) {
-            let renewable_energy_profile = 0; // [(WindCapacity * EEREDefaultRegionalWindForThatHour + UtilitySolarPV * EEREDefaultRegionalUtilitySolarPVForThatHour + RooftopSolarPV * EEREDefaultRegionalRooftopSolarPVForThatHour)]
-            let initialLoad = (load > top_percentile) ? load * (-_this.eereProfile.reduction) : 0
-            let calculatedLoad = math.chain(initialLoad)
-                                     .subtract(manual_eere_entry.toArray()[index])
-                                     .add(renewable_energy_profile)
-                                     .subtract(resulting_hourly_mw_reduction)
-                                     .add(_this.eereProfile.constantMw)
-                                     .done();
-            let finalMw = data.regional_load[index].year < 1990 ? 0 : calculatedLoad;
-                    
-            return {
-                manual_eere_entry: manual_eere_entry.toArray()[index],
-                renewable_energy_profile: renewable_energy_profile, 
-                final_mw: finalMw,
-                current_load_mw: load,
-                flag: 0
-            }
-        });
+    calculateGeneration() {
+        console.warn('- calculateGeneration',this.rdf);
 
-        store.dispatch(completeCalculation(hourly_eere));
+        store.dispatch(completeGeneration([1,2,3]));
+
+        setTimeout(() => {
+            this.calculateStateEmissions();
+        },50)
+
+        setTimeout(() => {
+            this.calculateMonthlyEmissions();
+        },50)
+    }
+
+    calculateStateEmissions() {
+        store.dispatch(completeStateEmissions([4,5,6]))
+    }
+
+    calculateMonthlyEmissions() {
+        store.dispatch(completeMonthlyEmissions([7,8,9]));
+    }
+
+    calculateEereLoad(){
+        const regionalLoad = _.map(this.rdf.regional_load,'regional_load_mw');
+        const k = 1 - (this.eereProfile.topHours / 100);
+        this.top_percentile = stats.percentile(regionalLoad, k);
+        this.resulting_hourly_mw_reduction = math.chain(this.eereProfile.annualGwh).multiply(1000).divide(regionalLoad.length).done();
+        this.manual_eere_entry = math.zeros(regionalLoad.length);
+        this.hourly_eere = _.map(regionalLoad, this.hourlyEereCb.bind(this));
+        
+        store.dispatch(completeCalculation(this.hourly_eere));
+    }
+
+    hourlyEereCb(load,index){
+
+        let renewable_energy_profile = 0; // [(WindCapacity * EEREDefaultRegionalWindForThatHour + UtilitySolarPV * EEREDefaultRegionalUtilitySolarPVForThatHour + RooftopSolarPV * EEREDefaultRegionalRooftopSolarPVForThatHour)]
+        let initialLoad = (load > this.top_percentile) ? load * (- this.eereProfile.reduction) : 0
+        let calculatedLoad = math.chain(initialLoad)
+                                 .subtract(this.manual_eere_entry.toArray()[index])
+                                 .add(renewable_energy_profile)
+                                 .subtract(this.resulting_hourly_mw_reduction)
+                                 .add(this.eereProfile.constantMw)
+                                 .done();
+        let finalMw = this.rdf.regional_load[index].year < 1990 ? 0 : calculatedLoad;
+        
+        return {
+            manual_eere_entry: this.manual_eere_entry.toArray()[index],
+            renewable_energy_profile: renewable_energy_profile, 
+            final_mw: finalMw,
+            current_load_mw: load,
+            flag: 0
+        }
     }
 }
 

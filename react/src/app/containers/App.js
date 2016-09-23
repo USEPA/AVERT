@@ -4,19 +4,22 @@ import { connect } from 'react-redux';
 import { store } from '../store';
 
 // App
-import { updateYear, submitCalculation } from '../actions';
+import { updateYear, calculateEereProfile, calculateGeneration } from '../actions';
 import EereProfile from './EereProfile';
 import EereLoadOutput from '../components/EereLoadOutput';
 import Graphs from './Graphs';
 import RegionList from '../components/RegionList';
 import YearSelector from '../components/YearSelector';
 import Submit from '../components/Submit';
+import { statusEnum } from '../utils/statusEnum';
 
 // Styles
 import '../../styles/EereLoadProfile.css';
 
 class App extends Component {
+    
     render() {
+    
         return (
             <div>
                 <h2>AVERT</h2>
@@ -25,7 +28,8 @@ class App extends Component {
                     <RegionList />
                     <YearSelector label="Year" value={ this.props.year } onChange={(e) => this.props.onYearChange(e.target.value) } />
                     <EereProfile />
-                    <Submit label="Calculate" submitted={ this.props.calculating } onClick={(e) => this.props.onCalculate()} />
+                    <Submit label="Calculate" submitted={ statusEnum[this.props.eere_status].submitted } onClick={(e) => this.props.onCalculate()} />
+                    <Submit label="Generation" submitted={ statusEnum[this.props.generation_status].submitted } onClick={(e) => this.props.onCalculateGeneration()} />
                 </div>
                 <EereLoadOutput />
                 <Graphs />
@@ -38,7 +42,8 @@ const mapStateToProps = (state) => {
     return {
         year: state.regions.options.year,
         submitted: state.eere.submitted,
-        calculating: state.eere.calculating,
+        eere_status: state.eere.status,
+        generation_status: state.generation.status,
     }
 }
 
@@ -48,7 +53,10 @@ const mapDispatchToProps = (dispatch) => {
             store.dispatch(updateYear(year));
         },
         onCalculate: () => {
-            store.dispatch(submitCalculation());
+            calculateEereProfile();
+        },
+        onCalculateGeneration: () => {
+            calculateGeneration();
         },
     }
 }
