@@ -1,4 +1,5 @@
 import {    
+    SELECT_REGION,
     UPDATE_EERE_TOP_HOURS,
     UPDATE_EERE_REDUCTION,
     UPDATE_EERE_ANNUAL_GWH,
@@ -11,8 +12,12 @@ import {
     COMPLETE_CALCULATION,
 } from '../actions';
 
-const eere = (state = { status: 'not_started', topHours: '', reduction: '', annualGwh: '', constantMw: '', capacity: '', utilitySolar: '', rooftopSolar: '', hourlyEere: [] }, action) => {
+const eere = (state = { status: 'select_region', topHours: '', reduction: '', annualGwh: '', constantMw: '', capacity: '', utilitySolar: '', rooftopSolar: '', hourlyEere: [] }, action) => {
 	switch (action.type) {
+        case SELECT_REGION:
+            return Object.assign({}, state, {
+                status: "ready",
+            });
 		case UPDATE_EERE_TOP_HOURS:
 			return Object.assign({}, state, {
 				topHours: action.text

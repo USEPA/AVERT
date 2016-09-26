@@ -21,48 +21,64 @@ class AnnualDisplacementEngine {
         }
     }
 
-    get generation() {
+    getDisplacedGeneration(dataSet){
         console.warn('- AnnualDisplacementEngine','generation',this.rdf);
         // const _this = this;
-        const genArray = this.rdf.data.generation.map((item) => { return item.medians });
+        const medians = dataSet.map((item) => { return item.medians });
         const loadArrayOriginal = this.rdf.regional_load.map((item) => { return item.regional_load_mw });
-        // Temporarily make loadArrayPost === loadArrayOriginal
-        const temporaryEereProfile = 3; // this.profile[index]
-        const loadArrayPost = loadArrayOriginal.map((item,index) => { return item - temporaryEereProfile });
+        // const loadArrayPost = loadArrayOriginal.map((item,index) => { return item - _this.profile[index] });
         // const min = this.rdf.load_bin_edges[0];
         // const max = this.rdf.load_bin_edges[this.rdf.load_bin_edges.length];
         
-        // let deltas = [];
+        // const peaks = [];
+        // const capacities = [];
         const totals = loadArrayOriginal.map((item,index) => {
-            // const postValue = loadArrayPost[index];
+                        
+            // Filter out outliers
+            // if( ! (item > min && item < max)) return false;
             
-            // if( ! (item > min && item < max) && (postValue < min && postValue > max)) return false;
+            // Calculate pre slope, intercept, val
+            const preSlope = 1;
+            // const preSlope = loadArrayOriginal.map((value,index) => { 
+            //     math.divide(
+            //         math.subtract(value, loadArrayOriginal[index + 1]),
+            //         math.subtract(median[index], medians[index + 1])
+            //     );  
+            // }).reduce((sum,n) => { return sum + n });
+            // const preSlope = loadArrayOriginal[preMatchIndex] - loadArrayOriginal[postMatchIndex] / medians[preMatchIndex] - medians[postMatchIndex]
 
-            return _.reduce(genArray[index], (sum, n) => { return math.add(sum,n) }, 0);
-            // const slopePre = 1;
-            // const interceptPre = 1;
-            // const valPre = item * slopePre + interceptPre;
+            const preIntercept = 1;
+            const preVal = math.chain(item).multiply(preSlope).add(preIntercept).done();
+            
+            // Calculate post slope, intercept, val
+            const postSlope = 1;
+            const postIntercept = 1;
+            const postVal = math.chain(item).multiply(postSlope).add(postIntercept).done();
 
-            // const slopePost = 1;
-            // const interceptPost = 1;
-            // const valPost = item * slopePost + interceptPost;
+            // Calculate delta V (postVal - preVal)
+            const dV = math.subtract(postVal, preVal);
 
-            // deltas[index] = valPost - valPre;
-
-            // return {
-            //     peak: generation[_.sortedIndex(generation,item)], // See line 265
-            //     total: _.reduce(generation, (sum,n) => { return sum + n }, 0), // See line 267
-            //     capacity: 1, // See lines 271
-            // }
+            // if(postVal > totalGen[0]) peaks[index] = postVal;
+            // return postVal;
+            
+            // peaks[index] = medians[_.sortedIndex(medians,item)];
+            // capacities[index] = 0;
+            
+            return postVal;
+            // return _.reduce(medians[index], (sum, n) => { return math.add(sum,n) }, 0);
         });
 
         const original = _.reduce(totals, (sum, n) => { return math.add(sum,n) }, 0);
 
         return {
             original: original,
-            post: 2,
-            impact: 3
+            post: 0,
+            impact: 0
         }
+    }
+
+    get generation() {
+        return this.getDisplacedGeneration(this.rdf.data.generation)
     }
 
     get totalEmissions() {
@@ -82,47 +98,35 @@ class AnnualDisplacementEngine {
     }
 
     get so2Total() {
-        return {
-            original: 1,
-            post: 2,
-            impact:3 
-        }
+        return this.getDisplacedGeneration(this.rdf.data.so2);
     }
 
     get noxTotal() {
-        return {
-            original: 1,
-            post: 2,
-            impact:3 
-        }
+        return this.getDisplacedGeneration(this.rdf.data.nox);
     }
 
     get co2Total() {
-        return {
-            original: 1,
-            post: 2,
-            impact:3 
-        }
+        return this.getDisplacedGeneration(this.rdf.data.co2);
     }
 
     get so2Rate() {
         return {
-            original: 1,
-            post: 2,
+            original: 0,
+            post: 0,
         }
     }
 
     get noxRate() {
         return {
-            original: 1,
-            post: 2,
+            original: 0,
+            post: 0,
         }
     }
 
     get co2Rate() {
         return {
-            original: 1,
-            post: 2,
+            original: 0,
+            post: 0,
         }
     }
 }

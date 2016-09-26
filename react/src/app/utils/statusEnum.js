@@ -1,5 +1,9 @@
 export const statusEnum = {
-    "not_started": {
+    "select_region": {
+        lang: "Select region",
+        submitted: true,
+    },
+    "ready": {
         lang: "Press button",
         submitted: false,
     },

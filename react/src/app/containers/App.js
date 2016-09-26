@@ -29,7 +29,7 @@ class App extends Component {
                     <YearSelector label="Year" value={ this.props.year } onChange={(e) => this.props.onYearChange(e.target.value) } />
                     <EereProfile />
                     <Submit label="Calculate" submitted={ statusEnum[this.props.eere_status].submitted } onClick={(e) => this.props.onCalculate()} />
-                    <Submit label="Generation" submitted={ statusEnum[this.props.annual_status].submitted } onClick={(e) => this.props.onCalculateGeneration()} />
+                    <Submit label="Displacement" submitted={ statusEnum[this.props.annual_status].submitted } onClick={(e) => this.props.onCalculateGeneration()} />
                 </div>
                 <EereLoadOutput />
                 <Graphs />

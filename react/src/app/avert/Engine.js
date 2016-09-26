@@ -61,8 +61,15 @@ class Engine {
         const monthlyEmissions = new MonthlyEmissionsEngine();
 
         store.dispatch(completeAnnual(annualDisplacement.output));
-        store.dispatch(completeStateEmissions(stateEmissions.emissions));
-        store.dispatch(completeMonthlyEmissions(monthlyEmissions.emissions));
+        
+        setTimeout(() => {
+            store.dispatch(completeStateEmissions(stateEmissions.emissions));
+        }, 50)
+
+        setTimeout(() => {
+            store.dispatch(completeMonthlyEmissions(monthlyEmissions.emissions));
+        }, 50)
+        
     }
 
     calculateEereLoad(){

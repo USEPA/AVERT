@@ -1,4 +1,5 @@
 import {    
+    SELECT_REGION,
     START_DISPLACEMENT,
     COMPLETE_ANNUAL,
 } from '../actions';
@@ -6,7 +7,7 @@ import {
 const resultsFormat = { original: '', post: '', impact: ''}
 
 const annualDisplacement = (state = { 
-    status: "not_started", 
+    status: "select_region", 
     results: {
         generation: { so2: resultsFormat, nox: resultsFormat, co2: resultsFormat },
         totalEmissions: { so2: resultsFormat, nox: resultsFormat, co2: resultsFormat },
@@ -14,6 +15,10 @@ const annualDisplacement = (state = {
     } 
 }, action) => {
     switch (action.type) {
+        case SELECT_REGION:
+            return Object.assign({}, state, {
+                status: "ready",
+            });
         case START_DISPLACEMENT:
             return Object.assign({}, state, {
                 status: "started",
