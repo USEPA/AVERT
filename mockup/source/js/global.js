@@ -10,6 +10,9 @@
     }
   }
 
+  function toggleAttribute(el, attr = 'active', opt1 = 'true', opt2 = 'false') {
+    el.setAttribute('data-' + attr, el.getAttribute('data-' + attr) === opt1 ? opt2 : opt1);
+  };
 
 
 
@@ -22,6 +25,7 @@
   }
 
   avertApp.addEventListener('click', selectRegion, false);
+
 
 
 
@@ -60,6 +64,23 @@
   }
 
   tabNav.addEventListener('click', disableAnchors, false);
+
+
+
+
+
+  // form inputs for 'EE/RE' Impacts tab
+  const toggleForm = avertApp.querySelector('.avert-toggle-form');
+  const formFields = avertApp.querySelectorAll('.avert-input-group-fields');
+
+  function toggleFormInputs(event) {
+    // delegate only to '.avert-input-group-checkbox' elements
+    if (event.target.className !== 'avert-input-group-checkbox') { return; }
+
+    toggleAttribute(event.target.nextElementSibling.nextElementSibling);
+  }
+
+  toggleForm.addEventListener('click', toggleFormInputs, false);
 
 
 
@@ -113,7 +134,4 @@
 
   avertApp.addEventListener('click', openModal, false);
   avertApp.addEventListener('click', closeModal, false);
-
-  //console.log(modalLinks);
-  //console.log(modalPanes);
 }());
