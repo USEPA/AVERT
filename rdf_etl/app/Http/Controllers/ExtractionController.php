@@ -24,7 +24,7 @@ class ExtractionController extends Controller
         $filePath = '/resources/assets/excel/';
         $file = $filePath . '';
 //        $file = $filePath . 'AVERT RDF 2015 EPABase (California) - tabbed.xlsx';
-//        $file = $filePath . 'AVERT RDF 2015 EPABase (Northeast) - tabbed.xlsx';
+        $file = $filePath . 'AVERT RDF 2015 EPABase (Northeast) - tabbed.xlsx';
         $sheetNames = [
             'Metadata',
             'Regional Load',
@@ -103,6 +103,7 @@ class ExtractionController extends Controller
 
         // Excel service collection does not allow map function :(
         $data->each(function($item, $key) use (&$run,&$region) {
+            $hourlyLimit = $item->get('regional_load_mw') * 0.15;
             $regionalLoad = new RegionalLoad([
                 'hour_of_year' => $item->get('hour_of_year'),
                 'year' => $item->get('year'),
@@ -110,6 +111,7 @@ class ExtractionController extends Controller
                 'day' => $item->get('day'),
                 'hour' => $item->get('hour'),
                 'regional_load_mw' => $item->get('regional_load_mw'),
+                'hourly_limit' => $hourlyLimit,
             ]);
             $regionalLoad->run()->associate($run);
             $regionalLoad->region()->associate($region);
@@ -141,7 +143,10 @@ class ExtractionController extends Controller
         $sheet = Excel::selectSheets($sheetname)->load($file);
         $data = $sheet->get();
         $data->each(function($item,$key) use ($region,$run,$edges,$medianType,$medianUnit) {
-            $location = $region->locations()->where('orispl_code',$item->get('orispl_code'))->first();
+//            $location = $region->locations()->where('orispl_code',$item->get('orispl_code'))->where('unit_code',$item->get('unit_code'))->first();
+//            var_dump($item->get('full_unit_name'));die();
+//            var_dump($region->locations()->first());die();
+            $location = $region->locations()->where('full_name',$item->get('full_unit_name'))->first();
 
             if( ! $location) {
                 $location = new Location([

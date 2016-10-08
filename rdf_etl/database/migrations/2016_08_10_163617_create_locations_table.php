@@ -24,6 +24,7 @@ class CreateLocationsTable extends Migration
             $table->string('unit_code');
             $table->string('full_name');
             $table->timestamps();
+            $table->index('full_name');
         });
     }
 

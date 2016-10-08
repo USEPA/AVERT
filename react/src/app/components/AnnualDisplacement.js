@@ -12,7 +12,7 @@ class AnnualDisplacement extends Component {
     render() {
         const statusIndicator = statusEnum[this.props.annual_status].lang;
         const { data } = this.props;
-
+console.log('AnnualDisplacement Component','data',data);
         return(
             <div>
                 <h4>Annual Displacement</h4>

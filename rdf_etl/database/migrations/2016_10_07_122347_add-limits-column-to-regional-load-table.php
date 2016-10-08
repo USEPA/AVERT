@@ -13,7 +13,7 @@ class AddLimitsColumnToRegionalLoadTable extends Migration
     public function up()
     {
         Schema::table('regional_load', function ($table) {
-            $table->integer('hourly_limit');
+            $table->decimal('hourly_limit',8,2);
         });
     }
 

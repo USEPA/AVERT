@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Limit;
 use App\LoadBinEdge;
 use App\LoadBinMedian;
 use App\Location;
@@ -34,6 +35,7 @@ class RegionController extends Controller
     public function getRuns(Request $request, $name) {
 //        $region = Region::where('region_name',$name)->with('runs','loads','edges','medians','locations')->first();
         $region = Region::where('region_name',$name)->first();
+
         $runs = Run::where('region_id',$region->id)->get();
         $runs->transform(function($item,$key) use ($request) {
             $item['url'] = $request->url() . '/year/' . $item['year'];
@@ -41,19 +43,24 @@ class RegionController extends Controller
             return $item;
         });
 
+        $limits = Limit::where('region_id',$region->id)->get();
+
         return response()->json([
             'region' => $region,
-            'runs' => $runs
+            'runs' => $runs,
+            'limits' => $limits,
         ]);
     }
 
     public function getYear(Request $request, $name, $year) {
         $region = Region::where('region_name',$name)->first();
         $run = Run::where('region_id',$region->id)->where('year',$year)->first();
+        $limits = Limit::where('region_id',$region->id)->where('year',$year)->first();
         $dataBasePath = $request->url() . '/data/';
         return response()->json([
             'region' => $region,
             'run' => $run,
+            'limits' => $limits,
             'data' => [
                 'All' => $dataBasePath . 'all',
                 'Generation (MW)' => $dataBasePath . 'generation',
@@ -73,6 +80,7 @@ class RegionController extends Controller
 
         $region = Region::where('region_name',$name)->first();
         $run = Run::where('region_id',$region->id)->where('year',$year)->first();
+        $limits = Limit::where('region_id',$region->id)->where('year',$year)->first();
         $regionalLoad = RegionalLoad::where('region_id',$region->id)->get();
 
 
@@ -80,6 +88,7 @@ class RegionController extends Controller
         $loadBinEdges = $loadBinEdges->reject(function ($item, $key) {
             return  $item['edge_value_mw'] === 0 && $item['edge'] === 0;
         });
+
         $edgeArray = $loadBinEdges->map(function($item){
             return $item['edge_value_mw'];
         });
@@ -123,6 +132,7 @@ class RegionController extends Controller
         return response()->json([
             'region' => $region,
             'run' => $run,
+            'limits' => $limits,
             'regional_load' => $regionalLoad,
             'load_bin_edges' => $edgeArray,
 //            'edge_count' => $numEdges,
@@ -142,6 +152,12 @@ class RegionController extends Controller
         }])->get();
 
         $data->transform(function ($item, $key) use ($numEdges) {
+
+//if($key === 1) {
+//    printf((string)$item->medians);
+//    printf(count($item->medians));
+//    die();
+//}
 
             $item->medians->transform(function ($median) {
                 return $median['median'];

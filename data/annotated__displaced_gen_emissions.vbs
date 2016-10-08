@@ -272,13 +272,13 @@ For a = 1 To 5          'loops through sheets
                 deltaV = Round(valB - valA, 3)
 
                 If b <= (lastRowColA - 3) / 2 Then
-                    deltaArray_1(b, c) = deltaV
+                    deltaArray_1(b, c) = deltaV ' Used for impacts'
                 Else
                     deltaArray_2(b - ((lastRowColA - 3) / 2), c) = deltaV
                 End If
 
-                totalArray(b, 1) = Round(totalArray(b, 1) + valA, 3)
-                totalArray(b, 2) = Round(totalArray(b, 2) + valB, 3)
+                totalArray(b, 1) = Round(totalArray(b, 1) + valA, 3) ' This is used for annual emission original'
+                totalArray(b, 2) = Round(totalArray(b, 2) + valB, 3) ' This is used for annual emission post'
 
                 'Creates array with peak generation, total generation, and capacity factor.
                 If selectSheet = "Generation" Then
@@ -300,9 +300,9 @@ For a = 1 To 5          'loops through sheets
 
             'Fills in an error message if the load is greater or smaller than the allowed range.
             If b <= (lastRowColA - 3) / 2 Then
-                deltaArray_1(b, 1) = "Load outside of bin range"
+                deltaArray_1(b, 1) = "Load outside of bin range" ' This number is used for impacts'
             Else
-                deltaArray_2(b - ((lastRowColA - 3) / 2), 1) = "Load outside of bin range"
+                deltaArray_2(b - ((lastRowColA - 3) / 2), 1) = "Load outside of bin range" ' This number is used for impacts; just a memory hack for excel'
             End If
 
             totalArray(b, 1) = 0
@@ -313,10 +313,10 @@ For a = 1 To 5          'loops through sheets
     Next b
 
     'Places arrays on the sheet.
-    Range(Cells(4, 12), Cells(((lastRowColA / 2) + 2), lastRowColJ - 4 + 11)) = deltaArray_1
+    Range(Cells(4, 12), Cells(((lastRowColA / 2) + 2), lastRowColJ - 4 + 11)) = deltaArray_1 ' Dumped into all the location data on the Gen sheet. Each hour for all the locations is summed for column K. Col K is used for the impacts number'
     Range(Cells(((lastRowColA / 2) + 3), 12), Cells(lastRowColA, lastRowColJ - 4 + 11)) = deltaArray_2
     Application.CutCopyMode = False
-    Range(Cells(4, 9), Cells(lastRowColA, 10)) = totalArray
+    Range(Cells(4, 9), Cells(lastRowColA, 10)) = totalArray ' Original Gen --> What gets summed for the annual'
 
     If selectSheet = "Generation" Then
         Range(Cells(lastRowColA + 2, 12), Cells(lastRowColA + 4, lastRowColJ - 4 + 11)) = totalGen

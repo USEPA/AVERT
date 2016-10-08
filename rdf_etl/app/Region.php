@@ -12,6 +12,10 @@ class Region extends Model
         return $this->hasMany('App\Run','region_id');
     }
 
+    public function limits() {
+        return $this->hasMany('App\Limits','region_id');
+    }
+
     public function loads() {
         return $this->hasMany('App\RegionalLoad','region_id');
     }
