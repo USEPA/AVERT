@@ -52,7 +52,8 @@ const eere = (state = { status: 'select_region', topHours: '', reduction: '', an
             });
         case SUBMIT_CALCULATION:
             return Object.assign({}, state, {
-                status: 'started'
+                status: 'started',
+                hourlyEere: [],
             });
         case COMPLETE_CALCULATION:
             return Object.assign({}, state, {

@@ -19,14 +19,20 @@ class EereLoadOutput extends Component {
                     <thead>
                         <tr>
                             <th>Current Load (MW)</th>
+                            <th>Manual EERE Entry</th>
+                            <th>Renewable Energy Profile</th>
                             <th>Final (MW)</th>
+                            <th>Flag</th>
                         </tr>
                     </thead>
                     <tbody>
                         {hourlyEere.map((item,index) =>
                             <tr key={index}>
                                 <td>{item.current_load_mw}</td>
+                                <td>{item.manual_eere_entry}</td>
+                                <td>{item.renewable_energy_profile}</td>
                                 <td>{item.final_mw}</td>
+                                <td>{item.flag}</td>
                             </tr>
                         )}
                     </tbody>

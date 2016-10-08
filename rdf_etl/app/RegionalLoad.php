@@ -8,7 +8,7 @@ class RegionalLoad extends Model
 {
     protected $table = 'regional_load';
 
-    protected $fillable = ['hour_of_year','year','month','day','hour','regional_load_mw'];
+    protected $fillable = ['hour_of_year','year','month','day','hour','regional_load_mw','hourly_limit'];
 
     public $timestamps = false;
 
