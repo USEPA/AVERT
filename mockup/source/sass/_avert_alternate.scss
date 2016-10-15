@@ -1,0 +1,73 @@
+.avert-tabular-layout {
+  margin-top: 1rem;
+
+  p {
+    margin-top: 0;
+    font-size: 0.875rem;
+  }
+
+  input[type="text"] {
+    margin: 0.25rem 0;
+    padding: 0.25rem;
+    width: 10rem;
+    font-size: 0.875rem;
+    font-weight: bold;
+  }
+
+  .avert-choice {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid $greye;
+  }
+
+  .avert-unit {
+    font-size: 0.75rem;
+  }
+
+  .avert-letter {
+    float: left;
+    margin-right: 0.5rem;
+    padding: 0.125rem;
+    border-radius: 3px;
+    width: 1.75rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    background-color: $greya;
+  }
+}
+
+[class^="avert-row"] {
+  overflow: hidden;
+  border: 1px solid $greyc;
+  border-top: none;
+}
+
+[class^="avert-column"] {
+  padding: 0.5rem 0.625rem;
+}
+
+.avert-column-full {
+  width: 100%;
+}
+.avert-column-left {
+  float: left;
+  width: 34%;
+}
+.avert-column-right {
+  float: right;
+  border-left: 1px solid $greyc;
+  width: 66%;
+}
+
+.avert-row-header {
+  border-color: $grey6;
+  font-weight: bold;
+  color: white;
+  background-color: $grey6;
+}
+.avert-row-subheader {
+  font-weight: bold;
+  background-color: $greye;
+}
