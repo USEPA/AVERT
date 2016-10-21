@@ -31,28 +31,32 @@ class AnnualDisplacementEngine {
     }
 
     excelMatch(array,lookup) {
-        const sortedHaystack = array.concat(lookup).sort(function(a,b) {
-            return a - b;
-        });
+        const sortedHaystack = array.concat(lookup).sort(function(a,b) { return a - b; });
         const index = sortedHaystack.indexOf(lookup);
-// console.warn('excelMatch',sortedHaystack,index);
-        return array.indexOf(sortedHaystack[index - 1]);
+        const matchedIndex = array.indexOf(sortedHaystack[index - 1]);
+// console.log('excelMatch',lookup,matchedIndex,array[matchedIndex],array[matchedIndex - 1],array[matchedIndex + 1]);
+        return matchedIndex;
     }
 
     calculateSlope(m,x,b) {
         return math.add(math.multiply(m,x),b);
     }
 
-    getDisplacedGeneration(dataSet,no){
+    getDisplacedGeneration(dataSet,dataSetNonOzone,no){
+        
         // if(no) return { original: '', post: '', impact: '' };
         
         console.warn('- AnnualDisplacementEngine','generation',this.rdf);
         const _this = this;
         const edges = Object.keys(this.rdf.load_bin_edges).map((key) => this.rdf.load_bin_edges[key]);
+        
         const medians = dataSet.map((item) => { return item.medians });
-        const loadArrayOriginal = this.rdf.regional_load.map((item) => { return item.regional_load_mw });
+        const mediansNonOzone = dataSetNonOzone ? dataSetNonOzone.map((item) => { return item.medians; }) : false;
+        const loadArrayMonth = this.rdf.regional_load.map((item) => { return item.month; });
+        const loadArrayOriginal = this.rdf.regional_load.map((item) => { return item.regional_load_mw; });
         const loadArrayPost = loadArrayOriginal.map((item,index) => { 
-            return math.sum(item,_this.hourlyEere[index].final_mw) 
+            console.log('--',index,item,_this.hourlyEere[index].final_mw,math.sum(item,_this.hourlyEere[index].final_mw));
+            return math.sum(item,_this.hourlyEere[index].final_mw); 
         });
         // const loadKeys = Object.keys(this.rdf.load_bin_edges);        
         // const min = this.rdf.load_bin_edges[loadKeys[0]];
@@ -60,13 +64,14 @@ class AnnualDisplacementEngine {
         const min = edges[0];
         const max = edges[edges.length - 1];
         
-        // console.log('.....','medians',medians);
-        // console.log('.....','loadArrayOriginal',loadArrayOriginal);
-        // console.log('.....','loadArrayPost',loadArrayPost);
+        // console.log('.....','dataSet',dataSet.length,dataSet);
+        // console.log('.....','medians',medians.length,medians);
+        // console.log('.....','loadArrayMonth',loadArrayMonth.length,loadArrayMonth);
+        // console.log('.....','loadArrayOriginal',loadArrayOriginal.length,loadArrayOriginal);
+        // console.log('.....','loadArrayPost',loadArrayPost.length,loadArrayPost);
         // console.log('.....','min',min);
         // console.log('.....','max',max);
         // console.log('.....','edges',edges);
-        // console.warn('.....','load keys',loadKeys,loadKeys.length,loadKeys[loadKeys.length]);
         
         // const peaks = [];
         // const capacities = [];
@@ -74,76 +79,93 @@ class AnnualDisplacementEngine {
         let postTotalArray = [];
         let deltaVArray = [];
         for (let i = 0; i < loadArrayOriginal.length; i++) {
+            
+            // console.time('loadArrayOriginal iteration');
             const load = loadArrayOriginal[i];
-            const postLoad = parseInt(loadArrayPost[i],10);
+            const month = loadArrayMonth[i];
+            const postLoad = loadArrayPost[i];
             preTotalArray[i] = 0;
             postTotalArray[i] = 0;
             deltaVArray[i] = 0;
-
-            // console.log(load,min,max,load > min, load < max);
-            if( ! (load > min && load < max && postLoad > min && postLoad < max)) {
-                console.warn('Skipping value');
+// console.log('Start Iteration',i,load,(load >= min && load <= max && postLoad >= min && postLoad <= max),load,postLoad);
+            if( ! (load >= min && load <= max && postLoad >= min && postLoad <= max)) {
+                // console.log('---','Skipped!','---',load,postLoad);
                 continue;
             }
 
-            for (let j = 0; j < medians.length; j++) {
-                const median = medians[j];
-                // const preGenMatchIndex = index of gen value closest to load value; Consider sort, get value, then indexOf?
-                // const nextPreGenMatchIndex = preGenMatchIndex + 1
-                const preGenIndex = this.excelMatch(edges,load);
-                const preGenA = Math.trunc(median[preGenIndex] || 0);
-                const preGenB = Math.trunc(median[preGenIndex + 1] || 0);
-                const preEdgeA = Math.trunc(edges[preGenIndex] || 0); // Edges are 1-indexed
-                const preEdgeB = Math.trunc(edges[preGenIndex + 1] || 0);
+            let activeMedians = medians;
+            if(mediansNonOzone) {
+                activeMedians = (month >= 5 && month <= 10) ? medians : mediansNonOzone;    
+            }
 
-                const postGenIndex = this.excelMatch(edges,postLoad);
-                const postGenA = Math.trunc(median[postGenIndex] || 0);
-                const postGenB = Math.trunc(median[postGenIndex + 1] || 0);
-                const postEdgeA = Math.trunc(edges[postGenIndex] || 0);
-                const postEdgeB = Math.trunc(edges[postGenIndex + 1] || 0);
+            const preGenIndex = this.excelMatch(edges,load);
+            const postGenIndex = this.excelMatch(edges,postLoad);
+
+            for (let j = 0; j < activeMedians.length; j++) {
+                const median = activeMedians[j];
+                
+                // console.log('Inputs:',median[preGenIndex],median[preGenIndex + 1],edges[preGenIndex],edges[preGenIndex + 1]);
+                
+                const preGenA = median[preGenIndex];
+                const preGenB = median[preGenIndex + 1];
+                const preEdgeA = edges[preGenIndex]; // Edges are 1-indexed
+                const preEdgeB = edges[preGenIndex + 1];
+
+                const postGenA = median[postGenIndex];
+                const postGenB = median[postGenIndex + 1];
+                const postEdgeA = edges[postGenIndex];
+                const postEdgeB = edges[postGenIndex + 1];
                
-                // const foo = [
-                //     { name: 'load', 'value': load },
-                //     { name: 'postLoad', 'value': postLoad },
-                //     { name: 'median', 'value': median },
-                //     { name: 'preGenA', 'value': preGenA },
-                //     { name: 'preGenB', 'value': preGenB },
-                //     { name: 'preEdgeA', 'value': preEdgeA },
-                //     { name: 'preEdgeB', 'value': preEdgeB },
-                //     { name: 'postGenA', 'value': postGenA },
-                //     { name: 'postGenB', 'value': postGenB },
-                //     { name: 'postEdgeA', 'value': postEdgeA },
-                //     { name: 'postEdgeB', 'value': postEdgeB },
-                // ]
-
-                // console.log('- calculating pre slope -');
-                // console.table(foo)
-
                 const preSlope = math.divide(math.subtract(preGenA,preGenB),math.subtract(preEdgeA, preEdgeB)).toString();
                 const preIntercept = math.subtract(preGenA,math.multiply(preSlope,preEdgeA)).toString();
-                const preVal = parseInt(math.round(math.add(math.multiply(load,preSlope),preIntercept)).toString(),10);
-
-                // console.log('preSlope calculation:',preSlope,preIntercept,preVal);
+                const preVal = math.add(math.multiply(load,preSlope),preIntercept);
 
                 const postSlope = math.divide(math.subtract(postGenA,postGenB),math.subtract(postEdgeA,postEdgeB)).toString();
                 const postIntercept = math.subtract(postGenA,math.multiply(postSlope,postEdgeA)).toString();
-                const postVal = parseInt(math.round(math.add(math.multiply(postLoad,postSlope),postIntercept)).toString(),10);
-                // console.log('postSlope calculation:',postSlope,postIntercept,postVal);
+                const postVal = math.add(math.multiply(postLoad,postSlope),postIntercept);
 
-                const deltaV = postVal - preVal;
+                const deltaV = math.subtract(postVal,preVal);
 
-                // console.log('delta V:',deltaV);
+                preTotalArray[i] = math.add(preTotalArray[i],preVal);
+                postTotalArray[i] = math.add(postTotalArray[i],postVal);
+                deltaVArray[i] = math.add(deltaVArray[i],deltaV);
 
-                preTotalArray[i] += preVal;
-                postTotalArray[i] += postVal;
-                deltaVArray[i] += deltaV;
-
-                // console.log('totals','pre:',preTotalArray[i],'post:',postTotalArray[i]);
-                // if(j > 5) break;
+                // if(j === 1){
+                    // const debug = [
+                    //     { name: 'load', 'value': load },
+                    //     { name: 'postLoad', 'value': postLoad + 1 },
+                    //     { name: 'median', 'value': median },
+                    //     { name: 'preGenIndex', 'value': preGenIndex },
+                    //     { name: 'preGenA', 'value': preGenA },
+                    //     { name: 'preGenB', 'value': preGenB },
+                    //     { name: 'preEdgeA', 'value': preEdgeA },
+                    //     { name: 'preEdgeB', 'value': preEdgeB },
+                    //     { name: 'preVal', 'value': preVal },
+                    //     { name: 'postGenIndex', 'value': postGenIndex + 1},
+                    //     { name: 'postGenA', 'value': postGenA },
+                    //     { name: 'postGenB', 'value': postGenB },
+                    //     { name: 'postEdgeA', 'value': postEdgeA },
+                    //     { name: 'postEdgeB', 'value': postEdgeB },
+                    //     { name: 'postVal', 'value': postVal },
+                    //     { name: 'deltaV', 'value': deltaV },
+                    // ]; 
+                    // console.log('preSlope calculation:',preSlope,preIntercept,preVal);
+                    // console.log('postSlope calculation:',postSlope,postIntercept,postVal);
+                    // console.log('delta V:',deltaV);
+                    // console.table(debug);
+                    // console.log('totals','pre:',preTotalArray[i],'post:',postTotalArray[i]);
+                // }
+                // if(j > 0) break;
+                // 
+                // console.log('Values:',preSlope,preIntercept,preVal,postSlope,postIntercept,postVal,deltaV,preTotalArray[i],postTotalArray[i]);
+                // console.log(preTotalArray[i]);
             }
             // console.log('load total','pre:',preTotalArray[i],'post:',postTotalArray[i]);
-            // if(i > 5) break;
+            // if(i > 0) break;
+            
+            // console.timeEnd('loadArrayOriginal iteration');
         }
+        // console.log('Check 8760',loadArrayOriginal.length,preTotalArray.length,medians.length)
         console.log('preTotalArray',preTotalArray.length,'...',preTotalArray);
         console.log('postTotalArray',preTotalArray.length,'...',postTotalArray);
         const preTotal = preTotalArray.reduce(function(sum,n){ return sum + (n || 0) },0);
@@ -151,12 +173,13 @@ class AnnualDisplacementEngine {
 
         // console.log('array',preTotalArray,postTotalArray);
         // console.log('total',preTotal,postTotal);
-        console.log('preTotal',preTotal);
-        console.log('postTotal',postTotal);
+        console.log('preTotal',parseInt(preTotal,10));
+        console.log('postTotal',parseInt(postTotal,10));
+        
         return {
-            original: preTotal,
-            post: postTotal,
-            impact: postTotal - preTotal,
+            original: parseInt(preTotal,10),
+            post: parseInt(postTotal,10),
+            impact: math.subtract(postTotal,preTotal),
         };
     }
 
@@ -187,7 +210,9 @@ class AnnualDisplacementEngine {
     get so2Total() {
         console.log('_________ get so2 total __________');
         // Need to build special so2 array to pass in that combines so2_non for the relevant months
-        const totals = this.getDisplacedGeneration(this.rdf.data.so2,false);
+        console.log('SO2 data',this.rdf.data.so2);
+        console.log('Data',this.rdf.data);
+        const totals = this.getDisplacedGeneration(this.rdf.data.so2,this.rdf.data.so2_not,true);
         this.so2Original = totals.original;
         this.so2Post = totals.post;
         return totals;
@@ -196,7 +221,7 @@ class AnnualDisplacementEngine {
     get noxTotal() {
         console.log('_________ get nox total __________');
         // Need to build special nox array to pass in that combines nox_non for the relevant months
-        const totals = this.getDisplacedGeneration(this.rdf.data.nox,true);
+        const totals = this.getDisplacedGeneration(this.rdf.data.nox,this.rdf.data.nox_not,true);
         this.noxOriginal = totals.original;
         this.noxPost = totals.post;
         return totals;
@@ -205,7 +230,7 @@ class AnnualDisplacementEngine {
     get co2Total() {
         console.log('_________ get co2 total __________');
         // Need to build special co2 array to pass in that combines co2_non for the relevant months
-        const totals = this.getDisplacedGeneration(this.rdf.data.co2,true);
+        const totals = this.getDisplacedGeneration(this.rdf.data.co2,this.rdf.data.co2_not,true);
         this.co2Original = totals.original;
         this.co2Post = totals.post;
         return totals;
