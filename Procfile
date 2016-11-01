@@ -1,1 +1,1 @@
-web: node react
+web: node react/index.html
