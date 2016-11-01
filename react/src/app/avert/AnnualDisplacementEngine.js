@@ -43,21 +43,18 @@ class AnnualDisplacementEngine {
     }
 
     getDisplacedGeneration(dataSet,dataSetNonOzone,no){
-        
+        console.time('getDisplacedGeneration');
         // if(no) return { original: '', post: '', impact: '' };
         
         console.warn('- AnnualDisplacementEngine','generation',this.rdf);
         const _this = this;
         const edges = Object.keys(this.rdf.load_bin_edges).map((key) => this.rdf.load_bin_edges[key]);
         
-        const medians = dataSet.map((item) => { return item.medians });
-        const mediansNonOzone = dataSetNonOzone ? dataSetNonOzone.map((item) => { return item.medians; }) : false;
-        const loadArrayMonth = this.rdf.regional_load.map((item) => { return item.month; });
-        const loadArrayOriginal = this.rdf.regional_load.map((item) => { return item.regional_load_mw; });
-        const loadArrayPost = loadArrayOriginal.map((item,index) => { 
-            console.log('--',index,item,_this.hourlyEere[index].final_mw,math.sum(item,_this.hourlyEere[index].final_mw));
-            return math.sum(item,_this.hourlyEere[index].final_mw); 
-        });
+        const medians = dataSet.map((item) => item.medians);
+        const mediansNonOzone = dataSetNonOzone ? dataSetNonOzone.map((item) => item.medians) : false;
+        const loadArrayMonth = this.rdf.regional_load.map((item) => item.month );
+        const loadArrayOriginal = this.rdf.regional_load.map((item) => item.regional_load_mw);
+        const loadArrayPost = loadArrayOriginal.map((item,index) => math.sum(item,_this.hourlyEere[index].final_mw));
         // const loadKeys = Object.keys(this.rdf.load_bin_edges);        
         // const min = this.rdf.load_bin_edges[loadKeys[0]];
         // const max = this.rdf.load_bin_edges[loadKeys[loadKeys.length - 1]];
@@ -87,11 +84,9 @@ class AnnualDisplacementEngine {
             preTotalArray[i] = 0;
             postTotalArray[i] = 0;
             deltaVArray[i] = 0;
-// console.log('Start Iteration',i,load,(load >= min && load <= max && postLoad >= min && postLoad <= max),load,postLoad);
-            if( ! (load >= min && load <= max && postLoad >= min && postLoad <= max)) {
-                // console.log('---','Skipped!','---',load,postLoad);
-                continue;
-            }
+
+            if( ! (load >= min && load <= max && postLoad >= min && postLoad <= max)) continue;
+            
 
             let activeMedians = medians;
             if(mediansNonOzone) {
@@ -176,10 +171,11 @@ class AnnualDisplacementEngine {
         console.log('preTotal',parseInt(preTotal,10));
         console.log('postTotal',parseInt(postTotal,10));
         
+        console.timeEnd('getDisplacedGeneration');
         return {
             original: parseInt(preTotal,10),
             post: parseInt(postTotal,10),
-            impact: math.subtract(postTotal,preTotal),
+            impact: parseInt(math.subtract(postTotal,preTotal),10),
         };
     }
 

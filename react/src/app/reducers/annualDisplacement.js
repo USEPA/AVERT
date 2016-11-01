@@ -9,7 +9,7 @@ const resultsFormat = { original: '', post: '', impact: ''}
 const annualDisplacement = (state = { 
     status: "select_region", 
     results: {
-        generation: { so2: resultsFormat, nox: resultsFormat, co2: resultsFormat },
+        generation: resultsFormat,
         totalEmissions: { so2: resultsFormat, nox: resultsFormat, co2: resultsFormat },
         emissionRates: { so2: resultsFormat, nox: resultsFormat, co2: resultsFormat },
     } 
