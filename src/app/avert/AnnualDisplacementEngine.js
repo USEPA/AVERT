@@ -6,6 +6,7 @@ import math from 'mathjs';
 // Engine
 
 // App
+// import so2 from './so2';
 
 class AnnualDisplacementEngine {
     constructor(rdf, hourlyEere) {
@@ -43,8 +44,8 @@ class AnnualDisplacementEngine {
     }
 
     getDisplacedGeneration(dataSet,dataSetNonOzone,no){
-        console.time('getDisplacedGeneration');
         // if(no) return { original: '', post: '', impact: '' };
+        console.time('getDisplacedGeneration');
         
         console.warn('- AnnualDisplacementEngine','generation',this.rdf);
         const _this = this;
@@ -61,22 +62,25 @@ class AnnualDisplacementEngine {
         const min = edges[0];
         const max = edges[edges.length - 1];
         
-        // console.log('.....','dataSet',dataSet.length,dataSet);
-        // console.log('.....','medians',medians.length,medians);
-        // console.log('.....','loadArrayMonth',loadArrayMonth.length,loadArrayMonth);
-        // console.log('.....','loadArrayOriginal',loadArrayOriginal.length,loadArrayOriginal);
-        // console.log('.....','loadArrayPost',loadArrayPost.length,loadArrayPost);
-        // console.log('.....','min',min);
-        // console.log('.....','max',max);
-        // console.log('.....','edges',edges);
-        
+        console.log('.....','dataSet',dataSet.length,dataSet);
+        console.log('.....','medians',medians.length,medians);
+        console.log('.....','loadArrayMonth',loadArrayMonth.length,loadArrayMonth);
+        console.log('.....','loadArrayOriginal',loadArrayOriginal.length,loadArrayOriginal);
+        console.log('.....','loadArrayPost',loadArrayPost.length,loadArrayPost);
+        console.log('.....','min',min);
+        console.log('.....','max',max);
+        console.log('.....','edges',edges);
+        console.log('.....','so2',so2);
         // const peaks = [];
         // const capacities = [];
         let preTotalArray = [];
         let postTotalArray = [];
         let deltaVArray = [];
+        let foo = false;
+        let skipped = [];
+        let bad = [];
+        let bar = false;
         for (let i = 0; i < loadArrayOriginal.length; i++) {
-            
             // console.time('loadArrayOriginal iteration');
             const load = loadArrayOriginal[i];
             const month = loadArrayMonth[i];
@@ -85,12 +89,32 @@ class AnnualDisplacementEngine {
             postTotalArray[i] = 0;
             deltaVArray[i] = 0;
 
-            if( ! (load >= min && load <= max && postLoad >= min && postLoad <= max)) continue;
+            if( ! (load >= min && load <= max && postLoad >= min && postLoad <= max)) {
+                skipped.push(load)
+                continue;
+            }
             
 
             let activeMedians = medians;
             if(mediansNonOzone) {
-                activeMedians = (month >= 5 && month <= 10) ? medians : mediansNonOzone;    
+                if(month === 10 && bar === false){
+                    console.log('now october',month,i);
+                    bar = true;
+                }
+
+                if(month >=5 && month <= 9 && foo === false){
+                    console.log('switching over to ozone',i)
+                    foo = true;
+                }
+
+                if((month < 5 || month > 9) && foo === true) {
+                    console.log('switching back to non-ozone',i)
+                    foo = false;   
+                }
+
+
+                // activeMedians = (month >= 5 && i <= 6552) ? medians : mediansNonOzone;    
+                activeMedians = (month >= 5 && month <= 9) ? medians : mediansNonOzone;    
             }
 
             const preGenIndex = this.excelMatch(edges,load);
@@ -119,11 +143,15 @@ class AnnualDisplacementEngine {
                 const postIntercept = math.subtract(postGenA,math.multiply(postSlope,postEdgeA)).toString();
                 const postVal = math.add(math.multiply(postLoad,postSlope),postIntercept);
 
-                const deltaV = math.subtract(postVal,preVal);
+                // const deltaV = math.round(math.subtract(postVal,preVal),3);
+
+                // preTotalArray[i] = math.round(math.add(preTotalArray[i],preVal),3);
+                // postTotalArray[i] = math.round(math.add(postTotalArray[i],postVal),3);
 
                 preTotalArray[i] = math.add(preTotalArray[i],preVal);
                 postTotalArray[i] = math.add(postTotalArray[i],postVal);
-                deltaVArray[i] = math.add(deltaVArray[i],deltaV);
+                
+                // deltaVArray[i] = math.add(deltaVArray[i],deltaV);
 
                 // if(j === 1){
                     // const debug = [
@@ -155,22 +183,35 @@ class AnnualDisplacementEngine {
                 // console.log('Values:',preSlope,preIntercept,preVal,postSlope,postIntercept,postVal,deltaV,preTotalArray[i],postTotalArray[i]);
                 // console.log(preTotalArray[i]);
             }
+
+            // if(Math.abs(so2[i] - preTotalArray[i]) > 1) {
+            //     // console.log('Comparison',so2[i],preTotalArray[i],so2[i] - preTotalArray[i]);
+            //     bad.push({
+            //         original: so2[i],
+            //         online: preTotalArray[i],
+            //         difference: so2[i] - preTotalArray[i],
+            //         index: i,
+            //         load: load,
+            //         month: month,
+            //     });
+            // }
             // console.log('load total','pre:',preTotalArray[i],'post:',postTotalArray[i]);
             // if(i > 0) break;
             
             // console.timeEnd('loadArrayOriginal iteration');
         }
         // console.log('Check 8760',loadArrayOriginal.length,preTotalArray.length,medians.length)
-        console.log('preTotalArray',preTotalArray.length,'...',preTotalArray);
-        console.log('postTotalArray',preTotalArray.length,'...',postTotalArray);
+        // console.log('preTotalArray',preTotalArray.length,'...',preTotalArray);
+        // console.log('postTotalArray',preTotalArray.length,'...',postTotalArray);
         const preTotal = preTotalArray.reduce(function(sum,n){ return sum + (n || 0) },0);
         const postTotal = postTotalArray.reduce(function(sum,n){ return sum + (n || 0) },0);
 
         // console.log('array',preTotalArray,postTotalArray);
         // console.log('total',preTotal,postTotal);
-        console.log('preTotal',parseInt(preTotal,10));
-        console.log('postTotal',parseInt(postTotal,10));
-        
+        console.log('preTotal',parseInt(preTotal,10),preTotalArray);
+        // console.log('postTotal',parseInt(postTotal,10));
+        console.log('skipped',skipped.length,skipped)
+        console.log('bad',bad.length,bad);
         console.timeEnd('getDisplacedGeneration');
         return {
             original: parseInt(preTotal,10),
@@ -181,7 +222,7 @@ class AnnualDisplacementEngine {
 
     get generation() {
         console.log('_________ get generation __________');
-        const totals = this.getDisplacedGeneration(this.rdf.data.generation);
+        const totals = this.getDisplacedGeneration(this.rdf.data.generation,false,true);
         this.generationOriginal = totals.original;
         this.generationPost = totals.post;
         return totals;
@@ -208,7 +249,7 @@ class AnnualDisplacementEngine {
         // Need to build special so2 array to pass in that combines so2_non for the relevant months
         console.log('SO2 data',this.rdf.data.so2);
         console.log('Data',this.rdf.data);
-        const totals = this.getDisplacedGeneration(this.rdf.data.so2,this.rdf.data.so2_not,true);
+        const totals = this.getDisplacedGeneration(this.rdf.data.so2,this.rdf.data.so2_not,false);
         this.so2Original = totals.original;
         this.so2Post = totals.post;
         return totals;
@@ -238,7 +279,7 @@ class AnnualDisplacementEngine {
         //     original: '',
         //     post: ''
         // }
-
+console.log('why?',this.so2Original,this.generationOriginal);
         const original = math.round(math.divide(this.so2Original,this.generationOriginal),2);
         const post = math.round(math.divide(this.so2Post,this.generationPost),2);
         return {

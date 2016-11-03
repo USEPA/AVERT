@@ -12,8 +12,8 @@ class AnnualDisplacement extends Component {
     render() {
         const statusIndicator = statusEnum[this.props.annual_status].lang;
         const { data } = this.props;
-console.log('AnnualDisplacement Component','data',data);
-console.log('...',data.generation)
+// console.log('AnnualDisplacement Component','data',data);
+// console.log('...',data.generation)
         return(
             <div>
                 <h4>Annual Displacement</h4>
@@ -78,7 +78,7 @@ console.log('...',data.generation)
     }
 
     addCommas(x){
-        console.log(x,typeof x);
+        // console.log(x,typeof x);
         if(typeof x === "undefined") return '';
 
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");
