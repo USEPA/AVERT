@@ -56,32 +56,15 @@ class AnnualDisplacementEngine {
         const loadArrayMonth = this.rdf.regional_load.map((item) => item.month );
         const loadArrayOriginal = this.rdf.regional_load.map((item) => item.regional_load_mw);
         const loadArrayPost = loadArrayOriginal.map((item,index) => math.sum(item,_this.hourlyEere[index].final_mw));
-        // const loadKeys = Object.keys(this.rdf.load_bin_edges);        
-        // const min = this.rdf.load_bin_edges[loadKeys[0]];
-        // const max = this.rdf.load_bin_edges[loadKeys[loadKeys.length - 1]];
         const min = edges[0];
         const max = edges[edges.length - 1];
-        
-        console.log('.....','dataSet',dataSet.length,dataSet);
-        console.log('.....','medians',medians.length,medians);
-        console.log('.....','loadArrayMonth',loadArrayMonth.length,loadArrayMonth);
-        console.log('.....','loadArrayOriginal',loadArrayOriginal.length,loadArrayOriginal);
-        console.log('.....','loadArrayPost',loadArrayPost.length,loadArrayPost);
-        console.log('.....','min',min);
-        console.log('.....','max',max);
-        console.log('.....','edges',edges);
-        console.log('.....','so2',so2);
-        // const peaks = [];
-        // const capacities = [];
+
         let preTotalArray = [];
         let postTotalArray = [];
         let deltaVArray = [];
         let foo = false;
-        let skipped = [];
-        let bad = [];
         let bar = false;
         for (let i = 0; i < loadArrayOriginal.length; i++) {
-            // console.time('loadArrayOriginal iteration');
             const load = loadArrayOriginal[i];
             const month = loadArrayMonth[i];
             const postLoad = loadArrayPost[i];
@@ -89,11 +72,7 @@ class AnnualDisplacementEngine {
             postTotalArray[i] = 0;
             deltaVArray[i] = 0;
 
-            if( ! (load >= min && load <= max && postLoad >= min && postLoad <= max)) {
-                skipped.push(load)
-                continue;
-            }
-            
+            if( ! (load >= min && load <= max && postLoad >= min && postLoad <= max)) continue;
 
             let activeMedians = medians;
             if(mediansNonOzone) {
@@ -123,8 +102,6 @@ class AnnualDisplacementEngine {
             for (let j = 0; j < activeMedians.length; j++) {
                 const median = activeMedians[j];
                 
-                // console.log('Inputs:',median[preGenIndex],median[preGenIndex + 1],edges[preGenIndex],edges[preGenIndex + 1]);
-                
                 const preGenA = median[preGenIndex];
                 const preGenB = median[preGenIndex + 1];
                 const preEdgeA = edges[preGenIndex]; // Edges are 1-indexed
@@ -152,66 +129,12 @@ class AnnualDisplacementEngine {
                 postTotalArray[i] = math.add(postTotalArray[i],postVal);
                 
                 // deltaVArray[i] = math.add(deltaVArray[i],deltaV);
-
-                // if(j === 1){
-                    // const debug = [
-                    //     { name: 'load', 'value': load },
-                    //     { name: 'postLoad', 'value': postLoad + 1 },
-                    //     { name: 'median', 'value': median },
-                    //     { name: 'preGenIndex', 'value': preGenIndex },
-                    //     { name: 'preGenA', 'value': preGenA },
-                    //     { name: 'preGenB', 'value': preGenB },
-                    //     { name: 'preEdgeA', 'value': preEdgeA },
-                    //     { name: 'preEdgeB', 'value': preEdgeB },
-                    //     { name: 'preVal', 'value': preVal },
-                    //     { name: 'postGenIndex', 'value': postGenIndex + 1},
-                    //     { name: 'postGenA', 'value': postGenA },
-                    //     { name: 'postGenB', 'value': postGenB },
-                    //     { name: 'postEdgeA', 'value': postEdgeA },
-                    //     { name: 'postEdgeB', 'value': postEdgeB },
-                    //     { name: 'postVal', 'value': postVal },
-                    //     { name: 'deltaV', 'value': deltaV },
-                    // ]; 
-                    // console.log('preSlope calculation:',preSlope,preIntercept,preVal);
-                    // console.log('postSlope calculation:',postSlope,postIntercept,postVal);
-                    // console.log('delta V:',deltaV);
-                    // console.table(debug);
-                    // console.log('totals','pre:',preTotalArray[i],'post:',postTotalArray[i]);
-                // }
-                // if(j > 0) break;
-                // 
-                // console.log('Values:',preSlope,preIntercept,preVal,postSlope,postIntercept,postVal,deltaV,preTotalArray[i],postTotalArray[i]);
-                // console.log(preTotalArray[i]);
             }
-
-            // if(Math.abs(so2[i] - preTotalArray[i]) > 1) {
-            //     // console.log('Comparison',so2[i],preTotalArray[i],so2[i] - preTotalArray[i]);
-            //     bad.push({
-            //         original: so2[i],
-            //         online: preTotalArray[i],
-            //         difference: so2[i] - preTotalArray[i],
-            //         index: i,
-            //         load: load,
-            //         month: month,
-            //     });
-            // }
-            // console.log('load total','pre:',preTotalArray[i],'post:',postTotalArray[i]);
-            // if(i > 0) break;
-            
-            // console.timeEnd('loadArrayOriginal iteration');
         }
-        // console.log('Check 8760',loadArrayOriginal.length,preTotalArray.length,medians.length)
-        // console.log('preTotalArray',preTotalArray.length,'...',preTotalArray);
-        // console.log('postTotalArray',preTotalArray.length,'...',postTotalArray);
+        
         const preTotal = preTotalArray.reduce(function(sum,n){ return sum + (n || 0) },0);
         const postTotal = postTotalArray.reduce(function(sum,n){ return sum + (n || 0) },0);
 
-        // console.log('array',preTotalArray,postTotalArray);
-        // console.log('total',preTotal,postTotal);
-        console.log('preTotal',parseInt(preTotal,10),preTotalArray);
-        // console.log('postTotal',parseInt(postTotal,10));
-        console.log('skipped',skipped.length,skipped)
-        console.log('bad',bad.length,bad);
         console.timeEnd('getDisplacedGeneration');
         return {
             original: parseInt(preTotal,10),
@@ -246,7 +169,6 @@ class AnnualDisplacementEngine {
 
     get so2Total() {
         console.log('_________ get so2 total __________');
-        // Need to build special so2 array to pass in that combines so2_non for the relevant months
         console.log('SO2 data',this.rdf.data.so2);
         console.log('Data',this.rdf.data);
         const totals = this.getDisplacedGeneration(this.rdf.data.so2,this.rdf.data.so2_not,false);
@@ -257,7 +179,6 @@ class AnnualDisplacementEngine {
 
     get noxTotal() {
         console.log('_________ get nox total __________');
-        // Need to build special nox array to pass in that combines nox_non for the relevant months
         const totals = this.getDisplacedGeneration(this.rdf.data.nox,this.rdf.data.nox_not,true);
         this.noxOriginal = totals.original;
         this.noxPost = totals.post;
@@ -266,7 +187,6 @@ class AnnualDisplacementEngine {
 
     get co2Total() {
         console.log('_________ get co2 total __________');
-        // Need to build special co2 array to pass in that combines co2_non for the relevant months
         const totals = this.getDisplacedGeneration(this.rdf.data.co2,this.rdf.data.co2_not,true);
         this.co2Original = totals.original;
         this.co2Post = totals.post;
@@ -275,11 +195,6 @@ class AnnualDisplacementEngine {
 
     get so2Rate() {
         console.log('_________ get so2 rate __________');
-        // return {
-        //     original: '',
-        //     post: ''
-        // }
-console.log('why?',this.so2Original,this.generationOriginal);
         const original = math.round(math.divide(this.so2Original,this.generationOriginal),2);
         const post = math.round(math.divide(this.so2Post,this.generationPost),2);
         return {
@@ -290,10 +205,6 @@ console.log('why?',this.so2Original,this.generationOriginal);
 
     get noxRate() {
         console.log('_________ get nox rate __________');
-        // return {
-        //     original: '',
-        //     post: ''
-        // }
 
         const original = math.round(math.divide(this.noxOriginal,this.generationOriginal),2);
         const post = math.round(math.divide(this.noxPost,this.generationPost),2);
@@ -305,10 +216,6 @@ console.log('why?',this.so2Original,this.generationOriginal);
 
     get co2Rate() {
         console.log('_________ get co2 rate __________');
-        // return {
-        //     original: '',
-        //     post: ''
-        // }
 
         const original = math.round(math.divide(this.co2Original,this.generationOriginal),2);
         const post = math.round(math.divide(this.co2Post,this.generationPost),2);
