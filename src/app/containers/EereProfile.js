@@ -5,13 +5,16 @@ import { store } from '../store';
 
 // App
 // import Calculations from '../components/Calculations';
-import { updateEereTopHours, 
-        updateEereReduction,
-        updateEereAnnualGwh,
-        updateEereConstantMw,
-        updateEereWindCapacity,
-        updateEereUtilitySolar,
-        updateEereRooftopSolar } from '../actions';
+import { 
+    updateEereTopHours, 
+    updateEereReduction,
+    updateEereAnnualGwh,
+    updateEereConstantMw,
+    updateEereWindCapacity,
+    updateEereUtilitySolar,
+    updateEereRooftopSolar 
+} from '../actions';
+        
 import TextInput from '../components/TextInput';
 
 class EereProfile extends Component {
@@ -19,6 +22,9 @@ class EereProfile extends Component {
         return (
             <div>
                 <h3>EERE Profile</h3>
+
+                <div>Is Valid? { this.props.valid ? 'Yes' : 'No'}</div>
+
                 <TextInput label="Top Hours" value={ this.props.topHours } onChange={(e) => this.props.onTopHoursChange(e.target.value) } />
                 <TextInput label="Reduction" value={ this.props.reduction } onChange={(e) => this.props.onReductionChange(e.target.value) } />
                 <TextInput label="Annual GWH" value={ this.props.annualGwh } onChange={(e) => this.props.onAnnualGwhChange(e.target.value) } />
@@ -40,6 +46,8 @@ const mapStateToProps = (state) => {
         capacity: state.eere.capacity,
         utilitySolar: state.eere.utilitySolar,
         rooftopSolar: state.eere.rooftopSolar,
+        valid: state.eere.valid,
+        errors: state.eere.errors,
     }
 }
 

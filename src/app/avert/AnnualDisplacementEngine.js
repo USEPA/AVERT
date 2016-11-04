@@ -35,15 +35,13 @@ class AnnualDisplacementEngine {
         const sortedHaystack = array.concat(lookup).sort(function(a,b) { return a - b; });
         const index = sortedHaystack.indexOf(lookup);
         const matchedIndex = array.indexOf(sortedHaystack[index - 1]);
-// console.log('excelMatch',lookup,matchedIndex,array[matchedIndex],array[matchedIndex - 1],array[matchedIndex + 1]);
         return matchedIndex;
     }
 
     getDisplacedGeneration(dataSet,dataSetNonOzone,no){
         // if(no) return { original: '', post: '', impact: '' };
-        console.time('getDisplacedGeneration');
+        console.time('prep');
         
-        console.warn('- AnnualDisplacementEngine','generation',this.rdf);
         const _this = this;
         const edges = Object.keys(this.rdf.load_bin_edges).map((key) => this.rdf.load_bin_edges[key]);
         
@@ -63,6 +61,9 @@ class AnnualDisplacementEngine {
             state: {},
             // county: {},
         };
+        console.timeEnd('prep')
+
+        console.time('iterations');
         for (let i = 0; i < loadArrayOriginal.length; i++) {
             const load = loadArrayOriginal[i];
             const month = loadArrayMonth[i];
@@ -96,27 +97,29 @@ class AnnualDisplacementEngine {
                 postTotalArray[i] += postVal;
                 deltaVArray[i] += deltaV;
                 
-                monthlyEmissions.state[state] = monthlyEmissions.state[state] ? monthlyEmissions.state[state] : {};
-                monthlyEmissions.state[state][month] = monthlyEmissions.state[state][month] ? monthlyEmissions.state[state][month] : 0;
-                monthlyEmissions.state[state][month] += deltaV;
+                monthlyEmissions.state[state] = monthlyEmissions.state[state] ? monthlyEmissions.state[state] : { data: {}, counties: {} };
+                monthlyEmissions.state[state].data[month] = monthlyEmissions.state[state].data[month] ? monthlyEmissions.state[state].data[month] : 0;
+                monthlyEmissions.state[state].data[month] += deltaV;
 
                 // monthlyEmissions.county[county] = monthlyEmissions.county[county] ? monthlyEmissions.county[county] : {};
                 // monthlyEmissions.county[county][month] = monthlyEmissions.county[county][month] ? monthlyEmissions.county[county][month] : 0;
                 // monthlyEmissions.county[county][month] += deltaV;
 
-                monthlyEmissions.state[state][county] = monthlyEmissions.state[state][county] ? monthlyEmissions.state[state][county] : {};
-                monthlyEmissions.state[state][county][month] = monthlyEmissions.state[state][county][month] ? monthlyEmissions.state[state][county][month] : 0;
-                monthlyEmissions.state[state][county][month] += deltaV;
+                monthlyEmissions.state[state].counties[county] = monthlyEmissions.state[state].counties[county] ? monthlyEmissions.state[state].counties[county] : {};
+                monthlyEmissions.state[state].counties[county][month] = monthlyEmissions.state[state].counties[county][month] ? monthlyEmissions.state[state].counties[county][month] : 0;
+                monthlyEmissions.state[state].counties[county][month] += deltaV;
             }
 
             monthlyEmissions.regional[month] += deltaVArray[i];
         }
+        console.timeEnd('iterations');
+
+        console.time('end');
         
         const preTotal = preTotalArray.reduce(function(sum,n){ return sum + (n || 0) },0);
         const postTotal = postTotalArray.reduce(function(sum,n){ return sum + (n || 0) },0);
 
-        // console.log('Monthly Emissions',monthlyEmissions);
-        console.timeEnd('getDisplacedGeneration');
+        console.timeEnd('end');
         return {
             original: parseInt(preTotal,10),
             post: parseInt(postTotal,10),
@@ -134,8 +137,9 @@ class AnnualDisplacementEngine {
     }
 
     get generation() {
-        console.log('_________ get generation __________');
+        console.time('_________ get generation __________');
         const totals = this.getDisplacedGeneration(this.rdf.data.generation,false,false);
+        console.timeEnd('_________ get generation __________');
         this.generationOriginal = totals.original;
         this.generationPost = totals.post;
         return totals;
@@ -158,33 +162,37 @@ class AnnualDisplacementEngine {
     }
 
     get so2Total() {
-        console.log('_________ get so2 total __________');
+        console.time('_________ get so2 total __________');
         const totals = this.getDisplacedGeneration(this.rdf.data.so2,this.rdf.data.so2_not,true);
         this.so2Original = totals.original;
         this.so2Post = totals.post;
+        console.timeEnd('_________ get so2 total __________');
         return totals;
     }
 
     get noxTotal() {
-        console.log('_________ get nox total __________');
+        console.time('_________ get nox total __________');
         const totals = this.getDisplacedGeneration(this.rdf.data.nox,this.rdf.data.nox_not,true);
         this.noxOriginal = totals.original;
         this.noxPost = totals.post;
+        console.timeEnd('_________ get nox total __________');
         return totals;
     }
 
     get co2Total() {
-        console.log('_________ get co2 total __________');
+        console.time('_________ get co2 total __________');
         const totals = this.getDisplacedGeneration(this.rdf.data.co2,this.rdf.data.co2_not,true);
         this.co2Original = totals.original;
         this.co2Post = totals.post;
+        console.timeEnd('_________ get co2 total __________');
         return totals;
     }
 
     get so2Rate() {
-        console.log('_________ get so2 rate __________');
+        console.time('_________ get so2 rate __________');
         const original = math.round(math.divide(this.so2Original,this.generationOriginal),2);
         const post = math.round(math.divide(this.so2Post,this.generationPost),2);
+        console.timeEnd('_________ get so2 rate __________');
         return {
             original: original.toString(),
             post: post.toString(),
@@ -192,9 +200,10 @@ class AnnualDisplacementEngine {
     }
 
     get noxRate() {
-        console.log('_________ get nox rate __________');
+        console.time('_________ get nox rate __________');
         const original = math.round(math.divide(this.noxOriginal,this.generationOriginal),2);
         const post = math.round(math.divide(this.noxPost,this.generationPost),2);
+        console.timeEnd('_________ get nox rate __________');
         return {
             original: original.toString(),
             post: post.toString(),
@@ -202,9 +211,10 @@ class AnnualDisplacementEngine {
     }
 
     get co2Rate() {
-        console.log('_________ get co2 rate __________');
+        console.time('_________ get co2 rate __________');
         const original = math.round(math.divide(this.co2Original,this.generationOriginal),2);
         const post = math.round(math.divide(this.co2Post,this.generationPost),2);
+        console.timeEnd('_________ get co2 rate __________');
         return {
             original: original.toString(),
             post: post.toString(),

@@ -8,16 +8,20 @@ class MonthlyEmissionsEngine {
         
         return {
             generation: {
-                regional: Object.values(annualData.generation.monthlyEmissions.regional)
+                regional: Object.values(annualData.generation.monthlyEmissions.regional),
+                state: annualData.generation.monthlyEmissions.state,
             },
             so2: {
-                regional: Object.values(annualData.so2.monthlyEmissions.regional)
+                regional: Object.values(annualData.totalEmissions.so2.monthlyEmissions.regional),
+                state: annualData.totalEmissions.so2.monthlyEmissions.state,
             },
             nox: {
-                regional: Object.values(annualData.nox.monthlyEmissions.regional)
+                regional: Object.values(annualData.totalEmissions.nox.monthlyEmissions.regional),
+                state: annualData.totalEmissions.nox.monthlyEmissions.state,
             },
             co2: {
-                regional: Object.values(annualData.co2.monthlyEmissions.regional)
+                regional: Object.values(annualData.totalEmissions.co2.monthlyEmissions.regional),
+                state: annualData.totalEmissions.co2.monthlyEmissions.state,
             }
         }
     }
