@@ -4,7 +4,7 @@ import {
     COMPLETE_ANNUAL,
 } from '../actions';
 
-const resultsFormat = { original: '', post: '', impact: ''}
+const resultsFormat = { original: '', post: '', impact: '' };
 
 const annualDisplacement = (state = { 
     status: "select_region", 

@@ -62,7 +62,8 @@ class Engine {
         const stateEmissions = new StateEmissionsEngine();
         const monthlyEmissions = new MonthlyEmissionsEngine();
 
-        store.dispatch(completeAnnual(annualDisplacement.output));
+        const annualOutput = annualDisplacement.output;
+        store.dispatch(completeAnnual(annualOutput));
         
         setTimeout(() => {
             store.dispatch(completeStateEmissions(stateEmissions.emissions));
@@ -70,6 +71,8 @@ class Engine {
 
         setTimeout(() => {
             store.dispatch(completeMonthlyEmissions(monthlyEmissions.emissions));
+            // store.dispatch(completeMonthlyEmissions(monthlyEmissions.extract(annualOutput)));
+            // monthlyEmissions.extract(annualOutput);
         }, 50)
         
     }

@@ -4,7 +4,7 @@ import {
     COMPLETE_MONTHLY,
 } from '../actions';
 
-const monthlyEmissions = (state = { status: "select_region", results: [] }, action) => {
+const monthlyEmissions = (state = { status: "select_region", results: [], regional: [], states: [] }, action) => {
     switch (action.type) {
         case SELECT_REGION:
             return Object.assign({}, state, {
@@ -15,9 +15,12 @@ const monthlyEmissions = (state = { status: "select_region", results: [] }, acti
                 status: "started",
             });
         case COMPLETE_MONTHLY:
+            console.warn('- Complete Month',action);
             return Object.assign({}, state, {
                 status: "complete",
-                results: action.data
+                results: action.data,
+                regional: [],
+                states: [],
             });
         default:
             return state;

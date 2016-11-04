@@ -39,10 +39,6 @@ class AnnualDisplacementEngine {
         return matchedIndex;
     }
 
-    calculateSlope(m,x,b) {
-        return math.add(math.multiply(m,x),b);
-    }
-
     getDisplacedGeneration(dataSet,dataSetNonOzone,no){
         // if(no) return { original: '', post: '', impact: '' };
         console.time('getDisplacedGeneration');
@@ -62,12 +58,18 @@ class AnnualDisplacementEngine {
         let preTotalArray = [];
         let postTotalArray = [];
         let deltaVArray = [];
-        let foo = false;
-        let bar = false;
+        const monthlyEmissions = {
+            regional: {},
+            state: {},
+            // county: {},
+        };
         for (let i = 0; i < loadArrayOriginal.length; i++) {
             const load = loadArrayOriginal[i];
             const month = loadArrayMonth[i];
             const postLoad = loadArrayPost[i];
+            
+            monthlyEmissions.regional[month] = monthlyEmissions.regional[month] ? monthlyEmissions.regional[month] : 0;
+
             preTotalArray[i] = 0;
             postTotalArray[i] = 0;
             deltaVArray[i] = 0;
@@ -76,23 +78,6 @@ class AnnualDisplacementEngine {
 
             let activeMedians = medians;
             if(mediansNonOzone) {
-                if(month === 10 && bar === false){
-                    console.log('now october',month,i);
-                    bar = true;
-                }
-
-                if(month >=5 && month <= 9 && foo === false){
-                    console.log('switching over to ozone',i)
-                    foo = true;
-                }
-
-                if((month < 5 || month > 9) && foo === true) {
-                    console.log('switching back to non-ozone',i)
-                    foo = false;   
-                }
-
-
-                // activeMedians = (month >= 5 && i <= 6552) ? medians : mediansNonOzone;    
                 activeMedians = (month >= 5 && month <= 9) ? medians : mediansNonOzone;    
             }
 
@@ -101,51 +86,56 @@ class AnnualDisplacementEngine {
 
             for (let j = 0; j < activeMedians.length; j++) {
                 const median = activeMedians[j];
+                const state = dataSet[j].state;
+                const county = dataSet[j].county;
+                const preVal = this.calculateLinear(load,median[preGenIndex],median[preGenIndex + 1],edges[preGenIndex],edges[preGenIndex + 1]);
+                const postVal = this.calculateLinear(postLoad,median[postGenIndex],median[postGenIndex + 1],edges[postGenIndex],edges[postGenIndex + 1]);
+                const deltaV = math.subtract(postVal,preVal);
+
+                preTotalArray[i] += preVal;
+                postTotalArray[i] += postVal;
+                deltaVArray[i] += deltaV;
                 
-                const preGenA = median[preGenIndex];
-                const preGenB = median[preGenIndex + 1];
-                const preEdgeA = edges[preGenIndex]; // Edges are 1-indexed
-                const preEdgeB = edges[preGenIndex + 1];
+                monthlyEmissions.state[state] = monthlyEmissions.state[state] ? monthlyEmissions.state[state] : {};
+                monthlyEmissions.state[state][month] = monthlyEmissions.state[state][month] ? monthlyEmissions.state[state][month] : 0;
+                monthlyEmissions.state[state][month] += deltaV;
 
-                const postGenA = median[postGenIndex];
-                const postGenB = median[postGenIndex + 1];
-                const postEdgeA = edges[postGenIndex];
-                const postEdgeB = edges[postGenIndex + 1];
-               
-                const preSlope = math.divide(math.subtract(preGenA,preGenB),math.subtract(preEdgeA, preEdgeB)).toString();
-                const preIntercept = math.subtract(preGenA,math.multiply(preSlope,preEdgeA)).toString();
-                const preVal = math.add(math.multiply(load,preSlope),preIntercept);
+                // monthlyEmissions.county[county] = monthlyEmissions.county[county] ? monthlyEmissions.county[county] : {};
+                // monthlyEmissions.county[county][month] = monthlyEmissions.county[county][month] ? monthlyEmissions.county[county][month] : 0;
+                // monthlyEmissions.county[county][month] += deltaV;
 
-                const postSlope = math.divide(math.subtract(postGenA,postGenB),math.subtract(postEdgeA,postEdgeB)).toString();
-                const postIntercept = math.subtract(postGenA,math.multiply(postSlope,postEdgeA)).toString();
-                const postVal = math.add(math.multiply(postLoad,postSlope),postIntercept);
-
-                // const deltaV = math.round(math.subtract(postVal,preVal),3);
-
-                // preTotalArray[i] = math.round(math.add(preTotalArray[i],preVal),3);
-                // postTotalArray[i] = math.round(math.add(postTotalArray[i],postVal),3);
-
-                preTotalArray[i] = math.add(preTotalArray[i],preVal);
-                postTotalArray[i] = math.add(postTotalArray[i],postVal);
-                
-                // deltaVArray[i] = math.add(deltaVArray[i],deltaV);
+                monthlyEmissions.state[state][county] = monthlyEmissions.state[state][county] ? monthlyEmissions.state[state][county] : {};
+                monthlyEmissions.state[state][county][month] = monthlyEmissions.state[state][county][month] ? monthlyEmissions.state[state][county][month] : 0;
+                monthlyEmissions.state[state][county][month] += deltaV;
             }
+
+            monthlyEmissions.regional[month] += deltaVArray[i];
         }
         
         const preTotal = preTotalArray.reduce(function(sum,n){ return sum + (n || 0) },0);
         const postTotal = postTotalArray.reduce(function(sum,n){ return sum + (n || 0) },0);
 
+        // console.log('Monthly Emissions',monthlyEmissions);
         console.timeEnd('getDisplacedGeneration');
         return {
             original: parseInt(preTotal,10),
             post: parseInt(postTotal,10),
             impact: parseInt(math.subtract(postTotal,preTotal),10),
+            monthlyEmissions: monthlyEmissions,
         };
+    }
+
+    calculateLinear(load,genA,genB,edgeA,edgeB){
+        const slope = math.divide(math.subtract(genA,genB),math.subtract(edgeA, edgeB)).toString();
+        const intercept = math.subtract(genA,math.multiply(slope,edgeA)).toString();
+        const val = math.add(math.multiply(load,slope),intercept);
+
+        return val;
     }
 
     get generation() {
         console.log('_________ get generation __________');
-        const totals = this.getDisplacedGeneration(this.rdf.data.generation,false,true);
+        const totals = this.getDisplacedGeneration(this.rdf.data.generation,false,false);
         this.generationOriginal = totals.original;
         this.generationPost = totals.post;
         return totals;
@@ -169,9 +159,7 @@ class AnnualDisplacementEngine {
 
     get so2Total() {
         console.log('_________ get so2 total __________');
-        console.log('SO2 data',this.rdf.data.so2);
-        console.log('Data',this.rdf.data);
-        const totals = this.getDisplacedGeneration(this.rdf.data.so2,this.rdf.data.so2_not,false);
+        const totals = this.getDisplacedGeneration(this.rdf.data.so2,this.rdf.data.so2_not,true);
         this.so2Original = totals.original;
         this.so2Post = totals.post;
         return totals;
@@ -205,7 +193,6 @@ class AnnualDisplacementEngine {
 
     get noxRate() {
         console.log('_________ get nox rate __________');
-
         const original = math.round(math.divide(this.noxOriginal,this.generationOriginal),2);
         const post = math.round(math.divide(this.noxPost,this.generationPost),2);
         return {
@@ -216,7 +203,6 @@ class AnnualDisplacementEngine {
 
     get co2Rate() {
         console.log('_________ get co2 rate __________');
-
         const original = math.round(math.divide(this.co2Original,this.generationOriginal),2);
         const post = math.round(math.divide(this.co2Post,this.generationPost),2);
         return {
