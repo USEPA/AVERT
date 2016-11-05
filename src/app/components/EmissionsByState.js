@@ -23,12 +23,6 @@ class EmissionsByState extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>FOO</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                    </tr>
                     {states.map((state,index) => {
                         return (
                             <tr>
