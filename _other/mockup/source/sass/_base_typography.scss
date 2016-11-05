@@ -3,14 +3,12 @@
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
   line-height: 1;
-  // removes the following element's top margin
-  + * { margin-top: 0 !important; }
 }
 
 
 
 // default text styles
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4 {
   @extend %heading;
   font-size: 1.25rem;
 }
@@ -71,12 +69,15 @@ fieldset {
   color: $avert-blue;
 }
 .avert-heading-two {
+  margin-bottom: 1rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 2px solid currentColor;
   font-size: 1.25rem; // 20px
   color: $avert-blue;
 }
 .avert-heading-three {
   font-size: 1.125rem; // 18px
-  color: $grey4;
+  color: darken($avert-blue, 10%);
 }
 .avert-heading-four {
   font-size: 1rem; // 16px
