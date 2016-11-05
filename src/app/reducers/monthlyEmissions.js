@@ -75,16 +75,13 @@ const monthlyEmissions = (state = {
             });
 
         case SELECT_STATE:
-            console.warn("SELECT_STATE",action.state,state.results);
             const counties = Object.keys(state.results.so2.state[action.state].counties).filter((val) => isNaN(val));
-            console.warn('- Counties',counties);
-            console.warn('- State',state.results.so2.state[action.state],state.results.nox.state[action.state],state.results.co2.state[action.state])
             const stateData = { 
                 so2: Object.values(state.results.so2.state[action.state].data), 
                 nox: Object.values(state.results.nox.state[action.state].data), 
                 co2: Object.values(state.results.co2.state[action.state].data), 
             };
-            
+
             console.warn("- State Data",stateData);
             return Object.assign({}, state, {
                 selected_state: action.state,
@@ -94,8 +91,15 @@ const monthlyEmissions = (state = {
             });
 
         case SELECT_COUNTY:
+            const countyData = {
+                so2: Object.values(state.results.so2.state[state.selected_state].counties[action.county]),
+                nox: Object.values(state.results.nox.state[state.selected_state].counties[action.county]),
+                co2: Object.values(state.results.co2.state[state.selected_state].counties[action.county]),
+            };
             return Object.assign({}, state, {
                 selected_county: action.county,
+                counties: countyData,
+                output: countyData,
             });
 
         case SELECT_UNIT:

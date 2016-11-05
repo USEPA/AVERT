@@ -101,10 +101,6 @@ class AnnualDisplacementEngine {
                 monthlyEmissions.state[state].data[month] = monthlyEmissions.state[state].data[month] ? monthlyEmissions.state[state].data[month] : 0;
                 monthlyEmissions.state[state].data[month] += deltaV;
 
-                // monthlyEmissions.county[county] = monthlyEmissions.county[county] ? monthlyEmissions.county[county] : {};
-                // monthlyEmissions.county[county][month] = monthlyEmissions.county[county][month] ? monthlyEmissions.county[county][month] : 0;
-                // monthlyEmissions.county[county][month] += deltaV;
-
                 monthlyEmissions.state[state].counties[county] = monthlyEmissions.state[state].counties[county] ? monthlyEmissions.state[state].counties[county] : {};
                 monthlyEmissions.state[state].counties[county][month] = monthlyEmissions.state[state].counties[county][month] ? monthlyEmissions.state[state].counties[county][month] : 0;
                 monthlyEmissions.state[state].counties[county][month] += deltaV;
