@@ -20,6 +20,7 @@ import {
     completeCalculation, 
     completeAnnual, 
     completeStateEmissions, 
+    foo_completeStateEmissions, 
     completeMonthlyEmissions,
     foo_completeMonthlyEmissions,
     updateExceedences,
@@ -69,12 +70,12 @@ class Engine {
         
         setTimeout(() => {
             store.dispatch(completeStateEmissions(stateEmissions.emissions));
+            store.dispatch(foo_completeStateEmissions(stateEmissions.extract(annualOutput)));
         }, 50)
 
         setTimeout(() => {
             store.dispatch(completeMonthlyEmissions(monthlyEmissions.emissions));
             store.dispatch(foo_completeMonthlyEmissions(monthlyEmissions.extract(annualOutput)));
-            // monthlyEmissions.extract(annualOutput);
         }, 50)
         
     }

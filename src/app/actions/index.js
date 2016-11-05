@@ -35,6 +35,7 @@ export const SELECT_COUNTY = 'SELECT_COUNTY';
 export const SELECT_UNIT = 'SELECT_UNIT';
 
 export const COMPLETE_STATE = 'COMPLETE_STATE';
+export const FOO_COMPLETE_STATE = 'FOO_COMPLETE_STATE';
 
 export const INVALIDATE_REGION = 'INVALIDATE_REGION';
 export const REQUEST_REGION = 'REQUEST_REGION';
@@ -183,14 +184,11 @@ export function completeMonthlyEmissions(data) {
 }
 
 export function foo_completeMonthlyEmissions(data) {
-	const so2 = data.so2;
-	const nox = data.nox;
-	const co2 = data.co2;
 	return {
 		type: FOO_COMPLETE_MONTHLY,
-		so2,
-		nox,
-		co2,
+		so2: data.so2,
+		nox: data.nox,
+		co2: data.co2,
 	}
 }
 
@@ -226,6 +224,13 @@ export function completeStateEmissions(data) {
 	return {
 		type: COMPLETE_STATE,
 		data
+	}
+}
+
+export function foo_completeStateEmissions(data) {
+	return {
+		type: FOO_COMPLETE_STATE,
+		data,
 	}
 }
 

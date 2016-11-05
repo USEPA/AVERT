@@ -8,14 +8,39 @@ import { statusEnum } from '../utils/statusEnum';
 class EmissionsByState extends Component {
     render() {
         const statusIndicator = statusEnum[this.props.state_status].lang
-        const { data } = this.props;
+        const { data, states } = this.props;
         return(
             <div>
                 <h4>Emissions by State</h4>
                 <span>{ statusIndicator }</span>
-                <ul>
-                    { data.map((item,index) => <li key={index}>{item}</li> )}
-                </ul>
+                <table className="annual-displacement-table">
+                    <thead>
+                    <tr>
+                        <th>State</th>
+                        <th>SO<sub>2</sub> (lbs)</th>
+                        <th>NO<sub>X</sub> (lbs)</th>
+                        <th>CO<sub>2</sub> (tons)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>FOO</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    {states.map((state,index) => {
+                        return (
+                            <tr>
+                                <td>{state}</td>
+                                <td>{data[index].so2}</td>
+                                <td>{data[index].nox}</td>
+                                <td>{data[index].co2}</td>
+                            </tr>
+                        );
+                    })}
+                    </tbody>
+                </table>
             </div>
         )
     }
@@ -24,7 +49,8 @@ class EmissionsByState extends Component {
 const mapStateToProps = (state) => {
     return {
         state_status: state.stateEmissions.status,
-        data: state.stateEmissions.results
+        data: state.stateEmissions.results.data ? state.stateEmissions.results.data : {},
+        states: state.stateEmissions.results.states ? state.stateEmissions.results.states : [],
     }
 }
 

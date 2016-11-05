@@ -19,6 +19,8 @@ const eere = (state = {
     submitted: false,
     valid: true,
     exceedences: [],
+    top_exceedence_value: 0,
+    top_exceedence_hour: 0,
     errors: [],
     topHours: '', 
     reduction: '', 
@@ -77,12 +79,19 @@ const eere = (state = {
             });
 
         case UPDATE_EXCEEDENCES:
-            console.warn("UPDATE_EXCEEDENCES",action.exceedences.reduce((a,b) => a + b));
+            const valid = action.exceedences.reduce((a,b) => a + b) === 0;
+            const maxVal = (! valid) ? Math.max(action.exceedences) : 0;
+            const maxIndex = (! valid) ? action.exceedences.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0) : 0;
+            console.warn("UPDATE_EXCEEDENCES",valid);
+            console.warn("- Max val",maxVal);
+            console.warn("- Max index",maxIndex);
             return Object.assign({}, state, {
                 // TODO: Consider breaking validity for exceed from validity for fields
-                valid: action.exceedences.reduce((a,b) => a + b) === 0,
-                exceedences: action.exceedences
-            })
+                valid: valid,
+                exceedences: action.exceedences,
+                top_exceedence_value: maxVal,
+                top_exceedence_hour: maxIndex,
+            });
         
         case SUBMIT_PARAMS:
             return Object.assign({}, state, {
