@@ -316,86 +316,61 @@
           <section class="avert-step" id="parameters" data-active="false">
             <div class="avert-step-body">
               <h2 class="avert-heading-two">Set Energy Efficiency and Renewable Energy Impacts</h2>
-              <p>AVERT quantifies avoided emissions and electricity generation displaced by EE/RE policies and programs. Specify the impacts of EE/RE programs below, and AVERT will use these inputs to generate results. Multiple values can be entered, and produce cumulative effects, except when noted. For more information about inputs, please consult the <a href="https://www.epa.gov/statelocalclimate/avert-user-manual-0">AVERT user manual</a>.</p>
+              <p>AVERT quantifies avoided emissions and electricity generation displaced by EE/RE policies and programs. Specify the impacts of EE/RE programs below, and AVERT will use these inputs to generate results. For more information about inputs, please consult the <a href="https://www.epa.gov/statelocalclimate/avert-user-manual-0">AVERT user manual</a>.</p>
 
-              <div class="avert-toggle-form">
-                <p class="avert-form-info">Any combination of inputs below may be selected and entered.</p>
+              <p class="avert-small-text">Five types of programs are listed below (A through E). You can enter impacts for any or all types of programs, in any combination. AVERT will calculate cumulative impacts.</p>
 
-                <fieldset class="avert-input-group">
-                  <input id="g1" class="avert-input-group-checkbox" type="checkbox">
-                  <label for="g1" class="avert-input-group-heading">Reduce generation by a specified percent in some or all hours: <a href="#info-1" class="avert-modal-link">info</a></label>
+              <div class="avert-details-block">
+                <header>
+                  <p>Energy Efficiency</p>
+                </header>
 
-                  <section class="avert-input-group-fields" data-active="false">
-                    <div class="avert-form-field">
-                      <label for="f1">Reduce generation during the top <strong>X</strong> percent of hours:</label>
-                      <input id="f1" type="text">
-                    </div>
-                    <div class="avert-form-gap">
-                      <p>AND</p>
-                    </div>
-                    <div class="avert-form-field">
-                      <label for="f2">Reduce generation by <strong>X</strong> percent during these hours:</label>
-                      <input id="f2" type="text">
-                    </div>
+                <details>
+                  <summary data-label="A">Reductions spread evenly throughout the year</summary>
+                  <section>
+                    <p><strong>Choose one:</strong></p>
+                    <ul>
+                      <li>Reduce hourly generation by <input type="text"> <span>MW</span></li>
+                      <li>Reduce total annual generation by <input type="text"> <span>GWh</span></li>
+                    </ul>
                   </section>
+                </details>
 
-                  <div class="avert-modal" id="info-1" data-active="false">
-                    <a href="#" class="avert-modal-close">×</a>
-                    <p>To simulate a broad-based efficiency program, enter 100 percent as the “% of top hours” and an estimated load reduction fraction in the cell labeled “% reduction.” To simulate a peak-reduction targeting program such as demand response, enter a fraction of high-demand hours that the program is expected to affect (e.g., 1%–3%), and the load reduction (as a fraction of peaking load) that would be targeted in those hours.</p>
-                  </div>
-                </fieldset>
-
-                <fieldset class="avert-input-group">
-                  <input id="g2" class="avert-input-group-checkbox" type="checkbox">
-                  <label for="g2" class="avert-input-group-heading">Distribute energy efficiency impacts evenly throughout the year: <a href="#info-2" class="avert-modal-link">info</a></label>
-
-                  <section class="avert-input-group-fields" data-active="false">
-                    <div class="avert-form-field">
-                      <label for="f3">Reduce annual generation by <strong>X</strong> GWh:</label>
-                      <input id="f3" type="text">
-                    </div>
-                    <div class="avert-form-gap">
-                      <p>OR</p>
-                    </div>
-                    <div class="avert-form-field">
-                      <label for="f4">Reduce hourly generation by <strong>X</strong> MW:</label>
-                      <input id="f4" type="text">
-                    </div>
+                <details>
+                  <summary data-label="B">Percentage reductions in some or all hours</summary>
+                  <section>
+                    <p><strong>Choose one:</strong></p>
+                    <ul>
+                      <li>Broad-based program: Reduce generation by <input type="text"> <span>% in all hours</span></li>
+                      <li>Targeted program: Reduce generation by <input type="text"> <span>% during the peak</span> <input type="text"> <span>% of hours</span></li>
+                    </ul>
                   </section>
+                </details>
 
-                  <div class="avert-modal" id="info-2" data-active="false">
-                    <a href="#" class="avert-modal-close">×</a>
-                    <p>“Reduce generation by annual GWh” simply distributes those savings evenly over all hours of the year. The user inputs a total number of GWh expected to be saved in a single year. An industrial or refrigeration efficiency program may be well represented by a constant reduction across most hours of the year.</p>
-                    <p>“Reduce each hour by a constant MW” is identical in effect to the annual load reduction by total GWh. The user enters a constant reduction for every hour of the year in MW.</p>
-                  </div>
-                </fieldset>
+                <header>
+                  <p>Renewable Energy</p>
+                </header>
 
-                <fieldset class="avert-input-group">
-                  <input id="g3" class="avert-input-group-checkbox" type="checkbox">
-                  <label for="g3" class="avert-input-group-heading">Enter annual capacity of renewable energy resources: <a href="#info-3" class="avert-modal-link">info</a></label>
-
-                  <section class="avert-input-group-fields" data-active="false">
-                    <div class="avert-form-field avert-form-third">
-                      <label for="f5">Wind capacity (MW)</label>
-                      <input id="f5" type="text">
-                    </div>
-
-                    <div class="avert-form-field avert-form-third">
-                      <label for="f6">Utility solar photovoltaic capacity (MW)</label>
-                      <input id="f6" type="text">
-                    </div>
-
-                    <div class="avert-form-field avert-form-third">
-                      <label for="f7">Rooftop solar photovoltaic capacity (MW)</label>
-                      <input id="f7" type="text">
-                    </div>
+                <details>
+                  <summary data-label="C">Wind</summary>
+                  <section>
+                    <p>Total capacity: <input type="text"> <span>MW<span></p>
                   </section>
+                </details>
 
-                  <div class="avert-modal" id="info-3" data-active="false">
-                    <a href="#" class="avert-modal-close">×</a>
-                    <p>Select the annual capacity (maximum potential electricity generation) for each type of resource, measured in MW. The model applies these values to “hourly capacity factors” that vary by resource type and region.</p>
-                  </div>
-                </fieldset>
+                <details>
+                  <summary data-label="D">Utility-scale solar photovoltaic</summary>
+                  <section>
+                    <p>Total capacity: <input type="text"> <span>MW</span></p>
+                  </section>
+                </details>
+
+                <details>
+                  <summary data-label="E">Distributed (rooftop) solar photovoltaic</summary>
+                  <section>
+                    <p>Total capacity: <input type="text"> <span>MW</span></p>
+                  </section>
+                </details>
               </div>
 
               <div class="avert-eere-profile">
