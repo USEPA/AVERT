@@ -1,0 +1,76 @@
+.avert-form-info {
+  margin-bottom: 1.25rem;
+  padding: 0.625rem;
+  font-size: 0.875rem;
+  text-align: center;
+  background-color: $greye;
+  color: $grey6;
+}
+
+
+
+.avert-input-group-checkbox {
+  position: relative;
+  bottom: -0.25rem;
+  float: left;
+  margin: 0 0.25rem;
+  width: 1rem;
+  height: 1rem;
+}
+.avert-input-group-fields[data-active="false"] {
+  display: none;
+}
+.avert-input-group-fields[data-active="true"] {
+  display: block;
+}
+
+
+
+.avert-form-field {
+  position: relative;
+  float: left;
+  margin: 0.25rem;
+  padding: 0.25rem;
+  border: 1px solid $grey9;
+  width: calc(50% - 1.5rem);
+  height: 2.75rem;
+
+  label {
+    position: absolute;
+    z-index: 1;
+    left: 0.25rem;
+    top: 0.125rem;
+    font-size: 0.625rem;
+  }
+
+  input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    padding: 1.25rem 0.25rem 0.25rem;
+    border: 0;
+    font-size: 0.875rem;
+    font-weight: bold;
+  }
+}
+
+
+.avert-form-gap {
+  float: left;
+  width: 2rem;
+
+  p {
+    margin-top: 1.125rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-align: center;
+  }
+}
+
+
+.avert-form-third {
+  width: calc(100% / 3 - 0.5rem);
+}
