@@ -23,7 +23,7 @@ import {
     foo_completeStateEmissions, 
     completeMonthlyEmissions,
     foo_completeMonthlyEmissions,
-    updateExceedences,
+    updateExceedances,
 } from '../actions';
 
 class Engine {
@@ -84,20 +84,29 @@ class Engine {
         const regionalLoad = _.map(this.rdf.regional_load,'regional_load_mw');
         const k = 1 - (this.eereProfile.topHours / 100);
         const percentLimit = this.rdf.limits.max_ee_percent / 100;
+        const softLimit = .15;
+        const hardLimit = .3;
 
         this.limits = regionalLoad.map((load) => (load * -percentLimit));
+        this.softLimits = regionalLoad.map((load) => (load * -softLimit));
+        this.hardLimits = regionalLoad.map((load) => (load * -hardLimit));
         this.topPercentile = stats.percentile(regionalLoad, k);
         this.resultingHourlyMwReduction = math.chain(this.eereProfile.annualGwh).multiply(1000).divide(regionalLoad.length).done();
         this.manualEereEntry = math.zeros(regionalLoad.length);
+
         this.hourlyEere = _.map(regionalLoad, this.hourlyEereCb.bind(this));
-        this.exceedences = _.map(this.hourlyEere,'exceedence');
-        
+        this.exceedances = _.map(this.hourlyEere,'exceedance');
+        this.softExceedances = _.map(this.hourlyEere,'soft_exceedance');
+        this.hardExceedances = _.map(this.hourlyEere,'hard_exceedance');
+
         store.dispatch(completeCalculation(this.hourlyEere));
-        store.dispatch(updateExceedences(this.exceedences));
+        store.dispatch(updateExceedances(this.exceedances,this.softExceedances,this.hardExceedances));
     }
 
     hourlyEereCb(load,index){
         const limit = this.limits[index];
+        const softLimit = this.softLimits[index];
+        const hardLimit = this.hardLimits[index];
         const hourlyEereDefault = northeastEere.data[index];
         
         const renewable_energy_profile = -math.sum(math.multiply(this.eereProfile.windCapacity,hourlyEereDefault.wind),
@@ -105,7 +114,7 @@ class Engine {
                                                 math.multiply(this.eereProfile.rooftopSolar,hourlyEereDefault.rooftop_pv));
 
         const percentReduction = -(this.eereProfile.reduction / 100);
-        const initialLoad = (load > this.topPercentile) ? (load * percentReduction) : 0
+        const initialLoad = (load > this.topPercentile) ? (load * percentReduction) : 0;
         const calculatedLoad = math.chain(initialLoad)
                                    .subtract(this.manualEereEntry.toArray()[index])
                                    .add(renewable_energy_profile)
@@ -128,8 +137,16 @@ class Engine {
             current_load_mw: load,
             flag: 0,
             limit: limit,
-            exceedence: (finalMw < limit) ? ((finalMw/limit) - 1) : 0,
+            soft_limit: softLimit,
+            hard_limit: hardLimit,
+            exceedance: (finalMw < limit) ? ((finalMw/limit) - 1) : 0,
+            soft_exceedance: Engine.doesExceed(finalMw,softLimit),
+            hard_exceedance: Engine.doesExceed(finalMw,hardLimit),
         }
+    }
+
+    static doesExceed(mw,limit) {
+        return (mw < limit) ? ((mw / limit) - 1) : 0;
     }
 }
 

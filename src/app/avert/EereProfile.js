@@ -11,10 +11,8 @@ class EereProfile {
 	}
 
     get isValid() {
-        
-        if(this._errors.length) return false;
 
-        return true;
+        return this._errors.length === 0;
     }
 
     get errors() {
@@ -50,6 +48,8 @@ class EereProfile {
     set topHours(value) {
         this.removeError('topHours');
 
+        if (value > 100 || value < 0) this.addError('topHours');
+
         this._topHours = value;
 
         return this;
@@ -61,6 +61,8 @@ class EereProfile {
 
     set reduction(value) {
         this.removeError('reduction');
+
+        if (value > 100 || value < 0) this.addError('reduction');
 
         this._reduction = value;
 
@@ -86,7 +88,10 @@ class EereProfile {
     }
 
     set constantMw(value) {
-        this.removeError('constantMw');
+        this.removeError('constantMw');       
+        const constantLimit = parseInt((41900 * 1000) / 8760,10);
+        
+        if(value > constantLimit) this.addError('constantMw');
 
         this._constantMw = value;
 

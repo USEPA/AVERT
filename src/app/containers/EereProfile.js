@@ -19,21 +19,67 @@ import TextInput from '../components/TextInput';
 
 class EereProfile extends Component {
     render() {
+
+        const {
+            topHours,
+            reduction,
+            annualGwh,
+            constantMw,
+            capacity,
+            utilitySolar,
+            rooftopSolar,
+            valid,
+            errors,
+            softValid,
+            softTopExceedanceValue,
+            softTopExceedanceHour,
+            hardValid,
+            hardTopExceedanceValue,
+            hardTopExceedanceHour,
+            onTopHoursChange,
+            onReductionChange,
+            onAnnualGwhChange,
+            onConstantMwChange,
+            onWindCapacityChange,
+            onUtilitySolarChange,
+            onRooftopSolarChange,
+        } = this.props;
+
+        console.warn('Errors',errors,'Soft val',softTopExceedanceValue,'Hard val',hardTopExceedanceValue);
         return (
             <div>
                 <h3>EERE Profile</h3>
 
-                <div>Is Valid? { this.props.valid ? 'Yes' : 'No'}</div>
+                <div>Is First Pass Valid? { valid ? 'Yes' : 'No'}</div>
+                <div>Did second pass stay under 15% {softValid ? 'Yes': 'No'} (Value: {softTopExceedanceValue}, Hour: {softTopExceedanceHour})</div>
+                <div>Did second pass stay under 30% {hardValid ? 'Yes': 'No'} (Value: {hardTopExceedanceValue}, Hour: {hardTopExceedanceHour})</div>
 
-                <TextInput label="Top Hours" value={ this.props.topHours } onChange={(e) => this.props.onTopHoursChange(e.target.value) } />
-                <TextInput label="Reduction" value={ this.props.reduction } onChange={(e) => this.props.onReductionChange(e.target.value) } />
-                <TextInput label="Annual GWH" value={ this.props.annualGwh } onChange={(e) => this.props.onAnnualGwhChange(e.target.value) } />
-                <TextInput label="Constant MW" value={ this.props.constantMw } onChange={(e) => this.props.onConstantMwChange(e.target.value) } />
-                <TextInput label="Wind Capacity" value={ this.props.capacity } onChange={(e) => this.props.onWindCapacityChange(e.target.value) } />
-                <TextInput label="Utility Solar" value={ this.props.utilitySolar } onChange={(e) => this.props.onUtilitySolarChange(e.target.value) } />
-                <TextInput label="Rooftop Solar" value={ this.props.rooftopSolar } onChange={(e) => this.props.onRooftopSolarChange(e.target.value) } />
+                <TextInput label="Top Hours" value={ topHours } onChange={(e) => onTopHoursChange(e.target.value) } />
+                {this.getError(errors,'topHours')}
+
+                <TextInput label="Reduction" value={ reduction } onChange={(e) => onReductionChange(e.target.value) } />
+                {this.getError(errors,'reduction')}
+
+                <TextInput label="Annual GWH" value={ annualGwh } onChange={(e) => onAnnualGwhChange(e.target.value) } />
+                {this.getError(errors,'annualGwh')}
+
+                <TextInput label="Constant MW" value={ constantMw } onChange={(e) => onConstantMwChange(e.target.value) } />
+                {this.getError(errors,'constantMw')}
+
+                <TextInput label="Wind Capacity" value={ capacity } onChange={(e) => onWindCapacityChange(e.target.value) } />
+                {this.getError(errors,'windCapacity')}
+
+                <TextInput label="Utility Solar" value={ utilitySolar } onChange={(e) => onUtilitySolarChange(e.target.value) } />
+                {this.getError(errors,'utilitySolar')}
+
+                <TextInput label="Rooftop Solar" value={ rooftopSolar } onChange={(e) => onRooftopSolarChange(e.target.value) } />
+                {this.getError(errors,'rooftopSolar')}
             </div>
         )
+    }
+
+    getError(errors,label){
+        return errors.indexOf(label) !== -1 ? `Errors in ${label}` : '';
     }
 }
 
@@ -48,8 +94,16 @@ const mapStateToProps = (state) => {
         rooftopSolar: state.eere.rooftopSolar,
         valid: state.eere.valid,
         errors: state.eere.errors,
+        softValid: state.eere.soft_valid,
+        softExceedances: state.eere.soft_exceedances,
+        softTopExceedanceValue: state.eere.soft_top_exceedance_value,
+        softTopExceedanceHour: state.eere.soft_top_exceedance_hour,
+        hardValid: state.eere.hard_valid,
+        hardExceedances: state.eere.hard_exceedances,
+        hardTopExceedanceValue: state.eere.hard_top_exceedance_value,
+        hardTopExceedanceHour: state.eere.hard_top_exceedance_hour,
     }
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {

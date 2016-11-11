@@ -61,7 +61,7 @@ class AnnualDisplacementEngine {
             state: {},
             // county: {},
         };
-        console.timeEnd('prep')
+        console.timeEnd('prep');
 
         console.time('iterations');
         for (let i = 0; i < loadArrayOriginal.length; i++) {
@@ -89,8 +89,8 @@ class AnnualDisplacementEngine {
                 const median = activeMedians[j];
                 const state = dataSet[j].state;
                 const county = dataSet[j].county;
-                const preVal = this.calculateLinear(load,median[preGenIndex],median[preGenIndex + 1],edges[preGenIndex],edges[preGenIndex + 1]);
-                const postVal = this.calculateLinear(postLoad,median[postGenIndex],median[postGenIndex + 1],edges[postGenIndex],edges[postGenIndex + 1]);
+                const preVal = AnnualDisplacementEngine.calculateLinear(load,median[preGenIndex],median[preGenIndex + 1],edges[preGenIndex],edges[preGenIndex + 1]);
+                const postVal = AnnualDisplacementEngine.calculateLinear(postLoad,median[postGenIndex],median[postGenIndex + 1],edges[postGenIndex],edges[postGenIndex + 1]);
                 const deltaV = math.subtract(postVal,preVal);
 
                 preTotalArray[i] += preVal;
@@ -124,12 +124,11 @@ class AnnualDisplacementEngine {
         };
     }
 
-    calculateLinear(load,genA,genB,edgeA,edgeB){
+    static calculateLinear(load,genA,genB,edgeA,edgeB){
         const slope = math.divide(math.subtract(genA,genB),math.subtract(edgeA, edgeB)).toString();
         const intercept = math.subtract(genA,math.multiply(slope,edgeA)).toString();
-        const val = math.add(math.multiply(load,slope),intercept);
 
-        return val;
+        return math.add(math.multiply(load,slope),intercept);
     }
 
     get generation() {

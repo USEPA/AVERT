@@ -26,7 +26,7 @@ class EereLoadOutput extends Component {
                             <th>Renewable Energy Profile</th>
                             <th>Final (MW)</th>
                             <th>Limit</th>
-                            <th>Exceedence</th>
+                            <th>Exceedance</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,7 +40,7 @@ class EereLoadOutput extends Component {
                                 <td>{item.renewable_energy_profile}</td>
                                 <td>{item.final_mw}</td>
                                 <td>{item.limit}</td>
-                                <td>{item.exceedence}</td>
+                                <td>{item.exceedance}</td>
                             </tr>
                         )}
                     </tbody>

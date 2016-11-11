@@ -25,7 +25,7 @@ class EmissionsByState extends Component {
                     <tbody>
                     {states.map((state,index) => {
                         return (
-                            <tr>
+                            <tr key={index}>
                                 <td>{state}</td>
                                 <td>{data[index].so2}</td>
                                 <td>{data[index].nox}</td>
