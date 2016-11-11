@@ -1,0 +1,72 @@
+.avert-details-block {
+  margin-top: 1rem;
+  border-top: 1px solid $greyc;
+
+  header {
+    font-weight: bold;
+    background-color: $greye;
+  }
+
+  header,
+  details {
+    overflow: hidden;
+    border: 1px solid $greyc;
+    border-top: 0;
+  }
+
+  header,
+  section {
+    padding: 0.5rem 0.625rem;
+  }
+
+  summary {
+    position: relative;
+    padding: 0 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: bold;
+    cursor: pointer;
+
+    // letter
+    &::before {
+      content: attr(data-label);
+      display: inline-block;
+      position: relative;
+      top: 0.25rem;
+      margin: 0.25rem 0.625rem 0 0;
+      padding: 0.125rem;
+      border-radius: 3px;
+      width: 1.75rem;
+      font-size: 1.5rem;
+      text-align: center;
+      text-shadow: 0 0 4px rgba(black, 0.125);
+      color: white;
+      background-color: $greya;
+    }
+  }
+
+  // highlight letter on hover/open
+  details[open] > summary::before,
+  summary:hover::before {
+    background-color: $avert-blue;
+  }
+
+  p,
+  ul,
+  li {
+    margin-top: 0;
+    font-size: 0.875rem;
+  }
+
+  span {
+    font-size: 0.75rem;
+  }
+
+  input {
+    margin: 0.25rem 0;
+    padding: 0.125rem 0.25rem;
+    width: 4rem;
+    font-size: inherit;
+    font-weight: bold;
+    text-align: right;
+  }
+}

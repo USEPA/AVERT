@@ -1,3 +1,9 @@
+// include details.js polyfill
+var details = require('./details');
+
+
+
+
 (function(){
   'use strict';
 
@@ -29,7 +35,6 @@
 
 
 
-
   // set up avert button navigation
   const allTabs     = avertApp.querySelectorAll('.avert-nav a');
   const allSections = avertApp.querySelectorAll('.avert-step');
@@ -54,7 +59,6 @@
 
 
 
-
   // disable navigation for section tabs
   const tabNav = document.querySelector('.avert-nav');
 
@@ -64,24 +68,6 @@
   }
 
   tabNav.addEventListener('click', disableAnchors, false);
-
-
-
-
-
-  // form inputs for 'EE/RE' Impacts tab
-  const toggleForm = avertApp.querySelector('.avert-toggle-form');
-  const formFields = avertApp.querySelectorAll('.avert-input-group-fields');
-
-  function toggleFormInputs(event) {
-    // delegate only to '.avert-input-group-checkbox' elements
-    if (event.target.className !== 'avert-input-group-checkbox') { return; }
-
-    toggleAttribute(event.target.nextElementSibling.nextElementSibling);
-  }
-
-  toggleForm.addEventListener('click', toggleFormInputs, false);
-
 
 
 
@@ -104,7 +90,6 @@
   }
 
   geoGroups.addEventListener('change', displayFilteredSelect, false);
-
 
 
 
