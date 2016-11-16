@@ -12,24 +12,3 @@ const Root = () => (
 );
 
 export default Root;
-
-
-
-
-
-// // action creators
-// import { setActiveStep } from '../../actions';
-//
-// console.log('--------------');
-// console.log('Initial State:');
-// console.log(store.getState());
-//
-// console.log('Dispatch setActiveStep');
-// store.dispatch(setActiveStep(2));
-// console.log('Updated State:');
-// console.log(store.getState());
-//
-// console.log('Dispatch setActiveStep');
-// store.dispatch(setActiveStep(3));
-// console.log('Updated State:');
-// console.log(store.getState());

@@ -2,7 +2,9 @@ import React, { PropTypes } from 'react';
 // components
 import Panel from '../Panel';
 import PanelBody from '../PanelBody';
+import SelectItem from '../SelectItem';
 // containers
+import SelectListContainer from '../../containers/SelectListContainer';
 import PanelFooterContainer from '../../containers/PanelFooterContainer';
 // styles
 import './styles.css';
@@ -12,6 +14,19 @@ const Panels = (props) => (
     <Panel active={ props.activePanel === 1 ? true : false }>
       <PanelBody heading='Select Region'>
         <p>The contiguous 48 states are split into 10 AVERT regions, which are aggregates of EPA’s <a href='https://www.epa.gov/energy/egrid'>eGRID subregions</a>. Select a region for analysis by either using the dropdown menu or clicking the map. Selecting a region loads region-specific wind and solar capacity data and the power plants operating within each region.</p>
+
+        <SelectListContainer>
+          <SelectItem text='California' />
+          <SelectItem text='Great Lakes / Mid-Atlantic' />
+          <SelectItem text='Lower Midwest' />
+          <SelectItem text='Northeast' />
+          <SelectItem text='Northwest' />
+          <SelectItem text='Rocky Mountains' />
+          <SelectItem text='Southeast' />
+          <SelectItem text='Southwest' />
+          <SelectItem text='Texas' />
+          <SelectItem text='Upper Midwest' />
+        </SelectListContainer>
       </PanelBody>
 
       <PanelFooterContainer nextButtonText='Set EE/RE Impacts' />

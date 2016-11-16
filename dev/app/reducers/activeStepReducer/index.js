@@ -8,6 +8,6 @@ const activeStepReducer = (state = 1, action) => {
     default:
       return state;
   }
-}
+};
 
 export default activeStepReducer;
