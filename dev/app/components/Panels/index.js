@@ -3,6 +3,7 @@ import React, { PropTypes } from 'react';
 import Panel from '../Panel';
 import PanelBody from '../PanelBody';
 import SelectItem from '../SelectItem';
+import RegionMap from '../RegionMap';
 // containers
 import SelectListContainer from '../../containers/SelectListContainer';
 import PanelFooterContainer from '../../containers/PanelFooterContainer';
@@ -27,6 +28,10 @@ const Panels = (props) => (
           <SelectItem text='Texas' />
           <SelectItem text='Upper Midwest' />
         </SelectListContainer>
+
+        <RegionMap />
+
+        <p className="avert-small-text">The online version of AVERT can run analyses for 2015 only. The Excel version of AVERT (available for download <a href="https://www.epa.gov/statelocalclimate/download-avert">here</a>) allows analyses for years 2007–2015 or for a future year scenario.</p>
       </PanelBody>
 
       <PanelFooterContainer nextButtonText='Set EE/RE Impacts' />

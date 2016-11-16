@@ -112,8 +112,15 @@ fieldset {
 
 
 
-/* --- buttons --- */
+/* --- small text --- */
+.avert-small-text {
+  font-size: 0.875rem;
+  color: #666;
+}
 
+
+
+/* --- buttons --- */
 .avert-button {
   display: inline-block;
   padding: 0.25rem 0.75rem;

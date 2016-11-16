@@ -1,0 +1,32 @@
+.avert-region-map {
+  margin-bottom: 1.5rem;
+}
+.avert-region-map svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* labels */
+.avert-region-map .label {
+  cursor: pointer;
+  pointer-events: none;
+}
+.avert-region-map .label text {
+  font-family: sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  fill: #fff;
+}
+.avert-region-map .label rect {
+  fill: #111;
+  opacity: 0.66;
+}
+
+/* regions */
+#avert-regions {
+  stroke: #fff;
+  cursor: pointer;
+}
+#avert-regions g:hover{
+  fill: #00bee6;
+}
