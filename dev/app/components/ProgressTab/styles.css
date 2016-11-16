@@ -1,0 +1,60 @@
+.avert-nav li {
+  float: left;
+  height: 2.5rem;
+  width: calc((100% - 2.5rem) / 3);
+}
+/* space between tabs */
+.avert-nav .avert-tab1,
+.avert-nav .avert-tab2 {
+  margin-right: 1.25rem;
+}
+/* right arrow */
+.avert-nav .avert-tab1 a::after,
+.avert-nav .avert-tab2 a::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: -1.25rem;
+  /* css triangle */
+  width: 0;
+  height: 0;
+  border-top: 1.25rem solid transparent;
+  border-bottom: 1.25rem solid transparent;
+  border-left: 1.25rem solid #ccc;
+}
+/* fill behind right arrow */
+.avert-nav .avert-tab2 a::before,
+.avert-nav .avert-tab3 a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -1.25rem;
+  width: 1.25rem;
+  height: 2.5rem;
+  background-color: #ccc;
+}
+
+.avert-nav a {
+  position: relative;
+  display: block;
+  padding: 0.75rem;
+  line-height: 1;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 0 5px rgba(0,0,0, 0.25);
+  color: white;
+  background-color: #ccc;
+  cursor: default;
+}
+.avert-nav a[data-active="true"] {
+  background-color: #00bee6;
+}
+/* right arrow */
+.avert-nav a[data-active="true"]::after {
+  border-left-color: #00bee6;
+}
+/* fill behind arrow */
+.avert-nav a[data-active="true"]::before {
+  background-color: #00bee6;
+}

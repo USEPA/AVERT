@@ -1,0 +1,57 @@
+.avert-step-footer {
+  overflow: hidden;
+  padding: 0.75rem;
+  background: #eee;
+}
+
+/* removes the first child element's top margin */
+.avert-step-footer > :first-child {
+  margin-top: 0 !important;
+}
+
+
+
+/* prev/next icons for footer buttons */
+.avert-prev { float: left; }
+.avert-next { float: right; }
+.avert-prev::before,
+.avert-next::after, {
+  content: '';
+  display: inline-block;
+  width: 0.625rem;
+  height: 0.625rem;
+  /*background-image: url('../img/icons.svg');*/
+  background-size: 400px 200px;
+  background-position: -36px -10px;
+}
+.avert-prev::before {
+  margin-right: 0.375rem;
+  transform: rotate(180deg);
+}
+.avert-next::after {
+  margin-left: 0.375rem;
+}
+
+
+
+.avert-reset-button {
+  background-color: #92c12f;
+}
+.avert-reset-button:hover {
+  background-color: #9fcf3a;
+}
+/* hide next icon */
+.avert-reset-button::after {
+  display: none;
+}
+/* reset icon */
+.avert-reset-button::before {
+  content: '';
+  display: inline-block;
+  margin-right: 0.375rem;
+  width: 0.625rem;
+  height: 0.625rem;
+  /*background-image: url('../img/icons.svg');*/
+  background-size: 400px 200px;
+  background-position: -56px -10px;
+}

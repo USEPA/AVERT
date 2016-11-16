@@ -1,0 +1,4 @@
+/* hide inactive steps */
+.avert-step[data-active="false"] {
+  display: none;
+}
