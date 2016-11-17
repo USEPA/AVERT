@@ -4,6 +4,7 @@ import Panel from '../Panel';
 import PanelBody from '../PanelBody';
 import SelectItem from '../SelectItem';
 import RegionMap from '../RegionMap';
+import DetailsList from '../DetailsList';
 // containers
 import SelectListContainer from '../../containers/SelectListContainer';
 import PanelFooterContainer from '../../containers/PanelFooterContainer';
@@ -37,16 +38,24 @@ const Panels = (props) => (
       <PanelFooterContainer nextButtonText='Set EE/RE Impacts' />
     </Panel>
 
+
+
     <Panel active={ props.activePanel === 2 ? true : false }>
-      <PanelBody heading='Set EE/RE Impacts'>
+      <PanelBody heading='Set Energy Efficiency and Renewable Energy Impacts'>
         <p>AVERT quantifies avoided emissions and electricity generation displaced by EE/RE policies and programs. Specify the impacts of EE/RE programs below, and AVERT will use these inputs to generate results. For more information about inputs, please consult the <a href='https://www.epa.gov/statelocalclimate/avert-user-manual-0'>AVERT user manual</a>.</p>
+
+        <p className="avert-small-text">Five types of programs are listed below (A through E). You can enter impacts for any or all types of programs, in any combination. AVERT will calculate cumulative impacts.</p>
+
+        <DetailsList />
       </PanelBody>
 
       <PanelFooterContainer prevButtonText='Back to Region' nextButtonText='Get Results' />
     </Panel>
 
+
+
     <Panel active={ props.activePanel === 3 ? true : false }>
-      <PanelBody heading='Get Results'>
+      <PanelBody heading='Results: Avoided Regional, State, and County-Level Emissions'>
         <h3 className='avert-heading-three'>Annual Regional Displacements</h3>
       </PanelBody>
 
