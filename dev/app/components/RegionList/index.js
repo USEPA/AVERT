@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 // styles
 import './styles.css';
 
-const SelectList = (props) => (
+const RegionList = (props) => (
   <select className='avert-region-select' value={ props.selectedRegion }
     onChange={(e) => {
       props.onSelectChange(e.target.value);
@@ -13,10 +13,10 @@ const SelectList = (props) => (
   </select>
 );
 
-SelectList.propTypes = {
+RegionList.propTypes = {
   selectedRegion: PropTypes.string.isRequired,
   onSelectChange: PropTypes.func.isRequired,
   children: PropTypes.node,
 };
 
-export default SelectList;
+export default RegionList;

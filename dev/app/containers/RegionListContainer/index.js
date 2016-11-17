@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 // components
-import SelectList from '../../components/SelectList';
+import RegionList from '../../components/RegionList';
 // action creators
 import { changeSelectedRegion } from '../../actions';
 
@@ -18,9 +18,9 @@ const mapDispatchToProps = (dispatch) => {
   }
 };
 
-const SelectListContainer = connect(
+const RegionListContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(SelectList);
+)(RegionList);
 
-export default SelectListContainer;
+export default RegionListContainer;

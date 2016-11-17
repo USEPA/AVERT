@@ -2,11 +2,12 @@ import React, { PropTypes } from 'react';
 // components
 import Panel from '../Panel';
 import PanelBody from '../PanelBody';
-import SelectItem from '../SelectItem';
+import RegionItem from '../RegionItem';
 import RegionMap from '../RegionMap';
 import DetailsList from '../DetailsList';
+import EEREChart from '../EEREChart';
 // containers
-import SelectListContainer from '../../containers/SelectListContainer';
+import RegionListContainer from '../../containers/RegionListContainer';
 import PanelFooterContainer from '../../containers/PanelFooterContainer';
 // styles
 import './styles.css';
@@ -17,18 +18,18 @@ const Panels = (props) => (
       <PanelBody heading='Select Region'>
         <p>The contiguous 48 states are split into 10 AVERT regions, which are aggregates of EPA’s <a href='https://www.epa.gov/energy/egrid'>eGRID subregions</a>. Select a region for analysis by either using the dropdown menu or clicking the map. Selecting a region loads region-specific wind and solar capacity data and the power plants operating within each region.</p>
 
-        <SelectListContainer>
-          <SelectItem text='California' />
-          <SelectItem text='Great Lakes / Mid-Atlantic' />
-          <SelectItem text='Lower Midwest' />
-          <SelectItem text='Northeast' />
-          <SelectItem text='Northwest' />
-          <SelectItem text='Rocky Mountains' />
-          <SelectItem text='Southeast' />
-          <SelectItem text='Southwest' />
-          <SelectItem text='Texas' />
-          <SelectItem text='Upper Midwest' />
-        </SelectListContainer>
+        <RegionListContainer>
+          <RegionItem name='California' />
+          <RegionItem name='Great Lakes / Mid-Atlantic' />
+          <RegionItem name='Lower Midwest' />
+          <RegionItem name='Northeast' />
+          <RegionItem name='Northwest' />
+          <RegionItem name='Rocky Mountains' />
+          <RegionItem name='Southeast' />
+          <RegionItem name='Southwest' />
+          <RegionItem name='Texas' />
+          <RegionItem name='Upper Midwest' />
+        </RegionListContainer>
 
         <RegionMap />
 
@@ -47,6 +48,8 @@ const Panels = (props) => (
         <p className="avert-small-text">Five types of programs are listed below (A through E). You can enter impacts for any or all types of programs, in any combination. AVERT will calculate cumulative impacts.</p>
 
         <DetailsList />
+
+        <EEREChart heading='EE/RE profile based on values entered:' />
       </PanelBody>
 
       <PanelFooterContainer prevButtonText='Back to Region' nextButtonText='Get Results' />
