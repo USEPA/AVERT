@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/Eastern-Research-Group/EPA-AVERT#readme",
   "devDependencies": {
-    "react-scripts": "0.2.1"
+    "react-scripts": "0.4.3"
   },
   "dependencies": {
     "lodash": "^4.15.0",
@@ -35,6 +35,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
