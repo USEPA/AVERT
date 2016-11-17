@@ -1,7 +1,3 @@
 #southeast {
-  fill: #abcd65;
-}
-#southeast:hover,
-[data-active="true"] > #southeast {
-  fill: #00bee6;
+  fill: #bdc736;
 }

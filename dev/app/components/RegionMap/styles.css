@@ -25,5 +25,13 @@
 /* regions */
 .avert-region-map .avert-region {
   stroke: #fff;
+  stroke-linejoin: round;
   cursor: pointer;
+  opacity: 0.33;
+}
+.avert-region-map .avert-region:hover {
+  opacity: 0.66;
+}
+.avert-region-map .avert-region[data-active="true"] {
+  opacity: 1;
 }

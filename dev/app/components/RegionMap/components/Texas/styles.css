@@ -1,7 +1,3 @@
 #texas {
-  fill: #f9a057;
-}
-#texas:hover,
-[data-active="true"] > #texas {
-  fill: #00bee6;
+  fill: #fda929;
 }

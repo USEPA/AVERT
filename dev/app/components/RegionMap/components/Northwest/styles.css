@@ -1,7 +1,3 @@
 #northwest {
-  fill: #24326e;
-}
-#northwest:hover,
-[data-active="true"] > #northwest {
-  fill: #00bee6;
+  fill: #364f95;
 }
