@@ -12,7 +12,7 @@ import PanelFooterContainer from '../../containers/PanelFooterContainer';
 // styles
 import './styles.css';
 
-const Panels = (props) => (
+const StepPanels = (props) => (
   <div className='avert-steps'>
     <Panel active={ props.activePanel === 1 ? true : false }>
       <PanelBody heading='Select Region'>
@@ -67,8 +67,8 @@ const Panels = (props) => (
   </div>
 );
 
-Panels.propTypes = {
+StepPanels.propTypes = {
   activePanel: PropTypes.number.isRequired,
 };
 
-export default Panels;
+export default StepPanels;

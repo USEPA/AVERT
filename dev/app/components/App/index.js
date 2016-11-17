@@ -1,14 +1,14 @@
 import React, { PropTypes } from 'react';
 // components
-import ProgressBar from '../ProgressBar';
-import Panels from '../Panels';
+import StepProgressBar from '../StepProgressBar';
+import StepPanels from '../StepPanels';
 // styles
 import './styles.css';
 
 const App = (props) => (
   <div className='avert-container avert-copy'>
-    <ProgressBar activeTab={ props.activeStep } />
-    <Panels activePanel={ props.activeStep } />
+    <StepProgressBar activeTab={ props.activeStep } />
+    <StepPanels activePanel={ props.activeStep } />
   </div>
 );
 
