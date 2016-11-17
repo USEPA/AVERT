@@ -1,3 +1,7 @@
 #great-lakes {
   fill: #cd6666;
 }
+#great-lakes:hover,
+[data-active="true"] > #great-lakes {
+  fill: #00bee6;
+}

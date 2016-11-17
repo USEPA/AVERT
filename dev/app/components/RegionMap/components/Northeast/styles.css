@@ -1,3 +1,7 @@
 #northeast {
   fill: #6799cd;
 }
+#northeast:hover,
+[data-active="true"] > #northeast {
+  fill: #00bee6;
+}

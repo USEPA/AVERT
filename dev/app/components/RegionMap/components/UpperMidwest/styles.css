@@ -1,3 +1,7 @@
 #upper-midwest {
   fill: #b8def6;
 }
+#upper-midwest:hover,
+[data-active="true"] > #upper-midwest {
+  fill: #00bee6;
+}

@@ -1,3 +1,7 @@
 #california {
   fill: #f6eb16;
 }
+#california:hover,
+[data-active="true"] > #california {
+  fill: #00bee6;
+}

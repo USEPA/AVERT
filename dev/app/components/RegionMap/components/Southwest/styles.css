@@ -1,3 +1,7 @@
 #southwest {
   fill: #b72025;
 }
+#southwest:hover,
+[data-active="true"] > #southwest {
+  fill: #00bee6;
+}

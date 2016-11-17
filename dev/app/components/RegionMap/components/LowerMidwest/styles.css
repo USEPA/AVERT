@@ -1,3 +1,7 @@
 #lower-midwest {
   fill: #dabedb;
 }
+#lower-midwest:hover,
+[data-active="true"] > #lower-midwest {
+  fill: #00bee6;
+}
