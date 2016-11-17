@@ -4,7 +4,7 @@ import Panel from '../Panel';
 import PanelBody from '../PanelBody';
 import RegionItem from '../RegionItem';
 import RegionMap from '../RegionMap';
-import DetailsList from '../DetailsList';
+import EEREInputs from '../EEREInputs';
 import EEREChart from '../EEREChart';
 // containers
 import RegionListContainer from '../../containers/RegionListContainer';
@@ -47,7 +47,7 @@ const Panels = (props) => (
 
         <p className="avert-small-text">Five types of programs are listed below (A through E). You can enter impacts for any or all types of programs, in any combination. AVERT will calculate cumulative impacts.</p>
 
-        <DetailsList />
+        <EEREInputs />
 
         <EEREChart heading='EE/RE profile based on values entered:' />
       </PanelBody>

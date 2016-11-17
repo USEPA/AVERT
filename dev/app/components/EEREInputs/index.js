@@ -2,7 +2,7 @@ import React from 'react';
 // styles
 import './styles.css';
 
-const DetailsList = () => (
+const EEREInputs = () => (
   <div className='avert-details-block'>
     <header>
       <p>Energy Efficiency</p>
@@ -57,4 +57,4 @@ const DetailsList = () => (
   </div>
 );
 
-export default DetailsList;
+export default EEREInputs;
