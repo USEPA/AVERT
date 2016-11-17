@@ -9,7 +9,8 @@ class PanelFooter extends Component {
 
     if (this.props.prevButtonText) {
       prevButtonElement = (
-        <a className='avert-button avert-prev' href='' onClick={(e) => {
+        <a className='avert-button avert-prev' href=''
+          onClick={(e) => {
             e.preventDefault();
             const step = this.props.activeStep - 1;
             this.props.onButtonClick(step);
@@ -18,8 +19,12 @@ class PanelFooter extends Component {
       );
     }
 
+    // conditionally define reset class, if on last panel
+    const resetClass = this.props.lastPanel ? 'avert-reset-button' : '';
+
     const nextButtonElement = (
-      <a className='avert-button avert-next' href='' onClick={(e) => {
+      <a className={`avert-button avert-next ${resetClass}`} href=''
+        onClick={(e) => {
           e.preventDefault();
           const step = this.props.lastPanel ? 1 : this.props.activeStep + 1;
           this.props.onButtonClick(step);

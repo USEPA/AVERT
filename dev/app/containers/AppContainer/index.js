@@ -4,7 +4,7 @@ import App from '../../components/App';
 
 const mapStateToProps = (state) => {
   return {
-    activeStep: state.activeStep
+    activeStep: state.activeStep,
   }
 };
 

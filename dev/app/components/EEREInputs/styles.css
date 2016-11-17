@@ -47,7 +47,7 @@
   /* highlight letter on hover/open */
 .avert-details-block details[open] > summary::before,
 .avert-details-block summary:hover::before {
-  background-color: #00a9cc;
+  background-color: rgb(0,169,204);
 }
 
 .avert-details-block p,

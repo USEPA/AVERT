@@ -32,6 +32,6 @@
 .avert-region-map .avert-region:hover {
   opacity: 0.66;
 }
-.avert-region-map .avert-region[data-active="true"] {
+.avert-region-map .avert-region[data-active='true'] {
   opacity: 1;
 }

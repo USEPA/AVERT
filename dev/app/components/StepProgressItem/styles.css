@@ -47,14 +47,14 @@
   background-color: #ccc;
   cursor: default;
 }
-.avert-nav a[data-active="true"] {
-  background-color: #00bee6;
+.avert-nav a[data-active='true'] {
+  background-color: rgb(0,190,230);
 }
 /* right arrow */
-.avert-nav a[data-active="true"]::after {
-  border-left-color: #00bee6;
+.avert-nav a[data-active='true']::after {
+  border-left-color: rgb(0,190,230);
 }
 /* fill behind arrow */
-.avert-nav a[data-active="true"]::before {
-  background-color: #00bee6;
+.avert-nav a[data-active='true']::before {
+  background-color: rgb(0,190,230);
 }

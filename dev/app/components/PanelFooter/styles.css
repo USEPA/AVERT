@@ -15,7 +15,7 @@
 .avert-prev { float: left; }
 .avert-next { float: right; }
 .avert-prev::before,
-.avert-next::after, {
+.avert-next::after {
   content: '';
   display: inline-block;
   width: 0.625rem;
@@ -35,10 +35,10 @@
 
 
 .avert-reset-button {
-  background-color: #92c12f;
+  background-color: rgb(146,193,47) !important;
 }
 .avert-reset-button:hover {
-  background-color: #9fcf3a;
+  background-color: rgb(159,207,58) !important;
 }
 /* hide next icon */
 .avert-reset-button::after {

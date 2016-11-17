@@ -6,9 +6,13 @@ import RegionItem from '../RegionItem';
 import RegionMap from '../RegionMap';
 import EEREInputs from '../EEREInputs';
 import EEREChart from '../EEREChart';
+import DisplacementsTable from '../DisplacementsTable';
+import EmissionsTable from '../EmissionsTable';
+import DataDownload from '../DataDownload';
 // containers
 import RegionListContainer from '../../containers/RegionListContainer';
 import PanelFooterContainer from '../../containers/PanelFooterContainer';
+import EmissionsChartContainer from '../../containers/EmissionsChartContainer';
 // styles
 import './styles.css';
 
@@ -59,7 +63,13 @@ const StepPanels = (props) => (
 
     <Panel active={ props.activePanel === 3 ? true : false }>
       <PanelBody heading='Results: Avoided Regional, State, and County-Level Emissions'>
-        <h3 className='avert-heading-three'>Annual Regional Displacements</h3>
+        <DisplacementsTable heading='Annual Regional Displacements' />
+
+        <EmissionsTable heading='Annual State Emission Changes' />
+
+        <EmissionsChartContainer heading='Monthly Emission Changes' />
+
+        <DataDownload heading='Data Download' />
       </PanelBody>
 
       <PanelFooterContainer prevButtonText='Back to EE/RE Impacts' nextButtonText='Reset Region' lastPanel />

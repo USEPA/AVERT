@@ -6,15 +6,15 @@ import { changeSelectedRegion } from '../../actions';
 
 const mapStateToProps = (state) => {
   return {
-    selectedRegion: state.selectedRegion
+    selectedRegion: state.selectedRegion,
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSelectChange: (name) => {
-      dispatch(changeSelectedRegion(name))
-    }
+    onSelectChange: (text) => {
+      dispatch(changeSelectedRegion(text))
+    },
   }
 };
 

@@ -6,7 +6,7 @@ import { setActiveStep } from '../../actions';
 
 const mapStateToProps = (state) => {
   return {
-    activeStep: state.activeStep
+    activeStep: state.activeStep,
   }
 };
 
@@ -14,7 +14,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onButtonClick: (stepNumber) => {
       dispatch(setActiveStep(stepNumber))
-    }
+    },
   }
 };
 
