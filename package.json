@@ -1,9 +1,24 @@
 {
-  "name": "react",
+  "name": "epa-avert",
   "version": "0.0.1",
   "private": true,
+  "description": "EPA's Avoided Emissions and Generation Tools (AVERT) is a free tool that estimates the emissions benefits of energy efficiency and renewable energy policies and programs.",
+  "author": "Eastern Research Group, Inc.",
+  "contributors": [
+    "Bryan Neva <bryan.neva@erg.com>",
+    "Courtney Myers <courtney.myers@erg.com>"
+  ],
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eastern-Research-Group/EPA-AVERT.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Eastern-Research-Group/EPA-AVERT/issues"
+  },
+  "homepage": "https://github.com/Eastern-Research-Group/EPA-AVERT#readme",
   "devDependencies": {
-    "react-scripts": "0.2.1"
+    "react-scripts": "0.4.3"
   },
   "dependencies": {
     "lodash": "^4.15.0",
@@ -20,6 +35,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "test": "react-scripts test --verbose",
+    "coverage": "react-scripts test --coverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

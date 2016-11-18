@@ -1,0 +1,37 @@
+.avert-region-map {
+  margin-bottom: 1.5rem;
+}
+.avert-region-map svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* labels */
+.avert-region-map .label {
+  cursor: pointer;
+  pointer-events: none;
+}
+.avert-region-map .label text {
+  font-family: sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  fill: #fff;
+}
+.avert-region-map .label rect {
+  fill: #111;
+  opacity: 0.66;
+}
+
+/* regions */
+.avert-region-map .avert-region {
+  stroke: #fff;
+  stroke-linejoin: round;
+  cursor: pointer;
+  opacity: 0.33;
+}
+.avert-region-map .avert-region:hover {
+  opacity: 0.66;
+}
+.avert-region-map .avert-region[data-active='true'] {
+  opacity: 1;
+}

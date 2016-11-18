@@ -1,0 +1,11 @@
+.avert-nav {
+  overflow: hidden;
+  margin-bottom: 1rem;
+  border: 1px solid #aaa;
+}
+
+.avert-nav ol {
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none;
+}
