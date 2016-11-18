@@ -112,7 +112,7 @@ class EmissionsChart extends Component {
 
 EmissionsChart.propTypes = {
   selectedState: PropTypes.string,
-  electedCounty: PropTypes.string,
+  selectedCounty: PropTypes.string,
   heading: PropTypes.string.isRequired,
   aggregation: PropTypes.string.isRequired,
   onAggregationRadioChange: PropTypes.func.isRequired,
