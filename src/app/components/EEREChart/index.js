@@ -1,36 +1,96 @@
-import React , { PropTypes } from 'react';
-// containers
-import EERETableContainer from '../../containers/EERETableContainer';
+import React , { Component, PropTypes } from 'react';
+import Highcharts from 'react-highcharts';
 // utilities
 import statusEnum from '../../utils/statusEnum';
 
-const EEREChart = (props) => {
-  const disabledClass = () => {
-    if (statusEnum[props.eere_status].submitted) {
-      return 'avert-button-disabled';
-    } else {
-      return '';
-    }
+class EEREChart extends Component {
+  render(){
+    const disabledClass = () => {
+      if (statusEnum[this.props.eere_status].submitted) {
+        return 'avert-button-disabled';
+      } else {
+        return '';
+      }
+    };
+
+    const data = this.props.hourlyEere.map((hour) => hour.final_mw);
+    const hours = this.props.hourlyEere.map((hour, index) => index);
+    const chartConfig = {
+      chart: {
+        height: 300,
+      },
+      title: {
+        text: false,
+      },
+      credits: {
+        enabled: false,
+      },
+      xAxis: {
+        categories: hours,
+      },
+      yAxis: {
+        title: {
+          text: false,
+        },
+      },
+      series: [{
+        name: 'EERE Load Output',
+        data: data,
+        color: '#058dc7',
+      }],
+    };
+
+    return(
+      <div className='avert-eere-profile'>
+        <h3 className='avert-heading-three'>{ this.props.heading }</h3>
+
+        <a className={`avert-button ${disabledClass()}`} href=''
+          onClick={(e) => {
+            e.preventDefault();
+            this.props.onCalculateProfile()
+          }}
+        >
+          { statusEnum[this.props.eere_status].lang }
+        </a>
+
+        <Highcharts config={chartConfig} ref='eere-profile' />
+
+        {/*
+        <table className="avert-table">
+          <thead>
+            <tr>
+              <th>Hour</th>
+              <th>Current Load (MW)</th>
+              <th>Manual EERE Entry</th>
+              <th>Constant</th>
+              <th>Percent</th>
+              <th>Renewable Energy Profile</th>
+              <th>Final (MW)</th>
+              <th>Limit</th>
+              <th>Exceedance</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.props.hourlyEere.map((item, index) => (
+              <tr key={ index }>
+                <td>{ item.index + 1 }</td>
+                <td>{ item.current_load_mw }</td>
+                <td>{ item.manual_eere_entry }</td>
+                <td>{ item.constant }</td>
+                <td>{ item.percent }</td>
+                <td>{ item.renewable_energy_profile }</td>
+                <td>{ item.final_mw }</td>
+                <td>{ item.limit }</td>
+                <td>{ item.exceedance }</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        */}
+      </div>
+    );
   };
-
-  return(
-    <div className='avert-eere-profile'>
-      <h3 className='avert-heading-three'>{ props.heading }</h3>
-
-      <a className={`avert-button ${disabledClass()}`} href=''
-        onClick={(e) => {
-          e.preventDefault();
-          props.onCalculateProfile()
-        }}
-      >
-        { statusEnum[props.eere_status].lang }
-      </a>
-
-      {/* EERETable is temporary until we hook up Highcharts */}
-      <EERETableContainer />
-    </div>
-  );
-};
+}
 
 EEREChart.propTypes = {
   heading: PropTypes.string.isRequired,
