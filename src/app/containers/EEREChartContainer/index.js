@@ -6,6 +6,7 @@ import { calculateEereProfile } from '../../actions';
 
 const mapStateToProps = (state) => ({
   eere_status: state.eere.status,
+  hourlyEere: state.eere.hourlyEere,
 });
 
 const mapDispatchToProps = (dispatch) => ({

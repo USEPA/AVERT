@@ -37,6 +37,7 @@
 
 
 
-.avert-geography-chart {
-  margin: 1.5rem 0;
+.avert-emissions-charts {
+  padding: 1rem;
+  border: 1px solid #aaa;
 }

@@ -12,7 +12,7 @@ const statusEnum = {
     submitted: true,
   },
   "complete": {
-    lang: "Calculating Complete",
+    lang: "Recalculate",
     submitted: false,
   },
 };
