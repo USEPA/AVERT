@@ -8,7 +8,7 @@ const Region = (props) => (
     onClick={(e) => {
       props.onRegionClick(props.regionId);
     }}
-    data-active={ props.name === props.selectedRegion ? true : false }
+    data-active={ props.regionId === props.selectedRegion ? true : false }
   >
     { props.children }
   </g>
