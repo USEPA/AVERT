@@ -1,3 +1,5 @@
 import configureStore from './configureStore';
 
-export const store = configureStore();
+const store = configureStore();
+
+export default store;

@@ -1,18 +1,21 @@
 import { combineReducers } from 'redux';
-import regions from './regions';
-import eere from './eere';
-import annualDisplacement from './annualDisplacement';
-import monthlyEmissions from './monthlyEmissions';
-import stateEmissions from './stateEmissions';
+// reducers
+import activeStepReducer from './activeStepReducer';
+import eereReducer from './eereReducer';
+import annualDisplacementReducer from './annualDisplacementReducer';
+import stateEmissionsReducer from './stateEmissionsReducer';
+import monthlyEmissionsReducer from './monthlyEmissionsReducer';
+import regionsReducer from './regionsReducer';
+//import rdfsReducer from './rdfsReducer';
 
-const avertApp = combineReducers({
-	eere,
-    annualDisplacement,
-    stateEmissions,
-    monthlyEmissions,
-    regions,
+const reducers = combineReducers({
+  activeStep: activeStepReducer,
+  eere: eereReducer,
+  annualDisplacement: annualDisplacementReducer,
+  stateEmissions: stateEmissionsReducer,
+  monthlyEmissions: monthlyEmissionsReducer,
+  regions: regionsReducer,
+  // rdfs: rdfsReducer,
 });
 
-
-
-export default avertApp;
+export default reducers;

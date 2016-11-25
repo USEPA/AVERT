@@ -1,0 +1,178 @@
+/* --- reset --- */
+@import 'https://fonts.googleapis.com/css?family=Open+Sans:400,700';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1;
+  /* prevent iOS from resizing text */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: white;
+}
+
+
+
+/* --- layout --- */
+.avert-container {
+  margin: 1rem auto;
+  padding: 0 1.5rem;
+  max-width: 48rem; /* 768px */
+}
+.avert-centered {
+  text-align: center;
+}
+
+
+
+/* --- typography --- */
+h1, h2, h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+p {
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+
+li {
+  font-size: 1rem;
+}
+
+a {
+  color: rgb(0,169,204);
+  text-decoration: none;
+}
+
+sup, sub {
+  position: relative;
+  vertical-align: baseline;
+  font-size: 75%;
+}
+sup { top: -0.3125rem; }
+sub { top: 0.3125rem; }
+
+select {
+  font-size: 1rem;
+}
+
+fieldset {
+  border: 0;
+}
+
+
+
+/* --- copy --- */
+.avert-copy {
+  line-height: 1.375;
+  color: #444;
+}
+.avert-copy ul,
+.avert-copy ol {
+  margin-top: 1rem;
+  padding-left: 2rem;
+}
+/* remove top margin for nested list items */
+.avert-copy ul ul,
+.avert-copy ul ol,
+.avert-copy ol ul,
+.avert-copy ol ol {
+  margin-top: 0;
+}
+
+
+
+/* --- headings --- */
+.avert-heading-one {
+  font-size: 1.5rem;
+  color: rgb(0,169,204);
+}
+.avert-heading-two {
+  margin-bottom: 1rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 2px solid currentColor;
+  font-size: 1.25rem;
+  color: rgb(0,169,204);
+}
+.avert-heading-three {
+  font-size: 1.125rem;
+  color: rgb(0,127,153);
+}
+
+
+
+/* --- small text --- */
+.avert-small-text {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+
+
+/* --- buttons --- */
+.avert-button {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 3px;
+  font-size: 0.875rem;
+  color: white;
+  background-color: rgb(0,169,204);
+}
+.avert-button:hover {
+  background-color: rgb(0,190,230);
+}
+.avert-button-disabled,
+.avert-button-disabled:hover {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+
+
+/* --- tables --- */
+.avert-table {
+  border-spacing: 1px;
+  border-color: white;
+  width: 100%;
+}
+
+.avert-table tr:nth-of-type(odd) {
+  background-color: rgba(0,169,204, 0.1875);
+}
+
+.avert-table tr:nth-of-type(even) {
+  background-color: rgba(0,169,204, 0.125);
+}
+
+.avert-table th {
+  color: white;
+  background-color: rgb(0,169,204);
+}
+
+.avert-table th,
+.avert-table td {
+  padding: 0.375rem 0.5rem;
+  font-size: 0.9375rem;
+}
+
+.avert-table td {
+  padding-left: 1.25rem;
+}
+
+.avert-table .avert-table-group {
+  font-weight: bold;
+}
+.avert-table .avert-table-group td {
+  padding-left: 0.375rem;
+}

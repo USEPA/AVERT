@@ -15,12 +15,12 @@ import MonthlyEmissionsEngine from './MonthlyEmissionsEngine';
 import northeastEere from '../../assets/data/northeast-eere-defaults.json';
 
 // App
-import { store } from '../store';
-import { 
-    completeCalculation, 
-    completeAnnual, 
-    completeStateEmissions, 
-    foo_completeStateEmissions, 
+import store from '../store';
+import {
+    completeCalculation,
+    completeAnnual,
+    completeStateEmissions,
+    foo_completeStateEmissions,
     completeMonthlyEmissions,
     foo_completeMonthlyEmissions,
     updateExceedances,
@@ -67,7 +67,7 @@ class Engine {
 
         const annualOutput = annualDisplacement.output;
         store.dispatch(completeAnnual(annualOutput));
-        
+
         setTimeout(() => {
             store.dispatch(completeStateEmissions(stateEmissions.emissions));
             store.dispatch(foo_completeStateEmissions(stateEmissions.extract(annualOutput)));
@@ -77,7 +77,7 @@ class Engine {
             store.dispatch(completeMonthlyEmissions(monthlyEmissions.emissions));
             store.dispatch(foo_completeMonthlyEmissions(monthlyEmissions.extract(annualOutput)));
         }, 50)
-        
+
     }
 
     calculateEereLoad(){
@@ -108,7 +108,7 @@ class Engine {
         const softLimit = this.softLimits[index];
         const hardLimit = this.hardLimits[index];
         const hourlyEereDefault = northeastEere.data[index];
-        
+
         const renewable_energy_profile = -math.sum(math.multiply(this.eereProfile.windCapacity,hourlyEereDefault.wind),
                                                 math.multiply(this.eereProfile.utilitySolar,hourlyEereDefault.utility_pv),
                                                 math.multiply(this.eereProfile.rooftopSolar,hourlyEereDefault.rooftop_pv));
@@ -130,7 +130,7 @@ class Engine {
         return {
             index: index,
             manual_eere_entry: this.manualEereEntry.toArray()[index],
-            renewable_energy_profile: renewable_energy_profile, 
+            renewable_energy_profile: renewable_energy_profile,
             final_mw: finalMw,
             percent: initialLoad,
             constant: this.resultingHourlyMwReduction,

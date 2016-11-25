@@ -1,14 +1,11 @@
-// Deps
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
+// components
+import Root from './app/components/Root';
+// store
+import store from './app/store';
 
-// App
-import Root from './app/containers/Root';
-
-// Styles
-import './index.css';
-
-ReactDOM.render(
-    <Root />,
-    document.getElementById('root')
+render(
+  <Root store={store}/>,
+  document.getElementById('root')
 );

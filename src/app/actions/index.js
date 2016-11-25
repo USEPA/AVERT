@@ -1,11 +1,12 @@
-// Deps
 import fetch from 'isomorphic-fetch';
+// avert
+import { avert, eereProfile } from '../avert';
+// store
+import store from '../store';
 
-// App
-import {avert, eereProfile} from '../avert';
-import {store} from '../store';
+// action types
+export const CHANGE_ACTIVE_STEP = 'CHANGE_ACTIVE_STEP';
 
-// Constants
 export const SELECT_REGION = 'SELECT_REGION';
 export const UPDATE_YEAR = 'UPDATE_YEAR';
 
@@ -40,250 +41,242 @@ export const FOO_COMPLETE_STATE = 'FOO_COMPLETE_STATE';
 export const INVALIDATE_REGION = 'INVALIDATE_REGION';
 export const REQUEST_REGION = 'REQUEST_REGION';
 export const RECEIVE_REGION = 'RECEIVE_REGION';
+
 export const ADD_RDF = 'ADD_RDF';
 
-// Actions
-export function selectRegion (region) {
-    avert.setRegion(region);
-    return {
-        type: SELECT_REGION,
-        region
-    }
-}
+// action creators
+export const setActiveStep = (number) => ({
+  type: CHANGE_ACTIVE_STEP,
+  payload: {
+    stepNumber: number
+  },
+});
 
-export function updateYear (year) {
-    avert.setYear(year);
-    return {
-        type: UPDATE_YEAR,
-        year
-    }
-}
+export const selectRegion = (region) => {
+  avert.setRegion(region);
 
-export function updateEereTopHours (text) {
-    eereProfile.topHours = text;
-    store.dispatch(submitParams());
-    return {
-        type: UPDATE_EERE_TOP_HOURS,
-        text
-    }
-}
+  return {
+    type: SELECT_REGION,
+    region,
+  };
+};
 
-export function updateEereReduction (text) {
-    eereProfile.reduction = text;
-    store.dispatch(submitParams());
-    return {
-        type: UPDATE_EERE_REDUCTION,
-        text
-    }
-}
+export const updateYear = (year) => {
+  avert.setYear(year);
 
-export function updateEereAnnualGwh (text) {
-    eereProfile.annualGwh = text;
-    store.dispatch(submitParams());
-    return {
-        type: UPDATE_EERE_ANNUAL_GWH,
-        text
-    }
-}
+  return {
+    type: UPDATE_YEAR,
+    year,
+  };
+};
 
-export function updateEereConstantMw (text) {
-    eereProfile.constantMw = text;
-    store.dispatch(submitParams());
-    return {
-        type: UPDATE_EERE_CONSTANT_MW,
-        text
-    }
-}
+export const submitParams = () => {
+  avert.setEereProfile(eereProfile);
 
-export function updateEereWindCapacity (text) {
-    eereProfile.windCapacity = text;
-    store.dispatch(submitParams());
-    return {
-        type: UPDATE_EERE_WIND_CAPACITY,
-        text
-    }
-}
+  const valid = eereProfile.isValid;
+  const errors = eereProfile.errors;
 
-export function updateEereUtilitySolar (text) {
-    eereProfile.utilitySolar = text;
-    store.dispatch(submitParams());
-    return {
-        type: UPDATE_EERE_UTILITY_SOLAR,
-        text
-    }
-}
+  return [{
+    type: VALIDATE_EERE,
+    valid,
+    errors,
+  }, {
+    type: SUBMIT_PARAMS,
+  }];
+};
 
-export function updateEereRooftopSolar (text) {
-    eereProfile.rooftopSolar = text;
-    store.dispatch(submitParams());
-    return {
-        type: UPDATE_EERE_ROOFTOP_SOLAR,
-        text
-    }
-}
+export const updateEereTopHours = (text) => {
+  eereProfile.topHours = text;
 
-export function updateExceedances (exceedances,soft,hard) {
-    return {
-        type: UPDATE_EXCEEDANCES,
-        exceedances,
-        soft_exceedances: soft,
-        hard_exceedances: hard,
-    }
-}
+  store.dispatch(submitParams());
 
-export function submitParams () {
-    avert.setEereProfile(eereProfile);
-    const valid = eereProfile.isValid;
-    const errors = eereProfile.errors;
-    return [{
-        type: VALIDATE_EERE,
-        valid,
-        errors,
-    }, {
-        type: SUBMIT_PARAMS,
-    }];
-}
+  return {
+    type: UPDATE_EERE_TOP_HOURS,
+    text,
+  };
+};
 
-function submitCalculation () {
-    return {
-        type: SUBMIT_CALCULATION
-    }
-}
+export const updateEereReduction = (text) => {
+  eereProfile.reduction = text;
 
-export function completeCalculation (hourlyEere) {
-    return {
-        type: COMPLETE_CALCULATION,
-        hourlyEere
-    }
-}
+  store.dispatch(submitParams());
 
-export function calculateEereProfile () {
-    store.dispatch(submitCalculation());
+  return {
+    type: UPDATE_EERE_REDUCTION,
+    text,
+  };
+};
 
-    setTimeout(() => {
-        avert.calculateEereLoad();
-    }, 50)
-}
+export const updateEereAnnualGwh = (text) => {
+  eereProfile.annualGwh = text;
 
-function startDisplacement () {
-    return {
-        type: START_DISPLACEMENT,
-    }
-}
+  store.dispatch(submitParams());
 
-export function completeAnnual (data) {
-    return {
-        type: COMPLETE_ANNUAL,
-        data
-    }
-}
+  return {
+    type: UPDATE_EERE_ANNUAL_GWH,
+    text,
+  };
+};
 
-export function completeMonthlyEmissions (data) {
-    return {
-        type: COMPLETE_MONTHLY,
-        data
-    }
-}
+export const updateEereConstantMw = (text) => {
+  eereProfile.constantMw = text;
 
-export function foo_completeMonthlyEmissions (data) {
-    return {
-        type: FOO_COMPLETE_MONTHLY,
-        so2: data.so2,
-        nox: data.nox,
-        co2: data.co2,
-    }
-}
+  store.dispatch(submitParams());
 
-export function updateMonthlyAggregation (aggregation) {
-    return {
-        type: SELECT_AGGREGATION,
-        aggregation
-    }
-}
+  return {
+    type: UPDATE_EERE_CONSTANT_MW,
+    text,
+  };
+};
 
-export function updateMonthlyUnit (unit) {
-    return {
-        type: SELECT_UNIT,
-        unit
-    }
-}
+export const updateEereWindCapacity = (text) => {
+  eereProfile.windCapacity = text;
 
-export function selectState (state) {
-    return {
-        type: SELECT_STATE,
-        state
-    }
-}
+  store.dispatch(submitParams());
 
-export function selectCounty (county) {
-    return {
-        type: SELECT_COUNTY,
-        county
-    }
-}
+  return {
+    type: UPDATE_EERE_WIND_CAPACITY,
+    text,
+  };
+};
 
-export function completeStateEmissions (data) {
-    return {
-        type: COMPLETE_STATE,
-        data
-    }
-}
+export const updateEereUtilitySolar = (text) => {
+  eereProfile.utilitySolar = text;
 
-export function foo_completeStateEmissions (data) {
-    return {
-        type: FOO_COMPLETE_STATE,
-        data,
-    }
-}
+  store.dispatch(submitParams());
 
-export function calculateDisplacement () {
-    store.dispatch(startDisplacement());
+  return {
+    type: UPDATE_EERE_UTILITY_SOLAR,
+    text,
+  };
+};
 
-    setTimeout(() => {
-        avert.calculateDisplacement();
-    }, 50);
-}
+export const updateEereRooftopSolar = (text) => {
+  eereProfile.rooftopSolar = text;
 
-export function invalidateRegion (region) {
-    return {
-        type: INVALIDATE_REGION,
-        region
-    }
-}
+  store.dispatch(submitParams());
 
-export function requestRegion (region) {
-    return {
-        type: REQUEST_REGION,
-        region
-    }
-}
+  return {
+    type: UPDATE_EERE_ROOFTOP_SOLAR,
+    text,
+  };
+};
 
-export function receiveRegion (region, json) {
-    return {
-        type: RECEIVE_REGION,
-        region,
-        posts: json.data.children.map(child => child.data),
-        receivedAt: Date.now()
-    }
-}
+export const updateExceedances = (exceedances, soft, hard) => ({
+  type: UPDATE_EXCEEDANCES,
+  exceedances,
+  soft_exceedances: soft,
+  hard_exceedances: hard,
+});
+
+export const completeCalculation = (hourlyEere) => ({
+  type: COMPLETE_CALCULATION,
+  hourlyEere,
+});
+
+const submitCalculation = () => ({
+  type: SUBMIT_CALCULATION,
+});
+
+export const calculateEereProfile =  () => {
+  store.dispatch(submitCalculation());
+
+  setTimeout(() => {
+    avert.calculateEereLoad();
+  }, 50);
+};
+
+export const completeAnnual = (data) => ({
+  type: COMPLETE_ANNUAL,
+  data,
+});
+
+export const completeMonthlyEmissions = (data) => ({
+  type: COMPLETE_MONTHLY,
+  data,
+});
+
+export const foo_completeMonthlyEmissions = (data) => ({
+  type: FOO_COMPLETE_MONTHLY,
+  so2: data.so2,
+  nox: data.nox,
+  co2: data.co2,
+});
+
+export const updateMonthlyAggregation = (aggregation) => ({
+  type: SELECT_AGGREGATION,
+  aggregation,
+});
+
+export const updateMonthlyUnit = (unit) => ({
+  type: SELECT_UNIT,
+  unit,
+});
+
+export const selectState = (state) => ({
+  type: SELECT_STATE,
+  state,
+});
+
+export const selectCounty = (county) => ({
+  type: SELECT_COUNTY,
+  county,
+});
+
+export const completeStateEmissions = (data) => ({
+  type: COMPLETE_STATE,
+  data,
+});
+
+export const foo_completeStateEmissions = (data) => ({
+  type: FOO_COMPLETE_STATE,
+  data,
+});
+
+const startDisplacement = () => ({
+  type: START_DISPLACEMENT,
+});
+
+export const calculateDisplacement = () => {
+  store.dispatch(startDisplacement());
+
+  setTimeout(() => {
+    avert.calculateDisplacement();
+  }, 50);
+};
+
+export const invalidateRegion = (region) => ({
+  type: INVALIDATE_REGION,
+  region,
+});
+
+export const requestRegion = (region) => ({
+  type: REQUEST_REGION,
+  region,
+});
+
+export const receiveRegion = (region, json) => ({
+  type: RECEIVE_REGION,
+  region,
+  posts: json.data.children.map(child => child.data),
+  receivedAt: Date.now(),
+});
 
 let nextRdfId = 0;
-export function addRdf (rdf) {
-    return {
-        type: 'ADD_RDF',
-        id: nextRdfId ++,
-        rdf
-    }
-}
+export const addRdf = (rdf) => ({
+  type: ADD_RDF,
+  id: nextRdfId++,
+  rdf,
+});
 
-export function fetchRegion (region) {
-    return function (dispatch) {
-        dispatch(requestRegion(region));
+export const fetchRegion = (region) => {
+  return function(dispatch) {
+    dispatch(requestRegion(region));
 
-        return fetch(`http://www.reddit.com/r/${region}.json`)
-            .then(response => response.json())
-            .then(json =>
-                dispatch(receiveRegion(region, json))
-            )
-    }
-}
+    return fetch(`http://www.reddit.com/r/${region}.json`)
+      .then(response => response.json())
+      .then(json =>
+        dispatch(receiveRegion(region, json))
+      );
+  };
+};

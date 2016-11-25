@@ -1,19 +1,28 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import createLogger from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
-// import createLogger from 'redux-logger';
 import reduxMulti from 'redux-multi';
-import avertApp from '../reducers';
+// reducers
+import reducers from '../reducers';
 
-// const loggerMiddleware = createLogger();
+const logger = createLogger();
 
-export default function configureStore(preloadedState) {
-    return createStore(
-        avertApp,
-        preloadedState,
-        applyMiddleware(
-            thunkMiddleware,
-            // loggerMiddleware,
-            reduxMulti,
-        )
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const configureStore = (preloadedState) => {
+  const store = createStore(
+    reducers,
+    preloadedState,
+    composeEnhancers(
+      applyMiddleware(
+        logger,
+        thunkMiddleware,
+        reduxMulti,
+      )
     )
+  );
+
+  return store;
 };
+
+export default configureStore;
