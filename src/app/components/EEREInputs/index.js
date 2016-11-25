@@ -2,6 +2,9 @@ import React, { PropTypes } from 'react';
 // styles
 import './styles.css';
 
+// include details pollyfill for IE/Edge
+const details = require('../../../assets/details-pollyfill');
+
 const EEREInputs = ({
   errors,
   valid,
