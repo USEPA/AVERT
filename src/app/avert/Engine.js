@@ -119,7 +119,7 @@ class Engine {
                                    .subtract(this.manualEereEntry.toArray()[index])
                                    .add(renewable_energy_profile)
                                    .subtract(this.resultingHourlyMwReduction)
-                                   .add(this.eereProfile.constantMw)
+                                   .subtract(this.eereProfile.constantMw)
                                    .done();
 
 
