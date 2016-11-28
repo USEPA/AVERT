@@ -41,3 +41,18 @@
   padding: 1rem;
   border: 1px solid #aaa;
 }
+
+
+
+.avert-emissions-charts [data-highcharts-chart] {
+  margin-bottom: 1rem;
+}
+.avert-emissions-charts [data-highcharts-chart]:last-of-type {
+  margin-bottom: 0;
+}
+
+.avert-emissions-charts .highcharts-title {
+  font-size: 1rem !important;
+  font-weight: bold;
+  color: #444 !important;
+}
