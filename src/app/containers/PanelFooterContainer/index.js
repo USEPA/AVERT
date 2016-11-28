@@ -1,11 +1,12 @@
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 // components
 import PanelFooter from '../../components/PanelFooter';
 // action creators
-import { setActiveStep } from '../../actions';
+import {setActiveStep} from '../../actions';
 
 const mapStateToProps = (state) => ({
-  activeStep: state.activeStep,
+  activeStep: state.panel.activeStep,
+  nextDisabled: state.panel.nextDisabled,
 });
 
 const mapDispatchToProps = (dispatch) => ({

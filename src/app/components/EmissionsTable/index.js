@@ -1,5 +1,19 @@
 import React, { PropTypes } from 'react';
 
+//TODO: Refactor into util method
+// const addCommas = (number) => {
+//   if (typeof number === "undefined") { return '' };
+//   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");
+// };
+//
+// const formatOutput = (number) => {
+//   let output = Math.ceil(number / 10) * 10;
+//   return addCommas(output);
+// };
+const formatOutput = (number) => {
+  return Math.round(number);
+};
+
 const EmissionsTable = (props) => (
   <div className='avert-emissions-table'>
     <h3 className='avert-heading-three'>{ props.heading }</h3>
@@ -18,9 +32,9 @@ const EmissionsTable = (props) => (
           return (
             <tr key={ index }>
               <td>{ state }</td>
-              <td>{ props.data[index].so2 }</td>
-              <td>{ props.data[index].nox }</td>
-              <td>{ props.data[index].co2 }</td>
+              <td>{ formatOutput(props.data[index].so2) }</td>
+              <td>{ formatOutput(props.data[index].nox) }</td>
+              <td>{ formatOutput(props.data[index].co2) }</td>
             </tr>
           );
         })}

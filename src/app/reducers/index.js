@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 // reducers
-import activeStepReducer from './activeStepReducer';
+// import activeStepReducer from './activeStepReducer';
+import panelReducer from './panelReducer';
 import eereReducer from './eereReducer';
 import annualDisplacementReducer from './annualDisplacementReducer';
 import stateEmissionsReducer from './stateEmissionsReducer';
@@ -9,7 +10,8 @@ import regionsReducer from './regionsReducer';
 //import rdfsReducer from './rdfsReducer';
 
 const reducers = combineReducers({
-  activeStep: activeStepReducer,
+  // activeStep: activeStepReducer,
+  panel: panelReducer,
   eere: eereReducer,
   annualDisplacement: annualDisplacementReducer,
   stateEmissions: stateEmissionsReducer,

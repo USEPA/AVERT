@@ -70,17 +70,17 @@ const eereReducer = (state = defaultState, action) => {
     //     ___?___: action.text,
     //   };
 
-  case UPDATE_EERE_REDUCTION:
-    return {
-      ...state,
-      reduction: action.text,
-    };
+    case UPDATE_EERE_REDUCTION:
+      return {
+        ...state,
+        reduction: action.text,
+      };
 
-  case UPDATE_EERE_TOP_HOURS:
-    return {
-      ...state,
-      topHours: action.text,
-    };
+    case UPDATE_EERE_TOP_HOURS:
+      return {
+        ...state,
+        topHours: action.text,
+      };
 
     case UPDATE_EERE_WIND_CAPACITY:
       return {
@@ -108,17 +108,18 @@ const eereReducer = (state = defaultState, action) => {
       };
 
     case UPDATE_EXCEEDANCES:
+      //TODO: Pull these calculations out into a util, run them in the action, then pass them to the reducers
       const valid = action.exceedances.reduce((a, b) => a + b) === 0;
-      const maxVal = (! valid) ? Math.max(...action.exceedances) : 0;
-      const maxIndex = (! valid) ? action.exceedances.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0) : 0;
+      const maxVal = (!valid) ? Math.max(...action.exceedances) : 0;
+      const maxIndex = (!valid) ? action.exceedances.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0) : 0;
 
       const softValid = action.soft_exceedances.reduce((a, b) => a + b) === 0;
-      const softMaxVal = (! valid) ? Math.max(...action.soft_exceedances) : 0;
-      const softMaxIndex = (! valid) ? action.soft_exceedances.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0) : 0;
+      const softMaxVal = (!valid) ? Math.max(...action.soft_exceedances) : 0;
+      const softMaxIndex = (!valid) ? action.soft_exceedances.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0) : 0;
 
       const hardValid = action.hard_exceedances.reduce((a, b) => a + b) === 0;
-      const hardMaxVal = (! valid) ? Math.max(...action.hard_exceedances) : 0;
-      const hardMaxIndex = (! valid) ? action.hard_exceedances.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0) : 0;
+      const hardMaxVal = (!valid) ? Math.max(...action.hard_exceedances) : 0;
+      const hardMaxIndex = (!valid) ? action.hard_exceedances.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0) : 0;
 
       return {
         // TODO: Consider splitting up "validity for exceed" from "validity for fields"

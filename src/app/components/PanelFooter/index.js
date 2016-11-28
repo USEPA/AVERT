@@ -20,9 +20,11 @@ const PanelFooter = (props) => {
 
   // conditionally define reset class, if on last panel
   const resetClass = props.lastPanel ? 'avert-reset-button' : '';
-
+  const disabledClass = props.nextDisabled ? 'avert-button-disabled' : '';
   const nextButtonElement = (
-    <a className={`avert-button avert-next ${resetClass}`} href=''
+    <a
+      className={`avert-button avert-next ${resetClass} ${disabledClass}`}
+      href=''
       onClick={(e) => {
         e.preventDefault();
         const step = props.lastPanel ? 1 : props.activeStep + 1;
@@ -47,6 +49,7 @@ PanelFooter.propTypes = {
   onButtonClick: PropTypes.func.isRequired,
   prevButtonText: PropTypes.string,
   nextButtonText: PropTypes.string.isRequired,
+  nextDisabled: PropTypes.bool,
 };
 
 export default PanelFooter;

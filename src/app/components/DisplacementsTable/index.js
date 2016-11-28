@@ -11,9 +11,19 @@ const DisplacementsTable = (props) => {
     }
   };
 
+  //TODO: Refactor into util method
   const addCommas = (number) => {
-    if (typeof number === "undefined") { return '' };
+    if (typeof number === "undefined") return '';
+
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");
+  };
+
+  const formatOutput = (number) => {
+
+    if(number < 10 && number > -10) return '--';
+
+    let output = Math.ceil(number / 10) * 10;
+    return addCommas(output);
   };
 
   return (
@@ -42,30 +52,30 @@ const DisplacementsTable = (props) => {
         <tbody>
           <tr>
             <td>{'Generation (MWh)'}</td>
-            <td>{ addCommas(props.data.generation.original) }</td>
-            <td>{ addCommas(props.data.generation.post) }</td>
-            <td>{ addCommas(props.data.generation.impact) }</td>
+            <td>{ formatOutput(props.data.generation.original) }</td>
+            <td>{ formatOutput(props.data.generation.post) }</td>
+            <td>{ formatOutput(props.data.generation.impact) }</td>
           </tr>
           <tr className='avert-table-group'>
             <td colSpan='4'>{'Total emissions of fossil EGUs'}</td>
           </tr>
           <tr>
             <td>{'SO'}<sub>{'2'}</sub>{' (lbs)'}</td>
-            <td>{ addCommas(props.data.totalEmissions.so2.original) }</td>
-            <td>{ addCommas(props.data.totalEmissions.so2.post) }</td>
-            <td>{ addCommas(props.data.totalEmissions.so2.impact) }</td>
+            <td>{ formatOutput(props.data.totalEmissions.so2.original) }</td>
+            <td>{ formatOutput(props.data.totalEmissions.so2.post) }</td>
+            <td>{ formatOutput(props.data.totalEmissions.so2.impact) }</td>
           </tr>
           <tr>
             <td>{'NO'}<sub>{'X'}</sub>{' (lbs)'}</td>
-            <td>{ addCommas(props.data.totalEmissions.nox.original) }</td>
-            <td>{ addCommas(props.data.totalEmissions.nox.post) }</td>
-            <td>{ addCommas(props.data.totalEmissions.nox.impact) }</td>
+            <td>{ formatOutput(props.data.totalEmissions.nox.original) }</td>
+            <td>{ formatOutput(props.data.totalEmissions.nox.post) }</td>
+            <td>{ formatOutput(props.data.totalEmissions.nox.impact) }</td>
           </tr>
           <tr>
             <td>{'CO'}<sub>{'2'}</sub>{' (tons)'}</td>
-            <td>{ addCommas(props.data.totalEmissions.co2.original) }</td>
-            <td>{ addCommas(props.data.totalEmissions.co2.post) }</td>
-            <td>{ addCommas(props.data.totalEmissions.co2.impact) }</td>
+            <td>{ formatOutput(props.data.totalEmissions.co2.original) }</td>
+            <td>{ formatOutput(props.data.totalEmissions.co2.post) }</td>
+            <td>{ formatOutput(props.data.totalEmissions.co2.impact) }</td>
           </tr>
           <tr className='avert-table-group'>
             <td colSpan='4'>{'Emission rates of fossil EGUs'}</td>
@@ -91,7 +101,9 @@ const DisplacementsTable = (props) => {
         </tbody>
       </table>
 
-      <p className='avert-small-text'>Negative numbers indicate displaced generation and emissions. All results are rounded to the nearest hundred. A dash ('–') indicates a result greater than zero, but lower than the level of reportable significance.</p>
+      <p className='avert-small-text'>Negative numbers indicate displaced generation and emissions. All results are
+        rounded to the nearest ten. A dash ('–') indicates a result greater than zero, but lower than the level of
+        reportable significance.</p>
     </div>
   );
 };

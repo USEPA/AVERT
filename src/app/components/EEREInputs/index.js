@@ -35,10 +35,17 @@ const EEREInputs = ({
 }) => {
   console.warn('Errors:', errors, 'Soft val:', softTopExceedanceValue, 'Hard val:', hardTopExceedanceValue);
 
-  const displayError = (errors, inputField) => {
+  const displayError = (errors, inputField, maxVal, messageOverride) => {
     if (errors.indexOf(inputField) !== -1) {
       return (
-        <span className='avert-input-error'>{`Errors in ${inputField}`}</span>
+        <span className='avert-input-error'>{
+            messageOverride ?
+                messageOverride :
+                `Please enter a number between 0 and ${maxVal}. This will help ensure that each of your proposed
+                programs displaces no more than 15% of hourly regional fossil generation, which is the recommended
+                limit for AVERT. AVERT is designed to simulate marginal operational changes in load, rather than
+                large-scale changes that may fundamental dynamics.`
+        }</span>
       );
     }
   };
@@ -77,7 +84,7 @@ const EEREInputs = ({
                   }}
                 />
                 <span>{' MW'}</span>
-                { displayError(errors, 'constantMw') }
+                { displayError(errors, 'constantMw', 4783) }
               </li>
 
               <li>
@@ -90,7 +97,7 @@ const EEREInputs = ({
                   }}
                 />
                 <span>{' GWh'}</span>
-                { displayError(errors, 'annualGwh') }
+                { displayError(errors, 'annualGwh', 41900) }
               </li>
             </ul>
           </section>
@@ -111,7 +118,7 @@ const EEREInputs = ({
                   }}
                 />
                 <span>{' % in all hours'}</span>
-                { displayError(errors, '___?___') }
+                { displayError(errors, '___?___', 15) }
               </li>
 
               <li>
@@ -132,8 +139,8 @@ const EEREInputs = ({
                   }}
                 />
                 <span>{' % of hours'}</span>
-                { displayError(errors, 'reduction') }
-                { displayError(errors, 'topHours') }
+                { displayError(errors, 'reduction', false, 'Please enter a number from 0 to 100.') }
+                { displayError(errors, 'topHours', false, 'Please enter a number from 0 to 100.') }
               </li>
             </ul>
           </section>
@@ -156,7 +163,7 @@ const EEREInputs = ({
                 }}
               />
               <span>{' MW'}</span>
-              { displayError(errors, 'windCapacity') }
+              { displayError(errors, 'windCapacity', 4780) }
             </p>
           </section>
         </details>
@@ -174,7 +181,7 @@ const EEREInputs = ({
                 }}
               />
               <span>{' MW'}</span>
-              { displayError(errors, 'utilitySolar') }
+              { displayError(errors, 'utilitySolar', 4780) }
             </p>
           </section>
         </details>
@@ -192,7 +199,7 @@ const EEREInputs = ({
                 }}
               />
               <span>{' MW'}</span>
-              { displayError(errors, 'rooftopSolar') }
+              { displayError(errors, 'rooftopSolar', 4780) }
             </p>
           </section>
         </details>
