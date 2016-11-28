@@ -6,7 +6,7 @@ import statusEnum from '../../utils/statusEnum';
 class EEREChart extends Component {
   render(){
     const disabledClass = () => {
-      if (statusEnum[this.props.eere_status].submitted) {
+      if (statusEnum[this.props.eere_status].submitted || ! this.props.valid) {
         return 'avert-button-disabled';
       } else {
         return '';
