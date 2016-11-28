@@ -51,7 +51,7 @@ class EEREChart extends Component {
       }],
     };
 
-    return(
+    return (
       <div className='avert-eere-profile'>
         <h3 className='avert-heading-three'>{ this.props.heading }</h3>
 

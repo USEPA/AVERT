@@ -39,7 +39,7 @@ const PanelFooter = (props) => {
       </p>
     </div>
   );
-}
+};
 
 PanelFooter.propTypes = {
   lastPanel: PropTypes.bool,

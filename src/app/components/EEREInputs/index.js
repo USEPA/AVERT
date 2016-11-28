@@ -37,13 +37,13 @@ const EEREInputs = ({
 
   const displayError = (errors, inputField) => {
     if (errors.indexOf(inputField) !== -1) {
-      return(
+      return (
         <span className='avert-input-error'>{`Errors in ${inputField}`}</span>
       );
     }
   };
 
-  return(
+  return (
     <div>
       <div style={{ marginTop: '1rem', padding: '0.5rem', backgroundColor: '#eee', }}>
         <p className='avert-small-text' style={{ marginTop: '0', }}>

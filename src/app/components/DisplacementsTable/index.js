@@ -16,7 +16,7 @@ const DisplacementsTable = (props) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");
   };
 
-  return(
+  return (
     <div className='avert-displacement-table'>
       <h3 className='avert-heading-three'>{ props.heading }</h3>
 
