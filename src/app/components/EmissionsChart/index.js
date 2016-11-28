@@ -71,11 +71,14 @@ class EmissionsChart extends Component {
       chart: {
         type: 'column',
         height: 200,
-      },
-      title: {
-        text: false,
+        style: {
+          fontFamily: '"Open Sans", sans-serif',
+        },
       },
       credits: {
+        enabled: false,
+      },
+      legend: {
         enabled: false,
       },
       xAxis: {
@@ -89,6 +92,9 @@ class EmissionsChart extends Component {
     };
     const so2_config = {
       ...shared_config,
+      title: {
+        text: 'SO₂',
+      },
       series: [{
         name: 'SO₂',
         data: so2_data,
@@ -97,6 +103,9 @@ class EmissionsChart extends Component {
     };
     const nox_config = {
       ...shared_config,
+      title: {
+        text: 'NOₓ',
+      },
       series: [{
         name: 'NOₓ',
         data: nox_data,
@@ -105,6 +114,9 @@ class EmissionsChart extends Component {
     };
     const co2_config = {
       ...shared_config,
+      title: {
+        text: 'CO₂',
+      },
       series: [{
         name: 'CO₂',
         data: co2_data,

@@ -18,11 +18,22 @@ class EEREChart extends Component {
     const chartConfig = {
       chart: {
         height: 300,
+        style: {
+          fontFamily: '"Open Sans", sans-serif',
+        },
       },
       title: {
-        text: false,
+        text: 'EERE Load Output',
+        style: {
+          fontSize: '1rem',
+          fontWeight: 'bold',
+          color: '#444',
+        },
       },
       credits: {
+        enabled: false,
+      },
+      legend: {
         enabled: false,
       },
       xAxis: {
