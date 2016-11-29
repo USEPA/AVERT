@@ -13,7 +13,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onButtonClick(stepNumber) {
+  onSetActiveStep(stepNumber) {
     dispatch(setActiveStep(stepNumber));
   },
   onCalculateDisplacement() {

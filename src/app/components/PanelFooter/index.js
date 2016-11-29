@@ -11,7 +11,7 @@ const PanelFooter = (props) => {
         onClick={(e) => {
           e.preventDefault();
           const step = props.activeStep - 1;
-          props.onButtonClick(step);
+          props.onSetActiveStep(step);
         }}
       >{ props.prevButtonText }</a>
     );
@@ -29,7 +29,7 @@ const PanelFooter = (props) => {
       onClick={(e) => {
         e.preventDefault();
         const step = props.lastPanel ? 1 : props.activeStep + 1;
-        props.onButtonClick(step);
+        props.onSetActiveStep(step);
 
         // calculate displacement if on second step
         if (props.activeStep === 2) { props.onCalculateDisplacement() }
@@ -50,7 +50,7 @@ const PanelFooter = (props) => {
 PanelFooter.propTypes = {
   lastPanel: PropTypes.bool,
   activeStep: PropTypes.number.isRequired,
-  onButtonClick: PropTypes.func.isRequired,
+  onSetActiveStep: PropTypes.func.isRequired,
   prevButtonText: PropTypes.string,
   nextButtonText: PropTypes.string.isRequired,
   nextDisabled: PropTypes.bool,
