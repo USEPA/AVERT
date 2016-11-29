@@ -1,8 +1,11 @@
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 // components
 import PanelFooter from '../../components/PanelFooter';
 // action creators
-import {setActiveStep} from '../../actions';
+import {
+  setActiveStep,
+  calculateDisplacement,
+} from '../../actions';
 
 const mapStateToProps = (state) => ({
   activeStep: state.panel.activeStep,
@@ -11,7 +14,10 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onButtonClick(stepNumber) {
-    dispatch(setActiveStep(stepNumber))
+    dispatch(setActiveStep(stepNumber));
+  },
+  onCalculateDisplacement() {
+    calculateDisplacement();
   },
 });
 

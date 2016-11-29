@@ -4,7 +4,7 @@ const statusEnum = {
     submitted: true,
   },
   "ready": {
-    lang: "Calculate",
+    lang: "Calculate EE/RE Impacts",
     submitted: false,
   },
   "started": {
@@ -12,7 +12,7 @@ const statusEnum = {
     submitted: true,
   },
   "complete": {
-    lang: "Recalculate",
+    lang: "Recalculate EE/RE Impacts",
     submitted: false,
   },
 };

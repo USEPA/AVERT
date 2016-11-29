@@ -1,4 +1,6 @@
 import React, { PropTypes } from 'react';
+// utilities
+import statusEnum from '../../utils/statusEnum';
 // styles
 import './styles.css';
 
@@ -32,23 +34,26 @@ const EEREInputs = ({
   onWindCapacityChange,
   onUtilitySolarChange,
   onRooftopSolarChange,
+
+  eereStatus,
+  onCalculateProfile,
 }) => {
   console.warn('Errors:', errors, 'Soft val:', softTopExceedanceValue, 'Hard val:', hardTopExceedanceValue);
 
   const displayError = (errors, inputField, maxVal, messageOverride) => {
     if (errors.indexOf(inputField) !== -1) {
       return (
-        <span className='avert-input-error'>{
-            messageOverride ?
-                messageOverride :
-                `Please enter a number between 0 and ${maxVal}. This will help ensure that each of your proposed
-                programs displaces no more than 15% of hourly regional fossil generation, which is the recommended
-                limit for AVERT. AVERT is designed to simulate marginal operational changes in load, rather than
-                large-scale changes that may fundamental dynamics.`
-        }</span>
+        <span className='avert-input-error'>
+          { messageOverride ?
+            messageOverride :
+            `Please enter a number between 0 and ${maxVal}. This will help ensure that each of your proposed programs displaces no more than 15% of hourly regional fossil generation, which is the recommended limit for AVERT. AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may fundamental dynamics.`
+          }
+        </span>
       );
     }
   };
+
+  const disabledClass = statusEnum[eereStatus].submitted ? 'avert-button-disabled' : '';
 
   return (
     <div>
@@ -60,7 +65,7 @@ const EEREInputs = ({
           {` (Value: ${softTopExceedanceValue}, Hour: ${softTopExceedanceHour})`}
           <br />
           {'Did second pass stay under 30%?'} <b>{ hardValid ? 'Yes': 'No' }</b>
-        {` (Value: ${hardTopExceedanceValue}, Hour: ${hardTopExceedanceHour})`}
+          {` (Value: ${hardTopExceedanceValue}, Hour: ${hardTopExceedanceHour})`}
         </p>
       </div>
 
@@ -204,6 +209,17 @@ const EEREInputs = ({
           </section>
         </details>
       </div>
+
+      <p className='avert-centered'>
+        <a className={`avert-button ${disabledClass}`} href=''
+          onClick={(e) => {
+            e.preventDefault();
+            onCalculateProfile()
+          }}
+        >
+          { statusEnum[eereStatus].lang }
+        </a>
+      </p>
     </div>
   );
 };
@@ -231,6 +247,9 @@ EEREInputs.propTypes = {
   onWindCapacityChange: PropTypes.func,
   onUtilitySolarChange: PropTypes.func,
   onRooftopSolarChange: PropTypes.func,
+
+  eereStatus: PropTypes.string.isRequired,
+  onCalculateProfile: PropTypes.func.isRequired,
 };
 
 export default EEREInputs;
