@@ -3,7 +3,7 @@ import {
   CHANGE_ACTIVE_STEP,
   SELECT_REGION,
   COMPLETE_CALCULATION,
-  UPDATE_EXCEEDANCES,
+  //UPDATE_EXCEEDANCES,
 } from '../../actions';
 
 const defaultState = {

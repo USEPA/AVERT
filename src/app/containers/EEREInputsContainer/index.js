@@ -11,6 +11,8 @@ import {
   updateEereWindCapacity,
   updateEereUtilitySolar,
   updateEereRooftopSolar,
+
+  calculateEereProfile
 } from '../../actions';
 
 const mapStateToProps = (state) => ({
@@ -33,6 +35,8 @@ const mapStateToProps = (state) => ({
   windCapacity: state.eere.windCapacity,
   utilitySolar: state.eere.utilitySolar,
   rooftopSolar: state.eere.rooftopSolar,
+
+  eereStatus: state.eere.status,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -59,6 +63,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onRooftopSolarChange(text) {
     dispatch(updateEereRooftopSolar(text));
+  },
+  onCalculateProfile() {
+    calculateEereProfile();
   },
 });
 
