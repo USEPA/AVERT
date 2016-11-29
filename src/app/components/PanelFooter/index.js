@@ -28,11 +28,13 @@ const PanelFooter = (props) => {
       href=''
       onClick={(e) => {
         e.preventDefault();
-        const step = props.lastPanel ? 1 : props.activeStep + 1;
-        props.onSetActiveStep(step);
-
-        // calculate displacement if on second step
-        if (props.activeStep === 2) { props.onCalculateDisplacement() }
+        // if not disabled, change step
+        if (!props.nextDisabled) {
+          const step = props.lastPanel ? 1 : props.activeStep + 1;
+          props.onSetActiveStep(step);
+          // if on second step, calculate displacement
+          if (props.activeStep === 2) { props.onCalculateDisplacement() }
+        }
       }}
     >{ props.nextButtonText }</a>
   );
