@@ -53,10 +53,11 @@ const EEREInputs = ({
     }
   };
 
-  const disabledClass = EereStatusEnum[eereStatus].submitted ? 'avert-button-disabled' : '';
+  const disabledClass = !valid || eereStatus === 'started' ? 'avert-button-disabled' : '';
 
   return (
     <div>
+
       <div style={{ marginTop: '1rem', padding: '0.5rem', backgroundColor: '#eee', }}>
         <p className='avert-small-text' style={{ marginTop: '0', }}>
           {'Is First Pass Valid?'} <b>{ valid ? 'Yes' : 'No' }</b>
@@ -214,10 +215,11 @@ const EEREInputs = ({
         <a className={`avert-button ${disabledClass}`} href=''
           onClick={(e) => {
             e.preventDefault();
-            onCalculateProfile()
+            // if valid prop (state) is true, calculate profile
+            if (valid) { onCalculateProfile() }
           }}
         >
-          { EereStatusEnum[eereStatus].lang }
+          { EereStatusEnum[eereStatus].text }
         </a>
       </p>
     </div>
