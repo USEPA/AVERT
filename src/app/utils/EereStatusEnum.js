@@ -1,4 +1,4 @@
-const statusEnum = {
+const EereStatusEnum = {
   "select_region": {
     lang: "Select Region",
     submitted: true,
@@ -17,4 +17,4 @@ const statusEnum = {
   },
 };
 
-export default statusEnum;
+export default EereStatusEnum;

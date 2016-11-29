@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 // utilities
-import statusEnum from '../../utils/statusEnum';
+import EereStatusEnum from '../../utils/EereStatusEnum';
 // styles
 import './styles.css';
 
@@ -53,7 +53,7 @@ const EEREInputs = ({
     }
   };
 
-  const disabledClass = statusEnum[eereStatus].submitted ? 'avert-button-disabled' : '';
+  const disabledClass = EereStatusEnum[eereStatus].submitted ? 'avert-button-disabled' : '';
 
   return (
     <div>
@@ -217,7 +217,7 @@ const EEREInputs = ({
             onCalculateProfile()
           }}
         >
-          { statusEnum[eereStatus].lang }
+          { EereStatusEnum[eereStatus].lang }
         </a>
       </p>
     </div>
