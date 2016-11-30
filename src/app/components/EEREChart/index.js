@@ -53,26 +53,28 @@ const EEREChart = (props) => {
   }
 
   let validationError = null;
-  validationError = (
-    <div style={{ marginTop: '1rem', padding: '0.5rem', backgroundColor: '#eee', }}>
-      <p className='avert-small-text' style={{ marginTop: '0', }}>
-        {'ERROR:'}<br />
-        {'Did second pass stay under 30%?'} <b>{ props.hardValid ? 'Yes': 'No' }</b>
-        {` (Hour: ${props.hardTopExceedanceHour})`}
+  if (!props.hardValid) {
+    validationError = (
+      <p className='avert-validation-error'>
+        <span className='avert-validation-heading'>{'ERROR:'}</span>
+        {'The combined impact of your proposed programs would displace up to '}
+        <strong>{props.hardTopExceedanceHour}</strong>
+        {' of hourly regional fossil generation. The recommended limit for AVERT is 15%, as AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics. Please reduce one or more of your inputs to ensure more reliable results.'}
       </p>
-    </div>
-  );
+    );
+  }
 
   let validationWarning = null;
-  validationWarning = (
-    <div style={{ marginTop: '1rem', padding: '0.5rem', backgroundColor: '#eee', }}>
-      <p className='avert-small-text' style={{ marginTop: '0', }}>
-        {'WARNING:'}<br />
-        {'Did second pass stay under 15%?'} <b>{ props.softValid ? 'Yes': 'No' }</b>
-        {` (Hour: ${props.softTopExceedanceHour})`}
+  if (!props.softValid && props.hardValid) {
+    validationWarning = (
+      <p className='avert-validation-warning'>
+        <span className='avert-validation-heading'>{'WARNING:'}</span>
+        {'The combined impact of your proposed programs would displace up to '}
+        <strong>{props.softTopExceedanceHour}</strong>
+        {' of hourly regional fossil generation. The recommended limit for AVERT is 15%, as AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics. You may wish to reduce one or more of your inputs to ensure more reliable results.'}
       </p>
-    </div>
-  )
+    );
+  }
 
   return (
     <div>

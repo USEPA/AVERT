@@ -129,7 +129,7 @@ const eereReducer = (state = defaultState, action) => {
         hard_valid: hardValid,
         hard_exceedances: action.hard_exceedances,
         hard_top_exceedance_value: hardMaxVal,
-        Hard_top_exceedance_hour: hardMaxIndex,
+        hard_top_exceedance_hour: hardMaxIndex,
       };
 
     case SUBMIT_PARAMS:
