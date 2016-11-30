@@ -52,11 +52,43 @@ const EEREChart = (props) => {
     );
   }
 
-  return chart;
+  let validationError = null;
+  validationError = (
+    <div style={{ marginTop: '1rem', padding: '0.5rem', backgroundColor: '#eee', }}>
+      <p className='avert-small-text' style={{ marginTop: '0', }}>
+        {'ERROR:'}<br />
+        {'Did second pass stay under 30%?'} <b>{ props.hardValid ? 'Yes': 'No' }</b>
+        {` (Hour: ${props.hardTopExceedanceHour})`}
+      </p>
+    </div>
+  );
+
+  let validationWarning = null;
+  validationWarning = (
+    <div style={{ marginTop: '1rem', padding: '0.5rem', backgroundColor: '#eee', }}>
+      <p className='avert-small-text' style={{ marginTop: '0', }}>
+        {'WARNING:'}<br />
+        {'Did second pass stay under 15%?'} <b>{ props.softValid ? 'Yes': 'No' }</b>
+        {` (Hour: ${props.softTopExceedanceHour})`}
+      </p>
+    </div>
+  )
+
+  return (
+    <div>
+      { chart }
+      { validationError }
+      { validationWarning }
+    </div>
+  );
 };
 
 EEREChart.propTypes = {
   heading: PropTypes.string.isRequired,
+  // softValid: PropTypes.string,
+  // softTopExceedanceHour: PropTypes.string,
+  // hardValid: PropTypes.string,
+  // hardTopExceedanceHour: PropTypes.string,
 };
 
 export default EEREChart;

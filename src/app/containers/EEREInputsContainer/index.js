@@ -18,14 +18,6 @@ import {
 const mapStateToProps = (state) => ({
   errors: state.eere.errors,
   valid: state.eere.valid,
-  softValid: state.eere.soft_valid,
-  softExceedances: state.eere.soft_exceedances,
-  softTopExceedanceValue: state.eere.soft_top_exceedance_value,
-  softTopExceedanceHour: state.eere.soft_top_exceedance_hour,
-  hardValid: state.eere.hard_valid,
-  hardExceedances: state.eere.hard_exceedances,
-  hardTopExceedanceValue: state.eere.hard_top_exceedance_value,
-  hardTopExceedanceHour: state.eere.hard_top_exceedance_hour,
 
   constantMw: state.eere.constantMw,
   annualGwh: state.eere.annualGwh,

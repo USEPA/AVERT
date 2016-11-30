@@ -72,6 +72,11 @@
 
 .avert-input-error {
   display: block;
-  font-weight: bold;
+  font-style: italic;
   color: rgb(206, 29, 29);
+}
+.avert-input-error-range {
+  display: block;
+  font-weight: bold;
+  font-style: normal;
 }
