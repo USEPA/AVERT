@@ -42,9 +42,12 @@ const EEREChart = (props) => {
     }],
   };
 
-  // conditionally define chart if hourlyEere prop exists
+  // boolean flag to render chart and error/warning when hourlyEere prop exits
+  let ready = props.hourlyEere.length > 0;
+
   let chart = null;
-  if (props.hourlyEere.length > 0) {
+  // conditionally re-define chart when ready (hourlyEere prop exists)
+  if (ready) {
     chart = (
       <div className='avert-eere-profile'>
         <Highcharts config={chartConfig} />
@@ -53,7 +56,8 @@ const EEREChart = (props) => {
   }
 
   let validationError = null;
-  if (!props.hardValid) {
+  // conditionally re-define error when ready and hardValid prop exists
+  if (ready && !props.hardValid) {
     validationError = (
       <p className='avert-validation-error'>
         <span className='avert-validation-heading'>{'ERROR:'}</span>
@@ -65,7 +69,9 @@ const EEREChart = (props) => {
   }
 
   let validationWarning = null;
-  if (!props.softValid && props.hardValid) {
+  // conditionally re-define warning when ready,
+  // softValid prop exists, and hardValid prop doesn't exist
+  if (ready && !props.softValid && props.hardValid) {
     validationWarning = (
       <p className='avert-validation-warning'>
         <span className='avert-validation-heading'>{'WARNING:'}</span>
