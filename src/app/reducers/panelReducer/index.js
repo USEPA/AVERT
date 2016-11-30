@@ -2,12 +2,16 @@
 import {
   CHANGE_ACTIVE_STEP,
   SELECT_REGION,
+  SUBMIT_CALCULATION,
   COMPLETE_CALCULATION,
+  START_DISPLACEMENT,
+  FOO_COMPLETE_MONTHLY,
   //UPDATE_EXCEEDANCES,
 } from '../../actions';
 
 const defaultState = {
   activeStep: 1,
+  loading: false,
   nextDisabled: true,
   regionScreen: true,
   eereScreen: false,
@@ -31,11 +35,30 @@ const panelReducer = (state = defaultState, action) => {
         eereScreen: true,
       };
 
+    case SUBMIT_CALCULATION:
+      return {
+        ...state,
+        loading: true,
+      };
+
     case COMPLETE_CALCULATION:
       return {
         ...state,
+        loading: false,
         nextDisabled: false,
         resultsScreen: true,
+      };
+
+    case START_DISPLACEMENT:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case FOO_COMPLETE_MONTHLY:
+      return {
+        ...state,
+        loading: false,
       };
 
     // case UPDATE_EXCEEDANCES:

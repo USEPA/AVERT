@@ -12,7 +12,7 @@ import {
   updateEereUtilitySolar,
   updateEereRooftopSolar,
 
-  calculateEereProfile
+  calculateEereProfile,
 } from '../../actions';
 
 const mapStateToProps = (state) => ({
