@@ -1,0 +1,22 @@
+.turbine-base {
+  fill: #0092cc;
+}
+.turbine-blades path {
+  fill: #00bee6;
+}
+.turbine-blades circle {
+  fill: none;
+}
+.turbine-cap {
+  fill: #03d5e5;
+}
+
+.turbine-blades {
+  transform-origin: center center;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0%   { transform: rotate(0);      }
+  100% { transform: rotate(360deg); }
+}

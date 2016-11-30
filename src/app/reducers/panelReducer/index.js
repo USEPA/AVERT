@@ -13,9 +13,9 @@ const defaultState = {
   activeStep: 1,
   loading: false,
   nextDisabled: true,
-  regionScreen: true,
-  eereScreen: false,
-  resultsScreen: false,
+  // regionScreen: true,
+  // eereScreen: false,
+  // resultsScreen: false,
 };
 
 const panelReducer = (state = defaultState, action) => {
@@ -32,7 +32,7 @@ const panelReducer = (state = defaultState, action) => {
       return {
         ...state,
         nextDisabled: false,
-        eereScreen: true,
+        // eereScreen: true,
       };
 
     case SUBMIT_CALCULATION:
@@ -46,7 +46,7 @@ const panelReducer = (state = defaultState, action) => {
         ...state,
         loading: false,
         nextDisabled: false,
-        resultsScreen: true,
+        // resultsScreen: true,
       };
 
     case START_DISPLACEMENT:

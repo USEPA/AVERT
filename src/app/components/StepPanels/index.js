@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 // components
+import LoadingIcon from '../LoadingIcon';
 import Panel from '../Panel';
 import PanelBody from '../PanelBody';
 import RegionMap from '../RegionMap';
@@ -16,11 +17,23 @@ import EmissionsChartContainer from '../../containers/EmissionsChartContainer';
 import './styles.css';
 
 const StepPanels = (props) => {
-  const loadingClass = props.loading ? 'avert-loading' : '';
-  // const loadingClass = 'avert-loading';
+  const loadingClass = props.loading ? 'avert-loading-overlay' : '';
+
+  let loadingIndicator = null;
+  // conditionally re-define loadingIndicator when loading prop exists
+  if (props.loading) {
+    loadingIndicator = (
+      <div className="avert-loading-indicator">
+        <LoadingIcon />
+        <p className="avert-loading-text">{'LOADING...'}</p>
+      </div>
+    );
+  }
 
   return (
     <div className={`avert-steps ${loadingClass}`}>
+      { loadingIndicator }
+
       <Panel active={ props.activePanel === 1 }>
         <PanelBody heading='Select Region'>
           <p>
