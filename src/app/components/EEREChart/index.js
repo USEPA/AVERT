@@ -42,9 +42,12 @@ const EEREChart = (props) => {
     }],
   };
 
-  // conditionally define chart if hourlyEere prop exists
+  // boolean flag to render chart and error/warning when hourlyEere prop exits
+  let ready = props.hourlyEere.length > 0;
+
   let chart = null;
-  if (props.hourlyEere.length > 0) {
+  // conditionally re-define chart when ready (hourlyEere prop exists)
+  if (ready) {
     chart = (
       <div className='avert-eere-profile'>
         <Highcharts config={chartConfig} />
@@ -52,11 +55,48 @@ const EEREChart = (props) => {
     );
   }
 
-  return chart;
+  let validationError = null;
+  // conditionally re-define error when ready and hardValid prop exists
+  if (ready && !props.hardValid) {
+    validationError = (
+      <p className='avert-validation-error'>
+        <span className='avert-validation-heading'>{'ERROR:'}</span>
+        {'The combined impact of your proposed programs would displace up to '}
+        <strong>{props.hardTopExceedanceHour}</strong>
+        {' of hourly regional fossil generation. The recommended limit for AVERT is 15%, as AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics. Please reduce one or more of your inputs to ensure more reliable results.'}
+      </p>
+    );
+  }
+
+  let validationWarning = null;
+  // conditionally re-define warning when ready,
+  // softValid prop exists, and hardValid prop doesn't exist
+  if (ready && !props.softValid && props.hardValid) {
+    validationWarning = (
+      <p className='avert-validation-warning'>
+        <span className='avert-validation-heading'>{'WARNING:'}</span>
+        {'The combined impact of your proposed programs would displace up to '}
+        <strong>{props.softTopExceedanceHour}</strong>
+        {' of hourly regional fossil generation. The recommended limit for AVERT is 15%, as AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics. You may wish to reduce one or more of your inputs to ensure more reliable results.'}
+      </p>
+    );
+  }
+
+  return (
+    <div>
+      { chart }
+      { validationError }
+      { validationWarning }
+    </div>
+  );
 };
 
 EEREChart.propTypes = {
   heading: PropTypes.string.isRequired,
+  // softValid: PropTypes.string,
+  // softTopExceedanceHour: PropTypes.string,
+  // hardValid: PropTypes.string,
+  // hardTopExceedanceHour: PropTypes.string,
 };
 
 export default EEREChart;

@@ -1,19 +1,12 @@
 const EereStatusEnum = {
-  "select_region": {
-    lang: "Select Region",
-    submitted: true,
-  },
   "ready": {
-    lang: "Calculate EE/RE Impacts",
-    submitted: false,
+    text: "Calculate EE/RE Impacts",
   },
   "started": {
-    lang: "Calculating...",
-    submitted: true,
+    text: "Calculating...",
   },
   "complete": {
-    lang: "Recalculate EE/RE Impacts",
-    submitted: false,
+    text: "Recalculate EE/RE Impacts",
   },
 };
 
