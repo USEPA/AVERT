@@ -64,7 +64,7 @@ const EmissionsChart = ({
   const shared_config = {
     chart: {
       type: 'column',
-      height: 200,
+      height: 240,
       style: {
         fontFamily: '"Open Sans", sans-serif',
       },
@@ -78,16 +78,16 @@ const EmissionsChart = ({
     xAxis: {
       categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     },
-    yAxis: {
-      title: {
-        text: false,
-      },
-    },
   };
   const so2_config = {
     ...shared_config,
     title: {
       text: 'SO₂',
+    },
+    yAxis: {
+      title: {
+        text: 'Emission changes (lbs)',
+      },
     },
     series: [{
       name: 'SO₂',
@@ -100,6 +100,11 @@ const EmissionsChart = ({
     title: {
       text: 'NOₓ',
     },
+    yAxis: {
+      title: {
+        text: 'Emission changes (lbs)',
+      },
+    },
     series: [{
       name: 'NOₓ',
       data: nox_data,
@@ -110,6 +115,11 @@ const EmissionsChart = ({
     ...shared_config,
     title: {
       text: 'CO₂',
+    },
+    yAxis: {
+      title: {
+        text: 'Emission changes (tons)',
+      },
     },
     series: [{
       name: 'CO₂',
