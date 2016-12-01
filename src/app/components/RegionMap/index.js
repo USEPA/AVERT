@@ -21,7 +21,7 @@ const RegionMap = () => (
       <title>AVERT region map</title>
 
       <g id='avert-regions'>
-        <RegionContainer regionId='2'>
+        <RegionContainer regionId='10'>
           <UpperMidwest />
         </RegionContainer>
 
@@ -49,11 +49,11 @@ const RegionMap = () => (
           <Northeast />
         </RegionContainer>
 
-        <RegionContainer regionId='10'>
+        <RegionContainer regionId='6'>
           <LowerMidwest />
         </RegionContainer>
 
-        <RegionContainer regionId='6'>
+        <RegionContainer regionId='2'>
           <GreatLakes />
         </RegionContainer>
 

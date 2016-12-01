@@ -1,24 +1,19 @@
 import { connect } from 'react-redux';
 // components
 import EEREChart from '../../components/EEREChart';
-// action creators
-import { calculateEereProfile } from '../../actions';
 
 const mapStateToProps = (state) => ({
-  eere_status: state.eere.status,
-  hourlyEere: state.eere.hourlyEere,
-  valid: state.eere.valid,
-});
+  softValid: state.eere.soft_valid,
+  softTopExceedanceHour: state.eere.soft_top_exceedance_hour,
+  hardValid: state.eere.hard_valid,
+  hardTopExceedanceHour: state.eere.hard_top_exceedance_hour,
 
-const mapDispatchToProps = (dispatch) => ({
-  onCalculateProfile() {
-    calculateEereProfile();
-  },
+  hourlyEere: state.eere.hourlyEere,
 });
 
 const EEREChartContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(EEREChart);
 
 export default EEREChartContainer;

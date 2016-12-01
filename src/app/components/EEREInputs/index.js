@@ -1,9 +1,8 @@
 import React, { PropTypes } from 'react';
+// utilities
+import EereStatusEnum from '../../utils/EereStatusEnum';
 // styles
 import './styles.css';
-
-// include details pollyfill for IE/Edge
-const details = require('../../../assets/details-pollyfill');
 
 const EEREInputs = ({
   errors,
@@ -32,38 +31,33 @@ const EEREInputs = ({
   onWindCapacityChange,
   onUtilitySolarChange,
   onRooftopSolarChange,
+
+  eereStatus,
+  onCalculateProfile,
 }) => {
   console.warn('Errors:', errors, 'Soft val:', softTopExceedanceValue, 'Hard val:', hardTopExceedanceValue);
 
-  const displayError = (errors, inputField, maxVal, messageOverride) => {
+  const displayError = (errors, inputField, maxVal, errorMessage) => {
     if (errors.indexOf(inputField) !== -1) {
       return (
-        <span className='avert-input-error'>{
-            messageOverride ?
-                messageOverride :
-                `Please enter a number between 0 and ${maxVal}. This will help ensure that each of your proposed
-                programs displaces no more than 15% of hourly regional fossil generation, which is the recommended
-                limit for AVERT. AVERT is designed to simulate marginal operational changes in load, rather than
-                large-scale changes that may fundamental dynamics.`
-        }</span>
+        <span className='avert-input-error'>
+          <span className='avert-input-error-range'>
+            { errorMessage ? errorMessage :
+              `Please enter a number between 0 and ${maxVal}.`
+            }
+          </span>
+          { errorMessage ? '' :
+            'This will help ensure that each of your proposed programs displaces no more than 15% of hourly regional fossil generation, which is the recommended limit for AVERT. AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may fundamental dynamics.'
+          }
+        </span>
       );
     }
   };
 
+  const disabledClass = !valid || eereStatus === 'started' ? 'avert-button-disabled' : '';
+
   return (
     <div>
-      <div style={{ marginTop: '1rem', padding: '0.5rem', backgroundColor: '#eee', }}>
-        <p className='avert-small-text' style={{ marginTop: '0', }}>
-          {'Is First Pass Valid?'} <b>{ valid ? 'Yes' : 'No' }</b>
-          <br />
-          {'Did second pass stay under 15%?'} <b>{ softValid ? 'Yes': 'No' }</b>
-          {` (Value: ${softTopExceedanceValue}, Hour: ${softTopExceedanceHour})`}
-          <br />
-          {'Did second pass stay under 30%?'} <b>{ hardValid ? 'Yes': 'No' }</b>
-        {` (Value: ${hardTopExceedanceValue}, Hour: ${hardTopExceedanceHour})`}
-        </p>
-      </div>
-
       <div className='avert-details-block'>
         <header>
           <p>Energy Efficiency</p>
@@ -204,6 +198,18 @@ const EEREInputs = ({
           </section>
         </details>
       </div>
+
+      <p className='avert-centered'>
+        <a className={`avert-button ${disabledClass}`} href=''
+          onClick={(e) => {
+            e.preventDefault();
+            // if valid prop (state) is true, calculate profile
+            if (valid) { onCalculateProfile() }
+          }}
+        >
+          { EereStatusEnum[eereStatus].text }
+        </a>
+      </p>
     </div>
   );
 };
@@ -211,12 +217,6 @@ const EEREInputs = ({
 EEREInputs.propTypes = {
   // errors: PropTypes.string,
   // valid: PropTypes.string,
-  // softValid: PropTypes.string,
-  // softTopExceedanceValue: PropTypes.string,
-  // softTopExceedanceHour: PropTypes.string,
-  // hardValid: PropTypes.string,
-  // hardTopExceedanceValue: PropTypes.string,
-  // hardTopExceedanceHour: PropTypes.string,
   // topHours: PropTypes.string,
   // reduction: PropTypes.string,
   // annualGwh: PropTypes.string,
@@ -231,6 +231,9 @@ EEREInputs.propTypes = {
   onWindCapacityChange: PropTypes.func,
   onUtilitySolarChange: PropTypes.func,
   onRooftopSolarChange: PropTypes.func,
+
+  eereStatus: PropTypes.string.isRequired,
+  onCalculateProfile: PropTypes.func.isRequired,
 };
 
 export default EEREInputs;

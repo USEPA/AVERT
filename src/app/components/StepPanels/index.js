@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 // components
+import LoadingIcon from '../LoadingIcon';
 import Panel from '../Panel';
 import PanelBody from '../PanelBody';
 import RegionMap from '../RegionMap';
@@ -15,83 +16,101 @@ import EmissionsChartContainer from '../../containers/EmissionsChartContainer';
 // styles
 import './styles.css';
 
-const StepPanels = (props) => (
-  <div className='avert-steps'>
-    <Panel active={ props.activePanel === 1 }>
-      <PanelBody heading='Select Region'>
-        <p>
-          {'The contiguous 48 states are split into 10 AVERT regions, which are aggregates of EPA’s '}
-            <a href='https://www.epa.gov/energy/egrid'>{'eGRID subregions'}</a>
-          {'. Select a region for analysis by either using the dropdown menu or clicking the map. Selecting a region loads region-specific wind and solar capacity data and the power plants operating within each region.'}
-        </p>
+const StepPanels = (props) => {
+  const loadingClass = props.loading ? 'avert-loading-overlay' : '';
 
-        <RegionListContainer />
+  let loadingIndicator = null;
+  // conditionally re-define loadingIndicator when loading prop exists
+  if (props.loading) {
+    loadingIndicator = (
+      <div className="avert-loading-indicator">
+        <LoadingIcon />
+        <p className="avert-loading-text">{'LOADING...'}</p>
+      </div>
+    );
+  }
 
-        <RegionMap />
+  return (
+    <div className={`avert-steps ${loadingClass}`}>
+      { loadingIndicator }
 
-        {/*
-        <select
-          value={ store.getState().regions.year }
-          onChange={(e) => store.dispatch(updateYear(e.target.value))}
-        >
-          <option value="" disabled defaultValue>Select Year</option>
-          <option value="2015">2015</option>
-          <option value="2014">2014</option>
-        </select>
-        */}
+      <Panel active={ props.activePanel === 1 }>
+        <PanelBody heading='Select Region'>
+          <p>
+            {'The contiguous 48 states are split into 10 AVERT regions, which are aggregates of EPA’s '}
+              <a href='https://www.epa.gov/energy/egrid'>{'eGRID subregions'}</a>
+            {'. Select a region for analysis by either using the dropdown menu or clicking the map. Selecting a region loads region-specific wind and solar capacity data and the power plants operating within each region.'}
+          </p>
 
-        <p className='avert-small-text'>
-          {'The online version of AVERT can run analyses for 2015 only. The Excel version of AVERT (available for download '}
-            <a href="https://www.epa.gov/statelocalclimate/download-avert">{'here'}</a>
-          {') allows analyses for years 2007–2015 or for a future year scenario.'}
-        </p>
-      </PanelBody>
+          <RegionListContainer />
 
-      <PanelFooterContainer nextButtonText='Set EE/RE Impacts' />
-    </Panel>
+          <RegionMap />
 
+          {/*
+          <select
+            value={ store.getState().regions.year }
+            onChange={(e) => store.dispatch(updateYear(e.target.value))}
+          >
+            <option value="" disabled defaultValue>Select Year</option>
+            <option value="2015">2015</option>
+            <option value="2014">2014</option>
+          </select>
+          */}
 
+          <p className='avert-small-text'>
+            {'The online version of AVERT can run analyses for 2015 only. The Excel version of AVERT (available for download '}
+              <a href="https://www.epa.gov/statelocalclimate/download-avert">{'here'}</a>
+            {') allows analyses for years 2007–2015 or for a future year scenario.'}
+          </p>
+        </PanelBody>
 
-    <Panel active={ props.activePanel === 2 }>
-      <PanelBody heading='Set Energy Efficiency and Renewable Energy Impacts'>
-        <p>
-          {'AVERT quantifies avoided emissions and electricity generation displaced by EE/RE policies and programs. Specify the impacts of EE/RE programs below, and AVERT will use these inputs to generate results. For more information about inputs, please consult the '}
-            <a href='https://www.epa.gov/statelocalclimate/avert-user-manual-0'>{'AVERT user manual'}</a>
-          {'.'}
-        </p>
-
-        <p className="avert-small-text">
-          {'Five types of programs are listed below (A through E). You can enter impacts for any or all types of programs, in any combination. AVERT will calculate cumulative impacts.'}
-        </p>
-
-        <EEREInputsContainer />
-
-        <EEREChartContainer heading='EE/RE profile based on values entered:' />
-      </PanelBody>
-
-      <PanelFooterContainer prevButtonText='Back to Region' nextButtonText='Get Results' />
-    </Panel>
+        <PanelFooterContainer nextButtonText='Set EE/RE Impacts' />
+      </Panel>
 
 
 
-    <Panel active={ props.activePanel === 3 }>
-      <PanelBody heading='Results: Avoided Regional, State, and County-Level Emissions'>
-        <DisplacementsTableContainer heading='Annual Regional Displacements' />
+      <Panel active={ props.activePanel === 2 }>
+        <PanelBody heading='Set Energy Efficiency and Renewable Energy Impacts'>
+          <p>
+            {'AVERT quantifies avoided emissions and electricity generation displaced by EE/RE policies and programs. Specify the impacts of EE/RE programs below, and AVERT will use these inputs to generate results. For more information about inputs, please consult the '}
+              <a href='https://www.epa.gov/statelocalclimate/avert-user-manual-0'>{'AVERT user manual'}</a>
+            {'.'}
+          </p>
 
-        <EmissionsTableContainer heading='Annual State Emission Changes' />
+          <p className="avert-small-text">
+            {'Five types of programs are listed below (A through E). You can enter impacts for any or all types of programs, in any combination. AVERT will calculate cumulative impacts.'}
+          </p>
 
-        <EmissionsChartContainer heading='Monthly Emission Changes' />
+          <EEREInputsContainer />
 
-        <DataDownload heading='Data Download' />
-      </PanelBody>
+          <EEREChartContainer heading='EE/RE profile based on values entered:' />
+        </PanelBody>
 
-      <PanelFooterContainer prevButtonText='Back to EE/RE Impacts' nextButtonText='Reset Region' lastPanel />
-    </Panel>
-  </div>
-);
+        <PanelFooterContainer prevButtonText='Back to Region' nextButtonText='Get Results' />
+      </Panel>
+
+
+
+      <Panel active={ props.activePanel === 3 }>
+        <PanelBody heading='Results: Avoided Regional, State, and County-Level Emissions'>
+          <DisplacementsTableContainer heading='Annual Regional Displacements' />
+
+          <EmissionsTableContainer heading='Annual State Emission Changes' />
+
+          <EmissionsChartContainer heading='Monthly Emission Changes' />
+
+          <DataDownload heading='Data Download' />
+        </PanelBody>
+
+        <PanelFooterContainer prevButtonText='Back to EE/RE Impacts' nextButtonText='Reset Region' lastPanel />
+      </Panel>
+    </div>
+  );
+};
 
 StepPanels.propTypes = {
   activePanel: PropTypes.number.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default StepPanels;

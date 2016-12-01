@@ -1,6 +1,5 @@
 // action types
 import {
-  SELECT_REGION,
   UPDATE_EERE_TOP_HOURS,
   UPDATE_EERE_REDUCTION,
   UPDATE_EERE_ANNUAL_GWH,
@@ -16,7 +15,7 @@ import {
 } from '../../actions';
 
 const defaultState = {
-  status: 'select_region',
+  status: 'ready',
 
   constantMw: '',
   annualGwh: '',
@@ -46,12 +45,6 @@ const defaultState = {
 
 const eereReducer = (state = defaultState, action) => {
   switch (action.type) {
-    case SELECT_REGION:
-      return {
-        ...state,
-        status: "ready",
-      };
-
     case UPDATE_EERE_CONSTANT_MW:
       return {
         ...state,
@@ -136,7 +129,7 @@ const eereReducer = (state = defaultState, action) => {
         hard_valid: hardValid,
         hard_exceedances: action.hard_exceedances,
         hard_top_exceedance_value: hardMaxVal,
-        Hard_top_exceedance_hour: hardMaxIndex,
+        hard_top_exceedance_hour: hardMaxIndex,
       };
 
     case SUBMIT_PARAMS:

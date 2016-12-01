@@ -1,80 +1,102 @@
-import React , { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import Highcharts from 'react-highcharts';
-// utilities
-import statusEnum from '../../utils/statusEnum';
+// styles
+import './styles.css';
 
-class EEREChart extends Component {
-  render(){
-    const disabledClass = () => {
-      if (statusEnum[this.props.eere_status].submitted || ! this.props.valid) {
-        return 'avert-button-disabled';
-      } else {
-        return '';
-      }
-    };
-
-    const data = this.props.hourlyEere.map((hour) => hour.final_mw);
-    const hours = this.props.hourlyEere.map((hour, index) => index);
-    const chartConfig = {
-      chart: {
-        height: 300,
-        style: {
-          fontFamily: '"Open Sans", sans-serif',
-        },
+const EEREChart = (props) => {
+  const data = props.hourlyEere.map((hour) => hour.final_mw);
+  const hours = props.hourlyEere.map((hour, index) => index);
+  const chartConfig = {
+    chart: {
+      height: 300,
+      style: {
+        fontFamily: '"Open Sans", sans-serif',
       },
+    },
+    title: {
+      text: props.heading,
+      style: {
+        fontSize: '1rem',
+        fontWeight: 'bold',
+        color: '#444',
+      },
+    },
+    credits: {
+      enabled: false,
+    },
+    legend: {
+      enabled: false,
+    },
+    xAxis: {
+      categories: hours,
+    },
+    yAxis: {
       title: {
-        text: 'EERE Load Output',
-        style: {
-          fontSize: '1rem',
-          fontWeight: 'bold',
-          color: '#444',
-        },
+        text: false,
       },
-      credits: {
-        enabled: false,
-      },
-      legend: {
-        enabled: false,
-      },
-      xAxis: {
-        categories: hours,
-      },
-      yAxis: {
-        title: {
-          text: false,
-        },
-      },
-      series: [{
-        name: 'EERE Load Output',
-        data: data,
-        color: '#058dc7',
-      }],
-    };
+    },
+    series: [{
+      name: 'EERE Load Output',
+      data: data,
+      color: '#058dc7',
+    }],
+  };
 
-    return (
+  // boolean flag to render chart and error/warning when hourlyEere prop exits
+  let ready = props.hourlyEere.length > 0;
+
+  let chart = null;
+  // conditionally re-define chart when ready (hourlyEere prop exists)
+  if (ready) {
+    chart = (
       <div className='avert-eere-profile'>
-        <h3 className='avert-heading-three'>{ this.props.heading }</h3>
-
-        <a className={`avert-button ${disabledClass()}`} href=''
-          onClick={(e) => {
-            e.preventDefault();
-            this.props.onCalculateProfile()
-          }}
-        >
-          { statusEnum[this.props.eere_status].lang }
-        </a>
-
-        <Highcharts config={chartConfig} ref='eere-profile' />
+        <Highcharts config={chartConfig} />
       </div>
     );
-  };
-}
+  }
+
+  let validationError = null;
+  // conditionally re-define error when ready and hardValid prop exists
+  if (ready && !props.hardValid) {
+    validationError = (
+      <p className='avert-validation-error'>
+        <span className='avert-validation-heading'>{'ERROR:'}</span>
+        {'The combined impact of your proposed programs would displace up to '}
+        <strong>{props.hardTopExceedanceHour}</strong>
+        {' of hourly regional fossil generation. The recommended limit for AVERT is 15%, as AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics. Please reduce one or more of your inputs to ensure more reliable results.'}
+      </p>
+    );
+  }
+
+  let validationWarning = null;
+  // conditionally re-define warning when ready,
+  // softValid prop exists, and hardValid prop doesn't exist
+  if (ready && !props.softValid && props.hardValid) {
+    validationWarning = (
+      <p className='avert-validation-warning'>
+        <span className='avert-validation-heading'>{'WARNING:'}</span>
+        {'The combined impact of your proposed programs would displace up to '}
+        <strong>{props.softTopExceedanceHour}</strong>
+        {' of hourly regional fossil generation. The recommended limit for AVERT is 15%, as AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics. You may wish to reduce one or more of your inputs to ensure more reliable results.'}
+      </p>
+    );
+  }
+
+  return (
+    <div>
+      { chart }
+      { validationError }
+      { validationWarning }
+    </div>
+  );
+};
 
 EEREChart.propTypes = {
   heading: PropTypes.string.isRequired,
-  eere_status: PropTypes.string.isRequired,
-  onCalculateProfile: PropTypes.func.isRequired,
-  valid: PropTypes.bool.isRequired,
+  // softValid: PropTypes.string,
+  // softTopExceedanceHour: PropTypes.string,
+  // hardValid: PropTypes.string,
+  // hardTopExceedanceHour: PropTypes.string,
 };
 
 export default EEREChart;
