@@ -49,14 +49,20 @@ class Engine {
         this.region = RegionEnum[region];
         this.rdf = RdfEnum[this.region];
 
-        const foo = {
-            'northeast': northeastEere,
-            'california': californiaEere,
+        const regionDefaults = {
+            1: californiaEere,
+            2: greatLakesMidAtlanticEere,
+            3: northeastEere,
+            4: northwestEere,
+            5: rockyMountainsEere,
+            6: lowerMidwestEere,
+            7: southeastEere,
+            8: southwestEere,
+            9: texasEere,
+            10: upperMidwestEere,
         };
 
-        this.eereDefault = northeastEere;
-
-        console.warn('...','REGION',region)
+        this.eereDefault = regionDefaults[region];
 
         return this;
     }
