@@ -22,4 +22,5 @@ Route::group(['prefix'=>'api/v1'],function(){
     Route::get('region/{name}','RegionController@getRuns');
     Route::get('region/{name}/year/{year}','RegionController@getYear');
     Route::get('region/{name}/year/{year}/data/{data_type}','RegionController@getData');
+    Route::get('region/{name}/year/{year}/export/{data_type}','RegionController@exportData');
 });

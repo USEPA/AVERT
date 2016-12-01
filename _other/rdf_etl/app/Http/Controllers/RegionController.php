@@ -12,6 +12,9 @@ use App\Run;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 class RegionController extends Controller
 {
@@ -22,7 +25,7 @@ class RegionController extends Controller
 
             unset($item->created_at);
             unset($item->updated_at);
-            $item['url'] = $request->url() . '/' . $item['region_name'];
+            $item['url'] = $request->url() . '/' . $item['region_abbv'];
 
             return $item;
         });
@@ -34,7 +37,8 @@ class RegionController extends Controller
 
     public function getRuns(Request $request, $name) {
 //        $region = Region::where('region_name',$name)->with('runs','loads','edges','medians','locations')->first();
-        $region = Region::where('region_name',$name)->first();
+//        $region = Region::where('region_name',$name)->first();
+        $region = Region::where('region_abbv',$name)->first();
 
         $runs = Run::where('region_id',$region->id)->get();
         $runs->transform(function($item,$key) use ($request) {
@@ -53,7 +57,7 @@ class RegionController extends Controller
     }
 
     public function getYear(Request $request, $name, $year) {
-        $region = Region::where('region_name',$name)->first();
+        $region = Region::where('region_abbv',$name)->first();
         $run = Run::where('region_id',$region->id)->where('year',$year)->first();
         $limits = Limit::where('region_id',$region->id)->where('year',$year)->first();
         $dataBasePath = $request->url() . '/data/';
@@ -78,7 +82,7 @@ class RegionController extends Controller
 
     public function getData(Request $request, $name, $year, $data_type) {
 
-        $region = Region::where('region_name',$name)->first();
+        $region = Region::where('region_abbv',$name)->first();
         $run = Run::where('region_id',$region->id)->where('year',$year)->first();
         $limits = Limit::where('region_id',$region->id)->where('year',$year)->first();
         $regionalLoad = RegionalLoad::where('region_id',$region->id)->get();
@@ -137,6 +141,20 @@ class RegionController extends Controller
             'load_bin_edges' => $edgeArray,
 //            'edge_count' => $numEdges,
             'data' => $dataOutput
+        ]);
+    }
+
+    public function exportData(Request $request, $name, $year, $data_type) {
+
+        $json = $this->getData($request, $name, $year, $data_type);
+        // $request = Request::create('/api/v1/region/' . $name . '/year/' . $year . '/data/' . $data_type, 'GET');
+        // $response = Route::dispatch($request);
+        // $json = $response->original();
+
+        Storage::put($name . '.json',$json);
+
+        return response()->json([
+           'success' => 'Success!',
         ]);
     }
 
