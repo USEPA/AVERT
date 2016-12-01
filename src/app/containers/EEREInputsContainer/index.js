@@ -16,6 +16,7 @@ import {
 } from '../../actions';
 
 const mapStateToProps = (state) => ({
+  limits: state.eere.limits,
   errors: state.eere.errors,
   valid: state.eere.valid,
 

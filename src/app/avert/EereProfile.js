@@ -1,5 +1,5 @@
 class EereProfile {
-	constructor() {
+    constructor() {
         this._topHours = 0;
         this._reduction = 0;
         this._annualGwh = 0;
@@ -8,7 +8,25 @@ class EereProfile {
         this._utilitySolar = 0;
         this._rooftopSolar = 0;
         this._errors = [];
-	}
+        this._limits = {
+            annualGwh: false,
+            constantMwh: false,
+            renewables: false,
+        }
+    }
+
+    get limits() {
+        console.log('......','limits',this._limits);
+        return this._limits;
+    }
+
+    set limits(limits) {
+        this._limits = {
+            annualGwh: limits.reductions,
+            constantMwh: parseInt((limits.reductions * 1000) / 8760,10),
+            renewables: limits.renewables,
+        };
+    }
 
     get isValid() {
 
@@ -62,7 +80,7 @@ class EereProfile {
     set reduction(value) {
         this.removeError('reduction');
 
-        if (value > 100 || value < 0) this.addError('reduction');
+        if (value > 15 || value < 0) this.addError('reduction');
 
         this._reduction = value;
 
@@ -76,11 +94,11 @@ class EereProfile {
     set annualGwh(value) {
         this.removeError('annualGwh');
 
-        if(value > 41900) this.addError('annualGwh');
+        if(this.limits.annualGwh > 41900) this.addError('annualGwh');
 
         this._annualGwh = value;
 
-        return this;        
+        return this;
     }
     
     get constantMw() {
@@ -88,10 +106,9 @@ class EereProfile {
     }
 
     set constantMw(value) {
-        this.removeError('constantMw');       
-        const constantLimit = parseInt((41900 * 1000) / 8760,10);
+        this.removeError('constantMw');
         
-        if(value > constantLimit) this.addError('constantMw');
+        if(value > this.limits.constantMwh) this.addError('constantMw');
 
         this._constantMw = value;
 
@@ -105,7 +122,7 @@ class EereProfile {
     set windCapacity(value) {
         this.removeError('windCapacity');
 
-        if(value > 4780) this.addError('windCapacity');
+        if(value > this.limits.renewables) this.addError('windCapacity');
 
         this._windCapacity = value;
 
@@ -119,7 +136,7 @@ class EereProfile {
     set utilitySolar(value) {
         this.removeError('utilitySolar');
 
-        if(value > 4780) this.addError('utilitySolar');
+        if(value > this.limits.renewables) this.addError('utilitySolar');
 
         this._utilitySolar = value;
 
@@ -133,7 +150,7 @@ class EereProfile {
     set rooftopSolar(value) {
         this.removeError('rooftopSolar');
 
-        if(value > 4780) this.addError('rooftopSolar');
+        if(value > this.limits.renewables) this.addError('rooftopSolar');
 
         this._rooftopSolar = value;
 

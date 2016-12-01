@@ -8,6 +8,7 @@ import store from '../store';
 export const CHANGE_ACTIVE_STEP = 'CHANGE_ACTIVE_STEP';
 
 export const SELECT_REGION = 'SELECT_REGION';
+export const SET_LIMITS = 'SET_LIMITS';
 export const UPDATE_YEAR = 'UPDATE_YEAR';
 
 export const UPDATE_EERE_TOP_HOURS = 'UPDATE_EERE_TOP_HOURS';
@@ -54,11 +55,21 @@ export const setActiveStep = (number) => ({
 
 export const selectRegion = (region) => {
   avert.setRegion(region);
+  
+  eereProfile.limits = {
+    reductions: avert.limits.max_ee_yearly_gwh,
+    renewables: avert.limits.max_solar_wind_mwh,
+  };
 
-  return {
+  return [{
     type: SELECT_REGION,
     region,
-  };
+  }, {
+    type: SET_LIMITS,
+    payload: {
+      limits: eereProfile.limits,
+    }
+  }];
 };
 
 export const updateYear = (year) => {
