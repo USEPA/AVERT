@@ -5,6 +5,7 @@ import EereStatusEnum from '../../utils/EereStatusEnum';
 import './styles.css';
 
 const EEREInputs = ({
+  limits,
   errors,
   valid,
   softValid,
@@ -78,7 +79,7 @@ const EEREInputs = ({
                   }}
                 />
                 <span>{' MW'}</span>
-                { displayError(errors, 'constantMw', 4783) }
+                { displayError(errors, 'constantMw', limits.constantMwh) }
               </li>
 
               <li>
@@ -91,7 +92,7 @@ const EEREInputs = ({
                   }}
                 />
                 <span>{' GWh'}</span>
-                { displayError(errors, 'annualGwh', 41900) }
+                { displayError(errors, 'annualGwh', limits.annualGwh) }
               </li>
             </ul>
           </section>
@@ -157,7 +158,7 @@ const EEREInputs = ({
                 }}
               />
               <span>{' MW'}</span>
-              { displayError(errors, 'windCapacity', 4780) }
+              { displayError(errors, 'windCapacity', limits.renewables) }
             </p>
           </section>
         </details>
@@ -175,7 +176,7 @@ const EEREInputs = ({
                 }}
               />
               <span>{' MW'}</span>
-              { displayError(errors, 'utilitySolar', 4780) }
+              { displayError(errors, 'utilitySolar', limits.renewables) }
             </p>
           </section>
         </details>
@@ -193,7 +194,7 @@ const EEREInputs = ({
                 }}
               />
               <span>{' MW'}</span>
-              { displayError(errors, 'rooftopSolar', 4780) }
+              { displayError(errors, 'rooftopSolar', limits.renewables) }
             </p>
           </section>
         </details>
@@ -224,6 +225,7 @@ EEREInputs.propTypes = {
   // capacity: PropTypes.string,
   // utilitySolar: PropTypes.string,
   // rooftopSolar: PropTypes.string,
+  limits: PropTypes.object,
   onTopHoursChange: PropTypes.func,
   onReductionChange: PropTypes.func,
   onAnnualGwhChange: PropTypes.func,

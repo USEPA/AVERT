@@ -1,5 +1,6 @@
 // action types
 import {
+  SET_LIMITS,
   UPDATE_EERE_TOP_HOURS,
   UPDATE_EERE_REDUCTION,
   UPDATE_EERE_ANNUAL_GWH,
@@ -17,6 +18,7 @@ import {
 const defaultState = {
   status: 'ready',
 
+  limits: { annualGwh: false, constantMwh: false, renewables: false },
   constantMw: '',
   annualGwh: '',
   //___?___,
@@ -45,6 +47,11 @@ const defaultState = {
 
 const eereReducer = (state = defaultState, action) => {
   switch (action.type) {
+    case SET_LIMITS:
+      return {
+        ...state,
+        limits: action.payload.limits
+      };
     case UPDATE_EERE_CONSTANT_MW:
       return {
         ...state,

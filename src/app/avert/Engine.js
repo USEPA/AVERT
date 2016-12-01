@@ -67,6 +67,10 @@ class Engine {
         return this;
     }
 
+    get limits() {
+        return this.rdf.limits;
+    }
+
     getRegion(){
         return this.region;
     }
