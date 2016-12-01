@@ -4,9 +4,6 @@ import EereStatusEnum from '../../utils/EereStatusEnum';
 // styles
 import './styles.css';
 
-// include details pollyfill for IE/Edge
-const details = require('../../../assets/details-pollyfill');
-
 const EEREInputs = ({
   errors,
   valid,
