@@ -12,19 +12,20 @@ class EereProfile {
             annualGwh: false,
             constantMwh: false,
             renewables: false,
+            softPercent: 15,
         }
     }
 
     get limits() {
-        console.log('......','limits',this._limits);
         return this._limits;
     }
 
     set limits(limits) {
         this._limits = {
-            annualGwh: limits.reductions,
-            constantMwh: parseInt((limits.reductions * 1000) / 8760,10),
+            annualGwh: limits.constantReductions,
+            constantMwh: parseInt((limits.constantReductions * 1000) / 8760,10),
             renewables: limits.renewables,
+            softPercent: 15,
         };
     }
 
@@ -80,7 +81,7 @@ class EereProfile {
     set reduction(value) {
         this.removeError('reduction');
 
-        if (value > 15 || value < 0) this.addError('reduction');
+        if (value > this.limits.softPercent || value < 0) this.addError('reduction');
 
         this._reduction = value;
 
@@ -94,7 +95,7 @@ class EereProfile {
     set annualGwh(value) {
         this.removeError('annualGwh');
 
-        if(this.limits.annualGwh > 41900) this.addError('annualGwh');
+        if(value > this.limits.annualGwh) this.addError('annualGwh');
 
         this._annualGwh = value;
 

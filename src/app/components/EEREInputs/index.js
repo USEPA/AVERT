@@ -36,7 +36,7 @@ const EEREInputs = ({
   eereStatus,
   onCalculateProfile,
 }) => {
-  console.warn('Errors:', errors, 'Soft val:', softTopExceedanceValue, 'Hard val:', hardTopExceedanceValue);
+  // console.warn('Errors:', errors, 'Soft val:', softTopExceedanceValue, 'Hard val:', hardTopExceedanceValue);
 
   const displayError = (errors, inputField, maxVal, errorMessage) => {
     if (errors.indexOf(inputField) !== -1) {
@@ -56,7 +56,6 @@ const EEREInputs = ({
   };
 
   const disabledClass = !valid || eereStatus === 'started' ? 'avert-button-disabled' : '';
-
   return (
     <div>
       <div className='avert-details-block'>
@@ -134,7 +133,7 @@ const EEREInputs = ({
                   }}
                 />
                 <span>{' % of hours'}</span>
-                { displayError(errors, 'reduction', false, 'Please enter a number from 0 to 100.') }
+                { displayError(errors, 'reduction', false, 'Please enter a number from 0 to 15.') }
                 { displayError(errors, 'topHours', false, 'Please enter a number from 0 to 100.') }
               </li>
             </ul>

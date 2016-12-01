@@ -5,7 +5,7 @@ import {
 } from '../../actions';
 
 const initialState = {
-  region: '',
+  region: 0,
   year: 2015,
 };
 

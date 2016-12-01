@@ -15,7 +15,7 @@ const Region = (props) => (
 );
 
 Region.propTypes = {
-  regionId: PropTypes.string.isRequired,
+  regionId: PropTypes.number.isRequired,
   onRegionClick: PropTypes.func.isRequired,
   children: PropTypes.node,
 };

@@ -54,16 +54,17 @@ export const setActiveStep = (number) => ({
 });
 
 export const selectRegion = (region) => {
-  avert.setRegion(region);
-  
+  const formattedRegion = parseInt(region, 10);
+  avert.setRegion(formattedRegion);
+
   eereProfile.limits = {
-    reductions: avert.limits.max_ee_yearly_gwh,
-    renewables: avert.limits.max_solar_wind_mwh,
+    constantReductions: avert.getHardLimits() ? avert.getHardLimits().max_ee_yearly_gwh : false,
+    renewables: avert.getHardLimits() ? avert.getHardLimits().max_solar_wind_mwh : false,
   };
 
   return [{
     type: SELECT_REGION,
-    region,
+    region: formattedRegion,
   }, {
     type: SET_LIMITS,
     payload: {
