@@ -12,7 +12,18 @@ import RdfEnum from './enums/RdfEnum';
 import AnnualDisplacementEngine from './AnnualDisplacementEngine';
 import StateEmissionsEngine from './StateEmissionsEngine';
 import MonthlyEmissionsEngine from './MonthlyEmissionsEngine';
-import northeastEere from '../../assets/data/northeast-eere-defaults.json';
+
+// EERE Defaults
+import californiaEere from '../../assets/data/eere-defaults-california.json';
+import greatLakesMidAtlanticEere from '../../assets/data/eere-defaults-great-lakes-mid-atlantic.json';
+import lowerMidwestEere from '../../assets/data/eere-defaults-lower-midwest.json';
+import northeastEere from '../../assets/data/eere-defaults-northeast.json';
+import northwestEere from '../../assets/data/eere-defaults-northwest.json';
+import rockyMountainsEere from '../../assets/data/eere-defaults-rocky-mountains.json';
+import southeastEere from '../../assets/data/eere-defaults-southeast.json';
+import southwestEere from '../../assets/data/eere-defaults-southwest.json';
+import texasEere from '../../assets/data/eere-defaults-texas.json';
+import upperMidwestEere from '../../assets/data/eere-defaults-upper-midwest.json';
 
 // App
 import store from '../store';
@@ -37,7 +48,15 @@ class Engine {
     setRegion(region) {
         this.region = RegionEnum[region];
         this.rdf = RdfEnum[this.region];
+
+        const foo = {
+            'northeast': northeastEere,
+            'california': californiaEere,
+        };
+
         this.eereDefault = northeastEere;
+
+        console.warn('...','REGION',region)
 
         return this;
     }
