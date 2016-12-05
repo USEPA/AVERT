@@ -13,8 +13,8 @@ import {
 const initialState = {
   status: "select_region",
   selected_aggregation: 'region',
-  selected_state: false,
-  selected_county: false,
+  selected_state: '',
+  selected_county: '',
   selected_unit: 'emission',
   results: {
     so2: {},
