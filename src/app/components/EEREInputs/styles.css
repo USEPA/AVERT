@@ -64,10 +64,14 @@
 .avert-details-block input {
   margin: 0.25rem 0;
   padding: 0.125rem 0.25rem;
+  border: 1px solid #ccc;
   width: 4rem;
   font-size: inherit;
   font-weight: bold;
   text-align: right;
+}
+.avert-details-block input:disabled {
+  background-color: #eee;
 }
 
 .avert-input-error {

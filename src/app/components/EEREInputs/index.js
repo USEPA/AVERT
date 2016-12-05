@@ -73,6 +73,7 @@ const EEREInputs = ({
                 <input
                   type='text'
                   value={ constantMw }
+                  disabled={ annualGwh ? true : false }
                   onChange={(e) => {
                     onConstantMwChange(e.target.value)
                   }}
@@ -86,6 +87,7 @@ const EEREInputs = ({
                 <input
                   type='text'
                   value={ annualGwh }
+                  disabled={ constantMw ? true : false }
                   onChange={(e) => {
                     onAnnualGwhChange(e.target.value)
                   }}
@@ -107,6 +109,7 @@ const EEREInputs = ({
                 <input
                   type='text'
                   value={ '___?___' }
+                  disabled={ reduction || topHours ? true : false }
                   onChange={(e) => {
                     //on___?___Change(e.target.value)
                   }}
