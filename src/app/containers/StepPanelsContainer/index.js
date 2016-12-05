@@ -4,6 +4,7 @@ import StepPanels from '../../components/StepPanels';
 
 const mapStateToProps = (state) => ({
   loading: state.panel.loading,
+  softValid: state.eere.soft_valid,
 });
 
 const StepPanelsContainer = connect(

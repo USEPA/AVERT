@@ -30,6 +30,17 @@ const StepPanels = (props) => {
     );
   }
 
+  let validationWarning = null;
+  // conditionally re-define warning when softValid prop is false
+  if (!props.softValid) {
+    validationWarning = (
+      <p className='avert-message-top avert-validation-warning'>
+        <span className='avert-message-heading'>{'WARNING:'}</span>
+        {'The proposed EE/RE programs would collectively displace more than 15% of regional fossil generation in one or more hours of the year. AVERT works best with displacements of 15% or less, as it is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics.'}
+      </p>
+    );
+  }
+
   return (
     <div className={`avert-steps ${loadingClass}`}>
       { loadingIndicator }
@@ -93,6 +104,8 @@ const StepPanels = (props) => {
 
       <Panel active={ props.activePanel === 3 }>
         <PanelBody heading='Results: Avoided Regional, State, and County-Level Emissions'>
+          { validationWarning }
+
           <DisplacementsTableContainer heading='Annual Regional Displacements' />
 
           <EmissionsTableContainer heading='Annual State Emission Changes' />
@@ -111,6 +124,7 @@ const StepPanels = (props) => {
 StepPanels.propTypes = {
   activePanel: PropTypes.number.isRequired,
   loading: PropTypes.bool.isRequired,
+  // softValid: PropTypes.string,
 };
 
 export default StepPanels;

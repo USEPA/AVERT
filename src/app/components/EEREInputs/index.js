@@ -199,7 +199,7 @@ const EEREInputs = ({
         </details>
       </div>
 
-      <p className='avert-centered'>
+      <p className='avert-impacts-button'>
         <a className={`avert-button ${disabledClass}`} href=''
           onClick={(e) => {
             e.preventDefault();

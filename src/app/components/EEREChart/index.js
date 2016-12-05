@@ -1,7 +1,5 @@
 import React, { PropTypes } from 'react';
 import Highcharts from 'react-highcharts';
-// styles
-import './styles.css';
 
 const EEREChart = (props) => {
   const data = props.hourlyEere.map((hour) => hour.final_mw);
@@ -56,11 +54,11 @@ const EEREChart = (props) => {
   }
 
   let validationError = null;
-  // conditionally re-define error when ready and hardValid prop exists
+  // conditionally re-define error when ready and hardValid prop is false
   if (ready && !props.hardValid) {
     validationError = (
-      <p className='avert-validation-error'>
-        <span className='avert-validation-heading'>{'ERROR:'}</span>
+      <p className='avert-message-bottom avert-validation-error'>
+        <span className='avert-message-heading'>{'ERROR:'}</span>
         {'The combined impact of your proposed programs would displace up to '}
         <strong>{props.hardTopExceedanceHour}</strong>
         {' of hourly regional fossil generation. The recommended limit for AVERT is 15%, as AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics. Please reduce one or more of your inputs to ensure more reliable results.'}
@@ -70,11 +68,11 @@ const EEREChart = (props) => {
 
   let validationWarning = null;
   // conditionally re-define warning when ready,
-  // softValid prop exists, and hardValid prop doesn't exist
+  // softValid prop is false, and hardValid prop is true
   if (ready && !props.softValid && props.hardValid) {
     validationWarning = (
-      <p className='avert-validation-warning'>
-        <span className='avert-validation-heading'>{'WARNING:'}</span>
+      <p className='avert-message-bottom avert-validation-warning'>
+        <span className='avert-message-heading'>{'WARNING:'}</span>
         {'The combined impact of your proposed programs would displace up to '}
         <strong>{props.softTopExceedanceHour}</strong>
         {' of hourly regional fossil generation. The recommended limit for AVERT is 15%, as AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics. You may wish to reduce one or more of your inputs to ensure more reliable results.'}
@@ -93,6 +91,7 @@ const EEREChart = (props) => {
 
 EEREChart.propTypes = {
   heading: PropTypes.string.isRequired,
+  hourlyEere: PropTypes.array.isRequired,
   // softValid: PropTypes.string,
   // softTopExceedanceHour: PropTypes.string,
   // hardValid: PropTypes.string,
