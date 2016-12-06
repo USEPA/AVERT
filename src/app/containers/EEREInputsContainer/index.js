@@ -29,9 +29,6 @@ const mapStateToProps = (state) => ({
   utilitySolar: state.eere.utilitySolar,
   rooftopSolar: state.eere.rooftopSolar,
 
-  broadProgramDisabled: state.eere.broadProgramDisabled,
-  targetedProgramDisabled: state.eere.targetedProgramDisabled,
-
   eereStatus: state.eere.status,
 });
 

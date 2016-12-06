@@ -102,20 +102,19 @@ const EEREInputs = ({
                   onChange={ onBroadBasedProgramChange }
                 />
                 <span>{' % in all hours'}</span>
-                { displayError(errors, '_____', 15) }
               </li>
 
               <li>
                 {'Targeted program: Reduce generation by '}
                 <EEREInputFieldContainer
                   value={ reduction }
-                  disabled= { broadProgram ? true: false }
+                  disabled={ broadProgram ? true: false }
                   onChange={ onReductionChange }
                 />
                 <span>{' % during the peak '}</span>
                 <EEREInputFieldContainer
                   value={ topHours }
-                  disabled= { broadProgram ? true: false }
+                  disabled={ broadProgram ? true: false }
                   onChange={ onTopHoursChange }
                 />
                 <span>{' % of hours'}</span>
