@@ -5,7 +5,6 @@ import stats from 'stats-lite'
 
 // Engine
 import Regions from '../utils/Regions';
-import GasesEnum from './enums/GasesEnum';
 import YearsEnum from './enums/YearsEnum';
 import AnnualDisplacementEngine from './AnnualDisplacementEngine';
 import StateEmissionsEngine from './StateEmissionsEngine';
@@ -26,41 +25,49 @@ import {
 class Engine {
 
     constructor(){
-        this.gas = [GasesEnum.CO2,GasesEnum.SO2,GasesEnum.NOx];
-        this.year = YearsEnum.CURRENT;
-        this.filepath = '../../assets/data/';
+        this._year = YearsEnum.CURRENT;
+        this.regionData = false;
+        this._region = false;
+        this.rdf = false;
+        this._eereDefault = false;
+        this.eereProfile = false;
     }
 
-    setRegion(region) {
+    set year(year) {
+        this._year = YearsEnum[year];
+    }
+
+    get year() {
+        return this._year;
+    }
+
+    get region() {
+        return this._region;
+    }
+
+    set region(region) {
         const regionKey = _.findKey(Regions, (o) => o.id === region);
         this.regionData = Regions[regionKey];
-        this.region = this.regionData.slug;
-        this.rdf = this.regionData.rdf;
-        this.eereDefault = this.regionData.defaults;
+        this._region = this.regionData.slug;
 
-        return this;
+        // this.rdf = this.regionData.rdf;
+        // this.eereDefault = this.regionData.defaults;
     }
 
-    getHardLimits() {
+    setRdf(rdf) {
+        this.rdf = rdf;
+    }
+
+    setDefaults(defaults) {
+        this.eereDefault = defaults;
+    }
+
+    get firstLimits() {
         return this.rdf.limits;
     }
 
-    getRegion(){
-        return this.region;
-    }
-
-    setYear(year) {
-        this.year = YearsEnum[year];
-
-        return this;
-    }
-
-    getYear() {
-        return this.year;
-    }
-
-    setEereProfile(eereProfile) {
-        this.eereProfile = eereProfile;
+    setEereProfile(profile) {
+        this.eereProfile = profile;
     }
 
     calculateDisplacement() {
@@ -74,7 +81,7 @@ class Engine {
         setTimeout(() => {
             store.dispatch(completeStateEmissions(stateEmissions.emissions));
             store.dispatch(foo_completeStateEmissions(stateEmissions.extract(annualOutput)));
-        }, 50)
+        }, 50);
 
         setTimeout(() => {
             store.dispatch(completeMonthlyEmissions(monthlyEmissions.emissions));
@@ -125,11 +132,8 @@ class Engine {
                                    .subtract(this.eereProfile.constantMw)
                                    .done();
 
-
         const finalMw = this.rdf.regional_load[index].year < 1990 ? 0 : calculatedLoad;
-        // if(finalMw < -100){
-        //     console.log('_______',index,finalMw,load,this.eereProfile.reduction,load*(-(this.eereProfile.reduction/100)),load*(-this.eereProfile.reduction),'________')
-        // }
+
         return {
             index: index,
             manual_eere_entry: this.manualEereEntry.toArray()[index],

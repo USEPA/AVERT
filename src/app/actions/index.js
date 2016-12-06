@@ -1,6 +1,8 @@
 import fetch from 'isomorphic-fetch';
 // avert
 import { avert, eereProfile } from '../avert';
+import * as northeast_rdf from '../../assets/data/rdf_northeast_2015.json';
+import * as northeast_defaults from '../../assets/data/eere-defaults-northeast.json';
 // store
 import store from '../store';
 
@@ -42,6 +44,10 @@ export const FOO_COMPLETE_STATE = 'FOO_COMPLETE_STATE';
 export const INVALIDATE_REGION = 'INVALIDATE_REGION';
 export const REQUEST_REGION = 'REQUEST_REGION';
 export const RECEIVE_REGION = 'RECEIVE_REGION';
+export const OVERRIDE_REGION = 'OVERRIDE_REGION';
+export const INVALIDATE_DEFAULTS = 'INVALIDATE_DEFAULTS';
+export const REQUEST_DEFAULTS = 'REQUEST_DEFAULTS';
+export const RECEIVE_DEFAULTS = 'RECEIVE_DEFAULTS';
 
 export const ADD_RDF = 'ADD_RDF';
 
@@ -53,36 +59,122 @@ export const setActiveStep = (number) => ({
   },
 });
 
-export const selectRegion = (region) => {
-  const formattedRegion = parseInt(region, 10);
-  avert.setRegion(formattedRegion);
+export const invalidateDefaults = (region) => ({
+  type: INVALIDATE_DEFAULTS,
+  region,
+});
 
-  eereProfile.limits = {
-    constantReductions: avert.getHardLimits() ? avert.getHardLimits().max_ee_yearly_gwh : false,
-    renewables: avert.getHardLimits() ? avert.getHardLimits().max_solar_wind_mwh : false,
-  };
+const requestDefaults = (region) => ({
+  type: REQUEST_DEFAULTS,
+  region,
+});
 
-  return [{
-    type: SELECT_REGION,
-    region: formattedRegion,
-  }, {
-    type: SET_LIMITS,
-    payload: {
-      limits: eereProfile.limits,
-    }
-  }];
-};
-
-export const updateYear = (year) => {
-  avert.setYear(year);
+const receiveDefaults = (region, defaults) => {
+  avert.setDefaults(defaults);
 
   return {
-    type: UPDATE_YEAR,
-    year,
+    type: RECEIVE_DEFAULTS,
+    payload: {
+      defaults: defaults
+    },
+  }
+};
+
+export const fetchDefaults = () => {
+  return function(dispatch) {
+    const region = avert.regionData;
+    dispatch(requestDefaults(region.slug));
+
+    return fetch(`http://appdev6.erg.com/avert/data/${region.defaults}.json`)
+      .then(response => response.json())
+      .then(json => dispatch(receiveDefaults(region.slug, json)))
   };
+};
+
+export const invalidateRegion = (region) => ({
+  type: INVALIDATE_REGION,
+  region,
+});
+
+const requestRegion = (region) => ({
+  type: REQUEST_REGION,
+  region,
+});
+
+const setLimits = () => {
+  eereProfile.limits = {
+    constantReductions: avert.firstLimits ? avert.firstLimits.max_ee_yearly_gwh : false,
+    renewables: avert.firstLimits ? avert.firstLimits.max_solar_wind_mwh : false,
+  };
+
+  return {
+    type: SET_LIMITS,
+    payload: {
+      limits: eereProfile.limits
+    }
+  }
+};
+
+const emitReceiveRegion = (rdf) => {
+  return {
+    type: RECEIVE_REGION,
+    payload: {
+      rdf: rdf
+    },
+  }
+};
+
+const receiveRegion = (region, json) => {
+  return function(dispatch) {
+    avert.setRdf(json);
+    dispatch(setLimits());
+    return dispatch(emitReceiveRegion(json));
+  };
+};
+
+let nextRdfId = 0;
+export const addRdf = (rdf) => ({
+  type: ADD_RDF,
+  id: nextRdfId++,
+  rdf,
+});
+
+export const fetchRegion = () => {
+  return function(dispatch) {
+    const region = avert.regionData;
+    dispatch(requestRegion(region.slug));
+
+    return fetch(`http://appdev6.erg.com/avert/data/${region.rdf}.json`)
+      .then(response => response.json())
+      .then(json =>
+        dispatch(receiveRegion(region.slug, json))
+      ).then(dispatch(fetchDefaults()));
+  };
+};
+
+const changeRegion = (region) => ({
+  type: SELECT_REGION,
+  region: region,
+});
+
+export const selectRegion = (region) => {
+  return function(dispatch) {
+    const formattedRegion = parseInt(region, 10);
+    avert.region = formattedRegion;
+    dispatch(changeRegion(formattedRegion));
+    dispatch(fetchRegion());
+  };
+};
+
+export const overrideRegion = () => {
+  return function(dispatch) {
+    dispatch(receiveRegion('NE',northeast_rdf));
+    dispatch(receiveDefaults('NE',northeast_defaults));
+  }
 };
 
 export const submitParams = () => {
+  // avert.eereProfile = eereProfile;
   avert.setEereProfile(eereProfile);
 
   const valid = eereProfile.isValid;
@@ -99,7 +191,6 @@ export const submitParams = () => {
 
 export const updateEereTopHours = (text) => {
   eereProfile.topHours = text;
-
   store.dispatch(submitParams());
 
   return {
@@ -110,7 +201,6 @@ export const updateEereTopHours = (text) => {
 
 export const updateEereReduction = (text) => {
   eereProfile.reduction = text;
-
   store.dispatch(submitParams());
 
   return {
@@ -121,7 +211,6 @@ export const updateEereReduction = (text) => {
 
 export const updateEereAnnualGwh = (text) => {
   eereProfile.annualGwh = text;
-
   store.dispatch(submitParams());
 
   return {
@@ -132,7 +221,6 @@ export const updateEereAnnualGwh = (text) => {
 
 export const updateEereConstantMw = (text) => {
   eereProfile.constantMw = text;
-
   store.dispatch(submitParams());
 
   return {
@@ -143,7 +231,6 @@ export const updateEereConstantMw = (text) => {
 
 export const updateEereWindCapacity = (text) => {
   eereProfile.windCapacity = text;
-
   store.dispatch(submitParams());
 
   return {
@@ -154,7 +241,6 @@ export const updateEereWindCapacity = (text) => {
 
 export const updateEereUtilitySolar = (text) => {
   eereProfile.utilitySolar = text;
-
   store.dispatch(submitParams());
 
   return {
@@ -165,7 +251,6 @@ export const updateEereUtilitySolar = (text) => {
 
 export const updateEereRooftopSolar = (text) => {
   eereProfile.rooftopSolar = text;
-
   store.dispatch(submitParams());
 
   return {
@@ -257,38 +342,3 @@ export const calculateDisplacement = () => {
   }, 50);
 };
 
-export const invalidateRegion = (region) => ({
-  type: INVALIDATE_REGION,
-  region,
-});
-
-export const requestRegion = (region) => ({
-  type: REQUEST_REGION,
-  region,
-});
-
-export const receiveRegion = (region, json) => ({
-  type: RECEIVE_REGION,
-  region,
-  posts: json.data.children.map(child => child.data),
-  receivedAt: Date.now(),
-});
-
-let nextRdfId = 0;
-export const addRdf = (rdf) => ({
-  type: ADD_RDF,
-  id: nextRdfId++,
-  rdf,
-});
-
-export const fetchRegion = (region) => {
-  return function(dispatch) {
-    dispatch(requestRegion(region));
-
-    return fetch(`http://www.reddit.com/r/${region}.json`)
-      .then(response => response.json())
-      .then(json =>
-        dispatch(receiveRegion(region, json))
-      );
-  };
-};

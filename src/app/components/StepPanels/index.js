@@ -62,6 +62,9 @@ const StepPanels = (props) => {
               <a href="https://www.epa.gov/statelocalclimate/download-avert">{'here'}</a>
             {') allows analyses for years 2007–2015 or for a future year scenario.'}
           </p>
+          <em className="avert-small-text" onClick={() => { props.onClickDebug() }}>
+            (Debug)
+          </em>
         </PanelBody>
 
         <PanelFooterContainer nextButtonText='Set EE/RE Impacts' />

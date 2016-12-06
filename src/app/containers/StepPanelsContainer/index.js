@@ -1,14 +1,22 @@
 import { connect } from 'react-redux';
 // components
 import StepPanels from '../../components/StepPanels';
+// action creators
+import { overrideRegion } from '../../actions';
 
 const mapStateToProps = (state) => ({
   loading: state.panel.loading,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  onClickDebug: () => {
+    dispatch(overrideRegion());
+  },
+});
+
 const StepPanelsContainer = connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(StepPanels);
 
 export default StepPanelsContainer;
