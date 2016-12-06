@@ -1,9 +1,19 @@
 .avert-region-map {
-  margin-bottom: 1.5rem;
+  position: relative;
+  margin: 1.5rem 0;
+}
+/* padding-top: intrinsic aspect ratio so SVG displays property in IE */
+.avert-region-map::before {
+  content: '';
+  display: block;
+  /* height and width of svg */
+  padding-top: calc(500 / 720 * 100%);
 }
 .avert-region-map svg {
-  max-width: 100%;
-  height: auto;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
 }
 
 /* labels */
