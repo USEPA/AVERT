@@ -1,7 +1,11 @@
 // action types
 import {
   CHANGE_ACTIVE_STEP,
-  SELECT_REGION,
+  // SELECT_REGION,
+  // REQUEST_DEFAULTS,
+  // RECEIVE_DEFAULTS,
+  REQUEST_REGION,
+  RECEIVE_REGION,
   SUBMIT_CALCULATION,
   COMPLETE_CALCULATION,
   START_DISPLACEMENT,
@@ -28,11 +32,24 @@ const panelReducer = (state = defaultState, action) => {
         nextDisabled: true,
       };
 
-    case SELECT_REGION:
+    // case SELECT_REGION:
+    //   return {
+    //     ...state,
+    //     nextDisabled: false,
+    //     // eereScreen: true,
+    //   };
+
+    case REQUEST_REGION:
       return {
         ...state,
+        loading: true,
+      };
+
+    case RECEIVE_REGION:
+      return {
+        ...state,
+        loading: false,
         nextDisabled: false,
-        // eereScreen: true,
       };
 
     case SUBMIT_CALCULATION:

@@ -13,7 +13,7 @@ const EEREInputs = ({
 
   constantMw,
   annualGwh,
-  _____,
+  broadProgram,
   reduction,
   topHours,
   windCapacity,
@@ -22,7 +22,7 @@ const EEREInputs = ({
 
   onConstantMwChange,
   onAnnualGwhChange,
-  on_____Change,
+  onBroadBasedProgramChange,
   onReductionChange,
   onTopHoursChange,
   onWindCapacityChange,
@@ -97,9 +97,9 @@ const EEREInputs = ({
               <li>
                 {'Broad-based program: Reduce generation by '}
                 <EEREInputFieldContainer
-                  value={ _____ }
+                  value={ broadProgram }
                   disabled={ reduction || topHours ? true : false }
-                  onChange={ on_____Change }
+                  onChange={ onBroadBasedProgramChange }
                 />
                 <span>{' % in all hours'}</span>
                 { displayError(errors, '_____', 15) }
@@ -109,13 +109,13 @@ const EEREInputs = ({
                 {'Targeted program: Reduce generation by '}
                 <EEREInputFieldContainer
                   value={ reduction }
-                  disabled= { _____ ? true: false }
+                  disabled= { broadProgram ? true: false }
                   onChange={ onReductionChange }
                 />
                 <span>{' % during the peak '}</span>
                 <EEREInputFieldContainer
                   value={ topHours }
-                  disabled= { _____ ? true: false }
+                  disabled= { broadProgram ? true: false }
                   onChange={ onTopHoursChange }
                 />
                 <span>{' % of hours'}</span>

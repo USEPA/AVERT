@@ -6,7 +6,7 @@ import annualDisplacementReducer from './annualDisplacementReducer';
 import stateEmissionsReducer from './stateEmissionsReducer';
 import monthlyEmissionsReducer from './monthlyEmissionsReducer';
 import regionsReducer from './regionsReducer';
-//import rdfsReducer from './rdfsReducer';
+import rdfsReducer from './rdfsReducer';
 
 const reducers = combineReducers({
   panel: panelReducer,
@@ -15,7 +15,7 @@ const reducers = combineReducers({
   stateEmissions: stateEmissionsReducer,
   monthlyEmissions: monthlyEmissionsReducer,
   regions: regionsReducer,
-  // rdfs: rdfsReducer,
+  rdfs: rdfsReducer,
 });
 
 export default reducers;
