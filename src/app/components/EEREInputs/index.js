@@ -51,7 +51,21 @@ const EEREInputs = ({
     }
   };
 
-  const disabledClass = !valid || eereStatus === 'started' ? 'avert-button-disabled' : '';
+  const allFieldsEmpty =
+    // array of field values saved to state
+    [constantMw, annualGwh, broadProgram, reduction, topHours, windCapacity, utilitySolar, rooftopSolar]
+      // filter out fields that aren't empty
+      .filter(field => field.length > 0)
+      // if any exist, assign false, else assign true
+      .length > 0 ? false : true;
+
+  let disabledClass = '';
+  // reassign disabledClass if...
+  // form validation fails, all fields are empty, or calculation has started
+  if (!valid || allFieldsEmpty || eereStatus === 'started') {
+    disabledClass = 'avert-button-disabled';
+  }
+
   return (
     <div>
       <div className='avert-details-block'>
