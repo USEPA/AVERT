@@ -36,3 +36,34 @@
   text-align: center;
   color: #00bee6;
 }
+
+.avert-message-heading {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: bold;
+  font-size: 0.875rem;
+}
+
+.avert-message-top,
+.avert-message-bottom {
+  position: relative;
+  left: -1.5rem;
+  width: calc(100% + 3rem);
+  padding: 1.5rem;
+  margin-top: 0;
+  font-size: 0.75rem;
+}
+.avert-message-top {
+  top: 0;
+}
+.avert-message-bottom {
+  bottom: -1.5rem;
+}
+
+.avert-validation-error {
+  color: white;
+  background-color: rgb(212,57,57);
+}
+.avert-validation-warning {
+  background-color: rgb(249,201,114);
+}

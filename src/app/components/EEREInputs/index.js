@@ -1,4 +1,6 @@
 import React, { PropTypes } from 'react';
+// containers
+import EEREInputFieldContainer from '../../containers/EEREInputFieldContainer';
 // utilities
 import EereStatusEnum from '../../utils/EereStatusEnum';
 // styles
@@ -8,12 +10,6 @@ const EEREInputs = ({
   limits,
   errors,
   valid,
-  softValid,
-  softTopExceedanceValue,
-  softTopExceedanceHour,
-  hardValid,
-  hardTopExceedanceValue,
-  hardTopExceedanceHour,
 
   constantMw,
   annualGwh,
@@ -33,9 +29,6 @@ const EEREInputs = ({
   onUtilitySolarChange,
   onRooftopSolarChange,
 
-  broadProgramDisabled,
-  targetedProgramDisabled,
-  
   eereStatus,
   onCalculateProfile,
 }) => {
@@ -73,12 +66,10 @@ const EEREInputs = ({
             <ul>
               <li>
                 {'Reduce hourly generation by '}
-                <input
-                  type='text'
+                <EEREInputFieldContainer
                   value={ constantMw }
-                  onChange={(e) => {
-                    onConstantMwChange(e.target.value)
-                  }}
+                  disabled={ annualGwh ? true : false }
+                  onChange={ onConstantMwChange }
                 />
                 <span>{' MW'}</span>
                 { displayError(errors, 'constantMw', limits.constantMwh) }
@@ -86,12 +77,10 @@ const EEREInputs = ({
 
               <li>
                 {'Reduce total annual generation by '}
-                <input
-                  type='text'
+                <EEREInputFieldContainer
                   value={ annualGwh }
-                  onChange={(e) => {
-                    onAnnualGwhChange(e.target.value)
-                  }}
+                  disabled={ constantMw ? true : false }
+                  onChange={ onAnnualGwhChange }
                 />
                 <span>{' GWh'}</span>
                 { displayError(errors, 'annualGwh', limits.annualGwh) }
@@ -107,33 +96,26 @@ const EEREInputs = ({
             <ul>
               <li>
                 {'Broad-based program: Reduce generation by '}
-                <input
-                  type='text'
+                <EEREInputFieldContainer
                   value={ broadProgram }
-                  onChange={(e) => {
-                    onBroadBasedProgramChange(e.target.value)
-                  }}
+                  disabled={ reduction || topHours ? true : false }
+                  onChange={ onBroadBasedProgramChange }
                 />
                 <span>{' % in all hours'}</span>
-                { displayError(errors, '___?___', 15) }
               </li>
 
               <li>
                 {'Targeted program: Reduce generation by '}
-                <input
-                  type='text'
+                <EEREInputFieldContainer
                   value={ reduction }
-                  onChange={(e) => {
-                    onReductionChange(e.target.value)
-                  }}
+                  disabled={ broadProgram ? true: false }
+                  onChange={ onReductionChange }
                 />
                 <span>{' % during the peak '}</span>
-                <input
-                  type='text'
+                <EEREInputFieldContainer
                   value={ topHours }
-                  onChange={(e) => {
-                    onTopHoursChange(e.target.value)
-                  }}
+                  disabled={ broadProgram ? true: false }
+                  onChange={ onTopHoursChange }
                 />
                 <span>{' % of hours'}</span>
                 { displayError(errors, 'reduction', false, 'Please enter a number from 0 to 15.') }
@@ -152,12 +134,9 @@ const EEREInputs = ({
           <section>
             <p>
               {'Total capacity: '}
-              <input
-                type='text'
+              <EEREInputFieldContainer
                 value={ windCapacity }
-                onChange={(e) => {
-                  onWindCapacityChange(e.target.value)
-                }}
+                onChange={ onWindCapacityChange }
               />
               <span>{' MW'}</span>
               { displayError(errors, 'windCapacity', limits.renewables) }
@@ -170,12 +149,9 @@ const EEREInputs = ({
           <section>
             <p>
               {'Total capacity: '}
-              <input
-                type='text'
+              <EEREInputFieldContainer
                 value={ utilitySolar }
-                onChange={(e) => {
-                  onUtilitySolarChange(e.target.value)
-                }}
+                onChange={ onUtilitySolarChange }
               />
               <span>{' MW'}</span>
               { displayError(errors, 'utilitySolar', limits.renewables) }
@@ -188,12 +164,9 @@ const EEREInputs = ({
           <section>
             <p>
               {'Total capacity: '}
-              <input
-                type='text'
+              <EEREInputFieldContainer
                 value={ rooftopSolar }
-                onChange={(e) => {
-                  onRooftopSolarChange(e.target.value)
-                }}
+                onChange={ onRooftopSolarChange }
               />
               <span>{' MW'}</span>
               { displayError(errors, 'rooftopSolar', limits.renewables) }
@@ -202,7 +175,7 @@ const EEREInputs = ({
         </details>
       </div>
 
-      <p className='avert-centered'>
+      <p className='avert-impacts-button'>
         <a className={`avert-button ${disabledClass}`} href=''
           onClick={(e) => {
             e.preventDefault();

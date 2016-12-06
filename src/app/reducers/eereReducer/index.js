@@ -23,8 +23,6 @@ const defaultState = {
   constantMw: '',
   annualGwh: '',
   broadProgram: '',
-  broadProgramDisabled: false,
-  targetedProgramDisabled: false,
   reduction: '',
   topHours: '',
   windCapacity: '',
@@ -71,7 +69,6 @@ const eereReducer = (state = defaultState, action) => {
       return {
         ...state,
         reduction: action.text,
-        broadProgramDisabled: action.text === '' ? false : true,
       };
 
     case UPDATE_EERE_TOP_HOURS:
@@ -79,14 +76,12 @@ const eereReducer = (state = defaultState, action) => {
       return {
         ...state,
         topHours: action.text,
-        broadProgramDisabled: action.text === '' ? false : true,
       };
 
     case UPDATE_EERE_BROAD_BASE_PROGRAM:
       return {
         ...state,
         broadProgram: action.text,
-        targetedProgramDisabled: action.text === '' ? false : true,
       };
 
     case UPDATE_EERE_WIND_CAPACITY:
