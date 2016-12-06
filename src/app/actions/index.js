@@ -15,6 +15,7 @@ export const UPDATE_YEAR = 'UPDATE_YEAR';
 
 export const UPDATE_EERE_TOP_HOURS = 'UPDATE_EERE_TOP_HOURS';
 export const UPDATE_EERE_REDUCTION = 'UPDATE_EERE_REDUCTION';
+export const UPDATE_EERE_BROAD_BASE_PROGRAM = 'UPDATE_EERE_BROAD_BASE_PROGRAM';
 export const UPDATE_EERE_ANNUAL_GWH = 'UPDATE_EERE_ANNUAL_GWH';
 export const UPDATE_EERE_CONSTANT_MW = 'UPDATE_EERE_CONSTANT_MW';
 export const UPDATE_EERE_WIND_CAPACITY = 'UPDATE_EERE_WIND_CAPACITY';
@@ -205,6 +206,17 @@ export const updateEereReduction = (text) => {
 
   return {
     type: UPDATE_EERE_REDUCTION,
+    text,
+  };
+};
+
+export const updateEereBroadBasedProgram = (text) => {
+  eereProfile.topHours = 100;
+  eereProfile.reduction = text;
+  store.dispatch(submitParams());
+
+  return {
+    type: UPDATE_EERE_BROAD_BASE_PROGRAM,
     text,
   };
 };

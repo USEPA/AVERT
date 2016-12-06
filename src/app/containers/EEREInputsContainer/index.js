@@ -5,7 +5,7 @@ import EEREInputs from '../../components/EEREInputs';
 import {
   updateEereConstantMw,
   updateEereAnnualGwh,
-  //update___?___,
+  updateEereBroadBasedProgram,
   updateEereReduction,
   updateEereTopHours,
   updateEereWindCapacity,
@@ -22,12 +22,15 @@ const mapStateToProps = (state) => ({
 
   constantMw: state.eere.constantMw,
   annualGwh: state.eere.annualGwh,
-  //___?___: state.eere.___?___,
+  broadProgram: state.eere.broadProgram,
   reduction: state.eere.reduction,
   topHours: state.eere.topHours,
   windCapacity: state.eere.windCapacity,
   utilitySolar: state.eere.utilitySolar,
   rooftopSolar: state.eere.rooftopSolar,
+
+  broadProgramDisabled: state.eere.broadProgramDisabled,
+  targetedProgramDisabled: state.eere.targetedProgramDisabled,
 
   eereStatus: state.eere.status,
 });
@@ -39,9 +42,9 @@ const mapDispatchToProps = (dispatch) => ({
   onAnnualGwhChange(text) {
     dispatch(updateEereAnnualGwh(text));
   },
-  // on___?___Change(text) {
-  //   dispatch(update___?___(text));
-  // },
+  onBroadBasedProgramChange(text) {
+    dispatch(updateEereBroadBasedProgram(text));
+  },
   onReductionChange(text) {
     dispatch(updateEereReduction(text));
   },

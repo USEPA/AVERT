@@ -17,7 +17,7 @@ const EEREInputs = ({
 
   constantMw,
   annualGwh,
-  //___?___
+  broadProgram,
   reduction,
   topHours,
   windCapacity,
@@ -26,13 +26,16 @@ const EEREInputs = ({
 
   onConstantMwChange,
   onAnnualGwhChange,
-  //on___?___Change,
+  onBroadBasedProgramChange,
   onReductionChange,
   onTopHoursChange,
   onWindCapacityChange,
   onUtilitySolarChange,
   onRooftopSolarChange,
 
+  broadProgramDisabled,
+  targetedProgramDisabled,
+  
   eereStatus,
   onCalculateProfile,
 }) => {
@@ -106,9 +109,9 @@ const EEREInputs = ({
                 {'Broad-based program: Reduce generation by '}
                 <input
                   type='text'
-                  value={ '___?___' }
+                  value={ broadProgram }
                   onChange={(e) => {
-                    //on___?___Change(e.target.value)
+                    onBroadBasedProgramChange(e.target.value)
                   }}
                 />
                 <span>{' % in all hours'}</span>

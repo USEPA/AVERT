@@ -3,6 +3,7 @@ import {
   SET_LIMITS,
   UPDATE_EERE_TOP_HOURS,
   UPDATE_EERE_REDUCTION,
+  UPDATE_EERE_BROAD_BASE_PROGRAM,
   UPDATE_EERE_ANNUAL_GWH,
   UPDATE_EERE_CONSTANT_MW,
   UPDATE_EERE_WIND_CAPACITY,
@@ -21,7 +22,9 @@ const defaultState = {
   limits: { annualGwh: false, constantMwh: false, renewables: false },
   constantMw: '',
   annualGwh: '',
-  //___?___,
+  broadProgram: '',
+  broadProgramDisabled: false,
+  targetedProgramDisabled: false,
   reduction: '',
   topHours: '',
   windCapacity: '',
@@ -64,22 +67,26 @@ const eereReducer = (state = defaultState, action) => {
         annualGwh: action.text,
       };
 
-    // case UPDATE___?___:
-    //   return {
-    //     ...state,
-    //     ___?___: action.text,
-    //   };
-
     case UPDATE_EERE_REDUCTION:
       return {
         ...state,
         reduction: action.text,
+        broadProgramDisabled: action.text === '' ? false : true,
       };
 
     case UPDATE_EERE_TOP_HOURS:
+
       return {
         ...state,
         topHours: action.text,
+        broadProgramDisabled: action.text === '' ? false : true,
+      };
+
+    case UPDATE_EERE_BROAD_BASE_PROGRAM:
+      return {
+        ...state,
+        broadProgram: action.text,
+        targetedProgramDisabled: action.text === '' ? false : true,
       };
 
     case UPDATE_EERE_WIND_CAPACITY:
