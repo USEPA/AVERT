@@ -35,7 +35,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && echo 'Move details polyfill!'",
     "test": "react-scripts test --verbose",
     "coverage": "react-scripts test --coverage",
     "eject": "react-scripts eject"
