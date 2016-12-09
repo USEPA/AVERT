@@ -169,8 +169,9 @@ export const selectRegion = (region) => {
 
 export const overrideRegion = () => {
   return function(dispatch) {
-    dispatch(receiveRegion('NE',northeast_rdf));
-    dispatch(receiveDefaults('NE',northeast_defaults));
+    dispatch(changeRegion(3));
+    dispatch(receiveRegion('NE', northeast_rdf));
+    dispatch(receiveDefaults('NE', northeast_defaults));
   }
 };
 
@@ -353,4 +354,3 @@ export const calculateDisplacement = () => {
     avert.calculateDisplacement();
   }, 50);
 };
-

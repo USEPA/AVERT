@@ -9,7 +9,8 @@ import {
 
 const mapStateToProps = (state) => ({
   activeStep: state.panel.activeStep,
-  nextDisabled: state.panel.nextDisabled,
+  eereStatus: state.eere.status,
+  region: state.regions.region,
 });
 
 const mapDispatchToProps = (dispatch) => ({
