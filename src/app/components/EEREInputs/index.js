@@ -70,7 +70,7 @@ const EEREInputs = ({
           <p>Energy Efficiency</p>
         </header>
 
-        <details>
+        <details open={ constantMw || annualGwh }>
           <summary data-label='A'>Reductions spread evenly throughout the year</summary>
           <section>
             <p><strong>Choose one:</strong></p>
@@ -100,7 +100,7 @@ const EEREInputs = ({
           </section>
         </details>
 
-        <details>
+        <details open={ broadProgram || reduction || topHours }>
           <summary data-label='B'>Percentage reductions in some or all hours</summary>
           <section>
             <p><strong>Choose one:</strong></p>
@@ -140,7 +140,7 @@ const EEREInputs = ({
           <p>Renewable Energy</p>
         </header>
 
-        <details>
+        <details open={ windCapacity }>
           <summary data-label='C'>Wind</summary>
           <section>
             <p>
@@ -155,7 +155,7 @@ const EEREInputs = ({
           </section>
         </details>
 
-        <details>
+        <details open={ utilitySolar }>
           <summary data-label='D'>Utility-scale solar photovoltaic</summary>
           <section>
             <p>
@@ -170,7 +170,7 @@ const EEREInputs = ({
           </section>
         </details>
 
-        <details>
+        <details open={ rooftopSolar }>
           <summary data-label='E'>Distributed (rooftop) solar photovoltaic</summary>
           <section>
             <p>

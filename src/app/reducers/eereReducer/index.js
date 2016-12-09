@@ -11,6 +11,7 @@ import {
   UPDATE_EERE_ROOFTOP_SOLAR,
   VALIDATE_EERE,
   UPDATE_EXCEEDANCES,
+  RESET_EERE_INPUTS,
   SUBMIT_PARAMS,
   SUBMIT_CALCULATION,
   COMPLETE_CALCULATION,
@@ -139,6 +140,19 @@ const eereReducer = (state = defaultState, action) => {
         hard_exceedances: action.hard_exceedances,
         hard_top_exceedance_value: hardMaxVal,
         hard_top_exceedance_hour: hardMaxIndex,
+      };
+
+    case RESET_EERE_INPUTS:
+      return {
+        ...state,
+        constantMw: '',
+        annualGwh: '',
+        broadProgram: '',
+        reduction: '',
+        topHours: '',
+        windCapacity: '',
+        utilitySolar: '',
+        rooftopSolar: '',
       };
 
     case SUBMIT_PARAMS:
