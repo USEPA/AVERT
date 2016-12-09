@@ -18,7 +18,7 @@
   },
   "homepage": "http://appdev6.erg.com/avert/2016-12-09",
   "devDependencies": {
-    "react-scripts": "0.7.0"
+    "react-scripts": "0.8.3"
   },
   "dependencies": {
     "lodash": "^4.15.0",
