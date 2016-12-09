@@ -74,9 +74,10 @@ class AnnualDisplacementEngine {
             const month = loadArrayMonth[i];
             const postLoad = loadArrayPost[i];
 
-            monthlyEmissions.regional.data[month] = monthlyEmissions.regional.data[month] ? monthlyEmissions.regional.data[month] : 0;
-            monthlyEmissions.regional.pre[month] = monthlyEmissions.regional.pre[month] ? monthlyEmissions.regional.pre[month] : 0;
-            monthlyEmissions.regional.post[month] = monthlyEmissions.regional.post[month] ? monthlyEmissions.regional.post[month] : 0;
+            monthlyEmissions.regional[month] = monthlyEmissions.regional[month] ? monthlyEmissions.regional[month] : 0;
+            // monthlyEmissions.regional.data[month] = monthlyEmissions.regional.data[month] ? monthlyEmissions.regional.data[month] : 0;
+            // monthlyEmissions.regional.pre[month] = monthlyEmissions.regional.pre[month] ? monthlyEmissions.regional.pre[month] : 0;
+            // monthlyEmissions.regional.post[month] = monthlyEmissions.regional.post[month] ? monthlyEmissions.regional.post[month] : 0;
 
             preTotalArray[i] = 0;
             postTotalArray[i] = 0;
@@ -147,9 +148,10 @@ class AnnualDisplacementEngine {
                 monthlyEmissions.state[state].counties[county].post[month] += postVal;
             }
 
-            monthlyEmissions.regional.data[month] += deltaVArray[i];
-            monthlyEmissions.regional.pre[month] += preTotalArray[i];
-            monthlyEmissions.regional.post[month] += postTotalArray[i];
+            monthlyEmissions.regional[month] += deltaVArray[i];
+            // monthlyEmissions.regional.data[month] += deltaVArray[i];
+            // monthlyEmissions.regional.pre[month] += preTotalArray[i];
+            // monthlyEmissions.regional.post[month] += postTotalArray[i];
         }
         console.timeEnd('iterations');
 

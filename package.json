@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/Eastern-Research-Group/EPA-AVERT/issues"
   },
-  "homepage": "http://appdev6.erg.com/avert/2016-12-06",
+  "homepage": "http://appdev6.erg.com/avert/2016-12-09",
   "devDependencies": {
     "react-scripts": "0.7.0"
   },
@@ -35,7 +35,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && echo 'Move details polyfill!'",
+    "build": "react-scripts build && echo 'Remember to:\n[] Move details polyfill!'",
     "test": "react-scripts test --verbose",
     "coverage": "react-scripts test --coverage",
     "eject": "react-scripts eject"
