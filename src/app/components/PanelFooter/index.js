@@ -10,6 +10,9 @@ const PanelFooter = (props) => {
       <a className='avert-button avert-prev' href=''
         onClick={(e) => {
           e.preventDefault();
+
+          if (props.activeStep === 2) { props.onResetEereInputs(); }
+
           const step = props.activeStep - 1;
           props.onSetActiveStep(step);
         }}
@@ -60,6 +63,7 @@ PanelFooter.propTypes = {
   onSetActiveStep: PropTypes.func.isRequired,
   prevButtonText: PropTypes.string,
   nextButtonText: PropTypes.string.isRequired,
+  onResetEereInputs: PropTypes.func.isRequired,
   region: PropTypes.number.isRequired,
   eereStatus: PropTypes.string.isRequired,
   onCalculateDisplacement: PropTypes.func,
