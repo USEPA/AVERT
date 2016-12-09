@@ -114,6 +114,7 @@ class Engine {
     }
 
     hourlyEereCb(load,index){
+        setTimeout(() => {}, 0);
         const limit = this.limits[index];
         const softLimit = this.softLimits[index];
         const hardLimit = this.hardLimits[index];
