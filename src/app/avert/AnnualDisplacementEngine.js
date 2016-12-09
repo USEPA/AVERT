@@ -39,12 +39,13 @@ class AnnualDisplacementEngine {
     }
 
     getDisplacedGeneration(dataSet,dataSetNonOzone,no){
+        setTimeout(() => {},0);
         // if(no) return { original: '', post: '', impact: '' };
         console.time('prep');
-        
+
         const _this = this;
         const edges = Object.keys(this.rdf.load_bin_edges).map((key) => this.rdf.load_bin_edges[key]);
-        
+
         const medians = dataSet.map((item) => item.medians);
         const mediansNonOzone = dataSetNonOzone ? dataSetNonOzone.map((item) => item.medians) : false;
         const loadArrayMonth = this.rdf.regional_load.map((item) => item.month );
@@ -57,19 +58,25 @@ class AnnualDisplacementEngine {
         let postTotalArray = [];
         let deltaVArray = [];
         const monthlyEmissions = {
-            regional: {},
+            regional: {
+                data: {},
+                pre: {},
+                post: {},
+            },
             state: {},
-            // county: {},
         };
         console.timeEnd('prep');
 
         console.time('iterations');
         for (let i = 0; i < loadArrayOriginal.length; i++) {
+            setTimeout(() => {},0);
             const load = loadArrayOriginal[i];
             const month = loadArrayMonth[i];
             const postLoad = loadArrayPost[i];
-            
-            monthlyEmissions.regional[month] = monthlyEmissions.regional[month] ? monthlyEmissions.regional[month] : 0;
+
+            monthlyEmissions.regional.data[month] = monthlyEmissions.regional.data[month] ? monthlyEmissions.regional.data[month] : 0;
+            monthlyEmissions.regional.pre[month] = monthlyEmissions.regional.pre[month] ? monthlyEmissions.regional.pre[month] : 0;
+            monthlyEmissions.regional.post[month] = monthlyEmissions.regional.post[month] ? monthlyEmissions.regional.post[month] : 0;
 
             preTotalArray[i] = 0;
             postTotalArray[i] = 0;
@@ -79,7 +86,7 @@ class AnnualDisplacementEngine {
 
             let activeMedians = medians;
             if(mediansNonOzone) {
-                activeMedians = (month >= 5 && month <= 9) ? medians : mediansNonOzone;    
+                activeMedians = (month >= 5 && month <= 9) ? medians : mediansNonOzone;
             }
 
             const preGenIndex = this.excelMatch(edges,load);
@@ -96,22 +103,58 @@ class AnnualDisplacementEngine {
                 preTotalArray[i] += preVal;
                 postTotalArray[i] += postVal;
                 deltaVArray[i] += deltaV;
-                
-                monthlyEmissions.state[state] = monthlyEmissions.state[state] ? monthlyEmissions.state[state] : { data: {}, counties: {} };
-                monthlyEmissions.state[state].data[month] = monthlyEmissions.state[state].data[month] ? monthlyEmissions.state[state].data[month] : 0;
+
+                //Initialize empty States if they don't already exist
+                monthlyEmissions.state[state] = monthlyEmissions.state[state]
+                  ? monthlyEmissions.state[state]
+                  : { data: {}, pre: {}, post: {}, counties: {} };
+
+                //Initialize 0 value for the month if it hasn't been started
+                monthlyEmissions.state[state].data[month] = monthlyEmissions.state[state].data[month]
+                  ? monthlyEmissions.state[state].data[month]
+                  : 0;
                 monthlyEmissions.state[state].data[month] += deltaV;
 
-                monthlyEmissions.state[state].counties[county] = monthlyEmissions.state[state].counties[county] ? monthlyEmissions.state[state].counties[county] : {};
-                monthlyEmissions.state[state].counties[county][month] = monthlyEmissions.state[state].counties[county][month] ? monthlyEmissions.state[state].counties[county][month] : 0;
-                monthlyEmissions.state[state].counties[county][month] += deltaV;
+                monthlyEmissions.state[state].pre[month] = monthlyEmissions.state[state].pre[month]
+                  ? monthlyEmissions.state[state].pre[month]
+                  : 0;
+                monthlyEmissions.state[state].pre[month] += preVal;
+
+                monthlyEmissions.state[state].post[month] = monthlyEmissions.state[state].post[month]
+                  ? monthlyEmissions.state[state].post[month]
+                  : 0;
+                monthlyEmissions.state[state].post[month] += postVal;
+
+                //Initialize empty County if it doesn't already exist
+                monthlyEmissions.state[state].counties[county] = monthlyEmissions.state[state].counties[county]
+                  ? monthlyEmissions.state[state].counties[county]
+                  : { data: {}, pre: {}, post: {} };
+
+                //Initialize 0 value for the month if it hasn't been started
+                monthlyEmissions.state[state].counties[county].data[month] = monthlyEmissions.state[state].counties[county].data[month]
+                  ? monthlyEmissions.state[state].counties[county].data[month]
+                  : 0;
+                monthlyEmissions.state[state].counties[county].data[month] += deltaV;
+
+                monthlyEmissions.state[state].counties[county].pre[month] = monthlyEmissions.state[state].counties[county].pre[month]
+                  ? monthlyEmissions.state[state].counties[county].pre[month]
+                  : 0;
+                monthlyEmissions.state[state].counties[county].pre[month] += preVal;
+
+                monthlyEmissions.state[state].counties[county].post[month] = monthlyEmissions.state[state].counties[county].post[month]
+                  ? monthlyEmissions.state[state].counties[county].post[month]
+                  : 0;
+                monthlyEmissions.state[state].counties[county].post[month] += postVal;
             }
 
-            monthlyEmissions.regional[month] += deltaVArray[i];
+            monthlyEmissions.regional.data[month] += deltaVArray[i];
+            monthlyEmissions.regional.pre[month] += preTotalArray[i];
+            monthlyEmissions.regional.post[month] += postTotalArray[i];
         }
         console.timeEnd('iterations');
 
         console.time('end');
-        
+
         const preTotal = preTotalArray.reduce(function(sum,n){ return sum + (n || 0) },0);
         const postTotal = postTotalArray.reduce(function(sum,n){ return sum + (n || 0) },0);
 

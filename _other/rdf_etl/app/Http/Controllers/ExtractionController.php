@@ -27,13 +27,13 @@ class ExtractionController extends Controller
         // Loaded
         // $file = $filePath . 'AVERT RDF 2015 EPABase (California) - tabbed.xlsx';
         // $file = $filePath . 'AVERT RDF 2015 EPABase (Great Lakes - Mid-Atlantic) - tabbed.xlsx';
-        // $file = $filePath . 'AVERT RDF 2015 EPABase (Lower Midwest) - tabbed.xlsx';
+        $file = $filePath . 'AVERT RDF 2015 EPABase (Lower Midwest) - tabbed.xlsx';
         // $file = $filePath . 'AVERT RDF 2015 EPABase (Northeast) - tabbed.xlsx';
         // $file = $filePath . 'AVERT RDF 2015 EPABase (Texas) - tabbed.xlsx';
         // $file = $filePath . 'AVERT RDF 2015 EPABase (Upper Midwest) - tabbed.xlsx';
 
         // Errors
-        $file = $filePath . 'AVERT RDF 2015 EPABase (Northwest) - tabbed.xlsx';
+        // $file = $filePath . 'AVERT RDF 2015 EPABase (Northwest) - tabbed.xlsx';
         // $file = $filePath . 'AVERT RDF 2015 EPABase (Southeast) - tabbed.xlsx';
         // $file = $filePath . 'AVERT RDF 2015 EPABase (Rocky Mountains) - tabbed.xlsx';
         // $file = $filePath . 'AVERT RDF 2015 EPABase (Southwest) - tabbed.xlsx';
@@ -59,15 +59,15 @@ class ExtractionController extends Controller
         $loads    = $this->extractRegionalLoad($file, 'Regional Load', $region, $run);
         $edges    = $this->extractLoadBinEdges($file, 'Load Bin Edges', $region, $run);
 
-        // $generation = $this->extractMedian($file,$sheetNames[3],$region,$run,$edges,'generation','MW');
+        // $generation = $this->extractMedian($file, $sheetNames[3], $region, $run, $edges, 'generation', 'MW');
         // $so2     = $this->extractMedian($file,$sheetNames[4],$region,$run,$edges,'so2','Lbs');
-        $so2_not = $this->extractMedian($file,$sheetNames[5],$region,$run,$edges,'so2_not','Lbs');
-        // $nox     = $this->extractMedian($file,$sheetNames[6],$region,$run,$edges,'nox','Lbs');
-        // $nox_not = $this->extractMedian($file,$sheetNames[7],$region,$run,$edges,'nox_not','Lbs');
-        // $co2     = $this->extractMedian($file,$sheetNames[8],$region,$run,$edges,'co2','Tons');
-        // $co2_not  = $this->extractMedian($file, $sheetNames[9], $region, $run, $edges, 'co2_not', 'Tons');
-        // $heat     = $this->extractMedian($file, $sheetNames[10], $region, $run, $edges, 'heat', 'MMBTU');
-        // $heat_not = $this->extractMedian($file, $sheetNames[11], $region, $run, $edges, 'heat_not', 'MMBTU');
+        // $so2_not = $this->extractMedian($file,$sheetNames[5],$region,$run,$edges,'so2_not','Lbs');
+        $nox     = $this->extractMedian($file,$sheetNames[6],$region,$run,$edges,'nox','Lbs');
+        $nox_not = $this->extractMedian($file,$sheetNames[7],$region,$run,$edges,'nox_not','Lbs');
+        $co2     = $this->extractMedian($file,$sheetNames[8],$region,$run,$edges,'co2','Tons');
+        $co2_not  = $this->extractMedian($file, $sheetNames[9], $region, $run, $edges, 'co2_not', 'Tons');
+        $heat     = $this->extractMedian($file, $sheetNames[10], $region, $run, $edges, 'heat', 'MMBTU');
+        $heat_not = $this->extractMedian($file, $sheetNames[11], $region, $run, $edges, 'heat_not', 'MMBTU');
 
         return view('load');
     }
@@ -158,12 +158,21 @@ class ExtractionController extends Controller
         $sheet = Excel::selectSheets($sheetname)->load($file);
         $data  = $sheet->get();
         $data->each(function ($item, $key) use ($region, $run, $edges, $medianType, $medianUnit) {
-            //            $location = $region->locations()->where('orispl_code',$item->get('orispl_code'))->where('unit_code',$item->get('unit_code'))->first();
-            //            var_dump($item->get('full_unit_name'));die();
-            //            var_dump($region->locations()->first());die();
+            // $location = $region->locations()
+            //                    ->where('orispl_code', $item->get('orispl_code'))
+            //                    ->where('unit_code', $item->get('unit_code'))
+            //                    ->first();
+            // dd($item->get('full_unit_name'));
+            // dd($region->locations()->first());
+
+            if( ! $item) return;
             $location = $region->locations()->where('full_name', $item->get('full_unit_name'))->first();
 
-            if (!$location) {
+
+            if ( ! $location) {
+
+                if( ! $item->get('state')) return;
+
                 $location = new Location([
                     'state'       => $item->get('state'),
                     'county'      => $item->get('county'),
@@ -187,17 +196,15 @@ class ExtractionController extends Controller
             ];
 
             foreach ($item as $median_key => $median_value) {
-
-                if (in_array($median_key, ['state',
-                                           'county',
-                                           'lat',
-                                           'lon',
-                                           'fueltype',
-                                           'orispl_code',
-                                           'unit_code',
-                                           'full_unit_name'])) {
-                    continue;
-                }
+                $labelValues = ['state',
+                                'county',
+                                'lat',
+                                'lon',
+                                'fueltype',
+                                'orispl_code',
+                                'unit_code',
+                                'full_unit_name'];
+                if (in_array($median_key, $labelValues)) continue;
 
                 if (is_null($median_value)) continue;
 
