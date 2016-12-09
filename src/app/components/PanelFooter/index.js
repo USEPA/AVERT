@@ -18,9 +18,16 @@ const PanelFooter = (props) => {
   }
 
   // conditionally define reset class, if on last panel
-  const resetClass = props.lastPanel ? 'avert-reset-button' : '';
-  // conditionally define disabled class, if nextDisabled state is truthy
-  const disabledClass = props.nextDisabled ? 'avert-button-disabled' : '';
+  const resetClass = props.activeStep === 3 ? 'avert-reset-button' : '';
+
+  const stepOneDisabled = props.activeStep === 1 && props.region === 0;
+  const stepTwoDisabled = props.activeStep === 2 && props.eereStatus !== 'complete';
+  const stepTwoComplete = props.activeStep === 2 && props.eereStatus === 'complete'
+
+  const disabledClass =
+    // on step one w/out region selected, on step two w/out profile calculation
+    (stepOneDisabled || stepTwoDisabled) ? 'avert-button-disabled' : '';
+
   // define nextButtonElement
   const nextButtonElement = (
     <a
@@ -28,13 +35,12 @@ const PanelFooter = (props) => {
       href=''
       onClick={(e) => {
         e.preventDefault();
-        // if not disabled, change step
-        if (!props.nextDisabled) {
-          const step = props.lastPanel ? 1 : props.activeStep + 1;
-          props.onSetActiveStep(step);
-          // if on second step, calculate displacement
-          if (props.activeStep === 2) { props.onCalculateDisplacement() }
-        }
+
+        if (stepOneDisabled) { return; }
+        if (stepTwoComplete) { props.onCalculateDisplacement(); }
+
+        const step = props.activeStep === 3 ? 1 : props.activeStep + 1;
+        props.onSetActiveStep(step);
       }}
     >{ props.nextButtonText }</a>
   );
@@ -50,12 +56,12 @@ const PanelFooter = (props) => {
 };
 
 PanelFooter.propTypes = {
-  lastPanel: PropTypes.bool,
   activeStep: PropTypes.number.isRequired,
   onSetActiveStep: PropTypes.func.isRequired,
   prevButtonText: PropTypes.string,
   nextButtonText: PropTypes.string.isRequired,
-  nextDisabled: PropTypes.bool,
+  region: PropTypes.number.isRequired,
+  eereStatus: PropTypes.string.isRequired,
   onCalculateDisplacement: PropTypes.func,
 };
 
