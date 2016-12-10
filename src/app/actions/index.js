@@ -33,8 +33,12 @@ export const COMPLETE_CALCULATION = "COMPLETE_CALCULATION";
 
 export const START_DISPLACEMENT = 'START_DISPLACEMENT';
 export const COMPLETE_ANNUAL = 'COMPLETE_ANNUAL';
+export const COMPLETE_ANNUAL_GENERATION = 'COMPLETE_ANNUAL_GENERATION';
+export const COMPLETE_ANNUAL_SO2 = 'COMPLETE_ANNUAL_SO2';
+export const COMPLETE_ANNUAL_NOX = 'COMPLETE_ANNUAL_NOX';
+export const COMPLETE_ANNUAL_CO2 = 'COMPLETE_ANNUAL_CO2';
+export const COMPLETE_ANNUAL_RATES = 'COMPLETE_ANNUAL_RATES';
 export const COMPLETE_MONTHLY = 'COMPLETE_MONTHLY';
-export const FOO_COMPLETE_MONTHLY = 'FOO_COMPLETE_MONTHLY';
 
 export const SELECT_AGGREGATION = 'SELECT_AGGREGATION';
 export const SELECT_STATE = 'SELECT_STATE';
@@ -307,13 +311,43 @@ export const completeAnnual = (data) => ({
   data,
 });
 
-export const completeMonthlyEmissions = (data) => ({
-  type: COMPLETE_MONTHLY,
-  data,
+export const completeAnnualGeneration = (data) => ({
+  type: COMPLETE_ANNUAL_GENERATION,
+  payload: {
+    data: data,
+  },
 });
 
-export const foo_completeMonthlyEmissions = (data) => ({
-  type: FOO_COMPLETE_MONTHLY,
+export const completeAnnualSo2 = (data) => ({
+  type: COMPLETE_ANNUAL_SO2,
+  payload: {
+    data: data,
+  },
+});
+
+export const completeAnnualNox = (data) => ({
+  type: COMPLETE_ANNUAL_NOX,
+  payload: {
+    data: data,
+  },
+});
+
+export const completeAnnualCo2 = (data) => ({
+  type: COMPLETE_ANNUAL_CO2,
+  payload: {
+    data: data,
+  },
+});
+
+export const completeAnnualRates = (data) => ({
+  type: COMPLETE_ANNUAL_RATES,
+  payload: {
+    data: data,
+  },
+});
+
+export const completeMonthlyEmissions = (data) => ({
+  type: COMPLETE_MONTHLY,
   so2: data.so2,
   nox: data.nox,
   co2: data.co2,

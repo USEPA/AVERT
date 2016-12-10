@@ -26,6 +26,7 @@ const StepPanels = (props) => {
       <div className="avert-loading-indicator">
         <LoadingIcon />
         <p className="avert-loading-text">{'LOADING...'}</p>
+        <p className="avert-loading-text">{props.percentComplete}% Complete</p>
       </div>
     );
   }
@@ -129,6 +130,7 @@ StepPanels.propTypes = {
   activePanel: PropTypes.number.isRequired,
   loading: PropTypes.bool.isRequired,
   // softValid: PropTypes.string,
+  percentComplete: PropTypes.number,
 };
 
 export default StepPanels;

@@ -1,24 +1,27 @@
 // Deps
 import _ from 'lodash';
-import math from 'mathjs';
-import stats from 'stats-lite'
 
 // Engine
 import Regions from '../utils/Regions';
 import YearsEnum from './enums/YearsEnum';
-import AnnualDisplacementEngine from './AnnualDisplacementEngine';
-import StateEmissionsEngine from './StateEmissionsEngine';
-import MonthlyEmissionsEngine from './MonthlyEmissionsEngine';
+import AnnualDisplacementEngine from './engines/AnnualDisplacementEngine';
+import StateEmissionsEngine from './engines/StateEmissionsEngine';
+import MonthlyEmissionsEngine from './engines/MonthlyEmissionsEngine';
+import Rdf from './entities/Rdf';
+import EereEngine from './engines/EereEngine';
 
 // App
 import store from '../store';
 import {
     completeCalculation,
     completeAnnual,
+    completeAnnualGeneration,
+    completeAnnualSo2,
+    completeAnnualNox,
+    completeAnnualCo2,
+    completeAnnualRates,
     completeStateEmissions,
-    foo_completeStateEmissions,
     completeMonthlyEmissions,
-    foo_completeMonthlyEmissions,
     updateExceedances,
 } from '../actions';
 
@@ -29,6 +32,7 @@ class Engine {
         this.regionData = false;
         this._region = false;
         this.rdf = false;
+        this.rdfClass = false;
         this._eereDefault = false;
         this.eereProfile = false;
     }
@@ -49,112 +53,129 @@ class Engine {
         const regionKey = _.findKey(Regions, (o) => o.id === region);
         this.regionData = Regions[regionKey];
         this._region = this.regionData.slug;
+    }
 
-        // this.rdf = this.regionData.rdf;
-        // this.eereDefault = this.regionData.defaults;
+    setRdfClass(rdf) {
+        this.rdfClass = rdf;
     }
 
     setRdf(rdf) {
-        this.rdf = rdf;
+        this.rdf = (new Rdf(rdf)).raw;
+
+        if(this.rdfClass) {
+            return this.rdfClass.setRdf(rdf);
+        }
+
+        return this.setRdfClass(new Rdf({ rdf: rdf }));
     }
 
     setDefaults(defaults) {
         this.eereDefault = defaults;
+
+        if(this.rdfClass){
+            return this.rdfClass.setDefaults(defaults);
+        }
+
+        return this.setRdfClass(new Rdf({ defaults: defaults }));
     }
 
     get firstLimits() {
-        return this.rdf.limits;
+        return this.rdfClass.raw.limits;
     }
 
     setEereProfile(profile) {
         this.eereProfile = profile;
     }
 
-    calculateDisplacement() {
-        const annualDisplacement = new AnnualDisplacementEngine(this.rdf,this.hourlyEere);
-        const stateEmissions = new StateEmissionsEngine();
-        const monthlyEmissions = new MonthlyEmissionsEngine();
+    calculateEereLoad(){
+        this.eereEngine = new EereEngine(this.eereProfile,this.rdfClass);
+        this.eereEngine.calculateEereLoad();
+        this.hourlyEere = this.eereEngine.hourlyEere;
+        store.dispatch(completeCalculation(this.eereEngine.hourlyEere));
+        store.dispatch(updateExceedances(this.eereEngine.exceedances,this.eereEngine.softExceedances,this.eereEngine.hardExceedances));
+    }
 
-        const annualOutput = annualDisplacement.output;
+    calculateDisplacement() {
+        this.annualDisplacement = new AnnualDisplacementEngine(this.rdfClass,this.hourlyEere);
+        this.stateEmissions = new StateEmissionsEngine();
+        this.monthlyEmissions = new MonthlyEmissionsEngine();
+
+        /*/
+        const annualOutput = this.annualDisplacement.output;
         store.dispatch(completeAnnual(annualOutput));
 
         setTimeout(() => {
-            store.dispatch(completeStateEmissions(stateEmissions.emissions));
-            store.dispatch(foo_completeStateEmissions(stateEmissions.extract(annualOutput)));
+            store.dispatch(completeStateEmissions(this.stateEmissions.extract(annualOutput)));
         }, 50);
 
         setTimeout(() => {
-            store.dispatch(completeMonthlyEmissions(monthlyEmissions.emissions));
-            store.dispatch(foo_completeMonthlyEmissions(monthlyEmissions.extract(annualOutput)));
-        }, 50)
+            store.dispatch(completeMonthlyEmissions(this.monthlyEmissions.extract(annualOutput)));
+        }, 50);
+
+        /*/
+        const functions = [
+            this.completeGeneration,
+            this.completeSo2,
+            this.completeNoxTotal,
+            this.completeCo2Total,
+            this.completeEmissionRates,
+            this.completeAnnual,
+            this.completeState,
+            this.completeMonthly,
+        ];
+
+        setTimeout(this.callFunctions(functions, 0, this), 10);
+        //*/
 
     }
 
-    calculateEereLoad(){
-        const regionalLoad = _.map(this.rdf.regional_load,'regional_load_mw');
-        const k = 1 - (this.eereProfile.topHours / 100);
-        const percentLimit = this.rdf.limits.max_ee_percent / 100;
-        const softLimit = .15;
-        const hardLimit = .3;
-
-        this.limits = regionalLoad.map((load) => (load * -percentLimit));
-        this.softLimits = regionalLoad.map((load) => (load * -softLimit));
-        this.hardLimits = regionalLoad.map((load) => (load * -hardLimit));
-        this.topPercentile = stats.percentile(regionalLoad, k);
-        this.resultingHourlyMwReduction = math.chain(this.eereProfile.annualGwh).multiply(1000).divide(regionalLoad.length).done();
-        this.manualEereEntry = math.zeros(regionalLoad.length);
-
-        this.hourlyEere = _.map(regionalLoad, this.hourlyEereCb.bind(this));
-        this.exceedances = _.map(this.hourlyEere,'exceedance');
-        this.softExceedances = _.map(this.hourlyEere,'soft_exceedance');
-        this.hardExceedances = _.map(this.hourlyEere,'hard_exceedance');
-
-        store.dispatch(completeCalculation(this.hourlyEere));
-        store.dispatch(updateExceedances(this.exceedances,this.softExceedances,this.hardExceedances));
-    }
-
-    hourlyEereCb(load,index){
-        setTimeout(() => {}, 0);
-        const limit = this.limits[index];
-        const softLimit = this.softLimits[index];
-        const hardLimit = this.hardLimits[index];
-        const hourlyEereDefault = this.eereDefault.data[index];
-
-        const renewable_energy_profile = -math.sum(math.multiply(this.eereProfile.windCapacity,hourlyEereDefault.wind),
-                                                math.multiply(this.eereProfile.utilitySolar,hourlyEereDefault.utility_pv),
-                                                math.multiply(this.eereProfile.rooftopSolar,hourlyEereDefault.rooftop_pv));
-
-        const percentReduction = -(this.eereProfile.reduction / 100);
-        const initialLoad = (load > this.topPercentile) ? (load * percentReduction) : 0;
-        const calculatedLoad = math.chain(initialLoad)
-                                   .subtract(this.manualEereEntry.toArray()[index])
-                                   .add(renewable_energy_profile)
-                                   .subtract(this.resultingHourlyMwReduction)
-                                   .subtract(this.eereProfile.constantMw)
-                                   .done();
-
-        const finalMw = this.rdf.regional_load[index].year < 1990 ? 0 : calculatedLoad;
-
-        return {
-            index: index,
-            manual_eere_entry: this.manualEereEntry.toArray()[index],
-            renewable_energy_profile: renewable_energy_profile,
-            final_mw: finalMw,
-            percent: initialLoad,
-            constant: this.resultingHourlyMwReduction,
-            current_load_mw: load,
-            flag: 0,
-            limit: limit,
-            soft_limit: softLimit,
-            hard_limit: hardLimit,
-            exceedance: (finalMw < limit) ? ((finalMw/limit) - 1) : 0,
-            soft_exceedance: Engine.doesExceed(finalMw,softLimit),
-            hard_exceedance: Engine.doesExceed(finalMw,hardLimit),
+    callFunctions(functions, i, _this){
+        functions[i++](_this);
+        if(i < functions.length) {
+            setTimeout(this.callFunctions(functions, i, _this), 10);
         }
     }
 
-    static doesExceed(mw,limit) {
-        return (mw < limit) ? ((mw / limit) - 1) : 0;
+    completeGeneration(_this) {
+        _this.generation = _this.annualDisplacement.generation;
+        console.warn('...','Complete Generation',_this.generation);
+        store.dispatch(completeAnnualGeneration(_this.generation));
+    }
+
+    completeSo2(_this) {
+        _this.so2 = _this.annualDisplacement.so2Total;
+        console.warn('...','Complete SO2',_this.so2);
+        store.dispatch(completeAnnualSo2(_this.so2));
+    }
+    completeNoxTotal(_this) {
+        _this.nox = _this.annualDisplacement.noxTotal;
+        store.dispatch(completeAnnualNox(_this.nox));
+    }
+    completeCo2Total(_this) {
+        _this.co2 = _this.annualDisplacement.co2Total;
+        store.dispatch(completeAnnualCo2(_this.co2));
+    }
+    completeEmissionRates(_this) {
+        _this.rates = _this.annualDisplacement.emissionRates;
+        store.dispatch(completeAnnualRates(_this.rates));
+    }
+    completeAnnual(_this) {
+        _this.annualOutput = {
+            generation: _this.generation,
+            totalEmissions: {
+                so2: _this.so2,
+                nox: _this.nox,
+                co2: _this.co2,
+            },
+            emissionRates: _this.rates,
+        };
+        store.dispatch(completeAnnual(_this.annualOutput));
+    }
+    completeState(_this) {
+        store.dispatch(completeStateEmissions(_this.stateEmissions.extract(_this.annualOutput)));
+    }
+    completeMonthly(_this) {
+        store.dispatch(completeMonthlyEmissions(_this.monthlyEmissions.extract(_this.annualOutput)));
     }
 }
 

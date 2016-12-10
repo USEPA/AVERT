@@ -3,7 +3,6 @@ import {
   SELECT_REGION,
   START_DISPLACEMENT,
   COMPLETE_MONTHLY,
-  FOO_COMPLETE_MONTHLY,
   SELECT_AGGREGATION,
   SELECT_STATE,
   SELECT_COUNTY,
@@ -48,14 +47,7 @@ const monthlyEmissionsReducer = (state = initialState, action) => {
       };
 
     case COMPLETE_MONTHLY:
-      return {
-        ...state,
-        status: "complete",
-        results: action.data,
-      };
-
-    case FOO_COMPLETE_MONTHLY:
-      console.warn('- FOO Complete Monthly',action);
+      console.warn('- Complete Monthly',action);
 
       // const regionalSo2Pre = Object.values(state.so2.regional.pre);
       // const regionalSo2Post = Object.values(state.so2.regional.post);

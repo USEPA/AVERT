@@ -5,24 +5,21 @@ import reduxMulti from 'redux-multi';
 // reducers
 import reducers from '../reducers';
 
-const logger = createLogger();
+const composeEnhancers = (typeof window !== 'undefined') ? (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose) : compose;
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const middleware = applyMiddleware(
+  createLogger(),
+  thunkMiddleware,
+  reduxMulti
+);
 
 const configureStore = (preloadedState) => {
-  const store = createStore(
+
+  return createStore(
     reducers,
     preloadedState,
-    composeEnhancers(
-      applyMiddleware(
-        logger,
-        thunkMiddleware,
-        reduxMulti,
-      )
-    )
+    composeEnhancers(middleware),
   );
-
-  return store;
 };
 
 export default configureStore;
