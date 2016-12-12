@@ -26,7 +26,9 @@ const StepPanels = (props) => {
       <div className="avert-loading-indicator">
         <LoadingIcon />
         <p className="avert-loading-text">{'LOADING...'}</p>
-        <p className="avert-loading-text">{props.percentComplete}% Complete</p>
+        <p className="avert-loading-text">
+          <progress value={props.percentComplete} max="100">{props.percentComplete}%</progress>
+        </p>
       </div>
     );
   }

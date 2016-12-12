@@ -7,6 +7,7 @@ import {
   RECEIVE_DEFAULTS,
   INVALIDATE_DEFAULTS,
   REQUEST_DEFAULTS,
+  OVERRIDE_REGION,
 } from '../../actions';
 
 const rdf = (state = {}, action) => {
@@ -25,6 +26,7 @@ const rdf = (state = {}, action) => {
 const rdfs = (state = {
   defaults: false,
   rdf: false,
+  debug: false,
 }, action) => {
   switch (action.type) {
     case INVALIDATE_DEFAULTS:
@@ -50,6 +52,12 @@ const rdfs = (state = {
         ...state,
         rdf(undefined, action),
       ];
+
+    case OVERRIDE_REGION:
+      return {
+        ...state,
+        debug: true,
+      };
 
     default:
       return state;

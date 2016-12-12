@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
 // avert
-import { avert, eereProfile } from '../avert';
+import {avert, eereProfile} from '../avert';
 import * as northeast_rdf from '../../assets/data/rdf_northeast_2015.json';
 import * as northeast_defaults from '../../assets/data/eere-defaults-northeast.json';
 // store
@@ -89,7 +89,7 @@ const receiveDefaults = (region, defaults) => {
 };
 
 export const fetchDefaults = () => {
-  return function(dispatch) {
+  return function (dispatch) {
     const region = avert.regionData;
     dispatch(requestDefaults(region.slug));
 
@@ -133,7 +133,7 @@ const emitReceiveRegion = (rdf) => {
 };
 
 const receiveRegion = (region, json) => {
-  return function(dispatch) {
+  return function (dispatch) {
     avert.setRdf(json);
     dispatch(setLimits());
     return dispatch(emitReceiveRegion(json));
@@ -148,7 +148,10 @@ export const addRdf = (rdf) => ({
 });
 
 export const fetchRegion = () => {
-  return function(dispatch) {
+  return function (dispatch, getState) {
+
+    if (getState().rdfs.debug) return Promise.resolve();
+
     const region = avert.regionData;
     dispatch(requestRegion(region.slug));
 
@@ -166,7 +169,7 @@ const changeRegion = (region) => ({
 });
 
 export const selectRegion = (region) => {
-  return function(dispatch) {
+  return function (dispatch) {
     const formattedRegion = parseInt(region, 10);
     avert.region = formattedRegion;
     dispatch(changeRegion(formattedRegion));
@@ -174,10 +177,14 @@ export const selectRegion = (region) => {
 };
 
 export const overrideRegion = () => {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch(changeRegion(3));
     dispatch(receiveRegion('NE', northeast_rdf));
     dispatch(receiveDefaults('NE', northeast_defaults));
+
+    return dispatch({
+      type: OVERRIDE_REGION
+    });
   }
 };
 
@@ -302,7 +309,7 @@ const submitCalculation = () => ({
   type: SUBMIT_CALCULATION,
 });
 
-export const calculateEereProfile =  () => {
+export const calculateEereProfile = () => {
   store.dispatch(submitCalculation());
 
   setTimeout(() => {
@@ -310,45 +317,154 @@ export const calculateEereProfile =  () => {
   }, 50);
 };
 
-export const completeAnnual = (data) => ({
-  type: COMPLETE_ANNUAL,
-  data,
-});
+// export const completeAnnual = (data) => ({
+//   type: COMPLETE_ANNUAL,
+//   data,
+// });
 
-export const completeAnnualGeneration = (data) => ({
-  type: COMPLETE_ANNUAL_GENERATION,
-  payload: {
-    data: data,
-  },
-});
+// export const completeAnnualGeneration = (data) => ({
+//   type: COMPLETE_ANNUAL_GENERATION,
+//   payload: {
+//     data: data,
+//   },
+// });
 
-export const completeAnnualSo2 = (data) => ({
-  type: COMPLETE_ANNUAL_SO2,
-  payload: {
-    data: data,
-  },
-});
+// export const completeAnnualSo2 = (data) => ({
+//   type: COMPLETE_ANNUAL_SO2,
+//   payload: {
+//     data: data,
+//   },
+// });
 
-export const completeAnnualNox = (data) => ({
-  type: COMPLETE_ANNUAL_NOX,
-  payload: {
-    data: data,
-  },
-});
+// export const completeAnnualNox = (data) => ({
+//   type: COMPLETE_ANNUAL_NOX,
+//   payload: {
+//     data: data,
+//   },
+// });
 
-export const completeAnnualCo2 = (data) => ({
-  type: COMPLETE_ANNUAL_CO2,
-  payload: {
-    data: data,
-  },
-});
+// export const completeAnnualCo2 = (data) => ({
+//   type: COMPLETE_ANNUAL_CO2,
+//   payload: {
+//     data: data,
+//   },
+// });
 
-export const completeAnnualRates = (data) => ({
-  type: COMPLETE_ANNUAL_RATES,
-  payload: {
-    data: data,
-  },
-});
+// export const completeAnnualRates = (data) => ({
+//   type: COMPLETE_ANNUAL_RATES,
+//   payload: {
+//     data: data,
+//   },
+// });
+
+export const completeAnnualGeneration = (data) => {
+  return function (dispatch, getState) {
+    dispatch({
+      type: COMPLETE_ANNUAL_GENERATION,
+      payload: {
+        data: data,
+      }
+    });
+
+    setTimeout(() => {
+      avert.getSo2();
+      return Promise.resolve();
+    }, 100);
+
+  }
+};
+
+export const completeAnnualSo2 = (data) => {
+  return function (dispatch, getState) {
+    dispatch({
+      type: COMPLETE_ANNUAL_SO2,
+      payload: {
+        data: data,
+      },
+    });
+
+    setTimeout(() => {
+      avert.getNox();
+      return Promise.resolve();
+    }, 100);
+  };
+};
+
+export const completeAnnualNox = (data) => {
+  return function (dispatch, getState) {
+    dispatch({
+      type: COMPLETE_ANNUAL_NOX,
+      payload: {
+        data: data,
+      },
+    });
+
+    setTimeout(() => {
+      avert.getCo2();
+      return Promise.resolve();
+    }, 100);
+  };
+};
+
+export const completeAnnualCo2 = (data) => {
+  return function (dispatch, getState) {
+    dispatch({
+      type: COMPLETE_ANNUAL_CO2,
+      payload: {
+        data: data,
+      },
+    });
+
+    setTimeout(() => {
+      avert.getEmissionRates();
+      return Promise.resolve();
+    }, 100);
+  };
+};
+
+export const completeAnnualRates = (data) => {
+  return function (dispatch, getState) {
+    dispatch({
+      type: COMPLETE_ANNUAL_RATES,
+      payload: {
+        data: data,
+      },
+    });
+
+    setTimeout(() => {
+      avert.getAnnual();
+      return Promise.resolve();
+    }, 100);
+  }
+};
+
+export const completeAnnual = (data) => {
+  return function (dispatch, getState) {
+    dispatch({
+      type: COMPLETE_ANNUAL,
+      data,
+    });
+
+    setTimeout(() => {
+      avert.getStateEmissions();
+      return Promise.resolve();
+    }, 100);
+  }
+};
+
+export const completeStateEmissions = (data) => {
+  return function (dispatch, getState) {
+    dispatch({
+      type: COMPLETE_STATE,
+      data,
+    });
+
+    setTimeout(() => {
+      avert.getMonthlyEmissions();
+      return Promise.resolve();
+    }, 100)
+  }
+};
 
 export const completeMonthlyEmissions = (data) => ({
   type: COMPLETE_MONTHLY,
@@ -377,15 +493,10 @@ export const selectCounty = (county) => ({
   county,
 });
 
-export const completeStateEmissions = (data) => ({
-  type: COMPLETE_STATE,
-  data,
-});
-
-export const foo_completeStateEmissions = (data) => ({
-  type: FOO_COMPLETE_STATE,
-  data,
-});
+// export const completeStateEmissions = (data) => ({
+//   type: COMPLETE_STATE,
+//   data,
+// });
 
 const startDisplacement = () => ({
   type: START_DISPLACEMENT,

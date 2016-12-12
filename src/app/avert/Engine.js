@@ -100,82 +100,53 @@ class Engine {
         this.stateEmissions = new StateEmissionsEngine();
         this.monthlyEmissions = new MonthlyEmissionsEngine();
 
-        /*/
-        const annualOutput = this.annualDisplacement.output;
-        store.dispatch(completeAnnual(annualOutput));
-
-        setTimeout(() => {
-            store.dispatch(completeStateEmissions(this.stateEmissions.extract(annualOutput)));
-        }, 50);
-
-        setTimeout(() => {
-            store.dispatch(completeMonthlyEmissions(this.monthlyEmissions.extract(annualOutput)));
-        }, 50);
-
-        /*/
-        const functions = [
-            this.completeGeneration,
-            this.completeSo2,
-            this.completeNoxTotal,
-            this.completeCo2Total,
-            this.completeEmissionRates,
-            this.completeAnnual,
-            this.completeState,
-            this.completeMonthly,
-        ];
-
-        setTimeout(this.callFunctions(functions, 0, this), 10);
-        //*/
-
+        this.getGeneration();
     }
 
-    callFunctions(functions, i, _this){
-        functions[i++](_this);
-        if(i < functions.length) {
-            setTimeout(this.callFunctions(functions, i, _this), 10);
-        }
+    getGeneration() {
+        this.generation = this.annualDisplacement.generation;
+        store.dispatch(completeAnnualGeneration(this.generation));
     }
 
-    completeGeneration(_this) {
-        _this.generation = _this.annualDisplacement.generation;
-        console.warn('...','Complete Generation',_this.generation);
-        store.dispatch(completeAnnualGeneration(_this.generation));
+    getSo2() {
+        this.so2 = this.annualDisplacement.so2Total;
+        store.dispatch(completeAnnualSo2(this.so2));
     }
 
-    completeSo2(_this) {
-        _this.so2 = _this.annualDisplacement.so2Total;
-        console.warn('...','Complete SO2',_this.so2);
-        store.dispatch(completeAnnualSo2(_this.so2));
+    getNox() {
+        this.nox = this.annualDisplacement.noxTotal;
+        store.dispatch(completeAnnualNox(this.nox));
     }
-    completeNoxTotal(_this) {
-        _this.nox = _this.annualDisplacement.noxTotal;
-        store.dispatch(completeAnnualNox(_this.nox));
+
+    getCo2() {
+        this.co2 = this.annualDisplacement.co2Total;
+        store.dispatch(completeAnnualCo2(this.co2));
     }
-    completeCo2Total(_this) {
-        _this.co2 = _this.annualDisplacement.co2Total;
-        store.dispatch(completeAnnualCo2(_this.co2));
+
+    getEmissionRates() {
+        this.rates = this.annualDisplacement.emissionRates;
+        store.dispatch(completeAnnualRates(this.rates));
     }
-    completeEmissionRates(_this) {
-        _this.rates = _this.annualDisplacement.emissionRates;
-        store.dispatch(completeAnnualRates(_this.rates));
-    }
-    completeAnnual(_this) {
-        _this.annualOutput = {
-            generation: _this.generation,
+
+    getAnnual() {
+        this.annualOutput = {
+            generation: this.generation,
             totalEmissions: {
-                so2: _this.so2,
-                nox: _this.nox,
-                co2: _this.co2,
+                so2: this.so2,
+                nox: this.nox,
+                co2: this.co2,
             },
-            emissionRates: _this.rates,
+            emissionRates: this.rates,
         };
-        store.dispatch(completeAnnual(_this.annualOutput));
+        store.dispatch(completeAnnual(this.annualOutput));
     }
-    completeState(_this) {
-        store.dispatch(completeStateEmissions(_this.stateEmissions.extract(_this.annualOutput)));
+
+    getStateEmissions() {
+        store.dispatch(completeStateEmissions(this.stateEmissions.extract(this.annualOutput)));
     }
-    completeMonthly(_this) {
-        store.dispatch(completeMonthlyEmissions(_this.monthlyEmissions.extract(_this.annualOutput)));
+
+    getMonthlyEmissions() {
+        store.dispatch(completeMonthlyEmissions(this.monthlyEmissions.extract(this.annualOutput)));
     }
 }
 
