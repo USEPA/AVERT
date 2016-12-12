@@ -170,7 +170,6 @@ export const selectRegion = (region) => {
     const formattedRegion = parseInt(region, 10);
     avert.region = formattedRegion;
     dispatch(changeRegion(formattedRegion));
-    dispatch(fetchRegion());
   };
 };
 

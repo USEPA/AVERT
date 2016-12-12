@@ -4,6 +4,7 @@ import PanelFooter from '../../components/PanelFooter';
 // action creators
 import {
   setActiveStep,
+  fetchRegion,
   calculateDisplacement,
   resetEereInputs,
   resetEereHourly,
@@ -19,6 +20,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   onSetActiveStep(stepNumber) {
     dispatch(setActiveStep(stepNumber));
+  },
+  onFetchRegion() {
+    dispatch(fetchRegion());
   },
   onCalculateDisplacement() {
     calculateDisplacement();

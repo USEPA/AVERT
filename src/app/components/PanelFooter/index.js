@@ -44,6 +44,10 @@ const PanelFooter = (props) => {
 
         if (noRegionSelected) { return; }
 
+        if (onStepOne) {
+          props.onFetchRegion();
+        }
+
         if (onStepTwo) {
           if (props.eereStatus === 'complete' && props.hardValid) {
             props.onCalculateDisplacement();
