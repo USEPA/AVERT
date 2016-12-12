@@ -6,12 +6,14 @@ import {
   setActiveStep,
   calculateDisplacement,
   resetEereInputs,
+  resetEereHourly,
 } from '../../actions';
 
 const mapStateToProps = (state) => ({
   activeStep: state.panel.activeStep,
-  eereStatus: state.eere.status,
   region: state.regions.region,
+  eereStatus: state.eere.status,
+  hardValid: state.eere.hard_valid,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -23,6 +25,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onResetEereInputs() {
     dispatch(resetEereInputs());
+  },
+  onResetEereHourly() {
+    dispatch(resetEereHourly());
   },
 });
 

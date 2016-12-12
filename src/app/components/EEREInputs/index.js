@@ -59,9 +59,8 @@ const EEREInputs = ({
       // if any exist, assign false, else assign true
       .length > 0 ? false : true;
 
-  const disabledClass =
-    // form validation fails, all fields are empty, or calculation has started
-    (!valid || allFieldsEmpty || eereStatus === 'started') ? 'avert-button-disabled' : '';
+  const disabledClass = (!valid || allFieldsEmpty || eereStatus === 'started') ?
+    'avert-button-disabled' : '';
 
   return (
     <div>

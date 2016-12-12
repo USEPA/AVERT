@@ -3,6 +3,10 @@ import React, { PropTypes } from 'react';
 import './styles.css';
 
 const PanelFooter = (props) => {
+  const onStepOne = props.activeStep === 1;
+  const onStepTwo = props.activeStep === 2;
+  const onStepThree = props.activeStep === 3;
+
   // conditionally define prevButtonElement, if prevButtonText prop exists
   let prevButtonElement;
   if (props.prevButtonText) {
@@ -11,7 +15,7 @@ const PanelFooter = (props) => {
         onClick={(e) => {
           e.preventDefault();
 
-          if (props.activeStep === 2) { props.onResetEereInputs(); }
+          if (onStepTwo) { props.onResetEereInputs() }
 
           const step = props.activeStep - 1;
           props.onSetActiveStep(step);
@@ -21,15 +25,14 @@ const PanelFooter = (props) => {
   }
 
   // conditionally define reset class, if on last panel
-  const resetClass = props.activeStep === 3 ? 'avert-reset-button' : '';
+  const resetClass = onStepThree ? 'avert-reset-button' : '';
 
-  const stepOneDisabled = props.activeStep === 1 && props.region === 0;
-  const stepTwoDisabled = props.activeStep === 2 && props.eereStatus !== 'complete';
-  const stepTwoComplete = props.activeStep === 2 && props.eereStatus === 'complete'
+  const noRegionSelected = onStepOne && props.region === 0;
+  const calculationRunning = onStepTwo && props.eereStatus !== 'complete';
+  const validationFailed = onStepTwo && !props.hardValid;
 
-  const disabledClass =
-    // on step one w/out region selected, on step two w/out profile calculation
-    (stepOneDisabled || stepTwoDisabled) ? 'avert-button-disabled' : '';
+  const disabledClass = (noRegionSelected || calculationRunning || validationFailed) ?
+    'avert-button-disabled' : '';
 
   // define nextButtonElement
   const nextButtonElement = (
@@ -39,10 +42,22 @@ const PanelFooter = (props) => {
       onClick={(e) => {
         e.preventDefault();
 
-        if (stepOneDisabled) { return; }
-        if (stepTwoComplete) { props.onCalculateDisplacement(); }
+        if (noRegionSelected) { return; }
 
-        const step = props.activeStep === 3 ? 1 : props.activeStep + 1;
+        if (onStepTwo) {
+          if (props.eereStatus === 'complete' && props.hardValid) {
+            props.onCalculateDisplacement();
+          } else {
+            return;
+          }
+        }
+
+        if (onStepThree) {
+          props.onResetEereInputs();
+          props.onResetEereHourly();
+        }
+
+        const step = onStepThree ? 1 : props.activeStep + 1;
         props.onSetActiveStep(step);
       }}
     >{ props.nextButtonText }</a>
@@ -64,8 +79,10 @@ PanelFooter.propTypes = {
   prevButtonText: PropTypes.string,
   nextButtonText: PropTypes.string.isRequired,
   onResetEereInputs: PropTypes.func.isRequired,
+  onResetEereHourly: PropTypes.func.isRequired,
   region: PropTypes.number.isRequired,
   eereStatus: PropTypes.string.isRequired,
+  // hardValid: PropTypes.string,
   onCalculateDisplacement: PropTypes.func,
 };
 

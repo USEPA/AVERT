@@ -12,6 +12,7 @@ import {
   VALIDATE_EERE,
   UPDATE_EXCEEDANCES,
   RESET_EERE_INPUTS,
+  RESET_EERE_HOURLY,
   SUBMIT_PARAMS,
   SUBMIT_CALCULATION,
   COMPLETE_CALCULATION,
@@ -153,6 +154,12 @@ const eereReducer = (state = defaultState, action) => {
         windCapacity: '',
         utilitySolar: '',
         rooftopSolar: '',
+      };
+
+    case RESET_EERE_HOURLY:
+      return {
+        ...state,
+        hourlyEere: [],
       };
 
     case SUBMIT_PARAMS:

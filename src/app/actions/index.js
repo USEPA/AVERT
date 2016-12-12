@@ -26,6 +26,7 @@ export const VALIDATE_EERE = "VALIDATE_EERE";
 export const UPDATE_EXCEEDANCES = "UPDATE_EXCEEDANCES";
 
 export const RESET_EERE_INPUTS = 'RESET_EERE_INPUTS';
+export const RESET_EERE_HOURLY = 'RESET_EERE_HOURLY';
 
 export const SUBMIT_PARAMS = 'SUBMIT_PARAMS';
 export const SUBMIT_CALCULATION = 'SUBMIT_CALCULATION';
@@ -287,6 +288,10 @@ export const updateExceedances = (exceedances, soft, hard) => ({
 
 export const resetEereInputs = () => ({
   type: RESET_EERE_INPUTS,
+});
+
+export const resetEereHourly = () => ({
+  type: RESET_EERE_HOURLY,
 });
 
 export const completeCalculation = (hourlyEere) => ({
