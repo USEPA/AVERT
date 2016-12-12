@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/Eastern-Research-Group/EPA-AVERT/issues"
   },
-  "homepage": "http://appdev6.erg.com/avert/2016-12-09",
+  "homepage": "http://appdev6.erg.com/avert/2016-12-12",
   "devDependencies": {
     "react-scripts": "0.8.4"
   },

@@ -61,13 +61,13 @@ describe('EERE Engine', () => {
 
   describe('doesExceed',() => {
     it('should take a load smaller than a limit and say it has not been exceeded', () => {
-      let data = genericEngine.doesExceed(5, 10);
+      let data = genericEngine.doesExceedFormatted(5, 10, 100);
       expect(data).toBe(0);
     });
 
     it('should take a load bigger than a limit and return percentage it is bigger', () => {
-      let data = genericEngine.doesExceed(9, 5);
-      expect(data).toBe(0.8);
+      let data = genericEngine.doesExceedFormatted(1100, 1000, 15);
+      expect(data).toBe(16.5);
     });
   });
 

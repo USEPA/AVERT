@@ -67,13 +67,28 @@ class EereEngine {
       // flag: 0,
       soft_limit: softLimit,
       hard_limit: hardLimit,
-      soft_exceedance: this.doesExceed(finalMw,softLimit),
-      hard_exceedance: this.doesExceed(finalMw,hardLimit),
+      soft_exceedance: this.doesExceedFormatted(finalMw,softLimit,15),
+      hard_exceedance: this.doesExceedFormatted(finalMw,hardLimit,30),
     }
   }
 
   doesExceed(mw,limit) {
     return (Math.abs(mw) > Math.abs(limit)) ? ((Math.abs(mw) / Math.abs(limit)) - 1) : 0;
+  }
+
+  doesExceedFromOriginal(mw,limit,load) {
+
+    return (Math.abs(mw) > Math.abs(limit)) ? ((Math.abs(mw) / Math.abs(load)) * 100) : 0;
+  }
+
+  doesExceedFormatted(mw,limit,numericalLimit) {
+    if(Math.abs(mw) > Math.abs(limit)){
+      const exceedance = (Math.abs(mw) / Math.abs(limit)) - 1;
+
+      return exceedance * numericalLimit + numericalLimit;
+    }
+
+    return 0;
   }
 }
 

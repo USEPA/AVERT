@@ -5,22 +5,22 @@ class MonthlyEmissionsEngine {
         // console.warn('extracting so2...',annualData.totalEmissions.so2.monthlyEmissions);
         // console.warn('extracting nox...',annualData.totalEmissions.nox.monthlyEmissions);
         // console.warn('extracting co2...',annualData.totalEmissions.co2.monthlyEmissions);
-        
+
         return {
             generation: {
-                regional: Object.values(annualData.generation.monthlyEmissions.regional),
+                regional: Object.values(annualData.generation.monthlyEmissions.regional).slice(0,12),
                 state: annualData.generation.monthlyEmissions.state,
             },
             so2: {
-                regional: Object.values(annualData.totalEmissions.so2.monthlyEmissions.regional),
+                regional: Object.values(annualData.totalEmissions.so2.monthlyEmissions.regional).slice(0,12),
                 state: annualData.totalEmissions.so2.monthlyEmissions.state,
             },
             nox: {
-                regional: Object.values(annualData.totalEmissions.nox.monthlyEmissions.regional),
+                regional: Object.values(annualData.totalEmissions.nox.monthlyEmissions.regional).slice(0,12),
                 state: annualData.totalEmissions.nox.monthlyEmissions.state,
             },
             co2: {
-                regional: Object.values(annualData.totalEmissions.co2.monthlyEmissions.regional),
+                regional: Object.values(annualData.totalEmissions.co2.monthlyEmissions.regional).slice(0,12),
                 state: annualData.totalEmissions.co2.monthlyEmissions.state,
             }
         }

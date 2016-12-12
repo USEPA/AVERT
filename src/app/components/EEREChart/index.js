@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import Highcharts from 'react-highcharts';
+import NumberFormattingHelper from '../../utils/NumberFormattingHelper';
 
 const EEREChart = (props) => {
   const data = props.hourlyEere.map((hour) => hour.final_mw);
@@ -60,7 +61,7 @@ const EEREChart = (props) => {
       <p className='avert-message-bottom avert-validation-error'>
         <span className='avert-message-heading'>{'ERROR:'}</span>
         {'The combined impact of your proposed programs would displace up to '}
-        <strong>{props.hardTopExceedanceHour}</strong>
+        <strong>{NumberFormattingHelper.twoDecimals(props.hardTopExceedance)}%</strong>
         {' of hourly regional fossil generation. The recommended limit for AVERT is 15%, as AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics. Please reduce one or more of your inputs to ensure more reliable results.'}
       </p>
     );
@@ -74,7 +75,7 @@ const EEREChart = (props) => {
       <p className='avert-message-bottom avert-validation-warning'>
         <span className='avert-message-heading'>{'WARNING:'}</span>
         {'The combined impact of your proposed programs would displace up to '}
-        <strong>{props.softTopExceedanceHour}</strong>
+        <strong>{NumberFormattingHelper.twoDecimals(props.softTopExceedance)}%</strong>
         {' of hourly regional fossil generation. The recommended limit for AVERT is 15%, as AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics. You may wish to reduce one or more of your inputs to ensure more reliable results.'}
       </p>
     );
