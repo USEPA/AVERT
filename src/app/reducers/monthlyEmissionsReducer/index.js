@@ -107,7 +107,8 @@ const monthlyEmissionsReducer = (state = initialState, action) => {
         selected_state: action.state,
         available_counties: counties,
         states: stateData,
-        output: state.unit === 'emission' ? stateData : statePercentage,
+        // output: state.unit === 'emission' ? stateData : statePercentage,
+        output: stateData,
         percent_difference: statePercentage,
       };
 
@@ -135,7 +136,8 @@ const monthlyEmissionsReducer = (state = initialState, action) => {
         ...state,
         selected_county: action.county,
         counties: countyData,
-        output: state.unit === 'emission' ? countyData : countyPercentage,
+        // output: state.unit === 'emission' ? countyData : countyPercentage,
+        output: countyData,
         percent_difference: countyPercentage,
       };
 

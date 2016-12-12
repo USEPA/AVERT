@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import NumberFormattingHelper from '../../utils/NumberFormattingHelper';
 
 const DisplacementsTable = (props) => {
   //TODO: Refactor into util method
@@ -61,20 +62,20 @@ const DisplacementsTable = (props) => {
           </tr>
           <tr>
             <td>{'SO'}<sub>{'2'}</sub>{' (lbs/MWh)'}</td>
-            <td>{ props.data.emissionRates.so2.original }</td>
-            <td>{ props.data.emissionRates.so2.post }</td>
+            <td>{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.so2.original) }</td>
+            <td>{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.so2.post) }</td>
             <td>&nbsp;</td>
           </tr>
           <tr>
             <td>{'NO'}<sub>{'X'}</sub>{' (lbs/MWh)'}</td>
-            <td>{ props.data.emissionRates.nox.original }</td>
-            <td>{ props.data.emissionRates.nox.post }</td>
+            <td>{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.nox.original) }</td>
+            <td>{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.nox.post) }</td>
             <td>&nbsp;</td>
           </tr>
           <tr>
             <td>{'CO'}<sub>{'2'}</sub>{' (tons/MWh)'}</td>
-            <td>{ props.data.emissionRates.co2.original }</td>
-            <td>{ props.data.emissionRates.co2.post }</td>
+            <td>{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.co2.original) }</td>
+            <td>{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.co2.post) }</td>
             <td>&nbsp;</td>
           </tr>
         </tbody>

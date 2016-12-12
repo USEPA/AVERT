@@ -26,9 +26,7 @@ class AnnualDisplacementEngine {
   }
 
   get generation() {
-    console.time('_________ get generation __________');
     const totals = this.getDisplacedGeneration(this.rdf.generation, false, false);
-    console.timeEnd('_________ get generation __________');
     this.generationOriginal = totals.original;
     this.generationPost = totals.post;
     return totals;
@@ -51,37 +49,29 @@ class AnnualDisplacementEngine {
   }
 
   get so2Total() {
-    console.time('_________ get so2 total __________');
     const totals = this.getDisplacedGeneration(this.rdf.raw.data.so2, this.rdf.raw.data.so2_not, true);
     this.so2Original = totals.original;
     this.so2Post = totals.post;
-    console.timeEnd('_________ get so2 total __________');
     return totals;
   }
 
   get noxTotal() {
-    console.time('_________ get nox total __________');
     const totals = this.getDisplacedGeneration(this.rdf.raw.data.nox, this.rdf.raw.data.nox_not, true);
     this.noxOriginal = totals.original;
     this.noxPost = totals.post;
-    console.timeEnd('_________ get nox total __________');
     return totals;
   }
 
   get co2Total() {
-    console.time('_________ get co2 total __________');
     const totals = this.getDisplacedGeneration(this.rdf.raw.data.co2, this.rdf.raw.data.co2_not, true);
     this.co2Original = totals.original;
     this.co2Post = totals.post;
-    console.timeEnd('_________ get co2 total __________');
     return totals;
   }
 
   get so2Rate() {
-    console.time('_________ get so2 rate __________');
     const original = math.round(math.divide(this.so2Original, this.generationOriginal), 2);
     const post = math.round(math.divide(this.so2Post, this.generationPost), 2);
-    console.timeEnd('_________ get so2 rate __________');
     return {
       original: original.toString(),
       post: post.toString(),
@@ -89,10 +79,8 @@ class AnnualDisplacementEngine {
   }
 
   get noxRate() {
-    console.time('_________ get nox rate __________');
     const original = math.round(math.divide(this.noxOriginal, this.generationOriginal), 2);
     const post = math.round(math.divide(this.noxPost, this.generationPost), 2);
-    console.timeEnd('_________ get nox rate __________');
     return {
       original: original.toString(),
       post: post.toString(),
@@ -100,10 +88,8 @@ class AnnualDisplacementEngine {
   }
 
   get co2Rate() {
-    console.time('_________ get co2 rate __________');
     const original = math.round(math.divide(this.co2Original, this.generationOriginal), 2);
     const post = math.round(math.divide(this.co2Post, this.generationPost), 2);
-    console.timeEnd('_________ get co2 rate __________');
     return {
       original: original.toString(),
       post: post.toString(),
