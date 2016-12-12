@@ -21,6 +21,7 @@
     "react-scripts": "0.8.4"
   },
   "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.15.0",
     "mathjs": "^3.4.1",
     "react": "^15.2.1",
