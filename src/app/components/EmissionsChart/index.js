@@ -5,6 +5,8 @@ import './styles.css';
 
 const EmissionsChart = ({
   heading,
+  selected_region,
+  reselectRegion,
   selected_state,
   selectState,
   available_states,
@@ -141,7 +143,10 @@ const EmissionsChart = ({
             name='aggregation'
             value='region'
             checked={ aggregation === 'region' }
-            onChange={(e) => onAggregationChange(e.target.value)}
+            onChange={(e) => {
+              onAggregationChange(e.target.value);
+              reselectRegion(selected_region);
+            }}
           />
           Region
         </label>
@@ -152,7 +157,10 @@ const EmissionsChart = ({
             name='aggregation'
             value='state'
             checked={ aggregation === 'state' }
-            onChange={(e) => onAggregationChange(e.target.value)}
+            onChange={(e) => {
+              onAggregationChange(e.target.value);
+              if (selected_state) { selectState(selected_state) }
+            }}
           />
           State
         </label>
@@ -163,7 +171,10 @@ const EmissionsChart = ({
             name='aggregation'
             value='county'
             checked={ aggregation === 'county' }
-            onChange={(e) => onAggregationChange(e.target.value)}
+            onChange={(e) => {
+              onAggregationChange(e.target.value);
+              if (selected_county) { selectCounty(selected_county) }
+            }}
           />
           County
         </label>
@@ -211,6 +222,7 @@ const EmissionsChart = ({
 
 EmissionsChart.propTypes = {
   heading: PropTypes.string.isRequired,
+  reselectRegion: PropTypes.func.isRequired,
   //selected_state: PropTypes.string.isRequired,
   selectState: PropTypes.func.isRequired,
   available_states: PropTypes.array.isRequired,
