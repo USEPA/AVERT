@@ -19,121 +19,12 @@ const EmissionsChart = ({
   onUnitChange,
   output,
 }) => {
-  // conditionally define stateSelector, if aggrigation is State or County
-  let stateSelector;
-  if (aggregation === 'state' || aggregation === 'county') {
-    stateSelector = (
-      <div className='avert-select-group'>
-        <select
-          value={ selected_state }
-          onChange={(e) => selectState(e.target.value)}
-        >
-          <option value='' disabled>Select State</option>
+  // rendering is readay when output prop has data
+  const readyToRender = output.so2.length > 0;
 
-          {available_states.map((state, index) => {
-            return <option key={ index } value={ state }>{ state }</option>
-          })}
-        </select>
-      </div>
-    );
-  }
-
-  // conditionally define countySelector, if aggrigation is County
-  let countySelector;
-  if (aggregation === 'county') {
-    countySelector = (
-      <div className='avert-select-group'>
-        <select
-          value={ selected_county }
-          onChange={(e) => selectCounty(e.target.value)}
-        >
-          <option value='' disabled>Select County</option>
-
-          {available_counties.map((county, index) => {
-            return <option key={ index } value={ county }>{ county }</option>
-          })}
-        </select>
-      </div>
-    )
-  }
-
-  // charts data
-  const so2_data = output.so2.map((emission) => emission);
-  const nox_data = output.nox.map((emission) => emission);
-  const co2_data = output.co2.map((emission) => emission);
-
-  // charts config
-  const shared_config = {
-    chart: {
-      type: 'column',
-      height: 240,
-      style: {
-        fontFamily: '"Open Sans", sans-serif',
-      },
-    },
-    credits: {
-      enabled: false,
-    },
-    legend: {
-      enabled: false,
-    },
-    xAxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    },
-  };
-  const so2_config = {
-    ...shared_config,
-    title: {
-      text: 'SO₂',
-    },
-    yAxis: {
-      title: {
-        text: 'Emission changes (lbs)',
-      },
-    },
-    series: [{
-      name: 'SO₂',
-      data: so2_data,
-      color: '#058dc7',
-    }],
-  };
-  const nox_config = {
-    ...shared_config,
-    title: {
-      text: 'NOₓ',
-    },
-    yAxis: {
-      title: {
-        text: 'Emission changes (lbs)',
-      },
-    },
-    series: [{
-      name: 'NOₓ',
-      data: nox_data,
-      color: '#ed561b',
-    }]
-  };
-  const co2_config = {
-    ...shared_config,
-    title: {
-      text: 'CO₂',
-    },
-    yAxis: {
-      title: {
-        text: 'Emission changes (tons)',
-      },
-    },
-    series: [{
-      name: 'CO₂',
-      data: co2_data,
-      color: '#50b432',
-    }]
-  };
-
-  return (
-    <div className='avert-emissions-chart'>
-      <h3 className='avert-heading-three'>{ heading }</h3>
-
+  let aggregationFilter = null;
+  if (readyToRender) {
+    aggregationFilter = (
       <div className='avert-inline-select' id='geography-groups'>
         <p>{'Select level of aggregation:'}</p>
 
@@ -179,12 +70,58 @@ const EmissionsChart = ({
           County
         </label>
       </div>
+    );
+  }
 
+  let stateSelector = null;
+  if (aggregation === 'state' || aggregation === 'county') {
+    stateSelector = (
+      <div className='avert-select-group'>
+        <select
+          value={ selected_state }
+          onChange={(e) => selectState(e.target.value)}
+        >
+          <option value='' disabled>Select State</option>
+
+          {available_states.map((state, index) => {
+            return <option key={ index } value={ state }>{ state }</option>
+          })}
+        </select>
+      </div>
+    );
+  }
+
+  let countySelector = null;
+  if (aggregation === 'county') {
+    countySelector = (
+      <div className='avert-select-group'>
+        <select
+          value={ selected_county }
+          onChange={(e) => selectCounty(e.target.value)}
+        >
+          <option value='' disabled>Select County</option>
+
+          {available_counties.map((county, index) => {
+            return <option key={ index } value={ county }>{ county }</option>
+          })}
+        </select>
+      </div>
+    )
+  }
+
+  let geographyFilter = null;
+  if (readyToRender) {
+    geographyFilter = (
       <div className='avert-geography-filter'>
         { stateSelector }
         { countySelector }
       </div>
+    );
+  }
 
+  let unitFilter = null;
+  if (readyToRender) {
+    unitFilter = (
       <div className='avert-inline-select'>
         <p>{'Select units:'}</p>
 
@@ -210,12 +147,105 @@ const EmissionsChart = ({
           Percent change
         </label>
       </div>
+    );
+  }
 
+  // charts data
+  const so2_data = output.so2.map((emission) => emission);
+  const nox_data = output.nox.map((emission) => emission);
+  const co2_data = output.co2.map((emission) => emission);
+
+  // charts config
+  const shared_config = {
+    chart: {
+      type: 'column',
+      height: 240,
+      style: {
+        fontFamily: '"Open Sans", sans-serif',
+      },
+    },
+    credits: {
+      enabled: false,
+    },
+    legend: {
+      enabled: false,
+    },
+    xAxis: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    },
+  };
+
+  const so2_config = {
+    ...shared_config,
+    title: {
+      text: 'SO₂',
+    },
+    yAxis: {
+      title: {
+        text: 'Emission changes (lbs)',
+      },
+    },
+    series: [{
+      name: 'SO₂',
+      data: so2_data,
+      color: '#058dc7',
+    }],
+  };
+
+  const nox_config = {
+    ...shared_config,
+    title: {
+      text: 'NOₓ',
+    },
+    yAxis: {
+      title: {
+        text: 'Emission changes (lbs)',
+      },
+    },
+    series: [{
+      name: 'NOₓ',
+      data: nox_data,
+      color: '#ed561b',
+    }]
+  };
+
+  const co2_config = {
+    ...shared_config,
+    title: {
+      text: 'CO₂',
+    },
+    yAxis: {
+      title: {
+        text: 'Emission changes (tons)',
+      },
+    },
+    series: [{
+      name: 'CO₂',
+      data: co2_data,
+      color: '#50b432',
+    }]
+  };
+
+  let chart = null;
+  if (readyToRender) {
+    chart = (
       <div className="avert-emissions-charts">
         <Highcharts config={so2_config} />
         <Highcharts config={nox_config} />
         <Highcharts config={co2_config} />
       </div>
+    );
+  }
+
+  return (
+    <div className='avert-emissions-chart'>
+      <h3 className='avert-heading-three'>{ heading }</h3>
+
+      { aggregationFilter }
+      { geographyFilter }
+      { unitFilter }
+
+      { chart }
     </div>
   );
 };
