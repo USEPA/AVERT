@@ -29,6 +29,7 @@ const EmissionsTable = (props) => (
       </thead>
       <tbody>
         {props.states.map((state, index) => {
+          console.log('........',state,index,props.data[index]);
           return (
             <tr key={ index }>
               <td>{ state }</td>

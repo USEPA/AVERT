@@ -1,5 +1,7 @@
 // Deps
 import math from 'mathjs';
+import StateEmissions from '../entities/StateEmissions';
+import MonthlyEmissions from '../entities/MonthlyEmissions';
 
 class AnnualDisplacementEngine {
   constructor(rdf, hourlyEere) {
@@ -15,6 +17,9 @@ class AnnualDisplacementEngine {
     this.noxPost = 0;
     this.co2Original = 0;
     this.co2Post = 0;
+
+    this.stateEmissions = new StateEmissions();
+    this.monthlyEmissions = new MonthlyEmissions();
   }
 
   get output() {
@@ -26,7 +31,7 @@ class AnnualDisplacementEngine {
   }
 
   get generation() {
-    const totals = this.getDisplacedGeneration(this.rdf.generation, false, false);
+    const totals = this.getDisplacedGeneration(this.rdf.generation, false,'generation');
     this.generationOriginal = totals.original;
     this.generationPost = totals.post;
     return totals;
@@ -49,21 +54,22 @@ class AnnualDisplacementEngine {
   }
 
   get so2Total() {
-    const totals = this.getDisplacedGeneration(this.rdf.raw.data.so2, this.rdf.raw.data.so2_not, true);
+    const totals = this.getDisplacedGeneration(this.rdf.raw.data.so2, this.rdf.raw.data.so2_not,'so2');
     this.so2Original = totals.original;
     this.so2Post = totals.post;
+
     return totals;
   }
 
   get noxTotal() {
-    const totals = this.getDisplacedGeneration(this.rdf.raw.data.nox, this.rdf.raw.data.nox_not, true);
+    const totals = this.getDisplacedGeneration(this.rdf.raw.data.nox, this.rdf.raw.data.nox_not,'nox');
     this.noxOriginal = totals.original;
     this.noxPost = totals.post;
     return totals;
   }
 
   get co2Total() {
-    const totals = this.getDisplacedGeneration(this.rdf.raw.data.co2, this.rdf.raw.data.co2_not, true);
+    const totals = this.getDisplacedGeneration(this.rdf.raw.data.co2, this.rdf.raw.data.co2_not,'co2');
     this.co2Original = totals.original;
     this.co2Post = totals.post;
     return totals;
@@ -97,8 +103,7 @@ class AnnualDisplacementEngine {
   }
 
 
-
-  getDisplacedGeneration(dataSet, dataSetNonOzone, no) {
+  getDisplacedGeneration(dataSet, dataSetNonOzone, emissionType) {
 
     let preTotalArray = [];
     let postTotalArray = [];
@@ -111,6 +116,20 @@ class AnnualDisplacementEngine {
       },
       state: {},
     };
+
+    const monthlyEmissionChanges = {
+      region: {},
+      state: {},
+      county: {},
+    };
+
+    const monthlyPercentageChanges = {
+      region: {},
+      state: {},
+      county: {},
+    };
+
+    const stateEmissionChanges = {};
 
     const edges = this.rdf.edges;
     const min = edges[0];
@@ -132,6 +151,8 @@ class AnnualDisplacementEngine {
       postTotalArray[i] = 0;
       deltaVArray[i] = 0;
       monthlyEmissions.regional[month] = monthlyEmissions.regional[month] ? monthlyEmissions.regional[month] : 0;
+      monthlyEmissionChanges.region[month] = monthlyEmissionChanges.region[month] ? monthlyEmissionChanges.region[month] : 0;
+      monthlyPercentageChanges.region[month] = monthlyPercentageChanges.region[month] ? monthlyPercentageChanges.region[month] : 0;
 
       if (this.isOutlier(load, min, max, postLoad)) continue;
 
@@ -145,19 +166,105 @@ class AnnualDisplacementEngine {
         preTotalArray[i] += data.pre;
         postTotalArray[i] += data.post;
         deltaVArray[i] += data.delta;
+
+        const state = dataSet[j].state;
+        // State - Total Emissions
+        // this.stateEmissions.add(emissionType,state,data.delta);
+        stateEmissionChanges[state] = stateEmissionChanges[state] ? stateEmissionChanges[state] : 0;
+        stateEmissionChanges[state] += data.delta;
+
+        /**
+         * State - Monthly - Emissions
+         */
+        this.monthlyEmissions.addState(emissionType,'emissions',state,month,data.delta);
+        if(typeof monthlyEmissionChanges.state[state] === 'undefined'){
+          monthlyEmissionChanges.state[state] = {}
+        }
+
+        if(typeof monthlyEmissionChanges.state[state][month] === 'undefined') {
+          monthlyEmissionChanges.state[state][month] = 0;
+        }
+
+        monthlyEmissionChanges.state[state][month] += data.delta;
+
+        /**
+         * State - Monthly - Percent
+         */
+        this.monthlyEmissions.addState(emissionType,'percentages',state,month,data.delta);
+        if(typeof monthlyPercentageChanges.state[state] === 'undefined'){
+          monthlyPercentageChanges.state[state] = {}
+        }
+
+        if(typeof monthlyPercentageChanges.state[state][month] === 'undefined') {
+          monthlyPercentageChanges.state[state][month] = 0;
+        }
+
+        monthlyPercentageChanges.state[state][month] += data.percentDifference;
+
+        /**
+         * County - Monthly Emissions
+         */
+        const county = dataSet[j].county;
+        this.monthlyEmissions.addCounty(emissionType,'emissions',state,county,month,data.delta);
+        if(typeof monthlyEmissionChanges.county[state] === 'undefined'){
+          monthlyEmissionChanges.county[state] = {}
+        }
+
+        if(typeof monthlyEmissionChanges.county[state][county] === 'undefined'){
+          monthlyEmissionChanges.county[state][county] = {}
+        }
+
+        if(typeof monthlyEmissionChanges.county[state][county][month] === 'undefined') {
+          monthlyEmissionChanges.county[state][county][month] = 0;
+        }
+
+        monthlyEmissionChanges.county[state][county][month] += data.delta;
+
+        /**
+         * County - Monthly - Percentages
+         */
+
+        this.monthlyEmissions.addCounty(emissionType,'percentages',state,county,month,data.delta);
+        if(typeof monthlyPercentageChanges.county[state] === 'undefined'){
+          monthlyPercentageChanges.county[state] = {}
+        }
+
+        if(typeof monthlyPercentageChanges.county[state][county] === 'undefined'){
+          monthlyPercentageChanges.county[state][county] = {}
+        }
+
+        if(typeof monthlyPercentageChanges.county[state][county][month] === 'undefined') {
+          monthlyPercentageChanges.county[state][county][month] = 0;
+        }
+
+        monthlyPercentageChanges.county[state][county][month] += data.percentDifference;
+
       }
 
       monthlyEmissions.regional[month] += deltaVArray[i];
+      monthlyEmissionChanges.region[month] += deltaVArray[i];
+      monthlyPercentageChanges.region[month] += deltaVArray[i];
+      this.monthlyEmissions.addRegion(emissionType,'emissions',month,deltaVArray[i]);
+      this.monthlyEmissions.addRegion(emissionType,'percentages',month,deltaVArray[i]);
     }
 
     const preTotal = preTotalArray.reduce((sum, n) => sum + (n || 0), 0);
     const postTotal = postTotalArray.reduce((sum, n) => sum + (n || 0), 0);
+
+    const monthlyChanges = {
+      emissions: monthlyEmissionChanges,
+      percentages: monthlyPercentageChanges,
+    };
 
     return {
       original: parseInt(preTotal, 10),
       post: parseInt(postTotal, 10),
       impact: parseInt(math.subtract(postTotal, preTotal), 10),
       monthlyEmissions: monthlyEmissions,
+      monthlyChanges: monthlyChanges,
+      // monthlyChanges: this.monthlyEmissions[emissionType],
+      // stateChanges: this.stateEmissions[emissionType],
+      stateChanges: stateEmissionChanges,
     };
   }
 
@@ -175,6 +282,7 @@ class AnnualDisplacementEngine {
       pre: preVal,
       post: postVal,
       delta: deltaV,
+      percentDifference: (postVal - preVal) / postVal * 100,
     }
   }
 

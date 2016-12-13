@@ -143,6 +143,8 @@ class Engine {
 
     getStateEmissions() {
         store.dispatch(completeStateEmissions(this.stateEmissions.extract(this.annualOutput)));
+        // console.log('Entity','...',this.annualDisplacement.stateEmissions.export());
+        // store.dispatch(completeStateEmissions(this.annualDisplacement.stateEmissions.export()));
     }
 
     getMonthlyEmissions() {

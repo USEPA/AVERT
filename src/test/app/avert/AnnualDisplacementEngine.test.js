@@ -87,8 +87,9 @@ describe('AnnualDisplacementEngine', () => {
   describe('getDisplacedGenerations', () => {
     let engine = new AnnualDisplacementEngine(rdf, eere.hourlyEere);
     let data;
+
     it('should calculate displaced generations', () => {
-      data = engine.getDisplacedGeneration(engine.rdf.raw.data.generation, false, false);
+      data = engine.getDisplacedGeneration(engine.rdf.raw.data.generation, false, 'generation');
     });
 
     it('should calculate original generation values before displacing with EERE', () => {
@@ -179,4 +180,334 @@ describe('AnnualDisplacementEngine', () => {
       }
     });
   });
+
+  describe('Displaced Generations - Monthly Changes', () => {
+    let engine = new AnnualDisplacementEngine(rdf, eere.hourlyEere);
+    let data = engine.getDisplacedGeneration(engine.rdf.raw.data.generation, false, 'generation');
+
+    it('should contain monthly emission changes', () => {
+      expect(Object.keys(data.monthlyChanges)).toContain('emissions');
+    });
+
+    it('should contain monthly percent changes', () => {
+      expect(Object.keys(data.monthlyChanges)).toContain('percentages');
+    });
+
+    describe('Monthly Changes - Emissions', () => {
+      describe('Region level monthly emissions', () => {
+        it('should contain regional data', () => {
+          expect(Object.keys(data.monthlyChanges.emissions)).toContain('region');
+        });
+
+        it('should extract every month if using actual NE data', () => {
+          if (!usingMock) {
+            expect(Object.keys(data.monthlyChanges.emissions.region)).toEqual(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']);
+          }
+        });
+
+        it('should extract only the first month if using mock NE data', () => {
+          if (usingMock) {
+            expect(Object.keys(data.monthlyChanges.emissions.region)).toEqual(['1']);
+          }
+        });
+
+        it('should have have January generation emission value of -0.25033370701134317 when using mock NE data', () => {
+          if (usingMock) {
+            expect(data.monthlyChanges.emissions.region[1]).toBe(-0.25033370701134317);
+          }
+        });
+
+        it('should have have January generation emission value of -1608.8198956026513 when using real NE data', () => {
+          if (!usingMock) {
+            expect(data.monthlyChanges.emissions.region[1]).toBe(-1608.8198956026513);
+          }
+        });
+      });
+
+      describe('State level monthly emissions', () => {
+        it('should contain each state with data', () => {
+          expect(Object.keys(data.monthlyChanges.emissions.state)).toContain('NY');
+        });
+
+        it('should extract every month if using actual NE data', () => {
+          if (!usingMock) {
+            expect(Object.keys(data.monthlyChanges.emissions.state.NY))
+              .toEqual(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']);
+          }
+        });
+
+        it('should contain january for each state', () => {
+          expect(Object.keys(data.monthlyChanges.emissions.state.NY)).toContain("1");
+        });
+
+        it('should aggregate state data into months', () => {
+          if (usingMock) {
+            expect(data.monthlyChanges.emissions.state.NY[1]).toBe(-0.29548786970313756);
+          } else {
+            expect(data.monthlyChanges.emissions.state.NY[1]).toBe(-854.9121809831477);
+          }
+        });
+      });
+
+      describe('County level monthly emissions', () => {
+        it('should index counties by state', () => {
+          expect(Object.keys(data.monthlyChanges.emissions.county)).toContain('NY');
+        });
+
+        it('should have every county in the state with data', () => {
+          expect(Object.keys(data.monthlyChanges.emissions.county['NY'])).toContain('Albany');
+        });
+
+        it('should contain every month', () => {
+          expect(Object.keys(data.monthlyChanges.emissions.county.NY.Albany)).toContain('1');
+        });
+
+        it('should aggregate avoided emissions into each month', () => {
+          if(usingMock) {
+            expect(data.monthlyChanges.emissions.county.NY.Albany[1]).toBe(-0.18776868948081926);
+          } else {
+            expect(data.monthlyChanges.emissions.county.NY.Albany[1]).toBe(-20.200556652153903);
+          }
+        });
+      });
+    });
+
+    describe('Monthly Changes - Percentage ', () => {
+      describe('Region level monthly percentages', () => {
+        it('should contain regional data', () => {
+          expect(Object.keys(data.monthlyChanges.percentages)).toContain('region');
+        });
+
+        it('should have an object index for each month', () => {
+          if(usingMock) {
+            expect(Object.keys(data.monthlyChanges.percentages.region)).toEqual(["1"]);
+          } else {
+            expect(Object.keys(data.monthlyChanges.percentages.region))
+              .toEqual(["1","2","3","4","5","6","7","8","9","10","11","12"]);
+          }
+        });
+
+        it('should have an avoided percent change of -0.2503 in January when using mock data', () => {
+          if(usingMock) {
+            expect(data.monthlyChanges.percentages.region[1]).toBe(-0.25033370701134317);
+          }
+        });
+      });
+
+      describe('State level monthly percentages', () => {
+        it('should contain states', () => {
+          expect(Object.keys(data.monthlyChanges.percentages)).toContain('state');
+        });
+
+        it('should contain each state that has data', () => {
+          if(usingMock) {
+            expect(Object.keys(data.monthlyChanges.percentages.state)).toEqual(['NH','NY','NJ','MA']);
+          } else {
+            expect(Object.keys(data.monthlyChanges.percentages.state))
+              .toEqual(["NH", "NY", "NJ", "MA", "CT", "VT", "RI", "ME"]);
+          }
+        });
+
+        it('should group data by months for each state', () => {
+          if(usingMock) {
+            expect(Object.keys(data.monthlyChanges.percentages.state.NY)).toEqual(["1"]);
+          } else {
+            expect(Object.keys(data.monthlyChanges.percentages.state.NY))
+              .toEqual(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']);
+          }
+        });
+
+        it('should aggregate data into each month', () => {
+          if(usingMock) {
+            expect(data.monthlyChanges.percentages.state.NY[1]).toBe(-0.2800169168077661);
+          } else {
+            expect(data.monthlyChanges.percentages.state.NY[1]).toBe(-854.9121809831477);
+          }
+        });
+      });
+
+      describe('County level monthly percentage changes', () => {
+        it('should contain counties', () => {
+          expect(Object.keys(data.monthlyChanges.percentages)).toContain('county');
+        });
+
+        it('should have an index of all states', () => {
+          if(usingMock) {
+            expect(Object.keys(data.monthlyChanges.percentages.county)).toEqual(['NH','NY','NJ','MA']);
+          } else {
+            expect(Object.keys(data.monthlyChanges.percentages.county))
+              .toEqual(["NH", "NY", "NJ", "MA", "CT", "VT", "RI", "ME"]);
+          }
+        });
+
+        it('should have every county in the state with data', () => {
+          expect(Object.keys(data.monthlyChanges.percentages.county['NY'])).toContain('Albany');
+        });
+
+        it('should contain every month', () => {
+          expect(Object.keys(data.monthlyChanges.percentages.county.NY.Albany)).toContain('1');
+        });
+
+        it('should aggregate avoided percentages into each month', () => {
+          if(usingMock) {
+            expect(data.monthlyChanges.percentages.county.NY.Albany[1]).toBe(-0.1425325935534659);
+          } else {
+            expect(data.monthlyChanges.percentages.county.NY.Albany[1]).toBe(-20.200556652153903);
+          }
+        });
+      })
+    });
+  });
+
+
+
+  describe('Displaced Generations - State Changes', () => {
+    let engine = new AnnualDisplacementEngine(rdf, eere.hourlyEere);
+    let data = engine.getDisplacedGeneration(engine.rdf.raw.data.generation, false, 'generation');
+
+    it('should contain emission changes by state', () => {
+      expect(Object.keys(data)).toContain('stateChanges');
+    });
+
+    it('should contain a list of states for the region', () => {
+      if(usingMock) {
+        expect(Object.keys(data.stateChanges)).toEqual(['NH','NY','NJ','MA']);
+      } else {
+        expect(Object.keys(data.stateChanges)).toEqual(["NH", "NY", "NJ", "MA", "CT", "VT", "RI", "ME"]);
+      }
+    });
+
+    it('should aggregate the emissions for NH', () => {
+      if(usingMock) {
+        expect(data.stateChanges.NH).toBe(0.05833865343725364);
+      } else {
+        expect(data.stateChanges.NH).toBe(-563.8124004921106);
+      }
+    });
+
+    // describe('StateEmissions class', () => {
+    //   it('should use the StateEmissions class', () => {
+    //     expect(engine.stateEmissions.constructor.name).toBe('StateEmissions');
+    //   });
+    //
+    //   it('should be able to aggregate emissions by state', () => {
+    //     if(usingMock) {
+    //       expect(Object.keys(engine.stateEmissions.generation)).toEqual(['NH','NY','NJ','MA']);
+    //     }
+    //   });
+    //
+    //   it('should aggregate the emissions for NH', () => {
+    //     if(usingMock) {
+    //       expect(engine.stateEmissions.generation.NH).toBe(0.05833865343725364);
+    //     } else {
+    //       expect(engine.stateEmissions.generation.NH).toBe(-563.8124004921106);
+    //     }
+    //   });
+    //
+    //   it('should export states', () => {
+    //     expect(engine.stateEmissions.export()).toEqual(["NH", "NY", "NJ", "MA"]);
+    //   })
+    // });
+  });
 });
+//
+// describe('MonthlyEmissions class', () => {
+//   let usingMock = true;
+//
+//   let rdf = new Rdf({rdf: northeast_rdf, defaults: northeast_defaults});
+//   let profile = new EereProfile();
+//   profile.limits = {constantReductions: 5, renewables: 10};
+//   profile.windCapacity = 7;
+//   let eere = new EereEngine(profile, rdf);
+//   eere.calculateEereLoad();
+//   let engine2 = new AnnualDisplacementEngine(rdf, eere.hourlyEere);
+//   let data2;
+//
+//   it('should run', () => {
+//     data2 = engine2.getDisplacedGeneration(engine2.rdf.raw.data.generation, false, 'generation');
+//   });
+//
+//   it('should contain monthly emission changes', () => {
+//     expect(Object.keys(engine2.monthlyEmissions.generation)).toContain('emissions');
+//   });
+//
+//   it('should contain monthly percent changes', () => {
+//     expect(Object.keys(engine2.monthlyEmissions.generation)).toContain('percentages');
+//   });
+//
+//   describe('Monthly Changes - Emissions', () => {
+//     describe('Region level monthly emissions', () => {
+//       it('should contain regional data', () => {
+//         expect(Object.keys(engine2.monthlyEmissions.generation.emissions)).toContain('region');
+//       });
+//
+//       it('should extract every month if using actual NE data', () => {
+//         if (!usingMock) {
+//           expect(Object.keys(engine2.monthlyEmissions.generation.emissions.region)).toEqual(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']);
+//         }
+//       });
+//
+//       it('should extract only the first month if using mock NE data', () => {
+//         if (usingMock) {
+//           expect(Object.keys(engine2.monthlyEmissions.generation.emissions.region)).toEqual(['1']);
+//         }
+//       });
+//
+//       it('should have have January generation emission value of -0.25033370701134317 when using mock NE data', () => {
+//         if (usingMock) {
+//           // console.log('............','Engine Count',engine2.count);
+//           // console.log('............','Separate Count',engine2.monthlyEmissions.count);
+//           expect(engine2.monthlyEmissions.generation.emissions.region[1]).toBe(-0.25033370701134317);
+//         }
+//       });
+//     });
+//
+//     describe('State level monthly emissions', () => {
+//       it('should contain each state with data', () => {
+//         expect(Object.keys(engine2.monthlyEmissions.generation.emissions.state)).toContain('NY');
+//       });
+//
+//       it('should extract every month if using actual NE data', () => {
+//         if (!usingMock) {
+//           expect(Object.keys(engine2.monthlyEmissions.generation.emissions.state.NY))
+//             .toEqual(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']);
+//         }
+//       });
+//
+//       it('should contain january for each state', () => {
+//         expect(Object.keys(engine2.monthlyEmissions.generation.emissions.state.NY)).toContain("1");
+//       });
+//
+//       it('should aggregate state data into months', () => {
+//         if (usingMock) {
+//           expect(engine2.monthlyEmissions.generation.emissions.state.NY[1]).toBe(-0.29548786970313756);
+//         } else {
+//           expect(engine2.monthlyEmissions.generation.emissions.state.NY[1]).toBe(-854.9121809831477);
+//         }
+//       });
+//     });
+//
+//     describe('County level monthly emissions', () => {
+//       it('should index counties by state', () => {
+//         expect(Object.keys(engine2.monthlyEmissions.generation.emissions.county)).toContain('NY');
+//       });
+//
+//       it('should have every county in the state with data', () => {
+//         expect(Object.keys(engine2.monthlyEmissions.generation.emissions.county['NY'])).toContain('Albany');
+//       });
+//
+//       it('should contain every month', () => {
+//         expect(Object.keys(engine2.monthlyEmissions.generation.emissions.county.NY.Albany)).toContain('1');
+//       });
+//
+//       it('should aggregate avoided emissions into each month', () => {
+//         if(usingMock) {
+//           expect(engine2.monthlyEmissions.generation.emissions.county.NY.Albany[1]).toBe(-0.18776868948081926);
+//           // console.log('...............',engine2.monthlyEmissions.generation);
+//         } else {
+//           expect(engine2.monthlyEmissions.generation.emissions.county.NY.Albany[1]).toBe(-20.200556652153903);
+//         }
+//       });
+//     });
+//   });
+// });

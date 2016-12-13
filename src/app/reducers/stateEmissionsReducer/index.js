@@ -3,7 +3,6 @@ import {
   SELECT_REGION,
   START_DISPLACEMENT,
   COMPLETE_STATE,
-  FOO_COMPLETE_STATE,
 } from '../../actions';
 
 const defaultState = {
@@ -26,18 +25,10 @@ const stateEmissionsReducer = (state = defaultState, action) => {
       };
 
     case COMPLETE_STATE:
+      console.warn('COMPLETE_STATE', action.data);
       return {
         ...state,
         status: "complete",
-        results: action.data,
-      };
-
-    case FOO_COMPLETE_STATE:
-      console.warn('FOO_COMPLETE_STATE', action);
-
-      return {
-        ...state,
-        state: "complete",
         results: action.data,
       };
 
