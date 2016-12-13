@@ -4,6 +4,7 @@ import {
   START_DISPLACEMENT,
   COMPLETE_MONTHLY,
   SELECT_AGGREGATION,
+  RESELECT_REGION,
   SELECT_STATE,
   SELECT_COUNTY,
   SELECT_UNIT,
@@ -81,6 +82,12 @@ const monthlyEmissionsReducer = (state = initialState, action) => {
         ...state,
         selected_aggregation: action.aggregation,
         output: action.aggregation === 'region' ? state.regional : state.output,
+      };
+
+    case RESELECT_REGION:
+      return {
+        ...state,
+        output: action.region,
       };
 
     case SELECT_STATE:
