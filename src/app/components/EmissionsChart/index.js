@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import Highcharts from 'react-highcharts';
+
 // styles
 import './styles.css';
 

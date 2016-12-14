@@ -1,4 +1,6 @@
 import React, { PropTypes } from 'react';
+import ReactHighcharts from 'react-highcharts';
+require('highcharts-exporting')(ReactHighcharts.Highcharts);
 // components
 import StepProgressBar from '../StepProgressBar';
 // containers
