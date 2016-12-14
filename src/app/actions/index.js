@@ -28,7 +28,6 @@ export const UPDATE_EXCEEDANCES = "UPDATE_EXCEEDANCES";
 export const RESET_EERE_INPUTS = 'RESET_EERE_INPUTS';
 export const RESET_EERE_HOURLY = 'RESET_EERE_HOURLY';
 
-export const SUBMIT_PARAMS = 'SUBMIT_PARAMS';
 export const SUBMIT_CALCULATION = 'SUBMIT_CALCULATION';
 export const COMPLETE_CALCULATION = "COMPLETE_CALCULATION";
 
@@ -188,25 +187,23 @@ export const overrideRegion = () => {
   }
 };
 
-export const submitParams = () => {
+export const validateEere = () => {
   // avert.eereProfile = eereProfile;
   avert.setEereProfile(eereProfile);
 
   const valid = eereProfile.isValid;
   const errors = eereProfile.errors;
 
-  return [{
+  return {
     type: VALIDATE_EERE,
     valid,
     errors,
-  }, {
-    type: SUBMIT_PARAMS,
-  }];
+  };
 };
 
 export const updateEereTopHours = (text) => {
   eereProfile.topHours = text;
-  store.dispatch(submitParams());
+  store.dispatch(validateEere());
 
   return {
     type: UPDATE_EERE_TOP_HOURS,
@@ -216,7 +213,7 @@ export const updateEereTopHours = (text) => {
 
 export const updateEereReduction = (text) => {
   eereProfile.reduction = text;
-  store.dispatch(submitParams());
+  store.dispatch(validateEere());
 
   return {
     type: UPDATE_EERE_REDUCTION,
@@ -227,7 +224,7 @@ export const updateEereReduction = (text) => {
 export const updateEereBroadBasedProgram = (text) => {
   eereProfile.topHours = 100;
   eereProfile.reduction = text;
-  store.dispatch(submitParams());
+  store.dispatch(validateEere());
 
   return {
     type: UPDATE_EERE_BROAD_BASE_PROGRAM,
@@ -237,7 +234,7 @@ export const updateEereBroadBasedProgram = (text) => {
 
 export const updateEereAnnualGwh = (text) => {
   eereProfile.annualGwh = text;
-  store.dispatch(submitParams());
+  store.dispatch(validateEere());
 
   return {
     type: UPDATE_EERE_ANNUAL_GWH,
@@ -247,7 +244,7 @@ export const updateEereAnnualGwh = (text) => {
 
 export const updateEereConstantMw = (text) => {
   eereProfile.constantMw = text;
-  store.dispatch(submitParams());
+  store.dispatch(validateEere());
 
   return {
     type: UPDATE_EERE_CONSTANT_MW,
@@ -257,7 +254,7 @@ export const updateEereConstantMw = (text) => {
 
 export const updateEereWindCapacity = (text) => {
   eereProfile.windCapacity = text;
-  store.dispatch(submitParams());
+  store.dispatch(validateEere());
 
   return {
     type: UPDATE_EERE_WIND_CAPACITY,
@@ -267,7 +264,7 @@ export const updateEereWindCapacity = (text) => {
 
 export const updateEereUtilitySolar = (text) => {
   eereProfile.utilitySolar = text;
-  store.dispatch(submitParams());
+  store.dispatch(validateEere());
 
   return {
     type: UPDATE_EERE_UTILITY_SOLAR,
@@ -277,7 +274,7 @@ export const updateEereUtilitySolar = (text) => {
 
 export const updateEereRooftopSolar = (text) => {
   eereProfile.rooftopSolar = text;
-  store.dispatch(submitParams());
+  store.dispatch(validateEere());
 
   return {
     type: UPDATE_EERE_ROOFTOP_SOLAR,

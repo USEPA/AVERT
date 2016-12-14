@@ -1,7 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import createLogger from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
-import reduxMulti from 'redux-multi';
 // reducers
 import reducers from '../reducers';
 
@@ -10,7 +9,6 @@ const composeEnhancers = (typeof window !== 'undefined') ? (window.__REDUX_DEVTO
 const middleware = applyMiddleware(
   createLogger(),
   thunkMiddleware,
-  reduxMulti
 );
 
 const configureStore = (preloadedState) => {

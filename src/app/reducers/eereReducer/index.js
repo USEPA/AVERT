@@ -13,7 +13,6 @@ import {
   UPDATE_EXCEEDANCES,
   RESET_EERE_INPUTS,
   RESET_EERE_HOURLY,
-  SUBMIT_PARAMS,
   SUBMIT_CALCULATION,
   COMPLETE_CALCULATION,
 } from '../../actions';
@@ -160,12 +159,6 @@ const eereReducer = (state = defaultState, action) => {
       return {
         ...state,
         hourlyEere: [],
-      };
-
-    case SUBMIT_PARAMS:
-      return {
-        ...state,
-        submitted: true,
       };
 
     case SUBMIT_CALCULATION:
