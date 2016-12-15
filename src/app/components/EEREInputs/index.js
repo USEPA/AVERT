@@ -34,18 +34,14 @@ const EEREInputs = ({
 }) => {
   // console.warn('Errors:', errors, 'Soft val:', softTopExceedanceValue, 'Hard val:', hardTopExceedanceValue);
 
-  const displayError = (errors, inputField, maxVal, errorMessage) => {
+  const displayError = (errors, inputField, maxVal) => {
     if (errors.indexOf(inputField) !== -1) {
       return (
         <span className='avert-input-error'>
           <span className='avert-input-error-range'>
-            { errorMessage ? errorMessage :
-              `Please enter a number between 0 and ${maxVal}.`
-            }
+            {`Please enter a number between 0 and ${maxVal}.`}
           </span>
-          { errorMessage ? '' :
-            'This will help ensure that each of your proposed programs displaces no more than 15% of hourly regional fossil generation, which is the recommended limit for AVERT. AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may fundamental dynamics.'
-          }
+          {'This will help ensure that each of your proposed programs displaces no more than 15% of hourly regional fossil generation, which is the recommended limit for AVERT. AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics.'}
         </span>
       );
     }
@@ -128,8 +124,8 @@ const EEREInputs = ({
                   onChange={ onTopHoursChange }
                 />
                 <span>{' % of hours'}</span>
-                { displayError(errors, 'reduction', false, 'Please enter a number from 0 to 15.') }
-                { displayError(errors, 'topHours', false, 'Please enter a number from 0 to 100.') }
+                { displayError(errors, 'reduction', 15) }
+                { displayError(errors, 'topHours', 100) }
               </li>
             </ul>
           </section>
