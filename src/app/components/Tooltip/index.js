@@ -14,7 +14,7 @@ class Tooltip extends Component {
           }}
         >info</a>
 
-        <div className='avert-modal' data-active='false' ref='modal'>
+        <span className='avert-modal' data-active='false' ref='modal'>
           <a href='' className='avert-modal-close'
             onClick={(e) => {
               e.preventDefault();
@@ -23,8 +23,8 @@ class Tooltip extends Component {
             }}
           >×</a>
 
-        <p>{ this.props.children }</p>
-        </div>
+        { this.props.children }
+        </span>
       </span>
     );
   };
