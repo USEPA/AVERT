@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 // containers
 import EEREInputFieldContainer from '../../containers/EEREInputFieldContainer';
+import TooltipContainer from '../../containers/TooltipContainer';
 // utilities
 import EereStatusEnum from '../../utils/EereStatusEnum';
 // styles
@@ -78,6 +79,10 @@ const EEREInputs = ({
                   onChange={ onConstantMwChange }
                 />
                 <span>{' MW'}</span>
+                <TooltipContainer>
+                  “Reduce hourly generation” allows you to enter a constant reduction for every hour of the year, in MW. An industrial or refrigeration efficiency program may be well represented by a constant reduction across most hours of the year.
+                </TooltipContainer>
+
                 { displayError(errors, 'constantMw', limits.constantMwh) }
               </li>
 

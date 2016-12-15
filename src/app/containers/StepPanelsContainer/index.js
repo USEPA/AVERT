@@ -6,6 +6,7 @@ import { overrideRegion } from '../../actions';
 
 const mapStateToProps = (state) => ({
   loading: state.panel.loading,
+  modalOverlay: state.panel.modalOverlay,
   percentComplete: state.panel.percentComplete,
   softValid: state.eere.soft_valid,
 });

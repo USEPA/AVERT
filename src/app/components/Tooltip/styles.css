@@ -1,0 +1,102 @@
+.avert-modal-overlay {
+  position: relative;
+}
+
+.avert-modal-overlay::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background-color: rgba(0,0,0, 0.5);
+}
+
+.avert-modal-link {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  background-image: url('../../../assets/icons.svg');
+  background-size: 400px 200px;
+  background-position: -10px -10px;
+
+  position: relative;
+  left: 6px;
+  bottom: -3px;
+
+  /* hide text */
+  text-indent: 400%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.avert-modal {
+  position: fixed;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: calc(100% - 3rem);
+  max-width: 20rem;
+  max-height: calc(100vh - 1rem);
+  padding: 1rem;
+  box-shadow: 0 0 0.25rem rgba(0,0,0, 0.33);
+  background-color: white;
+
+  animation-name: scale-up;
+  animation-duration: 0.2s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+}
+
+.avert-modal[data-active='false'] {
+  display: none;
+}
+
+.avert-modal[data-active='closed'] {
+  animation-name: scale-down;
+  animation-duration: 0.3s;
+}
+
+.avert-modal p {
+  font-size: 0.875rem;
+}
+
+.avert-modal .avert-modal-close {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  padding: 0 0.5rem;
+  font-weight: bold;
+  font-size: 1.25rem;
+  color: white;
+  background-color: rgba(0,0,0, 0.66);
+  text-shadow: 0 0 5px rgba(0,0,0, 0.25);
+  text-decoration: none;
+  opacity: 0.25;
+}
+
+.avert-modal .avert-modal-close:hover {
+  opacity: 0.75;
+}
+
+@keyframes scale-up {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-50%) scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-50%) scale(1);
+  }
+}
+
+@keyframes scale-down {
+  from {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-50%) scale(0);
+  }
+}

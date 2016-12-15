@@ -8,6 +8,7 @@ import store from '../store';
 
 // action types
 export const CHANGE_ACTIVE_STEP = 'CHANGE_ACTIVE_STEP';
+export const TOGGLE_MODAL_OVERLAY = 'TOGGLE_MODAL_OVERLAY';
 
 export const SELECT_REGION = 'SELECT_REGION';
 export const SET_LIMITS = 'SET_LIMITS';
@@ -64,6 +65,10 @@ export const setActiveStep = (number) => ({
   payload: {
     stepNumber: number
   },
+});
+
+export const toggleModalOverlay = () => ({
+  type: TOGGLE_MODAL_OVERLAY,
 });
 
 export const invalidateDefaults = (region) => ({
