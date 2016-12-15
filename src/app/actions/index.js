@@ -288,9 +288,13 @@ export const updateExceedances = (exceedances, soft, hard) => ({
   hard_exceedances: hard,
 });
 
-export const resetEereInputs = () => ({
-  type: RESET_EERE_INPUTS,
-});
+export const resetEereInputs = () => {
+  eereProfile.reset();
+
+  return {
+    type: RESET_EERE_INPUTS,
+  }
+};
 
 export const completeCalculation = (hourlyEere) => ({
   type: COMPLETE_CALCULATION,
