@@ -1,21 +1,23 @@
 import { combineReducers } from 'redux';
 // reducers
-import panelReducer from './panelReducer';
-import eereReducer from './eereReducer';
 import annualDisplacementReducer from './annualDisplacementReducer';
-import stateEmissionsReducer from './stateEmissionsReducer';
+import dataDownloadReducer from './dataDownloadReducer';
+import eereReducer from './eereReducer';
 import monthlyEmissionsReducer from './monthlyEmissionsReducer';
-import regionsReducer from './regionsReducer';
+import panelReducer from './panelReducer';
 import rdfsReducer from './rdfsReducer';
+import regionsReducer from './regionsReducer';
+import stateEmissionsReducer from './stateEmissionsReducer';
 
 const reducers = combineReducers({
-  panel: panelReducer,
-  eere: eereReducer,
   annualDisplacement: annualDisplacementReducer,
-  stateEmissions: stateEmissionsReducer,
+  dataDownload: dataDownloadReducer,
+  eere: eereReducer,
   monthlyEmissions: monthlyEmissionsReducer,
-  regions: regionsReducer,
+  panel: panelReducer,
   rdfs: rdfsReducer,
+  regions: regionsReducer,
+  stateEmissions: stateEmissionsReducer,
 });
 
 export default reducers;

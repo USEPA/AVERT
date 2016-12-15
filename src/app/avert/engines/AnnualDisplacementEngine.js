@@ -168,15 +168,19 @@ class AnnualDisplacementEngine {
         deltaVArray[i] += data.delta;
 
         const state = dataSet[j].state;
+        const county = dataSet[j].county;
+        this.stateEmissions.add(emissionType,state,data.delta);
+        this.monthlyEmissions.addRegion(emissionType,'percentages',month,data.percentDifference);
+        this.monthlyEmissions.addState(emissionType,'emissions',state,month,data.delta);
+        this.monthlyEmissions.addState(emissionType,'percentages',state,month,data.percentDifference);
+        this.monthlyEmissions.addCounty(emissionType,'emissions',state,county,month,data.delta);
+        this.monthlyEmissions.addCounty(emissionType,'percentages',state,county,month,data.percentDifference);
+
         // State - Total Emissions
-        // this.stateEmissions.add(emissionType,state,data.delta);
         stateEmissionChanges[state] = stateEmissionChanges[state] ? stateEmissionChanges[state] : 0;
         stateEmissionChanges[state] += data.delta;
 
-        /**
-         * State - Monthly - Emissions
-         */
-        this.monthlyEmissions.addState(emissionType,'emissions',state,month,data.delta);
+        //State - Monthly - Emissions
         if(typeof monthlyEmissionChanges.state[state] === 'undefined'){
           monthlyEmissionChanges.state[state] = {}
         }
@@ -187,10 +191,7 @@ class AnnualDisplacementEngine {
 
         monthlyEmissionChanges.state[state][month] += data.delta;
 
-        /**
-         * State - Monthly - Percent
-         */
-        this.monthlyEmissions.addState(emissionType,'percentages',state,month,data.delta);
+        //State - Monthly - Percent
         if(typeof monthlyPercentageChanges.state[state] === 'undefined'){
           monthlyPercentageChanges.state[state] = {}
         }
@@ -201,11 +202,7 @@ class AnnualDisplacementEngine {
 
         monthlyPercentageChanges.state[state][month] += data.percentDifference;
 
-        /**
-         * County - Monthly Emissions
-         */
-        const county = dataSet[j].county;
-        this.monthlyEmissions.addCounty(emissionType,'emissions',state,county,month,data.delta);
+        //County - Monthly Emissions
         if(typeof monthlyEmissionChanges.county[state] === 'undefined'){
           monthlyEmissionChanges.county[state] = {}
         }
@@ -220,11 +217,7 @@ class AnnualDisplacementEngine {
 
         monthlyEmissionChanges.county[state][county][month] += data.delta;
 
-        /**
-         * County - Monthly - Percentages
-         */
-
-        this.monthlyEmissions.addCounty(emissionType,'percentages',state,county,month,data.delta);
+        // County - Monthly - Percentages
         if(typeof monthlyPercentageChanges.county[state] === 'undefined'){
           monthlyPercentageChanges.county[state] = {}
         }
@@ -238,14 +231,12 @@ class AnnualDisplacementEngine {
         }
 
         monthlyPercentageChanges.county[state][county][month] += data.percentDifference;
-
       }
 
       monthlyEmissions.regional[month] += deltaVArray[i];
       monthlyEmissionChanges.region[month] += deltaVArray[i];
       monthlyPercentageChanges.region[month] += deltaVArray[i];
       this.monthlyEmissions.addRegion(emissionType,'emissions',month,deltaVArray[i]);
-      this.monthlyEmissions.addRegion(emissionType,'percentages',month,deltaVArray[i]);
     }
 
     const preTotal = preTotalArray.reduce((sum, n) => sum + (n || 0), 0);
@@ -262,9 +253,10 @@ class AnnualDisplacementEngine {
       impact: parseInt(math.subtract(postTotal, preTotal), 10),
       monthlyEmissions: monthlyEmissions,
       monthlyChanges: monthlyChanges,
+      stateChanges: stateEmissionChanges,
       // monthlyChanges: this.monthlyEmissions[emissionType],
       // stateChanges: this.stateEmissions[emissionType],
-      stateChanges: stateEmissionChanges,
+
     };
   }
 
@@ -275,6 +267,7 @@ class AnnualDisplacementEngine {
     const preVal = this.calculateLinear(load, median[preIndex], median[preIndex + 1], edges[preIndex], edges[preIndex + 1]);
     const postVal = this.calculateLinear(postLoad, median[postIndex], median[postIndex + 1], edges[postIndex], edges[postIndex + 1]);
     const deltaV = this.calculateDeltaV(postVal, preVal);
+    const percentDifference = preVal !== 0 ? deltaV / preVal * 100 : 0;
     this.extractStateEmissions(monthlyEmissions, state, month, deltaV, preVal, postVal);
     this.extractCountyEmissions(monthlyEmissions, state, county, month, deltaV, preVal, postVal);
 
@@ -282,7 +275,7 @@ class AnnualDisplacementEngine {
       pre: preVal,
       post: postVal,
       delta: deltaV,
-      percentDifference: (postVal - preVal) / postVal * 100,
+      percentDifference: percentDifference,
     }
   }
 

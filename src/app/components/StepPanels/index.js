@@ -119,7 +119,7 @@ const StepPanels = (props) => {
 
           <EmissionsChartContainer heading='Monthly Emission Changes' />
 
-          <DataDownload heading='Data Download' />
+          <DataDownload heading='Data Download' onClick={() => {props.onClickDataDownload ()}} />
         </PanelBody>
 
         <PanelFooterContainer prevButtonText='Back to EE/RE Impacts' nextButtonText='Reset Region' />

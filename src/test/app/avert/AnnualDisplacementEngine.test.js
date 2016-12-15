@@ -319,7 +319,7 @@ describe('AnnualDisplacementEngine', () => {
 
         it('should aggregate data into each month', () => {
           if(usingMock) {
-            expect(data.monthlyChanges.percentages.state.NY[1]).toBe(-0.2800169168077661);
+            expect(data.monthlyChanges.percentages.state.NY[1]).toBe(-0.27954464553214947);
           } else {
             expect(data.monthlyChanges.percentages.state.NY[1]).toBe(-854.9121809831477);
           }
@@ -350,7 +350,7 @@ describe('AnnualDisplacementEngine', () => {
 
         it('should aggregate avoided percentages into each month', () => {
           if(usingMock) {
-            expect(data.monthlyChanges.percentages.county.NY.Albany[1]).toBe(-0.1425325935534659);
+            expect(data.monthlyChanges.percentages.county.NY.Albany[1]).toBe(-0.14223868293835307);
           } else {
             expect(data.monthlyChanges.percentages.county.NY.Albany[1]).toBe(-20.200556652153903);
           }
