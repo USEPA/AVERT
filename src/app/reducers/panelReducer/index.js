@@ -1,6 +1,7 @@
 // action types
 import {
   CHANGE_ACTIVE_STEP,
+  TOGGLE_MODAL_OVERLAY,
   // REQUEST_DEFAULTS,
   // RECEIVE_DEFAULTS,
   REQUEST_REGION,
@@ -20,6 +21,7 @@ import {
 const defaultState = {
   activeStep: 1,
   loading: false,
+  modalOverlay: false,
   percentComplete: 0,
 };
 
@@ -29,6 +31,12 @@ const panelReducer = (state = defaultState, action) => {
       return {
         ...state,
         activeStep: action.payload.stepNumber,
+      };
+
+    case TOGGLE_MODAL_OVERLAY:
+      return {
+        ...state,
+        modalOverlay: !state.modalOverlay,
       };
 
     case REQUEST_REGION:

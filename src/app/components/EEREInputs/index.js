@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 // containers
 import EEREInputFieldContainer from '../../containers/EEREInputFieldContainer';
+import TooltipContainer from '../../containers/TooltipContainer';
 // utilities
 import EereStatusEnum from '../../utils/EereStatusEnum';
 // styles
@@ -78,6 +79,11 @@ const EEREInputs = ({
                   onChange={ onConstantMwChange }
                 />
                 <span>{' MW'}</span>
+
+                <TooltipContainer>
+                  {'“Reduce hourly generation” allows you to enter a constant reduction for every hour of the year, in MW. An industrial or refrigeration efficiency program may be well represented by a constant reduction across most hours of the year.'}
+                </TooltipContainer>
+
                 { displayError(errors, 'constantMw', limits.constantMwh) }
               </li>
 
@@ -89,6 +95,11 @@ const EEREInputs = ({
                   onChange={ onAnnualGwhChange }
                 />
                 <span>{' GWh'}</span>
+
+                <TooltipContainer>
+                  {'“Reduce total annual generation” is identical in effect to reducing hourly generation by a fixed amount. Enter the total number of GWh expected to be saved in a single year. This option simply distributes the total annual savings evenly over all hours of the year.'}
+                </TooltipContainer>
+
                 { displayError(errors, 'annualGwh', limits.annualGwh) }
               </li>
             </ul>
@@ -108,6 +119,10 @@ const EEREInputs = ({
                   onChange={ onBroadBasedProgramChange }
                 />
                 <span>{' % in all hours'}</span>
+
+                <TooltipContainer>
+                  {'To simulate a broad-based efficiency program, enter an estimated load reduction fraction. This percentage reduction will be applied to all hours of the year.'}
+                </TooltipContainer>
               </li>
 
               <li>
@@ -124,6 +139,11 @@ const EEREInputs = ({
                   onChange={ onTopHoursChange }
                 />
                 <span>{' % of hours'}</span>
+
+                <TooltipContainer>
+                  {'To simulate a peak-reduction targeting program such as demand response, enter the load reduction (as a fraction of peaking load) that would be targeted, as well as the fraction of high-demand hours that the program is expected to affect (e.g., 1%–3%).'}
+                </TooltipContainer>
+
                 { displayError(errors, 'reduction', 15) }
                 { displayError(errors, 'topHours', 100) }
               </li>
@@ -145,6 +165,11 @@ const EEREInputs = ({
                 onChange={ onWindCapacityChange }
               />
               <span>{' MW'}</span>
+
+              <TooltipContainer>
+                {'Enter the annual capacity (maximum potential electricity generation) for this type of resource, measured in MW. The model uses these inputs along with hourly capacity factors that vary by resource type and region.'}
+              </TooltipContainer>
+
               { displayError(errors, 'windCapacity', limits.renewables) }
             </p>
           </section>
@@ -160,6 +185,11 @@ const EEREInputs = ({
                 onChange={ onUtilitySolarChange }
               />
               <span>{' MW'}</span>
+
+              <TooltipContainer>
+                {'Enter the annual capacity (maximum potential electricity generation) for this type of resource, measured in MW. The model uses these inputs along with hourly capacity factors that vary by resource type and region.'}
+              </TooltipContainer>
+
               { displayError(errors, 'utilitySolar', limits.renewables) }
             </p>
           </section>
@@ -175,6 +205,11 @@ const EEREInputs = ({
                 onChange={ onRooftopSolarChange }
               />
               <span>{' MW'}</span>
+
+              <TooltipContainer>
+                {'Enter the annual capacity (maximum potential electricity generation) for this type of resource, measured in MW. The model uses these inputs along with hourly capacity factors that vary by resource type and region.'}
+              </TooltipContainer>
+
               { displayError(errors, 'rooftopSolar', limits.renewables) }
             </p>
           </section>

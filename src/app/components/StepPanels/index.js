@@ -18,6 +18,7 @@ import './styles.css';
 
 const StepPanels = (props) => {
   const loadingClass = props.loading ? 'avert-loading-overlay' : '';
+  const modalClass = props.modalOverlay ? 'avert-modal-overlay' : '';
 
   let loadingIndicator = null;
   // conditionally re-define loadingIndicator when loading prop exists
@@ -45,7 +46,7 @@ const StepPanels = (props) => {
   }
 
   return (
-    <div className={`avert-steps ${loadingClass}`}>
+    <div className={`avert-steps ${loadingClass} ${modalClass}`}>
       { loadingIndicator }
 
       <Panel active={ props.activePanel === 1 }>
