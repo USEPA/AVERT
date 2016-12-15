@@ -51,6 +51,7 @@ const panelReducer = (state = defaultState, action) => {
     case RECEIVE_REGION:
     case COMPLETE_CALCULATION:
     case COMPLETE_MONTHLY:
+    // case COMPLETE_ANNUAL:
       return {
         ...state,
         loading: false,

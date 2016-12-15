@@ -2,7 +2,10 @@ import { connect } from 'react-redux';
 // components
 import StepPanels from '../../components/StepPanels';
 // action creators
-import { overrideRegion } from '../../actions';
+import {
+  overrideRegion,
+  startDataDownload,
+} from '../../actions';
 
 const mapStateToProps = (state) => ({
   loading: state.panel.loading,
@@ -13,7 +16,11 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onClickDebug() {
+    // dispatch(startDataDownload());
     dispatch(overrideRegion());
+  },
+  onClickDataDownload() {
+    dispatch(startDataDownload());
   },
 });
 
