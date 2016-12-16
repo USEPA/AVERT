@@ -78,9 +78,9 @@ const StepPanels = (props) => {
             {') allows analyses for years 2007–2015 or for a future year scenario.'}
           </p>
 
-          <p className="avert-small-text" onClick={() => { props.onClickDebug() }}>
-            <em>(Debug)</em>
-          </p>
+          {/*<p className="avert-small-text" onClick={() => { props.onClickDebug() }}>*/}
+            {/*<em>(Debug)</em>*/}
+          {/*</p>*/}
         </PanelBody>
 
         <PanelFooterContainer nextButtonText='Set EE/RE Impacts' />

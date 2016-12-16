@@ -29,10 +29,11 @@ class MonthlyEmissionsEngine {
     // }
 
     extract(annualData) {
+        const statesAndCounties = this.extractStatesCounties(annualData);
         return {
-            statesAndCounties: this.extractStatesCounties(annualData),
-            emissions: this.extractEmissions(annualData),
-            percentages: this.extractPercentages(annualData),
+            statesAndCounties: statesAndCounties,
+            emissions: this.extractEmissions(annualData,statesAndCounties),
+            percentages: this.extractPercentages(annualData,statesAndCounties),
         };
     }
 
@@ -46,8 +47,26 @@ class MonthlyEmissionsEngine {
         return results
     }
 
-    extractEmissions(annualData) {
-
+    extractEmissions(annualData, statesAndCounties) {
+        // const results = {};
+        // const gasses = ['so2','nox','co2'];
+        // gasses.forEach((gas) => {
+        //
+        //     results[gas].regional = _.values(annualData[gas].monthlyChanges.emissions.region);
+        //
+        //     statesAndCounties.forEach((state) => {
+        //         state = Object.keys(state)[0];
+        //         results[gas].state[state] = _.values(annualData.totalEmissions[gas].monthlyChanges.emissions.state[state]);
+        //
+        //         annualData.totalEmissions[gas].monthlyChanges.emissions.county[state].forEach((county) => {
+        //             county = Object.keys(county)[0];
+        //             results[gas].county[state] = {};
+        //             results[gas].county[state][county] =  _.values(annualData.totalEmissions[gas].monthlyChanges.emissions.county[state][county]);
+        //         })
+        //     });
+        // });
+        //
+        // return results;
         return {
             generation: {
                 regional: _.values(annualData.generation.monthlyChanges.emissions.region),
@@ -72,7 +91,7 @@ class MonthlyEmissionsEngine {
         }
     }
 
-    extractPercentages(annualData) {
+    extractPercentages(annualData, statesAndCounties) {
         return {
             generation: {
                 regional: _.values(annualData.generation.monthlyChanges.percentages.region),

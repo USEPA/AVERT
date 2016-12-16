@@ -3,17 +3,21 @@ import fetch from 'isomorphic-fetch';
 import Blob from 'blob';
 import json2csv from 'json2csv';
 import FileSaver from 'file-saver';
+import _ from 'lodash';
 
 // avert
 import {avert, eereProfile} from '../avert';
 import * as northeast_rdf from '../../assets/data/rdf_northeast_2015.json';
 import * as northeast_defaults from '../../assets/data/eere-defaults-northeast.json';
-
+// import { MonthlyUnitEnum } from '../utils/MonthlyUnitEnum';
+// import { AggregationEnum } from '../utils/AggregationEnum';
+// import { extractDownloadStructure } from '../utils/DataDownloadHelper';
 // store
 import store from '../store';
 
 // action types
 export const CHANGE_ACTIVE_STEP = 'CHANGE_ACTIVE_STEP';
+
 export const TOGGLE_MODAL_OVERLAY = 'TOGGLE_MODAL_OVERLAY';
 
 export const SELECT_REGION = 'SELECT_REGION';
@@ -57,6 +61,7 @@ export const REQUEST_DEFAULTS = 'REQUEST_DEFAULTS';
 export const RECEIVE_DEFAULTS = 'RECEIVE_DEFAULTS';
 export const ADD_RDF = 'ADD_RDF';
 export const START_DATA_DOWNLOAD = 'START_DATA_DOWNLOAD';
+export const SET_DOWNLOAD_DATA = 'SET_DOWNLOAD_DATA';
 
 // action creators
 export const setActiveStep = (number) => ({
@@ -97,7 +102,7 @@ export const fetchDefaults = () => {
     const region = avert.regionData;
     dispatch(requestDefaults(region.slug));
 
-    return fetch(`http://appdev6.erg.com/avert/data/${region.defaults}.json`)
+    return fetch(`../data/${region.defaults}.json`)
       .then(response => response.json())
       .then(json => dispatch(receiveDefaults(region.slug, json)))
   };
@@ -418,6 +423,7 @@ export const completeAnnual = (data) => {
 
 export const completeStateEmissions = (data) => {
   return function (dispatch, getState) {
+
     dispatch({
       type: COMPLETE_STATE,
       data,
@@ -430,74 +436,103 @@ export const completeStateEmissions = (data) => {
   }
 };
 
-export const renderMonthlyEmissionsCharts = (state) => ({
-  type: RENDER_MONTHLY_CHARTS,
-});
+export const renderMonthlyEmissionsCharts = () => {
+
+  return {
+    type: RENDER_MONTHLY_CHARTS,
+  };
+};
+
+export const prepareDownloadData = (data) => {
+
+  return {
+    type: SET_DOWNLOAD_DATA,
+    data,
+  }
+};
 
 export const completeMonthlyEmissions = (data) => {
   return function (dispatch, getState) {
+    const { monthlyEmissions } = getState();
+
     dispatch({
       type: COMPLETE_MONTHLY,
       data,
     });
 
-    return dispatch(renderMonthlyEmissionsCharts(getState));
+    dispatch(prepareDownloadData(data));
+    dispatch(renderMonthlyEmissionsCharts(monthlyEmissions));
   }
 };
 
 export const updateMonthlyAggregation = (aggregation) => {
   return function (dispatch, getState) {
-    dispatch({
+    const { monthlyEmissions } = getState();
+
+
+    const foo = dispatch({
       type: SELECT_AGGREGATION,
       aggregation,
     });
 
-    return dispatch(renderMonthlyEmissionsCharts(getState));
+    console.log('Select Aggregation',aggregation,foo);
+
+    return dispatch(renderMonthlyEmissionsCharts(monthlyEmissions));
   }
 };
 
 
 export const updateMonthlyUnit = (unit) => {
   return function (dispatch, getState) {
+    const { monthlyEmissions } = getState();
+
     dispatch({
       type: SELECT_UNIT,
       unit,
     });
 
-    return dispatch(renderMonthlyEmissionsCharts(getState));
+    return dispatch(renderMonthlyEmissionsCharts(monthlyEmissions));
   }
 };
 
-export const reselectRegion = (region) => {
+export const reselectRegion = () => {
   return function (dispatch, getState) {
+
+    const { monthlyEmissions } = getState();
+
     dispatch({
-      type: RESELECT_REGION,
-      region
+      type: RESELECT_REGION
     });
 
-    return dispatch(renderMonthlyEmissionsCharts(getState));
+    return dispatch(renderMonthlyEmissionsCharts(monthlyEmissions));
   }
 };
 
 export const selectState = (state) => {
   return function (dispatch, getState) {
+    const { monthlyEmissions } = getState();
+    const visibleCounties = monthlyEmissions.newCounties[state];
+
     dispatch({
       type: SELECT_STATE,
       state,
+      visibleCounties,
     });
 
-    return dispatch(renderMonthlyEmissionsCharts(getState));
+    return dispatch(renderMonthlyEmissionsCharts(monthlyEmissions));
   }
 };
 
 export const selectCounty = (county) => {
   return function (dispatch, getState) {
+    const { monthlyEmissions } = getState();
+
     dispatch({
       type: SELECT_COUNTY,
       county,
     });
 
-    return dispatch(renderMonthlyEmissionsCharts(getState));
+    return dispatch(renderMonthlyEmissionsCharts(monthlyEmissions));
   }
 };
 
@@ -516,7 +551,7 @@ export const calculateDisplacement = () => {
 export const startDataDownload = () => {
   return function (dispatch, getState) {
     const {monthlyEmissions} = getState();
-    const allMonthlyEmissions = monthlyEmissions.forDownload;
+    const allMonthlyEmissions = monthlyEmissions.newDownloadableData;
     const fields = [
       'type',
       'aggregation_level',

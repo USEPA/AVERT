@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import Highcharts from 'react-highcharts';
-
+import { StatusEnum } from '../../utils/StatusEnum';
+import { AggregationEnum } from '../../utils/AggregationEnum';
+import { MonthlyUnitEnum } from '../../utils/MonthlyUnitEnum';
 // styles
 import './styles.css';
 
@@ -19,9 +21,10 @@ const EmissionsChart = ({
   unit,
   onUnitChange,
   output,
+  monthly_status,
 }) => {
-  // rendering is readay when output prop has data
-  const readyToRender = output.so2.length > 0;
+  // rendering is ready when output prop has data
+  const readyToRender = monthly_status === StatusEnum.DONE;
 
   let aggregationFilter = null;
   if (readyToRender) {
@@ -33,8 +36,8 @@ const EmissionsChart = ({
           <input
             type='radio'
             name='aggregation'
-            value='region'
-            checked={ aggregation === 'region' }
+            value={ AggregationEnum.REGION }
+            checked={ aggregation === AggregationEnum.REGION }
             onChange={(e) => {
               onAggregationChange(e.target.value);
               reselectRegion(selected_region);
@@ -47,8 +50,8 @@ const EmissionsChart = ({
           <input
             type='radio'
             name='aggregation'
-            value='state'
-            checked={ aggregation === 'state' }
+            value={ AggregationEnum.STATE }
+            checked={ aggregation === AggregationEnum.STATE }
             onChange={(e) => {
               onAggregationChange(e.target.value);
               if (selected_state) { selectState(selected_state) }
@@ -61,8 +64,8 @@ const EmissionsChart = ({
           <input
             type='radio'
             name='aggregation'
-            value='county'
-            checked={ aggregation === 'county' }
+            value={ AggregationEnum.COUNTY }
+            checked={ aggregation === AggregationEnum.COUNTY }
             onChange={(e) => {
               onAggregationChange(e.target.value);
               if (selected_county) { selectCounty(selected_county) }
@@ -75,7 +78,7 @@ const EmissionsChart = ({
   }
 
   let stateSelector = null;
-  if (aggregation === 'state' || aggregation === 'county') {
+  if (aggregation === AggregationEnum.STATE || aggregation === AggregationEnum.COUNTY) {
     stateSelector = (
       <div className='avert-select-group'>
         <select
@@ -93,7 +96,7 @@ const EmissionsChart = ({
   }
 
   let countySelector = null;
-  if (aggregation === 'county') {
+  if (aggregation === AggregationEnum.COUNTY) {
     countySelector = (
       <div className='avert-select-group'>
         <select
@@ -130,8 +133,8 @@ const EmissionsChart = ({
           <input
             type='radio'
             name='unit'
-            value='emission'
-            checked={ unit === 'emission' }
+            value={MonthlyUnitEnum.EMISSION}
+            checked={ unit === MonthlyUnitEnum.EMISSION }
             onChange={(e) => onUnitChange(e.target.value)}
           />
           Emission changes (lbs or tons)
@@ -141,8 +144,8 @@ const EmissionsChart = ({
           <input
             type='radio'
             name='unit'
-            value='percent'
-            checked={ unit === 'percent' }
+            value={MonthlyUnitEnum.PERCENT_CHANGE}
+            checked={ unit === MonthlyUnitEnum.PERCENT_CHANGE }
             onChange={(e) => onUnitChange(e.target.value)}
           />
           Percent change
@@ -155,6 +158,10 @@ const EmissionsChart = ({
   const so2_data = output.so2.map((emission) => emission);
   const nox_data = output.nox.map((emission) => emission);
   const co2_data = output.co2.map((emission) => emission);
+
+  // const so2_data = [];
+  // const nox_data = [];
+  // const co2_data = [];
 
   // charts config
   const shared_config = {
