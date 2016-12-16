@@ -7,7 +7,6 @@ import {
   fetchRegion,
   calculateDisplacement,
   resetEereInputs,
-  resetEereHourly,
 } from '../../actions';
 
 const mapStateToProps = (state) => ({
@@ -29,9 +28,6 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onResetEereInputs() {
     dispatch(resetEereInputs());
-  },
-  onResetEereHourly() {
-    dispatch(resetEereHourly());
   },
 });
 

@@ -34,7 +34,7 @@ export const UPDATE_EERE_ROOFTOP_SOLAR = 'UPDATE_EERE_ROOFTOP_SOLAR';
 export const VALIDATE_EERE = "VALIDATE_EERE";
 export const UPDATE_EXCEEDANCES = "UPDATE_EXCEEDANCES";
 export const RESET_EERE_INPUTS = 'RESET_EERE_INPUTS';
-export const RESET_EERE_HOURLY = 'RESET_EERE_HOURLY';
+
 export const SUBMIT_CALCULATION = 'SUBMIT_CALCULATION';
 export const COMPLETE_CALCULATION = "COMPLETE_CALCULATION";
 export const START_DISPLACEMENT = 'START_DISPLACEMENT';
@@ -301,13 +301,13 @@ export const updateExceedances = (exceedances, soft, hard) => ({
   hard_exceedances: hard,
 });
 
-export const resetEereInputs = () => ({
-  type: RESET_EERE_INPUTS,
-});
+export const resetEereInputs = () => {
+  eereProfile.reset();
 
-export const resetEereHourly = () => ({
-  type: RESET_EERE_HOURLY,
-});
+  return {
+    type: RESET_EERE_INPUTS,
+  }
+};
 
 export const completeCalculation = (hourlyEere) => ({
   type: COMPLETE_CALCULATION,

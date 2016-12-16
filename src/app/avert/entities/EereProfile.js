@@ -39,7 +39,7 @@ class EereProfile {
     }
 
     set errors(value) {
-        
+
         this._errors = value;
 
         return this;
@@ -101,14 +101,14 @@ class EereProfile {
 
         return this;
     }
-    
+
     get constantMw() {
         return this._constantMw;
     }
 
     set constantMw(value) {
         this.removeError('constantMw');
-        
+
         if(value > this.limits.constantMwh) this.addError('constantMw');
 
         this._constantMw = value;
@@ -156,6 +156,10 @@ class EereProfile {
         this._rooftopSolar = value;
 
         return this;
+    }
+
+    reset() {
+      
     }
 }
 

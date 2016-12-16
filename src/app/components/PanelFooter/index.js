@@ -15,7 +15,7 @@ const PanelFooter = (props) => {
         onClick={(e) => {
           e.preventDefault();
 
-          if (onStepTwo) { props.onResetEereInputs() }
+          if (onStepTwo) { props.onResetEereInputs(); }
 
           const step = props.activeStep - 1;
           props.onSetActiveStep(step);
@@ -44,9 +44,7 @@ const PanelFooter = (props) => {
 
         if (noRegionSelected) { return; }
 
-        if (onStepOne) {
-          props.onFetchRegion();
-        }
+        if (onStepOne) { props.onFetchRegion(); }
 
         if (onStepTwo) {
           if (props.eereStatus === 'complete' && props.hardValid) {
@@ -56,10 +54,7 @@ const PanelFooter = (props) => {
           }
         }
 
-        if (onStepThree) {
-          props.onResetEereInputs();
-          props.onResetEereHourly();
-        }
+        if (onStepThree) { props.onResetEereInputs(); }
 
         const step = onStepThree ? 1 : props.activeStep + 1;
         props.onSetActiveStep(step);
@@ -83,7 +78,6 @@ PanelFooter.propTypes = {
   prevButtonText: PropTypes.string,
   nextButtonText: PropTypes.string.isRequired,
   onResetEereInputs: PropTypes.func.isRequired,
-  onResetEereHourly: PropTypes.func.isRequired,
   region: PropTypes.number.isRequired,
   eereStatus: PropTypes.string.isRequired,
   // hardValid: PropTypes.string,

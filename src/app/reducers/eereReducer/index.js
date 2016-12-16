@@ -12,7 +12,6 @@ import {
   VALIDATE_EERE,
   UPDATE_EXCEEDANCES,
   RESET_EERE_INPUTS,
-  RESET_EERE_HOURLY,
   SUBMIT_CALCULATION,
   COMPLETE_CALCULATION,
 } from '../../actions';
@@ -143,23 +142,7 @@ const eereReducer = (state = defaultState, action) => {
       };
 
     case RESET_EERE_INPUTS:
-      return {
-        ...state,
-        constantMw: '',
-        annualGwh: '',
-        broadProgram: '',
-        reduction: '',
-        topHours: '',
-        windCapacity: '',
-        utilitySolar: '',
-        rooftopSolar: '',
-      };
-
-    case RESET_EERE_HOURLY:
-      return {
-        ...state,
-        hourlyEere: [],
-      };
+      return defaultState;
 
     case SUBMIT_CALCULATION:
       return {
