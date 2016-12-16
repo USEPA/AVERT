@@ -40,7 +40,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && echo 'Remember to modify build/index.html:\n[] Move details polyfill!\n[] Remove (Debug) text from StepPanels/index.js\n'",
+    "build": "react-scripts build && echo 'Remember to modify build/index.html:\n[] Move details polyfill!\n'",
     "test": "react-scripts test --verbose",
     "coverage": "react-scripts test --coverage",
     "eject": "react-scripts eject"
