@@ -38,10 +38,10 @@ class MonthlyEmissionsEngine {
     }
 
     extractStatesCounties(annualData) {
-        const states = Object.keys(annualData.totalEmissions.so2.monthlyChanges.emissions.state);
+        const states = Object.keys(annualData.totalEmissions.so2.monthlyChanges.emissions.state).sort();
         let results = {};
         states.forEach((state) => {
-            results[state] = Object.keys(annualData.totalEmissions.so2.monthlyChanges.emissions.county[state]);
+            results[state] = Object.keys(annualData.totalEmissions.so2.monthlyChanges.emissions.county[state]).sort();
         });
 
         return results
