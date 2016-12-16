@@ -20,6 +20,14 @@
   padding: 0.5rem 0.625rem;
 }
 
+/* consistent cross browser focus (http://master.origin.formcore.fgview.com/) */
+.avert-details-block summary:focus,
+.avert-details-block input:focus,
+.avert-details-block a:focus {
+  outline: none;
+  box-shadow: inset 0 0 0.25rem rgb(0,169,204);
+}
+
 .avert-details-block summary {
   position: relative;
   padding: 0 0.5rem 0.75rem;
