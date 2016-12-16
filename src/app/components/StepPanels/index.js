@@ -45,6 +45,16 @@ const StepPanels = (props) => {
     );
   }
 
+  let regionDebug = null;
+  // conditionally re-define debug text when in development environment
+  if (process.env.NODE_ENV === 'development') {
+    regionDebug = (
+      <p className="avert-small-text" onClick={() => { props.onClickDebug() }}>
+        <em>(Debug)</em>
+      </p>
+    );
+  }
+
   return (
     <div className={`avert-steps ${loadingClass} ${modalClass}`}>
       { loadingIndicator }
@@ -78,9 +88,7 @@ const StepPanels = (props) => {
             {') allows analyses for years 2007–2015 or for a future year scenario.'}
           </p>
 
-          {/*<p className="avert-small-text" onClick={() => { props.onClickDebug() }}>*/}
-            {/*<em>(Debug)</em>*/}
-          {/*</p>*/}
+          { regionDebug }
         </PanelBody>
 
         <PanelFooterContainer nextButtonText='Set EE/RE Impacts' />
