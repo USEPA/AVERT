@@ -25,7 +25,7 @@ const stateEmissionsReducer = (state = defaultState, action) => {
       };
 
     case COMPLETE_STATE:
-      console.warn('COMPLETE_STATE', action.data);
+      // console.warn('COMPLETE_STATE', action.data);
       return {
         ...state,
         status: "complete",

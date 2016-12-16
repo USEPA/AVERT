@@ -1,18 +1,28 @@
+// deps
 import fetch from 'isomorphic-fetch';
+import Blob from 'blob';
+import json2csv from 'json2csv';
+import FileSaver from 'file-saver';
+import _ from 'lodash';
+
 // avert
 import {avert, eereProfile} from '../avert';
 import * as northeast_rdf from '../../assets/data/rdf_northeast_2015.json';
 import * as northeast_defaults from '../../assets/data/eere-defaults-northeast.json';
+// import { MonthlyUnitEnum } from '../utils/MonthlyUnitEnum';
+// import { AggregationEnum } from '../utils/AggregationEnum';
+// import { extractDownloadStructure } from '../utils/DataDownloadHelper';
 // store
 import store from '../store';
 
 // action types
 export const CHANGE_ACTIVE_STEP = 'CHANGE_ACTIVE_STEP';
 
+export const TOGGLE_MODAL_OVERLAY = 'TOGGLE_MODAL_OVERLAY';
+
 export const SELECT_REGION = 'SELECT_REGION';
 export const SET_LIMITS = 'SET_LIMITS';
 export const UPDATE_YEAR = 'UPDATE_YEAR';
-
 export const UPDATE_EERE_TOP_HOURS = 'UPDATE_EERE_TOP_HOURS';
 export const UPDATE_EERE_REDUCTION = 'UPDATE_EERE_REDUCTION';
 export const UPDATE_EERE_BROAD_BASE_PROGRAM = 'UPDATE_EERE_BROAD_BASE_PROGRAM';
@@ -21,15 +31,12 @@ export const UPDATE_EERE_CONSTANT_MW = 'UPDATE_EERE_CONSTANT_MW';
 export const UPDATE_EERE_WIND_CAPACITY = 'UPDATE_EERE_WIND_CAPACITY';
 export const UPDATE_EERE_UTILITY_SOLAR = 'UPDATE_EERE_UTILITY_SOLAR';
 export const UPDATE_EERE_ROOFTOP_SOLAR = 'UPDATE_EERE_ROOFTOP_SOLAR';
-
 export const VALIDATE_EERE = "VALIDATE_EERE";
 export const UPDATE_EXCEEDANCES = "UPDATE_EXCEEDANCES";
-
 export const RESET_EERE_INPUTS = 'RESET_EERE_INPUTS';
 
 export const SUBMIT_CALCULATION = 'SUBMIT_CALCULATION';
 export const COMPLETE_CALCULATION = "COMPLETE_CALCULATION";
-
 export const START_DISPLACEMENT = 'START_DISPLACEMENT';
 export const COMPLETE_ANNUAL = 'COMPLETE_ANNUAL';
 export const COMPLETE_ANNUAL_GENERATION = 'COMPLETE_ANNUAL_GENERATION';
@@ -38,15 +45,13 @@ export const COMPLETE_ANNUAL_NOX = 'COMPLETE_ANNUAL_NOX';
 export const COMPLETE_ANNUAL_CO2 = 'COMPLETE_ANNUAL_CO2';
 export const COMPLETE_ANNUAL_RATES = 'COMPLETE_ANNUAL_RATES';
 export const COMPLETE_MONTHLY = 'COMPLETE_MONTHLY';
-
 export const SELECT_AGGREGATION = 'SELECT_AGGREGATION';
 export const RESELECT_REGION = 'RESELECT_REGION';
 export const SELECT_STATE = 'SELECT_STATE';
 export const SELECT_COUNTY = 'SELECT_COUNTY';
 export const SELECT_UNIT = 'SELECT_UNIT';
-
+export const RENDER_MONTHLY_CHARTS = 'RENDER_MONTHLY_CHARTS';
 export const COMPLETE_STATE = 'COMPLETE_STATE';
-
 export const INVALIDATE_REGION = 'INVALIDATE_REGION';
 export const REQUEST_REGION = 'REQUEST_REGION';
 export const RECEIVE_REGION = 'RECEIVE_REGION';
@@ -54,8 +59,9 @@ export const OVERRIDE_REGION = 'OVERRIDE_REGION';
 export const INVALIDATE_DEFAULTS = 'INVALIDATE_DEFAULTS';
 export const REQUEST_DEFAULTS = 'REQUEST_DEFAULTS';
 export const RECEIVE_DEFAULTS = 'RECEIVE_DEFAULTS';
-
 export const ADD_RDF = 'ADD_RDF';
+export const START_DATA_DOWNLOAD = 'START_DATA_DOWNLOAD';
+export const SET_DOWNLOAD_DATA = 'SET_DOWNLOAD_DATA';
 
 // action creators
 export const setActiveStep = (number) => ({
@@ -65,6 +71,11 @@ export const setActiveStep = (number) => ({
   },
 });
 
+export const toggleModalOverlay = () => ({
+  type: TOGGLE_MODAL_OVERLAY,
+});
+
+//Use this when downloading another region
 export const invalidateDefaults = (region) => ({
   type: INVALIDATE_DEFAULTS,
   region,
@@ -91,12 +102,13 @@ export const fetchDefaults = () => {
     const region = avert.regionData;
     dispatch(requestDefaults(region.slug));
 
-    return fetch(`http://appdev6.erg.com/avert/data/${region.defaults}.json`)
+    return fetch(`../data/${region.defaults}.json`)
       .then(response => response.json())
       .then(json => dispatch(receiveDefaults(region.slug, json)))
   };
 };
 
+//Use this when downloading another region
 export const invalidateRegion = (region) => ({
   type: INVALIDATE_REGION,
   region,
@@ -138,6 +150,7 @@ const receiveRegion = (region, json) => {
   };
 };
 
+//Deprecate?
 let nextRdfId = 0;
 export const addRdf = (rdf) => ({
   type: ADD_RDF,
@@ -313,46 +326,6 @@ export const calculateEereProfile = () => {
   }, 50);
 };
 
-// export const completeAnnual = (data) => ({
-//   type: COMPLETE_ANNUAL,
-//   data,
-// });
-
-// export const completeAnnualGeneration = (data) => ({
-//   type: COMPLETE_ANNUAL_GENERATION,
-//   payload: {
-//     data: data,
-//   },
-// });
-
-// export const completeAnnualSo2 = (data) => ({
-//   type: COMPLETE_ANNUAL_SO2,
-//   payload: {
-//     data: data,
-//   },
-// });
-
-// export const completeAnnualNox = (data) => ({
-//   type: COMPLETE_ANNUAL_NOX,
-//   payload: {
-//     data: data,
-//   },
-// });
-
-// export const completeAnnualCo2 = (data) => ({
-//   type: COMPLETE_ANNUAL_CO2,
-//   payload: {
-//     data: data,
-//   },
-// });
-
-// export const completeAnnualRates = (data) => ({
-//   type: COMPLETE_ANNUAL_RATES,
-//   payload: {
-//     data: data,
-//   },
-// });
-
 export const completeAnnualGeneration = (data) => {
   return function (dispatch, getState) {
     dispatch({
@@ -450,6 +423,7 @@ export const completeAnnual = (data) => {
 
 export const completeStateEmissions = (data) => {
   return function (dispatch, getState) {
+
     dispatch({
       type: COMPLETE_STATE,
       data,
@@ -462,40 +436,105 @@ export const completeStateEmissions = (data) => {
   }
 };
 
-export const completeMonthlyEmissions = (data) => ({
-  type: COMPLETE_MONTHLY,
-  data,
-});
+export const renderMonthlyEmissionsCharts = () => {
 
-export const updateMonthlyAggregation = (aggregation) => ({
-  type: SELECT_AGGREGATION,
-  aggregation,
-});
+  return {
+    type: RENDER_MONTHLY_CHARTS,
+  };
+};
 
-export const updateMonthlyUnit = (unit) => ({
-  type: SELECT_UNIT,
-  unit,
-});
+export const prepareDownloadData = (data) => {
 
-export const reselectRegion = (region) => ({
-  type: RESELECT_REGION,
-  region
-});
+  return {
+    type: SET_DOWNLOAD_DATA,
+    data,
+  }
+};
 
-export const selectState = (state) => ({
-  type: SELECT_STATE,
-  state,
-});
+export const completeMonthlyEmissions = (data) => {
+  return function (dispatch, getState) {
+    const { monthlyEmissions } = getState();
 
-export const selectCounty = (county) => ({
-  type: SELECT_COUNTY,
-  county,
-});
+    dispatch({
+      type: COMPLETE_MONTHLY,
+      data,
+    });
 
-// export const completeStateEmissions = (data) => ({
-//   type: COMPLETE_STATE,
-//   data,
-// });
+    dispatch(prepareDownloadData(data));
+    dispatch(renderMonthlyEmissionsCharts(monthlyEmissions));
+  }
+};
+
+export const updateMonthlyAggregation = (aggregation) => {
+  return function (dispatch, getState) {
+    const { monthlyEmissions } = getState();
+
+
+    const foo = dispatch({
+      type: SELECT_AGGREGATION,
+      aggregation,
+    });
+
+    console.log('Select Aggregation',aggregation,foo);
+
+    return dispatch(renderMonthlyEmissionsCharts(monthlyEmissions));
+  }
+};
+
+
+export const updateMonthlyUnit = (unit) => {
+  return function (dispatch, getState) {
+    const { monthlyEmissions } = getState();
+
+    dispatch({
+      type: SELECT_UNIT,
+      unit,
+    });
+
+    return dispatch(renderMonthlyEmissionsCharts(monthlyEmissions));
+  }
+};
+
+export const reselectRegion = () => {
+  return function (dispatch, getState) {
+
+    const { monthlyEmissions } = getState();
+
+    dispatch({
+      type: RESELECT_REGION
+    });
+
+    return dispatch(renderMonthlyEmissionsCharts(monthlyEmissions));
+  }
+};
+
+export const selectState = (state) => {
+  return function (dispatch, getState) {
+    const { monthlyEmissions } = getState();
+    const visibleCounties = monthlyEmissions.newCounties[state];
+
+    dispatch({
+      type: SELECT_STATE,
+      state,
+      visibleCounties,
+    });
+
+    return dispatch(renderMonthlyEmissionsCharts(monthlyEmissions));
+  }
+};
+
+export const selectCounty = (county) => {
+  return function (dispatch, getState) {
+    const { monthlyEmissions } = getState();
+
+    dispatch({
+      type: SELECT_COUNTY,
+      county,
+    });
+
+    return dispatch(renderMonthlyEmissionsCharts(monthlyEmissions));
+  }
+};
 
 const startDisplacement = () => ({
   type: START_DISPLACEMENT,
@@ -507,4 +546,42 @@ export const calculateDisplacement = () => {
   setTimeout(() => {
     avert.calculateDisplacement();
   }, 50);
+};
+
+export const startDataDownload = () => {
+  return function (dispatch, getState) {
+    const {monthlyEmissions} = getState();
+    const allMonthlyEmissions = monthlyEmissions.newDownloadableData;
+    const fields = [
+      'type',
+      'aggregation_level',
+      'state',
+      'county',
+      'emission_unit',
+      'january',
+      'february',
+      'march',
+      'april',
+      'may',
+      'june',
+      'july',
+      'august',
+      'september',
+      'october',
+      'november',
+      'december',
+    ];
+
+    try {
+      const csv = json2csv({fields: fields, data: allMonthlyEmissions});
+      const blob = new Blob([csv], {type: 'text/plain:charset=utf-8'});
+      FileSaver.saveAs(blob, 'AVERT Monthly Emissions.csv');
+    } catch (e) {
+      console.error(e);
+    }
+
+    return dispatch({
+      type: START_DATA_DOWNLOAD
+    });
+  }
 };

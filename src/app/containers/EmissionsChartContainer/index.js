@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import EmissionsChart from '../../components/EmissionsChart';
 // action creators
 import {
-  // changeSelectedAggregation,
   // changeSelectedUnit,
   updateMonthlyAggregation,
   updateMonthlyUnit,
@@ -16,14 +15,14 @@ const mapStateToProps = (state) => ({
   // aggregation: state.selectedAggregation,
   // unit: state.selectedUnit,
   monthly_status: state.monthlyEmissions.status,
-  output: state.monthlyEmissions.output,
-  aggregation: state.monthlyEmissions.selected_aggregation,
-  unit: state.monthlyEmissions.selected_unit,
+  output: state.monthlyEmissions.newVisibleData,
+  aggregation: state.monthlyEmissions.newSelectedAggregation,
+  unit: state.monthlyEmissions.newSelectedUnit,
   selected_region: state.monthlyEmissions.regional,
-  available_states: state.monthlyEmissions.available_states,
-  available_counties: state.monthlyEmissions.available_counties,
-  selected_state: state.monthlyEmissions.selected_state,
-  selected_county: state.monthlyEmissions.selected_county,
+  available_states: state.monthlyEmissions.newStates,
+  available_counties: state.monthlyEmissions.newVisibleCounties,
+  selected_state: state.monthlyEmissions.newSelectedState,
+  selected_county: state.monthlyEmissions.newSelectedCounty,
 });
 
 const mapDispatchToProps = (dispatch) => ({

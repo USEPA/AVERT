@@ -18,6 +18,7 @@ import './styles.css';
 
 const StepPanels = (props) => {
   const loadingClass = props.loading ? 'avert-loading-overlay' : '';
+  const modalClass = props.modalOverlay ? 'avert-modal-overlay' : '';
 
   let loadingIndicator = null;
   // conditionally re-define loadingIndicator when loading prop exists
@@ -45,7 +46,7 @@ const StepPanels = (props) => {
   }
 
   return (
-    <div className={`avert-steps ${loadingClass}`}>
+    <div className={`avert-steps ${loadingClass} ${modalClass}`}>
       { loadingIndicator }
 
       <Panel active={ props.activePanel === 1 }>
@@ -77,9 +78,9 @@ const StepPanels = (props) => {
             {') allows analyses for years 2007–2015 or for a future year scenario.'}
           </p>
 
-          <p className="avert-small-text" onClick={() => { props.onClickDebug() }}>
-            <em>(Debug)</em>
-          </p>
+          {/*<p className="avert-small-text" onClick={() => { props.onClickDebug() }}>*/}
+            {/*<em>(Debug)</em>*/}
+          {/*</p>*/}
         </PanelBody>
 
         <PanelFooterContainer nextButtonText='Set EE/RE Impacts' />
@@ -119,7 +120,7 @@ const StepPanels = (props) => {
 
           <EmissionsChartContainer heading='Monthly Emission Changes' />
 
-          <DataDownload heading='Data Download' />
+          <DataDownload heading='Data Download' onClick={() => {props.onClickDataDownload ()}} />
         </PanelBody>
 
         <PanelFooterContainer prevButtonText='Back to EE/RE Impacts' nextButtonText='Reset Region' />

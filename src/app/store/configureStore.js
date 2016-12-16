@@ -7,7 +7,7 @@ import reducers from '../reducers';
 const composeEnhancers = (typeof window !== 'undefined') ? (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose) : compose;
 
 const middleware = applyMiddleware(
-  createLogger(),
+  // createLogger(),
   thunkMiddleware,
 );
 

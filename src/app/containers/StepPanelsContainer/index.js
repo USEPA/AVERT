@@ -2,17 +2,25 @@ import { connect } from 'react-redux';
 // components
 import StepPanels from '../../components/StepPanels';
 // action creators
-import { overrideRegion } from '../../actions';
+import {
+  overrideRegion,
+  startDataDownload,
+} from '../../actions';
 
 const mapStateToProps = (state) => ({
   loading: state.panel.loading,
+  modalOverlay: state.panel.modalOverlay,
   percentComplete: state.panel.percentComplete,
   softValid: state.eere.soft_valid,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onClickDebug() {
+    // dispatch(startDataDownload());
     dispatch(overrideRegion());
+  },
+  onClickDataDownload() {
+    dispatch(startDataDownload());
   },
 });
 
