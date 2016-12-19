@@ -102,7 +102,7 @@ export const fetchDefaults = () => {
     const region = avert.regionData;
     dispatch(requestDefaults(region.slug));
 
-    return fetch(`../data/${region.defaults}.json`)
+    return fetch(`./data/${region.defaults}.json`, { credentials: 'same-origin' })
       .then(response => response.json())
       .then(json => dispatch(receiveDefaults(region.slug, json)))
   };
@@ -166,7 +166,7 @@ export const fetchRegion = () => {
     const region = avert.regionData;
     dispatch(requestRegion(region.slug));
 
-    return fetch(`http://appdev6.erg.com/avert/data/${region.rdf}.json`)
+    return fetch(`./data/${region.rdf}.json`, { credentials: 'same-origin' })
       .then(response => response.json())
       .then(json =>
         dispatch(receiveRegion(region.slug, json))

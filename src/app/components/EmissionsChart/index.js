@@ -190,7 +190,7 @@ const EmissionsChart = ({
     },
     yAxis: {
       title: {
-        text: 'Emission changes (lbs)',
+        text: unit === MonthlyUnitEnum.PERCENT_CHANGE ? 'Percent change' : 'Emission changes (lbs)',
       },
     },
     series: [{
@@ -207,7 +207,7 @@ const EmissionsChart = ({
     },
     yAxis: {
       title: {
-        text: 'Emission changes (lbs)',
+        text: unit === MonthlyUnitEnum.PERCENT_CHANGE ? 'Percent change' : 'Emission changes (lbs)',
       },
     },
     series: [{
@@ -224,7 +224,7 @@ const EmissionsChart = ({
     },
     yAxis: {
       title: {
-        text: 'Emission changes (tons)',
+        text: unit === MonthlyUnitEnum.PERCENT_CHANGE ? 'Percent change' : 'Emission changes (tons)',
       },
     },
     series: [{
