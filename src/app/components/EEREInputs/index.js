@@ -167,7 +167,7 @@ const EEREInputs = ({
               <span>{' MW'}</span>
 
               <TooltipContainer>
-                {'Enter the annual capacity (maximum potential electricity generation) for this type of resource, measured in MW. The model uses these inputs along with hourly capacity factors that vary by resource type and region.'}
+                {'Enter the total capacity (maximum potential electricity generation) for this type of resource, measured in MW. The model uses these inputs along with hourly capacity factors that vary by resource type and region.'}
               </TooltipContainer>
 
               { displayError(errors, 'windCapacity', limits.renewables) }
@@ -187,7 +187,7 @@ const EEREInputs = ({
               <span>{' MW'}</span>
 
               <TooltipContainer>
-                {'Enter the annual capacity (maximum potential electricity generation) for this type of resource, measured in MW. The model uses these inputs along with hourly capacity factors that vary by resource type and region.'}
+                {'Enter the total capacity (maximum potential electricity generation) for this type of resource, measured in MW. The model uses these inputs along with hourly capacity factors that vary by resource type and region.'}
               </TooltipContainer>
 
               { displayError(errors, 'utilitySolar', limits.renewables) }
@@ -207,7 +207,7 @@ const EEREInputs = ({
               <span>{' MW'}</span>
 
               <TooltipContainer>
-                {'Enter the annual capacity (maximum potential electricity generation) for this type of resource, measured in MW. The model uses these inputs along with hourly capacity factors that vary by resource type and region.'}
+                {'Enter the total capacity (maximum potential electricity generation) for this type of resource, measured in MW. The model uses these inputs along with hourly capacity factors that vary by resource type and region.'}
               </TooltipContainer>
 
               { displayError(errors, 'rooftopSolar', limits.renewables) }
