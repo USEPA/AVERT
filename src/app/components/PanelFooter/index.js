@@ -7,6 +7,17 @@ const PanelFooter = (props) => {
   const onStepTwo = props.activeStep === 2;
   const onStepThree = props.activeStep === 3;
 
+  // smooth scroll to top
+  const scrollToTop = (duration = 300) => {
+    // const step = -window.scrollY / (duration / 16.666);
+    // const interval = setInterval(() => {
+    //   if (window.scrollY === 0) { clearInterval(interval) }
+    //   window.scrollBy(0, step);
+    // }, 16.666);
+
+    scrollTo(0, 0);
+  };
+
   // conditionally define prevButtonElement, if prevButtonText prop exists
   let prevButtonElement;
   if (props.prevButtonText) {
@@ -14,6 +25,7 @@ const PanelFooter = (props) => {
       <a className='avert-button avert-prev' href=''
         onClick={(e) => {
           e.preventDefault();
+          scrollToTop();
 
           if (onStepTwo) { props.onResetEereInputs(); }
 
@@ -44,17 +56,24 @@ const PanelFooter = (props) => {
 
         if (noRegionSelected) { return; }
 
-        if (onStepOne) { props.onFetchRegion(); }
+        if (onStepOne) {
+          scrollToTop();
+          props.onFetchRegion();
+        }
 
         if (onStepTwo) {
           if (props.eereStatus === 'complete' && props.hardValid) {
+            scrollToTop();
             props.onCalculateDisplacement();
           } else {
             return;
           }
         }
 
-        if (onStepThree) { props.onResetEereInputs(); }
+        if (onStepThree) {
+          scrollToTop();
+          props.onResetEereInputs();
+        }
 
         const step = onStepThree ? 1 : props.activeStep + 1;
         props.onSetActiveStep(step);
