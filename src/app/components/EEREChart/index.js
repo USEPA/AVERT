@@ -28,10 +28,13 @@ const EEREChart = (props) => {
     },
     xAxis: {
       categories: hours,
+      title: {
+        text: 'Hour',
+      },
     },
     yAxis: {
       title: {
-        text: false,
+        text: 'Change in load (MW)',
       },
     },
     series: [{
