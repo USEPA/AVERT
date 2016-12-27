@@ -31,6 +31,9 @@ const EEREChart = (props) => {
       title: {
         text: 'Hour',
       },
+      labels: {
+        formatter: function() { return this.value.toLocaleString() },
+      },
     },
     yAxis: {
       title: {
