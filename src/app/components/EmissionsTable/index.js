@@ -11,7 +11,7 @@ import React, { PropTypes } from 'react';
 //   return addCommas(output);
 // };
 const formatOutput = (number) => {
-  return Math.round(number);
+  return Math.round(number).toLocaleString();
 };
 
 const EmissionsTable = (props) => (
