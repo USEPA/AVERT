@@ -28,10 +28,16 @@ const EEREChart = (props) => {
     },
     xAxis: {
       categories: hours,
+      title: {
+        text: 'Hour',
+      },
+      labels: {
+        formatter: function() { return this.value.toLocaleString() },
+      },
     },
     yAxis: {
       title: {
-        text: false,
+        text: 'Change in load (MW)',
       },
     },
     series: [{
