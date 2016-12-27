@@ -26,6 +26,16 @@ const EEREChart = (props) => {
     legend: {
       enabled: false,
     },
+    lang: {
+      hoverText: 'Export options',
+    },
+    exporting: {
+      buttons: {
+        contextButton: {
+          _titleKey: 'hoverText',
+        }
+      },
+    },
     xAxis: {
       categories: hours,
       title: {

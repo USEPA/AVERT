@@ -159,10 +159,6 @@ const EmissionsChart = ({
   const nox_data = output.nox.map((emission) => emission);
   const co2_data = output.co2.map((emission) => emission);
 
-  // const so2_data = [];
-  // const nox_data = [];
-  // const co2_data = [];
-
   // charts config
   const shared_config = {
     chart: {
@@ -177,6 +173,16 @@ const EmissionsChart = ({
     },
     legend: {
       enabled: false,
+    },
+    lang: {
+      hoverText: 'Export options',
+    },
+    exporting: {
+      buttons: {
+        contextButton: {
+          _titleKey: 'hoverText',
+        }
+      },
     },
     xAxis: {
       categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
