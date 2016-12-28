@@ -6,7 +6,7 @@ import {
   // changeSelectedUnit,
   updateMonthlyAggregation,
   updateMonthlyUnit,
-  reselectRegion,
+  // reselectRegion,
   selectState,
   selectCounty,
 } from '../../actions';
@@ -18,7 +18,7 @@ const mapStateToProps = (state) => ({
   output: state.monthlyEmissions.newVisibleData,
   aggregation: state.monthlyEmissions.newSelectedAggregation,
   unit: state.monthlyEmissions.newSelectedUnit,
-  selected_region: state.monthlyEmissions.regional,
+  // selected_region: state.monthlyEmissions.regional,
   available_states: state.monthlyEmissions.newStates,
   available_counties: state.monthlyEmissions.newVisibleCounties,
   selected_state: state.monthlyEmissions.newSelectedState,
@@ -38,9 +38,9 @@ const mapDispatchToProps = (dispatch) => ({
   onUnitChange(unit) {
     dispatch(updateMonthlyUnit(unit));
   },
-  reselectRegion(region) {
-    dispatch(reselectRegion(region));
-  },
+  // reselectRegion(region) {
+  //   dispatch(reselectRegion(region));
+  // },
   selectState(state) {
     dispatch(selectState(state));
   },

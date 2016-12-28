@@ -46,7 +46,7 @@ export const COMPLETE_ANNUAL_CO2 = 'COMPLETE_ANNUAL_CO2';
 export const COMPLETE_ANNUAL_RATES = 'COMPLETE_ANNUAL_RATES';
 export const COMPLETE_MONTHLY = 'COMPLETE_MONTHLY';
 export const SELECT_AGGREGATION = 'SELECT_AGGREGATION';
-export const RESELECT_REGION = 'RESELECT_REGION';
+// export const RESELECT_REGION = 'RESELECT_REGION';
 export const SELECT_STATE = 'SELECT_STATE';
 export const SELECT_COUNTY = 'SELECT_COUNTY';
 export const SELECT_UNIT = 'SELECT_UNIT';
@@ -495,18 +495,18 @@ export const updateMonthlyUnit = (unit) => {
   }
 };
 
-export const reselectRegion = () => {
-  return function (dispatch, getState) {
-
-    const { monthlyEmissions } = getState();
-
-    dispatch({
-      type: RESELECT_REGION
-    });
-
-    return dispatch(renderMonthlyEmissionsCharts(monthlyEmissions));
-  }
-};
+// export const reselectRegion = () => {
+//   return function (dispatch, getState) {
+//
+//     const { monthlyEmissions } = getState();
+//
+//     dispatch({
+//       type: RESELECT_REGION
+//     });
+//
+//     return dispatch(renderMonthlyEmissionsCharts(monthlyEmissions));
+//   }
+// };
 
 export const selectState = (state) => {
   return function (dispatch, getState) {

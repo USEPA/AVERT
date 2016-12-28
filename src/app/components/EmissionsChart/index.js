@@ -9,7 +9,7 @@ import './styles.css';
 const EmissionsChart = ({
   heading,
   selected_region,
-  reselectRegion,
+  // reselectRegion,
   selected_state,
   selectState,
   available_states,
@@ -40,7 +40,7 @@ const EmissionsChart = ({
             checked={ aggregation === AggregationEnum.REGION }
             onChange={(e) => {
               onAggregationChange(e.target.value);
-              reselectRegion(selected_region);
+              // reselectRegion(selected_region);
             }}
           />
           Region
@@ -189,10 +189,15 @@ const EmissionsChart = ({
     },
   };
 
+  let titleAggregation;
+  if (aggregation === AggregationEnum.REGION) { titleAggregation = '(Region Name)'; }
+  if (aggregation === AggregationEnum.STATE) { titleAggregation = selected_state; }
+  if (aggregation === AggregationEnum.COUNTY) { titleAggregation = selected_county; }
+
   const so2_config = {
     ...shared_config,
     title: {
-      text: 'SO₂',
+      text: `${titleAggregation} SO₂`,
     },
     yAxis: {
       title: {
@@ -209,7 +214,7 @@ const EmissionsChart = ({
   const nox_config = {
     ...shared_config,
     title: {
-      text: 'NOₓ',
+      text: `${titleAggregation} NOₓ`,
     },
     yAxis: {
       title: {
@@ -226,7 +231,7 @@ const EmissionsChart = ({
   const co2_config = {
     ...shared_config,
     title: {
-      text: 'CO₂',
+      text: `${titleAggregation} CO₂`,
     },
     yAxis: {
       title: {
@@ -266,7 +271,7 @@ const EmissionsChart = ({
 
 EmissionsChart.propTypes = {
   heading: PropTypes.string.isRequired,
-  reselectRegion: PropTypes.func.isRequired,
+  // reselectRegion: PropTypes.func.isRequired,
   //selected_state: PropTypes.string.isRequired,
   selectState: PropTypes.func.isRequired,
   available_states: PropTypes.array.isRequired,
