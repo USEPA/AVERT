@@ -1,6 +1,11 @@
 import React, { PropTypes } from 'react';
 import Highcharts from 'react-highcharts';
+// containers
+import TooltipContainer from '../../containers/TooltipContainer';
+// utilities
 import NumberFormattingHelper from '../../utils/NumberFormattingHelper';
+// styles
+import './styles.css';
 
 const EEREChart = (props) => {
   const data = props.hourlyEere.map((hour) => hour.final_mw);
@@ -13,12 +18,7 @@ const EEREChart = (props) => {
       },
     },
     title: {
-      text: props.heading,
-      style: {
-        fontSize: '1rem',
-        fontWeight: 'bold',
-        color: '#444',
-      },
+      text: null,
     },
     credits: {
       enabled: false,
@@ -65,6 +65,13 @@ const EEREChart = (props) => {
   if (ready) {
     chart = (
       <div className='avert-eere-profile'>
+        <h3 className="avert-chart-title">
+          { props.heading }
+          <TooltipContainer>
+            {'This graph shows the hourly changes in load that will result from the inputs entered above. This hourly EE/RE profile will be used to calculate the avoided emissions for this AVERT region.'}
+          </TooltipContainer>
+        </h3>
+
         <Highcharts config={chartConfig} />
       </div>
     );
