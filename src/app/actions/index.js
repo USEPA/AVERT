@@ -19,6 +19,8 @@ import store from '../store';
 export const CHANGE_ACTIVE_STEP = 'CHANGE_ACTIVE_STEP';
 
 export const TOGGLE_MODAL_OVERLAY = 'TOGGLE_MODAL_OVERLAY';
+export const STORE_ACTIVE_MODAL = 'STORE_ACTIVE_MODAL';
+export const RESET_ACTIVE_MODAL = 'RESET_ACTIVE_MODAL';
 
 export const SELECT_REGION = 'SELECT_REGION';
 export const SET_LIMITS = 'SET_LIMITS';
@@ -72,6 +74,15 @@ export const setActiveStep = (number) => ({
 
 export const toggleModalOverlay = () => ({
   type: TOGGLE_MODAL_OVERLAY,
+});
+
+export const storeActiveModal = (activeModalId) => ({
+  type: STORE_ACTIVE_MODAL,
+  activeModalId
+});
+
+export const resetActiveModal = () => ({
+  type: RESET_ACTIVE_MODAL,
 });
 
 //Use this when downloading another region
