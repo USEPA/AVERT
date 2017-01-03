@@ -33,9 +33,9 @@ const EmissionsTable = (props) => (
           return (
             <tr key={ index }>
               <td>{ state }</td>
-              <td>{ formatOutput(props.data[index].so2) }</td>
-              <td>{ formatOutput(props.data[index].nox) }</td>
-              <td>{ formatOutput(props.data[index].co2) }</td>
+              <td className="avert-table-data">{ formatOutput(props.data[index].so2) }</td>
+              <td className="avert-table-data">{ formatOutput(props.data[index].nox) }</td>
+              <td className="avert-table-data">{ formatOutput(props.data[index].co2) }</td>
             </tr>
           );
         })}
