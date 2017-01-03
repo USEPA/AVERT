@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
 import Highcharts from 'react-highcharts';
+// utilities
+import Regions from '../../utils/Regions';
 import { StatusEnum } from '../../utils/StatusEnum';
 import { AggregationEnum } from '../../utils/AggregationEnum';
 import { MonthlyUnitEnum } from '../../utils/MonthlyUnitEnum';
@@ -189,8 +191,14 @@ const EmissionsChart = ({
     },
   };
 
+  const regionName = selected_region === 0 ?
+    '' :
+    Object.keys(Regions)
+      .map(r => Regions[r])
+      .filter(r => r.id === selected_region)[0].label;
+
   let titleAggregation;
-  if (aggregation === AggregationEnum.REGION) { titleAggregation = '(Region Name)'; }
+  if (aggregation === AggregationEnum.REGION) { titleAggregation = regionName; }
   if (aggregation === AggregationEnum.STATE) { titleAggregation = selected_state; }
   if (aggregation === AggregationEnum.COUNTY) { titleAggregation = selected_county; }
 
