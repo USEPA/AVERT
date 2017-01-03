@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
 import Highcharts from 'react-highcharts';
+// utilities
+import Regions from '../../utils/Regions';
 import { StatusEnum } from '../../utils/StatusEnum';
 import { AggregationEnum } from '../../utils/AggregationEnum';
 import { MonthlyUnitEnum } from '../../utils/MonthlyUnitEnum';
@@ -9,7 +11,6 @@ import './styles.css';
 const EmissionsChart = ({
   heading,
   selected_region,
-  reselectRegion,
   selected_state,
   selectState,
   available_states,
@@ -40,7 +41,6 @@ const EmissionsChart = ({
             checked={ aggregation === AggregationEnum.REGION }
             onChange={(e) => {
               onAggregationChange(e.target.value);
-              reselectRegion(selected_region);
             }}
           />
           Region
@@ -189,10 +189,21 @@ const EmissionsChart = ({
     },
   };
 
+  const regionName = selected_region === 0 ?
+    '' :
+    Object.keys(Regions)
+      .map(r => Regions[r])
+      .filter(r => r.id === selected_region)[0].label;
+
+  let titleAggregation;
+  if (aggregation === AggregationEnum.REGION) { titleAggregation = regionName; }
+  if (aggregation === AggregationEnum.STATE) { titleAggregation = selected_state; }
+  if (aggregation === AggregationEnum.COUNTY) { titleAggregation = selected_county; }
+
   const so2_config = {
     ...shared_config,
     title: {
-      text: 'SO₂',
+      text: `${titleAggregation} SO₂`,
     },
     yAxis: {
       title: {
@@ -209,7 +220,7 @@ const EmissionsChart = ({
   const nox_config = {
     ...shared_config,
     title: {
-      text: 'NOₓ',
+      text: `${titleAggregation} NOₓ`,
     },
     yAxis: {
       title: {
@@ -226,7 +237,7 @@ const EmissionsChart = ({
   const co2_config = {
     ...shared_config,
     title: {
-      text: 'CO₂',
+      text: `${titleAggregation} CO₂`,
     },
     yAxis: {
       title: {
@@ -266,7 +277,6 @@ const EmissionsChart = ({
 
 EmissionsChart.propTypes = {
   heading: PropTypes.string.isRequired,
-  reselectRegion: PropTypes.func.isRequired,
   //selected_state: PropTypes.string.isRequired,
   selectState: PropTypes.func.isRequired,
   available_states: PropTypes.array.isRequired,

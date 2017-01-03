@@ -65,7 +65,7 @@ const EEREChart = (props) => {
   if (ready) {
     chart = (
       <div className='avert-eere-profile'>
-        <h3 className="avert-chart-title">
+        <h3 className='avert-chart-title'>
           { props.heading }
           <TooltipContainer>
             {'This graph shows the hourly changes in load that will result from the inputs entered above. This hourly EE/RE profile will be used to calculate the avoided emissions for this AVERT region.'}
