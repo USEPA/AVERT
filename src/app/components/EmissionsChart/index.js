@@ -11,7 +11,6 @@ import './styles.css';
 const EmissionsChart = ({
   heading,
   selected_region,
-  // reselectRegion,
   selected_state,
   selectState,
   available_states,
@@ -42,7 +41,6 @@ const EmissionsChart = ({
             checked={ aggregation === AggregationEnum.REGION }
             onChange={(e) => {
               onAggregationChange(e.target.value);
-              // reselectRegion(selected_region);
             }}
           />
           Region
@@ -279,7 +277,6 @@ const EmissionsChart = ({
 
 EmissionsChart.propTypes = {
   heading: PropTypes.string.isRequired,
-  // reselectRegion: PropTypes.func.isRequired,
   //selected_state: PropTypes.string.isRequired,
   selectState: PropTypes.func.isRequired,
   available_states: PropTypes.array.isRequired,

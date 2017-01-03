@@ -6,7 +6,6 @@ import {
   // changeSelectedUnit,
   updateMonthlyAggregation,
   updateMonthlyUnit,
-  // reselectRegion,
   selectState,
   selectCounty,
 } from '../../actions';
@@ -38,9 +37,6 @@ const mapDispatchToProps = (dispatch) => ({
   onUnitChange(unit) {
     dispatch(updateMonthlyUnit(unit));
   },
-  // reselectRegion(region) {
-  //   dispatch(reselectRegion(region));
-  // },
   selectState(state) {
     dispatch(selectState(state));
   },
