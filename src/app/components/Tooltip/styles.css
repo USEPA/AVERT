@@ -42,17 +42,21 @@
   box-shadow: 0 0 0.25rem rgba(0,0,0, 0.33);
   background-color: white;
 
-  animation-name: scale-up;
-  animation-duration: 0.2s;
   animation-timing-function: ease-out;
   animation-fill-mode: both;
+}
+
+.avert-modal[data-active='true'] {
+  animation-name: scale-up;
+  animation-duration: 0.2s;
 }
 
 .avert-modal[data-active='false'] {
   display: none;
 }
 
-.avert-modal[data-active='closed'] {
+.avert-modal[data-closing='true'] {
+  display: inherit;
   animation-name: scale-down;
   animation-duration: 0.3s;
 }

@@ -2,6 +2,8 @@
 import {
   CHANGE_ACTIVE_STEP,
   TOGGLE_MODAL_OVERLAY,
+  STORE_ACTIVE_MODAL,
+  RESET_ACTIVE_MODAL,
   // REQUEST_DEFAULTS,
   // RECEIVE_DEFAULTS,
   REQUEST_REGION,
@@ -22,6 +24,8 @@ const defaultState = {
   activeStep: 1,
   loading: false,
   modalOverlay: false,
+  activeModalId: 0,
+  closingModalId: 0,
   percentComplete: 0,
 };
 
@@ -37,6 +41,20 @@ const panelReducer = (state = defaultState, action) => {
       return {
         ...state,
         modalOverlay: !state.modalOverlay,
+      };
+
+    case STORE_ACTIVE_MODAL:
+      return {
+        ...state,
+        activeModalId: action.activeModalId,
+        closingModalId: 0,
+      };
+
+    case RESET_ACTIVE_MODAL:
+      return {
+        ...state,
+        activeModalId: 0,
+        closingModalId: action.activeModalId,
       };
 
     case REQUEST_REGION:

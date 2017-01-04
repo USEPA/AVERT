@@ -45,6 +45,13 @@ const StepPanels = (props) => {
     );
   }
 
+  const clickedOutsideModal = (event) => {
+    if (event.target.classList.contains('avert-modal-overlay')) {
+      return true;
+    }
+    return false;
+  };
+
   let regionDebug = null;
   // conditionally re-define debug text when in development environment
   if (process.env.NODE_ENV === 'development') {
@@ -56,7 +63,18 @@ const StepPanels = (props) => {
   }
 
   return (
-    <div className={`avert-steps ${loadingClass} ${modalClass}`}>
+    <div className={`avert-steps ${loadingClass} ${modalClass}`}
+      onClick={(e) => {
+        if (props.modalOverlay && clickedOutsideModal(e)) {
+          props.onClickOutsideModal(props.activeModalId);
+        }
+      }}
+      onKeyDown={(e) => {
+        if (props.modalOverlay && e.keyCode === 27) {
+          props.onClickOutsideModal(props.activeModalId);
+        }
+      }}
+    >
       { loadingIndicator }
 
       <Panel active={ props.activePanel === 1 }>
@@ -140,6 +158,8 @@ const StepPanels = (props) => {
 StepPanels.propTypes = {
   activePanel: PropTypes.number.isRequired,
   loading: PropTypes.bool.isRequired,
+  onClickOutsideModal: PropTypes.func.isRequired,
+  activeModalId: PropTypes.number.isRequired,
   // softValid: PropTypes.string,
   percentComplete: PropTypes.number,
 };
