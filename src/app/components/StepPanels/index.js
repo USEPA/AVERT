@@ -66,7 +66,7 @@ const StepPanels = (props) => {
     <div className={`avert-steps ${loadingClass} ${modalClass}`}
       onClick={(e) => {
         if (props.modalOverlay && clickedOutsideModal(e)) {
-          props.onClickOutsideModal();
+          props.onClickOutsideModal(props.activeModalId);
         }
       }}
     >
@@ -154,6 +154,7 @@ StepPanels.propTypes = {
   activePanel: PropTypes.number.isRequired,
   loading: PropTypes.bool.isRequired,
   onClickOutsideModal: PropTypes.func.isRequired,
+  activeModalId: PropTypes.number.isRequired,
   // softValid: PropTypes.string,
   percentComplete: PropTypes.number,
 };

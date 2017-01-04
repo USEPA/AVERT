@@ -3,9 +3,8 @@ import React, { PropTypes } from 'react';
 import './styles.css';
 
 const Tooltip = (props) => {
-  let activeState = 'false';
-  if (props.activeModalId === 0) { activeState = 'closed' }
-  if (props.activeModalId === props.id) { activeState = 'true' }
+  const activeState = props.activeModalId === props.id ? true : false;
+  const modalClosing = props.closingModalId === props.id ? true : false;
 
   return (
     <span>
@@ -20,11 +19,12 @@ const Tooltip = (props) => {
       <span className='avert-modal'
         data-modal-id={ props.id }
         data-active={ activeState }
+        data-closing={ modalClosing }
       >
         <a href='' className='avert-modal-close'
           onClick={(e) => {
             e.preventDefault();
-            props.onResetActiveModal();
+            props.onResetActiveModal(props.id);
             props.onToggleModalOverlay();
           }}
         >×</a>
@@ -40,6 +40,7 @@ Tooltip.propTypes = {
   onStoreActiveModal: PropTypes.func.isRequired,
   onToggleModalOverlay: PropTypes.func.isRequired,
   activeModalId: PropTypes.number.isRequired,
+  closingModalId: PropTypes.number.isRequired,
 };
 
 export default Tooltip;

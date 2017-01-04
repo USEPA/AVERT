@@ -78,11 +78,12 @@ export const toggleModalOverlay = () => ({
 
 export const storeActiveModal = (activeModalId) => ({
   type: STORE_ACTIVE_MODAL,
-  activeModalId
+  activeModalId,
 });
 
-export const resetActiveModal = () => ({
+export const resetActiveModal = (activeModalId) => ({
   type: RESET_ACTIVE_MODAL,
+  activeModalId,
 });
 
 //Use this when downloading another region

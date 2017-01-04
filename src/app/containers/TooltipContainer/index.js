@@ -10,14 +10,15 @@ import {
 
 const mapStateToProps = (state) => ({
   activeModalId: state.panel.activeModalId,
+  closingModalId: state.panel.closingModalId,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onStoreActiveModal(activeModalId) {
     dispatch(storeActiveModal(activeModalId));
   },
-  onResetActiveModal() {
-    dispatch(resetActiveModal());
+  onResetActiveModal(activeModalId) {
+    dispatch(resetActiveModal(activeModalId));
   },
   onToggleModalOverlay() {
     dispatch(toggleModalOverlay());

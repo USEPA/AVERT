@@ -22,8 +22,8 @@ const mapDispatchToProps = (dispatch) => ({
     // dispatch(startDataDownload());
     dispatch(overrideRegion());
   },
-  onClickOutsideModal() {
-    dispatch(resetActiveModal());
+  onClickOutsideModal(activeModalId) {
+    dispatch(resetActiveModal(activeModalId));
     dispatch(toggleModalOverlay());
   },
   onClickDataDownload() {

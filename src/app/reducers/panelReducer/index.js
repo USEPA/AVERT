@@ -25,6 +25,7 @@ const defaultState = {
   loading: false,
   modalOverlay: false,
   activeModalId: 0,
+  closingModalId: 0,
   percentComplete: 0,
 };
 
@@ -46,12 +47,14 @@ const panelReducer = (state = defaultState, action) => {
       return {
         ...state,
         activeModalId: action.activeModalId,
+        closingModalId: 0,
       };
 
     case RESET_ACTIVE_MODAL:
       return {
         ...state,
         activeModalId: 0,
+        closingModalId: action.activeModalId,
       };
 
     case REQUEST_REGION:
