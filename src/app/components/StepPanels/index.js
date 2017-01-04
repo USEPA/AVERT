@@ -69,6 +69,11 @@ const StepPanels = (props) => {
           props.onClickOutsideModal(props.activeModalId);
         }
       }}
+      onKeyDown={(e) => {
+        if (props.modalOverlay && e.keyCode === 27) {
+          props.onClickOutsideModal(props.activeModalId);
+        }
+      }}
     >
       { loadingIndicator }
 
