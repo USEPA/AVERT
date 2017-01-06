@@ -172,6 +172,40 @@ describe('EERE Profile', () => {
 
       profile.rooftopSolar = 0;
     });
-
   });
+
+  describe('Reset', () => {
+
+    let profile = new EereProfile();
+
+    beforeEach(() => {
+      profile.topHours = 5;
+    });
+
+    afterEach(() => {
+      profile.reset();
+      profile._limits = {
+        annualGwh: false,
+        constantMwh: false,
+        renewables: false,
+        softPercent: 15,
+      }
+    });
+
+    it('should set all EERE profile to the original during construction', () => {
+      profile.reset();
+      expect(profile.topHours).toBe(0);
+      expect(profile.topHours).not.toBe(5);
+    });
+
+    it('should not touch the region specify validation limits', () => {
+      profile.limits = {
+        constantReductions: 5,
+        renewables: 10,
+      };
+
+      profile.reset();
+      expect(profile.limits.annualGwh).toBe(5);
+    });
+  })
 });

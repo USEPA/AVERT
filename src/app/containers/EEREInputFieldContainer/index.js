@@ -12,7 +12,7 @@ const mapDispatchToProps = (dispatch) => ({
   onCalculateProfile() {
     calculateEereProfile();
   },
-})
+});
 
 const EEREInputFieldContainer = connect(
   mapStateToProps,

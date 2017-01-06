@@ -159,7 +159,14 @@ class EereProfile {
     }
 
     reset() {
-      
+        this._topHours = 0;
+        this._reduction = 0;
+        this._annualGwh = 0;
+        this._constantMw = 0;
+        this._windCapacity = 0;
+        this._utilitySolar = 0;
+        this._rooftopSolar = 0;
+        this._errors = [];
     }
 }
 
