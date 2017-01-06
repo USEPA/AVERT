@@ -2,32 +2,6 @@ import _ from 'lodash';
 
 class MonthlyEmissionsEngine {
 
-    // extract(annualData) {
-    //     // console.warn('extracting generation...',annualData.generation.monthlyEmissions);
-    //     // console.warn('extracting so2...',annualData.totalEmissions.so2.monthlyEmissions);
-    //     // console.warn('extracting nox...',annualData.totalEmissions.nox.monthlyEmissions);
-    //     // console.warn('extracting co2...',annualData.totalEmissions.co2.monthlyEmissions);
-    //
-    //     return {
-    //         generation: {
-    //             regional: _.values(annualData.generation.monthlyEmissions.regional).slice(0,12),
-    //             state: annualData.generation.monthlyEmissions.state,
-    //         },
-    //         so2: {
-    //             regional: _.values(annualData.totalEmissions.so2.monthlyEmissions.regional).slice(0,12),
-    //             state: annualData.totalEmissions.so2.monthlyEmissions.state,
-    //         },
-    //         nox: {
-    //             regional: _.values(annualData.totalEmissions.nox.monthlyEmissions.regional).slice(0,12),
-    //             state: annualData.totalEmissions.nox.monthlyEmissions.state,
-    //         },
-    //         co2: {
-    //             regional: _.values(annualData.totalEmissions.co2.monthlyEmissions.regional).slice(0,12),
-    //             state: annualData.totalEmissions.co2.monthlyEmissions.state,
-    //         }
-    //     }
-    // }
-
     extract(annualData) {
         const statesAndCounties = this.extractStatesCounties(annualData);
         return {
@@ -48,25 +22,7 @@ class MonthlyEmissionsEngine {
     }
 
     extractEmissions(annualData, statesAndCounties) {
-        // const results = {};
-        // const gasses = ['so2','nox','co2'];
-        // gasses.forEach((gas) => {
-        //
-        //     results[gas].regional = _.values(annualData[gas].monthlyChanges.emissions.region);
-        //
-        //     statesAndCounties.forEach((state) => {
-        //         state = Object.keys(state)[0];
-        //         results[gas].state[state] = _.values(annualData.totalEmissions[gas].monthlyChanges.emissions.state[state]);
-        //
-        //         annualData.totalEmissions[gas].monthlyChanges.emissions.county[state].forEach((county) => {
-        //             county = Object.keys(county)[0];
-        //             results[gas].county[state] = {};
-        //             results[gas].county[state][county] =  _.values(annualData.totalEmissions[gas].monthlyChanges.emissions.county[state][county]);
-        //         })
-        //     });
-        // });
-        //
-        // return results;
+
         return {
             generation: {
                 regional: _.values(annualData.generation.monthlyChanges.emissions.region),
