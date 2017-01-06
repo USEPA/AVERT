@@ -63,6 +63,11 @@ const EEREChart = (props) => {
   let chart = null;
   // conditionally re-define chart when ready (hourlyEere prop exists)
   if (ready) {
+    const totalLoadMw = props.hourlyEere
+      .map((hour) => hour.current_load_mw)
+      .reduce((a, b) => a + b, 0);
+    const totalLoadGwh = (totalLoadMw / 1000).toLocaleString();
+
     chart = (
       <div className='avert-eere-profile'>
         <h3 className='avert-chart-title'>
@@ -73,6 +78,10 @@ const EEREChart = (props) => {
         </h3>
 
         <Highcharts config={chartConfig} />
+
+        <p className="avert-small-text">
+          {`This EE/RE profile will displace ${totalLoadGwh} GWh of regional fossil fuel generation over the course of a year.`}
+        </p>
       </div>
     );
   }
