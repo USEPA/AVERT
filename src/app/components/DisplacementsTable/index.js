@@ -65,20 +65,20 @@ const DisplacementsTable = (props) => {
           </tr>
           <tr>
             <td>{'SO'}<sub>{'2'}</sub>{' (lbs/MWh)'}</td>
-            <td className="avert-table-data">{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.so2.original) }</td>
-            <td className="avert-table-data">{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.so2.post) }</td>
+            <td className="avert-table-data">{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.so2.original, { 'alwaysShow': true, 'hideZero': '--' }) }</td>
+            <td className="avert-table-data">{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.so2.post, { 'alwaysShow': true, 'hideZero': '--' }) }</td>
             <td className="avert-table-data">&nbsp;</td>
           </tr>
           <tr>
             <td>{'NO'}<sub>{'X'}</sub>{' (lbs/MWh)'}</td>
-            <td className="avert-table-data">{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.nox.original) }</td>
-            <td className="avert-table-data">{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.nox.post) }</td>
+            <td className="avert-table-data">{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.nox.original, { 'alwaysShow': true, 'hideZero': '--' }) }</td>
+            <td className="avert-table-data">{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.nox.post, { 'alwaysShow': true, 'hideZero': '--' }) }</td>
             <td className="avert-table-data">&nbsp;</td>
           </tr>
           <tr>
             <td>{'CO'}<sub>{'2'}</sub>{' (tons/MWh)'}</td>
-            <td className="avert-table-data">{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.co2.original) }</td>
-            <td className="avert-table-data">{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.co2.post) }</td>
+            <td className="avert-table-data">{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.co2.original, { 'alwaysShow': true, 'hideZero': '--' }) }</td>
+            <td className="avert-table-data">{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.co2.post, { 'alwaysShow': true, 'hideZero': '--' }) }</td>
             <td className="avert-table-data">&nbsp;</td>
           </tr>
         </tbody>
