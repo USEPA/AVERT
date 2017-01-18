@@ -66,12 +66,13 @@ const EEREChart = (props) => {
     const totalLoadMw = props.hourlyEere
       .map((hour) => hour.current_load_mw)
       .reduce((a, b) => a + b, 0);
-    const totalLoadGwh = (totalLoadMw / 1000).toLocaleString();
+    const totalLoadGwh = Math.round(totalLoadMw / 1000).toLocaleString();
 
     chart = (
       <div className='avert-eere-profile'>
         <h3 className='avert-chart-title'>
           { props.heading }
+          {' '}
           <TooltipContainer>
             {'This graph shows the hourly changes in load that will result from the inputs entered above. This hourly EE/RE profile will be used to calculate the avoided emissions for this AVERT region.'}
           </TooltipContainer>
