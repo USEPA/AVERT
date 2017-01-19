@@ -130,6 +130,7 @@ const monthlyEmissionsReducer = (state = initialState, action) => {
         ...state,
         // newSelectedAggregation: 'state',
         newSelectedState: action.state,
+        newSelectedCounty: '',
         newVisibleCounties: action.visibleCounties,
       };
 

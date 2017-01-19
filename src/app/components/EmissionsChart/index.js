@@ -190,20 +190,32 @@ const EmissionsChart = ({
   };
 
   const regionName = selected_region === 0 ?
-    '' :
+    'Unspecified' :
     Object.keys(Regions)
       .map(r => Regions[r])
       .filter(r => r.id === selected_region)[0].label;
 
   let titleAggregation;
-  if (aggregation === AggregationEnum.REGION) { titleAggregation = regionName; }
-  if (aggregation === AggregationEnum.STATE) { titleAggregation = selected_state; }
-  if (aggregation === AggregationEnum.COUNTY) { titleAggregation = selected_county; }
+  if (aggregation === AggregationEnum.REGION) {
+    titleAggregation = `${regionName} Region`;
+  }
+  if (aggregation === AggregationEnum.STATE) {
+    titleAggregation = `${selected_state}`;
+  }
+  if (aggregation === AggregationEnum.COUNTY) {
+    titleAggregation = selected_county === '' ?
+      '' :
+      `${selected_county}, ${selected_state}`;
+  }
+
+  const titleText = (titleChemical) => {
+    return `Change in ${titleChemical} Emissions: ${titleAggregation}`
+  };
 
   const so2_config = {
     ...shared_config,
     title: {
-      text: `${titleAggregation} SO₂`,
+      text: titleText('SO₂'),
     },
     yAxis: {
       title: {
@@ -220,7 +232,7 @@ const EmissionsChart = ({
   const nox_config = {
     ...shared_config,
     title: {
-      text: `${titleAggregation} NOₓ`,
+      text: titleText('NOₓ'),
     },
     yAxis: {
       title: {
@@ -237,7 +249,7 @@ const EmissionsChart = ({
   const co2_config = {
     ...shared_config,
     title: {
-      text: `${titleAggregation} CO₂`,
+      text: titleText('CO₂'),
     },
     yAxis: {
       title: {
