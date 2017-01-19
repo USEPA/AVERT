@@ -41,23 +41,23 @@
   display: block;
   margin-bottom: 0.25rem;
   font-weight: bold;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
 }
 
 .avert-message-top,
 .avert-message-bottom {
   position: relative;
-  left: -1.5rem;
-  width: calc(100% + 3rem);
-  padding: 1.5rem;
+  left: -1rem;
+  width: calc(100% + 2rem);
+  padding: 1rem;
   margin-top: 0;
-  font-size: 0.75rem;
+  font-size: 0.625rem;
 }
 .avert-message-top {
   top: 0;
 }
 .avert-message-bottom {
-  bottom: -1.5rem;
+  bottom: -1rem;
 }
 
 .avert-validation-error {
@@ -66,4 +66,65 @@
 }
 .avert-validation-warning {
   background-color: rgb(249,201,114);
+}
+
+
+
+/* --- media queries --- */
+@media (min-width: 25em) {
+  .avert-message-top,
+  .avert-message-bottom {
+    left: -1.125rem;
+    width: calc(100% + 2.25rem);
+    padding: 1.125rem;
+  }
+  .avert-message-bottom {
+    bottom: -1.125rem;
+  }
+}
+
+@media (min-width: 30em) {
+  .avert-message-heading {
+    font-size: 0.8125rem;
+  }
+
+  .avert-message-top,
+  .avert-message-bottom {
+    left: -1.25rem;
+    width: calc(100% + 2.5rem);
+    padding: 1.25rem;
+    font-size: 0.6875rem;
+  }
+  .avert-message-bottom {
+    bottom: -1.25rem;
+  }
+}
+
+@media (min-width: 35em) {
+  .avert-message-top,
+  .avert-message-bottom {
+    left: -1.375rem;
+    width: calc(100% + 2.75rem);
+    padding: 1.375rem;
+  }
+  .avert-message-bottom {
+    bottom: -1.375rem;
+  }
+}
+
+@media (min-width: 40em) {
+  .avert-message-heading {
+    font-size: 0.875rem;
+  }
+
+  .avert-message-top,
+  .avert-message-bottom {
+    left: -1.5rem;
+    width: calc(100% + 3rem);
+    padding: 1.5rem;
+    font-size: 0.75rem;
+  }
+  .avert-message-bottom {
+    bottom: -1.5rem;
+  }
 }

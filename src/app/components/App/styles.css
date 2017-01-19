@@ -45,7 +45,7 @@ p {
   margin-top: 0.75rem;
 }
 
-p, li, select {
+p, li, select, label {
   font-size: 0.75rem;
 }
 
@@ -188,7 +188,7 @@ fieldset {
     margin-top: 0.8125rem;
   }
 
-  p, li, select {
+  p, li, select, label {
     font-size: 0.8125rem;
   }
 
@@ -241,7 +241,7 @@ fieldset {
     margin-top: 0.875rem;
   }
 
-  p, li, select {
+  p, li, select, label {
     font-size: 0.875rem;
   }
 
@@ -294,7 +294,7 @@ fieldset {
     margin-top: 0.9375rem;
   }
 
-  p, li, select {
+  p, li, select, label {
     font-size: 0.9375rem;
   }
 
@@ -347,7 +347,7 @@ fieldset {
     margin-top: 1rem;
   }
 
-  p, li, select {
+  p, li, select, label {
     font-size: 1rem;
   }
 

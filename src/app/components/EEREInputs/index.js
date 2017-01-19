@@ -72,13 +72,17 @@ const EEREInputs = ({
             <p><strong>Choose one:</strong></p>
             <ul>
               <li>
-                {'Reduce total annual generation by '}
+                <span className="avert-input-label">
+                  {'Reduce total annual generation by '}
+                </span>
                 <EEREInputFieldContainer
                   value={ annualGwh }
                   disabled={ constantMw ? true : false }
                   onChange={ onAnnualGwhChange }
                 />
-                <span>{' GWh '}</span>
+                <span className="avert-input-unit">
+                  {' GWh '}
+                </span>
 
                 <TooltipContainer id={1}>
                   {'Enter the total number of GWh expected to be saved in a single year. This option simply distributes the total annual savings evenly over all hours of the year. An industrial or refrigeration efficiency program may be well represented by a constant reduction across most hours of the year.'}
@@ -88,13 +92,17 @@ const EEREInputs = ({
               </li>
 
               <li>
-                {'Reduce hourly generation by '}
+                <span className="avert-input-label">
+                  {'Reduce hourly generation by '}
+                </span>
                 <EEREInputFieldContainer
                   value={ constantMw }
                   disabled={ annualGwh ? true : false }
                   onChange={ onConstantMwChange }
                 />
-                <span>{' MW '}</span>
+                <span className="avert-input-unit">
+                  {' MW '}
+                </span>
 
                 <TooltipContainer id={2}>
                   {'“Reduce hourly generation” is identical in effect to reducing total annual generation. It allows you to enter a constant reduction for every hour of the year, in MW. An industrial or refrigeration efficiency program may be well represented by a constant reduction across most hours of the year.'}
@@ -112,13 +120,17 @@ const EEREInputs = ({
             <p><strong>Choose one:</strong></p>
             <ul>
               <li>
-                {'Broad-based program: Reduce generation by '}
+                <span className="avert-input-label">
+                  {'Broad-based program: Reduce generation by '}
+                </span>
                 <EEREInputFieldContainer
                   value={ broadProgram }
                   disabled={ reduction || topHours ? true : false }
                   onChange={ onBroadBasedProgramChange }
                 />
-                <span>{' % in all hours '}</span>
+                <span className="avert-input-unit">
+                  {' % in all hours '}
+                </span>
 
                 <TooltipContainer id={3}>
                   {'To simulate a broad-based efficiency program, enter an estimated load reduction fraction. This percentage reduction will be applied to all hours of the year.'}
@@ -126,19 +138,25 @@ const EEREInputs = ({
               </li>
 
               <li>
-                {'Targeted program: Reduce generation by '}
+                <span className="avert-input-label">
+                  {'Targeted program: Reduce generation by '}
+                </span>
                 <EEREInputFieldContainer
                   value={ reduction }
                   disabled={ broadProgram ? true: false }
                   onChange={ onReductionChange }
                 />
-                <span>{' % during the peak '}</span>
+                <span className="avert-input-unit">
+                  {' % during the peak '}
+                </span>
                 <EEREInputFieldContainer
                   value={ topHours }
                   disabled={ broadProgram ? true: false }
                   onChange={ onTopHoursChange }
                 />
-                <span>{' % of hours '}</span>
+                <span className="avert-input-unit">
+                  {' % of hours '}
+                </span>
 
                 <TooltipContainer id={4}>
                   {'To simulate a peak-reduction targeting program such as demand response, enter the load reduction (as a fraction of peaking load) that would be targeted, as well as the fraction of high-demand hours that the program is expected to affect (e.g., 1%–3%).'}
@@ -159,12 +177,16 @@ const EEREInputs = ({
           <summary data-label='C'>Wind</summary>
           <section>
             <p>
-              {'Total capacity: '}
+              <span className="avert-input-label">
+                {'Total capacity: '}
+              </span>
               <EEREInputFieldContainer
                 value={ windCapacity }
                 onChange={ onWindCapacityChange }
               />
-              <span>{' MW '}</span>
+              <span className="avert-input-unit">
+                {' MW '}
+              </span>
 
               <TooltipContainer id={5}>
                 {'Enter the total capacity (maximum potential electricity generation) for this type of resource, measured in MW. The model uses these inputs along with hourly capacity factors that vary by resource type and region.'}
@@ -179,12 +201,16 @@ const EEREInputs = ({
           <summary data-label='D'>Utility-scale solar photovoltaic</summary>
           <section>
             <p>
-              {'Total capacity: '}
+              <span className="avert-input-label">
+                {'Total capacity: '}
+              </span>
               <EEREInputFieldContainer
                 value={ utilitySolar }
                 onChange={ onUtilitySolarChange }
               />
-              <span>{' MW '}</span>
+              <span className="avert-input-unit">
+                {' MW '}
+              </span>
 
               <TooltipContainer id={6}>
                 {'Enter the total capacity (maximum potential electricity generation) for this type of resource, measured in MW. The model uses these inputs along with hourly capacity factors that vary by resource type and region.'}
@@ -199,12 +225,16 @@ const EEREInputs = ({
           <summary data-label='E'>Distributed (rooftop) solar photovoltaic</summary>
           <section>
             <p>
-              {'Total capacity: '}
+              <span className="avert-input-label">
+                {'Total capacity: '}
+              </span>
               <EEREInputFieldContainer
                 value={ rooftopSolar }
                 onChange={ onRooftopSolarChange }
               />
-              <span>{' MW '}</span>
+              <span className="avert-input-unit">
+                {' MW '}
+              </span>
 
               <TooltipContainer id={7}>
                 {'Enter the total capacity (maximum potential electricity generation) for this type of resource, measured in MW. The model uses these inputs along with hourly capacity factors that vary by resource type and region.'}
