@@ -80,9 +80,9 @@ const StepPanels = (props) => {
       <Panel active={ props.activePanel === 1 }>
         <PanelBody heading='Select Region'>
           <p>
-            {'The contiguous 48 states are split into 10 AVERT regions, which are aggregates of EPA’s '}
+            {'AVERT splits the contiguous 48 states into 10 regions. AVERT regions are aggregated based on EPA’s '}
               <a href='https://www.epa.gov/energy/egrid'>{'eGRID subregions'}</a>
-            {'. Select a region for analysis by either using the dropdown menu or clicking the map. Selecting a region loads region-specific wind and solar capacity data and the power plants operating within each region.'}
+            {'. Select a region for analysis by either using the dropdown menu or clicking the map. Selecting a region loads the power plants operating within each region and region-specific wind and solar capacity data.'}
           </p>
 
           <RegionListContainer />
@@ -101,7 +101,7 @@ const StepPanels = (props) => {
           */}
 
           <p className='avert-small-text'>
-            {'The online version of AVERT can run analyses for 2015 only. The Excel version of AVERT (available for download '}
+            {'The online version of AVERT can run analyses using 2015 emissions and generation data. The Excel version of AVERT (available for download '}
               <a href="https://www.epa.gov/statelocalclimate/download-avert">{'here'}</a>
             {') allows analyses for years 2007–2015 or for a future year scenario.'}
           </p>
@@ -119,7 +119,7 @@ const StepPanels = (props) => {
           <p>
             {'AVERT quantifies avoided emissions and electricity generation displaced by EE/RE policies and programs. Specify the impacts of EE/RE programs below, and AVERT will use these inputs to generate results. For more information about inputs, please consult the '}
               <a href='https://www.epa.gov/statelocalclimate/avert-user-manual-0'>{'AVERT user manual'}</a>
-            {'.'}
+            {' or click the '}<span className="avert-modal-link"></span>{' icon for each program type below.'}
           </p>
 
           <p className="avert-small-text">

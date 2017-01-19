@@ -26,6 +26,17 @@ const EEREChart = (props) => {
     legend: {
       enabled: false,
     },
+    tooltip: {
+      headerFormat: '<span style="font-size: 10px">Hour of Year: {point.key}</span><br/>',
+      // pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y}</b><br/>',
+      pointFormatter: function() {
+        return (
+          '<span style="color:' + this.color + '">\u25CF</span> ' +
+          this.series.yAxis.axisTitle.textStr + ': ' +
+          '<b>' + Math.round(this.y).toLocaleString() + '</b><br/>'
+        )
+      },
+    },
     lang: {
       hoverText: 'Export options',
     },
@@ -49,6 +60,9 @@ const EEREChart = (props) => {
       title: {
         text: 'Change in load (MW)',
       },
+      labels: {
+        formatter: function() { return Math.round(this.value) },
+      },
     },
     series: [{
       name: 'EERE Load Output',
@@ -66,13 +80,14 @@ const EEREChart = (props) => {
     const totalLoadMw = props.hourlyEere
       .map((hour) => hour.current_load_mw)
       .reduce((a, b) => a + b, 0);
-    const totalLoadGwh = (totalLoadMw / 1000).toLocaleString();
+    const totalLoadGwh = Math.round(totalLoadMw / 1000).toLocaleString();
 
     chart = (
       <div className='avert-eere-profile'>
         <h3 className='avert-chart-title'>
           { props.heading }
-          <TooltipContainer>
+          {' '}
+          <TooltipContainer id={8}>
             {'This graph shows the hourly changes in load that will result from the inputs entered above. This hourly EE/RE profile will be used to calculate the avoided emissions for this AVERT region.'}
           </TooltipContainer>
         </h3>

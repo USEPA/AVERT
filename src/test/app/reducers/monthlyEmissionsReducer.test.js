@@ -137,6 +137,7 @@ describe('monthlyEmissions', () => {
         }))
         .toEqual({
           newSelectedState: 'Virginia',
+          newSelectedCounty: '',
           newVisibleCounties: ['Arlington County'],
         });
     });
@@ -442,4 +443,3 @@ describe('monthlyEmissions', () => {
     });
   });
 });
-
