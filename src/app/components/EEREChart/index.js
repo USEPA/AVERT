@@ -33,11 +33,10 @@ const EEREChart = (props) => {
         return (
           '<span style="color:' + this.color + '">\u25CF</span> ' +
           this.series.yAxis.axisTitle.textStr + ': ' +
-          '<b>' + Math.round(this.y) + '</b><br/>'
+          '<b>' + Math.round(this.y).toLocaleString() + '</b><br/>'
         )
       },
     },
-
     lang: {
       hoverText: 'Export options',
     },

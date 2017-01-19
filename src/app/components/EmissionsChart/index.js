@@ -174,6 +174,16 @@ const EmissionsChart = ({
     legend: {
       enabled: false,
     },
+    tooltip: {
+      // pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y}</b><br/>',
+      pointFormatter: function() {
+        return (
+          '<span style="color:' + this.color + '">\u25CF</span> ' +
+          this.series.yAxis.axisTitle.textStr + ': ' +
+          '<b>' + Math.round(this.y).toLocaleString() + '</b><br/>'
+        )
+      },
+    },
     lang: {
       hoverText: 'Export options',
     },
@@ -181,7 +191,7 @@ const EmissionsChart = ({
       buttons: {
         contextButton: {
           _titleKey: 'hoverText',
-        }
+        },
       },
     },
     xAxis: {
