@@ -137,6 +137,8 @@ fieldset {
 
 /* --- tables --- */
 .avert-table {
+  display: inline-block;
+  overflow: auto;
   border-spacing: 1px;
   border-color: white;
   width: 100%;
@@ -162,6 +164,7 @@ fieldset {
 }
 
 .avert-table .avert-table-data {
+  width: calc(100% / 3);
   font-family: 'Roboto Mono', monospace;
   font-size: 0.625rem;
   text-align: right;
@@ -328,7 +331,12 @@ fieldset {
     font-size: 0.875rem;
   }
 
+  .avert-table {
+    display: table;
+  }
+
   .avert-table .avert-table-data {
+    width: auto;
     font-size: 0.8125rem;
   }
 }

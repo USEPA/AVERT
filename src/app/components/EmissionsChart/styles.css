@@ -4,11 +4,12 @@
 }
 
 .avert-inline-select p {
-  display: inline-block;
+  display: block;
   margin-top: 0;
 }
 
 .avert-inline-select label {
+  display: block;
   margin-left: 0.75rem;
 }
 
@@ -55,4 +56,19 @@
   font-size: 1rem !important;
   font-weight: bold;
   color: #444 !important;
+}
+
+
+
+/* --- media queries --- */
+@media (min-width: 25em) {
+  .avert-inline-select label {
+    display: inline-block;
+  }
+}
+
+@media (min-width: 35em) {
+  .avert-inline-select p {
+    display: inline-block;
+  }
 }
