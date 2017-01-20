@@ -4,10 +4,10 @@ import EEREChart from '../../components/EEREChart';
 
 const mapStateToProps = (state) => ({
   softValid: state.eere.soft_valid,
-  softTopExceedanceHour: state.eere.soft_top_exceedance_hour,
+  softTopExceedanceTimestamp: state.eere.soft_top_exceedance_timestamp,
   softTopExceedance: state.eere.soft_top_exceedance_value,
   hardValid: state.eere.hard_valid,
-  hardTopExceedanceHour: state.eere.hard_top_exceedance_hour,
+  hardTopExceedanceTimestamp: state.eere.hard_top_exceedance_timestamp,
   hardTopExceedance: state.eere.hard_top_exceedance_value,
 
   hourlyEere: state.eere.hourlyEere,
