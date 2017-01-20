@@ -20,6 +20,17 @@ const StepPanels = (props) => {
   const loadingClass = props.loading ? 'avert-loading-overlay' : '';
   const modalClass = props.modalOverlay ? 'avert-modal-overlay' : '';
 
+  let loadingProgress = null;
+  // conditionally re-define loadingProgress if on third panel
+  if (props.activePanel === 3) {
+    loadingProgress = (
+      <p className="avert-loading-text">
+        <progress value={props.percentComplete} max="100">{props.percentComplete}%</progress>
+        <p>These calculations may take several minutes.</p>
+      </p>
+    );
+  }
+
   let loadingIndicator = null;
   // conditionally re-define loadingIndicator when loading prop exists
   if (props.loading) {
@@ -27,9 +38,7 @@ const StepPanels = (props) => {
       <div className="avert-loading-indicator">
         <LoadingIcon />
         <p className="avert-loading-text">{'LOADING...'}</p>
-        <p className="avert-loading-text">
-          <progress value={props.percentComplete} max="100">{props.percentComplete}%</progress>
-        </p>
+        { loadingProgress }
       </div>
     );
   }
