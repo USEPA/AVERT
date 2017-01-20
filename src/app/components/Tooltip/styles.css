@@ -12,6 +12,7 @@
 
 .avert-modal-link {
   display: inline-block;
+  margin-top: -1rem;
   width: 1rem;
   height: 1rem;
   background-image: url('../../../assets/icons.svg');
@@ -21,6 +22,7 @@
   position: relative;
   left: 1px;
   bottom: -3px;
+  transform: scale(0.75);
 
   /* hide text */
   text-indent: 400%;
@@ -103,5 +105,30 @@
   to {
     opacity: 0;
     transform: translateX(-50%) translateY(-50%) scale(0);
+  }
+}
+
+/* --- media queries --- */
+@media (min-width: 25em) {
+  .avert-modal-link {
+    transform: scale(0.8125);
+  }
+}
+
+@media (min-width: 30em) {
+  .avert-modal-link {
+    transform: scale(0.875);
+  }
+}
+
+@media (min-width: 35em) {
+  .avert-modal-link {
+    transform: scale(0.9375);
+  }
+}
+
+@media (min-width: 40em) {
+  .avert-modal-link {
+    transform: none;
   }
 }
