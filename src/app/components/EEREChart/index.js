@@ -78,9 +78,9 @@ const EEREChart = (props) => {
   // conditionally re-define chart when ready (hourlyEere prop exists)
   if (ready) {
     const totalLoadMw = props.hourlyEere
-      .map((hour) => hour.current_load_mw)
+      .map((hour) => hour.final_mw)
       .reduce((a, b) => a + b, 0);
-    const totalLoadGwh = Math.round(totalLoadMw / 1000).toLocaleString();
+    const totalLoadGwh = Math.round(totalLoadMw / -1000).toLocaleString();
 
     chart = (
       <div className='avert-eere-profile'>

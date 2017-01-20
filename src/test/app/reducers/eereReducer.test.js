@@ -36,10 +36,12 @@ describe('eereReducer', () => {
     soft_exceedances: [],
     soft_top_exceedance_value: 0,
     soft_top_exceedance_hour: 0,
+    soft_top_exceedance_timestamp: {},
     hard_valid: true,
     hard_exceedances: [],
     hard_top_exceedance_value: 0,
     hard_top_exceedance_hour: 0,
+    hard_top_exceedance_timestamp: {},
     submitted: false,
     hourlyEere: [],
   };

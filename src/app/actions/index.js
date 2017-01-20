@@ -305,12 +305,45 @@ export const updateEereRooftopSolar = (text) => {
   };
 };
 
-export const updateExceedances = (exceedances, soft, hard) => ({
-  type: UPDATE_EXCEEDANCES,
-  exceedances,
-  soft_exceedances: soft,
-  hard_exceedances: hard,
-});
+export const updateExceedances = (exceedances, soft, hard) => {
+  return function (dispatch, getState) {
+    const { rdfs } = getState();
+    //TODO: Pull these calculations out into a util, run them in the action, then pass them to the reducers
+    const valid = exceedances.reduce((a, b) => a + b) === 0;
+    const maxVal = (!valid) ? Math.max(...exceedances) : 0;
+    const maxIndex = (!valid) ? exceedances.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0) : 0;
+
+    const softValid = soft.reduce((a, b) => a + b) === 0;
+    const softMaxVal = (!valid) ? Math.max(...soft) : 0;
+    const softMaxIndex = (!valid) ? soft.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0) : 0;
+    const softTimestamp = (softMaxIndex !== 0) ? rdfs.rdf.regional_load[softMaxIndex] : {};
+
+    const hardValid = hard.reduce((a, b) => a + b) === 0;
+    const hardMaxVal = (!valid) ? Math.max(...hard) : 0;
+    const hardMaxIndex = (!valid) ? hard.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0) : 0;
+    const hardTimestamp = (hardMaxIndex !== 0) ? rdfs.rdf.regional_load[hardMaxIndex] : {};
+
+    return dispatch({
+      type: UPDATE_EXCEEDANCES,
+      payload: {
+        exceedances,
+        soft_exceedances: soft,
+        hard_exceedances: hard,
+        valid,
+        maxVal,
+        maxIndex,
+        softValid,
+        softMaxVal,
+        softMaxIndex,
+        softTimestamp,
+        hardValid,
+        hardMaxVal,
+        hardMaxIndex,
+        hardTimestamp,
+      }
+    });
+  }
+};
 
 export const resetEereInputs = () => {
   eereProfile.reset();

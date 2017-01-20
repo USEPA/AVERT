@@ -38,10 +38,12 @@ const defaultState = {
   soft_exceedances: [],
   soft_top_exceedance_value: 0,
   soft_top_exceedance_hour: 0,
+  soft_top_exceedance_timestamp: {},
   hard_valid: true,
   hard_exceedances: [],
   hard_top_exceedance_value: 0,
   hard_top_exceedance_hour: 0,
+  hard_top_exceedance_timestamp: {},
   submitted: false,
   hourlyEere: [],
 };
@@ -72,7 +74,6 @@ const eereReducer = (state = defaultState, action) => {
       };
 
     case UPDATE_EERE_TOP_HOURS:
-
       return {
         ...state,
         topHours: action.text,
@@ -110,35 +111,25 @@ const eereReducer = (state = defaultState, action) => {
       };
 
     case UPDATE_EXCEEDANCES:
-      //TODO: Pull these calculations out into a util, run them in the action, then pass them to the reducers
-      const valid = action.exceedances.reduce((a, b) => a + b) === 0;
-      const maxVal = (!valid) ? Math.max(...action.exceedances) : 0;
-      const maxIndex = (!valid) ? action.exceedances.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0) : 0;
-
-      const softValid = action.soft_exceedances.reduce((a, b) => a + b) === 0;
-      const softMaxVal = (!valid) ? Math.max(...action.soft_exceedances) : 0;
-      const softMaxIndex = (!valid) ? action.soft_exceedances.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0) : 0;
-
-      const hardValid = action.hard_exceedances.reduce((a, b) => a + b) === 0;
-      const hardMaxVal = (!valid) ? Math.max(...action.hard_exceedances) : 0;
-      const hardMaxIndex = (!valid) ? action.hard_exceedances.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0) : 0;
 
       return {
         // TODO: Consider splitting up "validity for exceed" from "validity for fields"
         ...state,
-        exceedances: action.exceedances,
-        top_exceedance_value: maxVal,
-        top_exceedance_hour: maxIndex,
+        exceedances: action.payload.exceedances,
+        top_exceedance_value: action.payload.maxVal,
+        top_exceedance_hour: action.payload.maxIndex,
 
-        soft_valid: softValid,
-        soft_exceedances: action.soft_exceedances,
-        soft_top_exceedance_value: softMaxVal,
-        soft_top_exceedance_hour: softMaxIndex,
+        soft_valid: action.payload.softValid,
+        soft_exceedances: action.payload.soft_exceedances,
+        soft_top_exceedance_value: action.payload.softMaxVal,
+        soft_top_exceedance_hour: action.payload.softMaxIndex,
+        soft_top_exceedance_timestamp: action.payload.softTimestamp,
 
-        hard_valid: hardValid,
-        hard_exceedances: action.hard_exceedances,
-        hard_top_exceedance_value: hardMaxVal,
-        hard_top_exceedance_hour: hardMaxIndex,
+        hard_valid: action.payload.hardValid,
+        hard_exceedances: action.payload.hard_exceedances,
+        hard_top_exceedance_value: action.payload.hardMaxVal,
+        hard_top_exceedance_hour: action.payload.hardMaxIndex,
+        hard_top_exceedance_timestamp: action.payload.hardTimestamp,
       };
 
     case RESET_EERE_INPUTS:
