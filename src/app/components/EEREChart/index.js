@@ -27,13 +27,13 @@ const EEREChart = (props) => {
       enabled: false,
     },
     tooltip: {
-      headerFormat: '<span style="font-size: 10px">Hour of Year: {point.key}</span><br/>',
-      // pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y}</b><br/>',
-      pointFormatter: function() {
+      formatter: function() {
         return (
-          '<span style="color:' + this.color + '">\u25CF</span> ' +
-          this.series.yAxis.axisTitle.textStr + ': ' +
-          '<b>' + Math.round(this.y).toLocaleString() + '</b><br/>'
+          `<span style="font-size: 10px">Hour of year:
+          ${this.x.toLocaleString()}</span><br/>
+          <span style="color:${this.color}">\u25CF</span>
+          ${this.series.yAxis.axisTitle.textStr}
+          <b>${Math.round(this.y).toLocaleString()}</b><br/>`
         )
       },
     },
