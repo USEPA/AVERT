@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, {PropTypes} from 'react';
 // components
 import LoadingIcon from '../LoadingIcon';
 import Panel from '../Panel';
@@ -24,10 +24,10 @@ const StepPanels = (props) => {
   // conditionally re-define loadingProgress if on third panel
   if (props.activePanel === 3) {
     loadingProgress = (
-      <p className="avert-loading-text">
+      <div>
         <progress value={props.percentComplete} max="100">{props.percentComplete}%</progress>
-        <p>These calculations may take several minutes.</p>
-      </p>
+        <p className="avert-loading-text">These calculations may take several minutes.</p>
+      </div>
     );
   }
 
@@ -65,7 +65,9 @@ const StepPanels = (props) => {
   // conditionally re-define debug text when in development environment
   if (process.env.NODE_ENV === 'development') {
     regionDebug = (
-      <p className="avert-small-text" onClick={() => { props.onClickDebug() }}>
+      <p className="avert-small-text" onClick={() => {
+        props.onClickDebug()
+      }}>
         <em>(Debug)</em>
       </p>
     );
@@ -73,16 +75,16 @@ const StepPanels = (props) => {
 
   return (
     <div className={`avert-steps ${loadingClass} ${modalClass}`}
-      onClick={(e) => {
-        if (props.modalOverlay && clickedOutsideModal(e)) {
-          props.onClickOutsideModal(props.activeModalId);
-        }
-      }}
-      onKeyDown={(e) => {
-        if (props.modalOverlay && e.keyCode === 27) {
-          props.onClickOutsideModal(props.activeModalId);
-        }
-      }}
+         onClick={(e) => {
+           if (props.modalOverlay && clickedOutsideModal(e)) {
+             props.onClickOutsideModal(props.activeModalId);
+           }
+         }}
+         onKeyDown={(e) => {
+           if (props.modalOverlay && e.keyCode === 27) {
+             props.onClickOutsideModal(props.activeModalId);
+           }
+         }}
     >
       { loadingIndicator }
 
@@ -90,7 +92,7 @@ const StepPanels = (props) => {
         <PanelBody heading='Select Region'>
           <p>
             {'AVERT splits the contiguous 48 states into 10 regions. AVERT regions are aggregated based on EPA’s '}
-              <a href='https://www.epa.gov/energy/egrid'>{'eGRID subregions'}</a>
+            <a href='https://www.epa.gov/energy/egrid'>{'eGRID subregions'}</a>
             {'. Select a region for analysis by either using the dropdown menu or clicking the map. Selecting a region loads the power plants operating within each region and region-specific wind and solar capacity data.'}
           </p>
 
@@ -99,35 +101,34 @@ const StepPanels = (props) => {
           <RegionMap />
 
           {/*
-          <select
-            value={ store.getState().regions.year }
-            onChange={(e) => store.dispatch(updateYear(e.target.value))}
-          >
-            <option value="" disabled defaultValue>Select Year</option>
-            <option value="2015">2015</option>
-            <option value="2014">2014</option>
-          </select>
-          */}
+           <select
+           value={ store.getState().regions.year }
+           onChange={(e) => store.dispatch(updateYear(e.target.value))}
+           >
+           <option value="" disabled defaultValue>Select Year</option>
+           <option value="2015">2015</option>
+           <option value="2014">2014</option>
+           </select>
+           */}
 
           <p className='avert-small-text'>
             {'The online version of AVERT can run analyses using 2015 emissions and generation data. The Excel version of AVERT (available for download '}
-              <a href="https://www.epa.gov/statelocalclimate/download-avert">{'here'}</a>
+            <a href="https://www.epa.gov/statelocalclimate/download-avert">{'here'}</a>
             {') allows analyses for years 2007–2015 or for a future year scenario.'}
           </p>
 
           { regionDebug }
         </PanelBody>
 
-        <PanelFooterContainer nextButtonText='Set EE/RE Impacts' />
+        <PanelFooterContainer nextButtonText='Set EE/RE Impacts'/>
       </Panel>
-
 
 
       <Panel active={ props.activePanel === 2 }>
         <PanelBody heading='Set Energy Efficiency and Renewable Energy Impacts'>
           <p>
             {'AVERT quantifies avoided emissions and electricity generation displaced by EE/RE policies and programs. Specify the impacts of EE/RE programs below, and AVERT will use these inputs to generate results. For more information about inputs, please consult the '}
-              <a href='https://www.epa.gov/statelocalclimate/avert-user-manual-0'>{'AVERT user manual'}</a>
+            <a href='https://www.epa.gov/statelocalclimate/avert-user-manual-0'>{'AVERT user manual'}</a>
             {' or click the '}<span className="avert-modal-link"></span>{' icon for each program type below.'}
           </p>
 
@@ -137,28 +138,29 @@ const StepPanels = (props) => {
 
           <EEREInputsContainer />
 
-          <EEREChartContainer heading='EE/RE profile based on values entered:' />
+          <EEREChartContainer heading='EE/RE profile based on values entered:'/>
         </PanelBody>
 
-        <PanelFooterContainer prevButtonText='Back to Region' nextButtonText='Get Results' />
+        <PanelFooterContainer prevButtonText='Back to Region' nextButtonText='Get Results'/>
       </Panel>
-
 
 
       <Panel active={ props.activePanel === 3 }>
         <PanelBody heading='Results: Avoided Regional, State, and County-Level Emissions'>
           { validationWarning }
 
-          <DisplacementsTableContainer heading='Annual Regional Displacements' />
+          <DisplacementsTableContainer heading='Annual Regional Displacements'/>
 
-          <EmissionsTableContainer heading='Annual State Emission Changes' />
+          <EmissionsTableContainer heading='Annual State Emission Changes'/>
 
-          <EmissionsChartContainer heading='Monthly Emission Changes' />
+          <EmissionsChartContainer heading='Monthly Emission Changes'/>
 
-          <DataDownload heading='Data Download' onClick={() => {props.onClickDataDownload ()}} />
+          <DataDownload heading='Data Download' onClick={() => {
+            props.onClickDataDownload()
+          }}/>
         </PanelBody>
 
-        <PanelFooterContainer prevButtonText='Back to EE/RE Impacts' nextButtonText='Reset Region' />
+        <PanelFooterContainer prevButtonText='Back to EE/RE Impacts' nextButtonText='Reset Region'/>
       </Panel>
     </div>
   );

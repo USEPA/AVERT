@@ -9,9 +9,9 @@ import _ from 'lodash';
 import {avert, eereProfile} from '../avert';
 import * as northeast_rdf from '../../assets/data/rdf_northeast_2015.json';
 import * as northeast_defaults from '../../assets/data/eere-defaults-northeast.json';
-// import { MonthlyUnitEnum } from '../utils/MonthlyUnitEnum';
-// import { AggregationEnum } from '../utils/AggregationEnum';
-// import { extractDownloadStructure } from '../utils/DataDownloadHelper';
+import StateEmissionsEngine from '../avert/engines/StateEmissionsEngine';
+import MonthlyEmissionsEngine from '../avert/engines/MonthlyEmissionsEngine';
+
 // store
 import store from '../store';
 
@@ -40,6 +40,9 @@ export const RESET_EERE_INPUTS = 'RESET_EERE_INPUTS';
 export const SUBMIT_CALCULATION = 'SUBMIT_CALCULATION';
 export const COMPLETE_CALCULATION = "COMPLETE_CALCULATION";
 export const START_DISPLACEMENT = 'START_DISPLACEMENT';
+export const INVALIDATE_DISPLACEMENT = 'INVALIDATE_DISPLACEMENT';
+export const REQUEST_DISPLACEMENT = 'REQUEST_DISPLACEMENT';
+export const RECEIVE_DISPLACEMENT = 'RECEIVE_DISPLACEMENT';
 export const COMPLETE_ANNUAL = 'COMPLETE_ANNUAL';
 export const COMPLETE_ANNUAL_GENERATION = 'COMPLETE_ANNUAL_GENERATION';
 export const COMPLETE_ANNUAL_SO2 = 'COMPLETE_ANNUAL_SO2';
@@ -113,7 +116,7 @@ export const fetchDefaults = () => {
     const region = avert.regionData;
     dispatch(requestDefaults(region.slug));
 
-    return fetch(`./data/${region.defaults}.json`, { credentials: 'same-origin' })
+    return fetch(`./data/${region.defaults}.json`, {credentials: 'same-origin'})
       .then(response => response.json())
       .then(json => dispatch(receiveDefaults(region.slug, json)))
   };
@@ -177,7 +180,7 @@ export const fetchRegion = () => {
     const region = avert.regionData;
     dispatch(requestRegion(region.slug));
 
-    return fetch(`./data/${region.rdf}.json`, { credentials: 'same-origin' })
+    return fetch(`./data/${region.rdf}.json`, {credentials: 'same-origin'})
       .then(response => response.json())
       .then(json =>
         dispatch(receiveRegion(region.slug, json))
@@ -211,7 +214,6 @@ export const overrideRegion = () => {
 };
 
 export const validateEere = () => {
-  // avert.eereProfile = eereProfile;
   avert.setEereProfile(eereProfile);
 
   const valid = eereProfile.isValid;
@@ -307,7 +309,7 @@ export const updateEereRooftopSolar = (text) => {
 
 export const updateExceedances = (exceedances, soft, hard) => {
   return function (dispatch, getState) {
-    const { rdfs } = getState();
+    const {rdfs} = getState();
     //TODO: Pull these calculations out into a util, run them in the action, then pass them to the reducers
     const valid = exceedances.reduce((a, b) => a + b) === 0;
     const maxVal = (!valid) ? Math.max(...exceedances) : 0;
@@ -465,20 +467,10 @@ export const completeAnnual = (data) => {
   }
 };
 
-export const completeStateEmissions = (data) => {
-  return function (dispatch, getState) {
-
-    dispatch({
-      type: COMPLETE_STATE,
-      data,
-    });
-
-    setTimeout(() => {
-      avert.getMonthlyEmissions();
-      return Promise.resolve();
-    }, 100)
-  }
-};
+export const completeStateEmissions = (data) => ({
+  type: COMPLETE_STATE,
+  data,
+});
 
 export const renderMonthlyEmissionsCharts = () => {
 
@@ -497,7 +489,7 @@ export const prepareDownloadData = (data) => {
 
 export const completeMonthlyEmissions = (data) => {
   return function (dispatch, getState) {
-    const { monthlyEmissions } = getState();
+    const {monthlyEmissions} = getState();
 
     dispatch({
       type: COMPLETE_MONTHLY,
@@ -511,15 +503,12 @@ export const completeMonthlyEmissions = (data) => {
 
 export const updateMonthlyAggregation = (aggregation) => {
   return function (dispatch, getState) {
-    const { monthlyEmissions } = getState();
+    const {monthlyEmissions} = getState();
 
-
-    const foo = dispatch({
+    dispatch({
       type: SELECT_AGGREGATION,
       aggregation,
     });
-
-    console.log('Select Aggregation',aggregation,foo);
 
     return dispatch(renderMonthlyEmissionsCharts(monthlyEmissions));
   }
@@ -528,7 +517,7 @@ export const updateMonthlyAggregation = (aggregation) => {
 
 export const updateMonthlyUnit = (unit) => {
   return function (dispatch, getState) {
-    const { monthlyEmissions } = getState();
+    const {monthlyEmissions} = getState();
 
     dispatch({
       type: SELECT_UNIT,
@@ -541,7 +530,7 @@ export const updateMonthlyUnit = (unit) => {
 
 export const selectState = (state) => {
   return function (dispatch, getState) {
-    const { monthlyEmissions } = getState();
+    const {monthlyEmissions} = getState();
     const visibleCounties = monthlyEmissions.newCounties[state];
 
     dispatch({
@@ -556,7 +545,7 @@ export const selectState = (state) => {
 
 export const selectCounty = (county) => {
   return function (dispatch, getState) {
-    const { monthlyEmissions } = getState();
+    const {monthlyEmissions} = getState();
 
     dispatch({
       type: SELECT_COUNTY,
@@ -567,16 +556,76 @@ export const selectCounty = (county) => {
   }
 };
 
+export const invalidateDisplacement = () => ({
+  type: 'INVALIDATE_DISPLACEMENT',
+});
+
+export const requestDisplacement = () => ({
+  type: 'REQUEST_DISPLACEMENT',
+});
+
+export const receiveDisplacement = (json) => {
+  return dispatch => {
+    dispatch({
+      type: 'RECEIVE_DISPLACEMENT',
+      data: json.data,
+    });
+
+    const stateEngine = new StateEmissionsEngine();
+    const stateData = stateEngine.extract(json.data);
+    dispatch(completeStateEmissions(stateData));
+
+    const monthlyEngine = new MonthlyEmissionsEngine();
+    const monthlyData = monthlyEngine.extract(json.data);
+
+    return dispatch(completeMonthlyEmissions(monthlyData));
+  };
+}
+
+const fetchDisplacement = (rdf, eere) => {
+  return dispatch => {
+    dispatch(requestDisplacement());
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+      },
+      body: JSON.stringify({rdf: avert.rdfClass.toJsonString(), eere: avert.hourlyEere}),
+    };
+
+    return fetch('http://app7.erg.com/avert/api/v1/displacements', options)
+    // return fetch('http://app7.erg.com/avert/api/v1/displacements')
+    // return fetch(`http://localhost:3001/api/v1/displacements`, options)
+    // return fetch('https://epa-avert-microservice.herokuapp.com/api/v1/displacements', options)
+    // return fetch('http://sample-env.um6jxw6p3t.us-west-2.elasticbeanstalk.com/', options)
+      .then(response => response.json())
+      .then(json => dispatch(receiveDisplacement(json)));
+  }
+};
+
+const shouldFetchDisplacement = (dispatch, getState) => {
+  //check if data is redundant
+  //If existing data but not relevant, invalidate data
+  return true;
+};
+
+export const fetchDisplacementIfNeeded = () => {
+  return (dispatch, getState) => {
+    if (shouldFetchDisplacement(dispatch, getState)) {
+      return dispatch(fetchDisplacement('rdf', 'eere'));
+    }
+  }
+};
+
 const startDisplacement = () => ({
   type: START_DISPLACEMENT,
 });
 
-export const calculateDisplacement = () => {
+export function calculateDisplacement() {
   store.dispatch(startDisplacement());
-
-  setTimeout(() => {
-    avert.calculateDisplacement();
-  }, 50);
+  return store.dispatch(fetchDisplacementIfNeeded());
 };
 
 export const startDataDownload = () => {

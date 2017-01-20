@@ -8,9 +8,19 @@ class Rdf {
     this.defaults = {};
     this.months = [];
     this.edges = [];
+    this._generation = [];
 
     if(options && typeof options.rdf !== 'undefined') this.setRdf(options.rdf);
     if(options && typeof options.defaults !== 'undefined') this.setDefaults(options.defaults);
+  }
+
+  toJsonString() {
+    let json = JSON.stringify(this);
+    Object.keys(this).filter(key => key[0] === "_").forEach(key => {
+      json = json.replace(key, key.substring(1));
+    });
+
+    return json;
   }
 
   get generation() {

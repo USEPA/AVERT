@@ -13,11 +13,15 @@ import {
   START_DISPLACEMENT,
   COMPLETE_MONTHLY,
   // COMPLETE_ANNUAL,
+  INVALIDATE_DISPLACEMENT,
+  REQUEST_DISPLACEMENT,
+  RECEIVE_DISPLACEMENT,
   COMPLETE_ANNUAL_GENERATION,
   COMPLETE_ANNUAL_SO2,
   COMPLETE_ANNUAL_NOX,
   COMPLETE_ANNUAL_CO2,
   COMPLETE_ANNUAL_RATES,
+
 } from '../../actions';
 
 const defaultState = {
@@ -64,6 +68,19 @@ const panelReducer = (state = defaultState, action) => {
         ...state,
         loading: true,
         percentComplete: 0,
+      };
+
+    case INVALIDATE_DISPLACEMENT:
+      return state;
+
+    case REQUEST_DISPLACEMENT:
+      return state;
+
+    case RECEIVE_DISPLACEMENT:
+      return {
+        ...state,
+        loading: false,
+        percentComplete: 100,
       };
 
     case RECEIVE_REGION:

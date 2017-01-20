@@ -67,7 +67,7 @@ class EereProfile {
     set topHours(value) {
         this.removeError('topHours');
 
-        if (value > 100 || value < 0) this.addError('topHours');
+        if (value > 100 || value < 0 || isNaN(value)) this.addError('topHours');
 
         this._topHours = value;
 
@@ -81,7 +81,7 @@ class EereProfile {
     set reduction(value) {
         this.removeError('reduction');
 
-        if (value > this.limits.softPercent || value < 0) this.addError('reduction');
+        if (value > this.limits.softPercent || value < 0 || isNaN(value)) this.addError('reduction');
 
         this._reduction = value;
 
@@ -95,7 +95,7 @@ class EereProfile {
     set annualGwh(value) {
         this.removeError('annualGwh');
 
-        if(value > this.limits.annualGwh) this.addError('annualGwh');
+        if(value > this.limits.annualGwh || value < 0 || isNaN(value)) this.addError('annualGwh');
 
         this._annualGwh = value;
 
@@ -109,7 +109,7 @@ class EereProfile {
     set constantMw(value) {
         this.removeError('constantMw');
 
-        if(value > this.limits.constantMwh) this.addError('constantMw');
+        if(value > this.limits.constantMwh || value < 0 || isNaN(value)) this.addError('constantMw');
 
         this._constantMw = value;
 
@@ -123,7 +123,7 @@ class EereProfile {
     set windCapacity(value) {
         this.removeError('windCapacity');
 
-        if(value > this.limits.renewables) this.addError('windCapacity');
+        if(value > this.limits.renewables || value < 0 || isNaN(value)) this.addError('windCapacity');
 
         this._windCapacity = value;
 
@@ -137,7 +137,7 @@ class EereProfile {
     set utilitySolar(value) {
         this.removeError('utilitySolar');
 
-        if(value > this.limits.renewables) this.addError('utilitySolar');
+        if(value > this.limits.renewables || value < 0 || isNaN(value)) this.addError('utilitySolar');
 
         this._utilitySolar = value;
 
@@ -151,7 +151,7 @@ class EereProfile {
     set rooftopSolar(value) {
         this.removeError('rooftopSolar');
 
-        if(value > this.limits.renewables) this.addError('rooftopSolar');
+        if(value > this.limits.renewables || value < 0 || isNaN(value)) this.addError('rooftopSolar');
 
         this._rooftopSolar = value;
 

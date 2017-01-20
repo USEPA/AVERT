@@ -3,6 +3,9 @@ import {
   SELECT_REGION,
   START_DISPLACEMENT,
   COMPLETE_ANNUAL,
+  INVALIDATE_DISPLACEMENT,
+  REQUEST_DISPLACEMENT,
+  RECEIVE_DISPLACEMENT,
 } from '../../actions';
 
 const resultsFormat = {
@@ -47,6 +50,19 @@ const annualDisplacementReducer = (state = defaultState, action) => {
         ...state,
         status: "complete",
         results: action.data,
+      };
+
+    case INVALIDATE_DISPLACEMENT:
+      return state;
+
+    case REQUEST_DISPLACEMENT:
+      return state;
+
+    case RECEIVE_DISPLACEMENT:
+      return {
+        ...state,
+        status: "complete",
+        results: action.data
       };
 
     default:
