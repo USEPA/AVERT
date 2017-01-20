@@ -101,40 +101,46 @@ const EEREChart = (props) => {
     );
   }
 
-  let validationError = null;
-  // conditionally re-define error when ready and hardValid prop is false
-  if (ready && !props.hardValid) {
-    validationError = (
-      <p className='avert-message-bottom avert-validation-error'>
-        <span className='avert-message-heading'>{'ERROR:'}</span>
+  const validationMessage = (input) => {
+    let x = {};
+    if (input === 'error') {
+      x.timestamp = props.hardTopExceedanceTimestamp;
+      x.exceedence = props.hardTopExceedance;
+      x.heading = 'ERROR';
+      x.threshold = '30';
+    }
+    if (input === 'warning') {
+      x.timestamp = props.softTopExceedanceTimestamp;
+      x.exceedence = props.softTopExceedance;
+      x.heading = 'WARNING';
+      x.threshold = '15';
+    }
+
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const month = months[x.timestamp.month - 1];
+    const day = x.timestamp.day;
+    const hour = x.timestamp.hour > 12 ? x.timestamp.hour - 12 : x.timestamp.hour;
+    const ampm = x.timestamp.hour > 12 ? 'PM' : 'AM';
+
+    return (
+      <p className={`avert-message-bottom avert-validation-${input}`}>
+        <span className='avert-message-heading'>{`${x.heading}:`}</span>
         {'The combined impact of your proposed programs would displace more than '}
-        <strong>{NumberFormattingHelper.twoDecimals(props.hardTopExceedance)}{'%'}</strong>
+        <strong>{`${x.threshold}%`}</strong>
         {' of regional fossil generation in at least one hour of the year. (Maximum value: '}
-        <strong>{'XX.XX'}</strong>
+        <strong>{NumberFormattingHelper.twoDecimals(x.exceedence)}</strong>
         {'% on '}
-        <strong>{'Month Day at X:00 X.M.'}</strong>
+        <strong>{`${month} ${day} at ${hour}:00 ${ampm}`}</strong>
         {'). The recommended limit for AVERT is 15%, as AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics. Please reduce one or more of your inputs to ensure more reliable results.'}
       </p>
     );
-  }
+  };
 
-  let validationWarning = null;
-  // conditionally re-define warning when ready,
-  // softValid prop is false, and hardValid prop is true
-  if (ready && !props.softValid && props.hardValid) {
-    validationWarning = (
-      <p className='avert-message-bottom avert-validation-warning'>
-        <span className='avert-message-heading'>{'WARNING:'}</span>
-        {'The combined impact of your proposed programs would displace more than '}
-        <strong>{NumberFormattingHelper.twoDecimals(props.softTopExceedance)}{'%'}</strong>
-        {' of regional fossil generation in at least one hour of the year. (Maximum value: '}
-        <strong>{'XX.XX'}</strong>
-        {'% on '}
-        <strong>{'Month Day at X:00 X.M.'}</strong>
-        {'). The recommended limit for AVERT is 15%, as AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics. You may wish to reduce one or more of your inputs to ensure more reliable results.'}
-      </p>
-    );
-  }
+  // set validationError when ready and hardValid prop is false
+  const validationError = (ready && !props.hardValid) ? validationMessage('error') : null;
+
+  // set validationWarning when ready, softValid prop is false, and hardValid prop is true
+  const validationWarning = (ready && !props.softValid && props.hardValid) ? validationMessage('warning') : null;
 
   return (
     <div>
@@ -149,9 +155,9 @@ EEREChart.propTypes = {
   heading: PropTypes.string.isRequired,
   hourlyEere: PropTypes.array.isRequired,
   // softValid: PropTypes.string,
-  // softTopExceedanceHour: PropTypes.string,
+  // softTopExceedanceTimestamp: PropTypes.string,
   // hardValid: PropTypes.string,
-  // hardTopExceedanceHour: PropTypes.string,
+  // hardTopExceedanceTimestamp: PropTypes.string,
 };
 
 export default EEREChart;
