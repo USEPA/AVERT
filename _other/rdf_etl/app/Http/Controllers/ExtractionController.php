@@ -27,7 +27,9 @@ class ExtractionController extends Controller
         // Loaded
         // $file = $filePath . 'AVERT RDF 2015 EPABase (California) - tabbed.xlsx';
         // $file = $filePath . 'AVERT RDF 2015 EPABase (Great Lakes - Mid-Atlantic) - tabbed.xlsx';
-        $file = $filePath . 'AVERT RDF 2015 EPABase (Lower Midwest) - tabbed.xlsx';
+        // $file = $filePath . 'AVERT RDF 2015 EPABase (Lower Midwest) - tabbed.xlsx';
+        // $file = $filePath . 'AVERT RDF Tabber - AZNM 2015 Net.xlsx';
+        $file = $filePath . 'AVERT RDF Tabber - AZNM 2015 Net - Static.xlsx';
         // $file = $filePath . 'AVERT RDF 2015 EPABase (Northeast) - tabbed.xlsx';
         // $file = $filePath . 'AVERT RDF 2015 EPABase (Texas) - tabbed.xlsx';
         // $file = $filePath . 'AVERT RDF 2015 EPABase (Upper Midwest) - tabbed.xlsx';
@@ -59,15 +61,15 @@ class ExtractionController extends Controller
         $loads    = $this->extractRegionalLoad($file, 'Regional Load', $region, $run);
         $edges    = $this->extractLoadBinEdges($file, 'Load Bin Edges', $region, $run);
 
-        // $generation = $this->extractMedian($file, $sheetNames[3], $region, $run, $edges, 'generation', 'MW');
-        // $so2     = $this->extractMedian($file,$sheetNames[4],$region,$run,$edges,'so2','Lbs');
-        // $so2_not = $this->extractMedian($file,$sheetNames[5],$region,$run,$edges,'so2_not','Lbs');
-        $nox     = $this->extractMedian($file,$sheetNames[6],$region,$run,$edges,'nox','Lbs');
-        $nox_not = $this->extractMedian($file,$sheetNames[7],$region,$run,$edges,'nox_not','Lbs');
-        $co2     = $this->extractMedian($file,$sheetNames[8],$region,$run,$edges,'co2','Tons');
-        $co2_not  = $this->extractMedian($file, $sheetNames[9], $region, $run, $edges, 'co2_not', 'Tons');
-        $heat     = $this->extractMedian($file, $sheetNames[10], $region, $run, $edges, 'heat', 'MMBTU');
-        $heat_not = $this->extractMedian($file, $sheetNames[11], $region, $run, $edges, 'heat_not', 'MMBTU');
+        $generation = $this->extractMedian($file, $sheetNames[3], $region, $run, $edges, 'generation', 'MW');
+        $so2     = $this->extractMedian($file,$sheetNames[4],$region,$run,$edges,'so2','Lbs');
+        $so2_not = $this->extractMedian($file,$sheetNames[5],$region,$run,$edges,'so2_not','Lbs');
+        // $nox     = $this->extractMedian($file,$sheetNames[6],$region,$run,$edges,'nox','Lbs');
+        // $nox_not = $this->extractMedian($file,$sheetNames[7],$region,$run,$edges,'nox_not','Lbs');
+        // $co2     = $this->extractMedian($file,$sheetNames[8],$region,$run,$edges,'co2','Tons');
+        // $co2_not  = $this->extractMedian($file, $sheetNames[9], $region, $run, $edges, 'co2_not', 'Tons');
+        // $heat     = $this->extractMedian($file, $sheetNames[10], $region, $run, $edges, 'heat', 'MMBTU');
+        // $heat_not = $this->extractMedian($file, $sheetNames[11], $region, $run, $edges, 'heat_not', 'MMBTU');
 
         return view('load');
     }
@@ -116,6 +118,7 @@ class ExtractionController extends Controller
 
         // Excel service collection does not allow map function :(
         $data->each(function ($item, $key) use (&$run, &$region) {
+            if (is_null($item->get('regional_load_mw'))) return;
             $hourlyLimit  = $item->get('regional_load_mw') * 0.15;
             $regionalLoad = new RegionalLoad([
                 'hour_of_year'     => $item->get('hour_of_year'),

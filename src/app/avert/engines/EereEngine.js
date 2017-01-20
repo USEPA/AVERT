@@ -3,14 +3,15 @@ import math from 'mathjs';
 import stats from 'stats-lite'
 
 class EereEngine {
-  constructor(profile,rdf) {
+  constructor(profile,rdf,region) {
     this.profile = profile;
     this.rdf = rdf;
+    this.region = region;
+    this.gridLoss = 1 / (1 - (region.grid_loss / 100));
     this.softLimits = this.rdf.softLimits;
     this.hardLimits = this.rdf.hardLimits;
     this.calculateTopPercentile(this.rdf.regionalLoads);
     this.calculateHourlyReduction(this.rdf.regionalLoads.length);
-    // this.manualEereEntry = math.zeros(this.rdf.regionalLoads.length);
     this.hourlyEere = [];
     this.exceedances = [];
     this.softExceedances = [];
@@ -41,17 +42,28 @@ class EereEngine {
     const hardLimit = this.rdf.hardLimits[index];
     const hourlyEereDefault = this.rdf.defaults.data[index];
 
+    //baseload ee (A)
+    const resultingHourlyMwReduction = this.resultingHourlyMwReduction * this.gridLoss;
+    const constantMw = this.profile.constantMw * this.gridLoss;
+
+    //peakhour ee (B)
+    const percentReduction = -(this.profile.reduction / 100) * this.gridLoss;
+
+    //wind (C) = hourlyEereDefault.wind
+    //utility-scale solar photovoltaic (D) = hourlyEereDefault.utility_pv
+    //distributed pv (E)
+    const distributedPv = hourlyEereDefault.rooftop_pv * this.gridLoss;
+
     const renewable_energy_profile = -math.sum(math.multiply(this.profile.windCapacity,hourlyEereDefault.wind),
       math.multiply(this.profile.utilitySolar,hourlyEereDefault.utility_pv),
-      math.multiply(this.profile.rooftopSolar,hourlyEereDefault.rooftop_pv));
+      math.multiply(this.profile.rooftopSolar,distributedPv));
 
-    const percentReduction = -(this.profile.reduction / 100);
     const initialLoad = (load > this.topPercentile) ? (load * percentReduction) : 0;
     const calculatedLoad = math.chain(initialLoad)
     // .subtract(this.manualEereEntry.toArray()[index])
       .add(renewable_energy_profile)
-      .subtract(this.resultingHourlyMwReduction)
-      .subtract(this.profile.constantMw)
+      .subtract(resultingHourlyMwReduction)
+      .subtract(constantMw)
       .done();
 
     const finalMw = this.rdf.regionalLoads[index].year < 1990 ? 0 : calculatedLoad;

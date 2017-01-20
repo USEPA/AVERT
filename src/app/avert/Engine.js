@@ -88,7 +88,12 @@ class Engine {
     }
 
     calculateEereLoad(){
-        this.eereEngine = new EereEngine(this.eereProfile,this.rdfClass);
+
+        const regionAbbv = this.rdfClass.raw.region.region_abbv;
+        const regionKey = _.findKey(Regions, (o) => o.original_slug === regionAbbv);
+        const regionData = Regions[regionKey];
+
+        this.eereEngine = new EereEngine(this.eereProfile,this.rdfClass,regionData);
         this.eereEngine.calculateEereLoad();
         this.hourlyEere = this.eereEngine.hourlyEere;
         store.dispatch(completeCalculation(this.eereEngine.hourlyEere));

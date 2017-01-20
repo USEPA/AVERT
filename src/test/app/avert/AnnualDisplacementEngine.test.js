@@ -4,6 +4,7 @@ import Rdf from '../../../app/avert/entities/Rdf';
 import EereProfile from '../../../app/avert/entities/EereProfile';
 import northeast_defaults from '../../../assets/data/eere-defaults-northeast.json';
 import EereEngine from '../../../app/avert/engines/EereEngine';
+import Region from '../../../app/utils/Regions';
 
 describe('AnnualDisplacementEngine', () => {
 
@@ -13,7 +14,7 @@ describe('AnnualDisplacementEngine', () => {
   let profile = new EereProfile();
   profile.limits = {constantReductions: 5, renewables: 10};
   profile.windCapacity = 7;
-  let eere = new EereEngine(profile, rdf);
+  let eere = new EereEngine(profile, rdf, Region.NORTHEAST);
   eere.calculateEereLoad();
 
   describe('constructor', () => {

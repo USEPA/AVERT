@@ -3,20 +3,21 @@ import EereProfile from '../../../app/avert/entities/EereProfile';
 import northeast_rdf from '../../../assets/data/rdf_northeast_2015.json';
 import northeast_defaults from '../../../assets/data/eere-defaults-northeast.json';
 import Rdf from '../../../app/avert/entities/Rdf';
+import Region from '../../../app/utils/Regions';
 
 describe('EERE Engine', () => {
   let genericProfile = new EereProfile();
   genericProfile.limits = {constantReductions: 1000,renewables: 1000};
   genericProfile.annualGwh = 500;
   let rdf = new Rdf({ rdf: northeast_rdf, defaults: northeast_defaults, });
-  let genericEngine = new EereEngine(genericProfile,rdf);
+  let genericEngine = new EereEngine(genericProfile,rdf,Region.NORTHEAST);
 
   describe('constructor', () => {
     let profile = new EereProfile();
     profile.limits = {constantReductions: 1000,renewables: 1000};
     profile.annualGwh = 500;
 
-    let engine = new EereEngine(profile,rdf);
+    let engine = new EereEngine(profile,rdf,Region.NORTHEAST);
 
     it('should accept an rdf', () => {
       expect(engine.rdf.regionName).toBe('Northeast');
@@ -31,7 +32,7 @@ describe('EERE Engine', () => {
     let profile = new EereProfile();
     profile.limits = {constantReductions: 1000,renewables: 1000};
     profile.annualGwh = 500;
-    let engine = new EereEngine(profile,rdf);
+    let engine = new EereEngine(profile,rdf,Region.NORTHEAST);
 
     it('should take an EERE profile and return a constant reduction for all hours', () => {
       let constantReduction = engine.calculateHourlyReduction(10);
@@ -45,7 +46,7 @@ describe('EERE Engine', () => {
     profile.limits = {constantReductions: 1000,renewables: 1000};
     profile.topHours = 10;
 
-    let engine = new EereEngine(profile,rdf);
+    let engine = new EereEngine(profile,rdf,Region.NORTHEAST);
 
     it('should return the top percentage of loads given a variable percentage', () => {
       engine.calculateTopPercentile([1,2,3,4,5,6,7,8,9,10]);
@@ -76,7 +77,7 @@ describe('EERE Engine', () => {
     let profile = new EereProfile();
     profile.limits = {constantReductions: 5,renewables: 10};
     profile.windCapacity = 7;
-    let engine = new EereEngine(profile,rdf);
+    let engine = new EereEngine(profile,rdf,Region.NORTHEAST);
 
     describe('first load from northeast',() => {
       let data = engine.hourlyEereCb(rdf.regionalLoads[0],0);
@@ -122,7 +123,7 @@ describe('EERE Engine', () => {
     let profile = new EereProfile();
     profile.limits = {constantReductions: 5,renewables: 10};
     profile.windCapacity = 7;
-    let engine = new EereEngine(profile,rdf);
+    let engine = new EereEngine(profile,rdf,Region.NORTHEAST);
 
     it('should calculate Hourly EERE for given rdf', () => {
       engine.calculateEereLoad();
