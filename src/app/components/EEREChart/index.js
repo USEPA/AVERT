@@ -27,13 +27,13 @@ const EEREChart = (props) => {
       enabled: false,
     },
     tooltip: {
-      headerFormat: '<span style="font-size: 10px">Hour of Year: {point.key}</span><br/>',
-      // pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y}</b><br/>',
-      pointFormatter: function() {
+      formatter: function() {
         return (
-          '<span style="color:' + this.color + '">\u25CF</span> ' +
-          this.series.yAxis.axisTitle.textStr + ': ' +
-          '<b>' + Math.round(this.y).toLocaleString() + '</b><br/>'
+          `<span style="font-size: 10px">Hour of year:
+          ${this.x.toLocaleString()}</span><br/>
+          <span style="color:${this.color}">\u25CF</span>
+          ${this.series.yAxis.axisTitle.textStr}
+          <b>${Math.round(this.y).toLocaleString()}</b><br/>`
         )
       },
     },
@@ -107,9 +107,13 @@ const EEREChart = (props) => {
     validationError = (
       <p className='avert-message-bottom avert-validation-error'>
         <span className='avert-message-heading'>{'ERROR:'}</span>
-        {'The combined impact of your proposed programs would displace up to '}
-        <strong>{NumberFormattingHelper.twoDecimals(props.hardTopExceedance)}%</strong>
-        {' of hourly regional fossil generation. The recommended limit for AVERT is 15%, as AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics. Please reduce one or more of your inputs to ensure more reliable results.'}
+        {'The combined impact of your proposed programs would displace more than '}
+        <strong>{NumberFormattingHelper.twoDecimals(props.hardTopExceedance)}{'%'}</strong>
+        {' of regional fossil generation in at least one hour of the year. (Maximum value: '}
+        <strong>{'XX.XX'}</strong>
+        {'% on '}
+        <strong>{'Month Day at X:00 X.M.'}</strong>
+        {'). The recommended limit for AVERT is 15%, as AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics. Please reduce one or more of your inputs to ensure more reliable results.'}
       </p>
     );
   }
@@ -121,9 +125,13 @@ const EEREChart = (props) => {
     validationWarning = (
       <p className='avert-message-bottom avert-validation-warning'>
         <span className='avert-message-heading'>{'WARNING:'}</span>
-        {'The combined impact of your proposed programs would displace up to '}
-        <strong>{NumberFormattingHelper.twoDecimals(props.softTopExceedance)}%</strong>
-        {' of hourly regional fossil generation. The recommended limit for AVERT is 15%, as AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics. You may wish to reduce one or more of your inputs to ensure more reliable results.'}
+        {'The combined impact of your proposed programs would displace more than '}
+        <strong>{NumberFormattingHelper.twoDecimals(props.softTopExceedance)}{'%'}</strong>
+        {' of regional fossil generation in at least one hour of the year. (Maximum value: '}
+        <strong>{'XX.XX'}</strong>
+        {'% on '}
+        <strong>{'Month Day at X:00 X.M.'}</strong>
+        {'). The recommended limit for AVERT is 15%, as AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics. You may wish to reduce one or more of your inputs to ensure more reliable results.'}
       </p>
     );
   }
