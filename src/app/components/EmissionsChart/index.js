@@ -213,9 +213,11 @@ const EmissionsChart = ({
     titleAggregation = `${selected_state}`;
   }
   if (aggregation === AggregationEnum.COUNTY) {
+    // counties are called parishes in Louisiana
+    const countyWord = selected_state === 'Louisiana' ? 'Parish' : 'County';
     titleAggregation = selected_county === '' ?
       '' :
-      `${selected_county}, ${selected_state}`;
+      `${selected_county} ${countyWord}, ${selected_state}`;
   }
 
   const titleText = (titleChemical) => {
