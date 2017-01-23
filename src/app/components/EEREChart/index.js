@@ -88,7 +88,7 @@ const EEREChart = (props) => {
           { props.heading }
           {' '}
           <TooltipContainer id={8}>
-            {'This graph shows the hourly changes in load that will result from the inputs entered above. This hourly EE/RE profile will be used to calculate the avoided emissions for this AVERT region.'}
+            {'This graph shows the hourly changes in load that will result from the inputs entered above, along with adjustments for avoided transmission and distribution line loss, where applicable. This hourly EE/RE profile will be used to calculate the avoided emissions for this AVERT region.'}
           </TooltipContainer>
         </h3>
 
