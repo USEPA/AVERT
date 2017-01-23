@@ -225,7 +225,8 @@ const EmissionsChart = ({
   const so2_config = {
     ...shared_config,
     title: {
-      text: titleText('SO₂'),
+      text: `<tspan class='avert-chart-title'>${titleText('SO₂')}</tspan>`,
+      useHTML: true,
     },
     yAxis: {
       title: {
@@ -242,7 +243,8 @@ const EmissionsChart = ({
   const nox_config = {
     ...shared_config,
     title: {
-      text: titleText('NOₓ'),
+      text: `<tspan class='avert-chart-title'>${titleText('NOₓ')}</tspan>`,
+      useHTML: true,
     },
     yAxis: {
       title: {
@@ -259,7 +261,8 @@ const EmissionsChart = ({
   const co2_config = {
     ...shared_config,
     title: {
-      text: titleText('CO₂'),
+      text: `<tspan class='avert-chart-title'>${titleText('CO₂')}</tspan>`,
+      useHTML: true,
     },
     yAxis: {
       title: {
@@ -310,6 +313,7 @@ EmissionsChart.propTypes = {
   unit: PropTypes.string.isRequired,
   onUnitChange: PropTypes.func.isRequired,
   output: PropTypes.object.isRequired,
+  //monthly_status: PropTypes.string.isRequired,
 };
 
 export default EmissionsChart;

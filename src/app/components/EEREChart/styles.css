@@ -1,39 +1,5 @@
-.avert-eere-profile .avert-chart-title {
-  font-size: 0.75rem;
-  font-weight: bold;
-  text-align: center;
-  color: #444;
-}
-
 .avert-eere-profile .avert-modal {
   font-weight: normal;
   line-height: 1.375;
   text-align: left;
-}
-
-
-
-/* --- media queries --- */
-@media (min-width: 25em) {
-  .avert-eere-profile .avert-chart-title {
-    font-size: 0.8125rem;
-  }
-}
-
-@media (min-width: 30em) {
-  .avert-eere-profile .avert-chart-title {
-    font-size: 0.875rem;
-  }
-}
-
-@media (min-width: 35em) {
-  .avert-eere-profile .avert-chart-title {
-    font-size: 0.9375rem;
-  }
-}
-
-@media (min-width: 40em) {
-  .avert-eere-profile .avert-chart-title {
-    font-size: 1rem;
-  }
 }
