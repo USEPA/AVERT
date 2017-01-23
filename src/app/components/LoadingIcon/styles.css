@@ -12,7 +12,7 @@
 }
 
 .turbine-blades {
-  transform-origin: 44px 43.39px; /* center of blades */
+  transform-origin: 88px 86.78px; /* center of blades */
   animation: spin 2s linear infinite;
 }
 

@@ -27,9 +27,8 @@
 }
 
 .avert-loading-indicator svg {
-  margin-bottom: 2rem;
   width: 100%;
-  transform: scale(1.5);
+  transform: scale(0.75);
 }
 
 .avert-loading-heading {
@@ -93,8 +92,7 @@
   }
 
   .avert-loading-indicator svg {
-    margin-bottom: 2.25rem;
-    transform: scale(1.625);
+    transform: scale(0.8125);
   }
 
   .avert-loading-heading {
@@ -123,8 +121,7 @@
   }
 
   .avert-loading-indicator svg {
-    margin-bottom: 2.5rem;
-    transform: scale(1.75);
+    transform: scale(0.875);
   }
 
   .avert-loading-heading {
@@ -148,8 +145,7 @@
   }
 
   .avert-loading-indicator svg {
-    margin-bottom: 2.75rem;
-    transform: scale(1.875);
+    transform: scale(0.9375);
   }
 
   .avert-loading-heading {
@@ -178,8 +174,7 @@
   }
 
   .avert-loading-indicator svg {
-    margin-bottom: 3rem;
-    transform: scale(2);
+    transform: none;
   }
 
   .avert-loading-heading {
