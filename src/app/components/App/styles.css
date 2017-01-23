@@ -176,6 +176,17 @@ fieldset {
 
 
 
+/* --- chart titles --- */
+.avert-chart-title {
+  font-size: 0.75rem;
+  line-height: 1.125;
+  font-weight: bold;
+  text-align: center;
+  color: #444;
+}
+
+
+
 /* --- media queries --- */
 @media (min-width: 25em) {
   .avert-container {
@@ -227,6 +238,10 @@ fieldset {
 
   .avert-table .avert-table-data {
     font-size: 0.6875rem;
+  }
+
+  .avert-chart-title {
+    font-size: 0.8125rem;
   }
 }
 
@@ -280,6 +295,10 @@ fieldset {
 
   .avert-table .avert-table-data {
     font-size: 0.75rem;
+  }
+
+  .avert-chart-title {
+    font-size: 0.875rem;
   }
 }
 
@@ -339,6 +358,10 @@ fieldset {
     width: auto;
     font-size: 0.8125rem;
   }
+
+  .avert-chart-title {
+    font-size: 0.9375rem;
+  }
 }
 
 @media (min-width: 40em) {
@@ -391,5 +414,9 @@ fieldset {
 
   .avert-table .avert-table-data {
     font-size: 0.875rem;
+  }
+
+  .avert-chart-title {
+    font-size: 1rem;
   }
 }

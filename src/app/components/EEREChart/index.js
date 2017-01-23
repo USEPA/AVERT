@@ -72,11 +72,11 @@ const EEREChart = (props) => {
   };
 
   // boolean flag to render chart and error/warning when hourlyEere prop exits
-  let ready = props.hourlyEere.length > 0;
+  let readyToRender = props.hourlyEere.length > 0;
 
   let chart = null;
-  // conditionally re-define chart when ready (hourlyEere prop exists)
-  if (ready) {
+  // conditionally re-define chart when readyToRender (hourlyEere prop exists)
+  if (readyToRender) {
     const totalLoadMw = props.hourlyEere
       .map((hour) => hour.final_mw)
       .reduce((a, b) => a + b, 0);
@@ -136,11 +136,11 @@ const EEREChart = (props) => {
     );
   };
 
-  // set validationError when ready and hardValid prop is false
-  const validationError = (ready && !props.hardValid) ? validationMessage('error') : null;
+  // set validationError when readyToRender and hardValid prop is false
+  const validationError = (readyToRender && !props.hardValid) ? validationMessage('error') : null;
 
-  // set validationWarning when ready, softValid prop is false, and hardValid prop is true
-  const validationWarning = (ready && !props.softValid && props.hardValid) ? validationMessage('warning') : null;
+  // set validationWarning when readyToRender, softValid prop is false, and hardValid prop is true
+  const validationWarning = (readyToRender && !props.softValid && props.hardValid) ? validationMessage('warning') : null;
 
   return (
     <div>

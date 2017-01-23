@@ -22,19 +22,28 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
+  text-align: center;
+  color: #00bee6;
 }
 
 .avert-loading-indicator svg {
-  margin-bottom: 3rem;
   width: 100%;
-  transform: scale(2);
+  transform: scale(0.75);
 }
 
-.avert-loading-text {
-  font-size: 1.5rem;
+.avert-loading-heading {
+  font-size: 1.25rem;
   font-weight: bold;
-  text-align: center;
-  color: #00bee6;
+}
+
+.avert-loading-progress {
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.avert-loading-info {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
 }
 
 .avert-message-heading {
@@ -81,6 +90,18 @@
   .avert-message-bottom {
     bottom: -1.125rem;
   }
+
+  .avert-loading-indicator svg {
+    transform: scale(0.8125);
+  }
+
+  .avert-loading-heading {
+    font-size: 1.3125rem;
+  }
+
+  .avert-loading-info {
+    font-size: 0.8125rem;
+  }
 }
 
 @media (min-width: 30em) {
@@ -98,6 +119,18 @@
   .avert-message-bottom {
     bottom: -1.25rem;
   }
+
+  .avert-loading-indicator svg {
+    transform: scale(0.875);
+  }
+
+  .avert-loading-heading {
+    font-size: 1.375rem;
+  }
+
+  .avert-loading-info {
+    font-size: 0.875rem;
+  }
 }
 
 @media (min-width: 35em) {
@@ -109,6 +142,18 @@
   }
   .avert-message-bottom {
     bottom: -1.375rem;
+  }
+
+  .avert-loading-indicator svg {
+    transform: scale(0.9375);
+  }
+
+  .avert-loading-heading {
+    font-size: 1.4375rem;
+  }
+
+  .avert-loading-info {
+    font-size: 0.9375rem;
   }
 }
 
@@ -126,5 +171,17 @@
   }
   .avert-message-bottom {
     bottom: -1.5rem;
+  }
+
+  .avert-loading-indicator svg {
+    transform: none;
+  }
+
+  .avert-loading-heading {
+    font-size: 1.5rem;
+  }
+
+  .avert-loading-info {
+    font-size: 1rem;
   }
 }

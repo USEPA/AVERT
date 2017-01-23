@@ -25,8 +25,8 @@ const StepPanels = (props) => {
   if (props.activePanel === 3) {
     loadingProgress = (
       <div>
-        <progress value={props.percentComplete} max="100">{props.percentComplete}%</progress>
-        <p className="avert-loading-text">These calculations may take several minutes.</p>
+        <progress className="avert-loading-progress" value={props.percentComplete} max="100">{props.percentComplete}%</progress>
+        <p className="avert-loading-info">These calculations may take several minutes.</p>
       </div>
     );
   }
@@ -37,7 +37,7 @@ const StepPanels = (props) => {
     loadingIndicator = (
       <div className="avert-loading-indicator">
         <LoadingIcon />
-        <p className="avert-loading-text">{'LOADING...'}</p>
+        <p className="avert-loading-heading">{'LOADING...'}</p>
         { loadingProgress }
       </div>
     );
