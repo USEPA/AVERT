@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react';
 
-const isSafari =
+const isDesktopSafari =
   navigator.userAgent.toLowerCase().indexOf('safari') !== -1 &&
-  navigator.userAgent.toLowerCase().indexOf('chrome') === -1;
+  navigator.userAgent.toLowerCase().indexOf('chrome') === -1 &&
+  navigator.userAgent.toLowerCase().indexOf('mobi') === -1;
 
-const safariWarning = isSafari ? (
+const safariWarning = isDesktopSafari ? (
   <p className='avert-message-bottom avert-validation-warning avert-centered'>
     {'Please press ⌘ + S to save the file after it is opened.'}
   </p>
