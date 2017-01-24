@@ -5,6 +5,7 @@ import Regions from '../../utils/Regions';
 import { StatusEnum } from '../../utils/StatusEnum';
 import { AggregationEnum } from '../../utils/AggregationEnum';
 import { MonthlyUnitEnum } from '../../utils/MonthlyUnitEnum';
+import StatesEnum from '../../utils/StatesEnum';;
 // styles
 import './styles.css';
 
@@ -88,7 +89,7 @@ const EmissionsChart = ({
           <option value='' disabled>Select State</option>
 
           {available_states.map((state, index) => {
-            return <option key={ index } value={ state }>{ state }</option>
+            return <option key={ index } value={ state }>{ StatesEnum[state] }</option>
           })}
         </select>
       </div>
@@ -210,14 +211,16 @@ const EmissionsChart = ({
     titleAggregation = `${regionName} Region`;
   }
   if (aggregation === AggregationEnum.STATE) {
-    titleAggregation = `${selected_state}`;
+    titleAggregation = selected_state === '' ?
+      '' :
+      `${StatesEnum[selected_state]}`;
   }
   if (aggregation === AggregationEnum.COUNTY) {
     // counties are called parishes in Louisiana
-    const countyWord = selected_state === 'Louisiana' ? 'Parish' : 'County';
+    const countyWord = StatesEnum[selected_state] === 'Louisiana' ? 'Parish' : 'County';
     titleAggregation = selected_county === '' ?
       '' :
-      `${selected_county} ${countyWord}, ${selected_state}`;
+      `${selected_county} ${countyWord}, ${StatesEnum[selected_state]}`;
   }
 
   const titleText = (titleChemical) => {
