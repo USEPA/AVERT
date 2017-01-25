@@ -53,7 +53,7 @@ const EEREInputs = ({
             <span className='avert-input-error-range'>
               {'Please enter a positive number.'}
             </span>
-            {'If you wish to model a reverse EE/RE scenario (i.e., a negative number), use the Excel version of the AVERT Main Module.n Module.'}
+            {'If you wish to model a reverse EE/RE scenario (i.e., a negative number), use the Excel version of the AVERT Main Module.'}
           </span>
         );
       }
