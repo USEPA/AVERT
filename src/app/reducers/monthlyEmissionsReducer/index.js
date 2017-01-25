@@ -15,6 +15,7 @@ import {
   SELECT_COUNTY,
   SELECT_UNIT,
   RENDER_MONTHLY_CHARTS,
+  RESET_MONTHLY_EMISSIONS,
   SET_DOWNLOAD_DATA,
 } from '../../actions';
 
@@ -163,7 +164,8 @@ const monthlyEmissionsReducer = (state = initialState, action) => {
         newVisibleData: visibleData,
       };
 
-
+    case RESET_MONTHLY_EMISSIONS:
+      return initialState;
 
     case SET_DOWNLOAD_DATA:
 

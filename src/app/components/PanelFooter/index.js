@@ -73,6 +73,7 @@ const PanelFooter = (props) => {
         if (onStepThree) {
           scrollToTop();
           props.onResetEereInputs();
+          props.onResetMonthlyEmissions();
         }
 
         const step = onStepThree ? 1 : props.activeStep + 1;
@@ -97,6 +98,7 @@ PanelFooter.propTypes = {
   prevButtonText: PropTypes.string,
   nextButtonText: PropTypes.string.isRequired,
   onResetEereInputs: PropTypes.func.isRequired,
+  onResetMonthlyEmissions: PropTypes.func.isRequired,
   region: PropTypes.number.isRequired,
   eereStatus: PropTypes.string.isRequired,
   // hardValid: PropTypes.string,
