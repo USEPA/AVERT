@@ -230,7 +230,7 @@ const EmissionsChart = ({
   const so2_config = {
     ...shared_config,
     title: {
-      text: `<tspan class='avert-chart-title'>${titleText('SO₂')}</tspan>`,
+      text: `<tspan class='avert-chart-title'>${titleText('SO<sub>2</sub>')}</tspan>`,
       useHTML: true,
     },
     yAxis: {
@@ -248,7 +248,7 @@ const EmissionsChart = ({
   const nox_config = {
     ...shared_config,
     title: {
-      text: `<tspan class='avert-chart-title'>${titleText('NOₓ')}</tspan>`,
+      text: `<tspan class='avert-chart-title'>${titleText('NO<sub>X</sub>')}</tspan>`,
       useHTML: true,
     },
     yAxis: {
@@ -266,7 +266,7 @@ const EmissionsChart = ({
   const co2_config = {
     ...shared_config,
     title: {
-      text: `<tspan class='avert-chart-title'>${titleText('CO₂')}</tspan>`,
+      text: `<tspan class='avert-chart-title'>${titleText('CO<sub>2</sub>')}</tspan>`,
       useHTML: true,
     },
     yAxis: {
