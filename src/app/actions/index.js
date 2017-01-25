@@ -147,14 +147,12 @@ const setLimits = () => {
   }
 };
 
-const emitReceiveRegion = (rdf) => {
-  return {
-    type: RECEIVE_REGION,
-    payload: {
-      rdf: rdf
-    },
-  }
-};
+const emitReceiveRegion = (rdf) => ({
+  type: RECEIVE_REGION,
+  payload: {
+    rdf: rdf
+  },
+});
 
 const receiveRegion = (region, json) => {
   return function (dispatch) {
@@ -472,20 +470,14 @@ export const completeStateEmissions = (data) => ({
   data,
 });
 
-export const renderMonthlyEmissionsCharts = () => {
+export const renderMonthlyEmissionsCharts = () => ({
+  type: RENDER_MONTHLY_CHARTS,
+});
 
-  return {
-    type: RENDER_MONTHLY_CHARTS,
-  };
-};
-
-export const prepareDownloadData = (data) => {
-
-  return {
-    type: SET_DOWNLOAD_DATA,
-    data,
-  }
-};
+export const prepareDownloadData = (data) => ({
+  type: SET_DOWNLOAD_DATA,
+  data,
+});
 
 export const completeMonthlyEmissions = (data) => {
   return function (dispatch, getState) {
