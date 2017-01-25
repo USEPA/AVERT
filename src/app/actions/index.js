@@ -56,6 +56,8 @@ export const SELECT_COUNTY = 'SELECT_COUNTY';
 export const SELECT_UNIT = 'SELECT_UNIT';
 export const RENDER_MONTHLY_CHARTS = 'RENDER_MONTHLY_CHARTS';
 export const COMPLETE_STATE = 'COMPLETE_STATE';
+export const RESET_MONTHLY_EMISSIONS = 'RESET_MONTHLY_EMISSIONS';
+
 export const INVALIDATE_REGION = 'INVALIDATE_REGION';
 export const REQUEST_REGION = 'REQUEST_REGION';
 export const RECEIVE_REGION = 'RECEIVE_REGION';
@@ -469,6 +471,10 @@ export const completeStateEmissions = (data) => ({
   type: COMPLETE_STATE,
   data,
 });
+
+export const resetMonthlyEmissions = () => ({
+  type: RESET_MONTHLY_EMISSIONS,
+})
 
 export const renderMonthlyEmissionsCharts = () => ({
   type: RENDER_MONTHLY_CHARTS,
