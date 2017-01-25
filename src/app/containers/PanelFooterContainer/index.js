@@ -7,6 +7,7 @@ import {
   fetchRegion,
   calculateDisplacement,
   resetEereInputs,
+  resetMonthlyEmissions,
 } from '../../actions';
 
 const mapStateToProps = (state) => ({
@@ -29,6 +30,9 @@ const mapDispatchToProps = (dispatch) => ({
   onResetEereInputs() {
     dispatch(resetEereInputs());
   },
+  onResetMonthlyEmissions() {
+    dispatch(resetMonthlyEmissions());
+  }
 });
 
 const PanelFooterContainer = connect(

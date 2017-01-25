@@ -56,6 +56,8 @@ export const SELECT_COUNTY = 'SELECT_COUNTY';
 export const SELECT_UNIT = 'SELECT_UNIT';
 export const RENDER_MONTHLY_CHARTS = 'RENDER_MONTHLY_CHARTS';
 export const COMPLETE_STATE = 'COMPLETE_STATE';
+export const RESET_MONTHLY_EMISSIONS = 'RESET_MONTHLY_EMISSIONS';
+
 export const INVALIDATE_REGION = 'INVALIDATE_REGION';
 export const REQUEST_REGION = 'REQUEST_REGION';
 export const RECEIVE_REGION = 'RECEIVE_REGION';
@@ -147,14 +149,12 @@ const setLimits = () => {
   }
 };
 
-const emitReceiveRegion = (rdf) => {
-  return {
-    type: RECEIVE_REGION,
-    payload: {
-      rdf: rdf
-    },
-  }
-};
+const emitReceiveRegion = (rdf) => ({
+  type: RECEIVE_REGION,
+  payload: {
+    rdf: rdf
+  },
+});
 
 const receiveRegion = (region, json) => {
   return function (dispatch) {
@@ -472,20 +472,18 @@ export const completeStateEmissions = (data) => ({
   data,
 });
 
-export const renderMonthlyEmissionsCharts = () => {
+export const resetMonthlyEmissions = () => ({
+  type: RESET_MONTHLY_EMISSIONS,
+})
 
-  return {
-    type: RENDER_MONTHLY_CHARTS,
-  };
-};
+export const renderMonthlyEmissionsCharts = () => ({
+  type: RENDER_MONTHLY_CHARTS,
+});
 
-export const prepareDownloadData = (data) => {
-
-  return {
-    type: SET_DOWNLOAD_DATA,
-    data,
-  }
-};
+export const prepareDownloadData = (data) => ({
+  type: SET_DOWNLOAD_DATA,
+  data,
+});
 
 export const completeMonthlyEmissions = (data) => {
   return function (dispatch, getState) {
