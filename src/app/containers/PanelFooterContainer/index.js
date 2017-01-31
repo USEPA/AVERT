@@ -25,7 +25,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(fetchRegion());
   },
   onCalculateDisplacement() {
-    calculateDisplacement();
+    dispatch(calculateDisplacement());
   },
   onResetEereInputs() {
     dispatch(resetEereInputs());

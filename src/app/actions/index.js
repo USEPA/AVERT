@@ -7,67 +7,79 @@ import _ from 'lodash';
 
 // avert
 import {avert, eereProfile} from '../avert';
-import * as northeast_rdf from '../../assets/data/rdf_northeast_2015.json';
-import * as northeast_defaults from '../../assets/data/eere-defaults-northeast.json';
 import StateEmissionsEngine from '../avert/engines/StateEmissionsEngine';
 import MonthlyEmissionsEngine from '../avert/engines/MonthlyEmissionsEngine';
 
 // store
 import store from '../store';
+import * as fromGeneration from '../redux/modules/generation';
+import * as fromSo2 from '../redux/modules/so2';
+import * as fromNox from '../redux/modules/nox';
+import * as fromCo2 from '../redux/modules/co2';
+import {
+  getGenerationData,
+  getSo2Data,
+  getNoxData,
+  getCo2Data,
+  getSo2Rate,
+  getNoxRate,
+  getCo2Rate,
+} from '../redux/modules/reducer';
 
 // action types
-export const CHANGE_ACTIVE_STEP = 'CHANGE_ACTIVE_STEP';
+export const CHANGE_ACTIVE_STEP = 'avert/core/CHANGE_ACTIVE_STEP';
 
-export const TOGGLE_MODAL_OVERLAY = 'TOGGLE_MODAL_OVERLAY';
-export const STORE_ACTIVE_MODAL = 'STORE_ACTIVE_MODAL';
-export const RESET_ACTIVE_MODAL = 'RESET_ACTIVE_MODAL';
+export const TOGGLE_MODAL_OVERLAY = 'avert/core/TOGGLE_MODAL_OVERLAY';
+export const STORE_ACTIVE_MODAL = 'avert/core/STORE_ACTIVE_MODAL';
+export const RESET_ACTIVE_MODAL = 'avert/core/RESET_ACTIVE_MODAL';
+export const INCREMENT_PROGRESS = 'avert/core/INCREMENT_PROGRESS';
 
-export const SELECT_REGION = 'SELECT_REGION';
-export const SET_LIMITS = 'SET_LIMITS';
-export const UPDATE_YEAR = 'UPDATE_YEAR';
-export const UPDATE_EERE_TOP_HOURS = 'UPDATE_EERE_TOP_HOURS';
-export const UPDATE_EERE_REDUCTION = 'UPDATE_EERE_REDUCTION';
-export const UPDATE_EERE_BROAD_BASE_PROGRAM = 'UPDATE_EERE_BROAD_BASE_PROGRAM';
-export const UPDATE_EERE_ANNUAL_GWH = 'UPDATE_EERE_ANNUAL_GWH';
-export const UPDATE_EERE_CONSTANT_MW = 'UPDATE_EERE_CONSTANT_MW';
-export const UPDATE_EERE_WIND_CAPACITY = 'UPDATE_EERE_WIND_CAPACITY';
-export const UPDATE_EERE_UTILITY_SOLAR = 'UPDATE_EERE_UTILITY_SOLAR';
-export const UPDATE_EERE_ROOFTOP_SOLAR = 'UPDATE_EERE_ROOFTOP_SOLAR';
-export const VALIDATE_EERE = "VALIDATE_EERE";
-export const UPDATE_EXCEEDANCES = "UPDATE_EXCEEDANCES";
-export const RESET_EERE_INPUTS = 'RESET_EERE_INPUTS';
+export const SELECT_REGION = 'avert/core/SELECT_REGION';
+export const SET_LIMITS = 'avert/core/SET_LIMITS';
+export const UPDATE_YEAR = 'avert/core/UPDATE_YEAR';
+export const UPDATE_EERE_TOP_HOURS = 'avert/core/UPDATE_EERE_TOP_HOURS';
+export const UPDATE_EERE_REDUCTION = 'avert/core/UPDATE_EERE_REDUCTION';
+export const UPDATE_EERE_BROAD_BASE_PROGRAM = 'avert/core/UPDATE_EERE_BROAD_BASE_PROGRAM';
+export const UPDATE_EERE_ANNUAL_GWH = 'avert/core/UPDATE_EERE_ANNUAL_GWH';
+export const UPDATE_EERE_CONSTANT_MW = 'avert/core/UPDATE_EERE_CONSTANT_MW';
+export const UPDATE_EERE_WIND_CAPACITY = 'avert/core/UPDATE_EERE_WIND_CAPACITY';
+export const UPDATE_EERE_UTILITY_SOLAR = 'avert/core/UPDATE_EERE_UTILITY_SOLAR';
+export const UPDATE_EERE_ROOFTOP_SOLAR = 'avert/core/UPDATE_EERE_ROOFTOP_SOLAR';
+export const VALIDATE_EERE = "avert/core/VALIDATE_EERE";
+export const UPDATE_EXCEEDANCES = "avert/core/UPDATE_EXCEEDANCES";
+export const RESET_EERE_INPUTS = 'avert/core/RESET_EERE_INPUTS';
 
-export const SUBMIT_CALCULATION = 'SUBMIT_CALCULATION';
-export const COMPLETE_CALCULATION = "COMPLETE_CALCULATION";
-export const START_DISPLACEMENT = 'START_DISPLACEMENT';
-export const INVALIDATE_DISPLACEMENT = 'INVALIDATE_DISPLACEMENT';
-export const REQUEST_DISPLACEMENT = 'REQUEST_DISPLACEMENT';
-export const RECEIVE_DISPLACEMENT = 'RECEIVE_DISPLACEMENT';
-export const COMPLETE_ANNUAL = 'COMPLETE_ANNUAL';
-export const COMPLETE_ANNUAL_GENERATION = 'COMPLETE_ANNUAL_GENERATION';
-export const COMPLETE_ANNUAL_SO2 = 'COMPLETE_ANNUAL_SO2';
-export const COMPLETE_ANNUAL_NOX = 'COMPLETE_ANNUAL_NOX';
-export const COMPLETE_ANNUAL_CO2 = 'COMPLETE_ANNUAL_CO2';
-export const COMPLETE_ANNUAL_RATES = 'COMPLETE_ANNUAL_RATES';
-export const COMPLETE_MONTHLY = 'COMPLETE_MONTHLY';
-export const SELECT_AGGREGATION = 'SELECT_AGGREGATION';
-export const SELECT_STATE = 'SELECT_STATE';
-export const SELECT_COUNTY = 'SELECT_COUNTY';
-export const SELECT_UNIT = 'SELECT_UNIT';
-export const RENDER_MONTHLY_CHARTS = 'RENDER_MONTHLY_CHARTS';
-export const COMPLETE_STATE = 'COMPLETE_STATE';
-export const RESET_MONTHLY_EMISSIONS = 'RESET_MONTHLY_EMISSIONS';
+export const SUBMIT_CALCULATION = 'avert/core/SUBMIT_CALCULATION';
+export const COMPLETE_CALCULATION = "avert/core/COMPLETE_CALCULATION";
+export const START_DISPLACEMENT = 'avert/core/START_DISPLACEMENT';
+export const INVALIDATE_DISPLACEMENT = 'avert/core/INVALIDATE_DISPLACEMENT';
+export const REQUEST_DISPLACEMENT = 'avert/core/REQUEST_DISPLACEMENT';
+export const RECEIVE_DISPLACEMENT = 'avert/core/RECEIVE_DISPLACEMENT';
+export const COMPLETE_ANNUAL = 'avert/core/COMPLETE_ANNUAL';
+export const COMPLETE_ANNUAL_GENERATION = 'avert/core/COMPLETE_ANNUAL_GENERATION';
+export const COMPLETE_ANNUAL_SO2 = 'avert/core/COMPLETE_ANNUAL_SO2';
+export const COMPLETE_ANNUAL_NOX = 'avert/core/COMPLETE_ANNUAL_NOX';
+export const COMPLETE_ANNUAL_CO2 = 'avert/core/COMPLETE_ANNUAL_CO2';
+export const COMPLETE_ANNUAL_RATES = 'avert/core/COMPLETE_ANNUAL_RATES';
+export const COMPLETE_MONTHLY = 'avert/core/COMPLETE_MONTHLY';
+export const SELECT_AGGREGATION = 'avert/core/SELECT_AGGREGATION';
+export const SELECT_STATE = 'avert/core/SELECT_STATE';
+export const SELECT_COUNTY = 'avert/core/SELECT_COUNTY';
+export const SELECT_UNIT = 'avert/core/SELECT_UNIT';
+export const RENDER_MONTHLY_CHARTS = 'avert/core/RENDER_MONTHLY_CHARTS';
+export const COMPLETE_STATE = 'avert/core/COMPLETE_STATE';
+export const RESET_MONTHLY_EMISSIONS = 'avert/core/RESET_MONTHLY_EMISSIONS';
 
-export const INVALIDATE_REGION = 'INVALIDATE_REGION';
-export const REQUEST_REGION = 'REQUEST_REGION';
-export const RECEIVE_REGION = 'RECEIVE_REGION';
-export const OVERRIDE_REGION = 'OVERRIDE_REGION';
-export const INVALIDATE_DEFAULTS = 'INVALIDATE_DEFAULTS';
-export const REQUEST_DEFAULTS = 'REQUEST_DEFAULTS';
-export const RECEIVE_DEFAULTS = 'RECEIVE_DEFAULTS';
-export const ADD_RDF = 'ADD_RDF';
-export const START_DATA_DOWNLOAD = 'START_DATA_DOWNLOAD';
-export const SET_DOWNLOAD_DATA = 'SET_DOWNLOAD_DATA';
+export const INVALIDATE_REGION = 'avert/core/INVALIDATE_REGION';
+export const REQUEST_REGION = 'avert/core/REQUEST_REGION';
+export const RECEIVE_REGION = 'avert/core/RECEIVE_REGION';
+export const OVERRIDE_REGION = 'avert/core/OVERRIDE_REGION';
+export const INVALIDATE_DEFAULTS = 'avert/core/INVALIDATE_DEFAULTS';
+export const REQUEST_DEFAULTS = 'avert/core/REQUEST_DEFAULTS';
+export const RECEIVE_DEFAULTS = 'avert/core/RECEIVE_DEFAULTS';
+export const ADD_RDF = 'avert/core/ADD_RDF';
+export const START_DATA_DOWNLOAD = 'avert/core/START_DATA_DOWNLOAD';
+export const SET_DOWNLOAD_DATA = 'avert/core/SET_DOWNLOAD_DATA';
 
 // action creators
 export const setActiveStep = (number) => ({
@@ -89,6 +101,10 @@ export const storeActiveModal = (activeModalId) => ({
 export const resetActiveModal = (activeModalId) => ({
   type: RESET_ACTIVE_MODAL,
   activeModalId,
+});
+
+export const incrementProgress = () => ({
+  type: INCREMENT_PROGRESS
 });
 
 //Use this when downloading another region
@@ -199,18 +215,6 @@ export const selectRegion = (region) => {
     avert.region = formattedRegion;
     dispatch(changeRegion(formattedRegion));
   };
-};
-
-export const overrideRegion = () => {
-  return function (dispatch) {
-    dispatch(changeRegion(3));
-    dispatch(receiveRegion('NE', northeast_rdf));
-    dispatch(receiveDefaults('NE', northeast_defaults));
-
-    return dispatch({
-      type: OVERRIDE_REGION
-    });
-  }
 };
 
 export const validateEere = () => {
@@ -562,23 +566,39 @@ export const requestDisplacement = () => ({
   type: 'REQUEST_DISPLACEMENT',
 });
 
-export const receiveDisplacement = (json) => {
-  return dispatch => {
+export const receiveDisplacement = () => {
+  return (dispatch,getState) => {
+    dispatch(incrementProgress());
+
+    const data = {
+      generation: getGenerationData(getState()),
+      totalEmissions: {
+        so2: getSo2Data(getState()),
+        nox: getNoxData(getState()),
+        co2: getCo2Data(getState()),
+      },
+      emissionRates: {
+        so2: getSo2Rate(getState()),
+        nox: getNoxRate(getState()),
+        co2: getCo2Rate(getState()),
+      },
+    };
+
     dispatch({
-      type: 'RECEIVE_DISPLACEMENT',
-      data: json.data,
+      type: RECEIVE_DISPLACEMENT,
+      data
     });
 
     const stateEngine = new StateEmissionsEngine();
-    const stateData = stateEngine.extract(json.data);
+    const stateData = stateEngine.extract(data);
     dispatch(completeStateEmissions(stateData));
 
     const monthlyEngine = new MonthlyEmissionsEngine();
-    const monthlyData = monthlyEngine.extract(json.data);
+    const monthlyData = monthlyEngine.extract(data);
 
     return dispatch(completeMonthlyEmissions(monthlyData));
   };
-}
+};
 
 const fetchDisplacement = (rdf, eere) => {
   return dispatch => {
@@ -622,12 +642,20 @@ const startDisplacement = () => ({
 });
 
 export function calculateDisplacement() {
-  store.dispatch(startDisplacement());
-  return store.dispatch(fetchDisplacementIfNeeded());
-};
+  return dispatch => {
+    dispatch(startDisplacement());
+    dispatch(incrementProgress());
+    return Promise.all([
+      dispatch(fromGeneration.fetchGenerationIfNeeded()),
+      dispatch(fromSo2.fetchSo2IfNeeded()),
+      dispatch(fromNox.fetchNoxIfNeeded()),
+      dispatch(fromCo2.fetchCo2IfNeeded()),
+    ]).then(() => dispatch(receiveDisplacement()));
+  }
+}
 
 export const startDataDownload = () => {
-  return function (dispatch, getState) {
+  return (dispatch, getState) => {
     const {monthlyEmissions} = getState();
     const allMonthlyEmissions = monthlyEmissions.newDownloadableData;
     const fields = [
@@ -663,3 +691,4 @@ export const startDataDownload = () => {
     });
   }
 };
+

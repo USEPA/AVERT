@@ -21,7 +21,7 @@ import {
   COMPLETE_ANNUAL_NOX,
   COMPLETE_ANNUAL_CO2,
   COMPLETE_ANNUAL_RATES,
-
+  INCREMENT_PROGRESS
 } from '../../actions';
 
 const defaultState = {
@@ -61,6 +61,12 @@ const panelReducer = (state = defaultState, action) => {
         closingModalId: action.activeModalId,
       };
 
+    case INCREMENT_PROGRESS:
+      return {
+        ...state,
+        percentComplete: ++state.percentComplete
+      };
+
     case REQUEST_REGION:
     case SUBMIT_CALCULATION:
     case START_DISPLACEMENT:
@@ -80,7 +86,6 @@ const panelReducer = (state = defaultState, action) => {
       return {
         ...state,
         loading: false,
-        percentComplete: 100,
       };
 
     case RECEIVE_REGION:
@@ -90,37 +95,31 @@ const panelReducer = (state = defaultState, action) => {
       return {
         ...state,
         loading: false,
-        percentComplete: 100,
       };
 
     case COMPLETE_ANNUAL_GENERATION:
       return {
         ...state,
-        percentComplete: 20,
       };
 
     case COMPLETE_ANNUAL_SO2:
       return {
         ...state,
-        percentComplete: 40,
       };
 
     case COMPLETE_ANNUAL_NOX:
       return {
         ...state,
-        percentComplete: 60,
       };
 
     case COMPLETE_ANNUAL_CO2:
       return {
         ...state,
-        percentComplete: 80,
       };
 
     case COMPLETE_ANNUAL_RATES:
       return {
         ...state,
-        percentComplete: 85,
       };
 
 

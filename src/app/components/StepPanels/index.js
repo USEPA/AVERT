@@ -25,7 +25,9 @@ const StepPanels = (props) => {
   if (props.activePanel === 3) {
     loadingProgress = (
       <div>
-        <progress className="avert-loading-progress" value={props.percentComplete} max="100">{props.percentComplete}%</progress>
+        <progress className="avert-loading-progress" value={props.percentComplete} max="6">
+          {parseInt(parseInt(props.percentComplete,10) / 6,10)}%
+        </progress>
         <p className="avert-loading-info">These calculations may take several minutes.</p>
       </div>
     );
@@ -60,18 +62,6 @@ const StepPanels = (props) => {
     }
     return false;
   };
-
-  let regionDebug = null;
-  // conditionally re-define debug text when in development environment
-  if (process.env.NODE_ENV === 'development') {
-    regionDebug = (
-      <p className="avert-small-text" onClick={() => {
-        props.onClickDebug()
-      }}>
-        <em>(Debug)</em>
-      </p>
-    );
-  }
 
   return (
     <div className={`avert-steps ${loadingClass} ${modalClass}`}
@@ -116,8 +106,6 @@ const StepPanels = (props) => {
             <a href="https://www.epa.gov/statelocalclimate/download-avert">{'here'}</a>
             {') allows analyses for years 2007–2015 or for a future year scenario.'}
           </p>
-
-          { regionDebug }
         </PanelBody>
 
         <PanelFooterContainer nextButtonText='Set EE/RE Impacts'/>

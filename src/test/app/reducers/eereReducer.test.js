@@ -62,7 +62,7 @@ describe('EERE related actions', () => {
 
     const store = mockStore();
     const expectedActions = [
-      { type: 'RESET_EERE_INPUTS' },
+      { type: RESET_EERE_INPUTS },
     ];
 
     store.dispatch(resetEereInputs());

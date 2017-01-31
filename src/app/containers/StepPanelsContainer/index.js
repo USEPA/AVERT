@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import StepPanels from '../../components/StepPanels';
 // action creators
 import {
-  overrideRegion,
   resetActiveModal,
   toggleModalOverlay,
   startDataDownload,
@@ -18,10 +17,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onClickDebug() {
-    // dispatch(startDataDownload());
-    dispatch(overrideRegion());
-  },
   onClickOutsideModal(activeModalId) {
     dispatch(resetActiveModal(activeModalId));
     dispatch(toggleModalOverlay());
