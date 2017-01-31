@@ -593,7 +593,7 @@ const fetchDisplacement = (rdf, eere) => {
       body: JSON.stringify({rdf: avert.rdfClass.toJsonString(), eere: avert.hourlyEere}),
     };
 
-    return fetch('http://app7.erg.com/avert/api/v1/displacements', options)
+    return fetch('https://app7.erg.com/avert/api/v1/displacements', options)
     // return fetch('http://app7.erg.com/avert/api/v1/displacements')
     // return fetch(`http://localhost:3001/api/v1/displacements`, options)
     // return fetch('https://epa-avert-microservice.herokuapp.com/api/v1/displacements', options)
