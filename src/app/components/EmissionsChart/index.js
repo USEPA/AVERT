@@ -28,6 +28,14 @@ const EmissionsChart = ({
   // rendering is ready when output prop has data
   const readyToRender = monthly_status === StatusEnum.DONE;
 
+  // callback for after highcharts chart renders
+  const afterRender = (chart) => {
+    // as this entire react app is ultimately served in an iframe on another page,
+    // this document has a click handler that sends document's height to other window,
+    // which can then set the embedded iframe's height (see public/post-message.js)
+    document.querySelector('html').click();
+  };
+
   let aggregationFilter = null;
   if (readyToRender) {
     aggregationFilter = (
@@ -285,9 +293,9 @@ const EmissionsChart = ({
   if (readyToRender) {
     chart = (
       <div className="avert-emissions-charts">
-        <Highcharts config={so2_config} />
-        <Highcharts config={nox_config} />
-        <Highcharts config={co2_config} />
+        <Highcharts config={so2_config} callback={afterRender} />
+        <Highcharts config={nox_config} callback={afterRender} />
+        <Highcharts config={co2_config} callback={afterRender} />
       </div>
     );
   }

@@ -74,6 +74,14 @@ const EEREChart = (props) => {
   // boolean flag to render chart and error/warning when hourlyEere prop exits
   let readyToRender = props.hourlyEere.length > 0;
 
+  // callback for after highcharts chart renders
+  const afterRender = (chart) => {
+    // as this entire react app is ultimately served in an iframe on another page,
+    // this document has a click handler that sends document's height to other window,
+    // which can then set the embedded iframe's height (see public/post-message.js)
+    document.querySelector('html').click();
+  };
+
   let chart = null;
   // conditionally re-define chart when readyToRender (hourlyEere prop exists)
   if (readyToRender) {
@@ -92,7 +100,7 @@ const EEREChart = (props) => {
           </TooltipContainer>
         </h3>
 
-        <Highcharts config={chartConfig} />
+        <Highcharts config={chartConfig} callback={afterRender} />
 
         <p className="avert-small-text">
           {`This EE/RE profile will displace ${totalLoadGwh} GWh of regional fossil fuel generation over the course of a year.`}
