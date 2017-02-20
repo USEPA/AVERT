@@ -568,6 +568,16 @@ export const requestDisplacement = () => ({
 
 export const receiveDisplacement = () => {
   return (dispatch,getState) => {
+    
+    dispatch({
+      type: 'ATTEMPTING_TO_CALCULATE_DISPLACEMENT_VALUES'
+    });
+
+    const {generation,so2,nox,co2} = getState();
+    if(generation.isFetching || so2.isFetching || nox.isFetching || co2.isFetching) {
+      return setTimeout(() => dispatch(receiveDisplacement()),30000);
+    }
+
     dispatch(incrementProgress());
 
     const data = {
@@ -645,12 +655,17 @@ export function calculateDisplacement() {
   return dispatch => {
     dispatch(startDisplacement());
     dispatch(incrementProgress());
-    return Promise.all([
-      dispatch(fromGeneration.fetchGenerationIfNeeded()),
-      dispatch(fromSo2.fetchSo2IfNeeded()),
-      dispatch(fromNox.fetchNoxIfNeeded()),
-      dispatch(fromCo2.fetchCo2IfNeeded()),
-    ]).then(() => dispatch(receiveDisplacement()));
+    const generation = dispatch(fromGeneration.fetchGenerationIfNeeded());
+
+    return Promise.resolve(generation)
+    .then(() => {
+      return Promise.all([
+        dispatch(fromSo2.fetchSo2IfNeeded()),
+        dispatch(fromNox.fetchNoxIfNeeded()),
+        dispatch(fromCo2.fetchCo2IfNeeded()),
+      ])
+      .then(() => dispatch(receiveDisplacement()))
+    })
   }
 }
 
