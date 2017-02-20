@@ -117,8 +117,9 @@ function fetchGeneration (url,region,eere) {
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
       },
-      body: JSON.stringify({rdf: avert.rdfClass.toJsonString(), region: region, eere: avert.hourlyEere}),
+      // body: JSON.stringify({rdf: avert.rdfClass.toJsonString(), region: region, eere: avert.hourlyEere}),
       // body: JSON.stringify({region: region, eere: eere}),
+      body: JSON.stringify({region: avert.regionData.slug, eere: avert.hourlyEere}),
     };
 
     return fetch(`${url}/api/v1/generation`, options)

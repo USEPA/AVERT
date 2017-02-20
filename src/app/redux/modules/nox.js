@@ -126,15 +126,15 @@ function fetchNox (url,region,eere) {
         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
       },
       // body: JSON.stringify({rdf: avert.rdfClass.toJsonString(), eere: avert.hourlyEere}),
-      body: JSON.stringify({rdf: avert.rdfClass.toJsonString(), region: region, eere: avert.hourlyEere}),
-      // body: JSON.stringify({region: region, eere: eere}),
+      // body: JSON.stringify({rdf: avert.rdfClass.toJsonString(), region: region, eere: avert.hourlyEere}),
+      body: JSON.stringify({region: avert.regionData.slug, eere: avert.hourlyEere}),
     };
 
     return fetch(`${url}/api/v1/nox`, options)
       .then(response => response.json())
-      // .then(json => dispatch(receiveNox(json)));
       .then(json => dispatch(receiveJobId(json)))
       .then(action => dispatch(pollServerForData()))
+      // .then(json => dispatch(receiveNox(json)));
   }
 }
 
