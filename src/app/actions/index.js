@@ -119,22 +119,25 @@ const requestDefaults = (region) => ({
 });
 
 const receiveDefaults = (region, defaults) => {
-  avert.setDefaults(defaults);
+  avert.setDefaults(defaults.eereDefaults);
 
   return {
     type: RECEIVE_DEFAULTS,
     payload: {
-      defaults: defaults
+      defaults: defaults.eereDefaults
     },
   }
 };
 
 export const fetchDefaults = () => {
-  return function (dispatch) {
+  return function (dispatch, getState) {
+    const {api} = getState();
+
     const region = avert.regionData;
     dispatch(requestDefaults(region.slug));
 
-    return fetch(`./data/${region.defaults}.json`, {credentials: 'same-origin'})
+    return fetch(`${api.baseUrl}/api/v1/eere/${region.slug}`)
+    // return fetch(`./data/${region.defaults}.json`, {credentials: 'same-origin'})
       .then(response => response.json())
       .then(json => dispatch(receiveDefaults(region.slug, json)))
   };
@@ -174,7 +177,7 @@ const emitReceiveRegion = (rdf) => ({
 
 const receiveRegion = (region, json) => {
   return function (dispatch) {
-    avert.setRdf(json);
+    avert.setRdf(json.rdf);
     dispatch(setLimits());
     return dispatch(emitReceiveRegion(json));
   };
@@ -190,17 +193,18 @@ export const addRdf = (rdf) => ({
 
 export const fetchRegion = () => {
   return function (dispatch, getState) {
+    const {api,rdfs} = getState();
 
-    if (getState().rdfs.debug) return Promise.resolve();
+    if (rdfs.debug) return Promise.resolve();
 
     const region = avert.regionData;
     dispatch(requestRegion(region.slug));
-
-    return fetch(`./data/${region.rdf}.json`, {credentials: 'same-origin'})
+    
+    return fetch(`${api.baseUrl}/api/v1/rdf/${region.slug}`)
+    // return fetch(`./data/${region.rdf}.json`, {credentials: 'same-origin'})
       .then(response => response.json())
-      .then(json =>
-        dispatch(receiveRegion(region.slug, json))
-      ).then(dispatch(fetchDefaults()));
+      .then(json => dispatch(receiveRegion(region.slug, json)))
+      .then(action => dispatch(fetchDefaults()));
   };
 };
 
