@@ -4,10 +4,13 @@ import {incrementProgress} from '../../actions';
 const REQUEST_GENERATION = 'avert/generation/REQUEST_GENERATION';
 const RECEIVE_GENERATION = 'avert/generation/RECEIVE_GENERATION';
 const INVALIDATE_GENERATION = 'avert/generation/INVALIDATE_GENERATION';
+const RECEIVE_JOB_ID = 'avert/generation/RECEIVE_JOB_ID';
+const POLL_SERVER_FOR_DATA = 'avert/generation/POLL_SERVER_FOR_DATA';
 
 export const initialState = {
   isFetching: false,
   didInvalidate: false,
+  jobId: 0,
   data: {},
 };
 
@@ -33,6 +36,12 @@ export default function reducer(state = initialState, action) {
         didInvalidate: false,
         data: action.json.data,
       };
+
+    case RECEIVE_JOB_ID:
+      return {
+        ...state,
+        jobId: action.json.job
+      }
 
     default:
       return state;
@@ -67,6 +76,37 @@ export function receiveGeneration (json) {
   }
 };
 
+export function pollServerForData(json) {
+  return (dispatch,getState) => {
+    const {api,generation} = getState();
+
+    dispatch({
+      type: POLL_SERVER_FOR_DATA,
+      jobId: generation.jobId,
+      json,
+    });
+
+    return fetch(`${api.baseUrl}/api/v1/jobs/${generation.jobId}`)
+      .then(response => response.json())
+      .then(json => {
+        if(json.response === 'in progress') {
+          return setTimeout(() => dispatch(pollServerForData(json)),30000)
+        }
+
+        return dispatch(receiveGeneration(json));
+      });
+  }
+}
+
+export function receiveJobId(json) {
+  return dispatch => {
+    return dispatch({
+      type: RECEIVE_JOB_ID,
+      json,
+    });
+  }
+}
+
 function fetchGeneration (url,region,eere) {
   return dispatch => {
     dispatch(requestGeneration());
@@ -83,7 +123,9 @@ function fetchGeneration (url,region,eere) {
 
     return fetch(`${url}/api/v1/generation`, options)
       .then(response => response.json())
-      .then(json => dispatch(receiveGeneration(json)));
+      .then(json => dispatch(receiveJobId(json)))
+      .then(action => dispatch(pollServerForData()))
+      // .then(json => dispatch(receiveGeneration(json)));
   }
 }
 

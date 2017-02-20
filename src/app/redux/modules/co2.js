@@ -3,13 +3,16 @@ import math from 'mathjs';
 import {avert} from '../../avert';
 import {incrementProgress} from '../../actions';
 
-const REQUEST_CO2 = 'avert/generation/REQUEST_CO2';
-const RECEIVE_CO2 = 'avert/generation/RECEIVE_CO2';
-const INVALIDATE_CO2 = 'avert/generation/INVALIDATE_CO2';
+const REQUEST_CO2 = 'avert/co2/REQUEST_CO2';
+const RECEIVE_CO2 = 'avert/co2/RECEIVE_CO2';
+const INVALIDATE_CO2 = 'avert/co2/INVALIDATE_CO2';
+const RECEIVE_JOB_ID = 'avert/co2/RECEIVE_JOB_ID';
+const POLL_SERVER_FOR_DATA = 'avert/co2/POLL_SERVER_FOR_DATA';
 
 export const initialState = {
   isFetching: false,
   didInvalidate: false,
+  jobId: 0,
   data: {},
 };
 
@@ -35,6 +38,12 @@ export default function reducer(state = initialState, action) {
         didInvalidate: false,
         data: action.json.data,
       };
+
+    case RECEIVE_JOB_ID:
+      return {
+        ...state,
+        jobId: action.json.job
+      }
 
     default:
       return state;
@@ -75,6 +84,37 @@ export function receiveCo2 (json) {
   }
 }
 
+export function pollServerForData(json) {
+  return (dispatch,getState) => {
+    const {api,co2} = getState();
+
+    dispatch({
+      type: POLL_SERVER_FOR_DATA,
+      jobId: co2.jobId,
+      json,
+    });
+
+    return fetch(`${api.baseUrl}/api/v1/jobs/${co2.jobId}`)
+      .then(response => response.json())
+      .then(json => {
+        if(json.response === 'in progress') {
+          return setTimeout(() => dispatch(pollServerForData(json)),30000)
+        }
+
+        return dispatch(receiveCo2(json));
+      });
+  }
+}
+
+export function receiveJobId(json) {
+  return dispatch => {
+    return dispatch({
+      type: RECEIVE_JOB_ID,
+      json,
+    });
+  }
+}
+
 function fetchCo2 (url,region,eere) {
   return dispatch => {
     dispatch(requestCo2());
@@ -92,7 +132,9 @@ function fetchCo2 (url,region,eere) {
 
     return fetch(`${url}/api/v1/co2`, options)
       .then(response => response.json())
-      .then(json => dispatch(receiveCo2(json)));
+      // .then(json => dispatch(receiveCo2(json)));
+      .then(json => dispatch(receiveJobId(json)))
+      .then(action => dispatch(pollServerForData()))
   }
 }
 

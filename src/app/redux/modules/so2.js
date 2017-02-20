@@ -3,13 +3,16 @@ import math from 'mathjs';
 import {avert} from '../../avert';
 import {incrementProgress} from '../../actions';
 
-const REQUEST_SO2 = 'avert/generation/REQUEST_SO2';
-const RECEIVE_SO2 = 'avert/generation/RECEIVE_SO2';
-const INVALIDATE_SO2 = 'avert/generation/INVALIDATE_SO2';
+const REQUEST_SO2 = 'avert/so2/REQUEST_SO2';
+const RECEIVE_SO2 = 'avert/so2/RECEIVE_SO2';
+const INVALIDATE_SO2 = 'avert/so2/INVALIDATE_SO2';
+const RECEIVE_JOB_ID = 'avert/so2/RECEIVE_JOB_ID';
+const POLL_SERVER_FOR_DATA = 'avert/so2/POLL_SERVER_FOR_DATA';
 
 export const initialState = {
   isFetching: false,
   didInvalidate: false,
+  jobId: 0,
   data: {},
 };
 
@@ -35,6 +38,12 @@ export default function reducer(state = initialState, action) {
         didInvalidate: false,
         data: action.json.data,
       };
+
+    case RECEIVE_JOB_ID:
+      return {
+        ...state,
+        jobId: action.json.job
+      }
 
     default:
       return state;
@@ -76,6 +85,37 @@ export function receiveSo2 (json) {
   }
 }
 
+export function pollServerForData(json) {
+  return (dispatch,getState) => {
+    const {api,so2} = getState();
+
+    dispatch({
+      type: POLL_SERVER_FOR_DATA,
+      jobId: so2.jobId,
+      json,
+    });
+
+    return fetch(`${api.baseUrl}/api/v1/jobs/${so2.jobId}`)
+      .then(response => response.json())
+      .then(json => {
+        if(json.response === 'in progress') {
+          return setTimeout(() => dispatch(pollServerForData(json)),30000)
+        }
+
+        return dispatch(receiveSo2(json));
+      });
+  }
+}
+
+export function receiveJobId(json) {
+  return dispatch => {
+    return dispatch({
+      type: RECEIVE_JOB_ID,
+      json,
+    });
+  }
+}
+
 function fetchSo2 (url,region,eere) {
   return dispatch => {
     dispatch(requestSo2());
@@ -91,9 +131,11 @@ function fetchSo2 (url,region,eere) {
       // body: JSON.stringify({region: region, eere: eere}),
     };
 
-    return fetch(`${url}/api/v1/so2`, options)
+        return fetch(`${url}/api/v1/so2`, options)
       .then(response => response.json())
-      .then(json => dispatch(receiveSo2(json)))
+      // .then(json => dispatch(receiveSo2(json)))
+      .then(json => dispatch(receiveJobId(json)))
+      .then(action => dispatch(pollServerForData()))
       ;
   }
 }

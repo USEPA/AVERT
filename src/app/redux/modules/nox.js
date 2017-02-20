@@ -3,13 +3,16 @@ import math from 'mathjs';
 import {avert} from '../../avert';
 import {incrementProgress} from '../../actions';
 
-const REQUEST_NOX = 'avert/generation/REQUEST_NOX';
-const RECEIVE_NOX = 'avert/generation/RECEIVE_NOX';
-const INVALIDATE_NOX = 'avert/generation/INVALIDATE_NOX';
+const REQUEST_NOX = 'avert/nox/REQUEST_NOX';
+const RECEIVE_NOX = 'avert/nox/RECEIVE_NOX';
+const INVALIDATE_NOX = 'avert/nox/INVALIDATE_NOX';
+const RECEIVE_JOB_ID = 'avert/nox/RECEIVE_JOB_ID';
+const POLL_SERVER_FOR_DATA = 'avert/nox/POLL_SERVER_FOR_DATA';
 
 export const initialState = {
   isFetching: false,
   didInvalidate: false,
+  jobId: 0,
   data: {},
 };
 
@@ -35,6 +38,12 @@ export default function reducer(state = initialState, action) {
         didInvalidate: false,
         data: action.json.data,
       };
+
+    case RECEIVE_JOB_ID:
+      return {
+        ...state,
+        jobId: action.json.job
+      }
 
     default:
       return state;
@@ -75,6 +84,37 @@ export function receiveNox (json) {
   }
 }
 
+export function pollServerForData(json) {
+  return (dispatch,getState) => {
+    const {api,nox} = getState();
+
+    dispatch({
+      type: POLL_SERVER_FOR_DATA,
+      jobId: nox.jobId,
+      json,
+    });
+
+    return fetch(`${api.baseUrl}/api/v1/jobs/${nox.jobId}`)
+      .then(response => response.json())
+      .then(json => {
+        if(json.response === 'in progress') {
+          return setTimeout(() => dispatch(pollServerForData(json)),30000)
+        }
+
+        return dispatch(receiveNox(json));
+      });
+  }
+}
+
+export function receiveJobId(json) {
+  return dispatch => {
+    return dispatch({
+      type: RECEIVE_JOB_ID,
+      json,
+    });
+  }
+}
+
 function fetchNox (url,region,eere) {
   return dispatch => {
     dispatch(requestNox());
@@ -92,7 +132,9 @@ function fetchNox (url,region,eere) {
 
     return fetch(`${url}/api/v1/nox`, options)
       .then(response => response.json())
-      .then(json => dispatch(receiveNox(json)));
+      // .then(json => dispatch(receiveNox(json)));
+      .then(json => dispatch(receiveJobId(json)))
+      .then(action => dispatch(pollServerForData()))
   }
 }
 
