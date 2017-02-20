@@ -5,9 +5,9 @@ import {
   STORE_ACTIVE_MODAL,
   RESET_ACTIVE_MODAL,
   // REQUEST_DEFAULTS,
-  // RECEIVE_DEFAULTS,
+  RECEIVE_DEFAULTS,
   REQUEST_REGION,
-  RECEIVE_REGION,
+  // RECEIVE_REGION,
   SUBMIT_CALCULATION,
   COMPLETE_CALCULATION,
   START_DISPLACEMENT,
@@ -88,7 +88,8 @@ const panelReducer = (state = defaultState, action) => {
         loading: false,
       };
 
-    case RECEIVE_REGION:
+    case RECEIVE_DEFAULTS:
+    // case RECEIVE_REGION:
     case COMPLETE_CALCULATION:
     case COMPLETE_MONTHLY:
     // case COMPLETE_ANNUAL:
