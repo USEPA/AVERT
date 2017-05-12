@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, {PropTypes} from 'react';
 // containers
 import EEREInputFieldContainer from '../../containers/EEREInputFieldContainer';
 import TooltipContainer from '../../containers/TooltipContainer';
@@ -62,13 +62,9 @@ const EEREInputs = ({
     }
   };
 
-  const allFieldsEmpty =
-    // array of field values saved to state
-    [constantMw, annualGwh, broadProgram, reduction, topHours, windCapacity, utilitySolar, rooftopSolar]
-      // filter out fields that aren't empty
-      .filter(field => field.length > 0)
-      // if any exist, assign false, else assign true
-      .length > 0 ? false : true;
+  // array of field values saved to state; filter out fields that aren't empty; if any exist, assign false, else assign true
+  const allFieldsEmpty = [constantMw, annualGwh, broadProgram, reduction, topHours, windCapacity, utilitySolar, rooftopSolar]
+    .filter(field => field.length > 0).length <= 0;
 
   const disabledClass = (!valid || allFieldsEmpty || eereStatus === 'started') ?
     'avert-button-disabled' : '';
@@ -159,7 +155,7 @@ const EEREInputs = ({
                 </span>
                 <EEREInputFieldContainer
                   value={ reduction }
-                  disabled={ broadProgram ? true: false }
+                  disabled={ broadProgram ? true : false }
                   onChange={ onReductionChange }
                 />
                 <span className='avert-input-unit'>
@@ -167,7 +163,7 @@ const EEREInputs = ({
                 </span>
                 <EEREInputFieldContainer
                   value={ topHours }
-                  disabled={ broadProgram ? true: false }
+                  disabled={ broadProgram ? true : false }
                   onChange={ onTopHoursChange }
                 />
                 <span className='avert-input-unit'>
@@ -200,7 +196,7 @@ const EEREInputs = ({
                 value={ windCapacity }
                 onChange={ onWindCapacityChange }
               />
-            <span className='avert-input-unit'>
+              <span className='avert-input-unit'>
                 {' MW '}
               </span>
 
@@ -224,7 +220,7 @@ const EEREInputs = ({
                 value={ utilitySolar }
                 onChange={ onUtilitySolarChange }
               />
-            <span className='avert-input-unit'>
+              <span className='avert-input-unit'>
                 {' MW '}
               </span>
 
@@ -248,7 +244,7 @@ const EEREInputs = ({
                 value={ rooftopSolar }
                 onChange={ onRooftopSolarChange }
               />
-            <span className='avert-input-unit'>
+              <span className='avert-input-unit'>
                 {' MW '}
               </span>
 
@@ -264,11 +260,11 @@ const EEREInputs = ({
 
       <p className='avert-impacts-button'>
         <a className={`avert-button ${disabledClass}`} href=''
-          onClick={(e) => {
-            e.preventDefault();
-            // if valid prop (state) is true, calculate profile
-            if (valid) { onCalculateProfile() }
-          }}
+           onClick={(e) => {
+             e.preventDefault();
+             // if valid prop (state) is true, calculate profile
+             valid && onCalculateProfile();
+           }}
         >
           { EereStatusEnum[eereStatus].text }
         </a>

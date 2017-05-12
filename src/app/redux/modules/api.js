@@ -2,7 +2,8 @@ const SET_BASE_URL = 'avert/api/SET_BASE_URL';
 
 export const initialState = {
   // baseUrl: 'http://localhost:3001',
-  baseUrl: 'https://app7.erg.com/avert',
+  // baseUrl: 'https://app7.erg.com/avert',
+  baseUrl: 'https://avert-microservice2.cfapps.io',
 };
 
 export default function reducer(state = initialState, action) {
