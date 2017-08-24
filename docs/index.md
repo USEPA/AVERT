@@ -1,6 +1,6 @@
 # Architecture
 
-![Architecture Diagram](/docs/AVERT Architecture.gif)
+![Architecture Diagram](https://github.com/Eastern-Research-Group/EPA-AVERT/blob/master/docs/AVERT%20Architecture.gif)
 
 ## Components
 
