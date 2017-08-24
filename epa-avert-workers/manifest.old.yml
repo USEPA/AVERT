@@ -1,0 +1,5 @@
+applications:
+  - name: avert
+    command: npm start
+    services:
+      - hui-redis

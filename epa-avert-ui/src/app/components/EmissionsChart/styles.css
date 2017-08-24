@@ -1,0 +1,74 @@
+.avert-inline-select {
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.avert-inline-select p {
+  display: block;
+  margin-top: 0;
+}
+
+.avert-inline-select label {
+  display: block;
+  margin-left: 0.75rem;
+}
+
+.avert-inline-select input {
+  position: relative;
+  bottom: 0.125rem;
+  margin-right: 0.375rem;
+}
+
+
+
+.avert-geography-filter {
+  overflow: hidden;
+}
+
+
+
+.avert-select-group {
+  float: left;
+  margin: 0 0.5rem 1rem;
+  width: calc(50% - 1rem);
+}
+.avert-select-group select {
+  width: 100%;
+}
+
+
+
+.avert-emissions-charts {
+  padding: 1rem;
+  border: 1px solid #aaa;
+}
+
+
+
+.avert-emissions-charts [data-highcharts-chart] {
+  margin-bottom: 1rem;
+}
+.avert-emissions-charts [data-highcharts-chart]:last-of-type {
+  margin-bottom: 0;
+}
+
+.avert-emissions-charts .highcharts-title {
+  font-size: 1rem !important;
+  font-weight: bold;
+  color: #444 !important;
+}
+
+
+
+/* --- media queries --- */
+@media (min-width: 25em) {
+  .avert-inline-select label {
+    display: inline-block;
+  }
+}
+
+@media (min-width: 35em) {
+  .avert-inline-select p {
+    display: inline-block;
+  }
+}

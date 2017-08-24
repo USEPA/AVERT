@@ -1,0 +1,81 @@
+.avert-nav a {
+  display: block;
+  margin-top: 0.375rem;
+  padding: 0.75rem;
+  border: 1px solid #aaa;
+  line-height: 1;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 0 5px rgba(0,0,0, 0.25);
+  color: white;
+  background-color: #ccc;
+  cursor: default;
+}
+
+.avert-nav .avert-tab1 a {
+  margin-top: 0;
+}
+
+.avert-nav a[data-active='true'] {
+  background-color: rgb(0,190,230);
+}
+
+
+
+/* --- media queries --- */
+@media (min-width: 35em) {
+  .avert-nav li {
+    float: left;
+    width: calc((100% - 2.5rem) / 3);
+  }
+
+  .avert-nav a {
+    position: relative;
+    margin-top: 0;
+    border: 0;
+  }
+
+  /* space between tabs */
+  .avert-nav .avert-tab1,
+  .avert-nav .avert-tab2 {
+    margin-right: 1.25rem;
+  }
+
+  /* right arrow */
+  .avert-nav .avert-tab1 a::after,
+  .avert-nav .avert-tab2 a::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: -1.25rem;
+    /* css triangle */
+    width: 0;
+    height: 0;
+    border-top: 1.25rem solid transparent;
+    border-bottom: 1.25rem solid transparent;
+    border-left: 1.25rem solid #ccc;
+  }
+
+  /* fill behind right arrow */
+  .avert-nav .avert-tab2 a::before,
+  .avert-nav .avert-tab3 a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -1.25rem;
+    width: 1.25rem;
+    height: 2.5rem;
+    background-color: #ccc;
+  }
+
+  /* right arrow */
+  .avert-nav a[data-active='true']::after {
+    border-left-color: rgb(0,190,230);
+  }
+
+  /* fill behind arrow */
+  .avert-nav a[data-active='true']::before {
+    background-color: rgb(0,190,230);
+  }
+}

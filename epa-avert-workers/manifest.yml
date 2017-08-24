@@ -1,0 +1,10 @@
+applications:
+  - name: avert-workers
+    command: npm start
+    # memory: 512M
+    memory: 128M
+    instances: 4
+    services:
+#      - avert-redis
+      # - redis-100
+      - avert-redis28

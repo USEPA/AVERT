@@ -1,0 +1,93 @@
+// universal heading styles
+%heading {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+
+
+// default text styles
+h1, h2, h3, h4 {
+  @extend %heading;
+  font-size: 1.25rem;
+}
+
+p {
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+
+li {
+  font-size: 1rem;
+}
+
+a {
+  color: $avert-blue;
+  text-decoration: none;
+}
+
+sup, sub {
+  position: relative;
+  vertical-align: baseline;
+  font-size: 75%;
+}
+sup {
+  top: -0.3125rem;
+}
+sub {
+  top: 0.3125rem;
+}
+
+select {
+  font-size: 1rem;
+}
+
+fieldset {
+  border: none;
+}
+
+
+// body copy
+.avert-copy {
+  line-height: 1.375;
+  color: $grey4;
+
+  // body copy lists
+  ul, ol {
+    margin-top: 1rem;
+    padding-left: 2rem;
+    // remove top margin for nested list items
+    ul, ol { margin-top: 0; }
+  }
+}
+
+
+
+.avert-heading-one {
+  font-size: 1.5rem; // 24px
+  color: $avert-blue;
+}
+.avert-heading-two {
+  margin-bottom: 1rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 2px solid currentColor;
+  font-size: 1.25rem; // 20px
+  color: $avert-blue;
+}
+.avert-heading-three {
+  font-size: 1.125rem; // 18px
+  color: darken($avert-blue, 10%);
+}
+.avert-heading-four {
+  font-size: 1rem; // 16px
+  color: $avert-blue;
+}
+
+
+
+// small text
+.avert-small-text {
+  font-size: 0.875rem;
+  color: $grey6;
+}
