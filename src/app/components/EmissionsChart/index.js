@@ -5,7 +5,7 @@ import Regions from '../../utils/Regions';
 import { StatusEnum } from '../../utils/StatusEnum';
 import { AggregationEnum } from '../../utils/AggregationEnum';
 import { MonthlyUnitEnum } from '../../utils/MonthlyUnitEnum';
-import StatesEnum from '../../utils/StatesEnum';;
+import StatesEnum from '../../utils/StatesEnum';
 // styles
 import './styles.css';
 

@@ -130,6 +130,8 @@ function fetchNox (url,region,eere) {
       body: JSON.stringify({region: avert.regionData.slug, eere: avert.hourlyEere}),
     };
 
+    // console.log('nox',options);
+    // return;
     return fetch(`${url}/api/v1/nox`, options)
       .then(response => response.json())
       .then(json => dispatch(receiveJobId(json)))

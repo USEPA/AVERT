@@ -122,6 +122,9 @@ function fetchGeneration (url,region,eere) {
       body: JSON.stringify({region: avert.regionData.slug, eere: avert.hourlyEere}),
     };
 
+    // console.log('generation',options);
+    // return;
+
     return fetch(`${url}/api/v1/generation`, options)
       .then(response => response.json())
       .then(json => dispatch(receiveJobId(json)))

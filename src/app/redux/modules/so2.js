@@ -131,6 +131,10 @@ function fetchSo2 (url,region,eere) {
       body: JSON.stringify({region: avert.regionData.slug, eere: avert.hourlyEere}),
     };
 
+    // console.log('so2',options.body);
+
+    // return;
+
     return fetch(`${url}/api/v1/so2`, options)
       .then(response => response.json())
       .then(json => dispatch(receiveJobId(json)))

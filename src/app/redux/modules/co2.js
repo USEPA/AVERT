@@ -130,6 +130,9 @@ function fetchCo2 (url,region,eere) {
       body: JSON.stringify({region: avert.regionData.slug, eere: avert.hourlyEere}),
     };
 
+    // console.log('co2',options);
+    // return;
+
     return fetch(`${url}/api/v1/co2`, options)
       .then(response => response.json())
       .then(json => dispatch(receiveJobId(json)))
