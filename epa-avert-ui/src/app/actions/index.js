@@ -12,10 +12,10 @@ import MonthlyEmissionsEngine from '../avert/engines/MonthlyEmissionsEngine';
 
 // store
 import store from '../store';
-import * as fromGeneration from '../redux/modules/generation';
-import * as fromSo2 from '../redux/modules/so2';
-import * as fromNox from '../redux/modules/nox';
-import * as fromCo2 from '../redux/modules/co2';
+import * as fromGeneration from 'app/redux/generation';
+import * as fromSo2 from 'app/redux/so2';
+import * as fromNox from 'app/redux/nox';
+import * as fromCo2 from 'app/redux/co2';
 
 // action types
 export const CHANGE_ACTIVE_STEP = 'avert/core/CHANGE_ACTIVE_STEP';

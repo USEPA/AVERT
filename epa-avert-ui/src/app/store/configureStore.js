@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 // reducers
-import reducer from '../redux/modules/reducer';
+import reducer from 'app/redux/index';
 
 // use Chrome Redux Devtools extension if installed
 const composeEnhancers = (typeof window !== 'undefined')
