@@ -16,15 +16,6 @@ import * as fromGeneration from '../redux/modules/generation';
 import * as fromSo2 from '../redux/modules/so2';
 import * as fromNox from '../redux/modules/nox';
 import * as fromCo2 from '../redux/modules/co2';
-import {
-  getGenerationData,
-  getSo2Data,
-  getNoxData,
-  getCo2Data,
-  getSo2Rate,
-  getNoxRate,
-  getCo2Rate,
-} from '../redux/modules/reducer';
 
 // action types
 export const CHANGE_ACTIVE_STEP = 'avert/core/CHANGE_ACTIVE_STEP';
@@ -199,7 +190,7 @@ export const fetchRegion = () => {
 
     const region = avert.regionData;
     dispatch(requestRegion(region.slug));
-    
+
     return fetch(`${api.baseUrl}/api/v1/rdf/${region.slug}`)
     // return fetch(`./data/${region.rdf}.json`, {credentials: 'same-origin'})
       .then(response => response.json())
@@ -572,7 +563,7 @@ export const requestDisplacement = () => ({
 
 export const receiveDisplacement = () => {
   return (dispatch,getState) => {
-    
+
     dispatch({
       type: 'ATTEMPTING_TO_CALCULATE_DISPLACEMENT_VALUES'
     });
@@ -585,16 +576,16 @@ export const receiveDisplacement = () => {
     dispatch(incrementProgress());
 
     const data = {
-      generation: getGenerationData(getState()),
+      generation: fromGeneration.getGenerationData(getState()),
       totalEmissions: {
-        so2: getSo2Data(getState()),
-        nox: getNoxData(getState()),
-        co2: getCo2Data(getState()),
+        so2: fromSo2.getSo2Data(getState()),
+        nox: fromNox.getNoxData(getState()),
+        co2: fromCo2.getCo2Data(getState()),
       },
       emissionRates: {
-        so2: getSo2Rate(getState()),
-        nox: getNoxRate(getState()),
-        co2: getCo2Rate(getState()),
+        so2: fromSo2.getSo2Rate(getState()),
+        nox: fromNox.getNoxRate(getState()),
+        co2: fromCo2.getCo2Rate(getState()),
       },
     };
 
@@ -659,14 +650,14 @@ export function calculateDisplacement() {
   return dispatch => {
     dispatch(startDisplacement());
     dispatch(incrementProgress());
-    const generation = dispatch(fromGeneration.fetchGenerationIfNeeded());
+    const generation = dispatch(fromGeneration.fetchGeneration());
 
     return Promise.resolve(generation)
     .then(() => {
       return Promise.all([
-        dispatch(fromSo2.fetchSo2IfNeeded()),
-        dispatch(fromNox.fetchNoxIfNeeded()),
-        dispatch(fromCo2.fetchCo2IfNeeded()),
+        dispatch(fromSo2.fetchSo2()),
+        dispatch(fromNox.fetchNox()),
+        dispatch(fromCo2.fetchCo2()),
       ])
       .then(() => dispatch(receiveDisplacement()))
     })

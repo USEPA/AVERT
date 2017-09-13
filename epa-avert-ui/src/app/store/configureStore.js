@@ -1,24 +1,19 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-// import createLogger from 'redux-logger';
-import thunkMiddleware from 'redux-thunk';
+import thunk from 'redux-thunk';
 // reducers
-// import reducers from '../reducers';
 import reducer from '../redux/modules/reducer';
 
-const composeEnhancers = (typeof window !== 'undefined') ? (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose) : compose;
+// use Chrome Redux Devtools extension if installed
+const composeEnhancers = (typeof window !== 'undefined')
+  ? (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose)
+  : compose;
 
-const middleware = applyMiddleware(
-  // createLogger(),
-  thunkMiddleware,
-);
+const middleware = [thunk];
+
+const enhancer = composeEnhancers(applyMiddleware(...middleware));
 
 const configureStore = (preloadedState) => {
-
-  return createStore(
-    reducer,
-    preloadedState,
-    composeEnhancers(middleware),
-  );
+  return createStore(reducer, preloadedState, enhancer);
 };
 
 export default configureStore;
