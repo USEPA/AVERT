@@ -1,6 +1,7 @@
 // action types
+import { SELECT_REGION } from 'app/actions';
+
 import {
-  SELECT_REGION,
   START_DISPLACEMENT,
   COMPLETE_ANNUAL,
   INVALIDATE_DISPLACEMENT,

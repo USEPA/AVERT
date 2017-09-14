@@ -1,6 +1,8 @@
+// actions
+import { SET_EERE_LIMITS } from 'app/actions';
+
 // action types
 import {
-  SET_LIMITS,
   UPDATE_EERE_TOP_HOURS,
   UPDATE_EERE_REDUCTION,
   UPDATE_EERE_BROAD_BASE_PROGRAM,
@@ -50,7 +52,7 @@ const defaultState = {
 
 const eereReducer = (state = defaultState, action) => {
   switch (action.type) {
-    case SET_LIMITS:
+    case SET_EERE_LIMITS:
       return {
         ...state,
         limits: action.payload.limits

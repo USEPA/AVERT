@@ -6,28 +6,106 @@ import FileSaver from 'file-saver';
 import _ from 'lodash';
 
 // avert
-import {avert, eereProfile} from '../avert';
+import { avert, eereProfile } from 'app/avert';
 import StateEmissionsEngine from '../avert/engines/StateEmissionsEngine';
 import MonthlyEmissionsEngine from '../avert/engines/MonthlyEmissionsEngine';
 
 // store
 import store from '../store';
+
+// reducers
 import * as fromGeneration from 'app/redux/generation';
 import * as fromSo2 from 'app/redux/so2';
 import * as fromNox from 'app/redux/nox';
 import * as fromCo2 from 'app/redux/co2';
 
-// action types
-export const CHANGE_ACTIVE_STEP = 'avert/core/CHANGE_ACTIVE_STEP';
 
-export const TOGGLE_MODAL_OVERLAY = 'avert/core/TOGGLE_MODAL_OVERLAY';
-export const STORE_ACTIVE_MODAL = 'avert/core/STORE_ACTIVE_MODAL';
-export const RESET_ACTIVE_MODAL = 'avert/core/RESET_ACTIVE_MODAL';
+// actions and action creators
 export const INCREMENT_PROGRESS = 'avert/core/INCREMENT_PROGRESS';
+export const incrementProgress = () => ({
+  type: INCREMENT_PROGRESS
+});
+
 
 export const SELECT_REGION = 'avert/core/SELECT_REGION';
-export const SET_LIMITS = 'avert/core/SET_LIMITS';
-export const UPDATE_YEAR = 'avert/core/UPDATE_YEAR';
+export function selectRegion(regionId) {
+  return (dispatch) => {
+    const selectedRegionId = parseInt(regionId, 10);
+    // set region in avert engine and dispatch 'select region' event
+    avert.region = selectedRegionId;
+    dispatch({
+      type: SELECT_REGION,
+      region: selectedRegionId,
+    });
+  };
+}
+
+
+export const REQUEST_REGION_RDF = 'avert/core/REQUEST_REGION_RDF';
+export const SET_EERE_LIMITS = 'avert/core/SET_EERE_LIMITS';
+export const RECEIVE_REGION_RDF = 'avert/core/RECEIVE_REGION_RDF';
+export const REQUEST_REGION_DEFAULTS = 'avert/core/REQUEST_REGION_DEFAULTS';
+export const RECEIVE_REGION_DEFAULTS = 'avert/core/RECEIVE_REGION_DEFAULTS';
+export const fetchRegion = () => {
+  return function (dispatch, getState) {
+    const { api } = getState();
+    // get regionData from avert engine
+    const region = avert.regionData;
+    // dispatch 'request region rdf' action
+    dispatch({
+      type: REQUEST_REGION_RDF,
+      region: region.slug,
+    });
+    // fetch rdf data for region
+    return fetch(`${api.baseUrl}/api/v1/rdf/${region.slug}`)
+      .then(response => response.json())
+      .then(json => {
+        // set rdf in avert engine
+        avert.setRdf(json.rdf);
+        // set eere profile limits
+        eereProfile.limits = {
+          constantReductions: avert.firstLimits ? avert.firstLimits.max_ee_yearly_gwh : false,
+          renewables: avert.firstLimits ? avert.firstLimits.max_solar_wind_mwh : false,
+        };
+        // dispatch 'set eere limits' action
+        dispatch({
+          type: SET_EERE_LIMITS,
+          payload: {
+            limits: eereProfile.limits
+          }
+        });
+        // dispatch 'reveive region rdf' action
+        dispatch({
+          type: RECEIVE_REGION_RDF,
+          payload: {
+            rdf: json
+          },
+        });
+        // dispatch 'request region defaults' action
+        dispatch({
+          type: REQUEST_REGION_DEFAULTS,
+          region: region.slug,
+        });
+        // fetch eere data for region
+        fetch(`${api.baseUrl}/api/v1/eere/${region.slug}`)
+          .then(response => response.json())
+          .then(json => {
+            // set defaults in avert engine
+            avert.setDefaults(json.eereDefaults);
+            // dispatch 'receive region defaults' action
+            dispatch({
+              type: RECEIVE_REGION_DEFAULTS,
+              payload: {
+                defaults: json.eereDefaults
+              }
+            });
+          });
+      });
+  };
+};
+
+
+// action types
 export const UPDATE_EERE_TOP_HOURS = 'avert/core/UPDATE_EERE_TOP_HOURS';
 export const UPDATE_EERE_REDUCTION = 'avert/core/UPDATE_EERE_REDUCTION';
 export const UPDATE_EERE_BROAD_BASE_PROGRAM = 'avert/core/UPDATE_EERE_BROAD_BASE_PROGRAM';
@@ -61,157 +139,10 @@ export const RENDER_MONTHLY_CHARTS = 'avert/core/RENDER_MONTHLY_CHARTS';
 export const COMPLETE_STATE = 'avert/core/COMPLETE_STATE';
 export const RESET_MONTHLY_EMISSIONS = 'avert/core/RESET_MONTHLY_EMISSIONS';
 
-export const INVALIDATE_REGION = 'avert/core/INVALIDATE_REGION';
-export const REQUEST_REGION = 'avert/core/REQUEST_REGION';
-export const RECEIVE_REGION = 'avert/core/RECEIVE_REGION';
-export const OVERRIDE_REGION = 'avert/core/OVERRIDE_REGION';
-export const INVALIDATE_DEFAULTS = 'avert/core/INVALIDATE_DEFAULTS';
-export const REQUEST_DEFAULTS = 'avert/core/REQUEST_DEFAULTS';
-export const RECEIVE_DEFAULTS = 'avert/core/RECEIVE_DEFAULTS';
-export const ADD_RDF = 'avert/core/ADD_RDF';
 export const START_DATA_DOWNLOAD = 'avert/core/START_DATA_DOWNLOAD';
 export const SET_DOWNLOAD_DATA = 'avert/core/SET_DOWNLOAD_DATA';
 
 // action creators
-export const setActiveStep = (number) => ({
-  type: CHANGE_ACTIVE_STEP,
-  payload: {
-    stepNumber: number
-  },
-});
-
-export const toggleModalOverlay = () => ({
-  type: TOGGLE_MODAL_OVERLAY,
-});
-
-export const storeActiveModal = (activeModalId) => ({
-  type: STORE_ACTIVE_MODAL,
-  activeModalId,
-});
-
-export const resetActiveModal = (activeModalId) => ({
-  type: RESET_ACTIVE_MODAL,
-  activeModalId,
-});
-
-export const incrementProgress = () => ({
-  type: INCREMENT_PROGRESS
-});
-
-//Use this when downloading another region
-export const invalidateDefaults = (region) => ({
-  type: INVALIDATE_DEFAULTS,
-  region,
-});
-
-const requestDefaults = (region) => ({
-  type: REQUEST_DEFAULTS,
-  region,
-});
-
-const receiveDefaults = (region, defaults) => {
-  avert.setDefaults(defaults.eereDefaults);
-
-  return {
-    type: RECEIVE_DEFAULTS,
-    payload: {
-      defaults: defaults.eereDefaults
-    },
-  }
-};
-
-export const fetchDefaults = () => {
-  return function (dispatch, getState) {
-    const {api} = getState();
-
-    const region = avert.regionData;
-    dispatch(requestDefaults(region.slug));
-
-    return fetch(`${api.baseUrl}/api/v1/eere/${region.slug}`)
-    // return fetch(`./data/${region.defaults}.json`, {credentials: 'same-origin'})
-      .then(response => response.json())
-      .then(json => dispatch(receiveDefaults(region.slug, json)))
-  };
-};
-
-//Use this when downloading another region
-export const invalidateRegion = (region) => ({
-  type: INVALIDATE_REGION,
-  region,
-});
-
-const requestRegion = (region) => ({
-  type: REQUEST_REGION,
-  region,
-});
-
-const setLimits = () => {
-  eereProfile.limits = {
-    constantReductions: avert.firstLimits ? avert.firstLimits.max_ee_yearly_gwh : false,
-    renewables: avert.firstLimits ? avert.firstLimits.max_solar_wind_mwh : false,
-  };
-
-  return {
-    type: SET_LIMITS,
-    payload: {
-      limits: eereProfile.limits
-    }
-  }
-};
-
-const emitReceiveRegion = (rdf) => ({
-  type: RECEIVE_REGION,
-  payload: {
-    rdf: rdf
-  },
-});
-
-const receiveRegion = (region, json) => {
-  return function (dispatch) {
-    avert.setRdf(json.rdf);
-    dispatch(setLimits());
-    return dispatch(emitReceiveRegion(json));
-  };
-};
-
-//Deprecate?
-let nextRdfId = 0;
-export const addRdf = (rdf) => ({
-  type: ADD_RDF,
-  id: nextRdfId++,
-  rdf,
-});
-
-export const fetchRegion = () => {
-  return function (dispatch, getState) {
-    const {api,rdfs} = getState();
-
-    if (rdfs.debug) return Promise.resolve();
-
-    const region = avert.regionData;
-    dispatch(requestRegion(region.slug));
-
-    return fetch(`${api.baseUrl}/api/v1/rdf/${region.slug}`)
-    // return fetch(`./data/${region.rdf}.json`, {credentials: 'same-origin'})
-      .then(response => response.json())
-      .then(json => dispatch(receiveRegion(region.slug, json)))
-      .then(action => dispatch(fetchDefaults()));
-  };
-};
-
-const changeRegion = (region) => ({
-  type: SELECT_REGION,
-  region: region,
-});
-
-export const selectRegion = (region) => {
-  return function (dispatch) {
-    const formattedRegion = parseInt(region, 10);
-    avert.region = formattedRegion;
-    dispatch(changeRegion(formattedRegion));
-  };
-};
-
 export const validateEere = () => {
   avert.setEereProfile(eereProfile);
 

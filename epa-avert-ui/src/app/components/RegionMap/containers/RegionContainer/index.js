@@ -1,13 +1,11 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 // action creators
-import { selectRegion } from '../../../../actions';
+import { selectRegion } from 'app/actions';
 
 const Region = (props) => (
   <g className='avert-region'
-    onClick={(e) => {
-      props.onRegionClick(props.regionId);
-    }}
+    onClick={(e) => { props.onRegionClick(props.regionId) }}
     data-active={ props.regionId === props.selectedRegion ? true : false }
   >
     { props.children }

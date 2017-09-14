@@ -5,8 +5,9 @@ import {AggregationEnum} from '../../utils/AggregationEnum';
 import {MonthlyUnitEnum} from '../../utils/MonthlyUnitEnum';
 
 // action types
+import { SELECT_REGION } from 'app/actions';
+
 import {
-  SELECT_REGION,
   START_DISPLACEMENT,
   COMPLETE_MONTHLY,
   SELECT_AGGREGATION,

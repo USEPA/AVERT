@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 // components
 import RegionList from '../../components/RegionList';
 // action creators
-import { selectRegion } from '../../actions';
+import { selectRegion } from 'app/actions';
 
 const mapStateToProps = (state) => ({
   selectedRegion: state.regions.region,

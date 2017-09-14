@@ -2,9 +2,8 @@ import { connect } from 'react-redux';
 // components
 import StepPanels from '../../components/StepPanels';
 // action creators
+import { toggleModalOverlay, resetActiveModal } from 'app/redux/panel';
 import {
-  resetActiveModal,
-  toggleModalOverlay,
   startDataDownload,
 } from '../../actions';
 
@@ -12,7 +11,7 @@ const mapStateToProps = (state) => ({
   loading: state.panel.loading,
   modalOverlay: state.panel.modalOverlay,
   activeModalId: state.panel.activeModalId,
-  percentComplete: state.panel.percentComplete,
+  loadingProgress: state.panel.loadingProgress,
   softValid: state.eere.soft_valid,
 });
 

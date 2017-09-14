@@ -2,8 +2,8 @@ import { connect } from 'react-redux';
 // components
 import PanelFooter from '../../components/PanelFooter';
 // action creators
+import { setActiveStep } from 'app/redux/panel';
 import {
-  setActiveStep,
   fetchRegion,
   calculateDisplacement,
   resetEereInputs,

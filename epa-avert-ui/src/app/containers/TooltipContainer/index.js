@@ -2,11 +2,7 @@ import { connect } from 'react-redux';
 // components
 import Tooltip from '../../components/Tooltip';
 // action creators
-import {
-  storeActiveModal,
-  resetActiveModal,
-  toggleModalOverlay
-} from '../../actions';
+import { toggleModalOverlay, storeActiveModal, resetActiveModal } from 'app/redux/panel';
 
 const mapStateToProps = (state) => ({
   activeModalId: state.panel.activeModalId,
