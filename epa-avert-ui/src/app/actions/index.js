@@ -1,5 +1,4 @@
 // deps
-import fetch from 'isomorphic-fetch';
 import Blob from 'blob';
 import json2csv from 'json2csv';
 import FileSaver from 'file-saver';
@@ -632,4 +631,3 @@ export const startDataDownload = () => {
     });
   }
 };
-

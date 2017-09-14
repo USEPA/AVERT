@@ -1,7 +1,7 @@
-import fetch from 'isomorphic-fetch';
 import math from 'mathjs';
-
+// engine
 import { avert } from 'app/avert';
+// action creators
 import { incrementProgress } from 'app/actions';
 
 // actions
@@ -44,60 +44,40 @@ export default function reducer(state = initialState, action) {
 }
 
 // action creators
-export function requestSo2() {
-  return {
-    type: REQUEST_SO2,
-  };
-}
-
-export function receiveSo2(json) {
-  return (dispatch) => {
-    dispatch(incrementProgress());
-
-    return dispatch({
-      type: RECEIVE_SO2,
-      json,
-    });
-  }
-}
-
-export function pollServerForData(json) {
+function pollServerForData() {
   return (dispatch, getState) => {
     const { api, so2 } = getState();
-
+    // dispatch 'poll server for data' action
     dispatch({
       type: POLL_SERVER_FOR_DATA,
       jobId: so2.jobId,
-      json,
     });
-
+    // fetch so2 data via job id
     return fetch(`${api.baseUrl}/api/v1/jobs/${so2.jobId}`)
       .then(response => response.json())
       .then(json => {
+        // recursively call function if response from server is 'in progress'
         if (json.response === 'in progress') {
-          return setTimeout(() => dispatch(pollServerForData(json)), api.pollingFrequency)
+          return setTimeout(() => dispatch(pollServerForData()), api.pollingFrequency)
         }
-
-        return dispatch(receiveSo2(json));
+        // dispatch 'incrementProgress' and 'receive so2' actions
+        dispatch(incrementProgress());
+        dispatch({
+          type: RECEIVE_SO2,
+          json: json,
+        });
       });
-  };
-}
-
-export function receiveJobId(json) {
-  return (dispatch) => {
-    return dispatch({
-      type: RECEIVE_JOB_ID,
-      json,
-    });
   };
 }
 
 export function fetchSo2() {
   return (dispatch, getState) => {
     const { api } = getState();
-
-    dispatch(requestSo2());
-
+    // dispatch 'request so2' action
+    dispatch({
+      type: REQUEST_SO2,
+    });
+    // post so2 data for region and receive a job id
     const options = {
       method: 'POST',
       headers: {
@@ -109,11 +89,16 @@ export function fetchSo2() {
         eere: avert.hourlyEere
       }),
     };
-
     return fetch(`${api.baseUrl}/api/v1/so2`, options)
       .then(response => response.json())
-      .then(json => dispatch(receiveJobId(json)))
-      .then(action => dispatch(pollServerForData()));
+      .then(json => {
+        // dispatch 'receive job id' and 'poll server for data' actions
+        dispatch({
+          type: RECEIVE_JOB_ID,
+          json: json,
+        });
+        dispatch(pollServerForData());
+      });
   };
 }
 

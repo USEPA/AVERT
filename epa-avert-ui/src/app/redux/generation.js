@@ -1,6 +1,6 @@
-import fetch from 'isomorphic-fetch';
-
+// engine
 import { avert } from 'app/avert';
+// action creators
 import { incrementProgress } from 'app/actions';
 
 // actions
@@ -43,61 +43,40 @@ export default function reducer(state = initialState, action) {
 }
 
 // action creators
-export function requestGeneration() {
-  return {
-    type: REQUEST_GENERATION,
-  };
-}
-
-export function receiveGeneration(json) {
-  return (dispatch) => {
-    dispatch(incrementProgress());
-
-    return dispatch({
-      type: RECEIVE_GENERATION,
-      json: json,
-    });
-  };
-}
-
-export function pollServerForData(json) {
+function pollServerForData() {
   return (dispatch, getState) => {
     const { api, generation } = getState();
-
+    // dispatch 'poll server for data' action
     dispatch({
       type: POLL_SERVER_FOR_DATA,
       jobId: generation.jobId,
-      json,
     });
-
+    // fetch generation data via job id
     return fetch(`${api.baseUrl}/api/v1/jobs/${generation.jobId}`)
       .then(response => response.json())
       .then(json => {
+        // recursively call function if response from server is 'in progress'
         if (json.response === 'in progress') {
-          return setTimeout(() => dispatch(pollServerForData(json)), api.pollingFrequency)
+          return setTimeout(() => dispatch(pollServerForData()), api.pollingFrequency)
         }
-
-        return dispatch(receiveGeneration(json));
+        // dispatch 'incrementProgress' and 'receive generation' actions
+        dispatch(incrementProgress());
+        dispatch({
+          type: RECEIVE_GENERATION,
+          json: json,
+        });
       });
   };
 }
 
-export function receiveJobId(json) {
-  return (dispatch) => {
-    return dispatch({
-      type: RECEIVE_JOB_ID,
-      json,
-    });
-  };
-}
-
-// other
 export function fetchGeneration() {
   return (dispatch, getState) => {
     const { api } = getState();
-
-    dispatch(requestGeneration());
-
+    // dispatch 'request generation' action
+    dispatch({
+      type: REQUEST_GENERATION,
+    });
+    // post generation data for region and receive a job id
     const options = {
       method: 'POST',
       headers: {
@@ -109,12 +88,18 @@ export function fetchGeneration() {
         eere: avert.hourlyEere
       }),
     };
-
     return fetch(`${api.baseUrl}/api/v1/generation`, options)
       .then(response => response.json())
-      .then(json => dispatch(receiveJobId(json)))
-      .then(action => dispatch(pollServerForData()));
+      .then(json => {
+        // dispatch 'receive job id' and 'poll server for data' actions
+        dispatch({
+          type: RECEIVE_JOB_ID,
+          json: json,
+        });
+        dispatch(pollServerForData());
+      });
   };
 }
 
+// other
 export const getGenerationData = (state) => state.generation.data;

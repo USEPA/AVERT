@@ -1,7 +1,7 @@
-import fetch from 'isomorphic-fetch';
 import math from 'mathjs';
-
+// engine
 import { avert } from 'app/avert';
+// action creators
 import { incrementProgress } from 'app/actions';
 
 // actions
@@ -44,60 +44,40 @@ export default function reducer(state = initialState, action) {
 }
 
 // action creators
-export function requestNox() {
-  return {
-    type: REQUEST_NOX,
-  };
-}
-
-export function receiveNox(json) {
-  return (dispatch) => {
-    dispatch(incrementProgress());
-
-    return dispatch({
-      type: RECEIVE_NOX,
-      json,
-    });
-  };
-}
-
-export function pollServerForData(json) {
+function pollServerForData() {
   return (dispatch, getState) => {
     const { api, nox } = getState();
-
+    // dispatch 'poll server for data' action
     dispatch({
       type: POLL_SERVER_FOR_DATA,
       jobId: nox.jobId,
-      json,
     });
-
+    // fetch nox data via job id
     return fetch(`${api.baseUrl}/api/v1/jobs/${nox.jobId}`)
       .then(response => response.json())
       .then(json => {
+        // recursively call function if response from server is 'in progress'
         if (json.response === 'in progress') {
-          return setTimeout(() => dispatch(pollServerForData(json)), api.pollingFrequency)
+          return setTimeout(() => dispatch(pollServerForData()), api.pollingFrequency)
         }
-
-        return dispatch(receiveNox(json));
+        // dispatch 'incrementProgress' and 'receive nox' actions
+        dispatch(incrementProgress());
+        dispatch({
+          type: RECEIVE_NOX,
+          json: json,
+        });
       });
   };
 }
 
-export function receiveJobId(json) {
-  return (dispatch) => {
-    return dispatch({
-      type: RECEIVE_JOB_ID,
-      json,
-    });
-  };
-}
-
-export function fetchNox () {
+export function fetchNox() {
   return (dispatch, getState) => {
     const { api } = getState();
-
-    dispatch(requestNox());
-
+    // dispatch 'request nox' action
+    dispatch({
+      type: REQUEST_NOX,
+    });
+    // post nox data for region and receive a job id
     const options = {
       method: 'POST',
       headers: {
@@ -109,11 +89,16 @@ export function fetchNox () {
         eere: avert.hourlyEere
       }),
     };
-
     return fetch(`${api.baseUrl}/api/v1/nox`, options)
       .then(response => response.json())
-      .then(json => dispatch(receiveJobId(json)))
-      .then(action => dispatch(pollServerForData()));
+      .then(json => {
+        // dispatch 'receive job id' and 'poll server for data' actions
+        dispatch({
+          type: RECEIVE_JOB_ID,
+          json: json,
+        });
+        dispatch(pollServerForData());
+      });
   };
 }
 
