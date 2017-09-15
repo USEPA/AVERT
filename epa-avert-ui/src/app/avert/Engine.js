@@ -13,7 +13,7 @@ import EereEngine from './engines/EereEngine';
 // App
 import store from '../store';
 import {
-    completeCalculation,
+    completeEereCalculation,
     completeAnnual,
     completeAnnualGeneration,
     completeAnnualSo2,
@@ -96,7 +96,7 @@ class Engine {
         this.eereEngine = new EereEngine(this.eereProfile,this.rdfClass,regionData);
         this.eereEngine.calculateEereLoad();
         this.hourlyEere = this.eereEngine.hourlyEere;
-        store.dispatch(completeCalculation(this.eereEngine.hourlyEere));
+        store.dispatch(completeEereCalculation(this.eereEngine.hourlyEere));
         store.dispatch(updateExceedances(this.eereEngine.exceedances,this.eereEngine.softExceedances,this.eereEngine.hardExceedances));
     }
 

@@ -1,13 +1,8 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import {
-  eereProfile
-} from '../../../app/avert';
-import eereReducer from '../../../app/reducers/eereReducer';
-import {
-  RESET_EERE_INPUTS,
-  resetEereInputs,
-} from '../../../app/actions';
+import { eereProfile } from 'app/avert';
+import eereReducer from 'app/redux/eere';
+import { RESET_EERE_INPUTS, resetEereInputs } from 'app/actions';
 
 
 const middlewares = [ thunk ];
@@ -42,7 +37,6 @@ describe('eereReducer', () => {
     hard_top_exceedance_value: 0,
     hard_top_exceedance_hour: 0,
     hard_top_exceedance_timestamp: {},
-    submitted: false,
     hourlyEere: [],
   };
 

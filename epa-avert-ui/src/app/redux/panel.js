@@ -8,14 +8,14 @@ import {
   INCREMENT_PROGRESS,
   REQUEST_REGION_RDF,
   RECEIVE_REGION_DEFAULTS,
+  SUBMIT_EERE_CALCULATION,
+  COMPLETE_EERE_CALCULATION,
 } from 'app/actions';
 
 // --- todo: define here, or import ---
 import {
-  SUBMIT_CALCULATION,
   START_DISPLACEMENT,
   RECEIVE_DISPLACEMENT,
-  COMPLETE_CALCULATION,
   COMPLETE_MONTHLY,
 } from 'app/actions';
 
@@ -64,7 +64,7 @@ export default function reducer(state = initialState, action) {
       };
 
     case REQUEST_REGION_RDF:
-    case SUBMIT_CALCULATION:
+    case SUBMIT_EERE_CALCULATION:
     case START_DISPLACEMENT:
       return {
         ...state,
@@ -72,9 +72,9 @@ export default function reducer(state = initialState, action) {
         loadingProgress: 0,
       };
 
+    case COMPLETE_EERE_CALCULATION:
     case RECEIVE_DISPLACEMENT:
     case RECEIVE_REGION_DEFAULTS:
-    case COMPLETE_CALCULATION:
     case COMPLETE_MONTHLY:
       return {
         ...state,

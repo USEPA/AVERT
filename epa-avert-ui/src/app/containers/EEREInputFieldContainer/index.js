@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 // components
 import EEREInputField from '../../components/EEREInputField';
 // action creators
-import { calculateEereProfile } from '../../actions';
+import { calculateEereProfile } from 'app/actions';
 
 const mapStateToProps = (state) => ({
   valid: state.eere.valid,
@@ -10,7 +10,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onCalculateProfile() {
-    calculateEereProfile();
+    dispatch(calculateEereProfile());
   },
 });
 

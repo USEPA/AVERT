@@ -13,7 +13,7 @@ import {
   updateEereRooftopSolar,
 
   calculateEereProfile,
-} from '../../actions';
+} from 'app/actions';
 
 const mapStateToProps = (state) => ({
   limits: state.eere.limits,
@@ -58,7 +58,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(updateEereRooftopSolar(text));
   },
   onCalculateProfile() {
-    calculateEereProfile();
+    dispatch(calculateEereProfile());
   },
 });
 

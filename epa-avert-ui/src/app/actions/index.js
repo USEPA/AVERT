@@ -9,9 +9,6 @@ import { avert, eereProfile } from 'app/avert';
 import StateEmissionsEngine from '../avert/engines/StateEmissionsEngine';
 import MonthlyEmissionsEngine from '../avert/engines/MonthlyEmissionsEngine';
 
-// store
-import store from '../store';
-
 // reducers
 import * as fromGeneration from 'app/redux/generation';
 import * as fromSo2 from 'app/redux/so2';
@@ -61,7 +58,7 @@ export const fetchRegion = () => {
       .then(json => {
         // set rdf in avert engine
         avert.setRdf(json.rdf);
-        // set eere profile limits
+        // set eere profile's limits
         eereProfile.limits = {
           constantReductions: avert.firstLimits ? avert.firstLimits.max_ee_yearly_gwh : false,
           renewables: avert.firstLimits ? avert.firstLimits.max_solar_wind_mwh : false,
@@ -104,21 +101,199 @@ export const fetchRegion = () => {
 };
 
 
-// action types
-export const UPDATE_EERE_TOP_HOURS = 'avert/core/UPDATE_EERE_TOP_HOURS';
-export const UPDATE_EERE_REDUCTION = 'avert/core/UPDATE_EERE_REDUCTION';
-export const UPDATE_EERE_BROAD_BASE_PROGRAM = 'avert/core/UPDATE_EERE_BROAD_BASE_PROGRAM';
-export const UPDATE_EERE_ANNUAL_GWH = 'avert/core/UPDATE_EERE_ANNUAL_GWH';
-export const UPDATE_EERE_CONSTANT_MW = 'avert/core/UPDATE_EERE_CONSTANT_MW';
-export const UPDATE_EERE_WIND_CAPACITY = 'avert/core/UPDATE_EERE_WIND_CAPACITY';
-export const UPDATE_EERE_UTILITY_SOLAR = 'avert/core/UPDATE_EERE_UTILITY_SOLAR';
-export const UPDATE_EERE_ROOFTOP_SOLAR = 'avert/core/UPDATE_EERE_ROOFTOP_SOLAR';
 export const VALIDATE_EERE = "avert/core/VALIDATE_EERE";
-export const UPDATE_EXCEEDANCES = "avert/core/UPDATE_EXCEEDANCES";
-export const RESET_EERE_INPUTS = 'avert/core/RESET_EERE_INPUTS';
+export const validateEere = () => {
+  // set eere profile in avert engine and return validation action
+  avert.setEereProfile(eereProfile);
+  return {
+    type: VALIDATE_EERE,
+    valid: eereProfile.isValid,
+    errors: eereProfile.errors,
+  };
+};
 
-export const SUBMIT_CALCULATION = 'avert/core/SUBMIT_CALCULATION';
-export const COMPLETE_CALCULATION = "avert/core/COMPLETE_CALCULATION";
+export const UPDATE_EERE_ANNUAL_GWH = 'avert/core/UPDATE_EERE_ANNUAL_GWH';
+export const updateEereAnnualGwh = (text) => {
+  return function (dispatch) {
+    // set eere profile's annualGwh
+    eereProfile.annualGwh = text;
+    // dispatch validation and update actions
+    dispatch(validateEere());
+    dispatch({
+      type: UPDATE_EERE_ANNUAL_GWH,
+      text: text,
+    });
+  };
+};
+
+export const UPDATE_EERE_CONSTANT_MW = 'avert/core/UPDATE_EERE_CONSTANT_MW';
+export const updateEereConstantMw = (text) => {
+  return function (dispatch) {
+    // set eere profile's constantMw
+    eereProfile.constantMw = text;
+    // dispatch validation and update actions
+    dispatch(validateEere());
+    dispatch({
+      type: UPDATE_EERE_CONSTANT_MW,
+      text: text,
+    });
+  };
+};
+
+export const UPDATE_EERE_BROAD_BASE_PROGRAM = 'avert/core/UPDATE_EERE_BROAD_BASE_PROGRAM';
+export const updateEereBroadBasedProgram = (text) => {
+  return function (dispatch) {
+    // set eere profile's topHours and reduction
+    eereProfile.topHours = 100;
+    eereProfile.reduction = text;
+    // dispatch validation and update actions
+    dispatch(validateEere());
+    dispatch({
+      type: UPDATE_EERE_BROAD_BASE_PROGRAM,
+      text:text,
+    });
+  };
+};
+
+export const UPDATE_EERE_REDUCTION = 'avert/core/UPDATE_EERE_REDUCTION';
+export const updateEereReduction = (text) => {
+  return function (dispatch) {
+    // set eere profile's reduction
+    eereProfile.reduction = text;
+    // dispatch validation and update actions
+    dispatch(validateEere());
+    dispatch({
+      type: UPDATE_EERE_REDUCTION,
+      text: text,
+    });
+  };
+};
+
+export const UPDATE_EERE_TOP_HOURS = 'avert/core/UPDATE_EERE_TOP_HOURS';
+export const updateEereTopHours = (text) => {
+  return function (dispatch) {
+    // set eere profile's topHours
+    eereProfile.topHours = text;
+    // dispatch validation and update actions
+    dispatch(validateEere());
+    dispatch({
+      type: UPDATE_EERE_TOP_HOURS,
+      text: text,
+    });
+  };
+};
+
+export const UPDATE_EERE_WIND_CAPACITY = 'avert/core/UPDATE_EERE_WIND_CAPACITY';
+export const updateEereWindCapacity = (text) => {
+  return function (dispatch) {
+    // set eere profile's windCapacity
+    eereProfile.windCapacity = text;
+    // dispatch validation and update actions
+    dispatch(validateEere());
+    dispatch({
+      type: UPDATE_EERE_WIND_CAPACITY,
+      text: text,
+    });
+  };
+};
+
+export const UPDATE_EERE_UTILITY_SOLAR = 'avert/core/UPDATE_EERE_UTILITY_SOLAR';
+export const updateEereUtilitySolar = (text) => {
+  return function (dispatch) {
+    // set eere profile's utilitySolar
+    eereProfile.utilitySolar = text;
+    // dispatch validation and update actions
+    dispatch(validateEere());
+    dispatch({
+      type: UPDATE_EERE_UTILITY_SOLAR,
+      text: text,
+    });
+  };
+};
+
+export const UPDATE_EERE_ROOFTOP_SOLAR = 'avert/core/UPDATE_EERE_ROOFTOP_SOLAR';
+export const updateEereRooftopSolar = (text) => {
+  return function (dispatch) {
+    // set eere profile's rooftopSolar
+    eereProfile.rooftopSolar = text;
+    dispatch(validateEere());
+    dispatch({
+      type: UPDATE_EERE_ROOFTOP_SOLAR,
+      text: text,
+    });
+  };
+};
+
+export const SUBMIT_EERE_CALCULATION = 'avert/core/SUBMIT_EERE_CALCULATION';
+export const calculateEereProfile = () => {
+  // after delay, calculate eere load in avert engine and return action
+  setTimeout(() => avert.calculateEereLoad(), 50);
+  return {
+    type: SUBMIT_EERE_CALCULATION,
+  };
+};
+
+export const COMPLETE_EERE_CALCULATION = "avert/core/COMPLETE_EERE_CALCULATION";
+export const completeEereCalculation = (hourlyEere) => ({
+  type: COMPLETE_EERE_CALCULATION,
+  hourlyEere: hourlyEere,
+});
+
+export const UPDATE_EXCEEDANCES = "avert/core/UPDATE_EXCEEDANCES";
+export const updateExceedances = (exceedances, soft, hard) => {
+  return function (dispatch, getState) {
+    const { rdfs } = getState();
+    //TODO: Pull these calculations out into a util, run them in the action, then pass them to the reducers
+    const valid = exceedances.reduce((a, b) => a + b) === 0;
+    const maxVal = (!valid) ? Math.max(...exceedances) : 0;
+    const maxIndex = (!valid) ? exceedances.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0) : 0;
+
+    const softValid = soft.reduce((a, b) => a + b) === 0;
+    const softMaxVal = (!valid) ? Math.max(...soft) : 0;
+    const softMaxIndex = (!valid) ? soft.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0) : 0;
+    const softTimestamp = (softMaxIndex !== 0) ? rdfs.rdf.regional_load[softMaxIndex] : {};
+
+    const hardValid = hard.reduce((a, b) => a + b) === 0;
+    const hardMaxVal = (!valid) ? Math.max(...hard) : 0;
+    const hardMaxIndex = (!valid) ? hard.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0) : 0;
+    const hardTimestamp = (hardMaxIndex !== 0) ? rdfs.rdf.regional_load[hardMaxIndex] : {};
+
+    return dispatch({
+      type: UPDATE_EXCEEDANCES,
+      payload: {
+        exceedances: exceedances,
+        soft_exceedances: soft,
+        hard_exceedances: hard,
+
+        valid: valid,
+        maxVal: maxVal,
+        maxIndex: maxIndex,
+
+        softValid: softValid,
+        softMaxVal: softMaxVal,
+        softMaxIndex: softMaxIndex,
+        softTimestamp: softTimestamp,
+
+        hardValid: hardValid,
+        hardMaxVal: hardMaxVal,
+        hardMaxIndex: hardMaxIndex,
+        hardTimestamp: hardTimestamp,
+      }
+    });
+  };
+};
+
+export const RESET_EERE_INPUTS = 'avert/core/RESET_EERE_INPUTS';
+export const resetEereInputs = () => {
+  // call reset on eere profile and return reset eere action
+  eereProfile.reset();
+  return {
+    type: RESET_EERE_INPUTS,
+  }
+};
+
+
+// action types
 export const START_DISPLACEMENT = 'avert/core/START_DISPLACEMENT';
 export const INVALIDATE_DISPLACEMENT = 'avert/core/INVALIDATE_DISPLACEMENT';
 export const REQUEST_DISPLACEMENT = 'avert/core/REQUEST_DISPLACEMENT';
@@ -142,165 +317,6 @@ export const START_DATA_DOWNLOAD = 'avert/core/START_DATA_DOWNLOAD';
 export const SET_DOWNLOAD_DATA = 'avert/core/SET_DOWNLOAD_DATA';
 
 // action creators
-export const validateEere = () => {
-  avert.setEereProfile(eereProfile);
-
-  const valid = eereProfile.isValid;
-  const errors = eereProfile.errors;
-
-  return {
-    type: VALIDATE_EERE,
-    valid,
-    errors,
-  };
-};
-
-export const updateEereTopHours = (text) => {
-  eereProfile.topHours = text;
-  store.dispatch(validateEere());
-
-  return {
-    type: UPDATE_EERE_TOP_HOURS,
-    text,
-  };
-};
-
-export const updateEereReduction = (text) => {
-  eereProfile.reduction = text;
-  store.dispatch(validateEere());
-
-  return {
-    type: UPDATE_EERE_REDUCTION,
-    text,
-  };
-};
-
-export const updateEereBroadBasedProgram = (text) => {
-  eereProfile.topHours = 100;
-  eereProfile.reduction = text;
-  store.dispatch(validateEere());
-
-  return {
-    type: UPDATE_EERE_BROAD_BASE_PROGRAM,
-    text,
-  };
-};
-
-export const updateEereAnnualGwh = (text) => {
-  eereProfile.annualGwh = text;
-  store.dispatch(validateEere());
-
-  return {
-    type: UPDATE_EERE_ANNUAL_GWH,
-    text,
-  };
-};
-
-export const updateEereConstantMw = (text) => {
-  eereProfile.constantMw = text;
-  store.dispatch(validateEere());
-
-  return {
-    type: UPDATE_EERE_CONSTANT_MW,
-    text,
-  };
-};
-
-export const updateEereWindCapacity = (text) => {
-  eereProfile.windCapacity = text;
-  store.dispatch(validateEere());
-
-  return {
-    type: UPDATE_EERE_WIND_CAPACITY,
-    text,
-  };
-};
-
-export const updateEereUtilitySolar = (text) => {
-  eereProfile.utilitySolar = text;
-  store.dispatch(validateEere());
-
-  return {
-    type: UPDATE_EERE_UTILITY_SOLAR,
-    text,
-  };
-};
-
-export const updateEereRooftopSolar = (text) => {
-  eereProfile.rooftopSolar = text;
-  store.dispatch(validateEere());
-
-  return {
-    type: UPDATE_EERE_ROOFTOP_SOLAR,
-    text,
-  };
-};
-
-export const updateExceedances = (exceedances, soft, hard) => {
-  return function (dispatch, getState) {
-    const {rdfs} = getState();
-    //TODO: Pull these calculations out into a util, run them in the action, then pass them to the reducers
-    const valid = exceedances.reduce((a, b) => a + b) === 0;
-    const maxVal = (!valid) ? Math.max(...exceedances) : 0;
-    const maxIndex = (!valid) ? exceedances.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0) : 0;
-
-    const softValid = soft.reduce((a, b) => a + b) === 0;
-    const softMaxVal = (!valid) ? Math.max(...soft) : 0;
-    const softMaxIndex = (!valid) ? soft.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0) : 0;
-    const softTimestamp = (softMaxIndex !== 0) ? rdfs.rdf.regional_load[softMaxIndex] : {};
-
-    const hardValid = hard.reduce((a, b) => a + b) === 0;
-    const hardMaxVal = (!valid) ? Math.max(...hard) : 0;
-    const hardMaxIndex = (!valid) ? hard.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0) : 0;
-    const hardTimestamp = (hardMaxIndex !== 0) ? rdfs.rdf.regional_load[hardMaxIndex] : {};
-
-    return dispatch({
-      type: UPDATE_EXCEEDANCES,
-      payload: {
-        exceedances,
-        soft_exceedances: soft,
-        hard_exceedances: hard,
-        valid,
-        maxVal,
-        maxIndex,
-        softValid,
-        softMaxVal,
-        softMaxIndex,
-        softTimestamp,
-        hardValid,
-        hardMaxVal,
-        hardMaxIndex,
-        hardTimestamp,
-      }
-    });
-  }
-};
-
-export const resetEereInputs = () => {
-  eereProfile.reset();
-
-  return {
-    type: RESET_EERE_INPUTS,
-  }
-};
-
-export const completeCalculation = (hourlyEere) => ({
-  type: COMPLETE_CALCULATION,
-  hourlyEere,
-});
-
-const submitCalculation = () => ({
-  type: SUBMIT_CALCULATION,
-});
-
-export const calculateEereProfile = () => {
-  store.dispatch(submitCalculation());
-
-  setTimeout(() => {
-    avert.calculateEereLoad();
-  }, 50);
-};
-
 export const completeAnnualGeneration = (data) => {
   return function (dispatch, getState) {
     dispatch({
