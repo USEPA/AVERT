@@ -3,16 +3,13 @@ import { connect } from 'react-redux';
 import EmissionsChart from '../../components/EmissionsChart';
 // action creators
 import {
-  // changeSelectedUnit,
-  updateMonthlyAggregation,
-  updateMonthlyUnit,
-  selectState,
-  selectCounty,
-} from '../../actions';
+  selectMonthlyAggregation,
+  selectMonthlyUnit,
+  selectMonthlyState,
+  selectMonthlyCounty,
+} from 'app/actions';
 
 const mapStateToProps = (state) => ({
-  // aggregation: state.selectedAggregation,
-  // unit: state.selectedUnit,
   monthly_status: state.monthlyEmissions.status,
   output: state.monthlyEmissions.newVisibleData,
   aggregation: state.monthlyEmissions.newSelectedAggregation,
@@ -25,23 +22,17 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  // onAggregationRadioChange(text) {
-  //   dispatch(changeSelectedAggregation(text))
-  // },
-  // onUnitRadioChange(text) {
-  //   dispatch(changeSelectedUnit(text))
-  // },
   onAggregationChange(aggregation) {
-    dispatch(updateMonthlyAggregation(aggregation));
+    dispatch(selectMonthlyAggregation(aggregation));
   },
   onUnitChange(unit) {
-    dispatch(updateMonthlyUnit(unit));
+    dispatch(selectMonthlyUnit(unit));
   },
   selectState(state) {
-    dispatch(selectState(state));
+    dispatch(selectMonthlyState(state));
   },
   selectCounty(county) {
-    dispatch(selectCounty(county));
+    dispatch(selectMonthlyCounty(county));
   },
 });
 

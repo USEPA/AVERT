@@ -1,4 +1,3 @@
-import math from 'mathjs';
 // engine
 import { avert } from 'app/avert';
 // action creators
@@ -74,9 +73,7 @@ export function fetchSo2() {
   return (dispatch, getState) => {
     const { api } = getState();
     // dispatch 'request so2' action
-    dispatch({
-      type: REQUEST_SO2,
-    });
+    dispatch({ type: REQUEST_SO2 });
     // post so2 data for region and receive a job id
     const options = {
       method: 'POST',
@@ -101,20 +98,3 @@ export function fetchSo2() {
       });
   };
 }
-
-// other
-export const getSo2Data = (state) => state.so2.data;
-export const getSo2Rate = (state) => ({
-  original: math.round(
-    math.divide(
-      state.so2.data.original,
-      state.generation.data.original
-    ),
-  2),
-  post: math.round(
-    math.divide(
-      state.so2.data.post,
-      state.generation.data.post
-    ),
-  2),
-});

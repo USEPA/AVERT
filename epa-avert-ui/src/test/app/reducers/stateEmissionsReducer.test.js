@@ -6,8 +6,8 @@ describe('stateEmissionsReducer', () => {
     expect(stateEmissionsReducer(undefined, {})).toEqual({results: [], status: 'select_region'});
   });
 
-  it('should handle COMPLETE_STATE', () => {
-    expect(stateEmissionsReducer([], {type: types.COMPLETE_STATE, data: 'Foo'}))
+  it('should handle COMPLETE_STATE_EMISSIONS', () => {
+    expect(stateEmissionsReducer([], {type: types.COMPLETE_STATE_EMISSIONS, data: 'Foo'}))
       .toEqual({results: "Foo", status: "complete"})
   });
 });

@@ -9,11 +9,10 @@ import so2 from 'app/redux/so2';
 import nox from 'app/redux/nox';
 import co2 from 'app/redux/co2';
 import eere from 'app/redux/eere';
-
-import annualDisplacement from '../reducers/annualDisplacementReducer';
-import dataDownload from '../reducers/dataDownloadReducer';
-import monthlyEmissions from '../reducers/monthlyEmissionsReducer';
-import stateEmissions from '../reducers/stateEmissionsReducer';
+import annualDisplacement from 'app/redux/annualDisplacement';
+import stateEmissions from 'app/redux/stateEmissions';
+import monthlyEmissions from 'app/redux/monthlyEmissions';
+import dataDownload from 'app/redux/dataDownload';
 
 export default combineReducers({
   regions,
@@ -26,7 +25,7 @@ export default combineReducers({
   co2,
   eere,
   annualDisplacement,
-  monthlyEmissions,
   stateEmissions,
+  monthlyEmissions,
   dataDownload,
 });

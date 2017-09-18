@@ -8,7 +8,7 @@ import {
   calculateDisplacement,
   resetEereInputs,
   resetMonthlyEmissions,
-} from '../../actions';
+} from 'app/actions';
 
 const mapStateToProps = (state) => ({
   activeStep: state.panel.activeStep,

@@ -8,18 +8,17 @@ import { StatusEnum } from '../../../app/utils/StatusEnum';
 import { AggregationEnum } from '../../../app/utils/AggregationEnum';
 
 import {
-  COMPLETE_MONTHLY,
-  RESELECT_REGION,
-  SELECT_STATE,
-  SELECT_COUNTY,
-  SELECT_UNIT,
-  RENDER_MONTHLY_CHARTS,
+  COMPLETE_MONTHLY_EMISSIONS,
+  SELECT_MONTHLY_STATE,
+  SELECT_MONTHLY_COUNTY,
+  SELECT_MONTHLY_UNIT,
+  RENDER_MONTHLY_EMISSIONS_CHARTS,
   SET_DOWNLOAD_DATA,
   renderMonthlyEmissionsCharts,
   completeMonthlyEmissions,
-  updateMonthlyUnit,
-  selectState,
-  selectCounty,
+  selectMonthlyUnit,
+  selectMonthlyState,
+  selectMonthlyCounty,
 } from '../../../app/actions';
 
 const middlewares = [ thunk ];
@@ -63,7 +62,7 @@ describe('monthlyEmissions', () => {
       });
     });
 
-    it('should handle COMPLETE_MONTHLY', () => {
+    it('should handle COMPLETE_MONTHLY_EMISSIONS', () => {
       const stateData = { 'Virginia': [1,2,3] };
       const countyData = { 'Arlington County': [4,5,6] };
       const data = {
@@ -87,7 +86,7 @@ describe('monthlyEmissions', () => {
 
       expect(
         monthlyEmissionsReducer([], {
-          type: COMPLETE_MONTHLY,
+          type: COMPLETE_MONTHLY_EMISSIONS,
           data: data,
         }))
         .toEqual({
@@ -116,22 +115,10 @@ describe('monthlyEmissions', () => {
         });
     });
 
-    it('should handle RESELECT_REGION', () => {
+    it('should handle SELECT_MONTHLY_STATE', () => {
       expect(
         monthlyEmissionsReducer([], {
-          type: RESELECT_REGION,
-        }))
-        .toEqual({
-          newSelectedAggregation: "region",
-          newSelectedCounty: "",
-          newSelectedState: "",
-        });
-    });
-
-    it('should handle SELECT_STATE', () => {
-      expect(
-        monthlyEmissionsReducer([], {
-          type: SELECT_STATE,
+          type: SELECT_MONTHLY_STATE,
           state: 'Virginia',
           visibleCounties: ['Arlington County']
         }))
@@ -142,10 +129,10 @@ describe('monthlyEmissions', () => {
         });
     });
 
-    it('should handle SELECT_COUNTY', () => {
+    it('should handle SELECT_MONTHLY_COUNTY', () => {
       expect(
         monthlyEmissionsReducer([], {
-          type: SELECT_COUNTY,
+          type: SELECT_MONTHLY_COUNTY,
           county: 'Arlington County',
         }))
         .toEqual({
@@ -153,10 +140,10 @@ describe('monthlyEmissions', () => {
         });
     });
 
-    it('should handle SELECT_UNIT', () => {
+    it('should handle SELECT_MONTHLY_UNIT', () => {
       expect(
         monthlyEmissionsReducer([], {
-          type: SELECT_UNIT,
+          type: SELECT_MONTHLY_UNIT,
           unit: MonthlyUnitEnum.PERCENT_CHANGE,
         }))
         .toEqual({
@@ -165,10 +152,10 @@ describe('monthlyEmissions', () => {
     });
 
     //TODO: Why is this returning nothing?
-    // it('should handle RENDER_MONTHLY_CHARTS', () => {
+    // it('should handle RENDER_MONTHLY_EMISSIONS_CHARTS', () => {
     //   expect(
     //     monthlyEmissionsReducer([], {
-    //       type: RENDER_MONTHLY_CHARTS,
+    //       type: RENDER_MONTHLY_EMISSIONS_CHARTS,
     //       visibleData: { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } },
     //     }))
     //     .toEqual({
@@ -192,7 +179,7 @@ describe('monthlyEmissions', () => {
       expect(
         renderMonthlyEmissionsCharts(monthlyEmissions)
       ).toEqual({
-        type: RENDER_MONTHLY_CHARTS
+        type: RENDER_MONTHLY_EMISSIONS_CHARTS
       })
     });
 
@@ -214,7 +201,7 @@ describe('monthlyEmissions', () => {
       expect(
         renderMonthlyEmissionsCharts(monthlyEmissions)
       ).toEqual({
-        type: RENDER_MONTHLY_CHARTS,
+        type: RENDER_MONTHLY_EMISSIONS_CHARTS,
       })
     });
 
@@ -236,13 +223,13 @@ describe('monthlyEmissions', () => {
       expect(
         renderMonthlyEmissionsCharts(monthlyEmissions)
       ).toEqual({
-        type: RENDER_MONTHLY_CHARTS,
+        type: RENDER_MONTHLY_EMISSIONS_CHARTS,
       });
 
       expect(
         renderMonthlyEmissionsCharts(monthlyEmissions)
       ).not.toEqual({
-        type: RENDER_MONTHLY_CHARTS,
+        type: RENDER_MONTHLY_EMISSIONS_CHARTS,
         visibleData: {
           so2: [0],
           nox: [0],
@@ -269,13 +256,13 @@ describe('monthlyEmissions', () => {
       expect(
         renderMonthlyEmissionsCharts(monthlyEmissions)
       ).toEqual({
-        type: RENDER_MONTHLY_CHARTS,
+        type: RENDER_MONTHLY_EMISSIONS_CHARTS,
       });
 
       expect(
         renderMonthlyEmissionsCharts(monthlyEmissions)
       ).not.toEqual({
-        type: RENDER_MONTHLY_CHARTS,
+        type: RENDER_MONTHLY_EMISSIONS_CHARTS,
         visibleData: {
           so2: [0],
           nox: [0],
@@ -307,13 +294,13 @@ describe('monthlyEmissions', () => {
       expect(
         renderMonthlyEmissionsCharts(monthlyEmissions)
       ).toEqual({
-        type: RENDER_MONTHLY_CHARTS,
+        type: RENDER_MONTHLY_EMISSIONS_CHARTS,
       });
 
       expect(
         renderMonthlyEmissionsCharts(monthlyEmissions)
       ).not.toEqual({
-        type: RENDER_MONTHLY_CHARTS,
+        type: RENDER_MONTHLY_EMISSIONS_CHARTS,
         visibleData: {
           so2: [0],
           nox: [0],
@@ -324,7 +311,7 @@ describe('monthlyEmissions', () => {
       expect(
         renderMonthlyEmissionsCharts(monthlyEmissions)
       ).not.toEqual({
-        type: RENDER_MONTHLY_CHARTS,
+        type: RENDER_MONTHLY_EMISSIONS_CHARTS,
         visibleData: {
           so2: [1],
           nox: [1],
@@ -352,13 +339,13 @@ describe('monthlyEmissions', () => {
       expect(
         renderMonthlyEmissionsCharts(monthlyEmissions)
       ).toEqual({
-        type: RENDER_MONTHLY_CHARTS,
+        type: RENDER_MONTHLY_EMISSIONS_CHARTS,
       });
 
       expect(
         renderMonthlyEmissionsCharts(monthlyEmissions)
       ).not.toEqual({
-        type: RENDER_MONTHLY_CHARTS,
+        type: RENDER_MONTHLY_EMISSIONS_CHARTS,
         visibleData: {
           so2: [0],
           nox: [0],
@@ -378,9 +365,9 @@ describe('monthlyEmissions', () => {
       }});
 
       const expectedActions = [
-        { type: COMPLETE_MONTHLY, data: 'data' },
+        { type: COMPLETE_MONTHLY_EMISSIONS, data: 'data' },
         { type: SET_DOWNLOAD_DATA, data: 'data'  },
-        { type: RENDER_MONTHLY_CHARTS },
+        { type: RENDER_MONTHLY_EMISSIONS_CHARTS },
       ];
 
       store.dispatch(completeMonthlyEmissions('data'));
@@ -397,15 +384,15 @@ describe('monthlyEmissions', () => {
         newEmissionsRegionCo2: _.values(sampleData.co2),
       }});
       const expectedActions = [
-        { type: SELECT_UNIT, unit: 'emissions' },
-        { type: RENDER_MONTHLY_CHARTS },
+        { type: SELECT_MONTHLY_UNIT, unit: 'emissions' },
+        { type: RENDER_MONTHLY_EMISSIONS_CHARTS },
       ];
 
-      store.dispatch(updateMonthlyUnit('emissions'));
+      store.dispatch(selectMonthlyUnit('emissions'));
       expect(store.getActions()).toEqual(expectedActions);
     });
 
-    //TODO: selectState function is not pure.
+    //TODO: selectMonthlyState function is not pure.
     // it('should create an action when the state aggregation is selected', () => {
     //   const sampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
     //   const store = mockStore({ monthlyEmissions: {
@@ -416,11 +403,11 @@ describe('monthlyEmissions', () => {
     //     newEmissionsRegionCo2: _.values(sampleData.co2),
     //   }});
     //   const expectedActions = [
-    //     { type: SELECT_STATE, state: 'Virginia' },
-    //     { type: RENDER_MONTHLY_CHARTS, visibleData: { so2: _.values(sampleData.so2), nox: _.values(sampleData.nox), co2: _.values(sampleData.co2) } },
+    //     { type: SELECT_MONTHLY_STATE, state: 'Virginia' },
+    //     { type: RENDER_MONTHLY_EMISSIONS_CHARTS, visibleData: { so2: _.values(sampleData.so2), nox: _.values(sampleData.nox), co2: _.values(sampleData.co2) } },
     //   ];
     //
-    //   store.dispatch(selectState('Virginia'));
+    //   store.dispatch(selectMonthlyState('Virginia'));
     //   expect(store.getActions()).toEqual(expectedActions);
     // });
 
@@ -434,11 +421,11 @@ describe('monthlyEmissions', () => {
         newEmissionsRegionCo2: _.values(sampleData.co2),
       }});
       const expectedActions = [
-        { type: SELECT_COUNTY, county: 'Montgomery County' },
-        { type: RENDER_MONTHLY_CHARTS },
+        { type: SELECT_MONTHLY_COUNTY, county: 'Montgomery County' },
+        { type: RENDER_MONTHLY_EMISSIONS_CHARTS },
       ];
 
-      store.dispatch(selectCounty('Montgomery County'));
+      store.dispatch(selectMonthlyCounty('Montgomery County'));
       expect(store.getActions()).toEqual(expectedActions);
     });
   });

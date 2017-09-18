@@ -1,29 +1,26 @@
 import _ from 'lodash';
-import {extractDownloadStructure} from '../../utils/DataDownloadHelper';
-import {StatusEnum} from '../../utils/StatusEnum';
-import {AggregationEnum} from '../../utils/AggregationEnum';
-import {MonthlyUnitEnum} from '../../utils/MonthlyUnitEnum';
+import { extractDownloadStructure } from 'app/utils/DataDownloadHelper';
+import { StatusEnum } from 'app/utils/StatusEnum';
+import { AggregationEnum } from 'app/utils/AggregationEnum';
+import { MonthlyUnitEnum } from 'app/utils/MonthlyUnitEnum';
 
-// action types
-import { SELECT_REGION } from 'app/actions';
-
+// actions
 import {
+  SELECT_REGION,
   START_DISPLACEMENT,
-  COMPLETE_MONTHLY,
-  SELECT_AGGREGATION,
-  RESELECT_REGION,
-  SELECT_STATE,
-  SELECT_COUNTY,
-  SELECT_UNIT,
-  RENDER_MONTHLY_CHARTS,
+  COMPLETE_MONTHLY_EMISSIONS,
+  SELECT_MONTHLY_AGGREGATION,
+  SELECT_MONTHLY_UNIT,
+  SELECT_MONTHLY_STATE,
+  SELECT_MONTHLY_COUNTY,
+  RENDER_MONTHLY_EMISSIONS_CHARTS,
   RESET_MONTHLY_EMISSIONS,
   SET_DOWNLOAD_DATA,
-} from '../../actions';
+} from 'app/actions';
 
-// const standardStructure = { so2: [], nox: [], co2: []};
-
+// reducer
 const initialState = {
-  status: "select_region",
+  status: 'select_region',
   newSelectedAggregation: AggregationEnum.REGION,
   newSelectedState: '',
   newSelectedCounty: '',
@@ -54,21 +51,21 @@ const initialState = {
   newDownloadableData: [],
 };
 
-const monthlyEmissionsReducer = (state = initialState, action) => {
+export default function reducer(state = initialState, action) {
   switch (action.type) {
     case SELECT_REGION:
       return {
         ...state,
-        status: "ready",
+        status: 'ready',
       };
 
     case START_DISPLACEMENT:
       return {
         ...state,
-        status: "started",
+        status: 'started',
       };
 
-    case COMPLETE_MONTHLY:
+    case COMPLETE_MONTHLY_EMISSIONS:
       return {
         ...state,
         status: StatusEnum.DONE,
@@ -95,54 +92,53 @@ const monthlyEmissionsReducer = (state = initialState, action) => {
         newCounties: action.data.statesAndCounties,
       };
 
-    case SELECT_AGGREGATION:
+    case SELECT_MONTHLY_AGGREGATION:
       return {
         ...state,
         newSelectedAggregation: action.aggregation,
       };
 
-    case RESELECT_REGION:
-      return {
-        ...state,
-        newSelectedAggregation: 'region',
-        newSelectedState: '',
-        newSelectedCounty: '',
-      };
-
-    case SELECT_STATE:
-      return {
-        ...state,
-        // newSelectedAggregation: 'state',
-        newSelectedState: action.state,
-        newSelectedCounty: '',
-        newVisibleCounties: action.visibleCounties,
-      };
-
-    case SELECT_COUNTY:
-      return {
-        ...state,
-        // newSelectedAggregation: 'county',
-        newSelectedCounty: action.county,
-      };
-
-    case SELECT_UNIT:
+    case SELECT_MONTHLY_UNIT:
       return {
         ...state,
         newSelectedUnit: action.unit,
       };
 
-    case RENDER_MONTHLY_CHARTS:
+    case SELECT_MONTHLY_STATE:
+      return {
+        ...state,
+        newSelectedState: action.state,
+        newSelectedCounty: '',
+        newVisibleCounties: action.visibleCounties,
+      };
 
+    case SELECT_MONTHLY_COUNTY:
+      return {
+        ...state,
+        newSelectedCounty: action.county,
+      };
 
+    case RENDER_MONTHLY_EMISSIONS_CHARTS:
       const aggregation = state.newSelectedAggregation;
       const unit = state.newSelectedUnit;
-      // const selectedState = state.newSelectedState !== '' ? state.newSelectedState : state.newStates[0];
-      // const county = state.newSelectedCounty !== '' ? state.newSelectedCounty : state.newCounties[selectedState][0];
-      const selectedState = state.newSelectedState !== '' ? state.newSelectedState : false;
-      const county = state.newSelectedCounty !== '' ? state.newSelectedCounty : false;
-      let dataPrefix = unit === MonthlyUnitEnum.PERCENT_CHANGE ? 'newPercentages' : 'newEmissions';
-      const dataSuffixes = [{key: 'so2', suffix: 'So2'}, {key: 'nox', suffix: 'Nox'}, {key: 'co2', suffix: 'Co2'}];
+      const selectedState = (state.newSelectedState !== '')
+        ? state.newSelectedState
+        : false;
+      const county = (state.newSelectedCounty !== '')
+        ? state.newSelectedCounty
+        : false;
+      let dataPrefix = (unit === MonthlyUnitEnum.PERCENT_CHANGE)
+        ? 'newPercentages'
+        : 'newEmissions';
+
+      const dataSuffixes = [
+        {key: 'so2', suffix: 'So2'},
+        {key: 'nox', suffix: 'Nox'},
+        {key: 'co2', suffix: 'Co2'}
+      ];
+
       let visibleData = {};
+
       if (aggregation === AggregationEnum.REGION || selectedState === '' || (selectedState === '' && county === '')) {
         dataPrefix += 'Region';
         dataSuffixes.forEach((gas) => {
@@ -169,7 +165,6 @@ const monthlyEmissionsReducer = (state = initialState, action) => {
       return initialState;
 
     case SET_DOWNLOAD_DATA:
-
       let downloadableData = [];
       downloadableData.push(extractDownloadStructure('SO2', 'emissions', state.newEmissionsRegionSo2));
       downloadableData.push(extractDownloadStructure('NOX', 'emissions', state.newEmissionsRegionNox));
@@ -208,6 +203,3 @@ const monthlyEmissionsReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-
-export default monthlyEmissionsReducer;

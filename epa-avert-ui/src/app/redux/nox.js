@@ -1,4 +1,3 @@
-import math from 'mathjs';
 // engine
 import { avert } from 'app/avert';
 // action creators
@@ -74,9 +73,7 @@ export function fetchNox() {
   return (dispatch, getState) => {
     const { api } = getState();
     // dispatch 'request nox' action
-    dispatch({
-      type: REQUEST_NOX,
-    });
+    dispatch({ type: REQUEST_NOX });
     // post nox data for region and receive a job id
     const options = {
       method: 'POST',
@@ -101,20 +98,3 @@ export function fetchNox() {
       });
   };
 }
-
-// other
-export const getNoxData = (state) => state.nox.data;
-export const getNoxRate = (state) => ({
-  original: math.round(
-    math.divide(
-      state.nox.data.original,
-      state.generation.data.original
-    ),
-  2),
-  post: math.round(
-    math.divide(
-      state.nox.data.post,
-      state.generation.data.post
-    ),
-  2),
-});

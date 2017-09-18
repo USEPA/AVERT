@@ -1,13 +1,9 @@
-// deps
-import Blob from 'blob';
-import json2csv from 'json2csv';
-import FileSaver from 'file-saver';
-import _ from 'lodash';
+import math from 'mathjs';
 
-// avert
+// engine
 import { avert, eereProfile } from 'app/avert';
-import StateEmissionsEngine from '../avert/engines/StateEmissionsEngine';
-import MonthlyEmissionsEngine from '../avert/engines/MonthlyEmissionsEngine';
+import StateEmissionsEngine from 'app/avert/engines/StateEmissionsEngine';
+import MonthlyEmissionsEngine from 'app/avert/engines/MonthlyEmissionsEngine';
 
 // reducers
 import * as fromGeneration from 'app/redux/generation';
@@ -18,9 +14,7 @@ import * as fromCo2 from 'app/redux/co2';
 
 // actions and action creators
 export const INCREMENT_PROGRESS = 'avert/core/INCREMENT_PROGRESS';
-export const incrementProgress = () => ({
-  type: INCREMENT_PROGRESS
-});
+export const incrementProgress = () => ({ type: INCREMENT_PROGRESS });
 
 
 export const SELECT_REGION = 'avert/core/SELECT_REGION';
@@ -294,27 +288,12 @@ export const resetEereInputs = () => {
 
 
 // action types
-export const START_DISPLACEMENT = 'avert/core/START_DISPLACEMENT';
-export const INVALIDATE_DISPLACEMENT = 'avert/core/INVALIDATE_DISPLACEMENT';
-export const REQUEST_DISPLACEMENT = 'avert/core/REQUEST_DISPLACEMENT';
-export const RECEIVE_DISPLACEMENT = 'avert/core/RECEIVE_DISPLACEMENT';
-export const COMPLETE_ANNUAL = 'avert/core/COMPLETE_ANNUAL';
 export const COMPLETE_ANNUAL_GENERATION = 'avert/core/COMPLETE_ANNUAL_GENERATION';
 export const COMPLETE_ANNUAL_SO2 = 'avert/core/COMPLETE_ANNUAL_SO2';
 export const COMPLETE_ANNUAL_NOX = 'avert/core/COMPLETE_ANNUAL_NOX';
 export const COMPLETE_ANNUAL_CO2 = 'avert/core/COMPLETE_ANNUAL_CO2';
 export const COMPLETE_ANNUAL_RATES = 'avert/core/COMPLETE_ANNUAL_RATES';
-export const COMPLETE_MONTHLY = 'avert/core/COMPLETE_MONTHLY';
-export const SELECT_AGGREGATION = 'avert/core/SELECT_AGGREGATION';
-export const SELECT_STATE = 'avert/core/SELECT_STATE';
-export const SELECT_COUNTY = 'avert/core/SELECT_COUNTY';
-export const SELECT_UNIT = 'avert/core/SELECT_UNIT';
-export const RENDER_MONTHLY_CHARTS = 'avert/core/RENDER_MONTHLY_CHARTS';
-export const COMPLETE_STATE = 'avert/core/COMPLETE_STATE';
-export const RESET_MONTHLY_EMISSIONS = 'avert/core/RESET_MONTHLY_EMISSIONS';
 
-export const START_DATA_DOWNLOAD = 'avert/core/START_DATA_DOWNLOAD';
-export const SET_DOWNLOAD_DATA = 'avert/core/SET_DOWNLOAD_DATA';
 
 // action creators
 export const completeAnnualGeneration = (data) => {
@@ -398,6 +377,7 @@ export const completeAnnualRates = (data) => {
   }
 };
 
+export const COMPLETE_ANNUAL = 'avert/core/COMPLETE_ANNUAL';
 export const completeAnnual = (data) => {
   return function (dispatch, getState) {
     dispatch({
@@ -412,238 +392,158 @@ export const completeAnnual = (data) => {
   }
 };
 
+export const COMPLETE_STATE_EMISSIONS = 'avert/core/COMPLETE_STATE_EMISSIONS';
 export const completeStateEmissions = (data) => ({
-  type: COMPLETE_STATE,
-  data,
+  type: COMPLETE_STATE_EMISSIONS,
+  data: data,
 });
 
+
+
+
+
+export const RENDER_MONTHLY_EMISSIONS_CHARTS = 'avert/core/RENDER_MONTHLY_EMISSIONS_CHARTS';
+export const renderMonthlyEmissionsCharts = () => ({
+  type: RENDER_MONTHLY_EMISSIONS_CHARTS,
+});
+
+export const COMPLETE_MONTHLY_EMISSIONS = 'avert/core/COMPLETE_MONTHLY_EMISSIONS';
+export const SET_DOWNLOAD_DATA = 'avert/core/SET_DOWNLOAD_DATA';
+export const completeMonthlyEmissions = (data) => {
+  return function (dispatch) {
+    dispatch({
+      type: COMPLETE_MONTHLY_EMISSIONS,
+      data: data,
+    });
+    dispatch({
+      type: SET_DOWNLOAD_DATA,
+      data: data,
+    });
+    dispatch(renderMonthlyEmissionsCharts());
+  }
+};
+
+export const SELECT_MONTHLY_AGGREGATION = 'avert/core/SELECT_MONTHLY_AGGREGATION';
+export const selectMonthlyAggregation = (aggregation) => {
+  return function (dispatch) {
+    dispatch({
+      type: SELECT_MONTHLY_AGGREGATION,
+      aggregation: aggregation,
+    });
+    dispatch(renderMonthlyEmissionsCharts());
+  }
+};
+
+export const SELECT_MONTHLY_UNIT = 'avert/core/SELECT_MONTHLY_UNIT';
+export const selectMonthlyUnit = (unit) => {
+  return function (dispatch) {
+    dispatch({
+      type: SELECT_MONTHLY_UNIT,
+      unit: unit,
+    });
+    dispatch(renderMonthlyEmissionsCharts());
+  }
+};
+
+export const SELECT_MONTHLY_STATE = 'avert/core/SELECT_MONTHLY_STATE';
+export const selectMonthlyState = (state) => {
+  return function (dispatch, getState) {
+    const { monthlyEmissions } = getState();
+
+    dispatch({
+      type: SELECT_MONTHLY_STATE,
+      state: state,
+      visibleCounties: monthlyEmissions.newCounties[state],
+    });
+    dispatch(renderMonthlyEmissionsCharts());
+  }
+};
+
+export const SELECT_MONTHLY_COUNTY = 'avert/core/SELECT_MONTHLY_COUNTY';
+export const selectMonthlyCounty = (county) => {
+  return function (dispatch) {
+    dispatch({
+      type: SELECT_MONTHLY_COUNTY,
+      county: county,
+    });
+    dispatch(renderMonthlyEmissionsCharts());
+  }
+};
+
+export const RESET_MONTHLY_EMISSIONS = 'avert/core/RESET_MONTHLY_EMISSIONS';
 export const resetMonthlyEmissions = () => ({
   type: RESET_MONTHLY_EMISSIONS,
-})
-
-export const renderMonthlyEmissionsCharts = () => ({
-  type: RENDER_MONTHLY_CHARTS,
 });
 
-export const prepareDownloadData = (data) => ({
-  type: SET_DOWNLOAD_DATA,
-  data,
-});
-
-export const completeMonthlyEmissions = (data) => {
-  return function (dispatch, getState) {
-    const {monthlyEmissions} = getState();
-
-    dispatch({
-      type: COMPLETE_MONTHLY,
-      data,
-    });
-
-    dispatch(prepareDownloadData(data));
-    dispatch(renderMonthlyEmissionsCharts(monthlyEmissions));
-  }
-};
-
-export const updateMonthlyAggregation = (aggregation) => {
-  return function (dispatch, getState) {
-    const {monthlyEmissions} = getState();
-
-    dispatch({
-      type: SELECT_AGGREGATION,
-      aggregation,
-    });
-
-    return dispatch(renderMonthlyEmissionsCharts(monthlyEmissions));
-  }
-};
 
 
-export const updateMonthlyUnit = (unit) => {
-  return function (dispatch, getState) {
-    const {monthlyEmissions} = getState();
 
-    dispatch({
-      type: SELECT_UNIT,
-      unit,
-    });
 
-    return dispatch(renderMonthlyEmissionsCharts(monthlyEmissions));
-  }
-};
+export const RECEIVE_DISPLACEMENT = 'avert/core/RECEIVE_DISPLACEMENT';
+const receiveDisplacement = () => {
+  return (dispatch, getState) => {
+    const { generation, so2, nox, co2 } = getState();
+    const { round, divide } = math;
 
-export const selectState = (state) => {
-  return function (dispatch, getState) {
-    const {monthlyEmissions} = getState();
-    const visibleCounties = monthlyEmissions.newCounties[state];
-
-    dispatch({
-      type: SELECT_STATE,
-      state,
-      visibleCounties,
-    });
-
-    return dispatch(renderMonthlyEmissionsCharts(monthlyEmissions));
-  }
-};
-
-export const selectCounty = (county) => {
-  return function (dispatch, getState) {
-    const {monthlyEmissions} = getState();
-
-    dispatch({
-      type: SELECT_COUNTY,
-      county,
-    });
-
-    return dispatch(renderMonthlyEmissionsCharts(monthlyEmissions));
-  }
-};
-
-export const invalidateDisplacement = () => ({
-  type: 'INVALIDATE_DISPLACEMENT',
-});
-
-export const requestDisplacement = () => ({
-  type: 'REQUEST_DISPLACEMENT',
-});
-
-export const receiveDisplacement = () => {
-  return (dispatch,getState) => {
-
-    dispatch({
-      type: 'ATTEMPTING_TO_CALCULATE_DISPLACEMENT_VALUES'
-    });
-
-    const {generation,so2,nox,co2} = getState();
-    if(generation.isFetching || so2.isFetching || nox.isFetching || co2.isFetching) {
-      return setTimeout(() => dispatch(receiveDisplacement()),30000);
+    // recursively call function if data is still fetching
+    if (generation.isFetching || so2.isFetching || nox.isFetching || co2.isFetching) {
+      return setTimeout(() => dispatch(receiveDisplacement()), 1000);
     }
 
-    dispatch(incrementProgress());
-
     const data = {
-      generation: fromGeneration.getGenerationData(getState()),
+      generation: generation.data,
       totalEmissions: {
-        so2: fromSo2.getSo2Data(getState()),
-        nox: fromNox.getNoxData(getState()),
-        co2: fromCo2.getCo2Data(getState()),
+        so2: so2.data,
+        nox: nox.data,
+        co2: co2.data,
       },
       emissionRates: {
-        so2: fromSo2.getSo2Rate(getState()),
-        nox: fromNox.getNoxRate(getState()),
-        co2: fromCo2.getCo2Rate(getState()),
+        so2: {
+          original: round(divide(so2.data.original, generation.data.original), 2),
+          post: round(divide(so2.data.post, generation.data.post), 2),
+        },
+        nox: {
+          original: round(divide(nox.data.original, generation.data.original), 2),
+          post: round(divide(nox.data.post, generation.data.post), 2),
+        },
+        co2: {
+          original: round(divide(co2.data.original, generation.data.original), 2),
+          post: round(divide(co2.data.post, generation.data.post), 2),
+        },
       },
     };
 
+    // dispatch 'increment progress' and 'receive displacement' actions
+    dispatch(incrementProgress());
     dispatch({
       type: RECEIVE_DISPLACEMENT,
-      data
+      data: data,
     });
 
+    // create state engine and dispatch action
     const stateEngine = new StateEmissionsEngine();
     const stateData = stateEngine.extract(data);
     dispatch(completeStateEmissions(stateData));
 
+    // create monthly engine and dispatch action
     const monthlyEngine = new MonthlyEmissionsEngine();
     const monthlyData = monthlyEngine.extract(data);
-
     return dispatch(completeMonthlyEmissions(monthlyData));
   };
 };
 
-const fetchDisplacement = (rdf, eere) => {
-  return dispatch => {
-    dispatch(requestDisplacement());
-
-    const options = {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
-      },
-      body: JSON.stringify({rdf: avert.rdfClass.toJsonString(), eere: avert.hourlyEere}),
-    };
-
-    return fetch('https://app7.erg.com/avert/api/v1/displacements', options)
-    // return fetch('http://app7.erg.com/avert/api/v1/displacements')
-    // return fetch(`http://localhost:3001/api/v1/displacements`, options)
-    // return fetch('https://epa-avert-microservice.herokuapp.com/api/v1/displacements', options)
-    // return fetch('http://sample-env.um6jxw6p3t.us-west-2.elasticbeanstalk.com/', options)
-      .then(response => response.json())
-      .then(json => dispatch(receiveDisplacement(json)));
-  }
-};
-
-const shouldFetchDisplacement = (dispatch, getState) => {
-  //check if data is redundant
-  //If existing data but not relevant, invalidate data
-  return true;
-};
-
-export const fetchDisplacementIfNeeded = () => {
-  return (dispatch, getState) => {
-    if (shouldFetchDisplacement(dispatch, getState)) {
-      return dispatch(fetchDisplacement('rdf', 'eere'));
-    }
-  }
-};
-
-const startDisplacement = () => ({
-  type: START_DISPLACEMENT,
-});
-
+export const START_DISPLACEMENT = 'avert/core/START_DISPLACEMENT';
 export function calculateDisplacement() {
-  return dispatch => {
-    dispatch(startDisplacement());
+  return (dispatch) => {
+    // dispatch 'start displacement' and 'increment progress' actions
+    dispatch({ type: START_DISPLACEMENT });
     dispatch(incrementProgress());
-    const generation = dispatch(fromGeneration.fetchGeneration());
 
-    return Promise.resolve(generation)
-    .then(() => {
-      return Promise.all([
-        dispatch(fromSo2.fetchSo2()),
-        dispatch(fromNox.fetchNox()),
-        dispatch(fromCo2.fetchCo2()),
-      ])
-      .then(() => dispatch(receiveDisplacement()))
-    })
+    // fetch generation, so2, nox, and co2
+    return dispatch(fromGeneration.fetchGeneration())
+      .then(() => dispatch(fromSo2.fetchSo2()))
+      .then(() => dispatch(fromNox.fetchNox()))
+      .then(() => dispatch(fromCo2.fetchCo2()))
+      .then(() => dispatch(receiveDisplacement()));
   }
 }
-
-export const startDataDownload = () => {
-  return (dispatch, getState) => {
-    const {monthlyEmissions} = getState();
-    const allMonthlyEmissions = monthlyEmissions.newDownloadableData;
-    const fields = [
-      'type',
-      'aggregation_level',
-      'state',
-      'county',
-      'emission_unit',
-      'january',
-      'february',
-      'march',
-      'april',
-      'may',
-      'june',
-      'july',
-      'august',
-      'september',
-      'october',
-      'november',
-      'december',
-    ];
-
-    try {
-      const csv = json2csv({fields: fields, data: allMonthlyEmissions});
-      const blob = new Blob([csv], {type: 'text/plain:charset=utf-8'});
-      FileSaver.saveAs(blob, 'AVERT Monthly Emissions.csv');
-    } catch (e) {
-      console.error(e);
-    }
-
-    return dispatch({
-      type: START_DATA_DOWNLOAD
-    });
-  }
-};

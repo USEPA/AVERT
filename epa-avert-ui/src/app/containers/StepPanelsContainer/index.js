@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import StepPanels from '../../components/StepPanels';
 // action creators
 import { toggleModalOverlay, resetActiveModal } from 'app/redux/panel';
-import {
-  startDataDownload,
-} from '../../actions';
+import { startDataDownload } from 'app/redux/dataDownload';
 
 const mapStateToProps = (state) => ({
   loading: state.panel.loading,

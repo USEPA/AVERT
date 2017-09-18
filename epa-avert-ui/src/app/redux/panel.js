@@ -1,23 +1,19 @@
 // actions
-const CHANGE_ACTIVE_STEP = 'avert/panel/CHANGE_ACTIVE_STEP';
-const TOGGLE_MODAL_OVERLAY = 'avert/panel/TOGGLE_MODAL_OVERLAY';
-const STORE_ACTIVE_MODAL = 'avert/panel/STORE_ACTIVE_MODAL';
-const RESET_ACTIVE_MODAL = 'avert/panel/RESET_ACTIVE_MODAL';
-
 import {
   INCREMENT_PROGRESS,
   REQUEST_REGION_RDF,
   RECEIVE_REGION_DEFAULTS,
   SUBMIT_EERE_CALCULATION,
   COMPLETE_EERE_CALCULATION,
-} from 'app/actions';
-
-// --- todo: define here, or import ---
-import {
   START_DISPLACEMENT,
   RECEIVE_DISPLACEMENT,
-  COMPLETE_MONTHLY,
+  COMPLETE_MONTHLY_EMISSIONS,
 } from 'app/actions';
+
+const CHANGE_ACTIVE_STEP = 'avert/panel/CHANGE_ACTIVE_STEP';
+const TOGGLE_MODAL_OVERLAY = 'avert/panel/TOGGLE_MODAL_OVERLAY';
+const STORE_ACTIVE_MODAL = 'avert/panel/STORE_ACTIVE_MODAL';
+const RESET_ACTIVE_MODAL = 'avert/panel/RESET_ACTIVE_MODAL';
 
 // reducer
 const initialState = {
@@ -75,7 +71,7 @@ export default function reducer(state = initialState, action) {
     case COMPLETE_EERE_CALCULATION:
     case RECEIVE_DISPLACEMENT:
     case RECEIVE_REGION_DEFAULTS:
-    case COMPLETE_MONTHLY:
+    case COMPLETE_MONTHLY_EMISSIONS:
       return {
         ...state,
         loading: false,

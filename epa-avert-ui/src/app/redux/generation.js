@@ -73,9 +73,7 @@ export function fetchGeneration() {
   return (dispatch, getState) => {
     const { api } = getState();
     // dispatch 'request generation' action
-    dispatch({
-      type: REQUEST_GENERATION,
-    });
+    dispatch({ type: REQUEST_GENERATION });
     // post generation data for region and receive a job id
     const options = {
       method: 'POST',
@@ -100,6 +98,3 @@ export function fetchGeneration() {
       });
   };
 }
-
-// other
-export const getGenerationData = (state) => state.generation.data;
