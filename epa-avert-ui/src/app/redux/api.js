@@ -4,7 +4,7 @@ const SET_POLLING_FREQUENCY = 'avert/api/SET_POLLING_FREQUENCY';
 
 // reducer
 const initialState = {
-  baseUrl: 'https://app7.erg.com/avert', //'https://avert-microservice2.cfapps.io' //'http://localhost:3001'
+  baseUrl: 'https://app7.erg.com/avert', //'http://localhost:3001'
   pollingFrequency: 30000,
 };
 

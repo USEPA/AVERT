@@ -287,15 +287,10 @@ export const resetEereInputs = () => {
 };
 
 
-// action types
-export const COMPLETE_ANNUAL_GENERATION = 'avert/core/COMPLETE_ANNUAL_GENERATION';
-export const COMPLETE_ANNUAL_SO2 = 'avert/core/COMPLETE_ANNUAL_SO2';
-export const COMPLETE_ANNUAL_NOX = 'avert/core/COMPLETE_ANNUAL_NOX';
-export const COMPLETE_ANNUAL_CO2 = 'avert/core/COMPLETE_ANNUAL_CO2';
-export const COMPLETE_ANNUAL_RATES = 'avert/core/COMPLETE_ANNUAL_RATES';
 
 
-// action creators
+
+const COMPLETE_ANNUAL_GENERATION = 'avert/core/COMPLETE_ANNUAL_GENERATION';
 export const completeAnnualGeneration = (data) => {
   return function (dispatch, getState) {
     dispatch({
@@ -313,6 +308,7 @@ export const completeAnnualGeneration = (data) => {
   }
 };
 
+const COMPLETE_ANNUAL_SO2 = 'avert/core/COMPLETE_ANNUAL_SO2';
 export const completeAnnualSo2 = (data) => {
   return function (dispatch, getState) {
     dispatch({
@@ -329,6 +325,7 @@ export const completeAnnualSo2 = (data) => {
   };
 };
 
+const COMPLETE_ANNUAL_NOX = 'avert/core/COMPLETE_ANNUAL_NOX';
 export const completeAnnualNox = (data) => {
   return function (dispatch, getState) {
     dispatch({
@@ -345,6 +342,7 @@ export const completeAnnualNox = (data) => {
   };
 };
 
+const COMPLETE_ANNUAL_CO2 = 'avert/core/COMPLETE_ANNUAL_CO2';
 export const completeAnnualCo2 = (data) => {
   return function (dispatch, getState) {
     dispatch({
@@ -361,6 +359,7 @@ export const completeAnnualCo2 = (data) => {
   };
 };
 
+const COMPLETE_ANNUAL_RATES = 'avert/core/COMPLETE_ANNUAL_RATES';
 export const completeAnnualRates = (data) => {
   return function (dispatch, getState) {
     dispatch({
