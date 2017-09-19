@@ -4,7 +4,9 @@ const SET_POLLING_FREQUENCY = 'avert/api/SET_POLLING_FREQUENCY';
 
 // reducer
 const initialState = {
-  baseUrl: 'https://app7.erg.com/avert', //'http://localhost:3001'
+  baseUrl: (process.env.REACT_APP_WEB_SERVICE === 'local')
+    ? 'http://localhost:3001'
+    : 'https://app7.erg.com/avert',
   pollingFrequency: 30000,
 };
 
