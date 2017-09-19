@@ -1,59 +1,52 @@
 {
-  "name": "epa-avert-microservice",
-  "version": "0.1.0",
-  "description": "Offloaded server calculations.",
+  "name": "epa-avert-webservice",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Offloaded server calculations for the AVERT web app.",
+  "author": "Eastern Research Group, Inc.",
+  "contributors": [
+    "Bryan Neva <bryan.neva@erg.com>",
+    "Courtney Myers <courtney.myers@erg.com>"
+  ],
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eastern-Research-Group/EPA-AVERT.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Eastern-Research-Group/EPA-AVERT/issues"
+  },
   "engines": {
-    "node": "7.10.0"
+    "node": "8.x"
   },
   "main": "./app.js",
+  "scripts": {
+    "start": "node ./app.js",
+    "dev": "WEB_SERVICE=local node ./app.js",
+    "test": "mocha --reporter spec --require should */test.js"
+  },
   "dependencies": {
     "bluebird": "^3.4.7",
     "cfenv": "^1.0.4",
     "co": "^4.6.0",
     "co-body": "^4.2.0",
     "co-redis": "^2.1.1",
-    "co-views": "^2.1.0",
     "koa": "^1.2.4",
-    "koa-cluster": "^1.1.0",
     "koa-cors": "0.0.16",
-    "koa-csrf": "^3.0.4",
     "koa-json": "^1.1.3",
     "koa-logger": "^1.3.0",
     "koa-request": "^1.0.0",
     "koa-route": "^2.4.2",
-    "koa-router": "^5.4.0",
-    "koa-send": "^3.3.0",
-    "koa-static": "^2.0.0",
-    "koa-toobusy": "^1.0.1",
-    "koa-websocket": "^2.1.0",
     "kue": "^0.11.5",
     "lodash": "^4.17.4",
     "mathjs": "^3.8.1",
     "redis": "^2.6.5",
     "stats-lite": "^2.0.3",
-    "swig": "^1.4.2",
     "thunkify": "^2.1.2"
   },
   "devDependencies": {
-    "co": "*",
-    "eslint": "^3.13.0",
     "mocha": "^3.2.0",
     "should": "^11.1.2",
-    "supertest": "*"
-  },
-  "scripts": {
-    "cluster_start": "koa-cluster app.js",
-    "start": "node ./app.js",
-    "test": "make test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Eastern-Research-Group/epa-avert-microservice.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Eastern-Research-Group/epa-avert-microservice/issues"
-  },
-  "homepage": "https://github.com/Eastern-Research-Group/epa-avert-microservice#readme"
+    "supertest": "^3.0.0"
+  }
 }

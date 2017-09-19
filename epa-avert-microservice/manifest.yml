@@ -1,9 +1,6 @@
 applications:
-  - name: avert-microservice
+  - name: avert-webservice
     command: npm start
     memory: 512M
     services:
-      # - avert-redis
-      # - redis-100
-      # - avert-redis-500
-      - avert-redis28
+      - avert-redis32

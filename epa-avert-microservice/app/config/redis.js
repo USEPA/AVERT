@@ -1,25 +1,23 @@
-var cfenv = require('cfenv');
-var appEnv = cfenv.getAppEnv();
+const cfenv = require('cfenv');
 
+const appEnv = cfenv.getAppEnv();
 const services = appEnv.getServices();
-const redisService = services['avert-redis28'];
 
-// module.exports = {
-//     "hostname": "redis-14500.c8.us-east-1-2.ec2.cloud.redislabs.com",
-//     "password": "2WoFxGeKuDFuIoxB",
-//     "port": "14500"
-// };
-
-// module.exports = {
-//   "hostname": "redis-18520.c11.us-east-1-3.ec2.cloud.redislabs.com",
-//   "password": "x05VCovqKeCfQwqL",
-//   "port": "18520"
-// };
-// 
-// 
+let redis;
+if (process.env.WEB_SERVICE !== 'local') {
+  // cloud foundry redis service
+  redis = services['avert-redis32'].credentials;
+} else {
+  // local settings (requires redis-server be running)
+  redis = {
+    port: '6379',
+    hostname: '127.0.0.1',
+    password: null,
+  };
+}
 
 module.exports = {
-    hostname: redisService.credentials.hostname,
-    password: redisService.credentials.password,
-    port: redisService.credentials.port,
+  port: redis.port,
+  hostname: redis.hostname,
+  password: redis.password,
 }
