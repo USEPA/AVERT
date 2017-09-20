@@ -1,34 +1,26 @@
 const thunkify = require('thunkify');
 const fs = require('fs');
-const regions = require('../../types/regions');
+const regions = require('../../lib/regions');
 
-// Controller
-const EereController = {
-    list: function *list() {
-        var availableRegions = Object.keys(regions);
-        this.body = {
-            availableRegions: availableRegions
-        };
-    },
-    show: function *show(region) {
-        var read = thunkify(fs.readFile);
+const read = thunkify(fs.readFile);
 
-        let response = 'not found';
-        let eereDefaults = false;
-        if(region in regions){
-            response = 'ok';
-            eereDefaults = yield read(regions[region].defaults);
-            eereDefaults = JSON.parse(eereDefaults);
-        } else {
-            this.throw(404, 'invalid region');
-        }
-
-        this.body = {
-            region: region,
-            response: response,
-            eereDefaults: eereDefaults,
-        }
+module.exports = {
+  list: function* () {
+    this.body = {
+      availableRegions: Object.keys(regions)
+    };
+  },
+  show: function* (region) {
+    if (!(region in regions)) {
+      this.throw(404, 'invalid region');
     }
-};
 
-module.exports = EereController;
+    const eereFile = yield read(regions[region].defaults);
+
+    this.body = {
+      region: region,
+      response: 'ok',
+      eereDefaults: JSON.parse(eereFile),
+    }
+  }
+};

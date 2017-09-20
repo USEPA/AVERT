@@ -1,32 +1,26 @@
 const thunkify = require('thunkify');
 const fs = require('fs');
-const regions = require('../../types/regions');
+const regions = require('../../lib/regions');
 
-// Controller
-const RdfController = {
-    list: function *() {
-        var availableRegions = Object.keys(regions);
-        this.body = {
-            availableRegions: availableRegions
-        };
-    },
-    show: function *(region) {
-        var read = thunkify(fs.readFile);
+const read = thunkify(fs.readFile);
 
-        let response = 'not found';
-        let rdf = false;
-        if(region in regions){
-            response = 'ok';
-            rdf = yield read(regions[region].rdf);
-            rdf = JSON.parse(rdf);
-        }
-
-        this.body = {
-            region: region,
-            response: response,
-            rdf: rdf,
-        }
+module.exports = {
+  list: function* () {
+    this.body = {
+      availableRegions: Object.keys(regions)
+    };
+  },
+  show: function* (region) {
+    if (!(region in regions)) {
+      this.throw(404, 'invalid region');
     }
-};
 
-module.exports = RdfController;
+    const rdfFile = yield read(regions[region].rdf);
+
+    this.body = {
+      region: region,
+      response: 'ok',
+      rdf: JSON.parse(rdfFile),
+    }
+  }
+};
