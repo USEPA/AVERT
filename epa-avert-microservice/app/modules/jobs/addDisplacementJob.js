@@ -63,7 +63,7 @@ db.on('error', function(err) {
 const redis = require('../../lib/redis');
 const thunkify = require('thunkify');
 const fs = require('fs');
-const regions = require('../../types/regions');
+const regions = require('../../lib/regions');
 const read = thunkify(fs.readFile);
 const co = require('co');
 const Rdf = require('../rdf/Rdf');
