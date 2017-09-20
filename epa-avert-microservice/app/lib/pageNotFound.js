@@ -1,7 +1,7 @@
-function* pageNotFound (next) {
+module.exports = function* (next) {
   yield next;
 
-  if (this.status != 404) return;
+  if (this.status !== 404) return;
 
   this.status = 404;
 
@@ -22,5 +22,3 @@ function* pageNotFound (next) {
       this.body = 'Page Not Found';
   }
 }
-
-module.exports = pageNotFound;

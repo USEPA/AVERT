@@ -1,13 +1,13 @@
 const logger = require('koa-logger');
-const json = require('koa-json');
 const cors = require('koa-cors');
-const errorHandler = require('../lib/errorHandler');
+const json = require('koa-json');
+const pageNotFound = require('../lib/pageNotFound');
 
 const middleware = [
   logger(),
-  errorHandler,
   cors(),
   json(),
+  pageNotFound,
 ];
 
 module.exports = middleware;
