@@ -7,7 +7,7 @@ const initialState = {
   baseUrl: (process.env.REACT_APP_WEB_SERVICE === 'local')
     ? 'http://localhost:3001'
     : 'https://app7.erg.com/avert',
-  pollingFrequency: 30000,
+  pollingFrequency: 5000,
 };
 
 export default function reducer(state = initialState, action) {
