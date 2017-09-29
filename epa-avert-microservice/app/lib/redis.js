@@ -1,15 +1,15 @@
 const Redis = require('redis');
 const bluebird = require('bluebird');
 const coRedis = require('co-redis');
+const redisConfig = require('../config/redis');
 
 bluebird.promisifyAll(Redis.RedisClient.prototype);
 bluebird.promisifyAll(Redis.Multi.prototype);
 
-const config = require('../config/redis');
-const db = Redis.createClient(config.port, config.hostname);
+const db = Redis.createClient(redisConfig.port, redisConfig.hostname);
 // provide authentication when connecting to cloud foundry redis service
 if (process.env.WEB_SERVICE !== 'local') {
-  db.auth(config.password);
+  db.auth(redisConfig.password);
 }
 
 db.on('error', function (err) {
