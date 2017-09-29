@@ -59,7 +59,7 @@ module.exports = {
             defaults: JSON.parse(eereFile, 'utf8')
           }).toJSON();
 
-          // get 'generation:eere:id' key and value in 'avert' hash in redis
+          // get 'generation:eere:id' value in 'avert' hash in redis
           const eere = yield redisClient.get(`generation:eere:${id}`);
           // return early if eere not found in redis
           if (!eere) { done(); }
@@ -104,7 +104,7 @@ module.exports = {
             defaults: JSON.parse(eereFile, 'utf8')
           }).toJSON();
 
-          // get 'so2:eere:id' key and value in 'avert' hash in redis
+          // get 'so2:eere:id' value in 'avert' hash in redis
           const eere = yield redisClient.get(`so2:eere:${id}`);
           // return early if eere not found in redis
           if (!eere) { done(); }
@@ -149,7 +149,7 @@ module.exports = {
             defaults: JSON.parse(eereFile, 'utf8')
           }).toJSON();
 
-          // get 'nox:eere:id' key and value in 'avert' hash in redis
+          // get 'nox:eere:id' value in 'avert' hash in redis
           const eere = yield redisClient.get(`nox:eere:${id}`);
           // return early if eere not found in redis
           if (!eere) { done(); }
@@ -194,7 +194,7 @@ module.exports = {
             defaults: JSON.parse(eereFile, 'utf8')
           }).toJSON();
 
-          // get 'co2:eere:id' key and value in 'avert' hash in redis
+          // get 'co2:eere:id' value in 'avert' hash in redis
           const eere = yield redisClient.get(`co2:eere:${id}`);
           // return early if eere not found in redis
           if (!eere) { done(); }

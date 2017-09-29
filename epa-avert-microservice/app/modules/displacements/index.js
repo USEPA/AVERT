@@ -28,9 +28,9 @@ module.exports = {
     //   headers: { 'User-Agent': 'request' },
     // });
 
-    // return 'OK' response and job id (used by web app)
+    // return 'ok' response and job id (used by web app)
     this.body = {
-      response: 'OK',
+      response: 'ok',
       job: id,
     }
   },
@@ -53,9 +53,9 @@ module.exports = {
     //   headers: { 'User-Agent': 'request' },
     // });
 
-    // return 'OK' response and job id (used by web app)
+    // return 'ok' response and job id (used by web app)
     this.body = {
-      response: 'OK',
+      response: 'ok',
       job: id,
     }
   },
@@ -78,9 +78,9 @@ module.exports = {
     //   headers: { 'User-Agent': 'request' },
     // });
 
-    // return 'OK' response and job id (used by web app)
+    // return 'ok' response and job id (used by web app)
     this.body = {
-      response: 'OK',
+      response: 'ok',
       job: id,
     }
   },
@@ -103,10 +103,10 @@ module.exports = {
     //   headers: { 'User-Agent': 'request' },
     // });
 
-    // return 'OK' response and job id (used by web app)
+    // return 'ok' response and job id (used by web app)
     this.body = {
-      response: 'OK',
+      response: 'ok',
       job: id,
     }
-  }
+  },
 };

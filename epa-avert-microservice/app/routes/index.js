@@ -29,7 +29,7 @@ module.exports = [
   route.post('/api/v1/nox', displacements.calculateNox),
   route.post('/api/v1/co2', displacements.calculateCo2),
 
-  //
-  route.post('/api/v1/jobs', jobs.post),
+  // web app method: calculateDisplacement()
+  // (from panel 2, user clicks 'Get Results' button)
   route.get('/api/v1/jobs/:id', jobs.get),
 ];
