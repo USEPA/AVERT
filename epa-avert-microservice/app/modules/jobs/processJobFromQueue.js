@@ -4,6 +4,7 @@ const kue = require('kue');
 const Redis = require('redis');
 const bluebird = require('bluebird');
 const thunkify = require('thunkify');
+
 const redisConfig = require('../../config/redis');
 const redisClient = require('../../lib/redis');
 const regions = require('../../lib/regions');

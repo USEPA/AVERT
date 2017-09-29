@@ -2,6 +2,7 @@ const co = require('co');
 const kue = require('kue');
 const Redis = require('redis');
 const bluebird = require('bluebird');
+
 const redisConfig = require('../../config/redis');
 const redisClient = require('../../lib/redis');
 

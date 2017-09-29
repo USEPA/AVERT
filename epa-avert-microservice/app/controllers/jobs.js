@@ -1,4 +1,4 @@
-const redisClient = require('../../lib/redis');
+const redisClient = require('../lib/redis');
 
 module.exports = {
   get: function* (id) {

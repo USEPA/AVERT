@@ -1,8 +1,9 @@
 const parse = require('co-body');
 const request = require('koa-request');
-const redisClient = require('../../lib/redis');
-const addJobToQueue = require('../jobs/addJobToQueue');
-const processJobFromQueue = require('../jobs/processJobFromQueue');
+
+const redisClient = require('../lib/redis');
+const addJobToQueue = require('../modules/jobs/addJobToQueue');
+const processJobFromQueue = require('../modules/jobs/processJobFromQueue');
 
 const maxFileSize = '50mb';
 const workerUrl = 'https://avert-workers.app.cloud.gov/api/v1/jobs/process';

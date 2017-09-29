@@ -1,9 +1,9 @@
 const route = require('koa-route');
 
-const rdf = require('../modules/rdf');
-const eere = require('../modules/eere');
-const displacements = require('../modules/displacements');
-const jobs = require('../modules/jobs');
+const rdf = require('../controllers/rdf');
+const eere = require('../controllers/eere');
+const displacements = require('../controllers/displacements');
+const jobs = require('../controllers/jobs');
 
 module.exports = [
   route.get('/', function* () {

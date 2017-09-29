@@ -23,7 +23,7 @@
   "scripts": {
     "start": "node ./app.js",
     "dev": "WEB_SERVICE=local node ./app.js",
-    "test": "mocha --reporter spec --require should */test.js"
+    "test": "WEB_SERVICE=local mocha --reporter spec --require should */test.js"
   },
   "dependencies": {
     "bluebird": "^3.4.7",

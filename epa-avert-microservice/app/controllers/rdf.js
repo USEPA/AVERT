@@ -1,6 +1,7 @@
-const thunkify = require('thunkify');
 const fs = require('fs');
-const regions = require('../../lib/regions');
+const thunkify = require('thunkify');
+
+const regions = require('../lib/regions');
 
 const read = thunkify(fs.readFile);
 
@@ -17,13 +18,13 @@ module.exports = {
       this.throw(404, 'invalid region');
     }
 
-    const eereFile = yield read(regions[region].defaults);
+    const rdfFile = yield read(regions[region].rdf);
 
-    // return response, region, and eereDefaults (used by web app)
+    // return response, region, and rdf (used by web app)
     this.body = {
       region: region,
       response: 'ok',
-      eereDefaults: JSON.parse(eereFile),
+      rdf: JSON.parse(rdfFile),
     }
   },
 };
