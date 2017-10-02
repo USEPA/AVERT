@@ -41,7 +41,6 @@
     "lodash": "^4.17.4",
     "mathjs": "^3.8.1",
     "redis": "^2.6.5",
-    "stats-lite": "^2.0.3",
     "thunkify": "^2.1.2"
   },
   "devDependencies": {
