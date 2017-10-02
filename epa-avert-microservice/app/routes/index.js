@@ -32,4 +32,10 @@ module.exports = [
   // web app method: calculateDisplacement()
   // (from panel 2, user clicks 'Get Results' button)
   route.get('/api/v1/jobs/:id', jobs.get),
+
+  // web service method: request made from within queue controller
+  route.get('/api/v1/queue/generation', queue.processGeneration),
+  route.get('/api/v1/queue/so2', queue.processSo2),
+  route.get('/api/v1/queue/nox', queue.processNox),
+  route.get('/api/v1/queue/co2', queue.processCo2),
 ];
