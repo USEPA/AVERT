@@ -1,8 +1,8 @@
 'use strict';
 
 const math = require('mathjs');
-const StateEmissions = require('../stateEmissions/StateEmissions');
-const MonthlyEmissions = require('../monthlyEmissions/MonthlyEmissions');
+const StateEmissions = require('../modules/StateEmissions');
+const MonthlyEmissions = require('../modules/MonthlyEmissions');
 
 const DisplacementsEngine = (function () {
     function DisplacementsEngine (rdf, hourlyEere) {

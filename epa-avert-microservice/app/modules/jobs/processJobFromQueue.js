@@ -8,8 +8,8 @@ const thunkify = require('thunkify');
 const redisConfig = require('../../config/redis');
 const redisClient = require('../../lib/redis');
 const regions = require('../../lib/regions');
-const Rdf = require('../rdf/Rdf');
-const DisplacementsEngine = require('../displacements/DisplacementsEngine');
+const Rdf = require('../Rdf');
+const DisplacementsEngine = require('../DisplacementsEngine');
 
 bluebird.promisifyAll(Redis.RedisClient.prototype);
 bluebird.promisifyAll(Redis.Multi.prototype);
