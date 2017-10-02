@@ -81,7 +81,7 @@ module.exports = {
 
     job.save();
 
-    // process generation job from queue
+    // create request, which will process job from queue via processGeneration()
     yield request({
       url: `http://${this.request.header.host}/api/v1/queue/generation`,
       headers: { 'User-Agent': 'request' },
@@ -91,7 +91,7 @@ module.exports = {
     this.body = {
       response: 'ok',
       job: id,
-    }
+    };
   },
 
 
@@ -129,7 +129,7 @@ module.exports = {
 
     job.save();
 
-    // process so2 job from queue
+    // create request, which will pjob from queue via processSo2()
     yield request({
       url: `http://${this.request.header.host}/api/v1/queue/so2`,
       headers: { 'User-Agent': 'request' },
@@ -139,7 +139,7 @@ module.exports = {
     this.body = {
       response: 'ok',
       job: id,
-    }
+    };
   },
 
 
@@ -177,7 +177,7 @@ module.exports = {
 
     job.save();
 
-    // process nox job from queue
+    // create request, which will pjob from queue via processNox()
     yield request({
       url: `http://${this.request.header.host}/api/v1/queue/nox`,
       headers: { 'User-Agent': 'request' },
@@ -187,7 +187,7 @@ module.exports = {
     this.body = {
       response: 'ok',
       job: id,
-    }
+    };
   },
 
 
@@ -225,7 +225,7 @@ module.exports = {
 
     job.save();
 
-    // process co2 job from queue
+    // create request, which will pjob from queue via processCo2()
     yield request({
       url: `http://${this.request.header.host}/api/v1/queue/co2`,
       headers: { 'User-Agent': 'request' },
@@ -235,214 +235,182 @@ module.exports = {
     this.body = {
       response: 'ok',
       job: id,
-    }
+    };
   },
 
 
 
   processGeneration: function* () {
-    try {
-      queue.process('calculate_generation', function (job, done) {
-        const id = job.data.jobId;
-        const region = job.data.region;
+    queue.process('calculate_generation', function (job, done) {
+      const id = job.data.jobId;
+      const region = job.data.region;
 
-        if (!(region in regions)) { return false; }
+      if (!(region in regions)) { return false; }
 
-        co(function* () {
-          console.log(`Processing: Job ${id} (Generation) starting`);
+      co(function* () {
+        console.log(`Processing: Job ${id} (Generation) starting`);
 
-          // instantiate new Rdf from data files
-          const rdfFile = yield read(regions[region].rdf);
-          const eereFile = yield read(regions[region].defaults);
-          const rdf = new Rdf({
-            rdf: JSON.parse(rdfFile, 'utf8'),
-            defaults: JSON.parse(eereFile, 'utf8')
-          }).toJSON();
+        // instantiate new Rdf from data files
+        const rdfFile = yield read(regions[region].rdf);
+        const eereFile = yield read(regions[region].defaults);
+        const rdf = new Rdf({
+          rdf: JSON.parse(rdfFile, 'utf8'),
+          defaults: JSON.parse(eereFile, 'utf8')
+        }).toJSON();
 
-          // get 'generation:eere:id' value in 'avert' hash in redis
-          const eere = yield redisClient.get(`generation:eere:${id}`);
-          // return early if eere not found in redis
-          if (!eere) { done(); }
+        // get 'generation:eere:id' value in 'avert' hash in redis
+        const eere = yield redisClient.get(`generation:eere:${id}`);
+        // return early if eere not found in redis
+        if (!eere) { done(); }
 
-          // get generation data from new DisplacementEngine instance
-          const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
-          const data = engine.getGeneration();
+        // get generation data from new DisplacementEngine instance
+        const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
+        const data = engine.getGeneration();
 
-          // set 'job:id' key and value in 'avert' hash in redis
-          yield redisClient.set(`job:${id}`, JSON.stringify(data));
+        // set 'job:id' key and value in 'avert' hash in redis
+        yield redisClient.set(`job:${id}`, JSON.stringify(data));
 
-          console.log(`Processing: Job ${id} (Generation) finished`);
-          return done();
-        });
+        console.log(`Processing: Job ${id} (Generation) finished`);
+        return done();
       });
+    });
 
-      // return status for debugging (not used in web app)
-      this.body = {
-        response: 'ok',
-        status: 'calculate_generation',
-      }
-
-      return true;
-
-    } catch (e) {
-      console.error(`Processing error: ${e}`);
-      return false;
-    }
+    // return status for debugging (not used in web app)
+    this.body = {
+      response: 'ok',
+      status: 'calculate_generation',
+    };
   },
 
 
 
   processSo2: function* () {
-    try {
-      queue.process('calculate_so2', function (job, done) {
-        const id = job.data.jobId;
-        const region = job.data.region;
+    queue.process('calculate_so2', function (job, done) {
+      const id = job.data.jobId;
+      const region = job.data.region;
 
-        if (!(region in regions)) { return false; }
+      if (!(region in regions)) { return false; }
 
-        co(function* () {
-          console.log(`Processing: Job ${id} (SO2) starting`);
+      co(function* () {
+        console.log(`Processing: Job ${id} (SO2) starting`);
 
-          // instantiate new Rdf from data files
-          const rdfFile = yield read(regions[region].rdf);
-          const eereFile = yield read(regions[region].defaults);
-          const rdf = new Rdf({
-            rdf: JSON.parse(rdfFile, 'utf8'),
-            defaults: JSON.parse(eereFile, 'utf8')
-          }).toJSON();
+        // instantiate new Rdf from data files
+        const rdfFile = yield read(regions[region].rdf);
+        const eereFile = yield read(regions[region].defaults);
+        const rdf = new Rdf({
+          rdf: JSON.parse(rdfFile, 'utf8'),
+          defaults: JSON.parse(eereFile, 'utf8')
+        }).toJSON();
 
-          // get 'so2:eere:id' value in 'avert' hash in redis
-          const eere = yield redisClient.get(`so2:eere:${id}`);
-          // return early if eere not found in redis
-          if (!eere) { done(); }
+        // get 'so2:eere:id' value in 'avert' hash in redis
+        const eere = yield redisClient.get(`so2:eere:${id}`);
+        // return early if eere not found in redis
+        if (!eere) { done(); }
 
-          // get so2 total data from new DisplacementEngine instance
-          const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
-          const data = engine.getSo2Total();
+        // get so2 total data from new DisplacementEngine instance
+        const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
+        const data = engine.getSo2Total();
 
-          // set 'job:id' key and value in 'avert' hash in redis
-          yield redisClient.set(`job:${id}`, JSON.stringify(data));
+        // set 'job:id' key and value in 'avert' hash in redis
+        yield redisClient.set(`job:${id}`, JSON.stringify(data));
 
-          console.log(`Processing: Job ${id} (SO2) finished`);
-          return done();
-        });
+        console.log(`Processing: Job ${id} (SO2) finished`);
+        return done();
       });
+    });
 
-      // return status for debugging (not used in web app)
-      this.body = {
-        response: 'ok',
-        status: 'calculate_so2',
-      }
-
-      return true;
-
-    } catch (e) {
-      console.error(`Processing error: ${e}`);
-      return false;
-    }
+    // return status for debugging (not used in web app)
+    this.body = {
+      response: 'ok',
+      status: 'calculate_so2',
+    };
   },
 
 
 
   processNox: function* () {
-    try {
-      queue.process('calculate_nox', function (job, done) {
-        const id = job.data.jobId;
-        const region = job.data.region;
+    queue.process('calculate_nox', function (job, done) {
+      const id = job.data.jobId;
+      const region = job.data.region;
 
-        if (!(region in regions)) { return false; }
+      if (!(region in regions)) { return false; }
 
-        co(function* () {
-          console.log(`Processing: Job ${id} (NOx) starting`);
+      co(function* () {
+        console.log(`Processing: Job ${id} (NOx) starting`);
 
-          // instantiate new Rdf from data files
-          const rdfFile = yield read(regions[region].rdf);
-          const eereFile = yield read(regions[region].defaults);
-          const rdf = new Rdf({
-            rdf: JSON.parse(rdfFile, 'utf8'),
-            defaults: JSON.parse(eereFile, 'utf8')
-          }).toJSON();
+        // instantiate new Rdf from data files
+        const rdfFile = yield read(regions[region].rdf);
+        const eereFile = yield read(regions[region].defaults);
+        const rdf = new Rdf({
+          rdf: JSON.parse(rdfFile, 'utf8'),
+          defaults: JSON.parse(eereFile, 'utf8')
+        }).toJSON();
 
-          // get 'nox:eere:id' value in 'avert' hash in redis
-          const eere = yield redisClient.get(`nox:eere:${id}`);
-          // return early if eere not found in redis
-          if (!eere) { done(); }
+        // get 'nox:eere:id' value in 'avert' hash in redis
+        const eere = yield redisClient.get(`nox:eere:${id}`);
+        // return early if eere not found in redis
+        if (!eere) { done(); }
 
-          // get nox total data from new DisplacementEngine instance
-          const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
-          const data = engine.getNoxTotal();
+        // get nox total data from new DisplacementEngine instance
+        const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
+        const data = engine.getNoxTotal();
 
-          // set 'job:id' key and value in 'avert' hash in redis
-          yield redisClient.set(`job:${id}`, JSON.stringify(data));
+        // set 'job:id' key and value in 'avert' hash in redis
+        yield redisClient.set(`job:${id}`, JSON.stringify(data));
 
-          console.log(`Processing: Job ${id} (NOx) finished`);
-          return done();
-        });
+        console.log(`Processing: Job ${id} (NOx) finished`);
+        return done();
       });
+    });
 
-      // return status for debugging (not used in web app)
-      this.body = {
-        response: 'ok',
-        status: 'calculate_nox',
-      }
-
-      return true;
-
-    } catch (e) {
-      console.error(`Processing error: ${e}`);
-      return false;
-    }
+    // return status for debugging (not used in web app)
+    this.body = {
+      response: 'ok',
+      status: 'calculate_nox',
+    };
   },
 
 
 
   processCo2: function* () {
-    try {
-      queue.process('calculate_co2', function (job, done) {
-        const id = job.data.jobId;
-        const region = job.data.region;
+    queue.process('calculate_co2', function (job, done) {
+      const id = job.data.jobId;
+      const region = job.data.region;
 
-        if (!(region in regions)) { return false; }
+      if (!(region in regions)) { return false; }
 
-        co(function* () {
-          console.log(`Processing: Job ${id} (SO2) starting`);
+      co(function* () {
+        console.log(`Processing: Job ${id} (SO2) starting`);
 
-          // instantiate new Rdf from data files
-          const rdfFile = yield read(regions[region].rdf);
-          const eereFile = yield read(regions[region].defaults);
-          const rdf = new Rdf({
-            rdf: JSON.parse(rdfFile, 'utf8'),
-            defaults: JSON.parse(eereFile, 'utf8')
-          }).toJSON();
+        // instantiate new Rdf from data files
+        const rdfFile = yield read(regions[region].rdf);
+        const eereFile = yield read(regions[region].defaults);
+        const rdf = new Rdf({
+          rdf: JSON.parse(rdfFile, 'utf8'),
+          defaults: JSON.parse(eereFile, 'utf8')
+        }).toJSON();
 
-          // get 'co2:eere:id' value in 'avert' hash in redis
-          const eere = yield redisClient.get(`co2:eere:${id}`);
-          // return early if eere not found in redis
-          if (!eere) { done(); }
+        // get 'co2:eere:id' value in 'avert' hash in redis
+        const eere = yield redisClient.get(`co2:eere:${id}`);
+        // return early if eere not found in redis
+        if (!eere) { done(); }
 
-          // get co2 total data from new DisplacementEngine instance
-          const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
-          const data = engine.getCo2Total();
+        // get co2 total data from new DisplacementEngine instance
+        const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
+        const data = engine.getCo2Total();
 
-          // set 'job:id' key and value in 'avert' hash in redis
-          yield redisClient.set(`job:${id}`, JSON.stringify(data));
+        // set 'job:id' key and value in 'avert' hash in redis
+        yield redisClient.set(`job:${id}`, JSON.stringify(data));
 
-          console.log(`Processing: Job ${id} (CO2) finished`);
-          return done();
-        });
+        console.log(`Processing: Job ${id} (CO2) finished`);
+        return done();
       });
+    });
 
-      // return status for debugging (not used in web app)
-      this.body = {
-        response: 'ok',
-        status: 'calculate_co2',
-      }
-
-      return true;
-
-    } catch (e) {
-      console.error(`Processing error: ${e}`);
-      return false;
-    }
+    // return status for debugging (not used in web app)
+    this.body = {
+      response: 'ok',
+      status: 'calculate_co2',
+    };
   },
 };
