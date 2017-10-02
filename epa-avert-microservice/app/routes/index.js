@@ -2,7 +2,7 @@ const route = require('koa-route');
 
 const rdf = require('../controllers/rdf');
 const eere = require('../controllers/eere');
-const displacements = require('../controllers/displacements');
+const queue = require('../controllers/queue');
 const jobs = require('../controllers/jobs');
 
 module.exports = [
@@ -24,10 +24,10 @@ module.exports = [
 
   // web app method: calculateDisplacement()
   // (from panel 2, user clicks 'Get Results' button)
-  route.post('/api/v1/generation', displacements.calculateGeneration),
-  route.post('/api/v1/so2', displacements.calculateSo2),
-  route.post('/api/v1/nox', displacements.calculateNox),
-  route.post('/api/v1/co2', displacements.calculateCo2),
+  route.post('/api/v1/generation', queue.addGeneration),
+  route.post('/api/v1/so2', queue.addSo2),
+  route.post('/api/v1/nox', queue.addNox),
+  route.post('/api/v1/co2', queue.addCo2),
 
   // web app method: calculateDisplacement()
   // (from panel 2, user clicks 'Get Results' button)

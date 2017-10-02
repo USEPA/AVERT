@@ -11,7 +11,7 @@ const workerUrl = 'https://avert-workers.app.cloud.gov/api/v1/jobs/process';
 
 
 module.exports = {
-  calculateGeneration: function* () {
+  addGeneration: function* () {
     const body = yield parse.json(this, { limit: maxFileSize });
     // increment 'job' string in redis
     const id = yield redisClient.incr('job');
@@ -36,7 +36,7 @@ module.exports = {
     }
   },
 
-  calculateSo2: function* () {
+  addSo2: function* () {
     const body = yield parse.json(this, { limit: maxFileSize });
     // increment 'job' string in redis
     const id = yield redisClient.incr('job');
@@ -61,7 +61,7 @@ module.exports = {
     }
   },
 
-  calculateNox: function* () {
+  addNox: function* () {
     const body = yield parse.json(this, { limit: maxFileSize });
     // increment 'job' string in redis
     const id = yield redisClient.incr('job');
@@ -86,7 +86,7 @@ module.exports = {
     }
   },
 
-  calculateCo2: function* () {
+  addCo2: function* () {
     const body = yield parse.json(this, { limit: maxFileSize });
     // increment 'job' string in redis
     const id = yield redisClient.incr('job');
