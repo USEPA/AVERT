@@ -6,7 +6,9 @@ const SET_POLLING_FREQUENCY = 'avert/api/SET_POLLING_FREQUENCY';
 const initialState = {
   baseUrl: (process.env.REACT_APP_WEB_SERVICE === 'local')
     ? 'http://localhost:3001'
-    : 'https://app7.erg.com/avert',
+    : 'https://avert-webservice.app.cloud.gov',
+    // : 'https://avert.app.cloud.gov',
+    // : 'https://app7.erg.com/avert',
   pollingFrequency: 5000,
 };
 
