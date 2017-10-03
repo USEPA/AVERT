@@ -1,0 +1,49 @@
+{
+  "name": "epa-avert-webapp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "EPA's Avoided Emissions and Generation Tools (AVERT) is a free tool that estimates the emissions benefits of energy efficiency and renewable energy policies and programs.",
+  "author": "Eastern Research Group, Inc.",
+  "contributors": [
+    "Bryan Neva <bryan.neva@erg.com>",
+    "Courtney Myers <courtney.myers@erg.com>"
+  ],
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eastern-Research-Group/EPA-AVERT.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Eastern-Research-Group/EPA-AVERT/issues"
+  },
+  "devDependencies": {
+    "react-scripts": "0.8.4",
+    "redux-mock-store": "^1.2.1"
+  },
+  "dependencies": {
+    "blob": "0.0.4",
+    "file-saver": "^1.3.3",
+    "highcharts-exporting": "^0.1.2",
+    "json2csv": "^3.7.3",
+    "lodash": "^4.15.0",
+    "mathjs": "^3.4.1",
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1",
+    "react-highcharts": "^11.0.0",
+    "react-redux": "^4.4.5",
+    "redux": "^3.6.0",
+    "redux-thunk": "^2.1.0",
+    "stats-lite": "^2.0.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "dev": "REACT_APP_WEB_SERVICE=local react-scripts start",
+    "build": "react-scripts build && echo 'Remember to modify build/index.html:\n[] Move details polyfill!\n'",
+    "test": "react-scripts test --verbose",
+    "coverage": "react-scripts test --coverage",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "./node_modules/react-scripts/config/eslint.js"
+  }
+}

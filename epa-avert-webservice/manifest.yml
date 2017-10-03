@@ -1,0 +1,7 @@
+applications:
+  - name: avert-webservice
+    command: npm start
+    memory: 512M
+    instances: 4
+    services:
+      - avert-redis32
