@@ -1,0 +1,6 @@
+general:
+  build_dir: epa-avert-webapp
+
+test:
+  post:
+    - (cd ../epa-avert-webservice && npm install && npm test)
