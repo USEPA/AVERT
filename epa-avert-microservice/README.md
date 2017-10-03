@@ -1,3 +1,3 @@
-# EPA AVERT Microservice
+# EPA AVERT Web Service
 
-Offloaded server calculations.
+Node.js web service (built with Koa and Redis/Kue) for performing displacement calculations for AVERT web app.
