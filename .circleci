@@ -1,10 +1,2 @@
-machine:
-  node:
-    version: 8.0.0
-
 general:
   build_dir: epa-avert-webapp
-
-test:
-  post:
-    - (cd ../epa-avert-webservice && npm install && npm test)
