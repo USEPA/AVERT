@@ -539,10 +539,12 @@ export function calculateDisplacement() {
     dispatch(incrementProgress());
 
     // fetch generation, so2, nox, and co2
-    return dispatch(fromGeneration.fetchGeneration())
-      .then(() => dispatch(fromSo2.fetchSo2()))
-      .then(() => dispatch(fromNox.fetchNox()))
-      .then(() => dispatch(fromCo2.fetchCo2()))
-      .then(() => dispatch(receiveDisplacement()));
+    dispatch(fromGeneration.fetchGeneration());
+    dispatch(fromSo2.fetchSo2());
+    dispatch(fromNox.fetchNox());
+    dispatch(fromCo2.fetchCo2());
+
+    // receive displacement
+    dispatch(receiveDisplacement());
   }
 }

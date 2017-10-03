@@ -9,7 +9,7 @@ const initialState = {
     : 'https://avert-webservice.app.cloud.gov',
     // : 'https://avert.app.cloud.gov',
     // : 'https://app7.erg.com/avert',
-  pollingFrequency: 5000,
+  pollingFrequency: 10000,
 };
 
 export default function reducer(state = initialState, action) {
