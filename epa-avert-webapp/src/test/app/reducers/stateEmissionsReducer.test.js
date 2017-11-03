@@ -1,13 +1,14 @@
-import stateEmissionsReducer from '../../../app/reducers/stateEmissionsReducer';
-import * as types from '../../../app/actions';
+import stateEmissionsReducer from '../../../app/redux/stateEmissions';
+import { COMPLETE_STATE_EMISSIONS } from 'app/actions';
 
 describe('stateEmissionsReducer', () => {
   it('should return an initial state', () => {
-    expect(stateEmissionsReducer(undefined, {})).toEqual({results: [], status: 'select_region'});
+    expect(stateEmissionsReducer(undefined, {}))
+      .toEqual({ status: 'select_region', results: [] });
   });
 
   it('should handle COMPLETE_STATE_EMISSIONS', () => {
-    expect(stateEmissionsReducer([], {type: types.COMPLETE_STATE_EMISSIONS, data: 'Foo'}))
-      .toEqual({results: "Foo", status: "complete"})
+    expect(stateEmissionsReducer([], { type: COMPLETE_STATE_EMISSIONS, data: 'Foo' }))
+      .toEqual({ status: 'complete', results: 'Foo' })
   });
 });

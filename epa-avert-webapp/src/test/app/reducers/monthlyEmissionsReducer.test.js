@@ -2,7 +2,7 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import _ from 'lodash';
-import monthlyEmissionsReducer from '../../../app/reducers/monthlyEmissionsReducer';
+import monthlyEmissionsReducer from '../../../app/redux/monthlyEmissions';
 import { MonthlyUnitEnum } from '../../../app/utils/MonthlyUnitEnum';
 import { StatusEnum } from '../../../app/utils/StatusEnum';
 import { AggregationEnum } from '../../../app/utils/AggregationEnum';

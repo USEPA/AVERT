@@ -1,6 +1,4 @@
-//Avert is a hard dependency for Engine for some reason
-import {avert} from '../../../app/avert';
-import Engine from '../../../app/avert/Engine';
+import Engine from 'app/avert/Engine';
 import Regions from '../../../app/utils/Regions';
 import EereProfile from '../../../app/avert/entities/EereProfile';
 
