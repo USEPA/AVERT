@@ -2,34 +2,28 @@
 
 module.exports = (function () {
   function MonthlyEmissions () {
-    const locationLevels = {
-      region: {},
-      state: {},
-      county: {},
+    this.generation = {
+      emissions: { region: {}, state: {}, county: {} },
+      percentages: { region: {}, state: {}, county: {} },
     };
 
-    const standardStructure = {
-      emissions: locationLevels,
-      percentages: locationLevels,
+    this.so2 = {
+      emissions: { region: {}, state: {}, county: {} },
+      percentages: { region: {}, state: {}, county: {} },
     };
 
-    this.generation = standardStructure;
-    this.so2 = standardStructure;
-    this.nox = standardStructure;
-    this.co2 = standardStructure;
+    this.nox = {
+      emissions: { region: {}, state: {}, county: {} },
+      percentages: { region: {}, state: {}, county: {} },
+    };
+
+    this.co2 = {
+      emissions: { region: {}, state: {}, county: {} },
+      percentages: { region: {}, state: {}, county: {} },
+    };
 
     this.count = 0;
   }
-
-  MonthlyEmissions.prototype.toJSON = function() {
-    return {
-      generation: this.generation,
-      so2: this.so2,
-      nox: this.nox,
-      co2: this.co2,
-      count: this.count,
-    };
-  };
 
   MonthlyEmissions.prototype.addRegion = function (type, emissionsOrPercentages, month, data) {
     if (typeof this[type][emissionsOrPercentages].region[month] === 'undefined') {

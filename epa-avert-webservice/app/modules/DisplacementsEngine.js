@@ -9,9 +9,9 @@ module.exports = (function () {
   function DisplacementsEngine (rdf, hourlyEere) {
     this.rdf = rdf;
     this.hourlyEere = hourlyEere;
+
     this.generationOriginal = 0;
     this.generationPost = 0;
-
     this.so2Original = 0;
     this.so2Post = 0;
     this.noxOriginal = 0;
@@ -23,29 +23,6 @@ module.exports = (function () {
     this.monthlyEmissions = new MonthlyEmissions();
   }
 
-  DisplacementsEngine.prototype.toJSON = function () {
-    return {
-      rdf: this.rdf,
-      hourlyEere: this.hourlyEere,
-      generationOriginal: this.generationOriginal,
-      generationPost: this.generationPost,
-      so2Original: this.so2Original,
-      so2Post: this.so2Post,
-      noxOriginal: this.noxOriginal,
-      noxPost: this.noxPost,
-      co2Original: this.co2Original,
-      co2Post: this.co2Post
-    }
-  };
-
-  DisplacementsEngine.prototype.getOutput = function () {
-    return {
-      generation: this.getGeneration(),
-      totalEmissions: this.getTotalEmissions(),
-      emissionRates: this.getEmissionRates(),
-  }
-  };
-
   DisplacementsEngine.prototype.getGeneration = function (callback) {
     const totals = this.getDisplacedGeneration(this.rdf.raw.data.generation, false, 'generation');
     this.generationOriginal = totals.original;
@@ -56,23 +33,6 @@ module.exports = (function () {
     }
 
     return totals;
-  };
-
-  DisplacementsEngine.prototype.getTotalEmissions = function () {
-    // console.log('getTotalEmissions');
-    return {
-      so2: this.getSo2Total(),
-      nox: this.getNoxTotal(),
-      co2: this.getCo2Total(),
-    }
-  };
-
-  DisplacementsEngine.prototype.getEmissionRates = function () {
-    return {
-      so2: this.getSo2Rate(),
-      nox: this.getNoxRate(),
-      co2: this.getCo2Rate(),
-    }
   };
 
   DisplacementsEngine.prototype.getSo2Total = function () {
@@ -101,35 +61,6 @@ module.exports = (function () {
     }
 
     return totals;
-  };
-
-  DisplacementsEngine.prototype.getSo2Rate = function () {
-    const original = math.round(math.divide(this.so2Original, this.generationOriginal), 2);
-    const post = math.round(math.divide(this.so2Post, this.generationPost), 2);
-
-    return {
-      original: original.toString(),
-      post: post.toString(),
-    }
-  };
-
-  DisplacementsEngine.prototype.getNoxRate = function () {
-    const original = math.round(math.divide(this.noxOriginal, this.generationOriginal), 2);
-    const post = math.round(math.divide(this.noxPost, this.generationPost), 2);
-
-    return {
-      original: original.toString(),
-      post: post.toString(),
-    }
-  };
-
-  DisplacementsEngine.prototype.getCo2Rate = function () {
-    const original = math.round(math.divide(this.co2Original, this.generationOriginal), 2);
-    const post = math.round(math.divide(this.co2Post, this.generationPost), 2);
-    return {
-      original: original.toString(),
-      post: post.toString(),
-    }
   };
 
   DisplacementsEngine.prototype.getDisplacedGeneration = function (dataSet, dataSetNonOzone, emissionType) {
@@ -423,12 +354,6 @@ module.exports = (function () {
 
   DisplacementsEngine.prototype.isOutlier = function (load, min, max, postLoad) {
     return ! (load >= min && load <= max && postLoad >= min && postLoad <= max);
-  };
-
-  DisplacementsEngine.prototype.extractLoadBinEdges = function (data) {
-    return Object.keys(data).map(function (key) {
-      return data[key]
-    });
   };
 
   DisplacementsEngine.prototype.calculateLinear = function (load, genA, genB, edgeA, edgeB) {
