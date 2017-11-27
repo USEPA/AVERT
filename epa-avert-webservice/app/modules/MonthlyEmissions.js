@@ -27,9 +27,7 @@ module.exports = (function () {
 
   MonthlyEmissions.prototype.addRegion = function (type, emissionsOrPercentages, month, data) {
     let value = this[type][emissionsOrPercentages].region[month];
-
-    if (typeof value === 'undefined') value = 0;
-
+    value = value || 0;
     value += data;
   };
 
@@ -37,20 +35,16 @@ module.exports = (function () {
     this.count ++;
 
     let value = this[type][emissionsOrPercentages].state[state];
-
-    if (typeof value === 'undefined') value = {};
-    if (typeof value[month] === 'undefined') value[month] = 0;
-
+    value = value || {};
+    value[month] = value[month] || 0;
     value[month] += data;
   };
 
   MonthlyEmissions.prototype.addCounty = function (type, emissionsOrPercentages, state, county, month, data) {
     let value = this[type][emissionsOrPercentages].county[state];
-
-    if (typeof value === 'undefined') value = {};
-    if (typeof value[county] === 'undefined') value[county] = {};
-    if (typeof value[county][month] === 'undefined') value[county][month] = 0;
-
+    value = value || {};
+    value[county] = value[county] || {};
+    value[county][month] = value[county][month] || 0;
     value[county][month] += data;
   };
 

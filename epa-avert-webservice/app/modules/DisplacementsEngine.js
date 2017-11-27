@@ -2,7 +2,6 @@
 
 const math = require('mathjs');
 
-const StateEmissions = require('../modules/StateEmissions');
 const MonthlyEmissions = require('../modules/MonthlyEmissions');
 
 module.exports = (function () {
@@ -19,7 +18,13 @@ module.exports = (function () {
     this.co2Original = 0;
     this.co2Post = 0;
 
-    this.stateEmissions = new StateEmissions();
+    this.stateEmissions = {
+      generation: {},
+      so2: {},
+      nox: {},
+      co2: {},
+    };
+
     this.monthlyEmissions = new MonthlyEmissions();
   }
 
@@ -109,25 +114,15 @@ module.exports = (function () {
       postTotalArray[i] = 0;
       deltaVArray[i] = 0;
 
-      monthlyEmissions.regional[month] = monthlyEmissions.regional[month]
-        ? monthlyEmissions.regional[month]
-        : 0;
+      monthlyEmissions.regional[month] = monthlyEmissions.regional[month] || 0;
 
-      monthlyEmissionChanges.region[month] = monthlyEmissionChanges.region[month]
-        ? monthlyEmissionChanges.region[month]
-        : 0;
+      monthlyEmissionChanges.region[month] = monthlyEmissionChanges.region[month] || 0;
 
-      monthlyPercentageChanges.region[month] = monthlyPercentageChanges.region[month]
-        ? monthlyPercentageChanges.region[month]
-        : 0;
+      monthlyPercentageChanges.region[month] = monthlyPercentageChanges.region[month] || 0;
 
-      monthlyPreValues.region[month] = monthlyPreValues.region[month]
-        ? monthlyPreValues.region[month]
-        : 0;
+      monthlyPreValues.region[month] = monthlyPreValues.region[month] || 0;
 
-      monthlyPostValues.region[month] = monthlyPostValues.region[month]
-        ? monthlyPostValues.region[month]
-        : 0;
+      monthlyPostValues.region[month] = monthlyPostValues.region[month] || 0;
 
       if (this.isOutlier(load, min, max, postLoad)) continue;
 
@@ -145,7 +140,11 @@ module.exports = (function () {
         const state = dataSet[j].state;
         const county = dataSet[j].county;
 
-        this.stateEmissions.add(emissionType, state, data.delta);
+        // set state emissions
+        this.stateEmissions[emissionType][state] = this.stateEmissions[emissionType][state] || 0;
+        this.stateEmissions[emissionType][state] += data.delta;
+
+        // set monthly emissions
         this.monthlyEmissions.addRegion(emissionType, 'percentages', month, data.percentDifference);
         this.monthlyEmissions.addState(emissionType, 'emissions', state, month, data.delta);
         this.monthlyEmissions.addState(emissionType, 'percentages', state, month, data.percentDifference);
@@ -153,110 +152,47 @@ module.exports = (function () {
         this.monthlyEmissions.addCounty(emissionType, 'percentages', state, county, month, data.percentDifference);
 
         // State - Total Emissions
-        stateEmissionChanges[state] = stateEmissionChanges[state]
-          ? stateEmissionChanges[state]
-          : 0;
-
+        stateEmissionChanges[state] = stateEmissionChanges[state] || 0;
         stateEmissionChanges[state] += data.delta;
 
         // State - Monthly - Emissions
-        if (typeof monthlyEmissionChanges.state[state] === 'undefined') {
-          monthlyEmissionChanges.state[state] = {}
-        }
-
-        if (typeof monthlyEmissionChanges.state[state][month] === 'undefined') {
-          monthlyEmissionChanges.state[state][month] = 0;
-        }
-
+        monthlyEmissionChanges.state[state] = monthlyEmissionChanges.state[state] || {};
+        monthlyEmissionChanges.state[state][month] = monthlyEmissionChanges.state[state][month] || 0;
         monthlyEmissionChanges.state[state][month] += data.delta;
 
         // State - Monthly - Percent
-        if (typeof monthlyPercentageChanges.state[state] === 'undefined') {
-          monthlyPercentageChanges.state[state] = {}
-        }
-
-        if (typeof monthlyPercentageChanges.state[state][month] === 'undefined') {
-          monthlyPercentageChanges.state[state][month] = 0;
-        }
-
+        monthlyPercentageChanges.state[state] = monthlyPercentageChanges.state[state] || {};
+        monthlyPercentageChanges.state[state][month] = monthlyPercentageChanges.state[state][month] || 0;
         // monthlyPercentageChanges.state[state][month] += data.percentDifference;
 
-        if (typeof monthlyPreValues.state[state] === 'undefined') {
-          monthlyPreValues.state[state] = {}
-        }
-
-        if (typeof monthlyPreValues.state[state][month] === 'undefined') {
-          monthlyPreValues.state[state][month] = 0;
-        }
-
+        monthlyPreValues.state[state] = monthlyPreValues.state[state] || {};
+        monthlyPreValues.state[state][month] = monthlyPreValues.state[state][month] || 0;
         monthlyPreValues.state[state][month] += data.pre;
 
-        if (typeof monthlyPostValues.state[state] === 'undefined') {
-          monthlyPostValues.state[state] = {}
-        }
-
-        if (typeof monthlyPostValues.state[state][month] === 'undefined') {
-          monthlyPostValues.state[state][month] = 0;
-        }
-
+        monthlyPostValues.state[state] = monthlyPostValues.state[state] || {};
+        monthlyPostValues.state[state][month] = monthlyPostValues.state[state][month] || 0;
         monthlyPostValues.state[state][month] += data.post;
 
         // County - Monthly Emissions
-        if (typeof monthlyEmissionChanges.county[state] === 'undefined') {
-          monthlyEmissionChanges.county[state] = {}
-        }
-
-        if (typeof monthlyEmissionChanges.county[state][county] === 'undefined') {
-          monthlyEmissionChanges.county[state][county] = {}
-        }
-
-        if (typeof monthlyEmissionChanges.county[state][county][month] === 'undefined') {
-          monthlyEmissionChanges.county[state][county][month] = 0;
-        }
-
+        monthlyEmissionChanges.county[state] = monthlyEmissionChanges.county[state] || {};
+        monthlyEmissionChanges.county[state][county] = monthlyEmissionChanges.county[state][county] || {};
+        monthlyEmissionChanges.county[state][county][month] = monthlyEmissionChanges.county[state][county][month] || 0;
         monthlyEmissionChanges.county[state][county][month] += data.delta;
 
         // County - Monthly - Percentages
-        if (typeof monthlyPercentageChanges.county[state] === 'undefined') {
-          monthlyPercentageChanges.county[state] = {}
-        }
-
-        if (typeof monthlyPercentageChanges.county[state][county] === 'undefined') {
-          monthlyPercentageChanges.county[state][county] = {}
-        }
-
-        if (typeof monthlyPercentageChanges.county[state][county][month] === 'undefined') {
-          monthlyPercentageChanges.county[state][county][month] = 0;
-        }
-
+        monthlyPercentageChanges.county[state] = monthlyPercentageChanges.county[state] || {};
+        monthlyPercentageChanges.county[state][county] = monthlyPercentageChanges.county[state][county] || {};
+        monthlyPercentageChanges.county[state][county][month] = monthlyPercentageChanges.county[state][county][month] || 0;
         // monthlyPercentageChanges.county[state][county][month] += data.percentDifference;
 
-        if (typeof monthlyPreValues.county[state] === 'undefined') {
-          monthlyPreValues.county[state] = {}
-        }
-
-        if (typeof monthlyPreValues.county[state][county] === 'undefined') {
-          monthlyPreValues.county[state][county] = {}
-        }
-
-        if (typeof monthlyPreValues.county[state][county][month] === 'undefined') {
-          monthlyPreValues.county[state][county][month] = 0;
-        }
-
+        monthlyPreValues.county[state] = monthlyPreValues.county[state] || {};
+        monthlyPreValues.county[state][county] = monthlyPreValues.county[state][county] || {};
+        monthlyPreValues.county[state][county][month] = monthlyPreValues.county[state][county][month] || 0;
         monthlyPreValues.county[state][county][month] += data.pre;
 
-        if (typeof monthlyPostValues.county[state] === 'undefined') {
-          monthlyPostValues.county[state] = {}
-        }
-
-        if (typeof monthlyPostValues.county[state][county] === 'undefined') {
-          monthlyPostValues.county[state][county] = {}
-        }
-
-        if (typeof monthlyPostValues.county[state][county][month] === 'undefined') {
-          monthlyPostValues.county[state][county][month] = 0;
-        }
-
+        monthlyPostValues.county[state] = monthlyPostValues.county[state] || {};
+        monthlyPostValues.county[state][county] = monthlyPostValues.county[state][county] || {};
+        monthlyPostValues.county[state][county][month] = monthlyPostValues.county[state][county][month] || 0;
         monthlyPostValues.county[state][county][month] += data.post;
       }
 
@@ -375,44 +311,32 @@ module.exports = (function () {
       : { data: {}, pre: {}, post: {}, counties: {} };
 
     // Initialize 0 value for the month if it hasn't been started
-    monthlyEmissions.state[state].data[month] = monthlyEmissions.state[state].data[month]
-      ? monthlyEmissions.state[state].data[month]
-      : 0;
+    monthlyEmissions.state[state].data[month] = monthlyEmissions.state[state].data[month] || 0;
     monthlyEmissions.state[state].data[month] += deltaV;
 
-    monthlyEmissions.state[state].pre[month] = monthlyEmissions.state[state].pre[month]
-      ? monthlyEmissions.state[state].pre[month]
-      : 0;
+    monthlyEmissions.state[state].pre[month] = monthlyEmissions.state[state].pre[month] || 0;
     monthlyEmissions.state[state].pre[month] += preVal;
 
-    monthlyEmissions.state[state].post[month] = monthlyEmissions.state[state].post[month]
-      ? monthlyEmissions.state[state].post[month]
-      : 0;
+    monthlyEmissions.state[state].post[month] = monthlyEmissions.state[state].post[month] || 0;
     monthlyEmissions.state[state].post[month] += postVal;
   };
 
   // Move this to MonthlyEmissionsCalculator
   DisplacementsEngine.prototype.extractCountyEmissions = function (monthlyEmissions, state, county, month, deltaV, preVal, postVal) {
+    let value = monthlyEmissions.state[state].counties[county];
+
     // Initialize empty County if it doesn't already exist
-    monthlyEmissions.state[state].counties[county] = monthlyEmissions.state[state].counties[county]
-      ? monthlyEmissions.state[state].counties[county]
-      : { data: {}, pre: {}, post: {} };
+    value = value || { data: {}, pre: {}, post: {} };
 
     // Initialize 0 value for the month if it hasn't been started
-    monthlyEmissions.state[state].counties[county].data[month] = monthlyEmissions.state[state].counties[county].data[month]
-      ? monthlyEmissions.state[state].counties[county].data[month]
-      : 0;
-    monthlyEmissions.state[state].counties[county].data[month] += deltaV;
+    value.data[month] = value.data[month] || 0;
+    value.data[month] += deltaV;
 
-    monthlyEmissions.state[state].counties[county].pre[month] = monthlyEmissions.state[state].counties[county].pre[month]
-      ? monthlyEmissions.state[state].counties[county].pre[month]
-      : 0;
-    monthlyEmissions.state[state].counties[county].pre[month] += preVal;
+    value.pre[month] = value.pre[month] || 0;
+    value.pre[month] += preVal;
 
-    monthlyEmissions.state[state].counties[county].post[month] = monthlyEmissions.state[state].counties[county].post[month]
-      ? monthlyEmissions.state[state].counties[county].post[month]
-      : 0;
-    monthlyEmissions.state[state].counties[county].post[month] += postVal;
+    value.post[month] = value.post[month] || 0;
+    value.post[month] += postVal;
   };
 
   return DisplacementsEngine;
