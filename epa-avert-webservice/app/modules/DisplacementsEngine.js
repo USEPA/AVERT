@@ -2,8 +2,6 @@
 
 const math = require('mathjs');
 
-const MonthlyEmissions = require('../modules/MonthlyEmissions');
-
 module.exports = (function () {
   function DisplacementsEngine (rdf, hourlyEere) {
     this.rdf = rdf;
@@ -25,7 +23,24 @@ module.exports = (function () {
       co2: {},
     };
 
-    this.monthlyEmissions = new MonthlyEmissions();
+    this.monthlyEmissions = {
+      generation: {
+        emissions: { region: {}, state: {}, county: {} },
+        percentages: { region: {}, state: {}, county: {} },
+      },
+      so2: {
+        emissions: { region: {}, state: {}, county: {} },
+        percentages: { region: {}, state: {}, county: {} },
+      },
+      nox: {
+        emissions: { region: {}, state: {}, county: {} },
+        percentages: { region: {}, state: {}, county: {} },
+      },
+      co2: {
+        emissions: { region: {}, state: {}, county: {} },
+        percentages: { region: {}, state: {}, county: {} },
+      },
+    };
   }
 
   DisplacementsEngine.prototype.getGeneration = function () {
@@ -60,7 +75,11 @@ module.exports = (function () {
     return totals;
   };
 
-  DisplacementsEngine.prototype.getDisplacedGeneration = function (dataSet, dataSetNonOzone, emissionType) {
+  DisplacementsEngine.prototype.getDisplacedGeneration = function (dataSet, dataSetNonOzone, type) {
+    // shortcuts to instance properties
+    const $se = this.stateEmissions;
+    const $me = this.monthlyEmissions;
+
     let preTotalArray = [];
     let postTotalArray = [];
     let deltaVArray = [];
@@ -107,13 +126,9 @@ module.exports = (function () {
       deltaVArray[i] = 0;
 
       monthlyEmissions.regional[month] = monthlyEmissions.regional[month] || 0;
-
       monthlyEmissionChanges.region[month] = monthlyEmissionChanges.region[month] || 0;
-
       monthlyPercentageChanges.region[month] = monthlyPercentageChanges.region[month] || 0;
-
       monthlyPreValues.region[month] = monthlyPreValues.region[month] || 0;
-
       monthlyPostValues.region[month] = monthlyPostValues.region[month] || 0;
 
       if (this.isOutlier(load, min, max, postLoad)) continue;
@@ -133,15 +148,33 @@ module.exports = (function () {
         const county = dataSet[j].county;
 
         // set state emissions
-        this.stateEmissions[emissionType][state] = this.stateEmissions[emissionType][state] || 0;
-        this.stateEmissions[emissionType][state] += data.delta;
+        $se[type][state] = $se[type][state] || 0;
+        $se[type][state] += data.delta;
 
         // set monthly emissions
-        this.monthlyEmissions.addRegion(emissionType, 'percentages', month, data.percentDifference);
-        this.monthlyEmissions.addState(emissionType, 'emissions', state, month, data.delta);
-        this.monthlyEmissions.addState(emissionType, 'percentages', state, month, data.percentDifference);
-        this.monthlyEmissions.addCounty(emissionType, 'emissions', state, county, month, data.delta);
-        this.monthlyEmissions.addCounty(emissionType, 'percentages', state, county, month, data.percentDifference);
+        // add region
+        $me[type]['percentages'].region[month] = $me[type]['percentages'].region[month] || 0;
+        $me[type]['percentages'].region[month] += data.percentDifference;
+
+        // add state
+        $me[type]['emissions'].state[state] = $me[type]['emissions'].state[state] || {};
+        $me[type]['emissions'].state[state][month] = $me[type]['emissions'].state[state][month] || 0;
+        $me[type]['emissions'].state[state][month] += data.delta;
+
+        $me[type]['percentages'].state[state] = $me[type]['percentages'].state[state] || {};
+        $me[type]['percentages'].state[state][month] = $me[type]['percentages'].state[state][month] || 0;
+        $me[type]['percentages'].state[state][month] += data.percentDifference;
+
+        // add county
+        $me[type]['emissions'].county[state] = $me[type]['emissions'].county[state] || {};
+        $me[type]['emissions'].county[state][county] = $me[type]['emissions'].county[state][county] || {};
+        $me[type]['emissions'].county[state][county][month] = $me[type]['emissions'].county[state][county][month] || 0;
+        $me[type]['emissions'].county[state][county][month] += data.delta;
+
+        $me[type]['percentages'].county[state] = $me[type]['percentages'].county[state] || {};
+        $me[type]['percentages'].county[state][county] = $me[type]['percentages'].county[state][county] || {};
+        $me[type]['percentages'].county[state][county][month] = $me[type]['percentages'].county[state][county][month] || 0;
+        $me[type]['percentages'].county[state][county][month] += data.percentDifference;
 
         // State - Total Emissions
         stateEmissionChanges[state] = stateEmissionChanges[state] || 0;
@@ -193,7 +226,10 @@ module.exports = (function () {
       // monthlyPercentageChanges.region[month] += deltaVArray[i];
       monthlyPreValues.region[month] += preTotalArray[i];
       monthlyPostValues.region[month] += postTotalArray[i];
-      this.monthlyEmissions.addRegion(emissionType, 'emissions', month, deltaVArray[i]);
+
+      // add region
+      $me[type]['emissions'].region[month] = $me[type]['emissions'].region[month] || 0;
+      $me[type]['emissions'].region[month] += deltaVArray[i];
     }
 
     const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
