@@ -28,14 +28,10 @@ module.exports = (function () {
     this.monthlyEmissions = new MonthlyEmissions();
   }
 
-  DisplacementsEngine.prototype.getGeneration = function (callback) {
+  DisplacementsEngine.prototype.getGeneration = function () {
     const totals = this.getDisplacedGeneration(this.rdf.raw.data.generation, false, 'generation');
     this.generationOriginal = totals.original;
     this.generationPost = totals.post;
-
-    if (callback && typeof callback === 'function') {
-      callback(totals);
-    }
 
     return totals;
   };
@@ -56,14 +52,10 @@ module.exports = (function () {
     return totals;
   };
 
-  DisplacementsEngine.prototype.getCo2Total = function (callback) {
+  DisplacementsEngine.prototype.getCo2Total = function () {
     const totals = this.getDisplacedGeneration(this.rdf.raw.data.co2, this.rdf.raw.data.co2_not, 'co2');
     this.co2Original = totals.original;
     this.co2Post = totals.post;
-
-    if (callback && typeof callback === 'function') {
-      callback(totals);
-    }
 
     return totals;
   };
