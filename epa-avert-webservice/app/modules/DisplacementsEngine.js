@@ -2,6 +2,11 @@
 
 const math = require('mathjs');
 
+// helper function for initializing default values
+function init(value, fallback) {
+  return (value != null) ? value : fallback;
+}
+
 module.exports = (function () {
   function DisplacementsEngine (rdf, hourlyEere) {
     this.rdf = rdf;
@@ -125,11 +130,11 @@ module.exports = (function () {
       postTotalArray[i] = 0;
       deltaVArray[i] = 0;
 
-      monthlyEmissions.regional[month] = monthlyEmissions.regional[month] || 0;
-      monthlyEmissionChanges.region[month] = monthlyEmissionChanges.region[month] || 0;
-      monthlyPercentageChanges.region[month] = monthlyPercentageChanges.region[month] || 0;
-      monthlyPreValues.region[month] = monthlyPreValues.region[month] || 0;
-      monthlyPostValues.region[month] = monthlyPostValues.region[month] || 0;
+      monthlyEmissions.regional[month] = init(monthlyEmissions.regional[month], 0);
+      monthlyEmissionChanges.region[month] = init(monthlyEmissionChanges.region[month], 0);
+      monthlyPercentageChanges.region[month] = init(monthlyPercentageChanges.region[month], 0);
+      monthlyPreValues.region[month] = init(monthlyPreValues.region[month], 0);
+      monthlyPostValues.region[month] = init(monthlyPostValues.region[month], 0);
 
       if (this.isOutlier(load, min, max, postLoad)) continue;
 
@@ -148,76 +153,76 @@ module.exports = (function () {
         const county = dataSet[j].county;
 
         // set state emissions
-        $se[type][state] = $se[type][state] || 0;
+        $se[type][state] = init($se[type][state], 0);
         $se[type][state] += data.delta;
 
         // set monthly emissions
         // add region
-        $me[type]['percentages'].region[month] = $me[type]['percentages'].region[month] || 0;
+        $me[type]['percentages'].region[month] = init($me[type]['percentages'].region[month], 0);
         $me[type]['percentages'].region[month] += data.percentDifference;
 
         // add state
-        $me[type]['emissions'].state[state] = $me[type]['emissions'].state[state] || {};
-        $me[type]['emissions'].state[state][month] = $me[type]['emissions'].state[state][month] || 0;
+        $me[type]['emissions'].state[state] = init($me[type]['emissions'].state[state], {});
+        $me[type]['emissions'].state[state][month] = init($me[type]['emissions'].state[state][month], 0);
         $me[type]['emissions'].state[state][month] += data.delta;
 
-        $me[type]['percentages'].state[state] = $me[type]['percentages'].state[state] || {};
-        $me[type]['percentages'].state[state][month] = $me[type]['percentages'].state[state][month] || 0;
+        $me[type]['percentages'].state[state] = init($me[type]['percentages'].state[state], {});
+        $me[type]['percentages'].state[state][month] = init($me[type]['percentages'].state[state][month], 0);
         $me[type]['percentages'].state[state][month] += data.percentDifference;
 
         // add county
-        $me[type]['emissions'].county[state] = $me[type]['emissions'].county[state] || {};
-        $me[type]['emissions'].county[state][county] = $me[type]['emissions'].county[state][county] || {};
-        $me[type]['emissions'].county[state][county][month] = $me[type]['emissions'].county[state][county][month] || 0;
+        $me[type]['emissions'].county[state] = init($me[type]['emissions'].county[state], {});
+        $me[type]['emissions'].county[state][county] = init($me[type]['emissions'].county[state][county], {});
+        $me[type]['emissions'].county[state][county][month] = init($me[type]['emissions'].county[state][county][month], 0);
         $me[type]['emissions'].county[state][county][month] += data.delta;
 
-        $me[type]['percentages'].county[state] = $me[type]['percentages'].county[state] || {};
-        $me[type]['percentages'].county[state][county] = $me[type]['percentages'].county[state][county] || {};
-        $me[type]['percentages'].county[state][county][month] = $me[type]['percentages'].county[state][county][month] || 0;
+        $me[type]['percentages'].county[state] = init($me[type]['percentages'].county[state], {});
+        $me[type]['percentages'].county[state][county] = init($me[type]['percentages'].county[state][county], {});
+        $me[type]['percentages'].county[state][county][month] = init($me[type]['percentages'].county[state][county][month], 0);
         $me[type]['percentages'].county[state][county][month] += data.percentDifference;
 
         // State - Total Emissions
-        stateEmissionChanges[state] = stateEmissionChanges[state] || 0;
+        stateEmissionChanges[state] = init(stateEmissionChanges[state], 0);
         stateEmissionChanges[state] += data.delta;
 
         // State - Monthly - Emissions
-        monthlyEmissionChanges.state[state] = monthlyEmissionChanges.state[state] || {};
-        monthlyEmissionChanges.state[state][month] = monthlyEmissionChanges.state[state][month] || 0;
+        monthlyEmissionChanges.state[state] = init(monthlyEmissionChanges.state[state], {});
+        monthlyEmissionChanges.state[state][month] = init(monthlyEmissionChanges.state[state][month], 0);
         monthlyEmissionChanges.state[state][month] += data.delta;
 
         // State - Monthly - Percent
-        monthlyPercentageChanges.state[state] = monthlyPercentageChanges.state[state] || {};
-        monthlyPercentageChanges.state[state][month] = monthlyPercentageChanges.state[state][month] || 0;
+        monthlyPercentageChanges.state[state] = init(monthlyPercentageChanges.state[state], {});
+        monthlyPercentageChanges.state[state][month] = init(monthlyPercentageChanges.state[state][month], 0);
         // monthlyPercentageChanges.state[state][month] += data.percentDifference;
 
-        monthlyPreValues.state[state] = monthlyPreValues.state[state] || {};
-        monthlyPreValues.state[state][month] = monthlyPreValues.state[state][month] || 0;
+        monthlyPreValues.state[state] = init(monthlyPreValues.state[state], {});
+        monthlyPreValues.state[state][month] = init(monthlyPreValues.state[state][month], 0);
         monthlyPreValues.state[state][month] += data.pre;
 
-        monthlyPostValues.state[state] = monthlyPostValues.state[state] || {};
-        monthlyPostValues.state[state][month] = monthlyPostValues.state[state][month] || 0;
+        monthlyPostValues.state[state] = init(monthlyPostValues.state[state], {});
+        monthlyPostValues.state[state][month] = init(monthlyPostValues.state[state][month], 0);
         monthlyPostValues.state[state][month] += data.post;
 
         // County - Monthly Emissions
-        monthlyEmissionChanges.county[state] = monthlyEmissionChanges.county[state] || {};
-        monthlyEmissionChanges.county[state][county] = monthlyEmissionChanges.county[state][county] || {};
-        monthlyEmissionChanges.county[state][county][month] = monthlyEmissionChanges.county[state][county][month] || 0;
+        monthlyEmissionChanges.county[state] = init(monthlyEmissionChanges.county[state], {});
+        monthlyEmissionChanges.county[state][county] = init(monthlyEmissionChanges.county[state][county], {});
+        monthlyEmissionChanges.county[state][county][month] = init(monthlyEmissionChanges.county[state][county][month], 0);
         monthlyEmissionChanges.county[state][county][month] += data.delta;
 
         // County - Monthly - Percentages
-        monthlyPercentageChanges.county[state] = monthlyPercentageChanges.county[state] || {};
-        monthlyPercentageChanges.county[state][county] = monthlyPercentageChanges.county[state][county] || {};
-        monthlyPercentageChanges.county[state][county][month] = monthlyPercentageChanges.county[state][county][month] || 0;
+        monthlyPercentageChanges.county[state] = init(monthlyPercentageChanges.county[state], {});
+        monthlyPercentageChanges.county[state][county] = init(monthlyPercentageChanges.county[state][county], {});
+        monthlyPercentageChanges.county[state][county][month] = init(monthlyPercentageChanges.county[state][county][month], 0);
         // monthlyPercentageChanges.county[state][county][month] += data.percentDifference;
 
-        monthlyPreValues.county[state] = monthlyPreValues.county[state] || {};
-        monthlyPreValues.county[state][county] = monthlyPreValues.county[state][county] || {};
-        monthlyPreValues.county[state][county][month] = monthlyPreValues.county[state][county][month] || 0;
+        monthlyPreValues.county[state] = init(monthlyPreValues.county[state], {});
+        monthlyPreValues.county[state][county] = init(monthlyPreValues.county[state][county], {});
+        monthlyPreValues.county[state][county][month] = init(monthlyPreValues.county[state][county][month], 0);
         monthlyPreValues.county[state][county][month] += data.pre;
 
-        monthlyPostValues.county[state] = monthlyPostValues.county[state] || {};
-        monthlyPostValues.county[state][county] = monthlyPostValues.county[state][county] || {};
-        monthlyPostValues.county[state][county][month] = monthlyPostValues.county[state][county][month] || 0;
+        monthlyPostValues.county[state] = init(monthlyPostValues.county[state], {});
+        monthlyPostValues.county[state][county] = init(monthlyPostValues.county[state][county], {});
+        monthlyPostValues.county[state][county][month] = init(monthlyPostValues.county[state][county][month], 0);
         monthlyPostValues.county[state][county][month] += data.post;
       }
 
@@ -228,7 +233,7 @@ module.exports = (function () {
       monthlyPostValues.region[month] += postTotalArray[i];
 
       // add region
-      $me[type]['emissions'].region[month] = $me[type]['emissions'].region[month] || 0;
+      $me[type]['emissions'].region[month] = init($me[type]['emissions'].region[month], 0);
       $me[type]['emissions'].region[month] += deltaVArray[i];
     }
 
@@ -339,13 +344,13 @@ module.exports = (function () {
       : { data: {}, pre: {}, post: {}, counties: {} };
 
     // Initialize 0 value for the month if it hasn't been started
-    monthlyEmissions.state[state].data[month] = monthlyEmissions.state[state].data[month] || 0;
+    monthlyEmissions.state[state].data[month] = init(monthlyEmissions.state[state].data[month], 0);
     monthlyEmissions.state[state].data[month] += deltaV;
 
-    monthlyEmissions.state[state].pre[month] = monthlyEmissions.state[state].pre[month] || 0;
+    monthlyEmissions.state[state].pre[month] = init(monthlyEmissions.state[state].pre[month], 0);
     monthlyEmissions.state[state].pre[month] += preVal;
 
-    monthlyEmissions.state[state].post[month] = monthlyEmissions.state[state].post[month] || 0;
+    monthlyEmissions.state[state].post[month] = init(monthlyEmissions.state[state].post[month], 0);
     monthlyEmissions.state[state].post[month] += postVal;
   };
 
@@ -354,16 +359,16 @@ module.exports = (function () {
     let value = monthlyEmissions.state[state].counties[county];
 
     // Initialize empty County if it doesn't already exist
-    value = value || { data: {}, pre: {}, post: {} };
+    value = init(value, { data: {}, pre: {}, post: {} });
 
     // Initialize 0 value for the month if it hasn't been started
-    value.data[month] = value.data[month] || 0;
+    value.data[month] = init(value.data[month], 0);
     value.data[month] += deltaV;
 
-    value.pre[month] = value.pre[month] || 0;
+    value.pre[month] = init(value.pre[month], 0);
     value.pre[month] += preVal;
 
-    value.post[month] = value.post[month] || 0;
+    value.post[month] = init(value.post[month], 0);
     value.post[month] += postVal;
   };
 
