@@ -81,9 +81,6 @@ module.exports = (function () {
   };
 
   DisplacementsEngine.prototype.getDisplacedGeneration = function (dataSet, dataSetNonOzone, type) {
-    let preTotalArray = [];
-    let postTotalArray = [];
-    let deltaVArray = [];
     const monthlyEmissions = {
       regional: {
         data: {}, pre: {}, post: {}
@@ -108,22 +105,27 @@ module.exports = (function () {
     const min = edges[0];
     const max = edges[edges.length - 1];
 
-    //Refactor into its own method that generates one median array;
-    const medians = dataSet.map(function (item) {
-      return item.medians
-    });
-    const mediansNonOzone = dataSetNonOzone
-      ? dataSetNonOzone.map(function (item) { return item.medians })
+    const medians = dataSet.map(function (item) { return item.medians; });
+
+    const mediansNonOzone = (dataSetNonOzone)
+      ? dataSetNonOzone.map(function (item) { return item.medians; })
       : false;
 
-    const loadArrayMonth = this.rdf.months;
-    const loadArrayOriginal = this.rdf.regionalLoads;
-    const loadArrayPost = this.getDisplacedLoadArray(loadArrayOriginal, this.hourlyEere);
+    const loadArrayPost = this.rdf.regionalLoads.map(function (item, index) {
+      return math.sum(item, this.hourlyEere[index].final_mw)
+    }, this);
 
-    for (let i = 0; i < loadArrayOriginal.length; i ++) {
-      const load = loadArrayOriginal[i];
-      const month = loadArrayMonth[i];
+    let preTotalArray = [];
+    let postTotalArray = [];
+    let deltaVArray = [];
+
+    for (let i = 0; i < this.rdf.regionalLoads.length; i ++) {
+      const load = this.rdf.regionalLoads[i];
+      const month = this.rdf.months[i];
       const postLoad = loadArrayPost[i];
+
+      // check for outliers
+      if (!(load >= min && load <= max && postLoad >= min && postLoad <= max)) continue;
 
       preTotalArray[i] = 0;
       postTotalArray[i] = 0;
@@ -135,9 +137,11 @@ module.exports = (function () {
       init(monthlyPreValues.region, month, 0);
       init(monthlyPostValues.region, month, 0);
 
-      if (this.isOutlier(load, min, max, postLoad)) continue;
+      // set active medians, based on mediansNonOzone value and month
+      const activeMedians = (mediansNonOzone)
+        ? (month >= 5 && month <= 9) ? medians : mediansNonOzone
+        : medians;
 
-      const activeMedians = this.useOzoneOrNon(medians, mediansNonOzone, month);
       const preGenIndex = this.excelMatch(edges, load);
       const postGenIndex = this.excelMatch(edges, postLoad);
 
@@ -302,24 +306,6 @@ module.exports = (function () {
     if (array[index] === lookup) return array.indexOf(sortedHaystack[index]);
 
     return array.indexOf(sortedHaystack[index - 1]);
-  };
-
-  DisplacementsEngine.prototype.getDisplacedLoadArray = function (loadArrayOriginal, hourlyEere) {
-    return loadArrayOriginal.map(function (item, index) {
-      return math.sum(item, hourlyEere[index].final_mw)
-    });
-  };
-
-  DisplacementsEngine.prototype.useOzoneOrNon = function (medians, mediansNonOzone, month) {
-    let activeMedians = medians;
-    if (mediansNonOzone) {
-      activeMedians = (month >= 5 && month <= 9) ? medians : mediansNonOzone;
-    }
-    return activeMedians;
-  };
-
-  DisplacementsEngine.prototype.isOutlier = function (load, min, max, postLoad) {
-    return ! (load >= min && load <= max && postLoad >= min && postLoad <= max);
   };
 
   DisplacementsEngine.prototype.calculateLinear = function (load, genA, genB, edgeA, edgeB) {
