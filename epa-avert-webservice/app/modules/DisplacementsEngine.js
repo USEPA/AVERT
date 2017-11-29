@@ -3,9 +3,25 @@
 const math = require('mathjs');
 
 // helper function for initializing default values of an object's key
-function init(object, key, fallback) {
+function init (object, key, fallback) {
   (object[key] != null) ? object[key] : object[key] = fallback;
 }
+
+function calculateLinear ({ load, genA, genB, edgeA, edgeB }) {
+  const slope = (genA - genB) / (edgeA - edgeB);
+  const intercept = genA - (slope * edgeA);
+  return load * slope + intercept;
+};
+
+function excelMatch (array, lookup) {
+  const sortedArray = array.concat(lookup).sort(function (a, b) { return a - b; });
+  const index = sortedArray.indexOf(lookup);
+  // return index of item directly before lookup item in sorted array
+  if (array[index] === lookup) { return index; }
+  return index - 1;
+};
+
+
 
 module.exports = (function () {
   function DisplacementsEngine (rdf, hourlyEere) {
@@ -31,10 +47,7 @@ module.exports = (function () {
 
   DisplacementsEngine.prototype.getDisplacedGeneration = function (dataSet, dataSetNonOzone, type) {
     const monthlyEmissions = {
-      regional: {
-        data: {}, pre: {}, post: {}
-      },
-      state: {}
+      regional: {}, state: {},
     };
     const monthlyEmissionChanges = {
       region: {}, state: {}, county: {}
@@ -80,29 +93,78 @@ module.exports = (function () {
       postTotalArray[i] = 0;
       deltaVArray[i] = 0;
 
-      init(monthlyEmissions.regional, month, 0);
-      init(monthlyEmissionChanges.region, month, 0);
-      init(monthlyPercentageChanges.region, month, 0);
-      init(monthlyPreValues.region, month, 0);
-      init(monthlyPostValues.region, month, 0);
+      monthlyEmissions.regional[month] = 0;
+      monthlyEmissionChanges.region[month] = 0;
+      monthlyPercentageChanges.region[month] = 0;
+      monthlyPreValues.region[month] = 0;
+      monthlyPostValues.region[month] = 0;
 
       // set active medians, based on mediansNonOzone value and month
       const activeMedians = (mediansNonOzone)
         ? (month >= 5 && month <= 9) ? medians : mediansNonOzone
         : medians;
 
-      const preGenIndex = this.excelMatch(edges, load);
-      const postGenIndex = this.excelMatch(edges, postLoad);
+      const preGenIndex = excelMatch(edges, load);
+      const postGenIndex = excelMatch(edges, postLoad);
 
       for (let j = 0; j < activeMedians.length; j ++) {
-        const data = this.calculateMedians(activeMedians, j, dataSet, load, preGenIndex, edges, postLoad, postGenIndex, monthlyEmissions, month);
+        const median = activeMedians[j];
+        const state = dataSet[j].state;
+        const county = dataSet[j].county;
 
+        const preVal = calculateLinear({
+          load: load,
+          genA: median[preGenIndex],
+          genB: median[preGenIndex + 1],
+          edgeA: edges[preGenIndex],
+          edgeB: edges[preGenIndex + 1]
+        });
+
+        const postVal = calculateLinear({
+          load: postLoad,
+          genA: median[postGenIndex],
+          genB: median[postGenIndex + 1],
+          edgeA: edges[postGenIndex],
+          edgeB: edges[postGenIndex + 1]
+        });
+
+        const deltaV = postVal - preVal;
+
+        const data = {
+          pre: preVal,
+          post: postVal,
+          delta: deltaV,
+          percentDifference: (preVal !== 0) ? deltaV / preVal * 100 : 0
+        }
+
+        // --- Extract State Emissions ---
+        init(monthlyEmissions.state, state, { data: {}, pre: {}, post: {}, counties: {} });
+
+        init(monthlyEmissions.state[state].data, month, 0);
+        monthlyEmissions.state[state].data[month] += deltaV;
+
+        init(monthlyEmissions.state[state].pre, month, 0);
+        monthlyEmissions.state[state].pre[month] += preVal;
+
+        init(monthlyEmissions.state[state].post, month, 0);
+        monthlyEmissions.state[state].post[month] += postVal;
+
+        // --- Extract County Emissions ---
+        init(monthlyEmissions.state[state].counties, county, { data: {}, pre: {}, post: {} });
+
+        init(monthlyEmissions.state[state].counties[county].data, month, 0);
+        monthlyEmissions.state[state].counties[county].data[month] += deltaV;
+
+        init(monthlyEmissions.state[state].counties[county].pre, month, 0);
+        monthlyEmissions.state[state].counties[county].pre[month] += preVal;
+
+        init(monthlyEmissions.state[state].counties[county].post, month, 0);
+        monthlyEmissions.state[state].counties[county].post[month] += postVal;
+
+        //
         preTotalArray[i] += data.pre;
         postTotalArray[i] += data.post;
         deltaVArray[i] += data.delta;
-
-        const state = dataSet[j].state;
-        const county = dataSet[j].county;
 
         // State - Total Emissions
         init(stateEmissionChanges, state, 0);
@@ -191,78 +253,6 @@ module.exports = (function () {
       },
       stateChanges: stateEmissionChanges,
     };
-  };
-
-  DisplacementsEngine.prototype.calculateMedians = function (medians, index, data, load, preIndex, edges, postLoad, postIndex, monthlyEmissions, month) {
-    const median = medians[index];
-    const state = data[index].state;
-    const county = data[index].county;
-    const preVal = this.calculateLinear(load, median[preIndex], median[preIndex + 1], edges[preIndex], edges[preIndex + 1]);
-    const postVal = this.calculateLinear(postLoad, median[postIndex], median[postIndex + 1], edges[postIndex], edges[postIndex + 1]);
-    const deltaV = this.calculateDeltaV(postVal, preVal);
-    const percentDifference = preVal !== 0 ? deltaV / preVal * 100 : 0;
-
-    this.extractStateEmissions(monthlyEmissions, state, month, deltaV, preVal, postVal);
-    this.extractCountyEmissions(monthlyEmissions, state, county, month, deltaV, preVal, postVal);
-
-    return {
-      pre: preVal,
-      post: postVal,
-      delta: deltaV,
-      percentDifference: percentDifference
-    }
-  };
-
-  DisplacementsEngine.prototype.excelMatch = function (array, lookup) {
-    const sortedHaystack = array.concat(lookup).sort(function (a, b) {
-      return a - b;
-    });
-    const index = sortedHaystack.indexOf(lookup);
-
-    if (array[index] === lookup) return array.indexOf(sortedHaystack[index]);
-
-    return array.indexOf(sortedHaystack[index - 1]);
-  };
-
-  DisplacementsEngine.prototype.calculateLinear = function (load, genA, genB, edgeA, edgeB) {
-    const slope = (genA - genB) / (edgeA - edgeB);
-    const intercept = genA - (slope * edgeA);
-
-    return load * slope + intercept;
-  };
-
-  DisplacementsEngine.prototype.calculateDeltaV = function (postVal, preVal) {
-    return postVal - preVal;
-  };
-
-  DisplacementsEngine.prototype.extractStateEmissions = function (monthlyEmissions, state, month, deltaV, preVal, postVal) {
-    // Initialize empty States if they don't already exist
-    init(monthlyEmissions.state, state, { data: {}, pre: {}, post: {}, counties: {} });
-
-    // Initialize 0 value for the month if it hasn't been started
-    init(monthlyEmissions.state[state].data, month, 0);
-    monthlyEmissions.state[state].data[month] += deltaV;
-
-    init(monthlyEmissions.state[state].pre, month, 0);
-    monthlyEmissions.state[state].pre[month] += preVal;
-
-    init(monthlyEmissions.state[state].post, month, 0);
-    monthlyEmissions.state[state].post[month] += postVal;
-  };
-
-  DisplacementsEngine.prototype.extractCountyEmissions = function (monthlyEmissions, state, county, month, deltaV, preVal, postVal) {
-    // Initialize empty County if it doesn't already exist
-    init(monthlyEmissions.state[state].counties, county, { data: {}, pre: {}, post: {} });
-
-    // Initialize 0 value for the month if it hasn't been started
-    init(monthlyEmissions.state[state].counties[county].data, month, 0);
-    monthlyEmissions.state[state].counties[county].data[month] += deltaV;
-
-    init(monthlyEmissions.state[state].counties[county].pre, month, 0);
-    monthlyEmissions.state[state].counties[county].pre[month] += preVal;
-
-    init(monthlyEmissions.state[state].counties[county].post, month, 0);
-    monthlyEmissions.state[state].counties[county].post[month] += postVal;
   };
 
   return DisplacementsEngine;
