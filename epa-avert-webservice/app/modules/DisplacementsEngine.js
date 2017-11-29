@@ -11,47 +11,22 @@ module.exports = (function () {
   function DisplacementsEngine (rdf, hourlyEere) {
     this.rdf = rdf;
     this.hourlyEere = hourlyEere;
-
-    this.generationOriginal = 0;
-    this.generationPost = 0;
-    this.so2Original = 0;
-    this.so2Post = 0;
-    this.noxOriginal = 0;
-    this.noxPost = 0;
-    this.co2Original = 0;
-    this.co2Post = 0;
   }
 
   DisplacementsEngine.prototype.getGeneration = function () {
-    const totals = this.getDisplacedGeneration(this.rdf.raw.data.generation, false, 'generation');
-    this.generationOriginal = totals.original;
-    this.generationPost = totals.post;
-
-    return totals;
+    return this.getDisplacedGeneration(this.rdf.raw.data.generation, false, 'generation');
   };
 
   DisplacementsEngine.prototype.getSo2Total = function () {
-    const totals = this.getDisplacedGeneration(this.rdf.raw.data.so2, this.rdf.raw.data.so2_not, 'so2');
-    this.so2Original = totals.original;
-    this.so2Post = totals.post;
-
-    return totals;
+    return this.getDisplacedGeneration(this.rdf.raw.data.so2, this.rdf.raw.data.so2_not, 'so2');
   };
 
   DisplacementsEngine.prototype.getNoxTotal = function () {
-    const totals = this.getDisplacedGeneration(this.rdf.raw.data.nox, this.rdf.raw.data.nox_not, 'nox');
-    this.noxOriginal = totals.original;
-    this.noxPost = totals.post;
-
-    return totals;
+    return this.getDisplacedGeneration(this.rdf.raw.data.nox, this.rdf.raw.data.nox_not, 'nox');
   };
 
   DisplacementsEngine.prototype.getCo2Total = function () {
-    const totals = this.getDisplacedGeneration(this.rdf.raw.data.co2, this.rdf.raw.data.co2_not, 'co2');
-    this.co2Original = totals.original;
-    this.co2Post = totals.post;
-
-    return totals;
+    return this.getDisplacedGeneration(this.rdf.raw.data.co2, this.rdf.raw.data.co2_not, 'co2');
   };
 
   DisplacementsEngine.prototype.getDisplacedGeneration = function (dataSet, dataSetNonOzone, type) {
