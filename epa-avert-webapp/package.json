@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/Eastern-Research-Group/EPA-AVERT/issues"
   },
-  "homepage": "http://projects.erg.com/avert/team/app/2017-10-03",
+  "homepage": ".",
   "devDependencies": {
     "react-scripts": "0.8.4",
     "redux-mock-store": "^1.2.1"
@@ -39,7 +39,7 @@
   "scripts": {
     "start": "react-scripts start",
     "dev": "REACT_APP_WEB_SERVICE=local react-scripts start",
-    "build": "react-scripts build && echo 'Remember to modify build/index.html:\n[] Move details polyfill!\n'",
+    "build": "react-scripts build && cat post-build-instructions.txt",
     "test": "react-scripts test --verbose",
     "coverage": "react-scripts test --coverage",
     "eject": "react-scripts eject"
