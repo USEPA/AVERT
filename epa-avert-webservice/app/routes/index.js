@@ -6,7 +6,7 @@ const queue = require('../controllers/queue');
 const jobs = require('../controllers/jobs');
 
 module.exports = [
-  route.get('/', function* () {
+  route.get('/api/v1', function* () {
     this.body = 'AVERT web service is running...';
   }),
 
