@@ -482,11 +482,11 @@ export const resetMonthlyEmissions = () => ({
 export const RECEIVE_DISPLACEMENT = 'avert/core/RECEIVE_DISPLACEMENT';
 const receiveDisplacement = () => {
   return (dispatch, getState) => {
-    const { generation, so2, nox, co2 } = getState();
+    const { generation, so2, nox, co2, pm25 } = getState();
     const { round, divide } = math;
 
     // recursively call function if data is still fetching
-    if (generation.isFetching || so2.isFetching || nox.isFetching || co2.isFetching) {
+    if (generation.isFetching || so2.isFetching || nox.isFetching || co2.isFetching || pm25.isFetching) {
       return setTimeout(() => dispatch(receiveDisplacement()), 1000);
     }
 
@@ -496,6 +496,7 @@ const receiveDisplacement = () => {
         so2: so2.data,
         nox: nox.data,
         co2: co2.data,
+        pm25: pm25.data,
       },
       emissionRates: {
         so2: {
@@ -509,6 +510,10 @@ const receiveDisplacement = () => {
         co2: {
           original: round(divide(co2.data.original, generation.data.original), 2),
           post: round(divide(co2.data.post, generation.data.post), 2),
+        },
+        pm25: {
+          original: round(divide(pm25.data.original, generation.data.original), 2),
+          post: round(divide(pm25.data.post, generation.data.post), 2),
         },
       },
     };
