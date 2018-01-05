@@ -10,6 +10,7 @@ import * as fromGeneration from 'app/redux/generation';
 import * as fromSo2 from 'app/redux/so2';
 import * as fromNox from 'app/redux/nox';
 import * as fromCo2 from 'app/redux/co2';
+import * as fromPm25 from 'app/redux/pm25';
 
 
 // actions and action creators
@@ -538,11 +539,12 @@ export function calculateDisplacement() {
     dispatch({ type: START_DISPLACEMENT });
     dispatch(incrementProgress());
 
-    // fetch generation, so2, nox, and co2
+    // fetch generation, so2, nox, co2, and pm25
     dispatch(fromGeneration.fetchGeneration());
     dispatch(fromSo2.fetchSo2());
     dispatch(fromNox.fetchNox());
     dispatch(fromCo2.fetchCo2());
+    dispatch(fromPm25.fetchPm25());
 
     // receive displacement
     dispatch(receiveDisplacement());
