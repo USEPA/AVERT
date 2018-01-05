@@ -45,6 +45,10 @@ module.exports = (function () {
     return this.getDisplacedGeneration(this.rdf.raw.data.co2, this.rdf.raw.data.co2_not, 'co2');
   };
 
+  DisplacementsEngine.prototype.getPm25Total = function () {
+    return this.getDisplacedGeneration(this.rdf.raw.data.pm25, this.rdf.raw.data.pm25_not, 'pm25');
+  };
+
   DisplacementsEngine.prototype.getDisplacedGeneration = function (dataSet, dataSetNonOzone, type) {
     // set up structure of data collections (used in returned object's keys)
     const monthlyEmissions = { regional: {}, state: {} };
