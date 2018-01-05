@@ -1,17 +1,21 @@
 import React, { PropTypes } from 'react';
-// utilities
-import NumberFormattingHelper from '../../utils/NumberFormattingHelper';
 // styles
 import './styles.css';
 
 const formatOutput = (number) => {
   if (number < 10 && number > -10) return '--';
-
   let output = Math.ceil(number / 10) * 10;
   return output.toLocaleString();
 };
 
+const formatNumber = (number) => {
+  if (number === 0) return '---';
+  return parseFloat(number).toFixed(2); // always display two decimal places
+};
+
 const DisplacementsTable = (props) => {
+  const { generation, totalEmissions, emissionRates } = props.data;
+
   // rendering is ready when state annual displacement status is 'complete'
   const readyToRender = props.annualStatus === 'complete';
 
@@ -24,58 +28,70 @@ const DisplacementsTable = (props) => {
           <thead>
             <tr>
               <th>&nbsp;</th>
-              <th>{'Original'}</th>
-              <th>{'Post-EE/RE'}</th>
-              <th>{'EE/RE Impacts'}</th>
+              <th>Original</th>
+              <th>Post-EE/RE</th>
+              <th>EE/RE Impacts</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>{'Generation (MWh)'}</td>
-              <td className="avert-table-data">{ formatOutput(props.data.generation.original) }</td>
-              <td className="avert-table-data">{ formatOutput(props.data.generation.post) }</td>
-              <td className="avert-table-data">{ formatOutput(props.data.generation.impact) }</td>
+              <td>Generation (MWh)</td>
+              <td className="avert-table-data">{ formatOutput(generation.original) }</td>
+              <td className="avert-table-data">{ formatOutput(generation.post) }</td>
+              <td className="avert-table-data">{ formatOutput(generation.impact) }</td>
             </tr>
             <tr className='avert-table-group'>
-              <td colSpan='4'>{'Total emissions of fossil EGUs'}</td>
+              <td colSpan='4'>Total emissions of fossil EGUs</td>
             </tr>
             <tr>
-              <td>{'SO'}<sub>{'2'}</sub>{' (lbs)'}</td>
-              <td className="avert-table-data">{ formatOutput(props.data.totalEmissions.so2.original) }</td>
-              <td className="avert-table-data">{ formatOutput(props.data.totalEmissions.so2.post) }</td>
-              <td className="avert-table-data">{ formatOutput(props.data.totalEmissions.so2.impact) }</td>
+              <td>SO<sub>2</sub> (lbs)</td>
+              <td className="avert-table-data">{ formatOutput(totalEmissions.so2.original) }</td>
+              <td className="avert-table-data">{ formatOutput(totalEmissions.so2.post) }</td>
+              <td className="avert-table-data">{ formatOutput(totalEmissions.so2.impact) }</td>
             </tr>
             <tr>
-              <td>{'NO'}<sub>{'X'}</sub>{' (lbs)'}</td>
-              <td className="avert-table-data">{ formatOutput(props.data.totalEmissions.nox.original) }</td>
-              <td className="avert-table-data">{ formatOutput(props.data.totalEmissions.nox.post) }</td>
-              <td className="avert-table-data">{ formatOutput(props.data.totalEmissions.nox.impact) }</td>
+              <td>NO<sub>X</sub> (lbs)</td>
+              <td className="avert-table-data">{ formatOutput(totalEmissions.nox.original) }</td>
+              <td className="avert-table-data">{ formatOutput(totalEmissions.nox.post) }</td>
+              <td className="avert-table-data">{ formatOutput(totalEmissions.nox.impact) }</td>
             </tr>
             <tr>
-              <td>{'CO'}<sub>{'2'}</sub>{' (tons)'}</td>
-              <td className="avert-table-data">{ formatOutput(props.data.totalEmissions.co2.original) }</td>
-              <td className="avert-table-data">{ formatOutput(props.data.totalEmissions.co2.post) }</td>
-              <td className="avert-table-data">{ formatOutput(props.data.totalEmissions.co2.impact) }</td>
+              <td>CO<sub>2</sub> (tons)</td>
+              <td className="avert-table-data">{ formatOutput(totalEmissions.co2.original) }</td>
+              <td className="avert-table-data">{ formatOutput(totalEmissions.co2.post) }</td>
+              <td className="avert-table-data">{ formatOutput(totalEmissions.co2.impact) }</td>
+            </tr>
+            <tr>
+              <td>PM<sub>2.5</sub> (???)</td>{/* TODO: get unit for PM2.5 */}
+              <td className="avert-table-data">{ formatOutput(totalEmissions.pm25.original) }</td>
+              <td className="avert-table-data">{ formatOutput(totalEmissions.pm25.post) }</td>
+              <td className="avert-table-data">{ formatOutput(totalEmissions.pm25.impact) }</td>
             </tr>
             <tr className='avert-table-group'>
-              <td colSpan='4'>{'Emission rates of fossil EGUs'}</td>
+              <td colSpan='4'>Emission rates of fossil EGUs</td>
             </tr>
             <tr>
-              <td>{'SO'}<sub>{'2'}</sub>{' (lbs/MWh)'}</td>
-              <td className="avert-table-data">{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.so2.original, { 'alwaysShow': true, 'hideZero': '--' }) }</td>
-              <td className="avert-table-data">{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.so2.post, { 'alwaysShow': true, 'hideZero': '--' }) }</td>
+              <td>SO<sub>2</sub> (lbs/MWh)</td>
+              <td className="avert-table-data">{ formatNumber(emissionRates.so2.original) }</td>
+              <td className="avert-table-data">{ formatNumber(emissionRates.so2.post) }</td>
               <td className="avert-table-data">&nbsp;</td>
             </tr>
             <tr>
-              <td>{'NO'}<sub>{'X'}</sub>{' (lbs/MWh)'}</td>
-              <td className="avert-table-data">{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.nox.original, { 'alwaysShow': true, 'hideZero': '--' }) }</td>
-              <td className="avert-table-data">{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.nox.post, { 'alwaysShow': true, 'hideZero': '--' }) }</td>
+              <td>NO<sub>X</sub> (lbs/MWh)</td>
+              <td className="avert-table-data">{ formatNumber(emissionRates.nox.original) }</td>
+              <td className="avert-table-data">{ formatNumber(emissionRates.nox.post) }</td>
               <td className="avert-table-data">&nbsp;</td>
             </tr>
             <tr>
-              <td>{'CO'}<sub>{'2'}</sub>{' (tons/MWh)'}</td>
-              <td className="avert-table-data">{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.co2.original, { 'alwaysShow': true, 'hideZero': '--' }) }</td>
-              <td className="avert-table-data">{ NumberFormattingHelper.twoDecimals(props.data.emissionRates.co2.post, { 'alwaysShow': true, 'hideZero': '--' }) }</td>
+              <td>CO<sub>2</sub> (tons/MWh)</td>
+              <td className="avert-table-data">{ formatNumber(emissionRates.co2.original) }</td>
+              <td className="avert-table-data">{ formatNumber(emissionRates.co2.post) }</td>
+              <td className="avert-table-data">&nbsp;</td>
+            </tr>
+            <tr>
+              <td>PM<sub>2.5</sub> (???/MWh)</td>{/* TODO: get unit for PM2.5 */}
+              <td className="avert-table-data">{ formatNumber(emissionRates.pm25.original) }</td>
+              <td className="avert-table-data">{ formatNumber(emissionRates.pm25.post) }</td>
               <td className="avert-table-data">&nbsp;</td>
             </tr>
           </tbody>
