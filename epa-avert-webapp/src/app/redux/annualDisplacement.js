@@ -20,12 +20,14 @@ const initialState = {
     totalEmissions: {
       so2: format,
       nox: format,
-      co2: format
+      co2: format,
+      pm25: format,
     },
     emissionRates: {
       so2: format,
       nox: format,
-      co2: format
+      co2: format,
+      pm25: format,
     },
   },
 };
