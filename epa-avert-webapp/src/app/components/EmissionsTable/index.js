@@ -18,10 +18,11 @@ const EmissionsTable = (props) => {
         <table className='avert-table'>
           <thead>
             <tr>
-              <th>{'State'}</th>
-              <th>{'SO'}<sub>{'2'}</sub>{' (lbs)'}</th>
-              <th>{'NO'}<sub>{'X'}</sub>{' (lbs)'}</th>
-              <th>{'CO'}<sub>{'2'}</sub>{' (tons)'}</th>
+              <th>State</th>
+              <th>SO<sub>2</sub> (lbs)</th>
+              <th>NO<sub>X</sub> (lbs)</th>
+              <th>CO<sub>2</sub> (tons)</th>
+              <th>PM<sub>2.5</sub> (???)</th>{/* TODO: get unit for PM2.5 */}
             </tr>
           </thead>
           <tbody>
@@ -33,6 +34,9 @@ const EmissionsTable = (props) => {
                   <td className="avert-table-data">{ formatOutput(props.data[index].so2) }</td>
                   <td className="avert-table-data">{ formatOutput(props.data[index].nox) }</td>
                   <td className="avert-table-data">{ formatOutput(props.data[index].co2) }</td>
+                  {/* TODO: update actions/index.js StateEmissionsEngine to account for PM2.5 */}
+                  {/* TODO: go through avert/engines and see what code is redundant b/c logic is in epa-avert-webservice */}
+                  <td className="avert-table-data">{/* formatOutput(props.data[index].pm25) */}</td>
                 </tr>
               );
             })}
