@@ -9,6 +9,7 @@ class StateEmissions {
         so2: annualData.totalEmissions.so2.stateChanges[state],
         nox: annualData.totalEmissions.nox.stateChanges[state],
         co2: annualData.totalEmissions.co2.stateChanges[state],
+        pm25: annualData.totalEmissions.pm25.stateChanges[state],
       }
     }).sort((a, b) => {
       const stateA = a.state.toUpperCase();
