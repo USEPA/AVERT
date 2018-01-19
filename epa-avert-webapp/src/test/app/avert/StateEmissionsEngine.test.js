@@ -8,6 +8,7 @@ describe('StateEmissionsEngine', () => {
       so2: { stateChanges: {}},
       nox: { stateChanges: {}},
       co2: { stateChanges: {}},
+      pm25: { stateChanges: {}},
     }
   };
 
@@ -15,6 +16,7 @@ describe('StateEmissionsEngine', () => {
     annualData.totalEmissions.so2.stateChanges = {};
     annualData.totalEmissions.nox.stateChanges = {};
     annualData.totalEmissions.co2.stateChanges = {};
+    annualData.totalEmissions.pm25.stateChanges = {};
   });
 
   it('should extract states from annual data', () => {
@@ -29,13 +31,14 @@ describe('StateEmissionsEngine', () => {
     annualData.totalEmissions.so2.stateChanges = exampleData;
     annualData.totalEmissions.nox.stateChanges = exampleData;
     annualData.totalEmissions.co2.stateChanges = exampleData;
+    annualData.totalEmissions.pm25.stateChanges = exampleData;
 
     const data = engine.extract(annualData);
 
     expect(data.data).toEqual([
-      {state: 'A', so2: 1, nox: 1, co2: 1},
-      {state: 'B', so2: 2, nox: 2, co2: 2},
-      {state: 'C', so2: 3, nox: 3, co2: 3},
+      {state: 'A', so2: 1, nox: 1, co2: 1, pm25: 1},
+      {state: 'B', so2: 2, nox: 2, co2: 2, pm25: 2},
+      {state: 'C', so2: 3, nox: 3, co2: 3, pm25: 3},
     ]);
   });
 
@@ -50,14 +53,15 @@ describe('StateEmissionsEngine', () => {
     annualData.totalEmissions.so2.stateChanges = exampleData;
     annualData.totalEmissions.nox.stateChanges = exampleData;
     annualData.totalEmissions.co2.stateChanges = exampleData;
+    annualData.totalEmissions.pm25.stateChanges = exampleData;
 
     const data = engine.extract(annualData);
 
     expect(data.data).toEqual([
-      {state: 'B', so2: 2, nox: 2, co2: 2},
-      {state: 'D', so2: 4, nox: 4, co2: 4},
-      {state: 'W', so2: 3, nox: 3, co2: 3},
-      {state: 'Z', so2: 1, nox: 1, co2: 1},
+      {state: 'B', so2: 2, nox: 2, co2: 2, pm25: 2},
+      {state: 'D', so2: 4, nox: 4, co2: 4, pm25: 4},
+      {state: 'W', so2: 3, nox: 3, co2: 3, pm25: 3},
+      {state: 'Z', so2: 1, nox: 1, co2: 1, pm25: 1},
     ]);
   });
 });
