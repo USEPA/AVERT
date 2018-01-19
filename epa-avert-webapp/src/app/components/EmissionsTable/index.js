@@ -27,16 +27,13 @@ const EmissionsTable = (props) => {
           </thead>
           <tbody>
             {props.states.map((state, index) => {
-              // console.log('........', state, index, props.data[index]);
               return (
                 <tr key={ index }>
                   <td>{ state }</td>
                   <td className="avert-table-data">{ formatOutput(props.data[index].so2) }</td>
                   <td className="avert-table-data">{ formatOutput(props.data[index].nox) }</td>
                   <td className="avert-table-data">{ formatOutput(props.data[index].co2) }</td>
-                  {/* TODO: update actions/index.js StateEmissionsEngine to account for PM2.5 */}
-                  {/* TODO: go through avert/engines and see what code is redundant b/c logic is in epa-avert-webservice */}
-                  <td className="avert-table-data">{/* formatOutput(props.data[index].pm25) */}</td>
+                  <td className="avert-table-data">{ formatOutput(props.data[index].pm25) }</td>
                 </tr>
               );
             })}
