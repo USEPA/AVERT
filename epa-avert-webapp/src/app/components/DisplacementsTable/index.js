@@ -62,7 +62,7 @@ const DisplacementsTable = (props) => {
               <td className="avert-table-data">{ formatOutput(totalEmissions.co2.impact) }</td>
             </tr>
             <tr>
-              <td>PM<sub>2.5</sub> (???)</td>{/* TODO: get unit for PM2.5 */}
+              <td>PM<sub>2.5</sub> (lbs)</td>
               <td className="avert-table-data">{ formatOutput(totalEmissions.pm25.original) }</td>
               <td className="avert-table-data">{ formatOutput(totalEmissions.pm25.post) }</td>
               <td className="avert-table-data">{ formatOutput(totalEmissions.pm25.impact) }</td>
@@ -89,7 +89,7 @@ const DisplacementsTable = (props) => {
               <td className="avert-table-data">&nbsp;</td>
             </tr>
             <tr>
-              <td>PM<sub>2.5</sub> (???/MWh)</td>{/* TODO: get unit for PM2.5 */}
+              <td>PM<sub>2.5</sub> (lbs/MWh)</td>
               <td className="avert-table-data">{ formatNumber(emissionRates.pm25.original) }</td>
               <td className="avert-table-data">{ formatNumber(emissionRates.pm25.post) }</td>
               <td className="avert-table-data">&nbsp;</td>

@@ -22,7 +22,7 @@ const EmissionsTable = (props) => {
               <th>SO<sub>2</sub> (lbs)</th>
               <th>NO<sub>X</sub> (lbs)</th>
               <th>CO<sub>2</sub> (tons)</th>
-              <th>PM<sub>2.5</sub> (???)</th>{/* TODO: get unit for PM2.5 */}
+              <th>PM<sub>2.5</sub> (lbs)</th>
             </tr>
           </thead>
           <tbody>
