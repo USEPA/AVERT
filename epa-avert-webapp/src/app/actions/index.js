@@ -567,6 +567,11 @@ const receiveDisplacement = () => {
           state: co2.data.monthlyChanges.emissions.state,
           county: co2.data.monthlyChanges.emissions.county,
         },
+        pm25: {
+          regional: Object.values(pm25.data.monthlyChanges.emissions.region),
+          state: pm25.data.monthlyChanges.emissions.state,
+          county: pm25.data.monthlyChanges.emissions.county,
+        },
       },
       percentages: {
         generation: {
@@ -588,6 +593,11 @@ const receiveDisplacement = () => {
           regional: Object.values(co2.data.monthlyChanges.percentages.region),
           state: co2.data.monthlyChanges.percentages.state,
           county: co2.data.monthlyChanges.percentages.county,
+        },
+        pm25: {
+          regional: Object.values(pm25.data.monthlyChanges.percentages.region),
+          state: pm25.data.monthlyChanges.percentages.state,
+          county: pm25.data.monthlyChanges.percentages.county,
         },
       },
     };
