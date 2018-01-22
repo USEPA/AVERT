@@ -2,7 +2,6 @@ import math from 'mathjs';
 
 // engine
 import { avert, eereProfile } from 'app/avert';
-import StateEmissionsEngine from 'app/avert/engines/StateEmissionsEngine';
 import MonthlyEmissionsEngine from 'app/avert/engines/MonthlyEmissionsEngine';
 
 // reducers
@@ -525,10 +524,17 @@ const receiveDisplacement = () => {
       data: data,
     });
 
-    // create state engine and dispatch action
-    const stateEngine = new StateEmissionsEngine();
-    const stateData = stateEngine.extract(data);
-    dispatch(completeStateEmissions(stateData));
+    // calculate state emissions and dispatch action
+    const states = Object.keys(generation.data.stateChanges).sort();
+    const stateEmissions = states.map((state) => ({
+      state: state,
+      so2: so2.data.stateChanges[state],
+      nox: nox.data.stateChanges[state],
+      co2: co2.data.stateChanges[state],
+      pm25: pm25.data.stateChanges[state],
+    }));
+
+    dispatch(completeStateEmissions({ states: states, data: stateEmissions }));
 
     // create monthly engine and dispatch action
     const monthlyEngine = new MonthlyEmissionsEngine();
