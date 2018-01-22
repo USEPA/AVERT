@@ -143,7 +143,7 @@ const EmissionsChart = ({
             type='radio'
             name='unit'
             value={MonthlyUnitEnum.EMISSION}
-            checked={ unit === MonthlyUnitEnum.EMISSION }
+            checked={unit === MonthlyUnitEnum.EMISSION}
             onChange={(e) => onUnitChange(e.target.value)}
           />
           Emission changes (lbs or tons)
@@ -154,7 +154,7 @@ const EmissionsChart = ({
             type='radio'
             name='unit'
             value={MonthlyUnitEnum.PERCENT_CHANGE}
-            checked={ unit === MonthlyUnitEnum.PERCENT_CHANGE }
+            checked={unit === MonthlyUnitEnum.PERCENT_CHANGE}
             onChange={(e) => onUnitChange(e.target.value)}
           />
           Percent change
@@ -162,11 +162,6 @@ const EmissionsChart = ({
       </div>
     );
   }
-
-  // charts data
-  const so2_data = output.so2.map((emission) => emission);
-  const nox_data = output.nox.map((emission) => emission);
-  const co2_data = output.co2.map((emission) => emission);
 
   // charts config
   const shared_config = {
@@ -208,32 +203,28 @@ const EmissionsChart = ({
     },
   };
 
-  const regionName = selected_region === 0 ?
-    'Unspecified' :
-    Object.keys(Regions)
-      .map(r => Regions[r])
-      .filter(r => r.id === selected_region)[0].label;
+  const regionName = (selected_region === 0)
+    ? 'Unspecified'
+    : Object.values(Regions).find(r => r.id === selected_region).label;
 
-  let titleAggregation;
+  let location;
   if (aggregation === AggregationEnum.REGION) {
-    titleAggregation = `${regionName} Region`;
+    location = `${regionName} Region`;
   }
   if (aggregation === AggregationEnum.STATE) {
-    titleAggregation = selected_state === '' ?
-      '' :
-      `${StatesEnum[selected_state]}`;
+    location = (selected_state === '')
+      ? ''
+      : `${StatesEnum[selected_state]}`;
   }
   if (aggregation === AggregationEnum.COUNTY) {
     // counties are called parishes in Louisiana
-    const countyWord = StatesEnum[selected_state] === 'Louisiana' ? 'Parish' : 'County';
-    titleAggregation = selected_county === '' ?
-      '' :
-      `${selected_county} ${countyWord}, ${StatesEnum[selected_state]}`;
+    const county = StatesEnum[selected_state] === 'Louisiana' ? 'Parish' : 'County';
+    location = (selected_county === '')
+      ? ''
+      : `${selected_county} ${county}, ${StatesEnum[selected_state]}`;
   }
 
-  const titleText = (titleChemical) => {
-    return `Change in ${titleChemical} Emissions: ${titleAggregation}`
-  };
+  const titleText = (chemical) => `Change in ${chemical} Emissions: ${location}`;
 
   const so2_config = {
     ...shared_config,
@@ -248,7 +239,7 @@ const EmissionsChart = ({
     },
     series: [{
       name: 'SO₂',
-      data: so2_data,
+      data: output.so2,
       color: '#058dc7',
     }],
   };
@@ -266,7 +257,7 @@ const EmissionsChart = ({
     },
     series: [{
       name: 'NOₓ',
-      data: nox_data,
+      data: output.nox,
       color: '#ed561b',
     }]
   };
@@ -284,8 +275,26 @@ const EmissionsChart = ({
     },
     series: [{
       name: 'CO₂',
-      data: co2_data,
+      data: output.co2,
       color: '#50b432',
+    }]
+  };
+
+  const pm25_config = {
+    ...shared_config,
+    title: {
+      text: `<tspan class='avert-chart-title'>${titleText('PM<sub>2.5</sub>')}</tspan>`,
+      useHTML: true,
+    },
+    yAxis: {
+      title: {
+        text: unit === MonthlyUnitEnum.PERCENT_CHANGE ? 'Percent change' : 'Emission changes (lbs)',
+      },
+    },
+    series: [{
+      name: 'PM₂₅',
+      data: output.pm25,
+      color: '#FF9655',
     }]
   };
 
@@ -296,6 +305,7 @@ const EmissionsChart = ({
         <Highcharts config={so2_config} callback={afterRender} />
         <Highcharts config={nox_config} callback={afterRender} />
         <Highcharts config={co2_config} callback={afterRender} />
+        <Highcharts config={pm25_config} callback={afterRender} />
       </div>
     );
   }

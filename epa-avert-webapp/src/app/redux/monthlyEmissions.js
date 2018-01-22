@@ -134,51 +134,34 @@ export default function reducer(state = initialState, action) {
       };
 
     case RENDER_MONTHLY_EMISSIONS_CHARTS:
-      const aggr = state.selectedAggregation;
+      const { selectedAggregation, selectedState, selectedCounty } = state;
 
-      const selectedState = (state.selectedState !== '')
-        ? state.selectedState
-        : false;
-
-      const selectedCounty = (state.selectedCounty !== '')
-        ? state.selectedCounty
-        : false;
-
-      let prefix = (state.selectedUnit === MonthlyUnitEnum.PERCENT_CHANGE)
+      let unit = (state.selectedUnit === MonthlyUnitEnum.PERCENT_CHANGE)
         ? 'percentages'
         : 'emissions';
 
-      const suffixes = [
-        { key: 'so2', suffix: 'So2' },
-        { key: 'nox', suffix: 'Nox' },
-        { key: 'co2', suffix: 'Co2' },
-        { key: 'pm25', suffix: 'Pm25' },
-      ];
+      const pollutants = ['So2', 'Nox', 'Co2', 'Pm25'];
 
-      let data = {};
-
-      if ((aggr === AggregationEnum.REGION) || (selectedState === '') ||  (selectedState === '' && selectedCounty === '')) {
-        prefix += 'Region';
-        suffixes.forEach((gas) => {
-          data[gas.key] = _.values(state[prefix + gas.suffix]);
+      let emissionData = {};
+      if (selectedAggregation === AggregationEnum.REGION) {
+        pollutants.forEach((p) => {
+          emissionData[p.toLowerCase()] = _.values(state[`${unit}Region${p}`]);
         });
-      // -----
-      } else if ((aggr === AggregationEnum.STATE) || (selectedCounty === '')) {
-        prefix += 'States';
-        suffixes.forEach((gas) => {
-          data[gas.key] = _.values(state[prefix + gas.suffix][selectedState]);
+      }
+      if (selectedAggregation === AggregationEnum.STATE) {
+        pollutants.forEach((p) => {
+          emissionData[p.toLowerCase()] = _.values(state[`${unit}States${p}`][selectedState]);
         });
-      // -----
-      } else if (aggr === AggregationEnum.COUNTY) {
-        prefix += 'Counties';
-        suffixes.forEach((gas) => {
-          data[gas.key] = _.values(state[prefix + gas.suffix][selectedState][selectedCounty]);
+      }
+      if (selectedAggregation === AggregationEnum.COUNTY) {
+        pollutants.forEach((p) => {
+          emissionData[p.toLowerCase()] = _.values(state[`${unit}Counties${p}`][selectedState][selectedCounty]);
         });
       }
 
       return {
         ...state,
-        visibleData: data,
+        visibleData: emissionData,
       };
 
     case RESET_MONTHLY_EMISSIONS:
