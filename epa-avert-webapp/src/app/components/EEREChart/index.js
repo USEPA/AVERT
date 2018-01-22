@@ -128,6 +128,7 @@ const EEREChart = (props) => {
     }
 
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    // TODO: check values below, as undefined is displayed in webapp when RockyMountains region B: Broad Based 15% is entered
     const month = months[x.timestamp.month - 1];
     const day = x.timestamp.day;
     const hour = x.timestamp.hour > 12 ? x.timestamp.hour - 12 : x.timestamp.hour;
