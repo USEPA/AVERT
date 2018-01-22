@@ -2,7 +2,6 @@ import math from 'mathjs';
 
 // engine
 import { avert, eereProfile } from 'app/avert';
-import MonthlyEmissionsEngine from 'app/avert/engines/MonthlyEmissionsEngine';
 
 // reducers
 import * as fromGeneration from 'app/redux/generation';
@@ -489,7 +488,7 @@ const receiveDisplacement = () => {
       return setTimeout(() => dispatch(receiveDisplacement()), 1000);
     }
 
-    const data = {
+    const displacementData = {
       generation: generation.data,
       totalEmissions: {
         so2: so2.data,
@@ -521,12 +520,14 @@ const receiveDisplacement = () => {
     dispatch(incrementProgress());
     dispatch({
       type: RECEIVE_DISPLACEMENT,
-      data: data,
+      data: displacementData,
     });
 
-    // calculate state emissions and dispatch action
+    // build up states array
     const states = Object.keys(generation.data.stateChanges).sort();
-    const stateEmissions = states.map((state) => ({
+
+    // calculate state emissions and dispatch action
+    const stateEmissionsData = states.map((state) => ({
       state: state,
       so2: so2.data.stateChanges[state],
       nox: nox.data.stateChanges[state],
@@ -534,12 +535,64 @@ const receiveDisplacement = () => {
       pm25: pm25.data.stateChanges[state],
     }));
 
-    dispatch(completeStateEmissions({ states: states, data: stateEmissions }));
+    dispatch(completeStateEmissions({ states: states, data: stateEmissionsData }));
 
-    // create monthly engine and dispatch action
-    const monthlyEngine = new MonthlyEmissionsEngine();
-    const monthlyData = monthlyEngine.extract(data);
-    return dispatch(completeMonthlyEmissions(monthlyData));
+    // build two-dimmensional states and counties array
+    let statesAndCounties = {};
+    states.forEach((state) => {
+      statesAndCounties[state] = Object.keys(generation.data.monthlyChanges.emissions.county[state]).sort();
+    });
+
+    // calculate monthly emissions and dispatch action
+    const monthlyEmissionsData = {
+      statesAndCounties: statesAndCounties,
+      emissions: {
+        generation: {
+          regional: Object.values(generation.data.monthlyChanges.emissions.region),
+          state: generation.data.monthlyChanges.emissions.state,
+          county: generation.data.monthlyChanges.emissions.county,
+        },
+        so2: {
+          regional: Object.values(so2.data.monthlyChanges.emissions.region),
+          state: so2.data.monthlyChanges.emissions.state,
+          county: so2.data.monthlyChanges.emissions.county,
+        },
+        nox: {
+          regional: Object.values(nox.data.monthlyChanges.emissions.region),
+          state: nox.data.monthlyChanges.emissions.state,
+          county: nox.data.monthlyChanges.emissions.county,
+        },
+        co2: {
+          regional: Object.values(co2.data.monthlyChanges.emissions.region),
+          state: co2.data.monthlyChanges.emissions.state,
+          county: co2.data.monthlyChanges.emissions.county,
+        },
+      },
+      percentages: {
+        generation: {
+          regional: Object.values(generation.data.monthlyChanges.percentages.region),
+          state: generation.data.monthlyChanges.percentages.state,
+          county: generation.data.monthlyChanges.percentages.county,
+        },
+        so2: {
+          regional: Object.values(so2.data.monthlyChanges.percentages.region),
+          state: so2.data.monthlyChanges.percentages.state,
+          county: so2.data.monthlyChanges.percentages.county,
+        },
+        nox: {
+          regional: Object.values(nox.data.monthlyChanges.percentages.region),
+          state: nox.data.monthlyChanges.percentages.state,
+          county: nox.data.monthlyChanges.percentages.county,
+        },
+        co2: {
+          regional: Object.values(co2.data.monthlyChanges.percentages.region),
+          state: co2.data.monthlyChanges.percentages.state,
+          county: co2.data.monthlyChanges.percentages.county,
+        },
+      },
+    };
+
+    return dispatch(completeMonthlyEmissions(monthlyEmissionsData));
   };
 };
 
