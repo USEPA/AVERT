@@ -1,5 +1,6 @@
 import _ from 'lodash';
-import { extractDownloadStructure } from 'app/utils/DataDownloadHelper';
+
+import { setStructure } from 'app/utils/DataDownloadHelper';
 import { StatusEnum } from 'app/utils/StatusEnum';
 import { AggregationEnum } from 'app/utils/AggregationEnum';
 import { MonthlyUnitEnum } from 'app/utils/MonthlyUnitEnum';
@@ -21,34 +22,36 @@ import {
 // reducer
 const initialState = {
   status: 'select_region',
-  newSelectedAggregation: AggregationEnum.REGION,
-  newSelectedState: '',
-  newSelectedCounty: '',
-  newSelectedUnit: MonthlyUnitEnum.EMISSION,
-  newRawData: {},
-  newEmissionsRegionSo2: [],
-  newEmissionsRegionNox: [],
-  newEmissionsRegionCo2: [],
-  newEmissionsStatesSo2: {},
-  newEmissionsStatesNox: {},
-  newEmissionsStatesCo2: {},
-  newEmissionsCountiesSo2: {},
-  newEmissionsCountiesNox: {},
-  newEmissionsCountiesCo2: {},
-  newPercentagesRegionSo2: [],
-  newPercentagesRegionNox: [],
-  newPercentagesRegionCo2: [],
-  newPercentagesStatesSo2: {},
-  newPercentagesStatesNox: {},
-  newPercentagesStatesCo2: {},
-  newPercentagesCountiesSo2: {},
-  newPercentagesCountiesNox: {},
-  newPercentagesCountiesCo2: {},
-  newStates: [],
-  newCounties: {},
-  newVisibleCounties: [],
-  newVisibleData: {so2: [], nox: [], co2: []},
-  newDownloadableData: [],
+  selectedAggregation: AggregationEnum.REGION,
+  selectedState: '',
+  selectedCounty: '',
+  selectedUnit: MonthlyUnitEnum.EMISSION,
+  rawData: {},
+  emissionsRegionSo2: [],
+  emissionsRegionNox: [],
+  emissionsRegionCo2: [],
+  emissionsStatesSo2: {},
+  emissionsStatesNox: {},
+  emissionsStatesCo2: {},
+  emissionsCountiesSo2: {},
+  emissionsCountiesNox: {},
+  emissionsCountiesCo2: {},
+  percentagesRegionSo2: [],
+  percentagesRegionNox: [],
+  percentagesRegionCo2: [],
+  percentagesStatesSo2: {},
+  percentagesStatesNox: {},
+  percentagesStatesCo2: {},
+  percentagesCountiesSo2: {},
+  percentagesCountiesNox: {},
+  percentagesCountiesCo2: {},
+  states: [],
+  counties: {},
+  visibleCounties: [],
+  visibleData: {
+    so2: [], nox: [], co2: [],
+  },
+  downloadableData: [],
 };
 
 export default function reducer(state = initialState, action) {
@@ -69,134 +72,135 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         status: StatusEnum.DONE,
-        newRawData: action.data,
-        newEmissionsRegionSo2: action.data.emissions.so2.regional,
-        newEmissionsRegionNox: action.data.emissions.nox.regional,
-        newEmissionsRegionCo2: action.data.emissions.co2.regional,
-        newEmissionsStatesSo2: action.data.emissions.so2.state,
-        newEmissionsStatesNox: action.data.emissions.nox.state,
-        newEmissionsStatesCo2: action.data.emissions.co2.state,
-        newEmissionsCountiesSo2: action.data.emissions.so2.county,
-        newEmissionsCountiesNox: action.data.emissions.nox.county,
-        newEmissionsCountiesCo2: action.data.emissions.co2.county,
-        newPercentagesRegionSo2: action.data.percentages.so2.regional,
-        newPercentagesRegionNox: action.data.percentages.nox.regional,
-        newPercentagesRegionCo2: action.data.percentages.co2.regional,
-        newPercentagesStatesSo2: action.data.percentages.so2.state,
-        newPercentagesStatesNox: action.data.percentages.nox.state,
-        newPercentagesStatesCo2: action.data.percentages.co2.state,
-        newPercentagesCountiesSo2: action.data.percentages.so2.county,
-        newPercentagesCountiesNox: action.data.percentages.nox.county,
-        newPercentagesCountiesCo2: action.data.percentages.co2.county,
-        newStates: Object.keys(action.data.statesAndCounties),
-        newCounties: action.data.statesAndCounties,
+        rawData: action.data,
+        emissionsRegionSo2: action.data.emissions.so2.regional,
+        emissionsRegionNox: action.data.emissions.nox.regional,
+        emissionsRegionCo2: action.data.emissions.co2.regional,
+        emissionsStatesSo2: action.data.emissions.so2.state,
+        emissionsStatesNox: action.data.emissions.nox.state,
+        emissionsStatesCo2: action.data.emissions.co2.state,
+        emissionsCountiesSo2: action.data.emissions.so2.county,
+        emissionsCountiesNox: action.data.emissions.nox.county,
+        emissionsCountiesCo2: action.data.emissions.co2.county,
+        percentagesRegionSo2: action.data.percentages.so2.regional,
+        percentagesRegionNox: action.data.percentages.nox.regional,
+        percentagesRegionCo2: action.data.percentages.co2.regional,
+        percentagesStatesSo2: action.data.percentages.so2.state,
+        percentagesStatesNox: action.data.percentages.nox.state,
+        percentagesStatesCo2: action.data.percentages.co2.state,
+        percentagesCountiesSo2: action.data.percentages.so2.county,
+        percentagesCountiesNox: action.data.percentages.nox.county,
+        percentagesCountiesCo2: action.data.percentages.co2.county,
+        states: Object.keys(action.data.statesAndCounties),
+        counties: action.data.statesAndCounties,
       };
 
     case SELECT_MONTHLY_AGGREGATION:
       return {
         ...state,
-        newSelectedAggregation: action.aggregation,
+        selectedAggregation: action.aggregation,
       };
 
     case SELECT_MONTHLY_UNIT:
       return {
         ...state,
-        newSelectedUnit: action.unit,
+        selectedUnit: action.unit,
       };
 
     case SELECT_MONTHLY_STATE:
       return {
         ...state,
-        newSelectedState: action.state,
-        newSelectedCounty: '',
-        newVisibleCounties: action.visibleCounties,
+        selectedState: action.state,
+        selectedCounty: '',
+        visibleCounties: action.visibleCounties,
       };
 
     case SELECT_MONTHLY_COUNTY:
       return {
         ...state,
-        newSelectedCounty: action.county,
+        selectedCounty: action.county,
       };
 
     case RENDER_MONTHLY_EMISSIONS_CHARTS:
-      const aggregation = state.newSelectedAggregation;
-      const unit = state.newSelectedUnit;
-      const selectedState = (state.newSelectedState !== '')
-        ? state.newSelectedState
-        : false;
-      const county = (state.newSelectedCounty !== '')
-        ? state.newSelectedCounty
-        : false;
-      let dataPrefix = (unit === MonthlyUnitEnum.PERCENT_CHANGE)
-        ? 'newPercentages'
-        : 'newEmissions';
+      const aggr = state.selectedAggregation;
 
-      const dataSuffixes = [
-        {key: 'so2', suffix: 'So2'},
-        {key: 'nox', suffix: 'Nox'},
-        {key: 'co2', suffix: 'Co2'}
+      const selectedState = (state.selectedState !== '')
+        ? state.selectedState
+        : false;
+
+      const selectedCounty = (state.selectedCounty !== '')
+        ? state.selectedCounty
+        : false;
+
+      let prefix = (state.selectedUnit === MonthlyUnitEnum.PERCENT_CHANGE)
+        ? 'percentages'
+        : 'emissions';
+
+      const suffixes = [
+        { key: 'so2', suffix: 'So2' },
+        { key: 'nox', suffix: 'Nox' },
+        { key: 'co2', suffix: 'Co2' },
       ];
 
-      let visibleData = {};
+      let data = {};
 
-      if (aggregation === AggregationEnum.REGION || selectedState === '' || (selectedState === '' && county === '')) {
-        dataPrefix += 'Region';
-        dataSuffixes.forEach((gas) => {
-          visibleData[gas.key] = _.values(state[dataPrefix + gas.suffix]);
+      if ((aggr === AggregationEnum.REGION) || (selectedState === '') ||  (selectedState === '' && selectedCounty === '')) {
+        prefix += 'Region';
+        suffixes.forEach((gas) => {
+          data[gas.key] = _.values(state[prefix + gas.suffix]);
         });
-      } else if (aggregation === AggregationEnum.STATE || county === '') {
-        dataPrefix += 'States';
-        dataSuffixes.forEach((gas) => {
-          visibleData[gas.key] = _.values(state[dataPrefix + gas.suffix][selectedState]);
+      // -----
+      } else if ((aggr === AggregationEnum.STATE) || (selectedCounty === '')) {
+        prefix += 'States';
+        suffixes.forEach((gas) => {
+          data[gas.key] = _.values(state[prefix + gas.suffix][selectedState]);
         });
-      } else if (aggregation === AggregationEnum.COUNTY) {
-        dataPrefix += 'Counties';
-        dataSuffixes.forEach((gas) => {
-          visibleData[gas.key] = _.values(state[dataPrefix + gas.suffix][selectedState][county]);
+      // -----
+      } else if (aggr === AggregationEnum.COUNTY) {
+        prefix += 'Counties';
+        suffixes.forEach((gas) => {
+          data[gas.key] = _.values(state[prefix + gas.suffix][selectedState][selectedCounty]);
         });
       }
 
       return {
         ...state,
-        newVisibleData: visibleData,
+        visibleData: data,
       };
 
     case RESET_MONTHLY_EMISSIONS:
       return initialState;
 
     case SET_DOWNLOAD_DATA:
-      let downloadableData = [];
-      downloadableData.push(extractDownloadStructure('SO2', 'emissions', state.newEmissionsRegionSo2));
-      downloadableData.push(extractDownloadStructure('NOX', 'emissions', state.newEmissionsRegionNox));
-      downloadableData.push(extractDownloadStructure('CO2', 'emissions', state.newEmissionsRegionCo2));
+      let dl = [];
+      dl.push(setStructure('SO2', 'emissions', state.emissionsRegionSo2));
+      dl.push(setStructure('NOX', 'emissions', state.emissionsRegionNox));
+      dl.push(setStructure('CO2', 'emissions', state.emissionsRegionCo2));
+      dl.push(setStructure('SO2', 'percentages', state.percentagesRegionSo2));
+      dl.push(setStructure('NOX', 'percentages', state.percentagesRegionNox));
+      dl.push(setStructure('CO2', 'percentages', state.percentagesRegionCo2));
 
-      downloadableData.push(extractDownloadStructure('SO2', 'percentages', state.newPercentagesRegionSo2));
-      downloadableData.push(extractDownloadStructure('NOX', 'percentages', state.newPercentagesRegionNox));
-      downloadableData.push(extractDownloadStructure('CO2', 'percentages', state.newPercentagesRegionCo2));
+      state.states.forEach((s) => {
+        dl.push(setStructure('SO2', 'emissions', state.emissionsStatesSo2[s], s));
+        dl.push(setStructure('NOX', 'emissions', state.emissionsStatesNox[s], s));
+        dl.push(setStructure('CO2', 'emissions', state.emissionsStatesCo2[s], s));
+        dl.push(setStructure('SO2', 'percentages', state.percentagesStatesSo2[s], s));
+        dl.push(setStructure('NOX', 'percentages', state.percentagesStatesNox[s], s));
+        dl.push(setStructure('CO2', 'percentages', state.percentagesStatesCo2[s], s));
 
-      state.newStates.forEach((thisState) => {
-        downloadableData.push(extractDownloadStructure('SO2', 'emissions', state.newEmissionsStatesSo2[thisState], thisState));
-        downloadableData.push(extractDownloadStructure('NOX', 'emissions', state.newEmissionsStatesNox[thisState], thisState));
-        downloadableData.push(extractDownloadStructure('CO2', 'emissions', state.newEmissionsStatesCo2[thisState], thisState));
-
-        downloadableData.push(extractDownloadStructure('SO2', 'percentages', state.newPercentagesStatesSo2[thisState], thisState));
-        downloadableData.push(extractDownloadStructure('NOX', 'percentages', state.newPercentagesStatesNox[thisState], thisState));
-        downloadableData.push(extractDownloadStructure('CO2', 'percentages', state.newPercentagesStatesCo2[thisState], thisState));
-
-        state.newCounties[thisState].forEach((county) => {
-          downloadableData.push(extractDownloadStructure('SO2', 'emissions', state.newEmissionsCountiesSo2[thisState][county], thisState, county));
-          downloadableData.push(extractDownloadStructure('NOX', 'emissions', state.newEmissionsCountiesNox[thisState][county], thisState, county));
-          downloadableData.push(extractDownloadStructure('CO2', 'emissions', state.newEmissionsCountiesCo2[thisState][county], thisState, county));
-
-          downloadableData.push(extractDownloadStructure('SO2', 'percentages', state.newPercentagesCountiesSo2[thisState][county], thisState, county));
-          downloadableData.push(extractDownloadStructure('NOX', 'percentages', state.newPercentagesCountiesNox[thisState][county], thisState, county));
-          downloadableData.push(extractDownloadStructure('CO2', 'percentages', state.newPercentagesCountiesCo2[thisState][county], thisState, county));
+        state.counties[s].forEach((c) => {
+          dl.push(setStructure('SO2', 'emissions', state.emissionsCountiesSo2[s][c], s, c));
+          dl.push(setStructure('NOX', 'emissions', state.emissionsCountiesNox[s][c], s, c));
+          dl.push(setStructure('CO2', 'emissions', state.emissionsCountiesCo2[s][c], s, c));
+          dl.push(setStructure('SO2', 'percentages', state.percentagesCountiesSo2[s][c], s, c));
+          dl.push(setStructure('NOX', 'percentages', state.percentagesCountiesNox[s][c], s, c));
+          dl.push(setStructure('CO2', 'percentages', state.percentagesCountiesCo2[s][c], s, c));
         });
       });
 
       return {
         ...state,
-        newDownloadableData: downloadableData,
+        downloadableData: dl,
       };
 
     default:

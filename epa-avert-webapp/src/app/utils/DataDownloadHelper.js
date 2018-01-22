@@ -1,7 +1,6 @@
-import _ from 'lodash';
+export const setStructure = (type, emissionsOrPercentages, data, state, county) => {
+  data = Object.values(data);
 
-export const extractDownloadStructure = (type, emissionsOrPercentages, data, state, county) => {
-  data = _.values(data);
   return {
     type: type,
     aggregation_level: county ? 'County' : (state ? 'State' : 'Regional'),
@@ -21,4 +20,4 @@ export const extractDownloadStructure = (type, emissionsOrPercentages, data, sta
     november: data[10],
     december: data[11],
   }
-}
+};

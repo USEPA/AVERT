@@ -451,7 +451,7 @@ export const selectMonthlyState = (state) => {
     dispatch({
       type: SELECT_MONTHLY_STATE,
       state: state,
-      visibleCounties: monthlyEmissions.newCounties[state],
+      visibleCounties: monthlyEmissions.counties[state],
     });
     dispatch(renderMonthlyEmissionsCharts());
   }
