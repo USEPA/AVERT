@@ -1,106 +1,99 @@
-import _ from 'lodash';
 import math from 'mathjs';
 import stats from 'stats-lite'
 
 class EereEngine {
-  constructor(profile,rdf,region) {
-    this.profile = profile;
-    this.rdf = rdf;
-    this.region = region;
-    this.gridLoss = 1 / (1 - (region.grid_loss / 100));
-    this.softLimits = this.rdf.softLimits;
-    this.hardLimits = this.rdf.hardLimits;
-    this.calculateTopPercentile(this.rdf.regionalLoads);
-    this.calculateHourlyReduction(this.rdf.regionalLoads.length);
-    this.hourlyEere = [];
-    this.exceedances = [];
-    this.softExceedances = [];
-    this.hardExceedances = [];
+  constructor(profile, rdf, region) {
+    this._eereProfile = profile;
+    this._rdf = rdf;
+    this._selectedRegion = region;
+
+    this._gridLoss = this._calculateGridLoss();
+    this._topPercentile = this._calculateTopPercentile();
+    this._hourlyMwReduction = this._calculateHourlyMwReduction();
+
+    this._softExceedances = [];
+    this._hardExceedances = [];
+    this._hourlyEere = [];
+    // build up above instance arrays
+    this._rdf.regionalLoads.forEach((load, index) => {
+      this._calculateExceedancesAndHourlyEere(load, index);
+    });
   }
 
-  calculateEereLoad(){
-    this.hourlyEere = _.map(this.rdf.regionalLoads, this.hourlyEereCb.bind(this));
-    this.exceedances = _.map(this.hourlyEere,'exceedance');
-    this.softExceedances = _.map(this.hourlyEere,'soft_exceedance');
-    this.hardExceedances = _.map(this.hourlyEere,'hard_exceedance');
+  _calculateGridLoss() {
+    return 1 / (1 - (this._selectedRegion.grid_loss / 100));
   }
 
-  calculateTopPercentile(regionalLoad) {
-    const k = 1 - (this.profile.topHours / 100);
-    this.topPercentile = stats.percentile(regionalLoad, k);
-    return this.topPercentile;
+  _calculateTopPercentile() {
+    const k = 1 - (this._eereProfile.topHours / 100);
+    return stats.percentile(this._rdf.regionalLoads, k);
   }
 
-  calculateHourlyReduction(numberOfRegions) {
-    const result = math.chain(this.profile.annualGwh).multiply(1000).divide(numberOfRegions).done();
-    this.resultingHourlyMwReduction = result;
-    return result;
+  _calculateHourlyMwReduction() {
+    const hours = this._rdf.regionalLoads.length;
+    return this._eereProfile.annualGwh * 1000 / hours;
   }
 
-  hourlyEereCb(load,index){
-    const softLimit = this.rdf.softLimits[index];
-    const hardLimit = this.rdf.hardLimits[index];
-    const hourlyEereDefault = this.rdf.defaults.data[index];
+  _calculateExceedancesAndHourlyEere(load, index) {
+    const softLimit = this._rdf.softLimits[index];
+    const hardLimit = this._rdf.hardLimits[index];
+    const hourlyDefault = this._rdf.defaults.data[index];
 
-    //baseload ee (A)
-    const resultingHourlyMwReduction = this.resultingHourlyMwReduction * this.gridLoss;
-    const constantMw = this.profile.constantMw * this.gridLoss;
+    // A: Base Load
+    const hourlyMwReduction = this._hourlyMwReduction * this._gridLoss;
+    const constantMw = this._eereProfile.constantMw * this._gridLoss;
+    // B: Peak Hours
+    const percentReduction = -(this._eereProfile.reduction / 100) * this._gridLoss;
+    // C: Wind
+    // D: Utility-scale solar photovoltaic
+    // E: Distributed rooftop solar photovoltaic
+    const renewableProfile = -math.sum(
+      math.multiply(this._eereProfile.windCapacity, hourlyDefault.wind),
+      math.multiply(this._eereProfile.utilitySolar, hourlyDefault.utility_pv),
+      math.multiply(this._eereProfile.rooftopSolar, hourlyDefault.rooftop_pv * this._gridLoss)
+    );
 
-    //peakhour ee (B)
-    const percentReduction = -(this.profile.reduction / 100) * this.gridLoss;
+    const initialLoad = (load > this._topPercentile) ? (load * percentReduction) : 0;
+    const calculatedLoad = initialLoad + renewableProfile - hourlyMwReduction - constantMw;
 
-    //wind (C) = hourlyEereDefault.wind
-    //utility-scale solar photovoltaic (D) = hourlyEereDefault.utility_pv
-    //distributed pv (E)
-    const distributedPv = hourlyEereDefault.rooftop_pv * this.gridLoss;
+    const softExceedance = this._doesExceed(calculatedLoad, softLimit, 15)
+    const hardExceedance = this._doesExceed(calculatedLoad, hardLimit, 30)
 
-    const renewable_energy_profile = -math.sum(math.multiply(this.profile.windCapacity,hourlyEereDefault.wind),
-      math.multiply(this.profile.utilitySolar,hourlyEereDefault.utility_pv),
-      math.multiply(this.profile.rooftopSolar,distributedPv));
-
-    const initialLoad = (load > this.topPercentile) ? (load * percentReduction) : 0;
-    const calculatedLoad = math.chain(initialLoad)
-    // .subtract(this.manualEereEntry.toArray()[index])
-      .add(renewable_energy_profile)
-      .subtract(resultingHourlyMwReduction)
-      .subtract(constantMw)
-      .done();
-
-    const finalMw = this.rdf.regionalLoads[index].year < 1990 ? 0 : calculatedLoad;
-
-    return {
+    // build up instance arrays
+    this._softExceedances[index] = softExceedance;
+    this._hardExceedances[index] = hardExceedance;
+    this._hourlyEere[index] = {
       index: index,
-      // manual_eere_entry: this.manualEereEntry.toArray()[index],
-      renewable_energy_profile: renewable_energy_profile,
-      final_mw: finalMw,
-      percent: initialLoad,
-      constant: this.resultingHourlyMwReduction,
+      constant: this._hourlyMwReduction,
       current_load_mw: load,
-      // flag: 0,
+      percent: initialLoad,
+      final_mw: calculatedLoad,
+      renewable_energy_profile: renewableProfile,
       soft_limit: softLimit,
       hard_limit: hardLimit,
-      soft_exceedance: this.doesExceedFormatted(finalMw,softLimit,15),
-      hard_exceedance: this.doesExceedFormatted(finalMw,hardLimit,30),
+      soft_exceedance: softExceedance,
+      hard_exceedance: hardExceedance,
     }
   }
 
-  doesExceed(mw,limit) {
-    return (Math.abs(mw) > Math.abs(limit)) ? ((Math.abs(mw) / Math.abs(limit)) - 1) : 0;
-  }
-
-  doesExceedFromOriginal(mw,limit,load) {
-
-    return (Math.abs(mw) > Math.abs(limit)) ? ((Math.abs(mw) / Math.abs(load)) * 100) : 0;
-  }
-
-  doesExceedFormatted(mw,limit,numericalLimit) {
-    if(Math.abs(mw) > Math.abs(limit)){
-      const exceedance = (Math.abs(mw) / Math.abs(limit)) - 1;
-
-      return exceedance * numericalLimit + numericalLimit;
+  _doesExceed(load, limit, number) {
+    if (Math.abs(load) > Math.abs(limit)) {
+      const exceedance = (Math.abs(load) / Math.abs(limit)) - 1;
+      return exceedance * number + number;
     }
-
     return 0;
+  }
+
+  get hourlyEere() {
+    return this._hourlyEere;
+  }
+
+  get softExceedances() {
+    return this._softExceedances;
+  }
+
+  get hardExceedances() {
+    return this._hardExceedances;
   }
 }
 
