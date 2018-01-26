@@ -10,7 +10,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onSelectChange: (regionId) => {
-    dispatch(selectRegion(regionId));
+    dispatch(selectRegion(Number(regionId)));
   },
 });
 

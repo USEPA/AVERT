@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { setStructure } from 'app/utils/DataDownloadHelper';
+import { setStructure } from 'app/utils/DataDownloadHelper'; 
 import { StatusEnum } from 'app/utils/StatusEnum';
 import { AggregationEnum } from 'app/utils/AggregationEnum';
 import { MonthlyUnitEnum } from 'app/utils/MonthlyUnitEnum';

@@ -1,5 +1,5 @@
 // engine
-import { avert } from 'app/avert';
+import { avert } from 'app/actions';
 // action creators
 import { incrementProgress } from 'app/actions';
 
@@ -82,8 +82,8 @@ export function fetchPm25() {
         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
       },
       body: JSON.stringify({
-        region: avert.regionData.slug,
-        eere: avert.hourlyEere
+        region: avert.regionSlug,
+        eere: avert.eereLoad.hourlyEere
       }),
     };
     return fetch(`${api.baseUrl}/api/v1/pm25`, options)

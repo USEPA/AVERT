@@ -184,7 +184,7 @@ describe('EERE Profile', () => {
 
     afterEach(() => {
       profile.reset();
-      profile._limits = {
+      profile.limits = {
         annualGwh: false,
         constantMwh: false,
         renewables: false,

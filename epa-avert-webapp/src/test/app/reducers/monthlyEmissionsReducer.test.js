@@ -31,34 +31,34 @@ describe('monthlyEmissions', () => {
         monthlyEmissionsReducer(undefined, {})
       ).toEqual({
         status: StatusEnum.READY,
-        newSelectedAggregation: AggregationEnum.REGION,
+        selectedAggregation: AggregationEnum.REGION,
         newSelectedState: '',
         newSelectedCounty: '',
-        newSelectedUnit: MonthlyUnitEnum.EMISSION,
+        selectedUnit: MonthlyUnitEnum.EMISSION,
         newRawData: {},
-        newEmissionsRegionSo2: [],
-        newEmissionsRegionNox: [],
-        newEmissionsRegionCo2: [],
-        newEmissionsStatesSo2: {},
-        newEmissionsStatesNox: {},
-        newEmissionsStatesCo2: {},
-        newEmissionsCountiesSo2: {},
-        newEmissionsCountiesNox: {},
-        newEmissionsCountiesCo2: {},
-        newPercentagesRegionSo2: [],
-        newPercentagesRegionNox: [],
-        newPercentagesRegionCo2: [],
-        newPercentagesStatesSo2: {},
-        newPercentagesStatesNox: {},
-        newPercentagesStatesCo2: {},
-        newPercentagesCountiesSo2: {},
-        newPercentagesCountiesNox: {},
-        newPercentagesCountiesCo2: {},
+        emissionsRegionSo2: [],
+        emissionsRegionNox: [],
+        emissionsRegionCo2: [],
+        emissionsStatesSo2: {},
+        emissionsStatesNox: {},
+        emissionsStatesCo2: {},
+        emissionsCountiesSo2: {},
+        emissionsCountiesNox: {},
+        emissionsCountiesCo2: {},
+        percentagesRegionSo2: [],
+        percentagesRegionNox: [],
+        percentagesRegionCo2: [],
+        percentagesStatesSo2: {},
+        percentagesStatesNox: {},
+        percentagesStatesCo2: {},
+        percentagesCountiesSo2: {},
+        percentagesCountiesNox: {},
+        percentagesCountiesCo2: {},
         newStates: [],
         newCounties: {},
         newVisibleCounties: [],
-        newVisibleData: { so2: [], nox: [], co2: [] },
-        newDownloadableData: [],
+        visibleData: { so2: [], nox: [], co2: [] },
+        downloadableData: [],
       });
     });
 
@@ -92,24 +92,24 @@ describe('monthlyEmissions', () => {
         .toEqual({
           status: StatusEnum.DONE,
           newRawData: data,
-          newEmissionsRegionSo2: data.emissions.so2.regional,
-          newEmissionsRegionNox: data.emissions.nox.regional,
-          newEmissionsRegionCo2: data.emissions.co2.regional,
-          newEmissionsStatesSo2: data.emissions.so2.state,
-          newEmissionsStatesNox: data.emissions.nox.state,
-          newEmissionsStatesCo2: data.emissions.co2.state,
-          newEmissionsCountiesSo2: data.emissions.so2.county,
-          newEmissionsCountiesNox: data.emissions.nox.county,
-          newEmissionsCountiesCo2: data.emissions.co2.county,
-          newPercentagesRegionSo2: data.percentages.so2.regional,
-          newPercentagesRegionNox: data.percentages.nox.regional,
-          newPercentagesRegionCo2: data.percentages.co2.regional,
-          newPercentagesStatesSo2: data.percentages.so2.state,
-          newPercentagesStatesNox: data.percentages.nox.state,
-          newPercentagesStatesCo2: data.percentages.co2.state,
-          newPercentagesCountiesSo2: data.percentages.so2.county,
-          newPercentagesCountiesNox: data.percentages.nox.county,
-          newPercentagesCountiesCo2: data.percentages.co2.county,
+          emissionsRegionSo2: data.emissions.so2.regional,
+          emissionsRegionNox: data.emissions.nox.regional,
+          emissionsRegionCo2: data.emissions.co2.regional,
+          emissionsStatesSo2: data.emissions.so2.state,
+          emissionsStatesNox: data.emissions.nox.state,
+          emissionsStatesCo2: data.emissions.co2.state,
+          emissionsCountiesSo2: data.emissions.so2.county,
+          emissionsCountiesNox: data.emissions.nox.county,
+          emissionsCountiesCo2: data.emissions.co2.county,
+          percentagesRegionSo2: data.percentages.so2.regional,
+          percentagesRegionNox: data.percentages.nox.regional,
+          percentagesRegionCo2: data.percentages.co2.regional,
+          percentagesStatesSo2: data.percentages.so2.state,
+          percentagesStatesNox: data.percentages.nox.state,
+          percentagesStatesCo2: data.percentages.co2.state,
+          percentagesCountiesSo2: data.percentages.so2.county,
+          percentagesCountiesNox: data.percentages.nox.county,
+          percentagesCountiesCo2: data.percentages.co2.county,
           newStates: Object.keys(data.statesAndCounties),
           newCounties: data.statesAndCounties,
         });
@@ -147,7 +147,7 @@ describe('monthlyEmissions', () => {
           unit: MonthlyUnitEnum.PERCENT_CHANGE,
         }))
         .toEqual({
-          newSelectedUnit: MonthlyUnitEnum.PERCENT_CHANGE,
+          selectedUnit: MonthlyUnitEnum.PERCENT_CHANGE,
         });
     });
 
@@ -159,7 +159,7 @@ describe('monthlyEmissions', () => {
     //       visibleData: { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } },
     //     }))
     //     .toEqual({
-    //       newVisibleData: { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } },
+    //       visibleData: { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } },
     //     });
     // });
   });
@@ -168,11 +168,11 @@ describe('monthlyEmissions', () => {
     it('should create an action to render monthly charts with regional data if aggregation is region and unit is emissions', () => {
       const sampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const monthlyEmissions = {
-        newSelectedAggregation: 'region',
-        newSelectedUnit: MonthlyUnitEnum.EMISSION,
-        newEmissionsRegionSo2: _.values(sampleData.so2),
-        newEmissionsRegionNox: _.values(sampleData.nox),
-        newEmissionsRegionCo2: _.values(sampleData.co2),
+        selectedAggregation: 'region',
+        selectedUnit: MonthlyUnitEnum.EMISSION,
+        emissionsRegionSo2: _.values(sampleData.so2),
+        emissionsRegionNox: _.values(sampleData.nox),
+        emissionsRegionCo2: _.values(sampleData.co2),
       };
       // newSelectedState: '',
       // newSelectedCounty: '',
@@ -187,14 +187,14 @@ describe('monthlyEmissions', () => {
       const badSampleData = { so2: { 1: 0 }, nox: { 1: 0 }, co2: { 1: 0 } };
       const sampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const monthlyEmissions = {
-        newSelectedAggregation: 'region',
-        newSelectedUnit: MonthlyUnitEnum.PERCENT_CHANGE,
-        newEmissionsRegionSo2: _.values(badSampleData.so2),
-        newEmissionsRegionNox: _.values(badSampleData.nox),
-        newEmissionsRegionCo2: _.values(badSampleData.co2),
-        newPercentagesRegionSo2: _.values(sampleData.so2),
-        newPercentagesRegionNox: _.values(sampleData.nox),
-        newPercentagesRegionCo2: _.values(sampleData.co2),
+        selectedAggregation: 'region',
+        selectedUnit: MonthlyUnitEnum.PERCENT_CHANGE,
+        emissionsRegionSo2: _.values(badSampleData.so2),
+        emissionsRegionNox: _.values(badSampleData.nox),
+        emissionsRegionCo2: _.values(badSampleData.co2),
+        percentagesRegionSo2: _.values(sampleData.so2),
+        percentagesRegionNox: _.values(sampleData.nox),
+        percentagesRegionCo2: _.values(sampleData.co2),
       };
       // newSelectedState: '',
       // newSelectedCounty: '',
@@ -209,12 +209,12 @@ describe('monthlyEmissions', () => {
       const badSampleData = { so2: { 1: 0 }, nox: { 1: 0 }, co2: { 1: 0 } };
       const goodSampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const monthlyEmissions = {
-        newSelectedAggregation: 'state',
-        newSelectedUnit: MonthlyUnitEnum.EMISSION,
+        selectedAggregation: 'state',
+        selectedUnit: MonthlyUnitEnum.EMISSION,
         newSelectedState: 'Virginia',
-        newEmissionsRegionSo2: _.values(badSampleData.so2),
-        newEmissionsRegionNox: _.values(badSampleData.nox),
-        newEmissionsRegionCo2: _.values(badSampleData.co2),
+        emissionsRegionSo2: _.values(badSampleData.so2),
+        emissionsRegionNox: _.values(badSampleData.nox),
+        emissionsRegionCo2: _.values(badSampleData.co2),
         newEmissionsStateSo2: { 'Virginia': _.values(goodSampleData.so2) },
         newEmissionsStateNox: { 'Virginia': _.values(goodSampleData.nox) },
         newEmissionsStateCo2: { 'Virginia': _.values(goodSampleData.co2) },
@@ -242,8 +242,8 @@ describe('monthlyEmissions', () => {
       const badSampleData = { so2: { 1: 0 }, nox: { 1: 0 }, co2: { 1: 0 } };
       const goodSampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const monthlyEmissions = {
-        newSelectedAggregation: 'state',
-        newSelectedUnit: MonthlyUnitEnum.PERCENT_CHANGE,
+        selectedAggregation: 'state',
+        selectedUnit: MonthlyUnitEnum.PERCENT_CHANGE,
         newSelectedState: 'Virginia',
         newEmissionsStateSo2: { 'Virginia': _.values(badSampleData.so2) },
         newEmissionsStateNox: { 'Virginia': _.values(badSampleData.nox) },
@@ -276,13 +276,13 @@ describe('monthlyEmissions', () => {
       const badSampleData2 = { so2: { 1: 1 }, nox: { 1: 1 }, co2: { 1: 1 } };
       const goodSampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const monthlyEmissions = {
-        newSelectedAggregation: 'county',
-        newSelectedUnit: MonthlyUnitEnum.EMISSION,
+        selectedAggregation: 'county',
+        selectedUnit: MonthlyUnitEnum.EMISSION,
         newSelectedState: 'Virginia',
         newSelectedCounty: 'Arlington County',
-        newEmissionsRegionSo2: _.values(badSampleData.so2),
-        newEmissionsRegionNox: _.values(badSampleData.nox),
-        newEmissionsRegionCo2: _.values(badSampleData.co2),
+        emissionsRegionSo2: _.values(badSampleData.so2),
+        emissionsRegionNox: _.values(badSampleData.nox),
+        emissionsRegionCo2: _.values(badSampleData.co2),
         newEmissionsStateSo2: { 'Virginia': _.values(badSampleData2.so2) },
         newEmissionsStateNox: { 'Virginia': _.values(badSampleData2.nox) },
         newEmissionsStateCo2: { 'Virginia': _.values(badSampleData2.co2) },
@@ -324,8 +324,8 @@ describe('monthlyEmissions', () => {
       const badSampleData = { so2: { 1: 0 }, nox: { 1: 0 }, co2: { 1: 0 } };
       const goodSampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const monthlyEmissions = {
-        newSelectedAggregation: 'county',
-        newSelectedUnit: MonthlyUnitEnum.PERCENT_CHANGE,
+        selectedAggregation: 'county',
+        selectedUnit: MonthlyUnitEnum.PERCENT_CHANGE,
         newSelectedState: 'Virginia',
         newSelectedCounty: 'Arlington County',
         newEmissionsCountySo2: { 'Virginia': { 'Arlington County': _.values(badSampleData.so2) } },
@@ -357,11 +357,11 @@ describe('monthlyEmissions', () => {
     it('should create an action when the AVERT engine completed the monthly emissions', () => {
       const sampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const store = mockStore({ monthlyEmissions: {
-        newSelectedAggregation: 'region',
-        newSelectedUnit: MonthlyUnitEnum.EMISSION,
-        newEmissionsRegionSo2: _.values(sampleData.so2),
-        newEmissionsRegionNox: _.values(sampleData.nox),
-        newEmissionsRegionCo2: _.values(sampleData.co2),
+        selectedAggregation: 'region',
+        selectedUnit: MonthlyUnitEnum.EMISSION,
+        emissionsRegionSo2: _.values(sampleData.so2),
+        emissionsRegionNox: _.values(sampleData.nox),
+        emissionsRegionCo2: _.values(sampleData.co2),
       }});
 
       const expectedActions = [
@@ -377,11 +377,11 @@ describe('monthlyEmissions', () => {
     it('should create an action when the unit is selected', () => {
       const sampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const store = mockStore({ monthlyEmissions: {
-        newSelectedAggregation: 'region',
-        newSelectedUnit: MonthlyUnitEnum.EMISSION,
-        newEmissionsRegionSo2: _.values(sampleData.so2),
-        newEmissionsRegionNox: _.values(sampleData.nox),
-        newEmissionsRegionCo2: _.values(sampleData.co2),
+        selectedAggregation: 'region',
+        selectedUnit: MonthlyUnitEnum.EMISSION,
+        emissionsRegionSo2: _.values(sampleData.so2),
+        emissionsRegionNox: _.values(sampleData.nox),
+        emissionsRegionCo2: _.values(sampleData.co2),
       }});
       const expectedActions = [
         { type: SELECT_MONTHLY_UNIT, unit: 'emissions' },
@@ -396,11 +396,11 @@ describe('monthlyEmissions', () => {
     // it('should create an action when the state aggregation is selected', () => {
     //   const sampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
     //   const store = mockStore({ monthlyEmissions: {
-    //     newSelectedAggregation: 'region',
-    //     newSelectedUnit: MonthlyUnitEnum.EMISSION,
-    //     newEmissionsRegionSo2: _.values(sampleData.so2),
-    //     newEmissionsRegionNox: _.values(sampleData.nox),
-    //     newEmissionsRegionCo2: _.values(sampleData.co2),
+    //     selectedAggregation: 'region',
+    //     selectedUnit: MonthlyUnitEnum.EMISSION,
+    //     emissionsRegionSo2: _.values(sampleData.so2),
+    //     emissionsRegionNox: _.values(sampleData.nox),
+    //     emissionsRegionCo2: _.values(sampleData.co2),
     //   }});
     //   const expectedActions = [
     //     { type: SELECT_MONTHLY_STATE, state: 'Virginia' },
@@ -414,11 +414,11 @@ describe('monthlyEmissions', () => {
     it('should create an action when the county aggregation is selected', () => {
       const sampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const store = mockStore({ monthlyEmissions: {
-        newSelectedAggregation: 'region',
-        newSelectedUnit: MonthlyUnitEnum.EMISSION,
-        newEmissionsRegionSo2: _.values(sampleData.so2),
-        newEmissionsRegionNox: _.values(sampleData.nox),
-        newEmissionsRegionCo2: _.values(sampleData.co2),
+        selectedAggregation: 'region',
+        selectedUnit: MonthlyUnitEnum.EMISSION,
+        emissionsRegionSo2: _.values(sampleData.so2),
+        emissionsRegionNox: _.values(sampleData.nox),
+        emissionsRegionCo2: _.values(sampleData.co2),
       }});
       const expectedActions = [
         { type: SELECT_MONTHLY_COUNTY, county: 'Montgomery County' },

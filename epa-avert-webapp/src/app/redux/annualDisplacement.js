@@ -3,7 +3,6 @@ import {
   SELECT_REGION,
   START_DISPLACEMENT,
   RECEIVE_DISPLACEMENT,
-  COMPLETE_ANNUAL,
 } from 'app/actions';
 
 // reducer
@@ -47,7 +46,6 @@ export default function reducer(state = initialState, action) {
       };
 
     case RECEIVE_DISPLACEMENT:
-    case COMPLETE_ANNUAL:
       return {
         ...state,
         status: 'complete',

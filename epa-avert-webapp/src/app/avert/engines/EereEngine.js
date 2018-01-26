@@ -5,7 +5,7 @@ class EereEngine {
   constructor(profile, rdf, region) {
     this._eereProfile = profile;
     this._rdf = rdf;
-    this._selectedRegion = region;
+    this._region = region;
 
     this._gridLoss = this._calculateGridLoss();
     this._topPercentile = this._calculateTopPercentile();
@@ -21,7 +21,7 @@ class EereEngine {
   }
 
   _calculateGridLoss() {
-    return 1 / (1 - (this._selectedRegion.grid_loss / 100));
+    return 1 / (1 - (this._region.grid_loss / 100));
   }
 
   _calculateTopPercentile() {
