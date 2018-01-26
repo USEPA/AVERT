@@ -1,4 +1,4 @@
-import EereProfile from '/app/engines/EereProfile';
+import EereProfile from 'app/engines/EereProfile';
 
 describe('EERE Profile', () => {
 
