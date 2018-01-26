@@ -3,13 +3,13 @@
 module.exports = (function () {
   function Rdf (options) {
     this.raw = {};
-    this.regionName = '';
+    this.regionName = ''; // not actually used (for debugging)
     this.edges = [];
     this.regionalLoads = [];
     this.months = [];
     this.defaults = {};
 
-    // if called with options.rdf
+    // if constructed with ({ rdf: ___ })
     if (options && typeof options.rdf !== 'undefined') {
       this.raw = options.rdf;
       this.regionName = options.rdf.region.region_name;
@@ -21,7 +21,7 @@ module.exports = (function () {
       }, this);
     }
 
-    // if called with options.defaults
+    // if constructed with ({ defaults: ___ })
     if (options && typeof options.defaults !== 'undefined') {
       this.defaults = options.defaults;
     }
