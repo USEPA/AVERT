@@ -1,8 +1,8 @@
 import Regions from 'app/utils/Regions';
-import Rdf from 'app/avert/entities/Rdf';
-import EereEngine from 'app/avert/engines/EereEngine';
+import Rdf from 'app/engines/Rdf';
+import EereEngine from 'app/engines/EereEngine';
 
-class Engine {
+class Avert {
   constructor() {
     this._region = {};
     this._rdf = false;
@@ -53,4 +53,4 @@ class Engine {
   }
 }
 
-export default Engine;
+export default Avert;

@@ -1,11 +1,8 @@
 import math from 'mathjs';
 
-import Engine from 'app/avert/Engine';
-import EereProfile from 'app/avert/entities/EereProfile';
-
 // engines
-export const avert = new Engine(); // console.log(avert)
-export const eereProfile = new EereProfile(); // console.log(eereProfile)
+import Avert from 'app/engines/Avert';
+import EereProfile from 'app/engines/EereProfile';
 
 // reducers
 import * as fromGeneration from 'app/redux/generation';
@@ -13,6 +10,11 @@ import * as fromSo2 from 'app/redux/so2';
 import * as fromNox from 'app/redux/nox';
 import * as fromCo2 from 'app/redux/co2';
 import * as fromPm25 from 'app/redux/pm25';
+
+
+// engines
+export const avert = new Avert(); // console.log(avert)
+export const eereProfile = new EereProfile(); // console.log(eereProfile)
 
 
 // actions and action creators
