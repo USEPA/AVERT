@@ -1,9 +1,11 @@
-import EereEngine from '../../../app/avert/engines/EereEngine';
-import EereProfile from '../../../app/avert/entities/EereProfile';
-import northeast_rdf from '../../../assets/data/rdf_northeast_2015.json';
-import northeast_defaults from '../../../assets/data/eere-defaults-northeast.json';
-import Rdf from '../../../app/avert/entities/Rdf';
-import Region from '../../../app/utils/Regions';
+import Region from 'app/utils/Regions';
+import Rdf from 'app/engines/Rdf';
+import EereEngine from 'app/engines/EereEngine';
+import EereProfile from 'app/engines/EereProfile';
+
+// data
+import northeast_rdf from 'app/test/data/rdf_NE_2016.json';
+import northeast_defaults from 'app/test/data/eere-defaults-northeast.json';
 
 describe('EERE Engine', () => {
   let genericProfile = new EereProfile();

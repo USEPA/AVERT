@@ -1,6 +1,8 @@
-import Rdf from '../../../app/avert/entities/Rdf';
-import northeast_rdf from '../../../assets/data/rdf_northeast_2015.json';
-import northeast_defaults from '../../../assets/data/eere-defaults-northeast.json';
+import Rdf from 'app/engines/Rdf';
+
+// data
+import northeast_rdf from 'app/test/data/rdf_NE_2016.json';
+import northeast_defaults from 'app/test/data/eere-defaults-northeast.json';
 
 describe('RDF Entity', () => {
   let rdf = new Rdf({ rdf: northeast_rdf, defaults: northeast_defaults });
