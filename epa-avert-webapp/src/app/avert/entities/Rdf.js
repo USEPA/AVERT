@@ -1,85 +1,69 @@
 class Rdf {
-
   constructor(options) {
-    this.raw = {};
-    this.regionName = '';
-    this.regionalLoads = [];
-    this.percentLimit = [];
-    this.defaults = {};
-    this.months = [];
-    this.edges = [];
-    this._generation = [];
+    this._regionName = ''; // not actually used (for debugging)
+    this._maxAnnualGwh = null;
+    this._maxRenewableMwh = null;
+    this._regionalLoads = [];
+    this._softLimits = [];
+    this._hardLimits = [];
+    this._months = [];
+    this._defaults = {};
 
-    if(options && typeof options.rdf !== 'undefined') this.setRdf(options.rdf);
-    if(options && typeof options.defaults !== 'undefined') this.setDefaults(options.defaults);
-  }
+    // if constructed with ({ rdf: ___ })
+    if (options && typeof options.rdf !== 'undefined') {
+      this.setRdf(options.rdf);
+    }
 
-  toJsonString() {
-    let json = JSON.stringify(this);
-    Object.keys(this).filter(key => key[0] === "_").forEach(key => {
-      json = json.replace(key, key.substring(1));
-    });
-
-    return json;
-  }
-
-  get generation() {
-    return this.raw.data.generation;
-  }
-
-  get so2() {
-    return this.raw.data.so2;
-  }
-
-  get so2_not() {
-    return this.raw.data.so2_not;
-  }
-
-  get co2() {
-    return this.raw.data.co2;
-  }
-
-  get co2_not() {
-    return this.raw.data.co2_not;
-  }
-
-  get nox() {
-    return this.raw.data.nox;
-  }
-
-  get nox_nox() {
-    return this.raw.data.nox_not;
-  }
-
-  setSecondValidationLimits() {
-    this.softLimits = this.regionalLoads.map((load) => (load * -this.percentLimit));
-    this.hardLimits = this.regionalLoads.map((load) => (load * -0.3));
+    // if constructed with ({ defaults: ___ })
+    if (options && typeof options.defaults !== 'undefined') {
+      this.setDefaults(options.defaults);
+    }
   }
 
   setRdf(rdf) {
-    this.raw = rdf;
-    this.regionName = rdf.region.region_name;
-    this.regionalLoads = rdf.regional_load.map((data) => data.regional_load_mw);
-    this.percentLimit = rdf.limits.max_ee_percent / 100;
-    this.setSecondValidationLimits();
-    this.extractLoadBinEdges(rdf);
-    this.extractMonths(rdf.regional_load);
+    this._regionName = rdf.region.region_name;
+    this._maxAnnualGwh = rdf.limits.max_ee_yearly_gwh;
+    this._maxRenewableMwh = rdf.limits.max_solar_wind_mwh;
+
+    rdf.regional_load.forEach(item => {
+      const load = item.regional_load_mw;
+      this._regionalLoads.push(load);
+      this._softLimits.push(load * -1 * rdf.limits.max_ee_percent / 100); // -0.15
+      this._hardLimits.push(load * -0.3);
+      this._months.push(item.month);
+    });
   }
 
   setDefaults(defaults) {
-    this.defaults = defaults;
+    this._defaults = defaults;
   }
 
-  extractLoadBinEdges(json){
-    this.edges = Object.keys(json.load_bin_edges).map((key) => json.load_bin_edges[key]);
-
-    return this.edges;
+  get maxAnnualGwh() {
+    return this._maxAnnualGwh;
   }
 
-  extractMonths(data) {
-    this.months = data.map((item) => item.month);
+  get maxRenewableMwh() {
+    return this._maxRenewableMwh;
+  }
 
-    return this.months;
+  get regionalLoads() {
+    return this._regionalLoads;
+  }
+
+  get softLimits() {
+    return this._softLimits;
+  }
+
+  get hardLimits() {
+    return this._hardLimits;
+  }
+
+  get months() {
+    return this._months;
+  }
+
+  get defaults() {
+    return this._defaults;
   }
 }
 

@@ -52,8 +52,8 @@ export const fetchRegion = () => {
         // set eere profile's first level validation limits (sets 'eereProfile._limits')
         eereProfile.limits = {
           hours: avert.rdf.months.length,
-          annualGwh: avert.rdf.raw.limits.max_ee_yearly_gwh,
-          renewables: avert.rdf.raw.limits.max_solar_wind_mwh,
+          annualGwh: avert.rdf.maxAnnualGwh,
+          renewables: avert.rdf.maxRenewableMwh,
         }; // console.log(eereProfile)
 
         dispatch({
