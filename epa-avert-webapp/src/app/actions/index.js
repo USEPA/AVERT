@@ -4,10 +4,8 @@ import Engine from 'app/avert/Engine';
 import EereProfile from 'app/avert/entities/EereProfile';
 
 // engines
-export const avert = new Engine();
-/* console.log(avert) */
-export const eereProfile = new EereProfile();
-/* console.log(eereProfile) */
+export const avert = new Engine(); // console.log(avert)
+export const eereProfile = new EereProfile(); // console.log(eereProfile)
 
 // reducers
 import * as fromGeneration from 'app/redux/generation';
@@ -25,7 +23,7 @@ export const incrementProgress = () => ({ type: INCREMENT_PROGRESS });
 export const SELECT_REGION = 'avert/core/SELECT_REGION';
 export function selectRegion(regionId) {
   return (dispatch) => {
-    avert.region = regionId; /* console.log(avert) */
+    avert.region = regionId; // console.log(avert)
 
     dispatch({
       type: SELECT_REGION,
@@ -48,16 +46,15 @@ export const fetchRegion = () => {
     // fetch rdf data for region
     return fetch(`${api.baseUrl}/api/v1/rdf/${avert.regionSlug}`)
       .then(response => response.json())
-      .then(json => { /* console.log(json) */
-        avert.rdf = json.rdf; /* console.log(avert) */
+      .then(json => { // console.log(json)
+        avert.rdf = json.rdf; // console.log(avert)
 
         // set eere profile's first level validation limits (sets 'eereProfile._limits')
         eereProfile.limits = {
           hours: avert.rdf.months.length,
           annualGwh: avert.rdf.raw.limits.max_ee_yearly_gwh,
           renewables: avert.rdf.raw.limits.max_solar_wind_mwh,
-        };
-        /* console.log(eereProfile) */
+        }; // console.log(eereProfile)
 
         dispatch({
           type: SET_EERE_LIMITS,
@@ -77,8 +74,8 @@ export const fetchRegion = () => {
         // fetch eere data for region
         fetch(`${api.baseUrl}/api/v1/eere/${avert.regionSlug}`)
           .then(response => response.json())
-          .then(json => { /* console.log(json) */
-            avert.eereDefaults = json.eereDefaults; /* console.log(avert) */
+          .then(json => { // console.log(json)
+            avert.eereDefaults = json.eereDefaults; // console.log(avert)
 
             dispatch({
               type: RECEIVE_REGION_DEFAULTS,
@@ -92,7 +89,7 @@ export const fetchRegion = () => {
 
 export const VALIDATE_EERE = "avert/core/VALIDATE_EERE";
 const validateEere = () => {
-  avert.eereProfile = eereProfile; /* console.log(avert) */
+  avert.eereProfile = eereProfile; // console.log(avert)
 
   return {
     type: VALIDATE_EERE,
@@ -104,7 +101,7 @@ const validateEere = () => {
 export const UPDATE_EERE_ANNUAL_GWH = 'avert/core/UPDATE_EERE_ANNUAL_GWH';
 export const updateEereAnnualGwh = (text) => {
   return function (dispatch) {
-    eereProfile.annualGwh = text; /* console.log(eereProfile) */
+    eereProfile.annualGwh = text; // console.log(eereProfile)
 
     dispatch(validateEere());
     dispatch({
@@ -117,7 +114,7 @@ export const updateEereAnnualGwh = (text) => {
 export const UPDATE_EERE_CONSTANT_MW = 'avert/core/UPDATE_EERE_CONSTANT_MW';
 export const updateEereConstantMw = (text) => {
   return function (dispatch) {
-    eereProfile.constantMw = text; /* console.log(eereProfile) */
+    eereProfile.constantMw = text; // console.log(eereProfile)
 
     dispatch(validateEere());
     dispatch({
@@ -131,7 +128,7 @@ export const UPDATE_EERE_BROAD_BASE_PROGRAM = 'avert/core/UPDATE_EERE_BROAD_BASE
 export const updateEereBroadBasedProgram = (text) => {
   return function (dispatch) {
     eereProfile.topHours = 100;
-    eereProfile.reduction = text; /* console.log(eereProfile) */
+    eereProfile.reduction = text; // console.log(eereProfile)
 
     dispatch(validateEere());
     dispatch({
@@ -144,7 +141,7 @@ export const updateEereBroadBasedProgram = (text) => {
 export const UPDATE_EERE_REDUCTION = 'avert/core/UPDATE_EERE_REDUCTION';
 export const updateEereReduction = (text) => {
   return function (dispatch) {
-    eereProfile.reduction = text; /* console.log(eereProfile) */
+    eereProfile.reduction = text; // console.log(eereProfile)
 
     dispatch(validateEere());
     dispatch({
@@ -157,7 +154,7 @@ export const updateEereReduction = (text) => {
 export const UPDATE_EERE_TOP_HOURS = 'avert/core/UPDATE_EERE_TOP_HOURS';
 export const updateEereTopHours = (text) => {
   return function (dispatch) {
-    eereProfile.topHours = text; /* console.log(eereProfile) */
+    eereProfile.topHours = text; // console.log(eereProfile)
 
     dispatch(validateEere());
     dispatch({
@@ -170,7 +167,7 @@ export const updateEereTopHours = (text) => {
 export const UPDATE_EERE_WIND_CAPACITY = 'avert/core/UPDATE_EERE_WIND_CAPACITY';
 export const updateEereWindCapacity = (text) => {
   return function (dispatch) {
-    eereProfile.windCapacity = text; /* console.log(eereProfile) */
+    eereProfile.windCapacity = text; // console.log(eereProfile)
 
     dispatch(validateEere());
     dispatch({
@@ -183,7 +180,7 @@ export const updateEereWindCapacity = (text) => {
 export const UPDATE_EERE_UTILITY_SOLAR = 'avert/core/UPDATE_EERE_UTILITY_SOLAR';
 export const updateEereUtilitySolar = (text) => {
   return function (dispatch) {
-    eereProfile.utilitySolar = text; /* console.log(eereProfile) */
+    eereProfile.utilitySolar = text; // console.log(eereProfile)
 
     dispatch(validateEere());
     dispatch({
@@ -196,7 +193,7 @@ export const updateEereUtilitySolar = (text) => {
 export const UPDATE_EERE_ROOFTOP_SOLAR = 'avert/core/UPDATE_EERE_ROOFTOP_SOLAR';
 export const updateEereRooftopSolar = (text) => {
   return function (dispatch) {
-    eereProfile.rooftopSolar = text; /* console.log(eereProfile) */
+    eereProfile.rooftopSolar = text; // console.log(eereProfile)
 
     dispatch(validateEere());
     dispatch({
@@ -260,11 +257,10 @@ export const calculateEereProfile = () => {
 
 export const RESET_EERE_INPUTS = 'avert/core/RESET_EERE_INPUTS';
 export const resetEereInputs = () => {
-  eereProfile.reset(); /* console.log(eereProfile) */
+  eereProfile.reset(); // console.log(eereProfile)
 
   return { type: RESET_EERE_INPUTS }
 };
-
 
 
 export const RENDER_MONTHLY_EMISSIONS_CHARTS = 'avert/core/RENDER_MONTHLY_EMISSIONS_CHARTS';
@@ -345,9 +341,6 @@ export const resetMonthlyEmissions = () => ({
 });
 
 
-
-
-
 export const RECEIVE_DISPLACEMENT = 'avert/core/RECEIVE_DISPLACEMENT';
 const receiveDisplacement = () => {
   return (dispatch, getState) => {
@@ -387,7 +380,6 @@ const receiveDisplacement = () => {
       },
     };
 
-    // dispatch 'increment progress' and 'receive displacement' actions
     dispatch(incrementProgress());
     dispatch({
       type: RECEIVE_DISPLACEMENT,
@@ -480,7 +472,6 @@ const receiveDisplacement = () => {
 export const START_DISPLACEMENT = 'avert/core/START_DISPLACEMENT';
 export function calculateDisplacement() {
   return (dispatch) => {
-    // dispatch 'start displacement' and 'increment progress' actions
     dispatch({ type: START_DISPLACEMENT });
     dispatch(incrementProgress());
 
@@ -491,7 +482,6 @@ export function calculateDisplacement() {
     dispatch(fromCo2.fetchCo2());
     dispatch(fromPm25.fetchPm25());
 
-    // receive displacement
     dispatch(receiveDisplacement());
   }
 }
