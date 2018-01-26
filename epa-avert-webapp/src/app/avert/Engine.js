@@ -1,6 +1,6 @@
-import Regions from '../utils/Regions';
-import Rdf from './entities/Rdf';
-import EereEngine from './engines/EereEngine';
+import Regions from 'app/utils/Regions';
+import Rdf from 'app/avert/entities/Rdf';
+import EereEngine from 'app/avert/engines/EereEngine';
 
 class Engine {
   constructor() {
