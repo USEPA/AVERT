@@ -1,84 +1,12 @@
 import EereProfile from 'app/engines/EereProfile';
 
 describe('EERE Profile', () => {
-
-  describe('Getters and setters', () => {
-    let profile = new EereProfile();
-
-    it('should accept top hours', () => {
-      profile.topHours = 5;
-
-      expect(profile.topHours).toBe(5);
-    });
-
-    it('should accept reduction', () => {
-      profile.reduction = 5;
-
-      expect(profile.reduction).toBe(5);
-    });
-
-    it('should accept annualGwh', () => {
-      profile.annualGwh = 5;
-
-      expect(profile.annualGwh).toBe(5);
-    });
-
-    it('should accept constantMw', () => {
-      profile.constantMw = 5;
-
-      expect(profile.constantMw).toBe(5);
-    });
-
-    it('should accept windCapacity', () => {
-      profile.windCapacity = 5;
-
-      expect(profile.windCapacity).toBe(5);
-    });
-
-    it('should accept utilitySolar', () => {
-      profile.utilitySolar = 5;
-
-      expect(profile.utilitySolar).toBe(5);
-    });
-
-    it('should accept rooftopSolar', () => {
-      profile.rooftopSolar = 5;
-
-      expect(profile.rooftopSolar).toBe(5);
-    });
-  });
-
-  describe('Limits', () => {
-    let profile = new EereProfile();
-
-    profile.limits = {
-      constantReductions: 5,
-      renewables: 10,
-    };
-
-    it('should extract reduction limits into an annual value', () => {
-      expect(profile.limits.annualGwh).toBe(5);
-    });
-
-    it('should extract reduction limits into a constant value', () => {
-      expect(profile.limits.constantMwh).toBe(parseInt(5 * 1000 / 8760, 10));
-    });
-
-    it('should extract the renewable limit', () => {
-      expect(profile.limits.renewables).toBe(10);
-    });
-
-    it('should always have a soft limit of 15', () => {
-      expect(profile.limits.softPercent).toBe(15);
-    });
-  });
-
   describe('Errors', () => {
     let profile = new EereProfile();
-
     profile.limits = {
-      constantReductions: 5,
-      renewables: 10,
+      hours: 8784,
+      annualGwh: 100,
+      renewables: 100,
     };
 
     it('should have no errors by default', () => {
@@ -90,106 +18,77 @@ describe('EERE Profile', () => {
     });
 
     it('should not be valid if an error is added', () => {
-      profile.addError('foo');
-
+      profile._addError('foo');
       expect(profile.isValid).toBe(false);
     });
 
     it('should be valid if an error is removed', () => {
-      profile.removeError('foo');
-
+      profile._removeError('foo');
       expect(profile.isValid).toBe(true);
     });
 
-    it('should be invalid if top hours is over 100%', () => {
-      profile.topHours = 500;
-
+    it('should be invalid if annualGwh is over the annual limit', () => {
+      profile.annualGwh = 101;
       expect(profile.isValid).toBe(false);
+      profile.annualGwh = 0;
+    });
 
+    it('should be invalid if constantMwh is over the constant limit', () => {
+      profile.constantMwh = 12;
+      expect(profile.isValid).toBe(false);
+      profile.constantMwh = 0;
+    });
+
+    it('should be invalid if top hours is over 100%', () => {
+      profile.topHours = 101;
+      expect(profile.isValid).toBe(false);
       profile.topHours = 0;
     });
 
     it('should be invalid if top hours is a negative percentage', () => {
-      profile.topHours = -5;
-
+      profile.topHours = -1;
       expect(profile.isValid).toBe(false);
-
       profile.topHours = 0;
     });
 
     it('should be invalid if the reduction percentage is more than the soft limit', () => {
       profile.reduction = 16;
-
       expect(profile.isValid).toBe(false);
-
       profile.reduction = 0;
     });
 
     it('should be invalid if the reduction percentage is negative', () => {
-      profile.reduction = -100;
-
+      profile.reduction = -1;
       expect(profile.isValid).toBe(false);
-
       profile.reduction = 0;
     });
 
-    it('should be invalid if annualGwh is over the annual limit', () => {
-      profile.annualGwh = 100;
-
-      expect(profile.isValid).toBe(false);
-
-      profile.annualGwh = 0;
-    });
-
-    it('should be invalid if constantMw is over the constant limit', () => {
-      profile.constantMw = 100;
-
-      expect(profile.isValid).toBe(false);
-
-      profile.constantMw = 0;
-    });
-
     it('should be invalid if wind capacity is over the renewable limit', () => {
-      profile.windCapacity = 100;
-
+      profile.windCapacity = 101;
       expect(profile.isValid).toBe(false);
-
       profile.windCapacity = 0;
     });
 
     it('should be invalid if utility solar is over the renewable limit', () => {
-      profile.utilitySolar = 100;
-
+      profile.utilitySolar = 101;
       expect(profile.isValid).toBe(false);
-
       profile.utilitySolar = 0;
     });
 
     it('should be invalid if rooftop solar is over the renewable limit', () => {
-      profile.rooftopSolar = 100;
-
+      profile.rooftopSolar = 101;
       expect(profile.isValid).toBe(false);
-
       profile.rooftopSolar = 0;
     });
   });
 
-  describe('Reset', () => {
 
+
+  describe('Reset', () => {
     let profile = new EereProfile();
 
     beforeEach(() => {
       profile.topHours = 5;
-    });
-
-    afterEach(() => {
-      profile.reset();
-      profile.limits = {
-        annualGwh: false,
-        constantMwh: false,
-        renewables: false,
-        softPercent: 15,
-      }
     });
 
     it('should set all EERE profile to the original during construction', () => {
@@ -198,14 +97,15 @@ describe('EERE Profile', () => {
       expect(profile.topHours).not.toBe(5);
     });
 
-    it('should not touch the region specify validation limits', () => {
+    it('should not touch the region specifc validation limits', () => {
       profile.limits = {
-        constantReductions: 5,
-        renewables: 10,
+        hours: 8784,
+        annualGwh: 100,
+        renewables: 100,
       };
 
       profile.reset();
-      expect(profile.limits.annualGwh).toBe(5);
+      expect(profile.limits.annualGwh).toBe(100);
     });
   })
 });
