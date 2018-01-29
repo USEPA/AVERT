@@ -6,7 +6,6 @@ import EereProfile from 'app/engines/EereProfile';
 import rdfFile from 'test/data/rdf_NE_2016.json';
 import defaultsFile from 'test/data/eere-defaults-northeast.json';
 
-// --------------------------------- CLEANUP! ---------------------------------
 describe('AVERT engine', () => {
   describe('Getters and Setters', () => {
     let avert = new Avert();
