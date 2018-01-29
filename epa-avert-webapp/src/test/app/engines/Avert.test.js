@@ -23,19 +23,19 @@ describe('AVERT engine', () => {
 
   describe('calculateEereLoad',() => {
     let avert = new Avert();
-    let profile = new EereProfile();
+    let eereProfile = new EereProfile();
 
-    profile.limits = {
+    eereProfile.limits = {
       hours: 8784,
       annualGwh: 100,
       renewables: 100,
     };
-    profile.windCapacity = 50;
+    eereProfile.windCapacity = 50;
 
     avert.region = 3;
     avert.rdf = rdfFile;
     avert.eereDefaults = defaultsFile;
-    avert.eereProfile = profile;
+    avert.eereProfile = eereProfile;
 
     it('should calculate Hourly EERE for given rdf', () => {
       avert.calculateEereLoad();
