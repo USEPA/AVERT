@@ -24,6 +24,10 @@ class Rdf {
     this._regionName = rdf.region.region_name;
     this._maxAnnualGwh = rdf.limits.max_ee_yearly_gwh;
     this._maxRenewableMwh = rdf.limits.max_solar_wind_mwh;
+    this._regionalLoads = [];
+    this._softLimits = [];
+    this._hardLimits = [];
+    this._months = [];
 
     rdf.regional_load.forEach(item => {
       const load = item.regional_load_mw;
