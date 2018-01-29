@@ -1,12 +1,11 @@
-// import expect from 'expect';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import _ from 'lodash';
-import monthlyEmissionsReducer from '../../../app/redux/monthlyEmissions';
-import { MonthlyUnitEnum } from '../../../app/utils/MonthlyUnitEnum';
-import { StatusEnum } from '../../../app/utils/StatusEnum';
-import { AggregationEnum } from '../../../app/utils/AggregationEnum';
 
+import monthlyEmissionsReducer from 'app/redux/monthlyEmissions';
+import { MonthlyUnitEnum } from 'app/utils/MonthlyUnitEnum';
+import { StatusEnum } from 'app/utils/StatusEnum';
+import { AggregationEnum } from 'app/utils/AggregationEnum';
 import {
   COMPLETE_MONTHLY_EMISSIONS,
   SELECT_MONTHLY_STATE,
@@ -19,45 +18,51 @@ import {
   selectMonthlyUnit,
   selectMonthlyState,
   selectMonthlyCounty,
-} from '../../../app/actions';
+} from 'app/actions';
 
-const middlewares = [ thunk ];
-const mockStore = configureMockStore(middlewares);
+const mockStore = configureMockStore([thunk]);
 
 describe('monthlyEmissions', () => {
   describe('Reducer', () => {
     it('should return an initial state', () => {
-      expect(
-        monthlyEmissionsReducer(undefined, {})
-      ).toEqual({
-        status: StatusEnum.READY,
+      expect(monthlyEmissionsReducer(undefined, {}))
+      .toEqual({
+        status: 'select_region',
         selectedAggregation: AggregationEnum.REGION,
-        newSelectedState: '',
-        newSelectedCounty: '',
+        selectedState: '',
+        selectedCounty: '',
         selectedUnit: MonthlyUnitEnum.EMISSION,
-        newRawData: {},
+        rawData: {},
         emissionsRegionSo2: [],
         emissionsRegionNox: [],
         emissionsRegionCo2: [],
+        emissionsRegionPm25: [],
         emissionsStatesSo2: {},
         emissionsStatesNox: {},
         emissionsStatesCo2: {},
+        emissionsStatesPm25: {},
         emissionsCountiesSo2: {},
         emissionsCountiesNox: {},
         emissionsCountiesCo2: {},
+        emissionsCountiesPm25: {},
         percentagesRegionSo2: [],
         percentagesRegionNox: [],
         percentagesRegionCo2: [],
+        percentagesRegionPm25: [],
         percentagesStatesSo2: {},
         percentagesStatesNox: {},
         percentagesStatesCo2: {},
+        percentagesStatesPm25: {},
         percentagesCountiesSo2: {},
         percentagesCountiesNox: {},
         percentagesCountiesCo2: {},
-        newStates: [],
-        newCounties: {},
-        newVisibleCounties: [],
-        visibleData: { so2: [], nox: [], co2: [] },
+        percentagesCountiesPm25: {},
+        states: [],
+        counties: {},
+        visibleCounties: [],
+        visibleData: {
+          so2: [], nox: [], co2: [], pm25: [],
+        },
         downloadableData: [],
       });
     });
@@ -71,16 +76,18 @@ describe('monthlyEmissions', () => {
           'Virginia': ['Arlington County']
         },
         emissions: {
-          generation: {regional: [1, 2, 3], state: stateData, county: countyData},
-          so2: {regional: [4, 5, 6], state: stateData, county: countyData},
-          nox: {regional: [7, 8, 9], state: stateData, county: countyData},
-          co2: {regional: [10, 11, 12], state: stateData, county: countyData},
+          generation: { regional: [1,2,3], state: stateData, county: countyData },
+          so2: { regional: [4,5,6], state: stateData, county: countyData },
+          nox: { regional: [7,8,9], state: stateData, county: countyData },
+          co2: { regional: [10,11,12], state: stateData, county: countyData },
+          pm25: { regional: [13,14,15], state: stateData, county: countyData },
         },
         percentages: {
-          generation: { regional: [12,11,10], state: stateData, county: countyData },
-          so2: { regional: [9,8,7], state: stateData, county: countyData },
-          nox: { regional: [6,5,4], state: stateData, county: countyData },
-          co2: { regional: [3,2,1], state: stateData, county: countyData },
+          generation: { regional: [15,14,13], state: stateData, county: countyData },
+          so2: { regional: [12,11,10], state: stateData, county: countyData },
+          nox: { regional: [9,8,7], state: stateData, county: countyData },
+          co2: { regional: [6,5,4], state: stateData, county: countyData },
+          pm25: { regional: [3,2,1], state: stateData, county: countyData },
         },
       };
 
@@ -91,27 +98,33 @@ describe('monthlyEmissions', () => {
         }))
         .toEqual({
           status: StatusEnum.DONE,
-          newRawData: data,
+          rawData: data,
           emissionsRegionSo2: data.emissions.so2.regional,
           emissionsRegionNox: data.emissions.nox.regional,
           emissionsRegionCo2: data.emissions.co2.regional,
+          emissionsRegionPm25: data.emissions.pm25.regional,
           emissionsStatesSo2: data.emissions.so2.state,
           emissionsStatesNox: data.emissions.nox.state,
           emissionsStatesCo2: data.emissions.co2.state,
+          emissionsStatesPm25: data.emissions.pm25.state,
           emissionsCountiesSo2: data.emissions.so2.county,
           emissionsCountiesNox: data.emissions.nox.county,
           emissionsCountiesCo2: data.emissions.co2.county,
+          emissionsCountiesPm25: data.emissions.pm25.county,
           percentagesRegionSo2: data.percentages.so2.regional,
           percentagesRegionNox: data.percentages.nox.regional,
           percentagesRegionCo2: data.percentages.co2.regional,
+          percentagesRegionPm25: data.percentages.pm25.regional,
           percentagesStatesSo2: data.percentages.so2.state,
           percentagesStatesNox: data.percentages.nox.state,
           percentagesStatesCo2: data.percentages.co2.state,
+          percentagesStatesPm25: data.percentages.pm25.state,
           percentagesCountiesSo2: data.percentages.so2.county,
           percentagesCountiesNox: data.percentages.nox.county,
           percentagesCountiesCo2: data.percentages.co2.county,
-          newStates: Object.keys(data.statesAndCounties),
-          newCounties: data.statesAndCounties,
+          percentagesCountiesPm25: data.percentages.pm25.county,
+          states: Object.keys(data.statesAndCounties),
+          counties: data.statesAndCounties,
         });
     });
 
@@ -123,9 +136,9 @@ describe('monthlyEmissions', () => {
           visibleCounties: ['Arlington County']
         }))
         .toEqual({
-          newSelectedState: 'Virginia',
-          newSelectedCounty: '',
-          newVisibleCounties: ['Arlington County'],
+          selectedState: 'Virginia',
+          selectedCounty: '',
+          visibleCounties: ['Arlington County'],
         });
     });
 
@@ -136,7 +149,7 @@ describe('monthlyEmissions', () => {
           county: 'Arlington County',
         }))
         .toEqual({
-          newSelectedCounty: 'Arlington County',
+          selectedCounty: 'Arlington County',
         });
     });
 
@@ -150,18 +163,6 @@ describe('monthlyEmissions', () => {
           selectedUnit: MonthlyUnitEnum.PERCENT_CHANGE,
         });
     });
-
-    //TODO: Why is this returning nothing?
-    // it('should handle RENDER_MONTHLY_EMISSIONS_CHARTS', () => {
-    //   expect(
-    //     monthlyEmissionsReducer([], {
-    //       type: RENDER_MONTHLY_EMISSIONS_CHARTS,
-    //       visibleData: { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } },
-    //     }))
-    //     .toEqual({
-    //       visibleData: { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } },
-    //     });
-    // });
   });
 
   describe('Actions',() => {
@@ -174,8 +175,6 @@ describe('monthlyEmissions', () => {
         emissionsRegionNox: _.values(sampleData.nox),
         emissionsRegionCo2: _.values(sampleData.co2),
       };
-      // newSelectedState: '',
-      // newSelectedCounty: '',
       expect(
         renderMonthlyEmissionsCharts(monthlyEmissions)
       ).toEqual({
@@ -196,8 +195,6 @@ describe('monthlyEmissions', () => {
         percentagesRegionNox: _.values(sampleData.nox),
         percentagesRegionCo2: _.values(sampleData.co2),
       };
-      // newSelectedState: '',
-      // newSelectedCounty: '',
       expect(
         renderMonthlyEmissionsCharts(monthlyEmissions)
       ).toEqual({
@@ -391,25 +388,6 @@ describe('monthlyEmissions', () => {
       store.dispatch(selectMonthlyUnit('emissions'));
       expect(store.getActions()).toEqual(expectedActions);
     });
-
-    //TODO: selectMonthlyState function is not pure.
-    // it('should create an action when the state aggregation is selected', () => {
-    //   const sampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
-    //   const store = mockStore({ monthlyEmissions: {
-    //     selectedAggregation: 'region',
-    //     selectedUnit: MonthlyUnitEnum.EMISSION,
-    //     emissionsRegionSo2: _.values(sampleData.so2),
-    //     emissionsRegionNox: _.values(sampleData.nox),
-    //     emissionsRegionCo2: _.values(sampleData.co2),
-    //   }});
-    //   const expectedActions = [
-    //     { type: SELECT_MONTHLY_STATE, state: 'Virginia' },
-    //     { type: RENDER_MONTHLY_EMISSIONS_CHARTS, visibleData: { so2: _.values(sampleData.so2), nox: _.values(sampleData.nox), co2: _.values(sampleData.co2) } },
-    //   ];
-    //
-    //   store.dispatch(selectMonthlyState('Virginia'));
-    //   expect(store.getActions()).toEqual(expectedActions);
-    // });
 
     it('should create an action when the county aggregation is selected', () => {
       const sampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
