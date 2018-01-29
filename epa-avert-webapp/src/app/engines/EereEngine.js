@@ -41,7 +41,7 @@ class EereEngine {
 
     // A: Base Load
     const hourlyMwReduction = this._hourlyMwReduction * this._gridLoss;
-    const constantMw = this._eereProfile.constantMw * this._gridLoss;
+    const constantMwh = this._eereProfile.constantMwh * this._gridLoss;
     // B: Peak Hours
     const percentReduction = -(this._eereProfile.reduction / 100) * this._gridLoss;
     // C: Wind
@@ -54,7 +54,7 @@ class EereEngine {
     );
 
     const initialLoad = (load > this._topPercentile) ? (load * percentReduction) : 0;
-    const calculatedLoad = initialLoad + renewableProfile - hourlyMwReduction - constantMw;
+    const calculatedLoad = initialLoad + renewableProfile - hourlyMwReduction - constantMwh;
 
     const softExceedance = this._doesExceed(calculatedLoad, softLimit, 15)
     const hardExceedance = this._doesExceed(calculatedLoad, hardLimit, 30)

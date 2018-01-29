@@ -8,7 +8,7 @@ class EereProfile {
     };
     this._errors = [];
     this._annualGwh = 0;
-    this._constantMw = 0;
+    this._constantMwh = 0;
     this._topHours = 0;
     this._reduction = 0;
     this._windCapacity = 0;
@@ -67,16 +67,16 @@ class EereProfile {
     return this._annualGwh;
   }
 
-  set constantMw(input) {
-    this._removeError('constantMw');
+  set constantMwh(input) {
+    this._removeError('constantMwh');
     if (this._isNegativeOrNaN(input) || input > this._limits.constantMwh) {
-      this._addError('constantMw');
+      this._addError('constantMwh');
     }
-    this._constantMw = input;
+    this._constantMwh = input;
   }
 
-  get constantMw() {
-    return this._constantMw;
+  get constantMwh() {
+    return this._constantMwh;
   }
 
   set topHours(input) {
@@ -142,7 +142,7 @@ class EereProfile {
   reset() {
     this._errors = [];
     this._annualGwh = 0;
-    this._constantMw = 0;
+    this._constantMwh = 0;
     this._topHours = 0;
     this._reduction = 0;
     this._windCapacity = 0;

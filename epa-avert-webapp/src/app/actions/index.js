@@ -116,7 +116,7 @@ export const updateEereAnnualGwh = (text) => {
 export const UPDATE_EERE_CONSTANT_MW = 'avert/core/UPDATE_EERE_CONSTANT_MW';
 export const updateEereConstantMw = (text) => {
   return function (dispatch) {
-    eereProfile.constantMw = text; // console.log(eereProfile)
+    eereProfile.constantMwh = text; // console.log(eereProfile)
 
     dispatch(validateEere());
     dispatch({

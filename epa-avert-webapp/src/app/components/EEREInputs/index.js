@@ -12,7 +12,7 @@ const EEREInputs = ({
   errors,
   valid,
 
-  constantMw,
+  constantMwh,
   annualGwh,
   broadProgram,
   reduction,
@@ -63,7 +63,7 @@ const EEREInputs = ({
   };
 
   // array of field values saved to state; filter out fields that aren't empty; if any exist, assign false, else assign true
-  const allFieldsEmpty = [constantMw, annualGwh, broadProgram, reduction, topHours, windCapacity, utilitySolar, rooftopSolar]
+  const allFieldsEmpty = [constantMwh, annualGwh, broadProgram, reduction, topHours, windCapacity, utilitySolar, rooftopSolar]
     .filter(field => field.length > 0).length <= 0;
 
   const disabledClass = (!valid || allFieldsEmpty || eereStatus === 'started') ?
@@ -87,7 +87,7 @@ const EEREInputs = ({
                 </span>
                 <EEREInputFieldContainer
                   value={ annualGwh }
-                  disabled={ constantMw ? true : false }
+                  disabled={ constantMwh ? true : false }
                   onChange={ onAnnualGwhChange }
                 />
                 <span className='avert-input-unit'>
@@ -106,7 +106,7 @@ const EEREInputs = ({
                   {'Reduce hourly generation by '}
                 </span>
                 <EEREInputFieldContainer
-                  value={ constantMw }
+                  value={ constantMwh }
                   disabled={ annualGwh ? true : false }
                   onChange={ onConstantMwChange }
                 />
@@ -118,7 +118,7 @@ const EEREInputs = ({
                   {'“Reduce hourly generation” is identical in effect to reducing total annual generation. It allows you to enter a constant reduction for every hour of the year, in MW. An industrial or refrigeration efficiency program may be well represented by a constant reduction across most hours of the year.'}
                 </TooltipContainer>
 
-                { displayError({name: 'constantMw', value: constantMw, max: limits.constantMwh}) }
+                { displayError({name: 'constantMwh', value: constantMwh, max: limits.constantMwh}) }
               </li>
             </ul>
           </section>
@@ -279,7 +279,7 @@ EEREInputs.propTypes = {
   // topHours: PropTypes.string,
   // reduction: PropTypes.string,
   // annualGwh: PropTypes.string,
-  // constantMw: PropTypes.string,
+  // constantMwh: PropTypes.string,
   // capacity: PropTypes.string,
   // utilitySolar: PropTypes.string,
   // rooftopSolar: PropTypes.string,

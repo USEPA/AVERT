@@ -28,7 +28,7 @@ const initialState = {
   errors: [],
 
   annualGwh: '',
-  constantMw: '',
+  constantMwh: '',
   broadProgram: '',
   reduction: '',
   topHours: '',
@@ -74,7 +74,7 @@ export default function reducer(state = initialState, action) {
     case UPDATE_EERE_CONSTANT_MW:
       return {
         ...state,
-        constantMw: action.text,
+        constantMwh: action.text,
       };
 
     case UPDATE_EERE_BROAD_BASE_PROGRAM:

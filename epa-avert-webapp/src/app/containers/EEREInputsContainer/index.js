@@ -20,7 +20,7 @@ const mapStateToProps = (state) => ({
   errors: state.eere.errors,
   valid: state.eere.valid,
 
-  constantMw: state.eere.constantMw,
+  constantMwh: state.eere.constantMwh,
   annualGwh: state.eere.annualGwh,
   broadProgram: state.eere.broadProgram,
   reduction: state.eere.reduction,
