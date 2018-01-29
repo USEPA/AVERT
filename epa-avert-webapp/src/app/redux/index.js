@@ -8,6 +8,7 @@ import generation from 'app/redux/generation';
 import so2 from 'app/redux/so2';
 import nox from 'app/redux/nox';
 import co2 from 'app/redux/co2';
+import pm25 from 'app/redux/pm25';
 import eere from 'app/redux/eere';
 import annualDisplacement from 'app/redux/annualDisplacement';
 import stateEmissions from 'app/redux/stateEmissions';
@@ -23,6 +24,7 @@ export default combineReducers({
   so2,
   nox,
   co2,
+  pm25,
   eere,
   annualDisplacement,
   stateEmissions,

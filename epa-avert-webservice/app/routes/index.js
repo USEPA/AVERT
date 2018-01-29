@@ -28,6 +28,7 @@ module.exports = [
   route.post('/api/v1/so2', queue.addSo2),
   route.post('/api/v1/nox', queue.addNox),
   route.post('/api/v1/co2', queue.addCo2),
+  route.post('/api/v1/pm25', queue.addPm25),
 
   // web app method: calculateDisplacement()
   // (from panel 2, user clicks 'Get Results' button)
@@ -38,4 +39,5 @@ module.exports = [
   route.get('/api/v1/queue/so2', queue.processSo2),
   route.get('/api/v1/queue/nox', queue.processNox),
   route.get('/api/v1/queue/co2', queue.processCo2),
+  route.get('/api/v1/queue/pm25', queue.processPm25),
 ];

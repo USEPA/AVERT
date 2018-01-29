@@ -10,8 +10,8 @@ const bluebird = require('bluebird');
 const redisConfig = require('../config/redis');
 const redisClient = require('../lib/redis');
 const regions = require('../lib/regions');
-const Rdf = require('../modules/Rdf');
-const DisplacementsEngine = require('../modules/DisplacementsEngine');
+const Rdf = require('../engines/Rdf');
+const DisplacementsEngine = require('../engines/DisplacementsEngine');
 
 bluebird.promisifyAll(Redis.RedisClient.prototype);
 bluebird.promisifyAll(Redis.Multi.prototype);
@@ -129,7 +129,7 @@ module.exports = {
 
     job.save();
 
-    // create request, which will pjob from queue via processSo2()
+    // create request, which will process job from queue via processSo2()
     yield request({
       url: `http://${this.request.header.host}/api/v1/queue/so2`,
       headers: { 'User-Agent': 'request' },
@@ -177,7 +177,7 @@ module.exports = {
 
     job.save();
 
-    // create request, which will pjob from queue via processNox()
+    // create request, which will process job from queue via processNox()
     yield request({
       url: `http://${this.request.header.host}/api/v1/queue/nox`,
       headers: { 'User-Agent': 'request' },
@@ -225,9 +225,57 @@ module.exports = {
 
     job.save();
 
-    // create request, which will pjob from queue via processCo2()
+    // create request, which will process job from queue via processCo2()
     yield request({
       url: `http://${this.request.header.host}/api/v1/queue/co2`,
+      headers: { 'User-Agent': 'request' },
+    });
+
+    // return 'ok' response and job id (used by web app)
+    this.body = {
+      response: 'ok',
+      job: id,
+    };
+  },
+
+
+
+  addPm25: function* () {
+    const body = yield parse.json(this, { limit: '50mb' });
+
+    // increment 'job' string in redis
+    const id = yield redisClient.incr('job');
+
+    // set/update 'pm25:eere:id' key and value in 'avert' hash in redis
+    yield redisClient.set(`pm25:eere:${id}`, JSON.stringify(body.eere));
+
+    // add pm25 job to queue
+    const job = queue.create('calculate_pm25', {
+      title: `Calculate Pm25 for '${body.region}' region`,
+      jobId: id,
+      region: body.region
+    });
+
+    job.on('complete', function () {
+      co(function* () {
+        console.log(`Success: Job ${id} (Pm25) is complete`);
+        // remove 'pm25:eere:id' key and value from 'avert' hash in redis
+        yield redisClient.del(`pm25:eere:${id}`);
+      });
+    }).on('failed', function () {
+      co(function* () {
+        console.log(`Error: Job ${id} (Pm25) has failed`);
+        // remove 'pm25:eere:id' and 'job:id' keys and values from 'avert' hash in redis
+        yield redisClient.del(`pm25:eere:${id}`);
+        yield redisClient.del(`job:${id}`);
+      });
+    });
+
+    job.save();
+
+    // create request, which will process job from queue via processPm25()
+    yield request({
+      url: `http://${this.request.header.host}/api/v1/queue/pm25`,
       headers: { 'User-Agent': 'request' },
     });
 
@@ -411,6 +459,50 @@ module.exports = {
     this.body = {
       response: 'ok',
       status: 'calculate_co2',
+    };
+  },
+
+
+
+  processPm25: function* () {
+    queue.process('calculate_pm25', function (job, done) {
+      const id = job.data.jobId;
+      const region = job.data.region;
+
+      if (!(region in regions)) { return false; }
+
+      co(function* () {
+        console.log(`Processing: Job ${id} (PM25) starting`);
+
+        // instantiate new Rdf from data files
+        const rdfFile = yield read(regions[region].rdf);
+        const eereFile = yield read(regions[region].defaults);
+        const rdf = new Rdf({
+          rdf: JSON.parse(rdfFile, 'utf8'),
+          defaults: JSON.parse(eereFile, 'utf8')
+        }).toJSON();
+
+        // get 'pm25:eere:id' value in 'avert' hash in redis
+        const eere = yield redisClient.get(`pm25:eere:${id}`);
+        // return early if eere not found in redis
+        if (!eere) { done(); }
+
+        // get pm25 total data from new DisplacementEngine instance
+        const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
+        const data = engine.getPm25Total();
+
+        // set 'job:id' key and value in 'avert' hash in redis
+        yield redisClient.set(`job:${id}`, JSON.stringify(data));
+
+        console.log(`Processing: Job ${id} (PM25) finished`);
+        return done();
+      });
+    });
+
+    // return status for debugging (not used in web app)
+    this.body = {
+      response: 'ok',
+      status: 'calculate_pm25',
     };
   },
 };

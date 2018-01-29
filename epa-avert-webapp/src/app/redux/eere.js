@@ -28,7 +28,7 @@ const initialState = {
   errors: [],
 
   annualGwh: '',
-  constantMw: '',
+  constantMwh: '',
   broadProgram: '',
   reduction: '',
   topHours: '',
@@ -39,20 +39,14 @@ const initialState = {
   status: 'ready',
   hourlyEere: [],
 
-  exceedances: [],
-  top_exceedance_value: 0,
-  top_exceedance_hour: 0,
-
   soft_valid: true,
   soft_exceedances: [],
   soft_top_exceedance_value: 0,
-  soft_top_exceedance_hour: 0,
   soft_top_exceedance_timestamp: {},
 
   hard_valid: true,
   hard_exceedances: [],
   hard_top_exceedance_value: 0,
-  hard_top_exceedance_hour: 0,
   hard_top_exceedance_timestamp: {},
 };
 
@@ -80,7 +74,7 @@ export default function reducer(state = initialState, action) {
     case UPDATE_EERE_CONSTANT_MW:
       return {
         ...state,
-        constantMw: action.text,
+        constantMwh: action.text,
       };
 
     case UPDATE_EERE_BROAD_BASE_PROGRAM:
@@ -134,23 +128,16 @@ export default function reducer(state = initialState, action) {
       };
 
     case UPDATE_EXCEEDANCES:
-      // TODO: Consider splitting up "validity for exceed" from "validity for fields"
       return {
         ...state,
-        exceedances: action.payload.exceedances,
-        top_exceedance_value: action.payload.maxVal,
-        top_exceedance_hour: action.payload.maxIndex,
-
         soft_valid: action.payload.softValid,
         soft_exceedances: action.payload.soft_exceedances,
         soft_top_exceedance_value: action.payload.softMaxVal,
-        soft_top_exceedance_hour: action.payload.softMaxIndex,
         soft_top_exceedance_timestamp: action.payload.softTimestamp,
 
         hard_valid: action.payload.hardValid,
         hard_exceedances: action.payload.hard_exceedances,
         hard_top_exceedance_value: action.payload.hardMaxVal,
-        hard_top_exceedance_hour: action.payload.hardMaxIndex,
         hard_top_exceedance_timestamp: action.payload.hardTimestamp,
       };
 

@@ -28,6 +28,7 @@ export const startDataDownload = () => {
   return (dispatch, getState) => {
     const { monthlyEmissions } = getState();
 
+    // TODO: pull fields from DataDownloadHelper
     const fields = [
       'type',
       'aggregation_level',
@@ -48,7 +49,7 @@ export const startDataDownload = () => {
       'december',
     ];
 
-    const data = monthlyEmissions.newDownloadableData;
+    const data = monthlyEmissions.downloadableData;
 
     try {
       const csv = json2csv({ fields, data });

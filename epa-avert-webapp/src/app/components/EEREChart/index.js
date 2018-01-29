@@ -2,10 +2,15 @@ import React, { PropTypes } from 'react';
 import Highcharts from 'react-highcharts';
 // containers
 import TooltipContainer from '../../containers/TooltipContainer';
-// utilities
-import NumberFormattingHelper from '../../utils/NumberFormattingHelper';
 // styles
 import './styles.css';
+
+const formatNumber = (number) => {
+  return number.toLocaleString(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2
+  });
+};
 
 const EEREChart = (props) => {
   const data = props.hourlyEere.map((hour) => hour.final_mw);
@@ -96,15 +101,13 @@ const EEREChart = (props) => {
           { props.heading }
           {' '}
           <TooltipContainer id={8}>
-            {'This graph shows the hourly changes in load that will result from the inputs entered above, along with adjustments for avoided transmission and distribution line loss, where applicable. This hourly EE/RE profile will be used to calculate the avoided emissions for this AVERT region.'}
+            This graph shows the hourly changes in load that will result from the inputs entered above, along with adjustments for avoided transmission and distribution line loss, where applicable. This hourly EE/RE profile will be used to calculate the avoided emissions for this AVERT region.
           </TooltipContainer>
         </h3>
 
         <Highcharts config={chartConfig} callback={afterRender} />
 
-        <p className="avert-small-text">
-          {`This EE/RE profile will displace ${totalLoadGwh} GWh of regional fossil fuel generation over the course of a year.`}
-        </p>
+        <p className="avert-small-text">This EE/RE profile will displace {totalLoadGwh} GWh of regional fossil fuel generation over the course of a year.</p>
       </div>
     );
   }
@@ -136,7 +139,7 @@ const EEREChart = (props) => {
         {'The combined impact of your proposed programs would displace more than '}
         <strong>{`${x.threshold}%`}</strong>
         {' of regional fossil generation in at least one hour of the year. (Maximum value: '}
-        <strong>{NumberFormattingHelper.twoDecimals(x.exceedence)}</strong>
+        <strong>{formatNumber(x.exceedence)}</strong>
         {'% on '}
         <strong>{`${month} ${day} at ${hour}:00 ${ampm}`}</strong>
         {'). The recommended limit for AVERT is 15%, as AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics. Please reduce one or more of your inputs to ensure more reliable results.'}
