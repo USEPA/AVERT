@@ -294,7 +294,7 @@ const EmissionsChart = ({
     series: [{
       name: 'PM₂₅',
       data: output.pm25,
-      color: '#FF9655',
+      color: '#665683',
     }]
   };
 
