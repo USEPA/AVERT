@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 
 const formatOutput = (number) => {
   return Math.round(number).toLocaleString();
@@ -46,11 +46,11 @@ const EmissionsTable = (props) => {
   return table;
 };
 
-EmissionsTable.propTypes = {
-  heading: PropTypes.string.isRequired,
-  //state_status: PropTypes.string.isRequired,
-  //data: PropTypes.object.isRequired,
-  //data: PropTypes.array.isRequired,
-};
+// EmissionsTable.propTypes = {
+//   heading: PropTypes.string.isRequired,
+//   //state_status: PropTypes.string.isRequired,
+//   //data: PropTypes.object.isRequired,
+//   //data: PropTypes.array.isRequired,
+// };
 
 export default EmissionsTable;

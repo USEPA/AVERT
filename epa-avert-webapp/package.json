@@ -18,7 +18,7 @@
   },
   "homepage": ".",
   "devDependencies": {
-    "react-scripts": "0.8.4",
+    "react-scripts": "1.1.0",
     "redux-mock-store": "1.5.1"
   },
   "dependencies": {
@@ -28,8 +28,8 @@
     "json2csv": "3.11.5",
     "lodash": "4.17.5",
     "mathjs": "3.20.2",
-    "react": "^15.2.1",
-    "react-dom": "^15.2.1",
+    "react": "16.2.0",
+    "react-dom": "16.2.0",
     "react-highcharts": "16.0.2",
     "react-redux": "5.0.6",
     "redux": "3.7.2",
@@ -43,8 +43,5 @@
     "test": "react-scripts test --verbose",
     "coverage": "react-scripts test --coverage",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "./node_modules/react-scripts/config/eslint.js"
   }
 }

@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
 // components
 import LoadingIcon from '../LoadingIcon';
 import Panel from '../Panel';
@@ -133,13 +133,13 @@ const StepPanels = (props) => {
   );
 };
 
-StepPanels.propTypes = {
-  activePanel: PropTypes.number.isRequired,
-  loading: PropTypes.bool.isRequired,
-  onClickOutsideModal: PropTypes.func.isRequired,
-  activeModalId: PropTypes.number.isRequired,
-  // softValid: PropTypes.string,
-  loadingProgress: PropTypes.number,
-};
+// StepPanels.propTypes = {
+//   activePanel: PropTypes.number.isRequired,
+//   loading: PropTypes.bool.isRequired,
+//   onClickOutsideModal: PropTypes.func.isRequired,
+//   activeModalId: PropTypes.number.isRequired,
+//   // softValid: PropTypes.string,
+//   loadingProgress: PropTypes.number,
+// };
 
 export default StepPanels;

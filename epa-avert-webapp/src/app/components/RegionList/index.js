@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 // utils
 import Regions from '../../utils/Regions';
 // styles
@@ -25,9 +25,9 @@ const RegionList = (props) => (
   </select>
 );
 
-RegionList.propTypes = {
-  selectedRegion: PropTypes.number.isRequired,
-  onSelectChange: PropTypes.func.isRequired,
-};
+// RegionList.propTypes = {
+//   selectedRegion: PropTypes.number.isRequired,
+//   onSelectChange: PropTypes.func.isRequired,
+// };
 
 export default RegionList;

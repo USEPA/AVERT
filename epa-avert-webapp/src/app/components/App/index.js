@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react';
+/* eslint-disable import/first */
+
+import React from 'react';
 import ReactHighcharts from 'react-highcharts';
 require('highcharts-exporting')(ReactHighcharts.Highcharts);
 // components
@@ -15,8 +17,8 @@ const App = (props) => (
   </div>
 );
 
-App.propTypes = {
-  activeStep: PropTypes.number.isRequired,
-};
+// App.propTypes = {
+//   activeStep: PropTypes.number.isRequired,
+// };
 
 export default App;

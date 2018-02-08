@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 // styles
 import './styles.css';
 
@@ -35,12 +35,12 @@ const Tooltip = (props) => {
   );
 };
 
-Tooltip.propTypes = {
-  children: PropTypes.node,
-  onStoreActiveModal: PropTypes.func.isRequired,
-  onToggleModalOverlay: PropTypes.func.isRequired,
-  activeModalId: PropTypes.number.isRequired,
-  closingModalId: PropTypes.number.isRequired,
-};
+// Tooltip.propTypes = {
+//   children: PropTypes.node,
+//   onStoreActiveModal: PropTypes.func.isRequired,
+//   onToggleModalOverlay: PropTypes.func.isRequired,
+//   activeModalId: PropTypes.number.isRequired,
+//   closingModalId: PropTypes.number.isRequired,
+// };
 
 export default Tooltip;

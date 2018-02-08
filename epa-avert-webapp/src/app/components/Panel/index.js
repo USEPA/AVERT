@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 // styles
 import './styles.css';
 
@@ -8,9 +8,9 @@ const Panel = (props) => (
   </section>
 );
 
-Panel.propTypes = {
-  active: PropTypes.bool.isRequired,
-  children: PropTypes.node,
-};
+// Panel.propTypes = {
+//   active: PropTypes.bool.isRequired,
+//   children: PropTypes.node,
+// };
 
 export default Panel;
