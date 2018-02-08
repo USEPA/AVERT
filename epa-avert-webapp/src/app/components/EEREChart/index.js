@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import Highcharts from 'react-highcharts';
 // containers
 import TooltipContainer from '../../containers/TooltipContainer';
@@ -162,13 +162,13 @@ const EEREChart = (props) => {
   );
 };
 
-EEREChart.propTypes = {
-  heading: PropTypes.string.isRequired,
-  hourlyEere: PropTypes.array.isRequired,
-  // softValid: PropTypes.string,
-  // softTopExceedanceTimestamp: PropTypes.string,
-  // hardValid: PropTypes.string,
-  // hardTopExceedanceTimestamp: PropTypes.string,
-};
+// EEREChart.propTypes = {
+//   heading: PropTypes.string.isRequired,
+//   hourlyEere: PropTypes.array.isRequired,
+//   // softValid: PropTypes.string,
+//   // softTopExceedanceTimestamp: PropTypes.string,
+//   // hardValid: PropTypes.string,
+//   // hardTopExceedanceTimestamp: PropTypes.string,
+// };
 
 export default EEREChart;

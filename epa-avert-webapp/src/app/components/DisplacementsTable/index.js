@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 // styles
 import './styles.css';
 
@@ -110,9 +110,9 @@ const DisplacementsTable = (props) => {
   );
 };
 
-DisplacementsTable.propTypes = {
-  heading: PropTypes.string.isRequired,
-  //annualStatus: PropTypes.string.isRequired,
-};
+// DisplacementsTable.propTypes = {
+//   heading: PropTypes.string.isRequired,
+//   //annualStatus: PropTypes.string.isRequired,
+// };
 
 export default DisplacementsTable;

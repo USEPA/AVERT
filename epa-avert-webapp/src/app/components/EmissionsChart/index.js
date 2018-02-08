@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react';
+/* eslint-disable import/first */
+
+import React from 'react';
 import Highcharts from 'react-highcharts';
 // utilities
 import Regions from '../../utils/Regions';
@@ -323,20 +325,20 @@ const EmissionsChart = ({
   );
 };
 
-EmissionsChart.propTypes = {
-  heading: PropTypes.string.isRequired,
-  //selected_state: PropTypes.string.isRequired,
-  selectState: PropTypes.func.isRequired,
-  available_states: PropTypes.array.isRequired,
-  //selected_county: PropTypes.string.isRequired,
-  selectCounty: PropTypes.func.isRequired,
-  available_counties: PropTypes.array.isRequired,
-  aggregation: PropTypes.string.isRequired,
-  onAggregationChange: PropTypes.func.isRequired,
-  unit: PropTypes.string.isRequired,
-  onUnitChange: PropTypes.func.isRequired,
-  output: PropTypes.object.isRequired,
-  //monthly_status: PropTypes.string.isRequired,
-};
+// EmissionsChart.propTypes = {
+//   heading: PropTypes.string.isRequired,
+//   //selected_state: PropTypes.string.isRequired,
+//   selectState: PropTypes.func.isRequired,
+//   available_states: PropTypes.array.isRequired,
+//   //selected_county: PropTypes.string.isRequired,
+//   selectCounty: PropTypes.func.isRequired,
+//   available_counties: PropTypes.array.isRequired,
+//   aggregation: PropTypes.string.isRequired,
+//   onAggregationChange: PropTypes.func.isRequired,
+//   unit: PropTypes.string.isRequired,
+//   onUnitChange: PropTypes.func.isRequired,
+//   output: PropTypes.object.isRequired,
+//   //monthly_status: PropTypes.string.isRequired,
+// };
 
 export default EmissionsChart;

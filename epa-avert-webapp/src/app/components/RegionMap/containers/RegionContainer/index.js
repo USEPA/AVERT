@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 // action creators
 import { selectRegion } from 'app/actions';
@@ -12,11 +12,11 @@ const Region = (props) => (
   </g>
 );
 
-Region.propTypes = {
-  regionId: PropTypes.number.isRequired,
-  onRegionClick: PropTypes.func.isRequired,
-  children: PropTypes.node,
-};
+// Region.propTypes = {
+//   regionId: PropTypes.number.isRequired,
+//   onRegionClick: PropTypes.func.isRequired,
+//   children: PropTypes.node,
+// };
 
 const mapStateToProps = (state) => ({
   selectedRegion: state.regions.region,

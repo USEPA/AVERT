@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
 // containers
 import EEREInputFieldContainer from '../../containers/EEREInputFieldContainer';
 import TooltipContainer from '../../containers/TooltipContainer';
@@ -273,27 +273,27 @@ const EEREInputs = ({
   );
 };
 
-EEREInputs.propTypes = {
-  // errors: PropTypes.string,
-  // valid: PropTypes.string,
-  // topHours: PropTypes.string,
-  // reduction: PropTypes.string,
-  // annualGwh: PropTypes.string,
-  // constantMwh: PropTypes.string,
-  // capacity: PropTypes.string,
-  // utilitySolar: PropTypes.string,
-  // rooftopSolar: PropTypes.string,
-  limits: PropTypes.object,
-  onTopHoursChange: PropTypes.func,
-  onReductionChange: PropTypes.func,
-  onAnnualGwhChange: PropTypes.func,
-  onConstantMwChange: PropTypes.func,
-  onWindCapacityChange: PropTypes.func,
-  onUtilitySolarChange: PropTypes.func,
-  onRooftopSolarChange: PropTypes.func,
-
-  eereStatus: PropTypes.string.isRequired,
-  onCalculateProfile: PropTypes.func.isRequired,
-};
+// EEREInputs.propTypes = {
+//   // errors: PropTypes.string,
+//   // valid: PropTypes.string,
+//   // topHours: PropTypes.string,
+//   // reduction: PropTypes.string,
+//   // annualGwh: PropTypes.string,
+//   // constantMwh: PropTypes.string,
+//   // capacity: PropTypes.string,
+//   // utilitySolar: PropTypes.string,
+//   // rooftopSolar: PropTypes.string,
+//   limits: PropTypes.object,
+//   onTopHoursChange: PropTypes.func,
+//   onReductionChange: PropTypes.func,
+//   onAnnualGwhChange: PropTypes.func,
+//   onConstantMwChange: PropTypes.func,
+//   onWindCapacityChange: PropTypes.func,
+//   onUtilitySolarChange: PropTypes.func,
+//   onRooftopSolarChange: PropTypes.func,
+//
+//   eereStatus: PropTypes.string.isRequired,
+//   onCalculateProfile: PropTypes.func.isRequired,
+// };
 
 export default EEREInputs;

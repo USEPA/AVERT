@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 // styles
 import './styles.css';
 
@@ -8,10 +8,10 @@ const StepProgressItem = (props) => (
   </li>
 );
 
-StepProgressItem.propTypes = {
-  step: PropTypes.number.isRequired,
-  active: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
-};
+// StepProgressItem.propTypes = {
+//   step: PropTypes.number.isRequired,
+//   active: PropTypes.bool.isRequired,
+//   title: PropTypes.string.isRequired,
+// };
 
 export default StepProgressItem;

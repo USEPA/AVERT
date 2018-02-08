@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 
 const EEREInputField = (props) => (
   <input
@@ -15,12 +15,12 @@ const EEREInputField = (props) => (
   />
 );
 
-EEREInputField.propTypes = {
-  // valid: PropTypes.string,
-  value: PropTypes.string,
-  disabled: PropTypes.bool,
-  onChange: PropTypes.func,
-  onCalculateProfile: PropTypes.func,
-}
+// EEREInputField.propTypes = {
+//   // valid: PropTypes.string,
+//   value: PropTypes.string,
+//   disabled: PropTypes.bool,
+//   onChange: PropTypes.func,
+//   onCalculateProfile: PropTypes.func,
+// }
 
 export default EEREInputField;

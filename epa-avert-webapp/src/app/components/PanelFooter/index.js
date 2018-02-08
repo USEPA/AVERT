@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 // styles
 import './styles.css';
 
@@ -15,7 +15,7 @@ const PanelFooter = (props) => {
     //   window.scrollBy(0, step);
     // }, 16.666);
 
-    scrollTo(0, 0);
+    window.scrollTo(0, 0);
   };
 
   // conditionally define prevButtonElement, if prevButtonText prop exists
@@ -92,17 +92,17 @@ const PanelFooter = (props) => {
   );
 };
 
-PanelFooter.propTypes = {
-  activeStep: PropTypes.number.isRequired,
-  onSetActiveStep: PropTypes.func.isRequired,
-  prevButtonText: PropTypes.string,
-  nextButtonText: PropTypes.string.isRequired,
-  onResetEereInputs: PropTypes.func.isRequired,
-  onResetMonthlyEmissions: PropTypes.func.isRequired,
-  region: PropTypes.number.isRequired,
-  eereStatus: PropTypes.string.isRequired,
-  // hardValid: PropTypes.string,
-  onCalculateDisplacement: PropTypes.func,
-};
+// PanelFooter.propTypes = {
+//   activeStep: PropTypes.number.isRequired,
+//   onSetActiveStep: PropTypes.func.isRequired,
+//   prevButtonText: PropTypes.string,
+//   nextButtonText: PropTypes.string.isRequired,
+//   onResetEereInputs: PropTypes.func.isRequired,
+//   onResetMonthlyEmissions: PropTypes.func.isRequired,
+//   region: PropTypes.number.isRequired,
+//   eereStatus: PropTypes.string.isRequired,
+//   // hardValid: PropTypes.string,
+//   onCalculateDisplacement: PropTypes.func,
+// };
 
 export default PanelFooter;

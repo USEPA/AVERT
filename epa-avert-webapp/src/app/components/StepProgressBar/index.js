@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 // components
 import StepProgressItem from '../StepProgressItem';
 // styles
@@ -14,8 +14,8 @@ const StepProgressBar = (props) => (
   </nav>
 );
 
-StepProgressBar.propTypes = {
-  activeTab: PropTypes.number.isRequired,
-};
+// StepProgressBar.propTypes = {
+//   activeTab: PropTypes.number.isRequired,
+// };
 
 export default StepProgressBar;

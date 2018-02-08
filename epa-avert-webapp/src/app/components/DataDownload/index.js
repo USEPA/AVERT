@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 
 const isDesktopSafari =
   navigator.userAgent.toLowerCase().indexOf('safari') !== -1 &&
@@ -28,9 +28,9 @@ const DataDownload = (props) => (
   </div>
 );
 
-DataDownload.propTypes = {
-  heading: PropTypes.string.isRequired,
-  onClick: PropTypes.func
-};
+// DataDownload.propTypes = {
+//   heading: PropTypes.string.isRequired,
+//   onClick: PropTypes.func
+// };
 
 export default DataDownload;
