@@ -41,9 +41,9 @@
     "start": "react-scripts start",
     "dev": "REACT_APP_WEB_SERVICE=local react-scripts start",
     "build": "react-scripts build && cat post-build-instructions.txt",
-    "flow": "flow",
     "test": "react-scripts test --verbose",
     "coverage": "react-scripts test --coverage",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "flow": "flow"
   }
 }

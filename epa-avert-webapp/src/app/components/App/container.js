@@ -1,14 +1,11 @@
 import { connect } from 'react-redux';
 // components
-import App from '../../components/App';
+import App from './index.js';
 
 const mapStateToProps = (state) => ({
   activeStep: state.panel.activeStep,
 });
 
-const AppContainer = connect(
-  mapStateToProps,
-  null
-)(App);
+const mapDispatchToProps = null;
 
-export default AppContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(App);

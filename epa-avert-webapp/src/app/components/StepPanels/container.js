@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 // components
-import StepPanels from '../../components/StepPanels';
-// action creators
+import StepPanels from './index.js';
+// actions
 import { toggleModalOverlay, resetActiveModal } from 'app/redux/panel';
 import { startDataDownload } from 'app/redux/dataDownload';
 
@@ -23,9 +23,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-const StepPanelsContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(StepPanels);
-
-export default StepPanelsContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(StepPanels);
