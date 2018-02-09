@@ -55,7 +55,7 @@ const DisplacementsTable = (props: Props) => {
   // rendering is ready when state annual displacement status is 'complete'
   const readyToRender = props.annualStatus === 'complete';
 
-  let Table = null;
+  let Table;
   // conditionally re-define Table when ready to render
   if (readyToRender) {
     Table = (

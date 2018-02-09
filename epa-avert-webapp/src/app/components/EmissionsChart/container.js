@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 // components
-import EmissionsChart from '../../components/EmissionsChart';
-// action creators
+import EmissionsChart from './index.js';
+// actions
 import {
   selectMonthlyAggregation,
   selectMonthlyUnit,
@@ -36,9 +36,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-const EmissionsChartContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EmissionsChart);
-
-export default EmissionsChartContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(EmissionsChart);
