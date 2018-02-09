@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 // components
-import EEREInputs from '../../components/EEREInputs';
-// action creators
+import EEREInputs from './index.js';
+// actions
 import {
   updateEereConstantMw,
   updateEereAnnualGwh,
@@ -11,7 +11,6 @@ import {
   updateEereWindCapacity,
   updateEereUtilitySolar,
   updateEereRooftopSolar,
-
   calculateEereProfile,
 } from 'app/actions';
 
@@ -19,7 +18,6 @@ const mapStateToProps = (state) => ({
   limits: state.eere.limits,
   errors: state.eere.errors,
   valid: state.eere.valid,
-
   constantMwh: state.eere.constantMwh,
   annualGwh: state.eere.annualGwh,
   broadProgram: state.eere.broadProgram,
@@ -28,7 +26,6 @@ const mapStateToProps = (state) => ({
   windCapacity: state.eere.windCapacity,
   utilitySolar: state.eere.utilitySolar,
   rooftopSolar: state.eere.rooftopSolar,
-
   eereStatus: state.eere.status,
 });
 
@@ -62,9 +59,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-const EEREInputsContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EEREInputs);
-
-export default EEREInputsContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(EEREInputs);

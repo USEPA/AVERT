@@ -1,73 +1,101 @@
+// @flow
+
 import React from 'react';
-// containers
-import EEREInputFieldContainer from '../../containers/EEREInputFieldContainer';
-import TooltipContainer from '../../containers/TooltipContainer';
-// utilities
-import EereStatusEnum from '../../utils/EereStatusEnum';
+// components
+import EEREInputField from 'app/components/EEREInputField/container.js';
+import Tooltip from 'app/components/Tooltip/container.js';
 // styles
 import './styles.css';
 
-const EEREInputs = ({
-  limits,
-  errors,
-  valid,
+type Props = {
+  limits: {
+    annualGwh: boolean | number,
+    constantMwh: boolean | number,
+    renewables: boolean | number,
+  },
+  errors: Array<string>,
+  valid: boolean,
+  constantMwh: string,
+  annualGwh: string,
+  broadProgram: string,
+  reduction: string,
+  topHours: string,
+  windCapacity: string,
+  utilitySolar: string,
+  rooftopSolar: string,
+  eereStatus: string,
+  onConstantMwChange: (string) => void,
+  onAnnualGwhChange: (string) => void,
+  onBroadBasedProgramChange: (string) => void,
+  onReductionChange: (string) => void,
+  onTopHoursChange: (string) => void,
+  onWindCapacityChange: (string) => void,
+  onUtilitySolarChange: (string) => void,
+  onRooftopSolarChange: (string) => void,
+  onCalculateProfile: () => void,
+};
 
-  constantMwh,
-  annualGwh,
-  broadProgram,
-  reduction,
-  topHours,
-  windCapacity,
-  utilitySolar,
-  rooftopSolar,
-
-  onConstantMwChange,
-  onAnnualGwhChange,
-  onBroadBasedProgramChange,
-  onReductionChange,
-  onTopHoursChange,
-  onWindCapacityChange,
-  onUtilitySolarChange,
-  onRooftopSolarChange,
-
-  eereStatus,
-  onCalculateProfile,
-}) => {
-  // console.warn('Errors:', errors, 'Soft val:', softTopExceedanceValue, 'Hard val:', hardTopExceedanceValue);
+const EEREInputs = (props: Props) => {
+  const {
+    limits,
+    errors,
+    valid,
+    constantMwh,
+    annualGwh,
+    broadProgram,
+    reduction,
+    topHours,
+    windCapacity,
+    utilitySolar,
+    rooftopSolar,
+    eereStatus,
+    onConstantMwChange,
+    onAnnualGwhChange,
+    onBroadBasedProgramChange,
+    onReductionChange,
+    onTopHoursChange,
+    onWindCapacityChange,
+    onUtilitySolarChange,
+    onRooftopSolarChange,
+    onCalculateProfile,
+  } = props;
 
   const displayError = (input) => {
     if ((errors.indexOf(input.name) !== -1) && (input.value.length > 0)) {
-      let message;
-      if (input.value >= 0) {
-        message = (
+      let Message;
+      if (Number(input.value) >= 0) {
+        Message = (
           <span className='avert-input-error'>
-            <span className='avert-input-error-range'>
-              {`Please enter a number between 0 and ${input.max}.`}
-            </span>
-            {'This will help ensure that each of your proposed programs displaces no more than 15% of hourly regional fossil generation, which is the recommended limit for AVERT. AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics.'}
+            <span className='avert-input-error-range'>Please enter a number between 0 and {input.max}.</span>
+            This will help ensure that each of your proposed programs displaces no more than 15% of hourly regional fossil generation, which is the recommended limit for AVERT. AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics.
           </span>
         );
       } else {
-        message = (
+        Message = (
           <span className='avert-input-error'>
-            <span className='avert-input-error-range'>
-              {'Please enter a positive number.'}
-            </span>
-            {'If you wish to model a reverse EE/RE scenario (i.e., a negative number), use the Excel version of the AVERT Main Module.'}
+            <span className='avert-input-error-range'>Please enter a positive number.</span>
+            If you wish to model a reverse EE/RE scenario (i.e., a negative number), use the Excel version of the AVERT Main Module.
           </span>
         );
       }
 
-      return message;
+      return Message;
     }
   };
 
-  // array of field values saved to state; filter out fields that aren't empty; if any exist, assign false, else assign true
-  const allFieldsEmpty = [constantMwh, annualGwh, broadProgram, reduction, topHours, windCapacity, utilitySolar, rooftopSolar]
-    .filter(field => field.length > 0).length <= 0;
+  // input values from props (connected to Redux store)
+  const inputsValues = [constantMwh, annualGwh, broadProgram, reduction, topHours, windCapacity, utilitySolar, rooftopSolar];
+  const inputsAreEmpty = inputsValues.filter(field => field.length > 0).length === 0;
 
-  const disabledClass = (!valid || allFieldsEmpty || eereStatus === 'started') ?
-    'avert-button-disabled' : '';
+  const disabledClass = (!valid || inputsAreEmpty || eereStatus === 'started')
+    ? ' avert-button-disabled'
+    : '';
+
+  const eereButtonOptions = {
+    'ready': 'Calculate EE/RE Impacts',
+    'started': 'Calculating...',
+    'complete': 'Recalculate EE/RE Impacts',
+  };
 
   return (
     <div>
@@ -82,43 +110,35 @@ const EEREInputs = ({
             <p><strong>Choose one:</strong></p>
             <ul>
               <li>
-                <span className='avert-input-label'>
-                  {'Reduce total annual generation by '}
-                </span>
-                <EEREInputFieldContainer
-                  value={ annualGwh }
-                  disabled={ constantMwh ? true : false }
-                  onChange={ onAnnualGwhChange }
+                <span className='avert-input-label'>Reduce total annual generation by </span>
+                <EEREInputField
+                  value={annualGwh}
+                  disabled={constantMwh ? true : false}
+                  onChange={onAnnualGwhChange}
                 />
-                <span className='avert-input-unit'>
-                  {' GWh '}
-                </span>
+                <span className='avert-input-unit'> GWh </span>
 
-                <TooltipContainer id={1}>
-                  {'Enter the total number of GWh expected to be saved in a single year. This option simply distributes the total annual savings evenly over all hours of the year. An industrial or refrigeration efficiency program may be well represented by a constant reduction across most hours of the year.'}
-                </TooltipContainer>
+                <Tooltip id={1}>
+                  Enter the total number of GWh expected to be saved in a single year. This option simply distributes the total annual savings evenly over all hours of the year. An industrial or refrigeration efficiency program may be well represented by a constant reduction across most hours of the year.
+                </Tooltip>
 
-                { displayError({name: 'annualGwh', value: annualGwh, max: limits.annualGwh}) }
+                {displayError({ name: 'annualGwh', value: annualGwh, max: limits.annualGwh })}
               </li>
 
               <li>
-                <span className='avert-input-label'>
-                  {'Reduce hourly generation by '}
-                </span>
-                <EEREInputFieldContainer
-                  value={ constantMwh }
-                  disabled={ annualGwh ? true : false }
-                  onChange={ onConstantMwChange }
+                <span className='avert-input-label'>Reduce hourly generation by </span>
+                <EEREInputField
+                  value={constantMwh}
+                  disabled={annualGwh ? true : false}
+                  onChange={onConstantMwChange}
                 />
-                <span className='avert-input-unit'>
-                  {' MW '}
-                </span>
+                <span className='avert-input-unit'> MW </span>
 
-                <TooltipContainer id={2}>
-                  {'“Reduce hourly generation” is identical in effect to reducing total annual generation. It allows you to enter a constant reduction for every hour of the year, in MW. An industrial or refrigeration efficiency program may be well represented by a constant reduction across most hours of the year.'}
-                </TooltipContainer>
+                <Tooltip id={2}>
+                  “Reduce hourly generation” is identical in effect to reducing total annual generation. It allows you to enter a constant reduction for every hour of the year, in MW. An industrial or refrigeration efficiency program may be well represented by a constant reduction across most hours of the year.
+                </Tooltip>
 
-                { displayError({name: 'constantMwh', value: constantMwh, max: limits.constantMwh}) }
+                {displayError({ name: 'constantMwh', value: constantMwh, max: limits.constantMwh })}
               </li>
             </ul>
           </section>
@@ -130,52 +150,42 @@ const EEREInputs = ({
             <p><strong>Choose one:</strong></p>
             <ul>
               <li>
-                <span className='avert-input-label'>
-                  {'Broad-based program: Reduce generation by '}
-                </span>
-                <EEREInputFieldContainer
-                  value={ broadProgram }
-                  disabled={ reduction || topHours ? true : false }
-                  onChange={ onBroadBasedProgramChange }
+                <span className='avert-input-label'>Broad-based program: Reduce generation by </span>
+                <EEREInputField
+                  value={broadProgram}
+                  disabled={reduction || topHours ? true : false}
+                  onChange={onBroadBasedProgramChange}
                 />
-                <span className='avert-input-unit'>
-                  {' % in all hours '}
-                </span>
+                <span className='avert-input-unit'> % in all hours </span>
 
-                <TooltipContainer id={3}>
-                  {'To simulate a broad-based efficiency program, enter an estimated load reduction fraction. This percentage reduction will be applied to all hours of the year.'}
-                </TooltipContainer>
+                <Tooltip id={3}>
+                  To simulate a broad-based efficiency program, enter an estimated load reduction fraction. This percentage reduction will be applied to all hours of the year.
+                </Tooltip>
 
-                { displayError({name: 'reduction', value: broadProgram, max: 15}) }
+                {displayError({ name: 'reduction', value: broadProgram, max: 15 })}
               </li>
 
               <li>
-                <span className='avert-input-label'>
-                  {'Targeted program: Reduce generation by '}
-                </span>
-                <EEREInputFieldContainer
-                  value={ reduction }
-                  disabled={ broadProgram ? true : false }
-                  onChange={ onReductionChange }
+                <span className='avert-input-label'>Targeted program: Reduce generation by </span>
+                <EEREInputField
+                  value={reduction}
+                  disabled={broadProgram ? true : false}
+                  onChange={onReductionChange}
                 />
-                <span className='avert-input-unit'>
-                  {' % during the peak '}
-                </span>
-                <EEREInputFieldContainer
-                  value={ topHours }
-                  disabled={ broadProgram ? true : false }
-                  onChange={ onTopHoursChange }
+                <span className='avert-input-unit'> % during the peak </span>
+                <EEREInputField
+                  value={topHours}
+                  disabled={broadProgram ? true : false}
+                  onChange={onTopHoursChange}
                 />
-                <span className='avert-input-unit'>
-                  {' % of hours '}
-                </span>
+                <span className='avert-input-unit'> % of hours </span>
 
-                <TooltipContainer id={4}>
-                  {'To simulate a peak-reduction targeting program such as demand response, enter the load reduction (as a fraction of peaking load) that would be targeted, as well as the fraction of high-demand hours that the program is expected to affect (e.g., 1%–3%).'}
-                </TooltipContainer>
+                <Tooltip id={4}>
+                  To simulate a peak-reduction targeting program such as demand response, enter the load reduction (as a fraction of peaking load) that would be targeted, as well as the fraction of high-demand hours that the program is expected to affect (e.g., 1%–3%).
+                </Tooltip>
 
-                { displayError({name: 'reduction', value: reduction, max: 15}) }
-                { displayError({name: 'topHours', value: topHours, max: 100}) }
+                {displayError({ name: 'reduction', value: reduction, max: 15 })}
+                {displayError({ name: 'topHours', value: topHours, max: 100 })}
               </li>
             </ul>
           </section>
@@ -189,22 +199,18 @@ const EEREInputs = ({
           <summary data-label='C'>Wind</summary>
           <section>
             <p>
-              <span className='avert-input-label'>
-                {'Total capacity: '}
-              </span>
-              <EEREInputFieldContainer
-                value={ windCapacity }
-                onChange={ onWindCapacityChange }
+              <span className='avert-input-label'>Total capacity: </span>
+              <EEREInputField
+                value={windCapacity}
+                onChange={onWindCapacityChange}
               />
-              <span className='avert-input-unit'>
-                {' MW '}
-              </span>
+              <span className='avert-input-unit'> MW </span>
 
-              <TooltipContainer id={5}>
-                {'Enter the total capacity (maximum potential electricity generation) for this type of resource, measured in MW. The model uses these inputs along with hourly capacity factors that vary by resource type and region.'}
-              </TooltipContainer>
+              <Tooltip id={5}>
+                Enter the total capacity (maximum potential electricity generation) for this type of resource, measured in MW. The model uses these inputs along with hourly capacity factors that vary by resource type and region.
+              </Tooltip>
 
-              { displayError({name: 'windCapacity', value: windCapacity, max: limits.renewables}) }
+              {displayError({ name: 'windCapacity', value: windCapacity, max: limits.renewables })}
             </p>
           </section>
         </details>
@@ -213,22 +219,18 @@ const EEREInputs = ({
           <summary data-label='D'>Utility-scale solar photovoltaic</summary>
           <section>
             <p>
-              <span className='avert-input-label'>
-                {'Total capacity: '}
-              </span>
-              <EEREInputFieldContainer
-                value={ utilitySolar }
-                onChange={ onUtilitySolarChange }
+              <span className='avert-input-label'>Total capacity: </span>
+              <EEREInputField
+                value={utilitySolar}
+                onChange={onUtilitySolarChange}
               />
-              <span className='avert-input-unit'>
-                {' MW '}
-              </span>
+              <span className='avert-input-unit'> MW </span>
 
-              <TooltipContainer id={6}>
-                {'Enter the total capacity (maximum potential electricity generation) for this type of resource, measured in MW. The model uses these inputs along with hourly capacity factors that vary by resource type and region.'}
-              </TooltipContainer>
+              <Tooltip id={6}>
+                Enter the total capacity (maximum potential electricity generation) for this type of resource, measured in MW. The model uses these inputs along with hourly capacity factors that vary by resource type and region.
+              </Tooltip>
 
-              { displayError({name: 'utilitySolar', value: utilitySolar, max: limits.renewables}) }
+              {displayError({ name: 'utilitySolar', value: utilitySolar, max: limits.renewables })}
             </p>
           </section>
         </details>
@@ -237,63 +239,37 @@ const EEREInputs = ({
           <summary data-label='E'>Distributed (rooftop) solar photovoltaic</summary>
           <section>
             <p>
-              <span className='avert-input-label'>
-                {'Total capacity: '}
-              </span>
-              <EEREInputFieldContainer
-                value={ rooftopSolar }
-                onChange={ onRooftopSolarChange }
+              <span className='avert-input-label'>Total capacity: </span>
+              <EEREInputField
+                value={rooftopSolar}
+                onChange={onRooftopSolarChange}
               />
-              <span className='avert-input-unit'>
-                {' MW '}
-              </span>
+              <span className='avert-input-unit'> MW </span>
 
-              <TooltipContainer id={7}>
-                {'Enter the total capacity (maximum potential electricity generation) for this type of resource, measured in MW. The model uses these inputs along with hourly capacity factors that vary by resource type and region.'}
-              </TooltipContainer>
+              <Tooltip id={7}>
+                Enter the total capacity (maximum potential electricity generation) for this type of resource, measured in MW. The model uses these inputs along with hourly capacity factors that vary by resource type and region.
+              </Tooltip>
 
-              { displayError({name: 'rooftopSolar', value: rooftopSolar, max: limits.renewables}) }
+              {displayError({ name: 'rooftopSolar', value: rooftopSolar, max: limits.renewables })}
             </p>
           </section>
         </details>
       </div>
 
       <p className='avert-impacts-button'>
-        <a className={`avert-button ${disabledClass}`} href=''
-           onClick={(e) => {
-             e.preventDefault();
-             // if valid prop (state) is true, calculate profile
-             valid && onCalculateProfile();
-           }}
+        <a className={`avert-button${disabledClass}`}
+          href=''
+          onClick={(event) => {
+            event.preventDefault();
+            // if valid prop (state) is true, calculate profile
+            valid && onCalculateProfile();
+          }}
         >
-          { EereStatusEnum[eereStatus].text }
+          {eereButtonOptions[eereStatus]}
         </a>
       </p>
     </div>
   );
 };
-
-// EEREInputs.propTypes = {
-//   // errors: PropTypes.string,
-//   // valid: PropTypes.string,
-//   // topHours: PropTypes.string,
-//   // reduction: PropTypes.string,
-//   // annualGwh: PropTypes.string,
-//   // constantMwh: PropTypes.string,
-//   // capacity: PropTypes.string,
-//   // utilitySolar: PropTypes.string,
-//   // rooftopSolar: PropTypes.string,
-//   limits: PropTypes.object,
-//   onTopHoursChange: PropTypes.func,
-//   onReductionChange: PropTypes.func,
-//   onAnnualGwhChange: PropTypes.func,
-//   onConstantMwChange: PropTypes.func,
-//   onWindCapacityChange: PropTypes.func,
-//   onUtilitySolarChange: PropTypes.func,
-//   onRooftopSolarChange: PropTypes.func,
-//
-//   eereStatus: PropTypes.string.isRequired,
-//   onCalculateProfile: PropTypes.func.isRequired,
-// };
 
 export default EEREInputs;

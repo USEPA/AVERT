@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 // components
-import EEREInputField from '../../components/EEREInputField';
-// action creators
+import EEREInputField from './index.js';
+// actions
 import { calculateEereProfile } from 'app/actions';
 
 const mapStateToProps = (state) => ({
@@ -14,9 +14,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-const EEREInputFieldContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(EEREInputField);
-
-export default EEREInputFieldContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(EEREInputField);

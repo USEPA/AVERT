@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 // components
-import EEREChart from '../../components/EEREChart';
+import EEREChart from './index.js';
 
 const mapStateToProps = (state) => ({
   softValid: state.eere.soft_valid,
@@ -9,13 +9,9 @@ const mapStateToProps = (state) => ({
   hardValid: state.eere.hard_valid,
   hardTopExceedanceTimestamp: state.eere.hard_top_exceedance_timestamp,
   hardTopExceedance: state.eere.hard_top_exceedance_value,
-
   hourlyEere: state.eere.hourlyEere,
 });
 
-const EEREChartContainer = connect(
-  mapStateToProps,
-  null
-)(EEREChart);
+const mapDispatchToProps = null;
 
-export default EEREChartContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(EEREChart);

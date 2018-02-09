@@ -1,8 +1,12 @@
 import { connect } from 'react-redux';
 // components
-import Tooltip from '../../components/Tooltip';
-// action creators
-import { toggleModalOverlay, storeActiveModal, resetActiveModal } from 'app/redux/panel';
+import Tooltip from './index.js';
+// actions
+import {
+  toggleModalOverlay,
+  storeActiveModal,
+  resetActiveModal,
+} from 'app/redux/panel';
 
 const mapStateToProps = (state) => ({
   activeModalId: state.panel.activeModalId,
@@ -21,9 +25,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-const TooltipContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Tooltip);
-
-export default TooltipContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(Tooltip);

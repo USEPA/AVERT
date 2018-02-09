@@ -6,15 +6,14 @@ import LoadingIcon from 'app/components/LoadingIcon';
 import Panel from 'app/components/Panel';
 import PanelBody from 'app/components/PanelBody';
 import PanelFooter from 'app/components/PanelFooter/container.js';
+import RegionList from 'app/components/RegionList/container.js';
 import RegionMap from 'app/components/RegionMap';
+import EEREInputs from 'app/components/EEREInputs/container.js';
+import EEREChart from 'app/components/EEREChart/container.js';
+import DisplacementsTable from '../../containers/DisplacementsTableContainer';
+import EmissionsTable from '../../containers/EmissionsTableContainer';
+import EmissionsChart from '../../containers/EmissionsChartContainer';
 import DataDownload from 'app/components/DataDownload';
-// containers
-import RegionListContainer from '../../containers/RegionListContainer';
-import EEREInputsContainer from '../../containers/EEREInputsContainer';
-import EEREChartContainer from '../../containers/EEREChartContainer';
-import DisplacementsTableContainer from '../../containers/DisplacementsTableContainer';
-import EmissionsTableContainer from '../../containers/EmissionsTableContainer';
-import EmissionsChartContainer from '../../containers/EmissionsChartContainer';
 // styles
 import './styles.css';
 
@@ -94,7 +93,7 @@ const StepPanels = (props: Props) => {
         <PanelBody heading='Select Region'>
           <p>AVERT splits the contiguous 48 states into 10 regions. AVERT regions are aggregated based on EPA’s <a href='https://www.epa.gov/energy/egrid'>eGRID subregions</a>. Select a region for analysis by either using the dropdown menu or clicking the map. Selecting a region loads the power plants operating within each region and region-specific wind and solar capacity data.</p>
 
-          <RegionListContainer />
+          <RegionList />
 
           <RegionMap />
 
@@ -111,9 +110,9 @@ const StepPanels = (props: Props) => {
 
           <p className="avert-small-text">Five types of programs are listed below (A through E). You can enter impacts for any or all types of programs, in any combination. AVERT will calculate cumulative impacts.</p>
 
-          <EEREInputsContainer />
+          <EEREInputs />
 
-          <EEREChartContainer heading='EE/RE profile based on values entered:'/>
+          <EEREChart heading='EE/RE profile based on values entered:'/>
         </PanelBody>
 
         <PanelFooter prevButtonText='Back to Region' nextButtonText='Get Results'/>
@@ -124,11 +123,11 @@ const StepPanels = (props: Props) => {
         <PanelBody heading='Results: Avoided Regional, State, and County-Level Emissions'>
           {ValidationWarning}
 
-          <DisplacementsTableContainer heading='Annual Regional Displacements'/>
+          <DisplacementsTable heading='Annual Regional Displacements'/>
 
-          <EmissionsTableContainer heading='Annual State Emission Changes'/>
+          <EmissionsTable heading='Annual State Emission Changes'/>
 
-          <EmissionsChartContainer heading='Monthly Emission Changes'/>
+          <EmissionsChart heading='Monthly Emission Changes'/>
 
           <DataDownload heading='Data Download' onClick={() => props.onClickDataDownload()}/>
         </PanelBody>

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 // components
-import RegionList from '../../components/RegionList';
-// action creators
+import RegionList from './index.js';
+// actions
 import { selectRegion } from 'app/actions';
 
 const mapStateToProps = (state) => ({
@@ -10,13 +10,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onSelectChange: (regionId) => {
-    dispatch(selectRegion(Number(regionId)));
+    dispatch(selectRegion(regionId));
   },
 });
 
-const RegionListContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RegionList);
-
-export default RegionListContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(RegionList);
