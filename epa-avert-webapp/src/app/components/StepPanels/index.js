@@ -10,7 +10,7 @@ import RegionList from 'app/components/RegionList/container.js';
 import RegionMap from 'app/components/RegionMap';
 import EEREInputs from 'app/components/EEREInputs/container.js';
 import EEREChart from 'app/components/EEREChart/container.js';
-import DisplacementsTable from '../../containers/DisplacementsTableContainer';
+import DisplacementsTable from 'app/components/DisplacementsTable/container.js';
 import EmissionsTable from '../../containers/EmissionsTableContainer';
 import EmissionsChart from '../../containers/EmissionsChartContainer';
 import DataDownload from 'app/components/DataDownload';

@@ -1,5 +1,3 @@
-import math from 'mathjs';
-
 // engines
 import Avert from 'app/engines/Avert';
 import EereProfile from 'app/engines/EereProfile';
@@ -347,7 +345,6 @@ export const RECEIVE_DISPLACEMENT = 'avert/core/RECEIVE_DISPLACEMENT';
 const receiveDisplacement = () => {
   return (dispatch, getState) => {
     const { generation, so2, nox, co2, pm25 } = getState();
-    const { round, divide } = math;
 
     // recursively call function if data is still fetching
     if (generation.isFetching || so2.isFetching || nox.isFetching || co2.isFetching || pm25.isFetching) {
@@ -355,29 +352,49 @@ const receiveDisplacement = () => {
     }
 
     const displacementData = {
-      generation: generation.data,
+      generation: {
+        original: generation.data.original,
+        post: generation.data.post,
+        impact: generation.data.impact,
+      },
       totalEmissions: {
-        so2: so2.data,
-        nox: nox.data,
-        co2: co2.data,
-        pm25: pm25.data,
+        so2: {
+          original: so2.data.original,
+          post: so2.data.post,
+          impact: so2.data.impact,
+        },
+        nox: {
+          original: nox.data.original,
+          post: nox.data.post,
+          impact: nox.data.impact,
+        },
+        co2: {
+          original: co2.data.original,
+          post: co2.data.post,
+          impact: co2.data.impact,
+        },
+        pm25: {
+          original: pm25.data.original,
+          post: pm25.data.post,
+          impact: pm25.data.impact,
+        },
       },
       emissionRates: {
         so2: {
-          original: round(divide(so2.data.original, generation.data.original), 2),
-          post: round(divide(so2.data.post, generation.data.post), 2),
+          original: (so2.data.original / generation.data.original).toFixed(2),
+          post: (so2.data.post / generation.data.post).toFixed(2),
         },
         nox: {
-          original: round(divide(nox.data.original, generation.data.original), 2),
-          post: round(divide(nox.data.post, generation.data.post), 2),
+          original: (nox.data.original / generation.data.original).toFixed(2),
+          post: (nox.data.post / generation.data.post).toFixed(2),
         },
         co2: {
-          original: round(divide(co2.data.original, generation.data.original), 2),
-          post: round(divide(co2.data.post, generation.data.post), 2),
+          original: (co2.data.original / generation.data.original).toFixed(2),
+          post: (co2.data.post / generation.data.post).toFixed(2),
         },
         pm25: {
-          original: round(divide(pm25.data.original, generation.data.original), 2),
-          post: round(divide(pm25.data.post, generation.data.post), 2),
+          original: (pm25.data.original / generation.data.original).toFixed(2),
+          post: (pm25.data.post / generation.data.post).toFixed(2),
         },
       },
     };

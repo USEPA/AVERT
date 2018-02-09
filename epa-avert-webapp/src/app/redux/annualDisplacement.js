@@ -6,27 +6,33 @@ import {
 } from 'app/actions';
 
 // reducer
-const format = {
+const origPostImpact = {
   original: '',
   post: '',
   impact: '',
 };
 
+const origPost = {
+  original: '',
+  post: '',
+};
+
+
 const initialState = {
   status: 'select_region',
   results: {
-    generation: format,
+    generation: origPostImpact,
     totalEmissions: {
-      so2: format,
-      nox: format,
-      co2: format,
-      pm25: format,
+      so2: origPostImpact,
+      nox: origPostImpact,
+      co2: origPostImpact,
+      pm25: origPostImpact,
     },
     emissionRates: {
-      so2: format,
-      nox: format,
-      co2: format,
-      pm25: format,
+      so2: origPost,
+      nox: origPost,
+      co2: origPost,
+      pm25: origPost,
     },
   },
 };
