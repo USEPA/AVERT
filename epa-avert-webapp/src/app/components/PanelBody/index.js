@@ -1,17 +1,21 @@
+// @flow
+
 import React from 'react';
 // styles
 import './styles.css';
+// types
+import type { Node } from 'react';
 
-const PanelBody = (props) => (
+type Props = {
+  heading: string,
+  children: Node,
+};
+
+const PanelBody = (props: Props) => (
   <div className='avert-step-body'>
-    <h2 className='avert-heading-two'>{ props.heading }</h2>
-    { props.children }
+    <h2 className='avert-heading-two'>{props.heading}</h2>
+    {props.children}
   </div>
 );
-
-// PanelBody.propTypes = {
-//   heading: PropTypes.string.isRequired,
-//   children: PropTypes.node,
-// };
 
 export default PanelBody;

@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 // styles
 import './styles.css';

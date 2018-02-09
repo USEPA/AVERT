@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 // components
-import PanelFooter from '../../components/PanelFooter';
-// action creators
+import PanelFooter from './index.js';
+// actions
 import { setActiveStep } from 'app/redux/panel';
 import {
   fetchRegion,
@@ -35,9 +35,4 @@ const mapDispatchToProps = (dispatch) => ({
   }
 });
 
-const PanelFooterContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PanelFooter);
-
-export default PanelFooterContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(PanelFooter);
