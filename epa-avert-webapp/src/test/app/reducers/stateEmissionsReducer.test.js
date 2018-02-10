@@ -6,18 +6,27 @@ describe('stateEmissionsReducer', () => {
     expect(stateEmissionsReducer(undefined, {}))
     .toEqual({
       status: 'select_region',
-      results: [],
+      results: {
+        states: [],
+        data: [],
+      },
     });
   });
 
   it('should handle COMPLETE_STATE_EMISSIONS', () => {
     expect(stateEmissionsReducer(undefined, {
       type: COMPLETE_STATE_EMISSIONS,
-      data: 'Foo',
+      data: {
+        states: ['Foo'],
+        data: ['Bar'],
+      },
     }))
     .toEqual({
       status: 'complete',
-      results: 'Foo',
+      results: {
+        states: ['Foo'],
+        data: ['Bar'],
+      },
     })
   });
 });
