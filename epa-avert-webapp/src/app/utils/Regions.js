@@ -1,4 +1,27 @@
-const Regions = {
+// @flow
+
+type Region = {|
+  id: number,
+  slug: string,
+  label: string,
+  original_slug: string,
+  grid_loss: number,
+|};
+
+type RegionsMap = {|
+  CALIFORNIA: Region,
+  GREAT_LAKES_MID_ATLANTIC: Region,
+  NORTHEAST: Region,
+  NORTHWEST: Region,
+  ROCKY_MOUNTAINS: Region,
+  LOWER_MIDWEST: Region,
+  SOUTHEAST: Region,
+  SOUTHWEST: Region,
+  TEXAS: Region,
+  UPPER_MIDWEST: Region,
+|};
+
+const Regions: RegionsMap = {
   CALIFORNIA: {
     id: 1,
     slug: 'CA',

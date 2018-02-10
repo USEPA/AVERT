@@ -1,46 +1,51 @@
+// @flow
+
 import React from 'react';
 // styles
 import './styles.css';
 
-const Tooltip = (props) => {
-  const activeState = props.activeModalId === props.id ? true : false;
-  const modalClosing = props.closingModalId === props.id ? true : false;
+type Props = {
+  id: number,
+  children: string,
+  // redux connected props
+  activeModalId: number,
+  closingModalId: number,
+  onStoreActiveModal: (number) => void,
+  onResetActiveModal: (number) => void,
+  onToggleModalOverlay: () => void,
+};
+
+const Tooltip = (props: Props) => {
+  const activeState = props.activeModalId === props.id;
+  const modalClosing = props.closingModalId === props.id;
 
   return (
     <span>
       <a href='' className='avert-modal-link'
-        onClick={(e) => {
-          e.preventDefault();
+        onClick={(event) => {
+          event.preventDefault();
           props.onStoreActiveModal(props.id);
           props.onToggleModalOverlay();
         }}
       >info</a>
 
       <span className='avert-modal'
-        data-modal-id={ props.id }
-        data-active={ activeState }
-        data-closing={ modalClosing }
+        data-modal-id={props.id}
+        data-active={activeState}
+        data-closing={modalClosing}
       >
         <a href='' className='avert-modal-close'
-          onClick={(e) => {
-            e.preventDefault();
+          onClick={(event) => {
+            event.preventDefault();
             props.onResetActiveModal(props.id);
             props.onToggleModalOverlay();
           }}
         >×</a>
 
-        { props.children }
+        {props.children}
       </span>
     </span>
   );
 };
-
-// Tooltip.propTypes = {
-//   children: PropTypes.node,
-//   onStoreActiveModal: PropTypes.func.isRequired,
-//   onToggleModalOverlay: PropTypes.func.isRequired,
-//   activeModalId: PropTypes.number.isRequired,
-//   closingModalId: PropTypes.number.isRequired,
-// };
 
 export default Tooltip;

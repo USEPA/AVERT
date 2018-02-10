@@ -1,4 +1,8 @@
-const StatesEnum = {
+// @flow
+
+type StatesMap = { [string]: string };
+
+const States: StatesMap = {
   AK: 'Alaska',
   AL: 'Alabama',
   AR: 'Arkansas',
@@ -69,4 +73,4 @@ const StatesEnum = {
   WY: 'Wyoming',
 }
 
-export default StatesEnum;
+export default States;

@@ -1,58 +1,80 @@
+// @flow
 /* eslint-disable import/first */
 
 import React from 'react';
 import Highcharts from 'react-highcharts';
 // utilities
-import Regions from '../../utils/Regions';
-import { StatusEnum } from '../../utils/StatusEnum';
-import { AggregationEnum } from '../../utils/AggregationEnum';
-import { MonthlyUnitEnum } from '../../utils/MonthlyUnitEnum';
-import StatesEnum from '../../utils/StatesEnum';;
+import Regions from 'app/utils/Regions';
+import States from 'app/utils/States';;
 // styles
 import './styles.css';
 
-const EmissionsChart = ({
-  heading,
-  selected_region,
-  selected_state,
-  selectState,
-  available_states,
-  selected_county,
-  selectCounty,
-  available_counties,
-  aggregation,
-  onAggregationChange,
-  unit,
-  onUnitChange,
-  output,
-  monthly_status,
-}) => {
+type Props = {
+  heading: string,
+  // redux connected props
+  monthlyStatus: string,
+  output: {
+    so2: Array<number>,
+    nox: Array<number>,
+    co2: Array<number>,
+    pm25: Array<number>,
+  },
+  aggregation: 'region' | 'state' | 'county',
+  unit: 'emission' | 'percent',
+  selectedRegionId: number,
+  availableStates: Array<string>,
+  availableCounties: Array<string>,
+  selectedState: string,
+  selectedCounty: string,
+  onAggregationChange: (string) => void,
+  onUnitChange: (string) => void,
+  selectState: (string) => void,
+  selectCounty: (string) => void,
+};
+
+const EmissionsChart = (props: Props) => {
+  const {
+    heading,
+    monthlyStatus,
+    output,
+    aggregation,
+    unit,
+    selectedRegionId,
+    availableStates,
+    availableCounties,
+    selectedState,
+    selectedCounty,
+    onAggregationChange,
+    onUnitChange,
+    selectState,
+    selectCounty,
+  } = props;
+
   // rendering is ready when output prop has data
-  const readyToRender = monthly_status === StatusEnum.DONE;
+  const readyToRender = monthlyStatus === 'complete';
 
   // callback for after highcharts chart renders
   const afterRender = (chart) => {
     // as this entire react app is ultimately served in an iframe on another page,
     // this document has a click handler that sends document's height to other window,
     // which can then set the embedded iframe's height (see public/post-message.js)
+    //$FlowFixMe: surpressing Flow error
     document.querySelector('html').click();
   };
 
-  let aggregationFilter = null;
+  let AggregationFilter;
   if (readyToRender) {
-    aggregationFilter = (
+    AggregationFilter = (
       <div className='avert-inline-select' id='geography-groups'>
-        <p>{'Select level of aggregation:'}</p>
+        <p>Select level of aggregation:</p>
 
         <label>
           <input
             type='radio'
             name='aggregation'
-            value={ AggregationEnum.REGION }
-            checked={ aggregation === AggregationEnum.REGION }
-            onChange={(e) => {
-              onAggregationChange(e.target.value);
-            }}
+            value={'region'}
+            checked={aggregation === 'region'}
+            onChange={(e) => onAggregationChange(e.target.value)}
           />
           Region
         </label>
@@ -61,11 +83,11 @@ const EmissionsChart = ({
           <input
             type='radio'
             name='aggregation'
-            value={ AggregationEnum.STATE }
-            checked={ aggregation === AggregationEnum.STATE }
-            onChange={(e) => {
-              onAggregationChange(e.target.value);
-              if (selected_state) { selectState(selected_state) }
+            value={'state'}
+            checked={aggregation === 'state'}
+            onChange={(event) => {
+              onAggregationChange(event.target.value);
+              if (selectedState) selectState(selectedState);
             }}
           />
           State
@@ -75,11 +97,11 @@ const EmissionsChart = ({
           <input
             type='radio'
             name='aggregation'
-            value={ AggregationEnum.COUNTY }
-            checked={ aggregation === AggregationEnum.COUNTY }
-            onChange={(e) => {
-              onAggregationChange(e.target.value);
-              if (selected_county) { selectCounty(selected_county) }
+            value={'county'}
+            checked={aggregation === 'county'}
+            onChange={(event) => {
+              onAggregationChange(event.target.value);
+              if (selectedCounty) selectCounty(selectedCounty);
             }}
           />
           County
@@ -88,64 +110,64 @@ const EmissionsChart = ({
     );
   }
 
-  let stateSelector = null;
-  if (aggregation === AggregationEnum.STATE || aggregation === AggregationEnum.COUNTY) {
-    stateSelector = (
+  let StateSelector;
+  if (aggregation === 'state' || aggregation === 'county') {
+    StateSelector = (
       <div className='avert-select-group'>
         <select
-          value={ selected_state }
-          onChange={(e) => selectState(e.target.value)}
+          value={selectedState}
+          onChange={(event) => selectState(event.target.value)}
         >
           <option value='' disabled>Select State</option>
 
-          {available_states.map((state, index) => {
-            return <option key={ index } value={ state }>{ StatesEnum[state] }</option>
-          })}
+          {availableStates.map((state, index) => (
+            <option key={index} value={state}>{States[state]}</option>
+          ))}
         </select>
       </div>
     );
   }
 
-  let countySelector = null;
-  if (aggregation === AggregationEnum.COUNTY) {
-    countySelector = (
+  let CountySelector;
+  if (aggregation === 'county') {
+    CountySelector = (
       <div className='avert-select-group'>
         <select
-          value={ selected_county }
-          onChange={(e) => selectCounty(e.target.value)}
+          value={selectedCounty}
+          onChange={(event) => selectCounty(event.target.value)}
         >
           <option value='' disabled>Select County</option>
 
-          {available_counties.map((county, index) => {
-            return <option key={ index } value={ county }>{ county }</option>
-          })}
+          {availableCounties.map((county, index) => (
+            <option key={index} value={county}>{county}</option>
+          ))}
         </select>
       </div>
     )
   }
 
-  let geographyFilter = null;
+  let GeographyFilter;
   if (readyToRender) {
-    geographyFilter = (
+    GeographyFilter = (
       <div className='avert-geography-filter'>
-        { stateSelector }
-        { countySelector }
+        {StateSelector}
+        {CountySelector}
       </div>
     );
   }
 
-  let unitFilter = null;
+  let UnitFilter;
   if (readyToRender) {
-    unitFilter = (
+    UnitFilter = (
       <div className='avert-inline-select'>
-        <p>{'Select units:'}</p>
+        <p>Select units:</p>
 
         <label>
           <input
             type='radio'
             name='unit'
-            value={MonthlyUnitEnum.EMISSION}
-            checked={unit === MonthlyUnitEnum.EMISSION}
+            value={'emission'}
+            checked={unit === 'emission'}
             onChange={(e) => onUnitChange(e.target.value)}
           />
           Emission changes (lbs or tons)
@@ -155,8 +177,8 @@ const EmissionsChart = ({
           <input
             type='radio'
             name='unit'
-            value={MonthlyUnitEnum.PERCENT_CHANGE}
-            checked={unit === MonthlyUnitEnum.PERCENT_CHANGE}
+            value={'percent'}
+            checked={unit === 'percent'}
             onChange={(e) => onUnitChange(e.target.value)}
           />
           Percent change
@@ -166,7 +188,7 @@ const EmissionsChart = ({
   }
 
   // charts config
-  const shared_config = {
+  const commonConfig = {
     chart: {
       type: 'column',
       height: 240,
@@ -205,38 +227,44 @@ const EmissionsChart = ({
     },
   };
 
-  const regionName = (selected_region === 0)
-    ? 'Unspecified'
-    : Object.values(Regions).find(r => r.id === selected_region).label;
-
   let location;
-  if (aggregation === AggregationEnum.REGION) {
+  if (aggregation === 'region') {
+    //$FlowFixMe: https://github.com/facebook/flow/issues/2221
+    const region = Object.values(Regions).find(r => r.id === selectedRegionId);
+    //$FlowFixMe: https://github.com/facebook/flow/issues/2221
+    const regionName = (region) ? region.label : 'Unspecified';
     location = `${regionName} Region`;
   }
-  if (aggregation === AggregationEnum.STATE) {
-    location = (selected_state === '')
+  if (aggregation === 'state') {
+    location = (selectedState === '')
       ? ''
-      : `${StatesEnum[selected_state]}`;
+      : `${States[selectedState]}`;
   }
-  if (aggregation === AggregationEnum.COUNTY) {
+  if (aggregation === 'county') {
     // counties are called parishes in Louisiana
-    const county = StatesEnum[selected_state] === 'Louisiana' ? 'Parish' : 'County';
-    location = (selected_county === '')
+    const county = (selectedState === 'LA') ? 'Parish' : 'County';
+    location = (selectedCounty === '')
       ? ''
-      : `${selected_county} ${county}, ${StatesEnum[selected_state]}`;
+      : `${selectedCounty} ${county}, ${States[selectedState]}`;
   }
 
-  const titleText = (chemical) => `Change in ${chemical} Emissions: ${location}`;
+  const formatTitle = (chemical) => (
+    `<tspan class='avert-chart-title'>Change in ${chemical} Emissions: ${location}</tspan>`
+  );
 
-  const so2_config = {
-    ...shared_config,
+  const formatYAxis = (emissionsUnit) => (
+    (unit === 'percent') ? 'Percent change' : `Emission changes (${emissionsUnit})`
+  );
+
+  const so2Config = {
+    ...commonConfig,
     title: {
-      text: `<tspan class='avert-chart-title'>${titleText('SO<sub>2</sub>')}</tspan>`,
+      text: formatTitle('SO<sub>2</sub>'),
       useHTML: true,
     },
     yAxis: {
       title: {
-        text: unit === MonthlyUnitEnum.PERCENT_CHANGE ? 'Percent change' : 'Emission changes (lbs)',
+        text: formatYAxis('lbs'),
       },
     },
     series: [{
@@ -246,99 +274,82 @@ const EmissionsChart = ({
     }],
   };
 
-  const nox_config = {
-    ...shared_config,
+  const noxConfig = {
+    ...commonConfig,
     title: {
-      text: `<tspan class='avert-chart-title'>${titleText('NO<sub>X</sub>')}</tspan>`,
+      text: formatTitle('NO<sub>X</sub>'),
       useHTML: true,
     },
     yAxis: {
       title: {
-        text: unit === MonthlyUnitEnum.PERCENT_CHANGE ? 'Percent change' : 'Emission changes (lbs)',
+        text: formatYAxis('lbs'),
       },
     },
     series: [{
       name: 'NOₓ',
       data: output.nox,
       color: '#ed561b',
-    }]
+    }],
   };
 
-  const co2_config = {
-    ...shared_config,
+  const co2Config = {
+    ...commonConfig,
     title: {
-      text: `<tspan class='avert-chart-title'>${titleText('CO<sub>2</sub>')}</tspan>`,
+      text: formatTitle('CO<sub>2</sub>'),
       useHTML: true,
     },
     yAxis: {
       title: {
-        text: unit === MonthlyUnitEnum.PERCENT_CHANGE ? 'Percent change' : 'Emission changes (tons)',
+        text: formatYAxis('tons'),
       },
     },
     series: [{
       name: 'CO₂',
       data: output.co2,
       color: '#50b432',
-    }]
+    }],
   };
 
-  const pm25_config = {
-    ...shared_config,
+  const pm25Config = {
+    ...commonConfig,
     title: {
-      text: `<tspan class='avert-chart-title'>${titleText('PM<sub>2.5</sub>')}</tspan>`,
+      text: formatTitle('PM<sub>2.5</sub>'),
       useHTML: true,
     },
     yAxis: {
       title: {
-        text: unit === MonthlyUnitEnum.PERCENT_CHANGE ? 'Percent change' : 'Emission changes (lbs)',
+        text: formatYAxis('lbs'),
       },
     },
     series: [{
       name: 'PM₂₅',
       data: output.pm25,
       color: '#665683',
-    }]
+    }],
   };
 
-  let chart = null;
+  let Charts;
   if (readyToRender) {
-    chart = (
+    Charts = (
       <div className="avert-emissions-charts">
-        <Highcharts config={so2_config} callback={afterRender} />
-        <Highcharts config={nox_config} callback={afterRender} />
-        <Highcharts config={co2_config} callback={afterRender} />
-        <Highcharts config={pm25_config} callback={afterRender} />
+        <Highcharts config={so2Config} callback={afterRender} />
+        <Highcharts config={noxConfig} callback={afterRender} />
+        <Highcharts config={co2Config} callback={afterRender} />
+        <Highcharts config={pm25Config} callback={afterRender} />
       </div>
     );
   }
 
   return (
     <div className='avert-emissions-chart'>
-      <h3 className='avert-heading-three'>{ heading }</h3>
+      <h3 className='avert-heading-three'>{heading}</h3>
 
-      { aggregationFilter }
-      { geographyFilter }
-      { unitFilter }
-
-      { chart }
+      {AggregationFilter}
+      {GeographyFilter}
+      {UnitFilter}
+      {Charts}
     </div>
   );
 };
-
-// EmissionsChart.propTypes = {
-//   heading: PropTypes.string.isRequired,
-//   //selected_state: PropTypes.string.isRequired,
-//   selectState: PropTypes.func.isRequired,
-//   available_states: PropTypes.array.isRequired,
-//   //selected_county: PropTypes.string.isRequired,
-//   selectCounty: PropTypes.func.isRequired,
-//   available_counties: PropTypes.array.isRequired,
-//   aggregation: PropTypes.string.isRequired,
-//   onAggregationChange: PropTypes.func.isRequired,
-//   unit: PropTypes.string.isRequired,
-//   onUnitChange: PropTypes.func.isRequired,
-//   output: PropTypes.object.isRequired,
-//   //monthly_status: PropTypes.string.isRequired,
-// };
 
 export default EmissionsChart;

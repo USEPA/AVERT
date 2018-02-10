@@ -146,9 +146,4 @@ const DisplacementsTable = (props: Props) => {
   );
 };
 
-// DisplacementsTable.propTypes = {
-//   heading: PropTypes.string.isRequired,
-//   //annualStatus: PropTypes.string.isRequired,
-// };
-
 export default DisplacementsTable;

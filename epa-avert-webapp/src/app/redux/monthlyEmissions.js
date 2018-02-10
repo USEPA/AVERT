@@ -1,9 +1,6 @@
 import _ from 'lodash';
 
-import { setStructure } from 'app/utils/DataDownloadHelper'; 
-import { StatusEnum } from 'app/utils/StatusEnum';
-import { AggregationEnum } from 'app/utils/AggregationEnum';
-import { MonthlyUnitEnum } from 'app/utils/MonthlyUnitEnum';
+import { setStructure } from 'app/utils/DataDownloadHelper';
 
 // actions
 import {
@@ -22,10 +19,10 @@ import {
 // reducer
 const initialState = {
   status: 'select_region',
-  selectedAggregation: AggregationEnum.REGION,
+  selectedAggregation: 'region',
   selectedState: '',
   selectedCounty: '',
-  selectedUnit: MonthlyUnitEnum.EMISSION,
+  selectedUnit: 'emission',
   rawData: {},
   emissionsRegionSo2: [],
   emissionsRegionNox: [],
@@ -77,7 +74,7 @@ export default function reducer(state = initialState, action) {
     case COMPLETE_MONTHLY_EMISSIONS:
       return {
         ...state,
-        status: StatusEnum.DONE,
+        status: 'complete',
         rawData: action.data,
         emissionsRegionSo2: action.data.emissions.so2.regional,
         emissionsRegionNox: action.data.emissions.nox.regional,
@@ -134,26 +131,23 @@ export default function reducer(state = initialState, action) {
       };
 
     case RENDER_MONTHLY_EMISSIONS_CHARTS:
-      const { selectedAggregation, selectedState, selectedCounty } = state;
-
-      let unit = (state.selectedUnit === MonthlyUnitEnum.PERCENT_CHANGE)
-        ? 'percentages'
-        : 'emissions';
+      const { selectedUnit, selectedAggregation, selectedState, selectedCounty } = state;
 
       const pollutants = ['So2', 'Nox', 'Co2', 'Pm25'];
+      const unit = (selectedUnit === 'percent') ? 'percentages' : 'emissions';
 
       let emissionData = {};
-      if (selectedAggregation === AggregationEnum.REGION) {
+      if (selectedAggregation === 'region') {
         pollutants.forEach((p) => {
           emissionData[p.toLowerCase()] = _.values(state[`${unit}Region${p}`]);
         });
       }
-      if (selectedAggregation === AggregationEnum.STATE) {
+      if (selectedAggregation === 'state') {
         pollutants.forEach((p) => {
           emissionData[p.toLowerCase()] = _.values(state[`${unit}States${p}`][selectedState]);
         });
       }
-      if (selectedAggregation === AggregationEnum.COUNTY) {
+      if (selectedAggregation === 'county') {
         pollutants.forEach((p) => {
           emissionData[p.toLowerCase()] = _.values(state[`${unit}Counties${p}`][selectedState][selectedCounty]);
         });
