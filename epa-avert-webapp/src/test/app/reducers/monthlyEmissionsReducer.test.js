@@ -3,9 +3,6 @@ import thunk from 'redux-thunk';
 import _ from 'lodash';
 
 import monthlyEmissionsReducer from 'app/redux/monthlyEmissions';
-import { MonthlyUnitEnum } from 'app/utils/MonthlyUnitEnum';
-import { StatusEnum } from 'app/utils/StatusEnum';
-import { AggregationEnum } from 'app/utils/AggregationEnum';
 import {
   COMPLETE_MONTHLY_EMISSIONS,
   SELECT_MONTHLY_STATE,
@@ -28,10 +25,10 @@ describe('monthlyEmissions', () => {
       expect(monthlyEmissionsReducer(undefined, {}))
       .toEqual({
         status: 'select_region',
-        selectedAggregation: AggregationEnum.REGION,
+        selectedAggregation: 'region',
         selectedState: '',
         selectedCounty: '',
-        selectedUnit: MonthlyUnitEnum.EMISSION,
+        selectedUnit: 'emission',
         rawData: {},
         emissionsRegionSo2: [],
         emissionsRegionNox: [],
@@ -97,7 +94,7 @@ describe('monthlyEmissions', () => {
           data: data,
         }))
         .toEqual({
-          status: StatusEnum.DONE,
+          status: 'complete',
           rawData: data,
           emissionsRegionSo2: data.emissions.so2.regional,
           emissionsRegionNox: data.emissions.nox.regional,
@@ -157,10 +154,10 @@ describe('monthlyEmissions', () => {
       expect(
         monthlyEmissionsReducer([], {
           type: SELECT_MONTHLY_UNIT,
-          unit: MonthlyUnitEnum.PERCENT_CHANGE,
+          unit: 'percent',
         }))
         .toEqual({
-          selectedUnit: MonthlyUnitEnum.PERCENT_CHANGE,
+          selectedUnit: 'percent',
         });
     });
   });
@@ -170,7 +167,7 @@ describe('monthlyEmissions', () => {
       const sampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const monthlyEmissions = {
         selectedAggregation: 'region',
-        selectedUnit: MonthlyUnitEnum.EMISSION,
+        selectedUnit: 'emission',
         emissionsRegionSo2: _.values(sampleData.so2),
         emissionsRegionNox: _.values(sampleData.nox),
         emissionsRegionCo2: _.values(sampleData.co2),
@@ -187,7 +184,7 @@ describe('monthlyEmissions', () => {
       const sampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const monthlyEmissions = {
         selectedAggregation: 'region',
-        selectedUnit: MonthlyUnitEnum.PERCENT_CHANGE,
+        selectedUnit: 'percent',
         emissionsRegionSo2: _.values(badSampleData.so2),
         emissionsRegionNox: _.values(badSampleData.nox),
         emissionsRegionCo2: _.values(badSampleData.co2),
@@ -207,7 +204,7 @@ describe('monthlyEmissions', () => {
       const goodSampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const monthlyEmissions = {
         selectedAggregation: 'state',
-        selectedUnit: MonthlyUnitEnum.EMISSION,
+        selectedUnit: 'emission',
         newSelectedState: 'Virginia',
         emissionsRegionSo2: _.values(badSampleData.so2),
         emissionsRegionNox: _.values(badSampleData.nox),
@@ -240,7 +237,7 @@ describe('monthlyEmissions', () => {
       const goodSampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const monthlyEmissions = {
         selectedAggregation: 'state',
-        selectedUnit: MonthlyUnitEnum.PERCENT_CHANGE,
+        selectedUnit: 'percent',
         newSelectedState: 'Virginia',
         newEmissionsStateSo2: { 'Virginia': _.values(badSampleData.so2) },
         newEmissionsStateNox: { 'Virginia': _.values(badSampleData.nox) },
@@ -274,7 +271,7 @@ describe('monthlyEmissions', () => {
       const goodSampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const monthlyEmissions = {
         selectedAggregation: 'county',
-        selectedUnit: MonthlyUnitEnum.EMISSION,
+        selectedUnit: 'emission',
         newSelectedState: 'Virginia',
         newSelectedCounty: 'Arlington County',
         emissionsRegionSo2: _.values(badSampleData.so2),
@@ -322,7 +319,7 @@ describe('monthlyEmissions', () => {
       const goodSampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const monthlyEmissions = {
         selectedAggregation: 'county',
-        selectedUnit: MonthlyUnitEnum.PERCENT_CHANGE,
+        selectedUnit: 'percent',
         newSelectedState: 'Virginia',
         newSelectedCounty: 'Arlington County',
         newEmissionsCountySo2: { 'Virginia': { 'Arlington County': _.values(badSampleData.so2) } },
@@ -355,7 +352,7 @@ describe('monthlyEmissions', () => {
       const sampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const store = mockStore({ monthlyEmissions: {
         selectedAggregation: 'region',
-        selectedUnit: MonthlyUnitEnum.EMISSION,
+        selectedUnit: 'emission',
         emissionsRegionSo2: _.values(sampleData.so2),
         emissionsRegionNox: _.values(sampleData.nox),
         emissionsRegionCo2: _.values(sampleData.co2),
@@ -375,7 +372,7 @@ describe('monthlyEmissions', () => {
       const sampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const store = mockStore({ monthlyEmissions: {
         selectedAggregation: 'region',
-        selectedUnit: MonthlyUnitEnum.EMISSION,
+        selectedUnit: 'emission',
         emissionsRegionSo2: _.values(sampleData.so2),
         emissionsRegionNox: _.values(sampleData.nox),
         emissionsRegionCo2: _.values(sampleData.co2),
@@ -393,7 +390,7 @@ describe('monthlyEmissions', () => {
       const sampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const store = mockStore({ monthlyEmissions: {
         selectedAggregation: 'region',
-        selectedUnit: MonthlyUnitEnum.EMISSION,
+        selectedUnit: 'emission',
         emissionsRegionSo2: _.values(sampleData.so2),
         emissionsRegionNox: _.values(sampleData.nox),
         emissionsRegionCo2: _.values(sampleData.co2),

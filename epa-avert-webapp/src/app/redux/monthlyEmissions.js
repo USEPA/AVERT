@@ -1,10 +1,5 @@
 import _ from 'lodash';
 
-import { setStructure } from 'app/utils/DataDownloadHelper'; 
-import { StatusEnum } from 'app/utils/StatusEnum';
-import { AggregationEnum } from 'app/utils/AggregationEnum';
-import { MonthlyUnitEnum } from 'app/utils/MonthlyUnitEnum';
-
 // actions
 import {
   SELECT_REGION,
@@ -19,13 +14,37 @@ import {
   SET_DOWNLOAD_DATA,
 } from 'app/actions';
 
+// utility function for structuring data for download file
+const setStructure = (type, emissionsOrPercentages, data, state, county) => {
+  data = Object.values(data);
+  return {
+    type: type,
+    aggregation_level: county ? 'County' : (state ? 'State' : 'Regional'),
+    state: state ? state : null,
+    county: county ? county : null,
+    emission_unit: emissionsOrPercentages,
+    january: data[0],
+    february: data[1],
+    march: data[2],
+    april: data[3],
+    may: data[4],
+    june: data[5],
+    july: data[6],
+    august: data[7],
+    september: data[8],
+    october: data[9],
+    november: data[10],
+    december: data[11],
+  }
+};
+
 // reducer
 const initialState = {
   status: 'select_region',
-  selectedAggregation: AggregationEnum.REGION,
+  selectedAggregation: 'region',
   selectedState: '',
   selectedCounty: '',
-  selectedUnit: MonthlyUnitEnum.EMISSION,
+  selectedUnit: 'emission',
   rawData: {},
   emissionsRegionSo2: [],
   emissionsRegionNox: [],
@@ -77,7 +96,7 @@ export default function reducer(state = initialState, action) {
     case COMPLETE_MONTHLY_EMISSIONS:
       return {
         ...state,
-        status: StatusEnum.DONE,
+        status: 'complete',
         rawData: action.data,
         emissionsRegionSo2: action.data.emissions.so2.regional,
         emissionsRegionNox: action.data.emissions.nox.regional,
@@ -134,26 +153,23 @@ export default function reducer(state = initialState, action) {
       };
 
     case RENDER_MONTHLY_EMISSIONS_CHARTS:
-      const { selectedAggregation, selectedState, selectedCounty } = state;
-
-      let unit = (state.selectedUnit === MonthlyUnitEnum.PERCENT_CHANGE)
-        ? 'percentages'
-        : 'emissions';
+      const { selectedUnit, selectedAggregation, selectedState, selectedCounty } = state;
 
       const pollutants = ['So2', 'Nox', 'Co2', 'Pm25'];
+      const unit = (selectedUnit === 'percent') ? 'percentages' : 'emissions';
 
       let emissionData = {};
-      if (selectedAggregation === AggregationEnum.REGION) {
+      if (selectedAggregation === 'region') {
         pollutants.forEach((p) => {
           emissionData[p.toLowerCase()] = _.values(state[`${unit}Region${p}`]);
         });
       }
-      if (selectedAggregation === AggregationEnum.STATE) {
+      if (selectedAggregation === 'state') {
         pollutants.forEach((p) => {
           emissionData[p.toLowerCase()] = _.values(state[`${unit}States${p}`][selectedState]);
         });
       }
-      if (selectedAggregation === AggregationEnum.COUNTY) {
+      if (selectedAggregation === 'county') {
         pollutants.forEach((p) => {
           emissionData[p.toLowerCase()] = _.values(state[`${unit}Counties${p}`][selectedState][selectedCounty]);
         });

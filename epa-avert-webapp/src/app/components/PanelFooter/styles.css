@@ -20,7 +20,7 @@
   display: inline-block;
   width: 0.625rem;
   height: 0.625rem;
-  background-image: url('../../../assets/icons.svg');
+  background-image: url('~app/components/App/icons.svg');
   background-size: 400px 200px;
   background-position: -36px -10px;
 }
@@ -51,7 +51,7 @@
   margin-right: 0.375rem;
   width: 0.625rem;
   height: 0.625rem;
-  background-image: url('../../../assets/icons.svg');
+  background-image: url('~app/components/App/icons.svg');
   background-size: 400px 200px;
   background-position: -56px -10px;
 }

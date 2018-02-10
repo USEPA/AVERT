@@ -1,11 +1,19 @@
+// @flow
+
 import React from 'react';
 import { Provider } from 'react-redux';
-// containers
-import AppContainer from '../../containers/AppContainer';
+// components
+import App from 'app/components/App/container.js';
+// types
+import type { Store as ReduxStore } from 'redux';
 
-const Root = (props) => (
+type Props = {
+  store: ReduxStore<>,
+};
+
+const Root = (props: Props) => (
   <Provider store={props.store}>
-    <AppContainer />
+    <App />
   </Provider>
 );
 

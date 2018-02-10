@@ -28,28 +28,8 @@ export const startDataDownload = () => {
   return (dispatch, getState) => {
     const { monthlyEmissions } = getState();
 
-    // TODO: pull fields from DataDownloadHelper
-    const fields = [
-      'type',
-      'aggregation_level',
-      'state',
-      'county',
-      'emission_unit',
-      'january',
-      'february',
-      'march',
-      'april',
-      'may',
-      'june',
-      'july',
-      'august',
-      'september',
-      'october',
-      'november',
-      'december',
-    ];
-
     const data = monthlyEmissions.downloadableData;
+    const fields = Object.keys(data[0]);
 
     try {
       const csv = json2csv({ fields, data });

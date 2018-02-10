@@ -8,7 +8,10 @@ import {
 // reducer
 const initialState = {
   status: 'select_region',
-  results: [],
+  results: {
+    states: [],
+    data: [],
+  },
 };
 
 export default function reducer(state = initialState, action) {

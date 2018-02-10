@@ -1,9 +1,10 @@
+// @flow
+
 import React from 'react';
-// utils
-import Regions from '../../utils/Regions';
-// containers
-import RegionContainer from './containers/RegionContainer';
+// enums
+import Regions from 'app/enums/Regions';
 // components
+import Region from './components/Region/container.js';
 import UpperMidwest from './components/UpperMidwest';
 import Texas from './components/Texas';
 import Southwest from './components/Southwest';
@@ -23,87 +24,107 @@ const RegionMap = () => (
       <title>AVERT region map</title>
 
       <g id='avert-regions'>
-        <RegionContainer regionId={ Regions.UPPER_MIDWEST.id }>
+        <Region regionId={Regions.UPPER_MIDWEST.id}>
           <UpperMidwest />
-        </RegionContainer>
+        </Region>
 
-        <RegionContainer regionId={ Regions.TEXAS.id }>
+        <Region regionId={Regions.TEXAS.id}>
           <Texas />
-        </RegionContainer>
+        </Region>
 
-        <RegionContainer regionId={ Regions.SOUTHWEST.id }>
+        <Region regionId={Regions.SOUTHWEST.id}>
           <Southwest />
-        </RegionContainer>
+        </Region>
 
-        <RegionContainer regionId={ Regions.SOUTHEAST.id }>
+        <Region regionId={Regions.SOUTHEAST.id}>
           <Southeast />
-        </RegionContainer>
+        </Region>
 
-        <RegionContainer regionId={ Regions.ROCKY_MOUNTAINS.id }>
+        <Region regionId={Regions.ROCKY_MOUNTAINS.id}>
           <RockyMountains />
-        </RegionContainer>
+        </Region>
 
-        <RegionContainer regionId={ Regions.NORTHWEST.id }>
+        <Region regionId={Regions.NORTHWEST.id}>
           <Northwest />
-        </RegionContainer>
+        </Region>
 
-        <RegionContainer regionId={ Regions.NORTHEAST.id }>
+        <Region regionId={Regions.NORTHEAST.id}>
           <Northeast />
-        </RegionContainer>
+        </Region>
 
-        <RegionContainer regionId={ Regions.LOWER_MIDWEST.id }>
+        <Region regionId={Regions.LOWER_MIDWEST.id}>
           <LowerMidwest />
-        </RegionContainer>
+        </Region>
 
-        <RegionContainer regionId={ Regions.GREAT_LAKES_MID_ATLANTIC.id }>
+        <Region regionId={Regions.GREAT_LAKES_MID_ATLANTIC.id}>
           <GreatLakes />
-        </RegionContainer>
+        </Region>
 
-        <RegionContainer regionId={ Regions.CALIFORNIA.id }>
+        <Region regionId={Regions.CALIFORNIA.id}>
           <California />
-        </RegionContainer>
+        </Region>
       </g>
 
       <g id='avert-labels'>
         <g className='label'>
           <rect x='10' y='223' width='85' height='22'/>
-          <text transform='translate(15 240)'>{ Regions.CALIFORNIA.label }</text>
+          <text transform='translate(15 240)'>
+            {Regions.CALIFORNIA.label}
+          </text>
         </g>
         <g className='label'>
           <rect x='465' y='183' width='206' height='22'/>
-          <text transform='translate(470 200)'>{ Regions.GREAT_LAKES_MID_ATLANTIC.label }</text>
+          <text transform='translate(470 200)'>
+            {Regions.GREAT_LAKES_MID_ATLANTIC.label}
+          </text>
         </g>
         <g className='label'>
           <rect x='275' y='283' width='125' height='22'/>
-          <text transform='translate(280 300)'>{ Regions.LOWER_MIDWEST.label }</text>
+          <text transform='translate(280 300)'>
+            {Regions.LOWER_MIDWEST.label}
+          </text>
         </g>
         <g className='label'>
           <rect x='595' y='113' width='86' height='22'/>
-          <text transform='translate(600 130)'>{ Regions.NORTHEAST.label }</text>
+          <text transform='translate(600 130)'>
+            {Regions.NORTHEAST.label}
+          </text>
         </g>
         <g className='label'>
           <rect x='95' y='133' width='88' height='22'/>
-          <text transform='translate(100 150)'>{ Regions.NORTHWEST.label }</text>
+          <text transform='translate(100 150)'>
+            {Regions.NORTHWEST.label}
+          </text>
         </g>
         <g className='label'>
           <rect x='175' y='213' width='142' height='22'/>
-          <text transform='translate(180 230)'>{ Regions.ROCKY_MOUNTAINS.label }</text>
+          <text transform='translate(180 230)'>
+            {Regions.ROCKY_MOUNTAINS.label}
+          </text>
         </g>
         <g className='label'>
           <rect x='465' y='323' width='88' height='22'/>
-          <text transform='translate(470 340)'>{ Regions.SOUTHEAST.label }</text>
+          <text transform='translate(470 340)'>
+            {Regions.SOUTHEAST.label}
+          </text>
         </g>
         <g className='label'>
           <rect x='135' y='313' width='92' height='22'/>
-          <text transform='translate(140 330)'>{ Regions.SOUTHWEST.label }</text>
+          <text transform='translate(140 330)'>
+            {Regions.SOUTHWEST.label}
+          </text>
         </g>
         <g className='label'>
           <rect x='295' y='383' width='56' height='22'/>
-          <text transform='translate(300 400)'>{ Regions.TEXAS.label }</text>
+          <text transform='translate(300 400)'>
+            {Regions.TEXAS.label}
+          </text>
         </g>
         <g className='label'>
           <rect x='305' y='143' width='125' height='22'/>
-          <text transform='translate(310 160)'>{ Regions.UPPER_MIDWEST.label }</text>
+          <text transform='translate(310 160)'>
+            {Regions.UPPER_MIDWEST.label}
+          </text>
         </g>
       </g>
     </svg>

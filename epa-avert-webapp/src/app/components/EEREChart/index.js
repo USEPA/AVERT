@@ -1,7 +1,9 @@
+// @flow
+
 import React from 'react';
 import Highcharts from 'react-highcharts';
-// containers
-import TooltipContainer from '../../containers/TooltipContainer';
+// components
+import Tooltip from 'app/components/Tooltip/container.js';
 // styles
 import './styles.css';
 
@@ -12,9 +14,49 @@ const formatNumber = (number) => {
   });
 };
 
-const EEREChart = (props) => {
-  const data = props.hourlyEere.map((hour) => hour.final_mw);
-  const hours = props.hourlyEere.map((hour, index) => index);
+type Timestamp = {
+  hour_of_year: number,
+  year: number,
+  month: number,
+  day: number,
+  hour: number,
+  regional_load_mw: number,
+  hourly_limit: number,
+};
+
+type Eere = {
+  index: number,
+  constant: number,
+  current_load_mw: number,
+  percent: number,
+  final_mw: number,
+  renewable_energy_profile: number,
+  soft_limit: number,
+  hard_limit: number,
+  soft_exceedance: number,
+  hard_exceedance: number,
+};
+
+type Props = {
+  heading: string,
+  // redux connected props
+  softValid: boolean,
+  softTopExceedanceTimestamp: Timestamp,
+  softTopExceedance: number,
+  hardValid: boolean,
+  hardTopExceedanceTimestamp: Timestamp,
+  hardTopExceedance: number,
+  hourlyEere: Array<Eere>,
+};
+
+const EEREChart = (props: Props) => {
+  let data = [];
+  let hours = [];
+  props.hourlyEere.forEach(hour => {
+    data.push(hour.final_mw);
+    hours.push(hour.index);
+  });
+
   const chartConfig = {
     chart: {
       height: 300,
@@ -84,25 +126,26 @@ const EEREChart = (props) => {
     // as this entire react app is ultimately served in an iframe on another page,
     // this document has a click handler that sends document's height to other window,
     // which can then set the embedded iframe's height (see public/post-message.js)
+    //$FlowFixMe: surpressing Flow error
     document.querySelector('html').click();
   };
 
-  let chart = null;
-  // conditionally re-define chart when readyToRender (hourlyEere prop exists)
+  let Chart = null;
+  // conditionally re-define Chart when readyToRender (hourlyEere prop exists)
   if (readyToRender) {
-    const totalLoadMw = props.hourlyEere
+    const totalLoadMwh = props.hourlyEere
       .map((hour) => hour.final_mw)
       .reduce((a, b) => a + b, 0);
-    const totalLoadGwh = Math.round(totalLoadMw / -1000).toLocaleString();
+    const totalLoadGwh = Math.round(totalLoadMwh / -1000).toLocaleString();
 
-    chart = (
+    Chart = (
       <div className='avert-eere-profile'>
         <h3 className='avert-chart-title'>
-          { props.heading }
+          {props.heading}
           {' '}
-          <TooltipContainer id={8}>
+          <Tooltip id={8}>
             This graph shows the hourly changes in load that will result from the inputs entered above, along with adjustments for avoided transmission and distribution line loss, where applicable. This hourly EE/RE profile will be used to calculate the avoided emissions for this AVERT region.
-          </TooltipContainer>
+          </Tooltip>
         </h3>
 
         <Highcharts config={chartConfig} callback={afterRender} />
@@ -112,15 +155,15 @@ const EEREChart = (props) => {
     );
   }
 
-  const validationMessage = (input) => {
+  const ValidationMessage = (type) => {
     let x = {};
-    if (input === 'error') {
+    if (type === 'error') {
       x.timestamp = props.hardTopExceedanceTimestamp;
       x.exceedence = props.hardTopExceedance;
       x.heading = 'ERROR';
       x.threshold = '30';
     }
-    if (input === 'warning') {
+    if (type === 'warning') {
       x.timestamp = props.softTopExceedanceTimestamp;
       x.exceedence = props.softTopExceedance;
       x.heading = 'WARNING';
@@ -134,41 +177,35 @@ const EEREChart = (props) => {
     const ampm = x.timestamp.hour > 12 ? 'PM' : 'AM';
 
     return (
-      <p className={`avert-message-bottom avert-validation-${input}`}>
-        <span className='avert-message-heading'>{`${x.heading}:`}</span>
-        {'The combined impact of your proposed programs would displace more than '}
-        <strong>{`${x.threshold}%`}</strong>
-        {' of regional fossil generation in at least one hour of the year. (Maximum value: '}
-        <strong>{formatNumber(x.exceedence)}</strong>
-        {'% on '}
-        <strong>{`${month} ${day} at ${hour}:00 ${ampm}`}</strong>
-        {'). The recommended limit for AVERT is 15%, as AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics. Please reduce one or more of your inputs to ensure more reliable results.'}
+      <p className={`avert-message-bottom avert-validation-${type}`}>
+        <span className='avert-message-heading'>{x.heading}:</span>
+        The combined impact of your proposed programs would displace more than
+        {' '}<strong>{x.threshold}%</strong>{' '}
+        of regional fossil generation in at least one hour of the year. (Maximum value:
+        {' '}<strong>{formatNumber(x.exceedence)}</strong>% on
+        {' '}<strong>{month} {day} at {hour}:00 {ampm}</strong>).
+        The recommended limit for AVERT is 15%, as AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics. Please reduce one or more of your inputs to ensure more reliable results.
       </p>
     );
   };
 
-  // set validationError when readyToRender and hardValid prop is false
-  const validationError = (readyToRender && !props.hardValid) ? validationMessage('error') : null;
+  // set ValidationError when readyToRender and hardValid prop is false
+  const ValidationError = (readyToRender && !props.hardValid)
+    ? ValidationMessage('error')
+    : null;
 
-  // set validationWarning when readyToRender, softValid prop is false, and hardValid prop is true
-  const validationWarning = (readyToRender && !props.softValid && props.hardValid) ? validationMessage('warning') : null;
+  // set ValidationWarning when readyToRender, softValid prop is false, and hardValid prop is true
+  const ValidationWarning = (readyToRender && !props.softValid && props.hardValid)
+    ? ValidationMessage('warning')
+    : null;
 
   return (
     <div>
-      { chart }
-      { validationError }
-      { validationWarning }
+      {Chart}
+      {ValidationError}
+      {ValidationWarning}
     </div>
   );
 };
-
-// EEREChart.propTypes = {
-//   heading: PropTypes.string.isRequired,
-//   hourlyEere: PropTypes.array.isRequired,
-//   // softValid: PropTypes.string,
-//   // softTopExceedanceTimestamp: PropTypes.string,
-//   // hardValid: PropTypes.string,
-//   // hardTopExceedanceTimestamp: PropTypes.string,
-// };
 
 export default EEREChart;
