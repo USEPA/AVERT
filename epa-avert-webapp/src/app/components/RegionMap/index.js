@@ -1,8 +1,8 @@
 // @flow
 
 import React from 'react';
-// utilities
-import Regions from 'app/utils/Regions';
+// enums
+import Regions from 'app/enums/Regions';
 // components
 import Region from './components/Region/container.js';
 import UpperMidwest from './components/UpperMidwest';

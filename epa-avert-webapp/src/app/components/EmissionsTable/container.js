@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
-import States from 'app/utils/States';
+// enums
+import States from 'app/enums/States';
 // components
 import EmissionsTable from './index.js';
 

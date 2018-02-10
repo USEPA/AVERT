@@ -1,4 +1,6 @@
-import Regions from 'app/utils/Regions';
+// enums
+import Regions from 'app/enums/Regions';
+// engines
 import Rdf from 'app/engines/Rdf';
 import EereEngine from 'app/engines/EereEngine';
 

@@ -1,8 +1,8 @@
 // @flow
 
 import React from 'react';
-// utilities
-import Regions from 'app/utils/Regions';
+// enums
+import Regions from 'app/enums/Regions';
 // styles
 import './styles.css';
 

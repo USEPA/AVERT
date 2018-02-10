@@ -3,9 +3,9 @@
 
 import React from 'react';
 import Highcharts from 'react-highcharts';
-// utilities
-import Regions from 'app/utils/Regions';
-import States from 'app/utils/States';;
+// enums
+import Regions from 'app/enums/Regions';
+import States from 'app/enums/States';
 // styles
 import './styles.css';
 
