@@ -23,7 +23,7 @@ export default function reducer(state = initialState, action) {
 }
 
 // action creators
-export function selectRegion(regionId) {
+export const selectRegion = (regionId) => {
   return (dispatch) => {
     avert.region = regionId;
 
@@ -32,4 +32,4 @@ export function selectRegion(regionId) {
       region: regionId,
     });
   };
-}
+};

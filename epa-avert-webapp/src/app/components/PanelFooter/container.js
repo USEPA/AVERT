@@ -4,9 +4,9 @@ import PanelFooter from './index.js';
 // actions
 import { setActiveStep } from 'app/redux/panel';
 import { fetchRegion } from 'app/redux/rdfs';
+import { resetEereInputs} from 'app/redux/eere';
 import {
   calculateDisplacement,
-  resetEereInputs,
   resetMonthlyEmissions,
 } from 'app/actions';
 

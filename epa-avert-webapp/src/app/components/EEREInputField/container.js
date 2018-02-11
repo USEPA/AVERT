@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 // components
 import EEREInputField from './index.js';
 // actions
-import { calculateEereProfile } from 'app/actions';
+import { calculateEereProfile } from 'app/redux/eere';
 
 const mapStateToProps = (state) => ({
   valid: state.eere.valid,
