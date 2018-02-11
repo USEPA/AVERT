@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 // actions
 import {
   SELECT_REGION,
@@ -161,17 +159,23 @@ export default function reducer(state = initialState, action) {
       let emissionData = {};
       if (selectedAggregation === 'region') {
         pollutants.forEach((p) => {
-          emissionData[p.toLowerCase()] = _.values(state[`${unit}Region${p}`]);
+          emissionData[p.toLowerCase()] = Object.values(
+            state[`${unit}Region${p}`]
+          );
         });
       }
-      if (selectedAggregation === 'state') {
+      if (selectedAggregation === 'state' && selectedState) {
         pollutants.forEach((p) => {
-          emissionData[p.toLowerCase()] = _.values(state[`${unit}States${p}`][selectedState]);
+          emissionData[p.toLowerCase()] = Object.values(
+            state[`${unit}States${p}`][selectedState]
+          );
         });
       }
-      if (selectedAggregation === 'county') {
+      if (selectedAggregation === 'county' && selectedState && selectedCounty) {
         pollutants.forEach((p) => {
-          emissionData[p.toLowerCase()] = _.values(state[`${unit}Counties${p}`][selectedState][selectedCounty]);
+          emissionData[p.toLowerCase()] = Object.values(
+            state[`${unit}Counties${p}`][selectedState][selectedCounty]
+          );
         });
       }
 
