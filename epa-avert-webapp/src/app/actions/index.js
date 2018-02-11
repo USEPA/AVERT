@@ -1,6 +1,6 @@
-// engines
-import Avert from 'app/engines/Avert';
-import EereProfile from 'app/engines/EereProfile';
+// temp
+
+
 
 // reducers
 import * as fromGeneration from 'app/redux/generation';
@@ -9,84 +9,14 @@ import * as fromNox from 'app/redux/nox';
 import * as fromCo2 from 'app/redux/co2';
 import * as fromPm25 from 'app/redux/pm25';
 
-
 // engines
-export const avert = new Avert(); // console.log(avert)
-export const eereProfile = new EereProfile(); // console.log(eereProfile)
+import Avert from 'app/engines/Avert';
+import EereProfile from 'app/engines/EereProfile';
+export const avert = new Avert();
+export const eereProfile = new EereProfile();
 
 
 // actions and action creators
-export const INCREMENT_PROGRESS = 'avert/core/INCREMENT_PROGRESS';
-export const incrementProgress = () => ({ type: INCREMENT_PROGRESS });
-
-
-export const SELECT_REGION = 'avert/core/SELECT_REGION';
-export function selectRegion(regionId) {
-  return (dispatch) => {
-    avert.region = regionId; // console.log(avert)
-
-    dispatch({
-      type: SELECT_REGION,
-      region: regionId,
-    });
-  };
-}
-
-export const REQUEST_REGION_RDF = 'avert/core/REQUEST_REGION_RDF';
-export const SET_EERE_LIMITS = 'avert/core/SET_EERE_LIMITS';
-export const RECEIVE_REGION_RDF = 'avert/core/RECEIVE_REGION_RDF';
-export const REQUEST_REGION_DEFAULTS = 'avert/core/REQUEST_REGION_DEFAULTS';
-export const RECEIVE_REGION_DEFAULTS = 'avert/core/RECEIVE_REGION_DEFAULTS';
-export const fetchRegion = () => {
-  return function (dispatch, getState) {
-    const { api } = getState();
-
-    dispatch({ type: REQUEST_REGION_RDF });
-
-    // fetch rdf data for region
-    return fetch(`${api.baseUrl}/api/v1/rdf/${avert.regionSlug}`)
-      .then(response => response.json())
-      .then(json => { // console.log(json)
-        avert.rdf = json.rdf; // console.log(avert)
-
-        // set eere profile's first level validation limits (sets 'eereProfile._limits')
-        eereProfile.limits = {
-          hours: avert.rdf.months.length,
-          annualGwh: avert.rdf.maxAnnualGwh,
-          renewables: avert.rdf.maxRenewableMwh,
-        }; // console.log(eereProfile)
-
-        dispatch({
-          type: SET_EERE_LIMITS,
-          payload: { limits: eereProfile.limits },
-        });
-
-        dispatch({
-          type: RECEIVE_REGION_RDF,
-          payload: { rdf: json },
-        });
-
-        dispatch({
-          type: REQUEST_REGION_DEFAULTS,
-          region: avert.regionSlug,
-        });
-
-        // fetch eere data for region
-        fetch(`${api.baseUrl}/api/v1/eere/${avert.regionSlug}`)
-          .then(response => response.json())
-          .then(json => { // console.log(json)
-            avert.eereDefaults = json.eereDefaults; // console.log(avert)
-
-            dispatch({
-              type: RECEIVE_REGION_DEFAULTS,
-              payload: { defaults: json.eereDefaults },
-            });
-          });
-      });
-  };
-};
-
-
 export const VALIDATE_EERE = "avert/core/VALIDATE_EERE";
 const validateEere = () => {
   avert.eereProfile = eereProfile; // console.log(avert)
@@ -340,6 +270,8 @@ export const resetMonthlyEmissions = () => ({
   type: RESET_MONTHLY_EMISSIONS,
 });
 
+export const INCREMENT_PROGRESS = 'avert/core/INCREMENT_PROGRESS';
+export const incrementProgress = () => ({ type: INCREMENT_PROGRESS });
 
 export const RECEIVE_DISPLACEMENT = 'avert/core/RECEIVE_DISPLACEMENT';
 const receiveDisplacement = () => {

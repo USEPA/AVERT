@@ -3,7 +3,7 @@ import Blob from 'blob';
 import FileSaver from 'file-saver';
 
 // actions
-const START_DATA_DOWNLOAD = 'avert/dataDownload/START_DATA_DOWNLOAD';
+const START_DATA_DOWNLOAD = 'dataDownload/START_DATA_DOWNLOAD';
 
 // reducer
 const initialState = {

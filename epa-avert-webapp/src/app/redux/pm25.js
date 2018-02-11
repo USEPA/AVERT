@@ -4,10 +4,10 @@ import { avert } from 'app/actions';
 import { incrementProgress } from 'app/actions';
 
 // actions
-const REQUEST_PM25 = 'avert/pm25/REQUEST_PM25';
-const RECEIVE_PM25 = 'avert/pm25/RECEIVE_PM25';
-const RECEIVE_JOB_ID = 'avert/pm25/RECEIVE_JOB_ID';
-const POLL_SERVER_FOR_DATA = 'avert/pm25/POLL_SERVER_FOR_DATA';
+const REQUEST_PM25 = 'pm25/REQUEST_PM25';
+const RECEIVE_PM25 = 'pm25/RECEIVE_PM25';
+const RECEIVE_JOB_ID = 'pm25/RECEIVE_JOB_ID';
+const POLL_SERVER_FOR_DATA = 'pm25/POLL_SERVER_FOR_DATA';
 
 // reducer
 export const initialState = {

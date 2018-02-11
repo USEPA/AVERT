@@ -1,6 +1,7 @@
+import { SET_EERE_LIMITS } from 'app/redux/rdfs';
+
 // actions
 import {
-  SET_EERE_LIMITS,
   VALIDATE_EERE,
   UPDATE_EERE_ANNUAL_GWH,
   UPDATE_EERE_CONSTANT_MW,

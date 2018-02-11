@@ -4,10 +4,10 @@ import { avert } from 'app/actions';
 import { incrementProgress } from 'app/actions';
 
 // actions
-const REQUEST_SO2 = 'avert/so2/REQUEST_SO2';
-const RECEIVE_SO2 = 'avert/so2/RECEIVE_SO2';
-const RECEIVE_JOB_ID = 'avert/so2/RECEIVE_JOB_ID';
-const POLL_SERVER_FOR_DATA = 'avert/so2/POLL_SERVER_FOR_DATA';
+const REQUEST_SO2 = 'so2/REQUEST_SO2';
+const RECEIVE_SO2 = 'so2/RECEIVE_SO2';
+const RECEIVE_JOB_ID = 'so2/RECEIVE_JOB_ID';
+const POLL_SERVER_FOR_DATA = 'so2/POLL_SERVER_FOR_DATA';
 
 // reducer
 export const initialState = {

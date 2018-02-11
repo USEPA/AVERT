@@ -1,6 +1,7 @@
 // actions
+import { SELECT_REGION } from 'app/redux/regions';
+
 import {
-  SELECT_REGION,
   START_DISPLACEMENT,
   COMPLETE_STATE_EMISSIONS,
 } from 'app/actions';

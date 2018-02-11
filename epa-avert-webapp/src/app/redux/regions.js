@@ -1,5 +1,8 @@
+// engine
+import { avert } from 'app/actions';
+
 // actions
-import { SELECT_REGION } from 'app/actions';
+export const SELECT_REGION = 'regions/SELECT_REGION';
 
 // reducer
 const initialState = {
@@ -19,4 +22,14 @@ export default function reducer(state = initialState, action) {
   }
 }
 
-// action creators (selectRegion function defined in 'app/actions')
+// action creators
+export function selectRegion(regionId) {
+  return (dispatch) => {
+    avert.region = regionId;
+
+    dispatch({
+      type: SELECT_REGION,
+      region: regionId,
+    });
+  };
+}

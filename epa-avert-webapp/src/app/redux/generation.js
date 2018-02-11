@@ -4,10 +4,10 @@ import { avert } from 'app/actions';
 import { incrementProgress } from 'app/actions';
 
 // actions
-const REQUEST_GENERATION = 'avert/generation/REQUEST_GENERATION';
-const RECEIVE_GENERATION = 'avert/generation/RECEIVE_GENERATION';
-const RECEIVE_JOB_ID = 'avert/generation/RECEIVE_JOB_ID';
-const POLL_SERVER_FOR_DATA = 'avert/generation/POLL_SERVER_FOR_DATA';
+const REQUEST_GENERATION = 'generation/REQUEST_GENERATION';
+const RECEIVE_GENERATION = 'generation/RECEIVE_GENERATION';
+const RECEIVE_JOB_ID = 'generation/RECEIVE_JOB_ID';
+const POLL_SERVER_FOR_DATA = 'generation/POLL_SERVER_FOR_DATA';
 
 // reducer
 export const initialState = {

@@ -4,10 +4,10 @@ import { avert } from 'app/actions';
 import { incrementProgress } from 'app/actions';
 
 // actions
-const REQUEST_NOX = 'avert/nox/REQUEST_NOX';
-const RECEIVE_NOX = 'avert/nox/RECEIVE_NOX';
-const RECEIVE_JOB_ID = 'avert/nox/RECEIVE_JOB_ID';
-const POLL_SERVER_FOR_DATA = 'avert/nox/POLL_SERVER_FOR_DATA';
+const REQUEST_NOX = 'nox/REQUEST_NOX';
+const RECEIVE_NOX = 'nox/RECEIVE_NOX';
+const RECEIVE_JOB_ID = 'nox/RECEIVE_JOB_ID';
+const POLL_SERVER_FOR_DATA = 'nox/POLL_SERVER_FOR_DATA';
 
 // reducer
 export const initialState = {

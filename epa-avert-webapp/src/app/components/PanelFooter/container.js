@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import PanelFooter from './index.js';
 // actions
 import { setActiveStep } from 'app/redux/panel';
+import { fetchRegion } from 'app/redux/rdfs';
 import {
-  fetchRegion,
   calculateDisplacement,
   resetEereInputs,
   resetMonthlyEmissions,
