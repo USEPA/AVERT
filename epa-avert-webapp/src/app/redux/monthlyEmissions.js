@@ -169,7 +169,7 @@ export default function reducer(state = initialState, action) {
           emissionData[p.toLowerCase()] = _.values(state[`${unit}States${p}`][selectedState]);
         });
       }
-      if (selectedAggregation === 'county') {
+      if (selectedAggregation === 'county' && selectedState) {
         pollutants.forEach((p) => {
           emissionData[p.toLowerCase()] = _.values(state[`${unit}Counties${p}`][selectedState][selectedCounty]);
         });
