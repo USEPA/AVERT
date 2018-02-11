@@ -1,7 +1,7 @@
 // engine
 import { avert } from 'app/actions';
 // action creators
-import { incrementProgress } from 'app/actions';
+import { incrementProgress } from 'app/redux/annualDisplacement';
 
 // action types
 const REQUEST_GENERATION = 'generation/REQUEST_GENERATION';
@@ -46,11 +46,12 @@ export default function reducer(state = initialState, action) {
 function pollServerForData() {
   return (dispatch, getState) => {
     const { api, generation } = getState();
-    // dispatch 'poll server for data' action
+
     dispatch({
       type: POLL_SERVER_FOR_DATA,
       jobId: generation.jobId,
     });
+
     // fetch generation data via job id
     return fetch(`${api.baseUrl}/api/v1/jobs/${generation.jobId}`)
       .then(response => response.json())
@@ -59,7 +60,6 @@ function pollServerForData() {
         if (json.response === 'in progress') {
           return setTimeout(() => dispatch(pollServerForData()), api.pollingFrequency)
         }
-        // dispatch 'incrementProgress' and 'receive generation' actions
         dispatch(incrementProgress());
         dispatch({
           type: RECEIVE_GENERATION,
@@ -72,8 +72,9 @@ function pollServerForData() {
 export function fetchGeneration() {
   return (dispatch, getState) => {
     const { api } = getState();
-    // dispatch 'request generation' action
+
     dispatch({ type: REQUEST_GENERATION });
+
     // post generation data for region and receive a job id
     const options = {
       method: 'POST',
@@ -89,7 +90,6 @@ export function fetchGeneration() {
     return fetch(`${api.baseUrl}/api/v1/generation`, options)
       .then(response => response.json())
       .then(json => {
-        // dispatch 'receive job id' and 'poll server for data' actions
         dispatch({
           type: RECEIVE_JOB_ID,
           json: json,

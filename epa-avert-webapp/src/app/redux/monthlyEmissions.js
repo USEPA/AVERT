@@ -1,9 +1,6 @@
-import {
-  START_DISPLACEMENT,
-} from 'app/actions';
-
 // action types
 import { SELECT_REGION } from 'app/redux/regions';
+import { START_DISPLACEMENT } from 'app/redux/annualDisplacement';
 export const RENDER_MONTHLY_EMISSIONS_CHARTS = 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS';
 export const COMPLETE_MONTHLY_EMISSIONS = 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS';
 export const SET_DOWNLOAD_DATA = 'monthlyEmissions/SET_DOWNLOAD_DATA';

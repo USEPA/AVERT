@@ -6,9 +6,7 @@ import { setActiveStep } from 'app/redux/panel';
 import { fetchRegion } from 'app/redux/rdfs';
 import { resetEereInputs} from 'app/redux/eere';
 import { resetMonthlyEmissions } from 'app/redux/monthlyEmissions';
-import {
-  calculateDisplacement,
-} from 'app/actions';
+import { calculateDisplacement } from 'app/redux/annualDisplacement';
 
 const mapStateToProps = (state) => ({
   activeStep: state.panel.activeStep,

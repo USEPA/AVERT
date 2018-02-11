@@ -1,7 +1,7 @@
 // engine
 import { avert } from 'app/actions';
 // action creators
-import { incrementProgress } from 'app/actions';
+import { incrementProgress } from 'app/redux/annualDisplacement';
 
 // action types
 const REQUEST_PM25 = 'pm25/REQUEST_PM25';
@@ -46,11 +46,12 @@ export default function reducer(state = initialState, action) {
 function pollServerForData() {
   return (dispatch, getState) => {
     const { api, pm25 } = getState();
-    // dispatch 'poll server for data' action
+
     dispatch({
       type: POLL_SERVER_FOR_DATA,
       jobId: pm25.jobId,
     });
+
     // fetch pm25 data via job id
     return fetch(`${api.baseUrl}/api/v1/jobs/${pm25.jobId}`)
       .then(response => response.json())
@@ -59,7 +60,6 @@ function pollServerForData() {
         if (json.response === 'in progress') {
           return setTimeout(() => dispatch(pollServerForData()), api.pollingFrequency)
         }
-        // dispatch 'incrementProgress' and 'receive pm25' actions
         dispatch(incrementProgress());
         dispatch({
           type: RECEIVE_PM25,
@@ -72,8 +72,9 @@ function pollServerForData() {
 export function fetchPm25() {
   return (dispatch, getState) => {
     const { api } = getState();
-    // dispatch 'request pm25' action
+
     dispatch({ type: REQUEST_PM25 });
+
     // post pm25 data for region and receive a job id
     const options = {
       method: 'POST',
@@ -89,7 +90,6 @@ export function fetchPm25() {
     return fetch(`${api.baseUrl}/api/v1/pm25`, options)
       .then(response => response.json())
       .then(json => {
-        // dispatch 'receive job id' and 'poll server for data' actions
         dispatch({
           type: RECEIVE_JOB_ID,
           json: json,

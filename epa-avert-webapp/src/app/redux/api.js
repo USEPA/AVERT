@@ -1,4 +1,4 @@
-// actions
+// action types
 const SET_BASE_URL = 'api/SET_BASE_URL';
 const SET_POLLING_FREQUENCY = 'api/SET_POLLING_FREQUENCY';
 

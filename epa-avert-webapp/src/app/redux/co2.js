@@ -1,7 +1,7 @@
 // engine
 import { avert } from 'app/actions';
 // action creators
-import { incrementProgress } from 'app/actions';
+import { incrementProgress } from 'app/redux/annualDisplacement';
 
 // action types
 const REQUEST_CO2 = 'co2/REQUEST_CO2';
@@ -46,11 +46,12 @@ export default function reducer(state = initialState, action) {
 function pollServerForData() {
   return (dispatch, getState) => {
     const { api, co2 } = getState();
-    // dispatch 'poll server for data' action
+
     dispatch({
       type: POLL_SERVER_FOR_DATA,
       jobId: co2.jobId,
     });
+
     // fetch co2 data via job id
     return fetch(`${api.baseUrl}/api/v1/jobs/${co2.jobId}`)
       .then(response => response.json())
@@ -59,7 +60,6 @@ function pollServerForData() {
         if (json.response === 'in progress') {
           return setTimeout(() => dispatch(pollServerForData()), api.pollingFrequency)
         }
-        // dispatch 'incrementProgress' and 'receive co2' actions
         dispatch(incrementProgress());
         dispatch({
           type: RECEIVE_CO2,
@@ -72,8 +72,9 @@ function pollServerForData() {
 export function fetchCo2() {
   return (dispatch, getState) => {
     const { api } = getState();
-    // dispatch 'request co2' action
+
     dispatch({ type: REQUEST_CO2 });
+
     // post co2 data for region and receive a job id
     const options = {
       method: 'POST',
@@ -89,7 +90,6 @@ export function fetchCo2() {
     return fetch(`${api.baseUrl}/api/v1/co2`, options)
       .then(response => response.json())
       .then(json => {
-        // dispatch 'receive job id' and 'poll server for data' actions
         dispatch({
           type: RECEIVE_JOB_ID,
           json: json,
