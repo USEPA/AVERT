@@ -3,12 +3,10 @@ import { connect } from 'react-redux';
 import PanelFooter from './index.js';
 // actions
 import { setActiveStep } from 'app/redux/panel';
-import {
-  fetchRegion,
-  calculateDisplacement,
-  resetEereInputs,
-  resetMonthlyEmissions,
-} from 'app/actions';
+import { fetchRegion } from 'app/redux/rdfs';
+import { resetEereInputs} from 'app/redux/eere';
+import { resetMonthlyEmissions } from 'app/redux/monthlyEmissions';
+import { calculateDisplacement } from 'app/redux/annualDisplacement';
 
 const mapStateToProps = (state) => ({
   activeStep: state.panel.activeStep,

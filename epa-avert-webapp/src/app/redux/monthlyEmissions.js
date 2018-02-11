@@ -1,16 +1,14 @@
-// actions
-import {
-  SELECT_REGION,
-  START_DISPLACEMENT,
-  COMPLETE_MONTHLY_EMISSIONS,
-  SELECT_MONTHLY_AGGREGATION,
-  SELECT_MONTHLY_UNIT,
-  SELECT_MONTHLY_STATE,
-  SELECT_MONTHLY_COUNTY,
-  RENDER_MONTHLY_EMISSIONS_CHARTS,
-  RESET_MONTHLY_EMISSIONS,
-  SET_DOWNLOAD_DATA,
-} from 'app/actions';
+// action types
+import { SELECT_REGION } from 'app/redux/regions';
+import { START_DISPLACEMENT } from 'app/redux/annualDisplacement';
+export const RENDER_MONTHLY_EMISSIONS_CHARTS = 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS';
+export const COMPLETE_MONTHLY_EMISSIONS = 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS';
+export const SET_DOWNLOAD_DATA = 'monthlyEmissions/SET_DOWNLOAD_DATA';
+export const SELECT_MONTHLY_AGGREGATION = 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION';
+export const SELECT_MONTHLY_UNIT = 'monthlyEmissions/SELECT_MONTHLY_UNIT';
+export const SELECT_MONTHLY_STATE = 'monthlyEmissions/SELECT_MONTHLY_STATE';
+export const SELECT_MONTHLY_COUNTY = 'monthlyEmissions/SELECT_MONTHLY_COUNTY';
+export const RESET_MONTHLY_EMISSIONS = 'monthlyEmissions/RESET_MONTHLY_EMISSIONS';
 
 // utility function for structuring data for download file
 const setStructure = (type, emissionsOrPercentages, data, state, county) => {
@@ -229,3 +227,68 @@ export default function reducer(state = initialState, action) {
       return state;
   }
 };
+
+export const renderMonthlyEmissionsCharts = () => ({
+  type: RENDER_MONTHLY_EMISSIONS_CHARTS,
+});
+
+export const completeMonthlyEmissions = (data) => {
+  return function (dispatch) {
+    dispatch({
+      type: COMPLETE_MONTHLY_EMISSIONS,
+      data: data,
+    });
+    dispatch({
+      type: SET_DOWNLOAD_DATA,
+      data: data,
+    });
+    dispatch(renderMonthlyEmissionsCharts());
+  }
+};
+
+export const selectMonthlyAggregation = (aggregation) => {
+  return function (dispatch) {
+    dispatch({
+      type: SELECT_MONTHLY_AGGREGATION,
+      aggregation: aggregation,
+    });
+    dispatch(renderMonthlyEmissionsCharts());
+  }
+};
+
+export const selectMonthlyUnit = (unit) => {
+  return function (dispatch) {
+    dispatch({
+      type: SELECT_MONTHLY_UNIT,
+      unit: unit,
+    });
+    dispatch(renderMonthlyEmissionsCharts());
+  }
+};
+
+export const selectMonthlyState = (state) => {
+  return function (dispatch, getState) {
+    const { monthlyEmissions } = getState();
+
+    dispatch({
+      type: SELECT_MONTHLY_STATE,
+      state: state,
+      visibleCounties: monthlyEmissions.counties[state],
+    });
+    dispatch(renderMonthlyEmissionsCharts());
+  }
+};
+
+export const selectMonthlyCounty = (county) => {
+  return function (dispatch) {
+    dispatch({
+      type: SELECT_MONTHLY_COUNTY,
+      county: county,
+    });
+    dispatch(renderMonthlyEmissionsCharts());
+  }
+};
+
+export const resetMonthlyEmissions = () => ({
+  type: RESET_MONTHLY_EMISSIONS,
+});

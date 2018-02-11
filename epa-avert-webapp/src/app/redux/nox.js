@@ -1,16 +1,16 @@
-// engine
-import { avert } from 'app/actions';
+// engines
+import { avert } from 'app/engines';
 // action creators
-import { incrementProgress } from 'app/actions';
+import { incrementProgress } from 'app/redux/annualDisplacement';
 
-// actions
-const REQUEST_NOX = 'avert/nox/REQUEST_NOX';
-const RECEIVE_NOX = 'avert/nox/RECEIVE_NOX';
-const RECEIVE_JOB_ID = 'avert/nox/RECEIVE_JOB_ID';
-const POLL_SERVER_FOR_DATA = 'avert/nox/POLL_SERVER_FOR_DATA';
+// action types
+export const REQUEST_NOX = 'nox/REQUEST_NOX';
+export const RECEIVE_NOX = 'nox/RECEIVE_NOX';
+export const RECEIVE_JOB_ID = 'nox/RECEIVE_JOB_ID';
+export const POLL_SERVER_FOR_DATA = 'nox/POLL_SERVER_FOR_DATA';
 
 // reducer
-export const initialState = {
+const initialState = {
   isFetching: false,
   jobId: 0,
   data: {},
@@ -43,14 +43,15 @@ export default function reducer(state = initialState, action) {
 }
 
 // action creators
-function pollServerForData() {
+export const pollServerForData = () => {
   return (dispatch, getState) => {
     const { api, nox } = getState();
-    // dispatch 'poll server for data' action
+
     dispatch({
       type: POLL_SERVER_FOR_DATA,
       jobId: nox.jobId,
     });
+
     // fetch nox data via job id
     return fetch(`${api.baseUrl}/api/v1/jobs/${nox.jobId}`)
       .then(response => response.json())
@@ -59,7 +60,6 @@ function pollServerForData() {
         if (json.response === 'in progress') {
           return setTimeout(() => dispatch(pollServerForData()), api.pollingFrequency)
         }
-        // dispatch 'incrementProgress' and 'receive nox' actions
         dispatch(incrementProgress());
         dispatch({
           type: RECEIVE_NOX,
@@ -67,13 +67,14 @@ function pollServerForData() {
         });
       });
   };
-}
+};
 
-export function fetchNox() {
+export const fetchNox = () => {
   return (dispatch, getState) => {
     const { api } = getState();
-    // dispatch 'request nox' action
+
     dispatch({ type: REQUEST_NOX });
+
     // post nox data for region and receive a job id
     const options = {
       method: 'POST',
@@ -89,7 +90,6 @@ export function fetchNox() {
     return fetch(`${api.baseUrl}/api/v1/nox`, options)
       .then(response => response.json())
       .then(json => {
-        // dispatch 'receive job id' and 'poll server for data' actions
         dispatch({
           type: RECEIVE_JOB_ID,
           json: json,
@@ -97,4 +97,4 @@ export function fetchNox() {
         dispatch(pollServerForData());
       });
   };
-}
+};

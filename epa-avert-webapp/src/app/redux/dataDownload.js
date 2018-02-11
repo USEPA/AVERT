@@ -2,8 +2,8 @@ import json2csv from 'json2csv';
 import Blob from 'blob';
 import FileSaver from 'file-saver';
 
-// actions
-const START_DATA_DOWNLOAD = 'avert/dataDownload/START_DATA_DOWNLOAD';
+// action types
+export const START_DATA_DOWNLOAD = 'dataDownload/START_DATA_DOWNLOAD';
 
 // reducer
 const initialState = {

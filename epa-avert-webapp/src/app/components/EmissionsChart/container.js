@@ -7,7 +7,7 @@ import {
   selectMonthlyUnit,
   selectMonthlyState,
   selectMonthlyCounty,
-} from 'app/actions';
+} from 'app/redux/monthlyEmissions';
 
 const mapStateToProps = (state) => ({
   monthlyStatus: state.monthlyEmissions.status,

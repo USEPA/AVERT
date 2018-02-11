@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import EEREInputs from './index.js';
 // actions
 import {
-  updateEereConstantMw,
   updateEereAnnualGwh,
+  updateEereConstantMw,
   updateEereBroadBasedProgram,
   updateEereReduction,
   updateEereTopHours,
@@ -12,7 +12,7 @@ import {
   updateEereUtilitySolar,
   updateEereRooftopSolar,
   calculateEereProfile,
-} from 'app/actions';
+} from 'app/redux/eere';
 
 const mapStateToProps = (state) => ({
   limits: state.eere.limits,
