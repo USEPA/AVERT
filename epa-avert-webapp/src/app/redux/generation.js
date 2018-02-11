@@ -3,7 +3,7 @@ import { avert } from 'app/actions';
 // action creators
 import { incrementProgress } from 'app/actions';
 
-// actions
+// action types
 const REQUEST_GENERATION = 'generation/REQUEST_GENERATION';
 const RECEIVE_GENERATION = 'generation/RECEIVE_GENERATION';
 const RECEIVE_JOB_ID = 'generation/RECEIVE_JOB_ID';

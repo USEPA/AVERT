@@ -3,7 +3,7 @@ import { avert } from 'app/actions';
 // action creators
 import { incrementProgress } from 'app/actions';
 
-// actions
+// action types
 const REQUEST_NOX = 'nox/REQUEST_NOX';
 const RECEIVE_NOX = 'nox/RECEIVE_NOX';
 const RECEIVE_JOB_ID = 'nox/RECEIVE_JOB_ID';

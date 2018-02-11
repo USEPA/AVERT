@@ -9,7 +9,7 @@ import {
   COMPLETE_MONTHLY_EMISSIONS,
 } from 'app/actions';
 
-// actions
+// action types
 const CHANGE_ACTIVE_STEP = 'panel/CHANGE_ACTIVE_STEP';
 const TOGGLE_MODAL_OVERLAY = 'panel/TOGGLE_MODAL_OVERLAY';
 const STORE_ACTIVE_MODAL = 'panel/STORE_ACTIVE_MODAL';

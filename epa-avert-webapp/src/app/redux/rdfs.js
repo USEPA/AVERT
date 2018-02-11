@@ -1,7 +1,7 @@
 // engine
 import { avert, eereProfile } from 'app/actions';
 
-// actions
+// action types
 export const REQUEST_REGION_RDF = 'rdfs/REQUEST_REGION_RDF';
 export const SET_EERE_LIMITS = 'rdfs/SET_EERE_LIMITS';
 export const RECEIVE_REGION_RDF = 'rdfs/RECEIVE_REGION_RDF';

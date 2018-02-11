@@ -3,7 +3,7 @@ import { avert } from 'app/actions';
 // action creators
 import { incrementProgress } from 'app/actions';
 
-// actions
+// action types
 const REQUEST_SO2 = 'so2/REQUEST_SO2';
 const RECEIVE_SO2 = 'so2/RECEIVE_SO2';
 const RECEIVE_JOB_ID = 'so2/RECEIVE_JOB_ID';

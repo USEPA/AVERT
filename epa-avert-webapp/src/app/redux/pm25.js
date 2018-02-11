@@ -3,7 +3,7 @@ import { avert } from 'app/actions';
 // action creators
 import { incrementProgress } from 'app/actions';
 
-// actions
+// action types
 const REQUEST_PM25 = 'pm25/REQUEST_PM25';
 const RECEIVE_PM25 = 'pm25/RECEIVE_PM25';
 const RECEIVE_JOB_ID = 'pm25/RECEIVE_JOB_ID';

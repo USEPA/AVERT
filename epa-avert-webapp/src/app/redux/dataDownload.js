@@ -2,7 +2,7 @@ import json2csv from 'json2csv';
 import Blob from 'blob';
 import FileSaver from 'file-saver';
 
-// actions
+// action types
 const START_DATA_DOWNLOAD = 'dataDownload/START_DATA_DOWNLOAD';
 
 // reducer

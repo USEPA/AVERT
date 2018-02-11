@@ -3,7 +3,7 @@ import { avert } from 'app/actions';
 // action creators
 import { incrementProgress } from 'app/actions';
 
-// actions
+// action types
 const REQUEST_CO2 = 'co2/REQUEST_CO2';
 const RECEIVE_CO2 = 'co2/RECEIVE_CO2';
 const RECEIVE_JOB_ID = 'co2/RECEIVE_JOB_ID';

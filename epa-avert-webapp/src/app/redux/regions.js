@@ -1,7 +1,7 @@
 // engine
 import { avert } from 'app/actions';
 
-// actions
+// action types
 export const SELECT_REGION = 'regions/SELECT_REGION';
 
 // reducer
