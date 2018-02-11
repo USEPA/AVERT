@@ -1,3 +1,7 @@
+// temporary
+import { completeMonthlyEmissions } from 'app/redux/monthlyEmissions';
+import { completeStateEmissions } from 'app/redux/stateEmissions';
+
 // reducers
 import * as fromGeneration from 'app/redux/generation';
 import * as fromSo2 from 'app/redux/so2';
@@ -13,83 +17,6 @@ export const eereProfile = new EereProfile();
 
 
 // actions and action creators
-export const RENDER_MONTHLY_EMISSIONS_CHARTS = 'avert/core/RENDER_MONTHLY_EMISSIONS_CHARTS';
-export const renderMonthlyEmissionsCharts = () => ({ type: RENDER_MONTHLY_EMISSIONS_CHARTS });
-
-export const COMPLETE_STATE_EMISSIONS = 'avert/core/COMPLETE_STATE_EMISSIONS';
-const completeStateEmissions = (data) => ({
-  type: COMPLETE_STATE_EMISSIONS,
-  data: data,
-});
-
-export const COMPLETE_MONTHLY_EMISSIONS = 'avert/core/COMPLETE_MONTHLY_EMISSIONS';
-export const SET_DOWNLOAD_DATA = 'avert/core/SET_DOWNLOAD_DATA';
-export const completeMonthlyEmissions = (data) => {
-  return function (dispatch) {
-    dispatch({
-      type: COMPLETE_MONTHLY_EMISSIONS,
-      data: data,
-    });
-    dispatch({
-      type: SET_DOWNLOAD_DATA,
-      data: data,
-    });
-    dispatch(renderMonthlyEmissionsCharts());
-  }
-};
-
-export const SELECT_MONTHLY_AGGREGATION = 'avert/core/SELECT_MONTHLY_AGGREGATION';
-export const selectMonthlyAggregation = (aggregation) => {
-  return function (dispatch) {
-    dispatch({
-      type: SELECT_MONTHLY_AGGREGATION,
-      aggregation: aggregation,
-    });
-    dispatch(renderMonthlyEmissionsCharts());
-  }
-};
-
-export const SELECT_MONTHLY_UNIT = 'avert/core/SELECT_MONTHLY_UNIT';
-export const selectMonthlyUnit = (unit) => {
-  return function (dispatch) {
-    dispatch({
-      type: SELECT_MONTHLY_UNIT,
-      unit: unit,
-    });
-    dispatch(renderMonthlyEmissionsCharts());
-  }
-};
-
-export const SELECT_MONTHLY_STATE = 'avert/core/SELECT_MONTHLY_STATE';
-export const selectMonthlyState = (state) => {
-  return function (dispatch, getState) {
-    const { monthlyEmissions } = getState();
-
-    dispatch({
-      type: SELECT_MONTHLY_STATE,
-      state: state,
-      visibleCounties: monthlyEmissions.counties[state],
-    });
-    dispatch(renderMonthlyEmissionsCharts());
-  }
-};
-
-export const SELECT_MONTHLY_COUNTY = 'avert/core/SELECT_MONTHLY_COUNTY';
-export const selectMonthlyCounty = (county) => {
-  return function (dispatch) {
-    dispatch({
-      type: SELECT_MONTHLY_COUNTY,
-      county: county,
-    });
-    dispatch(renderMonthlyEmissionsCharts());
-  }
-};
-
-export const RESET_MONTHLY_EMISSIONS = 'avert/core/RESET_MONTHLY_EMISSIONS';
-export const resetMonthlyEmissions = () => ({
-  type: RESET_MONTHLY_EMISSIONS,
-});
-
 export const INCREMENT_PROGRESS = 'avert/core/INCREMENT_PROGRESS';
 export const incrementProgress = () => ({ type: INCREMENT_PROGRESS });
 

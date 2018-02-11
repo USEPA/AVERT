@@ -1,14 +1,13 @@
-import { REQUEST_REGION_RDF, RECEIVE_REGION_DEFAULTS } from 'app/redux/rdfs';
-import { SUBMIT_EERE_CALCULATION, COMPLETE_EERE_CALCULATION } from 'app/redux/eere';
-
 import {
   INCREMENT_PROGRESS,
   START_DISPLACEMENT,
   RECEIVE_DISPLACEMENT,
-  COMPLETE_MONTHLY_EMISSIONS,
 } from 'app/actions';
 
 // action types
+import { REQUEST_REGION_RDF, RECEIVE_REGION_DEFAULTS } from 'app/redux/rdfs';
+import { SUBMIT_EERE_CALCULATION, COMPLETE_EERE_CALCULATION } from 'app/redux/eere';
+import { COMPLETE_MONTHLY_EMISSIONS } from 'app/redux/monthlyEmissions';
 const CHANGE_ACTIVE_STEP = 'panel/CHANGE_ACTIVE_STEP';
 const TOGGLE_MODAL_OVERLAY = 'panel/TOGGLE_MODAL_OVERLAY';
 const STORE_ACTIVE_MODAL = 'panel/STORE_ACTIVE_MODAL';

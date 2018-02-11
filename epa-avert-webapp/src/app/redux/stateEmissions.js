@@ -1,10 +1,10 @@
-// actions
-import { SELECT_REGION } from 'app/redux/regions';
-
 import {
   START_DISPLACEMENT,
-  COMPLETE_STATE_EMISSIONS,
 } from 'app/actions';
+
+// action types
+import { SELECT_REGION } from 'app/redux/regions';
+export const COMPLETE_STATE_EMISSIONS = 'stateEmissions/COMPLETE_STATE_EMISSIONS';
 
 // reducer
 const initialState = {
@@ -40,3 +40,8 @@ export default function reducer(state = initialState, action) {
       return state;
   }
 }
+
+export const completeStateEmissions = (data) => ({
+  type: COMPLETE_STATE_EMISSIONS,
+  data: data,
+});

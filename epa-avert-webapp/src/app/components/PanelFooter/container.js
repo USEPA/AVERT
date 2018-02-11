@@ -5,9 +5,9 @@ import PanelFooter from './index.js';
 import { setActiveStep } from 'app/redux/panel';
 import { fetchRegion } from 'app/redux/rdfs';
 import { resetEereInputs} from 'app/redux/eere';
+import { resetMonthlyEmissions } from 'app/redux/monthlyEmissions';
 import {
   calculateDisplacement,
-  resetMonthlyEmissions,
 } from 'app/actions';
 
 const mapStateToProps = (state) => ({

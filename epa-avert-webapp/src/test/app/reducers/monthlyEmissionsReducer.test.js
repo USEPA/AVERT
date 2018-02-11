@@ -1,20 +1,19 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import monthlyEmissionsReducer from 'app/redux/monthlyEmissions';
-import {
+import monthlyEmissionsReducer, {
+  RENDER_MONTHLY_EMISSIONS_CHARTS
   COMPLETE_MONTHLY_EMISSIONS,
+  SET_DOWNLOAD_DATA,
+  SELECT_MONTHLY_UNIT,
   SELECT_MONTHLY_STATE,
   SELECT_MONTHLY_COUNTY,
-  SELECT_MONTHLY_UNIT,
-  RENDER_MONTHLY_EMISSIONS_CHARTS,
-  SET_DOWNLOAD_DATA,
   renderMonthlyEmissionsCharts,
   completeMonthlyEmissions,
   selectMonthlyUnit,
   selectMonthlyState,
   selectMonthlyCounty,
-} from 'app/actions';
+} from 'app/redux/monthlyEmissions';
 
 const mockStore = configureMockStore([thunk]);
 

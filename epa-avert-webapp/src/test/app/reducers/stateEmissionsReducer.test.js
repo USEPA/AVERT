@@ -1,5 +1,6 @@
-import stateEmissionsReducer from 'app/redux/stateEmissions';
-import { COMPLETE_STATE_EMISSIONS } from 'app/actions';
+import stateEmissionsReducer, {
+  COMPLETE_STATE_EMISSIONS,
+} from 'app/redux/stateEmissions';
 
 describe('stateEmissionsReducer', () => {
   it('should return an initial state', () => {
