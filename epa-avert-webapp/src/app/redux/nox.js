@@ -1,5 +1,5 @@
-// engine
-import { avert } from 'app/actions';
+// engines
+import { avert } from 'app/engines';
 // action creators
 import { incrementProgress } from 'app/redux/annualDisplacement';
 

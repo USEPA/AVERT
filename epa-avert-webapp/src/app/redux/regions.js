@@ -1,5 +1,5 @@
-// engine
-import { avert } from 'app/actions';
+// engines
+import { avert } from 'app/engines';
 
 // action types
 export const SELECT_REGION = 'regions/SELECT_REGION';

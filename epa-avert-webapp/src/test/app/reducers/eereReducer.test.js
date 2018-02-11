@@ -1,11 +1,8 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { eereProfile } from 'app/actions';
-import eereReducer, {
-  RESET_EERE_INPUTS,
-  resetEereInputs,
-} from 'app/redux/eere';
+import { eereProfile  } from 'app/engines';
+import eereReducer, { RESET_EERE_INPUTS, resetEereInputs } from 'app/redux/eere';
 
 const mockStore = configureMockStore([thunk]);
 const store = mockStore();

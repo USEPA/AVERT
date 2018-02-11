@@ -1,5 +1,5 @@
-// engine
-import { avert, eereProfile } from 'app/actions';
+// engines
+import { avert, eereProfile  } from 'app/engines';
 
 // action types
 import { SET_EERE_LIMITS } from 'app/redux/rdfs';

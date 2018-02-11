@@ -1,5 +1,5 @@
-// engine
-import { avert, eereProfile } from 'app/actions';
+// engines
+import { avert, eereProfile  } from 'app/engines';
 
 // action types
 export const REQUEST_REGION_RDF = 'rdfs/REQUEST_REGION_RDF';
