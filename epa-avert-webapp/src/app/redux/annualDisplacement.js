@@ -221,7 +221,7 @@ export const receiveDisplacement = () => {
   };
 };
 
-export function calculateDisplacement() {
+export const calculateDisplacement = () => {
   return (dispatch) => {
     dispatch({ type: START_DISPLACEMENT });
     dispatch(incrementProgress());
@@ -235,4 +235,4 @@ export function calculateDisplacement() {
 
     dispatch(receiveDisplacement());
   }
-}
+};

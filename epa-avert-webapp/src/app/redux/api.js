@@ -1,6 +1,5 @@
 // action types
-const SET_BASE_URL = 'api/SET_BASE_URL';
-const SET_POLLING_FREQUENCY = 'api/SET_POLLING_FREQUENCY';
+export const SET_BASE_URL = 'api/SET_BASE_URL';
 
 // reducer
 const initialState = {
@@ -20,12 +19,6 @@ export default function reducer(state = initialState, action) {
         baseUrl: action.payload.url,
       };
 
-    case SET_POLLING_FREQUENCY:
-      return {
-        ...state,
-        pollingFrequency: action.payload.time,
-      };
-
     default:
       return state;
   }
@@ -36,12 +29,5 @@ export const setBaseUrl = (url) => ({
   type: SET_BASE_URL,
   payload: {
     url,
-  },
-});
-
-export const setPolingFrequency = (time) => ({
-  type: SET_BASE_URL,
-  payload: {
-    time,
   },
 });

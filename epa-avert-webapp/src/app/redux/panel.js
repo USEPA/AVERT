@@ -3,10 +3,10 @@ import { REQUEST_REGION_RDF, RECEIVE_REGION_DEFAULTS } from 'app/redux/rdfs';
 import { SUBMIT_EERE_CALCULATION, COMPLETE_EERE_CALCULATION } from 'app/redux/eere';
 import { COMPLETE_MONTHLY_EMISSIONS } from 'app/redux/monthlyEmissions';
 import { INCREMENT_PROGRESS, START_DISPLACEMENT, RECEIVE_DISPLACEMENT } from 'app/redux/annualDisplacement';
-const CHANGE_ACTIVE_STEP = 'panel/CHANGE_ACTIVE_STEP';
-const TOGGLE_MODAL_OVERLAY = 'panel/TOGGLE_MODAL_OVERLAY';
-const STORE_ACTIVE_MODAL = 'panel/STORE_ACTIVE_MODAL';
-const RESET_ACTIVE_MODAL = 'panel/RESET_ACTIVE_MODAL';
+export const CHANGE_ACTIVE_STEP = 'panel/CHANGE_ACTIVE_STEP';
+export const TOGGLE_MODAL_OVERLAY = 'panel/TOGGLE_MODAL_OVERLAY';
+export const STORE_ACTIVE_MODAL = 'panel/STORE_ACTIVE_MODAL';
+export const RESET_ACTIVE_MODAL = 'panel/RESET_ACTIVE_MODAL';
 
 // reducer
 const initialState = {
@@ -76,31 +76,23 @@ export default function reducer(state = initialState, action) {
 }
 
 // action creators
-export function setActiveStep(number) {
-  return {
-    type: CHANGE_ACTIVE_STEP,
-    payload: {
-      stepNumber: number,
-    },
-  };
-}
+export const setActiveStep = (stepNumber) => ({
+  type: CHANGE_ACTIVE_STEP,
+  payload: {
+    stepNumber: stepNumber,
+  },
+});
 
-export function toggleModalOverlay() {
-  return {
-    type: TOGGLE_MODAL_OVERLAY,
-  };
-}
+export const toggleModalOverlay = () => ({
+  type: TOGGLE_MODAL_OVERLAY,
+});
 
-export function storeActiveModal(activeModalId) {
-  return {
-    type: STORE_ACTIVE_MODAL,
-    activeModalId,
-  };
-}
+export const storeActiveModal = (modalId) => ({
+  type: STORE_ACTIVE_MODAL,
+  activeModalId: modalId,
+});
 
-export function resetActiveModal(activeModalId) {
-  return {
-    type: RESET_ACTIVE_MODAL,
-    activeModalId,
-  };
-}
+export const resetActiveModal = (modalId) => ({
+  type: RESET_ACTIVE_MODAL,
+  activeModalId: modalId,
+});

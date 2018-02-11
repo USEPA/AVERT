@@ -4,13 +4,13 @@ import { avert } from 'app/actions';
 import { incrementProgress } from 'app/redux/annualDisplacement';
 
 // action types
-const REQUEST_PM25 = 'pm25/REQUEST_PM25';
-const RECEIVE_PM25 = 'pm25/RECEIVE_PM25';
-const RECEIVE_JOB_ID = 'pm25/RECEIVE_JOB_ID';
-const POLL_SERVER_FOR_DATA = 'pm25/POLL_SERVER_FOR_DATA';
+export const REQUEST_PM25 = 'pm25/REQUEST_PM25';
+export const RECEIVE_PM25 = 'pm25/RECEIVE_PM25';
+export const RECEIVE_JOB_ID = 'pm25/RECEIVE_JOB_ID';
+export const POLL_SERVER_FOR_DATA = 'pm25/POLL_SERVER_FOR_DATA';
 
 // reducer
-export const initialState = {
+const initialState = {
   isFetching: false,
   jobId: 0,
   data: {},
@@ -43,7 +43,7 @@ export default function reducer(state = initialState, action) {
 }
 
 // action creators
-function pollServerForData() {
+export const pollServerForData = () => {
   return (dispatch, getState) => {
     const { api, pm25 } = getState();
 
@@ -67,9 +67,9 @@ function pollServerForData() {
         });
       });
   };
-}
+};
 
-export function fetchPm25() {
+export const fetchPm25 = () => {
   return (dispatch, getState) => {
     const { api } = getState();
 
@@ -97,4 +97,4 @@ export function fetchPm25() {
         dispatch(pollServerForData());
       });
   };
-}
+};
