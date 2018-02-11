@@ -2,7 +2,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import monthlyEmissionsReducer, {
-  RENDER_MONTHLY_EMISSIONS_CHARTS
+  RENDER_MONTHLY_EMISSIONS_CHARTS,
   COMPLETE_MONTHLY_EMISSIONS,
   SET_DOWNLOAD_DATA,
   SELECT_MONTHLY_UNIT,
