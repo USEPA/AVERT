@@ -1,6 +1,5 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import _ from 'lodash';
 
 import monthlyEmissionsReducer from 'app/redux/monthlyEmissions';
 import {
@@ -168,9 +167,9 @@ describe('monthlyEmissions', () => {
       const monthlyEmissions = {
         selectedAggregation: 'region',
         selectedUnit: 'emission',
-        emissionsRegionSo2: _.values(sampleData.so2),
-        emissionsRegionNox: _.values(sampleData.nox),
-        emissionsRegionCo2: _.values(sampleData.co2),
+        emissionsRegionSo2: Object.values(sampleData.so2),
+        emissionsRegionNox: Object.values(sampleData.nox),
+        emissionsRegionCo2: Object.values(sampleData.co2),
       };
       expect(
         renderMonthlyEmissionsCharts(monthlyEmissions)
@@ -185,12 +184,12 @@ describe('monthlyEmissions', () => {
       const monthlyEmissions = {
         selectedAggregation: 'region',
         selectedUnit: 'percent',
-        emissionsRegionSo2: _.values(badSampleData.so2),
-        emissionsRegionNox: _.values(badSampleData.nox),
-        emissionsRegionCo2: _.values(badSampleData.co2),
-        percentagesRegionSo2: _.values(sampleData.so2),
-        percentagesRegionNox: _.values(sampleData.nox),
-        percentagesRegionCo2: _.values(sampleData.co2),
+        emissionsRegionSo2: Object.values(badSampleData.so2),
+        emissionsRegionNox: Object.values(badSampleData.nox),
+        emissionsRegionCo2: Object.values(badSampleData.co2),
+        percentagesRegionSo2: Object.values(sampleData.so2),
+        percentagesRegionNox: Object.values(sampleData.nox),
+        percentagesRegionCo2: Object.values(sampleData.co2),
       };
       expect(
         renderMonthlyEmissionsCharts(monthlyEmissions)
@@ -206,12 +205,12 @@ describe('monthlyEmissions', () => {
         selectedAggregation: 'state',
         selectedUnit: 'emission',
         newSelectedState: 'Virginia',
-        emissionsRegionSo2: _.values(badSampleData.so2),
-        emissionsRegionNox: _.values(badSampleData.nox),
-        emissionsRegionCo2: _.values(badSampleData.co2),
-        newEmissionsStateSo2: { 'Virginia': _.values(goodSampleData.so2) },
-        newEmissionsStateNox: { 'Virginia': _.values(goodSampleData.nox) },
-        newEmissionsStateCo2: { 'Virginia': _.values(goodSampleData.co2) },
+        emissionsRegionSo2: Object.values(badSampleData.so2),
+        emissionsRegionNox: Object.values(badSampleData.nox),
+        emissionsRegionCo2: Object.values(badSampleData.co2),
+        newEmissionsStateSo2: { 'Virginia': Object.values(goodSampleData.so2) },
+        newEmissionsStateNox: { 'Virginia': Object.values(goodSampleData.nox) },
+        newEmissionsStateCo2: { 'Virginia': Object.values(goodSampleData.co2) },
       };
 
       expect(
@@ -239,12 +238,12 @@ describe('monthlyEmissions', () => {
         selectedAggregation: 'state',
         selectedUnit: 'percent',
         newSelectedState: 'Virginia',
-        newEmissionsStateSo2: { 'Virginia': _.values(badSampleData.so2) },
-        newEmissionsStateNox: { 'Virginia': _.values(badSampleData.nox) },
-        newEmissionsStateCo2: { 'Virginia': _.values(badSampleData.co2) },
-        newPercentagesStateSo2: { 'Virginia': _.values(goodSampleData.so2) },
-        newPercentagesStateNox: { 'Virginia': _.values(goodSampleData.nox) },
-        newPercentagesStateCo2: { 'Virginia': _.values(goodSampleData.co2) },
+        newEmissionsStateSo2: { 'Virginia': Object.values(badSampleData.so2) },
+        newEmissionsStateNox: { 'Virginia': Object.values(badSampleData.nox) },
+        newEmissionsStateCo2: { 'Virginia': Object.values(badSampleData.co2) },
+        newPercentagesStateSo2: { 'Virginia': Object.values(goodSampleData.so2) },
+        newPercentagesStateNox: { 'Virginia': Object.values(goodSampleData.nox) },
+        newPercentagesStateCo2: { 'Virginia': Object.values(goodSampleData.co2) },
       };
 
       expect(
@@ -274,15 +273,15 @@ describe('monthlyEmissions', () => {
         selectedUnit: 'emission',
         newSelectedState: 'Virginia',
         newSelectedCounty: 'Arlington County',
-        emissionsRegionSo2: _.values(badSampleData.so2),
-        emissionsRegionNox: _.values(badSampleData.nox),
-        emissionsRegionCo2: _.values(badSampleData.co2),
-        newEmissionsStateSo2: { 'Virginia': _.values(badSampleData2.so2) },
-        newEmissionsStateNox: { 'Virginia': _.values(badSampleData2.nox) },
-        newEmissionsStateCo2: { 'Virginia': _.values(badSampleData2.co2) },
-        newEmissionsCountySo2: { 'Virginia': { 'Arlington County': _.values(goodSampleData.so2) } },
-        newEmissionsCountyNox: { 'Virginia': { 'Arlington County': _.values(goodSampleData.nox) } },
-        newEmissionsCountyCo2: { 'Virginia': { 'Arlington County': _.values(goodSampleData.co2) } },
+        emissionsRegionSo2: Object.values(badSampleData.so2),
+        emissionsRegionNox: Object.values(badSampleData.nox),
+        emissionsRegionCo2: Object.values(badSampleData.co2),
+        newEmissionsStateSo2: { 'Virginia': Object.values(badSampleData2.so2) },
+        newEmissionsStateNox: { 'Virginia': Object.values(badSampleData2.nox) },
+        newEmissionsStateCo2: { 'Virginia': Object.values(badSampleData2.co2) },
+        newEmissionsCountySo2: { 'Virginia': { 'Arlington County': Object.values(goodSampleData.so2) } },
+        newEmissionsCountyNox: { 'Virginia': { 'Arlington County': Object.values(goodSampleData.nox) } },
+        newEmissionsCountyCo2: { 'Virginia': { 'Arlington County': Object.values(goodSampleData.co2) } },
       };
 
       expect(
@@ -322,12 +321,12 @@ describe('monthlyEmissions', () => {
         selectedUnit: 'percent',
         newSelectedState: 'Virginia',
         newSelectedCounty: 'Arlington County',
-        newEmissionsCountySo2: { 'Virginia': { 'Arlington County': _.values(badSampleData.so2) } },
-        newEmissionsCountyNox: { 'Virginia': { 'Arlington County': _.values(badSampleData.nox) } },
-        newEmissionsCountyCo2: { 'Virginia': { 'Arlington County': _.values(badSampleData.co2) } },
-        newPercentagesCountySo2: { 'Virginia': { 'Arlington County': _.values(goodSampleData.so2) } },
-        newPercentagesCountyNox: { 'Virginia': { 'Arlington County': _.values(goodSampleData.nox) } },
-        newPercentagesCountyCo2: { 'Virginia': { 'Arlington County': _.values(goodSampleData.co2) } },
+        newEmissionsCountySo2: { 'Virginia': { 'Arlington County': Object.values(badSampleData.so2) } },
+        newEmissionsCountyNox: { 'Virginia': { 'Arlington County': Object.values(badSampleData.nox) } },
+        newEmissionsCountyCo2: { 'Virginia': { 'Arlington County': Object.values(badSampleData.co2) } },
+        newPercentagesCountySo2: { 'Virginia': { 'Arlington County': Object.values(goodSampleData.so2) } },
+        newPercentagesCountyNox: { 'Virginia': { 'Arlington County': Object.values(goodSampleData.nox) } },
+        newPercentagesCountyCo2: { 'Virginia': { 'Arlington County': Object.values(goodSampleData.co2) } },
       };
 
       expect(
@@ -353,9 +352,9 @@ describe('monthlyEmissions', () => {
       const store = mockStore({ monthlyEmissions: {
         selectedAggregation: 'region',
         selectedUnit: 'emission',
-        emissionsRegionSo2: _.values(sampleData.so2),
-        emissionsRegionNox: _.values(sampleData.nox),
-        emissionsRegionCo2: _.values(sampleData.co2),
+        emissionsRegionSo2: Object.values(sampleData.so2),
+        emissionsRegionNox: Object.values(sampleData.nox),
+        emissionsRegionCo2: Object.values(sampleData.co2),
       }});
 
       const expectedActions = [
@@ -373,9 +372,9 @@ describe('monthlyEmissions', () => {
       const store = mockStore({ monthlyEmissions: {
         selectedAggregation: 'region',
         selectedUnit: 'emission',
-        emissionsRegionSo2: _.values(sampleData.so2),
-        emissionsRegionNox: _.values(sampleData.nox),
-        emissionsRegionCo2: _.values(sampleData.co2),
+        emissionsRegionSo2: Object.values(sampleData.so2),
+        emissionsRegionNox: Object.values(sampleData.nox),
+        emissionsRegionCo2: Object.values(sampleData.co2),
       }});
       const expectedActions = [
         { type: SELECT_MONTHLY_UNIT, unit: 'emissions' },
@@ -391,9 +390,9 @@ describe('monthlyEmissions', () => {
       const store = mockStore({ monthlyEmissions: {
         selectedAggregation: 'region',
         selectedUnit: 'emission',
-        emissionsRegionSo2: _.values(sampleData.so2),
-        emissionsRegionNox: _.values(sampleData.nox),
-        emissionsRegionCo2: _.values(sampleData.co2),
+        emissionsRegionSo2: Object.values(sampleData.so2),
+        emissionsRegionNox: Object.values(sampleData.nox),
+        emissionsRegionCo2: Object.values(sampleData.co2),
       }});
       const expectedActions = [
         { type: SELECT_MONTHLY_COUNTY, county: 'Montgomery County' },
