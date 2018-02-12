@@ -15,37 +15,44 @@ type Props = {
   onToggleModalOverlay: () => void,
 };
 
-const Tooltip = (props: Props) => {
-  const activeState = props.activeModalId === props.id;
-  const modalClosing = props.closingModalId === props.id;
+class Tooltip extends React.Component<Props> {
+  modalClose: ?HTMLAnchorElement;
 
-  return (
-    <span>
-      <a href='' className='avert-modal-link'
-        onClick={(event) => {
-          event.preventDefault();
-          props.onStoreActiveModal(props.id);
-          props.onToggleModalOverlay();
-        }}
-      >info</a>
+  componentDidUpdate() {
+    if (this.modalClose) this.modalClose.focus();
+  }
 
-      <span className='avert-modal'
-        data-modal-id={props.id}
-        data-active={activeState}
-        data-closing={modalClosing}
-      >
-        <a href='' className='avert-modal-close'
+  render() {
+    return (
+      <span>
+        <a href='' className='avert-modal-link'
           onClick={(event) => {
             event.preventDefault();
-            props.onResetActiveModal(props.id);
-            props.onToggleModalOverlay();
+            this.props.onStoreActiveModal(this.props.id);
+            this.props.onToggleModalOverlay();
           }}
-        >×</a>
+        >info</a>
 
-        {props.children}
+        <span className='avert-modal'
+          data-modal-id={this.props.id}
+          data-active={this.props.activeModalId === this.props.id}
+          data-closing={this.props.closingModalId === this.props.id}
+        >
+          <a className='avert-modal-close'
+            href=''
+            ref={(ref) => this.modalClose = ref}
+            onClick={(event) => {
+              event.preventDefault();
+              this.props.onResetActiveModal(this.props.id);
+              this.props.onToggleModalOverlay();
+            }}
+          >×</a>
+
+          {this.props.children}
+        </span>
       </span>
-    </span>
-  );
-};
+    );
+  }
+}
 
 export default Tooltip;
