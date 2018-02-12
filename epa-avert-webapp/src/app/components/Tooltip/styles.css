@@ -82,7 +82,8 @@
   opacity: 0.25;
 }
 
-.avert-modal .avert-modal-close:hover {
+.avert-modal .avert-modal-close:hover,
+.avert-modal .avert-modal-close:focus {
   opacity: 0.75;
 }
 
