@@ -5,15 +5,10 @@
 1) Edit 'index.html':
    Move details-polyfill.js script to be last element inside HTML body
 
-2) Edit 'static/css/main.*.css':
-   Change all background-image url paths containing 'icons.*.svg' to be
-   relative from current css directory, so Koa will serve them properly
-   ('./static/media/icons.*.svg' -> '../media/icons.*.svg')
-
-3) Copy and replace entire 'build' directory contents into 'public'
+2) Copy and replace entire 'build' directory contents into 'public'
    directory in 'epa-avert-webservice/app' directory
 
-4) Redeploy updated 'epa-avert-webservice' app to Cloud.gov:
+3) Redeploy updated 'epa-avert-webservice' app to Cloud.gov:
    cf push
 
 --------------------------------------------------------------------------------
