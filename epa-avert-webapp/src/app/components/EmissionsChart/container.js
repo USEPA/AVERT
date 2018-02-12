@@ -10,12 +10,12 @@ import {
 } from 'app/redux/monthlyEmissions';
 
 const mapStateToProps = (state) => ({
-  selectedRegionId: state.regions.region,
   monthlyStatus: state.monthlyEmissions.status,
   aggregation: state.monthlyEmissions.aggregation,
   unit: state.monthlyEmissions.unit,
   availableStates: state.monthlyEmissions.availableStates,
   availableCounties: state.monthlyEmissions.availableCounties,
+  selectedRegion: state.regions.name,
   selectedState: state.monthlyEmissions.selectedState,
   selectedCounty: state.monthlyEmissions.selectedCounty,
   output: state.monthlyEmissions.output,

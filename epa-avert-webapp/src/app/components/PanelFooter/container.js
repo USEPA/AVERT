@@ -10,7 +10,7 @@ import { calculateDisplacement } from 'app/redux/annualDisplacement';
 
 const mapStateToProps = (state) => ({
   activeStep: state.panel.activeStep,
-  region: state.regions.region,
+  regionId: state.regions.id,
   eereStatus: state.eere.status,
   hardValid: state.eere.hardValid,
 });

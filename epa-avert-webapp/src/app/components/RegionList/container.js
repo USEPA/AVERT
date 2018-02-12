@@ -5,7 +5,7 @@ import RegionList from './index.js';
 import { selectRegion } from 'app/redux/regions';
 
 const mapStateToProps = (state) => ({
-  selectedRegion: state.regions.region,
+  selectedRegion: state.regions.id,
 });
 
 const mapDispatchToProps = (dispatch) => ({

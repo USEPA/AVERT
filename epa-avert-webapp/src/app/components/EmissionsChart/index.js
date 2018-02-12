@@ -4,7 +4,6 @@
 import React from 'react';
 import Highcharts from 'react-highcharts';
 // enums
-import Regions from 'app/enums/Regions';
 import States from 'app/enums/States';
 // styles
 import './styles.css';
@@ -12,12 +11,12 @@ import './styles.css';
 type Props = {
   heading: string,
   // redux connected props
-  selectedRegionId: number,
   monthlyStatus: string,
   aggregation: 'region' | 'state' | 'county',
   unit: 'emissions' | 'percentages',
   availableStates: Array<string>,
   availableCounties: Array<string>,
+  selectedRegion: string,
   selectedState: string,
   selectedCounty: string,
   output: {
@@ -35,12 +34,12 @@ type Props = {
 const EmissionsChart = (props: Props) => {
   const {
     heading,
-    selectedRegionId,
     monthlyStatus,
     aggregation,
     unit,
     availableStates,
     availableCounties,
+    selectedRegion,
     selectedState,
     selectedCounty,
     output,
@@ -229,11 +228,7 @@ const EmissionsChart = (props: Props) => {
 
   let location;
   if (aggregation === 'region') {
-    //$FlowFixMe: https://github.com/facebook/flow/issues/2221
-    const region = Object.values(Regions).find(r => r.id === selectedRegionId);
-    //$FlowFixMe: https://github.com/facebook/flow/issues/2221
-    const regionName = (region) ? region.label : 'Unspecified';
-    location = `${regionName} Region`;
+    location = `${selectedRegion} Region`;
   }
   if (aggregation === 'state') {
     location = (selectedState === '')
