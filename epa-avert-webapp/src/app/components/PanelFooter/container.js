@@ -12,7 +12,7 @@ const mapStateToProps = (state) => ({
   activeStep: state.panel.activeStep,
   region: state.regions.region,
   eereStatus: state.eere.status,
-  hardValid: state.eere.hard_valid,
+  hardValid: state.eere.hardValid,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -30,15 +30,13 @@ describe('eereReducer', () => {
     status: 'ready',
     hourlyEere: [],
 
-    soft_valid: true,
-    soft_exceedances: [],
-    soft_top_exceedance_value: 0,
-    soft_top_exceedance_timestamp: {},
+    softValid: true,
+    softTopExceedanceValue: 0,
+    softTopExceedanceTimestamp: {},
 
-    hard_valid: true,
-    hard_exceedances: [],
-    hard_top_exceedance_value: 0,
-    hard_top_exceedance_timestamp: {},
+    hardValid: true,
+    hardTopExceedanceValue: 0,
+    hardTopExceedanceTimestamp: {},
   }
 
   it('should return an initial state', () => {

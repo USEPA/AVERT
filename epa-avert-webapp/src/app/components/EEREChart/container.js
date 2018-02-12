@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import EEREChart from './index.js';
 
 const mapStateToProps = (state) => ({
-  softValid: state.eere.soft_valid,
-  softTopExceedanceTimestamp: state.eere.soft_top_exceedance_timestamp,
-  softTopExceedance: state.eere.soft_top_exceedance_value,
-  hardValid: state.eere.hard_valid,
-  hardTopExceedanceTimestamp: state.eere.hard_top_exceedance_timestamp,
-  hardTopExceedance: state.eere.hard_top_exceedance_value,
+  softValid: state.eere.softValid,
+  softTopExceedanceTimestamp: state.eere.softTopExceedanceTimestamp,
+  softTopExceedance: state.eere.softTopExceedanceValue,
+  hardValid: state.eere.hardValid,
+  hardTopExceedanceTimestamp: state.eere.hardTopExceedanceTimestamp,
+  hardTopExceedance: state.eere.hardTopExceedanceValue,
   hourlyEere: state.eere.hourlyEere,
 });
 

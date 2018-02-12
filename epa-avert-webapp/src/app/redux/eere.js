@@ -40,15 +40,13 @@ const initialState = {
   status: 'ready',
   hourlyEere: [],
 
-  soft_valid: true,
-  soft_exceedances: [],
-  soft_top_exceedance_value: 0,
-  soft_top_exceedance_timestamp: {},
+  softValid: true,
+  softTopExceedanceValue: 0,
+  softTopExceedanceTimestamp: {},
 
-  hard_valid: true,
-  hard_exceedances: [],
-  hard_top_exceedance_value: 0,
-  hard_top_exceedance_timestamp: {},
+  hardValid: true,
+  hardTopExceedanceValue: 0,
+  hardTopExceedanceTimestamp: {},
 };
 
 export default function reducer(state = initialState, action) {
@@ -131,15 +129,13 @@ export default function reducer(state = initialState, action) {
     case UPDATE_EXCEEDANCES:
       return {
         ...state,
-        soft_valid: action.payload.softValid,
-        soft_exceedances: action.payload.soft_exceedances,
-        soft_top_exceedance_value: action.payload.softMaxVal,
-        soft_top_exceedance_timestamp: action.payload.softTimestamp,
+        softValid: action.payload.softValid,
+        softTopExceedanceValue: action.payload.softMaxVal,
+        softTopExceedanceTimestamp: action.payload.softTimestamp,
 
-        hard_valid: action.payload.hardValid,
-        hard_exceedances: action.payload.hard_exceedances,
-        hard_top_exceedance_value: action.payload.hardMaxVal,
-        hard_top_exceedance_timestamp: action.payload.hardTimestamp,
+        hardValid: action.payload.hardValid,
+        hardTopExceedanceValue: action.payload.hardMaxVal,
+        hardTopExceedanceTimestamp: action.payload.hardTimestamp,
       };
 
     case RESET_EERE_INPUTS:
@@ -281,9 +277,6 @@ export const updateExceedances = (soft, hard) => {
     return dispatch({
       type: UPDATE_EXCEEDANCES,
       payload: {
-        soft_exceedances: soft,
-        hard_exceedances: hard,
-
         softValid: softValid,
         softMaxVal: softMaxVal,
         softTimestamp: softTimestamp,
