@@ -15,18 +15,18 @@ import {
 } from 'app/redux/eere';
 
 const mapStateToProps = (state) => ({
-  limits: state.eere.limits,
-  errors: state.eere.errors,
+  status: state.eere.status,
   valid: state.eere.valid,
-  constantMwh: state.eere.constantMwh,
-  annualGwh: state.eere.annualGwh,
-  broadProgram: state.eere.broadProgram,
-  reduction: state.eere.reduction,
-  topHours: state.eere.topHours,
-  windCapacity: state.eere.windCapacity,
-  utilitySolar: state.eere.utilitySolar,
-  rooftopSolar: state.eere.rooftopSolar,
-  eereStatus: state.eere.status,
+  errors: state.eere.errors,
+  constantMwh: state.eere.inputs.constantMwh,
+  annualGwh: state.eere.inputs.annualGwh,
+  broadProgram: state.eere.inputs.broadProgram,
+  reduction: state.eere.inputs.reduction,
+  topHours: state.eere.inputs.topHours,
+  windCapacity: state.eere.inputs.windCapacity,
+  utilitySolar: state.eere.inputs.utilitySolar,
+  rooftopSolar: state.eere.inputs.rooftopSolar,
+  limits: state.eere.limits,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -63,10 +63,7 @@ export const fetchRegion = () => {
           payload: { limits: eereProfile.limits },
         });
 
-        dispatch({
-          type: REQUEST_REGION_DEFAULTS,
-          region: avert.regionSlug,
-        });
+        dispatch({ type: REQUEST_REGION_DEFAULTS });
 
         // fetch eere data for region
         fetch(`${api.baseUrl}/api/v1/eere/${avert.regionSlug}`)

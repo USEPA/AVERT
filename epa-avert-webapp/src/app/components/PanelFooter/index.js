@@ -9,7 +9,7 @@ type Props = {
   nextButtonText: string,
   // redux connected props
   activeStep: number,
-  region: number,
+  regionId: number,
   eereStatus: string,
   hardValid: boolean,
   onSetActiveStep: (number) => void,
@@ -58,11 +58,11 @@ const PanelFooter = (props: Props) => {
   // conditionally define reset class, if on last panel
   const resetClass = onStepThree ? 'avert-reset-button' : '';
 
-  const noRegionSelected = onStepOne && props.region === 0;
+  const noRegionSelected = onStepOne && props.regionId === 0;
   const calculationRunning = onStepTwo && props.eereStatus !== 'complete';
-  const validationFailed = onStepTwo && !props.hardValid;
+  const exceedsHardValidationLimit = onStepTwo && !props.hardValid;
 
-  const disabledClass = (noRegionSelected || calculationRunning || validationFailed)
+  const disabledClass = (noRegionSelected || calculationRunning || exceedsHardValidationLimit)
     ? 'avert-button-disabled'
     : '';
 

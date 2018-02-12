@@ -8,13 +8,10 @@ import Tooltip from 'app/components/Tooltip/container.js';
 import './styles.css';
 
 type Props = {
-  limits: {
-    annualGwh: boolean | number,
-    constantMwh: boolean | number,
-    renewables: boolean | number,
-  },
-  errors: Array<string>,
+  // redux connected props
+  status: string,
   valid: boolean,
+  errors: Array<string>,
   constantMwh: string,
   annualGwh: string,
   broadProgram: string,
@@ -23,7 +20,11 @@ type Props = {
   windCapacity: string,
   utilitySolar: string,
   rooftopSolar: string,
-  eereStatus: string,
+  limits: {
+    annualGwh: boolean | number,
+    constantMwh: boolean | number,
+    renewables: boolean | number,
+  },
   onConstantMwChange: (string) => void,
   onAnnualGwhChange: (string) => void,
   onBroadBasedProgramChange: (string) => void,
@@ -37,9 +38,9 @@ type Props = {
 
 const EEREInputs = (props: Props) => {
   const {
-    limits,
-    errors,
+    status,
     valid,
+    errors,
     constantMwh,
     annualGwh,
     broadProgram,
@@ -48,7 +49,7 @@ const EEREInputs = (props: Props) => {
     windCapacity,
     utilitySolar,
     rooftopSolar,
-    eereStatus,
+    limits,
     onConstantMwChange,
     onAnnualGwhChange,
     onBroadBasedProgramChange,
@@ -83,11 +84,11 @@ const EEREInputs = (props: Props) => {
     }
   };
 
-  // input values from props (connected to Redux store)
-  const inputsValues = [constantMwh, annualGwh, broadProgram, reduction, topHours, windCapacity, utilitySolar, rooftopSolar];
-  const inputsAreEmpty = inputsValues.filter(field => field.length > 0).length === 0;
+  // text input values from fields
+  const inputsFields = [constantMwh, annualGwh, broadProgram, reduction, topHours, windCapacity, utilitySolar, rooftopSolar];
+  const inputsAreEmpty = inputsFields.filter(field => field.length > 0).length === 0;
 
-  const disabledClass = (!valid || inputsAreEmpty || eereStatus === 'started')
+  const disabledClass = (!valid || inputsAreEmpty || status === 'started')
     ? ' avert-button-disabled'
     : '';
 
@@ -265,7 +266,7 @@ const EEREInputs = (props: Props) => {
             valid && onCalculateProfile();
           }}
         >
-          {eereButtonOptions[eereStatus]}
+          {eereButtonOptions[status]}
         </a>
       </p>
     </div>

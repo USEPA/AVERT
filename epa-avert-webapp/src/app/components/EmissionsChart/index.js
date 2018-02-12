@@ -4,7 +4,6 @@
 import React from 'react';
 import Highcharts from 'react-highcharts';
 // enums
-import Regions from 'app/enums/Regions';
 import States from 'app/enums/States';
 // styles
 import './styles.css';
@@ -13,19 +12,19 @@ type Props = {
   heading: string,
   // redux connected props
   monthlyStatus: string,
+  aggregation: 'region' | 'state' | 'county',
+  unit: 'emissions' | 'percentages',
+  availableStates: Array<string>,
+  availableCounties: Array<string>,
+  selectedRegion: string,
+  selectedState: string,
+  selectedCounty: string,
   output: {
     so2: Array<number>,
     nox: Array<number>,
     co2: Array<number>,
     pm25: Array<number>,
   },
-  aggregation: 'region' | 'state' | 'county',
-  unit: 'emission' | 'percent',
-  selectedRegionId: number,
-  availableStates: Array<string>,
-  availableCounties: Array<string>,
-  selectedState: string,
-  selectedCounty: string,
   onAggregationChange: (string) => void,
   onUnitChange: (string) => void,
   selectState: (string) => void,
@@ -36,14 +35,14 @@ const EmissionsChart = (props: Props) => {
   const {
     heading,
     monthlyStatus,
-    output,
     aggregation,
     unit,
-    selectedRegionId,
     availableStates,
     availableCounties,
+    selectedRegion,
     selectedState,
     selectedCounty,
+    output,
     onAggregationChange,
     onUnitChange,
     selectState,
@@ -166,8 +165,8 @@ const EmissionsChart = (props: Props) => {
           <input
             type='radio'
             name='unit'
-            value={'emission'}
-            checked={unit === 'emission'}
+            value={'emissions'}
+            checked={unit === 'emissions'}
             onChange={(e) => onUnitChange(e.target.value)}
           />
           Emission changes (lbs or tons)
@@ -177,8 +176,8 @@ const EmissionsChart = (props: Props) => {
           <input
             type='radio'
             name='unit'
-            value={'percent'}
-            checked={unit === 'percent'}
+            value={'percentages'}
+            checked={unit === 'percentages'}
             onChange={(e) => onUnitChange(e.target.value)}
           />
           Percent change
@@ -229,11 +228,7 @@ const EmissionsChart = (props: Props) => {
 
   let location;
   if (aggregation === 'region') {
-    //$FlowFixMe: https://github.com/facebook/flow/issues/2221
-    const region = Object.values(Regions).find(r => r.id === selectedRegionId);
-    //$FlowFixMe: https://github.com/facebook/flow/issues/2221
-    const regionName = (region) ? region.label : 'Unspecified';
-    location = `${regionName} Region`;
+    location = `${selectedRegion} Region`;
   }
   if (aggregation === 'state') {
     location = (selectedState === '')

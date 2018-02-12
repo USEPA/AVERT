@@ -26,7 +26,7 @@ export default function reducer(state = initialState, action) {
 // action creators
 export const startDataDownload = () => {
   return (dispatch, getState) => {
-    const { monthlyEmissions } = getState();
+    const { monthlyEmissions, regions } = getState();
 
     const data = monthlyEmissions.downloadableData;
     const fields = Object.keys(data[0]);
@@ -34,7 +34,7 @@ export const startDataDownload = () => {
     try {
       const csv = json2csv({ fields, data });
       const blob = new Blob([csv], { type: 'text/plain:charset=utf-8' });
-      FileSaver.saveAs(blob, 'AVERT Monthly Emissions.csv');
+      FileSaver.saveAs(blob, `AVERT Monthly Emissions (${regions.name} Region).csv`);
     } catch (e) {
       console.error(e);
     }

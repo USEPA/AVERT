@@ -11,14 +11,14 @@ import {
 
 const mapStateToProps = (state) => ({
   monthlyStatus: state.monthlyEmissions.status,
-  output: state.monthlyEmissions.visibleData,
-  aggregation: state.monthlyEmissions.selectedAggregation,
-  unit: state.monthlyEmissions.selectedUnit,
-  selectedRegionId: state.regions.region,
-  availableStates: state.monthlyEmissions.states,
-  availableCounties: state.monthlyEmissions.visibleCounties,
+  aggregation: state.monthlyEmissions.aggregation,
+  unit: state.monthlyEmissions.unit,
+  availableStates: state.monthlyEmissions.availableStates,
+  availableCounties: state.monthlyEmissions.availableCounties,
+  selectedRegion: state.region.name,
   selectedState: state.monthlyEmissions.selectedState,
   selectedCounty: state.monthlyEmissions.selectedCounty,
+  output: state.monthlyEmissions.output,
 });
 
 const mapDispatchToProps = (dispatch) => ({

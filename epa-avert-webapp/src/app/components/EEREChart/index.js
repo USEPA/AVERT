@@ -41,11 +41,11 @@ type Props = {
   heading: string,
   // redux connected props
   softValid: boolean,
+  softTopExceedanceValue: number,
   softTopExceedanceTimestamp: Timestamp,
-  softTopExceedance: number,
   hardValid: boolean,
+  hardTopExceedanceValue: number,
   hardTopExceedanceTimestamp: Timestamp,
-  hardTopExceedance: number,
   hourlyEere: Array<Eere>,
 };
 
@@ -158,18 +158,17 @@ const EEREChart = (props: Props) => {
   const ValidationMessage = (type) => {
     let x = {};
     if (type === 'error') {
-      x.timestamp = props.hardTopExceedanceTimestamp;
-      x.exceedence = props.hardTopExceedance;
       x.heading = 'ERROR';
       x.threshold = '30';
+      x.value = props.hardTopExceedanceValue;
+      x.timestamp = props.hardTopExceedanceTimestamp;
     }
     if (type === 'warning') {
-      x.timestamp = props.softTopExceedanceTimestamp;
-      x.exceedence = props.softTopExceedance;
       x.heading = 'WARNING';
       x.threshold = '15';
+      x.value = props.softTopExceedanceValue;
+      x.timestamp = props.softTopExceedanceTimestamp;
     }
-
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const month = months[x.timestamp.month - 1];
     const day = x.timestamp.day;
@@ -182,7 +181,7 @@ const EEREChart = (props: Props) => {
         The combined impact of your proposed programs would displace more than
         {' '}<strong>{x.threshold}%</strong>{' '}
         of regional fossil generation in at least one hour of the year. (Maximum value:
-        {' '}<strong>{formatNumber(x.exceedence)}</strong>% on
+        {' '}<strong>{formatNumber(x.value)}</strong>% on
         {' '}<strong>{month} {day} at {hour}:00 {ampm}</strong>).
         The recommended limit for AVERT is 15%, as AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics. Please reduce one or more of your inputs to ensure more reliable results.
       </p>

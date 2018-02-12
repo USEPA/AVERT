@@ -1,12 +1,15 @@
 // engines
 import { avert } from 'app/engines';
+// enums
+import Regions from 'app/enums/Regions';
 
 // action types
-export const SELECT_REGION = 'regions/SELECT_REGION';
+export const SELECT_REGION = 'region/SELECT_REGION';
 
 // reducer
 const initialState = {
-  region: 0,
+  id: 0,
+  name: '',
 };
 
 export default function reducer(state = initialState, action) {
@@ -14,7 +17,8 @@ export default function reducer(state = initialState, action) {
     case SELECT_REGION:
       return {
         ...state,
-        region: action.region,
+        id: action.payload.id,
+        name: action.payload.name,
       };
 
     default:
@@ -27,9 +31,14 @@ export const selectRegion = (regionId) => {
   return (dispatch) => {
     avert.region = regionId;
 
+    const region = Object.values(Regions).find(r => r.id === regionId);
+
     dispatch({
       type: SELECT_REGION,
-      region: regionId,
+      payload: {
+        id: regionId,
+        name: (region) ? region.label : '',
+      },
     });
   };
 };
