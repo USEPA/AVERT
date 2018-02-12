@@ -47,14 +47,6 @@ const initialState = {
     topExceedanceValue: 0,
     topExceedanceTimestamp: {},
   },
-
-  // softValid: true,
-  // softTopExceedanceValue: 0,
-  // softTopExceedanceTimestamp: {},
-  // hardValid: true,
-  // hardTopExceedanceValue: 0,
-  // hardTopExceedanceTimestamp: {},
-
   hourlyEere: [],
 };
 

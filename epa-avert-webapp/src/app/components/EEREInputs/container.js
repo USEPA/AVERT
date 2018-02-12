@@ -16,9 +16,8 @@ import {
 
 const mapStateToProps = (state) => ({
   status: state.eere.status,
-  limits: state.eere.limits,
-  errors: state.eere.errors,
   valid: state.eere.valid,
+  errors: state.eere.errors,
   constantMwh: state.eere.inputs.constantMwh,
   annualGwh: state.eere.inputs.annualGwh,
   broadProgram: state.eere.inputs.broadProgram,
@@ -27,6 +26,7 @@ const mapStateToProps = (state) => ({
   windCapacity: state.eere.inputs.windCapacity,
   utilitySolar: state.eere.inputs.utilitySolar,
   rooftopSolar: state.eere.inputs.rooftopSolar,
+  limits: state.eere.limits,
 });
 
 const mapDispatchToProps = (dispatch) => ({

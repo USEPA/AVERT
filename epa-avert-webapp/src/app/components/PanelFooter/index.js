@@ -60,9 +60,9 @@ const PanelFooter = (props: Props) => {
 
   const noRegionSelected = onStepOne && props.regionId === 0;
   const calculationRunning = onStepTwo && props.eereStatus !== 'complete';
-  const validationFailed = onStepTwo && !props.hardValid;
+  const exceedsHardValidationLimit = onStepTwo && !props.hardValid;
 
-  const disabledClass = (noRegionSelected || calculationRunning || validationFailed)
+  const disabledClass = (noRegionSelected || calculationRunning || exceedsHardValidationLimit)
     ? 'avert-button-disabled'
     : '';
 

@@ -10,13 +10,8 @@ import './styles.css';
 type Props = {
   // redux connected props
   status: string,
-  limits: {
-    annualGwh: boolean | number,
-    constantMwh: boolean | number,
-    renewables: boolean | number,
-  },
-  errors: Array<string>,
   valid: boolean,
+  errors: Array<string>,
   constantMwh: string,
   annualGwh: string,
   broadProgram: string,
@@ -25,6 +20,11 @@ type Props = {
   windCapacity: string,
   utilitySolar: string,
   rooftopSolar: string,
+  limits: {
+    annualGwh: boolean | number,
+    constantMwh: boolean | number,
+    renewables: boolean | number,
+  },
   onConstantMwChange: (string) => void,
   onAnnualGwhChange: (string) => void,
   onBroadBasedProgramChange: (string) => void,
@@ -39,9 +39,8 @@ type Props = {
 const EEREInputs = (props: Props) => {
   const {
     status,
-    limits,
-    errors,
     valid,
+    errors,
     constantMwh,
     annualGwh,
     broadProgram,
@@ -50,6 +49,7 @@ const EEREInputs = (props: Props) => {
     windCapacity,
     utilitySolar,
     rooftopSolar,
+    limits,
     onConstantMwChange,
     onAnnualGwhChange,
     onBroadBasedProgramChange,
