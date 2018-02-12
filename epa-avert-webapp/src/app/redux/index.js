@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 // reducers
-import regions from 'app/redux/regions';
+import region from 'app/redux/region';
 import panel from 'app/redux/panel';
 import api from 'app/redux/api';
 import rdfs from 'app/redux/rdfs';
@@ -16,7 +16,7 @@ import monthlyEmissions from 'app/redux/monthlyEmissions';
 import dataDownload from 'app/redux/dataDownload';
 
 export default combineReducers({
-  regions,
+  region,
   panel,
   api,
   rdfs,

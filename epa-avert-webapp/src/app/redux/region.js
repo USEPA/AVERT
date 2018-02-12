@@ -4,7 +4,7 @@ import { avert } from 'app/engines';
 import Regions from 'app/enums/Regions';
 
 // action types
-export const SELECT_REGION = 'regions/SELECT_REGION';
+export const SELECT_REGION = 'region/SELECT_REGION';
 
 // reducer
 const initialState = {

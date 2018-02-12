@@ -15,7 +15,7 @@ const mapStateToProps = (state) => ({
   unit: state.monthlyEmissions.unit,
   availableStates: state.monthlyEmissions.availableStates,
   availableCounties: state.monthlyEmissions.availableCounties,
-  selectedRegion: state.regions.name,
+  selectedRegion: state.region.name,
   selectedState: state.monthlyEmissions.selectedState,
   selectedCounty: state.monthlyEmissions.selectedCounty,
   output: state.monthlyEmissions.output,

@@ -2,10 +2,10 @@ import { connect } from 'react-redux';
 // components
 import Region from './index.js';
 // actions
-import { selectRegion } from 'app/redux/regions';
+import { selectRegion } from 'app/redux/region';
 
 const mapStateToProps = (state) => ({
-  selectedRegion: state.regions.id,
+  selectedRegion: state.region.id,
 });
 
 const mapDispatchToProps = (dispatch) => ({

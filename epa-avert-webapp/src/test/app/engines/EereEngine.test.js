@@ -10,7 +10,7 @@ import rdfFile from 'test/data/rdf_NE_2016.json';
 import defaultsFile from 'test/data/eere-defaults-northeast.json';
 
 describe('EERE Engine', () => {
-  let region = Region['NORTHEAST'];
+  let region = Region.NORTHEAST;
   let rdf = new Rdf({ rdf: rdfFile, defaults: defaultsFile, });
   let eereProfile = new EereProfile();
   eereProfile.limits = {

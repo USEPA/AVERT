@@ -1,5 +1,5 @@
 // action types
-import { SELECT_REGION } from 'app/redux/regions';
+import { SELECT_REGION } from 'app/redux/region';
 import { START_DISPLACEMENT } from 'app/redux/annualDisplacement';
 export const COMPLETE_STATE_EMISSIONS = 'stateEmissions/COMPLETE_STATE_EMISSIONS';
 

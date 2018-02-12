@@ -8,7 +8,7 @@ import { fetchCo2 } from 'app/redux/co2';
 import { fetchPm25 } from 'app/redux/pm25';
 
 // actions types
-import { SELECT_REGION } from 'app/redux/regions';
+import { SELECT_REGION } from 'app/redux/region';
 export const INCREMENT_PROGRESS = 'annualDisplacement/INCREMENT_PROGRESS';
 export const RECEIVE_DISPLACEMENT = 'annualDisplacement/RECEIVE_DISPLACEMENT';
 export const START_DISPLACEMENT = 'annualDisplacement/START_DISPLACEMENT';
