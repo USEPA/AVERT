@@ -23,11 +23,12 @@ describe('monthlyEmissions', () => {
       expect(monthlyEmissionsReducer(undefined, {}))
       .toEqual({
         status: 'select_region',
-        selectedAggregation: 'region',
+        aggregation: 'region',
         selectedState: '',
         selectedCounty: '',
-        selectedUnit: 'emission',
-        rawData: {},
+        unit: 'emissions',
+        data: {},
+
         emissionsRegionSo2: [],
         emissionsRegionNox: [],
         emissionsRegionCo2: [],
@@ -52,10 +53,11 @@ describe('monthlyEmissions', () => {
         percentagesCountiesNox: {},
         percentagesCountiesCo2: {},
         percentagesCountiesPm25: {},
-        states: [],
+
+        availableStates: [],
         counties: {},
         visibleCounties: [],
-        visibleData: {
+        output: {
           so2: [], nox: [], co2: [], pm25: [],
         },
         downloadableData: [],
@@ -93,7 +95,7 @@ describe('monthlyEmissions', () => {
         }))
         .toEqual({
           status: 'complete',
-          rawData: data,
+          data: data,
           emissionsRegionSo2: data.emissions.so2.regional,
           emissionsRegionNox: data.emissions.nox.regional,
           emissionsRegionCo2: data.emissions.co2.regional,
@@ -118,7 +120,7 @@ describe('monthlyEmissions', () => {
           percentagesCountiesNox: data.percentages.nox.county,
           percentagesCountiesCo2: data.percentages.co2.county,
           percentagesCountiesPm25: data.percentages.pm25.county,
-          states: Object.keys(data.statesAndCounties),
+          availableStates: Object.keys(data.statesAndCounties),
           counties: data.statesAndCounties,
         });
     });
@@ -152,10 +154,10 @@ describe('monthlyEmissions', () => {
       expect(
         monthlyEmissionsReducer([], {
           type: SELECT_MONTHLY_UNIT,
-          unit: 'percent',
+          unit: 'percentages',
         }))
         .toEqual({
-          selectedUnit: 'percent',
+          unit: 'percentages',
         });
     });
   });
@@ -164,8 +166,8 @@ describe('monthlyEmissions', () => {
     it('should create an action to render monthly charts with regional data if aggregation is region and unit is emissions', () => {
       const sampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const monthlyEmissions = {
-        selectedAggregation: 'region',
-        selectedUnit: 'emission',
+        aggregation: 'region',
+        unit: 'emission',
         emissionsRegionSo2: Object.values(sampleData.so2),
         emissionsRegionNox: Object.values(sampleData.nox),
         emissionsRegionCo2: Object.values(sampleData.co2),
@@ -181,8 +183,8 @@ describe('monthlyEmissions', () => {
       const badSampleData = { so2: { 1: 0 }, nox: { 1: 0 }, co2: { 1: 0 } };
       const sampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const monthlyEmissions = {
-        selectedAggregation: 'region',
-        selectedUnit: 'percent',
+        aggregation: 'region',
+        unit: 'percent',
         emissionsRegionSo2: Object.values(badSampleData.so2),
         emissionsRegionNox: Object.values(badSampleData.nox),
         emissionsRegionCo2: Object.values(badSampleData.co2),
@@ -201,8 +203,8 @@ describe('monthlyEmissions', () => {
       const badSampleData = { so2: { 1: 0 }, nox: { 1: 0 }, co2: { 1: 0 } };
       const goodSampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const monthlyEmissions = {
-        selectedAggregation: 'state',
-        selectedUnit: 'emission',
+        aggregation: 'state',
+        unit: 'emission',
         newSelectedState: 'Virginia',
         emissionsRegionSo2: Object.values(badSampleData.so2),
         emissionsRegionNox: Object.values(badSampleData.nox),
@@ -222,7 +224,7 @@ describe('monthlyEmissions', () => {
         renderMonthlyEmissionsCharts(monthlyEmissions)
       ).not.toEqual({
         type: RENDER_MONTHLY_EMISSIONS_CHARTS,
-        visibleData: {
+        output: {
           so2: [0],
           nox: [0],
           co2: [0],
@@ -234,8 +236,8 @@ describe('monthlyEmissions', () => {
       const badSampleData = { so2: { 1: 0 }, nox: { 1: 0 }, co2: { 1: 0 } };
       const goodSampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const monthlyEmissions = {
-        selectedAggregation: 'state',
-        selectedUnit: 'percent',
+        aggregation: 'state',
+        unit: 'percent',
         newSelectedState: 'Virginia',
         newEmissionsStateSo2: { 'Virginia': Object.values(badSampleData.so2) },
         newEmissionsStateNox: { 'Virginia': Object.values(badSampleData.nox) },
@@ -255,7 +257,7 @@ describe('monthlyEmissions', () => {
         renderMonthlyEmissionsCharts(monthlyEmissions)
       ).not.toEqual({
         type: RENDER_MONTHLY_EMISSIONS_CHARTS,
-        visibleData: {
+        output: {
           so2: [0],
           nox: [0],
           co2: [0],
@@ -268,8 +270,8 @@ describe('monthlyEmissions', () => {
       const badSampleData2 = { so2: { 1: 1 }, nox: { 1: 1 }, co2: { 1: 1 } };
       const goodSampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const monthlyEmissions = {
-        selectedAggregation: 'county',
-        selectedUnit: 'emission',
+        aggregation: 'county',
+        unit: 'emission',
         newSelectedState: 'Virginia',
         newSelectedCounty: 'Arlington County',
         emissionsRegionSo2: Object.values(badSampleData.so2),
@@ -293,7 +295,7 @@ describe('monthlyEmissions', () => {
         renderMonthlyEmissionsCharts(monthlyEmissions)
       ).not.toEqual({
         type: RENDER_MONTHLY_EMISSIONS_CHARTS,
-        visibleData: {
+        output: {
           so2: [0],
           nox: [0],
           co2: [0],
@@ -304,7 +306,7 @@ describe('monthlyEmissions', () => {
         renderMonthlyEmissionsCharts(monthlyEmissions)
       ).not.toEqual({
         type: RENDER_MONTHLY_EMISSIONS_CHARTS,
-        visibleData: {
+        output: {
           so2: [1],
           nox: [1],
           co2: [1],
@@ -316,8 +318,8 @@ describe('monthlyEmissions', () => {
       const badSampleData = { so2: { 1: 0 }, nox: { 1: 0 }, co2: { 1: 0 } };
       const goodSampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const monthlyEmissions = {
-        selectedAggregation: 'county',
-        selectedUnit: 'percent',
+        aggregation: 'county',
+        unit: 'percent',
         newSelectedState: 'Virginia',
         newSelectedCounty: 'Arlington County',
         newEmissionsCountySo2: { 'Virginia': { 'Arlington County': Object.values(badSampleData.so2) } },
@@ -338,7 +340,7 @@ describe('monthlyEmissions', () => {
         renderMonthlyEmissionsCharts(monthlyEmissions)
       ).not.toEqual({
         type: RENDER_MONTHLY_EMISSIONS_CHARTS,
-        visibleData: {
+        output: {
           so2: [0],
           nox: [0],
           co2: [0],
@@ -349,8 +351,8 @@ describe('monthlyEmissions', () => {
     it('should create an action when the AVERT engine completed the monthly emissions', () => {
       const sampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const store = mockStore({ monthlyEmissions: {
-        selectedAggregation: 'region',
-        selectedUnit: 'emission',
+        aggregation: 'region',
+        unit: 'emission',
         emissionsRegionSo2: Object.values(sampleData.so2),
         emissionsRegionNox: Object.values(sampleData.nox),
         emissionsRegionCo2: Object.values(sampleData.co2),
@@ -369,8 +371,8 @@ describe('monthlyEmissions', () => {
     it('should create an action when the unit is selected', () => {
       const sampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const store = mockStore({ monthlyEmissions: {
-        selectedAggregation: 'region',
-        selectedUnit: 'emission',
+        aggregation: 'region',
+        unit: 'emission',
         emissionsRegionSo2: Object.values(sampleData.so2),
         emissionsRegionNox: Object.values(sampleData.nox),
         emissionsRegionCo2: Object.values(sampleData.co2),
@@ -387,8 +389,8 @@ describe('monthlyEmissions', () => {
     it('should create an action when the county aggregation is selected', () => {
       const sampleData = { so2: { 1: 123, 2: 456, 3: 789 }, nox: { 1: 123, 2: 456, 3: 789 }, co2: { 1: 123, 2: 456, 3: 789 } };
       const store = mockStore({ monthlyEmissions: {
-        selectedAggregation: 'region',
-        selectedUnit: 'emission',
+        aggregation: 'region',
+        unit: 'emission',
         emissionsRegionSo2: Object.values(sampleData.so2),
         emissionsRegionNox: Object.values(sampleData.nox),
         emissionsRegionCo2: Object.values(sampleData.co2),

@@ -12,20 +12,20 @@ import './styles.css';
 type Props = {
   heading: string,
   // redux connected props
+  selectedRegionId: number,
   monthlyStatus: string,
+  aggregation: 'region' | 'state' | 'county',
+  unit: 'emissions' | 'percentages',
+  availableStates: Array<string>,
+  availableCounties: Array<string>,
+  selectedState: string,
+  selectedCounty: string,
   output: {
     so2: Array<number>,
     nox: Array<number>,
     co2: Array<number>,
     pm25: Array<number>,
   },
-  aggregation: 'region' | 'state' | 'county',
-  unit: 'emission' | 'percent',
-  selectedRegionId: number,
-  availableStates: Array<string>,
-  availableCounties: Array<string>,
-  selectedState: string,
-  selectedCounty: string,
   onAggregationChange: (string) => void,
   onUnitChange: (string) => void,
   selectState: (string) => void,
@@ -35,15 +35,15 @@ type Props = {
 const EmissionsChart = (props: Props) => {
   const {
     heading,
+    selectedRegionId,
     monthlyStatus,
-    output,
     aggregation,
     unit,
-    selectedRegionId,
     availableStates,
     availableCounties,
     selectedState,
     selectedCounty,
+    output,
     onAggregationChange,
     onUnitChange,
     selectState,
@@ -166,8 +166,8 @@ const EmissionsChart = (props: Props) => {
           <input
             type='radio'
             name='unit'
-            value={'emission'}
-            checked={unit === 'emission'}
+            value={'emissions'}
+            checked={unit === 'emissions'}
             onChange={(e) => onUnitChange(e.target.value)}
           />
           Emission changes (lbs or tons)
@@ -177,8 +177,8 @@ const EmissionsChart = (props: Props) => {
           <input
             type='radio'
             name='unit'
-            value={'percent'}
-            checked={unit === 'percent'}
+            value={'percentages'}
+            checked={unit === 'percentages'}
             onChange={(e) => onUnitChange(e.target.value)}
           />
           Percent change
