@@ -138,42 +138,42 @@ export default function reducer(state = initialState, action) {
     case SET_DOWNLOAD_DATA:
       const { emissions, percentages, statesAndCounties } = state.data;
 
-      let data = [];
+      let rows = [];
       // region
-      data.push(structureData('SO2', 'emissions', emissions.so2.regional));
-      data.push(structureData('NOX', 'emissions', emissions.nox.regional));
-      data.push(structureData('CO2', 'emissions', emissions.co2.regional));
-      data.push(structureData('PM25', 'emissions', emissions.pm25.regional));
-      data.push(structureData('SO2', 'percentages', percentages.so2.regional));
-      data.push(structureData('NOX', 'percentages', percentages.nox.regional));
-      data.push(structureData('CO2', 'percentages', percentages.co2.regional));
-      data.push(structureData('PM25', 'percentages', percentages.pm25.regional));
+      rows.push(structureData('SO2', 'emissions', emissions.so2.regional));
+      rows.push(structureData('NOX', 'emissions', emissions.nox.regional));
+      rows.push(structureData('CO2', 'emissions', emissions.co2.regional));
+      rows.push(structureData('PM25', 'emissions', emissions.pm25.regional));
+      rows.push(structureData('SO2', 'percentages', percentages.so2.regional));
+      rows.push(structureData('NOX', 'percentages', percentages.nox.regional));
+      rows.push(structureData('CO2', 'percentages', percentages.co2.regional));
+      rows.push(structureData('PM25', 'percentages', percentages.pm25.regional));
       // state
       Object.keys(statesAndCounties).forEach((s) => {
-        data.push(structureData('SO2', 'emissions', emissions.so2.state[s], s));
-        data.push(structureData('NOX', 'emissions', emissions.nox.state[s], s));
-        data.push(structureData('CO2', 'emissions', emissions.co2.state[s], s));
-        data.push(structureData('PM25', 'emissions', emissions.pm25.state[s], s));
-        data.push(structureData('SO2', 'percentages', percentages.so2.state[s], s));
-        data.push(structureData('NOX', 'percentages', percentages.nox.state[s], s));
-        data.push(structureData('CO2', 'percentages', percentages.co2.state[s], s));
-        data.push(structureData('PM25', 'percentages', percentages.pm25.state[s], s));
+        rows.push(structureData('SO2', 'emissions', emissions.so2.state[s], s));
+        rows.push(structureData('NOX', 'emissions', emissions.nox.state[s], s));
+        rows.push(structureData('CO2', 'emissions', emissions.co2.state[s], s));
+        rows.push(structureData('PM25', 'emissions', emissions.pm25.state[s], s));
+        rows.push(structureData('SO2', 'percentages', percentages.so2.state[s], s));
+        rows.push(structureData('NOX', 'percentages', percentages.nox.state[s], s));
+        rows.push(structureData('CO2', 'percentages', percentages.co2.state[s], s));
+        rows.push(structureData('PM25', 'percentages', percentages.pm25.state[s], s));
         // county
         statesAndCounties[s].forEach((c) => {
-          data.push(structureData('SO2', 'emissions', emissions.so2.county[s][c], s, c));
-          data.push(structureData('NOX', 'emissions', emissions.nox.county[s][c], s, c));
-          data.push(structureData('CO2', 'emissions', emissions.co2.county[s][c], s, c));
-          data.push(structureData('PM25', 'emissions', emissions.pm25.county[s][c], s, c));
-          data.push(structureData('SO2', 'percentages', percentages.so2.county[s][c], s, c));
-          data.push(structureData('NOX', 'percentages', percentages.nox.county[s][c], s, c));
-          data.push(structureData('CO2', 'percentages', percentages.co2.county[s][c], s, c));
-          data.push(structureData('PM25', 'percentages', percentages.pm25.county[s][c], s, c));
+          rows.push(structureData('SO2', 'emissions', emissions.so2.county[s][c], s, c));
+          rows.push(structureData('NOX', 'emissions', emissions.nox.county[s][c], s, c));
+          rows.push(structureData('CO2', 'emissions', emissions.co2.county[s][c], s, c));
+          rows.push(structureData('PM25', 'emissions', emissions.pm25.county[s][c], s, c));
+          rows.push(structureData('SO2', 'percentages', percentages.so2.county[s][c], s, c));
+          rows.push(structureData('NOX', 'percentages', percentages.nox.county[s][c], s, c));
+          rows.push(structureData('CO2', 'percentages', percentages.co2.county[s][c], s, c));
+          rows.push(structureData('PM25', 'percentages', percentages.pm25.county[s][c], s, c));
         });
       });
 
       return {
         ...state,
-        downloadableData: data,
+        downloadableData: rows,
       };
 
     default:
