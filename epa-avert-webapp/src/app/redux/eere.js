@@ -19,34 +19,43 @@ export const RESET_EERE_INPUTS = 'eere/RESET_EERE_INPUTS';
 
 // reducer
 const initialState = {
+  status: 'ready',
+  valid: true,
+  errors: [],
+  inputs: {
+    annualGwh: '',
+    constantMwh: '',
+    broadProgram: '',
+    reduction: '',
+    topHours: '',
+    windCapacity: '',
+    utilitySolar: '',
+    rooftopSolar: '',
+  },
   limits: {
     annualGwh: false,
     constantMwh: false,
     renewables: false,
   },
+  softLimit: {
+    valid: true,
+    topExceedanceValue: 0,
+    topExceedanceTimestamp: {},
+  },
+  hardLimit: {
+    valid: true,
+    topExceedanceValue: 0,
+    topExceedanceTimestamp: {},
+  },
 
-  valid: true,
-  errors: [],
+  // softValid: true,
+  // softTopExceedanceValue: 0,
+  // softTopExceedanceTimestamp: {},
+  // hardValid: true,
+  // hardTopExceedanceValue: 0,
+  // hardTopExceedanceTimestamp: {},
 
-  annualGwh: '',
-  constantMwh: '',
-  broadProgram: '',
-  reduction: '',
-  topHours: '',
-  windCapacity: '',
-  utilitySolar: '',
-  rooftopSolar: '',
-
-  status: 'ready',
   hourlyEere: [],
-
-  softValid: true,
-  softTopExceedanceValue: 0,
-  softTopExceedanceTimestamp: {},
-
-  hardValid: true,
-  hardTopExceedanceValue: 0,
-  hardTopExceedanceTimestamp: {},
 };
 
 export default function reducer(state = initialState, action) {
@@ -67,49 +76,73 @@ export default function reducer(state = initialState, action) {
     case UPDATE_EERE_ANNUAL_GWH:
       return {
         ...state,
-        annualGwh: action.text,
+        inputs: {
+          ...state.inputs,
+          annualGwh: action.text,
+        },
       };
 
     case UPDATE_EERE_CONSTANT_MW:
       return {
         ...state,
-        constantMwh: action.text,
+        inputs: {
+          ...state.inputs,
+          constantMwh: action.text,
+        },
       };
 
     case UPDATE_EERE_BROAD_BASE_PROGRAM:
       return {
         ...state,
-        broadProgram: action.text,
+        inputs: {
+          ...state.inputs,
+          broadProgram: action.text,
+        },
       };
 
     case UPDATE_EERE_REDUCTION:
       return {
         ...state,
-        reduction: action.text,
+        inputs: {
+          ...state.inputs,
+          reduction: action.text,
+        },
       };
 
     case UPDATE_EERE_TOP_HOURS:
       return {
         ...state,
-        topHours: action.text,
+        inputs: {
+          ...state.inputs,
+          topHours: action.text,
+        },
       };
 
     case UPDATE_EERE_WIND_CAPACITY:
       return {
         ...state,
-        windCapacity: action.text,
+        inputs: {
+          ...state.inputs,
+          windCapacity: action.text,
+        },
       };
 
     case UPDATE_EERE_UTILITY_SOLAR:
       return {
         ...state,
-        utilitySolar: action.text,
+        inputs: {
+          ...state.inputs,
+          utilitySolar: action.text,
+        },
       };
 
     case UPDATE_EERE_ROOFTOP_SOLAR:
       return {
         ...state,
-        rooftopSolar: action.text,
+        inputs: {
+          ...state.inputs,
+          rooftopSolar: action.text,
+        },
       };
 
     case SUBMIT_EERE_CALCULATION:
@@ -129,13 +162,16 @@ export default function reducer(state = initialState, action) {
     case UPDATE_EXCEEDANCES:
       return {
         ...state,
-        softValid: action.payload.softValid,
-        softTopExceedanceValue: action.payload.softMaxVal,
-        softTopExceedanceTimestamp: action.payload.softTimestamp,
-
-        hardValid: action.payload.hardValid,
-        hardTopExceedanceValue: action.payload.hardMaxVal,
-        hardTopExceedanceTimestamp: action.payload.hardTimestamp,
+        softLimit: {
+          valid: action.payload.softValid,
+          topExceedanceValue: action.payload.softMaxVal,
+          topExceedanceTimestamp: action.payload.softTimestamp,
+        },
+        hardLimit: {
+          valid: action.payload.hardValid,
+          topExceedanceValue: action.payload.hardMaxVal,
+          topExceedanceTimestamp: action.payload.hardTimestamp,
+        },
       };
 
     case RESET_EERE_INPUTS:
@@ -280,7 +316,6 @@ export const updateExceedances = (soft, hard) => {
         softValid: softValid,
         softMaxVal: softMaxVal,
         softTimestamp: softTimestamp,
-
         hardValid: hardValid,
         hardMaxVal: hardMaxVal,
         hardTimestamp: hardTimestamp,
