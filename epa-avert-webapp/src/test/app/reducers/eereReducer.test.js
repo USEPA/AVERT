@@ -9,34 +9,35 @@ const store = mockStore();
 
 describe('eereReducer', () => {
   const initialState = {
+    status: 'ready',
+    valid: true,
+    errors: [],
+    inputs: {
+      annualGwh: '',
+      constantMwh: '',
+      broadProgram: '',
+      reduction: '',
+      topHours: '',
+      windCapacity: '',
+      utilitySolar: '',
+      rooftopSolar: '',
+    },
     limits: {
       annualGwh: false,
       constantMwh: false,
       renewables: false,
     },
-
-    valid: true,
-    errors: [],
-
-    annualGwh: '',
-    constantMwh: '',
-    broadProgram: '',
-    reduction: '',
-    topHours: '',
-    windCapacity: '',
-    utilitySolar: '',
-    rooftopSolar: '',
-
-    status: 'ready',
+    softLimit: {
+      valid: true,
+      topExceedanceValue: 0,
+      topExceedanceTimestamp: {},
+    },
+    hardLimit: {
+      valid: true,
+      topExceedanceValue: 0,
+      topExceedanceTimestamp: {},
+    },
     hourlyEere: [],
-
-    softValid: true,
-    softTopExceedanceValue: 0,
-    softTopExceedanceTimestamp: {},
-
-    hardValid: true,
-    hardTopExceedanceValue: 0,
-    hardTopExceedanceTimestamp: {},
   }
 
   it('should return an initial state', () => {

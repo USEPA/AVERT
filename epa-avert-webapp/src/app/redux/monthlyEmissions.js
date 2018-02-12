@@ -66,7 +66,7 @@ export default function reducer(state = initialState, action) {
     case SELECT_MONTHLY_STATE:
       return {
         ...state,
-        selectedState: action.state,
+        selectedState: action.selectedState,
         selectedCounty: '',
         availableCounties: action.availableCounties,
       };
@@ -74,7 +74,7 @@ export default function reducer(state = initialState, action) {
     case SELECT_MONTHLY_COUNTY:
       return {
         ...state,
-        selectedCounty: action.county,
+        selectedCounty: action.selectedCounty,
       };
 
     case RENDER_MONTHLY_EMISSIONS_CHARTS:
@@ -195,44 +195,44 @@ export const completeMonthlyEmissions = (data) => {
   }
 };
 
-export const selectMonthlyAggregation = (aggregation) => {
+export const selectMonthlyAggregation = (selection) => {
   return function (dispatch) {
     dispatch({
       type: SELECT_MONTHLY_AGGREGATION,
-      aggregation: aggregation,
+      aggregation: selection,
     });
     dispatch(renderMonthlyEmissionsCharts());
   }
 };
 
-export const selectMonthlyUnit = (unit) => {
+export const selectMonthlyUnit = (selection) => {
   return function (dispatch) {
     dispatch({
       type: SELECT_MONTHLY_UNIT,
-      unit: unit,
+      unit: selection,
     });
     dispatch(renderMonthlyEmissionsCharts());
   }
 };
 
-export const selectMonthlyState = (state) => {
+export const selectMonthlyState = (selection) => {
   return function (dispatch, getState) {
     const { monthlyEmissions } = getState();
 
     dispatch({
       type: SELECT_MONTHLY_STATE,
-      state: state,
-      availableCounties: monthlyEmissions.data.statesAndCounties[state],
+      selectedState: selection,
+      availableCounties: monthlyEmissions.data.statesAndCounties[selection],
     });
     dispatch(renderMonthlyEmissionsCharts());
   }
 };
 
-export const selectMonthlyCounty = (county) => {
+export const selectMonthlyCounty = (selection) => {
   return function (dispatch) {
     dispatch({
       type: SELECT_MONTHLY_COUNTY,
-      county: county,
+      selectedCounty: selection,
     });
     dispatch(renderMonthlyEmissionsCharts());
   }
