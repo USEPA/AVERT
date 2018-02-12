@@ -5,9 +5,7 @@ export const SET_BASE_URL = 'api/SET_BASE_URL';
 const initialState = {
   baseUrl: (process.env.REACT_APP_WEB_SERVICE === 'local')
     ? 'http://localhost:3001'
-    : 'https://avert-webservice.app.cloud.gov',
-    // : 'https://avert.app.cloud.gov',
-    // : 'https://app7.erg.com/avert',
+    : 'https://avert.app.cloud.gov',
   pollingFrequency: 10000,
 };
 
