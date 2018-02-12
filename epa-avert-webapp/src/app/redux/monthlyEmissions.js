@@ -191,10 +191,7 @@ export const completeMonthlyEmissions = (data) => {
       type: COMPLETE_MONTHLY_EMISSIONS,
       data: data,
     });
-    dispatch({
-      type: SET_DOWNLOAD_DATA,
-      data: data,
-    });
+    dispatch({ type: SET_DOWNLOAD_DATA });
     dispatch(renderMonthlyEmissionsCharts());
   }
 };
