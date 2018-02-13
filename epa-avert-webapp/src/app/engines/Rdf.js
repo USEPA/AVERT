@@ -29,7 +29,7 @@ class Rdf {
     this._hardLimits = [];
     this._months = [];
 
-    rdf.regional_load.forEach(item => {
+    rdf.regional_load.forEach((item) => {
       const load = item.regional_load_mw;
       this._regionalLoads.push(load);
       this._softLimits.push(load * -1 * rdf.limits.max_ee_percent / 100); // -0.15
