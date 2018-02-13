@@ -248,7 +248,7 @@ const EmissionsChart = (props: Props) => {
   );
 
   const formatYAxis = (emissionsUnit) => (
-    (unit === 'percent') ? 'Percent change' : `Emission changes (${emissionsUnit})`
+    (unit === 'percentages') ? 'Percent change' : `Emission changes (${emissionsUnit})`
   );
 
   const so2Config = {
