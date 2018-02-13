@@ -14,6 +14,7 @@ import LowerMidwest from '../LowerMidwest';
 import GreatLakes from '../GreatLakes';
 import California from '../California';
 
+// prettier-ignore
 type Props = {
   regionId: number,
   children: ChildrenArray<
@@ -34,8 +35,11 @@ type Props = {
 };
 
 const Region = (props: Props) => (
-  <g className='avert-region'
-    onClick={(event) => { props.onRegionClick(props.regionId) }}
+  <g
+    className="avert-region"
+    onClick={(event) => {
+      props.onRegionClick(props.regionId);
+    }}
     data-active={props.regionId === props.selectedRegion ? true : false}
   >
     {props.children}

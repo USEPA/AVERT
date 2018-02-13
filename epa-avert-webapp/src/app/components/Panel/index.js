@@ -8,7 +8,7 @@ import type { ChildrenArray, Element } from 'react';
 import PanelBody from 'app/components/PanelBody';
 import PanelFooter from 'app/components/PanelFooter/container.js';
 
-
+// prettier-ignore
 type Props = {
   active: boolean,
   children: ChildrenArray<
@@ -18,7 +18,7 @@ type Props = {
 };
 
 const Panel = (props: Props) => (
-  <section className='avert-step' data-active={props.active}>
+  <section className="avert-step" data-active={props.active}>
     {props.children}
   </section>
 );

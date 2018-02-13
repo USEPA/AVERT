@@ -25,28 +25,36 @@ class Tooltip extends React.Component<Props> {
   render() {
     return (
       <span>
-        <a href='' className='avert-modal-link'
+        <a
+          href=""
+          className="avert-modal-link"
           onClick={(event) => {
             event.preventDefault();
             this.props.onStoreActiveModal(this.props.id);
             this.props.onToggleModalOverlay();
           }}
-        >info</a>
+        >
+          info
+        </a>
 
-        <span className='avert-modal'
+        <span
+          className="avert-modal"
           data-modal-id={this.props.id}
           data-active={this.props.activeModalId === this.props.id}
           data-closing={this.props.closingModalId === this.props.id}
         >
-          <a className='avert-modal-close'
-            href=''
-            ref={(ref) => this.modalClose = ref}
+          <a
+            className="avert-modal-close"
+            href=""
+            ref={(ref) => (this.modalClose = ref)}
             onClick={(event) => {
               event.preventDefault();
               this.props.onResetActiveModal(this.props.id);
               this.props.onToggleModalOverlay();
             }}
-          >×</a>
+          >
+            ×
+          </a>
 
           {this.props.children}
         </span>

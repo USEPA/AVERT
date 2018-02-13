@@ -28,6 +28,7 @@ const EmissionsTable = (props: Props) => {
 
   let Table;
   // conditionally re-define Table when ready to render
+  // prettier-ignore
   if (readyToRender) {
     Table = (
       <table className='avert-table'>
@@ -58,8 +59,8 @@ const EmissionsTable = (props: Props) => {
   }
 
   return (
-    <div className='avert-emissions-table'>
-      <h3 className='avert-heading-three'>{props.heading}</h3>
+    <div className="avert-emissions-table">
+      <h3 className="avert-heading-three">{props.heading}</h3>
       {Table}
     </div>
   );

@@ -10,7 +10,7 @@ import './styles.css';
 const formatNumber = (number) => {
   return number.toLocaleString(undefined, {
     minimumFractionDigits: 0,
-    maximumFractionDigits: 2
+    maximumFractionDigits: 2,
   });
 };
 
@@ -52,7 +52,7 @@ type Props = {
 const EEREChart = (props: Props) => {
   let data = [];
   let hours = [];
-  props.hourlyEere.forEach(hour => {
+  props.hourlyEere.forEach((hour) => {
     data.push(hour.final_mw);
     hours.push(hour.index);
   });
@@ -75,13 +75,11 @@ const EEREChart = (props: Props) => {
     },
     tooltip: {
       formatter: function() {
-        return (
-          `<span style="font-size: 10px">Hour of year:
+        return `<span style="font-size: 10px">Hour of year:
           ${this.x.toLocaleString()}</span><br/>
           <span style="color:${this.color}">\u25CF</span>
           ${this.series.yAxis.axisTitle.textStr}
-          <b>${Math.round(this.y).toLocaleString()}</b><br/>`
-        )
+          <b>${Math.round(this.y).toLocaleString()}</b><br/>`;
       },
     },
     lang: {
@@ -91,7 +89,7 @@ const EEREChart = (props: Props) => {
       buttons: {
         contextButton: {
           _titleKey: 'hoverText',
-        }
+        },
       },
     },
     xAxis: {
@@ -100,7 +98,9 @@ const EEREChart = (props: Props) => {
         text: 'Hour',
       },
       labels: {
-        formatter: function() { return this.value.toLocaleString() },
+        formatter: function() {
+          return this.value.toLocaleString();
+        },
       },
     },
     yAxis: {
@@ -108,14 +108,18 @@ const EEREChart = (props: Props) => {
         text: 'Change in load (MW)',
       },
       labels: {
-        formatter: function() { return Math.round(this.value) },
+        formatter: function() {
+          return Math.round(this.value);
+        },
       },
     },
-    series: [{
-      name: 'EERE Load Output',
-      data: data,
-      color: '#058dc7',
-    }],
+    series: [
+      {
+        name: 'EERE Load Output',
+        data: data,
+        color: '#058dc7',
+      },
+    ],
   };
 
   // boolean flag to render chart and error/warning when hourlyEere prop exits
@@ -139,18 +143,24 @@ const EEREChart = (props: Props) => {
     const totalLoadGwh = Math.round(totalLoadMwh / -1000).toLocaleString();
 
     Chart = (
-      <div className='avert-eere-profile'>
-        <h3 className='avert-chart-title'>
-          {props.heading}
-          {' '}
+      <div className="avert-eere-profile">
+        <h3 className="avert-chart-title">
+          {props.heading}{' '}
           <Tooltip id={8}>
-            This graph shows the hourly changes in load that will result from the inputs entered above, along with adjustments for avoided transmission and distribution line loss, where applicable. This hourly EE/RE profile will be used to calculate the avoided emissions for this AVERT region.
+            This graph shows the hourly changes in load that will result from
+            the inputs entered above, along with adjustments for avoided
+            transmission and distribution line loss, where applicable. This
+            hourly EE/RE profile will be used to calculate the avoided emissions
+            for this AVERT region.
           </Tooltip>
         </h3>
 
         <Highcharts config={chartConfig} callback={afterRender} />
 
-        <p className="avert-small-text">This EE/RE profile will displace {totalLoadGwh} GWh of regional fossil fuel generation over the course of a year.</p>
+        <p className="avert-small-text">
+          This EE/RE profile will displace {totalLoadGwh} GWh of regional fossil
+          fuel generation over the course of a year.
+        </p>
       </div>
     );
   }
@@ -169,30 +179,49 @@ const EEREChart = (props: Props) => {
       x.value = props.softTopExceedanceValue;
       x.timestamp = props.softTopExceedanceTimestamp;
     }
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
     const month = months[x.timestamp.month - 1];
     const day = x.timestamp.day;
-    const hour = x.timestamp.hour > 12 ? x.timestamp.hour - 12 : x.timestamp.hour;
+    const hour = x.timestamp.hour > 12 ? x.timestamp.hour - 12 : x.timestamp.hour; // prettier-ignore
     const ampm = x.timestamp.hour > 12 ? 'PM' : 'AM';
 
     return (
       <p className={`avert-message-bottom avert-validation-${type}`}>
-        <span className='avert-message-heading'>{x.heading}:</span>
-        The combined impact of your proposed programs would displace more than
-        {' '}<strong>{x.threshold}%</strong>{' '}
-        of regional fossil generation in at least one hour of the year. (Maximum value:
-        {' '}<strong>{formatNumber(x.value)}</strong>% on
-        {' '}<strong>{month} {day} at {hour}:00 {ampm}</strong>).
-        The recommended limit for AVERT is 15%, as AVERT is designed to simulate marginal operational changes in load, rather than large-scale changes that may change fundamental dynamics. Please reduce one or more of your inputs to ensure more reliable results.
+        <span className="avert-message-heading">{x.heading}:</span>
+        The combined impact of your proposed programs would displace more than{' '}
+        <strong>{x.threshold}%</strong> of regional fossil generation in at
+        least one hour of the year. (Maximum value:{' '}
+        <strong>{formatNumber(x.value)}</strong>% on{' '}
+        <strong>
+          {month} {day} at {hour}:00 {ampm}
+        </strong>). The recommended limit for AVERT is 15%, as AVERT is designed
+        to simulate marginal operational changes in load, rather than
+        large-scale changes that may change fundamental dynamics. Please reduce
+        one or more of your inputs to ensure more reliable results.
       </p>
     );
   };
 
+  // prettier-ignore
   // set ValidationError when readyToRender and hardValid prop is false
   const ValidationError = (readyToRender && !props.hardValid)
     ? ValidationMessage('error')
     : null;
 
+  // prettier-ignore
   // set ValidationWarning when readyToRender, softValid prop is false, and hardValid prop is true
   const ValidationWarning = (readyToRender && !props.softValid && props.hardValid)
     ? ValidationMessage('warning')

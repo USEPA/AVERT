@@ -15,7 +15,7 @@ type Props = {
 };
 
 const App = (props: Props) => (
-  <div className='avert-container avert-copy'>
+  <div className="avert-container avert-copy">
     <StepProgressBar activeTab={props.activeStep} />
     <StepPanels activePanel={props.activeStep} />
   </div>
