@@ -40,8 +40,10 @@
     "stats-lite": "2.1.0"
   },
   "lint-staged": {
-    "gitDir": "../",
-    "src/**/.{js,jsx,json,css}": ["prettier --write", "git add"]
+    "epa-avert-webapp/src/**/.{js,jsx,json,css}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "scripts": {
     "precommit": "lint-staged",
