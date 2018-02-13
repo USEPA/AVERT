@@ -54,11 +54,14 @@ export const pollServerForData = () => {
 
     // fetch co2 data via job id
     return fetch(`${api.baseUrl}/api/v1/jobs/${co2.jobId}`)
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         // recursively call function if response from server is 'in progress'
         if (json.response === 'in progress') {
-          return setTimeout(() => dispatch(pollServerForData()), api.pollingFrequency)
+          return setTimeout(
+            () => dispatch(pollServerForData()),
+            api.pollingFrequency,
+          );
         }
         dispatch(incrementProgress());
         dispatch({
@@ -79,17 +82,17 @@ export const fetchCo2 = () => {
     const options = {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+        Accept: 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
       },
       body: JSON.stringify({
         region: avert.regionSlug,
-        eere: avert.eereLoad.hourlyEere
+        eere: avert.eereLoad.hourlyEere,
       }),
     };
     return fetch(`${api.baseUrl}/api/v1/co2`, options)
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         dispatch({
           type: RECEIVE_JOB_ID,
           json: json,

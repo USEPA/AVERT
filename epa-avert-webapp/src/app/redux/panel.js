@@ -1,8 +1,8 @@
 // action types
 import { REQUEST_REGION_RDF, RECEIVE_REGION_DEFAULTS } from 'app/redux/rdfs';
-import { SUBMIT_EERE_CALCULATION, COMPLETE_EERE_CALCULATION } from 'app/redux/eere';
+import { SUBMIT_EERE_CALCULATION, COMPLETE_EERE_CALCULATION } from 'app/redux/eere'; // prettier-ignore
 import { COMPLETE_MONTHLY_EMISSIONS } from 'app/redux/monthlyEmissions';
-import { INCREMENT_PROGRESS, START_DISPLACEMENT, RECEIVE_DISPLACEMENT } from 'app/redux/annualDisplacement';
+import { INCREMENT_PROGRESS, START_DISPLACEMENT, RECEIVE_DISPLACEMENT } from 'app/redux/annualDisplacement'; // prettier-ignore
 export const CHANGE_ACTIVE_STEP = 'panel/CHANGE_ACTIVE_STEP';
 export const TOGGLE_MODAL_OVERLAY = 'panel/TOGGLE_MODAL_OVERLAY';
 export const STORE_ACTIVE_MODAL = 'panel/STORE_ACTIVE_MODAL';

@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 // reducers
 import reducer from 'app/redux/index';
 
+// prettier-ignore
 // use Chrome Redux Devtools extension if installed
 const composeEnhancers = (typeof window !== 'undefined')
   ? (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose)

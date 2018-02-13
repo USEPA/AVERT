@@ -15,13 +15,13 @@ export default function reducer(state = initialState, action) {
     case START_DATA_DOWNLOAD:
       return {
         ...state,
-        file: true
+        file: true,
       };
 
     default:
       return state;
   }
-};
+}
 
 // action creators
 export const startDataDownload = () => {
@@ -31,6 +31,7 @@ export const startDataDownload = () => {
     const data = monthlyEmissions.downloadableData;
     const fields = Object.keys(data[0]);
 
+    // prettier-ignore
     try {
       const csv = json2csv({ fields, data });
       const blob = new Blob([csv], { type: 'text/plain:charset=utf-8' });
@@ -41,5 +42,5 @@ export const startDataDownload = () => {
 
     // dispatch 'start data download' action
     return dispatch({ type: START_DATA_DOWNLOAD });
-  }
+  };
 };

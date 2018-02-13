@@ -31,13 +31,13 @@ export const selectRegion = (regionId) => {
   return (dispatch) => {
     avert.region = regionId;
 
-    const region = Object.values(Regions).find(r => r.id === regionId);
+    const region = Object.values(Regions).find((r) => r.id === regionId);
 
     dispatch({
       type: SELECT_REGION,
       payload: {
         id: regionId,
-        name: (region) ? region.label : '',
+        name: region ? region.label : '',
       },
     });
   };

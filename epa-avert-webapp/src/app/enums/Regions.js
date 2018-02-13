@@ -92,6 +92,6 @@ const Regions: RegionsMap = {
     original_slug: 'WMW',
     grid_loss: 4.97,
   },
-}
+};
 
 export default Regions;

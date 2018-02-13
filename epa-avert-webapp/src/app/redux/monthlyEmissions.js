@@ -1,14 +1,14 @@
 // action types
 import { SELECT_REGION } from 'app/redux/region';
 import { START_DISPLACEMENT } from 'app/redux/annualDisplacement';
-export const RENDER_MONTHLY_EMISSIONS_CHARTS = 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS';
-export const COMPLETE_MONTHLY_EMISSIONS = 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS';
+export const RENDER_MONTHLY_EMISSIONS_CHARTS = 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS'; // prettier-ignore
+export const COMPLETE_MONTHLY_EMISSIONS = 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS'; // prettier-ignore
 export const SET_DOWNLOAD_DATA = 'monthlyEmissions/SET_DOWNLOAD_DATA';
-export const SELECT_MONTHLY_AGGREGATION = 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION';
+export const SELECT_MONTHLY_AGGREGATION = 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION'; // prettier-ignore
 export const SELECT_MONTHLY_UNIT = 'monthlyEmissions/SELECT_MONTHLY_UNIT';
 export const SELECT_MONTHLY_STATE = 'monthlyEmissions/SELECT_MONTHLY_STATE';
 export const SELECT_MONTHLY_COUNTY = 'monthlyEmissions/SELECT_MONTHLY_COUNTY';
-export const RESET_MONTHLY_EMISSIONS = 'monthlyEmissions/RESET_MONTHLY_EMISSIONS';
+export const RESET_MONTHLY_EMISSIONS = 'monthlyEmissions/RESET_MONTHLY_EMISSIONS'; // prettier-ignore
 
 // reducer
 const initialState = {
@@ -91,14 +91,14 @@ export default function reducer(state = initialState, action) {
       if (aggregation === 'state' && selectedState) {
         pollutants.forEach((pollutant) => {
           emissionData[pollutant] = Object.values(
-            state.data[unit][pollutant].state[selectedState]
+            state.data[unit][pollutant].state[selectedState],
           );
         });
       }
       if (aggregation === 'county' && selectedState && selectedCounty) {
         pollutants.forEach((pollutant) => {
           emissionData[pollutant] = Object.values(
-            state.data[unit][pollutant].county[selectedState][selectedCounty]
+            state.data[unit][pollutant].county[selectedState][selectedCounty],
           );
         });
       }
@@ -118,9 +118,9 @@ export default function reducer(state = initialState, action) {
         data = Object.values(data);
         return {
           type: pollutant,
-          aggregation_level: (county) ? 'County' : ((state) ? 'State' : 'Regional'),
-          state: (state) ? state : null,
-          county: (county) ? county : null,
+          aggregation_level: county ? 'County' : state ? 'State' : 'Regional',
+          state: state ? state : null,
+          county: county ? county : null,
           emission_unit: unit,
           january: data[0],
           february: data[1],
@@ -134,7 +134,7 @@ export default function reducer(state = initialState, action) {
           october: data[9],
           november: data[10],
           december: data[11],
-        }
+        };
       };
 
       let rows = [];
@@ -146,27 +146,27 @@ export default function reducer(state = initialState, action) {
       rows.push(structureData('SO2', 'percentages', percentages.so2.regional));
       rows.push(structureData('NOX', 'percentages', percentages.nox.regional));
       rows.push(structureData('CO2', 'percentages', percentages.co2.regional));
-      rows.push(structureData('PM25', 'percentages', percentages.pm25.regional));
+      rows.push(structureData('PM25', 'percentages', percentages.pm25.regional)); // prettier-ignore
       // states
       Object.keys(statesAndCounties).forEach((s) => {
         rows.push(structureData('SO2', 'emissions', emissions.so2.state[s], s));
         rows.push(structureData('NOX', 'emissions', emissions.nox.state[s], s));
         rows.push(structureData('CO2', 'emissions', emissions.co2.state[s], s));
-        rows.push(structureData('PM25', 'emissions', emissions.pm25.state[s], s));
-        rows.push(structureData('SO2', 'percentages', percentages.so2.state[s], s));
-        rows.push(structureData('NOX', 'percentages', percentages.nox.state[s], s));
-        rows.push(structureData('CO2', 'percentages', percentages.co2.state[s], s));
-        rows.push(structureData('PM25', 'percentages', percentages.pm25.state[s], s));
+        rows.push(structureData('PM25', 'emissions', emissions.pm25.state[s], s)); // prettier-ignore
+        rows.push(structureData('SO2', 'percentages', percentages.so2.state[s], s)); // prettier-ignore
+        rows.push(structureData('NOX', 'percentages', percentages.nox.state[s], s)); // prettier-ignore
+        rows.push(structureData('CO2', 'percentages', percentages.co2.state[s], s)); // prettier-ignore
+        rows.push(structureData('PM25', 'percentages', percentages.pm25.state[s], s)); // prettier-ignore
         // counties
         statesAndCounties[s].forEach((c) => {
-          rows.push(structureData('SO2', 'emissions', emissions.so2.county[s][c], s, c));
-          rows.push(structureData('NOX', 'emissions', emissions.nox.county[s][c], s, c));
-          rows.push(structureData('CO2', 'emissions', emissions.co2.county[s][c], s, c));
-          rows.push(structureData('PM25', 'emissions', emissions.pm25.county[s][c], s, c));
-          rows.push(structureData('SO2', 'percentages', percentages.so2.county[s][c], s, c));
-          rows.push(structureData('NOX', 'percentages', percentages.nox.county[s][c], s, c));
-          rows.push(structureData('CO2', 'percentages', percentages.co2.county[s][c], s, c));
-          rows.push(structureData('PM25', 'percentages', percentages.pm25.county[s][c], s, c));
+          rows.push(structureData('SO2', 'emissions', emissions.so2.county[s][c], s, c)); // prettier-ignore
+          rows.push(structureData('NOX', 'emissions', emissions.nox.county[s][c], s, c)); // prettier-ignore
+          rows.push(structureData('CO2', 'emissions', emissions.co2.county[s][c], s, c)); // prettier-ignore
+          rows.push(structureData('PM25', 'emissions', emissions.pm25.county[s][c], s, c)); // prettier-ignore
+          rows.push(structureData('SO2', 'percentages', percentages.so2.county[s][c], s, c)); // prettier-ignore
+          rows.push(structureData('NOX', 'percentages', percentages.nox.county[s][c], s, c)); // prettier-ignore
+          rows.push(structureData('CO2', 'percentages', percentages.co2.county[s][c], s, c)); // prettier-ignore
+          rows.push(structureData('PM25', 'percentages', percentages.pm25.county[s][c], s, c)); // prettier-ignore
         });
       });
 
@@ -178,45 +178,45 @@ export default function reducer(state = initialState, action) {
     default:
       return state;
   }
-};
+}
 
 export const renderMonthlyEmissionsCharts = () => ({
   type: RENDER_MONTHLY_EMISSIONS_CHARTS,
 });
 
 export const completeMonthlyEmissions = (data) => {
-  return function (dispatch) {
+  return function(dispatch) {
     dispatch({
       type: COMPLETE_MONTHLY_EMISSIONS,
       data: data,
     });
     dispatch({ type: SET_DOWNLOAD_DATA });
     dispatch(renderMonthlyEmissionsCharts());
-  }
+  };
 };
 
 export const selectMonthlyAggregation = (selection) => {
-  return function (dispatch) {
+  return function(dispatch) {
     dispatch({
       type: SELECT_MONTHLY_AGGREGATION,
       aggregation: selection,
     });
     dispatch(renderMonthlyEmissionsCharts());
-  }
+  };
 };
 
 export const selectMonthlyUnit = (selection) => {
-  return function (dispatch) {
+  return function(dispatch) {
     dispatch({
       type: SELECT_MONTHLY_UNIT,
       unit: selection,
     });
     dispatch(renderMonthlyEmissionsCharts());
-  }
+  };
 };
 
 export const selectMonthlyState = (selection) => {
-  return function (dispatch, getState) {
+  return function(dispatch, getState) {
     const { monthlyEmissions } = getState();
 
     dispatch({
@@ -225,17 +225,17 @@ export const selectMonthlyState = (selection) => {
       availableCounties: monthlyEmissions.data.statesAndCounties[selection],
     });
     dispatch(renderMonthlyEmissionsCharts());
-  }
+  };
 };
 
 export const selectMonthlyCounty = (selection) => {
-  return function (dispatch) {
+  return function(dispatch) {
     dispatch({
       type: SELECT_MONTHLY_COUNTY,
       selectedCounty: selection,
     });
     dispatch(renderMonthlyEmissionsCharts());
-  }
+  };
 };
 
 export const resetMonthlyEmissions = () => ({

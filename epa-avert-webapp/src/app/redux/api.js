@@ -1,6 +1,7 @@
 // action types
 export const SET_BASE_URL = 'api/SET_BASE_URL';
 
+// prettier-ignore
 // reducer
 const initialState = {
   baseUrl: (process.env.REACT_APP_WEB_SERVICE === 'local')
