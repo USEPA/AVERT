@@ -1,8 +1,8 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { eereProfile  } from 'app/engines';
-import eereReducer, { RESET_EERE_INPUTS, resetEereInputs } from 'app/redux/eere';
+import { eereProfile } from 'app/engines';
+import eereReducer, { RESET_EERE_INPUTS, resetEereInputs } from 'app/redux/eere'; // prettier-ignore
 
 const mockStore = configureMockStore([thunk]);
 const store = mockStore();
@@ -38,16 +38,14 @@ describe('eereReducer', () => {
       topExceedanceTimestamp: {},
     },
     hourlyEere: [],
-  }
+  };
 
   it('should return an initial state', () => {
-    expect(eereReducer(undefined, {}))
-    .toEqual(initialState);
+    expect(eereReducer(undefined, {})).toEqual(initialState);
   });
 
   it('should handle RESET_EERE_INPUTS', () => {
-    expect(eereReducer(undefined, { type: RESET_EERE_INPUTS }))
-    .toEqual(initialState);
+    expect(eereReducer(undefined, { type: RESET_EERE_INPUTS })).toEqual(initialState); // prettier-ignore
   });
 });
 

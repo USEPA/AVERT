@@ -105,5 +105,5 @@ describe('EERE Profile', () => {
       eereProfile.reset();
       expect(eereProfile.limits.annualGwh).toBe(100);
     });
-  })
+  });
 });
