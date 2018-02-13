@@ -1,4 +1,3 @@
-import math from 'mathjs';
 import stats from 'stats-lite'
 
 class EereEngine {
@@ -47,11 +46,10 @@ class EereEngine {
     // C: Wind
     // D: Utility-scale solar photovoltaic
     // E: Distributed rooftop solar photovoltaic
-    const renewableProfile = -math.sum(
-      math.multiply(this._eereProfile.windCapacity, hourlyDefault.wind),
-      math.multiply(this._eereProfile.utilitySolar, hourlyDefault.utility_pv),
-      math.multiply(this._eereProfile.rooftopSolar, hourlyDefault.rooftop_pv * this._gridLoss)
-    );
+    const windCapacity = (this._eereProfile.windCapacity * hourlyDefault.wind);
+    const utilitySolar = (this._eereProfile.utilitySolar * hourlyDefault.utility_pv);
+    const rooftopSolar = (this._eereProfile.rooftopSolar * hourlyDefault.rooftop_pv * this._gridLoss);
+    const renewableProfile = -1 * (windCapacity + utilitySolar + rooftopSolar);
 
     const initialLoad = (load > this._topPercentile) ? (load * percentReduction) : 0;
     const calculatedLoad = initialLoad + renewableProfile - hourlyMwReduction - constantMwh;
