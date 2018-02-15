@@ -17,7 +17,7 @@ const States: StatesMap = {
   FL: 'Florida',
   FM: 'Fed. Micronesia',
   GA: 'Georgia',
-  GB: 'George\'s Bank',
+  GB: "George's Bank",
   GM: 'Gulf of Mexico',
   GU: 'Guam',
   HI: 'Hawaii',
@@ -71,6 +71,6 @@ const States: StatesMap = {
   WI: 'Wisconsin',
   WV: 'West Virginia',
   WY: 'Wyoming',
-}
+};
 
 export default States;

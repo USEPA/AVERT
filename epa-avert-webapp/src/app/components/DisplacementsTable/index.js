@@ -24,7 +24,7 @@ type OrigPostImpact = {
 type OrigPost = {
   original: number,
   post: number,
-}
+};
 
 type Data = {
   generation: OrigPostImpact,
@@ -57,6 +57,7 @@ const DisplacementsTable = (props: Props) => {
 
   let Table;
   // conditionally re-define Table when ready to render
+  // prettier-ignore
   if (readyToRender) {
     Table = (
       <div>
@@ -133,14 +134,19 @@ const DisplacementsTable = (props: Props) => {
           </tbody>
         </table>
 
-        <p className='avert-small-text'>Negative numbers indicate displaced generation and emissions. All results are rounded to the nearest ten. A dash ('–') indicates a result greater than zero, but lower than the level of reportable significance.</p>
+        <p className="avert-small-text">
+          Negative numbers indicate displaced generation and emissions. All
+          results are rounded to the nearest ten. A dash ('–') indicates a
+          result greater than zero, but lower than the level of reportable
+          significance.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className='avert-displacement-table'>
-      <h3 className='avert-heading-three'>{props.heading}</h3>
+    <div className="avert-displacement-table">
+      <h3 className="avert-heading-three">{props.heading}</h3>
       {Table}
     </div>
   );

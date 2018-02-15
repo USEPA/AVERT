@@ -4,6 +4,7 @@ import React from 'react';
 // styles
 import './styles.css';
 
+// prettier-ignore
 const LoadingIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="176" height="256" viewBox="0 0 176 256">
     <title>Wind Turbine</title>

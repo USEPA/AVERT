@@ -68,7 +68,7 @@ export default function reducer(state = initialState, action) {
     default:
       return state;
   }
-};
+}
 
 // action creators
 export const incrementProgress = () => ({
@@ -79,6 +79,7 @@ export const receiveDisplacement = () => {
   return (dispatch, getState) => {
     const { generation, so2, nox, co2, pm25 } = getState();
 
+    // prettier-ignore
     // recursively call function if data is still fetching
     if (generation.isFetching || so2.isFetching || nox.isFetching || co2.isFetching || pm25.isFetching) {
       return setTimeout(() => dispatch(receiveDisplacement()), 1000);
@@ -150,14 +151,18 @@ export const receiveDisplacement = () => {
       pm25: pm25.data.stateChanges[state],
     }));
 
-    dispatch(completeStateEmissions({ states: states, data: stateEmissionsData }));
+    dispatch(
+      completeStateEmissions({ states: states, data: stateEmissionsData }),
+    );
 
     // build two-dimmensional states and counties array
     let statesAndCounties = {};
+    // prettier-ignore
     states.forEach((state) => {
       statesAndCounties[state] = Object.keys(generation.data.monthlyChanges.emissions.county[state]).sort();
     });
 
+    // prettier-ignore
     // calculate monthly emissions and dispatch action
     const monthlyEmissionsData = {
       statesAndCounties: statesAndCounties,
@@ -234,5 +239,5 @@ export const calculateDisplacement = () => {
     dispatch(fetchPm25());
 
     dispatch(receiveDisplacement());
-  }
+  };
 };

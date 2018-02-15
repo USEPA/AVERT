@@ -64,13 +64,13 @@ const EmissionsChart = (props: Props) => {
   let AggregationFilter;
   if (readyToRender) {
     AggregationFilter = (
-      <div className='avert-inline-select' id='geography-groups'>
+      <div className="avert-inline-select" id="geography-groups">
         <p>Select level of aggregation:</p>
 
         <label>
           <input
-            type='radio'
-            name='aggregation'
+            type="radio"
+            name="aggregation"
             value={'region'}
             checked={aggregation === 'region'}
             onChange={(e) => onAggregationChange(e.target.value)}
@@ -80,8 +80,8 @@ const EmissionsChart = (props: Props) => {
 
         <label>
           <input
-            type='radio'
-            name='aggregation'
+            type="radio"
+            name="aggregation"
             value={'state'}
             checked={aggregation === 'state'}
             onChange={(event) => {
@@ -94,8 +94,8 @@ const EmissionsChart = (props: Props) => {
 
         <label>
           <input
-            type='radio'
-            name='aggregation'
+            type="radio"
+            name="aggregation"
             value={'county'}
             checked={aggregation === 'county'}
             onChange={(event) => {
@@ -112,15 +112,19 @@ const EmissionsChart = (props: Props) => {
   let StateSelector;
   if (aggregation === 'state' || aggregation === 'county') {
     StateSelector = (
-      <div className='avert-select-group'>
+      <div className="avert-select-group">
         <select
           value={selectedState}
           onChange={(event) => selectState(event.target.value)}
         >
-          <option value='' disabled>Select State</option>
+          <option value="" disabled>
+            Select State
+          </option>
 
           {availableStates.map((state, index) => (
-            <option key={index} value={state}>{States[state]}</option>
+            <option key={index} value={state}>
+              {States[state]}
+            </option>
           ))}
         </select>
       </div>
@@ -130,25 +134,29 @@ const EmissionsChart = (props: Props) => {
   let CountySelector;
   if (aggregation === 'county') {
     CountySelector = (
-      <div className='avert-select-group'>
+      <div className="avert-select-group">
         <select
           value={selectedCounty}
           onChange={(event) => selectCounty(event.target.value)}
         >
-          <option value='' disabled>Select County</option>
+          <option value="" disabled>
+            Select County
+          </option>
 
           {availableCounties.map((county, index) => (
-            <option key={index} value={county}>{county}</option>
+            <option key={index} value={county}>
+              {county}
+            </option>
           ))}
         </select>
       </div>
-    )
+    );
   }
 
   let GeographyFilter;
   if (readyToRender) {
     GeographyFilter = (
-      <div className='avert-geography-filter'>
+      <div className="avert-geography-filter">
         {StateSelector}
         {CountySelector}
       </div>
@@ -158,13 +166,13 @@ const EmissionsChart = (props: Props) => {
   let UnitFilter;
   if (readyToRender) {
     UnitFilter = (
-      <div className='avert-inline-select'>
+      <div className="avert-inline-select">
         <p>Select units:</p>
 
         <label>
           <input
-            type='radio'
-            name='unit'
+            type="radio"
+            name="unit"
             value={'emissions'}
             checked={unit === 'emissions'}
             onChange={(e) => onUnitChange(e.target.value)}
@@ -174,8 +182,8 @@ const EmissionsChart = (props: Props) => {
 
         <label>
           <input
-            type='radio'
-            name='unit'
+            type="radio"
+            name="unit"
             value={'percentages'}
             checked={unit === 'percentages'}
             onChange={(e) => onUnitChange(e.target.value)}
@@ -205,10 +213,10 @@ const EmissionsChart = (props: Props) => {
       // pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y}</b><br/>',
       pointFormatter: function() {
         return (
-          '<span style="color:' + this.color + '">\u25CF</span> ' +
-          this.series.yAxis.axisTitle.textStr + ': ' +
-          '<b>' + Math.round(this.y).toLocaleString() + '</b><br/>'
-        )
+          `<span style="color:${this.color}">\u25CF</span> ` +
+          `${this.series.yAxis.axisTitle.textStr}: ` +
+          `<b>${Math.round(this.y).toLocaleString()}</b><br/>`
+        );
       },
     },
     lang: {
@@ -222,19 +230,35 @@ const EmissionsChart = (props: Props) => {
       },
     },
     xAxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      categories: [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
+      ],
     },
   };
 
   let location;
+  // prettier-ignore
   if (aggregation === 'region') {
     location = `${selectedRegion} Region`;
   }
+  // prettier-ignore
   if (aggregation === 'state') {
     location = (selectedState === '')
       ? ''
       : `${States[selectedState]}`;
   }
+  // prettier-ignore
   if (aggregation === 'county') {
     // counties are called parishes in Louisiana
     const county = (selectedState === 'LA') ? 'Parish' : 'County';
@@ -243,13 +267,14 @@ const EmissionsChart = (props: Props) => {
       : `${selectedCounty} ${county}, ${States[selectedState]}`;
   }
 
-  const formatTitle = (chemical) => (
-    `<tspan class='avert-chart-title'>Change in ${chemical} Emissions: ${location}</tspan>`
-  );
+  const formatTitle = (chemical) =>
+    `<tspan class='avert-chart-title'>Change in ${chemical} Emissions: ${location}</tspan>`;
 
-  const formatYAxis = (emissionsUnit) => (
-    (unit === 'percentages') ? 'Percent change' : `Emission changes (${emissionsUnit})`
-  );
+  // prettier-ignore
+  const formatYAxis = (emissionsUnit) =>
+    (unit === 'percentages')
+      ? 'Percent change'
+      : `Emission changes (${emissionsUnit})`;
 
   const so2Config = {
     ...commonConfig,
@@ -262,11 +287,13 @@ const EmissionsChart = (props: Props) => {
         text: formatYAxis('lbs'),
       },
     },
-    series: [{
-      name: 'SO₂',
-      data: output.so2,
-      color: '#058dc7',
-    }],
+    series: [
+      {
+        name: 'SO₂',
+        data: output.so2,
+        color: '#058dc7',
+      },
+    ],
   };
 
   const noxConfig = {
@@ -280,11 +307,13 @@ const EmissionsChart = (props: Props) => {
         text: formatYAxis('lbs'),
       },
     },
-    series: [{
-      name: 'NOₓ',
-      data: output.nox,
-      color: '#ed561b',
-    }],
+    series: [
+      {
+        name: 'NOₓ',
+        data: output.nox,
+        color: '#ed561b',
+      },
+    ],
   };
 
   const co2Config = {
@@ -298,11 +327,13 @@ const EmissionsChart = (props: Props) => {
         text: formatYAxis('tons'),
       },
     },
-    series: [{
-      name: 'CO₂',
-      data: output.co2,
-      color: '#50b432',
-    }],
+    series: [
+      {
+        name: 'CO₂',
+        data: output.co2,
+        color: '#50b432',
+      },
+    ],
   };
 
   const pm25Config = {
@@ -316,11 +347,13 @@ const EmissionsChart = (props: Props) => {
         text: formatYAxis('lbs'),
       },
     },
-    series: [{
-      name: 'PM₂₅',
-      data: output.pm25,
-      color: '#665683',
-    }],
+    series: [
+      {
+        name: 'PM₂₅',
+        data: output.pm25,
+        color: '#665683',
+      },
+    ],
   };
 
   let Charts;
@@ -336,8 +369,8 @@ const EmissionsChart = (props: Props) => {
   }
 
   return (
-    <div className='avert-emissions-chart'>
-      <h3 className='avert-heading-three'>{heading}</h3>
+    <div className="avert-emissions-chart">
+      <h3 className="avert-heading-three">{heading}</h3>
 
       {AggregationFilter}
       {GeographyFilter}

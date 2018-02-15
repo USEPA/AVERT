@@ -19,13 +19,9 @@
   margin-right: 0.375rem;
 }
 
-
-
 .avert-geography-filter {
   overflow: hidden;
 }
-
-
 
 .avert-select-group {
   float: left;
@@ -36,14 +32,10 @@
   width: 100%;
 }
 
-
-
 .avert-emissions-charts {
   padding: 1rem;
   border: 1px solid #aaa;
 }
-
-
 
 .avert-emissions-charts [data-highcharts-chart] {
   margin-bottom: 1rem;
@@ -57,8 +49,6 @@
   font-weight: bold;
   color: #444 !important;
 }
-
-
 
 /* --- media queries --- */
 @media (min-width: 25em) {

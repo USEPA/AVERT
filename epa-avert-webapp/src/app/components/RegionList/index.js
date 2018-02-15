@@ -12,9 +12,10 @@ type Props = {
   onSelectChange: (number) => void,
 };
 
+// prettier-ignore
 const RegionList = (props: Props) => (
   <select
-    className='avert-region-select'
+    className="avert-region-select"
     value={props.selectedRegion}
     onChange={(event) => props.onSelectChange(Number(event.target.value))}
   >

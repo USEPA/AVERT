@@ -17,7 +17,6 @@ type Props = {
   onCalculateDisplacement: () => void,
   onResetEereInputs: () => void,
   onResetMonthlyEmissions: () => void,
-
 };
 
 const PanelFooter = (props: Props) => {
@@ -39,12 +38,16 @@ const PanelFooter = (props: Props) => {
   let PrevButtonElement;
   if (props.prevButtonText) {
     PrevButtonElement = (
-      <a className='avert-button avert-prev' href=''
+      <a
+        className="avert-button avert-prev"
+        href=""
         onClick={(e) => {
           e.preventDefault();
           scrollToTop();
 
-          if (onStepTwo) { props.onResetEereInputs(); }
+          if (onStepTwo) {
+            props.onResetEereInputs();
+          }
 
           const step = props.activeStep - 1;
           props.onSetActiveStep(step);
@@ -62,6 +65,7 @@ const PanelFooter = (props: Props) => {
   const calculationRunning = onStepTwo && props.eereStatus !== 'complete';
   const exceedsHardValidationLimit = onStepTwo && !props.hardValid;
 
+  // prettier-ignore
   const disabledClass = (noRegionSelected || calculationRunning || exceedsHardValidationLimit)
     ? 'avert-button-disabled'
     : '';
@@ -70,7 +74,7 @@ const PanelFooter = (props: Props) => {
   const NextButtonElement = (
     <a
       className={`avert-button avert-next ${resetClass} ${disabledClass}`}
-      href=''
+      href=""
       onClick={(e) => {
         e.preventDefault();
 
@@ -105,8 +109,8 @@ const PanelFooter = (props: Props) => {
   );
 
   return (
-    <div className='avert-step-footer'>
-      <p className='avert-centered'>
+    <div className="avert-step-footer">
+      <p className="avert-centered">
         {PrevButtonElement}
         {NextButtonElement}
       </p>

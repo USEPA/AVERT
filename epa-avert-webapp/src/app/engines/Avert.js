@@ -14,7 +14,7 @@ class Avert {
   }
 
   set region(regionId) {
-    const regionKey = Object.keys(Regions).find(key => Regions[key].id === regionId);
+    const regionKey = Object.keys(Regions).find(key => Regions[key].id === regionId); // prettier-ignore
     this._region = Regions[regionKey];
   }
 
@@ -47,7 +47,7 @@ class Avert {
   }
 
   calculateEereLoad() {
-    this._eereEngine = new EereEngine(this._eereProfile, this._rdf, this._region);
+    this._eereEngine = new EereEngine(this._eereProfile, this._rdf, this._region); // prettier-ignore
   }
 
   get eereLoad() {

@@ -13,7 +13,7 @@ type Props = {
 
 const EEREInputField = (props: Props) => (
   <input
-    type='text'
+    type="text"
     value={props.value}
     disabled={props.disabled ? props.disabled : false}
     onChange={(event) => props.onChange(event.target.value)}

@@ -11,7 +11,7 @@ import defaultsFile from 'test/data/eere-defaults-northeast.json';
 
 describe('EERE Engine', () => {
   let region = Region.NORTHEAST;
-  let rdf = new Rdf({ rdf: rdfFile, defaults: defaultsFile, });
+  let rdf = new Rdf({ rdf: rdfFile, defaults: defaultsFile });
   let eereProfile = new EereProfile();
   eereProfile.limits = {
     hours: 8784,
@@ -41,7 +41,7 @@ describe('EERE Engine', () => {
     });
   });
 
-  describe('_doesExceed',() => {
+  describe('_doesExceed', () => {
     eereProfile.annualGwh = 500;
     let eereEngine = new EereEngine(eereProfile, rdf, region);
 
@@ -56,7 +56,6 @@ describe('EERE Engine', () => {
     });
   });
 
-
   describe('_calculateExceedancesAndHourlyEere', () => {
     eereProfile.limits = {
       hours: 8784,
@@ -66,7 +65,7 @@ describe('EERE Engine', () => {
     eereProfile.windCapacity = 7;
     let eereEngine = new EereEngine(eereProfile, rdf, region);
 
-    describe('first load from northeast',() => {
+    describe('first load from northeast', () => {
       const firstLoad = eereEngine._hourlyEere[0];
 
       it('should store the current_load_mw', () => {

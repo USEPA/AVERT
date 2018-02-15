@@ -1,5 +1,5 @@
 /* --- reset --- */
-@import 'https://fonts.googleapis.com/css?family=Open+Sans:400,700|Roboto+Mono';
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700|Roboto+Mono');
 
 * {
   box-sizing: border-box;
@@ -19,8 +19,6 @@ body {
   background-color: white;
 }
 
-
-
 /* --- layout --- */
 .avert-container {
   margin: 0rem auto;
@@ -30,10 +28,10 @@ body {
   text-align: center;
 }
 
-
-
 /* --- typography --- */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   margin-top: 1rem;
   margin-bottom: 0.5rem;
   font-size: 1rem;
@@ -44,28 +42,34 @@ p {
   margin-top: 0.75rem;
 }
 
-p, li, select, label {
+p,
+li,
+select,
+label {
   font-size: 0.75rem;
 }
 
 a {
-  color: rgb(0,169,204);
+  color: rgb(0, 169, 204);
   text-decoration: none;
 }
 
-sup, sub {
+sup,
+sub {
   position: relative;
   vertical-align: baseline;
   font-size: 75%;
 }
-sup { top: -0.3125rem; }
-sub { top: 0.3125rem; }
+sup {
+  top: -0.3125rem;
+}
+sub {
+  top: 0.3125rem;
+}
 
 fieldset {
   border: 0;
 }
-
-
 
 /* --- copy --- */
 .avert-copy {
@@ -85,34 +89,28 @@ fieldset {
   margin-top: 0;
 }
 
-
-
 /* --- headings --- */
 .avert-heading-one {
   font-size: 1.25rem;
-  color: rgb(0,169,204);
+  color: rgb(0, 169, 204);
 }
 .avert-heading-two {
   margin-bottom: 0.75rem;
   padding-bottom: 0.25rem;
   border-bottom: 2px solid currentColor;
   font-size: 1rem;
-  color: rgb(0,169,204);
+  color: rgb(0, 169, 204);
 }
 .avert-heading-three {
   font-size: 0.875rem;
-  color: rgb(0,127,153);
+  color: rgb(0, 127, 153);
 }
-
-
 
 /* --- small text --- */
 .avert-small-text {
   font-size: 0.625rem;
   color: #666;
 }
-
-
 
 /* --- buttons --- */
 .avert-button {
@@ -121,18 +119,16 @@ fieldset {
   border-radius: 3px;
   font-size: 0.625rem;
   color: white;
-  background-color: rgb(0,169,204);
+  background-color: rgb(0, 169, 204);
 }
 .avert-button:hover {
-  background-color: rgb(0,190,230);
+  background-color: rgb(0, 190, 230);
 }
 .avert-button-disabled,
 .avert-button-disabled:hover {
   background-color: #999;
   cursor: not-allowed;
 }
-
-
 
 /* --- tables --- */
 .avert-table {
@@ -144,16 +140,16 @@ fieldset {
 }
 
 .avert-table tr:nth-of-type(odd) {
-  background-color: rgba(0,169,204, 0.1875);
+  background-color: rgba(0, 169, 204, 0.1875);
 }
 
 .avert-table tr:nth-of-type(even) {
-  background-color: rgba(0,169,204, 0.125);
+  background-color: rgba(0, 169, 204, 0.125);
 }
 
 .avert-table th {
   color: white;
-  background-color: rgb(0,169,204);
+  background-color: rgb(0, 169, 204);
 }
 
 .avert-table th,
@@ -173,8 +169,6 @@ fieldset {
   font-weight: bold;
 }
 
-
-
 /* --- chart titles --- */
 .avert-chart-title {
   font-size: 0.75rem;
@@ -184,11 +178,11 @@ fieldset {
   color: #444;
 }
 
-
-
 /* --- media queries --- */
 @media (min-width: 25em) {
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     margin-top: 1.125rem;
     font-size: 1.0625rem;
   }
@@ -197,7 +191,10 @@ fieldset {
     margin-top: 0.8125rem;
   }
 
-  p, li, select, label {
+  p,
+  li,
+  select,
+  label {
     font-size: 0.8125rem;
   }
 
@@ -241,7 +238,9 @@ fieldset {
 }
 
 @media (min-width: 30em) {
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     margin-top: 1.25rem;
     font-size: 1.125rem;
   }
@@ -250,7 +249,10 @@ fieldset {
     margin-top: 0.875rem;
   }
 
-  p, li, select, label {
+  p,
+  li,
+  select,
+  label {
     font-size: 0.875rem;
   }
 
@@ -294,7 +296,9 @@ fieldset {
 }
 
 @media (min-width: 35em) {
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     margin-top: 1.375rem;
     font-size: 1.1875rem;
   }
@@ -303,7 +307,10 @@ fieldset {
     margin-top: 0.9375rem;
   }
 
-  p, li, select, label {
+  p,
+  li,
+  select,
+  label {
     font-size: 0.9375rem;
   }
 
@@ -352,7 +359,9 @@ fieldset {
 }
 
 @media (min-width: 40em) {
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     margin-top: 1.5rem;
     font-size: 1.25rem;
   }
@@ -361,7 +370,10 @@ fieldset {
     margin-top: 1rem;
   }
 
-  p, li, select, label {
+  p,
+  li,
+  select,
+  label {
     font-size: 1rem;
   }
 

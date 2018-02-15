@@ -1,5 +1,4 @@
-import math from 'mathjs';
-import stats from 'stats-lite'
+import stats from 'stats-lite';
 
 class EereEngine {
   constructor(profile, rdf, region) {
@@ -21,11 +20,11 @@ class EereEngine {
   }
 
   _calculateGridLoss() {
-    return 1 / (1 - (this._region.grid_loss / 100));
+    return 1 / (1 - this._region.grid_loss / 100);
   }
 
   _calculateTopPercentile() {
-    const k = 1 - (this._eereProfile.topHours / 100);
+    const k = 1 - this._eereProfile.topHours / 100;
     return stats.percentile(this._rdf.regionalLoads, k);
   }
 
@@ -34,6 +33,7 @@ class EereEngine {
     return this._eereProfile.annualGwh * 1000 / hours;
   }
 
+  // prettier-ignore
   _calculateExceedancesAndHourlyEere(load, index) {
     const softLimit = this._rdf.softLimits[index];
     const hardLimit = this._rdf.hardLimits[index];
@@ -47,11 +47,10 @@ class EereEngine {
     // C: Wind
     // D: Utility-scale solar photovoltaic
     // E: Distributed rooftop solar photovoltaic
-    const renewableProfile = -math.sum(
-      math.multiply(this._eereProfile.windCapacity, hourlyDefault.wind),
-      math.multiply(this._eereProfile.utilitySolar, hourlyDefault.utility_pv),
-      math.multiply(this._eereProfile.rooftopSolar, hourlyDefault.rooftop_pv * this._gridLoss)
-    );
+    const windCapacity = (this._eereProfile.windCapacity * hourlyDefault.wind);
+    const utilitySolar = (this._eereProfile.utilitySolar * hourlyDefault.utility_pv);
+    const rooftopSolar = (this._eereProfile.rooftopSolar * hourlyDefault.rooftop_pv * this._gridLoss);
+    const renewableProfile = -1 * (windCapacity + utilitySolar + rooftopSolar);
 
     const initialLoad = (load > this._topPercentile) ? (load * percentReduction) : 0;
     const calculatedLoad = initialLoad + renewableProfile - hourlyMwReduction - constantMwh;
@@ -78,7 +77,7 @@ class EereEngine {
 
   _doesExceed(load, limit, number) {
     if (Math.abs(load) > Math.abs(limit)) {
-      const exceedance = (Math.abs(load) / Math.abs(limit)) - 1;
+      const exceedance = Math.abs(load) / Math.abs(limit) - 1;
       return exceedance * number + number;
     }
     return 0;

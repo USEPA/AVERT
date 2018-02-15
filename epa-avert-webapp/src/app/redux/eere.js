@@ -1,12 +1,12 @@
 // engines
-import { avert, eereProfile  } from 'app/engines';
+import { avert, eereProfile } from 'app/engines';
 
 // action types
 import { SET_EERE_LIMITS } from 'app/redux/rdfs';
 export const VALIDATE_EERE = 'eere/VALIDATE_EERE';
 export const UPDATE_EERE_ANNUAL_GWH = 'eere/UPDATE_EERE_ANNUAL_GWH';
 export const UPDATE_EERE_CONSTANT_MW = 'eere/UPDATE_EERE_CONSTANT_MW';
-export const UPDATE_EERE_BROAD_BASE_PROGRAM = 'eere/UPDATE_EERE_BROAD_BASE_PROGRAM';
+export const UPDATE_EERE_BROAD_BASE_PROGRAM = 'eere/UPDATE_EERE_BROAD_BASE_PROGRAM'; // prettier-ignore
 export const UPDATE_EERE_REDUCTION = 'eere/UPDATE_EERE_REDUCTION';
 export const UPDATE_EERE_TOP_HOURS = 'eere/UPDATE_EERE_TOP_HOURS';
 export const UPDATE_EERE_WIND_CAPACITY = 'eere/UPDATE_EERE_WIND_CAPACITY';
@@ -55,7 +55,7 @@ export default function reducer(state = initialState, action) {
     case SET_EERE_LIMITS:
       return {
         ...state,
-        limits: action.payload.limits
+        limits: action.payload.limits,
       };
 
     case VALIDATE_EERE:
@@ -172,7 +172,7 @@ export default function reducer(state = initialState, action) {
     default:
       return state;
   }
-};
+}
 
 // action creators
 export const validateEere = () => {
@@ -186,7 +186,7 @@ export const validateEere = () => {
 };
 
 export const updateEereAnnualGwh = (text) => {
-  return function (dispatch) {
+  return function(dispatch) {
     eereProfile.annualGwh = text;
 
     dispatch(validateEere());
@@ -198,7 +198,7 @@ export const updateEereAnnualGwh = (text) => {
 };
 
 export const updateEereConstantMw = (text) => {
-  return function (dispatch) {
+  return function(dispatch) {
     eereProfile.constantMwh = text;
 
     dispatch(validateEere());
@@ -210,20 +210,20 @@ export const updateEereConstantMw = (text) => {
 };
 
 export const updateEereBroadBasedProgram = (text) => {
-  return function (dispatch) {
+  return function(dispatch) {
     eereProfile.topHours = 100;
     eereProfile.reduction = text;
 
     dispatch(validateEere());
     dispatch({
       type: UPDATE_EERE_BROAD_BASE_PROGRAM,
-      text:text,
+      text: text,
     });
   };
 };
 
 export const updateEereReduction = (text) => {
-  return function (dispatch) {
+  return function(dispatch) {
     eereProfile.reduction = text;
 
     dispatch(validateEere());
@@ -235,7 +235,7 @@ export const updateEereReduction = (text) => {
 };
 
 export const updateEereTopHours = (text) => {
-  return function (dispatch) {
+  return function(dispatch) {
     eereProfile.topHours = text;
 
     dispatch(validateEere());
@@ -247,7 +247,7 @@ export const updateEereTopHours = (text) => {
 };
 
 export const updateEereWindCapacity = (text) => {
-  return function (dispatch) {
+  return function(dispatch) {
     eereProfile.windCapacity = text;
 
     dispatch(validateEere());
@@ -259,7 +259,7 @@ export const updateEereWindCapacity = (text) => {
 };
 
 export const updateEereUtilitySolar = (text) => {
-  return function (dispatch) {
+  return function(dispatch) {
     eereProfile.utilitySolar = text;
 
     dispatch(validateEere());
@@ -271,7 +271,7 @@ export const updateEereUtilitySolar = (text) => {
 };
 
 export const updateEereRooftopSolar = (text) => {
-  return function (dispatch) {
+  return function(dispatch) {
     eereProfile.rooftopSolar = text;
 
     dispatch(validateEere());
@@ -288,19 +288,19 @@ export const completeEereCalculation = (hourlyEere) => ({
 });
 
 export const updateExceedances = (soft, hard) => {
-  return function (dispatch, getState) {
+  return function(dispatch, getState) {
     const { rdfs } = getState();
     const regionalLoadHours = rdfs.rdf.rdf.regional_load;
 
     const softValid = soft.reduce((a, b) => a + b) === 0;
-    const softMaxVal = (!softValid) ? Math.max(...soft) : 0;
-    const softMaxIndex = (!softValid) ? soft.indexOf(softMaxVal) : 0;
-    const softTimestamp = (!softValid) ? regionalLoadHours[softMaxIndex] : {};
+    const softMaxVal = !softValid ? Math.max(...soft) : 0;
+    const softMaxIndex = !softValid ? soft.indexOf(softMaxVal) : 0;
+    const softTimestamp = !softValid ? regionalLoadHours[softMaxIndex] : {};
 
     const hardValid = hard.reduce((a, b) => a + b) === 0;
-    const hardMaxVal = (!hardValid) ? Math.max(...hard) : 0;
-    const hardMaxIndex = (!hardValid) ? hard.indexOf(hardMaxVal) : 0;
-    const hardTimestamp = (!hardValid) ? regionalLoadHours[hardMaxIndex] : {};
+    const hardMaxVal = !hardValid ? Math.max(...hard) : 0;
+    const hardMaxIndex = !hardValid ? hard.indexOf(hardMaxVal) : 0;
+    const hardTimestamp = !hardValid ? regionalLoadHours[hardMaxIndex] : {};
 
     return dispatch({
       type: UPDATE_EXCEEDANCES,
@@ -311,24 +311,29 @@ export const updateExceedances = (soft, hard) => {
         hardValid: hardValid,
         hardMaxVal: hardMaxVal,
         hardTimestamp: hardTimestamp,
-      }
+      },
     });
   };
 };
 
 export const calculateEereProfile = () => {
-  return function (dispatch) {
+  return function(dispatch) {
     dispatch({ type: SUBMIT_EERE_CALCULATION });
 
     avert.calculateEereLoad();
 
     dispatch(completeEereCalculation(avert.eereLoad.hourlyEere));
-    dispatch(updateExceedances(avert.eereLoad.softExceedances, avert.eereLoad.hardExceedances));
-  }
+    dispatch(
+      updateExceedances(
+        avert.eereLoad.softExceedances,
+        avert.eereLoad.hardExceedances,
+      ),
+    );
+  };
 };
 
 export const resetEereInputs = () => {
   eereProfile.reset();
 
-  return { type: RESET_EERE_INPUTS }
+  return { type: RESET_EERE_INPUTS };
 };

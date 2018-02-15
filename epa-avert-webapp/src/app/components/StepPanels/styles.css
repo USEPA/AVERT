@@ -13,7 +13,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: rgba(0,0,0, 0.875);
+  background-color: rgba(0, 0, 0, 0.875);
 }
 
 .avert-loading-indicator {
@@ -71,13 +71,11 @@
 
 .avert-validation-error {
   color: white;
-  background-color: rgb(212,57,57);
+  background-color: rgb(212, 57, 57);
 }
 .avert-validation-warning {
-  background-color: rgb(249,201,114);
+  background-color: rgb(249, 201, 114);
 }
-
-
 
 /* --- media queries --- */
 @media (min-width: 25em) {

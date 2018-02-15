@@ -4,7 +4,7 @@ import PanelFooter from './index.js';
 // actions
 import { setActiveStep } from 'app/redux/panel';
 import { fetchRegion } from 'app/redux/rdfs';
-import { resetEereInputs} from 'app/redux/eere';
+import { resetEereInputs } from 'app/redux/eere';
 import { resetMonthlyEmissions } from 'app/redux/monthlyEmissions';
 import { calculateDisplacement } from 'app/redux/annualDisplacement';
 
@@ -30,7 +30,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onResetMonthlyEmissions() {
     dispatch(resetMonthlyEmissions());
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PanelFooter);

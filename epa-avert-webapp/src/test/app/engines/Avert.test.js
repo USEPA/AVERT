@@ -21,7 +21,7 @@ describe('AVERT engine', () => {
     });
   });
 
-  describe('calculateEereLoad',() => {
+  describe('calculateEereLoad', () => {
     let avert = new Avert();
     let eereProfile = new EereProfile();
 
@@ -42,5 +42,4 @@ describe('AVERT engine', () => {
       expect(avert.eereLoad._hourlyEere[0].final_mw).toBe(-22.86814935);
     });
   });
-
 });

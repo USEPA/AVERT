@@ -1,5 +1,5 @@
 // engines
-import { avert, eereProfile  } from 'app/engines';
+import { avert, eereProfile } from 'app/engines';
 
 // action types
 export const REQUEST_REGION_RDF = 'rdfs/REQUEST_REGION_RDF';
@@ -12,7 +12,7 @@ export const RECEIVE_REGION_DEFAULTS = 'rdfs/RECEIVE_REGION_DEFAULTS';
 const initialState = {
   defaults: false,
   rdf: false,
-}
+};
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
@@ -31,19 +31,19 @@ export default function reducer(state = initialState, action) {
     default:
       return state;
   }
-};
+}
 
 // action creators
 export const fetchRegion = () => {
-  return function (dispatch, getState) {
+  return function(dispatch, getState) {
     const { api } = getState();
 
     dispatch({ type: REQUEST_REGION_RDF });
 
     // fetch rdf data for region
     return fetch(`${api.baseUrl}/api/v1/rdf/${avert.regionSlug}`)
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         avert.rdf = json.rdf;
 
         // set eere profile's first level validation limits (sets 'eereProfile._limits')
@@ -67,8 +67,8 @@ export const fetchRegion = () => {
 
         // fetch eere data for region
         fetch(`${api.baseUrl}/api/v1/eere/${avert.regionSlug}`)
-          .then(response => response.json())
-          .then(json => {
+          .then((response) => response.json())
+          .then((json) => {
             avert.eereDefaults = json.eereDefaults;
 
             dispatch({
