@@ -1,11 +1,11 @@
 // @flow
 
+import React from 'react';
 import json2csv from 'json2csv';
 import Blob from 'blob';
 import FileSaver from 'file-saver';
-import React from 'react';
 // data
-import rdf from './data/rdf_RM_2016.json';
+import rdf from 'test/data/rdf_RM_2016.json';
 
 type Props = {
   json: {
