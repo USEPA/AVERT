@@ -117,10 +117,10 @@ const StepPanels = (props: Props) => {
           <RegionMap />
 
           <p className="avert-small-text">
-            The online version of AVERT can run analyses using 2015 emissions
+            The online version of AVERT can run analyses using 2016 emissions
             and generation data. The Excel version of AVERT (available for
             download{' '}
-            <a href="https://www.epa.gov/statelocalclimate/download-avert">
+            <a href="https://www.epa.gov/statelocalenergy/download-avert">
               here
             </a>) allows analyses for years 2007–2015 or for a future year
             scenario.
@@ -137,7 +137,7 @@ const StepPanels = (props: Props) => {
             displaced by EE/RE policies and programs. Specify the impacts of
             EE/RE programs below, and AVERT will use these inputs to generate
             results. For more information about inputs, please consult the{' '}
-            <a href="https://www.epa.gov/statelocalclimate/avert-user-manual-0">
+            <a href="https://www.epa.gov/statelocalenergy/avert-user-manual">
               AVERT user manual
             </a>{' '}
             or click the <span className="avert-modal-link" /> icon for each

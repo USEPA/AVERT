@@ -223,6 +223,7 @@ const EmissionsChart = (props: Props) => {
       hoverText: 'Export options',
     },
     exporting: {
+      allowHTML: true,
       buttons: {
         contextButton: {
           _titleKey: 'hoverText',
