@@ -39,7 +39,7 @@
     "stats-lite": "2.1.0"
   },
   "lint-staged": {
-    "epa-avert-webapp/src/**/.{js,jsx,json,css}": [
+    "src/**/.{js,jsx,json,css}": [
       "prettier --write",
       "git add"
     ]
