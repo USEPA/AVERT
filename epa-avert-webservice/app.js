@@ -1,10 +1,10 @@
 'use strict';
 
-const koa = require('koa');
+const Koa = require('koa');
 const middleware = require('./app/config/middleware');
 const routes = require('./app/routes');
 
-const app = koa();
+const app = new Koa();
 const port = app.port = process.env.PORT || 3001;
 
 middleware.forEach(function (middleware) {
