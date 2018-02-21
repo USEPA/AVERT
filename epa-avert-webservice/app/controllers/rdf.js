@@ -1,27 +1,21 @@
 const fs = require('fs');
-const thunkify = require('thunkify');
-
+const util = require('util');
 const regions = require('../lib/regions');
 
-const read = thunkify(fs.readFile);
+const readFile = util.promisify(fs.readFile);
 
 module.exports = {
-  list: function* () {
-    // return availale regions (not used in web app, but helpful for debugging)
-    this.body = {
-      availableRegions: Object.keys(regions)
-    };
+  list: (ctx) => {
+    // not used in web app, but helpful for debugging
+    ctx.body = { availableRegions: Object.keys(regions) };
   },
 
-  show: function* (region) {
-    if (!(region in regions)) {
-      this.throw(404, 'invalid region');
-    }
+  show: async (ctx, region) => {
+    if (!(region in regions)) ctx.throw(404, `${region} region not found`);
 
-    const rdfFile = yield read(regions[region].rdf);
+    const rdfFile = await readFile(regions[region].rdf);
 
-    // return response, region, and rdf (used by web app)
-    this.body = {
+    ctx.body = {
       region: region,
       response: 'ok',
       rdf: JSON.parse(rdfFile),
