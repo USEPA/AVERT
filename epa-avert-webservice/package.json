@@ -35,7 +35,7 @@
     "koa": "2.5.0",
     "koa-logger": "3.1.0",
     "koa-request": "^1.0.0",
-    "koa-route": "^2.4.2",
+    "koa-route": "3.2.0",
     "koa-static": "4.0.2",
     "kue": "^0.11.5",
     "mathjs": "^3.8.1",
