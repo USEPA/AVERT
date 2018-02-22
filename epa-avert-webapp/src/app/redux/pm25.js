@@ -83,7 +83,7 @@ export const fetchPm25 = () => {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         region: avert.regionSlug,
