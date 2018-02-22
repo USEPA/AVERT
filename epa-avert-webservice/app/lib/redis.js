@@ -1,35 +1,30 @@
-const Redis = require('redis');
-const bluebird = require('bluebird');
-const coRedis = require('co-redis');
+const { promisify } = require('util');
+const redis = require('redis');
 
 const redisConfig = require('../config/redis');
 
-bluebird.promisifyAll(Redis.RedisClient.prototype);
-bluebird.promisifyAll(Redis.Multi.prototype);
-
-const db = Redis.createClient(redisConfig.port, redisConfig.hostname);
+const db = redis.createClient(redisConfig.port, redisConfig.hostname);
 // provide authentication when connecting to cloud foundry redis service
-if (process.env.WEB_SERVICE !== 'local') {
-  db.auth(redisConfig.password);
-}
+if (process.env.WEB_SERVICE !== 'local') db.auth(redisConfig.password);
 
-db.on('error', function (err) {
-  console.error('error', 'node-redis', 'lib/redis.js', err);
-});
+db.on('error', (err) => console.error('lib/redis.js', err));
 
-const dbCo = coRedis(db);
+const incAsync = promisify(db.incr).bind(db);
+const setAsync = promisify(db.hset).bind(db);
+const getAsync = promisify(db.hget).bind(db);
+const delAsync = promisify(db.hdel).bind(db);
 
 module.exports = {
-  incr: function* (key) {
-    return dbCo.incr(key);
+  inc: (key) => {
+    return incAsync(key);
   },
-  set: function* (key, value) {
-    return dbCo.hset('avert', key, value);
+  set: (key, value) => {
+    return setAsync('avert', key, value);
   },
-  get: function* (key) {
-    return dbCo.hget('avert', key);
+  get: (key) => {
+    return getAsync('avert', key);
   },
-  del: function* (key) {
-    return dbCo.hdel('avert', key);
+  del: (key) => {
+    return delAsync('avert', key);
   },
 };

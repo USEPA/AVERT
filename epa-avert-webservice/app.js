@@ -1,22 +1,19 @@
 'use strict';
 
-const koa = require('koa');
+const Koa = require('koa');
 const middleware = require('./app/config/middleware');
 const routes = require('./app/routes');
 
-const app = koa();
-const port = app.port = process.env.PORT || 3001;
+const app = new Koa();
 
-middleware.forEach(function (middleware) {
-  app.use(middleware);
-});
+middleware.forEach((middleware) => app.use(middleware));
 
-routes.forEach(function (route) {
-  app.use(route);
-});
+routes.forEach((route) => app.use(route));
 
-if (!module.parent) app.listen(port, function() {
-  console.log(`EPA AVERT Microservice app is running on http://localhost:${port}`);
+app.port = process.env.PORT || 3001;
+
+if (!module.parent) app.listen(app.port, () => {
+  console.log(`Koa is running on http://localhost:${app.port}`);
 });
 
 module.exports = app;
