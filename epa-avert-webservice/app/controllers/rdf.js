@@ -1,8 +1,8 @@
 const fs = require('fs');
-const util = require('util');
-const regions = require('../lib/regions');
+const { promisify } = require('util');
+const readFile = promisify(fs.readFile);
 
-const readFile = util.promisify(fs.readFile);
+const regions = require('../lib/regions');
 
 module.exports = {
   list: (ctx) => {
