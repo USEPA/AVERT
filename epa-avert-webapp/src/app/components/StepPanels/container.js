@@ -10,7 +10,7 @@ const mapStateToProps = (state) => ({
   modalOverlay: state.panel.modalOverlay,
   activeModalId: state.panel.activeModalId,
   loadingProgress: state.panel.loadingProgress,
-  softValid: state.eere.softValid,
+  softValid: state.eere.softLimit.valid,
 });
 
 const mapDispatchToProps = (dispatch) => ({
