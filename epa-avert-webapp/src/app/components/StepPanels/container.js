@@ -6,6 +6,7 @@ import { toggleModalOverlay, resetActiveModal } from 'app/redux/panel';
 import { startDataDownload } from 'app/redux/dataDownload';
 
 const mapStateToProps = (state) => ({
+  region: state.region.name,
   loading: state.panel.loading,
   modalOverlay: state.panel.modalOverlay,
   activeModalId: state.panel.activeModalId,
