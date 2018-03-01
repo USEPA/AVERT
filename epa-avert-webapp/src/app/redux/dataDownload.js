@@ -35,7 +35,7 @@ export const startDataDownload = () => {
     try {
       const csv = json2csv({ fields, data });
       const blob = new Blob([csv], { type: 'text/plain:charset=utf-8' });
-      FileSaver.saveAs(blob, `AVERT Monthly Emissions (${region.name} Region).csv`);
+      FileSaver.saveAs(blob, `AVERT Monthly Emission Changes (${region.name}).csv`);
     } catch (e) {
       console.error(e);
     }
