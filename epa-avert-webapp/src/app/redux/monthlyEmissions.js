@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 // action types
 import { SELECT_REGION } from 'app/redux/region';
 import { START_DISPLACEMENT } from 'app/redux/annualDisplacement';
@@ -82,31 +80,33 @@ export default function reducer(state = initialState, action) {
     case RENDER_MONTHLY_EMISSIONS_CHARTS:
       const { unit, aggregation, selectedState, selectedCounty } = state;
 
-      const pollutants = ['so2', 'nox', 'co2', 'pm25'];
-      // build up emissionsData object with keys for each pollutant
-      let emissionData = {};
+      const emissionData = {
+        so2: [],
+        nox: [],
+        co2: [],
+        pm25: [],
+      };
 
-      if (aggregation === 'region') {
-        pollutants.forEach((pollutant) => {
+      // populate emissionData with data from action (pollutant data from store)
+      Object.keys(emissionData).forEach((pollutant) => {
+        if (aggregation === 'region') {
           emissionData[pollutant] = Object.values(
             action[pollutant][unit].region,
           );
-        });
-      }
-      if (aggregation === 'state' && selectedState) {
-        pollutants.forEach((pollutant) => {
+        }
+
+        if (aggregation === 'state' && selectedState) {
           emissionData[pollutant] = Object.values(
             action[pollutant][unit].state[selectedState],
           );
-        });
-      }
-      if (aggregation === 'county' && selectedState && selectedCounty) {
-        pollutants.forEach((pollutant) => {
+        }
+
+        if (aggregation === 'county' && selectedState && selectedCounty) {
           emissionData[pollutant] = Object.values(
             action[pollutant][unit].county[selectedState][selectedCounty],
           );
-        });
-      }
+        }
+      });
 
       return {
         ...state,
