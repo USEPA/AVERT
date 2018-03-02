@@ -6,10 +6,8 @@ export const COMPLETE_STATE_EMISSIONS = 'stateEmissions/COMPLETE_STATE_EMISSIONS
 // reducer
 const initialState = {
   status: 'select_region',
-  results: {
-    states: [],
-    data: [],
-  },
+  states: [],
+  data: [],
 };
 
 export default function reducer(state = initialState, action) {
@@ -30,7 +28,8 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         status: 'complete',
-        results: action.data,
+        states: action.states,
+        data: action.data,
       };
 
     default:
@@ -38,7 +37,26 @@ export default function reducer(state = initialState, action) {
   }
 }
 
-export const completeStateEmissions = (data) => ({
-  type: COMPLETE_STATE_EMISSIONS,
-  data: data,
-});
+export const completeStateEmissions = () => {
+  return function(dispatch, getState) {
+    // get reducer data from store to use in dispatched action
+    const { annualDisplacement, so2, nox, co2, pm25 } = getState();
+
+    const states = Object.keys(annualDisplacement.statesAndCounties).sort();
+
+    // calculate state emissions and dispatch action
+    const data = states.map((state) => ({
+      state: state,
+      so2: so2.data.stateChanges[state],
+      nox: nox.data.stateChanges[state],
+      co2: co2.data.stateChanges[state],
+      pm25: pm25.data.stateChanges[state],
+    }));
+
+    dispatch({
+      type: COMPLETE_STATE_EMISSIONS,
+      states: states,
+      data: data,
+    });
+  };
+};

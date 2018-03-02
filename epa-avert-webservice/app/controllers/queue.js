@@ -269,30 +269,30 @@ module.exports = {
 
       if (!(region in regions)) return false;
 
-        console.log(`Processing: Job ${id} (Generation) starting`);
+      console.log(`Processing: Job ${id} (Generation) starting`);
 
-        // instantiate new Rdf from data files
-        const rdfFile = await readFile(regions[region].rdf);
-        const defaultsFile = await readFile(regions[region].defaults);
-        const rdf = new Rdf({
-          rdf: JSON.parse(rdfFile, 'utf8'),
-          defaults: JSON.parse(defaultsFile, 'utf8')
-        }).toJSON();
+      // instantiate new Rdf from data files
+      const rdfFile = await readFile(regions[region].rdf);
+      const defaultsFile = await readFile(regions[region].defaults);
+      const rdf = new Rdf({
+        rdf: JSON.parse(rdfFile, 'utf8'),
+        defaults: JSON.parse(defaultsFile, 'utf8')
+      }).toJSON();
 
-        // get 'generation:eere:id' value in 'avert' hash in redis
-        const eere = await redisClient.get(`generation:eere:${id}`);
-        // return early if eere not found in redis
-        if (!eere) { done(); }
+      // get 'generation:eere:id' value in 'avert' hash in redis
+      const eere = await redisClient.get(`generation:eere:${id}`);
+      // return early if eere not found in redis
+      if (!eere) { done(); }
 
-        // get generation data from new DisplacementEngine instance
-        const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
-        const data = engine.getGeneration();
+      // get generation data from new DisplacementEngine instance
+      const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
+      const data = engine.getGeneration();
 
-        // set 'job:id' key and value in 'avert' hash in redis
-        await redisClient.set(`job:${id}`, JSON.stringify(data));
+      // set 'job:id' key and value in 'avert' hash in redis
+      await redisClient.set(`job:${id}`, JSON.stringify(data));
 
-        console.log(`Processing: Job ${id} (Generation) finished`);
-        return done();
+      console.log(`Processing: Job ${id} (Generation) finished`);
+      return done();
     });
 
     // return status for debugging (not used in web app)
@@ -311,30 +311,30 @@ module.exports = {
 
       if (!(region in regions)) return false;
 
-        console.log(`Processing: Job ${id} (SO2) starting`);
+      console.log(`Processing: Job ${id} (SO2) starting`);
 
-        // instantiate new Rdf from data files
-        const rdfFile = await readFile(regions[region].rdf);
-        const defaultsFile = await readFile(regions[region].defaults);
-        const rdf = new Rdf({
-          rdf: JSON.parse(rdfFile, 'utf8'),
-          defaults: JSON.parse(defaultsFile, 'utf8')
-        }).toJSON();
+      // instantiate new Rdf from data files
+      const rdfFile = await readFile(regions[region].rdf);
+      const defaultsFile = await readFile(regions[region].defaults);
+      const rdf = new Rdf({
+        rdf: JSON.parse(rdfFile, 'utf8'),
+        defaults: JSON.parse(defaultsFile, 'utf8')
+      }).toJSON();
 
-        // get 'so2:eere:id' value in 'avert' hash in redis
-        const eere = await redisClient.get(`so2:eere:${id}`);
-        // return early if eere not found in redis
-        if (!eere) { done(); }
+      // get 'so2:eere:id' value in 'avert' hash in redis
+      const eere = await redisClient.get(`so2:eere:${id}`);
+      // return early if eere not found in redis
+      if (!eere) { done(); }
 
-        // get so2 total data from new DisplacementEngine instance
-        const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
-        const data = engine.getSo2Total();
+      // get so2 total data from new DisplacementEngine instance
+      const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
+      const data = engine.getSo2Total();
 
-        // set 'job:id' key and value in 'avert' hash in redis
-        await redisClient.set(`job:${id}`, JSON.stringify(data));
+      // set 'job:id' key and value in 'avert' hash in redis
+      await redisClient.set(`job:${id}`, JSON.stringify(data));
 
-        console.log(`Processing: Job ${id} (SO2) finished`);
-        return done();
+      console.log(`Processing: Job ${id} (SO2) finished`);
+      return done();
     });
 
     // return status for debugging (not used in web app)
@@ -353,30 +353,30 @@ module.exports = {
 
       if (!(region in regions)) return false;
 
-        console.log(`Processing: Job ${id} (NOx) starting`);
+      console.log(`Processing: Job ${id} (NOx) starting`);
 
-        // instantiate new Rdf from data files
-        const rdfFile = await readFile(regions[region].rdf);
-        const defaultsFile = await readFile(regions[region].defaults);
-        const rdf = new Rdf({
-          rdf: JSON.parse(rdfFile, 'utf8'),
-          defaults: JSON.parse(defaultsFile, 'utf8')
-        }).toJSON();
+      // instantiate new Rdf from data files
+      const rdfFile = await readFile(regions[region].rdf);
+      const defaultsFile = await readFile(regions[region].defaults);
+      const rdf = new Rdf({
+        rdf: JSON.parse(rdfFile, 'utf8'),
+        defaults: JSON.parse(defaultsFile, 'utf8')
+      }).toJSON();
 
-        // get 'nox:eere:id' value in 'avert' hash in redis
-        const eere = await redisClient.get(`nox:eere:${id}`);
-        // return early if eere not found in redis
-        if (!eere) { done(); }
+      // get 'nox:eere:id' value in 'avert' hash in redis
+      const eere = await redisClient.get(`nox:eere:${id}`);
+      // return early if eere not found in redis
+      if (!eere) { done(); }
 
-        // get nox total data from new DisplacementEngine instance
-        const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
-        const data = engine.getNoxTotal();
+      // get nox total data from new DisplacementEngine instance
+      const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
+      const data = engine.getNoxTotal();
 
-        // set 'job:id' key and value in 'avert' hash in redis
-        await redisClient.set(`job:${id}`, JSON.stringify(data));
+      // set 'job:id' key and value in 'avert' hash in redis
+      await redisClient.set(`job:${id}`, JSON.stringify(data));
 
-        console.log(`Processing: Job ${id} (NOx) finished`);
-        return done();
+      console.log(`Processing: Job ${id} (NOx) finished`);
+      return done();
     });
 
     // return status for debugging (not used in web app)
@@ -395,30 +395,30 @@ module.exports = {
 
       if (!(region in regions)) return false;
 
-        console.log(`Processing: Job ${id} (SO2) starting`);
+      console.log(`Processing: Job ${id} (SO2) starting`);
 
-        // instantiate new Rdf from data files
-        const rdfFile = await readFile(regions[region].rdf);
-        const defaultsFile = await readFile(regions[region].defaults);
-        const rdf = new Rdf({
-          rdf: JSON.parse(rdfFile, 'utf8'),
-          defaults: JSON.parse(defaultsFile, 'utf8')
-        }).toJSON();
+      // instantiate new Rdf from data files
+      const rdfFile = await readFile(regions[region].rdf);
+      const defaultsFile = await readFile(regions[region].defaults);
+      const rdf = new Rdf({
+        rdf: JSON.parse(rdfFile, 'utf8'),
+        defaults: JSON.parse(defaultsFile, 'utf8')
+      }).toJSON();
 
-        // get 'co2:eere:id' value in 'avert' hash in redis
-        const eere = await redisClient.get(`co2:eere:${id}`);
-        // return early if eere not found in redis
-        if (!eere) { done(); }
+      // get 'co2:eere:id' value in 'avert' hash in redis
+      const eere = await redisClient.get(`co2:eere:${id}`);
+      // return early if eere not found in redis
+      if (!eere) { done(); }
 
-        // get co2 total data from new DisplacementEngine instance
-        const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
-        const data = engine.getCo2Total();
+      // get co2 total data from new DisplacementEngine instance
+      const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
+      const data = engine.getCo2Total();
 
-        // set 'job:id' key and value in 'avert' hash in redis
-        await redisClient.set(`job:${id}`, JSON.stringify(data));
+      // set 'job:id' key and value in 'avert' hash in redis
+      await redisClient.set(`job:${id}`, JSON.stringify(data));
 
-        console.log(`Processing: Job ${id} (CO2) finished`);
-        return done();
+      console.log(`Processing: Job ${id} (CO2) finished`);
+      return done();
     });
 
     // return status for debugging (not used in web app)
@@ -437,30 +437,30 @@ module.exports = {
 
       if (!(region in regions)) return false;
 
-        console.log(`Processing: Job ${id} (PM25) starting`);
+      console.log(`Processing: Job ${id} (PM25) starting`);
 
-        // instantiate new Rdf from data files
-        const rdfFile = await readFile(regions[region].rdf);
-        const defaultsFile = await readFile(regions[region].defaults);
-        const rdf = new Rdf({
-          rdf: JSON.parse(rdfFile, 'utf8'),
-          defaults: JSON.parse(defaultsFile, 'utf8')
-        }).toJSON();
+      // instantiate new Rdf from data files
+      const rdfFile = await readFile(regions[region].rdf);
+      const defaultsFile = await readFile(regions[region].defaults);
+      const rdf = new Rdf({
+        rdf: JSON.parse(rdfFile, 'utf8'),
+        defaults: JSON.parse(defaultsFile, 'utf8')
+      }).toJSON();
 
-        // get 'pm25:eere:id' value in 'avert' hash in redis
-        const eere = await redisClient.get(`pm25:eere:${id}`);
-        // return early if eere not found in redis
-        if (!eere) { done(); }
+      // get 'pm25:eere:id' value in 'avert' hash in redis
+      const eere = await redisClient.get(`pm25:eere:${id}`);
+      // return early if eere not found in redis
+      if (!eere) { done(); }
 
-        // get pm25 total data from new DisplacementEngine instance
-        const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
-        const data = engine.getPm25Total();
+      // get pm25 total data from new DisplacementEngine instance
+      const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
+      const data = engine.getPm25Total();
 
-        // set 'job:id' key and value in 'avert' hash in redis
-        await redisClient.set(`job:${id}`, JSON.stringify(data));
+      // set 'job:id' key and value in 'avert' hash in redis
+      await redisClient.set(`job:${id}`, JSON.stringify(data));
 
-        console.log(`Processing: Job ${id} (PM25) finished`);
-        return done();
+      console.log(`Processing: Job ${id} (PM25) finished`);
+      return done();
     });
 
     // return status for debugging (not used in web app)

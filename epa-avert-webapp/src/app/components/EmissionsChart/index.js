@@ -210,25 +210,25 @@ const EmissionsChart = (props: Props) => {
       enabled: false,
     },
     tooltip: {
-      // pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y}</b><br/>',
       pointFormatter: function() {
-        return (
-          `<span style="color:${this.color}">\u25CF</span> ` +
-          `${this.series.yAxis.axisTitle.textStr}: ` +
-          `<b>${Math.round(this.y).toLocaleString()}</b><br/>`
-        );
+        const dataPoint = this.y.toLocaleString(undefined, {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        });
+
+        const suffix =
+          unit === 'emissions'
+            ? ` ${this.series.userOptions.emissionsUnit}`
+            : '%';
+
+        return `<strong>${dataPoint}</strong>${suffix}`;
       },
     },
     lang: {
-      hoverText: 'Export options',
+      contextButtonTitle: 'Export options',
     },
     exporting: {
       allowHTML: true,
-      buttons: {
-        contextButton: {
-          _titleKey: 'hoverText',
-        },
-      },
     },
     xAxis: {
       categories: [
@@ -248,6 +248,7 @@ const EmissionsChart = (props: Props) => {
     },
   };
 
+  // conditionally define location
   let location;
   // prettier-ignore
   if (aggregation === 'region') {
@@ -268,12 +269,11 @@ const EmissionsChart = (props: Props) => {
       : `${selectedCounty} ${county}, ${States[selectedState]}`;
   }
 
-  const formatTitle = (chemical) =>
-    `<tspan class='avert-chart-title'>Change in ${chemical} Emissions: ${location}</tspan>`;
+  const formatTitle = (pollutant) =>
+    `<tspan class='avert-chart-title'>Change in ${pollutant} Emissions: ${location}</tspan>`;
 
-  // prettier-ignore
   const formatYAxis = (emissionsUnit) =>
-    (unit === 'percentages')
+    unit === 'percentages'
       ? 'Percent change'
       : `Emission changes (${emissionsUnit})`;
 
@@ -293,6 +293,7 @@ const EmissionsChart = (props: Props) => {
         name: 'SO₂',
         data: output.so2,
         color: '#058dc7',
+        emissionsUnit: 'lbs',
       },
     ],
   };
@@ -313,6 +314,7 @@ const EmissionsChart = (props: Props) => {
         name: 'NOₓ',
         data: output.nox,
         color: '#ed561b',
+        emissionsUnit: 'lbs',
       },
     ],
   };
@@ -333,6 +335,7 @@ const EmissionsChart = (props: Props) => {
         name: 'CO₂',
         data: output.co2,
         color: '#50b432',
+        emissionsUnit: 'tons',
       },
     ],
   };
@@ -353,6 +356,7 @@ const EmissionsChart = (props: Props) => {
         name: 'PM₂₅',
         data: output.pm25,
         color: '#665683',
+        emissionsUnit: 'lbs',
       },
     ],
   };

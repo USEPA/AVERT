@@ -20,6 +20,7 @@ import './styles.css';
 type Props = {
   activePanel: number,
   // redux connected props
+  region: string,
   loading: boolean,
   modalOverlay: boolean,
   activeModalId: number,
@@ -165,11 +166,17 @@ const StepPanels = (props: Props) => {
         <PanelBody heading="Results: Avoided Regional, State, and County-Level Emissions">
           {ValidationWarning}
 
-          <DisplacementsTable heading="Annual Regional Displacements" />
+          <DisplacementsTable
+            heading={`Annual Regional Displacements: ${props.region} Region`}
+          />
 
-          <EmissionsTable heading="Annual State Emission Changes" />
+          <EmissionsTable
+            heading={`Annual State Emission Changes: ${props.region} Region`}
+          />
 
-          <EmissionsChart heading="Monthly Emission Changes" />
+          <EmissionsChart
+            heading={`Monthly Emission Changes: ${props.region} Region`}
+          />
 
           <DataDownload
             heading="Data Download"

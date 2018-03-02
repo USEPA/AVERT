@@ -27,6 +27,7 @@ const origPost = {
 
 const initialState = {
   status: 'select_region',
+  statesAndCounties: {},
   results: {
     generation: origPostImpact,
     totalEmissions: {
@@ -62,6 +63,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         status: 'complete',
+        statesAndCounties: action.statesAndCounties,
         results: action.data,
       };
 
@@ -77,6 +79,7 @@ export const incrementProgress = () => ({
 
 export const receiveDisplacement = () => {
   return (dispatch, getState) => {
+    // get reducer data from store to use in dispatched action
     const { generation, so2, nox, co2, pm25 } = getState();
 
     // prettier-ignore
@@ -133,96 +136,21 @@ export const receiveDisplacement = () => {
       },
     };
 
+    // build up statesAndCounties from monthlyChanges data
+    const so2countyEmissions = so2.data.monthlyChanges.emissions.county;
+    const statesAndCounties = {};
+    for (const state in so2countyEmissions) {
+      statesAndCounties[state] = Object.keys(so2countyEmissions[state]).sort();
+    }
+
     dispatch(incrementProgress());
     dispatch({
       type: RECEIVE_DISPLACEMENT,
       data: displacementData,
-    });
-
-    // build up states array
-    const states = Object.keys(generation.data.stateChanges).sort();
-
-    // calculate state emissions and dispatch action
-    const stateEmissionsData = states.map((state) => ({
-      state: state,
-      so2: so2.data.stateChanges[state],
-      nox: nox.data.stateChanges[state],
-      co2: co2.data.stateChanges[state],
-      pm25: pm25.data.stateChanges[state],
-    }));
-
-    dispatch(
-      completeStateEmissions({ states: states, data: stateEmissionsData }),
-    );
-
-    // build two-dimmensional states and counties array
-    let statesAndCounties = {};
-    // prettier-ignore
-    states.forEach((state) => {
-      statesAndCounties[state] = Object.keys(generation.data.monthlyChanges.emissions.county[state]).sort();
-    });
-
-    // prettier-ignore
-    // calculate monthly emissions and dispatch action
-    const monthlyEmissionsData = {
       statesAndCounties: statesAndCounties,
-      emissions: {
-        generation: {
-          regional: Object.values(generation.data.monthlyChanges.emissions.region),
-          state: generation.data.monthlyChanges.emissions.state,
-          county: generation.data.monthlyChanges.emissions.county,
-        },
-        so2: {
-          regional: Object.values(so2.data.monthlyChanges.emissions.region),
-          state: so2.data.monthlyChanges.emissions.state,
-          county: so2.data.monthlyChanges.emissions.county,
-        },
-        nox: {
-          regional: Object.values(nox.data.monthlyChanges.emissions.region),
-          state: nox.data.monthlyChanges.emissions.state,
-          county: nox.data.monthlyChanges.emissions.county,
-        },
-        co2: {
-          regional: Object.values(co2.data.monthlyChanges.emissions.region),
-          state: co2.data.monthlyChanges.emissions.state,
-          county: co2.data.monthlyChanges.emissions.county,
-        },
-        pm25: {
-          regional: Object.values(pm25.data.monthlyChanges.emissions.region),
-          state: pm25.data.monthlyChanges.emissions.state,
-          county: pm25.data.monthlyChanges.emissions.county,
-        },
-      },
-      percentages: {
-        generation: {
-          regional: Object.values(generation.data.monthlyChanges.percentages.region),
-          state: generation.data.monthlyChanges.percentages.state,
-          county: generation.data.monthlyChanges.percentages.county,
-        },
-        so2: {
-          regional: Object.values(so2.data.monthlyChanges.percentages.region),
-          state: so2.data.monthlyChanges.percentages.state,
-          county: so2.data.monthlyChanges.percentages.county,
-        },
-        nox: {
-          regional: Object.values(nox.data.monthlyChanges.percentages.region),
-          state: nox.data.monthlyChanges.percentages.state,
-          county: nox.data.monthlyChanges.percentages.county,
-        },
-        co2: {
-          regional: Object.values(co2.data.monthlyChanges.percentages.region),
-          state: co2.data.monthlyChanges.percentages.state,
-          county: co2.data.monthlyChanges.percentages.county,
-        },
-        pm25: {
-          regional: Object.values(pm25.data.monthlyChanges.percentages.region),
-          state: pm25.data.monthlyChanges.percentages.state,
-          county: pm25.data.monthlyChanges.percentages.county,
-        },
-      },
-    };
-
-    return dispatch(completeMonthlyEmissions(monthlyEmissionsData));
+    });
+    dispatch(completeStateEmissions());
+    dispatch(completeMonthlyEmissions());
   };
 };
 
