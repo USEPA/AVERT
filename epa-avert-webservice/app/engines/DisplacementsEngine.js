@@ -49,7 +49,6 @@ module.exports = (function () {
 
   DisplacementsEngine.prototype.getDisplacedGeneration = function (dataSet, dataSetNonOzone, type) {
     // set up structure of data collections (used in returned object's keys)
-    const monthlyEmissions = { regional: {}, state: {} };
     const monthlyEmissionChanges = { region: {}, state: {}, county: {} };
     const monthlyPercentageChanges = { region: {}, state: {}, county: {} };
     const monthlyPreValues = { region: {}, state: {}, county: {} };
@@ -76,7 +75,7 @@ module.exports = (function () {
 
     // setup total and delta arrays
     // (total arrays used to calculate returned 'original' and 'post' keys with data)
-    // (detla array used to calculate returned 'monthlyEmissions' and 'monthlyChanges' keys)
+    // (detla array used to calculate returned 'monthlyChanges' keys)
     let preTotalArray = [];
     let postTotalArray = [];
     let deltaVArray = [];
@@ -96,7 +95,6 @@ module.exports = (function () {
       deltaVArray[i] = 0;
 
       // initialize each data collection's month to '0' if it hasn't been set
-      init(monthlyEmissions.regional, month, 0);
       init(monthlyEmissionChanges.region, month, 0);
       init(monthlyPercentageChanges.region, month, 0);
       init(monthlyPreValues.region, month, 0);
@@ -110,7 +108,6 @@ module.exports = (function () {
       const activeMedians = (mediansNonOzone)
         ? (month >= 5 && month <= 9) ? medians : mediansNonOzone
         : medians;
-      // if (i === 0) console.log(activeMedians.length);
 
       // iterate over activeMedians (number varies per region)
       // ('RM' region: under 100. 'SE' region: over 1000)
@@ -135,39 +132,11 @@ module.exports = (function () {
           edgeB: edges[postGenIndex + 1]
         });
 
-        const deltaV = postVal - preVal;
-
         const data = {
           pre: preVal,
           post: postVal,
-          delta: deltaV,
+          delta: postVal - preVal,
         };
-
-        // initialize monthlyEmissions object structure per state, if it hasn't been set
-        init(monthlyEmissions.state, state, { data: {}, pre: {}, post: {}, counties: {} });
-
-        // increment monthlyEmissions per state and month
-        init(monthlyEmissions.state[state].data, month, 0);
-        monthlyEmissions.state[state].data[month] += deltaV;
-
-        init(monthlyEmissions.state[state].pre, month, 0);
-        monthlyEmissions.state[state].pre[month] += preVal;
-
-        init(monthlyEmissions.state[state].post, month, 0);
-        monthlyEmissions.state[state].post[month] += postVal;
-
-        // initialize monthlyEmissions object structure per state county, if it hasn't been set
-        init(monthlyEmissions.state[state].counties, county, { data: {}, pre: {}, post: {} });
-
-        // increment monthlyEmissions per state county and month
-        init(monthlyEmissions.state[state].counties[county].data, month, 0);
-        monthlyEmissions.state[state].counties[county].data[month] += deltaV;
-
-        init(monthlyEmissions.state[state].counties[county].pre, month, 0);
-        monthlyEmissions.state[state].counties[county].pre[month] += preVal;
-
-        init(monthlyEmissions.state[state].counties[county].post, month, 0);
-        monthlyEmissions.state[state].counties[county].post[month] += postVal;
 
         // initialize and increment stateEmissionsChanges per state
         init(stateEmissionChanges, state, 0);
@@ -206,13 +175,11 @@ module.exports = (function () {
         init(monthlyPostValues.county[state][county], month, 0);
         monthlyPostValues.county[state][county][month] += data.post;
 
-        // initialize monthlyPercentageChanges per state and month
-        // (set outside of loop)
+        // initialize monthlyPercentageChanges per state and month (set outside of loop)
         init(monthlyPercentageChanges.state, state, {});
         init(monthlyPercentageChanges.state[state], month, 0);
 
-        // initialize monthlyPercentageChanges per county, state, and month
-        // (set outside of loop)
+        // initialize monthlyPercentageChanges per county, state, and month (set outside of loop)
         init(monthlyPercentageChanges.county, state, {});
         init(monthlyPercentageChanges.county[state], county, {});
         init(monthlyPercentageChanges.county[state][county], month, 0);
@@ -224,7 +191,6 @@ module.exports = (function () {
       }
 
       // increment each data collection with accumulated values from total and delta arrays
-      monthlyEmissions.regional[month] += deltaVArray[i];
       monthlyEmissionChanges.region[month] += deltaVArray[i];
       monthlyPreValues.region[month] += preTotalArray[i];
       monthlyPostValues.region[month] += postTotalArray[i];
@@ -270,7 +236,6 @@ module.exports = (function () {
       original: Number(preTotal),
       post: Number(postTotal),
       impact: Number(postTotal - preTotal),
-      monthlyEmissions: monthlyEmissions,
       monthlyChanges: {
         emissions: monthlyEmissionChanges,
         percentages: monthlyPercentageChanges,
