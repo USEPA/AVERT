@@ -148,25 +148,7 @@ export const receiveDisplacement = () => {
       data: displacementData,
       statesAndCounties: statesAndCounties,
     });
-
-    const states = Object.keys(statesAndCounties).sort();
-
-    // calculate state emissions and dispatch action
-    const stateEmissionsData = states.map((state) => ({
-      state: state,
-      so2: so2.data.stateChanges[state],
-      nox: nox.data.stateChanges[state],
-      co2: co2.data.stateChanges[state],
-      pm25: pm25.data.stateChanges[state],
-    }));
-
-    dispatch(
-      completeStateEmissions({
-        states: states,
-        data: stateEmissionsData,
-      }),
-    );
-
+    dispatch(completeStateEmissions());
     dispatch(completeMonthlyEmissions());
   };
 };
