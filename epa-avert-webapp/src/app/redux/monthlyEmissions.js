@@ -88,7 +88,7 @@ export default function reducer(state = initialState, action) {
       };
 
       // populate emissionData with data from action (pollutant data from store)
-      Object.keys(emissionData).forEach((pollutant) => {
+      for (const pollutant in emissionData) {
         if (aggregation === 'region') {
           emissionData[pollutant] = Object.values(
             action[pollutant][unit].region,
@@ -106,7 +106,16 @@ export default function reducer(state = initialState, action) {
             action[pollutant][unit].county[selectedState][selectedCounty],
           );
         }
-      });
+      }
+
+      // multiply each emission datapoint by 100 if unit is 'percentages'
+      if (unit === 'percentages') {
+        for (const pollutant in emissionData) {
+          emissionData[pollutant].forEach(
+            (data, index, array) => (array[index] = data * 100),
+          );
+        }
+      }
 
       return {
         ...state,
