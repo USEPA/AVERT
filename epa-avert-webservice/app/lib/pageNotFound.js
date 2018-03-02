@@ -12,9 +12,7 @@ module.exports = async function (ctx, next) {
       break;
 
     case 'json':
-      ctx.body = {
-        message: 'Page Not Found'
-      };
+      ctx.body = { message: 'Page Not Found' };
       break;
 
     default:
