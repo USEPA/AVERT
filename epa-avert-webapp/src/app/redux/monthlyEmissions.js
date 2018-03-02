@@ -19,7 +19,7 @@ const initialState = {
   availableCounties: [],
   selectedState: '',
   selectedCounty: '',
-  data: {},
+  statesAndCounties: {},
   output: {
     so2: [],
     nox: [],
@@ -47,8 +47,8 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         status: 'complete',
-        data: action.data,
-        availableStates: Object.keys(action.data.statesAndCounties),
+        statesAndCounties: action.statesAndCounties,
+        availableStates: Object.keys(action.statesAndCounties),
       };
 
     case SELECT_MONTHLY_AGGREGATION:
@@ -126,10 +126,9 @@ export default function reducer(state = initialState, action) {
       return initialState;
 
     case SET_DOWNLOAD_DATA:
-      const { emissions, percentages, statesAndCounties } = state.data;
-
-      const structureData = (pollutant, unit, data, state, county) => {
+      const dataRow = (pollutant, unit, data, state, county) => {
         data = Object.values(data);
+
         return {
           type: pollutant,
           'aggregation level': county ? 'County' : state ? 'State' : 'Regional',
@@ -153,34 +152,34 @@ export default function reducer(state = initialState, action) {
 
       let rows = [];
       // region
-      rows.push(structureData('SO2', 'emissions (pounds)', emissions.so2.regional)); // prettier-ignore
-      rows.push(structureData('NOX', 'emissions (pounds)', emissions.nox.regional)); // prettier-ignore
-      rows.push(structureData('CO2', 'emissions (tons)', emissions.co2.regional)); // prettier-ignore
-      rows.push(structureData('PM25', 'emissions (pounds)', emissions.pm25.regional)); // prettier-ignore
-      rows.push(structureData('SO2', 'percentages', percentages.so2.regional)); // prettier-ignore
-      rows.push(structureData('NOX', 'percentages', percentages.nox.regional)); // prettier-ignore
-      rows.push(structureData('CO2', 'percentages', percentages.co2.regional)); // prettier-ignore
-      rows.push(structureData('PM25', 'percentages', percentages.pm25.regional)); // prettier-ignore
+      rows.push(dataRow('SO2', 'emissions (pounds)', action.so2.emissions.region)); // prettier-ignore
+      rows.push(dataRow('NOX', 'emissions (pounds)', action.nox.emissions.region)); // prettier-ignore
+      rows.push(dataRow('CO2', 'emissions (tons)', action.co2.emissions.region)); // prettier-ignore
+      rows.push(dataRow('PM25', 'emissions (pounds)', action.pm25.emissions.region)); // prettier-ignore
+      rows.push(dataRow('SO2', 'percentages', action.so2.percentages.region)); // prettier-ignore
+      rows.push(dataRow('NOX', 'percentages', action.nox.percentages.region)); // prettier-ignore
+      rows.push(dataRow('CO2', 'percentages', action.co2.percentages.region)); // prettier-ignore
+      rows.push(dataRow('PM25', 'percentages', action.pm25.percentages.region)); // prettier-ignore
       // states
-      Object.keys(statesAndCounties).forEach((s) => {
-        rows.push(structureData('SO2', 'emissions (pounds)', emissions.so2.state[s], s)); // prettier-ignore
-        rows.push(structureData('NOX', 'emissions (pounds)', emissions.nox.state[s], s)); // prettier-ignore
-        rows.push(structureData('CO2', 'emissions (tons)', emissions.co2.state[s], s)); // prettier-ignore
-        rows.push(structureData('PM25', 'emissions (pounds)', emissions.pm25.state[s], s)); // prettier-ignore
-        rows.push(structureData('SO2', 'percentages', percentages.so2.state[s], s)); // prettier-ignore
-        rows.push(structureData('NOX', 'percentages', percentages.nox.state[s], s)); // prettier-ignore
-        rows.push(structureData('CO2', 'percentages', percentages.co2.state[s], s)); // prettier-ignore
-        rows.push(structureData('PM25', 'percentages', percentages.pm25.state[s], s)); // prettier-ignore
+      Object.keys(state.statesAndCounties).forEach((s) => {
+        rows.push(dataRow('SO2', 'emissions (pounds)', action.so2.emissions.state[s], s)); // prettier-ignore
+        rows.push(dataRow('NOX', 'emissions (pounds)', action.nox.emissions.state[s], s)); // prettier-ignore
+        rows.push(dataRow('CO2', 'emissions (tons)', action.co2.emissions.state[s], s)); // prettier-ignore
+        rows.push(dataRow('PM25', 'emissions (pounds)', action.pm25.emissions.state[s], s)); // prettier-ignore
+        rows.push(dataRow('SO2', 'percentages', action.so2.percentages.state[s], s)); // prettier-ignore
+        rows.push(dataRow('NOX', 'percentages', action.nox.percentages.state[s], s)); // prettier-ignore
+        rows.push(dataRow('CO2', 'percentages', action.co2.percentages.state[s], s)); // prettier-ignore
+        rows.push(dataRow('PM25', 'percentages', action.pm25.percentages.state[s], s)); // prettier-ignore
         // counties
-        statesAndCounties[s].forEach((c) => {
-          rows.push(structureData('SO2', 'emissions (pounds)', emissions.so2.county[s][c], s, c)); // prettier-ignore
-          rows.push(structureData('NOX', 'emissions (pounds)', emissions.nox.county[s][c], s, c)); // prettier-ignore
-          rows.push(structureData('CO2', 'emissions (tons)', emissions.co2.county[s][c], s, c)); // prettier-ignore
-          rows.push(structureData('PM25', 'emissions (pounds)', emissions.pm25.county[s][c], s, c)); // prettier-ignore
-          rows.push(structureData('SO2', 'percentages', percentages.so2.county[s][c], s, c)); // prettier-ignore
-          rows.push(structureData('NOX', 'percentages', percentages.nox.county[s][c], s, c)); // prettier-ignore
-          rows.push(structureData('CO2', 'percentages', percentages.co2.county[s][c], s, c)); // prettier-ignore
-          rows.push(structureData('PM25', 'percentages', percentages.pm25.county[s][c], s, c)); // prettier-ignore
+        state.statesAndCounties[s].forEach((c) => {
+          rows.push(dataRow('SO2', 'emissions (pounds)', action.so2.emissions.county[s][c], s, c)); // prettier-ignore
+          rows.push(dataRow('NOX', 'emissions (pounds)', action.nox.emissions.county[s][c], s, c)); // prettier-ignore
+          rows.push(dataRow('CO2', 'emissions (tons)', action.co2.emissions.county[s][c], s, c)); // prettier-ignore
+          rows.push(dataRow('PM25', 'emissions (pounds)', action.pm25.emissions.county[s][c], s, c)); // prettier-ignore
+          rows.push(dataRow('SO2', 'percentages', action.so2.percentages.county[s][c], s, c)); // prettier-ignore
+          rows.push(dataRow('NOX', 'percentages', action.nox.percentages.county[s][c], s, c)); // prettier-ignore
+          rows.push(dataRow('CO2', 'percentages', action.co2.percentages.county[s][c], s, c)); // prettier-ignore
+          rows.push(dataRow('PM25', 'percentages', action.pm25.percentages.county[s][c], s, c)); // prettier-ignore
         });
       });
 
@@ -196,7 +195,7 @@ export default function reducer(state = initialState, action) {
 
 export const renderMonthlyEmissionsCharts = () => {
   return function(dispatch, getState) {
-    // get pollutants from store to use in dispatched action
+    // get each pollutant's monthly changes from store to use in dispatched action
     const { so2, nox, co2, pm25 } = getState();
 
     dispatch({
@@ -209,13 +208,24 @@ export const renderMonthlyEmissionsCharts = () => {
   };
 };
 
-export const completeMonthlyEmissions = (data) => {
-  return function(dispatch) {
+export const completeMonthlyEmissions = (statesAndCounties) => {
+  return function(dispatch, getState) {
+    // get each pollutant's monthly changes from store to use in dispatched action
+    const { so2, nox, co2, pm25 } = getState();
+
     dispatch({
       type: COMPLETE_MONTHLY_EMISSIONS,
-      data: data,
+      statesAndCounties: statesAndCounties,
     });
-    dispatch({ type: SET_DOWNLOAD_DATA });
+
+    dispatch({
+      type: SET_DOWNLOAD_DATA,
+      so2: so2.data.monthlyChanges,
+      nox: nox.data.monthlyChanges,
+      co2: co2.data.monthlyChanges,
+      pm25: pm25.data.monthlyChanges,
+    });
+
     dispatch(renderMonthlyEmissionsCharts());
   };
 };
@@ -247,7 +257,7 @@ export const selectMonthlyState = (selection) => {
     dispatch({
       type: SELECT_MONTHLY_STATE,
       selectedState: selection,
-      availableCounties: monthlyEmissions.data.statesAndCounties[selection],
+      availableCounties: monthlyEmissions.statesAndCounties[selection],
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
