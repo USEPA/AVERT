@@ -75,27 +75,20 @@ const EEREChart = (props: Props) => {
     },
     tooltip: {
       formatter: function() {
-        return `<span style="font-size: 10px">Hour of year:
-          ${this.x.toLocaleString()}</span><br/>
-          <span style="color:${this.color}">\u25CF</span>
-          ${this.series.yAxis.axisTitle.textStr}
-          <b>${Math.round(this.y).toLocaleString()}</b><br/>`;
+        return `<span style="font-size: 10px">
+          ${this.series.xAxis.axisTitle.textStr}:
+          ${this.x.toLocaleString()}
+          </span><br/>
+          <strong>${Math.round(this.y).toLocaleString()}</strong> MW`;
       },
     },
     lang: {
-      hoverText: 'Export options',
-    },
-    exporting: {
-      buttons: {
-        contextButton: {
-          _titleKey: 'hoverText',
-        },
-      },
+      contextButtonTitle: 'Export options',
     },
     xAxis: {
       categories: hours,
       title: {
-        text: 'Hour',
+        text: 'Hour of year',
       },
       labels: {
         formatter: function() {
