@@ -1,7 +1,5 @@
 'use strict';
 
-const math = require('mathjs');
-
 // helper function for initializing default values of an object's key
 function init (object, key, fallback) {
   (object[key] != null) ? object[key] : object[key] = fallback;
@@ -73,7 +71,7 @@ module.exports = (function () {
     const loadArrayOriginal = this.rdf.regionalLoads;
     //
     const loadArrayPost = loadArrayOriginal.map(function (item, index) {
-      return math.sum(item, this.hourlyEere[index].final_mw)
+      return item + this.hourlyEere[index].final_mw;
     }, this);
 
     // setup total and delta arrays
@@ -271,7 +269,7 @@ module.exports = (function () {
     return {
       original: Number(preTotal),
       post: Number(postTotal),
-      impact: Number(math.subtract(postTotal, preTotal)),
+      impact: Number(postTotal - preTotal),
       monthlyEmissions: monthlyEmissions,
       monthlyChanges: {
         emissions: monthlyEmissionChanges,
