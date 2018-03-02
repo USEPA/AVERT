@@ -79,6 +79,7 @@ export const incrementProgress = () => ({
 
 export const receiveDisplacement = () => {
   return (dispatch, getState) => {
+    // get reducer data from store to use in dispatched action
     const { generation, so2, nox, co2, pm25 } = getState();
 
     // prettier-ignore
