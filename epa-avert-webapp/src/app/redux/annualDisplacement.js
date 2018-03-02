@@ -27,6 +27,7 @@ const origPost = {
 
 const initialState = {
   status: 'select_region',
+  statesAndCounties: {},
   results: {
     generation: origPostImpact,
     totalEmissions: {
@@ -62,6 +63,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         status: 'complete',
+        statesAndCounties: action.statesAndCounties,
         results: action.data,
       };
 
@@ -133,14 +135,21 @@ export const receiveDisplacement = () => {
       },
     };
 
+    // build up statesAndCounties from monthlyChanges data
+    const so2countyEmissions = so2.data.monthlyChanges.emissions.county;
+    const statesAndCounties = {};
+    for (const state in so2countyEmissions) {
+      statesAndCounties[state] = Object.keys(so2countyEmissions[state]).sort();
+    }
+
     dispatch(incrementProgress());
     dispatch({
       type: RECEIVE_DISPLACEMENT,
       data: displacementData,
+      statesAndCounties: statesAndCounties,
     });
 
-    // build up states array
-    const states = Object.keys(generation.data.stateChanges).sort();
+    const states = Object.keys(statesAndCounties).sort();
 
     // calculate state emissions and dispatch action
     const stateEmissionsData = states.map((state) => ({
@@ -152,17 +161,13 @@ export const receiveDisplacement = () => {
     }));
 
     dispatch(
-      completeStateEmissions({ states: states, data: stateEmissionsData }),
+      completeStateEmissions({
+        states: states,
+        data: stateEmissionsData,
+      }),
     );
 
-    // build two-dimmensional states and counties array
-    let statesAndCounties = {};
-    // prettier-ignore
-    states.forEach((state) => {
-      statesAndCounties[state] = Object.keys(generation.data.monthlyChanges.emissions.county[state]).sort();
-    });
-
-    return dispatch(completeMonthlyEmissions(statesAndCounties));
+    dispatch(completeMonthlyEmissions());
   };
 };
 

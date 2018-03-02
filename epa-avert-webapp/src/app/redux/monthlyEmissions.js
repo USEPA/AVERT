@@ -19,7 +19,6 @@ const initialState = {
   availableCounties: [],
   selectedState: '',
   selectedCounty: '',
-  statesAndCounties: {},
   output: {
     so2: [],
     nox: [],
@@ -47,8 +46,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         status: 'complete',
-        statesAndCounties: action.statesAndCounties,
-        availableStates: Object.keys(action.statesAndCounties),
+        availableStates: action.availableStates,
       };
 
     case SELECT_MONTHLY_AGGREGATION:
@@ -161,7 +159,7 @@ export default function reducer(state = initialState, action) {
       rows.push(dataRow('CO2', 'percentages', action.co2.percentages.region)); // prettier-ignore
       rows.push(dataRow('PM25', 'percentages', action.pm25.percentages.region)); // prettier-ignore
       // states
-      Object.keys(state.statesAndCounties).forEach((s) => {
+      Object.keys(action.statesAndCounties).forEach((s) => {
         rows.push(dataRow('SO2', 'emissions (pounds)', action.so2.emissions.state[s], s)); // prettier-ignore
         rows.push(dataRow('NOX', 'emissions (pounds)', action.nox.emissions.state[s], s)); // prettier-ignore
         rows.push(dataRow('CO2', 'emissions (tons)', action.co2.emissions.state[s], s)); // prettier-ignore
@@ -171,7 +169,7 @@ export default function reducer(state = initialState, action) {
         rows.push(dataRow('CO2', 'percentages', action.co2.percentages.state[s], s)); // prettier-ignore
         rows.push(dataRow('PM25', 'percentages', action.pm25.percentages.state[s], s)); // prettier-ignore
         // counties
-        state.statesAndCounties[s].forEach((c) => {
+        action.statesAndCounties[s].forEach((c) => {
           rows.push(dataRow('SO2', 'emissions (pounds)', action.so2.emissions.county[s][c], s, c)); // prettier-ignore
           rows.push(dataRow('NOX', 'emissions (pounds)', action.nox.emissions.county[s][c], s, c)); // prettier-ignore
           rows.push(dataRow('CO2', 'emissions (tons)', action.co2.emissions.county[s][c], s, c)); // prettier-ignore
@@ -195,7 +193,7 @@ export default function reducer(state = initialState, action) {
 
 export const renderMonthlyEmissionsCharts = () => {
   return function(dispatch, getState) {
-    // get each pollutant's monthly changes from store to use in dispatched action
+    // get reducer data from store to use in dispatched action
     const { so2, nox, co2, pm25 } = getState();
 
     dispatch({
@@ -208,14 +206,14 @@ export const renderMonthlyEmissionsCharts = () => {
   };
 };
 
-export const completeMonthlyEmissions = (statesAndCounties) => {
+export const completeMonthlyEmissions = () => {
   return function(dispatch, getState) {
-    // get each pollutant's monthly changes from store to use in dispatched action
-    const { so2, nox, co2, pm25 } = getState();
+    // get reducer data from store to use in dispatched action
+    const { annualDisplacement, so2, nox, co2, pm25 } = getState();
 
     dispatch({
       type: COMPLETE_MONTHLY_EMISSIONS,
-      statesAndCounties: statesAndCounties,
+      availableStates: Object.keys(annualDisplacement.statesAndCounties).sort(),
     });
 
     dispatch({
@@ -224,6 +222,7 @@ export const completeMonthlyEmissions = (statesAndCounties) => {
       nox: nox.data.monthlyChanges,
       co2: co2.data.monthlyChanges,
       pm25: pm25.data.monthlyChanges,
+      statesAndCounties: annualDisplacement.statesAndCounties,
     });
 
     dispatch(renderMonthlyEmissionsCharts());
@@ -252,12 +251,13 @@ export const selectMonthlyUnit = (selection) => {
 
 export const selectMonthlyState = (selection) => {
   return function(dispatch, getState) {
-    const { monthlyEmissions } = getState();
+    // get reducer data from store to use in dispatched action
+    const { annualDisplacement } = getState();
 
     dispatch({
       type: SELECT_MONTHLY_STATE,
       selectedState: selection,
-      availableCounties: monthlyEmissions.statesAndCounties[selection],
+      availableCounties: annualDisplacement.statesAndCounties[selection].sort(),
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
