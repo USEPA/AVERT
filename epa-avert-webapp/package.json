@@ -18,7 +18,7 @@
   },
   "homepage": ".",
   "devDependencies": {
-    "react-scripts": "1.1.0",
+    "react-scripts": "1.1.1",
     "redux-mock-store": "1.5.1"
   },
   "dependencies": {
@@ -28,12 +28,12 @@
     "highcharts-exporting": "0.1.7",
     "husky": "0.14.3",
     "json2csv": "4.0.0",
-    "lint-staged": "6.1.0",
-    "prettier": "1.10.2",
+    "lint-staged": "7.0.0",
+    "prettier": "1.11.1",
     "react": "16.2.0",
     "react-dom": "16.2.0",
     "react-highcharts": "16.0.2",
-    "react-redux": "5.0.6",
+    "react-redux": "5.0.7",
     "redux": "3.7.2",
     "redux-thunk": "2.2.0",
     "stats-lite": "2.1.0"
