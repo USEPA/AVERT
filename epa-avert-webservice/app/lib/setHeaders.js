@@ -1,5 +1,5 @@
-module.exports = function* (next) {
-  yield next;
+module.exports = async function (ctx, next) {
+  await next();
 
-  this.set('X-Frame-Options', 'ALLOW-FROM https://epa.gov/');
+  ctx.set('X-Frame-Options', 'ALLOW-FROM https://epa.gov/');
 }
