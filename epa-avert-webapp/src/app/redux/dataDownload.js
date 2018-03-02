@@ -26,21 +26,23 @@ export default function reducer(state = initialState, action) {
 // action creators
 export const startDataDownload = () => {
   return (dispatch, getState) => {
+    // get reducer data from store to use in dispatched action
     const { monthlyEmissions, region } = getState();
 
     const data = monthlyEmissions.downloadableData;
     const fields = Object.keys(data[0]);
 
-    // prettier-ignore
     try {
-      const csv = json2csv({ fields, data });
+      const csv = json2csv.parse(data, { fields });
       const blob = new Blob([csv], { type: 'text/plain:charset=utf-8' });
-      FileSaver.saveAs(blob, `AVERT Monthly Emission Changes (${region.name}).csv`);
-    } catch (e) {
-      console.error(e);
+      FileSaver.saveAs(
+        blob,
+        `AVERT Monthly Emission Changes (${region.name}).csv`,
+      );
+    } catch (err) {
+      console.error(err);
     }
 
-    // dispatch 'start data download' action
     return dispatch({ type: START_DATA_DOWNLOAD });
   };
 };
