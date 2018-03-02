@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 // action types
 import { SELECT_REGION } from 'app/redux/region';
 import { START_DISPLACEMENT } from 'app/redux/annualDisplacement';
@@ -81,24 +83,27 @@ export default function reducer(state = initialState, action) {
       const { unit, aggregation, selectedState, selectedCounty } = state;
 
       const pollutants = ['so2', 'nox', 'co2', 'pm25'];
-
+      // build up emissionsData object with keys for each pollutant
       let emissionData = {};
+
       if (aggregation === 'region') {
         pollutants.forEach((pollutant) => {
-          emissionData[pollutant] = state.data[unit][pollutant].regional;
+          emissionData[pollutant] = Object.values(
+            action[pollutant][unit].region,
+          );
         });
       }
       if (aggregation === 'state' && selectedState) {
         pollutants.forEach((pollutant) => {
           emissionData[pollutant] = Object.values(
-            state.data[unit][pollutant].state[selectedState],
+            action[pollutant][unit].state[selectedState],
           );
         });
       }
       if (aggregation === 'county' && selectedState && selectedCounty) {
         pollutants.forEach((pollutant) => {
           emissionData[pollutant] = Object.values(
-            state.data[unit][pollutant].county[selectedState][selectedCounty],
+            action[pollutant][unit].county[selectedState][selectedCounty],
           );
         });
       }
@@ -180,9 +185,20 @@ export default function reducer(state = initialState, action) {
   }
 }
 
-export const renderMonthlyEmissionsCharts = () => ({
-  type: RENDER_MONTHLY_EMISSIONS_CHARTS,
-});
+export const renderMonthlyEmissionsCharts = () => {
+  return function(dispatch, getState) {
+    // get pollutants from store to use in dispatched action
+    const { so2, nox, co2, pm25 } = getState();
+
+    dispatch({
+      type: RENDER_MONTHLY_EMISSIONS_CHARTS,
+      so2: so2.data.monthlyChanges,
+      nox: nox.data.monthlyChanges,
+      co2: co2.data.monthlyChanges,
+      pm25: pm25.data.monthlyChanges,
+    });
+  };
+};
 
 export const completeMonthlyEmissions = (data) => {
   return function(dispatch) {

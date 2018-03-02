@@ -168,54 +168,54 @@ export const receiveDisplacement = () => {
       statesAndCounties: statesAndCounties,
       emissions: {
         generation: {
-          regional: Object.values(generation.data.monthlyChanges.emissions.region),
+          regional: generation.data.monthlyChanges.emissions.region,
           state: generation.data.monthlyChanges.emissions.state,
           county: generation.data.monthlyChanges.emissions.county,
         },
         so2: {
-          regional: Object.values(so2.data.monthlyChanges.emissions.region),
+          regional: so2.data.monthlyChanges.emissions.region,
           state: so2.data.monthlyChanges.emissions.state,
           county: so2.data.monthlyChanges.emissions.county,
         },
         nox: {
-          regional: Object.values(nox.data.monthlyChanges.emissions.region),
+          regional: nox.data.monthlyChanges.emissions.region,
           state: nox.data.monthlyChanges.emissions.state,
           county: nox.data.monthlyChanges.emissions.county,
         },
         co2: {
-          regional: Object.values(co2.data.monthlyChanges.emissions.region),
+          regional: co2.data.monthlyChanges.emissions.region,
           state: co2.data.monthlyChanges.emissions.state,
           county: co2.data.monthlyChanges.emissions.county,
         },
         pm25: {
-          regional: Object.values(pm25.data.monthlyChanges.emissions.region),
+          regional: pm25.data.monthlyChanges.emissions.region,
           state: pm25.data.monthlyChanges.emissions.state,
           county: pm25.data.monthlyChanges.emissions.county,
         },
       },
       percentages: {
         generation: {
-          regional: Object.values(generation.data.monthlyChanges.percentages.region),
+          regional: generation.data.monthlyChanges.percentages.region,
           state: generation.data.monthlyChanges.percentages.state,
           county: generation.data.monthlyChanges.percentages.county,
         },
         so2: {
-          regional: Object.values(so2.data.monthlyChanges.percentages.region),
+          regional: so2.data.monthlyChanges.percentages.region,
           state: so2.data.monthlyChanges.percentages.state,
           county: so2.data.monthlyChanges.percentages.county,
         },
         nox: {
-          regional: Object.values(nox.data.monthlyChanges.percentages.region),
+          regional: nox.data.monthlyChanges.percentages.region,
           state: nox.data.monthlyChanges.percentages.state,
           county: nox.data.monthlyChanges.percentages.county,
         },
         co2: {
-          regional: Object.values(co2.data.monthlyChanges.percentages.region),
+          regional: co2.data.monthlyChanges.percentages.region,
           state: co2.data.monthlyChanges.percentages.state,
           county: co2.data.monthlyChanges.percentages.county,
         },
         pm25: {
-          regional: Object.values(pm25.data.monthlyChanges.percentages.region),
+          regional: pm25.data.monthlyChanges.percentages.region,
           state: pm25.data.monthlyChanges.percentages.state,
           county: pm25.data.monthlyChanges.percentages.county,
         },
