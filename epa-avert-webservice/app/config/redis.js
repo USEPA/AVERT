@@ -12,7 +12,7 @@ let redis = {
 
 // cloud foundry redis service settings
 if (process.env.WEB_SERVICE !== 'local') {
-  redis = services['avert-redis32'].credentials;
+  redis = services['avert-redis'].credentials;
 }
 
 module.exports = {
