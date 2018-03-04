@@ -4,4 +4,4 @@ applications:
     memory: 192M
     instances: 16
     services:
-      - avert-redis32
+      - avert-redis

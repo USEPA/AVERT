@@ -2,6 +2,7 @@ const fs = require('fs');
 const { promisify } = require('util');
 const readFile = promisify(fs.readFile);
 const kue = require('kue');
+const request = require('request');
 
 const redisConfig = require('../config/redis');
 const redisClient = require('../lib/redis');
@@ -43,14 +44,14 @@ module.exports = {
     });
 
     // 'complete' event fires when processGeneration() succeeds
-    job.on('complete', async () => {
+    job.on('complete', () => {
       console.log(`Success: Job ${id} (Generation) is complete`);
       redisClient.del(`generation:eere:${id}`);
       job.remove();
     });
 
     // 'failed' event fires when processGeneration() fails
-    job.on('failed', async () => {
+    job.on('failed', () => {
       console.log(`Error: Job ${id} (Generation) has failed`);
       redisClient.del(`generation:eere:${id}`);
     });
@@ -59,10 +60,10 @@ module.exports = {
       if (!err) console.log(`Stored: Job ${id} (Generation) saved to Kue`);
     });
 
-    // require 'http' or 'https' module, depending on request's protocol
-    const http = require(`${ctx.protocol}`);
     // create request, which will process job from queue via processGeneration()
-    http.get(`${ctx.protocol}://${ctx.header.host}/api/v1/queue/generation`);
+    request(`${ctx.origin}/api/v1/queue/generation`, (err, res, body) => {
+      if (err) console.log('Fetch error:', err);
+    });
 
     // web app uses job id to poll server for data via GET /api/v1/jobs/:id
     ctx.body = {
@@ -90,13 +91,13 @@ module.exports = {
     });
 
     // 'complete' event fires when processSo2() succeeds
-    job.on('complete', async () => {
+    job.on('complete', () => {
       console.log(`Success: Job ${id} (SO2) is complete`);
       redisClient.del(`so2:eere:${id}`);
     });
 
     // 'failed' event fires when processSo2() fails
-    job.on('failed', async () => {
+    job.on('failed', () => {
       console.log(`Error: Job ${id} (SO2) has failed`);
       redisClient.del(`so2:eere:${id}`);
     });
@@ -105,10 +106,10 @@ module.exports = {
       if (!err) console.log(`Stored: Job ${id} (SO2) saved to Kue`);
     });
 
-    // require 'http' or 'https' module, depending on request's protocol
-    const http = require(`${ctx.protocol}`);
     // create request, which will process job from queue via processSo2()
-    http.get(`${ctx.protocol}://${ctx.header.host}/api/v1/queue/so2`);
+    request(`${ctx.origin}/api/v1/queue/so2`, (err, res, body) => {
+      if (err) console.log('Fetch error:', err);
+    });
 
     // web app uses job id to poll server for data via GET /api/v1/jobs/:id
     ctx.body = {
@@ -136,14 +137,14 @@ module.exports = {
     });
 
     // 'complete' event fires when processNox() succeeds
-    job.on('complete', async () => {
+    job.on('complete', () => {
       console.log(`Success: Job ${id} (NOx) is complete`);
       redisClient.del(`nox:eere:${id}`);
       job.remove();
     });
 
     // 'failed' event fires when processNox() fails
-    job.on('failed', async () => {
+    job.on('failed', () => {
       console.log(`Error: Job ${id} (NOx) has failed`);
       redisClient.del(`nox:eere:${id}`);
     });
@@ -152,10 +153,10 @@ module.exports = {
       if (!err) console.log(`Stored: Job ${id} (NOx) saved to Kue`);
     });
 
-    // require 'http' or 'https' module, depending on request's protocol
-    const http = require(`${ctx.protocol}`);
     // create request, which will process job from queue via processNox()
-    http.get(`${ctx.protocol}://${ctx.header.host}/api/v1/queue/nox`);
+    request(`${ctx.origin}/api/v1/queue/nox`, (err, res, body) => {
+      if (err) console.log('Fetch error:', err);
+    });
 
     // web app uses job id to poll server for data via GET /api/v1/jobs/:id
     ctx.body = {
@@ -183,14 +184,14 @@ module.exports = {
     });
 
     // 'complete' event fires when processCo2() succeeds
-    job.on('complete', async () => {
+    job.on('complete', () => {
       console.log(`Success: Job ${id} (CO2) is complete`);
       redisClient.del(`co2:eere:${id}`);
       job.remove();
     });
 
     // 'failed' event fires when processCo2() fails
-    job.on('failed', async () => {
+    job.on('failed', () => {
       console.log(`Error: Job ${id} (CO2) has failed`);
       redisClient.del(`co2:eere:${id}`);
     });
@@ -199,10 +200,10 @@ module.exports = {
       if (!err) console.log(`Stored: Job ${id} (CO2) saved to Kue`);
     });
 
-    // require 'http' or 'https' module, depending on request's protocol
-    const http = require(`${ctx.protocol}`);
     // create request, which will process job from queue via processCo2()
-    http.get(`${ctx.protocol}://${ctx.header.host}/api/v1/queue/co2`);
+    request(`${ctx.origin}/api/v1/queue/co2`, (err, res, body) => {
+      if (err) console.log('Fetch error:', err);
+    });
 
     // web app uses job id to poll server for data via GET /api/v1/jobs/:id
     ctx.body = {
@@ -230,14 +231,14 @@ module.exports = {
     });
 
     // 'complete' event fires when processPm25() succeeds
-    job.on('complete', async () => {
+    job.on('complete', () => {
       console.log(`Success: Job ${id} (Pm25) is complete`);
       redisClient.del(`pm25:eere:${id}`);
       job.remove();
     });
 
     // 'failed' event fires when processPm25() fails
-    job.on('failed', async () => {
+    job.on('failed', () => {
       console.log(`Error: Job ${id} (Pm25) has failed`);
       redisClient.del(`pm25:eere:${id}`);
     });
@@ -246,10 +247,10 @@ module.exports = {
       if (!err) console.log(`Stored: Job ${id} (Pm25) saved to Kue`);
     });
 
-    // require 'http' or 'https' module, depending on request's protocol
-    const http = require(`${ctx.protocol}`);
     // create request, which will process job from queue via processPm25()
-    http.get(`${ctx.protocol}://${ctx.header.host}/api/v1/queue/pm25`);
+    request(`${ctx.origin}/api/v1/queue/pm25`, (err, res, body) => {
+      if (err) console.log('Fetch error:', err);
+    });
 
     // web app uses job id to poll server for data via GET /api/v1/jobs/:id
     ctx.body = {
@@ -264,8 +265,6 @@ module.exports = {
     queue.process('calculate_generation', async (job, done) => {
       const id = job.data.jobId;
       const region = job.data.region;
-
-      console.log(id);
 
       if (!(region in regions)) return false;
 
@@ -298,7 +297,7 @@ module.exports = {
     // return status for debugging (not used in web app)
     ctx.body = {
       response: 'ok',
-      status: 'calculate_generation',
+      status: 'processGeneration() called',
     };
   },
 
@@ -340,7 +339,7 @@ module.exports = {
     // return status for debugging (not used in web app)
     ctx.body = {
       response: 'ok',
-      status: 'calculate_so2',
+      status: 'processSo2() called',
     };
   },
 
@@ -382,7 +381,7 @@ module.exports = {
     // return status for debugging (not used in web app)
     ctx.body = {
       response: 'ok',
-      status: 'calculate_nox',
+      status: 'processNox() called',
     };
   },
 
@@ -424,7 +423,7 @@ module.exports = {
     // return status for debugging (not used in web app)
     ctx.body = {
       response: 'ok',
-      status: 'calculate_co2',
+      status: 'processCo2() called',
     };
   },
 
@@ -466,7 +465,7 @@ module.exports = {
     // return status for debugging (not used in web app)
     ctx.body = {
       response: 'ok',
-      status: 'calculate_pm25',
+      status: 'processPm25() called',
     };
   },
 };
