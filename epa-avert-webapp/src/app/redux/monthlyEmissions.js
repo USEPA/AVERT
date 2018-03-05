@@ -106,15 +106,6 @@ export default function reducer(state = initialState, action) {
         }
       }
 
-      // multiply each emission datapoint by 100 if unit is 'percentages'
-      if (unit === 'percentages') {
-        for (const pollutant in emissionData) {
-          emissionData[pollutant].forEach(
-            (data, index, array) => (array[index] = data * 100),
-          );
-        }
-      }
-
       return {
         ...state,
         output: emissionData,
@@ -128,23 +119,23 @@ export default function reducer(state = initialState, action) {
         data = Object.values(data);
 
         return {
-          type: pollutant,
-          'aggregation level': county ? 'County' : state ? 'State' : 'Regional',
-          state: state ? state : null,
-          county: county ? county : null,
-          'emissions unit': unit,
-          january: data[0],
-          february: data[1],
-          march: data[2],
-          april: data[3],
-          may: data[4],
-          june: data[5],
-          july: data[6],
-          august: data[7],
-          september: data[8],
-          october: data[9],
-          november: data[10],
-          december: data[11],
+          Pollutant: pollutant,
+          'Aggregation level': county ? 'County' : state ? 'State' : 'Region',
+          State: state ? state : null,
+          County: county ? county : null,
+          'Unit of measure': unit,
+          January: data[0],
+          February: data[1],
+          March: data[2],
+          April: data[3],
+          May: data[4],
+          June: data[5],
+          July: data[6],
+          August: data[7],
+          September: data[8],
+          October: data[9],
+          November: data[10],
+          December: data[11],
         };
       };
 
@@ -154,30 +145,30 @@ export default function reducer(state = initialState, action) {
       rows.push(rowData('NOX', 'emissions (pounds)', action.nox.emissions.region)); // prettier-ignore
       rows.push(rowData('CO2', 'emissions (tons)', action.co2.emissions.region)); // prettier-ignore
       rows.push(rowData('PM25', 'emissions (pounds)', action.pm25.emissions.region)); // prettier-ignore
-      rows.push(rowData('SO2', 'percentages', action.so2.percentages.region)); // prettier-ignore
-      rows.push(rowData('NOX', 'percentages', action.nox.percentages.region)); // prettier-ignore
-      rows.push(rowData('CO2', 'percentages', action.co2.percentages.region)); // prettier-ignore
-      rows.push(rowData('PM25', 'percentages', action.pm25.percentages.region)); // prettier-ignore
+      rows.push(rowData('SO2', 'percent', action.so2.percentages.region)); // prettier-ignore
+      rows.push(rowData('NOX', 'percent', action.nox.percentages.region)); // prettier-ignore
+      rows.push(rowData('CO2', 'percent', action.co2.percentages.region)); // prettier-ignore
+      rows.push(rowData('PM25', 'percent', action.pm25.percentages.region)); // prettier-ignore
       // states
       Object.keys(action.statesAndCounties).forEach((s) => {
         rows.push(rowData('SO2', 'emissions (pounds)', action.so2.emissions.state[s], s)); // prettier-ignore
         rows.push(rowData('NOX', 'emissions (pounds)', action.nox.emissions.state[s], s)); // prettier-ignore
         rows.push(rowData('CO2', 'emissions (tons)', action.co2.emissions.state[s], s)); // prettier-ignore
         rows.push(rowData('PM25', 'emissions (pounds)', action.pm25.emissions.state[s], s)); // prettier-ignore
-        rows.push(rowData('SO2', 'percentages', action.so2.percentages.state[s], s)); // prettier-ignore
-        rows.push(rowData('NOX', 'percentages', action.nox.percentages.state[s], s)); // prettier-ignore
-        rows.push(rowData('CO2', 'percentages', action.co2.percentages.state[s], s)); // prettier-ignore
-        rows.push(rowData('PM25', 'percentages', action.pm25.percentages.state[s], s)); // prettier-ignore
+        rows.push(rowData('SO2', 'percent', action.so2.percentages.state[s], s)); // prettier-ignore
+        rows.push(rowData('NOX', 'percent', action.nox.percentages.state[s], s)); // prettier-ignore
+        rows.push(rowData('CO2', 'percent', action.co2.percentages.state[s], s)); // prettier-ignore
+        rows.push(rowData('PM25', 'percent', action.pm25.percentages.state[s], s)); // prettier-ignore
         // counties
         action.statesAndCounties[s].forEach((c) => {
           rows.push(rowData('SO2', 'emissions (pounds)', action.so2.emissions.county[s][c], s, c)); // prettier-ignore
           rows.push(rowData('NOX', 'emissions (pounds)', action.nox.emissions.county[s][c], s, c)); // prettier-ignore
           rows.push(rowData('CO2', 'emissions (tons)', action.co2.emissions.county[s][c], s, c)); // prettier-ignore
           rows.push(rowData('PM25', 'emissions (pounds)', action.pm25.emissions.county[s][c], s, c)); // prettier-ignore
-          rows.push(rowData('SO2', 'percentages', action.so2.percentages.county[s][c], s, c)); // prettier-ignore
-          rows.push(rowData('NOX', 'percentages', action.nox.percentages.county[s][c], s, c)); // prettier-ignore
-          rows.push(rowData('CO2', 'percentages', action.co2.percentages.county[s][c], s, c)); // prettier-ignore
-          rows.push(rowData('PM25', 'percentages', action.pm25.percentages.county[s][c], s, c)); // prettier-ignore
+          rows.push(rowData('SO2', 'percent', action.so2.percentages.county[s][c], s, c)); // prettier-ignore
+          rows.push(rowData('NOX', 'percent', action.nox.percentages.county[s][c], s, c)); // prettier-ignore
+          rows.push(rowData('CO2', 'percent', action.co2.percentages.county[s][c], s, c)); // prettier-ignore
+          rows.push(rowData('PM25', 'percent', action.pm25.percentages.county[s][c], s, c)); // prettier-ignore
         });
       });
 

@@ -88,7 +88,7 @@ export const receiveDisplacement = () => {
       return setTimeout(() => dispatch(receiveDisplacement()), 1000);
     }
 
-    const displacementData = {
+    const data = {
       generation: {
         original: generation.data.original,
         post: generation.data.post,
@@ -146,7 +146,7 @@ export const receiveDisplacement = () => {
     dispatch(incrementProgress());
     dispatch({
       type: RECEIVE_DISPLACEMENT,
-      data: displacementData,
+      data: data,
       statesAndCounties: statesAndCounties,
     });
     dispatch(completeStateEmissions());
