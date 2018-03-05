@@ -106,15 +106,6 @@ export default function reducer(state = initialState, action) {
         }
       }
 
-      // multiply each emission datapoint by 100 if unit is 'percentages'
-      if (unit === 'percentages') {
-        for (const pollutant in emissionData) {
-          emissionData[pollutant].forEach(
-            (data, index, array) => (array[index] = data * 100),
-          );
-        }
-      }
-
       return {
         ...state,
         output: emissionData,
