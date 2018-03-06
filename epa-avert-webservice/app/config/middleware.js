@@ -6,6 +6,17 @@ const serve = require('koa-static');
 const setHeaders = require('../lib/setHeaders');
 const pageNotFound = require('../lib/pageNotFound');
 
+let authMiddleware = [];
+if (process.env.AUTH_USER) {
+  const auth = require('koa-basic-auth');
+  const basicAuth = require('../lib/basicAuth');
+
+  authMiddleware = [
+    basicAuth,
+    auth({ name: process.env.AUTH_USER, pass: process.env.AUTH_PASS }),
+  ];
+}
+
 const middleware = [
   setHeaders,
   logger(),
@@ -15,4 +26,4 @@ const middleware = [
   pageNotFound,
 ];
 
-module.exports = middleware;
+module.exports = authMiddleware.concat(middleware);
