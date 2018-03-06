@@ -5,7 +5,7 @@ Node.js web service (built with Koa and Redis/Kue) for performing displacement c
 ## Local Development
 Local development depends on `redis-server` and `node` (version 8 or higher).
 
-Open three seperate terminal sessions and run the following in each subsequent session:
+Open three separate terminal sessions and run the following in each subsequent session:
 1. Start a local redis server: `redis-server`.
 2. From the [epa-avert-webservice directory](/epa-avert-webservice) (this one), start the npm dev script: `npm run dev`.
 2. From the [epa-avert-webapp directory](/epa-avert-webapp) (up a level), start the npm dev script: `npm run dev`. App will be served from `localhost:3000`.
