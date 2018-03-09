@@ -22,8 +22,8 @@
   "main": "./app.js",
   "scripts": {
     "start": "node ./app.js",
-    "dev": "WEB_SERVICE=local node ./app.js",
-    "test": "WEB_SERVICE=local mocha */test.js"
+    "dev": "KOA_DEV=true AUTH_ENABLED=true AUTH_USER=avert AUTH_PASS=local node ./app.js",
+    "test": "KOA_DEV=true mocha */test.js"
   },
   "dependencies": {
     "@koa/cors": "2.2.1",

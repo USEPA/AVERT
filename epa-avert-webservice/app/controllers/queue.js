@@ -20,7 +20,7 @@ const queue = kue.createQueue({
 });
 
 // --- display kue dashboard (local development only)
-if (process.env.WEB_SERVICE === 'local') {
+if (process.env.KOA_DEV) {
   kue.app.listen(3002, () => {
     console.log('Kue is running on http://localhost:3002');
   });

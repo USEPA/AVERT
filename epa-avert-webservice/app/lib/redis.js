@@ -5,7 +5,7 @@ const redisConfig = require('../config/redis');
 
 const db = redis.createClient(redisConfig.port, redisConfig.hostname);
 // provide authentication when connecting to cloud foundry redis service
-if (process.env.WEB_SERVICE !== 'local') db.auth(redisConfig.password);
+if (!process.env.KOA_DEV) db.auth(redisConfig.password);
 
 db.on('error', (err) => console.error('lib/redis.js', err));
 
