@@ -17,11 +17,11 @@ The app is currently deployed to the `epa-prototyping` org on [Cloud.gov](https:
 
 ### Development/Staging Spaces
 The development/staging version is exactly the same as the production version, but it requires basic authentication to access the site. From the [epa-avert-webservice directory](/epa-avert-webservice) (this one), in a terminal session enter:    
-`cf set-env avert AUTH_ENABLED true` and then enter: `cf push`
+`cf set-env avert REACT_APP_AUTH true` and then enter: `cf push`
 
 To view the username and password you’ll need to authenticate with the site, in a terminal session run:    
-`cf env avert` and look for the 'User-Provided' `AUTH_USER` and `AUTH_PASS` variables. These can be changed the same way you set the `AUTH_ENABLED` environment variable above.
+`cf env avert` and look for the 'User-Provided' `REACT_APP_USER` and `REACT_APP_PASS` variables. These can be changed the same way you set the `REACT_APP_AUTH` environment variable above.
 
 ### Production Space
 No authentication is needed to access the production app. As with Development/Staging, from the [epa-avert-webservice directory](/epa-avert-webservice) (this one), in a terminal session, enter:    
-`cf set-env avert AUTH_ENABLED false` and then enter: `cf push`
+`cf set-env avert REACT_APP_AUTH false` and then enter: `cf push`
