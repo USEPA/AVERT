@@ -7,13 +7,13 @@ const setHeaders = require('../lib/setHeaders');
 const pageNotFound = require('../lib/pageNotFound');
 
 let authMiddleware = [];
-if (process.env.AUTH_ENABLED === 'true') {
+if (process.env.REACT_APP_AUTH === 'true') {
   const auth = require('koa-basic-auth');
   const basicAuth = require('../lib/basicAuth');
 
   authMiddleware = [
     basicAuth,
-    auth({ name: process.env.AUTH_USER, pass: process.env.AUTH_PASS }),
+    auth({ name: process.env.REACT_APP_USER, pass: process.env.REACT_APP_PASS }),
   ];
 }
 
