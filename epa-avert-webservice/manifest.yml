@@ -1,7 +1,8 @@
+---
 applications:
-  - name: avert
-    command: npm start
-    memory: 192M
-    instances: 16
-    services:
-      - avert-redis
+- name: avert
+  command: npm start
+  memory: 192M
+  instances: 16
+  services:
+  - avert-redis

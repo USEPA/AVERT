@@ -7,7 +7,7 @@ const setHeaders = require('../lib/setHeaders');
 const pageNotFound = require('../lib/pageNotFound');
 
 let authMiddleware = [];
-if (process.env.AUTH_USER) {
+if (process.env.AUTH_ENABLED === 'true') {
   const auth = require('koa-basic-auth');
   const basicAuth = require('../lib/basicAuth');
 
