@@ -1,4 +1,4 @@
-const redisClient = require('../lib/redis');
+const redisClient = require('../lib/redisClient');
 
 module.exports = {
   get: async (ctx, id) => {

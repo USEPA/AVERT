@@ -1,10 +1,9 @@
 // action types
 export const SET_BASE_URL = 'api/SET_BASE_URL';
 
-// prettier-ignore
 // reducer
 const initialState = {
-  baseUrl: (process.env.REACT_APP_WEB_SERVICE === 'local')
+  baseUrl: process.env.REACT_APP_DEV
     ? 'http://localhost:3001'
     : 'https://avert.app.cloud.gov',
   pollingFrequency: 10000,

@@ -1,15 +1,39 @@
 'use strict';
 
 const Koa = require('koa');
-const middleware = require('./app/config/middleware');
+const cors = require('@koa/cors');
+const auth = require('koa-basic-auth');
+const serve = require('koa-static');
+const logger = require('koa-logger');
+const bodyParser = require('koa-bodyparser');
+
 const routes = require('./app/routes');
+const basicAuth = require('./app/middleware/basicAuth');
+const pageNotFound = require('./app/middleware/pageNotFound');
+const customHeaders = require('./app/middleware/customHeaders');
 
 const app = new Koa();
 
-middleware.forEach((middleware) => app.use(middleware));
+// setup initial middleware
+app.use(logger());
+app.use(cors());
+app.use(bodyParser({ jsonLimit: '50mb' }));
+app.use(customHeaders);
 
-routes.forEach((route) => app.use(route));
+// setup routes
+routes.forEach(route => app.use(route));
 
+// conditionally apply basic auth to downstream middleware
+if (process.env.AVERT_AUTH === 'true') {
+  app.use(basicAuth);
+  app.use(auth({ name: process.env.AVERT_USER, pass: process.env.AVERT_PASS }));
+}
+
+// setup serving of static files and custom 404
+app.use(serve('./app/public'));
+app.use(pageNotFound);
+
+// configure port and start server
 app.port = process.env.PORT || 3001;
 
 if (!module.parent) app.listen(app.port, () => {

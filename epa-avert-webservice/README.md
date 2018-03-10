@@ -16,12 +16,12 @@ The app is currently deployed to the `epa-prototyping` org on [Cloud.gov](https:
 **IMPORTANT:** Before deploying code to Cloud.gov, ensure this app has the most recent version of the [epa-avert-webapp's build files](/epa-avert-webapp/build) in this app's [public](/epa-avert-webservice/public) directory.
 
 ### Development/Staging Spaces
-From the [epa-avert-webservice directory](/epa-avert-webservice) (this one), in a terminal session run:    
-`AUTH_USER='{username}' AUTH_PASS='{password}' cf push`
+The development/staging version is exactly the same as the production version, but it requires basic authentication to access the site. From the [epa-avert-webservice directory](/epa-avert-webservice) (this one), in a terminal session enter:    
+`cf set-env avert AVERT_AUTH true` and then enter: `cf push`
 
-Be sure to replace `{username}` and `{password}` with whatever username and password you intend to set for deployment (omit the curly braces). For example:    
-`AUTH_USER='testing' AUTH_PASS='dev2018' cf push`
+To view the username and password you’ll need to authenticate with the site, in a terminal session run:    
+`cf env avert` and look for the 'User-Provided' `AVERT_USER` and `AVERT_PASS` variables. These can be changed the same way you set the `AVERT_AUTH` environment variable above.
 
 ### Production Space
-No authentication is needed to access the production app. As with Development/Staging, from the [epa-avert-webservice directory](/epa-avert-webservice) (this one), in a terminal session, run:    
-`cf push`
+No authentication is needed to access the production app. As with Development/Staging, from the [epa-avert-webservice directory](/epa-avert-webservice) (this one), in a terminal session, enter:    
+`cf set-env avert AVERT_AUTH false` and then enter: `cf push`

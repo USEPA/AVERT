@@ -4,9 +4,9 @@ const readFile = promisify(fs.readFile);
 const kue = require('kue');
 const request = require('request');
 
-const redisConfig = require('../config/redis');
-const redisClient = require('../lib/redis');
-const regions = require('../lib/regions');
+const redisConfig = require('../lib/redisConfig');
+const redisClient = require('../lib/redisClient');
+const regions = require('../lib/regionsEnum');
 const Rdf = require('../engines/Rdf');
 const DisplacementsEngine = require('../engines/DisplacementsEngine');
 
@@ -20,7 +20,7 @@ const queue = kue.createQueue({
 });
 
 // --- display kue dashboard (local development only)
-if (process.env.WEB_SERVICE === 'local') {
+if (process.env.KOA_APP_DEV) {
   kue.app.listen(3002, () => {
     console.log('Kue is running on http://localhost:3002');
   });
