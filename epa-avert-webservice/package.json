@@ -22,7 +22,7 @@
   "main": "./app.js",
   "scripts": {
     "start": "node ./app.js",
-    "dev": "KOA_APP_DEV=true REACT_APP_AUTH=true REACT_APP_USER=avert REACT_APP_PASS=local node ./app.js",
+    "dev": "KOA_APP_DEV=true AVERT_AUTH=true AVERT_USER=avert AVERT_PASS=local node ./app.js",
     "test": "KOA_APP_DEV=true mocha */test.js"
   },
   "dependencies": {

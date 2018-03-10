@@ -24,12 +24,9 @@ app.use(customHeaders);
 routes.forEach(route => app.use(route));
 
 // conditionally apply basic auth to downstream middleware
-if (process.env.REACT_APP_AUTH === 'true') {
+if (process.env.AVERT_AUTH === 'true') {
   app.use(basicAuth);
-  app.use(auth({
-    name: process.env.REACT_APP_USER,
-    pass: process.env.REACT_APP_PASS,
-  }));
+  app.use(auth({ name: process.env.AVERT_USER, pass: process.env.AVERT_PASS }));
 }
 
 // setup serving of static files and custom 404
