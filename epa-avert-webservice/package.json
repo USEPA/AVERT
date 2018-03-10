@@ -1,6 +1,6 @@
 {
   "name": "epa-avert-webservice",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "private": true,
   "description": "Offloaded server calculations for the AVERT web app.",
   "author": "Eastern Research Group, Inc.",
