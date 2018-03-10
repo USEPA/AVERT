@@ -1,13 +1,13 @@
 const { promisify } = require('util');
 const redis = require('redis');
 
-const redisConfig = require('../config/redis');
+const redisConfig = require('./redisConfig');
 
 const db = redis.createClient(redisConfig.port, redisConfig.hostname);
 // provide authentication when connecting to cloud foundry redis service
 if (!process.env.KOA_APP_DEV) db.auth(redisConfig.password);
 
-db.on('error', (err) => console.error('lib/redis.js', err));
+db.on('error', (err) => console.error('lib/redisClient.js', err));
 
 const incAsync = promisify(db.incr).bind(db);
 const setAsync = promisify(db.hset).bind(db);
