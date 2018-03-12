@@ -52,8 +52,14 @@ export const pollServerForData = () => {
       jobId: pm25.jobId,
     });
 
+    const headers = new Headers();
+    headers.append('pragma', 'no-cache');
+    headers.append('cache-control', 'no-cache');
+
     // fetch pm25 data via job id
-    return fetch(`${api.baseUrl}/api/v1/jobs/${pm25.jobId}`)
+    return fetch(`${api.baseUrl}/api/v1/jobs/${pm25.jobId}`, {
+      headers: headers,
+    })
       .then((response) => response.json())
       .then((json) => {
         // recursively call function if response from server is 'in progress'

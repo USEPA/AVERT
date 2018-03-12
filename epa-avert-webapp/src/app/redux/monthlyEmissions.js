@@ -1,6 +1,7 @@
 // action types
 import { SELECT_REGION } from 'app/redux/region';
 import { START_DISPLACEMENT } from 'app/redux/annualDisplacement';
+import { RESET_EERE_INPUTS } from 'app/redux/eere';
 export const RENDER_MONTHLY_EMISSIONS_CHARTS = 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS'; // prettier-ignore
 export const COMPLETE_MONTHLY_EMISSIONS = 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS'; // prettier-ignore
 export const SET_DOWNLOAD_DATA = 'monthlyEmissions/SET_DOWNLOAD_DATA';
@@ -112,6 +113,7 @@ export default function reducer(state = initialState, action) {
       };
 
     case RESET_MONTHLY_EMISSIONS:
+    case RESET_EERE_INPUTS:
       return initialState;
 
     case SET_DOWNLOAD_DATA:

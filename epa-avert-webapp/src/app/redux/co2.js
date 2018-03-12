@@ -52,8 +52,14 @@ export const pollServerForData = () => {
       jobId: co2.jobId,
     });
 
+    const headers = new Headers();
+    headers.append('pragma', 'no-cache');
+    headers.append('cache-control', 'no-cache');
+
     // fetch co2 data via job id
-    return fetch(`${api.baseUrl}/api/v1/jobs/${co2.jobId}`)
+    return fetch(`${api.baseUrl}/api/v1/jobs/${co2.jobId}`, {
+      headers: headers,
+    })
       .then((response) => response.json())
       .then((json) => {
         // recursively call function if response from server is 'in progress'
