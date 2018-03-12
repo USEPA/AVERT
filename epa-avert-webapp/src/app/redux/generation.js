@@ -53,7 +53,9 @@ export const pollServerForData = () => {
     });
 
     // fetch generation data via job id
-    return fetch(`${api.baseUrl}/api/v1/jobs/${generation.jobId}`)
+    return fetch(`${api.baseUrl}/api/v1/jobs/${generation.jobId}`, {
+      cache: 'reload',
+    })
       .then((response) => response.json())
       .then((json) => {
         // recursively call function if response from server is 'in progress'

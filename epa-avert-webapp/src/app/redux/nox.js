@@ -53,7 +53,9 @@ export const pollServerForData = () => {
     });
 
     // fetch nox data via job id
-    return fetch(`${api.baseUrl}/api/v1/jobs/${nox.jobId}`)
+    return fetch(`${api.baseUrl}/api/v1/jobs/${nox.jobId}`, {
+      cache: 'reload',
+    })
       .then((response) => response.json())
       .then((json) => {
         // recursively call function if response from server is 'in progress'
