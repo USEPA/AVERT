@@ -52,9 +52,13 @@ export const pollServerForData = () => {
       jobId: so2.jobId,
     });
 
+    const headers = new Headers();
+    headers.append('pragma', 'no-cache');
+    headers.append('cache-control', 'no-cache');
+
     // fetch so2 data via job id
     return fetch(`${api.baseUrl}/api/v1/jobs/${so2.jobId}`, {
-      cache: 'reload',
+      headers: headers,
     })
       .then((response) => response.json())
       .then((json) => {
