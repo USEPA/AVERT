@@ -45,7 +45,7 @@ const PanelFooter = (props: Props) => {
           e.preventDefault();
           scrollToTop();
 
-          if (onStepTwo) {
+          if (onStepTwo || onStepThree) {
             props.onResetEereInputs();
           }
 
