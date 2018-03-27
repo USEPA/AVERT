@@ -1,15727 +1,15727 @@
 // @flow
 
 type Code = {
-  FIPS: number,
-  State: string,
-  County: string,
+  code: number,
+  state: string,
+  county: string,
 };
 
 const FipsCodes: Array<Code> = [
   {
-    "FIPS": 1001,
-    "State": "Alabama",
-    "County": "Autauga"
+    code: 1001,
+    state: 'Alabama',
+    county: 'Autauga',
   },
   {
-    "FIPS": 1003,
-    "State": "Alabama",
-    "County": "Baldwin"
+    code: 1003,
+    state: 'Alabama',
+    county: 'Baldwin',
   },
   {
-    "FIPS": 1005,
-    "State": "Alabama",
-    "County": "Barbour"
+    code: 1005,
+    state: 'Alabama',
+    county: 'Barbour',
   },
   {
-    "FIPS": 1007,
-    "State": "Alabama",
-    "County": "Bibb"
+    code: 1007,
+    state: 'Alabama',
+    county: 'Bibb',
   },
   {
-    "FIPS": 1009,
-    "State": "Alabama",
-    "County": "Blount"
+    code: 1009,
+    state: 'Alabama',
+    county: 'Blount',
   },
   {
-    "FIPS": 1011,
-    "State": "Alabama",
-    "County": "Bullock"
+    code: 1011,
+    state: 'Alabama',
+    county: 'Bullock',
   },
   {
-    "FIPS": 1013,
-    "State": "Alabama",
-    "County": "Butler"
+    code: 1013,
+    state: 'Alabama',
+    county: 'Butler',
   },
   {
-    "FIPS": 1015,
-    "State": "Alabama",
-    "County": "Calhoun"
+    code: 1015,
+    state: 'Alabama',
+    county: 'Calhoun',
   },
   {
-    "FIPS": 1017,
-    "State": "Alabama",
-    "County": "Chambers"
+    code: 1017,
+    state: 'Alabama',
+    county: 'Chambers',
   },
   {
-    "FIPS": 1019,
-    "State": "Alabama",
-    "County": "Cherokee"
+    code: 1019,
+    state: 'Alabama',
+    county: 'Cherokee',
   },
   {
-    "FIPS": 1021,
-    "State": "Alabama",
-    "County": "Chilton"
+    code: 1021,
+    state: 'Alabama',
+    county: 'Chilton',
   },
   {
-    "FIPS": 1023,
-    "State": "Alabama",
-    "County": "Choctaw"
+    code: 1023,
+    state: 'Alabama',
+    county: 'Choctaw',
   },
   {
-    "FIPS": 1025,
-    "State": "Alabama",
-    "County": "Clarke"
+    code: 1025,
+    state: 'Alabama',
+    county: 'Clarke',
   },
   {
-    "FIPS": 1027,
-    "State": "Alabama",
-    "County": "Clay"
+    code: 1027,
+    state: 'Alabama',
+    county: 'Clay',
   },
   {
-    "FIPS": 1029,
-    "State": "Alabama",
-    "County": "Cleburne"
+    code: 1029,
+    state: 'Alabama',
+    county: 'Cleburne',
   },
   {
-    "FIPS": 1031,
-    "State": "Alabama",
-    "County": "Coffee"
+    code: 1031,
+    state: 'Alabama',
+    county: 'Coffee',
   },
   {
-    "FIPS": 1033,
-    "State": "Alabama",
-    "County": "Colbert"
+    code: 1033,
+    state: 'Alabama',
+    county: 'Colbert',
   },
   {
-    "FIPS": 1035,
-    "State": "Alabama",
-    "County": "Conecuh"
+    code: 1035,
+    state: 'Alabama',
+    county: 'Conecuh',
   },
   {
-    "FIPS": 1037,
-    "State": "Alabama",
-    "County": "Coosa"
+    code: 1037,
+    state: 'Alabama',
+    county: 'Coosa',
   },
   {
-    "FIPS": 1039,
-    "State": "Alabama",
-    "County": "Covington"
+    code: 1039,
+    state: 'Alabama',
+    county: 'Covington',
   },
   {
-    "FIPS": 1041,
-    "State": "Alabama",
-    "County": "Crenshaw"
+    code: 1041,
+    state: 'Alabama',
+    county: 'Crenshaw',
   },
   {
-    "FIPS": 1043,
-    "State": "Alabama",
-    "County": "Cullman"
+    code: 1043,
+    state: 'Alabama',
+    county: 'Cullman',
   },
   {
-    "FIPS": 1045,
-    "State": "Alabama",
-    "County": "Dale"
+    code: 1045,
+    state: 'Alabama',
+    county: 'Dale',
   },
   {
-    "FIPS": 1047,
-    "State": "Alabama",
-    "County": "Dallas"
+    code: 1047,
+    state: 'Alabama',
+    county: 'Dallas',
   },
   {
-    "FIPS": 1049,
-    "State": "Alabama",
-    "County": "DeKalb"
+    code: 1049,
+    state: 'Alabama',
+    county: 'DeKalb',
   },
   {
-    "FIPS": 1051,
-    "State": "Alabama",
-    "County": "Elmore"
+    code: 1051,
+    state: 'Alabama',
+    county: 'Elmore',
   },
   {
-    "FIPS": 1053,
-    "State": "Alabama",
-    "County": "Escambia"
+    code: 1053,
+    state: 'Alabama',
+    county: 'Escambia',
   },
   {
-    "FIPS": 1055,
-    "State": "Alabama",
-    "County": "Etowah"
+    code: 1055,
+    state: 'Alabama',
+    county: 'Etowah',
   },
   {
-    "FIPS": 1057,
-    "State": "Alabama",
-    "County": "Fayette"
+    code: 1057,
+    state: 'Alabama',
+    county: 'Fayette',
   },
   {
-    "FIPS": 1059,
-    "State": "Alabama",
-    "County": "Franklin"
+    code: 1059,
+    state: 'Alabama',
+    county: 'Franklin',
   },
   {
-    "FIPS": 1061,
-    "State": "Alabama",
-    "County": "Geneva"
+    code: 1061,
+    state: 'Alabama',
+    county: 'Geneva',
   },
   {
-    "FIPS": 1063,
-    "State": "Alabama",
-    "County": "Greene"
+    code: 1063,
+    state: 'Alabama',
+    county: 'Greene',
   },
   {
-    "FIPS": 1065,
-    "State": "Alabama",
-    "County": "Hale"
+    code: 1065,
+    state: 'Alabama',
+    county: 'Hale',
   },
   {
-    "FIPS": 1067,
-    "State": "Alabama",
-    "County": "Henry"
+    code: 1067,
+    state: 'Alabama',
+    county: 'Henry',
   },
   {
-    "FIPS": 1069,
-    "State": "Alabama",
-    "County": "Houston"
+    code: 1069,
+    state: 'Alabama',
+    county: 'Houston',
   },
   {
-    "FIPS": 1071,
-    "State": "Alabama",
-    "County": "Jackson"
+    code: 1071,
+    state: 'Alabama',
+    county: 'Jackson',
   },
   {
-    "FIPS": 1073,
-    "State": "Alabama",
-    "County": "Jefferson"
+    code: 1073,
+    state: 'Alabama',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 1075,
-    "State": "Alabama",
-    "County": "Lamar"
+    code: 1075,
+    state: 'Alabama',
+    county: 'Lamar',
   },
   {
-    "FIPS": 1077,
-    "State": "Alabama",
-    "County": "Lauderdale"
+    code: 1077,
+    state: 'Alabama',
+    county: 'Lauderdale',
   },
   {
-    "FIPS": 1079,
-    "State": "Alabama",
-    "County": "Lawrence"
+    code: 1079,
+    state: 'Alabama',
+    county: 'Lawrence',
   },
   {
-    "FIPS": 1081,
-    "State": "Alabama",
-    "County": "Lee"
+    code: 1081,
+    state: 'Alabama',
+    county: 'Lee',
   },
   {
-    "FIPS": 1083,
-    "State": "Alabama",
-    "County": "Limestone"
+    code: 1083,
+    state: 'Alabama',
+    county: 'Limestone',
   },
   {
-    "FIPS": 1085,
-    "State": "Alabama",
-    "County": "Lowndes"
+    code: 1085,
+    state: 'Alabama',
+    county: 'Lowndes',
   },
   {
-    "FIPS": 1087,
-    "State": "Alabama",
-    "County": "Macon"
+    code: 1087,
+    state: 'Alabama',
+    county: 'Macon',
   },
   {
-    "FIPS": 1089,
-    "State": "Alabama",
-    "County": "Madison"
+    code: 1089,
+    state: 'Alabama',
+    county: 'Madison',
   },
   {
-    "FIPS": 1091,
-    "State": "Alabama",
-    "County": "Marengo"
+    code: 1091,
+    state: 'Alabama',
+    county: 'Marengo',
   },
   {
-    "FIPS": 1093,
-    "State": "Alabama",
-    "County": "Marion"
+    code: 1093,
+    state: 'Alabama',
+    county: 'Marion',
   },
   {
-    "FIPS": 1095,
-    "State": "Alabama",
-    "County": "Marshall"
+    code: 1095,
+    state: 'Alabama',
+    county: 'Marshall',
   },
   {
-    "FIPS": 1097,
-    "State": "Alabama",
-    "County": "Mobile"
+    code: 1097,
+    state: 'Alabama',
+    county: 'Mobile',
   },
   {
-    "FIPS": 1099,
-    "State": "Alabama",
-    "County": "Monroe"
+    code: 1099,
+    state: 'Alabama',
+    county: 'Monroe',
   },
   {
-    "FIPS": 1101,
-    "State": "Alabama",
-    "County": "Montgomery"
+    code: 1101,
+    state: 'Alabama',
+    county: 'Montgomery',
   },
   {
-    "FIPS": 1103,
-    "State": "Alabama",
-    "County": "Morgan"
+    code: 1103,
+    state: 'Alabama',
+    county: 'Morgan',
   },
   {
-    "FIPS": 1105,
-    "State": "Alabama",
-    "County": "Perry"
+    code: 1105,
+    state: 'Alabama',
+    county: 'Perry',
   },
   {
-    "FIPS": 1107,
-    "State": "Alabama",
-    "County": "Pickens"
+    code: 1107,
+    state: 'Alabama',
+    county: 'Pickens',
   },
   {
-    "FIPS": 1109,
-    "State": "Alabama",
-    "County": "Pike"
+    code: 1109,
+    state: 'Alabama',
+    county: 'Pike',
   },
   {
-    "FIPS": 1111,
-    "State": "Alabama",
-    "County": "Randolph"
+    code: 1111,
+    state: 'Alabama',
+    county: 'Randolph',
   },
   {
-    "FIPS": 1113,
-    "State": "Alabama",
-    "County": "Russell"
+    code: 1113,
+    state: 'Alabama',
+    county: 'Russell',
   },
   {
-    "FIPS": 1115,
-    "State": "Alabama",
-    "County": "St. Clair"
+    code: 1115,
+    state: 'Alabama',
+    county: 'St. Clair',
   },
   {
-    "FIPS": 1117,
-    "State": "Alabama",
-    "County": "Shelby"
+    code: 1117,
+    state: 'Alabama',
+    county: 'Shelby',
   },
   {
-    "FIPS": 1119,
-    "State": "Alabama",
-    "County": "Sumter"
+    code: 1119,
+    state: 'Alabama',
+    county: 'Sumter',
   },
   {
-    "FIPS": 1121,
-    "State": "Alabama",
-    "County": "Talladega"
+    code: 1121,
+    state: 'Alabama',
+    county: 'Talladega',
   },
   {
-    "FIPS": 1123,
-    "State": "Alabama",
-    "County": "Tallapoosa"
+    code: 1123,
+    state: 'Alabama',
+    county: 'Tallapoosa',
   },
   {
-    "FIPS": 1125,
-    "State": "Alabama",
-    "County": "Tuscaloosa"
+    code: 1125,
+    state: 'Alabama',
+    county: 'Tuscaloosa',
   },
   {
-    "FIPS": 1127,
-    "State": "Alabama",
-    "County": "Walker"
+    code: 1127,
+    state: 'Alabama',
+    county: 'Walker',
   },
   {
-    "FIPS": 1129,
-    "State": "Alabama",
-    "County": "Washington"
+    code: 1129,
+    state: 'Alabama',
+    county: 'Washington',
   },
   {
-    "FIPS": 1131,
-    "State": "Alabama",
-    "County": "Wilcox"
+    code: 1131,
+    state: 'Alabama',
+    county: 'Wilcox',
   },
   {
-    "FIPS": 1133,
-    "State": "Alabama",
-    "County": "Winston"
+    code: 1133,
+    state: 'Alabama',
+    county: 'Winston',
   },
   {
-    "FIPS": 2013,
-    "State": "Alaska",
-    "County": "Aleutians East"
+    code: 2013,
+    state: 'Alaska',
+    county: 'Aleutians East',
   },
   {
-    "FIPS": 2016,
-    "State": "Alaska",
-    "County": "Aleutians West"
+    code: 2016,
+    state: 'Alaska',
+    county: 'Aleutians West',
   },
   {
-    "FIPS": 2020,
-    "State": "Alaska",
-    "County": "Anchorage"
+    code: 2020,
+    state: 'Alaska',
+    county: 'Anchorage',
   },
   {
-    "FIPS": 2050,
-    "State": "Alaska",
-    "County": "Bethel"
+    code: 2050,
+    state: 'Alaska',
+    county: 'Bethel',
   },
   {
-    "FIPS": 2060,
-    "State": "Alaska",
-    "County": "Bristol Bay"
+    code: 2060,
+    state: 'Alaska',
+    county: 'Bristol Bay',
   },
   {
-    "FIPS": 2068,
-    "State": "Alaska",
-    "County": "Denali"
+    code: 2068,
+    state: 'Alaska',
+    county: 'Denali',
   },
   {
-    "FIPS": 2070,
-    "State": "Alaska",
-    "County": "Dillingham"
+    code: 2070,
+    state: 'Alaska',
+    county: 'Dillingham',
   },
   {
-    "FIPS": 2090,
-    "State": "Alaska",
-    "County": "Fairbanks North Star"
+    code: 2090,
+    state: 'Alaska',
+    county: 'Fairbanks North Star',
   },
   {
-    "FIPS": 2100,
-    "State": "Alaska",
-    "County": "Haines"
+    code: 2100,
+    state: 'Alaska',
+    county: 'Haines',
   },
   {
-    "FIPS": 2105,
-    "State": "Alaska",
-    "County": "Hoonah-Angoon"
+    code: 2105,
+    state: 'Alaska',
+    county: 'Hoonah-Angoon',
   },
   {
-    "FIPS": 2110,
-    "State": "Alaska",
-    "County": "Juneau"
+    code: 2110,
+    state: 'Alaska',
+    county: 'Juneau',
   },
   {
-    "FIPS": 2122,
-    "State": "Alaska",
-    "County": "Kenai Peninsula"
+    code: 2122,
+    state: 'Alaska',
+    county: 'Kenai Peninsula',
   },
   {
-    "FIPS": 2130,
-    "State": "Alaska",
-    "County": "Ketchikan Gateway"
+    code: 2130,
+    state: 'Alaska',
+    county: 'Ketchikan Gateway',
   },
   {
-    "FIPS": 2150,
-    "State": "Alaska",
-    "County": "Kodiak Island"
+    code: 2150,
+    state: 'Alaska',
+    county: 'Kodiak Island',
   },
   {
-    "FIPS": 2164,
-    "State": "Alaska",
-    "County": "Lake and Peninsula"
+    code: 2164,
+    state: 'Alaska',
+    county: 'Lake and Peninsula',
   },
   {
-    "FIPS": 2170,
-    "State": "Alaska",
-    "County": "Matanuska-Susitna"
+    code: 2170,
+    state: 'Alaska',
+    county: 'Matanuska-Susitna',
   },
   {
-    "FIPS": 2180,
-    "State": "Alaska",
-    "County": "Nome"
+    code: 2180,
+    state: 'Alaska',
+    county: 'Nome',
   },
   {
-    "FIPS": 2185,
-    "State": "Alaska",
-    "County": "North Slope"
+    code: 2185,
+    state: 'Alaska',
+    county: 'North Slope',
   },
   {
-    "FIPS": 2188,
-    "State": "Alaska",
-    "County": "Northwest Arctic"
+    code: 2188,
+    state: 'Alaska',
+    county: 'Northwest Arctic',
   },
   {
-    "FIPS": 2195,
-    "State": "Alaska",
-    "County": "Petersburg"
+    code: 2195,
+    state: 'Alaska',
+    county: 'Petersburg',
   },
   {
-    "FIPS": 2198,
-    "State": "Alaska",
-    "County": "Prince of Wales-Hyder"
+    code: 2198,
+    state: 'Alaska',
+    county: 'Prince of Wales-Hyder',
   },
   {
-    "FIPS": 2220,
-    "State": "Alaska",
-    "County": "Sitka"
+    code: 2220,
+    state: 'Alaska',
+    county: 'Sitka',
   },
   {
-    "FIPS": 2230,
-    "State": "Alaska",
-    "County": "Skagway"
+    code: 2230,
+    state: 'Alaska',
+    county: 'Skagway',
   },
   {
-    "FIPS": 2240,
-    "State": "Alaska",
-    "County": "Southeast Fairbanks"
+    code: 2240,
+    state: 'Alaska',
+    county: 'Southeast Fairbanks',
   },
   {
-    "FIPS": 2261,
-    "State": "Alaska",
-    "County": "Valdez-Cordova"
+    code: 2261,
+    state: 'Alaska',
+    county: 'Valdez-Cordova',
   },
   {
-    "FIPS": 2270,
-    "State": "Alaska",
-    "County": "Wade Hampton"
+    code: 2270,
+    state: 'Alaska',
+    county: 'Wade Hampton',
   },
   {
-    "FIPS": 2275,
-    "State": "Alaska",
-    "County": "Wrangell"
+    code: 2275,
+    state: 'Alaska',
+    county: 'Wrangell',
   },
   {
-    "FIPS": 2282,
-    "State": "Alaska",
-    "County": "Yakutat"
+    code: 2282,
+    state: 'Alaska',
+    county: 'Yakutat',
   },
   {
-    "FIPS": 2290,
-    "State": "Alaska",
-    "County": "Yukon-Koyukuk"
+    code: 2290,
+    state: 'Alaska',
+    county: 'Yukon-Koyukuk',
   },
   {
-    "FIPS": 4001,
-    "State": "Arizona",
-    "County": "Apache"
+    code: 4001,
+    state: 'Arizona',
+    county: 'Apache',
   },
   {
-    "FIPS": 4003,
-    "State": "Arizona",
-    "County": "Cochise"
+    code: 4003,
+    state: 'Arizona',
+    county: 'Cochise',
   },
   {
-    "FIPS": 4005,
-    "State": "Arizona",
-    "County": "Coconino"
+    code: 4005,
+    state: 'Arizona',
+    county: 'Coconino',
   },
   {
-    "FIPS": 4007,
-    "State": "Arizona",
-    "County": "Gila"
+    code: 4007,
+    state: 'Arizona',
+    county: 'Gila',
   },
   {
-    "FIPS": 4009,
-    "State": "Arizona",
-    "County": "Graham"
+    code: 4009,
+    state: 'Arizona',
+    county: 'Graham',
   },
   {
-    "FIPS": 4011,
-    "State": "Arizona",
-    "County": "Greenlee"
+    code: 4011,
+    state: 'Arizona',
+    county: 'Greenlee',
   },
   {
-    "FIPS": 4012,
-    "State": "Arizona",
-    "County": "La Paz"
+    code: 4012,
+    state: 'Arizona',
+    county: 'La Paz',
   },
   {
-    "FIPS": 4013,
-    "State": "Arizona",
-    "County": "Maricopa"
+    code: 4013,
+    state: 'Arizona',
+    county: 'Maricopa',
   },
   {
-    "FIPS": 4015,
-    "State": "Arizona",
-    "County": "Mohave"
+    code: 4015,
+    state: 'Arizona',
+    county: 'Mohave',
   },
   {
-    "FIPS": 4017,
-    "State": "Arizona",
-    "County": "Navajo"
+    code: 4017,
+    state: 'Arizona',
+    county: 'Navajo',
   },
   {
-    "FIPS": 4019,
-    "State": "Arizona",
-    "County": "Pima"
+    code: 4019,
+    state: 'Arizona',
+    county: 'Pima',
   },
   {
-    "FIPS": 4021,
-    "State": "Arizona",
-    "County": "Pinal"
+    code: 4021,
+    state: 'Arizona',
+    county: 'Pinal',
   },
   {
-    "FIPS": 4023,
-    "State": "Arizona",
-    "County": "Santa Cruz"
+    code: 4023,
+    state: 'Arizona',
+    county: 'Santa Cruz',
   },
   {
-    "FIPS": 4025,
-    "State": "Arizona",
-    "County": "Yavapai"
+    code: 4025,
+    state: 'Arizona',
+    county: 'Yavapai',
   },
   {
-    "FIPS": 4027,
-    "State": "Arizona",
-    "County": "Yuma"
+    code: 4027,
+    state: 'Arizona',
+    county: 'Yuma',
   },
   {
-    "FIPS": 5001,
-    "State": "Arkansas",
-    "County": "Arkansas"
+    code: 5001,
+    state: 'Arkansas',
+    county: 'Arkansas',
   },
   {
-    "FIPS": 5003,
-    "State": "Arkansas",
-    "County": "Ashley"
+    code: 5003,
+    state: 'Arkansas',
+    county: 'Ashley',
   },
   {
-    "FIPS": 5005,
-    "State": "Arkansas",
-    "County": "Baxter"
+    code: 5005,
+    state: 'Arkansas',
+    county: 'Baxter',
   },
   {
-    "FIPS": 5007,
-    "State": "Arkansas",
-    "County": "Benton"
+    code: 5007,
+    state: 'Arkansas',
+    county: 'Benton',
   },
   {
-    "FIPS": 5009,
-    "State": "Arkansas",
-    "County": "Boone"
+    code: 5009,
+    state: 'Arkansas',
+    county: 'Boone',
   },
   {
-    "FIPS": 5011,
-    "State": "Arkansas",
-    "County": "Bradley"
+    code: 5011,
+    state: 'Arkansas',
+    county: 'Bradley',
   },
   {
-    "FIPS": 5013,
-    "State": "Arkansas",
-    "County": "Calhoun"
+    code: 5013,
+    state: 'Arkansas',
+    county: 'Calhoun',
   },
   {
-    "FIPS": 5015,
-    "State": "Arkansas",
-    "County": "Carroll"
+    code: 5015,
+    state: 'Arkansas',
+    county: 'Carroll',
   },
   {
-    "FIPS": 5017,
-    "State": "Arkansas",
-    "County": "Chicot"
+    code: 5017,
+    state: 'Arkansas',
+    county: 'Chicot',
   },
   {
-    "FIPS": 5019,
-    "State": "Arkansas",
-    "County": "Clark"
+    code: 5019,
+    state: 'Arkansas',
+    county: 'Clark',
   },
   {
-    "FIPS": 5021,
-    "State": "Arkansas",
-    "County": "Clay"
+    code: 5021,
+    state: 'Arkansas',
+    county: 'Clay',
   },
   {
-    "FIPS": 5023,
-    "State": "Arkansas",
-    "County": "Cleburne"
+    code: 5023,
+    state: 'Arkansas',
+    county: 'Cleburne',
   },
   {
-    "FIPS": 5025,
-    "State": "Arkansas",
-    "County": "Cleveland"
+    code: 5025,
+    state: 'Arkansas',
+    county: 'Cleveland',
   },
   {
-    "FIPS": 5027,
-    "State": "Arkansas",
-    "County": "Columbia"
+    code: 5027,
+    state: 'Arkansas',
+    county: 'Columbia',
   },
   {
-    "FIPS": 5029,
-    "State": "Arkansas",
-    "County": "Conway"
+    code: 5029,
+    state: 'Arkansas',
+    county: 'Conway',
   },
   {
-    "FIPS": 5031,
-    "State": "Arkansas",
-    "County": "Craighead"
+    code: 5031,
+    state: 'Arkansas',
+    county: 'Craighead',
   },
   {
-    "FIPS": 5033,
-    "State": "Arkansas",
-    "County": "Crawford"
+    code: 5033,
+    state: 'Arkansas',
+    county: 'Crawford',
   },
   {
-    "FIPS": 5035,
-    "State": "Arkansas",
-    "County": "Crittenden"
+    code: 5035,
+    state: 'Arkansas',
+    county: 'Crittenden',
   },
   {
-    "FIPS": 5037,
-    "State": "Arkansas",
-    "County": "Cross"
+    code: 5037,
+    state: 'Arkansas',
+    county: 'Cross',
   },
   {
-    "FIPS": 5039,
-    "State": "Arkansas",
-    "County": "Dallas"
+    code: 5039,
+    state: 'Arkansas',
+    county: 'Dallas',
   },
   {
-    "FIPS": 5041,
-    "State": "Arkansas",
-    "County": "Desha"
+    code: 5041,
+    state: 'Arkansas',
+    county: 'Desha',
   },
   {
-    "FIPS": 5043,
-    "State": "Arkansas",
-    "County": "Drew"
+    code: 5043,
+    state: 'Arkansas',
+    county: 'Drew',
   },
   {
-    "FIPS": 5045,
-    "State": "Arkansas",
-    "County": "Faulkner"
+    code: 5045,
+    state: 'Arkansas',
+    county: 'Faulkner',
   },
   {
-    "FIPS": 5047,
-    "State": "Arkansas",
-    "County": "Franklin"
+    code: 5047,
+    state: 'Arkansas',
+    county: 'Franklin',
   },
   {
-    "FIPS": 5049,
-    "State": "Arkansas",
-    "County": "Fulton"
+    code: 5049,
+    state: 'Arkansas',
+    county: 'Fulton',
   },
   {
-    "FIPS": 5051,
-    "State": "Arkansas",
-    "County": "Garland"
+    code: 5051,
+    state: 'Arkansas',
+    county: 'Garland',
   },
   {
-    "FIPS": 5053,
-    "State": "Arkansas",
-    "County": "Grant"
+    code: 5053,
+    state: 'Arkansas',
+    county: 'Grant',
   },
   {
-    "FIPS": 5055,
-    "State": "Arkansas",
-    "County": "Greene"
+    code: 5055,
+    state: 'Arkansas',
+    county: 'Greene',
   },
   {
-    "FIPS": 5057,
-    "State": "Arkansas",
-    "County": "Hempstead"
+    code: 5057,
+    state: 'Arkansas',
+    county: 'Hempstead',
   },
   {
-    "FIPS": 5059,
-    "State": "Arkansas",
-    "County": "Hot Spring"
+    code: 5059,
+    state: 'Arkansas',
+    county: 'Hot Spring',
   },
   {
-    "FIPS": 5061,
-    "State": "Arkansas",
-    "County": "Howard"
+    code: 5061,
+    state: 'Arkansas',
+    county: 'Howard',
   },
   {
-    "FIPS": 5063,
-    "State": "Arkansas",
-    "County": "Independence"
+    code: 5063,
+    state: 'Arkansas',
+    county: 'Independence',
   },
   {
-    "FIPS": 5065,
-    "State": "Arkansas",
-    "County": "Izard"
+    code: 5065,
+    state: 'Arkansas',
+    county: 'Izard',
   },
   {
-    "FIPS": 5067,
-    "State": "Arkansas",
-    "County": "Jackson"
+    code: 5067,
+    state: 'Arkansas',
+    county: 'Jackson',
   },
   {
-    "FIPS": 5069,
-    "State": "Arkansas",
-    "County": "Jefferson"
+    code: 5069,
+    state: 'Arkansas',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 5071,
-    "State": "Arkansas",
-    "County": "Johnson"
+    code: 5071,
+    state: 'Arkansas',
+    county: 'Johnson',
   },
   {
-    "FIPS": 5073,
-    "State": "Arkansas",
-    "County": "Lafayette"
+    code: 5073,
+    state: 'Arkansas',
+    county: 'Lafayette',
   },
   {
-    "FIPS": 5075,
-    "State": "Arkansas",
-    "County": "Lawrence"
+    code: 5075,
+    state: 'Arkansas',
+    county: 'Lawrence',
   },
   {
-    "FIPS": 5077,
-    "State": "Arkansas",
-    "County": "Lee"
+    code: 5077,
+    state: 'Arkansas',
+    county: 'Lee',
   },
   {
-    "FIPS": 5079,
-    "State": "Arkansas",
-    "County": "Lincoln"
+    code: 5079,
+    state: 'Arkansas',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 5081,
-    "State": "Arkansas",
-    "County": "Little River"
+    code: 5081,
+    state: 'Arkansas',
+    county: 'Little River',
   },
   {
-    "FIPS": 5083,
-    "State": "Arkansas",
-    "County": "Logan"
+    code: 5083,
+    state: 'Arkansas',
+    county: 'Logan',
   },
   {
-    "FIPS": 5085,
-    "State": "Arkansas",
-    "County": "Lonoke"
+    code: 5085,
+    state: 'Arkansas',
+    county: 'Lonoke',
   },
   {
-    "FIPS": 5087,
-    "State": "Arkansas",
-    "County": "Madison"
+    code: 5087,
+    state: 'Arkansas',
+    county: 'Madison',
   },
   {
-    "FIPS": 5089,
-    "State": "Arkansas",
-    "County": "Marion"
+    code: 5089,
+    state: 'Arkansas',
+    county: 'Marion',
   },
   {
-    "FIPS": 5091,
-    "State": "Arkansas",
-    "County": "Miller"
+    code: 5091,
+    state: 'Arkansas',
+    county: 'Miller',
   },
   {
-    "FIPS": 5093,
-    "State": "Arkansas",
-    "County": "Mississippi"
+    code: 5093,
+    state: 'Arkansas',
+    county: 'Mississippi',
   },
   {
-    "FIPS": 5095,
-    "State": "Arkansas",
-    "County": "Monroe"
+    code: 5095,
+    state: 'Arkansas',
+    county: 'Monroe',
   },
   {
-    "FIPS": 5097,
-    "State": "Arkansas",
-    "County": "Montgomery"
+    code: 5097,
+    state: 'Arkansas',
+    county: 'Montgomery',
   },
   {
-    "FIPS": 5099,
-    "State": "Arkansas",
-    "County": "Nevada"
+    code: 5099,
+    state: 'Arkansas',
+    county: 'Nevada',
   },
   {
-    "FIPS": 5101,
-    "State": "Arkansas",
-    "County": "Newton"
+    code: 5101,
+    state: 'Arkansas',
+    county: 'Newton',
   },
   {
-    "FIPS": 5103,
-    "State": "Arkansas",
-    "County": "Ouachita"
+    code: 5103,
+    state: 'Arkansas',
+    county: 'Ouachita',
   },
   {
-    "FIPS": 5105,
-    "State": "Arkansas",
-    "County": "Perry"
+    code: 5105,
+    state: 'Arkansas',
+    county: 'Perry',
   },
   {
-    "FIPS": 5107,
-    "State": "Arkansas",
-    "County": "Phillips"
+    code: 5107,
+    state: 'Arkansas',
+    county: 'Phillips',
   },
   {
-    "FIPS": 5109,
-    "State": "Arkansas",
-    "County": "Pike"
+    code: 5109,
+    state: 'Arkansas',
+    county: 'Pike',
   },
   {
-    "FIPS": 5111,
-    "State": "Arkansas",
-    "County": "Poinsett"
+    code: 5111,
+    state: 'Arkansas',
+    county: 'Poinsett',
   },
   {
-    "FIPS": 5113,
-    "State": "Arkansas",
-    "County": "Polk"
+    code: 5113,
+    state: 'Arkansas',
+    county: 'Polk',
   },
   {
-    "FIPS": 5115,
-    "State": "Arkansas",
-    "County": "Pope"
+    code: 5115,
+    state: 'Arkansas',
+    county: 'Pope',
   },
   {
-    "FIPS": 5117,
-    "State": "Arkansas",
-    "County": "Prairie"
+    code: 5117,
+    state: 'Arkansas',
+    county: 'Prairie',
   },
   {
-    "FIPS": 5119,
-    "State": "Arkansas",
-    "County": "Pulaski"
+    code: 5119,
+    state: 'Arkansas',
+    county: 'Pulaski',
   },
   {
-    "FIPS": 5121,
-    "State": "Arkansas",
-    "County": "Randolph"
+    code: 5121,
+    state: 'Arkansas',
+    county: 'Randolph',
   },
   {
-    "FIPS": 5123,
-    "State": "Arkansas",
-    "County": "St. Francis"
+    code: 5123,
+    state: 'Arkansas',
+    county: 'St. Francis',
   },
   {
-    "FIPS": 5125,
-    "State": "Arkansas",
-    "County": "Saline"
+    code: 5125,
+    state: 'Arkansas',
+    county: 'Saline',
   },
   {
-    "FIPS": 5127,
-    "State": "Arkansas",
-    "County": "Scott"
+    code: 5127,
+    state: 'Arkansas',
+    county: 'Scott',
   },
   {
-    "FIPS": 5129,
-    "State": "Arkansas",
-    "County": "Searcy"
+    code: 5129,
+    state: 'Arkansas',
+    county: 'Searcy',
   },
   {
-    "FIPS": 5131,
-    "State": "Arkansas",
-    "County": "Sebastian"
+    code: 5131,
+    state: 'Arkansas',
+    county: 'Sebastian',
   },
   {
-    "FIPS": 5133,
-    "State": "Arkansas",
-    "County": "Sevier"
+    code: 5133,
+    state: 'Arkansas',
+    county: 'Sevier',
   },
   {
-    "FIPS": 5135,
-    "State": "Arkansas",
-    "County": "Sharp"
+    code: 5135,
+    state: 'Arkansas',
+    county: 'Sharp',
   },
   {
-    "FIPS": 5137,
-    "State": "Arkansas",
-    "County": "Stone"
+    code: 5137,
+    state: 'Arkansas',
+    county: 'Stone',
   },
   {
-    "FIPS": 5139,
-    "State": "Arkansas",
-    "County": "Union"
+    code: 5139,
+    state: 'Arkansas',
+    county: 'Union',
   },
   {
-    "FIPS": 5141,
-    "State": "Arkansas",
-    "County": "Van Buren"
+    code: 5141,
+    state: 'Arkansas',
+    county: 'Van Buren',
   },
   {
-    "FIPS": 5143,
-    "State": "Arkansas",
-    "County": "Washington"
+    code: 5143,
+    state: 'Arkansas',
+    county: 'Washington',
   },
   {
-    "FIPS": 5145,
-    "State": "Arkansas",
-    "County": "White"
+    code: 5145,
+    state: 'Arkansas',
+    county: 'White',
   },
   {
-    "FIPS": 5147,
-    "State": "Arkansas",
-    "County": "Woodruff"
+    code: 5147,
+    state: 'Arkansas',
+    county: 'Woodruff',
   },
   {
-    "FIPS": 5149,
-    "State": "Arkansas",
-    "County": "Yell"
+    code: 5149,
+    state: 'Arkansas',
+    county: 'Yell',
   },
   {
-    "FIPS": 6001,
-    "State": "California",
-    "County": "Alameda"
+    code: 6001,
+    state: 'California',
+    county: 'Alameda',
   },
   {
-    "FIPS": 6003,
-    "State": "California",
-    "County": "Alpine"
+    code: 6003,
+    state: 'California',
+    county: 'Alpine',
   },
   {
-    "FIPS": 6005,
-    "State": "California",
-    "County": "Amador"
+    code: 6005,
+    state: 'California',
+    county: 'Amador',
   },
   {
-    "FIPS": 6007,
-    "State": "California",
-    "County": "Butte"
+    code: 6007,
+    state: 'California',
+    county: 'Butte',
   },
   {
-    "FIPS": 6009,
-    "State": "California",
-    "County": "Calaveras"
+    code: 6009,
+    state: 'California',
+    county: 'Calaveras',
   },
   {
-    "FIPS": 6011,
-    "State": "California",
-    "County": "Colusa"
+    code: 6011,
+    state: 'California',
+    county: 'Colusa',
   },
   {
-    "FIPS": 6013,
-    "State": "California",
-    "County": "Contra Costa"
+    code: 6013,
+    state: 'California',
+    county: 'Contra Costa',
   },
   {
-    "FIPS": 6015,
-    "State": "California",
-    "County": "Del Norte"
+    code: 6015,
+    state: 'California',
+    county: 'Del Norte',
   },
   {
-    "FIPS": 6017,
-    "State": "California",
-    "County": "El Dorado"
+    code: 6017,
+    state: 'California',
+    county: 'El Dorado',
   },
   {
-    "FIPS": 6019,
-    "State": "California",
-    "County": "Fresno"
+    code: 6019,
+    state: 'California',
+    county: 'Fresno',
   },
   {
-    "FIPS": 6021,
-    "State": "California",
-    "County": "Glenn"
+    code: 6021,
+    state: 'California',
+    county: 'Glenn',
   },
   {
-    "FIPS": 6023,
-    "State": "California",
-    "County": "Humboldt"
+    code: 6023,
+    state: 'California',
+    county: 'Humboldt',
   },
   {
-    "FIPS": 6025,
-    "State": "California",
-    "County": "Imperial"
+    code: 6025,
+    state: 'California',
+    county: 'Imperial',
   },
   {
-    "FIPS": 6027,
-    "State": "California",
-    "County": "Inyo"
+    code: 6027,
+    state: 'California',
+    county: 'Inyo',
   },
   {
-    "FIPS": 6029,
-    "State": "California",
-    "County": "Kern"
+    code: 6029,
+    state: 'California',
+    county: 'Kern',
   },
   {
-    "FIPS": 6031,
-    "State": "California",
-    "County": "Kings"
+    code: 6031,
+    state: 'California',
+    county: 'Kings',
   },
   {
-    "FIPS": 6033,
-    "State": "California",
-    "County": "Lake"
+    code: 6033,
+    state: 'California',
+    county: 'Lake',
   },
   {
-    "FIPS": 6035,
-    "State": "California",
-    "County": "Lassen"
+    code: 6035,
+    state: 'California',
+    county: 'Lassen',
   },
   {
-    "FIPS": 6037,
-    "State": "California",
-    "County": "Los Angeles"
+    code: 6037,
+    state: 'California',
+    county: 'Los Angeles',
   },
   {
-    "FIPS": 6039,
-    "State": "California",
-    "County": "Madera"
+    code: 6039,
+    state: 'California',
+    county: 'Madera',
   },
   {
-    "FIPS": 6041,
-    "State": "California",
-    "County": "Marin"
+    code: 6041,
+    state: 'California',
+    county: 'Marin',
   },
   {
-    "FIPS": 6043,
-    "State": "California",
-    "County": "Mariposa"
+    code: 6043,
+    state: 'California',
+    county: 'Mariposa',
   },
   {
-    "FIPS": 6045,
-    "State": "California",
-    "County": "Mendocino"
+    code: 6045,
+    state: 'California',
+    county: 'Mendocino',
   },
   {
-    "FIPS": 6047,
-    "State": "California",
-    "County": "Merced"
+    code: 6047,
+    state: 'California',
+    county: 'Merced',
   },
   {
-    "FIPS": 6049,
-    "State": "California",
-    "County": "Modoc"
+    code: 6049,
+    state: 'California',
+    county: 'Modoc',
   },
   {
-    "FIPS": 6051,
-    "State": "California",
-    "County": "Mono"
+    code: 6051,
+    state: 'California',
+    county: 'Mono',
   },
   {
-    "FIPS": 6053,
-    "State": "California",
-    "County": "Monterey"
+    code: 6053,
+    state: 'California',
+    county: 'Monterey',
   },
   {
-    "FIPS": 6055,
-    "State": "California",
-    "County": "Napa"
+    code: 6055,
+    state: 'California',
+    county: 'Napa',
   },
   {
-    "FIPS": 6057,
-    "State": "California",
-    "County": "Nevada"
+    code: 6057,
+    state: 'California',
+    county: 'Nevada',
   },
   {
-    "FIPS": 6059,
-    "State": "California",
-    "County": "Orange"
+    code: 6059,
+    state: 'California',
+    county: 'Orange',
   },
   {
-    "FIPS": 6061,
-    "State": "California",
-    "County": "Placer"
+    code: 6061,
+    state: 'California',
+    county: 'Placer',
   },
   {
-    "FIPS": 6063,
-    "State": "California",
-    "County": "Plumas"
+    code: 6063,
+    state: 'California',
+    county: 'Plumas',
   },
   {
-    "FIPS": 6065,
-    "State": "California",
-    "County": "Riverside"
+    code: 6065,
+    state: 'California',
+    county: 'Riverside',
   },
   {
-    "FIPS": 6067,
-    "State": "California",
-    "County": "Sacramento"
+    code: 6067,
+    state: 'California',
+    county: 'Sacramento',
   },
   {
-    "FIPS": 6069,
-    "State": "California",
-    "County": "San Benito"
+    code: 6069,
+    state: 'California',
+    county: 'San Benito',
   },
   {
-    "FIPS": 6071,
-    "State": "California",
-    "County": "San Bernardino"
+    code: 6071,
+    state: 'California',
+    county: 'San Bernardino',
   },
   {
-    "FIPS": 6073,
-    "State": "California",
-    "County": "San Diego"
+    code: 6073,
+    state: 'California',
+    county: 'San Diego',
   },
   {
-    "FIPS": 6075,
-    "State": "California",
-    "County": "San Francisco"
+    code: 6075,
+    state: 'California',
+    county: 'San Francisco',
   },
   {
-    "FIPS": 6077,
-    "State": "California",
-    "County": "San Joaquin"
+    code: 6077,
+    state: 'California',
+    county: 'San Joaquin',
   },
   {
-    "FIPS": 6079,
-    "State": "California",
-    "County": "San Luis Obispo"
+    code: 6079,
+    state: 'California',
+    county: 'San Luis Obispo',
   },
   {
-    "FIPS": 6081,
-    "State": "California",
-    "County": "San Mateo"
+    code: 6081,
+    state: 'California',
+    county: 'San Mateo',
   },
   {
-    "FIPS": 6083,
-    "State": "California",
-    "County": "Santa Barbara"
+    code: 6083,
+    state: 'California',
+    county: 'Santa Barbara',
   },
   {
-    "FIPS": 6085,
-    "State": "California",
-    "County": "Santa Clara"
+    code: 6085,
+    state: 'California',
+    county: 'Santa Clara',
   },
   {
-    "FIPS": 6087,
-    "State": "California",
-    "County": "Santa Cruz"
+    code: 6087,
+    state: 'California',
+    county: 'Santa Cruz',
   },
   {
-    "FIPS": 6089,
-    "State": "California",
-    "County": "Shasta"
+    code: 6089,
+    state: 'California',
+    county: 'Shasta',
   },
   {
-    "FIPS": 6091,
-    "State": "California",
-    "County": "Sierra"
+    code: 6091,
+    state: 'California',
+    county: 'Sierra',
   },
   {
-    "FIPS": 6093,
-    "State": "California",
-    "County": "Siskiyou"
+    code: 6093,
+    state: 'California',
+    county: 'Siskiyou',
   },
   {
-    "FIPS": 6095,
-    "State": "California",
-    "County": "Solano"
+    code: 6095,
+    state: 'California',
+    county: 'Solano',
   },
   {
-    "FIPS": 6097,
-    "State": "California",
-    "County": "Sonoma"
+    code: 6097,
+    state: 'California',
+    county: 'Sonoma',
   },
   {
-    "FIPS": 6099,
-    "State": "California",
-    "County": "Stanislaus"
+    code: 6099,
+    state: 'California',
+    county: 'Stanislaus',
   },
   {
-    "FIPS": 6101,
-    "State": "California",
-    "County": "Sutter"
+    code: 6101,
+    state: 'California',
+    county: 'Sutter',
   },
   {
-    "FIPS": 6103,
-    "State": "California",
-    "County": "Tehama"
+    code: 6103,
+    state: 'California',
+    county: 'Tehama',
   },
   {
-    "FIPS": 6105,
-    "State": "California",
-    "County": "Trinity"
+    code: 6105,
+    state: 'California',
+    county: 'Trinity',
   },
   {
-    "FIPS": 6107,
-    "State": "California",
-    "County": "Tulare"
+    code: 6107,
+    state: 'California',
+    county: 'Tulare',
   },
   {
-    "FIPS": 6109,
-    "State": "California",
-    "County": "Tuolumne"
+    code: 6109,
+    state: 'California',
+    county: 'Tuolumne',
   },
   {
-    "FIPS": 6111,
-    "State": "California",
-    "County": "Ventura"
+    code: 6111,
+    state: 'California',
+    county: 'Ventura',
   },
   {
-    "FIPS": 6113,
-    "State": "California",
-    "County": "Yolo"
+    code: 6113,
+    state: 'California',
+    county: 'Yolo',
   },
   {
-    "FIPS": 6115,
-    "State": "California",
-    "County": "Yuba"
+    code: 6115,
+    state: 'California',
+    county: 'Yuba',
   },
   {
-    "FIPS": 8001,
-    "State": "Colorado",
-    "County": "Adams"
+    code: 8001,
+    state: 'Colorado',
+    county: 'Adams',
   },
   {
-    "FIPS": 8003,
-    "State": "Colorado",
-    "County": "Alamosa"
+    code: 8003,
+    state: 'Colorado',
+    county: 'Alamosa',
   },
   {
-    "FIPS": 8005,
-    "State": "Colorado",
-    "County": "Arapahoe"
+    code: 8005,
+    state: 'Colorado',
+    county: 'Arapahoe',
   },
   {
-    "FIPS": 8007,
-    "State": "Colorado",
-    "County": "Archuleta"
+    code: 8007,
+    state: 'Colorado',
+    county: 'Archuleta',
   },
   {
-    "FIPS": 8009,
-    "State": "Colorado",
-    "County": "Baca"
+    code: 8009,
+    state: 'Colorado',
+    county: 'Baca',
   },
   {
-    "FIPS": 8011,
-    "State": "Colorado",
-    "County": "Bent"
+    code: 8011,
+    state: 'Colorado',
+    county: 'Bent',
   },
   {
-    "FIPS": 8013,
-    "State": "Colorado",
-    "County": "Boulder"
+    code: 8013,
+    state: 'Colorado',
+    county: 'Boulder',
   },
   {
-    "FIPS": 8014,
-    "State": "Colorado",
-    "County": "Broomfield"
+    code: 8014,
+    state: 'Colorado',
+    county: 'Broomfield',
   },
   {
-    "FIPS": 8015,
-    "State": "Colorado",
-    "County": "Chaffee"
+    code: 8015,
+    state: 'Colorado',
+    county: 'Chaffee',
   },
   {
-    "FIPS": 8017,
-    "State": "Colorado",
-    "County": "Cheyenne"
+    code: 8017,
+    state: 'Colorado',
+    county: 'Cheyenne',
   },
   {
-    "FIPS": 8019,
-    "State": "Colorado",
-    "County": "Clear Creek"
+    code: 8019,
+    state: 'Colorado',
+    county: 'Clear Creek',
   },
   {
-    "FIPS": 8021,
-    "State": "Colorado",
-    "County": "Conejos"
+    code: 8021,
+    state: 'Colorado',
+    county: 'Conejos',
   },
   {
-    "FIPS": 8023,
-    "State": "Colorado",
-    "County": "Costilla"
+    code: 8023,
+    state: 'Colorado',
+    county: 'Costilla',
   },
   {
-    "FIPS": 8025,
-    "State": "Colorado",
-    "County": "Crowley"
+    code: 8025,
+    state: 'Colorado',
+    county: 'Crowley',
   },
   {
-    "FIPS": 8027,
-    "State": "Colorado",
-    "County": "Custer"
+    code: 8027,
+    state: 'Colorado',
+    county: 'Custer',
   },
   {
-    "FIPS": 8029,
-    "State": "Colorado",
-    "County": "Delta"
+    code: 8029,
+    state: 'Colorado',
+    county: 'Delta',
   },
   {
-    "FIPS": 8031,
-    "State": "Colorado",
-    "County": "Denver"
+    code: 8031,
+    state: 'Colorado',
+    county: 'Denver',
   },
   {
-    "FIPS": 8033,
-    "State": "Colorado",
-    "County": "Dolores"
+    code: 8033,
+    state: 'Colorado',
+    county: 'Dolores',
   },
   {
-    "FIPS": 8035,
-    "State": "Colorado",
-    "County": "Douglas"
+    code: 8035,
+    state: 'Colorado',
+    county: 'Douglas',
   },
   {
-    "FIPS": 8037,
-    "State": "Colorado",
-    "County": "Eagle"
+    code: 8037,
+    state: 'Colorado',
+    county: 'Eagle',
   },
   {
-    "FIPS": 8039,
-    "State": "Colorado",
-    "County": "Elbert"
+    code: 8039,
+    state: 'Colorado',
+    county: 'Elbert',
   },
   {
-    "FIPS": 8041,
-    "State": "Colorado",
-    "County": "El Paso"
+    code: 8041,
+    state: 'Colorado',
+    county: 'El Paso',
   },
   {
-    "FIPS": 8043,
-    "State": "Colorado",
-    "County": "Fremont"
+    code: 8043,
+    state: 'Colorado',
+    county: 'Fremont',
   },
   {
-    "FIPS": 8045,
-    "State": "Colorado",
-    "County": "Garfield"
+    code: 8045,
+    state: 'Colorado',
+    county: 'Garfield',
   },
   {
-    "FIPS": 8047,
-    "State": "Colorado",
-    "County": "Gilpin"
+    code: 8047,
+    state: 'Colorado',
+    county: 'Gilpin',
   },
   {
-    "FIPS": 8049,
-    "State": "Colorado",
-    "County": "Grand"
+    code: 8049,
+    state: 'Colorado',
+    county: 'Grand',
   },
   {
-    "FIPS": 8051,
-    "State": "Colorado",
-    "County": "Gunnison"
+    code: 8051,
+    state: 'Colorado',
+    county: 'Gunnison',
   },
   {
-    "FIPS": 8053,
-    "State": "Colorado",
-    "County": "Hinsdale"
+    code: 8053,
+    state: 'Colorado',
+    county: 'Hinsdale',
   },
   {
-    "FIPS": 8055,
-    "State": "Colorado",
-    "County": "Huerfano"
+    code: 8055,
+    state: 'Colorado',
+    county: 'Huerfano',
   },
   {
-    "FIPS": 8057,
-    "State": "Colorado",
-    "County": "Jackson"
+    code: 8057,
+    state: 'Colorado',
+    county: 'Jackson',
   },
   {
-    "FIPS": 8059,
-    "State": "Colorado",
-    "County": "Jefferson"
+    code: 8059,
+    state: 'Colorado',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 8061,
-    "State": "Colorado",
-    "County": "Kiowa"
+    code: 8061,
+    state: 'Colorado',
+    county: 'Kiowa',
   },
   {
-    "FIPS": 8063,
-    "State": "Colorado",
-    "County": "Kit Carson"
+    code: 8063,
+    state: 'Colorado',
+    county: 'Kit Carson',
   },
   {
-    "FIPS": 8065,
-    "State": "Colorado",
-    "County": "Lake"
+    code: 8065,
+    state: 'Colorado',
+    county: 'Lake',
   },
   {
-    "FIPS": 8067,
-    "State": "Colorado",
-    "County": "La Plata"
+    code: 8067,
+    state: 'Colorado',
+    county: 'La Plata',
   },
   {
-    "FIPS": 8069,
-    "State": "Colorado",
-    "County": "Larimer"
+    code: 8069,
+    state: 'Colorado',
+    county: 'Larimer',
   },
   {
-    "FIPS": 8071,
-    "State": "Colorado",
-    "County": "Las Animas"
+    code: 8071,
+    state: 'Colorado',
+    county: 'Las Animas',
   },
   {
-    "FIPS": 8073,
-    "State": "Colorado",
-    "County": "Lincoln"
+    code: 8073,
+    state: 'Colorado',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 8075,
-    "State": "Colorado",
-    "County": "Logan"
+    code: 8075,
+    state: 'Colorado',
+    county: 'Logan',
   },
   {
-    "FIPS": 8077,
-    "State": "Colorado",
-    "County": "Mesa"
+    code: 8077,
+    state: 'Colorado',
+    county: 'Mesa',
   },
   {
-    "FIPS": 8079,
-    "State": "Colorado",
-    "County": "Mineral"
+    code: 8079,
+    state: 'Colorado',
+    county: 'Mineral',
   },
   {
-    "FIPS": 8081,
-    "State": "Colorado",
-    "County": "Moffat"
+    code: 8081,
+    state: 'Colorado',
+    county: 'Moffat',
   },
   {
-    "FIPS": 8083,
-    "State": "Colorado",
-    "County": "Montezuma"
+    code: 8083,
+    state: 'Colorado',
+    county: 'Montezuma',
   },
   {
-    "FIPS": 8085,
-    "State": "Colorado",
-    "County": "Montrose"
+    code: 8085,
+    state: 'Colorado',
+    county: 'Montrose',
   },
   {
-    "FIPS": 8087,
-    "State": "Colorado",
-    "County": "Morgan"
+    code: 8087,
+    state: 'Colorado',
+    county: 'Morgan',
   },
   {
-    "FIPS": 8089,
-    "State": "Colorado",
-    "County": "Otero"
+    code: 8089,
+    state: 'Colorado',
+    county: 'Otero',
   },
   {
-    "FIPS": 8091,
-    "State": "Colorado",
-    "County": "Ouray"
+    code: 8091,
+    state: 'Colorado',
+    county: 'Ouray',
   },
   {
-    "FIPS": 8093,
-    "State": "Colorado",
-    "County": "Park"
+    code: 8093,
+    state: 'Colorado',
+    county: 'Park',
   },
   {
-    "FIPS": 8095,
-    "State": "Colorado",
-    "County": "Phillips"
+    code: 8095,
+    state: 'Colorado',
+    county: 'Phillips',
   },
   {
-    "FIPS": 8097,
-    "State": "Colorado",
-    "County": "Pitkin"
+    code: 8097,
+    state: 'Colorado',
+    county: 'Pitkin',
   },
   {
-    "FIPS": 8099,
-    "State": "Colorado",
-    "County": "Prowers"
+    code: 8099,
+    state: 'Colorado',
+    county: 'Prowers',
   },
   {
-    "FIPS": 8101,
-    "State": "Colorado",
-    "County": "Pueblo"
+    code: 8101,
+    state: 'Colorado',
+    county: 'Pueblo',
   },
   {
-    "FIPS": 8103,
-    "State": "Colorado",
-    "County": "Rio Blanco"
+    code: 8103,
+    state: 'Colorado',
+    county: 'Rio Blanco',
   },
   {
-    "FIPS": 8105,
-    "State": "Colorado",
-    "County": "Rio Grande"
+    code: 8105,
+    state: 'Colorado',
+    county: 'Rio Grande',
   },
   {
-    "FIPS": 8107,
-    "State": "Colorado",
-    "County": "Routt"
+    code: 8107,
+    state: 'Colorado',
+    county: 'Routt',
   },
   {
-    "FIPS": 8109,
-    "State": "Colorado",
-    "County": "Saguache"
+    code: 8109,
+    state: 'Colorado',
+    county: 'Saguache',
   },
   {
-    "FIPS": 8111,
-    "State": "Colorado",
-    "County": "San Juan"
+    code: 8111,
+    state: 'Colorado',
+    county: 'San Juan',
   },
   {
-    "FIPS": 8113,
-    "State": "Colorado",
-    "County": "San Miguel"
+    code: 8113,
+    state: 'Colorado',
+    county: 'San Miguel',
   },
   {
-    "FIPS": 8115,
-    "State": "Colorado",
-    "County": "Sedgwick"
+    code: 8115,
+    state: 'Colorado',
+    county: 'Sedgwick',
   },
   {
-    "FIPS": 8117,
-    "State": "Colorado",
-    "County": "Summit"
+    code: 8117,
+    state: 'Colorado',
+    county: 'Summit',
   },
   {
-    "FIPS": 8119,
-    "State": "Colorado",
-    "County": "Teller"
+    code: 8119,
+    state: 'Colorado',
+    county: 'Teller',
   },
   {
-    "FIPS": 8121,
-    "State": "Colorado",
-    "County": "Washington"
+    code: 8121,
+    state: 'Colorado',
+    county: 'Washington',
   },
   {
-    "FIPS": 8123,
-    "State": "Colorado",
-    "County": "Weld"
+    code: 8123,
+    state: 'Colorado',
+    county: 'Weld',
   },
   {
-    "FIPS": 8125,
-    "State": "Colorado",
-    "County": "Yuma"
+    code: 8125,
+    state: 'Colorado',
+    county: 'Yuma',
   },
   {
-    "FIPS": 9001,
-    "State": "Connecticut",
-    "County": "Fairfield"
+    code: 9001,
+    state: 'Connecticut',
+    county: 'Fairfield',
   },
   {
-    "FIPS": 9003,
-    "State": "Connecticut",
-    "County": "Hartford"
+    code: 9003,
+    state: 'Connecticut',
+    county: 'Hartford',
   },
   {
-    "FIPS": 9005,
-    "State": "Connecticut",
-    "County": "Litchfield"
+    code: 9005,
+    state: 'Connecticut',
+    county: 'Litchfield',
   },
   {
-    "FIPS": 9007,
-    "State": "Connecticut",
-    "County": "Middlesex"
+    code: 9007,
+    state: 'Connecticut',
+    county: 'Middlesex',
   },
   {
-    "FIPS": 9009,
-    "State": "Connecticut",
-    "County": "New Haven"
+    code: 9009,
+    state: 'Connecticut',
+    county: 'New Haven',
   },
   {
-    "FIPS": 9011,
-    "State": "Connecticut",
-    "County": "New London"
+    code: 9011,
+    state: 'Connecticut',
+    county: 'New London',
   },
   {
-    "FIPS": 9013,
-    "State": "Connecticut",
-    "County": "Tolland"
+    code: 9013,
+    state: 'Connecticut',
+    county: 'Tolland',
   },
   {
-    "FIPS": 9015,
-    "State": "Connecticut",
-    "County": "Windham"
+    code: 9015,
+    state: 'Connecticut',
+    county: 'Windham',
   },
   {
-    "FIPS": 10001,
-    "State": "Delaware",
-    "County": "Kent"
+    code: 10001,
+    state: 'Delaware',
+    county: 'Kent',
   },
   {
-    "FIPS": 10003,
-    "State": "Delaware",
-    "County": "New Castle"
+    code: 10003,
+    state: 'Delaware',
+    county: 'New Castle',
   },
   {
-    "FIPS": 10005,
-    "State": "Delaware",
-    "County": "Sussex"
+    code: 10005,
+    state: 'Delaware',
+    county: 'Sussex',
   },
   {
-    "FIPS": 11001,
-    "State": "District of Columbia",
-    "County": "District of Columbia"
+    code: 11001,
+    state: 'District of Columbia',
+    county: 'District of Columbia',
   },
   {
-    "FIPS": 12001,
-    "State": "Florida",
-    "County": "Alachua"
+    code: 12001,
+    state: 'Florida',
+    county: 'Alachua',
   },
   {
-    "FIPS": 12003,
-    "State": "Florida",
-    "County": "Baker"
+    code: 12003,
+    state: 'Florida',
+    county: 'Baker',
   },
   {
-    "FIPS": 12005,
-    "State": "Florida",
-    "County": "Bay"
+    code: 12005,
+    state: 'Florida',
+    county: 'Bay',
   },
   {
-    "FIPS": 12007,
-    "State": "Florida",
-    "County": "Bradford"
+    code: 12007,
+    state: 'Florida',
+    county: 'Bradford',
   },
   {
-    "FIPS": 12009,
-    "State": "Florida",
-    "County": "Brevard"
+    code: 12009,
+    state: 'Florida',
+    county: 'Brevard',
   },
   {
-    "FIPS": 12011,
-    "State": "Florida",
-    "County": "Broward"
+    code: 12011,
+    state: 'Florida',
+    county: 'Broward',
   },
   {
-    "FIPS": 12013,
-    "State": "Florida",
-    "County": "Calhoun"
+    code: 12013,
+    state: 'Florida',
+    county: 'Calhoun',
   },
   {
-    "FIPS": 12015,
-    "State": "Florida",
-    "County": "Charlotte"
+    code: 12015,
+    state: 'Florida',
+    county: 'Charlotte',
   },
   {
-    "FIPS": 12017,
-    "State": "Florida",
-    "County": "Citrus"
+    code: 12017,
+    state: 'Florida',
+    county: 'Citrus',
   },
   {
-    "FIPS": 12019,
-    "State": "Florida",
-    "County": "Clay"
+    code: 12019,
+    state: 'Florida',
+    county: 'Clay',
   },
   {
-    "FIPS": 12021,
-    "State": "Florida",
-    "County": "Collier"
+    code: 12021,
+    state: 'Florida',
+    county: 'Collier',
   },
   {
-    "FIPS": 12023,
-    "State": "Florida",
-    "County": "Columbia"
+    code: 12023,
+    state: 'Florida',
+    county: 'Columbia',
   },
   {
-    "FIPS": 12027,
-    "State": "Florida",
-    "County": "DeSoto"
+    code: 12027,
+    state: 'Florida',
+    county: 'DeSoto',
   },
   {
-    "FIPS": 12029,
-    "State": "Florida",
-    "County": "Dixie"
+    code: 12029,
+    state: 'Florida',
+    county: 'Dixie',
   },
   {
-    "FIPS": 12031,
-    "State": "Florida",
-    "County": "Duval"
+    code: 12031,
+    state: 'Florida',
+    county: 'Duval',
   },
   {
-    "FIPS": 12033,
-    "State": "Florida",
-    "County": "Escambia"
+    code: 12033,
+    state: 'Florida',
+    county: 'Escambia',
   },
   {
-    "FIPS": 12035,
-    "State": "Florida",
-    "County": "Flagler"
+    code: 12035,
+    state: 'Florida',
+    county: 'Flagler',
   },
   {
-    "FIPS": 12037,
-    "State": "Florida",
-    "County": "Franklin"
+    code: 12037,
+    state: 'Florida',
+    county: 'Franklin',
   },
   {
-    "FIPS": 12039,
-    "State": "Florida",
-    "County": "Gadsden"
+    code: 12039,
+    state: 'Florida',
+    county: 'Gadsden',
   },
   {
-    "FIPS": 12041,
-    "State": "Florida",
-    "County": "Gilchrist"
+    code: 12041,
+    state: 'Florida',
+    county: 'Gilchrist',
   },
   {
-    "FIPS": 12043,
-    "State": "Florida",
-    "County": "Glades"
+    code: 12043,
+    state: 'Florida',
+    county: 'Glades',
   },
   {
-    "FIPS": 12045,
-    "State": "Florida",
-    "County": "Gulf"
+    code: 12045,
+    state: 'Florida',
+    county: 'Gulf',
   },
   {
-    "FIPS": 12047,
-    "State": "Florida",
-    "County": "Hamilton"
+    code: 12047,
+    state: 'Florida',
+    county: 'Hamilton',
   },
   {
-    "FIPS": 12049,
-    "State": "Florida",
-    "County": "Hardee"
+    code: 12049,
+    state: 'Florida',
+    county: 'Hardee',
   },
   {
-    "FIPS": 12051,
-    "State": "Florida",
-    "County": "Hendry"
+    code: 12051,
+    state: 'Florida',
+    county: 'Hendry',
   },
   {
-    "FIPS": 12053,
-    "State": "Florida",
-    "County": "Hernando"
+    code: 12053,
+    state: 'Florida',
+    county: 'Hernando',
   },
   {
-    "FIPS": 12055,
-    "State": "Florida",
-    "County": "Highlands"
+    code: 12055,
+    state: 'Florida',
+    county: 'Highlands',
   },
   {
-    "FIPS": 12057,
-    "State": "Florida",
-    "County": "Hillsborough"
+    code: 12057,
+    state: 'Florida',
+    county: 'Hillsborough',
   },
   {
-    "FIPS": 12059,
-    "State": "Florida",
-    "County": "Holmes"
+    code: 12059,
+    state: 'Florida',
+    county: 'Holmes',
   },
   {
-    "FIPS": 12061,
-    "State": "Florida",
-    "County": "Indian River"
+    code: 12061,
+    state: 'Florida',
+    county: 'Indian River',
   },
   {
-    "FIPS": 12063,
-    "State": "Florida",
-    "County": "Jackson"
+    code: 12063,
+    state: 'Florida',
+    county: 'Jackson',
   },
   {
-    "FIPS": 12065,
-    "State": "Florida",
-    "County": "Jefferson"
+    code: 12065,
+    state: 'Florida',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 12067,
-    "State": "Florida",
-    "County": "Lafayette"
+    code: 12067,
+    state: 'Florida',
+    county: 'Lafayette',
   },
   {
-    "FIPS": 12069,
-    "State": "Florida",
-    "County": "Lake"
+    code: 12069,
+    state: 'Florida',
+    county: 'Lake',
   },
   {
-    "FIPS": 12071,
-    "State": "Florida",
-    "County": "Lee"
+    code: 12071,
+    state: 'Florida',
+    county: 'Lee',
   },
   {
-    "FIPS": 12073,
-    "State": "Florida",
-    "County": "Leon"
+    code: 12073,
+    state: 'Florida',
+    county: 'Leon',
   },
   {
-    "FIPS": 12075,
-    "State": "Florida",
-    "County": "Levy"
+    code: 12075,
+    state: 'Florida',
+    county: 'Levy',
   },
   {
-    "FIPS": 12077,
-    "State": "Florida",
-    "County": "Liberty"
+    code: 12077,
+    state: 'Florida',
+    county: 'Liberty',
   },
   {
-    "FIPS": 12079,
-    "State": "Florida",
-    "County": "Madison"
+    code: 12079,
+    state: 'Florida',
+    county: 'Madison',
   },
   {
-    "FIPS": 12081,
-    "State": "Florida",
-    "County": "Manatee"
+    code: 12081,
+    state: 'Florida',
+    county: 'Manatee',
   },
   {
-    "FIPS": 12083,
-    "State": "Florida",
-    "County": "Marion"
+    code: 12083,
+    state: 'Florida',
+    county: 'Marion',
   },
   {
-    "FIPS": 12085,
-    "State": "Florida",
-    "County": "Martin"
+    code: 12085,
+    state: 'Florida',
+    county: 'Martin',
   },
   {
-    "FIPS": 12086,
-    "State": "Florida",
-    "County": "Miami-Dade"
+    code: 12086,
+    state: 'Florida',
+    county: 'Miami-Dade',
   },
   {
-    "FIPS": 12087,
-    "State": "Florida",
-    "County": "Monroe"
+    code: 12087,
+    state: 'Florida',
+    county: 'Monroe',
   },
   {
-    "FIPS": 12089,
-    "State": "Florida",
-    "County": "Nassau"
+    code: 12089,
+    state: 'Florida',
+    county: 'Nassau',
   },
   {
-    "FIPS": 12091,
-    "State": "Florida",
-    "County": "Okaloosa"
+    code: 12091,
+    state: 'Florida',
+    county: 'Okaloosa',
   },
   {
-    "FIPS": 12093,
-    "State": "Florida",
-    "County": "Okeechobee"
+    code: 12093,
+    state: 'Florida',
+    county: 'Okeechobee',
   },
   {
-    "FIPS": 12095,
-    "State": "Florida",
-    "County": "Orange"
+    code: 12095,
+    state: 'Florida',
+    county: 'Orange',
   },
   {
-    "FIPS": 12097,
-    "State": "Florida",
-    "County": "Osceola"
+    code: 12097,
+    state: 'Florida',
+    county: 'Osceola',
   },
   {
-    "FIPS": 12099,
-    "State": "Florida",
-    "County": "Palm Beach"
+    code: 12099,
+    state: 'Florida',
+    county: 'Palm Beach',
   },
   {
-    "FIPS": 12101,
-    "State": "Florida",
-    "County": "Pasco"
+    code: 12101,
+    state: 'Florida',
+    county: 'Pasco',
   },
   {
-    "FIPS": 12103,
-    "State": "Florida",
-    "County": "Pinellas"
+    code: 12103,
+    state: 'Florida',
+    county: 'Pinellas',
   },
   {
-    "FIPS": 12105,
-    "State": "Florida",
-    "County": "Polk"
+    code: 12105,
+    state: 'Florida',
+    county: 'Polk',
   },
   {
-    "FIPS": 12107,
-    "State": "Florida",
-    "County": "Putnam"
+    code: 12107,
+    state: 'Florida',
+    county: 'Putnam',
   },
   {
-    "FIPS": 12109,
-    "State": "Florida",
-    "County": "St. Johns"
+    code: 12109,
+    state: 'Florida',
+    county: 'St. Johns',
   },
   {
-    "FIPS": 12111,
-    "State": "Florida",
-    "County": "St. Lucie"
+    code: 12111,
+    state: 'Florida',
+    county: 'St. Lucie',
   },
   {
-    "FIPS": 12113,
-    "State": "Florida",
-    "County": "Santa Rosa"
+    code: 12113,
+    state: 'Florida',
+    county: 'Santa Rosa',
   },
   {
-    "FIPS": 12115,
-    "State": "Florida",
-    "County": "Sarasota"
+    code: 12115,
+    state: 'Florida',
+    county: 'Sarasota',
   },
   {
-    "FIPS": 12117,
-    "State": "Florida",
-    "County": "Seminole"
+    code: 12117,
+    state: 'Florida',
+    county: 'Seminole',
   },
   {
-    "FIPS": 12119,
-    "State": "Florida",
-    "County": "Sumter"
+    code: 12119,
+    state: 'Florida',
+    county: 'Sumter',
   },
   {
-    "FIPS": 12121,
-    "State": "Florida",
-    "County": "Suwannee"
+    code: 12121,
+    state: 'Florida',
+    county: 'Suwannee',
   },
   {
-    "FIPS": 12123,
-    "State": "Florida",
-    "County": "Taylor"
+    code: 12123,
+    state: 'Florida',
+    county: 'Taylor',
   },
   {
-    "FIPS": 12125,
-    "State": "Florida",
-    "County": "Union"
+    code: 12125,
+    state: 'Florida',
+    county: 'Union',
   },
   {
-    "FIPS": 12127,
-    "State": "Florida",
-    "County": "Volusia"
+    code: 12127,
+    state: 'Florida',
+    county: 'Volusia',
   },
   {
-    "FIPS": 12129,
-    "State": "Florida",
-    "County": "Wakulla"
+    code: 12129,
+    state: 'Florida',
+    county: 'Wakulla',
   },
   {
-    "FIPS": 12131,
-    "State": "Florida",
-    "County": "Walton"
+    code: 12131,
+    state: 'Florida',
+    county: 'Walton',
   },
   {
-    "FIPS": 12133,
-    "State": "Florida",
-    "County": "Washington"
+    code: 12133,
+    state: 'Florida',
+    county: 'Washington',
   },
   {
-    "FIPS": 13001,
-    "State": "Georgia",
-    "County": "Appling"
+    code: 13001,
+    state: 'Georgia',
+    county: 'Appling',
   },
   {
-    "FIPS": 13003,
-    "State": "Georgia",
-    "County": "Atkinson"
+    code: 13003,
+    state: 'Georgia',
+    county: 'Atkinson',
   },
   {
-    "FIPS": 13005,
-    "State": "Georgia",
-    "County": "Bacon"
+    code: 13005,
+    state: 'Georgia',
+    county: 'Bacon',
   },
   {
-    "FIPS": 13007,
-    "State": "Georgia",
-    "County": "Baker"
+    code: 13007,
+    state: 'Georgia',
+    county: 'Baker',
   },
   {
-    "FIPS": 13009,
-    "State": "Georgia",
-    "County": "Baldwin"
+    code: 13009,
+    state: 'Georgia',
+    county: 'Baldwin',
   },
   {
-    "FIPS": 13011,
-    "State": "Georgia",
-    "County": "Banks"
+    code: 13011,
+    state: 'Georgia',
+    county: 'Banks',
   },
   {
-    "FIPS": 13013,
-    "State": "Georgia",
-    "County": "Barrow"
+    code: 13013,
+    state: 'Georgia',
+    county: 'Barrow',
   },
   {
-    "FIPS": 13015,
-    "State": "Georgia",
-    "County": "Bartow"
+    code: 13015,
+    state: 'Georgia',
+    county: 'Bartow',
   },
   {
-    "FIPS": 13017,
-    "State": "Georgia",
-    "County": "Ben Hill"
+    code: 13017,
+    state: 'Georgia',
+    county: 'Ben Hill',
   },
   {
-    "FIPS": 13019,
-    "State": "Georgia",
-    "County": "Berrien"
+    code: 13019,
+    state: 'Georgia',
+    county: 'Berrien',
   },
   {
-    "FIPS": 13021,
-    "State": "Georgia",
-    "County": "Bibb"
+    code: 13021,
+    state: 'Georgia',
+    county: 'Bibb',
   },
   {
-    "FIPS": 13023,
-    "State": "Georgia",
-    "County": "Bleckley"
+    code: 13023,
+    state: 'Georgia',
+    county: 'Bleckley',
   },
   {
-    "FIPS": 13025,
-    "State": "Georgia",
-    "County": "Brantley"
+    code: 13025,
+    state: 'Georgia',
+    county: 'Brantley',
   },
   {
-    "FIPS": 13027,
-    "State": "Georgia",
-    "County": "Brooks"
+    code: 13027,
+    state: 'Georgia',
+    county: 'Brooks',
   },
   {
-    "FIPS": 13029,
-    "State": "Georgia",
-    "County": "Bryan"
+    code: 13029,
+    state: 'Georgia',
+    county: 'Bryan',
   },
   {
-    "FIPS": 13031,
-    "State": "Georgia",
-    "County": "Bulloch"
+    code: 13031,
+    state: 'Georgia',
+    county: 'Bulloch',
   },
   {
-    "FIPS": 13033,
-    "State": "Georgia",
-    "County": "Burke"
+    code: 13033,
+    state: 'Georgia',
+    county: 'Burke',
   },
   {
-    "FIPS": 13035,
-    "State": "Georgia",
-    "County": "Butts"
+    code: 13035,
+    state: 'Georgia',
+    county: 'Butts',
   },
   {
-    "FIPS": 13037,
-    "State": "Georgia",
-    "County": "Calhoun"
+    code: 13037,
+    state: 'Georgia',
+    county: 'Calhoun',
   },
   {
-    "FIPS": 13039,
-    "State": "Georgia",
-    "County": "Camden"
+    code: 13039,
+    state: 'Georgia',
+    county: 'Camden',
   },
   {
-    "FIPS": 13043,
-    "State": "Georgia",
-    "County": "Candler"
+    code: 13043,
+    state: 'Georgia',
+    county: 'Candler',
   },
   {
-    "FIPS": 13045,
-    "State": "Georgia",
-    "County": "Carroll"
+    code: 13045,
+    state: 'Georgia',
+    county: 'Carroll',
   },
   {
-    "FIPS": 13047,
-    "State": "Georgia",
-    "County": "Catoosa"
+    code: 13047,
+    state: 'Georgia',
+    county: 'Catoosa',
   },
   {
-    "FIPS": 13049,
-    "State": "Georgia",
-    "County": "Charlton"
+    code: 13049,
+    state: 'Georgia',
+    county: 'Charlton',
   },
   {
-    "FIPS": 13051,
-    "State": "Georgia",
-    "County": "Chatham"
+    code: 13051,
+    state: 'Georgia',
+    county: 'Chatham',
   },
   {
-    "FIPS": 13053,
-    "State": "Georgia",
-    "County": "Chattahoochee"
+    code: 13053,
+    state: 'Georgia',
+    county: 'Chattahoochee',
   },
   {
-    "FIPS": 13055,
-    "State": "Georgia",
-    "County": "Chattooga"
+    code: 13055,
+    state: 'Georgia',
+    county: 'Chattooga',
   },
   {
-    "FIPS": 13057,
-    "State": "Georgia",
-    "County": "Cherokee"
+    code: 13057,
+    state: 'Georgia',
+    county: 'Cherokee',
   },
   {
-    "FIPS": 13059,
-    "State": "Georgia",
-    "County": "Clarke"
+    code: 13059,
+    state: 'Georgia',
+    county: 'Clarke',
   },
   {
-    "FIPS": 13061,
-    "State": "Georgia",
-    "County": "Clay"
+    code: 13061,
+    state: 'Georgia',
+    county: 'Clay',
   },
   {
-    "FIPS": 13063,
-    "State": "Georgia",
-    "County": "Clayton"
+    code: 13063,
+    state: 'Georgia',
+    county: 'Clayton',
   },
   {
-    "FIPS": 13065,
-    "State": "Georgia",
-    "County": "Clinch"
+    code: 13065,
+    state: 'Georgia',
+    county: 'Clinch',
   },
   {
-    "FIPS": 13067,
-    "State": "Georgia",
-    "County": "Cobb"
+    code: 13067,
+    state: 'Georgia',
+    county: 'Cobb',
   },
   {
-    "FIPS": 13069,
-    "State": "Georgia",
-    "County": "Coffee"
+    code: 13069,
+    state: 'Georgia',
+    county: 'Coffee',
   },
   {
-    "FIPS": 13071,
-    "State": "Georgia",
-    "County": "Colquitt"
+    code: 13071,
+    state: 'Georgia',
+    county: 'Colquitt',
   },
   {
-    "FIPS": 13073,
-    "State": "Georgia",
-    "County": "Columbia"
+    code: 13073,
+    state: 'Georgia',
+    county: 'Columbia',
   },
   {
-    "FIPS": 13075,
-    "State": "Georgia",
-    "County": "Cook"
+    code: 13075,
+    state: 'Georgia',
+    county: 'Cook',
   },
   {
-    "FIPS": 13077,
-    "State": "Georgia",
-    "County": "Coweta"
+    code: 13077,
+    state: 'Georgia',
+    county: 'Coweta',
   },
   {
-    "FIPS": 13079,
-    "State": "Georgia",
-    "County": "Crawford"
+    code: 13079,
+    state: 'Georgia',
+    county: 'Crawford',
   },
   {
-    "FIPS": 13081,
-    "State": "Georgia",
-    "County": "Crisp"
+    code: 13081,
+    state: 'Georgia',
+    county: 'Crisp',
   },
   {
-    "FIPS": 13083,
-    "State": "Georgia",
-    "County": "Dade"
+    code: 13083,
+    state: 'Georgia',
+    county: 'Dade',
   },
   {
-    "FIPS": 13085,
-    "State": "Georgia",
-    "County": "Dawson"
+    code: 13085,
+    state: 'Georgia',
+    county: 'Dawson',
   },
   {
-    "FIPS": 13087,
-    "State": "Georgia",
-    "County": "Decatur"
+    code: 13087,
+    state: 'Georgia',
+    county: 'Decatur',
   },
   {
-    "FIPS": 13089,
-    "State": "Georgia",
-    "County": "DeKalb"
+    code: 13089,
+    state: 'Georgia',
+    county: 'DeKalb',
   },
   {
-    "FIPS": 13091,
-    "State": "Georgia",
-    "County": "Dodge"
+    code: 13091,
+    state: 'Georgia',
+    county: 'Dodge',
   },
   {
-    "FIPS": 13093,
-    "State": "Georgia",
-    "County": "Dooly"
+    code: 13093,
+    state: 'Georgia',
+    county: 'Dooly',
   },
   {
-    "FIPS": 13095,
-    "State": "Georgia",
-    "County": "Dougherty"
+    code: 13095,
+    state: 'Georgia',
+    county: 'Dougherty',
   },
   {
-    "FIPS": 13097,
-    "State": "Georgia",
-    "County": "Douglas"
+    code: 13097,
+    state: 'Georgia',
+    county: 'Douglas',
   },
   {
-    "FIPS": 13099,
-    "State": "Georgia",
-    "County": "Early"
+    code: 13099,
+    state: 'Georgia',
+    county: 'Early',
   },
   {
-    "FIPS": 13101,
-    "State": "Georgia",
-    "County": "Echols"
+    code: 13101,
+    state: 'Georgia',
+    county: 'Echols',
   },
   {
-    "FIPS": 13103,
-    "State": "Georgia",
-    "County": "Effingham"
+    code: 13103,
+    state: 'Georgia',
+    county: 'Effingham',
   },
   {
-    "FIPS": 13105,
-    "State": "Georgia",
-    "County": "Elbert"
+    code: 13105,
+    state: 'Georgia',
+    county: 'Elbert',
   },
   {
-    "FIPS": 13107,
-    "State": "Georgia",
-    "County": "Emanuel"
+    code: 13107,
+    state: 'Georgia',
+    county: 'Emanuel',
   },
   {
-    "FIPS": 13109,
-    "State": "Georgia",
-    "County": "Evans"
+    code: 13109,
+    state: 'Georgia',
+    county: 'Evans',
   },
   {
-    "FIPS": 13111,
-    "State": "Georgia",
-    "County": "Fannin"
+    code: 13111,
+    state: 'Georgia',
+    county: 'Fannin',
   },
   {
-    "FIPS": 13113,
-    "State": "Georgia",
-    "County": "Fayette"
+    code: 13113,
+    state: 'Georgia',
+    county: 'Fayette',
   },
   {
-    "FIPS": 13115,
-    "State": "Georgia",
-    "County": "Floyd"
+    code: 13115,
+    state: 'Georgia',
+    county: 'Floyd',
   },
   {
-    "FIPS": 13117,
-    "State": "Georgia",
-    "County": "Forsyth"
+    code: 13117,
+    state: 'Georgia',
+    county: 'Forsyth',
   },
   {
-    "FIPS": 13119,
-    "State": "Georgia",
-    "County": "Franklin"
+    code: 13119,
+    state: 'Georgia',
+    county: 'Franklin',
   },
   {
-    "FIPS": 13121,
-    "State": "Georgia",
-    "County": "Fulton"
+    code: 13121,
+    state: 'Georgia',
+    county: 'Fulton',
   },
   {
-    "FIPS": 13123,
-    "State": "Georgia",
-    "County": "Gilmer"
+    code: 13123,
+    state: 'Georgia',
+    county: 'Gilmer',
   },
   {
-    "FIPS": 13125,
-    "State": "Georgia",
-    "County": "Glascock"
+    code: 13125,
+    state: 'Georgia',
+    county: 'Glascock',
   },
   {
-    "FIPS": 13127,
-    "State": "Georgia",
-    "County": "Glynn"
+    code: 13127,
+    state: 'Georgia',
+    county: 'Glynn',
   },
   {
-    "FIPS": 13129,
-    "State": "Georgia",
-    "County": "Gordon"
+    code: 13129,
+    state: 'Georgia',
+    county: 'Gordon',
   },
   {
-    "FIPS": 13131,
-    "State": "Georgia",
-    "County": "Grady"
+    code: 13131,
+    state: 'Georgia',
+    county: 'Grady',
   },
   {
-    "FIPS": 13133,
-    "State": "Georgia",
-    "County": "Greene"
+    code: 13133,
+    state: 'Georgia',
+    county: 'Greene',
   },
   {
-    "FIPS": 13135,
-    "State": "Georgia",
-    "County": "Gwinnett"
+    code: 13135,
+    state: 'Georgia',
+    county: 'Gwinnett',
   },
   {
-    "FIPS": 13137,
-    "State": "Georgia",
-    "County": "Habersham"
+    code: 13137,
+    state: 'Georgia',
+    county: 'Habersham',
   },
   {
-    "FIPS": 13139,
-    "State": "Georgia",
-    "County": "Hall"
+    code: 13139,
+    state: 'Georgia',
+    county: 'Hall',
   },
   {
-    "FIPS": 13141,
-    "State": "Georgia",
-    "County": "Hancock"
+    code: 13141,
+    state: 'Georgia',
+    county: 'Hancock',
   },
   {
-    "FIPS": 13143,
-    "State": "Georgia",
-    "County": "Haralson"
+    code: 13143,
+    state: 'Georgia',
+    county: 'Haralson',
   },
   {
-    "FIPS": 13145,
-    "State": "Georgia",
-    "County": "Harris"
+    code: 13145,
+    state: 'Georgia',
+    county: 'Harris',
   },
   {
-    "FIPS": 13147,
-    "State": "Georgia",
-    "County": "Hart"
+    code: 13147,
+    state: 'Georgia',
+    county: 'Hart',
   },
   {
-    "FIPS": 13149,
-    "State": "Georgia",
-    "County": "Heard"
+    code: 13149,
+    state: 'Georgia',
+    county: 'Heard',
   },
   {
-    "FIPS": 13151,
-    "State": "Georgia",
-    "County": "Henry"
+    code: 13151,
+    state: 'Georgia',
+    county: 'Henry',
   },
   {
-    "FIPS": 13153,
-    "State": "Georgia",
-    "County": "Houston"
+    code: 13153,
+    state: 'Georgia',
+    county: 'Houston',
   },
   {
-    "FIPS": 13155,
-    "State": "Georgia",
-    "County": "Irwin"
+    code: 13155,
+    state: 'Georgia',
+    county: 'Irwin',
   },
   {
-    "FIPS": 13157,
-    "State": "Georgia",
-    "County": "Jackson"
+    code: 13157,
+    state: 'Georgia',
+    county: 'Jackson',
   },
   {
-    "FIPS": 13159,
-    "State": "Georgia",
-    "County": "Jasper"
+    code: 13159,
+    state: 'Georgia',
+    county: 'Jasper',
   },
   {
-    "FIPS": 13161,
-    "State": "Georgia",
-    "County": "Jeff Davis"
+    code: 13161,
+    state: 'Georgia',
+    county: 'Jeff Davis',
   },
   {
-    "FIPS": 13163,
-    "State": "Georgia",
-    "County": "Jefferson"
+    code: 13163,
+    state: 'Georgia',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 13165,
-    "State": "Georgia",
-    "County": "Jenkins"
+    code: 13165,
+    state: 'Georgia',
+    county: 'Jenkins',
   },
   {
-    "FIPS": 13167,
-    "State": "Georgia",
-    "County": "Johnson"
+    code: 13167,
+    state: 'Georgia',
+    county: 'Johnson',
   },
   {
-    "FIPS": 13169,
-    "State": "Georgia",
-    "County": "Jones"
+    code: 13169,
+    state: 'Georgia',
+    county: 'Jones',
   },
   {
-    "FIPS": 13171,
-    "State": "Georgia",
-    "County": "Lamar"
+    code: 13171,
+    state: 'Georgia',
+    county: 'Lamar',
   },
   {
-    "FIPS": 13173,
-    "State": "Georgia",
-    "County": "Lanier"
+    code: 13173,
+    state: 'Georgia',
+    county: 'Lanier',
   },
   {
-    "FIPS": 13175,
-    "State": "Georgia",
-    "County": "Laurens"
+    code: 13175,
+    state: 'Georgia',
+    county: 'Laurens',
   },
   {
-    "FIPS": 13177,
-    "State": "Georgia",
-    "County": "Lee"
+    code: 13177,
+    state: 'Georgia',
+    county: 'Lee',
   },
   {
-    "FIPS": 13179,
-    "State": "Georgia",
-    "County": "Liberty"
+    code: 13179,
+    state: 'Georgia',
+    county: 'Liberty',
   },
   {
-    "FIPS": 13181,
-    "State": "Georgia",
-    "County": "Lincoln"
+    code: 13181,
+    state: 'Georgia',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 13183,
-    "State": "Georgia",
-    "County": "Long"
+    code: 13183,
+    state: 'Georgia',
+    county: 'Long',
   },
   {
-    "FIPS": 13185,
-    "State": "Georgia",
-    "County": "Lowndes"
+    code: 13185,
+    state: 'Georgia',
+    county: 'Lowndes',
   },
   {
-    "FIPS": 13187,
-    "State": "Georgia",
-    "County": "Lumpkin"
+    code: 13187,
+    state: 'Georgia',
+    county: 'Lumpkin',
   },
   {
-    "FIPS": 13189,
-    "State": "Georgia",
-    "County": "McDuffie"
+    code: 13189,
+    state: 'Georgia',
+    county: 'McDuffie',
   },
   {
-    "FIPS": 13191,
-    "State": "Georgia",
-    "County": "McIntosh"
+    code: 13191,
+    state: 'Georgia',
+    county: 'McIntosh',
   },
   {
-    "FIPS": 13193,
-    "State": "Georgia",
-    "County": "Macon"
+    code: 13193,
+    state: 'Georgia',
+    county: 'Macon',
   },
   {
-    "FIPS": 13195,
-    "State": "Georgia",
-    "County": "Madison"
+    code: 13195,
+    state: 'Georgia',
+    county: 'Madison',
   },
   {
-    "FIPS": 13197,
-    "State": "Georgia",
-    "County": "Marion"
+    code: 13197,
+    state: 'Georgia',
+    county: 'Marion',
   },
   {
-    "FIPS": 13199,
-    "State": "Georgia",
-    "County": "Meriwether"
+    code: 13199,
+    state: 'Georgia',
+    county: 'Meriwether',
   },
   {
-    "FIPS": 13201,
-    "State": "Georgia",
-    "County": "Miller"
+    code: 13201,
+    state: 'Georgia',
+    county: 'Miller',
   },
   {
-    "FIPS": 13205,
-    "State": "Georgia",
-    "County": "Mitchell"
+    code: 13205,
+    state: 'Georgia',
+    county: 'Mitchell',
   },
   {
-    "FIPS": 13207,
-    "State": "Georgia",
-    "County": "Monroe"
+    code: 13207,
+    state: 'Georgia',
+    county: 'Monroe',
   },
   {
-    "FIPS": 13209,
-    "State": "Georgia",
-    "County": "Montgomery"
+    code: 13209,
+    state: 'Georgia',
+    county: 'Montgomery',
   },
   {
-    "FIPS": 13211,
-    "State": "Georgia",
-    "County": "Morgan"
+    code: 13211,
+    state: 'Georgia',
+    county: 'Morgan',
   },
   {
-    "FIPS": 13213,
-    "State": "Georgia",
-    "County": "Murray"
+    code: 13213,
+    state: 'Georgia',
+    county: 'Murray',
   },
   {
-    "FIPS": 13215,
-    "State": "Georgia",
-    "County": "Muscogee"
+    code: 13215,
+    state: 'Georgia',
+    county: 'Muscogee',
   },
   {
-    "FIPS": 13217,
-    "State": "Georgia",
-    "County": "Newton"
+    code: 13217,
+    state: 'Georgia',
+    county: 'Newton',
   },
   {
-    "FIPS": 13219,
-    "State": "Georgia",
-    "County": "Oconee"
+    code: 13219,
+    state: 'Georgia',
+    county: 'Oconee',
   },
   {
-    "FIPS": 13221,
-    "State": "Georgia",
-    "County": "Oglethorpe"
+    code: 13221,
+    state: 'Georgia',
+    county: 'Oglethorpe',
   },
   {
-    "FIPS": 13223,
-    "State": "Georgia",
-    "County": "Paulding"
+    code: 13223,
+    state: 'Georgia',
+    county: 'Paulding',
   },
   {
-    "FIPS": 13225,
-    "State": "Georgia",
-    "County": "Peach"
+    code: 13225,
+    state: 'Georgia',
+    county: 'Peach',
   },
   {
-    "FIPS": 13227,
-    "State": "Georgia",
-    "County": "Pickens"
+    code: 13227,
+    state: 'Georgia',
+    county: 'Pickens',
   },
   {
-    "FIPS": 13229,
-    "State": "Georgia",
-    "County": "Pierce"
+    code: 13229,
+    state: 'Georgia',
+    county: 'Pierce',
   },
   {
-    "FIPS": 13231,
-    "State": "Georgia",
-    "County": "Pike"
+    code: 13231,
+    state: 'Georgia',
+    county: 'Pike',
   },
   {
-    "FIPS": 13233,
-    "State": "Georgia",
-    "County": "Polk"
+    code: 13233,
+    state: 'Georgia',
+    county: 'Polk',
   },
   {
-    "FIPS": 13235,
-    "State": "Georgia",
-    "County": "Pulaski"
+    code: 13235,
+    state: 'Georgia',
+    county: 'Pulaski',
   },
   {
-    "FIPS": 13237,
-    "State": "Georgia",
-    "County": "Putnam"
+    code: 13237,
+    state: 'Georgia',
+    county: 'Putnam',
   },
   {
-    "FIPS": 13239,
-    "State": "Georgia",
-    "County": "Quitman"
+    code: 13239,
+    state: 'Georgia',
+    county: 'Quitman',
   },
   {
-    "FIPS": 13241,
-    "State": "Georgia",
-    "County": "Rabun"
+    code: 13241,
+    state: 'Georgia',
+    county: 'Rabun',
   },
   {
-    "FIPS": 13243,
-    "State": "Georgia",
-    "County": "Randolph"
+    code: 13243,
+    state: 'Georgia',
+    county: 'Randolph',
   },
   {
-    "FIPS": 13245,
-    "State": "Georgia",
-    "County": "Richmond"
+    code: 13245,
+    state: 'Georgia',
+    county: 'Richmond',
   },
   {
-    "FIPS": 13247,
-    "State": "Georgia",
-    "County": "Rockdale"
+    code: 13247,
+    state: 'Georgia',
+    county: 'Rockdale',
   },
   {
-    "FIPS": 13249,
-    "State": "Georgia",
-    "County": "Schley"
+    code: 13249,
+    state: 'Georgia',
+    county: 'Schley',
   },
   {
-    "FIPS": 13251,
-    "State": "Georgia",
-    "County": "Screven"
+    code: 13251,
+    state: 'Georgia',
+    county: 'Screven',
   },
   {
-    "FIPS": 13253,
-    "State": "Georgia",
-    "County": "Seminole"
+    code: 13253,
+    state: 'Georgia',
+    county: 'Seminole',
   },
   {
-    "FIPS": 13255,
-    "State": "Georgia",
-    "County": "Spalding"
+    code: 13255,
+    state: 'Georgia',
+    county: 'Spalding',
   },
   {
-    "FIPS": 13257,
-    "State": "Georgia",
-    "County": "Stephens"
+    code: 13257,
+    state: 'Georgia',
+    county: 'Stephens',
   },
   {
-    "FIPS": 13259,
-    "State": "Georgia",
-    "County": "Stewart"
+    code: 13259,
+    state: 'Georgia',
+    county: 'Stewart',
   },
   {
-    "FIPS": 13261,
-    "State": "Georgia",
-    "County": "Sumter"
+    code: 13261,
+    state: 'Georgia',
+    county: 'Sumter',
   },
   {
-    "FIPS": 13263,
-    "State": "Georgia",
-    "County": "Talbot"
+    code: 13263,
+    state: 'Georgia',
+    county: 'Talbot',
   },
   {
-    "FIPS": 13265,
-    "State": "Georgia",
-    "County": "Taliaferro"
+    code: 13265,
+    state: 'Georgia',
+    county: 'Taliaferro',
   },
   {
-    "FIPS": 13267,
-    "State": "Georgia",
-    "County": "Tattnall"
+    code: 13267,
+    state: 'Georgia',
+    county: 'Tattnall',
   },
   {
-    "FIPS": 13269,
-    "State": "Georgia",
-    "County": "Taylor"
+    code: 13269,
+    state: 'Georgia',
+    county: 'Taylor',
   },
   {
-    "FIPS": 13271,
-    "State": "Georgia",
-    "County": "Telfair"
+    code: 13271,
+    state: 'Georgia',
+    county: 'Telfair',
   },
   {
-    "FIPS": 13273,
-    "State": "Georgia",
-    "County": "Terrell"
+    code: 13273,
+    state: 'Georgia',
+    county: 'Terrell',
   },
   {
-    "FIPS": 13275,
-    "State": "Georgia",
-    "County": "Thomas"
+    code: 13275,
+    state: 'Georgia',
+    county: 'Thomas',
   },
   {
-    "FIPS": 13277,
-    "State": "Georgia",
-    "County": "Tift"
+    code: 13277,
+    state: 'Georgia',
+    county: 'Tift',
   },
   {
-    "FIPS": 13279,
-    "State": "Georgia",
-    "County": "Toombs"
+    code: 13279,
+    state: 'Georgia',
+    county: 'Toombs',
   },
   {
-    "FIPS": 13281,
-    "State": "Georgia",
-    "County": "Towns"
+    code: 13281,
+    state: 'Georgia',
+    county: 'Towns',
   },
   {
-    "FIPS": 13283,
-    "State": "Georgia",
-    "County": "Treutlen"
+    code: 13283,
+    state: 'Georgia',
+    county: 'Treutlen',
   },
   {
-    "FIPS": 13285,
-    "State": "Georgia",
-    "County": "Troup"
+    code: 13285,
+    state: 'Georgia',
+    county: 'Troup',
   },
   {
-    "FIPS": 13287,
-    "State": "Georgia",
-    "County": "Turner"
+    code: 13287,
+    state: 'Georgia',
+    county: 'Turner',
   },
   {
-    "FIPS": 13289,
-    "State": "Georgia",
-    "County": "Twiggs"
+    code: 13289,
+    state: 'Georgia',
+    county: 'Twiggs',
   },
   {
-    "FIPS": 13291,
-    "State": "Georgia",
-    "County": "Union"
+    code: 13291,
+    state: 'Georgia',
+    county: 'Union',
   },
   {
-    "FIPS": 13293,
-    "State": "Georgia",
-    "County": "Upson"
+    code: 13293,
+    state: 'Georgia',
+    county: 'Upson',
   },
   {
-    "FIPS": 13295,
-    "State": "Georgia",
-    "County": "Walker"
+    code: 13295,
+    state: 'Georgia',
+    county: 'Walker',
   },
   {
-    "FIPS": 13297,
-    "State": "Georgia",
-    "County": "Walton"
+    code: 13297,
+    state: 'Georgia',
+    county: 'Walton',
   },
   {
-    "FIPS": 13299,
-    "State": "Georgia",
-    "County": "Ware"
+    code: 13299,
+    state: 'Georgia',
+    county: 'Ware',
   },
   {
-    "FIPS": 13301,
-    "State": "Georgia",
-    "County": "Warren"
+    code: 13301,
+    state: 'Georgia',
+    county: 'Warren',
   },
   {
-    "FIPS": 13303,
-    "State": "Georgia",
-    "County": "Washington"
+    code: 13303,
+    state: 'Georgia',
+    county: 'Washington',
   },
   {
-    "FIPS": 13305,
-    "State": "Georgia",
-    "County": "Wayne"
+    code: 13305,
+    state: 'Georgia',
+    county: 'Wayne',
   },
   {
-    "FIPS": 13307,
-    "State": "Georgia",
-    "County": "Webster"
+    code: 13307,
+    state: 'Georgia',
+    county: 'Webster',
   },
   {
-    "FIPS": 13309,
-    "State": "Georgia",
-    "County": "Wheeler"
+    code: 13309,
+    state: 'Georgia',
+    county: 'Wheeler',
   },
   {
-    "FIPS": 13311,
-    "State": "Georgia",
-    "County": "White"
+    code: 13311,
+    state: 'Georgia',
+    county: 'White',
   },
   {
-    "FIPS": 13313,
-    "State": "Georgia",
-    "County": "Whitfield"
+    code: 13313,
+    state: 'Georgia',
+    county: 'Whitfield',
   },
   {
-    "FIPS": 13315,
-    "State": "Georgia",
-    "County": "Wilcox"
+    code: 13315,
+    state: 'Georgia',
+    county: 'Wilcox',
   },
   {
-    "FIPS": 13317,
-    "State": "Georgia",
-    "County": "Wilkes"
+    code: 13317,
+    state: 'Georgia',
+    county: 'Wilkes',
   },
   {
-    "FIPS": 13319,
-    "State": "Georgia",
-    "County": "Wilkinson"
+    code: 13319,
+    state: 'Georgia',
+    county: 'Wilkinson',
   },
   {
-    "FIPS": 13321,
-    "State": "Georgia",
-    "County": "Worth"
+    code: 13321,
+    state: 'Georgia',
+    county: 'Worth',
   },
   {
-    "FIPS": 15001,
-    "State": "Hawaii",
-    "County": "Hawaii"
+    code: 15001,
+    state: 'Hawaii',
+    county: 'Hawaii',
   },
   {
-    "FIPS": 15003,
-    "State": "Hawaii",
-    "County": "Honolulu"
+    code: 15003,
+    state: 'Hawaii',
+    county: 'Honolulu',
   },
   {
-    "FIPS": 15005,
-    "State": "Hawaii",
-    "County": "Kalawao"
+    code: 15005,
+    state: 'Hawaii',
+    county: 'Kalawao',
   },
   {
-    "FIPS": 15007,
-    "State": "Hawaii",
-    "County": "Kauai"
+    code: 15007,
+    state: 'Hawaii',
+    county: 'Kauai',
   },
   {
-    "FIPS": 15009,
-    "State": "Hawaii",
-    "County": "Maui"
+    code: 15009,
+    state: 'Hawaii',
+    county: 'Maui',
   },
   {
-    "FIPS": 16001,
-    "State": "Idaho",
-    "County": "Ada"
+    code: 16001,
+    state: 'Idaho',
+    county: 'Ada',
   },
   {
-    "FIPS": 16003,
-    "State": "Idaho",
-    "County": "Adams"
+    code: 16003,
+    state: 'Idaho',
+    county: 'Adams',
   },
   {
-    "FIPS": 16005,
-    "State": "Idaho",
-    "County": "Bannock"
+    code: 16005,
+    state: 'Idaho',
+    county: 'Bannock',
   },
   {
-    "FIPS": 16007,
-    "State": "Idaho",
-    "County": "Bear Lake"
+    code: 16007,
+    state: 'Idaho',
+    county: 'Bear Lake',
   },
   {
-    "FIPS": 16009,
-    "State": "Idaho",
-    "County": "Benewah"
+    code: 16009,
+    state: 'Idaho',
+    county: 'Benewah',
   },
   {
-    "FIPS": 16011,
-    "State": "Idaho",
-    "County": "Bingham"
+    code: 16011,
+    state: 'Idaho',
+    county: 'Bingham',
   },
   {
-    "FIPS": 16013,
-    "State": "Idaho",
-    "County": "Blaine"
+    code: 16013,
+    state: 'Idaho',
+    county: 'Blaine',
   },
   {
-    "FIPS": 16015,
-    "State": "Idaho",
-    "County": "Boise"
+    code: 16015,
+    state: 'Idaho',
+    county: 'Boise',
   },
   {
-    "FIPS": 16017,
-    "State": "Idaho",
-    "County": "Bonner"
+    code: 16017,
+    state: 'Idaho',
+    county: 'Bonner',
   },
   {
-    "FIPS": 16019,
-    "State": "Idaho",
-    "County": "Bonneville"
+    code: 16019,
+    state: 'Idaho',
+    county: 'Bonneville',
   },
   {
-    "FIPS": 16021,
-    "State": "Idaho",
-    "County": "Boundary"
+    code: 16021,
+    state: 'Idaho',
+    county: 'Boundary',
   },
   {
-    "FIPS": 16023,
-    "State": "Idaho",
-    "County": "Butte"
+    code: 16023,
+    state: 'Idaho',
+    county: 'Butte',
   },
   {
-    "FIPS": 16025,
-    "State": "Idaho",
-    "County": "Camas"
+    code: 16025,
+    state: 'Idaho',
+    county: 'Camas',
   },
   {
-    "FIPS": 16027,
-    "State": "Idaho",
-    "County": "Canyon"
+    code: 16027,
+    state: 'Idaho',
+    county: 'Canyon',
   },
   {
-    "FIPS": 16029,
-    "State": "Idaho",
-    "County": "Caribou"
+    code: 16029,
+    state: 'Idaho',
+    county: 'Caribou',
   },
   {
-    "FIPS": 16031,
-    "State": "Idaho",
-    "County": "Cassia"
+    code: 16031,
+    state: 'Idaho',
+    county: 'Cassia',
   },
   {
-    "FIPS": 16033,
-    "State": "Idaho",
-    "County": "Clark"
+    code: 16033,
+    state: 'Idaho',
+    county: 'Clark',
   },
   {
-    "FIPS": 16035,
-    "State": "Idaho",
-    "County": "Clearwater"
+    code: 16035,
+    state: 'Idaho',
+    county: 'Clearwater',
   },
   {
-    "FIPS": 16037,
-    "State": "Idaho",
-    "County": "Custer"
+    code: 16037,
+    state: 'Idaho',
+    county: 'Custer',
   },
   {
-    "FIPS": 16039,
-    "State": "Idaho",
-    "County": "Elmore"
+    code: 16039,
+    state: 'Idaho',
+    county: 'Elmore',
   },
   {
-    "FIPS": 16041,
-    "State": "Idaho",
-    "County": "Franklin"
+    code: 16041,
+    state: 'Idaho',
+    county: 'Franklin',
   },
   {
-    "FIPS": 16043,
-    "State": "Idaho",
-    "County": "Fremont"
+    code: 16043,
+    state: 'Idaho',
+    county: 'Fremont',
   },
   {
-    "FIPS": 16045,
-    "State": "Idaho",
-    "County": "Gem"
+    code: 16045,
+    state: 'Idaho',
+    county: 'Gem',
   },
   {
-    "FIPS": 16047,
-    "State": "Idaho",
-    "County": "Gooding"
+    code: 16047,
+    state: 'Idaho',
+    county: 'Gooding',
   },
   {
-    "FIPS": 16049,
-    "State": "Idaho",
-    "County": "Idaho"
+    code: 16049,
+    state: 'Idaho',
+    county: 'Idaho',
   },
   {
-    "FIPS": 16051,
-    "State": "Idaho",
-    "County": "Jefferson"
+    code: 16051,
+    state: 'Idaho',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 16053,
-    "State": "Idaho",
-    "County": "Jerome"
+    code: 16053,
+    state: 'Idaho',
+    county: 'Jerome',
   },
   {
-    "FIPS": 16055,
-    "State": "Idaho",
-    "County": "Kootenai"
+    code: 16055,
+    state: 'Idaho',
+    county: 'Kootenai',
   },
   {
-    "FIPS": 16057,
-    "State": "Idaho",
-    "County": "Latah"
+    code: 16057,
+    state: 'Idaho',
+    county: 'Latah',
   },
   {
-    "FIPS": 16059,
-    "State": "Idaho",
-    "County": "Lemhi"
+    code: 16059,
+    state: 'Idaho',
+    county: 'Lemhi',
   },
   {
-    "FIPS": 16061,
-    "State": "Idaho",
-    "County": "Lewis"
+    code: 16061,
+    state: 'Idaho',
+    county: 'Lewis',
   },
   {
-    "FIPS": 16063,
-    "State": "Idaho",
-    "County": "Lincoln"
+    code: 16063,
+    state: 'Idaho',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 16065,
-    "State": "Idaho",
-    "County": "Madison"
+    code: 16065,
+    state: 'Idaho',
+    county: 'Madison',
   },
   {
-    "FIPS": 16067,
-    "State": "Idaho",
-    "County": "Minidoka"
+    code: 16067,
+    state: 'Idaho',
+    county: 'Minidoka',
   },
   {
-    "FIPS": 16069,
-    "State": "Idaho",
-    "County": "Nez Perce"
+    code: 16069,
+    state: 'Idaho',
+    county: 'Nez Perce',
   },
   {
-    "FIPS": 16071,
-    "State": "Idaho",
-    "County": "Oneida"
+    code: 16071,
+    state: 'Idaho',
+    county: 'Oneida',
   },
   {
-    "FIPS": 16073,
-    "State": "Idaho",
-    "County": "Owyhee"
+    code: 16073,
+    state: 'Idaho',
+    county: 'Owyhee',
   },
   {
-    "FIPS": 16075,
-    "State": "Idaho",
-    "County": "Payette"
+    code: 16075,
+    state: 'Idaho',
+    county: 'Payette',
   },
   {
-    "FIPS": 16077,
-    "State": "Idaho",
-    "County": "Power"
+    code: 16077,
+    state: 'Idaho',
+    county: 'Power',
   },
   {
-    "FIPS": 16079,
-    "State": "Idaho",
-    "County": "Shoshone"
+    code: 16079,
+    state: 'Idaho',
+    county: 'Shoshone',
   },
   {
-    "FIPS": 16081,
-    "State": "Idaho",
-    "County": "Teton"
+    code: 16081,
+    state: 'Idaho',
+    county: 'Teton',
   },
   {
-    "FIPS": 16083,
-    "State": "Idaho",
-    "County": "Twin Falls"
+    code: 16083,
+    state: 'Idaho',
+    county: 'Twin Falls',
   },
   {
-    "FIPS": 16085,
-    "State": "Idaho",
-    "County": "Valley"
+    code: 16085,
+    state: 'Idaho',
+    county: 'Valley',
   },
   {
-    "FIPS": 16087,
-    "State": "Idaho",
-    "County": "Washington"
+    code: 16087,
+    state: 'Idaho',
+    county: 'Washington',
   },
   {
-    "FIPS": 17001,
-    "State": "Illinois",
-    "County": "Adams"
+    code: 17001,
+    state: 'Illinois',
+    county: 'Adams',
   },
   {
-    "FIPS": 17003,
-    "State": "Illinois",
-    "County": "Alexander"
+    code: 17003,
+    state: 'Illinois',
+    county: 'Alexander',
   },
   {
-    "FIPS": 17005,
-    "State": "Illinois",
-    "County": "Bond"
+    code: 17005,
+    state: 'Illinois',
+    county: 'Bond',
   },
   {
-    "FIPS": 17007,
-    "State": "Illinois",
-    "County": "Boone"
+    code: 17007,
+    state: 'Illinois',
+    county: 'Boone',
   },
   {
-    "FIPS": 17009,
-    "State": "Illinois",
-    "County": "Brown"
+    code: 17009,
+    state: 'Illinois',
+    county: 'Brown',
   },
   {
-    "FIPS": 17011,
-    "State": "Illinois",
-    "County": "Bureau"
+    code: 17011,
+    state: 'Illinois',
+    county: 'Bureau',
   },
   {
-    "FIPS": 17013,
-    "State": "Illinois",
-    "County": "Calhoun"
+    code: 17013,
+    state: 'Illinois',
+    county: 'Calhoun',
   },
   {
-    "FIPS": 17015,
-    "State": "Illinois",
-    "County": "Carroll"
+    code: 17015,
+    state: 'Illinois',
+    county: 'Carroll',
   },
   {
-    "FIPS": 17017,
-    "State": "Illinois",
-    "County": "Cass"
+    code: 17017,
+    state: 'Illinois',
+    county: 'Cass',
   },
   {
-    "FIPS": 17019,
-    "State": "Illinois",
-    "County": "Champaign"
+    code: 17019,
+    state: 'Illinois',
+    county: 'Champaign',
   },
   {
-    "FIPS": 17021,
-    "State": "Illinois",
-    "County": "Christian"
+    code: 17021,
+    state: 'Illinois',
+    county: 'Christian',
   },
   {
-    "FIPS": 17023,
-    "State": "Illinois",
-    "County": "Clark"
+    code: 17023,
+    state: 'Illinois',
+    county: 'Clark',
   },
   {
-    "FIPS": 17025,
-    "State": "Illinois",
-    "County": "Clay"
+    code: 17025,
+    state: 'Illinois',
+    county: 'Clay',
   },
   {
-    "FIPS": 17027,
-    "State": "Illinois",
-    "County": "Clinton"
+    code: 17027,
+    state: 'Illinois',
+    county: 'Clinton',
   },
   {
-    "FIPS": 17029,
-    "State": "Illinois",
-    "County": "Coles"
+    code: 17029,
+    state: 'Illinois',
+    county: 'Coles',
   },
   {
-    "FIPS": 17031,
-    "State": "Illinois",
-    "County": "Cook"
+    code: 17031,
+    state: 'Illinois',
+    county: 'Cook',
   },
   {
-    "FIPS": 17033,
-    "State": "Illinois",
-    "County": "Crawford"
+    code: 17033,
+    state: 'Illinois',
+    county: 'Crawford',
   },
   {
-    "FIPS": 17035,
-    "State": "Illinois",
-    "County": "Cumberland"
+    code: 17035,
+    state: 'Illinois',
+    county: 'Cumberland',
   },
   {
-    "FIPS": 17037,
-    "State": "Illinois",
-    "County": "DeKalb"
+    code: 17037,
+    state: 'Illinois',
+    county: 'DeKalb',
   },
   {
-    "FIPS": 17039,
-    "State": "Illinois",
-    "County": "De Witt"
+    code: 17039,
+    state: 'Illinois',
+    county: 'De Witt',
   },
   {
-    "FIPS": 17041,
-    "State": "Illinois",
-    "County": "Douglas"
+    code: 17041,
+    state: 'Illinois',
+    county: 'Douglas',
   },
   {
-    "FIPS": 17043,
-    "State": "Illinois",
-    "County": "DuPage"
+    code: 17043,
+    state: 'Illinois',
+    county: 'DuPage',
   },
   {
-    "FIPS": 17045,
-    "State": "Illinois",
-    "County": "Edgar"
+    code: 17045,
+    state: 'Illinois',
+    county: 'Edgar',
   },
   {
-    "FIPS": 17047,
-    "State": "Illinois",
-    "County": "Edwards"
+    code: 17047,
+    state: 'Illinois',
+    county: 'Edwards',
   },
   {
-    "FIPS": 17049,
-    "State": "Illinois",
-    "County": "Effingham"
+    code: 17049,
+    state: 'Illinois',
+    county: 'Effingham',
   },
   {
-    "FIPS": 17051,
-    "State": "Illinois",
-    "County": "Fayette"
+    code: 17051,
+    state: 'Illinois',
+    county: 'Fayette',
   },
   {
-    "FIPS": 17053,
-    "State": "Illinois",
-    "County": "Ford"
+    code: 17053,
+    state: 'Illinois',
+    county: 'Ford',
   },
   {
-    "FIPS": 17055,
-    "State": "Illinois",
-    "County": "Franklin"
+    code: 17055,
+    state: 'Illinois',
+    county: 'Franklin',
   },
   {
-    "FIPS": 17057,
-    "State": "Illinois",
-    "County": "Fulton"
+    code: 17057,
+    state: 'Illinois',
+    county: 'Fulton',
   },
   {
-    "FIPS": 17059,
-    "State": "Illinois",
-    "County": "Gallatin"
+    code: 17059,
+    state: 'Illinois',
+    county: 'Gallatin',
   },
   {
-    "FIPS": 17061,
-    "State": "Illinois",
-    "County": "Greene"
+    code: 17061,
+    state: 'Illinois',
+    county: 'Greene',
   },
   {
-    "FIPS": 17063,
-    "State": "Illinois",
-    "County": "Grundy"
+    code: 17063,
+    state: 'Illinois',
+    county: 'Grundy',
   },
   {
-    "FIPS": 17065,
-    "State": "Illinois",
-    "County": "Hamilton"
+    code: 17065,
+    state: 'Illinois',
+    county: 'Hamilton',
   },
   {
-    "FIPS": 17067,
-    "State": "Illinois",
-    "County": "Hancock"
+    code: 17067,
+    state: 'Illinois',
+    county: 'Hancock',
   },
   {
-    "FIPS": 17069,
-    "State": "Illinois",
-    "County": "Hardin"
+    code: 17069,
+    state: 'Illinois',
+    county: 'Hardin',
   },
   {
-    "FIPS": 17071,
-    "State": "Illinois",
-    "County": "Henderson"
+    code: 17071,
+    state: 'Illinois',
+    county: 'Henderson',
   },
   {
-    "FIPS": 17073,
-    "State": "Illinois",
-    "County": "Henry"
+    code: 17073,
+    state: 'Illinois',
+    county: 'Henry',
   },
   {
-    "FIPS": 17075,
-    "State": "Illinois",
-    "County": "Iroquois"
+    code: 17075,
+    state: 'Illinois',
+    county: 'Iroquois',
   },
   {
-    "FIPS": 17077,
-    "State": "Illinois",
-    "County": "Jackson"
+    code: 17077,
+    state: 'Illinois',
+    county: 'Jackson',
   },
   {
-    "FIPS": 17079,
-    "State": "Illinois",
-    "County": "Jasper"
+    code: 17079,
+    state: 'Illinois',
+    county: 'Jasper',
   },
   {
-    "FIPS": 17081,
-    "State": "Illinois",
-    "County": "Jefferson"
+    code: 17081,
+    state: 'Illinois',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 17083,
-    "State": "Illinois",
-    "County": "Jersey"
+    code: 17083,
+    state: 'Illinois',
+    county: 'Jersey',
   },
   {
-    "FIPS": 17085,
-    "State": "Illinois",
-    "County": "Jo Daviess"
+    code: 17085,
+    state: 'Illinois',
+    county: 'Jo Daviess',
   },
   {
-    "FIPS": 17087,
-    "State": "Illinois",
-    "County": "Johnson"
+    code: 17087,
+    state: 'Illinois',
+    county: 'Johnson',
   },
   {
-    "FIPS": 17089,
-    "State": "Illinois",
-    "County": "Kane"
+    code: 17089,
+    state: 'Illinois',
+    county: 'Kane',
   },
   {
-    "FIPS": 17091,
-    "State": "Illinois",
-    "County": "Kankakee"
+    code: 17091,
+    state: 'Illinois',
+    county: 'Kankakee',
   },
   {
-    "FIPS": 17093,
-    "State": "Illinois",
-    "County": "Kendall"
+    code: 17093,
+    state: 'Illinois',
+    county: 'Kendall',
   },
   {
-    "FIPS": 17095,
-    "State": "Illinois",
-    "County": "Knox"
+    code: 17095,
+    state: 'Illinois',
+    county: 'Knox',
   },
   {
-    "FIPS": 17097,
-    "State": "Illinois",
-    "County": "Lake"
+    code: 17097,
+    state: 'Illinois',
+    county: 'Lake',
   },
   {
-    "FIPS": 17099,
-    "State": "Illinois",
-    "County": "La Salle"
+    code: 17099,
+    state: 'Illinois',
+    county: 'La Salle',
   },
   {
-    "FIPS": 17101,
-    "State": "Illinois",
-    "County": "Lawrence"
+    code: 17101,
+    state: 'Illinois',
+    county: 'Lawrence',
   },
   {
-    "FIPS": 17103,
-    "State": "Illinois",
-    "County": "Lee"
+    code: 17103,
+    state: 'Illinois',
+    county: 'Lee',
   },
   {
-    "FIPS": 17105,
-    "State": "Illinois",
-    "County": "Livingston"
+    code: 17105,
+    state: 'Illinois',
+    county: 'Livingston',
   },
   {
-    "FIPS": 17107,
-    "State": "Illinois",
-    "County": "Logan"
+    code: 17107,
+    state: 'Illinois',
+    county: 'Logan',
   },
   {
-    "FIPS": 17109,
-    "State": "Illinois",
-    "County": "McDonough"
+    code: 17109,
+    state: 'Illinois',
+    county: 'McDonough',
   },
   {
-    "FIPS": 17111,
-    "State": "Illinois",
-    "County": "McHenry"
+    code: 17111,
+    state: 'Illinois',
+    county: 'McHenry',
   },
   {
-    "FIPS": 17113,
-    "State": "Illinois",
-    "County": "McLean"
+    code: 17113,
+    state: 'Illinois',
+    county: 'McLean',
   },
   {
-    "FIPS": 17115,
-    "State": "Illinois",
-    "County": "Macon"
+    code: 17115,
+    state: 'Illinois',
+    county: 'Macon',
   },
   {
-    "FIPS": 17117,
-    "State": "Illinois",
-    "County": "Macoupin"
+    code: 17117,
+    state: 'Illinois',
+    county: 'Macoupin',
   },
   {
-    "FIPS": 17119,
-    "State": "Illinois",
-    "County": "Madison"
+    code: 17119,
+    state: 'Illinois',
+    county: 'Madison',
   },
   {
-    "FIPS": 17121,
-    "State": "Illinois",
-    "County": "Marion"
+    code: 17121,
+    state: 'Illinois',
+    county: 'Marion',
   },
   {
-    "FIPS": 17123,
-    "State": "Illinois",
-    "County": "Marshall"
+    code: 17123,
+    state: 'Illinois',
+    county: 'Marshall',
   },
   {
-    "FIPS": 17125,
-    "State": "Illinois",
-    "County": "Mason"
+    code: 17125,
+    state: 'Illinois',
+    county: 'Mason',
   },
   {
-    "FIPS": 17127,
-    "State": "Illinois",
-    "County": "Massac"
+    code: 17127,
+    state: 'Illinois',
+    county: 'Massac',
   },
   {
-    "FIPS": 17129,
-    "State": "Illinois",
-    "County": "Menard"
+    code: 17129,
+    state: 'Illinois',
+    county: 'Menard',
   },
   {
-    "FIPS": 17131,
-    "State": "Illinois",
-    "County": "Mercer"
+    code: 17131,
+    state: 'Illinois',
+    county: 'Mercer',
   },
   {
-    "FIPS": 17133,
-    "State": "Illinois",
-    "County": "Monroe"
+    code: 17133,
+    state: 'Illinois',
+    county: 'Monroe',
   },
   {
-    "FIPS": 17135,
-    "State": "Illinois",
-    "County": "Montgomery"
+    code: 17135,
+    state: 'Illinois',
+    county: 'Montgomery',
   },
   {
-    "FIPS": 17137,
-    "State": "Illinois",
-    "County": "Morgan"
+    code: 17137,
+    state: 'Illinois',
+    county: 'Morgan',
   },
   {
-    "FIPS": 17139,
-    "State": "Illinois",
-    "County": "Moultrie"
+    code: 17139,
+    state: 'Illinois',
+    county: 'Moultrie',
   },
   {
-    "FIPS": 17141,
-    "State": "Illinois",
-    "County": "Ogle"
+    code: 17141,
+    state: 'Illinois',
+    county: 'Ogle',
   },
   {
-    "FIPS": 17143,
-    "State": "Illinois",
-    "County": "Peoria"
+    code: 17143,
+    state: 'Illinois',
+    county: 'Peoria',
   },
   {
-    "FIPS": 17145,
-    "State": "Illinois",
-    "County": "Perry"
+    code: 17145,
+    state: 'Illinois',
+    county: 'Perry',
   },
   {
-    "FIPS": 17147,
-    "State": "Illinois",
-    "County": "Piatt"
+    code: 17147,
+    state: 'Illinois',
+    county: 'Piatt',
   },
   {
-    "FIPS": 17149,
-    "State": "Illinois",
-    "County": "Pike"
+    code: 17149,
+    state: 'Illinois',
+    county: 'Pike',
   },
   {
-    "FIPS": 17151,
-    "State": "Illinois",
-    "County": "Pope"
+    code: 17151,
+    state: 'Illinois',
+    county: 'Pope',
   },
   {
-    "FIPS": 17153,
-    "State": "Illinois",
-    "County": "Pulaski"
+    code: 17153,
+    state: 'Illinois',
+    county: 'Pulaski',
   },
   {
-    "FIPS": 17155,
-    "State": "Illinois",
-    "County": "Putnam"
+    code: 17155,
+    state: 'Illinois',
+    county: 'Putnam',
   },
   {
-    "FIPS": 17157,
-    "State": "Illinois",
-    "County": "Randolph"
+    code: 17157,
+    state: 'Illinois',
+    county: 'Randolph',
   },
   {
-    "FIPS": 17159,
-    "State": "Illinois",
-    "County": "Richland"
+    code: 17159,
+    state: 'Illinois',
+    county: 'Richland',
   },
   {
-    "FIPS": 17161,
-    "State": "Illinois",
-    "County": "Rock Island"
+    code: 17161,
+    state: 'Illinois',
+    county: 'Rock Island',
   },
   {
-    "FIPS": 17163,
-    "State": "Illinois",
-    "County": "St. Clair"
+    code: 17163,
+    state: 'Illinois',
+    county: 'St. Clair',
   },
   {
-    "FIPS": 17165,
-    "State": "Illinois",
-    "County": "Saline"
+    code: 17165,
+    state: 'Illinois',
+    county: 'Saline',
   },
   {
-    "FIPS": 17167,
-    "State": "Illinois",
-    "County": "Sangamon"
+    code: 17167,
+    state: 'Illinois',
+    county: 'Sangamon',
   },
   {
-    "FIPS": 17169,
-    "State": "Illinois",
-    "County": "Schuyler"
+    code: 17169,
+    state: 'Illinois',
+    county: 'Schuyler',
   },
   {
-    "FIPS": 17171,
-    "State": "Illinois",
-    "County": "Scott"
+    code: 17171,
+    state: 'Illinois',
+    county: 'Scott',
   },
   {
-    "FIPS": 17173,
-    "State": "Illinois",
-    "County": "Shelby"
+    code: 17173,
+    state: 'Illinois',
+    county: 'Shelby',
   },
   {
-    "FIPS": 17175,
-    "State": "Illinois",
-    "County": "Stark"
+    code: 17175,
+    state: 'Illinois',
+    county: 'Stark',
   },
   {
-    "FIPS": 17177,
-    "State": "Illinois",
-    "County": "Stephenson"
+    code: 17177,
+    state: 'Illinois',
+    county: 'Stephenson',
   },
   {
-    "FIPS": 17179,
-    "State": "Illinois",
-    "County": "Tazewell"
+    code: 17179,
+    state: 'Illinois',
+    county: 'Tazewell',
   },
   {
-    "FIPS": 17181,
-    "State": "Illinois",
-    "County": "Union"
+    code: 17181,
+    state: 'Illinois',
+    county: 'Union',
   },
   {
-    "FIPS": 17183,
-    "State": "Illinois",
-    "County": "Vermilion"
+    code: 17183,
+    state: 'Illinois',
+    county: 'Vermilion',
   },
   {
-    "FIPS": 17185,
-    "State": "Illinois",
-    "County": "Wabash"
+    code: 17185,
+    state: 'Illinois',
+    county: 'Wabash',
   },
   {
-    "FIPS": 17187,
-    "State": "Illinois",
-    "County": "Warren"
+    code: 17187,
+    state: 'Illinois',
+    county: 'Warren',
   },
   {
-    "FIPS": 17189,
-    "State": "Illinois",
-    "County": "Washington"
+    code: 17189,
+    state: 'Illinois',
+    county: 'Washington',
   },
   {
-    "FIPS": 17191,
-    "State": "Illinois",
-    "County": "Wayne"
+    code: 17191,
+    state: 'Illinois',
+    county: 'Wayne',
   },
   {
-    "FIPS": 17193,
-    "State": "Illinois",
-    "County": "White"
+    code: 17193,
+    state: 'Illinois',
+    county: 'White',
   },
   {
-    "FIPS": 17195,
-    "State": "Illinois",
-    "County": "Whiteside"
+    code: 17195,
+    state: 'Illinois',
+    county: 'Whiteside',
   },
   {
-    "FIPS": 17197,
-    "State": "Illinois",
-    "County": "Will"
+    code: 17197,
+    state: 'Illinois',
+    county: 'Will',
   },
   {
-    "FIPS": 17199,
-    "State": "Illinois",
-    "County": "Williamson"
+    code: 17199,
+    state: 'Illinois',
+    county: 'Williamson',
   },
   {
-    "FIPS": 17201,
-    "State": "Illinois",
-    "County": "Winnebago"
+    code: 17201,
+    state: 'Illinois',
+    county: 'Winnebago',
   },
   {
-    "FIPS": 17203,
-    "State": "Illinois",
-    "County": "Woodford"
+    code: 17203,
+    state: 'Illinois',
+    county: 'Woodford',
   },
   {
-    "FIPS": 18001,
-    "State": "Indiana",
-    "County": "Adams"
+    code: 18001,
+    state: 'Indiana',
+    county: 'Adams',
   },
   {
-    "FIPS": 18003,
-    "State": "Indiana",
-    "County": "Allen"
+    code: 18003,
+    state: 'Indiana',
+    county: 'Allen',
   },
   {
-    "FIPS": 18005,
-    "State": "Indiana",
-    "County": "Bartholomew"
+    code: 18005,
+    state: 'Indiana',
+    county: 'Bartholomew',
   },
   {
-    "FIPS": 18007,
-    "State": "Indiana",
-    "County": "Benton"
+    code: 18007,
+    state: 'Indiana',
+    county: 'Benton',
   },
   {
-    "FIPS": 18009,
-    "State": "Indiana",
-    "County": "Blackford"
+    code: 18009,
+    state: 'Indiana',
+    county: 'Blackford',
   },
   {
-    "FIPS": 18011,
-    "State": "Indiana",
-    "County": "Boone"
+    code: 18011,
+    state: 'Indiana',
+    county: 'Boone',
   },
   {
-    "FIPS": 18013,
-    "State": "Indiana",
-    "County": "Brown"
+    code: 18013,
+    state: 'Indiana',
+    county: 'Brown',
   },
   {
-    "FIPS": 18015,
-    "State": "Indiana",
-    "County": "Carroll"
+    code: 18015,
+    state: 'Indiana',
+    county: 'Carroll',
   },
   {
-    "FIPS": 18017,
-    "State": "Indiana",
-    "County": "Cass"
+    code: 18017,
+    state: 'Indiana',
+    county: 'Cass',
   },
   {
-    "FIPS": 18019,
-    "State": "Indiana",
-    "County": "Clark"
+    code: 18019,
+    state: 'Indiana',
+    county: 'Clark',
   },
   {
-    "FIPS": 18021,
-    "State": "Indiana",
-    "County": "Clay"
+    code: 18021,
+    state: 'Indiana',
+    county: 'Clay',
   },
   {
-    "FIPS": 18023,
-    "State": "Indiana",
-    "County": "Clinton"
+    code: 18023,
+    state: 'Indiana',
+    county: 'Clinton',
   },
   {
-    "FIPS": 18025,
-    "State": "Indiana",
-    "County": "Crawford"
+    code: 18025,
+    state: 'Indiana',
+    county: 'Crawford',
   },
   {
-    "FIPS": 18027,
-    "State": "Indiana",
-    "County": "Daviess"
+    code: 18027,
+    state: 'Indiana',
+    county: 'Daviess',
   },
   {
-    "FIPS": 18029,
-    "State": "Indiana",
-    "County": "Dearborn"
+    code: 18029,
+    state: 'Indiana',
+    county: 'Dearborn',
   },
   {
-    "FIPS": 18031,
-    "State": "Indiana",
-    "County": "Decatur"
+    code: 18031,
+    state: 'Indiana',
+    county: 'Decatur',
   },
   {
-    "FIPS": 18033,
-    "State": "Indiana",
-    "County": "De Kalb"
+    code: 18033,
+    state: 'Indiana',
+    county: 'De Kalb',
   },
   {
-    "FIPS": 18035,
-    "State": "Indiana",
-    "County": "Delaware"
+    code: 18035,
+    state: 'Indiana',
+    county: 'Delaware',
   },
   {
-    "FIPS": 18037,
-    "State": "Indiana",
-    "County": "Dubois"
+    code: 18037,
+    state: 'Indiana',
+    county: 'Dubois',
   },
   {
-    "FIPS": 18039,
-    "State": "Indiana",
-    "County": "Elkhart"
+    code: 18039,
+    state: 'Indiana',
+    county: 'Elkhart',
   },
   {
-    "FIPS": 18041,
-    "State": "Indiana",
-    "County": "Fayette"
+    code: 18041,
+    state: 'Indiana',
+    county: 'Fayette',
   },
   {
-    "FIPS": 18043,
-    "State": "Indiana",
-    "County": "Floyd"
+    code: 18043,
+    state: 'Indiana',
+    county: 'Floyd',
   },
   {
-    "FIPS": 18045,
-    "State": "Indiana",
-    "County": "Fountain"
+    code: 18045,
+    state: 'Indiana',
+    county: 'Fountain',
   },
   {
-    "FIPS": 18047,
-    "State": "Indiana",
-    "County": "Franklin"
+    code: 18047,
+    state: 'Indiana',
+    county: 'Franklin',
   },
   {
-    "FIPS": 18049,
-    "State": "Indiana",
-    "County": "Fulton"
+    code: 18049,
+    state: 'Indiana',
+    county: 'Fulton',
   },
   {
-    "FIPS": 18051,
-    "State": "Indiana",
-    "County": "Gibson"
+    code: 18051,
+    state: 'Indiana',
+    county: 'Gibson',
   },
   {
-    "FIPS": 18053,
-    "State": "Indiana",
-    "County": "Grant"
+    code: 18053,
+    state: 'Indiana',
+    county: 'Grant',
   },
   {
-    "FIPS": 18055,
-    "State": "Indiana",
-    "County": "Greene"
+    code: 18055,
+    state: 'Indiana',
+    county: 'Greene',
   },
   {
-    "FIPS": 18057,
-    "State": "Indiana",
-    "County": "Hamilton"
+    code: 18057,
+    state: 'Indiana',
+    county: 'Hamilton',
   },
   {
-    "FIPS": 18059,
-    "State": "Indiana",
-    "County": "Hancock"
+    code: 18059,
+    state: 'Indiana',
+    county: 'Hancock',
   },
   {
-    "FIPS": 18061,
-    "State": "Indiana",
-    "County": "Harrison"
+    code: 18061,
+    state: 'Indiana',
+    county: 'Harrison',
   },
   {
-    "FIPS": 18063,
-    "State": "Indiana",
-    "County": "Hendricks"
+    code: 18063,
+    state: 'Indiana',
+    county: 'Hendricks',
   },
   {
-    "FIPS": 18065,
-    "State": "Indiana",
-    "County": "Henry"
+    code: 18065,
+    state: 'Indiana',
+    county: 'Henry',
   },
   {
-    "FIPS": 18067,
-    "State": "Indiana",
-    "County": "Howard"
+    code: 18067,
+    state: 'Indiana',
+    county: 'Howard',
   },
   {
-    "FIPS": 18069,
-    "State": "Indiana",
-    "County": "Huntington"
+    code: 18069,
+    state: 'Indiana',
+    county: 'Huntington',
   },
   {
-    "FIPS": 18071,
-    "State": "Indiana",
-    "County": "Jackson"
+    code: 18071,
+    state: 'Indiana',
+    county: 'Jackson',
   },
   {
-    "FIPS": 18073,
-    "State": "Indiana",
-    "County": "Jasper"
+    code: 18073,
+    state: 'Indiana',
+    county: 'Jasper',
   },
   {
-    "FIPS": 18075,
-    "State": "Indiana",
-    "County": "Jay"
+    code: 18075,
+    state: 'Indiana',
+    county: 'Jay',
   },
   {
-    "FIPS": 18077,
-    "State": "Indiana",
-    "County": "Jefferson"
+    code: 18077,
+    state: 'Indiana',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 18079,
-    "State": "Indiana",
-    "County": "Jennings"
+    code: 18079,
+    state: 'Indiana',
+    county: 'Jennings',
   },
   {
-    "FIPS": 18081,
-    "State": "Indiana",
-    "County": "Johnson"
+    code: 18081,
+    state: 'Indiana',
+    county: 'Johnson',
   },
   {
-    "FIPS": 18083,
-    "State": "Indiana",
-    "County": "Knox"
+    code: 18083,
+    state: 'Indiana',
+    county: 'Knox',
   },
   {
-    "FIPS": 18085,
-    "State": "Indiana",
-    "County": "Kosciusko"
+    code: 18085,
+    state: 'Indiana',
+    county: 'Kosciusko',
   },
   {
-    "FIPS": 18087,
-    "State": "Indiana",
-    "County": "Lagrange"
+    code: 18087,
+    state: 'Indiana',
+    county: 'Lagrange',
   },
   {
-    "FIPS": 18089,
-    "State": "Indiana",
-    "County": "Lake"
+    code: 18089,
+    state: 'Indiana',
+    county: 'Lake',
   },
   {
-    "FIPS": 18091,
-    "State": "Indiana",
-    "County": "La Porte"
+    code: 18091,
+    state: 'Indiana',
+    county: 'La Porte',
   },
   {
-    "FIPS": 18093,
-    "State": "Indiana",
-    "County": "Lawrence"
+    code: 18093,
+    state: 'Indiana',
+    county: 'Lawrence',
   },
   {
-    "FIPS": 18095,
-    "State": "Indiana",
-    "County": "Madison"
+    code: 18095,
+    state: 'Indiana',
+    county: 'Madison',
   },
   {
-    "FIPS": 18097,
-    "State": "Indiana",
-    "County": "Marion"
+    code: 18097,
+    state: 'Indiana',
+    county: 'Marion',
   },
   {
-    "FIPS": 18099,
-    "State": "Indiana",
-    "County": "Marshall"
+    code: 18099,
+    state: 'Indiana',
+    county: 'Marshall',
   },
   {
-    "FIPS": 18101,
-    "State": "Indiana",
-    "County": "Martin"
+    code: 18101,
+    state: 'Indiana',
+    county: 'Martin',
   },
   {
-    "FIPS": 18103,
-    "State": "Indiana",
-    "County": "Miami"
+    code: 18103,
+    state: 'Indiana',
+    county: 'Miami',
   },
   {
-    "FIPS": 18105,
-    "State": "Indiana",
-    "County": "Monroe"
+    code: 18105,
+    state: 'Indiana',
+    county: 'Monroe',
   },
   {
-    "FIPS": 18107,
-    "State": "Indiana",
-    "County": "Montgomery"
+    code: 18107,
+    state: 'Indiana',
+    county: 'Montgomery',
   },
   {
-    "FIPS": 18109,
-    "State": "Indiana",
-    "County": "Morgan"
+    code: 18109,
+    state: 'Indiana',
+    county: 'Morgan',
   },
   {
-    "FIPS": 18111,
-    "State": "Indiana",
-    "County": "Newton"
+    code: 18111,
+    state: 'Indiana',
+    county: 'Newton',
   },
   {
-    "FIPS": 18113,
-    "State": "Indiana",
-    "County": "Noble"
+    code: 18113,
+    state: 'Indiana',
+    county: 'Noble',
   },
   {
-    "FIPS": 18115,
-    "State": "Indiana",
-    "County": "Ohio"
+    code: 18115,
+    state: 'Indiana',
+    county: 'Ohio',
   },
   {
-    "FIPS": 18117,
-    "State": "Indiana",
-    "County": "Orange"
+    code: 18117,
+    state: 'Indiana',
+    county: 'Orange',
   },
   {
-    "FIPS": 18119,
-    "State": "Indiana",
-    "County": "Owen"
+    code: 18119,
+    state: 'Indiana',
+    county: 'Owen',
   },
   {
-    "FIPS": 18121,
-    "State": "Indiana",
-    "County": "Parke"
+    code: 18121,
+    state: 'Indiana',
+    county: 'Parke',
   },
   {
-    "FIPS": 18123,
-    "State": "Indiana",
-    "County": "Perry"
+    code: 18123,
+    state: 'Indiana',
+    county: 'Perry',
   },
   {
-    "FIPS": 18125,
-    "State": "Indiana",
-    "County": "Pike"
+    code: 18125,
+    state: 'Indiana',
+    county: 'Pike',
   },
   {
-    "FIPS": 18127,
-    "State": "Indiana",
-    "County": "Porter"
+    code: 18127,
+    state: 'Indiana',
+    county: 'Porter',
   },
   {
-    "FIPS": 18129,
-    "State": "Indiana",
-    "County": "Posey"
+    code: 18129,
+    state: 'Indiana',
+    county: 'Posey',
   },
   {
-    "FIPS": 18131,
-    "State": "Indiana",
-    "County": "Pulaski"
+    code: 18131,
+    state: 'Indiana',
+    county: 'Pulaski',
   },
   {
-    "FIPS": 18133,
-    "State": "Indiana",
-    "County": "Putnam"
+    code: 18133,
+    state: 'Indiana',
+    county: 'Putnam',
   },
   {
-    "FIPS": 18135,
-    "State": "Indiana",
-    "County": "Randolph"
+    code: 18135,
+    state: 'Indiana',
+    county: 'Randolph',
   },
   {
-    "FIPS": 18137,
-    "State": "Indiana",
-    "County": "Ripley"
+    code: 18137,
+    state: 'Indiana',
+    county: 'Ripley',
   },
   {
-    "FIPS": 18139,
-    "State": "Indiana",
-    "County": "Rush"
+    code: 18139,
+    state: 'Indiana',
+    county: 'Rush',
   },
   {
-    "FIPS": 18141,
-    "State": "Indiana",
-    "County": "St. Joseph"
+    code: 18141,
+    state: 'Indiana',
+    county: 'St. Joseph',
   },
   {
-    "FIPS": 18143,
-    "State": "Indiana",
-    "County": "Scott"
+    code: 18143,
+    state: 'Indiana',
+    county: 'Scott',
   },
   {
-    "FIPS": 18145,
-    "State": "Indiana",
-    "County": "Shelby"
+    code: 18145,
+    state: 'Indiana',
+    county: 'Shelby',
   },
   {
-    "FIPS": 18147,
-    "State": "Indiana",
-    "County": "Spencer"
+    code: 18147,
+    state: 'Indiana',
+    county: 'Spencer',
   },
   {
-    "FIPS": 18149,
-    "State": "Indiana",
-    "County": "Starke"
+    code: 18149,
+    state: 'Indiana',
+    county: 'Starke',
   },
   {
-    "FIPS": 18151,
-    "State": "Indiana",
-    "County": "Steuben"
+    code: 18151,
+    state: 'Indiana',
+    county: 'Steuben',
   },
   {
-    "FIPS": 18153,
-    "State": "Indiana",
-    "County": "Sullivan"
+    code: 18153,
+    state: 'Indiana',
+    county: 'Sullivan',
   },
   {
-    "FIPS": 18155,
-    "State": "Indiana",
-    "County": "Switzerland"
+    code: 18155,
+    state: 'Indiana',
+    county: 'Switzerland',
   },
   {
-    "FIPS": 18157,
-    "State": "Indiana",
-    "County": "Tippecanoe"
+    code: 18157,
+    state: 'Indiana',
+    county: 'Tippecanoe',
   },
   {
-    "FIPS": 18159,
-    "State": "Indiana",
-    "County": "Tipton"
+    code: 18159,
+    state: 'Indiana',
+    county: 'Tipton',
   },
   {
-    "FIPS": 18161,
-    "State": "Indiana",
-    "County": "Union"
+    code: 18161,
+    state: 'Indiana',
+    county: 'Union',
   },
   {
-    "FIPS": 18163,
-    "State": "Indiana",
-    "County": "Vanderburgh"
+    code: 18163,
+    state: 'Indiana',
+    county: 'Vanderburgh',
   },
   {
-    "FIPS": 18165,
-    "State": "Indiana",
-    "County": "Vermillion"
+    code: 18165,
+    state: 'Indiana',
+    county: 'Vermillion',
   },
   {
-    "FIPS": 18167,
-    "State": "Indiana",
-    "County": "Vigo"
+    code: 18167,
+    state: 'Indiana',
+    county: 'Vigo',
   },
   {
-    "FIPS": 18169,
-    "State": "Indiana",
-    "County": "Wabash"
+    code: 18169,
+    state: 'Indiana',
+    county: 'Wabash',
   },
   {
-    "FIPS": 18171,
-    "State": "Indiana",
-    "County": "Warren"
+    code: 18171,
+    state: 'Indiana',
+    county: 'Warren',
   },
   {
-    "FIPS": 18173,
-    "State": "Indiana",
-    "County": "Warrick"
+    code: 18173,
+    state: 'Indiana',
+    county: 'Warrick',
   },
   {
-    "FIPS": 18175,
-    "State": "Indiana",
-    "County": "Washington"
+    code: 18175,
+    state: 'Indiana',
+    county: 'Washington',
   },
   {
-    "FIPS": 18177,
-    "State": "Indiana",
-    "County": "Wayne"
+    code: 18177,
+    state: 'Indiana',
+    county: 'Wayne',
   },
   {
-    "FIPS": 18179,
-    "State": "Indiana",
-    "County": "Wells"
+    code: 18179,
+    state: 'Indiana',
+    county: 'Wells',
   },
   {
-    "FIPS": 18181,
-    "State": "Indiana",
-    "County": "White"
+    code: 18181,
+    state: 'Indiana',
+    county: 'White',
   },
   {
-    "FIPS": 18183,
-    "State": "Indiana",
-    "County": "Whitley"
+    code: 18183,
+    state: 'Indiana',
+    county: 'Whitley',
   },
   {
-    "FIPS": 19001,
-    "State": "Iowa",
-    "County": "Adair"
+    code: 19001,
+    state: 'Iowa',
+    county: 'Adair',
   },
   {
-    "FIPS": 19003,
-    "State": "Iowa",
-    "County": "Adams"
+    code: 19003,
+    state: 'Iowa',
+    county: 'Adams',
   },
   {
-    "FIPS": 19005,
-    "State": "Iowa",
-    "County": "Allamakee"
+    code: 19005,
+    state: 'Iowa',
+    county: 'Allamakee',
   },
   {
-    "FIPS": 19007,
-    "State": "Iowa",
-    "County": "Appanoose"
+    code: 19007,
+    state: 'Iowa',
+    county: 'Appanoose',
   },
   {
-    "FIPS": 19009,
-    "State": "Iowa",
-    "County": "Audubon"
+    code: 19009,
+    state: 'Iowa',
+    county: 'Audubon',
   },
   {
-    "FIPS": 19011,
-    "State": "Iowa",
-    "County": "Benton"
+    code: 19011,
+    state: 'Iowa',
+    county: 'Benton',
   },
   {
-    "FIPS": 19013,
-    "State": "Iowa",
-    "County": "Black Hawk"
+    code: 19013,
+    state: 'Iowa',
+    county: 'Black Hawk',
   },
   {
-    "FIPS": 19015,
-    "State": "Iowa",
-    "County": "Boone"
+    code: 19015,
+    state: 'Iowa',
+    county: 'Boone',
   },
   {
-    "FIPS": 19017,
-    "State": "Iowa",
-    "County": "Bremer"
+    code: 19017,
+    state: 'Iowa',
+    county: 'Bremer',
   },
   {
-    "FIPS": 19019,
-    "State": "Iowa",
-    "County": "Buchanan"
+    code: 19019,
+    state: 'Iowa',
+    county: 'Buchanan',
   },
   {
-    "FIPS": 19021,
-    "State": "Iowa",
-    "County": "Buena Vista"
+    code: 19021,
+    state: 'Iowa',
+    county: 'Buena Vista',
   },
   {
-    "FIPS": 19023,
-    "State": "Iowa",
-    "County": "Butler"
+    code: 19023,
+    state: 'Iowa',
+    county: 'Butler',
   },
   {
-    "FIPS": 19025,
-    "State": "Iowa",
-    "County": "Calhoun"
+    code: 19025,
+    state: 'Iowa',
+    county: 'Calhoun',
   },
   {
-    "FIPS": 19027,
-    "State": "Iowa",
-    "County": "Carroll"
+    code: 19027,
+    state: 'Iowa',
+    county: 'Carroll',
   },
   {
-    "FIPS": 19029,
-    "State": "Iowa",
-    "County": "Cass"
+    code: 19029,
+    state: 'Iowa',
+    county: 'Cass',
   },
   {
-    "FIPS": 19031,
-    "State": "Iowa",
-    "County": "Cedar"
+    code: 19031,
+    state: 'Iowa',
+    county: 'Cedar',
   },
   {
-    "FIPS": 19033,
-    "State": "Iowa",
-    "County": "Cerro Gordo"
+    code: 19033,
+    state: 'Iowa',
+    county: 'Cerro Gordo',
   },
   {
-    "FIPS": 19035,
-    "State": "Iowa",
-    "County": "Cherokee"
+    code: 19035,
+    state: 'Iowa',
+    county: 'Cherokee',
   },
   {
-    "FIPS": 19037,
-    "State": "Iowa",
-    "County": "Chickasaw"
+    code: 19037,
+    state: 'Iowa',
+    county: 'Chickasaw',
   },
   {
-    "FIPS": 19039,
-    "State": "Iowa",
-    "County": "Clarke"
+    code: 19039,
+    state: 'Iowa',
+    county: 'Clarke',
   },
   {
-    "FIPS": 19041,
-    "State": "Iowa",
-    "County": "Clay"
+    code: 19041,
+    state: 'Iowa',
+    county: 'Clay',
   },
   {
-    "FIPS": 19043,
-    "State": "Iowa",
-    "County": "Clayton"
+    code: 19043,
+    state: 'Iowa',
+    county: 'Clayton',
   },
   {
-    "FIPS": 19045,
-    "State": "Iowa",
-    "County": "Clinton"
+    code: 19045,
+    state: 'Iowa',
+    county: 'Clinton',
   },
   {
-    "FIPS": 19047,
-    "State": "Iowa",
-    "County": "Crawford"
+    code: 19047,
+    state: 'Iowa',
+    county: 'Crawford',
   },
   {
-    "FIPS": 19049,
-    "State": "Iowa",
-    "County": "Dallas"
+    code: 19049,
+    state: 'Iowa',
+    county: 'Dallas',
   },
   {
-    "FIPS": 19051,
-    "State": "Iowa",
-    "County": "Davis"
+    code: 19051,
+    state: 'Iowa',
+    county: 'Davis',
   },
   {
-    "FIPS": 19053,
-    "State": "Iowa",
-    "County": "Decatur"
+    code: 19053,
+    state: 'Iowa',
+    county: 'Decatur',
   },
   {
-    "FIPS": 19055,
-    "State": "Iowa",
-    "County": "Delaware"
+    code: 19055,
+    state: 'Iowa',
+    county: 'Delaware',
   },
   {
-    "FIPS": 19057,
-    "State": "Iowa",
-    "County": "Des Moines"
+    code: 19057,
+    state: 'Iowa',
+    county: 'Des Moines',
   },
   {
-    "FIPS": 19059,
-    "State": "Iowa",
-    "County": "Dickinson"
+    code: 19059,
+    state: 'Iowa',
+    county: 'Dickinson',
   },
   {
-    "FIPS": 19061,
-    "State": "Iowa",
-    "County": "Dubuque"
+    code: 19061,
+    state: 'Iowa',
+    county: 'Dubuque',
   },
   {
-    "FIPS": 19063,
-    "State": "Iowa",
-    "County": "Emmet"
+    code: 19063,
+    state: 'Iowa',
+    county: 'Emmet',
   },
   {
-    "FIPS": 19065,
-    "State": "Iowa",
-    "County": "Fayette"
+    code: 19065,
+    state: 'Iowa',
+    county: 'Fayette',
   },
   {
-    "FIPS": 19067,
-    "State": "Iowa",
-    "County": "Floyd"
+    code: 19067,
+    state: 'Iowa',
+    county: 'Floyd',
   },
   {
-    "FIPS": 19069,
-    "State": "Iowa",
-    "County": "Franklin"
+    code: 19069,
+    state: 'Iowa',
+    county: 'Franklin',
   },
   {
-    "FIPS": 19071,
-    "State": "Iowa",
-    "County": "Fremont"
+    code: 19071,
+    state: 'Iowa',
+    county: 'Fremont',
   },
   {
-    "FIPS": 19073,
-    "State": "Iowa",
-    "County": "Greene"
+    code: 19073,
+    state: 'Iowa',
+    county: 'Greene',
   },
   {
-    "FIPS": 19075,
-    "State": "Iowa",
-    "County": "Grundy"
+    code: 19075,
+    state: 'Iowa',
+    county: 'Grundy',
   },
   {
-    "FIPS": 19077,
-    "State": "Iowa",
-    "County": "Guthrie"
+    code: 19077,
+    state: 'Iowa',
+    county: 'Guthrie',
   },
   {
-    "FIPS": 19079,
-    "State": "Iowa",
-    "County": "Hamilton"
+    code: 19079,
+    state: 'Iowa',
+    county: 'Hamilton',
   },
   {
-    "FIPS": 19081,
-    "State": "Iowa",
-    "County": "Hancock"
+    code: 19081,
+    state: 'Iowa',
+    county: 'Hancock',
   },
   {
-    "FIPS": 19083,
-    "State": "Iowa",
-    "County": "Hardin"
+    code: 19083,
+    state: 'Iowa',
+    county: 'Hardin',
   },
   {
-    "FIPS": 19085,
-    "State": "Iowa",
-    "County": "Harrison"
+    code: 19085,
+    state: 'Iowa',
+    county: 'Harrison',
   },
   {
-    "FIPS": 19087,
-    "State": "Iowa",
-    "County": "Henry"
+    code: 19087,
+    state: 'Iowa',
+    county: 'Henry',
   },
   {
-    "FIPS": 19089,
-    "State": "Iowa",
-    "County": "Howard"
+    code: 19089,
+    state: 'Iowa',
+    county: 'Howard',
   },
   {
-    "FIPS": 19091,
-    "State": "Iowa",
-    "County": "Humboldt"
+    code: 19091,
+    state: 'Iowa',
+    county: 'Humboldt',
   },
   {
-    "FIPS": 19093,
-    "State": "Iowa",
-    "County": "Ida"
+    code: 19093,
+    state: 'Iowa',
+    county: 'Ida',
   },
   {
-    "FIPS": 19095,
-    "State": "Iowa",
-    "County": "Iowa"
+    code: 19095,
+    state: 'Iowa',
+    county: 'Iowa',
   },
   {
-    "FIPS": 19097,
-    "State": "Iowa",
-    "County": "Jackson"
+    code: 19097,
+    state: 'Iowa',
+    county: 'Jackson',
   },
   {
-    "FIPS": 19099,
-    "State": "Iowa",
-    "County": "Jasper"
+    code: 19099,
+    state: 'Iowa',
+    county: 'Jasper',
   },
   {
-    "FIPS": 19101,
-    "State": "Iowa",
-    "County": "Jefferson"
+    code: 19101,
+    state: 'Iowa',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 19103,
-    "State": "Iowa",
-    "County": "Johnson"
+    code: 19103,
+    state: 'Iowa',
+    county: 'Johnson',
   },
   {
-    "FIPS": 19105,
-    "State": "Iowa",
-    "County": "Jones"
+    code: 19105,
+    state: 'Iowa',
+    county: 'Jones',
   },
   {
-    "FIPS": 19107,
-    "State": "Iowa",
-    "County": "Keokuk"
+    code: 19107,
+    state: 'Iowa',
+    county: 'Keokuk',
   },
   {
-    "FIPS": 19109,
-    "State": "Iowa",
-    "County": "Kossuth"
+    code: 19109,
+    state: 'Iowa',
+    county: 'Kossuth',
   },
   {
-    "FIPS": 19111,
-    "State": "Iowa",
-    "County": "Lee"
+    code: 19111,
+    state: 'Iowa',
+    county: 'Lee',
   },
   {
-    "FIPS": 19113,
-    "State": "Iowa",
-    "County": "Linn"
+    code: 19113,
+    state: 'Iowa',
+    county: 'Linn',
   },
   {
-    "FIPS": 19115,
-    "State": "Iowa",
-    "County": "Louisa"
+    code: 19115,
+    state: 'Iowa',
+    county: 'Louisa',
   },
   {
-    "FIPS": 19117,
-    "State": "Iowa",
-    "County": "Lucas"
+    code: 19117,
+    state: 'Iowa',
+    county: 'Lucas',
   },
   {
-    "FIPS": 19119,
-    "State": "Iowa",
-    "County": "Lyon"
+    code: 19119,
+    state: 'Iowa',
+    county: 'Lyon',
   },
   {
-    "FIPS": 19121,
-    "State": "Iowa",
-    "County": "Madison"
+    code: 19121,
+    state: 'Iowa',
+    county: 'Madison',
   },
   {
-    "FIPS": 19123,
-    "State": "Iowa",
-    "County": "Mahaska"
+    code: 19123,
+    state: 'Iowa',
+    county: 'Mahaska',
   },
   {
-    "FIPS": 19125,
-    "State": "Iowa",
-    "County": "Marion"
+    code: 19125,
+    state: 'Iowa',
+    county: 'Marion',
   },
   {
-    "FIPS": 19127,
-    "State": "Iowa",
-    "County": "Marshall"
+    code: 19127,
+    state: 'Iowa',
+    county: 'Marshall',
   },
   {
-    "FIPS": 19129,
-    "State": "Iowa",
-    "County": "Mills"
+    code: 19129,
+    state: 'Iowa',
+    county: 'Mills',
   },
   {
-    "FIPS": 19131,
-    "State": "Iowa",
-    "County": "Mitchell"
+    code: 19131,
+    state: 'Iowa',
+    county: 'Mitchell',
   },
   {
-    "FIPS": 19133,
-    "State": "Iowa",
-    "County": "Monona"
+    code: 19133,
+    state: 'Iowa',
+    county: 'Monona',
   },
   {
-    "FIPS": 19135,
-    "State": "Iowa",
-    "County": "Monroe"
+    code: 19135,
+    state: 'Iowa',
+    county: 'Monroe',
   },
   {
-    "FIPS": 19137,
-    "State": "Iowa",
-    "County": "Montgomery"
+    code: 19137,
+    state: 'Iowa',
+    county: 'Montgomery',
   },
   {
-    "FIPS": 19139,
-    "State": "Iowa",
-    "County": "Muscatine"
+    code: 19139,
+    state: 'Iowa',
+    county: 'Muscatine',
   },
   {
-    "FIPS": 19141,
-    "State": "Iowa",
-    "County": "O'Brien"
+    code: 19141,
+    state: 'Iowa',
+    county: "O'Brien",
   },
   {
-    "FIPS": 19143,
-    "State": "Iowa",
-    "County": "Osceola"
+    code: 19143,
+    state: 'Iowa',
+    county: 'Osceola',
   },
   {
-    "FIPS": 19145,
-    "State": "Iowa",
-    "County": "Page"
+    code: 19145,
+    state: 'Iowa',
+    county: 'Page',
   },
   {
-    "FIPS": 19147,
-    "State": "Iowa",
-    "County": "Palo Alto"
+    code: 19147,
+    state: 'Iowa',
+    county: 'Palo Alto',
   },
   {
-    "FIPS": 19149,
-    "State": "Iowa",
-    "County": "Plymouth"
+    code: 19149,
+    state: 'Iowa',
+    county: 'Plymouth',
   },
   {
-    "FIPS": 19151,
-    "State": "Iowa",
-    "County": "Pocahontas"
+    code: 19151,
+    state: 'Iowa',
+    county: 'Pocahontas',
   },
   {
-    "FIPS": 19153,
-    "State": "Iowa",
-    "County": "Polk"
+    code: 19153,
+    state: 'Iowa',
+    county: 'Polk',
   },
   {
-    "FIPS": 19155,
-    "State": "Iowa",
-    "County": "Pottawattamie"
+    code: 19155,
+    state: 'Iowa',
+    county: 'Pottawattamie',
   },
   {
-    "FIPS": 19157,
-    "State": "Iowa",
-    "County": "Poweshiek"
+    code: 19157,
+    state: 'Iowa',
+    county: 'Poweshiek',
   },
   {
-    "FIPS": 19159,
-    "State": "Iowa",
-    "County": "Ringgold"
+    code: 19159,
+    state: 'Iowa',
+    county: 'Ringgold',
   },
   {
-    "FIPS": 19161,
-    "State": "Iowa",
-    "County": "Sac"
+    code: 19161,
+    state: 'Iowa',
+    county: 'Sac',
   },
   {
-    "FIPS": 19163,
-    "State": "Iowa",
-    "County": "Scott"
+    code: 19163,
+    state: 'Iowa',
+    county: 'Scott',
   },
   {
-    "FIPS": 19165,
-    "State": "Iowa",
-    "County": "Shelby"
+    code: 19165,
+    state: 'Iowa',
+    county: 'Shelby',
   },
   {
-    "FIPS": 19167,
-    "State": "Iowa",
-    "County": "Sioux"
+    code: 19167,
+    state: 'Iowa',
+    county: 'Sioux',
   },
   {
-    "FIPS": 19169,
-    "State": "Iowa",
-    "County": "Story"
+    code: 19169,
+    state: 'Iowa',
+    county: 'Story',
   },
   {
-    "FIPS": 19171,
-    "State": "Iowa",
-    "County": "Tama"
+    code: 19171,
+    state: 'Iowa',
+    county: 'Tama',
   },
   {
-    "FIPS": 19173,
-    "State": "Iowa",
-    "County": "Taylor"
+    code: 19173,
+    state: 'Iowa',
+    county: 'Taylor',
   },
   {
-    "FIPS": 19175,
-    "State": "Iowa",
-    "County": "Union"
+    code: 19175,
+    state: 'Iowa',
+    county: 'Union',
   },
   {
-    "FIPS": 19177,
-    "State": "Iowa",
-    "County": "Van Buren"
+    code: 19177,
+    state: 'Iowa',
+    county: 'Van Buren',
   },
   {
-    "FIPS": 19179,
-    "State": "Iowa",
-    "County": "Wapello"
+    code: 19179,
+    state: 'Iowa',
+    county: 'Wapello',
   },
   {
-    "FIPS": 19181,
-    "State": "Iowa",
-    "County": "Warren"
+    code: 19181,
+    state: 'Iowa',
+    county: 'Warren',
   },
   {
-    "FIPS": 19183,
-    "State": "Iowa",
-    "County": "Washington"
+    code: 19183,
+    state: 'Iowa',
+    county: 'Washington',
   },
   {
-    "FIPS": 19185,
-    "State": "Iowa",
-    "County": "Wayne"
+    code: 19185,
+    state: 'Iowa',
+    county: 'Wayne',
   },
   {
-    "FIPS": 19187,
-    "State": "Iowa",
-    "County": "Webster"
+    code: 19187,
+    state: 'Iowa',
+    county: 'Webster',
   },
   {
-    "FIPS": 19189,
-    "State": "Iowa",
-    "County": "Winnebago"
+    code: 19189,
+    state: 'Iowa',
+    county: 'Winnebago',
   },
   {
-    "FIPS": 19191,
-    "State": "Iowa",
-    "County": "Winneshiek"
+    code: 19191,
+    state: 'Iowa',
+    county: 'Winneshiek',
   },
   {
-    "FIPS": 19193,
-    "State": "Iowa",
-    "County": "Woodbury"
+    code: 19193,
+    state: 'Iowa',
+    county: 'Woodbury',
   },
   {
-    "FIPS": 19195,
-    "State": "Iowa",
-    "County": "Worth"
+    code: 19195,
+    state: 'Iowa',
+    county: 'Worth',
   },
   {
-    "FIPS": 19197,
-    "State": "Iowa",
-    "County": "Wright"
+    code: 19197,
+    state: 'Iowa',
+    county: 'Wright',
   },
   {
-    "FIPS": 20001,
-    "State": "Kansas",
-    "County": "Allen"
+    code: 20001,
+    state: 'Kansas',
+    county: 'Allen',
   },
   {
-    "FIPS": 20003,
-    "State": "Kansas",
-    "County": "Anderson"
+    code: 20003,
+    state: 'Kansas',
+    county: 'Anderson',
   },
   {
-    "FIPS": 20005,
-    "State": "Kansas",
-    "County": "Atchison"
+    code: 20005,
+    state: 'Kansas',
+    county: 'Atchison',
   },
   {
-    "FIPS": 20007,
-    "State": "Kansas",
-    "County": "Barber"
+    code: 20007,
+    state: 'Kansas',
+    county: 'Barber',
   },
   {
-    "FIPS": 20009,
-    "State": "Kansas",
-    "County": "Barton"
+    code: 20009,
+    state: 'Kansas',
+    county: 'Barton',
   },
   {
-    "FIPS": 20011,
-    "State": "Kansas",
-    "County": "Bourbon"
+    code: 20011,
+    state: 'Kansas',
+    county: 'Bourbon',
   },
   {
-    "FIPS": 20013,
-    "State": "Kansas",
-    "County": "Brown"
+    code: 20013,
+    state: 'Kansas',
+    county: 'Brown',
   },
   {
-    "FIPS": 20015,
-    "State": "Kansas",
-    "County": "Butler"
+    code: 20015,
+    state: 'Kansas',
+    county: 'Butler',
   },
   {
-    "FIPS": 20017,
-    "State": "Kansas",
-    "County": "Chase"
+    code: 20017,
+    state: 'Kansas',
+    county: 'Chase',
   },
   {
-    "FIPS": 20019,
-    "State": "Kansas",
-    "County": "Chautauqua"
+    code: 20019,
+    state: 'Kansas',
+    county: 'Chautauqua',
   },
   {
-    "FIPS": 20021,
-    "State": "Kansas",
-    "County": "Cherokee"
+    code: 20021,
+    state: 'Kansas',
+    county: 'Cherokee',
   },
   {
-    "FIPS": 20023,
-    "State": "Kansas",
-    "County": "Cheyenne"
+    code: 20023,
+    state: 'Kansas',
+    county: 'Cheyenne',
   },
   {
-    "FIPS": 20025,
-    "State": "Kansas",
-    "County": "Clark"
+    code: 20025,
+    state: 'Kansas',
+    county: 'Clark',
   },
   {
-    "FIPS": 20027,
-    "State": "Kansas",
-    "County": "Clay"
+    code: 20027,
+    state: 'Kansas',
+    county: 'Clay',
   },
   {
-    "FIPS": 20029,
-    "State": "Kansas",
-    "County": "Cloud"
+    code: 20029,
+    state: 'Kansas',
+    county: 'Cloud',
   },
   {
-    "FIPS": 20031,
-    "State": "Kansas",
-    "County": "Coffey"
+    code: 20031,
+    state: 'Kansas',
+    county: 'Coffey',
   },
   {
-    "FIPS": 20033,
-    "State": "Kansas",
-    "County": "Comanche"
+    code: 20033,
+    state: 'Kansas',
+    county: 'Comanche',
   },
   {
-    "FIPS": 20035,
-    "State": "Kansas",
-    "County": "Cowley"
+    code: 20035,
+    state: 'Kansas',
+    county: 'Cowley',
   },
   {
-    "FIPS": 20037,
-    "State": "Kansas",
-    "County": "Crawford"
+    code: 20037,
+    state: 'Kansas',
+    county: 'Crawford',
   },
   {
-    "FIPS": 20039,
-    "State": "Kansas",
-    "County": "Decatur"
+    code: 20039,
+    state: 'Kansas',
+    county: 'Decatur',
   },
   {
-    "FIPS": 20041,
-    "State": "Kansas",
-    "County": "Dickinson"
+    code: 20041,
+    state: 'Kansas',
+    county: 'Dickinson',
   },
   {
-    "FIPS": 20043,
-    "State": "Kansas",
-    "County": "Doniphan"
+    code: 20043,
+    state: 'Kansas',
+    county: 'Doniphan',
   },
   {
-    "FIPS": 20045,
-    "State": "Kansas",
-    "County": "Douglas"
+    code: 20045,
+    state: 'Kansas',
+    county: 'Douglas',
   },
   {
-    "FIPS": 20047,
-    "State": "Kansas",
-    "County": "Edwards"
+    code: 20047,
+    state: 'Kansas',
+    county: 'Edwards',
   },
   {
-    "FIPS": 20049,
-    "State": "Kansas",
-    "County": "Elk"
+    code: 20049,
+    state: 'Kansas',
+    county: 'Elk',
   },
   {
-    "FIPS": 20051,
-    "State": "Kansas",
-    "County": "Ellis"
+    code: 20051,
+    state: 'Kansas',
+    county: 'Ellis',
   },
   {
-    "FIPS": 20053,
-    "State": "Kansas",
-    "County": "Ellsworth"
+    code: 20053,
+    state: 'Kansas',
+    county: 'Ellsworth',
   },
   {
-    "FIPS": 20055,
-    "State": "Kansas",
-    "County": "Finney"
+    code: 20055,
+    state: 'Kansas',
+    county: 'Finney',
   },
   {
-    "FIPS": 20057,
-    "State": "Kansas",
-    "County": "Ford"
+    code: 20057,
+    state: 'Kansas',
+    county: 'Ford',
   },
   {
-    "FIPS": 20059,
-    "State": "Kansas",
-    "County": "Franklin"
+    code: 20059,
+    state: 'Kansas',
+    county: 'Franklin',
   },
   {
-    "FIPS": 20061,
-    "State": "Kansas",
-    "County": "Geary"
+    code: 20061,
+    state: 'Kansas',
+    county: 'Geary',
   },
   {
-    "FIPS": 20063,
-    "State": "Kansas",
-    "County": "Gove"
+    code: 20063,
+    state: 'Kansas',
+    county: 'Gove',
   },
   {
-    "FIPS": 20065,
-    "State": "Kansas",
-    "County": "Graham"
+    code: 20065,
+    state: 'Kansas',
+    county: 'Graham',
   },
   {
-    "FIPS": 20067,
-    "State": "Kansas",
-    "County": "Grant"
+    code: 20067,
+    state: 'Kansas',
+    county: 'Grant',
   },
   {
-    "FIPS": 20069,
-    "State": "Kansas",
-    "County": "Gray"
+    code: 20069,
+    state: 'Kansas',
+    county: 'Gray',
   },
   {
-    "FIPS": 20071,
-    "State": "Kansas",
-    "County": "Greeley"
+    code: 20071,
+    state: 'Kansas',
+    county: 'Greeley',
   },
   {
-    "FIPS": 20073,
-    "State": "Kansas",
-    "County": "Greenwood"
+    code: 20073,
+    state: 'Kansas',
+    county: 'Greenwood',
   },
   {
-    "FIPS": 20075,
-    "State": "Kansas",
-    "County": "Hamilton"
+    code: 20075,
+    state: 'Kansas',
+    county: 'Hamilton',
   },
   {
-    "FIPS": 20077,
-    "State": "Kansas",
-    "County": "Harper"
+    code: 20077,
+    state: 'Kansas',
+    county: 'Harper',
   },
   {
-    "FIPS": 20079,
-    "State": "Kansas",
-    "County": "Harvey"
+    code: 20079,
+    state: 'Kansas',
+    county: 'Harvey',
   },
   {
-    "FIPS": 20081,
-    "State": "Kansas",
-    "County": "Haskell"
+    code: 20081,
+    state: 'Kansas',
+    county: 'Haskell',
   },
   {
-    "FIPS": 20083,
-    "State": "Kansas",
-    "County": "Hodgeman"
+    code: 20083,
+    state: 'Kansas',
+    county: 'Hodgeman',
   },
   {
-    "FIPS": 20085,
-    "State": "Kansas",
-    "County": "Jackson"
+    code: 20085,
+    state: 'Kansas',
+    county: 'Jackson',
   },
   {
-    "FIPS": 20087,
-    "State": "Kansas",
-    "County": "Jefferson"
+    code: 20087,
+    state: 'Kansas',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 20089,
-    "State": "Kansas",
-    "County": "Jewell"
+    code: 20089,
+    state: 'Kansas',
+    county: 'Jewell',
   },
   {
-    "FIPS": 20091,
-    "State": "Kansas",
-    "County": "Johnson"
+    code: 20091,
+    state: 'Kansas',
+    county: 'Johnson',
   },
   {
-    "FIPS": 20093,
-    "State": "Kansas",
-    "County": "Kearny"
+    code: 20093,
+    state: 'Kansas',
+    county: 'Kearny',
   },
   {
-    "FIPS": 20095,
-    "State": "Kansas",
-    "County": "Kingman"
+    code: 20095,
+    state: 'Kansas',
+    county: 'Kingman',
   },
   {
-    "FIPS": 20097,
-    "State": "Kansas",
-    "County": "Kiowa"
+    code: 20097,
+    state: 'Kansas',
+    county: 'Kiowa',
   },
   {
-    "FIPS": 20099,
-    "State": "Kansas",
-    "County": "Labette"
+    code: 20099,
+    state: 'Kansas',
+    county: 'Labette',
   },
   {
-    "FIPS": 20101,
-    "State": "Kansas",
-    "County": "Lane"
+    code: 20101,
+    state: 'Kansas',
+    county: 'Lane',
   },
   {
-    "FIPS": 20103,
-    "State": "Kansas",
-    "County": "Leavenworth"
+    code: 20103,
+    state: 'Kansas',
+    county: 'Leavenworth',
   },
   {
-    "FIPS": 20105,
-    "State": "Kansas",
-    "County": "Lincoln"
+    code: 20105,
+    state: 'Kansas',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 20107,
-    "State": "Kansas",
-    "County": "Linn"
+    code: 20107,
+    state: 'Kansas',
+    county: 'Linn',
   },
   {
-    "FIPS": 20109,
-    "State": "Kansas",
-    "County": "Logan"
+    code: 20109,
+    state: 'Kansas',
+    county: 'Logan',
   },
   {
-    "FIPS": 20111,
-    "State": "Kansas",
-    "County": "Lyon"
+    code: 20111,
+    state: 'Kansas',
+    county: 'Lyon',
   },
   {
-    "FIPS": 20113,
-    "State": "Kansas",
-    "County": "McPherson"
+    code: 20113,
+    state: 'Kansas',
+    county: 'McPherson',
   },
   {
-    "FIPS": 20115,
-    "State": "Kansas",
-    "County": "Marion"
+    code: 20115,
+    state: 'Kansas',
+    county: 'Marion',
   },
   {
-    "FIPS": 20117,
-    "State": "Kansas",
-    "County": "Marshall"
+    code: 20117,
+    state: 'Kansas',
+    county: 'Marshall',
   },
   {
-    "FIPS": 20119,
-    "State": "Kansas",
-    "County": "Meade"
+    code: 20119,
+    state: 'Kansas',
+    county: 'Meade',
   },
   {
-    "FIPS": 20121,
-    "State": "Kansas",
-    "County": "Miami"
+    code: 20121,
+    state: 'Kansas',
+    county: 'Miami',
   },
   {
-    "FIPS": 20123,
-    "State": "Kansas",
-    "County": "Mitchell"
+    code: 20123,
+    state: 'Kansas',
+    county: 'Mitchell',
   },
   {
-    "FIPS": 20125,
-    "State": "Kansas",
-    "County": "Montgomery"
+    code: 20125,
+    state: 'Kansas',
+    county: 'Montgomery',
   },
   {
-    "FIPS": 20127,
-    "State": "Kansas",
-    "County": "Morris"
+    code: 20127,
+    state: 'Kansas',
+    county: 'Morris',
   },
   {
-    "FIPS": 20129,
-    "State": "Kansas",
-    "County": "Morton"
+    code: 20129,
+    state: 'Kansas',
+    county: 'Morton',
   },
   {
-    "FIPS": 20131,
-    "State": "Kansas",
-    "County": "Nemaha"
+    code: 20131,
+    state: 'Kansas',
+    county: 'Nemaha',
   },
   {
-    "FIPS": 20133,
-    "State": "Kansas",
-    "County": "Neosho"
+    code: 20133,
+    state: 'Kansas',
+    county: 'Neosho',
   },
   {
-    "FIPS": 20135,
-    "State": "Kansas",
-    "County": "Ness"
+    code: 20135,
+    state: 'Kansas',
+    county: 'Ness',
   },
   {
-    "FIPS": 20137,
-    "State": "Kansas",
-    "County": "Norton"
+    code: 20137,
+    state: 'Kansas',
+    county: 'Norton',
   },
   {
-    "FIPS": 20139,
-    "State": "Kansas",
-    "County": "Osage"
+    code: 20139,
+    state: 'Kansas',
+    county: 'Osage',
   },
   {
-    "FIPS": 20141,
-    "State": "Kansas",
-    "County": "Osborne"
+    code: 20141,
+    state: 'Kansas',
+    county: 'Osborne',
   },
   {
-    "FIPS": 20143,
-    "State": "Kansas",
-    "County": "Ottawa"
+    code: 20143,
+    state: 'Kansas',
+    county: 'Ottawa',
   },
   {
-    "FIPS": 20145,
-    "State": "Kansas",
-    "County": "Pawnee"
+    code: 20145,
+    state: 'Kansas',
+    county: 'Pawnee',
   },
   {
-    "FIPS": 20147,
-    "State": "Kansas",
-    "County": "Phillips"
+    code: 20147,
+    state: 'Kansas',
+    county: 'Phillips',
   },
   {
-    "FIPS": 20149,
-    "State": "Kansas",
-    "County": "Pottawatomie"
+    code: 20149,
+    state: 'Kansas',
+    county: 'Pottawatomie',
   },
   {
-    "FIPS": 20151,
-    "State": "Kansas",
-    "County": "Pratt"
+    code: 20151,
+    state: 'Kansas',
+    county: 'Pratt',
   },
   {
-    "FIPS": 20153,
-    "State": "Kansas",
-    "County": "Rawlins"
+    code: 20153,
+    state: 'Kansas',
+    county: 'Rawlins',
   },
   {
-    "FIPS": 20155,
-    "State": "Kansas",
-    "County": "Reno"
+    code: 20155,
+    state: 'Kansas',
+    county: 'Reno',
   },
   {
-    "FIPS": 20157,
-    "State": "Kansas",
-    "County": "Republic"
+    code: 20157,
+    state: 'Kansas',
+    county: 'Republic',
   },
   {
-    "FIPS": 20159,
-    "State": "Kansas",
-    "County": "Rice"
+    code: 20159,
+    state: 'Kansas',
+    county: 'Rice',
   },
   {
-    "FIPS": 20161,
-    "State": "Kansas",
-    "County": "Riley"
+    code: 20161,
+    state: 'Kansas',
+    county: 'Riley',
   },
   {
-    "FIPS": 20163,
-    "State": "Kansas",
-    "County": "Rooks"
+    code: 20163,
+    state: 'Kansas',
+    county: 'Rooks',
   },
   {
-    "FIPS": 20165,
-    "State": "Kansas",
-    "County": "Rush"
+    code: 20165,
+    state: 'Kansas',
+    county: 'Rush',
   },
   {
-    "FIPS": 20167,
-    "State": "Kansas",
-    "County": "Russell"
+    code: 20167,
+    state: 'Kansas',
+    county: 'Russell',
   },
   {
-    "FIPS": 20169,
-    "State": "Kansas",
-    "County": "Saline"
+    code: 20169,
+    state: 'Kansas',
+    county: 'Saline',
   },
   {
-    "FIPS": 20171,
-    "State": "Kansas",
-    "County": "Scott"
+    code: 20171,
+    state: 'Kansas',
+    county: 'Scott',
   },
   {
-    "FIPS": 20173,
-    "State": "Kansas",
-    "County": "Sedgwick"
+    code: 20173,
+    state: 'Kansas',
+    county: 'Sedgwick',
   },
   {
-    "FIPS": 20175,
-    "State": "Kansas",
-    "County": "Seward"
+    code: 20175,
+    state: 'Kansas',
+    county: 'Seward',
   },
   {
-    "FIPS": 20177,
-    "State": "Kansas",
-    "County": "Shawnee"
+    code: 20177,
+    state: 'Kansas',
+    county: 'Shawnee',
   },
   {
-    "FIPS": 20179,
-    "State": "Kansas",
-    "County": "Sheridan"
+    code: 20179,
+    state: 'Kansas',
+    county: 'Sheridan',
   },
   {
-    "FIPS": 20181,
-    "State": "Kansas",
-    "County": "Sherman"
+    code: 20181,
+    state: 'Kansas',
+    county: 'Sherman',
   },
   {
-    "FIPS": 20183,
-    "State": "Kansas",
-    "County": "Smith"
+    code: 20183,
+    state: 'Kansas',
+    county: 'Smith',
   },
   {
-    "FIPS": 20185,
-    "State": "Kansas",
-    "County": "Stafford"
+    code: 20185,
+    state: 'Kansas',
+    county: 'Stafford',
   },
   {
-    "FIPS": 20187,
-    "State": "Kansas",
-    "County": "Stanton"
+    code: 20187,
+    state: 'Kansas',
+    county: 'Stanton',
   },
   {
-    "FIPS": 20189,
-    "State": "Kansas",
-    "County": "Stevens"
+    code: 20189,
+    state: 'Kansas',
+    county: 'Stevens',
   },
   {
-    "FIPS": 20191,
-    "State": "Kansas",
-    "County": "Sumner"
+    code: 20191,
+    state: 'Kansas',
+    county: 'Sumner',
   },
   {
-    "FIPS": 20193,
-    "State": "Kansas",
-    "County": "Thomas"
+    code: 20193,
+    state: 'Kansas',
+    county: 'Thomas',
   },
   {
-    "FIPS": 20195,
-    "State": "Kansas",
-    "County": "Trego"
+    code: 20195,
+    state: 'Kansas',
+    county: 'Trego',
   },
   {
-    "FIPS": 20197,
-    "State": "Kansas",
-    "County": "Wabaunsee"
+    code: 20197,
+    state: 'Kansas',
+    county: 'Wabaunsee',
   },
   {
-    "FIPS": 20199,
-    "State": "Kansas",
-    "County": "Wallace"
+    code: 20199,
+    state: 'Kansas',
+    county: 'Wallace',
   },
   {
-    "FIPS": 20201,
-    "State": "Kansas",
-    "County": "Washington"
+    code: 20201,
+    state: 'Kansas',
+    county: 'Washington',
   },
   {
-    "FIPS": 20203,
-    "State": "Kansas",
-    "County": "Wichita"
+    code: 20203,
+    state: 'Kansas',
+    county: 'Wichita',
   },
   {
-    "FIPS": 20205,
-    "State": "Kansas",
-    "County": "Wilson"
+    code: 20205,
+    state: 'Kansas',
+    county: 'Wilson',
   },
   {
-    "FIPS": 20207,
-    "State": "Kansas",
-    "County": "Woodson"
+    code: 20207,
+    state: 'Kansas',
+    county: 'Woodson',
   },
   {
-    "FIPS": 20209,
-    "State": "Kansas",
-    "County": "Wyandotte"
+    code: 20209,
+    state: 'Kansas',
+    county: 'Wyandotte',
   },
   {
-    "FIPS": 21001,
-    "State": "Kentucky",
-    "County": "Adair"
+    code: 21001,
+    state: 'Kentucky',
+    county: 'Adair',
   },
   {
-    "FIPS": 21003,
-    "State": "Kentucky",
-    "County": "Allen"
+    code: 21003,
+    state: 'Kentucky',
+    county: 'Allen',
   },
   {
-    "FIPS": 21005,
-    "State": "Kentucky",
-    "County": "Anderson"
+    code: 21005,
+    state: 'Kentucky',
+    county: 'Anderson',
   },
   {
-    "FIPS": 21007,
-    "State": "Kentucky",
-    "County": "Ballard"
+    code: 21007,
+    state: 'Kentucky',
+    county: 'Ballard',
   },
   {
-    "FIPS": 21009,
-    "State": "Kentucky",
-    "County": "Barren"
+    code: 21009,
+    state: 'Kentucky',
+    county: 'Barren',
   },
   {
-    "FIPS": 21011,
-    "State": "Kentucky",
-    "County": "Bath"
+    code: 21011,
+    state: 'Kentucky',
+    county: 'Bath',
   },
   {
-    "FIPS": 21013,
-    "State": "Kentucky",
-    "County": "Bell"
+    code: 21013,
+    state: 'Kentucky',
+    county: 'Bell',
   },
   {
-    "FIPS": 21015,
-    "State": "Kentucky",
-    "County": "Boone"
+    code: 21015,
+    state: 'Kentucky',
+    county: 'Boone',
   },
   {
-    "FIPS": 21017,
-    "State": "Kentucky",
-    "County": "Bourbon"
+    code: 21017,
+    state: 'Kentucky',
+    county: 'Bourbon',
   },
   {
-    "FIPS": 21019,
-    "State": "Kentucky",
-    "County": "Boyd"
+    code: 21019,
+    state: 'Kentucky',
+    county: 'Boyd',
   },
   {
-    "FIPS": 21021,
-    "State": "Kentucky",
-    "County": "Boyle"
+    code: 21021,
+    state: 'Kentucky',
+    county: 'Boyle',
   },
   {
-    "FIPS": 21023,
-    "State": "Kentucky",
-    "County": "Bracken"
+    code: 21023,
+    state: 'Kentucky',
+    county: 'Bracken',
   },
   {
-    "FIPS": 21025,
-    "State": "Kentucky",
-    "County": "Breathitt"
+    code: 21025,
+    state: 'Kentucky',
+    county: 'Breathitt',
   },
   {
-    "FIPS": 21027,
-    "State": "Kentucky",
-    "County": "Breckinridge"
+    code: 21027,
+    state: 'Kentucky',
+    county: 'Breckinridge',
   },
   {
-    "FIPS": 21029,
-    "State": "Kentucky",
-    "County": "Bullitt"
+    code: 21029,
+    state: 'Kentucky',
+    county: 'Bullitt',
   },
   {
-    "FIPS": 21031,
-    "State": "Kentucky",
-    "County": "Butler"
+    code: 21031,
+    state: 'Kentucky',
+    county: 'Butler',
   },
   {
-    "FIPS": 21033,
-    "State": "Kentucky",
-    "County": "Caldwell"
+    code: 21033,
+    state: 'Kentucky',
+    county: 'Caldwell',
   },
   {
-    "FIPS": 21035,
-    "State": "Kentucky",
-    "County": "Calloway"
+    code: 21035,
+    state: 'Kentucky',
+    county: 'Calloway',
   },
   {
-    "FIPS": 21037,
-    "State": "Kentucky",
-    "County": "Campbell"
+    code: 21037,
+    state: 'Kentucky',
+    county: 'Campbell',
   },
   {
-    "FIPS": 21039,
-    "State": "Kentucky",
-    "County": "Carlisle"
+    code: 21039,
+    state: 'Kentucky',
+    county: 'Carlisle',
   },
   {
-    "FIPS": 21041,
-    "State": "Kentucky",
-    "County": "Carroll"
+    code: 21041,
+    state: 'Kentucky',
+    county: 'Carroll',
   },
   {
-    "FIPS": 21043,
-    "State": "Kentucky",
-    "County": "Carter"
+    code: 21043,
+    state: 'Kentucky',
+    county: 'Carter',
   },
   {
-    "FIPS": 21045,
-    "State": "Kentucky",
-    "County": "Casey"
+    code: 21045,
+    state: 'Kentucky',
+    county: 'Casey',
   },
   {
-    "FIPS": 21047,
-    "State": "Kentucky",
-    "County": "Christian"
+    code: 21047,
+    state: 'Kentucky',
+    county: 'Christian',
   },
   {
-    "FIPS": 21049,
-    "State": "Kentucky",
-    "County": "Clark"
+    code: 21049,
+    state: 'Kentucky',
+    county: 'Clark',
   },
   {
-    "FIPS": 21051,
-    "State": "Kentucky",
-    "County": "Clay"
+    code: 21051,
+    state: 'Kentucky',
+    county: 'Clay',
   },
   {
-    "FIPS": 21053,
-    "State": "Kentucky",
-    "County": "Clinton"
+    code: 21053,
+    state: 'Kentucky',
+    county: 'Clinton',
   },
   {
-    "FIPS": 21055,
-    "State": "Kentucky",
-    "County": "Crittenden"
+    code: 21055,
+    state: 'Kentucky',
+    county: 'Crittenden',
   },
   {
-    "FIPS": 21057,
-    "State": "Kentucky",
-    "County": "Cumberland"
+    code: 21057,
+    state: 'Kentucky',
+    county: 'Cumberland',
   },
   {
-    "FIPS": 21059,
-    "State": "Kentucky",
-    "County": "Daviess"
+    code: 21059,
+    state: 'Kentucky',
+    county: 'Daviess',
   },
   {
-    "FIPS": 21061,
-    "State": "Kentucky",
-    "County": "Edmonson"
+    code: 21061,
+    state: 'Kentucky',
+    county: 'Edmonson',
   },
   {
-    "FIPS": 21063,
-    "State": "Kentucky",
-    "County": "Elliott"
+    code: 21063,
+    state: 'Kentucky',
+    county: 'Elliott',
   },
   {
-    "FIPS": 21065,
-    "State": "Kentucky",
-    "County": "Estill"
+    code: 21065,
+    state: 'Kentucky',
+    county: 'Estill',
   },
   {
-    "FIPS": 21067,
-    "State": "Kentucky",
-    "County": "Fayette"
+    code: 21067,
+    state: 'Kentucky',
+    county: 'Fayette',
   },
   {
-    "FIPS": 21069,
-    "State": "Kentucky",
-    "County": "Fleming"
+    code: 21069,
+    state: 'Kentucky',
+    county: 'Fleming',
   },
   {
-    "FIPS": 21071,
-    "State": "Kentucky",
-    "County": "Floyd"
+    code: 21071,
+    state: 'Kentucky',
+    county: 'Floyd',
   },
   {
-    "FIPS": 21073,
-    "State": "Kentucky",
-    "County": "Franklin"
+    code: 21073,
+    state: 'Kentucky',
+    county: 'Franklin',
   },
   {
-    "FIPS": 21075,
-    "State": "Kentucky",
-    "County": "Fulton"
+    code: 21075,
+    state: 'Kentucky',
+    county: 'Fulton',
   },
   {
-    "FIPS": 21077,
-    "State": "Kentucky",
-    "County": "Gallatin"
+    code: 21077,
+    state: 'Kentucky',
+    county: 'Gallatin',
   },
   {
-    "FIPS": 21079,
-    "State": "Kentucky",
-    "County": "Garrard"
+    code: 21079,
+    state: 'Kentucky',
+    county: 'Garrard',
   },
   {
-    "FIPS": 21081,
-    "State": "Kentucky",
-    "County": "Grant"
+    code: 21081,
+    state: 'Kentucky',
+    county: 'Grant',
   },
   {
-    "FIPS": 21083,
-    "State": "Kentucky",
-    "County": "Graves"
+    code: 21083,
+    state: 'Kentucky',
+    county: 'Graves',
   },
   {
-    "FIPS": 21085,
-    "State": "Kentucky",
-    "County": "Grayson"
+    code: 21085,
+    state: 'Kentucky',
+    county: 'Grayson',
   },
   {
-    "FIPS": 21087,
-    "State": "Kentucky",
-    "County": "Green"
+    code: 21087,
+    state: 'Kentucky',
+    county: 'Green',
   },
   {
-    "FIPS": 21089,
-    "State": "Kentucky",
-    "County": "Greenup"
+    code: 21089,
+    state: 'Kentucky',
+    county: 'Greenup',
   },
   {
-    "FIPS": 21091,
-    "State": "Kentucky",
-    "County": "Hancock"
+    code: 21091,
+    state: 'Kentucky',
+    county: 'Hancock',
   },
   {
-    "FIPS": 21093,
-    "State": "Kentucky",
-    "County": "Hardin"
+    code: 21093,
+    state: 'Kentucky',
+    county: 'Hardin',
   },
   {
-    "FIPS": 21095,
-    "State": "Kentucky",
-    "County": "Harlan"
+    code: 21095,
+    state: 'Kentucky',
+    county: 'Harlan',
   },
   {
-    "FIPS": 21097,
-    "State": "Kentucky",
-    "County": "Harrison"
+    code: 21097,
+    state: 'Kentucky',
+    county: 'Harrison',
   },
   {
-    "FIPS": 21099,
-    "State": "Kentucky",
-    "County": "Hart"
+    code: 21099,
+    state: 'Kentucky',
+    county: 'Hart',
   },
   {
-    "FIPS": 21101,
-    "State": "Kentucky",
-    "County": "Henderson"
+    code: 21101,
+    state: 'Kentucky',
+    county: 'Henderson',
   },
   {
-    "FIPS": 21103,
-    "State": "Kentucky",
-    "County": "Henry"
+    code: 21103,
+    state: 'Kentucky',
+    county: 'Henry',
   },
   {
-    "FIPS": 21105,
-    "State": "Kentucky",
-    "County": "Hickman"
+    code: 21105,
+    state: 'Kentucky',
+    county: 'Hickman',
   },
   {
-    "FIPS": 21107,
-    "State": "Kentucky",
-    "County": "Hopkins"
+    code: 21107,
+    state: 'Kentucky',
+    county: 'Hopkins',
   },
   {
-    "FIPS": 21109,
-    "State": "Kentucky",
-    "County": "Jackson"
+    code: 21109,
+    state: 'Kentucky',
+    county: 'Jackson',
   },
   {
-    "FIPS": 21111,
-    "State": "Kentucky",
-    "County": "Jefferson"
+    code: 21111,
+    state: 'Kentucky',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 21113,
-    "State": "Kentucky",
-    "County": "Jessamine"
+    code: 21113,
+    state: 'Kentucky',
+    county: 'Jessamine',
   },
   {
-    "FIPS": 21115,
-    "State": "Kentucky",
-    "County": "Johnson"
+    code: 21115,
+    state: 'Kentucky',
+    county: 'Johnson',
   },
   {
-    "FIPS": 21117,
-    "State": "Kentucky",
-    "County": "Kenton"
+    code: 21117,
+    state: 'Kentucky',
+    county: 'Kenton',
   },
   {
-    "FIPS": 21119,
-    "State": "Kentucky",
-    "County": "Knott"
+    code: 21119,
+    state: 'Kentucky',
+    county: 'Knott',
   },
   {
-    "FIPS": 21121,
-    "State": "Kentucky",
-    "County": "Knox"
+    code: 21121,
+    state: 'Kentucky',
+    county: 'Knox',
   },
   {
-    "FIPS": 21123,
-    "State": "Kentucky",
-    "County": "Larue"
+    code: 21123,
+    state: 'Kentucky',
+    county: 'Larue',
   },
   {
-    "FIPS": 21125,
-    "State": "Kentucky",
-    "County": "Laurel"
+    code: 21125,
+    state: 'Kentucky',
+    county: 'Laurel',
   },
   {
-    "FIPS": 21127,
-    "State": "Kentucky",
-    "County": "Lawrence"
+    code: 21127,
+    state: 'Kentucky',
+    county: 'Lawrence',
   },
   {
-    "FIPS": 21129,
-    "State": "Kentucky",
-    "County": "Lee"
+    code: 21129,
+    state: 'Kentucky',
+    county: 'Lee',
   },
   {
-    "FIPS": 21131,
-    "State": "Kentucky",
-    "County": "Leslie"
+    code: 21131,
+    state: 'Kentucky',
+    county: 'Leslie',
   },
   {
-    "FIPS": 21133,
-    "State": "Kentucky",
-    "County": "Letcher"
+    code: 21133,
+    state: 'Kentucky',
+    county: 'Letcher',
   },
   {
-    "FIPS": 21135,
-    "State": "Kentucky",
-    "County": "Lewis"
+    code: 21135,
+    state: 'Kentucky',
+    county: 'Lewis',
   },
   {
-    "FIPS": 21137,
-    "State": "Kentucky",
-    "County": "Lincoln"
+    code: 21137,
+    state: 'Kentucky',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 21139,
-    "State": "Kentucky",
-    "County": "Livingston"
+    code: 21139,
+    state: 'Kentucky',
+    county: 'Livingston',
   },
   {
-    "FIPS": 21141,
-    "State": "Kentucky",
-    "County": "Logan"
+    code: 21141,
+    state: 'Kentucky',
+    county: 'Logan',
   },
   {
-    "FIPS": 21143,
-    "State": "Kentucky",
-    "County": "Lyon"
+    code: 21143,
+    state: 'Kentucky',
+    county: 'Lyon',
   },
   {
-    "FIPS": 21145,
-    "State": "Kentucky",
-    "County": "McCracken"
+    code: 21145,
+    state: 'Kentucky',
+    county: 'McCracken',
   },
   {
-    "FIPS": 21147,
-    "State": "Kentucky",
-    "County": "McCreary"
+    code: 21147,
+    state: 'Kentucky',
+    county: 'McCreary',
   },
   {
-    "FIPS": 21149,
-    "State": "Kentucky",
-    "County": "McLean"
+    code: 21149,
+    state: 'Kentucky',
+    county: 'McLean',
   },
   {
-    "FIPS": 21151,
-    "State": "Kentucky",
-    "County": "Madison"
+    code: 21151,
+    state: 'Kentucky',
+    county: 'Madison',
   },
   {
-    "FIPS": 21153,
-    "State": "Kentucky",
-    "County": "Magoffin"
+    code: 21153,
+    state: 'Kentucky',
+    county: 'Magoffin',
   },
   {
-    "FIPS": 21155,
-    "State": "Kentucky",
-    "County": "Marion"
+    code: 21155,
+    state: 'Kentucky',
+    county: 'Marion',
   },
   {
-    "FIPS": 21157,
-    "State": "Kentucky",
-    "County": "Marshall"
+    code: 21157,
+    state: 'Kentucky',
+    county: 'Marshall',
   },
   {
-    "FIPS": 21159,
-    "State": "Kentucky",
-    "County": "Martin"
+    code: 21159,
+    state: 'Kentucky',
+    county: 'Martin',
   },
   {
-    "FIPS": 21161,
-    "State": "Kentucky",
-    "County": "Mason"
+    code: 21161,
+    state: 'Kentucky',
+    county: 'Mason',
   },
   {
-    "FIPS": 21163,
-    "State": "Kentucky",
-    "County": "Meade"
+    code: 21163,
+    state: 'Kentucky',
+    county: 'Meade',
   },
   {
-    "FIPS": 21165,
-    "State": "Kentucky",
-    "County": "Menifee"
+    code: 21165,
+    state: 'Kentucky',
+    county: 'Menifee',
   },
   {
-    "FIPS": 21167,
-    "State": "Kentucky",
-    "County": "Mercer"
+    code: 21167,
+    state: 'Kentucky',
+    county: 'Mercer',
   },
   {
-    "FIPS": 21169,
-    "State": "Kentucky",
-    "County": "Metcalfe"
+    code: 21169,
+    state: 'Kentucky',
+    county: 'Metcalfe',
   },
   {
-    "FIPS": 21171,
-    "State": "Kentucky",
-    "County": "Monroe"
+    code: 21171,
+    state: 'Kentucky',
+    county: 'Monroe',
   },
   {
-    "FIPS": 21173,
-    "State": "Kentucky",
-    "County": "Montgomery"
+    code: 21173,
+    state: 'Kentucky',
+    county: 'Montgomery',
   },
   {
-    "FIPS": 21175,
-    "State": "Kentucky",
-    "County": "Morgan"
+    code: 21175,
+    state: 'Kentucky',
+    county: 'Morgan',
   },
   {
-    "FIPS": 21177,
-    "State": "Kentucky",
-    "County": "Muhlenberg"
+    code: 21177,
+    state: 'Kentucky',
+    county: 'Muhlenberg',
   },
   {
-    "FIPS": 21179,
-    "State": "Kentucky",
-    "County": "Nelson"
+    code: 21179,
+    state: 'Kentucky',
+    county: 'Nelson',
   },
   {
-    "FIPS": 21181,
-    "State": "Kentucky",
-    "County": "Nicholas"
+    code: 21181,
+    state: 'Kentucky',
+    county: 'Nicholas',
   },
   {
-    "FIPS": 21183,
-    "State": "Kentucky",
-    "County": "Ohio"
+    code: 21183,
+    state: 'Kentucky',
+    county: 'Ohio',
   },
   {
-    "FIPS": 21185,
-    "State": "Kentucky",
-    "County": "Oldham"
+    code: 21185,
+    state: 'Kentucky',
+    county: 'Oldham',
   },
   {
-    "FIPS": 21187,
-    "State": "Kentucky",
-    "County": "Owen"
+    code: 21187,
+    state: 'Kentucky',
+    county: 'Owen',
   },
   {
-    "FIPS": 21189,
-    "State": "Kentucky",
-    "County": "Owsley"
+    code: 21189,
+    state: 'Kentucky',
+    county: 'Owsley',
   },
   {
-    "FIPS": 21191,
-    "State": "Kentucky",
-    "County": "Pendleton"
+    code: 21191,
+    state: 'Kentucky',
+    county: 'Pendleton',
   },
   {
-    "FIPS": 21193,
-    "State": "Kentucky",
-    "County": "Perry"
+    code: 21193,
+    state: 'Kentucky',
+    county: 'Perry',
   },
   {
-    "FIPS": 21195,
-    "State": "Kentucky",
-    "County": "Pike"
+    code: 21195,
+    state: 'Kentucky',
+    county: 'Pike',
   },
   {
-    "FIPS": 21197,
-    "State": "Kentucky",
-    "County": "Powell"
+    code: 21197,
+    state: 'Kentucky',
+    county: 'Powell',
   },
   {
-    "FIPS": 21199,
-    "State": "Kentucky",
-    "County": "Pulaski"
+    code: 21199,
+    state: 'Kentucky',
+    county: 'Pulaski',
   },
   {
-    "FIPS": 21201,
-    "State": "Kentucky",
-    "County": "Robertson"
+    code: 21201,
+    state: 'Kentucky',
+    county: 'Robertson',
   },
   {
-    "FIPS": 21203,
-    "State": "Kentucky",
-    "County": "Rockcastle"
+    code: 21203,
+    state: 'Kentucky',
+    county: 'Rockcastle',
   },
   {
-    "FIPS": 21205,
-    "State": "Kentucky",
-    "County": "Rowan"
+    code: 21205,
+    state: 'Kentucky',
+    county: 'Rowan',
   },
   {
-    "FIPS": 21207,
-    "State": "Kentucky",
-    "County": "Russell"
+    code: 21207,
+    state: 'Kentucky',
+    county: 'Russell',
   },
   {
-    "FIPS": 21209,
-    "State": "Kentucky",
-    "County": "Scott"
+    code: 21209,
+    state: 'Kentucky',
+    county: 'Scott',
   },
   {
-    "FIPS": 21211,
-    "State": "Kentucky",
-    "County": "Shelby"
+    code: 21211,
+    state: 'Kentucky',
+    county: 'Shelby',
   },
   {
-    "FIPS": 21213,
-    "State": "Kentucky",
-    "County": "Simpson"
+    code: 21213,
+    state: 'Kentucky',
+    county: 'Simpson',
   },
   {
-    "FIPS": 21215,
-    "State": "Kentucky",
-    "County": "Spencer"
+    code: 21215,
+    state: 'Kentucky',
+    county: 'Spencer',
   },
   {
-    "FIPS": 21217,
-    "State": "Kentucky",
-    "County": "Taylor"
+    code: 21217,
+    state: 'Kentucky',
+    county: 'Taylor',
   },
   {
-    "FIPS": 21219,
-    "State": "Kentucky",
-    "County": "Todd"
+    code: 21219,
+    state: 'Kentucky',
+    county: 'Todd',
   },
   {
-    "FIPS": 21221,
-    "State": "Kentucky",
-    "County": "Trigg"
+    code: 21221,
+    state: 'Kentucky',
+    county: 'Trigg',
   },
   {
-    "FIPS": 21223,
-    "State": "Kentucky",
-    "County": "Trimble"
+    code: 21223,
+    state: 'Kentucky',
+    county: 'Trimble',
   },
   {
-    "FIPS": 21225,
-    "State": "Kentucky",
-    "County": "Union"
+    code: 21225,
+    state: 'Kentucky',
+    county: 'Union',
   },
   {
-    "FIPS": 21227,
-    "State": "Kentucky",
-    "County": "Warren"
+    code: 21227,
+    state: 'Kentucky',
+    county: 'Warren',
   },
   {
-    "FIPS": 21229,
-    "State": "Kentucky",
-    "County": "Washington"
+    code: 21229,
+    state: 'Kentucky',
+    county: 'Washington',
   },
   {
-    "FIPS": 21231,
-    "State": "Kentucky",
-    "County": "Wayne"
+    code: 21231,
+    state: 'Kentucky',
+    county: 'Wayne',
   },
   {
-    "FIPS": 21233,
-    "State": "Kentucky",
-    "County": "Webster"
+    code: 21233,
+    state: 'Kentucky',
+    county: 'Webster',
   },
   {
-    "FIPS": 21235,
-    "State": "Kentucky",
-    "County": "Whitley"
+    code: 21235,
+    state: 'Kentucky',
+    county: 'Whitley',
   },
   {
-    "FIPS": 21237,
-    "State": "Kentucky",
-    "County": "Wolfe"
+    code: 21237,
+    state: 'Kentucky',
+    county: 'Wolfe',
   },
   {
-    "FIPS": 21239,
-    "State": "Kentucky",
-    "County": "Woodford"
+    code: 21239,
+    state: 'Kentucky',
+    county: 'Woodford',
   },
   {
-    "FIPS": 22001,
-    "State": "Louisiana",
-    "County": "Acadia"
+    code: 22001,
+    state: 'Louisiana',
+    county: 'Acadia',
   },
   {
-    "FIPS": 22003,
-    "State": "Louisiana",
-    "County": "Allen"
+    code: 22003,
+    state: 'Louisiana',
+    county: 'Allen',
   },
   {
-    "FIPS": 22005,
-    "State": "Louisiana",
-    "County": "Ascension"
+    code: 22005,
+    state: 'Louisiana',
+    county: 'Ascension',
   },
   {
-    "FIPS": 22007,
-    "State": "Louisiana",
-    "County": "Assumption"
+    code: 22007,
+    state: 'Louisiana',
+    county: 'Assumption',
   },
   {
-    "FIPS": 22009,
-    "State": "Louisiana",
-    "County": "Avoyelles"
+    code: 22009,
+    state: 'Louisiana',
+    county: 'Avoyelles',
   },
   {
-    "FIPS": 22011,
-    "State": "Louisiana",
-    "County": "Beauregard"
+    code: 22011,
+    state: 'Louisiana',
+    county: 'Beauregard',
   },
   {
-    "FIPS": 22013,
-    "State": "Louisiana",
-    "County": "Bienville"
+    code: 22013,
+    state: 'Louisiana',
+    county: 'Bienville',
   },
   {
-    "FIPS": 22015,
-    "State": "Louisiana",
-    "County": "Bossier"
+    code: 22015,
+    state: 'Louisiana',
+    county: 'Bossier',
   },
   {
-    "FIPS": 22017,
-    "State": "Louisiana",
-    "County": "Caddo"
+    code: 22017,
+    state: 'Louisiana',
+    county: 'Caddo',
   },
   {
-    "FIPS": 22019,
-    "State": "Louisiana",
-    "County": "Calcasieu"
+    code: 22019,
+    state: 'Louisiana',
+    county: 'Calcasieu',
   },
   {
-    "FIPS": 22021,
-    "State": "Louisiana",
-    "County": "Caldwell"
+    code: 22021,
+    state: 'Louisiana',
+    county: 'Caldwell',
   },
   {
-    "FIPS": 22023,
-    "State": "Louisiana",
-    "County": "Cameron"
+    code: 22023,
+    state: 'Louisiana',
+    county: 'Cameron',
   },
   {
-    "FIPS": 22025,
-    "State": "Louisiana",
-    "County": "Catahoula"
+    code: 22025,
+    state: 'Louisiana',
+    county: 'Catahoula',
   },
   {
-    "FIPS": 22027,
-    "State": "Louisiana",
-    "County": "Claiborne"
+    code: 22027,
+    state: 'Louisiana',
+    county: 'Claiborne',
   },
   {
-    "FIPS": 22029,
-    "State": "Louisiana",
-    "County": "Concordia"
+    code: 22029,
+    state: 'Louisiana',
+    county: 'Concordia',
   },
   {
-    "FIPS": 22031,
-    "State": "Louisiana",
-    "County": "De Soto"
+    code: 22031,
+    state: 'Louisiana',
+    county: 'De Soto',
   },
   {
-    "FIPS": 22033,
-    "State": "Louisiana",
-    "County": "East Baton Rouge"
+    code: 22033,
+    state: 'Louisiana',
+    county: 'East Baton Rouge',
   },
   {
-    "FIPS": 22035,
-    "State": "Louisiana",
-    "County": "East Carroll"
+    code: 22035,
+    state: 'Louisiana',
+    county: 'East Carroll',
   },
   {
-    "FIPS": 22037,
-    "State": "Louisiana",
-    "County": "East Feliciana"
+    code: 22037,
+    state: 'Louisiana',
+    county: 'East Feliciana',
   },
   {
-    "FIPS": 22039,
-    "State": "Louisiana",
-    "County": "Evangeline"
+    code: 22039,
+    state: 'Louisiana',
+    county: 'Evangeline',
   },
   {
-    "FIPS": 22041,
-    "State": "Louisiana",
-    "County": "Franklin"
+    code: 22041,
+    state: 'Louisiana',
+    county: 'Franklin',
   },
   {
-    "FIPS": 22043,
-    "State": "Louisiana",
-    "County": "Grant"
+    code: 22043,
+    state: 'Louisiana',
+    county: 'Grant',
   },
   {
-    "FIPS": 22045,
-    "State": "Louisiana",
-    "County": "Iberia"
+    code: 22045,
+    state: 'Louisiana',
+    county: 'Iberia',
   },
   {
-    "FIPS": 22047,
-    "State": "Louisiana",
-    "County": "Iberville"
+    code: 22047,
+    state: 'Louisiana',
+    county: 'Iberville',
   },
   {
-    "FIPS": 22049,
-    "State": "Louisiana",
-    "County": "Jackson"
+    code: 22049,
+    state: 'Louisiana',
+    county: 'Jackson',
   },
   {
-    "FIPS": 22051,
-    "State": "Louisiana",
-    "County": "Jefferson"
+    code: 22051,
+    state: 'Louisiana',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 22053,
-    "State": "Louisiana",
-    "County": "Jefferson Davis"
+    code: 22053,
+    state: 'Louisiana',
+    county: 'Jefferson Davis',
   },
   {
-    "FIPS": 22055,
-    "State": "Louisiana",
-    "County": "Lafayette"
+    code: 22055,
+    state: 'Louisiana',
+    county: 'Lafayette',
   },
   {
-    "FIPS": 22057,
-    "State": "Louisiana",
-    "County": "Lafourche"
+    code: 22057,
+    state: 'Louisiana',
+    county: 'Lafourche',
   },
   {
-    "FIPS": 22059,
-    "State": "Louisiana",
-    "County": "La Salle"
+    code: 22059,
+    state: 'Louisiana',
+    county: 'La Salle',
   },
   {
-    "FIPS": 22061,
-    "State": "Louisiana",
-    "County": "Lincoln"
+    code: 22061,
+    state: 'Louisiana',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 22063,
-    "State": "Louisiana",
-    "County": "Livingston"
+    code: 22063,
+    state: 'Louisiana',
+    county: 'Livingston',
   },
   {
-    "FIPS": 22065,
-    "State": "Louisiana",
-    "County": "Madison"
+    code: 22065,
+    state: 'Louisiana',
+    county: 'Madison',
   },
   {
-    "FIPS": 22067,
-    "State": "Louisiana",
-    "County": "Morehouse"
+    code: 22067,
+    state: 'Louisiana',
+    county: 'Morehouse',
   },
   {
-    "FIPS": 22069,
-    "State": "Louisiana",
-    "County": "Natchitoches"
+    code: 22069,
+    state: 'Louisiana',
+    county: 'Natchitoches',
   },
   {
-    "FIPS": 22071,
-    "State": "Louisiana",
-    "County": "Orleans"
+    code: 22071,
+    state: 'Louisiana',
+    county: 'Orleans',
   },
   {
-    "FIPS": 22073,
-    "State": "Louisiana",
-    "County": "Ouachita"
+    code: 22073,
+    state: 'Louisiana',
+    county: 'Ouachita',
   },
   {
-    "FIPS": 22075,
-    "State": "Louisiana",
-    "County": "Plaquemines"
+    code: 22075,
+    state: 'Louisiana',
+    county: 'Plaquemines',
   },
   {
-    "FIPS": 22077,
-    "State": "Louisiana",
-    "County": "Pointe Coupee"
+    code: 22077,
+    state: 'Louisiana',
+    county: 'Pointe Coupee',
   },
   {
-    "FIPS": 22079,
-    "State": "Louisiana",
-    "County": "Rapides"
+    code: 22079,
+    state: 'Louisiana',
+    county: 'Rapides',
   },
   {
-    "FIPS": 22081,
-    "State": "Louisiana",
-    "County": "Red River"
+    code: 22081,
+    state: 'Louisiana',
+    county: 'Red River',
   },
   {
-    "FIPS": 22083,
-    "State": "Louisiana",
-    "County": "Richland"
+    code: 22083,
+    state: 'Louisiana',
+    county: 'Richland',
   },
   {
-    "FIPS": 22085,
-    "State": "Louisiana",
-    "County": "Sabine"
+    code: 22085,
+    state: 'Louisiana',
+    county: 'Sabine',
   },
   {
-    "FIPS": 22087,
-    "State": "Louisiana",
-    "County": "St. Bernard"
+    code: 22087,
+    state: 'Louisiana',
+    county: 'St. Bernard',
   },
   {
-    "FIPS": 22089,
-    "State": "Louisiana",
-    "County": "St. Charles"
+    code: 22089,
+    state: 'Louisiana',
+    county: 'St. Charles',
   },
   {
-    "FIPS": 22091,
-    "State": "Louisiana",
-    "County": "St. Helena"
+    code: 22091,
+    state: 'Louisiana',
+    county: 'St. Helena',
   },
   {
-    "FIPS": 22093,
-    "State": "Louisiana",
-    "County": "St. James"
+    code: 22093,
+    state: 'Louisiana',
+    county: 'St. James',
   },
   {
-    "FIPS": 22095,
-    "State": "Louisiana",
-    "County": "St. John the Baptist"
+    code: 22095,
+    state: 'Louisiana',
+    county: 'St. John the Baptist',
   },
   {
-    "FIPS": 22097,
-    "State": "Louisiana",
-    "County": "St. Landry"
+    code: 22097,
+    state: 'Louisiana',
+    county: 'St. Landry',
   },
   {
-    "FIPS": 22099,
-    "State": "Louisiana",
-    "County": "St. Martin"
+    code: 22099,
+    state: 'Louisiana',
+    county: 'St. Martin',
   },
   {
-    "FIPS": 22101,
-    "State": "Louisiana",
-    "County": "St. Mary"
+    code: 22101,
+    state: 'Louisiana',
+    county: 'St. Mary',
   },
   {
-    "FIPS": 22103,
-    "State": "Louisiana",
-    "County": "St. Tammany"
+    code: 22103,
+    state: 'Louisiana',
+    county: 'St. Tammany',
   },
   {
-    "FIPS": 22105,
-    "State": "Louisiana",
-    "County": "Tangipahoa"
+    code: 22105,
+    state: 'Louisiana',
+    county: 'Tangipahoa',
   },
   {
-    "FIPS": 22107,
-    "State": "Louisiana",
-    "County": "Tensas"
+    code: 22107,
+    state: 'Louisiana',
+    county: 'Tensas',
   },
   {
-    "FIPS": 22109,
-    "State": "Louisiana",
-    "County": "Terrebonne"
+    code: 22109,
+    state: 'Louisiana',
+    county: 'Terrebonne',
   },
   {
-    "FIPS": 22111,
-    "State": "Louisiana",
-    "County": "Union"
+    code: 22111,
+    state: 'Louisiana',
+    county: 'Union',
   },
   {
-    "FIPS": 22113,
-    "State": "Louisiana",
-    "County": "Vermilion"
+    code: 22113,
+    state: 'Louisiana',
+    county: 'Vermilion',
   },
   {
-    "FIPS": 22115,
-    "State": "Louisiana",
-    "County": "Vernon"
+    code: 22115,
+    state: 'Louisiana',
+    county: 'Vernon',
   },
   {
-    "FIPS": 22117,
-    "State": "Louisiana",
-    "County": "Washington"
+    code: 22117,
+    state: 'Louisiana',
+    county: 'Washington',
   },
   {
-    "FIPS": 22119,
-    "State": "Louisiana",
-    "County": "Webster"
+    code: 22119,
+    state: 'Louisiana',
+    county: 'Webster',
   },
   {
-    "FIPS": 22121,
-    "State": "Louisiana",
-    "County": "West Baton Rouge"
+    code: 22121,
+    state: 'Louisiana',
+    county: 'West Baton Rouge',
   },
   {
-    "FIPS": 22123,
-    "State": "Louisiana",
-    "County": "West Carroll"
+    code: 22123,
+    state: 'Louisiana',
+    county: 'West Carroll',
   },
   {
-    "FIPS": 22125,
-    "State": "Louisiana",
-    "County": "West Feliciana"
+    code: 22125,
+    state: 'Louisiana',
+    county: 'West Feliciana',
   },
   {
-    "FIPS": 22127,
-    "State": "Louisiana",
-    "County": "Winn"
+    code: 22127,
+    state: 'Louisiana',
+    county: 'Winn',
   },
   {
-    "FIPS": 23001,
-    "State": "Maine",
-    "County": "Androscoggin"
+    code: 23001,
+    state: 'Maine',
+    county: 'Androscoggin',
   },
   {
-    "FIPS": 23003,
-    "State": "Maine",
-    "County": "Aroostook"
+    code: 23003,
+    state: 'Maine',
+    county: 'Aroostook',
   },
   {
-    "FIPS": 23005,
-    "State": "Maine",
-    "County": "Cumberland"
+    code: 23005,
+    state: 'Maine',
+    county: 'Cumberland',
   },
   {
-    "FIPS": 23007,
-    "State": "Maine",
-    "County": "Franklin"
+    code: 23007,
+    state: 'Maine',
+    county: 'Franklin',
   },
   {
-    "FIPS": 23009,
-    "State": "Maine",
-    "County": "Hancock"
+    code: 23009,
+    state: 'Maine',
+    county: 'Hancock',
   },
   {
-    "FIPS": 23011,
-    "State": "Maine",
-    "County": "Kennebec"
+    code: 23011,
+    state: 'Maine',
+    county: 'Kennebec',
   },
   {
-    "FIPS": 23013,
-    "State": "Maine",
-    "County": "Knox"
+    code: 23013,
+    state: 'Maine',
+    county: 'Knox',
   },
   {
-    "FIPS": 23015,
-    "State": "Maine",
-    "County": "Lincoln"
+    code: 23015,
+    state: 'Maine',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 23017,
-    "State": "Maine",
-    "County": "Oxford"
+    code: 23017,
+    state: 'Maine',
+    county: 'Oxford',
   },
   {
-    "FIPS": 23019,
-    "State": "Maine",
-    "County": "Penobscot"
+    code: 23019,
+    state: 'Maine',
+    county: 'Penobscot',
   },
   {
-    "FIPS": 23021,
-    "State": "Maine",
-    "County": "Piscataquis"
+    code: 23021,
+    state: 'Maine',
+    county: 'Piscataquis',
   },
   {
-    "FIPS": 23023,
-    "State": "Maine",
-    "County": "Sagadahoc"
+    code: 23023,
+    state: 'Maine',
+    county: 'Sagadahoc',
   },
   {
-    "FIPS": 23025,
-    "State": "Maine",
-    "County": "Somerset"
+    code: 23025,
+    state: 'Maine',
+    county: 'Somerset',
   },
   {
-    "FIPS": 23027,
-    "State": "Maine",
-    "County": "Waldo"
+    code: 23027,
+    state: 'Maine',
+    county: 'Waldo',
   },
   {
-    "FIPS": 23029,
-    "State": "Maine",
-    "County": "Washington"
+    code: 23029,
+    state: 'Maine',
+    county: 'Washington',
   },
   {
-    "FIPS": 23031,
-    "State": "Maine",
-    "County": "York"
+    code: 23031,
+    state: 'Maine',
+    county: 'York',
   },
   {
-    "FIPS": 24001,
-    "State": "Maryland",
-    "County": "Allegany"
+    code: 24001,
+    state: 'Maryland',
+    county: 'Allegany',
   },
   {
-    "FIPS": 24003,
-    "State": "Maryland",
-    "County": "Anne Arundel"
+    code: 24003,
+    state: 'Maryland',
+    county: 'Anne Arundel',
   },
   {
-    "FIPS": 24005,
-    "State": "Maryland",
-    "County": "Baltimore"
+    code: 24005,
+    state: 'Maryland',
+    county: 'Baltimore',
   },
   {
-    "FIPS": 24009,
-    "State": "Maryland",
-    "County": "Calvert"
+    code: 24009,
+    state: 'Maryland',
+    county: 'Calvert',
   },
   {
-    "FIPS": 24011,
-    "State": "Maryland",
-    "County": "Caroline"
+    code: 24011,
+    state: 'Maryland',
+    county: 'Caroline',
   },
   {
-    "FIPS": 24013,
-    "State": "Maryland",
-    "County": "Carroll"
+    code: 24013,
+    state: 'Maryland',
+    county: 'Carroll',
   },
   {
-    "FIPS": 24015,
-    "State": "Maryland",
-    "County": "Cecil"
+    code: 24015,
+    state: 'Maryland',
+    county: 'Cecil',
   },
   {
-    "FIPS": 24017,
-    "State": "Maryland",
-    "County": "Charles"
+    code: 24017,
+    state: 'Maryland',
+    county: 'Charles',
   },
   {
-    "FIPS": 24019,
-    "State": "Maryland",
-    "County": "Dorchester"
+    code: 24019,
+    state: 'Maryland',
+    county: 'Dorchester',
   },
   {
-    "FIPS": 24021,
-    "State": "Maryland",
-    "County": "Frederick"
+    code: 24021,
+    state: 'Maryland',
+    county: 'Frederick',
   },
   {
-    "FIPS": 24023,
-    "State": "Maryland",
-    "County": "Garrett"
+    code: 24023,
+    state: 'Maryland',
+    county: 'Garrett',
   },
   {
-    "FIPS": 24025,
-    "State": "Maryland",
-    "County": "Harford"
+    code: 24025,
+    state: 'Maryland',
+    county: 'Harford',
   },
   {
-    "FIPS": 24027,
-    "State": "Maryland",
-    "County": "Howard"
+    code: 24027,
+    state: 'Maryland',
+    county: 'Howard',
   },
   {
-    "FIPS": 24029,
-    "State": "Maryland",
-    "County": "Kent"
+    code: 24029,
+    state: 'Maryland',
+    county: 'Kent',
   },
   {
-    "FIPS": 24031,
-    "State": "Maryland",
-    "County": "Montgomery"
+    code: 24031,
+    state: 'Maryland',
+    county: 'Montgomery',
   },
   {
-    "FIPS": 24033,
-    "State": "Maryland",
-    "County": "Prince George's"
+    code: 24033,
+    state: 'Maryland',
+    county: "Prince George's",
   },
   {
-    "FIPS": 24035,
-    "State": "Maryland",
-    "County": "Queen Anne's"
+    code: 24035,
+    state: 'Maryland',
+    county: "Queen Anne's",
   },
   {
-    "FIPS": 24037,
-    "State": "Maryland",
-    "County": "St. Mary's"
+    code: 24037,
+    state: 'Maryland',
+    county: "St. Mary's",
   },
   {
-    "FIPS": 24039,
-    "State": "Maryland",
-    "County": "Somerset"
+    code: 24039,
+    state: 'Maryland',
+    county: 'Somerset',
   },
   {
-    "FIPS": 24041,
-    "State": "Maryland",
-    "County": "Talbot"
+    code: 24041,
+    state: 'Maryland',
+    county: 'Talbot',
   },
   {
-    "FIPS": 24043,
-    "State": "Maryland",
-    "County": "Washington"
+    code: 24043,
+    state: 'Maryland',
+    county: 'Washington',
   },
   {
-    "FIPS": 24045,
-    "State": "Maryland",
-    "County": "Wicomico"
+    code: 24045,
+    state: 'Maryland',
+    county: 'Wicomico',
   },
   {
-    "FIPS": 24047,
-    "State": "Maryland",
-    "County": "Worcester"
+    code: 24047,
+    state: 'Maryland',
+    county: 'Worcester',
   },
   {
-    "FIPS": 24510,
-    "State": "Maryland",
-    "County": "Baltimore city"
+    code: 24510,
+    state: 'Maryland',
+    county: 'Baltimore city',
   },
   {
-    "FIPS": 25001,
-    "State": "Massachusetts",
-    "County": "Barnstable"
+    code: 25001,
+    state: 'Massachusetts',
+    county: 'Barnstable',
   },
   {
-    "FIPS": 25003,
-    "State": "Massachusetts",
-    "County": "Berkshire"
+    code: 25003,
+    state: 'Massachusetts',
+    county: 'Berkshire',
   },
   {
-    "FIPS": 25005,
-    "State": "Massachusetts",
-    "County": "Bristol"
+    code: 25005,
+    state: 'Massachusetts',
+    county: 'Bristol',
   },
   {
-    "FIPS": 25007,
-    "State": "Massachusetts",
-    "County": "Dukes"
+    code: 25007,
+    state: 'Massachusetts',
+    county: 'Dukes',
   },
   {
-    "FIPS": 25009,
-    "State": "Massachusetts",
-    "County": "Essex"
+    code: 25009,
+    state: 'Massachusetts',
+    county: 'Essex',
   },
   {
-    "FIPS": 25011,
-    "State": "Massachusetts",
-    "County": "Franklin"
+    code: 25011,
+    state: 'Massachusetts',
+    county: 'Franklin',
   },
   {
-    "FIPS": 25013,
-    "State": "Massachusetts",
-    "County": "Hampden"
+    code: 25013,
+    state: 'Massachusetts',
+    county: 'Hampden',
   },
   {
-    "FIPS": 25015,
-    "State": "Massachusetts",
-    "County": "Hampshire"
+    code: 25015,
+    state: 'Massachusetts',
+    county: 'Hampshire',
   },
   {
-    "FIPS": 25017,
-    "State": "Massachusetts",
-    "County": "Middlesex"
+    code: 25017,
+    state: 'Massachusetts',
+    county: 'Middlesex',
   },
   {
-    "FIPS": 25019,
-    "State": "Massachusetts",
-    "County": "Nantucket"
+    code: 25019,
+    state: 'Massachusetts',
+    county: 'Nantucket',
   },
   {
-    "FIPS": 25021,
-    "State": "Massachusetts",
-    "County": "Norfolk"
+    code: 25021,
+    state: 'Massachusetts',
+    county: 'Norfolk',
   },
   {
-    "FIPS": 25023,
-    "State": "Massachusetts",
-    "County": "Plymouth"
+    code: 25023,
+    state: 'Massachusetts',
+    county: 'Plymouth',
   },
   {
-    "FIPS": 25025,
-    "State": "Massachusetts",
-    "County": "Suffolk"
+    code: 25025,
+    state: 'Massachusetts',
+    county: 'Suffolk',
   },
   {
-    "FIPS": 25027,
-    "State": "Massachusetts",
-    "County": "Worcester"
+    code: 25027,
+    state: 'Massachusetts',
+    county: 'Worcester',
   },
   {
-    "FIPS": 26001,
-    "State": "Michigan",
-    "County": "Alcona"
+    code: 26001,
+    state: 'Michigan',
+    county: 'Alcona',
   },
   {
-    "FIPS": 26003,
-    "State": "Michigan",
-    "County": "Alger"
+    code: 26003,
+    state: 'Michigan',
+    county: 'Alger',
   },
   {
-    "FIPS": 26005,
-    "State": "Michigan",
-    "County": "Allegan"
+    code: 26005,
+    state: 'Michigan',
+    county: 'Allegan',
   },
   {
-    "FIPS": 26007,
-    "State": "Michigan",
-    "County": "Alpena"
+    code: 26007,
+    state: 'Michigan',
+    county: 'Alpena',
   },
   {
-    "FIPS": 26009,
-    "State": "Michigan",
-    "County": "Antrim"
+    code: 26009,
+    state: 'Michigan',
+    county: 'Antrim',
   },
   {
-    "FIPS": 26011,
-    "State": "Michigan",
-    "County": "Arenac"
+    code: 26011,
+    state: 'Michigan',
+    county: 'Arenac',
   },
   {
-    "FIPS": 26013,
-    "State": "Michigan",
-    "County": "Baraga"
+    code: 26013,
+    state: 'Michigan',
+    county: 'Baraga',
   },
   {
-    "FIPS": 26015,
-    "State": "Michigan",
-    "County": "Barry"
+    code: 26015,
+    state: 'Michigan',
+    county: 'Barry',
   },
   {
-    "FIPS": 26017,
-    "State": "Michigan",
-    "County": "Bay"
+    code: 26017,
+    state: 'Michigan',
+    county: 'Bay',
   },
   {
-    "FIPS": 26019,
-    "State": "Michigan",
-    "County": "Benzie"
+    code: 26019,
+    state: 'Michigan',
+    county: 'Benzie',
   },
   {
-    "FIPS": 26021,
-    "State": "Michigan",
-    "County": "Berrien"
+    code: 26021,
+    state: 'Michigan',
+    county: 'Berrien',
   },
   {
-    "FIPS": 26023,
-    "State": "Michigan",
-    "County": "Branch"
+    code: 26023,
+    state: 'Michigan',
+    county: 'Branch',
   },
   {
-    "FIPS": 26025,
-    "State": "Michigan",
-    "County": "Calhoun"
+    code: 26025,
+    state: 'Michigan',
+    county: 'Calhoun',
   },
   {
-    "FIPS": 26027,
-    "State": "Michigan",
-    "County": "Cass"
+    code: 26027,
+    state: 'Michigan',
+    county: 'Cass',
   },
   {
-    "FIPS": 26029,
-    "State": "Michigan",
-    "County": "Charlevoix"
+    code: 26029,
+    state: 'Michigan',
+    county: 'Charlevoix',
   },
   {
-    "FIPS": 26031,
-    "State": "Michigan",
-    "County": "Cheboygan"
+    code: 26031,
+    state: 'Michigan',
+    county: 'Cheboygan',
   },
   {
-    "FIPS": 26033,
-    "State": "Michigan",
-    "County": "Chippewa"
+    code: 26033,
+    state: 'Michigan',
+    county: 'Chippewa',
   },
   {
-    "FIPS": 26035,
-    "State": "Michigan",
-    "County": "Clare"
+    code: 26035,
+    state: 'Michigan',
+    county: 'Clare',
   },
   {
-    "FIPS": 26037,
-    "State": "Michigan",
-    "County": "Clinton"
+    code: 26037,
+    state: 'Michigan',
+    county: 'Clinton',
   },
   {
-    "FIPS": 26039,
-    "State": "Michigan",
-    "County": "Crawford"
+    code: 26039,
+    state: 'Michigan',
+    county: 'Crawford',
   },
   {
-    "FIPS": 26041,
-    "State": "Michigan",
-    "County": "Delta"
+    code: 26041,
+    state: 'Michigan',
+    county: 'Delta',
   },
   {
-    "FIPS": 26043,
-    "State": "Michigan",
-    "County": "Dickinson"
+    code: 26043,
+    state: 'Michigan',
+    county: 'Dickinson',
   },
   {
-    "FIPS": 26045,
-    "State": "Michigan",
-    "County": "Eaton"
+    code: 26045,
+    state: 'Michigan',
+    county: 'Eaton',
   },
   {
-    "FIPS": 26047,
-    "State": "Michigan",
-    "County": "Emmet"
+    code: 26047,
+    state: 'Michigan',
+    county: 'Emmet',
   },
   {
-    "FIPS": 26049,
-    "State": "Michigan",
-    "County": "Genesee"
+    code: 26049,
+    state: 'Michigan',
+    county: 'Genesee',
   },
   {
-    "FIPS": 26051,
-    "State": "Michigan",
-    "County": "Gladwin"
+    code: 26051,
+    state: 'Michigan',
+    county: 'Gladwin',
   },
   {
-    "FIPS": 26053,
-    "State": "Michigan",
-    "County": "Gogebic"
+    code: 26053,
+    state: 'Michigan',
+    county: 'Gogebic',
   },
   {
-    "FIPS": 26055,
-    "State": "Michigan",
-    "County": "Grand Traverse"
+    code: 26055,
+    state: 'Michigan',
+    county: 'Grand Traverse',
   },
   {
-    "FIPS": 26057,
-    "State": "Michigan",
-    "County": "Gratiot"
+    code: 26057,
+    state: 'Michigan',
+    county: 'Gratiot',
   },
   {
-    "FIPS": 26059,
-    "State": "Michigan",
-    "County": "Hillsdale"
+    code: 26059,
+    state: 'Michigan',
+    county: 'Hillsdale',
   },
   {
-    "FIPS": 26061,
-    "State": "Michigan",
-    "County": "Houghton"
+    code: 26061,
+    state: 'Michigan',
+    county: 'Houghton',
   },
   {
-    "FIPS": 26063,
-    "State": "Michigan",
-    "County": "Huron"
+    code: 26063,
+    state: 'Michigan',
+    county: 'Huron',
   },
   {
-    "FIPS": 26065,
-    "State": "Michigan",
-    "County": "Ingham"
+    code: 26065,
+    state: 'Michigan',
+    county: 'Ingham',
   },
   {
-    "FIPS": 26067,
-    "State": "Michigan",
-    "County": "Ionia"
+    code: 26067,
+    state: 'Michigan',
+    county: 'Ionia',
   },
   {
-    "FIPS": 26069,
-    "State": "Michigan",
-    "County": "Iosco"
+    code: 26069,
+    state: 'Michigan',
+    county: 'Iosco',
   },
   {
-    "FIPS": 26071,
-    "State": "Michigan",
-    "County": "Iron"
+    code: 26071,
+    state: 'Michigan',
+    county: 'Iron',
   },
   {
-    "FIPS": 26073,
-    "State": "Michigan",
-    "County": "Isabella"
+    code: 26073,
+    state: 'Michigan',
+    county: 'Isabella',
   },
   {
-    "FIPS": 26075,
-    "State": "Michigan",
-    "County": "Jackson"
+    code: 26075,
+    state: 'Michigan',
+    county: 'Jackson',
   },
   {
-    "FIPS": 26077,
-    "State": "Michigan",
-    "County": "Kalamazoo"
+    code: 26077,
+    state: 'Michigan',
+    county: 'Kalamazoo',
   },
   {
-    "FIPS": 26079,
-    "State": "Michigan",
-    "County": "Kalkaska"
+    code: 26079,
+    state: 'Michigan',
+    county: 'Kalkaska',
   },
   {
-    "FIPS": 26081,
-    "State": "Michigan",
-    "County": "Kent"
+    code: 26081,
+    state: 'Michigan',
+    county: 'Kent',
   },
   {
-    "FIPS": 26083,
-    "State": "Michigan",
-    "County": "Keweenaw"
+    code: 26083,
+    state: 'Michigan',
+    county: 'Keweenaw',
   },
   {
-    "FIPS": 26085,
-    "State": "Michigan",
-    "County": "Lake"
+    code: 26085,
+    state: 'Michigan',
+    county: 'Lake',
   },
   {
-    "FIPS": 26087,
-    "State": "Michigan",
-    "County": "Lapeer"
+    code: 26087,
+    state: 'Michigan',
+    county: 'Lapeer',
   },
   {
-    "FIPS": 26089,
-    "State": "Michigan",
-    "County": "Leelanau"
+    code: 26089,
+    state: 'Michigan',
+    county: 'Leelanau',
   },
   {
-    "FIPS": 26091,
-    "State": "Michigan",
-    "County": "Lenawee"
+    code: 26091,
+    state: 'Michigan',
+    county: 'Lenawee',
   },
   {
-    "FIPS": 26093,
-    "State": "Michigan",
-    "County": "Livingston"
+    code: 26093,
+    state: 'Michigan',
+    county: 'Livingston',
   },
   {
-    "FIPS": 26095,
-    "State": "Michigan",
-    "County": "Luce"
+    code: 26095,
+    state: 'Michigan',
+    county: 'Luce',
   },
   {
-    "FIPS": 26097,
-    "State": "Michigan",
-    "County": "Mackinac"
+    code: 26097,
+    state: 'Michigan',
+    county: 'Mackinac',
   },
   {
-    "FIPS": 26099,
-    "State": "Michigan",
-    "County": "Macomb"
+    code: 26099,
+    state: 'Michigan',
+    county: 'Macomb',
   },
   {
-    "FIPS": 26101,
-    "State": "Michigan",
-    "County": "Manistee"
+    code: 26101,
+    state: 'Michigan',
+    county: 'Manistee',
   },
   {
-    "FIPS": 26103,
-    "State": "Michigan",
-    "County": "Marquette"
+    code: 26103,
+    state: 'Michigan',
+    county: 'Marquette',
   },
   {
-    "FIPS": 26105,
-    "State": "Michigan",
-    "County": "Mason"
+    code: 26105,
+    state: 'Michigan',
+    county: 'Mason',
   },
   {
-    "FIPS": 26107,
-    "State": "Michigan",
-    "County": "Mecosta"
+    code: 26107,
+    state: 'Michigan',
+    county: 'Mecosta',
   },
   {
-    "FIPS": 26109,
-    "State": "Michigan",
-    "County": "Menominee"
+    code: 26109,
+    state: 'Michigan',
+    county: 'Menominee',
   },
   {
-    "FIPS": 26111,
-    "State": "Michigan",
-    "County": "Midland"
+    code: 26111,
+    state: 'Michigan',
+    county: 'Midland',
   },
   {
-    "FIPS": 26113,
-    "State": "Michigan",
-    "County": "Missaukee"
+    code: 26113,
+    state: 'Michigan',
+    county: 'Missaukee',
   },
   {
-    "FIPS": 26115,
-    "State": "Michigan",
-    "County": "Monroe"
+    code: 26115,
+    state: 'Michigan',
+    county: 'Monroe',
   },
   {
-    "FIPS": 26117,
-    "State": "Michigan",
-    "County": "Montcalm"
+    code: 26117,
+    state: 'Michigan',
+    county: 'Montcalm',
   },
   {
-    "FIPS": 26119,
-    "State": "Michigan",
-    "County": "Montmorency"
+    code: 26119,
+    state: 'Michigan',
+    county: 'Montmorency',
   },
   {
-    "FIPS": 26121,
-    "State": "Michigan",
-    "County": "Muskegon"
+    code: 26121,
+    state: 'Michigan',
+    county: 'Muskegon',
   },
   {
-    "FIPS": 26123,
-    "State": "Michigan",
-    "County": "Newaygo"
+    code: 26123,
+    state: 'Michigan',
+    county: 'Newaygo',
   },
   {
-    "FIPS": 26125,
-    "State": "Michigan",
-    "County": "Oakland"
+    code: 26125,
+    state: 'Michigan',
+    county: 'Oakland',
   },
   {
-    "FIPS": 26127,
-    "State": "Michigan",
-    "County": "Oceana"
+    code: 26127,
+    state: 'Michigan',
+    county: 'Oceana',
   },
   {
-    "FIPS": 26129,
-    "State": "Michigan",
-    "County": "Ogemaw"
+    code: 26129,
+    state: 'Michigan',
+    county: 'Ogemaw',
   },
   {
-    "FIPS": 26131,
-    "State": "Michigan",
-    "County": "Ontonagon"
+    code: 26131,
+    state: 'Michigan',
+    county: 'Ontonagon',
   },
   {
-    "FIPS": 26133,
-    "State": "Michigan",
-    "County": "Osceola"
+    code: 26133,
+    state: 'Michigan',
+    county: 'Osceola',
   },
   {
-    "FIPS": 26135,
-    "State": "Michigan",
-    "County": "Oscoda"
+    code: 26135,
+    state: 'Michigan',
+    county: 'Oscoda',
   },
   {
-    "FIPS": 26137,
-    "State": "Michigan",
-    "County": "Otsego"
+    code: 26137,
+    state: 'Michigan',
+    county: 'Otsego',
   },
   {
-    "FIPS": 26139,
-    "State": "Michigan",
-    "County": "Ottawa"
+    code: 26139,
+    state: 'Michigan',
+    county: 'Ottawa',
   },
   {
-    "FIPS": 26141,
-    "State": "Michigan",
-    "County": "Presque Isle"
+    code: 26141,
+    state: 'Michigan',
+    county: 'Presque Isle',
   },
   {
-    "FIPS": 26143,
-    "State": "Michigan",
-    "County": "Roscommon"
+    code: 26143,
+    state: 'Michigan',
+    county: 'Roscommon',
   },
   {
-    "FIPS": 26145,
-    "State": "Michigan",
-    "County": "Saginaw"
+    code: 26145,
+    state: 'Michigan',
+    county: 'Saginaw',
   },
   {
-    "FIPS": 26147,
-    "State": "Michigan",
-    "County": "St. Clair"
+    code: 26147,
+    state: 'Michigan',
+    county: 'St. Clair',
   },
   {
-    "FIPS": 26149,
-    "State": "Michigan",
-    "County": "St. Joseph"
+    code: 26149,
+    state: 'Michigan',
+    county: 'St. Joseph',
   },
   {
-    "FIPS": 26151,
-    "State": "Michigan",
-    "County": "Sanilac"
+    code: 26151,
+    state: 'Michigan',
+    county: 'Sanilac',
   },
   {
-    "FIPS": 26153,
-    "State": "Michigan",
-    "County": "Schoolcraft"
+    code: 26153,
+    state: 'Michigan',
+    county: 'Schoolcraft',
   },
   {
-    "FIPS": 26155,
-    "State": "Michigan",
-    "County": "Shiawassee"
+    code: 26155,
+    state: 'Michigan',
+    county: 'Shiawassee',
   },
   {
-    "FIPS": 26157,
-    "State": "Michigan",
-    "County": "Tuscola"
+    code: 26157,
+    state: 'Michigan',
+    county: 'Tuscola',
   },
   {
-    "FIPS": 26159,
-    "State": "Michigan",
-    "County": "Van Buren"
+    code: 26159,
+    state: 'Michigan',
+    county: 'Van Buren',
   },
   {
-    "FIPS": 26161,
-    "State": "Michigan",
-    "County": "Washtenaw"
+    code: 26161,
+    state: 'Michigan',
+    county: 'Washtenaw',
   },
   {
-    "FIPS": 26163,
-    "State": "Michigan",
-    "County": "Wayne"
+    code: 26163,
+    state: 'Michigan',
+    county: 'Wayne',
   },
   {
-    "FIPS": 26165,
-    "State": "Michigan",
-    "County": "Wexford"
+    code: 26165,
+    state: 'Michigan',
+    county: 'Wexford',
   },
   {
-    "FIPS": 27001,
-    "State": "Minnesota",
-    "County": "Aitkin"
+    code: 27001,
+    state: 'Minnesota',
+    county: 'Aitkin',
   },
   {
-    "FIPS": 27003,
-    "State": "Minnesota",
-    "County": "Anoka"
+    code: 27003,
+    state: 'Minnesota',
+    county: 'Anoka',
   },
   {
-    "FIPS": 27005,
-    "State": "Minnesota",
-    "County": "Becker"
+    code: 27005,
+    state: 'Minnesota',
+    county: 'Becker',
   },
   {
-    "FIPS": 27007,
-    "State": "Minnesota",
-    "County": "Beltrami"
+    code: 27007,
+    state: 'Minnesota',
+    county: 'Beltrami',
   },
   {
-    "FIPS": 27009,
-    "State": "Minnesota",
-    "County": "Benton"
+    code: 27009,
+    state: 'Minnesota',
+    county: 'Benton',
   },
   {
-    "FIPS": 27011,
-    "State": "Minnesota",
-    "County": "Big Stone"
+    code: 27011,
+    state: 'Minnesota',
+    county: 'Big Stone',
   },
   {
-    "FIPS": 27013,
-    "State": "Minnesota",
-    "County": "Blue Earth"
+    code: 27013,
+    state: 'Minnesota',
+    county: 'Blue Earth',
   },
   {
-    "FIPS": 27015,
-    "State": "Minnesota",
-    "County": "Brown"
+    code: 27015,
+    state: 'Minnesota',
+    county: 'Brown',
   },
   {
-    "FIPS": 27017,
-    "State": "Minnesota",
-    "County": "Carlton"
+    code: 27017,
+    state: 'Minnesota',
+    county: 'Carlton',
   },
   {
-    "FIPS": 27019,
-    "State": "Minnesota",
-    "County": "Carver"
+    code: 27019,
+    state: 'Minnesota',
+    county: 'Carver',
   },
   {
-    "FIPS": 27021,
-    "State": "Minnesota",
-    "County": "Cass"
+    code: 27021,
+    state: 'Minnesota',
+    county: 'Cass',
   },
   {
-    "FIPS": 27023,
-    "State": "Minnesota",
-    "County": "Chippewa"
+    code: 27023,
+    state: 'Minnesota',
+    county: 'Chippewa',
   },
   {
-    "FIPS": 27025,
-    "State": "Minnesota",
-    "County": "Chisago"
+    code: 27025,
+    state: 'Minnesota',
+    county: 'Chisago',
   },
   {
-    "FIPS": 27027,
-    "State": "Minnesota",
-    "County": "Clay"
+    code: 27027,
+    state: 'Minnesota',
+    county: 'Clay',
   },
   {
-    "FIPS": 27029,
-    "State": "Minnesota",
-    "County": "Clearwater"
+    code: 27029,
+    state: 'Minnesota',
+    county: 'Clearwater',
   },
   {
-    "FIPS": 27031,
-    "State": "Minnesota",
-    "County": "Cook"
+    code: 27031,
+    state: 'Minnesota',
+    county: 'Cook',
   },
   {
-    "FIPS": 27033,
-    "State": "Minnesota",
-    "County": "Cottonwood"
+    code: 27033,
+    state: 'Minnesota',
+    county: 'Cottonwood',
   },
   {
-    "FIPS": 27035,
-    "State": "Minnesota",
-    "County": "Crow Wing"
+    code: 27035,
+    state: 'Minnesota',
+    county: 'Crow Wing',
   },
   {
-    "FIPS": 27037,
-    "State": "Minnesota",
-    "County": "Dakota"
+    code: 27037,
+    state: 'Minnesota',
+    county: 'Dakota',
   },
   {
-    "FIPS": 27039,
-    "State": "Minnesota",
-    "County": "Dodge"
+    code: 27039,
+    state: 'Minnesota',
+    county: 'Dodge',
   },
   {
-    "FIPS": 27041,
-    "State": "Minnesota",
-    "County": "Douglas"
+    code: 27041,
+    state: 'Minnesota',
+    county: 'Douglas',
   },
   {
-    "FIPS": 27043,
-    "State": "Minnesota",
-    "County": "Faribault"
+    code: 27043,
+    state: 'Minnesota',
+    county: 'Faribault',
   },
   {
-    "FIPS": 27045,
-    "State": "Minnesota",
-    "County": "Fillmore"
+    code: 27045,
+    state: 'Minnesota',
+    county: 'Fillmore',
   },
   {
-    "FIPS": 27047,
-    "State": "Minnesota",
-    "County": "Freeborn"
+    code: 27047,
+    state: 'Minnesota',
+    county: 'Freeborn',
   },
   {
-    "FIPS": 27049,
-    "State": "Minnesota",
-    "County": "Goodhue"
+    code: 27049,
+    state: 'Minnesota',
+    county: 'Goodhue',
   },
   {
-    "FIPS": 27051,
-    "State": "Minnesota",
-    "County": "Grant"
+    code: 27051,
+    state: 'Minnesota',
+    county: 'Grant',
   },
   {
-    "FIPS": 27053,
-    "State": "Minnesota",
-    "County": "Hennepin"
+    code: 27053,
+    state: 'Minnesota',
+    county: 'Hennepin',
   },
   {
-    "FIPS": 27055,
-    "State": "Minnesota",
-    "County": "Houston"
+    code: 27055,
+    state: 'Minnesota',
+    county: 'Houston',
   },
   {
-    "FIPS": 27057,
-    "State": "Minnesota",
-    "County": "Hubbard"
+    code: 27057,
+    state: 'Minnesota',
+    county: 'Hubbard',
   },
   {
-    "FIPS": 27059,
-    "State": "Minnesota",
-    "County": "Isanti"
+    code: 27059,
+    state: 'Minnesota',
+    county: 'Isanti',
   },
   {
-    "FIPS": 27061,
-    "State": "Minnesota",
-    "County": "Itasca"
+    code: 27061,
+    state: 'Minnesota',
+    county: 'Itasca',
   },
   {
-    "FIPS": 27063,
-    "State": "Minnesota",
-    "County": "Jackson"
+    code: 27063,
+    state: 'Minnesota',
+    county: 'Jackson',
   },
   {
-    "FIPS": 27065,
-    "State": "Minnesota",
-    "County": "Kanabec"
+    code: 27065,
+    state: 'Minnesota',
+    county: 'Kanabec',
   },
   {
-    "FIPS": 27067,
-    "State": "Minnesota",
-    "County": "Kandiyohi"
+    code: 27067,
+    state: 'Minnesota',
+    county: 'Kandiyohi',
   },
   {
-    "FIPS": 27069,
-    "State": "Minnesota",
-    "County": "Kittson"
+    code: 27069,
+    state: 'Minnesota',
+    county: 'Kittson',
   },
   {
-    "FIPS": 27071,
-    "State": "Minnesota",
-    "County": "Koochiching"
+    code: 27071,
+    state: 'Minnesota',
+    county: 'Koochiching',
   },
   {
-    "FIPS": 27073,
-    "State": "Minnesota",
-    "County": "Lac qui Parle"
+    code: 27073,
+    state: 'Minnesota',
+    county: 'Lac qui Parle',
   },
   {
-    "FIPS": 27075,
-    "State": "Minnesota",
-    "County": "Lake"
+    code: 27075,
+    state: 'Minnesota',
+    county: 'Lake',
   },
   {
-    "FIPS": 27077,
-    "State": "Minnesota",
-    "County": "Lake of the Woods"
+    code: 27077,
+    state: 'Minnesota',
+    county: 'Lake of the Woods',
   },
   {
-    "FIPS": 27079,
-    "State": "Minnesota",
-    "County": "Le Sueur"
+    code: 27079,
+    state: 'Minnesota',
+    county: 'Le Sueur',
   },
   {
-    "FIPS": 27081,
-    "State": "Minnesota",
-    "County": "Lincoln"
+    code: 27081,
+    state: 'Minnesota',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 27083,
-    "State": "Minnesota",
-    "County": "Lyon"
+    code: 27083,
+    state: 'Minnesota',
+    county: 'Lyon',
   },
   {
-    "FIPS": 27085,
-    "State": "Minnesota",
-    "County": "McLeod"
+    code: 27085,
+    state: 'Minnesota',
+    county: 'McLeod',
   },
   {
-    "FIPS": 27087,
-    "State": "Minnesota",
-    "County": "Mahnomen"
+    code: 27087,
+    state: 'Minnesota',
+    county: 'Mahnomen',
   },
   {
-    "FIPS": 27089,
-    "State": "Minnesota",
-    "County": "Marshall"
+    code: 27089,
+    state: 'Minnesota',
+    county: 'Marshall',
   },
   {
-    "FIPS": 27091,
-    "State": "Minnesota",
-    "County": "Martin"
+    code: 27091,
+    state: 'Minnesota',
+    county: 'Martin',
   },
   {
-    "FIPS": 27093,
-    "State": "Minnesota",
-    "County": "Meeker"
+    code: 27093,
+    state: 'Minnesota',
+    county: 'Meeker',
   },
   {
-    "FIPS": 27095,
-    "State": "Minnesota",
-    "County": "Mille Lacs"
+    code: 27095,
+    state: 'Minnesota',
+    county: 'Mille Lacs',
   },
   {
-    "FIPS": 27097,
-    "State": "Minnesota",
-    "County": "Morrison"
+    code: 27097,
+    state: 'Minnesota',
+    county: 'Morrison',
   },
   {
-    "FIPS": 27099,
-    "State": "Minnesota",
-    "County": "Mower"
+    code: 27099,
+    state: 'Minnesota',
+    county: 'Mower',
   },
   {
-    "FIPS": 27101,
-    "State": "Minnesota",
-    "County": "Murray"
+    code: 27101,
+    state: 'Minnesota',
+    county: 'Murray',
   },
   {
-    "FIPS": 27103,
-    "State": "Minnesota",
-    "County": "Nicollet"
+    code: 27103,
+    state: 'Minnesota',
+    county: 'Nicollet',
   },
   {
-    "FIPS": 27105,
-    "State": "Minnesota",
-    "County": "Nobles"
+    code: 27105,
+    state: 'Minnesota',
+    county: 'Nobles',
   },
   {
-    "FIPS": 27107,
-    "State": "Minnesota",
-    "County": "Norman"
+    code: 27107,
+    state: 'Minnesota',
+    county: 'Norman',
   },
   {
-    "FIPS": 27109,
-    "State": "Minnesota",
-    "County": "Olmsted"
+    code: 27109,
+    state: 'Minnesota',
+    county: 'Olmsted',
   },
   {
-    "FIPS": 27111,
-    "State": "Minnesota",
-    "County": "Otter Tail"
+    code: 27111,
+    state: 'Minnesota',
+    county: 'Otter Tail',
   },
   {
-    "FIPS": 27113,
-    "State": "Minnesota",
-    "County": "Pennington"
+    code: 27113,
+    state: 'Minnesota',
+    county: 'Pennington',
   },
   {
-    "FIPS": 27115,
-    "State": "Minnesota",
-    "County": "Pine"
+    code: 27115,
+    state: 'Minnesota',
+    county: 'Pine',
   },
   {
-    "FIPS": 27117,
-    "State": "Minnesota",
-    "County": "Pipestone"
+    code: 27117,
+    state: 'Minnesota',
+    county: 'Pipestone',
   },
   {
-    "FIPS": 27119,
-    "State": "Minnesota",
-    "County": "Polk"
+    code: 27119,
+    state: 'Minnesota',
+    county: 'Polk',
   },
   {
-    "FIPS": 27121,
-    "State": "Minnesota",
-    "County": "Pope"
+    code: 27121,
+    state: 'Minnesota',
+    county: 'Pope',
   },
   {
-    "FIPS": 27123,
-    "State": "Minnesota",
-    "County": "Ramsey"
+    code: 27123,
+    state: 'Minnesota',
+    county: 'Ramsey',
   },
   {
-    "FIPS": 27125,
-    "State": "Minnesota",
-    "County": "Red Lake"
+    code: 27125,
+    state: 'Minnesota',
+    county: 'Red Lake',
   },
   {
-    "FIPS": 27127,
-    "State": "Minnesota",
-    "County": "Redwood"
+    code: 27127,
+    state: 'Minnesota',
+    county: 'Redwood',
   },
   {
-    "FIPS": 27129,
-    "State": "Minnesota",
-    "County": "Renville"
+    code: 27129,
+    state: 'Minnesota',
+    county: 'Renville',
   },
   {
-    "FIPS": 27131,
-    "State": "Minnesota",
-    "County": "Rice"
+    code: 27131,
+    state: 'Minnesota',
+    county: 'Rice',
   },
   {
-    "FIPS": 27133,
-    "State": "Minnesota",
-    "County": "Rock"
+    code: 27133,
+    state: 'Minnesota',
+    county: 'Rock',
   },
   {
-    "FIPS": 27135,
-    "State": "Minnesota",
-    "County": "Roseau"
+    code: 27135,
+    state: 'Minnesota',
+    county: 'Roseau',
   },
   {
-    "FIPS": 27137,
-    "State": "Minnesota",
-    "County": "St. Louis"
+    code: 27137,
+    state: 'Minnesota',
+    county: 'St. Louis',
   },
   {
-    "FIPS": 27139,
-    "State": "Minnesota",
-    "County": "Scott"
+    code: 27139,
+    state: 'Minnesota',
+    county: 'Scott',
   },
   {
-    "FIPS": 27141,
-    "State": "Minnesota",
-    "County": "Sherburne"
+    code: 27141,
+    state: 'Minnesota',
+    county: 'Sherburne',
   },
   {
-    "FIPS": 27143,
-    "State": "Minnesota",
-    "County": "Sibley"
+    code: 27143,
+    state: 'Minnesota',
+    county: 'Sibley',
   },
   {
-    "FIPS": 27145,
-    "State": "Minnesota",
-    "County": "Stearns"
+    code: 27145,
+    state: 'Minnesota',
+    county: 'Stearns',
   },
   {
-    "FIPS": 27147,
-    "State": "Minnesota",
-    "County": "Steele"
+    code: 27147,
+    state: 'Minnesota',
+    county: 'Steele',
   },
   {
-    "FIPS": 27149,
-    "State": "Minnesota",
-    "County": "Stevens"
+    code: 27149,
+    state: 'Minnesota',
+    county: 'Stevens',
   },
   {
-    "FIPS": 27151,
-    "State": "Minnesota",
-    "County": "Swift"
+    code: 27151,
+    state: 'Minnesota',
+    county: 'Swift',
   },
   {
-    "FIPS": 27153,
-    "State": "Minnesota",
-    "County": "Todd"
+    code: 27153,
+    state: 'Minnesota',
+    county: 'Todd',
   },
   {
-    "FIPS": 27155,
-    "State": "Minnesota",
-    "County": "Traverse"
+    code: 27155,
+    state: 'Minnesota',
+    county: 'Traverse',
   },
   {
-    "FIPS": 27157,
-    "State": "Minnesota",
-    "County": "Wabasha"
+    code: 27157,
+    state: 'Minnesota',
+    county: 'Wabasha',
   },
   {
-    "FIPS": 27159,
-    "State": "Minnesota",
-    "County": "Wadena"
+    code: 27159,
+    state: 'Minnesota',
+    county: 'Wadena',
   },
   {
-    "FIPS": 27161,
-    "State": "Minnesota",
-    "County": "Waseca"
+    code: 27161,
+    state: 'Minnesota',
+    county: 'Waseca',
   },
   {
-    "FIPS": 27163,
-    "State": "Minnesota",
-    "County": "Washington"
+    code: 27163,
+    state: 'Minnesota',
+    county: 'Washington',
   },
   {
-    "FIPS": 27165,
-    "State": "Minnesota",
-    "County": "Watonwan"
+    code: 27165,
+    state: 'Minnesota',
+    county: 'Watonwan',
   },
   {
-    "FIPS": 27167,
-    "State": "Minnesota",
-    "County": "Wilkin"
+    code: 27167,
+    state: 'Minnesota',
+    county: 'Wilkin',
   },
   {
-    "FIPS": 27169,
-    "State": "Minnesota",
-    "County": "Winona"
+    code: 27169,
+    state: 'Minnesota',
+    county: 'Winona',
   },
   {
-    "FIPS": 27171,
-    "State": "Minnesota",
-    "County": "Wright"
+    code: 27171,
+    state: 'Minnesota',
+    county: 'Wright',
   },
   {
-    "FIPS": 27173,
-    "State": "Minnesota",
-    "County": "Yellow Medicine"
+    code: 27173,
+    state: 'Minnesota',
+    county: 'Yellow Medicine',
   },
   {
-    "FIPS": 28001,
-    "State": "Mississippi",
-    "County": "Adams"
+    code: 28001,
+    state: 'Mississippi',
+    county: 'Adams',
   },
   {
-    "FIPS": 28003,
-    "State": "Mississippi",
-    "County": "Alcorn"
+    code: 28003,
+    state: 'Mississippi',
+    county: 'Alcorn',
   },
   {
-    "FIPS": 28005,
-    "State": "Mississippi",
-    "County": "Amite"
+    code: 28005,
+    state: 'Mississippi',
+    county: 'Amite',
   },
   {
-    "FIPS": 28007,
-    "State": "Mississippi",
-    "County": "Attala"
+    code: 28007,
+    state: 'Mississippi',
+    county: 'Attala',
   },
   {
-    "FIPS": 28009,
-    "State": "Mississippi",
-    "County": "Benton"
+    code: 28009,
+    state: 'Mississippi',
+    county: 'Benton',
   },
   {
-    "FIPS": 28011,
-    "State": "Mississippi",
-    "County": "Bolivar"
+    code: 28011,
+    state: 'Mississippi',
+    county: 'Bolivar',
   },
   {
-    "FIPS": 28013,
-    "State": "Mississippi",
-    "County": "Calhoun"
+    code: 28013,
+    state: 'Mississippi',
+    county: 'Calhoun',
   },
   {
-    "FIPS": 28015,
-    "State": "Mississippi",
-    "County": "Carroll"
+    code: 28015,
+    state: 'Mississippi',
+    county: 'Carroll',
   },
   {
-    "FIPS": 28017,
-    "State": "Mississippi",
-    "County": "Chickasaw"
+    code: 28017,
+    state: 'Mississippi',
+    county: 'Chickasaw',
   },
   {
-    "FIPS": 28019,
-    "State": "Mississippi",
-    "County": "Choctaw"
+    code: 28019,
+    state: 'Mississippi',
+    county: 'Choctaw',
   },
   {
-    "FIPS": 28021,
-    "State": "Mississippi",
-    "County": "Claiborne"
+    code: 28021,
+    state: 'Mississippi',
+    county: 'Claiborne',
   },
   {
-    "FIPS": 28023,
-    "State": "Mississippi",
-    "County": "Clarke"
+    code: 28023,
+    state: 'Mississippi',
+    county: 'Clarke',
   },
   {
-    "FIPS": 28025,
-    "State": "Mississippi",
-    "County": "Clay"
+    code: 28025,
+    state: 'Mississippi',
+    county: 'Clay',
   },
   {
-    "FIPS": 28027,
-    "State": "Mississippi",
-    "County": "Coahoma"
+    code: 28027,
+    state: 'Mississippi',
+    county: 'Coahoma',
   },
   {
-    "FIPS": 28029,
-    "State": "Mississippi",
-    "County": "Copiah"
+    code: 28029,
+    state: 'Mississippi',
+    county: 'Copiah',
   },
   {
-    "FIPS": 28031,
-    "State": "Mississippi",
-    "County": "Covington"
+    code: 28031,
+    state: 'Mississippi',
+    county: 'Covington',
   },
   {
-    "FIPS": 28033,
-    "State": "Mississippi",
-    "County": "DeSoto"
+    code: 28033,
+    state: 'Mississippi',
+    county: 'DeSoto',
   },
   {
-    "FIPS": 28035,
-    "State": "Mississippi",
-    "County": "Forrest"
+    code: 28035,
+    state: 'Mississippi',
+    county: 'Forrest',
   },
   {
-    "FIPS": 28037,
-    "State": "Mississippi",
-    "County": "Franklin"
+    code: 28037,
+    state: 'Mississippi',
+    county: 'Franklin',
   },
   {
-    "FIPS": 28039,
-    "State": "Mississippi",
-    "County": "George"
+    code: 28039,
+    state: 'Mississippi',
+    county: 'George',
   },
   {
-    "FIPS": 28041,
-    "State": "Mississippi",
-    "County": "Greene"
+    code: 28041,
+    state: 'Mississippi',
+    county: 'Greene',
   },
   {
-    "FIPS": 28043,
-    "State": "Mississippi",
-    "County": "Grenada"
+    code: 28043,
+    state: 'Mississippi',
+    county: 'Grenada',
   },
   {
-    "FIPS": 28045,
-    "State": "Mississippi",
-    "County": "Hancock"
+    code: 28045,
+    state: 'Mississippi',
+    county: 'Hancock',
   },
   {
-    "FIPS": 28047,
-    "State": "Mississippi",
-    "County": "Harrison"
+    code: 28047,
+    state: 'Mississippi',
+    county: 'Harrison',
   },
   {
-    "FIPS": 28049,
-    "State": "Mississippi",
-    "County": "Hinds"
+    code: 28049,
+    state: 'Mississippi',
+    county: 'Hinds',
   },
   {
-    "FIPS": 28051,
-    "State": "Mississippi",
-    "County": "Holmes"
+    code: 28051,
+    state: 'Mississippi',
+    county: 'Holmes',
   },
   {
-    "FIPS": 28053,
-    "State": "Mississippi",
-    "County": "Humphreys"
+    code: 28053,
+    state: 'Mississippi',
+    county: 'Humphreys',
   },
   {
-    "FIPS": 28055,
-    "State": "Mississippi",
-    "County": "Issaquena"
+    code: 28055,
+    state: 'Mississippi',
+    county: 'Issaquena',
   },
   {
-    "FIPS": 28057,
-    "State": "Mississippi",
-    "County": "Itawamba"
+    code: 28057,
+    state: 'Mississippi',
+    county: 'Itawamba',
   },
   {
-    "FIPS": 28059,
-    "State": "Mississippi",
-    "County": "Jackson"
+    code: 28059,
+    state: 'Mississippi',
+    county: 'Jackson',
   },
   {
-    "FIPS": 28061,
-    "State": "Mississippi",
-    "County": "Jasper"
+    code: 28061,
+    state: 'Mississippi',
+    county: 'Jasper',
   },
   {
-    "FIPS": 28063,
-    "State": "Mississippi",
-    "County": "Jefferson"
+    code: 28063,
+    state: 'Mississippi',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 28065,
-    "State": "Mississippi",
-    "County": "Jefferson Davis"
+    code: 28065,
+    state: 'Mississippi',
+    county: 'Jefferson Davis',
   },
   {
-    "FIPS": 28067,
-    "State": "Mississippi",
-    "County": "Jones"
+    code: 28067,
+    state: 'Mississippi',
+    county: 'Jones',
   },
   {
-    "FIPS": 28069,
-    "State": "Mississippi",
-    "County": "Kemper"
+    code: 28069,
+    state: 'Mississippi',
+    county: 'Kemper',
   },
   {
-    "FIPS": 28071,
-    "State": "Mississippi",
-    "County": "Lafayette"
+    code: 28071,
+    state: 'Mississippi',
+    county: 'Lafayette',
   },
   {
-    "FIPS": 28073,
-    "State": "Mississippi",
-    "County": "Lamar"
+    code: 28073,
+    state: 'Mississippi',
+    county: 'Lamar',
   },
   {
-    "FIPS": 28075,
-    "State": "Mississippi",
-    "County": "Lauderdale"
+    code: 28075,
+    state: 'Mississippi',
+    county: 'Lauderdale',
   },
   {
-    "FIPS": 28077,
-    "State": "Mississippi",
-    "County": "Lawrence"
+    code: 28077,
+    state: 'Mississippi',
+    county: 'Lawrence',
   },
   {
-    "FIPS": 28079,
-    "State": "Mississippi",
-    "County": "Leake"
+    code: 28079,
+    state: 'Mississippi',
+    county: 'Leake',
   },
   {
-    "FIPS": 28081,
-    "State": "Mississippi",
-    "County": "Lee"
+    code: 28081,
+    state: 'Mississippi',
+    county: 'Lee',
   },
   {
-    "FIPS": 28083,
-    "State": "Mississippi",
-    "County": "Leflore"
+    code: 28083,
+    state: 'Mississippi',
+    county: 'Leflore',
   },
   {
-    "FIPS": 28085,
-    "State": "Mississippi",
-    "County": "Lincoln"
+    code: 28085,
+    state: 'Mississippi',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 28087,
-    "State": "Mississippi",
-    "County": "Lowndes"
+    code: 28087,
+    state: 'Mississippi',
+    county: 'Lowndes',
   },
   {
-    "FIPS": 28089,
-    "State": "Mississippi",
-    "County": "Madison"
+    code: 28089,
+    state: 'Mississippi',
+    county: 'Madison',
   },
   {
-    "FIPS": 28091,
-    "State": "Mississippi",
-    "County": "Marion"
+    code: 28091,
+    state: 'Mississippi',
+    county: 'Marion',
   },
   {
-    "FIPS": 28093,
-    "State": "Mississippi",
-    "County": "Marshall"
+    code: 28093,
+    state: 'Mississippi',
+    county: 'Marshall',
   },
   {
-    "FIPS": 28095,
-    "State": "Mississippi",
-    "County": "Monroe"
+    code: 28095,
+    state: 'Mississippi',
+    county: 'Monroe',
   },
   {
-    "FIPS": 28097,
-    "State": "Mississippi",
-    "County": "Montgomery"
+    code: 28097,
+    state: 'Mississippi',
+    county: 'Montgomery',
   },
   {
-    "FIPS": 28099,
-    "State": "Mississippi",
-    "County": "Neshoba"
+    code: 28099,
+    state: 'Mississippi',
+    county: 'Neshoba',
   },
   {
-    "FIPS": 28101,
-    "State": "Mississippi",
-    "County": "Newton"
+    code: 28101,
+    state: 'Mississippi',
+    county: 'Newton',
   },
   {
-    "FIPS": 28103,
-    "State": "Mississippi",
-    "County": "Noxubee"
+    code: 28103,
+    state: 'Mississippi',
+    county: 'Noxubee',
   },
   {
-    "FIPS": 28105,
-    "State": "Mississippi",
-    "County": "Oktibbeha"
+    code: 28105,
+    state: 'Mississippi',
+    county: 'Oktibbeha',
   },
   {
-    "FIPS": 28107,
-    "State": "Mississippi",
-    "County": "Panola"
+    code: 28107,
+    state: 'Mississippi',
+    county: 'Panola',
   },
   {
-    "FIPS": 28109,
-    "State": "Mississippi",
-    "County": "Pearl River"
+    code: 28109,
+    state: 'Mississippi',
+    county: 'Pearl River',
   },
   {
-    "FIPS": 28111,
-    "State": "Mississippi",
-    "County": "Perry"
+    code: 28111,
+    state: 'Mississippi',
+    county: 'Perry',
   },
   {
-    "FIPS": 28113,
-    "State": "Mississippi",
-    "County": "Pike"
+    code: 28113,
+    state: 'Mississippi',
+    county: 'Pike',
   },
   {
-    "FIPS": 28115,
-    "State": "Mississippi",
-    "County": "Pontotoc"
+    code: 28115,
+    state: 'Mississippi',
+    county: 'Pontotoc',
   },
   {
-    "FIPS": 28117,
-    "State": "Mississippi",
-    "County": "Prentiss"
+    code: 28117,
+    state: 'Mississippi',
+    county: 'Prentiss',
   },
   {
-    "FIPS": 28119,
-    "State": "Mississippi",
-    "County": "Quitman"
+    code: 28119,
+    state: 'Mississippi',
+    county: 'Quitman',
   },
   {
-    "FIPS": 28121,
-    "State": "Mississippi",
-    "County": "Rankin"
+    code: 28121,
+    state: 'Mississippi',
+    county: 'Rankin',
   },
   {
-    "FIPS": 28123,
-    "State": "Mississippi",
-    "County": "Scott"
+    code: 28123,
+    state: 'Mississippi',
+    county: 'Scott',
   },
   {
-    "FIPS": 28125,
-    "State": "Mississippi",
-    "County": "Sharkey"
+    code: 28125,
+    state: 'Mississippi',
+    county: 'Sharkey',
   },
   {
-    "FIPS": 28127,
-    "State": "Mississippi",
-    "County": "Simpson"
+    code: 28127,
+    state: 'Mississippi',
+    county: 'Simpson',
   },
   {
-    "FIPS": 28129,
-    "State": "Mississippi",
-    "County": "Smith"
+    code: 28129,
+    state: 'Mississippi',
+    county: 'Smith',
   },
   {
-    "FIPS": 28131,
-    "State": "Mississippi",
-    "County": "Stone"
+    code: 28131,
+    state: 'Mississippi',
+    county: 'Stone',
   },
   {
-    "FIPS": 28133,
-    "State": "Mississippi",
-    "County": "Sunflower"
+    code: 28133,
+    state: 'Mississippi',
+    county: 'Sunflower',
   },
   {
-    "FIPS": 28135,
-    "State": "Mississippi",
-    "County": "Tallahatchie"
+    code: 28135,
+    state: 'Mississippi',
+    county: 'Tallahatchie',
   },
   {
-    "FIPS": 28137,
-    "State": "Mississippi",
-    "County": "Tate"
+    code: 28137,
+    state: 'Mississippi',
+    county: 'Tate',
   },
   {
-    "FIPS": 28139,
-    "State": "Mississippi",
-    "County": "Tippah"
+    code: 28139,
+    state: 'Mississippi',
+    county: 'Tippah',
   },
   {
-    "FIPS": 28141,
-    "State": "Mississippi",
-    "County": "Tishomingo"
+    code: 28141,
+    state: 'Mississippi',
+    county: 'Tishomingo',
   },
   {
-    "FIPS": 28143,
-    "State": "Mississippi",
-    "County": "Tunica"
+    code: 28143,
+    state: 'Mississippi',
+    county: 'Tunica',
   },
   {
-    "FIPS": 28145,
-    "State": "Mississippi",
-    "County": "Union"
+    code: 28145,
+    state: 'Mississippi',
+    county: 'Union',
   },
   {
-    "FIPS": 28147,
-    "State": "Mississippi",
-    "County": "Walthall"
+    code: 28147,
+    state: 'Mississippi',
+    county: 'Walthall',
   },
   {
-    "FIPS": 28149,
-    "State": "Mississippi",
-    "County": "Warren"
+    code: 28149,
+    state: 'Mississippi',
+    county: 'Warren',
   },
   {
-    "FIPS": 28151,
-    "State": "Mississippi",
-    "County": "Washington"
+    code: 28151,
+    state: 'Mississippi',
+    county: 'Washington',
   },
   {
-    "FIPS": 28153,
-    "State": "Mississippi",
-    "County": "Wayne"
+    code: 28153,
+    state: 'Mississippi',
+    county: 'Wayne',
   },
   {
-    "FIPS": 28155,
-    "State": "Mississippi",
-    "County": "Webster"
+    code: 28155,
+    state: 'Mississippi',
+    county: 'Webster',
   },
   {
-    "FIPS": 28157,
-    "State": "Mississippi",
-    "County": "Wilkinson"
+    code: 28157,
+    state: 'Mississippi',
+    county: 'Wilkinson',
   },
   {
-    "FIPS": 28159,
-    "State": "Mississippi",
-    "County": "Winston"
+    code: 28159,
+    state: 'Mississippi',
+    county: 'Winston',
   },
   {
-    "FIPS": 28161,
-    "State": "Mississippi",
-    "County": "Yalobusha"
+    code: 28161,
+    state: 'Mississippi',
+    county: 'Yalobusha',
   },
   {
-    "FIPS": 28163,
-    "State": "Mississippi",
-    "County": "Yazoo"
+    code: 28163,
+    state: 'Mississippi',
+    county: 'Yazoo',
   },
   {
-    "FIPS": 29001,
-    "State": "Missouri",
-    "County": "Adair"
+    code: 29001,
+    state: 'Missouri',
+    county: 'Adair',
   },
   {
-    "FIPS": 29003,
-    "State": "Missouri",
-    "County": "Andrew"
+    code: 29003,
+    state: 'Missouri',
+    county: 'Andrew',
   },
   {
-    "FIPS": 29005,
-    "State": "Missouri",
-    "County": "Atchison"
+    code: 29005,
+    state: 'Missouri',
+    county: 'Atchison',
   },
   {
-    "FIPS": 29007,
-    "State": "Missouri",
-    "County": "Audrain"
+    code: 29007,
+    state: 'Missouri',
+    county: 'Audrain',
   },
   {
-    "FIPS": 29009,
-    "State": "Missouri",
-    "County": "Barry"
+    code: 29009,
+    state: 'Missouri',
+    county: 'Barry',
   },
   {
-    "FIPS": 29011,
-    "State": "Missouri",
-    "County": "Barton"
+    code: 29011,
+    state: 'Missouri',
+    county: 'Barton',
   },
   {
-    "FIPS": 29013,
-    "State": "Missouri",
-    "County": "Bates"
+    code: 29013,
+    state: 'Missouri',
+    county: 'Bates',
   },
   {
-    "FIPS": 29015,
-    "State": "Missouri",
-    "County": "Benton"
+    code: 29015,
+    state: 'Missouri',
+    county: 'Benton',
   },
   {
-    "FIPS": 29017,
-    "State": "Missouri",
-    "County": "Bollinger"
+    code: 29017,
+    state: 'Missouri',
+    county: 'Bollinger',
   },
   {
-    "FIPS": 29019,
-    "State": "Missouri",
-    "County": "Boone"
+    code: 29019,
+    state: 'Missouri',
+    county: 'Boone',
   },
   {
-    "FIPS": 29021,
-    "State": "Missouri",
-    "County": "Buchanan"
+    code: 29021,
+    state: 'Missouri',
+    county: 'Buchanan',
   },
   {
-    "FIPS": 29023,
-    "State": "Missouri",
-    "County": "Butler"
+    code: 29023,
+    state: 'Missouri',
+    county: 'Butler',
   },
   {
-    "FIPS": 29025,
-    "State": "Missouri",
-    "County": "Caldwell"
+    code: 29025,
+    state: 'Missouri',
+    county: 'Caldwell',
   },
   {
-    "FIPS": 29027,
-    "State": "Missouri",
-    "County": "Callaway"
+    code: 29027,
+    state: 'Missouri',
+    county: 'Callaway',
   },
   {
-    "FIPS": 29029,
-    "State": "Missouri",
-    "County": "Camden"
+    code: 29029,
+    state: 'Missouri',
+    county: 'Camden',
   },
   {
-    "FIPS": 29031,
-    "State": "Missouri",
-    "County": "Cape Girardeau"
+    code: 29031,
+    state: 'Missouri',
+    county: 'Cape Girardeau',
   },
   {
-    "FIPS": 29033,
-    "State": "Missouri",
-    "County": "Carroll"
+    code: 29033,
+    state: 'Missouri',
+    county: 'Carroll',
   },
   {
-    "FIPS": 29035,
-    "State": "Missouri",
-    "County": "Carter"
+    code: 29035,
+    state: 'Missouri',
+    county: 'Carter',
   },
   {
-    "FIPS": 29037,
-    "State": "Missouri",
-    "County": "Cass"
+    code: 29037,
+    state: 'Missouri',
+    county: 'Cass',
   },
   {
-    "FIPS": 29039,
-    "State": "Missouri",
-    "County": "Cedar"
+    code: 29039,
+    state: 'Missouri',
+    county: 'Cedar',
   },
   {
-    "FIPS": 29041,
-    "State": "Missouri",
-    "County": "Chariton"
+    code: 29041,
+    state: 'Missouri',
+    county: 'Chariton',
   },
   {
-    "FIPS": 29043,
-    "State": "Missouri",
-    "County": "Christian"
+    code: 29043,
+    state: 'Missouri',
+    county: 'Christian',
   },
   {
-    "FIPS": 29045,
-    "State": "Missouri",
-    "County": "Clark"
+    code: 29045,
+    state: 'Missouri',
+    county: 'Clark',
   },
   {
-    "FIPS": 29047,
-    "State": "Missouri",
-    "County": "Clay"
+    code: 29047,
+    state: 'Missouri',
+    county: 'Clay',
   },
   {
-    "FIPS": 29049,
-    "State": "Missouri",
-    "County": "Clinton"
+    code: 29049,
+    state: 'Missouri',
+    county: 'Clinton',
   },
   {
-    "FIPS": 29051,
-    "State": "Missouri",
-    "County": "Cole"
+    code: 29051,
+    state: 'Missouri',
+    county: 'Cole',
   },
   {
-    "FIPS": 29053,
-    "State": "Missouri",
-    "County": "Cooper"
+    code: 29053,
+    state: 'Missouri',
+    county: 'Cooper',
   },
   {
-    "FIPS": 29055,
-    "State": "Missouri",
-    "County": "Crawford"
+    code: 29055,
+    state: 'Missouri',
+    county: 'Crawford',
   },
   {
-    "FIPS": 29057,
-    "State": "Missouri",
-    "County": "Dade"
+    code: 29057,
+    state: 'Missouri',
+    county: 'Dade',
   },
   {
-    "FIPS": 29059,
-    "State": "Missouri",
-    "County": "Dallas"
+    code: 29059,
+    state: 'Missouri',
+    county: 'Dallas',
   },
   {
-    "FIPS": 29061,
-    "State": "Missouri",
-    "County": "Daviess"
+    code: 29061,
+    state: 'Missouri',
+    county: 'Daviess',
   },
   {
-    "FIPS": 29063,
-    "State": "Missouri",
-    "County": "DeKalb"
+    code: 29063,
+    state: 'Missouri',
+    county: 'DeKalb',
   },
   {
-    "FIPS": 29065,
-    "State": "Missouri",
-    "County": "Dent"
+    code: 29065,
+    state: 'Missouri',
+    county: 'Dent',
   },
   {
-    "FIPS": 29067,
-    "State": "Missouri",
-    "County": "Douglas"
+    code: 29067,
+    state: 'Missouri',
+    county: 'Douglas',
   },
   {
-    "FIPS": 29069,
-    "State": "Missouri",
-    "County": "Dunklin"
+    code: 29069,
+    state: 'Missouri',
+    county: 'Dunklin',
   },
   {
-    "FIPS": 29071,
-    "State": "Missouri",
-    "County": "Franklin"
+    code: 29071,
+    state: 'Missouri',
+    county: 'Franklin',
   },
   {
-    "FIPS": 29073,
-    "State": "Missouri",
-    "County": "Gasconade"
+    code: 29073,
+    state: 'Missouri',
+    county: 'Gasconade',
   },
   {
-    "FIPS": 29075,
-    "State": "Missouri",
-    "County": "Gentry"
+    code: 29075,
+    state: 'Missouri',
+    county: 'Gentry',
   },
   {
-    "FIPS": 29077,
-    "State": "Missouri",
-    "County": "Greene"
+    code: 29077,
+    state: 'Missouri',
+    county: 'Greene',
   },
   {
-    "FIPS": 29079,
-    "State": "Missouri",
-    "County": "Grundy"
+    code: 29079,
+    state: 'Missouri',
+    county: 'Grundy',
   },
   {
-    "FIPS": 29081,
-    "State": "Missouri",
-    "County": "Harrison"
+    code: 29081,
+    state: 'Missouri',
+    county: 'Harrison',
   },
   {
-    "FIPS": 29083,
-    "State": "Missouri",
-    "County": "Henry"
+    code: 29083,
+    state: 'Missouri',
+    county: 'Henry',
   },
   {
-    "FIPS": 29085,
-    "State": "Missouri",
-    "County": "Hickory"
+    code: 29085,
+    state: 'Missouri',
+    county: 'Hickory',
   },
   {
-    "FIPS": 29087,
-    "State": "Missouri",
-    "County": "Holt"
+    code: 29087,
+    state: 'Missouri',
+    county: 'Holt',
   },
   {
-    "FIPS": 29089,
-    "State": "Missouri",
-    "County": "Howard"
+    code: 29089,
+    state: 'Missouri',
+    county: 'Howard',
   },
   {
-    "FIPS": 29091,
-    "State": "Missouri",
-    "County": "Howell"
+    code: 29091,
+    state: 'Missouri',
+    county: 'Howell',
   },
   {
-    "FIPS": 29093,
-    "State": "Missouri",
-    "County": "Iron"
+    code: 29093,
+    state: 'Missouri',
+    county: 'Iron',
   },
   {
-    "FIPS": 29095,
-    "State": "Missouri",
-    "County": "Jackson"
+    code: 29095,
+    state: 'Missouri',
+    county: 'Jackson',
   },
   {
-    "FIPS": 29097,
-    "State": "Missouri",
-    "County": "Jasper"
+    code: 29097,
+    state: 'Missouri',
+    county: 'Jasper',
   },
   {
-    "FIPS": 29099,
-    "State": "Missouri",
-    "County": "Jefferson"
+    code: 29099,
+    state: 'Missouri',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 29101,
-    "State": "Missouri",
-    "County": "Johnson"
+    code: 29101,
+    state: 'Missouri',
+    county: 'Johnson',
   },
   {
-    "FIPS": 29103,
-    "State": "Missouri",
-    "County": "Knox"
+    code: 29103,
+    state: 'Missouri',
+    county: 'Knox',
   },
   {
-    "FIPS": 29105,
-    "State": "Missouri",
-    "County": "Laclede"
+    code: 29105,
+    state: 'Missouri',
+    county: 'Laclede',
   },
   {
-    "FIPS": 29107,
-    "State": "Missouri",
-    "County": "Lafayette"
+    code: 29107,
+    state: 'Missouri',
+    county: 'Lafayette',
   },
   {
-    "FIPS": 29109,
-    "State": "Missouri",
-    "County": "Lawrence"
+    code: 29109,
+    state: 'Missouri',
+    county: 'Lawrence',
   },
   {
-    "FIPS": 29111,
-    "State": "Missouri",
-    "County": "Lewis"
+    code: 29111,
+    state: 'Missouri',
+    county: 'Lewis',
   },
   {
-    "FIPS": 29113,
-    "State": "Missouri",
-    "County": "Lincoln"
+    code: 29113,
+    state: 'Missouri',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 29115,
-    "State": "Missouri",
-    "County": "Linn"
+    code: 29115,
+    state: 'Missouri',
+    county: 'Linn',
   },
   {
-    "FIPS": 29117,
-    "State": "Missouri",
-    "County": "Livingston"
+    code: 29117,
+    state: 'Missouri',
+    county: 'Livingston',
   },
   {
-    "FIPS": 29119,
-    "State": "Missouri",
-    "County": "McDonald"
+    code: 29119,
+    state: 'Missouri',
+    county: 'McDonald',
   },
   {
-    "FIPS": 29121,
-    "State": "Missouri",
-    "County": "Macon"
+    code: 29121,
+    state: 'Missouri',
+    county: 'Macon',
   },
   {
-    "FIPS": 29123,
-    "State": "Missouri",
-    "County": "Madison"
+    code: 29123,
+    state: 'Missouri',
+    county: 'Madison',
   },
   {
-    "FIPS": 29125,
-    "State": "Missouri",
-    "County": "Maries"
+    code: 29125,
+    state: 'Missouri',
+    county: 'Maries',
   },
   {
-    "FIPS": 29127,
-    "State": "Missouri",
-    "County": "Marion"
+    code: 29127,
+    state: 'Missouri',
+    county: 'Marion',
   },
   {
-    "FIPS": 29129,
-    "State": "Missouri",
-    "County": "Mercer"
+    code: 29129,
+    state: 'Missouri',
+    county: 'Mercer',
   },
   {
-    "FIPS": 29131,
-    "State": "Missouri",
-    "County": "Miller"
+    code: 29131,
+    state: 'Missouri',
+    county: 'Miller',
   },
   {
-    "FIPS": 29133,
-    "State": "Missouri",
-    "County": "Mississippi"
+    code: 29133,
+    state: 'Missouri',
+    county: 'Mississippi',
   },
   {
-    "FIPS": 29135,
-    "State": "Missouri",
-    "County": "Moniteau"
+    code: 29135,
+    state: 'Missouri',
+    county: 'Moniteau',
   },
   {
-    "FIPS": 29137,
-    "State": "Missouri",
-    "County": "Monroe"
+    code: 29137,
+    state: 'Missouri',
+    county: 'Monroe',
   },
   {
-    "FIPS": 29139,
-    "State": "Missouri",
-    "County": "Montgomery"
+    code: 29139,
+    state: 'Missouri',
+    county: 'Montgomery',
   },
   {
-    "FIPS": 29141,
-    "State": "Missouri",
-    "County": "Morgan"
+    code: 29141,
+    state: 'Missouri',
+    county: 'Morgan',
   },
   {
-    "FIPS": 29143,
-    "State": "Missouri",
-    "County": "New Madrid"
+    code: 29143,
+    state: 'Missouri',
+    county: 'New Madrid',
   },
   {
-    "FIPS": 29145,
-    "State": "Missouri",
-    "County": "Newton"
+    code: 29145,
+    state: 'Missouri',
+    county: 'Newton',
   },
   {
-    "FIPS": 29147,
-    "State": "Missouri",
-    "County": "Nodaway"
+    code: 29147,
+    state: 'Missouri',
+    county: 'Nodaway',
   },
   {
-    "FIPS": 29149,
-    "State": "Missouri",
-    "County": "Oregon"
+    code: 29149,
+    state: 'Missouri',
+    county: 'Oregon',
   },
   {
-    "FIPS": 29151,
-    "State": "Missouri",
-    "County": "Osage"
+    code: 29151,
+    state: 'Missouri',
+    county: 'Osage',
   },
   {
-    "FIPS": 29153,
-    "State": "Missouri",
-    "County": "Ozark"
+    code: 29153,
+    state: 'Missouri',
+    county: 'Ozark',
   },
   {
-    "FIPS": 29155,
-    "State": "Missouri",
-    "County": "Pemiscot"
+    code: 29155,
+    state: 'Missouri',
+    county: 'Pemiscot',
   },
   {
-    "FIPS": 29157,
-    "State": "Missouri",
-    "County": "Perry"
+    code: 29157,
+    state: 'Missouri',
+    county: 'Perry',
   },
   {
-    "FIPS": 29159,
-    "State": "Missouri",
-    "County": "Pettis"
+    code: 29159,
+    state: 'Missouri',
+    county: 'Pettis',
   },
   {
-    "FIPS": 29161,
-    "State": "Missouri",
-    "County": "Phelps"
+    code: 29161,
+    state: 'Missouri',
+    county: 'Phelps',
   },
   {
-    "FIPS": 29163,
-    "State": "Missouri",
-    "County": "Pike"
+    code: 29163,
+    state: 'Missouri',
+    county: 'Pike',
   },
   {
-    "FIPS": 29165,
-    "State": "Missouri",
-    "County": "Platte"
+    code: 29165,
+    state: 'Missouri',
+    county: 'Platte',
   },
   {
-    "FIPS": 29167,
-    "State": "Missouri",
-    "County": "Polk"
+    code: 29167,
+    state: 'Missouri',
+    county: 'Polk',
   },
   {
-    "FIPS": 29169,
-    "State": "Missouri",
-    "County": "Pulaski"
+    code: 29169,
+    state: 'Missouri',
+    county: 'Pulaski',
   },
   {
-    "FIPS": 29171,
-    "State": "Missouri",
-    "County": "Putnam"
+    code: 29171,
+    state: 'Missouri',
+    county: 'Putnam',
   },
   {
-    "FIPS": 29173,
-    "State": "Missouri",
-    "County": "Ralls"
+    code: 29173,
+    state: 'Missouri',
+    county: 'Ralls',
   },
   {
-    "FIPS": 29175,
-    "State": "Missouri",
-    "County": "Randolph"
+    code: 29175,
+    state: 'Missouri',
+    county: 'Randolph',
   },
   {
-    "FIPS": 29177,
-    "State": "Missouri",
-    "County": "Ray"
+    code: 29177,
+    state: 'Missouri',
+    county: 'Ray',
   },
   {
-    "FIPS": 29179,
-    "State": "Missouri",
-    "County": "Reynolds"
+    code: 29179,
+    state: 'Missouri',
+    county: 'Reynolds',
   },
   {
-    "FIPS": 29181,
-    "State": "Missouri",
-    "County": "Ripley"
+    code: 29181,
+    state: 'Missouri',
+    county: 'Ripley',
   },
   {
-    "FIPS": 29183,
-    "State": "Missouri",
-    "County": "St. Charles"
+    code: 29183,
+    state: 'Missouri',
+    county: 'St. Charles',
   },
   {
-    "FIPS": 29185,
-    "State": "Missouri",
-    "County": "St. Clair"
+    code: 29185,
+    state: 'Missouri',
+    county: 'St. Clair',
   },
   {
-    "FIPS": 29186,
-    "State": "Missouri",
-    "County": "Ste. Genevieve"
+    code: 29186,
+    state: 'Missouri',
+    county: 'Ste. Genevieve',
   },
   {
-    "FIPS": 29187,
-    "State": "Missouri",
-    "County": "St. Francois"
+    code: 29187,
+    state: 'Missouri',
+    county: 'St. Francois',
   },
   {
-    "FIPS": 29189,
-    "State": "Missouri",
-    "County": "St. Louis"
+    code: 29189,
+    state: 'Missouri',
+    county: 'St. Louis',
   },
   {
-    "FIPS": 29195,
-    "State": "Missouri",
-    "County": "Saline"
+    code: 29195,
+    state: 'Missouri',
+    county: 'Saline',
   },
   {
-    "FIPS": 29197,
-    "State": "Missouri",
-    "County": "Schuyler"
+    code: 29197,
+    state: 'Missouri',
+    county: 'Schuyler',
   },
   {
-    "FIPS": 29199,
-    "State": "Missouri",
-    "County": "Scotland"
+    code: 29199,
+    state: 'Missouri',
+    county: 'Scotland',
   },
   {
-    "FIPS": 29201,
-    "State": "Missouri",
-    "County": "Scott"
+    code: 29201,
+    state: 'Missouri',
+    county: 'Scott',
   },
   {
-    "FIPS": 29203,
-    "State": "Missouri",
-    "County": "Shannon"
+    code: 29203,
+    state: 'Missouri',
+    county: 'Shannon',
   },
   {
-    "FIPS": 29205,
-    "State": "Missouri",
-    "County": "Shelby"
+    code: 29205,
+    state: 'Missouri',
+    county: 'Shelby',
   },
   {
-    "FIPS": 29207,
-    "State": "Missouri",
-    "County": "Stoddard"
+    code: 29207,
+    state: 'Missouri',
+    county: 'Stoddard',
   },
   {
-    "FIPS": 29209,
-    "State": "Missouri",
-    "County": "Stone"
+    code: 29209,
+    state: 'Missouri',
+    county: 'Stone',
   },
   {
-    "FIPS": 29211,
-    "State": "Missouri",
-    "County": "Sullivan"
+    code: 29211,
+    state: 'Missouri',
+    county: 'Sullivan',
   },
   {
-    "FIPS": 29213,
-    "State": "Missouri",
-    "County": "Taney"
+    code: 29213,
+    state: 'Missouri',
+    county: 'Taney',
   },
   {
-    "FIPS": 29215,
-    "State": "Missouri",
-    "County": "Texas"
+    code: 29215,
+    state: 'Missouri',
+    county: 'Texas',
   },
   {
-    "FIPS": 29217,
-    "State": "Missouri",
-    "County": "Vernon"
+    code: 29217,
+    state: 'Missouri',
+    county: 'Vernon',
   },
   {
-    "FIPS": 29219,
-    "State": "Missouri",
-    "County": "Warren"
+    code: 29219,
+    state: 'Missouri',
+    county: 'Warren',
   },
   {
-    "FIPS": 29221,
-    "State": "Missouri",
-    "County": "Washington"
+    code: 29221,
+    state: 'Missouri',
+    county: 'Washington',
   },
   {
-    "FIPS": 29223,
-    "State": "Missouri",
-    "County": "Wayne"
+    code: 29223,
+    state: 'Missouri',
+    county: 'Wayne',
   },
   {
-    "FIPS": 29225,
-    "State": "Missouri",
-    "County": "Webster"
+    code: 29225,
+    state: 'Missouri',
+    county: 'Webster',
   },
   {
-    "FIPS": 29227,
-    "State": "Missouri",
-    "County": "Worth"
+    code: 29227,
+    state: 'Missouri',
+    county: 'Worth',
   },
   {
-    "FIPS": 29229,
-    "State": "Missouri",
-    "County": "Wright"
+    code: 29229,
+    state: 'Missouri',
+    county: 'Wright',
   },
   {
-    "FIPS": 29510,
-    "State": "Missouri",
-    "County": "St. Louis city"
+    code: 29510,
+    state: 'Missouri',
+    county: 'St. Louis city',
   },
   {
-    "FIPS": 30001,
-    "State": "Montana",
-    "County": "Beaverhead"
+    code: 30001,
+    state: 'Montana',
+    county: 'Beaverhead',
   },
   {
-    "FIPS": 30003,
-    "State": "Montana",
-    "County": "Big Horn"
+    code: 30003,
+    state: 'Montana',
+    county: 'Big Horn',
   },
   {
-    "FIPS": 30005,
-    "State": "Montana",
-    "County": "Blaine"
+    code: 30005,
+    state: 'Montana',
+    county: 'Blaine',
   },
   {
-    "FIPS": 30007,
-    "State": "Montana",
-    "County": "Broadwater"
+    code: 30007,
+    state: 'Montana',
+    county: 'Broadwater',
   },
   {
-    "FIPS": 30009,
-    "State": "Montana",
-    "County": "Carbon"
+    code: 30009,
+    state: 'Montana',
+    county: 'Carbon',
   },
   {
-    "FIPS": 30011,
-    "State": "Montana",
-    "County": "Carter"
+    code: 30011,
+    state: 'Montana',
+    county: 'Carter',
   },
   {
-    "FIPS": 30013,
-    "State": "Montana",
-    "County": "Cascade"
+    code: 30013,
+    state: 'Montana',
+    county: 'Cascade',
   },
   {
-    "FIPS": 30015,
-    "State": "Montana",
-    "County": "Chouteau"
+    code: 30015,
+    state: 'Montana',
+    county: 'Chouteau',
   },
   {
-    "FIPS": 30017,
-    "State": "Montana",
-    "County": "Custer"
+    code: 30017,
+    state: 'Montana',
+    county: 'Custer',
   },
   {
-    "FIPS": 30019,
-    "State": "Montana",
-    "County": "Daniels"
+    code: 30019,
+    state: 'Montana',
+    county: 'Daniels',
   },
   {
-    "FIPS": 30021,
-    "State": "Montana",
-    "County": "Dawson"
+    code: 30021,
+    state: 'Montana',
+    county: 'Dawson',
   },
   {
-    "FIPS": 30023,
-    "State": "Montana",
-    "County": "Deer Lodge"
+    code: 30023,
+    state: 'Montana',
+    county: 'Deer Lodge',
   },
   {
-    "FIPS": 30025,
-    "State": "Montana",
-    "County": "Fallon"
+    code: 30025,
+    state: 'Montana',
+    county: 'Fallon',
   },
   {
-    "FIPS": 30027,
-    "State": "Montana",
-    "County": "Fergus"
+    code: 30027,
+    state: 'Montana',
+    county: 'Fergus',
   },
   {
-    "FIPS": 30029,
-    "State": "Montana",
-    "County": "Flathead"
+    code: 30029,
+    state: 'Montana',
+    county: 'Flathead',
   },
   {
-    "FIPS": 30031,
-    "State": "Montana",
-    "County": "Gallatin"
+    code: 30031,
+    state: 'Montana',
+    county: 'Gallatin',
   },
   {
-    "FIPS": 30033,
-    "State": "Montana",
-    "County": "Garfield"
+    code: 30033,
+    state: 'Montana',
+    county: 'Garfield',
   },
   {
-    "FIPS": 30035,
-    "State": "Montana",
-    "County": "Glacier"
+    code: 30035,
+    state: 'Montana',
+    county: 'Glacier',
   },
   {
-    "FIPS": 30037,
-    "State": "Montana",
-    "County": "Golden Valley"
+    code: 30037,
+    state: 'Montana',
+    county: 'Golden Valley',
   },
   {
-    "FIPS": 30039,
-    "State": "Montana",
-    "County": "Granite"
+    code: 30039,
+    state: 'Montana',
+    county: 'Granite',
   },
   {
-    "FIPS": 30041,
-    "State": "Montana",
-    "County": "Hill"
+    code: 30041,
+    state: 'Montana',
+    county: 'Hill',
   },
   {
-    "FIPS": 30043,
-    "State": "Montana",
-    "County": "Jefferson"
+    code: 30043,
+    state: 'Montana',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 30045,
-    "State": "Montana",
-    "County": "Judith Basin"
+    code: 30045,
+    state: 'Montana',
+    county: 'Judith Basin',
   },
   {
-    "FIPS": 30047,
-    "State": "Montana",
-    "County": "Lake"
+    code: 30047,
+    state: 'Montana',
+    county: 'Lake',
   },
   {
-    "FIPS": 30049,
-    "State": "Montana",
-    "County": "Lewis and Clark"
+    code: 30049,
+    state: 'Montana',
+    county: 'Lewis and Clark',
   },
   {
-    "FIPS": 30051,
-    "State": "Montana",
-    "County": "Liberty"
+    code: 30051,
+    state: 'Montana',
+    county: 'Liberty',
   },
   {
-    "FIPS": 30053,
-    "State": "Montana",
-    "County": "Lincoln"
+    code: 30053,
+    state: 'Montana',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 30055,
-    "State": "Montana",
-    "County": "McCone"
+    code: 30055,
+    state: 'Montana',
+    county: 'McCone',
   },
   {
-    "FIPS": 30057,
-    "State": "Montana",
-    "County": "Madison"
+    code: 30057,
+    state: 'Montana',
+    county: 'Madison',
   },
   {
-    "FIPS": 30059,
-    "State": "Montana",
-    "County": "Meagher"
+    code: 30059,
+    state: 'Montana',
+    county: 'Meagher',
   },
   {
-    "FIPS": 30061,
-    "State": "Montana",
-    "County": "Mineral"
+    code: 30061,
+    state: 'Montana',
+    county: 'Mineral',
   },
   {
-    "FIPS": 30063,
-    "State": "Montana",
-    "County": "Missoula"
+    code: 30063,
+    state: 'Montana',
+    county: 'Missoula',
   },
   {
-    "FIPS": 30065,
-    "State": "Montana",
-    "County": "Musselshell"
+    code: 30065,
+    state: 'Montana',
+    county: 'Musselshell',
   },
   {
-    "FIPS": 30067,
-    "State": "Montana",
-    "County": "Park"
+    code: 30067,
+    state: 'Montana',
+    county: 'Park',
   },
   {
-    "FIPS": 30069,
-    "State": "Montana",
-    "County": "Petroleum"
+    code: 30069,
+    state: 'Montana',
+    county: 'Petroleum',
   },
   {
-    "FIPS": 30071,
-    "State": "Montana",
-    "County": "Phillips"
+    code: 30071,
+    state: 'Montana',
+    county: 'Phillips',
   },
   {
-    "FIPS": 30073,
-    "State": "Montana",
-    "County": "Pondera"
+    code: 30073,
+    state: 'Montana',
+    county: 'Pondera',
   },
   {
-    "FIPS": 30075,
-    "State": "Montana",
-    "County": "Powder River"
+    code: 30075,
+    state: 'Montana',
+    county: 'Powder River',
   },
   {
-    "FIPS": 30077,
-    "State": "Montana",
-    "County": "Powell"
+    code: 30077,
+    state: 'Montana',
+    county: 'Powell',
   },
   {
-    "FIPS": 30079,
-    "State": "Montana",
-    "County": "Prairie"
+    code: 30079,
+    state: 'Montana',
+    county: 'Prairie',
   },
   {
-    "FIPS": 30081,
-    "State": "Montana",
-    "County": "Ravalli"
+    code: 30081,
+    state: 'Montana',
+    county: 'Ravalli',
   },
   {
-    "FIPS": 30083,
-    "State": "Montana",
-    "County": "Richland"
+    code: 30083,
+    state: 'Montana',
+    county: 'Richland',
   },
   {
-    "FIPS": 30085,
-    "State": "Montana",
-    "County": "Roosevelt"
+    code: 30085,
+    state: 'Montana',
+    county: 'Roosevelt',
   },
   {
-    "FIPS": 30087,
-    "State": "Montana",
-    "County": "Rosebud"
+    code: 30087,
+    state: 'Montana',
+    county: 'Rosebud',
   },
   {
-    "FIPS": 30089,
-    "State": "Montana",
-    "County": "Sanders"
+    code: 30089,
+    state: 'Montana',
+    county: 'Sanders',
   },
   {
-    "FIPS": 30091,
-    "State": "Montana",
-    "County": "Sheridan"
+    code: 30091,
+    state: 'Montana',
+    county: 'Sheridan',
   },
   {
-    "FIPS": 30093,
-    "State": "Montana",
-    "County": "Silver Bow"
+    code: 30093,
+    state: 'Montana',
+    county: 'Silver Bow',
   },
   {
-    "FIPS": 30095,
-    "State": "Montana",
-    "County": "Stillwater"
+    code: 30095,
+    state: 'Montana',
+    county: 'Stillwater',
   },
   {
-    "FIPS": 30097,
-    "State": "Montana",
-    "County": "Sweet Grass"
+    code: 30097,
+    state: 'Montana',
+    county: 'Sweet Grass',
   },
   {
-    "FIPS": 30099,
-    "State": "Montana",
-    "County": "Teton"
+    code: 30099,
+    state: 'Montana',
+    county: 'Teton',
   },
   {
-    "FIPS": 30101,
-    "State": "Montana",
-    "County": "Toole"
+    code: 30101,
+    state: 'Montana',
+    county: 'Toole',
   },
   {
-    "FIPS": 30103,
-    "State": "Montana",
-    "County": "Treasure"
+    code: 30103,
+    state: 'Montana',
+    county: 'Treasure',
   },
   {
-    "FIPS": 30105,
-    "State": "Montana",
-    "County": "Valley"
+    code: 30105,
+    state: 'Montana',
+    county: 'Valley',
   },
   {
-    "FIPS": 30107,
-    "State": "Montana",
-    "County": "Wheatland"
+    code: 30107,
+    state: 'Montana',
+    county: 'Wheatland',
   },
   {
-    "FIPS": 30109,
-    "State": "Montana",
-    "County": "Wibaux"
+    code: 30109,
+    state: 'Montana',
+    county: 'Wibaux',
   },
   {
-    "FIPS": 30111,
-    "State": "Montana",
-    "County": "Yellowstone"
+    code: 30111,
+    state: 'Montana',
+    county: 'Yellowstone',
   },
   {
-    "FIPS": 31001,
-    "State": "Nebraska",
-    "County": "Adams"
+    code: 31001,
+    state: 'Nebraska',
+    county: 'Adams',
   },
   {
-    "FIPS": 31003,
-    "State": "Nebraska",
-    "County": "Antelope"
+    code: 31003,
+    state: 'Nebraska',
+    county: 'Antelope',
   },
   {
-    "FIPS": 31005,
-    "State": "Nebraska",
-    "County": "Arthur"
+    code: 31005,
+    state: 'Nebraska',
+    county: 'Arthur',
   },
   {
-    "FIPS": 31007,
-    "State": "Nebraska",
-    "County": "Banner"
+    code: 31007,
+    state: 'Nebraska',
+    county: 'Banner',
   },
   {
-    "FIPS": 31009,
-    "State": "Nebraska",
-    "County": "Blaine"
+    code: 31009,
+    state: 'Nebraska',
+    county: 'Blaine',
   },
   {
-    "FIPS": 31011,
-    "State": "Nebraska",
-    "County": "Boone"
+    code: 31011,
+    state: 'Nebraska',
+    county: 'Boone',
   },
   {
-    "FIPS": 31013,
-    "State": "Nebraska",
-    "County": "Box Butte"
+    code: 31013,
+    state: 'Nebraska',
+    county: 'Box Butte',
   },
   {
-    "FIPS": 31015,
-    "State": "Nebraska",
-    "County": "Boyd"
+    code: 31015,
+    state: 'Nebraska',
+    county: 'Boyd',
   },
   {
-    "FIPS": 31017,
-    "State": "Nebraska",
-    "County": "Brown"
+    code: 31017,
+    state: 'Nebraska',
+    county: 'Brown',
   },
   {
-    "FIPS": 31019,
-    "State": "Nebraska",
-    "County": "Buffalo"
+    code: 31019,
+    state: 'Nebraska',
+    county: 'Buffalo',
   },
   {
-    "FIPS": 31021,
-    "State": "Nebraska",
-    "County": "Burt"
+    code: 31021,
+    state: 'Nebraska',
+    county: 'Burt',
   },
   {
-    "FIPS": 31023,
-    "State": "Nebraska",
-    "County": "Butler"
+    code: 31023,
+    state: 'Nebraska',
+    county: 'Butler',
   },
   {
-    "FIPS": 31025,
-    "State": "Nebraska",
-    "County": "Cass"
+    code: 31025,
+    state: 'Nebraska',
+    county: 'Cass',
   },
   {
-    "FIPS": 31027,
-    "State": "Nebraska",
-    "County": "Cedar"
+    code: 31027,
+    state: 'Nebraska',
+    county: 'Cedar',
   },
   {
-    "FIPS": 31029,
-    "State": "Nebraska",
-    "County": "Chase"
+    code: 31029,
+    state: 'Nebraska',
+    county: 'Chase',
   },
   {
-    "FIPS": 31031,
-    "State": "Nebraska",
-    "County": "Cherry"
+    code: 31031,
+    state: 'Nebraska',
+    county: 'Cherry',
   },
   {
-    "FIPS": 31033,
-    "State": "Nebraska",
-    "County": "Cheyenne"
+    code: 31033,
+    state: 'Nebraska',
+    county: 'Cheyenne',
   },
   {
-    "FIPS": 31035,
-    "State": "Nebraska",
-    "County": "Clay"
+    code: 31035,
+    state: 'Nebraska',
+    county: 'Clay',
   },
   {
-    "FIPS": 31037,
-    "State": "Nebraska",
-    "County": "Colfax"
+    code: 31037,
+    state: 'Nebraska',
+    county: 'Colfax',
   },
   {
-    "FIPS": 31039,
-    "State": "Nebraska",
-    "County": "Cuming"
+    code: 31039,
+    state: 'Nebraska',
+    county: 'Cuming',
   },
   {
-    "FIPS": 31041,
-    "State": "Nebraska",
-    "County": "Custer"
+    code: 31041,
+    state: 'Nebraska',
+    county: 'Custer',
   },
   {
-    "FIPS": 31043,
-    "State": "Nebraska",
-    "County": "Dakota"
+    code: 31043,
+    state: 'Nebraska',
+    county: 'Dakota',
   },
   {
-    "FIPS": 31045,
-    "State": "Nebraska",
-    "County": "Dawes"
+    code: 31045,
+    state: 'Nebraska',
+    county: 'Dawes',
   },
   {
-    "FIPS": 31047,
-    "State": "Nebraska",
-    "County": "Dawson"
+    code: 31047,
+    state: 'Nebraska',
+    county: 'Dawson',
   },
   {
-    "FIPS": 31049,
-    "State": "Nebraska",
-    "County": "Deuel"
+    code: 31049,
+    state: 'Nebraska',
+    county: 'Deuel',
   },
   {
-    "FIPS": 31051,
-    "State": "Nebraska",
-    "County": "Dixon"
+    code: 31051,
+    state: 'Nebraska',
+    county: 'Dixon',
   },
   {
-    "FIPS": 31053,
-    "State": "Nebraska",
-    "County": "Dodge"
+    code: 31053,
+    state: 'Nebraska',
+    county: 'Dodge',
   },
   {
-    "FIPS": 31055,
-    "State": "Nebraska",
-    "County": "Douglas"
+    code: 31055,
+    state: 'Nebraska',
+    county: 'Douglas',
   },
   {
-    "FIPS": 31057,
-    "State": "Nebraska",
-    "County": "Dundy"
+    code: 31057,
+    state: 'Nebraska',
+    county: 'Dundy',
   },
   {
-    "FIPS": 31059,
-    "State": "Nebraska",
-    "County": "Fillmore"
+    code: 31059,
+    state: 'Nebraska',
+    county: 'Fillmore',
   },
   {
-    "FIPS": 31061,
-    "State": "Nebraska",
-    "County": "Franklin"
+    code: 31061,
+    state: 'Nebraska',
+    county: 'Franklin',
   },
   {
-    "FIPS": 31063,
-    "State": "Nebraska",
-    "County": "Frontier"
+    code: 31063,
+    state: 'Nebraska',
+    county: 'Frontier',
   },
   {
-    "FIPS": 31065,
-    "State": "Nebraska",
-    "County": "Furnas"
+    code: 31065,
+    state: 'Nebraska',
+    county: 'Furnas',
   },
   {
-    "FIPS": 31067,
-    "State": "Nebraska",
-    "County": "Gage"
+    code: 31067,
+    state: 'Nebraska',
+    county: 'Gage',
   },
   {
-    "FIPS": 31069,
-    "State": "Nebraska",
-    "County": "Garden"
+    code: 31069,
+    state: 'Nebraska',
+    county: 'Garden',
   },
   {
-    "FIPS": 31071,
-    "State": "Nebraska",
-    "County": "Garfield"
+    code: 31071,
+    state: 'Nebraska',
+    county: 'Garfield',
   },
   {
-    "FIPS": 31073,
-    "State": "Nebraska",
-    "County": "Gosper"
+    code: 31073,
+    state: 'Nebraska',
+    county: 'Gosper',
   },
   {
-    "FIPS": 31075,
-    "State": "Nebraska",
-    "County": "Grant"
+    code: 31075,
+    state: 'Nebraska',
+    county: 'Grant',
   },
   {
-    "FIPS": 31077,
-    "State": "Nebraska",
-    "County": "Greeley"
+    code: 31077,
+    state: 'Nebraska',
+    county: 'Greeley',
   },
   {
-    "FIPS": 31079,
-    "State": "Nebraska",
-    "County": "Hall"
+    code: 31079,
+    state: 'Nebraska',
+    county: 'Hall',
   },
   {
-    "FIPS": 31081,
-    "State": "Nebraska",
-    "County": "Hamilton"
+    code: 31081,
+    state: 'Nebraska',
+    county: 'Hamilton',
   },
   {
-    "FIPS": 31083,
-    "State": "Nebraska",
-    "County": "Harlan"
+    code: 31083,
+    state: 'Nebraska',
+    county: 'Harlan',
   },
   {
-    "FIPS": 31085,
-    "State": "Nebraska",
-    "County": "Hayes"
+    code: 31085,
+    state: 'Nebraska',
+    county: 'Hayes',
   },
   {
-    "FIPS": 31087,
-    "State": "Nebraska",
-    "County": "Hitchcock"
+    code: 31087,
+    state: 'Nebraska',
+    county: 'Hitchcock',
   },
   {
-    "FIPS": 31089,
-    "State": "Nebraska",
-    "County": "Holt"
+    code: 31089,
+    state: 'Nebraska',
+    county: 'Holt',
   },
   {
-    "FIPS": 31091,
-    "State": "Nebraska",
-    "County": "Hooker"
+    code: 31091,
+    state: 'Nebraska',
+    county: 'Hooker',
   },
   {
-    "FIPS": 31093,
-    "State": "Nebraska",
-    "County": "Howard"
+    code: 31093,
+    state: 'Nebraska',
+    county: 'Howard',
   },
   {
-    "FIPS": 31095,
-    "State": "Nebraska",
-    "County": "Jefferson"
+    code: 31095,
+    state: 'Nebraska',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 31097,
-    "State": "Nebraska",
-    "County": "Johnson"
+    code: 31097,
+    state: 'Nebraska',
+    county: 'Johnson',
   },
   {
-    "FIPS": 31099,
-    "State": "Nebraska",
-    "County": "Kearney"
+    code: 31099,
+    state: 'Nebraska',
+    county: 'Kearney',
   },
   {
-    "FIPS": 31101,
-    "State": "Nebraska",
-    "County": "Keith"
+    code: 31101,
+    state: 'Nebraska',
+    county: 'Keith',
   },
   {
-    "FIPS": 31103,
-    "State": "Nebraska",
-    "County": "Keya Paha"
+    code: 31103,
+    state: 'Nebraska',
+    county: 'Keya Paha',
   },
   {
-    "FIPS": 31105,
-    "State": "Nebraska",
-    "County": "Kimball"
+    code: 31105,
+    state: 'Nebraska',
+    county: 'Kimball',
   },
   {
-    "FIPS": 31107,
-    "State": "Nebraska",
-    "County": "Knox"
+    code: 31107,
+    state: 'Nebraska',
+    county: 'Knox',
   },
   {
-    "FIPS": 31109,
-    "State": "Nebraska",
-    "County": "Lancaster"
+    code: 31109,
+    state: 'Nebraska',
+    county: 'Lancaster',
   },
   {
-    "FIPS": 31111,
-    "State": "Nebraska",
-    "County": "Lincoln"
+    code: 31111,
+    state: 'Nebraska',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 31113,
-    "State": "Nebraska",
-    "County": "Logan"
+    code: 31113,
+    state: 'Nebraska',
+    county: 'Logan',
   },
   {
-    "FIPS": 31115,
-    "State": "Nebraska",
-    "County": "Loup"
+    code: 31115,
+    state: 'Nebraska',
+    county: 'Loup',
   },
   {
-    "FIPS": 31117,
-    "State": "Nebraska",
-    "County": "McPherson"
+    code: 31117,
+    state: 'Nebraska',
+    county: 'McPherson',
   },
   {
-    "FIPS": 31119,
-    "State": "Nebraska",
-    "County": "Madison"
+    code: 31119,
+    state: 'Nebraska',
+    county: 'Madison',
   },
   {
-    "FIPS": 31121,
-    "State": "Nebraska",
-    "County": "Merrick"
+    code: 31121,
+    state: 'Nebraska',
+    county: 'Merrick',
   },
   {
-    "FIPS": 31123,
-    "State": "Nebraska",
-    "County": "Morrill"
+    code: 31123,
+    state: 'Nebraska',
+    county: 'Morrill',
   },
   {
-    "FIPS": 31125,
-    "State": "Nebraska",
-    "County": "Nance"
+    code: 31125,
+    state: 'Nebraska',
+    county: 'Nance',
   },
   {
-    "FIPS": 31127,
-    "State": "Nebraska",
-    "County": "Nemaha"
+    code: 31127,
+    state: 'Nebraska',
+    county: 'Nemaha',
   },
   {
-    "FIPS": 31129,
-    "State": "Nebraska",
-    "County": "Nuckolls"
+    code: 31129,
+    state: 'Nebraska',
+    county: 'Nuckolls',
   },
   {
-    "FIPS": 31131,
-    "State": "Nebraska",
-    "County": "Otoe"
+    code: 31131,
+    state: 'Nebraska',
+    county: 'Otoe',
   },
   {
-    "FIPS": 31133,
-    "State": "Nebraska",
-    "County": "Pawnee"
+    code: 31133,
+    state: 'Nebraska',
+    county: 'Pawnee',
   },
   {
-    "FIPS": 31135,
-    "State": "Nebraska",
-    "County": "Perkins"
+    code: 31135,
+    state: 'Nebraska',
+    county: 'Perkins',
   },
   {
-    "FIPS": 31137,
-    "State": "Nebraska",
-    "County": "Phelps"
+    code: 31137,
+    state: 'Nebraska',
+    county: 'Phelps',
   },
   {
-    "FIPS": 31139,
-    "State": "Nebraska",
-    "County": "Pierce"
+    code: 31139,
+    state: 'Nebraska',
+    county: 'Pierce',
   },
   {
-    "FIPS": 31141,
-    "State": "Nebraska",
-    "County": "Platte"
+    code: 31141,
+    state: 'Nebraska',
+    county: 'Platte',
   },
   {
-    "FIPS": 31143,
-    "State": "Nebraska",
-    "County": "Polk"
+    code: 31143,
+    state: 'Nebraska',
+    county: 'Polk',
   },
   {
-    "FIPS": 31145,
-    "State": "Nebraska",
-    "County": "Red Willow"
+    code: 31145,
+    state: 'Nebraska',
+    county: 'Red Willow',
   },
   {
-    "FIPS": 31147,
-    "State": "Nebraska",
-    "County": "Richardson"
+    code: 31147,
+    state: 'Nebraska',
+    county: 'Richardson',
   },
   {
-    "FIPS": 31149,
-    "State": "Nebraska",
-    "County": "Rock"
+    code: 31149,
+    state: 'Nebraska',
+    county: 'Rock',
   },
   {
-    "FIPS": 31151,
-    "State": "Nebraska",
-    "County": "Saline"
+    code: 31151,
+    state: 'Nebraska',
+    county: 'Saline',
   },
   {
-    "FIPS": 31153,
-    "State": "Nebraska",
-    "County": "Sarpy"
+    code: 31153,
+    state: 'Nebraska',
+    county: 'Sarpy',
   },
   {
-    "FIPS": 31155,
-    "State": "Nebraska",
-    "County": "Saunders"
+    code: 31155,
+    state: 'Nebraska',
+    county: 'Saunders',
   },
   {
-    "FIPS": 31157,
-    "State": "Nebraska",
-    "County": "Scotts Bluff"
+    code: 31157,
+    state: 'Nebraska',
+    county: 'Scotts Bluff',
   },
   {
-    "FIPS": 31159,
-    "State": "Nebraska",
-    "County": "Seward"
+    code: 31159,
+    state: 'Nebraska',
+    county: 'Seward',
   },
   {
-    "FIPS": 31161,
-    "State": "Nebraska",
-    "County": "Sheridan"
+    code: 31161,
+    state: 'Nebraska',
+    county: 'Sheridan',
   },
   {
-    "FIPS": 31163,
-    "State": "Nebraska",
-    "County": "Sherman"
+    code: 31163,
+    state: 'Nebraska',
+    county: 'Sherman',
   },
   {
-    "FIPS": 31165,
-    "State": "Nebraska",
-    "County": "Sioux"
+    code: 31165,
+    state: 'Nebraska',
+    county: 'Sioux',
   },
   {
-    "FIPS": 31167,
-    "State": "Nebraska",
-    "County": "Stanton"
+    code: 31167,
+    state: 'Nebraska',
+    county: 'Stanton',
   },
   {
-    "FIPS": 31169,
-    "State": "Nebraska",
-    "County": "Thayer"
+    code: 31169,
+    state: 'Nebraska',
+    county: 'Thayer',
   },
   {
-    "FIPS": 31171,
-    "State": "Nebraska",
-    "County": "Thomas"
+    code: 31171,
+    state: 'Nebraska',
+    county: 'Thomas',
   },
   {
-    "FIPS": 31173,
-    "State": "Nebraska",
-    "County": "Thurston"
+    code: 31173,
+    state: 'Nebraska',
+    county: 'Thurston',
   },
   {
-    "FIPS": 31175,
-    "State": "Nebraska",
-    "County": "Valley"
+    code: 31175,
+    state: 'Nebraska',
+    county: 'Valley',
   },
   {
-    "FIPS": 31177,
-    "State": "Nebraska",
-    "County": "Washington"
+    code: 31177,
+    state: 'Nebraska',
+    county: 'Washington',
   },
   {
-    "FIPS": 31179,
-    "State": "Nebraska",
-    "County": "Wayne"
+    code: 31179,
+    state: 'Nebraska',
+    county: 'Wayne',
   },
   {
-    "FIPS": 31181,
-    "State": "Nebraska",
-    "County": "Webster"
+    code: 31181,
+    state: 'Nebraska',
+    county: 'Webster',
   },
   {
-    "FIPS": 31183,
-    "State": "Nebraska",
-    "County": "Wheeler"
+    code: 31183,
+    state: 'Nebraska',
+    county: 'Wheeler',
   },
   {
-    "FIPS": 31185,
-    "State": "Nebraska",
-    "County": "York"
+    code: 31185,
+    state: 'Nebraska',
+    county: 'York',
   },
   {
-    "FIPS": 32001,
-    "State": "Nevada",
-    "County": "Churchill"
+    code: 32001,
+    state: 'Nevada',
+    county: 'Churchill',
   },
   {
-    "FIPS": 32003,
-    "State": "Nevada",
-    "County": "Clark"
+    code: 32003,
+    state: 'Nevada',
+    county: 'Clark',
   },
   {
-    "FIPS": 32005,
-    "State": "Nevada",
-    "County": "Douglas"
+    code: 32005,
+    state: 'Nevada',
+    county: 'Douglas',
   },
   {
-    "FIPS": 32007,
-    "State": "Nevada",
-    "County": "Elko"
+    code: 32007,
+    state: 'Nevada',
+    county: 'Elko',
   },
   {
-    "FIPS": 32009,
-    "State": "Nevada",
-    "County": "Esmeralda"
+    code: 32009,
+    state: 'Nevada',
+    county: 'Esmeralda',
   },
   {
-    "FIPS": 32011,
-    "State": "Nevada",
-    "County": "Eureka"
+    code: 32011,
+    state: 'Nevada',
+    county: 'Eureka',
   },
   {
-    "FIPS": 32013,
-    "State": "Nevada",
-    "County": "Humboldt"
+    code: 32013,
+    state: 'Nevada',
+    county: 'Humboldt',
   },
   {
-    "FIPS": 32015,
-    "State": "Nevada",
-    "County": "Lander"
+    code: 32015,
+    state: 'Nevada',
+    county: 'Lander',
   },
   {
-    "FIPS": 32017,
-    "State": "Nevada",
-    "County": "Lincoln"
+    code: 32017,
+    state: 'Nevada',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 32019,
-    "State": "Nevada",
-    "County": "Lyon"
+    code: 32019,
+    state: 'Nevada',
+    county: 'Lyon',
   },
   {
-    "FIPS": 32021,
-    "State": "Nevada",
-    "County": "Mineral"
+    code: 32021,
+    state: 'Nevada',
+    county: 'Mineral',
   },
   {
-    "FIPS": 32023,
-    "State": "Nevada",
-    "County": "Nye"
+    code: 32023,
+    state: 'Nevada',
+    county: 'Nye',
   },
   {
-    "FIPS": 32027,
-    "State": "Nevada",
-    "County": "Pershing"
+    code: 32027,
+    state: 'Nevada',
+    county: 'Pershing',
   },
   {
-    "FIPS": 32029,
-    "State": "Nevada",
-    "County": "Storey"
+    code: 32029,
+    state: 'Nevada',
+    county: 'Storey',
   },
   {
-    "FIPS": 32031,
-    "State": "Nevada",
-    "County": "Washoe"
+    code: 32031,
+    state: 'Nevada',
+    county: 'Washoe',
   },
   {
-    "FIPS": 32033,
-    "State": "Nevada",
-    "County": "White Pine"
+    code: 32033,
+    state: 'Nevada',
+    county: 'White Pine',
   },
   {
-    "FIPS": 32510,
-    "State": "Nevada",
-    "County": "Carson city"
+    code: 32510,
+    state: 'Nevada',
+    county: 'Carson city',
   },
   {
-    "FIPS": 33001,
-    "State": "New Hampshire",
-    "County": "Belknap"
+    code: 33001,
+    state: 'New Hampshire',
+    county: 'Belknap',
   },
   {
-    "FIPS": 33003,
-    "State": "New Hampshire",
-    "County": "Carroll"
+    code: 33003,
+    state: 'New Hampshire',
+    county: 'Carroll',
   },
   {
-    "FIPS": 33005,
-    "State": "New Hampshire",
-    "County": "Cheshire"
+    code: 33005,
+    state: 'New Hampshire',
+    county: 'Cheshire',
   },
   {
-    "FIPS": 33007,
-    "State": "New Hampshire",
-    "County": "Coos"
+    code: 33007,
+    state: 'New Hampshire',
+    county: 'Coos',
   },
   {
-    "FIPS": 33009,
-    "State": "New Hampshire",
-    "County": "Grafton"
+    code: 33009,
+    state: 'New Hampshire',
+    county: 'Grafton',
   },
   {
-    "FIPS": 33011,
-    "State": "New Hampshire",
-    "County": "Hillsborough"
+    code: 33011,
+    state: 'New Hampshire',
+    county: 'Hillsborough',
   },
   {
-    "FIPS": 33013,
-    "State": "New Hampshire",
-    "County": "Merrimack"
+    code: 33013,
+    state: 'New Hampshire',
+    county: 'Merrimack',
   },
   {
-    "FIPS": 33015,
-    "State": "New Hampshire",
-    "County": "Rockingham"
+    code: 33015,
+    state: 'New Hampshire',
+    county: 'Rockingham',
   },
   {
-    "FIPS": 33017,
-    "State": "New Hampshire",
-    "County": "Strafford"
+    code: 33017,
+    state: 'New Hampshire',
+    county: 'Strafford',
   },
   {
-    "FIPS": 33019,
-    "State": "New Hampshire",
-    "County": "Sullivan"
+    code: 33019,
+    state: 'New Hampshire',
+    county: 'Sullivan',
   },
   {
-    "FIPS": 34001,
-    "State": "New Jersey",
-    "County": "Atlantic"
+    code: 34001,
+    state: 'New Jersey',
+    county: 'Atlantic',
   },
   {
-    "FIPS": 34003,
-    "State": "New Jersey",
-    "County": "Bergen"
+    code: 34003,
+    state: 'New Jersey',
+    county: 'Bergen',
   },
   {
-    "FIPS": 34005,
-    "State": "New Jersey",
-    "County": "Burlington"
+    code: 34005,
+    state: 'New Jersey',
+    county: 'Burlington',
   },
   {
-    "FIPS": 34007,
-    "State": "New Jersey",
-    "County": "Camden"
+    code: 34007,
+    state: 'New Jersey',
+    county: 'Camden',
   },
   {
-    "FIPS": 34009,
-    "State": "New Jersey",
-    "County": "Cape May"
+    code: 34009,
+    state: 'New Jersey',
+    county: 'Cape May',
   },
   {
-    "FIPS": 34011,
-    "State": "New Jersey",
-    "County": "Cumberland"
+    code: 34011,
+    state: 'New Jersey',
+    county: 'Cumberland',
   },
   {
-    "FIPS": 34013,
-    "State": "New Jersey",
-    "County": "Essex"
+    code: 34013,
+    state: 'New Jersey',
+    county: 'Essex',
   },
   {
-    "FIPS": 34015,
-    "State": "New Jersey",
-    "County": "Gloucester"
+    code: 34015,
+    state: 'New Jersey',
+    county: 'Gloucester',
   },
   {
-    "FIPS": 34017,
-    "State": "New Jersey",
-    "County": "Hudson"
+    code: 34017,
+    state: 'New Jersey',
+    county: 'Hudson',
   },
   {
-    "FIPS": 34019,
-    "State": "New Jersey",
-    "County": "Hunterdon"
+    code: 34019,
+    state: 'New Jersey',
+    county: 'Hunterdon',
   },
   {
-    "FIPS": 34021,
-    "State": "New Jersey",
-    "County": "Mercer"
+    code: 34021,
+    state: 'New Jersey',
+    county: 'Mercer',
   },
   {
-    "FIPS": 34023,
-    "State": "New Jersey",
-    "County": "Middlesex"
+    code: 34023,
+    state: 'New Jersey',
+    county: 'Middlesex',
   },
   {
-    "FIPS": 34025,
-    "State": "New Jersey",
-    "County": "Monmouth"
+    code: 34025,
+    state: 'New Jersey',
+    county: 'Monmouth',
   },
   {
-    "FIPS": 34027,
-    "State": "New Jersey",
-    "County": "Morris"
+    code: 34027,
+    state: 'New Jersey',
+    county: 'Morris',
   },
   {
-    "FIPS": 34029,
-    "State": "New Jersey",
-    "County": "Ocean"
+    code: 34029,
+    state: 'New Jersey',
+    county: 'Ocean',
   },
   {
-    "FIPS": 34031,
-    "State": "New Jersey",
-    "County": "Passaic"
+    code: 34031,
+    state: 'New Jersey',
+    county: 'Passaic',
   },
   {
-    "FIPS": 34033,
-    "State": "New Jersey",
-    "County": "Salem"
+    code: 34033,
+    state: 'New Jersey',
+    county: 'Salem',
   },
   {
-    "FIPS": 34035,
-    "State": "New Jersey",
-    "County": "Somerset"
+    code: 34035,
+    state: 'New Jersey',
+    county: 'Somerset',
   },
   {
-    "FIPS": 34037,
-    "State": "New Jersey",
-    "County": "Sussex"
+    code: 34037,
+    state: 'New Jersey',
+    county: 'Sussex',
   },
   {
-    "FIPS": 34039,
-    "State": "New Jersey",
-    "County": "Union"
+    code: 34039,
+    state: 'New Jersey',
+    county: 'Union',
   },
   {
-    "FIPS": 34041,
-    "State": "New Jersey",
-    "County": "Warren"
+    code: 34041,
+    state: 'New Jersey',
+    county: 'Warren',
   },
   {
-    "FIPS": 35001,
-    "State": "New Mexico",
-    "County": "Bernalillo"
+    code: 35001,
+    state: 'New Mexico',
+    county: 'Bernalillo',
   },
   {
-    "FIPS": 35003,
-    "State": "New Mexico",
-    "County": "Catron"
+    code: 35003,
+    state: 'New Mexico',
+    county: 'Catron',
   },
   {
-    "FIPS": 35005,
-    "State": "New Mexico",
-    "County": "Chaves"
+    code: 35005,
+    state: 'New Mexico',
+    county: 'Chaves',
   },
   {
-    "FIPS": 35006,
-    "State": "New Mexico",
-    "County": "Cibola"
+    code: 35006,
+    state: 'New Mexico',
+    county: 'Cibola',
   },
   {
-    "FIPS": 35007,
-    "State": "New Mexico",
-    "County": "Colfax"
+    code: 35007,
+    state: 'New Mexico',
+    county: 'Colfax',
   },
   {
-    "FIPS": 35009,
-    "State": "New Mexico",
-    "County": "Curry"
+    code: 35009,
+    state: 'New Mexico',
+    county: 'Curry',
   },
   {
-    "FIPS": 35011,
-    "State": "New Mexico",
-    "County": "De Baca"
+    code: 35011,
+    state: 'New Mexico',
+    county: 'De Baca',
   },
   {
-    "FIPS": 35013,
-    "State": "New Mexico",
-    "County": "Dona Ana"
+    code: 35013,
+    state: 'New Mexico',
+    county: 'Dona Ana',
   },
   {
-    "FIPS": 35015,
-    "State": "New Mexico",
-    "County": "Eddy"
+    code: 35015,
+    state: 'New Mexico',
+    county: 'Eddy',
   },
   {
-    "FIPS": 35017,
-    "State": "New Mexico",
-    "County": "Grant"
+    code: 35017,
+    state: 'New Mexico',
+    county: 'Grant',
   },
   {
-    "FIPS": 35019,
-    "State": "New Mexico",
-    "County": "Guadalupe"
+    code: 35019,
+    state: 'New Mexico',
+    county: 'Guadalupe',
   },
   {
-    "FIPS": 35021,
-    "State": "New Mexico",
-    "County": "Harding"
+    code: 35021,
+    state: 'New Mexico',
+    county: 'Harding',
   },
   {
-    "FIPS": 35023,
-    "State": "New Mexico",
-    "County": "Hidalgo"
+    code: 35023,
+    state: 'New Mexico',
+    county: 'Hidalgo',
   },
   {
-    "FIPS": 35025,
-    "State": "New Mexico",
-    "County": "Lea"
+    code: 35025,
+    state: 'New Mexico',
+    county: 'Lea',
   },
   {
-    "FIPS": 35027,
-    "State": "New Mexico",
-    "County": "Lincoln"
+    code: 35027,
+    state: 'New Mexico',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 35028,
-    "State": "New Mexico",
-    "County": "Los Alamos"
+    code: 35028,
+    state: 'New Mexico',
+    county: 'Los Alamos',
   },
   {
-    "FIPS": 35029,
-    "State": "New Mexico",
-    "County": "Luna"
+    code: 35029,
+    state: 'New Mexico',
+    county: 'Luna',
   },
   {
-    "FIPS": 35031,
-    "State": "New Mexico",
-    "County": "McKinley"
+    code: 35031,
+    state: 'New Mexico',
+    county: 'McKinley',
   },
   {
-    "FIPS": 35033,
-    "State": "New Mexico",
-    "County": "Mora"
+    code: 35033,
+    state: 'New Mexico',
+    county: 'Mora',
   },
   {
-    "FIPS": 35035,
-    "State": "New Mexico",
-    "County": "Otero"
+    code: 35035,
+    state: 'New Mexico',
+    county: 'Otero',
   },
   {
-    "FIPS": 35037,
-    "State": "New Mexico",
-    "County": "Quay"
+    code: 35037,
+    state: 'New Mexico',
+    county: 'Quay',
   },
   {
-    "FIPS": 35039,
-    "State": "New Mexico",
-    "County": "Rio Arriba"
+    code: 35039,
+    state: 'New Mexico',
+    county: 'Rio Arriba',
   },
   {
-    "FIPS": 35041,
-    "State": "New Mexico",
-    "County": "Roosevelt"
+    code: 35041,
+    state: 'New Mexico',
+    county: 'Roosevelt',
   },
   {
-    "FIPS": 35043,
-    "State": "New Mexico",
-    "County": "Sandoval"
+    code: 35043,
+    state: 'New Mexico',
+    county: 'Sandoval',
   },
   {
-    "FIPS": 35045,
-    "State": "New Mexico",
-    "County": "San Juan"
+    code: 35045,
+    state: 'New Mexico',
+    county: 'San Juan',
   },
   {
-    "FIPS": 35047,
-    "State": "New Mexico",
-    "County": "San Miguel"
+    code: 35047,
+    state: 'New Mexico',
+    county: 'San Miguel',
   },
   {
-    "FIPS": 35049,
-    "State": "New Mexico",
-    "County": "Santa Fe"
+    code: 35049,
+    state: 'New Mexico',
+    county: 'Santa Fe',
   },
   {
-    "FIPS": 35051,
-    "State": "New Mexico",
-    "County": "Sierra"
+    code: 35051,
+    state: 'New Mexico',
+    county: 'Sierra',
   },
   {
-    "FIPS": 35053,
-    "State": "New Mexico",
-    "County": "Socorro"
+    code: 35053,
+    state: 'New Mexico',
+    county: 'Socorro',
   },
   {
-    "FIPS": 35055,
-    "State": "New Mexico",
-    "County": "Taos"
+    code: 35055,
+    state: 'New Mexico',
+    county: 'Taos',
   },
   {
-    "FIPS": 35057,
-    "State": "New Mexico",
-    "County": "Torrance"
+    code: 35057,
+    state: 'New Mexico',
+    county: 'Torrance',
   },
   {
-    "FIPS": 35059,
-    "State": "New Mexico",
-    "County": "Union"
+    code: 35059,
+    state: 'New Mexico',
+    county: 'Union',
   },
   {
-    "FIPS": 35061,
-    "State": "New Mexico",
-    "County": "Valencia"
+    code: 35061,
+    state: 'New Mexico',
+    county: 'Valencia',
   },
   {
-    "FIPS": 36001,
-    "State": "New York",
-    "County": "Albany"
+    code: 36001,
+    state: 'New York',
+    county: 'Albany',
   },
   {
-    "FIPS": 36003,
-    "State": "New York",
-    "County": "Allegany"
+    code: 36003,
+    state: 'New York',
+    county: 'Allegany',
   },
   {
-    "FIPS": 36005,
-    "State": "New York",
-    "County": "Bronx"
+    code: 36005,
+    state: 'New York',
+    county: 'Bronx',
   },
   {
-    "FIPS": 36007,
-    "State": "New York",
-    "County": "Broome"
+    code: 36007,
+    state: 'New York',
+    county: 'Broome',
   },
   {
-    "FIPS": 36009,
-    "State": "New York",
-    "County": "Cattaraugus"
+    code: 36009,
+    state: 'New York',
+    county: 'Cattaraugus',
   },
   {
-    "FIPS": 36011,
-    "State": "New York",
-    "County": "Cayuga"
+    code: 36011,
+    state: 'New York',
+    county: 'Cayuga',
   },
   {
-    "FIPS": 36013,
-    "State": "New York",
-    "County": "Chautauqua"
+    code: 36013,
+    state: 'New York',
+    county: 'Chautauqua',
   },
   {
-    "FIPS": 36015,
-    "State": "New York",
-    "County": "Chemung"
+    code: 36015,
+    state: 'New York',
+    county: 'Chemung',
   },
   {
-    "FIPS": 36017,
-    "State": "New York",
-    "County": "Chenango"
+    code: 36017,
+    state: 'New York',
+    county: 'Chenango',
   },
   {
-    "FIPS": 36019,
-    "State": "New York",
-    "County": "Clinton"
+    code: 36019,
+    state: 'New York',
+    county: 'Clinton',
   },
   {
-    "FIPS": 36021,
-    "State": "New York",
-    "County": "Columbia"
+    code: 36021,
+    state: 'New York',
+    county: 'Columbia',
   },
   {
-    "FIPS": 36023,
-    "State": "New York",
-    "County": "Cortland"
+    code: 36023,
+    state: 'New York',
+    county: 'Cortland',
   },
   {
-    "FIPS": 36025,
-    "State": "New York",
-    "County": "Delaware"
+    code: 36025,
+    state: 'New York',
+    county: 'Delaware',
   },
   {
-    "FIPS": 36027,
-    "State": "New York",
-    "County": "Dutchess"
+    code: 36027,
+    state: 'New York',
+    county: 'Dutchess',
   },
   {
-    "FIPS": 36029,
-    "State": "New York",
-    "County": "Erie"
+    code: 36029,
+    state: 'New York',
+    county: 'Erie',
   },
   {
-    "FIPS": 36031,
-    "State": "New York",
-    "County": "Essex"
+    code: 36031,
+    state: 'New York',
+    county: 'Essex',
   },
   {
-    "FIPS": 36033,
-    "State": "New York",
-    "County": "Franklin"
+    code: 36033,
+    state: 'New York',
+    county: 'Franklin',
   },
   {
-    "FIPS": 36035,
-    "State": "New York",
-    "County": "Fulton"
+    code: 36035,
+    state: 'New York',
+    county: 'Fulton',
   },
   {
-    "FIPS": 36037,
-    "State": "New York",
-    "County": "Genesee"
+    code: 36037,
+    state: 'New York',
+    county: 'Genesee',
   },
   {
-    "FIPS": 36039,
-    "State": "New York",
-    "County": "Greene"
+    code: 36039,
+    state: 'New York',
+    county: 'Greene',
   },
   {
-    "FIPS": 36041,
-    "State": "New York",
-    "County": "Hamilton"
+    code: 36041,
+    state: 'New York',
+    county: 'Hamilton',
   },
   {
-    "FIPS": 36043,
-    "State": "New York",
-    "County": "Herkimer"
+    code: 36043,
+    state: 'New York',
+    county: 'Herkimer',
   },
   {
-    "FIPS": 36045,
-    "State": "New York",
-    "County": "Jefferson"
+    code: 36045,
+    state: 'New York',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 36047,
-    "State": "New York",
-    "County": "Kings"
+    code: 36047,
+    state: 'New York',
+    county: 'Kings',
   },
   {
-    "FIPS": 36049,
-    "State": "New York",
-    "County": "Lewis"
+    code: 36049,
+    state: 'New York',
+    county: 'Lewis',
   },
   {
-    "FIPS": 36051,
-    "State": "New York",
-    "County": "Livingston"
+    code: 36051,
+    state: 'New York',
+    county: 'Livingston',
   },
   {
-    "FIPS": 36053,
-    "State": "New York",
-    "County": "Madison"
+    code: 36053,
+    state: 'New York',
+    county: 'Madison',
   },
   {
-    "FIPS": 36055,
-    "State": "New York",
-    "County": "Monroe"
+    code: 36055,
+    state: 'New York',
+    county: 'Monroe',
   },
   {
-    "FIPS": 36057,
-    "State": "New York",
-    "County": "Montgomery"
+    code: 36057,
+    state: 'New York',
+    county: 'Montgomery',
   },
   {
-    "FIPS": 36059,
-    "State": "New York",
-    "County": "Nassau"
+    code: 36059,
+    state: 'New York',
+    county: 'Nassau',
   },
   {
-    "FIPS": 36061,
-    "State": "New York",
-    "County": "New York"
+    code: 36061,
+    state: 'New York',
+    county: 'New York',
   },
   {
-    "FIPS": 36063,
-    "State": "New York",
-    "County": "Niagara"
+    code: 36063,
+    state: 'New York',
+    county: 'Niagara',
   },
   {
-    "FIPS": 36065,
-    "State": "New York",
-    "County": "Oneida"
+    code: 36065,
+    state: 'New York',
+    county: 'Oneida',
   },
   {
-    "FIPS": 36067,
-    "State": "New York",
-    "County": "Onondaga"
+    code: 36067,
+    state: 'New York',
+    county: 'Onondaga',
   },
   {
-    "FIPS": 36069,
-    "State": "New York",
-    "County": "Ontario"
+    code: 36069,
+    state: 'New York',
+    county: 'Ontario',
   },
   {
-    "FIPS": 36071,
-    "State": "New York",
-    "County": "Orange"
+    code: 36071,
+    state: 'New York',
+    county: 'Orange',
   },
   {
-    "FIPS": 36073,
-    "State": "New York",
-    "County": "Orleans"
+    code: 36073,
+    state: 'New York',
+    county: 'Orleans',
   },
   {
-    "FIPS": 36075,
-    "State": "New York",
-    "County": "Oswego"
+    code: 36075,
+    state: 'New York',
+    county: 'Oswego',
   },
   {
-    "FIPS": 36077,
-    "State": "New York",
-    "County": "Otsego"
+    code: 36077,
+    state: 'New York',
+    county: 'Otsego',
   },
   {
-    "FIPS": 36079,
-    "State": "New York",
-    "County": "Putnam"
+    code: 36079,
+    state: 'New York',
+    county: 'Putnam',
   },
   {
-    "FIPS": 36081,
-    "State": "New York",
-    "County": "Queens"
+    code: 36081,
+    state: 'New York',
+    county: 'Queens',
   },
   {
-    "FIPS": 36083,
-    "State": "New York",
-    "County": "Rensselaer"
+    code: 36083,
+    state: 'New York',
+    county: 'Rensselaer',
   },
   {
-    "FIPS": 36085,
-    "State": "New York",
-    "County": "Richmond"
+    code: 36085,
+    state: 'New York',
+    county: 'Richmond',
   },
   {
-    "FIPS": 36087,
-    "State": "New York",
-    "County": "Rockland"
+    code: 36087,
+    state: 'New York',
+    county: 'Rockland',
   },
   {
-    "FIPS": 36089,
-    "State": "New York",
-    "County": "St. Lawrence"
+    code: 36089,
+    state: 'New York',
+    county: 'St. Lawrence',
   },
   {
-    "FIPS": 36091,
-    "State": "New York",
-    "County": "Saratoga"
+    code: 36091,
+    state: 'New York',
+    county: 'Saratoga',
   },
   {
-    "FIPS": 36093,
-    "State": "New York",
-    "County": "Schenectady"
+    code: 36093,
+    state: 'New York',
+    county: 'Schenectady',
   },
   {
-    "FIPS": 36095,
-    "State": "New York",
-    "County": "Schoharie"
+    code: 36095,
+    state: 'New York',
+    county: 'Schoharie',
   },
   {
-    "FIPS": 36097,
-    "State": "New York",
-    "County": "Schuyler"
+    code: 36097,
+    state: 'New York',
+    county: 'Schuyler',
   },
   {
-    "FIPS": 36099,
-    "State": "New York",
-    "County": "Seneca"
+    code: 36099,
+    state: 'New York',
+    county: 'Seneca',
   },
   {
-    "FIPS": 36101,
-    "State": "New York",
-    "County": "Steuben"
+    code: 36101,
+    state: 'New York',
+    county: 'Steuben',
   },
   {
-    "FIPS": 36103,
-    "State": "New York",
-    "County": "Suffolk"
+    code: 36103,
+    state: 'New York',
+    county: 'Suffolk',
   },
   {
-    "FIPS": 36105,
-    "State": "New York",
-    "County": "Sullivan"
+    code: 36105,
+    state: 'New York',
+    county: 'Sullivan',
   },
   {
-    "FIPS": 36107,
-    "State": "New York",
-    "County": "Tioga"
+    code: 36107,
+    state: 'New York',
+    county: 'Tioga',
   },
   {
-    "FIPS": 36109,
-    "State": "New York",
-    "County": "Tompkins"
+    code: 36109,
+    state: 'New York',
+    county: 'Tompkins',
   },
   {
-    "FIPS": 36111,
-    "State": "New York",
-    "County": "Ulster"
+    code: 36111,
+    state: 'New York',
+    county: 'Ulster',
   },
   {
-    "FIPS": 36113,
-    "State": "New York",
-    "County": "Warren"
+    code: 36113,
+    state: 'New York',
+    county: 'Warren',
   },
   {
-    "FIPS": 36115,
-    "State": "New York",
-    "County": "Washington"
+    code: 36115,
+    state: 'New York',
+    county: 'Washington',
   },
   {
-    "FIPS": 36117,
-    "State": "New York",
-    "County": "Wayne"
+    code: 36117,
+    state: 'New York',
+    county: 'Wayne',
   },
   {
-    "FIPS": 36119,
-    "State": "New York",
-    "County": "Westchester"
+    code: 36119,
+    state: 'New York',
+    county: 'Westchester',
   },
   {
-    "FIPS": 36121,
-    "State": "New York",
-    "County": "Wyoming"
+    code: 36121,
+    state: 'New York',
+    county: 'Wyoming',
   },
   {
-    "FIPS": 36123,
-    "State": "New York",
-    "County": "Yates"
+    code: 36123,
+    state: 'New York',
+    county: 'Yates',
   },
   {
-    "FIPS": 37001,
-    "State": "North Carolina",
-    "County": "Alamance"
+    code: 37001,
+    state: 'North Carolina',
+    county: 'Alamance',
   },
   {
-    "FIPS": 37003,
-    "State": "North Carolina",
-    "County": "Alexander"
+    code: 37003,
+    state: 'North Carolina',
+    county: 'Alexander',
   },
   {
-    "FIPS": 37005,
-    "State": "North Carolina",
-    "County": "Alleghany"
+    code: 37005,
+    state: 'North Carolina',
+    county: 'Alleghany',
   },
   {
-    "FIPS": 37007,
-    "State": "North Carolina",
-    "County": "Anson"
+    code: 37007,
+    state: 'North Carolina',
+    county: 'Anson',
   },
   {
-    "FIPS": 37009,
-    "State": "North Carolina",
-    "County": "Ashe"
+    code: 37009,
+    state: 'North Carolina',
+    county: 'Ashe',
   },
   {
-    "FIPS": 37011,
-    "State": "North Carolina",
-    "County": "Avery"
+    code: 37011,
+    state: 'North Carolina',
+    county: 'Avery',
   },
   {
-    "FIPS": 37013,
-    "State": "North Carolina",
-    "County": "Beaufort"
+    code: 37013,
+    state: 'North Carolina',
+    county: 'Beaufort',
   },
   {
-    "FIPS": 37015,
-    "State": "North Carolina",
-    "County": "Bertie"
+    code: 37015,
+    state: 'North Carolina',
+    county: 'Bertie',
   },
   {
-    "FIPS": 37017,
-    "State": "North Carolina",
-    "County": "Bladen"
+    code: 37017,
+    state: 'North Carolina',
+    county: 'Bladen',
   },
   {
-    "FIPS": 37019,
-    "State": "North Carolina",
-    "County": "Brunswick"
+    code: 37019,
+    state: 'North Carolina',
+    county: 'Brunswick',
   },
   {
-    "FIPS": 37021,
-    "State": "North Carolina",
-    "County": "Buncombe"
+    code: 37021,
+    state: 'North Carolina',
+    county: 'Buncombe',
   },
   {
-    "FIPS": 37023,
-    "State": "North Carolina",
-    "County": "Burke"
+    code: 37023,
+    state: 'North Carolina',
+    county: 'Burke',
   },
   {
-    "FIPS": 37025,
-    "State": "North Carolina",
-    "County": "Cabarrus"
+    code: 37025,
+    state: 'North Carolina',
+    county: 'Cabarrus',
   },
   {
-    "FIPS": 37027,
-    "State": "North Carolina",
-    "County": "Caldwell"
+    code: 37027,
+    state: 'North Carolina',
+    county: 'Caldwell',
   },
   {
-    "FIPS": 37029,
-    "State": "North Carolina",
-    "County": "Camden"
+    code: 37029,
+    state: 'North Carolina',
+    county: 'Camden',
   },
   {
-    "FIPS": 37031,
-    "State": "North Carolina",
-    "County": "Carteret"
+    code: 37031,
+    state: 'North Carolina',
+    county: 'Carteret',
   },
   {
-    "FIPS": 37033,
-    "State": "North Carolina",
-    "County": "Caswell"
+    code: 37033,
+    state: 'North Carolina',
+    county: 'Caswell',
   },
   {
-    "FIPS": 37035,
-    "State": "North Carolina",
-    "County": "Catawba"
+    code: 37035,
+    state: 'North Carolina',
+    county: 'Catawba',
   },
   {
-    "FIPS": 37037,
-    "State": "North Carolina",
-    "County": "Chatham"
+    code: 37037,
+    state: 'North Carolina',
+    county: 'Chatham',
   },
   {
-    "FIPS": 37039,
-    "State": "North Carolina",
-    "County": "Cherokee"
+    code: 37039,
+    state: 'North Carolina',
+    county: 'Cherokee',
   },
   {
-    "FIPS": 37041,
-    "State": "North Carolina",
-    "County": "Chowan"
+    code: 37041,
+    state: 'North Carolina',
+    county: 'Chowan',
   },
   {
-    "FIPS": 37043,
-    "State": "North Carolina",
-    "County": "Clay"
+    code: 37043,
+    state: 'North Carolina',
+    county: 'Clay',
   },
   {
-    "FIPS": 37045,
-    "State": "North Carolina",
-    "County": "Cleveland"
+    code: 37045,
+    state: 'North Carolina',
+    county: 'Cleveland',
   },
   {
-    "FIPS": 37047,
-    "State": "North Carolina",
-    "County": "Columbus"
+    code: 37047,
+    state: 'North Carolina',
+    county: 'Columbus',
   },
   {
-    "FIPS": 37049,
-    "State": "North Carolina",
-    "County": "Craven"
+    code: 37049,
+    state: 'North Carolina',
+    county: 'Craven',
   },
   {
-    "FIPS": 37051,
-    "State": "North Carolina",
-    "County": "Cumberland"
+    code: 37051,
+    state: 'North Carolina',
+    county: 'Cumberland',
   },
   {
-    "FIPS": 37053,
-    "State": "North Carolina",
-    "County": "Currituck"
+    code: 37053,
+    state: 'North Carolina',
+    county: 'Currituck',
   },
   {
-    "FIPS": 37055,
-    "State": "North Carolina",
-    "County": "Dare"
+    code: 37055,
+    state: 'North Carolina',
+    county: 'Dare',
   },
   {
-    "FIPS": 37057,
-    "State": "North Carolina",
-    "County": "Davidson"
+    code: 37057,
+    state: 'North Carolina',
+    county: 'Davidson',
   },
   {
-    "FIPS": 37059,
-    "State": "North Carolina",
-    "County": "Davie"
+    code: 37059,
+    state: 'North Carolina',
+    county: 'Davie',
   },
   {
-    "FIPS": 37061,
-    "State": "North Carolina",
-    "County": "Duplin"
+    code: 37061,
+    state: 'North Carolina',
+    county: 'Duplin',
   },
   {
-    "FIPS": 37063,
-    "State": "North Carolina",
-    "County": "Durham"
+    code: 37063,
+    state: 'North Carolina',
+    county: 'Durham',
   },
   {
-    "FIPS": 37065,
-    "State": "North Carolina",
-    "County": "Edgecombe"
+    code: 37065,
+    state: 'North Carolina',
+    county: 'Edgecombe',
   },
   {
-    "FIPS": 37067,
-    "State": "North Carolina",
-    "County": "Forsyth"
+    code: 37067,
+    state: 'North Carolina',
+    county: 'Forsyth',
   },
   {
-    "FIPS": 37069,
-    "State": "North Carolina",
-    "County": "Franklin"
+    code: 37069,
+    state: 'North Carolina',
+    county: 'Franklin',
   },
   {
-    "FIPS": 37071,
-    "State": "North Carolina",
-    "County": "Gaston"
+    code: 37071,
+    state: 'North Carolina',
+    county: 'Gaston',
   },
   {
-    "FIPS": 37073,
-    "State": "North Carolina",
-    "County": "Gates"
+    code: 37073,
+    state: 'North Carolina',
+    county: 'Gates',
   },
   {
-    "FIPS": 37075,
-    "State": "North Carolina",
-    "County": "Graham"
+    code: 37075,
+    state: 'North Carolina',
+    county: 'Graham',
   },
   {
-    "FIPS": 37077,
-    "State": "North Carolina",
-    "County": "Granville"
+    code: 37077,
+    state: 'North Carolina',
+    county: 'Granville',
   },
   {
-    "FIPS": 37079,
-    "State": "North Carolina",
-    "County": "Greene"
+    code: 37079,
+    state: 'North Carolina',
+    county: 'Greene',
   },
   {
-    "FIPS": 37081,
-    "State": "North Carolina",
-    "County": "Guilford"
+    code: 37081,
+    state: 'North Carolina',
+    county: 'Guilford',
   },
   {
-    "FIPS": 37083,
-    "State": "North Carolina",
-    "County": "Halifax"
+    code: 37083,
+    state: 'North Carolina',
+    county: 'Halifax',
   },
   {
-    "FIPS": 37085,
-    "State": "North Carolina",
-    "County": "Harnett"
+    code: 37085,
+    state: 'North Carolina',
+    county: 'Harnett',
   },
   {
-    "FIPS": 37087,
-    "State": "North Carolina",
-    "County": "Haywood"
+    code: 37087,
+    state: 'North Carolina',
+    county: 'Haywood',
   },
   {
-    "FIPS": 37089,
-    "State": "North Carolina",
-    "County": "Henderson"
+    code: 37089,
+    state: 'North Carolina',
+    county: 'Henderson',
   },
   {
-    "FIPS": 37091,
-    "State": "North Carolina",
-    "County": "Hertford"
+    code: 37091,
+    state: 'North Carolina',
+    county: 'Hertford',
   },
   {
-    "FIPS": 37093,
-    "State": "North Carolina",
-    "County": "Hoke"
+    code: 37093,
+    state: 'North Carolina',
+    county: 'Hoke',
   },
   {
-    "FIPS": 37095,
-    "State": "North Carolina",
-    "County": "Hyde"
+    code: 37095,
+    state: 'North Carolina',
+    county: 'Hyde',
   },
   {
-    "FIPS": 37097,
-    "State": "North Carolina",
-    "County": "Iredell"
+    code: 37097,
+    state: 'North Carolina',
+    county: 'Iredell',
   },
   {
-    "FIPS": 37099,
-    "State": "North Carolina",
-    "County": "Jackson"
+    code: 37099,
+    state: 'North Carolina',
+    county: 'Jackson',
   },
   {
-    "FIPS": 37101,
-    "State": "North Carolina",
-    "County": "Johnston"
+    code: 37101,
+    state: 'North Carolina',
+    county: 'Johnston',
   },
   {
-    "FIPS": 37103,
-    "State": "North Carolina",
-    "County": "Jones"
+    code: 37103,
+    state: 'North Carolina',
+    county: 'Jones',
   },
   {
-    "FIPS": 37105,
-    "State": "North Carolina",
-    "County": "Lee"
+    code: 37105,
+    state: 'North Carolina',
+    county: 'Lee',
   },
   {
-    "FIPS": 37107,
-    "State": "North Carolina",
-    "County": "Lenoir"
+    code: 37107,
+    state: 'North Carolina',
+    county: 'Lenoir',
   },
   {
-    "FIPS": 37109,
-    "State": "North Carolina",
-    "County": "Lincoln"
+    code: 37109,
+    state: 'North Carolina',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 37111,
-    "State": "North Carolina",
-    "County": "McDowell"
+    code: 37111,
+    state: 'North Carolina',
+    county: 'McDowell',
   },
   {
-    "FIPS": 37113,
-    "State": "North Carolina",
-    "County": "Macon"
+    code: 37113,
+    state: 'North Carolina',
+    county: 'Macon',
   },
   {
-    "FIPS": 37115,
-    "State": "North Carolina",
-    "County": "Madison"
+    code: 37115,
+    state: 'North Carolina',
+    county: 'Madison',
   },
   {
-    "FIPS": 37117,
-    "State": "North Carolina",
-    "County": "Martin"
+    code: 37117,
+    state: 'North Carolina',
+    county: 'Martin',
   },
   {
-    "FIPS": 37119,
-    "State": "North Carolina",
-    "County": "Mecklenburg"
+    code: 37119,
+    state: 'North Carolina',
+    county: 'Mecklenburg',
   },
   {
-    "FIPS": 37121,
-    "State": "North Carolina",
-    "County": "Mitchell"
+    code: 37121,
+    state: 'North Carolina',
+    county: 'Mitchell',
   },
   {
-    "FIPS": 37123,
-    "State": "North Carolina",
-    "County": "Montgomery"
+    code: 37123,
+    state: 'North Carolina',
+    county: 'Montgomery',
   },
   {
-    "FIPS": 37125,
-    "State": "North Carolina",
-    "County": "Moore"
+    code: 37125,
+    state: 'North Carolina',
+    county: 'Moore',
   },
   {
-    "FIPS": 37127,
-    "State": "North Carolina",
-    "County": "Nash"
+    code: 37127,
+    state: 'North Carolina',
+    county: 'Nash',
   },
   {
-    "FIPS": 37129,
-    "State": "North Carolina",
-    "County": "New Hanover"
+    code: 37129,
+    state: 'North Carolina',
+    county: 'New Hanover',
   },
   {
-    "FIPS": 37131,
-    "State": "North Carolina",
-    "County": "Northampton"
+    code: 37131,
+    state: 'North Carolina',
+    county: 'Northampton',
   },
   {
-    "FIPS": 37133,
-    "State": "North Carolina",
-    "County": "Onslow"
+    code: 37133,
+    state: 'North Carolina',
+    county: 'Onslow',
   },
   {
-    "FIPS": 37135,
-    "State": "North Carolina",
-    "County": "Orange"
+    code: 37135,
+    state: 'North Carolina',
+    county: 'Orange',
   },
   {
-    "FIPS": 37137,
-    "State": "North Carolina",
-    "County": "Pamlico"
+    code: 37137,
+    state: 'North Carolina',
+    county: 'Pamlico',
   },
   {
-    "FIPS": 37139,
-    "State": "North Carolina",
-    "County": "Pasquotank"
+    code: 37139,
+    state: 'North Carolina',
+    county: 'Pasquotank',
   },
   {
-    "FIPS": 37141,
-    "State": "North Carolina",
-    "County": "Pender"
+    code: 37141,
+    state: 'North Carolina',
+    county: 'Pender',
   },
   {
-    "FIPS": 37143,
-    "State": "North Carolina",
-    "County": "Perquimans"
+    code: 37143,
+    state: 'North Carolina',
+    county: 'Perquimans',
   },
   {
-    "FIPS": 37145,
-    "State": "North Carolina",
-    "County": "Person"
+    code: 37145,
+    state: 'North Carolina',
+    county: 'Person',
   },
   {
-    "FIPS": 37147,
-    "State": "North Carolina",
-    "County": "Pitt"
+    code: 37147,
+    state: 'North Carolina',
+    county: 'Pitt',
   },
   {
-    "FIPS": 37149,
-    "State": "North Carolina",
-    "County": "Polk"
+    code: 37149,
+    state: 'North Carolina',
+    county: 'Polk',
   },
   {
-    "FIPS": 37151,
-    "State": "North Carolina",
-    "County": "Randolph"
+    code: 37151,
+    state: 'North Carolina',
+    county: 'Randolph',
   },
   {
-    "FIPS": 37153,
-    "State": "North Carolina",
-    "County": "Richmond"
+    code: 37153,
+    state: 'North Carolina',
+    county: 'Richmond',
   },
   {
-    "FIPS": 37155,
-    "State": "North Carolina",
-    "County": "Robeson"
+    code: 37155,
+    state: 'North Carolina',
+    county: 'Robeson',
   },
   {
-    "FIPS": 37157,
-    "State": "North Carolina",
-    "County": "Rockingham"
+    code: 37157,
+    state: 'North Carolina',
+    county: 'Rockingham',
   },
   {
-    "FIPS": 37159,
-    "State": "North Carolina",
-    "County": "Rowan"
+    code: 37159,
+    state: 'North Carolina',
+    county: 'Rowan',
   },
   {
-    "FIPS": 37161,
-    "State": "North Carolina",
-    "County": "Rutherford"
+    code: 37161,
+    state: 'North Carolina',
+    county: 'Rutherford',
   },
   {
-    "FIPS": 37163,
-    "State": "North Carolina",
-    "County": "Sampson"
+    code: 37163,
+    state: 'North Carolina',
+    county: 'Sampson',
   },
   {
-    "FIPS": 37165,
-    "State": "North Carolina",
-    "County": "Scotland"
+    code: 37165,
+    state: 'North Carolina',
+    county: 'Scotland',
   },
   {
-    "FIPS": 37167,
-    "State": "North Carolina",
-    "County": "Stanly"
+    code: 37167,
+    state: 'North Carolina',
+    county: 'Stanly',
   },
   {
-    "FIPS": 37169,
-    "State": "North Carolina",
-    "County": "Stokes"
+    code: 37169,
+    state: 'North Carolina',
+    county: 'Stokes',
   },
   {
-    "FIPS": 37171,
-    "State": "North Carolina",
-    "County": "Surry"
+    code: 37171,
+    state: 'North Carolina',
+    county: 'Surry',
   },
   {
-    "FIPS": 37173,
-    "State": "North Carolina",
-    "County": "Swain"
+    code: 37173,
+    state: 'North Carolina',
+    county: 'Swain',
   },
   {
-    "FIPS": 37175,
-    "State": "North Carolina",
-    "County": "Transylvania"
+    code: 37175,
+    state: 'North Carolina',
+    county: 'Transylvania',
   },
   {
-    "FIPS": 37177,
-    "State": "North Carolina",
-    "County": "Tyrrell"
+    code: 37177,
+    state: 'North Carolina',
+    county: 'Tyrrell',
   },
   {
-    "FIPS": 37179,
-    "State": "North Carolina",
-    "County": "Union"
+    code: 37179,
+    state: 'North Carolina',
+    county: 'Union',
   },
   {
-    "FIPS": 37181,
-    "State": "North Carolina",
-    "County": "Vance"
+    code: 37181,
+    state: 'North Carolina',
+    county: 'Vance',
   },
   {
-    "FIPS": 37183,
-    "State": "North Carolina",
-    "County": "Wake"
+    code: 37183,
+    state: 'North Carolina',
+    county: 'Wake',
   },
   {
-    "FIPS": 37185,
-    "State": "North Carolina",
-    "County": "Warren"
+    code: 37185,
+    state: 'North Carolina',
+    county: 'Warren',
   },
   {
-    "FIPS": 37187,
-    "State": "North Carolina",
-    "County": "Washington"
+    code: 37187,
+    state: 'North Carolina',
+    county: 'Washington',
   },
   {
-    "FIPS": 37189,
-    "State": "North Carolina",
-    "County": "Watauga"
+    code: 37189,
+    state: 'North Carolina',
+    county: 'Watauga',
   },
   {
-    "FIPS": 37191,
-    "State": "North Carolina",
-    "County": "Wayne"
+    code: 37191,
+    state: 'North Carolina',
+    county: 'Wayne',
   },
   {
-    "FIPS": 37193,
-    "State": "North Carolina",
-    "County": "Wilkes"
+    code: 37193,
+    state: 'North Carolina',
+    county: 'Wilkes',
   },
   {
-    "FIPS": 37195,
-    "State": "North Carolina",
-    "County": "Wilson"
+    code: 37195,
+    state: 'North Carolina',
+    county: 'Wilson',
   },
   {
-    "FIPS": 37197,
-    "State": "North Carolina",
-    "County": "Yadkin"
+    code: 37197,
+    state: 'North Carolina',
+    county: 'Yadkin',
   },
   {
-    "FIPS": 37199,
-    "State": "North Carolina",
-    "County": "Yancey"
+    code: 37199,
+    state: 'North Carolina',
+    county: 'Yancey',
   },
   {
-    "FIPS": 38001,
-    "State": "North Dakota",
-    "County": "Adams"
+    code: 38001,
+    state: 'North Dakota',
+    county: 'Adams',
   },
   {
-    "FIPS": 38003,
-    "State": "North Dakota",
-    "County": "Barnes"
+    code: 38003,
+    state: 'North Dakota',
+    county: 'Barnes',
   },
   {
-    "FIPS": 38005,
-    "State": "North Dakota",
-    "County": "Benson"
+    code: 38005,
+    state: 'North Dakota',
+    county: 'Benson',
   },
   {
-    "FIPS": 38007,
-    "State": "North Dakota",
-    "County": "Billings"
+    code: 38007,
+    state: 'North Dakota',
+    county: 'Billings',
   },
   {
-    "FIPS": 38009,
-    "State": "North Dakota",
-    "County": "Bottineau"
+    code: 38009,
+    state: 'North Dakota',
+    county: 'Bottineau',
   },
   {
-    "FIPS": 38011,
-    "State": "North Dakota",
-    "County": "Bowman"
+    code: 38011,
+    state: 'North Dakota',
+    county: 'Bowman',
   },
   {
-    "FIPS": 38013,
-    "State": "North Dakota",
-    "County": "Burke"
+    code: 38013,
+    state: 'North Dakota',
+    county: 'Burke',
   },
   {
-    "FIPS": 38015,
-    "State": "North Dakota",
-    "County": "Burleigh"
+    code: 38015,
+    state: 'North Dakota',
+    county: 'Burleigh',
   },
   {
-    "FIPS": 38017,
-    "State": "North Dakota",
-    "County": "Cass"
+    code: 38017,
+    state: 'North Dakota',
+    county: 'Cass',
   },
   {
-    "FIPS": 38019,
-    "State": "North Dakota",
-    "County": "Cavalier"
+    code: 38019,
+    state: 'North Dakota',
+    county: 'Cavalier',
   },
   {
-    "FIPS": 38021,
-    "State": "North Dakota",
-    "County": "Dickey"
+    code: 38021,
+    state: 'North Dakota',
+    county: 'Dickey',
   },
   {
-    "FIPS": 38023,
-    "State": "North Dakota",
-    "County": "Divide"
+    code: 38023,
+    state: 'North Dakota',
+    county: 'Divide',
   },
   {
-    "FIPS": 38025,
-    "State": "North Dakota",
-    "County": "Dunn"
+    code: 38025,
+    state: 'North Dakota',
+    county: 'Dunn',
   },
   {
-    "FIPS": 38027,
-    "State": "North Dakota",
-    "County": "Eddy"
+    code: 38027,
+    state: 'North Dakota',
+    county: 'Eddy',
   },
   {
-    "FIPS": 38029,
-    "State": "North Dakota",
-    "County": "Emmons"
+    code: 38029,
+    state: 'North Dakota',
+    county: 'Emmons',
   },
   {
-    "FIPS": 38031,
-    "State": "North Dakota",
-    "County": "Foster"
+    code: 38031,
+    state: 'North Dakota',
+    county: 'Foster',
   },
   {
-    "FIPS": 38033,
-    "State": "North Dakota",
-    "County": "Golden Valley"
+    code: 38033,
+    state: 'North Dakota',
+    county: 'Golden Valley',
   },
   {
-    "FIPS": 38035,
-    "State": "North Dakota",
-    "County": "Grand Forks"
+    code: 38035,
+    state: 'North Dakota',
+    county: 'Grand Forks',
   },
   {
-    "FIPS": 38037,
-    "State": "North Dakota",
-    "County": "Grant"
+    code: 38037,
+    state: 'North Dakota',
+    county: 'Grant',
   },
   {
-    "FIPS": 38039,
-    "State": "North Dakota",
-    "County": "Griggs"
+    code: 38039,
+    state: 'North Dakota',
+    county: 'Griggs',
   },
   {
-    "FIPS": 38041,
-    "State": "North Dakota",
-    "County": "Hettinger"
+    code: 38041,
+    state: 'North Dakota',
+    county: 'Hettinger',
   },
   {
-    "FIPS": 38043,
-    "State": "North Dakota",
-    "County": "Kidder"
+    code: 38043,
+    state: 'North Dakota',
+    county: 'Kidder',
   },
   {
-    "FIPS": 38045,
-    "State": "North Dakota",
-    "County": "LaMoure"
+    code: 38045,
+    state: 'North Dakota',
+    county: 'LaMoure',
   },
   {
-    "FIPS": 38047,
-    "State": "North Dakota",
-    "County": "Logan"
+    code: 38047,
+    state: 'North Dakota',
+    county: 'Logan',
   },
   {
-    "FIPS": 38049,
-    "State": "North Dakota",
-    "County": "McHenry"
+    code: 38049,
+    state: 'North Dakota',
+    county: 'McHenry',
   },
   {
-    "FIPS": 38051,
-    "State": "North Dakota",
-    "County": "McIntosh"
+    code: 38051,
+    state: 'North Dakota',
+    county: 'McIntosh',
   },
   {
-    "FIPS": 38053,
-    "State": "North Dakota",
-    "County": "McKenzie"
+    code: 38053,
+    state: 'North Dakota',
+    county: 'McKenzie',
   },
   {
-    "FIPS": 38055,
-    "State": "North Dakota",
-    "County": "McLean"
+    code: 38055,
+    state: 'North Dakota',
+    county: 'McLean',
   },
   {
-    "FIPS": 38057,
-    "State": "North Dakota",
-    "County": "Mercer"
+    code: 38057,
+    state: 'North Dakota',
+    county: 'Mercer',
   },
   {
-    "FIPS": 38059,
-    "State": "North Dakota",
-    "County": "Morton"
+    code: 38059,
+    state: 'North Dakota',
+    county: 'Morton',
   },
   {
-    "FIPS": 38061,
-    "State": "North Dakota",
-    "County": "Mountrail"
+    code: 38061,
+    state: 'North Dakota',
+    county: 'Mountrail',
   },
   {
-    "FIPS": 38063,
-    "State": "North Dakota",
-    "County": "Nelson"
+    code: 38063,
+    state: 'North Dakota',
+    county: 'Nelson',
   },
   {
-    "FIPS": 38065,
-    "State": "North Dakota",
-    "County": "Oliver"
+    code: 38065,
+    state: 'North Dakota',
+    county: 'Oliver',
   },
   {
-    "FIPS": 38067,
-    "State": "North Dakota",
-    "County": "Pembina"
+    code: 38067,
+    state: 'North Dakota',
+    county: 'Pembina',
   },
   {
-    "FIPS": 38069,
-    "State": "North Dakota",
-    "County": "Pierce"
+    code: 38069,
+    state: 'North Dakota',
+    county: 'Pierce',
   },
   {
-    "FIPS": 38071,
-    "State": "North Dakota",
-    "County": "Ramsey"
+    code: 38071,
+    state: 'North Dakota',
+    county: 'Ramsey',
   },
   {
-    "FIPS": 38073,
-    "State": "North Dakota",
-    "County": "Ransom"
+    code: 38073,
+    state: 'North Dakota',
+    county: 'Ransom',
   },
   {
-    "FIPS": 38075,
-    "State": "North Dakota",
-    "County": "Renville"
+    code: 38075,
+    state: 'North Dakota',
+    county: 'Renville',
   },
   {
-    "FIPS": 38077,
-    "State": "North Dakota",
-    "County": "Richland"
+    code: 38077,
+    state: 'North Dakota',
+    county: 'Richland',
   },
   {
-    "FIPS": 38079,
-    "State": "North Dakota",
-    "County": "Rolette"
+    code: 38079,
+    state: 'North Dakota',
+    county: 'Rolette',
   },
   {
-    "FIPS": 38081,
-    "State": "North Dakota",
-    "County": "Sargent"
+    code: 38081,
+    state: 'North Dakota',
+    county: 'Sargent',
   },
   {
-    "FIPS": 38083,
-    "State": "North Dakota",
-    "County": "Sheridan"
+    code: 38083,
+    state: 'North Dakota',
+    county: 'Sheridan',
   },
   {
-    "FIPS": 38085,
-    "State": "North Dakota",
-    "County": "Sioux"
+    code: 38085,
+    state: 'North Dakota',
+    county: 'Sioux',
   },
   {
-    "FIPS": 38087,
-    "State": "North Dakota",
-    "County": "Slope"
+    code: 38087,
+    state: 'North Dakota',
+    county: 'Slope',
   },
   {
-    "FIPS": 38089,
-    "State": "North Dakota",
-    "County": "Stark"
+    code: 38089,
+    state: 'North Dakota',
+    county: 'Stark',
   },
   {
-    "FIPS": 38091,
-    "State": "North Dakota",
-    "County": "Steele"
+    code: 38091,
+    state: 'North Dakota',
+    county: 'Steele',
   },
   {
-    "FIPS": 38093,
-    "State": "North Dakota",
-    "County": "Stutsman"
+    code: 38093,
+    state: 'North Dakota',
+    county: 'Stutsman',
   },
   {
-    "FIPS": 38095,
-    "State": "North Dakota",
-    "County": "Towner"
+    code: 38095,
+    state: 'North Dakota',
+    county: 'Towner',
   },
   {
-    "FIPS": 38097,
-    "State": "North Dakota",
-    "County": "Traill"
+    code: 38097,
+    state: 'North Dakota',
+    county: 'Traill',
   },
   {
-    "FIPS": 38099,
-    "State": "North Dakota",
-    "County": "Walsh"
+    code: 38099,
+    state: 'North Dakota',
+    county: 'Walsh',
   },
   {
-    "FIPS": 38101,
-    "State": "North Dakota",
-    "County": "Ward"
+    code: 38101,
+    state: 'North Dakota',
+    county: 'Ward',
   },
   {
-    "FIPS": 38103,
-    "State": "North Dakota",
-    "County": "Wells"
+    code: 38103,
+    state: 'North Dakota',
+    county: 'Wells',
   },
   {
-    "FIPS": 38105,
-    "State": "North Dakota",
-    "County": "Williams"
+    code: 38105,
+    state: 'North Dakota',
+    county: 'Williams',
   },
   {
-    "FIPS": 39001,
-    "State": "Ohio",
-    "County": "Adams"
+    code: 39001,
+    state: 'Ohio',
+    county: 'Adams',
   },
   {
-    "FIPS": 39003,
-    "State": "Ohio",
-    "County": "Allen"
+    code: 39003,
+    state: 'Ohio',
+    county: 'Allen',
   },
   {
-    "FIPS": 39005,
-    "State": "Ohio",
-    "County": "Ashland"
+    code: 39005,
+    state: 'Ohio',
+    county: 'Ashland',
   },
   {
-    "FIPS": 39007,
-    "State": "Ohio",
-    "County": "Ashtabula"
+    code: 39007,
+    state: 'Ohio',
+    county: 'Ashtabula',
   },
   {
-    "FIPS": 39009,
-    "State": "Ohio",
-    "County": "Athens"
+    code: 39009,
+    state: 'Ohio',
+    county: 'Athens',
   },
   {
-    "FIPS": 39011,
-    "State": "Ohio",
-    "County": "Auglaize"
+    code: 39011,
+    state: 'Ohio',
+    county: 'Auglaize',
   },
   {
-    "FIPS": 39013,
-    "State": "Ohio",
-    "County": "Belmont"
+    code: 39013,
+    state: 'Ohio',
+    county: 'Belmont',
   },
   {
-    "FIPS": 39015,
-    "State": "Ohio",
-    "County": "Brown"
+    code: 39015,
+    state: 'Ohio',
+    county: 'Brown',
   },
   {
-    "FIPS": 39017,
-    "State": "Ohio",
-    "County": "Butler"
+    code: 39017,
+    state: 'Ohio',
+    county: 'Butler',
   },
   {
-    "FIPS": 39019,
-    "State": "Ohio",
-    "County": "Carroll"
+    code: 39019,
+    state: 'Ohio',
+    county: 'Carroll',
   },
   {
-    "FIPS": 39021,
-    "State": "Ohio",
-    "County": "Champaign"
+    code: 39021,
+    state: 'Ohio',
+    county: 'Champaign',
   },
   {
-    "FIPS": 39023,
-    "State": "Ohio",
-    "County": "Clark"
+    code: 39023,
+    state: 'Ohio',
+    county: 'Clark',
   },
   {
-    "FIPS": 39025,
-    "State": "Ohio",
-    "County": "Clermont"
+    code: 39025,
+    state: 'Ohio',
+    county: 'Clermont',
   },
   {
-    "FIPS": 39027,
-    "State": "Ohio",
-    "County": "Clinton"
+    code: 39027,
+    state: 'Ohio',
+    county: 'Clinton',
   },
   {
-    "FIPS": 39029,
-    "State": "Ohio",
-    "County": "Columbiana"
+    code: 39029,
+    state: 'Ohio',
+    county: 'Columbiana',
   },
   {
-    "FIPS": 39031,
-    "State": "Ohio",
-    "County": "Coshocton"
+    code: 39031,
+    state: 'Ohio',
+    county: 'Coshocton',
   },
   {
-    "FIPS": 39033,
-    "State": "Ohio",
-    "County": "Crawford"
+    code: 39033,
+    state: 'Ohio',
+    county: 'Crawford',
   },
   {
-    "FIPS": 39035,
-    "State": "Ohio",
-    "County": "Cuyahoga"
+    code: 39035,
+    state: 'Ohio',
+    county: 'Cuyahoga',
   },
   {
-    "FIPS": 39037,
-    "State": "Ohio",
-    "County": "Darke"
+    code: 39037,
+    state: 'Ohio',
+    county: 'Darke',
   },
   {
-    "FIPS": 39039,
-    "State": "Ohio",
-    "County": "Defiance"
+    code: 39039,
+    state: 'Ohio',
+    county: 'Defiance',
   },
   {
-    "FIPS": 39041,
-    "State": "Ohio",
-    "County": "Delaware"
+    code: 39041,
+    state: 'Ohio',
+    county: 'Delaware',
   },
   {
-    "FIPS": 39043,
-    "State": "Ohio",
-    "County": "Erie"
+    code: 39043,
+    state: 'Ohio',
+    county: 'Erie',
   },
   {
-    "FIPS": 39045,
-    "State": "Ohio",
-    "County": "Fairfield"
+    code: 39045,
+    state: 'Ohio',
+    county: 'Fairfield',
   },
   {
-    "FIPS": 39047,
-    "State": "Ohio",
-    "County": "Fayette"
+    code: 39047,
+    state: 'Ohio',
+    county: 'Fayette',
   },
   {
-    "FIPS": 39049,
-    "State": "Ohio",
-    "County": "Franklin"
+    code: 39049,
+    state: 'Ohio',
+    county: 'Franklin',
   },
   {
-    "FIPS": 39051,
-    "State": "Ohio",
-    "County": "Fulton"
+    code: 39051,
+    state: 'Ohio',
+    county: 'Fulton',
   },
   {
-    "FIPS": 39053,
-    "State": "Ohio",
-    "County": "Gallia"
+    code: 39053,
+    state: 'Ohio',
+    county: 'Gallia',
   },
   {
-    "FIPS": 39055,
-    "State": "Ohio",
-    "County": "Geauga"
+    code: 39055,
+    state: 'Ohio',
+    county: 'Geauga',
   },
   {
-    "FIPS": 39057,
-    "State": "Ohio",
-    "County": "Greene"
+    code: 39057,
+    state: 'Ohio',
+    county: 'Greene',
   },
   {
-    "FIPS": 39059,
-    "State": "Ohio",
-    "County": "Guernsey"
+    code: 39059,
+    state: 'Ohio',
+    county: 'Guernsey',
   },
   {
-    "FIPS": 39061,
-    "State": "Ohio",
-    "County": "Hamilton"
+    code: 39061,
+    state: 'Ohio',
+    county: 'Hamilton',
   },
   {
-    "FIPS": 39063,
-    "State": "Ohio",
-    "County": "Hancock"
+    code: 39063,
+    state: 'Ohio',
+    county: 'Hancock',
   },
   {
-    "FIPS": 39065,
-    "State": "Ohio",
-    "County": "Hardin"
+    code: 39065,
+    state: 'Ohio',
+    county: 'Hardin',
   },
   {
-    "FIPS": 39067,
-    "State": "Ohio",
-    "County": "Harrison"
+    code: 39067,
+    state: 'Ohio',
+    county: 'Harrison',
   },
   {
-    "FIPS": 39069,
-    "State": "Ohio",
-    "County": "Henry"
+    code: 39069,
+    state: 'Ohio',
+    county: 'Henry',
   },
   {
-    "FIPS": 39071,
-    "State": "Ohio",
-    "County": "Highland"
+    code: 39071,
+    state: 'Ohio',
+    county: 'Highland',
   },
   {
-    "FIPS": 39073,
-    "State": "Ohio",
-    "County": "Hocking"
+    code: 39073,
+    state: 'Ohio',
+    county: 'Hocking',
   },
   {
-    "FIPS": 39075,
-    "State": "Ohio",
-    "County": "Holmes"
+    code: 39075,
+    state: 'Ohio',
+    county: 'Holmes',
   },
   {
-    "FIPS": 39077,
-    "State": "Ohio",
-    "County": "Huron"
+    code: 39077,
+    state: 'Ohio',
+    county: 'Huron',
   },
   {
-    "FIPS": 39079,
-    "State": "Ohio",
-    "County": "Jackson"
+    code: 39079,
+    state: 'Ohio',
+    county: 'Jackson',
   },
   {
-    "FIPS": 39081,
-    "State": "Ohio",
-    "County": "Jefferson"
+    code: 39081,
+    state: 'Ohio',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 39083,
-    "State": "Ohio",
-    "County": "Knox"
+    code: 39083,
+    state: 'Ohio',
+    county: 'Knox',
   },
   {
-    "FIPS": 39085,
-    "State": "Ohio",
-    "County": "Lake"
+    code: 39085,
+    state: 'Ohio',
+    county: 'Lake',
   },
   {
-    "FIPS": 39087,
-    "State": "Ohio",
-    "County": "Lawrence"
+    code: 39087,
+    state: 'Ohio',
+    county: 'Lawrence',
   },
   {
-    "FIPS": 39089,
-    "State": "Ohio",
-    "County": "Licking"
+    code: 39089,
+    state: 'Ohio',
+    county: 'Licking',
   },
   {
-    "FIPS": 39091,
-    "State": "Ohio",
-    "County": "Logan"
+    code: 39091,
+    state: 'Ohio',
+    county: 'Logan',
   },
   {
-    "FIPS": 39093,
-    "State": "Ohio",
-    "County": "Lorain"
+    code: 39093,
+    state: 'Ohio',
+    county: 'Lorain',
   },
   {
-    "FIPS": 39095,
-    "State": "Ohio",
-    "County": "Lucas"
+    code: 39095,
+    state: 'Ohio',
+    county: 'Lucas',
   },
   {
-    "FIPS": 39097,
-    "State": "Ohio",
-    "County": "Madison"
+    code: 39097,
+    state: 'Ohio',
+    county: 'Madison',
   },
   {
-    "FIPS": 39099,
-    "State": "Ohio",
-    "County": "Mahoning"
+    code: 39099,
+    state: 'Ohio',
+    county: 'Mahoning',
   },
   {
-    "FIPS": 39101,
-    "State": "Ohio",
-    "County": "Marion"
+    code: 39101,
+    state: 'Ohio',
+    county: 'Marion',
   },
   {
-    "FIPS": 39103,
-    "State": "Ohio",
-    "County": "Medina"
+    code: 39103,
+    state: 'Ohio',
+    county: 'Medina',
   },
   {
-    "FIPS": 39105,
-    "State": "Ohio",
-    "County": "Meigs"
+    code: 39105,
+    state: 'Ohio',
+    county: 'Meigs',
   },
   {
-    "FIPS": 39107,
-    "State": "Ohio",
-    "County": "Mercer"
+    code: 39107,
+    state: 'Ohio',
+    county: 'Mercer',
   },
   {
-    "FIPS": 39109,
-    "State": "Ohio",
-    "County": "Miami"
+    code: 39109,
+    state: 'Ohio',
+    county: 'Miami',
   },
   {
-    "FIPS": 39111,
-    "State": "Ohio",
-    "County": "Monroe"
+    code: 39111,
+    state: 'Ohio',
+    county: 'Monroe',
   },
   {
-    "FIPS": 39113,
-    "State": "Ohio",
-    "County": "Montgomery"
+    code: 39113,
+    state: 'Ohio',
+    county: 'Montgomery',
   },
   {
-    "FIPS": 39115,
-    "State": "Ohio",
-    "County": "Morgan"
+    code: 39115,
+    state: 'Ohio',
+    county: 'Morgan',
   },
   {
-    "FIPS": 39117,
-    "State": "Ohio",
-    "County": "Morrow"
+    code: 39117,
+    state: 'Ohio',
+    county: 'Morrow',
   },
   {
-    "FIPS": 39119,
-    "State": "Ohio",
-    "County": "Muskingum"
+    code: 39119,
+    state: 'Ohio',
+    county: 'Muskingum',
   },
   {
-    "FIPS": 39121,
-    "State": "Ohio",
-    "County": "Noble"
+    code: 39121,
+    state: 'Ohio',
+    county: 'Noble',
   },
   {
-    "FIPS": 39123,
-    "State": "Ohio",
-    "County": "Ottawa"
+    code: 39123,
+    state: 'Ohio',
+    county: 'Ottawa',
   },
   {
-    "FIPS": 39125,
-    "State": "Ohio",
-    "County": "Paulding"
+    code: 39125,
+    state: 'Ohio',
+    county: 'Paulding',
   },
   {
-    "FIPS": 39127,
-    "State": "Ohio",
-    "County": "Perry"
+    code: 39127,
+    state: 'Ohio',
+    county: 'Perry',
   },
   {
-    "FIPS": 39129,
-    "State": "Ohio",
-    "County": "Pickaway"
+    code: 39129,
+    state: 'Ohio',
+    county: 'Pickaway',
   },
   {
-    "FIPS": 39131,
-    "State": "Ohio",
-    "County": "Pike"
+    code: 39131,
+    state: 'Ohio',
+    county: 'Pike',
   },
   {
-    "FIPS": 39133,
-    "State": "Ohio",
-    "County": "Portage"
+    code: 39133,
+    state: 'Ohio',
+    county: 'Portage',
   },
   {
-    "FIPS": 39135,
-    "State": "Ohio",
-    "County": "Preble"
+    code: 39135,
+    state: 'Ohio',
+    county: 'Preble',
   },
   {
-    "FIPS": 39137,
-    "State": "Ohio",
-    "County": "Putnam"
+    code: 39137,
+    state: 'Ohio',
+    county: 'Putnam',
   },
   {
-    "FIPS": 39139,
-    "State": "Ohio",
-    "County": "Richland"
+    code: 39139,
+    state: 'Ohio',
+    county: 'Richland',
   },
   {
-    "FIPS": 39141,
-    "State": "Ohio",
-    "County": "Ross"
+    code: 39141,
+    state: 'Ohio',
+    county: 'Ross',
   },
   {
-    "FIPS": 39143,
-    "State": "Ohio",
-    "County": "Sandusky"
+    code: 39143,
+    state: 'Ohio',
+    county: 'Sandusky',
   },
   {
-    "FIPS": 39145,
-    "State": "Ohio",
-    "County": "Scioto"
+    code: 39145,
+    state: 'Ohio',
+    county: 'Scioto',
   },
   {
-    "FIPS": 39147,
-    "State": "Ohio",
-    "County": "Seneca"
+    code: 39147,
+    state: 'Ohio',
+    county: 'Seneca',
   },
   {
-    "FIPS": 39149,
-    "State": "Ohio",
-    "County": "Shelby"
+    code: 39149,
+    state: 'Ohio',
+    county: 'Shelby',
   },
   {
-    "FIPS": 39151,
-    "State": "Ohio",
-    "County": "Stark"
+    code: 39151,
+    state: 'Ohio',
+    county: 'Stark',
   },
   {
-    "FIPS": 39153,
-    "State": "Ohio",
-    "County": "Summit"
+    code: 39153,
+    state: 'Ohio',
+    county: 'Summit',
   },
   {
-    "FIPS": 39155,
-    "State": "Ohio",
-    "County": "Trumbull"
+    code: 39155,
+    state: 'Ohio',
+    county: 'Trumbull',
   },
   {
-    "FIPS": 39157,
-    "State": "Ohio",
-    "County": "Tuscarawas"
+    code: 39157,
+    state: 'Ohio',
+    county: 'Tuscarawas',
   },
   {
-    "FIPS": 39159,
-    "State": "Ohio",
-    "County": "Union"
+    code: 39159,
+    state: 'Ohio',
+    county: 'Union',
   },
   {
-    "FIPS": 39161,
-    "State": "Ohio",
-    "County": "Van Wert"
+    code: 39161,
+    state: 'Ohio',
+    county: 'Van Wert',
   },
   {
-    "FIPS": 39163,
-    "State": "Ohio",
-    "County": "Vinton"
+    code: 39163,
+    state: 'Ohio',
+    county: 'Vinton',
   },
   {
-    "FIPS": 39165,
-    "State": "Ohio",
-    "County": "Warren"
+    code: 39165,
+    state: 'Ohio',
+    county: 'Warren',
   },
   {
-    "FIPS": 39167,
-    "State": "Ohio",
-    "County": "Washington"
+    code: 39167,
+    state: 'Ohio',
+    county: 'Washington',
   },
   {
-    "FIPS": 39169,
-    "State": "Ohio",
-    "County": "Wayne"
+    code: 39169,
+    state: 'Ohio',
+    county: 'Wayne',
   },
   {
-    "FIPS": 39171,
-    "State": "Ohio",
-    "County": "Williams"
+    code: 39171,
+    state: 'Ohio',
+    county: 'Williams',
   },
   {
-    "FIPS": 39173,
-    "State": "Ohio",
-    "County": "Wood"
+    code: 39173,
+    state: 'Ohio',
+    county: 'Wood',
   },
   {
-    "FIPS": 39175,
-    "State": "Ohio",
-    "County": "Wyandot"
+    code: 39175,
+    state: 'Ohio',
+    county: 'Wyandot',
   },
   {
-    "FIPS": 40001,
-    "State": "Oklahoma",
-    "County": "Adair"
+    code: 40001,
+    state: 'Oklahoma',
+    county: 'Adair',
   },
   {
-    "FIPS": 40003,
-    "State": "Oklahoma",
-    "County": "Alfalfa"
+    code: 40003,
+    state: 'Oklahoma',
+    county: 'Alfalfa',
   },
   {
-    "FIPS": 40005,
-    "State": "Oklahoma",
-    "County": "Atoka"
+    code: 40005,
+    state: 'Oklahoma',
+    county: 'Atoka',
   },
   {
-    "FIPS": 40007,
-    "State": "Oklahoma",
-    "County": "Beaver"
+    code: 40007,
+    state: 'Oklahoma',
+    county: 'Beaver',
   },
   {
-    "FIPS": 40009,
-    "State": "Oklahoma",
-    "County": "Beckham"
+    code: 40009,
+    state: 'Oklahoma',
+    county: 'Beckham',
   },
   {
-    "FIPS": 40011,
-    "State": "Oklahoma",
-    "County": "Blaine"
+    code: 40011,
+    state: 'Oklahoma',
+    county: 'Blaine',
   },
   {
-    "FIPS": 40013,
-    "State": "Oklahoma",
-    "County": "Bryan"
+    code: 40013,
+    state: 'Oklahoma',
+    county: 'Bryan',
   },
   {
-    "FIPS": 40015,
-    "State": "Oklahoma",
-    "County": "Caddo"
+    code: 40015,
+    state: 'Oklahoma',
+    county: 'Caddo',
   },
   {
-    "FIPS": 40017,
-    "State": "Oklahoma",
-    "County": "Canadian"
+    code: 40017,
+    state: 'Oklahoma',
+    county: 'Canadian',
   },
   {
-    "FIPS": 40019,
-    "State": "Oklahoma",
-    "County": "Carter"
+    code: 40019,
+    state: 'Oklahoma',
+    county: 'Carter',
   },
   {
-    "FIPS": 40021,
-    "State": "Oklahoma",
-    "County": "Cherokee"
+    code: 40021,
+    state: 'Oklahoma',
+    county: 'Cherokee',
   },
   {
-    "FIPS": 40023,
-    "State": "Oklahoma",
-    "County": "Choctaw"
+    code: 40023,
+    state: 'Oklahoma',
+    county: 'Choctaw',
   },
   {
-    "FIPS": 40025,
-    "State": "Oklahoma",
-    "County": "Cimarron"
+    code: 40025,
+    state: 'Oklahoma',
+    county: 'Cimarron',
   },
   {
-    "FIPS": 40027,
-    "State": "Oklahoma",
-    "County": "Cleveland"
+    code: 40027,
+    state: 'Oklahoma',
+    county: 'Cleveland',
   },
   {
-    "FIPS": 40029,
-    "State": "Oklahoma",
-    "County": "Coal"
+    code: 40029,
+    state: 'Oklahoma',
+    county: 'Coal',
   },
   {
-    "FIPS": 40031,
-    "State": "Oklahoma",
-    "County": "Comanche"
+    code: 40031,
+    state: 'Oklahoma',
+    county: 'Comanche',
   },
   {
-    "FIPS": 40033,
-    "State": "Oklahoma",
-    "County": "Cotton"
+    code: 40033,
+    state: 'Oklahoma',
+    county: 'Cotton',
   },
   {
-    "FIPS": 40035,
-    "State": "Oklahoma",
-    "County": "Craig"
+    code: 40035,
+    state: 'Oklahoma',
+    county: 'Craig',
   },
   {
-    "FIPS": 40037,
-    "State": "Oklahoma",
-    "County": "Creek"
+    code: 40037,
+    state: 'Oklahoma',
+    county: 'Creek',
   },
   {
-    "FIPS": 40039,
-    "State": "Oklahoma",
-    "County": "Custer"
+    code: 40039,
+    state: 'Oklahoma',
+    county: 'Custer',
   },
   {
-    "FIPS": 40041,
-    "State": "Oklahoma",
-    "County": "Delaware"
+    code: 40041,
+    state: 'Oklahoma',
+    county: 'Delaware',
   },
   {
-    "FIPS": 40043,
-    "State": "Oklahoma",
-    "County": "Dewey"
+    code: 40043,
+    state: 'Oklahoma',
+    county: 'Dewey',
   },
   {
-    "FIPS": 40045,
-    "State": "Oklahoma",
-    "County": "Ellis"
+    code: 40045,
+    state: 'Oklahoma',
+    county: 'Ellis',
   },
   {
-    "FIPS": 40047,
-    "State": "Oklahoma",
-    "County": "Garfield"
+    code: 40047,
+    state: 'Oklahoma',
+    county: 'Garfield',
   },
   {
-    "FIPS": 40049,
-    "State": "Oklahoma",
-    "County": "Garvin"
+    code: 40049,
+    state: 'Oklahoma',
+    county: 'Garvin',
   },
   {
-    "FIPS": 40051,
-    "State": "Oklahoma",
-    "County": "Grady"
+    code: 40051,
+    state: 'Oklahoma',
+    county: 'Grady',
   },
   {
-    "FIPS": 40053,
-    "State": "Oklahoma",
-    "County": "Grant"
+    code: 40053,
+    state: 'Oklahoma',
+    county: 'Grant',
   },
   {
-    "FIPS": 40055,
-    "State": "Oklahoma",
-    "County": "Greer"
+    code: 40055,
+    state: 'Oklahoma',
+    county: 'Greer',
   },
   {
-    "FIPS": 40057,
-    "State": "Oklahoma",
-    "County": "Harmon"
+    code: 40057,
+    state: 'Oklahoma',
+    county: 'Harmon',
   },
   {
-    "FIPS": 40059,
-    "State": "Oklahoma",
-    "County": "Harper"
+    code: 40059,
+    state: 'Oklahoma',
+    county: 'Harper',
   },
   {
-    "FIPS": 40061,
-    "State": "Oklahoma",
-    "County": "Haskell"
+    code: 40061,
+    state: 'Oklahoma',
+    county: 'Haskell',
   },
   {
-    "FIPS": 40063,
-    "State": "Oklahoma",
-    "County": "Hughes"
+    code: 40063,
+    state: 'Oklahoma',
+    county: 'Hughes',
   },
   {
-    "FIPS": 40065,
-    "State": "Oklahoma",
-    "County": "Jackson"
+    code: 40065,
+    state: 'Oklahoma',
+    county: 'Jackson',
   },
   {
-    "FIPS": 40067,
-    "State": "Oklahoma",
-    "County": "Jefferson"
+    code: 40067,
+    state: 'Oklahoma',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 40069,
-    "State": "Oklahoma",
-    "County": "Johnston"
+    code: 40069,
+    state: 'Oklahoma',
+    county: 'Johnston',
   },
   {
-    "FIPS": 40071,
-    "State": "Oklahoma",
-    "County": "Kay"
+    code: 40071,
+    state: 'Oklahoma',
+    county: 'Kay',
   },
   {
-    "FIPS": 40073,
-    "State": "Oklahoma",
-    "County": "Kingfisher"
+    code: 40073,
+    state: 'Oklahoma',
+    county: 'Kingfisher',
   },
   {
-    "FIPS": 40075,
-    "State": "Oklahoma",
-    "County": "Kiowa"
+    code: 40075,
+    state: 'Oklahoma',
+    county: 'Kiowa',
   },
   {
-    "FIPS": 40077,
-    "State": "Oklahoma",
-    "County": "Latimer"
+    code: 40077,
+    state: 'Oklahoma',
+    county: 'Latimer',
   },
   {
-    "FIPS": 40079,
-    "State": "Oklahoma",
-    "County": "Le Flore"
+    code: 40079,
+    state: 'Oklahoma',
+    county: 'Le Flore',
   },
   {
-    "FIPS": 40081,
-    "State": "Oklahoma",
-    "County": "Lincoln"
+    code: 40081,
+    state: 'Oklahoma',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 40083,
-    "State": "Oklahoma",
-    "County": "Logan"
+    code: 40083,
+    state: 'Oklahoma',
+    county: 'Logan',
   },
   {
-    "FIPS": 40085,
-    "State": "Oklahoma",
-    "County": "Love"
+    code: 40085,
+    state: 'Oklahoma',
+    county: 'Love',
   },
   {
-    "FIPS": 40087,
-    "State": "Oklahoma",
-    "County": "McClain"
+    code: 40087,
+    state: 'Oklahoma',
+    county: 'McClain',
   },
   {
-    "FIPS": 40089,
-    "State": "Oklahoma",
-    "County": "McCurtain"
+    code: 40089,
+    state: 'Oklahoma',
+    county: 'McCurtain',
   },
   {
-    "FIPS": 40091,
-    "State": "Oklahoma",
-    "County": "McIntosh"
+    code: 40091,
+    state: 'Oklahoma',
+    county: 'McIntosh',
   },
   {
-    "FIPS": 40093,
-    "State": "Oklahoma",
-    "County": "Major"
+    code: 40093,
+    state: 'Oklahoma',
+    county: 'Major',
   },
   {
-    "FIPS": 40095,
-    "State": "Oklahoma",
-    "County": "Marshall"
+    code: 40095,
+    state: 'Oklahoma',
+    county: 'Marshall',
   },
   {
-    "FIPS": 40097,
-    "State": "Oklahoma",
-    "County": "Mayes"
+    code: 40097,
+    state: 'Oklahoma',
+    county: 'Mayes',
   },
   {
-    "FIPS": 40099,
-    "State": "Oklahoma",
-    "County": "Murray"
+    code: 40099,
+    state: 'Oklahoma',
+    county: 'Murray',
   },
   {
-    "FIPS": 40101,
-    "State": "Oklahoma",
-    "County": "Muskogee"
+    code: 40101,
+    state: 'Oklahoma',
+    county: 'Muskogee',
   },
   {
-    "FIPS": 40103,
-    "State": "Oklahoma",
-    "County": "Noble"
+    code: 40103,
+    state: 'Oklahoma',
+    county: 'Noble',
   },
   {
-    "FIPS": 40105,
-    "State": "Oklahoma",
-    "County": "Nowata"
+    code: 40105,
+    state: 'Oklahoma',
+    county: 'Nowata',
   },
   {
-    "FIPS": 40107,
-    "State": "Oklahoma",
-    "County": "Okfuskee"
+    code: 40107,
+    state: 'Oklahoma',
+    county: 'Okfuskee',
   },
   {
-    "FIPS": 40109,
-    "State": "Oklahoma",
-    "County": "Oklahoma"
+    code: 40109,
+    state: 'Oklahoma',
+    county: 'Oklahoma',
   },
   {
-    "FIPS": 40111,
-    "State": "Oklahoma",
-    "County": "Okmulgee"
+    code: 40111,
+    state: 'Oklahoma',
+    county: 'Okmulgee',
   },
   {
-    "FIPS": 40113,
-    "State": "Oklahoma",
-    "County": "Osage"
+    code: 40113,
+    state: 'Oklahoma',
+    county: 'Osage',
   },
   {
-    "FIPS": 40115,
-    "State": "Oklahoma",
-    "County": "Ottawa"
+    code: 40115,
+    state: 'Oklahoma',
+    county: 'Ottawa',
   },
   {
-    "FIPS": 40117,
-    "State": "Oklahoma",
-    "County": "Pawnee"
+    code: 40117,
+    state: 'Oklahoma',
+    county: 'Pawnee',
   },
   {
-    "FIPS": 40119,
-    "State": "Oklahoma",
-    "County": "Payne"
+    code: 40119,
+    state: 'Oklahoma',
+    county: 'Payne',
   },
   {
-    "FIPS": 40121,
-    "State": "Oklahoma",
-    "County": "Pittsburg"
+    code: 40121,
+    state: 'Oklahoma',
+    county: 'Pittsburg',
   },
   {
-    "FIPS": 40123,
-    "State": "Oklahoma",
-    "County": "Pontotoc"
+    code: 40123,
+    state: 'Oklahoma',
+    county: 'Pontotoc',
   },
   {
-    "FIPS": 40125,
-    "State": "Oklahoma",
-    "County": "Pottawatomie"
+    code: 40125,
+    state: 'Oklahoma',
+    county: 'Pottawatomie',
   },
   {
-    "FIPS": 40127,
-    "State": "Oklahoma",
-    "County": "Pushmataha"
+    code: 40127,
+    state: 'Oklahoma',
+    county: 'Pushmataha',
   },
   {
-    "FIPS": 40129,
-    "State": "Oklahoma",
-    "County": "Roger Mills"
+    code: 40129,
+    state: 'Oklahoma',
+    county: 'Roger Mills',
   },
   {
-    "FIPS": 40131,
-    "State": "Oklahoma",
-    "County": "Rogers"
+    code: 40131,
+    state: 'Oklahoma',
+    county: 'Rogers',
   },
   {
-    "FIPS": 40133,
-    "State": "Oklahoma",
-    "County": "Seminole"
+    code: 40133,
+    state: 'Oklahoma',
+    county: 'Seminole',
   },
   {
-    "FIPS": 40135,
-    "State": "Oklahoma",
-    "County": "Sequoyah"
+    code: 40135,
+    state: 'Oklahoma',
+    county: 'Sequoyah',
   },
   {
-    "FIPS": 40137,
-    "State": "Oklahoma",
-    "County": "Stephens"
+    code: 40137,
+    state: 'Oklahoma',
+    county: 'Stephens',
   },
   {
-    "FIPS": 40139,
-    "State": "Oklahoma",
-    "County": "Texas"
+    code: 40139,
+    state: 'Oklahoma',
+    county: 'Texas',
   },
   {
-    "FIPS": 40141,
-    "State": "Oklahoma",
-    "County": "Tillman"
+    code: 40141,
+    state: 'Oklahoma',
+    county: 'Tillman',
   },
   {
-    "FIPS": 40143,
-    "State": "Oklahoma",
-    "County": "Tulsa"
+    code: 40143,
+    state: 'Oklahoma',
+    county: 'Tulsa',
   },
   {
-    "FIPS": 40145,
-    "State": "Oklahoma",
-    "County": "Wagoner"
+    code: 40145,
+    state: 'Oklahoma',
+    county: 'Wagoner',
   },
   {
-    "FIPS": 40147,
-    "State": "Oklahoma",
-    "County": "Washington"
+    code: 40147,
+    state: 'Oklahoma',
+    county: 'Washington',
   },
   {
-    "FIPS": 40149,
-    "State": "Oklahoma",
-    "County": "Washita"
+    code: 40149,
+    state: 'Oklahoma',
+    county: 'Washita',
   },
   {
-    "FIPS": 40151,
-    "State": "Oklahoma",
-    "County": "Woods"
+    code: 40151,
+    state: 'Oklahoma',
+    county: 'Woods',
   },
   {
-    "FIPS": 40153,
-    "State": "Oklahoma",
-    "County": "Woodward"
+    code: 40153,
+    state: 'Oklahoma',
+    county: 'Woodward',
   },
   {
-    "FIPS": 41001,
-    "State": "Oregon",
-    "County": "Baker"
+    code: 41001,
+    state: 'Oregon',
+    county: 'Baker',
   },
   {
-    "FIPS": 41003,
-    "State": "Oregon",
-    "County": "Benton"
+    code: 41003,
+    state: 'Oregon',
+    county: 'Benton',
   },
   {
-    "FIPS": 41005,
-    "State": "Oregon",
-    "County": "Clackamas"
+    code: 41005,
+    state: 'Oregon',
+    county: 'Clackamas',
   },
   {
-    "FIPS": 41007,
-    "State": "Oregon",
-    "County": "Clatsop"
+    code: 41007,
+    state: 'Oregon',
+    county: 'Clatsop',
   },
   {
-    "FIPS": 41009,
-    "State": "Oregon",
-    "County": "Columbia"
+    code: 41009,
+    state: 'Oregon',
+    county: 'Columbia',
   },
   {
-    "FIPS": 41011,
-    "State": "Oregon",
-    "County": "Coos"
+    code: 41011,
+    state: 'Oregon',
+    county: 'Coos',
   },
   {
-    "FIPS": 41013,
-    "State": "Oregon",
-    "County": "Crook"
+    code: 41013,
+    state: 'Oregon',
+    county: 'Crook',
   },
   {
-    "FIPS": 41015,
-    "State": "Oregon",
-    "County": "Curry"
+    code: 41015,
+    state: 'Oregon',
+    county: 'Curry',
   },
   {
-    "FIPS": 41017,
-    "State": "Oregon",
-    "County": "Deschutes"
+    code: 41017,
+    state: 'Oregon',
+    county: 'Deschutes',
   },
   {
-    "FIPS": 41019,
-    "State": "Oregon",
-    "County": "Douglas"
+    code: 41019,
+    state: 'Oregon',
+    county: 'Douglas',
   },
   {
-    "FIPS": 41021,
-    "State": "Oregon",
-    "County": "Gilliam"
+    code: 41021,
+    state: 'Oregon',
+    county: 'Gilliam',
   },
   {
-    "FIPS": 41023,
-    "State": "Oregon",
-    "County": "Grant"
+    code: 41023,
+    state: 'Oregon',
+    county: 'Grant',
   },
   {
-    "FIPS": 41025,
-    "State": "Oregon",
-    "County": "Harney"
+    code: 41025,
+    state: 'Oregon',
+    county: 'Harney',
   },
   {
-    "FIPS": 41027,
-    "State": "Oregon",
-    "County": "Hood River"
+    code: 41027,
+    state: 'Oregon',
+    county: 'Hood River',
   },
   {
-    "FIPS": 41029,
-    "State": "Oregon",
-    "County": "Jackson"
+    code: 41029,
+    state: 'Oregon',
+    county: 'Jackson',
   },
   {
-    "FIPS": 41031,
-    "State": "Oregon",
-    "County": "Jefferson"
+    code: 41031,
+    state: 'Oregon',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 41033,
-    "State": "Oregon",
-    "County": "Josephine"
+    code: 41033,
+    state: 'Oregon',
+    county: 'Josephine',
   },
   {
-    "FIPS": 41035,
-    "State": "Oregon",
-    "County": "Klamath"
+    code: 41035,
+    state: 'Oregon',
+    county: 'Klamath',
   },
   {
-    "FIPS": 41037,
-    "State": "Oregon",
-    "County": "Lake"
+    code: 41037,
+    state: 'Oregon',
+    county: 'Lake',
   },
   {
-    "FIPS": 41039,
-    "State": "Oregon",
-    "County": "Lane"
+    code: 41039,
+    state: 'Oregon',
+    county: 'Lane',
   },
   {
-    "FIPS": 41041,
-    "State": "Oregon",
-    "County": "Lincoln"
+    code: 41041,
+    state: 'Oregon',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 41043,
-    "State": "Oregon",
-    "County": "Linn"
+    code: 41043,
+    state: 'Oregon',
+    county: 'Linn',
   },
   {
-    "FIPS": 41045,
-    "State": "Oregon",
-    "County": "Malheur"
+    code: 41045,
+    state: 'Oregon',
+    county: 'Malheur',
   },
   {
-    "FIPS": 41047,
-    "State": "Oregon",
-    "County": "Marion"
+    code: 41047,
+    state: 'Oregon',
+    county: 'Marion',
   },
   {
-    "FIPS": 41049,
-    "State": "Oregon",
-    "County": "Morrow"
+    code: 41049,
+    state: 'Oregon',
+    county: 'Morrow',
   },
   {
-    "FIPS": 41051,
-    "State": "Oregon",
-    "County": "Multnomah"
+    code: 41051,
+    state: 'Oregon',
+    county: 'Multnomah',
   },
   {
-    "FIPS": 41053,
-    "State": "Oregon",
-    "County": "Polk"
+    code: 41053,
+    state: 'Oregon',
+    county: 'Polk',
   },
   {
-    "FIPS": 41055,
-    "State": "Oregon",
-    "County": "Sherman"
+    code: 41055,
+    state: 'Oregon',
+    county: 'Sherman',
   },
   {
-    "FIPS": 41057,
-    "State": "Oregon",
-    "County": "Tillamook"
+    code: 41057,
+    state: 'Oregon',
+    county: 'Tillamook',
   },
   {
-    "FIPS": 41059,
-    "State": "Oregon",
-    "County": "Umatilla"
+    code: 41059,
+    state: 'Oregon',
+    county: 'Umatilla',
   },
   {
-    "FIPS": 41061,
-    "State": "Oregon",
-    "County": "Union"
+    code: 41061,
+    state: 'Oregon',
+    county: 'Union',
   },
   {
-    "FIPS": 41063,
-    "State": "Oregon",
-    "County": "Wallowa"
+    code: 41063,
+    state: 'Oregon',
+    county: 'Wallowa',
   },
   {
-    "FIPS": 41065,
-    "State": "Oregon",
-    "County": "Wasco"
+    code: 41065,
+    state: 'Oregon',
+    county: 'Wasco',
   },
   {
-    "FIPS": 41067,
-    "State": "Oregon",
-    "County": "Washington"
+    code: 41067,
+    state: 'Oregon',
+    county: 'Washington',
   },
   {
-    "FIPS": 41069,
-    "State": "Oregon",
-    "County": "Wheeler"
+    code: 41069,
+    state: 'Oregon',
+    county: 'Wheeler',
   },
   {
-    "FIPS": 41071,
-    "State": "Oregon",
-    "County": "Yamhill"
+    code: 41071,
+    state: 'Oregon',
+    county: 'Yamhill',
   },
   {
-    "FIPS": 42001,
-    "State": "Pennsylvania",
-    "County": "Adams"
+    code: 42001,
+    state: 'Pennsylvania',
+    county: 'Adams',
   },
   {
-    "FIPS": 42003,
-    "State": "Pennsylvania",
-    "County": "Allegheny"
+    code: 42003,
+    state: 'Pennsylvania',
+    county: 'Allegheny',
   },
   {
-    "FIPS": 42005,
-    "State": "Pennsylvania",
-    "County": "Armstrong"
+    code: 42005,
+    state: 'Pennsylvania',
+    county: 'Armstrong',
   },
   {
-    "FIPS": 42007,
-    "State": "Pennsylvania",
-    "County": "Beaver"
+    code: 42007,
+    state: 'Pennsylvania',
+    county: 'Beaver',
   },
   {
-    "FIPS": 42009,
-    "State": "Pennsylvania",
-    "County": "Bedford"
+    code: 42009,
+    state: 'Pennsylvania',
+    county: 'Bedford',
   },
   {
-    "FIPS": 42011,
-    "State": "Pennsylvania",
-    "County": "Berks"
+    code: 42011,
+    state: 'Pennsylvania',
+    county: 'Berks',
   },
   {
-    "FIPS": 42013,
-    "State": "Pennsylvania",
-    "County": "Blair"
+    code: 42013,
+    state: 'Pennsylvania',
+    county: 'Blair',
   },
   {
-    "FIPS": 42015,
-    "State": "Pennsylvania",
-    "County": "Bradford"
+    code: 42015,
+    state: 'Pennsylvania',
+    county: 'Bradford',
   },
   {
-    "FIPS": 42017,
-    "State": "Pennsylvania",
-    "County": "Bucks"
+    code: 42017,
+    state: 'Pennsylvania',
+    county: 'Bucks',
   },
   {
-    "FIPS": 42019,
-    "State": "Pennsylvania",
-    "County": "Butler"
+    code: 42019,
+    state: 'Pennsylvania',
+    county: 'Butler',
   },
   {
-    "FIPS": 42021,
-    "State": "Pennsylvania",
-    "County": "Cambria"
+    code: 42021,
+    state: 'Pennsylvania',
+    county: 'Cambria',
   },
   {
-    "FIPS": 42023,
-    "State": "Pennsylvania",
-    "County": "Cameron"
+    code: 42023,
+    state: 'Pennsylvania',
+    county: 'Cameron',
   },
   {
-    "FIPS": 42025,
-    "State": "Pennsylvania",
-    "County": "Carbon"
+    code: 42025,
+    state: 'Pennsylvania',
+    county: 'Carbon',
   },
   {
-    "FIPS": 42027,
-    "State": "Pennsylvania",
-    "County": "Centre"
+    code: 42027,
+    state: 'Pennsylvania',
+    county: 'Centre',
   },
   {
-    "FIPS": 42029,
-    "State": "Pennsylvania",
-    "County": "Chester"
+    code: 42029,
+    state: 'Pennsylvania',
+    county: 'Chester',
   },
   {
-    "FIPS": 42031,
-    "State": "Pennsylvania",
-    "County": "Clarion"
+    code: 42031,
+    state: 'Pennsylvania',
+    county: 'Clarion',
   },
   {
-    "FIPS": 42033,
-    "State": "Pennsylvania",
-    "County": "Clearfield"
+    code: 42033,
+    state: 'Pennsylvania',
+    county: 'Clearfield',
   },
   {
-    "FIPS": 42035,
-    "State": "Pennsylvania",
-    "County": "Clinton"
+    code: 42035,
+    state: 'Pennsylvania',
+    county: 'Clinton',
   },
   {
-    "FIPS": 42037,
-    "State": "Pennsylvania",
-    "County": "Columbia"
+    code: 42037,
+    state: 'Pennsylvania',
+    county: 'Columbia',
   },
   {
-    "FIPS": 42039,
-    "State": "Pennsylvania",
-    "County": "Crawford"
+    code: 42039,
+    state: 'Pennsylvania',
+    county: 'Crawford',
   },
   {
-    "FIPS": 42041,
-    "State": "Pennsylvania",
-    "County": "Cumberland"
+    code: 42041,
+    state: 'Pennsylvania',
+    county: 'Cumberland',
   },
   {
-    "FIPS": 42043,
-    "State": "Pennsylvania",
-    "County": "Dauphin"
+    code: 42043,
+    state: 'Pennsylvania',
+    county: 'Dauphin',
   },
   {
-    "FIPS": 42045,
-    "State": "Pennsylvania",
-    "County": "Delaware"
+    code: 42045,
+    state: 'Pennsylvania',
+    county: 'Delaware',
   },
   {
-    "FIPS": 42047,
-    "State": "Pennsylvania",
-    "County": "Elk"
+    code: 42047,
+    state: 'Pennsylvania',
+    county: 'Elk',
   },
   {
-    "FIPS": 42049,
-    "State": "Pennsylvania",
-    "County": "Erie"
+    code: 42049,
+    state: 'Pennsylvania',
+    county: 'Erie',
   },
   {
-    "FIPS": 42051,
-    "State": "Pennsylvania",
-    "County": "Fayette"
+    code: 42051,
+    state: 'Pennsylvania',
+    county: 'Fayette',
   },
   {
-    "FIPS": 42053,
-    "State": "Pennsylvania",
-    "County": "Forest"
+    code: 42053,
+    state: 'Pennsylvania',
+    county: 'Forest',
   },
   {
-    "FIPS": 42055,
-    "State": "Pennsylvania",
-    "County": "Franklin"
+    code: 42055,
+    state: 'Pennsylvania',
+    county: 'Franklin',
   },
   {
-    "FIPS": 42057,
-    "State": "Pennsylvania",
-    "County": "Fulton"
+    code: 42057,
+    state: 'Pennsylvania',
+    county: 'Fulton',
   },
   {
-    "FIPS": 42059,
-    "State": "Pennsylvania",
-    "County": "Greene"
+    code: 42059,
+    state: 'Pennsylvania',
+    county: 'Greene',
   },
   {
-    "FIPS": 42061,
-    "State": "Pennsylvania",
-    "County": "Huntingdon"
+    code: 42061,
+    state: 'Pennsylvania',
+    county: 'Huntingdon',
   },
   {
-    "FIPS": 42063,
-    "State": "Pennsylvania",
-    "County": "Indiana"
+    code: 42063,
+    state: 'Pennsylvania',
+    county: 'Indiana',
   },
   {
-    "FIPS": 42065,
-    "State": "Pennsylvania",
-    "County": "Jefferson"
+    code: 42065,
+    state: 'Pennsylvania',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 42067,
-    "State": "Pennsylvania",
-    "County": "Juniata"
+    code: 42067,
+    state: 'Pennsylvania',
+    county: 'Juniata',
   },
   {
-    "FIPS": 42069,
-    "State": "Pennsylvania",
-    "County": "Lackawanna"
+    code: 42069,
+    state: 'Pennsylvania',
+    county: 'Lackawanna',
   },
   {
-    "FIPS": 42071,
-    "State": "Pennsylvania",
-    "County": "Lancaster"
+    code: 42071,
+    state: 'Pennsylvania',
+    county: 'Lancaster',
   },
   {
-    "FIPS": 42073,
-    "State": "Pennsylvania",
-    "County": "Lawrence"
+    code: 42073,
+    state: 'Pennsylvania',
+    county: 'Lawrence',
   },
   {
-    "FIPS": 42075,
-    "State": "Pennsylvania",
-    "County": "Lebanon"
+    code: 42075,
+    state: 'Pennsylvania',
+    county: 'Lebanon',
   },
   {
-    "FIPS": 42077,
-    "State": "Pennsylvania",
-    "County": "Lehigh"
+    code: 42077,
+    state: 'Pennsylvania',
+    county: 'Lehigh',
   },
   {
-    "FIPS": 42079,
-    "State": "Pennsylvania",
-    "County": "Luzerne"
+    code: 42079,
+    state: 'Pennsylvania',
+    county: 'Luzerne',
   },
   {
-    "FIPS": 42081,
-    "State": "Pennsylvania",
-    "County": "Lycoming"
+    code: 42081,
+    state: 'Pennsylvania',
+    county: 'Lycoming',
   },
   {
-    "FIPS": 42083,
-    "State": "Pennsylvania",
-    "County": "McKean"
+    code: 42083,
+    state: 'Pennsylvania',
+    county: 'McKean',
   },
   {
-    "FIPS": 42085,
-    "State": "Pennsylvania",
-    "County": "Mercer"
+    code: 42085,
+    state: 'Pennsylvania',
+    county: 'Mercer',
   },
   {
-    "FIPS": 42087,
-    "State": "Pennsylvania",
-    "County": "Mifflin"
+    code: 42087,
+    state: 'Pennsylvania',
+    county: 'Mifflin',
   },
   {
-    "FIPS": 42089,
-    "State": "Pennsylvania",
-    "County": "Monroe"
+    code: 42089,
+    state: 'Pennsylvania',
+    county: 'Monroe',
   },
   {
-    "FIPS": 42091,
-    "State": "Pennsylvania",
-    "County": "Montgomery"
+    code: 42091,
+    state: 'Pennsylvania',
+    county: 'Montgomery',
   },
   {
-    "FIPS": 42093,
-    "State": "Pennsylvania",
-    "County": "Montour"
+    code: 42093,
+    state: 'Pennsylvania',
+    county: 'Montour',
   },
   {
-    "FIPS": 42095,
-    "State": "Pennsylvania",
-    "County": "Northampton"
+    code: 42095,
+    state: 'Pennsylvania',
+    county: 'Northampton',
   },
   {
-    "FIPS": 42097,
-    "State": "Pennsylvania",
-    "County": "Northumberland"
+    code: 42097,
+    state: 'Pennsylvania',
+    county: 'Northumberland',
   },
   {
-    "FIPS": 42099,
-    "State": "Pennsylvania",
-    "County": "Perry"
+    code: 42099,
+    state: 'Pennsylvania',
+    county: 'Perry',
   },
   {
-    "FIPS": 42101,
-    "State": "Pennsylvania",
-    "County": "Philadelphia"
+    code: 42101,
+    state: 'Pennsylvania',
+    county: 'Philadelphia',
   },
   {
-    "FIPS": 42103,
-    "State": "Pennsylvania",
-    "County": "Pike"
+    code: 42103,
+    state: 'Pennsylvania',
+    county: 'Pike',
   },
   {
-    "FIPS": 42105,
-    "State": "Pennsylvania",
-    "County": "Potter"
+    code: 42105,
+    state: 'Pennsylvania',
+    county: 'Potter',
   },
   {
-    "FIPS": 42107,
-    "State": "Pennsylvania",
-    "County": "Schuylkill"
+    code: 42107,
+    state: 'Pennsylvania',
+    county: 'Schuylkill',
   },
   {
-    "FIPS": 42109,
-    "State": "Pennsylvania",
-    "County": "Snyder"
+    code: 42109,
+    state: 'Pennsylvania',
+    county: 'Snyder',
   },
   {
-    "FIPS": 42111,
-    "State": "Pennsylvania",
-    "County": "Somerset"
+    code: 42111,
+    state: 'Pennsylvania',
+    county: 'Somerset',
   },
   {
-    "FIPS": 42113,
-    "State": "Pennsylvania",
-    "County": "Sullivan"
+    code: 42113,
+    state: 'Pennsylvania',
+    county: 'Sullivan',
   },
   {
-    "FIPS": 42115,
-    "State": "Pennsylvania",
-    "County": "Susquehanna"
+    code: 42115,
+    state: 'Pennsylvania',
+    county: 'Susquehanna',
   },
   {
-    "FIPS": 42117,
-    "State": "Pennsylvania",
-    "County": "Tioga"
+    code: 42117,
+    state: 'Pennsylvania',
+    county: 'Tioga',
   },
   {
-    "FIPS": 42119,
-    "State": "Pennsylvania",
-    "County": "Union"
+    code: 42119,
+    state: 'Pennsylvania',
+    county: 'Union',
   },
   {
-    "FIPS": 42121,
-    "State": "Pennsylvania",
-    "County": "Venango"
+    code: 42121,
+    state: 'Pennsylvania',
+    county: 'Venango',
   },
   {
-    "FIPS": 42123,
-    "State": "Pennsylvania",
-    "County": "Warren"
+    code: 42123,
+    state: 'Pennsylvania',
+    county: 'Warren',
   },
   {
-    "FIPS": 42125,
-    "State": "Pennsylvania",
-    "County": "Washington"
+    code: 42125,
+    state: 'Pennsylvania',
+    county: 'Washington',
   },
   {
-    "FIPS": 42127,
-    "State": "Pennsylvania",
-    "County": "Wayne"
+    code: 42127,
+    state: 'Pennsylvania',
+    county: 'Wayne',
   },
   {
-    "FIPS": 42129,
-    "State": "Pennsylvania",
-    "County": "Westmoreland"
+    code: 42129,
+    state: 'Pennsylvania',
+    county: 'Westmoreland',
   },
   {
-    "FIPS": 42131,
-    "State": "Pennsylvania",
-    "County": "Wyoming"
+    code: 42131,
+    state: 'Pennsylvania',
+    county: 'Wyoming',
   },
   {
-    "FIPS": 42133,
-    "State": "Pennsylvania",
-    "County": "York"
+    code: 42133,
+    state: 'Pennsylvania',
+    county: 'York',
   },
   {
-    "FIPS": 44001,
-    "State": "Rhode Island",
-    "County": "Bristol"
+    code: 44001,
+    state: 'Rhode Island',
+    county: 'Bristol',
   },
   {
-    "FIPS": 44003,
-    "State": "Rhode Island",
-    "County": "Kent"
+    code: 44003,
+    state: 'Rhode Island',
+    county: 'Kent',
   },
   {
-    "FIPS": 44005,
-    "State": "Rhode Island",
-    "County": "Newport"
+    code: 44005,
+    state: 'Rhode Island',
+    county: 'Newport',
   },
   {
-    "FIPS": 44007,
-    "State": "Rhode Island",
-    "County": "Providence"
+    code: 44007,
+    state: 'Rhode Island',
+    county: 'Providence',
   },
   {
-    "FIPS": 44009,
-    "State": "Rhode Island",
-    "County": "Washington"
+    code: 44009,
+    state: 'Rhode Island',
+    county: 'Washington',
   },
   {
-    "FIPS": 45001,
-    "State": "South Carolina",
-    "County": "Abbeville"
+    code: 45001,
+    state: 'South Carolina',
+    county: 'Abbeville',
   },
   {
-    "FIPS": 45003,
-    "State": "South Carolina",
-    "County": "Aiken"
+    code: 45003,
+    state: 'South Carolina',
+    county: 'Aiken',
   },
   {
-    "FIPS": 45005,
-    "State": "South Carolina",
-    "County": "Allendale"
+    code: 45005,
+    state: 'South Carolina',
+    county: 'Allendale',
   },
   {
-    "FIPS": 45007,
-    "State": "South Carolina",
-    "County": "Anderson"
+    code: 45007,
+    state: 'South Carolina',
+    county: 'Anderson',
   },
   {
-    "FIPS": 45009,
-    "State": "South Carolina",
-    "County": "Bamberg"
+    code: 45009,
+    state: 'South Carolina',
+    county: 'Bamberg',
   },
   {
-    "FIPS": 45011,
-    "State": "South Carolina",
-    "County": "Barnwell"
+    code: 45011,
+    state: 'South Carolina',
+    county: 'Barnwell',
   },
   {
-    "FIPS": 45013,
-    "State": "South Carolina",
-    "County": "Beaufort"
+    code: 45013,
+    state: 'South Carolina',
+    county: 'Beaufort',
   },
   {
-    "FIPS": 45015,
-    "State": "South Carolina",
-    "County": "Berkeley"
+    code: 45015,
+    state: 'South Carolina',
+    county: 'Berkeley',
   },
   {
-    "FIPS": 45017,
-    "State": "South Carolina",
-    "County": "Calhoun"
+    code: 45017,
+    state: 'South Carolina',
+    county: 'Calhoun',
   },
   {
-    "FIPS": 45019,
-    "State": "South Carolina",
-    "County": "Charleston"
+    code: 45019,
+    state: 'South Carolina',
+    county: 'Charleston',
   },
   {
-    "FIPS": 45021,
-    "State": "South Carolina",
-    "County": "Cherokee"
+    code: 45021,
+    state: 'South Carolina',
+    county: 'Cherokee',
   },
   {
-    "FIPS": 45023,
-    "State": "South Carolina",
-    "County": "Chester"
+    code: 45023,
+    state: 'South Carolina',
+    county: 'Chester',
   },
   {
-    "FIPS": 45025,
-    "State": "South Carolina",
-    "County": "Chesterfield"
+    code: 45025,
+    state: 'South Carolina',
+    county: 'Chesterfield',
   },
   {
-    "FIPS": 45027,
-    "State": "South Carolina",
-    "County": "Clarendon"
+    code: 45027,
+    state: 'South Carolina',
+    county: 'Clarendon',
   },
   {
-    "FIPS": 45029,
-    "State": "South Carolina",
-    "County": "Colleton"
+    code: 45029,
+    state: 'South Carolina',
+    county: 'Colleton',
   },
   {
-    "FIPS": 45031,
-    "State": "South Carolina",
-    "County": "Darlington"
+    code: 45031,
+    state: 'South Carolina',
+    county: 'Darlington',
   },
   {
-    "FIPS": 45033,
-    "State": "South Carolina",
-    "County": "Dillon"
+    code: 45033,
+    state: 'South Carolina',
+    county: 'Dillon',
   },
   {
-    "FIPS": 45035,
-    "State": "South Carolina",
-    "County": "Dorchester"
+    code: 45035,
+    state: 'South Carolina',
+    county: 'Dorchester',
   },
   {
-    "FIPS": 45037,
-    "State": "South Carolina",
-    "County": "Edgefield"
+    code: 45037,
+    state: 'South Carolina',
+    county: 'Edgefield',
   },
   {
-    "FIPS": 45039,
-    "State": "South Carolina",
-    "County": "Fairfield"
+    code: 45039,
+    state: 'South Carolina',
+    county: 'Fairfield',
   },
   {
-    "FIPS": 45041,
-    "State": "South Carolina",
-    "County": "Florence"
+    code: 45041,
+    state: 'South Carolina',
+    county: 'Florence',
   },
   {
-    "FIPS": 45043,
-    "State": "South Carolina",
-    "County": "Georgetown"
+    code: 45043,
+    state: 'South Carolina',
+    county: 'Georgetown',
   },
   {
-    "FIPS": 45045,
-    "State": "South Carolina",
-    "County": "Greenville"
+    code: 45045,
+    state: 'South Carolina',
+    county: 'Greenville',
   },
   {
-    "FIPS": 45047,
-    "State": "South Carolina",
-    "County": "Greenwood"
+    code: 45047,
+    state: 'South Carolina',
+    county: 'Greenwood',
   },
   {
-    "FIPS": 45049,
-    "State": "South Carolina",
-    "County": "Hampton"
+    code: 45049,
+    state: 'South Carolina',
+    county: 'Hampton',
   },
   {
-    "FIPS": 45051,
-    "State": "South Carolina",
-    "County": "Horry"
+    code: 45051,
+    state: 'South Carolina',
+    county: 'Horry',
   },
   {
-    "FIPS": 45053,
-    "State": "South Carolina",
-    "County": "Jasper"
+    code: 45053,
+    state: 'South Carolina',
+    county: 'Jasper',
   },
   {
-    "FIPS": 45055,
-    "State": "South Carolina",
-    "County": "Kershaw"
+    code: 45055,
+    state: 'South Carolina',
+    county: 'Kershaw',
   },
   {
-    "FIPS": 45057,
-    "State": "South Carolina",
-    "County": "Lancaster"
+    code: 45057,
+    state: 'South Carolina',
+    county: 'Lancaster',
   },
   {
-    "FIPS": 45059,
-    "State": "South Carolina",
-    "County": "Laurens"
+    code: 45059,
+    state: 'South Carolina',
+    county: 'Laurens',
   },
   {
-    "FIPS": 45061,
-    "State": "South Carolina",
-    "County": "Lee"
+    code: 45061,
+    state: 'South Carolina',
+    county: 'Lee',
   },
   {
-    "FIPS": 45063,
-    "State": "South Carolina",
-    "County": "Lexington"
+    code: 45063,
+    state: 'South Carolina',
+    county: 'Lexington',
   },
   {
-    "FIPS": 45065,
-    "State": "South Carolina",
-    "County": "McCormick"
+    code: 45065,
+    state: 'South Carolina',
+    county: 'McCormick',
   },
   {
-    "FIPS": 45067,
-    "State": "South Carolina",
-    "County": "Marion"
+    code: 45067,
+    state: 'South Carolina',
+    county: 'Marion',
   },
   {
-    "FIPS": 45069,
-    "State": "South Carolina",
-    "County": "Marlboro"
+    code: 45069,
+    state: 'South Carolina',
+    county: 'Marlboro',
   },
   {
-    "FIPS": 45071,
-    "State": "South Carolina",
-    "County": "Newberry"
+    code: 45071,
+    state: 'South Carolina',
+    county: 'Newberry',
   },
   {
-    "FIPS": 45073,
-    "State": "South Carolina",
-    "County": "Oconee"
+    code: 45073,
+    state: 'South Carolina',
+    county: 'Oconee',
   },
   {
-    "FIPS": 45075,
-    "State": "South Carolina",
-    "County": "Orangeburg"
+    code: 45075,
+    state: 'South Carolina',
+    county: 'Orangeburg',
   },
   {
-    "FIPS": 45077,
-    "State": "South Carolina",
-    "County": "Pickens"
+    code: 45077,
+    state: 'South Carolina',
+    county: 'Pickens',
   },
   {
-    "FIPS": 45079,
-    "State": "South Carolina",
-    "County": "Richland"
+    code: 45079,
+    state: 'South Carolina',
+    county: 'Richland',
   },
   {
-    "FIPS": 45081,
-    "State": "South Carolina",
-    "County": "Saluda"
+    code: 45081,
+    state: 'South Carolina',
+    county: 'Saluda',
   },
   {
-    "FIPS": 45083,
-    "State": "South Carolina",
-    "County": "Spartanburg"
+    code: 45083,
+    state: 'South Carolina',
+    county: 'Spartanburg',
   },
   {
-    "FIPS": 45085,
-    "State": "South Carolina",
-    "County": "Sumter"
+    code: 45085,
+    state: 'South Carolina',
+    county: 'Sumter',
   },
   {
-    "FIPS": 45087,
-    "State": "South Carolina",
-    "County": "Union"
+    code: 45087,
+    state: 'South Carolina',
+    county: 'Union',
   },
   {
-    "FIPS": 45089,
-    "State": "South Carolina",
-    "County": "Williamsburg"
+    code: 45089,
+    state: 'South Carolina',
+    county: 'Williamsburg',
   },
   {
-    "FIPS": 45091,
-    "State": "South Carolina",
-    "County": "York"
+    code: 45091,
+    state: 'South Carolina',
+    county: 'York',
   },
   {
-    "FIPS": 46003,
-    "State": "South Dakota",
-    "County": "Aurora"
+    code: 46003,
+    state: 'South Dakota',
+    county: 'Aurora',
   },
   {
-    "FIPS": 46005,
-    "State": "South Dakota",
-    "County": "Beadle"
+    code: 46005,
+    state: 'South Dakota',
+    county: 'Beadle',
   },
   {
-    "FIPS": 46007,
-    "State": "South Dakota",
-    "County": "Bennett"
+    code: 46007,
+    state: 'South Dakota',
+    county: 'Bennett',
   },
   {
-    "FIPS": 46009,
-    "State": "South Dakota",
-    "County": "Bon Homme"
+    code: 46009,
+    state: 'South Dakota',
+    county: 'Bon Homme',
   },
   {
-    "FIPS": 46011,
-    "State": "South Dakota",
-    "County": "Brookings"
+    code: 46011,
+    state: 'South Dakota',
+    county: 'Brookings',
   },
   {
-    "FIPS": 46013,
-    "State": "South Dakota",
-    "County": "Brown"
+    code: 46013,
+    state: 'South Dakota',
+    county: 'Brown',
   },
   {
-    "FIPS": 46015,
-    "State": "South Dakota",
-    "County": "Brule"
+    code: 46015,
+    state: 'South Dakota',
+    county: 'Brule',
   },
   {
-    "FIPS": 46017,
-    "State": "South Dakota",
-    "County": "Buffalo"
+    code: 46017,
+    state: 'South Dakota',
+    county: 'Buffalo',
   },
   {
-    "FIPS": 46019,
-    "State": "South Dakota",
-    "County": "Butte"
+    code: 46019,
+    state: 'South Dakota',
+    county: 'Butte',
   },
   {
-    "FIPS": 46021,
-    "State": "South Dakota",
-    "County": "Campbell"
+    code: 46021,
+    state: 'South Dakota',
+    county: 'Campbell',
   },
   {
-    "FIPS": 46023,
-    "State": "South Dakota",
-    "County": "Charles Mix"
+    code: 46023,
+    state: 'South Dakota',
+    county: 'Charles Mix',
   },
   {
-    "FIPS": 46025,
-    "State": "South Dakota",
-    "County": "Clark"
+    code: 46025,
+    state: 'South Dakota',
+    county: 'Clark',
   },
   {
-    "FIPS": 46027,
-    "State": "South Dakota",
-    "County": "Clay"
+    code: 46027,
+    state: 'South Dakota',
+    county: 'Clay',
   },
   {
-    "FIPS": 46029,
-    "State": "South Dakota",
-    "County": "Codington"
+    code: 46029,
+    state: 'South Dakota',
+    county: 'Codington',
   },
   {
-    "FIPS": 46031,
-    "State": "South Dakota",
-    "County": "Corson"
+    code: 46031,
+    state: 'South Dakota',
+    county: 'Corson',
   },
   {
-    "FIPS": 46033,
-    "State": "South Dakota",
-    "County": "Custer"
+    code: 46033,
+    state: 'South Dakota',
+    county: 'Custer',
   },
   {
-    "FIPS": 46035,
-    "State": "South Dakota",
-    "County": "Davison"
+    code: 46035,
+    state: 'South Dakota',
+    county: 'Davison',
   },
   {
-    "FIPS": 46037,
-    "State": "South Dakota",
-    "County": "Day"
+    code: 46037,
+    state: 'South Dakota',
+    county: 'Day',
   },
   {
-    "FIPS": 46039,
-    "State": "South Dakota",
-    "County": "Deuel"
+    code: 46039,
+    state: 'South Dakota',
+    county: 'Deuel',
   },
   {
-    "FIPS": 46041,
-    "State": "South Dakota",
-    "County": "Dewey"
+    code: 46041,
+    state: 'South Dakota',
+    county: 'Dewey',
   },
   {
-    "FIPS": 46043,
-    "State": "South Dakota",
-    "County": "Douglas"
+    code: 46043,
+    state: 'South Dakota',
+    county: 'Douglas',
   },
   {
-    "FIPS": 46045,
-    "State": "South Dakota",
-    "County": "Edmunds"
+    code: 46045,
+    state: 'South Dakota',
+    county: 'Edmunds',
   },
   {
-    "FIPS": 46047,
-    "State": "South Dakota",
-    "County": "Fall River"
+    code: 46047,
+    state: 'South Dakota',
+    county: 'Fall River',
   },
   {
-    "FIPS": 46049,
-    "State": "South Dakota",
-    "County": "Faulk"
+    code: 46049,
+    state: 'South Dakota',
+    county: 'Faulk',
   },
   {
-    "FIPS": 46051,
-    "State": "South Dakota",
-    "County": "Grant"
+    code: 46051,
+    state: 'South Dakota',
+    county: 'Grant',
   },
   {
-    "FIPS": 46053,
-    "State": "South Dakota",
-    "County": "Gregory"
+    code: 46053,
+    state: 'South Dakota',
+    county: 'Gregory',
   },
   {
-    "FIPS": 46055,
-    "State": "South Dakota",
-    "County": "Haakon"
+    code: 46055,
+    state: 'South Dakota',
+    county: 'Haakon',
   },
   {
-    "FIPS": 46057,
-    "State": "South Dakota",
-    "County": "Hamlin"
+    code: 46057,
+    state: 'South Dakota',
+    county: 'Hamlin',
   },
   {
-    "FIPS": 46059,
-    "State": "South Dakota",
-    "County": "Hand"
+    code: 46059,
+    state: 'South Dakota',
+    county: 'Hand',
   },
   {
-    "FIPS": 46061,
-    "State": "South Dakota",
-    "County": "Hanson"
+    code: 46061,
+    state: 'South Dakota',
+    county: 'Hanson',
   },
   {
-    "FIPS": 46063,
-    "State": "South Dakota",
-    "County": "Harding"
+    code: 46063,
+    state: 'South Dakota',
+    county: 'Harding',
   },
   {
-    "FIPS": 46065,
-    "State": "South Dakota",
-    "County": "Hughes"
+    code: 46065,
+    state: 'South Dakota',
+    county: 'Hughes',
   },
   {
-    "FIPS": 46067,
-    "State": "South Dakota",
-    "County": "Hutchinson"
+    code: 46067,
+    state: 'South Dakota',
+    county: 'Hutchinson',
   },
   {
-    "FIPS": 46069,
-    "State": "South Dakota",
-    "County": "Hyde"
+    code: 46069,
+    state: 'South Dakota',
+    county: 'Hyde',
   },
   {
-    "FIPS": 46071,
-    "State": "South Dakota",
-    "County": "Jackson"
+    code: 46071,
+    state: 'South Dakota',
+    county: 'Jackson',
   },
   {
-    "FIPS": 46073,
-    "State": "South Dakota",
-    "County": "Jerauld"
+    code: 46073,
+    state: 'South Dakota',
+    county: 'Jerauld',
   },
   {
-    "FIPS": 46075,
-    "State": "South Dakota",
-    "County": "Jones"
+    code: 46075,
+    state: 'South Dakota',
+    county: 'Jones',
   },
   {
-    "FIPS": 46077,
-    "State": "South Dakota",
-    "County": "Kingsbury"
+    code: 46077,
+    state: 'South Dakota',
+    county: 'Kingsbury',
   },
   {
-    "FIPS": 46079,
-    "State": "South Dakota",
-    "County": "Lake"
+    code: 46079,
+    state: 'South Dakota',
+    county: 'Lake',
   },
   {
-    "FIPS": 46081,
-    "State": "South Dakota",
-    "County": "Lawrence"
+    code: 46081,
+    state: 'South Dakota',
+    county: 'Lawrence',
   },
   {
-    "FIPS": 46083,
-    "State": "South Dakota",
-    "County": "Lincoln"
+    code: 46083,
+    state: 'South Dakota',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 46085,
-    "State": "South Dakota",
-    "County": "Lyman"
+    code: 46085,
+    state: 'South Dakota',
+    county: 'Lyman',
   },
   {
-    "FIPS": 46087,
-    "State": "South Dakota",
-    "County": "McCook"
+    code: 46087,
+    state: 'South Dakota',
+    county: 'McCook',
   },
   {
-    "FIPS": 46089,
-    "State": "South Dakota",
-    "County": "McPherson"
+    code: 46089,
+    state: 'South Dakota',
+    county: 'McPherson',
   },
   {
-    "FIPS": 46091,
-    "State": "South Dakota",
-    "County": "Marshall"
+    code: 46091,
+    state: 'South Dakota',
+    county: 'Marshall',
   },
   {
-    "FIPS": 46093,
-    "State": "South Dakota",
-    "County": "Meade"
+    code: 46093,
+    state: 'South Dakota',
+    county: 'Meade',
   },
   {
-    "FIPS": 46095,
-    "State": "South Dakota",
-    "County": "Mellette"
+    code: 46095,
+    state: 'South Dakota',
+    county: 'Mellette',
   },
   {
-    "FIPS": 46097,
-    "State": "South Dakota",
-    "County": "Miner"
+    code: 46097,
+    state: 'South Dakota',
+    county: 'Miner',
   },
   {
-    "FIPS": 46099,
-    "State": "South Dakota",
-    "County": "Minnehaha"
+    code: 46099,
+    state: 'South Dakota',
+    county: 'Minnehaha',
   },
   {
-    "FIPS": 46101,
-    "State": "South Dakota",
-    "County": "Moody"
+    code: 46101,
+    state: 'South Dakota',
+    county: 'Moody',
   },
   {
-    "FIPS": 46103,
-    "State": "South Dakota",
-    "County": "Pennington"
+    code: 46103,
+    state: 'South Dakota',
+    county: 'Pennington',
   },
   {
-    "FIPS": 46105,
-    "State": "South Dakota",
-    "County": "Perkins"
+    code: 46105,
+    state: 'South Dakota',
+    county: 'Perkins',
   },
   {
-    "FIPS": 46107,
-    "State": "South Dakota",
-    "County": "Potter"
+    code: 46107,
+    state: 'South Dakota',
+    county: 'Potter',
   },
   {
-    "FIPS": 46109,
-    "State": "South Dakota",
-    "County": "Roberts"
+    code: 46109,
+    state: 'South Dakota',
+    county: 'Roberts',
   },
   {
-    "FIPS": 46111,
-    "State": "South Dakota",
-    "County": "Sanborn"
+    code: 46111,
+    state: 'South Dakota',
+    county: 'Sanborn',
   },
   {
-    "FIPS": 46113,
-    "State": "South Dakota",
-    "County": "Shannon"
+    code: 46113,
+    state: 'South Dakota',
+    county: 'Shannon',
   },
   {
-    "FIPS": 46115,
-    "State": "South Dakota",
-    "County": "Spink"
+    code: 46115,
+    state: 'South Dakota',
+    county: 'Spink',
   },
   {
-    "FIPS": 46117,
-    "State": "South Dakota",
-    "County": "Stanley"
+    code: 46117,
+    state: 'South Dakota',
+    county: 'Stanley',
   },
   {
-    "FIPS": 46119,
-    "State": "South Dakota",
-    "County": "Sully"
+    code: 46119,
+    state: 'South Dakota',
+    county: 'Sully',
   },
   {
-    "FIPS": 46121,
-    "State": "South Dakota",
-    "County": "Todd"
+    code: 46121,
+    state: 'South Dakota',
+    county: 'Todd',
   },
   {
-    "FIPS": 46123,
-    "State": "South Dakota",
-    "County": "Tripp"
+    code: 46123,
+    state: 'South Dakota',
+    county: 'Tripp',
   },
   {
-    "FIPS": 46125,
-    "State": "South Dakota",
-    "County": "Turner"
+    code: 46125,
+    state: 'South Dakota',
+    county: 'Turner',
   },
   {
-    "FIPS": 46127,
-    "State": "South Dakota",
-    "County": "Union"
+    code: 46127,
+    state: 'South Dakota',
+    county: 'Union',
   },
   {
-    "FIPS": 46129,
-    "State": "South Dakota",
-    "County": "Walworth"
+    code: 46129,
+    state: 'South Dakota',
+    county: 'Walworth',
   },
   {
-    "FIPS": 46135,
-    "State": "South Dakota",
-    "County": "Yankton"
+    code: 46135,
+    state: 'South Dakota',
+    county: 'Yankton',
   },
   {
-    "FIPS": 46137,
-    "State": "South Dakota",
-    "County": "Ziebach"
+    code: 46137,
+    state: 'South Dakota',
+    county: 'Ziebach',
   },
   {
-    "FIPS": 47001,
-    "State": "Tennessee",
-    "County": "Anderson"
+    code: 47001,
+    state: 'Tennessee',
+    county: 'Anderson',
   },
   {
-    "FIPS": 47003,
-    "State": "Tennessee",
-    "County": "Bedford"
+    code: 47003,
+    state: 'Tennessee',
+    county: 'Bedford',
   },
   {
-    "FIPS": 47005,
-    "State": "Tennessee",
-    "County": "Benton"
+    code: 47005,
+    state: 'Tennessee',
+    county: 'Benton',
   },
   {
-    "FIPS": 47007,
-    "State": "Tennessee",
-    "County": "Bledsoe"
+    code: 47007,
+    state: 'Tennessee',
+    county: 'Bledsoe',
   },
   {
-    "FIPS": 47009,
-    "State": "Tennessee",
-    "County": "Blount"
+    code: 47009,
+    state: 'Tennessee',
+    county: 'Blount',
   },
   {
-    "FIPS": 47011,
-    "State": "Tennessee",
-    "County": "Bradley"
+    code: 47011,
+    state: 'Tennessee',
+    county: 'Bradley',
   },
   {
-    "FIPS": 47013,
-    "State": "Tennessee",
-    "County": "Campbell"
+    code: 47013,
+    state: 'Tennessee',
+    county: 'Campbell',
   },
   {
-    "FIPS": 47015,
-    "State": "Tennessee",
-    "County": "Cannon"
+    code: 47015,
+    state: 'Tennessee',
+    county: 'Cannon',
   },
   {
-    "FIPS": 47017,
-    "State": "Tennessee",
-    "County": "Carroll"
+    code: 47017,
+    state: 'Tennessee',
+    county: 'Carroll',
   },
   {
-    "FIPS": 47019,
-    "State": "Tennessee",
-    "County": "Carter"
+    code: 47019,
+    state: 'Tennessee',
+    county: 'Carter',
   },
   {
-    "FIPS": 47021,
-    "State": "Tennessee",
-    "County": "Cheatham"
+    code: 47021,
+    state: 'Tennessee',
+    county: 'Cheatham',
   },
   {
-    "FIPS": 47023,
-    "State": "Tennessee",
-    "County": "Chester"
+    code: 47023,
+    state: 'Tennessee',
+    county: 'Chester',
   },
   {
-    "FIPS": 47025,
-    "State": "Tennessee",
-    "County": "Claiborne"
+    code: 47025,
+    state: 'Tennessee',
+    county: 'Claiborne',
   },
   {
-    "FIPS": 47027,
-    "State": "Tennessee",
-    "County": "Clay"
+    code: 47027,
+    state: 'Tennessee',
+    county: 'Clay',
   },
   {
-    "FIPS": 47029,
-    "State": "Tennessee",
-    "County": "Cocke"
+    code: 47029,
+    state: 'Tennessee',
+    county: 'Cocke',
   },
   {
-    "FIPS": 47031,
-    "State": "Tennessee",
-    "County": "Coffee"
+    code: 47031,
+    state: 'Tennessee',
+    county: 'Coffee',
   },
   {
-    "FIPS": 47033,
-    "State": "Tennessee",
-    "County": "Crockett"
+    code: 47033,
+    state: 'Tennessee',
+    county: 'Crockett',
   },
   {
-    "FIPS": 47035,
-    "State": "Tennessee",
-    "County": "Cumberland"
+    code: 47035,
+    state: 'Tennessee',
+    county: 'Cumberland',
   },
   {
-    "FIPS": 47037,
-    "State": "Tennessee",
-    "County": "Davidson"
+    code: 47037,
+    state: 'Tennessee',
+    county: 'Davidson',
   },
   {
-    "FIPS": 47039,
-    "State": "Tennessee",
-    "County": "Decatur"
+    code: 47039,
+    state: 'Tennessee',
+    county: 'Decatur',
   },
   {
-    "FIPS": 47041,
-    "State": "Tennessee",
-    "County": "DeKalb"
+    code: 47041,
+    state: 'Tennessee',
+    county: 'DeKalb',
   },
   {
-    "FIPS": 47043,
-    "State": "Tennessee",
-    "County": "Dickson"
+    code: 47043,
+    state: 'Tennessee',
+    county: 'Dickson',
   },
   {
-    "FIPS": 47045,
-    "State": "Tennessee",
-    "County": "Dyer"
+    code: 47045,
+    state: 'Tennessee',
+    county: 'Dyer',
   },
   {
-    "FIPS": 47047,
-    "State": "Tennessee",
-    "County": "Fayette"
+    code: 47047,
+    state: 'Tennessee',
+    county: 'Fayette',
   },
   {
-    "FIPS": 47049,
-    "State": "Tennessee",
-    "County": "Fentress"
+    code: 47049,
+    state: 'Tennessee',
+    county: 'Fentress',
   },
   {
-    "FIPS": 47051,
-    "State": "Tennessee",
-    "County": "Franklin"
+    code: 47051,
+    state: 'Tennessee',
+    county: 'Franklin',
   },
   {
-    "FIPS": 47053,
-    "State": "Tennessee",
-    "County": "Gibson"
+    code: 47053,
+    state: 'Tennessee',
+    county: 'Gibson',
   },
   {
-    "FIPS": 47055,
-    "State": "Tennessee",
-    "County": "Giles"
+    code: 47055,
+    state: 'Tennessee',
+    county: 'Giles',
   },
   {
-    "FIPS": 47057,
-    "State": "Tennessee",
-    "County": "Grainger"
+    code: 47057,
+    state: 'Tennessee',
+    county: 'Grainger',
   },
   {
-    "FIPS": 47059,
-    "State": "Tennessee",
-    "County": "Greene"
+    code: 47059,
+    state: 'Tennessee',
+    county: 'Greene',
   },
   {
-    "FIPS": 47061,
-    "State": "Tennessee",
-    "County": "Grundy"
+    code: 47061,
+    state: 'Tennessee',
+    county: 'Grundy',
   },
   {
-    "FIPS": 47063,
-    "State": "Tennessee",
-    "County": "Hamblen"
+    code: 47063,
+    state: 'Tennessee',
+    county: 'Hamblen',
   },
   {
-    "FIPS": 47065,
-    "State": "Tennessee",
-    "County": "Hamilton"
+    code: 47065,
+    state: 'Tennessee',
+    county: 'Hamilton',
   },
   {
-    "FIPS": 47067,
-    "State": "Tennessee",
-    "County": "Hancock"
+    code: 47067,
+    state: 'Tennessee',
+    county: 'Hancock',
   },
   {
-    "FIPS": 47069,
-    "State": "Tennessee",
-    "County": "Hardeman"
+    code: 47069,
+    state: 'Tennessee',
+    county: 'Hardeman',
   },
   {
-    "FIPS": 47071,
-    "State": "Tennessee",
-    "County": "Hardin"
+    code: 47071,
+    state: 'Tennessee',
+    county: 'Hardin',
   },
   {
-    "FIPS": 47073,
-    "State": "Tennessee",
-    "County": "Hawkins"
+    code: 47073,
+    state: 'Tennessee',
+    county: 'Hawkins',
   },
   {
-    "FIPS": 47075,
-    "State": "Tennessee",
-    "County": "Haywood"
+    code: 47075,
+    state: 'Tennessee',
+    county: 'Haywood',
   },
   {
-    "FIPS": 47077,
-    "State": "Tennessee",
-    "County": "Henderson"
+    code: 47077,
+    state: 'Tennessee',
+    county: 'Henderson',
   },
   {
-    "FIPS": 47079,
-    "State": "Tennessee",
-    "County": "Henry"
+    code: 47079,
+    state: 'Tennessee',
+    county: 'Henry',
   },
   {
-    "FIPS": 47081,
-    "State": "Tennessee",
-    "County": "Hickman"
+    code: 47081,
+    state: 'Tennessee',
+    county: 'Hickman',
   },
   {
-    "FIPS": 47083,
-    "State": "Tennessee",
-    "County": "Houston"
+    code: 47083,
+    state: 'Tennessee',
+    county: 'Houston',
   },
   {
-    "FIPS": 47085,
-    "State": "Tennessee",
-    "County": "Humphreys"
+    code: 47085,
+    state: 'Tennessee',
+    county: 'Humphreys',
   },
   {
-    "FIPS": 47087,
-    "State": "Tennessee",
-    "County": "Jackson"
+    code: 47087,
+    state: 'Tennessee',
+    county: 'Jackson',
   },
   {
-    "FIPS": 47089,
-    "State": "Tennessee",
-    "County": "Jefferson"
+    code: 47089,
+    state: 'Tennessee',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 47091,
-    "State": "Tennessee",
-    "County": "Johnson"
+    code: 47091,
+    state: 'Tennessee',
+    county: 'Johnson',
   },
   {
-    "FIPS": 47093,
-    "State": "Tennessee",
-    "County": "Knox"
+    code: 47093,
+    state: 'Tennessee',
+    county: 'Knox',
   },
   {
-    "FIPS": 47095,
-    "State": "Tennessee",
-    "County": "Lake"
+    code: 47095,
+    state: 'Tennessee',
+    county: 'Lake',
   },
   {
-    "FIPS": 47097,
-    "State": "Tennessee",
-    "County": "Lauderdale"
+    code: 47097,
+    state: 'Tennessee',
+    county: 'Lauderdale',
   },
   {
-    "FIPS": 47099,
-    "State": "Tennessee",
-    "County": "Lawrence"
+    code: 47099,
+    state: 'Tennessee',
+    county: 'Lawrence',
   },
   {
-    "FIPS": 47101,
-    "State": "Tennessee",
-    "County": "Lewis"
+    code: 47101,
+    state: 'Tennessee',
+    county: 'Lewis',
   },
   {
-    "FIPS": 47103,
-    "State": "Tennessee",
-    "County": "Lincoln"
+    code: 47103,
+    state: 'Tennessee',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 47105,
-    "State": "Tennessee",
-    "County": "Loudon"
+    code: 47105,
+    state: 'Tennessee',
+    county: 'Loudon',
   },
   {
-    "FIPS": 47107,
-    "State": "Tennessee",
-    "County": "McMinn"
+    code: 47107,
+    state: 'Tennessee',
+    county: 'McMinn',
   },
   {
-    "FIPS": 47109,
-    "State": "Tennessee",
-    "County": "McNairy"
+    code: 47109,
+    state: 'Tennessee',
+    county: 'McNairy',
   },
   {
-    "FIPS": 47111,
-    "State": "Tennessee",
-    "County": "Macon"
+    code: 47111,
+    state: 'Tennessee',
+    county: 'Macon',
   },
   {
-    "FIPS": 47113,
-    "State": "Tennessee",
-    "County": "Madison"
+    code: 47113,
+    state: 'Tennessee',
+    county: 'Madison',
   },
   {
-    "FIPS": 47115,
-    "State": "Tennessee",
-    "County": "Marion"
+    code: 47115,
+    state: 'Tennessee',
+    county: 'Marion',
   },
   {
-    "FIPS": 47117,
-    "State": "Tennessee",
-    "County": "Marshall"
+    code: 47117,
+    state: 'Tennessee',
+    county: 'Marshall',
   },
   {
-    "FIPS": 47119,
-    "State": "Tennessee",
-    "County": "Maury"
+    code: 47119,
+    state: 'Tennessee',
+    county: 'Maury',
   },
   {
-    "FIPS": 47121,
-    "State": "Tennessee",
-    "County": "Meigs"
+    code: 47121,
+    state: 'Tennessee',
+    county: 'Meigs',
   },
   {
-    "FIPS": 47123,
-    "State": "Tennessee",
-    "County": "Monroe"
+    code: 47123,
+    state: 'Tennessee',
+    county: 'Monroe',
   },
   {
-    "FIPS": 47125,
-    "State": "Tennessee",
-    "County": "Montgomery"
+    code: 47125,
+    state: 'Tennessee',
+    county: 'Montgomery',
   },
   {
-    "FIPS": 47127,
-    "State": "Tennessee",
-    "County": "Moore"
+    code: 47127,
+    state: 'Tennessee',
+    county: 'Moore',
   },
   {
-    "FIPS": 47129,
-    "State": "Tennessee",
-    "County": "Morgan"
+    code: 47129,
+    state: 'Tennessee',
+    county: 'Morgan',
   },
   {
-    "FIPS": 47131,
-    "State": "Tennessee",
-    "County": "Obion"
+    code: 47131,
+    state: 'Tennessee',
+    county: 'Obion',
   },
   {
-    "FIPS": 47133,
-    "State": "Tennessee",
-    "County": "Overton"
+    code: 47133,
+    state: 'Tennessee',
+    county: 'Overton',
   },
   {
-    "FIPS": 47135,
-    "State": "Tennessee",
-    "County": "Perry"
+    code: 47135,
+    state: 'Tennessee',
+    county: 'Perry',
   },
   {
-    "FIPS": 47137,
-    "State": "Tennessee",
-    "County": "Pickett"
+    code: 47137,
+    state: 'Tennessee',
+    county: 'Pickett',
   },
   {
-    "FIPS": 47139,
-    "State": "Tennessee",
-    "County": "Polk"
+    code: 47139,
+    state: 'Tennessee',
+    county: 'Polk',
   },
   {
-    "FIPS": 47141,
-    "State": "Tennessee",
-    "County": "Putnam"
+    code: 47141,
+    state: 'Tennessee',
+    county: 'Putnam',
   },
   {
-    "FIPS": 47143,
-    "State": "Tennessee",
-    "County": "Rhea"
+    code: 47143,
+    state: 'Tennessee',
+    county: 'Rhea',
   },
   {
-    "FIPS": 47145,
-    "State": "Tennessee",
-    "County": "Roane"
+    code: 47145,
+    state: 'Tennessee',
+    county: 'Roane',
   },
   {
-    "FIPS": 47147,
-    "State": "Tennessee",
-    "County": "Robertson"
+    code: 47147,
+    state: 'Tennessee',
+    county: 'Robertson',
   },
   {
-    "FIPS": 47149,
-    "State": "Tennessee",
-    "County": "Rutherford"
+    code: 47149,
+    state: 'Tennessee',
+    county: 'Rutherford',
   },
   {
-    "FIPS": 47151,
-    "State": "Tennessee",
-    "County": "Scott"
+    code: 47151,
+    state: 'Tennessee',
+    county: 'Scott',
   },
   {
-    "FIPS": 47153,
-    "State": "Tennessee",
-    "County": "Sequatchie"
+    code: 47153,
+    state: 'Tennessee',
+    county: 'Sequatchie',
   },
   {
-    "FIPS": 47155,
-    "State": "Tennessee",
-    "County": "Sevier"
+    code: 47155,
+    state: 'Tennessee',
+    county: 'Sevier',
   },
   {
-    "FIPS": 47157,
-    "State": "Tennessee",
-    "County": "Shelby"
+    code: 47157,
+    state: 'Tennessee',
+    county: 'Shelby',
   },
   {
-    "FIPS": 47159,
-    "State": "Tennessee",
-    "County": "Smith"
+    code: 47159,
+    state: 'Tennessee',
+    county: 'Smith',
   },
   {
-    "FIPS": 47161,
-    "State": "Tennessee",
-    "County": "Stewart"
+    code: 47161,
+    state: 'Tennessee',
+    county: 'Stewart',
   },
   {
-    "FIPS": 47163,
-    "State": "Tennessee",
-    "County": "Sullivan"
+    code: 47163,
+    state: 'Tennessee',
+    county: 'Sullivan',
   },
   {
-    "FIPS": 47165,
-    "State": "Tennessee",
-    "County": "Sumner"
+    code: 47165,
+    state: 'Tennessee',
+    county: 'Sumner',
   },
   {
-    "FIPS": 47167,
-    "State": "Tennessee",
-    "County": "Tipton"
+    code: 47167,
+    state: 'Tennessee',
+    county: 'Tipton',
   },
   {
-    "FIPS": 47169,
-    "State": "Tennessee",
-    "County": "Trousdale"
+    code: 47169,
+    state: 'Tennessee',
+    county: 'Trousdale',
   },
   {
-    "FIPS": 47171,
-    "State": "Tennessee",
-    "County": "Unicoi"
+    code: 47171,
+    state: 'Tennessee',
+    county: 'Unicoi',
   },
   {
-    "FIPS": 47173,
-    "State": "Tennessee",
-    "County": "Union"
+    code: 47173,
+    state: 'Tennessee',
+    county: 'Union',
   },
   {
-    "FIPS": 47175,
-    "State": "Tennessee",
-    "County": "Van Buren"
+    code: 47175,
+    state: 'Tennessee',
+    county: 'Van Buren',
   },
   {
-    "FIPS": 47177,
-    "State": "Tennessee",
-    "County": "Warren"
+    code: 47177,
+    state: 'Tennessee',
+    county: 'Warren',
   },
   {
-    "FIPS": 47179,
-    "State": "Tennessee",
-    "County": "Washington"
+    code: 47179,
+    state: 'Tennessee',
+    county: 'Washington',
   },
   {
-    "FIPS": 47181,
-    "State": "Tennessee",
-    "County": "Wayne"
+    code: 47181,
+    state: 'Tennessee',
+    county: 'Wayne',
   },
   {
-    "FIPS": 47183,
-    "State": "Tennessee",
-    "County": "Weakley"
+    code: 47183,
+    state: 'Tennessee',
+    county: 'Weakley',
   },
   {
-    "FIPS": 47185,
-    "State": "Tennessee",
-    "County": "White"
+    code: 47185,
+    state: 'Tennessee',
+    county: 'White',
   },
   {
-    "FIPS": 47187,
-    "State": "Tennessee",
-    "County": "Williamson"
+    code: 47187,
+    state: 'Tennessee',
+    county: 'Williamson',
   },
   {
-    "FIPS": 47189,
-    "State": "Tennessee",
-    "County": "Wilson"
+    code: 47189,
+    state: 'Tennessee',
+    county: 'Wilson',
   },
   {
-    "FIPS": 48001,
-    "State": "Texas",
-    "County": "Anderson"
+    code: 48001,
+    state: 'Texas',
+    county: 'Anderson',
   },
   {
-    "FIPS": 48003,
-    "State": "Texas",
-    "County": "Andrews"
+    code: 48003,
+    state: 'Texas',
+    county: 'Andrews',
   },
   {
-    "FIPS": 48005,
-    "State": "Texas",
-    "County": "Angelina"
+    code: 48005,
+    state: 'Texas',
+    county: 'Angelina',
   },
   {
-    "FIPS": 48007,
-    "State": "Texas",
-    "County": "Aransas"
+    code: 48007,
+    state: 'Texas',
+    county: 'Aransas',
   },
   {
-    "FIPS": 48009,
-    "State": "Texas",
-    "County": "Archer"
+    code: 48009,
+    state: 'Texas',
+    county: 'Archer',
   },
   {
-    "FIPS": 48011,
-    "State": "Texas",
-    "County": "Armstrong"
+    code: 48011,
+    state: 'Texas',
+    county: 'Armstrong',
   },
   {
-    "FIPS": 48013,
-    "State": "Texas",
-    "County": "Atascosa"
+    code: 48013,
+    state: 'Texas',
+    county: 'Atascosa',
   },
   {
-    "FIPS": 48015,
-    "State": "Texas",
-    "County": "Austin"
+    code: 48015,
+    state: 'Texas',
+    county: 'Austin',
   },
   {
-    "FIPS": 48017,
-    "State": "Texas",
-    "County": "Bailey"
+    code: 48017,
+    state: 'Texas',
+    county: 'Bailey',
   },
   {
-    "FIPS": 48019,
-    "State": "Texas",
-    "County": "Bandera"
+    code: 48019,
+    state: 'Texas',
+    county: 'Bandera',
   },
   {
-    "FIPS": 48021,
-    "State": "Texas",
-    "County": "Bastrop"
+    code: 48021,
+    state: 'Texas',
+    county: 'Bastrop',
   },
   {
-    "FIPS": 48023,
-    "State": "Texas",
-    "County": "Baylor"
+    code: 48023,
+    state: 'Texas',
+    county: 'Baylor',
   },
   {
-    "FIPS": 48025,
-    "State": "Texas",
-    "County": "Bee"
+    code: 48025,
+    state: 'Texas',
+    county: 'Bee',
   },
   {
-    "FIPS": 48027,
-    "State": "Texas",
-    "County": "Bell"
+    code: 48027,
+    state: 'Texas',
+    county: 'Bell',
   },
   {
-    "FIPS": 48029,
-    "State": "Texas",
-    "County": "Bexar"
+    code: 48029,
+    state: 'Texas',
+    county: 'Bexar',
   },
   {
-    "FIPS": 48031,
-    "State": "Texas",
-    "County": "Blanco"
+    code: 48031,
+    state: 'Texas',
+    county: 'Blanco',
   },
   {
-    "FIPS": 48033,
-    "State": "Texas",
-    "County": "Borden"
+    code: 48033,
+    state: 'Texas',
+    county: 'Borden',
   },
   {
-    "FIPS": 48035,
-    "State": "Texas",
-    "County": "Bosque"
+    code: 48035,
+    state: 'Texas',
+    county: 'Bosque',
   },
   {
-    "FIPS": 48037,
-    "State": "Texas",
-    "County": "Bowie"
+    code: 48037,
+    state: 'Texas',
+    county: 'Bowie',
   },
   {
-    "FIPS": 48039,
-    "State": "Texas",
-    "County": "Brazoria"
+    code: 48039,
+    state: 'Texas',
+    county: 'Brazoria',
   },
   {
-    "FIPS": 48041,
-    "State": "Texas",
-    "County": "Brazos"
+    code: 48041,
+    state: 'Texas',
+    county: 'Brazos',
   },
   {
-    "FIPS": 48043,
-    "State": "Texas",
-    "County": "Brewster"
+    code: 48043,
+    state: 'Texas',
+    county: 'Brewster',
   },
   {
-    "FIPS": 48045,
-    "State": "Texas",
-    "County": "Briscoe"
+    code: 48045,
+    state: 'Texas',
+    county: 'Briscoe',
   },
   {
-    "FIPS": 48047,
-    "State": "Texas",
-    "County": "Brooks"
+    code: 48047,
+    state: 'Texas',
+    county: 'Brooks',
   },
   {
-    "FIPS": 48049,
-    "State": "Texas",
-    "County": "Brown"
+    code: 48049,
+    state: 'Texas',
+    county: 'Brown',
   },
   {
-    "FIPS": 48051,
-    "State": "Texas",
-    "County": "Burleson"
+    code: 48051,
+    state: 'Texas',
+    county: 'Burleson',
   },
   {
-    "FIPS": 48053,
-    "State": "Texas",
-    "County": "Burnet"
+    code: 48053,
+    state: 'Texas',
+    county: 'Burnet',
   },
   {
-    "FIPS": 48055,
-    "State": "Texas",
-    "County": "Caldwell"
+    code: 48055,
+    state: 'Texas',
+    county: 'Caldwell',
   },
   {
-    "FIPS": 48057,
-    "State": "Texas",
-    "County": "Calhoun"
+    code: 48057,
+    state: 'Texas',
+    county: 'Calhoun',
   },
   {
-    "FIPS": 48059,
-    "State": "Texas",
-    "County": "Callahan"
+    code: 48059,
+    state: 'Texas',
+    county: 'Callahan',
   },
   {
-    "FIPS": 48061,
-    "State": "Texas",
-    "County": "Cameron"
+    code: 48061,
+    state: 'Texas',
+    county: 'Cameron',
   },
   {
-    "FIPS": 48063,
-    "State": "Texas",
-    "County": "Camp"
+    code: 48063,
+    state: 'Texas',
+    county: 'Camp',
   },
   {
-    "FIPS": 48065,
-    "State": "Texas",
-    "County": "Carson"
+    code: 48065,
+    state: 'Texas',
+    county: 'Carson',
   },
   {
-    "FIPS": 48067,
-    "State": "Texas",
-    "County": "Cass"
+    code: 48067,
+    state: 'Texas',
+    county: 'Cass',
   },
   {
-    "FIPS": 48069,
-    "State": "Texas",
-    "County": "Castro"
+    code: 48069,
+    state: 'Texas',
+    county: 'Castro',
   },
   {
-    "FIPS": 48071,
-    "State": "Texas",
-    "County": "Chambers"
+    code: 48071,
+    state: 'Texas',
+    county: 'Chambers',
   },
   {
-    "FIPS": 48073,
-    "State": "Texas",
-    "County": "Cherokee"
+    code: 48073,
+    state: 'Texas',
+    county: 'Cherokee',
   },
   {
-    "FIPS": 48075,
-    "State": "Texas",
-    "County": "Childress"
+    code: 48075,
+    state: 'Texas',
+    county: 'Childress',
   },
   {
-    "FIPS": 48077,
-    "State": "Texas",
-    "County": "Clay"
+    code: 48077,
+    state: 'Texas',
+    county: 'Clay',
   },
   {
-    "FIPS": 48079,
-    "State": "Texas",
-    "County": "Cochran"
+    code: 48079,
+    state: 'Texas',
+    county: 'Cochran',
   },
   {
-    "FIPS": 48081,
-    "State": "Texas",
-    "County": "Coke"
+    code: 48081,
+    state: 'Texas',
+    county: 'Coke',
   },
   {
-    "FIPS": 48083,
-    "State": "Texas",
-    "County": "Coleman"
+    code: 48083,
+    state: 'Texas',
+    county: 'Coleman',
   },
   {
-    "FIPS": 48085,
-    "State": "Texas",
-    "County": "Collin"
+    code: 48085,
+    state: 'Texas',
+    county: 'Collin',
   },
   {
-    "FIPS": 48087,
-    "State": "Texas",
-    "County": "Collingsworth"
+    code: 48087,
+    state: 'Texas',
+    county: 'Collingsworth',
   },
   {
-    "FIPS": 48089,
-    "State": "Texas",
-    "County": "Colorado"
+    code: 48089,
+    state: 'Texas',
+    county: 'Colorado',
   },
   {
-    "FIPS": 48091,
-    "State": "Texas",
-    "County": "Comal"
+    code: 48091,
+    state: 'Texas',
+    county: 'Comal',
   },
   {
-    "FIPS": 48093,
-    "State": "Texas",
-    "County": "Comanche"
+    code: 48093,
+    state: 'Texas',
+    county: 'Comanche',
   },
   {
-    "FIPS": 48095,
-    "State": "Texas",
-    "County": "Concho"
+    code: 48095,
+    state: 'Texas',
+    county: 'Concho',
   },
   {
-    "FIPS": 48097,
-    "State": "Texas",
-    "County": "Cooke"
+    code: 48097,
+    state: 'Texas',
+    county: 'Cooke',
   },
   {
-    "FIPS": 48099,
-    "State": "Texas",
-    "County": "Coryell"
+    code: 48099,
+    state: 'Texas',
+    county: 'Coryell',
   },
   {
-    "FIPS": 48101,
-    "State": "Texas",
-    "County": "Cottle"
+    code: 48101,
+    state: 'Texas',
+    county: 'Cottle',
   },
   {
-    "FIPS": 48103,
-    "State": "Texas",
-    "County": "Crane"
+    code: 48103,
+    state: 'Texas',
+    county: 'Crane',
   },
   {
-    "FIPS": 48105,
-    "State": "Texas",
-    "County": "Crockett"
+    code: 48105,
+    state: 'Texas',
+    county: 'Crockett',
   },
   {
-    "FIPS": 48107,
-    "State": "Texas",
-    "County": "Crosby"
+    code: 48107,
+    state: 'Texas',
+    county: 'Crosby',
   },
   {
-    "FIPS": 48109,
-    "State": "Texas",
-    "County": "Culberson"
+    code: 48109,
+    state: 'Texas',
+    county: 'Culberson',
   },
   {
-    "FIPS": 48111,
-    "State": "Texas",
-    "County": "Dallam"
+    code: 48111,
+    state: 'Texas',
+    county: 'Dallam',
   },
   {
-    "FIPS": 48113,
-    "State": "Texas",
-    "County": "Dallas"
+    code: 48113,
+    state: 'Texas',
+    county: 'Dallas',
   },
   {
-    "FIPS": 48115,
-    "State": "Texas",
-    "County": "Dawson"
+    code: 48115,
+    state: 'Texas',
+    county: 'Dawson',
   },
   {
-    "FIPS": 48117,
-    "State": "Texas",
-    "County": "Deaf Smith"
+    code: 48117,
+    state: 'Texas',
+    county: 'Deaf Smith',
   },
   {
-    "FIPS": 48119,
-    "State": "Texas",
-    "County": "Delta"
+    code: 48119,
+    state: 'Texas',
+    county: 'Delta',
   },
   {
-    "FIPS": 48121,
-    "State": "Texas",
-    "County": "Denton"
+    code: 48121,
+    state: 'Texas',
+    county: 'Denton',
   },
   {
-    "FIPS": 48123,
-    "State": "Texas",
-    "County": "DeWitt"
+    code: 48123,
+    state: 'Texas',
+    county: 'DeWitt',
   },
   {
-    "FIPS": 48125,
-    "State": "Texas",
-    "County": "Dickens"
+    code: 48125,
+    state: 'Texas',
+    county: 'Dickens',
   },
   {
-    "FIPS": 48127,
-    "State": "Texas",
-    "County": "Dimmit"
+    code: 48127,
+    state: 'Texas',
+    county: 'Dimmit',
   },
   {
-    "FIPS": 48129,
-    "State": "Texas",
-    "County": "Donley"
+    code: 48129,
+    state: 'Texas',
+    county: 'Donley',
   },
   {
-    "FIPS": 48131,
-    "State": "Texas",
-    "County": "Duval"
+    code: 48131,
+    state: 'Texas',
+    county: 'Duval',
   },
   {
-    "FIPS": 48133,
-    "State": "Texas",
-    "County": "Eastland"
+    code: 48133,
+    state: 'Texas',
+    county: 'Eastland',
   },
   {
-    "FIPS": 48135,
-    "State": "Texas",
-    "County": "Ector"
+    code: 48135,
+    state: 'Texas',
+    county: 'Ector',
   },
   {
-    "FIPS": 48137,
-    "State": "Texas",
-    "County": "Edwards"
+    code: 48137,
+    state: 'Texas',
+    county: 'Edwards',
   },
   {
-    "FIPS": 48139,
-    "State": "Texas",
-    "County": "Ellis"
+    code: 48139,
+    state: 'Texas',
+    county: 'Ellis',
   },
   {
-    "FIPS": 48141,
-    "State": "Texas",
-    "County": "El Paso"
+    code: 48141,
+    state: 'Texas',
+    county: 'El Paso',
   },
   {
-    "FIPS": 48143,
-    "State": "Texas",
-    "County": "Erath"
+    code: 48143,
+    state: 'Texas',
+    county: 'Erath',
   },
   {
-    "FIPS": 48145,
-    "State": "Texas",
-    "County": "Falls"
+    code: 48145,
+    state: 'Texas',
+    county: 'Falls',
   },
   {
-    "FIPS": 48147,
-    "State": "Texas",
-    "County": "Fannin"
+    code: 48147,
+    state: 'Texas',
+    county: 'Fannin',
   },
   {
-    "FIPS": 48149,
-    "State": "Texas",
-    "County": "Fayette"
+    code: 48149,
+    state: 'Texas',
+    county: 'Fayette',
   },
   {
-    "FIPS": 48151,
-    "State": "Texas",
-    "County": "Fisher"
+    code: 48151,
+    state: 'Texas',
+    county: 'Fisher',
   },
   {
-    "FIPS": 48153,
-    "State": "Texas",
-    "County": "Floyd"
+    code: 48153,
+    state: 'Texas',
+    county: 'Floyd',
   },
   {
-    "FIPS": 48155,
-    "State": "Texas",
-    "County": "Foard"
+    code: 48155,
+    state: 'Texas',
+    county: 'Foard',
   },
   {
-    "FIPS": 48157,
-    "State": "Texas",
-    "County": "Fort Bend"
+    code: 48157,
+    state: 'Texas',
+    county: 'Fort Bend',
   },
   {
-    "FIPS": 48159,
-    "State": "Texas",
-    "County": "Franklin"
+    code: 48159,
+    state: 'Texas',
+    county: 'Franklin',
   },
   {
-    "FIPS": 48161,
-    "State": "Texas",
-    "County": "Freestone"
+    code: 48161,
+    state: 'Texas',
+    county: 'Freestone',
   },
   {
-    "FIPS": 48163,
-    "State": "Texas",
-    "County": "Frio"
+    code: 48163,
+    state: 'Texas',
+    county: 'Frio',
   },
   {
-    "FIPS": 48165,
-    "State": "Texas",
-    "County": "Gaines"
+    code: 48165,
+    state: 'Texas',
+    county: 'Gaines',
   },
   {
-    "FIPS": 48167,
-    "State": "Texas",
-    "County": "Galveston"
+    code: 48167,
+    state: 'Texas',
+    county: 'Galveston',
   },
   {
-    "FIPS": 48169,
-    "State": "Texas",
-    "County": "Garza"
+    code: 48169,
+    state: 'Texas',
+    county: 'Garza',
   },
   {
-    "FIPS": 48171,
-    "State": "Texas",
-    "County": "Gillespie"
+    code: 48171,
+    state: 'Texas',
+    county: 'Gillespie',
   },
   {
-    "FIPS": 48173,
-    "State": "Texas",
-    "County": "Glasscock"
+    code: 48173,
+    state: 'Texas',
+    county: 'Glasscock',
   },
   {
-    "FIPS": 48175,
-    "State": "Texas",
-    "County": "Goliad"
+    code: 48175,
+    state: 'Texas',
+    county: 'Goliad',
   },
   {
-    "FIPS": 48177,
-    "State": "Texas",
-    "County": "Gonzales"
+    code: 48177,
+    state: 'Texas',
+    county: 'Gonzales',
   },
   {
-    "FIPS": 48179,
-    "State": "Texas",
-    "County": "Gray"
+    code: 48179,
+    state: 'Texas',
+    county: 'Gray',
   },
   {
-    "FIPS": 48181,
-    "State": "Texas",
-    "County": "Grayson"
+    code: 48181,
+    state: 'Texas',
+    county: 'Grayson',
   },
   {
-    "FIPS": 48183,
-    "State": "Texas",
-    "County": "Gregg"
+    code: 48183,
+    state: 'Texas',
+    county: 'Gregg',
   },
   {
-    "FIPS": 48185,
-    "State": "Texas",
-    "County": "Grimes"
+    code: 48185,
+    state: 'Texas',
+    county: 'Grimes',
   },
   {
-    "FIPS": 48187,
-    "State": "Texas",
-    "County": "Guadalupe"
+    code: 48187,
+    state: 'Texas',
+    county: 'Guadalupe',
   },
   {
-    "FIPS": 48189,
-    "State": "Texas",
-    "County": "Hale"
+    code: 48189,
+    state: 'Texas',
+    county: 'Hale',
   },
   {
-    "FIPS": 48191,
-    "State": "Texas",
-    "County": "Hall"
+    code: 48191,
+    state: 'Texas',
+    county: 'Hall',
   },
   {
-    "FIPS": 48193,
-    "State": "Texas",
-    "County": "Hamilton"
+    code: 48193,
+    state: 'Texas',
+    county: 'Hamilton',
   },
   {
-    "FIPS": 48195,
-    "State": "Texas",
-    "County": "Hansford"
+    code: 48195,
+    state: 'Texas',
+    county: 'Hansford',
   },
   {
-    "FIPS": 48197,
-    "State": "Texas",
-    "County": "Hardeman"
+    code: 48197,
+    state: 'Texas',
+    county: 'Hardeman',
   },
   {
-    "FIPS": 48199,
-    "State": "Texas",
-    "County": "Hardin"
+    code: 48199,
+    state: 'Texas',
+    county: 'Hardin',
   },
   {
-    "FIPS": 48201,
-    "State": "Texas",
-    "County": "Harris"
+    code: 48201,
+    state: 'Texas',
+    county: 'Harris',
   },
   {
-    "FIPS": 48203,
-    "State": "Texas",
-    "County": "Harrison"
+    code: 48203,
+    state: 'Texas',
+    county: 'Harrison',
   },
   {
-    "FIPS": 48205,
-    "State": "Texas",
-    "County": "Hartley"
+    code: 48205,
+    state: 'Texas',
+    county: 'Hartley',
   },
   {
-    "FIPS": 48207,
-    "State": "Texas",
-    "County": "Haskell"
+    code: 48207,
+    state: 'Texas',
+    county: 'Haskell',
   },
   {
-    "FIPS": 48209,
-    "State": "Texas",
-    "County": "Hays"
+    code: 48209,
+    state: 'Texas',
+    county: 'Hays',
   },
   {
-    "FIPS": 48211,
-    "State": "Texas",
-    "County": "Hemphill"
+    code: 48211,
+    state: 'Texas',
+    county: 'Hemphill',
   },
   {
-    "FIPS": 48213,
-    "State": "Texas",
-    "County": "Henderson"
+    code: 48213,
+    state: 'Texas',
+    county: 'Henderson',
   },
   {
-    "FIPS": 48215,
-    "State": "Texas",
-    "County": "Hidalgo"
+    code: 48215,
+    state: 'Texas',
+    county: 'Hidalgo',
   },
   {
-    "FIPS": 48217,
-    "State": "Texas",
-    "County": "Hill"
+    code: 48217,
+    state: 'Texas',
+    county: 'Hill',
   },
   {
-    "FIPS": 48219,
-    "State": "Texas",
-    "County": "Hockley"
+    code: 48219,
+    state: 'Texas',
+    county: 'Hockley',
   },
   {
-    "FIPS": 48221,
-    "State": "Texas",
-    "County": "Hood"
+    code: 48221,
+    state: 'Texas',
+    county: 'Hood',
   },
   {
-    "FIPS": 48223,
-    "State": "Texas",
-    "County": "Hopkins"
+    code: 48223,
+    state: 'Texas',
+    county: 'Hopkins',
   },
   {
-    "FIPS": 48225,
-    "State": "Texas",
-    "County": "Houston"
+    code: 48225,
+    state: 'Texas',
+    county: 'Houston',
   },
   {
-    "FIPS": 48227,
-    "State": "Texas",
-    "County": "Howard"
+    code: 48227,
+    state: 'Texas',
+    county: 'Howard',
   },
   {
-    "FIPS": 48229,
-    "State": "Texas",
-    "County": "Hudspeth"
+    code: 48229,
+    state: 'Texas',
+    county: 'Hudspeth',
   },
   {
-    "FIPS": 48231,
-    "State": "Texas",
-    "County": "Hunt"
+    code: 48231,
+    state: 'Texas',
+    county: 'Hunt',
   },
   {
-    "FIPS": 48233,
-    "State": "Texas",
-    "County": "Hutchinson"
+    code: 48233,
+    state: 'Texas',
+    county: 'Hutchinson',
   },
   {
-    "FIPS": 48235,
-    "State": "Texas",
-    "County": "Irion"
+    code: 48235,
+    state: 'Texas',
+    county: 'Irion',
   },
   {
-    "FIPS": 48237,
-    "State": "Texas",
-    "County": "Jack"
+    code: 48237,
+    state: 'Texas',
+    county: 'Jack',
   },
   {
-    "FIPS": 48239,
-    "State": "Texas",
-    "County": "Jackson"
+    code: 48239,
+    state: 'Texas',
+    county: 'Jackson',
   },
   {
-    "FIPS": 48241,
-    "State": "Texas",
-    "County": "Jasper"
+    code: 48241,
+    state: 'Texas',
+    county: 'Jasper',
   },
   {
-    "FIPS": 48243,
-    "State": "Texas",
-    "County": "Jeff Davis"
+    code: 48243,
+    state: 'Texas',
+    county: 'Jeff Davis',
   },
   {
-    "FIPS": 48245,
-    "State": "Texas",
-    "County": "Jefferson"
+    code: 48245,
+    state: 'Texas',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 48247,
-    "State": "Texas",
-    "County": "Jim Hogg"
+    code: 48247,
+    state: 'Texas',
+    county: 'Jim Hogg',
   },
   {
-    "FIPS": 48249,
-    "State": "Texas",
-    "County": "Jim Wells"
+    code: 48249,
+    state: 'Texas',
+    county: 'Jim Wells',
   },
   {
-    "FIPS": 48251,
-    "State": "Texas",
-    "County": "Johnson"
+    code: 48251,
+    state: 'Texas',
+    county: 'Johnson',
   },
   {
-    "FIPS": 48253,
-    "State": "Texas",
-    "County": "Jones"
+    code: 48253,
+    state: 'Texas',
+    county: 'Jones',
   },
   {
-    "FIPS": 48255,
-    "State": "Texas",
-    "County": "Karnes"
+    code: 48255,
+    state: 'Texas',
+    county: 'Karnes',
   },
   {
-    "FIPS": 48257,
-    "State": "Texas",
-    "County": "Kaufman"
+    code: 48257,
+    state: 'Texas',
+    county: 'Kaufman',
   },
   {
-    "FIPS": 48259,
-    "State": "Texas",
-    "County": "Kendall"
+    code: 48259,
+    state: 'Texas',
+    county: 'Kendall',
   },
   {
-    "FIPS": 48261,
-    "State": "Texas",
-    "County": "Kenedy"
+    code: 48261,
+    state: 'Texas',
+    county: 'Kenedy',
   },
   {
-    "FIPS": 48263,
-    "State": "Texas",
-    "County": "Kent"
+    code: 48263,
+    state: 'Texas',
+    county: 'Kent',
   },
   {
-    "FIPS": 48265,
-    "State": "Texas",
-    "County": "Kerr"
+    code: 48265,
+    state: 'Texas',
+    county: 'Kerr',
   },
   {
-    "FIPS": 48267,
-    "State": "Texas",
-    "County": "Kimble"
+    code: 48267,
+    state: 'Texas',
+    county: 'Kimble',
   },
   {
-    "FIPS": 48269,
-    "State": "Texas",
-    "County": "King"
+    code: 48269,
+    state: 'Texas',
+    county: 'King',
   },
   {
-    "FIPS": 48271,
-    "State": "Texas",
-    "County": "Kinney"
+    code: 48271,
+    state: 'Texas',
+    county: 'Kinney',
   },
   {
-    "FIPS": 48273,
-    "State": "Texas",
-    "County": "Kleberg"
+    code: 48273,
+    state: 'Texas',
+    county: 'Kleberg',
   },
   {
-    "FIPS": 48275,
-    "State": "Texas",
-    "County": "Knox"
+    code: 48275,
+    state: 'Texas',
+    county: 'Knox',
   },
   {
-    "FIPS": 48277,
-    "State": "Texas",
-    "County": "Lamar"
+    code: 48277,
+    state: 'Texas',
+    county: 'Lamar',
   },
   {
-    "FIPS": 48279,
-    "State": "Texas",
-    "County": "Lamb"
+    code: 48279,
+    state: 'Texas',
+    county: 'Lamb',
   },
   {
-    "FIPS": 48281,
-    "State": "Texas",
-    "County": "Lampasas"
+    code: 48281,
+    state: 'Texas',
+    county: 'Lampasas',
   },
   {
-    "FIPS": 48283,
-    "State": "Texas",
-    "County": "La Salle"
+    code: 48283,
+    state: 'Texas',
+    county: 'La Salle',
   },
   {
-    "FIPS": 48285,
-    "State": "Texas",
-    "County": "Lavaca"
+    code: 48285,
+    state: 'Texas',
+    county: 'Lavaca',
   },
   {
-    "FIPS": 48287,
-    "State": "Texas",
-    "County": "Lee"
+    code: 48287,
+    state: 'Texas',
+    county: 'Lee',
   },
   {
-    "FIPS": 48289,
-    "State": "Texas",
-    "County": "Leon"
+    code: 48289,
+    state: 'Texas',
+    county: 'Leon',
   },
   {
-    "FIPS": 48291,
-    "State": "Texas",
-    "County": "Liberty"
+    code: 48291,
+    state: 'Texas',
+    county: 'Liberty',
   },
   {
-    "FIPS": 48293,
-    "State": "Texas",
-    "County": "Limestone"
+    code: 48293,
+    state: 'Texas',
+    county: 'Limestone',
   },
   {
-    "FIPS": 48295,
-    "State": "Texas",
-    "County": "Lipscomb"
+    code: 48295,
+    state: 'Texas',
+    county: 'Lipscomb',
   },
   {
-    "FIPS": 48297,
-    "State": "Texas",
-    "County": "Live Oak"
+    code: 48297,
+    state: 'Texas',
+    county: 'Live Oak',
   },
   {
-    "FIPS": 48299,
-    "State": "Texas",
-    "County": "Llano"
+    code: 48299,
+    state: 'Texas',
+    county: 'Llano',
   },
   {
-    "FIPS": 48301,
-    "State": "Texas",
-    "County": "Loving"
+    code: 48301,
+    state: 'Texas',
+    county: 'Loving',
   },
   {
-    "FIPS": 48303,
-    "State": "Texas",
-    "County": "Lubbock"
+    code: 48303,
+    state: 'Texas',
+    county: 'Lubbock',
   },
   {
-    "FIPS": 48305,
-    "State": "Texas",
-    "County": "Lynn"
+    code: 48305,
+    state: 'Texas',
+    county: 'Lynn',
   },
   {
-    "FIPS": 48307,
-    "State": "Texas",
-    "County": "McCulloch"
+    code: 48307,
+    state: 'Texas',
+    county: 'McCulloch',
   },
   {
-    "FIPS": 48309,
-    "State": "Texas",
-    "County": "McLennan"
+    code: 48309,
+    state: 'Texas',
+    county: 'McLennan',
   },
   {
-    "FIPS": 48311,
-    "State": "Texas",
-    "County": "McMullen"
+    code: 48311,
+    state: 'Texas',
+    county: 'McMullen',
   },
   {
-    "FIPS": 48313,
-    "State": "Texas",
-    "County": "Madison"
+    code: 48313,
+    state: 'Texas',
+    county: 'Madison',
   },
   {
-    "FIPS": 48315,
-    "State": "Texas",
-    "County": "Marion"
+    code: 48315,
+    state: 'Texas',
+    county: 'Marion',
   },
   {
-    "FIPS": 48317,
-    "State": "Texas",
-    "County": "Martin"
+    code: 48317,
+    state: 'Texas',
+    county: 'Martin',
   },
   {
-    "FIPS": 48319,
-    "State": "Texas",
-    "County": "Mason"
+    code: 48319,
+    state: 'Texas',
+    county: 'Mason',
   },
   {
-    "FIPS": 48321,
-    "State": "Texas",
-    "County": "Matagorda"
+    code: 48321,
+    state: 'Texas',
+    county: 'Matagorda',
   },
   {
-    "FIPS": 48323,
-    "State": "Texas",
-    "County": "Maverick"
+    code: 48323,
+    state: 'Texas',
+    county: 'Maverick',
   },
   {
-    "FIPS": 48325,
-    "State": "Texas",
-    "County": "Medina"
+    code: 48325,
+    state: 'Texas',
+    county: 'Medina',
   },
   {
-    "FIPS": 48327,
-    "State": "Texas",
-    "County": "Menard"
+    code: 48327,
+    state: 'Texas',
+    county: 'Menard',
   },
   {
-    "FIPS": 48329,
-    "State": "Texas",
-    "County": "Midland"
+    code: 48329,
+    state: 'Texas',
+    county: 'Midland',
   },
   {
-    "FIPS": 48331,
-    "State": "Texas",
-    "County": "Milam"
+    code: 48331,
+    state: 'Texas',
+    county: 'Milam',
   },
   {
-    "FIPS": 48333,
-    "State": "Texas",
-    "County": "Mills"
+    code: 48333,
+    state: 'Texas',
+    county: 'Mills',
   },
   {
-    "FIPS": 48335,
-    "State": "Texas",
-    "County": "Mitchell"
+    code: 48335,
+    state: 'Texas',
+    county: 'Mitchell',
   },
   {
-    "FIPS": 48337,
-    "State": "Texas",
-    "County": "Montague"
+    code: 48337,
+    state: 'Texas',
+    county: 'Montague',
   },
   {
-    "FIPS": 48339,
-    "State": "Texas",
-    "County": "Montgomery"
+    code: 48339,
+    state: 'Texas',
+    county: 'Montgomery',
   },
   {
-    "FIPS": 48341,
-    "State": "Texas",
-    "County": "Moore"
+    code: 48341,
+    state: 'Texas',
+    county: 'Moore',
   },
   {
-    "FIPS": 48343,
-    "State": "Texas",
-    "County": "Morris"
+    code: 48343,
+    state: 'Texas',
+    county: 'Morris',
   },
   {
-    "FIPS": 48345,
-    "State": "Texas",
-    "County": "Motley"
+    code: 48345,
+    state: 'Texas',
+    county: 'Motley',
   },
   {
-    "FIPS": 48347,
-    "State": "Texas",
-    "County": "Nacogdoches"
+    code: 48347,
+    state: 'Texas',
+    county: 'Nacogdoches',
   },
   {
-    "FIPS": 48349,
-    "State": "Texas",
-    "County": "Navarro"
+    code: 48349,
+    state: 'Texas',
+    county: 'Navarro',
   },
   {
-    "FIPS": 48351,
-    "State": "Texas",
-    "County": "Newton"
+    code: 48351,
+    state: 'Texas',
+    county: 'Newton',
   },
   {
-    "FIPS": 48353,
-    "State": "Texas",
-    "County": "Nolan"
+    code: 48353,
+    state: 'Texas',
+    county: 'Nolan',
   },
   {
-    "FIPS": 48355,
-    "State": "Texas",
-    "County": "Nueces"
+    code: 48355,
+    state: 'Texas',
+    county: 'Nueces',
   },
   {
-    "FIPS": 48357,
-    "State": "Texas",
-    "County": "Ochiltree"
+    code: 48357,
+    state: 'Texas',
+    county: 'Ochiltree',
   },
   {
-    "FIPS": 48359,
-    "State": "Texas",
-    "County": "Oldham"
+    code: 48359,
+    state: 'Texas',
+    county: 'Oldham',
   },
   {
-    "FIPS": 48361,
-    "State": "Texas",
-    "County": "Orange"
+    code: 48361,
+    state: 'Texas',
+    county: 'Orange',
   },
   {
-    "FIPS": 48363,
-    "State": "Texas",
-    "County": "Palo Pinto"
+    code: 48363,
+    state: 'Texas',
+    county: 'Palo Pinto',
   },
   {
-    "FIPS": 48365,
-    "State": "Texas",
-    "County": "Panola"
+    code: 48365,
+    state: 'Texas',
+    county: 'Panola',
   },
   {
-    "FIPS": 48367,
-    "State": "Texas",
-    "County": "Parker"
+    code: 48367,
+    state: 'Texas',
+    county: 'Parker',
   },
   {
-    "FIPS": 48369,
-    "State": "Texas",
-    "County": "Parmer"
+    code: 48369,
+    state: 'Texas',
+    county: 'Parmer',
   },
   {
-    "FIPS": 48371,
-    "State": "Texas",
-    "County": "Pecos"
+    code: 48371,
+    state: 'Texas',
+    county: 'Pecos',
   },
   {
-    "FIPS": 48373,
-    "State": "Texas",
-    "County": "Polk"
+    code: 48373,
+    state: 'Texas',
+    county: 'Polk',
   },
   {
-    "FIPS": 48375,
-    "State": "Texas",
-    "County": "Potter"
+    code: 48375,
+    state: 'Texas',
+    county: 'Potter',
   },
   {
-    "FIPS": 48377,
-    "State": "Texas",
-    "County": "Presidio"
+    code: 48377,
+    state: 'Texas',
+    county: 'Presidio',
   },
   {
-    "FIPS": 48379,
-    "State": "Texas",
-    "County": "Rains"
+    code: 48379,
+    state: 'Texas',
+    county: 'Rains',
   },
   {
-    "FIPS": 48381,
-    "State": "Texas",
-    "County": "Randall"
+    code: 48381,
+    state: 'Texas',
+    county: 'Randall',
   },
   {
-    "FIPS": 48383,
-    "State": "Texas",
-    "County": "Reagan"
+    code: 48383,
+    state: 'Texas',
+    county: 'Reagan',
   },
   {
-    "FIPS": 48385,
-    "State": "Texas",
-    "County": "Real"
+    code: 48385,
+    state: 'Texas',
+    county: 'Real',
   },
   {
-    "FIPS": 48387,
-    "State": "Texas",
-    "County": "Red River"
+    code: 48387,
+    state: 'Texas',
+    county: 'Red River',
   },
   {
-    "FIPS": 48389,
-    "State": "Texas",
-    "County": "Reeves"
+    code: 48389,
+    state: 'Texas',
+    county: 'Reeves',
   },
   {
-    "FIPS": 48391,
-    "State": "Texas",
-    "County": "Refugio"
+    code: 48391,
+    state: 'Texas',
+    county: 'Refugio',
   },
   {
-    "FIPS": 48393,
-    "State": "Texas",
-    "County": "Roberts"
+    code: 48393,
+    state: 'Texas',
+    county: 'Roberts',
   },
   {
-    "FIPS": 48395,
-    "State": "Texas",
-    "County": "Robertson"
+    code: 48395,
+    state: 'Texas',
+    county: 'Robertson',
   },
   {
-    "FIPS": 48397,
-    "State": "Texas",
-    "County": "Rockwall"
+    code: 48397,
+    state: 'Texas',
+    county: 'Rockwall',
   },
   {
-    "FIPS": 48399,
-    "State": "Texas",
-    "County": "Runnels"
+    code: 48399,
+    state: 'Texas',
+    county: 'Runnels',
   },
   {
-    "FIPS": 48401,
-    "State": "Texas",
-    "County": "Rusk"
+    code: 48401,
+    state: 'Texas',
+    county: 'Rusk',
   },
   {
-    "FIPS": 48403,
-    "State": "Texas",
-    "County": "Sabine"
+    code: 48403,
+    state: 'Texas',
+    county: 'Sabine',
   },
   {
-    "FIPS": 48405,
-    "State": "Texas",
-    "County": "San Augustine"
+    code: 48405,
+    state: 'Texas',
+    county: 'San Augustine',
   },
   {
-    "FIPS": 48407,
-    "State": "Texas",
-    "County": "San Jacinto"
+    code: 48407,
+    state: 'Texas',
+    county: 'San Jacinto',
   },
   {
-    "FIPS": 48409,
-    "State": "Texas",
-    "County": "San Patricio"
+    code: 48409,
+    state: 'Texas',
+    county: 'San Patricio',
   },
   {
-    "FIPS": 48411,
-    "State": "Texas",
-    "County": "San Saba"
+    code: 48411,
+    state: 'Texas',
+    county: 'San Saba',
   },
   {
-    "FIPS": 48413,
-    "State": "Texas",
-    "County": "Schleicher"
+    code: 48413,
+    state: 'Texas',
+    county: 'Schleicher',
   },
   {
-    "FIPS": 48415,
-    "State": "Texas",
-    "County": "Scurry"
+    code: 48415,
+    state: 'Texas',
+    county: 'Scurry',
   },
   {
-    "FIPS": 48417,
-    "State": "Texas",
-    "County": "Shackelford"
+    code: 48417,
+    state: 'Texas',
+    county: 'Shackelford',
   },
   {
-    "FIPS": 48419,
-    "State": "Texas",
-    "County": "Shelby"
+    code: 48419,
+    state: 'Texas',
+    county: 'Shelby',
   },
   {
-    "FIPS": 48421,
-    "State": "Texas",
-    "County": "Sherman"
+    code: 48421,
+    state: 'Texas',
+    county: 'Sherman',
   },
   {
-    "FIPS": 48423,
-    "State": "Texas",
-    "County": "Smith"
+    code: 48423,
+    state: 'Texas',
+    county: 'Smith',
   },
   {
-    "FIPS": 48425,
-    "State": "Texas",
-    "County": "Somervell"
+    code: 48425,
+    state: 'Texas',
+    county: 'Somervell',
   },
   {
-    "FIPS": 48427,
-    "State": "Texas",
-    "County": "Starr"
+    code: 48427,
+    state: 'Texas',
+    county: 'Starr',
   },
   {
-    "FIPS": 48429,
-    "State": "Texas",
-    "County": "Stephens"
+    code: 48429,
+    state: 'Texas',
+    county: 'Stephens',
   },
   {
-    "FIPS": 48431,
-    "State": "Texas",
-    "County": "Sterling"
+    code: 48431,
+    state: 'Texas',
+    county: 'Sterling',
   },
   {
-    "FIPS": 48433,
-    "State": "Texas",
-    "County": "Stonewall"
+    code: 48433,
+    state: 'Texas',
+    county: 'Stonewall',
   },
   {
-    "FIPS": 48435,
-    "State": "Texas",
-    "County": "Sutton"
+    code: 48435,
+    state: 'Texas',
+    county: 'Sutton',
   },
   {
-    "FIPS": 48437,
-    "State": "Texas",
-    "County": "Swisher"
+    code: 48437,
+    state: 'Texas',
+    county: 'Swisher',
   },
   {
-    "FIPS": 48439,
-    "State": "Texas",
-    "County": "Tarrant"
+    code: 48439,
+    state: 'Texas',
+    county: 'Tarrant',
   },
   {
-    "FIPS": 48441,
-    "State": "Texas",
-    "County": "Taylor"
+    code: 48441,
+    state: 'Texas',
+    county: 'Taylor',
   },
   {
-    "FIPS": 48443,
-    "State": "Texas",
-    "County": "Terrell"
+    code: 48443,
+    state: 'Texas',
+    county: 'Terrell',
   },
   {
-    "FIPS": 48445,
-    "State": "Texas",
-    "County": "Terry"
+    code: 48445,
+    state: 'Texas',
+    county: 'Terry',
   },
   {
-    "FIPS": 48447,
-    "State": "Texas",
-    "County": "Throckmorton"
+    code: 48447,
+    state: 'Texas',
+    county: 'Throckmorton',
   },
   {
-    "FIPS": 48449,
-    "State": "Texas",
-    "County": "Titus"
+    code: 48449,
+    state: 'Texas',
+    county: 'Titus',
   },
   {
-    "FIPS": 48451,
-    "State": "Texas",
-    "County": "Tom Green"
+    code: 48451,
+    state: 'Texas',
+    county: 'Tom Green',
   },
   {
-    "FIPS": 48453,
-    "State": "Texas",
-    "County": "Travis"
+    code: 48453,
+    state: 'Texas',
+    county: 'Travis',
   },
   {
-    "FIPS": 48455,
-    "State": "Texas",
-    "County": "Trinity"
+    code: 48455,
+    state: 'Texas',
+    county: 'Trinity',
   },
   {
-    "FIPS": 48457,
-    "State": "Texas",
-    "County": "Tyler"
+    code: 48457,
+    state: 'Texas',
+    county: 'Tyler',
   },
   {
-    "FIPS": 48459,
-    "State": "Texas",
-    "County": "Upshur"
+    code: 48459,
+    state: 'Texas',
+    county: 'Upshur',
   },
   {
-    "FIPS": 48461,
-    "State": "Texas",
-    "County": "Upton"
+    code: 48461,
+    state: 'Texas',
+    county: 'Upton',
   },
   {
-    "FIPS": 48463,
-    "State": "Texas",
-    "County": "Uvalde"
+    code: 48463,
+    state: 'Texas',
+    county: 'Uvalde',
   },
   {
-    "FIPS": 48465,
-    "State": "Texas",
-    "County": "Val Verde"
+    code: 48465,
+    state: 'Texas',
+    county: 'Val Verde',
   },
   {
-    "FIPS": 48467,
-    "State": "Texas",
-    "County": "Van Zandt"
+    code: 48467,
+    state: 'Texas',
+    county: 'Van Zandt',
   },
   {
-    "FIPS": 48469,
-    "State": "Texas",
-    "County": "Victoria"
+    code: 48469,
+    state: 'Texas',
+    county: 'Victoria',
   },
   {
-    "FIPS": 48471,
-    "State": "Texas",
-    "County": "Walker"
+    code: 48471,
+    state: 'Texas',
+    county: 'Walker',
   },
   {
-    "FIPS": 48473,
-    "State": "Texas",
-    "County": "Waller"
+    code: 48473,
+    state: 'Texas',
+    county: 'Waller',
   },
   {
-    "FIPS": 48475,
-    "State": "Texas",
-    "County": "Ward"
+    code: 48475,
+    state: 'Texas',
+    county: 'Ward',
   },
   {
-    "FIPS": 48477,
-    "State": "Texas",
-    "County": "Washington"
+    code: 48477,
+    state: 'Texas',
+    county: 'Washington',
   },
   {
-    "FIPS": 48479,
-    "State": "Texas",
-    "County": "Webb"
+    code: 48479,
+    state: 'Texas',
+    county: 'Webb',
   },
   {
-    "FIPS": 48481,
-    "State": "Texas",
-    "County": "Wharton"
+    code: 48481,
+    state: 'Texas',
+    county: 'Wharton',
   },
   {
-    "FIPS": 48483,
-    "State": "Texas",
-    "County": "Wheeler"
+    code: 48483,
+    state: 'Texas',
+    county: 'Wheeler',
   },
   {
-    "FIPS": 48485,
-    "State": "Texas",
-    "County": "Wichita"
+    code: 48485,
+    state: 'Texas',
+    county: 'Wichita',
   },
   {
-    "FIPS": 48487,
-    "State": "Texas",
-    "County": "Wilbarger"
+    code: 48487,
+    state: 'Texas',
+    county: 'Wilbarger',
   },
   {
-    "FIPS": 48489,
-    "State": "Texas",
-    "County": "Willacy"
+    code: 48489,
+    state: 'Texas',
+    county: 'Willacy',
   },
   {
-    "FIPS": 48491,
-    "State": "Texas",
-    "County": "Williamson"
+    code: 48491,
+    state: 'Texas',
+    county: 'Williamson',
   },
   {
-    "FIPS": 48493,
-    "State": "Texas",
-    "County": "Wilson"
+    code: 48493,
+    state: 'Texas',
+    county: 'Wilson',
   },
   {
-    "FIPS": 48495,
-    "State": "Texas",
-    "County": "Winkler"
+    code: 48495,
+    state: 'Texas',
+    county: 'Winkler',
   },
   {
-    "FIPS": 48497,
-    "State": "Texas",
-    "County": "Wise"
+    code: 48497,
+    state: 'Texas',
+    county: 'Wise',
   },
   {
-    "FIPS": 48499,
-    "State": "Texas",
-    "County": "Wood"
+    code: 48499,
+    state: 'Texas',
+    county: 'Wood',
   },
   {
-    "FIPS": 48501,
-    "State": "Texas",
-    "County": "Yoakum"
+    code: 48501,
+    state: 'Texas',
+    county: 'Yoakum',
   },
   {
-    "FIPS": 48503,
-    "State": "Texas",
-    "County": "Young"
+    code: 48503,
+    state: 'Texas',
+    county: 'Young',
   },
   {
-    "FIPS": 48505,
-    "State": "Texas",
-    "County": "Zapata"
+    code: 48505,
+    state: 'Texas',
+    county: 'Zapata',
   },
   {
-    "FIPS": 48507,
-    "State": "Texas",
-    "County": "Zavala"
+    code: 48507,
+    state: 'Texas',
+    county: 'Zavala',
   },
   {
-    "FIPS": 49001,
-    "State": "Utah",
-    "County": "Beaver"
+    code: 49001,
+    state: 'Utah',
+    county: 'Beaver',
   },
   {
-    "FIPS": 49003,
-    "State": "Utah",
-    "County": "Box Elder"
+    code: 49003,
+    state: 'Utah',
+    county: 'Box Elder',
   },
   {
-    "FIPS": 49005,
-    "State": "Utah",
-    "County": "Cache"
+    code: 49005,
+    state: 'Utah',
+    county: 'Cache',
   },
   {
-    "FIPS": 49007,
-    "State": "Utah",
-    "County": "Carbon"
+    code: 49007,
+    state: 'Utah',
+    county: 'Carbon',
   },
   {
-    "FIPS": 49009,
-    "State": "Utah",
-    "County": "Daggett"
+    code: 49009,
+    state: 'Utah',
+    county: 'Daggett',
   },
   {
-    "FIPS": 49011,
-    "State": "Utah",
-    "County": "Davis"
+    code: 49011,
+    state: 'Utah',
+    county: 'Davis',
   },
   {
-    "FIPS": 49013,
-    "State": "Utah",
-    "County": "Duchesne"
+    code: 49013,
+    state: 'Utah',
+    county: 'Duchesne',
   },
   {
-    "FIPS": 49015,
-    "State": "Utah",
-    "County": "Emery"
+    code: 49015,
+    state: 'Utah',
+    county: 'Emery',
   },
   {
-    "FIPS": 49017,
-    "State": "Utah",
-    "County": "Garfield"
+    code: 49017,
+    state: 'Utah',
+    county: 'Garfield',
   },
   {
-    "FIPS": 49019,
-    "State": "Utah",
-    "County": "Grand"
+    code: 49019,
+    state: 'Utah',
+    county: 'Grand',
   },
   {
-    "FIPS": 49021,
-    "State": "Utah",
-    "County": "Iron"
+    code: 49021,
+    state: 'Utah',
+    county: 'Iron',
   },
   {
-    "FIPS": 49023,
-    "State": "Utah",
-    "County": "Juab"
+    code: 49023,
+    state: 'Utah',
+    county: 'Juab',
   },
   {
-    "FIPS": 49025,
-    "State": "Utah",
-    "County": "Kane"
+    code: 49025,
+    state: 'Utah',
+    county: 'Kane',
   },
   {
-    "FIPS": 49027,
-    "State": "Utah",
-    "County": "Millard"
+    code: 49027,
+    state: 'Utah',
+    county: 'Millard',
   },
   {
-    "FIPS": 49029,
-    "State": "Utah",
-    "County": "Morgan"
+    code: 49029,
+    state: 'Utah',
+    county: 'Morgan',
   },
   {
-    "FIPS": 49031,
-    "State": "Utah",
-    "County": "Piute"
+    code: 49031,
+    state: 'Utah',
+    county: 'Piute',
   },
   {
-    "FIPS": 49033,
-    "State": "Utah",
-    "County": "Rich"
+    code: 49033,
+    state: 'Utah',
+    county: 'Rich',
   },
   {
-    "FIPS": 49035,
-    "State": "Utah",
-    "County": "Salt Lake"
+    code: 49035,
+    state: 'Utah',
+    county: 'Salt Lake',
   },
   {
-    "FIPS": 49037,
-    "State": "Utah",
-    "County": "San Juan"
+    code: 49037,
+    state: 'Utah',
+    county: 'San Juan',
   },
   {
-    "FIPS": 49039,
-    "State": "Utah",
-    "County": "Sanpete"
+    code: 49039,
+    state: 'Utah',
+    county: 'Sanpete',
   },
   {
-    "FIPS": 49041,
-    "State": "Utah",
-    "County": "Sevier"
+    code: 49041,
+    state: 'Utah',
+    county: 'Sevier',
   },
   {
-    "FIPS": 49043,
-    "State": "Utah",
-    "County": "Summit"
+    code: 49043,
+    state: 'Utah',
+    county: 'Summit',
   },
   {
-    "FIPS": 49045,
-    "State": "Utah",
-    "County": "Tooele"
+    code: 49045,
+    state: 'Utah',
+    county: 'Tooele',
   },
   {
-    "FIPS": 49047,
-    "State": "Utah",
-    "County": "Uintah"
+    code: 49047,
+    state: 'Utah',
+    county: 'Uintah',
   },
   {
-    "FIPS": 49049,
-    "State": "Utah",
-    "County": "Utah"
+    code: 49049,
+    state: 'Utah',
+    county: 'Utah',
   },
   {
-    "FIPS": 49051,
-    "State": "Utah",
-    "County": "Wasatch"
+    code: 49051,
+    state: 'Utah',
+    county: 'Wasatch',
   },
   {
-    "FIPS": 49053,
-    "State": "Utah",
-    "County": "Washington"
+    code: 49053,
+    state: 'Utah',
+    county: 'Washington',
   },
   {
-    "FIPS": 49055,
-    "State": "Utah",
-    "County": "Wayne"
+    code: 49055,
+    state: 'Utah',
+    county: 'Wayne',
   },
   {
-    "FIPS": 49057,
-    "State": "Utah",
-    "County": "Weber"
+    code: 49057,
+    state: 'Utah',
+    county: 'Weber',
   },
   {
-    "FIPS": 50001,
-    "State": "Vermont",
-    "County": "Addison"
+    code: 50001,
+    state: 'Vermont',
+    county: 'Addison',
   },
   {
-    "FIPS": 50003,
-    "State": "Vermont",
-    "County": "Bennington"
+    code: 50003,
+    state: 'Vermont',
+    county: 'Bennington',
   },
   {
-    "FIPS": 50005,
-    "State": "Vermont",
-    "County": "Caledonia"
+    code: 50005,
+    state: 'Vermont',
+    county: 'Caledonia',
   },
   {
-    "FIPS": 50007,
-    "State": "Vermont",
-    "County": "Chittenden"
+    code: 50007,
+    state: 'Vermont',
+    county: 'Chittenden',
   },
   {
-    "FIPS": 50009,
-    "State": "Vermont",
-    "County": "Essex"
+    code: 50009,
+    state: 'Vermont',
+    county: 'Essex',
   },
   {
-    "FIPS": 50011,
-    "State": "Vermont",
-    "County": "Franklin"
+    code: 50011,
+    state: 'Vermont',
+    county: 'Franklin',
   },
   {
-    "FIPS": 50013,
-    "State": "Vermont",
-    "County": "Grand Isle"
+    code: 50013,
+    state: 'Vermont',
+    county: 'Grand Isle',
   },
   {
-    "FIPS": 50015,
-    "State": "Vermont",
-    "County": "Lamoille"
+    code: 50015,
+    state: 'Vermont',
+    county: 'Lamoille',
   },
   {
-    "FIPS": 50017,
-    "State": "Vermont",
-    "County": "Orange"
+    code: 50017,
+    state: 'Vermont',
+    county: 'Orange',
   },
   {
-    "FIPS": 50019,
-    "State": "Vermont",
-    "County": "Orleans"
+    code: 50019,
+    state: 'Vermont',
+    county: 'Orleans',
   },
   {
-    "FIPS": 50021,
-    "State": "Vermont",
-    "County": "Rutland"
+    code: 50021,
+    state: 'Vermont',
+    county: 'Rutland',
   },
   {
-    "FIPS": 50023,
-    "State": "Vermont",
-    "County": "Washington"
+    code: 50023,
+    state: 'Vermont',
+    county: 'Washington',
   },
   {
-    "FIPS": 50025,
-    "State": "Vermont",
-    "County": "Windham"
+    code: 50025,
+    state: 'Vermont',
+    county: 'Windham',
   },
   {
-    "FIPS": 50027,
-    "State": "Vermont",
-    "County": "Windsor"
+    code: 50027,
+    state: 'Vermont',
+    county: 'Windsor',
   },
   {
-    "FIPS": 51001,
-    "State": "Virginia",
-    "County": "Accomack"
+    code: 51001,
+    state: 'Virginia',
+    county: 'Accomack',
   },
   {
-    "FIPS": 51003,
-    "State": "Virginia",
-    "County": "Albemarle"
+    code: 51003,
+    state: 'Virginia',
+    county: 'Albemarle',
   },
   {
-    "FIPS": 51005,
-    "State": "Virginia",
-    "County": "Alleghany"
+    code: 51005,
+    state: 'Virginia',
+    county: 'Alleghany',
   },
   {
-    "FIPS": 51007,
-    "State": "Virginia",
-    "County": "Amelia"
+    code: 51007,
+    state: 'Virginia',
+    county: 'Amelia',
   },
   {
-    "FIPS": 51009,
-    "State": "Virginia",
-    "County": "Amherst"
+    code: 51009,
+    state: 'Virginia',
+    county: 'Amherst',
   },
   {
-    "FIPS": 51011,
-    "State": "Virginia",
-    "County": "Appomattox"
+    code: 51011,
+    state: 'Virginia',
+    county: 'Appomattox',
   },
   {
-    "FIPS": 51013,
-    "State": "Virginia",
-    "County": "Arlington"
+    code: 51013,
+    state: 'Virginia',
+    county: 'Arlington',
   },
   {
-    "FIPS": 51015,
-    "State": "Virginia",
-    "County": "Augusta"
+    code: 51015,
+    state: 'Virginia',
+    county: 'Augusta',
   },
   {
-    "FIPS": 51017,
-    "State": "Virginia",
-    "County": "Bath"
+    code: 51017,
+    state: 'Virginia',
+    county: 'Bath',
   },
   {
-    "FIPS": 51019,
-    "State": "Virginia",
-    "County": "Bedford"
+    code: 51019,
+    state: 'Virginia',
+    county: 'Bedford',
   },
   {
-    "FIPS": 51021,
-    "State": "Virginia",
-    "County": "Bland"
+    code: 51021,
+    state: 'Virginia',
+    county: 'Bland',
   },
   {
-    "FIPS": 51023,
-    "State": "Virginia",
-    "County": "Botetourt"
+    code: 51023,
+    state: 'Virginia',
+    county: 'Botetourt',
   },
   {
-    "FIPS": 51025,
-    "State": "Virginia",
-    "County": "Brunswick"
+    code: 51025,
+    state: 'Virginia',
+    county: 'Brunswick',
   },
   {
-    "FIPS": 51027,
-    "State": "Virginia",
-    "County": "Buchanan"
+    code: 51027,
+    state: 'Virginia',
+    county: 'Buchanan',
   },
   {
-    "FIPS": 51029,
-    "State": "Virginia",
-    "County": "Buckingham"
+    code: 51029,
+    state: 'Virginia',
+    county: 'Buckingham',
   },
   {
-    "FIPS": 51031,
-    "State": "Virginia",
-    "County": "Campbell"
+    code: 51031,
+    state: 'Virginia',
+    county: 'Campbell',
   },
   {
-    "FIPS": 51033,
-    "State": "Virginia",
-    "County": "Caroline"
+    code: 51033,
+    state: 'Virginia',
+    county: 'Caroline',
   },
   {
-    "FIPS": 51035,
-    "State": "Virginia",
-    "County": "Carroll"
+    code: 51035,
+    state: 'Virginia',
+    county: 'Carroll',
   },
   {
-    "FIPS": 51036,
-    "State": "Virginia",
-    "County": "Charles city"
+    code: 51036,
+    state: 'Virginia',
+    county: 'Charles city',
   },
   {
-    "FIPS": 51037,
-    "State": "Virginia",
-    "County": "Charlotte"
+    code: 51037,
+    state: 'Virginia',
+    county: 'Charlotte',
   },
   {
-    "FIPS": 51041,
-    "State": "Virginia",
-    "County": "Chesterfield"
+    code: 51041,
+    state: 'Virginia',
+    county: 'Chesterfield',
   },
   {
-    "FIPS": 51043,
-    "State": "Virginia",
-    "County": "Clarke"
+    code: 51043,
+    state: 'Virginia',
+    county: 'Clarke',
   },
   {
-    "FIPS": 51045,
-    "State": "Virginia",
-    "County": "Craig"
+    code: 51045,
+    state: 'Virginia',
+    county: 'Craig',
   },
   {
-    "FIPS": 51047,
-    "State": "Virginia",
-    "County": "Culpeper"
+    code: 51047,
+    state: 'Virginia',
+    county: 'Culpeper',
   },
   {
-    "FIPS": 51049,
-    "State": "Virginia",
-    "County": "Cumberland"
+    code: 51049,
+    state: 'Virginia',
+    county: 'Cumberland',
   },
   {
-    "FIPS": 51051,
-    "State": "Virginia",
-    "County": "Dickenson"
+    code: 51051,
+    state: 'Virginia',
+    county: 'Dickenson',
   },
   {
-    "FIPS": 51053,
-    "State": "Virginia",
-    "County": "Dinwiddie"
+    code: 51053,
+    state: 'Virginia',
+    county: 'Dinwiddie',
   },
   {
-    "FIPS": 51057,
-    "State": "Virginia",
-    "County": "Essex"
+    code: 51057,
+    state: 'Virginia',
+    county: 'Essex',
   },
   {
-    "FIPS": 51059,
-    "State": "Virginia",
-    "County": "Fairfax"
+    code: 51059,
+    state: 'Virginia',
+    county: 'Fairfax',
   },
   {
-    "FIPS": 51061,
-    "State": "Virginia",
-    "County": "Fauquier"
+    code: 51061,
+    state: 'Virginia',
+    county: 'Fauquier',
   },
   {
-    "FIPS": 51063,
-    "State": "Virginia",
-    "County": "Floyd"
+    code: 51063,
+    state: 'Virginia',
+    county: 'Floyd',
   },
   {
-    "FIPS": 51065,
-    "State": "Virginia",
-    "County": "Fluvanna"
+    code: 51065,
+    state: 'Virginia',
+    county: 'Fluvanna',
   },
   {
-    "FIPS": 51067,
-    "State": "Virginia",
-    "County": "Franklin"
+    code: 51067,
+    state: 'Virginia',
+    county: 'Franklin',
   },
   {
-    "FIPS": 51069,
-    "State": "Virginia",
-    "County": "Frederick"
+    code: 51069,
+    state: 'Virginia',
+    county: 'Frederick',
   },
   {
-    "FIPS": 51071,
-    "State": "Virginia",
-    "County": "Giles"
+    code: 51071,
+    state: 'Virginia',
+    county: 'Giles',
   },
   {
-    "FIPS": 51073,
-    "State": "Virginia",
-    "County": "Gloucester"
+    code: 51073,
+    state: 'Virginia',
+    county: 'Gloucester',
   },
   {
-    "FIPS": 51075,
-    "State": "Virginia",
-    "County": "Goochland"
+    code: 51075,
+    state: 'Virginia',
+    county: 'Goochland',
   },
   {
-    "FIPS": 51077,
-    "State": "Virginia",
-    "County": "Grayson"
+    code: 51077,
+    state: 'Virginia',
+    county: 'Grayson',
   },
   {
-    "FIPS": 51079,
-    "State": "Virginia",
-    "County": "Greene"
+    code: 51079,
+    state: 'Virginia',
+    county: 'Greene',
   },
   {
-    "FIPS": 51081,
-    "State": "Virginia",
-    "County": "Greensville"
+    code: 51081,
+    state: 'Virginia',
+    county: 'Greensville',
   },
   {
-    "FIPS": 51083,
-    "State": "Virginia",
-    "County": "Halifax"
+    code: 51083,
+    state: 'Virginia',
+    county: 'Halifax',
   },
   {
-    "FIPS": 51085,
-    "State": "Virginia",
-    "County": "Hanover"
+    code: 51085,
+    state: 'Virginia',
+    county: 'Hanover',
   },
   {
-    "FIPS": 51087,
-    "State": "Virginia",
-    "County": "Henrico"
+    code: 51087,
+    state: 'Virginia',
+    county: 'Henrico',
   },
   {
-    "FIPS": 51089,
-    "State": "Virginia",
-    "County": "Henry"
+    code: 51089,
+    state: 'Virginia',
+    county: 'Henry',
   },
   {
-    "FIPS": 51091,
-    "State": "Virginia",
-    "County": "Highland"
+    code: 51091,
+    state: 'Virginia',
+    county: 'Highland',
   },
   {
-    "FIPS": 51093,
-    "State": "Virginia",
-    "County": "Isle of Wight"
+    code: 51093,
+    state: 'Virginia',
+    county: 'Isle of Wight',
   },
   {
-    "FIPS": 51095,
-    "State": "Virginia",
-    "County": "James city"
+    code: 51095,
+    state: 'Virginia',
+    county: 'James city',
   },
   {
-    "FIPS": 51097,
-    "State": "Virginia",
-    "County": "King and Queen"
+    code: 51097,
+    state: 'Virginia',
+    county: 'King and Queen',
   },
   {
-    "FIPS": 51099,
-    "State": "Virginia",
-    "County": "King George"
+    code: 51099,
+    state: 'Virginia',
+    county: 'King George',
   },
   {
-    "FIPS": 51101,
-    "State": "Virginia",
-    "County": "King William"
+    code: 51101,
+    state: 'Virginia',
+    county: 'King William',
   },
   {
-    "FIPS": 51103,
-    "State": "Virginia",
-    "County": "Lancaster"
+    code: 51103,
+    state: 'Virginia',
+    county: 'Lancaster',
   },
   {
-    "FIPS": 51105,
-    "State": "Virginia",
-    "County": "Lee"
+    code: 51105,
+    state: 'Virginia',
+    county: 'Lee',
   },
   {
-    "FIPS": 51107,
-    "State": "Virginia",
-    "County": "Loudoun"
+    code: 51107,
+    state: 'Virginia',
+    county: 'Loudoun',
   },
   {
-    "FIPS": 51109,
-    "State": "Virginia",
-    "County": "Louisa"
+    code: 51109,
+    state: 'Virginia',
+    county: 'Louisa',
   },
   {
-    "FIPS": 51111,
-    "State": "Virginia",
-    "County": "Lunenburg"
+    code: 51111,
+    state: 'Virginia',
+    county: 'Lunenburg',
   },
   {
-    "FIPS": 51113,
-    "State": "Virginia",
-    "County": "Madison"
+    code: 51113,
+    state: 'Virginia',
+    county: 'Madison',
   },
   {
-    "FIPS": 51115,
-    "State": "Virginia",
-    "County": "Mathews"
+    code: 51115,
+    state: 'Virginia',
+    county: 'Mathews',
   },
   {
-    "FIPS": 51117,
-    "State": "Virginia",
-    "County": "Mecklenburg"
+    code: 51117,
+    state: 'Virginia',
+    county: 'Mecklenburg',
   },
   {
-    "FIPS": 51119,
-    "State": "Virginia",
-    "County": "Middlesex"
+    code: 51119,
+    state: 'Virginia',
+    county: 'Middlesex',
   },
   {
-    "FIPS": 51121,
-    "State": "Virginia",
-    "County": "Montgomery"
+    code: 51121,
+    state: 'Virginia',
+    county: 'Montgomery',
   },
   {
-    "FIPS": 51125,
-    "State": "Virginia",
-    "County": "Nelson"
+    code: 51125,
+    state: 'Virginia',
+    county: 'Nelson',
   },
   {
-    "FIPS": 51127,
-    "State": "Virginia",
-    "County": "New Kent"
+    code: 51127,
+    state: 'Virginia',
+    county: 'New Kent',
   },
   {
-    "FIPS": 51131,
-    "State": "Virginia",
-    "County": "Northampton"
+    code: 51131,
+    state: 'Virginia',
+    county: 'Northampton',
   },
   {
-    "FIPS": 51133,
-    "State": "Virginia",
-    "County": "Northumberland"
+    code: 51133,
+    state: 'Virginia',
+    county: 'Northumberland',
   },
   {
-    "FIPS": 51135,
-    "State": "Virginia",
-    "County": "Nottoway"
+    code: 51135,
+    state: 'Virginia',
+    county: 'Nottoway',
   },
   {
-    "FIPS": 51137,
-    "State": "Virginia",
-    "County": "Orange"
+    code: 51137,
+    state: 'Virginia',
+    county: 'Orange',
   },
   {
-    "FIPS": 51139,
-    "State": "Virginia",
-    "County": "Page"
+    code: 51139,
+    state: 'Virginia',
+    county: 'Page',
   },
   {
-    "FIPS": 51141,
-    "State": "Virginia",
-    "County": "Patrick"
+    code: 51141,
+    state: 'Virginia',
+    county: 'Patrick',
   },
   {
-    "FIPS": 51143,
-    "State": "Virginia",
-    "County": "Pittsylvania"
+    code: 51143,
+    state: 'Virginia',
+    county: 'Pittsylvania',
   },
   {
-    "FIPS": 51145,
-    "State": "Virginia",
-    "County": "Powhatan"
+    code: 51145,
+    state: 'Virginia',
+    county: 'Powhatan',
   },
   {
-    "FIPS": 51147,
-    "State": "Virginia",
-    "County": "Prince Edward"
+    code: 51147,
+    state: 'Virginia',
+    county: 'Prince Edward',
   },
   {
-    "FIPS": 51149,
-    "State": "Virginia",
-    "County": "Prince George"
+    code: 51149,
+    state: 'Virginia',
+    county: 'Prince George',
   },
   {
-    "FIPS": 51153,
-    "State": "Virginia",
-    "County": "Prince William"
+    code: 51153,
+    state: 'Virginia',
+    county: 'Prince William',
   },
   {
-    "FIPS": 51155,
-    "State": "Virginia",
-    "County": "Pulaski"
+    code: 51155,
+    state: 'Virginia',
+    county: 'Pulaski',
   },
   {
-    "FIPS": 51157,
-    "State": "Virginia",
-    "County": "Rappahannock"
+    code: 51157,
+    state: 'Virginia',
+    county: 'Rappahannock',
   },
   {
-    "FIPS": 51159,
-    "State": "Virginia",
-    "County": "Richmond"
+    code: 51159,
+    state: 'Virginia',
+    county: 'Richmond',
   },
   {
-    "FIPS": 51161,
-    "State": "Virginia",
-    "County": "Roanoke"
+    code: 51161,
+    state: 'Virginia',
+    county: 'Roanoke',
   },
   {
-    "FIPS": 51163,
-    "State": "Virginia",
-    "County": "Rockbridge"
+    code: 51163,
+    state: 'Virginia',
+    county: 'Rockbridge',
   },
   {
-    "FIPS": 51165,
-    "State": "Virginia",
-    "County": "Rockingham"
+    code: 51165,
+    state: 'Virginia',
+    county: 'Rockingham',
   },
   {
-    "FIPS": 51167,
-    "State": "Virginia",
-    "County": "Russell"
+    code: 51167,
+    state: 'Virginia',
+    county: 'Russell',
   },
   {
-    "FIPS": 51169,
-    "State": "Virginia",
-    "County": "Scott"
+    code: 51169,
+    state: 'Virginia',
+    county: 'Scott',
   },
   {
-    "FIPS": 51171,
-    "State": "Virginia",
-    "County": "Shenandoah"
+    code: 51171,
+    state: 'Virginia',
+    county: 'Shenandoah',
   },
   {
-    "FIPS": 51173,
-    "State": "Virginia",
-    "County": "Smyth"
+    code: 51173,
+    state: 'Virginia',
+    county: 'Smyth',
   },
   {
-    "FIPS": 51175,
-    "State": "Virginia",
-    "County": "Southampton"
+    code: 51175,
+    state: 'Virginia',
+    county: 'Southampton',
   },
   {
-    "FIPS": 51177,
-    "State": "Virginia",
-    "County": "Spotsylvania"
+    code: 51177,
+    state: 'Virginia',
+    county: 'Spotsylvania',
   },
   {
-    "FIPS": 51179,
-    "State": "Virginia",
-    "County": "Stafford"
+    code: 51179,
+    state: 'Virginia',
+    county: 'Stafford',
   },
   {
-    "FIPS": 51181,
-    "State": "Virginia",
-    "County": "Surry"
+    code: 51181,
+    state: 'Virginia',
+    county: 'Surry',
   },
   {
-    "FIPS": 51183,
-    "State": "Virginia",
-    "County": "Sussex"
+    code: 51183,
+    state: 'Virginia',
+    county: 'Sussex',
   },
   {
-    "FIPS": 51185,
-    "State": "Virginia",
-    "County": "Tazewell"
+    code: 51185,
+    state: 'Virginia',
+    county: 'Tazewell',
   },
   {
-    "FIPS": 51187,
-    "State": "Virginia",
-    "County": "Warren"
+    code: 51187,
+    state: 'Virginia',
+    county: 'Warren',
   },
   {
-    "FIPS": 51191,
-    "State": "Virginia",
-    "County": "Washington"
+    code: 51191,
+    state: 'Virginia',
+    county: 'Washington',
   },
   {
-    "FIPS": 51193,
-    "State": "Virginia",
-    "County": "Westmoreland"
+    code: 51193,
+    state: 'Virginia',
+    county: 'Westmoreland',
   },
   {
-    "FIPS": 51195,
-    "State": "Virginia",
-    "County": "Wise"
+    code: 51195,
+    state: 'Virginia',
+    county: 'Wise',
   },
   {
-    "FIPS": 51197,
-    "State": "Virginia",
-    "County": "Wythe"
+    code: 51197,
+    state: 'Virginia',
+    county: 'Wythe',
   },
   {
-    "FIPS": 51199,
-    "State": "Virginia",
-    "County": "York"
+    code: 51199,
+    state: 'Virginia',
+    county: 'York',
   },
   {
-    "FIPS": 51510,
-    "State": "Virginia",
-    "County": "Alexandria city"
+    code: 51510,
+    state: 'Virginia',
+    county: 'Alexandria city',
   },
   {
-    "FIPS": 51515,
-    "State": "Virginia",
-    "County": "Bedford city"
+    code: 51515,
+    state: 'Virginia',
+    county: 'Bedford city',
   },
   {
-    "FIPS": 51520,
-    "State": "Virginia",
-    "County": "Bristol city"
+    code: 51520,
+    state: 'Virginia',
+    county: 'Bristol city',
   },
   {
-    "FIPS": 51530,
-    "State": "Virginia",
-    "County": "Buena Vista city"
+    code: 51530,
+    state: 'Virginia',
+    county: 'Buena Vista city',
   },
   {
-    "FIPS": 51540,
-    "State": "Virginia",
-    "County": "Charlottesville city"
+    code: 51540,
+    state: 'Virginia',
+    county: 'Charlottesville city',
   },
   {
-    "FIPS": 51550,
-    "State": "Virginia",
-    "County": "Chesapeake city"
+    code: 51550,
+    state: 'Virginia',
+    county: 'Chesapeake city',
   },
   {
-    "FIPS": 51570,
-    "State": "Virginia",
-    "County": "Colonial Heights city"
+    code: 51570,
+    state: 'Virginia',
+    county: 'Colonial Heights city',
   },
   {
-    "FIPS": 51580,
-    "State": "Virginia",
-    "County": "Covington city"
+    code: 51580,
+    state: 'Virginia',
+    county: 'Covington city',
   },
   {
-    "FIPS": 51590,
-    "State": "Virginia",
-    "County": "Danville city"
+    code: 51590,
+    state: 'Virginia',
+    county: 'Danville city',
   },
   {
-    "FIPS": 51595,
-    "State": "Virginia",
-    "County": "Emporia city"
+    code: 51595,
+    state: 'Virginia',
+    county: 'Emporia city',
   },
   {
-    "FIPS": 51600,
-    "State": "Virginia",
-    "County": "Fairfax city"
+    code: 51600,
+    state: 'Virginia',
+    county: 'Fairfax city',
   },
   {
-    "FIPS": 51610,
-    "State": "Virginia",
-    "County": "Falls Church city"
+    code: 51610,
+    state: 'Virginia',
+    county: 'Falls Church city',
   },
   {
-    "FIPS": 51620,
-    "State": "Virginia",
-    "County": "Franklin city"
+    code: 51620,
+    state: 'Virginia',
+    county: 'Franklin city',
   },
   {
-    "FIPS": 51630,
-    "State": "Virginia",
-    "County": "Fredericksburg city"
+    code: 51630,
+    state: 'Virginia',
+    county: 'Fredericksburg city',
   },
   {
-    "FIPS": 51640,
-    "State": "Virginia",
-    "County": "Galax city"
+    code: 51640,
+    state: 'Virginia',
+    county: 'Galax city',
   },
   {
-    "FIPS": 51650,
-    "State": "Virginia",
-    "County": "Hampton city"
+    code: 51650,
+    state: 'Virginia',
+    county: 'Hampton city',
   },
   {
-    "FIPS": 51660,
-    "State": "Virginia",
-    "County": "Harrisonburg city"
+    code: 51660,
+    state: 'Virginia',
+    county: 'Harrisonburg city',
   },
   {
-    "FIPS": 51670,
-    "State": "Virginia",
-    "County": "Hopewell city"
+    code: 51670,
+    state: 'Virginia',
+    county: 'Hopewell city',
   },
   {
-    "FIPS": 51678,
-    "State": "Virginia",
-    "County": "Lexington city"
+    code: 51678,
+    state: 'Virginia',
+    county: 'Lexington city',
   },
   {
-    "FIPS": 51680,
-    "State": "Virginia",
-    "County": "Lynchburg city"
+    code: 51680,
+    state: 'Virginia',
+    county: 'Lynchburg city',
   },
   {
-    "FIPS": 51683,
-    "State": "Virginia",
-    "County": "Manassas city"
+    code: 51683,
+    state: 'Virginia',
+    county: 'Manassas city',
   },
   {
-    "FIPS": 51685,
-    "State": "Virginia",
-    "County": "Manassas Park city"
+    code: 51685,
+    state: 'Virginia',
+    county: 'Manassas Park city',
   },
   {
-    "FIPS": 51690,
-    "State": "Virginia",
-    "County": "Martinsville city"
+    code: 51690,
+    state: 'Virginia',
+    county: 'Martinsville city',
   },
   {
-    "FIPS": 51700,
-    "State": "Virginia",
-    "County": "Newport News city"
+    code: 51700,
+    state: 'Virginia',
+    county: 'Newport News city',
   },
   {
-    "FIPS": 51710,
-    "State": "Virginia",
-    "County": "Norfolk city"
+    code: 51710,
+    state: 'Virginia',
+    county: 'Norfolk city',
   },
   {
-    "FIPS": 51720,
-    "State": "Virginia",
-    "County": "Norton city"
+    code: 51720,
+    state: 'Virginia',
+    county: 'Norton city',
   },
   {
-    "FIPS": 51730,
-    "State": "Virginia",
-    "County": "Petersburg city"
+    code: 51730,
+    state: 'Virginia',
+    county: 'Petersburg city',
   },
   {
-    "FIPS": 51735,
-    "State": "Virginia",
-    "County": "Poquoson city"
+    code: 51735,
+    state: 'Virginia',
+    county: 'Poquoson city',
   },
   {
-    "FIPS": 51740,
-    "State": "Virginia",
-    "County": "Portsmouth city"
+    code: 51740,
+    state: 'Virginia',
+    county: 'Portsmouth city',
   },
   {
-    "FIPS": 51750,
-    "State": "Virginia",
-    "County": "Radford city"
+    code: 51750,
+    state: 'Virginia',
+    county: 'Radford city',
   },
   {
-    "FIPS": 51760,
-    "State": "Virginia",
-    "County": "Richmond city"
+    code: 51760,
+    state: 'Virginia',
+    county: 'Richmond city',
   },
   {
-    "FIPS": 51770,
-    "State": "Virginia",
-    "County": "Roanoke city"
+    code: 51770,
+    state: 'Virginia',
+    county: 'Roanoke city',
   },
   {
-    "FIPS": 51775,
-    "State": "Virginia",
-    "County": "Salem city"
+    code: 51775,
+    state: 'Virginia',
+    county: 'Salem city',
   },
   {
-    "FIPS": 51790,
-    "State": "Virginia",
-    "County": "Staunton city"
+    code: 51790,
+    state: 'Virginia',
+    county: 'Staunton city',
   },
   {
-    "FIPS": 51800,
-    "State": "Virginia",
-    "County": "Suffolk city"
+    code: 51800,
+    state: 'Virginia',
+    county: 'Suffolk city',
   },
   {
-    "FIPS": 51810,
-    "State": "Virginia",
-    "County": "Virginia Beach city"
+    code: 51810,
+    state: 'Virginia',
+    county: 'Virginia Beach city',
   },
   {
-    "FIPS": 51820,
-    "State": "Virginia",
-    "County": "Waynesboro city"
+    code: 51820,
+    state: 'Virginia',
+    county: 'Waynesboro city',
   },
   {
-    "FIPS": 51830,
-    "State": "Virginia",
-    "County": "Williamsburg city"
+    code: 51830,
+    state: 'Virginia',
+    county: 'Williamsburg city',
   },
   {
-    "FIPS": 51840,
-    "State": "Virginia",
-    "County": "Winchester city"
+    code: 51840,
+    state: 'Virginia',
+    county: 'Winchester city',
   },
   {
-    "FIPS": 53001,
-    "State": "Washington",
-    "County": "Adams"
+    code: 53001,
+    state: 'Washington',
+    county: 'Adams',
   },
   {
-    "FIPS": 53003,
-    "State": "Washington",
-    "County": "Asotin"
+    code: 53003,
+    state: 'Washington',
+    county: 'Asotin',
   },
   {
-    "FIPS": 53005,
-    "State": "Washington",
-    "County": "Benton"
+    code: 53005,
+    state: 'Washington',
+    county: 'Benton',
   },
   {
-    "FIPS": 53007,
-    "State": "Washington",
-    "County": "Chelan"
+    code: 53007,
+    state: 'Washington',
+    county: 'Chelan',
   },
   {
-    "FIPS": 53009,
-    "State": "Washington",
-    "County": "Clallam"
+    code: 53009,
+    state: 'Washington',
+    county: 'Clallam',
   },
   {
-    "FIPS": 53011,
-    "State": "Washington",
-    "County": "Clark"
+    code: 53011,
+    state: 'Washington',
+    county: 'Clark',
   },
   {
-    "FIPS": 53013,
-    "State": "Washington",
-    "County": "Columbia"
+    code: 53013,
+    state: 'Washington',
+    county: 'Columbia',
   },
   {
-    "FIPS": 53015,
-    "State": "Washington",
-    "County": "Cowlitz"
+    code: 53015,
+    state: 'Washington',
+    county: 'Cowlitz',
   },
   {
-    "FIPS": 53017,
-    "State": "Washington",
-    "County": "Douglas"
+    code: 53017,
+    state: 'Washington',
+    county: 'Douglas',
   },
   {
-    "FIPS": 53019,
-    "State": "Washington",
-    "County": "Ferry"
+    code: 53019,
+    state: 'Washington',
+    county: 'Ferry',
   },
   {
-    "FIPS": 53021,
-    "State": "Washington",
-    "County": "Franklin"
+    code: 53021,
+    state: 'Washington',
+    county: 'Franklin',
   },
   {
-    "FIPS": 53023,
-    "State": "Washington",
-    "County": "Garfield"
+    code: 53023,
+    state: 'Washington',
+    county: 'Garfield',
   },
   {
-    "FIPS": 53025,
-    "State": "Washington",
-    "County": "Grant"
+    code: 53025,
+    state: 'Washington',
+    county: 'Grant',
   },
   {
-    "FIPS": 53027,
-    "State": "Washington",
-    "County": "Grays Harbor"
+    code: 53027,
+    state: 'Washington',
+    county: 'Grays Harbor',
   },
   {
-    "FIPS": 53029,
-    "State": "Washington",
-    "County": "Island"
+    code: 53029,
+    state: 'Washington',
+    county: 'Island',
   },
   {
-    "FIPS": 53031,
-    "State": "Washington",
-    "County": "Jefferson"
+    code: 53031,
+    state: 'Washington',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 53033,
-    "State": "Washington",
-    "County": "King"
+    code: 53033,
+    state: 'Washington',
+    county: 'King',
   },
   {
-    "FIPS": 53035,
-    "State": "Washington",
-    "County": "Kitsap"
+    code: 53035,
+    state: 'Washington',
+    county: 'Kitsap',
   },
   {
-    "FIPS": 53037,
-    "State": "Washington",
-    "County": "Kittitas"
+    code: 53037,
+    state: 'Washington',
+    county: 'Kittitas',
   },
   {
-    "FIPS": 53039,
-    "State": "Washington",
-    "County": "Klickitat"
+    code: 53039,
+    state: 'Washington',
+    county: 'Klickitat',
   },
   {
-    "FIPS": 53041,
-    "State": "Washington",
-    "County": "Lewis"
+    code: 53041,
+    state: 'Washington',
+    county: 'Lewis',
   },
   {
-    "FIPS": 53043,
-    "State": "Washington",
-    "County": "Lincoln"
+    code: 53043,
+    state: 'Washington',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 53045,
-    "State": "Washington",
-    "County": "Mason"
+    code: 53045,
+    state: 'Washington',
+    county: 'Mason',
   },
   {
-    "FIPS": 53047,
-    "State": "Washington",
-    "County": "Okanogan"
+    code: 53047,
+    state: 'Washington',
+    county: 'Okanogan',
   },
   {
-    "FIPS": 53049,
-    "State": "Washington",
-    "County": "Pacific"
+    code: 53049,
+    state: 'Washington',
+    county: 'Pacific',
   },
   {
-    "FIPS": 53051,
-    "State": "Washington",
-    "County": "Pend Oreille"
+    code: 53051,
+    state: 'Washington',
+    county: 'Pend Oreille',
   },
   {
-    "FIPS": 53053,
-    "State": "Washington",
-    "County": "Pierce"
+    code: 53053,
+    state: 'Washington',
+    county: 'Pierce',
   },
   {
-    "FIPS": 53055,
-    "State": "Washington",
-    "County": "San Juan"
+    code: 53055,
+    state: 'Washington',
+    county: 'San Juan',
   },
   {
-    "FIPS": 53057,
-    "State": "Washington",
-    "County": "Skagit"
+    code: 53057,
+    state: 'Washington',
+    county: 'Skagit',
   },
   {
-    "FIPS": 53059,
-    "State": "Washington",
-    "County": "Skamania"
+    code: 53059,
+    state: 'Washington',
+    county: 'Skamania',
   },
   {
-    "FIPS": 53061,
-    "State": "Washington",
-    "County": "Snohomish"
+    code: 53061,
+    state: 'Washington',
+    county: 'Snohomish',
   },
   {
-    "FIPS": 53063,
-    "State": "Washington",
-    "County": "Spokane"
+    code: 53063,
+    state: 'Washington',
+    county: 'Spokane',
   },
   {
-    "FIPS": 53065,
-    "State": "Washington",
-    "County": "Stevens"
+    code: 53065,
+    state: 'Washington',
+    county: 'Stevens',
   },
   {
-    "FIPS": 53067,
-    "State": "Washington",
-    "County": "Thurston"
+    code: 53067,
+    state: 'Washington',
+    county: 'Thurston',
   },
   {
-    "FIPS": 53069,
-    "State": "Washington",
-    "County": "Wahkiakum"
+    code: 53069,
+    state: 'Washington',
+    county: 'Wahkiakum',
   },
   {
-    "FIPS": 53071,
-    "State": "Washington",
-    "County": "Walla Walla"
+    code: 53071,
+    state: 'Washington',
+    county: 'Walla Walla',
   },
   {
-    "FIPS": 53073,
-    "State": "Washington",
-    "County": "Whatcom"
+    code: 53073,
+    state: 'Washington',
+    county: 'Whatcom',
   },
   {
-    "FIPS": 53075,
-    "State": "Washington",
-    "County": "Whitman"
+    code: 53075,
+    state: 'Washington',
+    county: 'Whitman',
   },
   {
-    "FIPS": 53077,
-    "State": "Washington",
-    "County": "Yakima"
+    code: 53077,
+    state: 'Washington',
+    county: 'Yakima',
   },
   {
-    "FIPS": 54001,
-    "State": "West Virginia",
-    "County": "Barbour"
+    code: 54001,
+    state: 'West Virginia',
+    county: 'Barbour',
   },
   {
-    "FIPS": 54003,
-    "State": "West Virginia",
-    "County": "Berkeley"
+    code: 54003,
+    state: 'West Virginia',
+    county: 'Berkeley',
   },
   {
-    "FIPS": 54005,
-    "State": "West Virginia",
-    "County": "Boone"
+    code: 54005,
+    state: 'West Virginia',
+    county: 'Boone',
   },
   {
-    "FIPS": 54007,
-    "State": "West Virginia",
-    "County": "Braxton"
+    code: 54007,
+    state: 'West Virginia',
+    county: 'Braxton',
   },
   {
-    "FIPS": 54009,
-    "State": "West Virginia",
-    "County": "Brooke"
+    code: 54009,
+    state: 'West Virginia',
+    county: 'Brooke',
   },
   {
-    "FIPS": 54011,
-    "State": "West Virginia",
-    "County": "Cabell"
+    code: 54011,
+    state: 'West Virginia',
+    county: 'Cabell',
   },
   {
-    "FIPS": 54013,
-    "State": "West Virginia",
-    "County": "Calhoun"
+    code: 54013,
+    state: 'West Virginia',
+    county: 'Calhoun',
   },
   {
-    "FIPS": 54015,
-    "State": "West Virginia",
-    "County": "Clay"
+    code: 54015,
+    state: 'West Virginia',
+    county: 'Clay',
   },
   {
-    "FIPS": 54017,
-    "State": "West Virginia",
-    "County": "Doddridge"
+    code: 54017,
+    state: 'West Virginia',
+    county: 'Doddridge',
   },
   {
-    "FIPS": 54019,
-    "State": "West Virginia",
-    "County": "Fayette"
+    code: 54019,
+    state: 'West Virginia',
+    county: 'Fayette',
   },
   {
-    "FIPS": 54021,
-    "State": "West Virginia",
-    "County": "Gilmer"
+    code: 54021,
+    state: 'West Virginia',
+    county: 'Gilmer',
   },
   {
-    "FIPS": 54023,
-    "State": "West Virginia",
-    "County": "Grant"
+    code: 54023,
+    state: 'West Virginia',
+    county: 'Grant',
   },
   {
-    "FIPS": 54025,
-    "State": "West Virginia",
-    "County": "Greenbrier"
+    code: 54025,
+    state: 'West Virginia',
+    county: 'Greenbrier',
   },
   {
-    "FIPS": 54027,
-    "State": "West Virginia",
-    "County": "Hampshire"
+    code: 54027,
+    state: 'West Virginia',
+    county: 'Hampshire',
   },
   {
-    "FIPS": 54029,
-    "State": "West Virginia",
-    "County": "Hancock"
+    code: 54029,
+    state: 'West Virginia',
+    county: 'Hancock',
   },
   {
-    "FIPS": 54031,
-    "State": "West Virginia",
-    "County": "Hardy"
+    code: 54031,
+    state: 'West Virginia',
+    county: 'Hardy',
   },
   {
-    "FIPS": 54033,
-    "State": "West Virginia",
-    "County": "Harrison"
+    code: 54033,
+    state: 'West Virginia',
+    county: 'Harrison',
   },
   {
-    "FIPS": 54035,
-    "State": "West Virginia",
-    "County": "Jackson"
+    code: 54035,
+    state: 'West Virginia',
+    county: 'Jackson',
   },
   {
-    "FIPS": 54037,
-    "State": "West Virginia",
-    "County": "Jefferson"
+    code: 54037,
+    state: 'West Virginia',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 54039,
-    "State": "West Virginia",
-    "County": "Kanawha"
+    code: 54039,
+    state: 'West Virginia',
+    county: 'Kanawha',
   },
   {
-    "FIPS": 54041,
-    "State": "West Virginia",
-    "County": "Lewis"
+    code: 54041,
+    state: 'West Virginia',
+    county: 'Lewis',
   },
   {
-    "FIPS": 54043,
-    "State": "West Virginia",
-    "County": "Lincoln"
+    code: 54043,
+    state: 'West Virginia',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 54045,
-    "State": "West Virginia",
-    "County": "Logan"
+    code: 54045,
+    state: 'West Virginia',
+    county: 'Logan',
   },
   {
-    "FIPS": 54047,
-    "State": "West Virginia",
-    "County": "McDowell"
+    code: 54047,
+    state: 'West Virginia',
+    county: 'McDowell',
   },
   {
-    "FIPS": 54049,
-    "State": "West Virginia",
-    "County": "Marion"
+    code: 54049,
+    state: 'West Virginia',
+    county: 'Marion',
   },
   {
-    "FIPS": 54051,
-    "State": "West Virginia",
-    "County": "Marshall"
+    code: 54051,
+    state: 'West Virginia',
+    county: 'Marshall',
   },
   {
-    "FIPS": 54053,
-    "State": "West Virginia",
-    "County": "Mason"
+    code: 54053,
+    state: 'West Virginia',
+    county: 'Mason',
   },
   {
-    "FIPS": 54055,
-    "State": "West Virginia",
-    "County": "Mercer"
+    code: 54055,
+    state: 'West Virginia',
+    county: 'Mercer',
   },
   {
-    "FIPS": 54057,
-    "State": "West Virginia",
-    "County": "Mineral"
+    code: 54057,
+    state: 'West Virginia',
+    county: 'Mineral',
   },
   {
-    "FIPS": 54059,
-    "State": "West Virginia",
-    "County": "Mingo"
+    code: 54059,
+    state: 'West Virginia',
+    county: 'Mingo',
   },
   {
-    "FIPS": 54061,
-    "State": "West Virginia",
-    "County": "Monongalia"
+    code: 54061,
+    state: 'West Virginia',
+    county: 'Monongalia',
   },
   {
-    "FIPS": 54063,
-    "State": "West Virginia",
-    "County": "Monroe"
+    code: 54063,
+    state: 'West Virginia',
+    county: 'Monroe',
   },
   {
-    "FIPS": 54065,
-    "State": "West Virginia",
-    "County": "Morgan"
+    code: 54065,
+    state: 'West Virginia',
+    county: 'Morgan',
   },
   {
-    "FIPS": 54067,
-    "State": "West Virginia",
-    "County": "Nicholas"
+    code: 54067,
+    state: 'West Virginia',
+    county: 'Nicholas',
   },
   {
-    "FIPS": 54069,
-    "State": "West Virginia",
-    "County": "Ohio"
+    code: 54069,
+    state: 'West Virginia',
+    county: 'Ohio',
   },
   {
-    "FIPS": 54071,
-    "State": "West Virginia",
-    "County": "Pendleton"
+    code: 54071,
+    state: 'West Virginia',
+    county: 'Pendleton',
   },
   {
-    "FIPS": 54073,
-    "State": "West Virginia",
-    "County": "Pleasants"
+    code: 54073,
+    state: 'West Virginia',
+    county: 'Pleasants',
   },
   {
-    "FIPS": 54075,
-    "State": "West Virginia",
-    "County": "Pocahontas"
+    code: 54075,
+    state: 'West Virginia',
+    county: 'Pocahontas',
   },
   {
-    "FIPS": 54077,
-    "State": "West Virginia",
-    "County": "Preston"
+    code: 54077,
+    state: 'West Virginia',
+    county: 'Preston',
   },
   {
-    "FIPS": 54079,
-    "State": "West Virginia",
-    "County": "Putnam"
+    code: 54079,
+    state: 'West Virginia',
+    county: 'Putnam',
   },
   {
-    "FIPS": 54081,
-    "State": "West Virginia",
-    "County": "Raleigh"
+    code: 54081,
+    state: 'West Virginia',
+    county: 'Raleigh',
   },
   {
-    "FIPS": 54083,
-    "State": "West Virginia",
-    "County": "Randolph"
+    code: 54083,
+    state: 'West Virginia',
+    county: 'Randolph',
   },
   {
-    "FIPS": 54085,
-    "State": "West Virginia",
-    "County": "Ritchie"
+    code: 54085,
+    state: 'West Virginia',
+    county: 'Ritchie',
   },
   {
-    "FIPS": 54087,
-    "State": "West Virginia",
-    "County": "Roane"
+    code: 54087,
+    state: 'West Virginia',
+    county: 'Roane',
   },
   {
-    "FIPS": 54089,
-    "State": "West Virginia",
-    "County": "Summers"
+    code: 54089,
+    state: 'West Virginia',
+    county: 'Summers',
   },
   {
-    "FIPS": 54091,
-    "State": "West Virginia",
-    "County": "Taylor"
+    code: 54091,
+    state: 'West Virginia',
+    county: 'Taylor',
   },
   {
-    "FIPS": 54093,
-    "State": "West Virginia",
-    "County": "Tucker"
+    code: 54093,
+    state: 'West Virginia',
+    county: 'Tucker',
   },
   {
-    "FIPS": 54095,
-    "State": "West Virginia",
-    "County": "Tyler"
+    code: 54095,
+    state: 'West Virginia',
+    county: 'Tyler',
   },
   {
-    "FIPS": 54097,
-    "State": "West Virginia",
-    "County": "Upshur"
+    code: 54097,
+    state: 'West Virginia',
+    county: 'Upshur',
   },
   {
-    "FIPS": 54099,
-    "State": "West Virginia",
-    "County": "Wayne"
+    code: 54099,
+    state: 'West Virginia',
+    county: 'Wayne',
   },
   {
-    "FIPS": 54101,
-    "State": "West Virginia",
-    "County": "Webster"
+    code: 54101,
+    state: 'West Virginia',
+    county: 'Webster',
   },
   {
-    "FIPS": 54103,
-    "State": "West Virginia",
-    "County": "Wetzel"
+    code: 54103,
+    state: 'West Virginia',
+    county: 'Wetzel',
   },
   {
-    "FIPS": 54105,
-    "State": "West Virginia",
-    "County": "Wirt"
+    code: 54105,
+    state: 'West Virginia',
+    county: 'Wirt',
   },
   {
-    "FIPS": 54107,
-    "State": "West Virginia",
-    "County": "Wood"
+    code: 54107,
+    state: 'West Virginia',
+    county: 'Wood',
   },
   {
-    "FIPS": 54109,
-    "State": "West Virginia",
-    "County": "Wyoming"
+    code: 54109,
+    state: 'West Virginia',
+    county: 'Wyoming',
   },
   {
-    "FIPS": 55001,
-    "State": "Wisconsin",
-    "County": "Adams"
+    code: 55001,
+    state: 'Wisconsin',
+    county: 'Adams',
   },
   {
-    "FIPS": 55003,
-    "State": "Wisconsin",
-    "County": "Ashland"
+    code: 55003,
+    state: 'Wisconsin',
+    county: 'Ashland',
   },
   {
-    "FIPS": 55005,
-    "State": "Wisconsin",
-    "County": "Barron"
+    code: 55005,
+    state: 'Wisconsin',
+    county: 'Barron',
   },
   {
-    "FIPS": 55007,
-    "State": "Wisconsin",
-    "County": "Bayfield"
+    code: 55007,
+    state: 'Wisconsin',
+    county: 'Bayfield',
   },
   {
-    "FIPS": 55009,
-    "State": "Wisconsin",
-    "County": "Brown"
+    code: 55009,
+    state: 'Wisconsin',
+    county: 'Brown',
   },
   {
-    "FIPS": 55011,
-    "State": "Wisconsin",
-    "County": "Buffalo"
+    code: 55011,
+    state: 'Wisconsin',
+    county: 'Buffalo',
   },
   {
-    "FIPS": 55013,
-    "State": "Wisconsin",
-    "County": "Burnett"
+    code: 55013,
+    state: 'Wisconsin',
+    county: 'Burnett',
   },
   {
-    "FIPS": 55015,
-    "State": "Wisconsin",
-    "County": "Calumet"
+    code: 55015,
+    state: 'Wisconsin',
+    county: 'Calumet',
   },
   {
-    "FIPS": 55017,
-    "State": "Wisconsin",
-    "County": "Chippewa"
+    code: 55017,
+    state: 'Wisconsin',
+    county: 'Chippewa',
   },
   {
-    "FIPS": 55019,
-    "State": "Wisconsin",
-    "County": "Clark"
+    code: 55019,
+    state: 'Wisconsin',
+    county: 'Clark',
   },
   {
-    "FIPS": 55021,
-    "State": "Wisconsin",
-    "County": "Columbia"
+    code: 55021,
+    state: 'Wisconsin',
+    county: 'Columbia',
   },
   {
-    "FIPS": 55023,
-    "State": "Wisconsin",
-    "County": "Crawford"
+    code: 55023,
+    state: 'Wisconsin',
+    county: 'Crawford',
   },
   {
-    "FIPS": 55025,
-    "State": "Wisconsin",
-    "County": "Dane"
+    code: 55025,
+    state: 'Wisconsin',
+    county: 'Dane',
   },
   {
-    "FIPS": 55027,
-    "State": "Wisconsin",
-    "County": "Dodge"
+    code: 55027,
+    state: 'Wisconsin',
+    county: 'Dodge',
   },
   {
-    "FIPS": 55029,
-    "State": "Wisconsin",
-    "County": "Door"
+    code: 55029,
+    state: 'Wisconsin',
+    county: 'Door',
   },
   {
-    "FIPS": 55031,
-    "State": "Wisconsin",
-    "County": "Douglas"
+    code: 55031,
+    state: 'Wisconsin',
+    county: 'Douglas',
   },
   {
-    "FIPS": 55033,
-    "State": "Wisconsin",
-    "County": "Dunn"
+    code: 55033,
+    state: 'Wisconsin',
+    county: 'Dunn',
   },
   {
-    "FIPS": 55035,
-    "State": "Wisconsin",
-    "County": "Eau Claire"
+    code: 55035,
+    state: 'Wisconsin',
+    county: 'Eau Claire',
   },
   {
-    "FIPS": 55037,
-    "State": "Wisconsin",
-    "County": "Florence"
+    code: 55037,
+    state: 'Wisconsin',
+    county: 'Florence',
   },
   {
-    "FIPS": 55039,
-    "State": "Wisconsin",
-    "County": "Fond du Lac"
+    code: 55039,
+    state: 'Wisconsin',
+    county: 'Fond du Lac',
   },
   {
-    "FIPS": 55041,
-    "State": "Wisconsin",
-    "County": "Forest"
+    code: 55041,
+    state: 'Wisconsin',
+    county: 'Forest',
   },
   {
-    "FIPS": 55043,
-    "State": "Wisconsin",
-    "County": "Grant"
+    code: 55043,
+    state: 'Wisconsin',
+    county: 'Grant',
   },
   {
-    "FIPS": 55045,
-    "State": "Wisconsin",
-    "County": "Green"
+    code: 55045,
+    state: 'Wisconsin',
+    county: 'Green',
   },
   {
-    "FIPS": 55047,
-    "State": "Wisconsin",
-    "County": "Green Lake"
+    code: 55047,
+    state: 'Wisconsin',
+    county: 'Green Lake',
   },
   {
-    "FIPS": 55049,
-    "State": "Wisconsin",
-    "County": "Iowa"
+    code: 55049,
+    state: 'Wisconsin',
+    county: 'Iowa',
   },
   {
-    "FIPS": 55051,
-    "State": "Wisconsin",
-    "County": "Iron"
+    code: 55051,
+    state: 'Wisconsin',
+    county: 'Iron',
   },
   {
-    "FIPS": 55053,
-    "State": "Wisconsin",
-    "County": "Jackson"
+    code: 55053,
+    state: 'Wisconsin',
+    county: 'Jackson',
   },
   {
-    "FIPS": 55055,
-    "State": "Wisconsin",
-    "County": "Jefferson"
+    code: 55055,
+    state: 'Wisconsin',
+    county: 'Jefferson',
   },
   {
-    "FIPS": 55057,
-    "State": "Wisconsin",
-    "County": "Juneau"
+    code: 55057,
+    state: 'Wisconsin',
+    county: 'Juneau',
   },
   {
-    "FIPS": 55059,
-    "State": "Wisconsin",
-    "County": "Kenosha"
+    code: 55059,
+    state: 'Wisconsin',
+    county: 'Kenosha',
   },
   {
-    "FIPS": 55061,
-    "State": "Wisconsin",
-    "County": "Kewaunee"
+    code: 55061,
+    state: 'Wisconsin',
+    county: 'Kewaunee',
   },
   {
-    "FIPS": 55063,
-    "State": "Wisconsin",
-    "County": "La Crosse"
+    code: 55063,
+    state: 'Wisconsin',
+    county: 'La Crosse',
   },
   {
-    "FIPS": 55065,
-    "State": "Wisconsin",
-    "County": "Lafayette"
+    code: 55065,
+    state: 'Wisconsin',
+    county: 'Lafayette',
   },
   {
-    "FIPS": 55067,
-    "State": "Wisconsin",
-    "County": "Langlade"
+    code: 55067,
+    state: 'Wisconsin',
+    county: 'Langlade',
   },
   {
-    "FIPS": 55069,
-    "State": "Wisconsin",
-    "County": "Lincoln"
+    code: 55069,
+    state: 'Wisconsin',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 55071,
-    "State": "Wisconsin",
-    "County": "Manitowoc"
+    code: 55071,
+    state: 'Wisconsin',
+    county: 'Manitowoc',
   },
   {
-    "FIPS": 55073,
-    "State": "Wisconsin",
-    "County": "Marathon"
+    code: 55073,
+    state: 'Wisconsin',
+    county: 'Marathon',
   },
   {
-    "FIPS": 55075,
-    "State": "Wisconsin",
-    "County": "Marinette"
+    code: 55075,
+    state: 'Wisconsin',
+    county: 'Marinette',
   },
   {
-    "FIPS": 55077,
-    "State": "Wisconsin",
-    "County": "Marquette"
+    code: 55077,
+    state: 'Wisconsin',
+    county: 'Marquette',
   },
   {
-    "FIPS": 55078,
-    "State": "Wisconsin",
-    "County": "Menominee"
+    code: 55078,
+    state: 'Wisconsin',
+    county: 'Menominee',
   },
   {
-    "FIPS": 55079,
-    "State": "Wisconsin",
-    "County": "Milwaukee"
+    code: 55079,
+    state: 'Wisconsin',
+    county: 'Milwaukee',
   },
   {
-    "FIPS": 55081,
-    "State": "Wisconsin",
-    "County": "Monroe"
+    code: 55081,
+    state: 'Wisconsin',
+    county: 'Monroe',
   },
   {
-    "FIPS": 55083,
-    "State": "Wisconsin",
-    "County": "Oconto"
+    code: 55083,
+    state: 'Wisconsin',
+    county: 'Oconto',
   },
   {
-    "FIPS": 55085,
-    "State": "Wisconsin",
-    "County": "Oneida"
+    code: 55085,
+    state: 'Wisconsin',
+    county: 'Oneida',
   },
   {
-    "FIPS": 55087,
-    "State": "Wisconsin",
-    "County": "Outagamie"
+    code: 55087,
+    state: 'Wisconsin',
+    county: 'Outagamie',
   },
   {
-    "FIPS": 55089,
-    "State": "Wisconsin",
-    "County": "Ozaukee"
+    code: 55089,
+    state: 'Wisconsin',
+    county: 'Ozaukee',
   },
   {
-    "FIPS": 55091,
-    "State": "Wisconsin",
-    "County": "Pepin"
+    code: 55091,
+    state: 'Wisconsin',
+    county: 'Pepin',
   },
   {
-    "FIPS": 55093,
-    "State": "Wisconsin",
-    "County": "Pierce"
+    code: 55093,
+    state: 'Wisconsin',
+    county: 'Pierce',
   },
   {
-    "FIPS": 55095,
-    "State": "Wisconsin",
-    "County": "Polk"
+    code: 55095,
+    state: 'Wisconsin',
+    county: 'Polk',
   },
   {
-    "FIPS": 55097,
-    "State": "Wisconsin",
-    "County": "Portage"
+    code: 55097,
+    state: 'Wisconsin',
+    county: 'Portage',
   },
   {
-    "FIPS": 55099,
-    "State": "Wisconsin",
-    "County": "Price"
+    code: 55099,
+    state: 'Wisconsin',
+    county: 'Price',
   },
   {
-    "FIPS": 55101,
-    "State": "Wisconsin",
-    "County": "Racine"
+    code: 55101,
+    state: 'Wisconsin',
+    county: 'Racine',
   },
   {
-    "FIPS": 55103,
-    "State": "Wisconsin",
-    "County": "Richland"
+    code: 55103,
+    state: 'Wisconsin',
+    county: 'Richland',
   },
   {
-    "FIPS": 55105,
-    "State": "Wisconsin",
-    "County": "Rock"
+    code: 55105,
+    state: 'Wisconsin',
+    county: 'Rock',
   },
   {
-    "FIPS": 55107,
-    "State": "Wisconsin",
-    "County": "Rusk"
+    code: 55107,
+    state: 'Wisconsin',
+    county: 'Rusk',
   },
   {
-    "FIPS": 55109,
-    "State": "Wisconsin",
-    "County": "St. Croix"
+    code: 55109,
+    state: 'Wisconsin',
+    county: 'St. Croix',
   },
   {
-    "FIPS": 55111,
-    "State": "Wisconsin",
-    "County": "Sauk"
+    code: 55111,
+    state: 'Wisconsin',
+    county: 'Sauk',
   },
   {
-    "FIPS": 55113,
-    "State": "Wisconsin",
-    "County": "Sawyer"
+    code: 55113,
+    state: 'Wisconsin',
+    county: 'Sawyer',
   },
   {
-    "FIPS": 55115,
-    "State": "Wisconsin",
-    "County": "Shawano"
+    code: 55115,
+    state: 'Wisconsin',
+    county: 'Shawano',
   },
   {
-    "FIPS": 55117,
-    "State": "Wisconsin",
-    "County": "Sheboygan"
+    code: 55117,
+    state: 'Wisconsin',
+    county: 'Sheboygan',
   },
   {
-    "FIPS": 55119,
-    "State": "Wisconsin",
-    "County": "Taylor"
+    code: 55119,
+    state: 'Wisconsin',
+    county: 'Taylor',
   },
   {
-    "FIPS": 55121,
-    "State": "Wisconsin",
-    "County": "Trempealeau"
+    code: 55121,
+    state: 'Wisconsin',
+    county: 'Trempealeau',
   },
   {
-    "FIPS": 55123,
-    "State": "Wisconsin",
-    "County": "Vernon"
+    code: 55123,
+    state: 'Wisconsin',
+    county: 'Vernon',
   },
   {
-    "FIPS": 55125,
-    "State": "Wisconsin",
-    "County": "Vilas"
+    code: 55125,
+    state: 'Wisconsin',
+    county: 'Vilas',
   },
   {
-    "FIPS": 55127,
-    "State": "Wisconsin",
-    "County": "Walworth"
+    code: 55127,
+    state: 'Wisconsin',
+    county: 'Walworth',
   },
   {
-    "FIPS": 55129,
-    "State": "Wisconsin",
-    "County": "Washburn"
+    code: 55129,
+    state: 'Wisconsin',
+    county: 'Washburn',
   },
   {
-    "FIPS": 55131,
-    "State": "Wisconsin",
-    "County": "Washington"
+    code: 55131,
+    state: 'Wisconsin',
+    county: 'Washington',
   },
   {
-    "FIPS": 55133,
-    "State": "Wisconsin",
-    "County": "Waukesha"
+    code: 55133,
+    state: 'Wisconsin',
+    county: 'Waukesha',
   },
   {
-    "FIPS": 55135,
-    "State": "Wisconsin",
-    "County": "Waupaca"
+    code: 55135,
+    state: 'Wisconsin',
+    county: 'Waupaca',
   },
   {
-    "FIPS": 55137,
-    "State": "Wisconsin",
-    "County": "Waushara"
+    code: 55137,
+    state: 'Wisconsin',
+    county: 'Waushara',
   },
   {
-    "FIPS": 55139,
-    "State": "Wisconsin",
-    "County": "Winnebago"
+    code: 55139,
+    state: 'Wisconsin',
+    county: 'Winnebago',
   },
   {
-    "FIPS": 55141,
-    "State": "Wisconsin",
-    "County": "Wood"
+    code: 55141,
+    state: 'Wisconsin',
+    county: 'Wood',
   },
   {
-    "FIPS": 56001,
-    "State": "Wyoming",
-    "County": "Albany"
+    code: 56001,
+    state: 'Wyoming',
+    county: 'Albany',
   },
   {
-    "FIPS": 56003,
-    "State": "Wyoming",
-    "County": "Big Horn"
+    code: 56003,
+    state: 'Wyoming',
+    county: 'Big Horn',
   },
   {
-    "FIPS": 56005,
-    "State": "Wyoming",
-    "County": "Campbell"
+    code: 56005,
+    state: 'Wyoming',
+    county: 'Campbell',
   },
   {
-    "FIPS": 56007,
-    "State": "Wyoming",
-    "County": "Carbon"
+    code: 56007,
+    state: 'Wyoming',
+    county: 'Carbon',
   },
   {
-    "FIPS": 56009,
-    "State": "Wyoming",
-    "County": "Converse"
+    code: 56009,
+    state: 'Wyoming',
+    county: 'Converse',
   },
   {
-    "FIPS": 56011,
-    "State": "Wyoming",
-    "County": "Crook"
+    code: 56011,
+    state: 'Wyoming',
+    county: 'Crook',
   },
   {
-    "FIPS": 56013,
-    "State": "Wyoming",
-    "County": "Fremont"
+    code: 56013,
+    state: 'Wyoming',
+    county: 'Fremont',
   },
   {
-    "FIPS": 56015,
-    "State": "Wyoming",
-    "County": "Goshen"
+    code: 56015,
+    state: 'Wyoming',
+    county: 'Goshen',
   },
   {
-    "FIPS": 56017,
-    "State": "Wyoming",
-    "County": "Hot Springs"
+    code: 56017,
+    state: 'Wyoming',
+    county: 'Hot Springs',
   },
   {
-    "FIPS": 56019,
-    "State": "Wyoming",
-    "County": "Johnson"
+    code: 56019,
+    state: 'Wyoming',
+    county: 'Johnson',
   },
   {
-    "FIPS": 56021,
-    "State": "Wyoming",
-    "County": "Laramie"
+    code: 56021,
+    state: 'Wyoming',
+    county: 'Laramie',
   },
   {
-    "FIPS": 56023,
-    "State": "Wyoming",
-    "County": "Lincoln"
+    code: 56023,
+    state: 'Wyoming',
+    county: 'Lincoln',
   },
   {
-    "FIPS": 56025,
-    "State": "Wyoming",
-    "County": "Natrona"
+    code: 56025,
+    state: 'Wyoming',
+    county: 'Natrona',
   },
   {
-    "FIPS": 56027,
-    "State": "Wyoming",
-    "County": "Niobrara"
+    code: 56027,
+    state: 'Wyoming',
+    county: 'Niobrara',
   },
   {
-    "FIPS": 56029,
-    "State": "Wyoming",
-    "County": "Park"
+    code: 56029,
+    state: 'Wyoming',
+    county: 'Park',
   },
   {
-    "FIPS": 56031,
-    "State": "Wyoming",
-    "County": "Platte"
+    code: 56031,
+    state: 'Wyoming',
+    county: 'Platte',
   },
   {
-    "FIPS": 56033,
-    "State": "Wyoming",
-    "County": "Sheridan"
+    code: 56033,
+    state: 'Wyoming',
+    county: 'Sheridan',
   },
   {
-    "FIPS": 56035,
-    "State": "Wyoming",
-    "County": "Sublette"
+    code: 56035,
+    state: 'Wyoming',
+    county: 'Sublette',
   },
   {
-    "FIPS": 56037,
-    "State": "Wyoming",
-    "County": "Sweetwater"
+    code: 56037,
+    state: 'Wyoming',
+    county: 'Sweetwater',
   },
   {
-    "FIPS": 56039,
-    "State": "Wyoming",
-    "County": "Teton"
+    code: 56039,
+    state: 'Wyoming',
+    county: 'Teton',
   },
   {
-    "FIPS": 56041,
-    "State": "Wyoming",
-    "County": "Uinta"
+    code: 56041,
+    state: 'Wyoming',
+    county: 'Uinta',
   },
   {
-    "FIPS": 56043,
-    "State": "Wyoming",
-    "County": "Washakie"
+    code: 56043,
+    state: 'Wyoming',
+    county: 'Washakie',
   },
   {
-    "FIPS": 56045,
-    "State": "Wyoming",
-    "County": "Washakie"
-  }
+    code: 56045,
+    state: 'Wyoming',
+    county: 'Washakie',
+  },
 ];
 
 export default FipsCodes;
