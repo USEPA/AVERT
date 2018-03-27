@@ -13,7 +13,7 @@ import EEREChart from 'app/components/EEREChart/container.js';
 import DisplacementsTable from 'app/components/DisplacementsTable/container.js';
 import EmissionsTable from 'app/components/EmissionsTable/container.js';
 import EmissionsChart from 'app/components/EmissionsChart/container.js';
-import DataDownload from 'app/components/DataDownload';
+import DataDownload from 'app/components/DataDownload/container.js';
 // styles
 import './styles.css';
 
@@ -27,7 +27,6 @@ type Props = {
   loadingProgress: number,
   softValid: boolean,
   onClickOutsideModal: (number) => void,
-  onClickDataDownload: () => void,
 };
 
 const StepPanels = (props: Props) => {
@@ -178,10 +177,7 @@ const StepPanels = (props: Props) => {
             heading={`Monthly Emission Changes: ${props.region} Region`}
           />
 
-          <DataDownload
-            heading="Data Download"
-            onClick={() => props.onClickDataDownload()}
-          />
+          <DataDownload heading="Data Download" />
         </PanelBody>
 
         <PanelFooter

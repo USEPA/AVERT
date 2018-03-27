@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import StepPanels from './index.js';
 // actions
 import { toggleModalOverlay, resetActiveModal } from 'app/redux/panel';
-import { startDataDownload } from 'app/redux/dataDownload';
 
 const mapStateToProps = (state) => ({
   region: state.region.name,
@@ -18,9 +17,6 @@ const mapDispatchToProps = (dispatch) => ({
   onClickOutsideModal(activeModalId) {
     dispatch(resetActiveModal(activeModalId));
     dispatch(toggleModalOverlay());
-  },
-  onClickDataDownload() {
-    dispatch(startDataDownload());
   },
 });
 
