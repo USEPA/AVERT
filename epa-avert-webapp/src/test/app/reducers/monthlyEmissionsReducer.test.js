@@ -27,7 +27,8 @@ describe('monthlyEmissions', () => {
           co2: [],
           pm25: [],
         },
-        downloadableData: [],
+        downloadableCountyData: [],
+        downloadableCobraData: [],
       });
     });
 
