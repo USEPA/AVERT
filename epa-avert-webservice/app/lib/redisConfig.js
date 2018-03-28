@@ -11,7 +11,9 @@ let redis = {
 };
 
 // cloud foundry redis service settings
-if (!process.env.KOA_APP_DEV) redis = services['avert-redis'].credentials;
+if (process.env.KOA_APP_ENV !== 'local') {
+  redis = services['avert-redis'].credentials;
+}
 
 module.exports = {
   port: redis.port,
