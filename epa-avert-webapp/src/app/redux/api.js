@@ -3,9 +3,11 @@ export const SET_BASE_URL = 'api/SET_BASE_URL';
 
 // reducer
 const initialState = {
-  baseUrl: process.env.REACT_APP_DEV
+  baseUrl: process.env.REACT_APP_ENV === 'local'
     ? 'http://localhost:3001'
-    : 'https://avert.app.cloud.gov',
+    : process.env.REACT_APP_ENV === 'pcf'
+      ? 'https://avert-dev.cfapps.io'
+      : 'https://avert.app.cloud.gov',
   pollingFrequency: 10000,
 };
 

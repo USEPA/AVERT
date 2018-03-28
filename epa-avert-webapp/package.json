@@ -46,8 +46,8 @@
   },
   "scripts": {
     "precommit": "lint-staged",
-    "start": "react-scripts start",
-    "dev": "REACT_APP_DEV=true react-scripts start",
+    "start": "REACT_APP_ENV=local react-scripts start",
+    "build:pcf": "REACT_APP_ENV=pcf react-scripts build",
     "build": "react-scripts build && cat post-build-instructions.txt",
     "test": "react-scripts test --verbose",
     "coverage": "react-scripts test --coverage",
