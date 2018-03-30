@@ -1,12 +1,12 @@
 // @flow
 
-type Code = {
-  code: number,
+type County = {
+  code: string,
   state: string,
   county: string,
 };
 
-const FipsCodes: Array<Code> = [
+const FipsCodes: Array<County> = [
   {
     code: '01001',
     state: 'Alabama',
@@ -4305,7 +4305,7 @@ const FipsCodes: Array<Code> = [
   {
     code: '19141',
     state: 'Iowa',
-    county: 'O'Brien',
+    county: "O'Brien",
   },
   {
     code: '19143',
@@ -6050,17 +6050,17 @@ const FipsCodes: Array<Code> = [
   {
     code: '24033',
     state: 'Maryland',
-    county: 'Prince George's',
+    county: "Prince George's",
   },
   {
     code: '24035',
     state: 'Maryland',
-    county: 'Queen Anne's',
+    county: "Queen Anne's",
   },
   {
     code: '24037',
     state: 'Maryland',
-    county: 'St. Mary's',
+    county: "St. Mary's",
   },
   {
     code: '24039',
