@@ -152,9 +152,11 @@ export default function reducer(state = initialState, action) {
 
       // helper function to format cobra data rows
       const cobraRow = (state, county, action) => {
-        const fipsCode = FipsCodes.filter((item) => {
+        const fipsCounty = FipsCodes.filter((item) => {
           return item['state'] === States[state] && item['county'] === county;
-        })[0]['code'];
+        })[0];
+
+        const fipsCode = fipsCounty ? fipsCounty['code'] : '';
 
         const sum = (a, b) => a + b;
 
