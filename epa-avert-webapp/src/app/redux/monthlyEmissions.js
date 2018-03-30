@@ -176,14 +176,20 @@ export default function reducer(state = initialState, action) {
         const countyDisplay =
           county.indexOf('(City)') !== -1 ? county : `${county} County`;
 
+        const formatNumber = (number) =>
+          number.toLocaleString(undefined, {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 3,
+          });
+
         return {
           FIPS: fipsCode,
           STATE: States[state],
           COUNTY: countyDisplay,
           TIER1NAME: 'FUEL COMB. ELEC. UTIL.',
-          NOx_REDUCTIONS_TONS: noxData,
-          SO2_REDUCTIONS_TONS: so2Data,
-          PM25_REDUCTIONS_TONS: pm25Data,
+          NOx_REDUCTIONS_TONS: formatNumber(noxData),
+          SO2_REDUCTIONS_TONS: formatNumber(so2Data),
+          PM25_REDUCTIONS_TONS: formatNumber(pm25Data),
         };
       };
 
