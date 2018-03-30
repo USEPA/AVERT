@@ -1,5 +1,23 @@
 // @flow
 
+/*
+ * NOTE:
+ * This JS file was created from 'CountyFIPS' sheet of 'AVERT Main Module v2.0
+ * (20180201).xlsm file'. If changes are made to the sheet in Excel, this file
+ * needs to be updated, with special attention applied to:
+ *
+ * - code: Ensure they're strings and retain a leading zero (if applicable).
+ *
+ * - county: Ensure abbreviated county names are spelled out.
+ *           For example, 'Saint Louis' should be 'Saint Louis'.
+ *
+ *           Ensure cities are displayed with 'city' capitalized in parenthesis.
+ *           For example, 'Baltimore (City)' should be 'Baltimore (City)'.
+ *
+ *           Special formatting La Porte county, Indiana:
+ *           The web app displays this as 'LaPorte', so use that formatting.
+*/
+
 type County = {
   code: string,
   state: string,
@@ -295,7 +313,7 @@ const FipsCodes: Array<County> = [
   {
     code: '01115',
     state: 'Alabama',
-    county: 'St. Clair',
+    county: 'Saint Clair',
   },
   {
     code: '01117',
@@ -870,7 +888,7 @@ const FipsCodes: Array<County> = [
   {
     code: '05123',
     state: 'Arkansas',
-    county: 'St. Francis',
+    county: 'Saint Francis',
   },
   {
     code: '05125',
@@ -1880,12 +1898,12 @@ const FipsCodes: Array<County> = [
   {
     code: '12109',
     state: 'Florida',
-    county: 'St. Johns',
+    county: 'Saint Johns',
   },
   {
     code: '12111',
     state: 'Florida',
-    county: 'St. Lucie',
+    county: 'Saint Lucie',
   },
   {
     code: '12113',
@@ -3390,7 +3408,7 @@ const FipsCodes: Array<County> = [
   {
     code: '17163',
     state: 'Illinois',
-    county: 'St. Clair',
+    county: 'Saint Clair',
   },
   {
     code: '17165',
@@ -3720,7 +3738,7 @@ const FipsCodes: Array<County> = [
   {
     code: '18091',
     state: 'Indiana',
-    county: 'La Porte',
+    county: 'LaPorte',
   },
   {
     code: '18093',
@@ -3845,7 +3863,7 @@ const FipsCodes: Array<County> = [
   {
     code: '18141',
     state: 'Indiana',
-    county: 'St. Joseph',
+    county: 'Saint Joseph',
   },
   {
     code: '18143',
@@ -5790,47 +5808,47 @@ const FipsCodes: Array<County> = [
   {
     code: '22087',
     state: 'Louisiana',
-    county: 'St. Bernard',
+    county: 'Saint Bernard',
   },
   {
     code: '22089',
     state: 'Louisiana',
-    county: 'St. Charles',
+    county: 'Saint Charles',
   },
   {
     code: '22091',
     state: 'Louisiana',
-    county: 'St. Helena',
+    county: 'Saint Helena',
   },
   {
     code: '22093',
     state: 'Louisiana',
-    county: 'St. James',
+    county: 'Saint James',
   },
   {
     code: '22095',
     state: 'Louisiana',
-    county: 'St. John the Baptist',
+    county: 'Saint John the Baptist',
   },
   {
     code: '22097',
     state: 'Louisiana',
-    county: 'St. Landry',
+    county: 'Saint Landry',
   },
   {
     code: '22099',
     state: 'Louisiana',
-    county: 'St. Martin',
+    county: 'Saint Martin',
   },
   {
     code: '22101',
     state: 'Louisiana',
-    county: 'St. Mary',
+    county: 'Saint Mary',
   },
   {
     code: '22103',
     state: 'Louisiana',
-    county: 'St. Tammany',
+    county: 'Saint Tammany',
   },
   {
     code: '22105',
@@ -6060,7 +6078,7 @@ const FipsCodes: Array<County> = [
   {
     code: '24037',
     state: 'Maryland',
-    county: "St. Mary's",
+    county: "Saint Mary's",
   },
   {
     code: '24039',
@@ -6090,7 +6108,7 @@ const FipsCodes: Array<County> = [
   {
     code: '24510',
     state: 'Maryland',
-    county: 'Baltimore city',
+    county: 'Baltimore (City)',
   },
   {
     code: '25001',
@@ -6530,12 +6548,12 @@ const FipsCodes: Array<County> = [
   {
     code: '26147',
     state: 'Michigan',
-    county: 'St. Clair',
+    county: 'Saint Clair',
   },
   {
     code: '26149',
     state: 'Michigan',
-    county: 'St. Joseph',
+    county: 'Saint Joseph',
   },
   {
     code: '26151',
@@ -6920,7 +6938,7 @@ const FipsCodes: Array<County> = [
   {
     code: '27137',
     state: 'Minnesota',
-    county: 'St. Louis',
+    county: 'Saint Louis',
   },
   {
     code: '27139',
@@ -7880,12 +7898,12 @@ const FipsCodes: Array<County> = [
   {
     code: '29183',
     state: 'Missouri',
-    county: 'St. Charles',
+    county: 'Saint Charles',
   },
   {
     code: '29185',
     state: 'Missouri',
-    county: 'St. Clair',
+    county: 'Saint Clair',
   },
   {
     code: '29186',
@@ -7895,12 +7913,12 @@ const FipsCodes: Array<County> = [
   {
     code: '29187',
     state: 'Missouri',
-    county: 'St. Francois',
+    county: 'Saint Francois',
   },
   {
     code: '29189',
     state: 'Missouri',
-    county: 'St. Louis',
+    county: 'Saint Louis',
   },
   {
     code: '29195',
@@ -7995,7 +8013,7 @@ const FipsCodes: Array<County> = [
   {
     code: '29510',
     state: 'Missouri',
-    county: 'St. Louis city',
+    county: 'Saint Louis (City)',
   },
   {
     code: '30001',
@@ -8825,7 +8843,7 @@ const FipsCodes: Array<County> = [
   {
     code: '32510',
     state: 'Nevada',
-    county: 'Carson city',
+    county: 'Carson (City)',
   },
   {
     code: '33001',
@@ -9370,7 +9388,7 @@ const FipsCodes: Array<County> = [
   {
     code: '36089',
     state: 'New York',
-    county: 'St. Lawrence',
+    county: 'Saint Lawrence',
   },
   {
     code: '36091',
@@ -14200,7 +14218,7 @@ const FipsCodes: Array<County> = [
   {
     code: '51036',
     state: 'Virginia',
-    county: 'Charles city',
+    county: 'Charles (City)',
   },
   {
     code: '51037',
@@ -14340,7 +14358,7 @@ const FipsCodes: Array<County> = [
   {
     code: '51095',
     state: 'Virginia',
-    county: 'James city',
+    county: 'James (City)',
   },
   {
     code: '51097',
@@ -14585,197 +14603,197 @@ const FipsCodes: Array<County> = [
   {
     code: '51510',
     state: 'Virginia',
-    county: 'Alexandria city',
+    county: 'Alexandria (City)',
   },
   {
     code: '51515',
     state: 'Virginia',
-    county: 'Bedford city',
+    county: 'Bedford (City)',
   },
   {
     code: '51520',
     state: 'Virginia',
-    county: 'Bristol city',
+    county: 'Bristol (City)',
   },
   {
     code: '51530',
     state: 'Virginia',
-    county: 'Buena Vista city',
+    county: 'Buena Vista (City)',
   },
   {
     code: '51540',
     state: 'Virginia',
-    county: 'Charlottesville city',
+    county: 'Charlottesville (City)',
   },
   {
     code: '51550',
     state: 'Virginia',
-    county: 'Chesapeake city',
+    county: 'Chesapeake (City)',
   },
   {
     code: '51570',
     state: 'Virginia',
-    county: 'Colonial Heights city',
+    county: 'Colonial Heights (City)',
   },
   {
     code: '51580',
     state: 'Virginia',
-    county: 'Covington city',
+    county: 'Covington (City)',
   },
   {
     code: '51590',
     state: 'Virginia',
-    county: 'Danville city',
+    county: 'Danville (City)',
   },
   {
     code: '51595',
     state: 'Virginia',
-    county: 'Emporia city',
+    county: 'Emporia (City)',
   },
   {
     code: '51600',
     state: 'Virginia',
-    county: 'Fairfax city',
+    county: 'Fairfax (City)',
   },
   {
     code: '51610',
     state: 'Virginia',
-    county: 'Falls Church city',
+    county: 'Falls Church (City)',
   },
   {
     code: '51620',
     state: 'Virginia',
-    county: 'Franklin city',
+    county: 'Franklin (City)',
   },
   {
     code: '51630',
     state: 'Virginia',
-    county: 'Fredericksburg city',
+    county: 'Fredericksburg (City)',
   },
   {
     code: '51640',
     state: 'Virginia',
-    county: 'Galax city',
+    county: 'Galax (City)',
   },
   {
     code: '51650',
     state: 'Virginia',
-    county: 'Hampton city',
+    county: 'Hampton (City)',
   },
   {
     code: '51660',
     state: 'Virginia',
-    county: 'Harrisonburg city',
+    county: 'Harrisonburg (City)',
   },
   {
     code: '51670',
     state: 'Virginia',
-    county: 'Hopewell city',
+    county: 'Hopewell (City)',
   },
   {
     code: '51678',
     state: 'Virginia',
-    county: 'Lexington city',
+    county: 'Lexington (City)',
   },
   {
     code: '51680',
     state: 'Virginia',
-    county: 'Lynchburg city',
+    county: 'Lynchburg (City)',
   },
   {
     code: '51683',
     state: 'Virginia',
-    county: 'Manassas city',
+    county: 'Manassas (City)',
   },
   {
     code: '51685',
     state: 'Virginia',
-    county: 'Manassas Park city',
+    county: 'Manassas Park (City)',
   },
   {
     code: '51690',
     state: 'Virginia',
-    county: 'Martinsville city',
+    county: 'Martinsville (City)',
   },
   {
     code: '51700',
     state: 'Virginia',
-    county: 'Newport News city',
+    county: 'Newport News (City)',
   },
   {
     code: '51710',
     state: 'Virginia',
-    county: 'Norfolk city',
+    county: 'Norfolk (City)',
   },
   {
     code: '51720',
     state: 'Virginia',
-    county: 'Norton city',
+    county: 'Norton (City)',
   },
   {
     code: '51730',
     state: 'Virginia',
-    county: 'Petersburg city',
+    county: 'Petersburg (City)',
   },
   {
     code: '51735',
     state: 'Virginia',
-    county: 'Poquoson city',
+    county: 'Poquoson (City)',
   },
   {
     code: '51740',
     state: 'Virginia',
-    county: 'Portsmouth city',
+    county: 'Portsmouth (City)',
   },
   {
     code: '51750',
     state: 'Virginia',
-    county: 'Radford city',
+    county: 'Radford (City)',
   },
   {
     code: '51760',
     state: 'Virginia',
-    county: 'Richmond city',
+    county: 'Richmond (City)',
   },
   {
     code: '51770',
     state: 'Virginia',
-    county: 'Roanoke city',
+    county: 'Roanoke (City)',
   },
   {
     code: '51775',
     state: 'Virginia',
-    county: 'Salem city',
+    county: 'Salem (City)',
   },
   {
     code: '51790',
     state: 'Virginia',
-    county: 'Staunton city',
+    county: 'Staunton (City)',
   },
   {
     code: '51800',
     state: 'Virginia',
-    county: 'Suffolk city',
+    county: 'Suffolk (City)',
   },
   {
     code: '51810',
     state: 'Virginia',
-    county: 'Virginia Beach city',
+    county: 'Virginia Beach (City)',
   },
   {
     code: '51820',
     state: 'Virginia',
-    county: 'Waynesboro city',
+    county: 'Waynesboro (City)',
   },
   {
     code: '51830',
     state: 'Virginia',
-    county: 'Williamsburg city',
+    county: 'Williamsburg (City)',
   },
   {
     code: '51840',
     state: 'Virginia',
-    county: 'Winchester city',
+    county: 'Winchester (City)',
   },
   {
     code: '53001',
@@ -15525,7 +15543,7 @@ const FipsCodes: Array<County> = [
   {
     code: '55109',
     state: 'Wisconsin',
-    county: 'St. Croix',
+    county: 'Saint Croix',
   },
   {
     code: '55111',
