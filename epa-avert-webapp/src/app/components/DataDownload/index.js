@@ -17,7 +17,9 @@ const SafariWarning = isDesktopSafari ? (
 
 type Props = {
   heading: string,
-  onClick: () => void,
+  // redux connected props
+  onClickCountyResults: () => void,
+  onClickCobraResults: () => void,
 };
 
 const DataDownload = (props: Props) => (
@@ -35,10 +37,23 @@ const DataDownload = (props: Props) => (
         href=""
         onClick={(event) => {
           event.preventDefault();
-          props.onClick();
+          props.onClickCountyResults();
         }}
       >
-        Download Results File
+        Download County Level Results
+      </a>
+    </p>
+
+    <p className="avert-centered">
+      <a
+        className="avert-button"
+        href=""
+        onClick={(event) => {
+          event.preventDefault();
+          props.onClickCobraResults();
+        }}
+      >
+        Download COBRA Results
       </a>
     </p>
 
