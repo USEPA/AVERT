@@ -7,25 +7,45 @@ import './styles.css';
 type Props = {};
 
 type State = {
+  error: boolean,
   gw: number,
   mw: number,
   kw: number,
 };
 
 class UnitConversion extends React.Component<Props, State> {
-  setGw: (number) => void;
+  gwFactor: number;
+  mwFactor: number;
+  kwFactor: number;
+  setGw: (string, number) => void;
 
   constructor(props: Props) {
     super(props);
 
-    this.setGw = (value) => {
-      this.setState((prevState) => ({ ...prevState, gw: value }));
+    this.gwFactor = 1;
+    this.mwFactor = 1000;
+    this.kwFactor = 1000000;
+
+    this.setGw = (value, factor) => {
+      if (Number(value) >= 0) {
+        this.setState((prevState) => ({
+          ...prevState,
+          error: false,
+          gw: Number(value) / factor,
+        }));
+      } else {
+        this.setState((prevState) => ({
+          ...prevState,
+          error: true,
+        }));
+      }
     };
 
     this.state = {
-      gw: 1,
-      mw: 1000,
-      kw: 1000000,
+      error: false,
+      gw: this.gwFactor,
+      mw: this.mwFactor,
+      kw: this.kwFactor,
     };
   }
 
@@ -34,38 +54,38 @@ class UnitConversion extends React.Component<Props, State> {
       <div className="avert-unit-conversion">
         <p>Unit conversions:</p>
 
-        <div className="avert-unit-conversion-fields">
-          <div className="avert-unit-conversion-field">
+        <div className="avert-unit-fields">
+          <div className="avert-unit-field">
             <input
               type="text"
-              value={this.state.gw}
-              onChange={(event) => this.setGw(Number(event.target.value))}
+              value={this.state.gw * this.gwFactor}
+              onChange={(e) => this.setGw(e.target.value, this.gwFactor)}
             />
             <span> GW = </span>
           </div>
 
-          <div className="avert-unit-conversion-field">
+          <div className="avert-unit-field">
             <input
               type="text"
-              value={this.state.gw * 1000}
-              onChange={(event) =>
-                this.setGw(Number(event.target.value) / 1000)
-              }
+              value={this.state.gw * this.mwFactor}
+              onChange={(e) => this.setGw(e.target.value, this.mwFactor)}
             />
             <span> MW = </span>
           </div>
 
-          <div className="avert-unit-conversion-field">
+          <div className="avert-unit-field">
             <input
               type="text"
-              value={this.state.gw * 1000000}
-              onChange={(event) =>
-                this.setGw(Number(event.target.value) / 1000000)
-              }
+              value={this.state.gw * this.kwFactor}
+              onChange={(e) => this.setGw(e.target.value, this.kwFactor)}
             />
             <span> kW</span>
           </div>
         </div>
+
+        {this.state.error && (
+          <p class="avert-input-error">Please enter a positive number.</p>
+        )}
       </div>
     );
   }
