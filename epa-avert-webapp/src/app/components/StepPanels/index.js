@@ -9,6 +9,7 @@ import PanelFooter from 'app/components/PanelFooter/container.js';
 import RegionList from 'app/components/RegionList/container.js';
 import RegionMap from 'app/components/RegionMap';
 import EEREInputs from 'app/components/EEREInputs/container.js';
+import UnitConversion from 'app/components/UnitConversion';
 import EEREChart from 'app/components/EEREChart/container.js';
 import DisplacementsTable from 'app/components/DisplacementsTable/container.js';
 import EmissionsTable from 'app/components/EmissionsTable/container.js';
@@ -143,6 +144,8 @@ const StepPanels = (props: Props) => {
             or click the <span className="avert-modal-link" /> icon for each
             program type below.
           </p>
+
+          <UnitConversion />
 
           <p className="avert-small-text">
             Five types of programs are listed below (A through E). You can enter

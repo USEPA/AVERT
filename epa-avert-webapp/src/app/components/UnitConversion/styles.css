@@ -1,0 +1,49 @@
+.avert-unit-conversion {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid #ccc;
+}
+
+.avert-unit-conversion p {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: #444;
+}
+
+.avert-unit-conversion-fields {
+  display: flex;
+}
+
+.avert-unit-conversion-field {
+  display: flex;
+  align-items: baseline;
+  width: 100%;
+}
+
+.avert-unit-conversion-field input {
+  margin: 0.25rem 0;
+  padding: 0.125rem 0.25rem;
+  border: 1px solid #ccc;
+  width: 100%;
+  font-size: 0.875rem;
+  font-weight: bold;
+  text-align: right;
+}
+
+.avert-unit-conversion-field input:focus {
+  outline: none;
+  box-shadow: inset 0 0 0.25rem rgb(0, 169, 204);
+}
+
+.avert-unit-conversion-field span {
+  flex: 1 0 auto;
+  margin: 0 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1.375;
+  color: #444;
+}
+
+.avert-unit-conversion-field:last-child span {
+  margin-right: 0;
+}
