@@ -8,44 +8,57 @@ type Props = {};
 
 type State = {
   error: boolean,
-  gw: number,
-  mw: number,
-  kw: number,
+  gw: string,
+  mw: string,
+  kw: string,
 };
 
 class UnitConversion extends React.Component<Props, State> {
-  gwFactor: number;
-  mwFactor: number;
-  kwFactor: number;
-  setGw: (string, number) => void;
+  updateInputs: (string, string) => void;
 
   constructor(props: Props) {
     super(props);
 
-    this.gwFactor = 1;
-    this.mwFactor = 1000;
-    this.kwFactor = 1000000;
-
-    this.setGw = (value, factor) => {
-      if (Number(value) >= 0) {
-        this.setState((prevState) => ({
-          ...prevState,
-          error: false,
-          gw: Number(value) / factor,
-        }));
-      } else {
-        this.setState((prevState) => ({
-          ...prevState,
-          error: true,
-        }));
+    this.updateInputs = (value, unit) => {
+      const input = Number(value);
+      if (isNaN(input) || input < 0) {
+        this.setState((prevState) => ({ ...prevState, error: true }));
+        return;
       }
+
+      const factor = 1000;
+      const computed = {};
+      computed[unit] = value;
+
+      if (unit === 'gw') {
+        computed.mw = (input * factor).toString();
+        computed.kw = (input * factor * factor).toString();
+      }
+
+      if (unit === 'mw') {
+        computed.gw = (input / factor).toString();
+        computed.kw = (input * factor).toString();
+      }
+
+      if (unit === 'kw') {
+        computed.gw = (input / factor / factor).toString();
+        computed.mw = (input / factor).toString();
+      }
+
+      this.setState((prevState) => ({
+        ...prevState,
+        error: false,
+        gw: computed.gw,
+        mw: computed.mw,
+        kw: computed.kw,
+      }));
     };
 
     this.state = {
       error: false,
-      gw: this.gwFactor,
-      mw: this.mwFactor,
-      kw: this.kwFactor,
+      gw: '1',
+      mw: '1000',
+      kw: '1000000',
     };
   }
 
@@ -58,8 +71,8 @@ class UnitConversion extends React.Component<Props, State> {
           <div className="avert-unit-field">
             <input
               type="text"
-              value={this.state.gw * this.gwFactor}
-              onChange={(e) => this.setGw(e.target.value, this.gwFactor)}
+              value={this.state.gw}
+              onChange={(e) => this.updateInputs(e.target.value, 'gw')}
             />
             <span> GW = </span>
           </div>
@@ -67,8 +80,8 @@ class UnitConversion extends React.Component<Props, State> {
           <div className="avert-unit-field">
             <input
               type="text"
-              value={this.state.gw * this.mwFactor}
-              onChange={(e) => this.setGw(e.target.value, this.mwFactor)}
+              value={this.state.mw}
+              onChange={(e) => this.updateInputs(e.target.value, 'mw')}
             />
             <span> MW = </span>
           </div>
@@ -76,15 +89,15 @@ class UnitConversion extends React.Component<Props, State> {
           <div className="avert-unit-field">
             <input
               type="text"
-              value={this.state.gw * this.kwFactor}
-              onChange={(e) => this.setGw(e.target.value, this.kwFactor)}
+              value={this.state.kw}
+              onChange={(e) => this.updateInputs(e.target.value, 'kw')}
             />
             <span> kW</span>
           </div>
         </div>
 
         {this.state.error && (
-          <p class="avert-input-error">Please enter a positive number.</p>
+          <p className="avert-input-error">Please enter a positive number.</p>
         )}
       </div>
     );
