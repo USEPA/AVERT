@@ -173,8 +173,10 @@ export default function reducer(state = initialState, action) {
           action.pm25.emissions.county[state][county],
         ).reduce(sum, 0) /2000; // convert pounds to tons
 
-        const countyDisplay =
-          county.indexOf('(City)') !== -1 ? county : `${county} County`;
+        const countyName =
+          county.indexOf('(City)') !== -1
+            ? county // county is really a city
+            : state === 'LA' ? `${county} Parish` : `${county} County`;
 
         const formatNumber = (number) =>
           number.toLocaleString(undefined, {
@@ -185,7 +187,7 @@ export default function reducer(state = initialState, action) {
         return {
           FIPS: fipsCode,
           STATE: States[state],
-          COUNTY: countyDisplay,
+          COUNTY: countyName,
           TIER1NAME: 'FUEL COMB. ELEC. UTIL.',
           NOx_REDUCTIONS_TONS: formatNumber(noxData),
           SO2_REDUCTIONS_TONS: formatNumber(so2Data),
