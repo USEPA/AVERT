@@ -11,6 +11,10 @@
   text-align: center;
 }
 
+.avert-unit-conversion span {
+  text-align: left;
+}
+
 .avert-unit-conversion .avert-input-error {
   font-weight: bold;
   font-style: normal;
