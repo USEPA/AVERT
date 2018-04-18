@@ -68,7 +68,9 @@ class UnitConversion extends React.Component<Props, State> {
     return (
       <div className="avert-unit-conversion">
         <p>
-          <strong>Helpful Unit Conversions:</strong>{' '}
+          <span className="avert-unit-conversion-heading">
+            Helpful Unit Conversions
+          </span>{' '}
           <Tooltip id={8}>
             To convert units from power (<strong>kW, MW, GW</strong>) to energy
             (<strong>kWh, MWh, GWh</strong>), multiply by the total number of
@@ -88,30 +90,33 @@ class UnitConversion extends React.Component<Props, State> {
 
         <div className="avert-unit-fields">
           <div className="avert-unit-field">
+            <span className="avert-field-prefix" />
             <input
               type="text"
               value={this.state.kw}
               onChange={(e) => this.updateInputs(e.target.value, 'kw')}
             />
-            <span className="avert-unit-field-text"> kW = </span>
+            <span className="avert-field-postfix"> kW</span>
           </div>
 
           <div className="avert-unit-field">
+            <span className="avert-field-prefix">= </span>
             <input
               type="text"
               value={this.state.mw}
               onChange={(e) => this.updateInputs(e.target.value, 'mw')}
             />
-            <span className="avert-unit-field-text"> MW = </span>
+            <span className="avert-field-postfix"> MW</span>
           </div>
 
           <div className="avert-unit-field">
+            <span className="avert-field-prefix">= </span>
             <input
               type="text"
               value={this.state.gw}
               onChange={(e) => this.updateInputs(e.target.value, 'gw')}
             />
-            <span className="avert-unit-field-text"> GW</span>
+            <span className="avert-field-postfix"> GW</span>
           </div>
         </div>
 
