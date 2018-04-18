@@ -67,7 +67,24 @@ class UnitConversion extends React.Component<Props, State> {
   render() {
     return (
       <div className="avert-unit-conversion">
-        <p>Helpful Unit conversions:</p>
+        <p>
+          <strong>Helpful Unit Conversions:</strong>{' '}
+          <Tooltip id={8}>
+            To convert units from power (<strong>kW, MW, GW</strong>) to energy
+            (<strong>kWh, MWh, GWh</strong>), multiply by the total number of
+            hours in the year. To convert in the other direction, divide by the
+            total number of hours in the year. There are{' '}
+            <strong>8,760 hours</strong> in a non-leap year and{' '}
+            <strong>8,784 hours</strong> in a leap year.
+            <br />
+            <br />
+            <strong>
+              Example: converting energy to power for 2016 (leap year):
+            </strong>
+            <br />
+            10,000 kWh ÷ 8,784 h = 1.14 kW
+          </Tooltip>
+        </p>
 
         <div className="avert-unit-fields">
           <div className="avert-unit-field">
@@ -76,25 +93,7 @@ class UnitConversion extends React.Component<Props, State> {
               value={this.state.kw}
               onChange={(e) => this.updateInputs(e.target.value, 'kw')}
             />
-            <span className="avert-unit-field-text"> kW</span>
-
-            <Tooltip id={8}>
-              To convert <strong>kWh</strong> to <strong>kW</strong>, divide kWh
-              by the <em>total number of hours in the year</em>
-              <sup>*</sup>.
-              <br />
-              <br />
-              <sup>*</sup>Non-leap years: <strong>8760</strong> hours
-              <br />
-              <sup>*</sup>Leap years: <strong>8784</strong> hours
-              <br />
-              <br />
-              <strong>2016 (leap-year) example:</strong>
-              <br />
-              8784 kWh ÷ 8784 hrs = 1 kW
-            </Tooltip>
-
-            <span className="avert-unit-field-text">= </span>
+            <span className="avert-unit-field-text"> kW = </span>
           </div>
 
           <div className="avert-unit-field">
@@ -113,22 +112,6 @@ class UnitConversion extends React.Component<Props, State> {
               onChange={(e) => this.updateInputs(e.target.value, 'gw')}
             />
             <span className="avert-unit-field-text"> GW</span>
-
-            <Tooltip id={9}>
-              To convert <strong>GW</strong> to <strong>GWh</strong>, multiply
-              GW by the <em>total number of hours in the year</em>
-              <sup>*</sup>.
-              <br />
-              <br />
-              <sup>*</sup>Non-leap years: <strong>8760</strong> hours
-              <br />
-              <sup>*</sup>Leap years: <strong>8784</strong> hours
-              <br />
-              <br />
-              <strong>2016 (leap-year) example:</strong>
-              <br />
-              1 GW × 8784 hrs = 8784 GWh
-            </Tooltip>
           </div>
         </div>
 
