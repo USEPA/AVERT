@@ -133,6 +133,8 @@ const StepPanels = (props: Props) => {
 
       <Panel active={props.activePanel === 2}>
         <PanelBody heading="Set Energy Efficiency and Renewable Energy Impacts">
+          <UnitConversion />
+
           <p>
             AVERT quantifies avoided emissions and electricity generation
             displaced by EE/RE policies and programs. Specify the impacts of
@@ -144,8 +146,6 @@ const StepPanels = (props: Props) => {
             or click the <span className="avert-modal-link" /> icon for each
             program type below.
           </p>
-
-          <UnitConversion />
 
           <p className="avert-small-text">
             Five types of programs are listed below (A through E). You can enter

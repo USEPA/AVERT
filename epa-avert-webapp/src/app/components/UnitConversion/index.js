@@ -1,6 +1,8 @@
 // @flow
 
 import React from 'react';
+// components
+import Tooltip from 'app/components/Tooltip/container.js';
 // styles
 import './styles.css';
 
@@ -65,34 +67,56 @@ class UnitConversion extends React.Component<Props, State> {
   render() {
     return (
       <div className="avert-unit-conversion">
-        <p>Unit conversions:</p>
+        <p>
+          <span className="avert-unit-conversion-heading">
+            Helpful Unit Conversions
+          </span>{' '}
+          <Tooltip id={8}>
+            To convert units from power (<strong>kW, MW, GW</strong>) to energy
+            (<strong>kWh, MWh, GWh</strong>), multiply by the total number of
+            hours in the year. To convert in the other direction, divide by the
+            total number of hours in the year. There are{' '}
+            <strong>8,760 hours</strong> in a non-leap year and{' '}
+            <strong>8,784 hours</strong> in a leap year.
+            <br />
+            <br />
+            <strong>
+              Example: converting energy to power for 2016 (leap year):
+            </strong>
+            <br />
+            10,000 kWh ÷ 8,784 h = 1.14 kW
+          </Tooltip>
+        </p>
 
         <div className="avert-unit-fields">
           <div className="avert-unit-field">
-            <input
-              type="text"
-              value={this.state.gw}
-              onChange={(e) => this.updateInputs(e.target.value, 'gw')}
-            />
-            <span> GW = </span>
-          </div>
-
-          <div className="avert-unit-field">
-            <input
-              type="text"
-              value={this.state.mw}
-              onChange={(e) => this.updateInputs(e.target.value, 'mw')}
-            />
-            <span> MW = </span>
-          </div>
-
-          <div className="avert-unit-field">
+            <span className="avert-field-prefix" />
             <input
               type="text"
               value={this.state.kw}
               onChange={(e) => this.updateInputs(e.target.value, 'kw')}
             />
-            <span> kW</span>
+            <span className="avert-field-postfix"> kW</span>
+          </div>
+
+          <div className="avert-unit-field">
+            <span className="avert-field-prefix">= </span>
+            <input
+              type="text"
+              value={this.state.mw}
+              onChange={(e) => this.updateInputs(e.target.value, 'mw')}
+            />
+            <span className="avert-field-postfix"> MW</span>
+          </div>
+
+          <div className="avert-unit-field">
+            <span className="avert-field-prefix">= </span>
+            <input
+              type="text"
+              value={this.state.gw}
+              onChange={(e) => this.updateInputs(e.target.value, 'gw')}
+            />
+            <span className="avert-field-postfix"> GW</span>
           </div>
         </div>
 
