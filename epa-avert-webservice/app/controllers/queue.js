@@ -73,11 +73,7 @@ const processPollutant = (ctx, pollutant) => {
     console.log(`Queue: ${id} (${pollutant}) is processing`);
     // instantiate new Rdf from data files
     const rdfFile = await readFile(regions[region].rdf);
-    const defaultsFile = await readFile(regions[region].defaults);
-    const rdf = new Rdf({
-      rdf: JSON.parse(rdfFile, 'utf8'),
-      defaults: JSON.parse(defaultsFile, 'utf8')
-    }).toJSON();
+    const rdf = new Rdf(JSON.parse(rdfFile, 'utf8')).toJSON();
     // get 'pollutant:eere:id' value in 'avert' hash in redis
     const eere = await redisClient.get(`${pollutant}:eere:${id}`);
     // return early if eere not found in redis
