@@ -26,446 +26,93 @@ if (process.env.KOA_APP_ENV === 'local') {
   });
 }
 
+// add pollutant to queue
+const addPollutant = async (ctx, pollutant) => {
+  const body = await ctx.request.body;
+  // increment 'job' string in redis
+  const id = await redisClient.inc('job');
+  // set 'pollutant:eere:id' key and value in 'avert' hash in redis
+  await redisClient.set(`${pollutant}:eere:${id}`, JSON.stringify(body.eere));
+  // add pollutant job to queue
+  const job = queue.create(`calculate_${pollutant}`, {
+    title: `Calculate ${pollutant} for '${body.region}' region`,
+    jobId: id,
+    region: body.region,
+  }).save((err) => {
+    if (!err) console.log(`Queue: ${id} (${pollutant}) added to queue`);
+  });;
+  // 'complete' or 'failed' event fires when processPollutant() succeeds or fails
+  // remove job and 'pollutant:eere:id' key and value in 'avert' hash in redis
+  job.on('complete', () => {
+    console.log(`Queue: ${id} (${pollutant}) is complete`);
+    redisClient.del(`${pollutant}:eere:${id}`);
+    job.remove();
+  }).on('failed', () => {
+    console.log(`Queue: ${id} (${pollutant}) has failed`);
+    redisClient.del(`${pollutant}:eere:${id}`);
+    job.remove();
+  });
+  // create request, which will process job from queue via processPollutant()
+  request(`${ctx.origin}/api/v1/queue/${pollutant}`, (err, res, body) => {
+    if (err) console.log('Fetch error:', err);
+  });
+  // web app uses job id to poll server for data via GET /api/v1/jobs/:id
+  ctx.body = {
+    response: 'ok',
+    job: id,
+  };
+};
+
+// process pollutant from queue
+const processPollutant = (ctx, pollutant) => {
+  queue.process(`calculate_${pollutant}`, async (job, done) => {
+    const id = job.data.jobId;
+    const region = job.data.region;
+    if (!(region in regions)) return false;
+    //
+    console.log(`Queue: ${id} (${pollutant}) is processing`);
+    // instantiate new Rdf from data files
+    const rdfFile = await readFile(regions[region].rdf);
+    const defaultsFile = await readFile(regions[region].defaults);
+    const rdf = new Rdf({
+      rdf: JSON.parse(rdfFile, 'utf8'),
+      defaults: JSON.parse(defaultsFile, 'utf8')
+    }).toJSON();
+    // get 'pollutant:eere:id' value in 'avert' hash in redis
+    const eere = await redisClient.get(`${pollutant}:eere:${id}`);
+    // return early if eere not found in redis
+    if (!eere) done();
+    // get pollutant data from new DisplacementEngine instance
+    const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
+    let data;
+    if (pollutant === 'generation') data = engine.getGeneration();
+    if (pollutant === 'so2') data = engine.getSo2Total();
+    if (pollutant === 'nox') data = engine.getNoxTotal();
+    if (pollutant === 'co2') data = engine.getCo2Total();
+    if (pollutant === 'pm25') data = engine.getPm25Total();
+    // set 'job:id' key and value in 'avert' hash in redis
+    await redisClient.set(`job:${id}`, JSON.stringify(data));
+    //
+    console.log(`Queue: ${id} (${pollutant}) finished processing`);
+    return done();
+  });
+
+  // return status for debugging (not used in web app)
+  ctx.body = {
+    response: 'ok',
+    status: `${pollutant} processed`,
+  };
+}
+
 module.exports = {
-  addGeneration: async (ctx) => {
-    const body = await ctx.request.body;
-
-    // increment 'job' string in redis
-    const id = await redisClient.inc('job');
-
-    // set/update 'generation:eere:id' key and value in 'avert' hash in redis
-    await redisClient.set(`generation:eere:${id}`, JSON.stringify(body.eere));
-
-    // add generation job to queue
-    const job = queue.create('calculate_generation', {
-      title: `Calculate Generation for '${body.region}' region`,
-      jobId: id,
-      region: body.region,
-    });
-
-    // 'complete' event fires when processGeneration() succeeds
-    job.on('complete', () => {
-      console.log(`Success: Job ${id} (Generation) is complete`);
-      redisClient.del(`generation:eere:${id}`);
-      job.remove();
-    });
-
-    // 'failed' event fires when processGeneration() fails
-    job.on('failed', () => {
-      console.log(`Error: Job ${id} (Generation) has failed`);
-      redisClient.del(`generation:eere:${id}`);
-    });
-
-    job.save((err) => {
-      if (!err) console.log(`Stored: Job ${id} (Generation) saved to Kue`);
-    });
-
-    // create request, which will process job from queue via processGeneration()
-    request(`${ctx.origin}/api/v1/queue/generation`, (err, res, body) => {
-      if (err) console.log('Fetch error:', err);
-    });
-
-    // web app uses job id to poll server for data via GET /api/v1/jobs/:id
-    ctx.body = {
-      response: 'ok',
-      job: id,
-    };
-  },
-
-
-
-  addSo2: async (ctx) => {
-    const body = await ctx.request.body;
-
-    // increment 'job' string in redis
-    const id = await redisClient.inc('job');
-
-    // set/update 'so2:eere:id' key and value in 'avert' hash in redis
-    await redisClient.set(`so2:eere:${id}`, JSON.stringify(body.eere));
-
-    // add so2 job to queue
-    var job = queue.create('calculate_so2', {
-      title: `Calculate SO2 for '${body.region}' region`,
-      jobId: id,
-      region: body.region,
-    });
-
-    // 'complete' event fires when processSo2() succeeds
-    job.on('complete', () => {
-      console.log(`Success: Job ${id} (SO2) is complete`);
-      redisClient.del(`so2:eere:${id}`);
-    });
-
-    // 'failed' event fires when processSo2() fails
-    job.on('failed', () => {
-      console.log(`Error: Job ${id} (SO2) has failed`);
-      redisClient.del(`so2:eere:${id}`);
-    });
-
-    job.save((err) => {
-      if (!err) console.log(`Stored: Job ${id} (SO2) saved to Kue`);
-    });
-
-    // create request, which will process job from queue via processSo2()
-    request(`${ctx.origin}/api/v1/queue/so2`, (err, res, body) => {
-      if (err) console.log('Fetch error:', err);
-    });
-
-    // web app uses job id to poll server for data via GET /api/v1/jobs/:id
-    ctx.body = {
-      response: 'ok',
-      job: id,
-    };
-  },
-
-
-
-  addNox: async (ctx) => {
-    const body = await ctx.request.body;
-
-    // increment 'job' string in redis
-    const id = await redisClient.inc('job');
-
-    // set/update 'nox:eere:id' key and value in 'avert' hash in redis
-    await redisClient.set(`nox:eere:${id}`, JSON.stringify(body.eere));
-
-    // add nox job to queue
-    const job = queue.create('calculate_nox', {
-      title: `Calculate NOx for '${body.region}' region`,
-      jobId: id,
-      region: body.region,
-    });
-
-    // 'complete' event fires when processNox() succeeds
-    job.on('complete', () => {
-      console.log(`Success: Job ${id} (NOx) is complete`);
-      redisClient.del(`nox:eere:${id}`);
-      job.remove();
-    });
-
-    // 'failed' event fires when processNox() fails
-    job.on('failed', () => {
-      console.log(`Error: Job ${id} (NOx) has failed`);
-      redisClient.del(`nox:eere:${id}`);
-    });
-
-    job.save((err) => {
-      if (!err) console.log(`Stored: Job ${id} (NOx) saved to Kue`);
-    });
-
-    // create request, which will process job from queue via processNox()
-    request(`${ctx.origin}/api/v1/queue/nox`, (err, res, body) => {
-      if (err) console.log('Fetch error:', err);
-    });
-
-    // web app uses job id to poll server for data via GET /api/v1/jobs/:id
-    ctx.body = {
-      response: 'ok',
-      job: id,
-    };
-  },
-
-
-
-  addCo2: async (ctx) => {
-    const body = await ctx.request.body;
-
-    // increment 'job' string in redis
-    const id = await redisClient.inc('job');
-
-    // set/update 'co2:eere:id' key and value in 'avert' hash in redis
-    await redisClient.set(`co2:eere:${id}`, JSON.stringify(body.eere));
-
-    // add co2 job to queue
-    const job = queue.create('calculate_co2', {
-      title: `Calculate CO2 for '${body.region}' region`,
-      jobId: id,
-      region: body.region,
-    });
-
-    // 'complete' event fires when processCo2() succeeds
-    job.on('complete', () => {
-      console.log(`Success: Job ${id} (CO2) is complete`);
-      redisClient.del(`co2:eere:${id}`);
-      job.remove();
-    });
-
-    // 'failed' event fires when processCo2() fails
-    job.on('failed', () => {
-      console.log(`Error: Job ${id} (CO2) has failed`);
-      redisClient.del(`co2:eere:${id}`);
-    });
-
-    job.save((err) => {
-      if (!err) console.log(`Stored: Job ${id} (CO2) saved to Kue`);
-    });
-
-    // create request, which will process job from queue via processCo2()
-    request(`${ctx.origin}/api/v1/queue/co2`, (err, res, body) => {
-      if (err) console.log('Fetch error:', err);
-    });
-
-    // web app uses job id to poll server for data via GET /api/v1/jobs/:id
-    ctx.body = {
-      response: 'ok',
-      job: id,
-    };
-  },
-
-
-
-  addPm25: async (ctx) => {
-    const body = await ctx.request.body;
-
-    // increment 'job' string in redis
-    const id = await redisClient.inc('job');
-
-    // set/update 'pm25:eere:id' key and value in 'avert' hash in redis
-    await redisClient.set(`pm25:eere:${id}`, JSON.stringify(body.eere));
-
-    // add pm25 job to queue
-    const job = queue.create('calculate_pm25', {
-      title: `Calculate Pm25 for '${body.region}' region`,
-      jobId: id,
-      region: body.region,
-    });
-
-    // 'complete' event fires when processPm25() succeeds
-    job.on('complete', () => {
-      console.log(`Success: Job ${id} (Pm25) is complete`);
-      redisClient.del(`pm25:eere:${id}`);
-      job.remove();
-    });
-
-    // 'failed' event fires when processPm25() fails
-    job.on('failed', () => {
-      console.log(`Error: Job ${id} (Pm25) has failed`);
-      redisClient.del(`pm25:eere:${id}`);
-    });
-
-    job.save((err) => {
-      if (!err) console.log(`Stored: Job ${id} (Pm25) saved to Kue`);
-    });
-
-    // create request, which will process job from queue via processPm25()
-    request(`${ctx.origin}/api/v1/queue/pm25`, (err, res, body) => {
-      if (err) console.log('Fetch error:', err);
-    });
-
-    // web app uses job id to poll server for data via GET /api/v1/jobs/:id
-    ctx.body = {
-      response: 'ok',
-      job: id,
-    };
-  },
-
-
-
-  processGeneration: (ctx) => {
-    queue.process('calculate_generation', async (job, done) => {
-      const id = job.data.jobId;
-      const region = job.data.region;
-
-      if (!(region in regions)) return false;
-
-      console.log(`Processing: Job ${id} (Generation) starting`);
-
-      // instantiate new Rdf from data files
-      const rdfFile = await readFile(regions[region].rdf);
-      const defaultsFile = await readFile(regions[region].defaults);
-      const rdf = new Rdf({
-        rdf: JSON.parse(rdfFile, 'utf8'),
-        defaults: JSON.parse(defaultsFile, 'utf8')
-      }).toJSON();
-
-      // get 'generation:eere:id' value in 'avert' hash in redis
-      const eere = await redisClient.get(`generation:eere:${id}`);
-      // return early if eere not found in redis
-      if (!eere) { done(); }
-
-      // get generation data from new DisplacementEngine instance
-      const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
-      const data = engine.getGeneration();
-
-      // set 'job:id' key and value in 'avert' hash in redis
-      await redisClient.set(`job:${id}`, JSON.stringify(data));
-
-      console.log(`Processing: Job ${id} (Generation) finished`);
-      return done();
-    });
-
-    // return status for debugging (not used in web app)
-    ctx.body = {
-      response: 'ok',
-      status: 'processGeneration() called',
-    };
-  },
-
-
-
-  processSo2: (ctx) => {
-    queue.process('calculate_so2', async (job, done) => {
-      const id = job.data.jobId;
-      const region = job.data.region;
-
-      if (!(region in regions)) return false;
-
-      console.log(`Processing: Job ${id} (SO2) starting`);
-
-      // instantiate new Rdf from data files
-      const rdfFile = await readFile(regions[region].rdf);
-      const defaultsFile = await readFile(regions[region].defaults);
-      const rdf = new Rdf({
-        rdf: JSON.parse(rdfFile, 'utf8'),
-        defaults: JSON.parse(defaultsFile, 'utf8')
-      }).toJSON();
-
-      // get 'so2:eere:id' value in 'avert' hash in redis
-      const eere = await redisClient.get(`so2:eere:${id}`);
-      // return early if eere not found in redis
-      if (!eere) { done(); }
-
-      // get so2 total data from new DisplacementEngine instance
-      const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
-      const data = engine.getSo2Total();
-
-      // set 'job:id' key and value in 'avert' hash in redis
-      await redisClient.set(`job:${id}`, JSON.stringify(data));
-
-      console.log(`Processing: Job ${id} (SO2) finished`);
-      return done();
-    });
-
-    // return status for debugging (not used in web app)
-    ctx.body = {
-      response: 'ok',
-      status: 'processSo2() called',
-    };
-  },
-
-
-
-  processNox: (ctx) => {
-    queue.process('calculate_nox', async (job, done) => {
-      const id = job.data.jobId;
-      const region = job.data.region;
-
-      if (!(region in regions)) return false;
-
-      console.log(`Processing: Job ${id} (NOx) starting`);
-
-      // instantiate new Rdf from data files
-      const rdfFile = await readFile(regions[region].rdf);
-      const defaultsFile = await readFile(regions[region].defaults);
-      const rdf = new Rdf({
-        rdf: JSON.parse(rdfFile, 'utf8'),
-        defaults: JSON.parse(defaultsFile, 'utf8')
-      }).toJSON();
-
-      // get 'nox:eere:id' value in 'avert' hash in redis
-      const eere = await redisClient.get(`nox:eere:${id}`);
-      // return early if eere not found in redis
-      if (!eere) { done(); }
-
-      // get nox total data from new DisplacementEngine instance
-      const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
-      const data = engine.getNoxTotal();
-
-      // set 'job:id' key and value in 'avert' hash in redis
-      await redisClient.set(`job:${id}`, JSON.stringify(data));
-
-      console.log(`Processing: Job ${id} (NOx) finished`);
-      return done();
-    });
-
-    // return status for debugging (not used in web app)
-    ctx.body = {
-      response: 'ok',
-      status: 'processNox() called',
-    };
-  },
-
-
-
-  processCo2: (ctx) => {
-    queue.process('calculate_co2', async (job, done) => {
-      const id = job.data.jobId;
-      const region = job.data.region;
-
-      if (!(region in regions)) return false;
-
-      console.log(`Processing: Job ${id} (SO2) starting`);
-
-      // instantiate new Rdf from data files
-      const rdfFile = await readFile(regions[region].rdf);
-      const defaultsFile = await readFile(regions[region].defaults);
-      const rdf = new Rdf({
-        rdf: JSON.parse(rdfFile, 'utf8'),
-        defaults: JSON.parse(defaultsFile, 'utf8')
-      }).toJSON();
-
-      // get 'co2:eere:id' value in 'avert' hash in redis
-      const eere = await redisClient.get(`co2:eere:${id}`);
-      // return early if eere not found in redis
-      if (!eere) { done(); }
-
-      // get co2 total data from new DisplacementEngine instance
-      const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
-      const data = engine.getCo2Total();
-
-      // set 'job:id' key and value in 'avert' hash in redis
-      await redisClient.set(`job:${id}`, JSON.stringify(data));
-
-      console.log(`Processing: Job ${id} (CO2) finished`);
-      return done();
-    });
-
-    // return status for debugging (not used in web app)
-    ctx.body = {
-      response: 'ok',
-      status: 'processCo2() called',
-    };
-  },
-
-
-
-  processPm25: (ctx) => {
-    queue.process('calculate_pm25', async (job, done) => {
-      const id = job.data.jobId;
-      const region = job.data.region;
-
-      if (!(region in regions)) return false;
-
-      console.log(`Processing: Job ${id} (PM25) starting`);
-
-      // instantiate new Rdf from data files
-      const rdfFile = await readFile(regions[region].rdf);
-      const defaultsFile = await readFile(regions[region].defaults);
-      const rdf = new Rdf({
-        rdf: JSON.parse(rdfFile, 'utf8'),
-        defaults: JSON.parse(defaultsFile, 'utf8')
-      }).toJSON();
-
-      // get 'pm25:eere:id' value in 'avert' hash in redis
-      const eere = await redisClient.get(`pm25:eere:${id}`);
-      // return early if eere not found in redis
-      if (!eere) { done(); }
-
-      // get pm25 total data from new DisplacementEngine instance
-      const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
-      const data = engine.getPm25Total();
-
-      // set 'job:id' key and value in 'avert' hash in redis
-      await redisClient.set(`job:${id}`, JSON.stringify(data));
-
-      console.log(`Processing: Job ${id} (PM25) finished`);
-      return done();
-    });
-
-    // return status for debugging (not used in web app)
-    ctx.body = {
-      response: 'ok',
-      status: 'processPm25() called',
-    };
-  },
+  addGeneration: (ctx) => addPollutant(ctx, 'generation'),
+  addSo2: (ctx) => addPollutant(ctx, 'so2'),
+  addNox: (ctx) => addPollutant(ctx, 'nox'),
+  addCo2: (ctx) => addPollutant(ctx, 'co2'),
+  addPm25: (ctx) => addPollutant(ctx, 'pm25'),
+  processGeneration: (ctx) => processPollutant(ctx, 'generation'),
+  processSo2: (ctx) => processPollutant(ctx, 'so2'),
+  processNox: (ctx) => processPollutant(ctx, 'nox'),
+  processCo2: (ctx) => processPollutant(ctx, 'co2'),
+  processPm25: (ctx) => processPollutant(ctx, 'pm25'),
 };
