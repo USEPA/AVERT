@@ -1,5 +1,6 @@
 'use strict';
 
+const Raven = require('raven');
 const Koa = require('koa');
 const cors = require('@koa/cors');
 const auth = require('koa-basic-auth');
@@ -11,6 +12,9 @@ const routes = require('./app/routes');
 const basicAuth = require('./app/middleware/basicAuth');
 const pageNotFound = require('./app/middleware/pageNotFound');
 const customHeaders = require('./app/middleware/customHeaders');
+
+// initialize Sentry Raven client
+Raven.config('https://69c78678304f4e7da08b0da748eafeb9@sentry.io/1203469').install();
 
 const app = new Koa();
 
