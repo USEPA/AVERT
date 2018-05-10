@@ -27,57 +27,17 @@ type Props = {
   activeModalId: number,
   loadingProgress: number,
   softValid: boolean,
+  serverCalcError: boolean,
   onClickOutsideModal: (number) => void,
 };
 
 const StepPanels = (props: Props) => {
-  const loadingClass = props.loading ? ' avert-loading-overlay' : '';
-  const modalClass = props.modalOverlay ? ' avert-modal-overlay' : '';
-
-  let ProgressBar;
-  // conditionally re-define ProgressBar if on third panel
-  if (props.activePanel === 3) {
-    ProgressBar = (
-      <div>
-        <progress
-          className="avert-loading-progress"
-          value={props.loadingProgress}
-          max="6"
-        >
-          {props.loadingProgress * 100 / 6}%
-        </progress>
-        <p className="avert-loading-info">
-          These calculations may take several minutes.
-        </p>
-      </div>
-    );
+  let classes = ['avert-steps'];
+  if (props.loading || props.serverCalcError) {
+    classes.push('avert-dark-overlay');
   }
-
-  let LoadingIndicator;
-  // conditionally re-define LoadingIndicator when loading prop exists
-  if (props.loading) {
-    LoadingIndicator = (
-      <div className="avert-loading-indicator">
-        <LoadingIcon />
-        <p className="avert-loading-heading">LOADING...</p>
-        {ProgressBar}
-      </div>
-    );
-  }
-
-  let ValidationWarning;
-  // conditionally re-define ValidationWarning when softValid prop is false
-  if (!props.softValid) {
-    ValidationWarning = (
-      <p className="avert-message-top avert-validation-warning">
-        <span className="avert-message-heading">WARNING:</span>
-        The proposed EE/RE programs would collectively displace more than 15% of
-        regional fossil generation in one or more hours of the year. AVERT works
-        best with displacements of 15% or less, as it is designed to simulate
-        marginal operational changes in load, rather than large-scale changes
-        that may change fundamental dynamics.
-      </p>
-    );
+  if (props.modalOverlay) {
+    classes.push('avert-modal-overlay');
   }
 
   const clickedOutsideModal = (event) => {
@@ -87,7 +47,7 @@ const StepPanels = (props: Props) => {
 
   return (
     <div
-      className={`avert-steps${loadingClass}${modalClass}`}
+      className={classes.join(' ')}
       onClick={(event) => {
         if (props.modalOverlay && clickedOutsideModal(event)) {
           props.onClickOutsideModal(props.activeModalId);
@@ -99,7 +59,37 @@ const StepPanels = (props: Props) => {
         }
       }}
     >
-      {LoadingIndicator}
+      {// conditionally display loading indicator
+      props.loading &&
+        !props.serverCalcError && (
+          <div className="avert-overlay-text">
+            <LoadingIcon />
+            <p className="avert-overlay-heading">LOADING...</p>
+            {// conditionally display progress bar
+            props.activePanel === 3 && (
+              <div>
+                <progress
+                  className="avert-loading-progress"
+                  value={props.loadingProgress}
+                  max="6"
+                >
+                  {props.loadingProgress * 100 / 6}%
+                </progress>
+                <p className="avert-overlay-info">
+                  These calculations may take several minutes.
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+      {// conditionally display web server error
+      props.serverCalcError && (
+        <div className="avert-overlay-text">
+          <p className="avert-overlay-heading">Web Server Error</p>
+          <p className="avert-overlay-info">Please try reloading the page.</p>
+        </div>
+      )}
 
       <Panel active={props.activePanel === 1}>
         <PanelBody heading="Select Region">
@@ -166,7 +156,17 @@ const StepPanels = (props: Props) => {
 
       <Panel active={props.activePanel === 3}>
         <PanelBody heading="Results: Avoided Regional, State, and County-Level Emissions">
-          {ValidationWarning}
+          {// conditionally display validation warning
+          !props.softValid && (
+            <p className="avert-message-top avert-validation-warning">
+              <span className="avert-message-heading">WARNING:</span>
+              The proposed EE/RE programs would collectively displace more than
+              15% of regional fossil generation in one or more hours of the
+              year. AVERT works best with displacements of 15% or less, as it is
+              designed to simulate marginal operational changes in load, rather
+              than large-scale changes that may change fundamental dynamics.
+            </p>
+          )}
 
           <DisplacementsTable
             heading={`Annual Regional Displacements: ${props.region} Region`}
