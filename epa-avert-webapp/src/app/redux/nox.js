@@ -62,8 +62,8 @@ export const pollServerForData = () => {
     })
       .then((response) => response.json())
       .then((json) => {
-        // recursively call function if response from server is 'in progress'
-        if (json.response === 'in progress') {
+        // recursively call function if response from server is not 'ok'
+        if (json.response !== 'ok') {
           return setTimeout(
             () => dispatch(pollServerForData()),
             api.pollingFrequency,
