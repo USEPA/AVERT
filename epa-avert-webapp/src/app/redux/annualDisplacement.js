@@ -10,8 +10,9 @@ import { fetchPm25 } from 'app/redux/pm25';
 // actions types
 import { SELECT_REGION } from 'app/redux/region';
 export const INCREMENT_PROGRESS = 'annualDisplacement/INCREMENT_PROGRESS';
-export const RECEIVE_DISPLACEMENT = 'annualDisplacement/RECEIVE_DISPLACEMENT';
 export const START_DISPLACEMENT = 'annualDisplacement/START_DISPLACEMENT';
+export const RECEIVE_DISPLACEMENT = 'annualDisplacement/RECEIVE_DISPLACEMENT';
+export const RECEIVE_ERROR = 'annualDisplacement/RECEIVE_ERROR';
 
 // reducer
 const origPostImpact = {
@@ -51,12 +52,16 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         status: 'ready',
+        statesAndCounties: initialState.statesAndCounties,
+        results: initialState.results,
       };
 
     case START_DISPLACEMENT:
       return {
         ...state,
         status: 'started',
+        statesAndCounties: initialState.statesAndCounties,
+        results: initialState.results,
       };
 
     case RECEIVE_DISPLACEMENT:
@@ -66,6 +71,12 @@ export default function reducer(state = initialState, action) {
         statesAndCounties: action.statesAndCounties,
         results: action.data,
       };
+
+  case RECEIVE_ERROR:
+    return {
+      ...state,
+      status: 'error',
+    };
 
     default:
       return state;
@@ -81,6 +92,12 @@ export const receiveDisplacement = () => {
   return (dispatch, getState) => {
     // get reducer data from store to use in dispatched action
     const { generation, so2, nox, co2, pm25 } = getState();
+
+    // bail if a data source returns an error
+    if (generation.error || so2.error || nox.error || co2.error || pm25.error) {
+      dispatch({ type: RECEIVE_ERROR });
+      return;
+    }
 
     // prettier-ignore
     // recursively call function if data is still fetching
