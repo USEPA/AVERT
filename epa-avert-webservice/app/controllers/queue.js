@@ -29,10 +29,12 @@ if (process.env.KOA_APP_ENV === 'local') {
 // add pollutant to queue
 const addPollutant = async (ctx, pollutant) => {
   const body = await ctx.request.body;
-  // increment 'job' string in redis
-  const id = await redisClient.inc('job');
-  // set 'pollutant:eere:id' key and value in 'avert' hash in redis
+  // increment 'jobs:count' string in redis
+  const id = await redisClient.inc('jobs:count');
+  // set 'pollutant:eere:id' key and value in 'avert' hash in redis to eere data
   await redisClient.set(`${pollutant}:eere:${id}`, JSON.stringify(body.eere));
+  // set 'job:id' key and value in 'avert' hash in redis to temporary '---'
+  await redisClient.set(`job:${id}`, '---');
   // add pollutant job to queue
   const job = queue.create(`calculate_${pollutant}`, {
     title: `Calculate ${pollutant} for '${body.region}' region`,
@@ -40,7 +42,18 @@ const addPollutant = async (ctx, pollutant) => {
     region: body.region,
   }).save((err) => {
     if (!err) console.log(`Queue: ${id} (${pollutant}) added to queue`);
-  });;
+  });
+  // create request, which will process job from queue via processPollutant()
+  // (new request so seperate instance of app can handle processing pollutant)
+  request(`${ctx.origin}/api/v1/queue/${pollutant}`, (err, res, body) => {
+    if (err) console.log('Queue: Error fetching pollutant from queue', err);
+  });
+  // web app uses jobId to immediately make a new request,
+  // polling server for data via GET /api/v1/jobs/:id
+  ctx.body = {
+    response: 'ok',
+    jobId: id,
+  };
   // 'complete' or 'failed' event fires when processPollutant() succeeds or fails
   // remove job and 'pollutant:eere:id' key and value in 'avert' hash in redis
   job.on('complete', () => {
@@ -52,15 +65,6 @@ const addPollutant = async (ctx, pollutant) => {
     redisClient.del(`${pollutant}:eere:${id}`);
     job.remove();
   });
-  // create request, which will process job from queue via processPollutant()
-  request(`${ctx.origin}/api/v1/queue/${pollutant}`, (err, res, body) => {
-    if (err) console.log('Fetch error:', err);
-  });
-  // web app uses job id to poll server for data via GET /api/v1/jobs/:id
-  ctx.body = {
-    response: 'ok',
-    job: id,
-  };
 };
 
 // process pollutant from queue
@@ -68,16 +72,12 @@ const processPollutant = (ctx, pollutant) => {
   queue.process(`calculate_${pollutant}`, async (job, done) => {
     const id = job.data.jobId;
     const region = job.data.region;
-    if (!(region in regions)) return false;
-    //
     console.log(`Queue: ${id} (${pollutant}) is processing`);
-    // instantiate new Rdf from data files
+    // instantiate new Rdf from rdf data file
     const rdfFile = await readFile(regions[region].rdf);
     const rdf = new Rdf(JSON.parse(rdfFile, 'utf8')).toJSON();
     // get 'pollutant:eere:id' value in 'avert' hash in redis
     const eere = await redisClient.get(`${pollutant}:eere:${id}`);
-    // return early if eere not found in redis
-    if (!eere) done();
     // get pollutant data from new DisplacementEngine instance
     const engine = new DisplacementsEngine(rdf, JSON.parse(eere));
     let data;
@@ -86,18 +86,14 @@ const processPollutant = (ctx, pollutant) => {
     if (pollutant === 'nox') data = engine.getNoxTotal();
     if (pollutant === 'co2') data = engine.getCo2Total();
     if (pollutant === 'pm25') data = engine.getPm25Total();
-    // set 'job:id' key and value in 'avert' hash in redis
+    // overwrite temp '---' value of 'job:id' in 'avert' hash in redis with data
     await redisClient.set(`job:${id}`, JSON.stringify(data));
-    //
     console.log(`Queue: ${id} (${pollutant}) finished processing`);
     return done();
   });
 
-  // return status for debugging (not used in web app)
-  ctx.body = {
-    response: 'ok',
-    status: `${pollutant} processed`,
-  };
+  // return ok response for debugging (not used in web app)
+  ctx.body = { response: 'ok' };
 }
 
 module.exports = {

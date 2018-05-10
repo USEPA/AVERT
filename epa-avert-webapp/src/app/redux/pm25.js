@@ -34,7 +34,7 @@ export default function reducer(state = initialState, action) {
     case RECEIVE_JOB_ID:
       return {
         ...state,
-        jobId: action.json.job,
+        jobId: action.jobId,
       };
 
     default:
@@ -62,18 +62,24 @@ export const pollServerForData = () => {
     })
       .then((response) => response.json())
       .then((json) => {
-        // recursively call function if response from server is not 'ok'
-        if (json.response !== 'ok') {
+        if (json.response === 'error') {
+          // handle error...
+        }
+
+        if (json.response === 'processing') {
           return setTimeout(
             () => dispatch(pollServerForData()),
             api.pollingFrequency,
           );
         }
-        dispatch(incrementProgress());
-        dispatch({
-          type: RECEIVE_PM25,
-          json: json,
-        });
+
+        if (json.response === 'ok') {
+          dispatch(incrementProgress());
+          dispatch({
+            type: RECEIVE_PM25,
+            json: json,
+          });
+        }
       });
   };
 };
@@ -101,7 +107,7 @@ export const fetchPm25 = () => {
       .then((json) => {
         dispatch({
           type: RECEIVE_JOB_ID,
-          json: json,
+          jobId: json.jobId,
         });
         dispatch(pollServerForData());
       });
