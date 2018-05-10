@@ -8,7 +8,7 @@ const initialState = {
     : process.env.REACT_APP_ENV === 'pcf'
       ? 'https://avert-dev.cfapps.io'
       : 'https://avert.app.cloud.gov',
-  pollingFrequency: 10000,
+  pollingFrequency: 5000,
 };
 
 export default function reducer(state = initialState, action) {
