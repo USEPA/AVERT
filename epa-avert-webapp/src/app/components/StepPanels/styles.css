@@ -2,11 +2,11 @@
   border: 1px solid #aaa;
 }
 
-.avert-loading-overlay {
+.avert-dark-overlay {
   position: relative;
 }
 
-.avert-loading-overlay::after {
+.avert-dark-overlay::after {
   content: '';
   position: absolute;
   top: 0;
@@ -16,7 +16,7 @@
   background-color: rgba(0, 0, 0, 0.875);
 }
 
-.avert-loading-indicator {
+.avert-overlay-text {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -26,12 +26,12 @@
   color: #00bee6;
 }
 
-.avert-loading-indicator svg {
+.avert-overlay-text svg {
   width: 100%;
   transform: scale(0.75);
 }
 
-.avert-loading-heading {
+.avert-overlay-heading {
   font-size: 1.25rem;
   font-weight: bold;
 }
@@ -41,7 +41,7 @@
   width: 100%;
 }
 
-.avert-loading-info {
+.avert-overlay-info {
   margin-top: 0.5rem;
   font-size: 0.75rem;
 }
@@ -89,15 +89,15 @@
     bottom: -1.125rem;
   }
 
-  .avert-loading-indicator svg {
+  .avert-overlay-text svg {
     transform: scale(0.8125);
   }
 
-  .avert-loading-heading {
+  .avert-overlay-heading {
     font-size: 1.3125rem;
   }
 
-  .avert-loading-info {
+  .avert-overlay-info {
     font-size: 0.8125rem;
   }
 }
@@ -118,15 +118,15 @@
     bottom: -1.25rem;
   }
 
-  .avert-loading-indicator svg {
+  .avert-overlay-text svg {
     transform: scale(0.875);
   }
 
-  .avert-loading-heading {
+  .avert-overlay-heading {
     font-size: 1.375rem;
   }
 
-  .avert-loading-info {
+  .avert-overlay-info {
     font-size: 0.875rem;
   }
 }
@@ -142,15 +142,15 @@
     bottom: -1.375rem;
   }
 
-  .avert-loading-indicator svg {
+  .avert-overlay-text svg {
     transform: scale(0.9375);
   }
 
-  .avert-loading-heading {
+  .avert-overlay-heading {
     font-size: 1.4375rem;
   }
 
-  .avert-loading-info {
+  .avert-overlay-info {
     font-size: 0.9375rem;
   }
 }
@@ -171,15 +171,15 @@
     bottom: -1.5rem;
   }
 
-  .avert-loading-indicator svg {
+  .avert-overlay-text svg {
     transform: none;
   }
 
-  .avert-loading-heading {
+  .avert-overlay-heading {
     font-size: 1.5rem;
   }
 
-  .avert-loading-info {
+  .avert-overlay-info {
     font-size: 1rem;
   }
 }

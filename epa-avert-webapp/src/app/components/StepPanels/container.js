@@ -11,6 +11,7 @@ const mapStateToProps = (state) => ({
   activeModalId: state.panel.activeModalId,
   loadingProgress: state.panel.loadingProgress,
   softValid: state.eere.softLimit.valid,
+  serverCalcError: state.annualDisplacement.status === 'error',
 });
 
 const mapDispatchToProps = (dispatch) => ({

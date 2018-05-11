@@ -1,5 +1,6 @@
 'use strict';
 
+const Raven = require('raven');
 const Koa = require('koa');
 const cors = require('@koa/cors');
 const auth = require('koa-basic-auth');
@@ -13,6 +14,15 @@ const pageNotFound = require('./app/middleware/pageNotFound');
 const customHeaders = require('./app/middleware/customHeaders');
 
 const app = new Koa();
+
+// initialize Sentry Raven client and capture errors
+Raven.config('https://69c78678304f4e7da08b0da748eafeb9@sentry.io/1203469').install();
+
+app.on('error', (err) => {
+  Raven.captureException(err, (err, eventId) => {
+    console.log(`Reported error ${eventId}`);
+  });
+});
 
 // setup initial middleware
 app.use(logger());

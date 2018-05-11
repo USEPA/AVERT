@@ -6,6 +6,7 @@ import { incrementProgress } from 'app/redux/annualDisplacement';
 // action types
 export const REQUEST_SO2 = 'so2/REQUEST_SO2';
 export const RECEIVE_SO2 = 'so2/RECEIVE_SO2';
+export const RECEIVE_ERROR = 'so2/RECEIVE_ERROR';
 export const RECEIVE_JOB_ID = 'so2/RECEIVE_JOB_ID';
 export const POLL_SERVER_FOR_DATA = 'so2/POLL_SERVER_FOR_DATA';
 
@@ -14,6 +15,7 @@ const initialState = {
   isFetching: false,
   jobId: 0,
   data: {},
+  error: false,
 };
 
 export default function reducer(state = initialState, action) {
@@ -22,6 +24,8 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         isFetching: true,
+        data: initialState.data,
+        error: initialState.error,
       };
 
     case RECEIVE_SO2:
@@ -31,10 +35,17 @@ export default function reducer(state = initialState, action) {
         data: action.json.data,
       };
 
+    case RECEIVE_ERROR:
+      return {
+        ...state,
+        isFetching: false,
+        error: true,
+      };
+
     case RECEIVE_JOB_ID:
       return {
         ...state,
-        jobId: action.json.job,
+        jobId: action.jobId,
       };
 
     default:
@@ -62,18 +73,24 @@ export const pollServerForData = () => {
     })
       .then((response) => response.json())
       .then((json) => {
-        // recursively call function if response from server is 'in progress'
-        if (json.response === 'in progress') {
+        if (json.response === 'error') {
+          dispatch({ type: RECEIVE_ERROR });
+        }
+
+        if (json.response === 'processing') {
           return setTimeout(
             () => dispatch(pollServerForData()),
             api.pollingFrequency,
           );
         }
-        dispatch(incrementProgress());
-        dispatch({
-          type: RECEIVE_SO2,
-          json: json,
-        });
+
+        if (json.response === 'ok') {
+          dispatch(incrementProgress());
+          dispatch({
+            type: RECEIVE_SO2,
+            json: json,
+          });
+        }
       });
   };
 };
@@ -101,7 +118,7 @@ export const fetchSo2 = () => {
       .then((json) => {
         dispatch({
           type: RECEIVE_JOB_ID,
-          json: json,
+          jobId: json.jobId,
         });
         dispatch(pollServerForData());
       });

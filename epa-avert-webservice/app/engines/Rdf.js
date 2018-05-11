@@ -1,40 +1,26 @@
 'use strict';
 
 module.exports = (function () {
-  function Rdf (options) {
-    this.raw = {};
-    this.regionName = ''; // not actually used (for debugging)
-    this.edges = [];
-    this.regionalLoads = [];
-    this.months = [];
-    this.defaults = {};
-
-    // if constructed with ({ rdf: ___ })
-    if (options && typeof options.rdf !== 'undefined') {
-      this.raw = options.rdf;
-      this.regionName = options.rdf.region.region_name;
-      this.edges = options.rdf.load_bin_edges;
-
-      options.rdf.regional_load.forEach(function (item) {
-        this.regionalLoads.push(item.regional_load_mw);
-        this.months.push(item.month);
-      }, this);
-    }
-
-    // if constructed with ({ defaults: ___ })
-    if (options && typeof options.defaults !== 'undefined') {
-      this.defaults = options.defaults;
-    }
+  function Rdf (data) {
+    this._raw = data;
+    this._regionName = data.region.region_name; // (for debugging only)
+    this._edges = data.load_bin_edges;
+    this._regionalLoads = [];
+    this._months = [];
+    // build up regionalLoads and months arrays
+    data.regional_load.forEach(function (item) {
+      this._regionalLoads.push(item.regional_load_mw);
+      this._months.push(item.month);
+    }, this);
   }
 
   Rdf.prototype.toJSON = function () {
     return {
-      raw: this.raw,
-      regionName: this.regionName,
-      edges: this.edges,
-      regionalLoads: this.regionalLoads,
-      months: this.months,
-      defaults: this.defaults,
+      raw: this._raw,
+      regionName: this._regionName,
+      edges: this._edges,
+      regionalLoads: this._regionalLoads,
+      months: this._months,
     }
   };
 
