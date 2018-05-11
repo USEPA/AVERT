@@ -2,7 +2,8 @@
   "name": "epa-avert-webapp",
   "version": "1.8.0",
   "private": true,
-  "description": "EPA's Avoided Emissions and Generation Tools (AVERT) is a free tool that estimates the emissions benefits of energy efficiency and renewable energy policies and programs.",
+  "description":
+    "EPA's Avoided Emissions and Generation Tools (AVERT) is a free tool that estimates the emissions benefits of energy efficiency and renewable energy policies and programs.",
   "author": "Eastern Research Group, Inc.",
   "contributors": [
     "Bryan Neva <bryan.neva@erg.com>",
@@ -39,7 +40,7 @@
     "stats-lite": "2.1.0"
   },
   "lint-staged": {
-    "src/**/.{js,jsx,json,css}": [
+    "epa-avert-webapp/src/**/.{js,jsx,json,css}": [
       "prettier --write",
       "git add"
     ]
@@ -47,7 +48,8 @@
   "scripts": {
     "precommit": "lint-staged",
     "start": "REACT_APP_ENV=local react-scripts start",
-    "build:pcf": "REACT_APP_ENV=pcf react-scripts build && cat post-build-instructions.txt",
+    "build:pcf":
+      "REACT_APP_ENV=pcf react-scripts build && cat post-build-instructions.txt",
     "build": "react-scripts build && cat post-build-instructions.txt",
     "test": "react-scripts test --verbose",
     "coverage": "react-scripts test --coverage",
