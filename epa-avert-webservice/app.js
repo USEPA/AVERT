@@ -13,10 +13,16 @@ const basicAuth = require('./app/middleware/basicAuth');
 const pageNotFound = require('./app/middleware/pageNotFound');
 const customHeaders = require('./app/middleware/customHeaders');
 
-// initialize Sentry Raven client
+const app = new Koa();
+
+// initialize Sentry Raven client and capture errors
 Raven.config('https://69c78678304f4e7da08b0da748eafeb9@sentry.io/1203469').install();
 
-const app = new Koa();
+app.on('error', (err) => {
+  Raven.captureException(err, (err, eventId) => {
+    console.log(`Reported error ${eventId}`);
+  });
+});
 
 // setup initial middleware
 app.use(logger());
