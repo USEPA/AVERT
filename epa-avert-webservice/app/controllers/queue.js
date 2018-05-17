@@ -19,6 +19,10 @@ const queue = kue.createQueue({
   }
 });
 
+queue.on('error', (err) => {
+  console.log('Queue error:', err);
+});
+
 // --- display kue dashboard (local development only)
 if (process.env.KOA_APP_ENV === 'local') {
   kue.app.listen(3002, () => {
@@ -69,7 +73,7 @@ const addPollutant = async (ctx, pollutant) => {
 
 // process pollutant from queue
 const processPollutant = (ctx, pollutant) => {
-  queue.process(`calculate_${pollutant}`, async (job, done) => {
+  queue.process(`calculate_${pollutant}`, async (job, ctx, done) => {
     const id = job.data.jobId;
     const region = job.data.region;
     console.log(`Queue: ${id} (${pollutant}) is processing`);
