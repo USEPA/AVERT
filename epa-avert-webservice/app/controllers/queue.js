@@ -24,7 +24,7 @@ queue.on('error', (err) => {
 });
 
 // --- display kue dashboard (local development only)
-if (process.env.KOA_APP_ENV === 'local') {
+if (process.env.KOA_APP_ENV === 'dev') {
   kue.app.listen(3002, () => {
     console.log('Kue is running on http://localhost:3002');
   });
