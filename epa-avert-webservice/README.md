@@ -8,7 +8,7 @@ Local development depends on `redis-server` and `node` (version 8 or higher).
 Open three separate terminal sessions and run the following in each subsequent session:
 1. Start a local redis server: `redis-server`.
 2. From the [epa-avert-webservice directory](/epa-avert-webservice) (this one), start the npm dev script: `npm run dev`.
-2. From the [epa-avert-webapp directory](/epa-avert-webapp) (up a level), start the npm dev script: `npm run dev`. App will be served from `localhost:3000`.
+3. From the [epa-avert-webapp directory](/epa-avert-webapp) (up a level), start the npm start script: `npm start`. App will be served from `localhost:3000`.
 
 ## Cloud.gov Deployment
 The app is currently deployed to the `epa-prototyping` org on [Cloud.gov](https://cloud.gov/). The app will eventually be moved to a non-sandbox org w/ three spaces for Development, Staging, and Production. The Development and Staging spaces will be password protected with basic authentication.
