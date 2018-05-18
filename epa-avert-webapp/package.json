@@ -45,9 +45,8 @@
   "scripts": {
     "precommit": "lint-staged",
     "start": "react-scripts start",
-    "build:pcf":
-      "REACT_APP_URL=https://avert-dev.cfapps.io react-scripts build && cat post-build-instructions.txt",
-    "build": "react-scripts build && cat post-build-instructions.txt",
+    "build:pcf": "REACT_APP_URL=https://avert-dev.cfapps.io npm run build",
+    "build": "react-scripts build && ./sync-build-with-public.sh",
     "test": "react-scripts test --verbose",
     "coverage": "react-scripts test --coverage",
     "eject": "react-scripts eject",

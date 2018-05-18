@@ -13,4 +13,4 @@ Front-end app depends on a local instance of the [epa-avert-webservice app](/epa
 * From the [epa-avert-webapp directory](/epa-avert-webapp) (this one), in a terminal session run:  
   `npm run build`
 
-* Follow the post-build instructions that are printed to the terminal window (also found [here](/epa-avert-webapp/post-build-instructions.txt)).
+* Follow the deployment instructions found in the [epa-avert-webservice app](/epa-avert-webservice#cloudgov-deployment)).

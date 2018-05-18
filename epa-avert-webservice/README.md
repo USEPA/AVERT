@@ -13,7 +13,7 @@ Open three separate terminal sessions and run the following in each subsequent s
 ## Cloud.gov Deployment
 The app is currently deployed to the `epa-prototyping` org on [Cloud.gov](https://cloud.gov/). The app will eventually be moved to a non-sandbox org w/ three spaces for Development, Staging, and Production. The Development and Staging spaces will be password protected with basic authentication.
 
-**IMPORTANT:** Before deploying code to Cloud.gov, ensure this app has the most recent version of the [epa-avert-webapp's build files](/epa-avert-webapp/build) in this app's [public](/epa-avert-webservice/public) directory.
+**IMPORTANT:** Before deploying code to Cloud.gov, ensure this app has the most recent version of the webapp's build files. See: [epa-avert-webapp's Cloud.gov Deployment](/epa-avert-webapp#cloudgov-deployment).
 
 ### Development/Staging Spaces
 The development/staging version is exactly the same as the production version, but it requires basic authentication to access the site. From the [epa-avert-webservice directory](/epa-avert-webservice) (this one), in a terminal session enter:    
