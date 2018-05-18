@@ -22,8 +22,8 @@
   "main": "./app.js",
   "scripts": {
     "start": "node ./app.js",
-    "local": "KOA_APP_ENV=local AVERT_AUTH=true AVERT_USER=avert AVERT_PASS=local node ./app.js",
-    "test": "KOA_APP_ENV=local mocha */test.js"
+    "dev": "KOA_APP_ENV=dev AVERT_AUTH=true AVERT_USER=avert AVERT_PASS=dev node ./app.js",
+    "test": "KOA_APP_ENV=dev mocha */test.js"
   },
   "dependencies": {
     "@koa/cors": "2.2.1",
