@@ -260,13 +260,17 @@ const EmissionsChart = (props: Props) => {
       ? ''
       : `${States[selectedState]}`;
   }
-  // prettier-ignore
+
   if (aggregation === 'county') {
-    // counties are called parishes in Louisiana
-    const county = (selectedState === 'LA') ? 'Parish' : 'County';
-    location = (selectedCounty === '')
-      ? ''
-      : `${selectedCounty} ${county}, ${States[selectedState]}`;
+    const countyName =
+      selectedCounty.indexOf('(City)') !== -1
+        ? selectedCounty // county is really a city
+        : selectedState === 'LA'
+          ? `${selectedCounty} Parish`
+          : `${selectedCounty} County`;
+
+    location =
+      selectedCounty === '' ? '' : `${countyName}, ${States[selectedState]}`;
   }
 
   const formatTitle = (pollutant) =>
