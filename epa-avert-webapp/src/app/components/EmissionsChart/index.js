@@ -250,7 +250,7 @@ const EmissionsChart = (props: Props) => {
 
   // conditionally define location
   let location;
-  // prettier-ignore
+
   if (aggregation === 'region') {
     location = `${selectedRegion} Region`;
   }
@@ -260,7 +260,7 @@ const EmissionsChart = (props: Props) => {
       ? ''
       : `${States[selectedState]}`;
   }
-
+  // prettier-ignore
   if (aggregation === 'county') {
     const countyName =
       selectedCounty.indexOf('(City)') !== -1
@@ -269,8 +269,9 @@ const EmissionsChart = (props: Props) => {
           ? `${selectedCounty} Parish`
           : `${selectedCounty} County`;
 
-    location =
-      selectedCounty === '' ? '' : `${countyName}, ${States[selectedState]}`;
+    location = (selectedCounty === '')
+      ? ''
+      : `${countyName}, ${States[selectedState]}`;
   }
 
   const formatTitle = (pollutant) =>
