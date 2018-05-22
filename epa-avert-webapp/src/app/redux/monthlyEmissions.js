@@ -176,7 +176,9 @@ export default function reducer(state = initialState, action) {
         const countyName =
           county.indexOf('(City)') !== -1
             ? county // county is really a city
-            : state === 'LA' ? `${county} Parish` : `${county} County`;
+            : state === 'LA'
+              ? `${county} Parish`
+              : `${county} County`;
 
         const formatNumber = (number) =>
           number.toLocaleString(undefined, {
