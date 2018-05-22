@@ -108,12 +108,12 @@ const StepPanels = (props: Props) => {
           <RegionMap />
 
           <p className="avert-small-text">
-            The online version of AVERT can run analyses using 2016 emissions
+            The online version of AVERT can run analyses using 2017 emissions
             and generation data. The Excel version of AVERT (available for
             download{' '}
             <a href="https://www.epa.gov/statelocalenergy/download-avert">
               here
-            </a>) allows analyses for years 2007–2016 or for a future year
+            </a>) allows analyses for years 2007–2017 or for a future year
             scenario.
           </p>
         </PanelBody>
