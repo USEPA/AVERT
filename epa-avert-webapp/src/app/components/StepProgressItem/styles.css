@@ -24,7 +24,7 @@
 @media (min-width: 35em) {
   .avert-nav li {
     float: left;
-    width: calc((100% - 2.5rem) / 3);
+    width: calc((100% - 2.5rem) * 0.333333);
   }
 
   .avert-nav a {
