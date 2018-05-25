@@ -1,0 +1,72 @@
+.avert-unit-conversion {
+  margin-bottom: 1rem;
+  padding: 0.5rem 0.625rem 0.75rem;
+  border: 1px solid #dbdbdb;
+  background-color: #fbfbfb;
+}
+
+.avert-unit-conversion p {
+  margin: 0;
+  line-height: 1;
+  text-align: center;
+}
+
+.avert-unit-conversion-heading {
+  font-size: 0.8125rem;
+  font-weight: bold;
+}
+
+.avert-unit-conversion .avert-modal {
+  line-height: 1.375;
+  text-align: left;
+}
+
+.avert-unit-conversion .avert-input-error {
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: bold;
+  font-style: normal;
+}
+
+.avert-unit-field {
+  display: flex;
+  align-items: baseline;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.avert-unit-field input {
+  margin: 0 0.25rem;
+  padding: 0.125rem 0.25rem;
+  border: 1px solid #ccc;
+  width: 100%;
+  font-size: 0.8125rem;
+  font-weight: bold;
+  text-align: right;
+}
+
+/* consistent cross browser focus (http://master.origin.formcore.fgview.com/) */
+.avert-unit-field input:focus {
+  outline: none;
+  box-shadow: inset 0 0 0.25rem rgb(0, 169, 204);
+}
+
+.avert-unit-field .avert-field-prefix {
+  flex: 1 0 auto;
+  min-width: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.avert-unit-field .avert-field-postfix {
+  flex: 1 0 auto;
+  min-width: 1.5rem;
+  font-size: 0.75rem;
+}
+
+@media (min-width: 30em) {
+  .avert-unit-conversion {
+    float: right;
+    margin-left: 1rem;
+    width: calc(100% / 3);
+  }
+}

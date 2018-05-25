@@ -1,0 +1,6 @@
+machine:
+  node:
+    version: 8
+
+general:
+  build_dir: epa-avert-webapp

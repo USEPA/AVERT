@@ -1,0 +1,195 @@
+// @flow
+
+import React from 'react';
+// components
+import LoadingIcon from 'app/components/LoadingIcon';
+import Panel from 'app/components/Panel';
+import PanelBody from 'app/components/PanelBody';
+import PanelFooter from 'app/components/PanelFooter/container.js';
+import RegionList from 'app/components/RegionList/container.js';
+import RegionMap from 'app/components/RegionMap';
+import EEREInputs from 'app/components/EEREInputs/container.js';
+import UnitConversion from 'app/components/UnitConversion';
+import EEREChart from 'app/components/EEREChart/container.js';
+import DisplacementsTable from 'app/components/DisplacementsTable/container.js';
+import EmissionsTable from 'app/components/EmissionsTable/container.js';
+import EmissionsChart from 'app/components/EmissionsChart/container.js';
+import DataDownload from 'app/components/DataDownload/container.js';
+// styles
+import './styles.css';
+
+type Props = {
+  activePanel: number,
+  // redux connected props
+  region: string,
+  loading: boolean,
+  modalOverlay: boolean,
+  activeModalId: number,
+  loadingProgress: number,
+  softValid: boolean,
+  serverCalcError: boolean,
+  onClickOutsideModal: (number) => void,
+};
+
+const StepPanels = (props: Props) => {
+  let classes = ['avert-steps'];
+  if (props.loading || props.serverCalcError) {
+    classes.push('avert-dark-overlay');
+  }
+  if (props.modalOverlay) {
+    classes.push('avert-modal-overlay');
+  }
+
+  const clickedOutsideModal = (event) => {
+    if (event.target.classList.contains('avert-modal-overlay')) return true;
+    return false;
+  };
+
+  return (
+    <div
+      className={classes.join(' ')}
+      onClick={(event) => {
+        if (props.modalOverlay && clickedOutsideModal(event)) {
+          props.onClickOutsideModal(props.activeModalId);
+        }
+      }}
+      onKeyDown={(event) => {
+        if (props.modalOverlay && event.keyCode === 27) {
+          props.onClickOutsideModal(props.activeModalId);
+        }
+      }}
+    >
+      {// conditionally display loading indicator
+      props.loading &&
+        !props.serverCalcError && (
+          <div className="avert-overlay-text">
+            <LoadingIcon />
+            <p className="avert-overlay-heading">LOADING...</p>
+            {// conditionally display progress bar
+            props.activePanel === 3 && (
+              <div>
+                <progress
+                  className="avert-loading-progress"
+                  value={props.loadingProgress}
+                  max="6"
+                >
+                  {props.loadingProgress * 100 / 6}%
+                </progress>
+                <p className="avert-overlay-info">
+                  These calculations may take several minutes.
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+      {// conditionally display web server error
+      props.serverCalcError && (
+        <div className="avert-overlay-text">
+          <p className="avert-overlay-heading">Web Server Error</p>
+          <p className="avert-overlay-info">Please try reloading the page.</p>
+        </div>
+      )}
+
+      <Panel active={props.activePanel === 1}>
+        <PanelBody heading="Select Region">
+          <p>
+            AVERT splits the contiguous 48 states into 10 regions. AVERT regions
+            are aggregated based on EPA’s{' '}
+            <a href="https://www.epa.gov/energy/egrid">eGRID subregions</a>.
+            Select a region for analysis by either using the dropdown menu or
+            clicking the map. Selecting a region loads the power plants
+            operating within each region and region-specific wind and solar
+            capacity data.
+          </p>
+
+          <RegionList />
+
+          <RegionMap />
+
+          <p className="avert-small-text">
+            The online version of AVERT can run analyses using 2017 emissions
+            and generation data. The Excel version of AVERT (available for
+            download{' '}
+            <a href="https://www.epa.gov/statelocalenergy/download-avert">
+              here
+            </a>) allows analyses for years 2007–2017 or for a future year
+            scenario.
+          </p>
+        </PanelBody>
+
+        <PanelFooter nextButtonText="Set EE/RE Impacts" />
+      </Panel>
+
+      <Panel active={props.activePanel === 2}>
+        <PanelBody heading="Set Energy Efficiency and Renewable Energy Impacts">
+          <UnitConversion />
+
+          <p>
+            AVERT quantifies avoided emissions and electricity generation
+            displaced by EE/RE policies and programs. Specify the impacts of
+            EE/RE programs below, and AVERT will use these inputs to generate
+            results. For more information about inputs, please consult the{' '}
+            <a href="https://www.epa.gov/statelocalenergy/avert-user-manual">
+              AVERT user manual
+            </a>{' '}
+            or click the <span className="avert-modal-link" /> icon for each
+            program type below.
+          </p>
+
+          <p className="avert-small-text">
+            Five types of programs are listed below (A through E). You can enter
+            impacts for any or all types of programs, in any combination. AVERT
+            will calculate cumulative impacts.
+          </p>
+
+          <EEREInputs />
+
+          <EEREChart heading="EE/RE profile based on values entered:" />
+        </PanelBody>
+
+        <PanelFooter
+          prevButtonText="Back to Region"
+          nextButtonText="Get Results"
+        />
+      </Panel>
+
+      <Panel active={props.activePanel === 3}>
+        <PanelBody heading="Results: Avoided Regional, State, and County-Level Emissions">
+          {// conditionally display validation warning
+          !props.softValid && (
+            <p className="avert-message-top avert-validation-warning">
+              <span className="avert-message-heading">WARNING:</span>
+              The proposed EE/RE programs would collectively displace more than
+              15% of regional fossil generation in one or more hours of the
+              year. AVERT works best with displacements of 15% or less, as it is
+              designed to simulate marginal operational changes in load, rather
+              than large-scale changes that may change fundamental dynamics.
+            </p>
+          )}
+
+          <DisplacementsTable
+            heading={`Annual Regional Displacements: ${props.region} Region`}
+          />
+
+          <EmissionsTable
+            heading={`Annual State Emission Changes: ${props.region} Region`}
+          />
+
+          <EmissionsChart
+            heading={`Monthly Emission Changes: ${props.region} Region`}
+          />
+
+          <DataDownload heading="Data Download" />
+        </PanelBody>
+
+        <PanelFooter
+          prevButtonText="Back to EE/RE Impacts"
+          nextButtonText="Reset Region"
+        />
+      </Panel>
+    </div>
+  );
+};
+
+export default StepPanels;
