@@ -27,16 +27,13 @@
   },
   "dependencies": {
     "@koa/cors": "2.2.1",
-    "cfenv": "1.1.0",
     "koa": "2.5.1",
     "koa-basic-auth": "3.0.0",
     "koa-bodyparser": "4.2.0",
     "koa-logger": "3.2.0",
     "koa-route": "3.2.0",
     "koa-static": "4.0.3",
-    "raven": "2.6.2",
-    "redis": "2.8.0",
-    "request": "2.86.0"
+    "raven": "2.6.2"
   },
   "devDependencies": {
     "mocha": "5.1.1",
