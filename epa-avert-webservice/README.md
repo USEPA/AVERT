@@ -1,6 +1,6 @@
 # EPA AVERT Web Service
 
-Node.js web service (built with Koa) for performing displacement calculations for the AVERT web app.
+Node.js web service (built with Koa) for performing displacement calculations and serving the built static content of the avert web app.
 
 ## Local Development
 Local development depends on `node` (version 8 or higher).
