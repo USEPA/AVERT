@@ -3,12 +3,11 @@
 Node.js web service (built with Koa and Redis/Kue) for performing displacement calculations for AVERT web app.
 
 ## Local Development
-Local development depends on `redis-server` and `node` (version 8 or higher).
+Local development depends on `node` (version 8 or higher).
 
-Open three separate terminal sessions and run the following in each subsequent session:
-1. Start a local redis server: `redis-server`.
-2. From the [epa-avert-webservice directory](/epa-avert-webservice) (this one), start the npm dev script: `npm run dev`.
-3. From the [epa-avert-webapp directory](/epa-avert-webapp) (up a level), start the npm start script: `npm start`. App will be served from `localhost:3000`.
+Open two separate terminal sessions and run the following in each subsequent session:
+1. From the [epa-avert-webservice directory](/epa-avert-webservice) (this one), start the npm dev script: `npm run dev`.
+2. From the [epa-avert-webapp directory](/epa-avert-webapp) (up a level), start the npm start script: `npm start`. App will be served from `localhost:3000`.
 
 ## Cloud.gov Deployment
 Four environment variables are set in Cloud.gov (three specific to the AVERT app):

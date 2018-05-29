@@ -7,8 +7,6 @@ import { incrementProgress } from 'app/redux/annualDisplacement';
 export const REQUEST_PM25 = 'pm25/REQUEST_PM25';
 export const RECEIVE_PM25 = 'pm25/RECEIVE_PM25';
 export const RECEIVE_ERROR = 'pm25/RECEIVE_ERROR';
-export const RECEIVE_JOB_ID = 'pm25/RECEIVE_JOB_ID';
-export const POLL_SERVER_FOR_DATA = 'pm25/POLL_SERVER_FOR_DATA';
 
 // reducer
 const initialState = {
@@ -42,66 +40,19 @@ export default function reducer(state = initialState, action) {
         error: true,
       };
 
-    case RECEIVE_JOB_ID:
-      return {
-        ...state,
-        jobId: action.jobId,
-      };
-
     default:
       return state;
   }
 }
 
 // action creators
-export const pollServerForData = () => {
-  return (dispatch, getState) => {
-    const { api, pm25 } = getState();
-
-    dispatch({
-      type: POLL_SERVER_FOR_DATA,
-      jobId: pm25.jobId,
-    });
-
-    const headers = new Headers();
-    headers.append('pragma', 'no-cache');
-    headers.append('cache-control', 'no-cache');
-
-    // fetch pm25 data via job id
-    return fetch(`${api.baseUrl}/api/v1/jobs/${pm25.jobId}`, {
-      headers: headers,
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.response === 'error') {
-          dispatch({ type: RECEIVE_ERROR });
-        }
-
-        if (json.response === 'processing') {
-          return setTimeout(
-            () => dispatch(pollServerForData()),
-            api.pollingFrequency,
-          );
-        }
-
-        if (json.response === 'ok') {
-          dispatch(incrementProgress());
-          dispatch({
-            type: RECEIVE_PM25,
-            json: json,
-          });
-        }
-      });
-  };
-};
-
 export const fetchPm25 = () => {
   return (dispatch, getState) => {
     const { api } = getState();
 
     dispatch({ type: REQUEST_PM25 });
 
-    // post pm25 data for region and receive a job id
+    // post pm25 data for region and receive calculated displacement data
     const options = {
       method: 'POST',
       headers: {
@@ -113,14 +64,18 @@ export const fetchPm25 = () => {
         eere: avert.eereLoad.hourlyEere,
       }),
     };
+
     return fetch(`${api.baseUrl}/api/v1/pm25`, options)
       .then((response) => response.json())
       .then((json) => {
+        dispatch(incrementProgress());
         dispatch({
-          type: RECEIVE_JOB_ID,
-          jobId: json.jobId,
+          type: RECEIVE_PM25,
+          json: json,
         });
-        dispatch(pollServerForData());
+      })
+      .catch((error) => {
+        dispatch({ type: RECEIVE_ERROR });
       });
   };
 };
