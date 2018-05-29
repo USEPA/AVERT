@@ -11,17 +11,14 @@ module.exports = {
       return;
     }
 
-    //  if data is set to temporary '---' value, return calcutating
-    if (data === '---') {
-      ctx.body = { response: 'processing' }
-      return;
-    }
-
     // else, data has been processed, so return data
     ctx.body = {
       response: 'ok',
       data: JSON.parse(data),
     }
+
+    console.log(`Redis: ${id} data retrieved`);
+
     // remove 'job:id' key and value in 'avert' hash in redis
     redisClient.del(`job:${id}`);
   },
