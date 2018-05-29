@@ -6,7 +6,7 @@ const regions = require('../lib/regionsEnum');
 const Rdf = require('../engines/Rdf');
 const DisplacementsEngine = require('../engines/DisplacementsEngine');
 
-// add pollutant data to redis
+// receive eere data and region, and return displacement data
 const calculatePollutant = async (ctx, pollutant) => {
   const body = await ctx.request.body;
   // instantiate new Rdf from rdf data file
