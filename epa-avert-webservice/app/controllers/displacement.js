@@ -2,8 +2,6 @@ const fs = require('fs');
 const { promisify } = require('util');
 const readFile = promisify(fs.readFile);
 
-const redisConfig = require('../lib/redisConfig');
-const redisClient = require('../lib/redisClient');
 const regions = require('../lib/regionsEnum');
 const Rdf = require('../engines/Rdf');
 const DisplacementsEngine = require('../engines/DisplacementsEngine');
@@ -22,17 +20,11 @@ const calculatePollutant = async (ctx, pollutant) => {
   if (pollutant === 'nox') data = engine.getNoxTotal();
   if (pollutant === 'co2') data = engine.getCo2Total();
   if (pollutant === 'pm25') data = engine.getPm25Total();
-  // increment 'jobs:count' string in redis
-  const id = await redisClient.inc('jobs:count');
-  // set 'job:id' key and value in 'avert' hash in redis with data
-  await redisClient.set(`job:${id}`, JSON.stringify(data));
-  console.log(`Redis: ${id} (${pollutant}) data stored`);
-  // web app uses jobId to immediately make a new request,
-  // polling server for data via GET /api/v1/jobs/:id
+  // return data to web app
   ctx.body = {
     response: 'ok',
-    jobId: id,
-  };
+    data: data,
+  }
 };
 
 module.exports = {
