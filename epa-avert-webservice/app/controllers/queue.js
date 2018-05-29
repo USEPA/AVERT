@@ -8,8 +8,8 @@ const regions = require('../lib/regionsEnum');
 const Rdf = require('../engines/Rdf');
 const DisplacementsEngine = require('../engines/DisplacementsEngine');
 
-// add pollutant to redis
-const addPollutant = async (ctx, pollutant) => {
+// add pollutant data to redis
+const calculatePollutant = async (ctx, pollutant) => {
   const body = await ctx.request.body;
   // instantiate new Rdf from rdf data file
   const rdfFile = await readFile(regions[body.region].rdf);
@@ -36,9 +36,9 @@ const addPollutant = async (ctx, pollutant) => {
 };
 
 module.exports = {
-  addGeneration: (ctx) => addPollutant(ctx, 'generation'),
-  addSo2: (ctx) => addPollutant(ctx, 'so2'),
-  addNox: (ctx) => addPollutant(ctx, 'nox'),
-  addCo2: (ctx) => addPollutant(ctx, 'co2'),
-  addPm25: (ctx) => addPollutant(ctx, 'pm25'),
+  calculateGeneration: (ctx) => calculatePollutant(ctx, 'generation'),
+  calculateSo2: (ctx) => calculatePollutant(ctx, 'so2'),
+  calculateNox: (ctx) => calculatePollutant(ctx, 'nox'),
+  calculateCo2: (ctx) => calculatePollutant(ctx, 'co2'),
+  calculatePm25: (ctx) => calculatePollutant(ctx, 'pm25'),
 };

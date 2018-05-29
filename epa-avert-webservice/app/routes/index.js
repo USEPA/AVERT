@@ -24,11 +24,11 @@ module.exports = [
 
   // web app method: calculateDisplacement()
   // (from panel 2, user clicks 'Get Results' button)
-  route.post('/api/v1/generation', queue.addGeneration),
-  route.post('/api/v1/so2', queue.addSo2),
-  route.post('/api/v1/nox', queue.addNox),
-  route.post('/api/v1/co2', queue.addCo2),
-  route.post('/api/v1/pm25', queue.addPm25),
+  route.post('/api/v1/generation', queue.calculateGeneration),
+  route.post('/api/v1/so2', queue.calculateSo2),
+  route.post('/api/v1/nox', queue.calculateNox),
+  route.post('/api/v1/co2', queue.calculateCo2),
+  route.post('/api/v1/pm25', queue.calculatePm25),
 
   // web app method: calculateDisplacement()
   // (from panel 2, user clicks 'Get Results' button)
