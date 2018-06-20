@@ -2,19 +2,16 @@
 
 /*
  * NOTE:
- * This JS file was created from 'CountyFIPS' sheet of 'AVERT Main Module v2.0
- * (20180201).xlsm file'. If changes are made to the sheet in Excel, this file
- * needs to be updated, with special attention applied to:
+ * This JS file was created from the 'CountyFIPS' sheet of the 'AVERT Main
+ * Module v2.0 (20180201).xlsm file'. If changes are made to the sheet in Excel,
+ * this file needs to be updated, with special attention applied to:
  *
  * - code: Ensure they're strings and retain a leading zero (if applicable).
  *
- * - county: Ensure abbreviated county names are spelled out.
- *           For example, 'Saint Louis' should be 'Saint Louis'.
- *
- *           Ensure cities are displayed with 'city' capitalized in parenthesis.
+ * - county: Ensure cities are displayed with 'city' capitalized in parenthesis.
  *           For example, 'Baltimore (City)' should be 'Baltimore (City)'.
  *
- *           Special formatting La Porte county, Indiana:
+ *           Special formatting for La Porte county, Indiana:
  *           The web app displays this as 'LaPorte', so use that formatting.
 */
 
@@ -313,7 +310,7 @@ const FipsCodes: Array<County> = [
   {
     code: '01115',
     state: 'Alabama',
-    county: 'Saint Clair',
+    county: 'St. Clair',
   },
   {
     code: '01117',
@@ -888,7 +885,7 @@ const FipsCodes: Array<County> = [
   {
     code: '05123',
     state: 'Arkansas',
-    county: 'Saint Francis',
+    county: 'St. Francis',
   },
   {
     code: '05125',
@@ -1898,12 +1895,12 @@ const FipsCodes: Array<County> = [
   {
     code: '12109',
     state: 'Florida',
-    county: 'Saint Johns',
+    county: 'St. Johns',
   },
   {
     code: '12111',
     state: 'Florida',
-    county: 'Saint Lucie',
+    county: 'St. Lucie',
   },
   {
     code: '12113',
@@ -3408,7 +3405,7 @@ const FipsCodes: Array<County> = [
   {
     code: '17163',
     state: 'Illinois',
-    county: 'Saint Clair',
+    county: 'St. Clair',
   },
   {
     code: '17165',
@@ -3863,7 +3860,7 @@ const FipsCodes: Array<County> = [
   {
     code: '18141',
     state: 'Indiana',
-    county: 'Saint Joseph',
+    county: 'St. Joseph',
   },
   {
     code: '18143',
@@ -5808,47 +5805,47 @@ const FipsCodes: Array<County> = [
   {
     code: '22087',
     state: 'Louisiana',
-    county: 'Saint Bernard',
+    county: 'St. Bernard',
   },
   {
     code: '22089',
     state: 'Louisiana',
-    county: 'Saint Charles',
+    county: 'St. Charles',
   },
   {
     code: '22091',
     state: 'Louisiana',
-    county: 'Saint Helena',
+    county: 'St. Helena',
   },
   {
     code: '22093',
     state: 'Louisiana',
-    county: 'Saint James',
+    county: 'St. James',
   },
   {
     code: '22095',
     state: 'Louisiana',
-    county: 'Saint John the Baptist',
+    county: 'St. John the Baptist',
   },
   {
     code: '22097',
     state: 'Louisiana',
-    county: 'Saint Landry',
+    county: 'St. Landry',
   },
   {
     code: '22099',
     state: 'Louisiana',
-    county: 'Saint Martin',
+    county: 'St. Martin',
   },
   {
     code: '22101',
     state: 'Louisiana',
-    county: 'Saint Mary',
+    county: 'St. Mary',
   },
   {
     code: '22103',
     state: 'Louisiana',
-    county: 'Saint Tammany',
+    county: 'St. Tammany',
   },
   {
     code: '22105',
@@ -6078,7 +6075,7 @@ const FipsCodes: Array<County> = [
   {
     code: '24037',
     state: 'Maryland',
-    county: "Saint Mary's",
+    county: "St. Mary's",
   },
   {
     code: '24039',
@@ -6548,12 +6545,12 @@ const FipsCodes: Array<County> = [
   {
     code: '26147',
     state: 'Michigan',
-    county: 'Saint Clair',
+    county: 'St. Clair',
   },
   {
     code: '26149',
     state: 'Michigan',
-    county: 'Saint Joseph',
+    county: 'St. Joseph',
   },
   {
     code: '26151',
@@ -6938,7 +6935,7 @@ const FipsCodes: Array<County> = [
   {
     code: '27137',
     state: 'Minnesota',
-    county: 'Saint Louis',
+    county: 'St. Louis',
   },
   {
     code: '27139',
@@ -7898,12 +7895,12 @@ const FipsCodes: Array<County> = [
   {
     code: '29183',
     state: 'Missouri',
-    county: 'Saint Charles',
+    county: 'St. Charles',
   },
   {
     code: '29185',
     state: 'Missouri',
-    county: 'Saint Clair',
+    county: 'St. Clair',
   },
   {
     code: '29186',
@@ -7913,12 +7910,12 @@ const FipsCodes: Array<County> = [
   {
     code: '29187',
     state: 'Missouri',
-    county: 'Saint Francois',
+    county: 'St. Francois',
   },
   {
     code: '29189',
     state: 'Missouri',
-    county: 'Saint Louis',
+    county: 'St. Louis',
   },
   {
     code: '29195',
@@ -8013,7 +8010,7 @@ const FipsCodes: Array<County> = [
   {
     code: '29510',
     state: 'Missouri',
-    county: 'Saint Louis (City)',
+    county: 'St. Louis (City)',
   },
   {
     code: '30001',
@@ -9388,7 +9385,7 @@ const FipsCodes: Array<County> = [
   {
     code: '36089',
     state: 'New York',
-    county: 'Saint Lawrence',
+    county: 'St. Lawrence',
   },
   {
     code: '36091',
@@ -15543,7 +15540,7 @@ const FipsCodes: Array<County> = [
   {
     code: '55109',
     state: 'Wisconsin',
-    county: 'Saint Croix',
+    county: 'St. Croix',
   },
   {
     code: '55111',
