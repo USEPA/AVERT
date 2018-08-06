@@ -71,7 +71,7 @@ const EEREInputs = (props: Props) => {
               Please enter a number between 0 and {input.max}.
             </span>
             This will help ensure that each of your proposed programs displaces
-            no more than 15% of hourly regional fossil generation, which is the
+            no more than 30% of hourly regional fossil generation, which is the
             recommended limit for AVERT. AVERT is designed to simulate marginal
             operational changes in load, rather than large-scale changes that
             may change fundamental dynamics.
@@ -218,7 +218,7 @@ const EEREInputs = (props: Props) => {
                 {displayError({
                   name: 'reduction',
                   value: broadProgram,
-                  max: 15,
+                  max: limits.percent,
                 })}
               </li>
 
@@ -250,7 +250,7 @@ const EEREInputs = (props: Props) => {
                 {displayError({
                   name: 'reduction',
                   value: reduction,
-                  max: 15,
+                  max: limits.percent,
                 })}
 
                 {displayError({

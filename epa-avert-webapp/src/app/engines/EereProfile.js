@@ -4,7 +4,7 @@ class EereProfile {
       annualGwh: false,
       constantMwh: false,
       renewables: false,
-      softPercent: 15,
+      percent: 30,
     };
     this._errors = [];
     this._annualGwh = 0;
@@ -23,7 +23,7 @@ class EereProfile {
       annualGwh: obj.annualGwh,
       constantMwh: Math.round(hourly * 100) / 100,
       renewables: obj.renewables,
-      softPercent: 15,
+      percent: 30,
     };
   }
 
@@ -93,7 +93,7 @@ class EereProfile {
 
   set reduction(input) {
     this._removeError('reduction');
-    if (this._isNegativeOrNaN(input) || input > this._limits.softPercent) {
+    if (this._isNegativeOrNaN(input) || input > this._limits.percent) {
       this._addError('reduction');
     }
     this._reduction = input;

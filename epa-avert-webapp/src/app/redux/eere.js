@@ -36,6 +36,7 @@ const initialState = {
     annualGwh: false,
     constantMwh: false,
     renewables: false,
+    percent: false,
   },
   softLimit: {
     valid: true,
