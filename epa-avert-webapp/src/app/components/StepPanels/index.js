@@ -145,7 +145,10 @@ const StepPanels = (props: Props) => {
 
           <EEREInputs />
 
-          <EEREChart heading="EE/RE profile based on values entered:" />
+          <EEREChart
+            heading="EE/RE profile based on values entered:"
+            subheading="Adjusted for transmission and distribution line loss and wind and solar capacity factors, where applicable."
+          />
         </PanelBody>
 
         <PanelFooter

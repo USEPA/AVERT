@@ -31,7 +31,8 @@ body {
 /* --- typography --- */
 h1,
 h2,
-h3 {
+h3,
+h4 {
   margin-top: 1rem;
   margin-bottom: 0.5rem;
   font-size: 1rem;
@@ -170,19 +171,29 @@ fieldset {
 }
 
 /* --- chart titles --- */
-.avert-chart-title {
-  font-size: 0.75rem;
+.avert-chart-title,
+.avert-chart-subtitle {
   line-height: 1.125;
   font-weight: bold;
   text-align: center;
   color: #444;
 }
 
+.avert-chart-title {
+  font-size: 0.75rem;
+}
+
+.avert-chart-subtitle {
+  margin-top: 0.5rem;
+  font-size: 0.625rem;
+}
+
 /* --- media queries --- */
 @media (min-width: 25em) {
   h1,
   h2,
-  h3 {
+  h3,
+  h4 {
     margin-top: 1.125rem;
     font-size: 1.0625rem;
   }
@@ -240,7 +251,8 @@ fieldset {
 @media (min-width: 30em) {
   h1,
   h2,
-  h3 {
+  h3,
+  h4 {
     margin-top: 1.25rem;
     font-size: 1.125rem;
   }
@@ -293,12 +305,17 @@ fieldset {
   .avert-chart-title {
     font-size: 0.875rem;
   }
+
+  .avert-chart-subtitle {
+    font-size: 0.6875rem;
+  }
 }
 
 @media (min-width: 35em) {
   h1,
   h2,
-  h3 {
+  h3,
+  h4 {
     margin-top: 1.375rem;
     font-size: 1.1875rem;
   }
@@ -361,7 +378,8 @@ fieldset {
 @media (min-width: 40em) {
   h1,
   h2,
-  h3 {
+  h3,
+  h4 {
     margin-top: 1.5rem;
     font-size: 1.25rem;
   }
@@ -413,5 +431,9 @@ fieldset {
 
   .avert-chart-title {
     font-size: 1rem;
+  }
+
+  .avert-chart-subtitle {
+    font-size: 0.75rem;
   }
 }
