@@ -26,17 +26,17 @@
     "test": "mocha */test.js"
   },
   "dependencies": {
-    "@koa/cors": "2.2.1",
-    "koa": "2.5.1",
+    "@koa/cors": "2.2.2",
+    "koa": "2.5.2",
     "koa-basic-auth": "3.0.0",
-    "koa-bodyparser": "4.2.0",
+    "koa-bodyparser": "4.2.1",
     "koa-logger": "3.2.0",
     "koa-route": "3.2.0",
-    "koa-static": "4.0.3",
-    "raven": "2.6.2"
+    "koa-static": "5.0.0",
+    "raven": "2.6.3"
   },
   "devDependencies": {
-    "mocha": "5.1.1",
+    "mocha": "5.2.0",
     "supertest": "3.1.0"
   }
 }
