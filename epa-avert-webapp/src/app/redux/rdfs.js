@@ -51,6 +51,7 @@ export const fetchRegion = () => {
           hours: avert.rdf.months.length,
           annualGwh: avert.rdf.maxAnnualGwh,
           renewables: avert.rdf.maxRenewableMwh,
+          percent: avert.rdf.maxEEPercent,
         };
 
         dispatch({

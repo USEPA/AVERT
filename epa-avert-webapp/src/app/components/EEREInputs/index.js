@@ -24,6 +24,7 @@ type Props = {
     annualGwh: boolean | number,
     constantMwh: boolean | number,
     renewables: boolean | number,
+    percent: boolean | number,
   },
   onConstantMwChange: (string) => void,
   onAnnualGwhChange: (string) => void,
