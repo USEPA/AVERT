@@ -24,6 +24,7 @@ type Props = {
     annualGwh: boolean | number,
     constantMwh: boolean | number,
     renewables: boolean | number,
+    percent: boolean | number,
   },
   onConstantMwChange: (string) => void,
   onAnnualGwhChange: (string) => void,
@@ -71,10 +72,11 @@ const EEREInputs = (props: Props) => {
               Please enter a number between 0 and {input.max}.
             </span>
             This will help ensure that each of your proposed programs displaces
-            no more than 15% of hourly regional fossil generation, which is the
-            recommended limit for AVERT. AVERT is designed to simulate marginal
-            operational changes in load, rather than large-scale changes that
-            may change fundamental dynamics.
+            no more than approximately 30% of regional fossil generation in any
+            given hour. After you enter all your inputs and calculate your
+            hourly EE/RE profile below, AVERT will check more precisely to
+            ensure that your combined inputs are within AVERT’s recommended
+            limits.
           </span>
         );
       } else {
@@ -218,7 +220,7 @@ const EEREInputs = (props: Props) => {
                 {displayError({
                   name: 'reduction',
                   value: broadProgram,
-                  max: 15,
+                  max: limits.percent,
                 })}
               </li>
 
@@ -250,7 +252,7 @@ const EEREInputs = (props: Props) => {
                 {displayError({
                   name: 'reduction',
                   value: reduction,
-                  max: 15,
+                  max: limits.percent,
                 })}
 
                 {displayError({

@@ -39,6 +39,7 @@ type Eere = {
 
 type Props = {
   heading: string,
+  subheading: string,
   // redux connected props
   softValid: boolean,
   softTopExceedanceValue: number,
@@ -141,12 +142,15 @@ const EEREChart = (props: Props) => {
           {props.heading}{' '}
           <Tooltip id={8}>
             This graph shows the hourly changes in load that will result from
-            the inputs entered above, along with adjustments for avoided
-            transmission and distribution line loss, where applicable. This
-            hourly EE/RE profile will be used to calculate the avoided emissions
-            for this AVERT region.
+            the inputs entered above. It reflects a combination of all inputs,
+            typical capacity factors for wind and solar, and adjustments for
+            avoided transmission and distribution line loss, where applicable.
+            This hourly EE/RE profile will be used to calculate the avoided
+            emissions for this AVERT region.
           </Tooltip>
         </h3>
+
+        <h4 className="avert-chart-subtitle">{props.subheading}</h4>
 
         <Highcharts config={chartConfig} callback={afterRender} />
 

@@ -96,9 +96,10 @@ const StepPanels = (props: Props) => {
           <p>
             AVERT splits the contiguous 48 states into 10 regions. AVERT regions
             are aggregated based on EPA’s{' '}
-            <a href="https://www.epa.gov/energy/egrid">eGRID subregions</a>.
-            Select a region for analysis by either using the dropdown menu or
-            clicking the map. Selecting a region loads the power plants
+            <a href="https://www.epa.gov/energy/egrid" target="_parent">
+              eGRID subregions
+            </a>. Select a region for analysis by either using the dropdown menu
+            or clicking the map. Selecting a region loads the power plants
             operating within each region and region-specific wind and solar
             capacity data.
           </p>
@@ -111,7 +112,10 @@ const StepPanels = (props: Props) => {
             The online version of AVERT can run analyses using 2017 emissions
             and generation data. The Excel version of AVERT (available for
             download{' '}
-            <a href="https://www.epa.gov/statelocalenergy/download-avert">
+            <a
+              href="https://www.epa.gov/statelocalenergy/download-avert"
+              target="_parent"
+            >
               here
             </a>) allows analyses for years 2007–2017 or for a future year
             scenario.
@@ -130,7 +134,10 @@ const StepPanels = (props: Props) => {
             displaced by EE/RE policies and programs. Specify the impacts of
             EE/RE programs below, and AVERT will use these inputs to generate
             results. For more information about inputs, please consult the{' '}
-            <a href="https://www.epa.gov/statelocalenergy/avert-user-manual">
+            <a
+              href="https://www.epa.gov/statelocalenergy/avert-user-manual"
+              target="_parent"
+            >
               AVERT user manual
             </a>{' '}
             or click the <span className="avert-modal-link" /> icon for each
@@ -145,7 +152,10 @@ const StepPanels = (props: Props) => {
 
           <EEREInputs />
 
-          <EEREChart heading="EE/RE profile based on values entered:" />
+          <EEREChart
+            heading="EE/RE profile based on values entered:"
+            subheading="Adjusted for transmission and distribution line loss and wind and solar capacity factors, where applicable."
+          />
         </PanelBody>
 
         <PanelFooter

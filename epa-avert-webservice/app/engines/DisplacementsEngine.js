@@ -60,17 +60,17 @@ module.exports = (function () {
     const min = edges[0];
     const max = edges[edges.length - 1];
 
-    // medians (ozone and non-ozone)
-    const medians = dataSet.map(function (item) { return item.medians; });
+    // location medians (ozone and non-ozone)
+    const medians = dataSet.map(function (location) { return location.medians; });
     const mediansNonOzone = (dataSetNonOzone)
-      ? dataSetNonOzone.map(function (item) { return item.medians; })
+      ? dataSetNonOzone.map(function (location) { return location.medians; })
       : false;
 
-    // array of regional load (mwh) for each hour of the year
+    // original regional load (mwh) array for each hour of the year
     const loadArrayOriginal = this.rdf.regionalLoads;
-    //
-    const loadArrayPost = loadArrayOriginal.map(function (item, index) {
-      return item + this.hourlyEere[index].final_mw;
+    // EERE-merged array of region load (mwh) array for each hour of the year
+    const loadArrayPost = loadArrayOriginal.map(function (year, index) {
+      return year + this.hourlyEere[index].final_mw;
     }, this);
 
     // setup total and delta arrays
@@ -82,9 +82,9 @@ module.exports = (function () {
 
     // iterate over each hour in the year (8760 in non-leap years)
     for (let i = 0; i < loadArrayOriginal.length; i++) {
-      const load = loadArrayOriginal[i]; // regional load mwh (number)
+      const load = loadArrayOriginal[i]; // original regional load mwh (number)
       const month = this.rdf.months[i]; // month of load (number, 1-12)
-      const postLoad = loadArrayPost[i]; //
+      const postLoad = loadArrayPost[i]; // EERE-merged regional load mwh (number)
 
       // check for outliers
       if (!(load >= min && load <= max && postLoad >= min && postLoad <= max)) continue;
@@ -100,7 +100,7 @@ module.exports = (function () {
       init(monthlyPreValues.region, month, 0);
       init(monthlyPostValues.region, month, 0);
 
-      //
+      // get index of item closest to load (or postLoad) in edges array
       const preGenIndex = excelMatch(edges, load);
       const postGenIndex = excelMatch(edges, postLoad);
 
@@ -109,25 +109,25 @@ module.exports = (function () {
         ? (month >= 5 && month <= 9) ? medians : mediansNonOzone
         : medians;
 
-      // iterate over activeMedians (number varies per region)
+      // iterate over each location in the dataSet (number varies per region)
       // ('RM' region: under 100. 'SE' region: over 1000)
-      for (let j = 0; j < activeMedians.length; j ++) {
-        const median = activeMedians[j]; // active median (number)
+      for (let j = 0; j < dataSet.length; j ++) {
+        const medians = activeMedians[j]; // active medians (array of numbers)
         const state = dataSet[j].state; // state abbreviation (string)
         const county = dataSet[j].county; // county name (string)
 
         const preVal = calculateLinear({
           load: load,
-          genA: median[preGenIndex],
-          genB: median[preGenIndex + 1],
+          genA: medians[preGenIndex],
+          genB: medians[preGenIndex + 1],
           edgeA: edges[preGenIndex],
           edgeB: edges[preGenIndex + 1]
         });
 
         const postVal = calculateLinear({
           load: postLoad,
-          genA: median[postGenIndex],
-          genB: median[postGenIndex + 1],
+          genA: medians[postGenIndex],
+          genB: medians[postGenIndex + 1],
           edgeA: edges[postGenIndex],
           edgeB: edges[postGenIndex + 1]
         });

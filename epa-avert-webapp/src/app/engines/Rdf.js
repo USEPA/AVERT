@@ -3,6 +3,7 @@ class Rdf {
     this._regionName = ''; // not actually used (for debugging)
     this._maxAnnualGwh = null;
     this._maxRenewableMwh = null;
+    this._maxEEPercent = null;
     this._regionalLoads = [];
     this._softLimits = [];
     this._hardLimits = [];
@@ -24,6 +25,7 @@ class Rdf {
     this._regionName = rdf.region.region_name;
     this._maxAnnualGwh = rdf.limits.max_ee_yearly_gwh;
     this._maxRenewableMwh = rdf.limits.max_solar_wind_mwh;
+    this._maxEEPercent = rdf.limits.max_ee_percent;
     this._regionalLoads = [];
     this._softLimits = [];
     this._hardLimits = [];
@@ -32,7 +34,7 @@ class Rdf {
     rdf.regional_load.forEach((item) => {
       const load = item.regional_load_mw;
       this._regionalLoads.push(load);
-      this._softLimits.push(load * -1 * rdf.limits.max_ee_percent / 100); // -0.15
+      this._softLimits.push((load * -1 * rdf.limits.max_ee_percent) / 100); // -0.15
       this._hardLimits.push(load * -0.3);
       this._months.push(item.month);
     });
@@ -48,6 +50,10 @@ class Rdf {
 
   get maxRenewableMwh() {
     return this._maxRenewableMwh;
+  }
+
+  get maxEEPercent() {
+    return this._maxEEPercent;
   }
 
   get regionalLoads() {
