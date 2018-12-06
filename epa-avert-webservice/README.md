@@ -16,13 +16,13 @@ Four environment variables are set in Cloud.gov (three specific to the AVERT app
 - `AVERT_USER`: (any string)
 - `AVERT_PASS`: (any string)
 
-The app is currently deployed to the `epa-prototyping` org on [Cloud.gov](https://cloud.gov/). In production, the app will be deployed to a non-sandbox org. The development app is password protected with basic authentication.
+The app is currently deployed to the `epa-avert` org on [Cloud.gov](https://cloud.gov/). The development app is in the `avert-dev` space, while the production app in in the `avert-prod` space. The development app is password protected with basic authentication.
 
 **IMPORTANT:** Before deploying code to Cloud.gov, ensure the app has the most recent version of the webapp's build files. See: [epa-avert-webapp's Cloud.gov Deployment](/epa-avert-webapp#cloudgov-deployment).
 
 ### Development Deployment
 The development version is exactly the same as the production version, but is password protected with basic authentication. Ensure you're in this directory ([epa-avert-webservice](/epa-avert-webservice)) in a terminal session and enter:    
-`cf set-env avert AVERT_AUTH true` and then: `cf push`
+`cf set-env avert AVERT_AUTH true` and then: `cf push -f manifest.dev.yml`
 
 To view the previously-set username and password required for viewing the development site, in a terminal session run:    
 `cf env avert` and look for the 'User-Provided' `AVERT_USER` and `AVERT_PASS` variables. These can be changed the same way you set the `AVERT_AUTH` environment variable above.
