@@ -73,7 +73,7 @@ const StepPanels = (props: Props) => {
                   value={props.loadingProgress}
                   max="6"
                 >
-                  {props.loadingProgress * 100 / 6}%
+                  {(props.loadingProgress * 100) / 6}%
                 </progress>
                 <p className="avert-overlay-info">
                   These calculations may take several minutes.
@@ -98,8 +98,9 @@ const StepPanels = (props: Props) => {
             are aggregated based on EPA’s{' '}
             <a href="https://www.epa.gov/energy/egrid" target="_parent">
               eGRID subregions
-            </a>. Select a region for analysis by either using the dropdown menu
-            or clicking the map. Selecting a region loads the power plants
+            </a>
+            . Select a region for analysis by either using the dropdown menu or
+            clicking the map. Selecting a region loads the power plants
             operating within each region and region-specific wind and solar
             capacity data.
           </p>
@@ -109,7 +110,7 @@ const StepPanels = (props: Props) => {
           <RegionMap />
 
           <p className="avert-small-text">
-            The online version of AVERT can run analyses using 2017 emissions
+            The online version of AVERT can run analyses using 2018 emissions
             and generation data. The Excel version of AVERT (available for
             download{' '}
             <a
@@ -117,8 +118,8 @@ const StepPanels = (props: Props) => {
               target="_parent"
             >
               here
-            </a>) allows analyses for years 2007–2017 or for a future year
-            scenario.
+            </a>
+            ) allows analyses for years 2007–2018 or for a future year scenario.
           </p>
         </PanelBody>
 
