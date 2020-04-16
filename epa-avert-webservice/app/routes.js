@@ -1,8 +1,8 @@
 const route = require('koa-route');
 
-const rdf = require('../controllers/rdf');
-const eere = require('../controllers/eere');
-const displacement = require('../controllers/displacement');
+const rdf = require('./controllers/rdf');
+const eere = require('./controllers/eere');
+const displacement = require('./controllers/displacement');
 
 module.exports = [
   route.get('/api/v1', (ctx) => {
