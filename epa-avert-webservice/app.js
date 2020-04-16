@@ -1,6 +1,8 @@
 'use strict';
 
-const Raven = require('raven');
+require('dotenv').config();
+
+const Sentry = require('@sentry/node');
 const Koa = require('koa');
 const cors = require('@koa/cors');
 const auth = require('koa-basic-auth');
@@ -15,12 +17,15 @@ const customHeaders = require('./app/middleware/customHeaders');
 
 const app = new Koa();
 
-// initialize Sentry Raven client and capture errors
-Raven.config('https://69c78678304f4e7da08b0da748eafeb9@sentry.io/1203469').install();
+// initialize Sentry and capture errors
+Sentry.init({ dsn: process.env.SENTRY_DSN });
 
-app.on('error', (err) => {
-  Raven.captureException(err, (err, eventId) => {
-    console.log(`Reported error ${eventId}`);
+app.on('error', (err, ctx) => {
+  Sentry.withScope((scope) => {
+    scope.addEventProcessor((event) => {
+      return Sentry.Handlers.parseRequest(event, ctx.request);
+    });
+    Sentry.captureException(err);
   });
 });
 

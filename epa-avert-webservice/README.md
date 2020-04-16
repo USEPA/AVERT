@@ -3,7 +3,7 @@
 Node.js web service (built with Koa) for performing displacement calculations and serving the built static content of the avert web app.
 
 ## Local Development
-Local development depends on `node` (version 8 or higher).
+Local development depends on `node` (version 10 or higher).
 
 Open two separate terminal sessions and run the following in each subsequent session:
 1. From the [epa-avert-webservice directory](/epa-avert-webservice) (this one), start the npm dev script: `npm run dev`.
