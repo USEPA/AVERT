@@ -17,7 +17,7 @@
     "url": "https://github.com/Eastern-Research-Group/EPA-AVERT/issues"
   },
   "engines": {
-    "node": "8.x"
+    "node": "10.x"
   },
   "main": "./app.js",
   "scripts": {
