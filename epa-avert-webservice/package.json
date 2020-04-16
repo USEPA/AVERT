@@ -19,10 +19,10 @@
   "engines": {
     "node": "10.x"
   },
-  "main": "./app.js",
+  "main": "./index.js",
   "scripts": {
-    "start": "node ./app.js",
-    "dev": "AVERT_AUTH=true AVERT_USER=avert AVERT_PASS=dev node ./app.js",
+    "start": "node ./index.js",
+    "dev": "AVERT_AUTH=true AVERT_USER=avert AVERT_PASS=dev node ./index.js",
     "test": "mocha **/*.test.js"
   },
   "dependencies": {
