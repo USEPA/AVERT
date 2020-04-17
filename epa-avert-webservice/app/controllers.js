@@ -66,7 +66,7 @@ async function calculatePollutant(ctx, pollutant) {
   // parse rdf data from file
   const file = await readFile(config.regions[body.region].rdf);
   const rdf = parseRdfFile(file);
-  // get pollutant data from new DisplacementEngine instance
+  // get pollutant data from instance of DisplacementEngine
   const engine = new DisplacementsEngine(rdf, body.eere);
   let data;
   if (pollutant === 'generation') data = engine.getGeneration();
@@ -75,7 +75,7 @@ async function calculatePollutant(ctx, pollutant) {
   if (pollutant === 'co2') data = engine.getCo2Total();
   if (pollutant === 'pm25') data = engine.getPm25Total();
   // return data to web app
-  ctx.body = { data }
+  ctx.body = data;
 };
 
 /**

@@ -30,7 +30,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         isFetching: false,
-        data: action.json.data,
+        data: action.payload,
       };
 
     case RECEIVE_ERROR:
@@ -71,7 +71,7 @@ export const fetchGeneration = () => {
         dispatch(incrementProgress());
         dispatch({
           type: RECEIVE_GENERATION,
-          json: json,
+          payload: json,
         });
       })
       .catch((error) => {
