@@ -3,7 +3,6 @@ const { promisify } = require('util');
 const readFile = promisify(fs.readFile);
 
 const config = require('./config');
-const Rdf = require('./engines/Rdf');
 const DisplacementsEngine = require('./engines/DisplacementsEngine');
 
 /**
@@ -17,11 +16,11 @@ const rdf = {
     if (!(region in config.regions)) {
       ctx.throw(404, `${region} region not found`);
     }
-    const rdfFile = await readFile(config.regions[region].rdf);
+    const file = await readFile(config.regions[region].rdf);
     ctx.body = {
       region: region,
       response: 'ok',
-      rdf: JSON.parse(rdfFile),
+      rdf: JSON.parse(file),
     }
   },
 };
@@ -37,13 +36,33 @@ const eere = {
     if (!(region in config.regions)) {
       ctx.throw(404, `${region} region not found`);
     }
-    const eereDefaultsFile = await readFile(config.regions[region].defaults);
+    const file = await readFile(config.regions[region].defaults);
     ctx.body = {
       region: region,
       response: 'ok',
-      eereDefaults: JSON.parse(eereDefaultsFile),
+      eereDefaults: JSON.parse(file),
     }
   },
+}
+
+/**
+ * Parses a passed RDF file, and returns data in a format for providing to
+ * an instance of DisplacementsEngine
+ */
+function parseRdfFile(file) {
+  const json = JSON.parse(file, 'utf8');
+  const regionalLoads = [];
+  const months = [];
+  json.regional_load.forEach((item) => {
+    regionalLoads.push(item.regional_load_mw);
+    months.push(item.month);
+  });
+  return {
+    raw: json,
+    edges: json.load_bin_edges,
+    regionalLoads,
+    months,
+  };
 }
 
 /**
@@ -52,9 +71,9 @@ const eere = {
  */
 const calculatePollutant = async (ctx, pollutant) => {
   const body = await ctx.request.body;
-  // instantiate new Rdf from rdf data file
-  const rdfFile = await readFile(config.regions[body.region].rdf);
-  const rdf = new Rdf(JSON.parse(rdfFile, 'utf8')).toJSON();
+  // parse rdf data from file
+  const file = await readFile(config.regions[body.region].rdf);
+  const rdf = parseRdfFile(file);
   // get pollutant data from new DisplacementEngine instance
   const engine = new DisplacementsEngine(rdf, body.eere);
   let data;
