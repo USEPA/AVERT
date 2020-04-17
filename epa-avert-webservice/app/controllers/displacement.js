@@ -2,7 +2,7 @@ const fs = require('fs');
 const { promisify } = require('util');
 const readFile = promisify(fs.readFile);
 
-const regions = require('../lib/regionsEnum');
+const config = require('../config');
 const Rdf = require('../engines/Rdf');
 const DisplacementsEngine = require('../engines/DisplacementsEngine');
 
@@ -10,7 +10,7 @@ const DisplacementsEngine = require('../engines/DisplacementsEngine');
 const calculatePollutant = async (ctx, pollutant) => {
   const body = await ctx.request.body;
   // instantiate new Rdf from rdf data file
-  const rdfFile = await readFile(regions[body.region].rdf);
+  const rdfFile = await readFile(config.regions[body.region].rdf);
   const rdf = new Rdf(JSON.parse(rdfFile, 'utf8')).toJSON();
   // get pollutant data from new DisplacementEngine instance
   const engine = new DisplacementsEngine(rdf, body.eere);

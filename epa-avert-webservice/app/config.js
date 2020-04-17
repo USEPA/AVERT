@@ -1,4 +1,4 @@
-module.exports = {
+const regions = {
   CA: {
     label: 'California',
     defaults: 'app/data/eere-defaults-california.json',
@@ -50,3 +50,5 @@ module.exports = {
     rdf: 'app/data/rdf_WMW_2018.json',
   },
 };
+
+module.exports = { regions };
