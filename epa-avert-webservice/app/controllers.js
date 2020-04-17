@@ -58,7 +58,7 @@ function parseRdfFile(file) {
     months.push(item.month);
   });
   return {
-    raw: json,
+    data: json.data,
     edges: json.load_bin_edges,
     regionalLoads,
     months,

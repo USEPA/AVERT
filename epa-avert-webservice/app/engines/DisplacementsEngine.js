@@ -26,31 +26,31 @@ class DisplacementsEngine {
   }
 
   getGeneration() {
-    const { generation } = this._rdf.raw.data;
-    return this._getDisplacedGeneration(generation, false, 'generation');
+    const { generation } = this._rdf.data;
+    return this._getDisplacedGeneration(generation, false);
   }
 
   getSo2Total() {
-    const { so2, so2_not } = this._rdf.raw.data;
-    return this._getDisplacedGeneration(so2, so2_not, 'so2');
+    const { so2, so2_not } = this._rdf.data;
+    return this._getDisplacedGeneration(so2, so2_not);
   }
 
   getNoxTotal() {
-    const { nox, nox_not } = this._rdf.raw.data;
-    return this._getDisplacedGeneration(nox, nox_not, 'nox');
+    const { nox, nox_not } = this._rdf.data;
+    return this._getDisplacedGeneration(nox, nox_not);
   }
 
   getCo2Total() {
-    const { co2, co2_not } = this._rdf.raw.data;
-    return this._getDisplacedGeneration(co2, co2_not, 'co2');
+    const { co2, co2_not } = this._rdf.data;
+    return this._getDisplacedGeneration(co2, co2_not);
   }
 
   getPm25Total() {
-    const { pm25, pm25_not } = this._rdf.raw.data;
-    return this._getDisplacedGeneration(pm25, pm25_not, 'pm25');
+    const { pm25, pm25_not } = this._rdf.data;
+    return this._getDisplacedGeneration(pm25, pm25_not);
   }
 
-  _getDisplacedGeneration(dataSet, dataSetNonOzone, type) {
+  _getDisplacedGeneration(dataSet, dataSetNonOzone) {
     const { edges, regionalLoads, months } = this._rdf;
     const hourlyEere = this._hourlyEere;
 
@@ -109,9 +109,10 @@ class DisplacementsEngine {
       const postGenIndex = excelMatch(edges, postLoad);
 
       // set activeMedians, based on passed mediansNonOzone value and month
-      const activeMedians = (mediansNonOzone)
-        ? (month >= 5 && month <= 9) ? medians : mediansNonOzone
-        : medians;
+      const activeMedians =
+        mediansNonOzone
+          ? (month >= 5 && month <= 9) ? medians : mediansNonOzone
+          : medians;
 
       // iterate over each location in the dataSet (number varies per region)
       // ('RM' region: under 100. 'SE' region: over 1000)
