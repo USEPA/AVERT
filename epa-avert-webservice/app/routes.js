@@ -4,7 +4,7 @@ const rdf = require('./controllers/rdf');
 const eere = require('./controllers/eere');
 const displacement = require('./controllers/displacement');
 
-module.exports = [
+const routes = [
   route.get('/api/v1', (ctx) => {
     ctx.body = 'AVERT web service is running...';
   }),
@@ -31,3 +31,5 @@ module.exports = [
   route.post('/api/v1/co2', displacement.calculateCo2),
   route.post('/api/v1/pm25', displacement.calculatePm25),
 ];
+
+module.exports = routes;

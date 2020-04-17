@@ -7,7 +7,7 @@ const config = require('../config');
 module.exports = {
   list: (ctx) => {
     // not used in web app, but helpful for debugging
-    ctx.body = { availableRegions: Object.keys(config.regions) };
+    ctx.body = { regions: Object.keys(config.regions) };
   },
 
   show: async (ctx, region) => {
