@@ -1,53 +1,59 @@
 'use strict';
 
 // helper function for initializing default values of an object's key
-function init (object, key, fallback) {
+function init(object, key, fallback) {
   (object[key] != null) ? object[key] : object[key] = fallback;
 }
 
-function calculateLinear ({ load, genA, genB, edgeA, edgeB }) {
+function calculateLinear({ load, genA, genB, edgeA, edgeB }) {
   const slope = (genA - genB) / (edgeA - edgeB);
   const intercept = genA - (slope * edgeA);
   return load * slope + intercept;
 };
 
-function excelMatch (array, lookup) {
-  const sortedArray = array.concat(lookup).sort(function (a, b) { return a - b; });
+function excelMatch(array, lookup) {
+  const sortedArray = array.concat(lookup).sort((a, b) => a - b);
   const index = sortedArray.indexOf(lookup);
   // return index of item directly before lookup item in sorted array
-  if (array[index] === lookup) { return index; }
+  if (array[index] === lookup) return index;
   return index - 1;
 };
 
-
-
-module.exports = (function () {
-  function DisplacementsEngine (rdf, hourlyEere) {
-    this.rdf = rdf;
-    this.hourlyEere = hourlyEere;
+class DisplacementsEngine {
+  constructor(rdf, hourlyEere) {
+    this._rdf = rdf;
+    this._hourlyEere = hourlyEere;
   }
 
-  DisplacementsEngine.prototype.getGeneration = function () {
-    return this.getDisplacedGeneration(this.rdf.raw.data.generation, false, 'generation');
-  };
+  getGeneration() {
+    const { generation } = this._rdf.raw.data;
+    return this._getDisplacedGeneration(generation, false, 'generation');
+  }
 
-  DisplacementsEngine.prototype.getSo2Total = function () {
-    return this.getDisplacedGeneration(this.rdf.raw.data.so2, this.rdf.raw.data.so2_not, 'so2');
-  };
+  getSo2Total() {
+    const { so2, so2_not } = this._rdf.raw.data;
+    return this._getDisplacedGeneration(so2, so2_not, 'so2');
+  }
 
-  DisplacementsEngine.prototype.getNoxTotal = function () {
-    return this.getDisplacedGeneration(this.rdf.raw.data.nox, this.rdf.raw.data.nox_not, 'nox');
-  };
+  getNoxTotal() {
+    const { nox, nox_not } = this._rdf.raw.data;
+    return this._getDisplacedGeneration(nox, nox_not, 'nox');
+  }
 
-  DisplacementsEngine.prototype.getCo2Total = function () {
-    return this.getDisplacedGeneration(this.rdf.raw.data.co2, this.rdf.raw.data.co2_not, 'co2');
-  };
+  getCo2Total() {
+    const { co2, co2_not } = this._rdf.raw.data;
+    return this._getDisplacedGeneration(co2, co2_not, 'co2');
+  }
 
-  DisplacementsEngine.prototype.getPm25Total = function () {
-    return this.getDisplacedGeneration(this.rdf.raw.data.pm25, this.rdf.raw.data.pm25_not, 'pm25');
-  };
+  getPm25Total() {
+    const { pm25, pm25_not } = this._rdf.raw.data;
+    return this._getDisplacedGeneration(pm25, pm25_not, 'pm25');
+  }
 
-  DisplacementsEngine.prototype.getDisplacedGeneration = function (dataSet, dataSetNonOzone, type) {
+  _getDisplacedGeneration(dataSet, dataSetNonOzone, type) {
+    const { edges, regionalLoads, months } = this._rdf;
+    const hourlyEere = this._hourlyEere;
+
     // set up structure of data collections (used in returned object's keys)
     const monthlyEmissionChanges = { region: {}, state: {}, county: {} };
     const monthlyPercentageChanges = { region: {}, state: {}, county: {} };
@@ -56,22 +62,20 @@ module.exports = (function () {
     const stateEmissionChanges = {};
 
     // load bin edges
-    const edges = this.rdf.edges;
     const min = edges[0];
     const max = edges[edges.length - 1];
 
     // location medians (ozone and non-ozone)
-    const medians = dataSet.map(function (location) { return location.medians; });
-    const mediansNonOzone = (dataSetNonOzone)
-      ? dataSetNonOzone.map(function (location) { return location.medians; })
-      : false;
+    const medians = dataSet.map((location) => location.medians);
+    const mediansNonOzone = 
+      dataSetNonOzone
+        ? dataSetNonOzone.map((location) => location.medians)
+        : false;
 
-    // original regional load (mwh) array for each hour of the year
-    const loadArrayOriginal = this.rdf.regionalLoads;
     // EERE-merged array of region load (mwh) array for each hour of the year
-    const loadArrayPost = loadArrayOriginal.map(function (year, index) {
-      return year + this.hourlyEere[index].final_mw;
-    }, this);
+    const loadArrayPost = regionalLoads.map((year, index) => {
+      return year + hourlyEere[index].final_mw;
+    });
 
     // setup total and delta arrays
     // (total arrays used to calculate returned 'original' and 'post' keys with data)
@@ -81,9 +85,9 @@ module.exports = (function () {
     let deltaVArray = [];
 
     // iterate over each hour in the year (8760 in non-leap years)
-    for (let i = 0; i < loadArrayOriginal.length; i++) {
-      const load = loadArrayOriginal[i]; // original regional load mwh (number)
-      const month = this.rdf.months[i]; // month of load (number, 1-12)
+    for (let i = 0; i < regionalLoads.length; i++) {
+      const load = regionalLoads[i]; // original regional load mwh (number)
+      const month = months[i]; // month of load (number, 1-12)
       const postLoad = loadArrayPost[i]; // EERE-merged regional load mwh (number)
 
       // check for outliers
@@ -196,9 +200,9 @@ module.exports = (function () {
       monthlyPostValues.region[month] += postTotalArray[i];
     }
 
-    const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    const monthNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     // calculate monthlyPercentageChanges each month in the region
-    months.forEach(function (month) {
+    monthNumbers.forEach((month) => {
       monthlyPercentageChanges.region[month] =
         (monthlyPostValues.region[month] - monthlyPreValues.region[month])
         / monthlyPreValues.region[month] * 100;
@@ -206,8 +210,8 @@ module.exports = (function () {
 
     const states = Object.keys(monthlyPreValues.state);
     // calculate monthlyPercentageChanges each month in each state in the region
-    states.forEach(function (state) {
-      months.forEach(function (month) {
+    states.forEach((state) => {
+      monthNumbers.forEach((month) => {
         monthlyPercentageChanges.state[state][month] =
           (monthlyPostValues.state[state][month] - monthlyPreValues.state[state][month])
           / monthlyPreValues.state[state][month] * 100;
@@ -215,8 +219,8 @@ module.exports = (function () {
 
       const counties = Object.keys(monthlyPreValues.county[state]);
       // calculate monthlyPercentageChanges each month in each county in each state in the region
-      counties.forEach(function (county) {
-        months.forEach(function (month) {
+      counties.forEach((county) => {
+        monthNumbers.forEach((month) => {
           monthlyPercentageChanges.county[state][county][month] =
             (monthlyPostValues.county[state][county][month] - monthlyPreValues.county[state][county][month])
             / monthlyPreValues.county[state][county][month] * 100;
@@ -225,12 +229,8 @@ module.exports = (function () {
     });
 
     // total up the total arrays
-    const preTotal = preTotalArray.reduce(function (acc, value) {
-      return acc + (value || 0);
-    }, 0);
-    const postTotal = postTotalArray.reduce(function (acc, value) {
-      return acc + (value || 0);
-    }, 0);
+    const preTotal = preTotalArray.reduce((acc, value) => acc + (value || 0), 0);
+    const postTotal = postTotalArray.reduce((acc, value) => acc + (value || 0), 0);
 
     return {
       original: Number(preTotal),
@@ -242,7 +242,7 @@ module.exports = (function () {
       },
       stateChanges: stateEmissionChanges,
     };
-  };
+  }
+}
 
-  return DisplacementsEngine;
-})();
+module.exports = DisplacementsEngine;

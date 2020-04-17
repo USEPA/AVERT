@@ -69,7 +69,7 @@ function parseRdfFile(file) {
  * Receive eere data and region, and return displacement data
  * (used in Displacement Controller)
  */
-const calculatePollutant = async (ctx, pollutant) => {
+async function calculatePollutant(ctx, pollutant) {
   const body = await ctx.request.body;
   // parse rdf data from file
   const file = await readFile(config.regions[body.region].rdf);
