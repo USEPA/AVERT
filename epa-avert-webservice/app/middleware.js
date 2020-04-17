@@ -38,5 +38,5 @@ async function pageNotFound(ctx, next) {
 module.exports = {
   basicAuth,
   customHeaders,
-  pageNotFound
+  pageNotFound,
 };

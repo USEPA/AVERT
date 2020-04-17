@@ -51,4 +51,6 @@ const regions = {
   },
 };
 
-module.exports = { regions };
+module.exports = {
+  regions,
+};
