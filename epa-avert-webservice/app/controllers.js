@@ -10,18 +10,14 @@ const DisplacementsEngine = require('./engines/DisplacementsEngine');
  */
 const rdf = {
   list: (ctx) => {
-    ctx.body = { regions: Object.keys(config.regions) };
+    ctx.body = Object.keys(config.regions);
   },
   show: async (ctx, region) => {
     if (!(region in config.regions)) {
       ctx.throw(404, `${region} region not found`);
     }
     const file = await readFile(config.regions[region].rdf);
-    ctx.body = {
-      region: region,
-      response: 'ok',
-      rdf: JSON.parse(file),
-    }
+    ctx.body = JSON.parse(file);
   },
 };
 
@@ -30,18 +26,14 @@ const rdf = {
  */
 const eere = {
   list: (ctx) => {
-    ctx.body = { regions: Object.keys(config.regions) };
+    ctx.body = Object.keys(config.regions);
   },
   show: async (ctx, region) => {
     if (!(region in config.regions)) {
       ctx.throw(404, `${region} region not found`);
     }
     const file = await readFile(config.regions[region].defaults);
-    ctx.body = {
-      region: region,
-      response: 'ok',
-      eereDefaults: JSON.parse(file),
-    }
+    ctx.body = JSON.parse(file);
   },
 }
 
@@ -83,10 +75,7 @@ async function calculatePollutant(ctx, pollutant) {
   if (pollutant === 'co2') data = engine.getCo2Total();
   if (pollutant === 'pm25') data = engine.getPm25Total();
   // return data to web app
-  ctx.body = {
-    response: 'ok',
-    data: data,
-  }
+  ctx.body = { data }
 };
 
 /**

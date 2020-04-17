@@ -19,13 +19,13 @@ export default function reducer(state = initialState, action) {
     case RECEIVE_REGION_RDF:
       return {
         ...state,
-        rdf: action.payload.rdf,
+        rdf: action.payload,
       };
 
     case RECEIVE_REGION_DEFAULTS:
       return {
         ...state,
-        defaults: action.payload.defaults,
+        defaults: action.payload,
       };
 
     default:
@@ -44,7 +44,7 @@ export const fetchRegion = () => {
     return fetch(`${api.baseUrl}/api/v1/rdf/${avert.regionSlug}`)
       .then((response) => response.json())
       .then((json) => {
-        avert.rdf = json.rdf;
+        avert.rdf = json;
 
         // set eere profile's first level validation limits (sets 'eereProfile._limits')
         eereProfile.limits = {
@@ -56,7 +56,7 @@ export const fetchRegion = () => {
 
         dispatch({
           type: RECEIVE_REGION_RDF,
-          payload: { rdf: json },
+          payload: json,
         });
 
         dispatch({
@@ -70,11 +70,11 @@ export const fetchRegion = () => {
         fetch(`${api.baseUrl}/api/v1/eere/${avert.regionSlug}`)
           .then((response) => response.json())
           .then((json) => {
-            avert.eereDefaults = json.eereDefaults;
+            avert.eereDefaults = json;
 
             dispatch({
               type: RECEIVE_REGION_DEFAULTS,
-              payload: { defaults: json.eereDefaults },
+              payload: json,
             });
           });
       });

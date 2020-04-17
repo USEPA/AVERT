@@ -291,7 +291,7 @@ export const completeEereCalculation = (hourlyEere) => ({
 export const updateExceedances = (soft, hard) => {
   return function(dispatch, getState) {
     const { rdfs } = getState();
-    const regionalLoadHours = rdfs.rdf.rdf.regional_load;
+    const regionalLoadHours = rdfs.rdf.regional_load;
 
     const softValid = soft.reduce((a, b) => a + b) === 0;
     const softMaxVal = !softValid ? Math.max(...soft) : 0;
