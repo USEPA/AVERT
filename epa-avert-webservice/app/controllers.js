@@ -38,26 +38,6 @@ const eere = {
 }
 
 /**
- * Parses a passed RDF file, and returns data in a format for providing to
- * an instance of DisplacementsEngine
- */
-function parseRdfFile(file) {
-  const json = JSON.parse(file, 'utf8');
-  const regionalLoads = [];
-  const months = [];
-  json.regional_load.forEach((item) => {
-    regionalLoads.push(item.regional_load_mw);
-    months.push(item.month);
-  });
-  return {
-    data: json.data,
-    edges: json.load_bin_edges,
-    regionalLoads,
-    months,
-  };
-}
-
-/**
  * Receive eere data and region, and return displacement data
  * (used in Displacement Controller)
  */
@@ -65,7 +45,7 @@ async function calculatePollutant(ctx, pollutant) {
   const body = await ctx.request.body;
   // parse rdf data from file
   const file = await readFile(config.regions[body.region].rdf);
-  const rdf = parseRdfFile(file);
+  const rdf = JSON.parse(file, 'utf8');
   // get pollutant data from instance of DisplacementEngine
   const engine = new DisplacementsEngine(rdf, body.eere);
   let data;

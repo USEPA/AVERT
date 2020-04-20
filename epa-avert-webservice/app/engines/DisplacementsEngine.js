@@ -51,7 +51,7 @@ class DisplacementsEngine {
   }
 
   _getDisplacedGeneration(dataSet, dataSetNonOzone) {
-    const { edges, regionalLoads, months } = this._rdf;
+    const { regional_load, load_bin_edges } = this._rdf;
     const hourlyEere = this._hourlyEere;
 
     // set up structure of data collections (used in returned object's keys)
@@ -62,8 +62,8 @@ class DisplacementsEngine {
     const stateEmissionChanges = {};
 
     // load bin edges
-    const min = edges[0];
-    const max = edges[edges.length - 1];
+    const min = load_bin_edges[0];
+    const max = load_bin_edges[load_bin_edges.length - 1];
 
     // location medians (ozone and non-ozone)
     const medians = dataSet.map((location) => location.medians);
@@ -71,11 +71,6 @@ class DisplacementsEngine {
       dataSetNonOzone
         ? dataSetNonOzone.map((location) => location.medians)
         : false;
-
-    // EERE-merged array of region load (mwh) array for each hour of the year
-    const loadArrayPost = regionalLoads.map((year, index) => {
-      return year + hourlyEere[index].final_mw;
-    });
 
     // setup total and delta arrays
     // (total arrays used to calculate returned 'original' and 'post' keys with data)
@@ -85,10 +80,10 @@ class DisplacementsEngine {
     let deltaVArray = [];
 
     // iterate over each hour in the year (8760 in non-leap years)
-    for (let i = 0; i < regionalLoads.length; i++) {
-      const load = regionalLoads[i]; // original regional load mwh (number)
-      const month = months[i]; // month of load (number, 1-12)
-      const postLoad = loadArrayPost[i]; // EERE-merged regional load mwh (number)
+    for (let i = 0; i < regional_load.length; i++) {
+      const load = regional_load[i].regional_load_mw; // original regional load mwh (number)
+      const month = regional_load[i].month;           // month of load (number, 1-12)
+      const postLoad = load + hourlyEere[i].final_mw; // EERE-merged regional load mwh (number)
 
       // check for outliers
       if (!(load >= min && load <= max && postLoad >= min && postLoad <= max)) continue;
@@ -104,9 +99,9 @@ class DisplacementsEngine {
       init(monthlyPreValues.region, month, 0);
       init(monthlyPostValues.region, month, 0);
 
-      // get index of item closest to load (or postLoad) in edges array
-      const preGenIndex = excelMatch(edges, load);
-      const postGenIndex = excelMatch(edges, postLoad);
+      // get index of item closest to load (or postLoad) in load_bin_edges array
+      const preGenIndex = excelMatch(load_bin_edges, load);
+      const postGenIndex = excelMatch(load_bin_edges, postLoad);
 
       // set activeMedians, based on passed mediansNonOzone value and month
       const activeMedians =
@@ -125,16 +120,16 @@ class DisplacementsEngine {
           load: load,
           genA: medians[preGenIndex],
           genB: medians[preGenIndex + 1],
-          edgeA: edges[preGenIndex],
-          edgeB: edges[preGenIndex + 1]
+          edgeA: load_bin_edges[preGenIndex],
+          edgeB: load_bin_edges[preGenIndex + 1]
         });
 
         const postVal = calculateLinear({
           load: postLoad,
           genA: medians[postGenIndex],
           genB: medians[postGenIndex + 1],
-          edgeA: edges[postGenIndex],
-          edgeB: edges[postGenIndex + 1]
+          edgeA: load_bin_edges[postGenIndex],
+          edgeB: load_bin_edges[postGenIndex + 1]
         });
 
         const data = {
