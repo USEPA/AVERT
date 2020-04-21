@@ -27,33 +27,33 @@ function excelMatch(array, lookup) {
  * @param {'generation' | 'so2' | 'nox' | 'co2' | 'pm25'} pollutant 
  */
 function getDisplacement(rdf, eere, pollutant) {
-  // conditionally set dataSet and dataSetNonOzone based on provided pollutant
-  let dataSet = [];
-  let dataSetNonOzone = [];
+  // conditionally set ozoneData and nonOzoneData based on provided pollutant
+  let ozoneData = [];
+  let nonOzoneData = [];
 
   if (pollutant === 'generation') {
-    dataSet = rdf.data.generation;
-    dataSetNonOzone = false;
+    ozoneData = rdf.data.generation;
+    nonOzoneData = false;
   }
 
   if (pollutant === 'so2') {
-    dataSet = rdf.data.so2;
-    dataSetNonOzone = rdf.data.so2_not;
+    ozoneData = rdf.data.so2;
+    nonOzoneData = rdf.data.so2_not;
   }
 
   if (pollutant === 'nox') {
-    dataSet = rdf.data.nox;
-    dataSetNonOzone = rdf.data.nox_not;
+    ozoneData = rdf.data.nox;
+    nonOzoneData = rdf.data.nox_not;
   }
 
   if (pollutant === 'co2') {
-    dataSet = rdf.data.co2;
-    dataSetNonOzone = rdf.data.co2_not;
+    ozoneData = rdf.data.co2;
+    nonOzoneData = rdf.data.co2_not;
   }
 
   if (pollutant === 'pm25') {
-    dataSet = rdf.data.pm25;
-    dataSetNonOzone = rdf.data.pm25_not;
+    ozoneData = rdf.data.pm25;
+    nonOzoneData = rdf.data.pm25_not;
   }
 
   // set up structure of data collections (used in returned object's keys)
@@ -64,14 +64,14 @@ function getDisplacement(rdf, eere, pollutant) {
   const stateEmissionChanges = {};
 
   // load bin edges
-  const min = rdf.load_bin_edges[0];
-  const max = rdf.load_bin_edges[rdf.load_bin_edges.length - 1];
+  const minEdge = rdf.load_bin_edges[0];
+  const maxEdge = rdf.load_bin_edges[rdf.load_bin_edges.length - 1];
 
   // location medians (ozone and non-ozone)
-  const medians = dataSet.map((location) => location.medians);
-  const mediansNonOzone = 
-    dataSetNonOzone
-      ? dataSetNonOzone.map((location) => location.medians)
+  const ozoneMedians = ozoneData.map((data) => data.medians);
+  const nonOzoneMedians = 
+    nonOzoneData
+      ? nonOzoneData.map((data) => data.medians)
       : false;
 
   // setup total and delta arrays
@@ -88,7 +88,7 @@ function getDisplacement(rdf, eere, pollutant) {
     const postLoad = load + eere[i].final_mw;           // EERE-merged regional load mwh (number)
 
     // check for outliers
-    if (!(load >= min && load <= max && postLoad >= min && postLoad <= max)) continue;
+    if (!(load >= minEdge && load <= maxEdge && postLoad >= minEdge && postLoad <= maxEdge)) continue;
 
     // initialize total and delta arrays to '0'
     preTotalArray[i] = 0;
@@ -105,18 +105,18 @@ function getDisplacement(rdf, eere, pollutant) {
     const preGenIndex = excelMatch(rdf.load_bin_edges, load);
     const postGenIndex = excelMatch(rdf.load_bin_edges, postLoad);
 
-    // set activeMedians, based on passed mediansNonOzone value and month
+    // set activeMedians, based on passed nonOzoneMedians value and month
     const activeMedians =
-      mediansNonOzone
-        ? (month >= 5 && month <= 9) ? medians : mediansNonOzone
-        : medians;
+      nonOzoneMedians
+        ? (month >= 5 && month <= 9) ? ozoneMedians : nonOzoneMedians
+        : ozoneMedians;
 
-    // iterate over each location in the dataSet (number varies per region)
+    // iterate over each location in the ozoneData (number varies per region)
     // ('RM' region: under 100. 'SE' region: over 1000)
-    for (let j = 0; j < dataSet.length; j ++) {
+    for (let j = 0; j < ozoneData.length; j ++) {
       const medians = activeMedians[j]; // active medians (array of numbers)
-      const state = dataSet[j].state; // state abbreviation (string)
-      const county = dataSet[j].county; // county name (string)
+      const state = ozoneData[j].state; // state abbreviation (string)
+      const county = ozoneData[j].county; // county name (string)
 
       const preVal = calculateLinear({
         load: load,
