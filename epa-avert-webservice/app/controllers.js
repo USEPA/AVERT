@@ -3,7 +3,7 @@ const { promisify } = require('util');
 const readFile = promisify(fs.readFile);
 
 const config = require('./config');
-const DisplacementsEngine = require('./engines/DisplacementsEngine');
+const getDisplacement = require('./engines/DisplacementsEngine');
 
 /**
  * RDF Controller
@@ -38,24 +38,17 @@ const eere = {
 }
 
 /**
- * Receive eere data and region, and return displacement data
- * (used in Displacement Controller)
+ * Receives EERE data and region, and returns displacement data.
+ * 
+ * @param {*} ctx 
+ * @param {'generation' | 'so2' | 'nox' | 'co2' | 'pm25'} pollutant 
  */
 async function calculatePollutant(ctx, pollutant) {
   const body = await ctx.request.body;
   // parse rdf data from file
   const file = await readFile(`app/data/${config.regions[body.region].rdf}`);
   const rdf = JSON.parse(file);
-  // get pollutant data from instance of DisplacementEngine
-  const engine = new DisplacementsEngine(rdf, body.eere);
-  let data;
-  if (pollutant === 'generation') data = engine.getGeneration();
-  if (pollutant === 'so2') data = engine.getSo2Total();
-  if (pollutant === 'nox') data = engine.getNoxTotal();
-  if (pollutant === 'co2') data = engine.getCo2Total();
-  if (pollutant === 'pm25') data = engine.getPm25Total();
-  // return data to web app
-  ctx.body = data;
+  ctx.body = getDisplacement(rdf, body.eere, pollutant);
 };
 
 /**
