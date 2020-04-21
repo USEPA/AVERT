@@ -1,16 +1,78 @@
 'use strict';
 
+/**
+ * @typedef {Object} RDF
+ * @property {number[]} load_bin_edges
+ * @property {RegionalLoad[]} regional_load
+ * @property {PollutantData} data
+ */
+
+/**
+ * @typedef {Object} RegionalLoad
+ * @property {MonthNumber} month
+ * @property {number} regional_load_mw
+ */
+
+/**
+ * @typedef {1|2|3|4|5|6|7|8|9|10|11|12} MonthNumber
+ */
+
+/**
+ * @typedef {Object} PollutantData
+ * @property {LocationData[]} generation
+ * @property {LocationData[]} so2
+ * @property {LocationData[]} so2_not
+ * @property {LocationData[]} nox
+ * @property {LocationData[]} nox_not
+ * @property {LocationData[]} co2
+ * @property {LocationData[]} co2_not
+ * @property {LocationData[]} pm25
+ * @property {LocationData[]} pm25_not
+ */
+
+/**
+ * @typedef {Object} LocationData
+ * @property {string} state
+ * @property {string} county
+ * @property {number[]} medians
+ */
+
+/**
+ * @typedef {EereData[]} EERE
+ */
+
+/**
+ * @typedef {Object} EereData
+ * @property {number} final_mw
+ */
+
+/**
+ * @typedef {'generation'|'so2'|'nox'|'co2'|'pm25'} Pollutant
+ */
+
 // helper function for initializing default values of an object's key
 function init(object, key, fallback) {
   (object[key] != null) ? object[key] : object[key] = fallback;
 }
 
+/**
+ * @param {Object} options
+ * @param {number} options.load
+ * @param {number} options.genA
+ * @param {number} options.genB
+ * @param {number} options.edgeA
+ * @param {number} options.edgeB
+ */
 function calculateLinear({ load, genA, genB, edgeA, edgeB }) {
   const slope = (genA - genB) / (edgeA - edgeB);
   const intercept = genA - (slope * edgeA);
   return load * slope + intercept;
 };
 
+/**
+ * @param {number[]} array
+ * @param {number} lookup
+ */
 function excelMatch(array, lookup) {
   const sortedArray = array.concat(lookup).sort((a, b) => a - b);
   const index = sortedArray.indexOf(lookup);
@@ -21,15 +83,16 @@ function excelMatch(array, lookup) {
 
 /**
  * Caclulates displacement for a given pollutant.
- * 
- * @param {*} rdf 
- * @param {*} eere 
- * @param {'generation' | 'so2' | 'nox' | 'co2' | 'pm25'} pollutant 
+ * @param {RDF} rdf
+ * @param {EERE} eere
+ * @param {Pollutant} pollutant
  */
 function getDisplacement(rdf, eere, pollutant) {
   // conditionally set ozoneData and nonOzoneData based on provided pollutant
-  let ozoneData = [];
-  let nonOzoneData = [];
+  /** @type {LocationData[]} */
+  let ozoneData;
+  /** @type {LocationData[]|false} */
+  let nonOzoneData;
 
   if (pollutant === 'generation') {
     ozoneData = rdf.data.generation;
@@ -56,53 +119,85 @@ function getDisplacement(rdf, eere, pollutant) {
     nonOzoneData = rdf.data.pm25_not;
   }
 
+  const initialMonthlyValues = {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
+    7: 0,
+    8: 0,
+    9: 0,
+    10: 0,
+    11: 0,
+    12: 0,
+  };
+
   // set up structure of data collections (used in returned object's keys)
-  const monthlyEmissionChanges = { region: {}, state: {}, county: {} };
-  const monthlyPercentageChanges = { region: {}, state: {}, county: {} };
-  const monthlyPreValues = { region: {}, state: {}, county: {} };
-  const monthlyPostValues = { region: {}, state: {}, county: {} };
+  const monthlyEmissionChanges = {
+    region: initialMonthlyValues,
+    state: {},
+    county: {},
+  };
+
+  const monthlyPercentageChanges = {
+    region: initialMonthlyValues,
+    state: {},
+    county: {},
+  };
+
+  const monthlyPreValues = {
+    region: initialMonthlyValues,
+    state: {},
+    county: {},
+  };
+
+  const monthlyPostValues = {
+    region: initialMonthlyValues,
+    state: {},
+    county: {},
+  };
+
   const stateEmissionChanges = {};
 
   // load bin edges
   const minEdge = rdf.load_bin_edges[0];
   const maxEdge = rdf.load_bin_edges[rdf.load_bin_edges.length - 1];
 
-  // location medians (ozone and non-ozone)
+  // dataset medians (ozone and non-ozone)
   const ozoneMedians = ozoneData.map((data) => data.medians);
   const nonOzoneMedians = 
     nonOzoneData
       ? nonOzoneData.map((data) => data.medians)
       : false;
 
-  // setup total and delta arrays
-  // (total arrays used to calculate returned 'original' and 'post' keys with data)
-  // (detla array used to calculate returned 'monthlyChanges' keys)
-  let preTotalArray = [];
-  let postTotalArray = [];
-  let deltaVArray = [];
+  /** @type {number[]} - used to calculate returned 'original' key */
+  const preTotals = [];
+  /** @type {number[]} - used to calculate returned 'post' key */
+  const postTotals = [];
+  /** @type {number[]} - used to calculate returned 'monthlyChanges' key */
+  const deltas = [];
 
   // iterate over each hour in the year (8760 in non-leap years)
   for (let i = 0; i < rdf.regional_load.length; i++) {
-    const load = rdf.regional_load[i].regional_load_mw; // original regional load mwh (number)
-    const month = rdf.regional_load[i].month;           // month of load (number, 1-12)
-    const postLoad = load + eere[i].final_mw;           // EERE-merged regional load mwh (number)
+    const preLoad = rdf.regional_load[i].regional_load_mw; // original regional load (mwh)
+    const month = rdf.regional_load[i].month;              // numeric month of load
+    const postLoad = preLoad + eere[i].final_mw;           // EERE-merged regional load (mwh)
+
+    const preLoadInBounds = preLoad >= minEdge && preLoad <= maxEdge;
+    const postLoadInBounds = postLoad >= minEdge && postLoad <= maxEdge;
 
     // check for outliers
-    if (!(load >= minEdge && load <= maxEdge && postLoad >= minEdge && postLoad <= maxEdge)) continue;
+    if (!(preLoadInBounds && postLoadInBounds)) continue;
 
-    // initialize total and delta arrays to '0'
-    preTotalArray[i] = 0;
-    postTotalArray[i] = 0;
-    deltaVArray[i] = 0;
+    // initialize total and delta arrays to 0
+    preTotals[i] = 0;
+    postTotals[i] = 0;
+    deltas[i] = 0;
 
-    // initialize each data collection's month to '0' if it hasn't been set
-    init(monthlyEmissionChanges.region, month, 0);
-    init(monthlyPercentageChanges.region, month, 0);
-    init(monthlyPreValues.region, month, 0);
-    init(monthlyPostValues.region, month, 0);
-
-    // get index of item closest to load (or postLoad) in load_bin_edges array
-    const preGenIndex = excelMatch(rdf.load_bin_edges, load);
+    // get index of item closest to preLoad or postLoad in load_bin_edges array
+    const preGenIndex = excelMatch(rdf.load_bin_edges, preLoad);
     const postGenIndex = excelMatch(rdf.load_bin_edges, postLoad);
 
     // set activeMedians, based on passed nonOzoneMedians value and month
@@ -114,12 +209,12 @@ function getDisplacement(rdf, eere, pollutant) {
     // iterate over each location in the ozoneData (number varies per region)
     // ('RM' region: under 100. 'SE' region: over 1000)
     for (let j = 0; j < ozoneData.length; j ++) {
-      const medians = activeMedians[j]; // active medians (array of numbers)
-      const state = ozoneData[j].state; // state abbreviation (string)
-      const county = ozoneData[j].county; // county name (string)
+      const medians = activeMedians[j]; // active medians
+      const state = ozoneData[j].state; // state abbreviation
+      const county = ozoneData[j].county; // county name
 
       const preVal = calculateLinear({
-        load: load,
+        load: preLoad,
         genA: medians[preGenIndex],
         genB: medians[preGenIndex + 1],
         edgeA: rdf.load_bin_edges[preGenIndex],
@@ -187,15 +282,15 @@ function getDisplacement(rdf, eere, pollutant) {
       init(monthlyPercentageChanges.county[state][county], month, 0);
 
       // increment total and delta arrays with data
-      preTotalArray[i] += data.pre;
-      postTotalArray[i] += data.post;
-      deltaVArray[i] += data.delta;
+      preTotals[i] += data.pre;
+      postTotals[i] += data.post;
+      deltas[i] += data.delta;
     }
 
     // increment each data collection with accumulated values from total and delta arrays
-    monthlyEmissionChanges.region[month] += deltaVArray[i];
-    monthlyPreValues.region[month] += preTotalArray[i];
-    monthlyPostValues.region[month] += postTotalArray[i];
+    monthlyEmissionChanges.region[month] += deltas[i];
+    monthlyPreValues.region[month] += preTotals[i];
+    monthlyPostValues.region[month] += postTotals[i];
   }
 
   const monthNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -227,13 +322,13 @@ function getDisplacement(rdf, eere, pollutant) {
   });
 
   // total up the total arrays
-  const preTotal = preTotalArray.reduce((acc, value) => acc + (value || 0), 0);
-  const postTotal = postTotalArray.reduce((acc, value) => acc + (value || 0), 0);
+  const preTotal = preTotals.reduce((acc, cur) => acc + (cur || 0), 0);
+  const postTotal = postTotals.reduce((acc, cur) => acc + (cur || 0), 0);
 
   return {
-    original: Number(preTotal),
-    post: Number(postTotal),
-    impact: Number(postTotal - preTotal),
+    original: preTotal,
+    post: postTotal,
+    impact: postTotal - preTotal,
     monthlyChanges: {
       emissions: monthlyEmissionChanges,
       percentages: monthlyPercentageChanges,

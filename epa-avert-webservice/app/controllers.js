@@ -39,9 +39,8 @@ const eere = {
 
 /**
  * Receives EERE data and region, and returns displacement data.
- * 
  * @param {*} ctx 
- * @param {'generation' | 'so2' | 'nox' | 'co2' | 'pm25'} pollutant 
+ * @param {'generation'|'so2'|'nox'|'co2'|'pm25'} pollutant 
  */
 async function calculatePollutant(ctx, pollutant) {
   const body = await ctx.request.body;
