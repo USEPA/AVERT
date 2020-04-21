@@ -16,7 +16,7 @@ const rdf = {
     if (!(region in config.regions)) {
       ctx.throw(404, `${region} region not found`);
     }
-    const file = await readFile(config.regions[region].rdf);
+    const file = await readFile(`app/data/${config.regions[region].rdf}`);
     ctx.body = JSON.parse(file);
   },
 };
@@ -32,7 +32,7 @@ const eere = {
     if (!(region in config.regions)) {
       ctx.throw(404, `${region} region not found`);
     }
-    const file = await readFile(config.regions[region].defaults);
+    const file = await readFile(`app/data/${config.regions[region].eere}`);
     ctx.body = JSON.parse(file);
   },
 }
@@ -44,8 +44,8 @@ const eere = {
 async function calculatePollutant(ctx, pollutant) {
   const body = await ctx.request.body;
   // parse rdf data from file
-  const file = await readFile(config.regions[body.region].rdf);
-  const rdf = JSON.parse(file, 'utf8');
+  const file = await readFile(`app/data/${config.regions[body.region].rdf}`);
+  const rdf = JSON.parse(file);
   // get pollutant data from instance of DisplacementEngine
   const engine = new DisplacementsEngine(rdf, body.eere);
   let data;
