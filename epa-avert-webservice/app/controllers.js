@@ -3,7 +3,7 @@ const { promisify } = require('util');
 const readFile = promisify(fs.readFile);
 
 const config = require('./config');
-const getDisplacement = require('./engines/DisplacementsEngine');
+const getDisplacement = require('./calculations');
 
 /**
  * RDF Controller

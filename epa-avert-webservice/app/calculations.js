@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @typedef {Object} RDF
  * @property {number[]} load_bin_edges
