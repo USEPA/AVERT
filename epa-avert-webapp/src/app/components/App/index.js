@@ -1,9 +1,6 @@
 // @flow
-/* eslint-disable import/first */
 
 import React from 'react';
-import ReactHighcharts from 'react-highcharts';
-require('highcharts-exporting')(ReactHighcharts.Highcharts);
 // components
 import StepProgressBar from 'app/components/StepProgressBar';
 import StepPanels from 'app/components/StepPanels/container.js';

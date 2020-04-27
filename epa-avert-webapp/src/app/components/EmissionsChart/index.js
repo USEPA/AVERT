@@ -1,12 +1,14 @@
 // @flow
-/* eslint-disable import/first */
 
 import React from 'react';
-import Highcharts from 'react-highcharts';
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
 // enums
 import States from 'app/enums/States';
 // styles
 import './styles.css';
+
+require('highcharts/modules/exporting')(Highcharts);
 
 type Props = {
   heading: string,
@@ -210,7 +212,7 @@ const EmissionsChart = (props: Props) => {
       enabled: false,
     },
     tooltip: {
-      pointFormatter: function() {
+      pointFormatter: function () {
         const dataPoint = this.y.toLocaleString(undefined, {
           minimumFractionDigits: 0,
           maximumFractionDigits: 2,
@@ -370,10 +372,29 @@ const EmissionsChart = (props: Props) => {
   if (readyToRender) {
     Charts = (
       <div className="avert-emissions-charts">
-        <Highcharts config={so2Config} callback={afterRender} />
-        <Highcharts config={noxConfig} callback={afterRender} />
-        <Highcharts config={co2Config} callback={afterRender} />
-        <Highcharts config={pm25Config} callback={afterRender} />
+        <HighchartsReact
+          highcharts={Highcharts}
+          options={so2Config}
+          callback={afterRender}
+        />
+
+        <HighchartsReact
+          highcharts={Highcharts}
+          options={noxConfig}
+          callback={afterRender}
+        />
+
+        <HighchartsReact
+          highcharts={Highcharts}
+          options={co2Config}
+          callback={afterRender}
+        />
+
+        <HighchartsReact
+          highcharts={Highcharts}
+          options={pm25Config}
+          callback={afterRender}
+        />
       </div>
     );
   }

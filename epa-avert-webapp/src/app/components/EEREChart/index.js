@@ -1,11 +1,14 @@
 // @flow
 
 import React from 'react';
-import Highcharts from 'react-highcharts';
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
 // components
 import Tooltip from 'app/components/Tooltip/container.js';
 // styles
 import './styles.css';
+
+require('highcharts/modules/exporting')(Highcharts);
 
 const formatNumber = (number) => {
   return number.toLocaleString(undefined, {
@@ -75,7 +78,7 @@ const EEREChart = (props: Props) => {
       enabled: false,
     },
     tooltip: {
-      formatter: function() {
+      formatter: function () {
         return `<span style="font-size: 10px">
           ${this.series.xAxis.axisTitle.textStr}:
           ${this.x.toLocaleString()}
@@ -92,7 +95,7 @@ const EEREChart = (props: Props) => {
         text: 'Hour of year',
       },
       labels: {
-        formatter: function() {
+        formatter: function () {
           return this.value.toLocaleString();
         },
       },
@@ -102,7 +105,7 @@ const EEREChart = (props: Props) => {
         text: 'Change in load (MW)',
       },
       labels: {
-        formatter: function() {
+        formatter: function () {
           return Math.round(this.value);
         },
       },
@@ -152,7 +155,11 @@ const EEREChart = (props: Props) => {
 
         <h4 className="avert-chart-subtitle">{props.subheading}</h4>
 
-        <Highcharts config={chartConfig} callback={afterRender} />
+        <HighchartsReact
+          highcharts={Highcharts}
+          options={chartConfig}
+          callback={afterRender}
+        />
 
         <p className="avert-small-text">
           This EE/RE profile will displace {totalLoadGwh} GWh of regional fossil
@@ -204,10 +211,11 @@ const EEREChart = (props: Props) => {
         <strong>{formatNumber(x.value)}</strong>% on{' '}
         <strong>
           {month} {day} at {hour}:00 {ampm}
-        </strong>). The recommended limit for AVERT is 15%, as AVERT is designed
-        to simulate marginal operational changes in load, rather than
-        large-scale changes that may change fundamental dynamics. Please reduce
-        one or more of your inputs to ensure more reliable results.
+        </strong>
+        ). The recommended limit for AVERT is 15%, as AVERT is designed to
+        simulate marginal operational changes in load, rather than large-scale
+        changes that may change fundamental dynamics. Please reduce one or more
+        of your inputs to ensure more reliable results.
       </p>
     );
   };

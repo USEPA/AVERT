@@ -13,7 +13,7 @@
     "start": "react-scripts start",
     "build:dev": "REACT_APP_URL=https://avert-dev.app.cloud.gov npm run build",
     "build": "react-scripts build && ./sync-build-with-public.sh",
-    "test": "react-scripts test --verbose",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "cypress": "cypress open"
   },
@@ -23,18 +23,19 @@
     "husky": "4.2.5",
     "lint-staged": "10.1.7",
     "prettier": "2.0.5",
-    "react-scripts": "1.1.4",
+    "react-scripts": "3.4.1",
     "redux-mock-store": "1.5.3"
   },
   "dependencies": {
     "blob": "0.0.4",
     "file-saver": "1.3.8",
     "flow-bin": "0.78.0",
+    "highcharts": "8.0.4",
     "highcharts-exporting": "0.1.7",
+    "highcharts-react-official": "3.0.0",
     "json2csv": "4.2.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-highcharts": "16.0.2",
     "react-redux": "7.2.0",
     "redux": "4.0.5",
     "redux-thunk": "2.3.0",
@@ -47,5 +48,24 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,css,md,html}": "prettier --write"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all",
+      "ie 11"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version",
+      "ie 11"
+    ]
   }
 }
