@@ -1,7 +1,6 @@
 {
   "name": "epa-avert-webapp",
   "version": "1.15.0",
-  "private": true,
   "description": "EPA's Avoided Emissions and Generation Tools (AVERT) is a free tool that estimates the emissions benefits of energy efficiency and renewable energy policies and programs.",
   "author": "Eastern Research Group, Inc.",
   "contributors": [
@@ -9,15 +8,21 @@
     "Courtney Myers <courtney.myers@erg.com>"
   ],
   "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Eastern-Research-Group/EPA-AVERT.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Eastern-Research-Group/EPA-AVERT/issues"
-  },
   "homepage": ".",
+  "scripts": {
+    "precommit": "lint-staged",
+    "start": "react-scripts start",
+    "build:dev": "REACT_APP_URL=https://avert-dev.app.cloud.gov npm run build",
+    "build": "react-scripts build && ./sync-build-with-public.sh",
+    "test": "react-scripts test --verbose",
+    "coverage": "react-scripts test --coverage",
+    "eject": "react-scripts eject",
+    "flow": "flow",
+    "cypress": "cypress open"
+  },
   "devDependencies": {
+    "@testing-library/cypress": "6.0.0",
+    "cypress": "4.4.1",
     "react-scripts": "1.1.4",
     "redux-mock-store": "1.5.3"
   },
@@ -43,16 +48,5 @@
       "prettier --write",
       "git add"
     ]
-  },
-  "scripts": {
-    "precommit": "lint-staged",
-    "start": "react-scripts start",
-    "build:pcf": "REACT_APP_URL=https://avert-dev.cfapps.io npm run build",
-    "build:dev": "REACT_APP_URL=https://avert-dev.app.cloud.gov npm run build",
-    "build": "react-scripts build && ./sync-build-with-public.sh",
-    "test": "react-scripts test --verbose",
-    "coverage": "react-scripts test --coverage",
-    "eject": "react-scripts eject",
-    "flow": "flow"
   }
 }

@@ -1,7 +1,6 @@
 {
   "name": "epa-avert-webservice",
   "version": "1.15.0",
-  "private": true,
   "description": "Offloaded server calculations for the AVERT web app.",
   "author": "Eastern Research Group, Inc.",
   "contributors": [
@@ -9,13 +8,6 @@
     "Courtney Myers <courtney.myers@erg.com>"
   ],
   "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Eastern-Research-Group/EPA-AVERT.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Eastern-Research-Group/EPA-AVERT/issues"
-  },
   "engines": {
     "node": "10.x"
   },
@@ -24,6 +16,10 @@
     "start": "node ./index.js",
     "dev": "AVERT_AUTH=true AVERT_USER=avert AVERT_PASS=dev node ./index.js",
     "test": "mocha **/*.test.js"
+  },
+  "devDependencies": {
+    "mocha": "7.1.1",
+    "supertest": "4.0.2"
   },
   "dependencies": {
     "@koa/cors": "3.0.0",
@@ -35,9 +31,5 @@
     "koa-logger": "3.2.1",
     "koa-route": "3.2.0",
     "koa-static": "5.0.0"
-  },
-  "devDependencies": {
-    "mocha": "7.1.1",
-    "supertest": "4.0.2"
   }
 }
