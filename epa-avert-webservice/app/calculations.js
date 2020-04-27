@@ -104,33 +104,30 @@ function getDisplacement(rdf, eere, pollutant) {
   const nonOzoneData = rdf.data[`${pollutant}_not`] || false;
 
   // set up structure of data collections (used in returned object's keys)
-  /** @type {MonthlyValues} */
-  const initialMonthlyValues = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0 };
-
   /** @type {MonthlyChanges} */
   const monthlyEmissionChanges = {
-    region: initialMonthlyValues,
+    region: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0 },
     state: {},
     county: {},
   };
 
   /** @type {MonthlyChanges} */
   const monthlyPercentageChanges = {
-    region: initialMonthlyValues,
+    region: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0 },
     state: {},
     county: {},
   };
 
   /** @type {MonthlyChanges} */
   const monthlyPreValues = {
-    region: initialMonthlyValues,
+    region: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0 },
     state: {},
     county: {},
   };
 
   /** @type {MonthlyChanges} */
   const monthlyPostValues = {
-    region: initialMonthlyValues,
+    region: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0 },
     state: {},
     county: {},
   };
