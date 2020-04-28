@@ -45,3 +45,43 @@
 .avert-region-map .avert-region[data-active='true'] {
   opacity: 1;
 }
+
+#california {
+  fill: #fed330;
+}
+
+#great-lakes {
+  fill: #db742b;
+}
+
+#lower-midwest {
+  fill: #a74c8f;
+}
+
+#northeast {
+  fill: #d52074;
+}
+
+#northwest {
+  fill: #364f95;
+}
+
+#rocky-mountains {
+  fill: #67b187;
+}
+
+#southeast {
+  fill: #bdc736;
+}
+
+#southwest {
+  fill: #d85029;
+}
+
+#texas {
+  fill: #fda929;
+}
+
+#upper-midwest {
+  fill: #48b5d8;
+}
