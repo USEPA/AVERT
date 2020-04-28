@@ -1,10 +1,25 @@
+import { useSelector, TypedUseSelectorHook } from 'react-redux';
 // action types
 import { SELECT_REGION } from 'app/redux/region';
 import { START_DISPLACEMENT } from 'app/redux/annualDisplacement';
 export const COMPLETE_STATE_EMISSIONS = 'stateEmissions/COMPLETE_STATE_EMISSIONS'; // prettier-ignore
 
+type StateEmissionsState = {
+  status: 'select_region' | 'ready' | 'started' | 'complete';
+  states: [];
+  data: {
+    state: string;
+    so2: number;
+    nox: number;
+    co2: number;
+    pm25: number;
+  }[];
+};
+
+export const useStateEmissionsState: TypedUseSelectorHook<StateEmissionsState> = useSelector;
+
 // reducer
-const initialState = {
+const initialState: StateEmissionsState = {
   status: 'select_region',
   states: [],
   data: [],
@@ -38,7 +53,7 @@ export default function reducer(state = initialState, action) {
 }
 
 export const completeStateEmissions = () => {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     // get reducer data from store to use in dispatched action
     const { annualDisplacement, so2, nox, co2, pm25 } = getState();
 

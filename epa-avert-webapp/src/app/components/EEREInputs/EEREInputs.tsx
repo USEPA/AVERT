@@ -1,47 +1,31 @@
-// @flow
-
 import React from 'react';
+import { useDispatch } from 'react-redux';
 // components
-import EEREInputField from 'app/components/EEREInputField/container.js';
-import Tooltip from 'app/components/Tooltip/container.js';
+import EEREInputField from 'app/components/EEREInputField';
+import Tooltip from 'app/components/Tooltip/Tooltip';
+// reducers
+import {
+  useEereState,
+  updateEereAnnualGwh,
+  updateEereConstantMw,
+  updateEereBroadBasedProgram,
+  updateEereReduction,
+  updateEereTopHours,
+  updateEereWindCapacity,
+  updateEereUtilitySolar,
+  updateEereRooftopSolar,
+  calculateEereProfile,
+} from 'app/redux/eere';
 // styles
 import './styles.css';
 
-type Props = {
-  // redux connected props
-  status: string,
-  valid: boolean,
-  errors: Array<string>,
-  constantMwh: string,
-  annualGwh: string,
-  broadProgram: string,
-  reduction: string,
-  topHours: string,
-  windCapacity: string,
-  utilitySolar: string,
-  rooftopSolar: string,
-  limits: {
-    annualGwh: boolean | number,
-    constantMwh: boolean | number,
-    renewables: boolean | number,
-    percent: boolean | number,
-  },
-  onConstantMwChange: (string) => void,
-  onAnnualGwhChange: (string) => void,
-  onBroadBasedProgramChange: (string) => void,
-  onReductionChange: (string) => void,
-  onTopHoursChange: (string) => void,
-  onWindCapacityChange: (string) => void,
-  onUtilitySolarChange: (string) => void,
-  onRooftopSolarChange: (string) => void,
-  onCalculateProfile: () => void,
-};
-
-const EEREInputs = (props: Props) => {
+function EEREInputs() {
+  const dispatch = useDispatch();
+  const status = useEereState(({ status }) => status);
+  const valid = useEereState(({ valid }) => valid);
+  const errors = useEereState(({ errors }) => errors);
+  const limits = useEereState(({ limits }) => limits);
   const {
-    status,
-    valid,
-    errors,
     constantMwh,
     annualGwh,
     broadProgram,
@@ -50,26 +34,16 @@ const EEREInputs = (props: Props) => {
     windCapacity,
     utilitySolar,
     rooftopSolar,
-    limits,
-    onConstantMwChange,
-    onAnnualGwhChange,
-    onBroadBasedProgramChange,
-    onReductionChange,
-    onTopHoursChange,
-    onWindCapacityChange,
-    onUtilitySolarChange,
-    onRooftopSolarChange,
-    onCalculateProfile,
-  } = props;
+  } = useEereState(({ inputs }) => inputs);
 
-  const displayError = (input) => {
-    if (errors.indexOf(input.name) !== -1 && input.value.length > 0) {
+  function displayError({ name, value, max }: any) {
+    if (errors.indexOf(name) !== -1 && value.length > 0) {
       let Message;
-      if (Number(input.value) >= 0) {
+      if (Number(value) >= 0) {
         Message = (
           <span className="avert-input-error">
             <span className="avert-input-error-range">
-              Please enter a number between 0 and {input.max}.
+              Please enter a number between 0 and {max}.
             </span>
             This will help ensure that each of your proposed programs displaces
             no more than approximately 30% of regional fossil generation in any
@@ -93,7 +67,7 @@ const EEREInputs = (props: Props) => {
 
       return Message;
     }
-  };
+  }
 
   // text input values from fields
   const inputs = [
@@ -106,13 +80,14 @@ const EEREInputs = (props: Props) => {
     utilitySolar,
     rooftopSolar,
   ];
-  // prettier-ignore
-  const inputsAreEmpty = inputs.filter((field) => field.length > 0).length === 0;
 
-  // prettier-ignore
-  const disabledClass = (!valid || inputsAreEmpty || status === 'started')
-    ? ' avert-button-disabled'
-    : '';
+  const inputsAreEmpty =
+    inputs.filter((field) => field.length > 0).length === 0;
+
+  const disabledClass =
+    !valid || inputsAreEmpty || status === 'started'
+      ? ' avert-button-disabled'
+      : '';
 
   const eereButtonOptions = {
     ready: 'Calculate EE/RE Impacts',
@@ -142,8 +117,8 @@ const EEREInputs = (props: Props) => {
                 </span>
                 <EEREInputField
                   value={annualGwh}
-                  disabled={constantMwh ? true : false}
-                  onChange={onAnnualGwhChange}
+                  disabled={constantMwh}
+                  onChange={dispatch(updateEereAnnualGwh)}
                 />
                 <span className="avert-input-unit"> GWh </span>
 
@@ -168,8 +143,8 @@ const EEREInputs = (props: Props) => {
                 </span>
                 <EEREInputField
                   value={constantMwh}
-                  disabled={annualGwh ? true : false}
-                  onChange={onConstantMwChange}
+                  disabled={annualGwh}
+                  onChange={dispatch(updateEereConstantMw)}
                 />
                 <span className="avert-input-unit"> MW </span>
 
@@ -206,8 +181,8 @@ const EEREInputs = (props: Props) => {
                 </span>
                 <EEREInputField
                   value={broadProgram}
-                  disabled={reduction || topHours ? true : false}
-                  onChange={onBroadBasedProgramChange}
+                  disabled={reduction || topHours}
+                  onChange={dispatch(updateEereBroadBasedProgram)}
                 />
                 <span className="avert-input-unit"> % in all hours </span>
 
@@ -230,14 +205,14 @@ const EEREInputs = (props: Props) => {
                 </span>
                 <EEREInputField
                   value={reduction}
-                  disabled={broadProgram ? true : false}
-                  onChange={onReductionChange}
+                  disabled={broadProgram}
+                  onChange={dispatch(updateEereReduction)}
                 />
                 <span className="avert-input-unit"> % during the peak </span>
                 <EEREInputField
                   value={topHours}
-                  disabled={broadProgram ? true : false}
-                  onChange={onTopHoursChange}
+                  disabled={broadProgram}
+                  onChange={dispatch(updateEereTopHours)}
                 />
                 <span className="avert-input-unit"> % of hours </span>
 
@@ -276,7 +251,7 @@ const EEREInputs = (props: Props) => {
               <span className="avert-input-label">Total capacity: </span>
               <EEREInputField
                 value={windCapacity}
-                onChange={onWindCapacityChange}
+                onChange={dispatch(updateEereWindCapacity)}
               />
               <span className="avert-input-unit"> MW </span>
 
@@ -303,7 +278,7 @@ const EEREInputs = (props: Props) => {
               <span className="avert-input-label">Total capacity: </span>
               <EEREInputField
                 value={utilitySolar}
-                onChange={onUtilitySolarChange}
+                onChange={dispatch(updateEereUtilitySolar)}
               />
               <span className="avert-input-unit"> MW </span>
 
@@ -332,7 +307,7 @@ const EEREInputs = (props: Props) => {
               <span className="avert-input-label">Total capacity: </span>
               <EEREInputField
                 value={rooftopSolar}
-                onChange={onRooftopSolarChange}
+                onChange={dispatch(updateEereRooftopSolar)}
               />
               <span className="avert-input-unit"> MW </span>
 
@@ -356,11 +331,11 @@ const EEREInputs = (props: Props) => {
       <p className="avert-impacts-button">
         <a
           className={`avert-button${disabledClass}`}
-          href=""
-          onClick={(event) => {
-            event.preventDefault();
+          href="/"
+          onClick={(ev) => {
+            ev.preventDefault();
             // if valid prop (state) is true, calculate profile
-            valid && onCalculateProfile();
+            valid && dispatch(calculateEereProfile());
           }}
         >
           {eereButtonOptions[status]}
@@ -368,6 +343,6 @@ const EEREInputs = (props: Props) => {
       </p>
     </div>
   );
-};
+}
 
 export default EEREInputs;

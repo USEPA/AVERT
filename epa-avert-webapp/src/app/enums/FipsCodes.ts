@@ -1,8 +1,6 @@
-// @flow
-
 /*
  * NOTE:
- * This JS file was created from the 'CountyFIPS' sheet of the 'AVERT Main
+ * This file was created from the 'CountyFIPS' sheet of the 'AVERT Main
  * Module v2.0 (20180201).xlsm file'. If changes are made to the sheet in Excel,
  * this file needs to be updated, with special attention applied to:
  *
@@ -13,15 +11,15 @@
  *
  *           Special formatting for La Porte county, Indiana:
  *           The web app displays this as 'LaPorte', so use that formatting.
-*/
+ */
 
 type County = {
-  code: string,
-  state: string,
-  county: string,
+  code: string;
+  state: string;
+  county: string;
 };
 
-const FipsCodes: Array<County> = [
+const FipsCodes: County[] = [
   {
     code: '01001',
     state: 'Alabama',

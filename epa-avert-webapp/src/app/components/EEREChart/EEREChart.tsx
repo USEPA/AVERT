@@ -1,62 +1,31 @@
-// @flow
-
 import React from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 // components
-import Tooltip from 'app/components/Tooltip/container.js';
+import Tooltip from 'app/components/Tooltip/Tooltip';
+// reducers
+import { useEereState } from 'app/redux/eere';
 // styles
 import './styles.css';
 
 require('highcharts/modules/exporting')(Highcharts);
 
-const formatNumber = (number) => {
-  return number.toLocaleString(undefined, {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  });
-};
+function EEREChart() {
+  const {
+    valid: softValid,
+    topExceedanceValue: softTopExceedanceValue,
+    topExceedanceTimestamp: softTopExceedanceTimestamp,
+  } = useEereState(({ softLimit }) => softLimit);
+  const {
+    valid: hardValid,
+    topExceedanceValue: hardTopExceedanceValue,
+    topExceedanceTimestamp: hardTopExceedanceTimestamp,
+  } = useEereState(({ hardLimit }) => hardLimit);
+  const hourlyEere = useEereState(({ hourlyEere }) => hourlyEere);
 
-type Timestamp = {
-  hour_of_year: number,
-  year: number,
-  month: number,
-  day: number,
-  hour: number,
-  regional_load_mw: number,
-  hourly_limit: number,
-};
-
-type Eere = {
-  index: number,
-  constant: number,
-  current_load_mw: number,
-  percent: number,
-  final_mw: number,
-  renewable_energy_profile: number,
-  soft_limit: number,
-  hard_limit: number,
-  soft_exceedance: number,
-  hard_exceedance: number,
-};
-
-type Props = {
-  heading: string,
-  subheading: string,
-  // redux connected props
-  softValid: boolean,
-  softTopExceedanceValue: number,
-  softTopExceedanceTimestamp: Timestamp,
-  hardValid: boolean,
-  hardTopExceedanceValue: number,
-  hardTopExceedanceTimestamp: Timestamp,
-  hourlyEere: Array<Eere>,
-};
-
-const EEREChart = (props: Props) => {
-  let data = [];
-  let hours = [];
-  props.hourlyEere.forEach((hour) => {
+  let data: any[] = [];
+  let hours: any[] = [];
+  hourlyEere.forEach((hour: any) => {
     data.push(hour.final_mw);
     hours.push(hour.index);
   });
@@ -120,29 +89,20 @@ const EEREChart = (props: Props) => {
   };
 
   // boolean flag to render chart and error/warning when hourlyEere prop exits
-  let readyToRender = props.hourlyEere.length > 0;
+  let readyToRender = hourlyEere.length > 0;
 
-  // callback for after highcharts chart renders
-  const afterRender = (chart) => {
-    // as this entire react app is ultimately served in an iframe on another page,
-    // this document has a click handler that sends document's height to other window,
-    // which can then set the embedded iframe's height (see public/post-message.js)
-    //$FlowFixMe: surpressing Flow error
-    document.querySelector('html').click();
-  };
-
-  let Chart = null;
-  // conditionally re-define Chart when readyToRender (hourlyEere prop exists)
+  let chart = null;
+  // conditionally re-define chart when readyToRender (hourlyEere prop exists)
   if (readyToRender) {
-    const totalLoadMwh = props.hourlyEere
+    const totalLoadMwh = hourlyEere
       .map((hour) => hour.final_mw)
       .reduce((a, b) => a + b, 0);
     const totalLoadGwh = Math.round(totalLoadMwh / -1000).toLocaleString();
 
-    Chart = (
+    chart = (
       <div className="avert-eere-profile">
         <h3 className="avert-chart-title">
-          {props.heading}{' '}
+          EE/RE profile based on values entered:{' '}
           <Tooltip id={8}>
             This graph shows the hourly changes in load that will result from
             the inputs entered above. It reflects a combination of all inputs,
@@ -153,12 +113,21 @@ const EEREChart = (props: Props) => {
           </Tooltip>
         </h3>
 
-        <h4 className="avert-chart-subtitle">{props.subheading}</h4>
+        <h4 className="avert-chart-subtitle">
+          Adjusted for transmission and distribution line loss and wind and
+          solar capacity factors, where applicable.
+        </h4>
 
         <HighchartsReact
           highcharts={Highcharts}
           options={chartConfig}
-          callback={afterRender}
+          callback={(chart: any) => {
+            // callback for after highcharts chart renders
+            // as this entire react app is ultimately served in an iframe on another page,
+            // this document has a click handler that sends document's height to other window,
+            // which can then set the embedded iframe's height (see public/post-message.js)
+            document.querySelector('html')?.click();
+          }}
         />
 
         <p className="avert-small-text">
@@ -169,20 +138,28 @@ const EEREChart = (props: Props) => {
     );
   }
 
-  const ValidationMessage = (type) => {
-    let x = {};
+  function validationMessage(type: 'error' | 'warning') {
+    const x = {
+      heading: '',
+      threshold: '',
+      value: 0,
+      timestamp: { month: 0, day: 0, hour: 0, ampm: '' },
+    };
+
     if (type === 'error') {
       x.heading = 'ERROR';
       x.threshold = '30';
-      x.value = props.hardTopExceedanceValue;
-      x.timestamp = props.hardTopExceedanceTimestamp;
+      x.value = hardTopExceedanceValue;
+      x.timestamp = hardTopExceedanceTimestamp;
     }
+
     if (type === 'warning') {
       x.heading = 'WARNING';
       x.threshold = '15';
-      x.value = props.softTopExceedanceValue;
-      x.timestamp = props.softTopExceedanceTimestamp;
+      x.value = softTopExceedanceValue;
+      x.timestamp = softTopExceedanceTimestamp;
     }
+
     const months = [
       'January',
       'February',
@@ -208,7 +185,13 @@ const EEREChart = (props: Props) => {
         The combined impact of your proposed programs would displace more than{' '}
         <strong>{x.threshold}%</strong> of regional fossil generation in at
         least one hour of the year. (Maximum value:{' '}
-        <strong>{formatNumber(x.value)}</strong>% on{' '}
+        <strong>
+          {x.value.toLocaleString(undefined, {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2,
+          })}
+        </strong>
+        % on{' '}
         <strong>
           {month} {day} at {hour}:00 {ampm}
         </strong>
@@ -218,27 +201,25 @@ const EEREChart = (props: Props) => {
         of your inputs to ensure more reliable results.
       </p>
     );
-  };
+  }
 
-  // prettier-ignore
-  // set ValidationError when readyToRender and hardValid prop is false
-  const ValidationError = (readyToRender && !props.hardValid)
-    ? ValidationMessage('error')
-    : null;
+  // set validationError when readyToRender and hardValid prop is false
+  const validationError =
+    readyToRender && !hardValid ? validationMessage('error') : null;
 
-  // prettier-ignore
-  // set ValidationWarning when readyToRender, softValid prop is false, and hardValid prop is true
-  const ValidationWarning = (readyToRender && !props.softValid && props.hardValid)
-    ? ValidationMessage('warning')
-    : null;
+  // set validationWarning when readyToRender, softValid prop is false, and hardValid prop is true
+  const validationWarning =
+    readyToRender && !softValid && hardValid
+      ? validationMessage('warning')
+      : null;
 
   return (
     <div>
-      {Chart}
-      {ValidationError}
-      {ValidationWarning}
+      {chart}
+      {validationError}
+      {validationWarning}
     </div>
   );
-};
+}
 
 export default EEREChart;

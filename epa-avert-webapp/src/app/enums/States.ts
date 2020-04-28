@@ -1,6 +1,6 @@
-// @flow
-
-type StatesMap = { [string]: string };
+type StatesMap = {
+  [id: string]: string;
+};
 
 const States: StatesMap = {
   AK: 'Alaska',

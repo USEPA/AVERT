@@ -1,8 +1,16 @@
-// @flow
-
 import React from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import { useDispatch } from 'react-redux';
+// reducers
+import {
+  useMonthlyEmissionsState,
+  selectMonthlyAggregation,
+  selectMonthlyUnit,
+  selectMonthlyState,
+  selectMonthlyCounty,
+} from 'app/redux/monthlyEmissions';
+import { useRegionState } from 'app/redux/region';
 // enums
 import States from 'app/enums/States';
 // styles
@@ -11,61 +19,45 @@ import './styles.css';
 require('highcharts/modules/exporting')(Highcharts);
 
 type Props = {
-  heading: string,
-  // redux connected props
-  monthlyStatus: string,
-  aggregation: 'region' | 'state' | 'county',
-  unit: 'emissions' | 'percentages',
-  availableStates: Array<string>,
-  availableCounties: Array<string>,
-  selectedRegion: string,
-  selectedState: string,
-  selectedCounty: string,
-  output: {
-    so2: Array<number>,
-    nox: Array<number>,
-    co2: Array<number>,
-    pm25: Array<number>,
-  },
-  onAggregationChange: (string) => void,
-  onUnitChange: (string) => void,
-  selectState: (string) => void,
-  selectCounty: (string) => void,
+  heading: string;
 };
 
-const EmissionsChart = (props: Props) => {
-  const {
-    heading,
-    monthlyStatus,
-    aggregation,
-    unit,
-    availableStates,
-    availableCounties,
-    selectedRegion,
-    selectedState,
-    selectedCounty,
-    output,
-    onAggregationChange,
-    onUnitChange,
-    selectState,
-    selectCounty,
-  } = props;
+function EmissionsChart({ heading }: Props) {
+  const dispatch = useDispatch();
+  const status = useMonthlyEmissionsState(({ status }) => status);
+  const aggregation = useMonthlyEmissionsState(
+    ({ aggregation }) => aggregation,
+  );
+  const unit = useMonthlyEmissionsState(({ unit }) => unit);
+  const availableStates = useMonthlyEmissionsState(
+    ({ availableStates }) => availableStates,
+  );
+  const availableCounties = useMonthlyEmissionsState(
+    ({ availableCounties }) => availableCounties,
+  );
+  const selectedRegion = useRegionState(({ name }) => name);
+  const selectedState = useMonthlyEmissionsState(
+    ({ selectedState }) => selectedState,
+  );
+  const selectedCounty = useMonthlyEmissionsState(
+    ({ selectedCounty }) => selectedCounty,
+  );
+  const output = useMonthlyEmissionsState(({ output }) => output);
 
   // rendering is ready when output prop has data
-  const readyToRender = monthlyStatus === 'complete';
+  const readyToRender = status === 'complete';
 
   // callback for after highcharts chart renders
-  const afterRender = (chart) => {
+  const afterRender = (chart: any) => {
     // as this entire react app is ultimately served in an iframe on another page,
     // this document has a click handler that sends document's height to other window,
     // which can then set the embedded iframe's height (see public/post-message.js)
-    //$FlowFixMe: surpressing Flow error
-    document.querySelector('html').click();
+    document.querySelector('html')?.click();
   };
 
-  let AggregationFilter;
+  let aggregationFilter;
   if (readyToRender) {
-    AggregationFilter = (
+    aggregationFilter = (
       <div className="avert-inline-select" id="geography-groups">
         <p>Select level of aggregation:</p>
 
@@ -75,7 +67,9 @@ const EmissionsChart = (props: Props) => {
             name="aggregation"
             value={'region'}
             checked={aggregation === 'region'}
-            onChange={(e) => onAggregationChange(e.target.value)}
+            onChange={(ev) => {
+              dispatch(selectMonthlyAggregation(ev.target.value));
+            }}
           />
           Region
         </label>
@@ -86,9 +80,11 @@ const EmissionsChart = (props: Props) => {
             name="aggregation"
             value={'state'}
             checked={aggregation === 'state'}
-            onChange={(event) => {
-              onAggregationChange(event.target.value);
-              if (selectedState) selectState(selectedState);
+            onChange={(ev) => {
+              dispatch(selectMonthlyAggregation(ev.target.value));
+              if (selectedState) {
+                dispatch(selectMonthlyState(selectedState));
+              }
             }}
           />
           State
@@ -100,9 +96,11 @@ const EmissionsChart = (props: Props) => {
             name="aggregation"
             value={'county'}
             checked={aggregation === 'county'}
-            onChange={(event) => {
-              onAggregationChange(event.target.value);
-              if (selectedCounty) selectCounty(selectedCounty);
+            onChange={(ev) => {
+              dispatch(selectMonthlyAggregation(ev.target.value));
+              if (selectedCounty) {
+                dispatch(selectMonthlyCounty(selectedCounty));
+              }
             }}
           />
           County
@@ -117,7 +115,7 @@ const EmissionsChart = (props: Props) => {
       <div className="avert-select-group">
         <select
           value={selectedState}
-          onChange={(event) => selectState(event.target.value)}
+          onChange={(ev) => dispatch(selectMonthlyState(ev.target.value))}
         >
           <option value="" disabled>
             Select State
@@ -139,7 +137,7 @@ const EmissionsChart = (props: Props) => {
       <div className="avert-select-group">
         <select
           value={selectedCounty}
-          onChange={(event) => selectCounty(event.target.value)}
+          onChange={(ev) => dispatch(selectMonthlyCounty(ev.target.value))}
         >
           <option value="" disabled>
             Select County
@@ -155,9 +153,9 @@ const EmissionsChart = (props: Props) => {
     );
   }
 
-  let GeographyFilter;
+  let geographyFilter;
   if (readyToRender) {
-    GeographyFilter = (
+    geographyFilter = (
       <div className="avert-geography-filter">
         {StateSelector}
         {CountySelector}
@@ -165,9 +163,9 @@ const EmissionsChart = (props: Props) => {
     );
   }
 
-  let UnitFilter;
+  let unitFilter;
   if (readyToRender) {
-    UnitFilter = (
+    unitFilter = (
       <div className="avert-inline-select">
         <p>Select units:</p>
 
@@ -177,7 +175,7 @@ const EmissionsChart = (props: Props) => {
             name="unit"
             value={'emissions'}
             checked={unit === 'emissions'}
-            onChange={(e) => onUnitChange(e.target.value)}
+            onChange={(ev) => dispatch(selectMonthlyUnit(ev.target.value))}
           />
           Emission changes (lbs or tons)
         </label>
@@ -188,7 +186,7 @@ const EmissionsChart = (props: Props) => {
             name="unit"
             value={'percentages'}
             checked={unit === 'percentages'}
-            onChange={(e) => onUnitChange(e.target.value)}
+            onChange={(ev) => dispatch(selectMonthlyUnit(ev.target.value))}
           />
           Percent change
         </label>
@@ -251,38 +249,37 @@ const EmissionsChart = (props: Props) => {
   };
 
   // conditionally define location
-  let location;
+  let location: string;
 
   if (aggregation === 'region') {
     location = `${selectedRegion} Region`;
   }
-  // prettier-ignore
+
   if (aggregation === 'state') {
-    location = (selectedState === '')
-      ? ''
-      : `${States[selectedState]}`;
+    location = selectedState === '' ? '' : `${States[selectedState]}`;
   }
-  // prettier-ignore
+
   if (aggregation === 'county') {
     const countyName =
       selectedCounty.indexOf('(City)') !== -1
         ? selectedCounty // county is really a city
         : selectedState === 'LA'
-          ? `${selectedCounty} Parish`
-          : `${selectedCounty} County`;
+        ? `${selectedCounty} Parish`
+        : `${selectedCounty} County`;
 
-    location = (selectedCounty === '')
-      ? ''
-      : `${countyName}, ${States[selectedState]}`;
+    location =
+      selectedCounty === '' ? '' : `${countyName}, ${States[selectedState]}`;
   }
 
-  const formatTitle = (pollutant) =>
-    `<tspan class='avert-chart-title'>Change in ${pollutant} Emissions: ${location}</tspan>`;
+  function formatTitle(pollutant: string) {
+    return `<tspan class='avert-chart-title'>Change in ${pollutant} Emissions: ${location}</tspan>`;
+  }
 
-  const formatYAxis = (emissionsUnit) =>
-    unit === 'percentages'
+  function formatYAxis(emissionsUnit: string) {
+    return unit === 'percentages'
       ? 'Percent change'
       : `Emission changes (${emissionsUnit})`;
+  }
 
   const so2Config = {
     ...commonConfig,
@@ -368,9 +365,9 @@ const EmissionsChart = (props: Props) => {
     ],
   };
 
-  let Charts;
+  let charts;
   if (readyToRender) {
-    Charts = (
+    charts = (
       <div className="avert-emissions-charts">
         <HighchartsReact
           highcharts={Highcharts}
@@ -403,12 +400,12 @@ const EmissionsChart = (props: Props) => {
     <div className="avert-emissions-chart">
       <h3 className="avert-heading-three">{heading}</h3>
 
-      {AggregationFilter}
-      {GeographyFilter}
-      {UnitFilter}
-      {Charts}
+      {aggregationFilter}
+      {geographyFilter}
+      {unitFilter}
+      {charts}
     </div>
   );
-};
+}
 
 export default EmissionsChart;

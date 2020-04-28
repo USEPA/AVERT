@@ -7,13 +7,13 @@ import PanelBody from 'app/components/PanelBody/PanelBody';
 import PanelFooter from 'app/components/PanelFooter/PanelFooter';
 import RegionList from 'app/components/RegionList/RegionList';
 import RegionMap from 'app/components/RegionMap/RegionMap';
-import EEREInputs from 'app/components/EEREInputs/container.js';
-import UnitConversion from 'app/components/UnitConversion';
-import EEREChart from 'app/components/EEREChart/container.js';
-import DisplacementsTable from 'app/components/DisplacementsTable/container.js';
-import EmissionsTable from 'app/components/EmissionsTable/container.js';
-import EmissionsChart from 'app/components/EmissionsChart/container.js';
-import DataDownload from 'app/components/DataDownload/container.js';
+import EEREInputs from 'app/components/EEREInputs/EEREInputs';
+import UnitConversion from 'app/components/UnitConversion/UnitConversion';
+import EEREChart from 'app/components/EEREChart/EEREChart';
+import DisplacementsTable from 'app/components/DisplacementsTable/DisplacementsTable';
+import EmissionsTable from 'app/components/EmissionsTable/EmissionsTable';
+import EmissionsChart from 'app/components/EmissionsChart/EmissionsChart';
+import DataDownload from 'app/components/DataDownload';
 // reducers
 import {
   usePanelState,
@@ -120,7 +120,6 @@ function StepPanels() {
           </p>
 
           <RegionList />
-
           <RegionMap />
 
           <p className="avert-small-text">
@@ -166,11 +165,7 @@ function StepPanels() {
           </p>
 
           <EEREInputs />
-
-          <EEREChart
-            heading="EE/RE profile based on values entered:"
-            subheading="Adjusted for transmission and distribution line loss and wind and solar capacity factors, where applicable."
-          />
+          <EEREChart />
         </PanelBody>
 
         <PanelFooter
@@ -208,7 +203,7 @@ function StepPanels() {
             heading={`Monthly Emission Changes: ${region} Region`}
           />
 
-          <DataDownload heading="Data Download" />
+          <DataDownload />
         </PanelBody>
 
         <PanelFooter

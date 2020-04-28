@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react';
 import json2csv from 'json2csv';
 import Blob from 'blob';
@@ -9,16 +7,16 @@ import rdf from 'test/data/rdf_RM_2016.json';
 
 type Props = {
   json: {
-    name: string,
+    name: string;
     data: Array<{
-      day: number,
-      hour: number,
-      hour_of_year: number,
-      hourly_limit: number,
-      regional_loaw_mw: number,
-      year: number,
-    }>,
-  },
+      day: number;
+      hour: number;
+      hour_of_year: number;
+      hourly_limit: number;
+      regional_loaw_mw: number;
+      year: number;
+    }>;
+  };
 };
 
 const DownloadLink = (props: Props) => {
@@ -29,7 +27,8 @@ const DownloadLink = (props: Props) => {
   const fields = Object.keys(data[0]);
 
   return (
-    <a href=""
+    <a
+      href=""
       onClick={(event) => {
         event.preventDefault();
         try {
@@ -40,7 +39,9 @@ const DownloadLink = (props: Props) => {
           console.error(err);
         }
       }}
-    >{title}</a>
+    >
+      {title}
+    </a>
   );
 };
 
@@ -61,7 +62,7 @@ const RdfCsvDownloads = (props: {}) => {
     <div>
       {fields.map((field, index) => (
         <p key={index}>
-          <DownloadLink json={field}  />
+          <DownloadLink json={field} />
         </p>
       ))}
     </div>

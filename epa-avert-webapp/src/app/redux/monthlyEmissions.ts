@@ -1,3 +1,4 @@
+import { useSelector, TypedUseSelectorHook } from 'react-redux';
 // enums
 import States from 'app/enums/States';
 import FipsCodes from 'app/enums/FipsCodes';
@@ -18,8 +19,28 @@ export const SELECT_MONTHLY_COUNTY = 'monthlyEmissions/SELECT_MONTHLY_COUNTY';
 export const RESET_MONTHLY_EMISSIONS =
   'monthlyEmissions/RESET_MONTHLY_EMISSIONS';
 
+type MonthlyEmissionsState = {
+  status: 'select_region' | 'ready' | 'started' | 'complete';
+  aggregation: 'region' | 'state' | 'county';
+  unit: 'emissions' | 'percentages';
+  availableStates: string[];
+  availableCounties: string[];
+  selectedState: string;
+  selectedCounty: string;
+  output: {
+    so2: number[];
+    nox: number[];
+    co2: number[];
+    pm25: number[];
+  };
+  downloadableCountyData: [];
+  downloadableCobraData: [];
+};
+
+export const useMonthlyEmissionsState: TypedUseSelectorHook<MonthlyEmissionsState> = useSelector;
+
 // reducer
-const initialState = {
+const initialState: MonthlyEmissionsState = {
   status: 'select_region',
   aggregation: 'region',
   unit: 'emissions',
@@ -177,8 +198,8 @@ export default function reducer(state = initialState, action) {
           county.indexOf('(City)') !== -1
             ? county // county is really a city
             : state === 'LA'
-              ? `${county} Parish`
-              : `${county} County`;
+            ? `${county} Parish`
+            : `${county} County`;
 
         const formatNumber = (number) =>
           number.toLocaleString(undefined, {
@@ -253,7 +274,7 @@ export default function reducer(state = initialState, action) {
 }
 
 export const renderMonthlyEmissionsCharts = () => {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     // get reducer data from store to use in dispatched action
     const { so2, nox, co2, pm25 } = getState();
 
@@ -268,7 +289,7 @@ export const renderMonthlyEmissionsCharts = () => {
 };
 
 export const completeMonthlyEmissions = () => {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     // get reducer data from store to use in dispatched action
     const { annualDisplacement, so2, nox, co2, pm25 } = getState();
 
@@ -291,7 +312,7 @@ export const completeMonthlyEmissions = () => {
 };
 
 export const selectMonthlyAggregation = (selection) => {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch({
       type: SELECT_MONTHLY_AGGREGATION,
       aggregation: selection,
@@ -301,7 +322,7 @@ export const selectMonthlyAggregation = (selection) => {
 };
 
 export const selectMonthlyUnit = (selection) => {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch({
       type: SELECT_MONTHLY_UNIT,
       unit: selection,
@@ -311,7 +332,7 @@ export const selectMonthlyUnit = (selection) => {
 };
 
 export const selectMonthlyState = (selection) => {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     // get reducer data from store to use in dispatched action
     const { annualDisplacement } = getState();
 
@@ -325,7 +346,7 @@ export const selectMonthlyState = (selection) => {
 };
 
 export const selectMonthlyCounty = (selection) => {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch({
       type: SELECT_MONTHLY_COUNTY,
       selectedCounty: selection,

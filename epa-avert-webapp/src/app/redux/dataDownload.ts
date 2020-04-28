@@ -1,3 +1,4 @@
+import { useSelector, TypedUseSelectorHook } from 'react-redux';
 import json2csv from 'json2csv';
 import Blob from 'blob';
 import FileSaver from 'file-saver';
@@ -8,8 +9,15 @@ export const START_COUNTY_RESULTS_DOWNLOAD =
 export const START_COBRA_RESULTS_DOWNLOAD =
   'dataDownload/START_COBRA_RESULTS_DOWNLOAD';
 
+type DataDownloadState = {
+  countyFile: boolean;
+  cobraFile: boolean;
+};
+
+export const useDataDownloadState: TypedUseSelectorHook<DataDownloadState> = useSelector;
+
 // reducer
-const initialState = {
+const initialState: DataDownloadState = {
   countyFile: false,
   cobraFile: false,
 };
