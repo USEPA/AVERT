@@ -23,14 +23,14 @@ function EEREChart() {
   } = useEereState(({ hardLimit }) => hardLimit);
   const hourlyEere = useEereState(({ hourlyEere }) => hourlyEere);
 
-  let data: any[] = [];
-  let hours: any[] = [];
-  hourlyEere.forEach((hour: any) => {
+  let data: number[] = [];
+  let hours: string[] = [];
+  hourlyEere.forEach((hour) => {
     data.push(hour.final_mw);
-    hours.push(hour.index);
+    hours.push(hour.index.toString());
   });
 
-  const chartConfig = {
+  const chartConfig: Highcharts.Options = {
     chart: {
       height: 300,
       style: {
@@ -38,7 +38,7 @@ function EEREChart() {
       },
     },
     title: {
-      text: null,
+      text: undefined,
     },
     credits: {
       enabled: false,
@@ -48,8 +48,12 @@ function EEREChart() {
     },
     tooltip: {
       formatter: function () {
+        // TODO: "(TITLE)" line below should be:
+        // ${this.series.xAxis.axisTitle.textStr}:
+        console.log(this.series.xAxis);
+
         return `<span style="font-size: 10px">
-          ${this.series.xAxis.axisTitle.textStr}:
+          (TITLE):
           ${this.x.toLocaleString()}
           </span><br/>
           <strong>${Math.round(this.y).toLocaleString()}</strong> MW`;
@@ -75,12 +79,13 @@ function EEREChart() {
       },
       labels: {
         formatter: function () {
-          return Math.round(this.value);
+          return Math.round(this.value).toString();
         },
       },
     },
     series: [
       {
+        type: 'line',
         name: 'EERE Load Output',
         data: data,
         color: '#058dc7',
@@ -121,7 +126,7 @@ function EEREChart() {
         <HighchartsReact
           highcharts={Highcharts}
           options={chartConfig}
-          callback={(chart: any) => {
+          callback={(_chart: Highcharts.Chart) => {
             // callback for after highcharts chart renders
             // as this entire react app is ultimately served in an iframe on another page,
             // this document has a click handler that sends document's height to other window,
@@ -143,7 +148,7 @@ function EEREChart() {
       heading: '',
       threshold: '',
       value: 0,
-      timestamp: { month: 0, day: 0, hour: 0, ampm: '' },
+      timestamp: { month: 0, day: 0, hour: 0 },
     };
 
     if (type === 'error') {

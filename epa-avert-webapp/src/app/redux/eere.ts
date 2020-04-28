@@ -18,6 +18,16 @@ export const UPDATE_EXCEEDANCES = 'eere/UPDATE_EXCEEDANCES';
 export const SUBMIT_EERE_CALCULATION = 'eere/SUBMIT_EERE_CALCULATION';
 export const RESET_EERE_INPUTS = 'eere/RESET_EERE_INPUTS';
 
+type ExceedanceTimestamp = {
+  hour_of_year: number;
+  year: number;
+  month: number;
+  day: number;
+  hour: number;
+  regional_load_mw: number;
+  hourly_limit: number;
+};
+
 type EereState = {
   status: 'ready' | 'started' | 'complete';
   valid: boolean;
@@ -41,14 +51,25 @@ type EereState = {
   softLimit: {
     valid: boolean;
     topExceedanceValue: number;
-    topExceedanceTimestamp: {}; // TODO
+    topExceedanceTimestamp: ExceedanceTimestamp;
   };
   hardLimit: {
     valid: boolean;
     topExceedanceValue: number;
-    topExceedanceTimestamp: {}; // TODO
+    topExceedanceTimestamp: ExceedanceTimestamp;
   };
-  hourlyEere: []; // TODO
+  hourlyEere: {
+    index: number;
+    constant: number;
+    current_load_mw: number;
+    percent: number;
+    final_mw: number;
+    renewable_energy_profile: number;
+    soft_limit: number;
+    hard_limit: number;
+    soft_exceedance: number;
+    hard_exceedance: number;
+  }[];
 };
 
 export const useEereState: TypedUseSelectorHook<EereState> = useSelector;

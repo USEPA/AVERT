@@ -1,5 +1,4 @@
 {
   "editor.formatOnSave": true,
   "editor.rulers": [80],
-  "javascript.validate.enable": false
 }
