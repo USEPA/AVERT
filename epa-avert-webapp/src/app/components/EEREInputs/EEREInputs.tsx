@@ -5,6 +5,7 @@ import EEREInputField from 'app/components/EEREInputField';
 import Tooltip from 'app/components/Tooltip/Tooltip';
 // reducers
 import {
+  InputFields,
   useEereState,
   updateEereAnnualGwh,
   updateEereConstantMw,
@@ -36,37 +37,38 @@ function EEREInputs() {
     rooftopSolar,
   } = useEereState(({ inputs }) => inputs);
 
-  function displayError({ name, value, max }: any) {
-    if (errors.indexOf(name) !== -1 && value.length > 0) {
-      let Message;
-      if (Number(value) >= 0) {
-        Message = (
-          <span className="avert-input-error">
-            <span className="avert-input-error-range">
-              Please enter a number between 0 and {max}.
-            </span>
-            This will help ensure that each of your proposed programs displaces
-            no more than approximately 30% of regional fossil generation in any
-            given hour. After you enter all your inputs and calculate your
-            hourly EE/RE profile below, AVERT will check more precisely to
-            ensure that your combined inputs are within AVERT’s recommended
-            limits.
-          </span>
-        );
-      } else {
-        Message = (
-          <span className="avert-input-error">
-            <span className="avert-input-error-range">
-              Please enter a positive number.
-            </span>
-            If you wish to model a reverse EE/RE scenario (i.e., a negative
-            number), use the Excel version of the AVERT Main Module.
-          </span>
-        );
-      }
+  function displayError({
+    fieldName,
+    inputValue,
+    maxValue,
+  }: {
+    fieldName: InputFields;
+    inputValue: string;
+    maxValue: number;
+  }) {
+    if (inputValue.length <= 0) return;
+    if (!errors.includes(fieldName)) return;
 
-      return Message;
-    }
+    return Number(inputValue) >= 0 ? (
+      <span className="avert-input-error">
+        <span className="avert-input-error-range">
+          Please enter a number between 0 and {maxValue}.
+        </span>
+        This will help ensure that each of your proposed programs displaces no
+        more than approximately 30% of regional fossil generation in any given
+        hour. After you enter all your inputs and calculate your hourly EE/RE
+        profile below, AVERT will check more precisely to ensure that your
+        combined inputs are within AVERT’s recommended limits.
+      </span>
+    ) : (
+      <span className="avert-input-error">
+        <span className="avert-input-error-range">
+          Please enter a positive number.
+        </span>
+        If you wish to model a reverse EE/RE scenario (i.e., a negative number),
+        use the Excel version of the AVERT Main Module.
+      </span>
+    );
   }
 
   // text input values from fields
@@ -131,9 +133,9 @@ function EEREInputs() {
                 </Tooltip>
 
                 {displayError({
-                  name: 'annualGwh',
-                  value: annualGwh,
-                  max: limits.annualGwh,
+                  fieldName: 'annualGwh',
+                  inputValue: annualGwh,
+                  maxValue: limits.annualGwh,
                 })}
               </li>
 
@@ -157,9 +159,9 @@ function EEREInputs() {
                 </Tooltip>
 
                 {displayError({
-                  name: 'constantMwh',
-                  value: constantMwh,
-                  max: limits.constantMwh,
+                  fieldName: 'constantMwh',
+                  inputValue: constantMwh,
+                  maxValue: limits.constantMwh,
                 })}
               </li>
             </ul>
@@ -193,9 +195,9 @@ function EEREInputs() {
                 </Tooltip>
 
                 {displayError({
-                  name: 'reduction',
-                  value: broadProgram,
-                  max: limits.percent,
+                  fieldName: 'reduction',
+                  inputValue: broadProgram,
+                  maxValue: limits.percent,
                 })}
               </li>
 
@@ -225,15 +227,15 @@ function EEREInputs() {
                 </Tooltip>
 
                 {displayError({
-                  name: 'reduction',
-                  value: reduction,
-                  max: limits.percent,
+                  fieldName: 'reduction',
+                  inputValue: reduction,
+                  maxValue: limits.percent,
                 })}
 
                 {displayError({
-                  name: 'topHours',
-                  value: topHours,
-                  max: 100,
+                  fieldName: 'topHours',
+                  inputValue: topHours,
+                  maxValue: 100,
                 })}
               </li>
             </ul>
@@ -263,9 +265,9 @@ function EEREInputs() {
               </Tooltip>
 
               {displayError({
-                name: 'windCapacity',
-                value: windCapacity,
-                max: limits.renewables,
+                fieldName: 'windCapacity',
+                inputValue: windCapacity,
+                maxValue: limits.renewables,
               })}
             </p>
           </section>
@@ -290,9 +292,9 @@ function EEREInputs() {
               </Tooltip>
 
               {displayError({
-                name: 'utilitySolar',
-                value: utilitySolar,
-                max: limits.renewables,
+                fieldName: 'utilitySolar',
+                inputValue: utilitySolar,
+                maxValue: limits.renewables,
               })}
             </p>
           </section>
@@ -319,9 +321,9 @@ function EEREInputs() {
               </Tooltip>
 
               {displayError({
-                name: 'rooftopSolar',
-                value: rooftopSolar,
-                max: limits.renewables,
+                fieldName: 'rooftopSolar',
+                inputValue: rooftopSolar,
+                maxValue: limits.renewables,
               })}
             </p>
           </section>

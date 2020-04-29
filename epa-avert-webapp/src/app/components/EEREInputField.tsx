@@ -5,7 +5,7 @@ import { useEereState, calculateEereProfile } from 'app/redux/eere';
 
 type Props = {
   value: string;
-  disabled: boolean;
+  disabled?: string;
   onChange: (value: string) => void;
 };
 
@@ -17,7 +17,7 @@ function EEREInputField({ value, disabled, onChange }: Props) {
     <input
       type="text"
       value={value}
-      disabled={disabled}
+      disabled={disabled ? true : false}
       onChange={(ev) => onChange(ev.target.value)}
       onKeyPress={(ev) => {
         // if eere is valid is true, calculate profile

@@ -28,25 +28,28 @@ type ExceedanceTimestamp = {
   hourly_limit: number;
 };
 
+export type InputFields =
+  | 'annualGwh'
+  | 'constantMwh'
+  | 'broadProgram'
+  | 'reduction'
+  | 'topHours'
+  | 'windCapacity'
+  | 'utilitySolar'
+  | 'rooftopSolar';
+
 type EereState = {
   status: 'ready' | 'started' | 'complete';
   valid: boolean;
-  errors: []; // TODO
+  errors: InputFields[];
   inputs: {
-    annualGwh: any; // TODO
-    constantMwh: any; // TODO
-    broadProgram: any; // TODO
-    reduction: any; // TODO
-    topHours: any; // TODO
-    windCapacity: any; // TODO
-    utilitySolar: any; // TODO
-    rooftopSolar: any; // TODO
+    [field in InputFields]: string;
   };
   limits: {
-    annualGwh: any; // TODO
-    constantMwh: any; // TODO
-    renewables: any; // TODO
-    percent: any; // TODO
+    annualGwh: number;
+    constantMwh: number;
+    renewables: number;
+    percent: number;
   };
   softLimit: {
     valid: boolean;
@@ -90,10 +93,10 @@ const initialState: EereState = {
     rooftopSolar: '',
   },
   limits: {
-    annualGwh: false,
-    constantMwh: false,
-    renewables: false,
-    percent: false,
+    annualGwh: 0,
+    constantMwh: 0,
+    renewables: 0,
+    percent: 0,
   },
   softLimit: {
     valid: true,
