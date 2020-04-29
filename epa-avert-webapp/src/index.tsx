@@ -1,5 +1,6 @@
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
+import 'core-js/features/array/includes';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
