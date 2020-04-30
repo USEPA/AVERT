@@ -1,6 +1,6 @@
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
 // reducers
-import { AppThunk, MonthlyChanges } from 'app/redux/index';
+import { AppThunk, DataByMonth, MonthlyChanges } from 'app/redux/index';
 // enums
 import States from 'app/enums/States';
 import FipsCodes from 'app/enums/FipsCodes';
@@ -389,12 +389,12 @@ export const resetMonthlyEmissions = (): MonthlyEmissionsAction => ({
  */
 function countyRow(
   pollutant: 'SO2' | 'NOX' | 'CO2' | 'PM25',
-  unit: 'emissions (pounds)' | 'percent',
-  data,
-  state,
-  county,
+  unit: 'emissions (pounds)' | 'emissions (tons)' | 'percent',
+  data: DataByMonth,
+  state?: string,
+  county?: string,
 ): CountyDataRow {
-  data = Object.values(data);
+  const dataByMonth = Object.values(data);
 
   return {
     Pollutant: pollutant,
@@ -402,18 +402,18 @@ function countyRow(
     State: state ? state : null,
     County: county ? county : null,
     'Unit of measure': unit,
-    January: data[0],
-    February: data[1],
-    March: data[2],
-    April: data[3],
-    May: data[4],
-    June: data[5],
-    July: data[6],
-    August: data[7],
-    September: data[8],
-    October: data[9],
-    November: data[10],
-    December: data[11],
+    January: dataByMonth[0],
+    February: dataByMonth[1],
+    March: dataByMonth[2],
+    April: dataByMonth[3],
+    May: dataByMonth[4],
+    June: dataByMonth[5],
+    July: dataByMonth[6],
+    August: dataByMonth[7],
+    September: dataByMonth[8],
+    October: dataByMonth[9],
+    November: dataByMonth[10],
+    December: dataByMonth[11],
   };
 }
 
@@ -421,8 +421,8 @@ function countyRow(
  * helper function to format cobra county data rows
  */
 function cobraRow(
-  state,
-  county,
+  state: string,
+  county: string,
   action: { nox: MonthlyChanges; so2: MonthlyChanges; pm25: MonthlyChanges },
 ): CobraDataRow {
   const fipsCounty = FipsCodes.filter((item) => {
@@ -438,15 +438,15 @@ function cobraRow(
       ? `${county} Parish`
       : `${county} County`;
 
-  const noxData = action.nox.emissions.county[state][county];
-  const so2Data = action.so2.emissions.county[state][county];
-  const pm25Data = action.pm25.emissions.county[state][county];
+  const noxDataset = action.nox.emissions.county[state][county];
+  const so2Dataset = action.so2.emissions.county[state][county];
+  const pm25Dataset = action.pm25.emissions.county[state][county];
 
   const sum = (a: number, b: number) => a + b;
 
-  const noxDataTons = Object.values(noxData).reduce(sum, 0) / 2000;
-  const so2DataTons = Object.values(so2Data).reduce(sum, 0) / 2000;
-  const pm25DataTons = Object.values(pm25Data).reduce(sum, 0) / 2000;
+  const noxDataTons = Object.values(noxDataset).reduce(sum, 0) / 2000;
+  const so2DataTons = Object.values(so2Dataset).reduce(sum, 0) / 2000;
+  const pm25DataTons = Object.values(pm25Dataset).reduce(sum, 0) / 2000;
 
   function formatNumber(number: number) {
     return number.toLocaleString(undefined, {

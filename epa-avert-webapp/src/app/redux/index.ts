@@ -81,7 +81,7 @@ type DisplacementData = {
   };
 };
 
-export type { AppThunk, MonthlyChanges, DisplacementData };
+export type { AppThunk, DataByMonth, MonthlyChanges, DisplacementData };
 
 // -----------------------------------------------------------------------------
 // initial state for pollutants (generation, so2, nox, co2, pm25) used in other reducers
