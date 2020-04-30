@@ -1,4 +1,6 @@
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
+// reducers
+import { AppThunk } from 'app/redux/index';
 // engines
 import { avert, eereProfile } from 'app/engines';
 
@@ -7,7 +9,8 @@ import { SET_EERE_LIMITS } from 'app/redux/rdfs';
 export const VALIDATE_EERE = 'eere/VALIDATE_EERE';
 export const UPDATE_EERE_ANNUAL_GWH = 'eere/UPDATE_EERE_ANNUAL_GWH';
 export const UPDATE_EERE_CONSTANT_MW = 'eere/UPDATE_EERE_CONSTANT_MW';
-export const UPDATE_EERE_BROAD_BASE_PROGRAM = 'eere/UPDATE_EERE_BROAD_BASE_PROGRAM'; // prettier-ignore
+export const UPDATE_EERE_BROAD_BASE_PROGRAM =
+  'eere/UPDATE_EERE_BROAD_BASE_PROGRAM';
 export const UPDATE_EERE_REDUCTION = 'eere/UPDATE_EERE_REDUCTION';
 export const UPDATE_EERE_TOP_HOURS = 'eere/UPDATE_EERE_TOP_HOURS';
 export const UPDATE_EERE_WIND_CAPACITY = 'eere/UPDATE_EERE_WIND_CAPACITY';
@@ -18,15 +21,71 @@ export const UPDATE_EXCEEDANCES = 'eere/UPDATE_EXCEEDANCES';
 export const SUBMIT_EERE_CALCULATION = 'eere/SUBMIT_EERE_CALCULATION';
 export const RESET_EERE_INPUTS = 'eere/RESET_EERE_INPUTS';
 
-type ExceedanceTimestamp = {
-  hour_of_year: number;
-  year: number;
-  month: number;
-  day: number;
-  hour: number;
-  regional_load_mw: number;
-  hourly_limit: number;
-};
+type EereAction =
+  | {
+      type: typeof SET_EERE_LIMITS;
+      payload: {
+        limits: any; // TODO
+      };
+    }
+  | {
+      type: typeof VALIDATE_EERE;
+      valid: boolean;
+      errors: any[]; // TODO
+    }
+  | {
+      type: typeof UPDATE_EERE_ANNUAL_GWH;
+      text: string;
+    }
+  | {
+      type: typeof UPDATE_EERE_CONSTANT_MW;
+      text: string;
+    }
+  | {
+      type: typeof UPDATE_EERE_BROAD_BASE_PROGRAM;
+      text: string;
+    }
+  | {
+      type: typeof UPDATE_EERE_REDUCTION;
+      text: string;
+    }
+  | {
+      type: typeof UPDATE_EERE_TOP_HOURS;
+      text: string;
+    }
+  | {
+      type: typeof UPDATE_EERE_WIND_CAPACITY;
+      text: string;
+    }
+  | {
+      type: typeof UPDATE_EERE_UTILITY_SOLAR;
+      text: string;
+    }
+  | {
+      type: typeof UPDATE_EERE_ROOFTOP_SOLAR;
+      text: string;
+    }
+  | {
+      type: typeof COMPLETE_EERE_CALCULATION;
+      hourlyEere: HourlyEere[];
+    }
+  | {
+      type: typeof UPDATE_EXCEEDANCES;
+      payload: {
+        softValid: boolean;
+        softMaxVal: number;
+        softTimestamp: any; // TODO
+        hardValid: boolean;
+        hardMaxVal: number;
+        hardTimestamp: any; // TODO
+      };
+    }
+  | {
+      type: typeof SUBMIT_EERE_CALCULATION;
+    }
+  | {
+      type: typeof RESET_EERE_INPUTS;
+    };
 
 export type InputFields =
   | 'annualGwh'
@@ -37,6 +96,19 @@ export type InputFields =
   | 'windCapacity'
   | 'utilitySolar'
   | 'rooftopSolar';
+
+type HourlyEere = {
+  index: number;
+  constant: number;
+  current_load_mw: number;
+  percent: number;
+  final_mw: number;
+  renewable_energy_profile: number;
+  soft_limit: number;
+  hard_limit: number;
+  soft_exceedance: number;
+  hard_exceedance: number;
+};
 
 type EereState = {
   status: 'ready' | 'started' | 'complete';
@@ -54,25 +126,30 @@ type EereState = {
   softLimit: {
     valid: boolean;
     topExceedanceValue: number;
-    topExceedanceTimestamp: ExceedanceTimestamp;
+    topExceedanceTimestamp: {
+      hour_of_year: number;
+      year: number;
+      month: number;
+      day: number;
+      hour: number;
+      regional_load_mw: number;
+      hourly_limit: number;
+    };
   };
   hardLimit: {
     valid: boolean;
     topExceedanceValue: number;
-    topExceedanceTimestamp: ExceedanceTimestamp;
+    topExceedanceTimestamp: {
+      hour_of_year: number;
+      year: number;
+      month: number;
+      day: number;
+      hour: number;
+      regional_load_mw: number;
+      hourly_limit: number;
+    };
   };
-  hourlyEere: {
-    index: number;
-    constant: number;
-    current_load_mw: number;
-    percent: number;
-    final_mw: number;
-    renewable_energy_profile: number;
-    soft_limit: number;
-    hard_limit: number;
-    soft_exceedance: number;
-    hard_exceedance: number;
-  }[];
+  hourlyEere: HourlyEere[];
 };
 
 export const useEereState: TypedUseSelectorHook<EereState> = useSelector;
@@ -101,17 +178,36 @@ const initialState: EereState = {
   softLimit: {
     valid: true,
     topExceedanceValue: 0,
-    topExceedanceTimestamp: {},
+    topExceedanceTimestamp: {
+      hour_of_year: 0,
+      year: 0,
+      month: 0,
+      day: 0,
+      hour: 0,
+      regional_load_mw: 0,
+      hourly_limit: 0,
+    },
   },
   hardLimit: {
     valid: true,
     topExceedanceValue: 0,
-    topExceedanceTimestamp: {},
+    topExceedanceTimestamp: {
+      hour_of_year: 0,
+      year: 0,
+      month: 0,
+      day: 0,
+      hour: 0,
+      regional_load_mw: 0,
+      hourly_limit: 0,
+    },
   },
   hourlyEere: [],
 };
 
-export default function reducer(state = initialState, action) {
+export default function reducer(
+  state = initialState,
+  action: EereAction,
+): EereState {
   switch (action.type) {
     case SET_EERE_LIMITS:
       return {
@@ -246,7 +342,7 @@ export const validateEere = () => {
   };
 };
 
-export const updateEereAnnualGwh = (text) => {
+export const updateEereAnnualGwh = (text: string): AppThunk => {
   return function (dispatch) {
     eereProfile.annualGwh = text;
 
@@ -258,7 +354,7 @@ export const updateEereAnnualGwh = (text) => {
   };
 };
 
-export const updateEereConstantMw = (text) => {
+export const updateEereConstantMw = (text: string): AppThunk => {
   return function (dispatch) {
     eereProfile.constantMwh = text;
 
@@ -270,7 +366,7 @@ export const updateEereConstantMw = (text) => {
   };
 };
 
-export const updateEereBroadBasedProgram = (text) => {
+export const updateEereBroadBasedProgram = (text: string): AppThunk => {
   return function (dispatch) {
     eereProfile.topHours = 100;
     eereProfile.reduction = text;
@@ -283,7 +379,7 @@ export const updateEereBroadBasedProgram = (text) => {
   };
 };
 
-export const updateEereReduction = (text) => {
+export const updateEereReduction = (text: string): AppThunk => {
   return function (dispatch) {
     eereProfile.reduction = text;
 
@@ -295,7 +391,7 @@ export const updateEereReduction = (text) => {
   };
 };
 
-export const updateEereTopHours = (text) => {
+export const updateEereTopHours = (text: string): AppThunk => {
   return function (dispatch) {
     eereProfile.topHours = text;
 
@@ -307,7 +403,7 @@ export const updateEereTopHours = (text) => {
   };
 };
 
-export const updateEereWindCapacity = (text) => {
+export const updateEereWindCapacity = (text: string): AppThunk => {
   return function (dispatch) {
     eereProfile.windCapacity = text;
 
@@ -319,7 +415,7 @@ export const updateEereWindCapacity = (text) => {
   };
 };
 
-export const updateEereUtilitySolar = (text) => {
+export const updateEereUtilitySolar = (text: string): AppThunk => {
   return function (dispatch) {
     eereProfile.utilitySolar = text;
 
@@ -331,7 +427,7 @@ export const updateEereUtilitySolar = (text) => {
   };
 };
 
-export const updateEereRooftopSolar = (text) => {
+export const updateEereRooftopSolar = (text: string): AppThunk => {
   return function (dispatch) {
     eereProfile.rooftopSolar = text;
 
@@ -343,12 +439,12 @@ export const updateEereRooftopSolar = (text) => {
   };
 };
 
-export const completeEereCalculation = (hourlyEere) => ({
+export const completeEereCalculation = (hourlyEere: HourlyEere[]) => ({
   type: COMPLETE_EERE_CALCULATION,
   hourlyEere: hourlyEere,
 });
 
-export const updateExceedances = (soft, hard) => {
+export const updateExceedances = (soft, hard): AppThunk => {
   return function (dispatch, getState) {
     const { rdfs } = getState();
     const regionalLoadHours = rdfs.rdf.regional_load;
@@ -366,18 +462,18 @@ export const updateExceedances = (soft, hard) => {
     return dispatch({
       type: UPDATE_EXCEEDANCES,
       payload: {
-        softValid: softValid,
-        softMaxVal: softMaxVal,
-        softTimestamp: softTimestamp,
-        hardValid: hardValid,
-        hardMaxVal: hardMaxVal,
-        hardTimestamp: hardTimestamp,
+        softValid,
+        softMaxVal,
+        softTimestamp,
+        hardValid,
+        hardMaxVal,
+        hardTimestamp,
       },
     });
   };
 };
 
-export const calculateEereProfile = () => {
+export const calculateEereProfile = (): AppThunk => {
   return function (dispatch) {
     dispatch({ type: SUBMIT_EERE_CALCULATION });
 

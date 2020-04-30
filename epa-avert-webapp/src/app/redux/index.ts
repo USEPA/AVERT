@@ -82,7 +82,7 @@ type DisplacementData = {
 export type { AppThunk, DisplacementData };
 
 // -----------------------------------------------------------------------------
-// initial state for pollutants (so2, nox, co2, pm25) used in other reducers
+// initial state for pollutants (generation, so2, nox, co2, pm25) used in other reducers
 // -----------------------------------------------------------------------------
 const initialPollutantState = {
   isFetching: false,

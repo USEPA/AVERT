@@ -1,3 +1,9 @@
+// reducers
+import {
+  AppThunk,
+  DisplacementData,
+  initialPollutantState,
+} from 'app/redux/index';
 // engines
 import { avert } from 'app/engines';
 // action creators
@@ -8,15 +14,31 @@ export const REQUEST_GENERATION = 'generation/REQUEST_GENERATION';
 export const RECEIVE_GENERATION = 'generation/RECEIVE_GENERATION';
 export const RECEIVE_ERROR = 'generation/RECEIVE_ERROR';
 
-// reducer
-const initialState = {
-  isFetching: false,
-  jobId: 0,
-  data: {},
-  error: false,
+type GenerationAction =
+  | {
+      type: typeof REQUEST_GENERATION;
+    }
+  | {
+      type: typeof RECEIVE_GENERATION;
+      payload: DisplacementData;
+    }
+  | {
+      type: typeof RECEIVE_ERROR;
+    };
+
+type GenerationState = {
+  isFetching: boolean;
+  data: DisplacementData;
+  error: boolean;
 };
 
-export default function reducer(state = initialState, action) {
+// reducer
+const initialState: GenerationState = initialPollutantState;
+
+export default function reducer(
+  state = initialState,
+  action: GenerationAction,
+): GenerationState {
   switch (action.type) {
     case REQUEST_GENERATION:
       return {
@@ -46,7 +68,7 @@ export default function reducer(state = initialState, action) {
 }
 
 // action creators
-export const fetchGeneration = () => {
+export const fetchGeneration = (): AppThunk => {
   return (dispatch, getState) => {
     const { api } = getState();
 

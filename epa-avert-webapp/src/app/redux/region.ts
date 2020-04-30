@@ -1,4 +1,6 @@
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
+// reducers
+import { AppThunk } from 'app/redux/index';
 // engines
 import { avert } from 'app/engines';
 // enums
@@ -6,6 +8,14 @@ import Regions from 'app/enums/Regions';
 
 // action types
 export const SELECT_REGION = 'region/SELECT_REGION';
+
+type RegionAction = {
+  type: typeof SELECT_REGION;
+  payload: {
+    id: number;
+    name: string;
+  };
+};
 
 type RegionState = {
   id: number;
@@ -20,7 +30,10 @@ const initialState: RegionState = {
   name: '',
 };
 
-export default function reducer(state = initialState, action) {
+export default function reducer(
+  state = initialState,
+  action: RegionAction,
+): RegionState {
   switch (action.type) {
     case SELECT_REGION:
       return {
@@ -35,7 +48,7 @@ export default function reducer(state = initialState, action) {
 }
 
 // action creators
-export const selectRegion = (regionId: number) => {
+export const selectRegion = (regionId: number): AppThunk => {
   return (dispatch) => {
     avert.region = regionId;
 

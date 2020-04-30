@@ -1,3 +1,5 @@
+// reducers
+import { AppThunk } from 'app/redux/index';
 // engines
 import { avert, eereProfile } from 'app/engines';
 
@@ -8,13 +10,31 @@ export const RECEIVE_REGION_RDF = 'rdfs/RECEIVE_REGION_RDF';
 export const REQUEST_REGION_DEFAULTS = 'rdfs/REQUEST_REGION_DEFAULTS';
 export const RECEIVE_REGION_DEFAULTS = 'rdfs/RECEIVE_REGION_DEFAULTS';
 
+type RdfsAction =
+  | {
+      type: typeof RECEIVE_REGION_RDF;
+      payload: any; // TODO
+    }
+  | {
+      type: typeof RECEIVE_REGION_DEFAULTS;
+      payload: any; // TODO
+    };
+
+type RdfsState = {
+  defaults: boolean | {}; // TODO
+  rdf: boolean | {}; // TODO
+};
+
 // reducer
-const initialState = {
+const initialState: RdfsState = {
   defaults: false,
   rdf: false,
 };
 
-export default function reducer(state = initialState, action) {
+export default function reducer(
+  state = initialState,
+  action: RdfsAction,
+): RdfsState {
   switch (action.type) {
     case RECEIVE_REGION_RDF:
       return {
@@ -34,8 +54,8 @@ export default function reducer(state = initialState, action) {
 }
 
 // action creators
-export const fetchRegion = () => {
-  return function(dispatch, getState) {
+export const fetchRegion = (): AppThunk => {
+  return function (dispatch, getState) {
     const { api } = getState();
 
     dispatch({ type: REQUEST_REGION_RDF });
