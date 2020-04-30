@@ -46,40 +46,42 @@ type DataByMonth = {
   [MonthNumber in 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12]: number;
 };
 
+type MonthlyChanges = {
+  emissions: {
+    region: DataByMonth;
+    state: {
+      [stateId: string]: DataByMonth;
+    };
+    county: {
+      [stateId: string]: {
+        [countyName: string]: DataByMonth;
+      };
+    };
+  };
+  percentages: {
+    region: DataByMonth;
+    state: {
+      [stateId: string]: DataByMonth;
+    };
+    county: {
+      [stateId: string]: {
+        [countyName: string]: DataByMonth;
+      };
+    };
+  };
+};
+
 type DisplacementData = {
   original: number;
   post: number;
   impact: number;
-  monthlyChanges: {
-    emissions: {
-      region: DataByMonth;
-      state: {
-        [stateId: string]: DataByMonth;
-      };
-      county: {
-        [stateId: string]: {
-          [countyName: string]: DataByMonth;
-        };
-      };
-    };
-    percentages: {
-      region: DataByMonth;
-      state: {
-        [stateId: string]: DataByMonth;
-      };
-      county: {
-        [stateId: string]: {
-          [countyName: string]: DataByMonth;
-        };
-      };
-    };
-  };
+  monthlyChanges: MonthlyChanges;
   stateChanges: {
     [stateId: string]: number;
   };
 };
 
-export type { AppThunk, DisplacementData };
+export type { AppThunk, MonthlyChanges, DisplacementData };
 
 // -----------------------------------------------------------------------------
 // initial state for pollutants (generation, so2, nox, co2, pm25) used in other reducers

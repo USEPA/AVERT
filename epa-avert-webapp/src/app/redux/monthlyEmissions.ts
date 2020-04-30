@@ -1,6 +1,6 @@
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
 // reducers
-import { AppThunk } from 'app/redux/index';
+import { AppThunk, MonthlyChanges } from 'app/redux/index';
 // enums
 import States from 'app/enums/States';
 import FipsCodes from 'app/enums/FipsCodes';
@@ -21,6 +21,40 @@ export const SELECT_MONTHLY_COUNTY = 'monthlyEmissions/SELECT_MONTHLY_COUNTY';
 export const RESET_MONTHLY_EMISSIONS =
   'monthlyEmissions/RESET_MONTHLY_EMISSIONS';
 
+type MonthlyAggregation = 'region' | 'state' | 'county';
+
+type MonthlyUnit = 'emissions' | 'percentages';
+
+type CountyDataRow = {
+  Pollutant: 'SO2' | 'NOX' | 'CO2' | 'PM25';
+  'Aggregation level': 'County' | 'State' | 'Region';
+  State: string | null;
+  County: string | null;
+  'Unit of measure': 'emissions (pounds)' | 'emissions (tons)' | 'percent';
+  January: number;
+  February: number;
+  March: number;
+  April: number;
+  May: number;
+  June: number;
+  July: number;
+  August: number;
+  September: number;
+  October: number;
+  November: number;
+  December: number;
+};
+
+type CobraDataRow = {
+  FIPS: string;
+  STATE: string;
+  COUNTY: string;
+  TIER1NAME: string;
+  NOx_REDUCTIONS_TONS: string;
+  SO2_REDUCTIONS_TONS: string;
+  PM25_REDUCTIONS_TONS: string;
+};
+
 type MonthlyEmissionsAction =
   | {
       type: typeof SELECT_REGION;
@@ -33,10 +67,10 @@ type MonthlyEmissionsAction =
     }
   | {
       type: typeof RENDER_MONTHLY_EMISSIONS_CHARTS;
-      so2: any; // TODO
-      nox: any; // TODO
-      co2: any; // TODO
-      pm25: any; // TODO
+      so2: MonthlyChanges;
+      nox: MonthlyChanges;
+      co2: MonthlyChanges;
+      pm25: MonthlyChanges;
     }
   | {
       type: typeof COMPLETE_MONTHLY_EMISSIONS;
@@ -44,19 +78,21 @@ type MonthlyEmissionsAction =
     }
   | {
       type: typeof SET_DOWNLOAD_DATA;
-      so2: any; // TODO
-      nox: any; // TODO
-      co2: any; // TODO
-      pm25: any; // TODO
-      statesAndCounties: any; // TODO
+      so2: MonthlyChanges;
+      nox: MonthlyChanges;
+      co2: MonthlyChanges;
+      pm25: MonthlyChanges;
+      statesAndCounties: {
+        [stateId: string]: string[];
+      };
     }
   | {
       type: typeof SELECT_MONTHLY_AGGREGATION;
-      aggregation: 'region' | 'state' | 'county';
+      aggregation: MonthlyAggregation;
     }
   | {
       type: typeof SELECT_MONTHLY_UNIT;
-      unit: 'emissions' | 'percentages';
+      unit: MonthlyUnit;
     }
   | {
       type: typeof SELECT_MONTHLY_STATE;
@@ -73,8 +109,8 @@ type MonthlyEmissionsAction =
 
 type MonthlyEmissionsState = {
   status: 'select_region' | 'ready' | 'started' | 'complete';
-  aggregation: 'region' | 'state' | 'county';
-  unit: 'emissions' | 'percentages';
+  aggregation: MonthlyAggregation;
+  unit: MonthlyUnit;
   availableStates: string[];
   availableCounties: string[];
   selectedState: string;
@@ -85,8 +121,8 @@ type MonthlyEmissionsState = {
     co2: number[];
     pm25: number[];
   };
-  downloadableCountyData: []; // TODO
-  downloadableCobraData: []; // TODO
+  downloadableCountyData: CountyDataRow[];
+  downloadableCobraData: CobraDataRow[];
 };
 
 export const useMonthlyEmissionsState: TypedUseSelectorHook<MonthlyEmissionsState> = useSelector;
@@ -205,80 +241,8 @@ export default function reducer(
       return initialState;
 
     case SET_DOWNLOAD_DATA:
-      // helper function to format county data rows
-      function countyRow(pollutant, unit, data, state, county) {
-        data = Object.values(data);
-
-        return {
-          Pollutant: pollutant,
-          'Aggregation level': county ? 'County' : state ? 'State' : 'Region',
-          State: state ? state : null,
-          County: county ? county : null,
-          'Unit of measure': unit,
-          January: data[0],
-          February: data[1],
-          March: data[2],
-          April: data[3],
-          May: data[4],
-          June: data[5],
-          July: data[6],
-          August: data[7],
-          September: data[8],
-          October: data[9],
-          November: data[10],
-          December: data[11],
-        };
-      }
-
-      // helper function to format cobra data rows
-      function cobraRow(state, county, action) {
-        const fipsCounty = FipsCodes.filter((item) => {
-          return item['state'] === States[state] && item['county'] === county;
-        })[0];
-
-        const fipsCode = fipsCounty ? fipsCounty['code'] : '';
-
-        const sum = (a, b) => a + b;
-
-        // prettier-ignore
-        const noxData = Object.values(
-          action.nox.emissions.county[state][county],
-        ).reduce(sum, 0) / 2000; // convert pounds to tons
-        // prettier-ignore
-        const so2Data = Object.values(
-          action.so2.emissions.county[state][county],
-        ).reduce(sum, 0) / 2000; // convert pounds to tons
-        // prettier-ignore
-        const pm25Data = Object.values(
-          action.pm25.emissions.county[state][county],
-        ).reduce(sum, 0) /2000; // convert pounds to tons
-
-        const countyName =
-          county.indexOf('(City)') !== -1
-            ? county // county is really a city
-            : state === 'LA'
-            ? `${county} Parish`
-            : `${county} County`;
-
-        const formatNumber = (number) =>
-          number.toLocaleString(undefined, {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 3,
-          });
-
-        return {
-          FIPS: fipsCode,
-          STATE: States[state],
-          COUNTY: countyName,
-          TIER1NAME: 'FUEL COMB. ELEC. UTIL.',
-          NOx_REDUCTIONS_TONS: formatNumber(noxData),
-          SO2_REDUCTIONS_TONS: formatNumber(so2Data),
-          PM25_REDUCTIONS_TONS: formatNumber(pm25Data),
-        };
-      }
-
-      let countyData = [];
-      let cobraData = [];
+      const countyData: CountyDataRow[] = [];
+      const cobraData: CobraDataRow[] = [];
 
       //------ region data ------
       // add county data for each polutant, unit, and region
@@ -370,7 +334,9 @@ export const completeMonthlyEmissions = (): AppThunk => {
   };
 };
 
-export const selectMonthlyAggregation = (selection): AppThunk => {
+export const selectMonthlyAggregation = (
+  selection: MonthlyAggregation,
+): AppThunk => {
   return function (dispatch) {
     dispatch({
       type: SELECT_MONTHLY_AGGREGATION,
@@ -380,7 +346,7 @@ export const selectMonthlyAggregation = (selection): AppThunk => {
   };
 };
 
-export const selectMonthlyUnit = (selection): AppThunk => {
+export const selectMonthlyUnit = (selection: MonthlyUnit): AppThunk => {
   return function (dispatch) {
     dispatch({
       type: SELECT_MONTHLY_UNIT,
@@ -390,7 +356,7 @@ export const selectMonthlyUnit = (selection): AppThunk => {
   };
 };
 
-export const selectMonthlyState = (selection): AppThunk => {
+export const selectMonthlyState = (selection: string): AppThunk => {
   return function (dispatch, getState) {
     // get reducer data from store to use in dispatched action
     const { annualDisplacement } = getState();
@@ -404,7 +370,7 @@ export const selectMonthlyState = (selection): AppThunk => {
   };
 };
 
-export const selectMonthlyCounty = (selection): AppThunk => {
+export const selectMonthlyCounty = (selection: string): AppThunk => {
   return function (dispatch) {
     dispatch({
       type: SELECT_MONTHLY_COUNTY,
@@ -417,3 +383,85 @@ export const selectMonthlyCounty = (selection): AppThunk => {
 export const resetMonthlyEmissions = (): MonthlyEmissionsAction => ({
   type: RESET_MONTHLY_EMISSIONS,
 });
+
+/**
+ * helper function to format downloadable county data rows
+ */
+function countyRow(
+  pollutant: 'SO2' | 'NOX' | 'CO2' | 'PM25',
+  unit: 'emissions (pounds)' | 'percent',
+  data,
+  state,
+  county,
+): CountyDataRow {
+  data = Object.values(data);
+
+  return {
+    Pollutant: pollutant,
+    'Aggregation level': county ? 'County' : state ? 'State' : 'Region',
+    State: state ? state : null,
+    County: county ? county : null,
+    'Unit of measure': unit,
+    January: data[0],
+    February: data[1],
+    March: data[2],
+    April: data[3],
+    May: data[4],
+    June: data[5],
+    July: data[6],
+    August: data[7],
+    September: data[8],
+    October: data[9],
+    November: data[10],
+    December: data[11],
+  };
+}
+
+/**
+ * helper function to format cobra county data rows
+ */
+function cobraRow(
+  state,
+  county,
+  action: { nox: MonthlyChanges; so2: MonthlyChanges; pm25: MonthlyChanges },
+): CobraDataRow {
+  const fipsCounty = FipsCodes.filter((item) => {
+    return item['state'] === States[state] && item['county'] === county;
+  })[0];
+
+  const fipsCode = fipsCounty ? fipsCounty['code'] : '';
+
+  const countyName =
+    county.indexOf('(City)') !== -1
+      ? county // county is really a city
+      : state === 'LA'
+      ? `${county} Parish`
+      : `${county} County`;
+
+  const noxData = action.nox.emissions.county[state][county];
+  const so2Data = action.so2.emissions.county[state][county];
+  const pm25Data = action.pm25.emissions.county[state][county];
+
+  const sum = (a: number, b: number) => a + b;
+
+  const noxDataTons = Object.values(noxData).reduce(sum, 0) / 2000;
+  const so2DataTons = Object.values(so2Data).reduce(sum, 0) / 2000;
+  const pm25DataTons = Object.values(pm25Data).reduce(sum, 0) / 2000;
+
+  function formatNumber(number: number) {
+    return number.toLocaleString(undefined, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 3,
+    });
+  }
+
+  return {
+    FIPS: fipsCode,
+    STATE: States[state],
+    COUNTY: countyName,
+    TIER1NAME: 'FUEL COMB. ELEC. UTIL.',
+    NOx_REDUCTIONS_TONS: formatNumber(noxDataTons),
+    SO2_REDUCTIONS_TONS: formatNumber(so2DataTons),
+    PM25_REDUCTIONS_TONS: formatNumber(pm25DataTons),
+  };
+}
