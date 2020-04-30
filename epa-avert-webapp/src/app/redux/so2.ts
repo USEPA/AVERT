@@ -1,24 +1,46 @@
+// reducers
+import {
+  AppThunk,
+  DisplacementData,
+  initialPollutantState,
+} from 'app/redux/index';
 // engines
 import { avert } from 'app/engines';
 // action creators
 import { incrementProgress } from 'app/redux/annualDisplacement';
 
 // action types
-export const REQUEST_NOX = 'nox/REQUEST_NOX';
-export const RECEIVE_NOX = 'nox/RECEIVE_NOX';
-export const RECEIVE_ERROR = 'nox/RECEIVE_ERROR';
+export const REQUEST_SO2 = 'so2/REQUEST_SO2';
+export const RECEIVE_SO2 = 'so2/RECEIVE_SO2';
+export const RECEIVE_ERROR = 'so2/RECEIVE_ERROR';
 
-// reducer
-const initialState = {
-  isFetching: false,
-  jobId: 0,
-  data: {},
-  error: false,
+type So2Action =
+  | {
+      type: typeof REQUEST_SO2;
+    }
+  | {
+      type: typeof RECEIVE_SO2;
+      payload: DisplacementData;
+    }
+  | {
+      type: typeof RECEIVE_ERROR;
+    };
+
+type So2State = {
+  isFetching: boolean;
+  data: DisplacementData;
+  error: boolean;
 };
 
-export default function reducer(state = initialState, action) {
+// reducer
+const initialState: So2State = initialPollutantState;
+
+export default function reducer(
+  state = initialState,
+  action: So2Action,
+): So2State {
   switch (action.type) {
-    case REQUEST_NOX:
+    case REQUEST_SO2:
       return {
         ...state,
         isFetching: true,
@@ -26,7 +48,7 @@ export default function reducer(state = initialState, action) {
         error: initialState.error,
       };
 
-    case RECEIVE_NOX:
+    case RECEIVE_SO2:
       return {
         ...state,
         isFetching: false,
@@ -46,13 +68,13 @@ export default function reducer(state = initialState, action) {
 }
 
 // action creators
-export const fetchNox = () => {
+export const fetchSo2 = (): AppThunk => {
   return (dispatch, getState) => {
     const { api } = getState();
 
-    dispatch({ type: REQUEST_NOX });
+    dispatch({ type: REQUEST_SO2 });
 
-    // post nox data for region and receive calculated displacement data
+    // post so2 data for region and receive calculated displacement data
     const options = {
       method: 'POST',
       headers: {
@@ -65,12 +87,12 @@ export const fetchNox = () => {
       }),
     };
 
-    return fetch(`${api.baseUrl}/api/v1/nox`, options)
+    return fetch(`${api.baseUrl}/api/v1/so2`, options)
       .then((response) => response.json())
       .then((json) => {
         dispatch(incrementProgress());
         dispatch({
-          type: RECEIVE_NOX,
+          type: RECEIVE_SO2,
           payload: json,
         });
       })

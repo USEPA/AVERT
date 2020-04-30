@@ -1,24 +1,46 @@
+// reducers
+import {
+  AppThunk,
+  DisplacementData,
+  initialPollutantState,
+} from 'app/redux/index';
 // engines
 import { avert } from 'app/engines';
 // action creators
 import { incrementProgress } from 'app/redux/annualDisplacement';
 
 // action types
-export const REQUEST_SO2 = 'so2/REQUEST_SO2';
-export const RECEIVE_SO2 = 'so2/RECEIVE_SO2';
-export const RECEIVE_ERROR = 'so2/RECEIVE_ERROR';
+export const REQUEST_PM25 = 'pm25/REQUEST_PM25';
+export const RECEIVE_PM25 = 'pm25/RECEIVE_PM25';
+export const RECEIVE_ERROR = 'pm25/RECEIVE_ERROR';
 
-// reducer
-const initialState = {
-  isFetching: false,
-  jobId: 0,
-  data: {},
-  error: false,
+type Pm25Action =
+  | {
+      type: typeof REQUEST_PM25;
+    }
+  | {
+      type: typeof RECEIVE_PM25;
+      payload: DisplacementData;
+    }
+  | {
+      type: typeof RECEIVE_ERROR;
+    };
+
+type Pm25State = {
+  isFetching: boolean;
+  data: DisplacementData;
+  error: boolean;
 };
 
-export default function reducer(state = initialState, action) {
+// reducer
+const initialState: Pm25State = initialPollutantState;
+
+export default function reducer(
+  state = initialState,
+  action: Pm25Action,
+): Pm25State {
   switch (action.type) {
-    case REQUEST_SO2:
+    case REQUEST_PM25:
       return {
         ...state,
         isFetching: true,
@@ -26,7 +48,7 @@ export default function reducer(state = initialState, action) {
         error: initialState.error,
       };
 
-    case RECEIVE_SO2:
+    case RECEIVE_PM25:
       return {
         ...state,
         isFetching: false,
@@ -46,13 +68,13 @@ export default function reducer(state = initialState, action) {
 }
 
 // action creators
-export const fetchSo2 = () => {
+export const fetchPm25 = (): AppThunk => {
   return (dispatch, getState) => {
     const { api } = getState();
 
-    dispatch({ type: REQUEST_SO2 });
+    dispatch({ type: REQUEST_PM25 });
 
-    // post so2 data for region and receive calculated displacement data
+    // post pm25 data for region and receive calculated displacement data
     const options = {
       method: 'POST',
       headers: {
@@ -65,12 +87,12 @@ export const fetchSo2 = () => {
       }),
     };
 
-    return fetch(`${api.baseUrl}/api/v1/so2`, options)
+    return fetch(`${api.baseUrl}/api/v1/pm25`, options)
       .then((response) => response.json())
       .then((json) => {
         dispatch(incrementProgress());
         dispatch({
-          type: RECEIVE_SO2,
+          type: RECEIVE_PM25,
           payload: json,
         });
       })

@@ -1,3 +1,9 @@
+// reducers
+import {
+  AppThunk,
+  DisplacementData,
+  initialPollutantState,
+} from 'app/redux/index';
 // engines
 import { avert } from 'app/engines';
 // action creators
@@ -8,15 +14,31 @@ export const REQUEST_CO2 = 'co2/REQUEST_CO2';
 export const RECEIVE_CO2 = 'co2/RECEIVE_CO2';
 export const RECEIVE_ERROR = 'co2/RECEIVE_ERROR';
 
-// reducer
-const initialState = {
-  isFetching: false,
-  jobId: 0,
-  data: {},
-  error: false,
+type Co2Action =
+  | {
+      type: typeof REQUEST_CO2;
+    }
+  | {
+      type: typeof RECEIVE_CO2;
+      payload: DisplacementData;
+    }
+  | {
+      type: typeof RECEIVE_ERROR;
+    };
+
+type Co2State = {
+  isFetching: boolean;
+  data: DisplacementData;
+  error: boolean;
 };
 
-export default function reducer(state = initialState, action) {
+// reducer
+const initialState: Co2State = initialPollutantState;
+
+export default function reducer(
+  state = initialState,
+  action: Co2Action,
+): Co2State {
   switch (action.type) {
     case REQUEST_CO2:
       return {
@@ -46,7 +68,7 @@ export default function reducer(state = initialState, action) {
 }
 
 // action creators
-export const fetchCo2 = () => {
+export const fetchCo2 = (): AppThunk => {
   return (dispatch, getState) => {
     const { api } = getState();
 

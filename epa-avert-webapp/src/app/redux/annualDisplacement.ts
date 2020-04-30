@@ -1,4 +1,6 @@
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
+// reducers
+import { AppThunk } from 'app/redux/index';
 // action creators
 import { completeStateEmissions } from 'app/redux/stateEmissions';
 import { completeMonthlyEmissions } from 'app/redux/monthlyEmissions';
@@ -15,72 +17,74 @@ export const START_DISPLACEMENT = 'annualDisplacement/START_DISPLACEMENT';
 export const RECEIVE_DISPLACEMENT = 'annualDisplacement/RECEIVE_DISPLACEMENT';
 export const RECEIVE_ERROR = 'annualDisplacement/RECEIVE_ERROR';
 
+type AnnualDisplacementsAction =
+  | {
+      type: typeof SELECT_REGION;
+    }
+  | {
+      type: typeof INCREMENT_PROGRESS;
+    }
+  | {
+      type: typeof START_DISPLACEMENT;
+    }
+  | {
+      type: typeof RECEIVE_DISPLACEMENT;
+      data: any; // TODO
+      statesAndCounties: any; // TODO
+    }
+  | {
+      type: typeof RECEIVE_ERROR;
+    };
+
 type AnnualDisplacementState = {
   status: 'select_region' | 'ready' | 'started' | 'complete' | 'error';
-  statesAndCounties: {}; // TODO
+  statesAndCounties: {
+    [stateId: string]: string[];
+  };
   results: {
-    generation: OriginalPostImpact;
+    generation: { original: number; post: number; impact: number };
     totalEmissions: {
-      so2: OriginalPostImpact;
-      nox: OriginalPostImpact;
-      co2: OriginalPostImpact;
-      pm25: OriginalPostImpact;
+      so2: { original: number; post: number; impact: number };
+      nox: { original: number; post: number; impact: number };
+      co2: { original: number; post: number; impact: number };
+      pm25: { original: number; post: number; impact: number };
     };
     emissionRates: {
-      so2: OriginalPost;
-      nox: OriginalPost;
-      co2: OriginalPost;
-      pm25: OriginalPost;
+      so2: { original: string; post: string };
+      nox: { original: string; post: string };
+      co2: { original: string; post: string };
+      pm25: { original: string; post: string };
     };
   };
-};
-
-type OriginalPostImpact = {
-  original: any; // TODO
-  post: any; // TODO
-  impact: any; // TODO
-};
-
-type OriginalPost = {
-  original: any; // TODO
-  post: any; // TODO
 };
 
 export const useAnnualDisplacementState: TypedUseSelectorHook<AnnualDisplacementState> = useSelector;
 
 // reducer
-const originalPostImpact = {
-  original: '',
-  post: '',
-  impact: '',
-};
-
-const originalPost = {
-  original: '',
-  post: '',
-};
-
 const initialState: AnnualDisplacementState = {
   status: 'select_region',
   statesAndCounties: {},
   results: {
-    generation: originalPostImpact,
+    generation: { original: 0, post: 0, impact: 0 },
     totalEmissions: {
-      so2: originalPostImpact,
-      nox: originalPostImpact,
-      co2: originalPostImpact,
-      pm25: originalPostImpact,
+      so2: { original: 0, post: 0, impact: 0 },
+      nox: { original: 0, post: 0, impact: 0 },
+      co2: { original: 0, post: 0, impact: 0 },
+      pm25: { original: 0, post: 0, impact: 0 },
     },
     emissionRates: {
-      so2: originalPost,
-      nox: originalPost,
-      co2: originalPost,
-      pm25: originalPost,
+      so2: { original: '', post: '' },
+      nox: { original: '', post: '' },
+      co2: { original: '', post: '' },
+      pm25: { original: '', post: '' },
     },
   },
 };
 
-export default function reducer(state = initialState, action) {
+export default function reducer(
+  state = initialState,
+  action: AnnualDisplacementsAction,
+): AnnualDisplacementState {
   switch (action.type) {
     case SELECT_REGION:
       return {
@@ -118,11 +122,11 @@ export default function reducer(state = initialState, action) {
 }
 
 // action creators
-export const incrementProgress = () => ({
+export const incrementProgress = (): AnnualDisplacementsAction => ({
   type: INCREMENT_PROGRESS,
 });
 
-export const receiveDisplacement = () => {
+export const receiveDisplacement = (): AppThunk => {
   return (dispatch, getState) => {
     // get reducer data from store to use in dispatched action
     const { generation, so2, nox, co2, pm25 } = getState();
@@ -189,7 +193,7 @@ export const receiveDisplacement = () => {
 
     // build up statesAndCounties from monthlyChanges data
     const so2countyEmissions = so2.data.monthlyChanges.emissions.county;
-    const statesAndCounties = {};
+    const statesAndCounties: { [stateId: string]: string[] } = {};
     for (const state in so2countyEmissions) {
       statesAndCounties[state] = Object.keys(so2countyEmissions[state]).sort();
     }
@@ -205,7 +209,7 @@ export const receiveDisplacement = () => {
   };
 };
 
-export const calculateDisplacement = () => {
+export const calculateDisplacement = (): AppThunk => {
   return (dispatch) => {
     dispatch({ type: START_DISPLACEMENT });
     dispatch(incrementProgress());

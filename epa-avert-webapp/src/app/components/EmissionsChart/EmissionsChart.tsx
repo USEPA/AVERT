@@ -195,7 +195,7 @@ function EmissionsChart({ heading }: Props) {
   }
 
   // charts config
-  const commonConfig = {
+  const commonConfig: Highcharts.Options = {
     chart: {
       type: 'column',
       height: 240,
@@ -211,14 +211,14 @@ function EmissionsChart({ heading }: Props) {
     },
     tooltip: {
       pointFormatter: function () {
-        const dataPoint = this.y.toLocaleString(undefined, {
+        const dataPoint = this.y?.toLocaleString(undefined, {
           minimumFractionDigits: 0,
           maximumFractionDigits: 2,
         });
 
         const suffix =
           unit === 'emissions'
-            ? ` ${this.series.userOptions.emissionsUnit}`
+            ? ` ${(this.series.options as any).emissionsUnit}`
             : '%';
 
         return `<strong>${dataPoint}</strong>${suffix}`;

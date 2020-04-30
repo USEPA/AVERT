@@ -48,12 +48,8 @@ function EEREChart() {
     },
     tooltip: {
       formatter: function () {
-        // TODO: "(TITLE)" line below should be:
-        // ${this.series.xAxis.axisTitle.textStr}:
-        console.log(this.series.xAxis);
-
         return `<span style="font-size: 10px">
-          (TITLE):
+          ${(this.series.xAxis as any).axisTitle.textStr}:
           ${this.x.toLocaleString()}
           </span><br/>
           <strong>${Math.round(this.y).toLocaleString()}</strong> MW`;

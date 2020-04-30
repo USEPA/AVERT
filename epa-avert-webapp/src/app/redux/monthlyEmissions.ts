@@ -1,4 +1,6 @@
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
+// reducers
+import { AppThunk } from 'app/redux/index';
 // enums
 import States from 'app/enums/States';
 import FipsCodes from 'app/enums/FipsCodes';
@@ -19,6 +21,56 @@ export const SELECT_MONTHLY_COUNTY = 'monthlyEmissions/SELECT_MONTHLY_COUNTY';
 export const RESET_MONTHLY_EMISSIONS =
   'monthlyEmissions/RESET_MONTHLY_EMISSIONS';
 
+type MonthlyEmissionsAction =
+  | {
+      type: typeof SELECT_REGION;
+    }
+  | {
+      type: typeof START_DISPLACEMENT;
+    }
+  | {
+      type: typeof RESET_EERE_INPUTS;
+    }
+  | {
+      type: typeof RENDER_MONTHLY_EMISSIONS_CHARTS;
+      so2: any; // TODO
+      nox: any; // TODO
+      co2: any; // TODO
+      pm25: any; // TODO
+    }
+  | {
+      type: typeof COMPLETE_MONTHLY_EMISSIONS;
+      availableStates: string[];
+    }
+  | {
+      type: typeof SET_DOWNLOAD_DATA;
+      so2: any; // TODO
+      nox: any; // TODO
+      co2: any; // TODO
+      pm25: any; // TODO
+      statesAndCounties: any; // TODO
+    }
+  | {
+      type: typeof SELECT_MONTHLY_AGGREGATION;
+      aggregation: 'region' | 'state' | 'county';
+    }
+  | {
+      type: typeof SELECT_MONTHLY_UNIT;
+      unit: 'emissions' | 'percentages';
+    }
+  | {
+      type: typeof SELECT_MONTHLY_STATE;
+      selectedState: string;
+      availableCounties: string[];
+    }
+  | {
+      type: typeof SELECT_MONTHLY_COUNTY;
+      selectedCounty: string;
+    }
+  | {
+      type: typeof RESET_MONTHLY_EMISSIONS;
+    };
+
 type MonthlyEmissionsState = {
   status: 'select_region' | 'ready' | 'started' | 'complete';
   aggregation: 'region' | 'state' | 'county';
@@ -33,8 +85,8 @@ type MonthlyEmissionsState = {
     co2: number[];
     pm25: number[];
   };
-  downloadableCountyData: [];
-  downloadableCobraData: [];
+  downloadableCountyData: []; // TODO
+  downloadableCobraData: []; // TODO
 };
 
 export const useMonthlyEmissionsState: TypedUseSelectorHook<MonthlyEmissionsState> = useSelector;
@@ -58,7 +110,10 @@ const initialState: MonthlyEmissionsState = {
   downloadableCobraData: [],
 };
 
-export default function reducer(state = initialState, action) {
+export default function reducer(
+  state = initialState,
+  action: MonthlyEmissionsAction,
+): MonthlyEmissionsState {
   switch (action.type) {
     case SELECT_REGION:
       return {
@@ -108,7 +163,9 @@ export default function reducer(state = initialState, action) {
     case RENDER_MONTHLY_EMISSIONS_CHARTS:
       const { unit, aggregation, selectedState, selectedCounty } = state;
 
-      const emissionData = {
+      const emissionData: {
+        [pollutant in 'so2' | 'nox' | 'co2' | 'pm25']: number[];
+      } = {
         so2: [],
         nox: [],
         co2: [],
@@ -116,25 +173,27 @@ export default function reducer(state = initialState, action) {
       };
 
       // populate emissionData with data from action (pollutant data from store)
-      for (const pollutant in emissionData) {
-        if (aggregation === 'region') {
-          emissionData[pollutant] = Object.values(
-            action[pollutant][unit].region,
-          );
-        }
+      (Object.keys(emissionData) as ('so2' | 'nox' | 'co2' | 'pm25')[]).forEach(
+        (pollutant) => {
+          if (aggregation === 'region') {
+            emissionData[pollutant] = Object.values(
+              action[pollutant][unit].region,
+            );
+          }
 
-        if (aggregation === 'state' && selectedState) {
-          emissionData[pollutant] = Object.values(
-            action[pollutant][unit].state[selectedState],
-          );
-        }
+          if (aggregation === 'state' && selectedState) {
+            emissionData[pollutant] = Object.values(
+              action[pollutant][unit].state[selectedState],
+            );
+          }
 
-        if (aggregation === 'county' && selectedState && selectedCounty) {
-          emissionData[pollutant] = Object.values(
-            action[pollutant][unit].county[selectedState][selectedCounty],
-          );
-        }
-      }
+          if (aggregation === 'county' && selectedState && selectedCounty) {
+            emissionData[pollutant] = Object.values(
+              action[pollutant][unit].county[selectedState][selectedCounty],
+            );
+          }
+        },
+      );
 
       return {
         ...state,
@@ -147,7 +206,7 @@ export default function reducer(state = initialState, action) {
 
     case SET_DOWNLOAD_DATA:
       // helper function to format county data rows
-      const countyRow = (pollutant, unit, data, state, county) => {
+      function countyRow(pollutant, unit, data, state, county) {
         data = Object.values(data);
 
         return {
@@ -169,10 +228,10 @@ export default function reducer(state = initialState, action) {
           November: data[10],
           December: data[11],
         };
-      };
+      }
 
       // helper function to format cobra data rows
-      const cobraRow = (state, county, action) => {
+      function cobraRow(state, county, action) {
         const fipsCounty = FipsCodes.filter((item) => {
           return item['state'] === States[state] && item['county'] === county;
         })[0];
@@ -216,7 +275,7 @@ export default function reducer(state = initialState, action) {
           SO2_REDUCTIONS_TONS: formatNumber(so2Data),
           PM25_REDUCTIONS_TONS: formatNumber(pm25Data),
         };
-      };
+      }
 
       let countyData = [];
       let cobraData = [];
@@ -273,7 +332,7 @@ export default function reducer(state = initialState, action) {
   }
 }
 
-export const renderMonthlyEmissionsCharts = () => {
+export const renderMonthlyEmissionsCharts = (): AppThunk => {
   return function (dispatch, getState) {
     // get reducer data from store to use in dispatched action
     const { so2, nox, co2, pm25 } = getState();
@@ -288,7 +347,7 @@ export const renderMonthlyEmissionsCharts = () => {
   };
 };
 
-export const completeMonthlyEmissions = () => {
+export const completeMonthlyEmissions = (): AppThunk => {
   return function (dispatch, getState) {
     // get reducer data from store to use in dispatched action
     const { annualDisplacement, so2, nox, co2, pm25 } = getState();
@@ -311,7 +370,7 @@ export const completeMonthlyEmissions = () => {
   };
 };
 
-export const selectMonthlyAggregation = (selection) => {
+export const selectMonthlyAggregation = (selection): AppThunk => {
   return function (dispatch) {
     dispatch({
       type: SELECT_MONTHLY_AGGREGATION,
@@ -321,7 +380,7 @@ export const selectMonthlyAggregation = (selection) => {
   };
 };
 
-export const selectMonthlyUnit = (selection) => {
+export const selectMonthlyUnit = (selection): AppThunk => {
   return function (dispatch) {
     dispatch({
       type: SELECT_MONTHLY_UNIT,
@@ -331,7 +390,7 @@ export const selectMonthlyUnit = (selection) => {
   };
 };
 
-export const selectMonthlyState = (selection) => {
+export const selectMonthlyState = (selection): AppThunk => {
   return function (dispatch, getState) {
     // get reducer data from store to use in dispatched action
     const { annualDisplacement } = getState();
@@ -345,7 +404,7 @@ export const selectMonthlyState = (selection) => {
   };
 };
 
-export const selectMonthlyCounty = (selection) => {
+export const selectMonthlyCounty = (selection): AppThunk => {
   return function (dispatch) {
     dispatch({
       type: SELECT_MONTHLY_COUNTY,
@@ -355,6 +414,6 @@ export const selectMonthlyCounty = (selection) => {
   };
 };
 
-export const resetMonthlyEmissions = () => ({
+export const resetMonthlyEmissions = (): MonthlyEmissionsAction => ({
   type: RESET_MONTHLY_EMISSIONS,
 });

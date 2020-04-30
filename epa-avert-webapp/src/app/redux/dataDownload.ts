@@ -2,12 +2,22 @@ import { useSelector, TypedUseSelectorHook } from 'react-redux';
 import json2csv from 'json2csv';
 import Blob from 'blob';
 import FileSaver from 'file-saver';
+// reducers
+import { AppThunk } from 'app/redux/index';
 
 // action types
 export const START_COUNTY_RESULTS_DOWNLOAD =
   'dataDownload/START_COUNTY_RESULTS_DOWNLOAD';
 export const START_COBRA_RESULTS_DOWNLOAD =
   'dataDownload/START_COBRA_RESULTS_DOWNLOAD';
+
+type DataDownloadAction =
+  | {
+      type: typeof START_COUNTY_RESULTS_DOWNLOAD;
+    }
+  | {
+      type: typeof START_COBRA_RESULTS_DOWNLOAD;
+    };
 
 type DataDownloadState = {
   countyFile: boolean;
@@ -22,7 +32,10 @@ const initialState: DataDownloadState = {
   cobraFile: false,
 };
 
-export default function reducer(state = initialState, action) {
+export default function reducer(
+  state = initialState,
+  action: DataDownloadAction,
+): DataDownloadState {
   switch (action.type) {
     case START_COUNTY_RESULTS_DOWNLOAD:
       return {
@@ -42,7 +55,7 @@ export default function reducer(state = initialState, action) {
 }
 
 // action creators
-export const startCountyResultsDownload = () => {
+export const startCountyResultsDownload = (): AppThunk => {
   return (dispatch, getState) => {
     // get reducer data from store to use in dispatched action
     const { monthlyEmissions, region } = getState();
@@ -65,7 +78,7 @@ export const startCountyResultsDownload = () => {
   };
 };
 
-export const startCobraResultsDownload = () => {
+export const startCobraResultsDownload = (): AppThunk => {
   return (dispatch, getState) => {
     // get reducer data from store to use in dispatched action
     const { monthlyEmissions, region } = getState();

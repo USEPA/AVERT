@@ -1,24 +1,46 @@
+// reducers
+import {
+  AppThunk,
+  DisplacementData,
+  initialPollutantState,
+} from 'app/redux/index';
 // engines
 import { avert } from 'app/engines';
 // action creators
 import { incrementProgress } from 'app/redux/annualDisplacement';
 
 // action types
-export const REQUEST_PM25 = 'pm25/REQUEST_PM25';
-export const RECEIVE_PM25 = 'pm25/RECEIVE_PM25';
-export const RECEIVE_ERROR = 'pm25/RECEIVE_ERROR';
+export const REQUEST_NOX = 'nox/REQUEST_NOX';
+export const RECEIVE_NOX = 'nox/RECEIVE_NOX';
+export const RECEIVE_ERROR = 'nox/RECEIVE_ERROR';
 
-// reducer
-const initialState = {
-  isFetching: false,
-  jobId: 0,
-  data: {},
-  error: false,
+type NoxAction =
+  | {
+      type: typeof REQUEST_NOX;
+    }
+  | {
+      type: typeof RECEIVE_NOX;
+      payload: DisplacementData;
+    }
+  | {
+      type: typeof RECEIVE_ERROR;
+    };
+
+type NoxState = {
+  isFetching: boolean;
+  data: DisplacementData;
+  error: boolean;
 };
 
-export default function reducer(state = initialState, action) {
+// reducer
+const initialState: NoxState = initialPollutantState;
+
+export default function reducer(
+  state = initialState,
+  action: NoxAction,
+): NoxState {
   switch (action.type) {
-    case REQUEST_PM25:
+    case REQUEST_NOX:
       return {
         ...state,
         isFetching: true,
@@ -26,7 +48,7 @@ export default function reducer(state = initialState, action) {
         error: initialState.error,
       };
 
-    case RECEIVE_PM25:
+    case RECEIVE_NOX:
       return {
         ...state,
         isFetching: false,
@@ -46,13 +68,13 @@ export default function reducer(state = initialState, action) {
 }
 
 // action creators
-export const fetchPm25 = () => {
+export const fetchNox = (): AppThunk => {
   return (dispatch, getState) => {
     const { api } = getState();
 
-    dispatch({ type: REQUEST_PM25 });
+    dispatch({ type: REQUEST_NOX });
 
-    // post pm25 data for region and receive calculated displacement data
+    // post nox data for region and receive calculated displacement data
     const options = {
       method: 'POST',
       headers: {
@@ -65,12 +87,12 @@ export const fetchPm25 = () => {
       }),
     };
 
-    return fetch(`${api.baseUrl}/api/v1/pm25`, options)
+    return fetch(`${api.baseUrl}/api/v1/nox`, options)
       .then((response) => response.json())
       .then((json) => {
         dispatch(incrementProgress());
         dispatch({
-          type: RECEIVE_PM25,
+          type: RECEIVE_NOX,
           payload: json,
         });
       })
