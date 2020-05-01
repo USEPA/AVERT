@@ -21,9 +21,9 @@ export const SELECT_MONTHLY_COUNTY = 'monthlyEmissions/SELECT_MONTHLY_COUNTY';
 export const RESET_MONTHLY_EMISSIONS =
   'monthlyEmissions/RESET_MONTHLY_EMISSIONS';
 
-type MonthlyAggregation = 'region' | 'state' | 'county';
+export type MonthlyAggregation = 'region' | 'state' | 'county';
 
-type MonthlyUnit = 'emissions' | 'percentages';
+export type MonthlyUnit = 'emissions' | 'percentages';
 
 type CountyDataRow = {
   Pollutant: 'SO2' | 'NOX' | 'CO2' | 'PM25';

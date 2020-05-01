@@ -4,12 +4,21 @@ import Regions from 'app/enums/Regions';
 import Rdf from 'app/engines/Rdf';
 import EereEngine from 'app/engines/EereEngine';
 
+/**
+ * @typedef {Object} EERELoad
+ * @property {number[]} softExceedances
+ * @property {number[]} hardExceedances
+ * @property {any} hourlyEere
+ */
+
 class Avert {
   constructor() {
     this._region = {};
     this._rdf = false;
     this._eereDefaults = {};
     this._eereProfile = {};
+
+    /** @type {EERELoad} */
     this._eereEngine = {};
   }
 

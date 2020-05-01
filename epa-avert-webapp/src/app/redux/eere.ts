@@ -444,7 +444,7 @@ export const completeEereCalculation = (hourlyEere: HourlyEere[]) => ({
   hourlyEere: hourlyEere,
 });
 
-export const updateExceedances = (soft, hard): AppThunk => {
+export const updateExceedances = (soft: number[], hard: number[]): AppThunk => {
   return function (dispatch, getState) {
     const { rdfs } = getState();
     const regionalLoadHours = rdfs.rdf.regional_load;

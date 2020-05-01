@@ -4,6 +4,8 @@ import HighchartsReact from 'highcharts-react-official';
 import { useDispatch } from 'react-redux';
 // reducers
 import {
+  MonthlyAggregation,
+  MonthlyUnit,
   useMonthlyEmissionsState,
   selectMonthlyAggregation,
   selectMonthlyUnit,
@@ -68,7 +70,9 @@ function EmissionsChart({ heading }: Props) {
             value={'region'}
             checked={aggregation === 'region'}
             onChange={(ev) => {
-              dispatch(selectMonthlyAggregation(ev.target.value));
+              dispatch(
+                selectMonthlyAggregation(ev.target.value as MonthlyAggregation),
+              );
             }}
           />
           Region
@@ -81,7 +85,9 @@ function EmissionsChart({ heading }: Props) {
             value={'state'}
             checked={aggregation === 'state'}
             onChange={(ev) => {
-              dispatch(selectMonthlyAggregation(ev.target.value));
+              dispatch(
+                selectMonthlyAggregation(ev.target.value as MonthlyAggregation),
+              );
               if (selectedState) {
                 dispatch(selectMonthlyState(selectedState));
               }
@@ -97,7 +103,9 @@ function EmissionsChart({ heading }: Props) {
             value={'county'}
             checked={aggregation === 'county'}
             onChange={(ev) => {
-              dispatch(selectMonthlyAggregation(ev.target.value));
+              dispatch(
+                selectMonthlyAggregation(ev.target.value as MonthlyAggregation),
+              );
               if (selectedCounty) {
                 dispatch(selectMonthlyCounty(selectedCounty));
               }
@@ -175,7 +183,9 @@ function EmissionsChart({ heading }: Props) {
             name="unit"
             value={'emissions'}
             checked={unit === 'emissions'}
-            onChange={(ev) => dispatch(selectMonthlyUnit(ev.target.value))}
+            onChange={(ev) =>
+              dispatch(selectMonthlyUnit(ev.target.value as MonthlyUnit))
+            }
           />
           Emission changes (lbs or tons)
         </label>
@@ -186,7 +196,9 @@ function EmissionsChart({ heading }: Props) {
             name="unit"
             value={'percentages'}
             checked={unit === 'percentages'}
-            onChange={(ev) => dispatch(selectMonthlyUnit(ev.target.value))}
+            onChange={(ev) =>
+              dispatch(selectMonthlyUnit(ev.target.value as MonthlyUnit))
+            }
           />
           Percent change
         </label>
