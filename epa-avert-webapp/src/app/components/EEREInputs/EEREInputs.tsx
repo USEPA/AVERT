@@ -118,7 +118,7 @@ function EEREInputs() {
                 <EEREInputField
                   value={annualGwh}
                   disabled={constantMwh}
-                  onChange={dispatch(updateEereAnnualGwh)}
+                  onChange={(text) => dispatch(updateEereAnnualGwh(text))}
                 />
                 <span className="avert-input-unit"> GWh </span>
 
@@ -144,7 +144,7 @@ function EEREInputs() {
                 <EEREInputField
                   value={constantMwh}
                   disabled={annualGwh}
-                  onChange={dispatch(updateEereConstantMw)}
+                  onChange={(text) => dispatch(updateEereConstantMw(text))}
                 />
                 <span className="avert-input-unit"> MW </span>
 
@@ -182,7 +182,9 @@ function EEREInputs() {
                 <EEREInputField
                   value={broadProgram}
                   disabled={reduction || topHours}
-                  onChange={dispatch(updateEereBroadBasedProgram)}
+                  onChange={(text) =>
+                    dispatch(updateEereBroadBasedProgram(text))
+                  }
                 />
                 <span className="avert-input-unit"> % in all hours </span>
 
@@ -206,13 +208,13 @@ function EEREInputs() {
                 <EEREInputField
                   value={reduction}
                   disabled={broadProgram}
-                  onChange={dispatch(updateEereReduction)}
+                  onChange={(text) => dispatch(updateEereReduction)}
                 />
                 <span className="avert-input-unit"> % during the peak </span>
                 <EEREInputField
                   value={topHours}
                   disabled={broadProgram}
-                  onChange={dispatch(updateEereTopHours)}
+                  onChange={(text) => dispatch(updateEereTopHours(text))}
                 />
                 <span className="avert-input-unit"> % of hours </span>
 
@@ -251,7 +253,7 @@ function EEREInputs() {
               <span className="avert-input-label">Total capacity: </span>
               <EEREInputField
                 value={windCapacity}
-                onChange={dispatch(updateEereWindCapacity)}
+                onChange={(text) => dispatch(updateEereWindCapacity(text))}
               />
               <span className="avert-input-unit"> MW </span>
 
@@ -278,7 +280,7 @@ function EEREInputs() {
               <span className="avert-input-label">Total capacity: </span>
               <EEREInputField
                 value={utilitySolar}
-                onChange={dispatch(updateEereUtilitySolar)}
+                onChange={(text) => dispatch(updateEereUtilitySolar(text))}
               />
               <span className="avert-input-unit"> MW </span>
 
@@ -307,7 +309,7 @@ function EEREInputs() {
               <span className="avert-input-label">Total capacity: </span>
               <EEREInputField
                 value={rooftopSolar}
-                onChange={dispatch(updateEereRooftopSolar)}
+                onChange={(text) => dispatch(updateEereRooftopSolar(text))}
               />
               <span className="avert-input-unit"> MW </span>
 
