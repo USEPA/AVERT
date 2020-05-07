@@ -6,7 +6,7 @@ import monthlyEmissionsReducer, {
   SELECT_MONTHLY_UNIT,
   SELECT_MONTHLY_STATE,
   SELECT_MONTHLY_COUNTY,
-} from 'app/redux/monthlyEmissions';
+} from 'app/redux/reducers/monthlyEmissions';
 
 const mockStore = configureMockStore([thunk]);
 

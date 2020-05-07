@@ -1,43 +1,43 @@
 // reducers
-import { AppThunk, DisplacementData } from 'app/redux/index';
-import { initialPollutantState } from 'app/redux/_common';
+import { AppThunk } from 'app/redux/index';
+import { DisplacementData, initialPollutantState } from 'app/redux/shared';
 // engines
 import { avert } from 'app/engines';
 // action creators
-import { incrementProgress } from 'app/redux/annualDisplacement';
+import { incrementProgress } from 'app/redux/reducers/annualDisplacement';
 
 // action types
-export const REQUEST_PM25 = 'pm25/REQUEST_PM25';
-export const RECEIVE_PM25 = 'pm25/RECEIVE_PM25';
-export const RECEIVE_ERROR = 'pm25/RECEIVE_ERROR';
+export const REQUEST_NOX = 'nox/REQUEST_NOX';
+export const RECEIVE_NOX = 'nox/RECEIVE_NOX';
+export const RECEIVE_ERROR = 'nox/RECEIVE_ERROR';
 
-type Pm25Action =
+type NoxAction =
   | {
-      type: typeof REQUEST_PM25;
+      type: typeof REQUEST_NOX;
     }
   | {
-      type: typeof RECEIVE_PM25;
+      type: typeof RECEIVE_NOX;
       payload: DisplacementData;
     }
   | {
       type: typeof RECEIVE_ERROR;
     };
 
-type Pm25State = {
+type NoxState = {
   isFetching: boolean;
   data: DisplacementData;
   error: boolean;
 };
 
 // reducer
-const initialState: Pm25State = initialPollutantState;
+const initialState: NoxState = initialPollutantState;
 
 export default function reducer(
-  state: Pm25State = initialState,
-  action: Pm25Action,
-): Pm25State {
+  state: NoxState = initialState,
+  action: NoxAction,
+): NoxState {
   switch (action.type) {
-    case REQUEST_PM25:
+    case REQUEST_NOX:
       return {
         ...state,
         isFetching: true,
@@ -45,7 +45,7 @@ export default function reducer(
         error: initialState.error,
       };
 
-    case RECEIVE_PM25:
+    case RECEIVE_NOX:
       return {
         ...state,
         isFetching: false,
@@ -65,13 +65,13 @@ export default function reducer(
 }
 
 // action creators
-export const fetchPm25 = (): AppThunk => {
+export const fetchNox = (): AppThunk => {
   return (dispatch, getState) => {
     const { api } = getState();
 
-    dispatch({ type: REQUEST_PM25 });
+    dispatch({ type: REQUEST_NOX });
 
-    // post pm25 data for region and receive calculated displacement data
+    // post nox data for region and receive calculated displacement data
     const options = {
       method: 'POST',
       headers: {
@@ -84,12 +84,12 @@ export const fetchPm25 = (): AppThunk => {
       }),
     };
 
-    return fetch(`${api.baseUrl}/api/v1/pm25`, options)
+    return fetch(`${api.baseUrl}/api/v1/nox`, options)
       .then((response) => response.json())
       .then((json) => {
         dispatch(incrementProgress());
         dispatch({
-          type: RECEIVE_PM25,
+          type: RECEIVE_NOX,
           payload: json,
         });
       })

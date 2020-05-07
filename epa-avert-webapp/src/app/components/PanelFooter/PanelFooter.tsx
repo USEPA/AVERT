@@ -1,12 +1,12 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 // reducers
-import { usePanelState, setActiveStep } from 'app/redux/panel';
-import { useRegionState } from 'app/redux/region';
-import { useEereState, resetEereInputs } from 'app/redux/eere';
-import { fetchRegion } from 'app/redux/rdfs';
-import { calculateDisplacement } from 'app/redux/annualDisplacement';
-import { resetMonthlyEmissions } from 'app/redux/monthlyEmissions';
+import { usePanelState, setActiveStep } from 'app/redux/reducers/panel';
+import { useRegionState } from 'app/redux/reducers/region';
+import { useEereState, resetEereInputs } from 'app/redux/reducers/eere';
+import { fetchRegion } from 'app/redux/reducers/rdfs';
+import { calculateDisplacement } from 'app/redux/reducers/annualDisplacement';
+import { resetMonthlyEmissions } from 'app/redux/reducers/monthlyEmissions';
 // styles
 import './styles.css';
 

@@ -1,43 +1,43 @@
 // reducers
-import { AppThunk, DisplacementData } from 'app/redux/index';
-import { initialPollutantState } from 'app/redux/_common';
+import { AppThunk } from 'app/redux/index';
+import { DisplacementData, initialPollutantState } from 'app/redux/shared';
 // engines
 import { avert } from 'app/engines';
 // action creators
-import { incrementProgress } from 'app/redux/annualDisplacement';
+import { incrementProgress } from 'app/redux/reducers/annualDisplacement';
 
 // action types
-export const REQUEST_SO2 = 'so2/REQUEST_SO2';
-export const RECEIVE_SO2 = 'so2/RECEIVE_SO2';
-export const RECEIVE_ERROR = 'so2/RECEIVE_ERROR';
+export const REQUEST_PM25 = 'pm25/REQUEST_PM25';
+export const RECEIVE_PM25 = 'pm25/RECEIVE_PM25';
+export const RECEIVE_ERROR = 'pm25/RECEIVE_ERROR';
 
-type So2Action =
+type Pm25Action =
   | {
-      type: typeof REQUEST_SO2;
+      type: typeof REQUEST_PM25;
     }
   | {
-      type: typeof RECEIVE_SO2;
+      type: typeof RECEIVE_PM25;
       payload: DisplacementData;
     }
   | {
       type: typeof RECEIVE_ERROR;
     };
 
-type So2State = {
+type Pm25State = {
   isFetching: boolean;
   data: DisplacementData;
   error: boolean;
 };
 
 // reducer
-const initialState: So2State = initialPollutantState;
+const initialState: Pm25State = initialPollutantState;
 
 export default function reducer(
-  state: So2State = initialState,
-  action: So2Action,
-): So2State {
+  state: Pm25State = initialState,
+  action: Pm25Action,
+): Pm25State {
   switch (action.type) {
-    case REQUEST_SO2:
+    case REQUEST_PM25:
       return {
         ...state,
         isFetching: true,
@@ -45,7 +45,7 @@ export default function reducer(
         error: initialState.error,
       };
 
-    case RECEIVE_SO2:
+    case RECEIVE_PM25:
       return {
         ...state,
         isFetching: false,
@@ -65,13 +65,13 @@ export default function reducer(
 }
 
 // action creators
-export const fetchSo2 = (): AppThunk => {
+export const fetchPm25 = (): AppThunk => {
   return (dispatch, getState) => {
     const { api } = getState();
 
-    dispatch({ type: REQUEST_SO2 });
+    dispatch({ type: REQUEST_PM25 });
 
-    // post so2 data for region and receive calculated displacement data
+    // post pm25 data for region and receive calculated displacement data
     const options = {
       method: 'POST',
       headers: {
@@ -84,12 +84,12 @@ export const fetchSo2 = (): AppThunk => {
       }),
     };
 
-    return fetch(`${api.baseUrl}/api/v1/so2`, options)
+    return fetch(`${api.baseUrl}/api/v1/pm25`, options)
       .then((response) => response.json())
       .then((json) => {
         dispatch(incrementProgress());
         dispatch({
-          type: RECEIVE_SO2,
+          type: RECEIVE_PM25,
           payload: json,
         });
       })

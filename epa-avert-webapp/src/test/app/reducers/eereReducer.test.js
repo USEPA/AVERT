@@ -5,7 +5,7 @@ import { eereProfile } from 'app/engines';
 import eereReducer, {
   RESET_EERE_INPUTS,
   resetEereInputs,
-} from 'app/redux/eere';
+} from 'app/redux/reducers/eere';
 
 const mockStore = configureMockStore([thunk]);
 const store = mockStore();

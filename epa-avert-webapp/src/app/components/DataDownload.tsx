@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import {
   startCountyResultsDownload,
   startCobraResultsDownload,
-} from 'app/redux/dataDownload';
+} from 'app/redux/reducers/dataDownload';
 
 function DataDownload() {
   const dispatch = useDispatch();

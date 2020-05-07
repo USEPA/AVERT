@@ -11,8 +11,8 @@ import {
   selectMonthlyUnit,
   selectMonthlyState,
   selectMonthlyCounty,
-} from 'app/redux/monthlyEmissions';
-import { useRegionState } from 'app/redux/region';
+} from 'app/redux/reducers/monthlyEmissions';
+import { useRegionState } from 'app/redux/reducers/region';
 // enums
 import States from 'app/enums/States';
 // styles

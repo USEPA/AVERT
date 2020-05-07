@@ -2,16 +2,16 @@ import { useSelector, TypedUseSelectorHook } from 'react-redux';
 // reducers
 import { AppThunk } from 'app/redux/index';
 // action creators
-import { completeStateEmissions } from 'app/redux/stateEmissions';
-import { completeMonthlyEmissions } from 'app/redux/monthlyEmissions';
-import { fetchGeneration } from 'app/redux/generation';
-import { fetchSo2 } from 'app/redux/so2';
-import { fetchNox } from 'app/redux/nox';
-import { fetchCo2 } from 'app/redux/co2';
-import { fetchPm25 } from 'app/redux/pm25';
+import { completeStateEmissions } from 'app/redux/reducers/stateEmissions';
+import { completeMonthlyEmissions } from 'app/redux/reducers/monthlyEmissions';
+import { fetchGeneration } from 'app/redux/reducers/generation';
+import { fetchSo2 } from 'app/redux/reducers/so2';
+import { fetchNox } from 'app/redux/reducers/nox';
+import { fetchCo2 } from 'app/redux/reducers/co2';
+import { fetchPm25 } from 'app/redux/reducers/pm25';
 
 // actions types
-import { SELECT_REGION } from 'app/redux/region';
+import { SELECT_REGION } from 'app/redux/reducers/region';
 export const INCREMENT_PROGRESS = 'annualDisplacement/INCREMENT_PROGRESS';
 export const START_DISPLACEMENT = 'annualDisplacement/START_DISPLACEMENT';
 export const RECEIVE_DISPLACEMENT = 'annualDisplacement/RECEIVE_DISPLACEMENT';

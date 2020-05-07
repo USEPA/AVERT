@@ -1,4 +1,6 @@
-import stateEmissionsReducer, { COMPLETE_STATE_EMISSIONS } from 'app/redux/stateEmissions'; // prettier-ignore
+import stateEmissionsReducer, {
+  COMPLETE_STATE_EMISSIONS,
+} from 'app/redux/reducers/stateEmissions';
 
 describe('stateEmissionsReducer', () => {
   it('should return an initial state', () => {

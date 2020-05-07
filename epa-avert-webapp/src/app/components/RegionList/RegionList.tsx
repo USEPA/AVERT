@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 // reducers
-import { useRegionState, selectRegion } from 'app/redux/region';
+import { useRegionState, selectRegion } from 'app/redux/reducers/region';
 // enums
 import Regions from 'app/enums/Regions';
 // styles

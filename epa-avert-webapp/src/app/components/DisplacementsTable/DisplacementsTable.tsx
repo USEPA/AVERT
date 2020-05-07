@@ -1,6 +1,6 @@
 import React from 'react';
 // reducers
-import { useAnnualDisplacementState } from 'app/redux/annualDisplacement';
+import { useAnnualDisplacementState } from 'app/redux/reducers/annualDisplacement';
 // styles
 import './styles.css';
 

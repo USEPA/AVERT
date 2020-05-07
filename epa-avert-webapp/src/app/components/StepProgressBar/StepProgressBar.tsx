@@ -2,7 +2,7 @@ import React from 'react';
 // components
 import StepProgressItem from 'app/components/StepProgressItem/StepProgressItem';
 // reducers
-import { usePanelState } from 'app/redux/panel';
+import { usePanelState } from 'app/redux/reducers/panel';
 // styles
 import './styles.css';
 

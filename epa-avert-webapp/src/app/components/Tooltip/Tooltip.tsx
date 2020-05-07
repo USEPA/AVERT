@@ -6,7 +6,7 @@ import {
   toggleModalOverlay,
   storeActiveModal,
   resetActiveModal,
-} from 'app/redux/panel';
+} from 'app/redux/reducers/panel';
 // styles
 import './styles.css';
 

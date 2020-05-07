@@ -1,13 +1,14 @@
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
 // reducers
-import { AppThunk, DataByMonth, MonthlyChanges } from 'app/redux/index';
+import { AppThunk } from 'app/redux/index';
+import { DataByMonth, MonthlyChanges } from 'app/redux/shared';
 // enums
 import States from 'app/enums/States';
 import FipsCodes from 'app/enums/FipsCodes';
 // action types
-import { SELECT_REGION } from 'app/redux/region';
-import { START_DISPLACEMENT } from 'app/redux/annualDisplacement';
-import { RESET_EERE_INPUTS } from 'app/redux/eere';
+import { SELECT_REGION } from 'app/redux/reducers/region';
+import { START_DISPLACEMENT } from 'app/redux/reducers/annualDisplacement';
+import { RESET_EERE_INPUTS } from 'app/redux/reducers/eere';
 export const RENDER_MONTHLY_EMISSIONS_CHARTS =
   'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS';
 export const COMPLETE_MONTHLY_EMISSIONS =

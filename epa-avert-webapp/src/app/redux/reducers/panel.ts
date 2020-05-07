@@ -1,16 +1,19 @@
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
 // action types
-import { REQUEST_REGION_RDF, RECEIVE_REGION_DEFAULTS } from 'app/redux/rdfs';
+import {
+  REQUEST_REGION_RDF,
+  RECEIVE_REGION_DEFAULTS,
+} from 'app/redux/reducers/rdfs';
 import {
   SUBMIT_EERE_CALCULATION,
   COMPLETE_EERE_CALCULATION,
-} from 'app/redux/eere';
-import { COMPLETE_MONTHLY_EMISSIONS } from 'app/redux/monthlyEmissions';
+} from 'app/redux/reducers/eere';
+import { COMPLETE_MONTHLY_EMISSIONS } from 'app/redux/reducers/monthlyEmissions';
 import {
   INCREMENT_PROGRESS,
   START_DISPLACEMENT,
   RECEIVE_DISPLACEMENT,
-} from 'app/redux/annualDisplacement';
+} from 'app/redux/reducers/annualDisplacement';
 export const CHANGE_ACTIVE_STEP = 'panel/CHANGE_ACTIVE_STEP';
 export const TOGGLE_MODAL_OVERLAY = 'panel/TOGGLE_MODAL_OVERLAY';
 export const STORE_ACTIVE_MODAL = 'panel/STORE_ACTIVE_MODAL';

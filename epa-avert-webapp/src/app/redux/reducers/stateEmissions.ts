@@ -2,8 +2,8 @@ import { useSelector, TypedUseSelectorHook } from 'react-redux';
 // reducers
 import { AppThunk } from 'app/redux/index';
 // action types
-import { SELECT_REGION } from 'app/redux/region';
-import { START_DISPLACEMENT } from 'app/redux/annualDisplacement';
+import { SELECT_REGION } from 'app/redux/reducers/region';
+import { START_DISPLACEMENT } from 'app/redux/reducers/annualDisplacement';
 export const COMPLETE_STATE_EMISSIONS = 'stateEmissions/COMPLETE_STATE_EMISSIONS'; // prettier-ignore
 
 type StateEmissionsAction =

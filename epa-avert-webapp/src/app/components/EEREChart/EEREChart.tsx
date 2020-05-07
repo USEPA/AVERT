@@ -4,7 +4,7 @@ import HighchartsReact from 'highcharts-react-official';
 // components
 import Tooltip from 'app/components/Tooltip/Tooltip';
 // reducers
-import { useEereState } from 'app/redux/eere';
+import { useEereState } from 'app/redux/reducers/eere';
 // styles
 import './styles.css';
 

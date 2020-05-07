@@ -5,7 +5,7 @@ import { AppThunk } from 'app/redux/index';
 import { avert, eereProfile } from 'app/engines';
 
 // action types
-import { SET_EERE_LIMITS } from 'app/redux/rdfs';
+import { SET_EERE_LIMITS } from 'app/redux/reducers/rdfs';
 export const VALIDATE_EERE = 'eere/VALIDATE_EERE';
 export const UPDATE_EERE_ANNUAL_GWH = 'eere/UPDATE_EERE_ANNUAL_GWH';
 export const UPDATE_EERE_CONSTANT_MW = 'eere/UPDATE_EERE_CONSTANT_MW';

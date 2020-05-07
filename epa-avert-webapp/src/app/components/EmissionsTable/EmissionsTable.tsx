@@ -1,6 +1,6 @@
 import React from 'react';
 // reducers
-import { useStateEmissionsState } from 'app/redux/stateEmissions';
+import { useStateEmissionsState } from 'app/redux/reducers/stateEmissions';
 // enums
 import States from 'app/enums/States';
 

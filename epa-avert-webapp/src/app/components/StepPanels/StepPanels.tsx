@@ -19,10 +19,10 @@ import {
   usePanelState,
   toggleModalOverlay,
   resetActiveModal,
-} from 'app/redux/panel';
-import { useRegionState } from 'app/redux/region';
-import { useEereState } from 'app/redux/eere';
-import { useAnnualDisplacementState } from 'app/redux/annualDisplacement';
+} from 'app/redux/reducers/panel';
+import { useRegionState } from 'app/redux/reducers/region';
+import { useEereState } from 'app/redux/reducers/eere';
+import { useAnnualDisplacementState } from 'app/redux/reducers/annualDisplacement';
 // styles
 import './styles.css';
 

@@ -16,7 +16,7 @@ import {
   updateEereUtilitySolar,
   updateEereRooftopSolar,
   calculateEereProfile,
-} from 'app/redux/eere';
+} from 'app/redux/reducers/eere';
 // styles
 import './styles.css';
 

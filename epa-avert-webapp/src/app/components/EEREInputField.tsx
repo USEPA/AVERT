@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 // reducers
-import { useEereState, calculateEereProfile } from 'app/redux/eere';
+import { useEereState, calculateEereProfile } from 'app/redux/reducers/eere';
 
 type Props = {
   value: string;
