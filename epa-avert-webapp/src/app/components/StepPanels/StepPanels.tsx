@@ -15,11 +15,8 @@ import EmissionsTable from 'app/components/EmissionsTable/EmissionsTable';
 import EmissionsChart from 'app/components/EmissionsChart/EmissionsChart';
 import DataDownload from 'app/components/DataDownload';
 // reducers
-import {
-  usePanelState,
-  toggleModalOverlay,
-  resetActiveModal,
-} from 'app/redux/reducers/panel';
+import { useTypedSelector } from 'app/redux/index';
+import { toggleModalOverlay, resetActiveModal } from 'app/redux/reducers/panel';
 import { useRegionState } from 'app/redux/reducers/region';
 import { useEereState } from 'app/redux/reducers/eere';
 import { useAnnualDisplacementState } from 'app/redux/reducers/annualDisplacement';
@@ -28,13 +25,13 @@ import './styles.css';
 
 function StepPanels() {
   const dispatch = useDispatch();
-  const activeStep = usePanelState(({ activeStep }) => activeStep);
-  const loading = usePanelState(({ loading }) => loading);
-  const loadingProgress = usePanelState(
-    ({ loadingProgress }) => loadingProgress,
+  const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
+  const loading = useTypedSelector(({ panel }) => panel.loading);
+  const loadingProgress = useTypedSelector(
+    ({ panel }) => panel.loadingProgress,
   );
-  const modalOverlay = usePanelState(({ modalOverlay }) => modalOverlay);
-  const activeModalId = usePanelState(({ activeModalId }) => activeModalId);
+  const modalOverlay = useTypedSelector(({ panel }) => panel.modalOverlay);
+  const activeModalId = useTypedSelector(({ panel }) => panel.activeModalId);
   const region = useRegionState(({ name }) => name);
   const softValid = useEereState(({ softLimit }) => softLimit?.valid);
   const serverCalcError = useAnnualDisplacementState(({ status }) => {

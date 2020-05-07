@@ -1,5 +1,3 @@
-import { useSelector, TypedUseSelectorHook } from 'react-redux';
-
 type PanelAction =
   | {
       type: 'annualDisplacement/INCREMENT_PROGRESS';
@@ -51,8 +49,6 @@ type PanelState = {
   activeModalId: number;
   closingModalId: number;
 };
-
-export const usePanelState: TypedUseSelectorHook<PanelState> = useSelector;
 
 // reducer
 const initialState: PanelState = {

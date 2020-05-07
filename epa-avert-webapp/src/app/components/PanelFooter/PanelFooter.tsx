@@ -1,7 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 // reducers
-import { usePanelState, setActiveStep } from 'app/redux/reducers/panel';
+import { useTypedSelector } from 'app/redux/index';
+import { setActiveStep } from 'app/redux/reducers/panel';
 import { useRegionState } from 'app/redux/reducers/region';
 import { useEereState, resetEereInputs } from 'app/redux/reducers/eere';
 import { fetchRegion } from 'app/redux/reducers/rdfs';
@@ -17,7 +18,7 @@ type Props = {
 
 function PanelFooter({ prevButtonText, nextButtonText }: Props) {
   const dispatch = useDispatch();
-  const activeStep = usePanelState(({ activeStep }) => activeStep);
+  const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
   const regionId = useRegionState(({ id }) => id);
   const eereStatus = useEereState(({ status }) => status);
   const hardValid = useEereState(({ hardLimit }) => hardLimit?.valid);

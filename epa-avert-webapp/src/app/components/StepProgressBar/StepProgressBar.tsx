@@ -2,12 +2,12 @@ import React from 'react';
 // components
 import StepProgressItem from 'app/components/StepProgressItem/StepProgressItem';
 // reducers
-import { usePanelState } from 'app/redux/reducers/panel';
+import { useTypedSelector } from 'app/redux/index';
 // styles
 import './styles.css';
 
 function StepProgressBar() {
-  const activeStep = usePanelState(({ activeStep }) => activeStep);
+  const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
 
   return (
     <nav className="avert-nav">

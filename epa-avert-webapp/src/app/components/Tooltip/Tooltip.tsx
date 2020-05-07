@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 // reducers
+import { useTypedSelector } from 'app/redux/index';
 import {
-  usePanelState,
   toggleModalOverlay,
   storeActiveModal,
   resetActiveModal,
@@ -17,8 +17,8 @@ type Props = {
 
 function Tooltip({ id, children }: Props) {
   const dispatch = useDispatch();
-  const activeModalId = usePanelState(({ activeModalId }) => activeModalId);
-  const closingModalId = usePanelState(({ closingModalId }) => closingModalId);
+  const activeModalId = useTypedSelector(({ panel }) => panel.activeModalId);
+  const closingModalId = useTypedSelector(({ panel }) => panel.closingModalId);
 
   const closeLinkRef = React.useRef<HTMLAnchorElement>(null);
   React.useEffect(() => {
