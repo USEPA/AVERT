@@ -10,30 +10,23 @@ import { fetchNox } from 'app/redux/reducers/nox';
 import { fetchCo2 } from 'app/redux/reducers/co2';
 import { fetchPm25 } from 'app/redux/reducers/pm25';
 
-// actions types
-import { SELECT_REGION } from 'app/redux/reducers/region';
-export const INCREMENT_PROGRESS = 'annualDisplacement/INCREMENT_PROGRESS';
-export const START_DISPLACEMENT = 'annualDisplacement/START_DISPLACEMENT';
-export const RECEIVE_DISPLACEMENT = 'annualDisplacement/RECEIVE_DISPLACEMENT';
-export const RECEIVE_ERROR = 'annualDisplacement/RECEIVE_ERROR';
-
 type AnnualDisplacementsAction =
   | {
-      type: typeof SELECT_REGION;
+      type: 'region/SELECT_REGION';
     }
   | {
-      type: typeof INCREMENT_PROGRESS;
+      type: 'annualDisplacement/INCREMENT_PROGRESS';
     }
   | {
-      type: typeof START_DISPLACEMENT;
+      type: 'annualDisplacement/START_DISPLACEMENT';
     }
   | {
-      type: typeof RECEIVE_DISPLACEMENT;
+      type: 'annualDisplacement/RECEIVE_DISPLACEMENT';
       data: any; // TODO
       statesAndCounties: any; // TODO
     }
   | {
-      type: typeof RECEIVE_ERROR;
+      type: 'annualDisplacement/RECEIVE_ERROR';
     };
 
 type AnnualDisplacementState = {
@@ -86,7 +79,7 @@ export default function reducer(
   action: AnnualDisplacementsAction,
 ): AnnualDisplacementState {
   switch (action.type) {
-    case SELECT_REGION:
+    case 'region/SELECT_REGION':
       return {
         ...state,
         status: 'ready',
@@ -94,7 +87,7 @@ export default function reducer(
         results: initialState.results,
       };
 
-    case START_DISPLACEMENT:
+    case 'annualDisplacement/START_DISPLACEMENT':
       return {
         ...state,
         status: 'started',
@@ -102,7 +95,7 @@ export default function reducer(
         results: initialState.results,
       };
 
-    case RECEIVE_DISPLACEMENT:
+    case 'annualDisplacement/RECEIVE_DISPLACEMENT':
       return {
         ...state,
         status: 'complete',
@@ -110,7 +103,7 @@ export default function reducer(
         results: action.data,
       };
 
-    case RECEIVE_ERROR:
+    case 'annualDisplacement/RECEIVE_ERROR':
       return {
         ...state,
         status: 'error',
@@ -123,7 +116,7 @@ export default function reducer(
 
 // action creators
 export const incrementProgress = (): AnnualDisplacementsAction => ({
-  type: INCREMENT_PROGRESS,
+  type: 'annualDisplacement/INCREMENT_PROGRESS',
 });
 
 export const receiveDisplacement = (): AppThunk => {
@@ -133,7 +126,7 @@ export const receiveDisplacement = (): AppThunk => {
 
     // bail if a data source returns an error
     if (generation.error || so2.error || nox.error || co2.error || pm25.error) {
-      dispatch({ type: RECEIVE_ERROR });
+      dispatch({ type: 'annualDisplacement/RECEIVE_ERROR' });
       return;
     }
 
@@ -200,7 +193,7 @@ export const receiveDisplacement = (): AppThunk => {
 
     dispatch(incrementProgress());
     dispatch({
-      type: RECEIVE_DISPLACEMENT,
+      type: 'annualDisplacement/RECEIVE_DISPLACEMENT',
       data: data,
       statesAndCounties: statesAndCounties,
     });
@@ -211,7 +204,7 @@ export const receiveDisplacement = (): AppThunk => {
 
 export const calculateDisplacement = (): AppThunk => {
   return (dispatch) => {
-    dispatch({ type: START_DISPLACEMENT });
+    dispatch({ type: 'annualDisplacement/START_DISPLACEMENT' });
     dispatch(incrementProgress());
 
     // fetch generation, so2, nox, co2, and pm25

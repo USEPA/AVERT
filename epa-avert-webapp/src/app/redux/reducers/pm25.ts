@@ -6,21 +6,16 @@ import { avert } from 'app/engines';
 // action creators
 import { incrementProgress } from 'app/redux/reducers/annualDisplacement';
 
-// action types
-export const REQUEST_PM25 = 'pm25/REQUEST_PM25';
-export const RECEIVE_PM25 = 'pm25/RECEIVE_PM25';
-export const RECEIVE_ERROR = 'pm25/RECEIVE_ERROR';
-
 type Pm25Action =
   | {
-      type: typeof REQUEST_PM25;
+      type: 'pm25/REQUEST_PM25';
     }
   | {
-      type: typeof RECEIVE_PM25;
+      type: 'pm25/RECEIVE_PM25';
       payload: DisplacementData;
     }
   | {
-      type: typeof RECEIVE_ERROR;
+      type: 'pm25/RECEIVE_ERROR';
     };
 
 type Pm25State = {
@@ -37,7 +32,7 @@ export default function reducer(
   action: Pm25Action,
 ): Pm25State {
   switch (action.type) {
-    case REQUEST_PM25:
+    case 'pm25/REQUEST_PM25':
       return {
         ...state,
         isFetching: true,
@@ -45,14 +40,14 @@ export default function reducer(
         error: initialState.error,
       };
 
-    case RECEIVE_PM25:
+    case 'pm25/RECEIVE_PM25':
       return {
         ...state,
         isFetching: false,
         data: action.payload,
       };
 
-    case RECEIVE_ERROR:
+    case 'pm25/RECEIVE_ERROR':
       return {
         ...state,
         isFetching: false,
@@ -69,7 +64,7 @@ export const fetchPm25 = (): AppThunk => {
   return (dispatch, getState) => {
     const { api } = getState();
 
-    dispatch({ type: REQUEST_PM25 });
+    dispatch({ type: 'pm25/REQUEST_PM25' });
 
     // post pm25 data for region and receive calculated displacement data
     const options = {
@@ -89,12 +84,12 @@ export const fetchPm25 = (): AppThunk => {
       .then((json) => {
         dispatch(incrementProgress());
         dispatch({
-          type: RECEIVE_PM25,
+          type: 'pm25/RECEIVE_PM25',
           payload: json,
         });
       })
       .catch((error) => {
-        dispatch({ type: RECEIVE_ERROR });
+        dispatch({ type: 'pm25/RECEIVE_ERROR' });
       });
   };
 };

@@ -6,21 +6,16 @@ import { avert } from 'app/engines';
 // action creators
 import { incrementProgress } from 'app/redux/reducers/annualDisplacement';
 
-// action types
-export const REQUEST_SO2 = 'so2/REQUEST_SO2';
-export const RECEIVE_SO2 = 'so2/RECEIVE_SO2';
-export const RECEIVE_ERROR = 'so2/RECEIVE_ERROR';
-
 type So2Action =
   | {
-      type: typeof REQUEST_SO2;
+      type: 'so2/REQUEST_SO2';
     }
   | {
-      type: typeof RECEIVE_SO2;
+      type: 'so2/RECEIVE_SO2';
       payload: DisplacementData;
     }
   | {
-      type: typeof RECEIVE_ERROR;
+      type: 'so2/RECEIVE_ERROR';
     };
 
 type So2State = {
@@ -37,7 +32,7 @@ export default function reducer(
   action: So2Action,
 ): So2State {
   switch (action.type) {
-    case REQUEST_SO2:
+    case 'so2/REQUEST_SO2':
       return {
         ...state,
         isFetching: true,
@@ -45,14 +40,14 @@ export default function reducer(
         error: initialState.error,
       };
 
-    case RECEIVE_SO2:
+    case 'so2/RECEIVE_SO2':
       return {
         ...state,
         isFetching: false,
         data: action.payload,
       };
 
-    case RECEIVE_ERROR:
+    case 'so2/RECEIVE_ERROR':
       return {
         ...state,
         isFetching: false,
@@ -69,7 +64,7 @@ export const fetchSo2 = (): AppThunk => {
   return (dispatch, getState) => {
     const { api } = getState();
 
-    dispatch({ type: REQUEST_SO2 });
+    dispatch({ type: 'so2/REQUEST_SO2' });
 
     // post so2 data for region and receive calculated displacement data
     const options = {
@@ -89,12 +84,12 @@ export const fetchSo2 = (): AppThunk => {
       .then((json) => {
         dispatch(incrementProgress());
         dispatch({
-          type: RECEIVE_SO2,
+          type: 'so2/RECEIVE_SO2',
           payload: json,
         });
       })
       .catch((error) => {
-        dispatch({ type: RECEIVE_ERROR });
+        dispatch({ type: 'so2/RECEIVE_ERROR' });
       });
   };
 };

@@ -5,22 +5,6 @@ import { DataByMonth, MonthlyChanges } from 'app/redux/shared';
 // enums
 import States from 'app/enums/States';
 import FipsCodes from 'app/enums/FipsCodes';
-// action types
-import { SELECT_REGION } from 'app/redux/reducers/region';
-import { START_DISPLACEMENT } from 'app/redux/reducers/annualDisplacement';
-import { RESET_EERE_INPUTS } from 'app/redux/reducers/eere';
-export const RENDER_MONTHLY_EMISSIONS_CHARTS =
-  'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS';
-export const COMPLETE_MONTHLY_EMISSIONS =
-  'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS';
-export const SET_DOWNLOAD_DATA = 'monthlyEmissions/SET_DOWNLOAD_DATA';
-export const SELECT_MONTHLY_AGGREGATION =
-  'monthlyEmissions/SELECT_MONTHLY_AGGREGATION';
-export const SELECT_MONTHLY_UNIT = 'monthlyEmissions/SELECT_MONTHLY_UNIT';
-export const SELECT_MONTHLY_STATE = 'monthlyEmissions/SELECT_MONTHLY_STATE';
-export const SELECT_MONTHLY_COUNTY = 'monthlyEmissions/SELECT_MONTHLY_COUNTY';
-export const RESET_MONTHLY_EMISSIONS =
-  'monthlyEmissions/RESET_MONTHLY_EMISSIONS';
 
 export type MonthlyAggregation = 'region' | 'state' | 'county';
 
@@ -58,27 +42,27 @@ type CobraDataRow = {
 
 type MonthlyEmissionsAction =
   | {
-      type: typeof SELECT_REGION;
+      type: 'region/SELECT_REGION';
     }
   | {
-      type: typeof START_DISPLACEMENT;
+      type: 'annualDisplacement/START_DISPLACEMENT';
     }
   | {
-      type: typeof RESET_EERE_INPUTS;
+      type: 'eere/RESET_EERE_INPUTS';
     }
   | {
-      type: typeof RENDER_MONTHLY_EMISSIONS_CHARTS;
+      type: 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS';
       so2: MonthlyChanges;
       nox: MonthlyChanges;
       co2: MonthlyChanges;
       pm25: MonthlyChanges;
     }
   | {
-      type: typeof COMPLETE_MONTHLY_EMISSIONS;
+      type: 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS';
       availableStates: string[];
     }
   | {
-      type: typeof SET_DOWNLOAD_DATA;
+      type: 'monthlyEmissions/SET_DOWNLOAD_DATA';
       so2: MonthlyChanges;
       nox: MonthlyChanges;
       co2: MonthlyChanges;
@@ -88,24 +72,24 @@ type MonthlyEmissionsAction =
       };
     }
   | {
-      type: typeof SELECT_MONTHLY_AGGREGATION;
+      type: 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION';
       aggregation: MonthlyAggregation;
     }
   | {
-      type: typeof SELECT_MONTHLY_UNIT;
+      type: 'monthlyEmissions/SELECT_MONTHLY_UNIT';
       unit: MonthlyUnit;
     }
   | {
-      type: typeof SELECT_MONTHLY_STATE;
+      type: 'monthlyEmissions/SELECT_MONTHLY_STATE';
       selectedState: string;
       availableCounties: string[];
     }
   | {
-      type: typeof SELECT_MONTHLY_COUNTY;
+      type: 'monthlyEmissions/SELECT_MONTHLY_COUNTY';
       selectedCounty: string;
     }
   | {
-      type: typeof RESET_MONTHLY_EMISSIONS;
+      type: 'monthlyEmissions/RESET_MONTHLY_EMISSIONS';
     };
 
 type MonthlyEmissionsState = {
@@ -152,38 +136,38 @@ export default function reducer(
   action: MonthlyEmissionsAction,
 ): MonthlyEmissionsState {
   switch (action.type) {
-    case SELECT_REGION:
+    case 'region/SELECT_REGION':
       return {
         ...state,
         status: 'ready',
       };
 
-    case START_DISPLACEMENT:
+    case 'annualDisplacement/START_DISPLACEMENT':
       return {
         ...state,
         status: 'started',
       };
 
-    case COMPLETE_MONTHLY_EMISSIONS:
+    case 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS':
       return {
         ...state,
         status: 'complete',
         availableStates: action.availableStates,
       };
 
-    case SELECT_MONTHLY_AGGREGATION:
+    case 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION':
       return {
         ...state,
         aggregation: action.aggregation,
       };
 
-    case SELECT_MONTHLY_UNIT:
+    case 'monthlyEmissions/SELECT_MONTHLY_UNIT':
       return {
         ...state,
         unit: action.unit,
       };
 
-    case SELECT_MONTHLY_STATE:
+    case 'monthlyEmissions/SELECT_MONTHLY_STATE':
       return {
         ...state,
         selectedState: action.selectedState,
@@ -191,13 +175,13 @@ export default function reducer(
         availableCounties: action.availableCounties,
       };
 
-    case SELECT_MONTHLY_COUNTY:
+    case 'monthlyEmissions/SELECT_MONTHLY_COUNTY':
       return {
         ...state,
         selectedCounty: action.selectedCounty,
       };
 
-    case RENDER_MONTHLY_EMISSIONS_CHARTS:
+    case 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS':
       const { unit, aggregation, selectedState, selectedCounty } = state;
 
       const emissionData: {
@@ -237,11 +221,11 @@ export default function reducer(
         output: emissionData,
       };
 
-    case RESET_MONTHLY_EMISSIONS:
-    case RESET_EERE_INPUTS:
+    case 'monthlyEmissions/RESET_MONTHLY_EMISSIONS':
+    case 'eere/RESET_EERE_INPUTS':
       return initialState;
 
-    case SET_DOWNLOAD_DATA:
+    case 'monthlyEmissions/SET_DOWNLOAD_DATA':
       const countyData: CountyDataRow[] = [];
       const cobraData: CobraDataRow[] = [];
 
@@ -303,7 +287,7 @@ export const renderMonthlyEmissionsCharts = (): AppThunk => {
     const { so2, nox, co2, pm25 } = getState();
 
     dispatch({
-      type: RENDER_MONTHLY_EMISSIONS_CHARTS,
+      type: 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS',
       so2: so2.data.monthlyChanges,
       nox: nox.data.monthlyChanges,
       co2: co2.data.monthlyChanges,
@@ -318,12 +302,12 @@ export const completeMonthlyEmissions = (): AppThunk => {
     const { annualDisplacement, so2, nox, co2, pm25 } = getState();
 
     dispatch({
-      type: COMPLETE_MONTHLY_EMISSIONS,
+      type: 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS',
       availableStates: Object.keys(annualDisplacement.statesAndCounties).sort(),
     });
 
     dispatch({
-      type: SET_DOWNLOAD_DATA,
+      type: 'monthlyEmissions/SET_DOWNLOAD_DATA',
       so2: so2.data.monthlyChanges,
       nox: nox.data.monthlyChanges,
       co2: co2.data.monthlyChanges,
@@ -340,7 +324,7 @@ export const selectMonthlyAggregation = (
 ): AppThunk => {
   return function (dispatch) {
     dispatch({
-      type: SELECT_MONTHLY_AGGREGATION,
+      type: 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION',
       aggregation: selection,
     });
     dispatch(renderMonthlyEmissionsCharts());
@@ -350,7 +334,7 @@ export const selectMonthlyAggregation = (
 export const selectMonthlyUnit = (selection: MonthlyUnit): AppThunk => {
   return function (dispatch) {
     dispatch({
-      type: SELECT_MONTHLY_UNIT,
+      type: 'monthlyEmissions/SELECT_MONTHLY_UNIT',
       unit: selection,
     });
     dispatch(renderMonthlyEmissionsCharts());
@@ -363,7 +347,7 @@ export const selectMonthlyState = (selection: string): AppThunk => {
     const { annualDisplacement } = getState();
 
     dispatch({
-      type: SELECT_MONTHLY_STATE,
+      type: 'monthlyEmissions/SELECT_MONTHLY_STATE',
       selectedState: selection,
       availableCounties: annualDisplacement.statesAndCounties[selection].sort(),
     });
@@ -374,7 +358,7 @@ export const selectMonthlyState = (selection: string): AppThunk => {
 export const selectMonthlyCounty = (selection: string): AppThunk => {
   return function (dispatch) {
     dispatch({
-      type: SELECT_MONTHLY_COUNTY,
+      type: 'monthlyEmissions/SELECT_MONTHLY_COUNTY',
       selectedCounty: selection,
     });
     dispatch(renderMonthlyEmissionsCharts());
@@ -382,7 +366,7 @@ export const selectMonthlyCounty = (selection: string): AppThunk => {
 };
 
 export const resetMonthlyEmissions = (): MonthlyEmissionsAction => ({
-  type: RESET_MONTHLY_EMISSIONS,
+  type: 'monthlyEmissions/RESET_MONTHLY_EMISSIONS',
 });
 
 /**

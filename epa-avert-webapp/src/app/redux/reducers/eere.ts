@@ -4,73 +4,56 @@ import { AppThunk } from 'app/redux/index';
 // engines
 import { avert, eereProfile } from 'app/engines';
 
-// action types
-import { SET_EERE_LIMITS } from 'app/redux/reducers/rdfs';
-export const VALIDATE_EERE = 'eere/VALIDATE_EERE';
-export const UPDATE_EERE_ANNUAL_GWH = 'eere/UPDATE_EERE_ANNUAL_GWH';
-export const UPDATE_EERE_CONSTANT_MW = 'eere/UPDATE_EERE_CONSTANT_MW';
-export const UPDATE_EERE_BROAD_BASE_PROGRAM =
-  'eere/UPDATE_EERE_BROAD_BASE_PROGRAM';
-export const UPDATE_EERE_REDUCTION = 'eere/UPDATE_EERE_REDUCTION';
-export const UPDATE_EERE_TOP_HOURS = 'eere/UPDATE_EERE_TOP_HOURS';
-export const UPDATE_EERE_WIND_CAPACITY = 'eere/UPDATE_EERE_WIND_CAPACITY';
-export const UPDATE_EERE_UTILITY_SOLAR = 'eere/UPDATE_EERE_UTILITY_SOLAR';
-export const UPDATE_EERE_ROOFTOP_SOLAR = 'eere/UPDATE_EERE_ROOFTOP_SOLAR';
-export const COMPLETE_EERE_CALCULATION = 'eere/COMPLETE_EERE_CALCULATION';
-export const UPDATE_EXCEEDANCES = 'eere/UPDATE_EXCEEDANCES';
-export const SUBMIT_EERE_CALCULATION = 'eere/SUBMIT_EERE_CALCULATION';
-export const RESET_EERE_INPUTS = 'eere/RESET_EERE_INPUTS';
-
 type EereAction =
   | {
-      type: typeof SET_EERE_LIMITS;
+      type: 'rdfs/SET_EERE_LIMITS';
       payload: {
         limits: any; // TODO
       };
     }
   | {
-      type: typeof VALIDATE_EERE;
+      type: 'eere/VALIDATE_EERE';
       valid: boolean;
       errors: any[]; // TODO
     }
   | {
-      type: typeof UPDATE_EERE_ANNUAL_GWH;
+      type: 'eere/UPDATE_EERE_ANNUAL_GWH';
       text: string;
     }
   | {
-      type: typeof UPDATE_EERE_CONSTANT_MW;
+      type: 'eere/UPDATE_EERE_CONSTANT_MW';
       text: string;
     }
   | {
-      type: typeof UPDATE_EERE_BROAD_BASE_PROGRAM;
+      type: 'eere/UPDATE_EERE_BROAD_BASE_PROGRAM';
       text: string;
     }
   | {
-      type: typeof UPDATE_EERE_REDUCTION;
+      type: 'eere/UPDATE_EERE_REDUCTION';
       text: string;
     }
   | {
-      type: typeof UPDATE_EERE_TOP_HOURS;
+      type: 'eere/UPDATE_EERE_TOP_HOURS';
       text: string;
     }
   | {
-      type: typeof UPDATE_EERE_WIND_CAPACITY;
+      type: 'eere/UPDATE_EERE_WIND_CAPACITY';
       text: string;
     }
   | {
-      type: typeof UPDATE_EERE_UTILITY_SOLAR;
+      type: 'eere/UPDATE_EERE_UTILITY_SOLAR';
       text: string;
     }
   | {
-      type: typeof UPDATE_EERE_ROOFTOP_SOLAR;
+      type: 'eere/UPDATE_EERE_ROOFTOP_SOLAR';
       text: string;
     }
   | {
-      type: typeof COMPLETE_EERE_CALCULATION;
+      type: 'eere/COMPLETE_EERE_CALCULATION';
       hourlyEere: HourlyEere[];
     }
   | {
-      type: typeof UPDATE_EXCEEDANCES;
+      type: 'eere/UPDATE_EXCEEDANCES';
       payload: {
         softValid: boolean;
         softMaxVal: number;
@@ -81,10 +64,10 @@ type EereAction =
       };
     }
   | {
-      type: typeof SUBMIT_EERE_CALCULATION;
+      type: 'eere/SUBMIT_EERE_CALCULATION';
     }
   | {
-      type: typeof RESET_EERE_INPUTS;
+      type: 'eere/RESET_EERE_INPUTS';
     };
 
 export type InputFields =
@@ -209,20 +192,20 @@ export default function reducer(
   action: EereAction,
 ): EereState {
   switch (action.type) {
-    case SET_EERE_LIMITS:
+    case 'rdfs/SET_EERE_LIMITS':
       return {
         ...state,
         limits: action.payload.limits,
       };
 
-    case VALIDATE_EERE:
+    case 'eere/VALIDATE_EERE':
       return {
         ...state,
         valid: action.valid,
         errors: action.errors,
       };
 
-    case UPDATE_EERE_ANNUAL_GWH:
+    case 'eere/UPDATE_EERE_ANNUAL_GWH':
       return {
         ...state,
         inputs: {
@@ -231,7 +214,7 @@ export default function reducer(
         },
       };
 
-    case UPDATE_EERE_CONSTANT_MW:
+    case 'eere/UPDATE_EERE_CONSTANT_MW':
       return {
         ...state,
         inputs: {
@@ -240,7 +223,7 @@ export default function reducer(
         },
       };
 
-    case UPDATE_EERE_BROAD_BASE_PROGRAM:
+    case 'eere/UPDATE_EERE_BROAD_BASE_PROGRAM':
       return {
         ...state,
         inputs: {
@@ -249,7 +232,7 @@ export default function reducer(
         },
       };
 
-    case UPDATE_EERE_REDUCTION:
+    case 'eere/UPDATE_EERE_REDUCTION':
       return {
         ...state,
         inputs: {
@@ -258,7 +241,7 @@ export default function reducer(
         },
       };
 
-    case UPDATE_EERE_TOP_HOURS:
+    case 'eere/UPDATE_EERE_TOP_HOURS':
       return {
         ...state,
         inputs: {
@@ -267,7 +250,7 @@ export default function reducer(
         },
       };
 
-    case UPDATE_EERE_WIND_CAPACITY:
+    case 'eere/UPDATE_EERE_WIND_CAPACITY':
       return {
         ...state,
         inputs: {
@@ -276,7 +259,7 @@ export default function reducer(
         },
       };
 
-    case UPDATE_EERE_UTILITY_SOLAR:
+    case 'eere/UPDATE_EERE_UTILITY_SOLAR':
       return {
         ...state,
         inputs: {
@@ -285,7 +268,7 @@ export default function reducer(
         },
       };
 
-    case UPDATE_EERE_ROOFTOP_SOLAR:
+    case 'eere/UPDATE_EERE_ROOFTOP_SOLAR':
       return {
         ...state,
         inputs: {
@@ -294,21 +277,21 @@ export default function reducer(
         },
       };
 
-    case SUBMIT_EERE_CALCULATION:
+    case 'eere/SUBMIT_EERE_CALCULATION':
       return {
         ...state,
         status: 'started',
         hourlyEere: [],
       };
 
-    case COMPLETE_EERE_CALCULATION:
+    case 'eere/COMPLETE_EERE_CALCULATION':
       return {
         ...state,
         status: 'complete',
         hourlyEere: action.hourlyEere,
       };
 
-    case UPDATE_EXCEEDANCES:
+    case 'eere/UPDATE_EXCEEDANCES':
       return {
         ...state,
         softLimit: {
@@ -323,7 +306,7 @@ export default function reducer(
         },
       };
 
-    case RESET_EERE_INPUTS:
+    case 'eere/RESET_EERE_INPUTS':
       return initialState;
 
     default:
@@ -336,7 +319,7 @@ export const validateEere = () => {
   avert.eereProfile = eereProfile;
 
   return {
-    type: VALIDATE_EERE,
+    type: 'eere/VALIDATE_EERE',
     valid: eereProfile.isValid,
     errors: eereProfile.errors,
   };
@@ -348,7 +331,7 @@ export const updateEereAnnualGwh = (text: string): AppThunk => {
 
     dispatch(validateEere());
     dispatch({
-      type: UPDATE_EERE_ANNUAL_GWH,
+      type: 'eere/UPDATE_EERE_ANNUAL_GWH',
       text: text,
     });
   };
@@ -360,7 +343,7 @@ export const updateEereConstantMw = (text: string): AppThunk => {
 
     dispatch(validateEere());
     dispatch({
-      type: UPDATE_EERE_CONSTANT_MW,
+      type: 'eere/UPDATE_EERE_CONSTANT_MW',
       text: text,
     });
   };
@@ -373,7 +356,7 @@ export const updateEereBroadBasedProgram = (text: string): AppThunk => {
 
     dispatch(validateEere());
     dispatch({
-      type: UPDATE_EERE_BROAD_BASE_PROGRAM,
+      type: 'eere/UPDATE_EERE_BROAD_BASE_PROGRAM',
       text: text,
     });
   };
@@ -385,7 +368,7 @@ export const updateEereReduction = (text: string): AppThunk => {
 
     dispatch(validateEere());
     dispatch({
-      type: UPDATE_EERE_REDUCTION,
+      type: 'eere/UPDATE_EERE_REDUCTION',
       text: text,
     });
   };
@@ -397,7 +380,7 @@ export const updateEereTopHours = (text: string): AppThunk => {
 
     dispatch(validateEere());
     dispatch({
-      type: UPDATE_EERE_TOP_HOURS,
+      type: 'eere/UPDATE_EERE_TOP_HOURS',
       text: text,
     });
   };
@@ -409,7 +392,7 @@ export const updateEereWindCapacity = (text: string): AppThunk => {
 
     dispatch(validateEere());
     dispatch({
-      type: UPDATE_EERE_WIND_CAPACITY,
+      type: 'eere/UPDATE_EERE_WIND_CAPACITY',
       text: text,
     });
   };
@@ -421,7 +404,7 @@ export const updateEereUtilitySolar = (text: string): AppThunk => {
 
     dispatch(validateEere());
     dispatch({
-      type: UPDATE_EERE_UTILITY_SOLAR,
+      type: 'eere/UPDATE_EERE_UTILITY_SOLAR',
       text: text,
     });
   };
@@ -433,14 +416,14 @@ export const updateEereRooftopSolar = (text: string): AppThunk => {
 
     dispatch(validateEere());
     dispatch({
-      type: UPDATE_EERE_ROOFTOP_SOLAR,
+      type: 'eere/UPDATE_EERE_ROOFTOP_SOLAR',
       text: text,
     });
   };
 };
 
 export const completeEereCalculation = (hourlyEere: HourlyEere[]) => ({
-  type: COMPLETE_EERE_CALCULATION,
+  type: 'eere/COMPLETE_EERE_CALCULATION',
   hourlyEere: hourlyEere,
 });
 
@@ -460,7 +443,7 @@ export const updateExceedances = (soft: number[], hard: number[]): AppThunk => {
     const hardTimestamp = !hardValid ? regionalLoadHours[hardMaxIndex] : {};
 
     return dispatch({
-      type: UPDATE_EXCEEDANCES,
+      type: 'eere/UPDATE_EXCEEDANCES',
       payload: {
         softValid,
         softMaxVal,
@@ -475,7 +458,7 @@ export const updateExceedances = (soft: number[], hard: number[]): AppThunk => {
 
 export const calculateEereProfile = (): AppThunk => {
   return function (dispatch) {
-    dispatch({ type: SUBMIT_EERE_CALCULATION });
+    dispatch({ type: 'eere/SUBMIT_EERE_CALCULATION' });
 
     avert.calculateEereLoad();
 
@@ -492,5 +475,5 @@ export const calculateEereProfile = (): AppThunk => {
 export const resetEereInputs = () => {
   eereProfile.reset();
 
-  return { type: RESET_EERE_INPUTS };
+  return { type: 'eere/RESET_EERE_INPUTS' };
 };

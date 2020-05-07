@@ -1,20 +1,16 @@
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
 // reducers
 import { AppThunk } from 'app/redux/index';
-// action types
-import { SELECT_REGION } from 'app/redux/reducers/region';
-import { START_DISPLACEMENT } from 'app/redux/reducers/annualDisplacement';
-export const COMPLETE_STATE_EMISSIONS = 'stateEmissions/COMPLETE_STATE_EMISSIONS'; // prettier-ignore
 
 type StateEmissionsAction =
   | {
-      type: typeof SELECT_REGION;
+      type: 'region/SELECT_REGION';
     }
   | {
-      type: typeof START_DISPLACEMENT;
+      type: 'annualDisplacement/START_DISPLACEMENT';
     }
   | {
-      type: typeof COMPLETE_STATE_EMISSIONS;
+      type: 'stateEmissions/COMPLETE_STATE_EMISSIONS';
       states: string[];
       data: {
         state: string;
@@ -51,19 +47,19 @@ export default function reducer(
   action: StateEmissionsAction,
 ): StateEmissionsState {
   switch (action.type) {
-    case SELECT_REGION:
+    case 'region/SELECT_REGION':
       return {
         ...state,
         status: 'ready',
       };
 
-    case START_DISPLACEMENT:
+    case 'annualDisplacement/START_DISPLACEMENT':
       return {
         ...state,
         status: 'started',
       };
 
-    case COMPLETE_STATE_EMISSIONS:
+    case 'stateEmissions/COMPLETE_STATE_EMISSIONS':
       return {
         ...state,
         status: 'complete',
@@ -93,7 +89,7 @@ export const completeStateEmissions = (): AppThunk => {
     }));
 
     dispatch({
-      type: COMPLETE_STATE_EMISSIONS,
+      type: 'stateEmissions/COMPLETE_STATE_EMISSIONS',
       states: stateIds,
       data: data,
     });

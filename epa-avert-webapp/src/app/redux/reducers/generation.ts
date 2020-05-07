@@ -6,21 +6,16 @@ import { avert } from 'app/engines';
 // action creators
 import { incrementProgress } from 'app/redux/reducers/annualDisplacement';
 
-// action types
-export const REQUEST_GENERATION = 'generation/REQUEST_GENERATION';
-export const RECEIVE_GENERATION = 'generation/RECEIVE_GENERATION';
-export const RECEIVE_ERROR = 'generation/RECEIVE_ERROR';
-
 type GenerationAction =
   | {
-      type: typeof REQUEST_GENERATION;
+      type: 'generation/REQUEST_GENERATION';
     }
   | {
-      type: typeof RECEIVE_GENERATION;
+      type: 'generation/RECEIVE_GENERATION';
       payload: DisplacementData;
     }
   | {
-      type: typeof RECEIVE_ERROR;
+      type: 'generation/RECEIVE_ERROR';
     };
 
 type GenerationState = {
@@ -37,7 +32,7 @@ export default function reducer(
   action: GenerationAction,
 ): GenerationState {
   switch (action.type) {
-    case REQUEST_GENERATION:
+    case 'generation/REQUEST_GENERATION':
       return {
         ...state,
         isFetching: true,
@@ -45,14 +40,14 @@ export default function reducer(
         error: initialState.error,
       };
 
-    case RECEIVE_GENERATION:
+    case 'generation/RECEIVE_GENERATION':
       return {
         ...state,
         isFetching: false,
         data: action.payload,
       };
 
-    case RECEIVE_ERROR:
+    case 'generation/RECEIVE_ERROR':
       return {
         ...state,
         isFetching: false,
@@ -69,7 +64,7 @@ export const fetchGeneration = (): AppThunk => {
   return (dispatch, getState) => {
     const { api } = getState();
 
-    dispatch({ type: REQUEST_GENERATION });
+    dispatch({ type: 'generation/REQUEST_GENERATION' });
 
     // post generation data for region and receive calculated displacement data
     const options = {
@@ -89,12 +84,12 @@ export const fetchGeneration = (): AppThunk => {
       .then((json) => {
         dispatch(incrementProgress());
         dispatch({
-          type: RECEIVE_GENERATION,
+          type: 'generation/RECEIVE_GENERATION',
           payload: json,
         });
       })
       .catch((error) => {
-        dispatch({ type: RECEIVE_ERROR });
+        dispatch({ type: 'generation/RECEIVE_ERROR' });
       });
   };
 };

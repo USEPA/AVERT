@@ -6,11 +6,8 @@ import { avert } from 'app/engines';
 // enums
 import Regions from 'app/enums/Regions';
 
-// action types
-export const SELECT_REGION = 'region/SELECT_REGION';
-
 type RegionAction = {
-  type: typeof SELECT_REGION;
+  type: 'region/SELECT_REGION';
   payload: {
     id: number;
     name: string;
@@ -35,7 +32,7 @@ export default function reducer(
   action: RegionAction,
 ): RegionState {
   switch (action.type) {
-    case SELECT_REGION:
+    case 'region/SELECT_REGION':
       return {
         ...state,
         id: action.payload.id,
@@ -55,7 +52,7 @@ export const selectRegion = (regionId: number): AppThunk => {
     const region = Object.values(Regions).find((r) => r.id === regionId);
 
     dispatch({
-      type: SELECT_REGION,
+      type: 'region/SELECT_REGION',
       payload: {
         id: regionId,
         name: region ? region.label : '',

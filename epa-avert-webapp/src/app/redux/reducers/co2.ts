@@ -6,21 +6,16 @@ import { avert } from 'app/engines';
 // action creators
 import { incrementProgress } from 'app/redux/reducers/annualDisplacement';
 
-// action types
-export const REQUEST_CO2 = 'co2/REQUEST_CO2';
-export const RECEIVE_CO2 = 'co2/RECEIVE_CO2';
-export const RECEIVE_ERROR = 'co2/RECEIVE_ERROR';
-
 type Co2Action =
   | {
-      type: typeof REQUEST_CO2;
+      type: 'co2/REQUEST_CO2';
     }
   | {
-      type: typeof RECEIVE_CO2;
+      type: 'co2/RECEIVE_CO2';
       payload: DisplacementData;
     }
   | {
-      type: typeof RECEIVE_ERROR;
+      type: 'co2/RECEIVE_ERROR';
     };
 
 type Co2State = {
@@ -37,7 +32,7 @@ export default function reducer(
   action: Co2Action,
 ): Co2State {
   switch (action.type) {
-    case REQUEST_CO2:
+    case 'co2/REQUEST_CO2':
       return {
         ...state,
         isFetching: true,
@@ -45,14 +40,14 @@ export default function reducer(
         error: initialState.error,
       };
 
-    case RECEIVE_CO2:
+    case 'co2/RECEIVE_CO2':
       return {
         ...state,
         isFetching: false,
         data: action.payload,
       };
 
-    case RECEIVE_ERROR:
+    case 'co2/RECEIVE_ERROR':
       return {
         ...state,
         isFetching: false,
@@ -69,7 +64,7 @@ export const fetchCo2 = (): AppThunk => {
   return (dispatch, getState) => {
     const { api } = getState();
 
-    dispatch({ type: REQUEST_CO2 });
+    dispatch({ type: 'co2/REQUEST_CO2' });
 
     // post co2 data for region and receive calculated displacement data
     const options = {
@@ -89,12 +84,12 @@ export const fetchCo2 = (): AppThunk => {
       .then((json) => {
         dispatch(incrementProgress());
         dispatch({
-          type: RECEIVE_CO2,
+          type: 'co2/RECEIVE_CO2',
           payload: json,
         });
       })
       .catch((error) => {
-        dispatch({ type: RECEIVE_ERROR });
+        dispatch({ type: 'co2/RECEIVE_ERROR' });
       });
   };
 };

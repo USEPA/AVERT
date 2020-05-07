@@ -3,13 +3,6 @@ import { AppThunk } from 'app/redux/index';
 // engines
 import { avert, eereProfile } from 'app/engines';
 
-// action types
-export const REQUEST_REGION_RDF = 'rdfs/REQUEST_REGION_RDF';
-export const SET_EERE_LIMITS = 'rdfs/SET_EERE_LIMITS';
-export const RECEIVE_REGION_RDF = 'rdfs/RECEIVE_REGION_RDF';
-export const REQUEST_REGION_DEFAULTS = 'rdfs/REQUEST_REGION_DEFAULTS';
-export const RECEIVE_REGION_DEFAULTS = 'rdfs/RECEIVE_REGION_DEFAULTS';
-
 type RdfJSON = {
   region: any; // TODO
   run: any; // TODO
@@ -26,11 +19,11 @@ type EereJSON = {
 
 type RdfsAction =
   | {
-      type: typeof RECEIVE_REGION_RDF;
+      type: 'rdfs/RECEIVE_REGION_RDF';
       payload: RdfJSON;
     }
   | {
-      type: typeof RECEIVE_REGION_DEFAULTS;
+      type: 'rdfs/RECEIVE_REGION_DEFAULTS';
       payload: EereJSON;
     };
 
@@ -60,13 +53,13 @@ export default function reducer(
   action: RdfsAction,
 ): RdfsState {
   switch (action.type) {
-    case RECEIVE_REGION_RDF:
+    case 'rdfs/RECEIVE_REGION_RDF':
       return {
         ...state,
         rdf: action.payload,
       };
 
-    case RECEIVE_REGION_DEFAULTS:
+    case 'rdfs/RECEIVE_REGION_DEFAULTS':
       return {
         ...state,
         defaults: action.payload,
@@ -82,7 +75,7 @@ export const fetchRegion = (): AppThunk => {
   return function (dispatch, getState) {
     const { api } = getState();
 
-    dispatch({ type: REQUEST_REGION_RDF });
+    dispatch({ type: 'rdfs/REQUEST_REGION_RDF' });
 
     // fetch rdf data for region
     return fetch(`${api.baseUrl}/api/v1/rdf/${avert.regionSlug}`)
@@ -99,16 +92,16 @@ export const fetchRegion = (): AppThunk => {
         };
 
         dispatch({
-          type: RECEIVE_REGION_RDF,
+          type: 'rdfs/RECEIVE_REGION_RDF',
           payload: json,
         });
 
         dispatch({
-          type: SET_EERE_LIMITS,
+          type: 'rdfs/SET_EERE_LIMITS',
           payload: { limits: eereProfile.limits },
         });
 
-        dispatch({ type: REQUEST_REGION_DEFAULTS });
+        dispatch({ type: 'rdfs/REQUEST_REGION_DEFAULTS' });
 
         // fetch eere data for region
         fetch(`${api.baseUrl}/api/v1/eere/${avert.regionSlug}`)
@@ -117,7 +110,7 @@ export const fetchRegion = (): AppThunk => {
             avert.eereDefaults = json;
 
             dispatch({
-              type: RECEIVE_REGION_DEFAULTS,
+              type: 'rdfs/RECEIVE_REGION_DEFAULTS',
               payload: json,
             });
           });

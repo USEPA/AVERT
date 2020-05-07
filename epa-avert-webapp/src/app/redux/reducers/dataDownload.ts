@@ -5,18 +5,12 @@ import FileSaver from 'file-saver';
 // reducers
 import { AppThunk } from 'app/redux/index';
 
-// action types
-export const START_COUNTY_RESULTS_DOWNLOAD =
-  'dataDownload/START_COUNTY_RESULTS_DOWNLOAD';
-export const START_COBRA_RESULTS_DOWNLOAD =
-  'dataDownload/START_COBRA_RESULTS_DOWNLOAD';
-
 type DataDownloadAction =
   | {
-      type: typeof START_COUNTY_RESULTS_DOWNLOAD;
+      type: 'dataDownload/START_COUNTY_RESULTS_DOWNLOAD';
     }
   | {
-      type: typeof START_COBRA_RESULTS_DOWNLOAD;
+      type: 'dataDownload/START_COBRA_RESULTS_DOWNLOAD';
     };
 
 type DataDownloadState = {
@@ -37,13 +31,13 @@ export default function reducer(
   action: DataDownloadAction,
 ): DataDownloadState {
   switch (action.type) {
-    case START_COUNTY_RESULTS_DOWNLOAD:
+    case 'dataDownload/START_COUNTY_RESULTS_DOWNLOAD':
       return {
         ...state,
         countyFile: true,
       };
 
-    case START_COBRA_RESULTS_DOWNLOAD:
+    case 'dataDownload/START_COBRA_RESULTS_DOWNLOAD':
       return {
         ...state,
         cobraFile: true,
@@ -74,7 +68,7 @@ export const startCountyResultsDownload = (): AppThunk => {
       console.error(err);
     }
 
-    return dispatch({ type: START_COUNTY_RESULTS_DOWNLOAD });
+    return dispatch({ type: 'dataDownload/START_COUNTY_RESULTS_DOWNLOAD' });
   };
 };
 
@@ -94,6 +88,6 @@ export const startCobraResultsDownload = (): AppThunk => {
       console.error(err);
     }
 
-    return dispatch({ type: START_COBRA_RESULTS_DOWNLOAD });
+    return dispatch({ type: 'dataDownload/START_COBRA_RESULTS_DOWNLOAD' });
   };
 };
