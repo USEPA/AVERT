@@ -60,7 +60,7 @@ export default function reducer(
 }
 
 // action creators
-export const fetchGeneration = (): AppThunk => {
+export function fetchGeneration(): AppThunk {
   return (dispatch, getState) => {
     const { api } = getState();
 
@@ -92,4 +92,4 @@ export const fetchGeneration = (): AppThunk => {
         dispatch({ type: 'generation/RECEIVE_ERROR' });
       });
   };
-};
+}

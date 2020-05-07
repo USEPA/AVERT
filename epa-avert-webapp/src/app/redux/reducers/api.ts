@@ -36,9 +36,11 @@ export default function reducer(
 }
 
 // action creators
-export const setBaseUrl = (url: string) => ({
-  type: 'api/SET_BASE_URL',
-  payload: {
-    url,
-  },
-});
+export function setBaseUrl(url: string) {
+  return {
+    type: 'api/SET_BASE_URL',
+    payload: {
+      url,
+    },
+  };
+}

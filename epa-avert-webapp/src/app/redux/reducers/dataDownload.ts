@@ -46,7 +46,7 @@ export default function reducer(
 }
 
 // action creators
-export const startCountyResultsDownload = (): AppThunk => {
+export function startCountyResultsDownload(): AppThunk {
   return (dispatch, getState) => {
     // get reducer data from store to use in dispatched action
     const { monthlyEmissions, region } = getState();
@@ -67,9 +67,9 @@ export const startCountyResultsDownload = (): AppThunk => {
 
     return dispatch({ type: 'dataDownload/START_COUNTY_RESULTS_DOWNLOAD' });
   };
-};
+}
 
-export const startCobraResultsDownload = (): AppThunk => {
+export function startCobraResultsDownload(): AppThunk {
   return (dispatch, getState) => {
     // get reducer data from store to use in dispatched action
     const { monthlyEmissions, region } = getState();
@@ -87,4 +87,4 @@ export const startCobraResultsDownload = (): AppThunk => {
 
     return dispatch({ type: 'dataDownload/START_COBRA_RESULTS_DOWNLOAD' });
   };
-};
+}

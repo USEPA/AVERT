@@ -312,7 +312,7 @@ export default function reducer(
 }
 
 // action creators
-export const validateEere = () => {
+export function validateEere() {
   avert.eereProfile = eereProfile;
 
   return {
@@ -320,10 +320,10 @@ export const validateEere = () => {
     valid: eereProfile.isValid,
     errors: eereProfile.errors,
   };
-};
+}
 
-export const updateEereAnnualGwh = (text: string): AppThunk => {
-  return function (dispatch) {
+export function updateEereAnnualGwh(text: string): AppThunk {
+  return (dispatch) => {
     eereProfile.annualGwh = text;
 
     dispatch(validateEere());
@@ -332,10 +332,10 @@ export const updateEereAnnualGwh = (text: string): AppThunk => {
       text: text,
     });
   };
-};
+}
 
-export const updateEereConstantMw = (text: string): AppThunk => {
-  return function (dispatch) {
+export function updateEereConstantMw(text: string): AppThunk {
+  return (dispatch) => {
     eereProfile.constantMwh = text;
 
     dispatch(validateEere());
@@ -344,10 +344,10 @@ export const updateEereConstantMw = (text: string): AppThunk => {
       text: text,
     });
   };
-};
+}
 
-export const updateEereBroadBasedProgram = (text: string): AppThunk => {
-  return function (dispatch) {
+export function updateEereBroadBasedProgram(text: string): AppThunk {
+  return (dispatch) => {
     eereProfile.topHours = 100;
     eereProfile.reduction = text;
 
@@ -357,10 +357,10 @@ export const updateEereBroadBasedProgram = (text: string): AppThunk => {
       text: text,
     });
   };
-};
+}
 
-export const updateEereReduction = (text: string): AppThunk => {
-  return function (dispatch) {
+export function updateEereReduction(text: string): AppThunk {
+  return (dispatch) => {
     eereProfile.reduction = text;
 
     dispatch(validateEere());
@@ -369,10 +369,10 @@ export const updateEereReduction = (text: string): AppThunk => {
       text: text,
     });
   };
-};
+}
 
-export const updateEereTopHours = (text: string): AppThunk => {
-  return function (dispatch) {
+export function updateEereTopHours(text: string): AppThunk {
+  return (dispatch) => {
     eereProfile.topHours = text;
 
     dispatch(validateEere());
@@ -381,10 +381,10 @@ export const updateEereTopHours = (text: string): AppThunk => {
       text: text,
     });
   };
-};
+}
 
-export const updateEereWindCapacity = (text: string): AppThunk => {
-  return function (dispatch) {
+export function updateEereWindCapacity(text: string): AppThunk {
+  return (dispatch) => {
     eereProfile.windCapacity = text;
 
     dispatch(validateEere());
@@ -393,10 +393,10 @@ export const updateEereWindCapacity = (text: string): AppThunk => {
       text: text,
     });
   };
-};
+}
 
-export const updateEereUtilitySolar = (text: string): AppThunk => {
-  return function (dispatch) {
+export function updateEereUtilitySolar(text: string): AppThunk {
+  return (dispatch) => {
     eereProfile.utilitySolar = text;
 
     dispatch(validateEere());
@@ -405,10 +405,10 @@ export const updateEereUtilitySolar = (text: string): AppThunk => {
       text: text,
     });
   };
-};
+}
 
-export const updateEereRooftopSolar = (text: string): AppThunk => {
-  return function (dispatch) {
+export function updateEereRooftopSolar(text: string): AppThunk {
+  return (dispatch) => {
     eereProfile.rooftopSolar = text;
 
     dispatch(validateEere());
@@ -417,15 +417,17 @@ export const updateEereRooftopSolar = (text: string): AppThunk => {
       text: text,
     });
   };
-};
+}
 
-export const completeEereCalculation = (hourlyEere: HourlyEere[]) => ({
-  type: 'eere/COMPLETE_EERE_CALCULATION',
-  hourlyEere: hourlyEere,
-});
+export function completeEereCalculation(hourlyEere: HourlyEere[]) {
+  return {
+    type: 'eere/COMPLETE_EERE_CALCULATION',
+    hourlyEere: hourlyEere,
+  };
+}
 
-export const updateExceedances = (soft: number[], hard: number[]): AppThunk => {
-  return function (dispatch, getState) {
+export function updateExceedances(soft: number[], hard: number[]): AppThunk {
+  return (dispatch, getState) => {
     const { rdfs } = getState();
     const regionalLoadHours = rdfs.rdf.regional_load;
 
@@ -451,10 +453,10 @@ export const updateExceedances = (soft: number[], hard: number[]): AppThunk => {
       },
     });
   };
-};
+}
 
-export const calculateEereProfile = (): AppThunk => {
-  return function (dispatch) {
+export function calculateEereProfile(): AppThunk {
+  return (dispatch) => {
     dispatch({ type: 'eere/SUBMIT_EERE_CALCULATION' });
 
     avert.calculateEereLoad();
@@ -467,10 +469,12 @@ export const calculateEereProfile = (): AppThunk => {
       ),
     );
   };
-};
+}
 
-export const resetEereInputs = () => {
+export function resetEereInputs() {
   eereProfile.reset();
 
-  return { type: 'eere/RESET_EERE_INPUTS' };
-};
+  return {
+    type: 'eere/RESET_EERE_INPUTS',
+  };
+}

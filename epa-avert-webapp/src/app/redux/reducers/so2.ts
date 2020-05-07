@@ -60,7 +60,7 @@ export default function reducer(
 }
 
 // action creators
-export const fetchSo2 = (): AppThunk => {
+export function fetchSo2(): AppThunk {
   return (dispatch, getState) => {
     const { api } = getState();
 
@@ -92,4 +92,4 @@ export const fetchSo2 = (): AppThunk => {
         dispatch({ type: 'so2/RECEIVE_ERROR' });
       });
   };
-};
+}

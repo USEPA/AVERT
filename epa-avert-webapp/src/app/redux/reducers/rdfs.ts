@@ -71,8 +71,8 @@ export default function reducer(
 }
 
 // action creators
-export const fetchRegion = (): AppThunk => {
-  return function (dispatch, getState) {
+export function fetchRegion(): AppThunk {
+  return (dispatch, getState) => {
     const { api } = getState();
 
     dispatch({ type: 'rdfs/REQUEST_REGION_RDF' });
@@ -116,4 +116,4 @@ export const fetchRegion = (): AppThunk => {
           });
       });
   };
-};
+}

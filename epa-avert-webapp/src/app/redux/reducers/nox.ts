@@ -60,7 +60,7 @@ export default function reducer(
 }
 
 // action creators
-export const fetchNox = (): AppThunk => {
+export function fetchNox(): AppThunk {
   return (dispatch, getState) => {
     const { api } = getState();
 
@@ -92,4 +92,4 @@ export const fetchNox = (): AppThunk => {
         dispatch({ type: 'nox/RECEIVE_ERROR' });
       });
   };
-};
+}

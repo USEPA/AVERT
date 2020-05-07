@@ -60,7 +60,7 @@ export default function reducer(
 }
 
 // action creators
-export const fetchPm25 = (): AppThunk => {
+export function fetchPm25(): AppThunk {
   return (dispatch, getState) => {
     const { api } = getState();
 
@@ -92,4 +92,4 @@ export const fetchPm25 = (): AppThunk => {
         dispatch({ type: 'pm25/RECEIVE_ERROR' });
       });
   };
-};
+}

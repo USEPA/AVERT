@@ -278,8 +278,8 @@ export default function reducer(
   }
 }
 
-export const renderMonthlyEmissionsCharts = (): AppThunk => {
-  return function (dispatch, getState) {
+export function renderMonthlyEmissionsCharts(): AppThunk {
+  return (dispatch, getState) => {
     // get reducer data from store to use in dispatched action
     const { so2, nox, co2, pm25 } = getState();
 
@@ -291,10 +291,10 @@ export const renderMonthlyEmissionsCharts = (): AppThunk => {
       pm25: pm25.data.monthlyChanges,
     });
   };
-};
+}
 
-export const completeMonthlyEmissions = (): AppThunk => {
-  return function (dispatch, getState) {
+export function completeMonthlyEmissions(): AppThunk {
+  return (dispatch, getState) => {
     // get reducer data from store to use in dispatched action
     const { annualDisplacement, so2, nox, co2, pm25 } = getState();
 
@@ -314,32 +314,32 @@ export const completeMonthlyEmissions = (): AppThunk => {
 
     dispatch(renderMonthlyEmissionsCharts());
   };
-};
+}
 
-export const selectMonthlyAggregation = (
+export function selectMonthlyAggregation(
   selection: MonthlyAggregation,
-): AppThunk => {
-  return function (dispatch) {
+): AppThunk {
+  return (dispatch) => {
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION',
       aggregation: selection,
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
-};
+}
 
-export const selectMonthlyUnit = (selection: MonthlyUnit): AppThunk => {
-  return function (dispatch) {
+export function selectMonthlyUnit(selection: MonthlyUnit): AppThunk {
+  return (dispatch) => {
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_UNIT',
       unit: selection,
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
-};
+}
 
-export const selectMonthlyState = (selection: string): AppThunk => {
-  return function (dispatch, getState) {
+export function selectMonthlyState(selection: string): AppThunk {
+  return (dispatch, getState) => {
     // get reducer data from store to use in dispatched action
     const { annualDisplacement } = getState();
 
@@ -350,21 +350,23 @@ export const selectMonthlyState = (selection: string): AppThunk => {
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
-};
+}
 
-export const selectMonthlyCounty = (selection: string): AppThunk => {
-  return function (dispatch) {
+export function selectMonthlyCounty(selection: string): AppThunk {
+  return (dispatch) => {
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_COUNTY',
       selectedCounty: selection,
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
-};
+}
 
-export const resetMonthlyEmissions = (): MonthlyEmissionsAction => ({
-  type: 'monthlyEmissions/RESET_MONTHLY_EMISSIONS',
-});
+export function resetMonthlyEmissions(): MonthlyEmissionsAction {
+  return {
+    type: 'monthlyEmissions/RESET_MONTHLY_EMISSIONS',
+  };
+}
 
 /**
  * helper function to format downloadable county data rows

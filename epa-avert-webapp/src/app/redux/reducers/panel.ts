@@ -121,23 +121,31 @@ export default function reducer(
 }
 
 // action creators
-export const setActiveStep = (stepNumber: number) => ({
-  type: 'panel/CHANGE_ACTIVE_STEP',
-  payload: {
-    stepNumber,
-  },
-});
+export function setActiveStep(stepNumber: number) {
+  return {
+    type: 'panel/CHANGE_ACTIVE_STEP',
+    payload: {
+      stepNumber,
+    },
+  };
+}
 
-export const toggleModalOverlay = () => ({
-  type: 'panel/TOGGLE_MODAL_OVERLAY',
-});
+export function toggleModalOverlay() {
+  return {
+    type: 'panel/TOGGLE_MODAL_OVERLAY',
+  };
+}
 
-export const storeActiveModal = (modalId: number) => ({
-  type: 'panel/STORE_ACTIVE_MODAL',
-  activeModalId: modalId,
-});
+export function storeActiveModal(modalId: number) {
+  return {
+    type: 'panel/STORE_ACTIVE_MODAL',
+    activeModalId: modalId,
+  };
+}
 
-export const resetActiveModal = (modalId: number) => ({
-  type: 'panel/RESET_ACTIVE_MODAL',
-  activeModalId: modalId,
-});
+export function resetActiveModal(modalId: number) {
+  return {
+    type: 'panel/RESET_ACTIVE_MODAL',
+    activeModalId: modalId,
+  };
+}

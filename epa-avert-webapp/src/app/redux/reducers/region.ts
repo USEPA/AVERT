@@ -42,7 +42,7 @@ export default function reducer(
 }
 
 // action creators
-export const selectRegion = (regionId: number): AppThunk => {
+export function selectRegion(regionId: number): AppThunk {
   return (dispatch) => {
     avert.region = regionId;
 
@@ -56,4 +56,4 @@ export const selectRegion = (regionId: number): AppThunk => {
       },
     });
   };
-};
+}

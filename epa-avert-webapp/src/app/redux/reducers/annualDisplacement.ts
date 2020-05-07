@@ -112,11 +112,13 @@ export default function reducer(
 }
 
 // action creators
-export const incrementProgress = (): AnnualDisplacementsAction => ({
-  type: 'annualDisplacement/INCREMENT_PROGRESS',
-});
+export function incrementProgress(): AnnualDisplacementsAction {
+  return {
+    type: 'annualDisplacement/INCREMENT_PROGRESS',
+  };
+}
 
-export const receiveDisplacement = (): AppThunk => {
+export function receiveDisplacement(): AppThunk {
   return (dispatch, getState) => {
     // get reducer data from store to use in dispatched action
     const { generation, so2, nox, co2, pm25 } = getState();
@@ -197,9 +199,9 @@ export const receiveDisplacement = (): AppThunk => {
     dispatch(completeStateEmissions());
     dispatch(completeMonthlyEmissions());
   };
-};
+}
 
-export const calculateDisplacement = (): AppThunk => {
+export function calculateDisplacement(): AppThunk {
   return (dispatch) => {
     dispatch({ type: 'annualDisplacement/START_DISPLACEMENT' });
     dispatch(incrementProgress());
@@ -213,4 +215,4 @@ export const calculateDisplacement = (): AppThunk => {
 
     dispatch(receiveDisplacement());
   };
-};
+}
