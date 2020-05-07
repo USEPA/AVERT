@@ -33,7 +33,7 @@ type Props = {
 
 function Region({ id, children }: Props) {
   const dispatch = useDispatch();
-  const regionId = useRegionState((state) => state.id);
+  const regionId = useRegionState(({ id }) => id);
 
   return (
     <g

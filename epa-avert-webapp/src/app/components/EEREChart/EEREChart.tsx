@@ -11,21 +11,25 @@ import './styles.css';
 require('highcharts/modules/exporting')(Highcharts);
 
 function EEREChart() {
-  const {
-    valid: softValid,
-    topExceedanceValue: softTopExceedanceValue,
-    topExceedanceTimestamp: softTopExceedanceTimestamp,
-  } = useEereState(({ softLimit }) => softLimit);
-  const {
-    valid: hardValid,
-    topExceedanceValue: hardTopExceedanceValue,
-    topExceedanceTimestamp: hardTopExceedanceTimestamp,
-  } = useEereState(({ hardLimit }) => hardLimit);
+  const softValid = useEereState(({ softLimit }) => softLimit?.valid);
+  const softTopExceedanceValue = useEereState(
+    ({ softLimit }) => softLimit?.topExceedanceValue,
+  );
+  const softTopExceedanceTimestamp = useEereState(
+    ({ softLimit }) => softLimit?.topExceedanceTimestamp,
+  );
+  const hardValid = useEereState(({ hardLimit }) => hardLimit?.valid);
+  const hardTopExceedanceValue = useEereState(
+    ({ hardLimit }) => hardLimit?.topExceedanceValue,
+  );
+  const hardTopExceedanceTimestamp = useEereState(
+    ({ hardLimit }) => hardLimit?.topExceedanceTimestamp,
+  );
   const hourlyEere = useEereState(({ hourlyEere }) => hourlyEere);
 
   let data: number[] = [];
   let hours: string[] = [];
-  hourlyEere.forEach((hour) => {
+  hourlyEere?.forEach((hour) => {
     data.push(hour.final_mw);
     hours.push(hour.index.toString());
   });
@@ -90,7 +94,7 @@ function EEREChart() {
   };
 
   // boolean flag to render chart and error/warning when hourlyEere prop exits
-  let readyToRender = hourlyEere.length > 0;
+  let readyToRender = hourlyEere?.length > 0;
 
   let chart = null;
   // conditionally re-define chart when readyToRender (hourlyEere prop exists)

@@ -1,9 +1,6 @@
 // reducers
-import {
-  AppThunk,
-  DisplacementData,
-  initialPollutantState,
-} from 'app/redux/index';
+import { AppThunk, DisplacementData } from 'app/redux/index';
+import { initialPollutantState } from 'app/redux/_common';
 // engines
 import { avert } from 'app/engines';
 // action creators
@@ -36,7 +33,7 @@ type Co2State = {
 const initialState: Co2State = initialPollutantState;
 
 export default function reducer(
-  state = initialState,
+  state: Co2State = initialState,
   action: Co2Action,
 ): Co2State {
   switch (action.type) {

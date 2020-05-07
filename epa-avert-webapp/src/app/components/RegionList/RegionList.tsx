@@ -9,7 +9,7 @@ import './styles.css';
 
 function RegionList() {
   const dispatch = useDispatch();
-  const regionId = useRegionState((state) => state.id);
+  const regionId = useRegionState(({ id }) => id);
 
   return (
     <select

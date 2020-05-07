@@ -81,7 +81,7 @@ const initialState: PanelState = {
 };
 
 export default function reducer(
-  state = initialState,
+  state: PanelState = initialState,
   action: PanelAction,
 ): PanelState {
   switch (action.type) {

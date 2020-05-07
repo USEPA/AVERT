@@ -11,7 +11,9 @@ type Props = {
 function StepProgressItem({ step, active, title }: Props) {
   return (
     <li className={`avert-tab${step}`}>
-      <a data-active={active}>{title}</a>
+      <a href="/" data-active={active} onClick={(ev) => ev.preventDefault()}>
+        {title}
+      </a>
     </li>
   );
 }

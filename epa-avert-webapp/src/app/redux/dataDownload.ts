@@ -33,7 +33,7 @@ const initialState: DataDownloadState = {
 };
 
 export default function reducer(
-  state = initialState,
+  state: DataDownloadState = initialState,
   action: DataDownloadAction,
 ): DataDownloadState {
   switch (action.type) {

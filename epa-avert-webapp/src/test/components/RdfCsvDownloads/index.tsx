@@ -8,14 +8,27 @@ import rdf from 'test/data/rdf_RM_2016.json';
 type Props = {
   json: {
     name: string;
-    data: Array<{
-      day: number;
-      hour: number;
-      hour_of_year: number;
-      hourly_limit: number;
-      regional_loaw_mw: number;
-      year: number;
-    }>;
+    data:
+      | {
+          hour_of_year: number;
+          year: number;
+          month: number;
+          day: number;
+          hour: number;
+          regional_load_mw: number;
+          hourly_limit: number;
+        }[]
+      | {
+          state: string;
+          county: string;
+          lat: number;
+          lon: number;
+          fuel_type: string;
+          orispl_code: number;
+          unit_code: string;
+          full_name: string;
+          medians: number[];
+        }[];
   };
 };
 
@@ -59,13 +72,11 @@ const RdfCsvDownloads = (props: {}) => {
   ];
 
   return (
-    <div>
+    <React.Fragment>
       {fields.map((field, index) => (
-        <p key={index}>
-          <DownloadLink json={field} />
-        </p>
+        <DownloadLink key={index} json={field} />
       ))}
-    </div>
+    </React.Fragment>
   );
 };
 

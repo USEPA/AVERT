@@ -12,7 +12,7 @@ function EmissionsTable({ heading }: Props) {
   const status = useStateEmissionsState(({ status }) => status);
   const data = useStateEmissionsState(({ data }) => data);
   const states = useStateEmissionsState(({ states }) => {
-    return states.map((state) => States[state]);
+    return states?.map((state) => States[state]);
   });
 
   // rendering is ready when state emissions status is 'complete'

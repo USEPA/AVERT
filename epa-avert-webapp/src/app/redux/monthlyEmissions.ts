@@ -147,7 +147,7 @@ const initialState: MonthlyEmissionsState = {
 };
 
 export default function reducer(
-  state = initialState,
+  state: MonthlyEmissionsState = initialState,
   action: MonthlyEmissionsAction,
 ): MonthlyEmissionsState {
   switch (action.type) {

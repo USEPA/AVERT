@@ -44,7 +44,10 @@ function EmissionsChart({ heading }: Props) {
   const selectedCounty = useMonthlyEmissionsState(
     ({ selectedCounty }) => selectedCounty,
   );
-  const output = useMonthlyEmissionsState(({ output }) => output);
+  const so2Data = useMonthlyEmissionsState(({ output }) => output?.so2);
+  const noxData = useMonthlyEmissionsState(({ output }) => output?.nox);
+  const co2Data = useMonthlyEmissionsState(({ output }) => output?.co2);
+  const pm25Data = useMonthlyEmissionsState(({ output }) => output?.pm25);
 
   // rendering is ready when output prop has data
   const readyToRender = status === 'complete';
@@ -307,7 +310,7 @@ function EmissionsChart({ heading }: Props) {
     series: [
       {
         name: 'SO₂',
-        data: output.so2,
+        data: so2Data,
         color: '#058dc7',
         emissionsUnit: 'lbs',
       },
@@ -328,7 +331,7 @@ function EmissionsChart({ heading }: Props) {
     series: [
       {
         name: 'NOₓ',
-        data: output.nox,
+        data: noxData,
         color: '#ed561b',
         emissionsUnit: 'lbs',
       },
@@ -349,7 +352,7 @@ function EmissionsChart({ heading }: Props) {
     series: [
       {
         name: 'CO₂',
-        data: output.co2,
+        data: co2Data,
         color: '#50b432',
         emissionsUnit: 'tons',
       },
@@ -370,7 +373,7 @@ function EmissionsChart({ heading }: Props) {
     series: [
       {
         name: 'PM₂₅',
-        data: output.pm25,
+        data: pm25Data,
         color: '#665683',
         emissionsUnit: 'lbs',
       },

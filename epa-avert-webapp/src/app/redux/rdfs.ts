@@ -56,7 +56,7 @@ const initialState: RdfsState = {
 };
 
 export default function reducer(
-  state = initialState,
+  state: RdfsState = initialState,
   action: RdfsAction,
 ): RdfsState {
   switch (action.type) {

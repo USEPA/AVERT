@@ -21,11 +21,15 @@ type Props = {
 
 const DisplacementsTable = ({ heading }: Props) => {
   const annualStatus = useAnnualDisplacementState(({ status }) => status);
-  const {
-    generation,
-    totalEmissions,
-    emissionRates,
-  } = useAnnualDisplacementState(({ results }) => results);
+  const generation = useAnnualDisplacementState(
+    ({ results }) => results?.generation,
+  );
+  const totalEmissions = useAnnualDisplacementState(
+    ({ results }) => results?.totalEmissions,
+  );
+  const emissionRates = useAnnualDisplacementState(
+    ({ results }) => results?.emissionRates,
+  );
 
   // rendering is ready when state annual displacement status is 'complete'
   const readyToRender = annualStatus === 'complete';

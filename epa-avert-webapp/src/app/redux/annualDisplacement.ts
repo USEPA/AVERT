@@ -82,7 +82,7 @@ const initialState: AnnualDisplacementState = {
 };
 
 export default function reducer(
-  state = initialState,
+  state: AnnualDisplacementState = initialState,
   action: AnnualDisplacementsAction,
 ): AnnualDisplacementState {
   switch (action.type) {

@@ -17,10 +17,10 @@ type Props = {
 
 function PanelFooter({ prevButtonText, nextButtonText }: Props) {
   const dispatch = useDispatch();
-  const activeStep = usePanelState((state) => state.activeStep);
-  const regionId = useRegionState((state) => state.id);
-  const eereStatus = useEereState((state) => state.status);
-  const hardValid = useEereState((state) => state.hardLimit.valid);
+  const activeStep = usePanelState(({ activeStep }) => activeStep);
+  const regionId = useRegionState(({ id }) => id);
+  const eereStatus = useEereState(({ status }) => status);
+  const hardValid = useEereState(({ hardLimit }) => hardLimit?.valid);
 
   const onStepOne = activeStep === 1;
   const onStepTwo = activeStep === 2;

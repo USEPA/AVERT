@@ -31,7 +31,7 @@ const initialState: RegionState = {
 };
 
 export default function reducer(
-  state = initialState,
+  state: RegionState = initialState,
   action: RegionAction,
 ): RegionState {
   switch (action.type) {

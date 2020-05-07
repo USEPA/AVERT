@@ -23,7 +23,7 @@ const initialState: ApiState = {
 };
 
 export default function reducer(
-  state = initialState,
+  state: ApiState = initialState,
   action: ApiAction,
 ): ApiState {
   switch (action.type) {

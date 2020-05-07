@@ -205,7 +205,7 @@ const initialState: EereState = {
 };
 
 export default function reducer(
-  state = initialState,
+  state: EereState = initialState,
   action: EereAction,
 ): EereState {
   switch (action.type) {

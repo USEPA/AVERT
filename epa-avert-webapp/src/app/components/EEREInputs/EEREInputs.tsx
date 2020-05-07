@@ -26,16 +26,14 @@ function EEREInputs() {
   const valid = useEereState(({ valid }) => valid);
   const errors = useEereState(({ errors }) => errors);
   const limits = useEereState(({ limits }) => limits);
-  const {
-    constantMwh,
-    annualGwh,
-    broadProgram,
-    reduction,
-    topHours,
-    windCapacity,
-    utilitySolar,
-    rooftopSolar,
-  } = useEereState(({ inputs }) => inputs);
+  const constantMwh = useEereState(({ inputs }) => inputs?.constantMwh);
+  const annualGwh = useEereState(({ inputs }) => inputs?.annualGwh);
+  const broadProgram = useEereState(({ inputs }) => inputs?.broadProgram);
+  const reduction = useEereState(({ inputs }) => inputs?.reduction);
+  const topHours = useEereState(({ inputs }) => inputs?.topHours);
+  const windCapacity = useEereState(({ inputs }) => inputs?.windCapacity);
+  const utilitySolar = useEereState(({ inputs }) => inputs?.utilitySolar);
+  const rooftopSolar = useEereState(({ inputs }) => inputs?.rooftopSolar);
 
   function displayError({
     fieldName,
@@ -46,8 +44,8 @@ function EEREInputs() {
     inputValue: string;
     maxValue: number;
   }) {
-    if (inputValue.length <= 0) return;
-    if (!errors.includes(fieldName)) return;
+    if (inputValue?.length <= 0) return;
+    if (!errors?.includes(fieldName)) return;
 
     return Number(inputValue) >= 0 ? (
       <span className="avert-input-error">
@@ -72,7 +70,7 @@ function EEREInputs() {
   }
 
   // text input values from fields
-  const inputs = [
+  const inputsFields = [
     constantMwh,
     annualGwh,
     broadProgram,
@@ -84,7 +82,7 @@ function EEREInputs() {
   ];
 
   const inputsAreEmpty =
-    inputs.filter((field) => field.length > 0).length === 0;
+    inputsFields.filter((field) => field?.length > 0).length === 0;
 
   const disabledClass =
     !valid || inputsAreEmpty || status === 'started'
@@ -135,7 +133,7 @@ function EEREInputs() {
                 {displayError({
                   fieldName: 'annualGwh',
                   inputValue: annualGwh,
-                  maxValue: limits.annualGwh,
+                  maxValue: limits?.annualGwh,
                 })}
               </li>
 
@@ -161,7 +159,7 @@ function EEREInputs() {
                 {displayError({
                   fieldName: 'constantMwh',
                   inputValue: constantMwh,
-                  maxValue: limits.constantMwh,
+                  maxValue: limits?.constantMwh,
                 })}
               </li>
             </ul>
@@ -197,7 +195,7 @@ function EEREInputs() {
                 {displayError({
                   fieldName: 'reduction',
                   inputValue: broadProgram,
-                  maxValue: limits.percent,
+                  maxValue: limits?.percent,
                 })}
               </li>
 
@@ -229,7 +227,7 @@ function EEREInputs() {
                 {displayError({
                   fieldName: 'reduction',
                   inputValue: reduction,
-                  maxValue: limits.percent,
+                  maxValue: limits?.percent,
                 })}
 
                 {displayError({
@@ -267,7 +265,7 @@ function EEREInputs() {
               {displayError({
                 fieldName: 'windCapacity',
                 inputValue: windCapacity,
-                maxValue: limits.renewables,
+                maxValue: limits?.renewables,
               })}
             </p>
           </section>
@@ -294,7 +292,7 @@ function EEREInputs() {
               {displayError({
                 fieldName: 'utilitySolar',
                 inputValue: utilitySolar,
-                maxValue: limits.renewables,
+                maxValue: limits?.renewables,
               })}
             </p>
           </section>
@@ -323,7 +321,7 @@ function EEREInputs() {
               {displayError({
                 fieldName: 'rooftopSolar',
                 inputValue: rooftopSolar,
-                maxValue: limits.renewables,
+                maxValue: limits?.renewables,
               })}
             </p>
           </section>

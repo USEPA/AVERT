@@ -7,7 +7,7 @@ import { usePanelState } from 'app/redux/panel';
 import './styles.css';
 
 function StepProgressBar() {
-  const activeStep = usePanelState((state) => state.activeStep);
+  const activeStep = usePanelState(({ activeStep }) => activeStep);
 
   return (
     <nav className="avert-nav">

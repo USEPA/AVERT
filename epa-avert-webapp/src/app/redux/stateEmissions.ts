@@ -47,7 +47,7 @@ const initialState: StateEmissionsState = {
 };
 
 export default function reducer(
-  state = initialState,
+  state: StateEmissionsState = initialState,
   action: StateEmissionsAction,
 ): StateEmissionsState {
   switch (action.type) {

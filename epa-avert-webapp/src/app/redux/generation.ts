@@ -1,9 +1,6 @@
 // reducers
-import {
-  AppThunk,
-  DisplacementData,
-  initialPollutantState,
-} from 'app/redux/index';
+import { AppThunk, DisplacementData } from 'app/redux/index';
+import { initialPollutantState } from 'app/redux/_common';
 // engines
 import { avert } from 'app/engines';
 // action creators
@@ -36,7 +33,7 @@ type GenerationState = {
 const initialState: GenerationState = initialPollutantState;
 
 export default function reducer(
-  state = initialState,
+  state: GenerationState = initialState,
   action: GenerationAction,
 ): GenerationState {
   switch (action.type) {

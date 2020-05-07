@@ -28,15 +28,17 @@ import './styles.css';
 
 function StepPanels() {
   const dispatch = useDispatch();
-  const activeStep = usePanelState((state) => state.activeStep);
-  const loading = usePanelState((state) => state.loading);
-  const loadingProgress = usePanelState((state) => state.loadingProgress);
-  const modalOverlay = usePanelState((state) => state.modalOverlay);
-  const activeModalId = usePanelState((state) => state.activeModalId);
-  const region = useRegionState((state) => state.name);
-  const softValid = useEereState((state) => state.softLimit.valid);
-  const serverCalcError = useAnnualDisplacementState((state) => {
-    return state.status === 'error';
+  const activeStep = usePanelState(({ activeStep }) => activeStep);
+  const loading = usePanelState(({ loading }) => loading);
+  const loadingProgress = usePanelState(
+    ({ loadingProgress }) => loadingProgress,
+  );
+  const modalOverlay = usePanelState(({ modalOverlay }) => modalOverlay);
+  const activeModalId = usePanelState(({ activeModalId }) => activeModalId);
+  const region = useRegionState(({ name }) => name);
+  const softValid = useEereState(({ softLimit }) => softLimit?.valid);
+  const serverCalcError = useAnnualDisplacementState(({ status }) => {
+    return status === 'error';
   });
 
   function onClickOutsideModal(activeModalId: number) {
