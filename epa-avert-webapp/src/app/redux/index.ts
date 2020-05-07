@@ -1,5 +1,6 @@
 import { Action, combineReducers } from 'redux';
 import { ThunkAction } from 'redux-thunk';
+import { useSelector, TypedUseSelectorHook } from 'react-redux';
 // reducers
 import region from 'app/redux/reducers/region';
 import panel from 'app/redux/reducers/panel';
@@ -38,3 +39,5 @@ export default rootReducer;
 type RootState = ReturnType<typeof rootReducer>;
 
 export type AppThunk = ThunkAction<void, RootState, unknown, Action<string>>;
+
+export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
