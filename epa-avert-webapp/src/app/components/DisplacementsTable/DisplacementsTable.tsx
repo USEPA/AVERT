@@ -1,6 +1,6 @@
 import React from 'react';
 // reducers
-import { useAnnualDisplacementState } from 'app/redux/reducers/annualDisplacement';
+import { useTypedSelector } from 'app/redux/index';
 // styles
 import './styles.css';
 
@@ -20,15 +20,17 @@ type Props = {
 };
 
 const DisplacementsTable = ({ heading }: Props) => {
-  const annualStatus = useAnnualDisplacementState(({ status }) => status);
-  const generation = useAnnualDisplacementState(
-    ({ results }) => results?.generation,
+  const annualStatus = useTypedSelector(
+    ({ annualDisplacement }) => annualDisplacement.status,
   );
-  const totalEmissions = useAnnualDisplacementState(
-    ({ results }) => results?.totalEmissions,
+  const generation = useTypedSelector(
+    ({ annualDisplacement }) => annualDisplacement.results.generation,
   );
-  const emissionRates = useAnnualDisplacementState(
-    ({ results }) => results?.emissionRates,
+  const totalEmissions = useTypedSelector(
+    ({ annualDisplacement }) => annualDisplacement.results.totalEmissions,
+  );
+  const emissionRates = useTypedSelector(
+    ({ annualDisplacement }) => annualDisplacement.results.emissionRates,
   );
 
   // rendering is ready when state annual displacement status is 'complete'

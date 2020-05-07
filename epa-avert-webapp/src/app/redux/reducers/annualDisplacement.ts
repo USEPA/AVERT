@@ -1,4 +1,3 @@
-import { useSelector, TypedUseSelectorHook } from 'react-redux';
 // reducers
 import { AppThunk } from 'app/redux/index';
 // action creators
@@ -50,8 +49,6 @@ type AnnualDisplacementState = {
     };
   };
 };
-
-export const useAnnualDisplacementState: TypedUseSelectorHook<AnnualDisplacementState> = useSelector;
 
 // reducer
 const initialState: AnnualDisplacementState = {
