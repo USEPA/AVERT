@@ -1,4 +1,3 @@
-import { useSelector, TypedUseSelectorHook } from 'react-redux';
 // reducers
 import { AppThunk } from 'app/redux/index';
 
@@ -32,8 +31,6 @@ type StateEmissionsState = {
     pm25: number;
   }[];
 };
-
-export const useStateEmissionsState: TypedUseSelectorHook<StateEmissionsState> = useSelector;
 
 // reducer
 const initialState: StateEmissionsState = {

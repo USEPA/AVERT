@@ -1,6 +1,6 @@
 import React from 'react';
 // reducers
-import { useStateEmissionsState } from 'app/redux/reducers/stateEmissions';
+import { useTypedSelector } from 'app/redux/index';
 // enums
 import States from 'app/enums/States';
 
@@ -9,11 +9,13 @@ type Props = {
 };
 
 function EmissionsTable({ heading }: Props) {
-  const status = useStateEmissionsState(({ status }) => status);
-  const data = useStateEmissionsState(({ data }) => data);
-  const states = useStateEmissionsState(({ states }) => {
-    return states?.map((state) => States[state]);
-  });
+  const status = useTypedSelector(
+    ({ stateEmissions }) => stateEmissions.status,
+  );
+  const data = useTypedSelector(({ stateEmissions }) => stateEmissions.data);
+  const states = useTypedSelector(({ stateEmissions }) =>
+    stateEmissions.states.map((state) => States[state]),
+  );
 
   // rendering is ready when state emissions status is 'complete'
   const readyToRender = status === 'complete';

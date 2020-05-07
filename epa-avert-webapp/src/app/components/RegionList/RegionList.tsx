@@ -1,7 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 // reducers
-import { useRegionState, selectRegion } from 'app/redux/reducers/region';
+import { useTypedSelector } from 'app/redux/index';
+import { selectRegion } from 'app/redux/reducers/region';
 // enums
 import Regions from 'app/enums/Regions';
 // styles
@@ -9,7 +10,7 @@ import './styles.css';
 
 function RegionList() {
   const dispatch = useDispatch();
-  const regionId = useRegionState(({ id }) => id);
+  const regionId = useTypedSelector(({ region }) => region.id);
 
   return (
     <select

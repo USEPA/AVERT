@@ -1,7 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 // reducers
-import { useEereState, calculateEereProfile } from 'app/redux/reducers/eere';
+import { useTypedSelector } from 'app/redux/index';
+import { calculateEereProfile } from 'app/redux/reducers/eere';
 
 type Props = {
   value: string;
@@ -11,7 +12,7 @@ type Props = {
 
 function EEREInputField({ value, disabled, onChange }: Props) {
   const dispatch = useDispatch();
-  const valid = useEereState(({ valid }) => valid);
+  const valid = useTypedSelector(({ eere }) => eere.valid);
 
   return (
     <input

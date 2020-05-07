@@ -3,16 +3,15 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useDispatch } from 'react-redux';
 // reducers
+import { useTypedSelector } from 'app/redux/index';
 import {
   MonthlyAggregation,
   MonthlyUnit,
-  useMonthlyEmissionsState,
   selectMonthlyAggregation,
   selectMonthlyUnit,
   selectMonthlyState,
   selectMonthlyCounty,
 } from 'app/redux/reducers/monthlyEmissions';
-import { useRegionState } from 'app/redux/reducers/region';
 // enums
 import States from 'app/enums/States';
 // styles
@@ -26,28 +25,40 @@ type Props = {
 
 function EmissionsChart({ heading }: Props) {
   const dispatch = useDispatch();
-  const status = useMonthlyEmissionsState(({ status }) => status);
-  const aggregation = useMonthlyEmissionsState(
-    ({ aggregation }) => aggregation,
+  const status = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.status,
   );
-  const unit = useMonthlyEmissionsState(({ unit }) => unit);
-  const availableStates = useMonthlyEmissionsState(
-    ({ availableStates }) => availableStates,
+  const aggregation = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.aggregation,
   );
-  const availableCounties = useMonthlyEmissionsState(
-    ({ availableCounties }) => availableCounties,
+  const unit = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.unit,
   );
-  const selectedRegion = useRegionState(({ name }) => name);
-  const selectedState = useMonthlyEmissionsState(
-    ({ selectedState }) => selectedState,
+  const availableStates = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.availableStates,
   );
-  const selectedCounty = useMonthlyEmissionsState(
-    ({ selectedCounty }) => selectedCounty,
+  const availableCounties = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.availableCounties,
   );
-  const so2Data = useMonthlyEmissionsState(({ output }) => output?.so2);
-  const noxData = useMonthlyEmissionsState(({ output }) => output?.nox);
-  const co2Data = useMonthlyEmissionsState(({ output }) => output?.co2);
-  const pm25Data = useMonthlyEmissionsState(({ output }) => output?.pm25);
+  const selectedRegion = useTypedSelector(({ region }) => region.name);
+  const selectedState = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.selectedState,
+  );
+  const selectedCounty = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.selectedCounty,
+  );
+  const so2Data = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.output.so2,
+  );
+  const noxData = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.output.nox,
+  );
+  const co2Data = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.output.co2,
+  );
+  const pm25Data = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.output.pm25,
+  );
 
   // rendering is ready when output prop has data
   const readyToRender = status === 'complete';

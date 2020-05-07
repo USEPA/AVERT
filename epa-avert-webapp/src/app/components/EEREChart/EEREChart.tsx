@@ -4,28 +4,28 @@ import HighchartsReact from 'highcharts-react-official';
 // components
 import Tooltip from 'app/components/Tooltip/Tooltip';
 // reducers
-import { useEereState } from 'app/redux/reducers/eere';
+import { useTypedSelector } from 'app/redux/index';
 // styles
 import './styles.css';
 
 require('highcharts/modules/exporting')(Highcharts);
 
 function EEREChart() {
-  const softValid = useEereState(({ softLimit }) => softLimit?.valid);
-  const softTopExceedanceValue = useEereState(
-    ({ softLimit }) => softLimit?.topExceedanceValue,
+  const softValid = useTypedSelector(({ eere }) => eere.softLimit.valid);
+  const softTopExceedanceValue = useTypedSelector(
+    ({ eere }) => eere.softLimit.topExceedanceValue,
   );
-  const softTopExceedanceTimestamp = useEereState(
-    ({ softLimit }) => softLimit?.topExceedanceTimestamp,
+  const softTopExceedanceTimestamp = useTypedSelector(
+    ({ eere }) => eere.softLimit.topExceedanceTimestamp,
   );
-  const hardValid = useEereState(({ hardLimit }) => hardLimit?.valid);
-  const hardTopExceedanceValue = useEereState(
-    ({ hardLimit }) => hardLimit?.topExceedanceValue,
+  const hardValid = useTypedSelector(({ eere }) => eere.hardLimit.valid);
+  const hardTopExceedanceValue = useTypedSelector(
+    ({ eere }) => eere.hardLimit.topExceedanceValue,
   );
-  const hardTopExceedanceTimestamp = useEereState(
-    ({ hardLimit }) => hardLimit?.topExceedanceTimestamp,
+  const hardTopExceedanceTimestamp = useTypedSelector(
+    ({ eere }) => eere.hardLimit.topExceedanceTimestamp,
   );
-  const hourlyEere = useEereState(({ hourlyEere }) => hourlyEere);
+  const hourlyEere = useTypedSelector(({ eere }) => eere.hourlyEere);
 
   let data: number[] = [];
   let hours: string[] = [];

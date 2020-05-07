@@ -1,4 +1,3 @@
-import { useSelector, TypedUseSelectorHook } from 'react-redux';
 // reducers
 import { AppThunk } from 'app/redux/index';
 import { DataByMonth, MonthlyChanges } from 'app/redux/shared';
@@ -109,8 +108,6 @@ type MonthlyEmissionsState = {
   downloadableCountyData: CountyDataRow[];
   downloadableCobraData: CobraDataRow[];
 };
-
-export const useMonthlyEmissionsState: TypedUseSelectorHook<MonthlyEmissionsState> = useSelector;
 
 // reducer
 const initialState: MonthlyEmissionsState = {

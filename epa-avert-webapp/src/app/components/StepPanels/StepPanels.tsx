@@ -17,8 +17,6 @@ import DataDownload from 'app/components/DataDownload';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 import { toggleModalOverlay, resetActiveModal } from 'app/redux/reducers/panel';
-import { useRegionState } from 'app/redux/reducers/region';
-import { useEereState } from 'app/redux/reducers/eere';
 // styles
 import './styles.css';
 
@@ -31,8 +29,8 @@ function StepPanels() {
   );
   const modalOverlay = useTypedSelector(({ panel }) => panel.modalOverlay);
   const activeModalId = useTypedSelector(({ panel }) => panel.activeModalId);
-  const region = useRegionState(({ name }) => name);
-  const softValid = useEereState(({ softLimit }) => softLimit?.valid);
+  const region = useTypedSelector(({ region }) => region.name);
+  const softValid = useTypedSelector(({ eere }) => eere.softLimit.valid);
   const serverCalcError = useTypedSelector(
     ({ annualDisplacement }) => annualDisplacement.status === 'error',
   );

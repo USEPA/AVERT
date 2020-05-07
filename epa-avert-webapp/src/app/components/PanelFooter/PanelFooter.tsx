@@ -3,8 +3,7 @@ import { useDispatch } from 'react-redux';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 import { setActiveStep } from 'app/redux/reducers/panel';
-import { useRegionState } from 'app/redux/reducers/region';
-import { useEereState, resetEereInputs } from 'app/redux/reducers/eere';
+import { resetEereInputs } from 'app/redux/reducers/eere';
 import { fetchRegion } from 'app/redux/reducers/rdfs';
 import { calculateDisplacement } from 'app/redux/reducers/annualDisplacement';
 import { resetMonthlyEmissions } from 'app/redux/reducers/monthlyEmissions';
@@ -19,9 +18,9 @@ type Props = {
 function PanelFooter({ prevButtonText, nextButtonText }: Props) {
   const dispatch = useDispatch();
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
-  const regionId = useRegionState(({ id }) => id);
-  const eereStatus = useEereState(({ status }) => status);
-  const hardValid = useEereState(({ hardLimit }) => hardLimit?.valid);
+  const regionId = useTypedSelector(({ region }) => region.id);
+  const eereStatus = useTypedSelector(({ eere }) => eere.status);
+  const hardValid = useTypedSelector(({ eere }) => eere.hardLimit.valid);
 
   const onStepOne = activeStep === 1;
   const onStepTwo = activeStep === 2;

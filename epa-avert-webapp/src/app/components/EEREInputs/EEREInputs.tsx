@@ -4,9 +4,9 @@ import { useDispatch } from 'react-redux';
 import EEREInputField from 'app/components/EEREInputField';
 import Tooltip from 'app/components/Tooltip/Tooltip';
 // reducers
+import { useTypedSelector } from 'app/redux/index';
 import {
   InputFields,
-  useEereState,
   updateEereAnnualGwh,
   updateEereConstantMw,
   updateEereBroadBasedProgram,
@@ -22,18 +22,18 @@ import './styles.css';
 
 function EEREInputs() {
   const dispatch = useDispatch();
-  const status = useEereState(({ status }) => status);
-  const valid = useEereState(({ valid }) => valid);
-  const errors = useEereState(({ errors }) => errors);
-  const limits = useEereState(({ limits }) => limits);
-  const constantMwh = useEereState(({ inputs }) => inputs?.constantMwh);
-  const annualGwh = useEereState(({ inputs }) => inputs?.annualGwh);
-  const broadProgram = useEereState(({ inputs }) => inputs?.broadProgram);
-  const reduction = useEereState(({ inputs }) => inputs?.reduction);
-  const topHours = useEereState(({ inputs }) => inputs?.topHours);
-  const windCapacity = useEereState(({ inputs }) => inputs?.windCapacity);
-  const utilitySolar = useEereState(({ inputs }) => inputs?.utilitySolar);
-  const rooftopSolar = useEereState(({ inputs }) => inputs?.rooftopSolar);
+  const status = useTypedSelector(({ eere }) => eere.status);
+  const valid = useTypedSelector(({ eere }) => eere.valid);
+  const errors = useTypedSelector(({ eere }) => eere.errors);
+  const limits = useTypedSelector(({ eere }) => eere.limits);
+  const constantMwh = useTypedSelector(({ eere }) => eere.inputs.constantMwh);
+  const annualGwh = useTypedSelector(({ eere }) => eere.inputs.annualGwh);
+  const broadProgram = useTypedSelector(({ eere }) => eere.inputs.broadProgram);
+  const reduction = useTypedSelector(({ eere }) => eere.inputs.reduction);
+  const topHours = useTypedSelector(({ eere }) => eere.inputs.topHours);
+  const windCapacity = useTypedSelector(({ eere }) => eere.inputs.windCapacity);
+  const utilitySolar = useTypedSelector(({ eere }) => eere.inputs.utilitySolar);
+  const rooftopSolar = useTypedSelector(({ eere }) => eere.inputs.rooftopSolar);
 
   function displayError({
     fieldName,

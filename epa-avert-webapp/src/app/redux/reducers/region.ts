@@ -1,4 +1,3 @@
-import { useSelector, TypedUseSelectorHook } from 'react-redux';
 // reducers
 import { AppThunk } from 'app/redux/index';
 // engines
@@ -18,8 +17,6 @@ type RegionState = {
   id: number;
   name: string;
 };
-
-export const useRegionState: TypedUseSelectorHook<RegionState> = useSelector;
 
 // reducer
 const initialState: RegionState = {

@@ -1,4 +1,3 @@
-import { useSelector, TypedUseSelectorHook } from 'react-redux';
 // reducers
 import { AppThunk } from 'app/redux/index';
 // engines
@@ -134,8 +133,6 @@ type EereState = {
   };
   hourlyEere: HourlyEere[];
 };
-
-export const useEereState: TypedUseSelectorHook<EereState> = useSelector;
 
 // reducer
 const initialState: EereState = {

@@ -1,4 +1,3 @@
-import { useSelector, TypedUseSelectorHook } from 'react-redux';
 import json2csv from 'json2csv';
 import Blob from 'blob';
 import FileSaver from 'file-saver';
@@ -17,8 +16,6 @@ type DataDownloadState = {
   countyFile: boolean;
   cobraFile: boolean;
 };
-
-export const useDataDownloadState: TypedUseSelectorHook<DataDownloadState> = useSelector;
 
 // reducer
 const initialState: DataDownloadState = {

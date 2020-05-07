@@ -1,7 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 // reducers
-import { useRegionState, selectRegion } from 'app/redux/reducers/region';
+import { useTypedSelector } from 'app/redux/index';
+import { selectRegion } from 'app/redux/reducers/region';
 // components
 import UpperMidwest from './UpperMidwest';
 import Texas from './Texas';
@@ -33,7 +34,7 @@ type Props = {
 
 function Region({ id, children }: Props) {
   const dispatch = useDispatch();
-  const regionId = useRegionState(({ id }) => id);
+  const regionId = useTypedSelector(({ region }) => region.id);
 
   return (
     <g
