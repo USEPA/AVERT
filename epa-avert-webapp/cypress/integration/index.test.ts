@@ -40,19 +40,12 @@ describe('AVERT', () => {
       cy.findByText('Reductions spread evenly throughout the year').as(
         'toggleA',
       );
-      cy.findByText('Percentage reductions in some or all hours').as('toggleB');
-      cy.findByText('Wind').as('toggleC');
-      cy.findByText('Utility-scale solar photovoltaic').as('toggleD');
-      cy.findByText('Distributed (rooftop) solar photovoltaic').as('toggleE');
-    });
-
-    it('Toggle A inputs', () => {
       cy.get('@toggleA').click();
       cy.findByText('Reduce total annual generation by').next().as('annualGwh');
       cy.findByText('Reduce hourly generation by').next().as('constantMwh');
-    });
+      cy.get('@toggleA').click();
 
-    it('Toggle B inputs', () => {
+      cy.findByText('Percentage reductions in some or all hours').as('toggleB');
       cy.get('@toggleB').click();
       cy.findByText('Broad-based program: Reduce generation by')
         .next()
@@ -61,30 +54,42 @@ describe('AVERT', () => {
         .next()
         .as('reduction');
       cy.findByText('% during the peak').next().as('topHours');
-    });
+      cy.get('@toggleB').click();
 
-    it('Toggle C inputs', () => {
+      cy.findByText('Wind').as('toggleC');
       cy.get('@toggleC').click();
       cy.findAllByText('Total capacity:')
         .filter(':visible')
         .next()
         .as('windCapacity');
-    });
+      cy.get('@toggleC').click();
 
-    it('Toggle D inputs', () => {
+      cy.findByText('Utility-scale solar photovoltaic').as('toggleD');
       cy.get('@toggleD').click();
       cy.findAllByText('Total capacity:')
         .filter(':visible')
         .next()
         .as('utilitySolar');
-    });
-
-    it('Toggle E inputs', () => {
       cy.get('@toggleD').click();
+
+      cy.findByText('Distributed (rooftop) solar photovoltaic').as('toggleE');
+      cy.get('@toggleE').click();
       cy.findAllByText('Total capacity:')
         .filter(':visible')
         .next()
         .as('rooftopSolar');
+      cy.get('@toggleE').click();
+
+      cy.findByText('Calculate EE/RE Impacts').as('calculateBtn');
+    });
+
+    it('Entering a value for wind capacity and clicking the calculate button displays the EE/RE profile chart', () => {
+      const amount = '1000';
+      cy.get('@toggleC').click();
+      cy.get('@windCapacity').type(amount);
+      cy.get('@calculateBtn').click();
+
+      cy.findByText('EE/RE profile based on values entered:');
     });
   });
 });
