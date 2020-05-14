@@ -35,11 +35,6 @@ function StepPanels() {
     ({ annualDisplacement }) => annualDisplacement.status === 'error',
   );
 
-  function onClickOutsideModal(activeModalId: number) {
-    dispatch(resetActiveModal(activeModalId));
-    dispatch(toggleModalOverlay());
-  }
-
   const classes = ['avert-steps'];
   if (loading || serverCalcError) {
     classes.push('avert-dark-overlay');
@@ -53,14 +48,17 @@ function StepPanels() {
       className={classes.join(' ')}
       onClick={(ev) => {
         if (!modalOverlay) return;
-        if (ev.currentTarget.classList.contains('avert-modal-overlay')) {
-          onClickOutsideModal(activeModalId);
+        const target = ev.target as HTMLDivElement;
+        if (target.classList.contains('avert-modal-overlay')) {
+          dispatch(resetActiveModal(activeModalId));
+          dispatch(toggleModalOverlay());
         }
       }}
       onKeyDown={(ev) => {
         if (!modalOverlay) return;
-        if (ev.keyCode === 27) {
-          onClickOutsideModal(activeModalId);
+        if (ev.keyCode === 27 /* escape key */) {
+          dispatch(resetActiveModal(activeModalId));
+          dispatch(toggleModalOverlay());
         }
       }}
     >
