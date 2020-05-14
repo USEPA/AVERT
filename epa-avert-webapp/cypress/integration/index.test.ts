@@ -33,7 +33,7 @@ describe('AVERT', () => {
 
   describe('Set EE/RE Impacts', () => {
     beforeEach(() => {
-      const region = 'Southeast';
+      const region = 'Rocky Mountains';
       cy.get('@regionsSelect').select(region);
       cy.findAllByText('Set EE/RE Impacts').filter('.avert-next').click();
 
@@ -84,12 +84,35 @@ describe('AVERT', () => {
     });
 
     it('Entering a value for wind capacity and clicking the calculate button displays the EE/RE profile chart', () => {
-      const amount = '1000';
+      const amount = '800';
       cy.get('@toggleC').click();
       cy.get('@windCapacity').type(amount);
       cy.get('@calculateBtn').click();
 
       cy.findByText('EE/RE profile based on values entered:');
+    });
+  });
+
+  describe('Get Results', () => {
+    beforeEach(() => {
+      const region = 'Rocky Mountains';
+      cy.get('@regionsSelect').select(region);
+      cy.findAllByText('Set EE/RE Impacts').filter('.avert-next').click();
+
+      const amount = '800';
+      cy.findByText('Wind').click();
+      cy.findAllByText('Total capacity:')
+        .filter(':visible')
+        .next()
+        .type(amount);
+
+      cy.findByText('Calculate EE/RE Impacts').click();
+
+      cy.findAllByText('Get Results').filter('.avert-next').click();
+    });
+
+    it('TODO', () => {
+      cy.findByText('Total emissions of fossil EGUs', { timeout: 60000 });
     });
   });
 });
