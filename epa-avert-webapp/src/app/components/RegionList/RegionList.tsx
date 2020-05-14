@@ -10,33 +10,43 @@ import './styles.css';
 
 function RegionList() {
   const dispatch = useDispatch();
-  const regionId = useTypedSelector(({ region }) => region.id);
+  const regionNumber = useTypedSelector(({ region }) => region.number);
 
   return (
     <select
       className="avert-region-select"
-      value={regionId}
+      value={regionNumber}
       onChange={(ev) => dispatch(selectRegion(Number(ev.target.value)))}
     >
       <option value={0} disabled>
         Select Region
       </option>
-      <option value={Regions.CALIFORNIA.id}>{Regions.CALIFORNIA.label}</option>
-      <option value={Regions.GREAT_LAKES_MID_ATLANTIC.id}>
+      <option value={Regions.CALIFORNIA.number}>
+        {Regions.CALIFORNIA.label}
+      </option>
+      <option value={Regions.GREAT_LAKES_MID_ATLANTIC.number}>
         {Regions.GREAT_LAKES_MID_ATLANTIC.label}
       </option>
-      <option value={Regions.LOWER_MIDWEST.id}>
+      <option value={Regions.LOWER_MIDWEST.number}>
         {Regions.LOWER_MIDWEST.label}
       </option>
-      <option value={Regions.NORTHEAST.id}>{Regions.NORTHEAST.label}</option>
-      <option value={Regions.NORTHWEST.id}>{Regions.NORTHWEST.label}</option>
-      <option value={Regions.ROCKY_MOUNTAINS.id}>
+      <option value={Regions.NORTHEAST.number}>
+        {Regions.NORTHEAST.label}
+      </option>
+      <option value={Regions.NORTHWEST.number}>
+        {Regions.NORTHWEST.label}
+      </option>
+      <option value={Regions.ROCKY_MOUNTAINS.number}>
         {Regions.ROCKY_MOUNTAINS.label}
       </option>
-      <option value={Regions.SOUTHEAST.id}>{Regions.SOUTHEAST.label}</option>
-      <option value={Regions.SOUTHWEST.id}>{Regions.SOUTHWEST.label}</option>
-      <option value={Regions.TEXAS.id}>{Regions.TEXAS.label}</option>
-      <option value={Regions.UPPER_MIDWEST.id}>
+      <option value={Regions.SOUTHEAST.number}>
+        {Regions.SOUTHEAST.label}
+      </option>
+      <option value={Regions.SOUTHWEST.number}>
+        {Regions.SOUTHWEST.label}
+      </option>
+      <option value={Regions.TEXAS.number}>{Regions.TEXAS.label}</option>
+      <option value={Regions.UPPER_MIDWEST.number}>
         {Regions.UPPER_MIDWEST.label}
       </option>
     </select>

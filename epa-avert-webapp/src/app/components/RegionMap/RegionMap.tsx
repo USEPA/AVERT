@@ -17,6 +17,19 @@ import Regions from 'app/enums/Regions';
 import './styles.css';
 
 function RegionMap() {
+  const {
+    UPPER_MIDWEST,
+    TEXAS,
+    SOUTHWEST,
+    SOUTHEAST,
+    ROCKY_MOUNTAINS,
+    NORTHWEST,
+    NORTHEAST,
+    LOWER_MIDWEST,
+    GREAT_LAKES_MID_ATLANTIC,
+    CALIFORNIA,
+  } = Regions;
+
   return (
     <div className="avert-region-map">
       <svg
@@ -28,44 +41,64 @@ function RegionMap() {
         <title>AVERT region map</title>
 
         <g id="avert-regions">
-          <Region id={Regions.UPPER_MIDWEST.id}>
-            <UpperMidwest />
+          <Region number={UPPER_MIDWEST.number}>
+            <g id={`region-${UPPER_MIDWEST.slug.toLowerCase()}`}>
+              <UpperMidwest />
+            </g>
           </Region>
 
-          <Region id={Regions.TEXAS.id}>
-            <Texas />
+          <Region number={TEXAS.number}>
+            <g id={`region-${TEXAS.slug.toLowerCase()}`}>
+              <Texas />
+            </g>
           </Region>
 
-          <Region id={Regions.SOUTHWEST.id}>
-            <Southwest />
+          <Region number={SOUTHWEST.number}>
+            <g id={`region-${SOUTHWEST.slug.toLowerCase()}`}>
+              <Southwest />
+            </g>
           </Region>
 
-          <Region id={Regions.SOUTHEAST.id}>
-            <Southeast />
+          <Region number={SOUTHEAST.number}>
+            <g id={`region-${SOUTHEAST.slug.toLowerCase()}`}>
+              <Southeast />
+            </g>
           </Region>
 
-          <Region id={Regions.ROCKY_MOUNTAINS.id}>
-            <RockyMountains />
+          <Region number={ROCKY_MOUNTAINS.number}>
+            <g id={`region-${ROCKY_MOUNTAINS.slug.toLowerCase()}`}>
+              <RockyMountains />
+            </g>
           </Region>
 
-          <Region id={Regions.NORTHWEST.id}>
-            <Northwest />
+          <Region number={NORTHWEST.number}>
+            <g id={`region-${NORTHWEST.slug.toLowerCase()}`}>
+              <Northwest />
+            </g>
           </Region>
 
-          <Region id={Regions.NORTHEAST.id}>
-            <Northeast />
+          <Region number={NORTHEAST.number}>
+            <g id={`region-${NORTHEAST.slug.toLowerCase()}`}>
+              <Northeast />
+            </g>
           </Region>
 
-          <Region id={Regions.LOWER_MIDWEST.id}>
-            <LowerMidwest />
+          <Region number={LOWER_MIDWEST.number}>
+            <g id={`region-${LOWER_MIDWEST.slug.toLowerCase()}`}>
+              <LowerMidwest />
+            </g>
           </Region>
 
-          <Region id={Regions.GREAT_LAKES_MID_ATLANTIC.id}>
-            <GreatLakes />
+          <Region number={GREAT_LAKES_MID_ATLANTIC.number}>
+            <g id={`region-${GREAT_LAKES_MID_ATLANTIC.slug.toLowerCase()}`}>
+              <GreatLakes />
+            </g>
           </Region>
 
-          <Region id={Regions.CALIFORNIA.id}>
-            <California />
+          <Region number={CALIFORNIA.number}>
+            <g id={`region-${CALIFORNIA.slug.toLowerCase()}`}>
+              <California />
+            </g>
           </Region>
         </g>
 

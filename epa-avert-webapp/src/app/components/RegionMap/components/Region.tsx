@@ -15,9 +15,8 @@ import LowerMidwest from './LowerMidwest';
 import GreatLakes from './GreatLakes';
 import California from './California';
 
-// prettier-ignore
 type Props = {
-  id: number,
+  number: number;
   children: React.ReactElement<
     | typeof UpperMidwest
     | typeof Texas
@@ -32,15 +31,15 @@ type Props = {
   >;
 };
 
-function Region({ id, children }: Props) {
+function Region({ number, children }: Props) {
   const dispatch = useDispatch();
-  const regionId = useTypedSelector(({ region }) => region.id);
+  const regionNumber = useTypedSelector(({ region }) => region.number);
 
   return (
     <g
       className="avert-region"
-      onClick={(ev) => dispatch(selectRegion(id))}
-      data-active={id === regionId}
+      onClick={(ev) => dispatch(selectRegion(number))}
+      data-active={number === regionNumber}
     >
       {children}
     </g>

@@ -46,42 +46,52 @@
   opacity: 1;
 }
 
-#california {
+/* CALIFORNIA */
+#region-ca {
   fill: #fed330;
 }
 
-#great-lakes {
+/* GREAT_LAKES_MID_ATLANTIC */
+#region-emw {
   fill: #db742b;
 }
 
-#lower-midwest {
+/* LOWER_MIDWEST */
+#region-sc {
   fill: #a74c8f;
 }
 
-#northeast {
+/* NORTHEAST */
+#region-ne {
   fill: #d52074;
 }
 
-#northwest {
+/* NORTHWEST */
+#region-nw {
   fill: #364f95;
 }
 
-#rocky-mountains {
+/* ROCKY_MOUNTAINS */
+#region-rm {
   fill: #67b187;
 }
 
-#southeast {
+/* SOUTHEAST */
+#region-se {
   fill: #bdc736;
 }
 
-#southwest {
+/* SOUTHWEST */
+#region-sw {
   fill: #d85029;
 }
 
-#texas {
+/* TEXAS */
+#region-tx {
   fill: #fda929;
 }
 
-#upper-midwest {
+/* UPPER_MIDWEST */
+#region-wmw {
   fill: #48b5d8;
 }

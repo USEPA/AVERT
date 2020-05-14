@@ -1,96 +1,81 @@
-// @flow
+type Region = {
+  number: number;
+  slug: string;
+  label: string;
+  grid_loss: number;
+};
 
-// type Region = {|
-//   id: number,
-//   slug: string,
-//   label: string,
-//   original_slug: string,
-//   grid_loss: number,
-// |};
+export type RegionKeys =
+  | 'CALIFORNIA'
+  | 'GREAT_LAKES_MID_ATLANTIC'
+  | 'NORTHEAST'
+  | 'NORTHWEST'
+  | 'ROCKY_MOUNTAINS'
+  | 'LOWER_MIDWEST'
+  | 'SOUTHEAST'
+  | 'SOUTHWEST'
+  | 'TEXAS'
+  | 'UPPER_MIDWEST';
 
-// type RegionsMap = {|
-//   CALIFORNIA: Region,
-//   GREAT_LAKES_MID_ATLANTIC: Region,
-//   NORTHEAST: Region,
-//   NORTHWEST: Region,
-//   ROCKY_MOUNTAINS: Region,
-//   LOWER_MIDWEST: Region,
-//   SOUTHEAST: Region,
-//   SOUTHWEST: Region,
-//   TEXAS: Region,
-//   UPPER_MIDWEST: Region,
-// |};
-
-// const Regions: RegionsMap = {
-const Regions = {
+const Regions: { [key in RegionKeys]: Region } = {
   CALIFORNIA: {
-    id: 1,
+    number: 1,
     slug: 'CA',
     label: 'California',
-    original_slug: 'CA',
     grid_loss: 8.54,
   },
   GREAT_LAKES_MID_ATLANTIC: {
-    id: 2,
+    number: 2,
     slug: 'EMW',
     label: 'Great Lakes / Mid-Atlantic',
-    original_slug: 'EMW',
     grid_loss: 6.74,
   },
   NORTHEAST: {
-    id: 3,
+    number: 3,
     slug: 'NE',
     label: 'Northeast',
-    original_slug: 'NE',
     grid_loss: 6.74,
   },
   NORTHWEST: {
-    id: 4,
+    number: 4,
     slug: 'NW',
     label: 'Northwest',
-    original_slug: 'NW',
     grid_loss: 8.54,
   },
   ROCKY_MOUNTAINS: {
-    id: 5,
+    number: 5,
     slug: 'RM',
     label: 'Rocky Mountains',
-    original_slug: 'RM',
     grid_loss: 8.54,
   },
   LOWER_MIDWEST: {
-    id: 6,
+    number: 6,
     slug: 'SC',
     label: 'Lower Midwest',
-    original_slug: 'SC',
     grid_loss: 6.74,
   },
   SOUTHEAST: {
-    id: 7,
+    number: 7,
     slug: 'SE',
     label: 'Southeast',
-    original_slug: 'SE',
     grid_loss: 6.74,
   },
   SOUTHWEST: {
-    id: 8,
-    slug: 'SW',
+    number: 8,
+    slug: 'SW', // 'AZNM'
     label: 'Southwest',
-    original_slug: 'AZNM',
     grid_loss: 8.54,
   },
   TEXAS: {
-    id: 9,
+    number: 9,
     slug: 'TX',
     label: 'Texas',
-    original_slug: 'TX',
     grid_loss: 4.83,
   },
   UPPER_MIDWEST: {
-    id: 10,
+    number: 10,
     slug: 'WMW',
     label: 'Upper Midwest',
-    original_slug: 'WMW',
     grid_loss: 6.74,
   },
 };

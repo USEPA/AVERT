@@ -8,19 +8,19 @@ import Regions from 'app/enums/Regions';
 type RegionAction = {
   type: 'region/SELECT_REGION';
   payload: {
-    id: number;
+    number: number;
     name: string;
   };
 };
 
 type RegionState = {
-  id: number;
+  number: number;
   name: string;
 };
 
 // reducer
 const initialState: RegionState = {
-  id: 0,
+  number: 0,
   name: '',
 };
 
@@ -32,7 +32,7 @@ export default function reducer(
     case 'region/SELECT_REGION':
       return {
         ...state,
-        id: action.payload.id,
+        number: action.payload.number,
         name: action.payload.name,
       };
 
@@ -42,17 +42,19 @@ export default function reducer(
 }
 
 // action creators
-export function selectRegion(regionId: number): AppThunk {
+export function selectRegion(regionNumber: number): AppThunk {
   return (dispatch) => {
-    avert.region = regionId;
+    avert.region = regionNumber;
 
-    const region = Object.values(Regions).find((r) => r.id === regionId);
+    const selectedRegion = Object.values(Regions).find((region) => {
+      return region.number === regionNumber;
+    });
 
     dispatch({
       type: 'region/SELECT_REGION',
       payload: {
-        id: regionId,
-        name: region ? region.label : '',
+        number: regionNumber,
+        name: selectedRegion ? selectedRegion.label : '',
       },
     });
   };

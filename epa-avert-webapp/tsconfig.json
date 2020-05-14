@@ -14,7 +14,6 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
-    "types": ["cypress", "@types/testing-library__cypress"],
     "baseUrl": "src"
   },
   "include": ["src"]

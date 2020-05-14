@@ -23,7 +23,9 @@ class Avert {
   }
 
   set region(regionId) {
-    const regionKey = Object.keys(Regions).find(key => Regions[key].id === regionId); // prettier-ignore
+    const regionKey = Object.keys(Regions).find((key) => {
+      return Regions[key].number === regionId;
+    });
     this._region = Regions[regionKey];
   }
 
