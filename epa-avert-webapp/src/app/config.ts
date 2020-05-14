@@ -17,7 +17,7 @@ export type RegionKeys =
   | 'TEXAS'
   | 'UPPER_MIDWEST';
 
-const Regions: { [key in RegionKeys]: Region } = {
+export const regions: { [key in RegionKeys]: Region } = {
   CALIFORNIA: {
     number: 1,
     slug: 'CA',
@@ -79,5 +79,3 @@ const Regions: { [key in RegionKeys]: Region } = {
     grid_loss: 6.74,
   },
 };
-
-export default Regions;

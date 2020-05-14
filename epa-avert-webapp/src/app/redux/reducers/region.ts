@@ -3,7 +3,7 @@ import { AppThunk } from 'app/redux/index';
 // engines
 import { avert } from 'app/engines';
 // enums
-import Regions from 'app/enums/Regions';
+import { regions } from 'app/config';
 
 type RegionAction = {
   type: 'region/SELECT_REGION';
@@ -46,7 +46,7 @@ export function selectRegion(regionNumber: number): AppThunk {
   return (dispatch) => {
     avert.region = regionNumber;
 
-    const selectedRegion = Object.values(Regions).find((region) => {
+    const selectedRegion = Object.values(regions).find((region) => {
       return region.number === regionNumber;
     });
 

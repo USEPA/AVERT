@@ -1,5 +1,5 @@
-// enums
-import Regions from 'app/enums/Regions';
+// config
+import { regions } from 'app/config';
 // engines
 import Rdf from 'app/engines/Rdf';
 import EereEngine from 'app/engines/EereEngine';
@@ -23,10 +23,10 @@ class Avert {
   }
 
   set region(regionId) {
-    const regionKey = Object.keys(Regions).find((key) => {
-      return Regions[key].number === regionId;
+    const regionKey = Object.keys(regions).find((key) => {
+      return regions[key].number === regionId;
     });
-    this._region = Regions[regionKey];
+    this._region = regions[regionKey];
   }
 
   get regionSlug() {

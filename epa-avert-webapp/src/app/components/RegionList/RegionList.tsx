@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 import { selectRegion } from 'app/redux/reducers/region';
-// enums
-import Regions from 'app/enums/Regions';
+// config
+import { regions } from 'app/config';
 // styles
 import './styles.css';
 
@@ -21,33 +21,33 @@ function RegionList() {
       <option value={0} disabled>
         Select Region
       </option>
-      <option value={Regions.CALIFORNIA.number}>
-        {Regions.CALIFORNIA.label}
+      <option value={regions.CALIFORNIA.number}>
+        {regions.CALIFORNIA.label}
       </option>
-      <option value={Regions.GREAT_LAKES_MID_ATLANTIC.number}>
-        {Regions.GREAT_LAKES_MID_ATLANTIC.label}
+      <option value={regions.GREAT_LAKES_MID_ATLANTIC.number}>
+        {regions.GREAT_LAKES_MID_ATLANTIC.label}
       </option>
-      <option value={Regions.LOWER_MIDWEST.number}>
-        {Regions.LOWER_MIDWEST.label}
+      <option value={regions.LOWER_MIDWEST.number}>
+        {regions.LOWER_MIDWEST.label}
       </option>
-      <option value={Regions.NORTHEAST.number}>
-        {Regions.NORTHEAST.label}
+      <option value={regions.NORTHEAST.number}>
+        {regions.NORTHEAST.label}
       </option>
-      <option value={Regions.NORTHWEST.number}>
-        {Regions.NORTHWEST.label}
+      <option value={regions.NORTHWEST.number}>
+        {regions.NORTHWEST.label}
       </option>
-      <option value={Regions.ROCKY_MOUNTAINS.number}>
-        {Regions.ROCKY_MOUNTAINS.label}
+      <option value={regions.ROCKY_MOUNTAINS.number}>
+        {regions.ROCKY_MOUNTAINS.label}
       </option>
-      <option value={Regions.SOUTHEAST.number}>
-        {Regions.SOUTHEAST.label}
+      <option value={regions.SOUTHEAST.number}>
+        {regions.SOUTHEAST.label}
       </option>
-      <option value={Regions.SOUTHWEST.number}>
-        {Regions.SOUTHWEST.label}
+      <option value={regions.SOUTHWEST.number}>
+        {regions.SOUTHWEST.label}
       </option>
-      <option value={Regions.TEXAS.number}>{Regions.TEXAS.label}</option>
-      <option value={Regions.UPPER_MIDWEST.number}>
-        {Regions.UPPER_MIDWEST.label}
+      <option value={regions.TEXAS.number}>{regions.TEXAS.label}</option>
+      <option value={regions.UPPER_MIDWEST.number}>
+        {regions.UPPER_MIDWEST.label}
       </option>
     </select>
   );

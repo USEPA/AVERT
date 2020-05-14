@@ -1,5 +1,5 @@
-// enums
-import Region from 'app/enums/Regions';
+// config
+import { Region } from 'app/config';
 // engines
 import Rdf from 'app/engines/Rdf';
 import EereEngine from 'app/engines/EereEngine';
