@@ -33,8 +33,7 @@ describe('AVERT', () => {
 
   describe('Set EE/RE Impacts', () => {
     beforeEach(() => {
-      const region = 'Rocky Mountains';
-      cy.get('@regionsSelect').select(region);
+      cy.get('@regionsSelect').select('Rocky Mountains');
       cy.findAllByText('Set EE/RE Impacts').filter('.avert-next').click();
 
       cy.findByText('Reductions spread evenly throughout the year').as(
@@ -81,38 +80,155 @@ describe('AVERT', () => {
       cy.get('@toggleE').click();
 
       cy.findByText('Calculate EE/RE Impacts').as('calculateBtn');
+      cy.findAllByText('Get Results').filter('.avert-next').as('resultsBtn');
     });
 
-    it('Entering a value for wind capacity and clicking the calculate button displays the EE/RE profile chart', () => {
-      const amount = '800';
+    it('Entering a value for wind capacity displays the EE/RE profile chart and enables the “Get Results” button', () => {
       cy.get('@toggleC').click();
-      cy.get('@windCapacity').type(amount);
+      cy.get('@windCapacity').type('444');
+      cy.get('@resultsBtn').should('have.class', 'avert-button-disabled');
       cy.get('@calculateBtn').click();
-
       cy.findByText('EE/RE profile based on values entered:');
+      cy.get('@resultsBtn').should('not.have.class', 'avert-button-disabled');
+    });
+
+    it('Entering a value over the 15% threshold for wind capacity displays the warning message below the chart', () => {
+      cy.get('@toggleC').click();
+      cy.get('@windCapacity').type('888');
+      cy.get('@calculateBtn').click();
+      cy.findAllByText('WARNING:').filter(':visible');
+      cy.findByText('25.06');
+      cy.findByText('March 18 at 0:00 AM');
+    });
+
+    it('Entering a value over the 30% threshold for annual generation and wind capacity displays the error message below the chart', () => {
+      cy.get('@toggleA').click();
+      cy.get('@annualGwh').type('2222');
+      cy.get('@toggleC').click();
+      cy.get('@windCapacity').type('888');
+      cy.get('@calculateBtn').click();
+      cy.findAllByText('ERROR:').filter(':visible');
+      cy.findByText('33.2');
+      cy.findByText('March 18 at 0:00 AM');
+    });
+
+    it('Entering a value over the vaild limit for wind capacity displays the error message below the input', () => {
+      cy.get('@toggleC').click();
+      cy.get('@windCapacity').type('889');
+      cy.findByText('Please enter a number between 0 and 888.6.');
+      cy.get('@calculateBtn').should('have.class', 'avert-button-disabled');
+      cy.get('@resultsBtn').should('have.class', 'avert-button-disabled');
     });
   });
 
   describe('Get Results', () => {
     beforeEach(() => {
-      const region = 'Rocky Mountains';
-      cy.get('@regionsSelect').select(region);
+      cy.get('@regionsSelect').select('Rocky Mountains');
       cy.findAllByText('Set EE/RE Impacts').filter('.avert-next').click();
 
-      const amount = '800';
       cy.findByText('Wind').click();
-      cy.findAllByText('Total capacity:')
-        .filter(':visible')
-        .next()
-        .type(amount);
-
+      cy.findAllByText('Total capacity:').filter(':visible').next().type('888');
       cy.findByText('Calculate EE/RE Impacts').click();
-
       cy.findAllByText('Get Results').filter('.avert-next').click();
+      cy.findByText('LOADING...', { timeout: 60000 }).should('not.exist');
     });
 
-    it('TODO', () => {
-      cy.findByText('Total emissions of fossil EGUs', { timeout: 60000 });
+    it('Annual Regional Displacements table should display the correct results', () => {
+      cy.findByText('Generation (MWh)')
+        .next()
+        .should('contain', '49,701,740') // Original
+        .next()
+        .should('contain', '46,985,610') // Post-EE/RE
+        .next()
+        .should('contain', '-2,716,120'); // EE/RE Impacts
+
+      cy.findByText('Total emissions of fossil EGUs')
+        .parent()
+        .as('emissionTotals');
+
+      cy.get('@emissionTotals')
+        .next()
+        .as('so2Totals')
+        .children()
+        .eq(1)
+        .should('contain', '43,727,730') // Original
+        .next()
+        .should('contain', '42,277,640') // Post-EE/RE
+        .next()
+        .should('contain', '-1,450,080'); // EE/RE Impacts
+
+      cy.get('@so2Totals')
+        .next()
+        .as('noxTotals')
+        .children()
+        .eq(1)
+        .should('contain', '54,606,950') // Original
+        .next()
+        .should('contain', '51,565,750') // Post-EE/RE
+        .next()
+        .should('contain', '-3,041,200'); // EE/RE Impacts
+
+      cy.get('@noxTotals')
+        .next()
+        .as('co2Totals')
+        .children()
+        .eq(1)
+        .should('contain', '46,303,390') // Original
+        .next()
+        .should('contain', '44,052,640') // Post-EE/RE
+        .next()
+        .should('contain', '-2,250,750'); // EE/RE Impacts
+
+      cy.get('@co2Totals')
+        .next()
+        .as('pm25Totals')
+        .children()
+        .eq(1)
+        .should('contain', '1,309,910') // Original
+        .next()
+        .should('contain', '1,229,080') // Post-EE/RE
+        .next()
+        .should('contain', '-80,820'); // EE/RE Impacts
+
+      cy.findByText('Emission rates of fossil EGUs')
+        .parent()
+        .as('emissionRates');
+
+      cy.get('@emissionRates')
+        .next()
+        .as('so2Rates')
+        .children()
+        .eq(1)
+        .should('contain', '0.88') // Original
+        .next()
+        .should('contain', '0.90'); // Post-EE/RE
+
+      cy.get('@so2Rates')
+        .next()
+        .as('noxRates')
+        .children()
+        .eq(1)
+        .should('contain', '1.10') // Original
+        .next()
+        .should('contain', '1.10'); // Post-EE/RE
+
+      cy.get('@noxRates')
+        .next()
+        .as('co2Rates')
+        .children()
+        .eq(1)
+        .should('contain', '0.93') // Original
+        .next()
+        .should('contain', '0.94'); // Post-EE/RE
+
+      cy.get('@co2Rates')
+        .next()
+        .as('pm25Rates')
+        .children()
+        .eq(1)
+        .should('contain', '0.03') // Original
+        .next()
+        .should('contain', '0.03'); // Post-EE/RE
     });
   });
 });
