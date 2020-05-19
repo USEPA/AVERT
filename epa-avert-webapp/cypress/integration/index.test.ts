@@ -133,7 +133,7 @@ describe('AVERT', () => {
       cy.findByText('LOADING...', { timeout: 60000 }).should('not.exist');
     });
 
-    it('Annual Regional Displacements table should display the correct results', () => {
+    it('Annual Regional Displacements table displays the correct results', () => {
       cy.findByText('Generation (MWh)')
         .next()
         .should('contain', '49,701,740') // Original
@@ -229,6 +229,60 @@ describe('AVERT', () => {
         .should('contain', '0.03') // Original
         .next()
         .should('contain', '0.03'); // Post-EE/RE
+    });
+
+    it('Annual State Emission Changes table displays the correct results', () => {
+      cy.findByText('Colorado')
+        .parent()
+        .as('coloradoEmissions')
+        .children()
+        .eq(1)
+        .should('contain', '-1,198,630') // SO2 (lbs)
+        .next()
+        .should('contain', '-2,758,223') // NOX (lbs)
+        .next()
+        .should('contain', '-1,980,758') // CO2 (tons)
+        .next()
+        .should('contain', '-77,839'); // PM2.5 (lbs)
+
+      cy.get('@coloradoEmissions')
+        .next()
+        .as('newMexicoEmissions')
+        .children()
+        .eq(1)
+        .should('contain', '-93,698') // SO2 (lbs)
+        .next()
+        .should('contain', '-152,133') // NOX (lbs)
+        .next()
+        .should('contain', '-37,948') // CO2 (tons)
+        .next()
+        .should('contain', '-479'); // PM2.5 (lbs)
+
+      cy.get('@newMexicoEmissions')
+        .next()
+        .as('southDakotaEmissions')
+        .children()
+        .eq(1)
+        .should('contain', '0') // SO2 (lbs)
+        .next()
+        .should('contain', '-1,439') // NOX (lbs)
+        .next()
+        .should('contain', '-1,267') // CO2 (tons)
+        .next()
+        .should('contain', '0'); // PM2.5 (lbs)
+
+      cy.get('@southDakotaEmissions')
+        .next()
+        .as('wyomingEmissions')
+        .children()
+        .eq(1)
+        .should('contain', '-157,757') // SO2 (lbs)
+        .next()
+        .should('contain', '-129,414') // NOX (lbs)
+        .next()
+        .should('contain', '-230,783') // CO2 (tons)
+        .next()
+        .should('contain', '-2,512'); // PM2.5 (lbs)
     });
   });
 });
