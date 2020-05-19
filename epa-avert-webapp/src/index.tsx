@@ -3,13 +3,21 @@ import 'react-app-polyfill/stable';
 import 'core-js/features/array/includes';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 // components
-import Root from './app/components/Root';
+import App from 'app/components/App/App';
 // store
-import store from './app/store';
+import store from 'app/redux/store';
 
-ReactDOM.render(<Root store={store} />, document.getElementById('root'));
+const rootElement = document.getElementById('root');
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  rootElement,
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
