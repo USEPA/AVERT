@@ -1,9 +1,8 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
 import { DataByMonth, MonthlyChanges } from 'app/redux/shared';
-// enums
-import States from 'app/enums/States';
-import FipsCodes from 'app/enums/FipsCodes';
+// config
+import { states, fipsCodes } from 'app/config';
 
 export type MonthlyAggregation = 'region' | 'state' | 'county';
 
@@ -409,8 +408,8 @@ function cobraRow(
   county: string,
   action: { nox: MonthlyChanges; so2: MonthlyChanges; pm25: MonthlyChanges },
 ): CobraDataRow {
-  const fipsCounty = FipsCodes.filter((item) => {
-    return item['state'] === States[state] && item['county'] === county;
+  const fipsCounty = fipsCodes.filter((item) => {
+    return item['state'] === states[state] && item['county'] === county;
   })[0];
 
   const fipsCode = fipsCounty ? fipsCounty['code'] : '';
@@ -441,7 +440,7 @@ function cobraRow(
 
   return {
     FIPS: fipsCode,
-    STATE: States[state],
+    STATE: states[state],
     COUNTY: countyName,
     TIER1NAME: 'FUEL COMB. ELEC. UTIL.',
     NOx_REDUCTIONS_TONS: formatNumber(noxDataTons),

@@ -12,8 +12,8 @@ import {
   selectMonthlyState,
   selectMonthlyCounty,
 } from 'app/redux/reducers/monthlyEmissions';
-// enums
-import States from 'app/enums/States';
+// config
+import { states } from 'app/config';
 // styles
 import './styles.css';
 
@@ -145,7 +145,7 @@ function EmissionsChart({ heading }: Props) {
 
           {availableStates.map((state, index) => (
             <option key={index} value={state}>
-              {States[state]}
+              {states[state]}
             </option>
           ))}
         </select>
@@ -282,7 +282,7 @@ function EmissionsChart({ heading }: Props) {
   }
 
   if (aggregation === 'state') {
-    location = selectedState === '' ? '' : `${States[selectedState]}`;
+    location = selectedState === '' ? '' : `${states[selectedState]}`;
   }
 
   if (aggregation === 'county') {
@@ -294,7 +294,7 @@ function EmissionsChart({ heading }: Props) {
         : `${selectedCounty} County`;
 
     location =
-      selectedCounty === '' ? '' : `${countyName}, ${States[selectedState]}`;
+      selectedCounty === '' ? '' : `${countyName}, ${states[selectedState]}`;
   }
 
   function formatTitle(pollutant: string) {

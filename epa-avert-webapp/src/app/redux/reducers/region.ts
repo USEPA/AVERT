@@ -2,7 +2,7 @@
 import { AppThunk } from 'app/redux/index';
 // engines
 import { avert } from 'app/engines';
-// enums
+// config
 import { regions } from 'app/config';
 
 type RegionAction = {
