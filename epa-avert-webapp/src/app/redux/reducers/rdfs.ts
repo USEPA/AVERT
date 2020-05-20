@@ -157,14 +157,14 @@ export function fetchRegion(): AppThunk {
     return fetch(`${api.baseUrl}/api/v1/rdf/${region.slug}`)
       .then((response) => response.json())
       .then((json: RdfJSON) => {
-        avert.rdf = json;
+        avert.rdf = json; // TODO: remove this when its no longer needed
 
         // set eere profile's first level validation limits (sets 'eereProfile._limits')
         eereProfile.limits = {
-          hours: avert.rdf.months.length,
-          annualGwh: avert.rdf.maxAnnualGwh, // json.limits.max_ee_yearly_gwh
-          renewables: avert.rdf.maxRenewableMwh,
-          percent: avert.rdf.maxEEPercent,
+          hours: json.regional_load.length,
+          annualGwh: json.limits.max_ee_yearly_gwh,
+          renewables: json.limits.max_solar_wind_mwh,
+          percent: json.limits.max_ee_percent,
         };
 
         dispatch({

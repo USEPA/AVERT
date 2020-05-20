@@ -49,9 +49,12 @@ class Avert {
     const regionKey = Object.keys(regions).find((key) => {
       return regions[key].number === regionNumber;
     });
-    const region = regions[regionKey];
 
-    this._eereEngine = new EereEngine(this._eereProfile, this._rdf, region);
+    this._eereEngine = new EereEngine(
+      this._eereProfile,
+      this._rdf,
+      regions[regionKey].lineLoss,
+    );
   }
 
   get eereLoad() {
