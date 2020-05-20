@@ -4,17 +4,62 @@ import { AppThunk } from 'app/redux/index';
 import { avert, eereProfile } from 'app/engines';
 
 type RdfJSON = {
-  region: any; // TODO
-  run: any; // TODO
-  limits: any; // TODO
-  regional_load: any[]; // TODO
+  region: {
+    region_abbv: string;
+    region_name: string;
+    region_states: string; // comma seperated string of state abbreviations
+  };
+  run: {
+    file_name: string[];
+    mc_gen_runs: number;
+    mc_runs: number;
+    region_id: number;
+    year: number;
+  };
+  limits: {
+    created_at: null;
+    id: number;
+    max_ee_percent: number;
+    max_ee_yearly_gwh: number;
+    max_solar_wind_mwh: number;
+    region_id: number;
+    updated_at: null;
+    year: number;
+  };
+  regional_load: {
+    day: number;
+    hour: number;
+    hour_of_year: number;
+    hourly_limit: number;
+    month: number;
+    regional_load_mw: number;
+    year: number;
+  }[];
   load_bin_edges: number[];
-  data: any;
+  data: {
+    generation: any;
+    heat: any;
+    heat_not: any;
+    co2: any;
+    co2_not: any;
+    nox: any;
+    nox_not: any;
+    pm25: any;
+    pm25_not: any;
+    so2: any;
+    so2_not: any;
+  };
 };
 
 type EereJSON = {
   region: string;
-  data: any[];
+  data: {
+    date: string;
+    hour: number;
+    rooftop_pv: number;
+    utility_pv: number;
+    wind: number;
+  }[];
 };
 
 type RdfsAction =
@@ -39,12 +84,43 @@ const initialState: RdfsState = {
     data: [],
   },
   rdf: {
-    region: null,
-    run: null,
-    limits: null,
+    region: {
+      region_abbv: '',
+      region_name: '',
+      region_states: '',
+    },
+    run: {
+      file_name: [],
+      mc_gen_runs: 0,
+      mc_runs: 0,
+      region_id: 0,
+      year: 0,
+    },
+    limits: {
+      created_at: null,
+      id: 0,
+      max_ee_percent: 0,
+      max_ee_yearly_gwh: 0,
+      max_solar_wind_mwh: 0,
+      region_id: 0,
+      updated_at: null,
+      year: 0,
+    },
     regional_load: [],
     load_bin_edges: [],
-    data: null,
+    data: {
+      generation: null,
+      heat: null,
+      heat_not: null,
+      co2: null,
+      co2_not: null,
+      nox: null,
+      nox_not: null,
+      pm25: null,
+      pm25_not: null,
+      so2: null,
+      so2_not: null,
+    },
   },
 };
 
@@ -86,7 +162,7 @@ export function fetchRegion(): AppThunk {
         // set eere profile's first level validation limits (sets 'eereProfile._limits')
         eereProfile.limits = {
           hours: avert.rdf.months.length,
-          annualGwh: avert.rdf.maxAnnualGwh,
+          annualGwh: avert.rdf.maxAnnualGwh, // json.limits.max_ee_yearly_gwh
           renewables: avert.rdf.maxRenewableMwh,
           percent: avert.rdf.maxEEPercent,
         };
