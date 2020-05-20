@@ -15,7 +15,6 @@ class Avert {
   constructor() {
     this._rdf = false;
     this._eereDefaults = {};
-    this._eereProfile = {};
 
     /** @type {EERELoad} */
     this._eereEngine = {};
@@ -37,17 +36,13 @@ class Avert {
     this._rdf = new Rdf({ defaults: data });
   }
 
-  set eereProfile(profile) {
-    this._eereProfile = profile;
-  }
-
-  calculateEereLoad(regionNumber) {
+  calculateEereLoad(regionNumber, eereInputs) {
     const regionKey = Object.keys(regions).find((key) => {
       return regions[key].number === regionNumber;
     });
 
     this._eereEngine = new EereEngine(
-      this._eereProfile,
+      eereInputs,
       this._rdf,
       regions[regionKey].lineLoss,
     );

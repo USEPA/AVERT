@@ -19,13 +19,17 @@ class EereEngine {
   }
 
   _calculateTopPercentile() {
-    const k = 1 - this._eereProfile.topHours / 100;
-    return stats.percentile(this._rdf.regionalLoads, k);
+    const broadProgramInput = Number(this._eereProfile.broadProgram);
+    const topHoursInput = Number(this._eereProfile.topHours);
+    const hours = broadProgramInput ? 100 : topHoursInput;
+    const ptile = 1 - hours / 100;
+    return stats.percentile(this._rdf.regionalLoads, ptile);
   }
 
   _calculateHourlyMwReduction() {
+    const annualGwhInput = Number(this._eereProfile.annualGwh);
     const hours = this._rdf.regionalLoads.length;
-    return (this._eereProfile.annualGwh * 1000) / hours;
+    return (annualGwhInput * 1000) / hours;
   }
 
   // prettier-ignore
@@ -34,17 +38,24 @@ class EereEngine {
     const hardLimit = this._rdf.hardLimits[index];
     const hourlyDefault = this._rdf.defaults.data[index];
 
+    const constantMwhInput = Number(this._eereProfile.constantMwh);
+    const broadProgramInput = Number(this._eereProfile.broadProgram);
+    const reductionInput = Number(this._eereProfile.reduction);
+    const windCapacityInput = Number(this._eereProfile.windCapacity);
+    const utilitySolarInput = Number(this._eereProfile.utilitySolar);
+    const rooftopSolarInput = Number(this._eereProfile.rooftopSolar);
+
     // A: Base Load
     const hourlyMwReduction = this._hourlyMwReduction * this._lineLoss;
-    const constantMwh = this._eereProfile.constantMwh * this._lineLoss;
+    const constantMwh = constantMwhInput * this._lineLoss;
     // B: Peak Hours
-    const percentReduction = -(this._eereProfile.reduction / 100) * this._lineLoss;
+    const percentReduction = -1 * (broadProgramInput || reductionInput) / 100 * this._lineLoss;
     // C: Wind
     // D: Utility-scale solar photovoltaic
     // E: Distributed rooftop solar photovoltaic
-    const windCapacity = (this._eereProfile.windCapacity * hourlyDefault.wind);
-    const utilitySolar = (this._eereProfile.utilitySolar * hourlyDefault.utility_pv);
-    const rooftopSolar = (this._eereProfile.rooftopSolar * hourlyDefault.rooftop_pv * this._lineLoss);
+    const windCapacity = windCapacityInput * hourlyDefault.wind;
+    const utilitySolar = utilitySolarInput * hourlyDefault.utility_pv;
+    const rooftopSolar = rooftopSolarInput * hourlyDefault.rooftop_pv * this._lineLoss;
     const renewableProfile = -1 * (windCapacity + utilitySolar + rooftopSolar);
 
     const initialLoad = (load > this._topPercentile) ? (load * percentReduction) : 0;

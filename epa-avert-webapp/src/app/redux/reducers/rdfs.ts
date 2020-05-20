@@ -1,7 +1,7 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
 // engines
-import { avert, eereProfile } from 'app/engines';
+import { avert } from 'app/engines';
 
 type RdfJSON = {
   region: {
@@ -158,14 +158,6 @@ export function fetchRegion(): AppThunk {
       .then((response) => response.json())
       .then((json: RdfJSON) => {
         avert.rdf = json; // TODO: remove this when its no longer needed
-
-        // TODO: remove this when its no longer needed
-        eereProfile.limits = {
-          hours: json.regional_load.length,
-          annualGwh: json.limits.max_ee_yearly_gwh,
-          renewables: json.limits.max_solar_wind_mwh,
-          percent: json.limits.max_ee_percent,
-        };
 
         const {
           max_ee_yearly_gwh,
