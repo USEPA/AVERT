@@ -1,4 +1,4 @@
-describe('Get Results', () => {
+describe('Get Results – windCapacity', () => {
   beforeEach(() => {
     cy.visit('/');
 

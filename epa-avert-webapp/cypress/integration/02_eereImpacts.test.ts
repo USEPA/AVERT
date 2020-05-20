@@ -5,9 +5,7 @@ describe('Set EE/RE Impacts', () => {
     cy.findAllByText('Select Region')
       .filter('option')
       .parent()
-      .as('regionsSelect');
-
-    cy.get('@regionsSelect').select('Rocky Mountains');
+      .select('Rocky Mountains');
     cy.findAllByText('Set EE/RE Impacts').filter('.avert-next').click();
 
     cy.findByText('Reductions spread evenly throughout the year').as('toggleA');
