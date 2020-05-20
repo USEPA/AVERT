@@ -2,6 +2,8 @@
 import { AppThunk } from 'app/redux/index';
 // engines
 import { avert } from 'app/engines';
+// config
+import { RegionKeys, regions } from 'app/config';
 
 type EereAction =
   | {
@@ -313,19 +315,22 @@ export default function reducer(
 // action creators
 function validateInput(
   inputField: InputFields,
-  input: string,
+  inputValue: string,
   upperLimit: number,
-  inputFieldsWithErrors: InputFields[],
-) {
-  const value = Number(input);
-  const invalidInput = isNaN(value) || value < 0 || value > upperLimit;
+): AppThunk {
+  return (dispatch, getState) => {
+    const { eere } = getState();
 
-  // remove input field being validated from existing fields with errors
-  const errors = inputFieldsWithErrors.filter((field) => field !== inputField);
+    const value = Number(inputValue);
+    const invalidInput = isNaN(value) || value < 0 || value > upperLimit;
 
-  return {
-    type: 'eere/VALIDATE_EERE',
-    errors: invalidInput ? [...errors, inputField] : errors,
+    // remove input field being validated from existing fields with errors
+    const errors = eere.errors.filter((field) => field !== inputField);
+
+    return dispatch({
+      type: 'eere/VALIDATE_EERE',
+      errors: invalidInput ? [...errors, inputField] : errors,
+    });
   };
 }
 
@@ -338,9 +343,7 @@ export function updateEereAnnualGwh(input: string): AppThunk {
       text: input,
     });
 
-    dispatch(
-      validateInput('annualGwh', input, eere.limits.annualGwh, eere.errors),
-    );
+    dispatch(validateInput('annualGwh', input, eere.limits.annualGwh));
   };
 }
 
@@ -353,9 +356,7 @@ export function updateEereConstantMw(input: string): AppThunk {
       text: input,
     });
 
-    dispatch(
-      validateInput('constantMwh', input, eere.limits.constantMwh, eere.errors),
-    );
+    dispatch(validateInput('constantMwh', input, eere.limits.constantMwh));
   };
 }
 
@@ -368,9 +369,7 @@ export function updateEereBroadBasedProgram(input: string): AppThunk {
       text: input,
     });
 
-    dispatch(
-      validateInput('reduction', input, eere.limits.percent, eere.errors),
-    );
+    dispatch(validateInput('reduction', input, eere.limits.percent));
   };
 }
 
@@ -383,22 +382,18 @@ export function updateEereReduction(input: string): AppThunk {
       text: input,
     });
 
-    dispatch(
-      validateInput('reduction', input, eere.limits.percent, eere.errors),
-    );
+    dispatch(validateInput('reduction', input, eere.limits.percent));
   };
 }
 
 export function updateEereTopHours(input: string): AppThunk {
-  return (dispatch, getState) => {
-    const { eere } = getState();
-
+  return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_TOP_HOURS',
       text: input,
     });
 
-    dispatch(validateInput('topHours', input, 100, eere.errors));
+    dispatch(validateInput('topHours', input, 100));
   };
 }
 
@@ -411,9 +406,7 @@ export function updateEereWindCapacity(input: string): AppThunk {
       text: input,
     });
 
-    dispatch(
-      validateInput('windCapacity', input, eere.limits.renewables, eere.errors),
-    );
+    dispatch(validateInput('windCapacity', input, eere.limits.renewables));
   };
 }
 
@@ -426,9 +419,7 @@ export function updateEereUtilitySolar(input: string): AppThunk {
       text: input,
     });
 
-    dispatch(
-      validateInput('utilitySolar', input, eere.limits.renewables, eere.errors),
-    );
+    dispatch(validateInput('utilitySolar', input, eere.limits.renewables));
   };
 }
 
@@ -441,16 +432,7 @@ export function updateEereRooftopSolar(input: string): AppThunk {
       text: input,
     });
 
-    dispatch(
-      validateInput('rooftopSolar', input, eere.limits.renewables, eere.errors),
-    );
-  };
-}
-
-export function completeEereCalculation(hourlyEere: HourlyEere[]) {
-  return {
-    type: 'eere/COMPLETE_EERE_CALCULATION',
-    hourlyEere: hourlyEere,
+    dispatch(validateInput('rooftopSolar', input, eere.limits.renewables));
   };
 }
 
@@ -485,13 +467,28 @@ export function updateExceedances(soft: number[], hard: number[]): AppThunk {
 
 export function calculateEereProfile(): AppThunk {
   return (dispatch, getState) => {
-    const { region, eere } = getState();
+    const { region, rdfs, eere } = getState();
 
-    dispatch({ type: 'eere/SUBMIT_EERE_CALCULATION' });
+    dispatch({
+      type: 'eere/SUBMIT_EERE_CALCULATION',
+    });
 
-    avert.calculateEereLoad(region.number, eere.inputs);
+    const regionKey = (Object.keys(regions) as RegionKeys[]).find((key) => {
+      return regions[key].number === region.number;
+    });
 
-    dispatch(completeEereCalculation(avert.eereLoad.hourlyEere));
+    if (regionKey === undefined) throw new Error('Region number mismatch');
+
+    avert.calculateEereLoad({
+      regionLineLoss: regions[regionKey].lineLoss,
+      regionalLoads: rdfs.rdf.regional_load.map((l) => l.regional_load_mw),
+      eereInputs: eere.inputs,
+    });
+
+    dispatch({
+      type: 'eere/COMPLETE_EERE_CALCULATION',
+      hourlyEere: avert.eereLoad.hourlyEere,
+    });
 
     dispatch(
       updateExceedances(

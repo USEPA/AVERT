@@ -1,11 +1,11 @@
 import stats from 'stats-lite';
 
 class EereEngine {
-  constructor(profile, rdf, regionLineLoss) {
-    this._eereProfile = profile;
+  constructor(regionLineLoss, rdf, eereInputs) {
+    this._eereInputs = eereInputs;
     this._rdf = rdf;
 
-    this._lineLoss = 1 / (1 - regionLineLoss / 100);
+    this._regionLineLoss = 1 / (1 - regionLineLoss / 100);
     this._topPercentile = this._calculateTopPercentile();
     this._hourlyMwReduction = this._calculateHourlyMwReduction();
 
@@ -19,15 +19,15 @@ class EereEngine {
   }
 
   _calculateTopPercentile() {
-    const broadProgramInput = Number(this._eereProfile.broadProgram);
-    const topHoursInput = Number(this._eereProfile.topHours);
+    const broadProgramInput = Number(this._eereInputs.broadProgram);
+    const topHoursInput = Number(this._eereInputs.topHours);
     const hours = broadProgramInput ? 100 : topHoursInput;
     const ptile = 1 - hours / 100;
     return stats.percentile(this._rdf.regionalLoads, ptile);
   }
 
   _calculateHourlyMwReduction() {
-    const annualGwhInput = Number(this._eereProfile.annualGwh);
+    const annualGwhInput = Number(this._eereInputs.annualGwh);
     const hours = this._rdf.regionalLoads.length;
     return (annualGwhInput * 1000) / hours;
   }
@@ -38,24 +38,24 @@ class EereEngine {
     const hardLimit = this._rdf.hardLimits[index];
     const hourlyDefault = this._rdf.defaults.data[index];
 
-    const constantMwhInput = Number(this._eereProfile.constantMwh);
-    const broadProgramInput = Number(this._eereProfile.broadProgram);
-    const reductionInput = Number(this._eereProfile.reduction);
-    const windCapacityInput = Number(this._eereProfile.windCapacity);
-    const utilitySolarInput = Number(this._eereProfile.utilitySolar);
-    const rooftopSolarInput = Number(this._eereProfile.rooftopSolar);
+    const constantMwhInput = Number(this._eereInputs.constantMwh);
+    const broadProgramInput = Number(this._eereInputs.broadProgram);
+    const reductionInput = Number(this._eereInputs.reduction);
+    const windCapacityInput = Number(this._eereInputs.windCapacity);
+    const utilitySolarInput = Number(this._eereInputs.utilitySolar);
+    const rooftopSolarInput = Number(this._eereInputs.rooftopSolar);
 
     // A: Base Load
-    const hourlyMwReduction = this._hourlyMwReduction * this._lineLoss;
-    const constantMwh = constantMwhInput * this._lineLoss;
+    const hourlyMwReduction = this._hourlyMwReduction * this._regionLineLoss;
+    const constantMwh = constantMwhInput * this._regionLineLoss;
     // B: Peak Hours
-    const percentReduction = -1 * (broadProgramInput || reductionInput) / 100 * this._lineLoss;
+    const percentReduction = -1 * (broadProgramInput || reductionInput) / 100 * this._regionLineLoss;
     // C: Wind
     // D: Utility-scale solar photovoltaic
     // E: Distributed rooftop solar photovoltaic
     const windCapacity = windCapacityInput * hourlyDefault.wind;
     const utilitySolar = utilitySolarInput * hourlyDefault.utility_pv;
-    const rooftopSolar = rooftopSolarInput * hourlyDefault.rooftop_pv * this._lineLoss;
+    const rooftopSolar = rooftopSolarInput * hourlyDefault.rooftop_pv * this._regionLineLoss;
     const renewableProfile = -1 * (windCapacity + utilitySolar + rooftopSolar);
 
     const initialLoad = (load > this._topPercentile) ? (load * percentReduction) : 0;

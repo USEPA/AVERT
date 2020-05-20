@@ -1,5 +1,3 @@
-// config
-import { regions } from 'app/config';
 // engines
 import Rdf from 'app/engines/Rdf';
 import EereEngine from 'app/engines/EereEngine';
@@ -36,16 +34,10 @@ class Avert {
     this._rdf = new Rdf({ defaults: data });
   }
 
-  calculateEereLoad(regionNumber, eereInputs) {
-    const regionKey = Object.keys(regions).find((key) => {
-      return regions[key].number === regionNumber;
-    });
+  calculateEereLoad({ regionLineLoss, regionalLoads, eereInputs }) {
+    // TODO: use regionalLoads instead of this._rdf
 
-    this._eereEngine = new EereEngine(
-      eereInputs,
-      this._rdf,
-      regions[regionKey].lineLoss,
-    );
+    this._eereEngine = new EereEngine(regionLineLoss, this._rdf, eereInputs);
   }
 
   get eereLoad() {
