@@ -480,8 +480,10 @@ export function calculateEereProfile(): AppThunk {
     if (regionKey === undefined) throw new Error('Region number mismatch');
 
     avert.calculateEereLoad({
+      regionMaxEELimit: rdfs.rdf.limits.max_ee_percent,
       regionLineLoss: regions[regionKey].lineLoss,
-      regionalLoads: rdfs.rdf.regional_load.map((l) => l.regional_load_mw),
+      regionalLoads: rdfs.rdf.regional_load,
+      eereDefaults: rdfs.defaults.data,
       eereInputs: eere.inputs,
     });
 

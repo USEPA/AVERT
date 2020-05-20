@@ -1,7 +1,5 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
-// engines
-import { avert } from 'app/engines';
 
 type RdfJSON = {
   region: {
@@ -157,8 +155,6 @@ export function fetchRegion(): AppThunk {
     return fetch(`${api.baseUrl}/api/v1/rdf/${region.slug}`)
       .then((response) => response.json())
       .then((json: RdfJSON) => {
-        avert.rdf = json; // TODO: remove this when its no longer needed
-
         const {
           max_ee_yearly_gwh,
           max_solar_wind_mwh,
@@ -191,8 +187,6 @@ export function fetchRegion(): AppThunk {
         fetch(`${api.baseUrl}/api/v1/eere/${region.slug}`)
           .then((response) => response.json())
           .then((json: EereJSON) => {
-            avert.eereDefaults = json;
-
             dispatch({
               type: 'rdfs/RECEIVE_REGION_DEFAULTS',
               payload: json,

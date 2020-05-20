@@ -1,11 +1,19 @@
 import stats from 'stats-lite';
 
 class EereEngine {
-  constructor(regionLineLoss, rdf, eereInputs) {
-    this._eereInputs = eereInputs;
-    this._rdf = rdf;
-
+  constructor(
+    regionMaxEELimit,
+    regionLineLoss,
+    regionalLoads,
+    eereDefaults,
+    eereInputs,
+  ) {
+    this._regionMaxEELimit = regionMaxEELimit; // 15 (percent)
     this._regionLineLoss = 1 / (1 - regionLineLoss / 100);
+    this._regionalLoads = regionalLoads;
+    this._eereDefaults = eereDefaults;
+    this._eereInputs = eereInputs;
+
     this._topPercentile = this._calculateTopPercentile();
     this._hourlyMwReduction = this._calculateHourlyMwReduction();
 
@@ -13,30 +21,31 @@ class EereEngine {
     this._hardExceedances = [];
     this._hourlyEere = [];
     // build up above instance arrays
-    this._rdf.regionalLoads.forEach((load, index) => {
-      this._calculateExceedancesAndHourlyEere(load, index);
+    this._regionalLoads.forEach((hour, index) => {
+      this._calculateExceedancesAndHourlyEere(hour.regional_load_mw, index);
     });
   }
 
   _calculateTopPercentile() {
+    const loads = this._regionalLoads.map((hour) => hour.regional_load_mw);
     const broadProgramInput = Number(this._eereInputs.broadProgram);
     const topHoursInput = Number(this._eereInputs.topHours);
     const hours = broadProgramInput ? 100 : topHoursInput;
     const ptile = 1 - hours / 100;
-    return stats.percentile(this._rdf.regionalLoads, ptile);
+    return stats.percentile(loads, ptile);
   }
 
   _calculateHourlyMwReduction() {
     const annualGwhInput = Number(this._eereInputs.annualGwh);
-    const hours = this._rdf.regionalLoads.length;
+    const hours = this._regionalLoads.length;
     return (annualGwhInput * 1000) / hours;
   }
 
   // prettier-ignore
   _calculateExceedancesAndHourlyEere(load, index) {
-    const softLimit = this._rdf.softLimits[index];
-    const hardLimit = this._rdf.hardLimits[index];
-    const hourlyDefault = this._rdf.defaults.data[index];
+    const softLimit = load * -1 * this._regionMaxEELimit / 100;
+    const hardLimit = load * -0.3;
+    const hourlyDefault = this._eereDefaults[index];
 
     const constantMwhInput = Number(this._eereInputs.constantMwh);
     const broadProgramInput = Number(this._eereInputs.broadProgram);
