@@ -149,12 +149,12 @@ export default function reducer(
 // action creators
 export function fetchRegion(): AppThunk {
   return (dispatch, getState) => {
-    const { api } = getState();
+    const { region, api } = getState();
 
     dispatch({ type: 'rdfs/REQUEST_REGION_RDF' });
 
     // fetch rdf data for region
-    return fetch(`${api.baseUrl}/api/v1/rdf/${avert.regionSlug}`)
+    return fetch(`${api.baseUrl}/api/v1/rdf/${region.slug}`)
       .then((response) => response.json())
       .then((json: RdfJSON) => {
         avert.rdf = json;
@@ -180,7 +180,7 @@ export function fetchRegion(): AppThunk {
         dispatch({ type: 'rdfs/REQUEST_REGION_DEFAULTS' });
 
         // fetch eere data for region
-        fetch(`${api.baseUrl}/api/v1/eere/${avert.regionSlug}`)
+        fetch(`${api.baseUrl}/api/v1/eere/${region.slug}`)
           .then((response) => response.json())
           .then((json: EereJSON) => {
             avert.eereDefaults = json;

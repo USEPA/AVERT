@@ -62,7 +62,7 @@ export default function reducer(
 // action creators
 export function fetchPm25(): AppThunk {
   return (dispatch, getState) => {
-    const { api } = getState();
+    const { region, api } = getState();
 
     dispatch({ type: 'pm25/REQUEST_PM25' });
 
@@ -74,7 +74,7 @@ export function fetchPm25(): AppThunk {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        region: avert.regionSlug,
+        region: region.slug,
         eere: avert.eereLoad.hourlyEere,
       }),
     };

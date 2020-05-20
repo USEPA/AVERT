@@ -13,24 +13,12 @@ import EereEngine from 'app/engines/EereEngine';
 
 class Avert {
   constructor() {
-    this._region = {};
     this._rdf = false;
     this._eereDefaults = {};
     this._eereProfile = {};
 
     /** @type {EERELoad} */
     this._eereEngine = {};
-  }
-
-  set region(regionId) {
-    const regionKey = Object.keys(regions).find((key) => {
-      return regions[key].number === regionId;
-    });
-    this._region = regions[regionKey];
-  }
-
-  get regionSlug() {
-    return this._region.slug;
   }
 
   set rdf(data) {
@@ -57,8 +45,13 @@ class Avert {
     this._eereProfile = profile;
   }
 
-  calculateEereLoad() {
-    this._eereEngine = new EereEngine(this._eereProfile, this._rdf, this._region); // prettier-ignore
+  calculateEereLoad(regionNumber) {
+    const regionKey = Object.keys(regions).find((key) => {
+      return regions[key].number === regionNumber;
+    });
+    const region = regions[regionKey];
+
+    this._eereEngine = new EereEngine(this._eereProfile, this._rdf, region);
   }
 
   get eereLoad() {

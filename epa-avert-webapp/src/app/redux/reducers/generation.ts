@@ -62,7 +62,7 @@ export default function reducer(
 // action creators
 export function fetchGeneration(): AppThunk {
   return (dispatch, getState) => {
-    const { api } = getState();
+    const { region, api } = getState();
 
     dispatch({ type: 'generation/REQUEST_GENERATION' });
 
@@ -74,7 +74,7 @@ export function fetchGeneration(): AppThunk {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        region: avert.regionSlug,
+        region: region.slug,
         eere: avert.eereLoad.hourlyEere,
       }),
     };

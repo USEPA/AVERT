@@ -62,7 +62,7 @@ export default function reducer(
 // action creators
 export function fetchSo2(): AppThunk {
   return (dispatch, getState) => {
-    const { api } = getState();
+    const { region, api } = getState();
 
     dispatch({ type: 'so2/REQUEST_SO2' });
 
@@ -74,7 +74,7 @@ export function fetchSo2(): AppThunk {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        region: avert.regionSlug,
+        region: region.slug,
         eere: avert.eereLoad.hourlyEere,
       }),
     };

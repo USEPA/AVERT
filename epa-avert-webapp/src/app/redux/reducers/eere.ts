@@ -456,10 +456,12 @@ export function updateExceedances(soft: number[], hard: number[]): AppThunk {
 }
 
 export function calculateEereProfile(): AppThunk {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const { region } = getState();
+
     dispatch({ type: 'eere/SUBMIT_EERE_CALCULATION' });
 
-    avert.calculateEereLoad();
+    avert.calculateEereLoad(region.number);
 
     dispatch(completeEereCalculation(avert.eereLoad.hourlyEere));
     dispatch(

@@ -1,7 +1,5 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
-// engines
-import { avert } from 'app/engines';
 // config
 import { regions } from 'app/config';
 
@@ -10,18 +8,21 @@ type RegionAction = {
   payload: {
     number: number;
     name: string;
+    slug: string;
   };
 };
 
 type RegionState = {
   number: number;
   name: string;
+  slug: string;
 };
 
 // reducer
 const initialState: RegionState = {
   number: 0,
   name: '',
+  slug: '',
 };
 
 export default function reducer(
@@ -34,6 +35,7 @@ export default function reducer(
         ...state,
         number: action.payload.number,
         name: action.payload.name,
+        slug: action.payload.slug,
       };
 
     default:
@@ -44,8 +46,6 @@ export default function reducer(
 // action creators
 export function selectRegion(regionNumber: number): AppThunk {
   return (dispatch) => {
-    avert.region = regionNumber;
-
     const selectedRegion = Object.values(regions).find((region) => {
       return region.number === regionNumber;
     });
@@ -55,6 +55,7 @@ export function selectRegion(regionNumber: number): AppThunk {
       payload: {
         number: regionNumber,
         name: selectedRegion ? selectedRegion.label : '',
+        slug: selectedRegion ? selectedRegion.slug : '',
       },
     });
   };
