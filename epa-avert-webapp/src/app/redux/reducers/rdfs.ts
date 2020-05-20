@@ -159,7 +159,7 @@ export function fetchRegion(): AppThunk {
       .then((json: RdfJSON) => {
         avert.rdf = json; // TODO: remove this when its no longer needed
 
-        // set eere profile's first level validation limits (sets 'eereProfile._limits')
+        // TODO: remove this when its no longer needed
         eereProfile.limits = {
           hours: json.regional_load.length,
           annualGwh: json.limits.max_ee_yearly_gwh,
@@ -167,14 +167,30 @@ export function fetchRegion(): AppThunk {
           percent: json.limits.max_ee_percent,
         };
 
+        const {
+          max_ee_yearly_gwh,
+          max_solar_wind_mwh,
+          max_ee_percent,
+        } = json.limits;
+
         dispatch({
           type: 'rdfs/RECEIVE_REGION_RDF',
           payload: json,
         });
 
+        // calculate constantMwh (hourly) from annualGwh (total for year)
+        const hourly = (max_ee_yearly_gwh * 1000) / json.regional_load.length;
+
         dispatch({
           type: 'rdfs/SET_EERE_LIMITS',
-          payload: { limits: eereProfile.limits },
+          payload: {
+            limits: {
+              annualGwh: max_ee_yearly_gwh,
+              constantMwh: Math.round(hourly * 100) / 100,
+              renewables: max_solar_wind_mwh * 2,
+              percent: max_ee_percent * 2,
+            },
+          },
         });
 
         dispatch({ type: 'rdfs/REQUEST_REGION_DEFAULTS' });

@@ -23,7 +23,6 @@ import './styles.css';
 function EEREInputs() {
   const dispatch = useDispatch();
   const status = useTypedSelector(({ eere }) => eere.status);
-  const valid = useTypedSelector(({ eere }) => eere.valid);
   const errors = useTypedSelector(({ eere }) => eere.errors);
   const limits = useTypedSelector(({ eere }) => eere.limits);
   const constantMwh = useTypedSelector(({ eere }) => eere.inputs.constantMwh);
@@ -34,6 +33,8 @@ function EEREInputs() {
   const windCapacity = useTypedSelector(({ eere }) => eere.inputs.windCapacity);
   const utilitySolar = useTypedSelector(({ eere }) => eere.inputs.utilitySolar);
   const rooftopSolar = useTypedSelector(({ eere }) => eere.inputs.rooftopSolar);
+
+  const inputsAreValid = errors.length === 0;
 
   function displayError({
     fieldName,
@@ -85,7 +86,7 @@ function EEREInputs() {
     inputsFields.filter((field) => field?.length > 0).length === 0;
 
   const disabledClass =
-    !valid || inputsAreEmpty || status === 'started'
+    !inputsAreValid || inputsAreEmpty || status === 'started'
       ? ' avert-button-disabled'
       : '';
 
@@ -208,7 +209,7 @@ function EEREInputs() {
                 <EEREInputField
                   value={reduction}
                   disabled={broadProgram}
-                  onChange={(text) => dispatch(updateEereReduction)}
+                  onChange={(text) => dispatch(updateEereReduction(text))}
                 />
                 <span className="avert-input-unit"> % during the peak </span>
                 <EEREInputField
@@ -336,8 +337,8 @@ function EEREInputs() {
           href="/"
           onClick={(ev) => {
             ev.preventDefault();
-            // if valid prop (state) is true, calculate profile
-            valid && dispatch(calculateEereProfile());
+            // if inputsAreValid, calculate profile
+            inputsAreValid && dispatch(calculateEereProfile());
           }}
         >
           {eereButtonOptions[status]}

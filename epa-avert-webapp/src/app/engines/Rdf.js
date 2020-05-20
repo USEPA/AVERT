@@ -1,6 +1,5 @@
 class Rdf {
   constructor(options) {
-    this._regionName = ''; // not actually used (for debugging)
     this._regionalLoads = [];
     this._softLimits = [];
     this._hardLimits = [];
@@ -18,7 +17,6 @@ class Rdf {
   }
 
   setRdf(rdf) {
-    this._regionName = rdf.region.region_name;
     this._regionalLoads = [];
     this._softLimits = [];
     this._hardLimits = [];

@@ -12,7 +12,9 @@ type Props = {
 
 function EEREInputField({ value, disabled, onChange }: Props) {
   const dispatch = useDispatch();
-  const valid = useTypedSelector(({ eere }) => eere.valid);
+  const inputsAreValid = useTypedSelector(({ eere }) => {
+    return eere.errors.length === 0;
+  });
 
   return (
     <input
@@ -21,8 +23,8 @@ function EEREInputField({ value, disabled, onChange }: Props) {
       disabled={disabled ? true : false}
       onChange={(ev) => onChange(ev.target.value)}
       onKeyPress={(ev) => {
-        // if eere is valid is true, calculate profile
-        if (valid && ev.key === 'Enter') dispatch(calculateEereProfile());
+        if (inputsAreValid && ev.key === 'Enter')
+          dispatch(calculateEereProfile());
       }}
     />
   );

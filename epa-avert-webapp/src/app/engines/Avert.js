@@ -37,10 +37,6 @@ class Avert {
     this._rdf = new Rdf({ defaults: data });
   }
 
-  get rdf() {
-    return this._rdf;
-  }
-
   set eereProfile(profile) {
     this._eereProfile = profile;
   }
