@@ -63,11 +63,11 @@ type EereAction =
       type: 'eere/UPDATE_EXCEEDANCES';
       payload: {
         softValid: boolean;
-        softMaxVal: number;
-        softTimestamp: RegionalLoadData;
+        softTopExceedanceValue: number;
+        softTopExceedanceTimestamp: RegionalLoadData;
         hardValid: boolean;
-        hardMaxVal: number;
-        hardTimestamp: RegionalLoadData;
+        hardTopExceedanceValue: number;
+        hardTopExceedanceTimestamp: RegionalLoadData;
       };
     }
   | {
@@ -125,6 +125,16 @@ type EereState = {
   hourlyEere: HourlyEere[];
 };
 
+const emptyRegionalLoadHour = {
+  hour_of_year: 0,
+  year: 0,
+  month: 0,
+  day: 0,
+  hour: 0,
+  regional_load_mw: 0,
+  hourly_limit: 0,
+};
+
 // reducer
 const initialState: EereState = {
   status: 'ready',
@@ -148,28 +158,12 @@ const initialState: EereState = {
   softLimit: {
     valid: true,
     topExceedanceValue: 0,
-    topExceedanceTimestamp: {
-      hour_of_year: 0,
-      year: 0,
-      month: 0,
-      day: 0,
-      hour: 0,
-      regional_load_mw: 0,
-      hourly_limit: 0,
-    },
+    topExceedanceTimestamp: emptyRegionalLoadHour,
   },
   hardLimit: {
     valid: true,
     topExceedanceValue: 0,
-    topExceedanceTimestamp: {
-      hour_of_year: 0,
-      year: 0,
-      month: 0,
-      day: 0,
-      hour: 0,
-      regional_load_mw: 0,
-      hourly_limit: 0,
-    },
+    topExceedanceTimestamp: emptyRegionalLoadHour,
   },
   hourlyEere: [],
 };
@@ -282,13 +276,13 @@ export default function reducer(
         ...state,
         softLimit: {
           valid: action.payload.softValid,
-          topExceedanceValue: action.payload.softMaxVal,
-          topExceedanceTimestamp: action.payload.softTimestamp,
+          topExceedanceValue: action.payload.softTopExceedanceValue,
+          topExceedanceTimestamp: action.payload.softTopExceedanceTimestamp,
         },
         hardLimit: {
           valid: action.payload.hardValid,
-          topExceedanceValue: action.payload.hardMaxVal,
-          topExceedanceTimestamp: action.payload.hardTimestamp,
+          topExceedanceValue: action.payload.hardTopExceedanceValue,
+          topExceedanceTimestamp: action.payload.hardTopExceedanceTimestamp,
         },
       };
 
@@ -424,35 +418,6 @@ export function updateEereRooftopSolar(input: string): AppThunk {
   };
 }
 
-export function updateExceedances(soft: number[], hard: number[]): AppThunk {
-  return (dispatch, getState) => {
-    const { rdfs } = getState();
-    const regionalLoadHours = rdfs.rdf.regional_load;
-
-    const softValid = soft.reduce((a, b) => a + b) === 0;
-    const softMaxVal = !softValid ? Math.max(...soft) : 0;
-    const softMaxIndex = !softValid ? soft.indexOf(softMaxVal) : 0;
-    const softTimestamp = !softValid ? regionalLoadHours[softMaxIndex] : {};
-
-    const hardValid = hard.reduce((a, b) => a + b) === 0;
-    const hardMaxVal = !hardValid ? Math.max(...hard) : 0;
-    const hardMaxIndex = !hardValid ? hard.indexOf(hardMaxVal) : 0;
-    const hardTimestamp = !hardValid ? regionalLoadHours[hardMaxIndex] : {};
-
-    return dispatch({
-      type: 'eere/UPDATE_EXCEEDANCES',
-      payload: {
-        softValid,
-        softMaxVal,
-        softTimestamp,
-        hardValid,
-        hardMaxVal,
-        hardTimestamp,
-      },
-    });
-  };
-}
-
 export function calculateEereProfile(): AppThunk {
   return (dispatch, getState) => {
     const { region, rdfs, eere } = getState();
@@ -467,7 +432,11 @@ export function calculateEereProfile(): AppThunk {
 
     if (regionKey === undefined) throw new Error('Region number mismatch');
 
-    const { softExceedances, hardExceedances, hourlyEere } = calculateEere({
+    const {
+      softLimitHourlyExceedances,
+      hardLimitHourlyExceedances,
+      hourlyEere,
+    } = calculateEere({
       regionMaxEELimit: rdfs.rdf.limits.max_ee_percent,
       regionLineLoss: regions[regionKey].lineLoss,
       regionalLoads: rdfs.rdf.regional_load,
@@ -480,7 +449,35 @@ export function calculateEereProfile(): AppThunk {
       hourlyEere,
     });
 
-    dispatch(updateExceedances(softExceedances, hardExceedances));
+    const regionalLoadHours = rdfs.rdf.regional_load;
+
+    const softValid = softLimitHourlyExceedances.reduce((a, b) => a + b) === 0;
+    const softTopExceedanceValue = Math.max(...softLimitHourlyExceedances);
+    const softTopExceedanceIndex = !softValid
+      ? softLimitHourlyExceedances.indexOf(softTopExceedanceValue)
+      : 0;
+
+    const hardValid = hardLimitHourlyExceedances.reduce((a, b) => a + b) === 0;
+    const hardTopExceedanceValue = Math.max(...hardLimitHourlyExceedances);
+    const hardTopExceedanceIndex = !hardValid
+      ? hardLimitHourlyExceedances.indexOf(hardTopExceedanceValue)
+      : 0;
+
+    return dispatch({
+      type: 'eere/UPDATE_EXCEEDANCES',
+      payload: {
+        softValid,
+        softTopExceedanceValue,
+        softTopExceedanceTimestamp: !softValid
+          ? regionalLoadHours[softTopExceedanceIndex]
+          : emptyRegionalLoadHour,
+        hardValid,
+        hardTopExceedanceValue,
+        hardTopExceedanceTimestamp: !hardValid
+          ? regionalLoadHours[hardTopExceedanceIndex]
+          : emptyRegionalLoadHour,
+      },
+    });
   };
 }
 

@@ -28,7 +28,7 @@ function calculateHourlyReduction(
   return (annualGwhInput * 1000) / hours;
 }
 
-function calculateExceedance(
+function calculateHourlyExceedance(
   calculatedLoad: number,
   softOrHardLimit: number,
   amount: 15 | 30,
@@ -70,8 +70,8 @@ export function calculateEere({
   const percentReduction =
     ((-1 * (broadProgramInput || reductionInput)) / 100) * lineLoss;
 
-  const softExceedances: number[] = [];
-  const hardExceedances: number[] = [];
+  const softLimitHourlyExceedances: number[] = [];
+  const hardLimitHourlyExceedances: number[] = [];
   const hourlyEere: HourlyEere[] = [];
 
   regionalLoads.forEach((hour, index) => {
@@ -95,11 +95,20 @@ export function calculateEere({
       hourlyReduction * lineLoss -
       constantMwhInput * lineLoss;
 
-    const softExceedance = calculateExceedance(calculatedLoad, softLimit, 15);
-    const hardExceedance = calculateExceedance(calculatedLoad, hardLimit, 30);
+    const softLimitHourlyExceedance = calculateHourlyExceedance(
+      calculatedLoad,
+      softLimit,
+      15,
+    );
 
-    softExceedances[index] = softExceedance;
-    hardExceedances[index] = hardExceedance;
+    const hardLimitHourlyExceedance = calculateHourlyExceedance(
+      calculatedLoad,
+      hardLimit,
+      30,
+    );
+
+    softLimitHourlyExceedances[index] = softLimitHourlyExceedance;
+    hardLimitHourlyExceedances[index] = hardLimitHourlyExceedance;
     hourlyEere[index] = {
       index: index,
       constant: hourlyReduction,
@@ -109,10 +118,10 @@ export function calculateEere({
       renewable_energy_profile: renewableProfile,
       soft_limit: softLimit,
       hard_limit: hardLimit,
-      soft_exceedance: softExceedance,
-      hard_exceedance: hardExceedance,
+      soft_exceedance: softLimitHourlyExceedance,
+      hard_exceedance: hardLimitHourlyExceedance,
     };
   });
 
-  return { softExceedances, hardExceedances, hourlyEere };
+  return { softLimitHourlyExceedances, hardLimitHourlyExceedances, hourlyEere };
 }
