@@ -1,6 +1,16 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
 
+export type RegionalLoadData = {
+  day: number;
+  hour: number;
+  hour_of_year: number;
+  hourly_limit: number;
+  month: number;
+  regional_load_mw: number;
+  year: number;
+};
+
 type RdfJSON = {
   region: {
     region_abbv: string;
@@ -24,15 +34,7 @@ type RdfJSON = {
     updated_at: null;
     year: number;
   };
-  regional_load: {
-    day: number;
-    hour: number;
-    hour_of_year: number;
-    hourly_limit: number;
-    month: number;
-    regional_load_mw: number;
-    year: number;
-  }[];
+  regional_load: RegionalLoadData[];
   load_bin_edges: number[];
   data: {
     generation: any;
@@ -49,15 +51,17 @@ type RdfJSON = {
   };
 };
 
+export type EereDefaultData = {
+  date: string;
+  hour: number;
+  wind: number;
+  utility_pv: number;
+  rooftop_pv: number;
+};
+
 type EereJSON = {
   region: string;
-  data: {
-    date: string;
-    hour: number;
-    rooftop_pv: number;
-    utility_pv: number;
-    wind: number;
-  }[];
+  data: EereDefaultData[];
 };
 
 type RdfsAction =

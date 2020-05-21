@@ -6,7 +6,7 @@ import Tooltip from 'app/components/Tooltip/Tooltip';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 import {
-  InputFields,
+  EereInputFields,
   updateEereAnnualGwh,
   updateEereConstantMw,
   updateEereBroadBasedProgram,
@@ -41,7 +41,7 @@ function EEREInputs() {
     inputValue,
     maxValue,
   }: {
-    fieldName: InputFields;
+    fieldName: EereInputFields;
     inputValue: string;
     maxValue: number;
   }) {

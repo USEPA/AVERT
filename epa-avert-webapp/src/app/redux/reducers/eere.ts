@@ -1,7 +1,9 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
-// engines
-import { avert } from 'app/engines';
+// reducers
+import { RegionalLoadData } from 'app/redux/reducers/rdfs';
+// calculations
+import { calculateEere } from 'app/calculations';
 // config
 import { RegionKeys, regions } from 'app/config';
 
@@ -19,7 +21,7 @@ type EereAction =
     }
   | {
       type: 'eere/VALIDATE_EERE';
-      errors: InputFields[];
+      errors: EereInputFields[];
     }
   | {
       type: 'eere/UPDATE_EERE_ANNUAL_GWH';
@@ -62,10 +64,10 @@ type EereAction =
       payload: {
         softValid: boolean;
         softMaxVal: number;
-        softTimestamp: any; // TODO
+        softTimestamp: RegionalLoadData;
         hardValid: boolean;
         hardMaxVal: number;
-        hardTimestamp: any; // TODO
+        hardTimestamp: RegionalLoadData;
       };
     }
   | {
@@ -75,7 +77,7 @@ type EereAction =
       type: 'eere/RESET_EERE_INPUTS';
     };
 
-export type InputFields =
+export type EereInputFields =
   | 'annualGwh'
   | 'constantMwh'
   | 'broadProgram'
@@ -85,7 +87,9 @@ export type InputFields =
   | 'utilitySolar'
   | 'rooftopSolar';
 
-type HourlyEere = {
+export type EereInputs = { [field in EereInputFields]: string };
+
+export type HourlyEere = {
   index: number;
   constant: number;
   current_load_mw: number;
@@ -100,8 +104,8 @@ type HourlyEere = {
 
 type EereState = {
   status: 'ready' | 'started' | 'complete';
-  errors: InputFields[];
-  inputs: { [field in InputFields]: string };
+  errors: EereInputFields[];
+  inputs: EereInputs;
   limits: {
     annualGwh: number;
     constantMwh: number;
@@ -111,28 +115,12 @@ type EereState = {
   softLimit: {
     valid: boolean;
     topExceedanceValue: number;
-    topExceedanceTimestamp: {
-      hour_of_year: number;
-      year: number;
-      month: number;
-      day: number;
-      hour: number;
-      regional_load_mw: number;
-      hourly_limit: number;
-    };
+    topExceedanceTimestamp: RegionalLoadData;
   };
   hardLimit: {
     valid: boolean;
     topExceedanceValue: number;
-    topExceedanceTimestamp: {
-      hour_of_year: number;
-      year: number;
-      month: number;
-      day: number;
-      hour: number;
-      regional_load_mw: number;
-      hourly_limit: number;
-    };
+    topExceedanceTimestamp: RegionalLoadData;
   };
   hourlyEere: HourlyEere[];
 };
@@ -314,7 +302,7 @@ export default function reducer(
 
 // action creators
 function validateInput(
-  inputField: InputFields,
+  inputField: EereInputFields,
   inputValue: string,
   upperLimit: number,
 ): AppThunk {
@@ -479,7 +467,7 @@ export function calculateEereProfile(): AppThunk {
 
     if (regionKey === undefined) throw new Error('Region number mismatch');
 
-    avert.calculateEereLoad({
+    const { softExceedances, hardExceedances, hourlyEere } = calculateEere({
       regionMaxEELimit: rdfs.rdf.limits.max_ee_percent,
       regionLineLoss: regions[regionKey].lineLoss,
       regionalLoads: rdfs.rdf.regional_load,
@@ -489,15 +477,10 @@ export function calculateEereProfile(): AppThunk {
 
     dispatch({
       type: 'eere/COMPLETE_EERE_CALCULATION',
-      hourlyEere: avert.eereLoad.hourlyEere,
+      hourlyEere,
     });
 
-    dispatch(
-      updateExceedances(
-        avert.eereLoad.softExceedances,
-        avert.eereLoad.hardExceedances,
-      ),
-    );
+    dispatch(updateExceedances(softExceedances, hardExceedances));
   };
 }
 

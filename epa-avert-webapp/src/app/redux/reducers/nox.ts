@@ -1,8 +1,6 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
 import { DisplacementData, initialPollutantState } from 'app/redux/shared';
-// engines
-import { avert } from 'app/engines';
 // action creators
 import { incrementProgress } from 'app/redux/reducers/annualDisplacement';
 
@@ -62,7 +60,7 @@ export default function reducer(
 // action creators
 export function fetchNox(): AppThunk {
   return (dispatch, getState) => {
-    const { region, api } = getState();
+    const { region, api, eere } = getState();
 
     dispatch({ type: 'nox/REQUEST_NOX' });
 
@@ -75,7 +73,7 @@ export function fetchNox(): AppThunk {
       },
       body: JSON.stringify({
         region: region.slug,
-        eere: avert.eereLoad.hourlyEere,
+        eere: eere.hourlyEere,
       }),
     };
 
