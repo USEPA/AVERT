@@ -125,6 +125,17 @@ type EereState = {
   hourlyEere: HourlyEere[];
 };
 
+const emptyEereInputs = {
+  annualGwh: '',
+  constantMwh: '',
+  broadProgram: '',
+  reduction: '',
+  topHours: '',
+  windCapacity: '',
+  utilitySolar: '',
+  rooftopSolar: '',
+};
+
 const emptyRegionalLoadHour = {
   hour_of_year: 0,
   year: 0,
@@ -139,16 +150,7 @@ const emptyRegionalLoadHour = {
 const initialState: EereState = {
   status: 'ready',
   errors: [],
-  inputs: {
-    annualGwh: '',
-    constantMwh: '',
-    broadProgram: '',
-    reduction: '',
-    topHours: '',
-    windCapacity: '',
-    utilitySolar: '',
-    rooftopSolar: '',
-  },
+  inputs: emptyEereInputs,
   limits: {
     annualGwh: 0,
     constantMwh: 0,
@@ -287,7 +289,22 @@ export default function reducer(
       };
 
     case 'eere/RESET_EERE_INPUTS':
-      return initialState;
+      return {
+        ...state,
+        status: 'ready',
+        inputs: emptyEereInputs,
+        softLimit: {
+          valid: true,
+          topExceedanceValue: 0,
+          topExceedanceTimestamp: emptyRegionalLoadHour,
+        },
+        hardLimit: {
+          valid: true,
+          topExceedanceValue: 0,
+          topExceedanceTimestamp: emptyRegionalLoadHour,
+        },
+        hourlyEere: [],
+      };
 
     default:
       return state;
