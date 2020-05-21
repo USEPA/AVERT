@@ -22,7 +22,7 @@ The app is currently deployed to the `epa-avert` org on [Cloud.gov](https://clou
 
 ### Development Deployment
 The development version is exactly the same as the production version, but is password protected with basic authentication. Ensure you're in this directory ([epa-avert-webservice](/epa-avert-webservice)) in a terminal session and enter:    
-`cf set-env avert AVERT_AUTH true` and then: `cf push -f manifest.dev.yml`
+`cf set-env avert-dev AVERT_AUTH true` and then: `cf push -f manifest.dev.yml`
 
 To view the previously-set username and password required for viewing the development site, in a terminal session run:    
 `cf env avert` and look for the 'User-Provided' `AVERT_USER` and `AVERT_PASS` variables. These can be changed the same way you set the `AVERT_AUTH` environment variable above.
