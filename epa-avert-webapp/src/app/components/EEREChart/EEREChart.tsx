@@ -182,8 +182,11 @@ function EEREChart() {
     const month = months[x.timestamp.month - 1];
     const day = x.timestamp.day;
     const hour =
-      // TODO: use 'hour_of_year' ('hour' doesn't exist)
-      x.timestamp.hour > 12 ? x.timestamp.hour - 12 : x.timestamp.hour;
+      x.timestamp.hour === 0
+        ? 12
+        : x.timestamp.hour > 12
+        ? x.timestamp.hour - 12
+        : x.timestamp.hour;
     const ampm = x.timestamp.hour > 12 ? 'PM' : 'AM';
 
     return (
