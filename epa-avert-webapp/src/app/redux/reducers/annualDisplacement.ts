@@ -9,6 +9,26 @@ import { fetchNox } from 'app/redux/reducers/nox';
 import { fetchCo2 } from 'app/redux/reducers/co2';
 import { fetchPm25 } from 'app/redux/reducers/pm25';
 
+type StatesAndCounties = {
+  [stateId: string]: string[];
+};
+
+type DisplacementsResults = {
+  generation: { original: number; post: number; impact: number };
+  totalEmissions: {
+    so2: { original: number; post: number; impact: number };
+    nox: { original: number; post: number; impact: number };
+    co2: { original: number; post: number; impact: number };
+    pm25: { original: number; post: number; impact: number };
+  };
+  emissionRates: {
+    so2: { original: string; post: string };
+    nox: { original: string; post: string };
+    co2: { original: string; post: string };
+    pm25: { original: string; post: string };
+  };
+};
+
 type AnnualDisplacementsAction =
   | {
       type: 'region/SELECT_REGION';
@@ -21,8 +41,8 @@ type AnnualDisplacementsAction =
     }
   | {
       type: 'annualDisplacement/RECEIVE_DISPLACEMENT';
-      data: any; // TODO
-      statesAndCounties: any; // TODO
+      statesAndCounties: StatesAndCounties;
+      results: DisplacementsResults;
     }
   | {
       type: 'annualDisplacement/RECEIVE_ERROR';
@@ -30,24 +50,8 @@ type AnnualDisplacementsAction =
 
 type AnnualDisplacementState = {
   status: 'select_region' | 'ready' | 'started' | 'complete' | 'error';
-  statesAndCounties: {
-    [stateId: string]: string[];
-  };
-  results: {
-    generation: { original: number; post: number; impact: number };
-    totalEmissions: {
-      so2: { original: number; post: number; impact: number };
-      nox: { original: number; post: number; impact: number };
-      co2: { original: number; post: number; impact: number };
-      pm25: { original: number; post: number; impact: number };
-    };
-    emissionRates: {
-      so2: { original: string; post: string };
-      nox: { original: string; post: string };
-      co2: { original: string; post: string };
-      pm25: { original: string; post: string };
-    };
-  };
+  statesAndCounties: StatesAndCounties;
+  results: DisplacementsResults;
 };
 
 // reducer
@@ -97,7 +101,7 @@ export default function reducer(
         ...state,
         status: 'complete',
         statesAndCounties: action.statesAndCounties,
-        results: action.data,
+        results: action.results,
       };
 
     case 'annualDisplacement/RECEIVE_ERROR':
@@ -129,13 +133,26 @@ export function receiveDisplacement(): AppThunk {
       return;
     }
 
-    // prettier-ignore
     // recursively call function if data is still fetching
-    if (generation.isFetching || so2.isFetching || nox.isFetching || co2.isFetching || pm25.isFetching) {
+    if (
+      generation.isFetching ||
+      so2.isFetching ||
+      nox.isFetching ||
+      co2.isFetching ||
+      pm25.isFetching
+    ) {
       return setTimeout(() => dispatch(receiveDisplacement()), 1000);
     }
 
-    const data = {
+    // build up statesAndCounties from monthlyChanges data
+    const so2countyEmissions = so2.data.monthlyChanges.emissions.county;
+    const statesAndCounties: StatesAndCounties = {};
+    for (const stateId in so2countyEmissions) {
+      const stateCountyNames = Object.keys(so2countyEmissions[stateId]).sort();
+      statesAndCounties[stateId] = stateCountyNames;
+    }
+
+    const results = {
       generation: {
         original: generation.data.original,
         post: generation.data.post,
@@ -183,18 +200,11 @@ export function receiveDisplacement(): AppThunk {
       },
     };
 
-    // build up statesAndCounties from monthlyChanges data
-    const so2countyEmissions = so2.data.monthlyChanges.emissions.county;
-    const statesAndCounties: { [stateId: string]: string[] } = {};
-    for (const state in so2countyEmissions) {
-      statesAndCounties[state] = Object.keys(so2countyEmissions[state]).sort();
-    }
-
     dispatch(incrementProgress());
     dispatch({
       type: 'annualDisplacement/RECEIVE_DISPLACEMENT',
-      data: data,
-      statesAndCounties: statesAndCounties,
+      statesAndCounties,
+      results,
     });
     dispatch(completeStateEmissions());
     dispatch(completeMonthlyEmissions());
