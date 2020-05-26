@@ -170,15 +170,16 @@ export function fetchRegion(): AppThunk {
           payload: json,
         });
 
-        // calculate constantMwh (hourly) from annualGwh (total for year)
-        const hourly = (max_ee_yearly_gwh * 1000) / json.regional_load.length;
+        // calculate hourlyMwh from annualGwh (total for year)
+        const hourlyMwh =
+          (max_ee_yearly_gwh * 1000) / json.regional_load.length;
 
         dispatch({
           type: 'rdfs/SET_EERE_LIMITS',
           payload: {
             limits: {
-              annualGwh: max_ee_yearly_gwh,
-              constantMwh: Math.round(hourly * 100) / 100,
+              annualGwh: max_ee_yearly_gwh * 2,
+              constantMwh: Math.round(hourlyMwh * 100) / 100,
               renewables: max_solar_wind_mwh * 2,
               percent: max_ee_percent * 2,
             },
