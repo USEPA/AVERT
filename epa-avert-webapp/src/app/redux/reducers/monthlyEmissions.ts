@@ -1,6 +1,7 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
 import { DataByMonth, MonthlyChanges } from 'app/redux/shared';
+import { StatesAndCounties } from 'app/redux/reducers/annualDisplacement';
 // config
 import { states, fipsCodes } from 'app/config';
 
@@ -65,9 +66,7 @@ type MonthlyEmissionsAction =
       nox: MonthlyChanges;
       co2: MonthlyChanges;
       pm25: MonthlyChanges;
-      statesAndCounties: {
-        [stateId: string]: string[];
-      };
+      statesAndCounties: StatesAndCounties;
     }
   | {
       type: 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION';
@@ -279,7 +278,6 @@ export default function reducer(
 
 export function renderMonthlyEmissionsCharts(): AppThunk {
   return (dispatch, getState) => {
-    // get reducer data from store to use in dispatched action
     const { so2, nox, co2, pm25 } = getState();
 
     dispatch({
@@ -294,7 +292,6 @@ export function renderMonthlyEmissionsCharts(): AppThunk {
 
 export function completeMonthlyEmissions(): AppThunk {
   return (dispatch, getState) => {
-    // get reducer data from store to use in dispatched action
     const { annualDisplacement, so2, nox, co2, pm25 } = getState();
 
     dispatch({
@@ -316,46 +313,45 @@ export function completeMonthlyEmissions(): AppThunk {
 }
 
 export function selectMonthlyAggregation(
-  selection: MonthlyAggregation,
+  aggregation: MonthlyAggregation,
 ): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION',
-      aggregation: selection,
+      aggregation,
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
 }
 
-export function selectMonthlyUnit(selection: MonthlyUnit): AppThunk {
+export function selectMonthlyUnit(unit: MonthlyUnit): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_UNIT',
-      unit: selection,
+      unit,
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
 }
 
-export function selectMonthlyState(selection: string): AppThunk {
+export function selectMonthlyState(stateId: string): AppThunk {
   return (dispatch, getState) => {
-    // get reducer data from store to use in dispatched action
     const { annualDisplacement } = getState();
 
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_STATE',
-      selectedState: selection,
-      availableCounties: annualDisplacement.statesAndCounties[selection].sort(),
+      selectedState: stateId,
+      availableCounties: annualDisplacement.statesAndCounties[stateId].sort(),
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
 }
 
-export function selectMonthlyCounty(selection: string): AppThunk {
+export function selectMonthlyCounty(countyName: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_COUNTY',
-      selectedCounty: selection,
+      selectedCounty: countyName,
     });
     dispatch(renderMonthlyEmissionsCharts());
   };

@@ -9,24 +9,8 @@ import { fetchNox } from 'app/redux/reducers/nox';
 import { fetchCo2 } from 'app/redux/reducers/co2';
 import { fetchPm25 } from 'app/redux/reducers/pm25';
 
-type StatesAndCounties = {
+export type StatesAndCounties = {
   [stateId: string]: string[];
-};
-
-type DisplacementsResults = {
-  generation: { original: number; post: number; impact: number };
-  totalEmissions: {
-    so2: { original: number; post: number; impact: number };
-    nox: { original: number; post: number; impact: number };
-    co2: { original: number; post: number; impact: number };
-    pm25: { original: number; post: number; impact: number };
-  };
-  emissionRates: {
-    so2: { original: string; post: string };
-    nox: { original: string; post: string };
-    co2: { original: string; post: string };
-    pm25: { original: string; post: string };
-  };
 };
 
 type AnnualDisplacementsAction =
@@ -42,7 +26,6 @@ type AnnualDisplacementsAction =
   | {
       type: 'annualDisplacement/RECEIVE_DISPLACEMENT';
       statesAndCounties: StatesAndCounties;
-      results: DisplacementsResults;
     }
   | {
       type: 'annualDisplacement/RECEIVE_ERROR';
@@ -51,28 +34,12 @@ type AnnualDisplacementsAction =
 type AnnualDisplacementState = {
   status: 'select_region' | 'ready' | 'started' | 'complete' | 'error';
   statesAndCounties: StatesAndCounties;
-  results: DisplacementsResults;
 };
 
 // reducer
 const initialState: AnnualDisplacementState = {
   status: 'select_region',
   statesAndCounties: {},
-  results: {
-    generation: { original: 0, post: 0, impact: 0 },
-    totalEmissions: {
-      so2: { original: 0, post: 0, impact: 0 },
-      nox: { original: 0, post: 0, impact: 0 },
-      co2: { original: 0, post: 0, impact: 0 },
-      pm25: { original: 0, post: 0, impact: 0 },
-    },
-    emissionRates: {
-      so2: { original: '', post: '' },
-      nox: { original: '', post: '' },
-      co2: { original: '', post: '' },
-      pm25: { original: '', post: '' },
-    },
-  },
 };
 
 export default function reducer(
@@ -85,7 +52,6 @@ export default function reducer(
         ...state,
         status: 'ready',
         statesAndCounties: initialState.statesAndCounties,
-        results: initialState.results,
       };
 
     case 'annualDisplacement/START_DISPLACEMENT':
@@ -93,7 +59,6 @@ export default function reducer(
         ...state,
         status: 'started',
         statesAndCounties: initialState.statesAndCounties,
-        results: initialState.results,
       };
 
     case 'annualDisplacement/RECEIVE_DISPLACEMENT':
@@ -101,7 +66,6 @@ export default function reducer(
         ...state,
         status: 'complete',
         statesAndCounties: action.statesAndCounties,
-        results: action.results,
       };
 
     case 'annualDisplacement/RECEIVE_ERROR':
@@ -124,7 +88,6 @@ export function incrementProgress(): AnnualDisplacementsAction {
 
 export function receiveDisplacement(): AppThunk {
   return (dispatch, getState) => {
-    // get reducer data from store to use in dispatched action
     const { generation, so2, nox, co2, pm25 } = getState();
 
     // bail if a data source returns an error
@@ -152,59 +115,10 @@ export function receiveDisplacement(): AppThunk {
       statesAndCounties[stateId] = stateCountyNames;
     }
 
-    const results = {
-      generation: {
-        original: generation.data.original,
-        post: generation.data.post,
-        impact: generation.data.impact,
-      },
-      totalEmissions: {
-        so2: {
-          original: so2.data.original,
-          post: so2.data.post,
-          impact: so2.data.impact,
-        },
-        nox: {
-          original: nox.data.original,
-          post: nox.data.post,
-          impact: nox.data.impact,
-        },
-        co2: {
-          original: co2.data.original,
-          post: co2.data.post,
-          impact: co2.data.impact,
-        },
-        pm25: {
-          original: pm25.data.original,
-          post: pm25.data.post,
-          impact: pm25.data.impact,
-        },
-      },
-      emissionRates: {
-        so2: {
-          original: (so2.data.original / generation.data.original).toFixed(2),
-          post: (so2.data.post / generation.data.post).toFixed(2),
-        },
-        nox: {
-          original: (nox.data.original / generation.data.original).toFixed(2),
-          post: (nox.data.post / generation.data.post).toFixed(2),
-        },
-        co2: {
-          original: (co2.data.original / generation.data.original).toFixed(2),
-          post: (co2.data.post / generation.data.post).toFixed(2),
-        },
-        pm25: {
-          original: (pm25.data.original / generation.data.original).toFixed(2),
-          post: (pm25.data.post / generation.data.post).toFixed(2),
-        },
-      },
-    };
-
     dispatch(incrementProgress());
     dispatch({
       type: 'annualDisplacement/RECEIVE_DISPLACEMENT',
       statesAndCounties,
-      results,
     });
     dispatch(completeStateEmissions());
     dispatch(completeMonthlyEmissions());

@@ -48,7 +48,6 @@ export default function reducer(
 // action creators
 export function startCountyResultsDownload(): AppThunk {
   return (dispatch, getState) => {
-    // get reducer data from store to use in dispatched action
     const { monthlyEmissions, region } = getState();
 
     const data = monthlyEmissions.downloadableCountyData;
@@ -71,7 +70,6 @@ export function startCountyResultsDownload(): AppThunk {
 
 export function startCobraResultsDownload(): AppThunk {
   return (dispatch, getState) => {
-    // get reducer data from store to use in dispatched action
     const { monthlyEmissions, region } = getState();
 
     const data = monthlyEmissions.downloadableCobraData;

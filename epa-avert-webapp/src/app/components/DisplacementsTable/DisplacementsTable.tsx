@@ -4,15 +4,10 @@ import { useTypedSelector } from 'app/redux/index';
 // styles
 import './styles.css';
 
-const formatOutput = (number: any) => {
+const formatEmissions = (number: any) => {
   if (number < 10 && number > -10) return '--';
   let output = Math.ceil(number / 10) * 10;
   return output.toLocaleString();
-};
-
-const formatNumber = (number: any) => {
-  if (number === 0) return '---';
-  return parseFloat(number).toFixed(2); // always display two decimal places
 };
 
 type Props = {
@@ -23,15 +18,24 @@ const DisplacementsTable = ({ heading }: Props) => {
   const annualStatus = useTypedSelector(
     ({ annualDisplacement }) => annualDisplacement.status,
   );
-  const generation = useTypedSelector(
-    ({ annualDisplacement }) => annualDisplacement.results.generation,
-  );
-  const totalEmissions = useTypedSelector(
-    ({ annualDisplacement }) => annualDisplacement.results.totalEmissions,
-  );
-  const emissionRates = useTypedSelector(
-    ({ annualDisplacement }) => annualDisplacement.results.emissionRates,
-  );
+
+  const generationData = useTypedSelector(({ generation }) => generation.data);
+  const so2Data = useTypedSelector(({ so2 }) => so2.data);
+  const noxData = useTypedSelector(({ nox }) => nox.data);
+  const co2Data = useTypedSelector(({ co2 }) => co2.data);
+  const pm25Data = useTypedSelector(({ pm25 }) => pm25.data);
+
+  const so2EmissionsOriginal = so2Data.original / generationData.original;
+  const so2EmissionsPost = so2Data.post / generationData.post;
+
+  const noxEmissionsOriginal = noxData.original / generationData.original;
+  const noxEmissionsPost = noxData.post / generationData.post;
+
+  const co2EmissionsOriginal = co2Data.original / generationData.original;
+  const co2EmissionsPost = co2Data.post / generationData.post;
+
+  const pm25EmissionsOriginal = pm25Data.original / generationData.original;
+  const pm25EmissionsPost = pm25Data.post / generationData.post;
 
   // rendering is ready when state annual displacement status is 'complete'
   const readyToRender = annualStatus === 'complete';
@@ -54,13 +58,13 @@ const DisplacementsTable = ({ heading }: Props) => {
             <tr>
               <td>Generation (MWh)</td>
               <td className="avert-table-data">
-                {formatOutput(generation.original)}
+                {formatEmissions(generationData.original)}
               </td>
               <td className="avert-table-data">
-                {formatOutput(generation.post)}
+                {formatEmissions(generationData.post)}
               </td>
               <td className="avert-table-data">
-                {formatOutput(generation.impact)}
+                {formatEmissions(generationData.impact)}
               </td>
             </tr>
             <tr className="avert-table-group">
@@ -71,13 +75,13 @@ const DisplacementsTable = ({ heading }: Props) => {
                 SO<sub>2</sub> (lbs)
               </td>
               <td className="avert-table-data">
-                {formatOutput(totalEmissions.so2.original)}
+                {formatEmissions(so2Data.original)}
               </td>
               <td className="avert-table-data">
-                {formatOutput(totalEmissions.so2.post)}
+                {formatEmissions(so2Data.post)}
               </td>
               <td className="avert-table-data">
-                {formatOutput(totalEmissions.so2.impact)}
+                {formatEmissions(so2Data.impact)}
               </td>
             </tr>
             <tr>
@@ -85,13 +89,13 @@ const DisplacementsTable = ({ heading }: Props) => {
                 NO<sub>X</sub> (lbs)
               </td>
               <td className="avert-table-data">
-                {formatOutput(totalEmissions.nox.original)}
+                {formatEmissions(noxData.original)}
               </td>
               <td className="avert-table-data">
-                {formatOutput(totalEmissions.nox.post)}
+                {formatEmissions(noxData.post)}
               </td>
               <td className="avert-table-data">
-                {formatOutput(totalEmissions.nox.impact)}
+                {formatEmissions(noxData.impact)}
               </td>
             </tr>
             <tr>
@@ -99,13 +103,13 @@ const DisplacementsTable = ({ heading }: Props) => {
                 CO<sub>2</sub> (tons)
               </td>
               <td className="avert-table-data">
-                {formatOutput(totalEmissions.co2.original)}
+                {formatEmissions(co2Data.original)}
               </td>
               <td className="avert-table-data">
-                {formatOutput(totalEmissions.co2.post)}
+                {formatEmissions(co2Data.post)}
               </td>
               <td className="avert-table-data">
-                {formatOutput(totalEmissions.co2.impact)}
+                {formatEmissions(co2Data.impact)}
               </td>
             </tr>
             <tr>
@@ -113,13 +117,13 @@ const DisplacementsTable = ({ heading }: Props) => {
                 PM<sub>2.5</sub> (lbs)
               </td>
               <td className="avert-table-data">
-                {formatOutput(totalEmissions.pm25.original)}
+                {formatEmissions(pm25Data.original)}
               </td>
               <td className="avert-table-data">
-                {formatOutput(totalEmissions.pm25.post)}
+                {formatEmissions(pm25Data.post)}
               </td>
               <td className="avert-table-data">
-                {formatOutput(totalEmissions.pm25.impact)}
+                {formatEmissions(pm25Data.impact)}
               </td>
             </tr>
             <tr className="avert-table-group">
@@ -130,10 +134,10 @@ const DisplacementsTable = ({ heading }: Props) => {
                 SO<sub>2</sub> (lbs/MWh)
               </td>
               <td className="avert-table-data">
-                {formatNumber(emissionRates.so2.original)}
+                {so2EmissionsOriginal.toFixed(2)}
               </td>
               <td className="avert-table-data">
-                {formatNumber(emissionRates.so2.post)}
+                {so2EmissionsPost.toFixed(2)}
               </td>
               <td className="avert-table-data">&nbsp;</td>
             </tr>
@@ -142,10 +146,10 @@ const DisplacementsTable = ({ heading }: Props) => {
                 NO<sub>X</sub> (lbs/MWh)
               </td>
               <td className="avert-table-data">
-                {formatNumber(emissionRates.nox.original)}
+                {noxEmissionsOriginal.toFixed(2)}
               </td>
               <td className="avert-table-data">
-                {formatNumber(emissionRates.nox.post)}
+                {noxEmissionsPost.toFixed(2)}
               </td>
               <td className="avert-table-data">&nbsp;</td>
             </tr>
@@ -154,10 +158,10 @@ const DisplacementsTable = ({ heading }: Props) => {
                 CO<sub>2</sub> (tons/MWh)
               </td>
               <td className="avert-table-data">
-                {formatNumber(emissionRates.co2.original)}
+                {co2EmissionsOriginal.toFixed(2)}
               </td>
               <td className="avert-table-data">
-                {formatNumber(emissionRates.co2.post)}
+                {co2EmissionsPost.toFixed(2)}
               </td>
               <td className="avert-table-data">&nbsp;</td>
             </tr>
@@ -166,10 +170,10 @@ const DisplacementsTable = ({ heading }: Props) => {
                 PM<sub>2.5</sub> (lbs/MWh)
               </td>
               <td className="avert-table-data">
-                {formatNumber(emissionRates.pm25.original)}
+                {pm25EmissionsOriginal.toFixed(2)}
               </td>
               <td className="avert-table-data">
-                {formatNumber(emissionRates.pm25.post)}
+                {pm25EmissionsPost.toFixed(2)}
               </td>
               <td className="avert-table-data">&nbsp;</td>
             </tr>

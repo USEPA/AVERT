@@ -41,7 +41,7 @@ function EmissionsChart({ heading }: Props) {
     ({ monthlyEmissions }) => monthlyEmissions.availableCounties,
   );
   const selectedRegion = useTypedSelector(({ region }) => region.name);
-  const selectedState = useTypedSelector(
+  const selectedStateId = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.selectedState,
   );
   const selectedCounty = useTypedSelector(
@@ -102,8 +102,8 @@ function EmissionsChart({ heading }: Props) {
               dispatch(
                 selectMonthlyAggregation(ev.target.value as MonthlyAggregation),
               );
-              if (selectedState) {
-                dispatch(selectMonthlyState(selectedState));
+              if (selectedStateId) {
+                dispatch(selectMonthlyState(selectedStateId));
               }
             }}
           />
@@ -136,7 +136,7 @@ function EmissionsChart({ heading }: Props) {
     StateSelector = (
       <div className="avert-select-group">
         <select
-          value={selectedState}
+          value={selectedStateId}
           onChange={(ev) => dispatch(selectMonthlyState(ev.target.value))}
         >
           <option value="" disabled>
@@ -282,19 +282,19 @@ function EmissionsChart({ heading }: Props) {
   }
 
   if (aggregation === 'state') {
-    location = selectedState === '' ? '' : `${states[selectedState]}`;
+    location = selectedStateId === '' ? '' : `${states[selectedStateId]}`;
   }
 
   if (aggregation === 'county') {
     const countyName =
       selectedCounty.indexOf('(City)') !== -1
         ? selectedCounty // county is really a city
-        : selectedState === 'LA'
+        : selectedStateId === 'LA'
         ? `${selectedCounty} Parish`
         : `${selectedCounty} County`;
 
     location =
-      selectedCounty === '' ? '' : `${countyName}, ${states[selectedState]}`;
+      selectedCounty === '' ? '' : `${countyName}, ${states[selectedStateId]}`;
   }
 
   function formatTitle(pollutant: string) {

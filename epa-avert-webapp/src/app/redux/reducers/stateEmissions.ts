@@ -71,7 +71,6 @@ export default function reducer(
 
 export function completeStateEmissions(): AppThunk {
   return (dispatch, getState) => {
-    // get reducer data from store to use in dispatched action
     const { annualDisplacement, so2, nox, co2, pm25 } = getState();
 
     const stateIds = Object.keys(annualDisplacement.statesAndCounties).sort();
@@ -88,7 +87,7 @@ export function completeStateEmissions(): AppThunk {
     dispatch({
       type: 'stateEmissions/COMPLETE_STATE_EMISSIONS',
       states: stateIds,
-      data: data,
+      data,
     });
   };
 }
