@@ -45,3 +45,53 @@
 .avert-region-map .avert-region[data-active='true'] {
   opacity: 1;
 }
+
+/* CALIFORNIA */
+#region-ca {
+  fill: #fed330;
+}
+
+/* GREAT_LAKES_MID_ATLANTIC */
+#region-emw {
+  fill: #db742b;
+}
+
+/* LOWER_MIDWEST */
+#region-sc {
+  fill: #a74c8f;
+}
+
+/* NORTHEAST */
+#region-ne {
+  fill: #d52074;
+}
+
+/* NORTHWEST */
+#region-nw {
+  fill: #364f95;
+}
+
+/* ROCKY_MOUNTAINS */
+#region-rm {
+  fill: #67b187;
+}
+
+/* SOUTHEAST */
+#region-se {
+  fill: #bdc736;
+}
+
+/* SOUTHWEST */
+#region-sw {
+  fill: #d85029;
+}
+
+/* TEXAS */
+#region-tx {
+  fill: #fda929;
+}
+
+/* UPPER_MIDWEST */
+#region-wmw {
+  fill: #48b5d8;
+}

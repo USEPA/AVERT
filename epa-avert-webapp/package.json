@@ -1,7 +1,6 @@
 {
   "name": "epa-avert-webapp",
   "version": "1.15.0",
-  "private": true,
   "description": "EPA's Avoided Emissions and Generation Tools (AVERT) is a free tool that estimates the emissions benefits of energy efficiency and renewable energy policies and programs.",
   "author": "Eastern Research Group, Inc.",
   "contributors": [
@@ -9,50 +8,76 @@
     "Courtney Myers <courtney.myers@erg.com>"
   ],
   "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Eastern-Research-Group/EPA-AVERT.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Eastern-Research-Group/EPA-AVERT/issues"
-  },
   "homepage": ".",
+  "scripts": {
+    "start": "react-scripts start",
+    "build:dev": "REACT_APP_URL=https://avert-dev.app.cloud.gov npm run build",
+    "build": "react-scripts build && ./sync-build-with-public.sh",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "cypress": "cypress open"
+  },
   "devDependencies": {
-    "react-scripts": "1.1.4",
-    "redux-mock-store": "1.5.3"
+    "@testing-library/cypress": "6.0.0",
+    "@testing-library/jest-dom": "5.5.0",
+    "@testing-library/react": "10.0.3",
+    "@testing-library/user-event": "10.1.0",
+    "@types/jest": "25.2.1",
+    "@types/node": "13.13.4",
+    "@types/react": "16.9.34",
+    "@types/react-dom": "16.9.7",
+    "@types/react-redux": "7.1.7",
+    "@types/stats-lite": "2.2.0",
+    "cypress": "4.4.1",
+    "eslint-plugin-cypress": "2.10.3",
+    "husky": "4.2.5",
+    "lint-staged": "10.1.7",
+    "prettier": "2.0.5",
+    "react-scripts": "3.4.1",
+    "typescript": "3.8.3"
   },
   "dependencies": {
     "blob": "0.0.4",
+    "core-js": "3.6.5",
     "file-saver": "1.3.8",
-    "flow-bin": "0.78.0",
+    "highcharts": "8.0.4",
     "highcharts-exporting": "0.1.7",
-    "husky": "0.14.3",
+    "highcharts-react-official": "3.0.0",
     "json2csv": "4.2.1",
-    "lint-staged": "7.2.0",
-    "prettier": "1.14.0",
-    "react": "16.4.2",
-    "react-dom": "16.4.2",
-    "react-highcharts": "16.0.2",
-    "react-redux": "5.0.7",
-    "redux": "4.0.0",
+    "react": "16.13.1",
+    "react-app-polyfill": "1.0.6",
+    "react-dom": "16.13.1",
+    "react-redux": "7.2.0",
+    "redux": "4.0.5",
     "redux-thunk": "2.3.0",
     "stats-lite": "2.1.1"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
-    "src/**/*.{js,jsx,json,css}": [
-      "prettier --write",
-      "git add"
+    "*.{js,jsx,ts,tsx,json,css,md,html}": "prettier --write"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "plugin:cypress/recommended"
     ]
   },
-  "scripts": {
-    "precommit": "lint-staged",
-    "start": "react-scripts start",
-    "build:pcf": "REACT_APP_URL=https://avert-dev.cfapps.io npm run build",
-    "build:dev": "REACT_APP_URL=https://avert-dev.app.cloud.gov npm run build",
-    "build": "react-scripts build && ./sync-build-with-public.sh",
-    "test": "react-scripts test --verbose",
-    "coverage": "react-scripts test --coverage",
-    "eject": "react-scripts eject",
-    "flow": "flow"
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all",
+      "ie 11"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version",
+      "ie 11"
+    ]
   }
 }

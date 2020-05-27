@@ -1,7 +1,6 @@
 {
   "name": "epa-avert-webservice",
   "version": "1.15.0",
-  "private": true,
   "description": "Offloaded server calculations for the AVERT web app.",
   "author": "Eastern Research Group, Inc.",
   "contributors": [
@@ -9,34 +8,28 @@
     "Courtney Myers <courtney.myers@erg.com>"
   ],
   "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Eastern-Research-Group/EPA-AVERT.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Eastern-Research-Group/EPA-AVERT/issues"
-  },
   "engines": {
-    "node": "8.x"
+    "node": "10.x"
   },
-  "main": "./app.js",
+  "main": "./index.js",
   "scripts": {
-    "start": "node ./app.js",
-    "dev": "AVERT_AUTH=true AVERT_USER=avert AVERT_PASS=dev node ./app.js",
-    "test": "mocha */test.js"
-  },
-  "dependencies": {
-    "@koa/cors": "2.2.2",
-    "koa": "2.5.2",
-    "koa-basic-auth": "3.0.0",
-    "koa-bodyparser": "4.2.1",
-    "koa-logger": "3.2.0",
-    "koa-route": "3.2.0",
-    "koa-static": "5.0.0",
-    "raven": "2.6.3"
+    "start": "node ./index.js",
+    "dev": "AVERT_AUTH=true AVERT_USER=avert AVERT_PASS=dev node ./index.js",
+    "test": "mocha **/*.test.js"
   },
   "devDependencies": {
-    "mocha": "5.2.0",
-    "supertest": "3.1.0"
+    "mocha": "7.1.1",
+    "supertest": "4.0.2"
+  },
+  "dependencies": {
+    "@koa/cors": "3.0.0",
+    "@sentry/node": "5.15.4",
+    "dotenv": "8.2.0",
+    "koa": "2.11.0",
+    "koa-basic-auth": "4.0.0",
+    "koa-bodyparser": "4.3.0",
+    "koa-logger": "3.2.1",
+    "koa-route": "3.2.0",
+    "koa-static": "5.0.0"
   }
 }
