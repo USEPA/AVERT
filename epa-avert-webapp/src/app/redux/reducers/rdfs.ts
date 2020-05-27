@@ -179,7 +179,7 @@ export function fetchRegion(): AppThunk {
           payload: {
             limits: {
               annualGwh: max_ee_yearly_gwh * 2,
-              constantMwh: Math.round(hourlyMwh * 100) / 100,
+              constantMwh: Math.round(hourlyMwh * 2 * 100) / 100,
               renewables: max_solar_wind_mwh * 2,
               percent: max_ee_percent * 2,
             },
