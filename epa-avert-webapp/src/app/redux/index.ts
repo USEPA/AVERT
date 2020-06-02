@@ -15,7 +15,6 @@ import eere from 'app/redux/reducers/eere';
 import annualDisplacement from 'app/redux/reducers/annualDisplacement';
 import stateEmissions from 'app/redux/reducers/stateEmissions';
 import monthlyEmissions from 'app/redux/reducers/monthlyEmissions';
-import dataDownload from 'app/redux/reducers/dataDownload';
 
 const rootReducer = combineReducers({
   region,
@@ -31,7 +30,6 @@ const rootReducer = combineReducers({
   annualDisplacement,
   stateEmissions,
   monthlyEmissions,
-  dataDownload,
 });
 
 export default rootReducer;

@@ -1,13 +1,30 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import json2csv from 'json2csv';
+import Blob from 'blob';
+import FileSaver from 'file-saver';
 // reducers
-import {
-  startCountyResultsDownload,
-  startCobraResultsDownload,
-} from 'app/redux/reducers/dataDownload';
+import { useTypedSelector } from 'app/redux/index';
+
+function downloadDataFile(fileName: string, data: any) {
+  const fields = Object.keys(data[0]);
+
+  try {
+    const csv = json2csv.parse(data, { fields });
+    const blob = new Blob([csv], { type: 'text/plain:charset=utf-8' });
+    FileSaver.saveAs(blob, `${fileName}.csv`);
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 function DataDownload() {
-  const dispatch = useDispatch();
+  const regionName = useTypedSelector(({ region }) => region.name);
+  const countyData = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.downloadableCountyData,
+  );
+  const cobraData = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.downloadableCobraData,
+  );
 
   const isDesktopSafari =
     navigator.userAgent.toLowerCase().indexOf('safari') !== -1 &&
@@ -29,7 +46,8 @@ function DataDownload() {
           href="/"
           onClick={(ev) => {
             ev.preventDefault();
-            dispatch(startCountyResultsDownload());
+            const fileName = `AVERT Monthly Emission Changes (${regionName})`;
+            downloadDataFile(fileName, countyData);
           }}
         >
           Download County Level Results
@@ -42,7 +60,8 @@ function DataDownload() {
           href="/"
           onClick={(ev) => {
             ev.preventDefault();
-            dispatch(startCobraResultsDownload());
+            const fileName = `AVERT COBRA (${regionName})`;
+            downloadDataFile(fileName, cobraData);
           }}
         >
           Download COBRA Results
