@@ -1,4 +1,4 @@
-describe.skip('Get Results – offshoreWind', () => {
+describe('Get Results – offshoreWind', () => {
   beforeEach(() => {
     cy.visit('/');
 
@@ -17,7 +17,7 @@ describe.skip('Get Results – offshoreWind', () => {
     cy.findByText('LOADING...', { timeout: 60000 }).should('not.exist');
   });
 
-  it('Annual Regional Displacements table displays the correct results', () => {
+  it.skip('Annual Regional Displacements table displays the correct results', () => {
     cy.findByText('Generation (MWh)')
       .next()
       .should('contain', '') // Original
@@ -113,7 +113,7 @@ describe.skip('Get Results – offshoreWind', () => {
       .should('contain', ''); // Post-EE/RE
   });
 
-  it('Annual State Emission Changes table displays the correct results', () => {
+  it.skip('Annual State Emission Changes table displays the correct results', () => {
     cy.findByText('Colorado')
       .parent()
       .as('coloradoEmissions')

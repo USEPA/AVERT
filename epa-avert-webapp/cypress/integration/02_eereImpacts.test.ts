@@ -28,7 +28,7 @@ describe('Set EE/RE Impacts', () => {
     cy.findByText('Wind').as('toggleC');
     cy.get('@toggleC').click();
     cy.findByText('Onshore wind total capacity:').next().as('onshoreWind');
-    // cy.findByText('Offshore wind total capacity:').next().as('offshoreWind'); // TODO: update once offshore wind is added
+    cy.findByText('Offshore wind total capacity:').next().as('offshoreWind');
     cy.get('@toggleC').click();
 
     cy.findByText('Solar photovoltaic').as('toggleD');
@@ -46,7 +46,7 @@ describe('Set EE/RE Impacts', () => {
     cy.findAllByText('Get Results').filter('.avert-next').as('resultsBtn');
   });
 
-  it('Entering a value for wind capacity displays the EE/RE profile chart and enables the “Get Results” button', () => {
+  it('Entering a value for onshore wind capacity displays the EE/RE profile chart and enables the “Get Results” button', () => {
     cy.get('@toggleC').click();
     cy.get('@onshoreWind').type('444');
     cy.get('@resultsBtn').should('have.class', 'avert-button-disabled');
@@ -55,7 +55,7 @@ describe('Set EE/RE Impacts', () => {
     cy.get('@resultsBtn').should('not.have.class', 'avert-button-disabled');
   });
 
-  it('Entering a value over the 15% threshold for wind capacity displays the warning message below the chart', () => {
+  it('Entering a value over the 15% threshold for onshore wind capacity displays the warning message below the chart', () => {
     cy.get('@toggleC').click();
     cy.get('@onshoreWind').type('888');
     cy.get('@calculateBtn').click();
@@ -64,7 +64,7 @@ describe('Set EE/RE Impacts', () => {
     cy.findByText('March 18 at 12:00 AM');
   });
 
-  it('Entering a value over the 30% threshold for annual generation and wind capacity displays the error message below the chart', () => {
+  it('Entering a value over the 30% threshold for annual generation and onshore wind capacity displays the error message below the chart', () => {
     cy.get('@toggleA').click();
     cy.get('@annualGwh').type('2222');
     cy.get('@toggleC').click();
@@ -75,7 +75,7 @@ describe('Set EE/RE Impacts', () => {
     cy.findByText('March 18 at 12:00 AM');
   });
 
-  it('Entering a value over the vaild limit for wind capacity displays the error message below the input', () => {
+  it('Entering a value over the vaild limit for onshore wind capacity displays the error message below the input', () => {
     cy.get('@toggleC').click();
     cy.get('@onshoreWind').type('889');
     cy.findByText('Please enter a number between 0 and 888.6.');

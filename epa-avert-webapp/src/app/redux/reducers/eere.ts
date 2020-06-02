@@ -56,7 +56,13 @@ type EereAction =
       };
     }
   | {
-      type: 'eere/UPDATE_EERE_WIND_CAPACITY';
+      type: 'eere/UPDATE_EERE_ONSHORE_WIND';
+      payload: {
+        text: string;
+      };
+    }
+  | {
+      type: 'eere/UPDATE_EERE_OFFSHORE_WIND';
       payload: {
         text: string;
       };
@@ -103,7 +109,8 @@ export type EereInputFields =
   | 'broadProgram'
   | 'reduction'
   | 'topHours'
-  | 'windCapacity'
+  | 'onshoreWind'
+  | 'offshoreWind'
   | 'utilitySolar'
   | 'rooftopSolar';
 
@@ -151,7 +158,8 @@ const emptyEereInputs = {
   broadProgram: '',
   reduction: '',
   topHours: '',
-  windCapacity: '',
+  onshoreWind: '',
+  offshoreWind: '',
   utilitySolar: '',
   rooftopSolar: '',
 };
@@ -252,12 +260,21 @@ export default function reducer(
         },
       };
 
-    case 'eere/UPDATE_EERE_WIND_CAPACITY':
+    case 'eere/UPDATE_EERE_ONSHORE_WIND':
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          windCapacity: action.payload.text,
+          onshoreWind: action.payload.text,
+        },
+      };
+
+    case 'eere/UPDATE_EERE_OFFSHORE_WIND':
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          offshoreWind: action.payload.text,
         },
       };
 
@@ -428,18 +445,33 @@ export function updateEereTopHours(input: string): AppThunk {
   };
 }
 
-export function updateEereWindCapacity(input: string): AppThunk {
+export function updateEereOnshoreWind(input: string): AppThunk {
   return (dispatch, getState) => {
     const { eere } = getState();
 
     dispatch({
-      type: 'eere/UPDATE_EERE_WIND_CAPACITY',
+      type: 'eere/UPDATE_EERE_ONSHORE_WIND',
       payload: {
         text: input,
       },
     });
 
-    dispatch(validateInput('windCapacity', input, eere.limits.renewables));
+    dispatch(validateInput('onshoreWind', input, eere.limits.renewables));
+  };
+}
+
+export function updateEereOffshoreWind(input: string): AppThunk {
+  return (dispatch, getState) => {
+    const { eere } = getState();
+
+    dispatch({
+      type: 'eere/UPDATE_EERE_OFFSHORE_WIND',
+      payload: {
+        text: input,
+      },
+    });
+
+    dispatch(validateInput('offshoreWind', input, eere.limits.renewables));
   };
 }
 

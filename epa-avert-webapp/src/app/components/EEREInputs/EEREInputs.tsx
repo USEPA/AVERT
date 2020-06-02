@@ -12,7 +12,8 @@ import {
   updateEereBroadBasedProgram,
   updateEereReduction,
   updateEereTopHours,
-  updateEereWindCapacity,
+  updateEereOnshoreWind,
+  updateEereOffshoreWind,
   updateEereUtilitySolar,
   updateEereRooftopSolar,
   calculateEereProfile,
@@ -30,7 +31,8 @@ function EEREInputs() {
   const broadProgram = useTypedSelector(({ eere }) => eere.inputs.broadProgram);
   const reduction = useTypedSelector(({ eere }) => eere.inputs.reduction);
   const topHours = useTypedSelector(({ eere }) => eere.inputs.topHours);
-  const windCapacity = useTypedSelector(({ eere }) => eere.inputs.windCapacity);
+  const onshoreWind = useTypedSelector(({ eere }) => eere.inputs.onshoreWind);
+  const offshoreWind = useTypedSelector(({ eere }) => eere.inputs.offshoreWind);
   const utilitySolar = useTypedSelector(({ eere }) => eere.inputs.utilitySolar);
   const rooftopSolar = useTypedSelector(({ eere }) => eere.inputs.rooftopSolar);
 
@@ -77,7 +79,7 @@ function EEREInputs() {
     broadProgram,
     reduction,
     topHours,
-    windCapacity,
+    onshoreWind,
     utilitySolar,
     rooftopSolar,
   ];
@@ -259,8 +261,8 @@ function EEREInputs() {
                   Onshore wind total capacity:{' '}
                 </span>
                 <EEREInputField
-                  value={windCapacity}
-                  onChange={(text) => dispatch(updateEereWindCapacity(text))}
+                  value={onshoreWind}
+                  onChange={(text) => dispatch(updateEereOnshoreWind(text))}
                 />
                 <span className="avert-input-unit"> MW </span>
 
@@ -272,18 +274,37 @@ function EEREInputs() {
                 </Tooltip>
 
                 {displayError({
-                  fieldName: 'windCapacity',
-                  inputValue: windCapacity,
+                  fieldName: 'onshoreWind',
+                  inputValue: onshoreWind,
                   maxValue: limits?.renewables,
                 })}
               </li>
 
               <li>
+                {/* TODO: only display offshore wind for regions that include it */}
+
                 <span className="avert-input-label">
-                  Offshore wind total capacity:
+                  Offshore wind total capacity:{' '}
                 </span>
 
-                {/* TODO: add input for offshore wind */}
+                <EEREInputField
+                  value={offshoreWind}
+                  onChange={(text) => dispatch(updateEereOffshoreWind(text))}
+                />
+                <span className="avert-input-unit"> MW </span>
+
+                <Tooltip id={5}>
+                  Enter the total capacity (maximum potential electricity
+                  generation) for this type of resource, measured in MW. The
+                  model uses these inputs along with hourly capacity factors
+                  that vary by resource type and region.
+                </Tooltip>
+
+                {displayError({
+                  fieldName: 'offshoreWind',
+                  inputValue: offshoreWind,
+                  maxValue: limits?.renewables,
+                })}
               </li>
             </ul>
           </section>
