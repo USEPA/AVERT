@@ -1,7 +1,7 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
 // reducers
-import { RegionalLoadData } from 'app/redux/reducers/rdfs';
+import { RegionalLoadData } from 'app/redux/reducers/region';
 // calculations
 import { calculateEere } from 'app/calculations';
 // config
@@ -9,7 +9,7 @@ import { RegionKeys, regions } from 'app/config';
 
 type EereAction =
   | {
-      type: 'rdfs/SET_EERE_LIMITS';
+      type: 'region/SET_EERE_LIMITS';
       payload: {
         limits: {
           annualGwh: number;
@@ -195,7 +195,7 @@ export default function reducer(
   action: EereAction,
 ): EereState {
   switch (action.type) {
-    case 'rdfs/SET_EERE_LIMITS':
+    case 'region/SET_EERE_LIMITS':
       return {
         ...state,
         limits: action.payload.limits,
@@ -475,7 +475,7 @@ export function updateEereRooftopSolar(input: string): AppThunk {
 
 export function calculateEereProfile(): AppThunk {
   return (dispatch, getState) => {
-    const { region, rdfs, eere } = getState();
+    const { region, eere } = getState();
 
     dispatch({
       type: 'eere/SUBMIT_EERE_CALCULATION',
@@ -492,10 +492,10 @@ export function calculateEereProfile(): AppThunk {
       hardLimitHourlyExceedances,
       hourlyEere,
     } = calculateEere({
-      regionMaxEELimit: rdfs.rdf.limits.max_ee_percent,
+      regionMaxEELimit: region.rdf.limits.max_ee_percent,
       regionLineLoss: regions[regionKey].lineLoss,
-      regionalLoads: rdfs.rdf.regional_load,
-      eereDefaults: rdfs.defaults.data,
+      regionalLoads: region.rdf.regional_load,
+      eereDefaults: region.eereDefaults.data,
       eereInputs: eere.inputs,
     });
 
@@ -506,7 +506,7 @@ export function calculateEereProfile(): AppThunk {
       },
     });
 
-    const regionalLoadHours = rdfs.rdf.regional_load;
+    const regionalLoadHours = region.rdf.regional_load;
 
     const softValid = softLimitHourlyExceedances.reduce((a, b) => a + b) === 0;
     const softTopExceedanceValue = Math.max(...softLimitHourlyExceedances);

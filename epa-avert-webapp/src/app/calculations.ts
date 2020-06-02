@@ -1,6 +1,6 @@
 import stats from 'stats-lite';
 // reducers
-import { RegionalLoadData, EereDefaultData } from 'app/redux/reducers/rdfs';
+import { RegionalLoadData, EereDefaultData } from 'app/redux/reducers/region';
 import {
   EereInputFields,
   EereInputs,

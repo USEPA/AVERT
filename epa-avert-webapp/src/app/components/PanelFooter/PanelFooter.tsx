@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useTypedSelector } from 'app/redux/index';
 import { setActiveStep } from 'app/redux/reducers/panel';
 import { resetEereInputs } from 'app/redux/reducers/eere';
-import { fetchRegion } from 'app/redux/reducers/rdfs';
+import { fetchRegion } from 'app/redux/reducers/region';
 import { calculateDisplacement } from 'app/redux/reducers/annualDisplacement';
 import { resetMonthlyEmissions } from 'app/redux/reducers/monthlyEmissions';
 // styles

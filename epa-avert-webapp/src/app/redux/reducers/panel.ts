@@ -24,7 +24,7 @@ type PanelAction =
       };
     }
   | {
-      type: 'rdfs/REQUEST_REGION_RDF';
+      type: 'region/REQUEST_REGION_RDF';
     }
   | {
       type: 'eere/SUBMIT_EERE_CALCULATION';
@@ -33,7 +33,7 @@ type PanelAction =
       type: 'annualDisplacement/START_DISPLACEMENT';
     }
   | {
-      type: 'rdfs/RECEIVE_REGION_DEFAULTS';
+      type: 'region/RECEIVE_REGION_DEFAULTS';
     }
   | {
       type: 'eere/COMPLETE_EERE_CALCULATION';
@@ -101,7 +101,7 @@ export default function reducer(
         closingModalId: action.payload.activeModalId,
       };
 
-    case 'rdfs/REQUEST_REGION_RDF':
+    case 'region/REQUEST_REGION_RDF':
     case 'eere/SUBMIT_EERE_CALCULATION':
     case 'annualDisplacement/START_DISPLACEMENT':
       return {
@@ -110,7 +110,7 @@ export default function reducer(
         loadingProgress: 0,
       };
 
-    case 'rdfs/RECEIVE_REGION_DEFAULTS':
+    case 'region/RECEIVE_REGION_DEFAULTS':
     case 'eere/COMPLETE_EERE_CALCULATION':
     case 'annualDisplacement/RECEIVE_DISPLACEMENT':
     case 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS':

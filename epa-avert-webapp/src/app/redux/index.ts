@@ -5,7 +5,6 @@ import { useSelector, TypedUseSelectorHook } from 'react-redux';
 import region from 'app/redux/reducers/region';
 import panel from 'app/redux/reducers/panel';
 import api from 'app/redux/reducers/api';
-import rdfs from 'app/redux/reducers/rdfs';
 import generation from 'app/redux/reducers/generation';
 import so2 from 'app/redux/reducers/so2';
 import nox from 'app/redux/reducers/nox';
@@ -20,7 +19,6 @@ const rootReducer = combineReducers({
   region,
   panel,
   api,
-  rdfs,
   generation,
   so2,
   nox,
