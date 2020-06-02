@@ -54,6 +54,11 @@ function DataDownload() {
         </a>
       </p>
 
+      <p>
+        Download formatted outputs for use in EPA’s Co-Benefits Risk Assessment
+        (COBRA) Screening Model.
+      </p>
+
       <p className="avert-centered">
         <a
           className="avert-button"

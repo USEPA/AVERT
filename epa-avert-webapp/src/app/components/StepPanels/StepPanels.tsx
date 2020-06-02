@@ -102,7 +102,7 @@ function StepPanels() {
       <Panel active={activeStep === 1}>
         <PanelBody heading="Select Region">
           <p>
-            AVERT splits the contiguous 48 states into 10 regions. AVERT regions
+            AVERT splits the contiguous 48 states into 14 regions. AVERT regions
             are aggregated based on EPA’s{' '}
             <a href="https://www.epa.gov/energy/egrid" target="_parent">
               eGRID subregions
@@ -117,7 +117,7 @@ function StepPanels() {
           <RegionMap />
 
           <p className="avert-small-text">
-            The online version of AVERT can run analyses using 2018 emissions
+            The online version of AVERT can run analyses using 2019 emissions
             and generation data. The Excel version of AVERT (available for
             download{' '}
             <a
@@ -126,7 +126,7 @@ function StepPanels() {
             >
               here
             </a>
-            ) allows analyses for years 2007–2018 or for a future year scenario.
+            ) allows analyses for years 2017–2019 or for a future year scenario.
           </p>
         </PanelBody>
 
@@ -153,9 +153,9 @@ function StepPanels() {
           </p>
 
           <p className="avert-small-text">
-            Five types of programs are listed below (A through E). You can enter
-            impacts for any or all types of programs, in any combination. AVERT
-            will calculate cumulative impacts.
+            Several types of programs are listed below (A through D). You can
+            enter impacts for any or all types of programs, in any combination.
+            AVERT will calculate cumulative impacts.
           </p>
 
           <EEREInputs />
