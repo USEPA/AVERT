@@ -251,82 +251,99 @@ function EEREInputs() {
           <summary data-label="C">Wind</summary>
           <section>
             <p>
-              <span className="avert-input-label">Total capacity: </span>
-              <EEREInputField
-                value={windCapacity}
-                onChange={(text) => dispatch(updateEereWindCapacity(text))}
-              />
-              <span className="avert-input-unit"> MW </span>
-
-              <Tooltip id={5}>
-                Enter the total capacity (maximum potential electricity
-                generation) for this type of resource, measured in MW. The model
-                uses these inputs along with hourly capacity factors that vary
-                by resource type and region.
-              </Tooltip>
-
-              {displayError({
-                fieldName: 'windCapacity',
-                inputValue: windCapacity,
-                maxValue: limits?.renewables,
-              })}
+              <strong>Choose one or both:</strong>
             </p>
+            <ul>
+              <li>
+                <span className="avert-input-label">
+                  Onshore wind total capacity:{' '}
+                </span>
+                <EEREInputField
+                  value={windCapacity}
+                  onChange={(text) => dispatch(updateEereWindCapacity(text))}
+                />
+                <span className="avert-input-unit"> MW </span>
+
+                <Tooltip id={5}>
+                  Enter the total capacity (maximum potential electricity
+                  generation) for this type of resource, measured in MW. The
+                  model uses these inputs along with hourly capacity factors
+                  that vary by resource type and region.
+                </Tooltip>
+
+                {displayError({
+                  fieldName: 'windCapacity',
+                  inputValue: windCapacity,
+                  maxValue: limits?.renewables,
+                })}
+              </li>
+
+              <li>
+                <span className="avert-input-label">
+                  Offshore wind total capacity:
+                </span>
+
+                {/* TODO: add input for offshore wind */}
+              </li>
+            </ul>
           </section>
         </details>
 
         <details>
-          <summary data-label="D">Utility-scale solar photovoltaic</summary>
+          <summary data-label="D">Solar photovoltaic</summary>
           <section>
             <p>
-              <span className="avert-input-label">Total capacity: </span>
-              <EEREInputField
-                value={utilitySolar}
-                onChange={(text) => dispatch(updateEereUtilitySolar(text))}
-              />
-              <span className="avert-input-unit"> MW </span>
-
-              <Tooltip id={6}>
-                Enter the total capacity (maximum potential electricity
-                generation) for this type of resource, measured in MW. The model
-                uses these inputs along with hourly capacity factors that vary
-                by resource type and region.
-              </Tooltip>
-
-              {displayError({
-                fieldName: 'utilitySolar',
-                inputValue: utilitySolar,
-                maxValue: limits?.renewables,
-              })}
+              <strong>Choose one or both:</strong>
             </p>
-          </section>
-        </details>
+            <ul>
+              <li>
+                <span className="avert-input-label">
+                  Utility-scale solar photovoltaic total capacity:{' '}
+                </span>
+                <EEREInputField
+                  value={utilitySolar}
+                  onChange={(text) => dispatch(updateEereUtilitySolar(text))}
+                />
+                <span className="avert-input-unit"> MW </span>
 
-        <details>
-          <summary data-label="E">
-            Distributed (rooftop) solar photovoltaic
-          </summary>
-          <section>
-            <p>
-              <span className="avert-input-label">Total capacity: </span>
-              <EEREInputField
-                value={rooftopSolar}
-                onChange={(text) => dispatch(updateEereRooftopSolar(text))}
-              />
-              <span className="avert-input-unit"> MW </span>
+                <Tooltip id={6}>
+                  Enter the total capacity (maximum potential electricity
+                  generation) for this type of resource, measured in MW. The
+                  model uses these inputs along with hourly capacity factors
+                  that vary by resource type and region.
+                </Tooltip>
 
-              <Tooltip id={7}>
-                Enter the total capacity (maximum potential electricity
-                generation) for this type of resource, measured in MW. The model
-                uses these inputs along with hourly capacity factors that vary
-                by resource type and region.
-              </Tooltip>
+                {displayError({
+                  fieldName: 'utilitySolar',
+                  inputValue: utilitySolar,
+                  maxValue: limits?.renewables,
+                })}
+              </li>
 
-              {displayError({
-                fieldName: 'rooftopSolar',
-                inputValue: rooftopSolar,
-                maxValue: limits?.renewables,
-              })}
-            </p>
+              <li>
+                <span className="avert-input-label">
+                  Distributed (rooftop) solar voltaic total capacity:{' '}
+                </span>
+                <EEREInputField
+                  value={rooftopSolar}
+                  onChange={(text) => dispatch(updateEereRooftopSolar(text))}
+                />
+                <span className="avert-input-unit"> MW </span>
+
+                <Tooltip id={7}>
+                  Enter the total capacity (maximum potential electricity
+                  generation) for this type of resource, measured in MW. The
+                  model uses these inputs along with hourly capacity factors
+                  that vary by resource type and region.
+                </Tooltip>
+
+                {displayError({
+                  fieldName: 'rooftopSolar',
+                  inputValue: rooftopSolar,
+                  maxValue: limits?.renewables,
+                })}
+              </li>
+            </ul>
           </section>
         </details>
       </div>

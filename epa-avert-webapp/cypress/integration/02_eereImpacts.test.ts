@@ -27,27 +27,20 @@ describe('Set EE/RE Impacts', () => {
 
     cy.findByText('Wind').as('toggleC');
     cy.get('@toggleC').click();
-    cy.findAllByText('Total capacity:')
-      .filter(':visible')
-      .next()
-      .as('windCapacity');
+    cy.findByText('Onshore wind total capacity:').next().as('onshoreWind');
+    // cy.findByText('Offshore wind total capacity:').next().as('offshoreWind'); // TODO: update once offshore wind is added
     cy.get('@toggleC').click();
 
-    cy.findByText('Utility-scale solar photovoltaic').as('toggleD');
+    cy.findByText('Solar photovoltaic').as('toggleD');
     cy.get('@toggleD').click();
-    cy.findAllByText('Total capacity:')
-      .filter(':visible')
+    cy.findByText('Utility-scale solar photovoltaic total capacity:')
       .next()
       .as('utilitySolar');
     cy.get('@toggleD').click();
-
-    cy.findByText('Distributed (rooftop) solar photovoltaic').as('toggleE');
-    cy.get('@toggleE').click();
-    cy.findAllByText('Total capacity:')
-      .filter(':visible')
+    cy.findByText('Distributed (rooftop) solar voltaic total capacity:')
       .next()
       .as('rooftopSolar');
-    cy.get('@toggleE').click();
+    cy.get('@toggleD').click();
 
     cy.findByText('Calculate EE/RE Impacts').as('calculateBtn');
     cy.findAllByText('Get Results').filter('.avert-next').as('resultsBtn');
@@ -55,7 +48,7 @@ describe('Set EE/RE Impacts', () => {
 
   it('Entering a value for wind capacity displays the EE/RE profile chart and enables the “Get Results” button', () => {
     cy.get('@toggleC').click();
-    cy.get('@windCapacity').type('444');
+    cy.get('@onshoreWind').type('444');
     cy.get('@resultsBtn').should('have.class', 'avert-button-disabled');
     cy.get('@calculateBtn').click();
     cy.findByText('EE/RE profile based on values entered:');
@@ -64,7 +57,7 @@ describe('Set EE/RE Impacts', () => {
 
   it('Entering a value over the 15% threshold for wind capacity displays the warning message below the chart', () => {
     cy.get('@toggleC').click();
-    cy.get('@windCapacity').type('888');
+    cy.get('@onshoreWind').type('888');
     cy.get('@calculateBtn').click();
     cy.findAllByText('WARNING:').filter(':visible');
     cy.findByText('25.06');
@@ -75,7 +68,7 @@ describe('Set EE/RE Impacts', () => {
     cy.get('@toggleA').click();
     cy.get('@annualGwh').type('2222');
     cy.get('@toggleC').click();
-    cy.get('@windCapacity').type('888');
+    cy.get('@onshoreWind').type('888');
     cy.get('@calculateBtn').click();
     cy.findAllByText('ERROR:').filter(':visible');
     cy.findByText('33.2');
@@ -84,7 +77,7 @@ describe('Set EE/RE Impacts', () => {
 
   it('Entering a value over the vaild limit for wind capacity displays the error message below the input', () => {
     cy.get('@toggleC').click();
-    cy.get('@windCapacity').type('889');
+    cy.get('@onshoreWind').type('889');
     cy.findByText('Please enter a number between 0 and 888.6.');
     cy.get('@calculateBtn').should('have.class', 'avert-button-disabled');
     cy.get('@resultsBtn').should('have.class', 'avert-button-disabled');

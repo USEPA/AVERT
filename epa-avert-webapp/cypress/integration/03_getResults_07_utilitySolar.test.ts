@@ -1,4 +1,4 @@
-describe('Get Results – rooftopSolar', () => {
+describe('Get Results – utilitySolar', () => {
   beforeEach(() => {
     cy.visit('/');
 
@@ -8,8 +8,10 @@ describe('Get Results – rooftopSolar', () => {
       .select('Rocky Mountains');
     cy.findAllByText('Set EE/RE Impacts').filter('.avert-next').click();
 
-    cy.findByText('Distributed (rooftop) solar photovoltaic').click();
-    cy.findAllByText('Total capacity:').filter(':visible').next().type('888');
+    cy.findByText('Solar photovoltaic').click();
+    cy.findByText('Utility-scale solar photovoltaic total capacity:')
+      .next()
+      .type('888');
     cy.findByText('Calculate EE/RE Impacts').click();
     cy.findAllByText('Get Results').filter('.avert-next').click();
     cy.findByText('LOADING...', { timeout: 60000 }).should('not.exist');
@@ -20,9 +22,9 @@ describe('Get Results – rooftopSolar', () => {
       .next()
       .should('contain', '49,701,740') // Original
       .next()
-      .should('contain', '48,243,280') // Post-EE/RE
+      .should('contain', '47,960,160') // Post-EE/RE
       .next()
-      .should('contain', '-1,458,450'); // EE/RE Impacts
+      .should('contain', '-1,741,580'); // EE/RE Impacts
 
     cy.findByText('Total emissions of fossil EGUs')
       .parent()
@@ -35,9 +37,9 @@ describe('Get Results – rooftopSolar', () => {
       .eq(1)
       .should('contain', '43,727,730') // Original
       .next()
-      .should('contain', '42,996,290') // Post-EE/RE
+      .should('contain', '42,855,370') // Post-EE/RE
       .next()
-      .should('contain', '-731,430'); // EE/RE Impacts
+      .should('contain', '-872,350'); // EE/RE Impacts
 
     cy.get('@so2Totals')
       .next()
@@ -46,9 +48,9 @@ describe('Get Results – rooftopSolar', () => {
       .eq(1)
       .should('contain', '54,606,950') // Original
       .next()
-      .should('contain', '53,096,980') // Post-EE/RE
+      .should('contain', '52,807,900') // Post-EE/RE
       .next()
-      .should('contain', '-1,509,970'); // EE/RE Impacts
+      .should('contain', '-1,799,050'); // EE/RE Impacts
 
     cy.get('@noxTotals')
       .next()
@@ -57,9 +59,9 @@ describe('Get Results – rooftopSolar', () => {
       .eq(1)
       .should('contain', '46,303,390') // Original
       .next()
-      .should('contain', '45,128,250') // Post-EE/RE
+      .should('contain', '44,898,120') // Post-EE/RE
       .next()
-      .should('contain', '-1,175,130'); // EE/RE Impacts
+      .should('contain', '-1,405,270'); // EE/RE Impacts
 
     cy.get('@co2Totals')
       .next()
@@ -68,9 +70,9 @@ describe('Get Results – rooftopSolar', () => {
       .eq(1)
       .should('contain', '1,309,910') // Original
       .next()
-      .should('contain', '1,260,800') // Post-EE/RE
+      .should('contain', '1,251,390') // Post-EE/RE
       .next()
-      .should('contain', '-49,110'); // EE/RE Impacts
+      .should('contain', '-58,520'); // EE/RE Impacts
 
     cy.findByText('Emission rates of fossil EGUs').parent().as('emissionRates');
 
@@ -117,26 +119,26 @@ describe('Get Results – rooftopSolar', () => {
       .as('coloradoEmissions')
       .children()
       .eq(1)
-      .should('contain', '-602,819') // SO2 (lbs)
+      .should('contain', '-723,554') // SO2 (lbs)
       .next()
-      .should('contain', '-1,377,485') // NOX (lbs)
+      .should('contain', '-1,638,483') // NOX (lbs)
       .next()
-      .should('contain', '-1,054,260') // CO2 (tons)
+      .should('contain', '-1,261,651') // CO2 (tons)
       .next()
-      .should('contain', '-47,388'); // PM2.5 (lbs)
+      .should('contain', '-56,470'); // PM2.5 (lbs)
 
     cy.get('@coloradoEmissions')
       .next()
       .as('newMexicoEmissions')
       .children()
       .eq(1)
-      .should('contain', '-43,318') // SO2 (lbs)
+      .should('contain', '-52,902') // SO2 (lbs)
       .next()
-      .should('contain', '-69,508') // NOX (lbs)
+      .should('contain', '-85,119') // NOX (lbs)
       .next()
-      .should('contain', '-16,595') // CO2 (tons)
+      .should('contain', '-20,409') // CO2 (tons)
       .next()
-      .should('contain', '-209'); // PM2.5 (lbs)
+      .should('contain', '-258'); // PM2.5 (lbs)
 
     cy.get('@newMexicoEmissions')
       .next()
@@ -145,9 +147,9 @@ describe('Get Results – rooftopSolar', () => {
       .eq(1)
       .should('contain', '0') // SO2 (lbs)
       .next()
-      .should('contain', '-1,621') // NOX (lbs)
+      .should('contain', '-1,894') // NOX (lbs)
       .next()
-      .should('contain', '-1,433') // CO2 (tons)
+      .should('contain', '-1,673') // CO2 (tons)
       .next()
       .should('contain', '0'); // PM2.5 (lbs)
 
@@ -156,12 +158,12 @@ describe('Get Results – rooftopSolar', () => {
       .as('wyomingEmissions')
       .children()
       .eq(1)
-      .should('contain', '-85,295') // SO2 (lbs)
+      .should('contain', '-95,898') // SO2 (lbs)
       .next()
-      .should('contain', '-61,358') // NOX (lbs)
+      .should('contain', '-73,557') // NOX (lbs)
       .next()
-      .should('contain', '-102,852') // CO2 (tons)
+      .should('contain', '-121,537') // CO2 (tons)
       .next()
-      .should('contain', '-1,514'); // PM2.5 (lbs)
+      .should('contain', '-1,794'); // PM2.5 (lbs)
   });
 });
