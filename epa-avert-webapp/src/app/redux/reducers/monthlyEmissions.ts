@@ -51,39 +51,53 @@ type MonthlyEmissionsAction =
     }
   | {
       type: 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS';
-      so2: MonthlyChanges;
-      nox: MonthlyChanges;
-      co2: MonthlyChanges;
-      pm25: MonthlyChanges;
+      payload: {
+        so2: MonthlyChanges;
+        nox: MonthlyChanges;
+        co2: MonthlyChanges;
+        pm25: MonthlyChanges;
+      };
     }
   | {
       type: 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS';
-      availableStates: string[];
+      payload: {
+        availableStates: string[];
+      };
     }
   | {
       type: 'monthlyEmissions/SET_DOWNLOAD_DATA';
-      so2: MonthlyChanges;
-      nox: MonthlyChanges;
-      co2: MonthlyChanges;
-      pm25: MonthlyChanges;
-      statesAndCounties: StatesAndCounties;
+      payload: {
+        so2: MonthlyChanges;
+        nox: MonthlyChanges;
+        co2: MonthlyChanges;
+        pm25: MonthlyChanges;
+        statesAndCounties: StatesAndCounties;
+      };
     }
   | {
       type: 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION';
-      aggregation: MonthlyAggregation;
+      payload: {
+        aggregation: MonthlyAggregation;
+      };
     }
   | {
       type: 'monthlyEmissions/SELECT_MONTHLY_UNIT';
-      unit: MonthlyUnit;
+      payload: {
+        unit: MonthlyUnit;
+      };
     }
   | {
       type: 'monthlyEmissions/SELECT_MONTHLY_STATE';
-      selectedState: string;
-      availableCounties: string[];
+      payload: {
+        selectedState: string;
+        availableCounties: string[];
+      };
     }
   | {
       type: 'monthlyEmissions/SELECT_MONTHLY_COUNTY';
-      selectedCounty: string;
+      payload: {
+        selectedCounty: string;
+      };
     }
   | {
       type: 'monthlyEmissions/RESET_MONTHLY_EMISSIONS';
@@ -147,33 +161,33 @@ export default function reducer(
       return {
         ...state,
         status: 'complete',
-        availableStates: action.availableStates,
+        availableStates: action.payload.availableStates,
       };
 
     case 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION':
       return {
         ...state,
-        aggregation: action.aggregation,
+        aggregation: action.payload.aggregation,
       };
 
     case 'monthlyEmissions/SELECT_MONTHLY_UNIT':
       return {
         ...state,
-        unit: action.unit,
+        unit: action.payload.unit,
       };
 
     case 'monthlyEmissions/SELECT_MONTHLY_STATE':
       return {
         ...state,
-        selectedState: action.selectedState,
+        selectedState: action.payload.selectedState,
         selectedCounty: '',
-        availableCounties: action.availableCounties,
+        availableCounties: action.payload.availableCounties,
       };
 
     case 'monthlyEmissions/SELECT_MONTHLY_COUNTY':
       return {
         ...state,
-        selectedCounty: action.selectedCounty,
+        selectedCounty: action.payload.selectedCounty,
       };
 
     case 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS':
@@ -193,19 +207,21 @@ export default function reducer(
         (pollutant) => {
           if (aggregation === 'region') {
             emissionData[pollutant] = Object.values(
-              action[pollutant][unit].region,
+              action.payload[pollutant][unit].region,
             );
           }
 
           if (aggregation === 'state' && selectedState) {
             emissionData[pollutant] = Object.values(
-              action[pollutant][unit].state[selectedState],
+              action.payload[pollutant][unit].state[selectedState],
             );
           }
 
           if (aggregation === 'county' && selectedState && selectedCounty) {
             emissionData[pollutant] = Object.values(
-              action[pollutant][unit].county[selectedState][selectedCounty],
+              action.payload[pollutant][unit].county[selectedState][
+                selectedCounty
+              ],
             );
           }
         },
@@ -224,44 +240,46 @@ export default function reducer(
       const countyData: CountyDataRow[] = [];
       const cobraData: CobraDataRow[] = [];
 
+      const { so2, nox, co2, pm25, statesAndCounties } = action.payload;
+
       //------ region data ------
       // add county data for each polutant, unit, and region
-      countyData.push(countyRow('SO2', 'emissions (pounds)', action.so2.emissions.region)); // prettier-ignore
-      countyData.push(countyRow('NOX', 'emissions (pounds)', action.nox.emissions.region)); // prettier-ignore
-      countyData.push(countyRow('CO2', 'emissions (tons)', action.co2.emissions.region)); // prettier-ignore
-      countyData.push(countyRow('PM25', 'emissions (pounds)', action.pm25.emissions.region)); // prettier-ignore
-      countyData.push(countyRow('SO2', 'percent', action.so2.percentages.region)); // prettier-ignore
-      countyData.push(countyRow('NOX', 'percent', action.nox.percentages.region)); // prettier-ignore
-      countyData.push(countyRow('CO2', 'percent', action.co2.percentages.region)); // prettier-ignore
-      countyData.push(countyRow('PM25', 'percent', action.pm25.percentages.region)); // prettier-ignore
+      countyData.push(countyRow('SO2', 'emissions (pounds)', so2.emissions.region)); // prettier-ignore
+      countyData.push(countyRow('NOX', 'emissions (pounds)', nox.emissions.region)); // prettier-ignore
+      countyData.push(countyRow('CO2', 'emissions (tons)', co2.emissions.region)); // prettier-ignore
+      countyData.push(countyRow('PM25', 'emissions (pounds)', pm25.emissions.region)); // prettier-ignore
+      countyData.push(countyRow('SO2', 'percent', so2.percentages.region));
+      countyData.push(countyRow('NOX', 'percent', nox.percentages.region));
+      countyData.push(countyRow('CO2', 'percent', co2.percentages.region));
+      countyData.push(countyRow('PM25', 'percent', pm25.percentages.region));
 
       //------ states data ------
       // prettier-ignore
-      Object.keys(action.statesAndCounties).forEach((s) => {
+      Object.keys(statesAndCounties).forEach((s) => {
         // add county data for each polutant, unit, and state
-        countyData.push(countyRow('SO2', 'emissions (pounds)', action.so2.emissions.state[s], s));
-        countyData.push(countyRow('NOX', 'emissions (pounds)', action.nox.emissions.state[s], s));
-        countyData.push(countyRow('CO2', 'emissions (tons)', action.co2.emissions.state[s], s));
-        countyData.push(countyRow('PM25', 'emissions (pounds)', action.pm25.emissions.state[s], s));
-        countyData.push(countyRow('SO2', 'percent', action.so2.percentages.state[s], s));
-        countyData.push(countyRow('NOX', 'percent', action.nox.percentages.state[s], s));
-        countyData.push(countyRow('CO2', 'percent', action.co2.percentages.state[s], s));
-        countyData.push(countyRow('PM25', 'percent', action.pm25.percentages.state[s], s));
+        countyData.push(countyRow('SO2', 'emissions (pounds)', so2.emissions.state[s], s));
+        countyData.push(countyRow('NOX', 'emissions (pounds)', nox.emissions.state[s], s));
+        countyData.push(countyRow('CO2', 'emissions (tons)', co2.emissions.state[s], s));
+        countyData.push(countyRow('PM25', 'emissions (pounds)', pm25.emissions.state[s], s));
+        countyData.push(countyRow('SO2', 'percent', so2.percentages.state[s], s));
+        countyData.push(countyRow('NOX', 'percent', nox.percentages.state[s], s));
+        countyData.push(countyRow('CO2', 'percent', co2.percentages.state[s], s));
+        countyData.push(countyRow('PM25', 'percent', pm25.percentages.state[s], s));
 
         //------ counties data ------
-        action.statesAndCounties[s].forEach((c) => {
+        statesAndCounties[s].forEach((c) => {
           // add county data for each polutant, unit, and county
-          countyData.push(countyRow('SO2', 'emissions (pounds)', action.so2.emissions.county[s][c], s, c));
-          countyData.push(countyRow('NOX', 'emissions (pounds)', action.nox.emissions.county[s][c], s, c));
-          countyData.push(countyRow('CO2', 'emissions (tons)', action.co2.emissions.county[s][c], s, c));
-          countyData.push(countyRow('PM25', 'emissions (pounds)', action.pm25.emissions.county[s][c], s, c));
-          countyData.push(countyRow('SO2', 'percent', action.so2.percentages.county[s][c], s, c));
-          countyData.push(countyRow('NOX', 'percent', action.nox.percentages.county[s][c], s, c));
-          countyData.push(countyRow('CO2', 'percent', action.co2.percentages.county[s][c], s, c));
-          countyData.push(countyRow('PM25', 'percent', action.pm25.percentages.county[s][c], s, c));
+          countyData.push(countyRow('SO2', 'emissions (pounds)', so2.emissions.county[s][c], s, c));
+          countyData.push(countyRow('NOX', 'emissions (pounds)', nox.emissions.county[s][c], s, c));
+          countyData.push(countyRow('CO2', 'emissions (tons)', co2.emissions.county[s][c], s, c));
+          countyData.push(countyRow('PM25', 'emissions (pounds)', pm25.emissions.county[s][c], s, c));
+          countyData.push(countyRow('SO2', 'percent', so2.percentages.county[s][c], s, c));
+          countyData.push(countyRow('NOX', 'percent', nox.percentages.county[s][c], s, c));
+          countyData.push(countyRow('CO2', 'percent', co2.percentages.county[s][c], s, c));
+          countyData.push(countyRow('PM25', 'percent', pm25.percentages.county[s][c], s, c));
 
           // add cobra data for each county
-          cobraData.push(cobraRow(s, c, action));
+          cobraData.push(cobraRow(s, c, action.payload));
         });
       });
 
@@ -282,10 +300,12 @@ export function renderMonthlyEmissionsCharts(): AppThunk {
 
     dispatch({
       type: 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS',
-      so2: so2.data.monthlyChanges,
-      nox: nox.data.monthlyChanges,
-      co2: co2.data.monthlyChanges,
-      pm25: pm25.data.monthlyChanges,
+      payload: {
+        so2: so2.data.monthlyChanges,
+        nox: nox.data.monthlyChanges,
+        co2: co2.data.monthlyChanges,
+        pm25: pm25.data.monthlyChanges,
+      },
     });
   };
 }
@@ -296,16 +316,22 @@ export function completeMonthlyEmissions(): AppThunk {
 
     dispatch({
       type: 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS',
-      availableStates: Object.keys(annualDisplacement.statesAndCounties).sort(),
+      payload: {
+        availableStates: Object.keys(
+          annualDisplacement.statesAndCounties,
+        ).sort(),
+      },
     });
 
     dispatch({
       type: 'monthlyEmissions/SET_DOWNLOAD_DATA',
-      so2: so2.data.monthlyChanges,
-      nox: nox.data.monthlyChanges,
-      co2: co2.data.monthlyChanges,
-      pm25: pm25.data.monthlyChanges,
-      statesAndCounties: annualDisplacement.statesAndCounties,
+      payload: {
+        so2: so2.data.monthlyChanges,
+        nox: nox.data.monthlyChanges,
+        co2: co2.data.monthlyChanges,
+        pm25: pm25.data.monthlyChanges,
+        statesAndCounties: annualDisplacement.statesAndCounties,
+      },
     });
 
     dispatch(renderMonthlyEmissionsCharts());
@@ -318,7 +344,9 @@ export function selectMonthlyAggregation(
   return (dispatch) => {
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION',
-      aggregation,
+      payload: {
+        aggregation,
+      },
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
@@ -328,7 +356,9 @@ export function selectMonthlyUnit(unit: MonthlyUnit): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_UNIT',
-      unit,
+      payload: {
+        unit,
+      },
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
@@ -340,8 +370,10 @@ export function selectMonthlyState(stateId: string): AppThunk {
 
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_STATE',
-      selectedState: stateId,
-      availableCounties: annualDisplacement.statesAndCounties[stateId].sort(),
+      payload: {
+        selectedState: stateId,
+        availableCounties: annualDisplacement.statesAndCounties[stateId].sort(),
+      },
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
@@ -351,7 +383,9 @@ export function selectMonthlyCounty(countyName: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_COUNTY',
-      selectedCounty: countyName,
+      payload: {
+        selectedCounty: countyName,
+      },
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
@@ -402,7 +436,13 @@ function countyRow(
 function cobraRow(
   state: string,
   county: string,
-  action: { nox: MonthlyChanges; so2: MonthlyChanges; pm25: MonthlyChanges },
+  payload: {
+    so2: MonthlyChanges;
+    nox: MonthlyChanges;
+    co2: MonthlyChanges;
+    pm25: MonthlyChanges;
+    statesAndCounties: StatesAndCounties;
+  },
 ): CobraDataRow {
   const fipsCounty = fipsCodes.filter((item) => {
     return item['state'] === states[state] && item['county'] === county;
@@ -417,9 +457,9 @@ function cobraRow(
       ? `${county} Parish`
       : `${county} County`;
 
-  const noxDataset = action.nox.emissions.county[state][county];
-  const so2Dataset = action.so2.emissions.county[state][county];
-  const pm25Dataset = action.pm25.emissions.county[state][county];
+  const noxDataset = payload.nox.emissions.county[state][county];
+  const so2Dataset = payload.so2.emissions.county[state][county];
+  const pm25Dataset = payload.pm25.emissions.county[state][county];
 
   const sum = (a: number, b: number) => a + b;
 

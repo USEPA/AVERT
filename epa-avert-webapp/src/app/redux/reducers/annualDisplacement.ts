@@ -25,7 +25,9 @@ type AnnualDisplacementsAction =
     }
   | {
       type: 'annualDisplacement/RECEIVE_DISPLACEMENT';
-      statesAndCounties: StatesAndCounties;
+      payload: {
+        statesAndCounties: StatesAndCounties;
+      };
     }
   | {
       type: 'annualDisplacement/RECEIVE_ERROR';
@@ -65,7 +67,7 @@ export default function reducer(
       return {
         ...state,
         status: 'complete',
-        statesAndCounties: action.statesAndCounties,
+        statesAndCounties: action.payload.statesAndCounties,
       };
 
     case 'annualDisplacement/RECEIVE_ERROR':
@@ -118,7 +120,9 @@ export function receiveDisplacement(): AppThunk {
     dispatch(incrementProgress());
     dispatch({
       type: 'annualDisplacement/RECEIVE_DISPLACEMENT',
-      statesAndCounties,
+      payload: {
+        statesAndCounties,
+      },
     });
     dispatch(completeStateEmissions());
     dispatch(completeMonthlyEmissions());

@@ -10,7 +10,9 @@ type NoxAction =
     }
   | {
       type: 'nox/RECEIVE_NOX';
-      payload: DisplacementData;
+      payload: {
+        data: DisplacementData;
+      };
     }
   | {
       type: 'nox/RECEIVE_ERROR';
@@ -42,7 +44,7 @@ export default function reducer(
       return {
         ...state,
         isFetching: false,
-        data: action.payload,
+        data: action.payload.data,
       };
 
     case 'nox/RECEIVE_ERROR':
@@ -83,7 +85,9 @@ export function fetchNox(): AppThunk {
         dispatch(incrementProgress());
         dispatch({
           type: 'nox/RECEIVE_NOX',
-          payload: json,
+          payload: {
+            data: json,
+          },
         });
       })
       .catch((error) => {

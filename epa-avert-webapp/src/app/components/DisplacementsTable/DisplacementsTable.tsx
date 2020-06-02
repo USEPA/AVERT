@@ -18,7 +18,6 @@ const DisplacementsTable = ({ heading }: Props) => {
   const annualStatus = useTypedSelector(
     ({ annualDisplacement }) => annualDisplacement.status,
   );
-
   const generationData = useTypedSelector(({ generation }) => generation.data);
   const so2Data = useTypedSelector(({ so2 }) => so2.data);
   const noxData = useTypedSelector(({ nox }) => nox.data);

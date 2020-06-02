@@ -67,11 +67,15 @@ type EereJSON = {
 type RdfsAction =
   | {
       type: 'rdfs/RECEIVE_REGION_RDF';
-      payload: RdfJSON;
+      payload: {
+        regionRdf: RdfJSON;
+      };
     }
   | {
       type: 'rdfs/RECEIVE_REGION_DEFAULTS';
-      payload: EereJSON;
+      payload: {
+        regionDefaults: EereJSON;
+      };
     };
 
 type RdfsState = {
@@ -134,13 +138,13 @@ export default function reducer(
     case 'rdfs/RECEIVE_REGION_RDF':
       return {
         ...state,
-        rdf: action.payload,
+        rdf: action.payload.regionRdf,
       };
 
     case 'rdfs/RECEIVE_REGION_DEFAULTS':
       return {
         ...state,
-        defaults: action.payload,
+        defaults: action.payload.regionDefaults,
       };
 
     default:
@@ -167,7 +171,9 @@ export function fetchRegion(): AppThunk {
 
         dispatch({
           type: 'rdfs/RECEIVE_REGION_RDF',
-          payload: json,
+          payload: {
+            regionRdf: json,
+          },
         });
 
         // calculate hourlyMwh from annualGwh (total for year)
@@ -194,7 +200,9 @@ export function fetchRegion(): AppThunk {
           .then((json: EereJSON) => {
             dispatch({
               type: 'rdfs/RECEIVE_REGION_DEFAULTS',
-              payload: json,
+              payload: {
+                regionDefaults: json,
+              },
             });
           });
       });

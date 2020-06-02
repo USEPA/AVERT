@@ -21,43 +21,63 @@ type EereAction =
     }
   | {
       type: 'eere/VALIDATE_EERE';
-      errors: EereInputFields[];
+      payload: {
+        errors: EereInputFields[];
+      };
     }
   | {
       type: 'eere/UPDATE_EERE_ANNUAL_GWH';
-      text: string;
+      payload: {
+        text: string;
+      };
     }
   | {
       type: 'eere/UPDATE_EERE_CONSTANT_MW';
-      text: string;
+      payload: {
+        text: string;
+      };
     }
   | {
       type: 'eere/UPDATE_EERE_BROAD_BASE_PROGRAM';
-      text: string;
+      payload: {
+        text: string;
+      };
     }
   | {
       type: 'eere/UPDATE_EERE_REDUCTION';
-      text: string;
+      payload: {
+        text: string;
+      };
     }
   | {
       type: 'eere/UPDATE_EERE_TOP_HOURS';
-      text: string;
+      payload: {
+        text: string;
+      };
     }
   | {
       type: 'eere/UPDATE_EERE_WIND_CAPACITY';
-      text: string;
+      payload: {
+        text: string;
+      };
     }
   | {
       type: 'eere/UPDATE_EERE_UTILITY_SOLAR';
-      text: string;
+      payload: {
+        text: string;
+      };
     }
   | {
       type: 'eere/UPDATE_EERE_ROOFTOP_SOLAR';
-      text: string;
+      payload: {
+        text: string;
+      };
     }
   | {
       type: 'eere/COMPLETE_EERE_CALCULATION';
-      hourlyEere: HourlyEere[];
+      payload: {
+        hourlyEere: HourlyEere[];
+      };
     }
   | {
       type: 'eere/UPDATE_EXCEEDANCES';
@@ -184,7 +204,7 @@ export default function reducer(
     case 'eere/VALIDATE_EERE':
       return {
         ...state,
-        errors: action.errors,
+        errors: action.payload.errors,
       };
 
     case 'eere/UPDATE_EERE_ANNUAL_GWH':
@@ -192,7 +212,7 @@ export default function reducer(
         ...state,
         inputs: {
           ...state.inputs,
-          annualGwh: action.text,
+          annualGwh: action.payload.text,
         },
       };
 
@@ -201,7 +221,7 @@ export default function reducer(
         ...state,
         inputs: {
           ...state.inputs,
-          constantMwh: action.text,
+          constantMwh: action.payload.text,
         },
       };
 
@@ -210,7 +230,7 @@ export default function reducer(
         ...state,
         inputs: {
           ...state.inputs,
-          broadProgram: action.text,
+          broadProgram: action.payload.text,
         },
       };
 
@@ -219,7 +239,7 @@ export default function reducer(
         ...state,
         inputs: {
           ...state.inputs,
-          reduction: action.text,
+          reduction: action.payload.text,
         },
       };
 
@@ -228,7 +248,7 @@ export default function reducer(
         ...state,
         inputs: {
           ...state.inputs,
-          topHours: action.text,
+          topHours: action.payload.text,
         },
       };
 
@@ -237,7 +257,7 @@ export default function reducer(
         ...state,
         inputs: {
           ...state.inputs,
-          windCapacity: action.text,
+          windCapacity: action.payload.text,
         },
       };
 
@@ -246,7 +266,7 @@ export default function reducer(
         ...state,
         inputs: {
           ...state.inputs,
-          utilitySolar: action.text,
+          utilitySolar: action.payload.text,
         },
       };
 
@@ -255,7 +275,7 @@ export default function reducer(
         ...state,
         inputs: {
           ...state.inputs,
-          rooftopSolar: action.text,
+          rooftopSolar: action.payload.text,
         },
       };
 
@@ -270,7 +290,7 @@ export default function reducer(
       return {
         ...state,
         status: 'complete',
-        hourlyEere: action.hourlyEere,
+        hourlyEere: action.payload.hourlyEere,
       };
 
     case 'eere/UPDATE_EXCEEDANCES':
@@ -328,7 +348,9 @@ function validateInput(
 
     return dispatch({
       type: 'eere/VALIDATE_EERE',
-      errors: invalidInput ? [...errors, inputField] : errors,
+      payload: {
+        errors: invalidInput ? [...errors, inputField] : errors,
+      },
     });
   };
 }
@@ -339,7 +361,9 @@ export function updateEereAnnualGwh(input: string): AppThunk {
 
     dispatch({
       type: 'eere/UPDATE_EERE_ANNUAL_GWH',
-      text: input,
+      payload: {
+        text: input,
+      },
     });
 
     dispatch(validateInput('annualGwh', input, eere.limits.annualGwh));
@@ -352,7 +376,9 @@ export function updateEereConstantMw(input: string): AppThunk {
 
     dispatch({
       type: 'eere/UPDATE_EERE_CONSTANT_MW',
-      text: input,
+      payload: {
+        text: input,
+      },
     });
 
     dispatch(validateInput('constantMwh', input, eere.limits.constantMwh));
@@ -365,7 +391,9 @@ export function updateEereBroadBasedProgram(input: string): AppThunk {
 
     dispatch({
       type: 'eere/UPDATE_EERE_BROAD_BASE_PROGRAM',
-      text: input,
+      payload: {
+        text: input,
+      },
     });
 
     dispatch(validateInput('reduction', input, eere.limits.percent));
@@ -378,7 +406,9 @@ export function updateEereReduction(input: string): AppThunk {
 
     dispatch({
       type: 'eere/UPDATE_EERE_REDUCTION',
-      text: input,
+      payload: {
+        text: input,
+      },
     });
 
     dispatch(validateInput('reduction', input, eere.limits.percent));
@@ -389,7 +419,9 @@ export function updateEereTopHours(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_TOP_HOURS',
-      text: input,
+      payload: {
+        text: input,
+      },
     });
 
     dispatch(validateInput('topHours', input, 100));
@@ -402,7 +434,9 @@ export function updateEereWindCapacity(input: string): AppThunk {
 
     dispatch({
       type: 'eere/UPDATE_EERE_WIND_CAPACITY',
-      text: input,
+      payload: {
+        text: input,
+      },
     });
 
     dispatch(validateInput('windCapacity', input, eere.limits.renewables));
@@ -415,7 +449,9 @@ export function updateEereUtilitySolar(input: string): AppThunk {
 
     dispatch({
       type: 'eere/UPDATE_EERE_UTILITY_SOLAR',
-      text: input,
+      payload: {
+        text: input,
+      },
     });
 
     dispatch(validateInput('utilitySolar', input, eere.limits.renewables));
@@ -428,7 +464,9 @@ export function updateEereRooftopSolar(input: string): AppThunk {
 
     dispatch({
       type: 'eere/UPDATE_EERE_ROOFTOP_SOLAR',
-      text: input,
+      payload: {
+        text: input,
+      },
     });
 
     dispatch(validateInput('rooftopSolar', input, eere.limits.renewables));
@@ -463,7 +501,9 @@ export function calculateEereProfile(): AppThunk {
 
     dispatch({
       type: 'eere/COMPLETE_EERE_CALCULATION',
-      hourlyEere,
+      payload: {
+        hourlyEere,
+      },
     });
 
     const regionalLoadHours = rdfs.rdf.regional_load;

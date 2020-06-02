@@ -10,7 +10,9 @@ type So2Action =
     }
   | {
       type: 'so2/RECEIVE_SO2';
-      payload: DisplacementData;
+      payload: {
+        data: DisplacementData;
+      };
     }
   | {
       type: 'so2/RECEIVE_ERROR';
@@ -42,7 +44,7 @@ export default function reducer(
       return {
         ...state,
         isFetching: false,
-        data: action.payload,
+        data: action.payload.data,
       };
 
     case 'so2/RECEIVE_ERROR':
@@ -83,7 +85,9 @@ export function fetchSo2(): AppThunk {
         dispatch(incrementProgress());
         dispatch({
           type: 'so2/RECEIVE_SO2',
-          payload: json,
+          payload: {
+            data: json,
+          },
         });
       })
       .catch((error) => {

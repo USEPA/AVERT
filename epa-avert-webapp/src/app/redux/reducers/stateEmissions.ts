@@ -10,14 +10,16 @@ type StateEmissionsAction =
     }
   | {
       type: 'stateEmissions/COMPLETE_STATE_EMISSIONS';
-      states: string[];
-      data: {
-        state: string;
-        so2: number;
-        nox: number;
-        co2: number;
-        pm25: number;
-      }[];
+      payload: {
+        states: string[];
+        data: {
+          state: string;
+          so2: number;
+          nox: number;
+          co2: number;
+          pm25: number;
+        }[];
+      };
     };
 
 type StateEmissionsState = {
@@ -60,8 +62,8 @@ export default function reducer(
       return {
         ...state,
         status: 'complete',
-        states: action.states,
-        data: action.data,
+        states: action.payload.states,
+        data: action.payload.data,
       };
 
     default:
@@ -86,8 +88,10 @@ export function completeStateEmissions(): AppThunk {
 
     dispatch({
       type: 'stateEmissions/COMPLETE_STATE_EMISSIONS',
-      states: stateIds,
-      data,
+      payload: {
+        states: stateIds,
+        data,
+      },
     });
   };
 }

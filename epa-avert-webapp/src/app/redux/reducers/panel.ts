@@ -13,11 +13,15 @@ type PanelAction =
     }
   | {
       type: 'panel/STORE_ACTIVE_MODAL';
-      activeModalId: number;
+      payload: {
+        activeModalId: number;
+      };
     }
   | {
       type: 'panel/RESET_ACTIVE_MODAL';
-      activeModalId: number;
+      payload: {
+        activeModalId: number;
+      };
     }
   | {
       type: 'rdfs/REQUEST_REGION_RDF';
@@ -86,7 +90,7 @@ export default function reducer(
     case 'panel/STORE_ACTIVE_MODAL':
       return {
         ...state,
-        activeModalId: action.activeModalId,
+        activeModalId: action.payload.activeModalId,
         closingModalId: 0,
       };
 
@@ -94,7 +98,7 @@ export default function reducer(
       return {
         ...state,
         activeModalId: 0,
-        closingModalId: action.activeModalId,
+        closingModalId: action.payload.activeModalId,
       };
 
     case 'rdfs/REQUEST_REGION_RDF':
@@ -139,13 +143,17 @@ export function toggleModalOverlay() {
 export function storeActiveModal(modalId: number) {
   return {
     type: 'panel/STORE_ACTIVE_MODAL',
-    activeModalId: modalId,
+    payload: {
+      activeModalId: modalId,
+    },
   };
 }
 
 export function resetActiveModal(modalId: number) {
   return {
     type: 'panel/RESET_ACTIVE_MODAL',
-    activeModalId: modalId,
+    payload: {
+      activeModalId: modalId,
+    },
   };
 }

@@ -10,7 +10,9 @@ type Co2Action =
     }
   | {
       type: 'co2/RECEIVE_CO2';
-      payload: DisplacementData;
+      payload: {
+        data: DisplacementData;
+      };
     }
   | {
       type: 'co2/RECEIVE_ERROR';
@@ -42,7 +44,7 @@ export default function reducer(
       return {
         ...state,
         isFetching: false,
-        data: action.payload,
+        data: action.payload.data,
       };
 
     case 'co2/RECEIVE_ERROR':
@@ -83,7 +85,9 @@ export function fetchCo2(): AppThunk {
         dispatch(incrementProgress());
         dispatch({
           type: 'co2/RECEIVE_CO2',
-          payload: json,
+          payload: {
+            data: json,
+          },
         });
       })
       .catch((error) => {

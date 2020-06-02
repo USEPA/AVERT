@@ -10,7 +10,9 @@ type Pm25Action =
     }
   | {
       type: 'pm25/RECEIVE_PM25';
-      payload: DisplacementData;
+      payload: {
+        data: DisplacementData;
+      };
     }
   | {
       type: 'pm25/RECEIVE_ERROR';
@@ -42,7 +44,7 @@ export default function reducer(
       return {
         ...state,
         isFetching: false,
-        data: action.payload,
+        data: action.payload.data,
       };
 
     case 'pm25/RECEIVE_ERROR':
@@ -83,7 +85,9 @@ export function fetchPm25(): AppThunk {
         dispatch(incrementProgress());
         dispatch({
           type: 'pm25/RECEIVE_PM25',
-          payload: json,
+          payload: {
+            data: json,
+          },
         });
       })
       .catch((error) => {

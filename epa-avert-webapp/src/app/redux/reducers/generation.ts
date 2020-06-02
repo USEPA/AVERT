@@ -10,7 +10,9 @@ type GenerationAction =
     }
   | {
       type: 'generation/RECEIVE_GENERATION';
-      payload: DisplacementData;
+      payload: {
+        data: DisplacementData;
+      };
     }
   | {
       type: 'generation/RECEIVE_ERROR';
@@ -42,7 +44,7 @@ export default function reducer(
       return {
         ...state,
         isFetching: false,
-        data: action.payload,
+        data: action.payload.data,
       };
 
     case 'generation/RECEIVE_ERROR':
@@ -83,7 +85,9 @@ export function fetchGeneration(): AppThunk {
         dispatch(incrementProgress());
         dispatch({
           type: 'generation/RECEIVE_GENERATION',
-          payload: json,
+          payload: {
+            data: json,
+          },
         });
       })
       .catch((error) => {
