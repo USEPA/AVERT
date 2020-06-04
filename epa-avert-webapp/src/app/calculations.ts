@@ -61,7 +61,7 @@ export function calculateEere({
   const broadProgramInput = Number(eereInputs.broadProgram);
   const reductionInput = Number(eereInputs.reduction);
   const onshoreWindInput = Number(eereInputs.onshoreWind);
-  const offshoreWindInput = Number(eereInputs.offshoreWind); // TODO: use this in calculations
+  const offshoreWindInput = Number(eereInputs.offshoreWind);
   const utilitySolarInput = Number(eereInputs.utilitySolar);
   const rooftopSolarInput = Number(eereInputs.rooftopSolar);
 
@@ -82,7 +82,8 @@ export function calculateEere({
     const softLimit = (hourlyLoad * -1 * regionMaxEELimit) / 100;
     const hardLimit = hourlyLoad * -0.3;
 
-    const onshoreWind = onshoreWindInput * hourlyDefault.wind;
+    const onshoreWind = onshoreWindInput * hourlyDefault.onshore_wind;
+    const offshoreWind = offshoreWindInput * (hourlyDefault.offshore_wind || 0); // TODO: use this in calculations for regions that support offshoreWind
     const utilitySolar = utilitySolarInput * hourlyDefault.utility_pv;
     const rooftopSolar = rooftopSolarInput * hourlyDefault.rooftop_pv * lineLoss; // prettier-ignore
     const renewableProfile = -1 * (onshoreWind + utilitySolar + rooftopSolar);

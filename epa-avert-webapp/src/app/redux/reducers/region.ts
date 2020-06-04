@@ -56,7 +56,8 @@ type RdfJSON = {
 export type EereDefaultData = {
   date: string;
   hour: number;
-  wind: number;
+  onshore_wind: number;
+  offshore_wind: number | null;
   utility_pv: number;
   rooftop_pv: number;
 };
