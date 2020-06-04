@@ -10,31 +10,31 @@ import './styles.css';
 
 function RegionList() {
   const dispatch = useDispatch();
-  const regionNumber = useTypedSelector(({ region }) => region.number);
+  const regionId = useTypedSelector(({ region }) => region.id);
 
   return (
     <select
       className="avert-region-select"
-      value={regionNumber}
-      onChange={(ev) => dispatch(selectRegion(Number(ev.target.value)))}
+      value={regionId}
+      onChange={(ev) => dispatch(selectRegion(ev.target.value))}
     >
-      <option value={0} disabled>
+      <option value={''} disabled>
         Select Region
       </option>
-      <option value={regions.CA.number}>{regions.CA.label}</option>
-      <option value={regions.CENT.number}>{regions.CENT.label}</option>
-      <option value={regions.FL.number}>{regions.FL.label}</option>
-      <option value={regions.MIDA.number}>{regions.MIDA.label}</option>
-      <option value={regions.MIDW.number}>{regions.MIDW.label}</option>
-      <option value={regions.NCSC.number}>{regions.NCSC.label}</option>
-      <option value={regions.NE.number}>{regions.NE.label}</option>
-      <option value={regions.NW.number}>{regions.NW.label}</option>
-      <option value={regions.NY.number}>{regions.NY.label}</option>
-      <option value={regions.RM.number}>{regions.RM.label}</option>
-      <option value={regions.SE.number}>{regions.SE.label}</option>
-      <option value={regions.SW.number}>{regions.SW.label}</option>
-      <option value={regions.TE.number}>{regions.TE.label}</option>
-      <option value={regions.TN.number}>{regions.TN.label}</option>
+      <option value={regions.CA.id}>{regions.CA.label}</option>
+      <option value={regions.CENT.id}>{regions.CENT.label}</option>
+      <option value={regions.FL.id}>{regions.FL.label}</option>
+      <option value={regions.MIDA.id}>{regions.MIDA.label}</option>
+      <option value={regions.MIDW.id}>{regions.MIDW.label}</option>
+      <option value={regions.NCSC.id}>{regions.NCSC.label}</option>
+      <option value={regions.NE.id}>{regions.NE.label}</option>
+      <option value={regions.NW.id}>{regions.NW.label}</option>
+      <option value={regions.NY.id}>{regions.NY.label}</option>
+      <option value={regions.RM.id}>{regions.RM.label}</option>
+      <option value={regions.SE.id}>{regions.SE.label}</option>
+      <option value={regions.SW.id}>{regions.SW.label}</option>
+      <option value={regions.TE.id}>{regions.TE.label}</option>
+      <option value={regions.TN.id}>{regions.TN.label}</option>
     </select>
   );
 }

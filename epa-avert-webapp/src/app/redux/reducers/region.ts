@@ -71,9 +71,8 @@ type RegionAction =
   | {
       type: 'region/SELECT_REGION';
       payload: {
-        number: number;
         name: string;
-        slug: string;
+        id: string;
       };
     }
   | {
@@ -90,18 +89,16 @@ type RegionAction =
     };
 
 type RegionState = {
-  number: number;
   name: string;
-  slug: string;
+  id: string;
   eereDefaults: EereJSON;
   rdf: RdfJSON;
 };
 
 // reducer
 const initialState: RegionState = {
-  number: 0,
   name: '',
-  slug: '',
+  id: '',
   eereDefaults: {
     region: '',
     data: [],
@@ -155,9 +152,8 @@ export default function reducer(
     case 'region/SELECT_REGION':
       return {
         ...state,
-        number: action.payload.number,
         name: action.payload.name,
-        slug: action.payload.slug,
+        id: action.payload.id,
       };
 
     case 'region/RECEIVE_REGION_RDF':
@@ -178,18 +174,17 @@ export default function reducer(
 }
 
 // action creators
-export function selectRegion(regionNumber: number): AppThunk {
+export function selectRegion(regionId: string): AppThunk {
   return (dispatch) => {
     const selectedRegion = Object.values(regions).find((region) => {
-      return region.number === regionNumber;
+      return region.id === regionId;
     });
 
     dispatch({
       type: 'region/SELECT_REGION',
       payload: {
-        number: regionNumber,
         name: selectedRegion ? selectedRegion.label : '',
-        slug: selectedRegion ? selectedRegion.slug : '',
+        id: selectedRegion ? selectedRegion.id : '',
       },
     });
   };
@@ -202,7 +197,7 @@ export function fetchRegion(): AppThunk {
     dispatch({ type: 'region/REQUEST_REGION_RDF' });
 
     // fetch rdf data for region
-    return fetch(`${api.baseUrl}/api/v1/rdf/${region.slug}`)
+    return fetch(`${api.baseUrl}/api/v1/rdf/${region.id}`)
       .then((response) => response.json())
       .then((json: RdfJSON) => {
         const {
@@ -237,7 +232,7 @@ export function fetchRegion(): AppThunk {
         dispatch({ type: 'region/REQUEST_REGION_DEFAULTS' });
 
         // fetch eere data for region
-        fetch(`${api.baseUrl}/api/v1/eere/${region.slug}`)
+        fetch(`${api.baseUrl}/api/v1/eere/${region.id}`)
           .then((response) => response.json())
           .then((json: EereJSON) => {
             dispatch({

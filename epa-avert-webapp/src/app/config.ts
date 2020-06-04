@@ -1,6 +1,6 @@
 type Region = {
   number: number;
-  slug: string;
+  id: string;
   label: string;
   lineLoss: number;
 };
@@ -24,85 +24,85 @@ export type RegionKeys =
 export const regions: { [key in RegionKeys]: Region } = {
   CA: {
     number: 1,
-    slug: 'CA',
+    id: 'CA',
     label: 'California',
     lineLoss: 8.54, // TODO
   },
   CENT: {
     number: 2,
-    slug: 'CENT',
+    id: 'CENT',
     label: 'Central',
     lineLoss: 0, // TODO
   },
   FL: {
     number: 3,
-    slug: 'FL',
+    id: 'FL',
     label: 'Florida',
     lineLoss: 0, // TODO
   },
   MIDA: {
     number: 4,
-    slug: 'MIDA',
+    id: 'MIDA',
     label: 'Mid-Atlantic',
     lineLoss: 0, // TODO
   },
   MIDW: {
     number: 5,
-    slug: 'MIDW',
+    id: 'MIDW',
     label: 'Midwest',
     lineLoss: 0, // TODO
   },
   NCSC: {
     number: 6,
-    slug: 'NCSC',
+    id: 'NCSC',
     label: 'Carolinas',
     lineLoss: 0, // TODO
   },
   NE: {
     number: 7,
-    slug: 'NE',
+    id: 'NE',
     label: 'Northeast',
     lineLoss: 6.74, // TODO
   },
   NW: {
     number: 8,
-    slug: 'NW',
+    id: 'NW',
     label: 'Northwest',
     lineLoss: 8.54, // TODO
   },
   NY: {
     number: 9,
-    slug: 'NY',
+    id: 'NY',
     label: 'New York',
     lineLoss: 0, // TODO
   },
   RM: {
     number: 10,
-    slug: 'RM',
+    id: 'RM',
     label: 'Rocky Mountains',
     lineLoss: 8.54, // TODO
   },
   SE: {
     number: 11,
-    slug: 'SE',
+    id: 'SE',
     label: 'Southeast',
     lineLoss: 6.74, // TODO
   },
   SW: {
     number: 12,
-    slug: 'SW',
+    id: 'SW',
     label: 'Southwest',
     lineLoss: 8.54, // TODO
   },
   TE: {
     number: 13,
-    slug: 'TE',
+    id: 'TE',
     label: 'Texas',
     lineLoss: 4.83, // TODO
   },
   TN: {
     number: 14,
-    slug: 'TN',
+    id: 'TN',
     label: 'Tennessee',
     lineLoss: 0, // TODO
   },

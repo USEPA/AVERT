@@ -18,7 +18,7 @@ type Props = {
 function PanelFooter({ prevButtonText, nextButtonText }: Props) {
   const dispatch = useDispatch();
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
-  const regionNumber = useTypedSelector(({ region }) => region.number);
+  const regionId = useTypedSelector(({ region }) => region.id);
   const eereStatus = useTypedSelector(({ eere }) => eere.status);
   const hardValid = useTypedSelector(({ eere }) => eere.hardLimit.valid);
 
@@ -54,7 +54,7 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
   );
 
   // conditionally define reset and disabled classes
-  const noRegionSelected = onStepOne && regionNumber === 0;
+  const noRegionSelected = onStepOne && regionId === '';
   const calculationRunning = onStepTwo && eereStatus !== 'complete';
   const exceedsHardValidationLimit = onStepTwo && !hardValid;
 

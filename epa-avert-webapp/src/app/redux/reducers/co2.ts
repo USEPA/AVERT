@@ -74,7 +74,7 @@ export function fetchCo2(): AppThunk {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        region: region.slug,
+        region: region.id,
         eere: eere.hourlyEere,
       }),
     };

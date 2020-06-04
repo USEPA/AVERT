@@ -514,7 +514,7 @@ export function calculateEereProfile(): AppThunk {
     });
 
     const regionKey = (Object.keys(regions) as RegionKeys[]).find((key) => {
-      return regions[key].number === region.number;
+      return regions[key].id === region.id;
     });
 
     if (regionKey === undefined) throw new Error('Region number mismatch');

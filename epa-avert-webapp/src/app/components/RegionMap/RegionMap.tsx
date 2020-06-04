@@ -28,79 +28,79 @@ function RegionMap() {
         <title>AVERT region map</title>
 
         <g id="avert-regions">
-          <Region number={regions.CA.number}>
+          <Region id={regions.CA.id}>
             <g fill="#fed330">
               <California />
             </g>
           </Region>
 
-          <Region number={regions.CENT.number}>
+          <Region id={regions.CENT.id}>
             <g fill="#db742b">{/* */}</g>
           </Region>
 
-          <Region number={regions.FL.number}>
+          <Region id={regions.FL.id}>
             <g fill="#a74c8f">
               <Southwest />
             </g>
           </Region>
 
-          <Region number={regions.MIDA.number}>
+          <Region id={regions.MIDA.id}>
             <g fill="#d52074">
               <Southeast />
             </g>
           </Region>
 
-          <Region number={regions.MIDW.number}>
+          <Region id={regions.MIDW.id}>
             <g fill="#364f95">
               <RockyMountains />
             </g>
           </Region>
 
-          <Region number={regions.NCSC.number}>
+          <Region id={regions.NCSC.id}>
             <g fill="#67b187">
               <Northwest />
             </g>
           </Region>
 
-          <Region number={regions.NE.number}>
+          <Region id={regions.NE.id}>
             <g fill="#bdc736">
               <Northeast />
             </g>
           </Region>
 
-          <Region number={regions.NW.number}>
+          <Region id={regions.NW.id}>
             <g fill="#d85029">
               <LowerMidwest />
             </g>
           </Region>
 
-          <Region number={regions.NY.number}>
+          <Region id={regions.NY.id}>
             <g fill="#fda929">
               <GreatLakes />
             </g>
           </Region>
 
-          <Region number={regions.RM.number}>
+          <Region id={regions.RM.id}>
             <g fill="#48b5d8">
               <UpperMidwest />
             </g>
           </Region>
 
-          <Region number={regions.SE.number}>
+          <Region id={regions.SE.id}>
             <g fill="#333333">{/* TODO */}</g>
           </Region>
 
-          <Region number={regions.SW.number}>
+          <Region id={regions.SW.id}>
             <g fill="#555555">{/* TODO */}</g>
           </Region>
 
-          <Region number={regions.TE.number}>
+          <Region id={regions.TE.id}>
             <g fill="#777777">
               <Texas />
             </g>
           </Region>
 
-          <Region number={regions.TN.number}>
+          <Region id={regions.TN.id}>
             <g fill="#999999">{/* TODO */}</g>
           </Region>
         </g>
