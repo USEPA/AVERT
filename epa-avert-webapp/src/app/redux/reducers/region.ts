@@ -183,7 +183,7 @@ export function selectRegion(regionId: string): AppThunk {
     dispatch({
       type: 'region/SELECT_REGION',
       payload: {
-        name: selectedRegion ? selectedRegion.label : '',
+        name: selectedRegion ? selectedRegion.name : '',
         id: selectedRegion ? selectedRegion.id : '',
       },
     });

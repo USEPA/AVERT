@@ -108,59 +108,59 @@ function RegionMap() {
         <g id="avert-labels">
           <g className="label">
             <rect x="10" y="223" width="85" height="22" />
-            <text transform="translate(15 240)">{regions.CA.label}</text>
+            <text transform="translate(15 240)">{regions.CA.name}</text>
           </g>
           <g className="label">
             <rect x="465" y="183" width="206" height="22" />
-            <text transform="translate(470 200)">{regions.CENT.label}</text>
+            <text transform="translate(470 200)">{regions.CENT.name}</text>
           </g>
           <g className="label">
             <rect x="275" y="283" width="125" height="22" />
-            <text transform="translate(280 300)">{regions.FL.label}</text>
+            <text transform="translate(280 300)">{regions.FL.name}</text>
           </g>
           <g className="label">
             <rect x="595" y="113" width="86" height="22" />
-            <text transform="translate(600 130)">{regions.MIDA.label}</text>
+            <text transform="translate(600 130)">{regions.MIDA.name}</text>
           </g>
           <g className="label">
             <rect x="95" y="133" width="88" height="22" />
-            <text transform="translate(100 150)">{regions.MIDW.label}</text>
+            <text transform="translate(100 150)">{regions.MIDW.name}</text>
           </g>
           <g className="label">
             <rect x="175" y="213" width="142" height="22" />
-            <text transform="translate(180 230)">{regions.NCSC.label}</text>
+            <text transform="translate(180 230)">{regions.NCSC.name}</text>
           </g>
           <g className="label">
             <rect x="465" y="323" width="88" height="22" />
-            <text transform="translate(470 340)">{regions.NE.label}</text>
+            <text transform="translate(470 340)">{regions.NE.name}</text>
           </g>
           <g className="label">
             <rect x="135" y="313" width="92" height="22" />
-            <text transform="translate(140 330)">{regions.NW.label}</text>
+            <text transform="translate(140 330)">{regions.NW.name}</text>
           </g>
           <g className="label">
             <rect x="305" y="143" width="125" height="22" />
-            <text transform="translate(310 160)">{regions.RM.label}</text>
+            <text transform="translate(310 160)">{regions.RM.name}</text>
           </g>
           {/* <g className="label">
             <rect x="305" y="143" width="125" height="22" />
-            <text transform="translate(310 160)">{regions.SE.label}</text>
+            <text transform="translate(310 160)">{regions.SE.name}</text>
           </g> */}
           {/* <g className="label">
             <rect x="305" y="143" width="125" height="22" />
-            <text transform="translate(310 160)">{regions.SW.label}</text>
+            <text transform="translate(310 160)">{regions.SW.name}</text>
           </g> */}
           {/* <g className="label">
             <rect x="305" y="143" width="125" height="22" />
-            <text transform="translate(310 160)">{regions.NY.label}</text>
+            <text transform="translate(310 160)">{regions.NY.name}</text>
           </g> */}
           <g className="label">
             <rect x="295" y="383" width="56" height="22" />
-            <text transform="translate(300 400)">{regions.TE.label}</text>
+            <text transform="translate(300 400)">{regions.TE.name}</text>
           </g>
           {/* <g className="label">
             <rect x="305" y="143" width="125" height="22" />
-            <text transform="translate(310 160)">{regions.TN.label}</text>
+            <text transform="translate(310 160)">{regions.TN.name}</text>
           </g> */}
         </g>
       </svg>
