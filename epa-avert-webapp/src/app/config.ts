@@ -6,77 +6,105 @@ type Region = {
 };
 
 export type RegionKeys =
-  | 'CALIFORNIA'
-  | 'GREAT_LAKES_MID_ATLANTIC'
-  | 'NORTHEAST'
-  | 'NORTHWEST'
-  | 'ROCKY_MOUNTAINS'
-  | 'LOWER_MIDWEST'
-  | 'SOUTHEAST'
-  | 'SOUTHWEST'
-  | 'TEXAS'
-  | 'UPPER_MIDWEST';
+  | 'CA'
+  | 'CENT'
+  | 'FL'
+  | 'MIDA'
+  | 'MIDW'
+  | 'NCSC'
+  | 'NE'
+  | 'NW'
+  | 'NY'
+  | 'RM'
+  | 'SE'
+  | 'SW'
+  | 'TE'
+  | 'TN';
 
 export const regions: { [key in RegionKeys]: Region } = {
-  CALIFORNIA: {
+  CA: {
     number: 1,
     slug: 'CA',
     label: 'California',
-    lineLoss: 8.54,
+    lineLoss: 8.54, // TODO
   },
-  GREAT_LAKES_MID_ATLANTIC: {
+  CENT: {
     number: 2,
-    slug: 'EMW',
-    label: 'Great Lakes / Mid-Atlantic',
-    lineLoss: 6.74,
+    slug: 'CENT',
+    label: 'Central',
+    lineLoss: 0, // TODO
   },
-  NORTHEAST: {
+  FL: {
     number: 3,
+    slug: 'FL',
+    label: 'Florida',
+    lineLoss: 0, // TODO
+  },
+  MIDA: {
+    number: 4,
+    slug: 'MIDA',
+    label: 'Mid-Atlantic',
+    lineLoss: 0, // TODO
+  },
+  MIDW: {
+    number: 5,
+    slug: 'MIDW',
+    label: 'Midwest',
+    lineLoss: 0, // TODO
+  },
+  NCSC: {
+    number: 6,
+    slug: 'NCSC',
+    label: 'Carolinas',
+    lineLoss: 0, // TODO
+  },
+  NE: {
+    number: 7,
     slug: 'NE',
     label: 'Northeast',
-    lineLoss: 6.74,
+    lineLoss: 6.74, // TODO
   },
-  NORTHWEST: {
-    number: 4,
+  NW: {
+    number: 8,
     slug: 'NW',
     label: 'Northwest',
-    lineLoss: 8.54,
+    lineLoss: 8.54, // TODO
   },
-  ROCKY_MOUNTAINS: {
-    number: 5,
+  NY: {
+    number: 9,
+    slug: 'NY',
+    label: 'New York',
+    lineLoss: 0, // TODO
+  },
+  RM: {
+    number: 10,
     slug: 'RM',
     label: 'Rocky Mountains',
-    lineLoss: 8.54,
+    lineLoss: 8.54, // TODO
   },
-  LOWER_MIDWEST: {
-    number: 6,
-    slug: 'SC',
-    label: 'Lower Midwest',
-    lineLoss: 6.74,
-  },
-  SOUTHEAST: {
-    number: 7,
+  SE: {
+    number: 11,
     slug: 'SE',
     label: 'Southeast',
-    lineLoss: 6.74,
+    lineLoss: 6.74, // TODO
   },
-  SOUTHWEST: {
-    number: 8,
-    slug: 'SW', // 'AZNM'
+  SW: {
+    number: 12,
+    slug: 'SW',
     label: 'Southwest',
-    lineLoss: 8.54,
+    lineLoss: 8.54, // TODO
   },
-  TEXAS: {
-    number: 9,
-    slug: 'TX',
+  TE: {
+    number: 13,
+    slug: 'TE',
     label: 'Texas',
-    lineLoss: 4.83,
+    lineLoss: 4.83, // TODO
   },
-  UPPER_MIDWEST: {
-    number: 10,
-    slug: 'WMW',
-    label: 'Upper Midwest',
-    lineLoss: 6.74,
+  TN: {
+    number: 14,
+    slug: 'TN',
+    label: 'Tennessee',
+    lineLoss: 0, // TODO
   },
 };
 
