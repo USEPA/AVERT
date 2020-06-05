@@ -2,6 +2,7 @@ type Region = {
   id: string;
   name: string;
   lineLoss: number;
+  offshoreWind: boolean;
 };
 
 export type RegionKeys =
@@ -25,71 +26,85 @@ export const regions: { [key in RegionKeys]: Region } = {
     id: 'CA',
     name: 'California',
     lineLoss: 8.54, // TODO
+    offshoreWind: true,
   },
   CENT: {
     id: 'CENT',
     name: 'Central',
     lineLoss: 0, // TODO
+    offshoreWind: false,
   },
   FL: {
     id: 'FL',
     name: 'Florida',
     lineLoss: 0, // TODO
+    offshoreWind: false,
   },
   MIDA: {
     id: 'MIDA',
     name: 'Mid-Atlantic',
     lineLoss: 0, // TODO
+    offshoreWind: true,
   },
   MIDW: {
     id: 'MIDW',
     name: 'Midwest',
     lineLoss: 0, // TODO
+    offshoreWind: false,
   },
   NCSC: {
     id: 'NCSC',
     name: 'Carolinas',
     lineLoss: 0, // TODO
+    offshoreWind: true,
   },
   NE: {
     id: 'NE',
     name: 'New England',
     lineLoss: 6.74, // TODO
+    offshoreWind: true,
   },
   NY: {
     id: 'NY',
     name: 'New York',
     lineLoss: 0, // TODO
+    offshoreWind: true,
   },
   NW: {
     id: 'NW',
     name: 'Northwest',
     lineLoss: 8.54, // TODO
+    offshoreWind: true,
   },
   RM: {
     id: 'RM',
     name: 'Rocky Mountains',
     lineLoss: 8.54, // TODO
+    offshoreWind: false,
   },
   SE: {
     id: 'SE',
     name: 'Southeast',
     lineLoss: 6.74, // TODO
+    offshoreWind: false,
   },
   SW: {
     id: 'SW',
     name: 'Southwest',
     lineLoss: 8.54, // TODO
+    offshoreWind: false,
   },
   TE: {
     id: 'TE',
     name: 'Texas',
     lineLoss: 4.83, // TODO
+    offshoreWind: false,
   },
   TN: {
     id: 'TN',
     name: 'Tennessee',
     lineLoss: 0, // TODO
+    offshoreWind: false,
   },
 };
 

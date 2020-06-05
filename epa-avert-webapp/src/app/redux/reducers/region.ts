@@ -71,8 +71,9 @@ type RegionAction =
   | {
       type: 'region/SELECT_REGION';
       payload: {
-        name: string;
         id: string;
+        name: string;
+        offshoreWind: boolean;
       };
     }
   | {
@@ -89,16 +90,18 @@ type RegionAction =
     };
 
 type RegionState = {
-  name: string;
   id: string;
+  name: string;
+  offshoreWind: boolean;
   eereDefaults: EereJSON;
   rdf: RdfJSON;
 };
 
 // reducer
 const initialState: RegionState = {
-  name: '',
   id: '',
+  name: '',
+  offshoreWind: false,
   eereDefaults: {
     region: '',
     data: [],
@@ -152,8 +155,9 @@ export default function reducer(
     case 'region/SELECT_REGION':
       return {
         ...state,
-        name: action.payload.name,
         id: action.payload.id,
+        name: action.payload.name,
+        offshoreWind: action.payload.offshoreWind,
       };
 
     case 'region/RECEIVE_REGION_RDF':
@@ -183,8 +187,9 @@ export function selectRegion(regionId: string): AppThunk {
     dispatch({
       type: 'region/SELECT_REGION',
       payload: {
-        name: selectedRegion ? selectedRegion.name : '',
         id: selectedRegion ? selectedRegion.id : '',
+        name: selectedRegion ? selectedRegion.name : '',
+        offshoreWind: selectedRegion ? selectedRegion.offshoreWind : false,
       },
     });
   };
