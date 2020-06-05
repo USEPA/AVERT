@@ -2,19 +2,19 @@ import React from 'react';
 // components
 import Region from './components/Region';
 import California from './components/California';
+import Carolinas from './components/Carolinas';
 import Central from './components/Central';
 import Florida from './components/Florida';
 import MidAtlantic from './components/MidAtlantic';
 import Midwest from './components/Midwest';
-import Carolinas from './components/Carolinas';
 import NewEngland from './components/NewEngland';
 import NewYork from './components/NewYork';
 import Northwest from './components/Northwest';
 import RockyMountains from './components/RockyMountains';
 import Southeast from './components/Southeast';
 import Southwest from './components/Southwest';
-import Texas from './components/Texas';
 import Tennessee from './components/Tennessee';
+import Texas from './components/Texas';
 import States from './components/States';
 // config
 import { regions } from 'app/config';
@@ -37,6 +37,10 @@ function RegionMap() {
             <California />
           </Region>
 
+          <Region id={regions.NCSC.id}>
+            <Carolinas />
+          </Region>
+
           <Region id={regions.CENT.id}>
             <Central />
           </Region>
@@ -51,10 +55,6 @@ function RegionMap() {
 
           <Region id={regions.MIDW.id}>
             <Midwest />
-          </Region>
-
-          <Region id={regions.NCSC.id}>
-            <Carolinas />
           </Region>
 
           <Region id={regions.NE.id}>
@@ -81,12 +81,12 @@ function RegionMap() {
             <Southwest />
           </Region>
 
-          <Region id={regions.TE.id}>
-            <Texas />
-          </Region>
-
           <Region id={regions.TN.id}>
             <Tennessee />
+          </Region>
+
+          <Region id={regions.TE.id}>
+            <Texas />
           </Region>
         </g>
 
@@ -98,6 +98,10 @@ function RegionMap() {
           <g className="label">
             <rect x="10" y="223" width="85" height="22" />
             <text transform="translate(15 240)">{regions.CA.name}</text>
+          </g>
+          <g className="label">
+            <rect x="175" y="213" width="142" height="22" />
+            <text transform="translate(180 230)">{regions.NCSC.name}</text>
           </g>
           <g className="label">
             <rect x="465" y="183" width="206" height="22" />
@@ -114,10 +118,6 @@ function RegionMap() {
           <g className="label">
             <rect x="95" y="133" width="88" height="22" />
             <text transform="translate(100 150)">{regions.MIDW.name}</text>
-          </g>
-          <g className="label">
-            <rect x="175" y="213" width="142" height="22" />
-            <text transform="translate(180 230)">{regions.NCSC.name}</text>
           </g>
           <g className="label">
             <rect x="465" y="323" width="88" height="22" />
@@ -143,14 +143,14 @@ function RegionMap() {
             <rect x="305" y="143" width="125" height="22" />
             <text transform="translate(310 160)">{regions.SW.name}</text>
           </g> */}
-          <g className="label">
-            <rect x="295" y="383" width="56" height="22" />
-            <text transform="translate(300 400)">{regions.TE.name}</text>
-          </g>
           {/* <g className="label">
             <rect x="305" y="143" width="125" height="22" />
             <text transform="translate(310 160)">{regions.TN.name}</text>
           </g> */}
+          <g className="label">
+            <rect x="295" y="383" width="56" height="22" />
+            <text transform="translate(300 400)">{regions.TE.name}</text>
+          </g>
         </g>
       </svg>
     </div>

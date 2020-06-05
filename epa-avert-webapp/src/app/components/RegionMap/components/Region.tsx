@@ -5,37 +5,37 @@ import { useTypedSelector } from 'app/redux/index';
 import { selectRegion } from 'app/redux/reducers/region';
 // components
 import California from './California';
+import Carolinas from './Carolinas';
 import Central from './Central';
 import Florida from './Florida';
 import MidAtlantic from './MidAtlantic';
 import Midwest from './Midwest';
-import Carolinas from './Carolinas';
 import NewEngland from './NewEngland';
 import NewYork from './NewYork';
 import Northwest from './Northwest';
 import RockyMountains from './RockyMountains';
 import Southeast from './Southeast';
 import Southwest from './Southwest';
-import Texas from './Texas';
 import Tennessee from './Tennessee';
+import Texas from './Texas';
 
 type Props = {
   id: string;
   children: React.ReactElement<
     | typeof California
+    | typeof Carolinas
     | typeof Central
     | typeof Florida
     | typeof MidAtlantic
     | typeof Midwest
-    | typeof Carolinas
     | typeof NewEngland
     | typeof NewYork
     | typeof Northwest
     | typeof RockyMountains
     | typeof Southeast
     | typeof Southwest
-    | typeof Texas
     | typeof Tennessee
+    | typeof Texas
   >;
 };
 
