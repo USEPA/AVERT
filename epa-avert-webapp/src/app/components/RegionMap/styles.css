@@ -7,7 +7,7 @@
   content: '';
   display: block;
   /* height and width of svg */
-  padding-top: calc(500 / 720 * 100%);
+  padding-top: calc(460 / 720 * 100%);
 }
 .avert-region-map svg {
   position: absolute;
@@ -33,9 +33,16 @@
 }
 
 /* regions */
-.avert-region-map .avert-region {
+.avert-region-map .avert-regions,
+.avert-region-map .avert-states {
   stroke: #fff;
+  stroke-width: 0.75px;
   stroke-linejoin: round;
+}
+.avert-region-map .avert-states {
+  pointer-events: none;
+}
+.avert-region-map .avert-region {
   cursor: pointer;
   opacity: 0.33;
 }

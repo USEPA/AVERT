@@ -28,8 +28,8 @@ function RegionList() {
       <option value={regions.MIDW.id}>{regions.MIDW.name}</option>
       <option value={regions.NCSC.id}>{regions.NCSC.name}</option>
       <option value={regions.NE.id}>{regions.NE.name}</option>
-      <option value={regions.NW.id}>{regions.NW.name}</option>
       <option value={regions.NY.id}>{regions.NY.name}</option>
+      <option value={regions.NW.id}>{regions.NW.name}</option>
       <option value={regions.RM.id}>{regions.RM.name}</option>
       <option value={regions.SE.id}>{regions.SE.name}</option>
       <option value={regions.SW.id}>{regions.SW.name}</option>

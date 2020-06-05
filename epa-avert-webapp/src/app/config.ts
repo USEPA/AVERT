@@ -53,18 +53,18 @@ export const regions: { [key in RegionKeys]: Region } = {
   },
   NE: {
     id: 'NE',
-    name: 'Northeast',
+    name: 'New England',
     lineLoss: 6.74, // TODO
-  },
-  NW: {
-    id: 'NW',
-    name: 'Northwest',
-    lineLoss: 8.54, // TODO
   },
   NY: {
     id: 'NY',
     name: 'New York',
     lineLoss: 0, // TODO
+  },
+  NW: {
+    id: 'NW',
+    name: 'Northwest',
+    lineLoss: 8.54, // TODO
   },
   RM: {
     id: 'RM',

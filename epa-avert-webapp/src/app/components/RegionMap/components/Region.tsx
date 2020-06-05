@@ -4,30 +4,38 @@ import { useDispatch } from 'react-redux';
 import { useTypedSelector } from 'app/redux/index';
 import { selectRegion } from 'app/redux/reducers/region';
 // components
-import UpperMidwest from './UpperMidwest';
-import Texas from './Texas';
-import Southwest from './Southwest';
-import Southeast from './Southeast';
-import RockyMountains from './RockyMountains';
-import Northwest from './Northwest';
-import Northeast from './Northeast';
-import LowerMidwest from './LowerMidwest';
-import GreatLakes from './GreatLakes';
 import California from './California';
+import Central from './Central';
+import Florida from './Florida';
+import MidAtlantic from './MidAtlantic';
+import Midwest from './Midwest';
+import Carolinas from './Carolinas';
+import NewEngland from './NewEngland';
+import NewYork from './NewYork';
+import Northwest from './Northwest';
+import RockyMountains from './RockyMountains';
+import Southeast from './Southeast';
+import Southwest from './Southwest';
+import Texas from './Texas';
+import Tennessee from './Tennessee';
 
 type Props = {
   id: string;
   children: React.ReactElement<
-    | typeof UpperMidwest
-    | typeof Texas
-    | typeof Southwest
-    | typeof Southeast
-    | typeof RockyMountains
-    | typeof Northwest
-    | typeof Northeast
-    | typeof LowerMidwest
-    | typeof GreatLakes
     | typeof California
+    | typeof Central
+    | typeof Florida
+    | typeof MidAtlantic
+    | typeof Midwest
+    | typeof Carolinas
+    | typeof NewEngland
+    | typeof NewYork
+    | typeof Northwest
+    | typeof RockyMountains
+    | typeof Southeast
+    | typeof Southwest
+    | typeof Texas
+    | typeof Tennessee
   >;
 };
 

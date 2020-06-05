@@ -2,15 +2,20 @@ import React from 'react';
 // components
 import Region from './components/Region';
 import California from './components/California';
-import UpperMidwest from './components/UpperMidwest';
-import Southwest from './components/Southwest';
-import Southeast from './components/Southeast';
+import Central from './components/Central';
+import Florida from './components/Florida';
+import MidAtlantic from './components/MidAtlantic';
+import Midwest from './components/Midwest';
+import Carolinas from './components/Carolinas';
+import NewEngland from './components/NewEngland';
+import NewYork from './components/NewYork';
 import Northwest from './components/Northwest';
-import Northeast from './components/Northeast';
-import LowerMidwest from './components/LowerMidwest';
-import GreatLakes from './components/GreatLakes';
 import RockyMountains from './components/RockyMountains';
+import Southeast from './components/Southeast';
+import Southwest from './components/Southwest';
 import Texas from './components/Texas';
+import Tennessee from './components/Tennessee';
+import States from './components/States';
 // config
 import { regions } from 'app/config';
 // styles
@@ -22,90 +27,74 @@ function RegionMap() {
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="720"
-        height="500"
-        viewBox="0 0 720 500"
+        height="460"
+        viewBox="0 0 720 460"
       >
         <title>AVERT region map</title>
 
-        <g id="avert-regions">
+        <g className="avert-regions">
           <Region id={regions.CA.id}>
-            <g fill="#fed330">
-              <California />
-            </g>
+            <California />
           </Region>
 
           <Region id={regions.CENT.id}>
-            <g fill="#db742b">{/* */}</g>
+            <Central />
           </Region>
 
           <Region id={regions.FL.id}>
-            <g fill="#a74c8f">
-              <Southwest />
-            </g>
+            <Florida />
           </Region>
 
           <Region id={regions.MIDA.id}>
-            <g fill="#d52074">
-              <Southeast />
-            </g>
+            <MidAtlantic />
           </Region>
 
           <Region id={regions.MIDW.id}>
-            <g fill="#364f95">
-              <RockyMountains />
-            </g>
+            <Midwest />
           </Region>
 
           <Region id={regions.NCSC.id}>
-            <g fill="#67b187">
-              <Northwest />
-            </g>
+            <Carolinas />
           </Region>
 
           <Region id={regions.NE.id}>
-            <g fill="#bdc736">
-              <Northeast />
-            </g>
-          </Region>
-
-          <Region id={regions.NW.id}>
-            <g fill="#d85029">
-              <LowerMidwest />
-            </g>
+            <NewEngland />
           </Region>
 
           <Region id={regions.NY.id}>
-            <g fill="#fda929">
-              <GreatLakes />
-            </g>
+            <NewYork />
+          </Region>
+
+          <Region id={regions.NW.id}>
+            <Northwest />
           </Region>
 
           <Region id={regions.RM.id}>
-            <g fill="#48b5d8">
-              <UpperMidwest />
-            </g>
+            <RockyMountains />
           </Region>
 
           <Region id={regions.SE.id}>
-            <g fill="#333333">{/* TODO */}</g>
+            <Southeast />
           </Region>
 
           <Region id={regions.SW.id}>
-            <g fill="#555555">{/* TODO */}</g>
+            <Southwest />
           </Region>
 
           <Region id={regions.TE.id}>
-            <g fill="#777777">
-              <Texas />
-            </g>
+            <Texas />
           </Region>
 
           <Region id={regions.TN.id}>
-            <g fill="#999999">{/* TODO */}</g>
+            <Tennessee />
           </Region>
         </g>
 
-        <g id="avert-labels">
+        <g className="avert-states">
+          <States />
+        </g>
+
+        <g className="avert-labels">
           <g className="label">
             <rect x="10" y="223" width="85" height="22" />
             <text transform="translate(15 240)">{regions.CA.name}</text>
@@ -134,6 +123,10 @@ function RegionMap() {
             <rect x="465" y="323" width="88" height="22" />
             <text transform="translate(470 340)">{regions.NE.name}</text>
           </g>
+          {/* <g className="label">
+            <rect x="305" y="143" width="125" height="22" />
+            <text transform="translate(310 160)">{regions.NY.name}</text>
+          </g> */}
           <g className="label">
             <rect x="135" y="313" width="92" height="22" />
             <text transform="translate(140 330)">{regions.NW.name}</text>
@@ -149,10 +142,6 @@ function RegionMap() {
           {/* <g className="label">
             <rect x="305" y="143" width="125" height="22" />
             <text transform="translate(310 160)">{regions.SW.name}</text>
-          </g> */}
-          {/* <g className="label">
-            <rect x="305" y="143" width="125" height="22" />
-            <text transform="translate(310 160)">{regions.NY.name}</text>
           </g> */}
           <g className="label">
             <rect x="295" y="383" width="56" height="22" />
