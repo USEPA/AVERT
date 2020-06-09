@@ -21,8 +21,47 @@ import {
 // styles
 import './styles.css';
 
+function displayError({
+  errors,
+  fieldName,
+  inputValue,
+  maxValue,
+}: {
+  errors: EereInputFields[];
+  fieldName: EereInputFields;
+  inputValue: string;
+  maxValue: number;
+}) {
+  if (inputValue?.length <= 0) return;
+  if (!errors?.includes(fieldName)) return;
+
+  return Number(inputValue) >= 0 ? (
+    <span className="avert-input-error">
+      <span className="avert-input-error-range">
+        Please enter a number between 0 and {maxValue}.
+      </span>
+      This will help ensure that each of your proposed programs displaces no
+      more than approximately 30% of regional fossil generation in any given
+      hour. After you enter all your inputs and calculate your hourly EE/RE
+      profile below, AVERT will check more precisely to ensure that your
+      combined inputs are within AVERT’s recommended limits.
+    </span>
+  ) : (
+    <span className="avert-input-error">
+      <span className="avert-input-error-range">
+        Please enter a positive number.
+      </span>
+      If you wish to model a reverse EE/RE scenario (i.e., a negative number),
+      use the Excel version of the AVERT Main Module.
+    </span>
+  );
+}
+
 function EEREInputs() {
   const dispatch = useDispatch();
+  const regionSupportsOffshoreWind = useTypedSelector(
+    ({ region }) => region.offshoreWind,
+  );
   const status = useTypedSelector(({ eere }) => eere.status);
   const errors = useTypedSelector(({ eere }) => eere.errors);
   const limits = useTypedSelector(({ eere }) => eere.limits);
@@ -37,40 +76,6 @@ function EEREInputs() {
   const rooftopSolar = useTypedSelector(({ eere }) => eere.inputs.rooftopSolar);
 
   const inputsAreValid = errors.length === 0;
-
-  function displayError({
-    fieldName,
-    inputValue,
-    maxValue,
-  }: {
-    fieldName: EereInputFields;
-    inputValue: string;
-    maxValue: number;
-  }) {
-    if (inputValue?.length <= 0) return;
-    if (!errors?.includes(fieldName)) return;
-
-    return Number(inputValue) >= 0 ? (
-      <span className="avert-input-error">
-        <span className="avert-input-error-range">
-          Please enter a number between 0 and {maxValue}.
-        </span>
-        This will help ensure that each of your proposed programs displaces no
-        more than approximately 30% of regional fossil generation in any given
-        hour. After you enter all your inputs and calculate your hourly EE/RE
-        profile below, AVERT will check more precisely to ensure that your
-        combined inputs are within AVERT’s recommended limits.
-      </span>
-    ) : (
-      <span className="avert-input-error">
-        <span className="avert-input-error-range">
-          Please enter a positive number.
-        </span>
-        If you wish to model a reverse EE/RE scenario (i.e., a negative number),
-        use the Excel version of the AVERT Main Module.
-      </span>
-    );
-  }
 
   // text input values from fields
   const inputsFields = [
@@ -134,6 +139,7 @@ function EEREInputs() {
                 </Tooltip>
 
                 {displayError({
+                  errors,
                   fieldName: 'annualGwh',
                   inputValue: annualGwh,
                   maxValue: limits?.annualGwh,
@@ -160,6 +166,7 @@ function EEREInputs() {
                 </Tooltip>
 
                 {displayError({
+                  errors,
                   fieldName: 'constantMwh',
                   inputValue: constantMwh,
                   maxValue: limits?.constantMwh,
@@ -198,6 +205,7 @@ function EEREInputs() {
                 </Tooltip>
 
                 {displayError({
+                  errors,
                   fieldName: 'reduction',
                   inputValue: broadProgram,
                   maxValue: limits?.percent,
@@ -230,12 +238,14 @@ function EEREInputs() {
                 </Tooltip>
 
                 {displayError({
+                  errors,
                   fieldName: 'reduction',
                   inputValue: reduction,
                   maxValue: limits?.percent,
                 })}
 
                 {displayError({
+                  errors,
                   fieldName: 'topHours',
                   inputValue: topHours,
                   maxValue: 100,
@@ -274,6 +284,7 @@ function EEREInputs() {
                 </Tooltip>
 
                 {displayError({
+                  errors,
                   fieldName: 'onshoreWind',
                   inputValue: onshoreWind,
                   maxValue: limits?.renewables,
@@ -281,30 +292,50 @@ function EEREInputs() {
               </li>
 
               <li>
-                {/* TODO: only display offshore wind for regions that include it */}
+                {regionSupportsOffshoreWind ? (
+                  <>
+                    <span className="avert-input-label">
+                      Offshore wind total capacity:{' '}
+                    </span>
 
-                <span className="avert-input-label">
-                  Offshore wind total capacity:{' '}
-                </span>
+                    <EEREInputField
+                      value={offshoreWind}
+                      onChange={(text) =>
+                        dispatch(updateEereOffshoreWind(text))
+                      }
+                    />
+                    <span className="avert-input-unit"> MW </span>
 
-                <EEREInputField
-                  value={offshoreWind}
-                  onChange={(text) => dispatch(updateEereOffshoreWind(text))}
-                />
-                <span className="avert-input-unit"> MW </span>
+                    <Tooltip id={6}>
+                      Enter the total capacity (maximum potential electricity
+                      generation) for this type of resource, measured in MW. The
+                      model uses these inputs along with hourly capacity factors
+                      that vary by resource type and region.
+                    </Tooltip>
 
-                <Tooltip id={5}>
-                  Enter the total capacity (maximum potential electricity
-                  generation) for this type of resource, measured in MW. The
-                  model uses these inputs along with hourly capacity factors
-                  that vary by resource type and region.
-                </Tooltip>
+                    {displayError({
+                      errors,
+                      fieldName: 'offshoreWind',
+                      inputValue: offshoreWind,
+                      maxValue: limits?.renewables,
+                    })}
+                  </>
+                ) : (
+                  <>
+                    <span className="avert-input-label">
+                      <em>
+                        Offshore wind is not available in this AVERT region.{' '}
+                      </em>
+                    </span>
 
-                {displayError({
-                  fieldName: 'offshoreWind',
-                  inputValue: offshoreWind,
-                  maxValue: limits?.renewables,
-                })}
+                    <Tooltip id={7}>
+                      AVERT does not support offshore wind modeling in this
+                      region. It is unlikely that offshore areas suitable for
+                      wind farms would connect to the electrical grid in this
+                      region.
+                    </Tooltip>
+                  </>
+                )}
               </li>
             </ul>
           </section>
@@ -327,7 +358,7 @@ function EEREInputs() {
                 />
                 <span className="avert-input-unit"> MW </span>
 
-                <Tooltip id={6}>
+                <Tooltip id={8}>
                   Enter the total capacity (maximum potential electricity
                   generation) for this type of resource, measured in MW. The
                   model uses these inputs along with hourly capacity factors
@@ -335,6 +366,7 @@ function EEREInputs() {
                 </Tooltip>
 
                 {displayError({
+                  errors,
                   fieldName: 'utilitySolar',
                   inputValue: utilitySolar,
                   maxValue: limits?.renewables,
@@ -351,7 +383,7 @@ function EEREInputs() {
                 />
                 <span className="avert-input-unit"> MW </span>
 
-                <Tooltip id={7}>
+                <Tooltip id={9}>
                   Enter the total capacity (maximum potential electricity
                   generation) for this type of resource, measured in MW. The
                   model uses these inputs along with hourly capacity factors
@@ -359,6 +391,7 @@ function EEREInputs() {
                 </Tooltip>
 
                 {displayError({
+                  errors,
                   fieldName: 'rooftopSolar',
                   inputValue: rooftopSolar,
                   maxValue: limits?.renewables,
