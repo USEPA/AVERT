@@ -11,7 +11,7 @@ type StateEmissionsAction =
   | {
       type: 'stateEmissions/COMPLETE_STATE_EMISSIONS';
       payload: {
-        states: string[];
+        stateIds: string[];
         data: {
           state: string;
           so2: number;
@@ -27,7 +27,7 @@ type StateEmissionsAction =
 
 type StateEmissionsState = {
   status: 'ready' | 'started' | 'complete';
-  states: string[];
+  stateIds: string[];
   data: {
     state: string;
     so2: number;
@@ -40,7 +40,7 @@ type StateEmissionsState = {
 // reducer
 const initialState: StateEmissionsState = {
   status: 'ready',
-  states: [],
+  stateIds: [],
   data: [],
 };
 
@@ -63,7 +63,7 @@ export default function reducer(
       return {
         ...state,
         status: 'complete',
-        states: action.payload.states,
+        stateIds: action.payload.stateIds,
         data: action.payload.data,
       };
 
@@ -90,7 +90,7 @@ export function completeStateEmissions(): AppThunk {
     dispatch({
       type: 'stateEmissions/COMPLETE_STATE_EMISSIONS',
       payload: {
-        states: stateIds,
+        stateIds,
         data,
       },
     });

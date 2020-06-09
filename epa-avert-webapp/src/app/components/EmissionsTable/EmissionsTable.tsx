@@ -14,7 +14,7 @@ function EmissionsTable({ heading }: Props) {
   );
   const data = useTypedSelector(({ stateEmissions }) => stateEmissions.data);
   const states = useTypedSelector(({ stateEmissions }) =>
-    stateEmissions.states.map((state) => allStates[state]),
+    stateEmissions.stateIds.map((stateId) => allStates[stateId]),
   );
 
   // rendering is ready when state emissions status is 'complete'
