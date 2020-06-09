@@ -37,9 +37,10 @@ function UnitConversion() {
       computed.mw = input / factor;
     }
 
-    setGw(computed.gw);
-    setMw(computed.mw);
+    setError(false);
     setKw(computed.kw);
+    setMw(computed.mw);
+    setGw(computed.gw);
   }
 
   return (
