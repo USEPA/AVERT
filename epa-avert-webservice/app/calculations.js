@@ -36,12 +36,7 @@
  */
 
 /**
- * @typedef {EereData[]} EERE
- */
-
-/**
- * @typedef {Object} EereData
- * @property {number} final_mw
+ * @typedef {number[]} HourlyLoad
  */
 
 /**
@@ -93,10 +88,10 @@ function excelMatch(array, lookup) {
 /**
  * Caclulates displacement for a given pollutant.
  * @param {RDF} rdf
- * @param {EERE} eere
+ * @param {HourlyLoad} hourlyLoad
  * @param {Pollutant} pollutant
  */
-function getDisplacement(rdf, eere, pollutant) {
+function getDisplacement(rdf, hourlyLoad, pollutant) {
   // set ozoneData and nonOzoneData based on provided pollutant
   const ozoneData = rdf.data[pollutant];
 
@@ -159,7 +154,7 @@ function getDisplacement(rdf, eere, pollutant) {
   for (let i = 0; i < rdf.regional_load.length; i++) {
     const month = rdf.regional_load[i].month;              // numeric month of load
     const preLoad = rdf.regional_load[i].regional_load_mw; // original regional load (mwh)
-    const postLoad = preLoad + eere[i].final_mw;           // EERE-merged regional load (mwh)
+    const postLoad = preLoad + hourlyLoad[i];              // EERE-merged regional load (mwh)
 
     const preLoadInBounds = preLoad >= minEdge && preLoad <= maxEdge;
     const postLoadInBounds = postLoad >= minEdge && postLoad <= maxEdge;

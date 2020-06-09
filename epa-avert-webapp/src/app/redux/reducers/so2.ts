@@ -75,7 +75,7 @@ export function fetchSo2(): AppThunk {
       },
       body: JSON.stringify({
         region: region.id,
-        eere: eere.hourlyEere,
+        hourlyLoad: eere.hourlyEere.map((hour) => hour.final_mw),
       }),
     };
 

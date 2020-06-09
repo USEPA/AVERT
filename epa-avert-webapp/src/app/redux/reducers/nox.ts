@@ -75,7 +75,7 @@ export function fetchNox(): AppThunk {
       },
       body: JSON.stringify({
         region: region.id,
-        eere: eere.hourlyEere,
+        hourlyLoad: eere.hourlyEere.map((hour) => hour.final_mw),
       }),
     };
 

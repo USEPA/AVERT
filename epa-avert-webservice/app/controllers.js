@@ -47,7 +47,7 @@ async function calculatePollutant(ctx, pollutant) {
   // parse rdf data from file
   const file = await readFile(`app/data/${config.regions[body.region].rdf}`);
   const rdf = JSON.parse(file);
-  ctx.body = getDisplacement(rdf, body.eere, pollutant);
+  ctx.body = getDisplacement(rdf, body.hourlyLoad, pollutant);
 };
 
 /**
