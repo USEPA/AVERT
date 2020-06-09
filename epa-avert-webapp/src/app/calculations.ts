@@ -83,10 +83,11 @@ export function calculateEere({
     const hardLimit = hourlyLoad * -0.3;
 
     const onshoreWind = onshoreWindInput * hourlyDefault.onshore_wind;
-    const offshoreWind = offshoreWindInput * (hourlyDefault.offshore_wind || 0); // TODO: use this in calculations for regions that support offshoreWind
+    const offshoreWind = offshoreWindInput * (hourlyDefault.offshore_wind || 0);
     const utilitySolar = utilitySolarInput * hourlyDefault.utility_pv;
     const rooftopSolar = rooftopSolarInput * hourlyDefault.rooftop_pv * lineLoss; // prettier-ignore
-    const renewableProfile = -1 * (onshoreWind + utilitySolar + rooftopSolar);
+    const renewableProfile =
+      -1 * (onshoreWind + offshoreWind + utilitySolar + rooftopSolar); // TODO: confirm this is the proper use of offshoreWind
 
     const initialLoad =
       hourlyLoad > topPercentile ? hourlyLoad * percentReduction : 0;
