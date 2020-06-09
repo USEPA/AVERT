@@ -73,6 +73,7 @@ type RegionAction =
       payload: {
         id: string;
         name: string;
+        lineLoss: number;
         offshoreWind: boolean;
       };
     }
@@ -92,6 +93,7 @@ type RegionAction =
 type RegionState = {
   id: string;
   name: string;
+  lineLoss: number;
   offshoreWind: boolean;
   eereDefaults: EereJSON;
   rdf: RdfJSON;
@@ -101,6 +103,7 @@ type RegionState = {
 const initialState: RegionState = {
   id: '',
   name: '',
+  lineLoss: 0,
   offshoreWind: false,
   eereDefaults: {
     region: '',
@@ -157,6 +160,7 @@ export default function reducer(
         ...state,
         id: action.payload.id,
         name: action.payload.name,
+        lineLoss: action.payload.lineLoss,
         offshoreWind: action.payload.offshoreWind,
       };
 
@@ -189,6 +193,7 @@ export function selectRegion(regionId: string): AppThunk {
       payload: {
         id: selectedRegion ? selectedRegion.id : '',
         name: selectedRegion ? selectedRegion.name : '',
+        lineLoss: selectedRegion ? selectedRegion.lineLoss : 0,
         offshoreWind: selectedRegion ? selectedRegion.offshoreWind : false,
       },
     });

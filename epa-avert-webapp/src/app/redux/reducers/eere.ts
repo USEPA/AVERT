@@ -4,8 +4,6 @@ import { AppThunk } from 'app/redux/index';
 import { RegionalLoadData } from 'app/redux/reducers/region';
 // calculations
 import { calculateEere } from 'app/calculations';
-// config
-import { RegionKeys, regions } from 'app/config';
 
 type EereAction =
   | {
@@ -513,19 +511,13 @@ export function calculateEereProfile(): AppThunk {
       type: 'eere/SUBMIT_EERE_CALCULATION',
     });
 
-    const regionKey = (Object.keys(regions) as RegionKeys[]).find((key) => {
-      return regions[key].id === region.id;
-    });
-
-    if (regionKey === undefined) throw new Error('Region number mismatch');
-
     const {
       softLimitHourlyExceedances,
       hardLimitHourlyExceedances,
       hourlyEere,
     } = calculateEere({
       regionMaxEELimit: region.rdf.limits.max_ee_percent,
-      regionLineLoss: regions[regionKey].lineLoss,
+      regionLineLoss: region.lineLoss,
       regionalLoads: region.rdf.regional_load,
       eereDefaults: region.eereDefaults.data,
       eereInputs: eere.inputs,
