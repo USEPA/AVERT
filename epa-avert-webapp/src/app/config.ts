@@ -21,89 +21,95 @@ export type RegionKeys =
   | 'TE'
   | 'TN';
 
+const lineLoss = {
+  texas: 0.054,
+  eastern: 0.072,
+  western: 0.086,
+};
+
 export const regions: { [key in RegionKeys]: Region } = {
   CA: {
     id: 'CA',
     name: 'California',
-    lineLoss: 8.54, // TODO
+    lineLoss: lineLoss.western,
     offshoreWind: true,
   },
   CENT: {
     id: 'CENT',
     name: 'Central',
-    lineLoss: 0, // TODO
+    lineLoss: lineLoss.eastern,
     offshoreWind: false,
   },
   FL: {
     id: 'FL',
     name: 'Florida',
-    lineLoss: 0, // TODO
+    lineLoss: lineLoss.eastern,
     offshoreWind: false,
   },
   MIDA: {
     id: 'MIDA',
     name: 'Mid-Atlantic',
-    lineLoss: 0, // TODO
+    lineLoss: lineLoss.eastern,
     offshoreWind: true,
   },
   MIDW: {
     id: 'MIDW',
     name: 'Midwest',
-    lineLoss: 0, // TODO
+    lineLoss: lineLoss.western,
     offshoreWind: false,
   },
   NCSC: {
     id: 'NCSC',
     name: 'Carolinas',
-    lineLoss: 0, // TODO
+    lineLoss: lineLoss.eastern,
     offshoreWind: true,
   },
   NE: {
     id: 'NE',
     name: 'New England',
-    lineLoss: 6.74, // TODO
+    lineLoss: lineLoss.eastern,
     offshoreWind: true,
   },
   NY: {
     id: 'NY',
     name: 'New York',
-    lineLoss: 0, // TODO
+    lineLoss: lineLoss.eastern,
     offshoreWind: true,
   },
   NW: {
     id: 'NW',
     name: 'Northwest',
-    lineLoss: 8.54, // TODO
+    lineLoss: lineLoss.western,
     offshoreWind: true,
   },
   RM: {
     id: 'RM',
     name: 'Rocky Mountains',
-    lineLoss: 8.54, // TODO
+    lineLoss: lineLoss.western,
     offshoreWind: false,
   },
   SE: {
     id: 'SE',
     name: 'Southeast',
-    lineLoss: 6.74, // TODO
+    lineLoss: lineLoss.eastern,
     offshoreWind: false,
   },
   SW: {
     id: 'SW',
     name: 'Southwest',
-    lineLoss: 8.54, // TODO
+    lineLoss: lineLoss.western,
     offshoreWind: false,
   },
   TE: {
     id: 'TE',
     name: 'Texas',
-    lineLoss: 4.83, // TODO
+    lineLoss: lineLoss.texas,
     offshoreWind: false,
   },
   TN: {
     id: 'TN',
     name: 'Tennessee',
-    lineLoss: 0, // TODO
+    lineLoss: lineLoss.eastern,
     offshoreWind: false,
   },
 };

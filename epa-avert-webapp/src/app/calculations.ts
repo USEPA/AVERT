@@ -65,7 +65,7 @@ export function calculateEere({
   const utilitySolarInput = Number(eereInputs.utilitySolar);
   const rooftopSolarInput = Number(eereInputs.rooftopSolar);
 
-  const lineLoss = 1 / (1 - regionLineLoss / 100);
+  const lineLoss = 1 / (1 - regionLineLoss);
   const topPercentile = calculateTopPercentile(regionalLoads, eereInputs);
   const hourlyReduction = calculateHourlyReduction(regionalLoads, eereInputs);
   const percentReduction =
