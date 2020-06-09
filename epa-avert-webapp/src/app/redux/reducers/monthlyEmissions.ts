@@ -104,7 +104,7 @@ type MonthlyEmissionsAction =
     };
 
 type MonthlyEmissionsState = {
-  status: 'pending' | 'ready' | 'started' | 'complete';
+  status: 'ready' | 'started' | 'complete';
   aggregation: MonthlyAggregation;
   unit: MonthlyUnit;
   availableStates: string[];
@@ -123,7 +123,7 @@ type MonthlyEmissionsState = {
 
 // reducer
 const initialState: MonthlyEmissionsState = {
-  status: 'pending',
+  status: 'ready',
   aggregation: 'region',
   unit: 'emissions',
   availableStates: [],
@@ -146,10 +146,7 @@ export default function reducer(
 ): MonthlyEmissionsState {
   switch (action.type) {
     case 'region/SELECT_REGION':
-      return {
-        ...state,
-        status: 'ready',
-      };
+      return initialState;
 
     case 'annualDisplacement/START_DISPLACEMENT':
       return {

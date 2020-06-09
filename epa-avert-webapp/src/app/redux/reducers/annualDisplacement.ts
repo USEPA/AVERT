@@ -13,7 +13,7 @@ export type StatesAndCounties = {
   [stateId: string]: string[];
 };
 
-type AnnualDisplacementsAction =
+type AnnualDisplacementAction =
   | {
       type: 'region/SELECT_REGION';
     }
@@ -31,36 +31,36 @@ type AnnualDisplacementsAction =
     }
   | {
       type: 'annualDisplacement/RECEIVE_ERROR';
+    }
+  | {
+      type: 'annualDisplacement/RESET_DISPLACEMENT';
     };
 
 type AnnualDisplacementState = {
-  status: 'pending' | 'ready' | 'started' | 'complete' | 'error';
+  status: 'ready' | 'started' | 'complete' | 'error';
   statesAndCounties: StatesAndCounties;
 };
 
 // reducer
 const initialState: AnnualDisplacementState = {
-  status: 'pending',
+  status: 'ready',
   statesAndCounties: {},
 };
 
 export default function reducer(
   state: AnnualDisplacementState = initialState,
-  action: AnnualDisplacementsAction,
+  action: AnnualDisplacementAction,
 ): AnnualDisplacementState {
   switch (action.type) {
     case 'region/SELECT_REGION':
-      return {
-        ...state,
-        status: 'ready',
-        statesAndCounties: initialState.statesAndCounties,
-      };
+    case 'annualDisplacement/RESET_DISPLACEMENT':
+      return initialState;
 
     case 'annualDisplacement/START_DISPLACEMENT':
       return {
         ...state,
         status: 'started',
-        statesAndCounties: initialState.statesAndCounties,
+        statesAndCounties: {},
       };
 
     case 'annualDisplacement/RECEIVE_DISPLACEMENT':
@@ -82,7 +82,7 @@ export default function reducer(
 }
 
 // action creators
-export function incrementProgress(): AnnualDisplacementsAction {
+export function incrementProgress(): AnnualDisplacementAction {
   return {
     type: 'annualDisplacement/INCREMENT_PROGRESS',
   };
@@ -142,5 +142,11 @@ export function calculateDisplacement(): AppThunk {
     dispatch(fetchPm25());
 
     dispatch(receiveDisplacement());
+  };
+}
+
+export function resetAnnualDisplacement(): AnnualDisplacementAction {
+  return {
+    type: 'annualDisplacement/RESET_DISPLACEMENT',
   };
 }

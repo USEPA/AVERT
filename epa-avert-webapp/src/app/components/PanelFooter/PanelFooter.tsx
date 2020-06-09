@@ -5,7 +5,11 @@ import { useTypedSelector } from 'app/redux/index';
 import { setActiveStep } from 'app/redux/reducers/panel';
 import { resetEereInputs } from 'app/redux/reducers/eere';
 import { fetchRegion } from 'app/redux/reducers/region';
-import { calculateDisplacement } from 'app/redux/reducers/annualDisplacement';
+import {
+  calculateDisplacement,
+  resetAnnualDisplacement,
+} from 'app/redux/reducers/annualDisplacement';
+import { resetStateEmissions } from 'app/redux/reducers/stateEmissions';
 import { resetMonthlyEmissions } from 'app/redux/reducers/monthlyEmissions';
 // styles
 import './styles.css';
@@ -45,8 +49,14 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
         scrollToTop();
         // prevButtonText isn't provided to first step's use of PanelFooter,
         // so we can safely always assume we're on step 2 or 3
-        dispatch(resetEereInputs());
         dispatch(setActiveStep(activeStep - 1));
+        dispatch(resetEereInputs());
+
+        if (onStepThree) {
+          dispatch(resetAnnualDisplacement());
+          dispatch(resetStateEmissions());
+          dispatch(resetMonthlyEmissions());
+        }
       }}
     >
       {prevButtonText}
@@ -91,6 +101,8 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
         if (onStepThree) {
           scrollToTop();
           dispatch(resetEereInputs());
+          dispatch(resetAnnualDisplacement());
+          dispatch(resetStateEmissions());
           dispatch(resetMonthlyEmissions());
         }
 

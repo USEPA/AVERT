@@ -20,10 +20,13 @@ type StateEmissionsAction =
           pm25: number;
         }[];
       };
+    }
+  | {
+      type: 'stateEmissions/RESET_STATE_EMISSIONS';
     };
 
 type StateEmissionsState = {
-  status: 'pending' | 'ready' | 'started' | 'complete';
+  status: 'ready' | 'started' | 'complete';
   states: string[];
   data: {
     state: string;
@@ -36,7 +39,7 @@ type StateEmissionsState = {
 
 // reducer
 const initialState: StateEmissionsState = {
-  status: 'pending',
+  status: 'ready',
   states: [],
   data: [],
 };
@@ -47,10 +50,8 @@ export default function reducer(
 ): StateEmissionsState {
   switch (action.type) {
     case 'region/SELECT_REGION':
-      return {
-        ...state,
-        status: 'ready',
-      };
+    case 'stateEmissions/RESET_STATE_EMISSIONS':
+      return initialState;
 
     case 'annualDisplacement/START_DISPLACEMENT':
       return {
@@ -93,5 +94,11 @@ export function completeStateEmissions(): AppThunk {
         data,
       },
     });
+  };
+}
+
+export function resetStateEmissions(): StateEmissionsAction {
+  return {
+    type: 'stateEmissions/RESET_STATE_EMISSIONS',
   };
 }
