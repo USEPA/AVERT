@@ -104,7 +104,7 @@ type MonthlyEmissionsAction =
     };
 
 type MonthlyEmissionsState = {
-  status: 'select_region' | 'ready' | 'started' | 'complete';
+  status: 'pending' | 'ready' | 'started' | 'complete';
   aggregation: MonthlyAggregation;
   unit: MonthlyUnit;
   availableStates: string[];
@@ -123,7 +123,7 @@ type MonthlyEmissionsState = {
 
 // reducer
 const initialState: MonthlyEmissionsState = {
-  status: 'select_region',
+  status: 'pending',
   aggregation: 'region',
   unit: 'emissions',
   availableStates: [],

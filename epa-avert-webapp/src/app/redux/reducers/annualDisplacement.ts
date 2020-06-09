@@ -34,13 +34,13 @@ type AnnualDisplacementsAction =
     };
 
 type AnnualDisplacementState = {
-  status: 'select_region' | 'ready' | 'started' | 'complete' | 'error';
+  status: 'pending' | 'ready' | 'started' | 'complete' | 'error';
   statesAndCounties: StatesAndCounties;
 };
 
 // reducer
 const initialState: AnnualDisplacementState = {
-  status: 'select_region',
+  status: 'pending',
   statesAndCounties: {},
 };
 

@@ -23,7 +23,7 @@ type StateEmissionsAction =
     };
 
 type StateEmissionsState = {
-  status: 'select_region' | 'ready' | 'started' | 'complete';
+  status: 'pending' | 'ready' | 'started' | 'complete';
   states: string[];
   data: {
     state: string;
@@ -36,7 +36,7 @@ type StateEmissionsState = {
 
 // reducer
 const initialState: StateEmissionsState = {
-  status: 'select_region',
+  status: 'pending',
   states: [],
   data: [],
 };
