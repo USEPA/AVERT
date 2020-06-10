@@ -59,20 +59,22 @@ type DisplacementAction =
     }
   | { type: 'displacement/RECEIVE_PM25_ERROR' };
 
-type Pollutant = {
+type PollutantState = {
   isFetching: boolean;
   data: PollutantDisplacementData;
   error: boolean;
 };
 
+type Pollutant = 'generation' | 'so2' | 'nox' | 'co2' | 'pm25';
+
 type DisplacementState = {
   status: 'ready' | 'started' | 'complete' | 'error';
   statesAndCounties: StatesAndCounties;
-  generation: Pollutant;
-  so2: Pollutant;
-  nox: Pollutant;
-  co2: Pollutant;
-  pm25: Pollutant;
+  generation: PollutantState;
+  so2: PollutantState;
+  nox: PollutantState;
+  co2: PollutantState;
+  pm25: PollutantState;
 };
 
 const initialPollutantData = {
@@ -342,13 +344,14 @@ export function incrementProgress(): DisplacementAction {
   };
 }
 
-function fetchGeneration(): AppThunk {
+function fetchDisplacementData(pollutant: Pollutant): AppThunk {
   return (dispatch, getState) => {
     const { api, region, eere } = getState();
 
-    dispatch({ type: 'displacement/REQUEST_GENERATION_DATA' });
+    dispatch({ type: `displacement/REQUEST_${pollutant.toUpperCase()}_DATA` });
 
-    // post generation data for region and receive calculated displacement data
+    // post calculated hourly eere load for region and
+    // receive calculated displacement data for pollutant
     const options = {
       method: 'POST',
       headers: {
@@ -361,153 +364,19 @@ function fetchGeneration(): AppThunk {
       }),
     };
 
-    return fetch(`${api.baseUrl}/api/v1/generation`, options)
+    return fetch(`${api.baseUrl}/api/v1/${pollutant}`, options)
       .then((response) => response.json())
       .then((json) => {
         dispatch(incrementProgress());
         dispatch({
-          type: 'displacement/RECEIVE_GENERATION_DATA',
+          type: `displacement/RECEIVE_${pollutant.toUpperCase()}_DATA`,
           payload: { data: json },
         });
       })
       .catch((error) => {
-        dispatch({ type: 'displacement/RECEIVE_GENERATION_ERROR' });
-      });
-  };
-}
-
-function fetchSo2(): AppThunk {
-  return (dispatch, getState) => {
-    const { api, region, eere } = getState();
-
-    dispatch({ type: 'displacement/REQUEST_SO2_DATA' });
-
-    // post so2 data for region and receive calculated displacement data
-    const options = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        region: region.id,
-        hourlyLoad: eere.hourlyEere.map((hour) => hour.final_mw),
-      }),
-    };
-
-    return fetch(`${api.baseUrl}/api/v1/so2`, options)
-      .then((response) => response.json())
-      .then((json) => {
-        dispatch(incrementProgress());
         dispatch({
-          type: 'displacement/RECEIVE_SO2_DATA',
-          payload: { data: json },
+          type: `displacement/RECEIVE_${pollutant.toUpperCase()}_ERROR`,
         });
-      })
-      .catch((error) => {
-        dispatch({ type: 'displacement/RECEIVE_SO2_ERROR' });
-      });
-  };
-}
-
-function fetchNox(): AppThunk {
-  return (dispatch, getState) => {
-    const { api, region, eere } = getState();
-
-    dispatch({ type: 'displacement/REQUEST_NOX_DATA' });
-
-    // post nox data for region and receive calculated displacement data
-    const options = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        region: region.id,
-        hourlyLoad: eere.hourlyEere.map((hour) => hour.final_mw),
-      }),
-    };
-
-    return fetch(`${api.baseUrl}/api/v1/nox`, options)
-      .then((response) => response.json())
-      .then((json) => {
-        dispatch(incrementProgress());
-        dispatch({
-          type: 'displacement/RECEIVE_NOX_DATA',
-          payload: { data: json },
-        });
-      })
-      .catch((error) => {
-        dispatch({ type: 'displacement/RECEIVE_NOX_ERROR' });
-      });
-  };
-}
-
-function fetchCo2(): AppThunk {
-  return (dispatch, getState) => {
-    const { api, region, eere } = getState();
-
-    dispatch({ type: 'displacement/REQUEST_CO2_DATA' });
-
-    // post co2 data for region and receive calculated displacement data
-    const options = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        region: region.id,
-        hourlyLoad: eere.hourlyEere.map((hour) => hour.final_mw),
-      }),
-    };
-
-    return fetch(`${api.baseUrl}/api/v1/co2`, options)
-      .then((response) => response.json())
-      .then((json) => {
-        dispatch(incrementProgress());
-        dispatch({
-          type: 'displacement/RECEIVE_CO2_DATA',
-          payload: { data: json },
-        });
-      })
-      .catch((error) => {
-        dispatch({ type: 'displacement/RECEIVE_CO2_ERROR' });
-      });
-  };
-}
-
-function fetchPm25(): AppThunk {
-  return (dispatch, getState) => {
-    const { api, region, eere } = getState();
-
-    dispatch({ type: 'displacement/REQUEST_PM25_DATA' });
-
-    // post pm25 data for region and receive calculated displacement data
-    const options = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        region: region.id,
-        hourlyLoad: eere.hourlyEere.map((hour) => hour.final_mw),
-      }),
-    };
-
-    return fetch(`${api.baseUrl}/api/v1/pm25`, options)
-      .then((response) => response.json())
-      .then((json) => {
-        dispatch(incrementProgress());
-        dispatch({
-          type: 'displacement/RECEIVE_PM25_DATA',
-          payload: { data: json },
-        });
-      })
-      .catch((error) => {
-        dispatch({ type: 'displacement/RECEIVE_PM25_ERROR' });
       });
   };
 }
@@ -517,18 +386,17 @@ export function calculateDisplacement(): AppThunk {
     dispatch({ type: 'displacement/START_DISPLACEMENT' });
     dispatch(incrementProgress());
 
-    // fetch generation, so2, nox, co2, and pm25
-    dispatch(fetchGeneration());
-    dispatch(fetchSo2());
-    dispatch(fetchNox());
-    dispatch(fetchCo2());
-    dispatch(fetchPm25());
+    dispatch(fetchDisplacementData('generation'));
+    dispatch(fetchDisplacementData('so2'));
+    dispatch(fetchDisplacementData('nox'));
+    dispatch(fetchDisplacementData('co2'));
+    dispatch(fetchDisplacementData('pm25'));
 
     dispatch(receiveDisplacement());
   };
 }
 
-export function receiveDisplacement(): AppThunk {
+function receiveDisplacement(): AppThunk {
   return (dispatch, getState) => {
     const { displacement } = getState();
     const { generation, so2, nox, co2, pm25 } = displacement;

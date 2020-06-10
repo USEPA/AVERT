@@ -303,7 +303,7 @@ export default function reducer(
   }
 }
 
-export function renderMonthlyEmissionsCharts(): AppThunk {
+function renderMonthlyEmissionsCharts(): AppThunk {
   return (dispatch, getState) => {
     const { displacement } = getState();
     const { so2, nox, co2, pm25 } = displacement;
