@@ -5,7 +5,7 @@ describe('Set EE/RE Impacts', () => {
     cy.findAllByText('Select Region')
       .filter('option')
       .parent()
-      .select('Rocky Mountains');
+      .select('Carolinas');
     cy.findAllByText('Set EE/RE Impacts').filter('.avert-next').click();
 
     cy.findByText('Reductions spread evenly throughout the year').as('toggleA');
@@ -48,37 +48,39 @@ describe('Set EE/RE Impacts', () => {
 
   it('Entering a value for onshore wind capacity displays the EE/RE profile chart and enables the “Get Results” button', () => {
     cy.get('@toggleC').click();
-    cy.get('@onshoreWind').type('444');
+    cy.get('@onshoreWind').type('1000');
     cy.get('@resultsBtn').should('have.class', 'avert-button-disabled');
     cy.get('@calculateBtn').click();
     cy.findByText('EE/RE profile based on values entered:');
     cy.get('@resultsBtn').should('not.have.class', 'avert-button-disabled');
   });
 
-  it('Entering a value over the 15% threshold for onshore wind capacity displays the warning message below the chart', () => {
+  it('Entering a value over the 15% threshold for annual generation and onshore wind capacity displays the warning message below the chart', () => {
+    cy.get('@toggleA').click();
+    cy.get('@annualGwh').type('5000');
     cy.get('@toggleC').click();
-    cy.get('@onshoreWind').type('888');
+    cy.get('@onshoreWind').type('1000');
     cy.get('@calculateBtn').click();
     cy.findAllByText('WARNING:').filter(':visible');
-    cy.findByText('25.06');
-    cy.findByText('March 18 at 12:00 AM');
+    cy.findByText('19.24');
+    cy.findByText('January 1 at 5:00 AM');
   });
 
   it('Entering a value over the 30% threshold for annual generation and onshore wind capacity displays the error message below the chart', () => {
     cy.get('@toggleA').click();
-    cy.get('@annualGwh').type('2222');
+    cy.get('@annualGwh').type('10000');
     cy.get('@toggleC').click();
-    cy.get('@onshoreWind').type('888');
+    cy.get('@onshoreWind').type('1000');
     cy.get('@calculateBtn').click();
     cy.findAllByText('ERROR:').filter(':visible');
-    cy.findByText('33.2');
-    cy.findByText('March 18 at 12:00 AM');
+    cy.findByText('31.82');
+    cy.findByText('April 20 at 3:00 AM');
   });
 
   it('Entering a value over the vaild limit for onshore wind capacity displays the error message below the input', () => {
     cy.get('@toggleC').click();
-    cy.get('@onshoreWind').type('889');
-    cy.findByText('Please enter a number between 0 and 888.6.');
+    cy.get('@onshoreWind').type('1376');
+    cy.findByText('Please enter a number between 0 and 1375.5.');
     cy.get('@calculateBtn').should('have.class', 'avert-button-disabled');
     cy.get('@resultsBtn').should('have.class', 'avert-button-disabled');
   });

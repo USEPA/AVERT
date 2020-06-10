@@ -5,7 +5,7 @@ type Region = {
   offshoreWind: boolean;
 };
 
-type RegionKeys =
+export type RegionKeys =
   | 'CA'
   | 'CENT'
   | 'FL'
