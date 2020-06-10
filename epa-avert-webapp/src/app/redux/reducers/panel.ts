@@ -39,7 +39,7 @@ type PanelAction =
       type: 'eere/COMPLETE_EERE_CALCULATION';
     }
   | {
-      type: 'annualDisplacement/RECEIVE_DISPLACEMENT';
+      type: 'annualDisplacement/COMPLETE_DISPLACEMENT';
     }
   | {
       type: 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS';
@@ -112,7 +112,7 @@ export default function reducer(
 
     case 'region/RECEIVE_REGION_DEFAULTS':
     case 'eere/COMPLETE_EERE_CALCULATION':
-    case 'annualDisplacement/RECEIVE_DISPLACEMENT':
+    case 'annualDisplacement/COMPLETE_DISPLACEMENT':
     case 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS':
       return {
         ...state,

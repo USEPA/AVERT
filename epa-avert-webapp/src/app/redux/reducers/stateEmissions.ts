@@ -74,9 +74,10 @@ export default function reducer(
 
 export function completeStateEmissions(): AppThunk {
   return (dispatch, getState) => {
-    const { annualDisplacement, so2, nox, co2, pm25 } = getState();
+    const { annualDisplacement } = getState();
+    const { statesAndCounties, so2, nox, co2, pm25 } = annualDisplacement;
 
-    const stateIds = Object.keys(annualDisplacement.statesAndCounties).sort();
+    const stateIds = Object.keys(statesAndCounties).sort();
 
     // calculate state emissions and dispatch action
     const data = stateIds.map((stateId) => ({
@@ -98,7 +99,5 @@ export function completeStateEmissions(): AppThunk {
 }
 
 export function resetStateEmissions(): StateEmissionsAction {
-  return {
-    type: 'stateEmissions/RESET_STATE_EMISSIONS',
-  };
+  return { type: 'stateEmissions/RESET_STATE_EMISSIONS' };
 }

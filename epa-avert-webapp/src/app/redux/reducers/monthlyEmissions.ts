@@ -40,15 +40,9 @@ type CobraDataRow = {
 };
 
 type MonthlyEmissionsAction =
-  | {
-      type: 'region/SELECT_REGION';
-    }
-  | {
-      type: 'annualDisplacement/START_DISPLACEMENT';
-    }
-  | {
-      type: 'eere/RESET_EERE_INPUTS';
-    }
+  | { type: 'region/SELECT_REGION' }
+  | { type: 'annualDisplacement/START_DISPLACEMENT' }
+  | { type: 'eere/RESET_EERE_INPUTS' }
   | {
       type: 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS';
       payload: {
@@ -60,9 +54,7 @@ type MonthlyEmissionsAction =
     }
   | {
       type: 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS';
-      payload: {
-        availableStates: string[];
-      };
+      payload: { availableStates: string[] };
     }
   | {
       type: 'monthlyEmissions/SET_DOWNLOAD_DATA';
@@ -76,15 +68,11 @@ type MonthlyEmissionsAction =
     }
   | {
       type: 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION';
-      payload: {
-        aggregation: MonthlyAggregation;
-      };
+      payload: { aggregation: MonthlyAggregation };
     }
   | {
       type: 'monthlyEmissions/SELECT_MONTHLY_UNIT';
-      payload: {
-        unit: MonthlyUnit;
-      };
+      payload: { unit: MonthlyUnit };
     }
   | {
       type: 'monthlyEmissions/SELECT_MONTHLY_STATE';
@@ -95,13 +83,9 @@ type MonthlyEmissionsAction =
     }
   | {
       type: 'monthlyEmissions/SELECT_MONTHLY_COUNTY';
-      payload: {
-        selectedCounty: string;
-      };
+      payload: { selectedCounty: string };
     }
-  | {
-      type: 'monthlyEmissions/RESET_MONTHLY_EMISSIONS';
-    };
+  | { type: 'monthlyEmissions/RESET_MONTHLY_EMISSIONS' };
 
 type MonthlyEmissionsState = {
   status: 'ready' | 'started' | 'complete';
@@ -293,7 +277,8 @@ export default function reducer(
 
 export function renderMonthlyEmissionsCharts(): AppThunk {
   return (dispatch, getState) => {
-    const { so2, nox, co2, pm25 } = getState();
+    const { annualDisplacement } = getState();
+    const { so2, nox, co2, pm25 } = annualDisplacement;
 
     dispatch({
       type: 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS',
@@ -309,15 +294,12 @@ export function renderMonthlyEmissionsCharts(): AppThunk {
 
 export function completeMonthlyEmissions(): AppThunk {
   return (dispatch, getState) => {
-    const { annualDisplacement, so2, nox, co2, pm25 } = getState();
+    const { annualDisplacement } = getState();
+    const { statesAndCounties, so2, nox, co2, pm25 } = annualDisplacement;
 
     dispatch({
       type: 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS',
-      payload: {
-        availableStates: Object.keys(
-          annualDisplacement.statesAndCounties,
-        ).sort(),
-      },
+      payload: { availableStates: Object.keys(statesAndCounties).sort() },
     });
 
     dispatch({
@@ -327,7 +309,7 @@ export function completeMonthlyEmissions(): AppThunk {
         nox: nox.data.monthlyChanges,
         co2: co2.data.monthlyChanges,
         pm25: pm25.data.monthlyChanges,
-        statesAndCounties: annualDisplacement.statesAndCounties,
+        statesAndCounties: statesAndCounties,
       },
     });
 
@@ -341,9 +323,7 @@ export function selectMonthlyAggregation(
   return (dispatch) => {
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION',
-      payload: {
-        aggregation,
-      },
+      payload: { aggregation },
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
@@ -353,9 +333,7 @@ export function selectMonthlyUnit(unit: MonthlyUnit): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_UNIT',
-      payload: {
-        unit,
-      },
+      payload: { unit },
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
@@ -380,18 +358,14 @@ export function selectMonthlyCounty(countyName: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_COUNTY',
-      payload: {
-        selectedCounty: countyName,
-      },
+      payload: { selectedCounty: countyName },
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
 }
 
 export function resetMonthlyEmissions(): MonthlyEmissionsAction {
-  return {
-    type: 'monthlyEmissions/RESET_MONTHLY_EMISSIONS',
-  };
+  return { type: 'monthlyEmissions/RESET_MONTHLY_EMISSIONS' };
 }
 
 /**

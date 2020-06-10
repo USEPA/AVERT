@@ -18,11 +18,21 @@ const DisplacementsTable = ({ heading }: Props) => {
   const annualStatus = useTypedSelector(
     ({ annualDisplacement }) => annualDisplacement.status,
   );
-  const generationData = useTypedSelector(({ generation }) => generation.data);
-  const so2Data = useTypedSelector(({ so2 }) => so2.data);
-  const noxData = useTypedSelector(({ nox }) => nox.data);
-  const co2Data = useTypedSelector(({ co2 }) => co2.data);
-  const pm25Data = useTypedSelector(({ pm25 }) => pm25.data);
+  const generationData = useTypedSelector(
+    ({ annualDisplacement }) => annualDisplacement.generation.data,
+  );
+  const so2Data = useTypedSelector(
+    ({ annualDisplacement }) => annualDisplacement.so2.data,
+  );
+  const noxData = useTypedSelector(
+    ({ annualDisplacement }) => annualDisplacement.nox.data,
+  );
+  const co2Data = useTypedSelector(
+    ({ annualDisplacement }) => annualDisplacement.co2.data,
+  );
+  const pm25Data = useTypedSelector(
+    ({ annualDisplacement }) => annualDisplacement.pm25.data,
+  );
 
   const so2EmissionsOriginal = so2Data.original / generationData.original;
   const so2EmissionsPost = so2Data.post / generationData.post;
