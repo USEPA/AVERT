@@ -3,11 +3,11 @@ import { AppThunk } from 'app/redux/index';
 // action creators
 import { completeStateEmissions } from 'app/redux/reducers/stateEmissions';
 import { completeMonthlyEmissions } from 'app/redux/reducers/monthlyEmissions';
-import { fetchGeneration } from 'app/redux/reducers/generation';
-import { fetchSo2 } from 'app/redux/reducers/so2';
-import { fetchNox } from 'app/redux/reducers/nox';
-import { fetchCo2 } from 'app/redux/reducers/co2';
-import { fetchPm25 } from 'app/redux/reducers/pm25';
+import { fetchGeneration } from 'app/redux/reducers/displacementGeneration';
+import { fetchSo2 } from 'app/redux/reducers/displacementSo2';
+import { fetchNox } from 'app/redux/reducers/displacementNox';
+import { fetchCo2 } from 'app/redux/reducers/displacementCo2';
+import { fetchPm25 } from 'app/redux/reducers/displacementPm25';
 
 export type StatesAndCounties = {
   [stateId: string]: string[];
