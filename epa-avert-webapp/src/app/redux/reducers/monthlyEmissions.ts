@@ -1,6 +1,5 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
-import { DataByMonth, MonthlyChanges } from 'app/redux/shared';
 import { StatesAndCounties } from 'app/redux/reducers/displacement';
 // config
 import { states, fipsCodes } from 'app/config';
@@ -8,6 +7,35 @@ import { states, fipsCodes } from 'app/config';
 export type MonthlyAggregation = 'region' | 'state' | 'county';
 
 export type MonthlyUnit = 'emissions' | 'percentages';
+
+export type MonthlyChanges = {
+  emissions: {
+    region: DataByMonth;
+    state: {
+      [stateId: string]: DataByMonth;
+    };
+    county: {
+      [stateId: string]: {
+        [countyName: string]: DataByMonth;
+      };
+    };
+  };
+  percentages: {
+    region: DataByMonth;
+    state: {
+      [stateId: string]: DataByMonth;
+    };
+    county: {
+      [stateId: string]: {
+        [countyName: string]: DataByMonth;
+      };
+    };
+  };
+};
+
+type DataByMonth = {
+  [MonthNumber in 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12]: number;
+};
 
 type CountyDataRow = {
   Pollutant: 'SO2' | 'NOX' | 'CO2' | 'PM25';

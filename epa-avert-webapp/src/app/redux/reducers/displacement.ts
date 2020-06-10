@@ -1,9 +1,8 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
-import { MonthlyChanges } from 'app/redux/shared';
 // action creators
 import { completeStateEmissions } from './stateEmissions';
-import { completeMonthlyEmissions } from './monthlyEmissions';
+import { MonthlyChanges, completeMonthlyEmissions } from './monthlyEmissions';
 
 export type StatesAndCounties = {
   [stateId: string]: string[];
