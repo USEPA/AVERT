@@ -2,20 +2,20 @@ import { Action, combineReducers } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
 // reducers
-import api from 'app/redux/reducers/api';
-import panel from 'app/redux/reducers/panel';
-import region from 'app/redux/reducers/region';
-import eere from 'app/redux/reducers/eere';
-import annualDisplacement from 'app/redux/reducers/annualDisplacement';
-import stateEmissions from 'app/redux/reducers/stateEmissions';
-import monthlyEmissions from 'app/redux/reducers/monthlyEmissions';
+import api from './reducers/api';
+import panel from './reducers/panel';
+import region from './reducers/region';
+import eere from './reducers/eere';
+import displacement from './reducers/displacement';
+import stateEmissions from './reducers/stateEmissions';
+import monthlyEmissions from './reducers/monthlyEmissions';
 
 const rootReducer = combineReducers({
   api,
   panel,
   region,
   eere,
-  annualDisplacement,
+  displacement,
   stateEmissions,
   monthlyEmissions,
 });

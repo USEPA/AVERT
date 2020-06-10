@@ -9,7 +9,7 @@ export type StatesAndCounties = {
   [stateId: string]: string[];
 };
 
-type DisplacementData = {
+type PollutantDisplacementData = {
   original: number;
   post: number;
   impact: number;
@@ -19,54 +19,54 @@ type DisplacementData = {
   };
 };
 
-type AnnualDisplacementAction =
+type DisplacementAction =
   | { type: 'region/SELECT_REGION' }
-  | { type: 'annualDisplacement/INCREMENT_PROGRESS' }
-  | { type: 'annualDisplacement/START_DISPLACEMENT' }
+  | { type: 'displacement/INCREMENT_PROGRESS' }
+  | { type: 'displacement/START_DISPLACEMENT' }
   | {
-      type: 'annualDisplacement/COMPLETE_DISPLACEMENT';
+      type: 'displacement/COMPLETE_DISPLACEMENT';
       payload: { statesAndCounties: StatesAndCounties };
     }
-  | { type: 'annualDisplacement/DISPLACEMENT_ERROR' }
-  | { type: 'annualDisplacement/RESET_DISPLACEMENT' }
-  | { type: 'annualDisplacement/REQUEST_GENERATION_DATA' }
+  | { type: 'displacement/DISPLACEMENT_ERROR' }
+  | { type: 'displacement/RESET_DISPLACEMENT' }
+  | { type: 'displacement/REQUEST_GENERATION_DATA' }
   | {
-      type: 'annualDisplacement/RECEIVE_GENERATION_DATA';
-      payload: { data: DisplacementData };
+      type: 'displacement/RECEIVE_GENERATION_DATA';
+      payload: { data: PollutantDisplacementData };
     }
-  | { type: 'annualDisplacement/RECEIVE_GENERATION_ERROR' }
-  | { type: 'annualDisplacement/REQUEST_SO2_DATA' }
+  | { type: 'displacement/RECEIVE_GENERATION_ERROR' }
+  | { type: 'displacement/REQUEST_SO2_DATA' }
   | {
-      type: 'annualDisplacement/RECEIVE_SO2_DATA';
-      payload: { data: DisplacementData };
+      type: 'displacement/RECEIVE_SO2_DATA';
+      payload: { data: PollutantDisplacementData };
     }
-  | { type: 'annualDisplacement/RECEIVE_SO2_ERROR' }
-  | { type: 'annualDisplacement/REQUEST_NOX_DATA' }
+  | { type: 'displacement/RECEIVE_SO2_ERROR' }
+  | { type: 'displacement/REQUEST_NOX_DATA' }
   | {
-      type: 'annualDisplacement/RECEIVE_NOX_DATA';
-      payload: { data: DisplacementData };
+      type: 'displacement/RECEIVE_NOX_DATA';
+      payload: { data: PollutantDisplacementData };
     }
-  | { type: 'annualDisplacement/RECEIVE_NOX_ERROR' }
-  | { type: 'annualDisplacement/REQUEST_CO2_DATA' }
+  | { type: 'displacement/RECEIVE_NOX_ERROR' }
+  | { type: 'displacement/REQUEST_CO2_DATA' }
   | {
-      type: 'annualDisplacement/RECEIVE_CO2_DATA';
-      payload: { data: DisplacementData };
+      type: 'displacement/RECEIVE_CO2_DATA';
+      payload: { data: PollutantDisplacementData };
     }
-  | { type: 'annualDisplacement/RECEIVE_CO2_ERROR' }
-  | { type: 'annualDisplacement/REQUEST_PM25_DATA' }
+  | { type: 'displacement/RECEIVE_CO2_ERROR' }
+  | { type: 'displacement/REQUEST_PM25_DATA' }
   | {
-      type: 'annualDisplacement/RECEIVE_PM25_DATA';
-      payload: { data: DisplacementData };
+      type: 'displacement/RECEIVE_PM25_DATA';
+      payload: { data: PollutantDisplacementData };
     }
-  | { type: 'annualDisplacement/RECEIVE_PM25_ERROR' };
+  | { type: 'displacement/RECEIVE_PM25_ERROR' };
 
 type Pollutant = {
   isFetching: boolean;
-  data: DisplacementData;
+  data: PollutantDisplacementData;
   error: boolean;
 };
 
-type AnnualDisplacementState = {
+type DisplacementState = {
   status: 'ready' | 'started' | 'complete' | 'error';
   statesAndCounties: StatesAndCounties;
   generation: Pollutant;
@@ -122,7 +122,7 @@ const initialPollutantData = {
 };
 
 // reducer
-const initialState: AnnualDisplacementState = {
+const initialState: DisplacementState = {
   status: 'ready',
   statesAndCounties: {},
   generation: {
@@ -153,35 +153,35 @@ const initialState: AnnualDisplacementState = {
 };
 
 export default function reducer(
-  state: AnnualDisplacementState = initialState,
-  action: AnnualDisplacementAction,
-): AnnualDisplacementState {
+  state: DisplacementState = initialState,
+  action: DisplacementAction,
+): DisplacementState {
   switch (action.type) {
     case 'region/SELECT_REGION':
-    case 'annualDisplacement/RESET_DISPLACEMENT':
+    case 'displacement/RESET_DISPLACEMENT':
       return initialState;
 
-    case 'annualDisplacement/START_DISPLACEMENT':
+    case 'displacement/START_DISPLACEMENT':
       return {
         ...state,
         status: 'started',
         statesAndCounties: {},
       };
 
-    case 'annualDisplacement/COMPLETE_DISPLACEMENT':
+    case 'displacement/COMPLETE_DISPLACEMENT':
       return {
         ...state,
         status: 'complete',
         statesAndCounties: action.payload.statesAndCounties,
       };
 
-    case 'annualDisplacement/DISPLACEMENT_ERROR':
+    case 'displacement/DISPLACEMENT_ERROR':
       return {
         ...state,
         status: 'error',
       };
 
-    case 'annualDisplacement/REQUEST_GENERATION_DATA':
+    case 'displacement/REQUEST_GENERATION_DATA':
       return {
         ...state,
         generation: {
@@ -191,7 +191,7 @@ export default function reducer(
         },
       };
 
-    case 'annualDisplacement/RECEIVE_GENERATION_DATA':
+    case 'displacement/RECEIVE_GENERATION_DATA':
       return {
         ...state,
         generation: {
@@ -201,7 +201,7 @@ export default function reducer(
         },
       };
 
-    case 'annualDisplacement/RECEIVE_GENERATION_ERROR':
+    case 'displacement/RECEIVE_GENERATION_ERROR':
       return {
         ...state,
         generation: {
@@ -211,7 +211,7 @@ export default function reducer(
         },
       };
 
-    case 'annualDisplacement/REQUEST_SO2_DATA':
+    case 'displacement/REQUEST_SO2_DATA':
       return {
         ...state,
         so2: {
@@ -221,7 +221,7 @@ export default function reducer(
         },
       };
 
-    case 'annualDisplacement/RECEIVE_SO2_DATA':
+    case 'displacement/RECEIVE_SO2_DATA':
       return {
         ...state,
         so2: {
@@ -231,7 +231,7 @@ export default function reducer(
         },
       };
 
-    case 'annualDisplacement/RECEIVE_SO2_ERROR':
+    case 'displacement/RECEIVE_SO2_ERROR':
       return {
         ...state,
         so2: {
@@ -241,7 +241,7 @@ export default function reducer(
         },
       };
 
-    case 'annualDisplacement/REQUEST_NOX_DATA':
+    case 'displacement/REQUEST_NOX_DATA':
       return {
         ...state,
         nox: {
@@ -251,7 +251,7 @@ export default function reducer(
         },
       };
 
-    case 'annualDisplacement/RECEIVE_NOX_DATA':
+    case 'displacement/RECEIVE_NOX_DATA':
       return {
         ...state,
         nox: {
@@ -261,7 +261,7 @@ export default function reducer(
         },
       };
 
-    case 'annualDisplacement/RECEIVE_NOX_ERROR':
+    case 'displacement/RECEIVE_NOX_ERROR':
       return {
         ...state,
         nox: {
@@ -271,7 +271,7 @@ export default function reducer(
         },
       };
 
-    case 'annualDisplacement/REQUEST_CO2_DATA':
+    case 'displacement/REQUEST_CO2_DATA':
       return {
         ...state,
         co2: {
@@ -281,7 +281,7 @@ export default function reducer(
         },
       };
 
-    case 'annualDisplacement/RECEIVE_CO2_DATA':
+    case 'displacement/RECEIVE_CO2_DATA':
       return {
         ...state,
         co2: {
@@ -291,7 +291,7 @@ export default function reducer(
         },
       };
 
-    case 'annualDisplacement/RECEIVE_CO2_ERROR':
+    case 'displacement/RECEIVE_CO2_ERROR':
       return {
         ...state,
         co2: {
@@ -301,7 +301,7 @@ export default function reducer(
         },
       };
 
-    case 'annualDisplacement/REQUEST_PM25_DATA':
+    case 'displacement/REQUEST_PM25_DATA':
       return {
         ...state,
         pm25: {
@@ -311,7 +311,7 @@ export default function reducer(
         },
       };
 
-    case 'annualDisplacement/RECEIVE_PM25_DATA':
+    case 'displacement/RECEIVE_PM25_DATA':
       return {
         ...state,
         pm25: {
@@ -321,7 +321,7 @@ export default function reducer(
         },
       };
 
-    case 'annualDisplacement/RECEIVE_PM25_ERROR':
+    case 'displacement/RECEIVE_PM25_ERROR':
       return {
         ...state,
         pm25: {
@@ -337,9 +337,9 @@ export default function reducer(
 }
 
 // action creators
-export function incrementProgress(): AnnualDisplacementAction {
+export function incrementProgress(): DisplacementAction {
   return {
-    type: 'annualDisplacement/INCREMENT_PROGRESS',
+    type: 'displacement/INCREMENT_PROGRESS',
   };
 }
 
@@ -347,7 +347,7 @@ function fetchGeneration(): AppThunk {
   return (dispatch, getState) => {
     const { region, api, eere } = getState();
 
-    dispatch({ type: 'annualDisplacement/REQUEST_GENERATION_DATA' });
+    dispatch({ type: 'displacement/REQUEST_GENERATION_DATA' });
 
     // post generation data for region and receive calculated displacement data
     const options = {
@@ -367,12 +367,12 @@ function fetchGeneration(): AppThunk {
       .then((json) => {
         dispatch(incrementProgress());
         dispatch({
-          type: 'annualDisplacement/RECEIVE_GENERATION_DATA',
+          type: 'displacement/RECEIVE_GENERATION_DATA',
           payload: { data: json },
         });
       })
       .catch((error) => {
-        dispatch({ type: 'annualDisplacement/RECEIVE_GENERATION_ERROR' });
+        dispatch({ type: 'displacement/RECEIVE_GENERATION_ERROR' });
       });
   };
 }
@@ -381,7 +381,7 @@ function fetchSo2(): AppThunk {
   return (dispatch, getState) => {
     const { region, api, eere } = getState();
 
-    dispatch({ type: 'annualDisplacement/REQUEST_SO2_DATA' });
+    dispatch({ type: 'displacement/REQUEST_SO2_DATA' });
 
     // post so2 data for region and receive calculated displacement data
     const options = {
@@ -401,12 +401,12 @@ function fetchSo2(): AppThunk {
       .then((json) => {
         dispatch(incrementProgress());
         dispatch({
-          type: 'annualDisplacement/RECEIVE_SO2_DATA',
+          type: 'displacement/RECEIVE_SO2_DATA',
           payload: { data: json },
         });
       })
       .catch((error) => {
-        dispatch({ type: 'annualDisplacement/RECEIVE_SO2_ERROR' });
+        dispatch({ type: 'displacement/RECEIVE_SO2_ERROR' });
       });
   };
 }
@@ -415,7 +415,7 @@ function fetchNox(): AppThunk {
   return (dispatch, getState) => {
     const { region, api, eere } = getState();
 
-    dispatch({ type: 'annualDisplacement/REQUEST_NOX_DATA' });
+    dispatch({ type: 'displacement/REQUEST_NOX_DATA' });
 
     // post nox data for region and receive calculated displacement data
     const options = {
@@ -435,12 +435,12 @@ function fetchNox(): AppThunk {
       .then((json) => {
         dispatch(incrementProgress());
         dispatch({
-          type: 'annualDisplacement/RECEIVE_NOX_DATA',
+          type: 'displacement/RECEIVE_NOX_DATA',
           payload: { data: json },
         });
       })
       .catch((error) => {
-        dispatch({ type: 'annualDisplacement/RECEIVE_NOX_ERROR' });
+        dispatch({ type: 'displacement/RECEIVE_NOX_ERROR' });
       });
   };
 }
@@ -449,7 +449,7 @@ function fetchCo2(): AppThunk {
   return (dispatch, getState) => {
     const { region, api, eere } = getState();
 
-    dispatch({ type: 'annualDisplacement/REQUEST_CO2_DATA' });
+    dispatch({ type: 'displacement/REQUEST_CO2_DATA' });
 
     // post co2 data for region and receive calculated displacement data
     const options = {
@@ -469,12 +469,12 @@ function fetchCo2(): AppThunk {
       .then((json) => {
         dispatch(incrementProgress());
         dispatch({
-          type: 'annualDisplacement/RECEIVE_CO2_DATA',
+          type: 'displacement/RECEIVE_CO2_DATA',
           payload: { data: json },
         });
       })
       .catch((error) => {
-        dispatch({ type: 'annualDisplacement/RECEIVE_CO2_ERROR' });
+        dispatch({ type: 'displacement/RECEIVE_CO2_ERROR' });
       });
   };
 }
@@ -483,7 +483,7 @@ function fetchPm25(): AppThunk {
   return (dispatch, getState) => {
     const { region, api, eere } = getState();
 
-    dispatch({ type: 'annualDisplacement/REQUEST_PM25_DATA' });
+    dispatch({ type: 'displacement/REQUEST_PM25_DATA' });
 
     // post pm25 data for region and receive calculated displacement data
     const options = {
@@ -503,19 +503,19 @@ function fetchPm25(): AppThunk {
       .then((json) => {
         dispatch(incrementProgress());
         dispatch({
-          type: 'annualDisplacement/RECEIVE_PM25_DATA',
+          type: 'displacement/RECEIVE_PM25_DATA',
           payload: { data: json },
         });
       })
       .catch((error) => {
-        dispatch({ type: 'annualDisplacement/RECEIVE_PM25_ERROR' });
+        dispatch({ type: 'displacement/RECEIVE_PM25_ERROR' });
       });
   };
 }
 
 export function calculateDisplacement(): AppThunk {
   return (dispatch) => {
-    dispatch({ type: 'annualDisplacement/START_DISPLACEMENT' });
+    dispatch({ type: 'displacement/START_DISPLACEMENT' });
     dispatch(incrementProgress());
 
     // fetch generation, so2, nox, co2, and pm25
@@ -531,12 +531,12 @@ export function calculateDisplacement(): AppThunk {
 
 export function receiveDisplacement(): AppThunk {
   return (dispatch, getState) => {
-    const { annualDisplacement } = getState();
-    const { generation, so2, nox, co2, pm25 } = annualDisplacement;
+    const { displacement } = getState();
+    const { generation, so2, nox, co2, pm25 } = displacement;
 
     // bail if a data source returns an error
     if (generation.error || so2.error || nox.error || co2.error || pm25.error) {
-      dispatch({ type: 'annualDisplacement/DISPLACEMENT_ERROR' });
+      dispatch({ type: 'displacement/DISPLACEMENT_ERROR' });
       return;
     }
 
@@ -561,7 +561,7 @@ export function receiveDisplacement(): AppThunk {
 
     dispatch(incrementProgress());
     dispatch({
-      type: 'annualDisplacement/COMPLETE_DISPLACEMENT',
+      type: 'displacement/COMPLETE_DISPLACEMENT',
       payload: { statesAndCounties },
     });
     dispatch(completeStateEmissions());
@@ -569,6 +569,6 @@ export function receiveDisplacement(): AppThunk {
   };
 }
 
-export function resetAnnualDisplacement(): AnnualDisplacementAction {
-  return { type: 'annualDisplacement/RESET_DISPLACEMENT' };
+export function resetDisplacement(): DisplacementAction {
+  return { type: 'displacement/RESET_DISPLACEMENT' };
 }

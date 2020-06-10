@@ -1,7 +1,7 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
 import { DataByMonth, MonthlyChanges } from 'app/redux/shared';
-import { StatesAndCounties } from 'app/redux/reducers/annualDisplacement';
+import { StatesAndCounties } from 'app/redux/reducers/displacement';
 // config
 import { states, fipsCodes } from 'app/config';
 
@@ -41,7 +41,7 @@ type CobraDataRow = {
 
 type MonthlyEmissionsAction =
   | { type: 'region/SELECT_REGION' }
-  | { type: 'annualDisplacement/START_DISPLACEMENT' }
+  | { type: 'displacement/START_DISPLACEMENT' }
   | { type: 'eere/RESET_EERE_INPUTS' }
   | {
       type: 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS';
@@ -132,7 +132,7 @@ export default function reducer(
     case 'region/SELECT_REGION':
       return initialState;
 
-    case 'annualDisplacement/START_DISPLACEMENT':
+    case 'displacement/START_DISPLACEMENT':
       return {
         ...state,
         status: 'started',
@@ -277,8 +277,8 @@ export default function reducer(
 
 export function renderMonthlyEmissionsCharts(): AppThunk {
   return (dispatch, getState) => {
-    const { annualDisplacement } = getState();
-    const { so2, nox, co2, pm25 } = annualDisplacement;
+    const { displacement } = getState();
+    const { so2, nox, co2, pm25 } = displacement;
 
     dispatch({
       type: 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS',
@@ -294,8 +294,8 @@ export function renderMonthlyEmissionsCharts(): AppThunk {
 
 export function completeMonthlyEmissions(): AppThunk {
   return (dispatch, getState) => {
-    const { annualDisplacement } = getState();
-    const { statesAndCounties, so2, nox, co2, pm25 } = annualDisplacement;
+    const { displacement } = getState();
+    const { statesAndCounties, so2, nox, co2, pm25 } = displacement;
 
     dispatch({
       type: 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS',
@@ -341,13 +341,13 @@ export function selectMonthlyUnit(unit: MonthlyUnit): AppThunk {
 
 export function selectMonthlyState(stateId: string): AppThunk {
   return (dispatch, getState) => {
-    const { annualDisplacement } = getState();
+    const { displacement } = getState();
 
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_STATE',
       payload: {
         selectedState: stateId,
-        availableCounties: annualDisplacement.statesAndCounties[stateId].sort(),
+        availableCounties: displacement.statesAndCounties[stateId].sort(),
       },
     });
     dispatch(renderMonthlyEmissionsCharts());

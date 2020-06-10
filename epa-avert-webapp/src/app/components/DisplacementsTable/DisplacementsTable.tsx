@@ -15,23 +15,15 @@ type Props = {
 };
 
 const DisplacementsTable = ({ heading }: Props) => {
-  const annualStatus = useTypedSelector(
-    ({ annualDisplacement }) => annualDisplacement.status,
-  );
+  const status = useTypedSelector(({ displacement }) => displacement.status);
   const generationData = useTypedSelector(
-    ({ annualDisplacement }) => annualDisplacement.generation.data,
+    ({ displacement }) => displacement.generation.data,
   );
-  const so2Data = useTypedSelector(
-    ({ annualDisplacement }) => annualDisplacement.so2.data,
-  );
-  const noxData = useTypedSelector(
-    ({ annualDisplacement }) => annualDisplacement.nox.data,
-  );
-  const co2Data = useTypedSelector(
-    ({ annualDisplacement }) => annualDisplacement.co2.data,
-  );
+  const so2Data = useTypedSelector(({ displacement }) => displacement.so2.data);
+  const noxData = useTypedSelector(({ displacement }) => displacement.nox.data);
+  const co2Data = useTypedSelector(({ displacement }) => displacement.co2.data);
   const pm25Data = useTypedSelector(
-    ({ annualDisplacement }) => annualDisplacement.pm25.data,
+    ({ displacement }) => displacement.pm25.data,
   );
 
   const so2EmissionsOriginal = so2Data.original / generationData.original;
@@ -46,8 +38,8 @@ const DisplacementsTable = ({ heading }: Props) => {
   const pm25EmissionsOriginal = pm25Data.original / generationData.original;
   const pm25EmissionsPost = pm25Data.post / generationData.post;
 
-  // rendering is ready when state annual displacement status is 'complete'
-  const readyToRender = annualStatus === 'complete';
+  // rendering is ready when state displacement status is 'complete'
+  const readyToRender = status === 'complete';
 
   let table;
   // conditionally re-define table when ready to render

@@ -6,7 +6,7 @@ type StateEmissionsAction =
       type: 'region/SELECT_REGION';
     }
   | {
-      type: 'annualDisplacement/START_DISPLACEMENT';
+      type: 'displacement/START_DISPLACEMENT';
     }
   | {
       type: 'stateEmissions/COMPLETE_STATE_EMISSIONS';
@@ -53,7 +53,7 @@ export default function reducer(
     case 'stateEmissions/RESET_STATE_EMISSIONS':
       return initialState;
 
-    case 'annualDisplacement/START_DISPLACEMENT':
+    case 'displacement/START_DISPLACEMENT':
       return {
         ...state,
         status: 'started',
@@ -74,8 +74,8 @@ export default function reducer(
 
 export function completeStateEmissions(): AppThunk {
   return (dispatch, getState) => {
-    const { annualDisplacement } = getState();
-    const { statesAndCounties, so2, nox, co2, pm25 } = annualDisplacement;
+    const { displacement } = getState();
+    const { statesAndCounties, so2, nox, co2, pm25 } = displacement;
 
     const stateIds = Object.keys(statesAndCounties).sort();
 

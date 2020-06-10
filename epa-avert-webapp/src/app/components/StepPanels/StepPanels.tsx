@@ -32,7 +32,7 @@ function StepPanels() {
   const region = useTypedSelector(({ region }) => region.name);
   const softValid = useTypedSelector(({ eere }) => eere.softLimit.valid);
   const serverCalcError = useTypedSelector(
-    ({ annualDisplacement }) => annualDisplacement.status === 'error',
+    ({ displacement }) => displacement.status === 'error',
   );
 
   const classes = ['avert-steps'];

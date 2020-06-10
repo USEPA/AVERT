@@ -1,6 +1,6 @@
 type PanelAction =
   | {
-      type: 'annualDisplacement/INCREMENT_PROGRESS';
+      type: 'displacement/INCREMENT_PROGRESS';
     }
   | {
       type: 'panel/CHANGE_ACTIVE_STEP';
@@ -30,7 +30,7 @@ type PanelAction =
       type: 'eere/SUBMIT_EERE_CALCULATION';
     }
   | {
-      type: 'annualDisplacement/START_DISPLACEMENT';
+      type: 'displacement/START_DISPLACEMENT';
     }
   | {
       type: 'region/RECEIVE_REGION_DEFAULTS';
@@ -39,7 +39,7 @@ type PanelAction =
       type: 'eere/COMPLETE_EERE_CALCULATION';
     }
   | {
-      type: 'annualDisplacement/COMPLETE_DISPLACEMENT';
+      type: 'displacement/COMPLETE_DISPLACEMENT';
     }
   | {
       type: 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS';
@@ -69,7 +69,7 @@ export default function reducer(
   action: PanelAction,
 ): PanelState {
   switch (action.type) {
-    case 'annualDisplacement/INCREMENT_PROGRESS':
+    case 'displacement/INCREMENT_PROGRESS':
       return {
         ...state,
         loadingProgress: ++state.loadingProgress,
@@ -103,7 +103,7 @@ export default function reducer(
 
     case 'region/REQUEST_REGION_RDF':
     case 'eere/SUBMIT_EERE_CALCULATION':
-    case 'annualDisplacement/START_DISPLACEMENT':
+    case 'displacement/START_DISPLACEMENT':
       return {
         ...state,
         loading: true,
@@ -112,7 +112,7 @@ export default function reducer(
 
     case 'region/RECEIVE_REGION_DEFAULTS':
     case 'eere/COMPLETE_EERE_CALCULATION':
-    case 'annualDisplacement/COMPLETE_DISPLACEMENT':
+    case 'displacement/COMPLETE_DISPLACEMENT':
     case 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS':
       return {
         ...state,

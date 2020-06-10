@@ -7,8 +7,8 @@ import { resetEereInputs } from 'app/redux/reducers/eere';
 import { fetchRegion } from 'app/redux/reducers/region';
 import {
   calculateDisplacement,
-  resetAnnualDisplacement,
-} from 'app/redux/reducers/annualDisplacement';
+  resetDisplacement,
+} from 'app/redux/reducers/displacement';
 import { resetStateEmissions } from 'app/redux/reducers/stateEmissions';
 import { resetMonthlyEmissions } from 'app/redux/reducers/monthlyEmissions';
 // styles
@@ -53,7 +53,7 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
         dispatch(resetEereInputs());
 
         if (onStepThree) {
-          dispatch(resetAnnualDisplacement());
+          dispatch(resetDisplacement());
           dispatch(resetStateEmissions());
           dispatch(resetMonthlyEmissions());
         }
@@ -101,7 +101,7 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
         if (onStepThree) {
           scrollToTop();
           dispatch(resetEereInputs());
-          dispatch(resetAnnualDisplacement());
+          dispatch(resetDisplacement());
           dispatch(resetStateEmissions());
           dispatch(resetMonthlyEmissions());
         }
