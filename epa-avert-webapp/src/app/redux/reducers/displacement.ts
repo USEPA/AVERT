@@ -344,7 +344,7 @@ export function incrementProgress(): DisplacementAction {
 
 function fetchGeneration(): AppThunk {
   return (dispatch, getState) => {
-    const { region, api, eere } = getState();
+    const { api, region, eere } = getState();
 
     dispatch({ type: 'displacement/REQUEST_GENERATION_DATA' });
 
@@ -378,7 +378,7 @@ function fetchGeneration(): AppThunk {
 
 function fetchSo2(): AppThunk {
   return (dispatch, getState) => {
-    const { region, api, eere } = getState();
+    const { api, region, eere } = getState();
 
     dispatch({ type: 'displacement/REQUEST_SO2_DATA' });
 
@@ -412,7 +412,7 @@ function fetchSo2(): AppThunk {
 
 function fetchNox(): AppThunk {
   return (dispatch, getState) => {
-    const { region, api, eere } = getState();
+    const { api, region, eere } = getState();
 
     dispatch({ type: 'displacement/REQUEST_NOX_DATA' });
 
@@ -446,7 +446,7 @@ function fetchNox(): AppThunk {
 
 function fetchCo2(): AppThunk {
   return (dispatch, getState) => {
-    const { region, api, eere } = getState();
+    const { api, region, eere } = getState();
 
     dispatch({ type: 'displacement/REQUEST_CO2_DATA' });
 
@@ -480,7 +480,7 @@ function fetchCo2(): AppThunk {
 
 function fetchPm25(): AppThunk {
   return (dispatch, getState) => {
-    const { region, api, eere } = getState();
+    const { api, region, eere } = getState();
 
     dispatch({ type: 'displacement/REQUEST_PM25_DATA' });
 

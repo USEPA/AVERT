@@ -79,15 +79,11 @@ type RegionAction =
     }
   | {
       type: 'region/RECEIVE_REGION_RDF';
-      payload: {
-        regionRdf: RdfJSON;
-      };
+      payload: { regionRdf: RdfJSON };
     }
   | {
       type: 'region/RECEIVE_REGION_DEFAULTS';
-      payload: {
-        regionDefaults: EereJSON;
-      };
+      payload: { regionDefaults: EereJSON };
     };
 
 type RegionState = {
@@ -218,9 +214,7 @@ export function fetchRegion(): AppThunk {
 
         dispatch({
           type: 'region/RECEIVE_REGION_RDF',
-          payload: {
-            regionRdf: json,
-          },
+          payload: { regionRdf: json },
         });
 
         // calculate hourlyMwh from annualGwh (total for year)
@@ -247,9 +241,7 @@ export function fetchRegion(): AppThunk {
           .then((json: EereJSON) => {
             dispatch({
               type: 'region/RECEIVE_REGION_DEFAULTS',
-              payload: {
-                regionDefaults: json,
-              },
+              payload: { regionDefaults: json },
             });
           });
       });

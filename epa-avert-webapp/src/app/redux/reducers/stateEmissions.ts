@@ -2,12 +2,8 @@
 import { AppThunk } from 'app/redux/index';
 
 type StateEmissionsAction =
-  | {
-      type: 'region/SELECT_REGION';
-    }
-  | {
-      type: 'displacement/START_DISPLACEMENT';
-    }
+  | { type: 'region/SELECT_REGION' }
+  | { type: 'displacement/START_DISPLACEMENT' }
   | {
       type: 'stateEmissions/COMPLETE_STATE_EMISSIONS';
       payload: {
@@ -21,9 +17,7 @@ type StateEmissionsAction =
         }[];
       };
     }
-  | {
-      type: 'stateEmissions/RESET_STATE_EMISSIONS';
-    };
+  | { type: 'stateEmissions/RESET_STATE_EMISSIONS' };
 
 type StateEmissionsState = {
   status: 'ready' | 'started' | 'complete';

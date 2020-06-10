@@ -1,49 +1,25 @@
 type PanelAction =
-  | {
-      type: 'displacement/INCREMENT_PROGRESS';
-    }
+  | { type: 'displacement/INCREMENT_PROGRESS' }
   | {
       type: 'panel/CHANGE_ACTIVE_STEP';
-      payload: {
-        stepNumber: number;
-      };
+      payload: { stepNumber: number };
     }
-  | {
-      type: 'panel/TOGGLE_MODAL_OVERLAY';
-    }
+  | { type: 'panel/TOGGLE_MODAL_OVERLAY' }
   | {
       type: 'panel/STORE_ACTIVE_MODAL';
-      payload: {
-        activeModalId: number;
-      };
+      payload: { activeModalId: number };
     }
   | {
       type: 'panel/RESET_ACTIVE_MODAL';
-      payload: {
-        activeModalId: number;
-      };
+      payload: { activeModalId: number };
     }
-  | {
-      type: 'region/REQUEST_REGION_RDF';
-    }
-  | {
-      type: 'eere/SUBMIT_EERE_CALCULATION';
-    }
-  | {
-      type: 'displacement/START_DISPLACEMENT';
-    }
-  | {
-      type: 'region/RECEIVE_REGION_DEFAULTS';
-    }
-  | {
-      type: 'eere/COMPLETE_EERE_CALCULATION';
-    }
-  | {
-      type: 'displacement/COMPLETE_DISPLACEMENT';
-    }
-  | {
-      type: 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS';
-    };
+  | { type: 'region/REQUEST_REGION_RDF' }
+  | { type: 'eere/SUBMIT_EERE_CALCULATION' }
+  | { type: 'displacement/START_DISPLACEMENT' }
+  | { type: 'region/RECEIVE_REGION_DEFAULTS' }
+  | { type: 'eere/COMPLETE_EERE_CALCULATION' }
+  | { type: 'displacement/COMPLETE_DISPLACEMENT' }
+  | { type: 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS' };
 
 type PanelState = {
   activeStep: number;
@@ -128,32 +104,24 @@ export default function reducer(
 export function setActiveStep(stepNumber: number) {
   return {
     type: 'panel/CHANGE_ACTIVE_STEP',
-    payload: {
-      stepNumber,
-    },
+    payload: { stepNumber },
   };
 }
 
 export function toggleModalOverlay() {
-  return {
-    type: 'panel/TOGGLE_MODAL_OVERLAY',
-  };
+  return { type: 'panel/TOGGLE_MODAL_OVERLAY' };
 }
 
 export function storeActiveModal(modalId: number) {
   return {
     type: 'panel/STORE_ACTIVE_MODAL',
-    payload: {
-      activeModalId: modalId,
-    },
+    payload: { activeModalId: modalId },
   };
 }
 
 export function resetActiveModal(modalId: number) {
   return {
     type: 'panel/RESET_ACTIVE_MODAL',
-    payload: {
-      activeModalId: modalId,
-    },
+    payload: { activeModalId: modalId },
   };
 }

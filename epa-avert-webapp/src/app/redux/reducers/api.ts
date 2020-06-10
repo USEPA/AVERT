@@ -5,9 +5,7 @@ if (!process.env.REACT_APP_URL) {
 
 type ApiAction = {
   type: 'api/SET_BASE_URL';
-  payload: {
-    url: string;
-  };
+  payload: { url: string };
 };
 
 type ApiState = {
@@ -39,8 +37,6 @@ export default function reducer(
 export function setBaseUrl(url: string) {
   return {
     type: 'api/SET_BASE_URL',
-    payload: {
-      url,
-    },
+    payload: { url },
   };
 }
