@@ -5,164 +5,220 @@ describe('Get Results – reduction & topHours', () => {
     cy.findAllByText('Select Region')
       .filter('option')
       .parent()
-      .select('Rocky Mountains');
+      .select('New England');
     cy.findAllByText('Set EE/RE Impacts').filter('.avert-next').click();
 
     cy.findByText('Percentage reductions in some or all hours').click();
-    cy.findByText('Targeted program: Reduce generation by').next().type('22');
-    cy.findByText('% during the peak').next().type('22');
+    cy.findByText('Targeted program: Reduce generation by').next().type('15');
+    cy.findByText('% during the peak').next().type('50');
     cy.findByText('Calculate EE/RE Impacts').click();
     cy.findAllByText('Get Results').filter('.avert-next').click();
     cy.findByText('LOADING...', { timeout: 60000 }).should('not.exist');
   });
 
   it('Annual Regional Displacements table displays the correct results', () => {
+    const generation = ['38,646,290', '34,572,510', '-4,073,770'];
+
     cy.findByText('Generation (MWh)')
       .next()
-      .should('contain', '49,701,740') // Original
+      .should('contain', generation[0]) // Original
       .next()
-      .should('contain', '46,296,130') // Post-EE/RE
+      .should('contain', generation[1]) // Post-EE/RE
       .next()
-      .should('contain', '-3,405,600'); // EE/RE Impacts
+      .should('contain', generation[2]); // EE/RE Impacts
 
     cy.findByText('Total emissions of fossil EGUs')
       .parent()
       .as('emissionTotals');
+
+    const so2Totals = ['1,593,280', '1,020,500', '-572,770'];
 
     cy.get('@emissionTotals')
       .next()
       .as('so2Totals')
       .children()
       .eq(1)
-      .should('contain', '43,727,730') // Original
+      .should('contain', so2Totals[0]) // Original
       .next()
-      .should('contain', '42,337,140') // Post-EE/RE
+      .should('contain', so2Totals[1]) // Post-EE/RE
       .next()
-      .should('contain', '-1,390,580'); // EE/RE Impacts
+      .should('contain', so2Totals[2]); // EE/RE Impacts
+
+    const noxTotals = ['7,868,290', '6,753,790', '-1,114,500'];
 
     cy.get('@so2Totals')
       .next()
       .as('noxTotals')
       .children()
       .eq(1)
-      .should('contain', '54,606,950') // Original
+      .should('contain', noxTotals[0]) // Original
       .next()
-      .should('contain', '51,736,160') // Post-EE/RE
+      .should('contain', noxTotals[1]) // Post-EE/RE
       .next()
-      .should('contain', '-2,870,790'); // EE/RE Impacts
+      .should('contain', noxTotals[2]); // EE/RE Impacts
+
+    const co2Totals = ['20,985,550', '18,827,660', '-2,157,880'];
 
     cy.get('@noxTotals')
       .next()
       .as('co2Totals')
       .children()
       .eq(1)
-      .should('contain', '46,303,390') // Original
+      .should('contain', co2Totals[0]) // Original
       .next()
-      .should('contain', '43,782,530') // Post-EE/RE
+      .should('contain', co2Totals[1]) // Post-EE/RE
       .next()
-      .should('contain', '-2,520,860'); // EE/RE Impacts
+      .should('contain', co2Totals[2]); // EE/RE Impacts
+
+    const pm25Totals = ['1,125,940', '1,000,070', '-125,860'];
 
     cy.get('@co2Totals')
       .next()
       .as('pm25Totals')
       .children()
       .eq(1)
-      .should('contain', '1,309,910') // Original
+      .should('contain', pm25Totals[0]) // Original
       .next()
-      .should('contain', '1,174,120') // Post-EE/RE
+      .should('contain', pm25Totals[1]) // Post-EE/RE
       .next()
-      .should('contain', '-135,790'); // EE/RE Impacts
+      .should('contain', pm25Totals[2]); // EE/RE Impacts
 
     cy.findByText('Emission rates of fossil EGUs').parent().as('emissionRates');
+
+    const so2Rates = ['0.04', '0.03'];
 
     cy.get('@emissionRates')
       .next()
       .as('so2Rates')
       .children()
       .eq(1)
-      .should('contain', '0.88') // Original
+      .should('contain', so2Rates[0]) // Original
       .next()
-      .should('contain', '0.91'); // Post-EE/RE
+      .should('contain', so2Rates[1]); // Post-EE/RE
+
+    const noxRates = ['0.20', '0.20'];
 
     cy.get('@so2Rates')
       .next()
       .as('noxRates')
       .children()
       .eq(1)
-      .should('contain', '1.10') // Original
+      .should('contain', noxRates[0]) // Original
       .next()
-      .should('contain', '1.12'); // Post-EE/RE
+      .should('contain', noxRates[1]); // Post-EE/RE
+
+    const co2Rates = ['0.54', '0.54'];
 
     cy.get('@noxRates')
       .next()
       .as('co2Rates')
       .children()
       .eq(1)
-      .should('contain', '0.93') // Original
+      .should('contain', co2Rates[0]) // Original
       .next()
-      .should('contain', '0.95'); // Post-EE/RE
+      .should('contain', co2Rates[1]); // Post-EE/RE
+
+    const pm25Rates = ['0.03', '0.03'];
 
     cy.get('@co2Rates')
       .next()
       .as('pm25Rates')
       .children()
       .eq(1)
-      .should('contain', '0.03') // Original
+      .should('contain', pm25Rates[0]) // Original
       .next()
-      .should('contain', '0.03'); // Post-EE/RE
+      .should('contain', pm25Rates[1]); // Post-EE/RE
   });
 
   it('Annual State Emission Changes table displays the correct results', () => {
-    cy.findByText('Colorado')
+    const connecticut = ['-66,040', '-297,331', '-405,436', '-30,915'];
+
+    cy.findByText('Connecticut')
       .parent()
-      .as('coloradoEmissions')
+      .as('connecticut')
       .children()
       .eq(1)
-      .should('contain', '-1,158,525') // SO2 (lbs)
+      .should('contain', connecticut[0]) // SO2 (lbs)
       .next()
-      .should('contain', '-2,673,885') // NOX (lbs)
+      .should('contain', connecticut[1]) // NOX (lbs)
       .next()
-      .should('contain', '-2,371,583') // CO2 (tons)
+      .should('contain', connecticut[2]) // CO2 (tons)
       .next()
-      .should('contain', '-130,900'); // PM2.5 (lbs)
+      .should('contain', connecticut[3]); // PM2.5 (lbs)
 
-    cy.get('@coloradoEmissions')
-      .next()
-      .as('newMexicoEmissions')
-      .children()
-      .eq(1)
-      .should('contain', '-64,102') // SO2 (lbs)
-      .next()
-      .should('contain', '-90,269') // NOX (lbs)
-      .next()
-      .should('contain', '-18,556') // CO2 (tons)
-      .next()
-      .should('contain', '-236'); // PM2.5 (lbs)
+    const massachusetts = ['-222,581', '-353,669', '-948,073', '-70,123'];
 
-    cy.get('@newMexicoEmissions')
+    cy.get('@connecticut')
       .next()
-      .as('southDakotaEmissions')
+      .as('massachusetts')
       .children()
       .eq(1)
-      .should('contain', '0') // SO2 (lbs)
+      .should('contain', massachusetts[0]) // SO2 (lbs)
       .next()
-      .should('contain', '-5,479') // NOX (lbs)
+      .should('contain', massachusetts[1]) // NOX (lbs)
       .next()
-      .should('contain', '-4,864') // CO2 (tons)
+      .should('contain', massachusetts[2]) // CO2 (tons)
       .next()
-      .should('contain', '0'); // PM2.5 (lbs)
+      .should('contain', massachusetts[3]); // PM2.5 (lbs)
 
-    cy.get('@southDakotaEmissions')
+    const maine = ['-30,630', '-55,684', '-175,542', '-11,781'];
+
+    cy.get('@massachusetts')
       .next()
-      .as('wyomingEmissions')
+      .as('maine')
       .children()
       .eq(1)
-      .should('contain', '-167,957') // SO2 (lbs)
+      .should('contain', maine[0]) // SO2 (lbs)
       .next()
-      .should('contain', '-101,159') // NOX (lbs)
+      .should('contain', maine[1]) // NOX (lbs)
       .next()
-      .should('contain', '-125,858') // CO2 (tons)
+      .should('contain', maine[2]) // CO2 (tons)
       .next()
-      .should('contain', '-4,655'); // PM2.5 (lbs)
+      .should('contain', maine[3]); // PM2.5 (lbs)
+
+    const newHampshire = ['-248,961', '-334,349', '-373,903', '-9,834'];
+
+    cy.get('@maine')
+      .next()
+      .as('newHampshire')
+      .children()
+      .eq(1)
+      .should('contain', newHampshire[0]) // SO2 (lbs)
+      .next()
+      .should('contain', newHampshire[1]) // NOX (lbs)
+      .next()
+      .should('contain', newHampshire[2]) // CO2 (tons)
+      .next()
+      .should('contain', newHampshire[3]); // PM2.5 (lbs)
+
+    const rhodeIsland = ['-4,464', '-59,031', '-233,233', '-3,113'];
+
+    cy.get('@newHampshire')
+      .next()
+      .as('rhodeIsland')
+      .children()
+      .eq(1)
+      .should('contain', rhodeIsland[0]) // SO2 (lbs)
+      .next()
+      .should('contain', rhodeIsland[1]) // NOX (lbs)
+      .next()
+      .should('contain', rhodeIsland[2]) // CO2 (tons)
+      .next()
+      .should('contain', rhodeIsland[3]); // PM2.5 (lbs)
+
+    const vermont = ['-101', '-14,442', '-21,700', '-103'];
+
+    cy.get('@rhodeIsland')
+      .next()
+      .as('vermont')
+      .children()
+      .eq(1)
+      .should('contain', vermont[0]) // SO2 (lbs)
+      .next()
+      .should('contain', vermont[1]) // NOX (lbs)
+      .next()
+      .should('contain', vermont[2]) // CO2 (tons)
+      .next()
+      .should('contain', vermont[3]); // PM2.5 (lbs)
   });
 });
