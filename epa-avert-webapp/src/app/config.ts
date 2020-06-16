@@ -55,7 +55,7 @@ export const regions: { [key in RegionKeys]: Region } = {
   MIDW: {
     id: 'MIDW',
     name: 'Midwest',
-    lineLoss: lineLoss.western,
+    lineLoss: lineLoss.eastern,
     offshoreWind: false,
   },
   NCSC: {
