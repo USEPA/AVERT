@@ -408,11 +408,14 @@ function countyRow(
 ): CountyDataRow {
   const dataByMonth = Object.values(data);
 
+  // format 'city' if found in county name
+  const countyName = county ? county.replace(/city/, '(City)') : null;
+
   return {
     Pollutant: pollutant,
     'Aggregation level': county ? 'County' : state ? 'State' : 'Region',
     State: state ? state : null,
-    County: county ? county : null,
+    County: countyName,
     'Unit of measure': unit,
     January: dataByMonth[0],
     February: dataByMonth[1],
@@ -443,11 +446,24 @@ function cobraRow(
     statesAndCounties: StatesAndCounties;
   },
 ): CobraDataRow {
-  const fipsCounty = fipsCodes.filter((item) => {
-    return item['state'] === states[state] && item['county'] === county;
+  /**
+   * All counties in the `fipsCodes` array (which is data converted from the
+   * main AVERT Excel file) have the word 'County' included at the end of
+   * their county name. This is correct for actual counties, but shouldn't
+   * be the case for cities, so when we match on county names, we need to
+   * trim off the extra "County" string if its actually a city.
+   * For example, in the `fipsCodes` array (which again, is data converted from
+   * the Excel file), Baltimore city is stored as "Baltimore city County", but
+   * in the RDFs it's stored as "Baltimore city"
+   */
+  const matchedFipsCodeItem = fipsCodes.filter((item) => {
+    return (
+      item['state'] === states[state] &&
+      item['county'].replace(/city County/, 'city') === county
+    );
   })[0];
 
-  const fipsCode = fipsCounty ? fipsCounty['code'] : '';
+  const fipsCode = matchedFipsCodeItem ? matchedFipsCodeItem['code'] : '';
 
   // format 'city' if found in county name
   const countyName = county.replace(/city/, '(City)');
