@@ -167,7 +167,8 @@ function EmissionsChart({ heading }: Props) {
 
           {availableCounties.map((county, index) => (
             <option key={index} value={county}>
-              {county}
+              {/* format 'city' if found in county name */}
+              {county.replace(/city/, '(City)')}
             </option>
           ))}
         </select>
@@ -274,28 +275,22 @@ function EmissionsChart({ heading }: Props) {
     },
   };
 
-  // conditionally define location
-  let location: string;
+  // format 'city' if found in county name
+  const countyName = selectedCounty.replace(/city/, '(City)');
 
-  if (aggregation === 'region') {
-    location = `${selectedRegion} Region`;
-  }
-
-  if (aggregation === 'state') {
-    location = selectedStateId === '' ? '' : `${states[selectedStateId]}`;
-  }
-
-  if (aggregation === 'county') {
-    const countyName =
-      selectedCounty.indexOf('(City)') !== -1
-        ? selectedCounty // county is really a city
-        : selectedStateId === 'LA'
-        ? `${selectedCounty} Parish`
-        : `${selectedCounty} County`;
-
-    location =
-      selectedCounty === '' ? '' : `${countyName}, ${states[selectedStateId]}`;
-  }
+  // conditionally define location based on aggregation
+  const location =
+    aggregation === 'region'
+      ? `${selectedRegion} Region`
+      : aggregation === 'state'
+      ? selectedStateId === ''
+        ? ''
+        : `${states[selectedStateId]}`
+      : aggregation === 'county'
+      ? selectedCounty === ''
+        ? ''
+        : `${countyName}, ${states[selectedStateId]}`
+      : '';
 
   function formatTitle(pollutant: string) {
     return `<tspan class='avert-chart-title'>Change in ${pollutant} Emissions: ${location}</tspan>`;

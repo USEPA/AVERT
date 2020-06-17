@@ -449,12 +449,8 @@ function cobraRow(
 
   const fipsCode = fipsCounty ? fipsCounty['code'] : '';
 
-  const countyName =
-    county.indexOf('(City)') !== -1
-      ? county // county is really a city
-      : state === 'LA'
-      ? `${county} Parish`
-      : `${county} County`;
+  // format 'city' if found in county name
+  const countyName = county.replace(/city/, '(City)');
 
   const noxDataset = payload.nox.emissions.county[state][county];
   const so2Dataset = payload.so2.emissions.county[state][county];
