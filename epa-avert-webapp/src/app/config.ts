@@ -1,11 +1,4 @@
-type Region = {
-  id: string;
-  name: string;
-  lineLoss: number;
-  offshoreWind: boolean;
-};
-
-export type RegionKeys =
+export type RegionId =
   | 'CA'
   | 'CENT'
   | 'FL'
@@ -21,13 +14,20 @@ export type RegionKeys =
   | 'TE'
   | 'TN';
 
+export type Region = {
+  id: RegionId;
+  name: string;
+  lineLoss: number;
+  offshoreWind: boolean;
+};
+
 const lineLoss = {
   texas: 0.054,
   eastern: 0.072,
   western: 0.086,
 };
 
-export const regions: { [key in RegionKeys]: Region } = {
+export const regions: { [key in RegionId]: Region } = {
   CA: {
     id: 'CA',
     name: 'California',

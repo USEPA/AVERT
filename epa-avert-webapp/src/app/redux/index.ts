@@ -5,6 +5,7 @@ import { useSelector, TypedUseSelectorHook } from 'react-redux';
 import api from './reducers/api';
 import panel from './reducers/panel';
 import region from './reducers/region';
+import regions from './reducers/regions';
 import eere from './reducers/eere';
 import displacement from './reducers/displacement';
 import stateEmissions from './reducers/stateEmissions';
@@ -13,7 +14,8 @@ import monthlyEmissions from './reducers/monthlyEmissions';
 const rootReducer = combineReducers({
   api,
   panel,
-  region,
+  region, // TODO: remove this once everything's switched over to regions below
+  regions,
   eere,
   displacement,
   stateEmissions,

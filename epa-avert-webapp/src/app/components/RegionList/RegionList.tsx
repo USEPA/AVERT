@@ -3,8 +3,9 @@ import { useDispatch } from 'react-redux';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 import { selectRegion } from 'app/redux/reducers/region';
+import { selectRegions } from 'app/redux/reducers/regions';
 // config
-import { regions } from 'app/config';
+import { RegionId, regions } from 'app/config';
 // styles
 import './styles.css';
 
@@ -16,7 +17,10 @@ function RegionList() {
     <select
       className="avert-region-select"
       value={regionId}
-      onChange={(ev) => dispatch(selectRegion(ev.target.value))}
+      onChange={(ev) => {
+        dispatch(selectRegion(ev.target.value));
+        dispatch(selectRegions([ev.target.value] as RegionId[]));
+      }}
     >
       <option value={''} disabled>
         Select Region
