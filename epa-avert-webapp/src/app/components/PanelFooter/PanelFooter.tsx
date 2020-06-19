@@ -5,6 +5,7 @@ import { useTypedSelector } from 'app/redux/index';
 import { setActiveStep } from 'app/redux/reducers/panel';
 import { resetEereInputs } from 'app/redux/reducers/eere';
 import { fetchRegion } from 'app/redux/reducers/region';
+import { fetchRegionsData } from 'app/redux/reducers/regions';
 import {
   calculateDisplacement,
   resetDisplacement,
@@ -86,7 +87,8 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
 
         if (onStepOne) {
           scrollToTop();
-          dispatch(fetchRegion());
+          dispatch(fetchRegion()); // TODO: delete this once its no longer used
+          dispatch(fetchRegionsData());
         }
 
         if (onStepTwo) {
