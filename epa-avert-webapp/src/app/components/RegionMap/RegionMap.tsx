@@ -31,13 +31,13 @@ const containerStyles = css`
     display: block;
     padding-top: calc(460 / 720 * 100%); /* height and width of svg */
   }
-`;
 
-const svgStyles = css`
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
+  svg {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const labelStyles = css`
@@ -71,7 +71,6 @@ function RegionMap() {
   return (
     <div css={containerStyles}>
       <svg
-        css={svgStyles}
         xmlns="http://www.w3.org/2000/svg"
         width="720"
         height="460"
@@ -79,7 +78,7 @@ function RegionMap() {
       >
         <title>AVERT region map</title>
 
-        <g css={boundaryStyles} data-id="regions">
+        <g data-id="regions" css={boundaryStyles}>
           <Region id={regions.CA.id}>
             <California />
           </Region>
@@ -137,7 +136,7 @@ function RegionMap() {
           </Region>
         </g>
 
-        <g css={[boundaryStyles, statesStyles]} data-id="states">
+        <g data-id="states" css={[boundaryStyles, statesStyles]}>
           <UnitedStates fill="none" />
         </g>
 
