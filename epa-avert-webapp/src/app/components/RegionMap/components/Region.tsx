@@ -1,8 +1,8 @@
 /** @jsx jsx */
 
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { jsx, css } from '@emotion/core';
+import { useDispatch } from 'react-redux';
 // components
 import California from './California';
 import Carolinas from './Carolinas';

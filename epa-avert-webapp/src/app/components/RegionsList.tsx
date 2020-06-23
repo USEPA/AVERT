@@ -1,4 +1,6 @@
-import React from 'react';
+/** @jsx jsx */
+
+import { jsx, css } from '@emotion/core';
 import { useDispatch } from 'react-redux';
 // reducers
 import { selectRegions } from 'app/redux/reducers/regions';
@@ -6,17 +8,20 @@ import { selectRegions } from 'app/redux/reducers/regions';
 import { useSelectedRegions } from 'app/hooks';
 // config
 import { RegionId, regions } from 'app/config';
-// styles
-import './styles.css';
 
-function RegionList() {
+const selectStyles = css`
+  margin: 1.5rem 25% 0;
+  width: 50%;
+`;
+
+function RegionsList() {
   const dispatch = useDispatch();
 
   const regionIds = useSelectedRegions().map((region) => region.id);
 
   return (
     <select
-      className="avert-region-select"
+      css={selectStyles}
       value={regionIds[0]}
       onChange={(ev) => {
         dispatch(selectRegions([ev.target.value] as RegionId[]));
@@ -43,4 +48,4 @@ function RegionList() {
   );
 }
 
-export default RegionList;
+export default RegionsList;

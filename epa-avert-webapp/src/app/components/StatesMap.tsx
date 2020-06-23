@@ -1,7 +1,6 @@
 /** @jsx jsx */
 
 import { jsx, css } from '@emotion/core';
-
 // components
 import UnitedStates from 'app/components/UnitedStates';
 

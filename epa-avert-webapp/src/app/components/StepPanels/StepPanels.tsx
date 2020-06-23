@@ -5,7 +5,7 @@ import LoadingIcon from 'app/components/LoadingIcon/LoadingIcon';
 import Panel from 'app/components/Panel/Panel';
 import PanelBody from 'app/components/PanelBody/PanelBody';
 import PanelFooter from 'app/components/PanelFooter/PanelFooter';
-import RegionList from 'app/components/RegionList/RegionList';
+import RegionsList from 'app/components/RegionsList';
 import RegionMap from 'app/components/RegionMap/RegionMap';
 // import StatesMap from 'app/components/StatesMap';
 import EEREInputs from 'app/components/EEREInputs/EEREInputs';
@@ -120,7 +120,7 @@ function StepPanels() {
             capacity data.
           </p>
 
-          <RegionList />
+          <RegionsList />
           <RegionMap />
 
           {/* <StatesMap /> */}
