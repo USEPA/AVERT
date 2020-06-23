@@ -1,5 +1,8 @@
+/** @jsx jsx */
+
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { jsx, css } from '@emotion/core';
 // components
 import California from './California';
 import Carolinas from './Carolinas';
@@ -21,6 +24,19 @@ import { selectRegions } from 'app/redux/reducers/regions';
 import { useSelectedRegions } from 'app/hooks';
 // config
 import { RegionId } from 'app/config';
+
+const regionStyles = css`
+  cursor: pointer;
+  opacity: 0.33;
+
+  &:hover {
+    opacity: 0.66;
+  }
+
+  &[data-active='true'] {
+    opacity: 1;
+  }
+`;
 
 type Props = {
   id: RegionId;
@@ -49,7 +65,7 @@ function Region({ id, children }: Props) {
 
   return (
     <g
-      className="avert-region"
+      css={regionStyles}
       onClick={(ev) => dispatch(selectRegions([id]))}
       data-active={regionIds.includes(id)}
     >
