@@ -5,6 +5,7 @@ import EEREInputField from 'app/components/EEREInputField';
 import Tooltip from 'app/components/Tooltip/Tooltip';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
+import { RegionState } from 'app/redux/reducers/regions';
 import {
   EereInputFields,
   updateEereAnnualGwh,
@@ -18,6 +19,8 @@ import {
   updateEereRooftopSolar,
   calculateEereProfile,
 } from 'app/redux/reducers/eere';
+// hooks
+import { useSelectedRegions } from 'app/hooks';
 // styles
 import './styles.css';
 
@@ -57,6 +60,33 @@ function displayError({
   );
 }
 
+function calculateRegionLimits(region: RegionState) {
+  if (!region)
+    return {
+      annualGwh: 0,
+      constantMwh: 0,
+      renewables: 0,
+      percent: 0,
+    };
+
+  const {
+    max_ee_yearly_gwh,
+    max_solar_wind_mwh,
+    max_ee_percent,
+  } = region.rdf.limits;
+
+  // calculate hourlyMwh from annualGwh (total for year)
+  const hourlyMwh =
+    (max_ee_yearly_gwh * 1000) / region.rdf.regional_load.length;
+
+  return {
+    annualGwh: max_ee_yearly_gwh * 2,
+    constantMwh: Math.round(hourlyMwh * 2 * 100) / 100,
+    renewables: max_solar_wind_mwh * 2,
+    percent: max_ee_percent * 2,
+  };
+}
+
 function EEREInputs() {
   const dispatch = useDispatch();
   const regionSupportsOffshoreWind = useTypedSelector(
@@ -64,7 +94,6 @@ function EEREInputs() {
   );
   const status = useTypedSelector(({ eere }) => eere.status);
   const errors = useTypedSelector(({ eere }) => eere.errors);
-  const limits = useTypedSelector(({ eere }) => eere.limits);
   const constantMwh = useTypedSelector(({ eere }) => eere.inputs.constantMwh);
   const annualGwh = useTypedSelector(({ eere }) => eere.inputs.annualGwh);
   const broadProgram = useTypedSelector(({ eere }) => eere.inputs.broadProgram);
@@ -74,6 +103,10 @@ function EEREInputs() {
   const offshoreWind = useTypedSelector(({ eere }) => eere.inputs.offshoreWind);
   const utilitySolar = useTypedSelector(({ eere }) => eere.inputs.utilitySolar);
   const rooftopSolar = useTypedSelector(({ eere }) => eere.inputs.rooftopSolar);
+
+  // TODO: determine how to set limits when multiple regions are selected
+  const regions = useSelectedRegions();
+  const limits = calculateRegionLimits(regions[0]);
 
   const inputsAreValid = errors.length === 0;
 
@@ -126,7 +159,9 @@ function EEREInputs() {
                 <EEREInputField
                   value={annualGwh}
                   disabled={constantMwh}
-                  onChange={(text) => dispatch(updateEereAnnualGwh(text))}
+                  onChange={(text) => {
+                    dispatch(updateEereAnnualGwh(text, limits.annualGwh));
+                  }}
                 />
                 <span className="avert-input-unit"> GWh </span>
 
@@ -142,7 +177,7 @@ function EEREInputs() {
                   errors,
                   fieldName: 'annualGwh',
                   inputValue: annualGwh,
-                  maxValue: limits?.annualGwh,
+                  maxValue: limits.annualGwh,
                 })}
               </li>
 
@@ -153,7 +188,9 @@ function EEREInputs() {
                 <EEREInputField
                   value={constantMwh}
                   disabled={annualGwh}
-                  onChange={(text) => dispatch(updateEereConstantMw(text))}
+                  onChange={(text) => {
+                    dispatch(updateEereConstantMw(text, limits.constantMwh));
+                  }}
                 />
                 <span className="avert-input-unit"> MW </span>
 
@@ -169,7 +206,7 @@ function EEREInputs() {
                   errors,
                   fieldName: 'constantMwh',
                   inputValue: constantMwh,
-                  maxValue: limits?.constantMwh,
+                  maxValue: limits.constantMwh,
                 })}
               </li>
             </ul>
@@ -192,9 +229,9 @@ function EEREInputs() {
                 <EEREInputField
                   value={broadProgram}
                   disabled={reduction || topHours}
-                  onChange={(text) =>
-                    dispatch(updateEereBroadBasedProgram(text))
-                  }
+                  onChange={(text) => {
+                    dispatch(updateEereBroadBasedProgram(text, limits.percent));
+                  }}
                 />
                 <span className="avert-input-unit"> % in all hours </span>
 
@@ -208,7 +245,7 @@ function EEREInputs() {
                   errors,
                   fieldName: 'reduction',
                   inputValue: broadProgram,
-                  maxValue: limits?.percent,
+                  maxValue: limits.percent,
                 })}
               </li>
 
@@ -219,13 +256,17 @@ function EEREInputs() {
                 <EEREInputField
                   value={reduction}
                   disabled={broadProgram}
-                  onChange={(text) => dispatch(updateEereReduction(text))}
+                  onChange={(text) => {
+                    dispatch(updateEereReduction(text, limits.percent));
+                  }}
                 />
                 <span className="avert-input-unit"> % during the peak </span>
                 <EEREInputField
                   value={topHours}
                   disabled={broadProgram}
-                  onChange={(text) => dispatch(updateEereTopHours(text))}
+                  onChange={(text) => {
+                    dispatch(updateEereTopHours(text, 100));
+                  }}
                 />
                 <span className="avert-input-unit"> % of hours </span>
 
@@ -241,7 +282,7 @@ function EEREInputs() {
                   errors,
                   fieldName: 'reduction',
                   inputValue: reduction,
-                  maxValue: limits?.percent,
+                  maxValue: limits.percent,
                 })}
 
                 {displayError({
@@ -272,7 +313,9 @@ function EEREInputs() {
                 </span>
                 <EEREInputField
                   value={onshoreWind}
-                  onChange={(text) => dispatch(updateEereOnshoreWind(text))}
+                  onChange={(text) => {
+                    dispatch(updateEereOnshoreWind(text, limits.renewables));
+                  }}
                 />
                 <span className="avert-input-unit"> MW </span>
 
@@ -287,7 +330,7 @@ function EEREInputs() {
                   errors,
                   fieldName: 'onshoreWind',
                   inputValue: onshoreWind,
-                  maxValue: limits?.renewables,
+                  maxValue: limits.renewables,
                 })}
               </li>
 
@@ -300,9 +343,11 @@ function EEREInputs() {
 
                     <EEREInputField
                       value={offshoreWind}
-                      onChange={(text) =>
-                        dispatch(updateEereOffshoreWind(text))
-                      }
+                      onChange={(text) => {
+                        dispatch(
+                          updateEereOffshoreWind(text, limits.renewables),
+                        );
+                      }}
                     />
                     <span className="avert-input-unit"> MW </span>
 
@@ -317,7 +362,7 @@ function EEREInputs() {
                       errors,
                       fieldName: 'offshoreWind',
                       inputValue: offshoreWind,
-                      maxValue: limits?.renewables,
+                      maxValue: limits.renewables,
                     })}
                   </>
                 ) : (
@@ -354,7 +399,9 @@ function EEREInputs() {
                 </span>
                 <EEREInputField
                   value={utilitySolar}
-                  onChange={(text) => dispatch(updateEereUtilitySolar(text))}
+                  onChange={(text) => {
+                    dispatch(updateEereUtilitySolar(text, limits.renewables));
+                  }}
                 />
                 <span className="avert-input-unit"> MW </span>
 
@@ -369,7 +416,7 @@ function EEREInputs() {
                   errors,
                   fieldName: 'utilitySolar',
                   inputValue: utilitySolar,
-                  maxValue: limits?.renewables,
+                  maxValue: limits.renewables,
                 })}
               </li>
 
@@ -379,7 +426,9 @@ function EEREInputs() {
                 </span>
                 <EEREInputField
                   value={rooftopSolar}
-                  onChange={(text) => dispatch(updateEereRooftopSolar(text))}
+                  onChange={(text) => {
+                    dispatch(updateEereRooftopSolar(text, limits.renewables));
+                  }}
                 />
                 <span className="avert-input-unit"> MW </span>
 
@@ -394,7 +443,7 @@ function EEREInputs() {
                   errors,
                   fieldName: 'rooftopSolar',
                   inputValue: rooftopSolar,
-                  maxValue: limits?.renewables,
+                  maxValue: limits.renewables,
                 })}
               </li>
             </ul>

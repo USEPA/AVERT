@@ -7,17 +7,6 @@ import { calculateEere } from 'app/calculations';
 
 type EereAction =
   | {
-      type: 'region/SET_EERE_LIMITS';
-      payload: {
-        limits: {
-          annualGwh: number;
-          constantMwh: number;
-          renewables: number;
-          percent: number;
-        };
-      };
-    }
-  | {
       type: 'eere/VALIDATE_EERE';
       payload: { errors: EereInputFields[] };
     }
@@ -105,12 +94,6 @@ type EereState = {
   status: 'ready' | 'started' | 'complete';
   errors: EereInputFields[];
   inputs: EereInputs;
-  limits: {
-    annualGwh: number;
-    constantMwh: number;
-    renewables: number;
-    percent: number;
-  };
   softLimit: {
     valid: boolean;
     topExceedanceValue: number;
@@ -151,12 +134,6 @@ const initialState: EereState = {
   status: 'ready',
   errors: [],
   inputs: emptyEereInputs,
-  limits: {
-    annualGwh: 0,
-    constantMwh: 0,
-    renewables: 0,
-    percent: 0,
-  },
   softLimit: {
     valid: true,
     topExceedanceValue: 0,
@@ -175,12 +152,6 @@ export default function reducer(
   action: EereAction,
 ): EereState {
   switch (action.type) {
-    case 'region/SET_EERE_LIMITS':
-      return {
-        ...state,
-        limits: action.payload.limits,
-      };
-
     case 'eere/VALIDATE_EERE':
       return {
         ...state,
@@ -344,118 +315,105 @@ function validateInput(
   };
 }
 
-export function updateEereAnnualGwh(input: string): AppThunk {
-  return (dispatch, getState) => {
-    const { eere } = getState();
-
+export function updateEereAnnualGwh(input: string, limit: number): AppThunk {
+  return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_ANNUAL_GWH',
       payload: { text: input },
     });
 
-    dispatch(validateInput('annualGwh', input, eere.limits.annualGwh));
+    dispatch(validateInput('annualGwh', input, limit));
   };
 }
 
-export function updateEereConstantMw(input: string): AppThunk {
-  return (dispatch, getState) => {
-    const { eere } = getState();
-
+export function updateEereConstantMw(input: string, limit: number): AppThunk {
+  return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_CONSTANT_MW',
       payload: { text: input },
     });
 
-    dispatch(validateInput('constantMwh', input, eere.limits.constantMwh));
+    dispatch(validateInput('constantMwh', input, limit));
   };
 }
 
-export function updateEereBroadBasedProgram(input: string): AppThunk {
-  return (dispatch, getState) => {
-    const { eere } = getState();
-
+export function updateEereBroadBasedProgram(
+  input: string,
+  limit: number,
+): AppThunk {
+  return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_BROAD_BASE_PROGRAM',
       payload: { text: input },
     });
 
-    dispatch(validateInput('reduction', input, eere.limits.percent));
+    dispatch(validateInput('reduction', input, limit));
   };
 }
 
-export function updateEereReduction(input: string): AppThunk {
-  return (dispatch, getState) => {
-    const { eere } = getState();
-
+export function updateEereReduction(input: string, limit: number): AppThunk {
+  return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_REDUCTION',
       payload: { text: input },
     });
 
-    dispatch(validateInput('reduction', input, eere.limits.percent));
+    dispatch(validateInput('reduction', input, limit));
   };
 }
 
-export function updateEereTopHours(input: string): AppThunk {
+export function updateEereTopHours(input: string, limit: number): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_TOP_HOURS',
       payload: { text: input },
     });
 
-    dispatch(validateInput('topHours', input, 100));
+    dispatch(validateInput('topHours', input, limit));
   };
 }
 
-export function updateEereOnshoreWind(input: string): AppThunk {
-  return (dispatch, getState) => {
-    const { eere } = getState();
-
+export function updateEereOnshoreWind(input: string, limit: number): AppThunk {
+  return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_ONSHORE_WIND',
       payload: { text: input },
     });
 
-    dispatch(validateInput('onshoreWind', input, eere.limits.renewables));
+    dispatch(validateInput('onshoreWind', input, limit));
   };
 }
 
-export function updateEereOffshoreWind(input: string): AppThunk {
-  return (dispatch, getState) => {
-    const { eere } = getState();
-
+export function updateEereOffshoreWind(input: string, limit: number): AppThunk {
+  return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_OFFSHORE_WIND',
       payload: { text: input },
     });
 
-    dispatch(validateInput('offshoreWind', input, eere.limits.renewables));
+    dispatch(validateInput('offshoreWind', input, limit));
   };
 }
 
-export function updateEereUtilitySolar(input: string): AppThunk {
-  return (dispatch, getState) => {
-    const { eere } = getState();
-
+export function updateEereUtilitySolar(input: string, limit: number): AppThunk {
+  return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_UTILITY_SOLAR',
       payload: { text: input },
     });
 
-    dispatch(validateInput('utilitySolar', input, eere.limits.renewables));
+    dispatch(validateInput('utilitySolar', input, limit));
   };
 }
 
-export function updateEereRooftopSolar(input: string): AppThunk {
-  return (dispatch, getState) => {
-    const { eere } = getState();
-
+export function updateEereRooftopSolar(input: string, limit: number): AppThunk {
+  return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_ROOFTOP_SOLAR',
       payload: { text: input },
     });
 
-    dispatch(validateInput('rooftopSolar', input, eere.limits.renewables));
+    dispatch(validateInput('rooftopSolar', input, limit));
   };
 }
 

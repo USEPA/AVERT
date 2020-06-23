@@ -72,6 +72,7 @@ type RegionsAction =
       type: 'regions/SELECT_REGIONS';
       payload: { regionIds: RegionId[] };
     }
+  | { type: 'regions/REQUEST_REGIONS_DATA' }
   | {
       type: 'regions/RECEIVE_REGION_RDF';
       payload: {
@@ -85,9 +86,10 @@ type RegionsAction =
         regionId: RegionId;
         regionDefaults: EereJSON;
       };
-    };
+    }
+  | { type: 'regions/RECEIVE_REGIONS_DATA' };
 
-type RegionState = Region & {
+export type RegionState = Region & {
   selected: boolean;
   eereDefaults: EereJSON;
   rdf: RdfJSON;
@@ -186,6 +188,10 @@ export default function reducer(
       };
     }
 
+    case 'regions/REQUEST_REGIONS_DATA':
+    case 'regions/RECEIVE_REGIONS_DATA':
+      return state;
+
     default:
       return state;
   }
@@ -217,32 +223,38 @@ export function fetchRegionsData(): AppThunk {
       }
     });
 
-    Promise.all(rdfRequests).then((rdfResponses) => {
-      rdfResponses.forEach((rdfResponse) => {
-        rdfResponse.json().then((rdfJson: RdfJSON) => {
-          const regionId = rdfJson.region.region_abbv;
+    dispatch({ type: 'regions/REQUEST_REGIONS_DATA' });
 
-          dispatch({
-            type: 'regions/RECEIVE_REGION_RDF',
-            payload: {
-              regionId: regionId as RegionId,
-              regionRdf: rdfJson,
-            },
-          });
+    Promise.all(rdfRequests)
+      .then((rdfResponses) => {
+        rdfResponses.forEach((rdfResponse) => {
+          rdfResponse.json().then((rdfJson: RdfJSON) => {
+            const regionId = rdfJson.region.region_abbv;
 
-          fetch(`${api.baseUrl}/api/v1/eere/${regionId}`)
-            .then((eereResponse) => eereResponse.json())
-            .then((eereJson: EereJSON) => {
-              dispatch({
-                type: 'regions/RECEIVE_REGION_DEFAULTS',
-                payload: {
-                  regionId: regionId as RegionId,
-                  regionDefaults: eereJson,
-                },
-              });
+            dispatch({
+              type: 'regions/RECEIVE_REGION_RDF',
+              payload: {
+                regionId: regionId as RegionId,
+                regionRdf: rdfJson,
+              },
             });
+
+            fetch(`${api.baseUrl}/api/v1/eere/${regionId}`)
+              .then((eereResponse) => eereResponse.json())
+              .then((eereJson: EereJSON) => {
+                dispatch({
+                  type: 'regions/RECEIVE_REGION_DEFAULTS',
+                  payload: {
+                    regionId: regionId as RegionId,
+                    regionDefaults: eereJson,
+                  },
+                });
+              });
+          });
         });
+      })
+      .then(() => {
+        dispatch({ type: 'regions/RECEIVE_REGIONS_DATA' });
       });
-    });
   };
 }

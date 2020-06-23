@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import { useTypedSelector } from 'app/redux/index';
 import { setActiveStep } from 'app/redux/reducers/panel';
 import { resetEereInputs } from 'app/redux/reducers/eere';
-import { fetchRegion } from 'app/redux/reducers/region';
 import { fetchRegionsData } from 'app/redux/reducers/regions';
 import {
   calculateDisplacement,
@@ -12,6 +11,8 @@ import {
 } from 'app/redux/reducers/displacement';
 import { resetStateEmissions } from 'app/redux/reducers/stateEmissions';
 import { resetMonthlyEmissions } from 'app/redux/reducers/monthlyEmissions';
+// hooks
+import { useSelectedRegions } from 'app/hooks';
 // styles
 import './styles.css';
 
@@ -22,10 +23,12 @@ type Props = {
 
 function PanelFooter({ prevButtonText, nextButtonText }: Props) {
   const dispatch = useDispatch();
+
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
-  const regionId = useTypedSelector(({ region }) => region.id);
   const eereStatus = useTypedSelector(({ eere }) => eere.status);
   const hardValid = useTypedSelector(({ eere }) => eere.hardLimit.valid);
+
+  const regionIds = useSelectedRegions().map((region) => region.id);
 
   const onStepOne = activeStep === 1;
   const onStepTwo = activeStep === 2;
@@ -65,7 +68,7 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
   );
 
   // conditionally define reset and disabled classes
-  const noRegionSelected = onStepOne && regionId === '';
+  const noRegionSelected = onStepOne && regionIds.length === 0;
   const calculationRunning = onStepTwo && eereStatus !== 'complete';
   const exceedsHardValidationLimit = onStepTwo && !hardValid;
 
@@ -87,7 +90,6 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
 
         if (onStepOne) {
           scrollToTop();
-          dispatch(fetchRegion()); // TODO: delete this once its no longer used
           dispatch(fetchRegionsData());
         }
 

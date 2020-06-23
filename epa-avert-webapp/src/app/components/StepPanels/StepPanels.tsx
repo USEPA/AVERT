@@ -17,11 +17,14 @@ import DataDownload from 'app/components/DataDownload';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 import { toggleModalOverlay, resetActiveModal } from 'app/redux/reducers/panel';
+// hooks
+import { useSelectedRegions } from 'app/hooks';
 // styles
 import './styles.css';
 
 function StepPanels() {
   const dispatch = useDispatch();
+
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
   const loading = useTypedSelector(({ panel }) => panel.loading);
   const loadingProgress = useTypedSelector(
@@ -29,11 +32,13 @@ function StepPanels() {
   );
   const modalOverlay = useTypedSelector(({ panel }) => panel.modalOverlay);
   const activeModalId = useTypedSelector(({ panel }) => panel.activeModalId);
-  const region = useTypedSelector(({ region }) => region.name);
   const softValid = useTypedSelector(({ eere }) => eere.softLimit.valid);
   const serverCalcError = useTypedSelector(
     ({ displacement }) => displacement.status === 'error',
   );
+
+  const region = useTypedSelector(({ region }) => region.name); // TODO: use regionNames instead
+  const regionNames = useSelectedRegions().map((region) => region.name);
 
   const classes = ['avert-steps'];
   if (loading || serverCalcError) {

@@ -1,9 +1,5 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-// reducers
-import { useTypedSelector } from 'app/redux/index';
-import { selectRegion } from 'app/redux/reducers/region';
-import { selectRegions } from 'app/redux/reducers/regions';
 // components
 import California from './California';
 import Carolinas from './Carolinas';
@@ -19,6 +15,10 @@ import Southeast from './Southeast';
 import Southwest from './Southwest';
 import Tennessee from './Tennessee';
 import Texas from './Texas';
+// reducers
+import { selectRegions } from 'app/redux/reducers/regions';
+// hooks
+import { useSelectedRegions } from 'app/hooks';
 // config
 import { RegionId } from 'app/config';
 
@@ -44,16 +44,14 @@ type Props = {
 
 function Region({ id, children }: Props) {
   const dispatch = useDispatch();
-  const regionId = useTypedSelector(({ region }) => region.id);
+
+  const regionIds = useSelectedRegions().map((region) => region.id);
 
   return (
     <g
       className="avert-region"
-      onClick={(ev) => {
-        dispatch(selectRegion(id));
-        dispatch(selectRegions([id]));
-      }}
-      data-active={id === regionId}
+      onClick={(ev) => dispatch(selectRegions([id]))}
+      data-active={regionIds.includes(id)}
     >
       {children}
     </g>

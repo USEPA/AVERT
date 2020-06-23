@@ -2,7 +2,7 @@
 import { AppThunk } from 'app/redux/index';
 
 type StateEmissionsAction =
-  | { type: 'region/SELECT_REGION' }
+  | { type: 'regions/SELECT_REGIONS' }
   | { type: 'displacement/START_DISPLACEMENT' }
   | {
       type: 'stateEmissions/COMPLETE_STATE_EMISSIONS';
@@ -43,7 +43,7 @@ export default function reducer(
   action: StateEmissionsAction,
 ): StateEmissionsState {
   switch (action.type) {
-    case 'region/SELECT_REGION':
+    case 'regions/SELECT_REGIONS':
     case 'stateEmissions/RESET_STATE_EMISSIONS':
       return initialState;
 

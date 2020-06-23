@@ -1,9 +1,9 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 // reducers
-import { useTypedSelector } from 'app/redux/index';
-import { selectRegion } from 'app/redux/reducers/region';
 import { selectRegions } from 'app/redux/reducers/regions';
+// hooks
+import { useSelectedRegions } from 'app/hooks';
 // config
 import { RegionId, regions } from 'app/config';
 // styles
@@ -11,14 +11,14 @@ import './styles.css';
 
 function RegionList() {
   const dispatch = useDispatch();
-  const regionId = useTypedSelector(({ region }) => region.id);
+
+  const regionIds = useSelectedRegions().map((region) => region.id);
 
   return (
     <select
       className="avert-region-select"
-      value={regionId}
+      value={regionIds[0]}
       onChange={(ev) => {
-        dispatch(selectRegion(ev.target.value));
         dispatch(selectRegions([ev.target.value] as RegionId[]));
       }}
     >
