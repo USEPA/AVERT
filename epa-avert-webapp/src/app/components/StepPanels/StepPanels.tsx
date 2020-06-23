@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 // components
-import LoadingIcon from 'app/components/LoadingIcon/LoadingIcon';
+import LoadingIcon from 'app/components/LoadingIcon';
 import Panel from 'app/components/Panel';
 import PanelBody from 'app/components/PanelBody/PanelBody';
 import PanelFooter from 'app/components/PanelFooter/PanelFooter';
