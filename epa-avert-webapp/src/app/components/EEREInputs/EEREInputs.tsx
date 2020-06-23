@@ -89,9 +89,6 @@ function calculateRegionLimits(region: RegionState) {
 
 function EEREInputs() {
   const dispatch = useDispatch();
-  const regionSupportsOffshoreWind = useTypedSelector(
-    ({ region }) => region.offshoreWind,
-  );
   const status = useTypedSelector(({ eere }) => eere.status);
   const errors = useTypedSelector(({ eere }) => eere.errors);
   const constantMwh = useTypedSelector(({ eere }) => eere.inputs.constantMwh);
@@ -104,9 +101,10 @@ function EEREInputs() {
   const utilitySolar = useTypedSelector(({ eere }) => eere.inputs.utilitySolar);
   const rooftopSolar = useTypedSelector(({ eere }) => eere.inputs.rooftopSolar);
 
-  // TODO: determine how to set limits when multiple regions are selected
+  // TODO: determine how to handle when multiple regions are selected
   const regions = useSelectedRegions();
   const limits = calculateRegionLimits(regions[0]);
+  const regionSupportsOffshoreWind = regions[0]?.offshoreWind;
 
   const inputsAreValid = errors.length === 0;
 

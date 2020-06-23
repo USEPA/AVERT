@@ -1,6 +1,6 @@
 import stats from 'stats-lite';
 // reducers
-import { RegionalLoadData, EereDefaultData } from 'app/redux/reducers/region';
+import { RegionalLoadData, EereDefaultData } from 'app/redux/reducers/regions';
 import {
   EereInputFields,
   EereInputs,
@@ -87,7 +87,7 @@ export function calculateEere({
     const utilitySolar = utilitySolarInput * hourlyDefault.utility_pv;
     const rooftopSolar = rooftopSolarInput * hourlyDefault.rooftop_pv * lineLoss; // prettier-ignore
     const renewableProfile =
-      -1 * (onshoreWind + offshoreWind + utilitySolar + rooftopSolar); // TODO: confirm this is the proper use of offshoreWind
+      -1 * (onshoreWind + offshoreWind + utilitySolar + rooftopSolar);
 
     const initialLoad =
       hourlyLoad > topPercentile ? hourlyLoad * percentReduction : 0;

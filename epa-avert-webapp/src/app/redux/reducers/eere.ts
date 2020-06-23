@@ -1,9 +1,12 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
+import { RegionState } from 'app/redux/reducers/regions';
 // reducers
-import { RegionalLoadData } from 'app/redux/reducers/region';
+import { RegionalLoadData } from 'app/redux/reducers/regions';
 // calculations
 import { calculateEere } from 'app/calculations';
+// config
+import { RegionId } from 'app/config';
 
 type EereAction =
   | {
@@ -419,7 +422,15 @@ export function updateEereRooftopSolar(input: string, limit: number): AppThunk {
 
 export function calculateEereProfile(): AppThunk {
   return (dispatch, getState) => {
-    const { region, eere } = getState();
+    const { regions, eere } = getState();
+
+    // TODO: determine how to handle when multiple regions are selected
+    const selectedRegions: RegionState[] = [];
+    for (const key in regions) {
+      const region = regions[key as RegionId];
+      if (region.selected) selectedRegions.push(region);
+    }
+    const region = selectedRegions[0];
 
     dispatch({ type: 'eere/SUBMIT_EERE_CALCULATION' });
 

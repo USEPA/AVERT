@@ -1,8 +1,11 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
+import { RegionState } from 'app/redux/reducers/regions';
 // action creators
 import { completeStateEmissions } from './stateEmissions';
 import { MonthlyChanges, completeMonthlyEmissions } from './monthlyEmissions';
+// config
+import { RegionId } from 'app/config';
 
 export type StatesAndCounties = {
   [stateId: string]: string[];
@@ -346,7 +349,15 @@ export function incrementProgress(): DisplacementAction {
 
 function fetchDisplacementData(pollutant: Pollutant): AppThunk {
   return (dispatch, getState) => {
-    const { api, region, eere } = getState();
+    const { api, regions, eere } = getState();
+
+    // TODO: determine how to handle when multiple regions are selected
+    const selectedRegions: RegionState[] = [];
+    for (const key in regions) {
+      const region = regions[key as RegionId];
+      if (region.selected) selectedRegions.push(region);
+    }
+    const region = selectedRegions[0];
 
     dispatch({ type: `displacement/REQUEST_${pollutant.toUpperCase()}_DATA` });
 

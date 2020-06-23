@@ -4,6 +4,8 @@ import Blob from 'blob';
 import FileSaver from 'file-saver';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
+// hooks
+import { useSelectedRegions } from 'app/hooks';
 
 function downloadDataFile(fileName: string, data: any) {
   const fields = Object.keys(data[0]);
@@ -18,13 +20,16 @@ function downloadDataFile(fileName: string, data: any) {
 }
 
 function DataDownload() {
-  const regionName = useTypedSelector(({ region }) => region.name);
   const countyData = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.downloadableCountyData,
   );
   const cobraData = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.downloadableCobraData,
   );
+
+  // TODO: determine how to handle when multiple regions are selected
+  const regions = useSelectedRegions();
+  const regionName = regions[0]?.name;
 
   const isDesktopSafari =
     navigator.userAgent.toLowerCase().indexOf('safari') !== -1 &&

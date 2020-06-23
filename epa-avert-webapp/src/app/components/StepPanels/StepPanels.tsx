@@ -37,8 +37,9 @@ function StepPanels() {
     ({ displacement }) => displacement.status === 'error',
   );
 
-  const region = useTypedSelector(({ region }) => region.name); // TODO: use regionNames instead
-  const regionNames = useSelectedRegions().map((region) => region.name);
+  // TODO: determine how to handle when multiple regions are selected
+  const regions = useSelectedRegions();
+  const regionName = regions[0]?.name;
 
   const classes = ['avert-steps'];
   if (loading || serverCalcError) {
@@ -191,15 +192,15 @@ function StepPanels() {
           }
 
           <DisplacementsTable
-            heading={`Annual Regional Displacements: ${region} Region`}
+            heading={`Annual Regional Displacements: ${regionName} Region`}
           />
 
           <EmissionsTable
-            heading={`Annual State Emission Changes: ${region} Region`}
+            heading={`Annual State Emission Changes: ${regionName} Region`}
           />
 
           <EmissionsChart
-            heading={`Monthly Emission Changes: ${region} Region`}
+            heading={`Monthly Emission Changes: ${regionName} Region`}
           />
 
           <DataDownload />

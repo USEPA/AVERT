@@ -12,6 +12,8 @@ import {
   selectMonthlyState,
   selectMonthlyCounty,
 } from 'app/redux/reducers/monthlyEmissions';
+// hooks
+import { useSelectedRegions } from 'app/hooks';
 // config
 import { states } from 'app/config';
 // styles
@@ -40,7 +42,6 @@ function EmissionsChart({ heading }: Props) {
   const availableCounties = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.availableCounties,
   );
-  const selectedRegion = useTypedSelector(({ region }) => region.name);
   const selectedStateId = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.selectedState,
   );
@@ -59,6 +60,10 @@ function EmissionsChart({ heading }: Props) {
   const pm25Data = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.output.pm25,
   );
+
+  // TODO: determine how to handle when multiple regions are selected
+  const regions = useSelectedRegions();
+  const regionName = regions[0]?.name;
 
   // rendering is ready when output prop has data
   const readyToRender = status === 'complete';
@@ -281,7 +286,7 @@ function EmissionsChart({ heading }: Props) {
   // conditionally define location based on aggregation
   const location =
     aggregation === 'region'
-      ? `${selectedRegion} Region`
+      ? `${regionName} Region`
       : aggregation === 'state'
       ? selectedStateId === ''
         ? ''
