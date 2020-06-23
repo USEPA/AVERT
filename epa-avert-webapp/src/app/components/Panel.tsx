@@ -1,9 +1,16 @@
+/** @jsx jsx */
+
+import { jsx, css } from '@emotion/core';
 import React from 'react';
 // components
 import PanelBody from 'app/components/PanelBody/PanelBody';
 import PanelFooter from 'app/components/PanelFooter/PanelFooter';
-// styles
-import './styles.css';
+
+const stepStyles = css`
+  &[data-active='false'] {
+    display: none;
+  }
+`;
 
 type Props = {
   active: boolean;
@@ -12,7 +19,7 @@ type Props = {
 
 function Panel({ active, children }: Props) {
   return (
-    <section className="avert-step" data-active={active}>
+    <section data-active={active} css={stepStyles}>
       {children}
     </section>
   );
