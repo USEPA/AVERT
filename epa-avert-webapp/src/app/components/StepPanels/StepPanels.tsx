@@ -7,6 +7,7 @@ import PanelBody from 'app/components/PanelBody/PanelBody';
 import PanelFooter from 'app/components/PanelFooter/PanelFooter';
 import RegionList from 'app/components/RegionList/RegionList';
 import RegionMap from 'app/components/RegionMap/RegionMap';
+import StatesMap from 'app/components/StatesMap';
 import EEREInputs from 'app/components/EEREInputs/EEREInputs';
 import UnitConversion from 'app/components/UnitConversion/UnitConversion';
 import EEREChart from 'app/components/EEREChart/EEREChart';
@@ -121,6 +122,8 @@ function StepPanels() {
 
           <RegionList />
           <RegionMap />
+
+          {/* <StatesMap /> */}
 
           <p className="avert-small-text">
             The online version of AVERT can run analyses using 2019 emissions

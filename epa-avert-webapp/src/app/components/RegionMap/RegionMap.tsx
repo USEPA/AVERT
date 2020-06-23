@@ -15,7 +15,7 @@ import Southeast from './components/Southeast';
 import Southwest from './components/Southwest';
 import Tennessee from './components/Tennessee';
 import Texas from './components/Texas';
-import States from './components/States';
+import UnitedStates from 'app/components/UnitedStates';
 // config
 import { regions } from 'app/config';
 // styles
@@ -91,7 +91,7 @@ function RegionMap() {
         </g>
 
         <g className="avert-states">
-          <States />
+          <UnitedStates fill="none" />
         </g>
 
         <g className="avert-labels">
