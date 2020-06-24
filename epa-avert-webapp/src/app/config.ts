@@ -172,6 +172,7 @@ export type StateId =
 export type State = {
   id: StateId;
   name: string;
+  regions: Partial<{ [key in RegionId]: number }>;
 };
 
 /**
@@ -182,198 +183,337 @@ export const states: { [key in StateId]: State } = {
   AL: {
     id: 'AL',
     name: 'Alabama',
+    regions: {
+      SE: 73.791629656774,
+      TN: 26.208370343226,
+    },
   },
   AR: {
     id: 'AR',
     name: 'Arkansas',
+    regions: {
+      MIDW: 73.757031571744,
+      CENT: 26.242968428256,
+    },
   },
   AZ: {
     id: 'AZ',
     name: 'Arizona',
+    regions: {
+      SW: 100,
+    },
   },
   CA: {
     id: 'CA',
     name: 'California',
+    regions: {
+      CA: 100,
+    },
   },
   CO: {
     id: 'CO',
     name: 'Colorado',
+    regions: {
+      RM: 100,
+    },
   },
   CT: {
     id: 'CT',
     name: 'Connecticut',
+    regions: {
+      NE: 100,
+    },
   },
   DC: {
     id: 'DC',
     name: 'District of Columbia',
+    regions: {
+      MIDA: 100,
+    },
   },
   DE: {
     id: 'DE',
     name: 'Delaware',
+    regions: {
+      MIDA: 100,
+    },
   },
   FL: {
     id: 'FL',
     name: 'Florida',
+    regions: {
+      SE: 5.54204561120175,
+      FL: 94.4579543887982,
+    },
   },
   GA: {
     id: 'GA',
     name: 'Georgia',
+    regions: {
+      SE: 97.5685884564488,
+      TN: 2.43141154355125,
+    },
   },
   IA: {
     id: 'IA',
     name: 'Iowa',
+    regions: {
+      MIDW: 94.0739868582707,
+      CENT: 5.92601314172933,
+    },
   },
   ID: {
     id: 'ID',
     name: 'Idaho',
+    regions: {
+      NW: 100,
+    },
   },
   IL: {
     id: 'IL',
     name: 'Illinois',
+    regions: {
+      MIDA: 65.2031111352377,
+      MIDW: 34.7968888647623,
+    },
   },
   IN: {
     id: 'IN',
     name: 'Indiana',
+    regions: {
+      MIDA: 21.306124107215,
+      MIDW: 78.693875892785,
+    },
   },
   KS: {
     id: 'KS',
     name: 'Kansas',
+    regions: {
+      CENT: 100,
+    },
   },
   KY: {
     id: 'KY',
     name: 'Kentucky',
+    regions: {
+      TN: 14.9033170798895,
+      MIDA: 29.8395825874621,
+      MIDW: 55.2571003326483,
+    },
   },
   LA: {
     id: 'LA',
     name: 'Louisiana',
+    regions: {
+      MIDW: 92.7251993267115,
+      CENT: 7.27480067328851,
+    },
   },
   MA: {
     id: 'MA',
     name: 'Massachusetts',
+    regions: {
+      NE: 100,
+    },
   },
   MD: {
     id: 'MD',
     name: 'Maryland',
+    regions: {
+      MIDA: 100,
+    },
   },
   ME: {
     id: 'ME',
     name: 'Maine',
+    regions: {
+      NE: 100,
+    },
   },
   MI: {
     id: 'MI',
     name: 'Michigan',
+    regions: {
+      MIDA: 3.87442312109519,
+      MIDW: 96.1255768789048,
+    },
   },
   MN: {
     id: 'MN',
     name: 'Minnesota',
+    regions: {
+      MIDW: 98.705735394633,
+      CENT: 1.29426460536664,
+    },
   },
   MO: {
     id: 'MO',
     name: 'Missouri',
+    regions: {
+      MIDW: 65.1822776582235,
+      CENT: 34.8177223417765,
+    },
   },
   MS: {
     id: 'MS',
     name: 'Mississippi',
+    regions: {
+      SE: 23.2693176758563,
+      TN: 32.3277059280809,
+      MIDW: 44.4029763960628,
+    },
   },
   MT: {
     id: 'MT',
     name: 'Montana',
+    regions: {
+      NW: 90.9322053030408,
+      RM: 1.63910331296,
+      CENT: 7.42869138399923,
+    },
   },
   NC: {
     id: 'NC',
     name: 'North Carolina',
+    regions: {
+      NCSC: 95.8122354967843,
+      MIDA: 4.18776450321575,
+    },
   },
   ND: {
     id: 'ND',
     name: 'North Dakota',
+    regions: {
+      MIDW: 53.063953245907,
+      CENT: 46.9360467540927,
+    },
   },
   NE: {
     id: 'NE',
     name: 'Nebraska',
+    regions: {
+      RM: 4.12001916514984,
+      CENT: 95.8799808348502,
+    },
   },
   NH: {
     id: 'NH',
     name: 'New Hampshire',
+    regions: {
+      NE: 100,
+    },
   },
   NJ: {
     id: 'NJ',
     name: 'New Jersey',
+    regions: {
+      MIDA: 100,
+    },
   },
   NM: {
     id: 'NM',
     name: 'New Mexico',
+    regions: {
+      RM: 4.57850916915244,
+      SW: 60.2887390314291,
+      CENT: 35.1327517994185,
+    },
   },
   NV: {
     id: 'NV',
     name: 'Nevada',
+    regions: {
+      NW: 100,
+    },
   },
   NY: {
     id: 'NY',
     name: 'New York',
+    regions: {
+      NY: 100,
+    },
   },
   OH: {
     id: 'OH',
     name: 'Ohio',
+    regions: {
+      MIDA: 100,
+    },
   },
   OK: {
     id: 'OK',
     name: 'Oklahoma',
+    regions: {},
   },
   OR: {
     id: 'OR',
     name: 'Oregon',
+    regions: {},
   },
   PA: {
     id: 'PA',
     name: 'Pennsylvania',
+    regions: {},
   },
   RI: {
     id: 'RI',
     name: 'Rhode Island',
+    regions: {},
   },
   SC: {
     id: 'SC',
     name: 'South Carolina',
+    regions: {},
   },
   SD: {
     id: 'SD',
     name: 'South Dakota',
+    regions: {},
   },
   TN: {
     id: 'TN',
     name: 'Tennessee',
+    regions: {},
   },
   TX: {
     id: 'TX',
     name: 'Texas',
+    regions: {},
   },
   UT: {
     id: 'UT',
     name: 'Utah',
+    regions: {},
   },
   VA: {
     id: 'VA',
     name: 'Virginia',
+    regions: {},
   },
   VT: {
     id: 'VT',
     name: 'Vermont',
+    regions: {},
   },
   WA: {
     id: 'WA',
     name: 'Washington',
+    regions: {},
   },
   WI: {
     id: 'WI',
     name: 'Wisconsin',
+    regions: {},
   },
   WV: {
     id: 'WV',
     name: 'West Virginia',
+    regions: {},
   },
   WY: {
     id: 'WY',
     name: 'Wyoming',
+    regions: {},
   },
 };
 
