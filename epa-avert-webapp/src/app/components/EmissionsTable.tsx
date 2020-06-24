@@ -1,8 +1,6 @@
 import React from 'react';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
-// config
-import { states as allStates } from 'app/config';
 
 type Props = {
   heading: string;
@@ -12,10 +10,10 @@ function EmissionsTable({ heading }: Props) {
   const status = useTypedSelector(
     ({ stateEmissions }) => stateEmissions.status,
   );
-  const data = useTypedSelector(({ stateEmissions }) => stateEmissions.data);
-  const states = useTypedSelector(({ stateEmissions }) =>
-    stateEmissions.stateIds.map((stateId) => allStates[stateId]),
+  const stateIds = useTypedSelector(
+    ({ stateEmissions }) => stateEmissions.stateIds,
   );
+  const data = useTypedSelector(({ stateEmissions }) => stateEmissions.data);
 
   // rendering is ready when state emissions status is 'complete'
   const readyToRender = status === 'complete';
@@ -43,21 +41,22 @@ function EmissionsTable({ heading }: Props) {
           </tr>
         </thead>
         <tbody>
-          {states.map((state, index) => {
+          {stateIds.map((stateId) => {
+            const state = data[stateId];
             return (
-              <tr key={index}>
-                <td>{state}</td>
+              <tr key={stateId}>
+                <td>{state.name}</td>
                 <td className="avert-table-data">
-                  {Math.round(data[index].so2).toLocaleString()}
+                  {Math.round(state.so2).toLocaleString()}
                 </td>
                 <td className="avert-table-data">
-                  {Math.round(data[index].nox).toLocaleString()}
+                  {Math.round(state.nox).toLocaleString()}
                 </td>
                 <td className="avert-table-data">
-                  {Math.round(data[index].co2).toLocaleString()}
+                  {Math.round(state.co2).toLocaleString()}
                 </td>
                 <td className="avert-table-data">
-                  {Math.round(data[index].pm25).toLocaleString()}
+                  {Math.round(state.pm25).toLocaleString()}
                 </td>
               </tr>
             );

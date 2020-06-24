@@ -21,6 +21,10 @@ export type Region = {
   offshoreWind: boolean;
 };
 
+/**
+ * `lineLoss` and its use in `regions` was created from the `Library`
+ * sheet of the `AVERT Main Module v3.0 beta 05.18.20.xlsm` file.
+ */
 const lineLoss = {
   texas: 0.054,
   eastern: 0.072,
@@ -114,79 +118,267 @@ export const regions: { [key in RegionId]: Region } = {
   },
 };
 
-export const states: { [stateId: string]: string } = {
-  AK: 'Alaska',
-  AL: 'Alabama',
-  AR: 'Arkansas',
-  AS: 'American Samoa',
-  AT: 'Atlantic Offshore',
-  AZ: 'Arizona',
-  CA: 'California',
-  CO: 'Colorado',
-  CT: 'Connecticut',
-  DC: 'Dist. Of Columbia',
-  DE: 'Delaware',
-  FL: 'Florida',
-  FM: 'Fed. Micronesia',
-  GA: 'Georgia',
-  GB: "George's Bank",
-  GM: 'Gulf of Mexico',
-  GU: 'Guam',
-  HI: 'Hawaii',
-  IA: 'Iowa',
-  ID: 'Idaho',
-  IL: 'Illinois',
-  IN: 'Indiana',
-  JA: 'Johnston Atoll',
-  KS: 'Kansas',
-  KY: 'Kentucky',
-  LA: 'Louisiana',
-  MA: 'Massachusetts',
-  MD: 'Maryland',
-  ME: 'Maine',
-  MH: 'Marshall Islands',
-  MI: 'Michigan',
-  MN: 'Minnesota',
-  MO: 'Missouri',
-  MP: 'Mariana Islands',
-  MS: 'Mississippi',
-  MT: 'Montana',
-  MW: 'Midway Islands',
-  NC: 'North Carolina',
-  ND: 'North Dakota',
-  NE: 'Nebraska',
-  NH: 'New Hampshire',
-  NI: 'No. Marianas Isl.',
-  NJ: 'New Jersey',
-  NM: 'New Mexico',
-  NN: 'Navajo Nation',
-  NV: 'Nevada',
-  NY: 'New York',
-  OH: 'Ohio',
-  OK: 'Oklahoma',
-  OR: 'Oregon',
-  PA: 'Pennsylvania',
-  PR: 'Puerto Rico',
-  PW: 'Palau',
-  RI: 'Rhode Island',
-  SC: 'South Carolina',
-  SD: 'South Dakota',
-  TN: 'Tennessee',
-  TT: 'Trust Territory',
-  TX: 'Texas',
-  UM: 'U.S. Minor Islands',
-  UT: 'Utah',
-  VA: 'Virginia',
-  VI: 'Virgin Islands',
-  VT: 'Vermont',
-  WA: 'Washington',
-  WI: 'Wisconsin',
-  WV: 'West Virginia',
-  WY: 'Wyoming',
+export type StateId =
+  | 'AL'
+  | 'AR'
+  | 'AZ'
+  | 'CA'
+  | 'CO'
+  | 'CT'
+  | 'DC'
+  | 'DE'
+  | 'FL'
+  | 'GA'
+  | 'IA'
+  | 'ID'
+  | 'IL'
+  | 'IN'
+  | 'KS'
+  | 'KY'
+  | 'LA'
+  | 'MA'
+  | 'MD'
+  | 'ME'
+  | 'MI'
+  | 'MN'
+  | 'MO'
+  | 'MS'
+  | 'MT'
+  | 'NC'
+  | 'ND'
+  | 'NE'
+  | 'NH'
+  | 'NJ'
+  | 'NM'
+  | 'NV'
+  | 'NY'
+  | 'OH'
+  | 'OK'
+  | 'OR'
+  | 'PA'
+  | 'RI'
+  | 'SC'
+  | 'SD'
+  | 'TN'
+  | 'TX'
+  | 'UT'
+  | 'VA'
+  | 'VT'
+  | 'WA'
+  | 'WI'
+  | 'WV'
+  | 'WY';
+
+export type State = {
+  id: StateId;
+  name: string;
 };
 
 /**
- * **fipsCodes** was created from the `CountyFIPS` sheet of the
+ * `states` was created from the `Library` sheet of the
+ * `AVERT Main Module v3.0 beta 05.18.20.xlsm` file.
+ */
+export const states: { [key in StateId]: State } = {
+  AL: {
+    id: 'AL',
+    name: 'Alabama',
+  },
+  AR: {
+    id: 'AR',
+    name: 'Arkansas',
+  },
+  AZ: {
+    id: 'AZ',
+    name: 'Arizona',
+  },
+  CA: {
+    id: 'CA',
+    name: 'California',
+  },
+  CO: {
+    id: 'CO',
+    name: 'Colorado',
+  },
+  CT: {
+    id: 'CT',
+    name: 'Connecticut',
+  },
+  DC: {
+    id: 'DC',
+    name: 'District of Columbia',
+  },
+  DE: {
+    id: 'DE',
+    name: 'Delaware',
+  },
+  FL: {
+    id: 'FL',
+    name: 'Florida',
+  },
+  GA: {
+    id: 'GA',
+    name: 'Georgia',
+  },
+  IA: {
+    id: 'IA',
+    name: 'Iowa',
+  },
+  ID: {
+    id: 'ID',
+    name: 'Idaho',
+  },
+  IL: {
+    id: 'IL',
+    name: 'Illinois',
+  },
+  IN: {
+    id: 'IN',
+    name: 'Indiana',
+  },
+  KS: {
+    id: 'KS',
+    name: 'Kansas',
+  },
+  KY: {
+    id: 'KY',
+    name: 'Kentucky',
+  },
+  LA: {
+    id: 'LA',
+    name: 'Louisiana',
+  },
+  MA: {
+    id: 'MA',
+    name: 'Massachusetts',
+  },
+  MD: {
+    id: 'MD',
+    name: 'Maryland',
+  },
+  ME: {
+    id: 'ME',
+    name: 'Maine',
+  },
+  MI: {
+    id: 'MI',
+    name: 'Michigan',
+  },
+  MN: {
+    id: 'MN',
+    name: 'Minnesota',
+  },
+  MO: {
+    id: 'MO',
+    name: 'Missouri',
+  },
+  MS: {
+    id: 'MS',
+    name: 'Mississippi',
+  },
+  MT: {
+    id: 'MT',
+    name: 'Montana',
+  },
+  NC: {
+    id: 'NC',
+    name: 'North Carolina',
+  },
+  ND: {
+    id: 'ND',
+    name: 'North Dakota',
+  },
+  NE: {
+    id: 'NE',
+    name: 'Nebraska',
+  },
+  NH: {
+    id: 'NH',
+    name: 'New Hampshire',
+  },
+  NJ: {
+    id: 'NJ',
+    name: 'New Jersey',
+  },
+  NM: {
+    id: 'NM',
+    name: 'New Mexico',
+  },
+  NV: {
+    id: 'NV',
+    name: 'Nevada',
+  },
+  NY: {
+    id: 'NY',
+    name: 'New York',
+  },
+  OH: {
+    id: 'OH',
+    name: 'Ohio',
+  },
+  OK: {
+    id: 'OK',
+    name: 'Oklahoma',
+  },
+  OR: {
+    id: 'OR',
+    name: 'Oregon',
+  },
+  PA: {
+    id: 'PA',
+    name: 'Pennsylvania',
+  },
+  RI: {
+    id: 'RI',
+    name: 'Rhode Island',
+  },
+  SC: {
+    id: 'SC',
+    name: 'South Carolina',
+  },
+  SD: {
+    id: 'SD',
+    name: 'South Dakota',
+  },
+  TN: {
+    id: 'TN',
+    name: 'Tennessee',
+  },
+  TX: {
+    id: 'TX',
+    name: 'Texas',
+  },
+  UT: {
+    id: 'UT',
+    name: 'Utah',
+  },
+  VA: {
+    id: 'VA',
+    name: 'Virginia',
+  },
+  VT: {
+    id: 'VT',
+    name: 'Vermont',
+  },
+  WA: {
+    id: 'WA',
+    name: 'Washington',
+  },
+  WI: {
+    id: 'WI',
+    name: 'Wisconsin',
+  },
+  WV: {
+    id: 'WV',
+    name: 'West Virginia',
+  },
+  WY: {
+    id: 'WY',
+    name: 'Wyoming',
+  },
+};
+
+/**
+ * `fipsCodes` was created from the `CountyFIPS` sheet of the
  * `AVERT Main Module v3.0 beta 05.18.20.xlsm` file.
  * To create the data structure:
  *   1. The Excel sheet was saved as a temporary CSV file

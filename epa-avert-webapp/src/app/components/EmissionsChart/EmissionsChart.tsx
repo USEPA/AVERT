@@ -15,7 +15,7 @@ import {
 // hooks
 import { useSelectedRegions } from 'app/hooks';
 // config
-import { states } from 'app/config';
+import { StateId, states } from 'app/config';
 // styles
 import './styles.css';
 
@@ -148,11 +148,15 @@ function EmissionsChart({ heading }: Props) {
             Select State
           </option>
 
-          {availableStates.map((state, index) => (
-            <option key={index} value={state}>
-              {states[state]}
-            </option>
-          ))}
+          {availableStates.map((stateId) => {
+            return (
+              <React.Fragment key={stateId}>
+                <option value={stateId}>
+                  {states[stateId as StateId].name}
+                </option>
+              </React.Fragment>
+            );
+          })}
         </select>
       </div>
     );
@@ -290,11 +294,11 @@ function EmissionsChart({ heading }: Props) {
       : aggregation === 'state'
       ? selectedStateId === ''
         ? ''
-        : `${states[selectedStateId]}`
+        : `${states[selectedStateId as StateId].name}`
       : aggregation === 'county'
       ? selectedCounty === ''
         ? ''
-        : `${countyName}, ${states[selectedStateId]}`
+        : `${countyName}, ${states[selectedStateId as StateId].name}`
       : '';
 
   function formatTitle(pollutant: string) {

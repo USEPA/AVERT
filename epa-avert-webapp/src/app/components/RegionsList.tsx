@@ -22,7 +22,7 @@ function RegionsList() {
   return (
     <select
       css={selectStyles}
-      value={regionIds[0]}
+      value={regionIds.length === 0 ? '' : regionIds[0]}
       onChange={(ev) => {
         dispatch(selectRegions([ev.target.value] as RegionId[]));
       }}

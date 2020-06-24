@@ -1,5 +1,16 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
+// config
+import { StateId, states } from 'app/config';
+
+type StateEmissionsData = {
+  id: string;
+  name: string;
+  so2: number;
+  nox: number;
+  co2: number;
+  pm25: number;
+};
 
 type StateEmissionsAction =
   | { type: 'regions/SELECT_REGIONS' }
@@ -8,13 +19,7 @@ type StateEmissionsAction =
       type: 'stateEmissions/COMPLETE_STATE_EMISSIONS';
       payload: {
         stateIds: string[];
-        data: {
-          state: string;
-          so2: number;
-          nox: number;
-          co2: number;
-          pm25: number;
-        }[];
+        data: { [stateId: string]: StateEmissionsData };
       };
     }
   | { type: 'stateEmissions/RESET_STATE_EMISSIONS' };
@@ -22,20 +27,14 @@ type StateEmissionsAction =
 type StateEmissionsState = {
   status: 'ready' | 'started' | 'complete';
   stateIds: string[];
-  data: {
-    state: string;
-    so2: number;
-    nox: number;
-    co2: number;
-    pm25: number;
-  }[];
+  data: { [stateId: string]: StateEmissionsData };
 };
 
 // reducer
 const initialState: StateEmissionsState = {
   status: 'ready',
   stateIds: [],
-  data: [],
+  data: {},
 };
 
 export default function reducer(
@@ -73,14 +72,19 @@ export function completeStateEmissions(): AppThunk {
 
     const stateIds = Object.keys(statesAndCounties).sort();
 
-    // calculate state emissions and dispatch action
-    const data = stateIds.map((stateId) => ({
-      state: stateId,
-      so2: so2.data.stateChanges[stateId],
-      nox: nox.data.stateChanges[stateId],
-      co2: co2.data.stateChanges[stateId],
-      pm25: pm25.data.stateChanges[stateId],
-    }));
+    // set state emissions and dispatch action
+    const data: { [stateId: string]: StateEmissionsData } = {};
+
+    stateIds.forEach((stateId) => {
+      data[stateId] = {
+        id: stateId,
+        name: states[stateId as StateId].name,
+        so2: so2.data.stateChanges[stateId],
+        nox: nox.data.stateChanges[stateId],
+        co2: co2.data.stateChanges[stateId],
+        pm25: pm25.data.stateChanges[stateId],
+      };
+    });
 
     dispatch({
       type: 'stateEmissions/COMPLETE_STATE_EMISSIONS',

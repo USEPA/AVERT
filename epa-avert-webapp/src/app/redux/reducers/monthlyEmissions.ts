@@ -2,7 +2,7 @@
 import { AppThunk } from 'app/redux/index';
 import { StatesAndCounties } from 'app/redux/reducers/displacement';
 // config
-import { states, fipsCodes } from 'app/config';
+import { StateId, states, fipsCodes } from 'app/config';
 
 export type MonthlyAggregation = 'region' | 'state' | 'county';
 
@@ -436,7 +436,7 @@ function countyRow(
  * helper function to format cobra county data rows
  */
 function cobraRow(
-  state: string,
+  stateId: string,
   county: string,
   payload: {
     so2: MonthlyChanges;
@@ -458,7 +458,7 @@ function cobraRow(
    */
   const matchedFipsCodeItem = fipsCodes.filter((item) => {
     return (
-      item['state'] === states[state] &&
+      item['state'] === states[stateId as StateId].name &&
       item['county'].replace(/city County/, 'city') === county
     );
   })[0];
@@ -468,9 +468,9 @@ function cobraRow(
   // format 'city' if found in county name
   const countyName = county.replace(/city/, '(City)');
 
-  const noxDataset = payload.nox.emissions.county[state][county];
-  const so2Dataset = payload.so2.emissions.county[state][county];
-  const pm25Dataset = payload.pm25.emissions.county[state][county];
+  const noxDataset = payload.nox.emissions.county[stateId][county];
+  const so2Dataset = payload.so2.emissions.county[stateId][county];
+  const pm25Dataset = payload.pm25.emissions.county[stateId][county];
 
   const sum = (a: number, b: number) => a + b;
 
@@ -487,7 +487,7 @@ function cobraRow(
 
   return {
     FIPS: fipsCode,
-    STATE: states[state],
+    STATE: states[stateId as StateId].name,
     COUNTY: countyName,
     TIER1NAME: 'FUEL COMB. ELEC. UTIL.',
     NOx_REDUCTIONS_TONS: formatNumber(noxDataTons),
