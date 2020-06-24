@@ -7,7 +7,8 @@ import PanelBody from 'app/components/PanelBody/PanelBody';
 import PanelFooter from 'app/components/PanelFooter/PanelFooter';
 import RegionsList from 'app/components/RegionsList';
 import RegionMap from 'app/components/RegionMap/RegionMap';
-// import StatesMap from 'app/components/StatesMap';
+import StatesList from 'app/components/StatesList';
+import StatesMap from 'app/components/StatesMap';
 import EEREInputs from 'app/components/EEREInputs/EEREInputs';
 import UnitConversion from 'app/components/UnitConversion/UnitConversion';
 import EEREChart from 'app/components/EEREChart/EEREChart';
@@ -123,7 +124,29 @@ function StepPanels() {
           <RegionsList />
           <RegionMap />
 
-          {/* <StatesMap /> */}
+          <p className="avert-small-text">
+            The online version of AVERT can run analyses using 2019 emissions
+            and generation data. The Excel version of AVERT (available for
+            download{' '}
+            <a
+              href="https://www.epa.gov/statelocalenergy/download-avert"
+              target="_parent"
+            >
+              here
+            </a>
+            ) allows analyses for years 2017–2019 or for a future year scenario.
+          </p>
+        </PanelBody>
+
+        <PanelBody heading="Select State">
+          <p>
+            Select a state for analysis by either using the dropdown menu or
+            clicking the map. Selecting a state loads the power plants operating
+            within each region and region-specific wind and solar capacity data.
+          </p>
+
+          <StatesList />
+          <StatesMap />
 
           <p className="avert-small-text">
             The online version of AVERT can run analyses using 2019 emissions
