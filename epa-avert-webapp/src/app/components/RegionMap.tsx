@@ -86,6 +86,7 @@ const regionStyles = css`
 
 type RegionProps = {
   id: RegionId;
+  fill: string;
   children: React.ReactElement<
     | typeof California
     | typeof Carolinas
@@ -104,7 +105,7 @@ type RegionProps = {
   >;
 };
 
-function Region({ id, children }: RegionProps) {
+function Region({ id, fill, children }: RegionProps) {
   const dispatch = useDispatch();
 
   const regionIds = useSelectedRegions().map((region) => region.id);
@@ -112,6 +113,7 @@ function Region({ id, children }: RegionProps) {
   return (
     <g
       css={regionStyles}
+      fill={fill}
       onClick={(ev) => dispatch(selectRegions([id]))}
       data-active={regionIds.includes(id)}
     >
@@ -132,59 +134,59 @@ function RegionMap() {
         <title>AVERT region map</title>
 
         <g data-id="regions" css={boundaryStyles}>
-          <Region id={regions.CA.id}>
+          <Region id={regions.CA.id} fill="#fed330">
             <California />
           </Region>
 
-          <Region id={regions.NCSC.id}>
+          <Region id={regions.NCSC.id} fill="#bdc736">
             <Carolinas />
           </Region>
 
-          <Region id={regions.CENT.id}>
+          <Region id={regions.CENT.id} fill="#a74c8f">
             <Central />
           </Region>
 
-          <Region id={regions.FL.id}>
+          <Region id={regions.FL.id} fill="#238e86">
             <Florida />
           </Region>
 
-          <Region id={regions.MIDA.id}>
+          <Region id={regions.MIDA.id} fill="#db742b">
             <MidAtlantic />
           </Region>
 
-          <Region id={regions.MIDW.id}>
+          <Region id={regions.MIDW.id} fill="#48b5d8">
             <Midwest />
           </Region>
 
-          <Region id={regions.NE.id}>
+          <Region id={regions.NE.id} fill="#d52074">
             <NewEngland />
           </Region>
 
-          <Region id={regions.NY.id}>
+          <Region id={regions.NY.id} fill="#8449b7">
             <NewYork />
           </Region>
 
-          <Region id={regions.NW.id}>
+          <Region id={regions.NW.id} fill="#364f95">
             <Northwest />
           </Region>
 
-          <Region id={regions.RM.id}>
+          <Region id={regions.RM.id} fill="#67b187">
             <RockyMountains />
           </Region>
 
-          <Region id={regions.SE.id}>
+          <Region id={regions.SE.id} fill="#99781a">
             <Southeast />
           </Region>
 
-          <Region id={regions.SW.id}>
+          <Region id={regions.SW.id} fill="#d85029">
             <Southwest />
           </Region>
 
-          <Region id={regions.TN.id}>
+          <Region id={regions.TN.id} fill="#157a15">
             <Tennessee />
           </Region>
 
-          <Region id={regions.TE.id}>
+          <Region id={regions.TE.id} fill="#fda929">
             <Texas />
           </Region>
         </g>
