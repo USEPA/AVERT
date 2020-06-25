@@ -6,6 +6,8 @@ import { useDispatch } from 'react-redux';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 import { selectState } from 'app/redux/reducers/states';
+// hooks
+import { useSelectedState } from 'app/hooks';
 // config
 import { StateId, states } from 'app/config';
 
@@ -17,12 +19,12 @@ const selectStyles = css`
 function StatesList() {
   const dispatch = useDispatch();
 
-  const selectedStateId = useTypedSelector(({ states }) => states.stateId);
+  const selectedStateId = useSelectedState()?.id;
 
   return (
     <select
       css={selectStyles}
-      value={selectedStateId}
+      value={!selectedStateId ? '' : selectedStateId}
       onChange={(ev) => dispatch(selectState(ev.target.value as StateId))}
     >
       <option value={''} disabled>

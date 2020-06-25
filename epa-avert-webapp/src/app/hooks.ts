@@ -2,7 +2,7 @@
 import { useTypedSelector } from 'app/redux/index';
 import { RegionState } from 'app/redux/reducers/regions';
 // config
-import { RegionId } from 'app/config';
+import { RegionId, StateId } from 'app/config';
 
 function useSelectedRegions() {
   return useTypedSelector(({ regions }) => {
@@ -15,4 +15,13 @@ function useSelectedRegions() {
   });
 }
 
-export { useSelectedRegions };
+function useSelectedState() {
+  return useTypedSelector(({ states }) => {
+    for (const key in states) {
+      const state = states[key as StateId];
+      if (state.selected) return state;
+    }
+  });
+}
+
+export { useSelectedRegions, useSelectedState };

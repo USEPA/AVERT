@@ -1,16 +1,27 @@
+// config
+import { StateId, State, states } from 'app/config';
+
 type StatesAction = {
   type: 'states/SELECT_STATE';
-  payload: { stateId: string };
+  payload: { stateId: StateId };
+};
+
+type StateState = State & {
+  selected: boolean;
 };
 
 type StatesState = {
-  stateId: string;
+  [key in StateId]: StateState;
 };
 
+// augment states data (from config) with additonal 'selected' field for each state
+const updatedStates: any = { ...states };
+for (const key in updatedStates) {
+  updatedStates[key].selected = false;
+}
+
 // reducer
-const initialState: StatesState = {
-  stateId: '',
-};
+const initialState: StatesState = updatedStates;
 
 export default function reducer(
   state: StatesState = initialState,
@@ -18,10 +29,13 @@ export default function reducer(
 ): StatesState {
   switch (action.type) {
     case 'states/SELECT_STATE':
-      return {
-        ...state,
-        stateId: action.payload.stateId,
-      };
+      const updatedState = { ...state };
+      for (const key in state) {
+        const stateId = key as StateId;
+        const stateIsSelected = action.payload.stateId === stateId;
+        updatedState[stateId].selected = stateIsSelected;
+      }
+      return updatedState;
 
     default:
       return state;
