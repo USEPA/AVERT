@@ -1,8 +1,8 @@
 /** @jsx jsx */
 
 import { jsx, css } from '@emotion/core';
+import { useDispatch } from 'react-redux';
 // components
-import Region from './components/Region';
 import California from 'app/components/Regions/California';
 import Carolinas from 'app/components/Regions/Carolinas';
 import Central from 'app/components/Regions/Central';
@@ -18,25 +18,12 @@ import Southwest from 'app/components/Regions/Southwest';
 import Tennessee from 'app/components/Regions/Tennessee';
 import Texas from 'app/components/Regions/Texas';
 import UnitedStates from 'app/components/UnitedStates';
+// reducers
+import { selectRegions } from 'app/redux/reducers/regions';
+// hooks
+import { useSelectedRegions } from 'app/hooks';
 // config
-import { regions } from 'app/config';
-
-export type RegionComponent = React.ReactElement<
-  | typeof California
-  | typeof Carolinas
-  | typeof Central
-  | typeof Florida
-  | typeof MidAtlantic
-  | typeof Midwest
-  | typeof NewEngland
-  | typeof NewYork
-  | typeof Northwest
-  | typeof RockyMountains
-  | typeof Southeast
-  | typeof Southwest
-  | typeof Tennessee
-  | typeof Texas
->;
+import { RegionId, regions } from 'app/config';
 
 const containerStyles = css`
   position: relative;
@@ -83,6 +70,55 @@ const boundaryStyles = css`
 const statesStyles = css`
   pointer-events: none;
 `;
+
+const regionStyles = css`
+  cursor: pointer;
+  opacity: 0.33;
+
+  &:hover {
+    opacity: 0.66;
+  }
+
+  &[data-active='true'] {
+    opacity: 1;
+  }
+`;
+
+type RegionProps = {
+  id: RegionId;
+  children: React.ReactElement<
+    | typeof California
+    | typeof Carolinas
+    | typeof Central
+    | typeof Florida
+    | typeof MidAtlantic
+    | typeof Midwest
+    | typeof NewEngland
+    | typeof NewYork
+    | typeof Northwest
+    | typeof RockyMountains
+    | typeof Southeast
+    | typeof Southwest
+    | typeof Tennessee
+    | typeof Texas
+  >;
+};
+
+function Region({ id, children }: RegionProps) {
+  const dispatch = useDispatch();
+
+  const regionIds = useSelectedRegions().map((region) => region.id);
+
+  return (
+    <g
+      css={regionStyles}
+      onClick={(ev) => dispatch(selectRegions([id]))}
+      data-active={regionIds.includes(id)}
+    >
+      {children}
+    </g>
+  );
+}
 
 function RegionMap() {
   return (

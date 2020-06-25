@@ -6,7 +6,7 @@ import Panel from 'app/components/Panel';
 import PanelBody from 'app/components/PanelBody/PanelBody';
 import PanelFooter from 'app/components/PanelFooter/PanelFooter';
 import RegionsList from 'app/components/RegionsList';
-import RegionMap from 'app/components/RegionMap/RegionMap';
+import RegionMap from 'app/components/RegionMap';
 import StatesList from 'app/components/StatesList';
 import StatesMap from 'app/components/StatesMap';
 import EEREInputs from 'app/components/EEREInputs/EEREInputs';
