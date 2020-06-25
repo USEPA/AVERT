@@ -443,77 +443,116 @@ export const states: { [key in StateId]: State } = {
   OK: {
     id: 'OK',
     name: 'Oklahoma',
-    regions: {},
+    regions: {
+      MIDW: 4.58716009767985,
+      CENT: 95.4128399023201,
+    },
   },
   OR: {
     id: 'OR',
     name: 'Oregon',
-    regions: {},
+    regions: {
+      NW: 100,
+    },
   },
   PA: {
     id: 'PA',
     name: 'Pennsylvania',
-    regions: {},
+    regions: {
+      MIDA: 100,
+    },
   },
   RI: {
     id: 'RI',
     name: 'Rhode Island',
-    regions: {},
+    regions: {
+      NE: 100,
+    },
   },
   SC: {
     id: 'SC',
     name: 'South Carolina',
-    regions: {},
+    regions: {
+      NCSC: 100,
+    },
   },
   SD: {
     id: 'SD',
     name: 'South Dakota',
-    regions: {},
+    regions: {
+      RM: 24.6328808233089,
+      MIDW: 25.4722557633138,
+      CENT: 49.8948634133773,
+    },
   },
   TN: {
     id: 'TN',
     name: 'Tennessee',
-    regions: {},
+    regions: {
+      TN: 97.9705292162893,
+      MIDA: 2.02947078371074,
+    },
   },
   TX: {
     id: 'TX',
     name: 'Texas',
-    regions: {},
+    regions: {
+      SW: 1.49870155100264,
+      TE: 85.6392226594376,
+      MIDW: 5.4354231583257,
+      CENT: 7.42665263123409,
+    },
   },
   UT: {
     id: 'UT',
     name: 'Utah',
-    regions: {},
+    regions: {
+      NW: 97.3172662009813,
+      RM: 2.68273379901869,
+    },
   },
   VA: {
     id: 'VA',
     name: 'Virginia',
-    regions: {},
+    regions: {
+      MIDA: 100,
+    },
   },
   VT: {
     id: 'VT',
     name: 'Vermont',
-    regions: {},
+    regions: {
+      NE: 100,
+    },
   },
   WA: {
     id: 'WA',
     name: 'Washington',
-    regions: {},
+    regions: {
+      NW: 100,
+    },
   },
   WI: {
     id: 'WI',
     name: 'Wisconsin',
-    regions: {},
+    regions: {
+      MIDW: 100,
+    },
   },
   WV: {
     id: 'WV',
     name: 'West Virginia',
-    regions: {},
+    regions: {
+      MIDA: 100,
+    },
   },
   WY: {
     id: 'WY',
     name: 'Wyoming',
-    regions: {},
+    regions: {
+      NW: 62.2496676189133,
+      RM: 37.7503323810867,
+    },
   },
 };
 
