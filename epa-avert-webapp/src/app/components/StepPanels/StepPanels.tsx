@@ -1,9 +1,9 @@
-import React from 'react';
+/** @jsx jsx */
+
+import { jsx, css } from '@emotion/core';
 import { useDispatch } from 'react-redux';
 // components
 import LoadingIcon from 'app/components/LoadingIcon';
-import Panel from 'app/components/Panel';
-import PanelBody from 'app/components/PanelBody/PanelBody';
 import PanelFooter from 'app/components/PanelFooter/PanelFooter';
 import RegionsList from 'app/components/RegionsList';
 import RegionsMap from 'app/components/RegionsMap';
@@ -23,6 +23,38 @@ import { toggleModalOverlay, resetActiveModal } from 'app/redux/reducers/panel';
 import { useSelectedRegions } from 'app/hooks';
 // styles
 import './styles.css';
+
+const panelStyles = css`
+  &[data-active='false'] {
+    display: none;
+  }
+`;
+
+const panelBodyStyles = css`
+  padding: 1rem;
+  border-top: 0.375rem solid rgb(0, 190, 230);
+  min-height: 30rem;
+
+  @media (min-width: 25em) {
+    padding: 1.125rem;
+  }
+
+  @media (min-width: 30em) {
+    padding: 1.25rem;
+  }
+
+  @media (min-width: 35em) {
+    padding: 1.375rem;
+  }
+
+  @media (min-width: 40em) {
+    padding: 1.5rem;
+  }
+`;
+
+const panelHeadingStyles = css`
+  margin-top: 0;
+`;
 
 function StepPanels() {
   const dispatch = useDispatch();
@@ -107,8 +139,12 @@ function StepPanels() {
         )
       }
 
-      <Panel active={activeStep === 1}>
-        <PanelBody heading="Select Region">
+      <section css={panelStyles} data-active={activeStep === 1}>
+        <div css={panelBodyStyles}>
+          <h2 css={panelHeadingStyles} className="avert-heading-two">
+            Select Region
+          </h2>
+
           <p>
             AVERT splits the contiguous 48 states into 14 regions. AVERT regions
             are aggregated based on EPA’s{' '}
@@ -136,9 +172,13 @@ function StepPanels() {
             </a>
             ) allows analyses for years 2017–2019 or for a future year scenario.
           </p>
-        </PanelBody>
+        </div>
 
-        <PanelBody heading="Select State">
+        <div css={panelBodyStyles}>
+          <h2 css={panelHeadingStyles} className="avert-heading-two">
+            Select State
+          </h2>
+
           <p>
             Select a state for analysis by either using the dropdown menu or
             clicking the map. Selecting a state loads the power plants operating
@@ -160,13 +200,17 @@ function StepPanels() {
             </a>
             ) allows analyses for years 2017–2019 or for a future year scenario.
           </p>
-        </PanelBody>
+        </div>
 
         <PanelFooter nextButtonText="Set EE/RE Impacts" />
-      </Panel>
+      </section>
 
-      <Panel active={activeStep === 2}>
-        <PanelBody heading="Set Energy Efficiency and Renewable Energy Impacts">
+      <section css={panelStyles} data-active={activeStep === 2}>
+        <div css={panelBodyStyles}>
+          <h2 css={panelHeadingStyles} className="avert-heading-two">
+            Set Energy Efficiency and Renewable Energy Impacts
+          </h2>
+
           <UnitConversion />
 
           <p>
@@ -192,16 +236,20 @@ function StepPanels() {
 
           <EEREInputs />
           <EEREChart />
-        </PanelBody>
+        </div>
 
         <PanelFooter
           prevButtonText="Back to Region"
           nextButtonText="Get Results"
         />
-      </Panel>
+      </section>
 
-      <Panel active={activeStep === 3}>
-        <PanelBody heading="Results: Avoided Regional, State, and County-Level Emissions">
+      <section css={panelStyles} data-active={activeStep === 3}>
+        <div css={panelBodyStyles}>
+          <h2 css={panelHeadingStyles} className="avert-heading-two">
+            Results: Avoided Regional, State, and County-Level Emissions
+          </h2>
+
           {
             // conditionally display validation warning
             !softValid && (
@@ -230,13 +278,13 @@ function StepPanels() {
           />
 
           <DataDownload />
-        </PanelBody>
+        </div>
 
         <PanelFooter
           prevButtonText="Back to EE/RE Impacts"
           nextButtonText="Reset Region"
         />
-      </Panel>
+      </section>
     </div>
   );
 }
