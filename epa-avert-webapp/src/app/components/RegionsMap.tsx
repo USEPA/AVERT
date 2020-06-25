@@ -171,7 +171,7 @@ function Region({ id, fill, children }: RegionProps) {
   );
 }
 
-function RegionMap() {
+function RegionsMap() {
   return (
     <div css={containerStyles}>
       <svg
@@ -355,4 +355,4 @@ function RegionMap() {
   );
 }
 
-export default RegionMap;
+export default RegionsMap;
