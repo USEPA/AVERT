@@ -1,6 +1,7 @@
 /** @jsx jsx */
 
 import { jsx, css } from '@emotion/core';
+import { useDispatch } from 'react-redux';
 // components
 import Alabama from 'app/components/States/Alabama';
 import Arkansas from 'app/components/States/Arkansas';
@@ -51,6 +52,12 @@ import Washington from 'app/components/States/Washington';
 import Wisconsin from 'app/components/States/Wisconsin';
 import WestVirginia from 'app/components/States/WestVirginia';
 import Wyoming from 'app/components/States/Wyoming';
+// reducers
+import { selectState } from 'app/redux/reducers/states';
+// hooks
+import { useSelectedState } from 'app/hooks';
+// config
+import { StateId, states } from 'app/config';
 
 const containerStyles = css`
   position: relative;
@@ -78,6 +85,90 @@ const statesStyles = css`
   fill: #bdc736;
 `;
 
+const stateStyles = css`
+  cursor: pointer;
+  opacity: 0.33;
+
+  &:hover {
+    opacity: 0.66;
+  }
+
+  &[data-active='true'] {
+    opacity: 1;
+  }
+`;
+
+type StateProps = {
+  id: StateId;
+  children: React.ReactElement<
+    | typeof Alabama
+    | typeof Arkansas
+    | typeof Arizona
+    | typeof California
+    | typeof Colorado
+    | typeof Connecticut
+    | typeof DistrictOfColumbia
+    | typeof Delaware
+    | typeof Florida
+    | typeof Georgia
+    | typeof Iowa
+    | typeof Idaho
+    | typeof Illinois
+    | typeof Indiana
+    | typeof Kansas
+    | typeof Kentucky
+    | typeof Louisiana
+    | typeof Massachusetts
+    | typeof Maryland
+    | typeof Maine
+    | typeof Michigan
+    | typeof Minnesota
+    | typeof Missouri
+    | typeof Mississippi
+    | typeof Montana
+    | typeof NorthCarolina
+    | typeof NorthDakota
+    | typeof Nebraska
+    | typeof NewHampshire
+    | typeof NewJersey
+    | typeof NewMexico
+    | typeof Nevada
+    | typeof NewYork
+    | typeof Ohio
+    | typeof Oklahoma
+    | typeof Oregon
+    | typeof Pennsylvania
+    | typeof RhodeIsland
+    | typeof SouthCarolina
+    | typeof SouthDakota
+    | typeof Tennessee
+    | typeof Texas
+    | typeof Utah
+    | typeof Virginia
+    | typeof Vermont
+    | typeof Washington
+    | typeof Wisconsin
+    | typeof WestVirginia
+    | typeof Wyoming
+  >;
+};
+
+function State({ id, children }: StateProps) {
+  const dispatch = useDispatch();
+
+  const selectedStateId = useSelectedState()?.id;
+
+  return (
+    <g
+      css={stateStyles}
+      onClick={(ev) => dispatch(selectState(id))}
+      data-active={selectedStateId === id}
+    >
+      {children}
+    </g>
+  );
+}
+
 function StatesMap() {
   return (
     <div css={containerStyles}>
@@ -90,55 +181,201 @@ function StatesMap() {
         <title>AVERT state map</title>
 
         <g css={statesStyles} data-id="states">
-          <Alabama />
-          <Arkansas />
-          <Arizona />
-          <California />
-          <Colorado />
-          <Connecticut />
-          <DistrictOfColumbia />
-          <Delaware />
-          <Florida />
-          <Georgia />
-          <Iowa />
-          <Idaho />
-          <Illinois />
-          <Indiana />
-          <Kansas />
-          <Kentucky />
-          <Louisiana />
-          <Massachusetts />
-          <Maryland />
-          <Maine />
-          <Michigan />
-          <Minnesota />
-          <Missouri />
-          <Mississippi />
-          <Montana />
-          <NorthCarolina />
-          <NorthDakota />
-          <Nebraska />
-          <NewHampshire />
-          <NewJersey />
-          <NewMexico />
-          <Nevada />
-          <NewYork />
-          <Ohio />
-          <Oklahoma />
-          <Oregon />
-          <Pennsylvania />
-          <RhodeIsland />
-          <SouthCarolina />
-          <SouthDakota />
-          <Tennessee />
-          <Texas />
-          <Utah />
-          <Virginia />
-          <Vermont />
-          <Washington />
-          <Wisconsin />
-          <WestVirginia />
-          <Wyoming />
+          <State id={states.AL.id}>
+            <Alabama />
+          </State>
+
+          <State id={states.AR.id}>
+            <Arkansas />
+          </State>
+
+          <State id={states.AZ.id}>
+            <Arizona />
+          </State>
+
+          <State id={states.CA.id}>
+            <California />
+          </State>
+
+          <State id={states.CO.id}>
+            <Colorado />
+          </State>
+
+          <State id={states.CT.id}>
+            <Connecticut />
+          </State>
+
+          <State id={states.DC.id}>
+            <DistrictOfColumbia />
+          </State>
+
+          <State id={states.DE.id}>
+            <Delaware />
+          </State>
+
+          <State id={states.FL.id}>
+            <Florida />
+          </State>
+
+          <State id={states.GA.id}>
+            <Georgia />
+          </State>
+
+          <State id={states.IA.id}>
+            <Iowa />
+          </State>
+
+          <State id={states.ID.id}>
+            <Idaho />
+          </State>
+
+          <State id={states.IL.id}>
+            <Illinois />
+          </State>
+
+          <State id={states.IN.id}>
+            <Indiana />
+          </State>
+
+          <State id={states.KS.id}>
+            <Kansas />
+          </State>
+
+          <State id={states.KY.id}>
+            <Kentucky />
+          </State>
+
+          <State id={states.LA.id}>
+            <Louisiana />
+          </State>
+
+          <State id={states.MA.id}>
+            <Massachusetts />
+          </State>
+
+          <State id={states.MD.id}>
+            <Maryland />
+          </State>
+
+          <State id={states.ME.id}>
+            <Maine />
+          </State>
+
+          <State id={states.MI.id}>
+            <Michigan />
+          </State>
+
+          <State id={states.MN.id}>
+            <Minnesota />
+          </State>
+
+          <State id={states.MO.id}>
+            <Missouri />
+          </State>
+
+          <State id={states.MS.id}>
+            <Mississippi />
+          </State>
+
+          <State id={states.MT.id}>
+            <Montana />
+          </State>
+
+          <State id={states.NC.id}>
+            <NorthCarolina />
+          </State>
+
+          <State id={states.ND.id}>
+            <NorthDakota />
+          </State>
+
+          <State id={states.NE.id}>
+            <Nebraska />
+          </State>
+
+          <State id={states.NH.id}>
+            <NewHampshire />
+          </State>
+
+          <State id={states.NJ.id}>
+            <NewJersey />
+          </State>
+
+          <State id={states.NM.id}>
+            <NewMexico />
+          </State>
+
+          <State id={states.NV.id}>
+            <Nevada />
+          </State>
+
+          <State id={states.NY.id}>
+            <NewYork />
+          </State>
+
+          <State id={states.OH.id}>
+            <Ohio />
+          </State>
+
+          <State id={states.OK.id}>
+            <Oklahoma />
+          </State>
+
+          <State id={states.OR.id}>
+            <Oregon />
+          </State>
+
+          <State id={states.PA.id}>
+            <Pennsylvania />
+          </State>
+
+          <State id={states.RI.id}>
+            <RhodeIsland />
+          </State>
+
+          <State id={states.SC.id}>
+            <SouthCarolina />
+          </State>
+
+          <State id={states.SD.id}>
+            <SouthDakota />
+          </State>
+
+          <State id={states.TN.id}>
+            <Tennessee />
+          </State>
+
+          <State id={states.TX.id}>
+            <Texas />
+          </State>
+
+          <State id={states.UT.id}>
+            <Utah />
+          </State>
+
+          <State id={states.VA.id}>
+            <Virginia />
+          </State>
+
+          <State id={states.VT.id}>
+            <Vermont />
+          </State>
+
+          <State id={states.WA.id}>
+            <Washington />
+          </State>
+
+          <State id={states.WI.id}>
+            <Wisconsin />
+          </State>
+
+          <State id={states.WV.id}>
+            <WestVirginia />
+          </State>
+
+          <State id={states.WY.id}>
+            <Wyoming />
+          </State>
         </g>
       </svg>
     </div>

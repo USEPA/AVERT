@@ -17,12 +17,12 @@ const selectStyles = css`
 function RegionsList() {
   const dispatch = useDispatch();
 
-  const regionIds = useSelectedRegions().map((region) => region.id);
+  const selectedRegionIds = useSelectedRegions().map((region) => region.id);
 
   return (
     <select
       css={selectStyles}
-      value={regionIds.length === 0 ? '' : regionIds[0]}
+      value={selectedRegionIds.length === 0 ? '' : selectedRegionIds[0]}
       onChange={(ev) => {
         dispatch(selectRegions([ev.target.value] as RegionId[]));
       }}
