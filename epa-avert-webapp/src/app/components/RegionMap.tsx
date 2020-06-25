@@ -3,21 +3,69 @@
 import { jsx, css } from '@emotion/core';
 import { useDispatch } from 'react-redux';
 // components
-import California from 'app/components/Regions/California';
-import Carolinas from 'app/components/Regions/Carolinas';
-import Central from 'app/components/Regions/Central';
-import Florida from 'app/components/Regions/Florida';
-import MidAtlantic from 'app/components/Regions/MidAtlantic';
-import Midwest from 'app/components/Regions/Midwest';
-import NewEngland from 'app/components/Regions/NewEngland';
-import NewYork from 'app/components/Regions/NewYork';
-import Northwest from 'app/components/Regions/Northwest';
-import RockyMountains from 'app/components/Regions/RockyMountains';
-import Southeast from 'app/components/Regions/Southeast';
-import Southwest from 'app/components/Regions/Southwest';
-import Tennessee from 'app/components/Regions/Tennessee';
-import Texas from 'app/components/Regions/Texas';
-import UnitedStates from 'app/components/UnitedStates';
+import CaliforniaRegion from 'app/components/Regions/California';
+import CarolinasRegion from 'app/components/Regions/Carolinas';
+import CentralRegion from 'app/components/Regions/Central';
+import FloridaRegion from 'app/components/Regions/Florida';
+import MidAtlanticRegion from 'app/components/Regions/MidAtlantic';
+import MidwestRegion from 'app/components/Regions/Midwest';
+import NewEnglandRegion from 'app/components/Regions/NewEngland';
+import NewYorkRegion from 'app/components/Regions/NewYork';
+import NorthwestRegion from 'app/components/Regions/Northwest';
+import RockyMountainsRegion from 'app/components/Regions/RockyMountains';
+import SoutheastRegion from 'app/components/Regions/Southeast';
+import SouthwestRegion from 'app/components/Regions/Southwest';
+import TennesseeRegion from 'app/components/Regions/Tennessee';
+import TexasRegion from 'app/components/Regions/Texas';
+import Alabama from 'app/components/States/Alabama';
+import Arkansas from 'app/components/States/Arkansas';
+import Arizona from 'app/components/States/Arizona';
+import California from 'app/components/States/California';
+import Colorado from 'app/components/States/Colorado';
+import Connecticut from 'app/components/States/Connecticut';
+import DistrictOfColumbia from 'app/components/States/DistrictOfColumbia';
+import Delaware from 'app/components/States/Delaware';
+import Florida from 'app/components/States/Florida';
+import Georgia from 'app/components/States/Georgia';
+import Iowa from 'app/components/States/Iowa';
+import Idaho from 'app/components/States/Idaho';
+import Illinois from 'app/components/States/Illinois';
+import Indiana from 'app/components/States/Indiana';
+import Kansas from 'app/components/States/Kansas';
+import Kentucky from 'app/components/States/Kentucky';
+import Louisiana from 'app/components/States/Louisiana';
+import Massachusetts from 'app/components/States/Massachusetts';
+import Maryland from 'app/components/States/Maryland';
+import Maine from 'app/components/States/Maine';
+import Michigan from 'app/components/States/Michigan';
+import Minnesota from 'app/components/States/Minnesota';
+import Missouri from 'app/components/States/Missouri';
+import Mississippi from 'app/components/States/Mississippi';
+import Montana from 'app/components/States/Montana';
+import NorthCarolina from 'app/components/States/NorthCarolina';
+import NorthDakota from 'app/components/States/NorthDakota';
+import Nebraska from 'app/components/States/Nebraska';
+import NewHampshire from 'app/components/States/NewHampshire';
+import NewJersey from 'app/components/States/NewJersey';
+import NewMexico from 'app/components/States/NewMexico';
+import Nevada from 'app/components/States/Nevada';
+import NewYork from 'app/components/States/NewYork';
+import Ohio from 'app/components/States/Ohio';
+import Oklahoma from 'app/components/States/Oklahoma';
+import Oregon from 'app/components/States/Oregon';
+import Pennsylvania from 'app/components/States/Pennsylvania';
+import RhodeIsland from 'app/components/States/RhodeIsland';
+import SouthCarolina from 'app/components/States/SouthCarolina';
+import SouthDakota from 'app/components/States/SouthDakota';
+import Tennessee from 'app/components/States/Tennessee';
+import Texas from 'app/components/States/Texas';
+import Utah from 'app/components/States/Utah';
+import Virginia from 'app/components/States/Virginia';
+import Vermont from 'app/components/States/Vermont';
+import Washington from 'app/components/States/Washington';
+import Wisconsin from 'app/components/States/Wisconsin';
+import WestVirginia from 'app/components/States/WestVirginia';
+import Wyoming from 'app/components/States/Wyoming';
 // reducers
 import { selectRegions } from 'app/redux/reducers/regions';
 // hooks
@@ -61,13 +109,14 @@ const labelStyles = css`
   }
 `;
 
-const boundaryStyles = css`
+const outlineStyles = css`
   stroke: #fff;
   stroke-width: 0.75px;
   stroke-linejoin: round;
 `;
 
 const statesStyles = css`
+  fill: none;
   pointer-events: none;
 `;
 
@@ -88,20 +137,20 @@ type RegionProps = {
   id: RegionId;
   fill: string;
   children: React.ReactElement<
-    | typeof California
-    | typeof Carolinas
-    | typeof Central
-    | typeof Florida
-    | typeof MidAtlantic
-    | typeof Midwest
-    | typeof NewEngland
-    | typeof NewYork
-    | typeof Northwest
-    | typeof RockyMountains
-    | typeof Southeast
-    | typeof Southwest
-    | typeof Tennessee
-    | typeof Texas
+    | typeof CaliforniaRegion
+    | typeof CarolinasRegion
+    | typeof CentralRegion
+    | typeof FloridaRegion
+    | typeof MidAtlanticRegion
+    | typeof MidwestRegion
+    | typeof NewEnglandRegion
+    | typeof NewYorkRegion
+    | typeof NorthwestRegion
+    | typeof RockyMountainsRegion
+    | typeof SoutheastRegion
+    | typeof SouthwestRegion
+    | typeof TennesseeRegion
+    | typeof TexasRegion
   >;
 };
 
@@ -133,66 +182,114 @@ function RegionMap() {
       >
         <title>AVERT region map</title>
 
-        <g data-id="regions" css={boundaryStyles}>
+        <g data-id="regions" css={outlineStyles}>
           <Region id={regions.CA.id} fill="#fed330">
-            <California />
+            <CaliforniaRegion />
           </Region>
 
           <Region id={regions.NCSC.id} fill="#bdc736">
-            <Carolinas />
+            <CarolinasRegion />
           </Region>
 
           <Region id={regions.CENT.id} fill="#a74c8f">
-            <Central />
+            <CentralRegion />
           </Region>
 
           <Region id={regions.FL.id} fill="#238e86">
-            <Florida />
+            <FloridaRegion />
           </Region>
 
           <Region id={regions.MIDA.id} fill="#db742b">
-            <MidAtlantic />
+            <MidAtlanticRegion />
           </Region>
 
           <Region id={regions.MIDW.id} fill="#48b5d8">
-            <Midwest />
+            <MidwestRegion />
           </Region>
 
           <Region id={regions.NE.id} fill="#d52074">
-            <NewEngland />
+            <NewEnglandRegion />
           </Region>
 
           <Region id={regions.NY.id} fill="#8449b7">
-            <NewYork />
+            <NewYorkRegion />
           </Region>
 
           <Region id={regions.NW.id} fill="#364f95">
-            <Northwest />
+            <NorthwestRegion />
           </Region>
 
           <Region id={regions.RM.id} fill="#67b187">
-            <RockyMountains />
+            <RockyMountainsRegion />
           </Region>
 
           <Region id={regions.SE.id} fill="#99781a">
-            <Southeast />
+            <SoutheastRegion />
           </Region>
 
           <Region id={regions.SW.id} fill="#d85029">
-            <Southwest />
+            <SouthwestRegion />
           </Region>
 
           <Region id={regions.TN.id} fill="#157a15">
-            <Tennessee />
+            <TennesseeRegion />
           </Region>
 
           <Region id={regions.TE.id} fill="#fda929">
-            <Texas />
+            <TexasRegion />
           </Region>
         </g>
 
-        <g data-id="states" css={[boundaryStyles, statesStyles]}>
-          <UnitedStates fill="none" />
+        <g data-id="states" css={[outlineStyles, statesStyles]}>
+          <Alabama />
+          <Arkansas />
+          <Arizona />
+          <California />
+          <Colorado />
+          <Connecticut />
+          <DistrictOfColumbia />
+          <Delaware />
+          <Florida />
+          <Georgia />
+          <Iowa />
+          <Idaho />
+          <Illinois />
+          <Indiana />
+          <Kansas />
+          <Kentucky />
+          <Louisiana />
+          <Massachusetts />
+          <Maryland />
+          <Maine />
+          <Michigan />
+          <Minnesota />
+          <Missouri />
+          <Mississippi />
+          <Montana />
+          <NorthCarolina />
+          <NorthDakota />
+          <Nebraska />
+          <NewHampshire />
+          <NewJersey />
+          <NewMexico />
+          <Nevada />
+          <NewYork />
+          <Ohio />
+          <Oklahoma />
+          <Oregon />
+          <Pennsylvania />
+          <RhodeIsland />
+          <SouthCarolina />
+          <SouthDakota />
+          <Tennessee />
+          <Texas />
+          <Utah />
+          <Virginia />
+          <Vermont />
+          <Washington />
+          <Wisconsin />
+          <WestVirginia />
+          <Wyoming />
         </g>
 
         <g data-id="labels">
