@@ -1,23 +1,9 @@
 /** @jsx jsx */
 
-import React from 'react';
 import { jsx, css } from '@emotion/core';
 import { useDispatch } from 'react-redux';
 // components
-import California from './California';
-import Carolinas from './Carolinas';
-import Central from './Central';
-import Florida from './Florida';
-import MidAtlantic from './MidAtlantic';
-import Midwest from './Midwest';
-import NewEngland from './NewEngland';
-import NewYork from './NewYork';
-import Northwest from './Northwest';
-import RockyMountains from './RockyMountains';
-import Southeast from './Southeast';
-import Southwest from './Southwest';
-import Tennessee from './Tennessee';
-import Texas from './Texas';
+import { RegionComponent } from 'app/components/RegionMap/RegionMap';
 // reducers
 import { selectRegions } from 'app/redux/reducers/regions';
 // hooks
@@ -40,22 +26,7 @@ const regionStyles = css`
 
 type Props = {
   id: RegionId;
-  children: React.ReactElement<
-    | typeof California
-    | typeof Carolinas
-    | typeof Central
-    | typeof Florida
-    | typeof MidAtlantic
-    | typeof Midwest
-    | typeof NewEngland
-    | typeof NewYork
-    | typeof Northwest
-    | typeof RockyMountains
-    | typeof Southeast
-    | typeof Southwest
-    | typeof Tennessee
-    | typeof Texas
-  >;
+  children: RegionComponent;
 };
 
 function Region({ id, children }: Props) {

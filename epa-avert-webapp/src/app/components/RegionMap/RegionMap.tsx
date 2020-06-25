@@ -3,23 +3,40 @@
 import { jsx, css } from '@emotion/core';
 // components
 import Region from './components/Region';
-import California from './components/California';
-import Carolinas from './components/Carolinas';
-import Central from './components/Central';
-import Florida from './components/Florida';
-import MidAtlantic from './components/MidAtlantic';
-import Midwest from './components/Midwest';
-import NewEngland from './components/NewEngland';
-import NewYork from './components/NewYork';
-import Northwest from './components/Northwest';
-import RockyMountains from './components/RockyMountains';
-import Southeast from './components/Southeast';
-import Southwest from './components/Southwest';
-import Tennessee from './components/Tennessee';
-import Texas from './components/Texas';
+import California from 'app/components/Regions/California';
+import Carolinas from 'app/components/Regions/Carolinas';
+import Central from 'app/components/Regions/Central';
+import Florida from 'app/components/Regions/Florida';
+import MidAtlantic from 'app/components/Regions/MidAtlantic';
+import Midwest from 'app/components/Regions/Midwest';
+import NewEngland from 'app/components/Regions/NewEngland';
+import NewYork from 'app/components/Regions/NewYork';
+import Northwest from 'app/components/Regions/Northwest';
+import RockyMountains from 'app/components/Regions/RockyMountains';
+import Southeast from 'app/components/Regions/Southeast';
+import Southwest from 'app/components/Regions/Southwest';
+import Tennessee from 'app/components/Regions/Tennessee';
+import Texas from 'app/components/Regions/Texas';
 import UnitedStates from 'app/components/UnitedStates';
 // config
 import { regions } from 'app/config';
+
+export type RegionComponent = React.ReactElement<
+  | typeof California
+  | typeof Carolinas
+  | typeof Central
+  | typeof Florida
+  | typeof MidAtlantic
+  | typeof Midwest
+  | typeof NewEngland
+  | typeof NewYork
+  | typeof Northwest
+  | typeof RockyMountains
+  | typeof Southeast
+  | typeof Southwest
+  | typeof Tennessee
+  | typeof Texas
+>;
 
 const containerStyles = css`
   position: relative;
