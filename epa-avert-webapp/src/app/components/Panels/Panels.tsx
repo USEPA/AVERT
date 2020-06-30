@@ -56,7 +56,7 @@ const panelHeadingStyles = css`
   margin-top: 0;
 `;
 
-function StepPanels() {
+function Panels() {
   const dispatch = useDispatch();
 
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
@@ -289,4 +289,4 @@ function StepPanels() {
   );
 }
 
-export default StepPanels;
+export default Panels;
