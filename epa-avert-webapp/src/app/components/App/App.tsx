@@ -1,6 +1,6 @@
 import React from 'react';
 // components
-import PanelNav from 'app/components/PanelNav';
+import PanelTabs from 'app/components/PanelTabs';
 import StepPanels from 'app/components/StepPanels/StepPanels';
 // styles
 import './styles.css';
@@ -8,7 +8,7 @@ import './styles.css';
 function App() {
   return (
     <div className="avert-container avert-copy">
-      <PanelNav />
+      <PanelTabs />
       <StepPanels />
     </div>
   );

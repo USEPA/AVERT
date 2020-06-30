@@ -112,7 +112,7 @@ const anchorStyles = css`
   }
 `;
 
-function StepTab({ step, active, title }: Props) {
+function PanelTab({ step, active, title }: Props) {
   return (
     <Tab step={step}>
       <a
@@ -127,4 +127,4 @@ function StepTab({ step, active, title }: Props) {
   );
 }
 
-export default StepTab;
+export default PanelTab;

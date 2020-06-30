@@ -2,7 +2,7 @@
 
 import { jsx, css } from '@emotion/core';
 // components
-import StepTab from 'app/components/StepTab';
+import PanelTab from 'app/components/PanelTab';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 
@@ -21,18 +21,22 @@ const listStyles = css`
   list-style: none;
 `;
 
-function PanelNav() {
+function PanelTabs() {
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
 
   return (
     <nav css={navStyles}>
       <ol css={listStyles}>
-        <StepTab step={1} active={activeStep === 1} title="Select Region" />
-        <StepTab step={2} active={activeStep === 2} title="Set EE/RE Impacts" />
-        <StepTab step={3} active={activeStep === 3} title="Get Results" />
+        <PanelTab step={1} active={activeStep === 1} title="Select Region" />
+        <PanelTab
+          step={2}
+          active={activeStep === 2}
+          title="Set EE/RE Impacts"
+        />
+        <PanelTab step={3} active={activeStep === 3} title="Get Results" />
       </ol>
     </nav>
   );
 }
 
-export default PanelNav;
+export default PanelTabs;
