@@ -1,14 +1,19 @@
+/** @jsx jsx */
+
 import React from 'react';
+import { jsx, css } from '@emotion/core';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
-// styles
-import './styles.css';
 
-const formatEmissions = (number: any) => {
+const rowLabelStyles = css`
+  padding: 0.375rem 1.25rem !important;
+`;
+
+function formatEmissions(number: any) {
   if (number < 10 && number > -10) return '--';
   let output = Math.ceil(number / 10) * 10;
   return output.toLocaleString();
-};
+}
 
 type Props = {
   heading: string;
@@ -45,7 +50,7 @@ const DisplacementsTable = ({ heading }: Props) => {
   // conditionally re-define table when ready to render
   if (readyToRender) {
     table = (
-      <div>
+      <React.Fragment>
         <table className="avert-table">
           <thead>
             <tr>
@@ -57,7 +62,7 @@ const DisplacementsTable = ({ heading }: Props) => {
           </thead>
           <tbody>
             <tr>
-              <td>Generation (MWh)</td>
+              <td css={rowLabelStyles}>Generation (MWh)</td>
               <td className="avert-table-data">
                 {formatEmissions(generationData.original)}
               </td>
@@ -72,7 +77,7 @@ const DisplacementsTable = ({ heading }: Props) => {
               <td colSpan={4}>Total emissions of fossil EGUs</td>
             </tr>
             <tr>
-              <td>
+              <td css={rowLabelStyles}>
                 SO<sub>2</sub> (lbs)
               </td>
               <td className="avert-table-data">
@@ -86,7 +91,7 @@ const DisplacementsTable = ({ heading }: Props) => {
               </td>
             </tr>
             <tr>
-              <td>
+              <td css={rowLabelStyles}>
                 NO<sub>X</sub> (lbs)
               </td>
               <td className="avert-table-data">
@@ -100,7 +105,7 @@ const DisplacementsTable = ({ heading }: Props) => {
               </td>
             </tr>
             <tr>
-              <td>
+              <td css={rowLabelStyles}>
                 CO<sub>2</sub> (tons)
               </td>
               <td className="avert-table-data">
@@ -114,7 +119,7 @@ const DisplacementsTable = ({ heading }: Props) => {
               </td>
             </tr>
             <tr>
-              <td>
+              <td css={rowLabelStyles}>
                 PM<sub>2.5</sub> (lbs)
               </td>
               <td className="avert-table-data">
@@ -131,7 +136,7 @@ const DisplacementsTable = ({ heading }: Props) => {
               <td colSpan={4}>Emission rates of fossil EGUs</td>
             </tr>
             <tr>
-              <td>
+              <td css={rowLabelStyles}>
                 SO<sub>2</sub> (lbs/MWh)
               </td>
               <td className="avert-table-data">
@@ -143,7 +148,7 @@ const DisplacementsTable = ({ heading }: Props) => {
               <td className="avert-table-data">&nbsp;</td>
             </tr>
             <tr>
-              <td>
+              <td css={rowLabelStyles}>
                 NO<sub>X</sub> (lbs/MWh)
               </td>
               <td className="avert-table-data">
@@ -155,7 +160,7 @@ const DisplacementsTable = ({ heading }: Props) => {
               <td className="avert-table-data">&nbsp;</td>
             </tr>
             <tr>
-              <td>
+              <td css={rowLabelStyles}>
                 CO<sub>2</sub> (tons/MWh)
               </td>
               <td className="avert-table-data">
@@ -167,7 +172,7 @@ const DisplacementsTable = ({ heading }: Props) => {
               <td className="avert-table-data">&nbsp;</td>
             </tr>
             <tr>
-              <td>
+              <td css={rowLabelStyles}>
                 PM<sub>2.5</sub> (lbs/MWh)
               </td>
               <td className="avert-table-data">
@@ -187,7 +192,7 @@ const DisplacementsTable = ({ heading }: Props) => {
           result greater than zero, but lower than the level of reportable
           significance.
         </p>
-      </div>
+      </React.Fragment>
     );
   }
 

@@ -12,7 +12,7 @@ import StatesMap from 'app/components/StatesMap';
 import EEREInputs from 'app/components/EEREInputs/EEREInputs';
 import UnitConversion from 'app/components/UnitConversion/UnitConversion';
 import EEREChart from 'app/components/EEREChart';
-import DisplacementsTable from 'app/components/DisplacementsTable/DisplacementsTable';
+import DisplacementsTable from 'app/components/DisplacementsTable';
 import EmissionsTable from 'app/components/EmissionsTable';
 import EmissionsChart from 'app/components/EmissionsChart/EmissionsChart';
 import DataDownload from 'app/components/DataDownload';
