@@ -52,7 +52,7 @@
 }
 
 .avert-modal[data-active='true'] {
-  /*animation-name: scale-up;*/
+  animation-name: scale-up;
   animation-duration: 0.2s;
 }
 
@@ -61,8 +61,8 @@
 }
 
 .avert-modal[data-closing='true'] {
-  /*display: inherit;*/
-  /*animation-name: scale-down;*/
+  display: inherit;
+  animation-name: scale-down;
   animation-duration: 0.3s;
 }
 
