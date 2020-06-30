@@ -3,19 +3,9 @@
 import { jsx, css } from '@emotion/core';
 import styled from '@emotion/styled/macro';
 
-type Props = {
-  step: number;
-  active: boolean;
-  title: string;
-};
-
-type TabProps = {
-  step: number;
-};
-
-const Tab = styled('li')<TabProps>`
+const Tab = styled('li')<{ step: number }>`
   /* remove space above first tab */
-  ${({ step }: TabProps) => {
+  ${({ step }) => {
     if (step === 1) {
       return css`
         a {
@@ -30,7 +20,7 @@ const Tab = styled('li')<TabProps>`
     width: calc((100% - 2.5rem) * 0.333333);
 
     /* space between tabs */
-    ${({ step }: TabProps) => {
+    ${({ step }) => {
       if (step === 1 || step === 2) {
         return css`
           margin-right: 1.25rem;
@@ -39,7 +29,7 @@ const Tab = styled('li')<TabProps>`
     }}
 
     /* right arrow */
-    ${({ step }: TabProps) => {
+    ${({ step }) => {
       if (step === 1 || step === 2) {
         return css`
           a::after {
@@ -60,7 +50,7 @@ const Tab = styled('li')<TabProps>`
     }}
 
     /* fill behind right arrow */
-    ${({ step }: TabProps) => {
+    ${({ step }) => {
       if (step === 2 || step === 3) {
         return css`
           a::before {
@@ -111,6 +101,12 @@ const anchorStyles = css`
     border: 0;
   }
 `;
+
+type Props = {
+  step: number;
+  active: boolean;
+  title: string;
+};
 
 function PanelTab({ step, active, title }: Props) {
   return (

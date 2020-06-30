@@ -1,4 +1,7 @@
-import React from 'react';
+/** @jsx jsx */
+
+import { jsx, css } from '@emotion/core';
+import styled from '@emotion/styled/macro';
 import { useDispatch } from 'react-redux';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
@@ -13,8 +16,71 @@ import { resetStateEmissions } from 'app/redux/reducers/stateEmissions';
 import { resetMonthlyEmissions } from 'app/redux/reducers/monthlyEmissions';
 // hooks
 import { useSelectedRegions } from 'app/hooks';
-// styles
-import './styles.css';
+// icons
+import icons from 'app/icons.svg';
+
+const footerStyles = css`
+  overflow: hidden;
+  padding: 0.75rem;
+  background: #eee;
+`;
+
+const buttonsStyles = css`
+  margin-top: 0;
+`;
+
+const iconStyles = css`
+  content: '';
+  display: inline-block;
+  width: 0.625rem;
+  height: 0.625rem;
+  background-image: url(${icons});
+  background-size: 400px 200px;
+  background-position: -36px -10px;
+`;
+
+const PrevButton = styled('a')`
+  float: left;
+
+  &::before {
+    ${iconStyles};
+    margin-right: 0.375rem;
+    transform: rotate(180deg);
+  }
+`;
+
+const NextButton = styled('a')<{ onStepThree: boolean }>`
+  float: right;
+
+  &::after {
+    ${iconStyles};
+    margin-left: 0.375rem;
+  }
+
+  ${({ onStepThree }) => {
+    if (onStepThree) {
+      return css`
+        background-color: rgb(146, 193, 47) !important;
+
+        &:hover {
+          background-color: rgb(159, 207, 58) !important;
+        }
+
+        /* hide next icon */
+        &::after {
+          display: none;
+        }
+
+        /* reset icon */
+        &::before {
+          ${iconStyles};
+          margin-right: 0.375rem;
+          background-position: -56px -10px;
+        }
+      `;
+    }
+  }}
+`;
 
 type Props = {
   prevButtonText?: string;
@@ -34,19 +100,13 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
   const onStepTwo = activeStep === 2;
   const onStepThree = activeStep === 3;
 
-  // smooth scroll to top
-  function scrollToTop(duration = 300) {
-    // const step = -window.scrollY / (duration / 16.666);
-    // const interval = setInterval(() => {
-    //   if (window.scrollY === 0) { clearInterval(interval) }
-    //   window.scrollBy(0, step);
-    // }, 16.666);
+  function scrollToTop() {
     window.scrollTo(0, 0);
   }
 
   const prevButton = !prevButtonText ? null : (
-    <a
-      className="avert-button avert-prev"
+    <PrevButton
+      className="avert-button"
       href="/"
       onClick={(ev) => {
         ev.preventDefault();
@@ -64,7 +124,7 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
       }}
     >
       {prevButtonText}
-    </a>
+    </PrevButton>
   );
 
   // conditionally define reset and disabled classes
@@ -80,8 +140,9 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
   const resetClass = onStepThree ? 'avert-reset-button' : '';
 
   const nextButton = (
-    <a
-      className={`avert-button avert-next ${disabledClass} ${resetClass}`}
+    <NextButton
+      onStepThree={onStepThree}
+      className={`avert-button ${disabledClass} ${resetClass}`}
       href="/"
       onClick={(ev) => {
         ev.preventDefault();
@@ -114,12 +175,12 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
       }}
     >
       {nextButtonText}
-    </a>
+    </NextButton>
   );
 
   return (
-    <div className="avert-step-footer">
-      <p className="avert-centered">
+    <div css={footerStyles} className="avert-step-footer">
+      <p css={buttonsStyles} className="avert-centered">
         {prevButton}
         {nextButton}
       </p>

@@ -2,7 +2,7 @@
 
 import { jsx, css, keyframes } from '@emotion/core';
 
-const spin = keyframes`
+const spinAnimation = keyframes`
   0% {
     transform: rotate(0);
   }
@@ -18,7 +18,7 @@ const turbineBaseStyles = css`
 
 const turbineBladesStyles = css`
   transform-origin: 88px 86.78px; /* center of blades */
-  animation: ${spin} 2s linear infinite;
+  animation: ${spinAnimation} 2s linear infinite;
 
   path {
     fill: #00bee6;

@@ -4,7 +4,7 @@ import { jsx, css } from '@emotion/core';
 import { useDispatch } from 'react-redux';
 // components
 import LoadingIcon from 'app/components/LoadingIcon';
-import PanelFooter from 'app/components/PanelFooter/PanelFooter';
+import PanelFooter from 'app/components/PanelFooter';
 import RegionsList from 'app/components/RegionsList';
 import RegionsMap from 'app/components/RegionsMap';
 import StatesList from 'app/components/StatesList';
