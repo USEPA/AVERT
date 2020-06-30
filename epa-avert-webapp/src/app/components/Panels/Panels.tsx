@@ -14,7 +14,7 @@ import UnitConversion from 'app/components/UnitConversion/UnitConversion';
 import EEREChart from 'app/components/EEREChart';
 import DisplacementsTable from 'app/components/DisplacementsTable';
 import EmissionsTable from 'app/components/EmissionsTable';
-import EmissionsChart from 'app/components/EmissionsChart/EmissionsChart';
+import EmissionsChart from 'app/components/EmissionsChart';
 import DataDownload from 'app/components/DataDownload';
 // reducers
 import { useTypedSelector } from 'app/redux/index';

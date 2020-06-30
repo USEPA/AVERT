@@ -1,4 +1,7 @@
+/** @jsx jsx */
+
 import React from 'react';
+import { jsx, css } from '@emotion/core';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useDispatch } from 'react-redux';
@@ -16,10 +19,61 @@ import {
 import { useSelectedRegions } from 'app/hooks';
 // config
 import { StateId, states } from 'app/config';
-// styles
-import './styles.css';
 
 require('highcharts/modules/exporting')(Highcharts);
+
+const filterGroupStyles = css`
+  overflow: hidden;
+  margin-bottom: 1rem;
+
+  label {
+    display: block;
+    margin-left: 0.75rem;
+
+    @media (min-width: 25em) {
+      display: inline-block;
+    }
+  }
+
+  input {
+    margin-right: 0.375rem;
+  }
+`;
+
+const filterTextStyles = css`
+  margin-top: 0;
+
+  @media (min-width: 35em) {
+    display: inline-block;
+  }
+`;
+
+const geographyFilterStyles = css`
+  overflow: hidden;
+`;
+
+const selectGroupStyles = css`
+  float: left;
+  margin: 0 0.5rem 1rem;
+  width: calc(50% - 1rem);
+
+  select {
+    width: 100%;
+  }
+`;
+
+const emissionsChartsStyles = css`
+  padding: 1rem;
+  border: 1px solid #aaa;
+
+  [data-highcharts-chart] {
+    margin-bottom: 1rem;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+`;
 
 type Props = {
   heading: string;
@@ -79,8 +133,8 @@ function EmissionsChart({ heading }: Props) {
   let aggregationFilter;
   if (readyToRender) {
     aggregationFilter = (
-      <div className="avert-inline-select" id="geography-groups">
-        <p>Select level of aggregation:</p>
+      <div css={filterGroupStyles}>
+        <p css={filterTextStyles}>Select level of aggregation:</p>
 
         <label>
           <input
@@ -136,10 +190,10 @@ function EmissionsChart({ heading }: Props) {
     );
   }
 
-  let StateSelector;
+  let stateSelect;
   if (aggregation === 'state' || aggregation === 'county') {
-    StateSelector = (
-      <div className="avert-select-group">
+    stateSelect = (
+      <div css={selectGroupStyles}>
         <select
           value={selectedStateId}
           onChange={(ev) => dispatch(selectMonthlyState(ev.target.value))}
@@ -162,10 +216,10 @@ function EmissionsChart({ heading }: Props) {
     );
   }
 
-  let CountySelector;
+  let countySelect;
   if (aggregation === 'county') {
-    CountySelector = (
-      <div className="avert-select-group">
+    countySelect = (
+      <div css={selectGroupStyles}>
         <select
           value={selectedCounty}
           onChange={(ev) => dispatch(selectMonthlyCounty(ev.target.value))}
@@ -188,9 +242,9 @@ function EmissionsChart({ heading }: Props) {
   let geographyFilter;
   if (readyToRender) {
     geographyFilter = (
-      <div className="avert-geography-filter">
-        {StateSelector}
-        {CountySelector}
+      <div css={geographyFilterStyles}>
+        {stateSelect}
+        {countySelect}
       </div>
     );
   }
@@ -198,8 +252,8 @@ function EmissionsChart({ heading }: Props) {
   let unitFilter;
   if (readyToRender) {
     unitFilter = (
-      <div className="avert-inline-select">
-        <p>Select units:</p>
+      <div css={filterGroupStyles}>
+        <p css={filterTextStyles}>Select units:</p>
 
         <label>
           <input
@@ -207,9 +261,9 @@ function EmissionsChart({ heading }: Props) {
             name="unit"
             value={'emissions'}
             checked={unit === 'emissions'}
-            onChange={(ev) =>
-              dispatch(selectMonthlyUnit(ev.target.value as MonthlyUnit))
-            }
+            onChange={(ev) => {
+              dispatch(selectMonthlyUnit(ev.target.value as MonthlyUnit));
+            }}
           />
           Emission changes (lbs or tons)
         </label>
@@ -398,7 +452,7 @@ function EmissionsChart({ heading }: Props) {
   let charts;
   if (readyToRender) {
     charts = (
-      <div className="avert-emissions-charts">
+      <div css={emissionsChartsStyles} className="avert-emissions-charts">
         <HighchartsReact
           highcharts={Highcharts}
           options={so2Config}
