@@ -138,12 +138,10 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
       ? 'avert-button-disabled'
       : '';
 
-  const resetClass = onStepThree ? 'avert-reset-button' : '';
-
   const nextButton = (
     <NextButton
       resultsShown={onStepThree}
-      className={`avert-button ${disabledClass} ${resetClass}`}
+      className={`avert-button ${disabledClass}`}
       href="/"
       onClick={(ev) => {
         ev.preventDefault();

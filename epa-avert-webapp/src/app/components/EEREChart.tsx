@@ -1,12 +1,20 @@
+/** @jsx jsx */
+
 import React from 'react';
+import { jsx, css } from '@emotion/core';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 // components
 import Tooltip from 'app/components/Tooltip/Tooltip';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
-// styles
-import './styles.css';
+
+// override inherited chart title styles
+const modalStyles = css`
+  font-weight: normal;
+  line-height: 1.375;
+  text-align: left;
+`;
 
 require('highcharts/modules/exporting')(Highcharts);
 
@@ -105,17 +113,19 @@ function EEREChart() {
     const totalLoadGwh = Math.round(totalLoadMwh / -1000).toLocaleString();
 
     chart = (
-      <div className="avert-eere-profile">
+      <React.Fragment>
         <h3 className="avert-chart-title">
           EE/RE profile based on values entered:{' '}
-          <Tooltip id={10}>
-            This graph shows the hourly changes in load that will result from
-            the inputs entered above. It reflects a combination of all inputs,
-            typical capacity factors for wind and solar, and adjustments for
-            avoided transmission and distribution line loss, where applicable.
-            This hourly EE/RE profile will be used to calculate the avoided
-            emissions for this AVERT region.
-          </Tooltip>
+          <span css={modalStyles}>
+            <Tooltip id={10}>
+              This graph shows the hourly changes in load that will result from
+              the inputs entered above. It reflects a combination of all inputs,
+              typical capacity factors for wind and solar, and adjustments for
+              avoided transmission and distribution line loss, where applicable.
+              This hourly EE/RE profile will be used to calculate the avoided
+              emissions for this AVERT region.
+            </Tooltip>
+          </span>
         </h3>
 
         <h4 className="avert-chart-subtitle">
@@ -139,7 +149,7 @@ function EEREChart() {
           This EE/RE profile will displace {totalLoadGwh} GWh of regional fossil
           fuel generation over the course of a year.
         </p>
-      </div>
+      </React.Fragment>
     );
   }
 
@@ -224,11 +234,11 @@ function EEREChart() {
       : null;
 
   return (
-    <div>
+    <React.Fragment>
       {chart}
       {validationError}
       {validationWarning}
-    </div>
+    </React.Fragment>
   );
 }
 

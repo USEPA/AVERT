@@ -26,7 +26,7 @@ function Tooltip({ id, children }: Props) {
   }, [closeLinkRef]);
 
   return (
-    <span>
+    <React.Fragment>
       <a
         href="/"
         className="avert-modal-link"
@@ -60,7 +60,7 @@ function Tooltip({ id, children }: Props) {
 
         {children}
       </span>
-    </span>
+    </React.Fragment>
   );
 }
 

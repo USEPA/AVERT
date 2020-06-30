@@ -135,7 +135,7 @@ function EEREInputs() {
   };
 
   return (
-    <div>
+    <React.Fragment>
       <div className="avert-details-block">
         <header>
           <p>Energy Efficiency</p>
@@ -462,7 +462,7 @@ function EEREInputs() {
           {eereButtonOptions[status]}
         </a>
       </p>
-    </div>
+    </React.Fragment>
   );
 }
 
