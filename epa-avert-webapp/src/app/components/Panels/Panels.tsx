@@ -1,6 +1,7 @@
 /** @jsx jsx */
 
 import { jsx, css } from '@emotion/core';
+import styled from '@emotion/styled/macro';
 import { useDispatch } from 'react-redux';
 // components
 import LoadingIcon from 'app/components/LoadingIcon';
@@ -16,6 +17,7 @@ import DisplacementsTable from 'app/components/DisplacementsTable';
 import EmissionsTable from 'app/components/EmissionsTable';
 import EmissionsChart from 'app/components/EmissionsChart';
 import DataDownload from 'app/components/DataDownload';
+import { modalLinkStyles } from 'app/components/Tooltip';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 import { toggleModalOverlay, resetActiveModal } from 'app/redux/reducers/panel';
@@ -23,6 +25,27 @@ import { toggleModalOverlay, resetActiveModal } from 'app/redux/reducers/panel';
 import { useSelectedRegions } from 'app/hooks';
 // styles
 import './styles.css';
+
+const Container = styled('div')<{ modalActive: boolean }>`
+  ${({ modalActive }) => {
+    if (modalActive) {
+      return css`
+        position: relative;
+
+        &::after {
+          content: '';
+          position: absolute;
+          z-index: 1;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background-color: rgba(0, 0, 0, 0.5);
+        }
+      `;
+    }
+  }}
+`;
 
 const panelStyles = css`
   &[data-active='false'] {
@@ -79,12 +102,10 @@ function Panels() {
   if (loading || serverCalcError) {
     classes.push('avert-dark-overlay');
   }
-  if (modalOverlay) {
-    classes.push('avert-modal-overlay');
-  }
 
   return (
-    <div
+    <Container
+      modalActive={modalOverlay}
       className={classes.join(' ')}
       onClick={(ev) => {
         if (!modalOverlay) return;
@@ -224,8 +245,8 @@ function Panels() {
             >
               AVERT user manual
             </a>{' '}
-            or click the <span className="avert-modal-link" /> icon for each
-            program type below.
+            or click the <span css={modalLinkStyles} /> icon for each program
+            type below.
           </p>
 
           <p className="avert-small-text">
@@ -285,7 +306,7 @@ function Panels() {
           nextButtonText="Reset Region"
         />
       </section>
-    </div>
+    </Container>
   );
 }
 

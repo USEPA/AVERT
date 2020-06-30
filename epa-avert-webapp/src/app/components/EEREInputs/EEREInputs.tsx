@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 // components
 import EEREInputField from 'app/components/EEREInputField';
-import Tooltip from 'app/components/Tooltip/Tooltip';
+import Tooltip from 'app/components/Tooltip';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 import { RegionState } from 'app/redux/reducers/regions';

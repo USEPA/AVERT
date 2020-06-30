@@ -5,7 +5,7 @@ import { jsx, css } from '@emotion/core';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 // components
-import Tooltip from 'app/components/Tooltip/Tooltip';
+import Tooltip from 'app/components/Tooltip';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 

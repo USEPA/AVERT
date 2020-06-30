@@ -3,7 +3,7 @@
 import React from 'react';
 import { jsx, css } from '@emotion/core';
 // components
-import Tooltip from 'app/components/Tooltip/Tooltip';
+import Tooltip from 'app/components/Tooltip';
 
 const unitConversionStyles = css`
   margin-bottom: 1rem;
