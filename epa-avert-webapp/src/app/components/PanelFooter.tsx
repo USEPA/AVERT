@@ -49,7 +49,7 @@ const PrevButton = styled('a')`
   }
 `;
 
-const NextButton = styled('a')<{ onStepThree: boolean }>`
+const NextButton = styled('a')<{ resultsShown: boolean }>`
   float: right;
 
   &::after {
@@ -57,8 +57,9 @@ const NextButton = styled('a')<{ onStepThree: boolean }>`
     margin-left: 0.375rem;
   }
 
-  ${({ onStepThree }) => {
-    if (onStepThree) {
+  /* if on the'Get Results' panel, use a reset icon instead of the arrow icon */
+  ${({ resultsShown }) => {
+    if (resultsShown) {
       return css`
         background-color: rgb(146, 193, 47) !important;
 
@@ -141,7 +142,7 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
 
   const nextButton = (
     <NextButton
-      onStepThree={onStepThree}
+      resultsShown={onStepThree}
       className={`avert-button ${disabledClass} ${resetClass}`}
       href="/"
       onClick={(ev) => {
