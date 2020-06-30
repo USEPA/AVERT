@@ -88,16 +88,16 @@ const modalStyles = css`
   animation-timing-function: ease-out;
   animation-fill-mode: both;
 
-  &[data-active='true'] {
+  &[data-modal-active='true'] {
     /* animation-name: ${scaleUpAnimation}; */
     animation-duration: 0.2s;
   }
 
-  &[data-active='false'] {
+  &[data-modal-active='false'] {
     display: none;
   }
 
-  &[data-closing='true'] {
+  &[data-modal-closing='true'] {
     /* display: inherit; */
     /* animation-name: ${scaleDownAnimation}; */
     animation-duration: 0.3s;
@@ -160,13 +160,14 @@ function Tooltip({ id, children }: Props) {
       <span
         css={modalStyles}
         data-modal-id={id}
-        data-active={activeModalId === id}
-        data-closing={closingModalId === id}
+        data-modal-active={activeModalId === id}
+        data-modal-closing={closingModalId === id}
       >
         <a
           css={modalCloseStyles}
           href="/"
           ref={closeLinkRef}
+          data-modal-close
           onClick={(ev) => {
             ev.preventDefault();
             dispatch(resetActiveModal(id));

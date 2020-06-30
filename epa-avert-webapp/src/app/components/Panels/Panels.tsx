@@ -26,21 +26,45 @@ import { useSelectedRegions } from 'app/hooks';
 // styles
 import './styles.css';
 
-const Container = styled('div')<{ modalActive: boolean }>`
-  ${({ modalActive }) => {
-    if (modalActive) {
+type ContainerProps = {
+  lightOverlay: boolean;
+  darkOverlay: boolean;
+};
+
+const Container = styled('div')<ContainerProps>`
+  border: 1px solid #aaa;
+
+  ${({ lightOverlay, darkOverlay }) => {
+    const overlayStyles = css`
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+    `;
+
+    if (lightOverlay) {
       return css`
-        position: relative;
+        ${overlayStyles};
 
         &::after {
-          content: '';
-          position: absolute;
           z-index: 1;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
           background-color: rgba(0, 0, 0, 0.5);
+        }
+      `;
+    }
+
+    if (darkOverlay) {
+      return css`
+        ${overlayStyles};
+
+        &::after {
+          background-color: rgba(0, 0, 0, 0.875);
         }
       `;
     }
@@ -98,19 +122,14 @@ function Panels() {
   const regions = useSelectedRegions();
   const regionName = regions[0]?.name;
 
-  const classes = ['avert-steps'];
-  if (loading || serverCalcError) {
-    classes.push('avert-dark-overlay');
-  }
-
   return (
     <Container
-      modalActive={modalOverlay}
-      className={classes.join(' ')}
+      lightOverlay={modalOverlay}
+      darkOverlay={loading || serverCalcError}
       onClick={(ev) => {
         if (!modalOverlay) return;
         const target = ev.target as HTMLDivElement;
-        if (target.classList.contains('avert-modal-overlay')) {
+        if (!target.dataset['modalId'] && !target.dataset['modalClose']) {
           dispatch(resetActiveModal(activeModalId));
           dispatch(toggleModalOverlay());
         }
