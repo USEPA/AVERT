@@ -23,8 +23,6 @@ import { useTypedSelector } from 'app/redux/index';
 import { toggleModalOverlay, resetActiveModal } from 'app/redux/reducers/panel';
 // hooks
 import { useSelectedRegions } from 'app/hooks';
-// styles
-import './styles.css';
 
 type ContainerProps = {
   lightOverlay: boolean;
@@ -71,6 +69,84 @@ const Container = styled('div')<ContainerProps>`
   }}
 `;
 
+const overlayTextStyles = css`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  text-align: center;
+  color: #00bee6;
+
+  svg {
+    width: 100%;
+    transform: scale(0.75);
+
+    @media (min-width: 25em) {
+      transform: scale(0.8125);
+    }
+
+    @media (min-width: 30em) {
+      transform: scale(0.875);
+    }
+
+    @media (min-width: 35em) {
+      transform: scale(0.9375);
+    }
+
+    @media (min-width: 40em) {
+      transform: none;
+    }
+  }
+`;
+
+const overlayHeadingStyles = css`
+  font-size: 1.25rem;
+  font-weight: bold;
+
+  @media (min-width: 25em) {
+    font-size: 1.3125rem;
+  }
+
+  @media (min-width: 30em) {
+    font-size: 1.375rem;
+  }
+
+  @media (min-width: 35em) {
+    font-size: 1.4375rem;
+  }
+
+  @media (min-width: 40em) {
+    font-size: 1.5rem;
+  }
+`;
+
+const overlayInfoStyles = css`
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+
+  @media (min-width: 25em) {
+    font-size: 0.8125rem;
+  }
+
+  @media (min-width: 30em) {
+    font-size: 0.875rem;
+  }
+
+  @media (min-width: 35em) {
+    font-size: 0.9375rem;
+  }
+
+  @media (min-width: 40em) {
+    font-size: 1rem;
+  }
+`;
+
+const loadingProgressStyles = css`
+  margin-top: 0.5rem;
+  width: 100%;
+`;
+
 const panelStyles = css`
   &[data-active='false'] {
     display: none;
@@ -101,6 +177,91 @@ const panelBodyStyles = css`
 
 const panelHeadingStyles = css`
   margin-top: 0;
+`;
+
+const messageStyles = css`
+  position: relative;
+  left: -1rem;
+  width: calc(100% + 2rem);
+  padding: 1rem;
+  margin-top: 0;
+  font-size: 0.625rem;
+
+  @media (min-width: 25em) {
+    left: -1.125rem;
+    width: calc(100% + 2.25rem);
+    padding: 1.125rem;
+  }
+
+  @media (min-width: 30em) {
+    left: -1.25rem;
+    width: calc(100% + 2.5rem);
+    padding: 1.25rem;
+    font-size: 0.6875rem;
+  }
+
+  @media (min-width: 35em) {
+    left: -1.375rem;
+    width: calc(100% + 2.75rem);
+    padding: 1.375rem;
+  }
+
+  @media (min-width: 40em) {
+    left: -1.5rem;
+    width: calc(100% + 3rem);
+    padding: 1.5rem;
+    font-size: 0.75rem;
+  }
+`;
+
+const topMessageStyles = css`
+  ${messageStyles};
+  top: 0;
+`;
+
+export const bottomMessageStyles = css`
+  ${messageStyles};
+  bottom: -1rem;
+
+  @media (min-width: 25em) {
+    bottom: -1.125rem;
+  }
+
+  @media (min-width: 30em) {
+    bottom: -1.25rem;
+  }
+
+  @media (min-width: 35em) {
+    bottom: -1.375rem;
+  }
+
+  @media (min-width: 40em) {
+    bottom: -1.5rem;
+  }
+`;
+
+export const messageHeadingStyles = css`
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: bold;
+  font-size: 0.75rem;
+
+  @media (min-width: 30em) {
+    font-size: 0.8125rem;
+  }
+
+  @media (min-width: 40em) {
+    font-size: 0.875rem;
+  }
+`;
+
+export const vadidationErrorStyles = css`
+  color: white;
+  background-color: rgb(212, 57, 57);
+`;
+
+export const vadidationWarningStyles = css`
+  background-color: rgb(249, 201, 114);
 `;
 
 function Panels() {
@@ -145,21 +306,21 @@ function Panels() {
       {
         // conditionally display loading indicator
         loading && !serverCalcError && (
-          <div className="avert-overlay-text">
+          <div css={overlayTextStyles}>
             <LoadingIcon />
-            <p className="avert-overlay-heading">LOADING...</p>
+            <p css={overlayHeadingStyles}>LOADING...</p>
             {
               // conditionally display progress bar
               activeStep === 3 && (
                 <div>
                   <progress
-                    className="avert-loading-progress"
+                    css={loadingProgressStyles}
                     value={loadingProgress}
                     max="6"
                   >
                     {(loadingProgress * 100) / 6}%
                   </progress>
-                  <p className="avert-overlay-info">
+                  <p css={overlayInfoStyles}>
                     These calculations may take several minutes.
                   </p>
                 </div>
@@ -172,9 +333,9 @@ function Panels() {
       {
         // conditionally display web server error
         serverCalcError && (
-          <div className="avert-overlay-text">
-            <p className="avert-overlay-heading">Web Server Error</p>
-            <p className="avert-overlay-info">Please try reloading the page.</p>
+          <div css={overlayTextStyles}>
+            <p css={overlayHeadingStyles}>Web Server Error</p>
+            <p css={overlayInfoStyles}>Please try reloading the page.</p>
           </div>
         )
       }
@@ -293,8 +454,8 @@ function Panels() {
           {
             // conditionally display validation warning
             !softValid && (
-              <p className="avert-message-top avert-validation-warning">
-                <span className="avert-message-heading">WARNING:</span>
+              <p css={[topMessageStyles, vadidationWarningStyles]}>
+                <span css={messageHeadingStyles}>WARNING:</span>
                 The proposed EE/RE programs would collectively displace more
                 than 15% of regional fossil generation in one or more hours of
                 the year. AVERT works best with displacements of 15% or less, as

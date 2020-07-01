@@ -2,12 +2,37 @@
 
 import React from 'react';
 import { jsx, css } from '@emotion/core';
+import styled from '@emotion/styled/macro';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 // components
 import Tooltip from 'app/components/Tooltip';
+import {
+  bottomMessageStyles,
+  messageHeadingStyles,
+  vadidationErrorStyles,
+  vadidationWarningStyles,
+} from 'app/components/Panels';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
+
+const ValidationMessage = styled('p')<{ type: 'error' | 'warning' }>`
+  ${({ type }) => {
+    if (type === 'error') {
+      return css`
+        ${bottomMessageStyles};
+        ${vadidationErrorStyles}
+      `;
+    }
+
+    if (type === 'warning') {
+      return css`
+        ${bottomMessageStyles};
+        ${vadidationWarningStyles}
+      `;
+    }
+  }}
+`;
 
 // override inherited chart title styles
 const modalStyles = css`
@@ -200,8 +225,8 @@ function EEREChart() {
     const ampm = x.timestamp.hour > 12 ? 'PM' : 'AM';
 
     return (
-      <p className={`avert-message-bottom avert-validation-${type}`}>
-        <span className="avert-message-heading">{x.heading}:</span>
+      <ValidationMessage type={type}>
+        <span css={messageHeadingStyles}>{x.heading}:</span>
         The combined impact of your proposed programs would displace more than{' '}
         <strong>{x.threshold}%</strong> of regional fossil generation in at
         least one hour of the year. (Maximum value:{' '}
@@ -219,7 +244,7 @@ function EEREChart() {
         simulate marginal operational changes in load, rather than large-scale
         changes that may change fundamental dynamics. Please reduce one or more
         of your inputs to ensure more reliable results.
-      </p>
+      </ValidationMessage>
     );
   }
 

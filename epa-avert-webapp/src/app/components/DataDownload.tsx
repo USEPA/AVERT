@@ -2,6 +2,11 @@ import React from 'react';
 import json2csv from 'json2csv';
 import Blob from 'blob';
 import FileSaver from 'file-saver';
+// components
+import {
+  bottomMessageStyles,
+  vadidationWarningStyles,
+} from 'app/components/Panels';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 // hooks
@@ -79,7 +84,10 @@ function DataDownload() {
       </p>
 
       {isDesktopSafari && (
-        <p className="avert-message-bottom avert-validation-warning avert-centered">
+        <p
+          css={[bottomMessageStyles, vadidationWarningStyles]}
+          className="avert-centered"
+        >
           Please press ⌘ + S to save the file after it is opened.
         </p>
       )}
