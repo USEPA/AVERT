@@ -1,8 +1,24 @@
-import React from 'react';
+/** @jsx jsx */
+
+import { jsx, css } from '@emotion/core';
 import { useDispatch } from 'react-redux';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 import { calculateEereProfile } from 'app/redux/reducers/eere';
+
+const inputStyles = css`
+  margin: 0.25rem 0;
+  padding: 0.125rem 0.25rem;
+  border: 1px solid #ccc;
+  width: 4rem;
+  font-size: inherit;
+  font-weight: bold;
+  text-align: right;
+
+  &:disabled {
+    background-color: #eee;
+  }
+`;
 
 type Props = {
   value: string;
@@ -18,6 +34,7 @@ function EEREInputField({ value, disabled, onChange }: Props) {
 
   return (
     <input
+      css={inputStyles}
       type="text"
       value={value}
       disabled={disabled ? true : false}

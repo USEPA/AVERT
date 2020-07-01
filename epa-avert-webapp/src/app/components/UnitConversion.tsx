@@ -4,6 +4,7 @@ import React from 'react';
 import { jsx, css } from '@emotion/core';
 // components
 import Tooltip from 'app/components/Tooltip';
+import { inputErrorStyles } from 'app/components/EEREInputs';
 
 const unitConversionStyles = css`
   margin-bottom: 1rem;
@@ -167,7 +168,7 @@ function UnitConversion() {
       </div>
 
       {error && (
-        <p css={errorStyles} className="avert-input-error">
+        <p css={[inputErrorStyles, errorStyles]}>
           Please enter a positive number.
         </p>
       )}

@@ -1,4 +1,7 @@
+/** @jsx jsx */
+
 import React from 'react';
+import { jsx, css } from '@emotion/core';
 import { useDispatch } from 'react-redux';
 // components
 import EEREInputField from 'app/components/EEREInputField';
@@ -21,8 +24,185 @@ import {
 } from 'app/redux/reducers/eere';
 // hooks
 import { useSelectedRegions } from 'app/hooks';
-// styles
-import './styles.css';
+
+const inputsBlockStyles = css`
+  margin: 1rem 0;
+  border-top: 1px solid #ccc;
+
+  p,
+  ul,
+  li {
+    margin-top: 0 !important;
+    font-size: 0.625rem;
+  }
+
+  @media (min-width: 25em) {
+    p,
+    ul,
+    li {
+      font-size: 0.6875rem;
+    }
+  }
+
+  @media (min-width: 30em) {
+    p,
+    ul,
+    li {
+      font-size: 0.75rem;
+    }
+  }
+
+  @media (min-width: 35em) {
+    p,
+    ul,
+    li {
+      font-size: 0.8125rem;
+    }
+  }
+
+  @media (min-width: 40em) {
+    p,
+    ul,
+    li {
+      font-size: 0.875rem;
+    }
+  }
+`;
+
+const inputsCategoryStyles = css`
+  overflow: hidden;
+  border: 1px solid #ccc;
+  border-top: 0;
+  padding: 0.5rem 0.625rem;
+  font-weight: bold;
+  background-color: #eee;
+`;
+
+const inputsGroupStyles = css`
+  display: block; /* IE */
+  overflow: hidden;
+  border: 1px solid #ccc;
+  border-top: 0;
+
+  /* highlight letter when details is open */
+  /* (summary is styled with inputsLabelStyles) */
+  &[open] > summary::after {
+    background-color: rgb(0, 169, 204);
+  }
+`;
+
+const inputsLabelStyles = css`
+  display: block; /* IE */
+  padding: 1rem 0.5rem;
+  font-size: 0.625rem;
+  font-weight: bold;
+  cursor: pointer;
+
+  @media (min-width: 25em) {
+    font-size: 0.6875rem;
+  }
+
+  @media (min-width: 30em) {
+    font-size: 0.75rem;
+  }
+
+  @media (min-width: 35em) {
+    font-size: 0.8125rem;
+  }
+
+  @media (min-width: 40em) {
+    font-size: 0.875rem;
+  }
+
+  /* letter (A, B, C, or D) */
+  &::after {
+    content: attr(data-label);
+    float: left;
+    margin-top: -0.375rem;
+    margin-right: 0.5rem;
+    border-radius: 3px;
+    width: 1.25rem;
+    font-size: 1rem;
+    text-align: center;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.125);
+    color: white;
+    background-color: #aaa;
+
+    @media (min-width: 25em) {
+      width: 1.375rem;
+      font-size: 1.125rem;
+    }
+
+    @media (min-width: 30em) {
+      width: 1.5rem;
+      font-size: 1.25rem;
+    }
+
+    @media (min-width: 35em) {
+      width: 1.625rem;
+      font-size: 1.375rem;
+    }
+
+    @media (min-width: 40em) {
+      width: 1.75rem;
+      font-size: 1.5rem;
+    }
+  }
+
+  /* highlight letter on hover */
+  &:hover::after {
+    background-color: rgb(0, 169, 204);
+  }
+`;
+
+const inputsContentStyles = css`
+  padding: 0.5rem 0.625rem;
+`;
+
+const inputLabelStyles = css`
+  display: block;
+
+  @media (min-width: 35em) {
+    display: inline;
+  }
+`;
+
+const inputUnitStyles = css`
+  font-size: 0.5rem;
+
+  @media (min-width: 25em) {
+    font-size: 0.5625rem;
+  }
+
+  @media (min-width: 30em) {
+    font-size: 0.625rem;
+  }
+
+  @media (min-width: 35em) {
+    font-size: 0.6875rem;
+  }
+
+  @media (min-width: 40em) {
+    font-size: 0.75rem;
+  }
+`;
+
+export const inputErrorStyles = css`
+  display: block;
+  font-style: italic;
+  color: rgb(206, 29, 29);
+`;
+
+const errorRangeStyles = css`
+  display: block;
+  font-weight: bold;
+  font-style: normal;
+`;
+
+const impactsButtonStyles = css`
+  text-align: center;
+  margin-bottom: 1rem;
+`;
 
 function displayError({
   errors,
@@ -39,8 +219,8 @@ function displayError({
   if (!errors?.includes(fieldName)) return;
 
   return Number(inputValue) >= 0 ? (
-    <span className="avert-input-error">
-      <span className="avert-input-error-range">
+    <span css={inputErrorStyles}>
+      <span css={errorRangeStyles}>
         Please enter a number between 0 and {maxValue}.
       </span>
       This will help ensure that each of your proposed programs displaces no
@@ -50,10 +230,8 @@ function displayError({
       combined inputs are within AVERT’s recommended limits.
     </span>
   ) : (
-    <span className="avert-input-error">
-      <span className="avert-input-error-range">
-        Please enter a positive number.
-      </span>
+    <span css={inputErrorStyles}>
+      <span css={errorRangeStyles}>Please enter a positive number.</span>
       If you wish to model a reverse EE/RE scenario (i.e., a negative number),
       use the Excel version of the AVERT Main Module.
     </span>
@@ -136,22 +314,22 @@ function EEREInputs() {
 
   return (
     <React.Fragment>
-      <div className="avert-details-block">
-        <header>
+      <div css={inputsBlockStyles}>
+        <header css={inputsCategoryStyles}>
           <p>Energy Efficiency</p>
         </header>
 
-        <details>
-          <summary data-label="A">
+        <details css={inputsGroupStyles}>
+          <summary css={inputsLabelStyles} data-label="A">
             Reductions spread evenly throughout the year
           </summary>
-          <section>
+          <section css={inputsContentStyles}>
             <p>
               <strong>Choose one:</strong>
             </p>
             <ul>
               <li>
-                <span className="avert-input-label">
+                <span css={inputLabelStyles}>
                   Reduce total annual generation by{' '}
                 </span>
                 <EEREInputField
@@ -161,7 +339,7 @@ function EEREInputs() {
                     dispatch(updateEereAnnualGwh(text, limits.annualGwh));
                   }}
                 />
-                <span className="avert-input-unit"> GWh </span>
+                <span css={inputUnitStyles}> GWh </span>
 
                 <Tooltip id={1}>
                   Enter the total number of GWh expected to be saved in a single
@@ -180,9 +358,7 @@ function EEREInputs() {
               </li>
 
               <li>
-                <span className="avert-input-label">
-                  Reduce hourly generation by{' '}
-                </span>
+                <span css={inputLabelStyles}>Reduce hourly generation by </span>
                 <EEREInputField
                   value={constantMwh}
                   disabled={annualGwh}
@@ -190,7 +366,7 @@ function EEREInputs() {
                     dispatch(updateEereConstantMw(text, limits.constantMwh));
                   }}
                 />
-                <span className="avert-input-unit"> MW </span>
+                <span css={inputUnitStyles}> MW </span>
 
                 <Tooltip id={2}>
                   “Reduce hourly generation” is identical in effect to reducing
@@ -211,17 +387,17 @@ function EEREInputs() {
           </section>
         </details>
 
-        <details>
-          <summary data-label="B">
+        <details css={inputsGroupStyles}>
+          <summary css={inputsLabelStyles} data-label="B">
             Percentage reductions in some or all hours
           </summary>
-          <section>
+          <section css={inputsContentStyles}>
             <p>
               <strong>Choose one:</strong>
             </p>
             <ul>
               <li>
-                <span className="avert-input-label">
+                <span css={inputLabelStyles}>
                   Broad-based program: Reduce generation by{' '}
                 </span>
                 <EEREInputField
@@ -231,7 +407,7 @@ function EEREInputs() {
                     dispatch(updateEereBroadBasedProgram(text, limits.percent));
                   }}
                 />
-                <span className="avert-input-unit"> % in all hours </span>
+                <span css={inputUnitStyles}> % in all hours </span>
 
                 <Tooltip id={3}>
                   To simulate a broad-based efficiency program, enter an
@@ -248,7 +424,7 @@ function EEREInputs() {
               </li>
 
               <li>
-                <span className="avert-input-label">
+                <span css={inputLabelStyles}>
                   Targeted program: Reduce generation by{' '}
                 </span>
                 <EEREInputField
@@ -258,7 +434,7 @@ function EEREInputs() {
                     dispatch(updateEereReduction(text, limits.percent));
                   }}
                 />
-                <span className="avert-input-unit"> % during the peak </span>
+                <span css={inputUnitStyles}> % during the peak </span>
                 <EEREInputField
                   value={topHours}
                   disabled={broadProgram}
@@ -266,7 +442,7 @@ function EEREInputs() {
                     dispatch(updateEereTopHours(text, 100));
                   }}
                 />
-                <span className="avert-input-unit"> % of hours </span>
+                <span css={inputUnitStyles}> % of hours </span>
 
                 <Tooltip id={4}>
                   To simulate a peak-reduction targeting program such as demand
@@ -294,19 +470,21 @@ function EEREInputs() {
           </section>
         </details>
 
-        <header>
+        <header css={inputsCategoryStyles}>
           <p>Renewable Energy</p>
         </header>
 
-        <details>
-          <summary data-label="C">Wind</summary>
-          <section>
+        <details css={inputsGroupStyles}>
+          <summary css={inputsLabelStyles} data-label="C">
+            Wind
+          </summary>
+          <section css={inputsContentStyles}>
             <p>
               <strong>Choose one or both:</strong>
             </p>
             <ul>
               <li>
-                <span className="avert-input-label">
+                <span css={inputLabelStyles}>
                   Onshore wind total capacity:{' '}
                 </span>
                 <EEREInputField
@@ -315,7 +493,7 @@ function EEREInputs() {
                     dispatch(updateEereOnshoreWind(text, limits.renewables));
                   }}
                 />
-                <span className="avert-input-unit"> MW </span>
+                <span css={inputUnitStyles}> MW </span>
 
                 <Tooltip id={5}>
                   Enter the total capacity (maximum potential electricity
@@ -334,8 +512,8 @@ function EEREInputs() {
 
               <li>
                 {regionSupportsOffshoreWind ? (
-                  <>
-                    <span className="avert-input-label">
+                  <React.Fragment>
+                    <span css={inputLabelStyles}>
                       Offshore wind total capacity:{' '}
                     </span>
 
@@ -347,7 +525,7 @@ function EEREInputs() {
                         );
                       }}
                     />
-                    <span className="avert-input-unit"> MW </span>
+                    <span css={inputUnitStyles}> MW </span>
 
                     <Tooltip id={6}>
                       Enter the total capacity (maximum potential electricity
@@ -362,10 +540,10 @@ function EEREInputs() {
                       inputValue: offshoreWind,
                       maxValue: limits.renewables,
                     })}
-                  </>
+                  </React.Fragment>
                 ) : (
-                  <>
-                    <span className="avert-input-label">
+                  <React.Fragment>
+                    <span css={inputLabelStyles}>
                       <em>
                         Offshore wind is not available in this AVERT region.{' '}
                       </em>
@@ -377,22 +555,24 @@ function EEREInputs() {
                       wind farms would connect to the electrical grid in this
                       region.
                     </Tooltip>
-                  </>
+                  </React.Fragment>
                 )}
               </li>
             </ul>
           </section>
         </details>
 
-        <details>
-          <summary data-label="D">Solar photovoltaic</summary>
-          <section>
+        <details css={inputsGroupStyles}>
+          <summary css={inputsLabelStyles} data-label="D">
+            Solar photovoltaic
+          </summary>
+          <section css={inputsContentStyles}>
             <p>
               <strong>Choose one or both:</strong>
             </p>
             <ul>
               <li>
-                <span className="avert-input-label">
+                <span css={inputLabelStyles}>
                   Utility-scale solar photovoltaic total capacity:{' '}
                 </span>
                 <EEREInputField
@@ -401,7 +581,7 @@ function EEREInputs() {
                     dispatch(updateEereUtilitySolar(text, limits.renewables));
                   }}
                 />
-                <span className="avert-input-unit"> MW </span>
+                <span css={inputUnitStyles}> MW </span>
 
                 <Tooltip id={8}>
                   Enter the total capacity (maximum potential electricity
@@ -419,7 +599,7 @@ function EEREInputs() {
               </li>
 
               <li>
-                <span className="avert-input-label">
+                <span css={inputLabelStyles}>
                   Distributed (rooftop) solar voltaic total capacity:{' '}
                 </span>
                 <EEREInputField
@@ -428,7 +608,7 @@ function EEREInputs() {
                     dispatch(updateEereRooftopSolar(text, limits.renewables));
                   }}
                 />
-                <span className="avert-input-unit"> MW </span>
+                <span css={inputUnitStyles}> MW </span>
 
                 <Tooltip id={9}>
                   Enter the total capacity (maximum potential electricity
@@ -449,7 +629,7 @@ function EEREInputs() {
         </details>
       </div>
 
-      <p className="avert-impacts-button">
+      <p css={impactsButtonStyles}>
         <a
           className={`avert-button${disabledClass}`}
           href="/"

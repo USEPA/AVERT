@@ -10,7 +10,7 @@ import RegionsList from 'app/components/RegionsList';
 import RegionsMap from 'app/components/RegionsMap';
 import StatesList from 'app/components/StatesList';
 import StatesMap from 'app/components/StatesMap';
-import EEREInputs from 'app/components/EEREInputs/EEREInputs';
+import EEREInputs from 'app/components/EEREInputs';
 import UnitConversion from 'app/components/UnitConversion';
 import EEREChart from 'app/components/EEREChart';
 import DisplacementsTable from 'app/components/DisplacementsTable';
