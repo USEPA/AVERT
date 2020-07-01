@@ -91,17 +91,6 @@ fieldset {
 }
 
 /* --- headings --- */
-.avert-heading-one {
-  font-size: 1.25rem;
-  color: rgb(0, 169, 204);
-}
-.avert-heading-two {
-  margin-bottom: 0.75rem;
-  padding-bottom: 0.25rem;
-  border-bottom: 2px solid currentColor;
-  font-size: 1rem;
-  color: rgb(0, 169, 204);
-}
 .avert-heading-three {
   font-size: 0.875rem;
   color: rgb(0, 127, 153);
@@ -215,13 +204,6 @@ fieldset {
     padding-left: 1.625rem;
   }
 
-  .avert-heading-one {
-    font-size: 1.3125rem;
-  }
-  .avert-heading-two {
-    margin-bottom: 0.8125rem;
-    font-size: 1.0625rem;
-  }
   .avert-heading-three {
     font-size: 0.9375rem;
   }
@@ -274,13 +256,6 @@ fieldset {
     padding-left: 1.75rem;
   }
 
-  .avert-heading-one {
-    font-size: 1.375rem;
-  }
-  .avert-heading-two {
-    margin-bottom: 0.875rem;
-    font-size: 1.125rem;
-  }
   .avert-heading-three {
     font-size: 1rem;
   }
@@ -337,13 +312,6 @@ fieldset {
     padding-left: 1.875rem;
   }
 
-  .avert-heading-one {
-    font-size: 1.4375rem;
-  }
-  .avert-heading-two {
-    margin-bottom: 0.9375rem;
-    font-size: 1.1875rem;
-  }
   .avert-heading-three {
     font-size: 1.065rem;
   }
@@ -401,13 +369,6 @@ fieldset {
     padding-left: 2rem;
   }
 
-  .avert-heading-one {
-    font-size: 1.5rem;
-  }
-  .avert-heading-two {
-    margin-bottom: 1rem;
-    font-size: 1.25rem;
-  }
   .avert-heading-three {
     font-size: 1.125rem;
   }

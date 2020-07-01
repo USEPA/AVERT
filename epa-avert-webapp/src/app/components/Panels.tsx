@@ -3,6 +3,8 @@
 import { jsx, css } from '@emotion/core';
 import styled from '@emotion/styled/macro';
 import { useDispatch } from 'react-redux';
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
+import '@reach/tabs/styles.css';
 // components
 import LoadingIcon from 'app/components/LoadingIcon';
 import PanelFooter from 'app/components/PanelFooter';
@@ -175,8 +177,65 @@ const panelBodyStyles = css`
   }
 `;
 
+const tabsStyles = css`
+  margin-top: -0.375rem;
+
+  [data-reach-tab-list] {
+    display: flex;
+    justify-content: space-between;
+    background-color: transparent;
+  }
+
+  [data-reach-tab] {
+    margin-bottom: 0;
+    padding-top: 0.375rem;
+    padding-left: 0;
+    padding-right: 0;
+    width: 50%;
+    font-weight: 700;
+    line-height: 1;
+
+    &:first-child {
+      text-align: left;
+    }
+
+    &:last-child {
+      text-align: right;
+    }
+
+    &[data-selected] {
+      border-bottom-width: 2px;
+    }
+  }
+`;
+
 const panelHeadingStyles = css`
   margin-top: 0;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 2px solid currentColor;
+  font-size: 1rem;
+  color: rgb(0, 169, 204);
+
+  @media (min-width: 25em) {
+    margin-bottom: 0.8125rem;
+    font-size: 1.0625rem;
+  }
+
+  @media (min-width: 30em) {
+    margin-bottom: 0.875rem;
+    font-size: 1.125rem;
+  }
+
+  @media (min-width: 35em) {
+    margin-bottom: 0.9375rem;
+    font-size: 1.1875rem;
+  }
+
+  @media (min-width: 40em) {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+  }
 `;
 
 const messageStyles = css`
@@ -342,65 +401,71 @@ function Panels() {
 
       <section css={panelStyles} data-active={activeStep === 1}>
         <div css={panelBodyStyles}>
-          <h2 css={panelHeadingStyles} className="avert-heading-two">
-            Select Region
-          </h2>
+          <Tabs css={tabsStyles}>
+            <TabList>
+              <Tab css={panelHeadingStyles}>Select Region</Tab>
+              <Tab css={panelHeadingStyles}>Select State</Tab>
+            </TabList>
 
-          <p>
-            AVERT splits the contiguous 48 states into 14 regions. AVERT regions
-            are aggregated based on EPA’s{' '}
-            <a href="https://www.epa.gov/energy/egrid" target="_parent">
-              eGRID subregions
-            </a>
-            . Select a region for analysis by either using the dropdown menu or
-            clicking the map. Selecting a region loads the power plants
-            operating within each region and region-specific wind and solar
-            capacity data.
-          </p>
+            <TabPanels>
+              <TabPanel>
+                <p>
+                  AVERT splits the contiguous 48 states into 14 regions. AVERT
+                  regions are aggregated based on EPA’s{' '}
+                  <a href="https://www.epa.gov/energy/egrid" target="_parent">
+                    eGRID subregions
+                  </a>
+                  . Select a region for analysis by either using the dropdown
+                  menu or clicking the map. Selecting a region loads the power
+                  plants operating within each region and region-specific wind
+                  and solar capacity data.
+                </p>
 
-          <RegionsList />
-          <RegionsMap />
+                <RegionsList />
+                <RegionsMap />
 
-          <p className="avert-small-text">
-            The online version of AVERT can run analyses using 2019 emissions
-            and generation data. The Excel version of AVERT (available for
-            download{' '}
-            <a
-              href="https://www.epa.gov/statelocalenergy/download-avert"
-              target="_parent"
-            >
-              here
-            </a>
-            ) allows analyses for years 2017–2019 or for a future year scenario.
-          </p>
-        </div>
+                <p className="avert-small-text">
+                  The online version of AVERT can run analyses using 2019
+                  emissions and generation data. The Excel version of AVERT
+                  (available for download{' '}
+                  <a
+                    href="https://www.epa.gov/statelocalenergy/download-avert"
+                    target="_parent"
+                  >
+                    here
+                  </a>
+                  ) allows analyses for years 2017–2019 or for a future year
+                  scenario.
+                </p>
+              </TabPanel>
 
-        <div css={panelBodyStyles}>
-          <h2 css={panelHeadingStyles} className="avert-heading-two">
-            Select State
-          </h2>
+              <TabPanel>
+                <p>
+                  Select a state for analysis by either using the dropdown menu
+                  or clicking the map. Selecting a state loads the power plants
+                  operating within each region and region-specific wind and
+                  solar capacity data.
+                </p>
 
-          <p>
-            Select a state for analysis by either using the dropdown menu or
-            clicking the map. Selecting a state loads the power plants operating
-            within each region and region-specific wind and solar capacity data.
-          </p>
+                <StatesList />
+                <StatesMap />
 
-          <StatesList />
-          <StatesMap />
-
-          <p className="avert-small-text">
-            The online version of AVERT can run analyses using 2019 emissions
-            and generation data. The Excel version of AVERT (available for
-            download{' '}
-            <a
-              href="https://www.epa.gov/statelocalenergy/download-avert"
-              target="_parent"
-            >
-              here
-            </a>
-            ) allows analyses for years 2017–2019 or for a future year scenario.
-          </p>
+                <p className="avert-small-text">
+                  The online version of AVERT can run analyses using 2019
+                  emissions and generation data. The Excel version of AVERT
+                  (available for download{' '}
+                  <a
+                    href="https://www.epa.gov/statelocalenergy/download-avert"
+                    target="_parent"
+                  >
+                    here
+                  </a>
+                  ) allows analyses for years 2017–2019 or for a future year
+                  scenario.
+                </p>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </div>
 
         <PanelFooter nextButtonText="Set EE/RE Impacts" />
@@ -408,7 +473,7 @@ function Panels() {
 
       <section css={panelStyles} data-active={activeStep === 2}>
         <div css={panelBodyStyles}>
-          <h2 css={panelHeadingStyles} className="avert-heading-two">
+          <h2 css={panelHeadingStyles}>
             Set Energy Efficiency and Renewable Energy Impacts
           </h2>
 
@@ -447,7 +512,7 @@ function Panels() {
 
       <section css={panelStyles} data-active={activeStep === 3}>
         <div css={panelBodyStyles}>
-          <h2 css={panelHeadingStyles} className="avert-heading-two">
+          <h2 css={panelHeadingStyles}>
             Results: Avoided Regional, State, and County-Level Emissions
           </h2>
 
