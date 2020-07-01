@@ -3,7 +3,7 @@ import React from 'react';
 import PanelTabs from 'app/components/PanelTabs';
 import Panels from 'app/components/Panels';
 // styles
-import './styles.css';
+import 'app/styles.css';
 
 function App() {
   return (
