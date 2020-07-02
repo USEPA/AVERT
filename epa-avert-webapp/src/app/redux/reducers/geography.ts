@@ -78,7 +78,7 @@ type GeographyAction =
       type: 'geography/SELECT_REGIONS';
       payload: { regionIds: RegionId[] };
     }
-  | { type: 'geography/REQUEST_REGIONS_DATA' }
+  | { type: 'geography/REQUEST_SELECTED_REGIONS_DATA' }
   | {
       type: 'geography/RECEIVE_REGION_RDF';
       payload: {
@@ -93,7 +93,7 @@ type GeographyAction =
         regionDefaults: EereJSON;
       };
     }
-  | { type: 'geography/RECEIVE_REGIONS_DATA' }
+  | { type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' }
   | {
       type: 'geography/SELECT_STATE';
       payload: { stateId: StateId };
@@ -205,8 +205,8 @@ export default function reducer(
       }
       return selectedRegionsState;
 
-    case 'geography/REQUEST_REGIONS_DATA':
-    case 'geography/RECEIVE_REGIONS_DATA':
+    case 'geography/REQUEST_SELECTED_REGIONS_DATA':
+    case 'geography/RECEIVE_SELECTED_REGIONS_DATA':
       return state;
 
     case 'geography/RECEIVE_REGION_RDF':
@@ -299,7 +299,7 @@ export function fetchRegionsData(): AppThunk {
       }
     });
 
-    dispatch({ type: 'geography/REQUEST_REGIONS_DATA' });
+    dispatch({ type: 'geography/REQUEST_SELECTED_REGIONS_DATA' });
 
     Promise.all([rdfRequests, eereRequests].map(Promise.all, Promise))
       .then(([rdfResponses, eereResponses]) => {
@@ -332,7 +332,7 @@ export function fetchRegionsData(): AppThunk {
         return Promise.all([Promise.all(rdfsData), Promise.all(eeresData)]);
       })
       .then(([rdfs, eeres]) => {
-        dispatch({ type: 'geography/RECEIVE_REGIONS_DATA' });
+        dispatch({ type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' });
       });
   };
 }
