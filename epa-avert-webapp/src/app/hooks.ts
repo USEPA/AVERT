@@ -1,14 +1,14 @@
 // reducers
 import { useTypedSelector } from 'app/redux/index';
-import { RegionState } from 'app/redux/reducers/regions';
+import { RegionState } from 'app/redux/reducers/geography';
 // config
 import { RegionId, StateId } from 'app/config';
 
 function useSelectedRegions() {
-  return useTypedSelector(({ regions }) => {
+  return useTypedSelector(({ geography }) => {
     const selectedRegions: RegionState[] = [];
-    for (const key in regions) {
-      const region = regions[key as RegionId];
+    for (const key in geography.regions) {
+      const region = geography.regions[key as RegionId];
       if (region.selected) selectedRegions.push(region);
     }
     return selectedRegions;

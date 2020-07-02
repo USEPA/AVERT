@@ -8,7 +8,7 @@ import EEREInputField from 'app/components/EEREInputField';
 import Tooltip from 'app/components/Tooltip';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
-import { RegionState } from 'app/redux/reducers/regions';
+import { RegionState } from 'app/redux/reducers/geography';
 import {
   EereInputFields,
   updateEereAnnualGwh,

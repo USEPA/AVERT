@@ -1,6 +1,6 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
-import { RegionState } from 'app/redux/reducers/regions';
+import { RegionState } from 'app/redux/reducers/geography';
 // action creators
 import { completeStateEmissions } from './stateEmissions';
 import { MonthlyChanges, completeMonthlyEmissions } from './monthlyEmissions';
@@ -22,7 +22,7 @@ type PollutantDisplacementData = {
 };
 
 type DisplacementAction =
-  | { type: 'regions/SELECT_REGIONS' }
+  | { type: 'geography/SELECT_REGIONS' }
   | { type: 'displacement/INCREMENT_PROGRESS' }
   | { type: 'displacement/START_DISPLACEMENT' }
   | {
@@ -161,7 +161,7 @@ export default function reducer(
   action: DisplacementAction,
 ): DisplacementState {
   switch (action.type) {
-    case 'regions/SELECT_REGIONS':
+    case 'geography/SELECT_REGIONS':
     case 'displacement/RESET_DISPLACEMENT':
       return initialState;
 
@@ -349,12 +349,12 @@ export function incrementProgress(): DisplacementAction {
 
 function fetchDisplacementData(pollutant: Pollutant): AppThunk {
   return (dispatch, getState) => {
-    const { api, regions, eere } = getState();
+    const { api, geography, eere } = getState();
 
     // TODO: determine how to handle when multiple regions are selected
     const selectedRegions: RegionState[] = [];
-    for (const key in regions) {
-      const region = regions[key as RegionId];
+    for (const key in geography.regions) {
+      const region = geography.regions[key as RegionId];
       if (region.selected) selectedRegions.push(region);
     }
     const region = selectedRegions[0];

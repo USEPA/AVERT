@@ -67,7 +67,7 @@ import Wisconsin from 'app/components/States/Wisconsin';
 import WestVirginia from 'app/components/States/WestVirginia';
 import Wyoming from 'app/components/States/Wyoming';
 // reducers
-import { selectRegions } from 'app/redux/reducers/regions';
+import { selectRegions } from 'app/redux/reducers/geography';
 // hooks
 import { useSelectedRegions } from 'app/hooks';
 // config

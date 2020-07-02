@@ -68,7 +68,7 @@ type CobraDataRow = {
 };
 
 type MonthlyEmissionsAction =
-  | { type: 'regions/SELECT_REGIONS' }
+  | { type: 'geography/SELECT_REGIONS' }
   | { type: 'displacement/START_DISPLACEMENT' }
   | { type: 'eere/RESET_EERE_INPUTS' }
   | {
@@ -157,7 +157,7 @@ export default function reducer(
   action: MonthlyEmissionsAction,
 ): MonthlyEmissionsState {
   switch (action.type) {
-    case 'regions/SELECT_REGIONS':
+    case 'geography/SELECT_REGIONS':
       return initialState;
 
     case 'displacement/START_DISPLACEMENT':

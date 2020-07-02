@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useTypedSelector } from 'app/redux/index';
 import { setActiveStep } from 'app/redux/reducers/panel';
 import { resetEereInputs } from 'app/redux/reducers/eere';
-import { fetchRegionsData } from 'app/redux/reducers/regions';
+import { fetchRegionsData } from 'app/redux/reducers/geography';
 import {
   calculateDisplacement,
   resetDisplacement,

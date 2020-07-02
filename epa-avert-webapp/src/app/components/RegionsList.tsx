@@ -3,7 +3,7 @@
 import { jsx, css } from '@emotion/core';
 import { useDispatch } from 'react-redux';
 // reducers
-import { selectRegions } from 'app/redux/reducers/regions';
+import { selectRegions } from 'app/redux/reducers/geography';
 // hooks
 import { useSelectedRegions } from 'app/hooks';
 // config
