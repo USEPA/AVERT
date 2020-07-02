@@ -1,7 +1,7 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
 // config
-import { RegionId, Region, regions } from 'app/config';
+import { RegionId, Region, regions, StateId, State, states } from 'app/config';
 
 type GeographicFocus = 'regions' | 'states';
 
@@ -93,7 +93,11 @@ type GeographyAction =
         regionDefaults: EereJSON;
       };
     }
-  | { type: 'geography/RECEIVE_REGIONS_DATA' };
+  | { type: 'geography/RECEIVE_REGIONS_DATA' }
+  | {
+      type: 'geography/SELECT_STATE';
+      payload: { stateId: StateId };
+    };
 
 export type RegionState = Region & {
   selected: boolean;
@@ -101,10 +105,17 @@ export type RegionState = Region & {
   rdf: RdfJSON;
 };
 
+type StateState = State & {
+  selected: boolean;
+};
+
 type GeographyState = {
   focus: GeographicFocus;
   regions: {
     [key in RegionId]: RegionState;
+  };
+  states: {
+    [key in StateId]: StateState;
   };
 };
 
@@ -161,10 +172,17 @@ for (const key in updatedRegions) {
   updatedRegions[key].rdf = initialRegionRdf;
 }
 
+// augment states data (from config) with additonal 'selected' field for each state
+const updatedStates: any = { ...states };
+for (const key in updatedStates) {
+  updatedStates[key].selected = false;
+}
+
 // reducer
 const initialState: GeographyState = {
   focus: 'regions',
   regions: updatedRegions,
+  states: updatedStates,
 };
 
 export default function reducer(
@@ -179,13 +197,17 @@ export default function reducer(
       };
 
     case 'geography/SELECT_REGIONS':
-      const updatedState = { ...state };
+      const selectedRegionsState = { ...state };
       for (const key in state.regions) {
         const regionId = key as RegionId;
         const regionIsSelected = action.payload.regionIds.includes(regionId);
-        updatedState.regions[regionId].selected = regionIsSelected;
+        selectedRegionsState.regions[regionId].selected = regionIsSelected;
       }
-      return updatedState;
+      return selectedRegionsState;
+
+    case 'geography/REQUEST_REGIONS_DATA':
+    case 'geography/RECEIVE_REGIONS_DATA':
+      return state;
 
     case 'geography/RECEIVE_REGION_RDF':
       return {
@@ -212,9 +234,14 @@ export default function reducer(
       };
     }
 
-    case 'geography/REQUEST_REGIONS_DATA':
-    case 'geography/RECEIVE_REGIONS_DATA':
-      return state;
+    case 'geography/SELECT_STATE':
+      const selectedStateState = { ...state };
+      for (const key in state.states) {
+        const stateId = key as StateId;
+        const stateIsSelected = action.payload.stateId === stateId;
+        selectedStateState.states[stateId].selected = stateIsSelected;
+      }
+      return selectedStateState;
 
     default:
       return state;
@@ -287,5 +314,12 @@ export function fetchRegionsData(): AppThunk {
       .then(() => {
         dispatch({ type: 'geography/RECEIVE_REGIONS_DATA' });
       });
+  };
+}
+
+export function selectState(stateId: string) {
+  return {
+    type: 'geography/SELECT_STATE',
+    payload: { stateId },
   };
 }

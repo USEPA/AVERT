@@ -1,8 +1,9 @@
 // config
 import { StateId, State, states } from 'app/config';
 
+// TODO: start copying over here...
 type StatesAction = {
-  type: 'states/SELECT_STATE';
+  type: 'geography/SELECT_STATE';
   payload: { stateId: StateId };
 };
 
@@ -28,7 +29,7 @@ export default function reducer(
   action: StatesAction,
 ): StatesState {
   switch (action.type) {
-    case 'states/SELECT_STATE':
+    case 'geography/SELECT_STATE':
       const updatedState = { ...state };
       for (const key in state) {
         const stateId = key as StateId;
@@ -45,7 +46,7 @@ export default function reducer(
 // action creators
 export function selectState(stateId: string) {
   return {
-    type: 'states/SELECT_STATE',
+    type: 'geography/SELECT_STATE',
     payload: { stateId },
   };
 }

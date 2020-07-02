@@ -5,7 +5,6 @@ import { useSelector, TypedUseSelectorHook } from 'react-redux';
 import api from './reducers/api';
 import panel from './reducers/panel';
 import geography from './reducers/geography';
-import states from './reducers/states';
 import eere from './reducers/eere';
 import displacement from './reducers/displacement';
 import stateEmissions from './reducers/stateEmissions';
@@ -15,7 +14,6 @@ const rootReducer = combineReducers({
   api,
   panel,
   geography,
-  states,
   eere,
   displacement,
   stateEmissions,

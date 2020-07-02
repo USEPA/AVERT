@@ -16,9 +16,9 @@ function useSelectedRegions() {
 }
 
 function useSelectedState() {
-  return useTypedSelector(({ states }) => {
-    for (const key in states) {
-      const state = states[key as StateId];
+  return useTypedSelector(({ geography }) => {
+    for (const key in geography.states) {
+      const state = geography.states[key as StateId];
       if (state.selected) return state;
     }
   });

@@ -4,7 +4,7 @@ import React from 'react';
 import { jsx, css } from '@emotion/core';
 import { useDispatch } from 'react-redux';
 // reducers
-import { selectState } from 'app/redux/reducers/states';
+import { selectState } from 'app/redux/reducers/geography';
 // hooks
 import { useSelectedState } from 'app/hooks';
 // config
