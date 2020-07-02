@@ -304,26 +304,24 @@ export function fetchRegionsData(): AppThunk {
     Promise.all([rdfRequests, eereRequests].map(Promise.all, Promise))
       .then(([rdfResponses, eereResponses]) => {
         (rdfResponses as Response[]).forEach((rdfResponse) => {
-          rdfResponse.json().then((regionRdf: RdfJSON) => {
-            const regionId = rdfResponse.url.split('/').pop() as RegionId;
+          rdfResponse.json().then((rdfJson: RdfJSON) => {
             dispatch({
               type: 'geography/RECEIVE_REGION_RDF',
               payload: {
-                regionId,
-                regionRdf,
+                regionId: rdfResponse.url.split('/').pop() as RegionId,
+                regionRdf: rdfJson,
               },
             });
           });
         });
 
         (eereResponses as Response[]).forEach((eereResponse) => {
-          eereResponse.json().then((regionDefaults: EereJSON) => {
-            const regionId = eereResponse.url.split('/').pop() as RegionId;
+          eereResponse.json().then((eereJson: EereJSON) => {
             dispatch({
               type: 'geography/RECEIVE_REGION_DEFAULTS',
               payload: {
-                regionId,
-                regionDefaults,
+                regionId: eereResponse.url.split('/').pop() as RegionId,
+                regionDefaults: eereJson,
               },
             });
           });
