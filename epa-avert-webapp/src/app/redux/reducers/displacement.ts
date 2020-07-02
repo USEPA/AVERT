@@ -353,8 +353,8 @@ function fetchDisplacementData(pollutant: Pollutant): AppThunk {
 
     // TODO: determine how to handle when multiple regions are selected
     const selectedRegions: RegionState[] = [];
-    for (const key in geography.regions) {
-      const region = geography.regions[key as RegionId];
+    for (const regionId in geography.regions) {
+      const region = geography.regions[regionId as RegionId];
       if (region.selected) selectedRegions.push(region);
     }
     const region = selectedRegions[0];

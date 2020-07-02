@@ -166,16 +166,16 @@ const initialRegionRdf = {
 
 // augment regions data (from config) with additonal fields for each region
 const updatedRegions: any = { ...regions };
-for (const key in updatedRegions) {
-  updatedRegions[key].selected = false;
-  updatedRegions[key].eereDefaults = initialRegionEereDefaults;
-  updatedRegions[key].rdf = initialRegionRdf;
+for (const regionId in updatedRegions) {
+  updatedRegions[regionId].selected = false;
+  updatedRegions[regionId].eereDefaults = initialRegionEereDefaults;
+  updatedRegions[regionId].rdf = initialRegionRdf;
 }
 
 // augment states data (from config) with additonal 'selected' field for each state
 const updatedStates: any = { ...states };
-for (const key in updatedStates) {
-  updatedStates[key].selected = false;
+for (const stateId in updatedStates) {
+  updatedStates[stateId].selected = false;
 }
 
 // reducer
@@ -268,9 +268,24 @@ export function fetchRegionsData(): AppThunk {
     const { api, geography } = getState();
 
     const selectedRegions: RegionState[] = [];
-    for (const key in geography.regions) {
-      const region = geography.regions[key as RegionId];
-      if (region.selected) selectedRegions.push(region);
+
+    if (geography.focus === 'regions') {
+      for (const regionId in geography.regions) {
+        const region = geography.regions[regionId as RegionId];
+        if (region.selected) selectedRegions.push(region);
+      }
+    }
+
+    if (geography.focus === 'states') {
+      for (const stateId in geography.states) {
+        const state = geography.states[stateId as StateId];
+        if (state.selected) {
+          Object.keys(state.regions).forEach((regionId) => {
+            const region = geography.regions[regionId as RegionId];
+            selectedRegions.push(region);
+          });
+        }
+      }
     }
 
     // build up requests of selected regions that haven't yet fetched their RDF

@@ -130,11 +130,10 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
     </PrevButton>
   );
 
-  // conditionally define reset and disabled classes
-  const noRegionSelected = onStepOne && selectedRegionIds.length === 0;
+  const noRegionsSelected = onStepOne && selectedRegionIds.length === 0;
   const noStateSelected = onStepOne && !selectedStateId;
   const noGeographySelected =
-    geographicFocus === 'regions' ? noRegionSelected : noStateSelected;
+    geographicFocus === 'regions' ? noRegionsSelected : noStateSelected;
 
   const calculationRunning = onStepTwo && eereStatus !== 'complete';
   const exceedsHardValidationLimit = onStepTwo && !hardValid;
