@@ -23,6 +23,7 @@ import { modalLinkStyles } from 'app/components/Tooltip';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 import { toggleModalOverlay, resetActiveModal } from 'app/redux/reducers/panel';
+import { selectGeography } from 'app/redux/reducers/geography';
 // hooks
 import { useSelectedRegions } from 'app/hooks';
 
@@ -195,17 +196,21 @@ const tabsStyles = css`
     font-weight: 700;
     line-height: 1;
 
-    &:first-child {
+    &:first-of-type {
       text-align: left;
     }
 
-    &:last-child {
+    &:last-of-type {
       text-align: right;
     }
 
     &[data-selected] {
       border-bottom-width: 2px;
     }
+  }
+
+  [data-reach-tab-panel] {
+    outline: none;
   }
 `;
 
@@ -331,6 +336,7 @@ function Panels() {
   const loadingProgress = useTypedSelector(
     ({ panel }) => panel.loadingProgress,
   );
+  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const modalOverlay = useTypedSelector(({ panel }) => panel.modalOverlay);
   const activeModalId = useTypedSelector(({ panel }) => panel.activeModalId);
   const softValid = useTypedSelector(({ eere }) => eere.softLimit.valid);
@@ -401,7 +407,13 @@ function Panels() {
 
       <section css={panelStyles} data-active={activeStep === 1}>
         <div css={panelBodyStyles}>
-          <Tabs css={tabsStyles}>
+          <Tabs
+            css={tabsStyles}
+            index={geographicFocus === 'regions' ? 0 : 1}
+            onChange={(index) => {
+              dispatch(selectGeography(index === 0 ? 'regions' : 'states'));
+            }}
+          >
             <TabList>
               <Tab css={panelHeadingStyles}>Select Region</Tab>
               <Tab css={panelHeadingStyles}>Select State</Tab>
