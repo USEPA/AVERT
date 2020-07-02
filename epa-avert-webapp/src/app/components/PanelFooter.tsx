@@ -15,7 +15,7 @@ import {
 import { resetStateEmissions } from 'app/redux/reducers/stateEmissions';
 import { resetMonthlyEmissions } from 'app/redux/reducers/monthlyEmissions';
 // hooks
-import { useSelectedRegions } from 'app/hooks';
+import { useSelectedRegions, useSelectedState } from 'app/hooks';
 // icons
 import icons from 'app/icons.svg';
 
@@ -92,10 +92,12 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
   const dispatch = useDispatch();
 
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
+  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const eereStatus = useTypedSelector(({ eere }) => eere.status);
   const hardValid = useTypedSelector(({ eere }) => eere.hardLimit.valid);
 
-  const regionIds = useSelectedRegions().map((region) => region.id);
+  const selectedRegionIds = useSelectedRegions().map((region) => region.id);
+  const selectedStateId = useSelectedState()?.id;
 
   const onStepOne = activeStep === 1;
   const onStepTwo = activeStep === 2;
@@ -129,12 +131,16 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
   );
 
   // conditionally define reset and disabled classes
-  const noRegionSelected = onStepOne && regionIds.length === 0;
+  const noRegionSelected = onStepOne && selectedRegionIds.length === 0;
+  const noStateSelected = onStepOne && !selectedStateId;
+  const noGeographySelected =
+    geographicFocus === 'regions' ? noRegionSelected : noStateSelected;
+
   const calculationRunning = onStepTwo && eereStatus !== 'complete';
   const exceedsHardValidationLimit = onStepTwo && !hardValid;
 
   const disabledClass =
-    noRegionSelected || calculationRunning || exceedsHardValidationLimit
+    noGeographySelected || calculationRunning || exceedsHardValidationLimit
       ? 'avert-button-disabled'
       : '';
 
@@ -146,7 +152,7 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
       onClick={(ev) => {
         ev.preventDefault();
 
-        if (noRegionSelected) return;
+        if (noGeographySelected) return;
 
         if (onStepOne) {
           scrollToTop();
