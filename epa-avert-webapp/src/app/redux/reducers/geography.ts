@@ -290,39 +290,42 @@ export function fetchRegionsData(): AppThunk {
 
     // build up requests of selected regions that haven't yet fetched their RDF
     const rdfRequests: Promise<Response>[] = [];
+    const eereRequests: Promise<Response>[] = [];
+
     selectedRegions.forEach((region) => {
       if (region.rdf.region.region_abbv === '') {
         rdfRequests.push(fetch(`${api.baseUrl}/api/v1/rdf/${region.id}`));
+        eereRequests.push(fetch(`${api.baseUrl}/api/v1/eere/${region.id}`));
       }
     });
 
     dispatch({ type: 'geography/REQUEST_REGIONS_DATA' });
 
-    Promise.all(rdfRequests)
-      .then((rdfResponses) => {
-        rdfResponses.forEach((rdfResponse) => {
-          rdfResponse.json().then((rdfJson: RdfJSON) => {
-            const regionId = rdfJson.region.region_abbv;
-
+    Promise.all([rdfRequests, eereRequests].map(Promise.all, Promise))
+      .then(([rdfResponses, eereResponses]) => {
+        (rdfResponses as Response[]).forEach((rdfResponse) => {
+          rdfResponse.json().then((regionRdf: RdfJSON) => {
+            const regionId = rdfResponse.url.split('/').pop() as RegionId;
             dispatch({
               type: 'geography/RECEIVE_REGION_RDF',
               payload: {
-                regionId: regionId as RegionId,
-                regionRdf: rdfJson,
+                regionId,
+                regionRdf,
               },
             });
+          });
+        });
 
-            fetch(`${api.baseUrl}/api/v1/eere/${regionId}`)
-              .then((eereResponse) => eereResponse.json())
-              .then((eereJson: EereJSON) => {
-                dispatch({
-                  type: 'geography/RECEIVE_REGION_DEFAULTS',
-                  payload: {
-                    regionId: regionId as RegionId,
-                    regionDefaults: eereJson,
-                  },
-                });
-              });
+        (eereResponses as Response[]).forEach((eereResponse) => {
+          eereResponse.json().then((regionDefaults: EereJSON) => {
+            const regionId = eereResponse.url.split('/').pop() as RegionId;
+            dispatch({
+              type: 'geography/RECEIVE_REGION_DEFAULTS',
+              payload: {
+                regionId,
+                regionDefaults,
+              },
+            });
           });
         });
       })
