@@ -303,8 +303,8 @@ export function fetchRegionsData(): AppThunk {
 
     Promise.all([rdfRequests, eereRequests].map(Promise.all, Promise))
       .then(([rdfResponses, eereResponses]) => {
-        (rdfResponses as Response[]).forEach((rdfResponse) => {
-          rdfResponse.json().then((rdfJson: RdfJSON) => {
+        const rdfsData = (rdfResponses as Response[]).map((rdfResponse) => {
+          return rdfResponse.json().then((rdfJson: RdfJSON) => {
             dispatch({
               type: 'geography/RECEIVE_REGION_RDF',
               payload: {
@@ -312,11 +312,12 @@ export function fetchRegionsData(): AppThunk {
                 regionRdf: rdfJson,
               },
             });
+            return rdfJson;
           });
         });
 
-        (eereResponses as Response[]).forEach((eereResponse) => {
-          eereResponse.json().then((eereJson: EereJSON) => {
+        const eeresData = (eereResponses as Response[]).map((eereResponse) => {
+          return eereResponse.json().then((eereJson: EereJSON) => {
             dispatch({
               type: 'geography/RECEIVE_REGION_DEFAULTS',
               payload: {
@@ -324,10 +325,13 @@ export function fetchRegionsData(): AppThunk {
                 regionDefaults: eereJson,
               },
             });
+            return eereJson;
           });
         });
+
+        return Promise.all([Promise.all(rdfsData), Promise.all(eeresData)]);
       })
-      .then(() => {
+      .then(([rdfs, eeres]) => {
         dispatch({ type: 'geography/RECEIVE_REGIONS_DATA' });
       });
   };
