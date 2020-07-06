@@ -3,7 +3,7 @@ import { AppThunk } from 'app/redux/index';
 // config
 import { RegionId, Region, regions, StateId, State, states } from 'app/config';
 
-export type GeographicFocus = 'regions' | 'states';
+type GeographicFocus = 'regions' | 'states';
 
 type EereLimits = {
   annualGwh: number;
@@ -109,8 +109,8 @@ type GeographyAction =
       type: 'geography/SET_EERE_LIMITS';
       payload: {
         geographicFocus: GeographicFocus;
-        regionId: RegionId | null;
-        stateId: StateId | null;
+        regionId: RegionId | undefined;
+        stateId: StateId | undefined;
         eereLimits: EereLimits;
       };
     };
@@ -459,23 +459,27 @@ export function fetchRegionsData(): AppThunk {
         return Promise.all([Promise.all(rdfsData), Promise.all(eeresData)]);
       })
       .then(([rdfs, eeres]) => {
-        const geographicFocus = geography.focus;
+        if (rdfs.length > 0) {
+          const geographicFocus = geography.focus;
+          const regionId = geographicFocus === 'regions' && selectedRegion?.id;
+          const stateId = geographicFocus === 'states' && selectedState?.id;
 
-        const eereLimits = calculateEereLimits({
-          geographicFocus,
-          selectedState,
-          rdfs,
-        });
-
-        dispatch({
-          type: 'geography/SET_EERE_LIMITS',
-          payload: {
+          const eereLimits = calculateEereLimits({
             geographicFocus,
-            regionId: geographicFocus === 'regions' ? selectedRegion?.id : null,
-            stateId: geographicFocus === 'states' ? selectedState?.id : null,
-            eereLimits,
-          },
-        });
+            selectedState,
+            rdfs,
+          });
+
+          dispatch({
+            type: 'geography/SET_EERE_LIMITS',
+            payload: {
+              geographicFocus,
+              regionId,
+              stateId,
+              eereLimits,
+            },
+          });
+        }
 
         dispatch({ type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' });
       });
