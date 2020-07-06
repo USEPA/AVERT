@@ -111,7 +111,7 @@ type GeographyAction =
         geographicFocus: GeographicFocus;
         regionId: RegionId | null;
         stateId: StateId | null;
-        limits: EereLimits;
+        eereLimits: EereLimits;
       };
     };
 
@@ -271,7 +271,38 @@ export default function reducer(
     }
 
     case 'geography/SET_EERE_LIMITS': {
-      // TODO: update state based on payload
+      if (
+        action.payload.geographicFocus === 'regions' &&
+        action.payload.regionId
+      ) {
+        return {
+          ...state,
+          regions: {
+            ...state.regions,
+            [action.payload.regionId]: {
+              ...state.regions[action.payload.regionId],
+              eereLimits: action.payload.eereLimits,
+            },
+          },
+        };
+      }
+
+      if (
+        action.payload.geographicFocus === 'states' &&
+        action.payload.stateId
+      ) {
+        return {
+          ...state,
+          states: {
+            ...state.states,
+            [action.payload.stateId]: {
+              ...state.states[action.payload.stateId],
+              eereLimits: action.payload.eereLimits,
+            },
+          },
+        };
+      }
+
       return state;
     }
 
@@ -302,7 +333,7 @@ export function selectState(stateId: string) {
   };
 }
 
-function calculateLimits({
+function calculateEereLimits({
   geographicFocus,
   selectedState,
   rdfs,
@@ -430,7 +461,7 @@ export function fetchRegionsData(): AppThunk {
       .then(([rdfs, eeres]) => {
         const geographicFocus = geography.focus;
 
-        const limits = calculateLimits({
+        const eereLimits = calculateEereLimits({
           geographicFocus,
           selectedState,
           rdfs,
@@ -442,7 +473,7 @@ export function fetchRegionsData(): AppThunk {
             geographicFocus,
             regionId: geographicFocus === 'regions' ? selectedRegion?.id : null,
             stateId: geographicFocus === 'states' ? selectedState?.id : null,
-            limits,
+            eereLimits,
           },
         });
 
