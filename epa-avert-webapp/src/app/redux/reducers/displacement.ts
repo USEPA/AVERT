@@ -22,7 +22,7 @@ type PollutantDisplacementData = {
 };
 
 type DisplacementAction =
-  | { type: 'geography/SELECT_REGIONS' }
+  | { type: 'geography/SELECT_REGION' }
   | { type: 'displacement/INCREMENT_PROGRESS' }
   | { type: 'displacement/START_DISPLACEMENT' }
   | {
@@ -161,7 +161,7 @@ export default function reducer(
   action: DisplacementAction,
 ): DisplacementState {
   switch (action.type) {
-    case 'geography/SELECT_REGIONS':
+    case 'geography/SELECT_REGION':
     case 'displacement/RESET_DISPLACEMENT':
       return initialState;
 

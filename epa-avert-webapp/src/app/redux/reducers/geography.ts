@@ -5,6 +5,13 @@ import { RegionId, Region, regions, StateId, State, states } from 'app/config';
 
 export type GeographicFocus = 'regions' | 'states';
 
+type EereLimits = {
+  annualGwh: number;
+  constantMwh: number;
+  renewables: number;
+  percent: number;
+};
+
 export type RegionalLoadData = {
   day: number;
   hour: number;
@@ -75,10 +82,15 @@ type GeographyAction =
       payload: { focus: GeographicFocus };
     }
   | {
-      type: 'geography/SELECT_REGIONS';
+      type: 'geography/SELECT_REGION';
       payload: { regionIds: RegionId[] };
     }
+  | {
+      type: 'geography/SELECT_STATE';
+      payload: { stateId: StateId };
+    }
   | { type: 'geography/REQUEST_SELECTED_REGIONS_DATA' }
+  | { type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' }
   | {
       type: 'geography/RECEIVE_REGION_RDF';
       payload: {
@@ -93,20 +105,26 @@ type GeographyAction =
         regionDefaults: EereJSON;
       };
     }
-  | { type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' }
   | {
-      type: 'geography/SELECT_STATE';
-      payload: { stateId: StateId };
+      type: 'geography/SET_EERE_LIMITS';
+      payload: {
+        geographicFocus: GeographicFocus;
+        regionId: RegionId | null;
+        stateId: StateId | null;
+        limits: EereLimits;
+      };
     };
 
 export type RegionState = Region & {
   selected: boolean;
+  eereLimits: EereLimits;
   eereDefaults: EereJSON;
   rdf: RdfJSON;
 };
 
 export type StateState = State & {
   selected: boolean;
+  eereLimits: EereLimits;
 };
 
 type GeographyState = {
@@ -117,6 +135,13 @@ type GeographyState = {
   states: {
     [key in StateId]: StateState;
   };
+};
+
+const initialEereLimits = {
+  annualGwh: 0,
+  constantMwh: 0,
+  renewables: 0,
+  percent: 0,
 };
 
 const initialRegionEereDefaults = {
@@ -168,14 +193,16 @@ const initialRegionRdf = {
 const updatedRegions: any = { ...regions };
 for (const regionId in updatedRegions) {
   updatedRegions[regionId].selected = false;
+  updatedRegions[regionId].eereLimits = initialEereLimits;
   updatedRegions[regionId].eereDefaults = initialRegionEereDefaults;
   updatedRegions[regionId].rdf = initialRegionRdf;
 }
 
-// augment states data (from config) with additonal 'selected' field for each state
+// augment states data (from config) with additonal field afor each state
 const updatedStates: any = { ...states };
 for (const stateId in updatedStates) {
   updatedStates[stateId].selected = false;
+  updatedStates[stateId].eereLimits = initialEereLimits;
 }
 
 // reducer
@@ -196,7 +223,7 @@ export default function reducer(
         focus: action.payload.focus,
       };
 
-    case 'geography/SELECT_REGIONS':
+    case 'geography/SELECT_REGION':
       const selectedRegionsState = { ...state };
       for (const key in state.regions) {
         const regionId = key as RegionId;
@@ -204,6 +231,15 @@ export default function reducer(
         selectedRegionsState.regions[regionId].selected = regionIsSelected;
       }
       return selectedRegionsState;
+
+    case 'geography/SELECT_STATE':
+      const selectedStateState = { ...state };
+      for (const key in state.states) {
+        const stateId = key as StateId;
+        const stateIsSelected = action.payload.stateId === stateId;
+        selectedStateState.states[stateId].selected = stateIsSelected;
+      }
+      return selectedStateState;
 
     case 'geography/REQUEST_SELECTED_REGIONS_DATA':
     case 'geography/RECEIVE_SELECTED_REGIONS_DATA':
@@ -234,14 +270,10 @@ export default function reducer(
       };
     }
 
-    case 'geography/SELECT_STATE':
-      const selectedStateState = { ...state };
-      for (const key in state.states) {
-        const stateId = key as StateId;
-        const stateIsSelected = action.payload.stateId === stateId;
-        selectedStateState.states[stateId].selected = stateIsSelected;
-      }
-      return selectedStateState;
+    case 'geography/SET_EERE_LIMITS': {
+      // TODO: update state based on payload
+      return state;
+    }
 
     default:
       return state;
@@ -258,8 +290,65 @@ export function selectGeography(focus: GeographicFocus) {
 
 export function selectRegions(regionIds: RegionId[]) {
   return {
-    type: 'geography/SELECT_REGIONS',
+    type: 'geography/SELECT_REGION',
     payload: { regionIds },
+  };
+}
+
+export function selectState(stateId: string) {
+  return {
+    type: 'geography/SELECT_STATE',
+    payload: { stateId },
+  };
+}
+
+function calculateLimits({
+  geographicFocus,
+  selectedState,
+  rdfs,
+}: {
+  geographicFocus: GeographicFocus;
+  selectedState: StateState | undefined;
+  rdfs: RdfJSON[];
+}) {
+  // variables set from rdf(s), depending on the geographic focus
+  let maxSolarWindMwh = 0;
+  let maxEEYearlyGwh = 0;
+  let maxEEPercent = 0;
+  let totalHours = 0;
+
+  // when a region is selected, only one rdf is passed
+  if (geographicFocus === 'regions') {
+    const { limits, regional_load } = rdfs[0];
+    maxSolarWindMwh = limits.max_solar_wind_mwh;
+    maxEEYearlyGwh = limits.max_ee_yearly_gwh;
+    maxEEPercent = limits.max_ee_percent;
+    totalHours = regional_load.length;
+  }
+
+  // when a state is selected, multiple rdfs are passed
+  if (geographicFocus === 'states' && selectedState) {
+    rdfs.forEach((rdf) => {
+      const { limits, regional_load } = rdf;
+      const regionId = rdf.region.region_abbv as RegionId;
+      // use percentage of the state within each region to build up variables
+      const percent = selectedState.regions[regionId] || 100;
+      maxSolarWindMwh += (limits.max_solar_wind_mwh * percent) / 100;
+      maxEEYearlyGwh += (limits.max_ee_yearly_gwh * percent) / 100;
+      maxEEPercent += (limits.max_ee_percent * percent) / 100;
+      // total hours is the same for all rdfs but its easier to just reassign it
+      totalHours = regional_load.length;
+    });
+  }
+
+  // calculate hourlyMwh from annualGwh (total for year)
+  const hourlyMwh = (maxEEYearlyGwh * 1000) / totalHours;
+
+  return {
+    annualGwh: Math.round(maxEEYearlyGwh * 2 * 100) / 100,
+    constantMwh: Math.round(hourlyMwh * 2 * 100) / 100,
+    renewables: Math.round(maxSolarWindMwh * 2 * 100) / 100,
+    percent: Math.round(maxEEPercent * 2 * 100) / 100,
   };
 }
 
@@ -269,10 +358,16 @@ export function fetchRegionsData(): AppThunk {
 
     const selectedRegions: RegionState[] = [];
 
+    let selectedRegion: RegionState | undefined;
+    let selectedState: StateState | undefined;
+
     if (geography.focus === 'regions') {
       for (const regionId in geography.regions) {
         const region = geography.regions[regionId as RegionId];
-        if (region.selected) selectedRegions.push(region);
+        if (region.selected) {
+          selectedRegion = region;
+          selectedRegions.push(region);
+        }
       }
     }
 
@@ -280,6 +375,7 @@ export function fetchRegionsData(): AppThunk {
       for (const stateId in geography.states) {
         const state = geography.states[stateId as StateId];
         if (state.selected) {
+          selectedState = state;
           Object.keys(state.regions).forEach((regionId) => {
             const region = geography.regions[regionId as RegionId];
             selectedRegions.push(region);
@@ -332,14 +428,25 @@ export function fetchRegionsData(): AppThunk {
         return Promise.all([Promise.all(rdfsData), Promise.all(eeresData)]);
       })
       .then(([rdfs, eeres]) => {
+        const geographicFocus = geography.focus;
+
+        const limits = calculateLimits({
+          geographicFocus,
+          selectedState,
+          rdfs,
+        });
+
+        dispatch({
+          type: 'geography/SET_EERE_LIMITS',
+          payload: {
+            geographicFocus,
+            regionId: geographicFocus === 'regions' ? selectedRegion?.id : null,
+            stateId: geographicFocus === 'states' ? selectedState?.id : null,
+            limits,
+          },
+        });
+
         dispatch({ type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' });
       });
-  };
-}
-
-export function selectState(stateId: string) {
-  return {
-    type: 'geography/SELECT_STATE',
-    payload: { stateId },
   };
 }

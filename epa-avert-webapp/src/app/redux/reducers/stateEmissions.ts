@@ -13,7 +13,7 @@ type StateEmissionsData = {
 };
 
 type StateEmissionsAction =
-  | { type: 'geography/SELECT_REGIONS' }
+  | { type: 'geography/SELECT_REGION' }
   | { type: 'displacement/START_DISPLACEMENT' }
   | {
       type: 'stateEmissions/COMPLETE_STATE_EMISSIONS';
@@ -42,7 +42,7 @@ export default function reducer(
   action: StateEmissionsAction,
 ): StateEmissionsState {
   switch (action.type) {
-    case 'geography/SELECT_REGIONS':
+    case 'geography/SELECT_REGION':
     case 'stateEmissions/RESET_STATE_EMISSIONS':
       return initialState;
 
