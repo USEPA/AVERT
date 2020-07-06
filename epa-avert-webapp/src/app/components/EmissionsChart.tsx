@@ -16,7 +16,7 @@ import {
   selectMonthlyCounty,
 } from 'app/redux/reducers/monthlyEmissions';
 // hooks
-import { useSelectedRegions } from 'app/hooks';
+import { useSelectedRegion } from 'app/hooks';
 // config
 import { StateId, states } from 'app/config';
 
@@ -116,8 +116,8 @@ function EmissionsChart({ heading }: Props) {
   );
 
   // TODO: determine how to handle when multiple regions are selected
-  const regions = useSelectedRegions();
-  const regionName = regions[0]?.name;
+  const region = useSelectedRegion();
+  const regionName = region?.name;
 
   // rendering is ready when output prop has data
   const readyToRender = status === 'complete';

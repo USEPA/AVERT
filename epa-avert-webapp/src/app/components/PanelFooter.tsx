@@ -15,7 +15,7 @@ import {
 import { resetStateEmissions } from 'app/redux/reducers/stateEmissions';
 import { resetMonthlyEmissions } from 'app/redux/reducers/monthlyEmissions';
 // hooks
-import { useSelectedRegions, useSelectedState } from 'app/hooks';
+import { useSelectedRegion, useSelectedState } from 'app/hooks';
 // icons
 import icons from 'app/icons.svg';
 
@@ -96,7 +96,7 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
   const eereStatus = useTypedSelector(({ eere }) => eere.status);
   const hardValid = useTypedSelector(({ eere }) => eere.hardLimit.valid);
 
-  const selectedRegionIds = useSelectedRegions().map((region) => region.id);
+  const selectedRegionId = useSelectedRegion()?.id;
   const selectedStateId = useSelectedState()?.id;
 
   const onStepOne = activeStep === 1;
@@ -130,7 +130,7 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
     </PrevButton>
   );
 
-  const noRegionsSelected = onStepOne && selectedRegionIds.length === 0;
+  const noRegionsSelected = onStepOne && !selectedRegionId;
   const noStateSelected = onStepOne && !selectedStateId;
   const noGeographySelected =
     geographicFocus === 'regions' ? noRegionsSelected : noStateSelected;

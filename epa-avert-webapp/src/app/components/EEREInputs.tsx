@@ -8,7 +8,11 @@ import EEREInputField from 'app/components/EEREInputField';
 import Tooltip from 'app/components/Tooltip';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
-import { RegionState } from 'app/redux/reducers/geography';
+import {
+  GeographicFocus,
+  RegionState,
+  StateState,
+} from 'app/redux/reducers/geography';
 import {
   EereInputFields,
   updateEereAnnualGwh,
@@ -23,7 +27,11 @@ import {
   calculateEereProfile,
 } from 'app/redux/reducers/eere';
 // hooks
-import { useSelectedRegions } from 'app/hooks';
+import {
+  useSelectedRegion,
+  useSelectedState,
+  useSelectedStateRegions,
+} from 'app/hooks';
 
 const inputsBlockStyles = css`
   margin: 1rem 0;
@@ -238,35 +246,64 @@ function displayError({
   );
 }
 
-function calculateRegionLimits(region: RegionState) {
-  if (!region)
-    return {
-      annualGwh: 0,
-      constantMwh: 0,
-      renewables: 0,
-      percent: 0,
-    };
+/**
+ * rounds a given number to two decimal places
+ */
+function round(number: number) {
+  return Math.round(number * 100) / 100;
+}
 
-  const {
-    max_ee_yearly_gwh,
-    max_solar_wind_mwh,
-    max_ee_percent,
-  } = region.rdf.limits;
+function calculateLimits({
+  geographicFocus,
+  selectedRegion,
+  selectedState,
+  selectedStateRegions,
+}: {
+  geographicFocus: GeographicFocus;
+  selectedRegion: RegionState | undefined;
+  selectedState: StateState | undefined;
+  selectedStateRegions: RegionState[];
+}) {
+  let maxSolarWindMwh = 0;
+  let maxEEYearlyGwh = 0;
+  let maxEEPercent = 0;
+  let totalHours = 0;
+
+  if (geographicFocus === 'regions' && selectedRegion) {
+    const { limits, regional_load } = selectedRegion.rdf;
+    maxSolarWindMwh = limits.max_solar_wind_mwh;
+    maxEEYearlyGwh = limits.max_ee_yearly_gwh;
+    maxEEPercent = limits.max_ee_percent;
+    totalHours = regional_load.length;
+  }
+
+  if (geographicFocus === 'states' && selectedState) {
+    selectedStateRegions.forEach((region) => {
+      const { limits, regional_load } = region.rdf;
+      // regionPercentage is the percentage of the state within a given region
+      const regionPercentage = selectedState.regions[region.id] || 100;
+
+      maxSolarWindMwh += (limits.max_solar_wind_mwh * regionPercentage) / 100;
+      maxEEYearlyGwh += (limits.max_ee_yearly_gwh * regionPercentage) / 100;
+      maxEEPercent += (limits.max_ee_percent * regionPercentage) / 100;
+      totalHours = regional_load.length;
+    });
+  }
 
   // calculate hourlyMwh from annualGwh (total for year)
-  const hourlyMwh =
-    (max_ee_yearly_gwh * 1000) / region.rdf.regional_load.length;
+  const hourlyMwh = (maxEEYearlyGwh * 1000) / totalHours;
 
   return {
-    annualGwh: max_ee_yearly_gwh * 2,
-    constantMwh: Math.round(hourlyMwh * 2 * 100) / 100,
-    renewables: max_solar_wind_mwh * 2,
-    percent: max_ee_percent * 2,
+    annualGwh: round(maxEEYearlyGwh * 2),
+    constantMwh: round(hourlyMwh * 2),
+    renewables: round(maxSolarWindMwh * 2),
+    percent: round(maxEEPercent * 2),
   };
 }
 
 function EEREInputs() {
   const dispatch = useDispatch();
+  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const status = useTypedSelector(({ eere }) => eere.status);
   const errors = useTypedSelector(({ eere }) => eere.errors);
   const constantMwh = useTypedSelector(({ eere }) => eere.inputs.constantMwh);
@@ -279,10 +316,21 @@ function EEREInputs() {
   const utilitySolar = useTypedSelector(({ eere }) => eere.inputs.utilitySolar);
   const rooftopSolar = useTypedSelector(({ eere }) => eere.inputs.rooftopSolar);
 
-  // TODO: determine how to handle when multiple regions are selected
-  const regions = useSelectedRegions();
-  const limits = calculateRegionLimits(regions[0]);
-  const regionSupportsOffshoreWind = regions[0]?.offshoreWind;
+  const selectedRegion = useSelectedRegion();
+  const selectedState = useSelectedState();
+  const selectedStateRegions = useSelectedStateRegions();
+
+  const limits = calculateLimits({
+    geographicFocus,
+    selectedRegion,
+    selectedState,
+    selectedStateRegions,
+  });
+
+  const regionSupportsOffshoreWind =
+    geographicFocus === 'regions'
+      ? selectedRegion?.offshoreWind
+      : selectedStateRegions.every((region) => region.offshoreWind);
 
   const inputsAreValid = errors.length === 0;
 

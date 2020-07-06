@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 // reducers
 import { selectRegions } from 'app/redux/reducers/geography';
 // hooks
-import { useSelectedRegions } from 'app/hooks';
+import { useSelectedRegion } from 'app/hooks';
 // config
 import { RegionId, regions } from 'app/config';
 
@@ -17,12 +17,12 @@ const selectStyles = css`
 function RegionsList() {
   const dispatch = useDispatch();
 
-  const selectedRegionIds = useSelectedRegions().map((region) => region.id);
+  const selectedRegionId = useSelectedRegion()?.id;
 
   return (
     <select
       css={selectStyles}
-      value={selectedRegionIds.length === 0 ? '' : selectedRegionIds[0]}
+      value={!selectedRegionId ? '' : selectedRegionId}
       onChange={(ev) => {
         dispatch(selectRegions([ev.target.value] as RegionId[]));
       }}

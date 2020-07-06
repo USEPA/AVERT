@@ -10,7 +10,7 @@ import {
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 // hooks
-import { useSelectedRegions } from 'app/hooks';
+import { useSelectedRegion } from 'app/hooks';
 
 function downloadDataFile(fileName: string, data: any) {
   const fields = Object.keys(data[0]);
@@ -33,8 +33,8 @@ function DataDownload() {
   );
 
   // TODO: determine how to handle when multiple regions are selected
-  const regions = useSelectedRegions();
-  const regionName = regions[0]?.name;
+  const region = useSelectedRegion();
+  const regionName = region?.name;
 
   const isDesktopSafari =
     navigator.userAgent.toLowerCase().indexOf('safari') !== -1 &&

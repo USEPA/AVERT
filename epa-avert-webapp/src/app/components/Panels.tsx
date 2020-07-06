@@ -25,7 +25,7 @@ import { useTypedSelector } from 'app/redux/index';
 import { toggleModalOverlay, resetActiveModal } from 'app/redux/reducers/panel';
 import { selectGeography } from 'app/redux/reducers/geography';
 // hooks
-import { useSelectedRegions } from 'app/hooks';
+import { useSelectedRegion } from 'app/hooks';
 
 type ContainerProps = {
   lightOverlay: boolean;
@@ -345,8 +345,8 @@ function Panels() {
   );
 
   // TODO: determine how to handle when multiple regions are selected
-  const regions = useSelectedRegions();
-  const regionName = regions[0]?.name;
+  const region = useSelectedRegion();
+  const regionName = region?.name;
 
   return (
     <Container

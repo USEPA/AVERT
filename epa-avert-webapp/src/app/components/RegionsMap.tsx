@@ -69,7 +69,7 @@ import Wyoming from 'app/components/States/Wyoming';
 // reducers
 import { selectRegions } from 'app/redux/reducers/geography';
 // hooks
-import { useSelectedRegions } from 'app/hooks';
+import { useSelectedRegion } from 'app/hooks';
 // config
 import { RegionId, regions } from 'app/config';
 
@@ -157,14 +157,14 @@ type RegionProps = {
 function Region({ id, fill, children }: RegionProps) {
   const dispatch = useDispatch();
 
-  const regionIds = useSelectedRegions().map((region) => region.id);
+  const selectedRegionId = useSelectedRegion()?.id;
 
   return (
     <g
       css={regionStyles}
       fill={fill}
       onClick={(ev) => dispatch(selectRegions([id]))}
-      data-active={regionIds.includes(id)}
+      data-active={selectedRegionId === id}
     >
       {children}
     </g>

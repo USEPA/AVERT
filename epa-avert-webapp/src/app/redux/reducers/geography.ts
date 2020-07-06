@@ -3,7 +3,7 @@ import { AppThunk } from 'app/redux/index';
 // config
 import { RegionId, Region, regions, StateId, State, states } from 'app/config';
 
-type GeographicFocus = 'regions' | 'states';
+export type GeographicFocus = 'regions' | 'states';
 
 export type RegionalLoadData = {
   day: number;
@@ -105,7 +105,7 @@ export type RegionState = Region & {
   rdf: RdfJSON;
 };
 
-type StateState = State & {
+export type StateState = State & {
   selected: boolean;
 };
 
