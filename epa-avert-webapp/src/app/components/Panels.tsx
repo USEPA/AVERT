@@ -463,6 +463,15 @@ function Panels() {
                 <StatesMap />
 
                 <p className="avert-small-text">
+                  When modeling EE/RE in a state, AVERT distributes the
+                  user-input EE/RE across all the AVERT regions straddled by the
+                  state. The energy impacts of EE/RE programs are assigned to
+                  each AVERT region based on the proportional generation
+                  provided to the state by EGUs in each AVERT region. For more
+                  information, see Appendix G of the User Manual.
+                </p>
+
+                <p className="avert-small-text">
                   The online version of AVERT can run analyses using 2019
                   emissions and generation data. The Excel version of AVERT
                   (available for download{' '}
