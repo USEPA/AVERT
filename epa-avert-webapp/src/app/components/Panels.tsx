@@ -25,7 +25,7 @@ import { useTypedSelector } from 'app/redux/index';
 import { toggleModalOverlay, resetActiveModal } from 'app/redux/reducers/panel';
 import { selectGeography } from 'app/redux/reducers/geography';
 // hooks
-import { useSelectedRegion } from 'app/hooks';
+import { useSelectedRegion, useSelectedState } from 'app/hooks';
 
 type ContainerProps = {
   lightOverlay: boolean;
@@ -243,6 +243,10 @@ const panelHeadingStyles = css`
   }
 `;
 
+const subheadingStyles = css`
+  margin-top: 0;
+`;
+
 const messageStyles = css`
   position: relative;
   left: -1rem;
@@ -345,8 +349,8 @@ function Panels() {
   );
 
   // TODO: determine how to handle when multiple regions are selected
-  const region = useSelectedRegion();
-  const regionName = region?.name;
+  const selectedRegionName = useSelectedRegion()?.name || '';
+  const selectedStateName = useSelectedState()?.name || '';
 
   return (
     <Container
@@ -498,6 +502,12 @@ function Panels() {
             Set Energy Efficiency and Renewable Energy Impacts
           </h2>
 
+          <h3 css={subheadingStyles} className="avert-heading-three">
+            {geographicFocus === 'regions'
+              ? `Region: ${selectedRegionName}`
+              : `State: ${selectedStateName}`}
+          </h3>
+
           <UnitConversion />
 
           <p>
@@ -537,6 +547,12 @@ function Panels() {
             Results: Avoided Regional, State, and County-Level Emissions
           </h2>
 
+          <h3 css={subheadingStyles} className="avert-heading-three">
+            {geographicFocus === 'regions'
+              ? `Region: ${selectedRegionName}`
+              : `State: ${selectedStateName}`}
+          </h3>
+
           {
             // conditionally display validation warning
             !softValid && (
@@ -553,15 +569,15 @@ function Panels() {
           }
 
           <DisplacementsTable
-            heading={`Annual Regional Displacements: ${regionName} Region`}
+            heading={`Annual Regional Displacements: ${selectedRegionName} Region`}
           />
 
           <EmissionsTable
-            heading={`Annual State Emission Changes: ${regionName} Region`}
+            heading={`Annual State Emission Changes: ${selectedRegionName} Region`}
           />
 
           <EmissionsChart
-            heading={`Monthly Emission Changes: ${regionName} Region`}
+            heading={`Monthly Emission Changes: ${selectedRegionName} Region`}
           />
 
           <DataDownload />
