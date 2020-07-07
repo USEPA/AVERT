@@ -42,9 +42,7 @@ function DataDownload() {
     navigator.userAgent.toLowerCase().indexOf('mobi') === -1;
 
   return (
-    <div className="avert-data-download">
-      <h3 className="avert-heading-three">Data Download</h3>
-
+    <React.Fragment>
       <p>
         Download monthly displacement data for each county, state, and region in
         this analysis, in CSV format.
@@ -91,7 +89,7 @@ function DataDownload() {
           Please press ⌘ + S to save the file after it is opened.
         </p>
       )}
-    </div>
+    </React.Fragment>
   );
 }
 

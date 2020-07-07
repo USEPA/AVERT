@@ -75,11 +75,7 @@ const emissionsChartsStyles = css`
   }
 `;
 
-type Props = {
-  heading: string;
-};
-
-function EmissionsChart({ heading }: Props) {
+function EmissionsChart() {
   const dispatch = useDispatch();
   const status = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.status,
@@ -481,14 +477,12 @@ function EmissionsChart({ heading }: Props) {
   }
 
   return (
-    <div className="avert-emissions-chart">
-      <h3 className="avert-heading-three">{heading}</h3>
-
+    <React.Fragment>
       {aggregationFilter}
       {geographyFilter}
       {unitFilter}
       {charts}
-    </div>
+    </React.Fragment>
   );
 }
 

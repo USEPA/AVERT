@@ -25,7 +25,11 @@ import { useTypedSelector } from 'app/redux/index';
 import { toggleModalOverlay, resetActiveModal } from 'app/redux/reducers/panel';
 import { selectGeography } from 'app/redux/reducers/geography';
 // hooks
-import { useSelectedRegion, useSelectedState } from 'app/hooks';
+import {
+  useSelectedRegion,
+  useSelectedState,
+  useSelectedStateRegions,
+} from 'app/hooks';
 
 type ContainerProps = {
   lightOverlay: boolean;
@@ -351,6 +355,17 @@ function Panels() {
   // TODO: determine how to handle when multiple regions are selected
   const selectedRegionName = useSelectedRegion()?.name || '';
   const selectedStateName = useSelectedState()?.name || '';
+  const selectedStateRegionNames = useSelectedStateRegions().map((r) => r.name);
+
+  const selectedStateRegions =
+    selectedStateRegionNames.length === 1
+      ? `${selectedStateRegionNames} Region`
+      : `${selectedStateRegionNames.join(', ')} Regions`;
+
+  const resultsHeading =
+    geographicFocus === 'regions'
+      ? `${selectedRegionName} Region`
+      : `${selectedStateName} (${selectedStateRegions})`;
 
   return (
     <Container
@@ -547,12 +562,6 @@ function Panels() {
             Results: Avoided Regional, State, and County-Level Emissions
           </h2>
 
-          <h3 css={subheadingStyles} className="avert-heading-three">
-            {geographicFocus === 'regions'
-              ? `Region: ${selectedRegionName}`
-              : `State: ${selectedStateName}`}
-          </h3>
-
           {
             // conditionally display validation warning
             !softValid && (
@@ -568,17 +577,31 @@ function Panels() {
             )
           }
 
-          <DisplacementsTable
-            heading={`Annual Regional Displacements: ${selectedRegionName} Region`}
-          />
+          <h3 className="avert-heading-three">
+            Annual Regional Displacements:
+            <br />
+            <small>{resultsHeading}</small>
+          </h3>
 
-          <EmissionsTable
-            heading={`Annual State Emission Changes: ${selectedRegionName} Region`}
-          />
+          <DisplacementsTable />
 
-          <EmissionsChart
-            heading={`Monthly Emission Changes: ${selectedRegionName} Region`}
-          />
+          <h3 className="avert-heading-three">
+            Annual State Emission Changes:
+            <br />
+            <small>{resultsHeading}</small>
+          </h3>
+
+          <EmissionsTable />
+
+          <h3 className="avert-heading-three">
+            Monthly Emission Changes:
+            <br />
+            <small>{resultsHeading}</small>
+          </h3>
+
+          <EmissionsChart />
+
+          <h3 className="avert-heading-three">Data Download</h3>
 
           <DataDownload />
         </div>
