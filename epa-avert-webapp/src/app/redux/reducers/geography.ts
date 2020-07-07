@@ -109,8 +109,8 @@ type GeographyAction =
       type: 'geography/SET_EERE_LIMITS';
       payload: {
         geographicFocus: GeographicFocus;
-        regionId: RegionId | undefined;
-        stateId: StateId | undefined;
+        regionId: RegionId | null;
+        stateId: StateId | null;
         eereLimits: EereLimits;
       };
     };
@@ -387,16 +387,23 @@ export function fetchRegionsData(): AppThunk {
   return (dispatch, getState) => {
     const { api, geography } = getState();
 
+    // select region(s), based on geographic focus:
+    // single region if geographic focus is 'regions'
+    // multiple regions if geographic focus is 'states'
     const selectedRegions: RegionState[] = [];
 
     let selectedRegion: RegionState | undefined;
+    let selectedRegionId: RegionId | undefined;
+
     let selectedState: StateState | undefined;
+    let selectedStateRegionIds: RegionId[] = [];
 
     if (geography.focus === 'regions') {
       for (const regionId in geography.regions) {
         const region = geography.regions[regionId as RegionId];
         if (region.selected) {
           selectedRegion = region;
+          selectedRegionId = region.id;
           selectedRegions.push(region);
         }
       }
@@ -407,8 +414,9 @@ export function fetchRegionsData(): AppThunk {
         const state = geography.states[stateId as StateId];
         if (state.selected) {
           selectedState = state;
-          Object.keys(state.regions).forEach((regionId) => {
-            const region = geography.regions[regionId as RegionId];
+          selectedStateRegionIds = Object.keys(state.regions) as RegionId[];
+          selectedStateRegionIds.forEach((regionId) => {
+            const region = geography.regions[regionId];
             selectedRegions.push(region);
           });
         }
@@ -428,6 +436,7 @@ export function fetchRegionsData(): AppThunk {
 
     dispatch({ type: 'geography/REQUEST_SELECTED_REGIONS_DATA' });
 
+    // request all rdf and eere data in parallel
     Promise.all([rdfRequests, eereRequests].map(Promise.all, Promise))
       .then(([rdfResponses, eereResponses]) => {
         const rdfsData = (rdfResponses as Response[]).map((rdfResponse) => {
@@ -459,27 +468,69 @@ export function fetchRegionsData(): AppThunk {
         return Promise.all([Promise.all(rdfsData), Promise.all(eeresData)]);
       })
       .then(([rdfs, eeres]) => {
-        if (rdfs.length > 0) {
-          const geographicFocus = geography.focus;
-          const regionId = geographicFocus === 'regions' && selectedRegion?.id;
-          const stateId = geographicFocus === 'states' && selectedState?.id;
+        // region ids from the rdfs that were just fetched above
+        const regionIdsFromJustFetchedRdfs = rdfs.map((rdf) => {
+          return rdf.region.region_abbv;
+        });
 
-          const eereLimits = calculateEereLimits({
-            geographicFocus,
-            selectedState,
-            rdfs,
-          });
+        // build up regionalDataFiles from either just fetched rdfs,
+        // or previously fetched (and stored) rdfs
+        let regionalDataFiles: RdfJSON[] = [];
 
-          dispatch({
-            type: 'geography/SET_EERE_LIMITS',
-            payload: {
-              geographicFocus,
-              regionId,
-              stateId,
-              eereLimits,
-            },
+        if (selectedRegion && selectedRegionId) {
+          // when a region is selected, `rdfs` will either contain just that one
+          // region's rdf, or be empty as the selected region's rdf was already
+          // previously fetched
+          if (regionIdsFromJustFetchedRdfs.includes(selectedRegionId)) {
+            regionalDataFiles = rdfs;
+          } else {
+            regionalDataFiles = [selectedRegion.rdf];
+          }
+        }
+
+        if (selectedState && selectedStateRegionIds) {
+          selectedStateRegionIds.forEach((selectedStateRegionId) => {
+            // when a state is selected, `rdfs` will contain all of the selected
+            // state's regions' rdfs that haven't already been fetched, which
+            // means it can be empty if they've all already been previously fetched
+            if (regionIdsFromJustFetchedRdfs.includes(selectedStateRegionId)) {
+              const justFetchedRegionRdf = rdfs.filter((rdf) => {
+                return rdf.region.region_abbv === selectedStateRegionId;
+              })[0];
+              regionalDataFiles.push(justFetchedRegionRdf);
+            } else {
+              const prevFetchedRegionRdf =
+                geography.regions[selectedStateRegionId].rdf;
+              regionalDataFiles.push(prevFetchedRegionRdf);
+            }
           });
         }
+
+        const eereLimits = calculateEereLimits({
+          geographicFocus: geography.focus,
+          selectedState,
+          rdfs: regionalDataFiles,
+        });
+
+        const regionId =
+          geography.focus === 'regions' && selectedRegion
+            ? selectedRegion.id
+            : null;
+
+        const stateId =
+          geography.focus === 'states' && selectedState
+            ? selectedState.id
+            : null;
+
+        dispatch({
+          type: 'geography/SET_EERE_LIMITS',
+          payload: {
+            geographicFocus: geography.focus,
+            regionId,
+            stateId,
+            eereLimits,
+          },
+        });
 
         dispatch({ type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' });
       });
