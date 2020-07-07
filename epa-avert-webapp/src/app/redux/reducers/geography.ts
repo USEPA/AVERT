@@ -83,7 +83,7 @@ type GeographyAction =
     }
   | {
       type: 'geography/SELECT_REGION';
-      payload: { regionIds: RegionId[] };
+      payload: { regionId: RegionId };
     }
   | {
       type: 'geography/SELECT_STATE';
@@ -227,7 +227,7 @@ export default function reducer(
       const selectedRegionsState = { ...state };
       for (const key in state.regions) {
         const regionId = key as RegionId;
-        const regionIsSelected = action.payload.regionIds.includes(regionId);
+        const regionIsSelected = action.payload.regionId === regionId;
         selectedRegionsState.regions[regionId].selected = regionIsSelected;
       }
       return selectedRegionsState;
@@ -319,10 +319,10 @@ export function selectGeography(focus: GeographicFocus) {
   };
 }
 
-export function selectRegions(regionIds: RegionId[]) {
+export function selectRegion(regionId: RegionId) {
   return {
     type: 'geography/SELECT_REGION',
-    payload: { regionIds },
+    payload: { regionId },
   };
 }
 

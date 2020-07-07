@@ -3,7 +3,7 @@
 import { jsx, css } from '@emotion/core';
 import { useDispatch } from 'react-redux';
 // reducers
-import { selectRegions } from 'app/redux/reducers/geography';
+import { selectRegion } from 'app/redux/reducers/geography';
 // hooks
 import { useSelectedRegion } from 'app/hooks';
 // config
@@ -23,9 +23,7 @@ function RegionsList() {
     <select
       css={selectStyles}
       value={!selectedRegionId ? '' : selectedRegionId}
-      onChange={(ev) => {
-        dispatch(selectRegions([ev.target.value] as RegionId[]));
-      }}
+      onChange={(ev) => dispatch(selectRegion(ev.target.value as RegionId))}
     >
       <option value={''} disabled>
         Select Region

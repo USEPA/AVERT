@@ -67,7 +67,7 @@ import Wisconsin from 'app/components/States/Wisconsin';
 import WestVirginia from 'app/components/States/WestVirginia';
 import Wyoming from 'app/components/States/Wyoming';
 // reducers
-import { selectRegions } from 'app/redux/reducers/geography';
+import { selectRegion } from 'app/redux/reducers/geography';
 // hooks
 import { useSelectedRegion } from 'app/hooks';
 // config
@@ -163,7 +163,7 @@ function Region({ id, fill, children }: RegionProps) {
     <g
       css={regionStyles}
       fill={fill}
-      onClick={(ev) => dispatch(selectRegions([id]))}
+      onClick={(ev) => dispatch(selectRegion(id))}
       data-active={selectedRegionId === id}
     >
       {children}
