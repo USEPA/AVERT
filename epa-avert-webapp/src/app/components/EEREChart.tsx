@@ -16,6 +16,22 @@ import {
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 
+const chartSubtitleStyles = css`
+  margin-top: 0.5rem;
+  font-size: 0.625rem;
+  line-height: 1.125;
+  text-align: center;
+  color: #444;
+
+  @media (min-width: 30em) {
+    font-size: 0.6875rem;
+  }
+
+  @media (min-width: 40em) {
+    font-size: 0.75rem;
+  }
+`;
+
 const ValidationMessage = styled('p')<{ type: 'error' | 'warning' }>`
   ${({ type }) => {
     if (type === 'error') {
@@ -153,7 +169,7 @@ function EEREChart() {
           </span>
         </h3>
 
-        <h4 className="avert-chart-subtitle">
+        <h4 css={chartSubtitleStyles}>
           Adjusted for transmission and distribution line loss and wind and
           solar capacity factors, where applicable.
         </h4>

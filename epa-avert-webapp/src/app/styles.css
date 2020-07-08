@@ -90,12 +90,6 @@ fieldset {
   margin-top: 0;
 }
 
-/* --- headings --- */
-.avert-heading-three {
-  font-size: 0.875rem;
-  color: rgb(0, 127, 153);
-}
-
 /* --- small text --- */
 .avert-small-text {
   font-size: 0.625rem;
@@ -160,21 +154,11 @@ fieldset {
 }
 
 /* --- chart titles --- */
-.avert-chart-title,
-.avert-chart-subtitle {
-  line-height: 1.125;
-  font-weight: bold;
-  text-align: center;
-  color: #444;
-}
-
 .avert-chart-title {
   font-size: 0.75rem;
-}
-
-.avert-chart-subtitle {
-  margin-top: 0.5rem;
-  font-size: 0.625rem;
+  line-height: 1.125;
+  text-align: center;
+  color: #444;
 }
 
 /* --- media queries --- */
@@ -202,10 +186,6 @@ fieldset {
   .avert-copy ol {
     margin-top: 0.8125rem;
     padding-left: 1.625rem;
-  }
-
-  .avert-heading-three {
-    font-size: 0.9375rem;
   }
 
   .avert-small-text {
@@ -256,10 +236,6 @@ fieldset {
     padding-left: 1.75rem;
   }
 
-  .avert-heading-three {
-    font-size: 1rem;
-  }
-
   .avert-small-text {
     font-size: 0.75rem;
   }
@@ -279,10 +255,6 @@ fieldset {
 
   .avert-chart-title {
     font-size: 0.875rem;
-  }
-
-  .avert-chart-subtitle {
-    font-size: 0.6875rem;
   }
 }
 
@@ -310,10 +282,6 @@ fieldset {
   .avert-copy ol {
     margin-top: 0.9375rem;
     padding-left: 1.875rem;
-  }
-
-  .avert-heading-three {
-    font-size: 1.065rem;
   }
 
   .avert-small-text {
@@ -369,10 +337,6 @@ fieldset {
     padding-left: 2rem;
   }
 
-  .avert-heading-three {
-    font-size: 1.125rem;
-  }
-
   .avert-small-text {
     font-size: 0.875rem;
   }
@@ -392,9 +356,5 @@ fieldset {
 
   .avert-chart-title {
     font-size: 1rem;
-  }
-
-  .avert-chart-subtitle {
-    font-size: 0.75rem;
   }
 }

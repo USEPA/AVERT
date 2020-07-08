@@ -218,7 +218,7 @@ const tabsStyles = css`
   }
 `;
 
-const panelHeadingStyles = css`
+const headingStyles = css`
   margin-top: 0;
   margin-bottom: 0.75rem;
   padding-bottom: 0.25rem;
@@ -248,7 +248,24 @@ const panelHeadingStyles = css`
 `;
 
 const subheadingStyles = css`
-  margin-top: 0;
+  font-size: 0.875rem;
+  color: rgb(0, 127, 153);
+
+  @media (min-width: 25em) {
+    font-size: 0.9375rem;
+  }
+
+  @media (min-width: 30em) {
+    font-size: 1rem;
+  }
+
+  @media (min-width: 35em) {
+    font-size: 1.0625rem;
+  }
+
+  @media (min-width: 40em) {
+    font-size: 1.125rem;
+  }
 `;
 
 const messageStyles = css`
@@ -434,8 +451,8 @@ function Panels() {
             }}
           >
             <TabList>
-              <Tab css={panelHeadingStyles}>Select Region</Tab>
-              <Tab css={panelHeadingStyles}>Select State</Tab>
+              <Tab css={headingStyles}>Select Region</Tab>
+              <Tab css={headingStyles}>Select State</Tab>
             </TabList>
 
             <TabPanels>
@@ -513,11 +530,11 @@ function Panels() {
 
       <section css={panelStyles} data-active={activeStep === 2}>
         <div css={panelBodyStyles}>
-          <h2 css={panelHeadingStyles}>
+          <h2 css={headingStyles}>
             Set Energy Efficiency and Renewable Energy Impacts
           </h2>
 
-          <h3 css={subheadingStyles} className="avert-heading-three">
+          <h3 css={[subheadingStyles, { marginTop: 0 }]}>
             {geographicFocus === 'regions'
               ? `Region: ${selectedRegionName}`
               : `State: ${selectedStateName}`}
@@ -558,7 +575,7 @@ function Panels() {
 
       <section css={panelStyles} data-active={activeStep === 3}>
         <div css={panelBodyStyles}>
-          <h2 css={panelHeadingStyles}>
+          <h2 css={headingStyles}>
             Results: Avoided Regional, State, and County-Level Emissions
           </h2>
 
@@ -577,7 +594,7 @@ function Panels() {
             )
           }
 
-          <h3 className="avert-heading-three">
+          <h3 css={subheadingStyles}>
             Annual Regional Displacements:
             <br />
             <small>{resultsHeading}</small>
@@ -585,7 +602,7 @@ function Panels() {
 
           <DisplacementsTable />
 
-          <h3 className="avert-heading-three">
+          <h3 css={subheadingStyles}>
             Annual State Emission Changes:
             <br />
             <small>{resultsHeading}</small>
@@ -593,7 +610,7 @@ function Panels() {
 
           <EmissionsTable />
 
-          <h3 className="avert-heading-three">
+          <h3 css={subheadingStyles}>
             Monthly Emission Changes:
             <br />
             <small>{resultsHeading}</small>
@@ -601,7 +618,7 @@ function Panels() {
 
           <EmissionsChart />
 
-          <h3 className="avert-heading-three">Data Download</h3>
+          <h3 css={subheadingStyles}>Data Download</h3>
 
           <DataDownload />
         </div>
