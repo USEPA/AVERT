@@ -39,7 +39,7 @@ type DataByMonth = {
 
 type CountyDataRow = {
   Pollutant: 'SO2' | 'NOX' | 'CO2' | 'PM25';
-  'Aggregation level': 'County' | 'State' | 'Region';
+  'Aggregation level': 'County' | 'State' | 'AVERT Region(s)';
   State: string | null;
   County: string | null;
   'Unit of measure': 'emissions (pounds)' | 'emissions (tons)' | 'percent';
@@ -413,7 +413,11 @@ function countyRow(
 
   return {
     Pollutant: pollutant,
-    'Aggregation level': county ? 'County' : state ? 'State' : 'Region',
+    'Aggregation level': county
+      ? 'County'
+      : state
+      ? 'State'
+      : 'AVERT Region(s)',
     State: state ? state : null,
     County: countyName,
     'Unit of measure': unit,
