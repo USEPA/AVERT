@@ -1,7 +1,4 @@
 import React from 'react';
-import json2csv from 'json2csv';
-import Blob from 'blob';
-import FileSaver from 'file-saver';
 // components
 import {
   bottomMessageStyles,
@@ -10,21 +7,18 @@ import {
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 // hooks
-import { useSelectedRegion } from 'app/hooks';
+import { useSelectedRegion, useSelectedState } from 'app/hooks';
 
-function downloadDataFile(fileName: string, data: any) {
-  const fields = Object.keys(data[0]);
-
-  try {
-    const csv = json2csv.parse(data, { fields });
-    const blob = new Blob([csv], { type: 'text/plain:charset=utf-8' });
-    FileSaver.saveAs(blob, `${fileName}.csv`);
-  } catch (err) {
-    console.error(err);
-  }
+function convertToCSVString(data: { [key: string]: any }[]) {
+  const keys = Object.keys(data[0] || {});
+  const rows = data.map((row) => {
+    return keys.map((key) => `"${row[key] || ''}"`).join(',');
+  });
+  return [keys.map((key) => `"${key}"`).join(',')].concat(rows).join('\r\n');
 }
 
 function DataDownload() {
+  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const countyData = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.downloadableCountyData,
   );
@@ -32,9 +26,16 @@ function DataDownload() {
     ({ monthlyEmissions }) => monthlyEmissions.downloadableCobraData,
   );
 
-  // TODO: determine how to handle when multiple regions are selected
-  const region = useSelectedRegion();
-  const regionName = region?.name;
+  const selectedRegionName = useSelectedRegion()?.name || '';
+  const selectedStateName = useSelectedState()?.name || '';
+
+  const geographyText =
+    geographicFocus === 'regions'
+      ? `Region – ${selectedRegionName}`
+      : `State – ${selectedStateName}`;
+
+  const countyCsvString = encodeURIComponent(convertToCSVString(countyData));
+  const cobraCsvString = encodeURIComponent(convertToCSVString(cobraData));
 
   const isDesktopSafari =
     navigator.userAgent.toLowerCase().indexOf('safari') !== -1 &&
@@ -51,12 +52,8 @@ function DataDownload() {
       <p className="avert-centered">
         <a
           className="avert-button"
-          href="/"
-          onClick={(ev) => {
-            ev.preventDefault();
-            const fileName = `AVERT Monthly Emission Changes (${regionName})`;
-            downloadDataFile(fileName, countyData);
-          }}
+          href={`data:text/csv;charset=utf-8,${countyCsvString}`}
+          download={`AVERT Monthly Emission Changes (${geographyText}).csv`}
         >
           Download County Level Results
         </a>
@@ -70,12 +67,8 @@ function DataDownload() {
       <p className="avert-centered">
         <a
           className="avert-button"
-          href="/"
-          onClick={(ev) => {
-            ev.preventDefault();
-            const fileName = `AVERT COBRA (${regionName})`;
-            downloadDataFile(fileName, cobraData);
-          }}
+          href={`data:text/csv;charset=utf-8,${cobraCsvString}`}
+          download={`AVERT COBRA (${geographyText}).csv`}
         >
           Download COBRA Results
         </a>
