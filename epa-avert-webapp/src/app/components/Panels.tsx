@@ -190,10 +190,8 @@ const tabsStyles = css`
   }
 
   [data-reach-tab] {
-    padding-top: 0.5rem;
-    padding-bottom: 0.875rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding: 0.5rem 1rem 0.875rem;
+
     border-top: 0.375rem solid transparent;
     border-bottom: 1px solid #aaa;
     width: 50%;
@@ -206,26 +204,18 @@ const tabsStyles = css`
     user-select: none;
 
     @media (min-width: 25em) {
-      padding-left: 1.125rem;
-      padding-right: 1.125rem;
       font-size: 0.9375rem;
     }
 
     @media (min-width: 30em) {
-      padding-left: 1.25rem;
-      padding-right: 1.25rem;
       font-size: 1rem;
     }
 
     @media (min-width: 35em) {
-      padding-left: 1.375rem;
-      padding-right: 1.375rem;
       font-size: 1.0625rem;
     }
 
     @media (min-width: 40em) {
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
       font-size: 1.125rem;
     }
 
@@ -233,20 +223,12 @@ const tabsStyles = css`
       color: #666;
     }
 
-    &:first-of-type {
-      text-align: left;
-
-      &[data-selected] {
-        border-right: 1px solid #aaa;
-      }
+    &:first-of-type[data-selected] {
+      border-right: 1px solid #aaa;
     }
 
-    &:last-of-type {
-      text-align: right;
-
-      &[data-selected] {
-        border-left: 1px solid #aaa;
-      }
+    &:last-of-type[data-selected] {
+      border-left: 1px solid #aaa;
     }
 
     &[data-selected] {
