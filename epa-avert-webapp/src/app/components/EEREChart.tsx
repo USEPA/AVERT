@@ -76,12 +76,9 @@ function EEREChart() {
   );
   const hourlyEere = useTypedSelector(({ eere }) => eere.hourlyEere);
 
-  let data: number[] = [];
-  let hours: string[] = [];
-  hourlyEere?.forEach((hour) => {
-    data.push(hour.final_mw);
-    hours.push(hour.index.toString());
-  });
+  const hours = Array(hourlyEere.length)
+    .fill(1)
+    .map((_, i) => (i + 1).toString());
 
   const chartConfig: Highcharts.Options = {
     chart: {
@@ -136,7 +133,7 @@ function EEREChart() {
       {
         type: 'line',
         name: 'EERE Load Output',
-        data: data,
+        data: hourlyEere,
         color: '#058dc7',
       },
     ],
@@ -148,9 +145,7 @@ function EEREChart() {
   let chart = null;
   // conditionally re-define chart when readyToRender (hourlyEere prop exists)
   if (readyToRender) {
-    const totalLoadMwh = hourlyEere
-      .map((hour) => hour.final_mw)
-      .reduce((a, b) => a + b, 0);
+    const totalLoadMwh = hourlyEere.reduce((a, b) => a + b, 0);
     const totalLoadGwh = Math.round(totalLoadMwh / -1000).toLocaleString();
 
     chart = (

@@ -371,7 +371,7 @@ function fetchDisplacementData(pollutant: Pollutant): AppThunk {
       },
       body: JSON.stringify({
         region: region.id,
-        hourlyLoad: eere.hourlyEere.map((hour) => hour.final_mw),
+        hourlyLoad: eere.hourlyEere,
       }),
     };
 

@@ -2,11 +2,11 @@
 import { AppThunk } from 'app/redux/index';
 import { RegionState } from 'app/redux/reducers/geography';
 // reducers
-import { RegionalLoadData } from 'app/redux/reducers/geography';
+import { RegionalLoadData, StateState } from 'app/redux/reducers/geography';
 // calculations
 import { calculateEere } from 'app/calculations';
 // config
-import { RegionId } from 'app/config';
+import { RegionId, StateId } from 'app/config';
 
 type EereAction =
   | {
@@ -51,7 +51,7 @@ type EereAction =
     }
   | {
       type: 'eere/COMPLETE_EERE_CALCULATION';
-      payload: { hourlyEere: HourlyEere[] };
+      payload: { hourlyEere: number[] };
     }
   | {
       type: 'eere/UPDATE_EXCEEDANCES';
@@ -80,19 +80,6 @@ export type EereInputFields =
 
 export type EereInputs = { [field in EereInputFields]: string };
 
-export type HourlyEere = {
-  index: number;
-  constant: number;
-  current_load_mw: number;
-  percent: number;
-  final_mw: number;
-  renewable_energy_profile: number;
-  soft_limit: number;
-  hard_limit: number;
-  soft_exceedance: number;
-  hard_exceedance: number;
-};
-
 type EereState = {
   status: 'ready' | 'started' | 'complete';
   errors: EereInputFields[];
@@ -107,7 +94,7 @@ type EereState = {
     topExceedanceValue: number;
     topExceedanceTimestamp: RegionalLoadData;
   };
-  hourlyEere: HourlyEere[];
+  hourlyEere: number[];
 };
 
 const emptyEereInputs = {
@@ -424,12 +411,36 @@ export function calculateEereProfile(): AppThunk {
   return (dispatch, getState) => {
     const { geography, eere } = getState();
 
-    // TODO: determine how to handle when multiple regions are selected
+    // select region(s), based on geographic focus:
+    // single region if geographic focus is 'regions'
+    // multiple regions if geographic focus is 'states'
     const selectedRegions: RegionState[] = [];
-    for (const regionId in geography.regions) {
-      const region = geography.regions[regionId as RegionId];
-      if (region.selected) selectedRegions.push(region);
+
+    let selectedState: StateState | undefined;
+
+    if (geography.focus === 'regions') {
+      for (const regionId in geography.regions) {
+        const region = geography.regions[regionId as RegionId];
+        if (region.selected) {
+          selectedRegions.push(region);
+        }
+      }
     }
+
+    if (geography.focus === 'states') {
+      for (const stateId in geography.states) {
+        const state = geography.states[stateId as StateId];
+        if (state.selected) {
+          selectedState = state;
+          Object.keys(state.regions).forEach((regionId) => {
+            const region = geography.regions[regionId as RegionId];
+            selectedRegions.push(region);
+          });
+        }
+      }
+    }
+
+    // TODO: account for multiple regions being selected
     const region = selectedRegions[0];
 
     dispatch({ type: 'eere/SUBMIT_EERE_CALCULATION' });

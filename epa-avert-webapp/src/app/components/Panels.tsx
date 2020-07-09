@@ -191,7 +191,6 @@ const tabsStyles = css`
 
   [data-reach-tab] {
     padding: 0.5rem 1rem 0.875rem;
-
     border-top: 0.375rem solid transparent;
     border-bottom: 1px solid #aaa;
     width: 50%;

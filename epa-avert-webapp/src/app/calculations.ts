@@ -1,7 +1,7 @@
 import stats from 'stats-lite';
 // reducers
 import { EereDefaultData } from 'app/redux/reducers/geography';
-import { EereInputFields, HourlyEere } from 'app/redux/reducers/eere';
+import { EereInputFields } from 'app/redux/reducers/eere';
 
 function calculateHourlyExceedance(
   calculatedLoad: number,
@@ -61,7 +61,7 @@ export function calculateEere({
 
   const softLimitHourlyExceedances: number[] = [];
   const hardLimitHourlyExceedances: number[] = [];
-  const hourlyEere: HourlyEere[] = [];
+  const hourlyEere: number[] = [];
 
   hourlyLoads.forEach((hourlyLoad, index) => {
     const hourlyDefault = eereDefaults[index];
@@ -83,35 +83,21 @@ export function calculateEere({
       hourlyMwReduction * lineLoss -
       constantMwhInput * lineLoss;
 
-    const softLimit = (hourlyLoad * -1 * regionMaxEEPercent) / 100;
-    const hardLimit = hourlyLoad * -0.3;
-
     const softLimitHourlyExceedance = calculateHourlyExceedance(
       calculatedLoad,
-      softLimit,
+      (hourlyLoad * -1 * regionMaxEEPercent) / 100,
       15,
     );
 
     const hardLimitHourlyExceedance = calculateHourlyExceedance(
       calculatedLoad,
-      hardLimit,
+      hourlyLoad * -0.3,
       30,
     );
 
     softLimitHourlyExceedances[index] = softLimitHourlyExceedance;
     hardLimitHourlyExceedances[index] = hardLimitHourlyExceedance;
-    hourlyEere[index] = {
-      index: index,
-      constant: hourlyMwReduction,
-      current_load_mw: hourlyLoad,
-      percent: initialLoad,
-      final_mw: calculatedLoad,
-      renewable_energy_profile: renewableProfile,
-      soft_limit: softLimit,
-      hard_limit: hardLimit,
-      soft_exceedance: softLimitHourlyExceedance,
-      hard_exceedance: hardLimitHourlyExceedance,
-    };
+    hourlyEere[index] = calculatedLoad;
   });
 
   return { softLimitHourlyExceedances, hardLimitHourlyExceedances, hourlyEere };
