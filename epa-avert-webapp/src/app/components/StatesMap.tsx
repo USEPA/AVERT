@@ -82,7 +82,7 @@ const statesStyles = css`
   stroke: #fff;
   stroke-width: 0.75px;
   stroke-linejoin: round;
-  fill: #bdc736;
+  fill: #00bee6;
 `;
 
 const stateStyles = css`

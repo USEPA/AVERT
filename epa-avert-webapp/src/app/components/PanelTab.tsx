@@ -90,6 +90,7 @@ const anchorStyles = css`
   color: white;
   background-color: #ccc;
   cursor: default;
+  user-select: none;
 
   &[data-active='true'] {
     background-color: rgb(0, 190, 230);

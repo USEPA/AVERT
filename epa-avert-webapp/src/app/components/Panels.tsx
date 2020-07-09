@@ -198,34 +198,35 @@ const tabsStyles = css`
     border-bottom: 1px solid #aaa;
     width: 50%;
     font-weight: 700;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     line-height: 1;
     color: #999;
     background-color: #eee;
     outline: none;
+    user-select: none;
 
     @media (min-width: 25em) {
       padding-left: 1.125rem;
       padding-right: 1.125rem;
-      font-size: 0.8125rem;
+      font-size: 0.9375rem;
     }
 
     @media (min-width: 30em) {
       padding-left: 1.25rem;
       padding-right: 1.25rem;
-      font-size: 0.875rem;
+      font-size: 1rem;
     }
 
     @media (min-width: 35em) {
       padding-left: 1.375rem;
       padding-right: 1.375rem;
-      font-size: 0.9375rem;
+      font-size: 1.0625rem;
     }
 
     @media (min-width: 40em) {
       padding-left: 1.5rem;
       padding-right: 1.5rem;
-      font-size: 1rem;
+      font-size: 1.125rem;
     }
 
     &:hover {
@@ -424,7 +425,6 @@ function Panels() {
     ({ displacement }) => displacement.status === 'error',
   );
 
-  // TODO: determine how to handle when multiple regions are selected
   const selectedRegionName = useSelectedRegion()?.name || '';
   const selectedStateName = useSelectedState()?.name || '';
   const selectedStateRegionNames = useSelectedStateRegions().map((r) => r.name);
