@@ -451,19 +451,28 @@ function cobraRow(
   },
 ): CobraDataRow {
   /**
-   * All counties in the `fipsCodes` array (which is data converted from the
-   * main AVERT Excel file) have the word 'County' included at the end of
-   * their county name. This is correct for actual counties, but shouldn't
-   * be the case for cities, so when we match on county names, we need to
-   * trim off the extra "County" string if its actually a city.
-   * For example, in the `fipsCodes` array (which again, is data converted from
-   * the Excel file), Baltimore city is stored as "Baltimore city County", but
-   * in the RDFs it's stored as "Baltimore city"
+   * All items in the `fipsCodes` array (which is data converted from the main
+   * AVERT Excel file) have the word 'County' at the end of their county names.
+   * This is correct in most cases but incorrect for two:
+   * - counties in Louisiana are called parishes
+   * - cities shouldn't have the word 'County' at the end of their name
+   *
+   * So we first handle Louisiana parishes by converting the passed county name
+   * to use 'County' instead of 'Parish', so we can match it to its correct FIPS
+   * code (e.g. the passed county 'Acadia Parish' becomes 'Avadia County')
+   *
+   * Then when we match on county names, we need to trim off the extra 'County'
+   * string if its actually a city. For example, in the `fipsCodes` array,
+   * the city of Baltimore is stored as 'Baltimore city County', but in the RDF
+   * it's stored as 'Baltimore city', so we need to use that name for matching
    */
+  const fipsCounty =
+    stateId === 'LA' ? county.replace(/ Parish$/, ' County') : county;
+
   const matchedFipsCodeItem = fipsCodes.filter((item) => {
     return (
       item['state'] === states[stateId as StateId].name &&
-      item['county'].replace(/city County/, 'city') === county
+      item['county'].replace(/city County$/, 'city') === fipsCounty
     );
   })[0];
 
