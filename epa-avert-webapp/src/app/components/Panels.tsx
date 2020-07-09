@@ -184,6 +184,7 @@ const panelBodyStyles = css`
 
 const tabsStyles = css`
   margin-top: -0.375rem;
+  border: 1px solid #aaa;
 
   [data-reach-tab-list] {
     display: flex;
@@ -192,13 +193,43 @@ const tabsStyles = css`
   }
 
   [data-reach-tab] {
-    margin-bottom: 0;
-    padding-top: 0.375rem;
-    padding-left: 0;
-    padding-right: 0;
+    padding-top: 0.5rem;
+    padding-bottom: 0.875rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-top: 0.375rem solid transparent;
+    border-bottom: none;
     width: 50%;
     font-weight: 700;
+    font-size: 0.75rem;
     line-height: 1;
+    color: #777;
+    background-color: #eee;
+    outline: none;
+
+    @media (min-width: 25em) {
+      padding-left: 1.125rem;
+      padding-right: 1.125rem;
+      font-size: 0.8125rem;
+    }
+
+    @media (min-width: 30em) {
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+      font-size: 0.875rem;
+    }
+
+    @media (min-width: 35em) {
+      padding-left: 1.375rem;
+      padding-right: 1.375rem;
+      font-size: 0.9375rem;
+    }
+
+    @media (min-width: 40em) {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      font-size: 1rem;
+    }
 
     &:first-of-type {
       text-align: left;
@@ -209,12 +240,40 @@ const tabsStyles = css`
     }
 
     &[data-selected] {
-      border-bottom-width: 2px;
+      padding-top: 0.875rem;
+      padding-bottom: 0.5rem;
+      border-top-color: rgb(0, 190, 230);
+      color: rgb(0, 169, 204);
+      background-color: white;
     }
   }
 
   [data-reach-tab-panel] {
     outline: none;
+
+    p:first-of-type {
+      margin-top: 0;
+    }
+  }
+
+  [data-reach-tab-panels] {
+    padding: 1rem;
+
+    @media (min-width: 25em) {
+      padding: 1.125rem;
+    }
+
+    @media (min-width: 30em) {
+      padding: 1.25rem;
+    }
+
+    @media (min-width: 35em) {
+      padding: 1.375rem;
+    }
+
+    @media (min-width: 40em) {
+      padding: 1.5rem;
+    }
   }
 `;
 
@@ -451,8 +510,8 @@ function Panels() {
             }}
           >
             <TabList>
-              <Tab css={headingStyles}>Select Region</Tab>
-              <Tab css={headingStyles}>Select State</Tab>
+              <Tab>Select Region</Tab>
+              <Tab>Select State</Tab>
             </TabList>
 
             <TabPanels>
