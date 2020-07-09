@@ -27,7 +27,7 @@ function PanelTabs() {
   return (
     <nav css={navStyles}>
       <ol css={listStyles}>
-        <PanelTab step={1} active={activeStep === 1} title="Select Region" />
+        <PanelTab step={1} active={activeStep === 1} title="Select Geography" />
         <PanelTab
           step={2}
           active={activeStep === 2}

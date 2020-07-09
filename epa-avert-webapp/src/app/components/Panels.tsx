@@ -183,9 +183,6 @@ const panelBodyStyles = css`
 `;
 
 const tabsStyles = css`
-  margin-top: -0.375rem;
-  border: 1px solid #aaa;
-
   [data-reach-tab-list] {
     display: flex;
     justify-content: space-between;
@@ -198,12 +195,12 @@ const tabsStyles = css`
     padding-left: 1rem;
     padding-right: 1rem;
     border-top: 0.375rem solid transparent;
-    border-bottom: none;
+    border-bottom: 1px solid #aaa;
     width: 50%;
     font-weight: 700;
     font-size: 0.75rem;
     line-height: 1;
-    color: #777;
+    color: #999;
     background-color: #eee;
     outline: none;
 
@@ -231,18 +228,31 @@ const tabsStyles = css`
       font-size: 1rem;
     }
 
+    &:hover {
+      color: #666;
+    }
+
     &:first-of-type {
       text-align: left;
+
+      &[data-selected] {
+        border-right: 1px solid #aaa;
+      }
     }
 
     &:last-of-type {
       text-align: right;
+
+      &[data-selected] {
+        border-left: 1px solid #aaa;
+      }
     }
 
     &[data-selected] {
       padding-top: 0.875rem;
       padding-bottom: 0.5rem;
       border-top-color: rgb(0, 190, 230);
+      border-bottom: none;
       color: rgb(0, 169, 204);
       background-color: white;
     }
@@ -257,23 +267,9 @@ const tabsStyles = css`
   }
 
   [data-reach-tab-panels] {
-    padding: 1rem;
-
-    @media (min-width: 25em) {
-      padding: 1.125rem;
-    }
-
-    @media (min-width: 30em) {
-      padding: 1.25rem;
-    }
-
-    @media (min-width: 35em) {
-      padding: 1.375rem;
-    }
-
-    @media (min-width: 40em) {
-      padding: 1.5rem;
-    }
+    ${panelBodyStyles}
+    border-top: none;
+    min-height: 0;
   }
 `;
 
@@ -501,88 +497,86 @@ function Panels() {
       }
 
       <section css={panelStyles} data-active={activeStep === 1}>
-        <div css={panelBodyStyles}>
-          <Tabs
-            css={tabsStyles}
-            index={geographicFocus === 'regions' ? 0 : 1}
-            onChange={(index) => {
-              dispatch(selectGeography(index === 0 ? 'regions' : 'states'));
-            }}
-          >
-            <TabList>
-              <Tab>Select Region</Tab>
-              <Tab>Select State</Tab>
-            </TabList>
+        <Tabs
+          css={tabsStyles}
+          index={geographicFocus === 'regions' ? 0 : 1}
+          onChange={(index) => {
+            dispatch(selectGeography(index === 0 ? 'regions' : 'states'));
+          }}
+        >
+          <TabList>
+            <Tab>Select Region</Tab>
+            <Tab>Select State</Tab>
+          </TabList>
 
-            <TabPanels>
-              <TabPanel>
-                <p>
-                  AVERT splits the contiguous 48 states into 14 regions. AVERT
-                  regions are aggregated based on EPA’s{' '}
-                  <a href="https://www.epa.gov/energy/egrid" target="_parent">
-                    eGRID subregions
-                  </a>
-                  . Select a region for analysis by either using the dropdown
-                  menu or clicking the map. Selecting a region loads the power
-                  plants operating within each region and region-specific wind
-                  and solar capacity data.
-                </p>
+          <TabPanels>
+            <TabPanel>
+              <p>
+                AVERT splits the contiguous 48 states into 14 regions. AVERT
+                regions are aggregated based on EPA’s{' '}
+                <a href="https://www.epa.gov/energy/egrid" target="_parent">
+                  eGRID subregions
+                </a>
+                . Select a region for analysis by either using the dropdown menu
+                or clicking the map. Selecting a region loads the power plants
+                operating within each region and region-specific wind and solar
+                capacity data.
+              </p>
 
-                <RegionsList />
-                <RegionsMap />
+              <RegionsList />
+              <RegionsMap />
 
-                <p className="avert-small-text">
-                  The online version of AVERT can run analyses using 2019
-                  emissions and generation data. The Excel version of AVERT
-                  (available for download{' '}
-                  <a
-                    href="https://www.epa.gov/statelocalenergy/download-avert"
-                    target="_parent"
-                  >
-                    here
-                  </a>
-                  ) allows analyses for years 2017–2019 or for a future year
-                  scenario.
-                </p>
-              </TabPanel>
+              <p className="avert-small-text">
+                The online version of AVERT can run analyses using 2019
+                emissions and generation data. The Excel version of AVERT
+                (available for download{' '}
+                <a
+                  href="https://www.epa.gov/statelocalenergy/download-avert"
+                  target="_parent"
+                >
+                  here
+                </a>
+                ) allows analyses for years 2017–2019 or for a future year
+                scenario.
+              </p>
+            </TabPanel>
 
-              <TabPanel>
-                <p>
-                  Select a state for analysis by either using the dropdown menu
-                  or clicking the map. Selecting a state loads the power plants
-                  operating within each region and region-specific wind and
-                  solar capacity data.
-                </p>
+            <TabPanel>
+              <p>
+                Select a state for analysis by either using the dropdown menu or
+                clicking the map. Selecting a state loads the power plants
+                operating within each region and region-specific wind and solar
+                capacity data.
+              </p>
 
-                <StatesList />
-                <StatesMap />
+              <StatesList />
+              <StatesMap />
 
-                <p className="avert-small-text">
-                  When modeling EE/RE in a state, AVERT distributes the
-                  user-input EE/RE across all the AVERT regions straddled by the
-                  state. The energy impacts of EE/RE programs are assigned to
-                  each AVERT region based on the proportional generation
-                  provided to the state by EGUs in each AVERT region. For more
-                  information, see Appendix G of the User Manual.
-                </p>
+              <p className="avert-small-text">
+                When modeling EE/RE in a state, AVERT distributes the user-input
+                EE/RE across all the AVERT regions straddled by the state. The
+                energy impacts of EE/RE programs are assigned to each AVERT
+                region based on the proportional generation provided to the
+                state by EGUs in each AVERT region. For more information, see
+                Appendix G of the User Manual.
+              </p>
 
-                <p className="avert-small-text">
-                  The online version of AVERT can run analyses using 2019
-                  emissions and generation data. The Excel version of AVERT
-                  (available for download{' '}
-                  <a
-                    href="https://www.epa.gov/statelocalenergy/download-avert"
-                    target="_parent"
-                  >
-                    here
-                  </a>
-                  ) allows analyses for years 2017–2019 or for a future year
-                  scenario.
-                </p>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        </div>
+              <p className="avert-small-text">
+                The online version of AVERT can run analyses using 2019
+                emissions and generation data. The Excel version of AVERT
+                (available for download{' '}
+                <a
+                  href="https://www.epa.gov/statelocalenergy/download-avert"
+                  target="_parent"
+                >
+                  here
+                </a>
+                ) allows analyses for years 2017–2019 or for a future year
+                scenario.
+              </p>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
 
         <PanelFooter nextButtonText="Set EE/RE Impacts" />
       </section>
