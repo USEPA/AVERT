@@ -439,9 +439,9 @@ export function calculateEereProfile(): AppThunk {
       hardLimitHourlyExceedances,
       hourlyEere,
     } = calculateEere({
-      regionMaxEELimit: region.rdf.limits.max_ee_percent,
+      regionMaxEEPercent: region.rdf.limits.max_ee_percent,
       regionLineLoss: region.lineLoss,
-      regionalLoads: region.rdf.regional_load,
+      hourlyLoads: region.rdf.regional_load.map((hr) => hr.regional_load_mw),
       eereDefaults: region.eereDefaults.data,
       eereInputs: eere.inputs,
     });
