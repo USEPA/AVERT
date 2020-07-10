@@ -434,6 +434,9 @@ export function calculateEereProfile(): AppThunk {
 
     dispatch({ type: 'eere/START_EERE_CALCULATIONS' });
 
+    // selected regional profiles are stored individually to pass to the
+    // displacements calculation, and also combined for all selected regions to
+    // create the eere profile chart and show validation warning/error message
     const selectedRegionalProfiles: RegionalProfile[] = [];
 
     selectedRegions.forEach((region) => {
