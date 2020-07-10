@@ -94,7 +94,9 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const eereStatus = useTypedSelector(({ eere }) => eere.status);
-  const hardValid = useTypedSelector(({ eere }) => eere.hardLimit.valid);
+  const hardValid = useTypedSelector(
+    ({ eere }) => eere.combinedProfile.hardValid,
+  );
 
   const selectedRegionId = useSelectedRegion()?.id;
   const selectedStateId = useSelectedState()?.id;

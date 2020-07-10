@@ -60,25 +60,29 @@ const modalStyles = css`
 require('highcharts/modules/exporting')(Highcharts);
 
 function EEREChart() {
-  const softValid = useTypedSelector(({ eere }) => eere.softLimit.valid);
+  const softValid = useTypedSelector(
+    ({ eere }) => eere.combinedProfile.softValid,
+  );
   const softTopExceedanceValue = useTypedSelector(
-    ({ eere }) => eere.softLimit.topExceedanceValue,
+    ({ eere }) => eere.combinedProfile.softTopExceedanceValue,
   );
   const softTopExceedanceTimestamp = useTypedSelector(
-    ({ eere }) => eere.softLimit.topExceedanceTimestamp,
+    ({ eere }) => eere.combinedProfile.softTopExceedanceTimestamp,
   );
-  const hardValid = useTypedSelector(({ eere }) => eere.hardLimit.valid);
+  const hardValid = useTypedSelector(
+    ({ eere }) => eere.combinedProfile.hardValid,
+  );
   const hardTopExceedanceValue = useTypedSelector(
-    ({ eere }) => eere.hardLimit.topExceedanceValue,
+    ({ eere }) => eere.combinedProfile.hardTopExceedanceValue,
   );
   const hardTopExceedanceTimestamp = useTypedSelector(
-    ({ eere }) => eere.hardLimit.topExceedanceTimestamp,
+    ({ eere }) => eere.combinedProfile.hardTopExceedanceTimestamp,
   );
-  const eereProfile = useTypedSelector(
-    ({ eere }) => eere.combinedRegionalProfiles,
+  const hourlyEere = useTypedSelector(
+    ({ eere }) => eere.combinedProfile.hourlyEere,
   );
 
-  const hours = Array(eereProfile.length)
+  const hours = Array(hourlyEere.length)
     .fill(1)
     .map((_, i) => (i + 1).toString());
 
@@ -135,19 +139,19 @@ function EEREChart() {
       {
         type: 'line',
         name: 'EERE Load Output',
-        data: eereProfile,
+        data: hourlyEere,
         color: '#058dc7',
       },
     ],
   };
 
-  // boolean flag to render chart and error/warning when eereProfile prop exits
-  let readyToRender = eereProfile?.length > 0;
+  // boolean flag to render chart and error/warning when hourlyEere exits
+  let readyToRender = hourlyEere?.length > 0;
 
   let chart = null;
-  // conditionally re-define chart when readyToRender (eereProfile prop exists)
+  // conditionally re-define chart when readyToRender (hourlyEere exists)
   if (readyToRender) {
-    const totalLoadMwh = eereProfile.reduce((a, b) => a + b, 0);
+    const totalLoadMwh = hourlyEere.reduce((a, b) => a + b, 0);
     const totalLoadGwh = Math.round(totalLoadMwh / -1000).toLocaleString();
 
     chart = (
@@ -261,11 +265,11 @@ function EEREChart() {
     );
   }
 
-  // set validationError when readyToRender and hardValid prop is false
+  // set validationError when readyToRender and hardValid is false
   const validationError =
     readyToRender && !hardValid ? validationMessage('error') : null;
 
-  // set validationWarning when readyToRender, softValid prop is false, and hardValid prop is true
+  // set validationWarning when readyToRender, softValid is false, and hardValid is true
   const validationWarning =
     readyToRender && !softValid && hardValid
       ? validationMessage('warning')

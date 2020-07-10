@@ -400,7 +400,9 @@ function Panels() {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const modalOverlay = useTypedSelector(({ panel }) => panel.modalOverlay);
   const activeModalId = useTypedSelector(({ panel }) => panel.activeModalId);
-  const softValid = useTypedSelector(({ eere }) => eere.softLimit.valid);
+  const softValid = useTypedSelector(
+    ({ eere }) => eere.combinedProfile.softValid,
+  );
   const serverCalcError = useTypedSelector(
     ({ displacement }) => displacement.status === 'error',
   );
