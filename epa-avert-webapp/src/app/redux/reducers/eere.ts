@@ -464,6 +464,9 @@ export function calculateEereProfile(): AppThunk {
 
     dispatch({ type: 'eere/START_EERE_CALCULATIONS' });
 
+    // two dimmensional array of hourlyEere load numbers for each selected region
+    const selectedRegionsHourlyEeres: number[][] = [];
+
     selectedRegions.forEach((region) => {
       // the regional scaling factor is a number between 0 and 1, representing
       // the proportion the selected geography exists within a given region.
@@ -503,6 +506,8 @@ export function calculateEereProfile(): AppThunk {
         eereInputs: scaledEereInputs,
       });
 
+      selectedRegionsHourlyEeres.push(hourlyEere);
+
       dispatch({
         type: 'eere/CALCULATE_REGIONAL_EERE_PROFILE',
         payload: {
@@ -518,10 +523,25 @@ export function calculateEereProfile(): AppThunk {
       });
     });
 
-    // TODO: account for multiple regions being selected... everything below is temporary
-    const region = selectedRegions[0];
+    // combine hourly eeres from each selected region into one hourlyEere array
+    const combinedHourlyEeres = selectedRegionsHourlyEeres.reduce(
+      (combinedHourlyEere, regionalHourlyEere) => {
+        return combinedHourlyEere.map((hourlyLoad, index) => {
+          return hourlyLoad + regionalHourlyEere[index];
+        });
+      },
+    );
+
+    dispatch({
+      type: 'eere/COMPLETE_EERE_CALCULATIONS',
+      payload: {
+        combinedRegionalProfiles: combinedHourlyEeres,
+      },
+    });
+
+    // TODO: determine how to combine exceedances from each region's eere profiles
+    const region = selectedRegions[0]; // TEMP
     const {
-      hourlyEere,
       softValid,
       softTopExceedanceValue,
       softTopExceedanceIndex,
@@ -543,13 +563,6 @@ export function calculateEereProfile(): AppThunk {
         offshoreWind: Number(eere.inputs.offshoreWind),
         utilitySolar: Number(eere.inputs.utilitySolar),
         rooftopSolar: Number(eere.inputs.rooftopSolar),
-      },
-    });
-
-    dispatch({
-      type: 'eere/COMPLETE_EERE_CALCULATIONS',
-      payload: {
-        combinedRegionalProfiles: hourlyEere, // TODO: pass combined eere profiles here...
       },
     });
 
