@@ -14,10 +14,10 @@ type PanelAction =
       payload: { activeModalId: number };
     }
   | { type: 'geography/REQUEST_SELECTED_REGIONS_DATA' }
-  | { type: 'eere/SUBMIT_EERE_CALCULATION' }
+  | { type: 'eere/START_EERE_CALCULATIONS' }
   | { type: 'displacement/START_DISPLACEMENT' }
   | { type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' }
-  | { type: 'eere/COMPLETE_EERE_CALCULATION' }
+  | { type: 'eere/COMPLETE_EERE_CALCULATIONS' }
   | { type: 'displacement/COMPLETE_DISPLACEMENT' }
   | { type: 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS' };
 
@@ -78,7 +78,7 @@ export default function reducer(
       };
 
     case 'geography/REQUEST_SELECTED_REGIONS_DATA':
-    case 'eere/SUBMIT_EERE_CALCULATION':
+    case 'eere/START_EERE_CALCULATIONS':
     case 'displacement/START_DISPLACEMENT':
       return {
         ...state,
@@ -87,7 +87,7 @@ export default function reducer(
       };
 
     case 'geography/RECEIVE_SELECTED_REGIONS_DATA':
-    case 'eere/COMPLETE_EERE_CALCULATION':
+    case 'eere/COMPLETE_EERE_CALCULATIONS':
     case 'displacement/COMPLETE_DISPLACEMENT':
     case 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS':
       return {

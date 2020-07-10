@@ -74,9 +74,11 @@ function EEREChart() {
   const hardTopExceedanceTimestamp = useTypedSelector(
     ({ eere }) => eere.hardLimit.topExceedanceTimestamp,
   );
-  const hourlyEere = useTypedSelector(({ eere }) => eere.hourlyEere);
+  const eereProfile = useTypedSelector(
+    ({ eere }) => eere.combinedRegionalProfiles,
+  );
 
-  const hours = Array(hourlyEere.length)
+  const hours = Array(eereProfile.length)
     .fill(1)
     .map((_, i) => (i + 1).toString());
 
@@ -133,19 +135,19 @@ function EEREChart() {
       {
         type: 'line',
         name: 'EERE Load Output',
-        data: hourlyEere,
+        data: eereProfile,
         color: '#058dc7',
       },
     ],
   };
 
-  // boolean flag to render chart and error/warning when hourlyEere prop exits
-  let readyToRender = hourlyEere?.length > 0;
+  // boolean flag to render chart and error/warning when eereProfile prop exits
+  let readyToRender = eereProfile?.length > 0;
 
   let chart = null;
-  // conditionally re-define chart when readyToRender (hourlyEere prop exists)
+  // conditionally re-define chart when readyToRender (eereProfile prop exists)
   if (readyToRender) {
-    const totalLoadMwh = hourlyEere.reduce((a, b) => a + b, 0);
+    const totalLoadMwh = eereProfile.reduce((a, b) => a + b, 0);
     const totalLoadGwh = Math.round(totalLoadMwh / -1000).toLocaleString();
 
     chart = (

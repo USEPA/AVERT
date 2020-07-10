@@ -353,6 +353,7 @@ function fetchDisplacementData(pollutant: Pollutant): AppThunk {
 
     // TODO: determine how to handle when multiple regions are selected
     const selectedRegions: RegionState[] = [];
+
     for (const regionId in geography.regions) {
       const region = geography.regions[regionId as RegionId];
       if (region.selected) selectedRegions.push(region);
@@ -371,7 +372,7 @@ function fetchDisplacementData(pollutant: Pollutant): AppThunk {
       },
       body: JSON.stringify({
         region: region.id,
-        hourlyLoad: eere.hourlyEere,
+        hourlyLoad: eere.combinedRegionalProfiles,
       }),
     };
 
