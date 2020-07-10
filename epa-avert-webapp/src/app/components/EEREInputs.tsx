@@ -294,10 +294,10 @@ function EEREInputs() {
   const inputsAreEmpty =
     inputsFields.filter((field) => field?.length > 0).length === 0;
 
-  const disabledClass =
-    !inputsAreValid || inputsAreEmpty || status === 'started'
-      ? ' avert-button-disabled'
-      : '';
+  const calculationDisabled =
+    !inputsAreValid || inputsAreEmpty || status === 'started';
+
+  const disabledClass = calculationDisabled ? ' avert-button-disabled' : '';
 
   const eereButtonOptions = {
     ready: 'Calculate EE/RE Impacts',
@@ -628,8 +628,8 @@ function EEREInputs() {
           href="/"
           onClick={(ev) => {
             ev.preventDefault();
-            // if inputsAreValid, calculate profile
-            inputsAreValid && dispatch(calculateEereProfile());
+            if (calculationDisabled) return;
+            dispatch(calculateEereProfile());
           }}
         >
           {eereButtonOptions[status]}

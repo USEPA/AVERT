@@ -28,9 +28,15 @@ type Props = {
 
 function EEREInputField({ value, disabled, onChange }: Props) {
   const dispatch = useDispatch();
-  const inputsAreValid = useTypedSelector(({ eere }) => {
-    return eere.errors.length === 0;
-  });
+  const status = useTypedSelector(({ eere }) => eere.status);
+  const errors = useTypedSelector(({ eere }) => eere.errors);
+
+  const inputsAreValid = errors.length === 0;
+
+  const inputIsEmpty = value.length === 0;
+
+  const calculationDisabled =
+    !inputsAreValid || inputIsEmpty || status === 'started';
 
   return (
     <input
@@ -40,8 +46,8 @@ function EEREInputField({ value, disabled, onChange }: Props) {
       disabled={disabled ? true : false}
       onChange={(ev) => onChange(ev.target.value)}
       onKeyPress={(ev) => {
-        if (inputsAreValid && ev.key === 'Enter')
-          dispatch(calculateEereProfile());
+        if (calculationDisabled) return;
+        if (ev.key === 'Enter') dispatch(calculateEereProfile());
       }}
     />
   );
