@@ -190,8 +190,8 @@ const tabsStyles = css`
   }
 
   [data-reach-tab] {
-    padding: 0.5rem 1rem 0.875rem;
-    border-top: 0.375rem solid transparent;
+    padding: 0.5625rem 1rem 0.6875rem;
+    border-top: 0.375rem solid #ccc;
     border-bottom: 1px solid #aaa;
     width: 50%;
     font-weight: 700;
@@ -219,6 +219,7 @@ const tabsStyles = css`
     }
 
     &:hover {
+      border-top-color: #999;
       color: #666;
     }
 
@@ -231,10 +232,8 @@ const tabsStyles = css`
     }
 
     &[data-selected] {
-      padding-top: 0.875rem;
-      padding-bottom: 0.5rem;
       border-top-color: rgb(0, 190, 230);
-      border-bottom: none;
+      border-bottom-color: white;
       color: rgb(0, 169, 204);
       background-color: white;
     }
