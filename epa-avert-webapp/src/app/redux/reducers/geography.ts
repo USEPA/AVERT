@@ -358,15 +358,24 @@ function calculateEereLimits({
   }
 
   // when a state is selected, multiple rdfs are passed
-  if (geographicFocus === 'states' && selectedState) {
+  if (geographicFocus === 'states') {
     rdfs.forEach((rdf) => {
       const { limits, regional_load } = rdf;
       const regionId = rdf.region.region_abbv as RegionId;
-      // use percentage of the state within each region to build up variables
-      const percent = selectedState.regions[regionId] || 100;
-      maxSolarWindMwh += (limits.max_solar_wind_mwh * percent) / 100;
-      maxEEYearlyGwh += (limits.max_ee_yearly_gwh * percent) / 100;
-      maxEEPercent += (limits.max_ee_percent * percent) / 100;
+
+      // the regional scaling factor is a number between 0 and 1, representing
+      // the proportion the selected geography exists within a given region.
+      // - if a state is selected and it falls exactly equally between two
+      //   regions, the regional scaling factor would be 0.5 for each of those
+      //   two regions
+      // - if a region is selected, the regional scaling factor will always be 1
+      const regionalScalingFactor = selectedState
+        ? (selectedState.regions[regionId] || 100) / 100
+        : 1;
+
+      maxSolarWindMwh += limits.max_solar_wind_mwh * regionalScalingFactor;
+      maxEEYearlyGwh += limits.max_ee_yearly_gwh * regionalScalingFactor;
+      maxEEPercent += limits.max_ee_percent * regionalScalingFactor;
       // total hours is the same for all rdfs but its easier to just reassign it
       totalHours = regional_load.length;
     });
