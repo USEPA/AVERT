@@ -603,7 +603,7 @@ function Panels() {
         </div>
 
         <PanelFooter
-          prevButtonText="Back to Region"
+          prevButtonText="Back to Geography"
           nextButtonText="Get Results"
         />
       </section>

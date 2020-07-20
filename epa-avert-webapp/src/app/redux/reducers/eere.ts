@@ -534,17 +534,20 @@ export function calculateEereProfile(): AppThunk {
     const softValid = profiles.softValids.every((isValid) => isValid);
     const hardValid = profiles.hardValids.every((isValid) => isValid);
 
-    // get the first hour of exceedance across all of the selected regions
-    // NOTE: `[].filter(Boolean)` used to filter out zeros, as a lack of
-    // exceedance for that particular region is denoted as a 0
-    const softTopExceedanceIdx = Math.min(
-      ...profiles.softTopExceedanceIdxs.filter(Boolean),
-    );
-    const hardTopExceedanceIdx = Math.min(
-      ...profiles.hardTopExceedanceIdxs.filter(Boolean),
-    );
+    // if a region is invalid...
+    //   get the first hour of exceedance across all of the selected regions
+    //   NOTE: `[].filter(Boolean)` used to filter out zeros, as a lack of
+    //   exceedance for that particular region is denoted as a 0
+    // else, a region is valid...
+    //   so just use the first index value (all will be 0)
+    const softTopExceedanceIdx = !softValid
+      ? Math.min(...profiles.softTopExceedanceIdxs.filter(Boolean))
+      : profiles.softTopExceedanceIdxs[0];
+    const hardTopExceedanceIdx = !hardValid
+      ? Math.min(...profiles.hardTopExceedanceIdxs.filter(Boolean))
+      : profiles.hardTopExceedanceIdxs[0];
 
-    // get the index of that first our of exceedance in the profiles object in
+    // get the index of that first hour of exceedance in the profiles object in
     // order to get the corresponding top value and corresponding region id
     const sIdx = profiles.softTopExceedanceIdxs.indexOf(softTopExceedanceIdx);
     const hIdx = profiles.hardTopExceedanceIdxs.indexOf(hardTopExceedanceIdx);
