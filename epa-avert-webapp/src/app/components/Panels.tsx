@@ -394,6 +394,7 @@ function Panels() {
 
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
   const loading = useTypedSelector(({ panel }) => panel.loading);
+  const loadingSteps = useTypedSelector(({ panel }) => panel.loadingSteps);
   const loadingProgress = useTypedSelector(
     ({ panel }) => panel.loadingProgress,
   );
@@ -454,9 +455,9 @@ function Panels() {
                   <progress
                     css={loadingProgressStyles}
                     value={loadingProgress}
-                    max="6"
+                    max={loadingSteps}
                   >
-                    {(loadingProgress * 100) / 6}%
+                    {(loadingProgress * 100) / loadingSteps}%
                   </progress>
                   <p css={overlayInfoStyles}>
                     These calculations may take several minutes.

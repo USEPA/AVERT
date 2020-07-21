@@ -24,6 +24,7 @@ type PanelAction =
 type PanelState = {
   activeStep: number;
   loading: boolean;
+  loadingSteps: number;
   loadingProgress: number;
   modalOverlay: boolean;
   activeModalId: number;
@@ -34,6 +35,7 @@ type PanelState = {
 const initialState: PanelState = {
   activeStep: 1,
   loading: false,
+  loadingSteps: 6, // total number of pollutant displacements + 1
   loadingProgress: 0,
   modalOverlay: false,
   activeModalId: 0,

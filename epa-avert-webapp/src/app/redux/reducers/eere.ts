@@ -1,8 +1,10 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
-import { RegionState } from 'app/redux/reducers/geography';
-// reducers
-import { RegionalLoadData, StateState } from 'app/redux/reducers/geography';
+import {
+  RegionalLoadData,
+  RegionState,
+  StateState,
+} from 'app/redux/reducers/geography';
 // calculations
 import { calculateEere } from 'app/calculations';
 // config
