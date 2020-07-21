@@ -1,22 +1,15 @@
 /**
  * @typedef {Object} RDF
+ * @property {RdfData} data
+ * @property {RdfLimits} limits
  * @property {number[]} load_bin_edges
- * @property {RegionalLoad[]} regional_load
- * @property {PollutantData} data
+ * @property {RdfRegion} region
+ * @property {RdfRegionalLoad[]} regional_load
+ * @property {RdfRun} run
  */
 
 /**
- * @typedef {Object} RegionalLoad
- * @property {MonthNumber} month
- * @property {number} regional_load_mw
- */
-
-/**
- * @typedef {1|2|3|4|5|6|7|8|9|10|11|12} MonthNumber
- */
-
-/**
- * @typedef {Object} PollutantData
+ * @typedef {Object} RdfData
  * @property {LocationData[]} generation
  * @property {LocationData[]} so2
  * @property {LocationData[]} so2_not
@@ -36,15 +29,41 @@
  */
 
 /**
- * @typedef {number[]} HourlyLoad
+ * @typedef {Object} RdfLimits
+ * @property {string[]} created_at
+ * @property {number} id
+ * @property {number} max_ee_percent
+ * @property {number} max_ee_yearly_gwh
+ * @property {number} max_solar_wind_mwh
+ * @property {number} region_id
+ * @property {string[]} updated_at
+ * @property {number} year
  */
 
 /**
- * @typedef {'generation'|'so2'|'nox'|'co2'|'pm25'} Pollutant
+ * @typedef {Object} RdfRegion
+ * @property {string} region_abbv
+ * @property {string} region_name
+ * @property {string} region_states
  */
 
 /**
- * @typedef {Object.<string, number>} StateChanges
+ * @typedef {Object} RdfRegionalLoad
+ * @property {MonthNumber} month
+ * @property {number} regional_load_mw
+ */
+
+/**
+ * @typedef {1|2|3|4|5|6|7|8|9|10|11|12} MonthNumber
+ */
+
+/**
+ * @typedef {Object} RdfRun
+ * @property {string[]} file_name
+ * @property {number} mc_gen_runs
+ * @property {number} mc_runs
+ * @property {number} region_id
+ * @property {number} year
  */
 
 /**
@@ -88,8 +107,8 @@ function excelMatch(array, lookup) {
 /**
  * Caclulates displacement for a given pollutant.
  * @param {RDF} rdf
- * @param {HourlyLoad} hourlyLoad
- * @param {Pollutant} pollutant
+ * @param {number[]} hourlyLoad
+ * @param {'generation'|'so2'|'nox'|'co2'|'pm25'} pollutant
  */
 function getDisplacement(rdf, hourlyLoad, pollutant) {
   // set ozoneData and nonOzoneData based on provided pollutant
@@ -127,7 +146,7 @@ function getDisplacement(rdf, hourlyLoad, pollutant) {
     county: {},
   };
 
-  /** @type {StateChanges} */
+  /** @type {Object.<string, number>} */
   const stateEmissionChanges = {};
 
   // load bin edges
@@ -294,6 +313,8 @@ function getDisplacement(rdf, hourlyLoad, pollutant) {
   const postTotal = postTotals.reduce((acc, cur) => acc + (cur || 0), 0);
 
   return {
+    regionId: rdf.region.region_abbv,
+    pollutant: pollutant,
     original: preTotal,
     post: postTotal,
     impact: postTotal - preTotal,
