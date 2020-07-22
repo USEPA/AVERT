@@ -217,87 +217,97 @@ export default function reducer(
   action: GeographyAction,
 ): GeographyState {
   switch (action.type) {
-    case 'geography/SELECT_GEOGRAPHY':
+    case 'geography/SELECT_GEOGRAPHY': {
+      const { focus } = action.payload;
+
       return {
         ...state,
-        focus: action.payload.focus,
+        focus,
       };
+    }
 
-    case 'geography/SELECT_REGION':
-      const selectedRegionsState = { ...state };
-      for (const key in state.regions) {
+    case 'geography/SELECT_REGION': {
+      const updatedState = { ...state };
+
+      for (const key in updatedState.regions) {
         const regionId = key as RegionId;
         const regionIsSelected = action.payload.regionId === regionId;
-        selectedRegionsState.regions[regionId].selected = regionIsSelected;
+        updatedState.regions[regionId].selected = regionIsSelected;
       }
-      return selectedRegionsState;
 
-    case 'geography/SELECT_STATE':
-      const selectedStateState = { ...state };
-      for (const key in state.states) {
+      return updatedState;
+    }
+
+    case 'geography/SELECT_STATE': {
+      const updatedState = { ...state };
+
+      for (const key in updatedState.states) {
         const stateId = key as StateId;
         const stateIsSelected = action.payload.stateId === stateId;
-        selectedStateState.states[stateId].selected = stateIsSelected;
+        updatedState.states[stateId].selected = stateIsSelected;
       }
-      return selectedStateState;
+      return updatedState;
+    }
 
     case 'geography/REQUEST_SELECTED_REGIONS_DATA':
-    case 'geography/RECEIVE_SELECTED_REGIONS_DATA':
+    case 'geography/RECEIVE_SELECTED_REGIONS_DATA': {
       return state;
+    }
 
-    case 'geography/RECEIVE_REGION_RDF':
+    case 'geography/RECEIVE_REGION_RDF': {
+      const { regionId, regionRdf } = action.payload;
+
       return {
         ...state,
         regions: {
           ...state.regions,
-          [action.payload.regionId]: {
-            ...state.regions[action.payload.regionId],
-            rdf: action.payload.regionRdf,
+          [regionId]: {
+            ...state.regions[regionId],
+            rdf: regionRdf,
           },
         },
       };
+    }
 
     case 'geography/RECEIVE_REGION_DEFAULTS': {
+      const { regionId, regionDefaults } = action.payload;
+
       return {
         ...state,
         regions: {
           ...state.regions,
-          [action.payload.regionId]: {
-            ...state.regions[action.payload.regionId],
-            eereDefaults: action.payload.regionDefaults,
+          [regionId]: {
+            ...state.regions[regionId],
+            eereDefaults: regionDefaults,
           },
         },
       };
     }
 
     case 'geography/SET_EERE_LIMITS': {
-      if (
-        action.payload.geographicFocus === 'regions' &&
-        action.payload.regionId
-      ) {
+      const { geographicFocus, regionId, stateId, eereLimits } = action.payload;
+
+      if (geographicFocus === 'regions' && regionId) {
         return {
           ...state,
           regions: {
             ...state.regions,
-            [action.payload.regionId]: {
-              ...state.regions[action.payload.regionId],
-              eereLimits: action.payload.eereLimits,
+            [regionId]: {
+              ...state.regions[regionId],
+              eereLimits,
             },
           },
         };
       }
 
-      if (
-        action.payload.geographicFocus === 'states' &&
-        action.payload.stateId
-      ) {
+      if (geographicFocus === 'states' && stateId) {
         return {
           ...state,
           states: {
             ...state.states,
-            [action.payload.stateId]: {
-              ...state.states[action.payload.stateId],
-              eereLimits: action.payload.eereLimits,
+            [stateId]: {
+              ...state.states[stateId],
+              eereLimits,
             },
           },
         };
@@ -306,8 +316,9 @@ export default function reducer(
       return state;
     }
 
-    default:
+    default: {
       return state;
+    }
   }
 }
 
