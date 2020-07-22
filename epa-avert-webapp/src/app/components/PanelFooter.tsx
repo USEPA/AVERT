@@ -12,7 +12,6 @@ import {
   calculateDisplacement,
   resetDisplacement,
 } from 'app/redux/reducers/displacement';
-import { resetStateEmissions } from 'app/redux/reducers/stateEmissions';
 import { resetMonthlyEmissions } from 'app/redux/reducers/monthlyEmissions';
 // hooks
 import { useSelectedRegion, useSelectedState } from 'app/hooks';
@@ -123,8 +122,7 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
 
         if (onStepThree) {
           dispatch(resetDisplacement());
-          dispatch(resetStateEmissions());
-          dispatch(resetMonthlyEmissions());
+          dispatch(resetMonthlyEmissions()); // TODO: remove once no longer needed
         }
       }}
     >
@@ -173,8 +171,7 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
           scrollToTop();
           dispatch(resetEereInputs());
           dispatch(resetDisplacement());
-          dispatch(resetStateEmissions());
-          dispatch(resetMonthlyEmissions());
+          dispatch(resetMonthlyEmissions()); // TODO: remove once no longer needed
         }
 
         dispatch(setActiveStep(onStepThree ? 1 : activeStep + 1));

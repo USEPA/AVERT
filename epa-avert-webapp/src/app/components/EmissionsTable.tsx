@@ -1,15 +1,22 @@
 import React from 'react';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
+import { StateChange } from 'app/redux/reducers/displacement';
+// config
+import { StateId } from 'app/config';
 
 function EmissionsTable() {
-  const status = useTypedSelector(
-    ({ stateEmissions }) => stateEmissions.status,
+  const status = useTypedSelector(({ displacement }) => displacement.status);
+  const stateChanges = useTypedSelector(
+    ({ displacement }) => displacement.stateChanges,
   );
-  const stateIds = useTypedSelector(
-    ({ stateEmissions }) => stateEmissions.stateIds,
-  );
-  const data = useTypedSelector(({ stateEmissions }) => stateEmissions.data);
+
+  // convert object of state changes to an array of state changes
+  const statesData: StateChange[] = [];
+  for (const stateId in stateChanges) {
+    const stateChange = stateChanges[stateId as StateId];
+    if (stateChange) statesData.push(stateChange);
+  }
 
   if (status !== 'complete') return null;
 
@@ -33,26 +40,27 @@ function EmissionsTable() {
         </tr>
       </thead>
       <tbody>
-        {stateIds.map((stateId) => {
-          const state = data[stateId];
-          return (
-            <tr key={stateId}>
-              <td>{state.name}</td>
-              <td className="avert-table-data">
-                {Math.round(state.so2).toLocaleString()}
-              </td>
-              <td className="avert-table-data">
-                {Math.round(state.nox).toLocaleString()}
-              </td>
-              <td className="avert-table-data">
-                {Math.round(state.co2).toLocaleString()}
-              </td>
-              <td className="avert-table-data">
-                {Math.round(state.pm25).toLocaleString()}
-              </td>
-            </tr>
-          );
-        })}
+        {statesData
+          .sort((a, b) => a.stateName.localeCompare(b.stateName))
+          .map((stateData) => {
+            return (
+              <tr key={stateData.stateId}>
+                <td>{stateData.stateName}</td>
+                <td className="avert-table-data">
+                  {Math.round(stateData.so2).toLocaleString()}
+                </td>
+                <td className="avert-table-data">
+                  {Math.round(stateData.nox).toLocaleString()}
+                </td>
+                <td className="avert-table-data">
+                  {Math.round(stateData.co2).toLocaleString()}
+                </td>
+                <td className="avert-table-data">
+                  {Math.round(stateData.pm25).toLocaleString()}
+                </td>
+              </tr>
+            );
+          })}
       </tbody>
     </table>
   );

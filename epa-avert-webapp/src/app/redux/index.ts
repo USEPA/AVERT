@@ -7,7 +7,6 @@ import panel from './reducers/panel';
 import geography from './reducers/geography';
 import eere from './reducers/eere';
 import displacement from './reducers/displacement';
-import stateEmissions from './reducers/stateEmissions';
 import monthlyEmissions from './reducers/monthlyEmissions';
 
 const rootReducer = combineReducers({
@@ -16,7 +15,6 @@ const rootReducer = combineReducers({
   geography,
   eere,
   displacement,
-  stateEmissions,
   monthlyEmissions,
 });
 

@@ -3,7 +3,7 @@ import { AppThunk } from 'app/redux/index';
 // action creators
 import { MonthlyChanges, completeMonthlyEmissions } from './monthlyEmissions';
 // config
-import { RegionId, StateId } from 'app/config';
+import { RegionId, StateId, states } from 'app/config';
 
 // TODO: move/remove this?
 export type StatesAndCounties = {
@@ -30,7 +30,9 @@ type RegionalDisplacement = {
   pm25: PollutantDisplacement;
 };
 
-type StateChange = {
+export type StateChange = {
+  stateId: StateId;
+  stateName: string;
   generation: number;
   so2: number;
   nox: number;
@@ -125,6 +127,8 @@ export default function reducer(
       // add it with initial zero values for each pollutant
       if (!updatedState.stateChanges[stateId]) {
         updatedState.stateChanges[stateId] = {
+          stateId,
+          stateName: states[stateId].name,
           generation: 0,
           so2: 0,
           nox: 0,
