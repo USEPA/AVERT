@@ -1,28 +1,41 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
 // action creators
-import { completeStateEmissions } from './stateEmissions';
 import { MonthlyChanges, completeMonthlyEmissions } from './monthlyEmissions';
 // config
-import { RegionId } from 'app/config';
+import { RegionId, StateId } from 'app/config';
 
-// TODO: move this?
+// TODO: move/remove this?
 export type StatesAndCounties = {
   [stateId: string]: string[];
 };
 
-type Pollutant = 'generation' | 'so2' | 'nox' | 'co2' | 'pm25';
+type PollutantName = 'generation' | 'so2' | 'nox' | 'co2' | 'pm25';
 
-export type PollutantDisplacementData = {
+type PollutantDisplacement = {
   regionId: RegionId;
-  pollutant: Pollutant;
+  pollutant: PollutantName;
   original: number;
   post: number;
   impact: number;
   monthlyChanges: MonthlyChanges;
-  stateChanges: {
-    [stateId: string]: number;
-  };
+  stateChanges: Partial<{ [key in StateId]: number }>;
+};
+
+type RegionalDisplacement = {
+  generation: PollutantDisplacement;
+  so2: PollutantDisplacement;
+  nox: PollutantDisplacement;
+  co2: PollutantDisplacement;
+  pm25: PollutantDisplacement;
+};
+
+type StateChange = {
+  generation: number;
+  so2: number;
+  nox: number;
+  co2: number;
+  pm25: number;
 };
 
 type DisplacementAction =
@@ -34,26 +47,28 @@ type DisplacementAction =
   | { type: 'displacement/REQUEST_DISPLACEMENT_DATA' }
   | {
       type: 'displacement/RECEIVE_DISPLACEMENT_DATA';
-      payload: { data: PollutantDisplacementData };
+      payload: { data: PollutantDisplacement };
+    }
+  | {
+      type: 'displacement/ADD_STATE_CHANGES';
+      payload: {
+        stateId: StateId;
+        pollutantName: PollutantName;
+        pollutantValue: number;
+      };
     };
-
-type RegionalDisplacement = {
-  generation: PollutantDisplacementData;
-  so2: PollutantDisplacementData;
-  nox: PollutantDisplacementData;
-  co2: PollutantDisplacementData;
-  pm25: PollutantDisplacementData;
-};
 
 type DisplacementState = {
   status: 'ready' | 'started' | 'complete' | 'error';
   regionalDisplacements: Partial<{ [key in RegionId]: RegionalDisplacement }>;
+  stateChanges: Partial<{ [key in StateId]: StateChange }>;
 };
 
 // reducer
 const initialState: DisplacementState = {
   status: 'ready',
   regionalDisplacements: {},
+  stateChanges: {},
 };
 
 export default function reducer(
@@ -62,41 +77,81 @@ export default function reducer(
 ): DisplacementState {
   switch (action.type) {
     case 'geography/SELECT_REGION':
-    case 'displacement/RESET_DISPLACEMENT':
+    case 'displacement/RESET_DISPLACEMENT': {
       return initialState;
+    }
 
-    case 'displacement/START_DISPLACEMENT':
+    case 'displacement/START_DISPLACEMENT': {
       return {
         ...state,
         status: 'started',
       };
+    }
 
-    case 'displacement/COMPLETE_DISPLACEMENT':
+    case 'displacement/COMPLETE_DISPLACEMENT': {
       return {
         ...state,
         status: 'complete',
       };
+    }
 
     case 'displacement/REQUEST_DISPLACEMENT_DATA':
-    case 'displacement/INCREMENT_PROGRESS':
+    case 'displacement/INCREMENT_PROGRESS': {
       return state;
+    }
 
-    case 'displacement/RECEIVE_DISPLACEMENT_DATA':
+    case 'displacement/RECEIVE_DISPLACEMENT_DATA': {
+      const { data } = action.payload;
+
       return {
         ...state,
         regionalDisplacements: {
           ...state.regionalDisplacements,
-          [action.payload.data.regionId]: {
-            ...state.regionalDisplacements[action.payload.data.regionId],
-            [action.payload.data.pollutant]: {
-              ...action.payload.data,
+          [data.regionId]: {
+            ...state.regionalDisplacements[data.regionId],
+            [data.pollutant]: {
+              ...data,
             },
           },
         },
       };
+    }
 
-    default:
+    case 'displacement/ADD_STATE_CHANGES': {
+      const updatedState = { ...state };
+      const { stateId, pollutantName, pollutantValue } = action.payload;
+
+      // if state hasn't already been added to stateChanges,
+      // add it with initial zero values for each pollutant
+      if (!updatedState.stateChanges[stateId]) {
+        updatedState.stateChanges[stateId] = {
+          generation: 0,
+          so2: 0,
+          nox: 0,
+          co2: 0,
+          pm25: 0,
+        };
+      }
+
+      // add dispatched pollutant value to previous pollutant value
+      const previousPollutantValue =
+        updatedState.stateChanges[stateId]?.[pollutantName] || 0;
+
+      return {
+        ...updatedState,
+        stateChanges: {
+          ...updatedState.stateChanges,
+          [stateId]: {
+            ...updatedState.stateChanges[stateId],
+            [pollutantName]: previousPollutantValue + pollutantValue,
+          },
+        },
+      };
+    }
+
+    default: {
       return state;
+    }
   }
 }
 
@@ -105,7 +160,7 @@ export function incrementProgress(): DisplacementAction {
   return { type: 'displacement/INCREMENT_PROGRESS' };
 }
 
-function fetchDisplacementData(pollutant: Pollutant): AppThunk {
+function fetchDisplacementData(pollutant: PollutantName): AppThunk {
   return (dispatch, getState) => {
     const { api, eere } = getState();
 
@@ -136,7 +191,7 @@ function fetchDisplacementData(pollutant: Pollutant): AppThunk {
     Promise.all(displacementRequests)
       .then((responses) => {
         const displacementData = responses.map((response) => {
-          return response.json().then((data: PollutantDisplacementData) => {
+          return response.json().then((data: PollutantDisplacement) => {
             dispatch({
               type: 'displacement/RECEIVE_DISPLACEMENT_DATA',
               payload: { data },
@@ -147,8 +202,24 @@ function fetchDisplacementData(pollutant: Pollutant): AppThunk {
 
         return Promise.all(displacementData);
       })
-      .then((displacement) => {
+      .then((regionalDisplacements) => {
         dispatch(incrementProgress());
+
+        // build up changes by state for each region (additive)
+        regionalDisplacements.forEach((displacement) => {
+          for (const key in displacement.stateChanges) {
+            const stateId = key as StateId;
+
+            dispatch({
+              type: 'displacement/ADD_STATE_CHANGES',
+              payload: {
+                stateId,
+                pollutantName: displacement.pollutant,
+                pollutantValue: displacement.stateChanges[stateId] || 0,
+              },
+            });
+          }
+        });
       });
   };
 }
@@ -179,7 +250,7 @@ export function calculateDisplacement(): AppThunk {
 
 function receiveDisplacement(): AppThunk {
   return (dispatch, getState) => {
-    const { panel, displacement } = getState();
+    const { panel } = getState();
 
     // recursively call function if data is still fetching
     if (panel.loadingProgress !== panel.loadingSteps) {
@@ -187,8 +258,7 @@ function receiveDisplacement(): AppThunk {
     }
 
     dispatch({ type: 'displacement/COMPLETE_DISPLACEMENT' });
-    dispatch(completeStateEmissions()); // TODO: move this?
-    dispatch(completeMonthlyEmissions()); // TODO: move this?
+    dispatch(completeMonthlyEmissions()); // TODO: remove once no longer needed
   };
 }
 
