@@ -148,130 +148,175 @@ export default function reducer(
   action: EereAction,
 ): EereState {
   switch (action.type) {
-    case 'eere/VALIDATE_EERE':
+    case 'eere/VALIDATE_EERE': {
+      const { errors } = action.payload;
+
       return {
         ...state,
-        errors: action.payload.errors,
+        errors,
       };
+    }
 
-    case 'eere/UPDATE_EERE_ANNUAL_GWH':
-      return {
-        ...state,
-        inputs: {
-          ...state.inputs,
-          annualGwh: action.payload.text,
-        },
-      };
+    case 'eere/UPDATE_EERE_ANNUAL_GWH': {
+      const { text } = action.payload;
 
-    case 'eere/UPDATE_EERE_CONSTANT_MW':
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          constantMwh: action.payload.text,
+          annualGwh: text,
         },
       };
+    }
 
-    case 'eere/UPDATE_EERE_BROAD_BASE_PROGRAM':
+    case 'eere/UPDATE_EERE_CONSTANT_MW': {
+      const { text } = action.payload;
+
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          broadProgram: action.payload.text,
+          constantMwh: text,
         },
       };
+    }
 
-    case 'eere/UPDATE_EERE_REDUCTION':
+    case 'eere/UPDATE_EERE_BROAD_BASE_PROGRAM': {
+      const { text } = action.payload;
+
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          reduction: action.payload.text,
+          broadProgram: text,
         },
       };
+    }
 
-    case 'eere/UPDATE_EERE_TOP_HOURS':
+    case 'eere/UPDATE_EERE_REDUCTION': {
+      const { text } = action.payload;
+
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          topHours: action.payload.text,
+          reduction: text,
         },
       };
+    }
 
-    case 'eere/UPDATE_EERE_ONSHORE_WIND':
+    case 'eere/UPDATE_EERE_TOP_HOURS': {
+      const { text } = action.payload;
+
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          onshoreWind: action.payload.text,
+          topHours: text,
         },
       };
+    }
 
-    case 'eere/UPDATE_EERE_OFFSHORE_WIND':
+    case 'eere/UPDATE_EERE_ONSHORE_WIND': {
+      const { text } = action.payload;
+
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          offshoreWind: action.payload.text,
+          onshoreWind: text,
         },
       };
+    }
 
-    case 'eere/UPDATE_EERE_UTILITY_SOLAR':
+    case 'eere/UPDATE_EERE_OFFSHORE_WIND': {
+      const { text } = action.payload;
+
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          utilitySolar: action.payload.text,
+          offshoreWind: text,
         },
       };
+    }
 
-    case 'eere/UPDATE_EERE_ROOFTOP_SOLAR':
+    case 'eere/UPDATE_EERE_UTILITY_SOLAR': {
+      const { text } = action.payload;
+
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          rooftopSolar: action.payload.text,
+          utilitySolar: text,
         },
       };
+    }
 
-    case 'eere/START_EERE_CALCULATIONS':
+    case 'eere/UPDATE_EERE_ROOFTOP_SOLAR': {
+      const { text } = action.payload;
+
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          rooftopSolar: text,
+        },
+      };
+    }
+
+    case 'eere/START_EERE_CALCULATIONS': {
       return {
         ...state,
         status: 'started',
         regionalProfiles: {},
       };
+    }
 
     case 'eere/CALCULATE_REGIONAL_EERE_PROFILE': {
+      const {
+        regionId,
+        hourlyEere,
+        softValid,
+        softTopExceedanceValue,
+        softTopExceedanceIndex,
+        hardValid,
+        hardTopExceedanceValue,
+        hardTopExceedanceIndex,
+      } = action.payload;
+
       return {
         ...state,
         regionalProfiles: {
           ...state.regionalProfiles,
-          [action.payload.regionId]: {
-            hourlyEere: action.payload.hourlyEere,
-            softValid: action.payload.softValid,
-            softTopExceedanceValue: action.payload.softTopExceedanceValue,
-            softTopExceedanceIndex: action.payload.softTopExceedanceIndex,
-            hardValid: action.payload.hardValid,
-            hardTopExceedanceValue: action.payload.hardTopExceedanceValue,
-            hardTopExceedanceIndex: action.payload.hardTopExceedanceIndex,
+          [regionId]: {
+            hourlyEere,
+            softValid,
+            softTopExceedanceValue,
+            softTopExceedanceIndex,
+            hardValid,
+            hardTopExceedanceValue,
+            hardTopExceedanceIndex,
           },
         },
       };
     }
 
-    case 'eere/COMPLETE_EERE_CALCULATIONS':
+    case 'eere/COMPLETE_EERE_CALCULATIONS': {
       return {
         ...state,
         status: 'complete',
         combinedProfile: action.payload,
       };
+    }
 
-    case 'eere/RESET_EERE_INPUTS':
+    case 'eere/RESET_EERE_INPUTS': {
       return initialState;
+    }
 
-    default:
+    default: {
       return state;
+    }
   }
 }
 
