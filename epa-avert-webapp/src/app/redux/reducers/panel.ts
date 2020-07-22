@@ -47,58 +47,72 @@ export default function reducer(
   action: PanelAction,
 ): PanelState {
   switch (action.type) {
-    case 'displacement/INCREMENT_PROGRESS':
+    case 'displacement/INCREMENT_PROGRESS': {
       return {
         ...state,
         loadingProgress: ++state.loadingProgress,
       };
+    }
 
-    case 'panel/CHANGE_ACTIVE_STEP':
+    case 'panel/CHANGE_ACTIVE_STEP': {
+      const { stepNumber } = action.payload;
+
       return {
         ...state,
-        activeStep: action.payload.stepNumber,
+        activeStep: stepNumber,
       };
+    }
 
-    case 'panel/TOGGLE_MODAL_OVERLAY':
+    case 'panel/TOGGLE_MODAL_OVERLAY': {
       return {
         ...state,
         modalOverlay: !state.modalOverlay,
       };
+    }
 
-    case 'panel/STORE_ACTIVE_MODAL':
+    case 'panel/STORE_ACTIVE_MODAL': {
+      const { activeModalId } = action.payload;
+
       return {
         ...state,
-        activeModalId: action.payload.activeModalId,
+        activeModalId,
         closingModalId: 0,
       };
+    }
 
-    case 'panel/RESET_ACTIVE_MODAL':
+    case 'panel/RESET_ACTIVE_MODAL': {
+      const { activeModalId } = action.payload;
+
       return {
         ...state,
         activeModalId: 0,
-        closingModalId: action.payload.activeModalId,
+        closingModalId: activeModalId,
       };
+    }
 
     case 'geography/REQUEST_SELECTED_REGIONS_DATA':
     case 'eere/START_EERE_CALCULATIONS':
-    case 'displacement/START_DISPLACEMENT':
+    case 'displacement/START_DISPLACEMENT': {
       return {
         ...state,
         loading: true,
         loadingProgress: 0,
       };
+    }
 
     case 'geography/RECEIVE_SELECTED_REGIONS_DATA':
     case 'eere/COMPLETE_EERE_CALCULATIONS':
     case 'displacement/COMPLETE_DISPLACEMENT':
-    case 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS':
+    case 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS': {
       return {
         ...state,
         loading: false,
       };
+    }
 
-    default:
+    default: {
       return state;
+    }
   }
 }
 
