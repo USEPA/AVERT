@@ -80,11 +80,11 @@ type MonthlyEmissionsAction =
     }
   | {
       type: 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION';
-      payload: { aggregation: MonthlyAggregation };
+      payload: { selectedAggregation: MonthlyAggregation };
     }
   | {
       type: 'monthlyEmissions/SELECT_MONTHLY_UNIT';
-      payload: { unit: MonthlyUnit };
+      payload: { selectedUnit: MonthlyUnit };
     }
   | {
       type: 'monthlyEmissions/SELECT_MONTHLY_STATE';
@@ -97,8 +97,8 @@ type MonthlyEmissionsAction =
   | { type: 'monthlyEmissions/RESET_MONTHLY_EMISSIONS' };
 
 type MonthlyEmissionsState = {
-  aggregation: MonthlyAggregation;
-  unit: MonthlyUnit;
+  selectedAggregation: MonthlyAggregation;
+  selectedUnit: MonthlyUnit;
   selectedStateId: string;
   selectedCountyName: string;
   output: {
@@ -113,8 +113,8 @@ type MonthlyEmissionsState = {
 
 // reducer
 const initialState: MonthlyEmissionsState = {
-  aggregation: 'region',
-  unit: 'emissions',
+  selectedAggregation: 'region',
+  selectedUnit: 'emissions',
   selectedStateId: '',
   selectedCountyName: '',
   output: {
@@ -137,20 +137,20 @@ export default function reducer(
     }
 
     case 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION': {
-      const { aggregation } = action.payload;
+      const { selectedAggregation } = action.payload;
 
       return {
         ...state,
-        aggregation,
+        selectedAggregation,
       };
     }
 
     case 'monthlyEmissions/SELECT_MONTHLY_UNIT': {
-      const { unit } = action.payload;
+      const { selectedUnit } = action.payload;
 
       return {
         ...state,
-        unit,
+        selectedUnit,
       };
     }
 
@@ -174,7 +174,12 @@ export default function reducer(
     }
 
     case 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS': {
-      const { unit, aggregation, selectedStateId, selectedCountyName } = state;
+      const {
+        selectedUnit,
+        selectedAggregation,
+        selectedStateId,
+        selectedCountyName,
+      } = state;
 
       const emissionData: {
         [pollutant in 'so2' | 'nox' | 'co2' | 'pm25']: number[];
@@ -188,25 +193,25 @@ export default function reducer(
       // populate emissionData with data from action (pollutant data from store)
       (Object.keys(emissionData) as ('so2' | 'nox' | 'co2' | 'pm25')[]).forEach(
         (pollutant) => {
-          if (aggregation === 'region') {
+          if (selectedAggregation === 'region') {
             emissionData[pollutant] = Object.values(
-              action.payload[pollutant][unit].region,
+              action.payload[pollutant][selectedUnit].region,
             );
           }
 
-          if (aggregation === 'state' && selectedStateId) {
+          if (selectedAggregation === 'state' && selectedStateId) {
             emissionData[pollutant] = Object.values(
-              action.payload[pollutant][unit].state[selectedStateId],
+              action.payload[pollutant][selectedUnit].state[selectedStateId],
             );
           }
 
           if (
-            aggregation === 'county' &&
+            selectedAggregation === 'county' &&
             selectedStateId &&
             selectedCountyName
           ) {
             emissionData[pollutant] = Object.values(
-              action.payload[pollutant][unit].county[selectedStateId][
+              action.payload[pollutant][selectedUnit].county[selectedStateId][
                 selectedCountyName
               ],
             );
@@ -322,42 +327,42 @@ export function completeMonthlyEmissions(): AppThunk {
 }
 
 export function selectMonthlyAggregation(
-  aggregation: MonthlyAggregation,
+  selectedAggregation: MonthlyAggregation,
 ): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION',
-      payload: { aggregation },
+      payload: { selectedAggregation },
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
 }
 
-export function selectMonthlyUnit(unit: MonthlyUnit): AppThunk {
+export function selectMonthlyUnit(selectedUnit: MonthlyUnit): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_UNIT',
-      payload: { unit },
+      payload: { selectedUnit },
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
 }
 
-export function selectMonthlyState(stateId: string): AppThunk {
+export function selectMonthlyState(selectedStateId: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_STATE',
-      payload: { selectedStateId: stateId },
+      payload: { selectedStateId },
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
 }
 
-export function selectMonthlyCounty(countyName: string): AppThunk {
+export function selectMonthlyCounty(selectedCountyName: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_COUNTY',
-      payload: { selectedCountyName: countyName },
+      payload: { selectedCountyName },
     });
     dispatch(renderMonthlyEmissionsCharts());
   };

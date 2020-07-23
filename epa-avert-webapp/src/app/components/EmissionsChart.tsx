@@ -78,11 +78,11 @@ const emissionsChartsStyles = css`
 function EmissionsChart() {
   const dispatch = useDispatch();
   const status = useTypedSelector(({ displacement }) => displacement.status);
-  const aggregation = useTypedSelector(
-    ({ monthlyEmissions }) => monthlyEmissions.aggregation,
+  const selectedAggregation = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.selectedAggregation,
   );
-  const unit = useTypedSelector(
-    ({ monthlyEmissions }) => monthlyEmissions.unit,
+  const selectedUnit = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.selectedUnit,
   );
   const selectedStateId = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.selectedStateId,
@@ -135,7 +135,7 @@ function EmissionsChart() {
             type="radio"
             name="aggregation"
             value={'region'}
-            checked={aggregation === 'region'}
+            checked={selectedAggregation === 'region'}
             onChange={(ev) => {
               dispatch(
                 selectMonthlyAggregation(ev.target.value as MonthlyAggregation),
@@ -150,7 +150,7 @@ function EmissionsChart() {
             type="radio"
             name="aggregation"
             value={'state'}
-            checked={aggregation === 'state'}
+            checked={selectedAggregation === 'state'}
             onChange={(ev) => {
               dispatch(
                 selectMonthlyAggregation(ev.target.value as MonthlyAggregation),
@@ -168,7 +168,7 @@ function EmissionsChart() {
             type="radio"
             name="aggregation"
             value={'county'}
-            checked={aggregation === 'county'}
+            checked={selectedAggregation === 'county'}
             onChange={(ev) => {
               dispatch(
                 selectMonthlyAggregation(ev.target.value as MonthlyAggregation),
@@ -185,7 +185,7 @@ function EmissionsChart() {
   }
 
   let stateSelect;
-  if (aggregation === 'state' || aggregation === 'county') {
+  if (selectedAggregation === 'state' || selectedAggregation === 'county') {
     stateSelect = (
       <div css={selectGroupStyles}>
         <select
@@ -211,7 +211,7 @@ function EmissionsChart() {
   }
 
   let countySelect;
-  if (aggregation === 'county') {
+  if (selectedAggregation === 'county') {
     countySelect = (
       <div css={selectGroupStyles}>
         <select
@@ -254,7 +254,7 @@ function EmissionsChart() {
             type="radio"
             name="unit"
             value={'emissions'}
-            checked={unit === 'emissions'}
+            checked={selectedUnit === 'emissions'}
             onChange={(ev) => {
               dispatch(selectMonthlyUnit(ev.target.value as MonthlyUnit));
             }}
@@ -267,7 +267,7 @@ function EmissionsChart() {
             type="radio"
             name="unit"
             value={'percentages'}
-            checked={unit === 'percentages'}
+            checked={selectedUnit === 'percentages'}
             onChange={(ev) =>
               dispatch(selectMonthlyUnit(ev.target.value as MonthlyUnit))
             }
@@ -301,7 +301,7 @@ function EmissionsChart() {
         });
 
         const suffix =
-          unit === 'emissions'
+          selectedUnit === 'emissions'
             ? ` ${(this.series.options as any).emissionsUnit}`
             : '%';
 
@@ -337,13 +337,13 @@ function EmissionsChart() {
 
   // conditionally define location based on aggregation
   const location =
-    aggregation === 'region'
+    selectedAggregation === 'region'
       ? `${regionName} Region`
-      : aggregation === 'state'
+      : selectedAggregation === 'state'
       ? selectedStateId === ''
         ? ''
         : `${states[selectedStateId as StateId].name}`
-      : aggregation === 'county'
+      : selectedAggregation === 'county'
       ? selectedCountyName === ''
         ? ''
         : `${countyName}, ${states[selectedStateId as StateId].name}`
@@ -354,7 +354,7 @@ function EmissionsChart() {
   }
 
   function formatYAxis(emissionsUnit: string) {
-    return unit === 'percentages'
+    return selectedUnit === 'percentages'
       ? 'Percent change'
       : `Emission changes (${emissionsUnit})`;
   }
