@@ -316,8 +316,7 @@ function getDisplacement(rdf, hourlyLoad, pollutant) {
     regionId: rdf.region.region_abbv,
     pollutant: pollutant,
     original: preTotal,
-    post: postTotal,
-    impact: postTotal - preTotal,
+    postEere: postTotal,
     monthlyChanges: {
       emissions: monthlyEmissionChanges,
       percentages: monthlyPercentageChanges,

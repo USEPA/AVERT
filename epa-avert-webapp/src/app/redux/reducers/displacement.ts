@@ -15,8 +15,7 @@ type PollutantDisplacement = {
   regionId: RegionId;
   pollutant: PollutantName;
   original: number;
-  post: number;
-  impact: number;
+  postEere: number;
   monthlyChanges: MonthlyChanges;
   stateChanges: Partial<{ [key in StateId]: number }>;
 };
@@ -106,6 +105,7 @@ type DisplacementState = {
   status: 'ready' | 'started' | 'complete' | 'error';
   regionalDisplacements: Partial<{ [key in RegionId]: RegionalDisplacement }>;
   combinedStateChanges: Partial<{ [key in StateId]: StateChange }>;
+  combinedMonthlyChanges: any;
   statesAndCounties: StatesAndCounties;
   downloadableCountyData: CountyDataRow[];
   downloadableCobraData: CobraDataRow[];
@@ -116,6 +116,7 @@ const initialState: DisplacementState = {
   status: 'ready',
   regionalDisplacements: {},
   combinedStateChanges: {},
+  combinedMonthlyChanges: {},
   statesAndCounties: {},
   downloadableCountyData: [],
   downloadableCobraData: [],
@@ -276,6 +277,9 @@ function fetchDisplacementData(pollutant: PollutantName): AppThunk {
       .then((regionalDisplacements) => {
         dispatch(incrementProgress());
 
+        // TODO: build up combined monthly changes for each region (additive)
+        const monthlyChanges = {};
+
         // build up changes by state for each region (additive)
         regionalDisplacements.forEach((displacement) => {
           for (const key in displacement.stateChanges) {
@@ -289,6 +293,8 @@ function fetchDisplacementData(pollutant: PollutantName): AppThunk {
                 pollutantValue: displacement.stateChanges[stateId] || 0,
               },
             });
+
+            // TODO: combinedMonthlyChanges...
           }
         });
       });

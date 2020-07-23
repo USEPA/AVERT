@@ -24,48 +24,43 @@ function DisplacementsTable() {
   );
 
   // add up displacement values from each region
-  const generation = { original: 0, post: 0, impact: 0 };
-  const so2 = { original: 0, post: 0, impact: 0 };
-  const nox = { original: 0, post: 0, impact: 0 };
-  const co2 = { original: 0, post: 0, impact: 0 };
-  const pm25 = { original: 0, post: 0, impact: 0 };
+  const generation = { original: 0, postEere: 0 };
+  const so2 = { original: 0, postEere: 0 };
+  const nox = { original: 0, postEere: 0 };
+  const co2 = { original: 0, postEere: 0 };
+  const pm25 = { original: 0, postEere: 0 };
 
   for (const regionId in regionalDisplacements) {
     // regional displacement data
     const data = regionalDisplacements[regionId as RegionId];
 
     generation.original += data?.generation?.original || 0;
-    generation.post += data?.generation?.post || 0;
-    generation.impact += data?.generation?.impact || 0;
+    generation.postEere += data?.generation?.postEere || 0;
 
     so2.original += data?.so2?.original || 0;
-    so2.post += data?.so2?.post || 0;
-    so2.impact += data?.so2?.impact || 0;
+    so2.postEere += data?.so2?.postEere || 0;
 
     nox.original += data?.nox?.original || 0;
-    nox.post += data?.nox?.post || 0;
-    nox.impact += data?.nox?.impact || 0;
+    nox.postEere += data?.nox?.postEere || 0;
 
     co2.original += data?.co2?.original || 0;
-    co2.post += data?.co2?.post || 0;
-    co2.impact += data?.co2?.impact || 0;
+    co2.postEere += data?.co2?.postEere || 0;
 
     pm25.original += data?.pm25?.original || 0;
-    pm25.post += data?.pm25?.post || 0;
-    pm25.impact += data?.pm25?.impact || 0;
+    pm25.postEere += data?.pm25?.postEere || 0;
   }
 
-  const so2EmissionsOrig = so2.original / generation.original;
-  const so2EmissionsPost = so2.post / generation.post;
+  const so2RateOrig = so2.original / generation.original;
+  const so2RatePost = so2.postEere / generation.postEere;
 
-  const noxEmissionsOrig = nox.original / generation.original;
-  const noxEmissionsPost = nox.post / generation.post;
+  const noxRateOrig = nox.original / generation.original;
+  const noxRatePost = nox.postEere / generation.postEere;
 
-  const co2EmissionsOrig = co2.original / generation.original;
-  const co2EmissionsPost = co2.post / generation.post;
+  const co2RateOrig = co2.original / generation.original;
+  const co2RatePost = co2.postEere / generation.postEere;
 
-  const pm25EmissionsOrig = pm25.original / generation.original;
-  const pm25EmissionsPost = pm25.post / generation.post;
+  const pm25RateOrig = pm25.original / generation.original;
+  const pm25RatePost = pm25.postEere / generation.postEere;
 
   if (status !== 'complete') return null;
 
@@ -87,10 +82,10 @@ function DisplacementsTable() {
               {formatNumber(generation.original)}
             </td>
             <td className="avert-table-data">
-              {formatNumber(generation.post)}
+              {formatNumber(generation.postEere)}
             </td>
             <td className="avert-table-data">
-              {formatNumber(generation.impact)}
+              {formatNumber(generation.original - generation.postEere)}
             </td>
           </tr>
           <tr className="avert-table-group">
@@ -101,32 +96,40 @@ function DisplacementsTable() {
               SO<sub>2</sub> (lbs)
             </td>
             <td className="avert-table-data">{formatNumber(so2.original)}</td>
-            <td className="avert-table-data">{formatNumber(so2.post)}</td>
-            <td className="avert-table-data">{formatNumber(so2.impact)}</td>
+            <td className="avert-table-data">{formatNumber(so2.postEere)}</td>
+            <td className="avert-table-data">
+              {formatNumber(so2.original - so2.postEere)}
+            </td>
           </tr>
           <tr>
             <td css={rowLabelStyles}>
               NO<sub>X</sub> (lbs)
             </td>
             <td className="avert-table-data">{formatNumber(nox.original)}</td>
-            <td className="avert-table-data">{formatNumber(nox.post)}</td>
-            <td className="avert-table-data">{formatNumber(nox.impact)}</td>
+            <td className="avert-table-data">{formatNumber(nox.postEere)}</td>
+            <td className="avert-table-data">
+              {formatNumber(nox.original - nox.postEere)}
+            </td>
           </tr>
           <tr>
             <td css={rowLabelStyles}>
               CO<sub>2</sub> (tons)
             </td>
             <td className="avert-table-data">{formatNumber(co2.original)}</td>
-            <td className="avert-table-data">{formatNumber(co2.post)}</td>
-            <td className="avert-table-data">{formatNumber(co2.impact)}</td>
+            <td className="avert-table-data">{formatNumber(co2.postEere)}</td>
+            <td className="avert-table-data">
+              {formatNumber(co2.original - co2.postEere)}
+            </td>
           </tr>
           <tr>
             <td css={rowLabelStyles}>
               PM<sub>2.5</sub> (lbs)
             </td>
             <td className="avert-table-data">{formatNumber(pm25.original)}</td>
-            <td className="avert-table-data">{formatNumber(pm25.post)}</td>
-            <td className="avert-table-data">{formatNumber(pm25.impact)}</td>
+            <td className="avert-table-data">{formatNumber(pm25.postEere)}</td>
+            <td className="avert-table-data">
+              {formatNumber(pm25.original - pm25.postEere)}
+            </td>
           </tr>
           <tr className="avert-table-group">
             <td colSpan={4}>Emission rates of fossil EGUs</td>
@@ -135,32 +138,32 @@ function DisplacementsTable() {
             <td css={rowLabelStyles}>
               SO<sub>2</sub> (lbs/MWh)
             </td>
-            <td className="avert-table-data">{so2EmissionsOrig.toFixed(2)}</td>
-            <td className="avert-table-data">{so2EmissionsPost.toFixed(2)}</td>
+            <td className="avert-table-data">{so2RateOrig.toFixed(2)}</td>
+            <td className="avert-table-data">{so2RatePost.toFixed(2)}</td>
             <td className="avert-table-data">&nbsp;</td>
           </tr>
           <tr>
             <td css={rowLabelStyles}>
               NO<sub>X</sub> (lbs/MWh)
             </td>
-            <td className="avert-table-data">{noxEmissionsOrig.toFixed(2)}</td>
-            <td className="avert-table-data">{noxEmissionsPost.toFixed(2)}</td>
+            <td className="avert-table-data">{noxRateOrig.toFixed(2)}</td>
+            <td className="avert-table-data">{noxRatePost.toFixed(2)}</td>
             <td className="avert-table-data">&nbsp;</td>
           </tr>
           <tr>
             <td css={rowLabelStyles}>
               CO<sub>2</sub> (tons/MWh)
             </td>
-            <td className="avert-table-data">{co2EmissionsOrig.toFixed(2)}</td>
-            <td className="avert-table-data">{co2EmissionsPost.toFixed(2)}</td>
+            <td className="avert-table-data">{co2RateOrig.toFixed(2)}</td>
+            <td className="avert-table-data">{co2RatePost.toFixed(2)}</td>
             <td className="avert-table-data">&nbsp;</td>
           </tr>
           <tr>
             <td css={rowLabelStyles}>
               PM<sub>2.5</sub> (lbs/MWh)
             </td>
-            <td className="avert-table-data">{pm25EmissionsOrig.toFixed(2)}</td>
-            <td className="avert-table-data">{pm25EmissionsPost.toFixed(2)}</td>
+            <td className="avert-table-data">{pm25RateOrig.toFixed(2)}</td>
+            <td className="avert-table-data">{pm25RatePost.toFixed(2)}</td>
             <td className="avert-table-data">&nbsp;</td>
           </tr>
         </tbody>
