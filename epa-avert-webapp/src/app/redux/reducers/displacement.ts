@@ -105,7 +105,7 @@ type DisplacementAction =
 type DisplacementState = {
   status: 'ready' | 'started' | 'complete' | 'error';
   regionalDisplacements: Partial<{ [key in RegionId]: RegionalDisplacement }>;
-  stateChanges: Partial<{ [key in StateId]: StateChange }>;
+  cumulativeStateChanges: Partial<{ [key in StateId]: StateChange }>;
   statesAndCounties: StatesAndCounties;
   downloadableCountyData: CountyDataRow[];
   downloadableCobraData: CobraDataRow[];
@@ -115,7 +115,7 @@ type DisplacementState = {
 const initialState: DisplacementState = {
   status: 'ready',
   regionalDisplacements: {},
-  stateChanges: {},
+  cumulativeStateChanges: {},
   statesAndCounties: {},
   downloadableCountyData: [],
   downloadableCobraData: [],
@@ -171,10 +171,10 @@ export default function reducer(
       const updatedState = { ...state };
       const { stateId, pollutantName, pollutantValue } = action.payload;
 
-      // if state hasn't already been added to stateChanges,
+      // if state hasn't already been added to cumulativeStateChanges,
       // add it with initial zero values for each pollutant
-      if (!updatedState.stateChanges[stateId]) {
-        updatedState.stateChanges[stateId] = {
+      if (!updatedState.cumulativeStateChanges[stateId]) {
+        updatedState.cumulativeStateChanges[stateId] = {
           id: stateId,
           name: states[stateId].name,
           generation: 0,
@@ -187,14 +187,14 @@ export default function reducer(
 
       // add dispatched pollutant value to previous pollutant value
       const previousPollutantValue =
-        updatedState.stateChanges[stateId]?.[pollutantName] || 0;
+        updatedState.cumulativeStateChanges[stateId]?.[pollutantName] || 0;
 
       return {
         ...updatedState,
-        stateChanges: {
-          ...updatedState.stateChanges,
+        cumulativeStateChanges: {
+          ...updatedState.cumulativeStateChanges,
           [stateId]: {
-            ...updatedState.stateChanges[stateId],
+            ...updatedState.cumulativeStateChanges[stateId],
             [pollutantName]: previousPollutantValue + pollutantValue,
           },
         },

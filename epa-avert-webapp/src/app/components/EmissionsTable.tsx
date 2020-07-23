@@ -7,15 +7,15 @@ import { StateId } from 'app/config';
 
 function EmissionsTable() {
   const status = useTypedSelector(({ displacement }) => displacement.status);
-  const stateChanges = useTypedSelector(
-    ({ displacement }) => displacement.stateChanges,
+  const cumulativeStateChanges = useTypedSelector(
+    ({ displacement }) => displacement.cumulativeStateChanges,
   );
 
-  // convert object of state changes to an array of state changes
-  const statesData: StateChange[] = [];
-  for (const stateId in stateChanges) {
-    const stateChange = stateChanges[stateId as StateId];
-    if (stateChange) statesData.push(stateChange);
+  // convert object of cumulative state changes to an array of changes by state
+  const changesByState: StateChange[] = [];
+  for (const stateId in cumulativeStateChanges) {
+    const stateChange = cumulativeStateChanges[stateId as StateId];
+    if (stateChange) changesByState.push(stateChange);
   }
 
   if (status !== 'complete') return null;
@@ -40,7 +40,7 @@ function EmissionsTable() {
         </tr>
       </thead>
       <tbody>
-        {statesData
+        {changesByState
           .sort((stateA, stateB) => stateA.name.localeCompare(stateB.name))
           .map((stateData) => {
             return (
