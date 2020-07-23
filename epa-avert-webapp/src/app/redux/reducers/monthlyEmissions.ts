@@ -94,7 +94,7 @@ type MonthlyEmissionsAction =
   | {
       type: 'monthlyEmissions/SELECT_MONTHLY_STATE';
       payload: {
-        selectedState: string;
+        selectedState: StateId;
         availableCounties: string[];
       };
     }
@@ -110,7 +110,7 @@ type MonthlyEmissionsState = {
   unit: MonthlyUnit;
   availableStates: string[];
   availableCounties: string[];
-  selectedState: string;
+  selectedState: StateId;
   selectedCounty: string;
   output: {
     so2: number[];
@@ -129,7 +129,7 @@ const initialState: MonthlyEmissionsState = {
   unit: 'emissions',
   availableStates: [],
   availableCounties: [],
-  selectedState: '',
+  selectedState: '' as StateId,
   selectedCounty: '',
   output: {
     so2: [],
@@ -146,49 +146,66 @@ export default function reducer(
   action: MonthlyEmissionsAction,
 ): MonthlyEmissionsState {
   switch (action.type) {
-    case 'geography/SELECT_REGION':
+    case 'geography/SELECT_REGION': {
       return initialState;
+    }
 
-    case 'displacement/START_DISPLACEMENT':
+    case 'displacement/START_DISPLACEMENT': {
       return {
         ...state,
         status: 'started',
       };
+    }
 
-    case 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS':
+    case 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS': {
+      const { availableStates } = action.payload;
+
       return {
         ...state,
         status: 'complete',
-        availableStates: action.payload.availableStates,
+        availableStates,
       };
+    }
 
-    case 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION':
+    case 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION': {
+      const { aggregation } = action.payload;
+
       return {
         ...state,
-        aggregation: action.payload.aggregation,
+        aggregation,
       };
+    }
 
-    case 'monthlyEmissions/SELECT_MONTHLY_UNIT':
+    case 'monthlyEmissions/SELECT_MONTHLY_UNIT': {
+      const { unit } = action.payload;
+
       return {
         ...state,
-        unit: action.payload.unit,
+        unit,
       };
+    }
 
-    case 'monthlyEmissions/SELECT_MONTHLY_STATE':
+    case 'monthlyEmissions/SELECT_MONTHLY_STATE': {
+      const { selectedState, availableCounties } = action.payload;
+
       return {
         ...state,
-        selectedState: action.payload.selectedState,
+        selectedState,
         selectedCounty: '',
-        availableCounties: action.payload.availableCounties,
+        availableCounties,
       };
+    }
 
-    case 'monthlyEmissions/SELECT_MONTHLY_COUNTY':
+    case 'monthlyEmissions/SELECT_MONTHLY_COUNTY': {
+      const { selectedCounty } = action.payload;
+
       return {
         ...state,
-        selectedCounty: action.payload.selectedCounty,
+        selectedCounty,
       };
+    }
 
-    case 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS':
+    case 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS': {
       const { unit, aggregation, selectedState, selectedCounty } = state;
 
       const emissionData: {
@@ -229,16 +246,18 @@ export default function reducer(
         ...state,
         output: emissionData,
       };
+    }
 
     case 'monthlyEmissions/RESET_MONTHLY_EMISSIONS':
-    case 'eere/RESET_EERE_INPUTS':
+    case 'eere/RESET_EERE_INPUTS': {
       return initialState;
+    }
 
-    case 'monthlyEmissions/SET_DOWNLOAD_DATA':
+    case 'monthlyEmissions/SET_DOWNLOAD_DATA': {
+      const { so2, nox, co2, pm25, statesAndCounties } = action.payload;
+
       const countyData: CountyDataRow[] = [];
       const cobraData: CobraDataRow[] = [];
-
-      const { so2, nox, co2, pm25, statesAndCounties } = action.payload;
 
       //------ region data ------
       // add county data for each polutant, unit, and region
@@ -286,9 +305,11 @@ export default function reducer(
         downloadableCountyData: countyData,
         downloadableCobraData: cobraData,
       };
+    }
 
-    default:
+    default: {
       return state;
+    }
   }
 }
 
@@ -312,39 +333,7 @@ function renderMonthlyEmissionsCharts(): AppThunk {
 export function completeMonthlyEmissions(): AppThunk {
   return (dispatch, getState) => {
     const { displacement } = getState();
-    const { regionalDisplacements } = displacement;
-
-    // build up statesAndCounties from each region's monthlyChanges data
-    const statesAndCounties: StatesAndCounties = {};
-
-    for (const regionId in regionalDisplacements) {
-      const regionalDisplacement = regionalDisplacements[regionId as RegionId];
-
-      if (regionalDisplacement) {
-        // states and counties are the same for all pollutants, so we'll
-        // just use generation (it really doesn't matter which we use)
-        const countyEmissions =
-          regionalDisplacement.generation.monthlyChanges.emissions.county;
-
-        for (const key in countyEmissions) {
-          const stateId = key as StateId;
-          const stateCountyNames = Object.keys(countyEmissions[stateId]).sort();
-          // initialize counties array for state, if state doesn't already exist
-          // in `statesAndCounties` and add state county names to array
-          // (we initialize and push counties instead of directly assigning
-          // counties to a state because states exist within multiple regions,
-          // but counties only exist within a single region)
-          if (!statesAndCounties[stateId]) statesAndCounties[stateId] = [];
-          statesAndCounties[stateId]?.push(...stateCountyNames);
-        }
-      }
-    }
-
-    // sort counties within each state
-    for (const key in statesAndCounties) {
-      const stateId = key as StateId;
-      statesAndCounties[stateId] = statesAndCounties[stateId]?.sort();
-    }
+    const { statesAndCounties } = displacement;
 
     dispatch({
       type: 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS',
@@ -390,16 +379,17 @@ export function selectMonthlyUnit(unit: MonthlyUnit): AppThunk {
   };
 }
 
-export function selectMonthlyState(stateId: string): AppThunk {
+export function selectMonthlyState(stateId: StateId): AppThunk {
   return (dispatch, getState) => {
-    // const { displacement } = getState();
+    const { displacement } = getState();
+    const { statesAndCounties } = displacement;
 
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_STATE',
-      // payload: {
-      //   selectedState: stateId,
-      //   availableCounties: displacement.statesAndCounties[stateId].sort(),
-      // },
+      payload: {
+        selectedState: stateId,
+        availableCounties: statesAndCounties[stateId]?.sort(),
+      },
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
