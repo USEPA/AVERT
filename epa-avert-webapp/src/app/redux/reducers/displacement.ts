@@ -105,7 +105,7 @@ type DisplacementAction =
 type DisplacementState = {
   status: 'ready' | 'started' | 'complete' | 'error';
   regionalDisplacements: Partial<{ [key in RegionId]: RegionalDisplacement }>;
-  cumulativeStateChanges: Partial<{ [key in StateId]: StateChange }>;
+  combinedStateChanges: Partial<{ [key in StateId]: StateChange }>;
   statesAndCounties: StatesAndCounties;
   downloadableCountyData: CountyDataRow[];
   downloadableCobraData: CobraDataRow[];
@@ -115,7 +115,7 @@ type DisplacementState = {
 const initialState: DisplacementState = {
   status: 'ready',
   regionalDisplacements: {},
-  cumulativeStateChanges: {},
+  combinedStateChanges: {},
   statesAndCounties: {},
   downloadableCountyData: [],
   downloadableCobraData: [],
@@ -171,10 +171,10 @@ export default function reducer(
       const updatedState = { ...state };
       const { stateId, pollutantName, pollutantValue } = action.payload;
 
-      // if state hasn't already been added to cumulativeStateChanges,
+      // if state hasn't already been added to combinedStateChanges,
       // add it with initial zero values for each pollutant
-      if (!updatedState.cumulativeStateChanges[stateId]) {
-        updatedState.cumulativeStateChanges[stateId] = {
+      if (!updatedState.combinedStateChanges[stateId]) {
+        updatedState.combinedStateChanges[stateId] = {
           id: stateId,
           name: states[stateId].name,
           generation: 0,
@@ -187,14 +187,14 @@ export default function reducer(
 
       // add dispatched pollutant value to previous pollutant value
       const previousPollutantValue =
-        updatedState.cumulativeStateChanges[stateId]?.[pollutantName] || 0;
+        updatedState.combinedStateChanges[stateId]?.[pollutantName] || 0;
 
       return {
         ...updatedState,
-        cumulativeStateChanges: {
-          ...updatedState.cumulativeStateChanges,
+        combinedStateChanges: {
+          ...updatedState.combinedStateChanges,
           [stateId]: {
-            ...updatedState.cumulativeStateChanges[stateId],
+            ...updatedState.combinedStateChanges[stateId],
             [pollutantName]: previousPollutantValue + pollutantValue,
           },
         },
