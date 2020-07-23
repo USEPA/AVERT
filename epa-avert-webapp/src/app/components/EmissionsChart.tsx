@@ -77,27 +77,25 @@ const emissionsChartsStyles = css`
 
 function EmissionsChart() {
   const dispatch = useDispatch();
-  const status = useTypedSelector(
-    ({ monthlyEmissions }) => monthlyEmissions.status,
-  );
+  const status = useTypedSelector(({ displacement }) => displacement.status);
   const aggregation = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.aggregation,
   );
   const unit = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.unit,
   );
-  const availableStates = useTypedSelector(
-    ({ monthlyEmissions }) => monthlyEmissions.availableStates,
-  );
-  const availableCounties = useTypedSelector(
-    ({ monthlyEmissions }) => monthlyEmissions.availableCounties,
-  );
   const selectedStateId = useTypedSelector(
-    ({ monthlyEmissions }) => monthlyEmissions.selectedState,
+    ({ monthlyEmissions }) => monthlyEmissions.selectedStateId,
   );
-  const selectedCounty = useTypedSelector(
-    ({ monthlyEmissions }) => monthlyEmissions.selectedCounty,
+  const selectedCountyName = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.selectedCountyName,
   );
+  const availableStates = useTypedSelector(({ displacement }) => {
+    return Object.keys(displacement.statesAndCounties).sort();
+  });
+  const availableCounties = useTypedSelector(({ displacement }) => {
+    return displacement.statesAndCounties[selectedStateId as StateId]?.sort();
+  });
   const so2Data = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.output.so2,
   );
@@ -175,8 +173,8 @@ function EmissionsChart() {
               dispatch(
                 selectMonthlyAggregation(ev.target.value as MonthlyAggregation),
               );
-              if (selectedCounty) {
-                dispatch(selectMonthlyCounty(selectedCounty));
+              if (selectedCountyName) {
+                dispatch(selectMonthlyCounty(selectedCountyName));
               }
             }}
           />
@@ -217,14 +215,14 @@ function EmissionsChart() {
     countySelect = (
       <div css={selectGroupStyles}>
         <select
-          value={selectedCounty}
+          value={selectedCountyName}
           onChange={(ev) => dispatch(selectMonthlyCounty(ev.target.value))}
         >
           <option value="" disabled>
             Select County
           </option>
 
-          {availableCounties.map((county, index) => (
+          {availableCounties?.map((county, index) => (
             <option key={index} value={county}>
               {/* format 'city' if found in county name */}
               {county.replace(/city/, '(City)')}
@@ -335,7 +333,7 @@ function EmissionsChart() {
   };
 
   // format 'city' if found in county name
-  const countyName = selectedCounty.replace(/city/, '(City)');
+  const countyName = selectedCountyName.replace(/city/, '(City)');
 
   // conditionally define location based on aggregation
   const location =
@@ -346,7 +344,7 @@ function EmissionsChart() {
         ? ''
         : `${states[selectedStateId as StateId].name}`
       : aggregation === 'county'
-      ? selectedCounty === ''
+      ? selectedCountyName === ''
         ? ''
         : `${countyName}, ${states[selectedStateId as StateId].name}`
       : '';

@@ -1,7 +1,7 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
 // config
-import { RegionId, StateId, states, fipsCodes } from 'app/config';
+import { StateId, states, fipsCodes } from 'app/config';
 
 export type MonthlyAggregation = 'region' | 'state' | 'county';
 
@@ -58,7 +58,6 @@ type StatesAndCounties = Partial<{ [key in StateId]: string[] }>;
 
 type MonthlyEmissionsAction =
   | { type: 'geography/SELECT_REGION' }
-  | { type: 'displacement/START_DISPLACEMENT' }
   | { type: 'eere/RESET_EERE_INPUTS' }
   | {
       type: 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS';
@@ -68,10 +67,6 @@ type MonthlyEmissionsAction =
         co2: MonthlyChanges;
         pm25: MonthlyChanges;
       };
-    }
-  | {
-      type: 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS';
-      payload: { availableStates: string[] };
     }
   | {
       type: 'monthlyEmissions/SET_DOWNLOAD_DATA';
@@ -93,25 +88,19 @@ type MonthlyEmissionsAction =
     }
   | {
       type: 'monthlyEmissions/SELECT_MONTHLY_STATE';
-      payload: {
-        selectedState: StateId;
-        availableCounties: string[];
-      };
+      payload: { selectedStateId: string };
     }
   | {
       type: 'monthlyEmissions/SELECT_MONTHLY_COUNTY';
-      payload: { selectedCounty: string };
+      payload: { selectedCountyName: string };
     }
   | { type: 'monthlyEmissions/RESET_MONTHLY_EMISSIONS' };
 
 type MonthlyEmissionsState = {
-  status: 'ready' | 'started' | 'complete';
   aggregation: MonthlyAggregation;
   unit: MonthlyUnit;
-  availableStates: string[];
-  availableCounties: string[];
-  selectedState: StateId;
-  selectedCounty: string;
+  selectedStateId: string;
+  selectedCountyName: string;
   output: {
     so2: number[];
     nox: number[];
@@ -124,13 +113,10 @@ type MonthlyEmissionsState = {
 
 // reducer
 const initialState: MonthlyEmissionsState = {
-  status: 'ready',
   aggregation: 'region',
   unit: 'emissions',
-  availableStates: [],
-  availableCounties: [],
-  selectedState: '' as StateId,
-  selectedCounty: '',
+  selectedStateId: '',
+  selectedCountyName: '',
   output: {
     so2: [],
     nox: [],
@@ -148,23 +134,6 @@ export default function reducer(
   switch (action.type) {
     case 'geography/SELECT_REGION': {
       return initialState;
-    }
-
-    case 'displacement/START_DISPLACEMENT': {
-      return {
-        ...state,
-        status: 'started',
-      };
-    }
-
-    case 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS': {
-      const { availableStates } = action.payload;
-
-      return {
-        ...state,
-        status: 'complete',
-        availableStates,
-      };
     }
 
     case 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION': {
@@ -186,27 +155,26 @@ export default function reducer(
     }
 
     case 'monthlyEmissions/SELECT_MONTHLY_STATE': {
-      const { selectedState, availableCounties } = action.payload;
+      const { selectedStateId } = action.payload;
 
       return {
         ...state,
-        selectedState,
-        selectedCounty: '',
-        availableCounties,
+        selectedStateId,
+        selectedCountyName: '',
       };
     }
 
     case 'monthlyEmissions/SELECT_MONTHLY_COUNTY': {
-      const { selectedCounty } = action.payload;
+      const { selectedCountyName } = action.payload;
 
       return {
         ...state,
-        selectedCounty,
+        selectedCountyName,
       };
     }
 
     case 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS': {
-      const { unit, aggregation, selectedState, selectedCounty } = state;
+      const { unit, aggregation, selectedStateId, selectedCountyName } = state;
 
       const emissionData: {
         [pollutant in 'so2' | 'nox' | 'co2' | 'pm25']: number[];
@@ -226,16 +194,20 @@ export default function reducer(
             );
           }
 
-          if (aggregation === 'state' && selectedState) {
+          if (aggregation === 'state' && selectedStateId) {
             emissionData[pollutant] = Object.values(
-              action.payload[pollutant][unit].state[selectedState],
+              action.payload[pollutant][unit].state[selectedStateId],
             );
           }
 
-          if (aggregation === 'county' && selectedState && selectedCounty) {
+          if (
+            aggregation === 'county' &&
+            selectedStateId &&
+            selectedCountyName
+          ) {
             emissionData[pollutant] = Object.values(
-              action.payload[pollutant][unit].county[selectedState][
-                selectedCounty
+              action.payload[pollutant][unit].county[selectedStateId][
+                selectedCountyName
               ],
             );
           }
@@ -317,41 +289,33 @@ function renderMonthlyEmissionsCharts(): AppThunk {
   return (dispatch, getState) => {
     // const { displacement } = getState();
     // const { so2, nox, co2, pm25 } = displacement;
-
-    dispatch({
-      type: 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS',
-      // payload: {
-      //   so2: so2.data.monthlyChanges,
-      //   nox: nox.data.monthlyChanges,
-      //   co2: co2.data.monthlyChanges,
-      //   pm25: pm25.data.monthlyChanges,
-      // },
-    });
+    // dispatch({
+    //   type: 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS',
+    //   payload: {
+    //     so2: so2.data.monthlyChanges,
+    //     nox: nox.data.monthlyChanges,
+    //     co2: co2.data.monthlyChanges,
+    //     pm25: pm25.data.monthlyChanges,
+    //   },
+    // });
   };
 }
 
 export function completeMonthlyEmissions(): AppThunk {
   return (dispatch, getState) => {
-    const { displacement } = getState();
-    const { statesAndCounties } = displacement;
+    // const { displacement } = getState();
+    // const { statesAndCounties, so2, nox, co2, pm25 } = displacement;
 
-    dispatch({
-      type: 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS',
-      payload: { availableStates: Object.keys(statesAndCounties).sort() },
-    });
-
-    // const { so2, nox, co2, pm25 } = displacement;
-
-    dispatch({
-      type: 'monthlyEmissions/SET_DOWNLOAD_DATA',
-      payload: {
-        // so2: so2.data.monthlyChanges,
-        // nox: nox.data.monthlyChanges,
-        // co2: co2.data.monthlyChanges,
-        // pm25: pm25.data.monthlyChanges,
-        statesAndCounties: statesAndCounties,
-      },
-    });
+    // dispatch({
+    //   type: 'monthlyEmissions/SET_DOWNLOAD_DATA',
+    //   payload: {
+    //     so2: so2.data.monthlyChanges,
+    //     nox: nox.data.monthlyChanges,
+    //     co2: co2.data.monthlyChanges,
+    //     pm25: pm25.data.monthlyChanges,
+    //     statesAndCounties: statesAndCounties,
+    //   },
+    // });
 
     dispatch(renderMonthlyEmissionsCharts());
   };
@@ -379,17 +343,11 @@ export function selectMonthlyUnit(unit: MonthlyUnit): AppThunk {
   };
 }
 
-export function selectMonthlyState(stateId: StateId): AppThunk {
-  return (dispatch, getState) => {
-    const { displacement } = getState();
-    const { statesAndCounties } = displacement;
-
+export function selectMonthlyState(stateId: string): AppThunk {
+  return (dispatch) => {
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_STATE',
-      payload: {
-        selectedState: stateId,
-        availableCounties: statesAndCounties[stateId]?.sort(),
-      },
+      payload: { selectedStateId: stateId },
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
@@ -399,7 +357,7 @@ export function selectMonthlyCounty(countyName: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_COUNTY',
-      payload: { selectedCounty: countyName },
+      payload: { selectedCountyName: countyName },
     });
     dispatch(renderMonthlyEmissionsCharts());
   };

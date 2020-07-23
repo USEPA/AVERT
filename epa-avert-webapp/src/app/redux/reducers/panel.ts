@@ -1,5 +1,4 @@
 type PanelAction =
-  | { type: 'displacement/INCREMENT_PROGRESS' }
   | {
       type: 'panel/CHANGE_ACTIVE_STEP';
       payload: { stepNumber: number };
@@ -14,12 +13,12 @@ type PanelAction =
       payload: { activeModalId: number };
     }
   | { type: 'geography/REQUEST_SELECTED_REGIONS_DATA' }
-  | { type: 'eere/START_EERE_CALCULATIONS' }
-  | { type: 'displacement/START_DISPLACEMENT' }
   | { type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' }
+  | { type: 'eere/START_EERE_CALCULATIONS' }
   | { type: 'eere/COMPLETE_EERE_CALCULATIONS' }
-  | { type: 'displacement/COMPLETE_DISPLACEMENT' }
-  | { type: 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS' };
+  | { type: 'displacement/INCREMENT_PROGRESS' }
+  | { type: 'displacement/START_DISPLACEMENT' }
+  | { type: 'displacement/COMPLETE_DISPLACEMENT' };
 
 type PanelState = {
   activeStep: number;
@@ -102,8 +101,7 @@ export default function reducer(
 
     case 'geography/RECEIVE_SELECTED_REGIONS_DATA':
     case 'eere/COMPLETE_EERE_CALCULATIONS':
-    case 'displacement/COMPLETE_DISPLACEMENT':
-    case 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS': {
+    case 'displacement/COMPLETE_DISPLACEMENT': {
       return {
         ...state,
         loading: false,
