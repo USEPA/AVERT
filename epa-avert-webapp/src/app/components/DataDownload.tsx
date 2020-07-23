@@ -20,10 +20,10 @@ function convertToCSVString(data: { [key: string]: any }[]) {
 function DataDownload() {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const countyData = useTypedSelector(
-    ({ monthlyEmissions }) => monthlyEmissions.downloadableCountyData,
+    ({ displacement }) => displacement.downloadableCountyData,
   );
   const cobraData = useTypedSelector(
-    ({ monthlyEmissions }) => monthlyEmissions.downloadableCobraData,
+    ({ displacement }) => displacement.downloadableCobraData,
   );
 
   const selectedRegionName = useSelectedRegion()?.name || '';

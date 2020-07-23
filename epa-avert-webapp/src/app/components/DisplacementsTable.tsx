@@ -31,27 +31,28 @@ function DisplacementsTable() {
   const pm25 = { original: 0, post: 0, impact: 0 };
 
   for (const regionId in regionalDisplacements) {
-    const regionalDisplacement = regionalDisplacements[regionId as RegionId];
+    // regional displacement data
+    const data = regionalDisplacements[regionId as RegionId];
 
-    generation.original += regionalDisplacement?.generation?.original || 0;
-    generation.post += regionalDisplacement?.generation?.post || 0;
-    generation.impact += regionalDisplacement?.generation?.impact || 0;
+    generation.original += data?.generation?.original || 0;
+    generation.post += data?.generation?.post || 0;
+    generation.impact += data?.generation?.impact || 0;
 
-    so2.original += regionalDisplacement?.so2?.original || 0;
-    so2.post += regionalDisplacement?.so2?.post || 0;
-    so2.impact += regionalDisplacement?.so2?.impact || 0;
+    so2.original += data?.so2?.original || 0;
+    so2.post += data?.so2?.post || 0;
+    so2.impact += data?.so2?.impact || 0;
 
-    nox.original += regionalDisplacement?.nox?.original || 0;
-    nox.post += regionalDisplacement?.nox?.post || 0;
-    nox.impact += regionalDisplacement?.nox?.impact || 0;
+    nox.original += data?.nox?.original || 0;
+    nox.post += data?.nox?.post || 0;
+    nox.impact += data?.nox?.impact || 0;
 
-    co2.original += regionalDisplacement?.co2?.original || 0;
-    co2.post += regionalDisplacement?.co2?.post || 0;
-    co2.impact += regionalDisplacement?.co2?.impact || 0;
+    co2.original += data?.co2?.original || 0;
+    co2.post += data?.co2?.post || 0;
+    co2.impact += data?.co2?.impact || 0;
 
-    pm25.original += regionalDisplacement?.pm25?.original || 0;
-    pm25.post += regionalDisplacement?.pm25?.post || 0;
-    pm25.impact += regionalDisplacement?.pm25?.impact || 0;
+    pm25.original += data?.pm25?.original || 0;
+    pm25.post += data?.pm25?.post || 0;
+    pm25.impact += data?.pm25?.impact || 0;
   }
 
   const so2EmissionsOrig = so2.original / generation.original;
