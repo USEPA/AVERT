@@ -1,7 +1,11 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
 // action creators
-import { MonthlyChanges, completeMonthlyEmissions } from './monthlyEmissions';
+import {
+  DataByMonth,
+  MonthlyChanges,
+  renderMonthlyEmissionsCharts,
+} from './monthlyEmissions';
 // config
 import { RegionId, StateId, states, fipsCodes } from 'app/config';
 
@@ -36,16 +40,6 @@ export type StateChange = {
 };
 
 type StatesAndCounties = Partial<{ [key in StateId]: string[] }>;
-
-type DataByMonth = {
-  [MonthNumber in 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12]: number;
-};
-
-type MonthlyData = {
-  region: DataByMonth;
-  state: { [stateId: string]: DataByMonth };
-  county: { [stateId: string]: { [countyName: string]: DataByMonth } };
-};
 
 type CountyDataRow = {
   Pollutant: 'SO2' | 'NOX' | 'CO2' | 'PM25';
@@ -400,7 +394,7 @@ function receiveDisplacement(): AppThunk {
 
     dispatch({ type: 'displacement/COMPLETE_DISPLACEMENT' });
 
-    dispatch(completeMonthlyEmissions());
+    dispatch(renderMonthlyEmissionsCharts());
   };
 }
 
