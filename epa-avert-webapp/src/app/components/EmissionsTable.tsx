@@ -41,11 +41,11 @@ function EmissionsTable() {
       </thead>
       <tbody>
         {statesData
-          .sort((a, b) => a.stateName.localeCompare(b.stateName))
+          .sort((stateA, stateB) => stateA.name.localeCompare(stateB.name))
           .map((stateData) => {
             return (
-              <tr key={stateData.stateId}>
-                <td>{stateData.stateName}</td>
+              <tr key={stateData.id}>
+                <td>{stateData.name}</td>
                 <td className="avert-table-data">
                   {Math.round(stateData.so2).toLocaleString()}
                 </td>

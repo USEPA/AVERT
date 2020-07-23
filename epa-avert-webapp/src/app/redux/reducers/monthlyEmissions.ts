@@ -1,8 +1,7 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
-import { StatesAndCounties } from 'app/redux/reducers/displacement';
 // config
-import { StateId, states, fipsCodes } from 'app/config';
+import { RegionId, StateId, states, fipsCodes } from 'app/config';
 
 export type MonthlyAggregation = 'region' | 'state' | 'county';
 
@@ -11,25 +10,13 @@ export type MonthlyUnit = 'emissions' | 'percentages';
 export type MonthlyChanges = {
   emissions: {
     region: DataByMonth;
-    state: {
-      [stateId: string]: DataByMonth;
-    };
-    county: {
-      [stateId: string]: {
-        [countyName: string]: DataByMonth;
-      };
-    };
+    state: { [stateId: string]: DataByMonth };
+    county: { [stateId: string]: { [countyName: string]: DataByMonth } };
   };
   percentages: {
     region: DataByMonth;
-    state: {
-      [stateId: string]: DataByMonth;
-    };
-    county: {
-      [stateId: string]: {
-        [countyName: string]: DataByMonth;
-      };
-    };
+    state: { [stateId: string]: DataByMonth };
+    county: { [stateId: string]: { [countyName: string]: DataByMonth } };
   };
 };
 
@@ -66,6 +53,8 @@ type CobraDataRow = {
   SO2_REDUCTIONS_TONS: string;
   PM25_REDUCTIONS_TONS: string;
 };
+
+type StatesAndCounties = Partial<{ [key in StateId]: string[] }>;
 
 type MonthlyEmissionsAction =
   | { type: 'geography/SELECT_REGION' }
@@ -264,7 +253,7 @@ export default function reducer(
 
       //------ states data ------
       // prettier-ignore
-      Object.keys(statesAndCounties).forEach((s) => {
+      (Object.keys(statesAndCounties) as StateId[]).forEach((s) => {
         // add county data for each polutant, unit, and state
         countyData.push(countyRow('SO2', 'emissions (pounds)', so2.emissions.state[s], s));
         countyData.push(countyRow('NOX', 'emissions (pounds)', nox.emissions.state[s], s));
@@ -276,7 +265,7 @@ export default function reducer(
         countyData.push(countyRow('PM25', 'percent', pm25.percentages.state[s], s));
 
         //------ counties data ------
-        statesAndCounties[s].forEach((c) => {
+        statesAndCounties[s]?.forEach((c) => {
           // add county data for each polutant, unit, and county
           countyData.push(countyRow('SO2', 'emissions (pounds)', so2.emissions.county[s][c], s, c));
           countyData.push(countyRow('NOX', 'emissions (pounds)', nox.emissions.county[s][c], s, c));
@@ -305,17 +294,17 @@ export default function reducer(
 
 function renderMonthlyEmissionsCharts(): AppThunk {
   return (dispatch, getState) => {
-    const { displacement } = getState();
-    const { so2, nox, co2, pm25 } = displacement;
+    // const { displacement } = getState();
+    // const { so2, nox, co2, pm25 } = displacement;
 
     dispatch({
       type: 'monthlyEmissions/RENDER_MONTHLY_EMISSIONS_CHARTS',
-      payload: {
-        so2: so2.data.monthlyChanges,
-        nox: nox.data.monthlyChanges,
-        co2: co2.data.monthlyChanges,
-        pm25: pm25.data.monthlyChanges,
-      },
+      // payload: {
+      //   so2: so2.data.monthlyChanges,
+      //   nox: nox.data.monthlyChanges,
+      //   co2: co2.data.monthlyChanges,
+      //   pm25: pm25.data.monthlyChanges,
+      // },
     });
   };
 }
@@ -323,20 +312,54 @@ function renderMonthlyEmissionsCharts(): AppThunk {
 export function completeMonthlyEmissions(): AppThunk {
   return (dispatch, getState) => {
     const { displacement } = getState();
-    const { statesAndCounties, so2, nox, co2, pm25 } = displacement;
+    const { regionalDisplacements } = displacement;
+
+    // build up statesAndCounties from each region's monthlyChanges data
+    const statesAndCounties: StatesAndCounties = {};
+
+    for (const regionId in regionalDisplacements) {
+      const regionalDisplacement = regionalDisplacements[regionId as RegionId];
+
+      if (regionalDisplacement) {
+        // states and counties are the same for all pollutants, so we'll
+        // just use generation (it really doesn't matter which we use)
+        const countyEmissions =
+          regionalDisplacement.generation.monthlyChanges.emissions.county;
+
+        for (const key in countyEmissions) {
+          const stateId = key as StateId;
+          const stateCountyNames = Object.keys(countyEmissions[stateId]).sort();
+          // initialize counties array for state, if state doesn't already exist
+          // in `statesAndCounties` and add state county names to array
+          // (we initialize and push counties instead of directly assigning
+          // counties to a state because states exist within multiple regions,
+          // but counties only exist within a single region)
+          if (!statesAndCounties[stateId]) statesAndCounties[stateId] = [];
+          statesAndCounties[stateId]?.push(...stateCountyNames);
+        }
+      }
+    }
+
+    // sort counties within each state
+    for (const key in statesAndCounties) {
+      const stateId = key as StateId;
+      statesAndCounties[stateId] = statesAndCounties[stateId]?.sort();
+    }
 
     dispatch({
       type: 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS',
       payload: { availableStates: Object.keys(statesAndCounties).sort() },
     });
 
+    // const { so2, nox, co2, pm25 } = displacement;
+
     dispatch({
       type: 'monthlyEmissions/SET_DOWNLOAD_DATA',
       payload: {
-        so2: so2.data.monthlyChanges,
-        nox: nox.data.monthlyChanges,
-        co2: co2.data.monthlyChanges,
-        pm25: pm25.data.monthlyChanges,
+        // so2: so2.data.monthlyChanges,
+        // nox: nox.data.monthlyChanges,
+        // co2: co2.data.monthlyChanges,
+        // pm25: pm25.data.monthlyChanges,
         statesAndCounties: statesAndCounties,
       },
     });
@@ -369,14 +392,14 @@ export function selectMonthlyUnit(unit: MonthlyUnit): AppThunk {
 
 export function selectMonthlyState(stateId: string): AppThunk {
   return (dispatch, getState) => {
-    const { displacement } = getState();
+    // const { displacement } = getState();
 
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_STATE',
-      payload: {
-        selectedState: stateId,
-        availableCounties: displacement.statesAndCounties[stateId].sort(),
-      },
+      // payload: {
+      //   selectedState: stateId,
+      //   availableCounties: displacement.statesAndCounties[stateId].sort(),
+      // },
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
@@ -403,7 +426,7 @@ function countyRow(
   pollutant: 'SO2' | 'NOX' | 'CO2' | 'PM25',
   unit: 'emissions (pounds)' | 'emissions (tons)' | 'percent',
   data: DataByMonth,
-  state?: string,
+  stateId?: StateId,
   county?: string,
 ): CountyDataRow {
   const dataByMonth = Object.values(data);
@@ -415,10 +438,10 @@ function countyRow(
     Pollutant: pollutant,
     'Aggregation level': county
       ? 'County'
-      : state
+      : stateId
       ? 'State'
       : 'AVERT Region(s)',
-    State: state ? state : null,
+    State: stateId ? stateId : null,
     County: countyName,
     'Unit of measure': unit,
     January: dataByMonth[0],
@@ -440,7 +463,7 @@ function countyRow(
  * helper function to format cobra county data rows
  */
 function cobraRow(
-  stateId: string,
+  stateId: StateId,
   county: string,
   payload: {
     so2: MonthlyChanges;
