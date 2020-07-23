@@ -35,6 +35,8 @@ export type StateChange = {
   pm25: number;
 };
 
+type StatesAndCounties = Partial<{ [key in StateId]: string[] }>;
+
 type DisplacementAction =
   | { type: 'geography/SELECT_REGION' }
   | { type: 'displacement/INCREMENT_PROGRESS' }
@@ -53,12 +55,17 @@ type DisplacementAction =
         pollutantName: PollutantName;
         pollutantValue: number;
       };
+    }
+  | {
+      type: 'displacement/STORE_STATES_AND_COUNTIES';
+      payload: { statesAndCounties: StatesAndCounties };
     };
 
 type DisplacementState = {
   status: 'ready' | 'started' | 'complete' | 'error';
   regionalDisplacements: Partial<{ [key in RegionId]: RegionalDisplacement }>;
   stateChanges: Partial<{ [key in StateId]: StateChange }>;
+  statesAndCounties: StatesAndCounties;
 };
 
 // reducer
@@ -66,6 +73,7 @@ const initialState: DisplacementState = {
   status: 'ready',
   regionalDisplacements: {},
   stateChanges: {},
+  statesAndCounties: {},
 };
 
 export default function reducer(
@@ -145,6 +153,15 @@ export default function reducer(
             [pollutantName]: previousPollutantValue + pollutantValue,
           },
         },
+      };
+    }
+
+    case 'displacement/STORE_STATES_AND_COUNTIES': {
+      const { statesAndCounties } = action.payload;
+
+      return {
+        ...state,
+        statesAndCounties,
       };
     }
 
@@ -249,14 +266,53 @@ export function calculateDisplacement(): AppThunk {
 
 function receiveDisplacement(): AppThunk {
   return (dispatch, getState) => {
-    const { panel } = getState();
+    const { panel, displacement } = getState();
 
     // recursively call function if data is still fetching
     if (panel.loadingProgress !== panel.loadingSteps) {
       return setTimeout(() => dispatch(receiveDisplacement()), 1000);
     }
 
+    // build up statesAndCounties from each region's monthlyChanges data
+    const statesAndCounties: StatesAndCounties = {};
+
+    for (const regionId in displacement.regionalDisplacements) {
+      const regionalDisplacement =
+        displacement.regionalDisplacements[regionId as RegionId];
+
+      if (regionalDisplacement) {
+        // states and counties are the same for all pollutants, so we'll
+        // just use generation (it really doesn't matter which we use)
+        const countyEmissions =
+          regionalDisplacement.generation.monthlyChanges.emissions.county;
+
+        for (const key in countyEmissions) {
+          const stateId = key as StateId;
+          const stateCountyNames = Object.keys(countyEmissions[stateId]).sort();
+          // initialize counties array for state, if state doesn't already exist
+          // in `statesAndCounties` and add state county names to array
+          // (we initialize and push counties instead of directly assigning
+          // counties to a state because states exist within multiple regions,
+          // but counties only exist within a single region)
+          if (!statesAndCounties[stateId]) statesAndCounties[stateId] = [];
+          statesAndCounties[stateId]?.push(...stateCountyNames);
+        }
+      }
+    }
+
+    // sort counties within each state
+    for (const key in statesAndCounties) {
+      const stateId = key as StateId;
+      statesAndCounties[stateId] = statesAndCounties[stateId]?.sort();
+    }
+
+    dispatch({
+      type: 'displacement/STORE_STATES_AND_COUNTIES',
+      payload: { statesAndCounties },
+    });
+
     dispatch({ type: 'displacement/COMPLETE_DISPLACEMENT' });
+
     dispatch(completeMonthlyEmissions()); // TODO: remove once no longer needed
   };
 }
