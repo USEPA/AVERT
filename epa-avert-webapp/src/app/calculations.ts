@@ -20,13 +20,13 @@ function calculateHourlyExceedance(
 export function calculateEere({
   regionMaxEEPercent, // region.rdf.limits.max_ee_percent (15 for all RDFs)
   regionLineLoss, // region.lineLoss
-  hourlyLoads, // region.rdf.regional_load.map((hour) => hour.regional_load_mw)
+  eereLoads, // region.rdf.regional_load.map((hour) => hour.regional_load_mw)
   eereDefaults, // region.eereDefaults.data
   eereInputs, // eere.inputs (scaled for each region)
 }: {
   regionMaxEEPercent: number;
   regionLineLoss: number;
-  hourlyLoads: number[];
+  eereLoads: number[];
   eereDefaults: EereDefaultData[];
   eereInputs: { [field in EereInputFields]: number };
 }) {
@@ -48,21 +48,20 @@ export function calculateEere({
 
   const lineLoss = 1 / (1 - regionLineLoss);
 
-  const hourlyMwReduction =
-    ((annualGwh * 1000) / hourlyLoads.length) * lineLoss;
+  const hourlyMwReduction = ((annualGwh * 1000) / eereLoads.length) * lineLoss;
 
   const percentReduction =
     ((-1 * (broadProgram || reduction)) / 100) * lineLoss;
 
   const percentHours = broadProgram ? 100 : topHours;
-  const topPercentile = stats.percentile(hourlyLoads, 1 - percentHours / 100);
+  const topPercentile = stats.percentile(eereLoads, 1 - percentHours / 100);
 
   // build up exceedances (soft and hard) and hourly eere for each hour of the year
   const softLimitHourlyExceedances: number[] = [];
   const hardLimitHourlyExceedances: number[] = [];
   const hourlyEere: number[] = [];
 
-  hourlyLoads.forEach((hourlyLoad, index) => {
+  eereLoads.forEach((hourlyLoad, index) => {
     const hourlyDefault = eereDefaults[index];
 
     const renewableProfile =

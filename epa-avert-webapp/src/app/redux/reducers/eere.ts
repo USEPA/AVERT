@@ -520,7 +520,7 @@ export function calculateEereProfile(): AppThunk {
       } = calculateEere({
         regionMaxEEPercent: region.rdf.limits.max_ee_percent,
         regionLineLoss: region.lineLoss,
-        hourlyLoads: region.rdf.regional_load.map((hr) => hr.regional_load_mw),
+        eereLoads: region.rdf.regional_load.map((hr) => hr.regional_load_mw),
         eereDefaults: region.eereDefaults.data,
         eereInputs: scaledEereInputs,
       });

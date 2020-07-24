@@ -2,7 +2,7 @@
 import { AppThunk } from 'app/redux/index';
 
 export type DataByMonth = {
-  [MonthNumber in 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12]: number;
+  [month in 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12]: number;
 };
 
 export type MonthlyAggregation = 'region' | 'state' | 'county';

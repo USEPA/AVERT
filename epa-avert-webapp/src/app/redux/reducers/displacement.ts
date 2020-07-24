@@ -9,23 +9,48 @@ import {
 // config
 import { RegionId, StateId, states, fipsCodes } from 'app/config';
 
-type PollutantName = 'generation' | 'so2' | 'nox' | 'co2' | 'pm25';
+export type PollutantName = 'generation' | 'so2' | 'nox' | 'co2' | 'pm25';
+
+type MonthKey =
+  | 'month1'
+  | 'month2'
+  | 'month3'
+  | 'month4'
+  | 'month5'
+  | 'month6'
+  | 'month7'
+  | 'month8'
+  | 'month9'
+  | 'month10'
+  | 'month11'
+  | 'month12';
+
+type MonthlyDisplacement = {
+  [month in MonthKey]: {
+    original: number;
+    postEere: number;
+  };
+};
 
 type PollutantDisplacement = {
   regionId: RegionId;
   pollutant: PollutantName;
-  original: number;
-  postEere: number;
+  originalTotal: number;
+  postEereTotal: number;
+  regionalData: MonthlyDisplacement;
+  stateData: {
+    [stateId: string]: MonthlyDisplacement;
+  };
+  countyData: {
+    [stateId: string]: {
+      [countyName: string]: MonthlyDisplacement;
+    };
+  };
   monthlyChanges: MonthlyChanges;
-  stateChanges: Partial<{ [key in StateId]: number }>;
 };
 
 type RegionalDisplacement = {
-  generation: PollutantDisplacement;
-  so2: PollutantDisplacement;
-  nox: PollutantDisplacement;
-  co2: PollutantDisplacement;
-  pm25: PollutantDisplacement;
+  [key in PollutantName]: PollutantDisplacement;
 };
 
 export type StateChange = {
@@ -253,7 +278,7 @@ function fetchDisplacementData(pollutant: PollutantName): AppThunk {
           },
           body: JSON.stringify({
             region: regionId,
-            hourlyLoad: regionalProfile?.hourlyEere,
+            eereLoad: regionalProfile?.hourlyEere,
           }),
         }),
       );
@@ -277,24 +302,27 @@ function fetchDisplacementData(pollutant: PollutantName): AppThunk {
       .then((regionalDisplacements) => {
         dispatch(incrementProgress());
 
-        // TODO: build up combined monthly changes for each region (additive)
-        const monthlyChanges = {};
-
         // build up changes by state for each region (additive)
         regionalDisplacements.forEach((displacement) => {
-          for (const key in displacement.stateChanges) {
+          for (const key in displacement.stateData) {
             const stateId = key as StateId;
+            const stateData = displacement.stateData[stateId];
+
+            // total each month's state emissions change for the given state
+            let stateEmissionsChange = 0;
+            for (const month in stateData) {
+              const { original, postEere } = stateData[month as MonthKey];
+              stateEmissionsChange += postEere - original;
+            }
 
             dispatch({
               type: 'displacement/ADD_STATE_CHANGES',
               payload: {
                 stateId,
                 pollutantName: displacement.pollutant,
-                pollutantValue: displacement.stateChanges[stateId] || 0,
+                pollutantValue: stateEmissionsChange,
               },
             });
-
-            // TODO: combinedMonthlyChanges...
           }
         });
       });

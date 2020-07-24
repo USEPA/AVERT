@@ -34,20 +34,20 @@ function DisplacementsTable() {
     // regional displacement data
     const data = regionalDisplacements[regionId as RegionId];
 
-    generation.original += data?.generation?.original || 0;
-    generation.postEere += data?.generation?.postEere || 0;
+    generation.original += data?.generation?.originalTotal || 0;
+    generation.postEere += data?.generation?.postEereTotal || 0;
 
-    so2.original += data?.so2?.original || 0;
-    so2.postEere += data?.so2?.postEere || 0;
+    so2.original += data?.so2?.originalTotal || 0;
+    so2.postEere += data?.so2?.postEereTotal || 0;
 
-    nox.original += data?.nox?.original || 0;
-    nox.postEere += data?.nox?.postEere || 0;
+    nox.original += data?.nox?.originalTotal || 0;
+    nox.postEere += data?.nox?.postEereTotal || 0;
 
-    co2.original += data?.co2?.original || 0;
-    co2.postEere += data?.co2?.postEere || 0;
+    co2.original += data?.co2?.originalTotal || 0;
+    co2.postEere += data?.co2?.postEereTotal || 0;
 
-    pm25.original += data?.pm25?.original || 0;
-    pm25.postEere += data?.pm25?.postEere || 0;
+    pm25.original += data?.pm25?.originalTotal || 0;
+    pm25.postEere += data?.pm25?.postEereTotal || 0;
   }
 
   const so2RateOrig = so2.original / generation.original;
