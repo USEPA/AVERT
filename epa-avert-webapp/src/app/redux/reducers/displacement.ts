@@ -25,7 +25,7 @@ type MonthKey =
   | 'month11'
   | 'month12';
 
-type MonthlyDisplacement = {
+export type MonthlyDisplacement = {
   [month in MonthKey]: {
     original: number;
     postEere: number;
@@ -130,7 +130,6 @@ type DisplacementState = {
   status: 'ready' | 'started' | 'complete' | 'error';
   regionalDisplacements: Partial<{ [key in RegionId]: RegionalDisplacement }>;
   combinedStateChanges: Partial<{ [key in StateId]: StateChange }>;
-  combinedMonthlyChanges: any;
   statesAndCounties: StatesAndCounties;
   downloadableCountyData: CountyDataRow[];
   downloadableCobraData: CobraDataRow[];
@@ -141,7 +140,6 @@ const initialState: DisplacementState = {
   status: 'ready',
   regionalDisplacements: {},
   combinedStateChanges: {},
-  combinedMonthlyChanges: {},
   statesAndCounties: {},
   downloadableCountyData: [],
   downloadableCobraData: [],
@@ -302,7 +300,8 @@ function fetchDisplacementData(pollutant: PollutantName): AppThunk {
       .then((regionalDisplacements) => {
         dispatch(incrementProgress());
 
-        // build up changes by state for each region (additive)
+        // build up changes by state for each region (the payload is additive
+        // within the reducer, as a state can exist within multiple regions)
         regionalDisplacements.forEach((displacement) => {
           for (const key in displacement.stateData) {
             const stateId = key as StateId;
