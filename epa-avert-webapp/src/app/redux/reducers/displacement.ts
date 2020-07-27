@@ -11,7 +11,7 @@ import { RegionId, StateId, states, fipsCodes } from 'app/config';
 
 export type PollutantName = 'generation' | 'so2' | 'nox' | 'co2' | 'pm25';
 
-type MonthKey =
+export type MonthKey =
   | 'month1'
   | 'month2'
   | 'month3'
@@ -46,7 +46,7 @@ type PollutantDisplacement = {
       [countyName: string]: MonthlyDisplacement;
     };
   };
-  monthlyChanges: MonthlyChanges;
+  monthlyChanges: MonthlyChanges; // TODO: remove once no longer used
 };
 
 type RegionalDisplacement = {
@@ -361,7 +361,7 @@ function receiveDisplacement(): AppThunk {
       return setTimeout(() => dispatch(receiveDisplacement()), 1000);
     }
 
-    // build up statesAndCounties from each region's monthlyChanges data
+    // build up statesAndCounties from each region's county data
     const statesAndCounties: StatesAndCounties = {};
 
     for (const regionId in displacement.regionalDisplacements) {
@@ -371,11 +371,11 @@ function receiveDisplacement(): AppThunk {
       if (data) {
         // states and counties are the same for all pollutants, so we'll
         // just use generation (it really doesn't matter which we use)
-        const countyEmissions = data.generation.monthlyChanges.emissions.county;
+        const { countyData } = data.generation;
 
-        for (const key in countyEmissions) {
+        for (const key in countyData) {
           const stateId = key as StateId;
-          const stateCountyNames = Object.keys(countyEmissions[stateId]).sort();
+          const stateCountyNames = Object.keys(countyData[stateId]).sort();
           // initialize counties array for state, if state doesn't already exist
           // in `statesAndCounties` and add state county names to array
           // (we initialize and push counties instead of directly assigning

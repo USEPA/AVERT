@@ -7,6 +7,7 @@ import HighchartsReact from 'highcharts-react-official';
 import { useDispatch } from 'react-redux';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
+import { MonthKey, MonthlyDisplacement } from 'app/redux/reducers/displacement';
 import {
   MonthlyAggregation,
   MonthlyUnit,
@@ -75,6 +76,21 @@ const emissionsChartsStyles = css`
   }
 `;
 
+function calculateMonthlyData(data: MonthlyDisplacement, unit: MonthlyUnit) {
+  const monthlyEmissions: number[] = [];
+  const monthlyPercentages: number[] = [];
+
+  for (const month in data) {
+    const { original, postEere } = data[month as MonthKey];
+    const emissions = postEere - original;
+    const percentage = (emissions / original) * 100;
+    monthlyEmissions.push(emissions);
+    monthlyPercentages.push(percentage);
+  }
+
+  return unit === 'emissions' ? monthlyEmissions : monthlyPercentages;
+}
+
 function EmissionsChart() {
   const dispatch = useDispatch();
   const status = useTypedSelector(({ displacement }) => displacement.status);
@@ -96,18 +112,13 @@ function EmissionsChart() {
   const availableCounties = useTypedSelector(({ displacement }) => {
     return displacement.statesAndCounties[selectedStateId as StateId]?.sort();
   });
-  const so2Data = useTypedSelector(
-    ({ monthlyEmissions }) => monthlyEmissions.output.so2,
+  const filteredMonthlyData = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.filteredMonthlyData,
   );
-  const noxData = useTypedSelector(
-    ({ monthlyEmissions }) => monthlyEmissions.output.nox,
-  );
-  const co2Data = useTypedSelector(
-    ({ monthlyEmissions }) => monthlyEmissions.output.co2,
-  );
-  const pm25Data = useTypedSelector(
-    ({ monthlyEmissions }) => monthlyEmissions.output.pm25,
-  );
+  const so2Data = calculateMonthlyData(filteredMonthlyData.so2, selectedUnit);
+  const noxData = calculateMonthlyData(filteredMonthlyData.nox, selectedUnit);
+  const co2Data = calculateMonthlyData(filteredMonthlyData.co2, selectedUnit);
+  const pm25Data = calculateMonthlyData(filteredMonthlyData.pm25, selectedUnit);
 
   // TODO: determine how to handle when multiple regions are selected
   const region = useSelectedRegion();
