@@ -7,7 +7,7 @@ import HighchartsReact from 'highcharts-react-official';
 import { useDispatch } from 'react-redux';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
-import { MonthKey, MonthlyDisplacement } from 'app/redux/reducers/displacement';
+import { calculateMonthlyData } from 'app/redux/reducers/displacement';
 import {
   MonthlyAggregation,
   MonthlyUnit,
@@ -75,21 +75,6 @@ const emissionsChartsStyles = css`
     }
   }
 `;
-
-function calculateMonthlyData(data: MonthlyDisplacement, unit: MonthlyUnit) {
-  const monthlyEmissions: number[] = [];
-  const monthlyPercentages: number[] = [];
-
-  for (const month in data) {
-    const { original, postEere } = data[month as MonthKey];
-    const emissions = postEere - original;
-    const percentage = (emissions / original) * 100;
-    monthlyEmissions.push(emissions);
-    monthlyPercentages.push(percentage);
-  }
-
-  return unit === 'emissions' ? monthlyEmissions : monthlyPercentages;
-}
 
 function EmissionsChart() {
   const dispatch = useDispatch();

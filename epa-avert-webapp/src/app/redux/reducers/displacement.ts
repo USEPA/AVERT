@@ -1,17 +1,13 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
 // action creators
-import {
-  DataByMonth,
-  MonthlyChanges,
-  renderMonthlyEmissionsCharts,
-} from './monthlyEmissions';
+import { MonthlyUnit, renderMonthlyEmissionsCharts } from './monthlyEmissions';
 // config
 import { RegionId, StateId, states, fipsCodes } from 'app/config';
 
 export type PollutantName = 'generation' | 'so2' | 'nox' | 'co2' | 'pm25';
 
-export type MonthKey =
+type MonthKey =
   | 'month1'
   | 'month2'
   | 'month3'
@@ -46,7 +42,6 @@ type PollutantDisplacement = {
       [countyName: string]: MonthlyDisplacement;
     };
   };
-  monthlyChanges: MonthlyChanges; // TODO: remove once no longer used
 };
 
 type RegionalDisplacement = {
@@ -435,35 +430,185 @@ export function resetDisplacement(): DisplacementAction {
   return { type: 'displacement/RESET_DISPLACEMENT' };
 }
 
+export function calculateMonthlyData(
+  data: MonthlyDisplacement,
+  unit: MonthlyUnit,
+) {
+  const monthlyEmissions: number[] = [];
+  const monthlyPercentages: number[] = [];
+
+  for (const month in data) {
+    const { original, postEere } = data[month as MonthKey];
+    const emissions = postEere - original;
+    const percentage = (emissions / original) * 100;
+    monthlyEmissions.push(emissions);
+    monthlyPercentages.push(percentage);
+  }
+
+  return unit === 'emissions' ? monthlyEmissions : monthlyPercentages;
+}
+
+function calculateMonthlyEmissions(data: MonthlyDisplacement) {
+  return calculateMonthlyData(data, 'emissions');
+}
+
+function calculateMonthlyPercents(data: MonthlyDisplacement) {
+  return calculateMonthlyData(data, 'percentages');
+}
+
 function formatRegionalDownloadData(
   regionalDisplacement: RegionalDisplacement,
   statesAndCounties: StatesAndCounties,
 ) {
-  const so2Emissions = regionalDisplacement.so2.monthlyChanges.emissions;
-  const so2Percentages = regionalDisplacement.so2.monthlyChanges.percentages;
-
-  const noxEmissions = regionalDisplacement.nox.monthlyChanges.emissions;
-  const noxPercentages = regionalDisplacement.nox.monthlyChanges.percentages;
-
-  const co2Emissions = regionalDisplacement.co2.monthlyChanges.emissions;
-  const co2Percentages = regionalDisplacement.co2.monthlyChanges.percentages;
-
-  const pm25Emissions = regionalDisplacement.pm25.monthlyChanges.emissions;
-  const pm25Percentages = regionalDisplacement.pm25.monthlyChanges.percentages;
+  const { so2, nox, co2, pm25 } = regionalDisplacement;
 
   const countyData: CountyDataRow[] = [];
   const cobraData: CobraDataRow[] = [];
 
-  // ------ region data ------
-  // add county data for each polutant, unit, and region
-  countyData.push(countyRow('SO2', 'emissions (pounds)', so2Emissions.region));
-  countyData.push(countyRow('NOX', 'emissions (pounds)', noxEmissions.region));
-  countyData.push(countyRow('CO2', 'emissions (tons)', co2Emissions.region));
-  countyData.push(countyRow('PM25', 'emissions (pounds)', pm25Emissions.region)); // prettier-ignore
-  countyData.push(countyRow('SO2', 'percent', so2Percentages.region));
-  countyData.push(countyRow('NOX', 'percent', noxPercentages.region));
-  countyData.push(countyRow('CO2', 'percent', co2Percentages.region));
-  countyData.push(countyRow('PM25', 'percent', pm25Percentages.region));
+  function addCountyRow({
+    pollutant,
+    unit,
+    data,
+    stateId,
+    countyName,
+  }: {
+    pollutant: 'SO2' | 'NOX' | 'CO2' | 'PM25';
+    unit: 'emissions (pounds)' | 'emissions (tons)' | 'percent';
+    data: number[];
+    stateId?: StateId;
+    countyName?: string;
+  }) {
+    countyData.push({
+      Pollutant: pollutant,
+      'Aggregation level': countyName
+        ? 'County'
+        : stateId
+        ? 'State'
+        : 'AVERT Region(s)',
+      State: stateId ? stateId : null,
+      County: countyName ? countyName.replace(/city/, '(City)') : null, // format 'city'
+      'Unit of measure': unit,
+      January: data[0],
+      February: data[1],
+      March: data[2],
+      April: data[3],
+      May: data[4],
+      June: data[5],
+      July: data[6],
+      August: data[7],
+      September: data[8],
+      October: data[9],
+      November: data[10],
+      December: data[11],
+    });
+  }
+
+  function addCobraRow({
+    stateId,
+    countyName,
+    so2CountyEmissions,
+    noxCountyEmissions,
+    pm25CountyEmissions,
+  }: {
+    stateId: StateId;
+    countyName: string;
+    so2CountyEmissions: number[];
+    noxCountyEmissions: number[];
+    pm25CountyEmissions: number[];
+  }) {
+    /**
+     * All items in the `fipsCodes` array (which is data converted from the main
+     * AVERT Excel file) have the word 'County' at the end of their county names.
+     * This is correct in most cases but incorrect for two:
+     * - counties in Louisiana are called parishes
+     * - cities shouldn't have the word 'County' at the end of their name
+     *
+     * So we first handle Louisiana parishes by converting the passed county name
+     * to use 'County' instead of 'Parish', so we can match it to its correct FIPS
+     * code (e.g. the passed county 'Acadia Parish' becomes 'Avadia County')
+     *
+     * Then when we match on county names, we need to trim off the extra 'County'
+     * string if its actually a city. For example, in the `fipsCodes` array,
+     * the city of Baltimore is stored as 'Baltimore city County', but in the RDF
+     * it's stored as 'Baltimore city', so we need to use that name for matching
+     */
+    const fipsCounty =
+      stateId === 'LA' ? countyName.replace(/ Parish$/, ' County') : countyName;
+
+    const matchedFipsCodeItem = fipsCodes.filter((item) => {
+      return (
+        item['state'] === states[stateId as StateId].name &&
+        item['county'].replace(/city County$/, 'city') === fipsCounty
+      );
+    })[0];
+
+    const fipsCode = matchedFipsCodeItem ? matchedFipsCodeItem['code'] : '';
+
+    const sum = (a: number, b: number) => a + b;
+
+    const so2Tons = so2CountyEmissions.reduce(sum, 0) / 2000;
+    const noxTons = noxCountyEmissions.reduce(sum, 0) / 2000;
+    const pm25Tons = pm25CountyEmissions.reduce(sum, 0) / 2000;
+
+    function formatNumber(number: number) {
+      return number.toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 3,
+      });
+    }
+
+    cobraData.push({
+      FIPS: fipsCode,
+      STATE: states[stateId as StateId].name,
+      COUNTY: countyName.replace(/city/, '(City)'), // format 'city'
+      TIER1NAME: 'FUEL COMB. ELEC. UTIL.',
+      NOx_REDUCTIONS_TONS: formatNumber(noxTons),
+      SO2_REDUCTIONS_TONS: formatNumber(so2Tons),
+      PM25_REDUCTIONS_TONS: formatNumber(pm25Tons),
+    });
+  }
+
+  // region data: add county data for each polutant, unit, and region
+  addCountyRow({
+    pollutant: 'SO2',
+    unit: 'emissions (pounds)',
+    data: calculateMonthlyEmissions(so2.regionalData),
+  });
+  addCountyRow({
+    pollutant: 'NOX',
+    unit: 'emissions (pounds)',
+    data: calculateMonthlyEmissions(nox.regionalData),
+  });
+  addCountyRow({
+    pollutant: 'CO2',
+    unit: 'emissions (tons)',
+    data: calculateMonthlyEmissions(co2.regionalData),
+  });
+  addCountyRow({
+    pollutant: 'PM25',
+    unit: 'emissions (pounds)',
+    data: calculateMonthlyEmissions(pm25.regionalData),
+  });
+  addCountyRow({
+    pollutant: 'SO2',
+    unit: 'percent',
+    data: calculateMonthlyPercents(so2.regionalData),
+  });
+  addCountyRow({
+    pollutant: 'NOX',
+    unit: 'percent',
+    data: calculateMonthlyPercents(nox.regionalData),
+  });
+  addCountyRow({
+    pollutant: 'CO2',
+    unit: 'percent',
+    data: calculateMonthlyPercents(co2.regionalData),
+  });
+  addCountyRow({
+    pollutant: 'PM25',
+    unit: 'percent',
+    data: calculateMonthlyPercents(pm25.regionalData),
+  });
 
   // NOTE: conditinal check is needed before attempting to add state and county
   // data below because `statesAndCounties` is combined from all of the selected
@@ -471,178 +616,170 @@ function formatRegionalDownloadData(
   // region's regional displacement results, so some states and counties won't
   // exist in every selected region's regional displacements results
 
-  // ------ states data ------
-  // prettier-ignore
-  (Object.keys(statesAndCounties) as StateId[]).forEach((s) => {
-    // add county data for each polutant, unit, and state
-    if (so2Emissions.state[s]) {
-      countyData.push(countyRow('SO2', 'emissions (pounds)', so2Emissions.state[s], s));
+  // states data: add county data for each polutant, unit, and state
+  (Object.keys(statesAndCounties) as StateId[]).forEach((stateId) => {
+    const so2StateData = so2.stateData[stateId];
+    const noxStateData = nox.stateData[stateId];
+    const co2StateData = co2.stateData[stateId];
+    const pm25StateData = pm25.stateData[stateId];
+
+    if (so2StateData) {
+      addCountyRow({
+        pollutant: 'SO2',
+        unit: 'emissions (pounds)',
+        data: calculateMonthlyEmissions(so2StateData),
+        stateId,
+      });
     }
-    if (noxEmissions.state[s]) {
-      countyData.push(countyRow('NOX', 'emissions (pounds)', noxEmissions.state[s], s));
+    if (noxStateData) {
+      addCountyRow({
+        pollutant: 'NOX',
+        unit: 'emissions (pounds)',
+        data: calculateMonthlyEmissions(noxStateData),
+        stateId,
+      });
     }
-    if (co2Emissions.state[s]) {
-      countyData.push(countyRow('CO2', 'emissions (tons)', co2Emissions.state[s], s));
+    if (co2StateData) {
+      addCountyRow({
+        pollutant: 'CO2',
+        unit: 'emissions (tons)',
+        data: calculateMonthlyEmissions(co2StateData),
+        stateId,
+      });
     }
-    if (pm25Emissions.state[s]) {
-      countyData.push(countyRow('PM25', 'emissions (pounds)', pm25Emissions.state[s], s));
+    if (pm25StateData) {
+      addCountyRow({
+        pollutant: 'PM25',
+        unit: 'emissions (pounds)',
+        data: calculateMonthlyEmissions(pm25StateData),
+        stateId,
+      });
     }
-    if (so2Percentages.state[s]) {
-      countyData.push(countyRow('SO2', 'percent', so2Percentages.state[s], s));
+    if (so2StateData) {
+      addCountyRow({
+        pollutant: 'SO2',
+        unit: 'percent',
+        data: calculateMonthlyPercents(so2StateData),
+        stateId,
+      });
     }
-    if (noxPercentages.state[s]) {
-      countyData.push(countyRow('NOX', 'percent', noxPercentages.state[s], s));
+    if (noxStateData) {
+      addCountyRow({
+        pollutant: 'NOX',
+        unit: 'percent',
+        data: calculateMonthlyPercents(noxStateData),
+        stateId,
+      });
     }
-    if (co2Percentages.state[s]) {
-      countyData.push(countyRow('CO2', 'percent', co2Percentages.state[s], s));
+    if (co2StateData) {
+      addCountyRow({
+        pollutant: 'CO2',
+        unit: 'percent',
+        data: calculateMonthlyPercents(co2StateData),
+        stateId,
+      });
     }
-    if (pm25Percentages.state[s]) {
-      countyData.push(countyRow('PM25', 'percent', pm25Percentages.state[s], s));
+    if (pm25StateData) {
+      addCountyRow({
+        pollutant: 'PM25',
+        unit: 'percent',
+        data: calculateMonthlyPercents(pm25StateData),
+        stateId,
+      });
     }
 
-    // ------ counties data ------
-    statesAndCounties[s]?.forEach((c) => {
-      // add county data for each polutant, unit, and county
-      if (so2Emissions.county[s]?.[c]) {
-        countyData.push(countyRow('SO2', 'emissions (pounds)', so2Emissions.county[s][c], s, c));
+    // counties data: add county data for each polutant, unit, and county
+    statesAndCounties[stateId]?.forEach((countyName) => {
+      const so2CountyData = so2.countyData[stateId]?.[countyName];
+      const noxCountyData = nox.countyData[stateId]?.[countyName];
+      const co2CountyData = co2.countyData[stateId]?.[countyName];
+      const pm25CountyData = pm25.countyData[stateId]?.[countyName];
+
+      if (so2CountyData) {
+        addCountyRow({
+          pollutant: 'SO2',
+          unit: 'emissions (pounds)',
+          data: calculateMonthlyEmissions(so2CountyData),
+          stateId,
+          countyName,
+        });
       }
-      if (noxEmissions.county[s]?.[c]) {
-        countyData.push(countyRow('NOX', 'emissions (pounds)', noxEmissions.county[s][c], s, c));
+      if (noxCountyData) {
+        addCountyRow({
+          pollutant: 'NOX',
+          unit: 'emissions (pounds)',
+          data: calculateMonthlyEmissions(noxCountyData),
+          stateId,
+          countyName,
+        });
       }
-      if (co2Emissions.county[s]?.[c]) {
-        countyData.push(countyRow('CO2', 'emissions (tons)', co2Emissions.county[s][c], s, c));
+      if (co2CountyData) {
+        addCountyRow({
+          pollutant: 'CO2',
+          unit: 'emissions (tons)',
+          data: calculateMonthlyEmissions(co2CountyData),
+          stateId,
+          countyName,
+        });
       }
-      if (pm25Emissions.county[s]?.[c]) {
-        countyData.push(countyRow('PM25', 'emissions (pounds)', pm25Emissions.county[s][c], s, c));
+      if (pm25CountyData) {
+        addCountyRow({
+          pollutant: 'PM25',
+          unit: 'emissions (pounds)',
+          data: calculateMonthlyEmissions(pm25CountyData),
+          stateId,
+          countyName,
+        });
       }
-      if (so2Percentages.county[s]?.[c]) {
-        countyData.push(countyRow('SO2', 'percent', so2Percentages.county[s][c], s, c));
+      if (so2CountyData) {
+        addCountyRow({
+          pollutant: 'SO2',
+          unit: 'percent',
+          data: calculateMonthlyPercents(so2CountyData),
+          stateId,
+          countyName,
+        });
       }
-      if (noxPercentages.county[s]?.[c]) {
-        countyData.push(countyRow('NOX', 'percent', noxPercentages.county[s][c], s, c));
+      if (noxCountyData) {
+        addCountyRow({
+          pollutant: 'NOX',
+          unit: 'percent',
+          data: calculateMonthlyPercents(noxCountyData),
+          stateId,
+          countyName,
+        });
       }
-      if (co2Percentages.county[s]?.[c]) {
-        countyData.push(countyRow('CO2', 'percent', co2Percentages.county[s][c], s, c));
+      if (co2CountyData) {
+        addCountyRow({
+          pollutant: 'CO2',
+          unit: 'percent',
+          data: calculateMonthlyPercents(co2CountyData),
+          stateId,
+          countyName,
+        });
       }
-      if (pm25Percentages.county[s]?.[c]) {
-        countyData.push(countyRow('PM25', 'percent', pm25Percentages.county[s][c], s, c));
+      if (pm25CountyData) {
+        addCountyRow({
+          pollutant: 'PM25',
+          unit: 'percent',
+          data: calculateMonthlyPercents(pm25CountyData),
+          stateId,
+          countyName,
+        });
       }
 
       // add cobra data for each county
-      const so2CountyEmissions = so2Emissions.county[s]?.[c];
-      const noxCountyEmissions = noxEmissions.county[s]?.[c];
-      const pm25CountyEmissions = pm25Emissions.county[s]?.[c];
-
-      if (so2CountyEmissions && noxCountyEmissions && pm25CountyEmissions) {
-        cobraData.push(cobraRow(s, c, so2CountyEmissions, noxCountyEmissions, pm25CountyEmissions));
+      if (so2CountyData && noxCountyData && pm25CountyData) {
+        addCobraRow({
+          stateId,
+          countyName,
+          so2CountyEmissions: calculateMonthlyEmissions(so2CountyData),
+          noxCountyEmissions: calculateMonthlyEmissions(noxCountyData),
+          pm25CountyEmissions: calculateMonthlyEmissions(pm25CountyData),
+        });
       }
     });
   });
 
   return { countyData, cobraData };
-}
-
-/**
- * helper function to format downloadable county data rows
- */
-function countyRow(
-  pollutant: 'SO2' | 'NOX' | 'CO2' | 'PM25',
-  unit: 'emissions (pounds)' | 'emissions (tons)' | 'percent',
-  data: DataByMonth,
-  stateId?: StateId,
-  county?: string,
-): CountyDataRow {
-  const dataByMonth = Object.values(data);
-
-  // format 'city' if found in county name
-  const countyName = county ? county.replace(/city/, '(City)') : null;
-
-  return {
-    Pollutant: pollutant,
-    'Aggregation level': county
-      ? 'County'
-      : stateId
-      ? 'State'
-      : 'AVERT Region(s)',
-    State: stateId ? stateId : null,
-    County: countyName,
-    'Unit of measure': unit,
-    January: dataByMonth[0],
-    February: dataByMonth[1],
-    March: dataByMonth[2],
-    April: dataByMonth[3],
-    May: dataByMonth[4],
-    June: dataByMonth[5],
-    July: dataByMonth[6],
-    August: dataByMonth[7],
-    September: dataByMonth[8],
-    October: dataByMonth[9],
-    November: dataByMonth[10],
-    December: dataByMonth[11],
-  };
-}
-
-/**
- * helper function to format cobra county data rows
- */
-function cobraRow(
-  stateId: StateId,
-  county: string,
-  so2CountyEmissions: DataByMonth,
-  noxCountyEmissions: DataByMonth,
-  pm25CountyEmissions: DataByMonth,
-): CobraDataRow {
-  /**
-   * All items in the `fipsCodes` array (which is data converted from the main
-   * AVERT Excel file) have the word 'County' at the end of their county names.
-   * This is correct in most cases but incorrect for two:
-   * - counties in Louisiana are called parishes
-   * - cities shouldn't have the word 'County' at the end of their name
-   *
-   * So we first handle Louisiana parishes by converting the passed county name
-   * to use 'County' instead of 'Parish', so we can match it to its correct FIPS
-   * code (e.g. the passed county 'Acadia Parish' becomes 'Avadia County')
-   *
-   * Then when we match on county names, we need to trim off the extra 'County'
-   * string if its actually a city. For example, in the `fipsCodes` array,
-   * the city of Baltimore is stored as 'Baltimore city County', but in the RDF
-   * it's stored as 'Baltimore city', so we need to use that name for matching
-   */
-  const fipsCounty =
-    stateId === 'LA' ? county.replace(/ Parish$/, ' County') : county;
-
-  const matchedFipsCodeItem = fipsCodes.filter((item) => {
-    return (
-      item['state'] === states[stateId as StateId].name &&
-      item['county'].replace(/city County$/, 'city') === fipsCounty
-    );
-  })[0];
-
-  const fipsCode = matchedFipsCodeItem ? matchedFipsCodeItem['code'] : '';
-
-  // format 'city' if found in county name
-  const countyName = county.replace(/city/, '(City)');
-
-  const sum = (a: number, b: number) => a + b;
-
-  const so2DataTons = Object.values(so2CountyEmissions).reduce(sum, 0) / 2000;
-  const noxDataTons = Object.values(noxCountyEmissions).reduce(sum, 0) / 2000;
-  const pm25DataTons = Object.values(pm25CountyEmissions).reduce(sum, 0) / 2000;
-
-  function formatNumber(number: number) {
-    return number.toLocaleString(undefined, {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 3,
-    });
-  }
-
-  return {
-    FIPS: fipsCode,
-    STATE: states[stateId as StateId].name,
-    COUNTY: countyName,
-    TIER1NAME: 'FUEL COMB. ELEC. UTIL.',
-    NOx_REDUCTIONS_TONS: formatNumber(noxDataTons),
-    SO2_REDUCTIONS_TONS: formatNumber(so2DataTons),
-    PM25_REDUCTIONS_TONS: formatNumber(pm25DataTons),
-  };
 }
