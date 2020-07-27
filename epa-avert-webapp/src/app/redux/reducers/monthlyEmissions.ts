@@ -7,26 +7,9 @@ import {
 // config
 import { RegionId } from 'app/config';
 
-export type DataByMonth = {
-  [key in 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12]: number;
-};
-
 export type MonthlyAggregation = 'region' | 'state' | 'county';
 
 export type MonthlyUnit = 'emissions' | 'percentages';
-
-export type MonthlyChanges = {
-  emissions: {
-    region: DataByMonth;
-    state: { [stateId: string]: DataByMonth };
-    county: { [stateId: string]: { [countyName: string]: DataByMonth } };
-  };
-  percentages: {
-    region: DataByMonth;
-    state: { [stateId: string]: DataByMonth };
-    county: { [stateId: string]: { [countyName: string]: DataByMonth } };
-  };
-};
 
 type MonthlyEmissionsAction =
   | { type: 'geography/SELECT_REGION' }
@@ -175,9 +158,6 @@ export function renderMonthlyEmissionsCharts(): AppThunk {
       selectedStateId,
       selectedCountyName,
     } = monthlyEmissions;
-
-    // TODO: update components/EmissionsChart.tsx to use the updated output data stored here
-    // (emissions and percentages need to be calculated client side in the component)
 
     (['so2', 'nox', 'co2', 'pm25'] as PollutantName[]).forEach((pollutant) => {
       // TODO: aggregate data for each selected region

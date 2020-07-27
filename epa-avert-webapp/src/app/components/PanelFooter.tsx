@@ -122,7 +122,7 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
 
         if (onStepThree) {
           dispatch(resetDisplacement());
-          dispatch(resetMonthlyEmissions()); // TODO: remove once no longer needed
+          dispatch(resetMonthlyEmissions());
         }
       }}
     >
@@ -171,7 +171,7 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
           scrollToTop();
           dispatch(resetEereInputs());
           dispatch(resetDisplacement());
-          dispatch(resetMonthlyEmissions()); // TODO: remove once no longer needed
+          dispatch(resetMonthlyEmissions());
         }
 
         dispatch(setActiveStep(onStepThree ? 1 : activeStep + 1));

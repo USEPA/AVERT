@@ -58,19 +58,16 @@
  */
 
 /**
+ * @typedef {'month1'|'month2'|'month3'|'month4'|'month5'|'month6'|'month7'|'month8'|'month9'|'month10'|'month11'|'month12'} MonthKey
+ */
+
+/**
  * @typedef {Object} RdfRun
  * @property {string[]} file_name
  * @property {number} mc_gen_runs
  * @property {number} mc_runs
  * @property {number} region_id
  * @property {number} year
- */
-
-/**
- * @typedef {Object} MonthlyChanges
- * @property {DataByMonth} region
- * @property {Object.<string, DataByMonth>} state
- * @property {Object.<string, Object.<string, DataByMonth>>} county
  */
 
 /**
@@ -81,7 +78,7 @@
 
 /**
  * @typedef {Object} DataByMonth
- * @property {number} MonthNumber
+ * @property {number} MonthKey
  */
 
 /**
@@ -123,37 +120,8 @@ function getDisplacement(rdf, eereLoad, pollutant) {
   /** @type {LocationData[]|false} */
   const nonOzoneData = rdf.data[`${pollutant}_not`] || false;
 
-  // set up structure of data collections (used in returned object's keys)
-  /** @type {MonthlyChanges} */
-  const monthlyEmissionChanges = {
-    region: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0 },
-    state: {},
-    county: {},
-  };
-
-  /** @type {MonthlyChanges} */
-  const monthlyPercentageChanges = {
-    region: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0 },
-    state: {},
-    county: {},
-  };
-
-  /** @type {MonthlyChanges} */
-  const monthlyPreValues = {
-    region: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0 },
-    state: {},
-    county: {},
-  };
-
-  /** @type {MonthlyChanges} */
-  const monthlyPostValues = {
-    region: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0 },
-    state: {},
-    county: {},
-  };
-
-/**
-   * monthly original and post-eere calculated values for each state
+  /**
+   * monthly original and post-eere calculated values for the region
    * @type {MonthlyDisplacement}
    */
   const regionalData = {}
@@ -186,9 +154,6 @@ function getDisplacement(rdf, eereLoad, pollutant) {
 
   /** @type {number[]} - used to calculate 'postEereTotal' returned data */
   const postEereTotals = new Array(rdf.regional_load.length).fill(0);
-
-  /** @type {number[]} - used to calculate 'monthlyChanges' key */
-  const deltas = new Array(rdf.regional_load.length).fill(0);
 
   // iterate over each hour in the year (8760 in non-leap years)
   for (let i = 0; i < rdf.regional_load.length; i++) {
@@ -236,8 +201,6 @@ function getDisplacement(rdf, eereLoad, pollutant) {
         edgeB: rdf.load_bin_edges[postEereLoadBinIndex + 1]
       });
 
-      const calculatedDelta = calculatedPostEere - calculatedOriginal;
-
       // initialize the data structures for the region, each state, each county,
       // and each month if they haven't yet been set up, and increment by the
       // calculated original and calculated post-eere values for each day of the
@@ -268,88 +231,11 @@ function getDisplacement(rdf, eereLoad, pollutant) {
       countyData[stateId][county][`month${month}`].original += calculatedOriginal;
       countyData[stateId][county][`month${month}`].postEere += calculatedPostEere;
 
-      // initialize and increment monthlyEmissionChanges per state and month
-      monthlyEmissionChanges.state[stateId] = monthlyEmissionChanges.state[stateId] || {};
-      monthlyEmissionChanges.state[stateId][month] = monthlyEmissionChanges.state[stateId][month] || 0;
-      monthlyEmissionChanges.state[stateId][month] += calculatedDelta;
-
-      // initialize and increment monthlyEmissionChanges per county, state, and month
-      monthlyEmissionChanges.county[stateId] = monthlyEmissionChanges.county[stateId] || {};
-      monthlyEmissionChanges.county[stateId][county] = monthlyEmissionChanges.county[stateId][county] || {};
-      monthlyEmissionChanges.county[stateId][county][month] = monthlyEmissionChanges.county[stateId][county][month] || 0;
-      monthlyEmissionChanges.county[stateId][county][month] += calculatedDelta;
-
-      // initialize and increment monthlyPreValues per state and month
-      monthlyPreValues.state[stateId] = monthlyPreValues.state[stateId] || {};
-      monthlyPreValues.state[stateId][month] = monthlyPreValues.state[stateId][month] || 0;
-      monthlyPreValues.state[stateId][month] += calculatedOriginal;
-
-      // initialize and increment monthlyPreValues per county, state, and month
-      monthlyPreValues.county[stateId] = monthlyPreValues.county[stateId] || {};
-      monthlyPreValues.county[stateId][county] = monthlyPreValues.county[stateId][county] || {};
-      monthlyPreValues.county[stateId][county][month] = monthlyPreValues.county[stateId][county][month] || 0;
-      monthlyPreValues.county[stateId][county][month] += calculatedOriginal;
-
-      // initialize and increment monthlyPostValues per state and month
-      monthlyPostValues.state[stateId] = monthlyPostValues.state[stateId] || {};
-      monthlyPostValues.state[stateId][month] = monthlyPostValues.state[stateId][month] || 0;
-      monthlyPostValues.state[stateId][month] += calculatedPostEere;
-
-      // initialize and increment monthlyPostValues per county, state, and month
-      monthlyPostValues.county[stateId] = monthlyPostValues.county[stateId] || {};
-      monthlyPostValues.county[stateId][county] = monthlyPostValues.county[stateId][county] || {};
-      monthlyPostValues.county[stateId][county][month] = monthlyPostValues.county[stateId][county][month] || 0;
-      monthlyPostValues.county[stateId][county][month] += calculatedPostEere;
-
-      // initialize monthlyPercentageChanges per state and month (set outside of loop)
-      monthlyPercentageChanges.state[stateId] = monthlyPercentageChanges.state[stateId] || {};
-      monthlyPercentageChanges.state[stateId][month] = monthlyPercentageChanges.state[stateId][month] || 0;
-
-      // initialize monthlyPercentageChanges per county, state, and month (set outside of loop)
-      monthlyPercentageChanges.county[stateId] = monthlyPercentageChanges.county[stateId] || {};
-      monthlyPercentageChanges.county[stateId][county] = monthlyPercentageChanges.county[stateId][county] || {};
-      monthlyPercentageChanges.county[stateId][county][month] = monthlyPercentageChanges.county[stateId][county][month] || 0;
-
       // increment total and delta arrays with data
       originalTotals[i] += calculatedOriginal;
       postEereTotals[i] += calculatedPostEere;
-      deltas[i] += calculatedDelta;
     });
-
-    // increment each data collection with accumulated values from total and delta arrays
-    monthlyEmissionChanges.region[month] += deltas[i];
-    monthlyPreValues.region[month] += originalTotals[i];
-    monthlyPostValues.region[month] += postEereTotals[i];
   }
-
-  /** @type {MonthNumber[]} */
-  const monthNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-  // calculate monthlyPercentageChanges each month in the region
-  monthNumbers.forEach((month) => {
-    monthlyPercentageChanges.region[month] =
-      (monthlyPostValues.region[month] - monthlyPreValues.region[month])
-      / monthlyPreValues.region[month] * 100;
-  });
-
-  const states = Object.keys(monthlyPreValues.state);
-  // calculate monthlyPercentageChanges each month in each state in the region
-  states.forEach((stateId) => {
-    monthNumbers.forEach((month) => {
-      monthlyPercentageChanges.state[stateId][month] =
-        (monthlyPostValues.state[stateId][month] - monthlyPreValues.state[stateId][month])
-        / monthlyPreValues.state[stateId][month] * 100;
-    });
-
-    const counties = Object.keys(monthlyPreValues.county[stateId]);
-    // calculate monthlyPercentageChanges each month in each county in each state in the region
-    counties.forEach((county) => {
-      monthNumbers.forEach((month) => {
-        monthlyPercentageChanges.county[stateId][county][month] =
-          (monthlyPostValues.county[stateId][county][month] - monthlyPreValues.county[stateId][county][month])
-          / monthlyPreValues.county[stateId][county][month] * 100;
-      });
-    });
-  });
 
   return {
     regionId: rdf.region.region_abbv,
@@ -359,11 +245,6 @@ function getDisplacement(rdf, eereLoad, pollutant) {
     regionalData,
     stateData,
     countyData,
-    // TODO: remove monthlyChanges after app's been updated to use above data
-    monthlyChanges: {
-      emissions: monthlyEmissionChanges,
-      percentages: monthlyPercentageChanges,
-    },
   };
 }
 
