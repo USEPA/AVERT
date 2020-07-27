@@ -478,6 +478,7 @@ function formatRegionalDownloadData(
     stateId?: StateId;
     countyName?: string;
   }) {
+    if (!data) return;
     countyData.push({
       Pollutant: pollutant,
       'Aggregation level': countyName
@@ -516,6 +517,10 @@ function formatRegionalDownloadData(
     noxCountyEmissions: number[];
     pm25CountyEmissions: number[];
   }) {
+    if (!so2CountyEmissions || !noxCountyEmissions || !pm25CountyEmissions) {
+      return;
+    }
+
     /**
      * All items in the `fipsCodes` array (which is data converted from the main
      * AVERT Excel file) have the word 'County' at the end of their county names.
@@ -574,36 +579,43 @@ function formatRegionalDownloadData(
     unit: 'emissions (pounds)',
     data: calculateMonthlyEmissions(so2.regionalData),
   });
+
   addCountyRow({
     pollutant: 'NOX',
     unit: 'emissions (pounds)',
     data: calculateMonthlyEmissions(nox.regionalData),
   });
+
   addCountyRow({
     pollutant: 'CO2',
     unit: 'emissions (tons)',
     data: calculateMonthlyEmissions(co2.regionalData),
   });
+
   addCountyRow({
     pollutant: 'PM25',
     unit: 'emissions (pounds)',
     data: calculateMonthlyEmissions(pm25.regionalData),
   });
+
   addCountyRow({
     pollutant: 'SO2',
     unit: 'percent',
     data: calculateMonthlyPercents(so2.regionalData),
   });
+
   addCountyRow({
     pollutant: 'NOX',
     unit: 'percent',
     data: calculateMonthlyPercents(nox.regionalData),
   });
+
   addCountyRow({
     pollutant: 'CO2',
     unit: 'percent',
     data: calculateMonthlyPercents(co2.regionalData),
   });
+
   addCountyRow({
     pollutant: 'PM25',
     unit: 'percent',
@@ -623,70 +635,61 @@ function formatRegionalDownloadData(
     const co2StateData = co2.stateData[stateId];
     const pm25StateData = pm25.stateData[stateId];
 
-    if (so2StateData) {
-      addCountyRow({
-        pollutant: 'SO2',
-        unit: 'emissions (pounds)',
-        data: calculateMonthlyEmissions(so2StateData),
-        stateId,
-      });
-    }
-    if (noxStateData) {
-      addCountyRow({
-        pollutant: 'NOX',
-        unit: 'emissions (pounds)',
-        data: calculateMonthlyEmissions(noxStateData),
-        stateId,
-      });
-    }
-    if (co2StateData) {
-      addCountyRow({
-        pollutant: 'CO2',
-        unit: 'emissions (tons)',
-        data: calculateMonthlyEmissions(co2StateData),
-        stateId,
-      });
-    }
-    if (pm25StateData) {
-      addCountyRow({
-        pollutant: 'PM25',
-        unit: 'emissions (pounds)',
-        data: calculateMonthlyEmissions(pm25StateData),
-        stateId,
-      });
-    }
-    if (so2StateData) {
-      addCountyRow({
-        pollutant: 'SO2',
-        unit: 'percent',
-        data: calculateMonthlyPercents(so2StateData),
-        stateId,
-      });
-    }
-    if (noxStateData) {
-      addCountyRow({
-        pollutant: 'NOX',
-        unit: 'percent',
-        data: calculateMonthlyPercents(noxStateData),
-        stateId,
-      });
-    }
-    if (co2StateData) {
-      addCountyRow({
-        pollutant: 'CO2',
-        unit: 'percent',
-        data: calculateMonthlyPercents(co2StateData),
-        stateId,
-      });
-    }
-    if (pm25StateData) {
-      addCountyRow({
-        pollutant: 'PM25',
-        unit: 'percent',
-        data: calculateMonthlyPercents(pm25StateData),
-        stateId,
-      });
-    }
+    addCountyRow({
+      pollutant: 'SO2',
+      unit: 'emissions (pounds)',
+      data: calculateMonthlyEmissions(so2StateData),
+      stateId,
+    });
+
+    addCountyRow({
+      pollutant: 'NOX',
+      unit: 'emissions (pounds)',
+      data: calculateMonthlyEmissions(noxStateData),
+      stateId,
+    });
+
+    addCountyRow({
+      pollutant: 'CO2',
+      unit: 'emissions (tons)',
+      data: calculateMonthlyEmissions(co2StateData),
+      stateId,
+    });
+
+    addCountyRow({
+      pollutant: 'PM25',
+      unit: 'emissions (pounds)',
+      data: calculateMonthlyEmissions(pm25StateData),
+      stateId,
+    });
+
+    addCountyRow({
+      pollutant: 'SO2',
+      unit: 'percent',
+      data: calculateMonthlyPercents(so2StateData),
+      stateId,
+    });
+
+    addCountyRow({
+      pollutant: 'NOX',
+      unit: 'percent',
+      data: calculateMonthlyPercents(noxStateData),
+      stateId,
+    });
+
+    addCountyRow({
+      pollutant: 'CO2',
+      unit: 'percent',
+      data: calculateMonthlyPercents(co2StateData),
+      stateId,
+    });
+
+    addCountyRow({
+      pollutant: 'PM25',
+      unit: 'percent',
+      data: calculateMonthlyPercents(pm25StateData),
+      stateId,
+    });
 
     // counties data: add county data for each polutant, unit, and county
     statesAndCounties[stateId]?.forEach((countyName) => {
@@ -695,89 +698,78 @@ function formatRegionalDownloadData(
       const co2CountyData = co2.countyData[stateId]?.[countyName];
       const pm25CountyData = pm25.countyData[stateId]?.[countyName];
 
-      if (so2CountyData) {
-        addCountyRow({
-          pollutant: 'SO2',
-          unit: 'emissions (pounds)',
-          data: calculateMonthlyEmissions(so2CountyData),
-          stateId,
-          countyName,
-        });
-      }
-      if (noxCountyData) {
-        addCountyRow({
-          pollutant: 'NOX',
-          unit: 'emissions (pounds)',
-          data: calculateMonthlyEmissions(noxCountyData),
-          stateId,
-          countyName,
-        });
-      }
-      if (co2CountyData) {
-        addCountyRow({
-          pollutant: 'CO2',
-          unit: 'emissions (tons)',
-          data: calculateMonthlyEmissions(co2CountyData),
-          stateId,
-          countyName,
-        });
-      }
-      if (pm25CountyData) {
-        addCountyRow({
-          pollutant: 'PM25',
-          unit: 'emissions (pounds)',
-          data: calculateMonthlyEmissions(pm25CountyData),
-          stateId,
-          countyName,
-        });
-      }
-      if (so2CountyData) {
-        addCountyRow({
-          pollutant: 'SO2',
-          unit: 'percent',
-          data: calculateMonthlyPercents(so2CountyData),
-          stateId,
-          countyName,
-        });
-      }
-      if (noxCountyData) {
-        addCountyRow({
-          pollutant: 'NOX',
-          unit: 'percent',
-          data: calculateMonthlyPercents(noxCountyData),
-          stateId,
-          countyName,
-        });
-      }
-      if (co2CountyData) {
-        addCountyRow({
-          pollutant: 'CO2',
-          unit: 'percent',
-          data: calculateMonthlyPercents(co2CountyData),
-          stateId,
-          countyName,
-        });
-      }
-      if (pm25CountyData) {
-        addCountyRow({
-          pollutant: 'PM25',
-          unit: 'percent',
-          data: calculateMonthlyPercents(pm25CountyData),
-          stateId,
-          countyName,
-        });
-      }
+      addCountyRow({
+        pollutant: 'SO2',
+        unit: 'emissions (pounds)',
+        data: calculateMonthlyEmissions(so2CountyData),
+        stateId,
+        countyName,
+      });
+
+      addCountyRow({
+        pollutant: 'NOX',
+        unit: 'emissions (pounds)',
+        data: calculateMonthlyEmissions(noxCountyData),
+        stateId,
+        countyName,
+      });
+
+      addCountyRow({
+        pollutant: 'CO2',
+        unit: 'emissions (tons)',
+        data: calculateMonthlyEmissions(co2CountyData),
+        stateId,
+        countyName,
+      });
+
+      addCountyRow({
+        pollutant: 'PM25',
+        unit: 'emissions (pounds)',
+        data: calculateMonthlyEmissions(pm25CountyData),
+        stateId,
+        countyName,
+      });
+
+      addCountyRow({
+        pollutant: 'SO2',
+        unit: 'percent',
+        data: calculateMonthlyPercents(so2CountyData),
+        stateId,
+        countyName,
+      });
+
+      addCountyRow({
+        pollutant: 'NOX',
+        unit: 'percent',
+        data: calculateMonthlyPercents(noxCountyData),
+        stateId,
+        countyName,
+      });
+
+      addCountyRow({
+        pollutant: 'CO2',
+        unit: 'percent',
+        data: calculateMonthlyPercents(co2CountyData),
+        stateId,
+        countyName,
+      });
+
+      addCountyRow({
+        pollutant: 'PM25',
+        unit: 'percent',
+        data: calculateMonthlyPercents(pm25CountyData),
+        stateId,
+        countyName,
+      });
 
       // add cobra data for each county
-      if (so2CountyData && noxCountyData && pm25CountyData) {
-        addCobraRow({
-          stateId,
-          countyName,
-          so2CountyEmissions: calculateMonthlyEmissions(so2CountyData),
-          noxCountyEmissions: calculateMonthlyEmissions(noxCountyData),
-          pm25CountyEmissions: calculateMonthlyEmissions(pm25CountyData),
-        });
-      }
+      addCobraRow({
+        stateId,
+        countyName,
+        so2CountyEmissions: calculateMonthlyEmissions(so2CountyData),
+        noxCountyEmissions: calculateMonthlyEmissions(noxCountyData),
+        pm25CountyEmissions: calculateMonthlyEmissions(pm25CountyData),
+      });
     });
   });
 

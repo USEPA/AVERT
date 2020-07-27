@@ -12,7 +12,9 @@ import { useSelectedRegion, useSelectedState } from 'app/hooks';
 function convertToCSVString(data: { [key: string]: any }[]) {
   const keys = Object.keys(data[0] || {});
   const rows = data.map((row) => {
-    return keys.map((key) => `"${row[key] || ''}"`).join(',');
+    return keys
+      .map((key) => `"${row[key] || row[key] === 0 ? row[key] : ''}"`)
+      .join(',');
   });
   return [keys.map((key) => `"${key}"`).join(',')].concat(rows).join('\r\n');
 }
