@@ -272,10 +272,10 @@ function EEREInputs() {
       ? selectedRegion?.eereLimits || fallbackEereLimits
       : selectedState?.eereLimits || fallbackEereLimits;
 
-  const regionSupportsOffshoreWind =
+  const atLeastOneRegionSupportsOffshoreWind =
     geographicFocus === 'regions'
       ? selectedRegion?.offshoreWind
-      : selectedStateRegions.every((region) => region.offshoreWind);
+      : selectedStateRegions.some((region) => region.offshoreWind);
 
   const inputsAreValid = errors.length === 0;
 
@@ -504,7 +504,7 @@ function EEREInputs() {
               </li>
 
               <li>
-                {regionSupportsOffshoreWind ? (
+                {atLeastOneRegionSupportsOffshoreWind ? (
                   <React.Fragment>
                     <span css={inputLabelStyles}>
                       Offshore wind total capacity:{' '}

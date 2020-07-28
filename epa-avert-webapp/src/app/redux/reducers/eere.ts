@@ -492,6 +492,12 @@ export function calculateEereProfile(): AppThunk {
     // create the eere profile chart and show validation warning/error message
     const selectedRegionalProfiles: RegionalProfile[] = [];
 
+    // collect selected regions that support offshore wind
+    // (used below to set the offshore wind scaling factor)
+    const selectedOffshoreWindRegions = selectedRegions.filter((region) => {
+      return region.offshoreWind;
+    });
+
     selectedRegions.forEach((region) => {
       // the regional scaling factor is a number between 0 and 1, representing
       // the proportion the selected geography exists within a given region.
@@ -503,6 +509,33 @@ export function calculateEereProfile(): AppThunk {
         ? (selectedState.regions[region.id] || 100) / 100
         : 1;
 
+      // the offshore wind factor is also a number between 0 and 1, representing
+      // the proportion the selected geography's offshore wind value should be
+      // allocated to each region. regions either support offshore wind or they
+      // don't, and some states are within at least one region that supports it,
+      // and at least one region that doesn't.
+      // - if a region is selected, the offshore wind factor will always be 1
+      //   (if the region doesn't support offshore wind, the input will be
+      //   disabled and 0 will be used in the calculations for offshore wind –
+      //   see `app/calculations.ts`)
+      // - if a state selected and it's within a region that supports offshore
+      //   wind, the offshore wind factor will be set to an integer equal to the
+      //   total number of other regions the selected state is within that also
+      //   support offshore wind (e.g. 0.5 for two, 0.3333333 for three, etc.)
+      // - if a state is selected and it's within a region that doesn't support
+      //   offshore wind, the offshore wind factor will always be 0
+      //
+      // for example:
+      // Kentucky is selected...it's within the Tennessee, Mid-Atlantic, and
+      // Midwest regions, but only the Mid-Atlantic region supports offshore
+      // wind. so the Tennessee and Midwest regions' `offshoreWindFactor` would
+      // be 0, and the Mid-Atlantic region's `offshoreWindFactor` would be 1
+      const offshoreWindFactor = !selectedState
+        ? 1
+        : selectedOffshoreWindRegions.includes(region)
+        ? 1 / selectedOffshoreWindRegions.length
+        : 0;
+
       const scaledEereInputs = {
         annualGwh: Number(eere.inputs.annualGwh) * regionalScalingFactor,
         constantMwh: Number(eere.inputs.constantMwh) * regionalScalingFactor,
@@ -510,7 +543,7 @@ export function calculateEereProfile(): AppThunk {
         reduction: Number(eere.inputs.reduction) * regionalScalingFactor,
         topHours: Number(eere.inputs.topHours) * regionalScalingFactor,
         onshoreWind: Number(eere.inputs.onshoreWind) * regionalScalingFactor,
-        offshoreWind: Number(eere.inputs.offshoreWind) * regionalScalingFactor,
+        offshoreWind: Number(eere.inputs.offshoreWind) * offshoreWindFactor,
         utilitySolar: Number(eere.inputs.utilitySolar) * regionalScalingFactor,
         rooftopSolar: Number(eere.inputs.rooftopSolar) * regionalScalingFactor,
       };
