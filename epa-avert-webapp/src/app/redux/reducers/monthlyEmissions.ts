@@ -1,15 +1,14 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
-import {
-  PollutantName,
-  MonthlyDisplacement,
-} from 'app/redux/reducers/displacement';
+import { MonthKey, MonthlyDisplacement } from 'app/redux/reducers/displacement';
 // config
 import { RegionId } from 'app/config';
 
 export type MonthlyAggregation = 'region' | 'state' | 'county';
 
 export type MonthlyUnit = 'emissions' | 'percentages';
+
+type PollutantName = 'so2' | 'nox' | 'co2' | 'pm25';
 
 type MonthlyEmissionsAction =
   | { type: 'geography/SELECT_REGION' }
@@ -154,40 +153,61 @@ export function renderMonthlyEmissionsCharts(): AppThunk {
   return (dispatch, getState) => {
     const { displacement, monthlyEmissions } = getState();
     const {
-      selectedAggregation,
-      selectedStateId,
-      selectedCountyName,
+      selectedAggregation: aggregation,
+      selectedStateId: stateId,
+      selectedCountyName: countyName,
     } = monthlyEmissions;
 
     (['so2', 'nox', 'co2', 'pm25'] as PollutantName[]).forEach((pollutant) => {
-      // TODO: aggregate data for each selected region
+      // aggregate monthly pollutant data for each selected region
+      const monthlyPollutantData: MonthlyDisplacement = {
+        month1: { original: 0, postEere: 0 },
+        month2: { original: 0, postEere: 0 },
+        month3: { original: 0, postEere: 0 },
+        month4: { original: 0, postEere: 0 },
+        month5: { original: 0, postEere: 0 },
+        month6: { original: 0, postEere: 0 },
+        month7: { original: 0, postEere: 0 },
+        month8: { original: 0, postEere: 0 },
+        month9: { original: 0, postEere: 0 },
+        month10: { original: 0, postEere: 0 },
+        month11: { original: 0, postEere: 0 },
+        month12: { original: 0, postEere: 0 },
+      };
 
       for (const regionId in displacement.regionalDisplacements) {
         // regional displacement data
         const data = displacement.regionalDisplacements[regionId as RegionId];
 
         if (data) {
-          // set filtered monthly data based on selected aggregation
-          const filteredMonthlyData: MonthlyDisplacement =
-            selectedAggregation === 'region'
+          // set regional monthly pollutant data based on selected aggregation
+          const regionalMonthlyPollutantData: MonthlyDisplacement =
+            aggregation === 'region'
               ? data[pollutant].regionalData
-              : selectedAggregation === 'state' && selectedStateId
-              ? data[pollutant].stateData[selectedStateId]
-              : selectedAggregation === 'county' &&
-                selectedStateId &&
-                selectedCountyName
-              ? data[pollutant].countyData[selectedStateId][selectedCountyName]
+              : aggregation === 'state' && stateId
+              ? data[pollutant].stateData[stateId]
+              : aggregation === 'county' && stateId && countyName
+              ? data[pollutant].countyData[stateId]?.[countyName]
               : initialMonthlyData;
 
-          dispatch({
-            type: 'monthlyEmissions/STORE_FILTERED_DATA',
-            payload: {
-              pollutant,
-              data: filteredMonthlyData,
-            },
-          });
+          // add regional monthly pollutant data to aggregated monthly pollutant
+          // data from all selected regions
+          for (const key in regionalMonthlyPollutantData) {
+            const month = key as MonthKey;
+            const { original, postEere } = regionalMonthlyPollutantData[month];
+            monthlyPollutantData[month].original += original;
+            monthlyPollutantData[month].postEere += postEere;
+          }
         }
       }
+
+      dispatch({
+        type: 'monthlyEmissions/STORE_FILTERED_DATA',
+        payload: {
+          pollutant,
+          data: monthlyPollutantData,
+        },
+      });
     });
   };
 }

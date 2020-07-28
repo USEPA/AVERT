@@ -5,9 +5,9 @@ import { MonthlyUnit, renderMonthlyEmissionsCharts } from './monthlyEmissions';
 // config
 import { RegionId, StateId, states, fipsCodes } from 'app/config';
 
-export type PollutantName = 'generation' | 'so2' | 'nox' | 'co2' | 'pm25';
+type PollutantName = 'generation' | 'so2' | 'nox' | 'co2' | 'pm25';
 
-type MonthKey =
+export type MonthKey =
   | 'month1'
   | 'month2'
   | 'month3'
