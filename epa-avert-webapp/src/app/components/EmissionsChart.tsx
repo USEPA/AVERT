@@ -100,10 +100,6 @@ function EmissionsChart() {
   const filteredMonthlyData = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.filteredMonthlyData,
   );
-  const so2Data = calculateMonthlyData(filteredMonthlyData.so2, selectedUnit);
-  const noxData = calculateMonthlyData(filteredMonthlyData.nox, selectedUnit);
-  const co2Data = calculateMonthlyData(filteredMonthlyData.co2, selectedUnit);
-  const pm25Data = calculateMonthlyData(filteredMonthlyData.pm25, selectedUnit);
 
   const region = useSelectedRegion();
 
@@ -111,166 +107,14 @@ function EmissionsChart() {
   const readyToRender = status === 'complete';
 
   // callback for after highcharts chart renders
-  const afterRender = (chart: any) => {
+  function afterRender(chart: any) {
     // as this entire react app is ultimately served in an iframe on another page,
     // this document has a click handler that sends document's height to other window,
     // which can then set the embedded iframe's height (see public/post-message.js)
     document.querySelector('html')?.click();
-  };
-
-  let aggregationFilter;
-  if (readyToRender) {
-    aggregationFilter = (
-      <div css={filterGroupStyles}>
-        <p css={filterTextStyles}>Select level of aggregation:</p>
-
-        <label>
-          <input
-            type="radio"
-            name="aggregation"
-            value={'region'}
-            checked={selectedAggregation === 'region'}
-            onChange={(ev) => {
-              dispatch(
-                selectMonthlyAggregation(ev.target.value as MonthlyAggregation),
-              );
-            }}
-          />
-          Region
-        </label>
-
-        <label>
-          <input
-            type="radio"
-            name="aggregation"
-            value={'state'}
-            checked={selectedAggregation === 'state'}
-            onChange={(ev) => {
-              dispatch(
-                selectMonthlyAggregation(ev.target.value as MonthlyAggregation),
-              );
-              if (selectedStateId) {
-                dispatch(selectMonthlyState(selectedStateId));
-              }
-            }}
-          />
-          State
-        </label>
-
-        <label>
-          <input
-            type="radio"
-            name="aggregation"
-            value={'county'}
-            checked={selectedAggregation === 'county'}
-            onChange={(ev) => {
-              dispatch(
-                selectMonthlyAggregation(ev.target.value as MonthlyAggregation),
-              );
-              if (selectedCountyName) {
-                dispatch(selectMonthlyCounty(selectedCountyName));
-              }
-            }}
-          />
-          County
-        </label>
-      </div>
-    );
   }
 
-  let stateSelect;
-  if (selectedAggregation === 'state' || selectedAggregation === 'county') {
-    stateSelect = (
-      <div css={selectGroupStyles}>
-        <select
-          value={selectedStateId}
-          onChange={(ev) => dispatch(selectMonthlyState(ev.target.value))}
-        >
-          <option value="" disabled>
-            Select State
-          </option>
-
-          {availableStates.map((stateId) => {
-            return (
-              <React.Fragment key={stateId}>
-                <option value={stateId}>
-                  {states[stateId as StateId].name}
-                </option>
-              </React.Fragment>
-            );
-          })}
-        </select>
-      </div>
-    );
-  }
-
-  let countySelect;
-  if (selectedAggregation === 'county') {
-    countySelect = (
-      <div css={selectGroupStyles}>
-        <select
-          value={selectedCountyName}
-          onChange={(ev) => dispatch(selectMonthlyCounty(ev.target.value))}
-        >
-          <option value="" disabled>
-            Select County
-          </option>
-
-          {availableCounties?.map((county, index) => (
-            <option key={index} value={county}>
-              {/* format 'city' if found in county name */}
-              {county.replace(/city/, '(City)')}
-            </option>
-          ))}
-        </select>
-      </div>
-    );
-  }
-
-  let geographyFilter;
-  if (readyToRender) {
-    geographyFilter = (
-      <div css={geographyFilterStyles}>
-        {stateSelect}
-        {countySelect}
-      </div>
-    );
-  }
-
-  let unitFilter;
-  if (readyToRender) {
-    unitFilter = (
-      <div css={filterGroupStyles}>
-        <p css={filterTextStyles}>Select units:</p>
-
-        <label>
-          <input
-            type="radio"
-            name="unit"
-            value={'emissions'}
-            checked={selectedUnit === 'emissions'}
-            onChange={(ev) => {
-              dispatch(selectMonthlyUnit(ev.target.value as MonthlyUnit));
-            }}
-          />
-          Emission changes (lbs or tons)
-        </label>
-
-        <label>
-          <input
-            type="radio"
-            name="unit"
-            value={'percentages'}
-            checked={selectedUnit === 'percentages'}
-            onChange={(ev) =>
-              dispatch(selectMonthlyUnit(ev.target.value as MonthlyUnit))
-            }
-          />
-          Percent change
-        </label>
-      </div>
-    );
-  }
+  if (status !== 'complete') return null;
 
   // charts config
   const commonConfig: Highcharts.Options = {
@@ -367,7 +211,7 @@ function EmissionsChart() {
     series: [
       {
         name: 'SO₂',
-        data: so2Data,
+        data: calculateMonthlyData(filteredMonthlyData.so2, selectedUnit),
         color: '#058dc7',
         emissionsUnit: 'lbs',
       },
@@ -388,7 +232,7 @@ function EmissionsChart() {
     series: [
       {
         name: 'NOₓ',
-        data: noxData,
+        data: calculateMonthlyData(filteredMonthlyData.nox, selectedUnit),
         color: '#ed561b',
         emissionsUnit: 'lbs',
       },
@@ -409,7 +253,7 @@ function EmissionsChart() {
     series: [
       {
         name: 'CO₂',
-        data: co2Data,
+        data: calculateMonthlyData(filteredMonthlyData.co2, selectedUnit),
         color: '#50b432',
         emissionsUnit: 'tons',
       },
@@ -430,17 +274,146 @@ function EmissionsChart() {
     series: [
       {
         name: 'PM₂₅',
-        data: pm25Data,
+        data: calculateMonthlyData(filteredMonthlyData.pm25, selectedUnit),
         color: '#665683',
         emissionsUnit: 'lbs',
       },
     ],
   };
 
-  let charts;
-  if (readyToRender) {
-    charts = (
-      <div css={emissionsChartsStyles} className="avert-emissions-charts">
+  return (
+    <React.Fragment>
+      <div css={filterGroupStyles}>
+        <p css={filterTextStyles}>Select level of aggregation:</p>
+
+        <label>
+          <input
+            type="radio"
+            name="aggregation"
+            value={'region'}
+            checked={selectedAggregation === 'region'}
+            onChange={(ev) => {
+              const aggregation = ev.target.value as MonthlyAggregation;
+              dispatch(selectMonthlyAggregation(aggregation));
+            }}
+          />
+          Region
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            name="aggregation"
+            value={'state'}
+            checked={selectedAggregation === 'state'}
+            onChange={(ev) => {
+              const aggregation = ev.target.value as MonthlyAggregation;
+              dispatch(selectMonthlyAggregation(aggregation));
+              if (selectedStateId) {
+                dispatch(selectMonthlyState(selectedStateId));
+              }
+            }}
+          />
+          State
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            name="aggregation"
+            value={'county'}
+            checked={selectedAggregation === 'county'}
+            onChange={(ev) => {
+              const aggregation = ev.target.value as MonthlyAggregation;
+              dispatch(selectMonthlyAggregation(aggregation));
+              if (selectedCountyName) {
+                dispatch(selectMonthlyCounty(selectedCountyName));
+              }
+            }}
+          />
+          County
+        </label>
+      </div>
+
+      <div css={geographyFilterStyles}>
+        {(selectedAggregation === 'state' ||
+          selectedAggregation === 'county') && (
+          <div css={selectGroupStyles}>
+            <select
+              value={selectedStateId}
+              onChange={(ev) => dispatch(selectMonthlyState(ev.target.value))}
+            >
+              <option value="" disabled>
+                Select State
+              </option>
+
+              {availableStates.map((stateId) => {
+                return (
+                  <React.Fragment key={stateId}>
+                    <option value={stateId}>
+                      {states[stateId as StateId].name}
+                    </option>
+                  </React.Fragment>
+                );
+              })}
+            </select>
+          </div>
+        )}
+
+        {selectedAggregation === 'county' && (
+          <div css={selectGroupStyles}>
+            <select
+              value={selectedCountyName}
+              onChange={(ev) => dispatch(selectMonthlyCounty(ev.target.value))}
+            >
+              <option value="" disabled>
+                Select County
+              </option>
+
+              {availableCounties?.map((county, index) => (
+                <option key={index} value={county}>
+                  {/* format 'city' if found in county name */}
+                  {county.replace(/city/, '(City)')}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+      </div>
+
+      <div css={filterGroupStyles}>
+        <p css={filterTextStyles}>Select units:</p>
+
+        <label>
+          <input
+            type="radio"
+            name="unit"
+            value={'emissions'}
+            checked={selectedUnit === 'emissions'}
+            onChange={(ev) => {
+              const unit = ev.target.value as MonthlyUnit;
+              dispatch(selectMonthlyUnit(unit));
+            }}
+          />
+          Emission changes (lbs or tons)
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            name="unit"
+            value={'percentages'}
+            checked={selectedUnit === 'percentages'}
+            onChange={(ev) => {
+              const unit = ev.target.value as MonthlyUnit;
+              dispatch(selectMonthlyUnit(unit));
+            }}
+          />
+          Percent change
+        </label>
+      </div>
+
+      <div css={emissionsChartsStyles}>
         <HighchartsReact
           highcharts={Highcharts}
           options={so2Config}
@@ -465,15 +438,6 @@ function EmissionsChart() {
           callback={afterRender}
         />
       </div>
-    );
-  }
-
-  return (
-    <React.Fragment>
-      {aggregationFilter}
-      {geographyFilter}
-      {unitFilter}
-      {charts}
     </React.Fragment>
   );
 }
