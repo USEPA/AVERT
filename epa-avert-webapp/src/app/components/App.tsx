@@ -1,13 +1,20 @@
-import React from 'react';
+/** @jsx jsx */
+
+import { jsx, css } from '@emotion/core';
 // components
 import PanelTabs from 'app/components/PanelTabs';
 import Panels from 'app/components/Panels';
 // styles
 import 'app/styles.css';
 
+const containerStyles = css`
+  margin: 0rem auto;
+  max-width: 45rem;
+`;
+
 function App() {
   return (
-    <div className="avert-container avert-copy">
+    <div css={containerStyles} className="avert-copy">
       <PanelTabs />
       <Panels />
     </div>

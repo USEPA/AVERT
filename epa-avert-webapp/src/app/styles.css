@@ -20,10 +20,6 @@ body {
 }
 
 /* --- layout --- */
-.avert-container {
-  margin: 0rem auto;
-  max-width: 45rem; /* 720px */
-}
 .avert-centered {
   text-align: center;
 }
