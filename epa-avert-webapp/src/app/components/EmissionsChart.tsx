@@ -105,9 +105,7 @@ function EmissionsChart() {
   const co2Data = calculateMonthlyData(filteredMonthlyData.co2, selectedUnit);
   const pm25Data = calculateMonthlyData(filteredMonthlyData.pm25, selectedUnit);
 
-  // TODO: determine how to handle when multiple regions are selected
   const region = useSelectedRegion();
-  const regionName = region?.name;
 
   // rendering is ready when output prop has data
   const readyToRender = status === 'complete';
@@ -334,7 +332,7 @@ function EmissionsChart() {
   // conditionally define location based on aggregation
   const location =
     selectedAggregation === 'region'
-      ? `${regionName} Region`
+      ? `${region?.name} Region`
       : selectedAggregation === 'state'
       ? selectedStateId === ''
         ? ''
