@@ -324,13 +324,19 @@ export default function reducer(
 function validateInput(
   inputField: EereInputFields,
   inputValue: string,
-  upperLimit: number,
+  _upperLimit: number, // no longer using upper limit for validation (see NOTE)
 ): AppThunk {
   return (dispatch, getState) => {
     const { eere } = getState();
 
     const value = Number(inputValue);
-    const invalidInput = isNaN(value) || value < 0 || value > upperLimit;
+
+    // NOTE: we're no longer validationg against an upper limit, but leaving
+    // code below commented out for now. we should condiser removing it entirely
+    // if its decided the upper limit for input validation is never coming back
+    // const invalidInput = isNaN(value) || value < 0 || value > _upperLimit;
+
+    const invalidInput = isNaN(value) || value < 0;
 
     // remove input field being validated from existing fields with errors
     const errors = eere.errors.filter((field) => field !== inputField);
