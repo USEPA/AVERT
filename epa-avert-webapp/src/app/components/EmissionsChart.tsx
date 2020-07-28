@@ -103,9 +103,6 @@ function EmissionsChart() {
 
   const region = useSelectedRegion();
 
-  // rendering is ready when output prop has data
-  const readyToRender = status === 'complete';
-
   // callback for after highcharts chart renders
   function afterRender(chart: any) {
     // as this entire react app is ultimately served in an iframe on another page,

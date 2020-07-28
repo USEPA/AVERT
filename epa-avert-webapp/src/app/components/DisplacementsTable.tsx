@@ -138,32 +138,32 @@ function DisplacementsTable() {
             <td css={rowLabelStyles}>
               SO<sub>2</sub> (lbs/MWh)
             </td>
-            <td className="avert-table-data">{so2RateOrig.toFixed(2)}</td>
-            <td className="avert-table-data">{so2RatePost.toFixed(2)}</td>
+            <td className="avert-table-data">{so2RateOrig.toFixed(3)}</td>
+            <td className="avert-table-data">{so2RatePost.toFixed(3)}</td>
             <td className="avert-table-data">&nbsp;</td>
           </tr>
           <tr>
             <td css={rowLabelStyles}>
               NO<sub>X</sub> (lbs/MWh)
             </td>
-            <td className="avert-table-data">{noxRateOrig.toFixed(2)}</td>
-            <td className="avert-table-data">{noxRatePost.toFixed(2)}</td>
+            <td className="avert-table-data">{noxRateOrig.toFixed(3)}</td>
+            <td className="avert-table-data">{noxRatePost.toFixed(3)}</td>
             <td className="avert-table-data">&nbsp;</td>
           </tr>
           <tr>
             <td css={rowLabelStyles}>
               CO<sub>2</sub> (tons/MWh)
             </td>
-            <td className="avert-table-data">{co2RateOrig.toFixed(2)}</td>
-            <td className="avert-table-data">{co2RatePost.toFixed(2)}</td>
+            <td className="avert-table-data">{co2RateOrig.toFixed(3)}</td>
+            <td className="avert-table-data">{co2RatePost.toFixed(3)}</td>
             <td className="avert-table-data">&nbsp;</td>
           </tr>
           <tr>
             <td css={rowLabelStyles}>
               PM<sub>2.5</sub> (lbs/MWh)
             </td>
-            <td className="avert-table-data">{pm25RateOrig.toFixed(2)}</td>
-            <td className="avert-table-data">{pm25RatePost.toFixed(2)}</td>
+            <td className="avert-table-data">{pm25RateOrig.toFixed(3)}</td>
+            <td className="avert-table-data">{pm25RatePost.toFixed(3)}</td>
             <td className="avert-table-data">&nbsp;</td>
           </tr>
         </tbody>
