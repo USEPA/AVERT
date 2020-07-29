@@ -661,7 +661,7 @@ function Panels() {
 
         <PanelFooter
           prevButtonText="Back to EE/RE Impacts"
-          nextButtonText="Reset Region"
+          nextButtonText="Reselect Geography"
         />
       </section>
     </Container>
