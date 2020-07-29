@@ -177,7 +177,9 @@ function EmissionsChart() {
   const countyName = selectedCountyName.replace(/city/, '(City)');
 
   const selectedStateRegionNames =
-    selectedRegionId === 'ALL'
+    selectedRegionId === ''
+      ? ''
+      : selectedRegionId === 'ALL'
       ? `${selectedStateRegions
           .map((region) => regions[region.id]?.name)
           .join(', ')} Regions`
