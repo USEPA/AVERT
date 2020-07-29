@@ -164,7 +164,7 @@ export default function reducer(
   }
 }
 
-export function renderMonthlyEmissionsCharts(): AppThunk {
+export function updateFilteredEmissionsData(): AppThunk {
   return (dispatch, getState) => {
     const { displacement, monthlyEmissions } = getState();
     const {
@@ -235,7 +235,7 @@ export function selectMonthlyAggregation(
       type: 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION',
       payload: { selectedAggregation },
     });
-    dispatch(renderMonthlyEmissionsCharts());
+    dispatch(updateFilteredEmissionsData());
   };
 }
 
@@ -245,7 +245,7 @@ export function selectMonthlyUnit(selectedUnit: MonthlyUnit): AppThunk {
       type: 'monthlyEmissions/SELECT_MONTHLY_UNIT',
       payload: { selectedUnit },
     });
-    dispatch(renderMonthlyEmissionsCharts());
+    dispatch(updateFilteredEmissionsData());
   };
 }
 
@@ -255,7 +255,7 @@ export function selectMonthlyRegion(selectedRegionId: string): AppThunk {
       type: 'monthlyEmissions/SELECT_MONTHLY_REGION',
       payload: { selectedRegionId },
     });
-    dispatch(renderMonthlyEmissionsCharts());
+    dispatch(updateFilteredEmissionsData());
   };
 }
 
@@ -265,7 +265,7 @@ export function selectMonthlyState(selectedStateId: string): AppThunk {
       type: 'monthlyEmissions/SELECT_MONTHLY_STATE',
       payload: { selectedStateId },
     });
-    dispatch(renderMonthlyEmissionsCharts());
+    dispatch(updateFilteredEmissionsData());
   };
 }
 
@@ -275,7 +275,7 @@ export function selectMonthlyCounty(selectedCountyName: string): AppThunk {
       type: 'monthlyEmissions/SELECT_MONTHLY_COUNTY',
       payload: { selectedCountyName },
     });
-    dispatch(renderMonthlyEmissionsCharts());
+    dispatch(updateFilteredEmissionsData());
   };
 }
 

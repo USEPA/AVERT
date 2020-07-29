@@ -1,7 +1,7 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
 // action creators
-import { MonthlyUnit, renderMonthlyEmissionsCharts } from './monthlyEmissions';
+import { MonthlyUnit, updateFilteredEmissionsData } from './monthlyEmissions';
 // config
 import { RegionId, StateId, states, fipsCodes } from 'app/config';
 
@@ -422,7 +422,7 @@ function receiveDisplacement(): AppThunk {
 
     dispatch({ type: 'displacement/COMPLETE_DISPLACEMENT' });
 
-    dispatch(renderMonthlyEmissionsCharts());
+    dispatch(updateFilteredEmissionsData());
   };
 }
 
