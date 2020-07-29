@@ -13,13 +13,14 @@ import {
   MonthlyUnit,
   selectMonthlyAggregation,
   selectMonthlyUnit,
+  selectMonthlyRegion,
   selectMonthlyState,
   selectMonthlyCounty,
 } from 'app/redux/reducers/monthlyEmissions';
 // hooks
-import { useSelectedRegion } from 'app/hooks';
+import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 // config
-import { StateId, states } from 'app/config';
+import { RegionId, StateId, regions, states } from 'app/config';
 
 require('highcharts/modules/exporting')(Highcharts);
 
@@ -79,11 +80,15 @@ const emissionsChartsStyles = css`
 function EmissionsChart() {
   const dispatch = useDispatch();
   const status = useTypedSelector(({ displacement }) => displacement.status);
+  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const selectedAggregation = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.selectedAggregation,
   );
   const selectedUnit = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.selectedUnit,
+  );
+  const selectedRegionId = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.selectedRegionId,
   );
   const selectedStateId = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.selectedStateId,
@@ -101,7 +106,8 @@ function EmissionsChart() {
     ({ monthlyEmissions }) => monthlyEmissions.filteredMonthlyData,
   );
 
-  const region = useSelectedRegion();
+  const selectedRegion = useSelectedRegion();
+  const selectedStateRegions = useSelectedStateRegions();
 
   // callback for after highcharts chart renders
   function afterRender(chart: any) {
@@ -170,10 +176,18 @@ function EmissionsChart() {
   // format 'city' if found in county name
   const countyName = selectedCountyName.replace(/city/, '(City)');
 
-  // conditionally define location based on aggregation
-  const location =
+  const selectedStateRegionNames =
+    selectedRegionId === 'ALL'
+      ? `${selectedStateRegions
+          .map((region) => regions[region.id]?.name)
+          .join(', ')} Regions`
+      : `${regions[selectedRegionId as RegionId]?.name} Region`;
+
+  const chartLocationText =
     selectedAggregation === 'region'
-      ? `${region?.name} Region`
+      ? geographicFocus === 'regions'
+        ? `${selectedRegion?.name} Region`
+        : selectedStateRegionNames
       : selectedAggregation === 'state'
       ? selectedStateId === ''
         ? ''
@@ -185,7 +199,7 @@ function EmissionsChart() {
       : '';
 
   function formatTitle(pollutant: string) {
-    return `<tspan class='avert-chart-title'>Change in ${pollutant} Emissions: ${location}</tspan>`;
+    return `<tspan class='avert-chart-title'>Change in ${pollutant} Emissions: ${chartLocationText}</tspan>`;
   }
 
   function formatYAxis(emissionsUnit: string) {
@@ -333,6 +347,29 @@ function EmissionsChart() {
       </div>
 
       <div css={geographyFilterStyles}>
+        {geographicFocus === 'states' && selectedAggregation === 'region' && (
+          <div css={selectGroupStyles}>
+            <select
+              value={selectedRegionId}
+              onChange={(ev) => dispatch(selectMonthlyRegion(ev.target.value))}
+            >
+              <option value="" disabled>
+                Select Region
+              </option>
+
+              <option value="ALL">All Affected Regions</option>
+
+              {selectedStateRegions.map((region) => {
+                return (
+                  <React.Fragment key={region.id}>
+                    <option value={region.id}>{region.name}</option>
+                  </React.Fragment>
+                );
+              })}
+            </select>
+          </div>
+        )}
+
         {(selectedAggregation === 'state' ||
           selectedAggregation === 'county') && (
           <div css={selectGroupStyles}>

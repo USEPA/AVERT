@@ -22,6 +22,10 @@ type MonthlyEmissionsAction =
       payload: { selectedUnit: MonthlyUnit };
     }
   | {
+      type: 'monthlyEmissions/SELECT_MONTHLY_REGION';
+      payload: { selectedRegionId: string };
+    }
+  | {
       type: 'monthlyEmissions/SELECT_MONTHLY_STATE';
       payload: { selectedStateId: string };
     }
@@ -41,6 +45,7 @@ type MonthlyEmissionsAction =
 type MonthlyEmissionsState = {
   selectedAggregation: MonthlyAggregation;
   selectedUnit: MonthlyUnit;
+  selectedRegionId: string;
   selectedStateId: string;
   selectedCountyName: string;
   filteredMonthlyData: {
@@ -70,6 +75,7 @@ const initialMonthlyData = {
 const initialState: MonthlyEmissionsState = {
   selectedAggregation: 'region',
   selectedUnit: 'emissions',
+  selectedRegionId: '',
   selectedStateId: '',
   selectedCountyName: '',
   filteredMonthlyData: {
@@ -104,6 +110,15 @@ export default function reducer(
       return {
         ...state,
         selectedUnit,
+      };
+    }
+
+    case 'monthlyEmissions/SELECT_MONTHLY_REGION': {
+      const { selectedRegionId } = action.payload;
+
+      return {
+        ...state,
+        selectedRegionId,
       };
     }
 
@@ -229,6 +244,16 @@ export function selectMonthlyUnit(selectedUnit: MonthlyUnit): AppThunk {
     dispatch({
       type: 'monthlyEmissions/SELECT_MONTHLY_UNIT',
       payload: { selectedUnit },
+    });
+    dispatch(renderMonthlyEmissionsCharts());
+  };
+}
+
+export function selectMonthlyRegion(selectedRegionId: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'monthlyEmissions/SELECT_MONTHLY_REGION',
+      payload: { selectedRegionId },
     });
     dispatch(renderMonthlyEmissionsCharts());
   };
