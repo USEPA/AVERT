@@ -354,7 +354,7 @@ function EmissionsChart() {
               onChange={(ev) => dispatch(selectMonthlyRegion(ev.target.value))}
             >
               <option value="" disabled>
-                Select Region
+                Select Region(s)
               </option>
 
               <option value="ALL">All Affected Regions</option>

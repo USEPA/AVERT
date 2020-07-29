@@ -166,16 +166,18 @@ export default function reducer(
 
 export function updateFilteredEmissionsData(): AppThunk {
   return (dispatch, getState) => {
-    const { displacement, monthlyEmissions } = getState();
+    const { geography, displacement, monthlyEmissions } = getState();
     const {
       selectedAggregation: aggregation,
+      selectedRegionId: regionId,
       selectedStateId: stateId,
       selectedCountyName: countyName,
     } = monthlyEmissions;
 
-    (['so2', 'nox', 'co2', 'pm25'] as PollutantName[]).forEach((pollutant) => {
-      // aggregate monthly pollutant data for each selected region
-      const monthlyPollutantData: MonthlyDisplacement = {
+    // store filtered monthly data for each pollutant
+    for (const pollutant of ['so2', 'nox', 'co2', 'pm25'] as PollutantName[]) {
+      // initial combined monthly pollutant data may be conditionally overwritten
+      const combinedMonthlyData: MonthlyDisplacement = {
         month1: { original: 0, postEere: 0 },
         month2: { original: 0, postEere: 0 },
         month3: { original: 0, postEere: 0 },
@@ -190,13 +192,57 @@ export function updateFilteredEmissionsData(): AppThunk {
         month12: { original: 0, postEere: 0 },
       };
 
-      for (const regionId in displacement.regionalDisplacements) {
-        // regional displacement data
+      // if a state is selected, the selected aggregation is region, and a
+      // region has not been selected, use the initially set (empty) combined
+      // monthly pollutant data
+      if (
+        geography.focus === 'states' &&
+        aggregation === 'region' &&
+        regionId === ''
+      ) {
+        dispatch({
+          type: 'monthlyEmissions/STORE_FILTERED_DATA',
+          payload: {
+            pollutant,
+            data: combinedMonthlyData,
+          },
+        });
+
+        continue;
+      }
+
+      // if a state is selected, the selected aggregation is region, and a
+      // region has been selected, use only the selected region's monthly
+      // pollutant data
+      if (
+        geography.focus === 'states' &&
+        aggregation === 'region' &&
+        regionId !== '' &&
+        regionId !== 'ALL'
+      ) {
         const data = displacement.regionalDisplacements[regionId as RegionId];
 
         if (data) {
+          dispatch({
+            type: 'monthlyEmissions/STORE_FILTERED_DATA',
+            payload: {
+              pollutant,
+              data: data[pollutant].regionalData,
+            },
+          });
+
+          continue;
+        }
+      }
+
+      // aggregate monthly pollutant data for each of the selected regions
+      for (const key in displacement.regionalDisplacements) {
+        // regional displacement data
+        const data = displacement.regionalDisplacements[key as RegionId];
+
+        if (data) {
           // set regional monthly pollutant data based on selected aggregation
-          const regionalMonthlyPollutantData: MonthlyDisplacement =
+          const regionalMonthlyData =
             aggregation === 'region'
               ? data[pollutant].regionalData
               : aggregation === 'state' && stateId
@@ -205,13 +251,13 @@ export function updateFilteredEmissionsData(): AppThunk {
               ? data[pollutant].countyData[stateId]?.[countyName]
               : initialMonthlyData;
 
-          // add regional monthly pollutant data to aggregated monthly pollutant
-          // data from all selected regions
-          for (const key in regionalMonthlyPollutantData) {
+          // add regional monthly pollutant data to aggregated monthly
+          // pollutant data (`combinedMonthlyData`) from all selected regions
+          for (const key in regionalMonthlyData) {
             const month = key as MonthKey;
-            const { original, postEere } = regionalMonthlyPollutantData[month];
-            monthlyPollutantData[month].original += original;
-            monthlyPollutantData[month].postEere += postEere;
+            const { original, postEere } = regionalMonthlyData[month];
+            combinedMonthlyData[month].original += original;
+            combinedMonthlyData[month].postEere += postEere;
           }
         }
       }
@@ -220,10 +266,10 @@ export function updateFilteredEmissionsData(): AppThunk {
         type: 'monthlyEmissions/STORE_FILTERED_DATA',
         payload: {
           pollutant,
-          data: monthlyPollutantData,
+          data: combinedMonthlyData,
         },
       });
-    });
+    }
   };
 }
 
