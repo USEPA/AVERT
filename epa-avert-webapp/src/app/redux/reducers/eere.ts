@@ -492,22 +492,25 @@ export function calculateEereProfile(): AppThunk {
     // create the eere profile chart and show validation warning/error message
     const selectedRegionalProfiles: RegionalProfile[] = [];
 
-    // collect selected regions that support offshore wind
-    // (used below to set the offshore wind scaling factor)
-    const selectedOffshoreWindRegions = selectedRegions.filter((region) => {
-      return region.offshoreWind;
+    // build up total percentage of state in all regions that support offshore wind
+    let totalOffshoreWindPercent = 0;
+    selectedRegions.forEach((region) => {
+      if (region.offshoreWind) {
+        const regionPercent = selectedState?.percentageByRegion[region.id] || 0;
+        totalOffshoreWindPercent += regionPercent;
+      }
     });
 
     selectedRegions.forEach((region) => {
+      const regionPercent = selectedState?.percentageByRegion[region.id] || 0;
+
       // the regional scaling factor is a number between 0 and 1, representing
       // the proportion the selected geography exists within a given region.
       // - if a state is selected and it falls exactly equally between two
       //   regions, the regional scaling factor would be 0.5 for each of those
       //   two regions
       // - if a region is selected, the regional scaling factor will always be 1
-      const regionalScalingFactor = selectedState
-        ? (selectedState.percentageByRegion[region.id] || 100) / 100
-        : 1;
+      const regionalScalingFactor = selectedState ? regionPercent / 100 : 1;
 
       // the offshore wind factor is also a number between 0 and 1, representing
       // the proportion the selected geography's offshore wind value should be
@@ -532,8 +535,8 @@ export function calculateEereProfile(): AppThunk {
       // be 0, and the Mid-Atlantic region's `offshoreWindFactor` would be 1
       const offshoreWindFactor = !selectedState
         ? 1
-        : selectedOffshoreWindRegions.includes(region)
-        ? 1 / selectedOffshoreWindRegions.length
+        : region.offshoreWind
+        ? regionPercent / totalOffshoreWindPercent
         : 0;
 
       const scaledEereInputs = {
