@@ -381,7 +381,7 @@ function calculateEereLimits({
       //   two regions
       // - if a region is selected, the regional scaling factor will always be 1
       const regionalScalingFactor = selectedState
-        ? (selectedState.regions[regionId] || 100) / 100
+        ? (selectedState.percentageByRegion[regionId] || 100) / 100
         : 1;
 
       maxSolarWindMwh += limits.max_solar_wind_mwh * regionalScalingFactor;
@@ -433,8 +433,9 @@ export function fetchRegionsData(): AppThunk {
       for (const stateId in geography.states) {
         const state = geography.states[stateId as StateId];
         if (state.selected) {
+          const regionIds = Object.keys(state.percentageByRegion);
           selectedState = state;
-          selectedStateRegionIds = Object.keys(state.regions) as RegionId[];
+          selectedStateRegionIds = regionIds as RegionId[];
           selectedStateRegionIds.forEach((regionId) => {
             const region = geography.regions[regionId];
             selectedRegions.push(region);

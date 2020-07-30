@@ -22,7 +22,7 @@ function useSelectedState() {
 function useSelectedStateRegions() {
   const selectedState = useSelectedState();
   const selectedStateRegionIds = selectedState
-    ? Object.keys(selectedState.regions)
+    ? Object.keys(selectedState.percentageByRegion)
     : [];
   return useTypedSelector(({ geography }) => {
     const selectedStateRegions: RegionState[] = [];

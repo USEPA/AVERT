@@ -477,7 +477,7 @@ export function calculateEereProfile(): AppThunk {
         const state = geography.states[stateId as StateId];
         if (state.selected) {
           selectedState = state;
-          Object.keys(state.regions).forEach((regionId) => {
+          Object.keys(state.percentageByRegion).forEach((regionId) => {
             const region = geography.regions[regionId as RegionId];
             selectedRegions.push(region);
           });
@@ -506,7 +506,7 @@ export function calculateEereProfile(): AppThunk {
       //   two regions
       // - if a region is selected, the regional scaling factor will always be 1
       const regionalScalingFactor = selectedState
-        ? (selectedState.regions[region.id] || 100) / 100
+        ? (selectedState.percentageByRegion[region.id] || 100) / 100
         : 1;
 
       // the offshore wind factor is also a number between 0 and 1, representing

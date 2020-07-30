@@ -172,7 +172,7 @@ export type StateId =
 export type State = {
   id: StateId;
   name: string;
-  regions: Partial<{ [key in RegionId]: number }>;
+  percentageByRegion: Partial<{ [key in RegionId]: number }>;
 };
 
 /**
@@ -183,7 +183,7 @@ export const states: { [key in StateId]: State } = {
   AL: {
     id: 'AL',
     name: 'Alabama',
-    regions: {
+    percentageByRegion: {
       SE: 73.791629656774,
       TN: 26.208370343226,
     },
@@ -191,7 +191,7 @@ export const states: { [key in StateId]: State } = {
   AR: {
     id: 'AR',
     name: 'Arkansas',
-    regions: {
+    percentageByRegion: {
       MIDW: 73.757031571744,
       CENT: 26.242968428256,
     },
@@ -199,49 +199,49 @@ export const states: { [key in StateId]: State } = {
   AZ: {
     id: 'AZ',
     name: 'Arizona',
-    regions: {
+    percentageByRegion: {
       SW: 100,
     },
   },
   CA: {
     id: 'CA',
     name: 'California',
-    regions: {
+    percentageByRegion: {
       CA: 100,
     },
   },
   CO: {
     id: 'CO',
     name: 'Colorado',
-    regions: {
+    percentageByRegion: {
       RM: 100,
     },
   },
   CT: {
     id: 'CT',
     name: 'Connecticut',
-    regions: {
+    percentageByRegion: {
       NE: 100,
     },
   },
   DC: {
     id: 'DC',
     name: 'District of Columbia',
-    regions: {
+    percentageByRegion: {
       MIDA: 100,
     },
   },
   DE: {
     id: 'DE',
     name: 'Delaware',
-    regions: {
+    percentageByRegion: {
       MIDA: 100,
     },
   },
   FL: {
     id: 'FL',
     name: 'Florida',
-    regions: {
+    percentageByRegion: {
       SE: 5.54204561120175,
       FL: 94.4579543887982,
     },
@@ -249,7 +249,7 @@ export const states: { [key in StateId]: State } = {
   GA: {
     id: 'GA',
     name: 'Georgia',
-    regions: {
+    percentageByRegion: {
       SE: 97.5685884564488,
       TN: 2.43141154355125,
     },
@@ -257,7 +257,7 @@ export const states: { [key in StateId]: State } = {
   IA: {
     id: 'IA',
     name: 'Iowa',
-    regions: {
+    percentageByRegion: {
       MIDW: 94.0739868582707,
       CENT: 5.92601314172933,
     },
@@ -265,14 +265,14 @@ export const states: { [key in StateId]: State } = {
   ID: {
     id: 'ID',
     name: 'Idaho',
-    regions: {
+    percentageByRegion: {
       NW: 100,
     },
   },
   IL: {
     id: 'IL',
     name: 'Illinois',
-    regions: {
+    percentageByRegion: {
       MIDA: 65.2031111352377,
       MIDW: 34.7968888647623,
     },
@@ -280,7 +280,7 @@ export const states: { [key in StateId]: State } = {
   IN: {
     id: 'IN',
     name: 'Indiana',
-    regions: {
+    percentageByRegion: {
       MIDA: 21.306124107215,
       MIDW: 78.693875892785,
     },
@@ -288,14 +288,14 @@ export const states: { [key in StateId]: State } = {
   KS: {
     id: 'KS',
     name: 'Kansas',
-    regions: {
+    percentageByRegion: {
       CENT: 100,
     },
   },
   KY: {
     id: 'KY',
     name: 'Kentucky',
-    regions: {
+    percentageByRegion: {
       TN: 14.9033170798895,
       MIDA: 29.8395825874621,
       MIDW: 55.2571003326483,
@@ -304,7 +304,7 @@ export const states: { [key in StateId]: State } = {
   LA: {
     id: 'LA',
     name: 'Louisiana',
-    regions: {
+    percentageByRegion: {
       MIDW: 92.7251993267115,
       CENT: 7.27480067328851,
     },
@@ -312,28 +312,28 @@ export const states: { [key in StateId]: State } = {
   MA: {
     id: 'MA',
     name: 'Massachusetts',
-    regions: {
+    percentageByRegion: {
       NE: 100,
     },
   },
   MD: {
     id: 'MD',
     name: 'Maryland',
-    regions: {
+    percentageByRegion: {
       MIDA: 100,
     },
   },
   ME: {
     id: 'ME',
     name: 'Maine',
-    regions: {
+    percentageByRegion: {
       NE: 100,
     },
   },
   MI: {
     id: 'MI',
     name: 'Michigan',
-    regions: {
+    percentageByRegion: {
       MIDA: 3.87442312109519,
       MIDW: 96.1255768789048,
     },
@@ -341,7 +341,7 @@ export const states: { [key in StateId]: State } = {
   MN: {
     id: 'MN',
     name: 'Minnesota',
-    regions: {
+    percentageByRegion: {
       MIDW: 98.705735394633,
       CENT: 1.29426460536664,
     },
@@ -349,7 +349,7 @@ export const states: { [key in StateId]: State } = {
   MO: {
     id: 'MO',
     name: 'Missouri',
-    regions: {
+    percentageByRegion: {
       MIDW: 65.1822776582235,
       CENT: 34.8177223417765,
     },
@@ -357,7 +357,7 @@ export const states: { [key in StateId]: State } = {
   MS: {
     id: 'MS',
     name: 'Mississippi',
-    regions: {
+    percentageByRegion: {
       SE: 23.2693176758563,
       TN: 32.3277059280809,
       MIDW: 44.4029763960628,
@@ -366,7 +366,7 @@ export const states: { [key in StateId]: State } = {
   MT: {
     id: 'MT',
     name: 'Montana',
-    regions: {
+    percentageByRegion: {
       NW: 90.9322053030408,
       RM: 1.63910331296,
       CENT: 7.42869138399923,
@@ -375,7 +375,7 @@ export const states: { [key in StateId]: State } = {
   NC: {
     id: 'NC',
     name: 'North Carolina',
-    regions: {
+    percentageByRegion: {
       NCSC: 95.8122354967843,
       MIDA: 4.18776450321575,
     },
@@ -383,7 +383,7 @@ export const states: { [key in StateId]: State } = {
   ND: {
     id: 'ND',
     name: 'North Dakota',
-    regions: {
+    percentageByRegion: {
       MIDW: 53.063953245907,
       CENT: 46.9360467540927,
     },
@@ -391,7 +391,7 @@ export const states: { [key in StateId]: State } = {
   NE: {
     id: 'NE',
     name: 'Nebraska',
-    regions: {
+    percentageByRegion: {
       RM: 4.12001916514984,
       CENT: 95.8799808348502,
     },
@@ -399,21 +399,21 @@ export const states: { [key in StateId]: State } = {
   NH: {
     id: 'NH',
     name: 'New Hampshire',
-    regions: {
+    percentageByRegion: {
       NE: 100,
     },
   },
   NJ: {
     id: 'NJ',
     name: 'New Jersey',
-    regions: {
+    percentageByRegion: {
       MIDA: 100,
     },
   },
   NM: {
     id: 'NM',
     name: 'New Mexico',
-    regions: {
+    percentageByRegion: {
       RM: 4.57850916915244,
       SW: 60.2887390314291,
       CENT: 35.1327517994185,
@@ -422,28 +422,28 @@ export const states: { [key in StateId]: State } = {
   NV: {
     id: 'NV',
     name: 'Nevada',
-    regions: {
+    percentageByRegion: {
       NW: 100,
     },
   },
   NY: {
     id: 'NY',
     name: 'New York',
-    regions: {
+    percentageByRegion: {
       NY: 100,
     },
   },
   OH: {
     id: 'OH',
     name: 'Ohio',
-    regions: {
+    percentageByRegion: {
       MIDA: 100,
     },
   },
   OK: {
     id: 'OK',
     name: 'Oklahoma',
-    regions: {
+    percentageByRegion: {
       MIDW: 4.58716009767985,
       CENT: 95.4128399023201,
     },
@@ -451,35 +451,35 @@ export const states: { [key in StateId]: State } = {
   OR: {
     id: 'OR',
     name: 'Oregon',
-    regions: {
+    percentageByRegion: {
       NW: 100,
     },
   },
   PA: {
     id: 'PA',
     name: 'Pennsylvania',
-    regions: {
+    percentageByRegion: {
       MIDA: 100,
     },
   },
   RI: {
     id: 'RI',
     name: 'Rhode Island',
-    regions: {
+    percentageByRegion: {
       NE: 100,
     },
   },
   SC: {
     id: 'SC',
     name: 'South Carolina',
-    regions: {
+    percentageByRegion: {
       NCSC: 100,
     },
   },
   SD: {
     id: 'SD',
     name: 'South Dakota',
-    regions: {
+    percentageByRegion: {
       RM: 24.6328808233089,
       MIDW: 25.4722557633138,
       CENT: 49.8948634133773,
@@ -488,7 +488,7 @@ export const states: { [key in StateId]: State } = {
   TN: {
     id: 'TN',
     name: 'Tennessee',
-    regions: {
+    percentageByRegion: {
       TN: 97.9705292162893,
       MIDA: 2.02947078371074,
     },
@@ -496,7 +496,7 @@ export const states: { [key in StateId]: State } = {
   TX: {
     id: 'TX',
     name: 'Texas',
-    regions: {
+    percentageByRegion: {
       SW: 1.49870155100264,
       TE: 85.6392226594376,
       MIDW: 5.4354231583257,
@@ -506,7 +506,7 @@ export const states: { [key in StateId]: State } = {
   UT: {
     id: 'UT',
     name: 'Utah',
-    regions: {
+    percentageByRegion: {
       NW: 97.3172662009813,
       RM: 2.68273379901869,
     },
@@ -514,42 +514,42 @@ export const states: { [key in StateId]: State } = {
   VA: {
     id: 'VA',
     name: 'Virginia',
-    regions: {
+    percentageByRegion: {
       MIDA: 100,
     },
   },
   VT: {
     id: 'VT',
     name: 'Vermont',
-    regions: {
+    percentageByRegion: {
       NE: 100,
     },
   },
   WA: {
     id: 'WA',
     name: 'Washington',
-    regions: {
+    percentageByRegion: {
       NW: 100,
     },
   },
   WI: {
     id: 'WI',
     name: 'Wisconsin',
-    regions: {
+    percentageByRegion: {
       MIDW: 100,
     },
   },
   WV: {
     id: 'WV',
     name: 'West Virginia',
-    regions: {
+    percentageByRegion: {
       MIDA: 100,
     },
   },
   WY: {
     id: 'WY',
     name: 'Wyoming',
-    regions: {
+    percentageByRegion: {
       NW: 62.2496676189133,
       RM: 37.7503323810867,
     },
