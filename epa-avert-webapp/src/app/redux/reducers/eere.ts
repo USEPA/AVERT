@@ -8,7 +8,7 @@ import {
 // calculations
 import { calculateEere } from 'app/calculations';
 // config
-import { RegionId, StateId } from 'app/config';
+import { RegionId, StateId, regions } from 'app/config';
 
 type RegionalProfile = {
   regionId: RegionId;
@@ -493,16 +493,13 @@ export function calculateEereProfile(): AppThunk {
     const selectedRegionalProfiles: RegionalProfile[] = [];
 
     // build up total percentage of state in all regions that support offshore wind
-    let totalOffshoreWindPercent = 0;
-    selectedRegions.forEach((region) => {
-      if (region.offshoreWind) {
-        const regionPercent = selectedState?.percentageByRegion[region.id] || 0;
-        totalOffshoreWindPercent += regionPercent;
-      }
-    });
+    const totalOffshoreWindPercent = selectedRegions.reduce((total, region) => {
+      const regionalPercent = selectedState?.percentageByRegion[region.id] || 0;
+      return region.offshoreWind ? (total += regionalPercent) : total;
+    }, 0);
 
     selectedRegions.forEach((region) => {
-      const regionPercent = selectedState?.percentageByRegion[region.id] || 0;
+      const regionalPercent = selectedState?.percentageByRegion[region.id] || 0;
 
       // the regional scaling factor is a number between 0 and 1, representing
       // the proportion the selected geography exists within a given region.
@@ -510,7 +507,7 @@ export function calculateEereProfile(): AppThunk {
       //   regions, the regional scaling factor would be 0.5 for each of those
       //   two regions
       // - if a region is selected, the regional scaling factor will always be 1
-      const regionalScalingFactor = selectedState ? regionPercent / 100 : 1;
+      const regionalScalingFactor = selectedState ? regionalPercent / 100 : 1;
 
       // the offshore wind factor is also a number between 0 and 1, representing
       // the proportion the selected geography's offshore wind value should be
@@ -521,10 +518,11 @@ export function calculateEereProfile(): AppThunk {
       //   (if the region doesn't support offshore wind, the input will be
       //   disabled and 0 will be used in the calculations for offshore wind –
       //   see `app/calculations.ts`)
-      // - if a state selected and it's within a region that supports offshore
-      //   wind, the offshore wind factor will be set to an integer equal to the
-      //   total number of other regions the selected state is within that also
-      //   support offshore wind (e.g. 0.5 for two, 0.3333333 for three, etc.)
+      // - if a is state is selected and it's within a region that supports
+      //   offshore wind, the offshore wind factor will be set to an integer
+      //   equal to the proportion the state exists within the region divided
+      //   by the proprtion the state exists within all regions that support
+      //   offshore wind
       // - if a state is selected and it's within a region that doesn't support
       //   offshore wind, the offshore wind factor will always be 0
       //
@@ -536,7 +534,7 @@ export function calculateEereProfile(): AppThunk {
       const offshoreWindFactor = !selectedState
         ? 1
         : region.offshoreWind
-        ? regionPercent / totalOffshoreWindPercent
+        ? regionalPercent / totalOffshoreWindPercent
         : 0;
 
       const scaledEereInputs = {
