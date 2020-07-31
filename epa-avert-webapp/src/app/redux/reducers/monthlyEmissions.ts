@@ -192,13 +192,14 @@ export function updateFilteredEmissionsData(): AppThunk {
         month12: { original: 0, postEere: 0 },
       };
 
-      // if a state is selected, the selected aggregation is region, and a
-      // region has not been selected, use the initially set (empty) combined
-      // monthly pollutant data
+      // if a state is selected, the selected aggregation is region, a region
+      // region has not been selected, and there is more than one region, use
+      // the initially set (empty) combined monthly pollutant data
       if (
         geography.focus === 'states' &&
         aggregation === 'region' &&
-        regionId === ''
+        regionId === '' &&
+        Object.keys(displacement.regionalDisplacements).length > 1
       ) {
         dispatch({
           type: 'monthlyEmissions/STORE_FILTERED_DATA',

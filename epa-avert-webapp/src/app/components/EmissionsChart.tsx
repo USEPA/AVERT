@@ -176,32 +176,42 @@ function EmissionsChart() {
   // format 'city' if found in county name
   const countyName = selectedCountyName.replace(/city/, '(City)');
 
-  const selectedStateRegionNames =
-    selectedRegionId === ''
-      ? ''
-      : selectedRegionId === 'ALL'
-      ? `${selectedStateRegions
-          .map((region) => regions[region.id]?.name)
-          .join(', ')} Regions`
-      : `${regions[selectedRegionId as RegionId]?.name} Region`;
+  const regionChartTitle =
+    geographicFocus === 'regions'
+      ? `${selectedRegion?.name} Region`
+      : geographicFocus === 'states'
+      ? selectedStateRegions.length === 1
+        ? `${regions[selectedStateRegions[0].id as RegionId]?.name} Region`
+        : selectedRegionId === ''
+        ? '' // multiple regions but a region has not yet been selected
+        : selectedRegionId === 'ALL'
+        ? `${selectedStateRegions
+            .map((region) => regions[region.id]?.name)
+            .join(', ')} Regions`
+        : `${regions[selectedRegionId as RegionId]?.name} Region`
+      : '';
 
-  const chartLocationText =
+  const stateChartTitle =
+    selectedStateId === ''
+      ? '' // state has not yet been selected
+      : `${states[selectedStateId as StateId].name}`;
+
+  const countyChartTitle =
+    selectedCountyName === ''
+      ? '' // county has not yet been selected
+      : `${countyName}, ${states[selectedStateId as StateId].name}`;
+
+  const chartLocationTitle =
     selectedAggregation === 'region'
-      ? geographicFocus === 'regions'
-        ? `${selectedRegion?.name} Region`
-        : selectedStateRegionNames
+      ? regionChartTitle
       : selectedAggregation === 'state'
-      ? selectedStateId === ''
-        ? ''
-        : `${states[selectedStateId as StateId].name}`
+      ? stateChartTitle
       : selectedAggregation === 'county'
-      ? selectedCountyName === ''
-        ? ''
-        : `${countyName}, ${states[selectedStateId as StateId].name}`
+      ? countyChartTitle
       : '';
 
   function formatTitle(pollutant: string) {
-    return `<tspan class='avert-chart-title'>Change in ${pollutant} Emissions: ${chartLocationText}</tspan>`;
+    return `<tspan class='avert-chart-title'>Change in ${pollutant} Emissions: ${chartLocationTitle}</tspan>`;
   }
 
   function formatYAxis(emissionsUnit: string) {
@@ -349,28 +359,32 @@ function EmissionsChart() {
       </div>
 
       <div css={geographyFilterStyles}>
-        {geographicFocus === 'states' && selectedAggregation === 'region' && (
-          <div css={selectGroupStyles}>
-            <select
-              value={selectedRegionId}
-              onChange={(ev) => dispatch(selectMonthlyRegion(ev.target.value))}
-            >
-              <option value="" disabled>
-                Select Region(s)
-              </option>
+        {geographicFocus === 'states' &&
+          selectedAggregation === 'region' &&
+          selectedStateRegions.length > 1 && (
+            <div css={selectGroupStyles}>
+              <select
+                value={selectedRegionId}
+                onChange={(ev) =>
+                  dispatch(selectMonthlyRegion(ev.target.value))
+                }
+              >
+                <option value="" disabled>
+                  Select Region(s)
+                </option>
 
-              <option value="ALL">All Affected Regions</option>
+                <option value="ALL">All Affected Regions</option>
 
-              {selectedStateRegions.map((region) => {
-                return (
-                  <React.Fragment key={region.id}>
-                    <option value={region.id}>{region.name}</option>
-                  </React.Fragment>
-                );
-              })}
-            </select>
-          </div>
-        )}
+                {selectedStateRegions.map((region) => {
+                  return (
+                    <React.Fragment key={region.id}>
+                      <option value={region.id}>{region.name}</option>
+                    </React.Fragment>
+                  );
+                })}
+              </select>
+            </div>
+          )}
 
         {(selectedAggregation === 'state' ||
           selectedAggregation === 'county') && (
