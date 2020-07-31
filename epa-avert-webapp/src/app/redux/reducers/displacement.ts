@@ -91,11 +91,10 @@ type CobraDataRow = {
 };
 
 type DisplacementAction =
-  | { type: 'geography/SELECT_REGION' }
+  | { type: 'displacement/RESET_DISPLACEMENT' }
   | { type: 'displacement/INCREMENT_PROGRESS' }
   | { type: 'displacement/START_DISPLACEMENT' }
   | { type: 'displacement/COMPLETE_DISPLACEMENT' }
-  | { type: 'displacement/RESET_DISPLACEMENT' }
   | { type: 'displacement/REQUEST_DISPLACEMENT_DATA' }
   | {
       type: 'displacement/RECEIVE_DISPLACEMENT_DATA';
@@ -145,9 +144,20 @@ export default function reducer(
   action: DisplacementAction,
 ): DisplacementState {
   switch (action.type) {
-    case 'geography/SELECT_REGION':
     case 'displacement/RESET_DISPLACEMENT': {
-      return initialState;
+      // initial state
+      return {
+        status: 'ready',
+        regionalDisplacements: {},
+        combinedStateChanges: {},
+        statesAndCounties: {},
+        downloadableCountyData: [],
+        downloadableCobraData: [],
+      };
+    }
+
+    case 'displacement/INCREMENT_PROGRESS': {
+      return state;
     }
 
     case 'displacement/START_DISPLACEMENT': {
@@ -164,8 +174,7 @@ export default function reducer(
       };
     }
 
-    case 'displacement/REQUEST_DISPLACEMENT_DATA':
-    case 'displacement/INCREMENT_PROGRESS': {
+    case 'displacement/REQUEST_DISPLACEMENT_DATA': {
       return state;
     }
 

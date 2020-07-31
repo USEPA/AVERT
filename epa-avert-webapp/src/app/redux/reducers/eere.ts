@@ -32,6 +32,7 @@ type CombinedProfile = {
 };
 
 type EereAction =
+  | { type: 'eere/RESET_EERE_INPUTS' }
   | {
       type: 'eere/VALIDATE_EERE';
       payload: { errors: EereInputFields[] };
@@ -80,8 +81,7 @@ type EereAction =
   | {
       type: 'eere/COMPLETE_EERE_CALCULATIONS';
       payload: CombinedProfile;
-    }
-  | { type: 'eere/RESET_EERE_INPUTS' };
+    };
 
 export type EereInputFields =
   | 'annualGwh'
@@ -148,6 +148,25 @@ export default function reducer(
   action: EereAction,
 ): EereState {
   switch (action.type) {
+    case 'eere/RESET_EERE_INPUTS': {
+      // initial state
+      return {
+        status: 'ready',
+        errors: [],
+        inputs: emptyEereInputs,
+        regionalProfiles: {},
+        combinedProfile: {
+          hourlyEere: [],
+          softValid: true,
+          softTopExceedanceValue: 0,
+          softTopExceedanceTimestamp: emptyRegionalLoadHour,
+          hardValid: true,
+          hardTopExceedanceValue: 0,
+          hardTopExceedanceTimestamp: emptyRegionalLoadHour,
+        },
+      };
+    }
+
     case 'eere/VALIDATE_EERE': {
       const { errors } = action.payload;
 
@@ -308,10 +327,6 @@ export default function reducer(
         status: 'complete',
         combinedProfile: action.payload,
       };
-    }
-
-    case 'eere/RESET_EERE_INPUTS': {
-      return initialState;
     }
 
     default: {

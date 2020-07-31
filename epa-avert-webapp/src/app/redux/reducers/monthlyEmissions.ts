@@ -11,8 +11,7 @@ export type MonthlyUnit = 'emissions' | 'percentages';
 type PollutantName = 'so2' | 'nox' | 'co2' | 'pm25';
 
 type MonthlyEmissionsAction =
-  | { type: 'geography/SELECT_REGION' }
-  | { type: 'eere/RESET_EERE_INPUTS' }
+  | { type: 'monthlyEmissions/RESET_MONTHLY_EMISSIONS' }
   | {
       type: 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION';
       payload: { selectedAggregation: MonthlyAggregation };
@@ -39,8 +38,7 @@ type MonthlyEmissionsAction =
         pollutant: PollutantName;
         data: MonthlyDisplacement;
       };
-    }
-  | { type: 'monthlyEmissions/RESET_FILTERED_DATA' };
+    };
 
 type MonthlyEmissionsState = {
   selectedAggregation: MonthlyAggregation;
@@ -91,8 +89,21 @@ export default function reducer(
   action: MonthlyEmissionsAction,
 ): MonthlyEmissionsState {
   switch (action.type) {
-    case 'geography/SELECT_REGION': {
-      return initialState;
+    case 'monthlyEmissions/RESET_MONTHLY_EMISSIONS': {
+      // initial state
+      return {
+        selectedAggregation: 'region',
+        selectedUnit: 'emissions',
+        selectedRegionId: '',
+        selectedStateId: '',
+        selectedCountyName: '',
+        filteredMonthlyData: {
+          so2: initialMonthlyData,
+          nox: initialMonthlyData,
+          co2: initialMonthlyData,
+          pm25: initialMonthlyData,
+        },
+      };
     }
 
     case 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION': {
@@ -151,11 +162,6 @@ export default function reducer(
           [pollutant]: data,
         },
       };
-    }
-
-    case 'eere/RESET_EERE_INPUTS':
-    case 'monthlyEmissions/RESET_FILTERED_DATA': {
-      return initialState;
     }
 
     default: {
@@ -327,5 +333,5 @@ export function selectMonthlyCounty(selectedCountyName: string): AppThunk {
 }
 
 export function resetMonthlyEmissions(): MonthlyEmissionsAction {
-  return { type: 'monthlyEmissions/RESET_FILTERED_DATA' };
+  return { type: 'monthlyEmissions/RESET_MONTHLY_EMISSIONS' };
 }
