@@ -3,7 +3,7 @@ import { AppThunk } from 'app/redux/index';
 // action creators
 import { MonthlyUnit, updateFilteredEmissionsData } from './monthlyEmissions';
 // config
-import { RegionId, StateId, states, fipsCodes } from 'app/config';
+import { RegionId, StateId, states, fipsCodes, regions } from 'app/config';
 
 type DisplacementPollutantName = 'generation' | 'so2' | 'nox' | 'co2' | 'pm25';
 
@@ -62,7 +62,7 @@ type StatesAndCounties = Partial<{ [key in StateId]: string[] }>;
 
 type CountyDataRow = {
   Pollutant: 'SO2' | 'NOX' | 'CO2' | 'PM25';
-  'Aggregation level': 'County' | 'State' | 'AVERT Region(s)';
+  'Aggregation level': string;
   State: string | null;
   County: string | null;
   'Unit of measure': 'emissions (pounds)' | 'emissions (tons)' | 'percent';
@@ -405,7 +405,10 @@ function receiveDisplacement(): AppThunk {
       const data = displacement.regionalDisplacements[regionId as RegionId];
 
       if (data) {
-        const { countyData, cobraData } = formatRegionalDownloadData(data);
+        const { countyData, cobraData } = formatRegionalDownloadData(
+          data,
+          regionId as RegionId,
+        );
 
         allRegionsCountyData.push(...countyData);
         allRegionsCobraData.push(...cobraData);
@@ -458,7 +461,10 @@ function calculateMonthlyPercents(data: MonthlyDisplacement) {
   return calculateMonthlyData(data, 'percentages');
 }
 
-function formatRegionalDownloadData(data: RegionalDisplacement) {
+function formatRegionalDownloadData(
+  data: RegionalDisplacement,
+  regionId: RegionId,
+) {
   const { so2, nox, co2, pm25 } = data;
 
   const countyData: CountyDataRow[] = [];
@@ -468,23 +474,27 @@ function formatRegionalDownloadData(data: RegionalDisplacement) {
     pollutant,
     unit,
     monthlyData,
+    regionId,
     stateId,
     countyName,
   }: {
     pollutant: 'SO2' | 'NOX' | 'CO2' | 'PM25';
     unit: 'emissions (pounds)' | 'emissions (tons)' | 'percent';
     monthlyData: number[];
+    regionId?: RegionId;
     stateId?: StateId;
     countyName?: string;
   }) {
     if (!monthlyData) return;
     countyData.push({
       Pollutant: pollutant,
-      'Aggregation level': countyName
+      'Aggregation level': regionId
+        ? `${regions[regionId].name} Region`
+        : countyName
         ? 'County'
         : stateId
         ? 'State'
-        : 'AVERT Region(s)',
+        : '',
       State: stateId ? stateId : null,
       County: countyName ? countyName.replace(/city/, '(City)') : null, // format 'city'
       'Unit of measure': unit,
@@ -577,48 +587,56 @@ function formatRegionalDownloadData(data: RegionalDisplacement) {
     pollutant: 'SO2',
     unit: 'emissions (pounds)',
     monthlyData: calculateMonthlyEmissions(so2.regionalData),
+    regionId,
   });
 
   addCountyRow({
     pollutant: 'NOX',
     unit: 'emissions (pounds)',
     monthlyData: calculateMonthlyEmissions(nox.regionalData),
+    regionId,
   });
 
   addCountyRow({
     pollutant: 'CO2',
     unit: 'emissions (tons)',
     monthlyData: calculateMonthlyEmissions(co2.regionalData),
+    regionId,
   });
 
   addCountyRow({
     pollutant: 'PM25',
     unit: 'emissions (pounds)',
     monthlyData: calculateMonthlyEmissions(pm25.regionalData),
+    regionId,
   });
 
   addCountyRow({
     pollutant: 'SO2',
     unit: 'percent',
     monthlyData: calculateMonthlyPercents(so2.regionalData),
+    regionId,
   });
 
   addCountyRow({
     pollutant: 'NOX',
     unit: 'percent',
     monthlyData: calculateMonthlyPercents(nox.regionalData),
+    regionId,
   });
 
   addCountyRow({
     pollutant: 'CO2',
     unit: 'percent',
     monthlyData: calculateMonthlyPercents(co2.regionalData),
+    regionId,
   });
 
   addCountyRow({
     pollutant: 'PM25',
     unit: 'percent',
     monthlyData: calculateMonthlyPercents(pm25.regionalData),
+    regionId,
   });
 
   // build up regional states and counties from the region's county data
