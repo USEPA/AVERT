@@ -4,8 +4,6 @@ object-assign
 @license MIT
 */
 
-/*! @source http://purl.eligrey.com/github/FileSaver.js/blob/master/FileSaver.js */
-
 /** @license React v0.19.1
  * scheduler.production.min.js
  *
