@@ -8,7 +8,7 @@ import {
 // calculations
 import { calculateEere } from 'app/calculations';
 // config
-import { RegionId, StateId } from 'app/config';
+import { RegionId, StateId, regions } from 'app/config';
 
 type RegionalProfile = {
   regionId: RegionId;
@@ -492,7 +492,8 @@ export function calculateEereProfile(): AppThunk {
     // create the eere profile chart and show validation warning/error message
     const selectedRegionalProfiles: RegionalProfile[] = [];
 
-    // build up total percentage of state in all regions that support offshore wind
+    // build up total percentage of selected state in all selected regions that
+    // support offshore wind
     const totalOffshoreWindPercent = selectedRegions.reduce((total, region) => {
       const regionalPercent = selectedState?.percentageByRegion[region.id] || 0;
       return region.offshoreWind ? (total += regionalPercent) : total;
@@ -503,11 +504,25 @@ export function calculateEereProfile(): AppThunk {
 
       // the regional scaling factor is a number between 0 and 1, representing
       // the proportion the selected geography exists within a given region.
-      // - if a state is selected and it falls exactly equally between two
-      //   regions, the regional scaling factor would be 0.5 for each of those
-      //   two regions
       // - if a region is selected, the regional scaling factor will always be 1
-      const regionalScalingFactor = selectedState ? regionalPercent / 100 : 1;
+      // - if a state is selected, the regional scaling factor comes from the
+      //   selected state's percentage by region value for the given region, as
+      //   defined in the config file (`app/config.ts`)
+      const regionalScalingFactor = !selectedState ? 1 : regionalPercent / 100;
+
+      // the percent reduction factor also is a number between 0 and 1, and
+      // is used to scale the user's input for broad-based program reduction
+      // (percent reduction across all hours) or targed program reduction
+      // (percent reduction across a specified peak percentage of hours) to
+      // each region, since a selected state represents only a percentage of
+      // a region's emissions sales
+      // - if a region is selected, the percent reduction factor will always be 1
+      // - if a state is selected, the percent reduction factor comes from the
+      //   given region's percentage by state value for the selected state, as
+      //   defined in the config file (`app/config.ts`)
+      const percentReductionFactor = !selectedState
+        ? 1
+        : (regions[region.id].percentageByState[selectedState?.id] || 0) / 100;
 
       // the offshore wind factor is also a number between 0 and 1, representing
       // the proportion the selected geography's offshore wind value should be
@@ -540,8 +555,8 @@ export function calculateEereProfile(): AppThunk {
       const scaledEereInputs = {
         annualGwh: Number(eere.inputs.annualGwh) * regionalScalingFactor,
         constantMwh: Number(eere.inputs.constantMwh) * regionalScalingFactor,
-        broadProgram: Number(eere.inputs.broadProgram) * regionalScalingFactor,
-        reduction: Number(eere.inputs.reduction) * regionalScalingFactor,
+        broadProgram: Number(eere.inputs.broadProgram) * percentReductionFactor,
+        reduction: Number(eere.inputs.reduction) * percentReductionFactor,
         topHours: Number(eere.inputs.topHours) * regionalScalingFactor,
         onshoreWind: Number(eere.inputs.onshoreWind) * regionalScalingFactor,
         offshoreWind: Number(eere.inputs.offshoreWind) * offshoreWindFactor,
