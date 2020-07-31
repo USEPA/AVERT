@@ -8,7 +8,7 @@ import {
 // calculations
 import { calculateEere } from 'app/calculations';
 // config
-import { RegionId, StateId, regions } from 'app/config';
+import { RegionId, StateId } from 'app/config';
 
 type RegionalProfile = {
   regionId: RegionId;

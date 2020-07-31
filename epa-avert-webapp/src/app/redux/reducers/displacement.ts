@@ -434,18 +434,20 @@ export function calculateMonthlyData(
   data: MonthlyDisplacement,
   unit: MonthlyUnit,
 ) {
-  const monthlyEmissions: number[] = [];
-  const monthlyPercentages: number[] = [];
+  const monthlyEmissionsChanges: number[] = [];
+  const monthlyPercentageChanges: number[] = [];
 
   for (const month in data) {
     const { original, postEere } = data[month as MonthKey];
-    const emissions = postEere - original;
-    const percentage = (emissions / original) * 100;
-    monthlyEmissions.push(emissions);
-    monthlyPercentages.push(percentage);
+    const emissionsChange = postEere - original;
+    const percentChange = (emissionsChange / original) * 100;
+    monthlyEmissionsChanges.push(emissionsChange);
+    monthlyPercentageChanges.push(percentChange);
   }
 
-  return unit === 'emissions' ? monthlyEmissions : monthlyPercentages;
+  return unit === 'emissions'
+    ? monthlyEmissionsChanges
+    : monthlyPercentageChanges;
 }
 
 function calculateMonthlyEmissions(data: MonthlyDisplacement) {
