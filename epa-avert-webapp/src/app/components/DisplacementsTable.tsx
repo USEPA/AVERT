@@ -85,7 +85,7 @@ function DisplacementsTable() {
               {formatNumber(generation.postEere)}
             </td>
             <td className="avert-table-data">
-              {formatNumber(generation.original - generation.postEere)}
+              {formatNumber(generation.postEere - generation.original)}
             </td>
           </tr>
           <tr className="avert-table-group">
@@ -98,7 +98,7 @@ function DisplacementsTable() {
             <td className="avert-table-data">{formatNumber(so2.original)}</td>
             <td className="avert-table-data">{formatNumber(so2.postEere)}</td>
             <td className="avert-table-data">
-              {formatNumber(so2.original - so2.postEere)}
+              {formatNumber(so2.postEere - so2.original)}
             </td>
           </tr>
           <tr>
@@ -108,7 +108,7 @@ function DisplacementsTable() {
             <td className="avert-table-data">{formatNumber(nox.original)}</td>
             <td className="avert-table-data">{formatNumber(nox.postEere)}</td>
             <td className="avert-table-data">
-              {formatNumber(nox.original - nox.postEere)}
+              {formatNumber(nox.postEere - nox.original)}
             </td>
           </tr>
           <tr>
@@ -118,7 +118,7 @@ function DisplacementsTable() {
             <td className="avert-table-data">{formatNumber(co2.original)}</td>
             <td className="avert-table-data">{formatNumber(co2.postEere)}</td>
             <td className="avert-table-data">
-              {formatNumber(co2.original - co2.postEere)}
+              {formatNumber(co2.postEere - co2.original)}
             </td>
           </tr>
           <tr>
@@ -128,7 +128,7 @@ function DisplacementsTable() {
             <td className="avert-table-data">{formatNumber(pm25.original)}</td>
             <td className="avert-table-data">{formatNumber(pm25.postEere)}</td>
             <td className="avert-table-data">
-              {formatNumber(pm25.original - pm25.postEere)}
+              {formatNumber(pm25.postEere - pm25.original)}
             </td>
           </tr>
           <tr className="avert-table-group">
