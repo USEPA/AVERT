@@ -452,7 +452,7 @@ export function calculateMonthlyData(
   for (const month in data) {
     const { original, postEere } = data[month as MonthKey];
     const emissionsChange = postEere - original;
-    const percentChange = (emissionsChange / original) * 100;
+    const percentChange = (emissionsChange / original) * 100 || 0;
     monthlyEmissionsChanges.push(emissionsChange);
     monthlyPercentageChanges.push(percentChange);
   }
