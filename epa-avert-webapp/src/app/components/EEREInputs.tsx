@@ -287,6 +287,7 @@ function EEREInputs() {
     reduction,
     topHours,
     onshoreWind,
+    offshoreWind,
     utilitySolar,
     rooftopSolar,
   ];
