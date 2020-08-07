@@ -495,22 +495,19 @@ function Panels() {
           <TabPanels>
             <TabPanel>
               <p>
-                AVERT splits the contiguous 48 states into 14 regions. AVERT
-                regions are aggregated based on EPA’s{' '}
-                <a href="https://www.epa.gov/energy/egrid" target="_parent">
-                  eGRID subregions
-                </a>
-                . Select a region for analysis by either using the dropdown menu
-                or clicking the map. Selecting a region loads the power plants
-                operating within each region and region-specific wind and solar
-                capacity data.
+                AVERT splits the contiguous 48 states into 14 independent
+                electricity regions. AVERT regions are organized by one or more
+                balancing authorities. Select a region for analysis by either
+                using the dropdown menu or clicking the map. Selecting a region
+                loads the power plants operating within each region and
+                region-specific wind and solar capacity data.
               </p>
 
               <RegionsList />
               <RegionsMap />
 
               <p className="avert-small-text">
-                The online version of AVERT can run analyses using 2019
+                The online version of AVERT completes analyses using 2019
                 emissions and generation data. The Excel version of AVERT
                 (available for download{' '}
                 <a
@@ -545,7 +542,7 @@ function Panels() {
               </p>
 
               <p className="avert-small-text">
-                The online version of AVERT can run analyses using 2019
+                The online version of AVERT completes analyses using 2019
                 emissions and generation data. The Excel version of AVERT
                 (available for download{' '}
                 <a
