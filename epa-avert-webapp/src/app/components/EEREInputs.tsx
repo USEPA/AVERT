@@ -594,7 +594,7 @@ function EEREInputs() {
 
               <li>
                 <span css={inputLabelStyles}>
-                  Distributed (rooftop) solar voltaic total capacity:{' '}
+                  Distributed (rooftop) solar photovoltaic total capacity:{' '}
                 </span>
                 <EEREInputField
                   value={rooftopSolar}
