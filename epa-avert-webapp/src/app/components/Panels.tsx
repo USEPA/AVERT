@@ -420,7 +420,7 @@ function Panels() {
   const resultsHeading =
     geographicFocus === 'regions'
       ? `${selectedRegionName} Region`
-      : `${selectedStateName} (${selectedStateRegions})`;
+      : `${selectedStateRegions} (due to changes in ${selectedStateName})`;
 
   return (
     <Container
