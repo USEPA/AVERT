@@ -25,6 +25,13 @@
  * @typedef {Object} LocationData
  * @property {string} state
  * @property {string} county
+ * @property {number} lat
+ * @property {number} lon
+ * @property {string} fuel_type
+ * @property {number} orispl_code
+ * @property {string} unit_code
+ * @property {string} full_name
+ * @property {0|1} infreq_emissions_flag
  * @property {number[]} medians
  */
 
@@ -193,13 +200,21 @@ function getDisplacement(rdf, eereLoad, pollutant) {
         edgeB: rdf.load_bin_edges[originalLoadBinIndex + 1]
       });
 
-      const calculatedPostEere = calculateLinear({
-        load: postEereLoad,
-        genA: medians[postEereLoadBinIndex],
-        genB: medians[postEereLoadBinIndex + 1],
-        edgeA: rdf.load_bin_edges[postEereLoadBinIndex],
-        edgeB: rdf.load_bin_edges[postEereLoadBinIndex + 1]
-      });
+      // handle special exclusions for emissions changes at specific locations
+      // (specifically added for errors with SO2 reporting, but the RDFs have
+      // been updated to include the `infreq_emissions_flag` for all pollutants
+      // for consistency, which allows other pollutants at specific locations
+      // to be excluded in the future)
+      const calculatedPostEere =
+        location.infreq_emissions_flag === 1
+          ? calculatedOriginal
+          : calculateLinear({
+              load: postEereLoad,
+              genA: medians[postEereLoadBinIndex],
+              genB: medians[postEereLoadBinIndex + 1],
+              edgeA: rdf.load_bin_edges[postEereLoadBinIndex],
+              edgeB: rdf.load_bin_edges[postEereLoadBinIndex + 1],
+            });
 
       // initialize the data structures for the region, each state, each county,
       // and each month if they haven't yet been set up, and increment by the
