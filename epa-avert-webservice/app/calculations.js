@@ -157,10 +157,10 @@ function getDisplacement(rdf, eereLoad, pollutant) {
       : false;
 
   /** @type {number[]} - used to calculate 'originalTotal' returned data */
-  const originalTotals = new Array(rdf.regional_load.length).fill(0);
+  const hourlyOriginalTotals = new Array(rdf.regional_load.length).fill(0);
 
   /** @type {number[]} - used to calculate 'postEereTotal' returned data */
-  const postEereTotals = new Array(rdf.regional_load.length).fill(0);
+  const hourlyPostEereTotals = new Array(rdf.regional_load.length).fill(0);
 
   // iterate over each hour in the year (8760 in non-leap years)
   for (let i = 0; i < rdf.regional_load.length; i++) {
@@ -246,17 +246,17 @@ function getDisplacement(rdf, eereLoad, pollutant) {
       countyData[stateId][county][`month${month}`].original += calculatedOriginal;
       countyData[stateId][county][`month${month}`].postEere += calculatedPostEere;
 
-      // increment total and delta arrays with data
-      originalTotals[i] += calculatedOriginal;
-      postEereTotals[i] += calculatedPostEere;
+      // increment hourly total arrays for each locations for the given hour
+      hourlyOriginalTotals[i] += calculatedOriginal;
+      hourlyPostEereTotals[i] += calculatedPostEere;
     });
   }
 
   return {
     regionId: rdf.region.region_abbv,
     pollutant: pollutant,
-    originalTotal: originalTotals.reduce((acc, cur) => acc + (cur || 0), 0),
-    postEereTotal: postEereTotals.reduce((acc, cur) => acc + (cur || 0), 0),
+    originalTotal: hourlyOriginalTotals.reduce((acc, cur) => acc + (cur || 0), 0),
+    postEereTotal: hourlyPostEereTotals.reduce((acc, cur) => acc + (cur || 0), 0),
     regionalData,
     stateData,
     countyData,
