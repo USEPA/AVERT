@@ -293,16 +293,16 @@ export const states: { [key in StateId]: State } = {
     id: 'AL',
     name: 'Alabama',
     percentageByRegion: {
-      SE: 73.791629656774,
-      TN: 26.208370343226,
+      SE: 74,
+      TN: 26,
     },
   },
   AR: {
     id: 'AR',
     name: 'Arkansas',
     percentageByRegion: {
-      MIDW: 73.757031571744,
-      CENT: 26.242968428256,
+      MIDW: 74,
+      CENT: 26,
     },
   },
   AZ: {
@@ -351,24 +351,24 @@ export const states: { [key in StateId]: State } = {
     id: 'FL',
     name: 'Florida',
     percentageByRegion: {
-      SE: 5.54204561120175,
-      FL: 94.4579543887982,
+      SE: 6,
+      FL: 94,
     },
   },
   GA: {
     id: 'GA',
     name: 'Georgia',
     percentageByRegion: {
-      SE: 97.5685884564488,
-      TN: 2.43141154355125,
+      SE: 98,
+      TN: 2,
     },
   },
   IA: {
     id: 'IA',
     name: 'Iowa',
     percentageByRegion: {
-      MIDW: 94.0739868582707,
-      CENT: 5.92601314172933,
+      MIDW: 94,
+      CENT: 6,
     },
   },
   ID: {
@@ -382,16 +382,16 @@ export const states: { [key in StateId]: State } = {
     id: 'IL',
     name: 'Illinois',
     percentageByRegion: {
-      MIDA: 65.2031111352377,
-      MIDW: 34.7968888647623,
+      MIDA: 65,
+      MIDW: 35,
     },
   },
   IN: {
     id: 'IN',
     name: 'Indiana',
     percentageByRegion: {
-      MIDA: 21.306124107215,
-      MIDW: 78.693875892785,
+      MIDA: 21,
+      MIDW: 79,
     },
   },
   KS: {
@@ -405,17 +405,17 @@ export const states: { [key in StateId]: State } = {
     id: 'KY',
     name: 'Kentucky',
     percentageByRegion: {
-      TN: 14.9033170798895,
-      MIDA: 29.8395825874621,
-      MIDW: 55.2571003326483,
+      TN: 15,
+      MIDA: 30,
+      MIDW: 55,
     },
   },
   LA: {
     id: 'LA',
     name: 'Louisiana',
     percentageByRegion: {
-      MIDW: 92.7251993267115,
-      CENT: 7.27480067328851,
+      MIDW: 93,
+      CENT: 7,
     },
   },
   MA: {
@@ -443,66 +443,66 @@ export const states: { [key in StateId]: State } = {
     id: 'MI',
     name: 'Michigan',
     percentageByRegion: {
-      MIDA: 3.87442312109519,
-      MIDW: 96.1255768789048,
+      MIDA: 4,
+      MIDW: 96,
     },
   },
   MN: {
     id: 'MN',
     name: 'Minnesota',
     percentageByRegion: {
-      MIDW: 98.705735394633,
-      CENT: 1.29426460536664,
+      MIDW: 99,
+      CENT: 1,
     },
   },
   MO: {
     id: 'MO',
     name: 'Missouri',
     percentageByRegion: {
-      MIDW: 65.1822776582235,
-      CENT: 34.8177223417765,
+      MIDW: 65,
+      CENT: 35,
     },
   },
   MS: {
     id: 'MS',
     name: 'Mississippi',
     percentageByRegion: {
-      SE: 23.2693176758563,
-      TN: 32.3277059280809,
-      MIDW: 44.4029763960628,
+      SE: 23,
+      TN: 32,
+      MIDW: 44,
     },
   },
   MT: {
     id: 'MT',
     name: 'Montana',
     percentageByRegion: {
-      NW: 90.9322053030408,
-      RM: 1.63910331296,
-      CENT: 7.42869138399923,
+      NW: 91,
+      RM: 2,
+      CENT: 7,
     },
   },
   NC: {
     id: 'NC',
     name: 'North Carolina',
     percentageByRegion: {
-      NCSC: 95.8122354967843,
-      MIDA: 4.18776450321575,
+      NCSC: 96,
+      MIDA: 4,
     },
   },
   ND: {
     id: 'ND',
     name: 'North Dakota',
     percentageByRegion: {
-      MIDW: 53.063953245907,
-      CENT: 46.9360467540927,
+      MIDW: 53,
+      CENT: 47,
     },
   },
   NE: {
     id: 'NE',
     name: 'Nebraska',
     percentageByRegion: {
-      RM: 4.12001916514984,
-      CENT: 95.8799808348502,
+      RM: 4,
+      CENT: 96,
     },
   },
   NH: {
@@ -523,9 +523,9 @@ export const states: { [key in StateId]: State } = {
     id: 'NM',
     name: 'New Mexico',
     percentageByRegion: {
-      RM: 4.57850916915244,
-      SW: 60.2887390314291,
-      CENT: 35.1327517994185,
+      RM: 5,
+      SW: 60,
+      CENT: 35,
     },
   },
   NV: {
@@ -553,8 +553,8 @@ export const states: { [key in StateId]: State } = {
     id: 'OK',
     name: 'Oklahoma',
     percentageByRegion: {
-      MIDW: 4.58716009767985,
-      CENT: 95.4128399023201,
+      MIDW: 5,
+      CENT: 95,
     },
   },
   OR: {
@@ -589,35 +589,35 @@ export const states: { [key in StateId]: State } = {
     id: 'SD',
     name: 'South Dakota',
     percentageByRegion: {
-      RM: 24.6328808233089,
-      MIDW: 25.4722557633138,
-      CENT: 49.8948634133773,
+      RM: 25,
+      MIDW: 25,
+      CENT: 50,
     },
   },
   TN: {
     id: 'TN',
     name: 'Tennessee',
     percentageByRegion: {
-      TN: 97.9705292162893,
-      MIDA: 2.02947078371074,
+      TN: 98,
+      MIDA: 2,
     },
   },
   TX: {
     id: 'TX',
     name: 'Texas',
     percentageByRegion: {
-      SW: 1.49870155100264,
-      TE: 85.6392226594376,
-      MIDW: 5.4354231583257,
-      CENT: 7.42665263123409,
+      SW: 1,
+      TE: 86,
+      MIDW: 5,
+      CENT: 7,
     },
   },
   UT: {
     id: 'UT',
     name: 'Utah',
     percentageByRegion: {
-      NW: 97.3172662009813,
-      RM: 2.68273379901869,
+      NW: 97,
+      RM: 3,
     },
   },
   VA: {
@@ -659,8 +659,8 @@ export const states: { [key in StateId]: State } = {
     id: 'WY',
     name: 'Wyoming',
     percentageByRegion: {
-      NW: 62.2496676189133,
-      RM: 37.7503323810867,
+      NW: 62,
+      RM: 38,
     },
   },
 };
