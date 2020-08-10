@@ -74,8 +74,8 @@ const errorStyles = css`
 
 function UnitConversion() {
   const [error, setError] = React.useState(false);
-  const [kw, setKw] = React.useState(1000000);
-  const [mw, setMw] = React.useState(1000);
+  const [kw, setKw] = React.useState(1e6);
+  const [mw, setMw] = React.useState(1e3);
   const [gw, setGw] = React.useState(1);
 
   function updateInputs(value: string, unit: 'kw' | 'mw' | 'gw') {
@@ -86,7 +86,7 @@ function UnitConversion() {
       return;
     }
 
-    const factor = 1000;
+    const factor = 1e3;
     const computed = { kw, mw, gw };
     computed[unit] = input;
 

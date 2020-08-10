@@ -48,7 +48,7 @@ export function calculateEere({
 
   const lineLoss = 1 / (1 - regionLineLoss);
 
-  const hourlyMwReduction = ((annualGwh * 1000) / eereLoads.length) * lineLoss;
+  const hourlyMwReduction = ((annualGwh * 1e3) / eereLoads.length) * lineLoss;
 
   const percentReduction =
     ((-1 * (broadProgram || reduction)) / 100) * lineLoss;

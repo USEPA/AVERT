@@ -393,7 +393,7 @@ function calculateEereLimits({
   }
 
   // calculate hourlyMwh from annualGwh (total for year)
-  const hourlyMwh = (maxEEYearlyGwh * 1000) / totalHours;
+  const hourlyMwh = (maxEEYearlyGwh * 1e3) / totalHours;
 
   return {
     annualGwh: Math.round(maxEEYearlyGwh * 2 * 100) / 100,
