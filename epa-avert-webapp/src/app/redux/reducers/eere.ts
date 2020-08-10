@@ -572,7 +572,7 @@ export function calculateEereProfile(): AppThunk {
         constantMwh: Number(eere.inputs.constantMwh) * regionalScalingFactor,
         broadProgram: Number(eere.inputs.broadProgram) * percentReductionFactor,
         reduction: Number(eere.inputs.reduction) * percentReductionFactor,
-        topHours: Number(eere.inputs.topHours) * regionalScalingFactor,
+        topHours: Number(eere.inputs.topHours),
         onshoreWind: Number(eere.inputs.onshoreWind) * regionalScalingFactor,
         offshoreWind: Number(eere.inputs.offshoreWind) * offshoreWindFactor,
         utilitySolar: Number(eere.inputs.utilitySolar) * regionalScalingFactor,
