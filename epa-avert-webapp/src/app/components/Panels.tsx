@@ -524,9 +524,9 @@ function Panels() {
             <TabPanel>
               <p>
                 Select a state for analysis by either using the dropdown menu or
-                clicking the map. Selecting a state loads the power plants
-                operating within each region and region-specific wind and solar
-                capacity data.
+                clicking the map. Selecting a state means AVERT will load power
+                plants and wind and solar capacity factors for all regions that
+                the state is part of.
               </p>
 
               <StatesList />

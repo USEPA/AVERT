@@ -538,9 +538,17 @@ function EEREInputs() {
                 ) : (
                   <React.Fragment>
                     <span css={inputLabelStyles}>
-                      <em>
-                        Offshore wind is not available in this AVERT region.{' '}
-                      </em>
+                      {geographicFocus === 'regions' ? (
+                        <em>
+                          Offshore wind calculations are not available in this
+                          AVERT region.{' '}
+                        </em>
+                      ) : (
+                        <em>
+                          Offshore wind calculations are not available in the
+                          AVERT region(s) that this state is part of.{' '}
+                        </em>
+                      )}
                     </span>
 
                     <Tooltip id={7}>
