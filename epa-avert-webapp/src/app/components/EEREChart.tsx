@@ -152,7 +152,12 @@ function EEREChart() {
   // conditionally re-define chart when readyToRender (hourlyEere exists)
   if (readyToRender) {
     const totalLoadMwh = hourlyEere.reduce((a, b) => a + b, 0);
-    const totalLoadGwh = Math.round(totalLoadMwh / -1000).toLocaleString();
+    const totalLoadGwh = Math.round(totalLoadMwh / -1000);
+
+    // annual kwh of electricity used by the average american home
+    const averageHomeKwh = 12146;
+    // calculate total equivalent number of american homes
+    const equivalentHomes = Math.round((totalLoadMwh / averageHomeKwh) * -1000);
 
     chart = (
       <React.Fragment>
@@ -188,8 +193,10 @@ function EEREChart() {
         />
 
         <p className="avert-small-text">
-          This EE/RE profile will displace {totalLoadGwh} GWh of regional fossil
-          fuel generation over the course of a year.
+          This EE/RE profile will displace {totalLoadGwh.toLocaleString()} GWh
+          of regional fossil fuel generation over the course of a year. For
+          reference, this equals the annual electricity consumed by{' '}
+          {equivalentHomes.toLocaleString()} average American homes.
         </p>
       </React.Fragment>
     );
