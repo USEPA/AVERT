@@ -536,28 +536,37 @@ function EEREInputs() {
                     })}
                   </React.Fragment>
                 ) : (
-                  <React.Fragment>
-                    <span css={inputLabelStyles}>
-                      {geographicFocus === 'regions' ? (
+                  <span css={inputLabelStyles}>
+                    {geographicFocus === 'regions' ? (
+                      <React.Fragment>
                         <em>
                           Offshore wind calculations are not available in this
                           AVERT region.{' '}
                         </em>
-                      ) : (
+
+                        <Tooltip id={7}>
+                          AVERT does not support offshore wind modeling in this
+                          region. It is unlikely that offshore areas suitable
+                          for wind farms would connect to the electrical grid in
+                          this region.
+                        </Tooltip>
+                      </React.Fragment>
+                    ) : (
+                      <React.Fragment>
                         <em>
                           Offshore wind calculations are not available in the
                           AVERT region(s) that this state is part of.{' '}
                         </em>
-                      )}
-                    </span>
 
-                    <Tooltip id={7}>
-                      AVERT does not support offshore wind modeling in this
-                      region. It is unlikely that offshore areas suitable for
-                      wind farms would connect to the electrical grid in this
-                      region.
-                    </Tooltip>
-                  </React.Fragment>
+                        <Tooltip id={7}>
+                          AVERT does not support offshore wind modeling in the
+                          region(s) that this state is part of. It is unlikely
+                          that offshore areas suitable for wind farms would
+                          connect to the electrical grid in these regions.
+                        </Tooltip>
+                      </React.Fragment>
+                    )}
+                  </span>
                 )}
               </li>
             </ul>
