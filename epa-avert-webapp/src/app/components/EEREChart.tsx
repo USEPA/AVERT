@@ -152,12 +152,11 @@ function EEREChart() {
   // conditionally re-define chart when readyToRender (hourlyEere exists)
   if (readyToRender) {
     const totalLoadMwh = hourlyEere.reduce((a, b) => a + b, 0);
-    const totalLoadGwh = Math.round(totalLoadMwh / -1000);
+    const totalLoadGwh = Math.round(totalLoadMwh / -1e3);
 
-    // annual kwh of electricity used by the average american home
-    const averageHomeKwh = 12146;
-    // calculate total equivalent number of american homes
-    const equivalentHomes = Math.round((totalLoadMwh / averageHomeKwh) * -1000);
+    // calculate the total equivalent number of american homes
+    // (annual kwh of electricity used by the average american home is 12,146)
+    const equivalentHomes = Math.round((totalLoadMwh / 12_146) * -1e3);
 
     chart = (
       <React.Fragment>
