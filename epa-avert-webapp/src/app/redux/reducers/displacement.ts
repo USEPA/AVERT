@@ -8,23 +8,17 @@ import { RegionId, StateId, states, fipsCodes, regions } from 'app/config';
 export type PollutantName = 'so2' | 'nox' | 'co2' | 'pm25';
 
 type RegionsDisplacementByPollutant = {
-  [key in PollutantName]: {
-    [regionId: string]: MonthlyDisplacement;
-  };
+  [key in PollutantName]: Partial<{ [key in RegionId]: MonthlyDisplacement }>;
 };
 
 type StatesDisplacementByPollutant = {
-  [key in PollutantName]: {
-    [stateId: string]: MonthlyDisplacement;
-  };
+  [key in PollutantName]: Partial<{ [key in StateId]: MonthlyDisplacement }>;
 };
 
 type CountiesDisplacementByPollutant = {
-  [key in PollutantName]: {
-    [stateId: string]: {
-      [countyName: string]: MonthlyDisplacement;
-    };
-  };
+  [key in PollutantName]: Partial<
+    { [key in StateId]: { [countyName: string]: MonthlyDisplacement } }
+  >;
 };
 
 export type MonthKey =
@@ -137,9 +131,9 @@ type DisplacementAction =
   | {
       type: 'displacement/STORE_MONTHLY_DISPLACEMENTS';
       payload: {
-        regionsMonthlyDisplacement: RegionsDisplacementByPollutant;
-        statesMonthlyDisplacement: StatesDisplacementByPollutant;
-        countiesMonthlyDisplacement: CountiesDisplacementByPollutant;
+        regionsDisplacements: RegionsDisplacementByPollutant;
+        statesDisplacements: StatesDisplacementByPollutant;
+        countiesDisplacements: CountiesDisplacementByPollutant;
       };
     }
   | {
@@ -155,9 +149,9 @@ type DisplacementState = {
   regionalDisplacements: Partial<{ [key in RegionId]: RegionalDisplacement }>;
   combinedStateChanges: Partial<{ [key in StateId]: StateChange }>;
   statesAndCounties: StatesAndCounties;
-  regionsMonthlyDisplacement: RegionsDisplacementByPollutant;
-  statesMonthlyDisplacement: StatesDisplacementByPollutant;
-  countiesMonthlyDisplacement: CountiesDisplacementByPollutant;
+  regionsDisplacements: RegionsDisplacementByPollutant;
+  statesDisplacements: StatesDisplacementByPollutant;
+  countiesDisplacements: CountiesDisplacementByPollutant;
   downloadableCountyData: CountyDataRow[];
   downloadableCobraData: CobraDataRow[];
 };
@@ -175,9 +169,9 @@ const initialState: DisplacementState = {
   regionalDisplacements: {},
   combinedStateChanges: {},
   statesAndCounties: {},
-  regionsMonthlyDisplacement: initialDisplacementByPollutant,
-  statesMonthlyDisplacement: initialDisplacementByPollutant,
-  countiesMonthlyDisplacement: initialDisplacementByPollutant,
+  regionsDisplacements: initialDisplacementByPollutant,
+  statesDisplacements: initialDisplacementByPollutant,
+  countiesDisplacements: initialDisplacementByPollutant,
   downloadableCountyData: [],
   downloadableCobraData: [],
 };
@@ -194,9 +188,9 @@ export default function reducer(
         regionalDisplacements: {},
         combinedStateChanges: {},
         statesAndCounties: {},
-        regionsMonthlyDisplacement: initialDisplacementByPollutant,
-        statesMonthlyDisplacement: initialDisplacementByPollutant,
-        countiesMonthlyDisplacement: initialDisplacementByPollutant,
+        regionsDisplacements: initialDisplacementByPollutant,
+        statesDisplacements: initialDisplacementByPollutant,
+        countiesDisplacements: initialDisplacementByPollutant,
         downloadableCountyData: [],
         downloadableCobraData: [],
       };
@@ -286,16 +280,16 @@ export default function reducer(
 
     case 'displacement/STORE_MONTHLY_DISPLACEMENTS': {
       const {
-        regionsMonthlyDisplacement,
-        statesMonthlyDisplacement,
-        countiesMonthlyDisplacement,
+        regionsDisplacements,
+        statesDisplacements,
+        countiesDisplacements,
       } = action.payload;
 
       return {
         ...state,
-        regionsMonthlyDisplacement,
-        statesMonthlyDisplacement,
-        countiesMonthlyDisplacement,
+        regionsDisplacements,
+        statesDisplacements,
+        countiesDisplacements,
       };
     }
 
@@ -470,21 +464,81 @@ function receiveDisplacement(): AppThunk {
     const allRegionsCountyData: CountyDataRow[] = [];
     const allRegionsCobraData: CobraDataRow[] = [];
 
-    const regionsMonthlyDisplacement: RegionsDisplacementByPollutant = {
+    const regionsDisplacements: RegionsDisplacementByPollutant = {
+      so2: {
+        ['ALL' as RegionId]: {
+          month1: { original: 0, postEere: 0 },
+          month2: { original: 0, postEere: 0 },
+          month3: { original: 0, postEere: 0 },
+          month4: { original: 0, postEere: 0 },
+          month5: { original: 0, postEere: 0 },
+          month6: { original: 0, postEere: 0 },
+          month7: { original: 0, postEere: 0 },
+          month8: { original: 0, postEere: 0 },
+          month9: { original: 0, postEere: 0 },
+          month10: { original: 0, postEere: 0 },
+          month11: { original: 0, postEere: 0 },
+          month12: { original: 0, postEere: 0 },
+        },
+      },
+      nox: {
+        ['ALL' as RegionId]: {
+          month1: { original: 0, postEere: 0 },
+          month2: { original: 0, postEere: 0 },
+          month3: { original: 0, postEere: 0 },
+          month4: { original: 0, postEere: 0 },
+          month5: { original: 0, postEere: 0 },
+          month6: { original: 0, postEere: 0 },
+          month7: { original: 0, postEere: 0 },
+          month8: { original: 0, postEere: 0 },
+          month9: { original: 0, postEere: 0 },
+          month10: { original: 0, postEere: 0 },
+          month11: { original: 0, postEere: 0 },
+          month12: { original: 0, postEere: 0 },
+        },
+      },
+      co2: {
+        ['ALL' as RegionId]: {
+          month1: { original: 0, postEere: 0 },
+          month2: { original: 0, postEere: 0 },
+          month3: { original: 0, postEere: 0 },
+          month4: { original: 0, postEere: 0 },
+          month5: { original: 0, postEere: 0 },
+          month6: { original: 0, postEere: 0 },
+          month7: { original: 0, postEere: 0 },
+          month8: { original: 0, postEere: 0 },
+          month9: { original: 0, postEere: 0 },
+          month10: { original: 0, postEere: 0 },
+          month11: { original: 0, postEere: 0 },
+          month12: { original: 0, postEere: 0 },
+        },
+      },
+      pm25: {
+        ['ALL' as RegionId]: {
+          month1: { original: 0, postEere: 0 },
+          month2: { original: 0, postEere: 0 },
+          month3: { original: 0, postEere: 0 },
+          month4: { original: 0, postEere: 0 },
+          month5: { original: 0, postEere: 0 },
+          month6: { original: 0, postEere: 0 },
+          month7: { original: 0, postEere: 0 },
+          month8: { original: 0, postEere: 0 },
+          month9: { original: 0, postEere: 0 },
+          month10: { original: 0, postEere: 0 },
+          month11: { original: 0, postEere: 0 },
+          month12: { original: 0, postEere: 0 },
+        },
+      },
+    };
+
+    const statesDisplacements: StatesDisplacementByPollutant = {
       so2: {},
       nox: {},
       co2: {},
       pm25: {},
     };
 
-    const statesMonthlyDisplacement: StatesDisplacementByPollutant = {
-      so2: {},
-      nox: {},
-      co2: {},
-      pm25: {},
-    };
-
-    const countiesMonthlyDisplacement: CountiesDisplacementByPollutant = {
+    const countiesDisplacements: CountiesDisplacementByPollutant = {
       so2: {},
       nox: {},
       co2: {},
@@ -502,18 +556,27 @@ function receiveDisplacement(): AppThunk {
             const { regionalData, stateData, countyData } = data[pollutant];
 
             // add regional data for the pollutant
-            regionsMonthlyDisplacement[pollutant] = {
-              ...regionsMonthlyDisplacement[pollutant],
-              [regionId]: regionalData,
+            regionsDisplacements[pollutant] = {
+              ...regionsDisplacements[pollutant],
+              [regionId as RegionId]: regionalData,
             };
 
+            // add up total displacement for the pollutant for all regions
+            const total = regionsDisplacements[pollutant]['ALL' as RegionId];
+            for (const key in total) {
+              const month = key as MonthKey;
+              total[month].original += regionalData[month].original;
+              total[month].postEere += regionalData[month].postEere;
+            }
+
             // add (and potentially combine) state data for the pollutant
-            for (const stateId in stateData) {
+            for (const key in stateData) {
+              const stateId = key as StateId;
               // if a state's pollutant data already exists for the pollutant,
               // it was already added from another region, so add this regions's
               // monthly displacement data for the pollutant for the state
-              if (statesMonthlyDisplacement[pollutant][stateId]) {
-                const dataset = statesMonthlyDisplacement[pollutant][stateId];
+              if (statesDisplacements[pollutant][stateId]) {
+                const dataset = statesDisplacements[pollutant][stateId];
                 for (const key in dataset) {
                   const month = key as MonthKey;
                   dataset[month].original += stateData[stateId][month].original;
@@ -522,23 +585,24 @@ function receiveDisplacement(): AppThunk {
               }
               // else a state's pollutant data hasn't yet been added, so add it
               else {
-                statesMonthlyDisplacement[pollutant] = {
-                  ...statesMonthlyDisplacement[pollutant],
+                statesDisplacements[pollutant] = {
+                  ...statesDisplacements[pollutant],
                   [stateId]: stateData[stateId],
                 };
               }
             }
 
             // add county data for the pollutant
-            for (const stateId in countyData) {
+            for (const key in countyData) {
+              const stateId = key as StateId;
               // counties exist entirely within only one region, so we can
               // safely add county data to existing states (no need to combine
-              // displacement data like we did with `statesMonthlyDisplacement`)
+              // displacement data like we did with `statesDisplacements`)
               for (const countyName in countyData[stateId]) {
-                countiesMonthlyDisplacement[pollutant] = {
-                  ...countiesMonthlyDisplacement[pollutant],
+                countiesDisplacements[pollutant] = {
+                  ...countiesDisplacements[pollutant],
                   [stateId]: {
-                    ...countiesMonthlyDisplacement[pollutant][stateId],
+                    ...countiesDisplacements[pollutant][stateId],
                     [countyName]: countyData[stateId][countyName],
                   },
                 };
@@ -560,9 +624,9 @@ function receiveDisplacement(): AppThunk {
     dispatch({
       type: 'displacement/STORE_MONTHLY_DISPLACEMENTS',
       payload: {
-        regionsMonthlyDisplacement,
-        statesMonthlyDisplacement,
-        countiesMonthlyDisplacement,
+        regionsDisplacements,
+        statesDisplacements,
+        countiesDisplacements,
       },
     });
 
