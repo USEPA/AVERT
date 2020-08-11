@@ -1,14 +1,16 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
-import { MonthKey, MonthlyDisplacement } from 'app/redux/reducers/displacement';
+import {
+  PollutantName,
+  MonthKey,
+  MonthlyDisplacement,
+} from 'app/redux/reducers/displacement';
 // config
 import { RegionId } from 'app/config';
 
 export type MonthlyAggregation = 'region' | 'state' | 'county';
 
 export type MonthlyUnit = 'emissions' | 'percentages';
-
-type PollutantName = 'so2' | 'nox' | 'co2' | 'pm25';
 
 type MonthlyEmissionsAction =
   | { type: 'monthlyEmissions/RESET_MONTHLY_EMISSIONS' }

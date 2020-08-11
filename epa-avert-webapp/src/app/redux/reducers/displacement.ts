@@ -5,7 +5,27 @@ import { MonthlyUnit, updateFilteredEmissionsData } from './monthlyEmissions';
 // config
 import { RegionId, StateId, states, fipsCodes, regions } from 'app/config';
 
-type DisplacementPollutantName = 'generation' | 'so2' | 'nox' | 'co2' | 'pm25';
+export type PollutantName = 'so2' | 'nox' | 'co2' | 'pm25';
+
+type RegionsDisplacementByPollutant = {
+  [key in PollutantName]: {
+    [regionId: string]: MonthlyDisplacement;
+  };
+};
+
+type StatesDisplacementByPollutant = {
+  [key in PollutantName]: {
+    [stateId: string]: MonthlyDisplacement;
+  };
+};
+
+type CountiesDisplacementByPollutant = {
+  [key in PollutantName]: {
+    [stateId: string]: {
+      [countyName: string]: MonthlyDisplacement;
+    };
+  };
+};
 
 export type MonthKey =
   | 'month1'
@@ -27,6 +47,8 @@ export type MonthlyDisplacement = {
     postEere: number;
   };
 };
+
+type DisplacementPollutantName = 'generation' | PollutantName;
 
 type PollutantDisplacement = {
   regionId: RegionId;
@@ -113,6 +135,14 @@ type DisplacementAction =
       payload: { statesAndCounties: StatesAndCounties };
     }
   | {
+      type: 'displacement/STORE_MONTHLY_DISPLACEMENTS';
+      payload: {
+        regionsMonthlyDisplacement: RegionsDisplacementByPollutant;
+        statesMonthlyDisplacement: StatesDisplacementByPollutant;
+        countiesMonthlyDisplacement: CountiesDisplacementByPollutant;
+      };
+    }
+  | {
       type: 'displacement/STORE_DOWNLOAD_DATA';
       payload: {
         countyData: CountyDataRow[];
@@ -125,8 +155,18 @@ type DisplacementState = {
   regionalDisplacements: Partial<{ [key in RegionId]: RegionalDisplacement }>;
   combinedStateChanges: Partial<{ [key in StateId]: StateChange }>;
   statesAndCounties: StatesAndCounties;
+  regionsMonthlyDisplacement: RegionsDisplacementByPollutant;
+  statesMonthlyDisplacement: StatesDisplacementByPollutant;
+  countiesMonthlyDisplacement: CountiesDisplacementByPollutant;
   downloadableCountyData: CountyDataRow[];
   downloadableCobraData: CobraDataRow[];
+};
+
+const initialDisplacementByPollutant = {
+  so2: {},
+  nox: {},
+  co2: {},
+  pm25: {},
 };
 
 // reducer
@@ -135,6 +175,9 @@ const initialState: DisplacementState = {
   regionalDisplacements: {},
   combinedStateChanges: {},
   statesAndCounties: {},
+  regionsMonthlyDisplacement: initialDisplacementByPollutant,
+  statesMonthlyDisplacement: initialDisplacementByPollutant,
+  countiesMonthlyDisplacement: initialDisplacementByPollutant,
   downloadableCountyData: [],
   downloadableCobraData: [],
 };
@@ -151,6 +194,9 @@ export default function reducer(
         regionalDisplacements: {},
         combinedStateChanges: {},
         statesAndCounties: {},
+        regionsMonthlyDisplacement: initialDisplacementByPollutant,
+        statesMonthlyDisplacement: initialDisplacementByPollutant,
+        countiesMonthlyDisplacement: initialDisplacementByPollutant,
         downloadableCountyData: [],
         downloadableCobraData: [],
       };
@@ -235,6 +281,21 @@ export default function reducer(
       return {
         ...state,
         statesAndCounties,
+      };
+    }
+
+    case 'displacement/STORE_MONTHLY_DISPLACEMENTS': {
+      const {
+        regionsMonthlyDisplacement,
+        statesMonthlyDisplacement,
+        countiesMonthlyDisplacement,
+      } = action.payload;
+
+      return {
+        ...state,
+        regionsMonthlyDisplacement,
+        statesMonthlyDisplacement,
+        countiesMonthlyDisplacement,
       };
     }
 
@@ -409,11 +470,83 @@ function receiveDisplacement(): AppThunk {
     const allRegionsCountyData: CountyDataRow[] = [];
     const allRegionsCobraData: CobraDataRow[] = [];
 
+    const regionsMonthlyDisplacement: RegionsDisplacementByPollutant = {
+      so2: {},
+      nox: {},
+      co2: {},
+      pm25: {},
+    };
+
+    const statesMonthlyDisplacement: StatesDisplacementByPollutant = {
+      so2: {},
+      nox: {},
+      co2: {},
+      pm25: {},
+    };
+
+    const countiesMonthlyDisplacement: CountiesDisplacementByPollutant = {
+      so2: {},
+      nox: {},
+      co2: {},
+      pm25: {},
+    };
+
     for (const regionId in displacement.regionalDisplacements) {
       // regional displacement data
       const data = displacement.regionalDisplacements[regionId as RegionId];
 
       if (data) {
+        // build up regional, states, and counties data for each pollutant
+        (['so2', 'nox', 'co2', 'pm25'] as PollutantName[]).forEach(
+          (pollutant) => {
+            const { regionalData, stateData, countyData } = data[pollutant];
+
+            // add regional data for the pollutant
+            regionsMonthlyDisplacement[pollutant] = {
+              ...regionsMonthlyDisplacement[pollutant],
+              [regionId]: regionalData,
+            };
+
+            // add (and potentially combine) state data for the pollutant
+            for (const stateId in stateData) {
+              // if a state's pollutant data already exists for the pollutant,
+              // it was already added from another region, so add this regions's
+              // monthly displacement data for the pollutant for the state
+              if (statesMonthlyDisplacement[pollutant][stateId]) {
+                const dataset = statesMonthlyDisplacement[pollutant][stateId];
+                for (const key in dataset) {
+                  const month = key as MonthKey;
+                  dataset[month].original += stateData[stateId][month].original;
+                  dataset[month].postEere += stateData[stateId][month].postEere;
+                }
+              }
+              // else a state's pollutant data hasn't yet been added, so add it
+              else {
+                statesMonthlyDisplacement[pollutant] = {
+                  ...statesMonthlyDisplacement[pollutant],
+                  [stateId]: stateData[stateId],
+                };
+              }
+            }
+
+            // add county data for the pollutant
+            for (const stateId in countyData) {
+              // counties exist entirely within only one region, so we can
+              // safely add county data to existing states (no need to combine
+              // displacement data like we did with `statesMonthlyDisplacement`)
+              for (const countyName in countyData[stateId]) {
+                countiesMonthlyDisplacement[pollutant] = {
+                  ...countiesMonthlyDisplacement[pollutant],
+                  [stateId]: {
+                    ...countiesMonthlyDisplacement[pollutant][stateId],
+                    [countyName]: countyData[stateId][countyName],
+                  },
+                };
+              }
+            }
+          },
+        );
+
         const { countyData, cobraData } = formatRegionalDownloadData(
           data,
           regionId as RegionId,
@@ -423,6 +556,15 @@ function receiveDisplacement(): AppThunk {
         allRegionsCobraData.push(...cobraData);
       }
     }
+
+    dispatch({
+      type: 'displacement/STORE_MONTHLY_DISPLACEMENTS',
+      payload: {
+        regionsMonthlyDisplacement,
+        statesMonthlyDisplacement,
+        countiesMonthlyDisplacement,
+      },
+    });
 
     dispatch({
       type: 'displacement/STORE_DOWNLOAD_DATA',
@@ -499,10 +641,10 @@ function formatRegionalDownloadData(
       Pollutant: pollutant,
       'Aggregation level': regionId
         ? `${regions[regionId].name} Region`
-        : countyName
-        ? 'County'
-        : stateId
+        : stateId && !countyName
         ? 'State'
+        : stateId && countyName
+        ? 'County'
         : '',
       State: stateId ? stateId : null,
       County: countyName ? countyName.replace(/city/, '(City)') : null, // format 'city'
