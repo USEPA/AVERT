@@ -22,6 +22,19 @@ export type RegionalLoadData = {
   year: number;
 };
 
+type EGUData = {
+  state: StateId;
+  county: string;
+  lat: number;
+  lon: number;
+  fuel_type: string;
+  orispl_code: number;
+  unit_code: string;
+  full_name: string;
+  infreq_emissions_flag: 0 | 1;
+  medians: number[];
+};
+
 type RdfJSON = {
   region: {
     region_abbv: string;
@@ -48,17 +61,17 @@ type RdfJSON = {
   regional_load: RegionalLoadData[];
   load_bin_edges: number[];
   data: {
-    generation: any;
-    heat: any;
-    heat_not: any;
-    co2: any;
-    co2_not: any;
-    nox: any;
-    nox_not: any;
-    pm25: any;
-    pm25_not: any;
-    so2: any;
-    so2_not: any;
+    generation: EGUData[];
+    heat: EGUData[];
+    heat_not: EGUData[];
+    co2: EGUData[];
+    co2_not: EGUData[];
+    nox: EGUData[];
+    nox_not: EGUData[];
+    pm25: EGUData[];
+    pm25_not: EGUData[];
+    so2: EGUData[];
+    so2_not: EGUData[];
   };
 };
 

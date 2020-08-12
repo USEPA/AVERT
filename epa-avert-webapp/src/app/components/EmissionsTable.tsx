@@ -7,14 +7,14 @@ import { StateId } from 'app/config';
 
 function EmissionsTable() {
   const status = useTypedSelector(({ displacement }) => displacement.status);
-  const combinedStateChanges = useTypedSelector(
-    ({ displacement }) => displacement.combinedStateChanges,
+  const annualStateEmissionChanges = useTypedSelector(
+    ({ displacement }) => displacement.annualStateEmissionChanges,
   );
 
-  // convert object of combined state changes to an array of changes by state
+  // convert object of annual state changes to an array of changes by state
   const changesByState: StateChange[] = [];
-  for (const stateId in combinedStateChanges) {
-    const stateChange = combinedStateChanges[stateId as StateId];
+  for (const stateId in annualStateEmissionChanges) {
+    const stateChange = annualStateEmissionChanges[stateId as StateId];
     if (stateChange) changesByState.push(stateChange);
   }
 
