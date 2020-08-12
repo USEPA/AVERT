@@ -131,9 +131,9 @@ type DisplacementAction =
   | {
       type: 'displacement/STORE_MONTHLY_DISPLACEMENTS';
       payload: {
-        regionsDisplacements: RegionsDisplacementByPollutant;
-        statesDisplacements: StatesDisplacementByPollutant;
-        countiesDisplacements: CountiesDisplacementByPollutant;
+        regionsMonthlyDisplacements: RegionsDisplacementByPollutant;
+        statesMonthlyDisplacements: StatesDisplacementByPollutant;
+        countiesMonthlyDisplacements: CountiesDisplacementByPollutant;
       };
     }
   | {
@@ -149,9 +149,9 @@ type DisplacementState = {
   regionalDisplacements: Partial<{ [key in RegionId]: RegionalDisplacement }>;
   combinedStateChanges: Partial<{ [key in StateId]: StateChange }>;
   statesAndCounties: StatesAndCounties;
-  regionsDisplacements: RegionsDisplacementByPollutant;
-  statesDisplacements: StatesDisplacementByPollutant;
-  countiesDisplacements: CountiesDisplacementByPollutant;
+  regionsMonthlyDisplacements: RegionsDisplacementByPollutant;
+  statesMonthlyDisplacements: StatesDisplacementByPollutant;
+  countiesMonthlyDisplacements: CountiesDisplacementByPollutant;
   downloadableCountyData: CountyDataRow[];
   downloadableCobraData: CobraDataRow[];
 };
@@ -169,9 +169,9 @@ const initialState: DisplacementState = {
   regionalDisplacements: {},
   combinedStateChanges: {},
   statesAndCounties: {},
-  regionsDisplacements: initialDisplacementByPollutant,
-  statesDisplacements: initialDisplacementByPollutant,
-  countiesDisplacements: initialDisplacementByPollutant,
+  regionsMonthlyDisplacements: initialDisplacementByPollutant,
+  statesMonthlyDisplacements: initialDisplacementByPollutant,
+  countiesMonthlyDisplacements: initialDisplacementByPollutant,
   downloadableCountyData: [],
   downloadableCobraData: [],
 };
@@ -188,9 +188,9 @@ export default function reducer(
         regionalDisplacements: {},
         combinedStateChanges: {},
         statesAndCounties: {},
-        regionsDisplacements: initialDisplacementByPollutant,
-        statesDisplacements: initialDisplacementByPollutant,
-        countiesDisplacements: initialDisplacementByPollutant,
+        regionsMonthlyDisplacements: initialDisplacementByPollutant,
+        statesMonthlyDisplacements: initialDisplacementByPollutant,
+        countiesMonthlyDisplacements: initialDisplacementByPollutant,
         downloadableCountyData: [],
         downloadableCobraData: [],
       };
@@ -280,16 +280,16 @@ export default function reducer(
 
     case 'displacement/STORE_MONTHLY_DISPLACEMENTS': {
       const {
-        regionsDisplacements,
-        statesDisplacements,
-        countiesDisplacements,
+        regionsMonthlyDisplacements,
+        statesMonthlyDisplacements,
+        countiesMonthlyDisplacements,
       } = action.payload;
 
       return {
         ...state,
-        regionsDisplacements,
-        statesDisplacements,
-        countiesDisplacements,
+        regionsMonthlyDisplacements,
+        statesMonthlyDisplacements,
+        countiesMonthlyDisplacements,
       };
     }
 
@@ -461,10 +461,9 @@ function receiveDisplacement(): AppThunk {
     });
 
     // build up downloadable county and cobra data from each region
-    const allRegionsCountyData: CountyDataRow[] = [];
     const allRegionsCobraData: CobraDataRow[] = [];
 
-    const regionsDisplacements: RegionsDisplacementByPollutant = {
+    const regionsMonthlyDisplacements: RegionsDisplacementByPollutant = {
       so2: {
         ['ALL' as RegionId]: {
           month1: { original: 0, postEere: 0 },
@@ -531,14 +530,14 @@ function receiveDisplacement(): AppThunk {
       },
     };
 
-    const statesDisplacements: StatesDisplacementByPollutant = {
+    const statesMonthlyDisplacements: StatesDisplacementByPollutant = {
       so2: {},
       nox: {},
       co2: {},
       pm25: {},
     };
 
-    const countiesDisplacements: CountiesDisplacementByPollutant = {
+    const countiesMonthlyDisplacements: CountiesDisplacementByPollutant = {
       so2: {},
       nox: {},
       co2: {},
@@ -556,17 +555,19 @@ function receiveDisplacement(): AppThunk {
             const { regionalData, stateData, countyData } = data[pollutant];
 
             // add regional data for the pollutant
-            regionsDisplacements[pollutant] = {
-              ...regionsDisplacements[pollutant],
+            regionsMonthlyDisplacements[pollutant] = {
+              ...regionsMonthlyDisplacements[pollutant],
               [regionId as RegionId]: regionalData,
             };
 
-            // add up total displacement for the pollutant for all regions
-            const total = regionsDisplacements[pollutant]['ALL' as RegionId];
-            for (const key in total) {
+            // add up total displacements for the pollutant for all regions
+            const allRegions =
+              regionsMonthlyDisplacements[pollutant]['ALL' as RegionId];
+
+            for (const key in allRegions) {
               const month = key as MonthKey;
-              total[month].original += regionalData[month].original;
-              total[month].postEere += regionalData[month].postEere;
+              allRegions[month].original += regionalData[month].original;
+              allRegions[month].postEere += regionalData[month].postEere;
             }
 
             // add (and potentially combine) state data for the pollutant
@@ -575,8 +576,8 @@ function receiveDisplacement(): AppThunk {
               // if a state's pollutant data already exists for the pollutant,
               // it was already added from another region, so add this regions's
               // monthly displacement data for the pollutant for the state
-              if (statesDisplacements[pollutant][stateId]) {
-                const dataset = statesDisplacements[pollutant][stateId];
+              if (statesMonthlyDisplacements[pollutant][stateId]) {
+                const dataset = statesMonthlyDisplacements[pollutant][stateId];
                 for (const key in dataset) {
                   const month = key as MonthKey;
                   dataset[month].original += stateData[stateId][month].original;
@@ -585,8 +586,8 @@ function receiveDisplacement(): AppThunk {
               }
               // else a state's pollutant data hasn't yet been added, so add it
               else {
-                statesDisplacements[pollutant] = {
-                  ...statesDisplacements[pollutant],
+                statesMonthlyDisplacements[pollutant] = {
+                  ...statesMonthlyDisplacements[pollutant],
                   [stateId]: stateData[stateId],
                 };
               }
@@ -595,14 +596,14 @@ function receiveDisplacement(): AppThunk {
             // add county data for the pollutant
             for (const key in countyData) {
               const stateId = key as StateId;
-              // counties exist entirely within only one region, so we can
-              // safely add county data to existing states (no need to combine
-              // displacement data like we did with `statesDisplacements`)
+              // counties exist entirely within only one region so we can safely
+              // add county data to existing states (no need to combine data
+              // like we did with `statesMonthlyDisplacements`)
               for (const countyName in countyData[stateId]) {
-                countiesDisplacements[pollutant] = {
-                  ...countiesDisplacements[pollutant],
+                countiesMonthlyDisplacements[pollutant] = {
+                  ...countiesMonthlyDisplacements[pollutant],
                   [stateId]: {
-                    ...countiesDisplacements[pollutant][stateId],
+                    ...countiesMonthlyDisplacements[pollutant][stateId],
                     [countyName]: countyData[stateId][countyName],
                   },
                 };
@@ -611,12 +612,8 @@ function receiveDisplacement(): AppThunk {
           },
         );
 
-        const { countyData, cobraData } = formatRegionalDownloadData(
-          data,
-          regionId as RegionId,
-        );
+        const cobraData = formatRegionalDownloadData(data);
 
-        allRegionsCountyData.push(...countyData);
         allRegionsCobraData.push(...cobraData);
       }
     }
@@ -624,16 +621,22 @@ function receiveDisplacement(): AppThunk {
     dispatch({
       type: 'displacement/STORE_MONTHLY_DISPLACEMENTS',
       payload: {
-        regionsDisplacements,
-        statesDisplacements,
-        countiesDisplacements,
+        regionsMonthlyDisplacements,
+        statesMonthlyDisplacements,
+        countiesMonthlyDisplacements,
       },
+    });
+
+    const countyData = formatCountyData({
+      regionsMonthlyDisplacements,
+      statesMonthlyDisplacements,
+      countiesMonthlyDisplacements,
     });
 
     dispatch({
       type: 'displacement/STORE_DOWNLOAD_DATA',
       payload: {
-        countyData: allRegionsCountyData,
+        countyData,
         cobraData: allRegionsCobraData,
       },
     });
@@ -676,14 +679,16 @@ function calculateMonthlyPercents(data: MonthlyDisplacement) {
   return calculateMonthlyData(data, 'percentages');
 }
 
-function formatRegionalDownloadData(
-  data: RegionalDisplacement,
-  regionId: RegionId,
-) {
-  const { so2, nox, co2, pm25 } = data;
-
+function formatCountyData({
+  regionsMonthlyDisplacements,
+  statesMonthlyDisplacements,
+  countiesMonthlyDisplacements,
+}: {
+  regionsMonthlyDisplacements: RegionsDisplacementByPollutant;
+  statesMonthlyDisplacements: StatesDisplacementByPollutant;
+  countiesMonthlyDisplacements: CountiesDisplacementByPollutant;
+}) {
   const countyData: CountyDataRow[] = [];
-  const cobraData: CobraDataRow[] = [];
 
   function addCountyRow({
     pollutant,
@@ -704,7 +709,9 @@ function formatRegionalDownloadData(
     countyData.push({
       Pollutant: pollutant,
       'Aggregation level': regionId
-        ? `${regions[regionId].name} Region`
+        ? regionId === ('ALL' as RegionId)
+          ? 'All Affected Regions'
+          : `${regions[regionId].name} Region`
         : stateId && !countyName
         ? 'State'
         : stateId && countyName
@@ -727,6 +734,331 @@ function formatRegionalDownloadData(
       December: monthlyData[11],
     });
   }
+
+  const allRegionsId = 'ALL' as RegionId;
+  const allRegionsSo2 = regionsMonthlyDisplacements.so2[allRegionsId];
+  const allRegionsNox = regionsMonthlyDisplacements.nox[allRegionsId];
+  const allRegionsCo2 = regionsMonthlyDisplacements.co2[allRegionsId];
+  const allRegionsPm25 = regionsMonthlyDisplacements.pm25[allRegionsId];
+
+  if (!allRegionsSo2 || !allRegionsNox || !allRegionsCo2 || !allRegionsPm25) {
+    return countyData;
+  }
+
+  // add "all regions" displacement data to countyData array
+  addCountyRow({
+    pollutant: 'SO2',
+    unit: 'emissions (pounds)',
+    monthlyData: calculateMonthlyEmissions(allRegionsSo2),
+    regionId: allRegionsId,
+  });
+
+  addCountyRow({
+    pollutant: 'NOX',
+    unit: 'emissions (pounds)',
+    monthlyData: calculateMonthlyEmissions(allRegionsNox),
+    regionId: allRegionsId,
+  });
+
+  addCountyRow({
+    pollutant: 'CO2',
+    unit: 'emissions (tons)',
+    monthlyData: calculateMonthlyEmissions(allRegionsCo2),
+    regionId: allRegionsId,
+  });
+
+  addCountyRow({
+    pollutant: 'PM25',
+    unit: 'emissions (pounds)',
+    monthlyData: calculateMonthlyEmissions(allRegionsPm25),
+    regionId: allRegionsId,
+  });
+
+  addCountyRow({
+    pollutant: 'SO2',
+    unit: 'percent',
+    monthlyData: calculateMonthlyPercents(allRegionsSo2),
+    regionId: allRegionsId,
+  });
+
+  addCountyRow({
+    pollutant: 'NOX',
+    unit: 'percent',
+    monthlyData: calculateMonthlyPercents(allRegionsNox),
+    regionId: allRegionsId,
+  });
+
+  addCountyRow({
+    pollutant: 'CO2',
+    unit: 'percent',
+    monthlyData: calculateMonthlyPercents(allRegionsCo2),
+    regionId: allRegionsId,
+  });
+
+  addCountyRow({
+    pollutant: 'PM25',
+    unit: 'percent',
+    monthlyData: calculateMonthlyPercents(allRegionsPm25),
+    regionId: allRegionsId,
+  });
+
+  // add each region's displacement data to countyData array
+  // NOTE: the same regions exist for all pollutants, so we'll just loop over
+  // so2 (but could use any of the other pollutants and get the same regions)
+  const sortedRegionIds = Object.keys(regionsMonthlyDisplacements.so2)
+    .filter((regionId) => regionId !== 'ALL')
+    .sort((a, b) => {
+      const regionA = regions[a as RegionId];
+      const regionB = regions[b as RegionId];
+      return regionA.name.localeCompare(regionB.name);
+    });
+
+  for (const id of sortedRegionIds) {
+    const regionId = id as RegionId;
+
+    // "all regions" displacement data has already been added, so skip it
+    if (id === 'ALL') continue;
+
+    const regionSo2 = regionsMonthlyDisplacements.so2[regionId];
+    const regionNox = regionsMonthlyDisplacements.nox[regionId];
+    const regionCo2 = regionsMonthlyDisplacements.co2[regionId];
+    const regionPm25 = regionsMonthlyDisplacements.pm25[regionId];
+
+    if (!regionSo2 || !regionNox || !regionCo2 || !regionPm25) {
+      return countyData;
+    }
+
+    addCountyRow({
+      pollutant: 'SO2',
+      unit: 'emissions (pounds)',
+      monthlyData: calculateMonthlyEmissions(regionSo2),
+      regionId,
+    });
+
+    addCountyRow({
+      pollutant: 'NOX',
+      unit: 'emissions (pounds)',
+      monthlyData: calculateMonthlyEmissions(regionNox),
+      regionId,
+    });
+
+    addCountyRow({
+      pollutant: 'CO2',
+      unit: 'emissions (tons)',
+      monthlyData: calculateMonthlyEmissions(regionCo2),
+      regionId,
+    });
+
+    addCountyRow({
+      pollutant: 'PM25',
+      unit: 'emissions (pounds)',
+      monthlyData: calculateMonthlyEmissions(regionPm25),
+      regionId,
+    });
+
+    addCountyRow({
+      pollutant: 'SO2',
+      unit: 'percent',
+      monthlyData: calculateMonthlyPercents(regionSo2),
+      regionId,
+    });
+
+    addCountyRow({
+      pollutant: 'NOX',
+      unit: 'percent',
+      monthlyData: calculateMonthlyPercents(regionNox),
+      regionId,
+    });
+
+    addCountyRow({
+      pollutant: 'CO2',
+      unit: 'percent',
+      monthlyData: calculateMonthlyPercents(regionCo2),
+      regionId,
+    });
+
+    addCountyRow({
+      pollutant: 'PM25',
+      unit: 'percent',
+      monthlyData: calculateMonthlyPercents(regionPm25),
+      regionId,
+    });
+  }
+
+  // add each state's displacement data to countyData array
+  // NOTE: the same regions exist for all pollutants, so we'll just loop over
+  // so2 (but could use any of the other pollutants and get the same regions)
+  const sortedStateIds = Object.keys(statesMonthlyDisplacements.so2).sort();
+
+  for (const id of sortedStateIds) {
+    const stateId = id as StateId;
+
+    const stateSo2 = statesMonthlyDisplacements.so2[stateId];
+    const stateNox = statesMonthlyDisplacements.nox[stateId];
+    const stateCo2 = statesMonthlyDisplacements.co2[stateId];
+    const statePm25 = statesMonthlyDisplacements.pm25[stateId];
+
+    if (!stateSo2 || !stateNox || !stateCo2 || !statePm25) {
+      return countyData;
+    }
+
+    addCountyRow({
+      pollutant: 'SO2',
+      unit: 'emissions (pounds)',
+      monthlyData: calculateMonthlyEmissions(stateSo2),
+      stateId,
+    });
+
+    addCountyRow({
+      pollutant: 'NOX',
+      unit: 'emissions (pounds)',
+      monthlyData: calculateMonthlyEmissions(stateNox),
+      stateId,
+    });
+
+    addCountyRow({
+      pollutant: 'CO2',
+      unit: 'emissions (tons)',
+      monthlyData: calculateMonthlyEmissions(stateCo2),
+      stateId,
+    });
+
+    addCountyRow({
+      pollutant: 'PM25',
+      unit: 'emissions (pounds)',
+      monthlyData: calculateMonthlyEmissions(statePm25),
+      stateId,
+    });
+
+    addCountyRow({
+      pollutant: 'SO2',
+      unit: 'percent',
+      monthlyData: calculateMonthlyPercents(stateSo2),
+      stateId,
+    });
+
+    addCountyRow({
+      pollutant: 'NOX',
+      unit: 'percent',
+      monthlyData: calculateMonthlyPercents(stateNox),
+      stateId,
+    });
+
+    addCountyRow({
+      pollutant: 'CO2',
+      unit: 'percent',
+      monthlyData: calculateMonthlyPercents(stateCo2),
+      stateId,
+    });
+
+    addCountyRow({
+      pollutant: 'PM25',
+      unit: 'percent',
+      monthlyData: calculateMonthlyPercents(statePm25),
+      stateId,
+    });
+  }
+
+  // add each county's displacement data to countyData array
+  // NOTE: the same regions exist for all pollutants, so we'll just loop over
+  // so2 (but could use any of the other pollutants and get the same regions)
+  const sortedCountyStateIds = Object.keys(
+    countiesMonthlyDisplacements.so2,
+  ).sort();
+
+  for (const id of sortedCountyStateIds) {
+    const stateId = id as StateId;
+
+    const stateSo2 = countiesMonthlyDisplacements.so2[stateId];
+    const stateNox = countiesMonthlyDisplacements.nox[stateId];
+    const stateCo2 = countiesMonthlyDisplacements.co2[stateId];
+    const statePm25 = countiesMonthlyDisplacements.pm25[stateId];
+
+    if (!stateSo2 || !stateNox || !stateCo2 || !statePm25) {
+      return countyData;
+    }
+
+    const sortedCountyNames = Object.keys(stateSo2).sort();
+
+    for (const countyName of sortedCountyNames) {
+      const countySo2 = stateSo2[countyName];
+      const countyNox = stateNox[countyName];
+      const countyCo2 = stateCo2[countyName];
+      const countyPm25 = statePm25[countyName];
+
+      addCountyRow({
+        pollutant: 'SO2',
+        unit: 'emissions (pounds)',
+        monthlyData: calculateMonthlyEmissions(countySo2),
+        stateId,
+        countyName,
+      });
+
+      addCountyRow({
+        pollutant: 'NOX',
+        unit: 'emissions (pounds)',
+        monthlyData: calculateMonthlyEmissions(countyNox),
+        stateId,
+        countyName,
+      });
+
+      addCountyRow({
+        pollutant: 'CO2',
+        unit: 'emissions (tons)',
+        monthlyData: calculateMonthlyEmissions(countyCo2),
+        stateId,
+        countyName,
+      });
+
+      addCountyRow({
+        pollutant: 'PM25',
+        unit: 'emissions (pounds)',
+        monthlyData: calculateMonthlyEmissions(countyPm25),
+        stateId,
+        countyName,
+      });
+
+      addCountyRow({
+        pollutant: 'SO2',
+        unit: 'percent',
+        monthlyData: calculateMonthlyPercents(countySo2),
+        stateId,
+        countyName,
+      });
+
+      addCountyRow({
+        pollutant: 'NOX',
+        unit: 'percent',
+        monthlyData: calculateMonthlyPercents(countyNox),
+        stateId,
+        countyName,
+      });
+
+      addCountyRow({
+        pollutant: 'CO2',
+        unit: 'percent',
+        monthlyData: calculateMonthlyPercents(countyCo2),
+        stateId,
+        countyName,
+      });
+
+      addCountyRow({
+        pollutant: 'PM25',
+        unit: 'percent',
+        monthlyData: calculateMonthlyPercents(countyPm25),
+        stateId,
+        countyName,
+      });
+    }
+  }
+
+  return countyData;
+}
+
+function formatRegionalDownloadData(data: RegionalDisplacement) {
+  const { so2, nox, pm25 } = data;
+
+  const cobraData: CobraDataRow[] = [];
 
   function addCobraRow({
     stateId,
@@ -797,63 +1129,6 @@ function formatRegionalDownloadData(
     });
   }
 
-  // region data: add county data for each polutant, unit, and region
-  addCountyRow({
-    pollutant: 'SO2',
-    unit: 'emissions (pounds)',
-    monthlyData: calculateMonthlyEmissions(so2.regionalData),
-    regionId,
-  });
-
-  addCountyRow({
-    pollutant: 'NOX',
-    unit: 'emissions (pounds)',
-    monthlyData: calculateMonthlyEmissions(nox.regionalData),
-    regionId,
-  });
-
-  addCountyRow({
-    pollutant: 'CO2',
-    unit: 'emissions (tons)',
-    monthlyData: calculateMonthlyEmissions(co2.regionalData),
-    regionId,
-  });
-
-  addCountyRow({
-    pollutant: 'PM25',
-    unit: 'emissions (pounds)',
-    monthlyData: calculateMonthlyEmissions(pm25.regionalData),
-    regionId,
-  });
-
-  addCountyRow({
-    pollutant: 'SO2',
-    unit: 'percent',
-    monthlyData: calculateMonthlyPercents(so2.regionalData),
-    regionId,
-  });
-
-  addCountyRow({
-    pollutant: 'NOX',
-    unit: 'percent',
-    monthlyData: calculateMonthlyPercents(nox.regionalData),
-    regionId,
-  });
-
-  addCountyRow({
-    pollutant: 'CO2',
-    unit: 'percent',
-    monthlyData: calculateMonthlyPercents(co2.regionalData),
-    regionId,
-  });
-
-  addCountyRow({
-    pollutant: 'PM25',
-    unit: 'percent',
-    monthlyData: calculateMonthlyPercents(pm25.regionalData),
-    regionId,
-  });
-
   // build up regional states and counties from the region's county data
   const regionalStatesAndCounties: StatesAndCounties = {};
 
@@ -867,139 +1142,11 @@ function formatRegionalDownloadData(
     regionalStatesAndCounties[stateId] = stateCountyNames;
   }
 
-  // states data: add county data for each polutant, unit, and state
   (Object.keys(regionalStatesAndCounties) as StateId[]).forEach((stateId) => {
-    const so2StateData = so2.stateData[stateId];
-    const noxStateData = nox.stateData[stateId];
-    const co2StateData = co2.stateData[stateId];
-    const pm25StateData = pm25.stateData[stateId];
-
-    addCountyRow({
-      pollutant: 'SO2',
-      unit: 'emissions (pounds)',
-      monthlyData: calculateMonthlyEmissions(so2StateData),
-      stateId,
-    });
-
-    addCountyRow({
-      pollutant: 'NOX',
-      unit: 'emissions (pounds)',
-      monthlyData: calculateMonthlyEmissions(noxStateData),
-      stateId,
-    });
-
-    addCountyRow({
-      pollutant: 'CO2',
-      unit: 'emissions (tons)',
-      monthlyData: calculateMonthlyEmissions(co2StateData),
-      stateId,
-    });
-
-    addCountyRow({
-      pollutant: 'PM25',
-      unit: 'emissions (pounds)',
-      monthlyData: calculateMonthlyEmissions(pm25StateData),
-      stateId,
-    });
-
-    addCountyRow({
-      pollutant: 'SO2',
-      unit: 'percent',
-      monthlyData: calculateMonthlyPercents(so2StateData),
-      stateId,
-    });
-
-    addCountyRow({
-      pollutant: 'NOX',
-      unit: 'percent',
-      monthlyData: calculateMonthlyPercents(noxStateData),
-      stateId,
-    });
-
-    addCountyRow({
-      pollutant: 'CO2',
-      unit: 'percent',
-      monthlyData: calculateMonthlyPercents(co2StateData),
-      stateId,
-    });
-
-    addCountyRow({
-      pollutant: 'PM25',
-      unit: 'percent',
-      monthlyData: calculateMonthlyPercents(pm25StateData),
-      stateId,
-    });
-
-    // counties data: add county data for each polutant, unit, and county
     regionalStatesAndCounties[stateId]?.forEach((countyName) => {
       const so2CountyData = so2.countyData[stateId]?.[countyName];
       const noxCountyData = nox.countyData[stateId]?.[countyName];
-      const co2CountyData = co2.countyData[stateId]?.[countyName];
       const pm25CountyData = pm25.countyData[stateId]?.[countyName];
-
-      addCountyRow({
-        pollutant: 'SO2',
-        unit: 'emissions (pounds)',
-        monthlyData: calculateMonthlyEmissions(so2CountyData),
-        stateId,
-        countyName,
-      });
-
-      addCountyRow({
-        pollutant: 'NOX',
-        unit: 'emissions (pounds)',
-        monthlyData: calculateMonthlyEmissions(noxCountyData),
-        stateId,
-        countyName,
-      });
-
-      addCountyRow({
-        pollutant: 'CO2',
-        unit: 'emissions (tons)',
-        monthlyData: calculateMonthlyEmissions(co2CountyData),
-        stateId,
-        countyName,
-      });
-
-      addCountyRow({
-        pollutant: 'PM25',
-        unit: 'emissions (pounds)',
-        monthlyData: calculateMonthlyEmissions(pm25CountyData),
-        stateId,
-        countyName,
-      });
-
-      addCountyRow({
-        pollutant: 'SO2',
-        unit: 'percent',
-        monthlyData: calculateMonthlyPercents(so2CountyData),
-        stateId,
-        countyName,
-      });
-
-      addCountyRow({
-        pollutant: 'NOX',
-        unit: 'percent',
-        monthlyData: calculateMonthlyPercents(noxCountyData),
-        stateId,
-        countyName,
-      });
-
-      addCountyRow({
-        pollutant: 'CO2',
-        unit: 'percent',
-        monthlyData: calculateMonthlyPercents(co2CountyData),
-        stateId,
-        countyName,
-      });
-
-      addCountyRow({
-        pollutant: 'PM25',
-        unit: 'percent',
-        monthlyData: calculateMonthlyPercents(pm25CountyData),
-        stateId,
-        countyName,
-      });
 
       // add cobra data for each county
       addCobraRow({
@@ -1012,5 +1159,5 @@ function formatRegionalDownloadData(
     });
   });
 
-  return { countyData, cobraData };
+  return cobraData;
 }
