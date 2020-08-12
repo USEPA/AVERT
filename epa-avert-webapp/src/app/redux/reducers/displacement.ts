@@ -145,6 +145,8 @@ type DisplacementAction =
           original: number;
           postEere: number;
           impacts: number;
+          replacedOriginal: number;
+          replacedPostEere: number;
         };
       };
     }
@@ -173,6 +175,8 @@ type DisplacementState = {
       original: number;
       postEere: number;
       impacts: number;
+      replacedOriginal: number;
+      replacedPostEere: number;
     };
   };
   annualStateEmissionChanges: Partial<{ [key in StateId]: StateChange }>;
@@ -183,6 +187,14 @@ type DisplacementState = {
   };
   downloadableCountyData: CountyDataRow[];
   downloadableCobraData: CobraDataRow[];
+};
+
+const initialPollutantDisplacement = {
+  original: 0,
+  postEere: 0,
+  impacts: 0,
+  replacedOriginal: 0,
+  replacedPostEere: 0,
 };
 
 const initialDisplacementByPollutant = {
@@ -198,11 +210,11 @@ const initialState: DisplacementState = {
   regionalDisplacements: {},
   statesAndCounties: {},
   annualRegionalDisplacements: {
-    generation: { original: 0, postEere: 0, impacts: 0 },
-    so2: { original: 0, postEere: 0, impacts: 0 },
-    nox: { original: 0, postEere: 0, impacts: 0 },
-    co2: { original: 0, postEere: 0, impacts: 0 },
-    pm25: { original: 0, postEere: 0, impacts: 0 },
+    generation: initialPollutantDisplacement,
+    so2: initialPollutantDisplacement,
+    nox: initialPollutantDisplacement,
+    co2: initialPollutantDisplacement,
+    pm25: initialPollutantDisplacement,
   },
   annualStateEmissionChanges: {},
   monthlyEmissionChanges: {
@@ -226,11 +238,11 @@ export default function reducer(
         regionalDisplacements: {},
         statesAndCounties: {},
         annualRegionalDisplacements: {
-          generation: { original: 0, postEere: 0, impacts: 0 },
-          so2: { original: 0, postEere: 0, impacts: 0 },
-          nox: { original: 0, postEere: 0, impacts: 0 },
-          co2: { original: 0, postEere: 0, impacts: 0 },
-          pm25: { original: 0, postEere: 0, impacts: 0 },
+          generation: initialPollutantDisplacement,
+          so2: initialPollutantDisplacement,
+          nox: initialPollutantDisplacement,
+          co2: initialPollutantDisplacement,
+          pm25: initialPollutantDisplacement,
         },
         annualStateEmissionChanges: {},
         monthlyEmissionChanges: {
@@ -601,13 +613,44 @@ function setAnnualRegionalDisplacements(
   regions: { [key in RegionId]: RegionState },
 ) {
   const data = {
-    generation: { original: 0, postEere: 0, impacts: 0 },
-    so2: { original: 0, postEere: 0, impacts: 0 },
-    nox: { original: 0, postEere: 0, impacts: 0 },
-    co2: { original: 0, postEere: 0, impacts: 0 },
-    pm25: { original: 0, postEere: 0, impacts: 0 },
+    generation: {
+      original: 0,
+      postEere: 0,
+      impacts: 0,
+      replacedOriginal: 0,
+      replacedPostEere: 0,
+    },
+    so2: {
+      original: 0,
+      postEere: 0,
+      impacts: 0,
+      replacedOriginal: 0,
+      replacedPostEere: 0,
+    },
+    nox: {
+      original: 0,
+      postEere: 0,
+      impacts: 0,
+      replacedOriginal: 0,
+      replacedPostEere: 0,
+    },
+    co2: {
+      original: 0,
+      postEere: 0,
+      impacts: 0,
+      replacedOriginal: 0,
+      replacedPostEere: 0,
+    },
+    pm25: {
+      original: 0,
+      postEere: 0,
+      impacts: 0,
+      replacedOriginal: 0,
+      replacedPostEere: 0,
+    },
   };
 
+  // sum each pollutant's original and postEere values for each selected region
   for (const key in regionalDisplacements) {
     const regionId = key as RegionId;
 
@@ -627,31 +670,36 @@ function setAnnualRegionalDisplacements(
 
     data.pm25.original += displacement?.pm25?.originalTotal || 0;
     data.pm25.postEere += displacement?.pm25?.postEereTotal || 0;
-
-    // emissions correction/override is needed for any region that has at least
-    // one EGU that has the `infreq_emissions_flag` property set to 1 in the
-    // region's RDF
-    for (const item of ['so2', 'nox', 'co2', 'pm25']) {
-      const pollutant = item as Pollutant;
-
-      const correctionNeeded = regions[regionId].rdf.data[pollutant].some(
-        (egu) => egu.infreq_emissions_flag === 1,
-      );
-
-      const actualEmissions = regions[regionId].actualEmissions[pollutant];
-
-      if (correctionNeeded && actualEmissions) {
-        // TODO
-        console.log(regionId, pollutant, actualEmissions);
-      }
-    }
   }
 
+  // calculate each pollutant's impacts
   data.generation.impacts = data.generation.postEere - data.generation.original;
   data.so2.impacts = data.so2.postEere - data.so2.original;
   data.nox.impacts = data.nox.postEere - data.nox.original;
   data.co2.impacts = data.co2.postEere - data.co2.original;
   data.pm25.impacts = data.pm25.postEere - data.pm25.original;
+
+  // emissions "replacement" is needed for any region that has at least
+  // one EGU that has the `infreq_emissions_flag` property set to 1 in the
+  // region's RDF
+  for (const key in regionalDisplacements) {
+    const regionId = key as RegionId;
+
+    for (const item of ['so2', 'nox', 'co2', 'pm25']) {
+      const pollutant = item as Pollutant;
+
+      const replacementNeeded = regions[regionId].rdf.data[pollutant].some(
+        (egu) => egu.infreq_emissions_flag === 1,
+      );
+
+      const emissions = regions[regionId].actualEmissions[pollutant];
+
+      if (replacementNeeded && emissions) {
+        data[pollutant].replacedOriginal = emissions;
+        data[pollutant].replacedPostEere = emissions - data[pollutant].impacts;
+      }
+    }
+  }
 
   return data;
 }
