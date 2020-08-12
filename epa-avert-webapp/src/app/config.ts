@@ -1,3 +1,5 @@
+export type Pollutant = 'so2' | 'nox' | 'co2' | 'pm25';
+
 export type RegionId =
   | 'CA'
   | 'CENT'
@@ -14,12 +16,17 @@ export type RegionId =
   | 'TE'
   | 'TN';
 
+/**
+ * NOTE: 2019 actual so2 emissions (tons) summed from all EGUs filtered by
+ * region, from `Actual SO2 data.xls` file emailed by Pat Knight on 8/8/20
+ */
 export type Region = {
   id: RegionId;
   name: string;
   lineLoss: number;
   offshoreWind: boolean;
   percentageByState: Partial<{ [key in StateId]: number }>;
+  actualEmissions: Partial<{ [key in Pollutant]: number }>;
 };
 
 /**
@@ -40,6 +47,9 @@ export const regions: { [key in RegionId]: Region } = {
     offshoreWind: true,
     percentageByState: {
       CA: 100,
+    },
+    actualEmissions: {
+      so2: 2_179.033,
     },
   },
   CENT: {
@@ -62,6 +72,9 @@ export const regions: { [key in RegionId]: Region } = {
       SD: 2.6437,
       TX: 12.9846,
     },
+    actualEmissions: {
+      so2: 114_410.351,
+    },
   },
   FL: {
     id: 'FL',
@@ -70,6 +83,9 @@ export const regions: { [key in RegionId]: Region } = {
     offshoreWind: false,
     percentageByState: {
       FL: 100,
+    },
+    actualEmissions: {
+      so2: 15_733.179,
     },
   },
   MIDA: {
@@ -92,6 +108,9 @@ export const regions: { [key in RegionId]: Region } = {
       TN: 0.2736,
       VA: 15.3029,
       WV: 4.4088,
+    },
+    actualEmissions: {
+      so2: 157_537.143,
     },
   },
   MIDW: {
@@ -116,6 +135,9 @@ export const regions: { [key in RegionId]: Region } = {
       TX: 3.2878,
       WI: 10.1114,
     },
+    actualEmissions: {
+      so2: 350_990.677,
+    },
   },
   NCSC: {
     id: 'NCSC',
@@ -125,6 +147,9 @@ export const regions: { [key in RegionId]: Region } = {
     percentageByState: {
       NC: 61.6987,
       SC: 38.3013,
+    },
+    actualEmissions: {
+      so2: 27_691.796,
     },
   },
   NE: {
@@ -140,6 +165,9 @@ export const regions: { [key in RegionId]: Region } = {
       RI: 6.3922,
       VT: 4.6622,
     },
+    actualEmissions: {
+      so2: 808.335,
+    },
   },
   NY: {
     id: 'NY',
@@ -148,6 +176,9 @@ export const regions: { [key in RegionId]: Region } = {
     offshoreWind: true,
     percentageByState: {
       NY: 100,
+    },
+    actualEmissions: {
+      so2: 1_989.526,
     },
   },
   NW: {
@@ -164,6 +195,9 @@ export const regions: { [key in RegionId]: Region } = {
       WA: 35.2925,
       WY: 4.1165,
     },
+    actualEmissions: {
+      so2: 24_998.958,
+    },
   },
   RM: {
     id: 'RM',
@@ -179,6 +213,9 @@ export const regions: { [key in RegionId]: Region } = {
       UT: 1.206,
       WY: 9.1754,
     },
+    actualEmissions: {
+      so2: 12_175.395,
+    },
   },
   SE: {
     id: 'SE',
@@ -191,6 +228,9 @@ export const regions: { [key in RegionId]: Region } = {
       GA: 59.8372,
       MS: 5.1415,
     },
+    actualEmissions: {
+      so2: 20_394.998,
+    },
   },
   SW: {
     id: 'SW',
@@ -202,6 +242,9 @@ export const regions: { [key in RegionId]: Region } = {
       NM: 14.6254,
       TX: 6.4536,
     },
+    actualEmissions: {
+      so2: 15_457.918,
+    },
   },
   TE: {
     id: 'TE',
@@ -210,6 +253,9 @@ export const regions: { [key in RegionId]: Region } = {
     offshoreWind: false,
     percentageByState: {
       TX: 100,
+    },
+    actualEmissions: {
+      so2: 115_235.576,
     },
   },
   TN: {
@@ -223,6 +269,9 @@ export const regions: { [key in RegionId]: Region } = {
       KY: 7.3385,
       MS: 10.4702,
       TN: 64.7969,
+    },
+    actualEmissions: {
+      so2: 32_402.356,
     },
   },
 };

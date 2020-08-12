@@ -1,12 +1,8 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
-import {
-  PollutantName,
-  MonthKey,
-  MonthlyDisplacement,
-} from 'app/redux/reducers/displacement';
+import { MonthKey, MonthlyDisplacement } from 'app/redux/reducers/displacement';
 // config
-import { RegionId } from 'app/config';
+import { Pollutant, RegionId } from 'app/config';
 
 export type MonthlyAggregation = 'region' | 'state' | 'county';
 
@@ -37,7 +33,7 @@ type MonthlyEmissionsAction =
   | {
       type: 'monthlyEmissions/STORE_FILTERED_DATA';
       payload: {
-        pollutant: PollutantName;
+        pollutant: Pollutant;
         data: MonthlyDisplacement;
       };
     };
@@ -183,7 +179,7 @@ export function updateFilteredEmissionsData(): AppThunk {
     } = monthlyEmissions;
 
     // store filtered monthly data for each pollutant
-    for (const pollutant of ['so2', 'nox', 'co2', 'pm25'] as PollutantName[]) {
+    for (const pollutant of ['so2', 'nox', 'co2', 'pm25'] as Pollutant[]) {
       // initial combined monthly pollutant data may be conditionally overwritten
       const combinedMonthlyData: MonthlyDisplacement = {
         month1: { original: 0, postEere: 0 },
