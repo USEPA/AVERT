@@ -133,14 +133,14 @@ type DisplacementAction =
       type: 'displacement/STORE_STATES_AND_COUNTIES';
       payload: { statesAndCounties: StatesAndCounties };
     }
-  | {
-      type: 'displacement/STORE_MONTHLY_DISPLACEMENTS';
-      payload: {
-        regionsMonthlyDisplacements: RegionsDisplacementByPollutant;
-        statesMonthlyDisplacements: StatesDisplacementByPollutant;
-        countiesMonthlyDisplacements: CountiesDisplacementByPollutant;
-      };
-    }
+  // | {
+  //     type: 'displacement/STORE_MONTHLY_DISPLACEMENTS';
+  //     payload: {
+  //       regionsMonthlyDisplacements: RegionsDisplacementByPollutant;
+  //       statesMonthlyDisplacements: StatesDisplacementByPollutant;
+  //       countiesMonthlyDisplacements: CountiesDisplacementByPollutant;
+  //     };
+  //   }
   | {
       type: 'displacement/STORE_DOWNLOAD_DATA';
       payload: {
@@ -154,19 +154,19 @@ type DisplacementState = {
   regionalDisplacements: Partial<{ [key in RegionId]: RegionalDisplacement }>;
   combinedStateChanges: Partial<{ [key in StateId]: StateChange }>;
   statesAndCounties: StatesAndCounties;
-  regionsMonthlyDisplacements: RegionsDisplacementByPollutant;
-  statesMonthlyDisplacements: StatesDisplacementByPollutant;
-  countiesMonthlyDisplacements: CountiesDisplacementByPollutant;
+  // regionsMonthlyDisplacements: RegionsDisplacementByPollutant;
+  // statesMonthlyDisplacements: StatesDisplacementByPollutant;
+  // countiesMonthlyDisplacements: CountiesDisplacementByPollutant;
   downloadableCountyData: CountyDataRow[];
   downloadableCobraData: CobraDataRow[];
 };
 
-const initialDisplacementByPollutant = {
-  so2: {},
-  nox: {},
-  co2: {},
-  pm25: {},
-};
+// const initialDisplacementByPollutant = {
+//   so2: {},
+//   nox: {},
+//   co2: {},
+//   pm25: {},
+// };
 
 // reducer
 const initialState: DisplacementState = {
@@ -174,9 +174,9 @@ const initialState: DisplacementState = {
   regionalDisplacements: {},
   combinedStateChanges: {},
   statesAndCounties: {},
-  regionsMonthlyDisplacements: initialDisplacementByPollutant,
-  statesMonthlyDisplacements: initialDisplacementByPollutant,
-  countiesMonthlyDisplacements: initialDisplacementByPollutant,
+  // regionsMonthlyDisplacements: initialDisplacementByPollutant,
+  // statesMonthlyDisplacements: initialDisplacementByPollutant,
+  // countiesMonthlyDisplacements: initialDisplacementByPollutant,
   downloadableCountyData: [],
   downloadableCobraData: [],
 };
@@ -193,9 +193,9 @@ export default function reducer(
         regionalDisplacements: {},
         combinedStateChanges: {},
         statesAndCounties: {},
-        regionsMonthlyDisplacements: initialDisplacementByPollutant,
-        statesMonthlyDisplacements: initialDisplacementByPollutant,
-        countiesMonthlyDisplacements: initialDisplacementByPollutant,
+        // regionsMonthlyDisplacements: initialDisplacementByPollutant,
+        // statesMonthlyDisplacements: initialDisplacementByPollutant,
+        // countiesMonthlyDisplacements: initialDisplacementByPollutant,
         downloadableCountyData: [],
         downloadableCobraData: [],
       };
@@ -283,20 +283,20 @@ export default function reducer(
       };
     }
 
-    case 'displacement/STORE_MONTHLY_DISPLACEMENTS': {
-      const {
-        regionsMonthlyDisplacements,
-        statesMonthlyDisplacements,
-        countiesMonthlyDisplacements,
-      } = action.payload;
+    // case 'displacement/STORE_MONTHLY_DISPLACEMENTS': {
+    //   const {
+    //     regionsMonthlyDisplacements,
+    //     statesMonthlyDisplacements,
+    //     countiesMonthlyDisplacements,
+    //   } = action.payload;
 
-      return {
-        ...state,
-        regionsMonthlyDisplacements,
-        statesMonthlyDisplacements,
-        countiesMonthlyDisplacements,
-      };
-    }
+    //   return {
+    //     ...state,
+    //     regionsMonthlyDisplacements,
+    //     statesMonthlyDisplacements,
+    //     countiesMonthlyDisplacements,
+    //   };
+    // }
 
     case 'displacement/STORE_DOWNLOAD_DATA': {
       const { countyData, cobraData } = action.payload;
@@ -553,7 +553,9 @@ function receiveDisplacement(): AppThunk {
 
       if (data) {
         // build up regional, states, and counties data for each pollutant
-        (['so2', 'nox', 'co2', 'pm25'] as Pollutant[]).forEach((pollutant) => {
+        for (const item of ['so2', 'nox', 'co2', 'pm25']) {
+          const pollutant = item as Pollutant;
+
           const { regionalData, stateData, countyData } = data[pollutant];
 
           // add regional data for the pollutant
@@ -611,18 +613,18 @@ function receiveDisplacement(): AppThunk {
               };
             }
           }
-        });
+        }
       }
     }
 
-    dispatch({
-      type: 'displacement/STORE_MONTHLY_DISPLACEMENTS',
-      payload: {
-        regionsMonthlyDisplacements,
-        statesMonthlyDisplacements,
-        countiesMonthlyDisplacements,
-      },
-    });
+    // dispatch({
+    //   type: 'displacement/STORE_MONTHLY_DISPLACEMENTS',
+    //   payload: {
+    //     regionsMonthlyDisplacements,
+    //     statesMonthlyDisplacements,
+    //     countiesMonthlyDisplacements,
+    //   },
+    // });
 
     const { countyData, cobraData } = formatDownloadableData({
       regionsMonthlyDisplacements,
