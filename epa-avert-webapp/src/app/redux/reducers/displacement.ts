@@ -1,6 +1,7 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
 // action creators
+import { RegionState } from './geography';
 import { MonthlyUnit, updateFilteredEmissionsData } from './monthlyEmissions';
 // config
 import {
@@ -134,7 +135,17 @@ type DisplacementAction =
       payload: { statesAndCounties: StatesAndCounties };
     }
   | {
-      type: 'displacement/STORE_MONTHLY_DISPLACEMENTS';
+      type: 'displacement/STORE_ANNUAL_REGIONAL_DISPLACEMENTS';
+      payload: {
+        [key in DisplacementPollutant]: {
+          original: number;
+          postEere: number;
+          impacts: number;
+        };
+      };
+    }
+  | {
+      type: 'displacement/STORE_MONTHLY_EMISSION_CHANGES';
       payload: {
         regions: RegionsDisplacementByPollutant;
         states: StatesDisplacementByPollutant;
@@ -142,7 +153,7 @@ type DisplacementAction =
       };
     }
   | {
-      type: 'displacement/STORE_DOWNLOAD_DATA';
+      type: 'displacement/STORE_DOWNLOADABLE_DATA';
       payload: {
         countyData: CountyDataRow[];
         cobraData: CobraDataRow[];
@@ -310,7 +321,22 @@ export default function reducer(
       };
     }
 
-    case 'displacement/STORE_MONTHLY_DISPLACEMENTS': {
+    case 'displacement/STORE_ANNUAL_REGIONAL_DISPLACEMENTS': {
+      const { generation, so2, nox, co2, pm25 } = action.payload;
+
+      return {
+        ...state,
+        annualRegionalDisplacements: {
+          generation,
+          so2,
+          nox,
+          co2,
+          pm25,
+        },
+      };
+    }
+
+    case 'displacement/STORE_MONTHLY_EMISSION_CHANGES': {
       const { regions, states, counties } = action.payload;
 
       return {
@@ -323,7 +349,7 @@ export default function reducer(
       };
     }
 
-    case 'displacement/STORE_DOWNLOAD_DATA': {
+    case 'displacement/STORE_DOWNLOADABLE_DATA': {
       const { countyData, cobraData } = action.payload;
 
       return {
@@ -443,7 +469,9 @@ export function calculateDisplacement(): AppThunk {
 
 function receiveDisplacement(): AppThunk {
   return (dispatch, getState) => {
-    const { panel, displacement } = getState();
+    const { panel, geography, displacement } = getState();
+
+    const { regionalDisplacements } = displacement;
 
     // recursively call function if data is still fetching
     if (panel.loadingProgress !== panel.loadingSteps) {
@@ -453,14 +481,13 @@ function receiveDisplacement(): AppThunk {
     // build up states and counties from each region's county data
     const allStatesAndCounties: StatesAndCounties = {};
 
-    for (const regionId in displacement.regionalDisplacements) {
-      // regional displacement data
-      const data = displacement.regionalDisplacements[regionId as RegionId];
+    for (const regionId in regionalDisplacements) {
+      const displacement = regionalDisplacements[regionId as RegionId];
 
-      if (data) {
+      if (displacement) {
         // states and counties are the same for all pollutants, so we'll
         // just use generation (it really doesn't matter which we use)
-        const { countyData } = data.generation;
+        const { countyData } = displacement.generation;
 
         for (const key in countyData) {
           const stateId = key as StateId;
@@ -488,6 +515,16 @@ function receiveDisplacement(): AppThunk {
     dispatch({
       type: 'displacement/STORE_STATES_AND_COUNTIES',
       payload: { statesAndCounties: allStatesAndCounties },
+    });
+
+    const displacements = setAnnualRegionalDisplacements({
+      regions: geography.regions,
+      regionalDisplacements,
+    });
+
+    dispatch({
+      type: 'displacement/STORE_ANNUAL_REGIONAL_DISPLACEMENTS',
+      payload: { ...displacements },
     });
 
     // organize monthly displacements for regions, states, and counties
@@ -572,16 +609,19 @@ function receiveDisplacement(): AppThunk {
       pm25: {},
     };
 
-    for (const regionId in displacement.regionalDisplacements) {
-      // regional displacement data
-      const data = displacement.regionalDisplacements[regionId as RegionId];
+    for (const regionId in regionalDisplacements) {
+      const displacement = regionalDisplacements[regionId as RegionId];
 
-      if (data) {
+      if (displacement) {
         // build up regional, states, and counties data for each pollutant
         for (const item of ['so2', 'nox', 'co2', 'pm25']) {
           const pollutant = item as Pollutant;
 
-          const { regionalData, stateData, countyData } = data[pollutant];
+          const {
+            regionalData,
+            stateData,
+            countyData, //
+          } = displacement[pollutant];
 
           // add regional data for the pollutant
           regionsMonthlyDisplacements[pollutant] = {
@@ -643,7 +683,7 @@ function receiveDisplacement(): AppThunk {
     }
 
     dispatch({
-      type: 'displacement/STORE_MONTHLY_DISPLACEMENTS',
+      type: 'displacement/STORE_MONTHLY_EMISSION_CHANGES',
       payload: {
         regions: regionsMonthlyDisplacements,
         states: statesMonthlyDisplacements,
@@ -658,7 +698,7 @@ function receiveDisplacement(): AppThunk {
     });
 
     dispatch({
-      type: 'displacement/STORE_DOWNLOAD_DATA',
+      type: 'displacement/STORE_DOWNLOADABLE_DATA',
       payload: {
         countyData,
         cobraData,
@@ -701,6 +741,69 @@ function calculateMonthlyEmissions(data: MonthlyDisplacement) {
 
 function calculateMonthlyPercents(data: MonthlyDisplacement) {
   return calculateMonthlyData(data, 'percentages');
+}
+
+function setAnnualRegionalDisplacements({
+  regions,
+  regionalDisplacements,
+}: {
+  regions: { [key in RegionId]: RegionState };
+  regionalDisplacements: Partial<{ [key in RegionId]: RegionalDisplacement }>;
+}) {
+  const data = {
+    generation: { original: 0, postEere: 0, impacts: 0 },
+    so2: { original: 0, postEere: 0, impacts: 0 },
+    nox: { original: 0, postEere: 0, impacts: 0 },
+    co2: { original: 0, postEere: 0, impacts: 0 },
+    pm25: { original: 0, postEere: 0, impacts: 0 },
+  };
+
+  for (const key in regionalDisplacements) {
+    const regionId = key as RegionId;
+
+    const displacement = regionalDisplacements[regionId];
+
+    data.generation.original += displacement?.generation?.originalTotal || 0;
+    data.generation.postEere += displacement?.generation?.postEereTotal || 0;
+
+    data.so2.original += displacement?.so2?.originalTotal || 0;
+    data.so2.postEere += displacement?.so2?.postEereTotal || 0;
+
+    data.nox.original += displacement?.nox?.originalTotal || 0;
+    data.nox.postEere += displacement?.nox?.postEereTotal || 0;
+
+    data.co2.original += displacement?.co2?.originalTotal || 0;
+    data.co2.postEere += displacement?.co2?.postEereTotal || 0;
+
+    data.pm25.original += displacement?.pm25?.originalTotal || 0;
+    data.pm25.postEere += displacement?.pm25?.postEereTotal || 0;
+
+    // emissions correction/override is needed for any region that has at least
+    // one EGU that has the `infreq_emissions_flag` property set to 1 in the
+    // region's RDF
+    for (const item of ['so2', 'nox', 'co2', 'pm25']) {
+      const pollutant = item as Pollutant;
+
+      const correctionNeeded = regions[regionId].rdf.data[pollutant].some(
+        (egu) => egu.infreq_emissions_flag === 1,
+      );
+
+      const actualEmissions = regions[regionId].actualEmissions[pollutant];
+
+      if (correctionNeeded && actualEmissions) {
+        // TODO
+        console.log(regionId, pollutant, actualEmissions);
+      }
+    }
+  }
+
+  data.generation.impacts = data.generation.postEere - data.generation.original;
+  data.so2.impacts = data.so2.postEere - data.so2.original;
+  data.nox.impacts = data.nox.postEere - data.nox.original;
+  data.co2.impacts = data.co2.postEere - data.co2.original;
+  data.pm25.impacts = data.pm25.postEere - data.pm25.original;
+
+  return data;
 }
 
 function sum(a: number, b: number) {

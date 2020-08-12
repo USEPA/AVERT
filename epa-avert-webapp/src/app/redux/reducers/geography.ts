@@ -142,12 +142,8 @@ export type StateState = State & {
 
 type GeographyState = {
   focus: GeographicFocus;
-  regions: {
-    [key in RegionId]: RegionState;
-  };
-  states: {
-    [key in StateId]: StateState;
-  };
+  regions: { [key in RegionId]: RegionState };
+  states: { [key in StateId]: StateState };
 };
 
 const initialEereLimits = {
