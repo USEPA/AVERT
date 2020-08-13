@@ -15,6 +15,8 @@ import {
 } from 'app/components/Panels';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
+// hooks
+import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 
 const chartSubtitleStyles = css`
   margin-top: 0.5rem;
@@ -60,6 +62,7 @@ const modalStyles = css`
 require('highcharts/modules/exporting')(Highcharts);
 
 function EEREChart() {
+  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const softValid = useTypedSelector(
     ({ eere }) => eere.combinedProfile.softValid,
   );
@@ -82,9 +85,21 @@ function EEREChart() {
     ({ eere }) => eere.combinedProfile.hourlyEere,
   );
 
-  const hours = Array(hourlyEere.length)
-    .fill(1)
-    .map((_, i) => (i + 1).toString());
+  const selectedRegion = useSelectedRegion();
+  const selectedStateRegions = useSelectedStateRegions();
+
+  const rdfYear =
+    geographicFocus === 'regions'
+      ? selectedRegion?.rdf.run.year
+      : selectedStateRegions[0].rdf.run.year;
+
+  const year = rdfYear || new Date().getFullYear();
+
+  const hourlyData = hourlyEere.map((eere, hour) => {
+    const firstHourOfYear = Date.UTC(year, 0, 1);
+    const hourlyMs = (hour + 1) * 60 * 60 * 1000;
+    return [new Date().setTime(firstHourOfYear + hourlyMs), eere];
+  });
 
   const chartConfig: Highcharts.Options = {
     chart: {
@@ -104,10 +119,9 @@ function EEREChart() {
     },
     tooltip: {
       formatter: function () {
-        return `<span style="font-size: 10px">
-          ${(this.series.xAxis as any).axisTitle.textStr}:
-          ${this.x.toLocaleString()}
-          </span><br/>
+        const firstHourOfYear = Date.UTC(year, 0, 1);
+        const hour = (this.x - firstHourOfYear) / 1000 / 60 / 60;
+        return `<span style="font-size: 10px">Hour of year: ${hour}</span><br/>
           <strong>${Math.round(this.y).toLocaleString()}</strong> MW`;
       },
     },
@@ -115,14 +129,12 @@ function EEREChart() {
       contextButtonTitle: 'Export options',
     },
     xAxis: {
-      categories: hours,
+      type: 'datetime',
+      dateTimeLabelFormats: {
+        month: '%b',
+      },
       title: {
         text: 'Hour of year',
-      },
-      labels: {
-        formatter: function () {
-          return this.value.toLocaleString();
-        },
       },
     },
     yAxis: {
@@ -139,7 +151,7 @@ function EEREChart() {
       {
         type: 'line',
         name: 'EERE Load Output',
-        data: hourlyEere,
+        data: hourlyData,
         color: '#058dc7',
       },
     ],
