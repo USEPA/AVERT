@@ -696,7 +696,7 @@ function setAnnualRegionalDisplacements(
 
       if (replacementNeeded && emissions) {
         data[pollutant].replacedOriginal = emissions;
-        data[pollutant].replacedPostEere = emissions - data[pollutant].impacts;
+        data[pollutant].replacedPostEere = emissions + data[pollutant].impacts;
       }
     }
   }
