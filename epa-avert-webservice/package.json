@@ -1,25 +1,20 @@
 {
   "name": "epa-avert-webservice",
   "version": "2.0.0",
-  "description": "Offloaded server calculations for the AVERT web app.",
-  "author": "Eastern Research Group, Inc.",
+  "description": "Web server for performing calculations and serving the built client side AVERT web app.",
+  "author": "USEPA (https://www.epa.gov)",
   "contributors": [
     "Bryan Neva <bryan.neva@erg.com>",
     "Courtney Myers <courtney.myers@erg.com>"
   ],
-  "license": "ISC",
+  "license": "CC0-1.0",
   "engines": {
     "node": "10.x"
   },
   "main": "./index.js",
   "scripts": {
     "start": "node ./index.js",
-    "dev": "AVERT_AUTH=true AVERT_USER=avert AVERT_PASS=dev node ./index.js",
-    "test": "mocha **/*.test.js"
-  },
-  "devDependencies": {
-    "mocha": "7.1.1",
-    "supertest": "4.0.2"
+    "dev": "AVERT_AUTH=true AVERT_USER=avert AVERT_PASS=dev node ./index.js"
   },
   "dependencies": {
     "@koa/cors": "3.0.0",

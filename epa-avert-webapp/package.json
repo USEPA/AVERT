@@ -1,13 +1,13 @@
 {
   "name": "epa-avert-webapp",
   "version": "2.0.0",
-  "description": "EPA's Avoided Emissions and Generation Tools (AVERT) is a free tool that estimates the emissions benefits of energy efficiency and renewable energy policies and programs.",
-  "author": "Eastern Research Group, Inc.",
+  "description": "EPA's Avoided Emissions and Generation Tool (AVERT) is a free tool that estimates the emissions benefits of energy efficiency and renewable energy policies and programs.",
+  "author": "USEPA (https://www.epa.gov)",
   "contributors": [
     "Bryan Neva <bryan.neva@erg.com>",
     "Courtney Myers <courtney.myers@erg.com>"
   ],
-  "license": "ISC",
+  "license": "CC0-1.0",
   "homepage": ".",
   "scripts": {
     "start": "react-scripts start",
