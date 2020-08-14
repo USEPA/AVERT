@@ -119,9 +119,8 @@ function EEREChart() {
     },
     tooltip: {
       formatter: function () {
-        const firstHourOfYear = Date.UTC(year, 0, 1);
-        const hour = (this.x - firstHourOfYear) / 1000 / 60 / 60;
-        return `<span style="font-size: 10px">Hour of year: ${hour}</span><br/>
+        return `<span style="font-size: 10px">
+          ${Highcharts.dateFormat('%m/%d/%y %l:%M %P', this.x)}</span><br/>
           <strong>${Math.round(this.y).toLocaleString()}</strong> MW`;
       },
     },
@@ -133,8 +132,9 @@ function EEREChart() {
       dateTimeLabelFormats: {
         month: '%b',
       },
+      tickInterval: 30 * 24 * 3600 * 1000,
       title: {
-        text: 'Hour of year',
+        text: undefined,
       },
     },
     yAxis: {
