@@ -91,7 +91,7 @@ function EEREChart() {
   const rdfYear =
     geographicFocus === 'regions'
       ? selectedRegion?.rdf.run.year
-      : selectedStateRegions[0].rdf.run.year;
+      : selectedStateRegions[0]?.rdf.run.year;
 
   const year = rdfYear || new Date().getFullYear();
 

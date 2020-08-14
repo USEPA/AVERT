@@ -1,5 +1,6 @@
 /** @jsx jsx */
 
+import React from 'react';
 import { jsx, css } from '@emotion/core';
 import styled from '@emotion/styled/macro';
 import { useDispatch } from 'react-redux';
@@ -422,6 +423,30 @@ function Panels() {
       ? `${selectedRegionName} Region`
       : `${selectedStateRegions} (due to changes in ${selectedStateName})`;
 
+  // the order of the displacements table and emissions table will be
+  // determined by the selected geography (regions or states)
+  const displacementsTable = (
+    <React.Fragment>
+      <h3 css={subheadingStyles}>
+        Annual Regional Displacements:
+        <br />
+        <small>{resultsHeading}</small>
+      </h3>
+      <DisplacementsTable />
+    </React.Fragment>
+  );
+
+  const emissionsTable = (
+    <React.Fragment>
+      <h3 css={subheadingStyles}>
+        Annual State Emission Changes:
+        <br />
+        <small>{resultsHeading}</small>
+      </h3>
+      <EmissionsTable />
+    </React.Fragment>
+  );
+
   return (
     <Container
       lightOverlay={modalOverlay}
@@ -627,21 +652,17 @@ function Panels() {
             )
           }
 
-          <h3 css={subheadingStyles}>
-            Annual Regional Displacements:
-            <br />
-            <small>{resultsHeading}</small>
-          </h3>
-
-          <DisplacementsTable />
-
-          <h3 css={subheadingStyles}>
-            Annual State Emission Changes:
-            <br />
-            <small>{resultsHeading}</small>
-          </h3>
-
-          <EmissionsTable />
+          {geographicFocus === 'regions' ? (
+            <React.Fragment>
+              {displacementsTable}
+              {emissionsTable}
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              {emissionsTable}
+              {displacementsTable}
+            </React.Fragment>
+          )}
 
           <h3 css={subheadingStyles}>
             Monthly Emission Changes:
