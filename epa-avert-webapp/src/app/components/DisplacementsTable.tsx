@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { jsx, css } from '@emotion/core';
+// components
+import Tooltip from 'app/components/Tooltip';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 
@@ -56,7 +58,12 @@ function DisplacementsTable() {
         </thead>
         <tbody>
           <tr>
-            <td css={rowLabelStyles}>Generation (MWh)</td>
+            <td css={rowLabelStyles}>
+              Generation (MWh){' '}
+              {Boolean(data.generation.replacedOriginal) && (
+                <Tooltip id={30}>Generation replacement text...</Tooltip>
+              )}
+            </td>
             <td className="avert-table-data">{formatNumber(genOrig)}</td>
             <td className="avert-table-data">{formatNumber(genPost)}</td>
             <td className="avert-table-data">{formatNumber(genImpacts)}</td>
@@ -66,7 +73,12 @@ function DisplacementsTable() {
           </tr>
           <tr>
             <td css={rowLabelStyles}>
-              SO<sub>2</sub> (lbs)
+              SO<sub>2</sub> (lbs){' '}
+              {Boolean(data.so2.replacedOriginal) && (
+                <Tooltip id={31}>
+                  SO<sub>2</sub> replacement text...
+                </Tooltip>
+              )}
             </td>
             <td className="avert-table-data">{formatNumber(so2Orig)}</td>
             <td className="avert-table-data">{formatNumber(so2Post)}</td>
@@ -74,7 +86,12 @@ function DisplacementsTable() {
           </tr>
           <tr>
             <td css={rowLabelStyles}>
-              NO<sub>X</sub> (lbs)
+              NO<sub>X</sub> (lbs){' '}
+              {Boolean(data.nox.replacedOriginal) && (
+                <Tooltip id={32}>
+                  NO<sub>X</sub> replacement text...
+                </Tooltip>
+              )}
             </td>
             <td className="avert-table-data">{formatNumber(noxOrig)}</td>
             <td className="avert-table-data">{formatNumber(noxPost)}</td>
@@ -82,7 +99,12 @@ function DisplacementsTable() {
           </tr>
           <tr>
             <td css={rowLabelStyles}>
-              CO<sub>2</sub> (tons)
+              CO<sub>2</sub> (tons){' '}
+              {Boolean(data.co2.replacedOriginal) && (
+                <Tooltip id={33}>
+                  CO<sub>2</sub> replacement text...
+                </Tooltip>
+              )}
             </td>
             <td className="avert-table-data">{formatNumber(co2Orig)}</td>
             <td className="avert-table-data">{formatNumber(co2Post)}</td>
@@ -90,7 +112,12 @@ function DisplacementsTable() {
           </tr>
           <tr>
             <td css={rowLabelStyles}>
-              PM<sub>2.5</sub> (lbs)
+              PM<sub>2.5</sub> (lbs){' '}
+              {Boolean(data.pm25.replacedOriginal) && (
+                <Tooltip id={34}>
+                  PM<sub>2.5</sub> replacement text...
+                </Tooltip>
+              )}
             </td>
             <td className="avert-table-data">{formatNumber(pm25Orig)}</td>
             <td className="avert-table-data">{formatNumber(pm25Post)}</td>
