@@ -1018,78 +1018,87 @@ function setDownloadableData(
     return { countyData, cobraData };
   }
 
-  // add "all regions" displacement data to countyData array
-  countyData.push(
-    formatCountyDataRow({
-      pollutant: 'SO2',
-      unit: 'emissions (pounds)',
-      monthlyData: calculateMonthlyData(allRegionsSo2, 'emissions'),
-      regionId: allRegionsId,
-    }),
-  );
+  // the same regions exist for all pollutants, but we'll just use so2
+  // to get the region ids (excluding the 'ALL' regions cumulative data)
+  const regionIds = Object.keys(regionsDisplacements.so2).filter((regionId) => {
+    return regionId !== 'ALL';
+  });
 
-  countyData.push(
-    formatCountyDataRow({
-      pollutant: 'NOX',
-      unit: 'emissions (pounds)',
-      monthlyData: calculateMonthlyData(allRegionsNox, 'emissions'),
-      regionId: allRegionsId,
-    }),
-  );
+  // if there's more than one region, add "all regions" displacement data
+  // to countyData array
+  if (regionIds.length > 1) {
+    countyData.push(
+      formatCountyDataRow({
+        pollutant: 'SO2',
+        unit: 'emissions (pounds)',
+        monthlyData: calculateMonthlyData(allRegionsSo2, 'emissions'),
+        regionId: allRegionsId,
+      }),
+    );
 
-  countyData.push(
-    formatCountyDataRow({
-      pollutant: 'CO2',
-      unit: 'emissions (tons)',
-      monthlyData: calculateMonthlyData(allRegionsCo2, 'emissions'),
-      regionId: allRegionsId,
-    }),
-  );
+    countyData.push(
+      formatCountyDataRow({
+        pollutant: 'NOX',
+        unit: 'emissions (pounds)',
+        monthlyData: calculateMonthlyData(allRegionsNox, 'emissions'),
+        regionId: allRegionsId,
+      }),
+    );
 
-  countyData.push(
-    formatCountyDataRow({
-      pollutant: 'PM25',
-      unit: 'emissions (pounds)',
-      monthlyData: calculateMonthlyData(allRegionsPm25, 'emissions'),
-      regionId: allRegionsId,
-    }),
-  );
+    countyData.push(
+      formatCountyDataRow({
+        pollutant: 'CO2',
+        unit: 'emissions (tons)',
+        monthlyData: calculateMonthlyData(allRegionsCo2, 'emissions'),
+        regionId: allRegionsId,
+      }),
+    );
 
-  countyData.push(
-    formatCountyDataRow({
-      pollutant: 'SO2',
-      unit: 'percent',
-      monthlyData: calculateMonthlyData(allRegionsSo2, 'percentages'),
-      regionId: allRegionsId,
-    }),
-  );
+    countyData.push(
+      formatCountyDataRow({
+        pollutant: 'PM25',
+        unit: 'emissions (pounds)',
+        monthlyData: calculateMonthlyData(allRegionsPm25, 'emissions'),
+        regionId: allRegionsId,
+      }),
+    );
 
-  countyData.push(
-    formatCountyDataRow({
-      pollutant: 'NOX',
-      unit: 'percent',
-      monthlyData: calculateMonthlyData(allRegionsNox, 'percentages'),
-      regionId: allRegionsId,
-    }),
-  );
+    countyData.push(
+      formatCountyDataRow({
+        pollutant: 'SO2',
+        unit: 'percent',
+        monthlyData: calculateMonthlyData(allRegionsSo2, 'percentages'),
+        regionId: allRegionsId,
+      }),
+    );
 
-  countyData.push(
-    formatCountyDataRow({
-      pollutant: 'CO2',
-      unit: 'percent',
-      monthlyData: calculateMonthlyData(allRegionsCo2, 'percentages'),
-      regionId: allRegionsId,
-    }),
-  );
+    countyData.push(
+      formatCountyDataRow({
+        pollutant: 'NOX',
+        unit: 'percent',
+        monthlyData: calculateMonthlyData(allRegionsNox, 'percentages'),
+        regionId: allRegionsId,
+      }),
+    );
 
-  countyData.push(
-    formatCountyDataRow({
-      pollutant: 'PM25',
-      unit: 'percent',
-      monthlyData: calculateMonthlyData(allRegionsPm25, 'percentages'),
-      regionId: allRegionsId,
-    }),
-  );
+    countyData.push(
+      formatCountyDataRow({
+        pollutant: 'CO2',
+        unit: 'percent',
+        monthlyData: calculateMonthlyData(allRegionsCo2, 'percentages'),
+        regionId: allRegionsId,
+      }),
+    );
+
+    countyData.push(
+      formatCountyDataRow({
+        pollutant: 'PM25',
+        unit: 'percent',
+        monthlyData: calculateMonthlyData(allRegionsPm25, 'percentages'),
+        regionId: allRegionsId,
+      }),
+    );
+  }
 
   // add each region's displacement data to countyData array
   // NOTE: the same regions exist for all pollutants, so we'll just loop over
