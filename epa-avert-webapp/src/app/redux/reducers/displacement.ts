@@ -6,6 +6,7 @@ import { MonthlyUnit, updateFilteredEmissionsData } from './monthlyEmissions';
 // config
 import {
   Pollutant,
+  DisplacementPollutant,
   RegionId,
   StateId,
   states,
@@ -47,8 +48,6 @@ export type MonthlyDisplacement = {
     postEere: number;
   };
 };
-
-type DisplacementPollutant = 'generation' | Pollutant;
 
 type PollutantDisplacement = {
   regionId: RegionId;
@@ -650,54 +649,84 @@ function setAnnualRegionalDisplacements(
     },
   };
 
-  // sum each pollutant's original and postEere values for each selected region
-  for (const key in regionalDisplacements) {
-    const regionId = key as RegionId;
+  // emissions "replacement" is needed for a pollutant if a region has at least
+  // one EGU that has the `infreq_emissions_flag` property set to 1 in the for
+  // the given pollutant. usually emissions "replacement" isn't needed, so we'll
+  // initially set each pollutant's replacement needed flag to false, and will
+  // conditionally reset its value to true as needed. if "replacement" is needed
+  // for a pollutant, we'll set `replacedOriginal` and `replacedPostEere` values
+  // for each pollutant as well.
+  const replacementNeededByPollutant = {
+    generation: false,
+    so2: false,
+    nox: false,
+    co2: false,
+    pm25: false,
+  };
 
-    const displacement = regionalDisplacements[regionId];
+  for (const item of ['generation', 'so2', 'nox', 'co2', 'pm25']) {
+    const pollutant = item as DisplacementPollutant;
 
-    data.generation.original += displacement?.generation?.originalTotal || 0;
-    data.generation.postEere += displacement?.generation?.postEereTotal || 0;
+    for (const key in regionalDisplacements) {
+      const regionId = key as RegionId;
+      const displacement = regionalDisplacements[regionId];
 
-    data.so2.original += displacement?.so2?.originalTotal || 0;
-    data.so2.postEere += displacement?.so2?.postEereTotal || 0;
+      // sum each pollutant's original and postEere values for each region
+      data[pollutant].original += displacement?.[pollutant].originalTotal || 0;
+      data[pollutant].postEere += displacement?.[pollutant].postEereTotal || 0;
 
-    data.nox.original += displacement?.nox?.originalTotal || 0;
-    data.nox.postEere += displacement?.nox?.postEereTotal || 0;
-
-    data.co2.original += displacement?.co2?.originalTotal || 0;
-    data.co2.postEere += displacement?.co2?.postEereTotal || 0;
-
-    data.pm25.original += displacement?.pm25?.originalTotal || 0;
-    data.pm25.postEere += displacement?.pm25?.postEereTotal || 0;
-  }
-
-  // calculate each pollutant's impacts
-  data.generation.impacts = data.generation.postEere - data.generation.original;
-  data.so2.impacts = data.so2.postEere - data.so2.original;
-  data.nox.impacts = data.nox.postEere - data.nox.original;
-  data.co2.impacts = data.co2.postEere - data.co2.original;
-  data.pm25.impacts = data.pm25.postEere - data.pm25.original;
-
-  // emissions "replacement" is needed for any region that has at least
-  // one EGU that has the `infreq_emissions_flag` property set to 1 in the
-  // region's RDF
-  for (const key in regionalDisplacements) {
-    const regionId = key as RegionId;
-
-    for (const item of ['so2', 'nox', 'co2', 'pm25']) {
-      const pollutant = item as Pollutant;
-
-      const replacementNeeded = regions[regionId].rdf.data[pollutant].some(
+      // conditionally reset flag if replacement is needed for the pollutant
+      const rdfPollutantData = regions[regionId].rdf.data[pollutant];
+      const regionalPollutantReplacementNeeded = rdfPollutantData.some(
         (egu) => egu.infreq_emissions_flag === 1,
       );
 
-      const emissions = regions[regionId].actualEmissions[pollutant];
-
-      if (replacementNeeded && emissions) {
-        data[pollutant].replacedOriginal = emissions;
-        data[pollutant].replacedPostEere = emissions + data[pollutant].impacts;
+      if (regionalPollutantReplacementNeeded) {
+        replacementNeededByPollutant[pollutant] = true;
       }
+    }
+  }
+
+  // looping through the pollutants a second time is necessary,
+  // as all the data above needed to be set first
+  for (const item of ['generation', 'so2', 'nox', 'co2', 'pm25']) {
+    const pollutant = item as DisplacementPollutant;
+
+    // set each pollutant's impacts as the difference between the cumulative
+    // original and postEere values
+    data[pollutant].impacts =
+      data[pollutant].postEere - data[pollutant].original;
+
+    // if replacement is needed, set each pollutant's replacedOriginal and
+    // replacedPostEere values
+    if (replacementNeededByPollutant[pollutant]) {
+      // we need to loop over each region again to determine which number to use
+      // in incrementing the replacedOriginal value
+      for (const key in regionalDisplacements) {
+        const regionId = key as RegionId;
+        const displacement = regionalDisplacements[regionId];
+
+        const rdfPollutantData = regions[regionId].rdf.data[pollutant];
+        const regionalPollutantReplacementNeeded = rdfPollutantData.some(
+          (egu) => egu.infreq_emissions_flag === 1,
+        );
+
+        // if replacement is needed for the region and pollutant, use the
+        // replacement value from the config file, else use the regions' total
+        // (as was use in incrementing the pollutant's original value)
+        const value = regionalPollutantReplacementNeeded
+          ? regions[regionId].actualEmissions[pollutant]
+          : displacement?.[pollutant].originalTotal;
+
+        // increment replacedOriginal for the region by the above set value
+        data[pollutant].replacedOriginal += value || 0;
+      }
+
+      // finally, set the pollutant's replacedPostEere by adding up the
+      // cumulative replacedOriginal value and the calculated impacts
+      // (impacts will be negative)
+      data[pollutant].replacedPostEere =
+        data[pollutant].replacedOriginal + data[pollutant].impacts;
     }
   }
 

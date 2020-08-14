@@ -1,5 +1,7 @@
 export type Pollutant = 'so2' | 'nox' | 'co2' | 'pm25';
 
+export type DisplacementPollutant = 'generation' | Pollutant;
+
 export type RegionId =
   | 'CA'
   | 'CENT'
@@ -26,7 +28,7 @@ export type Region = {
   lineLoss: number;
   offshoreWind: boolean;
   percentageByState: Partial<{ [key in StateId]: number }>;
-  actualEmissions: Partial<{ [key in Pollutant]: number }>;
+  actualEmissions: Partial<{ [key in DisplacementPollutant]: number }>;
 };
 
 /**
