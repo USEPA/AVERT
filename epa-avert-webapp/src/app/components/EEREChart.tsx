@@ -207,7 +207,7 @@ function EEREChart() {
           This EE/RE profile will displace {totalLoadGwh.toLocaleString()} GWh
           of regional fossil fuel generation over the course of a year. For
           reference, this equals the annual electricity consumed by{' '}
-          {equivalentHomes.toLocaleString()} average American homes.
+          {equivalentHomes.toLocaleString()} average homes in the United States.
         </p>
       </React.Fragment>
     );
