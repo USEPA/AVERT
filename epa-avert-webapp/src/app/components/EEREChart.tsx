@@ -97,7 +97,7 @@ function EEREChart() {
 
   const hourlyData = hourlyEere.map((eere, hour) => {
     const firstHourOfYear = Date.UTC(year, 0, 1);
-    const hourlyMs = (hour + 1) * 60 * 60 * 1000;
+    const hourlyMs = hour * 60 * 60 * 1000;
     return [new Date().setTime(firstHourOfYear + hourlyMs), eere];
   });
 
