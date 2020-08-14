@@ -1018,15 +1018,19 @@ function setDownloadableData(
     return { countyData, cobraData };
   }
 
-  // the same regions exist for all pollutants, but we'll just use so2
-  // to get the region ids (excluding the 'ALL' regions cumulative data)
-  const regionIds = Object.keys(regionsDisplacements.so2).filter((regionId) => {
-    return regionId !== 'ALL';
-  });
+  // NOTE: the same regions exist for all pollutants, so we'll just loop over
+  // so2 (but could use any of the other pollutants and get the same regions)
+  const sortedRegionIds = Object.keys(regionsDisplacements.so2)
+    .filter((regionId) => regionId !== 'ALL')
+    .sort((a, b) => {
+      const regionA = regions[a as RegionId];
+      const regionB = regions[b as RegionId];
+      return regionA.name.localeCompare(regionB.name);
+    });
 
   // if there's more than one region, add "all regions" displacement data
   // to countyData array
-  if (regionIds.length > 1) {
+  if (sortedRegionIds.length > 1) {
     countyData.push(
       formatCountyDataRow({
         pollutant: 'SO2',
@@ -1101,20 +1105,10 @@ function setDownloadableData(
   }
 
   // add each region's displacement data to countyData array
-  // NOTE: the same regions exist for all pollutants, so we'll just loop over
-  // so2 (but could use any of the other pollutants and get the same regions)
-  const sortedRegionIds = Object.keys(regionsDisplacements.so2)
-    .filter((regionId) => regionId !== 'ALL')
-    .sort((a, b) => {
-      const regionA = regions[a as RegionId];
-      const regionB = regions[b as RegionId];
-      return regionA.name.localeCompare(regionB.name);
-    });
-
   for (const id of sortedRegionIds) {
     const regionId = id as RegionId;
 
-    // "all regions" displacement data has already been added, so skip it
+    // skip "all regions" displacement data, as its already been handled above
     if (id === 'ALL') continue;
 
     const regionSo2 = regionsDisplacements.so2[regionId];
