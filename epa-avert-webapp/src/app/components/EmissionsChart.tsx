@@ -7,9 +7,11 @@ import HighchartsReact from 'highcharts-react-official';
 import { useDispatch } from 'react-redux';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
-import { calculateMonthlyData } from 'app/redux/reducers/displacement';
 import {
-  MonthlyAggregation,
+  MonthlyDisplacement,
+  calculateMonthlyData,
+} from 'app/redux/reducers/displacement';
+import {
   MonthlyUnit,
   selectMonthlyAggregation,
   selectMonthlyUnit,
@@ -20,7 +22,7 @@ import {
 // hooks
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 // config
-import { RegionId, StateId, regions, states } from 'app/config';
+import { Pollutant, RegionId, StateId, regions, states } from 'app/config';
 
 require('highcharts/modules/exporting')(Highcharts);
 
@@ -102,12 +104,61 @@ function EmissionsChart() {
   const availableCounties = useTypedSelector(({ displacement }) => {
     return displacement.statesAndCounties[selectedStateId as StateId]?.sort();
   });
-  const filteredMonthlyData = useTypedSelector(
-    ({ monthlyEmissions }) => monthlyEmissions.filteredMonthlyData,
+  const monthlyEmissionChanges = useTypedSelector(
+    ({ displacement }) => displacement.monthlyEmissionChanges,
   );
 
   const selectedRegion = useSelectedRegion();
   const selectedStateRegions = useSelectedStateRegions();
+
+  // set monthlyData for each pollutant, based on selected aggregation
+  const initialMonthlyData = {
+    month1: { original: 0, postEere: 0 },
+    month2: { original: 0, postEere: 0 },
+    month3: { original: 0, postEere: 0 },
+    month4: { original: 0, postEere: 0 },
+    month5: { original: 0, postEere: 0 },
+    month6: { original: 0, postEere: 0 },
+    month7: { original: 0, postEere: 0 },
+    month8: { original: 0, postEere: 0 },
+    month9: { original: 0, postEere: 0 },
+    month10: { original: 0, postEere: 0 },
+    month11: { original: 0, postEere: 0 },
+    month12: { original: 0, postEere: 0 },
+  };
+
+  const monthlyData: { [key in Pollutant]: MonthlyDisplacement } = {
+    so2: { ...initialMonthlyData },
+    nox: { ...initialMonthlyData },
+    co2: { ...initialMonthlyData },
+    pm25: { ...initialMonthlyData },
+  };
+
+  for (const item of ['so2', 'nox', 'co2', 'pm25']) {
+    const pollutant = item as Pollutant;
+    const regionId = selectedRegionId as RegionId;
+    const stateId = selectedStateId as StateId;
+
+    const { regions, states, counties } = monthlyEmissionChanges;
+
+    if (selectedAggregation === 'region') {
+      const displacement =
+        geographicFocus === 'regions' && selectedRegion
+          ? regions[pollutant][selectedRegion.id]
+          : regions[pollutant][regionId];
+      monthlyData[pollutant] = displacement || initialMonthlyData;
+    }
+
+    if (selectedAggregation === 'state') {
+      const displacement = states[pollutant][stateId];
+      monthlyData[pollutant] = displacement || initialMonthlyData;
+    }
+
+    if (selectedAggregation === 'county') {
+      const displacement = counties[pollutant][stateId]?.[selectedCountyName];
+      monthlyData[pollutant] = displacement || initialMonthlyData;
+    }
+  }
 
   // callback for after highcharts chart renders
   function afterRender(chart: any) {
@@ -234,7 +285,7 @@ function EmissionsChart() {
     series: [
       {
         name: 'SO₂',
-        data: calculateMonthlyData(filteredMonthlyData.so2, selectedUnit),
+        data: calculateMonthlyData(monthlyData.so2, selectedUnit),
         color: '#058dc7',
         emissionsUnit: 'lbs',
       },
@@ -255,7 +306,7 @@ function EmissionsChart() {
     series: [
       {
         name: 'NOₓ',
-        data: calculateMonthlyData(filteredMonthlyData.nox, selectedUnit),
+        data: calculateMonthlyData(monthlyData.nox, selectedUnit),
         color: '#ed561b',
         emissionsUnit: 'lbs',
       },
@@ -276,7 +327,7 @@ function EmissionsChart() {
     series: [
       {
         name: 'CO₂',
-        data: calculateMonthlyData(filteredMonthlyData.co2, selectedUnit),
+        data: calculateMonthlyData(monthlyData.co2, selectedUnit),
         color: '#50b432',
         emissionsUnit: 'tons',
       },
@@ -297,7 +348,7 @@ function EmissionsChart() {
     series: [
       {
         name: 'PM₂₅',
-        data: calculateMonthlyData(filteredMonthlyData.pm25, selectedUnit),
+        data: calculateMonthlyData(monthlyData.pm25, selectedUnit),
         color: '#665683',
         emissionsUnit: 'lbs',
       },
@@ -313,11 +364,10 @@ function EmissionsChart() {
           <input
             type="radio"
             name="aggregation"
-            value={'region'}
+            value="region"
             checked={selectedAggregation === 'region'}
             onChange={(ev) => {
-              const aggregation = ev.target.value as MonthlyAggregation;
-              dispatch(selectMonthlyAggregation(aggregation));
+              dispatch(selectMonthlyAggregation('region'));
             }}
           />
           Region
@@ -327,11 +377,10 @@ function EmissionsChart() {
           <input
             type="radio"
             name="aggregation"
-            value={'state'}
+            value="state"
             checked={selectedAggregation === 'state'}
             onChange={(ev) => {
-              const aggregation = ev.target.value as MonthlyAggregation;
-              dispatch(selectMonthlyAggregation(aggregation));
+              dispatch(selectMonthlyAggregation('state'));
               if (selectedStateId) {
                 dispatch(selectMonthlyState(selectedStateId));
               }
@@ -344,11 +393,10 @@ function EmissionsChart() {
           <input
             type="radio"
             name="aggregation"
-            value={'county'}
+            value="county"
             checked={selectedAggregation === 'county'}
             onChange={(ev) => {
-              const aggregation = ev.target.value as MonthlyAggregation;
-              dispatch(selectMonthlyAggregation(aggregation));
+              dispatch(selectMonthlyAggregation('county'));
               if (selectedCountyName) {
                 dispatch(selectMonthlyCounty(selectedCountyName));
               }

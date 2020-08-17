@@ -2,7 +2,7 @@
 import { AppThunk } from 'app/redux/index';
 // action creators
 import { EGUData, RegionState } from './geography';
-import { MonthlyUnit, updateFilteredEmissionsData } from './monthlyEmissions';
+import { MonthlyUnit } from './monthlyEmissions';
 // config
 import {
   Pollutant,
@@ -14,21 +14,7 @@ import {
   regions,
 } from 'app/config';
 
-type RegionsDisplacementsByPollutant = {
-  [key in Pollutant]: Partial<{ [key in RegionId]: MonthlyDisplacement }>;
-};
-
-type StatesDisplacementsByPollutant = {
-  [key in Pollutant]: Partial<{ [key in StateId]: MonthlyDisplacement }>;
-};
-
-type CountiesDisplacementsByPollutant = {
-  [key in Pollutant]: Partial<
-    { [key in StateId]: { [countyName: string]: MonthlyDisplacement } }
-  >;
-};
-
-export type MonthKey =
+type MonthKey =
   | 'month1'
   | 'month2'
   | 'month3'
@@ -73,6 +59,8 @@ type RegionalDisplacements = Partial<
   { [key in RegionId]: RegionalDisplacement }
 >;
 
+type StatesAndCounties = Partial<{ [key in StateId]: string[] }>;
+
 export type StateChange = {
   id: StateId;
   name: string;
@@ -83,7 +71,19 @@ export type StateChange = {
   pm25: number;
 };
 
-type StatesAndCounties = Partial<{ [key in StateId]: string[] }>;
+type RegionsDisplacementsByPollutant = {
+  [key in Pollutant]: Partial<{ [key in RegionId]: MonthlyDisplacement }>;
+};
+
+type StatesDisplacementsByPollutant = {
+  [key in Pollutant]: Partial<{ [key in StateId]: MonthlyDisplacement }>;
+};
+
+type CountiesDisplacementsByPollutant = {
+  [key in Pollutant]: Partial<
+    { [key in StateId]: { [countyName: string]: MonthlyDisplacement } }
+  >;
+};
 
 type CountyDataRow = {
   Pollutant: 'SO2' | 'NOX' | 'CO2' | 'PM25';
@@ -561,8 +561,6 @@ function receiveDisplacement(): AppThunk {
     });
 
     dispatch({ type: 'displacement/COMPLETE_DISPLACEMENT' });
-
-    dispatch(updateFilteredEmissionsData());
   };
 }
 
