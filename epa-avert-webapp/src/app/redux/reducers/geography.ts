@@ -22,7 +22,7 @@ export type RegionalLoadData = {
   year: number;
 };
 
-type EGUData = {
+export type EGUData = {
   state: StateId;
   county: string;
   lat: number;

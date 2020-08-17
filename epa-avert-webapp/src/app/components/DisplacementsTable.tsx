@@ -22,6 +22,9 @@ function DisplacementsTable() {
   const data = useTypedSelector(
     ({ displacement }) => displacement.annualRegionalDisplacements,
   );
+  const egusNeedingReplacement = useTypedSelector(
+    ({ displacement }) => displacement.egusNeedingReplacement,
+  );
 
   const genOrig = data.generation.replacedOriginal || data.generation.original;
   const genPost = data.generation.replacedPostEere || data.generation.postEere;
@@ -60,7 +63,7 @@ function DisplacementsTable() {
           <tr>
             <td css={rowLabelStyles}>
               Generation (MWh){' '}
-              {Boolean(data.generation.replacedOriginal) && (
+              {egusNeedingReplacement.generation.length > 0 && (
                 <Tooltip id={30}>Generation replacement text...</Tooltip>
               )}
             </td>
@@ -74,7 +77,7 @@ function DisplacementsTable() {
           <tr>
             <td css={rowLabelStyles}>
               SO<sub>2</sub> (lbs){' '}
-              {Boolean(data.so2.replacedOriginal) && (
+              {egusNeedingReplacement.so2.length > 0 && (
                 <Tooltip id={31}>
                   SO<sub>2</sub> replacement text...
                 </Tooltip>
@@ -87,7 +90,7 @@ function DisplacementsTable() {
           <tr>
             <td css={rowLabelStyles}>
               NO<sub>X</sub> (lbs){' '}
-              {Boolean(data.nox.replacedOriginal) && (
+              {egusNeedingReplacement.nox.length > 0 && (
                 <Tooltip id={32}>
                   NO<sub>X</sub> replacement text...
                 </Tooltip>
@@ -100,7 +103,7 @@ function DisplacementsTable() {
           <tr>
             <td css={rowLabelStyles}>
               CO<sub>2</sub> (tons){' '}
-              {Boolean(data.co2.replacedOriginal) && (
+              {egusNeedingReplacement.co2.length > 0 && (
                 <Tooltip id={33}>
                   CO<sub>2</sub> replacement text...
                 </Tooltip>
@@ -113,7 +116,7 @@ function DisplacementsTable() {
           <tr>
             <td css={rowLabelStyles}>
               PM<sub>2.5</sub> (lbs){' '}
-              {Boolean(data.pm25.replacedOriginal) && (
+              {egusNeedingReplacement.pm25.length > 0 && (
                 <Tooltip id={34}>
                   PM<sub>2.5</sub> replacement text...
                 </Tooltip>

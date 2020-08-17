@@ -1,7 +1,7 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
 // action creators
-import { RegionState } from './geography';
+import { EGUData, RegionState } from './geography';
 import { MonthlyUnit, updateFilteredEmissionsData } from './monthlyEmissions';
 // config
 import {
@@ -140,12 +140,17 @@ type DisplacementAction =
   | {
       type: 'displacement/STORE_ANNUAL_REGIONAL_DISPLACEMENTS';
       payload: {
-        [key in DisplacementPollutant]: {
-          original: number;
-          postEere: number;
-          impacts: number;
-          replacedOriginal: number;
-          replacedPostEere: number;
+        annualRegionalDisplacements: {
+          [key in DisplacementPollutant]: {
+            original: number;
+            postEere: number;
+            impacts: number;
+            replacedOriginal: number;
+            replacedPostEere: number;
+          };
+        };
+        egusNeedingReplacement: {
+          [key in DisplacementPollutant]: EGUData[];
         };
       };
     }
@@ -178,6 +183,7 @@ type DisplacementState = {
       replacedPostEere: number;
     };
   };
+  egusNeedingReplacement: { [key in DisplacementPollutant]: EGUData[] };
   annualStateEmissionChanges: Partial<{ [key in StateId]: StateChange }>;
   monthlyEmissionChanges: {
     regions: RegionsDisplacementsByPollutant;
@@ -215,6 +221,13 @@ const initialState: DisplacementState = {
     co2: initialPollutantDisplacement,
     pm25: initialPollutantDisplacement,
   },
+  egusNeedingReplacement: {
+    generation: [],
+    so2: [],
+    nox: [],
+    co2: [],
+    pm25: [],
+  },
   annualStateEmissionChanges: {},
   monthlyEmissionChanges: {
     regions: initialDisplacementByPollutant,
@@ -242,6 +255,13 @@ export default function reducer(
           nox: initialPollutantDisplacement,
           co2: initialPollutantDisplacement,
           pm25: initialPollutantDisplacement,
+        },
+        egusNeedingReplacement: {
+          generation: [],
+          so2: [],
+          nox: [],
+          co2: [],
+          pm25: [],
         },
         annualStateEmissionChanges: {},
         monthlyEmissionChanges: {
@@ -337,17 +357,15 @@ export default function reducer(
     }
 
     case 'displacement/STORE_ANNUAL_REGIONAL_DISPLACEMENTS': {
-      const { generation, so2, nox, co2, pm25 } = action.payload;
+      const {
+        annualRegionalDisplacements,
+        egusNeedingReplacement,
+      } = action.payload;
 
       return {
         ...state,
-        annualRegionalDisplacements: {
-          generation,
-          so2,
-          nox,
-          co2,
-          pm25,
-        },
+        annualRegionalDisplacements,
+        egusNeedingReplacement,
       };
     }
 
@@ -500,14 +518,17 @@ function receiveDisplacement(): AppThunk {
       payload: { statesAndCounties },
     });
 
-    const displacements = setAnnualRegionalDisplacements(
+    const {
+      annualRegionalDisplacements,
+      egusNeedingReplacement,
+    } = setAnnualRegionalDisplacements(
       regionalDisplacements,
       geography.regions,
     );
 
     dispatch({
       type: 'displacement/STORE_ANNUAL_REGIONAL_DISPLACEMENTS',
-      payload: { ...displacements },
+      payload: { annualRegionalDisplacements, egusNeedingReplacement },
     });
 
     const {
@@ -656,12 +677,14 @@ function setAnnualRegionalDisplacements(
   // conditionally reset its value to true as needed. if "replacement" is needed
   // for a pollutant, we'll set `replacedOriginal` and `replacedPostEere` values
   // for each pollutant as well.
-  const replacementNeededByPollutant = {
-    generation: false,
-    so2: false,
-    nox: false,
-    co2: false,
-    pm25: false,
+  const egusNeedingReplacement: {
+    [key in DisplacementPollutant]: EGUData[];
+  } = {
+    generation: [],
+    so2: [],
+    nox: [],
+    co2: [],
+    pm25: [],
   };
 
   for (const item of ['generation', 'so2', 'nox', 'co2', 'pm25']) {
@@ -675,15 +698,14 @@ function setAnnualRegionalDisplacements(
       data[pollutant].original += displacement?.[pollutant].originalTotal || 0;
       data[pollutant].postEere += displacement?.[pollutant].postEereTotal || 0;
 
-      // conditionally reset flag if replacement is needed for the pollutant
+      // add any regional egus needing replacement
       const rdfPollutantData = regions[regionId].rdf.data[pollutant];
-      const regionalPollutantReplacementNeeded = rdfPollutantData.some(
+
+      const regionalEGUsNeedingReplacement = rdfPollutantData.filter(
         (egu) => egu.infreq_emissions_flag === 1,
       );
 
-      if (regionalPollutantReplacementNeeded) {
-        replacementNeededByPollutant[pollutant] = true;
-      }
+      egusNeedingReplacement[pollutant].push(...regionalEGUsNeedingReplacement);
     }
   }
 
@@ -699,7 +721,7 @@ function setAnnualRegionalDisplacements(
 
     // if replacement is needed, set each pollutant's replacedOriginal and
     // replacedPostEere values
-    if (replacementNeededByPollutant[pollutant]) {
+    if (egusNeedingReplacement[pollutant].length > 0) {
       // we need to loop over each region again to determine which number to use
       // in incrementing the replacedOriginal value
       for (const key in regionalDisplacements) {
@@ -730,7 +752,10 @@ function setAnnualRegionalDisplacements(
     }
   }
 
-  return data;
+  return {
+    annualRegionalDisplacements: data,
+    egusNeedingReplacement,
+  };
 }
 
 function setMonthlyEmissionChanges(
