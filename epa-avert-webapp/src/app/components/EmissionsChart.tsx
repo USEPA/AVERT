@@ -79,6 +79,13 @@ const emissionsChartsStyles = css`
   }
 `;
 
+const noChartStyles = css`
+  border: 1px solid #ddd;
+  padding: 0 1rem 1rem;
+  background-color: whitesmoke;
+  text-align: center;
+`;
+
 function EmissionsChart() {
   const dispatch = useDispatch();
   const status = useTypedSelector(({ displacement }) => displacement.status);
@@ -104,6 +111,9 @@ function EmissionsChart() {
   const availableCounties = useTypedSelector(({ displacement }) => {
     return displacement.statesAndCounties[selectedStateId as StateId]?.sort();
   });
+  const egusNeedingReplacement = useTypedSelector(
+    ({ displacement }) => displacement.egusNeedingReplacement,
+  );
   const monthlyEmissionChanges = useTypedSelector(
     ({ displacement }) => displacement.monthlyEmissionChanges,
   );
@@ -158,14 +168,6 @@ function EmissionsChart() {
       const displacement = counties[pollutant][stateId]?.[selectedCountyName];
       monthlyData[pollutant] = displacement || initialMonthlyData;
     }
-  }
-
-  // callback for after highcharts chart renders
-  function afterRender(chart: any) {
-    // as this entire react app is ultimately served in an iframe on another page,
-    // this document has a click handler that sends document's height to other window,
-    // which can then set the embedded iframe's height (see public/post-message.js)
-    document.querySelector('html')?.click();
   }
 
   if (status !== 'complete') return null;
@@ -355,6 +357,64 @@ function EmissionsChart() {
     ],
   };
 
+  function renderChart(pollutant: Pollutant) {
+    const flaggedEGUs = egusNeedingReplacement[pollutant];
+
+    const flaggedRegion =
+      selectedAggregation === 'region' && flaggedEGUs.length > 0;
+
+    const flaggedState =
+      selectedAggregation === 'state' &&
+      flaggedEGUs.some((egu) => egu.state === selectedStateId);
+
+    const flaggedCounty =
+      selectedAggregation === 'county' &&
+      flaggedEGUs.some((egu) => egu.county === selectedCountyName);
+
+    // prettier-ignore
+    const pollutantMarkup = new Map<Pollutant, React.ReactNode>()
+      .set('so2', <React.Fragment>SO<sub>2</sub></React.Fragment>)
+      .set('nox', <React.Fragment>NO<sub>X</sub></React.Fragment>)
+      .set('co2', <React.Fragment>CO<sub>2</sub></React.Fragment>)
+      .set('pm25', <React.Fragment>PM<sub>2.5</sub></React.Fragment>);
+
+    const chartConfig = new Map<Pollutant, Object>()
+      .set('so2', so2Config)
+      .set('nox', noxConfig)
+      .set('co2', co2Config)
+      .set('pm25', pm25Config);
+
+    if (selectedUnit === 'percentages') {
+      if (flaggedRegion || flaggedState || flaggedCounty) {
+        return (
+          <div css={noChartStyles}>
+            <p className="avert-chart-title">
+              Change in {pollutantMarkup.get(pollutant)} Emissions:{' '}
+              {chartLocationTitle}
+            </p>
+            <p>
+              <small>(message)</small>
+            </p>
+          </div>
+        );
+      }
+    }
+
+    return (
+      <HighchartsReact
+        highcharts={Highcharts}
+        options={chartConfig.get(pollutant)}
+        callback={(_chart: any) => {
+          // as this entire react app is ultimately served in an iframe
+          // on another page, this document has a click handler that sends
+          // the document's height to other window, which can then set the
+          // embedded iframe's height (see public/post-message.js)
+          document.querySelector('html')?.click();
+        }}
+      />
+    );
+  }
+
   return (
     <React.Fragment>
       <div css={filterGroupStyles}>
@@ -512,29 +572,10 @@ function EmissionsChart() {
       </div>
 
       <div css={emissionsChartsStyles}>
-        <HighchartsReact
-          highcharts={Highcharts}
-          options={so2Config}
-          callback={afterRender}
-        />
-
-        <HighchartsReact
-          highcharts={Highcharts}
-          options={noxConfig}
-          callback={afterRender}
-        />
-
-        <HighchartsReact
-          highcharts={Highcharts}
-          options={co2Config}
-          callback={afterRender}
-        />
-
-        <HighchartsReact
-          highcharts={Highcharts}
-          options={pm25Config}
-          callback={afterRender}
-        />
+        {renderChart('so2')}
+        {renderChart('nox')}
+        {renderChart('co2')}
+        {renderChart('pm25')}
       </div>
     </React.Fragment>
   );
