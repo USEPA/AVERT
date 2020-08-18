@@ -80,8 +80,9 @@ const emissionsChartsStyles = css`
 `;
 
 const noChartStyles = css`
-  border: 1px solid #ddd;
+  margin-bottom: 1rem;
   padding: 0 1rem 1rem;
+  border: 1px solid #ddd;
   background-color: whitesmoke;
   text-align: center;
 `;
@@ -361,7 +362,12 @@ function EmissionsChart() {
     const flaggedEGUs = egusNeedingReplacement[pollutant];
 
     const flaggedRegion =
-      selectedAggregation === 'region' && flaggedEGUs.length > 0;
+      selectedAggregation === 'region' &&
+      (geographicFocus === 'regions'
+        ? flaggedEGUs.length > 0
+        : (flaggedEGUs.length > 0 && selectedRegionId === 'ALL') ||
+          flaggedEGUs.filter((egu) => egu.regionId === selectedRegionId)
+            .length > 0);
 
     const flaggedState =
       selectedAggregation === 'state' &&
