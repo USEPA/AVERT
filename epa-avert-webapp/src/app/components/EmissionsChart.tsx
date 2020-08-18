@@ -375,7 +375,10 @@ function EmissionsChart() {
 
     const flaggedCounty =
       selectedAggregation === 'county' &&
-      flaggedEGUs.some((egu) => egu.county === selectedCountyName);
+      flaggedEGUs.some(
+        (egu) =>
+          egu.state === selectedStateId && egu.county === selectedCountyName,
+      );
 
     // prettier-ignore
     const pollutantMarkup = new Map<Pollutant, React.ReactNode>()

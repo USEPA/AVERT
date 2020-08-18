@@ -14,6 +14,8 @@ import {
   regions,
 } from 'app/config';
 
+type ReplacementEGU = EGUData & { regionId: RegionId };
+
 type MonthKey =
   | 'month1'
   | 'month2'
@@ -150,7 +152,7 @@ type DisplacementAction =
           };
         };
         egusNeedingReplacement: {
-          [key in DisplacementPollutant]: EGUData[];
+          [key in DisplacementPollutant]: ReplacementEGU[];
         };
       };
     }
@@ -183,7 +185,7 @@ type DisplacementState = {
       replacedPostEere: number;
     };
   };
-  egusNeedingReplacement: { [key in DisplacementPollutant]: EGUData[] };
+  egusNeedingReplacement: { [key in DisplacementPollutant]: ReplacementEGU[] };
   annualStateEmissionChanges: Partial<{ [key in StateId]: StateChange }>;
   monthlyEmissionChanges: {
     regions: RegionsDisplacementsByPollutant;
@@ -546,11 +548,12 @@ function receiveDisplacement(): AppThunk {
       },
     });
 
-    const { countyData, cobraData } = setDownloadableData(
+    const { countyData, cobraData } = setDownloadableData({
+      egusNeedingReplacement,
       regionsDisplacements,
       statesDisplacements,
       countiesDisplacements,
-    );
+    });
 
     dispatch({
       type: 'displacement/STORE_DOWNLOADABLE_DATA',
@@ -676,7 +679,7 @@ function setAnnualRegionalDisplacements(
   // for a pollutant, we'll set `replacedOriginal` and `replacedPostEere` values
   // for each pollutant as well.
   const egusNeedingReplacement: {
-    [key in DisplacementPollutant]: EGUData[];
+    [key in DisplacementPollutant]: ReplacementEGU[];
   } = {
     generation: [],
     so2: [],
@@ -699,9 +702,9 @@ function setAnnualRegionalDisplacements(
       // add any regional egus needing replacement
       const rdfPollutantData = regions[regionId].rdf.data[pollutant];
 
-      const regionalEGUsNeedingReplacement = rdfPollutantData.filter(
-        (egu) => egu.infreq_emissions_flag === 1,
-      );
+      const regionalEGUsNeedingReplacement = rdfPollutantData
+        .filter((egu) => egu.infreq_emissions_flag === 1)
+        .map((egu) => ({ ...egu, regionId }));
 
       egusNeedingReplacement[pollutant].push(...regionalEGUsNeedingReplacement);
     }
@@ -1023,11 +1026,17 @@ function formatCobraDataRow({
   };
 }
 
-function setDownloadableData(
-  regionsDisplacements: RegionsDisplacementsByPollutant,
-  statesDisplacements: StatesDisplacementsByPollutant,
-  countiesDisplacements: CountiesDisplacementsByPollutant,
-) {
+function setDownloadableData({
+  egusNeedingReplacement,
+  regionsDisplacements,
+  statesDisplacements,
+  countiesDisplacements,
+}: {
+  egusNeedingReplacement: { [key in DisplacementPollutant]: ReplacementEGU[] };
+  regionsDisplacements: RegionsDisplacementsByPollutant;
+  statesDisplacements: StatesDisplacementsByPollutant;
+  countiesDisplacements: CountiesDisplacementsByPollutant;
+}) {
   const countyData: CountyDataRow[] = [];
   const cobraData: CobraDataRow[] = [];
 
@@ -1040,6 +1049,11 @@ function setDownloadableData(
   if (!allRegionsSo2 || !allRegionsNox || !allRegionsCo2 || !allRegionsPm25) {
     return { countyData, cobraData };
   }
+
+  const flaggedSo2EGUs = egusNeedingReplacement.so2;
+  const flaggedNoxEGUs = egusNeedingReplacement.nox;
+  const flaggedCo2EGUs = egusNeedingReplacement.co2;
+  const flaggedPm25EGUs = egusNeedingReplacement.pm25;
 
   // NOTE: the same regions exist for all pollutants, so we'll just loop over
   // so2 (but could use any of the other pollutants and get the same regions)
@@ -1094,7 +1108,10 @@ function setDownloadableData(
       formatCountyDataRow({
         pollutant: 'SO2',
         unit: 'percent',
-        monthlyData: calculateMonthlyData(allRegionsSo2, 'percentages'),
+        monthlyData:
+          flaggedSo2EGUs.length > 0
+            ? Array(12)
+            : calculateMonthlyData(allRegionsSo2, 'percentages'),
         regionId: allRegionsId,
       }),
     );
@@ -1103,7 +1120,10 @@ function setDownloadableData(
       formatCountyDataRow({
         pollutant: 'NOX',
         unit: 'percent',
-        monthlyData: calculateMonthlyData(allRegionsNox, 'percentages'),
+        monthlyData:
+          flaggedNoxEGUs.length > 0
+            ? Array(12)
+            : calculateMonthlyData(allRegionsNox, 'percentages'),
         regionId: allRegionsId,
       }),
     );
@@ -1112,7 +1132,10 @@ function setDownloadableData(
       formatCountyDataRow({
         pollutant: 'CO2',
         unit: 'percent',
-        monthlyData: calculateMonthlyData(allRegionsCo2, 'percentages'),
+        monthlyData:
+          flaggedCo2EGUs.length > 0
+            ? Array(12)
+            : calculateMonthlyData(allRegionsCo2, 'percentages'),
         regionId: allRegionsId,
       }),
     );
@@ -1121,7 +1144,10 @@ function setDownloadableData(
       formatCountyDataRow({
         pollutant: 'PM25',
         unit: 'percent',
-        monthlyData: calculateMonthlyData(allRegionsPm25, 'percentages'),
+        monthlyData:
+          flaggedPm25EGUs.length > 0
+            ? Array(12)
+            : calculateMonthlyData(allRegionsPm25, 'percentages'),
         regionId: allRegionsId,
       }),
     );
@@ -1183,7 +1209,9 @@ function setDownloadableData(
       formatCountyDataRow({
         pollutant: 'SO2',
         unit: 'percent',
-        monthlyData: calculateMonthlyData(regionSo2, 'percentages'),
+        monthlyData: flaggedSo2EGUs.some((egu) => egu.regionId === regionId)
+          ? Array(12)
+          : calculateMonthlyData(regionSo2, 'percentages'),
         regionId,
       }),
     );
@@ -1192,7 +1220,9 @@ function setDownloadableData(
       formatCountyDataRow({
         pollutant: 'NOX',
         unit: 'percent',
-        monthlyData: calculateMonthlyData(regionNox, 'percentages'),
+        monthlyData: flaggedNoxEGUs.some((egu) => egu.regionId === regionId)
+          ? Array(12)
+          : calculateMonthlyData(regionNox, 'percentages'),
         regionId,
       }),
     );
@@ -1201,7 +1231,9 @@ function setDownloadableData(
       formatCountyDataRow({
         pollutant: 'CO2',
         unit: 'percent',
-        monthlyData: calculateMonthlyData(regionCo2, 'percentages'),
+        monthlyData: flaggedCo2EGUs.some((egu) => egu.regionId === regionId)
+          ? Array(12)
+          : calculateMonthlyData(regionCo2, 'percentages'),
         regionId,
       }),
     );
@@ -1210,7 +1242,9 @@ function setDownloadableData(
       formatCountyDataRow({
         pollutant: 'PM25',
         unit: 'percent',
-        monthlyData: calculateMonthlyData(regionPm25, 'percentages'),
+        monthlyData: flaggedPm25EGUs.some((egu) => egu.regionId === regionId)
+          ? Array(12)
+          : calculateMonthlyData(regionPm25, 'percentages'),
         regionId,
       }),
     );
@@ -1273,7 +1307,9 @@ function setDownloadableData(
       formatCountyDataRow({
         pollutant: 'SO2',
         unit: 'percent',
-        monthlyData: calculateMonthlyData(stateSo2, 'percentages'),
+        monthlyData: flaggedSo2EGUs.some((egu) => egu.state === stateId)
+          ? Array(12)
+          : calculateMonthlyData(stateSo2, 'percentages'),
         stateId,
       }),
     );
@@ -1282,7 +1318,9 @@ function setDownloadableData(
       formatCountyDataRow({
         pollutant: 'NOX',
         unit: 'percent',
-        monthlyData: calculateMonthlyData(stateNox, 'percentages'),
+        monthlyData: flaggedNoxEGUs.some((egu) => egu.state === stateId)
+          ? Array(12)
+          : calculateMonthlyData(stateNox, 'percentages'),
         stateId,
       }),
     );
@@ -1291,7 +1329,9 @@ function setDownloadableData(
       formatCountyDataRow({
         pollutant: 'CO2',
         unit: 'percent',
-        monthlyData: calculateMonthlyData(stateCo2, 'percentages'),
+        monthlyData: flaggedCo2EGUs.some((egu) => egu.state === stateId)
+          ? Array(12)
+          : calculateMonthlyData(stateCo2, 'percentages'),
         stateId,
       }),
     );
@@ -1300,7 +1340,9 @@ function setDownloadableData(
       formatCountyDataRow({
         pollutant: 'PM25',
         unit: 'percent',
-        monthlyData: calculateMonthlyData(statePm25, 'percentages'),
+        monthlyData: flaggedPm25EGUs.some((egu) => egu.state === stateId)
+          ? Array(12)
+          : calculateMonthlyData(statePm25, 'percentages'),
         stateId,
       }),
     );
@@ -1375,7 +1417,11 @@ function setDownloadableData(
         formatCountyDataRow({
           pollutant: 'SO2',
           unit: 'percent',
-          monthlyData: calculateMonthlyData(countySo2, 'percentages'),
+          monthlyData: flaggedSo2EGUs.some(
+            (egu) => egu.state === stateId && egu.county === countyName,
+          )
+            ? Array(12)
+            : calculateMonthlyData(countySo2, 'percentages'),
           stateId,
           countyName,
         }),
@@ -1385,7 +1431,11 @@ function setDownloadableData(
         formatCountyDataRow({
           pollutant: 'NOX',
           unit: 'percent',
-          monthlyData: calculateMonthlyData(countyNox, 'percentages'),
+          monthlyData: flaggedNoxEGUs.some(
+            (egu) => egu.state === stateId && egu.county === countyName,
+          )
+            ? Array(12)
+            : calculateMonthlyData(countyNox, 'percentages'),
           stateId,
           countyName,
         }),
@@ -1395,7 +1445,11 @@ function setDownloadableData(
         formatCountyDataRow({
           pollutant: 'CO2',
           unit: 'percent',
-          monthlyData: calculateMonthlyData(countyCo2, 'percentages'),
+          monthlyData: flaggedCo2EGUs.some(
+            (egu) => egu.state === stateId && egu.county === countyName,
+          )
+            ? Array(12)
+            : calculateMonthlyData(countyCo2, 'percentages'),
           stateId,
           countyName,
         }),
@@ -1405,7 +1459,11 @@ function setDownloadableData(
         formatCountyDataRow({
           pollutant: 'PM25',
           unit: 'percent',
-          monthlyData: calculateMonthlyData(countyPm25, 'percentages'),
+          monthlyData: flaggedPm25EGUs.some(
+            (egu) => egu.state === stateId && egu.county === countyName,
+          )
+            ? Array(12)
+            : calculateMonthlyData(countyPm25, 'percentages'),
           stateId,
           countyName,
         }),
