@@ -84,7 +84,6 @@ const noChartStyles = css`
   padding: 0 1rem 1rem;
   border: 1px solid #ddd;
   background-color: whitesmoke;
-  text-align: center;
 `;
 
 function EmissionsChart() {
@@ -401,8 +400,15 @@ function EmissionsChart() {
               Change in {pollutantMarkup.get(pollutant)} Emissions:{' '}
               {chartLocationTitle}
             </p>
-            <p>
-              <small>(message)</small>
+            <p className="avert-small-text">
+              Percent change statistics are not available for{' '}
+              {pollutantMarkup.get(pollutant)} because at least one electric
+              power plant in the AVERT region(s) analyzed has a source data
+              limitation that complicates AVERT’s ability to model an accurate
+              baseline for calculating percent change. See Section 2 of the{' '}
+              <a href="https://www.epa.gov/avert">AVERT User Manual</a> for more
+              details about this “infrequent emission events” source data issue
+              and how AVERT addresses it.
             </p>
           </div>
         );

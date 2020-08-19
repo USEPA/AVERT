@@ -6,6 +6,7 @@ import { jsx, css } from '@emotion/core';
 import Tooltip from 'app/components/Tooltip';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
+import { DisplacementPollutant } from 'app/config';
 
 const rowLabelStyles = css`
   padding: 0.375rem 1.25rem !important;
@@ -46,6 +47,35 @@ function DisplacementsTable() {
   const pm25Post = data.pm25.replacedPostEere || data.pm25.postEere;
   const pm25Impacts = data.pm25.impacts;
 
+  const flaggedSo2EGUs = egusNeedingReplacement.so2;
+  const flaggedNoxEGUs = egusNeedingReplacement.nox;
+  const flaggedCo2EGUs = egusNeedingReplacement.co2;
+  const flaggedPm25EGUs = egusNeedingReplacement.pm25;
+
+  function replacementTooltip(
+    pollutant: DisplacementPollutant,
+    tooltipId: number,
+  ) {
+    // prettier-ignore
+    const pollutantMarkup = new Map<DisplacementPollutant, React.ReactNode>()
+      .set('generation', <React.Fragment>Generation</React.Fragment>)
+      .set('so2', <React.Fragment>SO<sub>2</sub></React.Fragment>)
+      .set('nox', <React.Fragment>NO<sub>X</sub></React.Fragment>)
+      .set('co2', <React.Fragment>CO<sub>2</sub></React.Fragment>)
+      .set('pm25', <React.Fragment>PM<sub>2.5</sub></React.Fragment>);
+
+    return (
+      <Tooltip id={tooltipId}>
+        The numbers in this row have been corrected to address the presence of
+        infrequent extreme emission events in the source data for{' '}
+        {pollutantMarkup.get(pollutant)} from at least one electric power plant
+        within this region. See Section 2 of the{' '}
+        <a href="https://www.epa.gov/avert">AVERT User Manual</a> for more
+        details about this source data issue and how AVERT addresses it.
+      </Tooltip>
+    );
+  }
+
   if (status !== 'complete') return null;
 
   return (
@@ -63,9 +93,8 @@ function DisplacementsTable() {
           <tr>
             <td css={rowLabelStyles}>
               Generation (MWh){' '}
-              {egusNeedingReplacement.generation.length > 0 && (
-                <Tooltip id={30}>Generation replacement text...</Tooltip>
-              )}
+              {egusNeedingReplacement.generation.length > 0 &&
+                replacementTooltip('generation', 30)}
             </td>
             <td className="avert-table-data">{formatNumber(genOrig)}</td>
             <td className="avert-table-data">{formatNumber(genPost)}</td>
@@ -77,11 +106,8 @@ function DisplacementsTable() {
           <tr>
             <td css={rowLabelStyles}>
               SO<sub>2</sub> (lbs){' '}
-              {egusNeedingReplacement.so2.length > 0 && (
-                <Tooltip id={31}>
-                  SO<sub>2</sub> replacement text...
-                </Tooltip>
-              )}
+              {egusNeedingReplacement.so2.length > 0 &&
+                replacementTooltip('so2', 31)}
             </td>
             <td className="avert-table-data">{formatNumber(so2Orig)}</td>
             <td className="avert-table-data">{formatNumber(so2Post)}</td>
@@ -90,11 +116,8 @@ function DisplacementsTable() {
           <tr>
             <td css={rowLabelStyles}>
               NO<sub>X</sub> (lbs){' '}
-              {egusNeedingReplacement.nox.length > 0 && (
-                <Tooltip id={32}>
-                  NO<sub>X</sub> replacement text...
-                </Tooltip>
-              )}
+              {egusNeedingReplacement.nox.length > 0 &&
+                replacementTooltip('nox', 32)}
             </td>
             <td className="avert-table-data">{formatNumber(noxOrig)}</td>
             <td className="avert-table-data">{formatNumber(noxPost)}</td>
@@ -103,11 +126,8 @@ function DisplacementsTable() {
           <tr>
             <td css={rowLabelStyles}>
               CO<sub>2</sub> (tons){' '}
-              {egusNeedingReplacement.co2.length > 0 && (
-                <Tooltip id={33}>
-                  CO<sub>2</sub> replacement text...
-                </Tooltip>
-              )}
+              {egusNeedingReplacement.co2.length > 0 &&
+                replacementTooltip('co2', 33)}
             </td>
             <td className="avert-table-data">{formatNumber(co2Orig)}</td>
             <td className="avert-table-data">{formatNumber(co2Post)}</td>
@@ -116,11 +136,8 @@ function DisplacementsTable() {
           <tr>
             <td css={rowLabelStyles}>
               PM<sub>2.5</sub> (lbs){' '}
-              {egusNeedingReplacement.pm25.length > 0 && (
-                <Tooltip id={34}>
-                  PM<sub>2.5</sub> replacement text...
-                </Tooltip>
-              )}
+              {egusNeedingReplacement.pm25.length > 0 &&
+                replacementTooltip('pm25', 34)}
             </td>
             <td className="avert-table-data">{formatNumber(pm25Orig)}</td>
             <td className="avert-table-data">{formatNumber(pm25Post)}</td>
