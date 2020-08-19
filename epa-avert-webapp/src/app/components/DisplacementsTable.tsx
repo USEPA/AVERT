@@ -47,11 +47,6 @@ function DisplacementsTable() {
   const pm25Post = data.pm25.replacedPostEere || data.pm25.postEere;
   const pm25Impacts = data.pm25.impacts;
 
-  const flaggedSo2EGUs = egusNeedingReplacement.so2;
-  const flaggedNoxEGUs = egusNeedingReplacement.nox;
-  const flaggedCo2EGUs = egusNeedingReplacement.co2;
-  const flaggedPm25EGUs = egusNeedingReplacement.pm25;
-
   function replacementTooltip(
     pollutant: DisplacementPollutant,
     tooltipId: number,
