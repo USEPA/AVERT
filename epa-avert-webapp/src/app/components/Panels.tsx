@@ -508,7 +508,7 @@ function Panels() {
         <Tabs
           css={tabsStyles}
           index={geographicFocus === 'regions' ? 0 : 1}
-          onChange={(index) => {
+          onChange={(index: number) => {
             dispatch(selectGeography(index === 0 ? 'regions' : 'states'));
           }}
         >
