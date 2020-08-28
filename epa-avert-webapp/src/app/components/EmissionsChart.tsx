@@ -402,13 +402,12 @@ function EmissionsChart() {
             </p>
             <p className="avert-small-text">
               Percent change statistics are not available for{' '}
-              {pollutantMarkup.get(pollutant)} because at least one electric
-              power plant in the geographic area you’ve selected has a source
-              data limitation that complicates AVERT’s ability to model an
-              accurate baseline for calculating percent change. See Section 2 of
-              the <a href="https://www.epa.gov/avert">AVERT User Manual</a> for
-              more details about this “infrequent emission events” source data
-              issue and how AVERT addresses it.
+              {pollutantMarkup.get(pollutant)} because the geographic area
+              you’ve selected features one or more power plants with an
+              infrequent {pollutantMarkup.get(pollutant)} emissions event. See
+              Section 2 of the{' '}
+              <a href="https://www.epa.gov/avert">AVERT User Manual</a> for more
+              information.
             </p>
           </div>
         );

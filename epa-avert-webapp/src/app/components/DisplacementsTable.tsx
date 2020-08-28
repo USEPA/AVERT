@@ -61,12 +61,12 @@ function DisplacementsTable() {
 
     return (
       <Tooltip id={tooltipId}>
-        The numbers in this row have been corrected to address the presence of
-        infrequent extreme emission events in the source data for{' '}
-        {pollutantMarkup.get(pollutant)} from at least one electric power plant
-        within the region(s) analyzed. See Section 2 of the{' '}
+        This region features one or more power plants with an infrequent{' '}
+        {pollutantMarkup.get(pollutant)} emissions event.{' '}
+        {pollutantMarkup.get(pollutant)} emissions changes from these plants are
+        not included in the totals. See Section 2 of the{' '}
         <a href="https://www.epa.gov/avert">AVERT User Manual</a> for more
-        details about this source data issue and how AVERT addresses it.
+        information.
       </Tooltip>
     );
   }
