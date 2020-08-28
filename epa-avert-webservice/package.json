@@ -17,10 +17,10 @@
     "dev": "AVERT_AUTH=true AVERT_USER=avert AVERT_PASS=dev node ./index.js"
   },
   "dependencies": {
-    "@koa/cors": "3.0.0",
-    "@sentry/node": "5.15.4",
+    "@koa/cors": "3.1.0",
+    "@sentry/node": "5.22.1",
     "dotenv": "8.2.0",
-    "koa": "2.11.0",
+    "koa": "2.13.0",
     "koa-basic-auth": "4.0.0",
     "koa-bodyparser": "4.3.0",
     "koa-logger": "3.2.1",
