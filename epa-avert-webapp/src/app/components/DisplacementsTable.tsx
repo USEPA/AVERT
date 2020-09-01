@@ -64,7 +64,7 @@ function DisplacementsTable() {
         This region features one or more power plants with an infrequent{' '}
         {pollutantMarkup.get(pollutant)} emissions event.{' '}
         {pollutantMarkup.get(pollutant)} emissions changes from these plants are
-        not included in the totals. See Section 2 of the{' '}
+        not included in this analysis. See Section 2 of the{' '}
         <a href="https://www.epa.gov/avert">AVERT User Manual</a> for more
         information.
       </Tooltip>
