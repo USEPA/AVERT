@@ -5,9 +5,7 @@ if (!process.env.REACT_APP_URL) {
 
 type ApiAction = {
   type: 'api/SET_BASE_URL';
-  payload: {
-    url: string;
-  };
+  payload: { url: string };
 };
 
 type ApiState = {
@@ -24,14 +22,18 @@ export default function reducer(
   action: ApiAction,
 ): ApiState {
   switch (action.type) {
-    case 'api/SET_BASE_URL':
+    case 'api/SET_BASE_URL': {
+      const { url } = action.payload;
+
       return {
         ...state,
-        baseUrl: action.payload.url,
+        baseUrl: url,
       };
+    }
 
-    default:
+    default: {
       return state;
+    }
   }
 }
 
@@ -39,8 +41,6 @@ export default function reducer(
 export function setBaseUrl(url: string) {
   return {
     type: 'api/SET_BASE_URL',
-    payload: {
-      url,
-    },
+    payload: { url },
   };
 }

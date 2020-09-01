@@ -1,13 +1,13 @@
 {
   "name": "epa-avert-webapp",
-  "version": "1.15.0",
-  "description": "EPA's Avoided Emissions and Generation Tools (AVERT) is a free tool that estimates the emissions benefits of energy efficiency and renewable energy policies and programs.",
-  "author": "Eastern Research Group, Inc.",
+  "version": "2.0.0",
+  "description": "EPA's Avoided Emissions and Generation Tool (AVERT) is a free tool that estimates the emissions benefits of energy efficiency and renewable energy policies and programs.",
+  "author": "USEPA (https://www.epa.gov)",
   "contributors": [
     "Bryan Neva <bryan.neva@erg.com>",
     "Courtney Myers <courtney.myers@erg.com>"
   ],
-  "license": "ISC",
+  "license": "CC0-1.0",
   "homepage": ".",
   "scripts": {
     "start": "react-scripts start",
@@ -18,39 +18,39 @@
     "cypress": "cypress open"
   },
   "devDependencies": {
-    "@testing-library/cypress": "6.0.0",
-    "@testing-library/jest-dom": "5.5.0",
-    "@testing-library/react": "10.0.3",
-    "@testing-library/user-event": "10.1.0",
-    "@types/jest": "25.2.1",
-    "@types/node": "13.13.4",
-    "@types/react": "16.9.34",
-    "@types/react-dom": "16.9.7",
-    "@types/react-redux": "7.1.7",
+    "@testing-library/cypress": "6.0.1",
+    "@testing-library/jest-dom": "5.11.4",
+    "@testing-library/react": "10.4.9",
+    "@testing-library/user-event": "12.1.3",
+    "@types/jest": "26.0.10",
+    "@types/node": "14.6.1",
+    "@types/react": "16.9.48",
+    "@types/react-dom": "16.9.8",
+    "@types/react-redux": "7.1.9",
     "@types/stats-lite": "2.2.0",
-    "cypress": "4.4.1",
-    "eslint-plugin-cypress": "2.10.3",
+    "cypress": "5.0.0",
+    "eslint-plugin-cypress": "2.11.1",
     "husky": "4.2.5",
-    "lint-staged": "10.1.7",
-    "prettier": "2.0.5",
-    "react-scripts": "3.4.1",
-    "typescript": "3.8.3"
+    "lint-staged": "10.2.13",
+    "prettier": "2.1.1",
+    "react-scripts": "3.4.3",
+    "typescript": "4.0.2"
   },
   "dependencies": {
-    "blob": "0.0.4",
+    "@emotion/core": "10.0.35",
+    "@emotion/styled": "10.0.27",
+    "@reach/tabs": "0.11.0",
     "core-js": "3.6.5",
-    "file-saver": "1.3.8",
-    "highcharts": "8.0.4",
+    "highcharts": "8.2.0",
     "highcharts-exporting": "0.1.7",
     "highcharts-react-official": "3.0.0",
-    "json2csv": "4.2.1",
     "react": "16.13.1",
     "react-app-polyfill": "1.0.6",
     "react-dom": "16.13.1",
-    "react-redux": "7.2.0",
+    "react-redux": "7.2.1",
     "redux": "4.0.5",
     "redux-thunk": "2.3.0",
-    "stats-lite": "2.1.1"
+    "stats-lite": "2.2.0"
   },
   "husky": {
     "hooks": {

@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 // components
-import App from 'app/components/App/App';
+import App from 'app/components/App';
 // store
 import store from 'app/redux/store';
 

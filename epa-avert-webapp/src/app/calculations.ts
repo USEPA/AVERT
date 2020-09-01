@@ -1,32 +1,7 @@
 import stats from 'stats-lite';
 // reducers
-import { RegionalLoadData, EereDefaultData } from 'app/redux/reducers/rdfs';
-import {
-  EereInputFields,
-  EereInputs,
-  HourlyEere,
-} from 'app/redux/reducers/eere';
-
-function calculateTopPercentile(
-  regionalLoads: RegionalLoadData[],
-  eereInputs: EereInputs,
-) {
-  const loads = regionalLoads.map((hour) => hour.regional_load_mw);
-  const broadProgramInput = Number(eereInputs.broadProgram);
-  const topHoursInput = Number(eereInputs.topHours);
-  const hours = broadProgramInput ? 100 : topHoursInput;
-  const ptile = 1 - hours / 100;
-  return stats.percentile(loads, ptile);
-}
-
-function calculateHourlyReduction(
-  regionalLoads: RegionalLoadData[],
-  eereInputs: EereInputs,
-) {
-  const annualGwhInput = Number(eereInputs.annualGwh);
-  const hours = regionalLoads.length;
-  return (annualGwhInput * 1000) / hours;
-}
+import { EereDefaultData } from 'app/redux/reducers/geography';
+import { EereInputFields } from 'app/redux/reducers/eere';
 
 function calculateHourlyExceedance(
   calculatedLoad: number,
@@ -35,93 +10,113 @@ function calculateHourlyExceedance(
 ) {
   const load = Math.abs(calculatedLoad);
   const limit = Math.abs(softOrHardLimit);
-
   if (load > limit) {
     const exceedance = load / limit - 1;
     return exceedance * amount + amount;
   }
-
   return 0;
 }
 
 export function calculateEere({
-  regionMaxEELimit, // 15 (percent)
-  regionLineLoss,
-  regionalLoads,
-  eereDefaults,
-  eereInputs,
+  regionMaxEEPercent, // region.rdf.limits.max_ee_percent (15 for all RDFs)
+  regionLineLoss, // region.lineLoss
+  eereLoads, // region.rdf.regional_load.map((hour) => hour.regional_load_mw)
+  eereDefaults, // region.eereDefaults.data
+  eereInputs, // eere.inputs (scaled for each region)
 }: {
-  regionMaxEELimit: number;
+  regionMaxEEPercent: number;
   regionLineLoss: number;
-  regionalLoads: RegionalLoadData[];
+  eereLoads: number[];
   eereDefaults: EereDefaultData[];
-  eereInputs: { [field in EereInputFields]: string };
+  eereInputs: { [field in EereInputFields]: number };
 }) {
-  const constantMwhInput = Number(eereInputs.constantMwh);
-  const broadProgramInput = Number(eereInputs.broadProgram);
-  const reductionInput = Number(eereInputs.reduction);
-  const windCapacityInput = Number(eereInputs.windCapacity);
-  const utilitySolarInput = Number(eereInputs.utilitySolar);
-  const rooftopSolarInput = Number(eereInputs.rooftopSolar);
+  const {
+    // A: Reductions spread evenly throughout the year
+    annualGwh,
+    constantMwh,
+    // B: Percentage reductions in some or all hours
+    broadProgram,
+    reduction,
+    topHours,
+    // C: Wind
+    onshoreWind,
+    offshoreWind,
+    // D: Solar photovoltaic
+    utilitySolar,
+    rooftopSolar,
+  } = eereInputs;
 
-  const lineLoss = 1 / (1 - regionLineLoss / 100);
-  const topPercentile = calculateTopPercentile(regionalLoads, eereInputs);
-  const hourlyReduction = calculateHourlyReduction(regionalLoads, eereInputs);
+  const lineLoss = 1 / (1 - regionLineLoss);
+
+  const hourlyMwReduction = ((annualGwh * 1e3) / eereLoads.length) * lineLoss;
+
   const percentReduction =
-    ((-1 * (broadProgramInput || reductionInput)) / 100) * lineLoss;
+    ((-1 * (broadProgram || reduction)) / 100) * lineLoss;
 
+  const percentHours = broadProgram ? 100 : topHours;
+  const topPercentile = stats.percentile(eereLoads, 1 - percentHours / 100);
+
+  // build up exceedances (soft and hard) and hourly eere for each hour of the year
   const softLimitHourlyExceedances: number[] = [];
   const hardLimitHourlyExceedances: number[] = [];
-  const hourlyEere: HourlyEere[] = [];
+  const hourlyEere: number[] = [];
 
-  regionalLoads.forEach((hour, index) => {
-    const hourlyLoad = hour.regional_load_mw;
+  eereLoads.forEach((hourlyLoad, index) => {
     const hourlyDefault = eereDefaults[index];
 
-    const softLimit = (hourlyLoad * -1 * regionMaxEELimit) / 100;
-    const hardLimit = hourlyLoad * -0.3;
-
-    const windCapacity = windCapacityInput * hourlyDefault.wind;
-    const utilitySolar = utilitySolarInput * hourlyDefault.utility_pv;
-    const rooftopSolar = rooftopSolarInput * hourlyDefault.rooftop_pv * lineLoss; // prettier-ignore
-    const renewableProfile = -1 * (windCapacity + utilitySolar + rooftopSolar);
+    const renewableProfile =
+      onshoreWind * hourlyDefault.onshore_wind +
+      offshoreWind * (hourlyDefault.offshore_wind || 0) +
+      utilitySolar * hourlyDefault.utility_pv +
+      rooftopSolar * hourlyDefault.rooftop_pv * lineLoss;
 
     const initialLoad =
       hourlyLoad > topPercentile ? hourlyLoad * percentReduction : 0;
 
     const calculatedLoad =
-      initialLoad +
+      initialLoad -
       renewableProfile -
-      hourlyReduction * lineLoss -
-      constantMwhInput * lineLoss;
+      hourlyMwReduction -
+      constantMwh * lineLoss;
 
     const softLimitHourlyExceedance = calculateHourlyExceedance(
       calculatedLoad,
-      softLimit,
+      (hourlyLoad * -1 * regionMaxEEPercent) / 100,
       15,
     );
 
     const hardLimitHourlyExceedance = calculateHourlyExceedance(
       calculatedLoad,
-      hardLimit,
+      hourlyLoad * -0.3,
       30,
     );
 
     softLimitHourlyExceedances[index] = softLimitHourlyExceedance;
     hardLimitHourlyExceedances[index] = hardLimitHourlyExceedance;
-    hourlyEere[index] = {
-      index: index,
-      constant: hourlyReduction,
-      current_load_mw: hourlyLoad,
-      percent: initialLoad,
-      final_mw: calculatedLoad,
-      renewable_energy_profile: renewableProfile,
-      soft_limit: softLimit,
-      hard_limit: hardLimit,
-      soft_exceedance: softLimitHourlyExceedance,
-      hard_exceedance: hardLimitHourlyExceedance,
-    };
+    hourlyEere[index] = calculatedLoad;
   });
 
-  return { softLimitHourlyExceedances, hardLimitHourlyExceedances, hourlyEere };
+  // calculate soft and hard exceedances to determine the hour that exceeded
+  // the soft and hard limits
+  const softValid = softLimitHourlyExceedances.reduce((a, b) => a + b) === 0;
+  const softTopExceedanceValue = Math.max(...softLimitHourlyExceedances);
+  const softTopExceedanceIndex = !softValid
+    ? softLimitHourlyExceedances.indexOf(softTopExceedanceValue)
+    : 0;
+
+  const hardValid = hardLimitHourlyExceedances.reduce((a, b) => a + b) === 0;
+  const hardTopExceedanceValue = Math.max(...hardLimitHourlyExceedances);
+  const hardTopExceedanceIndex = !hardValid
+    ? hardLimitHourlyExceedances.indexOf(hardTopExceedanceValue)
+    : 0;
+
+  return {
+    hourlyEere,
+    softValid,
+    softTopExceedanceValue,
+    softTopExceedanceIndex,
+    hardValid,
+    hardTopExceedanceValue,
+    hardTopExceedanceIndex,
+  };
 }

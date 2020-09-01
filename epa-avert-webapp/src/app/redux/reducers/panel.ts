@@ -1,49 +1,29 @@
 type PanelAction =
   | {
-      type: 'annualDisplacement/INCREMENT_PROGRESS';
-    }
-  | {
       type: 'panel/CHANGE_ACTIVE_STEP';
-      payload: {
-        stepNumber: number;
-      };
+      payload: { stepNumber: number };
     }
-  | {
-      type: 'panel/TOGGLE_MODAL_OVERLAY';
-    }
+  | { type: 'panel/TOGGLE_MODAL_OVERLAY' }
   | {
       type: 'panel/STORE_ACTIVE_MODAL';
-      activeModalId: number;
+      payload: { activeModalId: number };
     }
   | {
       type: 'panel/RESET_ACTIVE_MODAL';
-      activeModalId: number;
+      payload: { activeModalId: number };
     }
-  | {
-      type: 'rdfs/REQUEST_REGION_RDF';
-    }
-  | {
-      type: 'eere/SUBMIT_EERE_CALCULATION';
-    }
-  | {
-      type: 'annualDisplacement/START_DISPLACEMENT';
-    }
-  | {
-      type: 'rdfs/RECEIVE_REGION_DEFAULTS';
-    }
-  | {
-      type: 'eere/COMPLETE_EERE_CALCULATION';
-    }
-  | {
-      type: 'annualDisplacement/RECEIVE_DISPLACEMENT';
-    }
-  | {
-      type: 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS';
-    };
+  | { type: 'geography/REQUEST_SELECTED_REGIONS_DATA' }
+  | { type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' }
+  | { type: 'eere/START_EERE_CALCULATIONS' }
+  | { type: 'eere/COMPLETE_EERE_CALCULATIONS' }
+  | { type: 'displacement/INCREMENT_PROGRESS' }
+  | { type: 'displacement/START_DISPLACEMENT' }
+  | { type: 'displacement/COMPLETE_DISPLACEMENT' };
 
 type PanelState = {
   activeStep: number;
   loading: boolean;
+  loadingSteps: number;
   loadingProgress: number;
   modalOverlay: boolean;
   activeModalId: number;
@@ -54,6 +34,7 @@ type PanelState = {
 const initialState: PanelState = {
   activeStep: 1,
   loading: false,
+  loadingSteps: 6, // total number of pollutant displacements + 1
   loadingProgress: 0,
   modalOverlay: false,
   activeModalId: 0,
@@ -65,58 +46,71 @@ export default function reducer(
   action: PanelAction,
 ): PanelState {
   switch (action.type) {
-    case 'annualDisplacement/INCREMENT_PROGRESS':
+    case 'displacement/INCREMENT_PROGRESS': {
       return {
         ...state,
         loadingProgress: ++state.loadingProgress,
       };
+    }
 
-    case 'panel/CHANGE_ACTIVE_STEP':
+    case 'panel/CHANGE_ACTIVE_STEP': {
+      const { stepNumber } = action.payload;
+
       return {
         ...state,
-        activeStep: action.payload.stepNumber,
+        activeStep: stepNumber,
       };
+    }
 
-    case 'panel/TOGGLE_MODAL_OVERLAY':
+    case 'panel/TOGGLE_MODAL_OVERLAY': {
       return {
         ...state,
         modalOverlay: !state.modalOverlay,
       };
+    }
 
-    case 'panel/STORE_ACTIVE_MODAL':
+    case 'panel/STORE_ACTIVE_MODAL': {
+      const { activeModalId } = action.payload;
+
       return {
         ...state,
-        activeModalId: action.activeModalId,
+        activeModalId,
         closingModalId: 0,
       };
+    }
 
-    case 'panel/RESET_ACTIVE_MODAL':
+    case 'panel/RESET_ACTIVE_MODAL': {
+      const { activeModalId } = action.payload;
+
       return {
         ...state,
         activeModalId: 0,
-        closingModalId: action.activeModalId,
+        closingModalId: activeModalId,
       };
+    }
 
-    case 'rdfs/REQUEST_REGION_RDF':
-    case 'eere/SUBMIT_EERE_CALCULATION':
-    case 'annualDisplacement/START_DISPLACEMENT':
+    case 'geography/REQUEST_SELECTED_REGIONS_DATA':
+    case 'eere/START_EERE_CALCULATIONS':
+    case 'displacement/START_DISPLACEMENT': {
       return {
         ...state,
         loading: true,
         loadingProgress: 0,
       };
+    }
 
-    case 'rdfs/RECEIVE_REGION_DEFAULTS':
-    case 'eere/COMPLETE_EERE_CALCULATION':
-    case 'annualDisplacement/RECEIVE_DISPLACEMENT':
-    case 'monthlyEmissions/COMPLETE_MONTHLY_EMISSIONS':
+    case 'geography/RECEIVE_SELECTED_REGIONS_DATA':
+    case 'eere/COMPLETE_EERE_CALCULATIONS':
+    case 'displacement/COMPLETE_DISPLACEMENT': {
       return {
         ...state,
         loading: false,
       };
+    }
 
-    default:
+    default: {
       return state;
+    }
   }
 }
 
@@ -124,28 +118,24 @@ export default function reducer(
 export function setActiveStep(stepNumber: number) {
   return {
     type: 'panel/CHANGE_ACTIVE_STEP',
-    payload: {
-      stepNumber,
-    },
+    payload: { stepNumber },
   };
 }
 
 export function toggleModalOverlay() {
-  return {
-    type: 'panel/TOGGLE_MODAL_OVERLAY',
-  };
+  return { type: 'panel/TOGGLE_MODAL_OVERLAY' };
 }
 
 export function storeActiveModal(modalId: number) {
   return {
     type: 'panel/STORE_ACTIVE_MODAL',
-    activeModalId: modalId,
+    payload: { activeModalId: modalId },
   };
 }
 
 export function resetActiveModal(modalId: number) {
   return {
     type: 'panel/RESET_ACTIVE_MODAL',
-    activeModalId: modalId,
+    payload: { activeModalId: modalId },
   };
 }

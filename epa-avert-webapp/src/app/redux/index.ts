@@ -2,36 +2,20 @@ import { Action, combineReducers } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
 // reducers
-import region from 'app/redux/reducers/region';
-import panel from 'app/redux/reducers/panel';
-import api from 'app/redux/reducers/api';
-import rdfs from 'app/redux/reducers/rdfs';
-import generation from 'app/redux/reducers/generation';
-import so2 from 'app/redux/reducers/so2';
-import nox from 'app/redux/reducers/nox';
-import co2 from 'app/redux/reducers/co2';
-import pm25 from 'app/redux/reducers/pm25';
-import eere from 'app/redux/reducers/eere';
-import annualDisplacement from 'app/redux/reducers/annualDisplacement';
-import stateEmissions from 'app/redux/reducers/stateEmissions';
-import monthlyEmissions from 'app/redux/reducers/monthlyEmissions';
-import dataDownload from 'app/redux/reducers/dataDownload';
+import api from './reducers/api';
+import panel from './reducers/panel';
+import geography from './reducers/geography';
+import eere from './reducers/eere';
+import displacement from './reducers/displacement';
+import monthlyEmissions from './reducers/monthlyEmissions';
 
 const rootReducer = combineReducers({
-  region,
-  panel,
   api,
-  rdfs,
-  generation,
-  so2,
-  nox,
-  co2,
-  pm25,
+  panel,
+  geography,
   eere,
-  annualDisplacement,
-  stateEmissions,
+  displacement,
   monthlyEmissions,
-  dataDownload,
 });
 
 export default rootReducer;

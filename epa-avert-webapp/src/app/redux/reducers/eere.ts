@@ -1,80 +1,86 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
-// reducers
-import { RegionalLoadData } from 'app/redux/reducers/rdfs';
+import {
+  RegionalLoadData,
+  RegionState,
+  StateState,
+} from 'app/redux/reducers/geography';
 // calculations
 import { calculateEere } from 'app/calculations';
 // config
-import { RegionKeys, regions } from 'app/config';
+import { RegionId, StateId, regions } from 'app/config';
+
+type RegionalProfile = {
+  regionId: RegionId;
+  hourlyEere: number[];
+  softValid: boolean;
+  softTopExceedanceValue: number;
+  softTopExceedanceIndex: number;
+  hardValid: boolean;
+  hardTopExceedanceValue: number;
+  hardTopExceedanceIndex: number;
+};
+
+type CombinedProfile = {
+  hourlyEere: number[];
+  softValid: boolean;
+  softTopExceedanceValue: number;
+  softTopExceedanceTimestamp: RegionalLoadData;
+  hardValid: boolean;
+  hardTopExceedanceValue: number;
+  hardTopExceedanceTimestamp: RegionalLoadData;
+};
 
 type EereAction =
-  | {
-      type: 'rdfs/SET_EERE_LIMITS';
-      payload: {
-        limits: {
-          annualGwh: number;
-          constantMwh: number;
-          renewables: number;
-          percent: number;
-        };
-      };
-    }
+  | { type: 'eere/RESET_EERE_INPUTS' }
   | {
       type: 'eere/VALIDATE_EERE';
-      errors: EereInputFields[];
+      payload: { errors: EereInputFields[] };
     }
   | {
       type: 'eere/UPDATE_EERE_ANNUAL_GWH';
-      text: string;
+      payload: { text: string };
     }
   | {
       type: 'eere/UPDATE_EERE_CONSTANT_MW';
-      text: string;
+      payload: { text: string };
     }
   | {
       type: 'eere/UPDATE_EERE_BROAD_BASE_PROGRAM';
-      text: string;
+      payload: { text: string };
     }
   | {
       type: 'eere/UPDATE_EERE_REDUCTION';
-      text: string;
+      payload: { text: string };
     }
   | {
       type: 'eere/UPDATE_EERE_TOP_HOURS';
-      text: string;
+      payload: { text: string };
     }
   | {
-      type: 'eere/UPDATE_EERE_WIND_CAPACITY';
-      text: string;
+      type: 'eere/UPDATE_EERE_ONSHORE_WIND';
+      payload: { text: string };
+    }
+  | {
+      type: 'eere/UPDATE_EERE_OFFSHORE_WIND';
+      payload: { text: string };
     }
   | {
       type: 'eere/UPDATE_EERE_UTILITY_SOLAR';
-      text: string;
+      payload: { text: string };
     }
   | {
       type: 'eere/UPDATE_EERE_ROOFTOP_SOLAR';
-      text: string;
+      payload: { text: string };
+    }
+  | { type: 'eere/START_EERE_CALCULATIONS' }
+  | {
+      type: 'eere/CALCULATE_REGIONAL_EERE_PROFILE';
+      payload: RegionalProfile;
     }
   | {
-      type: 'eere/COMPLETE_EERE_CALCULATION';
-      hourlyEere: HourlyEere[];
-    }
-  | {
-      type: 'eere/UPDATE_EXCEEDANCES';
-      payload: {
-        softValid: boolean;
-        softTopExceedanceValue: number;
-        softTopExceedanceTimestamp: RegionalLoadData;
-        hardValid: boolean;
-        hardTopExceedanceValue: number;
-        hardTopExceedanceTimestamp: RegionalLoadData;
-      };
-    }
-  | {
-      type: 'eere/SUBMIT_EERE_CALCULATION';
-    }
-  | {
-      type: 'eere/RESET_EERE_INPUTS';
+      type: 'eere/COMPLETE_EERE_CALCULATIONS';
+      payload: CombinedProfile;
     };
 
 export type EereInputFields =
@@ -83,46 +89,19 @@ export type EereInputFields =
   | 'broadProgram'
   | 'reduction'
   | 'topHours'
-  | 'windCapacity'
+  | 'onshoreWind'
+  | 'offshoreWind'
   | 'utilitySolar'
   | 'rooftopSolar';
 
 export type EereInputs = { [field in EereInputFields]: string };
 
-export type HourlyEere = {
-  index: number;
-  constant: number;
-  current_load_mw: number;
-  percent: number;
-  final_mw: number;
-  renewable_energy_profile: number;
-  soft_limit: number;
-  hard_limit: number;
-  soft_exceedance: number;
-  hard_exceedance: number;
-};
-
 type EereState = {
   status: 'ready' | 'started' | 'complete';
   errors: EereInputFields[];
   inputs: EereInputs;
-  limits: {
-    annualGwh: number;
-    constantMwh: number;
-    renewables: number;
-    percent: number;
-  };
-  softLimit: {
-    valid: boolean;
-    topExceedanceValue: number;
-    topExceedanceTimestamp: RegionalLoadData;
-  };
-  hardLimit: {
-    valid: boolean;
-    topExceedanceValue: number;
-    topExceedanceTimestamp: RegionalLoadData;
-  };
-  hourlyEere: HourlyEere[];
+  regionalProfiles: Partial<{ [key in RegionId]: RegionalProfile }>;
+  combinedProfile: CombinedProfile;
 };
 
 const emptyEereInputs = {
@@ -131,7 +110,8 @@ const emptyEereInputs = {
   broadProgram: '',
   reduction: '',
   topHours: '',
-  windCapacity: '',
+  onshoreWind: '',
+  offshoreWind: '',
   utilitySolar: '',
   rooftopSolar: '',
 };
@@ -151,23 +131,16 @@ const initialState: EereState = {
   status: 'ready',
   errors: [],
   inputs: emptyEereInputs,
-  limits: {
-    annualGwh: 0,
-    constantMwh: 0,
-    renewables: 0,
-    percent: 0,
+  regionalProfiles: {},
+  combinedProfile: {
+    hourlyEere: [],
+    softValid: true,
+    softTopExceedanceValue: 0,
+    softTopExceedanceTimestamp: emptyRegionalLoadHour,
+    hardValid: true,
+    hardTopExceedanceValue: 0,
+    hardTopExceedanceTimestamp: emptyRegionalLoadHour,
   },
-  softLimit: {
-    valid: true,
-    topExceedanceValue: 0,
-    topExceedanceTimestamp: emptyRegionalLoadHour,
-  },
-  hardLimit: {
-    valid: true,
-    topExceedanceValue: 0,
-    topExceedanceTimestamp: emptyRegionalLoadHour,
-  },
-  hourlyEere: [],
 };
 
 export default function reducer(
@@ -175,139 +148,190 @@ export default function reducer(
   action: EereAction,
 ): EereState {
   switch (action.type) {
-    case 'rdfs/SET_EERE_LIMITS':
+    case 'eere/RESET_EERE_INPUTS': {
+      // initial state
+      return {
+        status: 'ready',
+        errors: [],
+        inputs: emptyEereInputs,
+        regionalProfiles: {},
+        combinedProfile: {
+          hourlyEere: [],
+          softValid: true,
+          softTopExceedanceValue: 0,
+          softTopExceedanceTimestamp: emptyRegionalLoadHour,
+          hardValid: true,
+          hardTopExceedanceValue: 0,
+          hardTopExceedanceTimestamp: emptyRegionalLoadHour,
+        },
+      };
+    }
+
+    case 'eere/VALIDATE_EERE': {
+      const { errors } = action.payload;
+
       return {
         ...state,
-        limits: action.payload.limits,
+        errors,
       };
+    }
 
-    case 'eere/VALIDATE_EERE':
-      return {
-        ...state,
-        errors: action.errors,
-      };
+    case 'eere/UPDATE_EERE_ANNUAL_GWH': {
+      const { text } = action.payload;
 
-    case 'eere/UPDATE_EERE_ANNUAL_GWH':
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          annualGwh: action.text,
+          annualGwh: text,
         },
       };
+    }
 
-    case 'eere/UPDATE_EERE_CONSTANT_MW':
+    case 'eere/UPDATE_EERE_CONSTANT_MW': {
+      const { text } = action.payload;
+
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          constantMwh: action.text,
+          constantMwh: text,
         },
       };
+    }
 
-    case 'eere/UPDATE_EERE_BROAD_BASE_PROGRAM':
+    case 'eere/UPDATE_EERE_BROAD_BASE_PROGRAM': {
+      const { text } = action.payload;
+
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          broadProgram: action.text,
+          broadProgram: text,
         },
       };
+    }
 
-    case 'eere/UPDATE_EERE_REDUCTION':
+    case 'eere/UPDATE_EERE_REDUCTION': {
+      const { text } = action.payload;
+
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          reduction: action.text,
+          reduction: text,
         },
       };
+    }
 
-    case 'eere/UPDATE_EERE_TOP_HOURS':
+    case 'eere/UPDATE_EERE_TOP_HOURS': {
+      const { text } = action.payload;
+
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          topHours: action.text,
+          topHours: text,
         },
       };
+    }
 
-    case 'eere/UPDATE_EERE_WIND_CAPACITY':
+    case 'eere/UPDATE_EERE_ONSHORE_WIND': {
+      const { text } = action.payload;
+
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          windCapacity: action.text,
+          onshoreWind: text,
         },
       };
+    }
 
-    case 'eere/UPDATE_EERE_UTILITY_SOLAR':
+    case 'eere/UPDATE_EERE_OFFSHORE_WIND': {
+      const { text } = action.payload;
+
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          utilitySolar: action.text,
+          offshoreWind: text,
         },
       };
+    }
 
-    case 'eere/UPDATE_EERE_ROOFTOP_SOLAR':
+    case 'eere/UPDATE_EERE_UTILITY_SOLAR': {
+      const { text } = action.payload;
+
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          rooftopSolar: action.text,
+          utilitySolar: text,
         },
       };
+    }
 
-    case 'eere/SUBMIT_EERE_CALCULATION':
+    case 'eere/UPDATE_EERE_ROOFTOP_SOLAR': {
+      const { text } = action.payload;
+
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          rooftopSolar: text,
+        },
+      };
+    }
+
+    case 'eere/START_EERE_CALCULATIONS': {
       return {
         ...state,
         status: 'started',
-        hourlyEere: [],
+        regionalProfiles: {},
       };
+    }
 
-    case 'eere/COMPLETE_EERE_CALCULATION':
+    case 'eere/CALCULATE_REGIONAL_EERE_PROFILE': {
+      const {
+        regionId,
+        hourlyEere,
+        softValid,
+        softTopExceedanceValue,
+        softTopExceedanceIndex,
+        hardValid,
+        hardTopExceedanceValue,
+        hardTopExceedanceIndex,
+      } = action.payload;
+
+      return {
+        ...state,
+        regionalProfiles: {
+          ...state.regionalProfiles,
+          [regionId]: {
+            hourlyEere,
+            softValid,
+            softTopExceedanceValue,
+            softTopExceedanceIndex,
+            hardValid,
+            hardTopExceedanceValue,
+            hardTopExceedanceIndex,
+          },
+        },
+      };
+    }
+
+    case 'eere/COMPLETE_EERE_CALCULATIONS': {
       return {
         ...state,
         status: 'complete',
-        hourlyEere: action.hourlyEere,
+        combinedProfile: action.payload,
       };
+    }
 
-    case 'eere/UPDATE_EXCEEDANCES':
-      return {
-        ...state,
-        softLimit: {
-          valid: action.payload.softValid,
-          topExceedanceValue: action.payload.softTopExceedanceValue,
-          topExceedanceTimestamp: action.payload.softTopExceedanceTimestamp,
-        },
-        hardLimit: {
-          valid: action.payload.hardValid,
-          topExceedanceValue: action.payload.hardTopExceedanceValue,
-          topExceedanceTimestamp: action.payload.hardTopExceedanceTimestamp,
-        },
-      };
-
-    case 'eere/RESET_EERE_INPUTS':
-      return {
-        ...state,
-        status: 'ready',
-        inputs: emptyEereInputs,
-        softLimit: {
-          valid: true,
-          topExceedanceValue: 0,
-          topExceedanceTimestamp: emptyRegionalLoadHour,
-        },
-        hardLimit: {
-          valid: true,
-          topExceedanceValue: 0,
-          topExceedanceTimestamp: emptyRegionalLoadHour,
-        },
-        hourlyEere: [],
-      };
-
-    default:
+    default: {
       return state;
+    }
   }
 }
 
@@ -315,191 +339,368 @@ export default function reducer(
 function validateInput(
   inputField: EereInputFields,
   inputValue: string,
-  upperLimit: number,
+  _upperLimit: number, // no longer using upper limit for validation (see NOTE)
 ): AppThunk {
   return (dispatch, getState) => {
     const { eere } = getState();
 
     const value = Number(inputValue);
-    const invalidInput = isNaN(value) || value < 0 || value > upperLimit;
+
+    // NOTE: we're no longer validationg against an upper limit, but leaving
+    // code below commented out for now. we should condiser removing it entirely
+    // if its decided the upper limit for input validation is never coming back
+    // const invalidInput = isNaN(value) || value < 0 || value > _upperLimit;
+
+    const invalidInput = isNaN(value) || value < 0;
 
     // remove input field being validated from existing fields with errors
     const errors = eere.errors.filter((field) => field !== inputField);
 
     return dispatch({
       type: 'eere/VALIDATE_EERE',
-      errors: invalidInput ? [...errors, inputField] : errors,
+      payload: {
+        errors: invalidInput ? [...errors, inputField] : errors,
+      },
     });
   };
 }
 
-export function updateEereAnnualGwh(input: string): AppThunk {
-  return (dispatch, getState) => {
-    const { eere } = getState();
-
+export function updateEereAnnualGwh(input: string, limit: number): AppThunk {
+  return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_ANNUAL_GWH',
-      text: input,
+      payload: { text: input },
     });
 
-    dispatch(validateInput('annualGwh', input, eere.limits.annualGwh));
+    dispatch(validateInput('annualGwh', input, limit));
   };
 }
 
-export function updateEereConstantMw(input: string): AppThunk {
-  return (dispatch, getState) => {
-    const { eere } = getState();
-
+export function updateEereConstantMw(input: string, limit: number): AppThunk {
+  return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_CONSTANT_MW',
-      text: input,
+      payload: { text: input },
     });
 
-    dispatch(validateInput('constantMwh', input, eere.limits.constantMwh));
+    dispatch(validateInput('constantMwh', input, limit));
   };
 }
 
-export function updateEereBroadBasedProgram(input: string): AppThunk {
-  return (dispatch, getState) => {
-    const { eere } = getState();
-
+export function updateEereBroadBasedProgram(
+  input: string,
+  limit: number,
+): AppThunk {
+  return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_BROAD_BASE_PROGRAM',
-      text: input,
+      payload: { text: input },
     });
 
-    dispatch(validateInput('reduction', input, eere.limits.percent));
+    dispatch(validateInput('reduction', input, limit));
   };
 }
 
-export function updateEereReduction(input: string): AppThunk {
-  return (dispatch, getState) => {
-    const { eere } = getState();
-
+export function updateEereReduction(input: string, limit: number): AppThunk {
+  return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_REDUCTION',
-      text: input,
+      payload: { text: input },
     });
 
-    dispatch(validateInput('reduction', input, eere.limits.percent));
+    dispatch(validateInput('reduction', input, limit));
   };
 }
 
-export function updateEereTopHours(input: string): AppThunk {
+export function updateEereTopHours(input: string, limit: number): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_TOP_HOURS',
-      text: input,
+      payload: { text: input },
     });
 
-    dispatch(validateInput('topHours', input, 100));
+    dispatch(validateInput('topHours', input, limit));
   };
 }
 
-export function updateEereWindCapacity(input: string): AppThunk {
-  return (dispatch, getState) => {
-    const { eere } = getState();
-
+export function updateEereOnshoreWind(input: string, limit: number): AppThunk {
+  return (dispatch) => {
     dispatch({
-      type: 'eere/UPDATE_EERE_WIND_CAPACITY',
-      text: input,
+      type: 'eere/UPDATE_EERE_ONSHORE_WIND',
+      payload: { text: input },
     });
 
-    dispatch(validateInput('windCapacity', input, eere.limits.renewables));
+    dispatch(validateInput('onshoreWind', input, limit));
   };
 }
 
-export function updateEereUtilitySolar(input: string): AppThunk {
-  return (dispatch, getState) => {
-    const { eere } = getState();
+export function updateEereOffshoreWind(input: string, limit: number): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'eere/UPDATE_EERE_OFFSHORE_WIND',
+      payload: { text: input },
+    });
 
+    dispatch(validateInput('offshoreWind', input, limit));
+  };
+}
+
+export function updateEereUtilitySolar(input: string, limit: number): AppThunk {
+  return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_UTILITY_SOLAR',
-      text: input,
+      payload: { text: input },
     });
 
-    dispatch(validateInput('utilitySolar', input, eere.limits.renewables));
+    dispatch(validateInput('utilitySolar', input, limit));
   };
 }
 
-export function updateEereRooftopSolar(input: string): AppThunk {
-  return (dispatch, getState) => {
-    const { eere } = getState();
-
+export function updateEereRooftopSolar(input: string, limit: number): AppThunk {
+  return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_ROOFTOP_SOLAR',
-      text: input,
+      payload: { text: input },
     });
 
-    dispatch(validateInput('rooftopSolar', input, eere.limits.renewables));
+    dispatch(validateInput('rooftopSolar', input, limit));
   };
 }
 
 export function calculateEereProfile(): AppThunk {
   return (dispatch, getState) => {
-    const { region, rdfs, eere } = getState();
+    const { geography, eere } = getState();
 
-    dispatch({
-      type: 'eere/SUBMIT_EERE_CALCULATION',
-    });
+    // select region(s), based on geographic focus:
+    // single region if geographic focus is 'regions'
+    // multiple regions if geographic focus is 'states'
+    const selectedRegions: RegionState[] = [];
 
-    const regionKey = (Object.keys(regions) as RegionKeys[]).find((key) => {
-      return regions[key].number === region.number;
-    });
+    let selectedState: StateState | undefined;
 
-    if (regionKey === undefined) throw new Error('Region number mismatch');
+    if (geography.focus === 'regions') {
+      for (const regionId in geography.regions) {
+        const region = geography.regions[regionId as RegionId];
+        if (region.selected) {
+          selectedRegions.push(region);
+        }
+      }
+    }
 
-    const {
-      softLimitHourlyExceedances,
-      hardLimitHourlyExceedances,
-      hourlyEere,
-    } = calculateEere({
-      regionMaxEELimit: rdfs.rdf.limits.max_ee_percent,
-      regionLineLoss: regions[regionKey].lineLoss,
-      regionalLoads: rdfs.rdf.regional_load,
-      eereDefaults: rdfs.defaults.data,
-      eereInputs: eere.inputs,
-    });
+    if (geography.focus === 'states') {
+      for (const stateId in geography.states) {
+        const state = geography.states[stateId as StateId];
+        if (state.selected) {
+          selectedState = state;
+          Object.keys(state.percentageByRegion).forEach((regionId) => {
+            const region = geography.regions[regionId as RegionId];
+            selectedRegions.push(region);
+          });
+        }
+      }
+    }
 
-    dispatch({
-      type: 'eere/COMPLETE_EERE_CALCULATION',
-      hourlyEere,
-    });
+    dispatch({ type: 'eere/START_EERE_CALCULATIONS' });
 
-    const regionalLoadHours = rdfs.rdf.regional_load;
+    // selected regional profiles are stored individually to pass to the
+    // displacements calculation, and also combined for all selected regions to
+    // create the eere profile chart and show validation warning/error message
+    const selectedRegionalProfiles: RegionalProfile[] = [];
 
-    const softValid = softLimitHourlyExceedances.reduce((a, b) => a + b) === 0;
-    const softTopExceedanceValue = Math.max(...softLimitHourlyExceedances);
-    const softTopExceedanceIndex = !softValid
-      ? softLimitHourlyExceedances.indexOf(softTopExceedanceValue)
-      : 0;
+    // build up total percentage of selected state in all selected regions that
+    // support offshore wind
+    const totalOffshoreWindPercent = selectedRegions.reduce((total, region) => {
+      const regionalPercent = selectedState?.percentageByRegion[region.id] || 0;
+      return region.offshoreWind ? (total += regionalPercent) : total;
+    }, 0);
 
-    const hardValid = hardLimitHourlyExceedances.reduce((a, b) => a + b) === 0;
-    const hardTopExceedanceValue = Math.max(...hardLimitHourlyExceedances);
-    const hardTopExceedanceIndex = !hardValid
-      ? hardLimitHourlyExceedances.indexOf(hardTopExceedanceValue)
-      : 0;
+    selectedRegions.forEach((region) => {
+      const regionalPercent = selectedState?.percentageByRegion[region.id] || 0;
 
-    return dispatch({
-      type: 'eere/UPDATE_EXCEEDANCES',
-      payload: {
+      // the regional scaling factor is a number between 0 and 1, representing
+      // the proportion the selected geography exists within a given region.
+      // - if a region is selected, the regional scaling factor will always be 1
+      // - if a state is selected, the regional scaling factor comes from the
+      //   selected state's percentage by region value for the given region, as
+      //   defined in the config file (`app/config.ts`)
+      const regionalScalingFactor = !selectedState ? 1 : regionalPercent / 100;
+
+      // the percent reduction factor also is a number between 0 and 1, and
+      // is used to scale the user's input for broad-based program reduction
+      // (percent reduction across all hours) or targed program reduction
+      // (percent reduction across a specified peak percentage of hours) to
+      // each region, since a selected state represents only a percentage of
+      // a region's emissions sales
+      // - if a region is selected, the percent reduction factor will always be 1
+      // - if a state is selected, the percent reduction factor comes from the
+      //   given region's percentage by state value for the selected state, as
+      //   defined in the config file (`app/config.ts`)
+      const percentReductionFactor = !selectedState
+        ? 1
+        : (regions[region.id].percentageByState[selectedState?.id] || 0) / 100;
+
+      // the offshore wind factor is also a number between 0 and 1, representing
+      // the proportion the selected geography's offshore wind value should be
+      // allocated to each region. regions either support offshore wind or they
+      // don't, and some states are within at least one region that supports it,
+      // and at least one region that doesn't.
+      // - if a region is selected, the offshore wind factor will always be 1
+      //   (if the region doesn't support offshore wind, the input will be
+      //   disabled and 0 will be used in the calculations for offshore wind –
+      //   see `app/calculations.ts`)
+      // - if a is state is selected and it's within a region that supports
+      //   offshore wind, the offshore wind factor will be set to an integer
+      //   equal to the proportion the state exists within the region divided
+      //   by the proprtion the state exists within all regions that support
+      //   offshore wind
+      // - if a state is selected and it's within a region that doesn't support
+      //   offshore wind, the offshore wind factor will always be 0
+      //
+      // for example:
+      // Kentucky is selected...it's within the Tennessee, Mid-Atlantic, and
+      // Midwest regions, but only the Mid-Atlantic region supports offshore
+      // wind. so the Tennessee and Midwest regions' `offshoreWindFactor` would
+      // be 0, and the Mid-Atlantic region's `offshoreWindFactor` would be 1
+      const offshoreWindFactor = !selectedState
+        ? 1
+        : region.offshoreWind
+        ? regionalPercent / totalOffshoreWindPercent
+        : 0;
+
+      const scaledEereInputs = {
+        annualGwh: Number(eere.inputs.annualGwh) * regionalScalingFactor,
+        constantMwh: Number(eere.inputs.constantMwh) * regionalScalingFactor,
+        broadProgram: Number(eere.inputs.broadProgram) * percentReductionFactor,
+        reduction: Number(eere.inputs.reduction) * percentReductionFactor,
+        topHours: Number(eere.inputs.topHours),
+        onshoreWind: Number(eere.inputs.onshoreWind) * regionalScalingFactor,
+        offshoreWind: Number(eere.inputs.offshoreWind) * offshoreWindFactor,
+        utilitySolar: Number(eere.inputs.utilitySolar) * regionalScalingFactor,
+        rooftopSolar: Number(eere.inputs.rooftopSolar) * regionalScalingFactor,
+      };
+
+      const {
+        hourlyEere,
         softValid,
         softTopExceedanceValue,
-        softTopExceedanceTimestamp: !softValid
-          ? regionalLoadHours[softTopExceedanceIndex]
-          : emptyRegionalLoadHour,
+        softTopExceedanceIndex,
         hardValid,
         hardTopExceedanceValue,
-        hardTopExceedanceTimestamp: !hardValid
-          ? regionalLoadHours[hardTopExceedanceIndex]
-          : emptyRegionalLoadHour,
+        hardTopExceedanceIndex,
+      } = calculateEere({
+        regionMaxEEPercent: region.rdf.limits.max_ee_percent,
+        regionLineLoss: region.lineLoss,
+        eereLoads: region.rdf.regional_load.map((hr) => hr.regional_load_mw),
+        eereDefaults: region.eereDefaults.data,
+        eereInputs: scaledEereInputs,
+      });
+
+      const regionalProfile = {
+        regionId: region.id,
+        hourlyEere,
+        softValid,
+        softTopExceedanceValue,
+        softTopExceedanceIndex,
+        hardValid,
+        hardTopExceedanceValue,
+        hardTopExceedanceIndex,
+      };
+
+      selectedRegionalProfiles.push(regionalProfile);
+
+      dispatch({
+        type: 'eere/CALCULATE_REGIONAL_EERE_PROFILE',
+        payload: regionalProfile,
+      });
+    });
+
+    // construct an object of properties from selectedRegionalProfiles, so we
+    // don't need to map over it multiple times to work with each property
+    const profiles = {
+      regionIds: [] as RegionId[],
+      hourlyEeres: [] as number[][],
+      softValids: [] as boolean[],
+      softTopExceedanceVals: [] as number[],
+      softTopExceedanceIdxs: [] as number[],
+      hardValids: [] as boolean[],
+      hardTopExceedanceVals: [] as number[],
+      hardTopExceedanceIdxs: [] as number[],
+    };
+
+    selectedRegionalProfiles.forEach((p) => {
+      profiles.regionIds.push(p.regionId);
+      profiles.hourlyEeres.push(p.hourlyEere);
+      profiles.softValids.push(p.softValid);
+      profiles.softTopExceedanceVals.push(p.softTopExceedanceValue);
+      profiles.softTopExceedanceIdxs.push(p.softTopExceedanceIndex);
+      profiles.hardValids.push(p.hardValid);
+      profiles.hardTopExceedanceVals.push(p.hardTopExceedanceValue);
+      profiles.hardTopExceedanceIdxs.push(p.hardTopExceedanceIndex);
+    });
+
+    // add up hourly eeres from each selected region into one hourlyEere array
+    const combinedHourlyEeres = profiles.hourlyEeres.reduce(
+      (combinedHourlyEere, regionalHourlyEere) => {
+        return combinedHourlyEere.map((hourlyLoad, index) => {
+          return hourlyLoad + regionalHourlyEere[index];
+        });
+      },
+    );
+
+    // if one region's not valid, the combined profile is not valid
+    const softValid = profiles.softValids.every((isValid) => isValid);
+    const hardValid = profiles.hardValids.every((isValid) => isValid);
+
+    // if a region is invalid...
+    //   get the first hour of exceedance across all of the selected regions
+    //   NOTE: `[].filter(Boolean)` used to filter out zeros, as a lack of
+    //   exceedance for that particular region is denoted as a 0
+    // else, a region is valid...
+    //   so just use the first index value (all will be 0)
+    const softTopExceedanceIdx = !softValid
+      ? Math.min(...profiles.softTopExceedanceIdxs.filter(Boolean))
+      : profiles.softTopExceedanceIdxs[0];
+    const hardTopExceedanceIdx = !hardValid
+      ? Math.min(...profiles.hardTopExceedanceIdxs.filter(Boolean))
+      : profiles.hardTopExceedanceIdxs[0];
+
+    // get the index of that first hour of exceedance in the profiles object in
+    // order to get the corresponding top value and corresponding region id
+    const sIdx = profiles.softTopExceedanceIdxs.indexOf(softTopExceedanceIdx);
+    const hIdx = profiles.hardTopExceedanceIdxs.indexOf(hardTopExceedanceIdx);
+
+    // get the corresponding value from that first hour of exceedance
+    const softTopExceedanceValue = profiles.softTopExceedanceVals[sIdx];
+    const hardTopExceedanceValue = profiles.hardTopExceedanceVals[hIdx];
+
+    // get the corresponding region id from the first hour of exceedance
+    const softRegionId = profiles.regionIds[sIdx];
+    const hardRegionId = profiles.regionIds[hIdx];
+
+    // get the timestamp of the first hour of exceedance
+    const softTopExceedanceTimestamp = !softValid
+      ? geography.regions[softRegionId].rdf.regional_load[softTopExceedanceIdx]
+      : emptyRegionalLoadHour;
+
+    const hardTopExceedanceTimestamp = !hardValid
+      ? geography.regions[hardRegionId].rdf.regional_load[hardTopExceedanceIdx]
+      : emptyRegionalLoadHour;
+
+    dispatch({
+      type: 'eere/COMPLETE_EERE_CALCULATIONS',
+      payload: {
+        hourlyEere: combinedHourlyEeres,
+        softValid,
+        softTopExceedanceValue,
+        softTopExceedanceTimestamp,
+        hardValid,
+        hardTopExceedanceValue,
+        hardTopExceedanceTimestamp,
       },
     });
   };
 }
 
 export function resetEereInputs() {
-  return {
-    type: 'eere/RESET_EERE_INPUTS',
-  };
+  return { type: 'eere/RESET_EERE_INPUTS' };
 }
