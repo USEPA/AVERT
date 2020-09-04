@@ -112,9 +112,9 @@ type CobraDataRow = {
   STATE: string;
   COUNTY: string;
   TIER1NAME: string;
-  NOx_REDUCTIONS_TONS: string;
-  SO2_REDUCTIONS_TONS: string;
-  PM25_REDUCTIONS_TONS: string;
+  NOx_REDUCTIONS_TONS: number;
+  SO2_REDUCTIONS_TONS: number;
+  PM25_REDUCTIONS_TONS: number;
 };
 
 type DisplacementAction =
@@ -920,10 +920,12 @@ function setMonthlyEmissionChanges(
 }
 
 function formatNumber(num: number) {
-  return num.toLocaleString(undefined, {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 3,
-  });
+  return Number(
+    num.toLocaleString(undefined, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 3,
+    }),
+  );
 }
 
 function formatCountyDataRow({
