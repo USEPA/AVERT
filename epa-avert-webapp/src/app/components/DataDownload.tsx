@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 // components
 import {
   bottomMessageStyles,
@@ -6,6 +7,7 @@ import {
 } from 'app/components/Panels';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
+import { postCobraData } from 'app/redux/reducers/displacement';
 // hooks
 import { useSelectedRegion, useSelectedState } from 'app/hooks';
 
@@ -20,6 +22,7 @@ function convertToCSVString(data: { [key: string]: any }[]) {
 }
 
 function DataDownload() {
+  const dispatch = useDispatch();
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const countyData = useTypedSelector(
     ({ displacement }) => displacement.downloadableCountyData,
@@ -73,6 +76,24 @@ function DataDownload() {
           download={`AVERT COBRA (${geographyText}).csv`}
         >
           Download COBRA Results
+        </a>
+      </p>
+
+      <p>
+        (PLACEHOLDER: text explaining submitting data to the COBRA App, and how
+        the user will be redirected upon successful submission).
+      </p>
+
+      <p className="avert-centered">
+        <a
+          className="avert-button"
+          href="https://cobra.app.cloud.gov/"
+          onClick={(ev) => {
+            ev.preventDefault();
+            dispatch(postCobraData(cobraData));
+          }}
+        >
+          Submit COBRA Results
         </a>
       </p>
 
