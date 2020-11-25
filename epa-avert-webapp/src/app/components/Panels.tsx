@@ -588,9 +588,7 @@ function Panels() {
 
       <section css={panelStyles} data-active={activeStep === 2}>
         <div css={panelBodyStyles}>
-          <h2 css={headingStyles}>
-            Set Energy Efficiency and Renewable Energy Impacts
-          </h2>
+          <h2 css={headingStyles}>Set Energy Scenario</h2>
 
           <h3 css={[subheadingStyles, { marginTop: 0 }]}>
             {geographicFocus === 'regions'
