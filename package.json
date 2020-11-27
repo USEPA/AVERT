@@ -14,8 +14,10 @@
   },
   "scripts": {
     "client": "cd epa-avert-webapp && npm start",
-    "server": "cd epa-avert-webservice && npm start",
-    "start": "concurrently -kc \"green.dim,blue.dim\" \"npm:client\" \"npm:server\""
+    "server": "cd epa-avert-webservice && npm run dev",
+    "start": "concurrently -kc \"green.dim,blue.dim\" \"npm:client\" \"npm:server\"",
+    "build:dev": "cd epa-avert-webapp && npm run build:dev",
+    "build:prod": "cd epa-avert-webapp && npm run build"
   },
   "devDependencies": {
     "concurrently": "5.3.0"
