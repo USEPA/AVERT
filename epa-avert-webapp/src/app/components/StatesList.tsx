@@ -25,6 +25,7 @@ function StatesList() {
       css={selectStyles}
       value={!selectedStateId ? '' : selectedStateId}
       onChange={(ev) => dispatch(selectState(ev.target.value as StateId))}
+      data-avert-state-select
     >
       <option value={''} disabled>
         Select State

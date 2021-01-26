@@ -24,6 +24,7 @@ function RegionsList() {
       css={selectStyles}
       value={!selectedRegionId ? '' : selectedRegionId}
       onChange={(ev) => dispatch(selectRegion(ev.target.value as RegionId))}
+      data-avert-region-select
     >
       <option value={''} disabled>
         Select Region

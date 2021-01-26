@@ -22,11 +22,12 @@ const inputStyles = css`
 
 type Props = {
   value: string;
+  fieldName: string;
   disabled?: string;
   onChange: (value: string) => void;
 };
 
-function EEREInputField({ value, disabled, onChange }: Props) {
+function EEREInputField({ value, fieldName, disabled, onChange }: Props) {
   const dispatch = useDispatch();
   const status = useTypedSelector(({ eere }) => eere.status);
   const errors = useTypedSelector(({ eere }) => eere.errors);
@@ -43,6 +44,7 @@ function EEREInputField({ value, disabled, onChange }: Props) {
       css={inputStyles}
       type="text"
       value={value}
+      data-avert-eere-input={fieldName}
       disabled={disabled ? true : false}
       onChange={(ev) => onChange(ev.target.value)}
       onKeyPress={(ev) => {

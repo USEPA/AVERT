@@ -170,8 +170,6 @@ function EmissionsChart() {
     }
   }
 
-  if (status !== 'complete') return null;
-
   // charts config
   const commonConfig: Highcharts.Options = {
     chart: {
@@ -443,6 +441,7 @@ function EmissionsChart() {
             onChange={(ev) => {
               dispatch(selectMonthlyAggregation('region'));
             }}
+            data-avert-aggregation-toggle="region"
           />
           Region
         </label>
@@ -459,6 +458,7 @@ function EmissionsChart() {
                 dispatch(selectMonthlyState(selectedStateId));
               }
             }}
+            data-avert-aggregation-toggle="state"
           />
           State
         </label>
@@ -475,12 +475,13 @@ function EmissionsChart() {
                 dispatch(selectMonthlyCounty(selectedCountyName));
               }
             }}
+            data-avert-aggregation-toggle="county"
           />
           County
         </label>
       </div>
 
-      <div css={geographyFilterStyles}>
+      <div css={geographyFilterStyles} data-avert-geography-selects>
         {geographicFocus === 'states' &&
           selectedAggregation === 'region' &&
           selectedStateRegions.length > 1 && (
@@ -490,6 +491,7 @@ function EmissionsChart() {
                 onChange={(ev) =>
                   dispatch(selectMonthlyRegion(ev.target.value))
                 }
+                data-avert-geography-select="region"
               >
                 <option value="" disabled>
                   Select Region(s)
@@ -514,6 +516,7 @@ function EmissionsChart() {
             <select
               value={selectedStateId}
               onChange={(ev) => dispatch(selectMonthlyState(ev.target.value))}
+              data-avert-geography-select="state"
             >
               <option value="" disabled>
                 Select State
@@ -537,6 +540,7 @@ function EmissionsChart() {
             <select
               value={selectedCountyName}
               onChange={(ev) => dispatch(selectMonthlyCounty(ev.target.value))}
+              data-avert-geography-select="county"
             >
               <option value="" disabled>
                 Select County
@@ -560,12 +564,13 @@ function EmissionsChart() {
           <input
             type="radio"
             name="unit"
-            value={'emissions'}
+            value="emissions"
             checked={selectedUnit === 'emissions'}
             onChange={(ev) => {
               const unit = ev.target.value as MonthlyUnit;
               dispatch(selectMonthlyUnit(unit));
             }}
+            data-avert-unit-toggle="emissions"
           />
           Emission changes (lbs or tons)
         </label>
@@ -574,23 +579,26 @@ function EmissionsChart() {
           <input
             type="radio"
             name="unit"
-            value={'percentages'}
+            value="percentages"
             checked={selectedUnit === 'percentages'}
             onChange={(ev) => {
               const unit = ev.target.value as MonthlyUnit;
               dispatch(selectMonthlyUnit(unit));
             }}
+            data-avert-unit-toggle="percentages"
           />
           Percent change
         </label>
       </div>
 
-      <div css={emissionsChartsStyles}>
-        {renderChart('so2')}
-        {renderChart('nox')}
-        {renderChart('co2')}
-        {renderChart('pm25')}
-      </div>
+      {status === 'complete' && (
+        <div css={emissionsChartsStyles}>
+          {renderChart('so2')}
+          {renderChart('nox')}
+          {renderChart('co2')}
+          {renderChart('pm25')}
+        </div>
+      )}
     </React.Fragment>
   );
 }

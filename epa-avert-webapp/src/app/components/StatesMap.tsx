@@ -177,6 +177,7 @@ function StatesMap() {
         width="720"
         height="460"
         viewBox="0 0 720 460"
+        data-avert-state-map
       >
         <title>AVERT state map</title>
 

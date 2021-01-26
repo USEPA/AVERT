@@ -308,7 +308,7 @@ function EEREInputs() {
 
   return (
     <React.Fragment>
-      <div css={inputsBlockStyles}>
+      <div css={inputsBlockStyles} data-avert-eere-inputs>
         <header css={inputsCategoryStyles}>
           <p>Energy Efficiency</p>
         </header>
@@ -328,6 +328,7 @@ function EEREInputs() {
                 </span>
                 <EEREInputField
                   value={annualGwh}
+                  fieldName={'annualGwh'}
                   disabled={constantMwh}
                   onChange={(text) => {
                     dispatch(updateEereAnnualGwh(text, limits.annualGwh));
@@ -355,6 +356,7 @@ function EEREInputs() {
                 <span css={inputLabelStyles}>Reduce hourly generation by </span>
                 <EEREInputField
                   value={constantMwh}
+                  fieldName={'constantMwh'}
                   disabled={annualGwh}
                   onChange={(text) => {
                     dispatch(updateEereConstantMw(text, limits.constantMwh));
@@ -396,6 +398,7 @@ function EEREInputs() {
                 </span>
                 <EEREInputField
                   value={broadProgram}
+                  fieldName={'broadProgram'}
                   disabled={reduction || topHours}
                   onChange={(text) => {
                     dispatch(updateEereBroadBasedProgram(text, limits.percent));
@@ -423,6 +426,7 @@ function EEREInputs() {
                 </span>
                 <EEREInputField
                   value={reduction}
+                  fieldName={'reduction'}
                   disabled={broadProgram}
                   onChange={(text) => {
                     dispatch(updateEereReduction(text, limits.percent));
@@ -431,6 +435,7 @@ function EEREInputs() {
                 <span css={inputUnitStyles}> % during the peak </span>
                 <EEREInputField
                   value={topHours}
+                  fieldName={'topHours'}
                   disabled={broadProgram}
                   onChange={(text) => {
                     dispatch(updateEereTopHours(text, 100));
@@ -483,6 +488,7 @@ function EEREInputs() {
                 </span>
                 <EEREInputField
                   value={onshoreWind}
+                  fieldName={'onshoreWind'}
                   onChange={(text) => {
                     dispatch(updateEereOnshoreWind(text, limits.renewables));
                   }}
@@ -513,6 +519,7 @@ function EEREInputs() {
 
                     <EEREInputField
                       value={offshoreWind}
+                      fieldName={'offshoreWind'}
                       onChange={(text) => {
                         dispatch(
                           updateEereOffshoreWind(text, limits.renewables),
@@ -588,6 +595,7 @@ function EEREInputs() {
                 </span>
                 <EEREInputField
                   value={utilitySolar}
+                  fieldName={'utilitySolar'}
                   onChange={(text) => {
                     dispatch(updateEereUtilitySolar(text, limits.renewables));
                   }}
@@ -615,6 +623,7 @@ function EEREInputs() {
                 </span>
                 <EEREInputField
                   value={rooftopSolar}
+                  fieldName={'rooftopSolar'}
                   onChange={(text) => {
                     dispatch(updateEereRooftopSolar(text, limits.renewables));
                   }}
@@ -649,6 +658,7 @@ function EEREInputs() {
             if (calculationDisabled) return;
             dispatch(calculateEereProfile());
           }}
+          data-avert-calculate-impacts-btn
         >
           {eereButtonOptions[status]}
         </a>
