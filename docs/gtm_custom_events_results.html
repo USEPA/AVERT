@@ -1,0 +1,74 @@
+<script>
+  (function() {
+    var regionAggregationToggle = document.querySelector('[data-avert-aggregation-toggle="region"]');
+    var stateAggregationToggle = document.querySelector('[data-avert-aggregation-toggle="state"]');
+    var countyAggregationToggle = document.querySelector('[data-avert-aggregation-toggle="county"]');
+    var emissionsUnitToggle = document.querySelector('[data-avert-unit-toggle="emissions"]');
+    var percentagesUnitToggle = document.querySelector('[data-avert-unit-toggle="percentages"]');
+    var geographySelects = document.querySelector('[data-avert-geography-selects]');
+
+    if (
+      !regionAggregationToggle ||
+      !stateAggregationToggle ||
+      !countyAggregationToggle ||
+      !emissionsUnitToggle ||
+      !percentagesUnitToggle ||
+      !geographySelects
+    ) {
+      return;
+    }
+
+    /** @param {Event} ev */
+    function captureAggrigationChange(ev) {
+      window.dataLayer.push({
+        event: 'emissionAggregationChanged',
+        emissionAggregation: ev.target.value,
+      });
+    }
+
+    /** @param {Event} ev */
+    function captureUnitChange(ev) {
+      window.dataLayer.push({
+        event: 'emissionUnitsChanged',
+        emissionUnits: ev.target.value,
+      });
+    }
+
+    regionAggregationToggle.addEventListener('change', captureAggrigationChange, false);
+    stateAggregationToggle.addEventListener('change', captureAggrigationChange, false);
+    countyAggregationToggle.addEventListener('change', captureAggrigationChange, false);
+
+    emissionsUnitToggle.addEventListener('change', captureUnitChange, false);
+    percentagesUnitToggle.addEventListener('change', captureUnitChange, false);
+
+    geographySelects.addEventListener('change', function(ev) {
+      var select = ev.target.dataset.avertGeographySelect;
+
+      if (select === 'region' && regionAggregationToggle.checked) {
+        window.dataLayer.push({
+          event: 'emissionRegionChanged',
+          emissionRegion: ev.target.value,
+        });
+      }
+
+      if (select === 'state' && stateAggregationToggle.checked) {
+        window.dataLayer.push({
+          event: 'emissionStateChanged',
+          emissionState: ev.target.value,
+        });
+      }
+
+      if (select === 'county' && countyAggregationToggle.checked) {
+        var stateSelect = geographySelects.querySelector('[data-avert-geography-select="state"]');
+        var countyAndState = stateSelect && stateSelect.value
+          ? ev.target.value + ', ' + stateSelect.value
+          : ev.target.value;
+
+        window.dataLayer.push({
+          event: 'emissionCountyChanged',
+          emissionCounty: countyAndState,
+        });
+      }
+    }, false);
+  })();
+</script>
