@@ -294,11 +294,11 @@ function EEREChart() {
       : null;
 
   return (
-    <React.Fragment>
+    <div data-avert-chart>
       {chart}
       {validationError}
       {validationWarning}
-    </React.Fragment>
+    </div>
   );
 }
 

@@ -591,14 +591,20 @@ function EmissionsChart() {
         </label>
       </div>
 
-      {status === 'complete' && (
-        <div css={emissionsChartsStyles}>
-          {renderChart('so2')}
-          {renderChart('nox')}
-          {renderChart('co2')}
-          {renderChart('pm25')}
+      <div css={emissionsChartsStyles}>
+        <div data-avert-chart>
+          {status === 'complete' && renderChart('so2')}
         </div>
-      )}
+        <div data-avert-chart>
+          {status === 'complete' && renderChart('nox')}
+        </div>
+        <div data-avert-chart>
+          {status === 'complete' && renderChart('co2')}
+        </div>
+        <div data-avert-chart>
+          {status === 'complete' && renderChart('pm25')}
+        </div>
+      </div>
     </React.Fragment>
   );
 }
