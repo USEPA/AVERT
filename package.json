@@ -13,11 +13,11 @@
     "node": "14.x"
   },
   "scripts": {
-    "client": "cd epa-avert-webapp && npm start",
-    "server": "cd epa-avert-webservice && npm run dev",
+    "client": "cd client && npm start",
+    "server": "cd server && npm run dev",
     "start": "concurrently -kc \"green.dim,blue.dim\" \"npm:client\" \"npm:server\"",
-    "build:dev": "cd epa-avert-webapp && npm run build:dev",
-    "build:prod": "cd epa-avert-webapp && npm run build"
+    "build:dev": "cd client && npm run build:dev",
+    "build:prod": "cd client && npm run build"
   },
   "devDependencies": {
     "concurrently": "5.3.0"
