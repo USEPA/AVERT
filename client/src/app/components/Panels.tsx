@@ -198,8 +198,8 @@ const tabsStyles = css`
     font-weight: 700;
     font-size: 0.875rem;
     line-height: 1;
-    color: #999;
-    background-color: #eee;
+    color: #707070;
+    background-color: whitesmoke;
     outline: none;
     user-select: none;
 
@@ -220,8 +220,7 @@ const tabsStyles = css`
     }
 
     &:hover {
-      border-top-color: #999;
-      color: #666;
+      border-top-color: #aaa;
     }
 
     &:first-of-type[data-selected] {
