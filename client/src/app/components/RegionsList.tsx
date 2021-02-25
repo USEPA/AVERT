@@ -22,6 +22,7 @@ function RegionsList() {
   return (
     <select
       css={selectStyles}
+      aria-label="Select Region"
       value={!selectedRegionId ? '' : selectedRegionId}
       onChange={(ev) => dispatch(selectRegion(ev.target.value as RegionId))}
       data-avert-region-select

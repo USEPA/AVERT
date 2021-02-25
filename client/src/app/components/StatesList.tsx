@@ -23,6 +23,7 @@ function StatesList() {
   return (
     <select
       css={selectStyles}
+      aria-label="Select State"
       value={!selectedStateId ? '' : selectedStateId}
       onChange={(ev) => dispatch(selectState(ev.target.value as StateId))}
       data-avert-state-select
