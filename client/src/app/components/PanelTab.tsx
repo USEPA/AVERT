@@ -68,12 +68,12 @@ const Tab = styled('li')<{ step: number }>`
 
     /* active tab – right arrow */
     a[data-active='true']::after {
-      border-left-color: rgb(0, 190, 230);
+      border-left-color: rgb(0, 164, 200);
     }
 
     /* active tab – fill behind right arrow */
     a[data-active='true']::before {
-      background-color: rgb(0, 190, 230);
+      background-color: rgb(0, 164, 200);
     }
   }
 `;
@@ -93,7 +93,7 @@ const anchorStyles = css`
   user-select: none;
 
   &[data-active='true'] {
-    background-color: rgb(0, 190, 230);
+    background-color: rgb(0, 164, 200);
   }
 
   @media (min-width: 35em) {

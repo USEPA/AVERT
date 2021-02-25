@@ -163,7 +163,7 @@ const panelStyles = css`
 
 const panelBodyStyles = css`
   padding: 1rem;
-  border-top: 0.375rem solid rgb(0, 190, 230);
+  border-top: 0.375rem solid rgb(0, 164, 200);
   min-height: 30rem;
 
   @media (min-width: 25em) {
@@ -233,9 +233,9 @@ const tabsStyles = css`
     }
 
     &[data-selected] {
-      border-top-color: rgb(0, 190, 230);
+      border-top-color: rgb(0, 164, 200);
       border-bottom-color: white;
-      color: rgb(0, 169, 204);
+      color: rgb(0, 128, 164);
       background-color: white;
     }
   }
@@ -261,7 +261,7 @@ const headingStyles = css`
   padding-bottom: 0.25rem;
   border-bottom: 2px solid currentColor;
   font-size: 1rem;
-  color: rgb(0, 169, 204);
+  color: rgb(0, 128, 164);
 
   @media (min-width: 25em) {
     margin-bottom: 0.8125rem;
@@ -286,7 +286,7 @@ const headingStyles = css`
 
 const subheadingStyles = css`
   font-size: 0.875rem;
-  color: rgb(0, 127, 153);
+  color: rgb(0, 128, 164);
 
   @media (min-width: 25em) {
     font-size: 0.9375rem;
