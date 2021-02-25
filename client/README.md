@@ -14,7 +14,7 @@ Running the **client app** locally depends on a running local instance of the [s
 
 - The app is configured to be deployed to Cloud.gov at the following development route: https://avert-dev.app.cloud.gov
 
-  If that route ever changes, update the `REACT_APP_URL` environment variable set in the `.env.development` file to reflect the updated route.
+  If that route ever changes, update the `REACT_APP_URL` environment variable set in the npm `build:dev` script in the `package.json` file to reflect the updated route.
 
 - Ensure you're in this directory ([client](/client)) and run:  
   `npm run build:dev`
