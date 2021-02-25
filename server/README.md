@@ -7,8 +7,8 @@ Node.js web service (built with Koa) for performing displacement calculations an
 Local development depends on `node` (version 10 or higher).
 
 Open two separate terminal sessions and run the following in each subsequent session:
-1. From the [epa-avert-webservice directory](/epa-avert-webservice) (this one), start the npm dev script: `npm run dev`.
-2. From the [epa-avert-webapp directory](/epa-avert-webapp) (up a level), start the npm start script: `npm start`. App will be served from `localhost:3000`.
+1. From the [server directory](/server) (this one), start the npm dev script: `npm run dev`.
+2. From the [client directory](/client) (up a level), start the npm start script: `npm start`. App will be served from `localhost:3000`.
 
 ## Cloud.gov Deployment
 
@@ -20,13 +20,13 @@ Four environment variables are set in Cloud.gov (three specific to the AVERT app
 
 The app is currently deployed to the `epa-avert` org on [Cloud.gov](https://cloud.gov/). The development app is in the `avert-dev` space, while the production app in in the `avert-prod` space. The development app is password protected with basic authentication.
 
-**IMPORTANT:** Before deploying code to Cloud.gov, ensure the app has the most recent version of the webapp's build files. See: [epa-avert-webapp's Cloud.gov Deployment](/epa-avert-webapp#cloudgov-deployment).
+**IMPORTANT:** Before deploying code to Cloud.gov, ensure the app has the most recent version of the webapp's build files. See: [client's Cloud.gov Deployment](/client#cloudgov-deployment).
 
 ### Development Deployment
 
 First, see **IMPORTANT** note above.
 
-The development version is exactly the same as the production version, but is password protected with basic authentication. Ensure you're in this directory ([epa-avert-webservice](/epa-avert-webservice)) in a terminal session and enter:    
+The development version is exactly the same as the production version, but is password protected with basic authentication. Ensure you're in this directory ([server](/server)) in a terminal session and enter:    
 `cf set-env avert-dev AVERT_AUTH true` and then: `cf push -f manifest.dev.yml`
 
 To view the previously-set username and password required for viewing the development site, in a terminal session run:    
@@ -36,5 +36,5 @@ To view the previously-set username and password required for viewing the develo
 
 First, see **IMPORTANT** note above.
 
-No authentication is needed to access the production app. As with the development instructions above, ensure you're in this directory ([epa-avert-webservice](/epa-avert-webservice)) in a terminal session and enter:    
+No authentication is needed to access the production app. As with the development instructions above, ensure you're in this directory ([server](/server)) in a terminal session and enter:    
 `cf set-env avert AVERT_AUTH false` and then: `cf push`

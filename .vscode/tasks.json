@@ -3,13 +3,13 @@
 	"tasks": [
 		{
 			"type": "typescript",
-			"tsconfig": "epa-avert-webapp/tsconfig.json",
+			"tsconfig": "client/tsconfig.json",
 			"option": "watch",
 			"problemMatcher": [
 				"$tsc-watch"
 			],
 			"group": "build",
-			"label": "tsc: watch - epa-avert-webapp/tsconfig.json"
+			"label": "tsc: watch - client/tsconfig.json"
 		}
 	]
 }
