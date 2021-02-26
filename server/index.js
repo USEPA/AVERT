@@ -16,7 +16,10 @@ const middleware = require('./app/middleware');
 const app = new Koa();
 
 // initialize Sentry and capture errors
-Sentry.init({ dsn: process.env.SENTRY_DSN });
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  autoSessionTracking: false,
+});
 
 app.on('error', (err, ctx) => {
   Sentry.withScope((scope) => {
