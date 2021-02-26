@@ -1,6 +1,6 @@
-/** @jsx jsx */
+/** @jsxImportSource @emotion/react */
 
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled/macro';
 
 const Tab = styled('li')<{ step: number }>`

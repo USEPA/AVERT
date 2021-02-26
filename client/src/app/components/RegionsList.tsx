@@ -1,6 +1,6 @@
-/** @jsx jsx */
+/** @jsxImportSource @emotion/react */
 
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // reducers
 import { selectRegion } from 'app/redux/reducers/geography';
