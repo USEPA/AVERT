@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
-import { jsx, css } from '@emotion/react';
-import styled from '@emotion/styled/macro';
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
 // reducers
 import { useTypedSelector } from 'app/redux/index';

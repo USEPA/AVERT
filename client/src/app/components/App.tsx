@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { jsx, css } from '@emotion/react';
+import { css } from '@emotion/react';
 // components
 import PanelTabs from 'app/components/PanelTabs';
 import Panels from 'app/components/Panels';

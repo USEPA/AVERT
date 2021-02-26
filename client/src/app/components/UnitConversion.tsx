@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { useState } from 'react';
-import { jsx, css } from '@emotion/react';
+import { css } from '@emotion/react';
 // components
 import Tooltip from 'app/components/Tooltip';
 import { inputErrorStyles } from 'app/components/EEREInputs';

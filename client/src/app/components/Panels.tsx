@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 
 import { Fragment } from 'react';
-import { jsx, css } from '@emotion/react';
-import styled from '@emotion/styled/macro';
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
 import '@reach/tabs/styles.css';

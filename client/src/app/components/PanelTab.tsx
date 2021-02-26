@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
-import { jsx, css } from '@emotion/react';
-import styled from '@emotion/styled/macro';
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 
 const Tab = styled('li')<{ step: number }>`
   /* remove space above first tab */

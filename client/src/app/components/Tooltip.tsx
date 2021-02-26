@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { ReactNode, Fragment, useRef, useEffect } from 'react';
-import { jsx, css, keyframes } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // reducers
 import { useTypedSelector } from 'app/redux/index';

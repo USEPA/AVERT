@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { ReactNode, Fragment } from 'react';
-import { jsx, css } from '@emotion/react';
+import { css } from '@emotion/react';
 // components
 import Tooltip from 'app/components/Tooltip';
 // reducers

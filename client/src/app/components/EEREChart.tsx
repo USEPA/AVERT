@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 
 import { Fragment } from 'react';
-import { jsx, css } from '@emotion/react';
-import styled from '@emotion/styled/macro';
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 // components

@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { ReactNode, Fragment } from 'react';
-import { jsx, css } from '@emotion/react';
+import { css } from '@emotion/react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useDispatch } from 'react-redux';

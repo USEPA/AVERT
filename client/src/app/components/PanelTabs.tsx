@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { jsx, css } from '@emotion/react';
+import { css } from '@emotion/react';
 // components
 import PanelTab from 'app/components/PanelTab';
 // reducers

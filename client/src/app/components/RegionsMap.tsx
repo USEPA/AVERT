@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { jsx, css } from '@emotion/react';
+import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // components
 import CaliforniaRegion from 'app/components/Regions/California';
