@@ -102,13 +102,13 @@ export function calculateEere({
   const softTopExceedanceValue = Math.max(...softLimitHourlyExceedances);
   const softTopExceedanceIndex = !softValid
     ? softLimitHourlyExceedances.indexOf(softTopExceedanceValue)
-    : 0;
+    : -1;
 
   const hardValid = hardLimitHourlyExceedances.reduce((a, b) => a + b) === 0;
   const hardTopExceedanceValue = Math.max(...hardLimitHourlyExceedances);
   const hardTopExceedanceIndex = !hardValid
     ? hardLimitHourlyExceedances.indexOf(hardTopExceedanceValue)
-    : 0;
+    : -1;
 
   return {
     hourlyEere,
