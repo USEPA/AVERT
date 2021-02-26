@@ -147,26 +147,30 @@ function EmissionsChart() {
 
   for (const item of ['so2', 'nox', 'co2', 'pm25']) {
     const pollutant = item as Pollutant;
-    const regionId = selectedRegionId as RegionId;
-    const stateId = selectedStateId as StateId;
 
-    const { regions, states, counties } = monthlyEmissionChanges;
+    const regionId =
+      selectedStateRegions.length === 1
+        ? selectedStateRegions[0].id
+        : (selectedRegionId as RegionId);
+
+    const stateId = selectedStateId as StateId;
 
     if (selectedAggregation === 'region') {
       const displacement =
         geographicFocus === 'regions' && selectedRegion
-          ? regions[pollutant][selectedRegion.id]
-          : regions[pollutant][regionId];
+          ? monthlyEmissionChanges.regions[pollutant][selectedRegion.id]
+          : monthlyEmissionChanges.regions[pollutant][regionId];
       monthlyData[pollutant] = displacement || initialMonthlyData;
     }
 
     if (selectedAggregation === 'state') {
-      const displacement = states[pollutant][stateId];
+      const displacement = monthlyEmissionChanges.states[pollutant][stateId];
       monthlyData[pollutant] = displacement || initialMonthlyData;
     }
 
     if (selectedAggregation === 'county') {
-      const displacement = counties[pollutant][stateId]?.[selectedCountyName];
+      /* prettier-ignore */
+      const displacement = monthlyEmissionChanges.counties[pollutant][stateId]?.[selectedCountyName];
       monthlyData[pollutant] = displacement || initialMonthlyData;
     }
   }
@@ -233,7 +237,7 @@ function EmissionsChart() {
       ? `${selectedRegion?.name} Region`
       : geographicFocus === 'states'
       ? selectedStateRegions.length === 1
-        ? `${regions[selectedStateRegions[0].id as RegionId]?.name} Region`
+        ? `${regions[selectedStateRegions[0].id]?.name} Region`
         : selectedRegionId === ''
         ? '' // multiple regions but a region has not yet been selected
         : selectedRegionId === 'ALL'
