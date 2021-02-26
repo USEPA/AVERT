@@ -327,6 +327,7 @@ function EEREInputs() {
                   Reduce total annual generation by{' '}
                 </span>
                 <EEREInputField
+                  ariaLabel="Number of GWh expected to be saved in a single year"
                   value={annualGwh}
                   fieldName={'annualGwh'}
                   disabled={constantMwh}
@@ -355,6 +356,7 @@ function EEREInputs() {
               <li>
                 <span css={inputLabelStyles}>Reduce hourly generation by </span>
                 <EEREInputField
+                  ariaLabel="Constant reduction for every hour of the year, in MW"
                   value={constantMwh}
                   fieldName={'constantMwh'}
                   disabled={annualGwh}
@@ -397,6 +399,7 @@ function EEREInputs() {
                   Broad-based program: Reduce generation by{' '}
                 </span>
                 <EEREInputField
+                  ariaLabel="Load reduction percentage applied to all hours of the year"
                   value={broadProgram}
                   fieldName={'broadProgram'}
                   disabled={reduction || topHours}
@@ -425,6 +428,7 @@ function EEREInputs() {
                   Targeted program: Reduce generation by{' '}
                 </span>
                 <EEREInputField
+                  ariaLabel="Load reduction (as a fraction of peaking load) that would be targeted"
                   value={reduction}
                   fieldName={'reduction'}
                   disabled={broadProgram}
@@ -434,6 +438,7 @@ function EEREInputs() {
                 />
                 <span css={inputUnitStyles}> % during the peak </span>
                 <EEREInputField
+                  ariaLabel="Fraction of high-demand hours that the program is expected to affect"
                   value={topHours}
                   fieldName={'topHours'}
                   disabled={broadProgram}
@@ -487,6 +492,7 @@ function EEREInputs() {
                   Onshore wind total capacity:{' '}
                 </span>
                 <EEREInputField
+                  ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                   value={onshoreWind}
                   fieldName={'onshoreWind'}
                   onChange={(text) => {
@@ -518,6 +524,7 @@ function EEREInputs() {
                     </span>
 
                     <EEREInputField
+                      ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                       value={offshoreWind}
                       fieldName={'offshoreWind'}
                       onChange={(text) => {
@@ -594,6 +601,7 @@ function EEREInputs() {
                   Utility-scale solar photovoltaic total capacity:{' '}
                 </span>
                 <EEREInputField
+                  ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                   value={utilitySolar}
                   fieldName={'utilitySolar'}
                   onChange={(text) => {
@@ -622,6 +630,7 @@ function EEREInputs() {
                   Distributed (rooftop) solar photovoltaic total capacity:{' '}
                 </span>
                 <EEREInputField
+                  ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                   value={rooftopSolar}
                   fieldName={'rooftopSolar'}
                   onChange={(text) => {

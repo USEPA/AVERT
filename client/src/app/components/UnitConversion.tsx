@@ -138,6 +138,7 @@ function UnitConversion() {
         <span css={unitPrefixStyles} />
         <input
           css={unitInputStyles}
+          aria-label="Kilowatts"
           type="text"
           value={kw}
           onChange={(ev) => updateInputs(ev.target.value, 'kw')}
@@ -149,6 +150,7 @@ function UnitConversion() {
         <span css={unitPrefixStyles}>= </span>
         <input
           css={unitInputStyles}
+          aria-label="Megawatts"
           type="text"
           value={mw}
           onChange={(ev) => updateInputs(ev.target.value, 'mw')}
@@ -160,6 +162,7 @@ function UnitConversion() {
         <span css={unitPrefixStyles}>= </span>
         <input
           css={unitInputStyles}
+          aria-label="Gigawatts"
           type="text"
           value={gw}
           onChange={(ev) => updateInputs(ev.target.value, 'gw')}

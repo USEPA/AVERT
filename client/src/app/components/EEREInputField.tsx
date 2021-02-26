@@ -21,13 +21,20 @@ const inputStyles = css`
 `;
 
 type Props = {
+  ariaLabel: string;
   value: string;
   fieldName: string;
   disabled?: string;
   onChange: (value: string) => void;
 };
 
-function EEREInputField({ value, fieldName, disabled, onChange }: Props) {
+function EEREInputField({
+  ariaLabel,
+  value,
+  fieldName,
+  disabled,
+  onChange,
+}: Props) {
   const dispatch = useDispatch();
   const status = useTypedSelector(({ eere }) => eere.status);
   const errors = useTypedSelector(({ eere }) => eere.errors);
@@ -42,6 +49,7 @@ function EEREInputField({ value, fieldName, disabled, onChange }: Props) {
   return (
     <input
       css={inputStyles}
+      aria-label={ariaLabel}
       type="text"
       value={value}
       data-avert-eere-input={fieldName}

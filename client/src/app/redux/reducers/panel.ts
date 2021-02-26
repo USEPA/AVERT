@@ -32,7 +32,7 @@ type PanelState = {
 
 // reducer
 const initialState: PanelState = {
-  activeStep: 1,
+  activeStep: 2,
   loading: false,
   loadingSteps: 6, // total number of pollutant displacements + 1
   loadingProgress: 0,
