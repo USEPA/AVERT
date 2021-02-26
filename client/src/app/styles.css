@@ -106,7 +106,7 @@ fieldset {
 }
 .avert-button-disabled,
 .avert-button-disabled:hover {
-  background-color: #999;
+  background-color: #707070;
   cursor: not-allowed;
 }
 

@@ -90,7 +90,7 @@ const inputsGroupStyles = css`
   /* highlight letter when details is open */
   /* (summary is styled with inputsLabelStyles) */
   &[open] > summary::after {
-    background-color: rgb(0, 169, 204);
+    background-color: rgb(0, 164, 200);
   }
 `;
 
@@ -154,7 +154,7 @@ const inputsLabelStyles = css`
 
   /* highlight letter on hover */
   &:hover::after {
-    background-color: rgb(0, 169, 204);
+    background-color: rgb(0, 164, 200);
   }
 `;
 
