@@ -60,6 +60,7 @@ const modalStyles = css`
 `;
 
 require('highcharts/modules/exporting')(Highcharts);
+require('highcharts/modules/accessibility')(Highcharts);
 
 function EEREChart() {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
@@ -107,6 +108,9 @@ function EEREChart() {
       style: {
         fontFamily: '"Open Sans", sans-serif',
       },
+    },
+    accessibility: {
+      description: 'EE/RE profile',
     },
     title: {
       text: undefined,

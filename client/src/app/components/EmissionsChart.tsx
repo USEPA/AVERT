@@ -25,6 +25,7 @@ import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 import { Pollutant, RegionId, StateId, regions, states } from 'app/config';
 
 require('highcharts/modules/exporting')(Highcharts);
+require('highcharts/modules/accessibility')(Highcharts);
 
 const filterGroupStyles = css`
   overflow: hidden;
