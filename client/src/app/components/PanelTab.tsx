@@ -43,7 +43,7 @@ const Tab = styled('li')<{ step: number }>`
             height: 0;
             border-top: 1.25rem solid transparent;
             border-bottom: 1.25rem solid transparent;
-            border-left: 1.25rem solid #ccc;
+            border-left: 1.25rem solid #eee;
           }
         `;
       }
@@ -60,7 +60,7 @@ const Tab = styled('li')<{ step: number }>`
             left: -1.25rem;
             width: 1.25rem;
             height: 2.5rem;
-            background-color: #ccc;
+            background-color: #eee;
           }
         `;
       }
@@ -86,14 +86,15 @@ const anchorStyles = css`
   line-height: 1;
   font-weight: bold;
   text-align: center;
-  text-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
-  color: white;
-  background-color: #ccc;
+  color: #666;
+  background-color: #eee;
   cursor: default;
   user-select: none;
 
   &[data-active='true'] {
+    color: white;
     background-color: rgb(0, 164, 200);
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
   }
 
   @media (min-width: 35em) {

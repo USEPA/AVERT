@@ -198,7 +198,7 @@ const tabsStyles = css`
     font-weight: 700;
     font-size: 0.875rem;
     line-height: 1;
-    color: #707070;
+    color: #666;
     background-color: whitesmoke;
     outline: none;
     user-select: none;
