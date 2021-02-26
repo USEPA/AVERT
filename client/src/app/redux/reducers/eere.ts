@@ -654,7 +654,7 @@ export function calculateEereProfile(): AppThunk {
     // if a region is invalid...
     //   get the first hour of exceedance across all of the selected regions
     // else, a region is valid...
-    //   so use -1
+    //   so use the first index value
     const softTopExceedanceIdx = !softValid
       ? Math.min(...profiles.softTopExceedanceIdxs.filter((d) => d !== -1))
       : profiles.softTopExceedanceIdxs[0];
