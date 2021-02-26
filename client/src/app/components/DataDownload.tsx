@@ -81,6 +81,7 @@ function DataDownload() {
         </a>
       </p>
 
+      {/*
       <p>
         (PLACEHOLDER: text explaining submitting data to the COBRA App, and how
         the user will be redirected upon successful submission).
@@ -98,6 +99,7 @@ function DataDownload() {
           Submit COBRA Results
         </a>
       </p>
+      */}
 
       {isDesktopSafari && (
         <p
