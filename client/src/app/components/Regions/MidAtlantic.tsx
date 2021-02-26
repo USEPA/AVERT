@@ -1,5 +1,3 @@
-import React from 'react';
-
 function MidAtlantic() {
   return (
     <g data-region="MIDA">

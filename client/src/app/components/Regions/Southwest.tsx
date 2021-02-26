@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Southwest() {
   return (
     <g data-region="SW">

@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Carolinas() {
   return (
     <g data-region="NCSC">

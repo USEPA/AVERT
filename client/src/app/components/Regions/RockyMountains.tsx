@@ -1,5 +1,3 @@
-import React from 'react';
-
 function RockyMountains() {
   return (
     <g data-region="RM">

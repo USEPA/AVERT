@@ -1,4 +1,3 @@
-import React from 'react';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 import { StateChange } from 'app/redux/reducers/displacement';

@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Montana() {
   return (
     <g data-state="MT">

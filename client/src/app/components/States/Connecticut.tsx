@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Connecticut() {
   return (
     <g data-state="CT">

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import React from 'react';
+import { ReactNode, Fragment } from 'react';
 import { jsx, css } from '@emotion/react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
@@ -379,11 +379,11 @@ function EmissionsChart() {
       );
 
     // prettier-ignore
-    const pollutantMarkup = new Map<Pollutant, React.ReactNode>()
-      .set('so2', <React.Fragment>SO<sub>2</sub></React.Fragment>)
-      .set('nox', <React.Fragment>NO<sub>X</sub></React.Fragment>)
-      .set('co2', <React.Fragment>CO<sub>2</sub></React.Fragment>)
-      .set('pm25', <React.Fragment>PM<sub>2.5</sub></React.Fragment>);
+    const pollutantMarkup = new Map<Pollutant, ReactNode>()
+      .set('so2', <Fragment>SO<sub>2</sub></Fragment>)
+      .set('nox', <Fragment>NO<sub>X</sub></Fragment>)
+      .set('co2', <Fragment>CO<sub>2</sub></Fragment>)
+      .set('pm25', <Fragment>PM<sub>2.5</sub></Fragment>);
 
     const chartConfig = new Map<Pollutant, Object>()
       .set('so2', so2Config)
@@ -429,7 +429,7 @@ function EmissionsChart() {
   }
 
   return (
-    <React.Fragment>
+    <Fragment>
       <div css={filterGroupStyles}>
         <p css={filterTextStyles}>Select level of aggregation:</p>
 
@@ -502,9 +502,9 @@ function EmissionsChart() {
 
                 {selectedStateRegions.map((region) => {
                   return (
-                    <React.Fragment key={region.id}>
+                    <Fragment key={region.id}>
                       <option value={region.id}>{region.name}</option>
-                    </React.Fragment>
+                    </Fragment>
                   );
                 })}
               </select>
@@ -525,11 +525,11 @@ function EmissionsChart() {
 
               {availableStates.map((stateId) => {
                 return (
-                  <React.Fragment key={stateId}>
+                  <Fragment key={stateId}>
                     <option value={stateId}>
                       {states[stateId as StateId].name}
                     </option>
-                  </React.Fragment>
+                  </Fragment>
                 );
               })}
             </select>
@@ -606,7 +606,7 @@ function EmissionsChart() {
           {status === 'complete' && renderChart('pm25')}
         </div>
       </div>
-    </React.Fragment>
+    </Fragment>
   );
 }
 

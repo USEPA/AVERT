@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import React from 'react';
+import { Fragment } from 'react';
 import { jsx, css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // reducers
@@ -34,9 +34,9 @@ function StatesList() {
 
       {Object.keys(states).map((stateId) => {
         return (
-          <React.Fragment key={stateId}>
+          <Fragment key={stateId}>
             <option value={stateId}>{states[stateId as StateId].name}</option>
-          </React.Fragment>
+          </Fragment>
         );
       })}
     </select>

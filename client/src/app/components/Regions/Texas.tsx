@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Texas() {
   return (
     <g data-region="TE">

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import React from 'react';
+import { ReactNode, Fragment } from 'react';
 import { jsx, css } from '@emotion/react';
 // components
 import Tooltip from 'app/components/Tooltip';
@@ -52,12 +52,12 @@ function DisplacementsTable() {
     tooltipId: number,
   ) {
     // prettier-ignore
-    const pollutantMarkup = new Map<DisplacementPollutant, React.ReactNode>()
-      .set('generation', <React.Fragment>Generation</React.Fragment>)
-      .set('so2', <React.Fragment>SO<sub>2</sub></React.Fragment>)
-      .set('nox', <React.Fragment>NO<sub>X</sub></React.Fragment>)
-      .set('co2', <React.Fragment>CO<sub>2</sub></React.Fragment>)
-      .set('pm25', <React.Fragment>PM<sub>2.5</sub></React.Fragment>);
+    const pollutantMarkup = new Map<DisplacementPollutant, ReactNode>()
+      .set('generation', <Fragment>Generation</Fragment>)
+      .set('so2', <Fragment>SO<sub>2</sub></Fragment>)
+      .set('nox', <Fragment>NO<sub>X</sub></Fragment>)
+      .set('co2', <Fragment>CO<sub>2</sub></Fragment>)
+      .set('pm25', <Fragment>PM<sub>2.5</sub></Fragment>);
 
     return (
       <Tooltip id={tooltipId}>
@@ -74,7 +74,7 @@ function DisplacementsTable() {
   if (status !== 'complete') return null;
 
   return (
-    <React.Fragment>
+    <Fragment>
       <table className="avert-table">
         <thead>
           <tr>
@@ -197,7 +197,7 @@ function DisplacementsTable() {
         results are rounded to the nearest ten. A dash ('–') indicates a result
         greater than zero, but lower than the level of reportable significance.
       </p>
-    </React.Fragment>
+    </Fragment>
   );
 }
 

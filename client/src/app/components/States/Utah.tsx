@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Utah() {
   return (
     <g data-state="UT">

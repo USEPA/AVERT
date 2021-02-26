@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import React from 'react';
+import { Fragment } from 'react';
 import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled/macro';
 import { useDispatch } from 'react-redux';
@@ -425,25 +425,25 @@ function Panels() {
   // the order of the displacements table and emissions table will be
   // determined by the selected geography (regions or states)
   const displacementsTable = (
-    <React.Fragment>
+    <Fragment>
       <h3 css={subheadingStyles}>
         Annual Regional Displacements:
         <br />
         <small>{resultsHeading}</small>
       </h3>
       <DisplacementsTable />
-    </React.Fragment>
+    </Fragment>
   );
 
   const emissionsTable = (
-    <React.Fragment>
+    <Fragment>
       <h3 css={subheadingStyles}>
         Annual State Emission Changes:
         <br />
         <small>{resultsHeading}</small>
       </h3>
       <EmissionsTable />
-    </React.Fragment>
+    </Fragment>
   );
 
   return (
@@ -648,15 +648,15 @@ function Panels() {
           }
 
           {geographicFocus === 'regions' ? (
-            <React.Fragment>
+            <Fragment>
               {displacementsTable}
               {emissionsTable}
-            </React.Fragment>
+            </Fragment>
           ) : (
-            <React.Fragment>
+            <Fragment>
               {emissionsTable}
               {displacementsTable}
-            </React.Fragment>
+            </Fragment>
           )}
 
           <h3 css={subheadingStyles}>

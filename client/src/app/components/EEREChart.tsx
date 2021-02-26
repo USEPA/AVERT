@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import React from 'react';
+import { Fragment } from 'react';
 import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled/macro';
 import Highcharts from 'highcharts';
@@ -175,7 +175,7 @@ function EEREChart() {
     const equivalentHomes = Math.round((totalLoadMwh / 12_146) * -1e3);
 
     chart = (
-      <React.Fragment>
+      <Fragment>
         <h3 className="avert-chart-title">
           EE/RE profile based on values entered:{' '}
           <span css={modalStyles}>
@@ -213,7 +213,7 @@ function EEREChart() {
           reference, this equals the annual electricity consumed by{' '}
           {equivalentHomes.toLocaleString()} average homes in the United States.
         </p>
-      </React.Fragment>
+      </Fragment>
     );
   }
 

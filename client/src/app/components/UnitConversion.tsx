@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import React from 'react';
+import { useState } from 'react';
 import { jsx, css } from '@emotion/react';
 // components
 import Tooltip from 'app/components/Tooltip';
@@ -73,10 +73,10 @@ const errorStyles = css`
 `;
 
 function UnitConversion() {
-  const [error, setError] = React.useState(false);
-  const [kw, setKw] = React.useState(1e6);
-  const [mw, setMw] = React.useState(1e3);
-  const [gw, setGw] = React.useState(1);
+  const [error, setError] = useState(false);
+  const [kw, setKw] = useState(1e6);
+  const [mw, setMw] = useState(1e3);
+  const [gw, setGw] = useState(1);
 
   function updateInputs(value: string, unit: 'kw' | 'mw' | 'gw') {
     const input = Number(value);

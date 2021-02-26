@@ -1,5 +1,3 @@
-import React from 'react';
-
 function NorthDakota() {
   return (
     <g data-state="ND">

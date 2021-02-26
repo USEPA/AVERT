@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Iowa() {
   return (
     <g data-state="IA">

@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Maine() {
   return (
     <g data-state="ME">

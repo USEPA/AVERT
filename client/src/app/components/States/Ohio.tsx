@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Ohio() {
   return (
     <g data-state="OH">

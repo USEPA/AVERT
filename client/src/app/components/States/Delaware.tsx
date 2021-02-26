@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Delaware() {
   return (
     <g data-state="DE">

@@ -1,5 +1,3 @@
-import React from 'react';
-
 function NewMexico() {
   return (
     <g data-state="NM">

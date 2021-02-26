@@ -1,5 +1,3 @@
-import React from 'react';
-
 function NewEngland() {
   return (
     <g data-region="NE">

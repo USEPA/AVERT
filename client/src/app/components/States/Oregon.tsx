@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Oregon() {
   return (
     <g data-state="OR">

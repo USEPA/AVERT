@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import React from 'react';
+import { Fragment } from 'react';
 import { jsx, css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // components
@@ -51,7 +51,7 @@ function DataDownload() {
     navigator.userAgent.toLowerCase().indexOf('mobi') === -1;
 
   return (
-    <React.Fragment>
+    <Fragment>
       <p>
         Download monthly displacement data for each county, state, and region in
         this analysis, in CSV format.
@@ -108,7 +108,7 @@ function DataDownload() {
           Please press ⌘ + S to save the file after it is opened.
         </p>
       )}
-    </React.Fragment>
+    </Fragment>
   );
 }
 

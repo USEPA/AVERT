@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import React from 'react';
+import { ReactNode, Fragment, useRef, useEffect } from 'react';
 import { jsx, css, keyframes } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // reducers
@@ -130,7 +130,7 @@ const modalCloseStyles = css`
 
 type Props = {
   id: number;
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 function Tooltip({ id, children }: Props) {
@@ -138,13 +138,13 @@ function Tooltip({ id, children }: Props) {
   const activeModalId = useTypedSelector(({ panel }) => panel.activeModalId);
   const closingModalId = useTypedSelector(({ panel }) => panel.closingModalId);
 
-  const closeLinkRef = React.useRef<HTMLAnchorElement>(null);
-  React.useEffect(() => {
+  const closeLinkRef = useRef<HTMLAnchorElement>(null);
+  useEffect(() => {
     if (closeLinkRef.current) closeLinkRef.current.focus();
   }, [closeLinkRef]);
 
   return (
-    <React.Fragment>
+    <Fragment>
       <a
         css={modalLinkStyles}
         href="/"
@@ -179,7 +179,7 @@ function Tooltip({ id, children }: Props) {
 
         {children}
       </span>
-    </React.Fragment>
+    </Fragment>
   );
 }
 

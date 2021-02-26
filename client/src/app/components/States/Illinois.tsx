@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Illinois() {
   return (
     <g data-state="IL">

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import React from 'react';
+import { Fragment } from 'react';
 import { jsx, css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // components
@@ -307,7 +307,7 @@ function EEREInputs() {
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       <div css={inputsBlockStyles} data-avert-eere-inputs>
         <header css={inputsCategoryStyles}>
           <p>Energy Efficiency</p>
@@ -518,7 +518,7 @@ function EEREInputs() {
 
               <li>
                 {atLeastOneRegionSupportsOffshoreWind ? (
-                  <React.Fragment>
+                  <Fragment>
                     <span css={inputLabelStyles}>
                       Offshore wind total capacity:{' '}
                     </span>
@@ -548,11 +548,11 @@ function EEREInputs() {
                       inputValue: offshoreWind,
                       maxValue: limits.renewables,
                     })}
-                  </React.Fragment>
+                  </Fragment>
                 ) : (
                   <span css={inputLabelStyles}>
                     {geographicFocus === 'regions' ? (
-                      <React.Fragment>
+                      <Fragment>
                         <em>
                           Offshore wind calculations are not available in this
                           AVERT region.{' '}
@@ -564,9 +564,9 @@ function EEREInputs() {
                           for wind farms would connect to the electrical grid in
                           this region.
                         </Tooltip>
-                      </React.Fragment>
+                      </Fragment>
                     ) : (
-                      <React.Fragment>
+                      <Fragment>
                         <em>
                           Offshore wind calculations are not available in the
                           AVERT region(s) that this state is part of.{' '}
@@ -578,7 +578,7 @@ function EEREInputs() {
                           that offshore areas suitable for wind farms would
                           connect to the electrical grid in these regions.
                         </Tooltip>
-                      </React.Fragment>
+                      </Fragment>
                     )}
                   </span>
                 )}
@@ -672,7 +672,7 @@ function EEREInputs() {
           {eereButtonOptions[status]}
         </a>
       </p>
-    </React.Fragment>
+    </Fragment>
   );
 }
 

@@ -1,5 +1,3 @@
-import React from 'react';
-
 function DistrictOfColumbia() {
   return (
     <g data-state="DC">

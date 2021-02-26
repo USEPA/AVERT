@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Idaho() {
   return (
     <g data-state="ID">

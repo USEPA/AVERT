@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Indiana() {
   return (
     <g data-state="IN">
