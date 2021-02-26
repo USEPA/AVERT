@@ -60,12 +60,6 @@ const NextButton = styled('a')<{ resultsShown: boolean }>`
   ${({ resultsShown }) => {
     if (resultsShown) {
       return css`
-        background-color: rgb(146, 193, 47) !important;
-
-        &:hover {
-          background-color: rgb(159, 207, 58) !important;
-        }
-
         /* hide next icon */
         &::after {
           display: none;
