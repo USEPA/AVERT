@@ -532,13 +532,12 @@ function Panels() {
 
               <p className="avert-small-text">
                 The online version of AVERT completes analyses using 2019
-                emissions and generation data. The Excel version of AVERT
-                (available for download{' '}
+                emissions and generation data. The Excel version of AVERT (
                 <a
                   href="https://www.epa.gov/statelocalenergy/download-avert"
                   target="_parent"
                 >
-                  here
+                  available for download here
                 </a>
                 ) allows analyses for years 2017–2019 or for a future year
                 scenario.
@@ -567,13 +566,12 @@ function Panels() {
 
               <p className="avert-small-text">
                 The online version of AVERT completes analyses using 2019
-                emissions and generation data. The Excel version of AVERT
-                (available for download{' '}
+                emissions and generation data. The Excel version of AVERT (
                 <a
                   href="https://www.epa.gov/statelocalenergy/download-avert"
                   target="_parent"
                 >
-                  here
+                  available for download here
                 </a>
                 ) allows analyses for years 2017–2019 or for a future year
                 scenario.
