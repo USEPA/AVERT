@@ -1,0 +1,31 @@
+{
+  "name": "epa-avert-server",
+  "version": "2.0.0",
+  "description": "Web server for performing calculations and serving the built client side AVERT web app.",
+  "homepage": "https://www.epa.gov/avert",
+  "author": "USEPA (https://www.epa.gov)",
+  "contributors": [
+    "Bryan Neva <bryan.neva@erg.com>",
+    "Courtney Myers <courtney.myers@erg.com>"
+  ],
+  "license": "CC0-1.0",
+  "engines": {
+    "node": "14.x"
+  },
+  "main": "./index.js",
+  "scripts": {
+    "start": "node ./index.js",
+    "dev": "AVERT_AUTH=true AVERT_USER=avert AVERT_PASS=dev node ./index.js"
+  },
+  "dependencies": {
+    "@koa/cors": "3.1.0",
+    "@sentry/node": "6.2.0",
+    "dotenv": "8.2.0",
+    "koa": "2.13.1",
+    "koa-basic-auth": "4.0.0",
+    "koa-bodyparser": "4.3.0",
+    "koa-logger": "3.2.1",
+    "koa-route": "3.2.0",
+    "koa-static": "5.0.0"
+  }
+}

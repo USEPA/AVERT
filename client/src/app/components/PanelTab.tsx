@@ -1,0 +1,128 @@
+/** @jsxImportSource @emotion/react */
+
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
+
+const Tab = styled('li')<{ step: number }>`
+  /* remove space above first tab */
+  ${({ step }) => {
+    if (step === 1) {
+      return css`
+        a {
+          margin-top: 0;
+        }
+      `;
+    }
+  }}
+
+  @media (min-width: 35em) {
+    float: left;
+    width: calc((100% - 2.5rem) * 0.333333);
+
+    /* space between tabs */
+    ${({ step }) => {
+      if (step === 1 || step === 2) {
+        return css`
+          margin-right: 1.25rem;
+        `;
+      }
+    }}
+
+    /* right arrow */
+    ${({ step }) => {
+      if (step === 1 || step === 2) {
+        return css`
+          a::after {
+            content: '';
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            right: -1.25rem;
+            /* css triangle */
+            width: 0;
+            height: 0;
+            border-top: 1.25rem solid transparent;
+            border-bottom: 1.25rem solid transparent;
+            border-left: 1.25rem solid #eee;
+          }
+        `;
+      }
+    }}
+
+    /* fill behind right arrow */
+    ${({ step }) => {
+      if (step === 2 || step === 3) {
+        return css`
+          a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -1.25rem;
+            width: 1.25rem;
+            height: 2.5rem;
+            background-color: #eee;
+          }
+        `;
+      }
+    }}
+
+    /* active tab – right arrow */
+    a[data-active='true']::after {
+      border-left-color: rgb(0, 128, 164);
+    }
+
+    /* active tab – fill behind right arrow */
+    a[data-active='true']::before {
+      background-color: rgb(0, 128, 164);
+    }
+  }
+`;
+
+const anchorStyles = css`
+  display: block;
+  margin-top: 0.375rem;
+  padding: 0.75rem;
+  border: 1px solid #aaa;
+  line-height: 1;
+  font-weight: bold;
+  text-align: center;
+  color: #666;
+  background-color: #eee;
+  cursor: default;
+  user-select: none;
+
+  &[data-active='true'] {
+    color: white;
+    background-color: rgb(0, 128, 164);
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+  }
+
+  @media (min-width: 35em) {
+    position: relative;
+    margin-top: 0;
+    border: 0;
+  }
+`;
+
+type Props = {
+  step: number;
+  active: boolean;
+  title: string;
+};
+
+function PanelTab({ step, active, title }: Props) {
+  return (
+    <Tab step={step}>
+      <a
+        css={anchorStyles}
+        href="/"
+        data-active={active}
+        onClick={(ev) => ev.preventDefault()}
+      >
+        {title}
+      </a>
+    </Tab>
+  );
+}
+
+export default PanelTab;
