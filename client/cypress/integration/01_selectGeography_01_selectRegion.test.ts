@@ -1,5 +1,5 @@
 // config
-import { RegionKeys, regions } from '../../src/app/config';
+import { RegionId, regions } from '../../src/app/config';
 
 describe('Select Region', () => {
   beforeEach(() => {
@@ -13,9 +13,9 @@ describe('Select Region', () => {
 
   it('Selecting a region in the “Select Region” dropdown menu highlights the corresponding region in the map', () => {
     for (const key in regions) {
-      const { id, name } = regions[key as RegionKeys];
+      const { id, name } = regions[key as RegionId];
       cy.get('@regionsSelect').select(name);
-      cy.get(`#avert-region-${id}`)
+      cy.get(`[data-avert-region-map] [data-region="${id}"]`)
         .parent()
         .should('have.attr', 'data-active', 'true');
     }
@@ -23,8 +23,10 @@ describe('Select Region', () => {
 
   it('Clicking a region on the map selects the corresponding region in the “Select Region” dropdown menu', () => {
     for (const key in regions) {
-      const { id } = regions[key as RegionKeys];
-      cy.get(`#avert-region-${id}`).parent().click({ force: true });
+      const { id } = regions[key as RegionId];
+      cy.get(`[data-avert-region-map] [data-region="${id}"]`)
+        .parent()
+        .click({ force: true });
       cy.get('@regionsSelect').should('have.value', id);
     }
   });
