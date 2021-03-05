@@ -6,7 +6,7 @@ describe('Set EE/RE Impacts', () => {
       .filter('option')
       .parent()
       .select('Carolinas');
-    cy.findAllByText('Set EE/RE Impacts').filter('.avert-next').click();
+    cy.findAllByText('Set EE/RE Impacts').filter('.avert-button').click();
 
     cy.findByText('Reductions spread evenly throughout the year').as('toggleA');
     cy.get('@toggleA').click();
@@ -36,14 +36,13 @@ describe('Set EE/RE Impacts', () => {
     cy.findByText('Utility-scale solar photovoltaic total capacity:')
       .next()
       .as('utilitySolar');
-    cy.get('@toggleD').click();
-    cy.findByText('Distributed (rooftop) solar voltaic total capacity:')
+    cy.findByText('Distributed (rooftop) solar photovoltaic total capacity:')
       .next()
       .as('rooftopSolar');
     cy.get('@toggleD').click();
 
     cy.findByText('Calculate EE/RE Impacts').as('calculateBtn');
-    cy.findAllByText('Get Results').filter('.avert-next').as('resultsBtn');
+    cy.findAllByText('Get Results').filter('.avert-button').as('resultsBtn');
   });
 
   it('Entering a value for onshore wind capacity displays the EE/RE profile chart and enables the “Get Results” button', () => {
@@ -62,7 +61,7 @@ describe('Set EE/RE Impacts', () => {
     cy.get('@onshoreWind').type('1000');
     cy.get('@calculateBtn').click();
     cy.findAllByText('WARNING:').filter(':visible');
-    cy.findByText('19.24');
+    cy.findByText('18.83');
     cy.findByText('January 1 at 5:00 AM');
   });
 
@@ -73,11 +72,20 @@ describe('Set EE/RE Impacts', () => {
     cy.get('@onshoreWind').type('1000');
     cy.get('@calculateBtn').click();
     cy.findAllByText('ERROR:').filter(':visible');
-    cy.findByText('31.82');
+    cy.findByText('31.08');
     cy.findByText('April 20 at 3:00 AM');
   });
 
-  it('Entering a value over the vaild limit for onshore wind capacity displays the error message below the input', () => {
+  it('Entering a negative value for annual generation displays the error message below the input', () => {
+    cy.get('@toggleA').click();
+    cy.get('@annualGwh').type('-1');
+    cy.findByText('Please enter a positive number.');
+    cy.get('@calculateBtn').should('have.class', 'avert-button-disabled');
+    cy.get('@resultsBtn').should('have.class', 'avert-button-disabled');
+  });
+
+  // NOTE: input validation message for max value was removed in a previous application update
+  it.skip('Entering a value over the vaild limit for onshore wind capacity displays the error message below the input', () => {
     cy.get('@toggleC').click();
     cy.get('@onshoreWind').type('1376');
     cy.findByText('Please enter a number between 0 and 1375.5.');
