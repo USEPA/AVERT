@@ -6,12 +6,12 @@ describe('Get Results – onshoreWind', () => {
       .filter('option')
       .parent()
       .select('Northwest');
-    cy.findAllByText('Set EE/RE Impacts').filter('.avert-next').click();
+    cy.findAllByText('Set EE/RE Impacts').filter('.avert-button').click();
 
     cy.findByText('Wind').click();
     cy.findByText('Onshore wind total capacity:').next().type('1000');
     cy.findByText('Calculate EE/RE Impacts').click();
-    cy.findAllByText('Get Results').filter('.avert-next').click();
+    cy.findAllByText('Get Results').filter('.avert-button').click();
     cy.findByText('LOADING...', { timeout: 60000 }).should('not.exist');
   });
 

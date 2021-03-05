@@ -6,12 +6,12 @@ describe('Get Results – annualGwh', () => {
       .filter('option')
       .parent()
       .select('Southwest');
-    cy.findAllByText('Set EE/RE Impacts').filter('.avert-next').click();
+    cy.findAllByText('Set EE/RE Impacts').filter('.avert-button').click();
 
     cy.findByText('Reductions spread evenly throughout the year').click();
     cy.findByText('Reduce total annual generation by').next().type('10000');
     cy.findByText('Calculate EE/RE Impacts').click();
-    cy.findAllByText('Get Results').filter('.avert-next').click();
+    cy.findAllByText('Get Results').filter('.avert-button').click();
     cy.findByText('LOADING...', { timeout: 60000 }).should('not.exist');
   });
 
