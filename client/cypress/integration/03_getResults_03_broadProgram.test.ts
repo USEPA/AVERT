@@ -6,14 +6,14 @@ describe('Get Results – broadProgram', () => {
       .filter('option')
       .parent()
       .select('New England');
-    cy.findAllByText('Set EE/RE Impacts').filter('.avert-next').click();
+    cy.findAllByText('Set EE/RE Impacts').filter('.avert-button').click();
 
     cy.findByText('Percentage reductions in some or all hours').click();
     cy.findByText('Broad-based program: Reduce generation by')
       .next()
       .type('10');
     cy.findByText('Calculate EE/RE Impacts').click();
-    cy.findAllByText('Get Results').filter('.avert-next').click();
+    cy.findAllByText('Get Results').filter('.avert-button').click();
     cy.findByText('LOADING...', { timeout: 60000 }).should('not.exist');
   });
 
