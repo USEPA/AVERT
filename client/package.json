@@ -40,11 +40,11 @@
     "typescript": "4.2.2"
   },
   "dependencies": {
-    "@emotion/react": "11.1.5",
-    "@emotion/styled": "11.1.5",
-    "@reach/tabs": "0.13.2",
-    "core-js": "3.9.1",
-    "highcharts": "9.0.1",
+    "@emotion/react": "11.4.0",
+    "@emotion/styled": "11.3.0",
+    "@reach/tabs": "0.15.0",
+    "core-js": "3.13.1",
+    "highcharts": "9.1.0",
     "highcharts-react-official": "3.0.0",
     "react": "17.0.1",
     "react-app-polyfill": "2.0.0",
