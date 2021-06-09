@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { Fragment } from 'react';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 // components
 import {
   bottomMessageStyles,
@@ -9,7 +9,7 @@ import {
 } from 'app/components/Panels';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
-import { postCobraData } from 'app/redux/reducers/displacement';
+// import { postCobraData } from 'app/redux/reducers/displacement';
 // hooks
 import { useSelectedRegion, useSelectedState } from 'app/hooks';
 
@@ -24,7 +24,7 @@ function convertToCSVString(data: { [key: string]: any }[]) {
 }
 
 function DataDownload() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const countyData = useTypedSelector(
     ({ displacement }) => displacement.downloadableCountyData,
@@ -93,7 +93,7 @@ function DataDownload() {
           href="https://cobra.app.cloud.gov/"
           onClick={(ev) => {
             ev.preventDefault();
-            dispatch(postCobraData(cobraData));
+            // dispatch(postCobraData(cobraData));
           }}
         >
           Submit COBRA Results

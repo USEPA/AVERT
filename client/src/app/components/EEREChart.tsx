@@ -147,7 +147,7 @@ function EEREChart() {
       },
       labels: {
         formatter: function () {
-          return Math.round(this.value).toString();
+          return Math.round(Number(this.value)).toString();
         },
       },
     },

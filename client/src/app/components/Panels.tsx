@@ -532,14 +532,19 @@ function Panels() {
 
               <p className="avert-small-text">
                 The online version of AVERT completes analyses using 2019
-                emissions and generation data. The Excel version of AVERT (
+                emissions and generation data. Due to temporary declines in
+                electricity demand in 2020, particularly in the months of March
+                through May, 2020 data may not be appropriate for certain
+                analyses. Thus, EPA recommends that analysts using AVERT to
+                assess annual, near-term future avoided emissions continue to
+                use the 2019 data year. The Excel version of AVERT (
                 <a
                   href="https://www.epa.gov/statelocalenergy/download-avert"
                   target="_parent"
                 >
                   available for download here
                 </a>
-                ) allows analyses for years 2017–2019 or for a future year
+                ) allows analyses for years 2017–2020 or for a future year
                 scenario.
               </p>
             </TabPanel>
@@ -566,14 +571,19 @@ function Panels() {
 
               <p className="avert-small-text">
                 The online version of AVERT completes analyses using 2019
-                emissions and generation data. The Excel version of AVERT (
+                emissions and generation data. Due to temporary declines in
+                electricity demand in 2020, particularly in the months of March
+                through May, 2020 data may not be appropriate for certain
+                analyses. Thus, EPA recommends that analysts using AVERT to
+                assess annual, near-term future avoided emissions continue to
+                use the 2019 data year. The Excel version of AVERT (
                 <a
                   href="https://www.epa.gov/statelocalenergy/download-avert"
                   target="_parent"
                 >
                   available for download here
                 </a>
-                ) allows analyses for years 2017–2019 or for a future year
+                ) allows analyses for years 2017–2020 or for a future year
                 scenario.
               </p>
             </TabPanel>
