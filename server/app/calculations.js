@@ -1,11 +1,50 @@
 /**
  * @typedef {Object} RDF
- * @property {RdfData} data
- * @property {RdfLimits} limits
- * @property {number[]} load_bin_edges
  * @property {RdfRegion} region
- * @property {RdfRegionalLoad[]} regional_load
  * @property {RdfRun} run
+ * @property {RdfLimits} limits
+ * @property {RdfRegionalLoad[]} regional_load
+ * @property {number[]} load_bin_edges
+ * @property {RdfData} data
+ */
+
+/**
+ * @typedef {Object} RdfRegion
+ * @property {string} region_abbv
+ * @property {string} region_name
+ * @property {string} region_states
+ */
+
+/**
+ * @typedef {Object} RdfRun
+ * @property {number} region_id
+ * @property {number} year
+ * @property {string[]} file_name
+ * @property {number} mc_runs
+ * @property {number} mc_gen_runs
+ */
+
+/**
+ * @typedef {Object} RdfLimits
+ * @property {number} id
+ * @property {number} region_id
+ * @property {number} year
+ * @property {number} max_solar_wind_mwh
+ * @property {number} max_ee_yearly_gwh
+ * @property {number} max_ee_percent
+ * @property {?string[]} created_at
+ * @property {?string[]} updated_at
+ */
+
+/**
+ * @typedef {Object} RdfRegionalLoad
+ * @property {number} hour_of_year
+ * @property {number} year
+ * @property {1|2|3|4|5|6|7|8|9|10|11|12} month
+ * @property {number} day
+ * @property {number} hour
+ * @property {number} regional_load_mw
+ * @property {number} hourly_limit
  */
 
 /**
@@ -17,6 +56,8 @@
  * @property {LocationData[]} nox_not
  * @property {LocationData[]} co2
  * @property {LocationData[]} co2_not
+ * @property {LocationData[]} heat
+ * @property {LocationData[]} heat_not
  * @property {LocationData[]} pm25
  * @property {LocationData[]} pm25_not
  */
@@ -36,57 +77,26 @@
  */
 
 /**
- * @typedef {Object} RdfLimits
- * @property {string[]} created_at
- * @property {number} id
- * @property {number} max_ee_percent
- * @property {number} max_ee_yearly_gwh
- * @property {number} max_solar_wind_mwh
- * @property {number} region_id
- * @property {string[]} updated_at
- * @property {number} year
- */
-
-/**
- * @typedef {Object} RdfRegion
- * @property {string} region_abbv
- * @property {string} region_name
- * @property {string} region_states
- */
-
-/**
- * @typedef {Object} RdfRegionalLoad
- * @property {MonthNumber} month
- * @property {number} regional_load_mw
- */
-
-/**
- * @typedef {1|2|3|4|5|6|7|8|9|10|11|12} MonthNumber
- */
-
-/**
- * @typedef {'month1'|'month2'|'month3'|'month4'|'month5'|'month6'|'month7'|'month8'|'month9'|'month10'|'month11'|'month12'} MonthKey
- */
-
-/**
- * @typedef {Object} RdfRun
- * @property {string[]} file_name
- * @property {number} mc_gen_runs
- * @property {number} mc_runs
- * @property {number} region_id
- * @property {number} year
- */
-
-/**
 * @typedef {Object} MonthlyDisplacement
-* @property {DataByMonth} original
-* @property {DataByMonth} postEere
+* @property {Displacement} month1
+* @property {Displacement} month2
+* @property {Displacement} month3
+* @property {Displacement} month4
+* @property {Displacement} month5
+* @property {Displacement} month6
+* @property {Displacement} month7
+* @property {Displacement} month8
+* @property {Displacement} month9
+* @property {Displacement} month10
+* @property {Displacement} month11
+* @property {Displacement} month12
 */
 
 /**
- * @typedef {Object} DataByMonth
- * @property {number} MonthKey
- */
+* @typedef {Object} Displacement
+* @property {number} original
+* @property {number} postEere
+*/
 
 /**
  * @param {Object} options
@@ -115,17 +125,21 @@ function excelMatch(array, lookup) {
 };
 
 /**
- * Caclulates displacement for a given pollutant.
+ * Caclulates displacement for a given metric.
  * @param {RDF} rdf
  * @param {number[]} eereLoad
- * @param {'generation'|'so2'|'nox'|'co2'|'pm25'} pollutant
+ * @param {''generation'|'so2'|'nox'|'co2'|'pm25'|'vocs'|'nh3'} metric
  */
-function getDisplacement(rdf, eereLoad, pollutant) {
-  // set ozoneData and nonOzoneData based on provided pollutant
-  const ozoneData = rdf.data[pollutant];
+function getDisplacement(rdf, eereLoad, metric) {
+  if (metric === 'pm25' || metric === 'vocs' || metric === 'nh3') {
+    // TODO: use rdf.data.heat and new 'annual-emission-factors' file to perform calculations
+  }
+
+  // set ozoneData and nonOzoneData based on provided metric
+  const ozoneData = rdf.data[metric];
 
   /** @type {LocationData[]|false} */
-  const nonOzoneData = rdf.data[`${pollutant}_not`] || false;
+  const nonOzoneData = rdf.data[`${metric}_not`] || false;
 
   /**
    * monthly original and post-eere calculated values for the region
@@ -202,8 +216,8 @@ function getDisplacement(rdf, eereLoad, pollutant) {
 
       // handle special exclusions for emissions changes at specific locations
       // (specifically added for errors with SO2 reporting, but the RDFs have
-      // been updated to include the `infreq_emissions_flag` for all pollutants
-      // for consistency, which allows other pollutants at specific locations
+      // been updated to include the `infreq_emissions_flag` for all metrics
+      // for consistency, which allows other metrics at specific locations
       // to be excluded in the future)
       const calculatedPostEere =
         location.infreq_emissions_flag === 1
@@ -254,7 +268,7 @@ function getDisplacement(rdf, eereLoad, pollutant) {
 
   return {
     regionId: rdf.region.region_abbv,
-    pollutant: pollutant,
+    pollutant: metric,
     originalTotal: hourlyOriginalTotals.reduce((acc, cur) => acc + (cur || 0), 0),
     postEereTotal: hourlyPostEereTotals.reduce((acc, cur) => acc + (cur || 0), 0),
     regionalData,
