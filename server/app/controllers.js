@@ -40,14 +40,20 @@ const eere = {
 /**
  * Receives EERE data and region, and returns displacement data.
  * @param {*} ctx 
- * @param {'generation'|'so2'|'nox'|'co2'|'pm25'|'vocs'|'nh3'} metric 
+ * @param {'generation'|'so2'|'nox'|'co2'|'pm25'|'nei'} metric // TODO: remove pm25
  */
 async function calculateMetric(ctx, metric) {
   const body = await ctx.request.body;
-  // parse rdf data from file
-  const file = await readFile(`app/data/${config.regions[body.region].rdf}`);
-  const rdf = JSON.parse(file);
-  ctx.body = getDisplacement(rdf, body.eereLoad, metric);
+  const eereLoad = body.eereLoad;
+  // parse rdf (and potentially nei) data from files
+  const rdfData = await readFile(`app/data/${config.regions[body.region].rdf}`);
+  const rdfJson = JSON.parse(rdfData);
+  let neiJson = null;
+  if (metric === 'nei') {
+    const neiData = await readFile('app/data/annual-emission-factors.json');
+    neiJson = JSON.parse(neiData);
+  }
+  ctx.body = getDisplacement({ rdfJson, neiJson, eereLoad, metric });
 };
 
 /**
@@ -58,9 +64,8 @@ const displacement = {
   calculateSO2: (ctx) => calculateMetric(ctx, 'so2'),
   calculateNOx: (ctx) => calculateMetric(ctx, 'nox'),
   calculateCO2: (ctx) => calculateMetric(ctx, 'co2'),
-  calculatePM25: (ctx) => calculateMetric(ctx, 'pm25'),
-  calculateVOCs: (ctx) => calculateMetric(ctx, 'vocs'),
-  calculateNH3: (ctx) => calculateMetric(ctx, 'nh3'),
+  calculatePM25: (ctx) => calculateMetric(ctx, 'pm25'), // TODO: remove
+  calculateNEIMetrics: (ctx) => calculateMetric(ctx, 'nei'),
 }
 
 module.exports = {

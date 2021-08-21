@@ -49,21 +49,21 @@
 
 /**
  * @typedef {Object} RdfData
- * @property {LocationData[]} generation
- * @property {LocationData[]} so2
- * @property {LocationData[]} so2_not
- * @property {LocationData[]} nox
- * @property {LocationData[]} nox_not
- * @property {LocationData[]} co2
- * @property {LocationData[]} co2_not
- * @property {LocationData[]} heat
- * @property {LocationData[]} heat_not
- * @property {LocationData[]} pm25
- * @property {LocationData[]} pm25_not
+ * @property {EguData[]} generation
+ * @property {EguData[]} so2
+ * @property {EguData[]} so2_not
+ * @property {EguData[]} nox
+ * @property {EguData[]} nox_not
+ * @property {EguData[]} co2
+ * @property {EguData[]} co2_not
+ * @property {EguData[]} heat
+ * @property {EguData[]} heat_not
+ * @property {EguData[]} pm25
+ * @property {EguData[]} pm25_not
  */
 
 /**
- * @typedef {Object} LocationData
+ * @typedef {Object} EguData
  * @property {string} state
  * @property {string} county
  * @property {number} lat
@@ -126,42 +126,49 @@ function excelMatch(array, lookup) {
 
 /**
  * Caclulates displacement for a given metric.
- * @param {RDF} rdf
- * @param {number[]} eereLoad
- * @param {''generation'|'so2'|'nox'|'co2'|'pm25'|'vocs'|'nh3'} metric
+ * @param {Object} options
+ * @param {RDF} options.rdfJson
+ * @param {?Object} options.neiData // TODO
+ * @param {number[]} options.eereLoad
+ * @param {'generation'|'so2'|'nox'|'co2'|'pm25'|'nei'} options.metric // TODO: remove pm25
  */
-function getDisplacement(rdf, eereLoad, metric) {
-  if (metric === 'pm25' || metric === 'vocs' || metric === 'nh3') {
-    // TODO: use rdf.data.heat and new 'annual-emission-factors' file to perform calculations
+function getDisplacement({ rdfJson, neiJson, eereLoad, metric }) {
+  // PM2.5, VOCs, and NH3 metrics are calculated with data in the
+  // `data/annual-emission-factors.json` file, which contains annual
+  // point-source data from the National Emissions Inventory
+  if (metric === 'nei') {
+    // TODO: use rdfJson.data.heat and data from NEI file to perform calculations...
+    console.log(neiJson);
   }
 
   // set ozoneData and nonOzoneData based on provided metric
-  const ozoneData = rdf.data[metric];
+  /** @type {EguData[]} */
+  const ozoneData = rdfJson.data[metric];
 
-  /** @type {LocationData[]|false} */
-  const nonOzoneData = rdf.data[`${metric}_not`] || false;
+  /** @type {EguData[]|false} */
+  const nonOzoneData = rdfJson.data[`${metric}_not`] || false;
 
   /**
    * monthly original and post-eere calculated values for the region
    * @type {MonthlyDisplacement}
    */
-  const regionalData = {}
+  const regionalData = {};
 
   /**
    * monthly original and post-eere calculated values for each state
    * @type {Object.<string, MonthlyDisplacement>}
    */
-  const stateData = {}
+  const stateData = {};
 
   /**
    * monthly original and post-eere calculated values for each county within each state
    * @type {Object.<string, Object.<string, MonthlyDisplacement>>}
    */
-  const countyData = {}
+  const countyData = {};
 
   // load bin edges
-  const firstEdge = rdf.load_bin_edges[0];
-  const lastEdge = rdf.load_bin_edges[rdf.load_bin_edges.length - 1];
+  const firstEdge = rdfJson.load_bin_edges[0];
+  const lastEdge = rdfJson.load_bin_edges[rdfJson.load_bin_edges.length - 1];
 
   // dataset medians (ozone and non-ozone)
   const ozoneMedians = ozoneData.map((data) => data.medians);
@@ -171,16 +178,16 @@ function getDisplacement(rdf, eereLoad, metric) {
       : false;
 
   /** @type {number[]} - used to calculate 'originalTotal' returned data */
-  const hourlyOriginalTotals = new Array(rdf.regional_load.length).fill(0);
+  const hourlyOriginalTotals = new Array(rdfJson.regional_load.length).fill(0);
 
   /** @type {number[]} - used to calculate 'postEereTotal' returned data */
-  const hourlyPostEereTotals = new Array(rdf.regional_load.length).fill(0);
+  const hourlyPostEereTotals = new Array(rdfJson.regional_load.length).fill(0);
 
   // iterate over each hour in the year (8760 in non-leap years)
-  for (let i = 0; i < rdf.regional_load.length; i++) {
-    const month = rdf.regional_load[i].month;                   // numeric month of load
-    const originalLoad = rdf.regional_load[i].regional_load_mw; // original regional load (mwh)
-    const postEereLoad = originalLoad + eereLoad[i];            // EERE-merged regional load (mwh)
+  for (let i = 0; i < rdfJson.regional_load.length; i++) {
+    const month = rdfJson.regional_load[i].month;                   // numeric month of load
+    const originalLoad = rdfJson.regional_load[i].regional_load_mw; // original regional load (mwh)
+    const postEereLoad = originalLoad + eereLoad[i];                // EERE-merged regional load (mwh)
 
     const originalLoadInBounds = originalLoad >= firstEdge && originalLoad <= lastEdge;
     const postEereLoadInBounds = postEereLoad >= firstEdge && postEereLoad <= lastEdge;
@@ -189,45 +196,45 @@ function getDisplacement(rdf, eereLoad, metric) {
     if (!(originalLoadInBounds && postEereLoadInBounds)) continue;
 
     // get index of item closest to originalLoad or postEereLoad in load_bin_edges array
-    const originalLoadBinIndex = excelMatch(rdf.load_bin_edges, originalLoad);
-    const postEereLoadBinIndex = excelMatch(rdf.load_bin_edges, postEereLoad);
+    const originalLoadBinIndex = excelMatch(rdfJson.load_bin_edges, originalLoad);
+    const postEereLoadBinIndex = excelMatch(rdfJson.load_bin_edges, postEereLoad);
 
-    // set activeMedians, based on passed nonOzoneMedians value and month
+    // set activeMedians, based on nonOzoneMedians value and month
     const activeMedians =
       nonOzoneMedians
         ? (month >= 5 && month <= 9) ? ozoneMedians : nonOzoneMedians
         : ozoneMedians;
 
-    // iterate over each location in ozoneData (e.g. rdf.data.generation)
-    // the total number of iterations varies per region...
+    // iterate over each EGU (electric generating unit) in ozoneData (e.g. rdfJson.data.generation)
+    // the total number of EGUs varies per region...
     // (less than 100 for the RM region; more than 1000 for the SE region)
-    ozoneData.forEach((location, index) => {
+    ozoneData.forEach((egu, index) => {
       const medians = activeMedians[index];
-      const stateId = location.state;
-      const county = location.county;
+      const stateId = egu.state;
+      const county = egu.county;
 
       const calculatedOriginal = calculateLinear({
         load: originalLoad,
         genA: medians[originalLoadBinIndex],
         genB: medians[originalLoadBinIndex + 1],
-        edgeA: rdf.load_bin_edges[originalLoadBinIndex],
-        edgeB: rdf.load_bin_edges[originalLoadBinIndex + 1]
+        edgeA: rdfJson.load_bin_edges[originalLoadBinIndex],
+        edgeB: rdfJson.load_bin_edges[originalLoadBinIndex + 1]
       });
 
-      // handle special exclusions for emissions changes at specific locations
+      // handle special exclusions for emissions changes at specific EGUs
       // (specifically added for errors with SO2 reporting, but the RDFs have
       // been updated to include the `infreq_emissions_flag` for all metrics
-      // for consistency, which allows other metrics at specific locations
+      // for consistency, which allows other metrics at specific EGUs
       // to be excluded in the future)
       const calculatedPostEere =
-        location.infreq_emissions_flag === 1
+        egu.infreq_emissions_flag === 1
           ? calculatedOriginal
           : calculateLinear({
               load: postEereLoad,
               genA: medians[postEereLoadBinIndex],
               genB: medians[postEereLoadBinIndex + 1],
-              edgeA: rdf.load_bin_edges[postEereLoadBinIndex],
-              edgeB: rdf.load_bin_edges[postEereLoadBinIndex + 1],
+              edgeA: rdfJson.load_bin_edges[postEereLoadBinIndex],
+              edgeB: rdfJson.load_bin_edges[postEereLoadBinIndex + 1],
             });
 
       // initialize the data structures for the region, each state, each county,
@@ -260,14 +267,14 @@ function getDisplacement(rdf, eereLoad, metric) {
       countyData[stateId][county][`month${month}`].original += calculatedOriginal;
       countyData[stateId][county][`month${month}`].postEere += calculatedPostEere;
 
-      // increment hourly total arrays for each locations for the given hour
+      // increment hourly total arrays for each EGU for the given hour
       hourlyOriginalTotals[i] += calculatedOriginal;
       hourlyPostEereTotals[i] += calculatedPostEere;
     });
   }
 
   return {
-    regionId: rdf.region.region_abbv,
+    regionId: rdfJson.region.region_abbv,
     pollutant: metric,
     originalTotal: hourlyOriginalTotals.reduce((acc, cur) => acc + (cur || 0), 0),
     postEereTotal: hourlyPostEereTotals.reduce((acc, cur) => acc + (cur || 0), 0),
