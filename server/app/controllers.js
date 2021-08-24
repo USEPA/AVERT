@@ -40,9 +40,10 @@ const eere = {
 /**
  * Receives EERE data and region, and returns displacement data.
  * @param {*} ctx 
- * @param {'generation'|'so2'|'nox'|'co2'|'pm25'|'nei'} metric // TODO: remove pm25
+ * @param {'generation'|'so2'|'nox'|'co2'|'nei'} metric
  */
 async function calculateMetric(ctx, metric) {
+  const year = config.year;
   const body = await ctx.request.body;
   const eereLoad = body.eereLoad;
   // parse rdf (and potentially nei) data from files
@@ -53,7 +54,7 @@ async function calculateMetric(ctx, metric) {
     const neiData = await readFile('app/data/annual-emission-factors.json');
     neiJson = JSON.parse(neiData);
   }
-  ctx.body = getDisplacement({ rdfJson, neiJson, eereLoad, metric });
+  ctx.body = getDisplacement({ year, metric, rdfJson, neiJson, eereLoad });
 };
 
 /**

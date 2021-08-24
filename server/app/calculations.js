@@ -159,20 +159,21 @@ function excelMatch(array, lookup) {
 /**
  * Caclulates displacement for a given metric.
  * @param {Object} options
+ * @param {number} options.year
+ * @param {'generation'|'so2'|'nox'|'co2'|'nei'} options.metric
  * @param {RdfJson} options.rdfJson
  * @param {?NeiJson} options.neiJson
  * @param {number[]} options.eereLoad
- * @param {'generation'|'so2'|'nox'|'co2'|'pm25'|'nei'} options.metric // TODO: remove pm25
  */
-function getDisplacement({ rdfJson, neiJson, eereLoad, metric }) {
+function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad }) {
   // NOTE: displacement data for PM2.5, VOCs, and NH3 pollutants are all
   // calculated when the provided metric parameter equals "nei"
   //
   // emissions rates for those pollutants are calculated with both the data in the
   // "heat" (and related "heat_not") key of the RDF's data object and data stored
-  // in the "app/data/annual-emission-factors.json" file, whose data is passed as
-  // the "neiJson" parameter as well ("neiJson" will be null unless the metric
-  // parameter is "nei" – see calculateMetric() in the "app/controllers.js" file)
+  // in the `app/data/annual-emission-factors.json` file, whose data is passed as
+  // the "neiJson" parameter as well ("neiJson" will be null unless the "metric"
+  // parameter equals "nei" – see calculateMetric() in `app/controllers.js`)
   //
   // that "neoJson" data contains annual point-source data from the National
   // Emissions Inventory for every EGU, organized by region
@@ -260,7 +261,7 @@ function getDisplacement({ rdfJson, neiJson, eereLoad, metric }) {
       const stateId = egu.state;
       const county = egu.county;
 
-      const calculatedOriginal = calculateLinear({
+      let calculatedOriginal = calculateLinear({
         load: originalLoad,
         genA: medians[originalLoadBinIndex],
         genB: medians[originalLoadBinIndex + 1],
@@ -273,7 +274,7 @@ function getDisplacement({ rdfJson, neiJson, eereLoad, metric }) {
       // been updated to include the `infreq_emissions_flag` for all metrics
       // for consistency, which allows other metrics at specific EGUs
       // to be excluded in the future)
-      const calculatedPostEere = egu.infreq_emissions_flag === 1
+      let calculatedPostEere = egu.infreq_emissions_flag === 1
         ? calculatedOriginal
         : calculateLinear({
             load: postEereLoad,
@@ -283,19 +284,18 @@ function getDisplacement({ rdfJson, neiJson, eereLoad, metric }) {
             edgeB: rdfJson.load_bin_edges[postEereLoadBinIndex + 1],
           });
 
-      // additional factor applied for PM2.5, VOCs, and NH3 pollutants
+      // NEI factor applied for PM2.5, VOCs, and NH3 pollutants
       if (metric === 'nei') {
         const matchedEgu = regionalNeiEgus.find((n) => {
           return n.orispl_code === egu.orispl_code && n.unit_code === egu.unit_code;
         });
 
-        const neiEguData = matchedEgu.annual_data.find((d) => d.year === '2019'); // TODO: don't hardcode year
-        // TODO: multiply `calculatedOriginal` and `calculatedPostEere` to the
-        // respective neiEgu's metric value (pm25, vocs, nh3) for the given year
-        //
-        // neiEguData.pm25;
-        // neiEguData.vocs;
-        // neiEguData.nh3;
+        // NEI EGU data for the given year
+        const neiEguData = matchedEgu.annual_data.find((d) => d.year === year);
+
+        // TODO: don't hardcode PM2.5, but run the calculation for all three pollutants
+        calculatedOriginal = calculatedOriginal * neiEguData['PM2.5'];
+        calculatedPostEere = calculatedPostEere * neiEguData['PM2.5'];
       }
 
       // initialize the data structures for the region, each state, each county,
