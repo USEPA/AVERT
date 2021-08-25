@@ -1,7 +1,15 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
 // config
-import { RegionId, Region, regions, StateId, State, states } from 'app/config';
+import {
+  RdfDataKey,
+  RegionId,
+  Region,
+  regions,
+  StateId,
+  State,
+  states,
+} from 'app/config';
 
 type GeographicFocus = 'regions' | 'states';
 
@@ -61,17 +69,7 @@ type RdfJSON = {
   regional_load: RegionalLoadData[];
   load_bin_edges: number[];
   data: {
-    generation: EGUData[];
-    heat: EGUData[];
-    heat_not: EGUData[];
-    co2: EGUData[];
-    co2_not: EGUData[];
-    nox: EGUData[];
-    nox_not: EGUData[];
-    pm25: EGUData[];
-    pm25_not: EGUData[];
-    so2: EGUData[];
-    so2_not: EGUData[];
+    [key in RdfDataKey]: EGUData[];
   };
 };
 

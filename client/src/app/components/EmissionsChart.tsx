@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 import {
+  ReplacementPollutant,
   MonthlyDisplacement,
   calculateMonthlyData,
 } from 'app/redux/reducers/displacement';
@@ -143,9 +144,11 @@ function EmissionsChart() {
     nox: { ...initialMonthlyData },
     co2: { ...initialMonthlyData },
     pm25: { ...initialMonthlyData },
+    vocs: { ...initialMonthlyData },
+    nh3: { ...initialMonthlyData },
   };
 
-  for (const item of ['so2', 'nox', 'co2', 'pm25']) {
+  for (const item of ['so2', 'nox', 'co2', 'pm25', 'vocs', 'nh3']) {
     const pollutant = item as Pollutant;
 
     const regionId =
@@ -360,8 +363,60 @@ function EmissionsChart() {
     ],
   };
 
+  const vocsConfig = {
+    ...commonConfig,
+    title: {
+      text: formatTitle('VOCs'),
+      useHTML: true,
+    },
+    yAxis: {
+      title: {
+        text: formatYAxis('lbs'),
+      },
+    },
+    series: [
+      {
+        name: 'VOCs',
+        data: calculateMonthlyData(monthlyData.vocs, selectedUnit),
+        color: '#665683', // TODO
+        emissionsUnit: 'lbs',
+      },
+    ],
+  };
+
+  const nh3Config = {
+    ...commonConfig,
+    title: {
+      text: formatTitle('NH<sub>3</sub>'),
+      useHTML: true,
+    },
+    yAxis: {
+      title: {
+        text: formatYAxis('lbs'),
+      },
+    },
+    series: [
+      {
+        name: 'NH₃',
+        data: calculateMonthlyData(monthlyData.nh3, selectedUnit),
+        color: '#665683', // TODO
+        emissionsUnit: 'lbs',
+      },
+    ],
+  };
+
   function renderChart(pollutant: Pollutant) {
-    const flaggedEGUs = egusNeedingReplacement[pollutant];
+    const replacementPotentiallyNeeded = [
+      'generation',
+      'so2',
+      'nox',
+      'co2',
+      'pm25',
+    ];
+
+    const flaggedEGUs = replacementPotentiallyNeeded.includes(pollutant)
+      ? egusNeedingReplacement[pollutant as ReplacementPollutant]
+      : [];
 
     const flaggedRegion =
       selectedAggregation === 'region' &&
@@ -387,13 +442,17 @@ function EmissionsChart() {
       .set('so2', <Fragment>SO<sub>2</sub></Fragment>)
       .set('nox', <Fragment>NO<sub>X</sub></Fragment>)
       .set('co2', <Fragment>CO<sub>2</sub></Fragment>)
-      .set('pm25', <Fragment>PM<sub>2.5</sub></Fragment>);
+      .set('pm25', <Fragment>PM<sub>2.5</sub></Fragment>)
+      .set('vocs', <Fragment>VOCs</Fragment>)
+      .set('nh3', <Fragment>NH<sub>2</sub></Fragment>);
 
     const chartConfig = new Map<Pollutant, Object>()
       .set('so2', so2Config)
       .set('nox', noxConfig)
       .set('co2', co2Config)
-      .set('pm25', pm25Config);
+      .set('pm25', pm25Config)
+      .set('vocs', vocsConfig)
+      .set('nh3', nh3Config);
 
     if (selectedUnit === 'percentages') {
       if (flaggedRegion || flaggedState || flaggedCounty) {
@@ -608,6 +667,12 @@ function EmissionsChart() {
         </div>
         <div data-avert-chart>
           {status === 'complete' && renderChart('pm25')}
+        </div>
+        <div data-avert-chart>
+          {status === 'complete' && renderChart('vocs')}
+        </div>
+        <div data-avert-chart>
+          {status === 'complete' && renderChart('nh3')}
         </div>
       </div>
     </Fragment>

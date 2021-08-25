@@ -1,6 +1,17 @@
-export type Pollutant = 'so2' | 'nox' | 'co2' | 'pm25';
+export type RdfDataKey =
+  | 'generation'
+  | 'heat'
+  | 'heat_not'
+  | 'co2'
+  | 'co2_not'
+  | 'nox'
+  | 'nox_not'
+  | 'pm25'
+  | 'pm25_not'
+  | 'so2'
+  | 'so2_not';
 
-export type DisplacementPollutant = 'generation' | Pollutant;
+export type Pollutant = 'so2' | 'nox' | 'co2' | 'pm25' | 'vocs' | 'nh3';
 
 export type RegionId =
   | 'CA'
@@ -28,7 +39,7 @@ export type Region = {
   lineLoss: number;
   offshoreWind: boolean;
   percentageByState: Partial<{ [key in StateId]: number }>;
-  actualEmissions: Partial<{ [key in DisplacementPollutant]: number }>;
+  actualEmissions: Partial<{ [key in RdfDataKey]: number }>;
 };
 
 /**

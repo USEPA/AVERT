@@ -6,7 +6,7 @@ import { css } from '@emotion/react';
 import Tooltip from 'app/components/Tooltip';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
-import { DisplacementPollutant } from 'app/config';
+import { ReplacementPollutant } from 'app/redux/reducers/displacement';
 
 const rowLabelStyles = css`
   padding: 0.375rem 1.25rem !important;
@@ -48,11 +48,11 @@ function DisplacementsTable() {
   const pm25Impacts = data.pm25.impacts;
 
   function replacementTooltip(
-    pollutant: DisplacementPollutant,
+    pollutant: ReplacementPollutant,
     tooltipId: number,
   ) {
     // prettier-ignore
-    const pollutantMarkup = new Map<DisplacementPollutant, ReactNode>()
+    const pollutantMarkup = new Map<ReplacementPollutant, ReactNode>()
       .set('generation', <Fragment>Generation</Fragment>)
       .set('so2', <Fragment>SO<sub>2</sub></Fragment>)
       .set('nox', <Fragment>NO<sub>X</sub></Fragment>)
