@@ -23,12 +23,11 @@ const routes = [
 
   // web app method: calculateDisplacement()
   // (from panel 2, user clicks 'Get Results' button)
-  route.post('/api/v1/generation', controllers.displacement.calculateGeneration),
-  route.post('/api/v1/so2', controllers.displacement.calculateSO2),
-  route.post('/api/v1/nox', controllers.displacement.calculateNOx),
-  route.post('/api/v1/co2', controllers.displacement.calculateCO2),
-  route.post('/api/v1/pm25', controllers.displacement.calculatePM25), // TODO: remove
-  route.post('/api/v1/nei', controllers.displacement.calculateNEIMetrics),
+  route.post('/api/v1/displacement/generation', controllers.displacement.calculateGeneration),
+  route.post('/api/v1/displacement/so2', controllers.displacement.calculateSO2),
+  route.post('/api/v1/displacement/nox', controllers.displacement.calculateNOx),
+  route.post('/api/v1/displacement/co2', controllers.displacement.calculateCO2),
+  route.post('/api/v1/displacement/nei', controllers.displacement.calculateNEIMetrics),
 ];
 
 module.exports = routes;

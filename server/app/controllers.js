@@ -65,7 +65,6 @@ const displacement = {
   calculateSO2: (ctx) => calculateMetric(ctx, 'so2'),
   calculateNOx: (ctx) => calculateMetric(ctx, 'nox'),
   calculateCO2: (ctx) => calculateMetric(ctx, 'co2'),
-  calculatePM25: (ctx) => calculateMetric(ctx, 'pm25'), // TODO: remove
   calculateNEIMetrics: (ctx) => calculateMetric(ctx, 'nei'),
 }
 
