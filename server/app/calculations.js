@@ -293,9 +293,10 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad }) {
         // NEI EGU data for the given year
         const neiEguData = matchedEgu.annual_data.find((d) => d.year === year);
 
-        // TODO: don't hardcode PM2.5, but run the calculation for all three pollutants
-        calculatedOriginal = calculatedOriginal * neiEguData['PM2.5'];
-        calculatedPostEere = calculatedPostEere * neiEguData['PM2.5'];
+        // TODO: don't hardcode PM2.5, but loop over the above calculations (outside of both loops) three times for PM2.5, VOCs, NH3
+        calculatedOriginal = calculatedOriginal * neiEguData.pm25;
+        calculatedPostEere = calculatedPostEere * neiEguData.pm25;
+        metric = 'pm25'; // TODO: remove! temporary to test new calculation of PM2.5
       }
 
       // initialize the data structures for the region, each state, each county,
@@ -334,15 +335,18 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad }) {
     });
   }
 
-  return {
-    regionId: rdfJson.region.region_abbv,
-    pollutant: metric,
-    originalTotal: hourlyOriginalTotals.reduce((acc, cur) => acc + (cur || 0), 0),
-    postEereTotal: hourlyPostEereTotals.reduce((acc, cur) => acc + (cur || 0), 0),
-    regionalData,
-    stateData,
-    countyData,
-  };
+  const displacement = {
+    [metric]: {
+      regionId: rdfJson.region.region_abbv,
+      originalTotal: hourlyOriginalTotals.reduce((acc, cur) => acc + (cur || 0), 0),
+      postEereTotal: hourlyPostEereTotals.reduce((acc, cur) => acc + (cur || 0), 0),
+      regionalData,
+      stateData,
+      countyData,
+    }
+  }
+
+  return displacement;
 }
 
 module.exports = getDisplacement;

@@ -50,7 +50,6 @@ export type MonthlyDisplacement = {
 
 type PollutantDisplacement = {
   regionId: RegionId;
-  pollutant: PollutantName;
   originalTotal: number;
   postEereTotal: number;
   regionalData: MonthlyDisplacement;
@@ -63,6 +62,10 @@ type PollutantDisplacement = {
     };
   };
 };
+
+type PollutantsDisplacements = Partial<
+  { [key in PollutantName]: PollutantDisplacement }
+>;
 
 type RegionalDisplacement = {
   [key in PollutantName]: PollutantDisplacement;
@@ -140,7 +143,7 @@ type DisplacementAction =
   | { type: 'displacement/REQUEST_DISPLACEMENT_DATA' }
   | {
       type: 'displacement/RECEIVE_DISPLACEMENT_DATA';
-      payload: { data: PollutantDisplacement };
+      payload: { data: PollutantsDisplacements };
     }
   | {
       type: 'displacement/ADD_STATE_CHANGES';
@@ -320,18 +323,32 @@ export default function reducer(
     case 'displacement/RECEIVE_DISPLACEMENT_DATA': {
       const { data } = action.payload;
 
-      return {
-        ...state,
-        regionalDisplacements: {
-          ...state.regionalDisplacements,
-          [data.regionId]: {
-            ...state.regionalDisplacements[data.regionId],
-            [data.pollutant]: {
-              ...data,
+      // each data object could contain multiple pollutants as keys:
+      // - if `fetchDisplacementData('generation')` is called, there will
+      //   only be one key for 'generation' (same for 'so2', 'nox', and 'co2').
+      // - if `fetchDisplacementData('nei')` is called, there will be a key
+      //   for 'pm25', 'vocs', and 'nh3'
+      for (const item in data) {
+        const pollutant = item as PollutantName;
+        const pollutantDisplacement = data[pollutant];
+        if (pollutantDisplacement) {
+          const { regionId } = pollutantDisplacement;
+          return {
+            ...state,
+            regionalDisplacements: {
+              ...state.regionalDisplacements,
+              [regionId]: {
+                ...state.regionalDisplacements[regionId],
+                [pollutant]: {
+                  ...pollutantDisplacement,
+                },
+              },
             },
-          },
-        },
-      };
+          };
+        }
+      }
+
+      return state;
     }
 
     case 'displacement/ADD_STATE_CHANGES': {
@@ -457,7 +474,7 @@ function fetchDisplacementData(
     Promise.all(displacementRequests)
       .then((responses) => {
         const displacementData = responses.map((response) => {
-          return response.json().then((data: PollutantDisplacement) => {
+          return response.json().then((data: PollutantsDisplacements) => {
             dispatch({
               type: 'displacement/RECEIVE_DISPLACEMENT_DATA',
               payload: { data },
@@ -474,25 +491,36 @@ function fetchDisplacementData(
         // build up changes by state for each region (the payload is additive
         // within the reducer, as a state can exist within multiple regions)
         regionalDisplacements.forEach((displacement) => {
-          for (const key in displacement.stateData) {
-            const stateId = key as StateId;
-            const stateData = displacement.stateData[stateId];
+          // each displacement object could contain multiple pollutants as keys:
+          // - if `fetchDisplacementData('generation')` is called, there will
+          //   only be one key for 'generation' (same for 'so2', 'nox', and 'co2').
+          // - if `fetchDisplacementData('nei')` is called, there will be a key
+          //   for 'pm25', 'vocs', and 'nh3'
+          for (const item in displacement) {
+            const pollutant = item as PollutantName;
+            const pollutantDisplacement = displacement[pollutant];
+            if (pollutantDisplacement) {
+              for (const key in pollutantDisplacement.stateData) {
+                const stateId = key as StateId;
+                const stateData = pollutantDisplacement.stateData[stateId];
 
-            // total each month's state emissions change for the given state
-            let stateEmissionsChange = 0;
-            for (const month in stateData) {
-              const { original, postEere } = stateData[month as MonthKey];
-              stateEmissionsChange += postEere - original;
+                // total each month's state emissions change for the given state
+                let stateEmissionsChange = 0;
+                for (const month in stateData) {
+                  const { original, postEere } = stateData[month as MonthKey];
+                  stateEmissionsChange += postEere - original;
+                }
+
+                dispatch({
+                  type: 'displacement/ADD_STATE_CHANGES',
+                  payload: {
+                    stateId,
+                    pollutantName: pollutant,
+                    pollutantValue: stateEmissionsChange,
+                  },
+                });
+              }
             }
-
-            dispatch({
-              type: 'displacement/ADD_STATE_CHANGES',
-              payload: {
-                stateId,
-                pollutantName: displacement.pollutant,
-                pollutantValue: stateEmissionsChange,
-              },
-            });
           }
         });
       });
