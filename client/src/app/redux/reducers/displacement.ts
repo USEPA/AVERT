@@ -328,17 +328,18 @@ export default function reducer(
       //   only be one key for 'generation' (same for 'so2', 'nox', and 'co2').
       // - if `fetchDisplacementData('nei')` is called, there will be a key
       //   for 'pm25', 'vocs', and 'nh3'
+      let updatedState = { ...state };
       for (const item in data) {
         const pollutant = item as PollutantName;
         const pollutantDisplacement = data[pollutant];
         if (pollutantDisplacement) {
           const { regionId } = pollutantDisplacement;
-          return {
-            ...state,
+          updatedState = {
+            ...updatedState,
             regionalDisplacements: {
-              ...state.regionalDisplacements,
+              ...updatedState.regionalDisplacements,
               [regionId]: {
-                ...state.regionalDisplacements[regionId],
+                ...updatedState.regionalDisplacements[regionId],
                 [pollutant]: {
                   ...pollutantDisplacement,
                 },
@@ -348,7 +349,7 @@ export default function reducer(
         }
       }
 
-      return state;
+      return updatedState;
     }
 
     case 'displacement/ADD_STATE_CHANGES': {
