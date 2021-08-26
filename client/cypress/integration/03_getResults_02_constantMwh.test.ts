@@ -16,7 +16,7 @@ describe('Get Results – constantMwh', () => {
   });
 
   it('Annual Regional Displacements table displays the correct results', () => {
-    const generation = ['91,785,140', '82,187,880', '-9,597,250'];
+    const generation = ['91,706,380', '82,077,310', '-9,629,060'];
 
     cy.findByText('Generation (MWh)')
       .next()
@@ -30,7 +30,7 @@ describe('Get Results – constantMwh', () => {
       .parent()
       .as('emissionTotals');
 
-    const so2Totals = ['46,809,850', '44,656,110', '-2,153,740'];
+    const so2Totals = ['30,774,290', '28,146,060', '-2,628,230'];
 
     cy.get('@emissionTotals')
       .next()
@@ -43,7 +43,7 @@ describe('Get Results – constantMwh', () => {
       .next()
       .should('contain', so2Totals[2]); // EE/RE Impacts
 
-    const noxTotals = ['81,524,590', '73,395,500', '-8,129,080'];
+    const noxTotals = ['80,223,900', '72,129,350', '-8,094,540'];
 
     cy.get('@so2Totals')
       .next()
@@ -56,7 +56,7 @@ describe('Get Results – constantMwh', () => {
       .next()
       .should('contain', noxTotals[2]); // EE/RE Impacts
 
-    const co2Totals = ['69,142,570', '62,419,420', '-6,723,140'];
+    const co2Totals = ['69,083,200', '62,330,410', '-6,752,780'];
 
     cy.get('@noxTotals')
       .next()
@@ -69,7 +69,7 @@ describe('Get Results – constantMwh', () => {
       .next()
       .should('contain', co2Totals[2]); // EE/RE Impacts
 
-    const pm25Totals = ['7,603,490', '6,942,310', '-661,180'];
+    const pm25Totals = ['10,487,290', '9,463,780', '-1,023,510'];
 
     cy.get('@co2Totals')
       .next()
@@ -82,9 +82,35 @@ describe('Get Results – constantMwh', () => {
       .next()
       .should('contain', pm25Totals[2]); // EE/RE Impacts
 
+    const vocsTotals = ['2,271,230', '2,025,750', '-245,470'];
+
+    cy.get('@pm25Totals')
+      .next()
+      .as('vocsTotals')
+      .children()
+      .eq(1)
+      .should('contain', vocsTotals[0]) // Original
+      .next()
+      .should('contain', vocsTotals[1]) // Post-EE/RE
+      .next()
+      .should('contain', vocsTotals[2]); // EE/RE Impacts
+
+    const nh3Totals = ['2,203,790', '1,949,060', '-254,720'];
+
+    cy.get('@vocsTotals')
+      .next()
+      .as('nh3Totals')
+      .children()
+      .eq(1)
+      .should('contain', nh3Totals[0]) // Original
+      .next()
+      .should('contain', nh3Totals[1]) // Post-EE/RE
+      .next()
+      .should('contain', nh3Totals[2]); // EE/RE Impacts
+
     cy.findByText('Emission rates of fossil EGUs').parent().as('emissionRates');
 
-    const so2Rates = ['0.51', '0.54'];
+    const so2Rates = ['0.336', '0.343'];
 
     cy.get('@emissionRates')
       .next()
@@ -95,7 +121,7 @@ describe('Get Results – constantMwh', () => {
       .next()
       .should('contain', so2Rates[1]); // Post-EE/RE
 
-    const noxRates = ['0.89', '0.89'];
+    const noxRates = ['0.875', '0.879'];
 
     cy.get('@so2Rates')
       .next()
@@ -106,7 +132,7 @@ describe('Get Results – constantMwh', () => {
       .next()
       .should('contain', noxRates[1]); // Post-EE/RE
 
-    const co2Rates = ['0.75', '0.76'];
+    const co2Rates = ['0.753', '0.759'];
 
     cy.get('@noxRates')
       .next()
@@ -117,7 +143,7 @@ describe('Get Results – constantMwh', () => {
       .next()
       .should('contain', co2Rates[1]); // Post-EE/RE
 
-    const pm25Rates = ['0.08', '0.08'];
+    const pm25Rates = ['0.114', '0.115'];
 
     cy.get('@co2Rates')
       .next()
@@ -127,12 +153,35 @@ describe('Get Results – constantMwh', () => {
       .should('contain', pm25Rates[0]) // Original
       .next()
       .should('contain', pm25Rates[1]); // Post-EE/RE
+
+    const vocsRates = ['0.025', '0.025'];
+
+    cy.get('@pm25Rates')
+      .next()
+      .as('vocsRates')
+      .children()
+      .eq(1)
+      .should('contain', vocsRates[0]) // Original
+      .next()
+      .should('contain', vocsRates[1]); // Post-EE/RE
+
+    const nh3Rates = ['0.024', '0.024'];
+
+    cy.get('@vocsRates')
+      .next()
+      .as('nh3Rates')
+      .children()
+      .eq(1)
+      .should('contain', nh3Rates[0]) // Original
+      .next()
+      .should('contain', nh3Rates[1]); // Post-EE/RE
   });
 
   it('Annual State Emission Changes table displays the correct results', () => {
-    const arizona = ['-1,471,687', '-5,988,337', '-4,828,768', '-567,369'];
+    const arizona = ['-1,926,081', '-5,958,119', '-4,848,318', '-747,562'];
 
-    cy.findByText('Arizona')
+    cy.findAllByText('Arizona')
+      .filter(':visible')
       .parent()
       .as('arizona')
       .children()
@@ -145,7 +194,7 @@ describe('Get Results – constantMwh', () => {
       .next()
       .should('contain', arizona[3]); // PM2.5 (lbs)
 
-    const california = ['-517', '5,421', '-52,486', '-1,821'];
+    const california = ['-509', '-7,459', '-51,881', '-5,324'];
 
     cy.get('@arizona')
       .next()
@@ -160,7 +209,7 @@ describe('Get Results – constantMwh', () => {
       .next()
       .should('contain', california[3]); // PM2.5 (lbs)
 
-    const newMexico = ['-680,371', '-1,764,023', '-1,651,283', '-76,440'];
+    const newMexico = ['-700,457', '-1,775,158', '-1,662,140', '-255,970'];
 
     cy.get('@california')
       .next()
@@ -175,7 +224,7 @@ describe('Get Results – constantMwh', () => {
       .next()
       .should('contain', newMexico[3]); // PM2.5 (lbs)
 
-    const texas = ['-1,165', '-382,149', '-190,604', '-15,552'];
+    const texas = ['-1,185', '-353,813', '-190,446', '-14,656'];
 
     cy.get('@newMexico')
       .next()
