@@ -69,7 +69,7 @@ describe('Get Results – annualGwh', () => {
       .next()
       .should('contain', co2Totals[2]); // EE/RE Impacts
 
-    const pm25Totals = ['7,596,550', '6,836,260', '-760,280'];
+    const pm25Totals = ['10,487,290', '9,325,680', '-1,161,610'];
 
     cy.get('@co2Totals')
       .next()
@@ -81,6 +81,32 @@ describe('Get Results – annualGwh', () => {
       .should('contain', pm25Totals[1]) // Post-EE/RE
       .next()
       .should('contain', pm25Totals[2]); // EE/RE Impacts
+
+    const vocsTotals = ['2,271,230', '1,992,220', '-279,010'];
+
+    cy.get('@pm25Totals')
+      .next()
+      .as('vocsTotals')
+      .children()
+      .eq(1)
+      .should('contain', vocsTotals[0]) // Original
+      .next()
+      .should('contain', vocsTotals[1]) // Post-EE/RE
+      .next()
+      .should('contain', vocsTotals[2]); // EE/RE Impacts
+
+    const nh3Totals = ['2,203,790', '1,914,310', '-289,470'];
+
+    cy.get('@vocsTotals')
+      .next()
+      .as('nh3Totals')
+      .children()
+      .eq(1)
+      .should('contain', nh3Totals[0]) // Original
+      .next()
+      .should('contain', nh3Totals[1]) // Post-EE/RE
+      .next()
+      .should('contain', nh3Totals[2]); // EE/RE Impacts
 
     cy.findByText('Emission rates of fossil EGUs').parent().as('emissionRates');
 
@@ -117,7 +143,7 @@ describe('Get Results – annualGwh', () => {
       .next()
       .should('contain', co2Rates[1]); // Post-EE/RE
 
-    const pm25Rates = ['0.083', '0.085'];
+    const pm25Rates = ['0.114', '0.116'];
 
     cy.get('@co2Rates')
       .next()
@@ -127,12 +153,35 @@ describe('Get Results – annualGwh', () => {
       .should('contain', pm25Rates[0]) // Original
       .next()
       .should('contain', pm25Rates[1]); // Post-EE/RE
+
+    const vocsRates = ['0.025', '0.025'];
+
+    cy.get('@pm25Rates')
+      .next()
+      .as('vocsRates')
+      .children()
+      .eq(1)
+      .should('contain', vocsRates[0]) // Original
+      .next()
+      .should('contain', vocsRates[1]); // Post-EE/RE
+
+    const nh3Rates = ['0.024', '0.024'];
+
+    cy.get('@vocsRates')
+      .next()
+      .as('nh3Rates')
+      .children()
+      .eq(1)
+      .should('contain', nh3Rates[0]) // Original
+      .next()
+      .should('contain', nh3Rates[1]); // Post-EE/RE
   });
 
   it('Annual State Emission Changes table displays the correct results', () => {
-    const arizona = ['-2,206,342', '-6,756,142', '-5,523,543', '-652,941'];
+    const arizona = ['-2,206,342', '-6,756,142', '-5,523,543', '-845,899'];
 
-    cy.findByText('Arizona')
+    cy.findAllByText('Arizona')
+      .filter(':visible')
       .parent()
       .as('arizona')
       .children()
@@ -145,7 +194,7 @@ describe('Get Results – annualGwh', () => {
       .next()
       .should('contain', arizona[3]); // PM2.5 (lbs)
 
-    const california = ['-577', '-8,395', '-58,718', '-2,002'];
+    const california = ['-577', '-8,395', '-58,718', '-6,026'];
 
     cy.get('@arizona')
       .next()
@@ -160,7 +209,7 @@ describe('Get Results – annualGwh', () => {
       .next()
       .should('contain', california[3]); // PM2.5 (lbs)
 
-    const newMexico = ['-801,748', '-2,036,602', '-1,902,239', '-87,956'];
+    const newMexico = ['-801,748', '-2,036,602', '-1,902,239', '-292,986'];
 
     cy.get('@california')
       .next()
@@ -175,7 +224,7 @@ describe('Get Results – annualGwh', () => {
       .next()
       .should('contain', newMexico[3]); // PM2.5 (lbs)
 
-    const texas = ['-801,748', '-2,036,602', '-1,902,239', '-87,956'];
+    const texas = ['-1,366', '-404,160', '-217,773', '-16,700'];
 
     cy.get('@newMexico')
       .next()
