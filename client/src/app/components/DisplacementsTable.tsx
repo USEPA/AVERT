@@ -43,9 +43,17 @@ function DisplacementsTable() {
   const co2Post = data.co2.replacedPostEere || data.co2.postEere;
   const co2Impacts = data.co2.impacts;
 
-  const pm25Orig = data.pm25.replacedOriginal || data.pm25.original;
-  const pm25Post = data.pm25.replacedPostEere || data.pm25.postEere;
+  const pm25Orig = data.pm25.original;
+  const pm25Post = data.pm25.postEere;
   const pm25Impacts = data.pm25.impacts;
+
+  const vocsOrig = data.vocs.original;
+  const vocsPost = data.vocs.postEere;
+  const vocsImpacts = data.vocs.impacts;
+
+  const nh3Orig = data.nh3.original;
+  const nh3Post = data.nh3.postEere;
+  const nh3Impacts = data.nh3.impacts;
 
   function replacementTooltip(
     pollutant: ReplacementPollutant,
@@ -135,6 +143,20 @@ function DisplacementsTable() {
             <td className="avert-table-data">{formatNumber(pm25Post)}</td>
             <td className="avert-table-data">{formatNumber(pm25Impacts)}</td>
           </tr>
+          <tr>
+            <td css={rowLabelStyles}>VOCs (lbs)</td>
+            <td className="avert-table-data">{formatNumber(vocsOrig)}</td>
+            <td className="avert-table-data">{formatNumber(vocsPost)}</td>
+            <td className="avert-table-data">{formatNumber(vocsImpacts)}</td>
+          </tr>
+          <tr>
+            <td css={rowLabelStyles}>
+              NH<sub>3</sub> (lbs)
+            </td>
+            <td className="avert-table-data">{formatNumber(nh3Orig)}</td>
+            <td className="avert-table-data">{formatNumber(nh3Post)}</td>
+            <td className="avert-table-data">{formatNumber(nh3Impacts)}</td>
+          </tr>
           <tr className="avert-table-group">
             <td colSpan={4}>Emission rates of fossil EGUs</td>
           </tr>
@@ -183,6 +205,28 @@ function DisplacementsTable() {
             </td>
             <td className="avert-table-data">
               {(pm25Post / genPost).toFixed(3)}
+            </td>
+            <td className="avert-table-data">&nbsp;</td>
+          </tr>
+          <tr>
+            <td css={rowLabelStyles}>VOCs (lbs/MWh)</td>
+            <td className="avert-table-data">
+              {(vocsOrig / genOrig).toFixed(3)}
+            </td>
+            <td className="avert-table-data">
+              {(vocsPost / genPost).toFixed(3)}
+            </td>
+            <td className="avert-table-data">&nbsp;</td>
+          </tr>
+          <tr>
+            <td css={rowLabelStyles}>
+              NH<sub>3</sub> (lbs/MWh)
+            </td>
+            <td className="avert-table-data">
+              {(nh3Orig / genOrig).toFixed(3)}
+            </td>
+            <td className="avert-table-data">
+              {(nh3Post / genPost).toFixed(3)}
             </td>
             <td className="avert-table-data">&nbsp;</td>
           </tr>
