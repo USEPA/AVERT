@@ -790,7 +790,10 @@ function setAnnualRegionalDisplacements(
 
     // if replacement is needed, set each pollutant's replacedOriginal and
     // replacedPostEere values
-    if (egusNeedingReplacement[pollutant as ReplacementPollutant].length > 0) {
+    if (
+      pollutant in egusNeedingReplacement &&
+      egusNeedingReplacement[pollutant as ReplacementPollutant].length > 0
+    ) {
       // we need to loop over each region again to determine which number to use
       // in incrementing the replacedOriginal value
       for (const key in regionalDisplacements) {
