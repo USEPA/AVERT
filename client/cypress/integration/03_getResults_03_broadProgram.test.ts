@@ -14,7 +14,7 @@ describe('Get Results – broadProgram', () => {
       .type('10');
     cy.findByText('Calculate EE/RE Impacts').click();
     cy.findAllByText('Get Results').filter('.avert-button').click();
-    cy.findByText('LOADING...', { timeout: 60000 }).should('not.exist');
+    cy.findByText('LOADING...', { timeout: 120000 }).should('not.exist');
   });
 
   it('Annual Regional Displacements table displays the correct results', () => {

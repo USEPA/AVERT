@@ -9,16 +9,16 @@ describe('Get Results – rooftopSolar', () => {
     cy.findAllByText('Set EE/RE Impacts').filter('.avert-button').click();
 
     cy.findByText('Solar photovoltaic').click();
-    cy.findByText('Distributed (rooftop) solar voltaic total capacity:')
+    cy.findByText('Distributed (rooftop) solar photovoltaic total capacity:')
       .next()
       .type('1000');
     cy.findByText('Calculate EE/RE Impacts').click();
     cy.findAllByText('Get Results').filter('.avert-button').click();
-    cy.findByText('LOADING...', { timeout: 60000 }).should('not.exist');
+    cy.findByText('LOADING...', { timeout: 120000 }).should('not.exist');
   });
 
   it('Annual Regional Displacements table displays the correct results', () => {
-    const generation = ['161,555,570', '159,606,650', '-1,948,910'];
+    const generation = ['161,709,120', '159,803,630', '-1,905,480'];
 
     cy.findByText('Generation (MWh)')
       .next()
@@ -32,7 +32,7 @@ describe('Get Results – rooftopSolar', () => {
       .parent()
       .as('emissionTotals');
 
-    const so2Totals = ['230,209,180', '227,938,010', '-2,271,160'];
+    const so2Totals = ['228,302,270', '226,048,840', '-2,253,430'];
 
     cy.get('@emissionTotals')
       .next()
@@ -45,7 +45,7 @@ describe('Get Results – rooftopSolar', () => {
       .next()
       .should('contain', so2Totals[2]); // EE/RE Impacts
 
-    const noxTotals = ['185,564,830', '183,099,990', '-2,464,840'];
+    const noxTotals = ['184,500,770', '182,094,490', '-2,406,280'];
 
     cy.get('@so2Totals')
       .next()
@@ -58,7 +58,7 @@ describe('Get Results – rooftopSolar', () => {
       .next()
       .should('contain', noxTotals[2]); // EE/RE Impacts
 
-    const co2Totals = ['142,944,640', '141,325,830', '-1,618,810'];
+    const co2Totals = ['143,108,490', '141,525,810', '-1,582,680'];
 
     cy.get('@noxTotals')
       .next()
@@ -71,7 +71,7 @@ describe('Get Results – rooftopSolar', () => {
       .next()
       .should('contain', co2Totals[2]); // EE/RE Impacts
 
-    const pm25Totals = ['13,345,110', '13,189,360', '-155,740'];
+    const pm25Totals = ['10,854,240', '10,734,280', '-119,960'];
 
     cy.get('@co2Totals')
       .next()
@@ -84,9 +84,35 @@ describe('Get Results – rooftopSolar', () => {
       .next()
       .should('contain', pm25Totals[2]); // EE/RE Impacts
 
+    const vocsTotals = ['4,459,460', '4,403,310', '-56,150'];
+
+    cy.get('@pm25Totals')
+      .next()
+      .as('vocsTotals')
+      .children()
+      .eq(1)
+      .should('contain', vocsTotals[0]) // Original
+      .next()
+      .should('contain', vocsTotals[1]) // Post-EE/RE
+      .next()
+      .should('contain', vocsTotals[2]); // EE/RE Impacts
+
+    const nh3Totals = ['4,202,210', '4,147,230', '-54,970'];
+
+    cy.get('@vocsTotals')
+      .next()
+      .as('nh3Totals')
+      .children()
+      .eq(1)
+      .should('contain', nh3Totals[0]) // Original
+      .next()
+      .should('contain', nh3Totals[1]) // Post-EE/RE
+      .next()
+      .should('contain', nh3Totals[2]); // EE/RE Impacts
+
     cy.findByText('Emission rates of fossil EGUs').parent().as('emissionRates');
 
-    const so2Rates = ['1.42', '1.43'];
+    const so2Rates = ['1.412', '1.415'];
 
     cy.get('@emissionRates')
       .next()
@@ -97,7 +123,7 @@ describe('Get Results – rooftopSolar', () => {
       .next()
       .should('contain', so2Rates[1]); // Post-EE/RE
 
-    const noxRates = ['1.15', '1.15'];
+    const noxRates = ['1.141', '1.139'];
 
     cy.get('@so2Rates')
       .next()
@@ -108,7 +134,7 @@ describe('Get Results – rooftopSolar', () => {
       .next()
       .should('contain', noxRates[1]); // Post-EE/RE
 
-    const co2Rates = ['0.88', '0.89'];
+    const co2Rates = ['0.885', '0.886'];
 
     cy.get('@noxRates')
       .next()
@@ -119,7 +145,7 @@ describe('Get Results – rooftopSolar', () => {
       .next()
       .should('contain', co2Rates[1]); // Post-EE/RE
 
-    const pm25Rates = ['0.08', '0.08'];
+    const pm25Rates = ['0.067', '0.067'];
 
     cy.get('@co2Rates')
       .next()
@@ -129,12 +155,35 @@ describe('Get Results – rooftopSolar', () => {
       .should('contain', pm25Rates[0]) // Original
       .next()
       .should('contain', pm25Rates[1]); // Post-EE/RE
+
+    const vocsRates = ['0.028', '0.028'];
+
+    cy.get('@pm25Rates')
+      .next()
+      .as('vocsRates')
+      .children()
+      .eq(1)
+      .should('contain', vocsRates[0]) // Original
+      .next()
+      .should('contain', vocsRates[1]); // Post-EE/RE
+
+    const nh3Rates = ['0.026', '0.026'];
+
+    cy.get('@vocsRates')
+      .next()
+      .as('nh3Rates')
+      .children()
+      .eq(1)
+      .should('contain', nh3Rates[0]) // Original
+      .next()
+      .should('contain', nh3Rates[1]); // Post-EE/RE
   });
 
   it('Annual State Emission Changes table displays the correct results', () => {
-    const arkansas = ['-23,431', '-77,943', '-61,985', '-4,740'];
+    const arkansas = ['-23,314', '-76,750', '-60,715', '-465'];
 
-    cy.findByText('Arkansas')
+    cy.findAllByText('Arkansas')
+      .filter(':visible')
       .parent()
       .as('arkansas')
       .children()
@@ -147,7 +196,7 @@ describe('Get Results – rooftopSolar', () => {
       .next()
       .should('contain', arkansas[3]); // PM2.5 (lbs)
 
-    const iowa = ['-10', '-1,259', '-1,510', '-974'];
+    const iowa = ['-9', '-1,212', '-1,438', '-833'];
 
     cy.get('@arkansas')
       .next()
@@ -162,7 +211,7 @@ describe('Get Results – rooftopSolar', () => {
       .next()
       .should('contain', iowa[3]); // PM2.5 (lbs)
 
-    const kansas = ['-133,002', '-374,864', '-326,697', '-26,174'];
+    const kansas = ['-129,120', '-367,262', '-317,030', '-29,860'];
 
     cy.get('@iowa')
       .next()
@@ -177,7 +226,7 @@ describe('Get Results – rooftopSolar', () => {
       .next()
       .should('contain', kansas[3]); // PM2.5 (lbs)
 
-    const louisiana = ['-110', '-9,130', '-14,789', '-1,585'];
+    const louisiana = ['-109', '-9,072', '-14,612', '-1,715'];
 
     cy.get('@kansas')
       .next()
@@ -192,7 +241,7 @@ describe('Get Results – rooftopSolar', () => {
       .next()
       .should('contain', louisiana[3]); // PM2.5 (lbs)
 
-    const missouri = ['-127,758', '-164,298', '-166,035', '-28,615'];
+    const missouri = ['-124,436', '-156,211', '-162,040', '-14,761'];
 
     cy.get('@louisiana')
       .next()
@@ -207,7 +256,7 @@ describe('Get Results – rooftopSolar', () => {
       .next()
       .should('contain', missouri[3]); // PM2.5 (lbs)
 
-    const montana = ['0', '-2,865', '-1,861', '-297'];
+    const montana = ['0', '-2,721', '-1,786', '-408'];
 
     cy.get('@missouri')
       .next()
@@ -222,24 +271,9 @@ describe('Get Results – rooftopSolar', () => {
       .next()
       .should('contain', montana[3]); // PM2.5 (lbs)
 
-    const northDakota = ['-83,984', '-86,828', '-59,820', '-7,001'];
+    const nebraska = ['-795,065', '-419,743', '-216,945', '-7,786'];
 
     cy.get('@montana')
-      .next()
-      .as('northDakota')
-      .children()
-      .eq(1)
-      .should('contain', northDakota[0]) // SO2 (lbs)
-      .next()
-      .should('contain', northDakota[1]) // NOX (lbs)
-      .next()
-      .should('contain', northDakota[2]) // CO2 (tons)
-      .next()
-      .should('contain', northDakota[3]); // PM2.5 (lbs)
-
-    const nebraska = ['-810,474', '-429,124', '-220,245', '-9,385'];
-
-    cy.get('@northDakota')
       .next()
       .as('nebraska')
       .children()
@@ -252,7 +286,7 @@ describe('Get Results – rooftopSolar', () => {
       .next()
       .should('contain', nebraska[3]); // PM2.5 (lbs)
 
-    const newMexico = ['-220', '-25,737', '-13,469', '-1,476'];
+    const newMexico = ['-218', '-25,479', '-13,836', '-1,411'];
 
     cy.get('@nebraska')
       .next()
@@ -267,9 +301,24 @@ describe('Get Results – rooftopSolar', () => {
       .next()
       .should('contain', newMexico[3]); // PM2.5 (lbs)
 
-    const oklahoma = ['-191,808', '-614,744', '-361,636', '-48,582'];
+    const northDakota = ['-82,862', '-84,727', '-57,944', '-7,478'];
 
     cy.get('@newMexico')
+      .next()
+      .as('northDakota')
+      .children()
+      .eq(1)
+      .should('contain', northDakota[0]) // SO2 (lbs)
+      .next()
+      .should('contain', northDakota[1]) // NOX (lbs)
+      .next()
+      .should('contain', northDakota[2]) // CO2 (tons)
+      .next()
+      .should('contain', northDakota[3]); // PM2.5 (lbs)
+
+    const oklahoma = ['-189,126', '-601,392', '-352,311', '-34,298'];
+
+    cy.get('@northDakota')
       .next()
       .as('oklahoma')
       .children()
@@ -282,7 +331,7 @@ describe('Get Results – rooftopSolar', () => {
       .next()
       .should('contain', oklahoma[3]); // PM2.5 (lbs)
 
-    const southDakota = ['-73', '-25,642', '-11,845', '-1,010'];
+    const southDakota = ['-71', '-18,231', '-11,503', '-523'];
 
     cy.get('@oklahoma')
       .next()
@@ -297,7 +346,7 @@ describe('Get Results – rooftopSolar', () => {
       .next()
       .should('contain', southDakota[3]); // PM2.5 (lbs)
 
-    const texas = ['-900,299', '-652,408', '-378,917', '-25,905'];
+    const texas = ['-909,109', '-643,480', '-372,525', '-20,423'];
 
     cy.get('@southDakota')
       .next()
