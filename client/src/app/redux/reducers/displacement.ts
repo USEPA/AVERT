@@ -16,12 +16,7 @@ import {
 
 type PollutantName = 'generation' | Pollutant;
 
-export type ReplacementPollutant =
-  | 'generation'
-  | 'so2'
-  | 'nox'
-  | 'co2'
-  | 'pm25';
+export type ReplacementPollutant = 'generation' | 'so2' | 'nox' | 'co2';
 
 type ReplacementEGUsByPollutant = {
   [key in ReplacementPollutant]: (EGUData & { regionId: RegionId })[];
@@ -248,7 +243,6 @@ const initialState: DisplacementState = {
     so2: [],
     nox: [],
     co2: [],
-    pm25: [],
   },
   annualStateEmissionChanges: {},
   monthlyEmissionChanges: {
@@ -285,7 +279,6 @@ export default function reducer(
           so2: [],
           nox: [],
           co2: [],
-          pm25: [],
         },
         annualStateEmissionChanges: {},
         monthlyEmissionChanges: {
@@ -735,20 +728,13 @@ function setAnnualRegionalDisplacements(
   // conditionally reset its value to true as needed. if "replacement" is needed
   // for a pollutant, we'll set `replacedOriginal` and `replacedPostEere` values
   // for each pollutant as well.
-  const replacementPotentiallyNeeded = [
-    'generation',
-    'so2',
-    'nox',
-    'co2',
-    'pm25',
-  ];
+  const replacementPotentiallyNeeded = ['generation', 'so2', 'nox', 'co2'];
 
   const egusNeedingReplacement: ReplacementEGUsByPollutant = {
     generation: [],
     so2: [],
     nox: [],
     co2: [],
-    pm25: [],
   };
 
   for (const item in data) {
@@ -1181,7 +1167,6 @@ function setDownloadableData({
   const flaggedSo2EGUs = egusNeedingReplacement.so2;
   const flaggedNoxEGUs = egusNeedingReplacement.nox;
   const flaggedCo2EGUs = egusNeedingReplacement.co2;
-  const flaggedPm25EGUs = egusNeedingReplacement.pm25;
 
   // NOTE: the same regions exist for all pollutants, so we'll just loop over
   // so2 (but could use any of the other pollutants and get the same regions)
@@ -1290,10 +1275,7 @@ function setDownloadableData({
       formatCountyDataRow({
         pollutant: 'PM25',
         unit: 'percent',
-        monthlyData:
-          flaggedPm25EGUs.length > 0
-            ? Array(12)
-            : calculateMonthlyData(allRegionsPm25, 'percentages'),
+        monthlyData: calculateMonthlyData(allRegionsPm25, 'percentages'),
         regionId: allRegionsId,
       }),
     );
@@ -1433,9 +1415,7 @@ function setDownloadableData({
       formatCountyDataRow({
         pollutant: 'PM25',
         unit: 'percent',
-        monthlyData: flaggedPm25EGUs.some((egu) => egu.regionId === regionId)
-          ? Array(12)
-          : calculateMonthlyData(regionPm25, 'percentages'),
+        monthlyData: calculateMonthlyData(regionPm25, 'percentages'),
         regionId,
       }),
     );
@@ -1576,9 +1556,7 @@ function setDownloadableData({
       formatCountyDataRow({
         pollutant: 'PM25',
         unit: 'percent',
-        monthlyData: flaggedPm25EGUs.some((egu) => egu.state === stateId)
-          ? Array(12)
-          : calculateMonthlyData(statePm25, 'percentages'),
+        monthlyData: calculateMonthlyData(statePm25, 'percentages'),
         stateId,
       }),
     );
@@ -1744,11 +1722,7 @@ function setDownloadableData({
         formatCountyDataRow({
           pollutant: 'PM25',
           unit: 'percent',
-          monthlyData: flaggedPm25EGUs.some(
-            (egu) => egu.state === stateId && egu.county === countyName,
-          )
-            ? Array(12)
-            : calculateMonthlyData(countyPm25, 'percentages'),
+          monthlyData: calculateMonthlyData(countyPm25, 'percentages'),
           stateId,
           countyName,
         }),

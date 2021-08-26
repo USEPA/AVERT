@@ -56,8 +56,7 @@ function DisplacementsTable() {
       .set('generation', <Fragment>Generation</Fragment>)
       .set('so2', <Fragment>SO<sub>2</sub></Fragment>)
       .set('nox', <Fragment>NO<sub>X</sub></Fragment>)
-      .set('co2', <Fragment>CO<sub>2</sub></Fragment>)
-      .set('pm25', <Fragment>PM<sub>2.5</sub></Fragment>);
+      .set('co2', <Fragment>CO<sub>2</sub></Fragment>);
 
     return (
       <Tooltip id={tooltipId}>
@@ -130,9 +129,7 @@ function DisplacementsTable() {
           </tr>
           <tr>
             <td css={rowLabelStyles}>
-              PM<sub>2.5</sub> (lbs){' '}
-              {egusNeedingReplacement.pm25.length > 0 &&
-                replacementTooltip('pm25', 34)}
+              PM<sub>2.5</sub> (lbs)
             </td>
             <td className="avert-table-data">{formatNumber(pm25Orig)}</td>
             <td className="avert-table-data">{formatNumber(pm25Post)}</td>

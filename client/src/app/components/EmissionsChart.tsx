@@ -406,13 +406,7 @@ function EmissionsChart() {
   };
 
   function renderChart(pollutant: Pollutant) {
-    const replacementPotentiallyNeeded = [
-      'generation',
-      'so2',
-      'nox',
-      'co2',
-      'pm25',
-    ];
+    const replacementPotentiallyNeeded = ['generation', 'so2', 'nox', 'co2'];
 
     const flaggedEGUs = replacementPotentiallyNeeded.includes(pollutant)
       ? egusNeedingReplacement[pollutant as ReplacementPollutant]
