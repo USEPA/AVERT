@@ -378,7 +378,7 @@ function EmissionsChart() {
       {
         name: 'VOCs',
         data: calculateMonthlyData(monthlyData.vocs, selectedUnit),
-        color: '#665683', // TODO
+        color: '#ffc107',
         emissionsUnit: 'lbs',
       },
     ],
@@ -399,7 +399,7 @@ function EmissionsChart() {
       {
         name: 'NH₃',
         data: calculateMonthlyData(monthlyData.nh3, selectedUnit),
-        color: '#665683', // TODO
+        color: '#009688',
         emissionsUnit: 'lbs',
       },
     ],
