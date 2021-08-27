@@ -8,6 +8,10 @@ import Tooltip from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import { ReplacementPollutant } from 'app/redux/reducers/displacement';
 
+const tableContainerStyles = css`
+  overflow: scroll;
+`;
+
 const rowLabelStyles = css`
   padding: 0.375rem 1.25rem !important;
 `;
@@ -82,157 +86,162 @@ function DisplacementsTable() {
 
   return (
     <Fragment>
-      <table className="avert-table">
-        <thead>
-          <tr>
-            <th>&nbsp;</th>
-            <th>Original</th>
-            <th>Post-EE/RE</th>
-            <th>EE/RE Impacts</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td css={rowLabelStyles}>
-              Generation (MWh){' '}
-              {egusNeedingReplacement.generation.length > 0 &&
-                replacementTooltip('generation', 30)}
-            </td>
-            <td className="avert-table-data">{formatNumber(genOrig)}</td>
-            <td className="avert-table-data">{formatNumber(genPost)}</td>
-            <td className="avert-table-data">{formatNumber(genImpacts)}</td>
-          </tr>
-          <tr className="avert-table-group">
-            <td colSpan={4}>Total emissions of fossil EGUs</td>
-          </tr>
-          <tr>
-            <td css={rowLabelStyles}>
-              SO<sub>2</sub> (lbs){' '}
-              {egusNeedingReplacement.so2.length > 0 &&
-                replacementTooltip('so2', 31)}
-            </td>
-            <td className="avert-table-data">{formatNumber(so2Orig)}</td>
-            <td className="avert-table-data">{formatNumber(so2Post)}</td>
-            <td className="avert-table-data">{formatNumber(so2Impacts)}</td>
-          </tr>
-          <tr>
-            <td css={rowLabelStyles}>
-              NO<sub>X</sub> (lbs){' '}
-              {egusNeedingReplacement.nox.length > 0 &&
-                replacementTooltip('nox', 32)}
-            </td>
-            <td className="avert-table-data">{formatNumber(noxOrig)}</td>
-            <td className="avert-table-data">{formatNumber(noxPost)}</td>
-            <td className="avert-table-data">{formatNumber(noxImpacts)}</td>
-          </tr>
-          <tr>
-            <td css={rowLabelStyles}>
-              CO<sub>2</sub> (tons){' '}
-              {egusNeedingReplacement.co2.length > 0 &&
-                replacementTooltip('co2', 33)}
-            </td>
-            <td className="avert-table-data">{formatNumber(co2Orig)}</td>
-            <td className="avert-table-data">{formatNumber(co2Post)}</td>
-            <td className="avert-table-data">{formatNumber(co2Impacts)}</td>
-          </tr>
-          <tr>
-            <td css={rowLabelStyles}>
-              PM<sub>2.5</sub> (lbs)
-            </td>
-            <td className="avert-table-data">{formatNumber(pm25Orig)}</td>
-            <td className="avert-table-data">{formatNumber(pm25Post)}</td>
-            <td className="avert-table-data">{formatNumber(pm25Impacts)}</td>
-          </tr>
-          <tr>
-            <td css={rowLabelStyles}>VOCs (lbs)</td>
-            <td className="avert-table-data">{formatNumber(vocsOrig)}</td>
-            <td className="avert-table-data">{formatNumber(vocsPost)}</td>
-            <td className="avert-table-data">{formatNumber(vocsImpacts)}</td>
-          </tr>
-          <tr>
-            <td css={rowLabelStyles}>
-              NH<sub>3</sub> (lbs)
-            </td>
-            <td className="avert-table-data">{formatNumber(nh3Orig)}</td>
-            <td className="avert-table-data">{formatNumber(nh3Post)}</td>
-            <td className="avert-table-data">{formatNumber(nh3Impacts)}</td>
-          </tr>
-          <tr className="avert-table-group">
-            <td colSpan={4}>Emission rates of fossil EGUs</td>
-          </tr>
-          <tr>
-            <td css={rowLabelStyles}>
-              SO<sub>2</sub> (lbs/MWh)
-            </td>
-            <td className="avert-table-data">
-              {(so2Orig / genOrig).toFixed(3)}
-            </td>
-            <td className="avert-table-data">
-              {(so2Post / genPost).toFixed(3)}
-            </td>
-            <td className="avert-table-data">&nbsp;</td>
-          </tr>
-          <tr>
-            <td css={rowLabelStyles}>
-              NO<sub>X</sub> (lbs/MWh)
-            </td>
-            <td className="avert-table-data">
-              {(noxOrig / genOrig).toFixed(3)}
-            </td>
-            <td className="avert-table-data">
-              {(noxPost / genPost).toFixed(3)}
-            </td>
-            <td className="avert-table-data">&nbsp;</td>
-          </tr>
-          <tr>
-            <td css={rowLabelStyles}>
-              CO<sub>2</sub> (tons/MWh)
-            </td>
-            <td className="avert-table-data">
-              {(co2Orig / genOrig).toFixed(3)}
-            </td>
-            <td className="avert-table-data">
-              {(co2Post / genPost).toFixed(3)}
-            </td>
-            <td className="avert-table-data">&nbsp;</td>
-          </tr>
-          <tr>
-            <td css={rowLabelStyles}>
-              PM<sub>2.5</sub> (lbs/MWh)
-            </td>
-            <td className="avert-table-data">
-              {(pm25Orig / genOrig).toFixed(3)}
-            </td>
-            <td className="avert-table-data">
-              {(pm25Post / genPost).toFixed(3)}
-            </td>
-            <td className="avert-table-data">&nbsp;</td>
-          </tr>
-          <tr>
-            <td css={rowLabelStyles}>VOCs (lbs/MWh)</td>
-            <td className="avert-table-data">
-              {(vocsOrig / genOrig).toFixed(3)}
-            </td>
-            <td className="avert-table-data">
-              {(vocsPost / genPost).toFixed(3)}
-            </td>
-            <td className="avert-table-data">&nbsp;</td>
-          </tr>
-          <tr>
-            <td css={rowLabelStyles}>
-              NH<sub>3</sub> (lbs/MWh)
-            </td>
-            <td className="avert-table-data">
-              {(nh3Orig / genOrig).toFixed(3)}
-            </td>
-            <td className="avert-table-data">
-              {(nh3Post / genPost).toFixed(3)}
-            </td>
-            <td className="avert-table-data">&nbsp;</td>
-          </tr>
-        </tbody>
-      </table>
-
+      <div css={tableContainerStyles}>
+        <table className="avert-table">
+          <thead>
+            <tr>
+              <th>&nbsp;</th>
+              <th>Original</th>
+              <th>Post-EE/RE</th>
+              <th>EE/RE Impacts</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td css={rowLabelStyles}>
+                Generation <small>(MWh)</small>{' '}
+                {egusNeedingReplacement.generation.length > 0 &&
+                  replacementTooltip('generation', 30)}
+              </td>
+              <td className="avert-table-data">{formatNumber(genOrig)}</td>
+              <td className="avert-table-data">{formatNumber(genPost)}</td>
+              <td className="avert-table-data">{formatNumber(genImpacts)}</td>
+            </tr>
+            <tr className="avert-table-group">
+              <td colSpan={4}>Total emissions of fossil EGUs</td>
+            </tr>
+            <tr>
+              <td css={rowLabelStyles}>
+                SO<sub>2</sub> <small>(lbs)</small>{' '}
+                {egusNeedingReplacement.so2.length > 0 &&
+                  replacementTooltip('so2', 31)}
+              </td>
+              <td className="avert-table-data">{formatNumber(so2Orig)}</td>
+              <td className="avert-table-data">{formatNumber(so2Post)}</td>
+              <td className="avert-table-data">{formatNumber(so2Impacts)}</td>
+            </tr>
+            <tr>
+              <td css={rowLabelStyles}>
+                NO<sub>X</sub> <small>(lbs)</small>{' '}
+                {egusNeedingReplacement.nox.length > 0 &&
+                  replacementTooltip('nox', 32)}
+              </td>
+              <td className="avert-table-data">{formatNumber(noxOrig)}</td>
+              <td className="avert-table-data">{formatNumber(noxPost)}</td>
+              <td className="avert-table-data">{formatNumber(noxImpacts)}</td>
+            </tr>
+            <tr>
+              <td css={rowLabelStyles}>
+                CO<sub>2</sub> <small>(tons)</small>{' '}
+                {egusNeedingReplacement.co2.length > 0 &&
+                  replacementTooltip('co2', 33)}
+              </td>
+              <td className="avert-table-data">{formatNumber(co2Orig)}</td>
+              <td className="avert-table-data">{formatNumber(co2Post)}</td>
+              <td className="avert-table-data">{formatNumber(co2Impacts)}</td>
+            </tr>
+            <tr>
+              <td css={rowLabelStyles}>
+                PM<sub>2.5</sub> <small>(lbs)</small>
+              </td>
+              <td className="avert-table-data">{formatNumber(pm25Orig)}</td>
+              <td className="avert-table-data">{formatNumber(pm25Post)}</td>
+              <td className="avert-table-data">{formatNumber(pm25Impacts)}</td>
+            </tr>
+            <tr>
+              <td css={rowLabelStyles}>
+                VOCs <small>(lbs)</small>
+              </td>
+              <td className="avert-table-data">{formatNumber(vocsOrig)}</td>
+              <td className="avert-table-data">{formatNumber(vocsPost)}</td>
+              <td className="avert-table-data">{formatNumber(vocsImpacts)}</td>
+            </tr>
+            <tr>
+              <td css={rowLabelStyles}>
+                NH<sub>3</sub> <small>(lbs)</small>
+              </td>
+              <td className="avert-table-data">{formatNumber(nh3Orig)}</td>
+              <td className="avert-table-data">{formatNumber(nh3Post)}</td>
+              <td className="avert-table-data">{formatNumber(nh3Impacts)}</td>
+            </tr>
+            <tr className="avert-table-group">
+              <td colSpan={4}>Emission rates of fossil EGUs</td>
+            </tr>
+            <tr>
+              <td css={rowLabelStyles}>
+                SO<sub>2</sub> <small>(lbs/MWh)</small>
+              </td>
+              <td className="avert-table-data">
+                {(so2Orig / genOrig).toFixed(3)}
+              </td>
+              <td className="avert-table-data">
+                {(so2Post / genPost).toFixed(3)}
+              </td>
+              <td className="avert-table-data">&nbsp;</td>
+            </tr>
+            <tr>
+              <td css={rowLabelStyles}>
+                NO<sub>X</sub> <small>(lbs/MWh)</small>
+              </td>
+              <td className="avert-table-data">
+                {(noxOrig / genOrig).toFixed(3)}
+              </td>
+              <td className="avert-table-data">
+                {(noxPost / genPost).toFixed(3)}
+              </td>
+              <td className="avert-table-data">&nbsp;</td>
+            </tr>
+            <tr>
+              <td css={rowLabelStyles}>
+                CO<sub>2</sub> <small>(tons/MWh)</small>
+              </td>
+              <td className="avert-table-data">
+                {(co2Orig / genOrig).toFixed(3)}
+              </td>
+              <td className="avert-table-data">
+                {(co2Post / genPost).toFixed(3)}
+              </td>
+              <td className="avert-table-data">&nbsp;</td>
+            </tr>
+            <tr>
+              <td css={rowLabelStyles}>
+                PM<sub>2.5</sub> <small>(lbs/MWh)</small>
+              </td>
+              <td className="avert-table-data">
+                {(pm25Orig / genOrig).toFixed(3)}
+              </td>
+              <td className="avert-table-data">
+                {(pm25Post / genPost).toFixed(3)}
+              </td>
+              <td className="avert-table-data">&nbsp;</td>
+            </tr>
+            <tr>
+              <td css={rowLabelStyles}>
+                VOCs <small>(lbs/MWh)</small>
+              </td>
+              <td className="avert-table-data">
+                {(vocsOrig / genOrig).toFixed(3)}
+              </td>
+              <td className="avert-table-data">
+                {(vocsPost / genPost).toFixed(3)}
+              </td>
+              <td className="avert-table-data">&nbsp;</td>
+            </tr>
+            <tr>
+              <td css={rowLabelStyles}>
+                NH<sub>3</sub> <small>(lbs/MWh)</small>
+              </td>
+              <td className="avert-table-data">
+                {(nh3Orig / genOrig).toFixed(3)}
+              </td>
+              <td className="avert-table-data">
+                {(nh3Post / genPost).toFixed(3)}
+              </td>
+              <td className="avert-table-data">&nbsp;</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <p className="avert-small-text">
         Negative numbers indicate displaced generation and emissions. All
         results are rounded to the nearest ten. A dash ('–') indicates a result
