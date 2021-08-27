@@ -19,7 +19,7 @@ describe('Get Results – reduction & topHours', () => {
   it('Annual Regional Displacements table displays the correct results', () => {
     const generation = ['41,694,430', '37,330,120', '-4,364,300'];
 
-    cy.findByText('Generation (MWh)')
+    cy.findByText('Generation')
       .next()
       .should('contain', generation[0]) // Original
       .next()
@@ -179,7 +179,8 @@ describe('Get Results – reduction & topHours', () => {
   });
 
   it('Annual State Emission Changes table displays the correct results', () => {
-    const connecticut = ['-67,347', '-260,842', '-415,768', '-16,594'];
+    /* prettier-ignore */
+    const connecticut = ['-67,347', '-260,842', '-415,768', '-16,594', '-16,122', '-24,915'];
 
     cy.findAllByText('Connecticut')
       .filter(':visible')
@@ -193,9 +194,14 @@ describe('Get Results – reduction & topHours', () => {
       .next()
       .should('contain', connecticut[2]) // CO2 (tons)
       .next()
-      .should('contain', connecticut[3]); // PM2.5 (lbs)
+      .should('contain', connecticut[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', connecticut[4]) // VOCS (lbs)
+      .next()
+      .should('contain', connecticut[5]); // NH3 (lbs)
 
-    const maine = ['-38,470', '-52,344', '-177,276', '-7,434'];
+    /* prettier-ignore */
+    const maine = ['-38,470', '-52,344', '-177,276', '-7,434', '-3,456', '-3,743'];
 
     cy.get('@connecticut')
       .next()
@@ -208,9 +214,14 @@ describe('Get Results – reduction & topHours', () => {
       .next()
       .should('contain', maine[2]) // CO2 (tons)
       .next()
-      .should('contain', maine[3]); // PM2.5 (lbs)
+      .should('contain', maine[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', maine[4]) // VOCS (lbs)
+      .next()
+      .should('contain', maine[5]); // NH3 (lbs)
 
-    const massachusetts = ['-216,679', '-318,888', '-984,311', '-65,427'];
+    /* prettier-ignore */
+    const massachusetts = ['-216,679', '-318,888', '-984,311', '-65,427', '-29,875', '-46,590'];
 
     cy.get('@maine')
       .next()
@@ -223,9 +234,14 @@ describe('Get Results – reduction & topHours', () => {
       .next()
       .should('contain', massachusetts[2]) // CO2 (tons)
       .next()
-      .should('contain', massachusetts[3]); // PM2.5 (lbs)
+      .should('contain', massachusetts[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', massachusetts[4]) // VOCS (lbs)
+      .next()
+      .should('contain', massachusetts[5]); // NH3 (lbs)
 
-    const newHampshire = ['-252,251', '-340,517', '-392,154', '-31,338'];
+    /* prettier-ignore */
+    const newHampshire = ['-252,251', '-340,517', '-392,154', '-31,338', '-7,276', '-21,532'];
 
     cy.get('@massachusetts')
       .next()
@@ -238,9 +254,14 @@ describe('Get Results – reduction & topHours', () => {
       .next()
       .should('contain', newHampshire[2]) // CO2 (tons)
       .next()
-      .should('contain', newHampshire[3]); // PM2.5 (lbs)
+      .should('contain', newHampshire[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', newHampshire[4]) // VOCS (lbs)
+      .next()
+      .should('contain', newHampshire[5]); // NH3 (lbs)
 
-    const rhodeIsland = ['-4,676', '-65,205', '-312,346', '-22,766'];
+    /* prettier-ignore */
+    const rhodeIsland = ['-4,676', '-65,205', '-312,346', '-22,766', '-28,508', '-50,762'];
 
     cy.get('@newHampshire')
       .next()
@@ -253,9 +274,14 @@ describe('Get Results – reduction & topHours', () => {
       .next()
       .should('contain', rhodeIsland[2]) // CO2 (tons)
       .next()
-      .should('contain', rhodeIsland[3]); // PM2.5 (lbs)
+      .should('contain', rhodeIsland[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', rhodeIsland[4]) // VOCS (lbs)
+      .next()
+      .should('contain', rhodeIsland[5]); // NH3 (lbs)
 
-    const vermont = ['-93', '-13,962', '-21,038', '-4,066'];
+    /* prettier-ignore */
+    const vermont = ['-93', '-13,962', '-21,038', '-4,066', '-3,176', '-1,441'];
 
     cy.get('@rhodeIsland')
       .next()
@@ -268,6 +294,10 @@ describe('Get Results – reduction & topHours', () => {
       .next()
       .should('contain', vermont[2]) // CO2 (tons)
       .next()
-      .should('contain', vermont[3]); // PM2.5 (lbs)
+      .should('contain', vermont[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', vermont[4]) // VOCS (lbs)
+      .next()
+      .should('contain', vermont[5]); // NH3 (lbs)
   });
 });

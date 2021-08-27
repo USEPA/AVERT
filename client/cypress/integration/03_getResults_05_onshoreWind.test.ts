@@ -18,7 +18,7 @@ describe('Get Results – onshoreWind', () => {
   it('Annual Regional Displacements table displays the correct results', () => {
     const generation = ['132,302,160', '129,891,530', '-2,410,630'];
 
-    cy.findByText('Generation (MWh)')
+    cy.findByText('Generation')
       .next()
       .should('contain', generation[0]) // Original
       .next()
@@ -178,7 +178,8 @@ describe('Get Results – onshoreWind', () => {
   });
 
   it('Annual State Emission Changes table displays the correct results', () => {
-    const idaho = ['-571', '-42,999', '-68,703', '-4,482'];
+    /* prettier-ignore */
+    const idaho = ['-571', '-42,999', '-68,703', '-4,482', '-1,365', '-6,110'];
 
     cy.findAllByText('Idaho')
       .filter(':visible')
@@ -192,9 +193,14 @@ describe('Get Results – onshoreWind', () => {
       .next()
       .should('contain', idaho[2]) // CO2 (tons)
       .next()
-      .should('contain', idaho[3]); // PM2.5 (lbs)
+      .should('contain', idaho[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', idaho[4]) // VOCS (lbs)
+      .next()
+      .should('contain', idaho[5]); // NH3 (lbs)
 
-    const montana = ['-340,149', '-457,009', '-214,280', '-40,298'];
+    /* prettier-ignore */
+    const montana = ['-340,149', '-457,009', '-214,280', '-40,298', '-8,499', '-329'];
 
     cy.get('@idaho')
       .next()
@@ -207,9 +213,14 @@ describe('Get Results – onshoreWind', () => {
       .next()
       .should('contain', montana[2]) // CO2 (tons)
       .next()
-      .should('contain', montana[3]); // PM2.5 (lbs)
+      .should('contain', montana[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', montana[4]) // VOCS (lbs)
+      .next()
+      .should('contain', montana[5]); // NH3 (lbs)
 
-    const nevada = ['-189,893', '-190,050', '-256,417', '-30,667'];
+    /* prettier-ignore */
+    const nevada = ['-189,893', '-190,050', '-256,417', '-30,667', '-17,069', '-15,944'];
 
     cy.get('@montana')
       .next()
@@ -222,9 +233,14 @@ describe('Get Results – onshoreWind', () => {
       .next()
       .should('contain', nevada[2]) // CO2 (tons)
       .next()
-      .should('contain', nevada[3]); // PM2.5 (lbs)
+      .should('contain', nevada[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', nevada[4]) // VOCS (lbs)
+      .next()
+      .should('contain', nevada[5]); // NH3 (lbs)
 
-    const oregon = ['-339,321', '-266,889', '-249,585', '-40,579'];
+    /* prettier-ignore */
+    const oregon = ['-339,321', '-266,889', '-249,585', '-40,579', '-7,997', '-13,312'];
 
     cy.get('@nevada')
       .next()
@@ -237,9 +253,14 @@ describe('Get Results – onshoreWind', () => {
       .next()
       .should('contain', oregon[2]) // CO2 (tons)
       .next()
-      .should('contain', oregon[3]); // PM2.5 (lbs)
+      .should('contain', oregon[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', oregon[4]) // VOCS (lbs)
+      .next()
+      .should('contain', oregon[5]); // NH3 (lbs)
 
-    const utah = ['-252,804', '-676,785', '-346,780', '-26,446'];
+    /* prettier-ignore */
+    const utah = ['-252,804', '-676,785', '-346,780', '-26,446', '-9,304', '-5,753'];
 
     cy.get('@oregon')
       .next()
@@ -252,9 +273,14 @@ describe('Get Results – onshoreWind', () => {
       .next()
       .should('contain', utah[2]) // CO2 (tons)
       .next()
-      .should('contain', utah[3]); // PM2.5 (lbs)
+      .should('contain', utah[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', utah[4]) // VOCS (lbs)
+      .next()
+      .should('contain', utah[5]); // NH3 (lbs)
 
-    const washington = ['-114,280', '-423,540', '-385,476', '-39,792'];
+    /* prettier-ignore */
+    const washington = ['-114,280', '-423,540', '-385,476', '-39,792', '-27,770', '-7,632'];
 
     cy.get('@utah')
       .next()
@@ -267,9 +293,14 @@ describe('Get Results – onshoreWind', () => {
       .next()
       .should('contain', washington[2]) // CO2 (tons)
       .next()
-      .should('contain', washington[3]); // PM2.5 (lbs)
+      .should('contain', washington[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', washington[4]) // VOCS (lbs)
+      .next()
+      .should('contain', washington[5]); // NH3 (lbs)
 
-    const wyoming = ['-412,669', '-465,456', '-274,638', '-20,851'];
+    /* prettier-ignore */
+    const wyoming = ['-412,669', '-465,456', '-274,638', '-20,851', '-8,431', '-122'];
 
     cy.get('@washington')
       .next()
@@ -282,6 +313,10 @@ describe('Get Results – onshoreWind', () => {
       .next()
       .should('contain', wyoming[2]) // CO2 (tons)
       .next()
-      .should('contain', wyoming[3]); // PM2.5 (lbs)
+      .should('contain', wyoming[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', wyoming[4]) // VOCS (lbs)
+      .next()
+      .should('contain', wyoming[5]); // NH3 (lbs)
   });
 });

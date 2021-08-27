@@ -18,7 +18,7 @@ describe('Get Results – constantMwh', () => {
   it('Annual Regional Displacements table displays the correct results', () => {
     const generation = ['91,706,380', '82,077,310', '-9,629,060'];
 
-    cy.findByText('Generation (MWh)')
+    cy.findByText('Generation')
       .next()
       .should('contain', generation[0]) // Original
       .next()
@@ -178,7 +178,8 @@ describe('Get Results – constantMwh', () => {
   });
 
   it('Annual State Emission Changes table displays the correct results', () => {
-    const arizona = ['-1,926,081', '-5,958,119', '-4,848,318', '-747,562'];
+    /* prettier-ignore */
+    const arizona = ['-1,926,081', '-5,958,119', '-4,848,318', '-747,562', '-164,646', '-184,315'];
 
     cy.findAllByText('Arizona')
       .filter(':visible')
@@ -192,9 +193,14 @@ describe('Get Results – constantMwh', () => {
       .next()
       .should('contain', arizona[2]) // CO2 (tons)
       .next()
-      .should('contain', arizona[3]); // PM2.5 (lbs)
+      .should('contain', arizona[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', arizona[4]) // VOCS (lbs)
+      .next()
+      .should('contain', arizona[5]); // NH3 (lbs)
 
-    const california = ['-509', '-7,459', '-51,881', '-5,324'];
+    /* prettier-ignore */
+    const california = ['-509', '-7,459', '-51,881', '-5,324', '-1,502', '-3,314'];
 
     cy.get('@arizona')
       .next()
@@ -207,9 +213,14 @@ describe('Get Results – constantMwh', () => {
       .next()
       .should('contain', california[2]) // CO2 (tons)
       .next()
-      .should('contain', california[3]); // PM2.5 (lbs)
+      .should('contain', california[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', california[4]) // VOCS (lbs)
+      .next()
+      .should('contain', california[5]); // NH3 (lbs)
 
-    const newMexico = ['-700,457', '-1,775,158', '-1,662,140', '-255,970'];
+    /* prettier-ignore */
+    const newMexico = ['-700,457', '-1,775,158', '-1,662,140', '-255,970', '-54,999', '-51,757'];
 
     cy.get('@california')
       .next()
@@ -222,9 +233,14 @@ describe('Get Results – constantMwh', () => {
       .next()
       .should('contain', newMexico[2]) // CO2 (tons)
       .next()
-      .should('contain', newMexico[3]); // PM2.5 (lbs)
+      .should('contain', newMexico[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', newMexico[4]) // VOCS (lbs)
+      .next()
+      .should('contain', newMexico[5]); // NH3 (lbs)
 
-    const texas = ['-1,185', '-353,813', '-190,446', '-14,656'];
+    /* prettier-ignore */
+    const texas = ['-1,185', '-353,813', '-190,446', '-14,656', '-24,332', '-15,339'];
 
     cy.get('@newMexico')
       .next()
@@ -237,6 +253,10 @@ describe('Get Results – constantMwh', () => {
       .next()
       .should('contain', texas[2]) // CO2 (tons)
       .next()
-      .should('contain', texas[3]); // PM2.5 (lbs)
+      .should('contain', texas[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', texas[4]) // VOCS (lbs)
+      .next()
+      .should('contain', texas[5]); // NH3 (lbs)
   });
 });

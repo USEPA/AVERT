@@ -20,7 +20,7 @@ describe('Get Results – broadProgram', () => {
   it('Annual Regional Displacements table displays the correct results', () => {
     const generation = ['41,694,430', '37,209,870', '-4,484,550'];
 
-    cy.findByText('Generation (MWh)')
+    cy.findByText('Generation')
       .next()
       .should('contain', generation[0]) // Original
       .next()
@@ -180,7 +180,8 @@ describe('Get Results – broadProgram', () => {
   });
 
   it('Annual State Emission Changes table displays the correct results', () => {
-    const connecticut = ['-54,298', '-221,565', '-511,196', '-19,491'];
+    /* prettier-ignore */
+    const connecticut = ['-54,298', '-221,565', '-511,196', '-19,491', '-15,887', '-27,732'];
 
     cy.findAllByText('Connecticut')
       .filter(':visible')
@@ -194,9 +195,14 @@ describe('Get Results – broadProgram', () => {
       .next()
       .should('contain', connecticut[2]) // CO2 (tons)
       .next()
-      .should('contain', connecticut[3]); // PM2.5 (lbs)
+      .should('contain', connecticut[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', connecticut[4]) // VOCS (lbs)
+      .next()
+      .should('contain', connecticut[5]); // NH3 (lbs)
 
-    const maine = ['-25,892', '-48,697', '-150,901', '-6,421'];
+    /* prettier-ignore */
+    const maine = ['-25,892', '-48,697', '-150,901', '-6,421', '-2,845', '-3,214'];
 
     cy.get('@connecticut')
       .next()
@@ -209,9 +215,14 @@ describe('Get Results – broadProgram', () => {
       .next()
       .should('contain', maine[2]) // CO2 (tons)
       .next()
-      .should('contain', maine[3]); // PM2.5 (lbs)
+      .should('contain', maine[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', maine[4]) // VOCS (lbs)
+      .next()
+      .should('contain', maine[5]); // NH3 (lbs)
 
-    const massachusetts = ['-168,188', '-273,583', '-922,812', '-54,438'];
+    /* prettier-ignore */
+    const massachusetts = ['-168,188', '-273,583', '-922,812', '-54,438', '-26,444', '-38,551'];
 
     cy.get('@maine')
       .next()
@@ -224,9 +235,14 @@ describe('Get Results – broadProgram', () => {
       .next()
       .should('contain', massachusetts[2]) // CO2 (tons)
       .next()
-      .should('contain', massachusetts[3]); // PM2.5 (lbs)
+      .should('contain', massachusetts[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', massachusetts[4]) // VOCS (lbs)
+      .next()
+      .should('contain', massachusetts[5]); // NH3 (lbs)
 
-    const newHampshire = ['-202,658', '-283,191', '-326,262', '-25,791'];
+    /* prettier-ignore */
+    const newHampshire = ['-202,658', '-283,191', '-326,262', '-25,791', '-6,128', '-18,695'];
 
     cy.get('@massachusetts')
       .next()
@@ -239,9 +255,14 @@ describe('Get Results – broadProgram', () => {
       .next()
       .should('contain', newHampshire[2]) // CO2 (tons)
       .next()
-      .should('contain', newHampshire[3]); // PM2.5 (lbs)
+      .should('contain', newHampshire[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', newHampshire[4]) // VOCS (lbs)
+      .next()
+      .should('contain', newHampshire[5]); // NH3 (lbs)
 
-    const rhodeIsland = ['-6,302', '-82,669', '-389,977', '-32,685'];
+    /* prettier-ignore */
+    const rhodeIsland = ['-6,302', '-82,669', '-389,977', '-32,685', '-34,062', '-44,974'];
 
     cy.get('@newHampshire')
       .next()
@@ -254,9 +275,14 @@ describe('Get Results – broadProgram', () => {
       .next()
       .should('contain', rhodeIsland[2]) // CO2 (tons)
       .next()
-      .should('contain', rhodeIsland[3]); // PM2.5 (lbs)
+      .should('contain', rhodeIsland[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', rhodeIsland[4]) // VOCS (lbs)
+      .next()
+      .should('contain', rhodeIsland[5]); // NH3 (lbs)
 
-    const vermont = ['-137', '-16,307', '-25,050', '-4,829'];
+    /* prettier-ignore */
+    const vermont = ['-137', '-16,307', '-25,050', '-4,829', '-3,771', '-1,711'];
 
     cy.get('@rhodeIsland')
       .next()
@@ -269,6 +295,10 @@ describe('Get Results – broadProgram', () => {
       .next()
       .should('contain', vermont[2]) // CO2 (tons)
       .next()
-      .should('contain', vermont[3]); // PM2.5 (lbs)
+      .should('contain', vermont[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', vermont[4]) // VOCS (lbs)
+      .next()
+      .should('contain', vermont[5]); // NH3 (lbs)
   });
 });
