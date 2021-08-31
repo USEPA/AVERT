@@ -366,7 +366,7 @@ function EmissionsChart() {
   const vocsConfig = {
     ...commonConfig,
     title: {
-      text: formatTitle('VOCs'),
+      text: formatTitle('VOC'),
       useHTML: true,
     },
     yAxis: {
@@ -376,7 +376,7 @@ function EmissionsChart() {
     },
     series: [
       {
-        name: 'VOCs',
+        name: 'VOC',
         data: calculateMonthlyData(monthlyData.vocs, selectedUnit),
         color: '#ffc107',
         emissionsUnit: 'lbs',
@@ -437,7 +437,7 @@ function EmissionsChart() {
       .set('nox', <Fragment>NO<sub>X</sub></Fragment>)
       .set('co2', <Fragment>CO<sub>2</sub></Fragment>)
       .set('pm25', <Fragment>PM<sub>2.5</sub></Fragment>)
-      .set('vocs', <Fragment>VOCs</Fragment>)
+      .set('vocs', <Fragment>VOC</Fragment>)
       .set('nh3', <Fragment>NH<sub>2</sub></Fragment>);
 
     const chartConfig = new Map<Pollutant, Object>()
