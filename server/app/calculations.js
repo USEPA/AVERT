@@ -252,73 +252,100 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad }) {
   /** @type {Pollutant[]} */
   const pollutants = metric === 'nei' ? ['pm25', 'vocs', 'nh3'] : [metric];
 
+  // as with the `displacements` object, the following five object's string keys are of type `Pollutant`:
+  /** @type {Object.<string, PollutantRegionalData} - monthly original and post-eere calculated values for the region, by pollutant */
+  const regionalData = {};
+
+  /** @type {Object.<string, PollutantStateData} - monthly original and post-eere calculated values for each state, by pollutant */
+  const stateData = {};
+
+  /** @type {Object.<string, PollutantCountyData} - monthly original and post-eere calculated values for each county within each state, by pollutant */
+  const countyData = {};
+
+  /** @type {Object.<string, number[]} - used to calculate 'originalTotal' returned data, by pollutant */
+  const hourlyOriginalTotals = {};
+
+  /** @type {Object.<string, number[]} - used to calculate 'postEereTotal' returned data, by pollutant */
+  const hourlyPostEereTotals = {};
+
   pollutants.forEach((pollutant) => {
-    /** @type {PollutantRegionalData} - monthly original and post-eere calculated values for the region */
-    const regionalData = {};
+    regionalData[pollutant] = {};
+    stateData[pollutant] = {};
+    countyData[pollutant] = {};
+    hourlyOriginalTotals[pollutant] = new Array(rdfJson.regional_load.length).fill(0);
+    hourlyPostEereTotals[pollutant] = new Array(rdfJson.regional_load.length).fill(0);
+  });
 
-    /** @type {PollutantStateData} - monthly original and post-eere calculated values for each state */
-    const stateData = {};
+  // iterate over each hour in the year (8760 in non-leap years)
+  for (let i = 0; i < rdfJson.regional_load.length; i++) {
+    const month = rdfJson.regional_load[i].month;                   // numeric month of load
+    const originalLoad = rdfJson.regional_load[i].regional_load_mw; // original regional load (mwh)
+    const postEereLoad = originalLoad + eereLoad[i];                // EERE-merged regional load (mwh)
 
-    /** @type {PollutantCountyData} - monthly original and post-eere calculated values for each county within each state */
-    const countyData = {};
+    const originalLoadInBounds = originalLoad >= firstEdge && originalLoad <= lastEdge;
+    const postEereLoadInBounds = postEereLoad >= firstEdge && postEereLoad <= lastEdge;
 
-    /** @type {number[]} - used to calculate 'originalTotal' returned data */
-    const hourlyOriginalTotals = new Array(rdfJson.regional_load.length).fill(0);
+    // filter out outliers
+    if (!(originalLoadInBounds && postEereLoadInBounds)) continue;
 
-    /** @type {number[]} - used to calculate 'postEereTotal' returned data */
-    const hourlyPostEereTotals = new Array(rdfJson.regional_load.length).fill(0);
+    // get index of item closest to originalLoad or postEereLoad in load_bin_edges array
+    const originalLoadBinIndex = excelMatch(rdfJson.load_bin_edges, originalLoad);
+    const postEereLoadBinIndex = excelMatch(rdfJson.load_bin_edges, postEereLoad);
 
-    // iterate over each hour in the year (8760 in non-leap years)
-    for (let i = 0; i < rdfJson.regional_load.length; i++) {
-      const month = rdfJson.regional_load[i].month;                   // numeric month of load
-      const originalLoad = rdfJson.regional_load[i].regional_load_mw; // original regional load (mwh)
-      const postEereLoad = originalLoad + eereLoad[i];                // EERE-merged regional load (mwh)
+    // set activeMedians, based on nonOzoneMedians value and month
+    const activeMedians = nonOzoneMedians
+      ? (month >= 5 && month <= 9) ? ozoneMedians : nonOzoneMedians
+      : ozoneMedians;
 
-      const originalLoadInBounds = originalLoad >= firstEdge && originalLoad <= lastEdge;
-      const postEereLoadInBounds = postEereLoad >= firstEdge && postEereLoad <= lastEdge;
+    // iterate over each EGU (electric generating unit) in ozoneData (e.g. rdfJson.data.generation)
+    // the total number of EGUs varies per region...
+    // (less than 100 for the RM region; more than 1000 for the SE region)
+    ozoneData.forEach((egu, index) => {
+      const medians = activeMedians[index];
+      const stateId = egu.state;
+      const county = egu.county;
 
-      // filter out outliers
-      if (!(originalLoadInBounds && postEereLoadInBounds)) continue;
+      const calculatedOriginal = calculateLinear({
+        load: originalLoad,
+        genA: medians[originalLoadBinIndex],
+        genB: medians[originalLoadBinIndex + 1],
+        edgeA: rdfJson.load_bin_edges[originalLoadBinIndex],
+        edgeB: rdfJson.load_bin_edges[originalLoadBinIndex + 1]
+      });
 
-      // get index of item closest to originalLoad or postEereLoad in load_bin_edges array
-      const originalLoadBinIndex = excelMatch(rdfJson.load_bin_edges, originalLoad);
-      const postEereLoadBinIndex = excelMatch(rdfJson.load_bin_edges, postEereLoad);
+      // handle special exclusions for emissions changes at specific EGUs
+      // (specifically added for errors with SO2 reporting, but the RDFs have
+      // been updated to include the `infreq_emissions_flag` for all metrics
+      // for consistency, which allows other metrics at specific EGUs
+      // to be excluded in the future)
+      const calculatedPostEere = egu.infreq_emissions_flag === 1
+        ? calculatedOriginal
+        : calculateLinear({
+            load: postEereLoad,
+            genA: medians[postEereLoadBinIndex],
+            genB: medians[postEereLoadBinIndex + 1],
+            edgeA: rdfJson.load_bin_edges[postEereLoadBinIndex],
+            edgeB: rdfJson.load_bin_edges[postEereLoadBinIndex + 1],
+          });
 
-      // set activeMedians, based on nonOzoneMedians value and month
-      const activeMedians = nonOzoneMedians
-        ? (month >= 5 && month <= 9) ? ozoneMedians : nonOzoneMedians
-        : ozoneMedians;
+      // store `calculatedOriginal` and `calculatedPostEere` values in objects,
+      // with their keys corresponding to the pollutant. these objects will be
+      // used to build up the additive data that's eventually returned for each
+      // pollutant. using these intermediate `original` and `postEere` objects
+      // may seem redundant at first, but is necssary because when the provided
+      // `metric` parameter equals "nei", the same `calculatedOriginal` and
+      // `calculatedPostEere` values are used for PM2.5, VOCs, and NH3 pollutants
 
-      // iterate over each EGU (electric generating unit) in ozoneData (e.g. rdfJson.data.generation)
-      // the total number of EGUs varies per region...
-      // (less than 100 for the RM region; more than 1000 for the SE region)
-      ozoneData.forEach((egu, index) => {
-        const medians = activeMedians[index];
-        const stateId = egu.state;
-        const county = egu.county;
+      // as with the `displacements` object, the following two object's string keys are of type `Pollutant`:
+      /** @type {Object.<string, number} - calculated original number, by pollutant */
+      const original = {};
 
-        let calculatedOriginal = calculateLinear({
-          load: originalLoad,
-          genA: medians[originalLoadBinIndex],
-          genB: medians[originalLoadBinIndex + 1],
-          edgeA: rdfJson.load_bin_edges[originalLoadBinIndex],
-          edgeB: rdfJson.load_bin_edges[originalLoadBinIndex + 1]
-        });
+      /** @type {Object.<string, number} - calculated post-eere number, by pollutant */
+      const postEere = {};
 
-        // handle special exclusions for emissions changes at specific EGUs
-        // (specifically added for errors with SO2 reporting, but the RDFs have
-        // been updated to include the `infreq_emissions_flag` for all metrics
-        // for consistency, which allows other metrics at specific EGUs
-        // to be excluded in the future)
-        let calculatedPostEere = egu.infreq_emissions_flag === 1
-          ? calculatedOriginal
-          : calculateLinear({
-              load: postEereLoad,
-              genA: medians[postEereLoadBinIndex],
-              genB: medians[postEereLoadBinIndex + 1],
-              edgeA: rdfJson.load_bin_edges[postEereLoadBinIndex],
-              edgeB: rdfJson.load_bin_edges[postEereLoadBinIndex + 1],
-            });
+      pollutants.forEach((pollutant) => {
+        original[pollutant] = calculatedOriginal;
+        postEere[pollutant] = calculatedPostEere;
 
         // NEI factor applied for PM2.5, VOCs, and NH3 pollutants
         if (metric === 'nei') {
@@ -329,8 +356,8 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad }) {
           // NEI EGU data for the given year
           const neiEguData = matchedEgu.annual_data.find((d) => d.year === year);
 
-          calculatedOriginal = calculatedOriginal * neiEguData[pollutant];
-          calculatedPostEere = calculatedPostEere * neiEguData[pollutant];
+          original[pollutant] = original[pollutant] * neiEguData[pollutant];
+          postEere[pollutant] = postEere[pollutant] * neiEguData[pollutant];
         }
 
         // initialize the data structures for the region, each state, each county,
@@ -342,40 +369,42 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad }) {
         // totals and the region total by adding up values, but storing them
         // individually here is computationally smarter as it means we don't need
         // to re-iterate over data structures later to sum those totals
-        regionalData[`month${month}`] = regionalData[`month${month}`] || {};
-        regionalData[`month${month}`].original = regionalData[`month${month}`].original || 0;
-        regionalData[`month${month}`].postEere = regionalData[`month${month}`].postEere || 0;
-        regionalData[`month${month}`].original += calculatedOriginal;
-        regionalData[`month${month}`].postEere += calculatedPostEere;
+        regionalData[pollutant][`month${month}`] = regionalData[pollutant][`month${month}`] || {};
+        regionalData[pollutant][`month${month}`].original = regionalData[pollutant][`month${month}`].original || 0;
+        regionalData[pollutant][`month${month}`].postEere = regionalData[pollutant][`month${month}`].postEere || 0;
+        regionalData[pollutant][`month${month}`].original += original[pollutant];
+        regionalData[pollutant][`month${month}`].postEere += postEere[pollutant];
 
-        stateData[stateId] = stateData[stateId] || {};
-        stateData[stateId][`month${month}`] = stateData[stateId][`month${month}`] || {};
-        stateData[stateId][`month${month}`].original = stateData[stateId][`month${month}`].original || 0;
-        stateData[stateId][`month${month}`].postEere = stateData[stateId][`month${month}`].postEere || 0;
-        stateData[stateId][`month${month}`].original += calculatedOriginal;
-        stateData[stateId][`month${month}`].postEere += calculatedPostEere;
+        stateData[pollutant][stateId] = stateData[pollutant][stateId] || {};
+        stateData[pollutant][stateId][`month${month}`] = stateData[pollutant][stateId][`month${month}`] || {};
+        stateData[pollutant][stateId][`month${month}`].original = stateData[pollutant][stateId][`month${month}`].original || 0;
+        stateData[pollutant][stateId][`month${month}`].postEere = stateData[pollutant][stateId][`month${month}`].postEere || 0;
+        stateData[pollutant][stateId][`month${month}`].original += original[pollutant];
+        stateData[pollutant][stateId][`month${month}`].postEere += postEere[pollutant];
 
-        countyData[stateId] = countyData[stateId] || {};
-        countyData[stateId][county] = countyData[stateId][county] || {};
-        countyData[stateId][county][`month${month}`] = countyData[stateId][county][`month${month}`] || {};
-        countyData[stateId][county][`month${month}`].original = countyData[stateId][county][`month${month}`].original || 0;
-        countyData[stateId][county][`month${month}`].postEere = countyData[stateId][county][`month${month}`].postEere || 0;
-        countyData[stateId][county][`month${month}`].original += calculatedOriginal;
-        countyData[stateId][county][`month${month}`].postEere += calculatedPostEere;
+        countyData[pollutant][stateId] = countyData[pollutant][stateId] || {};
+        countyData[pollutant][stateId][county] = countyData[pollutant][stateId][county] || {};
+        countyData[pollutant][stateId][county][`month${month}`] = countyData[pollutant][stateId][county][`month${month}`] || {};
+        countyData[pollutant][stateId][county][`month${month}`].original = countyData[pollutant][stateId][county][`month${month}`].original || 0;
+        countyData[pollutant][stateId][county][`month${month}`].postEere = countyData[pollutant][stateId][county][`month${month}`].postEere || 0;
+        countyData[pollutant][stateId][county][`month${month}`].original += original[pollutant];
+        countyData[pollutant][stateId][county][`month${month}`].postEere += postEere[pollutant];
 
         // increment hourly total arrays for each EGU for the given hour
-        hourlyOriginalTotals[i] += calculatedOriginal;
-        hourlyPostEereTotals[i] += calculatedPostEere;
+        hourlyOriginalTotals[pollutant][i] += original[pollutant];
+        hourlyPostEereTotals[pollutant][i] += postEere[pollutant];
       });
-    }
+    });
+  }
 
+  pollutants.forEach((pollutant) => {
     displacements[pollutant] = {
       regionId: rdfJson.region.region_abbv,
-      originalTotal: hourlyOriginalTotals.reduce((acc, cur) => acc + (cur || 0), 0),
-      postEereTotal: hourlyPostEereTotals.reduce((acc, cur) => acc + (cur || 0), 0),
-      regionalData,
-      stateData,
-      countyData,
+      originalTotal: hourlyOriginalTotals[pollutant].reduce((acc, cur) => acc + (cur || 0), 0),
+      postEereTotal: hourlyPostEereTotals[pollutant].reduce((acc, cur) => acc + (cur || 0), 0),
+      regionalData: regionalData[pollutant],
+      stateData: stateData[pollutant],
+      countyData: countyData[pollutant],
     }
   });
 
