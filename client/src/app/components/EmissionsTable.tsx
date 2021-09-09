@@ -11,6 +11,11 @@ const tableContainerStyles = css`
   overflow: scroll;
 `;
 
+function formatNumber(number: number) {
+  const output = Math.round(number / 10) * 10;
+  return output.toLocaleString();
+}
+
 function EmissionsTable() {
   const status = useTypedSelector(({ displacement }) => displacement.status);
   const annualStateEmissionChanges = useTypedSelector(
@@ -72,22 +77,22 @@ function EmissionsTable() {
                 <tr key={stateData.id}>
                   <td>{stateData.name}</td>
                   <td className="avert-table-data">
-                    {Math.round(stateData.so2).toLocaleString()}
+                    {formatNumber(stateData.so2)}
                   </td>
                   <td className="avert-table-data">
-                    {Math.round(stateData.nox).toLocaleString()}
+                    {formatNumber(stateData.nox)}
                   </td>
                   <td className="avert-table-data">
-                    {Math.round(stateData.co2).toLocaleString()}
+                    {formatNumber(stateData.co2)}
                   </td>
                   <td className="avert-table-data">
-                    {Math.round(stateData.pm25).toLocaleString()}
+                    {formatNumber(stateData.pm25)}
                   </td>
                   <td className="avert-table-data">
-                    {Math.round(stateData.vocs).toLocaleString()}
+                    {formatNumber(stateData.vocs)}
                   </td>
                   <td className="avert-table-data">
-                    {Math.round(stateData.nh3).toLocaleString()}
+                    {formatNumber(stateData.nh3)}
                   </td>
                 </tr>
               );
