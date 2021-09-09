@@ -174,10 +174,10 @@ function DisplacementsTable() {
               <td className="avert-table-data">
                 {(so2Orig / genOrig).toFixed(3)}
               </td>
-              <td className="avert-table-data">
-                {(so2Post / genPost).toFixed(3)}
-              </td>
               <td className="avert-table-data">&nbsp;</td>
+              <td className="avert-table-data">
+                {(so2Impacts / genImpacts).toFixed(3)}
+              </td>
             </tr>
             <tr>
               <td css={rowLabelStyles}>
@@ -186,10 +186,10 @@ function DisplacementsTable() {
               <td className="avert-table-data">
                 {(noxOrig / genOrig).toFixed(3)}
               </td>
-              <td className="avert-table-data">
-                {(noxPost / genPost).toFixed(3)}
-              </td>
               <td className="avert-table-data">&nbsp;</td>
+              <td className="avert-table-data">
+                {(noxImpacts / genImpacts).toFixed(3)}
+              </td>
             </tr>
             <tr>
               <td css={rowLabelStyles}>
@@ -198,10 +198,10 @@ function DisplacementsTable() {
               <td className="avert-table-data">
                 {(co2Orig / genOrig).toFixed(3)}
               </td>
-              <td className="avert-table-data">
-                {(co2Post / genPost).toFixed(3)}
-              </td>
               <td className="avert-table-data">&nbsp;</td>
+              <td className="avert-table-data">
+                {(co2Impacts / genImpacts).toFixed(3)}
+              </td>
             </tr>
             <tr>
               <td css={rowLabelStyles}>
@@ -210,10 +210,10 @@ function DisplacementsTable() {
               <td className="avert-table-data">
                 {(pm25Orig / genOrig).toFixed(3)}
               </td>
-              <td className="avert-table-data">
-                {(pm25Post / genPost).toFixed(3)}
-              </td>
               <td className="avert-table-data">&nbsp;</td>
+              <td className="avert-table-data">
+                {(pm25Impacts / genImpacts).toFixed(3)}
+              </td>
             </tr>
             <tr>
               <td css={rowLabelStyles}>
@@ -222,10 +222,10 @@ function DisplacementsTable() {
               <td className="avert-table-data">
                 {(vocsOrig / genOrig).toFixed(3)}
               </td>
-              <td className="avert-table-data">
-                {(vocsPost / genPost).toFixed(3)}
-              </td>
               <td className="avert-table-data">&nbsp;</td>
+              <td className="avert-table-data">
+                {(vocsImpacts / genImpacts).toFixed(3)}
+              </td>
             </tr>
             <tr>
               <td css={rowLabelStyles}>
@@ -234,10 +234,10 @@ function DisplacementsTable() {
               <td className="avert-table-data">
                 {(nh3Orig / genOrig).toFixed(3)}
               </td>
-              <td className="avert-table-data">
-                {(nh3Post / genPost).toFixed(3)}
-              </td>
               <td className="avert-table-data">&nbsp;</td>
+              <td className="avert-table-data">
+                {(nh3Impacts / genImpacts).toFixed(3)}
+              </td>
             </tr>
           </tbody>
         </table>
