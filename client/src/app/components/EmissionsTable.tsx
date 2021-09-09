@@ -35,12 +35,12 @@ function EmissionsTable() {
             <th>
               SO<sub>2</sub>
               <br />
-              <small>(lbs)</small>
+              <small>(lb)</small>
             </th>
             <th>
               NO<sub>X</sub>
               <br />
-              <small>(lbs)</small>
+              <small>(lb)</small>
             </th>
             <th>
               CO<sub>2</sub>
@@ -50,17 +50,17 @@ function EmissionsTable() {
             <th>
               PM<sub>2.5</sub>
               <br />
-              <small>(lbs)</small>
+              <small>(lb)</small>
             </th>
             <th>
               VOCs
               <br />
-              <small>(lbs)</small>
+              <small>(lb)</small>
             </th>
             <th>
               NH<sub>3</sub>
               <br />
-              <small>(lbs)</small>
+              <small>(lb)</small>
             </th>
           </tr>
         </thead>

@@ -287,7 +287,7 @@ function EmissionsChart() {
     },
     yAxis: {
       title: {
-        text: formatYAxis('lbs'),
+        text: formatYAxis('lb'),
       },
     },
     series: [
@@ -295,7 +295,7 @@ function EmissionsChart() {
         name: 'SO₂',
         data: calculateMonthlyData(monthlyData.so2, selectedUnit),
         color: '#058dc7',
-        emissionsUnit: 'lbs',
+        emissionsUnit: 'lb',
       },
     ],
   };
@@ -308,7 +308,7 @@ function EmissionsChart() {
     },
     yAxis: {
       title: {
-        text: formatYAxis('lbs'),
+        text: formatYAxis('lb'),
       },
     },
     series: [
@@ -316,7 +316,7 @@ function EmissionsChart() {
         name: 'NOₓ',
         data: calculateMonthlyData(monthlyData.nox, selectedUnit),
         color: '#ed561b',
-        emissionsUnit: 'lbs',
+        emissionsUnit: 'lb',
       },
     ],
   };
@@ -350,7 +350,7 @@ function EmissionsChart() {
     },
     yAxis: {
       title: {
-        text: formatYAxis('lbs'),
+        text: formatYAxis('lb'),
       },
     },
     series: [
@@ -358,7 +358,7 @@ function EmissionsChart() {
         name: 'PM₂₅',
         data: calculateMonthlyData(monthlyData.pm25, selectedUnit),
         color: '#665683',
-        emissionsUnit: 'lbs',
+        emissionsUnit: 'lb',
       },
     ],
   };
@@ -371,7 +371,7 @@ function EmissionsChart() {
     },
     yAxis: {
       title: {
-        text: formatYAxis('lbs'),
+        text: formatYAxis('lb'),
       },
     },
     series: [
@@ -379,7 +379,7 @@ function EmissionsChart() {
         name: 'VOC',
         data: calculateMonthlyData(monthlyData.vocs, selectedUnit),
         color: '#ffc107',
-        emissionsUnit: 'lbs',
+        emissionsUnit: 'lb',
       },
     ],
   };
@@ -392,7 +392,7 @@ function EmissionsChart() {
     },
     yAxis: {
       title: {
-        text: formatYAxis('lbs'),
+        text: formatYAxis('lb'),
       },
     },
     series: [
@@ -400,7 +400,7 @@ function EmissionsChart() {
         name: 'NH₃',
         data: calculateMonthlyData(monthlyData.nh3, selectedUnit),
         color: '#009688',
-        emissionsUnit: 'lbs',
+        emissionsUnit: 'lb',
       },
     ],
   };
@@ -630,7 +630,7 @@ function EmissionsChart() {
             }}
             data-avert-unit-toggle="emissions"
           />
-          Emission changes (lbs or tons)
+          Emission changes (lb or tons)
         </label>
 
         <label>

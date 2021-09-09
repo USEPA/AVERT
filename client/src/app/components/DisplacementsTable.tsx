@@ -112,7 +112,7 @@ function DisplacementsTable() {
             </tr>
             <tr>
               <td css={rowLabelStyles}>
-                SO<sub>2</sub> <small>(lbs)</small>{' '}
+                SO<sub>2</sub> <small>(lb)</small>{' '}
                 {egusNeedingReplacement.so2.length > 0 &&
                   replacementTooltip('so2', 31)}
               </td>
@@ -122,7 +122,7 @@ function DisplacementsTable() {
             </tr>
             <tr>
               <td css={rowLabelStyles}>
-                NO<sub>X</sub> <small>(lbs)</small>{' '}
+                NO<sub>X</sub> <small>(lb)</small>{' '}
                 {egusNeedingReplacement.nox.length > 0 &&
                   replacementTooltip('nox', 32)}
               </td>
@@ -142,7 +142,7 @@ function DisplacementsTable() {
             </tr>
             <tr>
               <td css={rowLabelStyles}>
-                PM<sub>2.5</sub> <small>(lbs)</small>
+                PM<sub>2.5</sub> <small>(lb)</small>
               </td>
               <td className="avert-table-data">{formatNumber(pm25Orig)}</td>
               <td className="avert-table-data">{formatNumber(pm25Post)}</td>
@@ -150,7 +150,7 @@ function DisplacementsTable() {
             </tr>
             <tr>
               <td css={rowLabelStyles}>
-                VOCs <small>(lbs)</small>
+                VOCs <small>(lb)</small>
               </td>
               <td className="avert-table-data">{formatNumber(vocsOrig)}</td>
               <td className="avert-table-data">{formatNumber(vocsPost)}</td>
@@ -158,7 +158,7 @@ function DisplacementsTable() {
             </tr>
             <tr>
               <td css={rowLabelStyles}>
-                NH<sub>3</sub> <small>(lbs)</small>
+                NH<sub>3</sub> <small>(lb)</small>
               </td>
               <td className="avert-table-data">{formatNumber(nh3Orig)}</td>
               <td className="avert-table-data">{formatNumber(nh3Post)}</td>
@@ -169,7 +169,7 @@ function DisplacementsTable() {
             </tr>
             <tr>
               <td css={rowLabelStyles}>
-                SO<sub>2</sub> <small>(lbs/MWh)</small>
+                SO<sub>2</sub> <small>(lb/MWh)</small>
               </td>
               <td className="avert-table-data">
                 {(so2Orig / genOrig).toFixed(3)}
@@ -181,7 +181,7 @@ function DisplacementsTable() {
             </tr>
             <tr>
               <td css={rowLabelStyles}>
-                NO<sub>X</sub> <small>(lbs/MWh)</small>
+                NO<sub>X</sub> <small>(lb/MWh)</small>
               </td>
               <td className="avert-table-data">
                 {(noxOrig / genOrig).toFixed(3)}
@@ -205,7 +205,7 @@ function DisplacementsTable() {
             </tr>
             <tr>
               <td css={rowLabelStyles}>
-                PM<sub>2.5</sub> <small>(lbs/MWh)</small>
+                PM<sub>2.5</sub> <small>(lb/MWh)</small>
               </td>
               <td className="avert-table-data">
                 {(pm25Orig / genOrig).toFixed(3)}
@@ -217,7 +217,7 @@ function DisplacementsTable() {
             </tr>
             <tr>
               <td css={rowLabelStyles}>
-                VOCs <small>(lbs/MWh)</small>
+                VOCs <small>(lb/MWh)</small>
               </td>
               <td className="avert-table-data">
                 {(vocsOrig / genOrig).toFixed(3)}
@@ -229,7 +229,7 @@ function DisplacementsTable() {
             </tr>
             <tr>
               <td css={rowLabelStyles}>
-                NH<sub>3</sub> <small>(lbs/MWh)</small>
+                NH<sub>3</sub> <small>(lb/MWh)</small>
               </td>
               <td className="avert-table-data">
                 {(nh3Orig / genOrig).toFixed(3)}
