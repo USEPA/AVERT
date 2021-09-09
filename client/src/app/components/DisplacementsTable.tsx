@@ -6,7 +6,7 @@ import { css } from '@emotion/react';
 import Tooltip from 'app/components/Tooltip';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
-import { ReplacementPollutant } from 'app/redux/reducers/displacement';
+import { ReplacementPollutantName } from 'app/redux/reducers/displacement';
 
 const tableContainerStyles = css`
   overflow: scroll;
@@ -43,6 +43,10 @@ function DisplacementsTable() {
   const noxPost = data.nox.replacedPostEere || data.nox.postEere;
   const noxImpacts = data.nox.impacts;
 
+  const ozoneNoxOrig = data.ozoneNox.replacedOriginal || data.ozoneNox.original;
+  const ozoneNoxPost = data.ozoneNox.replacedPostEere || data.ozoneNox.postEere;
+  const ozoneNoxImpacts = data.ozoneNox.impacts;
+
   const co2Orig = data.co2.replacedOriginal || data.co2.original;
   const co2Post = data.co2.replacedPostEere || data.co2.postEere;
   const co2Impacts = data.co2.impacts;
@@ -60,11 +64,11 @@ function DisplacementsTable() {
   const nh3Impacts = data.nh3.impacts;
 
   function replacementTooltip(
-    pollutant: ReplacementPollutant,
+    pollutant: ReplacementPollutantName,
     tooltipId: number,
   ) {
     // prettier-ignore
-    const pollutantMarkup = new Map<ReplacementPollutant, ReactNode>()
+    const pollutantMarkup = new Map<ReplacementPollutantName, ReactNode>()
       .set('generation', <Fragment>Generation</Fragment>)
       .set('so2', <Fragment>SO<sub>2</sub></Fragment>)
       .set('nox', <Fragment>NO<sub>X</sub></Fragment>)
@@ -132,6 +136,16 @@ function DisplacementsTable() {
             </tr>
             <tr>
               <td css={rowLabelStyles}>
+                Ozone season NO<sub>X</sub> <small>(lb)</small>
+              </td>
+              <td className="avert-table-data">{formatNumber(ozoneNoxOrig)}</td>
+              <td className="avert-table-data">{formatNumber(ozoneNoxPost)}</td>
+              <td className="avert-table-data">
+                {formatNumber(ozoneNoxImpacts)}
+              </td>
+            </tr>
+            <tr>
+              <td css={rowLabelStyles}>
                 CO<sub>2</sub> <small>(tons)</small>{' '}
                 {egusNeedingReplacement.co2.length > 0 &&
                   replacementTooltip('co2', 33)}
@@ -189,6 +203,18 @@ function DisplacementsTable() {
               <td className="avert-table-data">&nbsp;</td>
               <td className="avert-table-data">
                 {(noxImpacts / genImpacts).toFixed(3)}
+              </td>
+            </tr>
+            <tr>
+              <td css={rowLabelStyles}>
+                Ozone season NO<sub>X</sub> <small>(lb/MWh)</small>
+              </td>
+              <td className="avert-table-data">
+                {(ozoneNoxOrig / genOrig).toFixed(3)}
+              </td>
+              <td className="avert-table-data">&nbsp;</td>
+              <td className="avert-table-data">
+                {(ozoneNoxImpacts / genImpacts).toFixed(3)}
               </td>
             </tr>
             <tr>

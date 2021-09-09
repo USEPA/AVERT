@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 import {
-  ReplacementPollutant,
+  ReplacementPollutantName,
   MonthlyDisplacement,
   calculateMonthlyData,
 } from 'app/redux/reducers/displacement';
@@ -409,7 +409,7 @@ function EmissionsChart() {
     const replacementPotentiallyNeeded = ['generation', 'so2', 'nox', 'co2'];
 
     const flaggedEGUs = replacementPotentiallyNeeded.includes(pollutant)
-      ? egusNeedingReplacement[pollutant as ReplacementPollutant]
+      ? egusNeedingReplacement[pollutant as ReplacementPollutantName]
       : [];
 
     const flaggedRegion =
