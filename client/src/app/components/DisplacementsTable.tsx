@@ -18,7 +18,7 @@ const rowLabelStyles = css`
 
 function formatNumber(number: any) {
   if (number < 10 && number > -10) return '--';
-  const output = Math.ceil(number / 10) * 10;
+  const output = Math.round(number / 10) * 10;
   return output.toLocaleString();
 }
 
