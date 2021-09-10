@@ -190,8 +190,9 @@ function excelMatch(array, lookup) {
  * @param {RdfJson} options.rdfJson
  * @param {?NeiJson} options.neiJson
  * @param {number[]} options.eereLoad
+ * @param {boolean} options.debug
  */
-function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad }) {
+function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad, debug }) {
   /**
    * this displacements object's keys will be one of type `Pollutant`, with
    * the key's values being the calculated displacement data for that pollutant.
@@ -261,6 +262,10 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad }) {
 
   /** @type {Object.<string, PollutantCountyData} - monthly original and post-eere calculated values for each county within each state, by pollutant */
   const countyData = {};
+
+  // NOTE: hourlyData is used for debugging only, as the resulting object is huge
+  /** @type {Object.<string, Object} - hourly original and post-eere calculated values for every EGU, by pollutant */
+  const hourlyData = {};
 
   /** @type {Object.<string, number[]} - used to calculate 'originalTotal' returned data, by pollutant */
   const hourlyOriginalTotals = {};
@@ -391,6 +396,35 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad }) {
         countyData[pollutant][stateId][county][`month${month}`].original += original[pollutant];
         countyData[pollutant][stateId][county][`month${month}`].postEere += postEere[pollutant];
 
+        // NOTE: hourlyData isn't returned normally as the resulting object is
+        // huge (several hundred MB). this is just added as a means to verify
+        // hourly calculations for each EGU when developing locally.
+        // to temporaily enable this, update the `calculateMetric()` method in
+        // `app/controllers.js` to pass the `debug` parameter's value as `true`
+        //
+        // AGAIN, THIS IS FOR DEBUGGING ONLY – DO NOT ENABLE THIS FOR PRODUCTION,
+        // as the returned `hourlyData` object is massive, and when debug is set
+        // to `true`, this function also won't return the summed regional, state,
+        // and county data the web app needs
+        if (debug) {
+          hourlyData[pollutant] = hourlyData[pollutant] || [];
+          hourlyData[pollutant][i] = hourlyData[pollutant][i] || {};
+          hourlyData[pollutant][i].hour = hourlyData[pollutant][i].hour || i + 1;
+          hourlyData[pollutant][i].month = hourlyData[pollutant][i].month || month;
+          hourlyData[pollutant][i].year = hourlyData[pollutant][i].year || year;
+          hourlyData[pollutant][i].originalLoad = hourlyData[pollutant][i].originalLoad || originalLoad;
+          hourlyData[pollutant][i].postEereLoad = hourlyData[pollutant][i].postEereLoad || postEereLoad;
+          hourlyData[pollutant][i].egus = hourlyData[pollutant][i].egus || [];
+          hourlyData[pollutant][i].egus[index] = hourlyData[pollutant][i].egus[index] || {};
+          hourlyData[pollutant][i].egus[index].orisplCode = hourlyData[pollutant][i].egus[index].orisplCode || egu.orispl_code;
+          hourlyData[pollutant][i].egus[index].unitCode = hourlyData[pollutant][i].egus[index].unitCode || egu.unit_code;
+          hourlyData[pollutant][i].egus[index].name = hourlyData[pollutant][i].egus[index].name || egu.full_name;
+          hourlyData[pollutant][i].egus[index].state = hourlyData[pollutant][i].egus[index].state || stateId;
+          hourlyData[pollutant][i].egus[index].county = hourlyData[pollutant][i].egus[index].county || county;
+          hourlyData[pollutant][i].egus[index].original = hourlyData[pollutant][i].egus[index].original || original[pollutant];
+          hourlyData[pollutant][i].egus[index].postEere = hourlyData[pollutant][i].egus[index].postEere || postEere[pollutant];
+        }
+
         // increment hourly total arrays for each EGU for the given hour
         hourlyOriginalTotals[pollutant][i] += original[pollutant];
         hourlyPostEereTotals[pollutant][i] += postEere[pollutant];
@@ -408,6 +442,15 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad }) {
       countyData: countyData[pollutant],
     }
   });
+
+  if (debug) {
+    pollutants.forEach((pollutant) => {
+      delete displacements[pollutant].regionalData;
+      delete displacements[pollutant].stateData;
+      delete displacements[pollutant].countyData;
+      displacements[pollutant].hourlyData = hourlyData[pollutant]
+    });
+  }
 
   return displacements;
 }

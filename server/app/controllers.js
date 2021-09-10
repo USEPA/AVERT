@@ -54,7 +54,10 @@ async function calculateMetric(ctx, metric) {
     const neiData = await readFile('app/data/annual-emission-factors.json');
     neiJson = JSON.parse(neiData);
   }
-  ctx.body = getDisplacement({ year, metric, rdfJson, neiJson, eereLoad });
+  // NOTE: setting the debug param to `true` will break the web app, so it must
+  // stay set to `false`. it's only used in local development to debug hourly
+  // displacement data for each EGU (see `app/calculations.js`)
+  ctx.body = getDisplacement({ year, metric, rdfJson, neiJson, eereLoad, debug: false });
 };
 
 /**
