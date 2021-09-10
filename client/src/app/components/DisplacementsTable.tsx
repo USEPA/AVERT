@@ -13,12 +13,16 @@ const tableContainerStyles = css`
 `;
 
 const rowLabelStyles = css`
-  padding: 0.375rem 1.25rem !important;
+  padding-left: 1.25rem !important;
 `;
 
 const altRowLabelStyles = css`
-  padding: 0.375rem 1.25rem 0.375rem 1.875rem !important;
+  padding-left: 1.875rem !important;
   font-style: italic;
+`;
+
+const tableDataHeadingStyles = css`
+  text-align: right;
 `;
 
 function formatNumber(number: any) {
@@ -117,7 +121,7 @@ function DisplacementsTable() {
               <td className="avert-table-data">{formatNumber(genImpacts)}</td>
             </tr>
             <tr className="avert-table-group">
-              <td colSpan={4}>Total emissions of fossil EGUs</td>
+              <td colSpan={4}>Total Emissions from Fossil Generation Fleet</td>
             </tr>
             <tr>
               <td css={rowLabelStyles}>
@@ -188,7 +192,10 @@ function DisplacementsTable() {
               <td className="avert-table-data">{formatNumber(nh3Impacts)}</td>
             </tr>
             <tr className="avert-table-group">
-              <td colSpan={4}>Emission rates of fossil EGUs</td>
+              <td>AVERT-derived Emission Rates:</td>
+              <td css={tableDataHeadingStyles}>Average Fossil</td>
+              <td>&nbsp;</td>
+              <td css={tableDataHeadingStyles}>Marginal Fossil</td>
             </tr>
             <tr>
               <td css={rowLabelStyles}>
