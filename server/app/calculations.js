@@ -224,21 +224,21 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad }) {
     }).egus;
   }
 
-  // set ozoneData and nonOzoneData based on provided metric
+  // set ozoneSeasonData and nonOzoneSeasonData based on provided metric
   /** @type {EguData[]} */
-  const ozoneData = metric === 'nei'
+  const ozoneSeasonData = metric === 'nei'
     ? rdfJson.data['heat']
     : rdfJson.data[metric];
 
   /** @type {EguData[]|false} */
-  const nonOzoneData = metric === 'nei'
+  const nonOzoneSeasonData = metric === 'nei'
     ? rdfJson.data['heat_not']
-    : rdfJson.data[`${metric}_not`] || false; // false fallback for generation
+    : rdfJson.data[`${metric}_not`] || false; // false fallback for generation, as there's no non-ozone season generation data
 
-  // dataset medians (ozone and non-ozone)
-  const ozoneMedians = ozoneData.map((data) => data.medians);
-  const nonOzoneMedians = nonOzoneData
-    ? nonOzoneData.map((data) => data.medians)
+  // ozone season and non-ozone season medians
+  const ozoneSeasonMedians = ozoneSeasonData.map((data) => data.medians);
+  const nonOzoneSeasonMedians = nonOzoneSeasonData
+    ? nonOzoneSeasonData.map((data) => data.medians)
     : false;
 
   // load bin edges
@@ -292,16 +292,19 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad }) {
     const originalLoadBinIndex = excelMatch(rdfJson.load_bin_edges, originalLoad);
     const postEereLoadBinIndex = excelMatch(rdfJson.load_bin_edges, postEereLoad);
 
-    // set activeMedians, based on nonOzoneMedians value and month
-    const activeMedians = nonOzoneMedians
-      ? (month >= 5 && month <= 9) ? ozoneMedians : nonOzoneMedians
-      : ozoneMedians;
+    // set datasetMedians, based on nonOzoneSeasonMedians value and the current month
+    // NOTE: if nonOzoneSeasonMedians doesn't exist (in the case of generation),
+    // datasetMedians will be the same as ozoneSeasonMedians (which is rdfJson.data.generation)
+    const datasetMedians = nonOzoneSeasonMedians
+      ? (month >= 5 && month <= 9) ? ozoneSeasonMedians : nonOzoneSeasonMedians
+      : ozoneSeasonMedians;
 
-    // iterate over each EGU (electric generating unit) in ozoneData (e.g. rdfJson.data.generation)
+    // iterate over each EGU (electric generating unit) in ozoneSeasonData
+    // (e.g. rdfJson.data.generation, rdfJson.data.so2, etc.)
     // the total number of EGUs varies per region...
     // (less than 100 for the RM region; more than 1000 for the SE region)
-    ozoneData.forEach((egu, index) => {
-      const medians = activeMedians[index];
+    ozoneSeasonData.forEach((egu, index) => {
+      const medians = datasetMedians[index];
       const stateId = egu.state;
       const county = egu.county;
 
@@ -352,12 +355,10 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad }) {
           const matchedEgu = regionalNeiEgus.find((n) => {
             return n.orispl_code === egu.orispl_code && n.unit_code === egu.unit_code;
           });
-
           // NEI EGU data for the given year
           const neiEguData = matchedEgu.annual_data.find((d) => d.year === year);
-
-          original[pollutant] = original[pollutant] * neiEguData[pollutant];
-          postEere[pollutant] = postEere[pollutant] * neiEguData[pollutant];
+          original[pollutant] *= neiEguData[pollutant];
+          postEere[pollutant] *= neiEguData[pollutant];
         }
 
         // initialize the data structures for the region, each state, each county,

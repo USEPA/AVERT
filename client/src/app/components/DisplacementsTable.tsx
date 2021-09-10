@@ -194,7 +194,7 @@ function DisplacementsTable() {
             <tr className="avert-table-group">
               <td>AVERT-derived Emission Rates:</td>
               <td css={tableDataHeadingStyles}>Average Fossil</td>
-              <td>&nbsp;</td>
+              <td css={tableDataHeadingStyles}>&nbsp;</td>
               <td css={tableDataHeadingStyles}>Marginal Fossil</td>
             </tr>
             <tr>
