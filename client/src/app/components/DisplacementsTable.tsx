@@ -16,6 +16,11 @@ const rowLabelStyles = css`
   padding: 0.375rem 1.25rem !important;
 `;
 
+const altRowLabelStyles = css`
+  padding: 0.375rem 1.25rem 0.375rem 1.875rem !important;
+  font-style: italic;
+`;
+
 function formatNumber(number: any) {
   if (number < 10 && number > -10) return '--';
   const output = Math.round(number / 10) * 10;
@@ -135,8 +140,12 @@ function DisplacementsTable() {
               <td className="avert-table-data">{formatNumber(noxImpacts)}</td>
             </tr>
             <tr>
-              <td css={rowLabelStyles}>
-                Ozone season NO<sub>X</sub> <small>(lb)</small>
+              <td css={altRowLabelStyles}>
+                Ozone season NO<sub>X</sub> <small>(lb)</small>{' '}
+                <Tooltip id={34}>
+                  Ozone season is defined as May 1 — September 30. Ozone season
+                  emissions are a subset of annual emissions.
+                </Tooltip>
               </td>
               <td className="avert-table-data">{formatNumber(ozoneNoxOrig)}</td>
               <td className="avert-table-data">{formatNumber(ozoneNoxPost)}</td>
@@ -206,8 +215,12 @@ function DisplacementsTable() {
               </td>
             </tr>
             <tr>
-              <td css={rowLabelStyles}>
-                Ozone season NO<sub>X</sub> <small>(lb/MWh)</small>
+              <td css={altRowLabelStyles}>
+                Ozone season NO<sub>X</sub> <small>(lb/MWh)</small>{' '}
+                <Tooltip id={35}>
+                  Ozone season is defined as May 1 — September 30. Ozone season
+                  emissions are a subset of annual emissions.
+                </Tooltip>
               </td>
               <td className="avert-table-data">
                 {(ozoneNoxOrig / genOrig).toFixed(3)}
