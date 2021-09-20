@@ -414,6 +414,22 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad, debug }) {
           hourlyData[pollutant][i].year = hourlyData[pollutant][i].year || year;
           hourlyData[pollutant][i].originalLoad = hourlyData[pollutant][i].originalLoad || originalLoad;
           hourlyData[pollutant][i].postEereLoad = hourlyData[pollutant][i].postEereLoad || postEereLoad;
+
+          // NOTE: to generate data for a specific EGU, and not all EGUs,
+          // un-comment out the code below and update it with the specific EGU's
+          // ORISPL code and unit code and comment out the next several lines of
+          // code inside this `if` statement block
+          //
+          // if (egu.orispl_code === 50865 && egu.unit_code === '1') {
+            // hourlyData[pollutant][i].orisplCode = hourlyData[pollutant][i].orisplCode || egu.orispl_code;
+            // hourlyData[pollutant][i].unitCode = hourlyData[pollutant][i].unitCode || egu.unit_code;
+            // hourlyData[pollutant][i].name = hourlyData[pollutant][i].name || egu.full_name;
+            // hourlyData[pollutant][i].state = hourlyData[pollutant][i].state || stateId;
+            // hourlyData[pollutant][i].county = hourlyData[pollutant][i].county || county;
+            // hourlyData[pollutant][i].original = hourlyData[pollutant][i].original || original[pollutant];
+            // hourlyData[pollutant][i].postEere = hourlyData[pollutant][i].postEere || postEere[pollutant];
+          // }
+
           hourlyData[pollutant][i].egus = hourlyData[pollutant][i].egus || [];
           hourlyData[pollutant][i].egus[index] = hourlyData[pollutant][i].egus[index] || {};
           hourlyData[pollutant][i].egus[index].orisplCode = hourlyData[pollutant][i].egus[index].orisplCode || egu.orispl_code;
