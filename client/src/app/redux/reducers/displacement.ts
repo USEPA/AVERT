@@ -1792,38 +1792,3 @@ function setDownloadableData({
 
   return { countyData, cobraData };
 }
-
-export function postCobraData(cobraData: CobraDataRow[]): AppThunk {
-  return (dispatch, getState) => {
-    const { api } = getState();
-
-    // TODO: handle fetch errors gracefully (for both token and POSTing of data)
-    // probably should display an error message below the button on errors
-
-    fetch(`${api.cobraApiUrl}/api/token`)
-      .then((res) => res.json())
-      .then((json) => {
-        const token = json.value;
-
-        // TODO: get COBRA API URL to post cobra data to, and dermine what
-        // format the posted data should be in
-        fetch(`${api.cobraApiUrl}/api/PLACEHOLDER`, {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            token,
-            data: cobraData,
-          }),
-        })
-          .then((res) => res.json())
-          .then((json) => {
-            // TODO: get COBRA APP URL to redirect user to, and determine the
-            // format of the query string to pass to app (using token for now)
-            window.location.href = `${api.cobraAppUrl}?token=${token}`;
-          });
-      });
-  };
-}

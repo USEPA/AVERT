@@ -10,8 +10,8 @@ import Tooltip from 'app/components/Tooltip';
 import {
   bottomMessageStyles,
   messageHeadingStyles,
-  vadidationErrorStyles,
-  vadidationWarningStyles,
+  errorMessageStyles,
+  warningMessageStyles,
 } from 'app/components/Panels';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
@@ -39,14 +39,14 @@ const ValidationMessage = styled('p')<{ type: 'error' | 'warning' }>`
     if (type === 'error') {
       return css`
         ${bottomMessageStyles};
-        ${vadidationErrorStyles}
+        ${errorMessageStyles}
       `;
     }
 
     if (type === 'warning') {
       return css`
         ${bottomMessageStyles};
-        ${vadidationWarningStyles}
+        ${warningMessageStyles}
       `;
     }
   }}

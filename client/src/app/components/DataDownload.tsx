@@ -1,17 +1,73 @@
 /** @jsxImportSource @emotion/react */
 
-import { Fragment } from 'react';
-// import { useDispatch } from 'react-redux';
+import { Fragment, useState, useEffect } from 'react';
+import { css } from '@emotion/react';
 // components
 import {
   bottomMessageStyles,
-  vadidationWarningStyles,
+  infoMessageStyles,
+  successMessageStyles,
+  warningMessageStyles,
+  errorMessageStyles,
 } from 'app/components/Panels';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
-// import { postCobraData } from 'app/redux/reducers/displacement';
 // hooks
 import { useSelectedRegion, useSelectedState } from 'app/hooks';
+
+type CobraApiState = 'ready' | 'loading' | 'success' | 'error';
+
+type CobraApiData = {
+  stateCountyBadgesList: string[];
+  tier1Text: 'Fuel Combustion: Electric Utility';
+  tier2Text: null;
+  tier3Text: null;
+  PM25ri: 'reduce' | 'increase';
+  SO2ri: 'reduce' | 'increase';
+  NOXri: 'reduce' | 'increase';
+  NH3ri: 'reduce' | 'increase';
+  VOCri: 'reduce' | 'increase';
+  cPM25: number | null;
+  cSO2: number | null;
+  cNOX: number | null;
+  cNH3: number | null;
+  cVOC: number | null;
+  PM25pt: 'tons' | 'percent';
+  SO2pt: 'tons' | 'percent';
+  NOXpt: 'tons' | 'percent';
+  NH3pt: 'tons' | 'percent';
+  VOCpt: 'tons' | 'percent';
+  statetree_items_selected: string[];
+  tiertree_items_selected: ['1'];
+};
+
+const safariMessageStyles = css`
+  ${bottomMessageStyles};
+  ${warningMessageStyles};
+`;
+
+const cobraMessageStyles = css`
+  padding: 1rem;
+  font-size: 0.625rem;
+
+  @media (min-width: 25em) {
+    padding: 1.125rem;
+  }
+
+  @media (min-width: 30em) {
+    padding: 1.25rem;
+    font-size: 0.6875rem;
+  }
+
+  @media (min-width: 35em) {
+    padding: 1.375rem;
+  }
+
+  @media (min-width: 40em) {
+    padding: 1.5rem;
+    font-size: 0.75rem;
+  }
+`;
 
 function convertToCSVString(data: { [key: string]: any }[]) {
   const keys = Object.keys(data[0] || {});
@@ -24,7 +80,9 @@ function convertToCSVString(data: { [key: string]: any }[]) {
 }
 
 function DataDownload() {
-  // const dispatch = useDispatch();
+  const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
+  const cobraApiUrl = useTypedSelector(({ api }) => api.cobraApiUrl);
+  const cobraAppUrl = useTypedSelector(({ api }) => api.cobraAppUrl);
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const countyData = useTypedSelector(
     ({ displacement }) => displacement.downloadableCountyData,
@@ -32,6 +90,14 @@ function DataDownload() {
   const cobraData = useTypedSelector(
     ({ displacement }) => displacement.downloadableCobraData,
   );
+
+  const [cobraApiState, setCobraApiState] = useState<CobraApiState>('ready');
+  const [cobraApiMessage, setCobraApiMessage] = useState(<Fragment />);
+
+  useEffect(() => {
+    setCobraApiState('ready');
+    setCobraApiMessage(<Fragment />);
+  }, [activeStep]);
 
   const selectedRegionName = useSelectedRegion()?.name || '';
   const selectedStateName = useSelectedState()?.name || '';
@@ -43,6 +109,33 @@ function DataDownload() {
 
   const countyCsvString = encodeURIComponent(convertToCSVString(countyData));
   const cobraCsvString = encodeURIComponent(convertToCSVString(cobraData));
+
+  const cobraApiData: CobraApiData[] = cobraData.map((row) => {
+    const countyState = `${row.COUNTY.replace(/ County$/, '')}, ${row.STATE}`;
+    return {
+      stateCountyBadgesList: [countyState],
+      tier1Text: 'Fuel Combustion: Electric Utility',
+      tier2Text: null,
+      tier3Text: null,
+      PM25ri: 'reduce',
+      SO2ri: 'reduce',
+      NOXri: 'reduce',
+      NH3ri: 'reduce',
+      VOCri: 'reduce',
+      cPM25: Math.abs(row.PM25_REDUCTIONS_TONS),
+      cSO2: Math.abs(row.SO2_REDUCTIONS_TONS),
+      cNOX: Math.abs(row.NOx_REDUCTIONS_TONS),
+      cNH3: Math.abs(row.NH3_REDUCTIONS_TONS),
+      cVOC: Math.abs(row.VOCS_REDUCTIONS_TONS),
+      PM25pt: 'tons',
+      SO2pt: 'tons',
+      NOXpt: 'tons',
+      NH3pt: 'tons',
+      VOCpt: 'tons',
+      statetree_items_selected: [row.FIPS],
+      tiertree_items_selected: ['1'],
+    };
+  });
 
   const isDesktopSafari =
     navigator.userAgent.toLowerCase().indexOf('safari') !== -1 &&
@@ -81,11 +174,24 @@ function DataDownload() {
         </a>
       </p>
 
-      {/*
       <p>
         (PLACEHOLDER: text explaining submitting data to the COBRA App, and how
         the user will be redirected upon successful submission).
       </p>
+
+      {cobraApiState !== 'ready' && (
+        <p
+          css={[
+            cobraMessageStyles,
+            cobraApiState === 'loading' && infoMessageStyles,
+            cobraApiState === 'success' && successMessageStyles,
+            cobraApiState === 'error' && errorMessageStyles,
+          ]}
+          className="avert-centered"
+        >
+          {cobraApiMessage}
+        </p>
+      )}
 
       <p className="avert-centered">
         <a
@@ -93,20 +199,79 @@ function DataDownload() {
           href="https://cobra.app.cloud.gov/"
           onClick={(ev) => {
             ev.preventDefault();
-            // dispatch(postCobraData(cobraData));
+            setCobraApiState('loading');
+            setCobraApiMessage(<Fragment>Posting data to COBRA...</Fragment>);
+
+            fetch(`${cobraApiUrl}/api/Token`)
+              .then((tokenRes) => {
+                if (!tokenRes.ok) {
+                  setCobraApiState('error');
+                  setCobraApiMessage(
+                    // NOTE: Error fetching COBRA API token
+                    <Fragment>Error posting data to COBRA.</Fragment>,
+                  );
+                  throw new Error(tokenRes.statusText);
+                }
+                return tokenRes.json();
+              })
+              .then((tokenData) => {
+                const token = tokenData.value;
+
+                fetch(`${cobraApiUrl}/api/Queue`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ token, queueElements: cobraApiData }),
+                })
+                  .then((queueRes) => {
+                    if (!queueRes.ok) {
+                      setCobraApiState('error');
+                      setCobraApiMessage(
+                        // NOTE: Error posting data to COBRA API Queue.
+                        <Fragment>Error posting data to COBRA.</Fragment>,
+                      );
+                      throw new Error(queueRes.statusText);
+                    }
+
+                    const url = `${cobraAppUrl}/externalscenario/${token}`;
+                    window.open(url, '_blank')?.focus();
+
+                    setCobraApiState('success');
+                    setCobraApiMessage(
+                      <Fragment>
+                        <strong>Data succesfully submitted to COBRA.</strong>
+                        <br />
+                        If a new browser window or tab didn’t open, please check
+                        that your browser is not blocking popups.
+                      </Fragment>,
+                    );
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                    setCobraApiState('error');
+                    setCobraApiMessage(
+                      // NOTE: Error posting data to COBRA API Queue.
+                      <Fragment>Error posting data to COBRA.</Fragment>,
+                    );
+                  });
+              })
+              .catch((error) => {
+                console.log(error);
+                setCobraApiState('error');
+                setCobraApiMessage(
+                  // NOTE: Catch all error communicating with COBRA API.
+                  <Fragment>Error posting data to COBRA.</Fragment>,
+                );
+              });
           }}
         >
           Submit COBRA Results
         </a>
       </p>
-      */}
 
       {isDesktopSafari && (
-        <p
-          css={[bottomMessageStyles, vadidationWarningStyles]}
-          className="avert-centered"
-        >
-          Please press ⌘ + S to save the file after it is opened.
+        <p css={safariMessageStyles} className="avert-centered">
+          Please press <strong>⌘ + S</strong> to save the file after it is
+          opened.
         </p>
       )}
     </Fragment>
