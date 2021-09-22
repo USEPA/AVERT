@@ -50,6 +50,12 @@ const cobraMessageStyles = css`
   padding: 1rem;
   font-size: 0.625rem;
 
+  a {
+    color: #fff;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
   @media (min-width: 25em) {
     padding: 1.125rem;
   }
@@ -117,11 +123,11 @@ function DataDownload() {
       tier1Text: 'Fuel Combustion: Electric Utility',
       tier2Text: null,
       tier3Text: null,
-      PM25ri: 'reduce',
-      SO2ri: 'reduce',
-      NOXri: 'reduce',
-      NH3ri: 'reduce',
-      VOCri: 'reduce',
+      PM25ri: row.PM25_REDUCTIONS_TONS <= 0 ? 'reduce' : 'increase',
+      SO2ri: row.SO2_REDUCTIONS_TONS <= 0 ? 'reduce' : 'increase',
+      NOXri: row.NOx_REDUCTIONS_TONS <= 0 ? 'reduce' : 'increase',
+      NH3ri: row.NH3_REDUCTIONS_TONS <= 0 ? 'reduce' : 'increase',
+      VOCri: row.VOCS_REDUCTIONS_TONS <= 0 ? 'reduce' : 'increase',
       cPM25: Math.abs(row.PM25_REDUCTIONS_TONS),
       cSO2: Math.abs(row.SO2_REDUCTIONS_TONS),
       cNOX: Math.abs(row.NOx_REDUCTIONS_TONS),
@@ -136,6 +142,14 @@ function DataDownload() {
       tiertree_items_selected: ['1'],
     };
   });
+
+  const cobraApiErrorMessage = (
+    <>
+      Error connecting with COBRA application. Please try again later. If
+      connection problems persist, please contact AVERT support at{' '}
+      <a href="mailto:avert@epa.gov">avert@epa.gov</a>.
+    </>
+  );
 
   const isDesktopSafari =
     navigator.userAgent.toLowerCase().indexOf('safari') !== -1 &&
@@ -160,8 +174,8 @@ function DataDownload() {
       </p>
 
       <p>
-        Download formatted outputs for use in EPA’s Co-Benefits Risk Assessment
-        (COBRA) Screening Model.
+        Download formatted outputs for use in EPA’s COBRA Screening and Mapping
+        Tool.
       </p>
 
       <p className="avert-centered">
@@ -174,9 +188,18 @@ function DataDownload() {
         </a>
       </p>
 
+      {/* TODO: only render the paragrpah and button below if the COBRA API is up */}
       <p>
-        (PLACEHOLDER: text explaining submitting data to the COBRA App, and how
-        the user will be redirected upon successful submission).
+        EPA’s{' '}
+        <a href="https://www.epa.gov/cobra">
+          CO-Benefits Risk Assessment (COBRA) Health Impacts Screening and
+          Mapping Tool
+        </a>{' '}
+        is a free tool that quantifies the air quality, human health, and
+        health-related economic benefits from reductions in emissions that
+        result from clean energy policies and programs. Outputs from AVERT can
+        serve as inputs to COBRA. The button below will open a new browser tab
+        and load your AVERT results directly into the COBRA Web Edition.
       </p>
 
       {cobraApiState !== 'ready' && (
@@ -203,11 +226,11 @@ function DataDownload() {
             ev.preventDefault();
 
             setCobraApiState('loading');
-            setCobraApiMessage(<>Posting data to COBRA...</>);
+            setCobraApiMessage(<>Sending data to COBRA...</>);
 
             const cobraAppWindow = window.open('', '_blank');
             if (cobraAppWindow) {
-              cobraAppWindow.document.write('Posting data to COBRA...');
+              cobraAppWindow.document.write('Sending data to COBRA...');
               cobraAppWindow.document.body.style.fontFamily = 'sans-serif';
             }
 
@@ -215,7 +238,7 @@ function DataDownload() {
               .then((tokenRes) => {
                 if (!tokenRes.ok) {
                   setCobraApiState('error');
-                  setCobraApiMessage(<>Error connecting with COBRA app.</>);
+                  setCobraApiMessage(cobraApiErrorMessage);
                   cobraAppWindow?.close();
                   throw new Error(tokenRes.statusText);
                 }
@@ -232,7 +255,7 @@ function DataDownload() {
                   .then((queueRes) => {
                     if (!queueRes.ok) {
                       setCobraApiState('error');
-                      setCobraApiMessage(<>Error connecting with COBRA app.</>);
+                      setCobraApiMessage(cobraApiErrorMessage);
                       cobraAppWindow?.close();
                       throw new Error(queueRes.statusText);
                     }
@@ -247,19 +270,19 @@ function DataDownload() {
                   .catch((error) => {
                     console.log(error);
                     setCobraApiState('error');
-                    setCobraApiMessage(<>Error connecting with COBRA app.</>);
+                    setCobraApiMessage(cobraApiErrorMessage);
                     cobraAppWindow?.close();
                   });
               })
               .catch((error) => {
                 console.log(error);
                 setCobraApiState('error');
-                setCobraApiMessage(<>Error connecting with COBRA app.</>);
+                setCobraApiMessage(cobraApiErrorMessage);
                 cobraAppWindow?.close();
               });
           }}
         >
-          Submit COBRA Results
+          Submit Results to COBRA
         </a>
       </p>
 
