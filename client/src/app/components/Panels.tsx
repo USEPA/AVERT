@@ -19,6 +19,7 @@ import EEREChart from 'app/components/EEREChart';
 import DisplacementsTable from 'app/components/DisplacementsTable';
 import EmissionsTable from 'app/components/EmissionsTable';
 import EmissionsChart from 'app/components/EmissionsChart';
+import COBRAConnection from 'app/components/COBRAConnection';
 import DataDownload from 'app/components/DataDownload';
 import { modalLinkStyles } from 'app/components/Tooltip';
 // reducers
@@ -685,6 +686,10 @@ function Panels() {
           </h3>
 
           <EmissionsChart />
+
+          <h3 css={subheadingStyles}>Direct Connection to COBRA</h3>
+
+          <COBRAConnection />
 
           <h3 css={subheadingStyles}>Data Download</h3>
 
