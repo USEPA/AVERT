@@ -143,7 +143,7 @@ function DataDownload() {
     navigator.userAgent.toLowerCase().indexOf('mobi') === -1;
 
   return (
-    <Fragment>
+    <>
       <p>
         Download monthly displacement data for each county, state, and region in
         this analysis, in CSV format.
@@ -196,20 +196,27 @@ function DataDownload() {
       <p className="avert-centered">
         <a
           className="avert-button"
-          href="https://cobra.app.cloud.gov/"
+          href={cobraAppUrl}
+          target="_blank"
+          rel="noopener noreferrer"
           onClick={(ev) => {
             ev.preventDefault();
+
             setCobraApiState('loading');
-            setCobraApiMessage(<Fragment>Posting data to COBRA...</Fragment>);
+            setCobraApiMessage(<>Posting data to COBRA...</>);
+
+            const cobraAppWindow = window.open('', '_blank');
+            if (cobraAppWindow) {
+              cobraAppWindow.document.write('Posting data to COBRA...');
+              cobraAppWindow.document.body.style.fontFamily = 'sans-serif';
+            }
 
             fetch(`${cobraApiUrl}/api/Token`)
               .then((tokenRes) => {
                 if (!tokenRes.ok) {
                   setCobraApiState('error');
-                  setCobraApiMessage(
-                    // NOTE: Error fetching COBRA API token
-                    <Fragment>Error posting data to COBRA.</Fragment>,
-                  );
+                  setCobraApiMessage(<>Error connecting with COBRA app.</>);
+                  cobraAppWindow?.close();
                   throw new Error(tokenRes.statusText);
                 }
                 return tokenRes.json();
@@ -225,42 +232,30 @@ function DataDownload() {
                   .then((queueRes) => {
                     if (!queueRes.ok) {
                       setCobraApiState('error');
-                      setCobraApiMessage(
-                        // NOTE: Error posting data to COBRA API Queue.
-                        <Fragment>Error posting data to COBRA.</Fragment>,
-                      );
+                      setCobraApiMessage(<>Error connecting with COBRA app.</>);
+                      cobraAppWindow?.close();
                       throw new Error(queueRes.statusText);
                     }
 
-                    const url = `${cobraAppUrl}/externalscenario/${token}`;
-                    window.open(url, '_blank')?.focus();
+                    if (cobraAppWindow) {
+                      cobraAppWindow.location.href = `${cobraAppUrl}/externalscenario/${token}`;
+                    }
 
                     setCobraApiState('success');
-                    setCobraApiMessage(
-                      <Fragment>
-                        <strong>Data succesfully submitted to COBRA.</strong>
-                        <br />
-                        If a new browser window or tab didn’t open, please check
-                        that your browser is not blocking popups.
-                      </Fragment>,
-                    );
+                    setCobraApiMessage(<>Succesfully posted data to COBRA.</>);
                   })
                   .catch((error) => {
                     console.log(error);
                     setCobraApiState('error');
-                    setCobraApiMessage(
-                      // NOTE: Error posting data to COBRA API Queue.
-                      <Fragment>Error posting data to COBRA.</Fragment>,
-                    );
+                    setCobraApiMessage(<>Error connecting with COBRA app.</>);
+                    cobraAppWindow?.close();
                   });
               })
               .catch((error) => {
                 console.log(error);
                 setCobraApiState('error');
-                setCobraApiMessage(
-                  // NOTE: Catch all error communicating with COBRA API.
-                  <Fragment>Error posting data to COBRA.</Fragment>,
-                );
+                setCobraApiMessage(<>Error connecting with COBRA app.</>);
+                cobraAppWindow?.close();
               });
           }}
         >
@@ -274,7 +269,7 @@ function DataDownload() {
           opened.
         </p>
       )}
-    </Fragment>
+    </>
   );
 }
 
