@@ -80,30 +80,17 @@ function COBRAConnection() {
   useEffect(() => {
     if (activeStep !== 3) return;
 
-    fetch(`${cobraApiUrl}/api/version`)
-      .then((versionRes) => {
-        if (!versionRes.ok) throw new Error(versionRes.statusText);
-        return versionRes.text();
+    fetch(`${cobraApiUrl}/api/Token`)
+      .then((tokenRes) => {
+        if (!tokenRes.ok) throw new Error(tokenRes.statusText);
+        return tokenRes.json();
       })
-      .then((versionData) => {
-        const versionNum = Number(versionData.replace(/[^\d.]/g, ''));
-        if (versionNum < 1.3) {
-          const message = `COBRA API version ${versionNum} does not support AVERT app integration`;
-          throw new Error(message);
-        }
-        fetch(`${cobraApiUrl}/api/Token`)
-          .then((tokenRes) => {
-            if (!tokenRes.ok) throw new Error(tokenRes.statusText);
-            return tokenRes.json();
-          })
-          .then((tokenData) => {
-            const token = tokenData.value;
-            if (token) setCobraApiReady(true);
-          })
-          .catch((error) => {
-            console.log(error);
-            setCobraApiReady(false);
-          });
+      .then((tokenData) => {
+        const token = tokenData.value;
+        return fetch(`${cobraApiUrl}/api/Queue/${token}`).then((queueRes) => {
+          if (!queueRes.ok) throw new Error(queueRes.statusText);
+          setCobraApiReady(true);
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -118,18 +105,6 @@ function COBRAConnection() {
     setCobraApiState('ready');
     setCobraApiMessage(<Fragment />);
   }, [activeStep]);
-
-  function handleCobraApiError(cobraAppWindow: Window | null) {
-    cobraAppWindow?.close();
-    setCobraApiState('error');
-    setCobraApiMessage(
-      <>
-        Error connecting with COBRA application. Please try again later. If
-        connection problems persist, please contact AVERT support at{' '}
-        <a href="mailto:avert@epa.gov">avert@epa.gov</a>.
-      </>,
-    );
-  }
 
   const cobraApiData: CobraApiData[] = cobraData.map((row) => {
     const countyState = `${row.COUNTY.replace(/ County$/, '')}, ${row.STATE}`;
@@ -199,51 +174,45 @@ function COBRAConnection() {
           rel="noopener noreferrer"
           onClick={(ev) => {
             ev.preventDefault();
-
-            setCobraApiState('loading');
-            setCobraApiMessage(<>Sending data to COBRA...</>);
-
             const cobraAppWindow = window.open('', '_blank');
-
             if (cobraAppWindow) {
               cobraAppWindow.document.write('Sending data to COBRA...');
               cobraAppWindow.document.body.style.fontFamily = 'sans-serif';
             }
+            setCobraApiState('loading');
+            setCobraApiMessage(<>Sending data to COBRA...</>);
 
             fetch(`${cobraApiUrl}/api/Token`)
               .then((tokenRes) => {
-                if (!tokenRes.ok) {
-                  handleCobraApiError(cobraAppWindow);
-                  throw new Error(tokenRes.statusText);
-                }
+                if (!tokenRes.ok) throw new Error(tokenRes.statusText);
                 return tokenRes.json();
               })
               .then((tokenData) => {
                 const token = tokenData.value;
-                fetch(`${cobraApiUrl}/api/Queue`, {
+                return fetch(`${cobraApiUrl}/api/Queue`, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ token, queueElements: cobraApiData }),
-                })
-                  .then((queueRes) => {
-                    if (!queueRes.ok) {
-                      handleCobraApiError(cobraAppWindow);
-                      throw new Error(queueRes.statusText);
-                    }
-                    if (cobraAppWindow) {
-                      cobraAppWindow.location.href = `${cobraAppUrl}/externalscenario/${token}`;
-                    }
-                    setCobraApiState('success');
-                    setCobraApiMessage(<>Succesfully posted data to COBRA.</>);
-                  })
-                  .catch((error) => {
-                    console.log(error);
-                    handleCobraApiError(cobraAppWindow);
-                  });
+                }).then((queueRes) => {
+                  if (!queueRes.ok) throw new Error(queueRes.statusText);
+                  if (cobraAppWindow) {
+                    cobraAppWindow.location.href = `${cobraAppUrl}/externalscenario/${token}`;
+                  }
+                  setCobraApiState('success');
+                  setCobraApiMessage(<>Succesfully posted data to COBRA.</>);
+                });
               })
               .catch((error) => {
                 console.log(error);
-                handleCobraApiError(cobraAppWindow);
+                cobraAppWindow?.close();
+                setCobraApiState('error');
+                setCobraApiMessage(
+                  <>
+                    Error connecting with COBRA application. Please try again
+                    later. If connection problems persist, please contact AVERT
+                    support at <a href="mailto:avert@epa.gov">avert@epa.gov</a>.
+                  </>,
+                );
               });
           }}
         >
