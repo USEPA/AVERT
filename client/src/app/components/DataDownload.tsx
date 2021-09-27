@@ -2,6 +2,7 @@
 
 // components
 import {
+  subheadingStyles,
   bottomMessageStyles,
   warningMessageStyles,
 } from 'app/components/Panels';
@@ -47,6 +48,8 @@ function DataDownload() {
 
   return (
     <>
+      <h3 css={subheadingStyles}>Data Download</h3>
+
       <p>
         Download monthly displacement data for each county, state, and region in
         this analysis, in CSV format.

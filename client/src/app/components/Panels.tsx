@@ -284,7 +284,7 @@ const headingStyles = css`
   }
 `;
 
-const subheadingStyles = css`
+export const subheadingStyles = css`
   font-size: 0.875rem;
   color: rgb(0, 128, 164);
 
@@ -687,11 +687,7 @@ function Panels() {
 
           <EmissionsChart />
 
-          <h3 css={subheadingStyles}>Direct Connection to COBRA</h3>
-
           <COBRAConnection />
-
-          <h3 css={subheadingStyles}>Data Download</h3>
 
           <DataDownload />
         </div>

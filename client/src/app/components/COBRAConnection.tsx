@@ -4,6 +4,7 @@ import { Fragment, useState, useEffect } from 'react';
 import { css } from '@emotion/react';
 // components
 import {
+  subheadingStyles,
   infoMessageStyles,
   successMessageStyles,
   errorMessageStyles,
@@ -161,6 +162,8 @@ function COBRAConnection() {
 
   return (
     <>
+      <h3 css={subheadingStyles}>Direct Connection to COBRA</h3>
+
       <p>
         EPA’s{' '}
         <a href="https://www.epa.gov/cobra">
