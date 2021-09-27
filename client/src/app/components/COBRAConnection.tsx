@@ -74,23 +74,39 @@ function COBRAConnection() {
     ({ displacement }) => displacement.downloadableCobraData,
   );
 
-  const [cobraTokenApiOnline, setCobraTokenApiOnline] = useState(false);
+  const [cobraApiReady, setCobraApiReady] = useState(false);
 
   useEffect(() => {
     if (activeStep !== 3) return;
 
-    fetch(`${cobraApiUrl}/api/Token`)
-      .then((tokenRes) => {
-        if (!tokenRes.ok) throw new Error(tokenRes.statusText);
-        return tokenRes.json();
+    fetch(`${cobraApiUrl}/api/version`)
+      .then((versionRes) => {
+        if (!versionRes.ok) throw new Error(versionRes.statusText);
+        return versionRes.text();
       })
-      .then((tokenData) => {
-        const token = tokenData.value;
-        if (token) setCobraTokenApiOnline(true);
+      .then((versionData) => {
+        const versionNum = Number(versionData.replace(/[^\d.]/g, ''));
+        if (versionNum < 1.3) {
+          const message = `COBRA API version ${versionNum} does not support AVERT app integration`;
+          throw new Error(message);
+        }
+        fetch(`${cobraApiUrl}/api/Token`)
+          .then((tokenRes) => {
+            if (!tokenRes.ok) throw new Error(tokenRes.statusText);
+            return tokenRes.json();
+          })
+          .then((tokenData) => {
+            const token = tokenData.value;
+            if (token) setCobraApiReady(true);
+          })
+          .catch((error) => {
+            console.log(error);
+            setCobraApiReady(false);
+          });
       })
       .catch((error) => {
         console.log(error);
-        setCobraTokenApiOnline(false);
+        setCobraApiReady(false);
       });
   }, [activeStep, cobraApiUrl]);
 
@@ -141,7 +157,7 @@ function COBRAConnection() {
     };
   });
 
-  if (!cobraTokenApiOnline) return null;
+  if (!cobraApiReady) return null;
 
   return (
     <>
