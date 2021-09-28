@@ -1,15 +1,13 @@
 /** @jsxImportSource @emotion/react */
 
-import { Fragment } from 'react';
-// import { useDispatch } from 'react-redux';
 // components
 import {
+  subheadingStyles,
   bottomMessageStyles,
-  vadidationWarningStyles,
+  warningMessageStyles,
 } from 'app/components/Panels';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
-// import { postCobraData } from 'app/redux/reducers/displacement';
 // hooks
 import { useSelectedRegion, useSelectedState } from 'app/hooks';
 
@@ -24,7 +22,6 @@ function convertToCSVString(data: { [key: string]: any }[]) {
 }
 
 function DataDownload() {
-  // const dispatch = useDispatch();
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const countyData = useTypedSelector(
     ({ displacement }) => displacement.downloadableCountyData,
@@ -50,7 +47,9 @@ function DataDownload() {
     navigator.userAgent.toLowerCase().indexOf('mobi') === -1;
 
   return (
-    <Fragment>
+    <>
+      <h3 css={subheadingStyles}>Data Download</h3>
+
       <p>
         Download monthly displacement data for each county, state, and region in
         this analysis, in CSV format.
@@ -67,8 +66,8 @@ function DataDownload() {
       </p>
 
       <p>
-        Download formatted outputs for use in EPA’s Co-Benefits Risk Assessment
-        (COBRA) Screening Model.
+        Download formatted outputs for use in EPA’s COBRA Screening and Mapping
+        Tool.
       </p>
 
       <p className="avert-centered">
@@ -81,35 +80,16 @@ function DataDownload() {
         </a>
       </p>
 
-      {/*
-      <p>
-        (PLACEHOLDER: text explaining submitting data to the COBRA App, and how
-        the user will be redirected upon successful submission).
-      </p>
-
-      <p className="avert-centered">
-        <a
-          className="avert-button"
-          href="https://cobra.app.cloud.gov/"
-          onClick={(ev) => {
-            ev.preventDefault();
-            // dispatch(postCobraData(cobraData));
-          }}
-        >
-          Submit COBRA Results
-        </a>
-      </p>
-      */}
-
       {isDesktopSafari && (
         <p
-          css={[bottomMessageStyles, vadidationWarningStyles]}
+          css={[bottomMessageStyles, warningMessageStyles]}
           className="avert-centered"
         >
-          Please press ⌘ + S to save the file after it is opened.
+          Please press <strong>⌘ + S</strong> to save the file after it is
+          opened.
         </p>
       )}
-    </Fragment>
+    </>
   );
 }
 

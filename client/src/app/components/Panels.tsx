@@ -19,6 +19,7 @@ import EEREChart from 'app/components/EEREChart';
 import DisplacementsTable from 'app/components/DisplacementsTable';
 import EmissionsTable from 'app/components/EmissionsTable';
 import EmissionsChart from 'app/components/EmissionsChart';
+import COBRAConnection from 'app/components/COBRAConnection';
 import DataDownload from 'app/components/DataDownload';
 import { modalLinkStyles } from 'app/components/Tooltip';
 // reducers
@@ -283,7 +284,7 @@ const headingStyles = css`
   }
 `;
 
-const subheadingStyles = css`
+export const subheadingStyles = css`
   font-size: 0.875rem;
   color: rgb(0, 128, 164);
 
@@ -380,13 +381,22 @@ export const messageHeadingStyles = css`
   }
 `;
 
-export const vadidationErrorStyles = css`
-  color: white;
-  background-color: rgb(212, 57, 57);
+export const infoMessageStyles = css`
+  background-color: rgb(211, 239, 245);
 `;
 
-export const vadidationWarningStyles = css`
+export const successMessageStyles = css`
+  color: white;
+  background-color: rgb(90, 170, 60);
+`;
+
+export const warningMessageStyles = css`
   background-color: rgb(249, 201, 114);
+`;
+
+export const errorMessageStyles = css`
+  color: white;
+  background-color: rgb(212, 57, 57);
 `;
 
 function Panels() {
@@ -645,7 +655,7 @@ function Panels() {
           {
             // conditionally display validation warning
             !softValid && (
-              <p css={[topMessageStyles, vadidationWarningStyles]}>
+              <p css={[topMessageStyles, warningMessageStyles]}>
                 <span css={messageHeadingStyles}>WARNING:</span>
                 The proposed EE/RE programs would collectively displace more
                 than 15% of regional fossil generation in one or more hours of
@@ -677,7 +687,7 @@ function Panels() {
 
           <EmissionsChart />
 
-          <h3 css={subheadingStyles}>Data Download</h3>
+          <COBRAConnection />
 
           <DataDownload />
         </div>

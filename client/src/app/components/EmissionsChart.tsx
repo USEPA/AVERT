@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 import {
+  ReplacementPollutantName,
   MonthlyDisplacement,
   calculateMonthlyData,
 } from 'app/redux/reducers/displacement';
@@ -143,9 +144,11 @@ function EmissionsChart() {
     nox: { ...initialMonthlyData },
     co2: { ...initialMonthlyData },
     pm25: { ...initialMonthlyData },
+    vocs: { ...initialMonthlyData },
+    nh3: { ...initialMonthlyData },
   };
 
-  for (const item of ['so2', 'nox', 'co2', 'pm25']) {
+  for (const item of ['so2', 'nox', 'co2', 'pm25', 'vocs', 'nh3']) {
     const pollutant = item as Pollutant;
 
     const regionId =
@@ -284,7 +287,7 @@ function EmissionsChart() {
     },
     yAxis: {
       title: {
-        text: formatYAxis('lbs'),
+        text: formatYAxis('lb'),
       },
     },
     series: [
@@ -292,7 +295,7 @@ function EmissionsChart() {
         name: 'SO₂',
         data: calculateMonthlyData(monthlyData.so2, selectedUnit),
         color: '#058dc7',
-        emissionsUnit: 'lbs',
+        emissionsUnit: 'lb',
       },
     ],
   };
@@ -305,7 +308,7 @@ function EmissionsChart() {
     },
     yAxis: {
       title: {
-        text: formatYAxis('lbs'),
+        text: formatYAxis('lb'),
       },
     },
     series: [
@@ -313,7 +316,7 @@ function EmissionsChart() {
         name: 'NOₓ',
         data: calculateMonthlyData(monthlyData.nox, selectedUnit),
         color: '#ed561b',
-        emissionsUnit: 'lbs',
+        emissionsUnit: 'lb',
       },
     ],
   };
@@ -347,7 +350,7 @@ function EmissionsChart() {
     },
     yAxis: {
       title: {
-        text: formatYAxis('lbs'),
+        text: formatYAxis('lb'),
       },
     },
     series: [
@@ -355,13 +358,59 @@ function EmissionsChart() {
         name: 'PM₂₅',
         data: calculateMonthlyData(monthlyData.pm25, selectedUnit),
         color: '#665683',
-        emissionsUnit: 'lbs',
+        emissionsUnit: 'lb',
+      },
+    ],
+  };
+
+  const vocsConfig = {
+    ...commonConfig,
+    title: {
+      text: formatTitle('VOC'),
+      useHTML: true,
+    },
+    yAxis: {
+      title: {
+        text: formatYAxis('lb'),
+      },
+    },
+    series: [
+      {
+        name: 'VOC',
+        data: calculateMonthlyData(monthlyData.vocs, selectedUnit),
+        color: '#ffc107',
+        emissionsUnit: 'lb',
+      },
+    ],
+  };
+
+  const nh3Config = {
+    ...commonConfig,
+    title: {
+      text: formatTitle('NH<sub>3</sub>'),
+      useHTML: true,
+    },
+    yAxis: {
+      title: {
+        text: formatYAxis('lb'),
+      },
+    },
+    series: [
+      {
+        name: 'NH₃',
+        data: calculateMonthlyData(monthlyData.nh3, selectedUnit),
+        color: '#009688',
+        emissionsUnit: 'lb',
       },
     ],
   };
 
   function renderChart(pollutant: Pollutant) {
-    const flaggedEGUs = egusNeedingReplacement[pollutant];
+    const replacementPotentiallyNeeded = ['generation', 'so2', 'nox', 'co2'];
+
+    const flaggedEGUs = replacementPotentiallyNeeded.includes(pollutant)
+      ? egusNeedingReplacement[pollutant as ReplacementPollutantName]
+      : [];
 
     const flaggedRegion =
       selectedAggregation === 'region' &&
@@ -387,13 +436,17 @@ function EmissionsChart() {
       .set('so2', <Fragment>SO<sub>2</sub></Fragment>)
       .set('nox', <Fragment>NO<sub>X</sub></Fragment>)
       .set('co2', <Fragment>CO<sub>2</sub></Fragment>)
-      .set('pm25', <Fragment>PM<sub>2.5</sub></Fragment>);
+      .set('pm25', <Fragment>PM<sub>2.5</sub></Fragment>)
+      .set('vocs', <Fragment>VOC</Fragment>)
+      .set('nh3', <Fragment>NH<sub>2</sub></Fragment>);
 
     const chartConfig = new Map<Pollutant, Object>()
       .set('so2', so2Config)
       .set('nox', noxConfig)
       .set('co2', co2Config)
-      .set('pm25', pm25Config);
+      .set('pm25', pm25Config)
+      .set('vocs', vocsConfig)
+      .set('nh3', nh3Config);
 
     if (selectedUnit === 'percentages') {
       if (flaggedRegion || flaggedState || flaggedCounty) {
@@ -577,7 +630,7 @@ function EmissionsChart() {
             }}
             data-avert-unit-toggle="emissions"
           />
-          Emission changes (lbs or tons)
+          Emission changes (lb or tons)
         </label>
 
         <label>
@@ -608,6 +661,12 @@ function EmissionsChart() {
         </div>
         <div data-avert-chart>
           {status === 'complete' && renderChart('pm25')}
+        </div>
+        <div data-avert-chart>
+          {status === 'complete' && renderChart('vocs')}
+        </div>
+        <div data-avert-chart>
+          {status === 'complete' && renderChart('nh3')}
         </div>
       </div>
     </Fragment>

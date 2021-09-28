@@ -1,28 +1,69 @@
 /**
- * @typedef {Object} RDF
- * @property {RdfData} data
- * @property {RdfLimits} limits
- * @property {number[]} load_bin_edges
+ * @typedef {Object} RdfJson
  * @property {RdfRegion} region
- * @property {RdfRegionalLoad[]} regional_load
  * @property {RdfRun} run
+ * @property {RdfLimits} limits
+ * @property {RdfRegionalLoad[]} regional_load
+ * @property {number[]} load_bin_edges
+ * @property {RdfData} data
+ */
+
+/**
+ * @typedef {Object} RdfRegion
+ * @property {string} region_abbv
+ * @property {string} region_name
+ * @property {string} region_states
+ */
+
+/**
+ * @typedef {Object} RdfRun
+ * @property {number} region_id
+ * @property {number} year
+ * @property {string[]} file_name
+ * @property {number} mc_runs
+ * @property {number} mc_gen_runs
+ */
+
+/**
+ * @typedef {Object} RdfLimits
+ * @property {number} id
+ * @property {number} region_id
+ * @property {number} year
+ * @property {number} max_solar_wind_mwh
+ * @property {number} max_ee_yearly_gwh
+ * @property {number} max_ee_percent
+ * @property {?string[]} created_at
+ * @property {?string[]} updated_at
+ */
+
+/**
+ * @typedef {Object} RdfRegionalLoad
+ * @property {number} hour_of_year
+ * @property {number} year
+ * @property {1|2|3|4|5|6|7|8|9|10|11|12} month
+ * @property {number} day
+ * @property {number} hour
+ * @property {number} regional_load_mw
+ * @property {number} hourly_limit
  */
 
 /**
  * @typedef {Object} RdfData
- * @property {LocationData[]} generation
- * @property {LocationData[]} so2
- * @property {LocationData[]} so2_not
- * @property {LocationData[]} nox
- * @property {LocationData[]} nox_not
- * @property {LocationData[]} co2
- * @property {LocationData[]} co2_not
- * @property {LocationData[]} pm25
- * @property {LocationData[]} pm25_not
+ * @property {EguData[]} generation
+ * @property {EguData[]} so2
+ * @property {EguData[]} so2_not
+ * @property {EguData[]} nox
+ * @property {EguData[]} nox_not
+ * @property {EguData[]} co2
+ * @property {EguData[]} co2_not
+ * @property {EguData[]} heat
+ * @property {EguData[]} heat_not
+ * @property {EguData[]} pm25
+ * @property {EguData[]} pm25_not
  */
 
 /**
- * @typedef {Object} LocationData
+ * @typedef {Object} EguData
  * @property {string} state
  * @property {string} county
  * @property {number} lat
@@ -36,56 +77,83 @@
  */
 
 /**
- * @typedef {Object} RdfLimits
- * @property {string[]} created_at
- * @property {number} id
- * @property {number} max_ee_percent
- * @property {number} max_ee_yearly_gwh
- * @property {number} max_solar_wind_mwh
- * @property {number} region_id
- * @property {string[]} updated_at
+ * @typedef {Object} NeiJson
+ * @property {NeiRegion[]} regions
+ */
+
+/**
+ * @typedef {Object} NeiRegion
+ * @property {string} name
+ * @property {NeiEgu[]} egus
+ */
+
+/**
+ * @typedef {Object} NeiEgu
+ * @property {string} state
+ * @property {string} county
+ * @property {string} plant
+ * @property {number} orispl_code
+ * @property {string} unit_code
+ * @property {string} full_name
+ * @property {NeiData[]} annual_data
+ */
+
+/**
+ * @typedef {Object} NeiData
  * @property {number} year
- */
-
-/**
- * @typedef {Object} RdfRegion
- * @property {string} region_abbv
- * @property {string} region_name
- * @property {string} region_states
- */
-
-/**
- * @typedef {Object} RdfRegionalLoad
- * @property {MonthNumber} month
- * @property {number} regional_load_mw
- */
-
-/**
- * @typedef {1|2|3|4|5|6|7|8|9|10|11|12} MonthNumber
- */
-
-/**
- * @typedef {'month1'|'month2'|'month3'|'month4'|'month5'|'month6'|'month7'|'month8'|'month9'|'month10'|'month11'|'month12'} MonthKey
- */
-
-/**
- * @typedef {Object} RdfRun
- * @property {string[]} file_name
- * @property {number} mc_gen_runs
- * @property {number} mc_runs
- * @property {number} region_id
- * @property {number} year
+ * @property {number} generation
+ * @property {number} heat
+ * @property {?number} pm25
+ * @property {?number} vocs
+ * @property {?number} nh3
  */
 
 /**
 * @typedef {Object} MonthlyDisplacement
-* @property {DataByMonth} original
-* @property {DataByMonth} postEere
+* @property {Displacement} month1
+* @property {Displacement} month2
+* @property {Displacement} month3
+* @property {Displacement} month4
+* @property {Displacement} month5
+* @property {Displacement} month6
+* @property {Displacement} month7
+* @property {Displacement} month8
+* @property {Displacement} month9
+* @property {Displacement} month10
+* @property {Displacement} month11
+* @property {Displacement} month12
 */
 
 /**
- * @typedef {Object} DataByMonth
- * @property {number} MonthKey
+* @typedef {Object} Displacement
+* @property {number} original
+* @property {number} postEere
+*/
+
+/**
+ * @typedef {MonthlyDisplacement} PollutantRegionalData
+ */
+
+/**
+ * @typedef {Object.<string, MonthlyDisplacement>} PollutantStateData
+ */
+
+/**
+ * @typedef {Object.<string, Object.<string, MonthlyDisplacement>>} PollutantCountyData
+ */
+
+/**
+ * @typedef {Object} PollutantDisplacement
+ * @property {string} regionId
+ * @property {number} originalTotal
+ * @property {number} postEereTotal
+ * @property {PollutantRegionalData} regionalData
+ * @property {PollutantStateData} stateData
+ * @property {PollutantCountyData} countyData
+ */
+
+/**
+ * @typedef {'generation'|'so2'|'nox'|'co2'|'pm25'|'vocs'|'nh3'} Pollutant
  */
 
 /**
@@ -115,58 +183,109 @@ function excelMatch(array, lookup) {
 };
 
 /**
- * Caclulates displacement for a given pollutant.
- * @param {RDF} rdf
- * @param {number[]} eereLoad
- * @param {'generation'|'so2'|'nox'|'co2'|'pm25'} pollutant
+ * Caclulates displacement for a given metric.
+ * @param {Object} options
+ * @param {number} options.year
+ * @param {'generation'|'so2'|'nox'|'co2'|'nei'} options.metric
+ * @param {RdfJson} options.rdfJson
+ * @param {?NeiJson} options.neiJson
+ * @param {number[]} options.eereLoad
+ * @param {boolean} options.debug
  */
-function getDisplacement(rdf, eereLoad, pollutant) {
-  // set ozoneData and nonOzoneData based on provided pollutant
-  const ozoneData = rdf.data[pollutant];
-
-  /** @type {LocationData[]|false} */
-  const nonOzoneData = rdf.data[`${pollutant}_not`] || false;
-
+function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad, debug }) {
   /**
-   * monthly original and post-eere calculated values for the region
-   * @type {MonthlyDisplacement}
+   * this displacements object's keys will be one of type `Pollutant`, with
+   * the key's values being the calculated displacement data for that pollutant.
+   * an object with pollutants as keys is the return value from this function
+   * because if the provided `metric` parameter equals "nei", displacements will
+   * be calculated for multiple pullutants (PM2.5, VOCs, and NH3), with each
+   * pollutant's calculated displacement data being stored as the value of the
+   * pollutant's key of this `displacements` object.
+   * @type {Object.<string, PollutantDisplacement>}
    */
-  const regionalData = {}
+  const displacements = {};
 
-  /**
-   * monthly original and post-eere calculated values for each state
-   * @type {Object.<string, MonthlyDisplacement>}
-   */
-  const stateData = {}
+  // NOTE: displacement data for PM2.5, VOCs, and NH3 pollutants are all
+  // calculated when the provided `metric` parameter equals "nei". emissions
+  // rates for those pollutants are calculated with both the data in the "heat"
+  // (and related "heat_not") keys of the `rdfJson` data object and data stored
+  // in the `app/data/annual-emission-factors.json` file, whose data is passed
+  // as the `neiJson` parameter to this function as well (`neiJson` will be null
+  // unless the `metric` parameter equals "nei" – see `calculateMetric()` in
+  // `app/controllers.js`). that `neoJson` data contains annual point-source
+  // data from the National Emissions Inventory (NEI) for every EGU, organized
+  // by region.
 
-  /**
-   * monthly original and post-eere calculated values for each county within each state
-   * @type {Object.<string, Object.<string, MonthlyDisplacement>>}
-   */
-  const countyData = {}
+  /** @type {NeiEgu[]} - used to calculate PM2.5, VOCs, and NH3's emission rates */
+  let regionalNeiEgus = [];
+
+  if (metric === 'nei' && neiJson) {
+    regionalNeiEgus = neiJson.regions.find((region) => {
+      return region.name === rdfJson.region.region_name;
+    }).egus;
+  }
+
+  // set ozoneSeasonData and nonOzoneSeasonData based on provided metric
+  /** @type {EguData[]} */
+  const ozoneSeasonData = metric === 'nei'
+    ? rdfJson.data['heat']
+    : rdfJson.data[metric];
+
+  /** @type {EguData[]|false} */
+  const nonOzoneSeasonData = metric === 'nei'
+    ? rdfJson.data['heat_not']
+    : rdfJson.data[`${metric}_not`] || false; // false fallback for generation, as there's no non-ozone season generation data
+
+  // ozone season and non-ozone season medians
+  const ozoneSeasonMedians = ozoneSeasonData.map((data) => data.medians);
+  const nonOzoneSeasonMedians = nonOzoneSeasonData
+    ? nonOzoneSeasonData.map((data) => data.medians)
+    : false;
 
   // load bin edges
-  const firstEdge = rdf.load_bin_edges[0];
-  const lastEdge = rdf.load_bin_edges[rdf.load_bin_edges.length - 1];
+  const firstEdge = rdfJson.load_bin_edges[0];
+  const lastEdge = rdfJson.load_bin_edges[rdfJson.load_bin_edges.length - 1];
 
-  // dataset medians (ozone and non-ozone)
-  const ozoneMedians = ozoneData.map((data) => data.medians);
-  const nonOzoneMedians = 
-    nonOzoneData
-      ? nonOzoneData.map((data) => data.medians)
-      : false;
+  // create an array of pollutants, based on passed metric argument:
+  // - if the passed metric is 'nei', the pollutants array will be ['pm25', 'vocs', 'nh3']
+  // - else, the passed metric is either 'generation', 'so2', 'nox', or 'co2', and the
+  //   pollutants array will hold a single value, of the passed metric...e.g. ['generation']
+  /** @type {Pollutant[]} */
+  const pollutants = metric === 'nei' ? ['pm25', 'vocs', 'nh3'] : [metric];
 
-  /** @type {number[]} - used to calculate 'originalTotal' returned data */
-  const hourlyOriginalTotals = new Array(rdf.regional_load.length).fill(0);
+  // as with the `displacements` object, the following five object's string keys are of type `Pollutant`:
+  /** @type {Object.<string, PollutantRegionalData} - monthly original and post-eere calculated values for the region, by pollutant */
+  const regionalData = {};
 
-  /** @type {number[]} - used to calculate 'postEereTotal' returned data */
-  const hourlyPostEereTotals = new Array(rdf.regional_load.length).fill(0);
+  /** @type {Object.<string, PollutantStateData} - monthly original and post-eere calculated values for each state, by pollutant */
+  const stateData = {};
+
+  /** @type {Object.<string, PollutantCountyData} - monthly original and post-eere calculated values for each county within each state, by pollutant */
+  const countyData = {};
+
+  // NOTE: hourlyData is used for debugging only, as the resulting object is huge
+  /** @type {Object.<string, Object} - hourly original and post-eere calculated values for every EGU, by pollutant */
+  const hourlyData = {};
+
+  /** @type {Object.<string, number[]} - used to calculate 'originalTotal' returned data, by pollutant */
+  const hourlyOriginalTotals = {};
+
+  /** @type {Object.<string, number[]} - used to calculate 'postEereTotal' returned data, by pollutant */
+  const hourlyPostEereTotals = {};
+
+  pollutants.forEach((pollutant) => {
+    regionalData[pollutant] = {};
+    stateData[pollutant] = {};
+    countyData[pollutant] = {};
+    hourlyOriginalTotals[pollutant] = new Array(rdfJson.regional_load.length).fill(0);
+    hourlyPostEereTotals[pollutant] = new Array(rdfJson.regional_load.length).fill(0);
+  });
 
   // iterate over each hour in the year (8760 in non-leap years)
-  for (let i = 0; i < rdf.regional_load.length; i++) {
-    const month = rdf.regional_load[i].month;                   // numeric month of load
-    const originalLoad = rdf.regional_load[i].regional_load_mw; // original regional load (mwh)
-    const postEereLoad = originalLoad + eereLoad[i];            // EERE-merged regional load (mwh)
+  for (let i = 0; i < rdfJson.regional_load.length; i++) {
+    const month = rdfJson.regional_load[i].month;                   // numeric month of load
+    const originalLoad = rdfJson.regional_load[i].regional_load_mw; // original regional load (mwh)
+    const postEereLoad = originalLoad + eereLoad[i];                // EERE-merged regional load (mwh)
 
     const originalLoadInBounds = originalLoad >= firstEdge && originalLoad <= lastEdge;
     const postEereLoadInBounds = postEereLoad >= firstEdge && postEereLoad <= lastEdge;
@@ -175,92 +294,181 @@ function getDisplacement(rdf, eereLoad, pollutant) {
     if (!(originalLoadInBounds && postEereLoadInBounds)) continue;
 
     // get index of item closest to originalLoad or postEereLoad in load_bin_edges array
-    const originalLoadBinIndex = excelMatch(rdf.load_bin_edges, originalLoad);
-    const postEereLoadBinIndex = excelMatch(rdf.load_bin_edges, postEereLoad);
+    const originalLoadBinIndex = excelMatch(rdfJson.load_bin_edges, originalLoad);
+    const postEereLoadBinIndex = excelMatch(rdfJson.load_bin_edges, postEereLoad);
 
-    // set activeMedians, based on passed nonOzoneMedians value and month
-    const activeMedians =
-      nonOzoneMedians
-        ? (month >= 5 && month <= 9) ? ozoneMedians : nonOzoneMedians
-        : ozoneMedians;
+    // set datasetMedians, based on nonOzoneSeasonMedians value and the current month
+    // NOTE: if nonOzoneSeasonMedians doesn't exist (in the case of generation),
+    // datasetMedians will be the same as ozoneSeasonMedians (which is rdfJson.data.generation)
+    const datasetMedians = nonOzoneSeasonMedians
+      ? (month >= 5 && month <= 9) ? ozoneSeasonMedians : nonOzoneSeasonMedians
+      : ozoneSeasonMedians;
 
-    // iterate over each location in ozoneData (e.g. rdf.data.generation)
-    // the total number of iterations varies per region...
+    // iterate over each EGU (electric generating unit) in ozoneSeasonData
+    // (e.g. rdfJson.data.generation, rdfJson.data.so2, etc.)
+    // the total number of EGUs varies per region...
     // (less than 100 for the RM region; more than 1000 for the SE region)
-    ozoneData.forEach((location, index) => {
-      const medians = activeMedians[index];
-      const stateId = location.state;
-      const county = location.county;
+    ozoneSeasonData.forEach((egu, index) => {
+      const medians = datasetMedians[index];
+      const stateId = egu.state;
+      const county = egu.county;
 
       const calculatedOriginal = calculateLinear({
         load: originalLoad,
         genA: medians[originalLoadBinIndex],
         genB: medians[originalLoadBinIndex + 1],
-        edgeA: rdf.load_bin_edges[originalLoadBinIndex],
-        edgeB: rdf.load_bin_edges[originalLoadBinIndex + 1]
+        edgeA: rdfJson.load_bin_edges[originalLoadBinIndex],
+        edgeB: rdfJson.load_bin_edges[originalLoadBinIndex + 1]
       });
 
-      // handle special exclusions for emissions changes at specific locations
+      // handle special exclusions for emissions changes at specific EGUs
       // (specifically added for errors with SO2 reporting, but the RDFs have
-      // been updated to include the `infreq_emissions_flag` for all pollutants
-      // for consistency, which allows other pollutants at specific locations
+      // been updated to include the `infreq_emissions_flag` for all metrics
+      // for consistency, which allows other metrics at specific EGUs
       // to be excluded in the future)
-      const calculatedPostEere =
-        location.infreq_emissions_flag === 1
-          ? calculatedOriginal
-          : calculateLinear({
-              load: postEereLoad,
-              genA: medians[postEereLoadBinIndex],
-              genB: medians[postEereLoadBinIndex + 1],
-              edgeA: rdf.load_bin_edges[postEereLoadBinIndex],
-              edgeB: rdf.load_bin_edges[postEereLoadBinIndex + 1],
-            });
+      const calculatedPostEere = egu.infreq_emissions_flag === 1
+        ? calculatedOriginal
+        : calculateLinear({
+            load: postEereLoad,
+            genA: medians[postEereLoadBinIndex],
+            genB: medians[postEereLoadBinIndex + 1],
+            edgeA: rdfJson.load_bin_edges[postEereLoadBinIndex],
+            edgeB: rdfJson.load_bin_edges[postEereLoadBinIndex + 1],
+          });
 
-      // initialize the data structures for the region, each state, each county,
-      // and each month if they haven't yet been set up, and increment by the
-      // calculated original and calculated post-eere values for each day of the
-      // month to arrive at cumulative total original and post-eere values for
-      // the month for each data structure
-      // NOTE: in the web app, we could just use `countyData` and derive state
-      // totals and the region total by adding up values, but storing them
-      // individually here is computationally smarter as it means we don't need
-      // to re-iterate over data structures later to sum those totals
-      regionalData[`month${month}`] = regionalData[`month${month}`] || {};
-      regionalData[`month${month}`].original = regionalData[`month${month}`].original || 0;
-      regionalData[`month${month}`].postEere = regionalData[`month${month}`].postEere || 0;
-      regionalData[`month${month}`].original += calculatedOriginal;
-      regionalData[`month${month}`].postEere += calculatedPostEere;
+      // store `calculatedOriginal` and `calculatedPostEere` values in objects,
+      // with their keys corresponding to the pollutant. these objects will be
+      // used to build up the additive data that's eventually returned for each
+      // pollutant. using these intermediate `original` and `postEere` objects
+      // may seem redundant at first, but is necssary because when the provided
+      // `metric` parameter equals "nei", the same `calculatedOriginal` and
+      // `calculatedPostEere` values are used for PM2.5, VOCs, and NH3 pollutants
 
-      stateData[stateId] = stateData[stateId] || {};
-      stateData[stateId][`month${month}`] = stateData[stateId][`month${month}`] || {};
-      stateData[stateId][`month${month}`].original = stateData[stateId][`month${month}`].original || 0;
-      stateData[stateId][`month${month}`].postEere = stateData[stateId][`month${month}`].postEere || 0;
-      stateData[stateId][`month${month}`].original += calculatedOriginal;
-      stateData[stateId][`month${month}`].postEere += calculatedPostEere;
+      // as with the `displacements` object, the following two object's string keys are of type `Pollutant`:
+      /** @type {Object.<string, number} - calculated original number, by pollutant */
+      const original = {};
 
-      countyData[stateId] = countyData[stateId] || {};
-      countyData[stateId][county] = countyData[stateId][county] || {};
-      countyData[stateId][county][`month${month}`] = countyData[stateId][county][`month${month}`] || {};
-      countyData[stateId][county][`month${month}`].original = countyData[stateId][county][`month${month}`].original || 0;
-      countyData[stateId][county][`month${month}`].postEere = countyData[stateId][county][`month${month}`].postEere || 0;
-      countyData[stateId][county][`month${month}`].original += calculatedOriginal;
-      countyData[stateId][county][`month${month}`].postEere += calculatedPostEere;
+      /** @type {Object.<string, number} - calculated post-eere number, by pollutant */
+      const postEere = {};
 
-      // increment hourly total arrays for each locations for the given hour
-      hourlyOriginalTotals[i] += calculatedOriginal;
-      hourlyPostEereTotals[i] += calculatedPostEere;
+      pollutants.forEach((pollutant) => {
+        original[pollutant] = calculatedOriginal;
+        postEere[pollutant] = calculatedPostEere;
+
+        // NEI factor applied for PM2.5, VOCs, and NH3 pollutants
+        if (metric === 'nei') {
+          const matchedEgu = regionalNeiEgus.find((n) => {
+            return n.orispl_code === egu.orispl_code && n.unit_code === egu.unit_code;
+          });
+          // NEI EGU data for the given year
+          const neiEguData = matchedEgu.annual_data.find((d) => d.year === year);
+          original[pollutant] *= neiEguData[pollutant];
+          postEere[pollutant] *= neiEguData[pollutant];
+        }
+
+        // initialize the data structures for the region, each state, each county,
+        // and each month if they haven't yet been set up, and increment by the
+        // calculated original and calculated post-eere values for each day of the
+        // month to arrive at cumulative total original and post-eere values for
+        // the month for each data structure
+        // NOTE: in the web app, we could just use `countyData` and derive state
+        // totals and the region total by adding up values, but storing them
+        // individually here is computationally smarter as it means we don't need
+        // to re-iterate over data structures later to sum those totals
+        regionalData[pollutant][`month${month}`] = regionalData[pollutant][`month${month}`] || {};
+        regionalData[pollutant][`month${month}`].original = regionalData[pollutant][`month${month}`].original || 0;
+        regionalData[pollutant][`month${month}`].postEere = regionalData[pollutant][`month${month}`].postEere || 0;
+        regionalData[pollutant][`month${month}`].original += original[pollutant];
+        regionalData[pollutant][`month${month}`].postEere += postEere[pollutant];
+
+        stateData[pollutant][stateId] = stateData[pollutant][stateId] || {};
+        stateData[pollutant][stateId][`month${month}`] = stateData[pollutant][stateId][`month${month}`] || {};
+        stateData[pollutant][stateId][`month${month}`].original = stateData[pollutant][stateId][`month${month}`].original || 0;
+        stateData[pollutant][stateId][`month${month}`].postEere = stateData[pollutant][stateId][`month${month}`].postEere || 0;
+        stateData[pollutant][stateId][`month${month}`].original += original[pollutant];
+        stateData[pollutant][stateId][`month${month}`].postEere += postEere[pollutant];
+
+        countyData[pollutant][stateId] = countyData[pollutant][stateId] || {};
+        countyData[pollutant][stateId][county] = countyData[pollutant][stateId][county] || {};
+        countyData[pollutant][stateId][county][`month${month}`] = countyData[pollutant][stateId][county][`month${month}`] || {};
+        countyData[pollutant][stateId][county][`month${month}`].original = countyData[pollutant][stateId][county][`month${month}`].original || 0;
+        countyData[pollutant][stateId][county][`month${month}`].postEere = countyData[pollutant][stateId][county][`month${month}`].postEere || 0;
+        countyData[pollutant][stateId][county][`month${month}`].original += original[pollutant];
+        countyData[pollutant][stateId][county][`month${month}`].postEere += postEere[pollutant];
+
+        // NOTE: hourlyData isn't returned normally as the resulting object is
+        // huge (several hundred MB). this is just added as a means to verify
+        // hourly calculations for each EGU when developing locally.
+        // to temporaily enable this, update the `calculateMetric()` method in
+        // `app/controllers.js` to pass the `debug` parameter's value as `true`
+        //
+        // AGAIN, THIS IS FOR DEBUGGING ONLY – DO NOT ENABLE THIS FOR PRODUCTION,
+        // as the returned `hourlyData` object is massive, and when debug is set
+        // to `true`, this function also won't return the summed regional, state,
+        // and county data the web app needs
+        if (debug) {
+          hourlyData[pollutant] = hourlyData[pollutant] || [];
+          hourlyData[pollutant][i] = hourlyData[pollutant][i] || {};
+          hourlyData[pollutant][i].hour = hourlyData[pollutant][i].hour || i + 1;
+          hourlyData[pollutant][i].month = hourlyData[pollutant][i].month || month;
+          hourlyData[pollutant][i].year = hourlyData[pollutant][i].year || year;
+          hourlyData[pollutant][i].originalLoad = hourlyData[pollutant][i].originalLoad || originalLoad;
+          hourlyData[pollutant][i].postEereLoad = hourlyData[pollutant][i].postEereLoad || postEereLoad;
+
+          // NOTE: to generate data for a specific EGU, and not all EGUs,
+          // un-comment out the code below and update it with the specific EGU's
+          // ORISPL code and unit code and comment out the next several lines of
+          // code inside this `if` statement block
+          //
+          // if (egu.orispl_code === 50865 && egu.unit_code === '1') {
+            // hourlyData[pollutant][i].orisplCode = hourlyData[pollutant][i].orisplCode || egu.orispl_code;
+            // hourlyData[pollutant][i].unitCode = hourlyData[pollutant][i].unitCode || egu.unit_code;
+            // hourlyData[pollutant][i].name = hourlyData[pollutant][i].name || egu.full_name;
+            // hourlyData[pollutant][i].state = hourlyData[pollutant][i].state || stateId;
+            // hourlyData[pollutant][i].county = hourlyData[pollutant][i].county || county;
+            // hourlyData[pollutant][i].original = hourlyData[pollutant][i].original || original[pollutant];
+            // hourlyData[pollutant][i].postEere = hourlyData[pollutant][i].postEere || postEere[pollutant];
+          // }
+
+          hourlyData[pollutant][i].egus = hourlyData[pollutant][i].egus || [];
+          hourlyData[pollutant][i].egus[index] = hourlyData[pollutant][i].egus[index] || {};
+          hourlyData[pollutant][i].egus[index].orisplCode = hourlyData[pollutant][i].egus[index].orisplCode || egu.orispl_code;
+          hourlyData[pollutant][i].egus[index].unitCode = hourlyData[pollutant][i].egus[index].unitCode || egu.unit_code;
+          hourlyData[pollutant][i].egus[index].name = hourlyData[pollutant][i].egus[index].name || egu.full_name;
+          hourlyData[pollutant][i].egus[index].state = hourlyData[pollutant][i].egus[index].state || stateId;
+          hourlyData[pollutant][i].egus[index].county = hourlyData[pollutant][i].egus[index].county || county;
+          hourlyData[pollutant][i].egus[index].original = hourlyData[pollutant][i].egus[index].original || original[pollutant];
+          hourlyData[pollutant][i].egus[index].postEere = hourlyData[pollutant][i].egus[index].postEere || postEere[pollutant];
+        }
+
+        // increment hourly total arrays for each EGU for the given hour
+        hourlyOriginalTotals[pollutant][i] += original[pollutant];
+        hourlyPostEereTotals[pollutant][i] += postEere[pollutant];
+      });
     });
   }
 
-  return {
-    regionId: rdf.region.region_abbv,
-    pollutant: pollutant,
-    originalTotal: hourlyOriginalTotals.reduce((acc, cur) => acc + (cur || 0), 0),
-    postEereTotal: hourlyPostEereTotals.reduce((acc, cur) => acc + (cur || 0), 0),
-    regionalData,
-    stateData,
-    countyData,
-  };
+  pollutants.forEach((pollutant) => {
+    displacements[pollutant] = {
+      regionId: rdfJson.region.region_abbv,
+      originalTotal: hourlyOriginalTotals[pollutant].reduce((acc, cur) => acc + (cur || 0), 0),
+      postEereTotal: hourlyPostEereTotals[pollutant].reduce((acc, cur) => acc + (cur || 0), 0),
+      regionalData: regionalData[pollutant],
+      stateData: stateData[pollutant],
+      countyData: countyData[pollutant],
+    }
+  });
+
+  if (debug) {
+    pollutants.forEach((pollutant) => {
+      delete displacements[pollutant].regionalData;
+      delete displacements[pollutant].stateData;
+      delete displacements[pollutant].countyData;
+      displacements[pollutant].hourlyData = hourlyData[pollutant]
+    });
+  }
+
+  return displacements;
 }
 
 module.exports = getDisplacement;

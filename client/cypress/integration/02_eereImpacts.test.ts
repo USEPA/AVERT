@@ -61,8 +61,8 @@ describe('Set EE/RE Impacts', () => {
     cy.get('@onshoreWind').type('1000');
     cy.get('@calculateBtn').click();
     cy.findAllByText('WARNING:').filter(':visible');
-    cy.findByText('18.83');
-    cy.findByText('January 1 at 5:00 AM');
+    cy.findByText('24.35');
+    cy.findByText('December 29 at 4:00 AM');
   });
 
   it('Entering a value over the 30% threshold for annual generation and onshore wind capacity displays the error message below the chart', () => {
@@ -72,8 +72,8 @@ describe('Set EE/RE Impacts', () => {
     cy.get('@onshoreWind').type('1000');
     cy.get('@calculateBtn').click();
     cy.findAllByText('ERROR:').filter(':visible');
-    cy.findByText('31.08');
-    cy.findByText('April 20 at 3:00 AM');
+    cy.findByText('36.8');
+    cy.findByText('December 29 at 4:00 AM');
   });
 
   it('Entering a negative value for annual generation displays the error message below the input', () => {

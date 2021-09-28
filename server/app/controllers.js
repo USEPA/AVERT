@@ -40,25 +40,35 @@ const eere = {
 /**
  * Receives EERE data and region, and returns displacement data.
  * @param {*} ctx 
- * @param {'generation'|'so2'|'nox'|'co2'|'pm25'} pollutant 
+ * @param {'generation'|'so2'|'nox'|'co2'|'nei'} metric
  */
-async function calculatePollutant(ctx, pollutant) {
+async function calculateMetric(ctx, metric) {
+  const year = config.year;
   const body = await ctx.request.body;
-  // parse rdf data from file
-  const file = await readFile(`app/data/${config.regions[body.region].rdf}`);
-  const rdf = JSON.parse(file);
-  ctx.body = getDisplacement(rdf, body.eereLoad, pollutant);
+  const eereLoad = body.eereLoad;
+  // parse rdf (and potentially nei) data from files
+  const rdfData = await readFile(`app/data/${config.regions[body.region].rdf}`);
+  const rdfJson = JSON.parse(rdfData);
+  let neiJson = null;
+  if (metric === 'nei') {
+    const neiData = await readFile('app/data/annual-emission-factors.json');
+    neiJson = JSON.parse(neiData);
+  }
+  // NOTE: setting the debug param to `true` will break the web app, so it must
+  // stay set to `false`. it's only used in local development to debug hourly
+  // displacement data for each EGU (see `app/calculations.js`)
+  ctx.body = getDisplacement({ year, metric, rdfJson, neiJson, eereLoad, debug: false });
 };
 
 /**
  * Displacement Controller
  */
 const displacement = {
-  calculateGeneration: (ctx) => calculatePollutant(ctx, 'generation'),
-  calculateSo2: (ctx) => calculatePollutant(ctx, 'so2'),
-  calculateNox: (ctx) => calculatePollutant(ctx, 'nox'),
-  calculateCo2: (ctx) => calculatePollutant(ctx, 'co2'),
-  calculatePm25: (ctx) => calculatePollutant(ctx, 'pm25'),
+  calculateGeneration: (ctx) => calculateMetric(ctx, 'generation'),
+  calculateSO2: (ctx) => calculateMetric(ctx, 'so2'),
+  calculateNOx: (ctx) => calculateMetric(ctx, 'nox'),
+  calculateCO2: (ctx) => calculateMetric(ctx, 'co2'),
+  calculateNEIMetrics: (ctx) => calculateMetric(ctx, 'nei'),
 }
 
 module.exports = {

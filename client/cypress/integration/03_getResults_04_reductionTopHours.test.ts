@@ -13,13 +13,13 @@ describe('Get Results – reduction & topHours', () => {
     cy.findByText('% during the peak').next().type('50');
     cy.findByText('Calculate EE/RE Impacts').click();
     cy.findAllByText('Get Results').filter('.avert-button').click();
-    cy.findByText('LOADING...', { timeout: 60000 }).should('not.exist');
+    cy.findByText('LOADING...', { timeout: 120000 }).should('not.exist');
   });
 
   it('Annual Regional Displacements table displays the correct results', () => {
-    const generation = ['38,646,290', '34,572,510', '-4,073,770'];
+    const generation = ['41,694,430', '37,330,120', '-4,364,300'];
 
-    cy.findByText('Generation (MWh)')
+    cy.findByText('Generation')
       .next()
       .should('contain', generation[0]) // Original
       .next()
@@ -31,7 +31,7 @@ describe('Get Results – reduction & topHours', () => {
       .parent()
       .as('emissionTotals');
 
-    const so2Totals = ['1,593,280', '1,020,500', '-572,770'];
+    const so2Totals = ['1,616,030', '1,036,510', '-579,510'];
 
     cy.get('@emissionTotals')
       .next()
@@ -44,7 +44,7 @@ describe('Get Results – reduction & topHours', () => {
       .next()
       .should('contain', so2Totals[2]); // EE/RE Impacts
 
-    const noxTotals = ['7,868,290', '6,753,790', '-1,114,500'];
+    const noxTotals = ['6,972,500', '5,920,740', '-1,051,750'];
 
     cy.get('@so2Totals')
       .next()
@@ -57,7 +57,7 @@ describe('Get Results – reduction & topHours', () => {
       .next()
       .should('contain', noxTotals[2]); // EE/RE Impacts
 
-    const co2Totals = ['20,985,550', '18,827,660', '-2,157,880'];
+    const co2Totals = ['22,259,760', '19,956,860', '-2,302,890'];
 
     cy.get('@noxTotals')
       .next()
@@ -70,7 +70,7 @@ describe('Get Results – reduction & topHours', () => {
       .next()
       .should('contain', co2Totals[2]); // EE/RE Impacts
 
-    const pm25Totals = ['1,125,940', '1,000,070', '-125,860'];
+    const pm25Totals = ['1,208,640', '1,061,020', '-147,620'];
 
     cy.get('@co2Totals')
       .next()
@@ -83,9 +83,35 @@ describe('Get Results – reduction & topHours', () => {
       .next()
       .should('contain', pm25Totals[2]); // EE/RE Impacts
 
+    const vocsTotals = ['709,120', '620,710', '-88,410'];
+
+    cy.get('@pm25Totals')
+      .next()
+      .as('vocsTotals')
+      .children()
+      .eq(1)
+      .should('contain', vocsTotals[0]) // Original
+      .next()
+      .should('contain', vocsTotals[1]) // Post-EE/RE
+      .next()
+      .should('contain', vocsTotals[2]); // EE/RE Impacts
+
+    const nh3Totals = ['1,125,560', '976,580', '-148,980'];
+
+    cy.get('@vocsTotals')
+      .next()
+      .as('nh3Totals')
+      .children()
+      .eq(1)
+      .should('contain', nh3Totals[0]) // Original
+      .next()
+      .should('contain', nh3Totals[1]) // Post-EE/RE
+      .next()
+      .should('contain', nh3Totals[2]); // EE/RE Impacts
+
     cy.findByText('Emission rates of fossil EGUs').parent().as('emissionRates');
 
-    const so2Rates = ['0.04', '0.03'];
+    const so2Rates = ['0.039', '0.028'];
 
     cy.get('@emissionRates')
       .next()
@@ -96,7 +122,7 @@ describe('Get Results – reduction & topHours', () => {
       .next()
       .should('contain', so2Rates[1]); // Post-EE/RE
 
-    const noxRates = ['0.20', '0.20'];
+    const noxRates = ['0.167', '0.159'];
 
     cy.get('@so2Rates')
       .next()
@@ -107,7 +133,7 @@ describe('Get Results – reduction & topHours', () => {
       .next()
       .should('contain', noxRates[1]); // Post-EE/RE
 
-    const co2Rates = ['0.54', '0.54'];
+    const co2Rates = ['0.534', '0.535'];
 
     cy.get('@noxRates')
       .next()
@@ -118,7 +144,7 @@ describe('Get Results – reduction & topHours', () => {
       .next()
       .should('contain', co2Rates[1]); // Post-EE/RE
 
-    const pm25Rates = ['0.03', '0.03'];
+    const pm25Rates = ['0.029', '0.028'];
 
     cy.get('@co2Rates')
       .next()
@@ -128,12 +154,36 @@ describe('Get Results – reduction & topHours', () => {
       .should('contain', pm25Rates[0]) // Original
       .next()
       .should('contain', pm25Rates[1]); // Post-EE/RE
+
+    const vocsRates = ['0.017', '0.017'];
+
+    cy.get('@pm25Rates')
+      .next()
+      .as('vocsRates')
+      .children()
+      .eq(1)
+      .should('contain', vocsRates[0]) // Original
+      .next()
+      .should('contain', vocsRates[1]); // Post-EE/RE
+
+    const nh3Rates = ['0.027', '0.026'];
+
+    cy.get('@vocsRates')
+      .next()
+      .as('nh3Rates')
+      .children()
+      .eq(1)
+      .should('contain', nh3Rates[0]) // Original
+      .next()
+      .should('contain', nh3Rates[1]); // Post-EE/RE
   });
 
   it('Annual State Emission Changes table displays the correct results', () => {
-    const connecticut = ['-66,040', '-297,331', '-405,436', '-30,915'];
+    /* prettier-ignore */
+    const connecticut = ['-67,347', '-260,842', '-415,768', '-16,594', '-16,122', '-24,915'];
 
-    cy.findByText('Connecticut')
+    cy.findAllByText('Connecticut')
+      .filter(':visible')
       .parent()
       .as('connecticut')
       .children()
@@ -144,26 +194,16 @@ describe('Get Results – reduction & topHours', () => {
       .next()
       .should('contain', connecticut[2]) // CO2 (tons)
       .next()
-      .should('contain', connecticut[3]); // PM2.5 (lbs)
+      .should('contain', connecticut[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', connecticut[4]) // VOCS (lbs)
+      .next()
+      .should('contain', connecticut[5]); // NH3 (lbs)
 
-    const massachusetts = ['-222,581', '-353,669', '-948,073', '-70,123'];
+    /* prettier-ignore */
+    const maine = ['-38,470', '-52,344', '-177,276', '-7,434', '-3,456', '-3,743'];
 
     cy.get('@connecticut')
-      .next()
-      .as('massachusetts')
-      .children()
-      .eq(1)
-      .should('contain', massachusetts[0]) // SO2 (lbs)
-      .next()
-      .should('contain', massachusetts[1]) // NOX (lbs)
-      .next()
-      .should('contain', massachusetts[2]) // CO2 (tons)
-      .next()
-      .should('contain', massachusetts[3]); // PM2.5 (lbs)
-
-    const maine = ['-30,630', '-55,684', '-175,542', '-11,781'];
-
-    cy.get('@massachusetts')
       .next()
       .as('maine')
       .children()
@@ -174,11 +214,36 @@ describe('Get Results – reduction & topHours', () => {
       .next()
       .should('contain', maine[2]) // CO2 (tons)
       .next()
-      .should('contain', maine[3]); // PM2.5 (lbs)
+      .should('contain', maine[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', maine[4]) // VOCS (lbs)
+      .next()
+      .should('contain', maine[5]); // NH3 (lbs)
 
-    const newHampshire = ['-248,961', '-334,349', '-373,903', '-9,834'];
+    /* prettier-ignore */
+    const massachusetts = ['-216,679', '-318,888', '-984,311', '-65,427', '-29,875', '-46,590'];
 
     cy.get('@maine')
+      .next()
+      .as('massachusetts')
+      .children()
+      .eq(1)
+      .should('contain', massachusetts[0]) // SO2 (lbs)
+      .next()
+      .should('contain', massachusetts[1]) // NOX (lbs)
+      .next()
+      .should('contain', massachusetts[2]) // CO2 (tons)
+      .next()
+      .should('contain', massachusetts[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', massachusetts[4]) // VOCS (lbs)
+      .next()
+      .should('contain', massachusetts[5]); // NH3 (lbs)
+
+    /* prettier-ignore */
+    const newHampshire = ['-252,251', '-340,517', '-392,154', '-31,338', '-7,276', '-21,532'];
+
+    cy.get('@massachusetts')
       .next()
       .as('newHampshire')
       .children()
@@ -189,9 +254,14 @@ describe('Get Results – reduction & topHours', () => {
       .next()
       .should('contain', newHampshire[2]) // CO2 (tons)
       .next()
-      .should('contain', newHampshire[3]); // PM2.5 (lbs)
+      .should('contain', newHampshire[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', newHampshire[4]) // VOCS (lbs)
+      .next()
+      .should('contain', newHampshire[5]); // NH3 (lbs)
 
-    const rhodeIsland = ['-4,464', '-59,031', '-233,233', '-3,113'];
+    /* prettier-ignore */
+    const rhodeIsland = ['-4,676', '-65,205', '-312,346', '-22,766', '-28,508', '-50,762'];
 
     cy.get('@newHampshire')
       .next()
@@ -204,9 +274,14 @@ describe('Get Results – reduction & topHours', () => {
       .next()
       .should('contain', rhodeIsland[2]) // CO2 (tons)
       .next()
-      .should('contain', rhodeIsland[3]); // PM2.5 (lbs)
+      .should('contain', rhodeIsland[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', rhodeIsland[4]) // VOCS (lbs)
+      .next()
+      .should('contain', rhodeIsland[5]); // NH3 (lbs)
 
-    const vermont = ['-101', '-14,442', '-21,700', '-103'];
+    /* prettier-ignore */
+    const vermont = ['-93', '-13,962', '-21,038', '-4,066', '-3,176', '-1,441'];
 
     cy.get('@rhodeIsland')
       .next()
@@ -219,6 +294,10 @@ describe('Get Results – reduction & topHours', () => {
       .next()
       .should('contain', vermont[2]) // CO2 (tons)
       .next()
-      .should('contain', vermont[3]); // PM2.5 (lbs)
+      .should('contain', vermont[3]) // PM2.5 (lbs)
+      .next()
+      .should('contain', vermont[4]) // VOCS (lbs)
+      .next()
+      .should('contain', vermont[5]); // NH3 (lbs)
   });
 });
