@@ -44,6 +44,12 @@ function DisplacementsTable() {
   const genPost = data.generation.replacedPostEere || data.generation.postEere;
   const genImpacts = data.generation.impacts;
 
+  const ozoneGenOrig =
+    data.ozoneGeneration.replacedOriginal || data.ozoneGeneration.original;
+  // const ozoneGenPost =
+  //   data.ozoneGeneration.replacedPostEere || data.ozoneGeneration.postEere;
+  const ozoneGenImpacts = data.ozoneGeneration.impacts;
+
   const so2Orig = data.so2.replacedOriginal || data.so2.original;
   const so2Post = data.so2.replacedPostEere || data.so2.postEere;
   const so2Impacts = data.so2.impacts;
@@ -230,11 +236,11 @@ function DisplacementsTable() {
                 </Tooltip>
               </td>
               <td className="avert-table-data">
-                {(ozoneNoxOrig / genOrig).toFixed(3)}
+                {(ozoneNoxOrig / ozoneGenOrig).toFixed(3)}
               </td>
               <td className="avert-table-data">&nbsp;</td>
               <td className="avert-table-data">
-                {(ozoneNoxImpacts / genImpacts).toFixed(3)}
+                {(ozoneNoxImpacts / ozoneGenImpacts).toFixed(3)}
               </td>
             </tr>
             <tr>
