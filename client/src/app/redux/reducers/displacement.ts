@@ -16,7 +16,7 @@ import {
 
 type PollutantName = 'generation' | Pollutant;
 
-type AnnualPollutantName = 'ozoneNox' | PollutantName;
+type AnnualPollutantName = 'ozoneGeneration' | 'ozoneNox' | PollutantName;
 
 export type ReplacementPollutantName = 'generation' | 'so2' | 'nox' | 'co2';
 
@@ -233,6 +233,7 @@ const initialState: DisplacementState = {
   statesAndCounties: {},
   annualRegionalDisplacements: {
     generation: initialPollutantDisplacement,
+    ozoneGeneration: initialPollutantDisplacement,
     so2: initialPollutantDisplacement,
     nox: initialPollutantDisplacement,
     ozoneNox: initialPollutantDisplacement,
@@ -270,6 +271,7 @@ export default function reducer(
         statesAndCounties: {},
         annualRegionalDisplacements: {
           generation: initialPollutantDisplacement,
+          ozoneGeneration: initialPollutantDisplacement,
           so2: initialPollutantDisplacement,
           nox: initialPollutantDisplacement,
           ozoneNox: initialPollutantDisplacement,
@@ -681,6 +683,13 @@ function setAnnualRegionalDisplacements(
       replacedOriginal: 0,
       replacedPostEere: 0,
     },
+    ozoneGeneration: {
+      original: 0,
+      postEere: 0,
+      impacts: 0,
+      replacedOriginal: 0,
+      replacedPostEere: 0,
+    },
     so2: {
       original: 0,
       postEere: 0,
@@ -756,16 +765,30 @@ function setAnnualRegionalDisplacements(
       const displacement = regionalDisplacements[regionId];
       if (!displacement) break;
 
-      // ozone season nox is not calculated in the server app's getDisplacement()
-      // method, so it's derived by totaling each region's regional nox data from
-      // the months of May through September
-      if (item === 'ozoneNox') {
+      // ozone season generation and ozone season nox are not calculated in the
+      // server app's getDisplacement() method, so they're derived by totaling
+      // each region's regional generation and nox data from the months of May
+      // through September
+      if (item === 'ozoneGeneration' || item === 'ozoneNox') {
         const ozoneMonths = ['month5', 'month6', 'month7', 'month8', 'month9'];
-        ozoneMonths.forEach((month) => {
-          const m = month as MonthKey;
-          data.ozoneNox.original += displacement.nox.regionalData[m].original;
-          data.ozoneNox.postEere += displacement.nox.regionalData[m].postEere;
-        });
+
+        if (item === 'ozoneGeneration') {
+          ozoneMonths.forEach((month) => {
+            const m = month as MonthKey;
+            data.ozoneGeneration.original +=
+              displacement.generation.regionalData[m].original;
+            data.ozoneGeneration.postEere +=
+              displacement.generation.regionalData[m].postEere;
+          });
+        }
+
+        if (item === 'ozoneNox') {
+          ozoneMonths.forEach((month) => {
+            const m = month as MonthKey;
+            data.ozoneNox.original += displacement.nox.regionalData[m].original;
+            data.ozoneNox.postEere += displacement.nox.regionalData[m].postEere;
+          });
+        }
       }
       // data for all other pollutants is already calculated for each region in
       // the server app's getDisplacement() method (stored as `originalTotal`
