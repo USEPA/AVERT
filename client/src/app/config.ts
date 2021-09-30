@@ -47,9 +47,9 @@ export type Region = {
  * sheet of the `AVERT Main Module v3.0 beta 05.18.20.xlsm` file.
  */
 const lineLoss = {
-  texas: 0.054,
-  eastern: 0.072,
-  western: 0.086,
+  texas: 0.0537676720352858,
+  eastern: 0.0719796380333106,
+  western: 0.0859910088976303,
 };
 
 export const regions: { [key in RegionId]: Region } = {
