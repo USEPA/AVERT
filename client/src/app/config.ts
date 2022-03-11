@@ -48,13 +48,13 @@ export type Region = {
 };
 
 /**
- * `lineLoss` and its use in `regions` was created from the `Library`
- * sheet of the `AVERT Main Module v3.0 beta 05.18.20.xlsm` file.
+ * NOTE: line loss values stored in "Table 2: T&D losses" found in the "Library"
+ * sheet of the Excel workbook.
  */
 const lineLoss = {
-  texas: 0.0537676720352858,
-  eastern: 0.0719796380333106,
-  western: 0.0859910088976303,
+  texas: 0.0495352907853342,
+  eastern: 0.0750240831578937,
+  western: 0.0838715063900653,
 };
 
 export const regions: { [key in RegionId]: Region } = {
