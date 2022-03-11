@@ -32,11 +32,14 @@ export type RegionId =
 /**
  * NOTE: actual emissions for each region stored in the "Table 3: EGUs with
  * infrequent SO2 emission events" found in the "Library" sheet of the Excel
- * workbook.
+ * workbook. Even though we're only dealing with SO2 for now, this data
+ * structure was set up to be flexible enough to handle a future scenario where
+ * any of the other pollutants AVERT deals with have "infrequent emissions
+ * events."
  *
- * Even though we're only dealing with SO2 for now, this data structure was set
- * up to be flexible enough to handle a future scenario where any of the other
- * pollutants AVERT deals with have "infrequent emissions" events.
+ * NOTE: each region's percentage by state isn't stored in the Excel workbook,
+ * but are stored in a separate Excel file titled:
+ * "apportionment percentages for web AVERT.xlsx"
  */
 export type Region = {
   id: RegionId;
@@ -328,8 +331,8 @@ export type State = {
 };
 
 /**
- * `states` was created from the `Library` sheet of the
- * `AVERT Main Module v3.0 beta 05.18.20.xlsm` file.
+ * NOTE: each state's percentage by region stored in "Table 1: Percent of state
+ * in each AVERT region" found in the "Library" sheet of the Excel workbook.
  */
 export const states: { [key in StateId]: State } = {
   AL: {
