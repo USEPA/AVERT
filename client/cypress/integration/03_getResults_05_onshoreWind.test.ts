@@ -16,7 +16,7 @@ describe('Get Results – onshoreWind', () => {
   });
 
   it('Annual Regional Displacements table displays the correct results', () => {
-    const generation = ['132,302,160', '129,891,530', '-2,410,630'];
+    const generation = ['123,946,280', '121,544,310', '-2,401,970'];
 
     cy.findByText('Generation')
       .next()
@@ -26,11 +26,11 @@ describe('Get Results – onshoreWind', () => {
       .next()
       .should('contain', generation[2]); // EE/RE Impacts
 
-    cy.findByText('Total emissions of fossil EGUs')
+    cy.findByText('Total Emissions from Fossil Generation Fleet')
       .parent()
       .as('emissionTotals');
 
-    const so2Totals = ['95,417,940', '93,768,250', '-1,649,680'];
+    const so2Totals = ['67,142,200', '66,013,250', '-1,128,950'];
 
     cy.get('@emissionTotals')
       .next()
@@ -43,7 +43,7 @@ describe('Get Results – onshoreWind', () => {
       .next()
       .should('contain', so2Totals[2]); // EE/RE Impacts
 
-    const noxTotals = ['144,287,390', '141,764,660', '-2,522,720'];
+    const noxTotals = ['112,649,760', '110,615,290', '-2,034,470'];
 
     cy.get('@so2Totals')
       .next()
@@ -56,9 +56,22 @@ describe('Get Results – onshoreWind', () => {
       .next()
       .should('contain', noxTotals[2]); // EE/RE Impacts
 
-    const co2Totals = ['104,233,730', '102,437,850', '-1,795,870'];
+    const ozoneSeasonNoxTotals = ['49,413,100', '48,674,520', '-738,580'];
 
     cy.get('@noxTotals')
+      .next()
+      .as('ozoneSeasonNoxTotals')
+      .children()
+      .eq(1)
+      .should('contain', ozoneSeasonNoxTotals[0]) // Original
+      .next()
+      .should('contain', ozoneSeasonNoxTotals[1]) // Post-EE/RE
+      .next()
+      .should('contain', ozoneSeasonNoxTotals[2]); // EE/RE Impacts
+
+    const co2Totals = ['92,616,210', '90,886,990', '-1,729,220'];
+
+    cy.get('@ozoneSeasonNoxTotals')
       .next()
       .as('co2Totals')
       .children()
@@ -69,7 +82,7 @@ describe('Get Results – onshoreWind', () => {
       .next()
       .should('contain', co2Totals[2]); // EE/RE Impacts
 
-    const pm25Totals = ['11,417,310', '11,214,200', '-203,110'];
+    const pm25Totals = ['9,068,100', '8,890,230', '-177,870'];
 
     cy.get('@co2Totals')
       .next()
@@ -82,7 +95,7 @@ describe('Get Results – onshoreWind', () => {
       .next()
       .should('contain', pm25Totals[2]); // EE/RE Impacts
 
-    const vocsTotals = ['4,331,900', '4,251,470', '-80,430'];
+    const vocsTotals = ['3,382,560', '3,304,880', '-77,680'];
 
     cy.get('@pm25Totals')
       .next()
@@ -95,7 +108,7 @@ describe('Get Results – onshoreWind', () => {
       .next()
       .should('contain', vocsTotals[2]); // EE/RE Impacts
 
-    const nh3Totals = ['2,340,410', '2,291,200', '-49,200'];
+    const nh3Totals = ['2,434,250', '2,385,200', '-49,050'];
 
     cy.get('@vocsTotals')
       .next()
@@ -108,9 +121,9 @@ describe('Get Results – onshoreWind', () => {
       .next()
       .should('contain', nh3Totals[2]); // EE/RE Impacts
 
-    cy.findByText('Emission rates of fossil EGUs').parent().as('emissionRates');
+    cy.findByText('AVERT-derived Emission Rates:').parent().as('emissionRates');
 
-    const so2Rates = ['0.721', '0.722'];
+    const so2Rates = ['0.542', '0.470'];
 
     cy.get('@emissionRates')
       .next()
@@ -119,9 +132,10 @@ describe('Get Results – onshoreWind', () => {
       .eq(1)
       .should('contain', so2Rates[0]) // Original
       .next()
-      .should('contain', so2Rates[1]); // Post-EE/RE
+      .next()
+      .should('contain', so2Rates[1]); // EE/RE Impacts
 
-    const noxRates = ['1.091', '1.091'];
+    const noxRates = ['0.909', '0.847'];
 
     cy.get('@so2Rates')
       .next()
@@ -130,20 +144,34 @@ describe('Get Results – onshoreWind', () => {
       .eq(1)
       .should('contain', noxRates[0]) // Original
       .next()
-      .should('contain', noxRates[1]); // Post-EE/RE
+      .next()
+      .should('contain', noxRates[1]); // EE/RE Impacts
 
-    const co2Rates = ['0.788', '0.789'];
+    const ozoneSeasonNoxRates = ['0.896', '0.851'];
 
     cy.get('@noxRates')
+      .next()
+      .as('ozoneSeasonNoxRates')
+      .children()
+      .eq(1)
+      .should('contain', ozoneSeasonNoxRates[0]) // Original
+      .next()
+      .next()
+      .should('contain', ozoneSeasonNoxRates[1]); // EE/RE Impacts
+
+    const co2Rates = ['0.747', '0.720'];
+
+    cy.get('@ozoneSeasonNoxRates')
       .next()
       .as('co2Rates')
       .children()
       .eq(1)
       .should('contain', co2Rates[0]) // Original
       .next()
-      .should('contain', co2Rates[1]); // Post-EE/RE
+      .next()
+      .should('contain', co2Rates[1]); // EE/RE Impacts
 
-    const pm25Rates = ['0.086', '0.086'];
+    const pm25Rates = ['0.073', '0.074'];
 
     cy.get('@co2Rates')
       .next()
@@ -152,9 +180,10 @@ describe('Get Results – onshoreWind', () => {
       .eq(1)
       .should('contain', pm25Rates[0]) // Original
       .next()
-      .should('contain', pm25Rates[1]); // Post-EE/RE
+      .next()
+      .should('contain', pm25Rates[1]); // EE/RE Impacts
 
-    const vocsRates = ['0.033', '0.033'];
+    const vocsRates = ['0.027', '0.032'];
 
     cy.get('@pm25Rates')
       .next()
@@ -163,9 +192,10 @@ describe('Get Results – onshoreWind', () => {
       .eq(1)
       .should('contain', vocsRates[0]) // Original
       .next()
-      .should('contain', vocsRates[1]); // Post-EE/RE
+      .next()
+      .should('contain', vocsRates[1]); // EE/RE Impacts
 
-    const nh3Rates = ['0.018', '0.018'];
+    const nh3Rates = ['0.020', '0.020'];
 
     cy.get('@vocsRates')
       .next()
@@ -174,12 +204,13 @@ describe('Get Results – onshoreWind', () => {
       .eq(1)
       .should('contain', nh3Rates[0]) // Original
       .next()
-      .should('contain', nh3Rates[1]); // Post-EE/RE
+      .next()
+      .should('contain', nh3Rates[1]); // EE/RE Impacts
   });
 
   it('Annual State Emission Changes table displays the correct results', () => {
     /* prettier-ignore */
-    const idaho = ['-571', '-42,999', '-68,703', '-4,482', '-1,365', '-6,110'];
+    const idaho = ['-330', '-32,170', '-48,320', '-2,730', '-810', '-4,700'];
 
     cy.findAllByText('Idaho')
       .filter(':visible')
@@ -200,7 +231,7 @@ describe('Get Results – onshoreWind', () => {
       .should('contain', idaho[5]); // NH3 (lbs)
 
     /* prettier-ignore */
-    const montana = ['-340,149', '-457,009', '-214,280', '-40,298', '-8,499', '-329'];
+    const montana = ['-132,040', '-221,720', '-158,430', '-33,200', '-6,650', '-520'];
 
     cy.get('@idaho')
       .next()
@@ -220,7 +251,7 @@ describe('Get Results – onshoreWind', () => {
       .should('contain', montana[5]); // NH3 (lbs)
 
     /* prettier-ignore */
-    const nevada = ['-189,893', '-190,050', '-256,417', '-30,667', '-17,069', '-15,944'];
+    const nevada = ['-64,840', '-156,640', '-283,710', '-33,960', '-20,960', '-18,170'];
 
     cy.get('@montana')
       .next()
@@ -240,7 +271,7 @@ describe('Get Results – onshoreWind', () => {
       .should('contain', nevada[5]); // NH3 (lbs)
 
     /* prettier-ignore */
-    const oregon = ['-339,321', '-266,889', '-249,585', '-40,579', '-7,997', '-13,312'];
+    const oregon = ['-1,450', '-28,360', '-133,350', '-9,160', '-3,810', '-12,360'];
 
     cy.get('@nevada')
       .next()
@@ -260,7 +291,7 @@ describe('Get Results – onshoreWind', () => {
       .should('contain', oregon[5]); // NH3 (lbs)
 
     /* prettier-ignore */
-    const utah = ['-252,804', '-676,785', '-346,780', '-26,446', '-9,304', '-5,753'];
+    const utah = ['-240,410', '-696,060', '-366,440', '-33,010', '-9,980', '-6,450'];
 
     cy.get('@oregon')
       .next()
@@ -280,7 +311,7 @@ describe('Get Results – onshoreWind', () => {
       .should('contain', utah[5]); // NH3 (lbs)
 
     /* prettier-ignore */
-    const washington = ['-114,280', '-423,540', '-385,476', '-39,792', '-27,770', '-7,632'];
+    const washington = ['-66,780', '-313,050', '-347,020', '-33,880', '-23,150', '-6,680'];
 
     cy.get('@utah')
       .next()
@@ -300,7 +331,7 @@ describe('Get Results – onshoreWind', () => {
       .should('contain', washington[5]); // NH3 (lbs)
 
     /* prettier-ignore */
-    const wyoming = ['-412,669', '-465,456', '-274,638', '-20,851', '-8,431', '-122'];
+    const wyoming = ['-623,100', '-586,470', '-391,940', '-31,930', '-12,320', '-180'];
 
     cy.get('@washington')
       .next()

@@ -18,7 +18,7 @@ describe('Get Results – broadProgram', () => {
   });
 
   it('Annual Regional Displacements table displays the correct results', () => {
-    const generation = ['41,694,430', '37,209,870', '-4,484,550'];
+    const generation = ['48,854,680', '43,553,770', '-5,300,910'];
 
     cy.findByText('Generation')
       .next()
@@ -28,11 +28,11 @@ describe('Get Results – broadProgram', () => {
       .next()
       .should('contain', generation[2]); // EE/RE Impacts
 
-    cy.findByText('Total emissions of fossil EGUs')
+    cy.findByText('Total Emissions from Fossil Generation Fleet')
       .parent()
       .as('emissionTotals');
 
-    const so2Totals = ['1,616,030', '1,158,560', '-457,470'];
+    const so2Totals = ['1,824,010', '1,398,000', '-426,010'];
 
     cy.get('@emissionTotals')
       .next()
@@ -45,7 +45,7 @@ describe('Get Results – broadProgram', () => {
       .next()
       .should('contain', so2Totals[2]); // EE/RE Impacts
 
-    const noxTotals = ['6,972,500', '6,046,490', '-926,010'];
+    const noxTotals = ['6,798,130', '5,871,690', '-926,430'];
 
     cy.get('@so2Totals')
       .next()
@@ -58,9 +58,22 @@ describe('Get Results – broadProgram', () => {
       .next()
       .should('contain', noxTotals[2]); // EE/RE Impacts
 
-    const co2Totals = ['22,259,760', '19,933,560', '-2,326,190'];
+    const ozoneSeasonNoxTotals = ['3,253,040', '2,746,730', '-506,310'];
 
     cy.get('@noxTotals')
+      .next()
+      .as('ozoneSeasonNoxTotals')
+      .children()
+      .eq(1)
+      .should('contain', ozoneSeasonNoxTotals[0]) // Original
+      .next()
+      .should('contain', ozoneSeasonNoxTotals[1]) // Post-EE/RE
+      .next()
+      .should('contain', ozoneSeasonNoxTotals[2]); // EE/RE Impacts
+
+    const co2Totals = ['24,740,750', '22,083,720', '-2,657,030'];
+
+    cy.get('@ozoneSeasonNoxTotals')
       .next()
       .as('co2Totals')
       .children()
@@ -71,7 +84,7 @@ describe('Get Results – broadProgram', () => {
       .next()
       .should('contain', co2Totals[2]); // EE/RE Impacts
 
-    const pm25Totals = ['1,208,640', '1,064,980', '-143,650'];
+    const pm25Totals = ['1,352,820', '1,190,940', '-161,880'];
 
     cy.get('@co2Totals')
       .next()
@@ -84,7 +97,7 @@ describe('Get Results – broadProgram', () => {
       .next()
       .should('contain', pm25Totals[2]); // EE/RE Impacts
 
-    const vocsTotals = ['709,120', '619,980', '-89,130'];
+    const vocsTotals = ['806,410', '712,730', '-93,680'];
 
     cy.get('@pm25Totals')
       .next()
@@ -97,7 +110,7 @@ describe('Get Results – broadProgram', () => {
       .next()
       .should('contain', vocsTotals[2]); // EE/RE Impacts
 
-    const nh3Totals = ['1,125,560', '990,680', '-134,870'];
+    const nh3Totals = ['1,354,100', '1,202,520', '-151,580'];
 
     cy.get('@vocsTotals')
       .next()
@@ -110,9 +123,9 @@ describe('Get Results – broadProgram', () => {
       .next()
       .should('contain', nh3Totals[2]); // EE/RE Impacts
 
-    cy.findByText('Emission rates of fossil EGUs').parent().as('emissionRates');
+    cy.findByText('AVERT-derived Emission Rates:').parent().as('emissionRates');
 
-    const so2Rates = ['0.039', '0.031'];
+    const so2Rates = ['0.037', '0.080'];
 
     cy.get('@emissionRates')
       .next()
@@ -121,9 +134,10 @@ describe('Get Results – broadProgram', () => {
       .eq(1)
       .should('contain', so2Rates[0]) // Original
       .next()
-      .should('contain', so2Rates[1]); // Post-EE/RE
+      .next()
+      .should('contain', so2Rates[1]); // EE/RE Impacts
 
-    const noxRates = ['0.167', '0.162'];
+    const noxRates = ['0.139', '0.175'];
 
     cy.get('@so2Rates')
       .next()
@@ -132,20 +146,34 @@ describe('Get Results – broadProgram', () => {
       .eq(1)
       .should('contain', noxRates[0]) // Original
       .next()
-      .should('contain', noxRates[1]); // Post-EE/RE
+      .next()
+      .should('contain', noxRates[1]); // EE/RE Impacts
 
-    const co2Rates = ['0.534', '0.536'];
+    const ozoneSeasonNoxRates = ['0.143', '0.205'];
 
     cy.get('@noxRates')
+      .next()
+      .as('ozoneSeasonNoxRates')
+      .children()
+      .eq(1)
+      .should('contain', ozoneSeasonNoxRates[0]) // Original
+      .next()
+      .next()
+      .should('contain', ozoneSeasonNoxRates[1]); // EE/RE Impacts
+
+    const co2Rates = ['0.506', '0.501'];
+
+    cy.get('@ozoneSeasonNoxRates')
       .next()
       .as('co2Rates')
       .children()
       .eq(1)
       .should('contain', co2Rates[0]) // Original
       .next()
-      .should('contain', co2Rates[1]); // Post-EE/RE
+      .next()
+      .should('contain', co2Rates[1]); // EE/RE Impacts
 
-    const pm25Rates = ['0.029', '0.029'];
+    const pm25Rates = ['0.028', '0.031'];
 
     cy.get('@co2Rates')
       .next()
@@ -154,9 +182,10 @@ describe('Get Results – broadProgram', () => {
       .eq(1)
       .should('contain', pm25Rates[0]) // Original
       .next()
-      .should('contain', pm25Rates[1]); // Post-EE/RE
+      .next()
+      .should('contain', pm25Rates[1]); // EE/RE Impacts
 
-    const vocsRates = ['0.017', '0.017'];
+    const vocsRates = ['0.017', '0.018'];
 
     cy.get('@pm25Rates')
       .next()
@@ -165,9 +194,10 @@ describe('Get Results – broadProgram', () => {
       .eq(1)
       .should('contain', vocsRates[0]) // Original
       .next()
-      .should('contain', vocsRates[1]); // Post-EE/RE
+      .next()
+      .should('contain', vocsRates[1]); // EE/RE Impacts
 
-    const nh3Rates = ['0.027', '0.027'];
+    const nh3Rates = ['0.028', '0.029'];
 
     cy.get('@vocsRates')
       .next()
@@ -176,12 +206,13 @@ describe('Get Results – broadProgram', () => {
       .eq(1)
       .should('contain', nh3Rates[0]) // Original
       .next()
-      .should('contain', nh3Rates[1]); // Post-EE/RE
+      .next()
+      .should('contain', nh3Rates[1]); // EE/RE Impacts
   });
 
   it('Annual State Emission Changes table displays the correct results', () => {
     /* prettier-ignore */
-    const connecticut = ['-54,298', '-221,565', '-511,196', '-19,491', '-15,887', '-27,732'];
+    const connecticut = ['-128,830', '-236,900', '-623,150', '-33,730', '-18,580', '-34,260'];
 
     cy.findAllByText('Connecticut')
       .filter(':visible')
@@ -202,7 +233,7 @@ describe('Get Results – broadProgram', () => {
       .should('contain', connecticut[5]); // NH3 (lbs)
 
     /* prettier-ignore */
-    const maine = ['-25,892', '-48,697', '-150,901', '-6,421', '-2,845', '-3,214'];
+    const maine = ['-39,450', '-61,130', '-268,450', '-10,720', '-5,140', '-5,740'];
 
     cy.get('@connecticut')
       .next()
@@ -222,7 +253,7 @@ describe('Get Results – broadProgram', () => {
       .should('contain', maine[5]); // NH3 (lbs)
 
     /* prettier-ignore */
-    const massachusetts = ['-168,188', '-273,583', '-922,812', '-54,438', '-26,444', '-38,551'];
+    const massachusetts = ['-107,730', '-248,690', '-1,004,830', '-60,640', '-30,370', '-47,440'];
 
     cy.get('@maine')
       .next()
@@ -242,7 +273,7 @@ describe('Get Results – broadProgram', () => {
       .should('contain', massachusetts[5]); // NH3 (lbs)
 
     /* prettier-ignore */
-    const newHampshire = ['-202,658', '-283,191', '-326,262', '-25,791', '-6,128', '-18,695'];
+    const newHampshire = ['-142,380', '-248,000', '-383,920', '-25,990', '-6,070', '-23,780'];
 
     cy.get('@massachusetts')
       .next()
@@ -262,7 +293,7 @@ describe('Get Results – broadProgram', () => {
       .should('contain', newHampshire[5]); // NH3 (lbs)
 
     /* prettier-ignore */
-    const rhodeIsland = ['-6,302', '-82,669', '-389,977', '-32,685', '-34,062', '-44,974'];
+    const rhodeIsland = ['-7,530', '-121,960', '-362,560', '-28,840', '-31,400', '-39,390'];
 
     cy.get('@newHampshire')
       .next()
@@ -282,7 +313,7 @@ describe('Get Results – broadProgram', () => {
       .should('contain', rhodeIsland[5]); // NH3 (lbs)
 
     /* prettier-ignore */
-    const vermont = ['-137', '-16,307', '-25,050', '-4,829', '-3,771', '-1,711'];
+    const vermont = ['-90', '-9,740', '-14,120', '-1,940', '-2,130', '-970'];
 
     cy.get('@rhodeIsland')
       .next()
