@@ -18,7 +18,7 @@
     "dev": "AVERT_AUTH=true AVERT_USER=avert AVERT_PASS=dev node ./index.js"
   },
   "dependencies": {
-    "@koa/cors": "3.1.0",
+    "@koa/cors": "3.2.0",
     "@sentry/node": "6.18.2",
     "dotenv": "16.0.0",
     "koa": "2.13.4",
