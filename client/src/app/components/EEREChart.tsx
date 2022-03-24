@@ -123,9 +123,11 @@ function EEREChart() {
     },
     tooltip: {
       formatter: function () {
+        const x = Number(this.x);
+        const y = Number(this.y);
         return `<span style="font-size: 10px">
-          ${Highcharts.dateFormat('%m/%d/%y %l:%M %P', this.x)}</span><br/>
-          <strong>${Math.round(this.y).toLocaleString()}</strong> MW`;
+          ${Highcharts.dateFormat('%m/%d/%y %l:%M %P', x)}</span><br/>
+          <strong>${Math.round(y).toLocaleString()}</strong> MW`;
       },
     },
     lang: {

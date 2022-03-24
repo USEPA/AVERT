@@ -30,8 +30,16 @@ export type RegionId =
   | 'TN';
 
 /**
- * NOTE: 2019 actual so2 emissions (tons) summed from all EGUs filtered by
- * region, from `Actual SO2 data.xls` file emailed by Pat Knight on 8/8/20
+ * NOTE: actual emissions for each region stored in the "Table 3: EGUs with
+ * infrequent SO2 emission events" found in the "Library" sheet of the Excel
+ * workbook. Even though we're only dealing with SO2 for now, this data
+ * structure was set up to be flexible enough to handle a future scenario where
+ * any of the other pollutants AVERT deals with have "infrequent emissions
+ * events."
+ *
+ * NOTE: each region's percentage by state isn't stored in the Excel workbook,
+ * but are stored in a separate Excel file titled:
+ * "apportionment percentages for web AVERT.xlsx"
  */
 export type Region = {
   id: RegionId;
@@ -43,13 +51,13 @@ export type Region = {
 };
 
 /**
- * `lineLoss` and its use in `regions` was created from the `Library`
- * sheet of the `AVERT Main Module v3.0 beta 05.18.20.xlsm` file.
+ * NOTE: line loss values stored in "Table 2: T&D losses" found in the "Library"
+ * sheet of the Excel workbook.
  */
 const lineLoss = {
-  texas: 0.0537676720352858,
-  eastern: 0.0719796380333106,
-  western: 0.0859910088976303,
+  texas: 0.0495352907853342,
+  eastern: 0.0750240831578937,
+  western: 0.0838715063900653,
 };
 
 export const regions: { [key in RegionId]: Region } = {
@@ -93,7 +101,9 @@ export const regions: { [key in RegionId]: Region } = {
     percentageByState: {
       FL: 100,
     },
-    actualEmissions: {},
+    actualEmissions: {
+      so2: 32_186_626,
+    },
   },
   MIDA: {
     id: 'MIDA',
@@ -177,7 +187,7 @@ export const regions: { [key in RegionId]: Region } = {
       NY: 100,
     },
     actualEmissions: {
-      so2: 3_835_242,
+      so2: 3_060_272,
     },
   },
   NW: {
@@ -223,9 +233,7 @@ export const regions: { [key in RegionId]: Region } = {
       GA: 59.8372,
       MS: 5.1415,
     },
-    actualEmissions: {
-      so2: 40_776_266,
-    },
+    actualEmissions: {},
   },
   SW: {
     id: 'SW',
@@ -323,8 +331,8 @@ export type State = {
 };
 
 /**
- * `states` was created from the `Library` sheet of the
- * `AVERT Main Module v3.0 beta 05.18.20.xlsm` file.
+ * NOTE: each state's percentage by region stored in "Table 1: Percent of state
+ * in each AVERT region" found in the "Library" sheet of the Excel workbook.
  */
 export const states: { [key in StateId]: State } = {
   AL: {
