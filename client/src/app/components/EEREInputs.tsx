@@ -295,7 +295,7 @@ function EEREInputs() {
                 />
                 <span css={inputUnitStyles}> GWh </span>
 
-                <Tooltip id={1}>
+                <Tooltip id="annualGwh">
                   Enter the total number of GWh expected to be saved in a single
                   year. This option simply distributes the total annual savings
                   evenly over all hours of the year. An industrial or
@@ -321,7 +321,7 @@ function EEREInputs() {
                 />
                 <span css={inputUnitStyles}> MW </span>
 
-                <Tooltip id={2}>
+                <Tooltip id="constantMwh">
                   “Reduce hourly generation” is identical in effect to reducing
                   total annual generation. It allows you to enter a constant
                   reduction for every hour of the year, in MW. An industrial or
@@ -363,7 +363,7 @@ function EEREInputs() {
                 />
                 <span css={inputUnitStyles}> % in all hours </span>
 
-                <Tooltip id={3}>
+                <Tooltip id="broadProgram">
                   To simulate a broad-based efficiency program, enter an
                   estimated load reduction fraction. This percentage reduction
                   will be applied to all hours of the year.
@@ -397,7 +397,7 @@ function EEREInputs() {
                 />
                 <span css={inputUnitStyles}> % of hours </span>
 
-                <Tooltip id={4}>
+                <Tooltip id="reduction-topHours">
                   To simulate a peak-reduction targeting program such as demand
                   response, enter the load reduction (as a fraction of peaking
                   load) that would be targeted, as well as the fraction of
@@ -446,7 +446,7 @@ function EEREInputs() {
                 />
                 <span css={inputUnitStyles}> MW </span>
 
-                <Tooltip id={5}>
+                <Tooltip id="onshoreWind">
                   Enter the total capacity (maximum potential electricity
                   generation) for this type of resource, measured in MW. The
                   model uses these inputs along with hourly capacity factors
@@ -477,7 +477,7 @@ function EEREInputs() {
                     />
                     <span css={inputUnitStyles}> MW </span>
 
-                    <Tooltip id={6}>
+                    <Tooltip id="offshoreWind">
                       Enter the total capacity (maximum potential electricity
                       generation) for this type of resource, measured in MW. The
                       model uses these inputs along with hourly capacity factors
@@ -499,7 +499,7 @@ function EEREInputs() {
                           AVERT region.{' '}
                         </em>
 
-                        <Tooltip id={7}>
+                        <Tooltip id="no-offshoreWind-region">
                           AVERT does not support offshore wind modeling in this
                           region. It is unlikely that offshore areas suitable
                           for wind farms would connect to the electrical grid in
@@ -513,7 +513,7 @@ function EEREInputs() {
                           AVERT region(s) that this state is part of.{' '}
                         </em>
 
-                        <Tooltip id={7}>
+                        <Tooltip id="no-offshoreWind-state">
                           AVERT does not support offshore wind modeling in the
                           region(s) that this state is part of. It is unlikely
                           that offshore areas suitable for wind farms would
@@ -549,7 +549,7 @@ function EEREInputs() {
                 />
                 <span css={inputUnitStyles}> MW </span>
 
-                <Tooltip id={8}>
+                <Tooltip id="utilitySolar">
                   Enter the total capacity (maximum potential electricity
                   generation) for this type of resource, measured in MW. The
                   model uses these inputs along with hourly capacity factors
@@ -575,7 +575,7 @@ function EEREInputs() {
                 />
                 <span css={inputUnitStyles}> MW </span>
 
-                <Tooltip id={9}>
+                <Tooltip id="rooftopSolar">
                   Enter the total capacity (maximum potential electricity
                   generation) for this type of resource, measured in MW. The
                   model uses these inputs along with hourly capacity factors

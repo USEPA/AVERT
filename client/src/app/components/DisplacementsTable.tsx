@@ -78,10 +78,7 @@ function DisplacementsTable() {
   const nh3Post = data.nh3.postEere;
   const nh3Impacts = data.nh3.impacts;
 
-  function replacementTooltip(
-    pollutant: ReplacementPollutantName,
-    tooltipId: number,
-  ) {
+  function replacementTooltip(pollutant: ReplacementPollutantName) {
     // prettier-ignore
     const pollutantMarkup = new Map<ReplacementPollutantName, ReactNode>()
       .set('generation', <Fragment>Generation</Fragment>)
@@ -90,7 +87,7 @@ function DisplacementsTable() {
       .set('co2', <Fragment>CO<sub>2</sub></Fragment>);
 
     return (
-      <Tooltip id={tooltipId}>
+      <Tooltip id={pollutant}>
         This region features one or more power plants with an infrequent{' '}
         {pollutantMarkup.get(pollutant)} emissions event.{' '}
         {pollutantMarkup.get(pollutant)} emissions changes from these plants are
@@ -120,7 +117,7 @@ function DisplacementsTable() {
               <td css={rowLabelStyles}>
                 Generation <small>(MWh)</small>{' '}
                 {egusNeedingReplacement.generation.length > 0 &&
-                  replacementTooltip('generation', 30)}
+                  replacementTooltip('generation')}
               </td>
               <td className="avert-table-data">{formatNumber(genOrig)}</td>
               <td className="avert-table-data">{formatNumber(genPost)}</td>
@@ -133,7 +130,7 @@ function DisplacementsTable() {
               <td css={rowLabelStyles}>
                 SO<sub>2</sub> <small>(lb)</small>{' '}
                 {egusNeedingReplacement.so2.length > 0 &&
-                  replacementTooltip('so2', 31)}
+                  replacementTooltip('so2')}
               </td>
               <td className="avert-table-data">{formatNumber(so2Orig)}</td>
               <td className="avert-table-data">{formatNumber(so2Post)}</td>
@@ -143,7 +140,7 @@ function DisplacementsTable() {
               <td css={rowLabelStyles}>
                 NO<sub>X</sub> <small>(lb)</small>{' '}
                 {egusNeedingReplacement.nox.length > 0 &&
-                  replacementTooltip('nox', 32)}
+                  replacementTooltip('nox')}
               </td>
               <td className="avert-table-data">{formatNumber(noxOrig)}</td>
               <td className="avert-table-data">{formatNumber(noxPost)}</td>
@@ -152,7 +149,7 @@ function DisplacementsTable() {
             <tr>
               <td css={altRowLabelStyles}>
                 Ozone season NO<sub>X</sub> <small>(lb)</small>{' '}
-                <Tooltip id={34}>
+                <Tooltip id="ozone-season-nox-total">
                   Ozone season is defined as May 1 — September 30. Ozone season
                   emissions are a subset of annual emissions.
                 </Tooltip>
@@ -167,7 +164,7 @@ function DisplacementsTable() {
               <td css={rowLabelStyles}>
                 CO<sub>2</sub> <small>(tons)</small>{' '}
                 {egusNeedingReplacement.co2.length > 0 &&
-                  replacementTooltip('co2', 33)}
+                  replacementTooltip('co2')}
               </td>
               <td className="avert-table-data">{formatNumber(co2Orig)}</td>
               <td className="avert-table-data">{formatNumber(co2Post)}</td>
@@ -230,7 +227,7 @@ function DisplacementsTable() {
             <tr>
               <td css={altRowLabelStyles}>
                 Ozone season NO<sub>X</sub> <small>(lb/MWh)</small>{' '}
-                <Tooltip id={35}>
+                <Tooltip id="ozone-season-nox-rates">
                   Ozone season is defined as May 1 — September 30. Ozone season
                   emissions are a subset of annual emissions.
                 </Tooltip>

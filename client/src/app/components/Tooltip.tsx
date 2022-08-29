@@ -129,7 +129,7 @@ const modalCloseStyles = css`
 `;
 
 type Props = {
-  id: number;
+  id: string;
   children: ReactNode;
 };
 

@@ -6,11 +6,11 @@ type PanelAction =
   | { type: 'panel/TOGGLE_MODAL_OVERLAY' }
   | {
       type: 'panel/STORE_ACTIVE_MODAL';
-      payload: { activeModalId: number };
+      payload: { activeModalId: string };
     }
   | {
       type: 'panel/RESET_ACTIVE_MODAL';
-      payload: { activeModalId: number };
+      payload: { activeModalId: string };
     }
   | { type: 'geography/REQUEST_SELECTED_REGIONS_DATA' }
   | { type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' }
@@ -26,8 +26,8 @@ type PanelState = {
   loadingSteps: number;
   loadingProgress: number;
   modalOverlay: boolean;
-  activeModalId: number;
-  closingModalId: number;
+  activeModalId: string;
+  closingModalId: string;
 };
 
 // reducer
@@ -37,8 +37,8 @@ const initialState: PanelState = {
   loadingSteps: 6, // total number of pollutant displacements + 1
   loadingProgress: 0,
   modalOverlay: false,
-  activeModalId: 0,
-  closingModalId: 0,
+  activeModalId: '',
+  closingModalId: '',
 };
 
 export default function reducer(
@@ -75,7 +75,7 @@ export default function reducer(
       return {
         ...state,
         activeModalId,
-        closingModalId: 0,
+        closingModalId: '',
       };
     }
 
@@ -84,7 +84,7 @@ export default function reducer(
 
       return {
         ...state,
-        activeModalId: 0,
+        activeModalId: '',
         closingModalId: activeModalId,
       };
     }
@@ -126,14 +126,14 @@ export function toggleModalOverlay() {
   return { type: 'panel/TOGGLE_MODAL_OVERLAY' };
 }
 
-export function storeActiveModal(modalId: number) {
+export function storeActiveModal(modalId: string) {
   return {
     type: 'panel/STORE_ACTIVE_MODAL',
     payload: { activeModalId: modalId },
   };
 }
 
-export function resetActiveModal(modalId: number) {
+export function resetActiveModal(modalId: string) {
   return {
     type: 'panel/RESET_ACTIVE_MODAL',
     payload: { activeModalId: modalId },

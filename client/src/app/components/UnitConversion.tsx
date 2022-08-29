@@ -116,7 +116,7 @@ function UnitConversion() {
       <p css={textStyles}>
         <span css={headingStyles}>Helpful Unit Conversions</span>{' '}
         <span css={modalStyles}>
-          <Tooltip id={20}>
+          <Tooltip id="unit-conversion">
             To convert units from power (<strong>kW, MW, GW</strong>) to energy
             (<strong>kWh, MWh, GWh</strong>), multiply by the total number of
             hours in the year. To convert in the other direction, divide by the
