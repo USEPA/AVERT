@@ -32,41 +32,31 @@ const inputsBlockStyles = css`
   margin: 1rem 0;
   border-top: 1px solid #ccc;
 
-  p,
-  ul,
-  li {
+  & :is(p, ul, li) {
     margin-top: 0 !important;
     font-size: 0.625rem;
   }
 
   @media (min-width: 25em) {
-    p,
-    ul,
-    li {
+    & :is(p, ul, li) {
       font-size: 0.6875rem;
     }
   }
 
   @media (min-width: 30em) {
-    p,
-    ul,
-    li {
+    & :is(p, ul, li) {
       font-size: 0.75rem;
     }
   }
 
   @media (min-width: 35em) {
-    p,
-    ul,
-    li {
+    & :is(p, ul, li) {
       font-size: 0.8125rem;
     }
   }
 
   @media (min-width: 40em) {
-    p,
-    ul,
-    li {
+    & :is(p, ul, li) {
       font-size: 0.875rem;
     }
   }
