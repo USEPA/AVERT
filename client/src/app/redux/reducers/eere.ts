@@ -339,18 +339,11 @@ export default function reducer(
 function validateInput(
   inputField: EereInputFields,
   inputValue: string,
-  _upperLimit: number, // no longer using upper limit for validation (see NOTE)
 ): AppThunk {
   return (dispatch, getState) => {
     const { eere } = getState();
 
     const value = Number(inputValue);
-
-    // NOTE: we're no longer validationg against an upper limit, but leaving
-    // code below commented out for now. we should condiser removing it entirely
-    // if its decided the upper limit for input validation is never coming back
-    // const invalidInput = isNaN(value) || value < 0 || value > _upperLimit;
-
     const invalidInput = isNaN(value) || value < 0;
 
     // remove input field being validated from existing fields with errors
@@ -365,105 +358,102 @@ function validateInput(
   };
 }
 
-export function updateEereAnnualGwh(input: string, limit: number): AppThunk {
+export function updateEereAnnualGwh(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_ANNUAL_GWH',
       payload: { text: input },
     });
 
-    dispatch(validateInput('annualGwh', input, limit));
+    dispatch(validateInput('annualGwh', input));
   };
 }
 
-export function updateEereConstantMw(input: string, limit: number): AppThunk {
+export function updateEereConstantMw(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_CONSTANT_MW',
       payload: { text: input },
     });
 
-    dispatch(validateInput('constantMwh', input, limit));
+    dispatch(validateInput('constantMwh', input));
   };
 }
 
-export function updateEereBroadBasedProgram(
-  input: string,
-  limit: number,
-): AppThunk {
+export function updateEereBroadBasedProgram(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_BROAD_BASE_PROGRAM',
       payload: { text: input },
     });
 
-    dispatch(validateInput('reduction', input, limit));
+    dispatch(validateInput('reduction', input));
   };
 }
 
-export function updateEereReduction(input: string, limit: number): AppThunk {
+export function updateEereReduction(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_REDUCTION',
       payload: { text: input },
     });
 
-    dispatch(validateInput('reduction', input, limit));
+    dispatch(validateInput('reduction', input));
   };
 }
 
-export function updateEereTopHours(input: string, limit: number): AppThunk {
+export function updateEereTopHours(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_TOP_HOURS',
       payload: { text: input },
     });
 
-    dispatch(validateInput('topHours', input, limit));
+    dispatch(validateInput('topHours', input));
   };
 }
 
-export function updateEereOnshoreWind(input: string, limit: number): AppThunk {
+export function updateEereOnshoreWind(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_ONSHORE_WIND',
       payload: { text: input },
     });
 
-    dispatch(validateInput('onshoreWind', input, limit));
+    dispatch(validateInput('onshoreWind', input));
   };
 }
 
-export function updateEereOffshoreWind(input: string, limit: number): AppThunk {
+export function updateEereOffshoreWind(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_OFFSHORE_WIND',
       payload: { text: input },
     });
 
-    dispatch(validateInput('offshoreWind', input, limit));
+    dispatch(validateInput('offshoreWind', input));
   };
 }
 
-export function updateEereUtilitySolar(input: string, limit: number): AppThunk {
+export function updateEereUtilitySolar(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_UTILITY_SOLAR',
       payload: { text: input },
     });
 
-    dispatch(validateInput('utilitySolar', input, limit));
+    dispatch(validateInput('utilitySolar', input));
   };
 }
 
-export function updateEereRooftopSolar(input: string, limit: number): AppThunk {
+export function updateEereRooftopSolar(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_ROOFTOP_SOLAR',
       payload: { text: input },
     });
 
-    dispatch(validateInput('rooftopSolar', input, limit));
+    dispatch(validateInput('rooftopSolar', input));
   };
 }
 
@@ -522,7 +512,9 @@ export function calculateEereProfile(): AppThunk {
       // - if a region is selected, the regional scaling factor will always be 1
       // - if a state is selected, the regional scaling factor comes from the
       //   selected state's percentage by region value for the given region, as
-      //   defined in the config file (`app/config.ts`)
+      //   defined in the config file (`app/config.ts`). for example, if the
+      //   state falls exactly equally between the two regions, the regional
+      //   scaling factor would be 0.5 for each of those two regions.
       const regionalScalingFactor = !selectedState ? 1 : regionalPercent / 100;
 
       // the percent reduction factor also is a number between 0 and 1, and

@@ -13,13 +13,6 @@ import {
 
 type GeographicFocus = 'regions' | 'states';
 
-type EereLimits = {
-  annualGwh: number;
-  constantMwh: number;
-  renewables: number;
-  percent: number;
-};
-
 export type RegionalLoadData = {
   day: number;
   hour: number;
@@ -115,40 +108,22 @@ type GeographyAction =
         regionId: RegionId;
         regionDefaults: EereJSON;
       };
-    }
-  | {
-      type: 'geography/SET_EERE_LIMITS';
-      payload: {
-        geographicFocus: GeographicFocus;
-        regionId: RegionId | null;
-        stateId: StateId | null;
-        eereLimits: EereLimits;
-      };
     };
 
 export type RegionState = Region & {
   selected: boolean;
-  eereLimits: EereLimits;
   eereDefaults: EereJSON;
   rdf: RdfJSON;
 };
 
 export type StateState = State & {
   selected: boolean;
-  eereLimits: EereLimits;
 };
 
 type GeographyState = {
   focus: GeographicFocus;
   regions: { [key in RegionId]: RegionState };
   states: { [key in StateId]: StateState };
-};
-
-const initialEereLimits = {
-  annualGwh: 0,
-  constantMwh: 0,
-  renewables: 0,
-  percent: 0,
 };
 
 const initialRegionEereDefaults = {
@@ -200,7 +175,6 @@ const initialRegionRdf = {
 const updatedRegions: any = { ...regions };
 for (const regionId in updatedRegions) {
   updatedRegions[regionId].selected = false;
-  updatedRegions[regionId].eereLimits = initialEereLimits;
   updatedRegions[regionId].eereDefaults = initialRegionEereDefaults;
   updatedRegions[regionId].rdf = initialRegionRdf;
 }
@@ -209,7 +183,6 @@ for (const regionId in updatedRegions) {
 const updatedStates: any = { ...states };
 for (const stateId in updatedStates) {
   updatedStates[stateId].selected = false;
-  updatedStates[stateId].eereLimits = initialEereLimits;
 }
 
 // reducer
@@ -291,38 +264,6 @@ export default function reducer(
       };
     }
 
-    case 'geography/SET_EERE_LIMITS': {
-      const { geographicFocus, regionId, stateId, eereLimits } = action.payload;
-
-      if (geographicFocus === 'regions' && regionId) {
-        return {
-          ...state,
-          regions: {
-            ...state.regions,
-            [regionId]: {
-              ...state.regions[regionId],
-              eereLimits,
-            },
-          },
-        };
-      }
-
-      if (geographicFocus === 'states' && stateId) {
-        return {
-          ...state,
-          states: {
-            ...state.states,
-            [stateId]: {
-              ...state.states[stateId],
-              eereLimits,
-            },
-          },
-        };
-      }
-
-      return state;
-    }
-
     default: {
       return state;
     }
@@ -348,65 +289,6 @@ export function selectState(stateId: string) {
   return {
     type: 'geography/SELECT_STATE',
     payload: { stateId },
-  };
-}
-
-function calculateEereLimits({
-  geographicFocus,
-  selectedState,
-  rdfs,
-}: {
-  geographicFocus: GeographicFocus;
-  selectedState: StateState | undefined;
-  rdfs: RdfJSON[];
-}) {
-  // variables set from rdf(s), depending on the geographic focus
-  let maxSolarWindMwh = 0;
-  let maxEEYearlyGwh = 0;
-  let maxEEPercent = 0;
-  let totalHours = 0;
-
-  // when a region is selected, only one rdf is passed
-  if (geographicFocus === 'regions') {
-    const { limits, regional_load } = rdfs[0];
-    maxSolarWindMwh = limits.max_solar_wind_mwh;
-    maxEEYearlyGwh = limits.max_ee_yearly_gwh;
-    maxEEPercent = limits.max_ee_percent;
-    totalHours = regional_load.length;
-  }
-
-  // when a state is selected, multiple rdfs are passed
-  if (geographicFocus === 'states') {
-    rdfs.forEach((rdf) => {
-      const { limits, regional_load } = rdf;
-      const regionId = rdf.region.region_abbv as RegionId;
-
-      // the regional scaling factor is a number between 0 and 1, representing
-      // the proportion the selected geography exists within a given region.
-      // - if a state is selected and it falls exactly equally between two
-      //   regions, the regional scaling factor would be 0.5 for each of those
-      //   two regions
-      // - if a region is selected, the regional scaling factor will always be 1
-      const regionalScalingFactor = selectedState
-        ? (selectedState.percentageByRegion[regionId] || 100) / 100
-        : 1;
-
-      maxSolarWindMwh += limits.max_solar_wind_mwh * regionalScalingFactor;
-      maxEEYearlyGwh += limits.max_ee_yearly_gwh * regionalScalingFactor;
-      maxEEPercent += limits.max_ee_percent * regionalScalingFactor;
-      // total hours is the same for all rdfs but its easier to just reassign it
-      totalHours = regional_load.length;
-    });
-  }
-
-  // calculate hourlyMwh from annualGwh (total for year)
-  const hourlyMwh = (maxEEYearlyGwh * 1e3) / totalHours;
-
-  return {
-    annualGwh: Math.round(maxEEYearlyGwh * 2 * 100) / 100,
-    constantMwh: Math.round(hourlyMwh * 2 * 100) / 100,
-    renewables: Math.round(maxSolarWindMwh * 2 * 100) / 100,
-    percent: Math.round(maxEEPercent * 2 * 100) / 100,
   };
 }
 
@@ -533,32 +415,6 @@ export function fetchRegionsData(): AppThunk {
             }
           });
         }
-
-        const eereLimits = calculateEereLimits({
-          geographicFocus: geography.focus,
-          selectedState,
-          rdfs: regionalDataFiles,
-        });
-
-        const regionId =
-          geography.focus === 'regions' && selectedRegion
-            ? selectedRegion.id
-            : null;
-
-        const stateId =
-          geography.focus === 'states' && selectedState
-            ? selectedState.id
-            : null;
-
-        dispatch({
-          type: 'geography/SET_EERE_LIMITS',
-          payload: {
-            geographicFocus: geography.focus,
-            regionId,
-            stateId,
-            eereLimits,
-          },
-        });
 
         dispatch({ type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' });
       });
