@@ -46,7 +46,7 @@ const errorHeadingStyles = css`
 type Props = {
   label?: string;
   ariaLabel: string;
-  suffix: string;
+  suffix?: string;
   value: string;
   fieldName: string;
   disabled?: string;
@@ -97,7 +97,7 @@ export function EEREInputField({
         }}
       />
 
-      <span css={suffixStyles}> {suffix} </span>
+      {suffix && <span css={suffixStyles}> {suffix} </span>}
 
       {tooltip && <Tooltip id={fieldName}>{tooltip}</Tooltip>}
 

@@ -73,6 +73,22 @@ type EereAction =
       type: 'eere/UPDATE_EERE_ROOFTOP_SOLAR';
       payload: { text: string };
     }
+  | {
+      type: 'eere/UPDATE_EERE_BATTERY_EVS';
+      payload: { text: string };
+    }
+  | {
+      type: 'eere/UPDATE_EERE_HYBRID_EVS';
+      payload: { text: string };
+    }
+  | {
+      type: 'eere/UPDATE_EERE_TRANSIT_BUSES';
+      payload: { text: string };
+    }
+  | {
+      type: 'eere/UPDATE_EERE_SCHOOL_BUSES';
+      payload: { text: string };
+    }
   | { type: 'eere/START_EERE_CALCULATIONS' }
   | {
       type: 'eere/CALCULATE_REGIONAL_EERE_PROFILE';
@@ -92,7 +108,11 @@ export type EereInputFieldName =
   | 'onshoreWind'
   | 'offshoreWind'
   | 'utilitySolar'
-  | 'rooftopSolar';
+  | 'rooftopSolar'
+  | 'batteryEVs'
+  | 'hybridEVs'
+  | 'transitBuses'
+  | 'schoolBuses';
 
 export type EereInputs = { [field in EereInputFieldName]: string };
 
@@ -114,6 +134,10 @@ const emptyEereInputs = {
   offshoreWind: '',
   utilitySolar: '',
   rooftopSolar: '',
+  batteryEVs: '',
+  hybridEVs: '',
+  transitBuses: '',
+  schoolBuses: '',
 };
 
 const emptyRegionalLoadHour = {
@@ -169,7 +193,6 @@ export default function reducer(
 
     case 'eere/VALIDATE_EERE': {
       const { errors } = action.payload;
-
       return {
         ...state,
         errors,
@@ -178,7 +201,6 @@ export default function reducer(
 
     case 'eere/UPDATE_EERE_ANNUAL_GWH': {
       const { text } = action.payload;
-
       return {
         ...state,
         inputs: {
@@ -190,7 +212,6 @@ export default function reducer(
 
     case 'eere/UPDATE_EERE_CONSTANT_MW': {
       const { text } = action.payload;
-
       return {
         ...state,
         inputs: {
@@ -202,7 +223,6 @@ export default function reducer(
 
     case 'eere/UPDATE_EERE_BROAD_BASE_PROGRAM': {
       const { text } = action.payload;
-
       return {
         ...state,
         inputs: {
@@ -214,7 +234,6 @@ export default function reducer(
 
     case 'eere/UPDATE_EERE_REDUCTION': {
       const { text } = action.payload;
-
       return {
         ...state,
         inputs: {
@@ -226,7 +245,6 @@ export default function reducer(
 
     case 'eere/UPDATE_EERE_TOP_HOURS': {
       const { text } = action.payload;
-
       return {
         ...state,
         inputs: {
@@ -238,7 +256,6 @@ export default function reducer(
 
     case 'eere/UPDATE_EERE_ONSHORE_WIND': {
       const { text } = action.payload;
-
       return {
         ...state,
         inputs: {
@@ -250,7 +267,6 @@ export default function reducer(
 
     case 'eere/UPDATE_EERE_OFFSHORE_WIND': {
       const { text } = action.payload;
-
       return {
         ...state,
         inputs: {
@@ -262,7 +278,6 @@ export default function reducer(
 
     case 'eere/UPDATE_EERE_UTILITY_SOLAR': {
       const { text } = action.payload;
-
       return {
         ...state,
         inputs: {
@@ -274,12 +289,55 @@ export default function reducer(
 
     case 'eere/UPDATE_EERE_ROOFTOP_SOLAR': {
       const { text } = action.payload;
-
       return {
         ...state,
         inputs: {
           ...state.inputs,
           rooftopSolar: text,
+        },
+      };
+    }
+
+    case 'eere/UPDATE_EERE_BATTERY_EVS': {
+      const { text } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          batteryEVs: text,
+        },
+      };
+    }
+
+    case 'eere/UPDATE_EERE_HYBRID_EVS': {
+      const { text } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          hybridEVs: text,
+        },
+      };
+    }
+
+    case 'eere/UPDATE_EERE_TRANSIT_BUSES': {
+      const { text } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          transitBuses: text,
+        },
+      };
+    }
+
+    case 'eere/UPDATE_EERE_SCHOOL_BUSES': {
+      const { text } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          schoolBuses: text,
         },
       };
     }
@@ -303,7 +361,6 @@ export default function reducer(
         hardTopExceedanceValue,
         hardTopExceedanceIndex,
       } = action.payload;
-
       return {
         ...state,
         regionalProfiles: {
@@ -457,6 +514,50 @@ export function updateEereRooftopSolar(input: string): AppThunk {
   };
 }
 
+export function updateEereBatteryEVs(input: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'eere/UPDATE_EERE_BATTERY_EVS',
+      payload: { text: input },
+    });
+
+    dispatch(validateInput('batteryEVs', input));
+  };
+}
+
+export function updateEereHybridEVs(input: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'eere/UPDATE_EERE_HYBRID_EVS',
+      payload: { text: input },
+    });
+
+    dispatch(validateInput('hybridEVs', input));
+  };
+}
+
+export function updateEereTransitBuses(input: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'eere/UPDATE_EERE_TRANSIT_BUSES',
+      payload: { text: input },
+    });
+
+    dispatch(validateInput('transitBuses', input));
+  };
+}
+
+export function updateEereSchoolBuses(input: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'eere/UPDATE_EERE_SCHOOL_BUSES',
+      payload: { text: input },
+    });
+
+    dispatch(validateInput('schoolBuses', input));
+  };
+}
+
 export function calculateEereProfile(): AppThunk {
   return (dispatch, getState) => {
     const { geography, eere } = getState();
@@ -569,6 +670,10 @@ export function calculateEereProfile(): AppThunk {
         offshoreWind: Number(eere.inputs.offshoreWind) * offshoreWindFactor,
         utilitySolar: Number(eere.inputs.utilitySolar) * regionalScalingFactor,
         rooftopSolar: Number(eere.inputs.rooftopSolar) * regionalScalingFactor,
+        batteryEVs: Number(eere.inputs.batteryEVs) * regionalScalingFactor,
+        hybridEVs: Number(eere.inputs.hybridEVs) * regionalScalingFactor,
+        transitBuses: Number(eere.inputs.transitBuses) * regionalScalingFactor,
+        schoolBuses: Number(eere.inputs.schoolBuses) * regionalScalingFactor,
       };
 
       const {

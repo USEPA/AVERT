@@ -44,6 +44,11 @@ export function calculateEere({
     // D: Solar photovoltaic
     utilitySolar,
     rooftopSolar,
+    // E: Number of electric vehicles
+    batteryEVs,
+    hybridEVs,
+    transitBuses,
+    schoolBuses,
   } = eereInputs;
 
   const lineLoss = 1 / (1 - regionLineLoss);

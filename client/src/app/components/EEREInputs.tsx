@@ -17,6 +17,10 @@ import {
   updateEereOffshoreWind,
   updateEereUtilitySolar,
   updateEereRooftopSolar,
+  updateEereBatteryEVs,
+  updateEereHybridEVs,
+  updateEereTransitBuses,
+  updateEereSchoolBuses,
   calculateEereProfile,
 } from 'app/redux/reducers/eere';
 // hooks
@@ -101,7 +105,7 @@ const inputsLabelStyles = css`
     font-size: 0.875rem;
   }
 
-  /* letter (A, B, C, or D) */
+  /* letter (A, B, C, D, E, F, G, or H) */
   &::after {
     content: attr(data-label);
     float: left;
@@ -173,6 +177,10 @@ function EEREInputs() {
   const offshoreWind = useTypedSelector(({ eere }) => eere.inputs.offshoreWind);
   const utilitySolar = useTypedSelector(({ eere }) => eere.inputs.utilitySolar);
   const rooftopSolar = useTypedSelector(({ eere }) => eere.inputs.rooftopSolar);
+  const batteryEVs = useTypedSelector(({ eere }) => eere.inputs.batteryEVs);
+  const hybridEVs = useTypedSelector(({ eere }) => eere.inputs.hybridEVs);
+  const transitBuses = useTypedSelector(({ eere }) => eere.inputs.transitBuses);
+  const schoolBuses = useTypedSelector(({ eere }) => eere.inputs.schoolBuses);
 
   const selectedRegion = useSelectedRegion();
   const selectedStateRegions = useSelectedStateRegions();
@@ -195,6 +203,10 @@ function EEREInputs() {
     offshoreWind,
     utilitySolar,
     rooftopSolar,
+    batteryEVs,
+    hybridEVs,
+    transitBuses,
+    schoolBuses,
   ];
 
   const inputsAreEmpty =
@@ -476,6 +488,98 @@ function EEREInputs() {
                 />
               </li>
             </ul>
+          </section>
+        </details>
+
+        <header css={inputsCategoryStyles}>
+          <p>Electric Vehicles</p>
+        </header>
+
+        <details css={inputsGroupStyles}>
+          <summary css={inputsLabelStyles} data-label="E">
+            Number of electric vehicles
+          </summary>
+
+          <section css={inputsContentStyles}>
+            <p>
+              <strong>Choose any:</strong>
+            </p>
+
+            <ul>
+              <li>
+                <EEREInputField
+                  label="Light-duty battery EVs:"
+                  ariaLabel="TODO"
+                  value={batteryEVs}
+                  fieldName="batteryEVs"
+                  onChange={(text) => dispatch(updateEereBatteryEVs(text))}
+                  tooltip={<>TODO</>}
+                />
+              </li>
+
+              <li>
+                <EEREInputField
+                  label="Light-duty plug-in hybrid EVs:"
+                  ariaLabel="TODO"
+                  value={hybridEVs}
+                  fieldName="hybridEVs"
+                  onChange={(text) => dispatch(updateEereHybridEVs(text))}
+                  tooltip={<>TODO</>}
+                />
+              </li>
+
+              <li>
+                <EEREInputField
+                  label="Electric transit buses:"
+                  ariaLabel="TODO"
+                  value={transitBuses}
+                  fieldName="transitBuses"
+                  onChange={(text) => dispatch(updateEereTransitBuses(text))}
+                  tooltip={<>TODO</>}
+                />
+              </li>
+
+              <li>
+                <EEREInputField
+                  label="Electric school buses:"
+                  ariaLabel="TODO"
+                  value={schoolBuses}
+                  fieldName="schoolBuses"
+                  onChange={(text) => dispatch(updateEereSchoolBuses(text))}
+                  tooltip={<>TODO</>}
+                />
+              </li>
+            </ul>
+          </section>
+        </details>
+
+        <details css={inputsGroupStyles}>
+          <summary css={inputsLabelStyles} data-label="F">
+            Charging profiles
+          </summary>
+
+          <section css={inputsContentStyles}>
+            <p>TODO</p>
+          </section>
+        </details>
+
+        <details css={inputsGroupStyles}>
+          <summary css={inputsLabelStyles} data-label="G">
+            Location of deployment
+          </summary>
+
+          <section css={inputsContentStyles}>
+            <p>TODO</p>
+          </section>
+        </details>
+
+        <details css={inputsGroupStyles}>
+          <summary css={inputsLabelStyles} data-label="H">
+            Vehicle model year
+          </summary>
+
+          <section css={inputsContentStyles}>
+            <p>TODO</p>
           </section>
         </details>
       </div>
