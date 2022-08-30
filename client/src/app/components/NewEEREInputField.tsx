@@ -51,7 +51,7 @@ type Props = {
   fieldName: string;
   disabled?: string;
   onChange: (value: string) => void;
-  tooltip: ReactNode;
+  tooltip?: ReactNode;
 };
 
 export function NewEEREInputField({
@@ -97,7 +97,7 @@ export function NewEEREInputField({
 
       <span css={suffixStyles}> {suffix} </span>
 
-      <Tooltip id={fieldName}>{tooltip}</Tooltip>
+      {tooltip && <Tooltip id={fieldName}>{tooltip}</Tooltip>}
 
       {errors.includes(fieldName as EereInputFieldName) && (
         <span css={errorStyles}>

@@ -4,12 +4,10 @@ import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // components
 import { NewEEREInputField } from 'app/components/NewEEREInputField';
-import EEREInputField from 'app/components/EEREInputField';
 import Tooltip from 'app/components/Tooltip';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 import {
-  EereInputFieldName,
   updateEereAnnualGwh,
   updateEereConstantMw,
   updateEereBroadBasedProgram,
@@ -156,63 +154,10 @@ const inputLabelStyles = css`
   }
 `;
 
-const inputUnitStyles = css`
-  font-size: 0.5rem;
-
-  @media (min-width: 25em) {
-    font-size: 0.5625rem;
-  }
-
-  @media (min-width: 30em) {
-    font-size: 0.625rem;
-  }
-
-  @media (min-width: 35em) {
-    font-size: 0.6875rem;
-  }
-
-  @media (min-width: 40em) {
-    font-size: 0.75rem;
-  }
-`;
-
-export const inputErrorStyles = css`
-  display: block;
-  font-style: italic;
-  color: rgb(206, 29, 29);
-`;
-
-const errorRangeStyles = css`
-  display: block;
-  font-weight: bold;
-  font-style: normal;
-`;
-
 const impactsButtonStyles = css`
   text-align: center;
   margin-bottom: 1rem;
 `;
-
-function displayError({
-  errors,
-  fieldName,
-  inputValue,
-}: {
-  errors: EereInputFieldName[];
-  fieldName: EereInputFieldName;
-  inputValue: string;
-}) {
-  if (inputValue?.length <= 0) return;
-  if (!errors?.includes(fieldName)) return;
-
-  return (
-    <span css={inputErrorStyles}>
-      <span css={errorRangeStyles}>Please enter a positive number.</span>
-      If you wish to model a reverse EE/RE scenario (i.e., a negative number),
-      use the Excel version of the AVERT Main Module.
-    </span>
-  );
-}
 
 function EEREInputs() {
   const dispatch = useDispatch();
@@ -355,7 +300,7 @@ function EEREInputs() {
                   }
                   tooltip={
                     <>
-                  To simulate a broad-based efficiency program, enter an
+                      To simulate a broad-based efficiency program, enter an
                       estimated load reduction fraction. This percentage
                       reduction will be applied to all hours of the year.
                     </>
@@ -364,45 +309,34 @@ function EEREInputs() {
               </li>
 
               <li>
-                <span css={inputLabelStyles}>
-                  Targeted program: Reduce generation by{' '}
-                </span>
-                <EEREInputField
+                <NewEEREInputField
+                  label="Targeted program: Reduce generation by:"
                   ariaLabel="Load reduction (as a fraction of peaking load) that would be targeted"
+                  suffix="%"
                   value={reduction}
-                  fieldName={'reduction'}
+                  fieldName="reduction"
                   disabled={broadProgram}
                   onChange={(text) => dispatch(updateEereReduction(text))}
                 />
-                <span css={inputUnitStyles}> % during the peak </span>
-                <EEREInputField
+
+                <NewEEREInputField
+                  label="during the peak:"
                   ariaLabel="Fraction of high-demand hours that the program is expected to affect"
+                  suffix="% of hours"
                   value={topHours}
-                  fieldName={'topHours'}
+                  fieldName="topHours"
                   disabled={broadProgram}
                   onChange={(text) => dispatch(updateEereTopHours(text))}
+                  tooltip={
+                    <>
+                      To simulate a peak-reduction targeting program such as
+                      demand response, enter the load reduction (as a fraction
+                      of peaking load) that would be targeted, as well as the
+                      fraction of high-demand hours that the program is expected
+                      to affect (e.g., 1%–3%).
+                    </>
+                  }
                 />
-                <span css={inputUnitStyles}> % of hours </span>
-
-                <Tooltip id="reduction-topHours">
-                  To simulate a peak-reduction targeting program such as demand
-                  response, enter the load reduction (as a fraction of peaking
-                  load) that would be targeted, as well as the fraction of
-                  high-demand hours that the program is expected to affect
-                  (e.g., 1%–3%).
-                </Tooltip>
-
-                {displayError({
-                  errors,
-                  fieldName: 'reduction',
-                  inputValue: reduction,
-                })}
-
-                {displayError({
-                  errors,
-                  fieldName: 'topHours',
-                  inputValue: topHours,
-                })}
               </li>
             </ul>
           </section>
@@ -433,10 +367,10 @@ function EEREInputs() {
                   onChange={(text) => dispatch(updateEereOnshoreWind(text))}
                   tooltip={
                     <>
-                  Enter the total capacity (maximum potential electricity
-                  generation) for this type of resource, measured in MW. The
-                  model uses these inputs along with hourly capacity factors
-                  that vary by resource type and region.
+                      Enter the total capacity (maximum potential electricity
+                      generation) for this type of resource, measured in MW. The
+                      model uses these inputs along with hourly capacity factors
+                      that vary by resource type and region.
                     </>
                   }
                 />
@@ -446,9 +380,9 @@ function EEREInputs() {
                 {atLeastOneRegionSupportsOffshoreWind ? (
                   <NewEEREInputField
                     label="Offshore wind total capacity:"
-                      ariaLabel="Total capacity (maximum potential electricity generation) in MW"
+                    ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                     suffix="MW"
-                      value={offshoreWind}
+                    value={offshoreWind}
                     fieldName="offshoreWind"
                     onChange={(text) => dispatch(updateEereOffshoreWind(text))}
                     tooltip={
@@ -458,35 +392,35 @@ function EEREInputs() {
                         The model uses these inputs along with hourly capacity
                         factors that vary by resource type and region.
                       </>
-                      }
-                    />
+                    }
+                  />
                 ) : geographicFocus === 'regions' ? (
                   <span css={inputLabelStyles}>
-                        <em>
+                    <em>
                       Offshore wind calculations are not available in this AVERT
-                      region.{' '}
-                        </em>
+                      region{' '}
+                    </em>
 
-                        <Tooltip id="no-offshoreWind-region">
-                          AVERT does not support offshore wind modeling in this
+                    <Tooltip id="no-offshoreWind-region">
+                      AVERT does not support offshore wind modeling in this
                       region. It is unlikely that offshore areas suitable for
                       wind farms would connect to the electrical grid in this
                       region.
-                        </Tooltip>
+                    </Tooltip>
                   </span>
-                    ) : (
+                ) : (
                   <span css={inputLabelStyles}>
-                        <em>
+                    <em>
                       Offshore wind calculations are not available in the AVERT
-                      region(s) that this state is part of.{' '}
-                        </em>
+                      region(s) that this state is part of{' '}
+                    </em>
 
-                        <Tooltip id="no-offshoreWind-state">
-                          AVERT does not support offshore wind modeling in the
+                    <Tooltip id="no-offshoreWind-state">
+                      AVERT does not support offshore wind modeling in the
                       region(s) that this state is part of. It is unlikely that
                       offshore areas suitable for wind farms would connect to
                       the electrical grid in these regions.
-                        </Tooltip>
+                    </Tooltip>
                   </span>
                 )}
               </li>
@@ -515,10 +449,10 @@ function EEREInputs() {
                   onChange={(text) => dispatch(updateEereUtilitySolar(text))}
                   tooltip={
                     <>
-                  Enter the total capacity (maximum potential electricity
-                  generation) for this type of resource, measured in MW. The
-                  model uses these inputs along with hourly capacity factors
-                  that vary by resource type and region.
+                      Enter the total capacity (maximum potential electricity
+                      generation) for this type of resource, measured in MW. The
+                      model uses these inputs along with hourly capacity factors
+                      that vary by resource type and region.
                     </>
                   }
                 />
@@ -534,10 +468,10 @@ function EEREInputs() {
                   onChange={(text) => dispatch(updateEereRooftopSolar(text))}
                   tooltip={
                     <>
-                  Enter the total capacity (maximum potential electricity
-                  generation) for this type of resource, measured in MW. The
-                  model uses these inputs along with hourly capacity factors
-                  that vary by resource type and region.
+                      Enter the total capacity (maximum potential electricity
+                      generation) for this type of resource, measured in MW. The
+                      model uses these inputs along with hourly capacity factors
+                      that vary by resource type and region.
                     </>
                   }
                 />

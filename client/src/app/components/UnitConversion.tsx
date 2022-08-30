@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { css } from '@emotion/react';
 // components
 import Tooltip from 'app/components/Tooltip';
-import { inputErrorStyles } from 'app/components/EEREInputs';
 
 const unitConversionStyles = css`
   margin-bottom: 1rem;
@@ -69,7 +68,7 @@ const errorStyles = css`
   margin-top: 0.75rem;
   font-size: 0.75rem;
   font-weight: bold;
-  font-style: normal;
+  color: rgb(206, 29, 29);
 `;
 
 function UnitConversion() {
@@ -170,11 +169,7 @@ function UnitConversion() {
         <span css={unitPostfixStyles}> GW</span>
       </div>
 
-      {error && (
-        <p css={[inputErrorStyles, errorStyles]}>
-          Please enter a positive number.
-        </p>
-      )}
+      {error && <p css={errorStyles}>Please enter a positive number.</p>}
     </div>
   );
 }
