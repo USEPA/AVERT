@@ -1,7 +1,7 @@
 import stats from 'stats-lite';
 // reducers
 import { EereDefaultData } from 'app/redux/reducers/geography';
-import { EereInputFields } from 'app/redux/reducers/eere';
+import { EereInputFieldName } from 'app/redux/reducers/eere';
 
 function calculateHourlyExceedance(
   calculatedLoad: number,
@@ -28,7 +28,7 @@ export function calculateEere({
   regionLineLoss: number;
   eereLoads: number[];
   eereDefaults: EereDefaultData[];
-  eereInputs: { [field in EereInputFields]: number };
+  eereInputs: { [field in EereInputFieldName]: number };
 }) {
   const {
     // A: Reductions spread evenly throughout the year

@@ -35,7 +35,7 @@ type EereAction =
   | { type: 'eere/RESET_EERE_INPUTS' }
   | {
       type: 'eere/VALIDATE_EERE';
-      payload: { errors: EereInputFields[] };
+      payload: { errors: EereInputFieldName[] };
     }
   | {
       type: 'eere/UPDATE_EERE_ANNUAL_GWH';
@@ -83,7 +83,7 @@ type EereAction =
       payload: CombinedProfile;
     };
 
-export type EereInputFields =
+export type EereInputFieldName =
   | 'annualGwh'
   | 'constantMwh'
   | 'broadProgram'
@@ -94,11 +94,11 @@ export type EereInputFields =
   | 'utilitySolar'
   | 'rooftopSolar';
 
-export type EereInputs = { [field in EereInputFields]: string };
+export type EereInputs = { [field in EereInputFieldName]: string };
 
 type EereState = {
   status: 'ready' | 'started' | 'complete';
-  errors: EereInputFields[];
+  errors: EereInputFieldName[];
   inputs: EereInputs;
   regionalProfiles: Partial<{ [key in RegionId]: RegionalProfile }>;
   combinedProfile: CombinedProfile;
@@ -337,7 +337,7 @@ export default function reducer(
 
 // action creators
 function validateInput(
-  inputField: EereInputFields,
+  inputField: EereInputFieldName,
   inputValue: string,
 ): AppThunk {
   return (dispatch, getState) => {
