@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 
-import { Fragment } from 'react';
 import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // components
@@ -268,7 +267,7 @@ function EEREInputs() {
   };
 
   return (
-    <Fragment>
+    <>
       <div css={inputsBlockStyles} data-avert-eere-inputs>
         <header css={inputsCategoryStyles}>
           <p>Energy Efficiency</p>
@@ -278,63 +277,55 @@ function EEREInputs() {
           <summary css={inputsLabelStyles} data-label="A">
             Reductions spread evenly throughout the year
           </summary>
+
           <section css={inputsContentStyles}>
             <p>
               <strong>Choose one:</strong>
             </p>
+
             <ul>
               <li>
-                <span css={inputLabelStyles}>
-                  Reduce total annual generation by{' '}
-                </span>
-                <EEREInputField
+                <NewEEREInputField
+                  label="Reduce total annual generation by:"
                   ariaLabel="Number of GWh expected to be saved in a single year"
+                  suffix="GWh"
                   value={annualGwh}
-                  fieldName={'annualGwh'}
+                  fieldName="annualGwh"
                   disabled={constantMwh}
                   onChange={(text) => dispatch(updateEereAnnualGwh(text))}
+                  tooltip={
+                    <>
+                      Enter the total number of GWh expected to be saved in a
+                      single year. This option simply distributes the total
+                      annual savings evenly over all hours of the year. An
+                      industrial or refrigeration efficiency program may be well
+                      represented by a constant reduction across most hours of
+                      the year.
+                    </>
+                  }
                 />
-                <span css={inputUnitStyles}> GWh </span>
-
-                <Tooltip id="annualGwh">
-                  Enter the total number of GWh expected to be saved in a single
-                  year. This option simply distributes the total annual savings
-                  evenly over all hours of the year. An industrial or
-                  refrigeration efficiency program may be well represented by a
-                  constant reduction across most hours of the year.
-                </Tooltip>
-
-                {displayError({
-                  errors,
-                  fieldName: 'annualGwh',
-                  inputValue: annualGwh,
-                })}
               </li>
 
               <li>
-                <span css={inputLabelStyles}>Reduce hourly generation by </span>
-                <EEREInputField
+                <NewEEREInputField
+                  label="Reduce hourly generation by:"
                   ariaLabel="Constant reduction for every hour of the year, in MW"
+                  suffix="MW"
                   value={constantMwh}
-                  fieldName={'constantMwh'}
+                  fieldName="constantMwh"
                   disabled={annualGwh}
                   onChange={(text) => dispatch(updateEereConstantMw(text))}
+                  tooltip={
+                    <>
+                      “Reduce hourly generation” is identical in effect to
+                      reducing total annual generation. It allows you to enter a
+                      constant reduction for every hour of the year, in MW. An
+                      industrial or refrigeration efficiency program may be well
+                      represented by a constant reduction across most hours of
+                      the year.
+                    </>
+                  }
                 />
-                <span css={inputUnitStyles}> MW </span>
-
-                <Tooltip id="constantMwh">
-                  “Reduce hourly generation” is identical in effect to reducing
-                  total annual generation. It allows you to enter a constant
-                  reduction for every hour of the year, in MW. An industrial or
-                  refrigeration efficiency program may be well represented by a
-                  constant reduction across most hours of the year.
-                </Tooltip>
-
-                {displayError({
-                  errors,
-                  fieldName: 'constantMwh',
-                  inputValue: constantMwh,
-                })}
               </li>
             </ul>
           </section>
@@ -344,37 +335,32 @@ function EEREInputs() {
           <summary css={inputsLabelStyles} data-label="B">
             Percentage reductions in some or all hours
           </summary>
+
           <section css={inputsContentStyles}>
             <p>
               <strong>Choose one:</strong>
             </p>
+
             <ul>
               <li>
-                <span css={inputLabelStyles}>
-                  Broad-based program: Reduce generation by{' '}
-                </span>
-                <EEREInputField
+                <NewEEREInputField
+                  label="Broad-based program: Reduce generation by:"
                   ariaLabel="Load reduction percentage applied to all hours of the year"
+                  suffix="% in all hours"
                   value={broadProgram}
-                  fieldName={'broadProgram'}
+                  fieldName="broadProgram"
                   disabled={reduction || topHours}
                   onChange={(text) =>
                     dispatch(updateEereBroadBasedProgram(text))
                   }
-                />
-                <span css={inputUnitStyles}> % in all hours </span>
-
-                <Tooltip id="broadProgram">
+                  tooltip={
+                    <>
                   To simulate a broad-based efficiency program, enter an
-                  estimated load reduction fraction. This percentage reduction
-                  will be applied to all hours of the year.
-                </Tooltip>
-
-                {displayError({
-                  errors,
-                  fieldName: 'reduction',
-                  inputValue: broadProgram,
-                })}
+                      estimated load reduction fraction. This percentage
+                      reduction will be applied to all hours of the year.
+                    </>
+                  }
+                />
               </li>
 
               <li>
@@ -430,6 +416,7 @@ function EEREInputs() {
           <summary css={inputsLabelStyles} data-label="C">
             Wind
           </summary>
+
           <section css={inputsContentStyles}>
             <p>
               <strong>Choose one or both:</strong>
@@ -511,6 +498,7 @@ function EEREInputs() {
           <summary css={inputsLabelStyles} data-label="D">
             Solar photovoltaic
           </summary>
+
           <section css={inputsContentStyles}>
             <p>
               <strong>Choose one or both:</strong>
@@ -573,7 +561,7 @@ function EEREInputs() {
           {eereButtonOptions[status]}
         </a>
       </p>
-    </Fragment>
+    </>
   );
 }
 

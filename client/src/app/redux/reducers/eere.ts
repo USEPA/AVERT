@@ -387,7 +387,7 @@ export function updateEereBroadBasedProgram(input: string): AppThunk {
       payload: { text: input },
     });
 
-    dispatch(validateInput('reduction', input));
+    dispatch(validateInput('broadProgram', input));
   };
 }
 
