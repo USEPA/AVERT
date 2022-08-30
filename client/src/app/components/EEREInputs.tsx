@@ -3,7 +3,7 @@
 import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // components
-import { NewEEREInputField } from 'app/components/NewEEREInputField';
+import { EEREInputField } from 'app/components/EEREInputField';
 import Tooltip from 'app/components/Tooltip';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
@@ -230,7 +230,7 @@ function EEREInputs() {
 
             <ul>
               <li>
-                <NewEEREInputField
+                <EEREInputField
                   label="Reduce total annual generation by:"
                   ariaLabel="Number of GWh expected to be saved in a single year"
                   suffix="GWh"
@@ -252,7 +252,7 @@ function EEREInputs() {
               </li>
 
               <li>
-                <NewEEREInputField
+                <EEREInputField
                   label="Reduce hourly generation by:"
                   ariaLabel="Constant reduction for every hour of the year, in MW"
                   suffix="MW"
@@ -288,7 +288,7 @@ function EEREInputs() {
 
             <ul>
               <li>
-                <NewEEREInputField
+                <EEREInputField
                   label="Broad-based program: Reduce generation by:"
                   ariaLabel="Load reduction percentage applied to all hours of the year"
                   suffix="% in all hours"
@@ -309,7 +309,7 @@ function EEREInputs() {
               </li>
 
               <li>
-                <NewEEREInputField
+                <EEREInputField
                   label="Targeted program: Reduce generation by:"
                   ariaLabel="Load reduction (as a fraction of peaking load) that would be targeted"
                   suffix="%"
@@ -319,7 +319,7 @@ function EEREInputs() {
                   onChange={(text) => dispatch(updateEereReduction(text))}
                 />
 
-                <NewEEREInputField
+                <EEREInputField
                   label="during the peak:"
                   ariaLabel="Fraction of high-demand hours that the program is expected to affect"
                   suffix="% of hours"
@@ -358,7 +358,7 @@ function EEREInputs() {
 
             <ul>
               <li>
-                <NewEEREInputField
+                <EEREInputField
                   label="Onshore wind total capacity:"
                   ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                   suffix="MW"
@@ -378,7 +378,7 @@ function EEREInputs() {
 
               <li>
                 {atLeastOneRegionSupportsOffshoreWind ? (
-                  <NewEEREInputField
+                  <EEREInputField
                     label="Offshore wind total capacity:"
                     ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                     suffix="MW"
@@ -440,7 +440,7 @@ function EEREInputs() {
 
             <ul>
               <li>
-                <NewEEREInputField
+                <EEREInputField
                   label="Utility-scale solar photovoltaic total capacity:"
                   ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                   suffix="MW"
@@ -459,7 +459,7 @@ function EEREInputs() {
               </li>
 
               <li>
-                <NewEEREInputField
+                <EEREInputField
                   label="Distributed (rooftop) solar photovoltaic total capacity:"
                   ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                   suffix="MW"

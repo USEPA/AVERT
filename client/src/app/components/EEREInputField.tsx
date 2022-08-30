@@ -2,9 +2,16 @@
 
 import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
-// reducers
+import type { ReactNode } from 'react';
+// ---
+import Tooltip from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import { calculateEereProfile } from 'app/redux/reducers/eere';
+import type { EereInputFieldName } from 'app/redux/reducers/eere';
+
+const labelStyles = css`
+  font-size: inherit;
+`;
 
 const inputStyles = css`
   margin: 0.25rem 0;
@@ -20,47 +27,85 @@ const inputStyles = css`
   }
 `;
 
+const suffixStyles = css`
+  font-size: 0.875em;
+`;
+
+export const errorStyles = css`
+  display: block;
+  font-style: italic;
+  color: rgb(206, 29, 29);
+`;
+
+const errorHeadingStyles = css`
+  display: block;
+  font-weight: bold;
+  font-style: normal;
+`;
+
 type Props = {
+  label: string;
   ariaLabel: string;
+  suffix: string;
   value: string;
   fieldName: string;
   disabled?: string;
   onChange: (value: string) => void;
+  tooltip?: ReactNode;
 };
 
-function EEREInputField({
+export function EEREInputField({
+  label,
   ariaLabel,
+  suffix,
   value,
   fieldName,
   disabled,
   onChange,
+  tooltip,
 }: Props) {
   const dispatch = useDispatch();
   const status = useTypedSelector(({ eere }) => eere.status);
   const errors = useTypedSelector(({ eere }) => eere.errors);
 
   const inputsAreValid = errors.length === 0;
-
   const inputIsEmpty = value.length === 0;
 
   const calculationDisabled =
     !inputsAreValid || inputIsEmpty || status === 'started';
 
   return (
-    <input
-      css={inputStyles}
-      aria-label={ariaLabel}
-      type="text"
-      value={value}
-      data-avert-eere-input={fieldName}
-      disabled={disabled ? true : false}
-      onChange={(ev) => onChange(ev.target.value)}
-      onKeyPress={(ev) => {
-        if (calculationDisabled) return;
-        if (ev.key === 'Enter') dispatch(calculateEereProfile());
-      }}
-    />
+    <>
+      <label css={labelStyles} htmlFor={fieldName}>
+        {label}&nbsp;
+      </label>
+
+      <input
+        id={fieldName}
+        css={inputStyles}
+        aria-label={ariaLabel}
+        type="text"
+        value={value}
+        data-avert-eere-input={fieldName}
+        disabled={disabled ? true : false}
+        onChange={(ev) => onChange(ev.target.value)}
+        onKeyPress={(ev) => {
+          if (calculationDisabled) return;
+          if (ev.key === 'Enter') dispatch(calculateEereProfile());
+        }}
+      />
+
+      <span css={suffixStyles}> {suffix} </span>
+
+      {tooltip && <Tooltip id={fieldName}>{tooltip}</Tooltip>}
+
+      {errors.includes(fieldName as EereInputFieldName) && (
+        <span css={errorStyles}>
+          <span css={errorHeadingStyles}>Please enter a positive number.</span>
+          If you wish to model a reverse EE/RE scenario (i.e., a negative
+          number), use the Excel version of the AVERT Main Module.
+        </span>
+      )}
+    </>
   );
 }
-
-export default EEREInputField;
