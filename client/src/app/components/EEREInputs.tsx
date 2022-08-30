@@ -312,7 +312,7 @@ function EEREInputs() {
                 <EEREInputField
                   label="Targeted program: Reduce generation by:"
                   ariaLabel="Load reduction (as a fraction of peaking load) that would be targeted"
-                  suffix="%"
+                  suffix="% during the peak:"
                   value={reduction}
                   fieldName="reduction"
                   disabled={broadProgram}
@@ -320,7 +320,6 @@ function EEREInputs() {
                 />
 
                 <EEREInputField
-                  label="during the peak:"
                   ariaLabel="Fraction of high-demand hours that the program is expected to affect"
                   suffix="% of hours"
                   value={topHours}

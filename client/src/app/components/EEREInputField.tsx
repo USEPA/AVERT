@@ -44,7 +44,7 @@ const errorHeadingStyles = css`
 `;
 
 type Props = {
-  label: string;
+  label?: string;
   ariaLabel: string;
   suffix: string;
   value: string;
@@ -76,9 +76,11 @@ export function EEREInputField({
 
   return (
     <>
-      <label css={labelStyles} htmlFor={fieldName}>
-        {label}&nbsp;
-      </label>
+      {label && (
+        <label css={labelStyles} htmlFor={fieldName}>
+          {label}&nbsp;
+        </label>
+      )}
 
       <input
         id={fieldName}
