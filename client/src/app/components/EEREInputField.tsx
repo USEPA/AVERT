@@ -14,7 +14,7 @@ const labelStyles = css`
 `;
 
 const inputStyles = css`
-  margin: 0.25rem 0;
+  margin: 0.25rem;
   padding: 0.125rem 0.25rem;
   border: 1px solid #ccc;
   width: 4rem;
@@ -78,7 +78,7 @@ export function EEREInputField({
     <>
       {label && (
         <label css={labelStyles} htmlFor={fieldName}>
-          {label}&nbsp;
+          {label}
         </label>
       )}
 
@@ -97,7 +97,7 @@ export function EEREInputField({
         }}
       />
 
-      {suffix && <span css={suffixStyles}> {suffix} </span>}
+      {suffix && <span css={suffixStyles}>{suffix}&nbsp;</span>}
 
       {tooltip && <Tooltip id={fieldName}>{tooltip}</Tooltip>}
 
