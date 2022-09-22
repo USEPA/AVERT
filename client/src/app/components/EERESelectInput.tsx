@@ -3,7 +3,9 @@
 import { css } from '@emotion/react';
 
 const selectStyles = css`
-  /* */
+  margin: 0.25rem;
+  padding: 0.125rem 0.25rem;
+  border: 1px solid #ccc;
 
   &:disabled {
     background-color: #eee;

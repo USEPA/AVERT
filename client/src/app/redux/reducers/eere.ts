@@ -105,6 +105,18 @@ type EereAction =
       type: 'eere/UPDATE_EERE_SCHOOL_BUSES_PROFILE';
       payload: { option: string };
     }
+  | {
+      type: 'eere/UPDATE_EERE_EV_DEPLOYMENT_LOCATION';
+      payload: { option: string };
+    }
+  | {
+      type: 'eere/UPDATE_EERE_EV_MODEL_YEAR';
+      payload: { option: string };
+    }
+  | {
+      type: 'eere/UPDATE_EERE_ICE_VEHICLE_REPLACED';
+      payload: { option: string };
+    }
   | { type: 'eere/START_EERE_CALCULATIONS' }
   | {
       type: 'eere/CALCULATE_REGIONAL_EERE_PROFILE';
@@ -134,7 +146,10 @@ type EereSelectInputFieldName =
   | 'batteryEVsProfile'
   | 'hybridEVsProfile'
   | 'transitBusesProfile'
-  | 'schoolBusesProfile';
+  | 'schoolBusesProfile'
+  | 'evDeploymentLocation'
+  | 'evModelYear'
+  | 'iceVehicleReplaced';
 
 type EereInputFieldName = EereTextInputFieldName | EereSelectInputFieldName;
 
@@ -166,6 +181,9 @@ const emptyEereInputs = {
   transitBusesProfile: 'fleetwide',
   schoolBuses: '',
   schoolBusesProfile: 'fleetwide',
+  evDeploymentLocation: '',
+  evModelYear: '',
+  iceVehicleReplaced: '',
 };
 
 const emptyRegionalLoadHour = {
@@ -410,6 +428,39 @@ export default function reducer(
         inputs: {
           ...state.inputs,
           schoolBusesProfile: option,
+        },
+      };
+    }
+
+    case 'eere/UPDATE_EERE_EV_DEPLOYMENT_LOCATION': {
+      const { option } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          evDeploymentLocation: option,
+        },
+      };
+    }
+
+    case 'eere/UPDATE_EERE_EV_MODEL_YEAR': {
+      const { option } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          evModelYear: option,
+        },
+      };
+    }
+
+    case 'eere/UPDATE_EERE_ICE_VEHICLE_REPLACED': {
+      const { option } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          iceVehicleReplaced: option,
         },
       };
     }
@@ -661,6 +712,33 @@ export function updateEereSchoolBusesProfile(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_SCHOOL_BUSES_PROFILE',
+      payload: { option: input },
+    });
+  };
+}
+
+export function updateEereEVDeploymentLocation(input: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'eere/UPDATE_EERE_EV_DEPLOYMENT_LOCATION',
+      payload: { option: input },
+    });
+  };
+}
+
+export function updateEereEVModelYear(input: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'eere/UPDATE_EERE_EV_MODEL_YEAR',
+      payload: { option: input },
+    });
+  };
+}
+
+export function updateEereICEVehicleReplaced(input: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'eere/UPDATE_EERE_ICE_VEHICLE_REPLACED',
       payload: { option: input },
     });
   };

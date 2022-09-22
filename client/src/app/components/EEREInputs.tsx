@@ -26,6 +26,9 @@ import {
   updateEereTransitBusesProfile,
   updateEereSchoolBuses,
   updateEereSchoolBusesProfile,
+  updateEereEVDeploymentLocation,
+  updateEereEVModelYear,
+  updateEereICEVehicleReplaced,
   calculateEereProfile,
 } from 'app/redux/reducers/eere';
 // hooks
@@ -39,30 +42,30 @@ const inputsBlockStyles = css`
     margin-top: 0 !important;
   }
 
-  & :is(label, input, p, li) {
+  & :is(label, input, select, p, li) {
     font-size: 0.625rem;
   }
 
   @media (min-width: 25em) {
-    & :is(label, input, p, li) {
+    & :is(label, input, select, p, li) {
       font-size: 0.6875rem;
     }
   }
 
   @media (min-width: 30em) {
-    & :is(label, input, p, li) {
+    & :is(label, input, select, p, li) {
       font-size: 0.75rem;
     }
   }
 
   @media (min-width: 35em) {
-    & :is(label, input, p, li) {
+    & :is(label, input, select, p, li) {
       font-size: 0.8125rem;
     }
   }
 
   @media (min-width: 40em) {
-    & :is(label, input, p, li) {
+    & :is(label, input, select, p, li) {
       font-size: 0.875rem;
     }
   }
@@ -156,6 +159,12 @@ const inputsSummaryStyles = css`
 
 const inputsSectionStyles = css`
   padding: 0 0.625rem 0.5rem;
+
+  hr {
+    margin: 0.75rem 0;
+    border: none;
+    border-top: 1px solid #ccc;
+  }
 `;
 
 const inputTextStyles = css`
@@ -166,11 +175,12 @@ const inputTextStyles = css`
   }
 `;
 
-const inputGridStyles = css`
+const evInputsStyles = css`
   display: grid;
   grid-template-columns: max-content 1fr 1fr;
   grid-gap: 0.5rem;
   align-items: center;
+  margin-bottom: 1rem;
 
   label {
     text-align: right;
@@ -179,6 +189,10 @@ const inputGridStyles = css`
   input[type='text'] {
     margin: 0;
     width: 100%;
+  }
+
+  select {
+    margin: 0;
   }
 
   [data-input-error] {
@@ -231,6 +245,13 @@ function EEREInputs() {
   const schoolBuses = useTypedSelector(({ eere }) => eere.inputs.schoolBuses);
   const schoolBusesProfile = useTypedSelector(
     ({ eere }) => eere.inputs.schoolBusesProfile,
+  );
+  const evDeploymentLocation = useTypedSelector(
+    ({ eere }) => eere.inputs.evDeploymentLocation,
+  );
+  const evModelYear = useTypedSelector(({ eere }) => eere.inputs.evModelYear);
+  const iceVehicleReplaced = useTypedSelector(
+    ({ eere }) => eere.inputs.iceVehicleReplaced,
   );
 
   const selectedRegion = useSelectedRegion();
@@ -552,7 +573,7 @@ function EEREInputs() {
           </summary>
 
           <section css={inputsSectionStyles}>
-            <div css={inputGridStyles}>
+            <div css={evInputsStyles}>
               <p>&nbsp;</p>
               <p>
                 <strong>Number of Vehicles</strong>
@@ -638,20 +659,68 @@ function EEREInputs() {
               />
             </div>
 
-            <p>
-              <strong>Location of deployment:</strong>
-            </p>
+            <hr />
 
             <ul>
-              <li>TODO</li>
+              <li>
+                <label htmlFor="evDeploymentLocation">
+                  Location of EV deployment:
+                </label>
+
+                <EERESelectInput
+                  ariaLabel="TODO"
+                  options={[{ id: '', name: 'TODO' }]}
+                  value={evDeploymentLocation}
+                  fieldName="evDeploymentLocation"
+                  onChange={(option) =>
+                    dispatch(updateEereEVDeploymentLocation(option))
+                  }
+                />
+
+                <Tooltip id="evDeploymentLocation">
+                  <>TODO</>
+                </Tooltip>
+              </li>
             </ul>
 
-            <p>
-              <strong>Vehicle model year:</strong>
-            </p>
+            <hr />
 
             <ul>
-              <li>TODO</li>
+              <li>
+                <label htmlFor="evModelYear">EV model year:</label>
+
+                <EERESelectInput
+                  ariaLabel="TODO"
+                  options={[{ id: '', name: 'TODO' }]}
+                  value={evModelYear}
+                  fieldName="evModelYear"
+                  onChange={(option) => dispatch(updateEereEVModelYear(option))}
+                />
+
+                <Tooltip id="evModelYear">
+                  <>TODO</>
+                </Tooltip>
+              </li>
+
+              <li>
+                <label htmlFor="iceVehicleReplaced">
+                  Internal combustion engine vehicle being replaced:
+                </label>
+
+                <EERESelectInput
+                  ariaLabel="TODO"
+                  options={[{ id: '', name: 'TODO' }]}
+                  value={iceVehicleReplaced}
+                  fieldName="iceVehicleReplaced"
+                  onChange={(option) =>
+                    dispatch(updateEereICEVehicleReplaced(option))
+                  }
+                />
+
+                <Tooltip id="iceVehicleReplaced">
+                  <>TODO</>
+                </Tooltip>
+              </li>
             </ul>
           </section>
         </details>
