@@ -621,7 +621,7 @@ function Panels() {
           </p>
 
           <p className="avert-small-text">
-            Several types of programs are listed below (A through H). You can
+            Several types of programs are listed below (A through E). You can
             enter impacts for any or all types of programs, in any combination.
             AVERT will calculate cumulative impacts.
           </p>

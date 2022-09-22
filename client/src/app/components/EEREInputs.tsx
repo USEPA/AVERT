@@ -76,13 +76,13 @@ const inputsGroupStyles = css`
   border-top: 0;
 
   /* highlight letter when details is open */
-  /* (summary is styled with inputsLabelStyles) */
+  /* (summary is styled with inputsSummaryStyles) */
   &[open] > summary::after {
     background-color: rgb(0, 164, 200);
   }
 `;
 
-const inputsLabelStyles = css`
+const inputsSummaryStyles = css`
   display: block; /* IE */
   padding: 1rem 0.5rem;
   font-size: 0.625rem;
@@ -146,11 +146,11 @@ const inputsLabelStyles = css`
   }
 `;
 
-const inputsContentStyles = css`
-  padding: 0.5rem 0.625rem;
+const inputsSectionStyles = css`
+  padding: 0 0.625rem 0.5rem;
 `;
 
-const inputLabelStyles = css`
+const inputTextStyles = css`
   display: block;
 
   @media (min-width: 35em) {
@@ -231,11 +231,11 @@ function EEREInputs() {
         </header>
 
         <details css={inputsGroupStyles}>
-          <summary css={inputsLabelStyles} data-label="A">
+          <summary css={inputsSummaryStyles} data-label="A">
             Reductions spread evenly throughout the year
           </summary>
 
-          <section css={inputsContentStyles}>
+          <section css={inputsSectionStyles}>
             <p>
               <strong>Choose one:</strong>
             </p>
@@ -289,11 +289,11 @@ function EEREInputs() {
         </details>
 
         <details css={inputsGroupStyles}>
-          <summary css={inputsLabelStyles} data-label="B">
+          <summary css={inputsSummaryStyles} data-label="B">
             Percentage reductions in some or all hours
           </summary>
 
-          <section css={inputsContentStyles}>
+          <section css={inputsSectionStyles}>
             <p>
               <strong>Choose one:</strong>
             </p>
@@ -358,11 +358,11 @@ function EEREInputs() {
         </header>
 
         <details css={inputsGroupStyles}>
-          <summary css={inputsLabelStyles} data-label="C">
+          <summary css={inputsSummaryStyles} data-label="C">
             Wind
           </summary>
 
-          <section css={inputsContentStyles}>
+          <section css={inputsSectionStyles}>
             <p>
               <strong>Choose one or both:</strong>
             </p>
@@ -406,7 +406,7 @@ function EEREInputs() {
                     }
                   />
                 ) : geographicFocus === 'regions' ? (
-                  <span css={inputLabelStyles}>
+                  <span css={inputTextStyles}>
                     <em>
                       Offshore wind calculations are not available in this AVERT
                       region{' '}
@@ -420,7 +420,7 @@ function EEREInputs() {
                     </Tooltip>
                   </span>
                 ) : (
-                  <span css={inputLabelStyles}>
+                  <span css={inputTextStyles}>
                     <em>
                       Offshore wind calculations are not available in the AVERT
                       region(s) that this state is part of{' '}
@@ -440,11 +440,11 @@ function EEREInputs() {
         </details>
 
         <details css={inputsGroupStyles}>
-          <summary css={inputsLabelStyles} data-label="D">
+          <summary css={inputsSummaryStyles} data-label="D">
             Solar photovoltaic
           </summary>
 
-          <section css={inputsContentStyles}>
+          <section css={inputsSectionStyles}>
             <p>
               <strong>Choose one or both:</strong>
             </p>
@@ -496,15 +496,11 @@ function EEREInputs() {
         </header>
 
         <details css={inputsGroupStyles}>
-          <summary css={inputsLabelStyles} data-label="E">
-            Number of electric vehicles
+          <summary css={inputsSummaryStyles} data-label="E">
+            Electric Vehicles
           </summary>
 
-          <section css={inputsContentStyles}>
-            <p>
-              <strong>Choose any:</strong>
-            </p>
-
+          <section css={inputsSectionStyles}>
             <ul>
               <li>
                 <EEREInputField
@@ -550,36 +546,22 @@ function EEREInputs() {
                 />
               </li>
             </ul>
-          </section>
-        </details>
 
-        <details css={inputsGroupStyles}>
-          <summary css={inputsLabelStyles} data-label="F">
-            Charging profiles
-          </summary>
+            <p>
+              <strong>Location of deployment:</strong>
+            </p>
 
-          <section css={inputsContentStyles}>
-            <p>TODO</p>
-          </section>
-        </details>
+            <ul>
+              <li>TODO</li>
+            </ul>
 
-        <details css={inputsGroupStyles}>
-          <summary css={inputsLabelStyles} data-label="G">
-            Location of deployment
-          </summary>
+            <p>
+              <strong>Vehicle model year:</strong>
+            </p>
 
-          <section css={inputsContentStyles}>
-            <p>TODO</p>
-          </section>
-        </details>
-
-        <details css={inputsGroupStyles}>
-          <summary css={inputsLabelStyles} data-label="H">
-            Vehicle model year
-          </summary>
-
-          <section css={inputsContentStyles}>
-            <p>TODO</p>
+            <ul>
+              <li>TODO</li>
+            </ul>
           </section>
         </details>
       </div>
