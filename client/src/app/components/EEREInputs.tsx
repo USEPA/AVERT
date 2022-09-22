@@ -30,31 +30,34 @@ const inputsBlockStyles = css`
   margin: 1rem 0;
   border-top: 1px solid #ccc;
 
-  & :is(p, ul, li) {
+  & :is(p, ul) {
     margin-top: 0 !important;
+  }
+
+  & :is(label, input, p, li) {
     font-size: 0.625rem;
   }
 
   @media (min-width: 25em) {
-    & :is(p, ul, li) {
+    & :is(label, input, p, li) {
       font-size: 0.6875rem;
     }
   }
 
   @media (min-width: 30em) {
-    & :is(p, ul, li) {
+    & :is(label, input, p, li) {
       font-size: 0.75rem;
     }
   }
 
   @media (min-width: 35em) {
-    & :is(p, ul, li) {
+    & :is(label, input, p, li) {
       font-size: 0.8125rem;
     }
   }
 
   @media (min-width: 40em) {
-    & :is(p, ul, li) {
+    & :is(label, input, p, li) {
       font-size: 0.875rem;
     }
   }
@@ -155,6 +158,22 @@ const inputTextStyles = css`
 
   @media (min-width: 35em) {
     display: inline;
+  }
+`;
+
+const inputGridStyles = css`
+  display: grid;
+  grid-template-columns: max-content 1fr 1fr;
+  grid-gap: 0.5rem;
+  align-items: center;
+
+  label {
+    text-align: right;
+  }
+
+  input[type='text'] {
+    margin: 0;
+    width: 100%;
   }
 `;
 
@@ -501,51 +520,71 @@ function EEREInputs() {
           </summary>
 
           <section css={inputsSectionStyles}>
-            <ul>
-              <li>
-                <EERETextInput
-                  label="Light-duty battery EVs:"
-                  ariaLabel="TODO"
-                  value={batteryEVs}
-                  fieldName="batteryEVs"
-                  onChange={(text) => dispatch(updateEereBatteryEVs(text))}
-                  tooltip={<>TODO</>}
-                />
-              </li>
+            <div css={inputGridStyles}>
+              <p>&nbsp;</p>
+              <p>
+                <strong>Number of Vehicles</strong>
+              </p>
+              <p>
+                <strong>Charging Profile</strong>
+              </p>
 
-              <li>
-                <EERETextInput
-                  label="Light-duty plug-in hybrid EVs:"
-                  ariaLabel="TODO"
-                  value={hybridEVs}
-                  fieldName="hybridEVs"
-                  onChange={(text) => dispatch(updateEereHybridEVs(text))}
-                  tooltip={<>TODO</>}
-                />
-              </li>
+              <EERETextInput
+                label="Light-duty battery EVs:"
+                ariaLabel="TODO"
+                value={batteryEVs}
+                fieldName="batteryEVs"
+                onChange={(text) => dispatch(updateEereBatteryEVs(text))}
+              />
 
-              <li>
-                <EERETextInput
-                  label="Electric transit buses:"
-                  ariaLabel="TODO"
-                  value={transitBuses}
-                  fieldName="transitBuses"
-                  onChange={(text) => dispatch(updateEereTransitBuses(text))}
-                  tooltip={<>TODO</>}
-                />
-              </li>
+              <select>
+                <option>one</option>
+                <option>two</option>
+                <option>three</option>
+              </select>
 
-              <li>
-                <EERETextInput
-                  label="Electric school buses:"
-                  ariaLabel="TODO"
-                  value={schoolBuses}
-                  fieldName="schoolBuses"
-                  onChange={(text) => dispatch(updateEereSchoolBuses(text))}
-                  tooltip={<>TODO</>}
-                />
-              </li>
-            </ul>
+              <EERETextInput
+                label="Light-duty plug-in hybrid EVs:"
+                ariaLabel="TODO"
+                value={hybridEVs}
+                fieldName="hybridEVs"
+                onChange={(text) => dispatch(updateEereHybridEVs(text))}
+              />
+
+              <select>
+                <option>one</option>
+                <option>two</option>
+                <option>three</option>
+              </select>
+
+              <EERETextInput
+                label="Electric transit buses:"
+                ariaLabel="TODO"
+                value={transitBuses}
+                fieldName="transitBuses"
+                onChange={(text) => dispatch(updateEereTransitBuses(text))}
+              />
+
+              <select>
+                <option>one</option>
+                <option>two</option>
+                <option>three</option>
+              </select>
+
+              <EERETextInput
+                label="Electric school buses:"
+                ariaLabel="TODO"
+                value={schoolBuses}
+                fieldName="schoolBuses"
+                onChange={(text) => dispatch(updateEereSchoolBuses(text))}
+              />
+
+              <select>
+                <option>one</option>
+                <option>two</option>
+                <option>three</option>
+              </select>
+            </div>
 
             <p>
               <strong>Location of deployment:</strong>
