@@ -32,9 +32,15 @@ import {
   calculateEereProfile,
 } from 'app/redux/reducers/eere';
 // hooks
-import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
+import {
+  useSelectedRegion,
+  useSelectedState,
+  useSelectedStateRegions,
+} from 'app/hooks';
 // config
 import {
+  StateId,
+  states,
   evChargingProfileOptions,
   evModelYearOptions,
   iceReplacementVehicleOptions,
@@ -255,7 +261,32 @@ function EEREInputs() {
   );
 
   const selectedRegion = useSelectedRegion();
+  const selectedState = useSelectedState();
   const selectedStateRegions = useSelectedStateRegions();
+
+  const emptySelectOptions = [{ id: '', name: '' }];
+  const evDeploymentLocationOptions =
+    geographicFocus === 'regions'
+      ? selectedRegion
+        ? [
+            {
+              id: `region-${selectedRegion.id}`,
+              name: `Region: ${selectedRegion.name}`,
+            },
+            ...Object.keys(selectedRegion.percentageByState).map((id) => ({
+              id: `state-${id}`,
+              name: `State: ${states[id as StateId].name || id}`,
+            })),
+          ]
+        : emptySelectOptions
+      : selectedState
+      ? [
+          {
+            id: `state-${selectedState.id}`,
+            name: `State: ${selectedState.name}`,
+          },
+        ]
+      : emptySelectOptions;
 
   const atLeastOneRegionSupportsOffshoreWind =
     geographicFocus === 'regions'
@@ -655,7 +686,7 @@ function EEREInputs() {
 
               <EERESelectInput
                 ariaLabel="TODO"
-                options={[{ id: '', name: 'TODO' }]}
+                options={evDeploymentLocationOptions}
                 value={evDeploymentLocation}
                 fieldName="evDeploymentLocation"
                 onChange={(option) =>
