@@ -8,7 +8,14 @@ import {
 // calculations
 import { calculateEere } from 'app/calculations';
 // config
-import { RegionId, StateId, regions } from 'app/config';
+import {
+  RegionId,
+  StateId,
+  regions,
+  evChargingProfileOptions,
+  evModelYearOptions,
+  iceReplacementVehicleOptions,
+} from 'app/config';
 
 type RegionalProfile = {
   regionId: RegionId;
@@ -114,7 +121,7 @@ type EereAction =
       payload: { option: string };
     }
   | {
-      type: 'eere/UPDATE_EERE_ICE_VEHICLE_REPLACED';
+      type: 'eere/UPDATE_EERE_ICE_REPLACEMENT_VEHICLE';
       payload: { option: string };
     }
   | { type: 'eere/START_EERE_CALCULATIONS' }
@@ -149,7 +156,7 @@ type EereSelectInputFieldName =
   | 'schoolBusesProfile'
   | 'evDeploymentLocation'
   | 'evModelYear'
-  | 'iceVehicleReplaced';
+  | 'iceReplacementVehicle';
 
 type EereInputFieldName = EereTextInputFieldName | EereSelectInputFieldName;
 
@@ -174,16 +181,16 @@ const emptyEereInputs = {
   utilitySolar: '',
   rooftopSolar: '',
   batteryEVs: '',
-  batteryEVsProfile: 'fleetwide',
+  batteryEVsProfile: evChargingProfileOptions[0].id,
   hybridEVs: '',
-  hybridEVsProfile: 'fleetwide',
+  hybridEVsProfile: evChargingProfileOptions[0].id,
   transitBuses: '',
-  transitBusesProfile: 'fleetwide',
+  transitBusesProfile: evChargingProfileOptions[0].id,
   schoolBuses: '',
-  schoolBusesProfile: 'fleetwide',
+  schoolBusesProfile: evChargingProfileOptions[0].id,
   evDeploymentLocation: '',
-  evModelYear: '',
-  iceVehicleReplaced: '',
+  evModelYear: evModelYearOptions[0].id,
+  iceReplacementVehicle: iceReplacementVehicleOptions[0].id,
 };
 
 const emptyRegionalLoadHour = {
@@ -454,13 +461,13 @@ export default function reducer(
       };
     }
 
-    case 'eere/UPDATE_EERE_ICE_VEHICLE_REPLACED': {
+    case 'eere/UPDATE_EERE_ICE_REPLACEMENT_VEHICLE': {
       const { option } = action.payload;
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          iceVehicleReplaced: option,
+          iceReplacementVehicle: option,
         },
       };
     }
@@ -735,10 +742,10 @@ export function updateEereEVModelYear(input: string): AppThunk {
   };
 }
 
-export function updateEereICEVehicleReplaced(input: string): AppThunk {
+export function updateEereICEReplacementVehicle(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
-      type: 'eere/UPDATE_EERE_ICE_VEHICLE_REPLACED',
+      type: 'eere/UPDATE_EERE_ICE_REPLACEMENT_VEHICLE',
       payload: { option: input },
     });
   };

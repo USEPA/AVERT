@@ -28,11 +28,17 @@ import {
   updateEereSchoolBusesProfile,
   updateEereEVDeploymentLocation,
   updateEereEVModelYear,
-  updateEereICEVehicleReplaced,
+  updateEereICEReplacementVehicle,
   calculateEereProfile,
 } from 'app/redux/reducers/eere';
 // hooks
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
+// config
+import {
+  evChargingProfileOptions,
+  evModelYearOptions,
+  iceReplacementVehicleOptions,
+} from 'app/config';
 
 const inputsBlockStyles = css`
   margin: 1rem 0;
@@ -210,16 +216,6 @@ const impactsButtonStyles = css`
   margin-bottom: 1rem;
 `;
 
-// TODO: store profiles in a config file
-const evChargingProfiles = [
-  { id: 'fleetwide', name: 'Fleetwide' },
-  { id: 'residentialLevel1', name: 'Residential Level 1' },
-  { id: 'residentialLevel2', name: 'Residential Level 2' },
-  { id: 'workLevel1', name: 'Work Level 1' },
-  { id: 'workLevel2', name: 'Work Level 2' },
-  { id: 'dcFastCharging', name: 'DC Fast Charging' },
-];
-
 function EEREInputs() {
   const dispatch = useDispatch();
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
@@ -254,8 +250,8 @@ function EEREInputs() {
     ({ eere }) => eere.inputs.evDeploymentLocation,
   );
   const evModelYear = useTypedSelector(({ eere }) => eere.inputs.evModelYear);
-  const iceVehicleReplaced = useTypedSelector(
-    ({ eere }) => eere.inputs.iceVehicleReplaced,
+  const iceReplacementVehicle = useTypedSelector(
+    ({ eere }) => eere.inputs.iceReplacementVehicle,
   );
 
   const selectedRegion = useSelectedRegion();
@@ -583,7 +579,7 @@ function EEREInputs() {
 
               <EERESelectInput
                 ariaLabel="TODO"
-                options={evChargingProfiles}
+                options={evChargingProfileOptions}
                 value={batteryEVsProfile}
                 fieldName="batteryEVsProfile"
                 disabled={!batteryEVs}
@@ -602,7 +598,7 @@ function EEREInputs() {
 
               <EERESelectInput
                 ariaLabel="TODO"
-                options={evChargingProfiles}
+                options={evChargingProfileOptions}
                 value={hybridEVsProfile}
                 fieldName="hybridEVsProfile"
                 disabled={!hybridEVs}
@@ -621,7 +617,7 @@ function EEREInputs() {
 
               <EERESelectInput
                 ariaLabel="TODO"
-                options={evChargingProfiles}
+                options={evChargingProfileOptions}
                 value={transitBusesProfile}
                 fieldName="transitBusesProfile"
                 disabled={!transitBuses}
@@ -640,7 +636,7 @@ function EEREInputs() {
 
               <EERESelectInput
                 ariaLabel="TODO"
-                options={evChargingProfiles}
+                options={evChargingProfileOptions}
                 value={schoolBusesProfile}
                 fieldName="schoolBusesProfile"
                 disabled={!schoolBuses}
@@ -679,7 +675,7 @@ function EEREInputs() {
 
               <EERESelectInput
                 ariaLabel="TODO"
-                options={[{ id: '', name: 'TODO' }]}
+                options={evModelYearOptions}
                 value={evModelYear}
                 fieldName="evModelYear"
                 onChange={(option) => dispatch(updateEereEVModelYear(option))}
@@ -691,21 +687,21 @@ function EEREInputs() {
             </p>
 
             <p>
-              <label htmlFor="iceVehicleReplaced">
+              <label htmlFor="iceReplacementVehicle">
                 Internal combustion engine vehicle being replaced:
               </label>
 
               <EERESelectInput
                 ariaLabel="TODO"
-                options={[{ id: '', name: 'TODO' }]}
-                value={iceVehicleReplaced}
-                fieldName="iceVehicleReplaced"
+                options={iceReplacementVehicleOptions}
+                value={iceReplacementVehicle}
+                fieldName="iceReplacementVehicle"
                 onChange={(option) =>
-                  dispatch(updateEereICEVehicleReplaced(option))
+                  dispatch(updateEereICEReplacementVehicle(option))
                 }
               />
 
-              <Tooltip id="iceVehicleReplaced">
+              <Tooltip id="iceReplacementVehicle">
                 <>TODO</>
               </Tooltip>
             </p>

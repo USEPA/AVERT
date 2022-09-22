@@ -712,6 +712,38 @@ export const states: { [key in StateId]: State } = {
 };
 
 /**
+ * TODO
+ */
+export const evChargingProfileOptions = [
+  { id: 'fleetwide', name: 'Fleetwide' },
+  { id: 'residentialLevel1', name: 'Residential Level 1' },
+  { id: 'residentialLevel2', name: 'Residential Level 2' },
+  { id: 'workLevel1', name: 'Work Level 1' },
+  { id: 'workLevel2', name: 'Work Level 2' },
+  { id: 'dcFastCharging', name: 'DC Fast Charging' },
+];
+
+/**
+ * TODO
+ */
+export const evModelYearOptions = [
+  { id: '2020', name: '2020' },
+  { id: '2021', name: '2021' },
+  { id: '2022', name: '2022' },
+  { id: '2023', name: '2023' },
+  { id: '2024', name: '2024' },
+  { id: '2025', name: '2025' },
+];
+
+/**
+ * TODO
+ */
+export const iceReplacementVehicleOptions = [
+  { id: 'new', name: 'New' },
+  { id: 'existing', name: 'Existing' },
+];
+
+/**
  * `fipsCodes` was created from the `CountyFIPS` sheet of the
  * `AVERT Main Module v3.0 beta 05.18.20.xlsm` file.
  * To create the data structure:
