@@ -38,6 +38,10 @@ const inputsBlockStyles = css`
   margin: 1rem 0;
   border-top: 1px solid #ccc;
 
+  & ul {
+    padding-left: 1.5rem !important;
+  }
+
   & :is(p, ul) {
     margin-top: 0 !important;
   }
@@ -95,7 +99,7 @@ const inputsGroupStyles = css`
 
 const inputsSummaryStyles = css`
   display: block; /* IE */
-  padding: 1rem 0.5rem;
+  padding: 1rem 0.625rem;
   font-size: 0.625rem;
   font-weight: bold;
   cursor: pointer;
@@ -158,7 +162,7 @@ const inputsSummaryStyles = css`
 `;
 
 const inputsSectionStyles = css`
-  padding: 0 0.625rem 0.5rem;
+  padding: 0 1rem 0.75rem;
 
   hr {
     margin: 0.75rem 0;
@@ -436,18 +440,33 @@ function EEREInputs() {
 
           <section css={inputsSectionStyles}>
             <p>
-              <strong>Choose one or both:</strong>
+              <EERETextInput
+                label="Onshore wind total capacity:"
+                ariaLabel="Total capacity (maximum potential electricity generation) in MW"
+                suffix="MW"
+                value={onshoreWind}
+                fieldName="onshoreWind"
+                onChange={(text) => dispatch(updateEereOnshoreWind(text))}
+                tooltip={
+                  <>
+                    Enter the total capacity (maximum potential electricity
+                    generation) for this type of resource, measured in MW. The
+                    model uses these inputs along with hourly capacity factors
+                    that vary by resource type and region.
+                  </>
+                }
+              />
             </p>
 
-            <ul>
-              <li>
+            <p>
+              {atLeastOneRegionSupportsOffshoreWind ? (
                 <EERETextInput
-                  label="Onshore wind total capacity:"
+                  label="Offshore wind total capacity:"
                   ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                   suffix="MW"
-                  value={onshoreWind}
-                  fieldName="onshoreWind"
-                  onChange={(text) => dispatch(updateEereOnshoreWind(text))}
+                  value={offshoreWind}
+                  fieldName="offshoreWind"
+                  onChange={(text) => dispatch(updateEereOffshoreWind(text))}
                   tooltip={
                     <>
                       Enter the total capacity (maximum potential electricity
@@ -457,57 +476,35 @@ function EEREInputs() {
                     </>
                   }
                 />
-              </li>
+              ) : geographicFocus === 'regions' ? (
+                <span css={inputTextStyles}>
+                  <em>
+                    Offshore wind calculations are not available in this AVERT
+                    region{' '}
+                  </em>
 
-              <li>
-                {atLeastOneRegionSupportsOffshoreWind ? (
-                  <EERETextInput
-                    label="Offshore wind total capacity:"
-                    ariaLabel="Total capacity (maximum potential electricity generation) in MW"
-                    suffix="MW"
-                    value={offshoreWind}
-                    fieldName="offshoreWind"
-                    onChange={(text) => dispatch(updateEereOffshoreWind(text))}
-                    tooltip={
-                      <>
-                        Enter the total capacity (maximum potential electricity
-                        generation) for this type of resource, measured in MW.
-                        The model uses these inputs along with hourly capacity
-                        factors that vary by resource type and region.
-                      </>
-                    }
-                  />
-                ) : geographicFocus === 'regions' ? (
-                  <span css={inputTextStyles}>
-                    <em>
-                      Offshore wind calculations are not available in this AVERT
-                      region{' '}
-                    </em>
+                  <Tooltip id="no-offshoreWind-region">
+                    AVERT does not support offshore wind modeling in this
+                    region. It is unlikely that offshore areas suitable for wind
+                    farms would connect to the electrical grid in this region.
+                  </Tooltip>
+                </span>
+              ) : (
+                <span css={inputTextStyles}>
+                  <em>
+                    Offshore wind calculations are not available in the AVERT
+                    region(s) that this state is part of{' '}
+                  </em>
 
-                    <Tooltip id="no-offshoreWind-region">
-                      AVERT does not support offshore wind modeling in this
-                      region. It is unlikely that offshore areas suitable for
-                      wind farms would connect to the electrical grid in this
-                      region.
-                    </Tooltip>
-                  </span>
-                ) : (
-                  <span css={inputTextStyles}>
-                    <em>
-                      Offshore wind calculations are not available in the AVERT
-                      region(s) that this state is part of{' '}
-                    </em>
-
-                    <Tooltip id="no-offshoreWind-state">
-                      AVERT does not support offshore wind modeling in the
-                      region(s) that this state is part of. It is unlikely that
-                      offshore areas suitable for wind farms would connect to
-                      the electrical grid in these regions.
-                    </Tooltip>
-                  </span>
-                )}
-              </li>
-            </ul>
+                  <Tooltip id="no-offshoreWind-state">
+                    AVERT does not support offshore wind modeling in the
+                    region(s) that this state is part of. It is unlikely that
+                    offshore areas suitable for wind farms would connect to the
+                    electrical grid in these regions.
+                  </Tooltip>
+                </span>
+              )}
+            </p>
           </section>
         </details>
 
@@ -518,48 +515,42 @@ function EEREInputs() {
 
           <section css={inputsSectionStyles}>
             <p>
-              <strong>Choose one or both:</strong>
+              <EERETextInput
+                label="Utility-scale solar photovoltaic total capacity:"
+                ariaLabel="Total capacity (maximum potential electricity generation) in MW"
+                suffix="MW"
+                value={utilitySolar}
+                fieldName="utilitySolar"
+                onChange={(text) => dispatch(updateEereUtilitySolar(text))}
+                tooltip={
+                  <>
+                    Enter the total capacity (maximum potential electricity
+                    generation) for this type of resource, measured in MW. The
+                    model uses these inputs along with hourly capacity factors
+                    that vary by resource type and region.
+                  </>
+                }
+              />
             </p>
 
-            <ul>
-              <li>
-                <EERETextInput
-                  label="Utility-scale solar photovoltaic total capacity:"
-                  ariaLabel="Total capacity (maximum potential electricity generation) in MW"
-                  suffix="MW"
-                  value={utilitySolar}
-                  fieldName="utilitySolar"
-                  onChange={(text) => dispatch(updateEereUtilitySolar(text))}
-                  tooltip={
-                    <>
-                      Enter the total capacity (maximum potential electricity
-                      generation) for this type of resource, measured in MW. The
-                      model uses these inputs along with hourly capacity factors
-                      that vary by resource type and region.
-                    </>
-                  }
-                />
-              </li>
-
-              <li>
-                <EERETextInput
-                  label="Distributed (rooftop) solar photovoltaic total capacity:"
-                  ariaLabel="Total capacity (maximum potential electricity generation) in MW"
-                  suffix="MW"
-                  value={rooftopSolar}
-                  fieldName="rooftopSolar"
-                  onChange={(text) => dispatch(updateEereRooftopSolar(text))}
-                  tooltip={
-                    <>
-                      Enter the total capacity (maximum potential electricity
-                      generation) for this type of resource, measured in MW. The
-                      model uses these inputs along with hourly capacity factors
-                      that vary by resource type and region.
-                    </>
-                  }
-                />
-              </li>
-            </ul>
+            <p>
+              <EERETextInput
+                label="Distributed (rooftop) solar photovoltaic total capacity:"
+                ariaLabel="Total capacity (maximum potential electricity generation) in MW"
+                suffix="MW"
+                value={rooftopSolar}
+                fieldName="rooftopSolar"
+                onChange={(text) => dispatch(updateEereRooftopSolar(text))}
+                tooltip={
+                  <>
+                    Enter the total capacity (maximum potential electricity
+                    generation) for this type of resource, measured in MW. The
+                    model uses these inputs along with hourly capacity factors
+                    that vary by resource type and region.
+                  </>
+                }
+              />
+            </p>
           </section>
         </details>
 
@@ -661,67 +652,63 @@ function EEREInputs() {
 
             <hr />
 
-            <ul>
-              <li>
-                <label htmlFor="evDeploymentLocation">
-                  Location of EV deployment:
-                </label>
+            <p>
+              <label htmlFor="evDeploymentLocation">
+                Location of EV deployment:
+              </label>
 
-                <EERESelectInput
-                  ariaLabel="TODO"
-                  options={[{ id: '', name: 'TODO' }]}
-                  value={evDeploymentLocation}
-                  fieldName="evDeploymentLocation"
-                  onChange={(option) =>
-                    dispatch(updateEereEVDeploymentLocation(option))
-                  }
-                />
+              <EERESelectInput
+                ariaLabel="TODO"
+                options={[{ id: '', name: 'TODO' }]}
+                value={evDeploymentLocation}
+                fieldName="evDeploymentLocation"
+                onChange={(option) =>
+                  dispatch(updateEereEVDeploymentLocation(option))
+                }
+              />
 
-                <Tooltip id="evDeploymentLocation">
-                  <>TODO</>
-                </Tooltip>
-              </li>
-            </ul>
+              <Tooltip id="evDeploymentLocation">
+                <>TODO</>
+              </Tooltip>
+            </p>
 
             <hr />
 
-            <ul>
-              <li>
-                <label htmlFor="evModelYear">EV model year:</label>
+            <p>
+              <label htmlFor="evModelYear">EV model year:</label>
 
-                <EERESelectInput
-                  ariaLabel="TODO"
-                  options={[{ id: '', name: 'TODO' }]}
-                  value={evModelYear}
-                  fieldName="evModelYear"
-                  onChange={(option) => dispatch(updateEereEVModelYear(option))}
-                />
+              <EERESelectInput
+                ariaLabel="TODO"
+                options={[{ id: '', name: 'TODO' }]}
+                value={evModelYear}
+                fieldName="evModelYear"
+                onChange={(option) => dispatch(updateEereEVModelYear(option))}
+              />
 
-                <Tooltip id="evModelYear">
-                  <>TODO</>
-                </Tooltip>
-              </li>
+              <Tooltip id="evModelYear">
+                <>TODO</>
+              </Tooltip>
+            </p>
 
-              <li>
-                <label htmlFor="iceVehicleReplaced">
-                  Internal combustion engine vehicle being replaced:
-                </label>
+            <p>
+              <label htmlFor="iceVehicleReplaced">
+                Internal combustion engine vehicle being replaced:
+              </label>
 
-                <EERESelectInput
-                  ariaLabel="TODO"
-                  options={[{ id: '', name: 'TODO' }]}
-                  value={iceVehicleReplaced}
-                  fieldName="iceVehicleReplaced"
-                  onChange={(option) =>
-                    dispatch(updateEereICEVehicleReplaced(option))
-                  }
-                />
+              <EERESelectInput
+                ariaLabel="TODO"
+                options={[{ id: '', name: 'TODO' }]}
+                value={iceVehicleReplaced}
+                fieldName="iceVehicleReplaced"
+                onChange={(option) =>
+                  dispatch(updateEereICEVehicleReplaced(option))
+                }
+              />
 
-                <Tooltip id="iceVehicleReplaced">
-                  <>TODO</>
-                </Tooltip>
-              </li>
-            </ul>
+              <Tooltip id="iceVehicleReplaced">
+                <>TODO</>
+              </Tooltip>
+            </p>
           </section>
         </details>
       </div>
