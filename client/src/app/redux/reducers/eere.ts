@@ -35,7 +35,7 @@ type EereAction =
   | { type: 'eere/RESET_EERE_INPUTS' }
   | {
       type: 'eere/VALIDATE_EERE';
-      payload: { errors: EereInputFieldName[] };
+      payload: { errors: EereTextInputFieldName[] };
     }
   | {
       type: 'eere/UPDATE_EERE_ANNUAL_GWH';
@@ -78,16 +78,32 @@ type EereAction =
       payload: { text: string };
     }
   | {
+      type: 'eere/UPDATE_EERE_BATTERY_EVS_PROFILE';
+      payload: { option: string };
+    }
+  | {
       type: 'eere/UPDATE_EERE_HYBRID_EVS';
       payload: { text: string };
+    }
+  | {
+      type: 'eere/UPDATE_EERE_HYBRID_EVS_PROFILE';
+      payload: { option: string };
     }
   | {
       type: 'eere/UPDATE_EERE_TRANSIT_BUSES';
       payload: { text: string };
     }
   | {
+      type: 'eere/UPDATE_EERE_TRANSIT_BUSES_PROFILE';
+      payload: { option: string };
+    }
+  | {
       type: 'eere/UPDATE_EERE_SCHOOL_BUSES';
       payload: { text: string };
+    }
+  | {
+      type: 'eere/UPDATE_EERE_SCHOOL_BUSES_PROFILE';
+      payload: { option: string };
     }
   | { type: 'eere/START_EERE_CALCULATIONS' }
   | {
@@ -99,7 +115,7 @@ type EereAction =
       payload: CombinedProfile;
     };
 
-export type EereInputFieldName =
+export type EereTextInputFieldName =
   | 'annualGwh'
   | 'constantMwh'
   | 'broadProgram'
@@ -114,11 +130,19 @@ export type EereInputFieldName =
   | 'transitBuses'
   | 'schoolBuses';
 
+type EereSelectInputFieldName =
+  | 'batteryEVsProfile'
+  | 'hybridEVsProfile'
+  | 'transitBusesProfile'
+  | 'schoolBusesProfile';
+
+type EereInputFieldName = EereTextInputFieldName | EereSelectInputFieldName;
+
 export type EereInputs = { [field in EereInputFieldName]: string };
 
 type EereState = {
   status: 'ready' | 'started' | 'complete';
-  errors: EereInputFieldName[];
+  errors: EereTextInputFieldName[];
   inputs: EereInputs;
   regionalProfiles: Partial<{ [key in RegionId]: RegionalProfile }>;
   combinedProfile: CombinedProfile;
@@ -135,9 +159,13 @@ const emptyEereInputs = {
   utilitySolar: '',
   rooftopSolar: '',
   batteryEVs: '',
+  batteryEVsProfile: 'fleetwide',
   hybridEVs: '',
+  hybridEVsProfile: 'fleetwide',
   transitBuses: '',
+  transitBusesProfile: 'fleetwide',
   schoolBuses: '',
+  schoolBusesProfile: 'fleetwide',
 };
 
 const emptyRegionalLoadHour = {
@@ -309,6 +337,17 @@ export default function reducer(
       };
     }
 
+    case 'eere/UPDATE_EERE_BATTERY_EVS_PROFILE': {
+      const { option } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          batteryEVsProfile: option,
+        },
+      };
+    }
+
     case 'eere/UPDATE_EERE_HYBRID_EVS': {
       const { text } = action.payload;
       return {
@@ -316,6 +355,17 @@ export default function reducer(
         inputs: {
           ...state.inputs,
           hybridEVs: text,
+        },
+      };
+    }
+
+    case 'eere/UPDATE_EERE_HYBRID_EVS_PROFILE': {
+      const { option } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          hybridEVsProfile: option,
         },
       };
     }
@@ -331,6 +381,17 @@ export default function reducer(
       };
     }
 
+    case 'eere/UPDATE_EERE_TRANSIT_BUSES_PROFILE': {
+      const { option } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          transitBusesProfile: option,
+        },
+      };
+    }
+
     case 'eere/UPDATE_EERE_SCHOOL_BUSES': {
       const { text } = action.payload;
       return {
@@ -338,6 +399,17 @@ export default function reducer(
         inputs: {
           ...state.inputs,
           schoolBuses: text,
+        },
+      };
+    }
+
+    case 'eere/UPDATE_EERE_SCHOOL_BUSES_PROFILE': {
+      const { option } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          schoolBusesProfile: option,
         },
       };
     }
@@ -394,7 +466,7 @@ export default function reducer(
 
 // action creators
 function validateInput(
-  inputField: EereInputFieldName,
+  inputField: EereTextInputFieldName,
   inputValue: string,
 ): AppThunk {
   return (dispatch, getState) => {
@@ -525,6 +597,15 @@ export function updateEereBatteryEVs(input: string): AppThunk {
   };
 }
 
+export function updateEereBatteryEVsProfile(input: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'eere/UPDATE_EERE_BATTERY_EVS_PROFILE',
+      payload: { option: input },
+    });
+  };
+}
+
 export function updateEereHybridEVs(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
@@ -533,6 +614,15 @@ export function updateEereHybridEVs(input: string): AppThunk {
     });
 
     dispatch(validateInput('hybridEVs', input));
+  };
+}
+
+export function updateEereHybridEVsProfile(input: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'eere/UPDATE_EERE_HYBRID_EVS_PROFILE',
+      payload: { option: input },
+    });
   };
 }
 
@@ -547,6 +637,15 @@ export function updateEereTransitBuses(input: string): AppThunk {
   };
 }
 
+export function updateEereTransitBusesProfile(input: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'eere/UPDATE_EERE_TRANSIT_BUSES_PROFILE',
+      payload: { option: input },
+    });
+  };
+}
+
 export function updateEereSchoolBuses(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
@@ -555,6 +654,15 @@ export function updateEereSchoolBuses(input: string): AppThunk {
     });
 
     dispatch(validateInput('schoolBuses', input));
+  };
+}
+
+export function updateEereSchoolBusesProfile(input: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'eere/UPDATE_EERE_SCHOOL_BUSES_PROFILE',
+      payload: { option: input },
+    });
   };
 }
 

@@ -7,7 +7,7 @@ import type { ReactNode } from 'react';
 import Tooltip from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import { calculateEereProfile } from 'app/redux/reducers/eere';
-import type { EereInputFieldName } from 'app/redux/reducers/eere';
+import type { EereTextInputFieldName } from 'app/redux/reducers/eere';
 
 const labelStyles = css`
   font-size: inherit;
@@ -32,7 +32,6 @@ const suffixStyles = css`
 `;
 
 export const errorStyles = css`
-  display: block;
   font-style: italic;
   color: rgb(206, 29, 29);
 `;
@@ -101,12 +100,12 @@ export function EERETextInput({
 
       {tooltip && <Tooltip id={fieldName}>{tooltip}</Tooltip>}
 
-      {errors.includes(fieldName as EereInputFieldName) && (
-        <span css={errorStyles}>
+      {errors.includes(fieldName as EereTextInputFieldName) && (
+        <p css={errorStyles} data-input-error>
           <span css={errorHeadingStyles}>Please enter a positive number.</span>
           If you wish to model a reverse EE/RE scenario (i.e., a negative
           number), use the Excel version of the AVERT Main Module.
-        </span>
+        </p>
       )}
     </>
   );

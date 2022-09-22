@@ -4,6 +4,7 @@ import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // components
 import { EERETextInput } from 'app/components/EERETextInput';
+import { EERESelectInput } from 'app/components/EERESelectInput';
 import Tooltip from 'app/components/Tooltip';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
@@ -18,9 +19,13 @@ import {
   updateEereUtilitySolar,
   updateEereRooftopSolar,
   updateEereBatteryEVs,
+  updateEereBatteryEVsProfile,
   updateEereHybridEVs,
+  updateEereHybridEVsProfile,
   updateEereTransitBuses,
+  updateEereTransitBusesProfile,
   updateEereSchoolBuses,
+  updateEereSchoolBusesProfile,
   calculateEereProfile,
 } from 'app/redux/reducers/eere';
 // hooks
@@ -175,12 +180,27 @@ const inputGridStyles = css`
     margin: 0;
     width: 100%;
   }
+
+  [data-input-error] {
+    grid-column: 1 / -1;
+    grid-row-start: 6; /* NOTE: bumps the error below the header row + four rows of inputs */
+  }
 `;
 
 const impactsButtonStyles = css`
   text-align: center;
   margin-bottom: 1rem;
 `;
+
+// TODO: store profiles in a config file
+const evChargingProfiles = [
+  { id: 'fleetwide', name: 'Fleetwide' },
+  { id: 'residentialLevel1', name: 'Residential Level 1' },
+  { id: 'residentialLevel2', name: 'Residential Level 2' },
+  { id: 'workLevel1', name: 'Work Level 1' },
+  { id: 'workLevel2', name: 'Work Level 2' },
+  { id: 'dcFastCharging', name: 'DC Fast Charging' },
+];
 
 function EEREInputs() {
   const dispatch = useDispatch();
@@ -197,9 +217,21 @@ function EEREInputs() {
   const utilitySolar = useTypedSelector(({ eere }) => eere.inputs.utilitySolar);
   const rooftopSolar = useTypedSelector(({ eere }) => eere.inputs.rooftopSolar);
   const batteryEVs = useTypedSelector(({ eere }) => eere.inputs.batteryEVs);
+  const batteryEVsProfile = useTypedSelector(
+    ({ eere }) => eere.inputs.batteryEVsProfile,
+  );
   const hybridEVs = useTypedSelector(({ eere }) => eere.inputs.hybridEVs);
+  const hybridEVsProfile = useTypedSelector(
+    ({ eere }) => eere.inputs.hybridEVsProfile,
+  );
   const transitBuses = useTypedSelector(({ eere }) => eere.inputs.transitBuses);
+  const transitBusesProfile = useTypedSelector(
+    ({ eere }) => eere.inputs.transitBusesProfile,
+  );
   const schoolBuses = useTypedSelector(({ eere }) => eere.inputs.schoolBuses);
+  const schoolBusesProfile = useTypedSelector(
+    ({ eere }) => eere.inputs.schoolBusesProfile,
+  );
 
   const selectedRegion = useSelectedRegion();
   const selectedStateRegions = useSelectedStateRegions();
@@ -209,10 +241,10 @@ function EEREInputs() {
       ? selectedRegion?.offshoreWind
       : selectedStateRegions.some((region) => region.offshoreWind);
 
-  const inputsAreValid = errors.length === 0;
+  const textInputsAreValid = errors.length === 0;
 
   // text input values from fields
-  const inputsFields = [
+  const textInputsFields = [
     constantMwh,
     annualGwh,
     broadProgram,
@@ -228,11 +260,11 @@ function EEREInputs() {
     schoolBuses,
   ];
 
-  const inputsAreEmpty =
-    inputsFields.filter((field) => field?.length > 0).length === 0;
+  const textInputsAreEmpty =
+    textInputsFields.filter((field) => field?.length > 0).length === 0;
 
   const calculationDisabled =
-    !inputsAreValid || inputsAreEmpty || status === 'started';
+    !textInputsAreValid || textInputsAreEmpty || status === 'started';
 
   const disabledClass = calculationDisabled ? ' avert-button-disabled' : '';
 
@@ -537,11 +569,16 @@ function EEREInputs() {
                 onChange={(text) => dispatch(updateEereBatteryEVs(text))}
               />
 
-              <select>
-                <option>one</option>
-                <option>two</option>
-                <option>three</option>
-              </select>
+              <EERESelectInput
+                ariaLabel="TODO"
+                options={evChargingProfiles}
+                value={batteryEVsProfile}
+                fieldName="batteryEVsProfile"
+                disabled={!batteryEVs}
+                onChange={(option) =>
+                  dispatch(updateEereBatteryEVsProfile(option))
+                }
+              />
 
               <EERETextInput
                 label="Light-duty plug-in hybrid EVs:"
@@ -551,11 +588,16 @@ function EEREInputs() {
                 onChange={(text) => dispatch(updateEereHybridEVs(text))}
               />
 
-              <select>
-                <option>one</option>
-                <option>two</option>
-                <option>three</option>
-              </select>
+              <EERESelectInput
+                ariaLabel="TODO"
+                options={evChargingProfiles}
+                value={hybridEVsProfile}
+                fieldName="hybridEVsProfile"
+                disabled={!hybridEVs}
+                onChange={(option) =>
+                  dispatch(updateEereHybridEVsProfile(option))
+                }
+              />
 
               <EERETextInput
                 label="Electric transit buses:"
@@ -565,11 +607,16 @@ function EEREInputs() {
                 onChange={(text) => dispatch(updateEereTransitBuses(text))}
               />
 
-              <select>
-                <option>one</option>
-                <option>two</option>
-                <option>three</option>
-              </select>
+              <EERESelectInput
+                ariaLabel="TODO"
+                options={evChargingProfiles}
+                value={transitBusesProfile}
+                fieldName="transitBusesProfile"
+                disabled={!transitBuses}
+                onChange={(option) =>
+                  dispatch(updateEereTransitBusesProfile(option))
+                }
+              />
 
               <EERETextInput
                 label="Electric school buses:"
@@ -579,11 +626,16 @@ function EEREInputs() {
                 onChange={(text) => dispatch(updateEereSchoolBuses(text))}
               />
 
-              <select>
-                <option>one</option>
-                <option>two</option>
-                <option>three</option>
-              </select>
+              <EERESelectInput
+                ariaLabel="TODO"
+                options={evChargingProfiles}
+                value={schoolBusesProfile}
+                fieldName="schoolBusesProfile"
+                disabled={!schoolBuses}
+                onChange={(option) =>
+                  dispatch(updateEereSchoolBusesProfile(option))
+                }
+              />
             </div>
 
             <p>

@@ -1,7 +1,7 @@
 import stats from 'stats-lite';
 // reducers
 import { EereDefaultData } from 'app/redux/reducers/geography';
-import { EereInputFieldName } from 'app/redux/reducers/eere';
+import { EereTextInputFieldName } from 'app/redux/reducers/eere';
 
 function calculateHourlyExceedance(
   calculatedLoad: number,
@@ -28,7 +28,7 @@ export function calculateEere({
   regionLineLoss: number;
   eereLoads: number[];
   eereDefaults: EereDefaultData[];
-  eereInputs: { [field in EereInputFieldName]: number };
+  eereInputs: { [field in EereTextInputFieldName]: number };
 }) {
   const {
     // A: Reductions spread evenly throughout the year
@@ -45,10 +45,14 @@ export function calculateEere({
     utilitySolar,
     rooftopSolar,
     // E: Number of electric vehicles
-    batteryEVs,
-    hybridEVs,
-    transitBuses,
-    schoolBuses,
+    // batteryEVs,
+    // batteryEVsProfile,
+    // hybridEVs,
+    // hybridEVsProfile,
+    // transitBuses,
+    // transitBusesProfile,
+    // schoolBuses,
+    // schoolBusesProfile,
   } = eereInputs;
 
   const lineLoss = 1 / (1 - regionLineLoss);
