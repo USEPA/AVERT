@@ -54,7 +54,7 @@ type Props = {
   tooltip?: ReactNode;
 };
 
-export function EEREInputField({
+export function EERETextInput({
   label,
   ariaLabel,
   suffix,

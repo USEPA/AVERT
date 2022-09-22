@@ -3,7 +3,7 @@
 import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // components
-import { EEREInputField } from 'app/components/EEREInputField';
+import { EERETextInput } from 'app/components/EERETextInput';
 import Tooltip from 'app/components/Tooltip';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
@@ -242,7 +242,7 @@ function EEREInputs() {
 
             <ul>
               <li>
-                <EEREInputField
+                <EERETextInput
                   label="Reduce total annual generation by:"
                   ariaLabel="Number of GWh expected to be saved in a single year"
                   suffix="GWh"
@@ -264,7 +264,7 @@ function EEREInputs() {
               </li>
 
               <li>
-                <EEREInputField
+                <EERETextInput
                   label="Reduce hourly generation by:"
                   ariaLabel="Constant reduction for every hour of the year, in MW"
                   suffix="MW"
@@ -300,7 +300,7 @@ function EEREInputs() {
 
             <ul>
               <li>
-                <EEREInputField
+                <EERETextInput
                   label="Broad-based program: Reduce generation by:"
                   ariaLabel="Load reduction percentage applied to all hours of the year"
                   suffix="% in all hours"
@@ -321,7 +321,7 @@ function EEREInputs() {
               </li>
 
               <li>
-                <EEREInputField
+                <EERETextInput
                   label="Targeted program: Reduce generation by:"
                   ariaLabel="Load reduction (as a fraction of peaking load) that would be targeted"
                   suffix="% during the peak:"
@@ -331,7 +331,7 @@ function EEREInputs() {
                   onChange={(text) => dispatch(updateEereReduction(text))}
                 />
 
-                <EEREInputField
+                <EERETextInput
                   ariaLabel="Fraction of high-demand hours that the program is expected to affect"
                   suffix="% of hours"
                   value={topHours}
@@ -369,7 +369,7 @@ function EEREInputs() {
 
             <ul>
               <li>
-                <EEREInputField
+                <EERETextInput
                   label="Onshore wind total capacity:"
                   ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                   suffix="MW"
@@ -389,7 +389,7 @@ function EEREInputs() {
 
               <li>
                 {atLeastOneRegionSupportsOffshoreWind ? (
-                  <EEREInputField
+                  <EERETextInput
                     label="Offshore wind total capacity:"
                     ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                     suffix="MW"
@@ -451,7 +451,7 @@ function EEREInputs() {
 
             <ul>
               <li>
-                <EEREInputField
+                <EERETextInput
                   label="Utility-scale solar photovoltaic total capacity:"
                   ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                   suffix="MW"
@@ -470,7 +470,7 @@ function EEREInputs() {
               </li>
 
               <li>
-                <EEREInputField
+                <EERETextInput
                   label="Distributed (rooftop) solar photovoltaic total capacity:"
                   ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                   suffix="MW"
@@ -503,7 +503,7 @@ function EEREInputs() {
           <section css={inputsSectionStyles}>
             <ul>
               <li>
-                <EEREInputField
+                <EERETextInput
                   label="Light-duty battery EVs:"
                   ariaLabel="TODO"
                   value={batteryEVs}
@@ -514,7 +514,7 @@ function EEREInputs() {
               </li>
 
               <li>
-                <EEREInputField
+                <EERETextInput
                   label="Light-duty plug-in hybrid EVs:"
                   ariaLabel="TODO"
                   value={hybridEVs}
@@ -525,7 +525,7 @@ function EEREInputs() {
               </li>
 
               <li>
-                <EEREInputField
+                <EERETextInput
                   label="Electric transit buses:"
                   ariaLabel="TODO"
                   value={transitBuses}
@@ -536,7 +536,7 @@ function EEREInputs() {
               </li>
 
               <li>
-                <EEREInputField
+                <EERETextInput
                   label="Electric school buses:"
                   ariaLabel="TODO"
                   value={schoolBuses}
