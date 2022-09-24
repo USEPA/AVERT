@@ -711,6 +711,14 @@ export const states: { [key in StateId]: State } = {
   },
 };
 
+export type EvProfileName =
+  | 'fleetwide'
+  | 'residentialLevel1'
+  | 'residentialLevel2'
+  | 'workLevel2'
+  | 'publicLevel2'
+  | 'dcFastCharging';
+
 /**
  * TODO
  */

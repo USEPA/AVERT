@@ -4,7 +4,14 @@ import {
   RegionalLoadData,
   EereDefaultData,
 } from 'app/redux/reducers/geography';
-import { EereTextInputFieldName } from 'app/redux/reducers/eere';
+import {
+  EereTextInputFieldName,
+  EereEvProfileFieldName,
+} from 'app/redux/reducers/eere';
+// config
+import { EvProfileName } from 'app/config';
+// data
+import evChargingProfiles from 'app/data/ev-charging-profiles.json';
 
 function calculateHourlyExceedance(
   calculatedLoad: number,
@@ -25,13 +32,15 @@ export function calculateEere({
   regionLineLoss, // region.lineLoss
   regionalLoad, // region.rdf.regional_load
   eereDefaults, // region.eereDefaults.data
-  eereInputs, // eere.inputs (scaled for each region)
+  eereTextInputs, // eere.inputs (scaled for each region)
+  eereEvProfiles, // eere.inputs (selected EV profiles)
 }: {
   regionMaxEEPercent: number;
   regionLineLoss: number;
   regionalLoad: RegionalLoadData[];
   eereDefaults: EereDefaultData[];
-  eereInputs: { [field in EereTextInputFieldName]: number };
+  eereTextInputs: { [field in EereTextInputFieldName]: number };
+  eereEvProfiles: { [field in EereEvProfileFieldName]: string };
 }) {
   const {
     // A: Reductions spread evenly throughout the year
@@ -49,14 +58,17 @@ export function calculateEere({
     rooftopSolar,
     // E: Electric Vehicles
     // batteryEVs,
-    // batteryEVsProfile,
     // hybridEVs,
-    // hybridEVsProfile,
     // transitBuses,
-    // transitBusesProfile,
     // schoolBuses,
-    // schoolBusesProfile,
-  } = eereInputs;
+  } = eereTextInputs;
+
+  const {
+    batteryEVsProfile,
+    hybridEVsProfile,
+    transitBusesProfile,
+    schoolBusesProfile,
+  } = eereEvProfiles;
 
   const lineLoss = 1 / (1 - regionLineLoss);
 
@@ -66,18 +78,43 @@ export function calculateEere({
   const percentReduction =
     ((-1 * (broadProgram || reduction)) / 100) * lineLoss;
 
-  const hourlyLoads = regionalLoad.map((hour) => hour.regional_load_mw);
+  const hourlyLoads = regionalLoad.map((data) => data.regional_load_mw);
 
   const percentHours = broadProgram ? 100 : topHours;
   const topPercentile = stats.percentile(hourlyLoads, 1 - percentHours / 100);
+
+  const hourlyEvChargingProfiles = evChargingProfiles.map((data) => {
+    return {
+      hour: data.hour,
+      batteryEVs: {
+        weekday: data[batteryEVsProfile as EvProfileName].weekday,
+        weekend: data[batteryEVsProfile as EvProfileName].weekend,
+      },
+      hybridEVs: {
+        weekday: data[hybridEVsProfile as EvProfileName].weekday,
+        weekend: data[hybridEVsProfile as EvProfileName].weekend,
+      },
+      transitBuses: {
+        weekday: data[transitBusesProfile as EvProfileName].weekday,
+        weekend: data[transitBusesProfile as EvProfileName].weekend,
+      },
+      schoolBuses: {
+        weekday: data[schoolBusesProfile as EvProfileName].weekday,
+        weekend: data[schoolBusesProfile as EvProfileName].weekend,
+      },
+    };
+  });
 
   // build up exceedances (soft and hard) and hourly eere for each hour of the year
   const softLimitHourlyExceedances: number[] = [];
   const hardLimitHourlyExceedances: number[] = [];
   const hourlyEere: number[] = [];
 
-  regionalLoad.forEach((hour, index) => {
-    const hourlyLoad = hour.regional_load_mw;
+  regionalLoad.forEach((data, index) => {
+    const datetime = new Date(data.year, data.month - 1, data.day, data.hour);
+    const isWeekend = datetime.getDay() === 0 || datetime.getDay() === 6;
+
+    const hourlyLoad = data.regional_load_mw;
 
     const hourlyDefault = eereDefaults[index];
 
@@ -87,14 +124,19 @@ export function calculateEere({
       utilitySolar * hourlyDefault.utility_pv +
       rooftopSolar * hourlyDefault.rooftop_pv * lineLoss;
 
+    const evLoad = isWeekend
+      ? 0 // weekend load
+      : 0; // weekday load
+
     const initialLoad =
-      hourlyLoad > topPercentile ? hourlyLoad * percentReduction : 0;
+      hourlyLoad >= topPercentile ? hourlyLoad * percentReduction : 0;
 
     const calculatedLoad =
       initialLoad -
-      renewableProfile -
+      constantMwh * lineLoss -
       hourlyMwReduction -
-      constantMwh * lineLoss;
+      renewableProfile +
+      evLoad;
 
     const softLimitHourlyExceedance = calculateHourlyExceedance(
       calculatedLoad,

@@ -149,11 +149,14 @@ export type EereTextInputFieldName =
   | 'transitBuses'
   | 'schoolBuses';
 
-type EereSelectInputFieldName =
+export type EereEvProfileFieldName =
   | 'batteryEVsProfile'
   | 'hybridEVsProfile'
   | 'transitBusesProfile'
-  | 'schoolBusesProfile'
+  | 'schoolBusesProfile';
+
+type EereSelectInputFieldName =
+  | EereEvProfileFieldName
   | 'evDeploymentLocation'
   | 'evModelYear'
   | 'iceReplacementVehicle';
@@ -853,7 +856,7 @@ export function calculateEereProfile(): AppThunk {
         ? regionalPercent / totalOffshoreWindPercent
         : 0;
 
-      const scaledEereInputs = {
+      const scaledEereTextInputs = {
         annualGwh: Number(eere.inputs.annualGwh) * regionalScalingFactor,
         constantMwh: Number(eere.inputs.constantMwh) * regionalScalingFactor,
         broadProgram: Number(eere.inputs.broadProgram) * percentReductionFactor,
@@ -869,6 +872,13 @@ export function calculateEereProfile(): AppThunk {
         schoolBuses: Number(eere.inputs.schoolBuses) * regionalScalingFactor,
       };
 
+      const selectedEereEvProfiles = {
+        batteryEVsProfile: eere.inputs.batteryEVsProfile,
+        hybridEVsProfile: eere.inputs.hybridEVsProfile,
+        transitBusesProfile: eere.inputs.transitBusesProfile,
+        schoolBusesProfile: eere.inputs.schoolBusesProfile,
+      };
+
       const {
         hourlyEere,
         softValid,
@@ -882,7 +892,8 @@ export function calculateEereProfile(): AppThunk {
         regionLineLoss: region.lineLoss,
         regionalLoad: region.rdf.regional_load,
         eereDefaults: region.eereDefaults.data,
-        eereInputs: scaledEereInputs,
+        eereTextInputs: scaledEereTextInputs,
+        eereEvProfiles: selectedEereEvProfiles,
       });
 
       const regionalProfile = {
