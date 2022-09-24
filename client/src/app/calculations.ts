@@ -1,6 +1,9 @@
 import stats from 'stats-lite';
 // reducers
-import { EereDefaultData } from 'app/redux/reducers/geography';
+import {
+  RegionalLoadData,
+  EereDefaultData,
+} from 'app/redux/reducers/geography';
 import { EereTextInputFieldName } from 'app/redux/reducers/eere';
 
 function calculateHourlyExceedance(
@@ -20,13 +23,13 @@ function calculateHourlyExceedance(
 export function calculateEere({
   regionMaxEEPercent, // region.rdf.limits.max_ee_percent (15 for all RDFs)
   regionLineLoss, // region.lineLoss
-  eereLoads, // region.rdf.regional_load.map((hour) => hour.regional_load_mw)
+  regionalLoad, // region.rdf.regional_load
   eereDefaults, // region.eereDefaults.data
   eereInputs, // eere.inputs (scaled for each region)
 }: {
   regionMaxEEPercent: number;
   regionLineLoss: number;
-  eereLoads: number[];
+  regionalLoad: RegionalLoadData[];
   eereDefaults: EereDefaultData[];
   eereInputs: { [field in EereTextInputFieldName]: number };
 }) {
@@ -44,7 +47,7 @@ export function calculateEere({
     // D: Solar photovoltaic
     utilitySolar,
     rooftopSolar,
-    // E: Number of electric vehicles
+    // E: Electric Vehicles
     // batteryEVs,
     // batteryEVsProfile,
     // hybridEVs,
@@ -57,20 +60,25 @@ export function calculateEere({
 
   const lineLoss = 1 / (1 - regionLineLoss);
 
-  const hourlyMwReduction = ((annualGwh * 1e3) / eereLoads.length) * lineLoss;
+  const hourlyMwReduction =
+    ((annualGwh * 1000) / regionalLoad.length) * lineLoss;
 
   const percentReduction =
     ((-1 * (broadProgram || reduction)) / 100) * lineLoss;
 
+  const hourlyLoads = regionalLoad.map((hour) => hour.regional_load_mw);
+
   const percentHours = broadProgram ? 100 : topHours;
-  const topPercentile = stats.percentile(eereLoads, 1 - percentHours / 100);
+  const topPercentile = stats.percentile(hourlyLoads, 1 - percentHours / 100);
 
   // build up exceedances (soft and hard) and hourly eere for each hour of the year
   const softLimitHourlyExceedances: number[] = [];
   const hardLimitHourlyExceedances: number[] = [];
   const hourlyEere: number[] = [];
 
-  eereLoads.forEach((hourlyLoad, index) => {
+  regionalLoad.forEach((hour, index) => {
+    const hourlyLoad = hour.regional_load_mw;
+
     const hourlyDefault = eereDefaults[index];
 
     const renewableProfile =
