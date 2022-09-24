@@ -718,8 +718,8 @@ export const evChargingProfileOptions = [
   { id: 'fleetwide', name: 'Fleetwide' },
   { id: 'residentialLevel1', name: 'Residential Level 1' },
   { id: 'residentialLevel2', name: 'Residential Level 2' },
-  { id: 'workLevel1', name: 'Work Level 1' },
   { id: 'workLevel2', name: 'Work Level 2' },
+  { id: 'publicLevel2', name: 'Public Level 2' },
   { id: 'dcFastCharging', name: 'DC Fast Charging' },
 ];
 
