@@ -11,7 +11,7 @@ import {
 // config
 import { EvProfileName } from 'app/config';
 // data
-import evChargingProfiles from 'app/data/ev-charging-profiles.json';
+import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
 
 function calculateHourlyExceedance(
   calculatedLoad: number,
@@ -25,6 +25,37 @@ function calculateHourlyExceedance(
     return exceedance * amount + amount;
   }
   return 0;
+}
+
+/**
+ * build up monthly stats object by looping through every hour of the year,
+ * (only creates objects and sets their keys in the first hour of each month)
+ */
+function createMonthlyStats(regionalLoad: RegionalLoadData[]) {
+  const stats: {
+    [month: number]: {
+      [day: number]: { _done: boolean; dayOfWeek: number; isWeekend: boolean };
+    };
+  } = {};
+
+  regionalLoad.forEach((data) => {
+    stats[data.month] ??= {};
+    // NOTE: initial values to keep same object shape – will be mutated next
+    stats[data.month][data.day] ??= {
+      _done: false,
+      dayOfWeek: -1,
+      isWeekend: false,
+    };
+
+    if (stats[data.month][data.day]._done === false) {
+      const datetime = new Date(data.year, data.month - 1, data.day, data.hour);
+      const dayOfWeek = datetime.getDay();
+      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+      stats[data.month][data.day] = { _done: true, dayOfWeek, isWeekend };
+    }
+  });
+
+  return stats;
 }
 
 export function calculateEere({
@@ -83,7 +114,7 @@ export function calculateEere({
   const percentHours = broadProgram ? 100 : topHours;
   const topPercentile = stats.percentile(hourlyLoads, 1 - percentHours / 100);
 
-  const hourlyEvChargingProfiles = evChargingProfiles.map((data) => {
+  const hourlyEVChargingPercentagesByEVType = evChargingProfiles.map((data) => {
     return {
       hour: data.hour,
       batteryEVs: {
@@ -110,11 +141,22 @@ export function calculateEere({
   const hardLimitHourlyExceedances: number[] = [];
   const hourlyEere: number[] = [];
 
+  // build up monthly stats object by looping through every hour of the year
+  const monthlyStats = createMonthlyStats(regionalLoad);
+
   regionalLoad.forEach((data, index) => {
-    const datetime = new Date(data.year, data.month - 1, data.day, data.hour);
-    const isWeekend = datetime.getDay() === 0 || datetime.getDay() === 6;
+    const isWeekend = monthlyStats[data.month][data.day].isWeekend;
+    const daysInMonth = Object.keys(monthlyStats[data.month]).length;
+    const weekendDaysInMonth = Object.values(monthlyStats[data.month]).reduce(
+      (total, day) => (day.isWeekend ? ++total : total),
+      0,
+    );
+    const weekdayDaysInMonth = daysInMonth - weekendDaysInMonth;
 
     const hourlyLoad = data.regional_load_mw;
+
+    const initialLoad =
+      hourlyLoad >= topPercentile ? hourlyLoad * percentReduction : 0;
 
     const hourlyDefault = eereDefaults[index];
 
@@ -124,12 +166,17 @@ export function calculateEere({
       utilitySolar * hourlyDefault.utility_pv +
       rooftopSolar * hourlyDefault.rooftop_pv * lineLoss;
 
-    const evLoad = isWeekend
-      ? 0 // weekend load
-      : 0; // weekday load
+    const evChargingPercentage = hourlyEVChargingPercentagesByEVType[data.hour];
 
-    const initialLoad =
-      hourlyLoad >= topPercentile ? hourlyLoad * percentReduction : 0;
+    const evLoad =
+      evChargingPercentage.batteryEVs[isWeekend ? 'weekend' : 'weekday'] *
+        0 /* TODO */ +
+      evChargingPercentage.hybridEVs[isWeekend ? 'weekend' : 'weekday'] *
+        0 /* TODO */ +
+      evChargingPercentage.transitBuses[isWeekend ? 'weekend' : 'weekday'] *
+        0 /* TODO */ +
+      evChargingPercentage.schoolBuses[isWeekend ? 'weekend' : 'weekday'] *
+        0; /* TODO */
 
     const calculatedLoad =
       initialLoad -
