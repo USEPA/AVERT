@@ -9,9 +9,10 @@ import {
   EereEvProfileFieldName,
 } from 'app/redux/reducers/eere';
 // config
-import { EvProfileName } from 'app/config';
+import { EvProfileName, percentVehiclesDisplacedByEVs } from 'app/config';
 // data
 import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
+import movesEmissionsRates from 'app/data/moves-emissions-rates.json';
 
 function calculateHourlyExceedance(
   calculatedLoad: number,
@@ -58,6 +59,64 @@ function createYearlyStats(regionalLoad: RegionalLoadData[]) {
   return stats;
 }
 
+/**
+ * build up total monthly vehicles miles traveled by vehicle type
+ */
+function sumMonthlyVMT() {
+  const result: {
+    [month: number]: {
+      cars: number;
+      trucks: number;
+      transitBusesDiesel: number;
+      transitBusesCng: number;
+      transitBusesGasoline: number;
+      schoolBuses: number;
+    };
+  } = {};
+
+  movesEmissionsRates.forEach((data) => {
+    if (data.year === '2020') {
+      const month = Number(data.month);
+
+      // initialize and then increment monthly vmts by vehicle type
+      result[month] ??= {
+        cars: 0,
+        trucks: 0,
+        transitBusesDiesel: 0,
+        transitBusesCng: 0,
+        transitBusesGasoline: 0,
+        schoolBuses: 0,
+      };
+
+      if (data.vehicleType === 'Passenger Car') {
+        result[month].cars += data.VMT;
+      }
+
+      if (data.vehicleType === 'Passenger Truck') {
+        result[month].trucks += data.VMT;
+      }
+
+      if (data.vehicleType === 'Transit Bus' && data.fuelType === 'Diesel') {
+        result[month].transitBusesDiesel += data.VMT;
+      }
+
+      if (data.vehicleType === 'Transit Bus' && data.fuelType === 'CNG') {
+        result[month].transitBusesCng += data.VMT;
+      }
+
+      if (data.vehicleType === 'Transit Bus' && data.fuelType === 'Gasoline') {
+        result[month].transitBusesGasoline += data.VMT;
+      }
+
+      if (data.vehicleType === 'School Bus') {
+        result[month].schoolBuses += data.VMT;
+      }
+    }
+  });
+
+  return result;
+}
+
 export function calculateEere({
   regionMaxEEPercent, // region.rdf.limits.max_ee_percent (15 for all RDFs)
   regionLineLoss, // region.lineLoss
@@ -88,10 +147,10 @@ export function calculateEere({
     utilitySolar,
     rooftopSolar,
     // E: Electric Vehicles
-    // batteryEVs,
-    // hybridEVs,
-    // transitBuses,
-    // schoolBuses,
+    batteryEVs,
+    hybridEVs,
+    transitBuses,
+    schoolBuses,
   } = eereTextInputs;
 
   const {
@@ -135,6 +194,28 @@ export function calculateEere({
       },
     };
   });
+
+  // prettier-ignore
+  const displacedVehiclesByEvType = {
+    batteryEVs: {
+      cars: batteryEVs * (percentVehiclesDisplacedByEVs.batteryEVs.cars / 100),
+      trucks: batteryEVs * (percentVehiclesDisplacedByEVs.batteryEVs.trucks / 100),
+    },
+    hybridEVs: {
+      cars: hybridEVs * (percentVehiclesDisplacedByEVs.hybridEVs.cars / 100),
+      trucks: hybridEVs * (percentVehiclesDisplacedByEVs.hybridEVs.trucks / 100),
+    },
+    transitBuses: {
+      diesel: transitBuses * (percentVehiclesDisplacedByEVs.transitBuses.diesel / 100),
+      cng: transitBuses * (percentVehiclesDisplacedByEVs.transitBuses.cng / 100),
+      gasoline: transitBuses * (percentVehiclesDisplacedByEVs.transitBuses.gasoline / 100),
+    },
+    schoolBuses: {
+      diesel: schoolBuses * (percentVehiclesDisplacedByEVs.schoolBuses.diesel / 100),
+    },
+  };
+
+  const totalVMTByMonth = sumMonthlyVMT();
 
   // build up exceedances (soft and hard) and hourly eere for each hour of the year
   const softLimitHourlyExceedances: number[] = [];

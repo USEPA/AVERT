@@ -734,6 +734,38 @@ export const evChargingProfileOptions = [
 /**
  * TODO
  */
+export const percentVehiclesDisplacedByEVs = {
+  batteryEVs: {
+    cars: 28,
+    trucks: 72,
+  },
+  hybridEVs: {
+    cars: 28,
+    trucks: 72,
+  },
+  transitBuses: {
+    diesel: 79,
+    cng: 7,
+    gasoline: 15,
+  },
+  schoolBuses: {
+    diesel: 100,
+  },
+};
+
+/**
+ * TODO
+ */
+export const vehicleMilesTraveled = {
+  cars: 11599,
+  trucks: 11263,
+  transitBuses: 43647,
+  schoolBuses: 12000,
+};
+
+/**
+ * TODO
+ */
 export const evModelYearOptions = [
   { id: '2020', name: '2020' },
   { id: '2021', name: '2021' },
