@@ -28,10 +28,10 @@ function calculateHourlyExceedance(
 }
 
 /**
- * build up monthly stats object by looping through every hour of the year,
+ * build up yearly stats object by looping through every hour of the year,
  * (only creates objects and sets their keys in the first hour of each month)
  */
-function createMonthlyStats(regionalLoad: RegionalLoadData[]) {
+function createYearlyStats(regionalLoad: RegionalLoadData[]) {
   const stats: {
     [month: number]: {
       [day: number]: { _done: boolean; dayOfWeek: number; isWeekend: boolean };
@@ -141,13 +141,13 @@ export function calculateEere({
   const hardLimitHourlyExceedances: number[] = [];
   const hourlyEere: number[] = [];
 
-  // build up monthly stats object by looping through every hour of the year
-  const monthlyStats = createMonthlyStats(regionalLoad);
+  // build up yearly stats object by looping through every hour of the year
+  const yearlyStats = createYearlyStats(regionalLoad);
 
   regionalLoad.forEach((data, index) => {
-    const isWeekend = monthlyStats[data.month][data.day].isWeekend;
-    const daysInMonth = Object.keys(monthlyStats[data.month]).length;
-    const weekendDaysInMonth = Object.values(monthlyStats[data.month]).reduce(
+    const isWeekend = yearlyStats[data.month][data.day].isWeekend;
+    const daysInMonth = Object.keys(yearlyStats[data.month]).length;
+    const weekendDaysInMonth = Object.values(yearlyStats[data.month]).reduce(
       (total, day) => (day.isWeekend ? ++total : total),
       0,
     );
