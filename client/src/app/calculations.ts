@@ -214,6 +214,19 @@ function calculateMonthlySalesChanges(options: {
   const { batteryEVs, hybridEVs, transitBuses, schoolBuses, evModelYear } =
     options;
 
+  const result: {
+    [month: number]: {
+      batteryEVCars: number;
+      hybridEVCars: number;
+      batteryEVTrucks: number;
+      hybridEVTrucks: number;
+      transitBusesDiesel: number;
+      transitBusesCNG: number;
+      transitBusesGasoline: number;
+      schoolBuses: number;
+    };
+  } = {};
+
   /**
    * Number of vehicles displaced by new EVs.
    *
@@ -253,10 +266,10 @@ function calculateMonthlySalesChanges(options: {
   // TODO: find out what this number represents (converting between units)?
   const unitConversionFactor = 0.000001;
 
-  return [...Array(12)].map((_item, index) => {
+  [...Array(12)].forEach((_item, index) => {
     const month = index + 1;
-    return {
-      month,
+
+    result[month] = {
       batteryEVCars:
         vehiclesDisplaced.batteryEVCars *
         monthlyAdjustedVMT[month].cars *
@@ -301,6 +314,8 @@ function calculateMonthlySalesChanges(options: {
         unitConversionFactor,
     };
   });
+
+  return result;
 }
 
 export function calculateEere({
