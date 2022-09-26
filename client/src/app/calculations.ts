@@ -13,9 +13,9 @@ import {
   EvProfileName,
   EVModelYear,
   percentVehiclesDisplacedByEVs,
-  percentHybridEVMilesDrivenOnElectricity,
   vehicleMilesTraveledPerYear,
   evEfficiencyByModelYear,
+  percentHybridEVMilesDrivenOnElectricity,
 } from 'app/config';
 // data
 import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
@@ -67,10 +67,13 @@ function createYearlyStats(regionalLoad: RegionalLoadData[]) {
 }
 
 /**
- * build up total monthly vehicles miles traveled (VMT) by vehicle type, and
- * percentage/share of VMT by month
+ * Vehicle miles traveled (VMT) totals for each month from MOVES data, and the
+ * percentage/share of the yearly totals each month has, for each vehicle type.
+ *
+ * Excel: "Table 5: EV weather adjustments and monthly VMT adjustments" table
+ * in the "Library" sheet (totals: E220:P225, percentages: E227:P232).
  */
-function sumMonthlyVMT() {
+function setMonthlyVMTTotalsAndPercentages() {
   const result: {
     [month: number]: {
       cars: { total: number; percent: number };
@@ -82,7 +85,12 @@ function sumMonthlyVMT() {
     };
   } = {};
 
-  const totals = {
+  /**
+   * Yearly total vehicle miles traveled (VMT) for each vehicle type.
+   *
+   * Excel: Total column of Table 5 in the "Library" sheet (Q220:Q225).
+   */
+  const yearlyTotals = {
     cars: 0,
     trucks: 0,
     transitBusesDiesel: 0,
@@ -107,52 +115,54 @@ function sumMonthlyVMT() {
 
       if (data.vehicleType === 'Passenger Car') {
         result[month].cars.total += data.VMT;
-        totals.cars += data.VMT;
+        yearlyTotals.cars += data.VMT;
       }
 
       if (data.vehicleType === 'Passenger Truck') {
         result[month].trucks.total += data.VMT;
-        totals.trucks += data.VMT;
+        yearlyTotals.trucks += data.VMT;
       }
 
       if (data.vehicleType === 'Transit Bus' && data.fuelType === 'Diesel') {
         result[month].transitBusesDiesel.total += data.VMT;
-        totals.transitBusesDiesel += data.VMT;
+        yearlyTotals.transitBusesDiesel += data.VMT;
       }
 
       if (data.vehicleType === 'Transit Bus' && data.fuelType === 'CNG') {
         result[month].transitBusesCNG.total += data.VMT;
-        totals.transitBusesCNG += data.VMT;
+        yearlyTotals.transitBusesCNG += data.VMT;
       }
 
       if (data.vehicleType === 'Transit Bus' && data.fuelType === 'Gasoline') {
         result[month].transitBusesGasoline.total += data.VMT;
-        totals.transitBusesGasoline += data.VMT;
+        yearlyTotals.transitBusesGasoline += data.VMT;
       }
 
       if (data.vehicleType === 'School Bus') {
         result[month].schoolBuses.total += data.VMT;
-        totals.schoolBuses += data.VMT;
+        yearlyTotals.schoolBuses += data.VMT;
       }
     }
   });
 
   // prettier-ignore
   Object.values(result).forEach((data) => {
-    data.cars.percent = data.cars.total / totals.cars;
-    data.trucks.percent = data.trucks.total / totals.trucks;
-    data.transitBusesDiesel.percent = data.transitBusesDiesel.total / totals.transitBusesDiesel;
-    data.transitBusesCNG.percent = data.transitBusesCNG.total / totals.transitBusesCNG;
-    data.transitBusesGasoline.percent = data.transitBusesGasoline.total / totals.transitBusesGasoline;
-    data.schoolBuses.percent = data.schoolBuses.total / totals.schoolBuses;
+    data.cars.percent = data.cars.total / yearlyTotals.cars;
+    data.trucks.percent = data.trucks.total / yearlyTotals.trucks;
+    data.transitBusesDiesel.percent = data.transitBusesDiesel.total / yearlyTotals.transitBusesDiesel;
+    data.transitBusesCNG.percent = data.transitBusesCNG.total / yearlyTotals.transitBusesCNG;
+    data.transitBusesGasoline.percent = data.transitBusesGasoline.total / yearlyTotals.transitBusesGasoline;
+    data.schoolBuses.percent = data.schoolBuses.total / yearlyTotals.schoolBuses;
   });
 
   return result;
       }
 
 /**
- * calculate monthly adjusted VMT via vehicle miles traveled per year and
- * percentage of miles traveled each month
+ * Monthly vehicle miles traveled (VMT) for each vehicle type.
+ *
+ * Excel: "Table 5: EV weather adjustments and monthly VMT adjustments" table
+ * in the "Library" sheet (E234:P239).
  */
 function calculateMonthlyAdjustedVMT() {
   const result: {
@@ -166,10 +176,12 @@ function calculateMonthlyAdjustedVMT() {
     };
   } = {};
 
-  const totalVMTByMonth = sumMonthlyVMT();
+  // NOTE: we really only need percentages for each vehicle type
+  // (totals were stored to calculate the percentages)
+  const monthlyVMTTotalsAndPercentages = setMonthlyVMTTotalsAndPercentages();
 
   // prettier-ignore
-  Object.entries(totalVMTByMonth).forEach(([month, data]) => {
+  Object.entries(monthlyVMTTotalsAndPercentages).forEach(([month, data]) => {
     result[Number(month)] = {
       cars: vehicleMilesTraveledPerYear.cars * data.cars.percent,
       trucks: vehicleMilesTraveledPerYear.trucks * data.trucks.percent,
@@ -183,12 +195,16 @@ function calculateMonthlyAdjustedVMT() {
   return result;
 }
 
+// TODO: is there a better name for this?
 const monthlyAdjustedVMT = calculateMonthlyAdjustedVMT();
 
 /**
- * TODO
+ * Monthly sales changes in GWh.
+ *
+ * Excel: "Sales Changes" data from "Table 7: Calculated changes for the
+ * transportation sector" table in the "Library" sheet (G298:R306).
  */
-function calculateSalesChanges(options: {
+function calculateMonthlySalesChanges(options: {
   batteryEVs: number;
   hybridEVs: number;
   transitBuses: number;
@@ -198,6 +214,13 @@ function calculateSalesChanges(options: {
   const { batteryEVs, hybridEVs, transitBuses, schoolBuses, evModelYear } =
     options;
 
+  /**
+   * Number of vehicles displaced by new EVs.
+   *
+   * Excel: "Sales Changes" section of Table 7 in the "Library" sheet
+   * (E299:E306), which uses "Part II. Vehicle Composition" table in the
+   * "EV_Detail" sheet (L99:O104).
+   */
   const vehiclesDisplaced = {
     batteryEVCars:
       batteryEVs * (percentVehiclesDisplacedByEVs.batteryEVCars / 100),
@@ -217,53 +240,65 @@ function calculateSalesChanges(options: {
       schoolBuses * (percentVehiclesDisplacedByEVs.schoolBuses / 100),
   };
 
+  /**
+   * Efficiency factor for each vehicle type for the selected model year.
+   *
+   * Excel: "Table 5: EV weather adjustments and monthly VMT adjustments" table
+   * in the "Library" sheet (E212:E217). NOTE: the Excel version duplicates
+   * these values in the columns to the right for each month, but they're the
+   * same value for all months.
+   */
   const evEfficiency = evEfficiencyByModelYear[evModelYear as EVModelYear];
+
+  // TODO: find out what this number represents (converting between units)?
+  const unitConversionFactor = 0.000001;
 
   return [...Array(12)].map((_item, index) => {
     const month = index + 1;
     return {
+      month,
       batteryEVCars:
         vehiclesDisplaced.batteryEVCars *
         monthlyAdjustedVMT[month].cars *
         evEfficiency.batteryEVCars *
-        0.00001,
+        unitConversionFactor,
       hybridEVCars:
         vehiclesDisplaced.hybridEVCars *
         monthlyAdjustedVMT[month].cars *
         evEfficiency.hybridEVCars *
-        0.00001 *
+        unitConversionFactor *
         (percentHybridEVMilesDrivenOnElectricity / 100),
       batteryEVTrucks:
         vehiclesDisplaced.batteryEVTrucks *
         monthlyAdjustedVMT[month].trucks *
         evEfficiency.batteryEVTrucks *
-        0.00001,
+        unitConversionFactor,
       hybridEVTrucks:
         vehiclesDisplaced.hybridEVTrucks *
         monthlyAdjustedVMT[month].trucks *
         evEfficiency.batteryEVTrucks *
-        0.00001 *
+        unitConversionFactor *
         (percentHybridEVMilesDrivenOnElectricity / 100),
       transitBusesDiesel:
         vehiclesDisplaced.transitBusesDiesel *
         monthlyAdjustedVMT[month].transitBusesDiesel *
         evEfficiency.transitBuses *
-        0.00001,
+        unitConversionFactor,
       transitBusesCNG:
         vehiclesDisplaced.transitBusesCNG *
         monthlyAdjustedVMT[month].transitBusesCNG *
         evEfficiency.transitBuses *
-        0.00001,
+        unitConversionFactor,
       transitBusesGasoline:
         vehiclesDisplaced.transitBusesGasoline *
         monthlyAdjustedVMT[month].transitBusesGasoline *
         evEfficiency.transitBuses *
-        0.00001,
+        unitConversionFactor,
       schoolBuses:
         vehiclesDisplaced.schoolBuses *
         monthlyAdjustedVMT[month].schoolBuses *
         evEfficiency.schoolBuses *
-        0.00001,
+        unitConversionFactor,
     };
   });
 }
@@ -350,7 +385,7 @@ export function calculateEere({
     };
   });
 
-  const salesChanges = calculateSalesChanges({
+  const monthlySalesChanges = calculateMonthlySalesChanges({
     batteryEVs,
     hybridEVs,
     transitBuses,

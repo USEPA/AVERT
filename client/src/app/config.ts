@@ -722,12 +722,15 @@ export type EvProfileName =
 export type EVModelYear = '2020' | '2021' | '2022' | '2023' | '2024' | '2025';
 
 /**
- * TODO
+ * Percentages of vehicle types displaced by new EVs.
+ *
+ * Excel: "Part II. Vehicle Composition" table in the "EV_Detail" sheet
+ * (D100:G104).
  */
 export const percentVehiclesDisplacedByEVs = {
   batteryEVCars: 28,
-  hybridEVCars: 28,
   batteryEVTrucks: 72,
+  hybridEVCars: 28,
   hybridEVTrucks: 72,
   transitBusesDiesel: 79,
   transitBusesCNG: 7,
@@ -736,12 +739,9 @@ export const percentVehiclesDisplacedByEVs = {
 };
 
 /**
- * TODO
- */
-export const percentHybridEVMilesDrivenOnElectricity = 54;
-
-/**
- * TODO
+ * Vehicle miles traveled (VMT) per year.
+ *
+ * Excel: "Table 4: EV data inputs" table in the "Library" sheet (E180:E183).
  */
 export const vehicleMilesTraveledPerYear = {
   cars: 11599,
@@ -751,7 +751,9 @@ export const vehicleMilesTraveledPerYear = {
 };
 
 /**
- * TODO
+ * Efficiency factor for each vehicle type, for each EV model year.
+ *
+ * Excel: "Table 4: EV data inputs" table in the "Library" sheet (E195:J201).
  */
 export const evEfficiencyByModelYear = {
   '2020': {
@@ -803,6 +805,11 @@ export const evEfficiencyByModelYear = {
     schoolBuses: 1.83,
   },
 };
+
+/**
+ * Excel: "Table 4: EV data inputs" table in the "Library" sheet (E203).
+ */
+export const percentHybridEVMilesDrivenOnElectricity = 54;
 
 /**
  * TODO
