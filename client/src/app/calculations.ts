@@ -66,6 +66,39 @@ function createDailyStats(regionalLoad: RegionalLoadData[]) {
   return result;
 }
 
+function createMonthlyStats(dailyStats: {
+  [month: number]: {
+    [day: number]: { _done: boolean; dayOfWeek: number; isWeekend: boolean };
+  };
+}) {
+  const result: {
+    [month: number]: {
+      totalDays: number;
+      weekdayDays: number;
+      weekendDays: number;
+    };
+  } = {};
+
+  [...Array(12)].forEach((_item, index) => {
+    const month = index + 1;
+
+    const totalDays = Object.keys(dailyStats[month]).length;
+    const weekendDays = Object.values(dailyStats[month]).reduce(
+      (total, day) => (day.isWeekend ? ++total : total),
+      0,
+    );
+    const weekdayDays = totalDays - weekendDays;
+
+    result[month] = {
+      totalDays,
+      weekdayDays,
+      weekendDays,
+    };
+  });
+
+  return result;
+}
+
 /**
  * Vehicle miles traveled (VMT) totals for each month from MOVES data, and the
  * percentage/share of the yearly totals each month has, for each vehicle type.
@@ -415,16 +448,9 @@ export function calculateEere({
 
   // build up daily stats object by looping through every hour of the year
   const dailyStats = createDailyStats(regionalLoad);
+  const monthlyStats = createMonthlyStats(dailyStats);
 
   regionalLoad.forEach((data, index) => {
-    const isWeekend = dailyStats[data.month][data.day].isWeekend;
-    const daysInMonth = Object.keys(dailyStats[data.month]).length;
-    const weekendDaysInMonth = Object.values(dailyStats[data.month]).reduce(
-      (total, day) => (day.isWeekend ? ++total : total),
-      0,
-    );
-    const weekdayDaysInMonth = daysInMonth - weekendDaysInMonth;
-
     const hourlyLoad = data.regional_load_mw;
 
     const initialLoad =
@@ -439,6 +465,8 @@ export function calculateEere({
       rooftopSolar * hourlyDefault.rooftop_pv * lineLoss;
 
     const evChargingPercentage = hourlyEVChargingPercentagesByEVType[data.hour];
+
+    const isWeekend = dailyStats[data.month][data.day].isWeekend;
 
     const evLoad =
       evChargingPercentage.batteryEVs[isWeekend ? 'weekend' : 'weekday'] *
