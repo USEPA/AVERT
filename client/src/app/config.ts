@@ -719,17 +719,7 @@ export type EvProfileName =
   | 'publicLevel2'
   | 'dcFastCharging';
 
-/**
- * TODO
- */
-export const evChargingProfileOptions = [
-  { id: 'fleetwide', name: 'Fleetwide' },
-  { id: 'residentialLevel1', name: 'Residential Level 1' },
-  { id: 'residentialLevel2', name: 'Residential Level 2' },
-  { id: 'workLevel2', name: 'Work Level 2' },
-  { id: 'publicLevel2', name: 'Public Level 2' },
-  { id: 'dcFastCharging', name: 'DC Fast Charging' },
-];
+export type EVModelYear = '2020' | '2021' | '2022' | '2023' | '2024' | '2025';
 
 /**
  * TODO
@@ -756,12 +746,78 @@ export const percentVehiclesDisplacedByEVs = {
 /**
  * TODO
  */
-export const vehicleMilesTraveled = {
+export const vehicleMilesTraveledPerYear = {
   cars: 11599,
   trucks: 11263,
   transitBuses: 43647,
   schoolBuses: 12000,
 };
+
+/**
+ * TODO
+ */
+export const evEfficiencyByModelYear = {
+  '2020': {
+    batteryEVCars: 0.3,
+    hybridEVCars: 0.28,
+    batteryEVTrucks: 0.51,
+    hybridEVTrucks: 0.47,
+    transitBuses: 1.95,
+    schoolBuses: 1.95,
+  },
+  '2021': {
+    batteryEVCars: 0.29,
+    hybridEVCars: 0.28,
+    batteryEVTrucks: 0.51,
+    hybridEVTrucks: 0.47,
+    transitBuses: 1.93,
+    schoolBuses: 1.93,
+  },
+  '2022': {
+    batteryEVCars: 0.29,
+    hybridEVCars: 0.28,
+    batteryEVTrucks: 0.5,
+    hybridEVTrucks: 0.46,
+    transitBuses: 1.9,
+    schoolBuses: 1.9,
+  },
+  '2023': {
+    batteryEVCars: 0.28,
+    hybridEVCars: 0.28,
+    batteryEVTrucks: 0.5,
+    hybridEVTrucks: 0.46,
+    transitBuses: 1.87,
+    schoolBuses: 1.87,
+  },
+  '2024': {
+    batteryEVCars: 0.28,
+    hybridEVCars: 0.28,
+    batteryEVTrucks: 0.5,
+    hybridEVTrucks: 0.45,
+    transitBuses: 1.85,
+    schoolBuses: 1.85,
+  },
+  '2025': {
+    batteryEVCars: 0.27,
+    hybridEVCars: 0.27,
+    batteryEVTrucks: 0.49,
+    hybridEVTrucks: 0.45,
+    transitBuses: 1.83,
+    schoolBuses: 1.83,
+  },
+};
+
+/**
+ * TODO
+ */
+export const evChargingProfileOptions = [
+  { id: 'fleetwide', name: 'Fleetwide' },
+  { id: 'residentialLevel1', name: 'Residential Level 1' },
+  { id: 'residentialLevel2', name: 'Residential Level 2' },
+  { id: 'workLevel2', name: 'Work Level 2' },
+  { id: 'publicLevel2', name: 'Public Level 2' },
+  { id: 'dcFastCharging', name: 'DC Fast Charging' },
+];
 
 /**
  * TODO

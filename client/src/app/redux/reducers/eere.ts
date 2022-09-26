@@ -149,14 +149,11 @@ export type EereTextInputFieldName =
   | 'transitBuses'
   | 'schoolBuses';
 
-export type EereEvProfileFieldName =
+export type EereSelectInputFieldName =
   | 'batteryEVsProfile'
   | 'hybridEVsProfile'
   | 'transitBusesProfile'
-  | 'schoolBusesProfile';
-
-type EereSelectInputFieldName =
-  | EereEvProfileFieldName
+  | 'schoolBusesProfile'
   | 'evDeploymentLocation'
   | 'evModelYear'
   | 'iceReplacementVehicle';
@@ -872,11 +869,14 @@ export function calculateEereProfile(): AppThunk {
         schoolBuses: Number(eere.inputs.schoolBuses) * regionalScalingFactor,
       };
 
-      const selectedEereEvProfiles = {
+      const eereSelectInputs = {
         batteryEVsProfile: eere.inputs.batteryEVsProfile,
         hybridEVsProfile: eere.inputs.hybridEVsProfile,
         transitBusesProfile: eere.inputs.transitBusesProfile,
         schoolBusesProfile: eere.inputs.schoolBusesProfile,
+        evDeploymentLocation: eere.inputs.evDeploymentLocation,
+        evModelYear: eere.inputs.evModelYear,
+        iceReplacementVehicle: eere.inputs.iceReplacementVehicle,
       };
 
       const {
@@ -893,7 +893,7 @@ export function calculateEereProfile(): AppThunk {
         regionalLoad: region.rdf.regional_load,
         eereDefaults: region.eereDefaults.data,
         eereTextInputs: scaledEereTextInputs,
-        eereEvProfiles: selectedEereEvProfiles,
+        eereSelectInputs,
       });
 
       const regionalProfile = {
