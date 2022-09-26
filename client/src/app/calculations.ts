@@ -13,6 +13,7 @@ import {
   EvProfileName,
   EVModelYear,
   percentVehiclesDisplacedByEVs,
+  percentHybridEVMilesDrivenOnElectricity,
   vehicleMilesTraveledPerYear,
   evEfficiencyByModelYear,
 } from 'app/config';
@@ -74,7 +75,9 @@ function sumMonthlyVMT() {
     [month: number]: {
       cars: { total: number; percent: number };
       trucks: { total: number; percent: number };
-      transitBuses: { total: number; percent: number };
+      transitBusesDiesel: { total: number; percent: number };
+      transitBusesCNG: { total: number; percent: number };
+      transitBusesGasoline: { total: number; percent: number };
       schoolBuses: { total: number; percent: number };
     };
   } = {};
@@ -82,7 +85,9 @@ function sumMonthlyVMT() {
   const totals = {
     cars: 0,
     trucks: 0,
-    transitBuses: 0,
+    transitBusesDiesel: 0,
+    transitBusesCNG: 0,
+    transitBusesGasoline: 0,
     schoolBuses: 0,
   };
 
@@ -94,7 +99,9 @@ function sumMonthlyVMT() {
       result[month] ??= {
         cars: { total: 0, percent: 0 },
         trucks: { total: 0, percent: 0 },
-        transitBuses: { total: 0, percent: 0 },
+        transitBusesDiesel: { total: 0, percent: 0 },
+        transitBusesCNG: { total: 0, percent: 0 },
+        transitBusesGasoline: { total: 0, percent: 0 },
         schoolBuses: { total: 0, percent: 0 },
       };
 
@@ -108,9 +115,19 @@ function sumMonthlyVMT() {
         totals.trucks += data.VMT;
       }
 
-      if (data.vehicleType === 'Transit Bus') {
-        result[month].transitBuses.total += data.VMT;
-        totals.transitBuses += data.VMT;
+      if (data.vehicleType === 'Transit Bus' && data.fuelType === 'Diesel') {
+        result[month].transitBusesDiesel.total += data.VMT;
+        totals.transitBusesDiesel += data.VMT;
+      }
+
+      if (data.vehicleType === 'Transit Bus' && data.fuelType === 'CNG') {
+        result[month].transitBusesCNG.total += data.VMT;
+        totals.transitBusesCNG += data.VMT;
+      }
+
+      if (data.vehicleType === 'Transit Bus' && data.fuelType === 'Gasoline') {
+        result[month].transitBusesGasoline.total += data.VMT;
+        totals.transitBusesGasoline += data.VMT;
       }
 
       if (data.vehicleType === 'School Bus') {
@@ -120,10 +137,13 @@ function sumMonthlyVMT() {
     }
   });
 
+  // prettier-ignore
   Object.values(result).forEach((data) => {
     data.cars.percent = data.cars.total / totals.cars;
     data.trucks.percent = data.trucks.total / totals.trucks;
-    data.transitBuses.percent = data.transitBuses.total / totals.transitBuses;
+    data.transitBusesDiesel.percent = data.transitBusesDiesel.total / totals.transitBusesDiesel;
+    data.transitBusesCNG.percent = data.transitBusesCNG.total / totals.transitBusesCNG;
+    data.transitBusesGasoline.percent = data.transitBusesGasoline.total / totals.transitBusesGasoline;
     data.schoolBuses.percent = data.schoolBuses.total / totals.schoolBuses;
   });
 
@@ -139,7 +159,9 @@ function calculateMonthlyAdjustedVMT() {
     [month: number]: {
       cars: number;
       trucks: number;
-      transitBuses: number;
+      transitBusesDiesel: number;
+      transitBusesCNG: number;
+      transitBusesGasoline: number;
       schoolBuses: number;
     };
   } = {};
@@ -151,7 +173,9 @@ function calculateMonthlyAdjustedVMT() {
     result[Number(month)] = {
       cars: vehicleMilesTraveledPerYear.cars * data.cars.percent,
       trucks: vehicleMilesTraveledPerYear.trucks * data.trucks.percent,
-      transitBuses: vehicleMilesTraveledPerYear.transitBuses * data.transitBuses.percent,
+      transitBusesDiesel: vehicleMilesTraveledPerYear.transitBuses * data.transitBusesDiesel.percent,
+      transitBusesCNG: vehicleMilesTraveledPerYear.transitBuses * data.transitBusesCNG.percent,
+      transitBusesGasoline: vehicleMilesTraveledPerYear.transitBuses * data.transitBusesGasoline.percent,
       schoolBuses: vehicleMilesTraveledPerYear.schoolBuses * data.schoolBuses.percent,
     };
   });
@@ -160,6 +184,89 @@ function calculateMonthlyAdjustedVMT() {
 }
 
 const monthlyAdjustedVMT = calculateMonthlyAdjustedVMT();
+
+/**
+ * TODO
+ */
+function calculateSalesChanges(options: {
+  batteryEVs: number;
+  hybridEVs: number;
+  transitBuses: number;
+  schoolBuses: number;
+  evModelYear: string;
+}) {
+  const { batteryEVs, hybridEVs, transitBuses, schoolBuses, evModelYear } =
+    options;
+
+  const vehiclesDisplaced = {
+    batteryEVCars:
+      batteryEVs * (percentVehiclesDisplacedByEVs.batteryEVCars / 100),
+    hybridEVCars:
+      hybridEVs * (percentVehiclesDisplacedByEVs.hybridEVCars / 100),
+    batteryEVTrucks:
+      batteryEVs * (percentVehiclesDisplacedByEVs.batteryEVTrucks / 100),
+    hybridEVTrucks:
+      hybridEVs * (percentVehiclesDisplacedByEVs.hybridEVTrucks / 100),
+    transitBusesDiesel:
+      transitBuses * (percentVehiclesDisplacedByEVs.transitBusesDiesel / 100),
+    transitBusesCNG:
+      transitBuses * (percentVehiclesDisplacedByEVs.transitBusesCNG / 100),
+    transitBusesGasoline:
+      transitBuses * (percentVehiclesDisplacedByEVs.transitBusesGasoline / 100),
+    schoolBuses:
+      schoolBuses * (percentVehiclesDisplacedByEVs.schoolBuses / 100),
+  };
+
+  const evEfficiency = evEfficiencyByModelYear[evModelYear as EVModelYear];
+
+  return [...Array(12)].map((_item, index) => {
+    const month = index + 1;
+    return {
+      batteryEVCars:
+        vehiclesDisplaced.batteryEVCars *
+        monthlyAdjustedVMT[month].cars *
+        evEfficiency.batteryEVCars *
+        0.00001,
+      hybridEVCars:
+        vehiclesDisplaced.hybridEVCars *
+        monthlyAdjustedVMT[month].cars *
+        evEfficiency.hybridEVCars *
+        0.00001 *
+        (percentHybridEVMilesDrivenOnElectricity / 100),
+      batteryEVTrucks:
+        vehiclesDisplaced.batteryEVTrucks *
+        monthlyAdjustedVMT[month].trucks *
+        evEfficiency.batteryEVTrucks *
+        0.00001,
+      hybridEVTrucks:
+        vehiclesDisplaced.hybridEVTrucks *
+        monthlyAdjustedVMT[month].trucks *
+        evEfficiency.batteryEVTrucks *
+        0.00001 *
+        (percentHybridEVMilesDrivenOnElectricity / 100),
+      transitBusesDiesel:
+        vehiclesDisplaced.transitBusesDiesel *
+        monthlyAdjustedVMT[month].transitBusesDiesel *
+        evEfficiency.transitBuses *
+        0.00001,
+      transitBusesCNG:
+        vehiclesDisplaced.transitBusesCNG *
+        monthlyAdjustedVMT[month].transitBusesCNG *
+        evEfficiency.transitBuses *
+        0.00001,
+      transitBusesGasoline:
+        vehiclesDisplaced.transitBusesGasoline *
+        monthlyAdjustedVMT[month].transitBusesGasoline *
+        evEfficiency.transitBuses *
+        0.00001,
+      schoolBuses:
+        vehiclesDisplaced.schoolBuses *
+        monthlyAdjustedVMT[month].schoolBuses *
+        evEfficiency.schoolBuses *
+        0.00001,
+    };
+  });
+}
 
 export function calculateEere({
   regionMaxEEPercent, // region.rdf.limits.max_ee_percent (15 for all RDFs)
@@ -243,28 +350,13 @@ export function calculateEere({
     };
   });
 
-  // prettier-ignore
-  const displacedVehiclesByEvType = {
-    batteryEVs: {
-      cars: batteryEVs * (percentVehiclesDisplacedByEVs.batteryEVs.cars / 100),
-      trucks: batteryEVs * (percentVehiclesDisplacedByEVs.batteryEVs.trucks / 100),
-    },
-    hybridEVs: {
-      cars: hybridEVs * (percentVehiclesDisplacedByEVs.hybridEVs.cars / 100),
-      trucks: hybridEVs * (percentVehiclesDisplacedByEVs.hybridEVs.trucks / 100),
-    },
-    transitBuses: {
-      diesel: transitBuses * (percentVehiclesDisplacedByEVs.transitBuses.diesel / 100),
-      cng: transitBuses * (percentVehiclesDisplacedByEVs.transitBuses.cng / 100),
-      gasoline: transitBuses * (percentVehiclesDisplacedByEVs.transitBuses.gasoline / 100),
-    },
-    schoolBuses: {
-      diesel: schoolBuses * (percentVehiclesDisplacedByEVs.schoolBuses.diesel / 100),
-    },
-  };
-
-  const evEfficiency = evEfficiencyByModelYear[evModelYear as EVModelYear];
-
+  const salesChanges = calculateSalesChanges({
+    batteryEVs,
+    hybridEVs,
+    transitBuses,
+    schoolBuses,
+    evModelYear,
+  });
 
   // build up exceedances (soft and hard) and hourly eere for each hour of the year
   const softLimitHourlyExceedances: number[] = [];
