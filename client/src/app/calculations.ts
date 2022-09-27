@@ -351,6 +351,54 @@ function calculateMonthlySalesChanges(options: {
   return result;
 }
 
+/**
+ * Monthly sales changes in (units/TODO), combined into the four EV input types.
+ *
+ * Excel: Data in the third EV table (to the right of the "Calculate Changes"
+ * table) in the "CalculateEERE" sheet (T49:W61).
+ */
+function calculateCombinedMonthlySalesChanges(monthlySalesChanges: {
+  [month: number]: {
+    batteryEVCars: number;
+    hybridEVCars: number;
+    batteryEVTrucks: number;
+    hybridEVTrucks: number;
+    transitBusesDiesel: number;
+    transitBusesCNG: number;
+    transitBusesGasoline: number;
+    schoolBuses: number;
+  };
+}) {
+  const result: {
+    [month: number]: {
+      batteryEVs: number;
+      hybridEVs: number;
+      transitBuses: number;
+      schoolBuses: number;
+    };
+  } = {};
+
+  // TODO: find out what this number represents (converting between units)?
+  const unitConversionFactor = 1000;
+
+  Object.entries(monthlySalesChanges).forEach(([month, data]) => {
+    result[Number(month)] = {
+      batteryEVs:
+        (data.batteryEVCars + data.batteryEVTrucks) * unitConversionFactor,
+      hybridEVs:
+        (data.hybridEVCars + data.hybridEVTrucks) * unitConversionFactor,
+      transitBuses:
+        (data.transitBusesDiesel +
+          data.transitBusesCNG +
+          data.transitBusesGasoline) *
+        unitConversionFactor,
+      schoolBuses: data.schoolBuses * unitConversionFactor,
+    };
+  });
+
+  return result;
+}
+
 export function calculateEere({
   regionMaxEEPercent, // region.rdf.limits.max_ee_percent (15 for all RDFs)
   regionLineLoss, // region.lineLoss
@@ -411,6 +459,10 @@ export function calculateEere({
   const percentHours = broadProgram ? 100 : topHours;
   const topPercentile = stats.percentile(hourlyLoads, 1 - percentHours / 100);
 
+  /**
+   * Excel: Data in the first EV table (to the right of the "Calculate Changes"
+   * table) in the "CalculateEERE" sheet (P8:X32).
+   */
   const hourlyEVChargingPercentagesByEVType = evChargingProfiles.map((data) => {
     return {
       hour: data.hour,
@@ -440,6 +492,9 @@ export function calculateEere({
     schoolBuses,
     evModelYear,
   });
+
+  const combinedMonthlySalesChanges =
+    calculateCombinedMonthlySalesChanges(monthlySalesChanges);
 
   // build up exceedances (soft and hard) and hourly eere for each hour of the year
   const softLimitHourlyExceedances: number[] = [];
