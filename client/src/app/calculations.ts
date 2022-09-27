@@ -525,6 +525,65 @@ function calculateMonthlyDailyEVEnergyUsage(options: {
   return result;
 }
 
+/**
+ * Hourly EV load.
+ *
+ * Excel: Data in column Y of the "CalculateEERE" sheet.
+ */
+function calculateHourlyEVLoad(options: {
+  regionalLoadData: RegionalLoadData;
+  dailyStats: {
+    [month: number]: {
+      [day: number]: { _done: boolean; dayOfWeek: number; isWeekend: boolean };
+    };
+  };
+  hourlyEVChargingPercentages: {
+    [hour: number]: {
+      batteryEVs: { weekday: number; weekend: number };
+      hybridEVs: { weekday: number; weekend: number };
+      transitBuses: { weekday: number; weekend: number };
+      schoolBuses: { weekday: number; weekend: number };
+    };
+  };
+  monthlyDailyEVEnergyUsage: {
+    [month: number]: {
+      batteryEVs: { weekday: number; weekend: number };
+      hybridEVs: { weekday: number; weekend: number };
+      transitBuses: { weekday: number; weekend: number };
+      schoolBuses: { weekday: number; weekend: number };
+    };
+  };
+}) {
+  const {
+    regionalLoadData,
+    dailyStats,
+    hourlyEVChargingPercentages,
+    monthlyDailyEVEnergyUsage,
+  } = options;
+
+  // NOTE: `rdf.regional_load` data's hour value is zero indexed, so to match
+  // it with the hours stored as keys in our `hourlyEVChargingPercentages`
+  // object, we need to add 1 to the `rdf.regional_load` data's hour value
+  const hour = regionalLoadData.hour + 1;
+  const day = regionalLoadData.day;
+  const month = regionalLoadData.month;
+
+  const evChargingPercentage = hourlyEVChargingPercentages[hour];
+  const dayTypeField = dailyStats[month][day].isWeekend ? 'weekend' : 'weekday';
+
+  const evLoad =
+    evChargingPercentage.batteryEVs[dayTypeField] *
+      monthlyDailyEVEnergyUsage[month].batteryEVs[dayTypeField] +
+    evChargingPercentage.hybridEVs[dayTypeField] *
+      monthlyDailyEVEnergyUsage[month].hybridEVs[dayTypeField] +
+    evChargingPercentage.transitBuses[dayTypeField] *
+      monthlyDailyEVEnergyUsage[month].transitBuses[dayTypeField] +
+    evChargingPercentage.schoolBuses[dayTypeField] *
+      monthlyDailyEVEnergyUsage[month].schoolBuses[dayTypeField];
+
+  return evLoad;
+}
+
 export function calculateEere({
   regionMaxEEPercent, // region.rdf.limits.max_ee_percent (15 for all RDFs)
   regionLineLoss, // region.lineLoss
@@ -632,22 +691,12 @@ export function calculateEere({
       utilitySolar * hourlyDefault.utility_pv +
       rooftopSolar * hourlyDefault.rooftop_pv * lineLoss;
 
-    // NOTE: `rdf.regional_load` data's hour value is zero indexed, so to match
-    // it with the hours stored as keys in our `hourlyEVChargingPercentages`
-    // object, we need to add 1 to the `rdf.regional_load` data's hour value
-    const evChargingPercentage = hourlyEVChargingPercentages[data.hour + 1];
-
-    const isWeekend = dailyStats[data.month][data.day].isWeekend;
-
-    const evLoad =
-      evChargingPercentage.batteryEVs[isWeekend ? 'weekend' : 'weekday'] *
-        0 /* TODO */ +
-      evChargingPercentage.hybridEVs[isWeekend ? 'weekend' : 'weekday'] *
-        0 /* TODO */ +
-      evChargingPercentage.transitBuses[isWeekend ? 'weekend' : 'weekday'] *
-        0 /* TODO */ +
-      evChargingPercentage.schoolBuses[isWeekend ? 'weekend' : 'weekday'] *
-        0; /* TODO */
+    const evLoad = calculateHourlyEVLoad({
+      regionalLoadData: data,
+      dailyStats,
+      hourlyEVChargingPercentages,
+      monthlyDailyEVEnergyUsage,
+    });
 
     const calculatedLoad =
       initialLoad -
