@@ -233,12 +233,12 @@ function calculateMonthlyAdjustedVMT() {
 const monthlyAdjustedVMT = calculateMonthlyAdjustedVMT();
 
 /**
- * Monthly energy use in GW for all the EV types we have data for.
+ * Monthly EV energy use in GW for all the EV types we have data for.
  *
  * Excel: "Sales Changes" data from "Table 7: Calculated changes for the
  * transportation sector" table in the "Library" sheet (G298:R306).
  */
-function calculateSeparateMonthlyEnergyUsage(options: {
+function calculateSeparateMonthlyEVEnergyUsage(options: {
   batteryEVs: number;
   hybridEVs: number;
   transitBuses: number;
@@ -352,13 +352,13 @@ function calculateSeparateMonthlyEnergyUsage(options: {
 }
 
 /**
- * Monthly energy usage (total for each month) in MW, combined into the four
+ * Monthly EV energy usage (total for each month) in MW, combined into the four
  * AVERT EV input types.
  *
  * Excel: Data in the third EV table (to the right of the "Calculate Changes"
  * table) in the "CalculateEERE" sheet (T49:W61).
  */
-function calculateCombinedMonthlyEnergyUsage(separateMonthlyEnergyUsage: {
+function combineSeparateMonthlyEVEnergyUsage(separateMonthlyEVEnergyUsage: {
   [month: number]: {
     batteryEVCars: number;
     hybridEVCars: number;
@@ -381,7 +381,7 @@ function calculateCombinedMonthlyEnergyUsage(separateMonthlyEnergyUsage: {
 
   const GWtoMW = 1000;
 
-  Object.entries(separateMonthlyEnergyUsage).forEach(([month, data]) => {
+  Object.entries(separateMonthlyEVEnergyUsage).forEach(([month, data]) => {
     result[Number(month)] = {
       batteryEVs: (data.batteryEVCars + data.batteryEVTrucks) * GWtoMW,
       hybridEVs: (data.hybridEVCars + data.hybridEVTrucks) * GWtoMW,
@@ -398,13 +398,13 @@ function calculateCombinedMonthlyEnergyUsage(separateMonthlyEnergyUsage: {
 }
 
 /**
- * Monthly energy usage (MWh) for a typical weekday day or weekend day.
+ * Monthly EV energy usage (MWh) for a typical weekday day or weekend day.
  *
  * Excel: Data in the second EV table (to the right of the "Calculate Changes"
  * table) in the "CalculateEERE" sheet (P35:X47).
  */
-function calculateMonthlyDailyEnergyUsage(
-  monthlyEnergyUsage: {
+function calculateMonthlyDailyEVEnergyUsage(
+  monthlyEVEnergyUsage: {
     [month: number]: {
       batteryEVs: number;
       hybridEVs: number;
@@ -439,16 +439,16 @@ function calculateMonthlyDailyEnergyUsage(
       weekdayDays + weekenedToWeekdayRatio * weekendDays;
 
     const batteryEVsWeekday =
-      monthlyEnergyUsage[month].batteryEVs / scaledWeekdayDays;
+      monthlyEVEnergyUsage[month].batteryEVs / scaledWeekdayDays;
 
     const hybridEVsWeekday =
-      monthlyEnergyUsage[month].hybridEVs / scaledWeekdayDays;
+      monthlyEVEnergyUsage[month].hybridEVs / scaledWeekdayDays;
 
     const transitBusesWeekday =
-      monthlyEnergyUsage[month].transitBuses / scaledWeekdayDays;
+      monthlyEVEnergyUsage[month].transitBuses / scaledWeekdayDays;
 
     const schoolBusesWeekday =
-      monthlyEnergyUsage[month].schoolBuses / scaledWeekdayDays;
+      monthlyEVEnergyUsage[month].schoolBuses / scaledWeekdayDays;
 
     result[month] = {
       batteryEVs: {
@@ -565,7 +565,7 @@ export function calculateEere({
     },
   );
 
-  const separateMonthlyEnergyUsage = calculateSeparateMonthlyEnergyUsage({
+  const separateMonthlyEVEnergyUsage = calculateSeparateMonthlyEVEnergyUsage({
     batteryEVs,
     hybridEVs,
     transitBuses,
@@ -573,12 +573,12 @@ export function calculateEere({
     evModelYear,
   });
 
-  const monthlyEnergyUsage = calculateCombinedMonthlyEnergyUsage(
-    separateMonthlyEnergyUsage,
+  const monthlyEVEnergyUsage = combineSeparateMonthlyEVEnergyUsage(
+    separateMonthlyEVEnergyUsage,
   );
 
-  const monthlyDailyEnergyUsage = calculateMonthlyDailyEnergyUsage(
-    monthlyEnergyUsage,
+  const monthlyDailyEVEnergyUsage = calculateMonthlyDailyEVEnergyUsage(
+    monthlyEVEnergyUsage,
     monthlyStats,
   );
 
