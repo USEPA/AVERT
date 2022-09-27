@@ -751,7 +751,7 @@ export const vehicleMilesTraveledPerYear = {
 };
 
 /**
- * Efficiency factor for each vehicle type, for each EV model year.
+ * Efficiency factor (kWh/VMT) for each vehicle type, for each EV model year.
  *
  * Excel: "Table 4: EV data inputs" table in the "Library" sheet (E195:J201).
  */

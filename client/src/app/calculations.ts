@@ -296,8 +296,7 @@ function calculateMonthlySalesChanges(options: {
    */
   const evEfficiency = evEfficiencyByModelYear[evModelYear as EVModelYear];
 
-  // TODO: find out what this number represents (converting between units)?
-  const unitConversionFactor = 0.000001;
+  const kWhtoGWh = 0.000001;
 
   [...Array(12)].forEach((_item, index) => {
     const month = index + 1;
@@ -307,44 +306,44 @@ function calculateMonthlySalesChanges(options: {
         vehiclesDisplaced.batteryEVCars *
         monthlyAdjustedVMT[month].cars *
         evEfficiency.batteryEVCars *
-        unitConversionFactor,
+        kWhtoGWh,
       hybridEVCars:
         vehiclesDisplaced.hybridEVCars *
         monthlyAdjustedVMT[month].cars *
         evEfficiency.hybridEVCars *
-        unitConversionFactor *
+        kWhtoGWh *
         (percentHybridEVMilesDrivenOnElectricity / 100),
       batteryEVTrucks:
         vehiclesDisplaced.batteryEVTrucks *
         monthlyAdjustedVMT[month].trucks *
         evEfficiency.batteryEVTrucks *
-        unitConversionFactor,
+        kWhtoGWh,
       hybridEVTrucks:
         vehiclesDisplaced.hybridEVTrucks *
         monthlyAdjustedVMT[month].trucks *
         evEfficiency.batteryEVTrucks *
-        unitConversionFactor *
+        kWhtoGWh *
         (percentHybridEVMilesDrivenOnElectricity / 100),
       transitBusesDiesel:
         vehiclesDisplaced.transitBusesDiesel *
         monthlyAdjustedVMT[month].transitBusesDiesel *
         evEfficiency.transitBuses *
-        unitConversionFactor,
+        kWhtoGWh,
       transitBusesCNG:
         vehiclesDisplaced.transitBusesCNG *
         monthlyAdjustedVMT[month].transitBusesCNG *
         evEfficiency.transitBuses *
-        unitConversionFactor,
+        kWhtoGWh,
       transitBusesGasoline:
         vehiclesDisplaced.transitBusesGasoline *
         monthlyAdjustedVMT[month].transitBusesGasoline *
         evEfficiency.transitBuses *
-        unitConversionFactor,
+        kWhtoGWh,
       schoolBuses:
         vehiclesDisplaced.schoolBuses *
         monthlyAdjustedVMT[month].schoolBuses *
         evEfficiency.schoolBuses *
-        unitConversionFactor,
+        kWhtoGWh,
     };
   });
 
@@ -352,7 +351,7 @@ function calculateMonthlySalesChanges(options: {
 }
 
 /**
- * Monthly sales changes in (units/TODO), combined into the four EV input types.
+ * Monthly sales changes in MWh, combined into the four EV input types.
  *
  * Excel: Data in the third EV table (to the right of the "Calculate Changes"
  * table) in the "CalculateEERE" sheet (T49:W61).
@@ -378,21 +377,18 @@ function calculateCombinedMonthlySalesChanges(monthlySalesChanges: {
     };
   } = {};
 
-  // TODO: find out what this number represents (converting between units)?
-  const unitConversionFactor = 1000;
+  const GWhtoMWh = 1000;
 
   Object.entries(monthlySalesChanges).forEach(([month, data]) => {
     result[Number(month)] = {
-      batteryEVs:
-        (data.batteryEVCars + data.batteryEVTrucks) * unitConversionFactor,
-      hybridEVs:
-        (data.hybridEVCars + data.hybridEVTrucks) * unitConversionFactor,
+      batteryEVs: (data.batteryEVCars + data.batteryEVTrucks) * GWhtoMWh,
+      hybridEVs: (data.hybridEVCars + data.hybridEVTrucks) * GWhtoMWh,
       transitBuses:
         (data.transitBusesDiesel +
           data.transitBusesCNG +
           data.transitBusesGasoline) *
-        unitConversionFactor,
-      schoolBuses: data.schoolBuses * unitConversionFactor,
+        GWhtoMWh,
+      schoolBuses: data.schoolBuses * GWhtoMWh,
     };
   });
 
