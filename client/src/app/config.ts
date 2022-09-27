@@ -812,6 +812,15 @@ export const evEfficiencyByModelYear = {
 export const percentHybridEVMilesDrivenOnElectricity = 54;
 
 /**
+ * Ratio of typical weekend energy consumption as a share of typical weekday
+ * energy consumption.
+ *
+ * Excel: "Table D. Set ratio of weekend to weekday energy" table in the
+ * "EV_Detail" sheet (D91).
+ */
+export const percentWeekendToWeekdayEVConsumption = 95;
+
+/**
  * TODO
  */
 export const evChargingProfileOptions = [

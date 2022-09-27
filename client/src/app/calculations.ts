@@ -16,6 +16,7 @@ import {
   vehicleMilesTraveledPerYear,
   evEfficiencyByModelYear,
   percentHybridEVMilesDrivenOnElectricity,
+  percentWeekendToWeekdayEVConsumption,
 } from 'app/config';
 // data
 import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
@@ -232,12 +233,12 @@ function calculateMonthlyAdjustedVMT() {
 const monthlyAdjustedVMT = calculateMonthlyAdjustedVMT();
 
 /**
- * Monthly sales changes in GWh.
+ * Monthly energy use in GW for all the EV types we have data for.
  *
  * Excel: "Sales Changes" data from "Table 7: Calculated changes for the
  * transportation sector" table in the "Library" sheet (G298:R306).
  */
-function calculateMonthlySalesChanges(options: {
+function calculateSeparateMonthlyEnergyUsage(options: {
   batteryEVs: number;
   hybridEVs: number;
   transitBuses: number;
@@ -296,7 +297,7 @@ function calculateMonthlySalesChanges(options: {
    */
   const evEfficiency = evEfficiencyByModelYear[evModelYear as EVModelYear];
 
-  const kWhtoGWh = 0.000001;
+  const kWtoGW = 0.000001;
 
   [...Array(12)].forEach((_item, index) => {
     const month = index + 1;
@@ -306,44 +307,44 @@ function calculateMonthlySalesChanges(options: {
         vehiclesDisplaced.batteryEVCars *
         monthlyAdjustedVMT[month].cars *
         evEfficiency.batteryEVCars *
-        kWhtoGWh,
+        kWtoGW,
       hybridEVCars:
         vehiclesDisplaced.hybridEVCars *
         monthlyAdjustedVMT[month].cars *
         evEfficiency.hybridEVCars *
-        kWhtoGWh *
+        kWtoGW *
         (percentHybridEVMilesDrivenOnElectricity / 100),
       batteryEVTrucks:
         vehiclesDisplaced.batteryEVTrucks *
         monthlyAdjustedVMT[month].trucks *
         evEfficiency.batteryEVTrucks *
-        kWhtoGWh,
+        kWtoGW,
       hybridEVTrucks:
         vehiclesDisplaced.hybridEVTrucks *
         monthlyAdjustedVMT[month].trucks *
         evEfficiency.batteryEVTrucks *
-        kWhtoGWh *
+        kWtoGW *
         (percentHybridEVMilesDrivenOnElectricity / 100),
       transitBusesDiesel:
         vehiclesDisplaced.transitBusesDiesel *
         monthlyAdjustedVMT[month].transitBusesDiesel *
         evEfficiency.transitBuses *
-        kWhtoGWh,
+        kWtoGW,
       transitBusesCNG:
         vehiclesDisplaced.transitBusesCNG *
         monthlyAdjustedVMT[month].transitBusesCNG *
         evEfficiency.transitBuses *
-        kWhtoGWh,
+        kWtoGW,
       transitBusesGasoline:
         vehiclesDisplaced.transitBusesGasoline *
         monthlyAdjustedVMT[month].transitBusesGasoline *
         evEfficiency.transitBuses *
-        kWhtoGWh,
+        kWtoGW,
       schoolBuses:
         vehiclesDisplaced.schoolBuses *
         monthlyAdjustedVMT[month].schoolBuses *
         evEfficiency.schoolBuses *
-        kWhtoGWh,
+        kWtoGW,
     };
   });
 
@@ -351,12 +352,13 @@ function calculateMonthlySalesChanges(options: {
 }
 
 /**
- * Monthly sales changes in MWh, combined into the four EV input types.
+ * Monthly energy usage (total for each month) in MW, combined into the four
+ * AVERT EV input types.
  *
  * Excel: Data in the third EV table (to the right of the "Calculate Changes"
  * table) in the "CalculateEERE" sheet (T49:W61).
  */
-function calculateCombinedMonthlySalesChanges(monthlySalesChanges: {
+function calculateCombinedMonthlyEnergyUsage(separateMonthlyEnergyUsage: {
   [month: number]: {
     batteryEVCars: number;
     hybridEVCars: number;
@@ -377,18 +379,94 @@ function calculateCombinedMonthlySalesChanges(monthlySalesChanges: {
     };
   } = {};
 
-  const GWhtoMWh = 1000;
+  const GWtoMW = 1000;
 
-  Object.entries(monthlySalesChanges).forEach(([month, data]) => {
+  Object.entries(separateMonthlyEnergyUsage).forEach(([month, data]) => {
     result[Number(month)] = {
-      batteryEVs: (data.batteryEVCars + data.batteryEVTrucks) * GWhtoMWh,
-      hybridEVs: (data.hybridEVCars + data.hybridEVTrucks) * GWhtoMWh,
+      batteryEVs: (data.batteryEVCars + data.batteryEVTrucks) * GWtoMW,
+      hybridEVs: (data.hybridEVCars + data.hybridEVTrucks) * GWtoMW,
       transitBuses:
         (data.transitBusesDiesel +
           data.transitBusesCNG +
           data.transitBusesGasoline) *
-        GWhtoMWh,
-      schoolBuses: data.schoolBuses * GWhtoMWh,
+        GWtoMW,
+      schoolBuses: data.schoolBuses * GWtoMW,
+    };
+  });
+
+  return result;
+}
+
+/**
+ * Monthly energy usage (MWh) for a typical weekday day or weekend day.
+ *
+ * Excel: Data in the second EV table (to the right of the "Calculate Changes"
+ * table) in the "CalculateEERE" sheet (P35:X47).
+ */
+function calculateMonthlyDailyEnergyUsage(
+  monthlyEnergyUsage: {
+    [month: number]: {
+      batteryEVs: number;
+      hybridEVs: number;
+      transitBuses: number;
+      schoolBuses: number;
+    };
+  },
+  monthlyStats: {
+    [month: number]: {
+      totalDays: number;
+      weekdayDays: number;
+      weekendDays: number;
+    };
+  },
+) {
+  const result: {
+    [month: number]: {
+      batteryEVs: { weekday: number; weekend: number };
+      hybridEVs: { weekday: number; weekend: number };
+      transitBuses: { weekday: number; weekend: number };
+      schoolBuses: { weekday: number; weekend: number };
+    };
+  } = {};
+
+  [...Array(12)].forEach((_item, index) => {
+    const month = index + 1;
+
+    const weekdayDays = monthlyStats[month].weekdayDays;
+    const weekendDays = monthlyStats[month].weekendDays;
+    const weekenedToWeekdayRatio = percentWeekendToWeekdayEVConsumption / 100;
+    const scaledWeekdayDays =
+      weekdayDays + weekenedToWeekdayRatio * weekendDays;
+
+    const batteryEVsWeekday =
+      monthlyEnergyUsage[month].batteryEVs / scaledWeekdayDays;
+
+    const hybridEVsWeekday =
+      monthlyEnergyUsage[month].hybridEVs / scaledWeekdayDays;
+
+    const transitBusesWeekday =
+      monthlyEnergyUsage[month].transitBuses / scaledWeekdayDays;
+
+    const schoolBusesWeekday =
+      monthlyEnergyUsage[month].schoolBuses / scaledWeekdayDays;
+
+    result[month] = {
+      batteryEVs: {
+        weekday: batteryEVsWeekday,
+        weekend: batteryEVsWeekday * weekenedToWeekdayRatio,
+      },
+      hybridEVs: {
+        weekday: hybridEVsWeekday,
+        weekend: hybridEVsWeekday * weekenedToWeekdayRatio,
+      },
+      transitBuses: {
+        weekday: transitBusesWeekday,
+        weekend: transitBusesWeekday * weekenedToWeekdayRatio,
+      },
+      schoolBuses: {
+        weekday: schoolBusesWeekday,
+        weekend: schoolBusesWeekday * weekenedToWeekdayRatio,
+      },
     };
   });
 
@@ -455,11 +533,16 @@ export function calculateEere({
   const percentHours = broadProgram ? 100 : topHours;
   const topPercentile = stats.percentile(hourlyLoads, 1 - percentHours / 100);
 
+  // build up daily stats object by looping through every hour of the year
+  const dailyStats = createDailyStats(regionalLoad);
+  const monthlyStats = createMonthlyStats(dailyStats);
+
   /**
    * Excel: Data in the first EV table (to the right of the "Calculate Changes"
    * table) in the "CalculateEERE" sheet (P8:X32).
    */
-  const hourlyEVChargingPercentagesByEVType = evChargingProfiles.map((data) => {
+  const hourlyEVChargingPercentagesByDayType = evChargingProfiles.map(
+    (data) => {
     return {
       hour: data.hour,
       batteryEVs: {
@@ -479,9 +562,10 @@ export function calculateEere({
         weekend: data[schoolBusesProfile as EvProfileName].weekend,
       },
     };
-  });
+    },
+  );
 
-  const monthlySalesChanges = calculateMonthlySalesChanges({
+  const separateMonthlyEnergyUsage = calculateSeparateMonthlyEnergyUsage({
     batteryEVs,
     hybridEVs,
     transitBuses,
@@ -489,17 +573,19 @@ export function calculateEere({
     evModelYear,
   });
 
-  const combinedMonthlySalesChanges =
-    calculateCombinedMonthlySalesChanges(monthlySalesChanges);
+  const monthlyEnergyUsage = calculateCombinedMonthlyEnergyUsage(
+    separateMonthlyEnergyUsage,
+  );
+
+  const monthlyDailyEnergyUsage = calculateMonthlyDailyEnergyUsage(
+    monthlyEnergyUsage,
+    monthlyStats,
+  );
 
   // build up exceedances (soft and hard) and hourly eere for each hour of the year
   const softLimitHourlyExceedances: number[] = [];
   const hardLimitHourlyExceedances: number[] = [];
   const hourlyEere: number[] = [];
-
-  // build up daily stats object by looping through every hour of the year
-  const dailyStats = createDailyStats(regionalLoad);
-  const monthlyStats = createMonthlyStats(dailyStats);
 
   regionalLoad.forEach((data, index) => {
     const hourlyLoad = data.regional_load_mw;
@@ -515,7 +601,8 @@ export function calculateEere({
       utilitySolar * hourlyDefault.utility_pv +
       rooftopSolar * hourlyDefault.rooftop_pv * lineLoss;
 
-    const evChargingPercentage = hourlyEVChargingPercentagesByEVType[data.hour];
+    const evChargingPercentage =
+      hourlyEVChargingPercentagesByDayType[data.hour];
 
     const isWeekend = dailyStats[data.month][data.day].isWeekend;
 
