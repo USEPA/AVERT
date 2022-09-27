@@ -626,9 +626,7 @@ export function calculateEere({
     hybridEVsProfile,
     transitBusesProfile,
     schoolBusesProfile,
-    // evDeploymentLocation,
     evModelYear,
-    // iceReplacementVehicle,
   } = eereSelectInputs;
 
   const lineLoss = 1 / (1 - regionLineLoss);
