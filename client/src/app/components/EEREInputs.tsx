@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
+import { useMemo, useEffect } from 'react';
 import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // components
@@ -269,29 +270,32 @@ function EEREInputs() {
   const selectedState = useSelectedState();
   const selectedStateRegions = useSelectedStateRegions();
 
-  const emptySelectOptions = [{ id: '', name: '' }];
-  const evDeploymentLocationOptions =
-    geographicFocus === 'regions'
-      ? selectedRegion
+  const evDeploymentLocationOptions = useMemo(() => {
+    return geographicFocus === 'regions' && selectedRegion
         ? [
             {
               id: `region-${selectedRegion.id}`,
-              name: `Region: ${selectedRegion.name}`,
+            name: `${selectedRegion.name} Region`,
             },
             ...Object.keys(selectedRegion.percentageByState).map((id) => ({
               id: `state-${id}`,
-              name: `State: ${states[id as StateId].name || id}`,
+            name: states[id as StateId].name || id,
             })),
           ]
-        : emptySelectOptions
-      : selectedState
+      : geographicFocus === 'states' && selectedState
       ? [
           {
             id: `state-${selectedState.id}`,
             name: `State: ${selectedState.name}`,
           },
         ]
-      : emptySelectOptions;
+      : [{ id: '', name: '' }];
+  }, [geographicFocus, selectedRegion, selectedState]);
+
+  // initially set `evDeploymentLocation` to the first calculated location option
+  useEffect(() => {
+    dispatch(updateEereEVDeploymentLocation(evDeploymentLocationOptions[0].id));
+  }, [dispatch, evDeploymentLocationOptions]);
 
   const atLeastOneRegionSupportsOffshoreWind =
     geographicFocus === 'regions'
