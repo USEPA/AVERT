@@ -3,6 +3,7 @@
 import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // components
+import { subheadingStyles } from 'app/components/Panels';
 import { EERETextInput } from 'app/components/EERETextInput';
 import { EERESelectInput } from 'app/components/EERESelectInput';
 import Tooltip from 'app/components/Tooltip';
@@ -736,6 +737,117 @@ function EEREInputs() {
                 <>TODO</>
               </Tooltip>
             </p>
+
+            <h3 css={subheadingStyles}>
+              EV Sales and Stock Comparison
+              <br />
+              <small>
+                {geographicFocus === 'regions'
+                  ? `${selectedRegion?.name} Region`
+                  : `${selectedState?.name} State`}
+              </small>
+            </h3>
+
+            <table className="avert-table">
+              <thead>
+                <tr>
+                  <th>Electric Vehicle Type</th>
+                  <th>% of Annual Vehicle Sales</th>
+                  <th>% of Vehicles on the Road</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Light-duty vehicles</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr>
+                  <td>Transit buses</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr>
+                  <td>School buses</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3 css={subheadingStyles}>EE/RE and EV Comparison</h3>
+
+            <table className="avert-table">
+              <thead>
+                <tr>
+                  <th rowSpan={2}>EE/RE Type</th>
+                  <th colSpan={2}>
+                    Historical Additions{' '}
+                    <small>(Annual Avg. 2018&ndash;2020)</small>
+                  </th>
+                  <th colSpan={2}>EE/RE Required to Offset EV Demand</th>
+                  <th colSpan={2}>EE/RE Required ÷ Historical Additions</th>
+                </tr>
+                <tr>
+                  <th>
+                    <small>MW</small>
+                  </th>
+                  <th>
+                    <small>GWh</small>
+                  </th>
+                  <th>
+                    <small>MW</small>
+                  </th>
+                  <th>
+                    <small>GWh</small>
+                  </th>
+                  <th>
+                    <small>MW</small>
+                  </th>
+                  <th>
+                    <small>GWh</small>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>EE&nbsp;(retail)</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr>
+                  <td>Onshore&nbsp;Wind</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr>
+                  <td>Utility&nbsp;Solar</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr>
+                  <td>Total</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+              </tbody>
+            </table>
           </section>
         </details>
       </div>
