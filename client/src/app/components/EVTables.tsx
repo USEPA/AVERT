@@ -4,8 +4,96 @@
 import { useTypedSelector } from 'app/redux/index';
 // hooks
 import { useSelectedRegion, useSelectedState } from 'app/hooks';
+// data
+import countyFips from 'app/data/county-fips.json';
+import stateSalesAndStock from 'app/data/state-sales-and-stock.json';
 
-function EVSalesAndStockTable() {
+type SalesAndStockStateId = keyof typeof stateSalesAndStock;
+
+/**
+ * Vehicle sales and stock for each state in the selected region, and the region
+ * as a whole (sum of each state's sales and stock), for each vehicle type.
+ *
+ * Excel: "Table 9: List of states in region for purposes of calculating
+ * vehicle sales and stock" table in the "Library" sheet (C440:I457).
+ */
+function setVehicleSalesAndStockForRegion(options: {
+  regionName: string | undefined;
+  locationIds: string[];
+}) {
+  const { regionName, locationIds } = options;
+
+  const result: {
+    [locationId: string]: {
+      lightDutyVehicles: { sales: number; stock: number };
+      transitBuses: { sales: number; stock: number };
+      schoolBuses: { sales: number; stock: number };
+    };
+  } = {};
+
+  const stateIds = locationIds.reduce((previous, current) => {
+    return current.startsWith('region-')
+      ? previous
+      : previous.concat(current.replace('state-', ''));
+  }, [] as string[]);
+
+  countyFips.forEach((data) => {
+    const stateId = data['Postal State Code'];
+
+    if (data['AVERT Region'] === regionName && stateIds.includes(stateId)) {
+      const id = `state-${stateId}`;
+
+      const lightDutyVehiclesVMTShare = data['Share of State VMT - Passenger Cars']; // prettier-ignore
+      const transitBusesVMTShare = data['Share of State VMT - Transit Buses'];
+      const schoolBusesVMTShare = data['Share of State VMT - School Buses'];
+      const salesAndStock = stateSalesAndStock[stateId as SalesAndStockStateId];
+
+      // initialize and then increment state data by vehicle type
+      result[id] ??= {
+        lightDutyVehicles: { sales: 0, stock: 0 },
+        transitBuses: { sales: 0, stock: 0 },
+        schoolBuses: { sales: 0, stock: 0 },
+      };
+
+      result[id].lightDutyVehicles.sales +=
+        lightDutyVehiclesVMTShare * salesAndStock.lightDutyVehicles.sales;
+      result[id].lightDutyVehicles.stock +=
+        lightDutyVehiclesVMTShare * salesAndStock.lightDutyVehicles.stock;
+      result[id].transitBuses.sales +=
+        transitBusesVMTShare * salesAndStock.transitBuses.sales;
+      result[id].transitBuses.stock +=
+        transitBusesVMTShare * salesAndStock.transitBuses.stock;
+      result[id].schoolBuses.sales +=
+        schoolBusesVMTShare * salesAndStock.schoolBuses.sales;
+      result[id].schoolBuses.stock +=
+        schoolBusesVMTShare * salesAndStock.schoolBuses.stock;
+    }
+  });
+
+  const regionId = locationIds.find((item) => item.startsWith('region-'));
+
+  if (regionId) {
+    result[regionId] = {
+      lightDutyVehicles: { sales: 0, stock: 0 },
+      transitBuses: { sales: 0, stock: 0 },
+      schoolBuses: { sales: 0, stock: 0 },
+    };
+
+    stateIds.forEach((stateId) => {
+      const id = `state-${stateId}`;
+      result[regionId].lightDutyVehicles.sales += result[id].lightDutyVehicles.sales; // prettier-ignore
+      result[regionId].lightDutyVehicles.stock += result[id].lightDutyVehicles.stock; // prettier-ignore
+      result[regionId].transitBuses.sales += result[id].transitBuses.sales;
+      result[regionId].transitBuses.stock += result[id].transitBuses.stock;
+      result[regionId].schoolBuses.sales += result[id].schoolBuses.sales;
+      result[regionId].schoolBuses.stock += result[id].schoolBuses.stock;
+    });
+  }
+
+  return result;
+}
+
+function EVSalesAndStockTable({ locationIds }: { locationIds: string[] }) {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const batteryEVs = useTypedSelector(({ eere }) => eere.inputs.batteryEVs);
   const hybridEVs = useTypedSelector(({ eere }) => eere.inputs.hybridEVs);
@@ -22,6 +110,15 @@ function EVSalesAndStockTable() {
     geographicFocus === 'regions'
       ? `${selectedRegion?.name} Region`
       : selectedState?.name;
+
+  // TODO: memoize so it's not calculated every time an input changes
+  // (as it really only needs to be calculated when a region changes)
+  const salesAndStockByLocation = setVehicleSalesAndStockForRegion({
+    regionName: selectedRegion?.name,
+    locationIds,
+  });
+
+  const locationSalesAndStock = salesAndStockByLocation[evDeploymentLocation];
 
   const totalLightDutyVehicles =
     isNaN(Number(batteryEVs) + Number(hybridEVs)) ||
@@ -42,16 +139,18 @@ function EVSalesAndStockTable() {
 
   const data = {
     lightDutyVehicles: {
-      sales: totalLightDutyVehicles / 1 /* TODO */,
-      stock: 0,
+      sales: totalLightDutyVehicles / locationSalesAndStock.lightDutyVehicles.sales * 100, // prettier-ignore
+      stock: totalLightDutyVehicles / locationSalesAndStock.lightDutyVehicles.stock * 100, // prettier-ignore
     },
     transitBuses: {
-      sales: totalTransitBuses / 1 /* TODO */,
-      stock: 0,
+      sales:
+        (totalTransitBuses / locationSalesAndStock.transitBuses.sales) * 100,
+      stock:
+        (totalTransitBuses / locationSalesAndStock.transitBuses.stock) * 100,
     },
     schoolBuses: {
-      sales: totalSchoolBuses / 1 /* TODO */,
-      stock: 0,
+      sales: (totalSchoolBuses / locationSalesAndStock.schoolBuses.sales) * 100,
+      stock: (totalSchoolBuses / locationSalesAndStock.schoolBuses.stock) * 100,
     },
   };
 
@@ -83,18 +182,18 @@ function EVSalesAndStockTable() {
       <tbody>
         <tr>
           <td>Light-duty vehicles</td>
-          <td>{data.lightDutyVehicles.sales?.toLocaleString()}</td>
-          <td>{data.lightDutyVehicles.stock}</td>
+          <td>{data.lightDutyVehicles.sales?.toLocaleString()}%</td>
+          <td>{data.lightDutyVehicles.stock?.toLocaleString()}%</td>
         </tr>
         <tr>
           <td>Transit buses</td>
-          <td>{data.transitBuses.sales?.toLocaleString()}</td>
-          <td>{data.transitBuses.stock}</td>
+          <td>{data.transitBuses.sales?.toLocaleString()}%</td>
+          <td>{data.transitBuses.stock?.toLocaleString()}%</td>
         </tr>
         <tr>
           <td>School buses</td>
-          <td>{data.schoolBuses.sales?.toLocaleString()}</td>
-          <td>{data.schoolBuses.stock}</td>
+          <td>{data.schoolBuses.sales?.toLocaleString()}%</td>
+          <td>{data.schoolBuses.stock?.toLocaleString()}%</td>
         </tr>
       </tbody>
     </table>

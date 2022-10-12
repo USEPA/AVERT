@@ -1,0 +1,257 @@
+{
+  "AK": {
+    "lightDutyVehicles": { "sales": 24552, "stock": 707736 },
+    "transitBuses": { "sales": 4, "stock": 111 },
+    "schoolBuses": { "sales": 55, "stock": 729 }
+  },
+  "AL": {
+    "lightDutyVehicles": { "sales": 196391, "stock": 4921591 },
+    "transitBuses": { "sales": 13, "stock": 219 },
+    "schoolBuses": { "sales": 601, "stock": 7898 }
+  },
+  "AR": {
+    "lightDutyVehicles": { "sales": 119462, "stock": 2531815 },
+    "transitBuses": { "sales": 9, "stock": 119 },
+    "schoolBuses": { "sales": 386, "stock": 5070 }
+  },
+  "AZ": {
+    "lightDutyVehicles": { "sales": 301726, "stock": 5568568 },
+    "transitBuses": { "sales": 106, "stock": 1131 },
+    "schoolBuses": { "sales": 545, "stock": 7166 }
+  },
+  "CA": {
+    "lightDutyVehicles": { "sales": 1946486, "stock": 28671554 },
+    "transitBuses": { "sales": 788, "stock": 10444 },
+    "schoolBuses": { "sales": 1799, "stock": 23650 }
+  },
+  "CO": {
+    "lightDutyVehicles": { "sales": 316307, "stock": 4967406 },
+    "transitBuses": { "sales": 121, "stock": 1427 },
+    "schoolBuses": { "sales": 870, "stock": 11433 }
+  },
+  "CT": {
+    "lightDutyVehicles": { "sales": 168845, "stock": 2693553 },
+    "transitBuses": { "sales": 73, "stock": 707 },
+    "schoolBuses": { "sales": 654, "stock": 8600 }
+  },
+  "DC": {
+    "lightDutyVehicles": { "sales": 18762, "stock": 322119 },
+    "transitBuses": { "sales": 112, "stock": 1756 },
+    "schoolBuses": { "sales": 1070, "stock": 14068 }
+  },
+  "DE": {
+    "lightDutyVehicles": { "sales": 46310, "stock": 955591 },
+    "transitBuses": { "sales": 3, "stock": 250 },
+    "schoolBuses": { "sales": 134, "stock": 1763 }
+  },
+  "FL": {
+    "lightDutyVehicles": { "sales": 1217845, "stock": 16516963 },
+    "transitBuses": { "sales": 224, "stock": 3118 },
+    "schoolBuses": { "sales": 1072, "stock": 14089 }
+  },
+  "GA": {
+    "lightDutyVehicles": { "sales": 424982, "stock": 7921338 },
+    "transitBuses": { "sales": 72, "stock": 942 },
+    "schoolBuses": { "sales": 1126, "stock": 14799 }
+  },
+  "HI": {
+    "lightDutyVehicles": { "sales": 98197, "stock": 1191277 },
+    "transitBuses": { "sales": 26, "stock": 585 },
+    "schoolBuses": { "sales": 50, "stock": 656 }
+  },
+  "IA": {
+    "lightDutyVehicles": { "sales": 110197, "stock": 3291912 },
+    "transitBuses": { "sales": 27, "stock": 496 },
+    "schoolBuses": { "sales": 342, "stock": 4500 }
+  },
+  "ID": {
+    "lightDutyVehicles": { "sales": 58568, "stock": 1757500 },
+    "transitBuses": { "sales": 4, "stock": 89 },
+    "schoolBuses": { "sales": 214, "stock": 2815 }
+  },
+  "IL": {
+    "lightDutyVehicles": { "sales": 572526, "stock": 9708822 },
+    "transitBuses": { "sales": 201, "stock": 3222 },
+    "schoolBuses": { "sales": 1928, "stock": 25337 }
+  },
+  "IN": {
+    "lightDutyVehicles": { "sales": 234455, "stock": 5402845 },
+    "transitBuses": { "sales": 40, "stock": 536 },
+    "schoolBuses": { "sales": 1229, "stock": 16148 }
+  },
+  "KS": {
+    "lightDutyVehicles": { "sales": 85909, "stock": 2367766 },
+    "transitBuses": { "sales": 14, "stock": 186 },
+    "schoolBuses": { "sales": 306, "stock": 4026 }
+  },
+  "KY": {
+    "lightDutyVehicles": { "sales": 147702, "stock": 4024257 },
+    "transitBuses": { "sales": 28, "stock": 488 },
+    "schoolBuses": { "sales": 604, "stock": 7942 }
+  },
+  "LA": {
+    "lightDutyVehicles": { "sales": 207246, "stock": 3521633 },
+    "transitBuses": { "sales": 22, "stock": 391 },
+    "schoolBuses": { "sales": 520, "stock": 6841 }
+  },
+  "MA": {
+    "lightDutyVehicles": { "sales": 349631, "stock": 4730670 },
+    "transitBuses": { "sales": 139, "stock": 1674 },
+    "schoolBuses": { "sales": 685, "stock": 9000 }
+  },
+  "MD": {
+    "lightDutyVehicles": { "sales": 273579, "stock": 3901654 },
+    "transitBuses": { "sales": 93, "stock": 1413 },
+    "schoolBuses": { "sales": 551, "stock": 7248 }
+  },
+  "ME": {
+    "lightDutyVehicles": { "sales": 65457, "stock": 995610 },
+    "transitBuses": { "sales": 8, "stock": 193 },
+    "schoolBuses": { "sales": 240, "stock": 3156 }
+  },
+  "MI": {
+    "lightDutyVehicles": { "sales": 587490, "stock": 7788230 },
+    "transitBuses": { "sales": 168, "stock": 2000 },
+    "schoolBuses": { "sales": 1255, "stock": 16494 }
+  },
+  "MN": {
+    "lightDutyVehicles": { "sales": 261043, "stock": 4833037 },
+    "transitBuses": { "sales": 93, "stock": 1345 },
+    "schoolBuses": { "sales": 1389, "stock": 18259 }
+  },
+  "MO": {
+    "lightDutyVehicles": { "sales": 243246, "stock": 5035192 },
+    "transitBuses": { "sales": 57, "stock": 749 },
+    "schoolBuses": { "sales": 905, "stock": 11899 }
+  },
+  "MS": {
+    "lightDutyVehicles": { "sales": 98000, "stock": 1876689 },
+    "transitBuses": { "sales": 9, "stock": 152 },
+    "schoolBuses": { "sales": 408, "stock": 5363 }
+  },
+  "MT": {
+    "lightDutyVehicles": { "sales": 48392, "stock": 1440900 },
+    "transitBuses": { "sales": 8, "stock": 125 },
+    "schoolBuses": { "sales": 264, "stock": 3471 }
+  },
+  "NC": {
+    "lightDutyVehicles": { "sales": 398418, "stock": 7850719 },
+    "transitBuses": { "sales": 81, "stock": 1248 },
+    "schoolBuses": { "sales": 987, "stock": 12975 }
+  },
+  "ND": {
+    "lightDutyVehicles": { "sales": 36164, "stock": 723689 },
+    "transitBuses": { "sales": 5, "stock": 65 },
+    "schoolBuses": { "sales": 137, "stock": 1802 }
+  },
+  "NE": {
+    "lightDutyVehicles": { "sales": 75390, "stock": 1656738 },
+    "transitBuses": { "sales": 14, "stock": 183 },
+    "schoolBuses": { "sales": 434, "stock": 5706 }
+  },
+  "NH": {
+    "lightDutyVehicles": { "sales": 84829, "stock": 1220781 },
+    "transitBuses": { "sales": 4, "stock": 84 },
+    "schoolBuses": { "sales": 243, "stock": 3200 }
+  },
+  "NJ": {
+    "lightDutyVehicles": { "sales": 572500, "stock": 5579738 },
+    "transitBuses": { "sales": 12, "stock": 1564 },
+    "schoolBuses": { "sales": 1271, "stock": 16704 }
+  },
+  "NM": {
+    "lightDutyVehicles": { "sales": 78628, "stock": 1653689 },
+    "transitBuses": { "sales": 13, "stock": 263 },
+    "schoolBuses": { "sales": 153, "stock": 2007 }
+  },
+  "NV": {
+    "lightDutyVehicles": { "sales": 140128, "stock": 2390481 },
+    "transitBuses": { "sales": 59, "stock": 498 },
+    "schoolBuses": { "sales": 189, "stock": 2488 }
+  },
+  "NY": {
+    "lightDutyVehicles": { "sales": 977556, "stock": 10524337 },
+    "transitBuses": { "sales": 582, "stock": 7167 },
+    "schoolBuses": { "sales": 3469, "stock": 45600 }
+  },
+  "OH": {
+    "lightDutyVehicles": { "sales": 584603, "stock": 9893725 },
+    "transitBuses": { "sales": 152, "stock": 1735 },
+    "schoolBuses": { "sales": 1105, "stock": 14522 }
+  },
+  "OK": {
+    "lightDutyVehicles": { "sales": 236901, "stock": 3322566 },
+    "transitBuses": { "sales": 13, "stock": 194 },
+    "schoolBuses": { "sales": 43, "stock": 562 }
+  },
+  "OR": {
+    "lightDutyVehicles": { "sales": 161449, "stock": 3562759 },
+    "transitBuses": { "sales": 91, "stock": 1027 },
+    "schoolBuses": { "sales": 369, "stock": 4855 }
+  },
+  "PA": {
+    "lightDutyVehicles": { "sales": 635870, "stock": 9755720 },
+    "transitBuses": { "sales": 235, "stock": 3167 },
+    "schoolBuses": { "sales": 1643, "stock": 21596 }
+  },
+  "RI": {
+    "lightDutyVehicles": { "sales": 53599, "stock": 812654 },
+    "transitBuses": { "sales": 20, "stock": 252 },
+    "schoolBuses": { "sales": 129, "stock": 1691 }
+  },
+  "SC": {
+    "lightDutyVehicles": { "sales": 209155, "stock": 4104033 },
+    "transitBuses": { "sales": 20, "stock": 290 },
+    "schoolBuses": { "sales": 386, "stock": 5075 }
+  },
+  "SD": {
+    "lightDutyVehicles": { "sales": 36768, "stock": 1031458 },
+    "transitBuses": { "sales": 4, "stock": 46 },
+    "schoolBuses": { "sales": 152, "stock": 2000 }
+  },
+  "TN": {
+    "lightDutyVehicles": { "sales": 253015, "stock": 5415388 },
+    "transitBuses": { "sales": 39, "stock": 582 },
+    "schoolBuses": { "sales": 702, "stock": 9233 }
+  },
+  "TX": {
+    "lightDutyVehicles": { "sales": 1242983, "stock": 21429840 },
+    "transitBuses": { "sales": 274, "stock": 3323 },
+    "schoolBuses": { "sales": 3774, "stock": 49608 }
+  },
+  "UT": {
+    "lightDutyVehicles": { "sales": 164331, "stock": 2205039 },
+    "transitBuses": { "sales": 45, "stock": 523 },
+    "schoolBuses": { "sales": 241, "stock": 3168 }
+  },
+  "VA": {
+    "lightDutyVehicles": { "sales": 370796, "stock": 7130047 },
+    "transitBuses": { "sales": 77, "stock": 1271 },
+    "schoolBuses": { "sales": 1198, "stock": 15752 }
+  },
+  "VT": {
+    "lightDutyVehicles": { "sales": 42924, "stock": 549011 },
+    "transitBuses": { "sales": 7, "stock": 105 },
+    "schoolBuses": { "sales": 91, "stock": 1200 }
+  },
+  "WA": {
+    "lightDutyVehicles": { "sales": 285629, "stock": 6756390 },
+    "transitBuses": { "sales": 286, "stock": 3260 },
+    "schoolBuses": { "sales": 812, "stock": 10678 }
+  },
+  "WI": {
+    "lightDutyVehicles": { "sales": 241313, "stock": 5037687 },
+    "transitBuses": { "sales": 43, "stock": 1064 },
+    "schoolBuses": { "sales": 747, "stock": 9822 }
+  },
+  "WV": {
+    "lightDutyVehicles": { "sales": 50524, "stock": 1527640 },
+    "transitBuses": { "sales": 18, "stock": 178 },
+    "schoolBuses": { "sales": 221, "stock": 2900 }
+  },
+  "WY": {
+    "lightDutyVehicles": { "sales": 35222, "stock": 750131 },
+    "transitBuses": { "sales": 3, "stock": 66 },
+    "schoolBuses": { "sales": 102, "stock": 1343 }
+  }
+}

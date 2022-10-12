@@ -272,16 +272,16 @@ function EEREInputs() {
 
   const evDeploymentLocationOptions = useMemo(() => {
     return geographicFocus === 'regions' && selectedRegion
-        ? [
-            {
-              id: `region-${selectedRegion.id}`,
+      ? [
+          {
+            id: `region-${selectedRegion.id}`,
             name: `${selectedRegion.name} Region`,
-            },
-            ...Object.keys(selectedRegion.percentageByState).map((id) => ({
-              id: `state-${id}`,
+          },
+          ...Object.keys(selectedRegion.percentageByState).map((id) => ({
+            id: `state-${id}`,
             name: states[id as StateId].name || id,
-            })),
-          ]
+          })),
+        ]
       : geographicFocus === 'states' && selectedState
       ? [
           {
@@ -748,7 +748,9 @@ function EEREInputs() {
 
             <h3 css={subheadingStyles}>EV Sales and Stock Comparison</h3>
 
-            <EVSalesAndStockTable />
+            <EVSalesAndStockTable
+              locationIds={evDeploymentLocationOptions.map((opt) => opt.id)}
+            />
 
             <h3 css={subheadingStyles}>EE/RE and EV Comparison</h3>
 
