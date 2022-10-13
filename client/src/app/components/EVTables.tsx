@@ -6,6 +6,15 @@ import { SalesAndStockByVehicleType } from 'app/components/EEREInputs';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 
+function calculatePercent(numerator: number, denominator: number) {
+  return denominator !== 0
+    ? `${((numerator / denominator) * 100).toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 1,
+      })}%`
+    : 'N/A';
+}
+
 function EVSalesAndStockTable({
   evDeploymentLocationName,
   vehicleSalesAndStock,
@@ -43,18 +52,25 @@ function EVSalesAndStockTable({
       ? 0
       : Number(schoolBuses);
 
+  const lightDutyVehicleSales = locationSalesAndStock.lightDutyVehicles.sales;
+  const lightDutyVehicleStock = locationSalesAndStock.lightDutyVehicles.stock;
+  const transitBusesSales = locationSalesAndStock.transitBuses.sales;
+  const transitBusesStock = locationSalesAndStock.transitBuses.stock;
+  const schoolBusesSales = locationSalesAndStock.schoolBuses.sales;
+  const schoolBusesStock = locationSalesAndStock.schoolBuses.stock;
+
   const data = {
     lightDutyVehicles: {
-      sales: totalLightDutyVehicles / locationSalesAndStock.lightDutyVehicles.sales, // prettier-ignore
-      stock: totalLightDutyVehicles / locationSalesAndStock.lightDutyVehicles.stock, // prettier-ignore
+      sales: calculatePercent(totalLightDutyVehicles, lightDutyVehicleSales),
+      stock: calculatePercent(totalLightDutyVehicles, lightDutyVehicleStock),
     },
     transitBuses: {
-      sales: totalTransitBuses / locationSalesAndStock.transitBuses.sales,
-      stock: totalTransitBuses / locationSalesAndStock.transitBuses.stock,
+      sales: calculatePercent(totalTransitBuses, transitBusesSales),
+      stock: calculatePercent(totalTransitBuses, transitBusesStock),
     },
     schoolBuses: {
-      sales: totalSchoolBuses / locationSalesAndStock.schoolBuses.sales,
-      stock: totalSchoolBuses / locationSalesAndStock.schoolBuses.stock,
+      sales: calculatePercent(totalSchoolBuses, schoolBusesSales),
+      stock: calculatePercent(totalSchoolBuses, schoolBusesStock),
     },
   };
 
@@ -89,18 +105,18 @@ function EVSalesAndStockTable({
         <tbody>
           <tr>
             <td>Light-duty vehicles</td>
-            <td>{(data.lightDutyVehicles.sales * 100)?.toLocaleString()}%</td>
-            <td>{(data.lightDutyVehicles.stock * 100)?.toLocaleString()}%</td>
+            <td>{data.lightDutyVehicles.sales}</td>
+            <td>{data.lightDutyVehicles.stock}</td>
           </tr>
           <tr>
             <td>Transit buses</td>
-            <td>{(data.transitBuses.sales * 100)?.toLocaleString()}%</td>
-            <td>{(data.transitBuses.stock * 100)?.toLocaleString()}%</td>
+            <td>{data.transitBuses.sales}</td>
+            <td>{data.transitBuses.stock}</td>
           </tr>
           <tr>
             <td>School buses</td>
-            <td>{(data.schoolBuses.sales * 100)?.toLocaleString()}%</td>
-            <td>{(data.schoolBuses.stock * 100)?.toLocaleString()}%</td>
+            <td>{data.schoolBuses.sales}</td>
+            <td>{data.schoolBuses.stock}</td>
           </tr>
         </tbody>
       </table>
