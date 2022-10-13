@@ -258,22 +258,22 @@ function setVehicleSalesAndStockForRegion(options: {
   // NOTE: don't loop through `countyFips` until `locationIds` are set
   if (locationIds[0] === '') return result;
 
-  const stateIds = locationIds.reduce((previous, current) => {
-    return current.startsWith('region-')
-      ? previous
-      : previous.concat(current.replace('state-', ''));
+  // conditionally remove 'region-' option, as it will be added later
+  const locationStateIds = locationIds.reduce((previous, current) => {
+    return current.startsWith('region-') ? previous : previous.concat(current);
   }, [] as string[]);
 
   countyFips.forEach((data) => {
-    const stateId = data['Postal State Code'];
+    const id = data['Postal State Code'];
 
-    if (data['AVERT Region'] === regionName && stateIds.includes(stateId)) {
-      const id = `state-${stateId}`;
-
+    if (
+      data['AVERT Region'] === regionName &&
+      locationStateIds.includes(`state-${id}`)
+    ) {
       const lightDutyVehiclesVMTShare = data['Share of State VMT - Passenger Cars']; // prettier-ignore
       const transitBusesVMTShare = data['Share of State VMT - Transit Buses'];
       const schoolBusesVMTShare = data['Share of State VMT - School Buses'];
-      const salesAndStock = stateSalesAndStock[stateId as SalesAndStockStateId];
+      const salesAndStock = stateSalesAndStock[id as SalesAndStockStateId];
 
       // initialize and then increment state data by vehicle type
       result[id] ??= {
@@ -297,6 +297,8 @@ function setVehicleSalesAndStockForRegion(options: {
     }
   });
 
+  // conditionally add 'region-' to result as the sum of all states data
+  const resultStateIds = Object.keys(result);
   const regionId = locationIds.find((item) => item.startsWith('region-'));
 
   if (regionId) {
@@ -306,8 +308,7 @@ function setVehicleSalesAndStockForRegion(options: {
       schoolBuses: { sales: 0, stock: 0 },
     };
 
-    stateIds.forEach((stateId) => {
-      const id = `state-${stateId}`;
+    resultStateIds.forEach((id) => {
       result[regionId].lightDutyVehicles.sales += result[id].lightDutyVehicles.sales; // prettier-ignore
       result[regionId].lightDutyVehicles.stock += result[id].lightDutyVehicles.stock; // prettier-ignore
       result[regionId].transitBuses.sales += result[id].transitBuses.sales;
