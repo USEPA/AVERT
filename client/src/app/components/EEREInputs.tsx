@@ -255,8 +255,9 @@ function setVehicleSalesAndStockForRegion(options: {
     [locationId: string]: SalesAndStockByVehicleType;
   } = {};
 
-  // NOTE: don't loop through `countyFips` until `locationIds` are set
-  if (locationIds[0] === '') return result;
+  // don't loop through countyFips until regionName and locationIds are set
+  // NOTE: regionName will be undefined if a state is selected
+  if (!regionName || locationIds[0] === '') return result;
 
   // conditionally remove 'region-' option, as it will be added later
   const locationStateIds = locationIds.reduce((previous, current) => {
