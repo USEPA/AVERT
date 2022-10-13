@@ -107,9 +107,11 @@ function EVSalesAndStockTable({ locationIds }: { locationIds: string[] }) {
   const selectedState = useSelectedState();
 
   const locationName =
-    geographicFocus === 'regions'
-      ? `${selectedRegion?.name} Region`
-      : selectedState?.name;
+    geographicFocus === 'regions' && selectedRegion
+      ? `${selectedRegion.name} Region`
+      : geographicFocus === 'states' && selectedState
+      ? selectedState.name
+      : '';
 
   // TODO: memoize so it's not calculated every time an input changes
   // (as it really only needs to be calculated when a region changes)
@@ -119,6 +121,7 @@ function EVSalesAndStockTable({ locationIds }: { locationIds: string[] }) {
   });
 
   const locationSalesAndStock = salesAndStockByLocation[evDeploymentLocation];
+  if (!locationSalesAndStock) return null;
 
   const totalLightDutyVehicles =
     isNaN(Number(batteryEVs) + Number(hybridEVs)) ||
@@ -139,18 +142,16 @@ function EVSalesAndStockTable({ locationIds }: { locationIds: string[] }) {
 
   const data = {
     lightDutyVehicles: {
-      sales: totalLightDutyVehicles / locationSalesAndStock.lightDutyVehicles.sales * 100, // prettier-ignore
-      stock: totalLightDutyVehicles / locationSalesAndStock.lightDutyVehicles.stock * 100, // prettier-ignore
+      sales: totalLightDutyVehicles / locationSalesAndStock.lightDutyVehicles.sales, // prettier-ignore
+      stock: totalLightDutyVehicles / locationSalesAndStock.lightDutyVehicles.stock, // prettier-ignore
     },
     transitBuses: {
-      sales:
-        (totalTransitBuses / locationSalesAndStock.transitBuses.sales) * 100,
-      stock:
-        (totalTransitBuses / locationSalesAndStock.transitBuses.stock) * 100,
+      sales: totalTransitBuses / locationSalesAndStock.transitBuses.sales,
+      stock: totalTransitBuses / locationSalesAndStock.transitBuses.stock,
     },
     schoolBuses: {
-      sales: (totalSchoolBuses / locationSalesAndStock.schoolBuses.sales) * 100,
-      stock: (totalSchoolBuses / locationSalesAndStock.schoolBuses.stock) * 100,
+      sales: totalSchoolBuses / locationSalesAndStock.schoolBuses.sales,
+      stock: totalSchoolBuses / locationSalesAndStock.schoolBuses.stock,
     },
   };
 
@@ -182,18 +183,18 @@ function EVSalesAndStockTable({ locationIds }: { locationIds: string[] }) {
       <tbody>
         <tr>
           <td>Light-duty vehicles</td>
-          <td>{data.lightDutyVehicles.sales?.toLocaleString()}%</td>
-          <td>{data.lightDutyVehicles.stock?.toLocaleString()}%</td>
+          <td>{(data.lightDutyVehicles.sales * 100)?.toLocaleString()}%</td>
+          <td>{(data.lightDutyVehicles.stock * 100)?.toLocaleString()}%</td>
         </tr>
         <tr>
           <td>Transit buses</td>
-          <td>{data.transitBuses.sales?.toLocaleString()}%</td>
-          <td>{data.transitBuses.stock?.toLocaleString()}%</td>
+          <td>{(data.transitBuses.sales * 100)?.toLocaleString()}%</td>
+          <td>{(data.transitBuses.stock * 100)?.toLocaleString()}%</td>
         </tr>
         <tr>
           <td>School buses</td>
-          <td>{data.schoolBuses.sales?.toLocaleString()}%</td>
-          <td>{data.schoolBuses.stock?.toLocaleString()}%</td>
+          <td>{(data.schoolBuses.sales * 100)?.toLocaleString()}%</td>
+          <td>{(data.schoolBuses.stock * 100)?.toLocaleString()}%</td>
         </tr>
       </tbody>
     </table>
