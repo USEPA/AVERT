@@ -4,7 +4,6 @@ import { useMemo, useEffect } from 'react';
 import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // components
-import { subheadingStyles } from 'app/components/Panels';
 import { EERETextInput } from 'app/components/EERETextInput';
 import { EERESelectInput } from 'app/components/EERESelectInput';
 import {
@@ -746,13 +745,9 @@ function EEREInputs() {
               </Tooltip>
             </p>
 
-            <h3 css={subheadingStyles}>EV Sales and Stock Comparison</h3>
-
             <EVSalesAndStockTable
               locationIds={evDeploymentLocationOptions.map((opt) => opt.id)}
             />
-
-            <h3 css={subheadingStyles}>EE/RE and EV Comparison</h3>
 
             <EEREEVComparisonTable />
           </section>

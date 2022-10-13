@@ -1,5 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
+// components
+import { subheadingStyles } from 'app/components/Panels';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 // hooks
@@ -156,6 +158,9 @@ function EVSalesAndStockTable({ locationIds }: { locationIds: string[] }) {
   };
 
   return (
+    <>
+      <h3 css={subheadingStyles}>EV Sales and Stock Comparison</h3>
+
     <table className="avert-table">
       <thead>
         <tr>
@@ -198,11 +203,15 @@ function EVSalesAndStockTable({ locationIds }: { locationIds: string[] }) {
         </tr>
       </tbody>
     </table>
+    </>
   );
 }
 
 function EEREEVComparisonTable() {
   return (
+    <>
+      <h3 css={subheadingStyles}>EE/RE and EV Comparison</h3>
+
     <table className="avert-table">
       <thead>
         <tr>
@@ -273,6 +282,7 @@ function EEREEVComparisonTable() {
         </tr>
       </tbody>
     </table>
+    </>
   );
 }
 
