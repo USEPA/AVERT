@@ -5,17 +5,16 @@ import { subheadingStyles } from 'app/components/Panels';
 import { SalesAndStockByVehicleType } from 'app/components/EEREInputs';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
-// hooks
-import { useSelectedRegion, useSelectedState } from 'app/hooks';
 
 function EVSalesAndStockTable({
+  evDeploymentLocationName,
   vehicleSalesAndStock,
 }: {
+  evDeploymentLocationName: string | undefined;
   vehicleSalesAndStock: {
     [locationId: string]: SalesAndStockByVehicleType;
   };
 }) {
-  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const batteryEVs = useTypedSelector(({ eere }) => eere.inputs.batteryEVs);
   const hybridEVs = useTypedSelector(({ eere }) => eere.inputs.hybridEVs);
   const transitBuses = useTypedSelector(({ eere }) => eere.inputs.transitBuses);
@@ -23,16 +22,6 @@ function EVSalesAndStockTable({
   const evDeploymentLocation = useTypedSelector(
     ({ eere }) => eere.inputs.evDeploymentLocation,
   );
-
-  const selectedRegion = useSelectedRegion();
-  const selectedState = useSelectedState();
-
-  const locationName =
-    geographicFocus === 'regions' && selectedRegion
-      ? `${selectedRegion.name} Region`
-      : geographicFocus === 'states' && selectedState
-      ? selectedState.name
-      : '';
 
   const locationSalesAndStock = vehicleSalesAndStock[evDeploymentLocation];
   if (!locationSalesAndStock) return null;
@@ -79,19 +68,19 @@ function EVSalesAndStockTable({
             <th>Electric Vehicle Type</th>
             <th>
               % of Annual Vehicle Sales
-              {locationName && (
+              {evDeploymentLocationName && (
                 <>
                   <br />
-                  <small>in {locationName}</small>
+                  <small>in {evDeploymentLocationName}</small>
                 </>
               )}
             </th>
             <th>
               % of Vehicles on the Road
-              {locationName && (
+              {evDeploymentLocationName && (
                 <>
                   <br />
-                  <small>in {locationName}</small>
+                  <small>in {evDeploymentLocationName}</small>
                 </>
               )}
             </th>

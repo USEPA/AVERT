@@ -266,10 +266,11 @@ function setVehicleSalesAndStockForRegion(options: {
 
   countyFips.forEach((data) => {
     const id = data['Postal State Code'];
+    const stateId = `state-${id}`;
 
     if (
       data['AVERT Region'] === regionName &&
-      locationStateIds.includes(`state-${id}`)
+      locationStateIds.includes(stateId)
     ) {
       const lightDutyVehiclesVMTShare = data['Share of State VMT - Passenger Cars']; // prettier-ignore
       const transitBusesVMTShare = data['Share of State VMT - Transit Buses'];
@@ -277,23 +278,23 @@ function setVehicleSalesAndStockForRegion(options: {
       const salesAndStock = stateSalesAndStock[id as SalesAndStockStateId];
 
       // initialize and then increment state data by vehicle type
-      result[id] ??= {
+      result[stateId] ??= {
         lightDutyVehicles: { sales: 0, stock: 0 },
         transitBuses: { sales: 0, stock: 0 },
         schoolBuses: { sales: 0, stock: 0 },
       };
 
-      result[id].lightDutyVehicles.sales +=
+      result[stateId].lightDutyVehicles.sales +=
         lightDutyVehiclesVMTShare * salesAndStock.lightDutyVehicles.sales;
-      result[id].lightDutyVehicles.stock +=
+      result[stateId].lightDutyVehicles.stock +=
         lightDutyVehiclesVMTShare * salesAndStock.lightDutyVehicles.stock;
-      result[id].transitBuses.sales +=
+      result[stateId].transitBuses.sales +=
         transitBusesVMTShare * salesAndStock.transitBuses.sales;
-      result[id].transitBuses.stock +=
+      result[stateId].transitBuses.stock +=
         transitBusesVMTShare * salesAndStock.transitBuses.stock;
-      result[id].schoolBuses.sales +=
+      result[stateId].schoolBuses.sales +=
         schoolBusesVMTShare * salesAndStock.schoolBuses.sales;
-      result[id].schoolBuses.stock +=
+      result[stateId].schoolBuses.stock +=
         schoolBusesVMTShare * salesAndStock.schoolBuses.stock;
     }
   });
@@ -385,6 +386,10 @@ function EEREInputs() {
         ]
       : [{ id: '', name: '' }];
   }, [geographicFocus, selectedRegion, selectedState]);
+
+  const evDeploymentLocationName = evDeploymentLocationOptions.find((opt) => {
+    return opt.id === evDeploymentLocation;
+  })?.name;
 
   const vehicleSalesAndStock = useMemo(() => {
     return setVehicleSalesAndStockForRegion({
@@ -847,7 +852,10 @@ function EEREInputs() {
               </Tooltip>
             </p>
 
-            <EVSalesAndStockTable vehicleSalesAndStock={vehicleSalesAndStock} />
+            <EVSalesAndStockTable
+              evDeploymentLocationName={evDeploymentLocationName}
+              vehicleSalesAndStock={vehicleSalesAndStock}
+            />
 
             <EEREEVComparisonTable />
           </section>
