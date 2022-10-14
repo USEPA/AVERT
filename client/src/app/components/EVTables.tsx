@@ -5,6 +5,7 @@ import { subheadingStyles } from 'app/components/Panels';
 import { SalesAndStockByVehicleType } from 'app/components/EEREInputs';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
+import { RegionState } from 'app/redux/reducers/geography';
 // hooks
 import { useSelectedRegion } from 'app/hooks';
 /**
@@ -132,31 +133,61 @@ function EVSalesAndStockTable({
  * Historical EERE data for the EV deployment location (entire region or state).
  *
  * Excel: "Table 12: Historical renewable and energy efficiency addition data"
- * table in the "Library" sheet (C664:E664).
+ * table in the "Library" sheet (C664:H664).
  */
 function setDeploymentLocationHistoricalEERE(options: {
+  selectedRegion: RegionState | undefined;
   locationId: string;
-  lineLoss: number;
 }) {
-  const { locationId, lineLoss } = options;
-
-  const historicalMw = locationId.startsWith('region-')
-    ? regionEereAverages[locationId.replace('region-', '') as RegionId]
-    : locationId.startsWith('state-')
-    ? stateEereAverages[locationId.replace('state-', '') as StateId]
-    : { onshore_wind: 0, utility_pv: 0, ee_retail: 0 }; // fallback
-
-  /**
-   * NOTE: In the Excel app, EE (Retail) is only adjusted for lineLoss if the
-   * EV deployment location is the entire region (E664 of the "Library" sheet)
-   */
-  const lineLossFactor = locationId.startsWith('region-') ? 1 - lineLoss : 1;
+  const { selectedRegion, locationId } = options;
 
   const result = {
-    eeRetail: historicalMw.ee_retail * lineLossFactor,
-    onshoreWind: historicalMw.onshore_wind,
-    utilitySolar: historicalMw.utility_pv,
+    eeRetail: { mw: 0, gwh: 0 },
+    onshoreWind: { mw: 0, gwh: 0 },
+    utilitySolar: { mw: 0, gwh: 0 },
   };
+
+  if (!selectedRegion) return result;
+
+  const locationIsRegion = locationId.startsWith('region-');
+  const locationIsState = locationId.startsWith('state-');
+
+  const fallbackAverage = {
+    capacity_added_mw: { onshore_wind: 0, utility_pv: 0 },
+    retail_impacts_ghw: { ee_retail: 0 },
+  };
+
+  // averages for selected EV deployment location (region or state)
+  const locationAverage = locationIsRegion
+    ? regionEereAverages[locationId.replace('region-', '') as RegionId]
+    : locationIsState
+    ? stateEereAverages[locationId.replace('state-', '') as StateId]
+    : fallbackAverage;
+
+  // TODO: set in parent component (memoized) so we're not looping over eereDefaults needlessly
+  const reDefaultsHourlyTotal = selectedRegion.eereDefaults.data.reduce(
+    (total, hourlyEereDefault) => {
+      total.onshore_wind += hourlyEereDefault.onshore_wind;
+      total.utility_pv += hourlyEereDefault.utility_pv;
+      return total;
+    },
+    { onshore_wind: 0, utility_pv: 0 },
+  );
+  const reDefaultsTotalHours = selectedRegion.eereDefaults.data.length;
+  const reDefaultsHourlyAverage = {
+    onshore_wind: reDefaultsHourlyTotal.onshore_wind / reDefaultsTotalHours,
+    utility_pv: reDefaultsHourlyTotal.utility_pv / reDefaultsTotalHours,
+  };
+
+  const hoursInYear = 8760;
+  const GWtoMW = 1000;
+
+  result.eeRetail.mw = (locationAverage.retail_impacts_ghw.ee_retail * GWtoMW) / hoursInYear; // prettier-ignore
+  result.onshoreWind.mw = locationAverage.capacity_added_mw.onshore_wind;
+  result.utilitySolar.mw = locationAverage.capacity_added_mw.utility_pv;
+  result.eeRetail.gwh = locationAverage.retail_impacts_ghw.ee_retail;
+  result.onshoreWind.gwh = reDefaultsHourlyAverage.onshore_wind * hoursInYear * result.onshoreWind.mw / GWtoMW // prettier-ignore
+  result.utilitySolar.gwh = reDefaultsHourlyAverage.utility_pv * hoursInYear * result.utilitySolar.mw / GWtoMW; // prettier-ignore
 
   return result;
 }
@@ -181,9 +212,9 @@ function EEREEVComparisonTable() {
       ? selectedRegion.lineLoss
       : 1; // TODO: determine best way to set lineloss if a state is selected
 
-  const historicalMw = setDeploymentLocationHistoricalEERE({
+  const historicalEERE = setDeploymentLocationHistoricalEERE({
+    selectedRegion,
     locationId: evDeploymentLocation,
-    lineLoss,
   });
 
   return (
@@ -224,8 +255,8 @@ function EEREEVComparisonTable() {
         <tbody>
           <tr>
             <td>EE&nbsp;(retail)</td>
-            <td>{formatNumber(historicalMw.eeRetail)}</td>
-            <td>&nbsp;</td>
+            <td>{formatNumber(historicalEERE.eeRetail.mw)}</td>
+            <td>{formatNumber(historicalEERE.eeRetail.gwh)}</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
@@ -233,8 +264,8 @@ function EEREEVComparisonTable() {
           </tr>
           <tr>
             <td>Onshore&nbsp;Wind</td>
-            <td>{formatNumber(historicalMw.onshoreWind)}</td>
-            <td>&nbsp;</td>
+            <td>{formatNumber(historicalEERE.onshoreWind.mw)}</td>
+            <td>{formatNumber(historicalEERE.onshoreWind.gwh)}</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
@@ -242,8 +273,8 @@ function EEREEVComparisonTable() {
           </tr>
           <tr>
             <td>Utility&nbsp;Solar</td>
-            <td>{formatNumber(historicalMw.utilitySolar)}</td>
-            <td>&nbsp;</td>
+            <td>{formatNumber(historicalEERE.utilitySolar.mw)}</td>
+            <td>{formatNumber(historicalEERE.utilitySolar.gwh)}</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
@@ -253,12 +284,18 @@ function EEREEVComparisonTable() {
             <td>Total</td>
             <td>
               {formatNumber(
-                historicalMw.eeRetail / (1 - lineLoss) +
-                  historicalMw.onshoreWind +
-                  historicalMw.utilitySolar,
+                historicalEERE.eeRetail.mw / (1 - lineLoss) +
+                  historicalEERE.onshoreWind.mw +
+                  historicalEERE.utilitySolar.mw,
               )}
             </td>
-            <td>&nbsp;</td>
+            <td>
+              {formatNumber(
+                historicalEERE.eeRetail.gwh / (1 - lineLoss) +
+                  historicalEERE.onshoreWind.gwh +
+                  historicalEERE.utilitySolar.gwh,
+              )}
+            </td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
