@@ -18,8 +18,15 @@ import {
   percentHybridEVMilesDrivenOnElectricity,
   percentWeekendToWeekdayEVConsumption,
 } from 'app/config';
-// data
+/**
+ * Excel: "Table B1. View charging profiles or set a manual charging profile for
+ * Weekdays" table in the "EV_Detail" sheet (C25:H49), which comes from "Table
+ * 8: Default EV load profiles" table in the "Library" sheet).
+ */
 import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
+/**
+ * Excel: "MOVESEmissionRates" sheet.
+ */
 import movesEmissionsRates from 'app/data/moves-emissions-rates.json';
 
 function calculateHourlyExceedance(

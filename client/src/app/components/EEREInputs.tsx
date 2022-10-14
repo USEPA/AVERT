@@ -50,8 +50,14 @@ import {
   evModelYearOptions,
   iceReplacementVehicleOptions,
 } from 'app/config';
-// data
+/**
+ * Excel: "CountyFIPS" sheet.
+ */
 import countyFips from 'app/data/county-fips.json';
+/**
+ * Excel: "Table 10: LDV Sales and Stock" and "Table 11: Transit and School Bus
+ * Sales and Stock" tables in the "Library" sheet (B468:D519 and B529:F580).
+ */
 import stateSalesAndStock from 'app/data/state-sales-and-stock.json';
 
 type SalesAndStockStateId = keyof typeof stateSalesAndStock;
