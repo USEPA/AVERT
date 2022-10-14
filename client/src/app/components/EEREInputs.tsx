@@ -13,6 +13,7 @@ import {
 import Tooltip from 'app/components/Tooltip';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
+import { RegionState } from 'app/redux/reducers/geography';
 import {
   updateEereAnnualGwh,
   updateEereConstantMw,
@@ -66,6 +67,11 @@ export type SalesAndStockByVehicleType = {
   lightDutyVehicles: { sales: number; stock: number };
   transitBuses: { sales: number; stock: number };
   schoolBuses: { sales: number; stock: number };
+};
+
+export type RegionREDefaultsAverages = {
+  onshore_wind: number;
+  utility_pv: number;
 };
 
 const inputsBlockStyles = css`
@@ -252,22 +258,23 @@ const impactsButtonStyles = css`
  * vehicle sales and stock" table in the "Library" sheet (C440:I457).
  */
 function setVehicleSalesAndStockForRegion(options: {
-  regionName: string | undefined;
+  selectedRegion: RegionState | undefined;
   locationIds: string[];
 }) {
-  const { regionName, locationIds } = options;
+  const { selectedRegion, locationIds } = options;
 
   const result: {
     [locationId: string]: SalesAndStockByVehicleType;
   } = {};
 
-  // don't loop through countyFips until regionName and locationIds are set
-  // NOTE: regionName will be undefined if a state is selected
-  if (!regionName || locationIds[0] === '') return result;
+  // don't loop through countyFips until selectedRegion and locationIds are set
+  // NOTE: selectedRegion will be undefined if a state is selected
+  if (!selectedRegion || locationIds[0] === '') return result;
 
-  // conditionally remove 'region-' option, as it will be added later
-  const locationStateIds = locationIds.reduce((previous, current) => {
-    return current.startsWith('region-') ? previous : previous.concat(current);
+  // conditionally remove 'region-' option, as it will be added later as the sum
+  // of each state's data
+  const locationStateIds = locationIds.reduce((ids, id) => {
+    return id.startsWith('region-') ? ids : ids.concat(id);
   }, [] as string[]);
 
   countyFips.forEach((data) => {
@@ -275,7 +282,7 @@ function setVehicleSalesAndStockForRegion(options: {
     const stateId = `state-${id}`;
 
     if (
-      data['AVERT Region'] === regionName &&
+      data['AVERT Region'] === selectedRegion.name &&
       locationStateIds.includes(stateId)
     ) {
       const lightDutyVehiclesVMTShare = data['Share of State VMT - Passenger Cars']; // prettier-ignore
@@ -305,7 +312,7 @@ function setVehicleSalesAndStockForRegion(options: {
     }
   });
 
-  // conditionally add 'region-' to result as the sum of all states data
+  // conditionally add 'region-' to result as the sum of each state's data
   const resultStateIds = Object.keys(result);
   const regionId = locationIds.find((item) => item.startsWith('region-'));
 
@@ -325,6 +332,38 @@ function setVehicleSalesAndStockForRegion(options: {
       result[regionId].schoolBuses.stock += result[id].schoolBuses.stock;
     });
   }
+
+  return result;
+}
+
+/**
+ * Calculates averages of a selected region's hourly EERE Defaults for both
+ * onshore wind and utility solar. These average RE values are used in setting
+ * the historical RE data for Onshore Wind and Unitity Solar's GWh values in the
+ * `EEREEVComparisonTable` component.
+ *
+ * Excel: Used in calculating values for cells F664 and G664 of the "Table 12:
+ * Historical renewable and energy efficiency addition data" table in the
+ * "Library" sheet.
+ */
+function calculateREDefaultsAverages(selectedRegion: RegionState | undefined) {
+  const result: RegionREDefaultsAverages = { onshore_wind: 0, utility_pv: 0 };
+
+  if (!selectedRegion) return result;
+
+  const reDefaultsTotals = selectedRegion.eereDefaults.data.reduce(
+    (total, hourlyEereDefault) => {
+      total.onshore_wind += hourlyEereDefault.onshore_wind;
+      total.utility_pv += hourlyEereDefault.utility_pv;
+      return total;
+    },
+    { onshore_wind: 0, utility_pv: 0 },
+  );
+
+  const totalHours = selectedRegion.eereDefaults.data.length;
+
+  result.onshore_wind = reDefaultsTotals.onshore_wind / totalHours;
+  result.utility_pv = reDefaultsTotals.utility_pv / totalHours;
 
   return result;
 }
@@ -399,10 +438,14 @@ function EEREInputs() {
 
   const vehicleSalesAndStock = useMemo(() => {
     return setVehicleSalesAndStockForRegion({
-      regionName: selectedRegion?.name,
+      selectedRegion,
       locationIds: evDeploymentLocationOptions.map((option) => option.id),
     });
-  }, [selectedRegion?.name, evDeploymentLocationOptions]);
+  }, [selectedRegion, evDeploymentLocationOptions]);
+
+  const regionREDefaultsAverages = useMemo(() => {
+    return calculateREDefaultsAverages(selectedRegion);
+  }, [selectedRegion]);
 
   // initially set `evDeploymentLocation` to the first calculated location option
   useEffect(() => {
@@ -863,7 +906,9 @@ function EEREInputs() {
               vehicleSalesAndStock={vehicleSalesAndStock}
             />
 
-            <EEREEVComparisonTable />
+            <EEREEVComparisonTable
+              regionREDefaultsAverages={regionREDefaultsAverages}
+            />
           </section>
         </details>
       </div>

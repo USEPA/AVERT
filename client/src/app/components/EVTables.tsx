@@ -2,10 +2,12 @@
 
 // components
 import { subheadingStyles } from 'app/components/Panels';
-import { SalesAndStockByVehicleType } from 'app/components/EEREInputs';
+import {
+  SalesAndStockByVehicleType,
+  RegionREDefaultsAverages,
+} from 'app/components/EEREInputs';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
-import { RegionState } from 'app/redux/reducers/geography';
 // hooks
 import { useSelectedRegion } from 'app/hooks';
 /**
@@ -31,15 +33,14 @@ function calculatePercent(numerator: number, denominator: number) {
     : 'N/A';
 }
 
-function EVSalesAndStockTable({
-  evDeploymentLocationName,
-  vehicleSalesAndStock,
-}: {
+function EVSalesAndStockTable(props: {
   evDeploymentLocationName: string | undefined;
   vehicleSalesAndStock: {
     [locationId: string]: SalesAndStockByVehicleType;
   };
 }) {
+  const { evDeploymentLocationName, vehicleSalesAndStock } = props;
+
   const batteryEVs = useTypedSelector(({ eere }) => eere.inputs.batteryEVs);
   const hybridEVs = useTypedSelector(({ eere }) => eere.inputs.hybridEVs);
   const transitBuses = useTypedSelector(({ eere }) => eere.inputs.transitBuses);
@@ -136,18 +137,16 @@ function EVSalesAndStockTable({
  * table in the "Library" sheet (C664:H664).
  */
 function setDeploymentLocationHistoricalEERE(options: {
-  selectedRegion: RegionState | undefined;
+  regionREDefaultsAverages: RegionREDefaultsAverages;
   locationId: string;
 }) {
-  const { selectedRegion, locationId } = options;
+  const { regionREDefaultsAverages, locationId } = options;
 
   const result = {
     eeRetail: { mw: 0, gwh: 0 },
     onshoreWind: { mw: 0, gwh: 0 },
     utilitySolar: { mw: 0, gwh: 0 },
   };
-
-  if (!selectedRegion) return result;
 
   const locationIsRegion = locationId.startsWith('region-');
   const locationIsState = locationId.startsWith('state-');
@@ -164,21 +163,6 @@ function setDeploymentLocationHistoricalEERE(options: {
     ? stateEereAverages[locationId.replace('state-', '') as StateId]
     : fallbackAverage;
 
-  // TODO: set in parent component (memoized) so we're not looping over eereDefaults needlessly
-  const reDefaultsHourlyTotal = selectedRegion.eereDefaults.data.reduce(
-    (total, hourlyEereDefault) => {
-      total.onshore_wind += hourlyEereDefault.onshore_wind;
-      total.utility_pv += hourlyEereDefault.utility_pv;
-      return total;
-    },
-    { onshore_wind: 0, utility_pv: 0 },
-  );
-  const reDefaultsTotalHours = selectedRegion.eereDefaults.data.length;
-  const reDefaultsHourlyAverage = {
-    onshore_wind: reDefaultsHourlyTotal.onshore_wind / reDefaultsTotalHours,
-    utility_pv: reDefaultsHourlyTotal.utility_pv / reDefaultsTotalHours,
-  };
-
   const hoursInYear = 8760;
   const GWtoMW = 1000;
 
@@ -186,8 +170,8 @@ function setDeploymentLocationHistoricalEERE(options: {
   result.onshoreWind.mw = locationAverage.capacity_added_mw.onshore_wind;
   result.utilitySolar.mw = locationAverage.capacity_added_mw.utility_pv;
   result.eeRetail.gwh = locationAverage.retail_impacts_ghw.ee_retail;
-  result.onshoreWind.gwh = reDefaultsHourlyAverage.onshore_wind * hoursInYear * result.onshoreWind.mw / GWtoMW // prettier-ignore
-  result.utilitySolar.gwh = reDefaultsHourlyAverage.utility_pv * hoursInYear * result.utilitySolar.mw / GWtoMW; // prettier-ignore
+  result.onshoreWind.gwh = regionREDefaultsAverages.onshore_wind * hoursInYear * result.onshoreWind.mw / GWtoMW // prettier-ignore
+  result.utilitySolar.gwh = regionREDefaultsAverages.utility_pv * hoursInYear * result.utilitySolar.mw / GWtoMW; // prettier-ignore
 
   return result;
 }
@@ -199,7 +183,11 @@ function formatNumber(number: number) {
   });
 }
 
-function EEREEVComparisonTable() {
+function EEREEVComparisonTable(props: {
+  regionREDefaultsAverages: RegionREDefaultsAverages;
+}) {
+  const { regionREDefaultsAverages } = props;
+
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const evDeploymentLocation = useTypedSelector(
     ({ eere }) => eere.inputs.evDeploymentLocation,
@@ -213,7 +201,7 @@ function EEREEVComparisonTable() {
       : 1; // TODO: determine best way to set lineloss if a state is selected
 
   const historicalEERE = setDeploymentLocationHistoricalEERE({
-    selectedRegion,
+    regionREDefaultsAverages,
     locationId: evDeploymentLocation,
   });
 
