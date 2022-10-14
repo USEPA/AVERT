@@ -1,0 +1,72 @@
+{
+  "CA": {
+    "onshore_wind": 111.5666667,
+    "utility_pv": 1340.166667,
+    "ee_retail": 376.2715859
+  },
+  "NCSC": {
+    "onshore_wind": 0,
+    "utility_pv": 557.9,
+    "ee_retail": 204.3247805
+  },
+  "CENT": {
+    "onshore_wind": 2488.733333,
+    "utility_pv": 27.13333333,
+    "ee_retail": 95.30178709
+  },
+  "FL": {
+    "onshore_wind": 0,
+    "utility_pv": 1061.633333,
+    "ee_retail": 37.25098155
+  },
+  "MIDA": {
+    "onshore_wind": 621.6,
+    "utility_pv": 770.0333333,
+    "ee_retail": 895.5886533
+  },
+  "MIDW": {
+    "onshore_wind": 3074.366667,
+    "utility_pv": 393.3333333,
+    "ee_retail": 683.0239454
+  },
+  "NE": {
+    "onshore_wind": 44.5,
+    "utility_pv": 189.7333333,
+    "ee_retail": 328.2283437
+  },
+  "NY": {
+    "onshore_wind": 53.23333333,
+    "utility_pv": 142.0666667,
+    "ee_retail": 267.1632463
+  },
+  "NW": {
+    "onshore_wind": 596.3,
+    "utility_pv": 435.7666667,
+    "ee_retail": 268.9365596
+  },
+  "RM": {
+    "onshore_wind": 678.2333333,
+    "utility_pv": 75.06666667,
+    "ee_retail": 65.83701803
+  },
+  "SE": {
+    "onshore_wind": 0,
+    "utility_pv": 462.8,
+    "ee_retail": 51.3498971
+  },
+  "SW": {
+    "onshore_wind": 207.1333333,
+    "utility_pv": 163.6666667,
+    "ee_retail": 135.0323036
+  },
+  "TN": {
+    "onshore_wind": 0,
+    "utility_pv": 37.76666667,
+    "ee_retail": 15.02405928
+  },
+  "TE": {
+    "onshore_wind": 2409.433333,
+    "utility_pv": 1223.033333,
+    "ee_retail": 95.28907166
+  }
+}

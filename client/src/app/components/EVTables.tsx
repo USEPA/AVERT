@@ -5,6 +5,21 @@ import { subheadingStyles } from 'app/components/Panels';
 import { SalesAndStockByVehicleType } from 'app/components/EEREInputs';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
+// hooks
+import { useSelectedRegion } from 'app/hooks';
+/**
+ * Excel: "Table 12: Historical renewable and energy efficiency addition data"
+ * table in the "Library" sheet (B589:E603).
+ */
+import regionEereAverages from 'app/data/region-eere-averages.json';
+/**
+ * Excel: "Table 12: Historical renewable and energy efficiency addition data"
+ * table in the "Library" sheet (B609:E658).
+ */
+import stateEereAverages from 'app/data/state-eere-averages.json';
+
+type RegionId = keyof typeof regionEereAverages;
+type StateId = keyof typeof stateEereAverages;
 
 function calculatePercent(numerator: number, denominator: number) {
   return denominator !== 0
@@ -59,21 +74,6 @@ function EVSalesAndStockTable({
   const schoolBusesSales = locationSalesAndStock.schoolBuses.sales;
   const schoolBusesStock = locationSalesAndStock.schoolBuses.stock;
 
-  const data = {
-    lightDutyVehicles: {
-      sales: calculatePercent(totalLightDutyVehicles, lightDutyVehicleSales),
-      stock: calculatePercent(totalLightDutyVehicles, lightDutyVehicleStock),
-    },
-    transitBuses: {
-      sales: calculatePercent(totalTransitBuses, transitBusesSales),
-      stock: calculatePercent(totalTransitBuses, transitBusesStock),
-    },
-    schoolBuses: {
-      sales: calculatePercent(totalSchoolBuses, schoolBusesSales),
-      stock: calculatePercent(totalSchoolBuses, schoolBusesStock),
-    },
-  };
-
   return (
     <>
       <h3 css={subheadingStyles}>EV Sales and Stock Comparison</h3>
@@ -105,18 +105,22 @@ function EVSalesAndStockTable({
         <tbody>
           <tr>
             <td>Light-duty vehicles</td>
-            <td>{data.lightDutyVehicles.sales}</td>
-            <td>{data.lightDutyVehicles.stock}</td>
+            <td>
+              {calculatePercent(totalLightDutyVehicles, lightDutyVehicleSales)}
+            </td>
+            <td>
+              {calculatePercent(totalLightDutyVehicles, lightDutyVehicleStock)}
+            </td>
           </tr>
           <tr>
             <td>Transit buses</td>
-            <td>{data.transitBuses.sales}</td>
-            <td>{data.transitBuses.stock}</td>
+            <td>{calculatePercent(totalTransitBuses, transitBusesSales)}</td>
+            <td>{calculatePercent(totalTransitBuses, transitBusesStock)}</td>
           </tr>
           <tr>
             <td>School buses</td>
-            <td>{data.schoolBuses.sales}</td>
-            <td>{data.schoolBuses.stock}</td>
+            <td>{calculatePercent(totalSchoolBuses, schoolBusesSales)}</td>
+            <td>{calculatePercent(totalSchoolBuses, schoolBusesStock)}</td>
           </tr>
         </tbody>
       </table>
@@ -124,7 +128,64 @@ function EVSalesAndStockTable({
   );
 }
 
+/**
+ * Historical EERE data for the EV deployment location (entire region or state).
+ *
+ * Excel: "Table 12: Historical renewable and energy efficiency addition data"
+ * table in the "Library" sheet (C664:E664).
+ */
+function setDeploymentLocationHistoricalEERE(options: {
+  locationId: string;
+  lineLoss: number;
+}) {
+  const { locationId, lineLoss } = options;
+
+  const historicalMw = locationId.startsWith('region-')
+    ? regionEereAverages[locationId.replace('region-', '') as RegionId]
+    : locationId.startsWith('state-')
+    ? stateEereAverages[locationId.replace('state-', '') as StateId]
+    : { onshore_wind: 0, utility_pv: 0, ee_retail: 0 }; // fallback
+
+  /**
+   * NOTE: In the Excel app, EE (Retail) is only adjusted for lineLoss if the
+   * EV deployment location is the entire region (E664 of the "Library" sheet)
+   */
+  const lineLossFactor = locationId.startsWith('region-') ? 1 - lineLoss : 1;
+
+  const result = {
+    eeRetail: historicalMw.ee_retail * lineLossFactor,
+    onshoreWind: historicalMw.onshore_wind,
+    utilitySolar: historicalMw.utility_pv,
+  };
+
+  return result;
+}
+
+function formatNumber(number: number) {
+  return number.toLocaleString(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+}
+
 function EEREEVComparisonTable() {
+  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
+  const evDeploymentLocation = useTypedSelector(
+    ({ eere }) => eere.inputs.evDeploymentLocation,
+  );
+
+  const selectedRegion = useSelectedRegion();
+
+  const lineLoss =
+    geographicFocus === 'regions' && selectedRegion
+      ? selectedRegion.lineLoss
+      : 1; // TODO: determine best way to set lineloss if a state is selected
+
+  const historicalMw = setDeploymentLocationHistoricalEERE({
+    locationId: evDeploymentLocation,
+    lineLoss,
+  });
+
   return (
     <>
       <h3 css={subheadingStyles}>EE/RE and EV Comparison</h3>
@@ -163,7 +224,7 @@ function EEREEVComparisonTable() {
         <tbody>
           <tr>
             <td>EE&nbsp;(retail)</td>
-            <td>&nbsp;</td>
+            <td>{formatNumber(historicalMw.eeRetail)}</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
@@ -172,7 +233,7 @@ function EEREEVComparisonTable() {
           </tr>
           <tr>
             <td>Onshore&nbsp;Wind</td>
-            <td>&nbsp;</td>
+            <td>{formatNumber(historicalMw.onshoreWind)}</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
@@ -181,7 +242,7 @@ function EEREEVComparisonTable() {
           </tr>
           <tr>
             <td>Utility&nbsp;Solar</td>
-            <td>&nbsp;</td>
+            <td>{formatNumber(historicalMw.utilitySolar)}</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
@@ -190,7 +251,13 @@ function EEREEVComparisonTable() {
           </tr>
           <tr>
             <td>Total</td>
-            <td>&nbsp;</td>
+            <td>
+              {formatNumber(
+                historicalMw.eeRetail / (1 - lineLoss) +
+                  historicalMw.onshoreWind +
+                  historicalMw.utilitySolar,
+              )}
+            </td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
