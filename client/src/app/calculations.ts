@@ -29,6 +29,17 @@ import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
  */
 import movesEmissionsRates from 'app/data/moves-emissions-rates.json';
 
+type EVEnergyUsageByType = {
+  batteryEVCars: number;
+  hybridEVCars: number;
+  batteryEVTrucks: number;
+  hybridEVTrucks: number;
+  transitBusesDiesel: number;
+  transitBusesCNG: number;
+  transitBusesGasoline: number;
+  schoolBuses: number;
+};
+
 function calculateHourlyExceedance(
   calculatedLoad: number,
   softOrHardLimit: number,
@@ -306,16 +317,7 @@ function calculateSeparateMonthlyEVEnergyUsage(options: {
     options;
 
   const result: {
-    [month: number]: {
-      batteryEVCars: number;
-      hybridEVCars: number;
-      batteryEVTrucks: number;
-      hybridEVTrucks: number;
-      transitBusesDiesel: number;
-      transitBusesCNG: number;
-      transitBusesGasoline: number;
-      schoolBuses: number;
-    };
+    [month: number]: EVEnergyUsageByType;
   } = {};
 
   /**
@@ -404,6 +406,21 @@ function calculateSeparateMonthlyEVEnergyUsage(options: {
         kWtoGW,
     };
   });
+
+  return result;
+}
+
+/**
+ * Totals the energy usage from each EV type for all months in the year to a
+ * single total EV energy usage value for the year.
+ */
+function calculateTotalYearlyEVEnergyUsage(separateMonthlyEVEnergyUsage: {
+  [month: number]: EVEnergyUsageByType;
+}) {
+  const result = Object.values(separateMonthlyEVEnergyUsage).reduce(
+    (total, month) => total + Object.values(month).reduce((a, b) => a + b, 0),
+    0,
+  );
 
   return result;
 }
@@ -667,6 +684,12 @@ export function calculateEere({
     schoolBuses,
     evModelYear,
   });
+
+  // TODO: this value is needed in the EEREEVComparisonTable component, so move
+  // calculations around so data is available where needed
+  const totalYearlyEVEnergyUsage = calculateTotalYearlyEVEnergyUsage(
+    separateMonthlyEVEnergyUsage,
+  );
 
   const monthlyEVEnergyUsage = combineSeparateMonthlyEVEnergyUsage(
     separateMonthlyEVEnergyUsage,
