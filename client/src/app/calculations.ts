@@ -306,7 +306,7 @@ function createHourlyEVChargingPercentages(options: {
  * Excel: "Sales Changes" data from "Table 7: Calculated changes for the
  * transportation sector" table in the "Library" sheet (G298:R306).
  */
-function calculateSeparateMonthlyEVEnergyUsage(options: {
+function calculateMonthlyEVEnergyUsageByType(options: {
   batteryEVs: number;
   hybridEVs: number;
   transitBuses: number;
@@ -414,10 +414,10 @@ function calculateSeparateMonthlyEVEnergyUsage(options: {
  * Totals the energy usage from each EV type for all months in the year to a
  * single total EV energy usage value for the year.
  */
-function calculateTotalYearlyEVEnergyUsage(separateMonthlyEVEnergyUsage: {
+function calculateTotalYearlyEVEnergyUsage(monthlyEVEnergyUsageByType: {
   [month: number]: EVEnergyUsageByType;
 }) {
-  const result = Object.values(separateMonthlyEVEnergyUsage).reduce(
+  const result = Object.values(monthlyEVEnergyUsageByType).reduce(
     (total, month) => total + Object.values(month).reduce((a, b) => a + b, 0),
     0,
   );
@@ -432,17 +432,8 @@ function calculateTotalYearlyEVEnergyUsage(separateMonthlyEVEnergyUsage: {
  * Excel: Data in the third EV table (to the right of the "Calculate Changes"
  * table) in the "CalculateEERE" sheet (T49:W61).
  */
-function combineSeparateMonthlyEVEnergyUsage(separateMonthlyEVEnergyUsage: {
-  [month: number]: {
-    batteryEVCars: number;
-    hybridEVCars: number;
-    batteryEVTrucks: number;
-    hybridEVTrucks: number;
-    transitBusesDiesel: number;
-    transitBusesCNG: number;
-    transitBusesGasoline: number;
-    schoolBuses: number;
-  };
+function combineMonthlyEVEnergyUsage(monthlyEVEnergyUsageByType: {
+  [month: number]: EVEnergyUsageByType;
 }) {
   const result: {
     [month: number]: {
@@ -455,7 +446,7 @@ function combineSeparateMonthlyEVEnergyUsage(separateMonthlyEVEnergyUsage: {
 
   const GWtoMW = 1000;
 
-  Object.entries(separateMonthlyEVEnergyUsage).forEach(([month, data]) => {
+  Object.entries(monthlyEVEnergyUsageByType).forEach(([month, data]) => {
     result[Number(month)] = {
       batteryEVs: (data.batteryEVCars + data.batteryEVTrucks) * GWtoMW,
       hybridEVs: (data.hybridEVCars + data.hybridEVTrucks) * GWtoMW,
@@ -677,7 +668,7 @@ export function calculateEere({
     schoolBusesProfile,
   });
 
-  const separateMonthlyEVEnergyUsage = calculateSeparateMonthlyEVEnergyUsage({
+  const monthlyEVEnergyUsageByType = calculateMonthlyEVEnergyUsageByType({
     batteryEVs,
     hybridEVs,
     transitBuses,
@@ -688,11 +679,11 @@ export function calculateEere({
   // TODO: this value is needed in the EEREEVComparisonTable component, so move
   // calculations around so data is available where needed
   const totalYearlyEVEnergyUsage = calculateTotalYearlyEVEnergyUsage(
-    separateMonthlyEVEnergyUsage,
+    monthlyEVEnergyUsageByType,
   );
 
-  const monthlyEVEnergyUsage = combineSeparateMonthlyEVEnergyUsage(
-    separateMonthlyEVEnergyUsage,
+  const monthlyEVEnergyUsage = combineMonthlyEVEnergyUsage(
+    monthlyEVEnergyUsageByType,
   );
 
   const monthlyDailyEVEnergyUsage = calculateMonthlyDailyEVEnergyUsage({
