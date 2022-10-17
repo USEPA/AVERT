@@ -10,6 +10,11 @@ import {
 import { useTypedSelector } from 'app/redux/index';
 // hooks
 import { useSelectedRegion } from 'app/hooks';
+// calculations
+import {
+  calculateMonthlyEVEnergyUsageByType,
+  calculateTotalYearlyEVEnergyUsage,
+} from 'app/calculations';
 /**
  * Excel: "Table 12: Historical renewable and energy efficiency addition data"
  * table in the "Library" sheet (B589:E603).
@@ -41,6 +46,7 @@ function EVSalesAndStockTable(props: {
 }) {
   const { evDeploymentLocationName, vehicleSalesAndStock } = props;
 
+  // TODO: determine if regionalScalingFactor is needed if geographicFocus is states
   const batteryEVs = useTypedSelector(({ eere }) => eere.inputs.batteryEVs);
   const hybridEVs = useTypedSelector(({ eere }) => eere.inputs.hybridEVs);
   const transitBuses = useTypedSelector(({ eere }) => eere.inputs.transitBuses);
@@ -188,14 +194,30 @@ function EEREEVComparisonTable(props: {
 }) {
   const { regionREDefaultsAverages } = props;
 
+  // TODO: determine if regionalScalingFactor is needed if geographicFocus is states
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
+  const batteryEVs = useTypedSelector(({ eere }) => eere.inputs.batteryEVs);
+  const hybridEVs = useTypedSelector(({ eere }) => eere.inputs.hybridEVs);
+  const transitBuses = useTypedSelector(({ eere }) => eere.inputs.transitBuses);
+  const schoolBuses = useTypedSelector(({ eere }) => eere.inputs.schoolBuses);
+  const evModelYear = useTypedSelector(({ eere }) => eere.inputs.evModelYear);
   const evDeploymentLocation = useTypedSelector(
     ({ eere }) => eere.inputs.evDeploymentLocation,
   );
 
   const selectedRegion = useSelectedRegion();
 
-  const totalYearlyEVEnergyUsage = 36; // TODO: TEMPORARY VALUE FOR NOW – replace with value from calculations.ts
+  const monthlyEVEnergyUsageByType = calculateMonthlyEVEnergyUsageByType({
+    batteryEVs: Number(batteryEVs),
+    hybridEVs: Number(hybridEVs),
+    transitBuses: Number(transitBuses),
+    schoolBuses: Number(schoolBuses),
+    evModelYear,
+  });
+
+  const totalYearlyEVEnergyUsage = calculateTotalYearlyEVEnergyUsage(
+    monthlyEVEnergyUsageByType,
+  );
 
   const lineLoss =
     geographicFocus === 'regions' && selectedRegion

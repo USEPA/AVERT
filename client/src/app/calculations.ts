@@ -40,20 +40,6 @@ type EVEnergyUsageByType = {
   schoolBuses: number;
 };
 
-function calculateHourlyExceedance(
-  calculatedLoad: number,
-  softOrHardLimit: number,
-  amount: 15 | 30,
-) {
-  const load = Math.abs(calculatedLoad);
-  const limit = Math.abs(softOrHardLimit);
-  if (load > limit) {
-    const exceedance = load / limit - 1;
-    return exceedance * amount + amount;
-  }
-  return 0;
-}
-
 /**
  * build up daily stats object by looping through every hour of the year,
  * (only creates objects and sets their keys in the first hour of each month)
@@ -208,7 +194,7 @@ function setMonthlyVMTTotalsAndPercentages() {
   });
 
   return result;
-      }
+}
 
 /**
  * Monthly vehicle miles traveled (VMT) for each vehicle type.
@@ -306,7 +292,7 @@ function createHourlyEVChargingPercentages(options: {
  * Excel: "Sales Changes" data from "Table 7: Calculated changes for the
  * transportation sector" table in the "Library" sheet (G298:R306).
  */
-function calculateMonthlyEVEnergyUsageByType(options: {
+export function calculateMonthlyEVEnergyUsageByType(options: {
   batteryEVs: number;
   hybridEVs: number;
   transitBuses: number;
@@ -414,7 +400,7 @@ function calculateMonthlyEVEnergyUsageByType(options: {
  * Totals the energy usage from each EV type for all months in the year to a
  * single total EV energy usage value for the year.
  */
-function calculateTotalYearlyEVEnergyUsage(monthlyEVEnergyUsageByType: {
+export function calculateTotalYearlyEVEnergyUsage(monthlyEVEnergyUsageByType: {
   [month: number]: EVEnergyUsageByType;
 }) {
   const result = Object.values(monthlyEVEnergyUsageByType).reduce(
@@ -599,6 +585,23 @@ function calculateHourlyEVLoad(options: {
   return evLoad;
 }
 
+/**
+ * TODO...
+ */
+function calculateHourlyExceedance(
+  calculatedLoad: number,
+  softOrHardLimit: number,
+  amount: 15 | 30,
+) {
+  const load = Math.abs(calculatedLoad);
+  const limit = Math.abs(softOrHardLimit);
+  if (load > limit) {
+    const exceedance = load / limit - 1;
+    return exceedance * amount + amount;
+  }
+  return 0;
+}
+
 export function calculateEere({
   regionMaxEEPercent, // region.rdf.limits.max_ee_percent (15 for all RDFs)
   regionLineLoss, // region.lineLoss
@@ -675,12 +678,6 @@ export function calculateEere({
     schoolBuses,
     evModelYear,
   });
-
-  // TODO: this value is needed in the EEREEVComparisonTable component, so move
-  // calculations around so data is available where needed
-  const totalYearlyEVEnergyUsage = calculateTotalYearlyEVEnergyUsage(
-    monthlyEVEnergyUsageByType,
-  );
 
   const monthlyEVEnergyUsage = combineMonthlyEVEnergyUsage(
     monthlyEVEnergyUsageByType,
