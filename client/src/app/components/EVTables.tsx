@@ -209,10 +209,13 @@ function EEREEVComparisonTable(props: {
 
   const historicalEERetailMw = historicalEERE.eeRetail.mw;
   const historicalEERetailGWh = historicalEERE.eeRetail.gwh;
+
   const historicalOnshoreWindMw = historicalEERE.onshoreWind.mw;
   const historicalOnshoreWindGWh = historicalEERE.onshoreWind.gwh;
+
   const historicalUtilitySolarMw = historicalEERE.utilitySolar.mw;
   const historicalUtilitySolarGWh = historicalEERE.utilitySolar.gwh;
+
   const historicalTotalMw =
     historicalEERetailMw / (1 - lineLoss) +
     historicalOnshoreWindMw +
@@ -223,13 +226,29 @@ function EEREEVComparisonTable(props: {
     historicalUtilitySolarGWh;
 
   const requiredOffsetTotalGWh = totalYearlyEVEnergyUsage / (1 - lineLoss);
+
   const requiredOffsetEERetailGWh =
     (historicalEERetailGWh / (1 - lineLoss) / historicalTotalGWh) *
     requiredOffsetTotalGWh;
+  const requiredOffsetEERetailMw =
+    (historicalEERetailMw * requiredOffsetEERetailGWh) / historicalEERetailGWh;
+
   const requiredOffsetOnshoreWindGWh =
     (historicalOnshoreWindGWh / historicalTotalGWh) * requiredOffsetTotalGWh;
+  const requiredOffsetOnshoreWindMw =
+    (historicalOnshoreWindMw * requiredOffsetOnshoreWindGWh) /
+    historicalOnshoreWindGWh;
+
   const requiredOffsetUtilitySolarGWh =
     (historicalUtilitySolarGWh / historicalTotalGWh) * requiredOffsetTotalGWh;
+  const requiredOffsetUtilitySolarMw =
+    (historicalUtilitySolarMw * requiredOffsetUtilitySolarGWh) /
+    historicalUtilitySolarGWh;
+
+  const requiredOffsetTotalMw =
+    requiredOffsetEERetailMw +
+    requiredOffsetOnshoreWindMw +
+    requiredOffsetUtilitySolarMw;
 
   return (
     <>
@@ -271,7 +290,11 @@ function EEREEVComparisonTable(props: {
             <td>EE&nbsp;(retail)</td>
             <td>{formatNumber(historicalEERetailMw)}</td>
             <td>{formatNumber(historicalEERetailGWh)}</td>
-            <td>&nbsp;</td>
+            <td>
+              {historicalEERetailGWh === 0
+                ? '-'
+                : formatNumber(requiredOffsetEERetailMw)}
+            </td>
             <td>
               {historicalEERetailGWh === 0
                 ? '-'
@@ -284,7 +307,11 @@ function EEREEVComparisonTable(props: {
             <td>Onshore&nbsp;Wind</td>
             <td>{formatNumber(historicalOnshoreWindMw)}</td>
             <td>{formatNumber(historicalOnshoreWindGWh)}</td>
-            <td>&nbsp;</td>
+            <td>
+              {historicalOnshoreWindGWh === 0
+                ? '-'
+                : formatNumber(requiredOffsetOnshoreWindMw)}
+            </td>
             <td>
               {historicalOnshoreWindGWh === 0
                 ? '-'
@@ -297,7 +324,11 @@ function EEREEVComparisonTable(props: {
             <td>Utility&nbsp;Solar</td>
             <td>{formatNumber(historicalUtilitySolarMw)}</td>
             <td>{formatNumber(historicalUtilitySolarGWh)}</td>
-            <td>&nbsp;</td>
+            <td>
+              {historicalUtilitySolarGWh === 0
+                ? '-'
+                : formatNumber(requiredOffsetUtilitySolarMw)}
+            </td>
             <td>
               {historicalUtilitySolarGWh === 0
                 ? '-'
@@ -310,7 +341,7 @@ function EEREEVComparisonTable(props: {
             <td>Total</td>
             <td>{formatNumber(historicalTotalMw)}</td>
             <td>{formatNumber(historicalTotalGWh)}</td>
-            <td>&nbsp;</td>
+            <td>{formatNumber(requiredOffsetTotalMw)}</td>
             <td>{formatNumber(requiredOffsetTotalGWh)}</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
