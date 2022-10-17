@@ -195,6 +195,8 @@ function EEREEVComparisonTable(props: {
 
   const selectedRegion = useSelectedRegion();
 
+  const totalYearlyEVEnergyUsage = 36; // TODO: TEMPORARY VALUE FOR NOW – replace with value from calculations.ts
+
   const lineLoss =
     geographicFocus === 'regions' && selectedRegion
       ? selectedRegion.lineLoss
@@ -204,6 +206,30 @@ function EEREEVComparisonTable(props: {
     regionREDefaultsAverages,
     locationId: evDeploymentLocation,
   });
+
+  const historicalEERetailMw = historicalEERE.eeRetail.mw;
+  const historicalEERetailGWh = historicalEERE.eeRetail.gwh;
+  const historicalOnshoreWindMw = historicalEERE.onshoreWind.mw;
+  const historicalOnshoreWindGWh = historicalEERE.onshoreWind.gwh;
+  const historicalUtilitySolarMw = historicalEERE.utilitySolar.mw;
+  const historicalUtilitySolarGWh = historicalEERE.utilitySolar.gwh;
+  const historicalTotalMw =
+    historicalEERetailMw / (1 - lineLoss) +
+    historicalOnshoreWindMw +
+    historicalUtilitySolarMw;
+  const historicalTotalGWh =
+    historicalEERetailGWh / (1 - lineLoss) +
+    historicalOnshoreWindGWh +
+    historicalUtilitySolarGWh;
+
+  const requiredOffsetTotalGWh = totalYearlyEVEnergyUsage / (1 - lineLoss);
+  const requiredOffsetEERetailGWh =
+    (historicalEERetailGWh / (1 - lineLoss) / historicalTotalGWh) *
+    requiredOffsetTotalGWh;
+  const requiredOffsetOnshoreWindGWh =
+    (historicalOnshoreWindGWh / historicalTotalGWh) * requiredOffsetTotalGWh;
+  const requiredOffsetUtilitySolarGWh =
+    (historicalUtilitySolarGWh / historicalTotalGWh) * requiredOffsetTotalGWh;
 
   return (
     <>
@@ -243,49 +269,49 @@ function EEREEVComparisonTable(props: {
         <tbody>
           <tr>
             <td>EE&nbsp;(retail)</td>
-            <td>{formatNumber(historicalEERE.eeRetail.mw)}</td>
-            <td>{formatNumber(historicalEERE.eeRetail.gwh)}</td>
+            <td>{formatNumber(historicalEERetailMw)}</td>
+            <td>{formatNumber(historicalEERetailGWh)}</td>
             <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td>
+              {historicalEERetailGWh === 0
+                ? '-'
+                : formatNumber(requiredOffsetEERetailGWh)}
+            </td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
           </tr>
           <tr>
             <td>Onshore&nbsp;Wind</td>
-            <td>{formatNumber(historicalEERE.onshoreWind.mw)}</td>
-            <td>{formatNumber(historicalEERE.onshoreWind.gwh)}</td>
+            <td>{formatNumber(historicalOnshoreWindMw)}</td>
+            <td>{formatNumber(historicalOnshoreWindGWh)}</td>
             <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td>
+              {historicalOnshoreWindGWh === 0
+                ? '-'
+                : formatNumber(requiredOffsetOnshoreWindGWh)}
+            </td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
           </tr>
           <tr>
             <td>Utility&nbsp;Solar</td>
-            <td>{formatNumber(historicalEERE.utilitySolar.mw)}</td>
-            <td>{formatNumber(historicalEERE.utilitySolar.gwh)}</td>
+            <td>{formatNumber(historicalUtilitySolarMw)}</td>
+            <td>{formatNumber(historicalUtilitySolarGWh)}</td>
             <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td>
+              {historicalUtilitySolarGWh === 0
+                ? '-'
+                : formatNumber(requiredOffsetUtilitySolarGWh)}
+            </td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
           </tr>
           <tr>
             <td>Total</td>
-            <td>
-              {formatNumber(
-                historicalEERE.eeRetail.mw / (1 - lineLoss) +
-                  historicalEERE.onshoreWind.mw +
-                  historicalEERE.utilitySolar.mw,
-              )}
-            </td>
-            <td>
-              {formatNumber(
-                historicalEERE.eeRetail.gwh / (1 - lineLoss) +
-                  historicalEERE.onshoreWind.gwh +
-                  historicalEERE.utilitySolar.gwh,
-              )}
-            </td>
+            <td>{formatNumber(historicalTotalMw)}</td>
+            <td>{formatNumber(historicalTotalGWh)}</td>
             <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td>{formatNumber(requiredOffsetTotalGWh)}</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
           </tr>
