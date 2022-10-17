@@ -30,7 +30,7 @@ function calculatePercent(numerator: number, denominator: number) {
         minimumFractionDigits: 0,
         maximumFractionDigits: 1,
       })}%`
-    : 'N/A';
+    : '-';
 }
 
 function EVSalesAndStockTable(props: {
@@ -250,6 +250,21 @@ function EEREEVComparisonTable(props: {
     requiredOffsetOnshoreWindMw +
     requiredOffsetUtilitySolarMw;
 
+  const precentDifferenceEERetailMw =
+    requiredOffsetEERetailMw / historicalEERetailMw;
+  const precentDifferenceEERetailGWh =
+    requiredOffsetEERetailGWh / historicalEERetailGWh;
+
+  const precentDifferenceOnshoreWindMw =
+    requiredOffsetOnshoreWindMw / historicalOnshoreWindMw;
+  const precentDifferenceOnshoreWindGWh =
+    requiredOffsetOnshoreWindGWh / historicalOnshoreWindGWh;
+
+  const precentDifferenceUtilitySolarMw =
+    requiredOffsetUtilitySolarMw / historicalUtilitySolarMw;
+  const precentDifferenceUtilitySolarGWh =
+    requiredOffsetUtilitySolarGWh / historicalUtilitySolarGWh;
+
   return (
     <>
       <h3 css={subheadingStyles}>EE/RE and EV Comparison</h3>
@@ -300,8 +315,16 @@ function EEREEVComparisonTable(props: {
                 ? '-'
                 : formatNumber(requiredOffsetEERetailGWh)}
             </td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td>
+              {historicalEERetailMw === 0
+                ? '-'
+                : `${formatNumber(precentDifferenceEERetailMw * 100)}%`}
+            </td>
+            <td>
+              {historicalEERetailGWh === 0
+                ? '-'
+                : `${formatNumber(precentDifferenceEERetailGWh * 100)}%`}
+            </td>
           </tr>
           <tr>
             <td>Onshore&nbsp;Wind</td>
@@ -317,8 +340,16 @@ function EEREEVComparisonTable(props: {
                 ? '-'
                 : formatNumber(requiredOffsetOnshoreWindGWh)}
             </td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td>
+              {historicalOnshoreWindMw === 0
+                ? '-'
+                : `${formatNumber(precentDifferenceOnshoreWindMw * 100)}%`}
+            </td>
+            <td>
+              {historicalOnshoreWindGWh === 0
+                ? '-'
+                : `${formatNumber(precentDifferenceOnshoreWindGWh * 100)}%`}
+            </td>
           </tr>
           <tr>
             <td>Utility&nbsp;Solar</td>
@@ -334,8 +365,16 @@ function EEREEVComparisonTable(props: {
                 ? '-'
                 : formatNumber(requiredOffsetUtilitySolarGWh)}
             </td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td>
+              {historicalUtilitySolarMw === 0
+                ? '-'
+                : `${formatNumber(precentDifferenceUtilitySolarMw * 100)}%`}
+            </td>
+            <td>
+              {historicalUtilitySolarGWh === 0
+                ? '-'
+                : `${formatNumber(precentDifferenceUtilitySolarGWh * 100)}%`}
+            </td>
           </tr>
           <tr>
             <td>Total</td>
@@ -343,8 +382,8 @@ function EEREEVComparisonTable(props: {
             <td>{formatNumber(historicalTotalGWh)}</td>
             <td>{formatNumber(requiredOffsetTotalMw)}</td>
             <td>{formatNumber(requiredOffsetTotalGWh)}</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td>{'-'}</td>
+            <td>{'-'}</td>
           </tr>
         </tbody>
       </table>
