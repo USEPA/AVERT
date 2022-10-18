@@ -739,11 +739,11 @@ export const percentVehiclesDisplacedByEVs = {
 };
 
 /**
- * Vehicle miles traveled (VMT) per year.
+ * Average vehicle miles traveled (VMT) per vehicle type, per year.
  *
  * Excel: "Table 4: EV data inputs" table in the "Library" sheet (E180:E183).
  */
-export const vehicleMilesTraveledPerYear = {
+export const averageVMTPerYear = {
   cars: 11599,
   trucks: 11263,
   transitBuses: 43647,

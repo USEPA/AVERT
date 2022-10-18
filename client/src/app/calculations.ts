@@ -13,7 +13,7 @@ import {
   EvProfileName,
   EVModelYear,
   percentVehiclesDisplacedByEVs,
-  vehicleMilesTraveledPerYear,
+  averageVMTPerYear,
   evEfficiencyByModelYear,
   percentHybridEVMilesDrivenOnElectricity,
   percentWeekendToWeekdayEVConsumption,
@@ -111,7 +111,7 @@ function createMonthlyStats(dailyStats: {
  * Excel: "Table 5: EV weather adjustments and monthly VMT adjustments" table
  * in the "Library" sheet (totals: E220:P225, percentages: E227:P232).
  */
-function setMonthlyVMTTotalsAndPercentages() {
+function setMonthlyVMTTotalsAndPercentagesByVehicleType() {
   const result: {
     [month: number]: {
       cars: { total: number; percent: number };
@@ -184,13 +184,13 @@ function setMonthlyVMTTotalsAndPercentages() {
   });
 
   // prettier-ignore
-  Object.values(result).forEach((data) => {
-    data.cars.percent = data.cars.total / yearlyTotals.cars;
-    data.trucks.percent = data.trucks.total / yearlyTotals.trucks;
-    data.transitBusesDiesel.percent = data.transitBusesDiesel.total / yearlyTotals.transitBusesDiesel;
-    data.transitBusesCNG.percent = data.transitBusesCNG.total / yearlyTotals.transitBusesCNG;
-    data.transitBusesGasoline.percent = data.transitBusesGasoline.total / yearlyTotals.transitBusesGasoline;
-    data.schoolBuses.percent = data.schoolBuses.total / yearlyTotals.schoolBuses;
+  Object.values(result).forEach((month) => {
+    month.cars.percent = month.cars.total / yearlyTotals.cars;
+    month.trucks.percent = month.trucks.total / yearlyTotals.trucks;
+    month.transitBusesDiesel.percent = month.transitBusesDiesel.total / yearlyTotals.transitBusesDiesel;
+    month.transitBusesCNG.percent = month.transitBusesCNG.total / yearlyTotals.transitBusesCNG;
+    month.transitBusesGasoline.percent = month.transitBusesGasoline.total / yearlyTotals.transitBusesGasoline;
+    month.schoolBuses.percent = month.schoolBuses.total / yearlyTotals.schoolBuses;
   });
 
   return result;
@@ -202,7 +202,7 @@ function setMonthlyVMTTotalsAndPercentages() {
  * Excel: "Table 5: EV weather adjustments and monthly VMT adjustments" table
  * in the "Library" sheet (E234:P239).
  */
-function calculateMonthlyAdjustedVMT() {
+function calculateMonthlyVMTByVehicleType() {
   const result: {
     [month: number]: {
       cars: number;
@@ -216,25 +216,27 @@ function calculateMonthlyAdjustedVMT() {
 
   // NOTE: we really only need percentages for each vehicle type
   // (totals were stored to calculate the percentages)
-  const monthlyVMTTotalsAndPercentages = setMonthlyVMTTotalsAndPercentages();
+  const monthlyVMTTotalsAndPercentagesByVehicleType =
+    setMonthlyVMTTotalsAndPercentagesByVehicleType();
 
-  // prettier-ignore
-  Object.entries(monthlyVMTTotalsAndPercentages).forEach(([month, data]) => {
-    result[Number(month)] = {
-      cars: vehicleMilesTraveledPerYear.cars * data.cars.percent,
-      trucks: vehicleMilesTraveledPerYear.trucks * data.trucks.percent,
-      transitBusesDiesel: vehicleMilesTraveledPerYear.transitBuses * data.transitBusesDiesel.percent,
-      transitBusesCNG: vehicleMilesTraveledPerYear.transitBuses * data.transitBusesCNG.percent,
-      transitBusesGasoline: vehicleMilesTraveledPerYear.transitBuses * data.transitBusesGasoline.percent,
-      schoolBuses: vehicleMilesTraveledPerYear.schoolBuses * data.schoolBuses.percent,
-    };
-  });
+  Object.entries(monthlyVMTTotalsAndPercentagesByVehicleType).forEach(
+    ([month, data]) => {
+      /* prettier-ignore */
+      result[Number(month)] = {
+        cars: averageVMTPerYear.cars * data.cars.percent,
+        trucks: averageVMTPerYear.trucks * data.trucks.percent,
+        transitBusesDiesel: averageVMTPerYear.transitBuses * data.transitBusesDiesel.percent,
+        transitBusesCNG: averageVMTPerYear.transitBuses * data.transitBusesCNG.percent,
+        transitBusesGasoline: averageVMTPerYear.transitBuses * data.transitBusesGasoline.percent,
+        schoolBuses: averageVMTPerYear.schoolBuses * data.schoolBuses.percent,
+      };
+    },
+  );
 
   return result;
 }
 
-// TODO: is there a better name for this?
-const monthlyAdjustedVMT = calculateMonthlyAdjustedVMT();
+const monthlyVMTByVehicleType = calculateMonthlyVMTByVehicleType();
 
 /**
  * Excel: Data in the first EV table (to the right of the "Calculate Changes"
@@ -350,44 +352,44 @@ export function calculateMonthlyEVEnergyUsageByType(options: {
     result[month] = {
       batteryEVCars:
         vehiclesDisplaced.batteryEVCars *
-        monthlyAdjustedVMT[month].cars *
+        monthlyVMTByVehicleType[month].cars *
         evEfficiency.batteryEVCars *
         kWtoGW,
       hybridEVCars:
         vehiclesDisplaced.hybridEVCars *
-        monthlyAdjustedVMT[month].cars *
+        monthlyVMTByVehicleType[month].cars *
         evEfficiency.hybridEVCars *
         kWtoGW *
         (percentHybridEVMilesDrivenOnElectricity / 100),
       batteryEVTrucks:
         vehiclesDisplaced.batteryEVTrucks *
-        monthlyAdjustedVMT[month].trucks *
+        monthlyVMTByVehicleType[month].trucks *
         evEfficiency.batteryEVTrucks *
         kWtoGW,
       hybridEVTrucks:
         vehiclesDisplaced.hybridEVTrucks *
-        monthlyAdjustedVMT[month].trucks *
+        monthlyVMTByVehicleType[month].trucks *
         evEfficiency.batteryEVTrucks *
         kWtoGW *
         (percentHybridEVMilesDrivenOnElectricity / 100),
       transitBusesDiesel:
         vehiclesDisplaced.transitBusesDiesel *
-        monthlyAdjustedVMT[month].transitBusesDiesel *
+        monthlyVMTByVehicleType[month].transitBusesDiesel *
         evEfficiency.transitBuses *
         kWtoGW,
       transitBusesCNG:
         vehiclesDisplaced.transitBusesCNG *
-        monthlyAdjustedVMT[month].transitBusesCNG *
+        monthlyVMTByVehicleType[month].transitBusesCNG *
         evEfficiency.transitBuses *
         kWtoGW,
       transitBusesGasoline:
         vehiclesDisplaced.transitBusesGasoline *
-        monthlyAdjustedVMT[month].transitBusesGasoline *
+        monthlyVMTByVehicleType[month].transitBusesGasoline *
         evEfficiency.transitBuses *
         kWtoGW,
       schoolBuses:
         vehiclesDisplaced.schoolBuses *
-        monthlyAdjustedVMT[month].schoolBuses *
+        monthlyVMTByVehicleType[month].schoolBuses *
         evEfficiency.schoolBuses *
         kWtoGW,
     };
