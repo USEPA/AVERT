@@ -10,19 +10,19 @@ describe('Set EE/RE Impacts', () => {
 
     cy.findByText('Reductions spread evenly throughout the year').as('toggleA');
     cy.get('@toggleA').click();
-    cy.findByText('Reduce total annual generation by').next().as('annualGwh');
-    cy.findByText('Reduce hourly generation by').next().as('constantMwh');
+    cy.findByText('Reduce total annual generation by:').next().as('annualGwh');
+    cy.findByText('Reduce hourly generation by:').next().as('constantMwh');
     cy.get('@toggleA').click();
 
     cy.findByText('Percentage reductions in some or all hours').as('toggleB');
     cy.get('@toggleB').click();
-    cy.findByText('Broad-based program: Reduce generation by')
+    cy.findByText('Broad-based program: Reduce generation by:')
       .next()
       .as('broadProgram');
-    cy.findByText('Targeted program: Reduce generation by')
+    cy.findByText('Targeted program: Reduce generation by:')
       .next()
       .as('reduction');
-    cy.findByText('% during the peak').next().as('topHours');
+    cy.findByText('% during the peak:').next().as('topHours');
     cy.get('@toggleB').click();
 
     cy.findByText('Wind').as('toggleC');
