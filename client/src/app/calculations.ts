@@ -138,9 +138,10 @@ function setMonthlyVMTTotalsAndPercentagesByVehicleType() {
   };
 
   movesEmissionsRates.forEach((data) => {
-    if (data.year === '2020') {
-      const month = Number(data.month);
+    const { vehicleType, fuelType } = data;
+    const month = Number(data.month);
 
+    if (data.year === '2020') {
       // initialize and then increment monthly vmts by vehicle type
       result[month] ??= {
         cars: { total: 0, percent: 0 },
@@ -151,34 +152,24 @@ function setMonthlyVMTTotalsAndPercentagesByVehicleType() {
         schoolBuses: { total: 0, percent: 0 },
       };
 
-      if (data.vehicleType === 'Passenger Car') {
-        result[month].cars.total += data.VMT;
-        yearlyTotals.cars += data.VMT;
-      }
+      const vehicle =
+        vehicleType === 'Passenger Car'
+          ? 'cars'
+          : vehicleType === 'Passenger Truck'
+          ? 'trucks'
+          : vehicleType === 'Transit Bus' && fuelType === 'Diesel'
+          ? 'transitBusesDiesel'
+          : vehicleType === 'Transit Bus' && fuelType === 'CNG'
+          ? 'transitBusesCNG'
+          : vehicleType === 'Transit Bus' && fuelType === 'Gasoline'
+          ? 'transitBusesGasoline'
+          : vehicleType === 'School Bus'
+          ? 'schoolBuses'
+          : null; // NOTE: fallback (vehicle should never be null)
 
-      if (data.vehicleType === 'Passenger Truck') {
-        result[month].trucks.total += data.VMT;
-        yearlyTotals.trucks += data.VMT;
-      }
-
-      if (data.vehicleType === 'Transit Bus' && data.fuelType === 'Diesel') {
-        result[month].transitBusesDiesel.total += data.VMT;
-        yearlyTotals.transitBusesDiesel += data.VMT;
-      }
-
-      if (data.vehicleType === 'Transit Bus' && data.fuelType === 'CNG') {
-        result[month].transitBusesCNG.total += data.VMT;
-        yearlyTotals.transitBusesCNG += data.VMT;
-      }
-
-      if (data.vehicleType === 'Transit Bus' && data.fuelType === 'Gasoline') {
-        result[month].transitBusesGasoline.total += data.VMT;
-        yearlyTotals.transitBusesGasoline += data.VMT;
-      }
-
-      if (data.vehicleType === 'School Bus') {
-        result[month].schoolBuses.total += data.VMT;
-        yearlyTotals.schoolBuses += data.VMT;
+      if (vehicle) {
+        result[month][vehicle].total += data.VMT;
+        yearlyTotals[vehicle] += data.VMT;
       }
     }
   });
@@ -444,7 +435,8 @@ export function calculateMonthlyEmissionRatesByType(options: {
   const locationIsState = evDeploymentLocation.startsWith('state-');
 
   movesEmissionsRates.forEach((data) => {
-    const { month, vehicleType, fuelType } = data;
+    const { vehicleType, fuelType } = data;
+    const month = Number(data.month);
 
     result[month] ??= {
       cars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
@@ -455,10 +447,10 @@ export function calculateMonthlyEmissionRatesByType(options: {
       schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
     };
 
-    const evType =
-      vehicleType === 'Passenger Car' && fuelType === 'Gasoline'
+    const vehicle =
+      vehicleType === 'Passenger Car'
         ? 'cars'
-        : vehicleType === 'Passenger Truck' && fuelType === 'Gasoline'
+        : vehicleType === 'Passenger Truck'
         ? 'trucks'
         : vehicleType === 'Transit Bus' && fuelType === 'Diesel'
         ? 'transitBusesDiesel'
@@ -466,11 +458,11 @@ export function calculateMonthlyEmissionRatesByType(options: {
         ? 'transitBusesCNG'
         : vehicleType === 'Transit Bus' && fuelType === 'Gasoline'
         ? 'transitBusesGasoline'
-        : vehicleType === 'School Bus' && fuelType === 'Gasoline'
+        : vehicleType === 'School Bus'
         ? 'schoolBuses'
-        : null; // NOTE: fallback (evType should never be null)
+        : null; // NOTE: fallback (vehicle should never be null)
 
-    if (evType) {
+    if (vehicle) {
       const modelYearMatch =
         iceReplacementVehicle === 'new'
           ? data.modelYear === evModelYear
@@ -490,12 +482,12 @@ export function calculateMonthlyEmissionRatesByType(options: {
         : 1;
 
       if (modelYearMatch && conditionalYearMatch && conditionalStateMatch) {
-        result[month][evType].CO2 += data.CO2 * locationFactor;
-        result[month][evType].NOX += data.NOX * locationFactor;
-        result[month][evType].SO2 += data.SO2 * locationFactor;
-        result[month][evType].PM25 += data.PM25 * locationFactor;
-        result[month][evType].VOCs += data.VOCs * locationFactor;
-        result[month][evType].NH3 += data.NH3 * locationFactor;
+        result[month][vehicle].CO2 += data.CO2 * locationFactor;
+        result[month][vehicle].NOX += data.NOX * locationFactor;
+        result[month][vehicle].SO2 += data.SO2 * locationFactor;
+        result[month][vehicle].PM25 += data.PM25 * locationFactor;
+        result[month][vehicle].VOCs += data.VOCs * locationFactor;
+        result[month][vehicle].NH3 += data.NH3 * locationFactor;
       }
     }
   });
