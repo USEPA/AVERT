@@ -259,21 +259,21 @@ const impactsButtonStyles = css`
  */
 function setVehicleSalesAndStockForRegion(options: {
   selectedRegion: RegionState | undefined;
-  locationIds: string[];
+  evDeploymentLocations: string[];
 }) {
-  const { selectedRegion, locationIds } = options;
+  const { selectedRegion, evDeploymentLocations } = options;
 
   const result: {
     [locationId: string]: SalesAndStockByVehicleType;
   } = {};
 
-  // don't loop through countyFips until selectedRegion and locationIds are set
-  // NOTE: selectedRegion will be undefined if a state is selected
-  if (!selectedRegion || locationIds[0] === '') return result;
+  // don't loop through countyFips until selectedRegion and evDeploymentLocations
+  // are set (selectedRegion will be undefined if a state is selected)
+  if (!selectedRegion || evDeploymentLocations[0] === '') return result;
 
   // conditionally remove 'region-' option, as it will be added later as the sum
   // of each state's data
-  const locationStateIds = locationIds.reduce((ids, id) => {
+  const stateIds = evDeploymentLocations.reduce((ids, id) => {
     return id.startsWith('region-') ? ids : ids.concat(id);
   }, [] as string[]);
 
@@ -283,7 +283,7 @@ function setVehicleSalesAndStockForRegion(options: {
 
     if (
       data['AVERT Region'] === selectedRegion.name &&
-      locationStateIds.includes(stateId)
+      stateIds.includes(stateId)
     ) {
       const lightDutyVehiclesVMTShare = data['Share of State VMT - Passenger Cars']; // prettier-ignore
       const transitBusesVMTShare = data['Share of State VMT - Transit Buses'];
@@ -314,7 +314,7 @@ function setVehicleSalesAndStockForRegion(options: {
 
   // conditionally add 'region-' to result as the sum of each state's data
   const resultStateIds = Object.keys(result);
-  const regionId = locationIds.find((item) => item.startsWith('region-'));
+  const regionId = evDeploymentLocations.find((id) => id.startsWith('region-'));
 
   if (regionId) {
     result[regionId] = {
@@ -439,7 +439,7 @@ function EEREInputs() {
   const vehicleSalesAndStock = useMemo(() => {
     return setVehicleSalesAndStockForRegion({
       selectedRegion,
-      locationIds: evDeploymentLocationOptions.map((option) => option.id),
+      evDeploymentLocations: evDeploymentLocationOptions.map((opt) => opt.id),
     });
   }, [selectedRegion, evDeploymentLocationOptions]);
 

@@ -144,9 +144,9 @@ function EVSalesAndStockTable(props: {
  */
 function setDeploymentLocationHistoricalEERE(options: {
   regionREDefaultsAverages: RegionREDefaultsAverages;
-  locationId: string;
+  evDeploymentLocation: string;
 }) {
-  const { regionREDefaultsAverages, locationId } = options;
+  const { regionREDefaultsAverages, evDeploymentLocation } = options;
 
   const result = {
     eeRetail: { mw: 0, gwh: 0 },
@@ -154,8 +154,8 @@ function setDeploymentLocationHistoricalEERE(options: {
     utilitySolar: { mw: 0, gwh: 0 },
   };
 
-  const locationIsRegion = locationId.startsWith('region-');
-  const locationIsState = locationId.startsWith('state-');
+  const locationIsRegion = evDeploymentLocation.startsWith('region-');
+  const locationIsState = evDeploymentLocation.startsWith('state-');
 
   const fallbackAverage = {
     capacity_added_mw: { onshore_wind: 0, utility_pv: 0 },
@@ -164,9 +164,9 @@ function setDeploymentLocationHistoricalEERE(options: {
 
   // averages for selected EV deployment location (region or state)
   const locationAverage = locationIsRegion
-    ? regionEereAverages[locationId.replace('region-', '') as RegionId]
+    ? regionEereAverages[evDeploymentLocation.replace('region-', '') as RegionId] // prettier-ignore
     : locationIsState
-    ? stateEereAverages[locationId.replace('state-', '') as StateId]
+    ? stateEereAverages[evDeploymentLocation.replace('state-', '') as StateId]
     : fallbackAverage;
 
   const hoursInYear = 8760;
@@ -226,7 +226,7 @@ function EEREEVComparisonTable(props: {
 
   const historicalEERE = setDeploymentLocationHistoricalEERE({
     regionREDefaultsAverages,
-    locationId: evDeploymentLocation,
+    evDeploymentLocation,
   });
 
   const historicalEERetailMw = historicalEERE.eeRetail.mw;
