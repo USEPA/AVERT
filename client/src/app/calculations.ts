@@ -414,6 +414,96 @@ export function calculateTotalYearlyEVEnergyUsage(monthlyEVEnergyUsageByType: {
 }
 
 /**
+ * Monthly emission rates by vehicle type.
+ *
+ * Excel: "Table 6: Emission rates of various vehicle types" table in the
+ * "Library" sheet (G255:R290).
+ */
+export function calculateMonthlyEmissionRatesByType(options: {
+  evDeploymentLocation: string;
+  evModelYear: string;
+  iceReplacementVehicle: string;
+}) {
+  const { evDeploymentLocation, evModelYear, iceReplacementVehicle } = options;
+
+  const pollutants = ['CO2', 'NOX', 'SO2', 'PM25', 'VOCs', 'NH3'] as const;
+  type Pollutant = typeof pollutants[number];
+
+  const result: {
+    [month: number]: {
+      cars: { [pollutant in Pollutant]: number };
+      trucks: { [pollutant in Pollutant]: number };
+      transitBusesDiesel: { [pollutant in Pollutant]: number };
+      transitBusesCNG: { [pollutant in Pollutant]: number };
+      transitBusesGasoline: { [pollutant in Pollutant]: number };
+      schoolBuses: { [pollutant in Pollutant]: number };
+    };
+  } = {};
+
+  const locationIsRegion = evDeploymentLocation.startsWith('region-');
+  const locationIsState = evDeploymentLocation.startsWith('state-');
+
+  movesEmissionsRates.forEach((data) => {
+    const { month, vehicleType, fuelType } = data;
+
+    result[month] ??= {
+      cars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      trucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      transitBusesDiesel: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      transitBusesCNG: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      transitBusesGasoline: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
+      schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+    };
+
+    const evType =
+      vehicleType === 'Passenger Car' && fuelType === 'Gasoline'
+        ? 'cars'
+        : vehicleType === 'Passenger Truck' && fuelType === 'Gasoline'
+        ? 'trucks'
+        : vehicleType === 'Transit Bus' && fuelType === 'Diesel'
+        ? 'transitBusesDiesel'
+        : vehicleType === 'Transit Bus' && fuelType === 'CNG'
+        ? 'transitBusesCNG'
+        : vehicleType === 'Transit Bus' && fuelType === 'Gasoline'
+        ? 'transitBusesGasoline'
+        : vehicleType === 'School Bus' && fuelType === 'Gasoline'
+        ? 'schoolBuses'
+        : null; // NOTE: fallback (evType should never be null)
+
+    if (evType) {
+      const modelYearMatch =
+        iceReplacementVehicle === 'new'
+          ? data.modelYear === evModelYear
+          : data.modelYear === 'Fleet Average';
+
+      const conditionalYearMatch =
+        iceReplacementVehicle === 'new'
+          ? true //
+          : data.year === evModelYear;
+
+      const conditionalStateMatch = locationIsState
+        ? data.state === evDeploymentLocation.replace('state-', '')
+        : true;
+
+      const locationFactor = locationIsRegion
+        ? data.regionalWeight //
+        : 1;
+
+      if (modelYearMatch && conditionalYearMatch && conditionalStateMatch) {
+        result[month][evType].CO2 += data.CO2 * locationFactor;
+        result[month][evType].NOX += data.NOX * locationFactor;
+        result[month][evType].SO2 += data.SO2 * locationFactor;
+        result[month][evType].PM25 += data.PM25 * locationFactor;
+        result[month][evType].VOCs += data.VOCs * locationFactor;
+        result[month][evType].NH3 += data.NH3 * locationFactor;
+      }
+    }
+  });
+
+  return result;
+}
+
+/**
  * Monthly EV energy usage (total for each month) in MW, combined into the four
  * AVERT EV input types.
  *
