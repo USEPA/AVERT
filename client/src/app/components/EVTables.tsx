@@ -12,6 +12,8 @@ import { useTypedSelector } from 'app/redux/index';
 import { useSelectedRegion } from 'app/hooks';
 // calculations
 import {
+  calculateMonthlyVMTByVehicleType,
+  calculateVehiclesDisplaced,
   calculateMonthlyEVEnergyUsageByType,
   calculateTotalYearlyEVEnergyUsage,
 } from 'app/calculations';
@@ -25,6 +27,8 @@ import regionEereAverages from 'app/data/region-eere-averages.json';
  * table in the "Library" sheet (B609:E658).
  */
 import stateEereAverages from 'app/data/state-eere-averages.json';
+
+const monthlyVMTByVehicleType = calculateMonthlyVMTByVehicleType();
 
 type RegionId = keyof typeof regionEereAverages;
 type StateId = keyof typeof stateEereAverages;
@@ -207,11 +211,16 @@ function EEREEVComparisonTable(props: {
 
   const selectedRegion = useSelectedRegion();
 
-  const monthlyEVEnergyUsageByType = calculateMonthlyEVEnergyUsageByType({
+  const vehiclesDisplaced = calculateVehiclesDisplaced({
     batteryEVs: Number(batteryEVs),
     hybridEVs: Number(hybridEVs),
     transitBuses: Number(transitBuses),
     schoolBuses: Number(schoolBuses),
+  });
+
+  const monthlyEVEnergyUsageByType = calculateMonthlyEVEnergyUsageByType({
+    monthlyVMTByVehicleType,
+    vehiclesDisplaced,
     evModelYear,
   });
 

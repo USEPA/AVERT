@@ -728,13 +728,13 @@ export type EVModelYear = '2020' | '2021' | '2022' | '2023' | '2024' | '2025';
  * (D100:G104).
  */
 export const percentVehiclesDisplacedByEVs = {
-  batteryEVCars: 28,
-  batteryEVTrucks: 72,
-  hybridEVCars: 28,
-  hybridEVTrucks: 72,
-  transitBusesDiesel: 79,
-  transitBusesCNG: 7,
-  transitBusesGasoline: 15,
+  batteryEVCars: 27.6046368502288,
+  batteryEVTrucks: 72.3953631497712,
+  hybridEVCars: 27.6046368502288,
+  hybridEVTrucks: 72.3953631497712,
+  transitBusesDiesel: 78.8731353789831,
+  transitBusesCNG: 6.55779483731649,
+  transitBusesGasoline: 14.5690697837004,
   schoolBuses: 100,
 };
 

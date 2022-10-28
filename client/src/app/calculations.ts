@@ -29,16 +29,27 @@ import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
  */
 import movesEmissionsRates from 'app/data/moves-emissions-rates.json';
 
-type EVEnergyUsageByType = {
-  batteryEVCars: number;
-  hybridEVCars: number;
-  batteryEVTrucks: number;
-  hybridEVTrucks: number;
-  transitBusesDiesel: number;
-  transitBusesCNG: number;
-  transitBusesGasoline: number;
-  schoolBuses: number;
-};
+const pollutants = ['CO2', 'NOX', 'SO2', 'PM25', 'VOCs', 'NH3'] as const;
+
+type Pollutant = typeof pollutants[number];
+
+type EVTypes =
+  | 'batteryEVCars'
+  | 'hybridEVCars'
+  | 'batteryEVTrucks'
+  | 'hybridEVTrucks'
+  | 'transitBusesDiesel'
+  | 'transitBusesCNG'
+  | 'transitBusesGasoline'
+  | 'schoolBuses';
+
+type VehicleType =
+  | 'cars'
+  | 'trucks'
+  | 'transitBusesDiesel'
+  | 'transitBusesCNG'
+  | 'transitBusesGasoline'
+  | 'schoolBuses';
 
 /**
  * build up daily stats object by looping through every hour of the year,
@@ -114,12 +125,10 @@ function createMonthlyStats(dailyStats: {
 function setMonthlyVMTTotalsAndPercentagesByVehicleType() {
   const result: {
     [month: number]: {
-      cars: { total: number; percent: number };
-      trucks: { total: number; percent: number };
-      transitBusesDiesel: { total: number; percent: number };
-      transitBusesCNG: { total: number; percent: number };
-      transitBusesGasoline: { total: number; percent: number };
-      schoolBuses: { total: number; percent: number };
+      [vehicleType in VehicleType]: {
+        total: number;
+        percent: number;
+      };
     };
   } = {};
 
@@ -193,15 +202,10 @@ function setMonthlyVMTTotalsAndPercentagesByVehicleType() {
  * Excel: "Table 5: EV weather adjustments and monthly VMT adjustments" table
  * in the "Library" sheet (E234:P239).
  */
-function calculateMonthlyVMTByVehicleType() {
+export function calculateMonthlyVMTByVehicleType() {
   const result: {
     [month: number]: {
-      cars: number;
-      trucks: number;
-      transitBusesDiesel: number;
-      transitBusesCNG: number;
-      transitBusesGasoline: number;
-      schoolBuses: number;
+      [vehicleType in VehicleType]: number;
     };
   } = {};
 
@@ -211,9 +215,11 @@ function calculateMonthlyVMTByVehicleType() {
     setMonthlyVMTTotalsAndPercentagesByVehicleType();
 
   Object.entries(monthlyVMTTotalsAndPercentagesByVehicleType).forEach(
-    ([month, data]) => {
+    ([key, data]) => {
+      const month = Number(key);
+
       /* prettier-ignore */
-      result[Number(month)] = {
+      result[month] = {
         cars: averageVMTPerYear.cars * data.cars.percent,
         trucks: averageVMTPerYear.trucks * data.trucks.percent,
         transitBusesDiesel: averageVMTPerYear.transitBuses * data.transitBusesDiesel.percent,
@@ -280,33 +286,21 @@ function createHourlyEVChargingPercentages(options: {
 }
 
 /**
- * Monthly EV energy use in GW for all the EV types we have data for.
+ * Number of vehicles displaced by new EVs.
  *
- * Excel: "Sales Changes" data from "Table 7: Calculated changes for the
- * transportation sector" table in the "Library" sheet (G298:R306).
+ * Excel: "Sales Changes" section of Table 7 in the "Library" sheet
+ * (E299:E306), which uses "Part II. Vehicle Composition" table in the
+ * "EV_Detail" sheet (L99:O104).
  */
-export function calculateMonthlyEVEnergyUsageByType(options: {
+export function calculateVehiclesDisplaced(options: {
   batteryEVs: number;
   hybridEVs: number;
   transitBuses: number;
   schoolBuses: number;
-  evModelYear: string;
 }) {
-  const { batteryEVs, hybridEVs, transitBuses, schoolBuses, evModelYear } =
-    options;
+  const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = options;
 
-  const result: {
-    [month: number]: EVEnergyUsageByType;
-  } = {};
-
-  /**
-   * Number of vehicles displaced by new EVs.
-   *
-   * Excel: "Sales Changes" section of Table 7 in the "Library" sheet
-   * (E299:E306), which uses "Part II. Vehicle Composition" table in the
-   * "EV_Detail" sheet (L99:O104).
-   */
-  const vehiclesDisplaced = {
+  const result = {
     batteryEVCars:
       batteryEVs * (percentVehiclesDisplacedByEVs.batteryEVCars / 100),
     hybridEVCars:
@@ -324,6 +318,34 @@ export function calculateMonthlyEVEnergyUsageByType(options: {
     schoolBuses:
       schoolBuses * (percentVehiclesDisplacedByEVs.schoolBuses / 100),
   };
+
+  return result;
+}
+
+/**
+ * Monthly EV energy use in GW for all the EV types we have data for.
+ *
+ * Excel: "Sales Changes" data from "Table 7: Calculated changes for the
+ * transportation sector" table in the "Library" sheet (G298:R306).
+ */
+export function calculateMonthlyEVEnergyUsageByType(options: {
+  monthlyVMTByVehicleType: {
+    [month: number]: {
+      [vehicleType in VehicleType]: number;
+    };
+  };
+  vehiclesDisplaced: {
+    [evType in EVTypes]: number;
+  };
+  evModelYear: string;
+}) {
+  const { monthlyVMTByVehicleType, vehiclesDisplaced, evModelYear } = options;
+
+  const result: {
+    [month: number]: {
+      [evType in EVTypes]: number;
+    };
+  } = {};
 
   /**
    * Efficiency factor for each vehicle type for the selected model year.
@@ -394,7 +416,9 @@ export function calculateMonthlyEVEnergyUsageByType(options: {
  * single total EV energy usage value for the year.
  */
 export function calculateTotalYearlyEVEnergyUsage(monthlyEVEnergyUsageByType: {
-  [month: number]: EVEnergyUsageByType;
+  [month: number]: {
+    [evType in EVTypes]: number;
+  };
 }) {
   const result = Object.values(monthlyEVEnergyUsageByType).reduce(
     (total, month) => total + Object.values(month).reduce((a, b) => a + b, 0),
@@ -417,17 +441,11 @@ export function calculateMonthlyEmissionRatesByType(options: {
 }) {
   const { evDeploymentLocation, evModelYear, iceReplacementVehicle } = options;
 
-  const pollutants = ['CO2', 'NOX', 'SO2', 'PM25', 'VOCs', 'NH3'] as const;
-  type Pollutant = typeof pollutants[number];
-
   const result: {
     [month: number]: {
-      cars: { [pollutant in Pollutant]: number };
-      trucks: { [pollutant in Pollutant]: number };
-      transitBusesDiesel: { [pollutant in Pollutant]: number };
-      transitBusesCNG: { [pollutant in Pollutant]: number };
-      transitBusesGasoline: { [pollutant in Pollutant]: number };
-      schoolBuses: { [pollutant in Pollutant]: number };
+      [vehicleType in VehicleType]: {
+        [pollutant in Pollutant]: number;
+      };
     };
   } = {};
 
@@ -496,6 +514,103 @@ export function calculateMonthlyEmissionRatesByType(options: {
 }
 
 /**
+ * Monthly emission changes by EV type.
+ *
+ * Excel: Top half of the "Emission Changes" data from "Table 7: Calculated
+ * changes for the transportation sector" table in the "Library" sheet
+ * (G316:R336).
+ */
+function calculateMonthlyEmissionChangesByEVType(options: {
+  monthlyVMTByVehicleType: {
+    [month: number]: {
+      [vehicleType in VehicleType]: number;
+    };
+  };
+  vehiclesDisplaced: {
+    [evType in EVTypes]: number;
+  };
+  monthlyEmissionRates: {
+    [month: number]: {
+      [vehicleType in VehicleType]: {
+        [pollutant in Pollutant]: number;
+      };
+    };
+  };
+}) {
+  const { monthlyVMTByVehicleType, vehiclesDisplaced, monthlyEmissionRates } =
+    options;
+
+  const result: {
+    [month: number]: {
+      [evType in EVTypes]: {
+        [pollutant in Pollutant]: number;
+      };
+    };
+  } = {};
+
+  Object.entries(monthlyEmissionRates).forEach(([key, data]) => {
+    const month = Number(key);
+
+    result[month] ??= {
+      batteryEVCars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      hybridEVCars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      batteryEVTrucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      hybridEVTrucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      transitBusesDiesel: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      transitBusesCNG: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      transitBusesGasoline: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
+      schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+    };
+
+    pollutants.forEach((pollutant) => {
+      result[month].batteryEVCars[pollutant] =
+        data.cars[pollutant] *
+        monthlyVMTByVehicleType[month].cars *
+        vehiclesDisplaced.batteryEVCars;
+
+      result[month].hybridEVCars[pollutant] =
+        data.cars[pollutant] *
+        monthlyVMTByVehicleType[month].cars *
+        vehiclesDisplaced.hybridEVCars *
+        (percentHybridEVMilesDrivenOnElectricity / 100);
+
+      result[month].batteryEVTrucks[pollutant] =
+        data.trucks[pollutant] *
+        monthlyVMTByVehicleType[month].trucks *
+        vehiclesDisplaced.batteryEVTrucks;
+
+      result[month].hybridEVTrucks[pollutant] =
+        data.trucks[pollutant] *
+        monthlyVMTByVehicleType[month].trucks *
+        vehiclesDisplaced.hybridEVTrucks *
+        (percentHybridEVMilesDrivenOnElectricity / 100);
+
+      result[month].transitBusesDiesel[pollutant] =
+        data.transitBusesDiesel[pollutant] *
+        monthlyVMTByVehicleType[month].transitBusesDiesel *
+        vehiclesDisplaced.transitBusesDiesel;
+
+      result[month].transitBusesCNG[pollutant] =
+        data.transitBusesCNG[pollutant] *
+        monthlyVMTByVehicleType[month].transitBusesCNG *
+        vehiclesDisplaced.transitBusesCNG;
+
+      result[month].transitBusesGasoline[pollutant] =
+        data.transitBusesGasoline[pollutant] *
+        monthlyVMTByVehicleType[month].transitBusesGasoline *
+        vehiclesDisplaced.transitBusesGasoline;
+
+      result[month].schoolBuses[pollutant] =
+        data.schoolBuses[pollutant] *
+        monthlyVMTByVehicleType[month].schoolBuses *
+        vehiclesDisplaced.schoolBuses;
+    });
+  });
+
+  return result;
+}
+
+/**
  * Monthly EV energy usage (total for each month) in MW, combined into the four
  * AVERT EV input types.
  *
@@ -503,7 +618,9 @@ export function calculateMonthlyEmissionRatesByType(options: {
  * table) in the "CalculateEERE" sheet (T49:W61).
  */
 function combineMonthlyEVEnergyUsage(monthlyEVEnergyUsageByType: {
-  [month: number]: EVEnergyUsageByType;
+  [month: number]: {
+    [evType in EVTypes]: number;
+  };
 }) {
   const result: {
     [month: number]: {
@@ -516,8 +633,10 @@ function combineMonthlyEVEnergyUsage(monthlyEVEnergyUsageByType: {
 
   const GWtoMW = 1000;
 
-  Object.entries(monthlyEVEnergyUsageByType).forEach(([month, data]) => {
-    result[Number(month)] = {
+  Object.entries(monthlyEVEnergyUsageByType).forEach(([key, data]) => {
+    const month = Number(key);
+
+    result[month] = {
       batteryEVs: (data.batteryEVCars + data.batteryEVTrucks) * GWtoMW,
       hybridEVs: (data.hybridEVCars + data.hybridEVTrucks) * GWtoMW,
       transitBuses:
@@ -729,6 +848,8 @@ export function calculateEere({
     transitBusesProfile,
     schoolBusesProfile,
     evModelYear,
+    evDeploymentLocation,
+    iceReplacementVehicle,
   } = eereSelectInputs;
 
   const lineLoss = 1 / (1 - regionLineLoss);
@@ -755,11 +876,16 @@ export function calculateEere({
     schoolBusesProfile,
   });
 
-  const monthlyEVEnergyUsageByType = calculateMonthlyEVEnergyUsageByType({
+  const vehiclesDisplaced = calculateVehiclesDisplaced({
     batteryEVs,
     hybridEVs,
     transitBuses,
     schoolBuses,
+  });
+
+  const monthlyEVEnergyUsageByType = calculateMonthlyEVEnergyUsageByType({
+    monthlyVMTByVehicleType,
+    vehiclesDisplaced,
     evModelYear,
   });
 
@@ -770,6 +896,19 @@ export function calculateEere({
   const monthlyDailyEVEnergyUsage = calculateMonthlyDailyEVEnergyUsage({
     monthlyEVEnergyUsage,
     monthlyStats,
+  });
+
+  // TODO: recalculate EERE profile whenever any of the inputs change
+  const monthlyEmissionRates = calculateMonthlyEmissionRatesByType({
+    evDeploymentLocation,
+    evModelYear,
+    iceReplacementVehicle,
+  });
+
+  const monthlyEmissionChanges = calculateMonthlyEmissionChangesByEVType({
+    monthlyVMTByVehicleType,
+    vehiclesDisplaced,
+    monthlyEmissionRates,
   });
 
   // build up exceedances (soft and hard) and hourly eere for each hour of the year
