@@ -18,6 +18,8 @@ import {
   percentHybridEVMilesDrivenOnElectricity,
   percentWeekendToWeekdayEVConsumption,
 } from 'app/config';
+// calculations
+import type { DailyStats, MonthlyStats } from 'app/calculations/transportation';
 /**
  * Excel: "Table B1. View charging profiles or set a manual charging profile for
  * Weekdays" table in the "EV_Detail" sheet (C25:H49), which comes from "Table
@@ -50,70 +52,6 @@ type VehicleType =
   | 'transitBusesCNG'
   | 'transitBusesGasoline'
   | 'schoolBuses';
-
-/**
- * build up daily stats object by looping through every hour of the year,
- * (only creates objects and sets their keys in the first hour of each month)
- */
-function createDailyStats(regionalLoad: RegionalLoadData[]) {
-  const result: {
-    [month: number]: {
-      [day: number]: { _done: boolean; dayOfWeek: number; isWeekend: boolean };
-    };
-  } = {};
-
-  regionalLoad.forEach((data) => {
-    result[data.month] ??= {};
-    // NOTE: initial values to keep same object shape – will be mutated next
-    result[data.month][data.day] ??= {
-      _done: false,
-      dayOfWeek: -1,
-      isWeekend: false,
-    };
-
-    if (result[data.month][data.day]._done === false) {
-      const datetime = new Date(data.year, data.month - 1, data.day, data.hour);
-      const dayOfWeek = datetime.getDay();
-      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-      result[data.month][data.day] = { _done: true, dayOfWeek, isWeekend };
-    }
-  });
-
-  return result;
-}
-
-function createMonthlyStats(dailyStats: {
-  [month: number]: {
-    [day: number]: { _done: boolean; dayOfWeek: number; isWeekend: boolean };
-  };
-}) {
-  const result: {
-    [month: number]: {
-      totalDays: number;
-      weekdayDays: number;
-      weekendDays: number;
-    };
-  } = {};
-
-  [...Array(12)].forEach((_item, index) => {
-    const month = index + 1;
-
-    const totalDays = Object.keys(dailyStats[month]).length;
-    const weekendDays = Object.values(dailyStats[month]).reduce(
-      (total, day) => (day.isWeekend ? ++total : total),
-      0,
-    );
-    const weekdayDays = totalDays - weekendDays;
-
-    result[month] = {
-      totalDays,
-      weekdayDays,
-      weekendDays,
-    };
-  });
-
-  return result;
-}
 
 /**
  * Vehicle miles traveled (VMT) totals for each month from MOVES data, and the
@@ -758,13 +696,7 @@ function calculateMonthlyDailyEVEnergyUsage(options: {
       schoolBuses: number;
     };
   };
-  monthlyStats: {
-    [month: number]: {
-      totalDays: number;
-      weekdayDays: number;
-      weekendDays: number;
-    };
-  };
+  monthlyStats: MonthlyStats;
 }) {
   const { monthlyEVEnergyUsage, monthlyStats } = options;
 
@@ -828,11 +760,7 @@ function calculateMonthlyDailyEVEnergyUsage(options: {
  */
 function calculateHourlyEVLoad(options: {
   regionalLoadData: RegionalLoadData;
-  dailyStats: {
-    [month: number]: {
-      [day: number]: { _done: boolean; dayOfWeek: number; isWeekend: boolean };
-    };
-  };
+  dailyStats: DailyStats;
   hourlyEVChargingPercentages: {
     [hour: number]: {
       batteryEVs: { weekday: number; weekend: number };
@@ -902,6 +830,8 @@ export function calculateEere({
   regionLineLoss, // region.lineLoss
   regionalLoad, // region.rdf.regional_load
   eereDefaults, // region.eereDefaults.data
+  dailyStats, // transportation.dailyStats
+  monthlyStats, // transportation.monthlyStats
   eereTextInputs, // eere.inputs (scaled for each region)
   eereSelectInputs, // eere.inputs
 }: {
@@ -909,6 +839,8 @@ export function calculateEere({
   regionLineLoss: number;
   regionalLoad: RegionalLoadData[];
   eereDefaults: EereDefaultData[];
+  dailyStats: DailyStats;
+  monthlyStats: MonthlyStats;
   eereTextInputs: { [field in EereTextInputFieldName]: number };
   eereSelectInputs: { [field in EereSelectInputFieldName]: string };
 }) {
@@ -956,10 +888,6 @@ export function calculateEere({
 
   const percentHours = broadProgram ? 100 : topHours;
   const topPercentile = stats.percentile(hourlyLoads, 1 - percentHours / 100);
-
-  // build up daily stats object by looping through every hour of the year
-  const dailyStats = createDailyStats(regionalLoad);
-  const monthlyStats = createMonthlyStats(dailyStats);
 
   const hourlyEVChargingPercentages = createHourlyEVChargingPercentages({
     batteryEVsProfile,

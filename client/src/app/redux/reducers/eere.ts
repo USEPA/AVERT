@@ -753,7 +753,7 @@ export function updateEereICEReplacementVehicle(input: string): AppThunk {
 
 export function calculateEereProfile(): AppThunk {
   return (dispatch, getState) => {
-    const { geography, eere } = getState();
+    const { geography, transportation, eere } = getState();
 
     // select region(s), based on geographic focus:
     // single region if geographic focus is 'regions'
@@ -892,6 +892,8 @@ export function calculateEereProfile(): AppThunk {
         regionLineLoss: region.lineLoss,
         regionalLoad: region.rdf.regional_load,
         eereDefaults: region.eereDefaults.data,
+        dailyStats: transportation.dailyStats,
+        monthlyStats: transportation.monthlyStats,
         eereTextInputs: scaledEereTextInputs,
         eereSelectInputs,
       });
