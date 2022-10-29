@@ -617,7 +617,7 @@ function calculateMonthlyEmissionChangesByEVType(options: {
  * changes for the transportation sector" table in the "Library" sheet
  * (G336:R394).
  */
-export function calculateTotalMonthlyEmissionChanges(monthlyEmissionChangesByEVType: {
+function calculateTotalMonthlyEmissionChanges(monthlyEmissionChangesByEVType: {
   [month: number]: {
     [evType in EVTypes]: {
       [pollutant in Pollutant]: number;
@@ -668,6 +668,31 @@ export function calculateTotalMonthlyEmissionChanges(monthlyEmissionChangesByEVT
         };
       };
     },
+  );
+
+  return result;
+}
+
+/**
+ * Totals the monthly emission changes from each vehicle type for all months in
+ * the year to a single total emission changes value for the year.
+ */
+function calculateTotalYearlyEmissionChanges(totalMonthlyEmissionChanges: {
+  [month: number]: {
+    [key in 'cars' | 'trucks' | 'transitBuses' | 'schoolBuses' | 'total']: {
+      [pollutant in Pollutant]: number;
+    };
+  };
+}) {
+  const result = Object.values(totalMonthlyEmissionChanges).reduce(
+    (totals, month) => {
+      pollutants.forEach((pollutant) => {
+        totals[pollutant] += month.total[pollutant];
+      });
+
+      return totals;
+    },
+    { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
   );
 
   return result;
@@ -977,6 +1002,10 @@ export function calculateEere({
 
   const totalMonthlyEmissionChanges = calculateTotalMonthlyEmissionChanges(
     monthlyEmissionChangesByEVType,
+  );
+
+  const totalYearlyEmissionChanges = calculateTotalYearlyEmissionChanges(
+    totalMonthlyEmissionChanges,
   );
 
   // build up exceedances (soft and hard) and hourly eere for each hour of the year
