@@ -5,6 +5,7 @@ import {
   RegionState,
   StateState,
 } from 'app/redux/reducers/geography';
+import { storeEERETransportationData } from 'app/redux/reducers/transportation';
 // calculations
 import { calculateEere } from 'app/calculations';
 // config
@@ -661,6 +662,8 @@ export function updateEereBatteryEVsProfile(input: string): AppThunk {
       type: 'eere/UPDATE_EERE_BATTERY_EVS_PROFILE',
       payload: { option: input },
     });
+
+    dispatch(storeEERETransportationData());
   };
 }
 
@@ -681,6 +684,8 @@ export function updateEereHybridEVsProfile(input: string): AppThunk {
       type: 'eere/UPDATE_EERE_HYBRID_EVS_PROFILE',
       payload: { option: input },
     });
+
+    dispatch(storeEERETransportationData());
   };
 }
 
@@ -701,6 +706,8 @@ export function updateEereTransitBusesProfile(input: string): AppThunk {
       type: 'eere/UPDATE_EERE_TRANSIT_BUSES_PROFILE',
       payload: { option: input },
     });
+
+    dispatch(storeEERETransportationData());
   };
 }
 
@@ -721,6 +728,8 @@ export function updateEereSchoolBusesProfile(input: string): AppThunk {
       type: 'eere/UPDATE_EERE_SCHOOL_BUSES_PROFILE',
       payload: { option: input },
     });
+
+    dispatch(storeEERETransportationData());
   };
 }
 
@@ -869,16 +878,6 @@ export function calculateEereProfile(): AppThunk {
         schoolBuses: Number(eere.inputs.schoolBuses) * regionalScalingFactor,
       };
 
-      const eereSelectInputs = {
-        batteryEVsProfile: eere.inputs.batteryEVsProfile,
-        hybridEVsProfile: eere.inputs.hybridEVsProfile,
-        transitBusesProfile: eere.inputs.transitBusesProfile,
-        schoolBusesProfile: eere.inputs.schoolBusesProfile,
-        evDeploymentLocation: eere.inputs.evDeploymentLocation,
-        evModelYear: eere.inputs.evModelYear,
-        iceReplacementVehicle: eere.inputs.iceReplacementVehicle,
-      };
-
       const {
         hourlyEere,
         softValid,
@@ -894,8 +893,13 @@ export function calculateEereProfile(): AppThunk {
         eereDefaults: region.eereDefaults.data,
         dailyStats: transportation.dailyStats,
         monthlyStats: transportation.monthlyStats,
+        hourlyEVChargingPercentages: transportation.hourlyEVChargingPercentages,
         eereTextInputs: scaledEereTextInputs,
-        eereSelectInputs,
+        eereSelectInputs: {
+          evDeploymentLocation: eere.inputs.evDeploymentLocation,
+          evModelYear: eere.inputs.evModelYear,
+          iceReplacementVehicle: eere.inputs.iceReplacementVehicle,
+        },
       });
 
       const regionalProfile = {

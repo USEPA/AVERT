@@ -711,7 +711,7 @@ export const states: { [key in StateId]: State } = {
   },
 };
 
-export type EvProfileName =
+export type EVProfileName =
   | 'fleetwide'
   | 'residentialLevel1'
   | 'residentialLevel2'

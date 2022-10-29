@@ -2,10 +2,15 @@
 import { AppThunk } from 'app/redux/index';
 import { RegionalLoadData } from 'app/redux/reducers/geography';
 // calculations
-import type { DailyStats, MonthlyStats } from 'app/calculations/transportation';
+import type {
+  DailyStats,
+  MonthlyStats,
+  HourlyEVChargingPercentages,
+} from 'app/calculations/transportation';
 import {
   createDailyStats,
   createMonthlyStats,
+  createHourlyEVChargingPercentages,
 } from 'app/calculations/transportation';
 
 type TransportationAction =
@@ -16,17 +21,23 @@ type TransportationAction =
   | {
       type: 'transportation/SET_MONTHLY_STATS';
       payload: { monthlyStats: MonthlyStats };
+    }
+  | {
+      type: 'transportation/SET_HOURLY_EV_CHARGING_PERCENTAGES';
+      payload: { hourlyEVChargingPercentages: HourlyEVChargingPercentages };
     };
 
 type TransportationState = {
   dailyStats: DailyStats;
   monthlyStats: MonthlyStats;
+  hourlyEVChargingPercentages: HourlyEVChargingPercentages;
 };
 
 // reducer
 const initialState: TransportationState = {
   dailyStats: {},
   monthlyStats: {},
+  hourlyEVChargingPercentages: {},
 };
 
 export default function reducer(
@@ -52,6 +63,15 @@ export default function reducer(
       };
     }
 
+    case 'transportation/SET_HOURLY_EV_CHARGING_PERCENTAGES': {
+      const { hourlyEVChargingPercentages } = action.payload;
+
+      return {
+        ...state,
+        hourlyEVChargingPercentages,
+      };
+    }
+
     default: {
       return state;
     }
@@ -59,13 +79,13 @@ export default function reducer(
 }
 
 // action creators
-export function storeTransportationData(
+export function storeRegionTransportationData(
   regionalLoad: RegionalLoadData[],
 ): AppThunk {
-  const dailyStats = createDailyStats(regionalLoad);
-  const monthlyStats = createMonthlyStats(dailyStats);
-
   return (dispatch) => {
+    const dailyStats = createDailyStats(regionalLoad);
+    const monthlyStats = createMonthlyStats(dailyStats);
+
     dispatch({
       type: 'transportation/SET_DAILY_STATS',
       payload: { dailyStats },
@@ -74,6 +94,31 @@ export function storeTransportationData(
     dispatch({
       type: 'transportation/SET_MONTHLY_STATS',
       payload: { monthlyStats },
+    });
+  };
+}
+
+export function storeEERETransportationData(): AppThunk {
+  return (dispatch, getState) => {
+    const { eere } = getState();
+
+    const {
+      batteryEVsProfile,
+      hybridEVsProfile,
+      transitBusesProfile,
+      schoolBusesProfile,
+    } = eere.inputs;
+
+    const hourlyEVChargingPercentages = createHourlyEVChargingPercentages({
+      batteryEVsProfile,
+      hybridEVsProfile,
+      transitBusesProfile,
+      schoolBusesProfile,
+    });
+
+    dispatch({
+      type: 'transportation/SET_HOURLY_EV_CHARGING_PERCENTAGES',
+      payload: { hourlyEVChargingPercentages },
     });
   };
 }

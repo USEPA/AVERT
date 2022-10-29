@@ -4,13 +4,9 @@ import {
   RegionalLoadData,
   EereDefaultData,
 } from 'app/redux/reducers/geography';
-import {
-  EereTextInputFieldName,
-  EereSelectInputFieldName,
-} from 'app/redux/reducers/eere';
+import { EereTextInputFieldName } from 'app/redux/reducers/eere';
 // config
 import {
-  EvProfileName,
   EVModelYear,
   percentVehiclesDisplacedByEVs,
   averageVMTPerYear,
@@ -19,13 +15,11 @@ import {
   percentWeekendToWeekdayEVConsumption,
 } from 'app/config';
 // calculations
-import type { DailyStats, MonthlyStats } from 'app/calculations/transportation';
-/**
- * Excel: "Table B1. View charging profiles or set a manual charging profile for
- * Weekdays" table in the "EV_Detail" sheet (C25:H49), which comes from "Table
- * 8: Default EV load profiles" table in the "Library" sheet).
- */
-import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
+import type {
+  DailyStats,
+  MonthlyStats,
+  HourlyEVChargingPercentages,
+} from 'app/calculations/transportation';
 /**
  * Excel: "MOVESEmissionRates" sheet.
  */
@@ -172,56 +166,6 @@ export function calculateMonthlyVMTByVehicleType() {
 }
 
 const monthlyVMTByVehicleType = calculateMonthlyVMTByVehicleType();
-
-/**
- * Excel: Data in the first EV table (to the right of the "Calculate Changes"
- * table) in the "CalculateEERE" sheet (P8:X32).
- */
-function createHourlyEVChargingPercentages(options: {
-  batteryEVsProfile: string;
-  hybridEVsProfile: string;
-  transitBusesProfile: string;
-  schoolBusesProfile: string;
-}) {
-  const {
-    batteryEVsProfile,
-    hybridEVsProfile,
-    transitBusesProfile,
-    schoolBusesProfile,
-  } = options;
-
-  const result: {
-    [hour: number]: {
-      batteryEVs: { weekday: number; weekend: number };
-      hybridEVs: { weekday: number; weekend: number };
-      transitBuses: { weekday: number; weekend: number };
-      schoolBuses: { weekday: number; weekend: number };
-    };
-  } = {};
-
-  evChargingProfiles.forEach((data) => {
-    result[data.hour] = {
-      batteryEVs: {
-        weekday: data[batteryEVsProfile as EvProfileName].weekday,
-        weekend: data[batteryEVsProfile as EvProfileName].weekend,
-      },
-      hybridEVs: {
-        weekday: data[hybridEVsProfile as EvProfileName].weekday,
-        weekend: data[hybridEVsProfile as EvProfileName].weekend,
-      },
-      transitBuses: {
-        weekday: data[transitBusesProfile as EvProfileName].weekday,
-        weekend: data[transitBusesProfile as EvProfileName].weekend,
-      },
-      schoolBuses: {
-        weekday: data[schoolBusesProfile as EvProfileName].weekday,
-        weekend: data[schoolBusesProfile as EvProfileName].weekend,
-      },
-    };
-  });
-
-  return result;
-}
 
 /**
  * Number of vehicles displaced by new EVs.
@@ -761,14 +705,7 @@ function calculateMonthlyDailyEVEnergyUsage(options: {
 function calculateHourlyEVLoad(options: {
   regionalLoadData: RegionalLoadData;
   dailyStats: DailyStats;
-  hourlyEVChargingPercentages: {
-    [hour: number]: {
-      batteryEVs: { weekday: number; weekend: number };
-      hybridEVs: { weekday: number; weekend: number };
-      transitBuses: { weekday: number; weekend: number };
-      schoolBuses: { weekday: number; weekend: number };
-    };
-  };
+  hourlyEVChargingPercentages: HourlyEVChargingPercentages;
   monthlyDailyEVEnergyUsage: {
     [month: number]: {
       batteryEVs: { weekday: number; weekend: number };
@@ -832,6 +769,7 @@ export function calculateEere({
   eereDefaults, // region.eereDefaults.data
   dailyStats, // transportation.dailyStats
   monthlyStats, // transportation.monthlyStats
+  hourlyEVChargingPercentages, // transportation.hourlyEVChargingPercentages
   eereTextInputs, // eere.inputs (scaled for each region)
   eereSelectInputs, // eere.inputs
 }: {
@@ -841,8 +779,14 @@ export function calculateEere({
   eereDefaults: EereDefaultData[];
   dailyStats: DailyStats;
   monthlyStats: MonthlyStats;
+  hourlyEVChargingPercentages: HourlyEVChargingPercentages;
   eereTextInputs: { [field in EereTextInputFieldName]: number };
-  eereSelectInputs: { [field in EereSelectInputFieldName]: string };
+  eereSelectInputs: {
+    [field in
+      | 'evDeploymentLocation'
+      | 'evModelYear'
+      | 'iceReplacementVehicle']: string;
+  };
 }) {
   const {
     // A: Reductions spread evenly throughout the year
@@ -867,10 +811,6 @@ export function calculateEere({
 
   const {
     // E: Electric Vehicles
-    batteryEVsProfile,
-    hybridEVsProfile,
-    transitBusesProfile,
-    schoolBusesProfile,
     evModelYear,
     evDeploymentLocation,
     iceReplacementVehicle,
@@ -888,13 +828,6 @@ export function calculateEere({
 
   const percentHours = broadProgram ? 100 : topHours;
   const topPercentile = stats.percentile(hourlyLoads, 1 - percentHours / 100);
-
-  const hourlyEVChargingPercentages = createHourlyEVChargingPercentages({
-    batteryEVsProfile,
-    hybridEVsProfile,
-    transitBusesProfile,
-    schoolBusesProfile,
-  });
 
   const vehiclesDisplaced = calculateVehiclesDisplaced({
     batteryEVs,

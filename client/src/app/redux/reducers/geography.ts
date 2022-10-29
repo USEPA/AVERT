@@ -1,6 +1,9 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
-import { storeTransportationData } from 'app/redux/reducers/transportation';
+import {
+  storeRegionTransportationData,
+  storeEERETransportationData,
+} from 'app/redux/reducers/transportation';
 // config
 import {
   RdfDataKey,
@@ -422,7 +425,8 @@ export function fetchRegionsData(): AppThunk {
         return rdfs;
       })
       .then((rdfs) => {
-        dispatch(storeTransportationData(rdfs[0].regional_load));
+        dispatch(storeRegionTransportationData(rdfs[0].regional_load));
+        dispatch(storeEERETransportationData());
       });
   };
 }
