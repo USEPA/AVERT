@@ -5,7 +5,7 @@ import {
   RegionState,
   StateState,
 } from 'app/redux/reducers/geography';
-import { storeEERETransportationData } from 'app/redux/reducers/transportation';
+import { updateEERETransportationData } from 'app/redux/reducers/transportation';
 // calculations
 import { calculateEere } from 'app/calculations';
 // config
@@ -663,7 +663,7 @@ export function updateEereBatteryEVsProfile(input: string): AppThunk {
       payload: { option: input },
     });
 
-    dispatch(storeEERETransportationData());
+    dispatch(updateEERETransportationData());
   };
 }
 
@@ -685,7 +685,7 @@ export function updateEereHybridEVsProfile(input: string): AppThunk {
       payload: { option: input },
     });
 
-    dispatch(storeEERETransportationData());
+    dispatch(updateEERETransportationData());
   };
 }
 
@@ -707,7 +707,7 @@ export function updateEereTransitBusesProfile(input: string): AppThunk {
       payload: { option: input },
     });
 
-    dispatch(storeEERETransportationData());
+    dispatch(updateEERETransportationData());
   };
 }
 
@@ -729,7 +729,7 @@ export function updateEereSchoolBusesProfile(input: string): AppThunk {
       payload: { option: input },
     });
 
-    dispatch(storeEERETransportationData());
+    dispatch(updateEERETransportationData());
   };
 }
 
