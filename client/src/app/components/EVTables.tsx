@@ -13,7 +13,6 @@ import { useSelectedRegion } from 'app/hooks';
 // calculations
 import {
   calculateMonthlyVMTByVehicleType,
-  calculateVehiclesDisplaced,
   calculateMonthlyEVEnergyUsageByType,
   calculateTotalYearlyEVEnergyUsage,
 } from 'app/calculations';
@@ -200,23 +199,15 @@ function EEREEVComparisonTable(props: {
 
   // TODO: determine if regionalScalingFactor is needed if geographicFocus is states
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const batteryEVs = useTypedSelector(({ eere }) => eere.inputs.batteryEVs);
-  const hybridEVs = useTypedSelector(({ eere }) => eere.inputs.hybridEVs);
-  const transitBuses = useTypedSelector(({ eere }) => eere.inputs.transitBuses);
-  const schoolBuses = useTypedSelector(({ eere }) => eere.inputs.schoolBuses);
+  const vehiclesDisplaced = useTypedSelector(
+    ({ transportation }) => transportation.vehiclesDisplaced,
+  );
   const evModelYear = useTypedSelector(({ eere }) => eere.inputs.evModelYear);
   const evDeploymentLocation = useTypedSelector(
     ({ eere }) => eere.inputs.evDeploymentLocation,
   );
 
   const selectedRegion = useSelectedRegion();
-
-  const vehiclesDisplaced = calculateVehiclesDisplaced({
-    batteryEVs: Number(batteryEVs),
-    hybridEVs: Number(hybridEVs),
-    transitBuses: Number(transitBuses),
-    schoolBuses: Number(schoolBuses),
-  });
 
   const monthlyEVEnergyUsageByType = calculateMonthlyEVEnergyUsageByType({
     monthlyVMTByVehicleType,

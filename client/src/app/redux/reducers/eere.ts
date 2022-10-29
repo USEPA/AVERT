@@ -5,7 +5,10 @@ import {
   RegionState,
   StateState,
 } from 'app/redux/reducers/geography';
-import { updateTransportationDataFromEVChargingProfiles } from 'app/redux/reducers/transportation';
+import {
+  updateTransportationDataFromEVChargingProfiles,
+  updateTransportationDataFromEVNumbers,
+} from 'app/redux/reducers/transportation';
 // calculations
 import { calculateEere } from 'app/calculations';
 // config
@@ -653,6 +656,8 @@ export function updateEereBatteryEVs(input: string): AppThunk {
     });
 
     dispatch(validateInput('batteryEVs', input));
+
+    dispatch(updateTransportationDataFromEVNumbers());
   };
 }
 
@@ -675,6 +680,8 @@ export function updateEereHybridEVs(input: string): AppThunk {
     });
 
     dispatch(validateInput('hybridEVs', input));
+
+    dispatch(updateTransportationDataFromEVNumbers());
   };
 }
 
@@ -697,6 +704,8 @@ export function updateEereTransitBuses(input: string): AppThunk {
     });
 
     dispatch(validateInput('transitBuses', input));
+
+    dispatch(updateTransportationDataFromEVNumbers());
   };
 }
 
@@ -719,6 +728,8 @@ export function updateEereSchoolBuses(input: string): AppThunk {
     });
 
     dispatch(validateInput('schoolBuses', input));
+
+    dispatch(updateTransportationDataFromEVNumbers());
   };
 }
 
@@ -894,6 +905,7 @@ export function calculateEereProfile(): AppThunk {
         dailyStats: transportation.dailyStats,
         monthlyStats: transportation.monthlyStats,
         hourlyEVChargingPercentages: transportation.hourlyEVChargingPercentages,
+        vehiclesDisplaced: transportation.vehiclesDisplaced,
         eereTextInputs: scaledEereTextInputs,
         eereSelectInputs: {
           evDeploymentLocation: eere.inputs.evDeploymentLocation,

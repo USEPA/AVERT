@@ -6,11 +6,13 @@ import type {
   DailyStats,
   MonthlyStats,
   HourlyEVChargingPercentages,
+  VehiclesDisplaced,
 } from 'app/calculations/transportation';
 import {
   createDailyStats,
   createMonthlyStats,
   createHourlyEVChargingPercentages,
+  calculateVehiclesDisplaced,
 } from 'app/calculations/transportation';
 
 type TransportationAction =
@@ -25,12 +27,17 @@ type TransportationAction =
   | {
       type: 'transportation/SET_HOURLY_EV_CHARGING_PERCENTAGES';
       payload: { hourlyEVChargingPercentages: HourlyEVChargingPercentages };
+    }
+  | {
+      type: 'transportation/SET_VEHICLES_DISPLACED';
+      payload: { vehiclesDisplaced: VehiclesDisplaced };
     };
 
 type TransportationState = {
   dailyStats: DailyStats;
   monthlyStats: MonthlyStats;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
+  vehiclesDisplaced: VehiclesDisplaced;
 };
 
 // reducer
@@ -38,6 +45,16 @@ const initialState: TransportationState = {
   dailyStats: {},
   monthlyStats: {},
   hourlyEVChargingPercentages: {},
+  vehiclesDisplaced: {
+    batteryEVCars: 0,
+    hybridEVCars: 0,
+    batteryEVTrucks: 0,
+    hybridEVTrucks: 0,
+    transitBusesDiesel: 0,
+    transitBusesCNG: 0,
+    transitBusesGasoline: 0,
+    schoolBuses: 0,
+  },
 };
 
 export default function reducer(
@@ -69,6 +86,15 @@ export default function reducer(
       return {
         ...state,
         hourlyEVChargingPercentages,
+      };
+    }
+
+    case 'transportation/SET_VEHICLES_DISPLACED': {
+      const { vehiclesDisplaced } = action.payload;
+
+      return {
+        ...state,
+        vehiclesDisplaced,
       };
     }
 
@@ -119,6 +145,27 @@ export function updateTransportationDataFromEVChargingProfiles(): AppThunk {
     dispatch({
       type: 'transportation/SET_HOURLY_EV_CHARGING_PERCENTAGES',
       payload: { hourlyEVChargingPercentages },
+    });
+  };
+}
+
+export function updateTransportationDataFromEVNumbers(): AppThunk {
+  return (dispatch, getState) => {
+    const { eere } = getState();
+
+    const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = eere.inputs;
+
+    // TODO: do we need the `regionalScalingFactor` for these inputs?
+    const vehiclesDisplaced = calculateVehiclesDisplaced({
+      batteryEVs: Number(batteryEVs),
+      hybridEVs: Number(hybridEVs),
+      transitBuses: Number(transitBuses),
+      schoolBuses: Number(schoolBuses),
+    });
+
+    dispatch({
+      type: 'transportation/SET_VEHICLES_DISPLACED',
+      payload: { vehiclesDisplaced },
     });
   };
 }

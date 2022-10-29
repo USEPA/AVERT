@@ -8,7 +8,6 @@ import { EereTextInputFieldName } from 'app/redux/reducers/eere';
 // config
 import {
   EVModelYear,
-  percentVehiclesDisplacedByEVs,
   averageVMTPerYear,
   evEfficiencyByModelYear,
   percentHybridEVMilesDrivenOnElectricity,
@@ -19,6 +18,7 @@ import type {
   DailyStats,
   MonthlyStats,
   HourlyEVChargingPercentages,
+  VehiclesDisplaced,
 } from 'app/calculations/transportation';
 /**
  * Excel: "MOVESEmissionRates" sheet.
@@ -168,43 +168,6 @@ export function calculateMonthlyVMTByVehicleType() {
 const monthlyVMTByVehicleType = calculateMonthlyVMTByVehicleType();
 
 /**
- * Number of vehicles displaced by new EVs.
- *
- * Excel: "Sales Changes" section of Table 7 in the "Library" sheet
- * (E299:E306), which uses "Part II. Vehicle Composition" table in the
- * "EV_Detail" sheet (L99:O104).
- */
-export function calculateVehiclesDisplaced(options: {
-  batteryEVs: number;
-  hybridEVs: number;
-  transitBuses: number;
-  schoolBuses: number;
-}) {
-  const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = options;
-
-  const result = {
-    batteryEVCars:
-      batteryEVs * (percentVehiclesDisplacedByEVs.batteryEVCars / 100),
-    hybridEVCars:
-      hybridEVs * (percentVehiclesDisplacedByEVs.hybridEVCars / 100),
-    batteryEVTrucks:
-      batteryEVs * (percentVehiclesDisplacedByEVs.batteryEVTrucks / 100),
-    hybridEVTrucks:
-      hybridEVs * (percentVehiclesDisplacedByEVs.hybridEVTrucks / 100),
-    transitBusesDiesel:
-      transitBuses * (percentVehiclesDisplacedByEVs.transitBusesDiesel / 100),
-    transitBusesCNG:
-      transitBuses * (percentVehiclesDisplacedByEVs.transitBusesCNG / 100),
-    transitBusesGasoline:
-      transitBuses * (percentVehiclesDisplacedByEVs.transitBusesGasoline / 100),
-    schoolBuses:
-      schoolBuses * (percentVehiclesDisplacedByEVs.schoolBuses / 100),
-  };
-
-  return result;
-}
-
-/**
  * Monthly EV energy use in GW for all the EV types we have data for.
  *
  * Excel: "Sales Changes" data from "Table 7: Calculated changes for the
@@ -216,9 +179,7 @@ export function calculateMonthlyEVEnergyUsageByType(options: {
       [vehicleType in VehicleType]: number;
     };
   };
-  vehiclesDisplaced: {
-    [evType in EVTypes]: number;
-  };
+  vehiclesDisplaced: VehiclesDisplaced;
   evModelYear: string;
 }) {
   const { monthlyVMTByVehicleType, vehiclesDisplaced, evModelYear } = options;
@@ -408,9 +369,7 @@ function calculateMonthlyEmissionChangesByEVType(options: {
       [vehicleType in VehicleType]: number;
     };
   };
-  vehiclesDisplaced: {
-    [evType in EVTypes]: number;
-  };
+  vehiclesDisplaced: VehiclesDisplaced;
   monthlyEmissionRates: {
     [month: number]: {
       [vehicleType in VehicleType]: {
@@ -770,6 +729,7 @@ export function calculateEere({
   dailyStats, // transportation.dailyStats
   monthlyStats, // transportation.monthlyStats
   hourlyEVChargingPercentages, // transportation.hourlyEVChargingPercentages
+  vehiclesDisplaced, // transportation.vehiclesDisplaced
   eereTextInputs, // eere.inputs (scaled for each region)
   eereSelectInputs, // eere.inputs
 }: {
@@ -780,6 +740,7 @@ export function calculateEere({
   dailyStats: DailyStats;
   monthlyStats: MonthlyStats;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
+  vehiclesDisplaced: VehiclesDisplaced;
   eereTextInputs: { [field in EereTextInputFieldName]: number };
   eereSelectInputs: {
     [field in
@@ -802,11 +763,6 @@ export function calculateEere({
     // D: Solar photovoltaic
     utilitySolar,
     rooftopSolar,
-    // E: Electric Vehicles
-    batteryEVs,
-    hybridEVs,
-    transitBuses,
-    schoolBuses,
   } = eereTextInputs;
 
   const {
@@ -828,13 +784,6 @@ export function calculateEere({
 
   const percentHours = broadProgram ? 100 : topHours;
   const topPercentile = stats.percentile(hourlyLoads, 1 - percentHours / 100);
-
-  const vehiclesDisplaced = calculateVehiclesDisplaced({
-    batteryEVs,
-    hybridEVs,
-    transitBuses,
-    schoolBuses,
-  });
 
   const monthlyEVEnergyUsageByType = calculateMonthlyEVEnergyUsageByType({
     monthlyVMTByVehicleType,

@@ -8,12 +8,14 @@ import { RegionalLoadData } from 'app/redux/reducers/geography';
 import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
 // config
 import type { EVProfileName } from 'app/config';
+import { percentVehiclesDisplacedByEVs } from 'app/config';
 
 export type DailyStats = ReturnType<typeof createDailyStats>;
 export type MonthlyStats = ReturnType<typeof createMonthlyStats>;
 export type HourlyEVChargingPercentages = ReturnType<
   typeof createHourlyEVChargingPercentages
 >;
+export type VehiclesDisplaced = ReturnType<typeof calculateVehiclesDisplaced>;
 
 /**
  * Build up daily stats object by looping through every hour of the year,
@@ -124,6 +126,43 @@ export function createHourlyEVChargingPercentages(options: {
       },
     };
   });
+
+  return result;
+}
+
+/**
+ * Number of vehicles displaced by new EVs.
+ *
+ * Excel: "Sales Changes" section of Table 7 in the "Library" sheet
+ * (E299:E306), which uses "Part II. Vehicle Composition" table in the
+ * "EV_Detail" sheet (L99:O104).
+ */
+export function calculateVehiclesDisplaced(options: {
+  batteryEVs: number;
+  hybridEVs: number;
+  transitBuses: number;
+  schoolBuses: number;
+}) {
+  const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = options;
+
+  const result = {
+    batteryEVCars:
+      batteryEVs * (percentVehiclesDisplacedByEVs.batteryEVCars / 100),
+    hybridEVCars:
+      hybridEVs * (percentVehiclesDisplacedByEVs.hybridEVCars / 100),
+    batteryEVTrucks:
+      batteryEVs * (percentVehiclesDisplacedByEVs.batteryEVTrucks / 100),
+    hybridEVTrucks:
+      hybridEVs * (percentVehiclesDisplacedByEVs.hybridEVTrucks / 100),
+    transitBusesDiesel:
+      transitBuses * (percentVehiclesDisplacedByEVs.transitBusesDiesel / 100),
+    transitBusesCNG:
+      transitBuses * (percentVehiclesDisplacedByEVs.transitBusesCNG / 100),
+    transitBusesGasoline:
+      transitBuses * (percentVehiclesDisplacedByEVs.transitBusesGasoline / 100),
+    schoolBuses:
+      schoolBuses * (percentVehiclesDisplacedByEVs.schoolBuses / 100),
+  };
 
   return result;
 }
