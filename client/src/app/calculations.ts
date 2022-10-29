@@ -611,6 +611,69 @@ function calculateMonthlyEmissionChangesByEVType(options: {
 }
 
 /**
+ * Totals monthly emission changes from each EV type.
+ *
+ * Excel: Bottom half of the "Emission Changes" data from "Table 7: Calculated
+ * changes for the transportation sector" table in the "Library" sheet
+ * (G336:R394).
+ */
+export function calculateTotalMonthlyEmissionChanges(monthlyEmissionChangesByEVType: {
+  [month: number]: {
+    [evType in EVTypes]: {
+      [pollutant in Pollutant]: number;
+    };
+  };
+}) {
+  const result = Object.entries(monthlyEmissionChangesByEVType).reduce(
+    (totals, [key, data]) => {
+      const month = Number(key);
+
+      totals[month] ??= {
+        cars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+        trucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+        transitBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+        schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+        total: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      };
+
+      pollutants.forEach((pollutant) => {
+        const monthlyCars =
+          data.batteryEVCars[pollutant] + data.hybridEVCars[pollutant];
+        const monthlyTrucks =
+          data.batteryEVTrucks[pollutant] + data.hybridEVTrucks[pollutant];
+        const monthlyTransitBuses =
+          data.transitBusesDiesel[pollutant] +
+          data.transitBusesCNG[pollutant] +
+          data.transitBusesGasoline[pollutant];
+        const monthlySchoolBuses = data.schoolBuses[pollutant];
+        const monthlyTotal =
+          monthlyCars +
+          monthlyTrucks +
+          monthlyTransitBuses +
+          monthlySchoolBuses;
+
+        totals[month].cars[pollutant] += monthlyCars;
+        totals[month].trucks[pollutant] += monthlyTrucks;
+        totals[month].transitBuses[pollutant] += monthlyTransitBuses;
+        totals[month].schoolBuses[pollutant] += monthlySchoolBuses;
+        totals[month].total[pollutant] += monthlyTotal;
+      });
+
+      return totals;
+    },
+    {} as {
+      [month: number]: {
+        [key in 'cars' | 'trucks' | 'transitBuses' | 'schoolBuses' | 'total']: {
+          [pollutant in Pollutant]: number;
+        };
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
  * Monthly EV energy usage (total for each month) in MW, combined into the four
  * AVERT EV input types.
  *
@@ -905,11 +968,16 @@ export function calculateEere({
     iceReplacementVehicle,
   });
 
-  const monthlyEmissionChanges = calculateMonthlyEmissionChangesByEVType({
-    monthlyVMTByVehicleType,
-    vehiclesDisplaced,
-    monthlyEmissionRates,
-  });
+  const monthlyEmissionChangesByEVType =
+    calculateMonthlyEmissionChangesByEVType({
+      monthlyVMTByVehicleType,
+      vehiclesDisplaced,
+      monthlyEmissionRates,
+    });
+
+  const totalMonthlyEmissionChanges = calculateTotalMonthlyEmissionChanges(
+    monthlyEmissionChangesByEVType,
+  );
 
   // build up exceedances (soft and hard) and hourly eere for each hour of the year
   const softLimitHourlyExceedances: number[] = [];
