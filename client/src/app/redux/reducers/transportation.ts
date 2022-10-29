@@ -79,7 +79,7 @@ export default function reducer(
 }
 
 // action creators
-export function storeRegionTransportationData(
+export function updateTransportationDataFromSelectedGeography(
   regionalLoad: RegionalLoadData[],
 ): AppThunk {
   return (dispatch) => {
@@ -98,7 +98,7 @@ export function storeRegionTransportationData(
   };
 }
 
-export function storeEERETransportationData(): AppThunk {
+export function updateTransportationDataFromEVChargingProfiles(): AppThunk {
   return (dispatch, getState) => {
     const { eere } = getState();
 
