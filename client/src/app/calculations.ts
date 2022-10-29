@@ -675,7 +675,11 @@ function calculateTotalMonthlyEmissionChanges(monthlyEmissionChangesByEVType: {
 
 /**
  * Totals the monthly emission changes from each vehicle type for all months in
- * the year to a single total emission changes value for the year.
+ * the year to a single total emission changes value for the year for each
+ * pollutant.
+ *
+ * Excel: Yearly pollutant totals from the "Table 7: Calculated changes for the
+ * transportation sector" table in the "Library" sheet (S389:S394).
  */
 function calculateTotalYearlyEmissionChanges(totalMonthlyEmissionChanges: {
   [month: number]: {
