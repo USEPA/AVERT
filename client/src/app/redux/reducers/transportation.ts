@@ -4,21 +4,21 @@ import { RegionalLoadData } from 'app/redux/reducers/geography';
 // calculations
 import type {
   MonthlyVMTTotalsAndPercentages,
-  MonthlyVMTByVehicleType,
+  MonthlyVMTPerVehicle,
   DailyStats,
   MonthlyStats,
   HourlyEVChargingPercentages,
   VehiclesDisplaced,
-  MonthlyEVEnergyUsageByType,
+  MonthlyEVEnergyUsage,
 } from 'app/calculations/transportation';
 import {
   calculateMonthlyVMTTotalsAndPercentages,
-  calculateMonthlyVMTByVehicleType,
+  calculateMonthlyVMTPerVehicle,
   calculateDailyStats,
   calculateMonthlyStats,
   calculateHourlyEVChargingPercentages,
   calculateVehiclesDisplaced,
-  calculateMonthlyEVEnergyUsageByType,
+  calculateMonthlyEVEnergyUsage,
 } from 'app/calculations/transportation';
 
 type TransportationAction =
@@ -29,9 +29,9 @@ type TransportationAction =
       };
     }
   | {
-      type: 'transportation/SET_MONTHLY_VMT_BY_VEHICLE_TYPE';
+      type: 'transportation/SET_MONTHLY_VMT_PER_VEHICLE';
       payload: {
-        monthlyVMTByVehicleType: MonthlyVMTByVehicleType;
+        monthlyVMTPerVehicle: MonthlyVMTPerVehicle;
       };
     }
   | {
@@ -51,24 +51,26 @@ type TransportationAction =
       payload: { vehiclesDisplaced: VehiclesDisplaced };
     }
   | {
-      type: 'transportation/SET_MONTHLY_EV_ENERGY_USAGE_BY_TYPE';
-      payload: { monthlyEVEnergyUsageByType: MonthlyEVEnergyUsageByType };
+      type: 'transportation/SET_MONTHLY_EV_ENERGY_USAGE';
+      payload: {
+        monthlyEVEnergyUsage: MonthlyEVEnergyUsage;
+      };
     };
 
 type TransportationState = {
   monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
-  monthlyVMTByVehicleType: MonthlyVMTByVehicleType;
+  monthlyVMTPerVehicle: MonthlyVMTPerVehicle;
   dailyStats: DailyStats;
   monthlyStats: MonthlyStats;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
   vehiclesDisplaced: VehiclesDisplaced;
-  monthlyEVEnergyUsageByType: MonthlyEVEnergyUsageByType;
+  monthlyEVEnergyUsage: MonthlyEVEnergyUsage;
 };
 
 // reducer
 const initialState: TransportationState = {
   monthlyVMTTotalsAndPercentages: {},
-  monthlyVMTByVehicleType: {},
+  monthlyVMTPerVehicle: {},
   dailyStats: {},
   monthlyStats: {},
   hourlyEVChargingPercentages: {},
@@ -82,7 +84,7 @@ const initialState: TransportationState = {
     transitBusesGasoline: 0,
     schoolBuses: 0,
   },
-  monthlyEVEnergyUsageByType: {},
+  monthlyEVEnergyUsage: {},
 };
 
 export default function reducer(
@@ -99,12 +101,12 @@ export default function reducer(
       };
     }
 
-    case 'transportation/SET_MONTHLY_VMT_BY_VEHICLE_TYPE': {
-      const { monthlyVMTByVehicleType } = action.payload;
+    case 'transportation/SET_MONTHLY_VMT_PER_VEHICLE': {
+      const { monthlyVMTPerVehicle } = action.payload;
 
       return {
         ...state,
-        monthlyVMTByVehicleType,
+        monthlyVMTPerVehicle,
       };
     }
 
@@ -144,12 +146,12 @@ export default function reducer(
       };
     }
 
-    case 'transportation/SET_MONTHLY_EV_ENERGY_USAGE_BY_TYPE': {
-      const { monthlyEVEnergyUsageByType } = action.payload;
+    case 'transportation/SET_MONTHLY_EV_ENERGY_USAGE': {
+      const { monthlyEVEnergyUsage } = action.payload;
 
       return {
         ...state,
-        monthlyEVEnergyUsageByType,
+        monthlyEVEnergyUsage,
       };
     }
 
@@ -164,7 +166,8 @@ export function setMonthlyVMTData(): AppThunk {
   return (dispatch) => {
     const monthlyVMTTotalsAndPercentages =
       calculateMonthlyVMTTotalsAndPercentages();
-    const monthlyVMTByVehicleType = calculateMonthlyVMTByVehicleType(
+
+    const monthlyVMTPerVehicle = calculateMonthlyVMTPerVehicle(
       monthlyVMTTotalsAndPercentages,
     );
 
@@ -174,8 +177,8 @@ export function setMonthlyVMTData(): AppThunk {
     });
 
     dispatch({
-      type: 'transportation/SET_MONTHLY_VMT_BY_VEHICLE_TYPE',
-      payload: { monthlyVMTByVehicleType },
+      type: 'transportation/SET_MONTHLY_VMT_PER_VEHICLE',
+      payload: { monthlyVMTPerVehicle },
     });
   };
 }
@@ -241,25 +244,25 @@ export function setVehiclesDisplaced(): AppThunk {
       payload: { vehiclesDisplaced },
     });
 
-    dispatch(setMonthlyEVEnergyUsageByType());
+    dispatch(setMonthlyEVEnergyUsage());
   };
 }
 
-export function setMonthlyEVEnergyUsageByType(): AppThunk {
+export function setMonthlyEVEnergyUsage(): AppThunk {
   return (dispatch, getState) => {
     const { transportation, eere } = getState();
-    const { monthlyVMTByVehicleType, vehiclesDisplaced } = transportation;
+    const { monthlyVMTPerVehicle, vehiclesDisplaced } = transportation;
     const { evModelYear } = eere.inputs;
 
-    const monthlyEVEnergyUsageByType = calculateMonthlyEVEnergyUsageByType({
-      monthlyVMTByVehicleType,
+    const monthlyEVEnergyUsage = calculateMonthlyEVEnergyUsage({
+      monthlyVMTPerVehicle,
       vehiclesDisplaced,
       evModelYear,
     });
 
     dispatch({
-      type: 'transportation/SET_MONTHLY_EV_ENERGY_USAGE_BY_TYPE',
-      payload: { monthlyEVEnergyUsageByType },
+      type: 'transportation/SET_MONTHLY_EV_ENERGY_USAGE',
+      payload: { monthlyEVEnergyUsage },
     });
   };
 }

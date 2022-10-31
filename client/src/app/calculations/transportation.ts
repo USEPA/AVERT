@@ -70,8 +70,8 @@ type ExpandedVehicleType = typeof expandedVehicleTypes[number];
 export type MonthlyVMTTotalsAndPercentages = ReturnType<
   typeof calculateMonthlyVMTTotalsAndPercentages
 >;
-export type MonthlyVMTByVehicleType = ReturnType<
-  typeof calculateMonthlyVMTByVehicleType
+export type MonthlyVMTPerVehicle = ReturnType<
+  typeof calculateMonthlyVMTPerVehicle
 >;
 export type DailyStats = ReturnType<typeof calculateDailyStats>;
 export type MonthlyStats = ReturnType<typeof calculateMonthlyStats>;
@@ -79,8 +79,8 @@ export type HourlyEVChargingPercentages = ReturnType<
   typeof calculateHourlyEVChargingPercentages
 >;
 export type VehiclesDisplaced = ReturnType<typeof calculateVehiclesDisplaced>;
-export type MonthlyEVEnergyUsageByType = ReturnType<
-  typeof calculateMonthlyEVEnergyUsageByType
+export type MonthlyEVEnergyUsage = ReturnType<
+  typeof calculateMonthlyEVEnergyUsage
 >;
 
 /**
@@ -168,7 +168,7 @@ export function calculateMonthlyVMTTotalsAndPercentages() {
  * Excel: "Table 5: EV weather adjustments and monthly VMT adjustments" table
  * in the "Library" sheet (E234:P239).
  */
-export function calculateMonthlyVMTByVehicleType(
+export function calculateMonthlyVMTPerVehicle(
   monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages,
 ) {
   const result: {
@@ -364,12 +364,12 @@ export function calculateVehiclesDisplaced(options: {
  * Excel: "Sales Changes" data from "Table 7: Calculated changes for the
  * transportation sector" table in the "Library" sheet (G298:R306).
  */
-export function calculateMonthlyEVEnergyUsageByType(options: {
-  monthlyVMTByVehicleType: MonthlyVMTByVehicleType;
+export function calculateMonthlyEVEnergyUsage(options: {
+  monthlyVMTPerVehicle: MonthlyVMTPerVehicle;
   vehiclesDisplaced: VehiclesDisplaced;
   evModelYear: string;
 }) {
-  const { monthlyVMTByVehicleType, vehiclesDisplaced, evModelYear } = options;
+  const { monthlyVMTPerVehicle, vehiclesDisplaced, evModelYear } = options;
 
   const result: {
     [month: number]: {
@@ -395,44 +395,44 @@ export function calculateMonthlyEVEnergyUsageByType(options: {
     result[month] = {
       batteryEVCars:
         vehiclesDisplaced.batteryEVCars *
-        monthlyVMTByVehicleType[month].cars *
+        monthlyVMTPerVehicle[month].cars *
         evEfficiency.batteryEVCars *
         kWtoGW,
       hybridEVCars:
         vehiclesDisplaced.hybridEVCars *
-        monthlyVMTByVehicleType[month].cars *
+        monthlyVMTPerVehicle[month].cars *
         evEfficiency.hybridEVCars *
         kWtoGW *
         (percentHybridEVMilesDrivenOnElectricity / 100),
       batteryEVTrucks:
         vehiclesDisplaced.batteryEVTrucks *
-        monthlyVMTByVehicleType[month].trucks *
+        monthlyVMTPerVehicle[month].trucks *
         evEfficiency.batteryEVTrucks *
         kWtoGW,
       hybridEVTrucks:
         vehiclesDisplaced.hybridEVTrucks *
-        monthlyVMTByVehicleType[month].trucks *
+        monthlyVMTPerVehicle[month].trucks *
         evEfficiency.batteryEVTrucks *
         kWtoGW *
         (percentHybridEVMilesDrivenOnElectricity / 100),
       transitBusesDiesel:
         vehiclesDisplaced.transitBusesDiesel *
-        monthlyVMTByVehicleType[month].transitBusesDiesel *
+        monthlyVMTPerVehicle[month].transitBusesDiesel *
         evEfficiency.transitBuses *
         kWtoGW,
       transitBusesCNG:
         vehiclesDisplaced.transitBusesCNG *
-        monthlyVMTByVehicleType[month].transitBusesCNG *
+        monthlyVMTPerVehicle[month].transitBusesCNG *
         evEfficiency.transitBuses *
         kWtoGW,
       transitBusesGasoline:
         vehiclesDisplaced.transitBusesGasoline *
-        monthlyVMTByVehicleType[month].transitBusesGasoline *
+        monthlyVMTPerVehicle[month].transitBusesGasoline *
         evEfficiency.transitBuses *
         kWtoGW,
       schoolBuses:
         vehiclesDisplaced.schoolBuses *
-        monthlyVMTByVehicleType[month].schoolBuses *
+        monthlyVMTPerVehicle[month].schoolBuses *
         evEfficiency.schoolBuses *
         kWtoGW,
     };

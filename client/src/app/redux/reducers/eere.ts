@@ -8,7 +8,7 @@ import {
 import {
   setHourlyEVChargingPercentages,
   setVehiclesDisplaced,
-  setMonthlyEVEnergyUsageByType,
+  setMonthlyEVEnergyUsage,
 } from 'app/redux/reducers/transportation';
 // calculations
 import { calculateEere } from 'app/calculations';
@@ -761,7 +761,7 @@ export function updateEereEVModelYear(input: string): AppThunk {
       payload: { option: input },
     });
 
-    dispatch(setMonthlyEVEnergyUsageByType());
+    dispatch(setMonthlyEVEnergyUsage());
   };
 }
 
@@ -905,12 +905,12 @@ export function calculateEereProfile(): AppThunk {
         regionLineLoss: region.lineLoss,
         regionalLoad: region.rdf.regional_load,
         eereDefaults: region.eereDefaults.data,
-        monthlyVMTByVehicleType: transportation.monthlyVMTByVehicleType,
+        monthlyVMTPerVehicle: transportation.monthlyVMTPerVehicle,
         dailyStats: transportation.dailyStats,
         monthlyStats: transportation.monthlyStats,
         hourlyEVChargingPercentages: transportation.hourlyEVChargingPercentages,
         vehiclesDisplaced: transportation.vehiclesDisplaced,
-        monthlyEVEnergyUsageByType: transportation.monthlyEVEnergyUsageByType,
+        monthlyEVEnergyUsage: transportation.monthlyEVEnergyUsage,
         eereTextInputs: scaledEereTextInputs,
         eereSelectInputs: {
           evDeploymentLocation: eere.inputs.evDeploymentLocation,
