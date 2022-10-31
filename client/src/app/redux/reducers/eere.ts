@@ -6,8 +6,9 @@ import {
   StateState,
 } from 'app/redux/reducers/geography';
 import {
-  updateTransportationDataFromEVChargingProfiles,
-  updateTransportationDataFromEVNumbers,
+  setHourlyEVChargingPercentages,
+  setVehiclesDisplaced,
+  setMonthlyEVEnergyUsageByType,
 } from 'app/redux/reducers/transportation';
 // calculations
 import { calculateEere } from 'app/calculations';
@@ -657,7 +658,7 @@ export function updateEereBatteryEVs(input: string): AppThunk {
 
     dispatch(validateInput('batteryEVs', input));
 
-    dispatch(updateTransportationDataFromEVNumbers());
+    dispatch(setVehiclesDisplaced());
   };
 }
 
@@ -668,7 +669,7 @@ export function updateEereBatteryEVsProfile(input: string): AppThunk {
       payload: { option: input },
     });
 
-    dispatch(updateTransportationDataFromEVChargingProfiles());
+    dispatch(setHourlyEVChargingPercentages());
   };
 }
 
@@ -681,7 +682,7 @@ export function updateEereHybridEVs(input: string): AppThunk {
 
     dispatch(validateInput('hybridEVs', input));
 
-    dispatch(updateTransportationDataFromEVNumbers());
+    dispatch(setVehiclesDisplaced());
   };
 }
 
@@ -692,7 +693,7 @@ export function updateEereHybridEVsProfile(input: string): AppThunk {
       payload: { option: input },
     });
 
-    dispatch(updateTransportationDataFromEVChargingProfiles());
+    dispatch(setHourlyEVChargingPercentages());
   };
 }
 
@@ -705,7 +706,7 @@ export function updateEereTransitBuses(input: string): AppThunk {
 
     dispatch(validateInput('transitBuses', input));
 
-    dispatch(updateTransportationDataFromEVNumbers());
+    dispatch(setVehiclesDisplaced());
   };
 }
 
@@ -716,7 +717,7 @@ export function updateEereTransitBusesProfile(input: string): AppThunk {
       payload: { option: input },
     });
 
-    dispatch(updateTransportationDataFromEVChargingProfiles());
+    dispatch(setHourlyEVChargingPercentages());
   };
 }
 
@@ -729,7 +730,7 @@ export function updateEereSchoolBuses(input: string): AppThunk {
 
     dispatch(validateInput('schoolBuses', input));
 
-    dispatch(updateTransportationDataFromEVNumbers());
+    dispatch(setVehiclesDisplaced());
   };
 }
 
@@ -740,7 +741,7 @@ export function updateEereSchoolBusesProfile(input: string): AppThunk {
       payload: { option: input },
     });
 
-    dispatch(updateTransportationDataFromEVChargingProfiles());
+    dispatch(setHourlyEVChargingPercentages());
   };
 }
 
@@ -759,6 +760,8 @@ export function updateEereEVModelYear(input: string): AppThunk {
       type: 'eere/UPDATE_EERE_EV_MODEL_YEAR',
       payload: { option: input },
     });
+
+    dispatch(setMonthlyEVEnergyUsageByType());
   };
 }
 
@@ -907,6 +910,7 @@ export function calculateEereProfile(): AppThunk {
         monthlyStats: transportation.monthlyStats,
         hourlyEVChargingPercentages: transportation.hourlyEVChargingPercentages,
         vehiclesDisplaced: transportation.vehiclesDisplaced,
+        monthlyEVEnergyUsageByType: transportation.monthlyEVEnergyUsageByType,
         eereTextInputs: scaledEereTextInputs,
         eereSelectInputs: {
           evDeploymentLocation: eere.inputs.evDeploymentLocation,

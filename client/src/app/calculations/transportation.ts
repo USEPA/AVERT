@@ -1,8 +1,13 @@
 // reducers
 import { RegionalLoadData } from 'app/redux/reducers/geography';
 // config
-import type { EVProfileName } from 'app/config';
-import { percentVehiclesDisplacedByEVs, averageVMTPerYear } from 'app/config';
+import type { EVProfileName, EVModelYear } from 'app/config';
+import {
+  percentVehiclesDisplacedByEVs,
+  averageVMTPerYear,
+  evEfficiencyByModelYear,
+  percentHybridEVMilesDrivenOnElectricity,
+} from 'app/config';
 /**
  * Excel: "MOVESEmissionRates" sheet.
  */
@@ -31,7 +36,14 @@ type MovesData = {
   regionalWeight: number;
 };
 
-const vehicleTypes = [
+// const abridgedVehicleTypes = [
+//   'cars',
+//   'trucks',
+//   'transitBuses',
+//   'schoolBuses',
+// ] as const;
+
+const generalVehicleTypes = [
   'cars',
   'trucks',
   'transitBusesDiesel',
@@ -40,20 +52,36 @@ const vehicleTypes = [
   'schoolBuses',
 ] as const;
 
-type VehicleType = typeof vehicleTypes[number];
+const expandedVehicleTypes = [
+  'batteryEVCars',
+  'hybridEVCars',
+  'batteryEVTrucks',
+  'hybridEVTrucks',
+  'transitBusesDiesel',
+  'transitBusesCNG',
+  'transitBusesGasoline',
+  'schoolBuses',
+] as const;
+
+// type AbridgedVehicleType = typeof abridgedVehicleTypes[number];
+type GeneralVehicleType = typeof generalVehicleTypes[number];
+type ExpandedVehicleType = typeof expandedVehicleTypes[number];
 
 export type MonthlyVMTTotalsAndPercentages = ReturnType<
-  typeof setMonthlyVMTTotalsAndPercentages
+  typeof calculateMonthlyVMTTotalsAndPercentages
 >;
 export type MonthlyVMTByVehicleType = ReturnType<
   typeof calculateMonthlyVMTByVehicleType
 >;
-export type DailyStats = ReturnType<typeof createDailyStats>;
-export type MonthlyStats = ReturnType<typeof createMonthlyStats>;
+export type DailyStats = ReturnType<typeof calculateDailyStats>;
+export type MonthlyStats = ReturnType<typeof calculateMonthlyStats>;
 export type HourlyEVChargingPercentages = ReturnType<
-  typeof createHourlyEVChargingPercentages
+  typeof calculateHourlyEVChargingPercentages
 >;
 export type VehiclesDisplaced = ReturnType<typeof calculateVehiclesDisplaced>;
+export type MonthlyEVEnergyUsageByType = ReturnType<
+  typeof calculateMonthlyEVEnergyUsageByType
+>;
 
 /**
  * Vehicle miles traveled (VMT) totals for each month from MOVES data, and the
@@ -62,10 +90,10 @@ export type VehiclesDisplaced = ReturnType<typeof calculateVehiclesDisplaced>;
  * Excel: "Table 5: EV weather adjustments and monthly VMT adjustments" table
  * in the "Library" sheet (totals: E220:P225, percentages: E227:P232).
  */
-export function setMonthlyVMTTotalsAndPercentages() {
+export function calculateMonthlyVMTTotalsAndPercentages() {
   const result: {
     [month: number]: {
-      [vehicleType in VehicleType]: {
+      [vehicleType in GeneralVehicleType]: {
         total: number;
         percent: number;
       };
@@ -102,7 +130,7 @@ export function setMonthlyVMTTotalsAndPercentages() {
         schoolBuses: { total: 0, percent: 0 },
       };
 
-      const vehicleType: VehicleType | null =
+      const vehicleType: GeneralVehicleType | null =
         data.vehicleType === 'Passenger Car'
           ? 'cars'
           : data.vehicleType === 'Passenger Truck'
@@ -125,7 +153,7 @@ export function setMonthlyVMTTotalsAndPercentages() {
   });
 
   Object.values(result).forEach((month) => {
-    vehicleTypes.forEach((vehicleType) => {
+    generalVehicleTypes.forEach((vehicleType) => {
       month[vehicleType].percent =
         month[vehicleType].total / yearlyTotals[vehicleType];
     });
@@ -145,7 +173,7 @@ export function calculateMonthlyVMTByVehicleType(
 ) {
   const result: {
     [month: number]: {
-      [vehicleType in VehicleType]: number;
+      [vehicleType in GeneralVehicleType]: number;
     };
   } = {};
 
@@ -161,7 +189,9 @@ export function calculateMonthlyVMTByVehicleType(
       schoolBuses: 0,
     };
 
-    vehicleTypes.forEach((vehicleType) => {
+    generalVehicleTypes.forEach((vehicleType) => {
+      // NOTE: averageVMTPerYear's vehicle types are abridged
+      // (don't include transit buses broken out by fuel type)
       const averageVMTPerYearVehicleType =
         vehicleType === 'transitBusesDiesel' ||
         vehicleType === 'transitBusesCNG' ||
@@ -182,7 +212,7 @@ export function calculateMonthlyVMTByVehicleType(
  * Build up daily stats object by looping through every hour of the year,
  * (only creates objects and sets their keys in the first hour of each month)
  */
-export function createDailyStats(regionalLoad: RegionalLoadData[]) {
+export function calculateDailyStats(regionalLoad: RegionalLoadData[]) {
   const result: {
     [month: number]: {
       [day: number]: { _done: boolean; dayOfWeek: number; isWeekend: boolean };
@@ -212,7 +242,7 @@ export function createDailyStats(regionalLoad: RegionalLoadData[]) {
 /**
  * Build up monthly stats object from daily stats object.
  */
-export function createMonthlyStats(dailyStats: DailyStats) {
+export function calculateMonthlyStats(dailyStats: DailyStats) {
   const result: {
     [month: number]: {
       totalDays: number;
@@ -245,7 +275,7 @@ export function createMonthlyStats(dailyStats: DailyStats) {
  * Excel: Data in the first EV table (to the right of the "Calculate Changes"
  * table) in the "CalculateEERE" sheet (P8:X32).
  */
-export function createHourlyEVChargingPercentages(options: {
+export function calculateHourlyEVChargingPercentages(options: {
   batteryEVsProfile: string;
   hybridEVsProfile: string;
   transitBusesProfile: string;
@@ -324,6 +354,89 @@ export function calculateVehiclesDisplaced(options: {
     schoolBuses:
       schoolBuses * (percentVehiclesDisplacedByEVs.schoolBuses / 100),
   };
+
+  return result;
+}
+
+/**
+ * Monthly EV energy use in GW for all the EV types we have data for.
+ *
+ * Excel: "Sales Changes" data from "Table 7: Calculated changes for the
+ * transportation sector" table in the "Library" sheet (G298:R306).
+ */
+export function calculateMonthlyEVEnergyUsageByType(options: {
+  monthlyVMTByVehicleType: MonthlyVMTByVehicleType;
+  vehiclesDisplaced: VehiclesDisplaced;
+  evModelYear: string;
+}) {
+  const { monthlyVMTByVehicleType, vehiclesDisplaced, evModelYear } = options;
+
+  const result: {
+    [month: number]: {
+      [vehicleType in ExpandedVehicleType]: number;
+    };
+  } = {};
+
+  /**
+   * Efficiency factor for each vehicle type for the selected model year.
+   *
+   * Excel: "Table 5: EV weather adjustments and monthly VMT adjustments" table
+   * in the "Library" sheet (E212:E217). NOTE: the Excel version duplicates
+   * these values in the columns to the right for each month, but they're the
+   * same value for all months.
+   */
+  const evEfficiency = evEfficiencyByModelYear[evModelYear as EVModelYear];
+
+  const kWtoGW = 0.000001;
+
+  [...Array(12)].forEach((_item, index) => {
+    const month = index + 1;
+
+    result[month] = {
+      batteryEVCars:
+        vehiclesDisplaced.batteryEVCars *
+        monthlyVMTByVehicleType[month].cars *
+        evEfficiency.batteryEVCars *
+        kWtoGW,
+      hybridEVCars:
+        vehiclesDisplaced.hybridEVCars *
+        monthlyVMTByVehicleType[month].cars *
+        evEfficiency.hybridEVCars *
+        kWtoGW *
+        (percentHybridEVMilesDrivenOnElectricity / 100),
+      batteryEVTrucks:
+        vehiclesDisplaced.batteryEVTrucks *
+        monthlyVMTByVehicleType[month].trucks *
+        evEfficiency.batteryEVTrucks *
+        kWtoGW,
+      hybridEVTrucks:
+        vehiclesDisplaced.hybridEVTrucks *
+        monthlyVMTByVehicleType[month].trucks *
+        evEfficiency.batteryEVTrucks *
+        kWtoGW *
+        (percentHybridEVMilesDrivenOnElectricity / 100),
+      transitBusesDiesel:
+        vehiclesDisplaced.transitBusesDiesel *
+        monthlyVMTByVehicleType[month].transitBusesDiesel *
+        evEfficiency.transitBuses *
+        kWtoGW,
+      transitBusesCNG:
+        vehiclesDisplaced.transitBusesCNG *
+        monthlyVMTByVehicleType[month].transitBusesCNG *
+        evEfficiency.transitBuses *
+        kWtoGW,
+      transitBusesGasoline:
+        vehiclesDisplaced.transitBusesGasoline *
+        monthlyVMTByVehicleType[month].transitBusesGasoline *
+        evEfficiency.transitBuses *
+        kWtoGW,
+      schoolBuses:
+        vehiclesDisplaced.schoolBuses *
+        monthlyVMTByVehicleType[month].schoolBuses *
+        evEfficiency.schoolBuses *
+        kWtoGW,
+    };
+  });
 
   return result;
 }

@@ -11,10 +11,7 @@ import { useTypedSelector } from 'app/redux/index';
 // hooks
 import { useSelectedRegion } from 'app/hooks';
 // calculations
-import {
-  calculateMonthlyEVEnergyUsageByType,
-  calculateTotalYearlyEVEnergyUsage,
-} from 'app/calculations';
+import { calculateTotalYearlyEVEnergyUsage } from 'app/calculations';
 /**
  * Excel: "Table 12: Historical renewable and energy efficiency addition data"
  * table in the "Library" sheet (B589:E603).
@@ -196,26 +193,14 @@ function EEREEVComparisonTable(props: {
 
   // TODO: determine if regionalScalingFactor is needed if geographicFocus is states
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const monthlyVMTByVehicleType = useTypedSelector(
-    ({ transportation }) => transportation.monthlyVMTByVehicleType,
+  const monthlyEVEnergyUsageByType = useTypedSelector(
+    ({ transportation }) => transportation.monthlyEVEnergyUsageByType,
   );
-  const vehiclesDisplaced = useTypedSelector(
-    ({ transportation }) => transportation.vehiclesDisplaced,
-  );
-  const evModelYear = useTypedSelector(({ eere }) => eere.inputs.evModelYear);
   const evDeploymentLocation = useTypedSelector(
     ({ eere }) => eere.inputs.evDeploymentLocation,
   );
 
   const selectedRegion = useSelectedRegion();
-
-  if (Object.keys(monthlyVMTByVehicleType).length === 0) return null;
-
-  const monthlyEVEnergyUsageByType = calculateMonthlyEVEnergyUsageByType({
-    monthlyVMTByVehicleType,
-    vehiclesDisplaced,
-    evModelYear,
-  });
 
   const totalYearlyEVEnergyUsage = calculateTotalYearlyEVEnergyUsage(
     monthlyEVEnergyUsageByType,

@@ -9,14 +9,16 @@ import type {
   MonthlyStats,
   HourlyEVChargingPercentages,
   VehiclesDisplaced,
+  MonthlyEVEnergyUsageByType,
 } from 'app/calculations/transportation';
 import {
-  setMonthlyVMTTotalsAndPercentages,
+  calculateMonthlyVMTTotalsAndPercentages,
   calculateMonthlyVMTByVehicleType,
-  createDailyStats,
-  createMonthlyStats,
-  createHourlyEVChargingPercentages,
+  calculateDailyStats,
+  calculateMonthlyStats,
+  calculateHourlyEVChargingPercentages,
   calculateVehiclesDisplaced,
+  calculateMonthlyEVEnergyUsageByType,
 } from 'app/calculations/transportation';
 
 type TransportationAction =
@@ -47,6 +49,10 @@ type TransportationAction =
   | {
       type: 'transportation/SET_VEHICLES_DISPLACED';
       payload: { vehiclesDisplaced: VehiclesDisplaced };
+    }
+  | {
+      type: 'transportation/SET_MONTHLY_EV_ENERGY_USAGE_BY_TYPE';
+      payload: { monthlyEVEnergyUsageByType: MonthlyEVEnergyUsageByType };
     };
 
 type TransportationState = {
@@ -56,6 +62,7 @@ type TransportationState = {
   monthlyStats: MonthlyStats;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
   vehiclesDisplaced: VehiclesDisplaced;
+  monthlyEVEnergyUsageByType: MonthlyEVEnergyUsageByType;
 };
 
 // reducer
@@ -75,6 +82,7 @@ const initialState: TransportationState = {
     transitBusesGasoline: 0,
     schoolBuses: 0,
   },
+  monthlyEVEnergyUsageByType: {},
 };
 
 export default function reducer(
@@ -136,6 +144,15 @@ export default function reducer(
       };
     }
 
+    case 'transportation/SET_MONTHLY_EV_ENERGY_USAGE_BY_TYPE': {
+      const { monthlyEVEnergyUsageByType } = action.payload;
+
+      return {
+        ...state,
+        monthlyEVEnergyUsageByType,
+      };
+    }
+
     default: {
       return state;
     }
@@ -143,9 +160,10 @@ export default function reducer(
 }
 
 // action creators
-export function setTransportationDataOnStartup(): AppThunk {
+export function setMonthlyVMTData(): AppThunk {
   return (dispatch) => {
-    const monthlyVMTTotalsAndPercentages = setMonthlyVMTTotalsAndPercentages();
+    const monthlyVMTTotalsAndPercentages =
+      calculateMonthlyVMTTotalsAndPercentages();
     const monthlyVMTByVehicleType = calculateMonthlyVMTByVehicleType(
       monthlyVMTTotalsAndPercentages,
     );
@@ -162,12 +180,12 @@ export function setTransportationDataOnStartup(): AppThunk {
   };
 }
 
-export function updateTransportationDataFromSelectedGeography(
+export function setDailyAndMonthlyStats(
   regionalLoad: RegionalLoadData[],
 ): AppThunk {
   return (dispatch) => {
-    const dailyStats = createDailyStats(regionalLoad);
-    const monthlyStats = createMonthlyStats(dailyStats);
+    const dailyStats = calculateDailyStats(regionalLoad);
+    const monthlyStats = calculateMonthlyStats(dailyStats);
 
     dispatch({
       type: 'transportation/SET_DAILY_STATS',
@@ -181,10 +199,9 @@ export function updateTransportationDataFromSelectedGeography(
   };
 }
 
-export function updateTransportationDataFromEVChargingProfiles(): AppThunk {
+export function setHourlyEVChargingPercentages(): AppThunk {
   return (dispatch, getState) => {
     const { eere } = getState();
-
     const {
       batteryEVsProfile,
       hybridEVsProfile,
@@ -192,7 +209,7 @@ export function updateTransportationDataFromEVChargingProfiles(): AppThunk {
       schoolBusesProfile,
     } = eere.inputs;
 
-    const hourlyEVChargingPercentages = createHourlyEVChargingPercentages({
+    const hourlyEVChargingPercentages = calculateHourlyEVChargingPercentages({
       batteryEVsProfile,
       hybridEVsProfile,
       transitBusesProfile,
@@ -206,10 +223,9 @@ export function updateTransportationDataFromEVChargingProfiles(): AppThunk {
   };
 }
 
-export function updateTransportationDataFromEVNumbers(): AppThunk {
+export function setVehiclesDisplaced(): AppThunk {
   return (dispatch, getState) => {
     const { eere } = getState();
-
     const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = eere.inputs;
 
     // TODO: do we need the `regionalScalingFactor` for these inputs?
@@ -223,6 +239,27 @@ export function updateTransportationDataFromEVNumbers(): AppThunk {
     dispatch({
       type: 'transportation/SET_VEHICLES_DISPLACED',
       payload: { vehiclesDisplaced },
+    });
+
+    dispatch(setMonthlyEVEnergyUsageByType());
+  };
+}
+
+export function setMonthlyEVEnergyUsageByType(): AppThunk {
+  return (dispatch, getState) => {
+    const { transportation, eere } = getState();
+    const { monthlyVMTByVehicleType, vehiclesDisplaced } = transportation;
+    const { evModelYear } = eere.inputs;
+
+    const monthlyEVEnergyUsageByType = calculateMonthlyEVEnergyUsageByType({
+      monthlyVMTByVehicleType,
+      vehiclesDisplaced,
+      evModelYear,
+    });
+
+    dispatch({
+      type: 'transportation/SET_MONTHLY_EV_ENERGY_USAGE_BY_TYPE',
+      payload: { monthlyEVEnergyUsageByType },
     });
   };
 }

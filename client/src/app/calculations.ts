@@ -7,8 +7,6 @@ import {
 import { EereTextInputFieldName } from 'app/redux/reducers/eere';
 // config
 import {
-  EVModelYear,
-  evEfficiencyByModelYear,
   percentHybridEVMilesDrivenOnElectricity,
   percentWeekendToWeekdayEVConsumption,
 } from 'app/config';
@@ -19,6 +17,7 @@ import type {
   MonthlyStats,
   HourlyEVChargingPercentages,
   VehiclesDisplaced,
+  MonthlyEVEnergyUsageByType,
 } from 'app/calculations/transportation';
 /**
  * Excel: "MOVESEmissionRates" sheet.
@@ -29,7 +28,7 @@ const pollutants = ['CO2', 'NOX', 'SO2', 'PM25', 'VOCs', 'NH3'] as const;
 
 type Pollutant = typeof pollutants[number];
 
-type EVTypes =
+type ExpandedVehicleType =
   | 'batteryEVCars'
   | 'hybridEVCars'
   | 'batteryEVTrucks'
@@ -39,7 +38,7 @@ type EVTypes =
   | 'transitBusesGasoline'
   | 'schoolBuses';
 
-type VehicleType =
+type GeneralVehicleType =
   | 'cars'
   | 'trucks'
   | 'transitBusesDiesel'
@@ -48,97 +47,12 @@ type VehicleType =
   | 'schoolBuses';
 
 /**
- * Monthly EV energy use in GW for all the EV types we have data for.
- *
- * Excel: "Sales Changes" data from "Table 7: Calculated changes for the
- * transportation sector" table in the "Library" sheet (G298:R306).
- */
-export function calculateMonthlyEVEnergyUsageByType(options: {
-  monthlyVMTByVehicleType: MonthlyVMTByVehicleType;
-  vehiclesDisplaced: VehiclesDisplaced;
-  evModelYear: string;
-}) {
-  const { monthlyVMTByVehicleType, vehiclesDisplaced, evModelYear } = options;
-
-  const result: {
-    [month: number]: {
-      [evType in EVTypes]: number;
-    };
-  } = {};
-
-  /**
-   * Efficiency factor for each vehicle type for the selected model year.
-   *
-   * Excel: "Table 5: EV weather adjustments and monthly VMT adjustments" table
-   * in the "Library" sheet (E212:E217). NOTE: the Excel version duplicates
-   * these values in the columns to the right for each month, but they're the
-   * same value for all months.
-   */
-  const evEfficiency = evEfficiencyByModelYear[evModelYear as EVModelYear];
-
-  const kWtoGW = 0.000001;
-
-  [...Array(12)].forEach((_item, index) => {
-    const month = index + 1;
-
-    result[month] = {
-      batteryEVCars:
-        vehiclesDisplaced.batteryEVCars *
-        monthlyVMTByVehicleType[month].cars *
-        evEfficiency.batteryEVCars *
-        kWtoGW,
-      hybridEVCars:
-        vehiclesDisplaced.hybridEVCars *
-        monthlyVMTByVehicleType[month].cars *
-        evEfficiency.hybridEVCars *
-        kWtoGW *
-        (percentHybridEVMilesDrivenOnElectricity / 100),
-      batteryEVTrucks:
-        vehiclesDisplaced.batteryEVTrucks *
-        monthlyVMTByVehicleType[month].trucks *
-        evEfficiency.batteryEVTrucks *
-        kWtoGW,
-      hybridEVTrucks:
-        vehiclesDisplaced.hybridEVTrucks *
-        monthlyVMTByVehicleType[month].trucks *
-        evEfficiency.batteryEVTrucks *
-        kWtoGW *
-        (percentHybridEVMilesDrivenOnElectricity / 100),
-      transitBusesDiesel:
-        vehiclesDisplaced.transitBusesDiesel *
-        monthlyVMTByVehicleType[month].transitBusesDiesel *
-        evEfficiency.transitBuses *
-        kWtoGW,
-      transitBusesCNG:
-        vehiclesDisplaced.transitBusesCNG *
-        monthlyVMTByVehicleType[month].transitBusesCNG *
-        evEfficiency.transitBuses *
-        kWtoGW,
-      transitBusesGasoline:
-        vehiclesDisplaced.transitBusesGasoline *
-        monthlyVMTByVehicleType[month].transitBusesGasoline *
-        evEfficiency.transitBuses *
-        kWtoGW,
-      schoolBuses:
-        vehiclesDisplaced.schoolBuses *
-        monthlyVMTByVehicleType[month].schoolBuses *
-        evEfficiency.schoolBuses *
-        kWtoGW,
-    };
-  });
-
-  return result;
-}
-
-/**
  * Totals the energy usage from each EV type for all months in the year to a
  * single total EV energy usage value for the year.
  */
-export function calculateTotalYearlyEVEnergyUsage(monthlyEVEnergyUsageByType: {
-  [month: number]: {
-    [evType in EVTypes]: number;
-  };
-}) {
+export function calculateTotalYearlyEVEnergyUsage(
+  monthlyEVEnergyUsageByType: MonthlyEVEnergyUsageByType,
+) {
   const result = Object.values(monthlyEVEnergyUsageByType).reduce(
     (total, month) => total + Object.values(month).reduce((a, b) => a + b, 0),
     0,
@@ -162,7 +76,7 @@ export function calculateMonthlyEmissionRatesByType(options: {
 
   const result: {
     [month: number]: {
-      [vehicleType in VehicleType]: {
+      [vehicleType in GeneralVehicleType]: {
         [pollutant in Pollutant]: number;
       };
     };
@@ -244,7 +158,7 @@ function calculateMonthlyEmissionChangesByEVType(options: {
   vehiclesDisplaced: VehiclesDisplaced;
   monthlyEmissionRates: {
     [month: number]: {
-      [vehicleType in VehicleType]: {
+      [vehicleType in GeneralVehicleType]: {
         [pollutant in Pollutant]: number;
       };
     };
@@ -255,7 +169,7 @@ function calculateMonthlyEmissionChangesByEVType(options: {
 
   const result: {
     [month: number]: {
-      [evType in EVTypes]: {
+      [vehicleType in ExpandedVehicleType]: {
         [pollutant in Pollutant]: number;
       };
     };
@@ -332,7 +246,7 @@ function calculateMonthlyEmissionChangesByEVType(options: {
  */
 function calculateTotalMonthlyEmissionChanges(monthlyEmissionChangesByEVType: {
   [month: number]: {
-    [evType in EVTypes]: {
+    [vehicleType in ExpandedVehicleType]: {
       [pollutant in Pollutant]: number;
     };
   };
@@ -422,11 +336,9 @@ function calculateTotalYearlyEmissionChanges(totalMonthlyEmissionChanges: {
  * Excel: Data in the third EV table (to the right of the "Calculate Changes"
  * table) in the "CalculateEERE" sheet (T49:W61).
  */
-function combineMonthlyEVEnergyUsage(monthlyEVEnergyUsageByType: {
-  [month: number]: {
-    [evType in EVTypes]: number;
-  };
-}) {
+function combineMonthlyEVEnergyUsage(
+  monthlyEVEnergyUsageByType: MonthlyEVEnergyUsageByType,
+) {
   const result: {
     [month: number]: {
       batteryEVs: number;
@@ -603,6 +515,7 @@ export function calculateEere({
   monthlyStats, // transportation.monthlyStats
   hourlyEVChargingPercentages, // transportation.hourlyEVChargingPercentages
   vehiclesDisplaced, // transportation.vehiclesDisplaced
+  monthlyEVEnergyUsageByType, // transportation.monthlyEVEnergyUsageByType
   eereTextInputs, // eere.inputs (scaled for each region)
   eereSelectInputs, // eere.inputs
 }: {
@@ -615,6 +528,7 @@ export function calculateEere({
   monthlyStats: MonthlyStats;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
   vehiclesDisplaced: VehiclesDisplaced;
+  monthlyEVEnergyUsageByType: MonthlyEVEnergyUsageByType;
   eereTextInputs: { [field in EereTextInputFieldName]: number };
   eereSelectInputs: {
     [field in
@@ -658,12 +572,6 @@ export function calculateEere({
 
   const percentHours = broadProgram ? 100 : topHours;
   const topPercentile = stats.percentile(hourlyLoads, 1 - percentHours / 100);
-
-  const monthlyEVEnergyUsageByType = calculateMonthlyEVEnergyUsageByType({
-    monthlyVMTByVehicleType,
-    vehiclesDisplaced,
-    evModelYear,
-  });
 
   const monthlyEVEnergyUsage = combineMonthlyEVEnergyUsage(
     monthlyEVEnergyUsageByType,

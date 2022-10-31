@@ -1,8 +1,8 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
 import {
-  updateTransportationDataFromSelectedGeography,
-  updateTransportationDataFromEVChargingProfiles,
+  setDailyAndMonthlyStats,
+  setHourlyEVChargingPercentages,
 } from 'app/redux/reducers/transportation';
 // config
 import {
@@ -425,10 +425,8 @@ export function fetchRegionsData(): AppThunk {
         return rdfs;
       })
       .then((rdfs) => {
-        dispatch(
-          updateTransportationDataFromSelectedGeography(rdfs[0].regional_load),
-        );
-        dispatch(updateTransportationDataFromEVChargingProfiles());
+        dispatch(setDailyAndMonthlyStats(rdfs[0].regional_load));
+        dispatch(setHourlyEVChargingPercentages());
       });
   };
 }
