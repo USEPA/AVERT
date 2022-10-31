@@ -82,6 +82,9 @@ export type VehiclesDisplaced = ReturnType<typeof calculateVehiclesDisplaced>;
 export type MonthlyEVEnergyUsage = ReturnType<
   typeof calculateMonthlyEVEnergyUsage
 >;
+export type CombinedMonthlyEVEnergyUsage = ReturnType<
+  typeof calculateCombinedMonthlyEVEnergyUsage
+>;
 
 /**
  * Vehicle miles traveled (VMT) totals for each month from MOVES data, and the
@@ -435,6 +438,45 @@ export function calculateMonthlyEVEnergyUsage(options: {
         monthlyVMTPerVehicle[month].schoolBuses *
         evEfficiency.schoolBuses *
         kWtoGW,
+    };
+  });
+
+  return result;
+}
+
+/**
+ * Monthly EV energy usage (total for each month) in MW, combined into the four
+ * AVERT EV input types.
+ *
+ * Excel: Data in the third EV table (to the right of the "Calculate Changes"
+ * table) in the "CalculateEERE" sheet (T49:W61).
+ */
+export function calculateCombinedMonthlyEVEnergyUsage(
+  monthlyEVEnergyUsage: MonthlyEVEnergyUsage,
+) {
+  const result: {
+    [month: number]: {
+      batteryEVs: number;
+      hybridEVs: number;
+      transitBuses: number;
+      schoolBuses: number;
+    };
+  } = {};
+
+  const GWtoMW = 1000;
+
+  Object.entries(monthlyEVEnergyUsage).forEach(([key, data]) => {
+    const month = Number(key);
+
+    result[month] = {
+      batteryEVs: (data.batteryEVCars + data.batteryEVTrucks) * GWtoMW,
+      hybridEVs: (data.hybridEVCars + data.hybridEVTrucks) * GWtoMW,
+      transitBuses:
+        (data.transitBusesDiesel +
+          data.transitBusesCNG +
+          data.transitBusesGasoline) *
+        GWtoMW,
+      schoolBuses: data.schoolBuses * GWtoMW,
     };
   });
 

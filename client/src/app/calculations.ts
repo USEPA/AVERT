@@ -18,6 +18,7 @@ import type {
   HourlyEVChargingPercentages,
   VehiclesDisplaced,
   MonthlyEVEnergyUsage,
+  CombinedMonthlyEVEnergyUsage,
 } from 'app/calculations/transportation';
 /**
  * Excel: "MOVESEmissionRates" sheet.
@@ -330,45 +331,6 @@ function calculateTotalYearlyEmissionChanges(totalMonthlyEmissionChanges: {
 }
 
 /**
- * Monthly EV energy usage (total for each month) in MW, combined into the four
- * AVERT EV input types.
- *
- * Excel: Data in the third EV table (to the right of the "Calculate Changes"
- * table) in the "CalculateEERE" sheet (T49:W61).
- */
-function calculateCombinedMonthlyEVEnergyUsage(
-  monthlyEVEnergyUsage: MonthlyEVEnergyUsage,
-) {
-  const result: {
-    [month: number]: {
-      batteryEVs: number;
-      hybridEVs: number;
-      transitBuses: number;
-      schoolBuses: number;
-    };
-  } = {};
-
-  const GWtoMW = 1000;
-
-  Object.entries(monthlyEVEnergyUsage).forEach(([key, data]) => {
-    const month = Number(key);
-
-    result[month] = {
-      batteryEVs: (data.batteryEVCars + data.batteryEVTrucks) * GWtoMW,
-      hybridEVs: (data.hybridEVCars + data.hybridEVTrucks) * GWtoMW,
-      transitBuses:
-        (data.transitBusesDiesel +
-          data.transitBusesCNG +
-          data.transitBusesGasoline) *
-        GWtoMW,
-      schoolBuses: data.schoolBuses * GWtoMW,
-    };
-  });
-
-  return result;
-}
-
-/**
  * Monthly EV energy usage (MWh) for a typical weekday day or weekend day.
  *
  * Excel: Data in the second EV table (to the right of the "Calculate Changes"
@@ -516,6 +478,7 @@ export function calculateEere({
   hourlyEVChargingPercentages, // transportation.hourlyEVChargingPercentages
   vehiclesDisplaced, // transportation.vehiclesDisplaced
   monthlyEVEnergyUsage, // transportation.monthlyEVEnergyUsage
+  combinedMonthlyEVEnergyUsage, // transportation.combinedMonthlyEVEnergyUsage
   eereTextInputs, // eere.inputs (scaled for each region)
   eereSelectInputs, // eere.inputs
 }: {
@@ -529,6 +492,7 @@ export function calculateEere({
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
   vehiclesDisplaced: VehiclesDisplaced;
   monthlyEVEnergyUsage: MonthlyEVEnergyUsage;
+  combinedMonthlyEVEnergyUsage: CombinedMonthlyEVEnergyUsage;
   eereTextInputs: { [field in EereTextInputFieldName]: number };
   eereSelectInputs: {
     [field in
@@ -572,9 +536,6 @@ export function calculateEere({
 
   const percentHours = broadProgram ? 100 : topHours;
   const topPercentile = stats.percentile(hourlyLoads, 1 - percentHours / 100);
-
-  const combinedMonthlyEVEnergyUsage =
-    calculateCombinedMonthlyEVEnergyUsage(monthlyEVEnergyUsage);
 
   const monthlyDailyEVEnergyUsage = calculateMonthlyDailyEVEnergyUsage({
     combinedMonthlyEVEnergyUsage,

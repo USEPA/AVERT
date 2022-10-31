@@ -911,6 +911,8 @@ export function calculateEereProfile(): AppThunk {
         hourlyEVChargingPercentages: transportation.hourlyEVChargingPercentages,
         vehiclesDisplaced: transportation.vehiclesDisplaced,
         monthlyEVEnergyUsage: transportation.monthlyEVEnergyUsage,
+        combinedMonthlyEVEnergyUsage:
+          transportation.combinedMonthlyEVEnergyUsage,
         eereTextInputs: scaledEereTextInputs,
         eereSelectInputs: {
           evDeploymentLocation: eere.inputs.evDeploymentLocation,

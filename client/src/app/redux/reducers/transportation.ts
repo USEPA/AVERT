@@ -10,6 +10,7 @@ import type {
   HourlyEVChargingPercentages,
   VehiclesDisplaced,
   MonthlyEVEnergyUsage,
+  CombinedMonthlyEVEnergyUsage,
 } from 'app/calculations/transportation';
 import {
   calculateMonthlyVMTTotalsAndPercentages,
@@ -19,6 +20,7 @@ import {
   calculateHourlyEVChargingPercentages,
   calculateVehiclesDisplaced,
   calculateMonthlyEVEnergyUsage,
+  calculateCombinedMonthlyEVEnergyUsage,
 } from 'app/calculations/transportation';
 
 type TransportationAction =
@@ -52,9 +54,11 @@ type TransportationAction =
     }
   | {
       type: 'transportation/SET_MONTHLY_EV_ENERGY_USAGE';
-      payload: {
-        monthlyEVEnergyUsage: MonthlyEVEnergyUsage;
-      };
+      payload: { monthlyEVEnergyUsage: MonthlyEVEnergyUsage };
+    }
+  | {
+      type: 'transportation/SET_COMBINED_MONTHLY_EV_ENERGY_USAGE';
+      payload: { combinedMonthlyEVEnergyUsage: CombinedMonthlyEVEnergyUsage };
     };
 
 type TransportationState = {
@@ -65,6 +69,7 @@ type TransportationState = {
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
   vehiclesDisplaced: VehiclesDisplaced;
   monthlyEVEnergyUsage: MonthlyEVEnergyUsage;
+  combinedMonthlyEVEnergyUsage: CombinedMonthlyEVEnergyUsage;
 };
 
 // reducer
@@ -85,6 +90,7 @@ const initialState: TransportationState = {
     schoolBuses: 0,
   },
   monthlyEVEnergyUsage: {},
+  combinedMonthlyEVEnergyUsage: {},
 };
 
 export default function reducer(
@@ -152,6 +158,15 @@ export default function reducer(
       return {
         ...state,
         monthlyEVEnergyUsage,
+      };
+    }
+
+    case 'transportation/SET_COMBINED_MONTHLY_EV_ENERGY_USAGE': {
+      const { combinedMonthlyEVEnergyUsage } = action.payload;
+
+      return {
+        ...state,
+        combinedMonthlyEVEnergyUsage,
       };
     }
 
@@ -260,9 +275,17 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
       evModelYear,
     });
 
+    const combinedMonthlyEVEnergyUsage =
+      calculateCombinedMonthlyEVEnergyUsage(monthlyEVEnergyUsage);
+
     dispatch({
       type: 'transportation/SET_MONTHLY_EV_ENERGY_USAGE',
       payload: { monthlyEVEnergyUsage },
+    });
+
+    dispatch({
+      type: 'transportation/SET_COMBINED_MONTHLY_EV_ENERGY_USAGE',
+      payload: { combinedMonthlyEVEnergyUsage },
     });
   };
 }
