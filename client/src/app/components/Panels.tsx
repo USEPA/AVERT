@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
@@ -26,6 +26,7 @@ import { modalLinkStyles } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import { toggleModalOverlay, resetActiveModal } from 'app/redux/reducers/panel';
 import { selectGeography } from 'app/redux/reducers/geography';
+import { setTransportationDataOnStartup } from 'app/redux/reducers/transportation';
 // hooks
 import {
   useSelectedRegion,
@@ -401,6 +402,10 @@ export const errorMessageStyles = css`
 
 function Panels() {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setTransportationDataOnStartup());
+  }, [dispatch]);
 
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
   const loading = useTypedSelector(({ panel }) => panel.loading);

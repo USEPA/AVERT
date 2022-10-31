@@ -8,13 +8,13 @@ import { EereTextInputFieldName } from 'app/redux/reducers/eere';
 // config
 import {
   EVModelYear,
-  averageVMTPerYear,
   evEfficiencyByModelYear,
   percentHybridEVMilesDrivenOnElectricity,
   percentWeekendToWeekdayEVConsumption,
 } from 'app/config';
 // calculations
 import type {
+  MonthlyVMTByVehicleType,
   DailyStats,
   MonthlyStats,
   HourlyEVChargingPercentages,
@@ -48,137 +48,13 @@ type VehicleType =
   | 'schoolBuses';
 
 /**
- * Vehicle miles traveled (VMT) totals for each month from MOVES data, and the
- * percentage/share of the yearly totals each month has, for each vehicle type.
- *
- * Excel: "Table 5: EV weather adjustments and monthly VMT adjustments" table
- * in the "Library" sheet (totals: E220:P225, percentages: E227:P232).
- */
-function setMonthlyVMTTotalsAndPercentagesByVehicleType() {
-  const result: {
-    [month: number]: {
-      [vehicleType in VehicleType]: {
-        total: number;
-        percent: number;
-      };
-    };
-  } = {};
-
-  /**
-   * Yearly total vehicle miles traveled (VMT) for each vehicle type.
-   *
-   * Excel: Total column of Table 5 in the "Library" sheet (Q220:Q225).
-   */
-  const yearlyTotals = {
-    cars: 0,
-    trucks: 0,
-    transitBusesDiesel: 0,
-    transitBusesCNG: 0,
-    transitBusesGasoline: 0,
-    schoolBuses: 0,
-  };
-
-  movesEmissionsRates.forEach((data) => {
-    const { vehicleType, fuelType } = data;
-    const month = Number(data.month);
-
-    if (data.year === '2020') {
-      // initialize and then increment monthly vmts by vehicle type
-      result[month] ??= {
-        cars: { total: 0, percent: 0 },
-        trucks: { total: 0, percent: 0 },
-        transitBusesDiesel: { total: 0, percent: 0 },
-        transitBusesCNG: { total: 0, percent: 0 },
-        transitBusesGasoline: { total: 0, percent: 0 },
-        schoolBuses: { total: 0, percent: 0 },
-      };
-
-      const vehicle =
-        vehicleType === 'Passenger Car'
-          ? 'cars'
-          : vehicleType === 'Passenger Truck'
-          ? 'trucks'
-          : vehicleType === 'Transit Bus' && fuelType === 'Diesel'
-          ? 'transitBusesDiesel'
-          : vehicleType === 'Transit Bus' && fuelType === 'CNG'
-          ? 'transitBusesCNG'
-          : vehicleType === 'Transit Bus' && fuelType === 'Gasoline'
-          ? 'transitBusesGasoline'
-          : vehicleType === 'School Bus'
-          ? 'schoolBuses'
-          : null; // NOTE: fallback (vehicle should never be null)
-
-      if (vehicle) {
-        result[month][vehicle].total += data.VMT;
-        yearlyTotals[vehicle] += data.VMT;
-      }
-    }
-  });
-
-  // prettier-ignore
-  Object.values(result).forEach((month) => {
-    month.cars.percent = month.cars.total / yearlyTotals.cars;
-    month.trucks.percent = month.trucks.total / yearlyTotals.trucks;
-    month.transitBusesDiesel.percent = month.transitBusesDiesel.total / yearlyTotals.transitBusesDiesel;
-    month.transitBusesCNG.percent = month.transitBusesCNG.total / yearlyTotals.transitBusesCNG;
-    month.transitBusesGasoline.percent = month.transitBusesGasoline.total / yearlyTotals.transitBusesGasoline;
-    month.schoolBuses.percent = month.schoolBuses.total / yearlyTotals.schoolBuses;
-  });
-
-  return result;
-}
-
-/**
- * Monthly vehicle miles traveled (VMT) for each vehicle type.
- *
- * Excel: "Table 5: EV weather adjustments and monthly VMT adjustments" table
- * in the "Library" sheet (E234:P239).
- */
-export function calculateMonthlyVMTByVehicleType() {
-  const result: {
-    [month: number]: {
-      [vehicleType in VehicleType]: number;
-    };
-  } = {};
-
-  // NOTE: we really only need percentages for each vehicle type
-  // (totals were stored to calculate the percentages)
-  const monthlyVMTTotalsAndPercentagesByVehicleType =
-    setMonthlyVMTTotalsAndPercentagesByVehicleType();
-
-  Object.entries(monthlyVMTTotalsAndPercentagesByVehicleType).forEach(
-    ([key, data]) => {
-      const month = Number(key);
-
-      /* prettier-ignore */
-      result[month] = {
-        cars: averageVMTPerYear.cars * data.cars.percent,
-        trucks: averageVMTPerYear.trucks * data.trucks.percent,
-        transitBusesDiesel: averageVMTPerYear.transitBuses * data.transitBusesDiesel.percent,
-        transitBusesCNG: averageVMTPerYear.transitBuses * data.transitBusesCNG.percent,
-        transitBusesGasoline: averageVMTPerYear.transitBuses * data.transitBusesGasoline.percent,
-        schoolBuses: averageVMTPerYear.schoolBuses * data.schoolBuses.percent,
-      };
-    },
-  );
-
-  return result;
-}
-
-const monthlyVMTByVehicleType = calculateMonthlyVMTByVehicleType();
-
-/**
  * Monthly EV energy use in GW for all the EV types we have data for.
  *
  * Excel: "Sales Changes" data from "Table 7: Calculated changes for the
  * transportation sector" table in the "Library" sheet (G298:R306).
  */
 export function calculateMonthlyEVEnergyUsageByType(options: {
-  monthlyVMTByVehicleType: {
-    [month: number]: {
-      [vehicleType in VehicleType]: number;
-    };
-  };
+  monthlyVMTByVehicleType: MonthlyVMTByVehicleType;
   vehiclesDisplaced: VehiclesDisplaced;
   evModelYear: string;
 }) {
@@ -364,11 +240,7 @@ export function calculateMonthlyEmissionRatesByType(options: {
  * (G316:R336).
  */
 function calculateMonthlyEmissionChangesByEVType(options: {
-  monthlyVMTByVehicleType: {
-    [month: number]: {
-      [vehicleType in VehicleType]: number;
-    };
-  };
+  monthlyVMTByVehicleType: MonthlyVMTByVehicleType;
   vehiclesDisplaced: VehiclesDisplaced;
   monthlyEmissionRates: {
     [month: number]: {
@@ -726,6 +598,7 @@ export function calculateEere({
   regionLineLoss, // region.lineLoss
   regionalLoad, // region.rdf.regional_load
   eereDefaults, // region.eereDefaults.data
+  monthlyVMTByVehicleType, // transportation.monthlyVMTByVehicleType
   dailyStats, // transportation.dailyStats
   monthlyStats, // transportation.monthlyStats
   hourlyEVChargingPercentages, // transportation.hourlyEVChargingPercentages
@@ -737,6 +610,7 @@ export function calculateEere({
   regionLineLoss: number;
   regionalLoad: RegionalLoadData[];
   eereDefaults: EereDefaultData[];
+  monthlyVMTByVehicleType: MonthlyVMTByVehicleType;
   dailyStats: DailyStats;
   monthlyStats: MonthlyStats;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;

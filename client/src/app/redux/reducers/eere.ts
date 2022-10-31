@@ -902,6 +902,7 @@ export function calculateEereProfile(): AppThunk {
         regionLineLoss: region.lineLoss,
         regionalLoad: region.rdf.regional_load,
         eereDefaults: region.eereDefaults.data,
+        monthlyVMTByVehicleType: transportation.monthlyVMTByVehicleType,
         dailyStats: transportation.dailyStats,
         monthlyStats: transportation.monthlyStats,
         hourlyEVChargingPercentages: transportation.hourlyEVChargingPercentages,

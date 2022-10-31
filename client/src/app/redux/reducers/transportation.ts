@@ -3,12 +3,16 @@ import { AppThunk } from 'app/redux/index';
 import { RegionalLoadData } from 'app/redux/reducers/geography';
 // calculations
 import type {
+  MonthlyVMTTotalsAndPercentages,
+  MonthlyVMTByVehicleType,
   DailyStats,
   MonthlyStats,
   HourlyEVChargingPercentages,
   VehiclesDisplaced,
 } from 'app/calculations/transportation';
 import {
+  setMonthlyVMTTotalsAndPercentages,
+  calculateMonthlyVMTByVehicleType,
   createDailyStats,
   createMonthlyStats,
   createHourlyEVChargingPercentages,
@@ -16,6 +20,18 @@ import {
 } from 'app/calculations/transportation';
 
 type TransportationAction =
+  | {
+      type: 'transportation/SET_MONTHLY_VMT_TOTALS_AND_PERCENTAGES';
+      payload: {
+        monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
+      };
+    }
+  | {
+      type: 'transportation/SET_MONTHLY_VMT_BY_VEHICLE_TYPE';
+      payload: {
+        monthlyVMTByVehicleType: MonthlyVMTByVehicleType;
+      };
+    }
   | {
       type: 'transportation/SET_DAILY_STATS';
       payload: { dailyStats: DailyStats };
@@ -34,6 +50,8 @@ type TransportationAction =
     };
 
 type TransportationState = {
+  monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
+  monthlyVMTByVehicleType: MonthlyVMTByVehicleType;
   dailyStats: DailyStats;
   monthlyStats: MonthlyStats;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
@@ -42,6 +60,8 @@ type TransportationState = {
 
 // reducer
 const initialState: TransportationState = {
+  monthlyVMTTotalsAndPercentages: {},
+  monthlyVMTByVehicleType: {},
   dailyStats: {},
   monthlyStats: {},
   hourlyEVChargingPercentages: {},
@@ -62,6 +82,24 @@ export default function reducer(
   action: TransportationAction,
 ): TransportationState {
   switch (action.type) {
+    case 'transportation/SET_MONTHLY_VMT_TOTALS_AND_PERCENTAGES': {
+      const { monthlyVMTTotalsAndPercentages } = action.payload;
+
+      return {
+        ...state,
+        monthlyVMTTotalsAndPercentages,
+      };
+    }
+
+    case 'transportation/SET_MONTHLY_VMT_BY_VEHICLE_TYPE': {
+      const { monthlyVMTByVehicleType } = action.payload;
+
+      return {
+        ...state,
+        monthlyVMTByVehicleType,
+      };
+    }
+
     case 'transportation/SET_DAILY_STATS': {
       const { dailyStats } = action.payload;
 
@@ -105,6 +143,25 @@ export default function reducer(
 }
 
 // action creators
+export function setTransportationDataOnStartup(): AppThunk {
+  return (dispatch) => {
+    const monthlyVMTTotalsAndPercentages = setMonthlyVMTTotalsAndPercentages();
+    const monthlyVMTByVehicleType = calculateMonthlyVMTByVehicleType(
+      monthlyVMTTotalsAndPercentages,
+    );
+
+    dispatch({
+      type: 'transportation/SET_MONTHLY_VMT_TOTALS_AND_PERCENTAGES',
+      payload: { monthlyVMTTotalsAndPercentages },
+    });
+
+    dispatch({
+      type: 'transportation/SET_MONTHLY_VMT_BY_VEHICLE_TYPE',
+      payload: { monthlyVMTByVehicleType },
+    });
+  };
+}
+
 export function updateTransportationDataFromSelectedGeography(
   regionalLoad: RegionalLoadData[],
 ): AppThunk {
