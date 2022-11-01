@@ -193,8 +193,8 @@ function EEREEVComparisonTable(props: {
 
   // TODO: determine if regionalScalingFactor is needed if geographicFocus is states
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const monthlyEVEnergyUsage = useTypedSelector(
-    ({ transportation }) => transportation.monthlyEVEnergyUsage,
+  const monthlyEVEnergyUsageGW = useTypedSelector(
+    ({ transportation }) => transportation.monthlyEVEnergyUsageGW,
   );
   const evDeploymentLocation = useTypedSelector(
     ({ eere }) => eere.inputs.evDeploymentLocation,
@@ -202,8 +202,9 @@ function EEREEVComparisonTable(props: {
 
   const selectedRegion = useSelectedRegion();
 
-  const totalYearlyEVEnergyUsage =
-    calculateTotalYearlyEVEnergyUsage(monthlyEVEnergyUsage);
+  const totalYearlyEVEnergyUsage = calculateTotalYearlyEVEnergyUsage(
+    monthlyEVEnergyUsageGW,
+  );
 
   const lineLoss =
     geographicFocus === 'regions' && selectedRegion

@@ -79,11 +79,11 @@ export type HourlyEVChargingPercentages = ReturnType<
   typeof calculateHourlyEVChargingPercentages
 >;
 export type VehiclesDisplaced = ReturnType<typeof calculateVehiclesDisplaced>;
-export type MonthlyEVEnergyUsage = ReturnType<
-  typeof calculateMonthlyEVEnergyUsage
+export type MonthlyEVEnergyUsageGW = ReturnType<
+  typeof calculateMonthlyEVEnergyUsageGW
 >;
-export type CombinedMonthlyEVEnergyUsage = ReturnType<
-  typeof calculateCombinedMonthlyEVEnergyUsage
+export type MonthlyEVEnergyUsageMW = ReturnType<
+  typeof calculateMonthlyEVEnergyUsageMW
 >;
 
 /**
@@ -367,7 +367,7 @@ export function calculateVehiclesDisplaced(options: {
  * Excel: "Sales Changes" data from "Table 7: Calculated changes for the
  * transportation sector" table in the "Library" sheet (G298:R306).
  */
-export function calculateMonthlyEVEnergyUsage(options: {
+export function calculateMonthlyEVEnergyUsageGW(options: {
   monthlyVMTPerVehicle: MonthlyVMTPerVehicle;
   vehiclesDisplaced: VehiclesDisplaced;
   evModelYear: string;
@@ -451,8 +451,8 @@ export function calculateMonthlyEVEnergyUsage(options: {
  * Excel: Data in the third EV table (to the right of the "Calculate Changes"
  * table) in the "CalculateEERE" sheet (T49:W61).
  */
-export function calculateCombinedMonthlyEVEnergyUsage(
-  monthlyEVEnergyUsage: MonthlyEVEnergyUsage,
+export function calculateMonthlyEVEnergyUsageMW(
+  monthlyEVEnergyUsageGW: MonthlyEVEnergyUsageGW,
 ) {
   const result: {
     [month: number]: {
@@ -465,7 +465,7 @@ export function calculateCombinedMonthlyEVEnergyUsage(
 
   const GWtoMW = 1000;
 
-  Object.entries(monthlyEVEnergyUsage).forEach(([key, data]) => {
+  Object.entries(monthlyEVEnergyUsageGW).forEach(([key, data]) => {
     const month = Number(key);
 
     result[month] = {
