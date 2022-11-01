@@ -95,6 +95,9 @@ export type MonthlyDailyEVEnergyUsage = ReturnType<
 export type MonthlyEmissionRates = ReturnType<
   typeof calculateMonthlyEmissionRates
 >;
+export type MonthlyEmissionChanges = ReturnType<
+  typeof calculateMonthlyEmissionChanges
+>;
 
 /**
  * Vehicle miles traveled (VMT) totals for each month from MOVES data, and the
@@ -684,6 +687,98 @@ export function calculateMonthlyEmissionRates(options: {
         result[month][vehicleType].NH3 += data.NH3 * locationFactor;
       }
     }
+  });
+
+  return result;
+}
+
+/**
+ * Monthly emission changes by EV type.
+ *
+ * Excel: Top half of the "Emission Changes" data from "Table 7: Calculated
+ * changes for the transportation sector" table in the "Library" sheet
+ * (G316:R336).
+ */
+export function calculateMonthlyEmissionChanges(options: {
+  monthlyVMTPerVehicle: MonthlyVMTPerVehicle;
+  vehiclesDisplaced: VehiclesDisplaced;
+  monthlyEmissionRates: MonthlyEmissionRates;
+}) {
+  const { monthlyVMTPerVehicle, vehiclesDisplaced, monthlyEmissionRates } =
+    options;
+
+  const result: {
+    [month: number]: {
+      [vehicleType in ExpandedVehicleType]: {
+        [pollutant in Pollutant]: number;
+      };
+    };
+  } = {};
+
+  if (
+    Object.values(monthlyVMTPerVehicle).length === 0 ||
+    Object.values(monthlyEmissionRates).length === 0
+  ) {
+    return result;
+  }
+
+  Object.entries(monthlyEmissionRates).forEach(([key, data]) => {
+    const month = Number(key);
+
+    result[month] ??= {
+      batteryEVCars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      hybridEVCars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      batteryEVTrucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      hybridEVTrucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      transitBusesDiesel: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      transitBusesCNG: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      transitBusesGasoline: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
+      schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+    };
+
+    pollutants.forEach((pollutant) => {
+      result[month].batteryEVCars[pollutant] =
+        data.cars[pollutant] *
+        monthlyVMTPerVehicle[month].cars *
+        vehiclesDisplaced.batteryEVCars;
+
+      result[month].hybridEVCars[pollutant] =
+        data.cars[pollutant] *
+        monthlyVMTPerVehicle[month].cars *
+        vehiclesDisplaced.hybridEVCars *
+        (percentHybridEVMilesDrivenOnElectricity / 100);
+
+      result[month].batteryEVTrucks[pollutant] =
+        data.trucks[pollutant] *
+        monthlyVMTPerVehicle[month].trucks *
+        vehiclesDisplaced.batteryEVTrucks;
+
+      result[month].hybridEVTrucks[pollutant] =
+        data.trucks[pollutant] *
+        monthlyVMTPerVehicle[month].trucks *
+        vehiclesDisplaced.hybridEVTrucks *
+        (percentHybridEVMilesDrivenOnElectricity / 100);
+
+      result[month].transitBusesDiesel[pollutant] =
+        data.transitBusesDiesel[pollutant] *
+        monthlyVMTPerVehicle[month].transitBusesDiesel *
+        vehiclesDisplaced.transitBusesDiesel;
+
+      result[month].transitBusesCNG[pollutant] =
+        data.transitBusesCNG[pollutant] *
+        monthlyVMTPerVehicle[month].transitBusesCNG *
+        vehiclesDisplaced.transitBusesCNG;
+
+      result[month].transitBusesGasoline[pollutant] =
+        data.transitBusesGasoline[pollutant] *
+        monthlyVMTPerVehicle[month].transitBusesGasoline *
+        vehiclesDisplaced.transitBusesGasoline;
+
+      result[month].schoolBuses[pollutant] =
+        data.schoolBuses[pollutant] *
+        monthlyVMTPerVehicle[month].schoolBuses *
+        vehiclesDisplaced.schoolBuses;
+    });
   });
 
   return result;

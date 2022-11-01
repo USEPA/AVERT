@@ -912,12 +912,10 @@ export function calculateEereProfile(): AppThunk {
         regionLineLoss: region.lineLoss,
         regionalLoad: region.rdf.regional_load,
         eereDefaults: region.eereDefaults.data,
-        monthlyVMTPerVehicle: transportation.monthlyVMTPerVehicle,
         dailyStats: transportation.dailyStats,
         hourlyEVChargingPercentages: transportation.hourlyEVChargingPercentages,
-        vehiclesDisplaced: transportation.vehiclesDisplaced,
         monthlyDailyEVEnergyUsage: transportation.monthlyDailyEVEnergyUsage,
-        monthlyEmissionRates: transportation.monthlyEmissionRates,
+        monthlyEmissionChanges: transportation.monthlyEmissionChanges,
         eereTextInputs: scaledEereTextInputs,
       });
 

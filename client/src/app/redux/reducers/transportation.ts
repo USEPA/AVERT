@@ -13,6 +13,7 @@ import type {
   MonthlyEVEnergyUsageMW,
   MonthlyDailyEVEnergyUsage,
   MonthlyEmissionRates,
+  MonthlyEmissionChanges,
 } from 'app/calculations/transportation';
 import {
   calculateMonthlyVMTTotalsAndPercentages,
@@ -25,6 +26,7 @@ import {
   calculateMonthlyEVEnergyUsageMW,
   calculateMonthlyDailyEVEnergyUsage,
   calculateMonthlyEmissionRates,
+  calculateMonthlyEmissionChanges,
 } from 'app/calculations/transportation';
 
 type TransportationAction =
@@ -71,6 +73,10 @@ type TransportationAction =
   | {
       type: 'transportation/SET_MONTHLY_EMISSION_RATES';
       payload: { monthlyEmissionRates: MonthlyEmissionRates };
+    }
+  | {
+      type: 'transportation/SET_MONTHLY_EMISSION_CHANGES';
+      payload: { monthlyEmissionChanges: MonthlyEmissionChanges };
     };
 
 type TransportationState = {
@@ -84,6 +90,7 @@ type TransportationState = {
   monthlyEVEnergyUsageMW: MonthlyEVEnergyUsageMW;
   monthlyDailyEVEnergyUsage: MonthlyDailyEVEnergyUsage;
   monthlyEmissionRates: MonthlyEmissionRates;
+  monthlyEmissionChanges: MonthlyEmissionChanges;
 };
 
 // reducer
@@ -107,6 +114,7 @@ const initialState: TransportationState = {
   monthlyEVEnergyUsageMW: {},
   monthlyDailyEVEnergyUsage: {},
   monthlyEmissionRates: {},
+  monthlyEmissionChanges: {},
 };
 
 export default function reducer(
@@ -201,6 +209,15 @@ export default function reducer(
       return {
         ...state,
         monthlyEmissionRates,
+      };
+    }
+
+    case 'transportation/SET_MONTHLY_EMISSION_CHANGES': {
+      const { monthlyEmissionChanges } = action.payload;
+
+      return {
+        ...state,
+        monthlyEmissionChanges,
       };
     }
 
@@ -300,6 +317,8 @@ export function setVehiclesDisplaced(): AppThunk {
     });
 
     dispatch(setMonthlyEVEnergyUsage());
+
+    dispatch(setMonthlyEmissionChanges());
   };
 }
 
@@ -353,7 +372,8 @@ export function setMonthlyDailyEVEnergyUsage(): AppThunk {
 }
 
 export function setMonthlyEmissionRates(): AppThunk {
-  // NOTE: set whenever EV deployment location, EV model year, or ICE replacement vehicle changes
+  // NOTE: set whenever EV deployment location, EV model year, or ICE
+  // replacement vehicle changes
   return (dispatch, getState) => {
     const { eere } = getState();
     const { evDeploymentLocation, evModelYear, iceReplacementVehicle } =
@@ -368,6 +388,29 @@ export function setMonthlyEmissionRates(): AppThunk {
     dispatch({
       type: 'transportation/SET_MONTHLY_EMISSION_RATES',
       payload: { monthlyEmissionRates },
+    });
+
+    dispatch(setMonthlyEmissionChanges());
+  };
+}
+
+export function setMonthlyEmissionChanges(): AppThunk {
+  // NOTE: set whenever an EV number, EV deployment location, EV model year, or
+  // ICE replacement vehicle changes changes
+  return (dispatch, getState) => {
+    const { transportation } = getState();
+    const { monthlyVMTPerVehicle, vehiclesDisplaced, monthlyEmissionRates } =
+      transportation;
+
+    const monthlyEmissionChanges = calculateMonthlyEmissionChanges({
+      monthlyVMTPerVehicle,
+      vehiclesDisplaced,
+      monthlyEmissionRates,
+    });
+
+    dispatch({
+      type: 'transportation/SET_MONTHLY_EMISSION_CHANGES',
+      payload: { monthlyEmissionChanges },
     });
   };
 }
