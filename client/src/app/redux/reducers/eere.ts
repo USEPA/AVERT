@@ -915,7 +915,6 @@ export function calculateEereProfile(): AppThunk {
         dailyStats: transportation.dailyStats,
         hourlyEVChargingPercentages: transportation.hourlyEVChargingPercentages,
         monthlyDailyEVEnergyUsage: transportation.monthlyDailyEVEnergyUsage,
-        monthlyEmissionChanges: transportation.monthlyEmissionChanges,
         eereTextInputs: scaledEereTextInputs,
       });
 

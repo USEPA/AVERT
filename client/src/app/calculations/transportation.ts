@@ -98,6 +98,12 @@ export type MonthlyEmissionRates = ReturnType<
 export type MonthlyEmissionChanges = ReturnType<
   typeof calculateMonthlyEmissionChanges
 >;
+export type TotalMonthlyEmissionChanges = ReturnType<
+  typeof calculateTotalMonthlyEmissionChanges
+>;
+export type TotalYearlyEmissionChanges = ReturnType<
+  typeof calculateTotalYearlyEmissionChanges
+>;
 
 /**
  * Vehicle miles traveled (VMT) totals for each month from MOVES data, and the
@@ -780,6 +786,94 @@ export function calculateMonthlyEmissionChanges(options: {
         vehiclesDisplaced.schoolBuses;
     });
   });
+
+  return result;
+}
+
+/**
+ * Totals monthly emission changes from each EV type.
+ *
+ * Excel: Bottom half of the "Emission Changes" data from "Table 7: Calculated
+ * changes for the transportation sector" table in the "Library" sheet
+ * (G336:R394).
+ */
+export function calculateTotalMonthlyEmissionChanges(
+  monthlyEmissionChanges: MonthlyEmissionChanges,
+) {
+  if (Object.values(monthlyEmissionChanges).length === 0) {
+    return {};
+  }
+
+  const result = Object.entries(monthlyEmissionChanges).reduce(
+    (totals, [key, data]) => {
+      const month = Number(key);
+
+      totals[month] ??= {
+        cars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+        trucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+        transitBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+        schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+        total: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      };
+
+      pollutants.forEach((pollutant) => {
+        const monthlyCars =
+          data.batteryEVCars[pollutant] + data.hybridEVCars[pollutant];
+        const monthlyTrucks =
+          data.batteryEVTrucks[pollutant] + data.hybridEVTrucks[pollutant];
+        const monthlyTransitBuses =
+          data.transitBusesDiesel[pollutant] +
+          data.transitBusesCNG[pollutant] +
+          data.transitBusesGasoline[pollutant];
+        const monthlySchoolBuses = data.schoolBuses[pollutant];
+        const monthlyTotal =
+          monthlyCars +
+          monthlyTrucks +
+          monthlyTransitBuses +
+          monthlySchoolBuses;
+
+        totals[month].cars[pollutant] += monthlyCars;
+        totals[month].trucks[pollutant] += monthlyTrucks;
+        totals[month].transitBuses[pollutant] += monthlyTransitBuses;
+        totals[month].schoolBuses[pollutant] += monthlySchoolBuses;
+        totals[month].total[pollutant] += monthlyTotal;
+      });
+
+      return totals;
+    },
+    {} as {
+      [month: number]: {
+        [key in 'cars' | 'trucks' | 'transitBuses' | 'schoolBuses' | 'total']: {
+          [pollutant in Pollutant]: number;
+        };
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Totals the monthly emission changes from each vehicle type for all months in
+ * the year to a single total emission changes value for the year for each
+ * pollutant.
+ *
+ * Excel: Yearly pollutant totals from the "Table 7: Calculated changes for the
+ * transportation sector" table in the "Library" sheet (S389:S394).
+ */
+export function calculateTotalYearlyEmissionChanges(
+  totalMonthlyEmissionChanges: TotalMonthlyEmissionChanges,
+) {
+  const result = Object.values(totalMonthlyEmissionChanges).reduce(
+    (totals, month) => {
+      pollutants.forEach((pollutant) => {
+        totals[pollutant] += month.total[pollutant];
+      });
+
+      return totals;
+    },
+    { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+  );
 
   return result;
 }

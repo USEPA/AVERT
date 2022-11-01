@@ -14,6 +14,8 @@ import type {
   MonthlyDailyEVEnergyUsage,
   MonthlyEmissionRates,
   MonthlyEmissionChanges,
+  TotalMonthlyEmissionChanges,
+  TotalYearlyEmissionChanges,
 } from 'app/calculations/transportation';
 import {
   calculateMonthlyVMTTotalsAndPercentages,
@@ -27,6 +29,8 @@ import {
   calculateMonthlyDailyEVEnergyUsage,
   calculateMonthlyEmissionRates,
   calculateMonthlyEmissionChanges,
+  calculateTotalMonthlyEmissionChanges,
+  calculateTotalYearlyEmissionChanges,
 } from 'app/calculations/transportation';
 
 type TransportationAction =
@@ -77,6 +81,14 @@ type TransportationAction =
   | {
       type: 'transportation/SET_MONTHLY_EMISSION_CHANGES';
       payload: { monthlyEmissionChanges: MonthlyEmissionChanges };
+    }
+  | {
+      type: 'transportation/SET_TOTAL_MONTHLY_EMISSION_CHANGES';
+      payload: { totalMonthlyEmissionChanges: TotalMonthlyEmissionChanges };
+    }
+  | {
+      type: 'transportation/SET_TOTAL_YEARLY_EMISSION_CHANGES';
+      payload: { totalYearlyEmissionChanges: TotalYearlyEmissionChanges };
     };
 
 type TransportationState = {
@@ -91,6 +103,8 @@ type TransportationState = {
   monthlyDailyEVEnergyUsage: MonthlyDailyEVEnergyUsage;
   monthlyEmissionRates: MonthlyEmissionRates;
   monthlyEmissionChanges: MonthlyEmissionChanges;
+  totalMonthlyEmissionChanges: TotalMonthlyEmissionChanges;
+  totalYearlyEmissionChanges: TotalYearlyEmissionChanges;
 };
 
 // reducer
@@ -115,6 +129,15 @@ const initialState: TransportationState = {
   monthlyDailyEVEnergyUsage: {},
   monthlyEmissionRates: {},
   monthlyEmissionChanges: {},
+  totalMonthlyEmissionChanges: {},
+  totalYearlyEmissionChanges: {
+    CO2: 0,
+    NOX: 0,
+    SO2: 0,
+    PM25: 0,
+    VOCs: 0,
+    NH3: 0,
+  },
 };
 
 export default function reducer(
@@ -218,6 +241,24 @@ export default function reducer(
       return {
         ...state,
         monthlyEmissionChanges,
+      };
+    }
+
+    case 'transportation/SET_TOTAL_MONTHLY_EMISSION_CHANGES': {
+      const { totalMonthlyEmissionChanges } = action.payload;
+
+      return {
+        ...state,
+        totalMonthlyEmissionChanges,
+      };
+    }
+
+    case 'transportation/SET_TOTAL_YEARLY_EMISSION_CHANGES': {
+      const { totalYearlyEmissionChanges } = action.payload;
+
+      return {
+        ...state,
+        totalYearlyEmissionChanges,
       };
     }
 
@@ -408,9 +449,27 @@ export function setMonthlyEmissionChanges(): AppThunk {
       monthlyEmissionRates,
     });
 
+    const totalMonthlyEmissionChanges = calculateTotalMonthlyEmissionChanges(
+      monthlyEmissionChanges,
+    );
+
+    const totalYearlyEmissionChanges = calculateTotalYearlyEmissionChanges(
+      totalMonthlyEmissionChanges,
+    );
+
     dispatch({
       type: 'transportation/SET_MONTHLY_EMISSION_CHANGES',
       payload: { monthlyEmissionChanges },
+    });
+
+    dispatch({
+      type: 'transportation/SET_TOTAL_MONTHLY_EMISSION_CHANGES',
+      payload: { totalMonthlyEmissionChanges },
+    });
+
+    dispatch({
+      type: 'transportation/SET_TOTAL_YEARLY_EMISSION_CHANGES',
+      payload: { totalYearlyEmissionChanges },
     });
   };
 }
