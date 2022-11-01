@@ -11,6 +11,7 @@ import type {
   VehiclesDisplaced,
   MonthlyEVEnergyUsageGW,
   MonthlyEVEnergyUsageMW,
+  MonthlyDailyEVEnergyUsage,
 } from 'app/calculations/transportation';
 import {
   calculateMonthlyVMTTotalsAndPercentages,
@@ -21,6 +22,7 @@ import {
   calculateVehiclesDisplaced,
   calculateMonthlyEVEnergyUsageGW,
   calculateMonthlyEVEnergyUsageMW,
+  calculateMonthlyDailyEVEnergyUsage,
 } from 'app/calculations/transportation';
 
 type TransportationAction =
@@ -59,6 +61,10 @@ type TransportationAction =
   | {
       type: 'transportation/SET_MONTHLY_EV_ENERGY_USAGE_MW';
       payload: { monthlyEVEnergyUsageMW: MonthlyEVEnergyUsageMW };
+    }
+  | {
+      type: 'transportation/SET_MONTHLY_DAILY_EV_ENERGY_USAGE';
+      payload: { monthlyDailyEVEnergyUsage: MonthlyDailyEVEnergyUsage };
     };
 
 type TransportationState = {
@@ -70,6 +76,7 @@ type TransportationState = {
   vehiclesDisplaced: VehiclesDisplaced;
   monthlyEVEnergyUsageGW: MonthlyEVEnergyUsageGW;
   monthlyEVEnergyUsageMW: MonthlyEVEnergyUsageMW;
+  monthlyDailyEVEnergyUsage: MonthlyDailyEVEnergyUsage;
 };
 
 // reducer
@@ -91,6 +98,7 @@ const initialState: TransportationState = {
   },
   monthlyEVEnergyUsageGW: {},
   monthlyEVEnergyUsageMW: {},
+  monthlyDailyEVEnergyUsage: {},
 };
 
 export default function reducer(
@@ -170,6 +178,15 @@ export default function reducer(
       };
     }
 
+    case 'transportation/SET_MONTHLY_DAILY_EV_ENERGY_USAGE': {
+      const { monthlyDailyEVEnergyUsage } = action.payload;
+
+      return {
+        ...state,
+        monthlyDailyEVEnergyUsage,
+      };
+    }
+
     default: {
       return state;
     }
@@ -178,6 +195,7 @@ export default function reducer(
 
 // action creators
 export function setMonthlyVMTData(): AppThunk {
+  // NOTE: set when the app starts (only once, and never re-set)
   return (dispatch) => {
     const monthlyVMTTotalsAndPercentages =
       calculateMonthlyVMTTotalsAndPercentages();
@@ -201,6 +219,7 @@ export function setMonthlyVMTData(): AppThunk {
 export function setDailyAndMonthlyStats(
   regionalLoad: RegionalLoadData[],
 ): AppThunk {
+  // NOTE: set every time the selected geography changes (region or state)
   return (dispatch) => {
     const dailyStats = calculateDailyStats(regionalLoad);
     const monthlyStats = calculateMonthlyStats(dailyStats);
@@ -214,10 +233,13 @@ export function setDailyAndMonthlyStats(
       type: 'transportation/SET_MONTHLY_STATS',
       payload: { monthlyStats },
     });
+
+    dispatch(setMonthlyDailyEVEnergyUsage());
   };
 }
 
 export function setHourlyEVChargingPercentages(): AppThunk {
+  // NOTE: set whenever an EV profile changes
   return (dispatch, getState) => {
     const { eere } = getState();
     const {
@@ -242,6 +264,7 @@ export function setHourlyEVChargingPercentages(): AppThunk {
 }
 
 export function setVehiclesDisplaced(): AppThunk {
+  // NOTE: set whenever an EV number changes
   return (dispatch, getState) => {
     const { eere } = getState();
     const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = eere.inputs;
@@ -264,6 +287,7 @@ export function setVehiclesDisplaced(): AppThunk {
 }
 
 export function setMonthlyEVEnergyUsage(): AppThunk {
+  // NOTE: set whenever an EV number or EV model year changes
   return (dispatch, getState) => {
     const { transportation, eere } = getState();
     const { monthlyVMTPerVehicle, vehiclesDisplaced } = transportation;
@@ -287,6 +311,26 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
     dispatch({
       type: 'transportation/SET_MONTHLY_EV_ENERGY_USAGE_MW',
       payload: { monthlyEVEnergyUsageMW },
+    });
+
+    dispatch(setMonthlyDailyEVEnergyUsage());
+  };
+}
+
+export function setMonthlyDailyEVEnergyUsage(): AppThunk {
+  // NOTE: set whenever an EV number, EV model year, or the selected geography changes
+  return (dispatch, getState) => {
+    const { transportation } = getState();
+    const { monthlyStats, monthlyEVEnergyUsageMW } = transportation;
+
+    const monthlyDailyEVEnergyUsage = calculateMonthlyDailyEVEnergyUsage({
+      monthlyEVEnergyUsageMW,
+      monthlyStats,
+    });
+
+    dispatch({
+      type: 'transportation/SET_MONTHLY_DAILY_EV_ENERGY_USAGE',
+      payload: { monthlyDailyEVEnergyUsage },
     });
   };
 }

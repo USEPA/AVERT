@@ -7,6 +7,7 @@ import {
   averageVMTPerYear,
   evEfficiencyByModelYear,
   percentHybridEVMilesDrivenOnElectricity,
+  percentWeekendToWeekdayEVConsumption,
 } from 'app/config';
 /**
  * Excel: "MOVESEmissionRates" sheet.
@@ -84,6 +85,9 @@ export type MonthlyEVEnergyUsageGW = ReturnType<
 >;
 export type MonthlyEVEnergyUsageMW = ReturnType<
   typeof calculateMonthlyEVEnergyUsageMW
+>;
+export type MonthlyDailyEVEnergyUsage = ReturnType<
+  typeof calculateMonthlyDailyEVEnergyUsage
 >;
 
 /**
@@ -180,6 +184,10 @@ export function calculateMonthlyVMTPerVehicle(
     };
   } = {};
 
+  if (Object.keys(monthlyVMTTotalsAndPercentages).length === 0) {
+    return result;
+  }
+
   Object.entries(monthlyVMTTotalsAndPercentages).forEach(([key, data]) => {
     const month = Number(key);
 
@@ -222,6 +230,10 @@ export function calculateDailyStats(regionalLoad: RegionalLoadData[]) {
     };
   } = {};
 
+  if (regionalLoad.length === 0) {
+    return result;
+  }
+
   regionalLoad.forEach((data) => {
     result[data.month] ??= {};
     // NOTE: initial values to keep same object shape – will be mutated next
@@ -253,6 +265,10 @@ export function calculateMonthlyStats(dailyStats: DailyStats) {
       weekendDays: number;
     };
   } = {};
+
+  if (Object.keys(dailyStats).length === 0) {
+    return result;
+  }
 
   [...Array(12)].forEach((_item, index) => {
     const month = index + 1;
@@ -299,6 +315,15 @@ export function calculateHourlyEVChargingPercentages(options: {
       schoolBuses: { weekday: number; weekend: number };
     };
   } = {};
+
+  if (
+    batteryEVsProfile === '' ||
+    hybridEVsProfile === '' ||
+    transitBusesProfile === '' ||
+    schoolBusesProfile === ''
+  ) {
+    return result;
+  }
 
   evChargingProfiles.forEach((data) => {
     result[data.hour] = {
@@ -379,6 +404,10 @@ export function calculateMonthlyEVEnergyUsageGW(options: {
       [vehicleType in ExpandedVehicleType]: number;
     };
   } = {};
+
+  if (Object.keys(monthlyVMTPerVehicle).length === 0 || evModelYear === '') {
+    return result;
+  }
 
   /**
    * Efficiency factor for each vehicle type for the selected model year.
@@ -463,6 +492,10 @@ export function calculateMonthlyEVEnergyUsageMW(
     };
   } = {};
 
+  if (Object.keys(monthlyEVEnergyUsageGW).length === 0) {
+    return result;
+  }
+
   const GWtoMW = 1000;
 
   Object.entries(monthlyEVEnergyUsageGW).forEach(([key, data]) => {
@@ -477,6 +510,78 @@ export function calculateMonthlyEVEnergyUsageMW(
           data.transitBusesGasoline) *
         GWtoMW,
       schoolBuses: data.schoolBuses * GWtoMW,
+    };
+  });
+
+  return result;
+}
+
+/**
+ * Monthly EV energy usage (MWh) for a typical weekday day or weekend day.
+ *
+ * Excel: Data in the second EV table (to the right of the "Calculate Changes"
+ * table) in the "CalculateEERE" sheet (P35:X47).
+ */
+export function calculateMonthlyDailyEVEnergyUsage(options: {
+  monthlyEVEnergyUsageMW: MonthlyEVEnergyUsageMW;
+  monthlyStats: MonthlyStats;
+}) {
+  const { monthlyEVEnergyUsageMW, monthlyStats } = options;
+
+  const result: {
+    [month: number]: {
+      batteryEVs: { weekday: number; weekend: number };
+      hybridEVs: { weekday: number; weekend: number };
+      transitBuses: { weekday: number; weekend: number };
+      schoolBuses: { weekday: number; weekend: number };
+    };
+  } = {};
+
+  if (
+    Object.keys(monthlyEVEnergyUsageMW).length === 0 ||
+    Object.keys(monthlyStats).length === 0
+  ) {
+    return result;
+  }
+
+  [...Array(12)].forEach((_item, index) => {
+    const month = index + 1;
+
+    const weekdayDays = monthlyStats[month].weekdayDays;
+    const weekendDays = monthlyStats[month].weekendDays;
+    const weekenedToWeekdayRatio = percentWeekendToWeekdayEVConsumption / 100;
+    const scaledWeekdayDays =
+      weekdayDays + weekenedToWeekdayRatio * weekendDays;
+
+    const batteryEVsWeekday =
+      monthlyEVEnergyUsageMW[month].batteryEVs / scaledWeekdayDays;
+
+    const hybridEVsWeekday =
+      monthlyEVEnergyUsageMW[month].hybridEVs / scaledWeekdayDays;
+
+    const transitBusesWeekday =
+      monthlyEVEnergyUsageMW[month].transitBuses / scaledWeekdayDays;
+
+    const schoolBusesWeekday =
+      monthlyEVEnergyUsageMW[month].schoolBuses / scaledWeekdayDays;
+
+    result[month] = {
+      batteryEVs: {
+        weekday: batteryEVsWeekday,
+        weekend: batteryEVsWeekday * weekenedToWeekdayRatio,
+      },
+      hybridEVs: {
+        weekday: hybridEVsWeekday,
+        weekend: hybridEVsWeekday * weekenedToWeekdayRatio,
+      },
+      transitBuses: {
+        weekday: transitBusesWeekday,
+        weekend: transitBusesWeekday * weekenedToWeekdayRatio,
+      },
+      schoolBuses: {
+        weekday: schoolBusesWeekday,
+        weekend: schoolBusesWeekday * weekenedToWeekdayRatio,
+      },
     };
   });
 
