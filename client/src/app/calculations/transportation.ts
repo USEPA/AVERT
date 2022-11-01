@@ -104,6 +104,9 @@ export type TotalMonthlyEmissionChanges = ReturnType<
 export type TotalYearlyEmissionChanges = ReturnType<
   typeof calculateTotalYearlyEmissionChanges
 >;
+export type TotalYearlyEVEnergyUsage = ReturnType<
+  typeof calculateTotalYearlyEVEnergyUsage
+>;
 
 /**
  * Vehicle miles traveled (VMT) totals for each month from MOVES data, and the
@@ -527,6 +530,21 @@ export function calculateMonthlyEVEnergyUsageMW(
       schoolBuses: data.schoolBuses * GWtoMW,
     };
   });
+
+  return result;
+}
+
+/**
+ * Totals the energy usage from each EV type for all months in the year to a
+ * single total EV energy usage value for the year.
+ */
+export function calculateTotalYearlyEVEnergyUsage(
+  monthlyEVEnergyUsageGW: MonthlyEVEnergyUsageGW,
+) {
+  const result = Object.values(monthlyEVEnergyUsageGW).reduce(
+    (total, month) => total + Object.values(month).reduce((a, b) => a + b, 0),
+    0,
+  );
 
   return result;
 }

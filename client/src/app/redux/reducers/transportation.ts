@@ -11,6 +11,7 @@ import type {
   VehiclesDisplaced,
   MonthlyEVEnergyUsageGW,
   MonthlyEVEnergyUsageMW,
+  TotalYearlyEVEnergyUsage,
   MonthlyDailyEVEnergyUsage,
   MonthlyEmissionRates,
   MonthlyEmissionChanges,
@@ -26,6 +27,7 @@ import {
   calculateVehiclesDisplaced,
   calculateMonthlyEVEnergyUsageGW,
   calculateMonthlyEVEnergyUsageMW,
+  calculateTotalYearlyEVEnergyUsage,
   calculateMonthlyDailyEVEnergyUsage,
   calculateMonthlyEmissionRates,
   calculateMonthlyEmissionChanges,
@@ -71,6 +73,10 @@ type TransportationAction =
       payload: { monthlyEVEnergyUsageMW: MonthlyEVEnergyUsageMW };
     }
   | {
+      type: 'transportation/SET_TOTAL_YEARLY_EV_ENERGY_USAGE';
+      payload: { totalYearlyEVEnergyUsage: TotalYearlyEVEnergyUsage };
+    }
+  | {
       type: 'transportation/SET_MONTHLY_DAILY_EV_ENERGY_USAGE';
       payload: { monthlyDailyEVEnergyUsage: MonthlyDailyEVEnergyUsage };
     }
@@ -100,6 +106,7 @@ type TransportationState = {
   vehiclesDisplaced: VehiclesDisplaced;
   monthlyEVEnergyUsageGW: MonthlyEVEnergyUsageGW;
   monthlyEVEnergyUsageMW: MonthlyEVEnergyUsageMW;
+  totalYearlyEVEnergyUsage: TotalYearlyEVEnergyUsage;
   monthlyDailyEVEnergyUsage: MonthlyDailyEVEnergyUsage;
   monthlyEmissionRates: MonthlyEmissionRates;
   monthlyEmissionChanges: MonthlyEmissionChanges;
@@ -126,6 +133,7 @@ const initialState: TransportationState = {
   },
   monthlyEVEnergyUsageGW: {},
   monthlyEVEnergyUsageMW: {},
+  totalYearlyEVEnergyUsage: 0,
   monthlyDailyEVEnergyUsage: {},
   monthlyEmissionRates: {},
   monthlyEmissionChanges: {},
@@ -262,6 +270,15 @@ export default function reducer(
       };
     }
 
+    case 'transportation/SET_TOTAL_YEARLY_EV_ENERGY_USAGE': {
+      const { totalYearlyEVEnergyUsage } = action.payload;
+
+      return {
+        ...state,
+        totalYearlyEVEnergyUsage,
+      };
+    }
+
     default: {
       return state;
     }
@@ -380,6 +397,10 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
       monthlyEVEnergyUsageGW,
     );
 
+    const totalYearlyEVEnergyUsage = calculateTotalYearlyEVEnergyUsage(
+      monthlyEVEnergyUsageGW,
+    );
+
     dispatch({
       type: 'transportation/SET_MONTHLY_EV_ENERGY_USAGE_GW',
       payload: { monthlyEVEnergyUsageGW },
@@ -388,6 +409,11 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
     dispatch({
       type: 'transportation/SET_MONTHLY_EV_ENERGY_USAGE_MW',
       payload: { monthlyEVEnergyUsageMW },
+    });
+
+    dispatch({
+      type: 'transportation/SET_TOTAL_YEARLY_EV_ENERGY_USAGE',
+      payload: { totalYearlyEVEnergyUsage },
     });
 
     dispatch(setMonthlyDailyEVEnergyUsage());

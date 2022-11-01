@@ -9,24 +9,8 @@ import { EereTextInputFieldName } from 'app/redux/reducers/eere';
 import type {
   DailyStats,
   HourlyEVChargingPercentages,
-  MonthlyEVEnergyUsageGW,
   MonthlyDailyEVEnergyUsage,
 } from 'app/calculations/transportation';
-
-/**
- * Totals the energy usage from each EV type for all months in the year to a
- * single total EV energy usage value for the year.
- */
-export function calculateTotalYearlyEVEnergyUsage(
-  monthlyEVEnergyUsageGW: MonthlyEVEnergyUsageGW,
-) {
-  const result = Object.values(monthlyEVEnergyUsageGW).reduce(
-    (total, month) => total + Object.values(month).reduce((a, b) => a + b, 0),
-    0,
-  );
-
-  return result;
-}
 
 /**
  * Hourly EV load.

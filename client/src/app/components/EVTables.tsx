@@ -10,8 +10,6 @@ import {
 import { useTypedSelector } from 'app/redux/index';
 // hooks
 import { useSelectedRegion } from 'app/hooks';
-// calculations
-import { calculateTotalYearlyEVEnergyUsage } from 'app/calculations';
 /**
  * Excel: "Table 12: Historical renewable and energy efficiency addition data"
  * table in the "Library" sheet (B589:E603).
@@ -193,18 +191,14 @@ function EEREEVComparisonTable(props: {
 
   // TODO: determine if regionalScalingFactor is needed if geographicFocus is states
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const monthlyEVEnergyUsageGW = useTypedSelector(
-    ({ transportation }) => transportation.monthlyEVEnergyUsageGW,
+  const totalYearlyEVEnergyUsage = useTypedSelector(
+    ({ transportation }) => transportation.totalYearlyEVEnergyUsage,
   );
   const evDeploymentLocation = useTypedSelector(
     ({ eere }) => eere.inputs.evDeploymentLocation,
   );
 
   const selectedRegion = useSelectedRegion();
-
-  const totalYearlyEVEnergyUsage = calculateTotalYearlyEVEnergyUsage(
-    monthlyEVEnergyUsageGW,
-  );
 
   const lineLoss =
     geographicFocus === 'regions' && selectedRegion
