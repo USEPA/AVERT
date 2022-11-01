@@ -38,19 +38,7 @@ import {
   calculateEereProfile,
 } from 'app/redux/reducers/eere';
 // hooks
-import {
-  useSelectedRegion,
-  useSelectedState,
-  useSelectedStateRegions,
-} from 'app/hooks';
-// config
-import {
-  StateId,
-  states,
-  evChargingProfileOptions,
-  evModelYearOptions,
-  iceReplacementVehicleOptions,
-} from 'app/config';
+import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 // calculations
 import { calculateVehicleSalesAndStock } from 'app/calculations/transportation';
 
@@ -304,37 +292,23 @@ function EEREInputs() {
   const iceReplacementVehicle = useTypedSelector(
     ({ eere }) => eere.inputs.iceReplacementVehicle,
   );
+  const evChargingProfileOptions = useTypedSelector(
+    ({ eere }) => eere.selectOptions.evChargingProfileOptions,
+  );
+  const evModelYearOptions = useTypedSelector(
+    ({ eere }) => eere.selectOptions.evModelYearOptions,
+  );
+  const iceReplacementVehicleOptions = useTypedSelector(
+    ({ eere }) => eere.selectOptions.iceReplacementVehicleOptions,
+  );
+  const evDeploymentLocationOptions = useTypedSelector(
+    ({ eere }) => eere.selectOptions.evDeploymentLocationOptions,
+  );
 
   const selectedRegion = useSelectedRegion();
-  const selectedState = useSelectedState();
   const selectedStateRegions = useSelectedStateRegions();
 
-  const evDeploymentLocationOptions = useMemo(() => {
-    return geographicFocus === 'regions' && selectedRegion
-      ? [
-          {
-            id: `region-${selectedRegion.id}`,
-            name: `${selectedRegion.name} Region`,
-          },
-          ...Object.keys(selectedRegion.percentageByState).map((id) => ({
-            id: `state-${id}`,
-            name: states[id as StateId].name || id,
-          })),
-        ]
-      : geographicFocus === 'states' && selectedState
-      ? [
-          {
-            id: `state-${selectedState.id}`,
-            name: `State: ${selectedState.name}`,
-          },
-        ]
-      : [{ id: '', name: '' }];
-  }, [geographicFocus, selectedRegion, selectedState]);
-
-  const evDeploymentLocationName = evDeploymentLocationOptions.find((opt) => {
-    return opt.id === evDeploymentLocation;
-  })?.name;
-
+  // TODO: consider moving into transportation redux state
   const vehicleSalesAndStock = useMemo(() => {
     return calculateVehicleSalesAndStock({
       selectedRegion,
@@ -800,10 +774,7 @@ function EEREInputs() {
               </Tooltip>
             </p>
 
-            <EVSalesAndStockTable
-              evDeploymentLocationName={evDeploymentLocationName}
-              vehicleSalesAndStock={vehicleSalesAndStock}
-            />
+            <EVSalesAndStockTable vehicleSalesAndStock={vehicleSalesAndStock} />
 
             <EEREEVComparisonTable
               regionREDefaultsAverages={regionREDefaultsAverages}

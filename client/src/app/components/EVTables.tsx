@@ -33,10 +33,9 @@ function calculatePercent(numerator: number, denominator: number) {
 }
 
 function EVSalesAndStockTable(props: {
-  evDeploymentLocationName: string | undefined;
   vehicleSalesAndStock: VehicleSalesAndStock;
 }) {
-  const { evDeploymentLocationName, vehicleSalesAndStock } = props;
+  const { vehicleSalesAndStock } = props;
 
   // TODO: determine if regionalScalingFactor is needed if geographicFocus is states
   const batteryEVs = useTypedSelector(({ eere }) => eere.inputs.batteryEVs);
@@ -46,6 +45,13 @@ function EVSalesAndStockTable(props: {
   const evDeploymentLocation = useTypedSelector(
     ({ eere }) => eere.inputs.evDeploymentLocation,
   );
+  const evDeploymentLocationOptions = useTypedSelector(
+    ({ eere }) => eere.selectOptions.evDeploymentLocationOptions,
+  );
+
+  const evDeploymentLocationName = evDeploymentLocationOptions.find((opt) => {
+    return opt.id === evDeploymentLocation;
+  })?.name;
 
   const locationSalesAndStock = vehicleSalesAndStock[evDeploymentLocation];
   if (!locationSalesAndStock) return null;

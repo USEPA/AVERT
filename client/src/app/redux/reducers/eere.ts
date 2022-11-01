@@ -44,8 +44,14 @@ type CombinedProfile = {
   hardTopExceedanceTimestamp: RegionalLoadData;
 };
 
+type SelectOption = { id: string; name: string };
+
 type EereAction =
   | { type: 'eere/RESET_EERE_INPUTS' }
+  | {
+      type: 'eere/SET_EV_DEPLOYMENT_LOCATION_OPTIONS';
+      payload: { evDeploymentLocationOptions: SelectOption[] };
+    }
   | {
       type: 'eere/VALIDATE_EERE';
       payload: { errors: (EERETextInputFieldName | EVTextInputFieldName)[] };
@@ -171,12 +177,19 @@ type InputFieldName =
   | EVTextInputFieldName
   | EVSelectInputFieldName;
 
+type SelectOptionsFieldName =
+  | 'evChargingProfileOptions'
+  | 'evDeploymentLocationOptions'
+  | 'evModelYearOptions'
+  | 'iceReplacementVehicleOptions';
+
 export type EEREInputs = { [field in InputFieldName]: string };
 
 type EereState = {
   status: 'ready' | 'started' | 'complete';
   errors: (EERETextInputFieldName | EVTextInputFieldName)[];
   inputs: EEREInputs;
+  selectOptions: { [field in SelectOptionsFieldName]: SelectOption[] };
   regionalProfiles: Partial<{ [key in RegionId]: RegionalProfile }>;
   combinedProfile: CombinedProfile;
 };
@@ -219,6 +232,12 @@ const initialState: EereState = {
   status: 'ready',
   errors: [],
   inputs: emptyEEREInputs,
+  selectOptions: {
+    evChargingProfileOptions,
+    evDeploymentLocationOptions: [{ id: '', name: '' }],
+    evModelYearOptions,
+    iceReplacementVehicleOptions,
+  },
   regionalProfiles: {},
   combinedProfile: {
     hourlyEere: [],
@@ -239,9 +258,11 @@ export default function reducer(
     case 'eere/RESET_EERE_INPUTS': {
       // initial state
       return {
+        ...state,
         status: 'ready',
         errors: [],
         inputs: emptyEEREInputs,
+        // NOTE: selectOptions should not be reset
         regionalProfiles: {},
         combinedProfile: {
           hourlyEere: [],
@@ -251,6 +272,17 @@ export default function reducer(
           hardValid: true,
           hardTopExceedanceValue: 0,
           hardTopExceedanceTimestamp: emptyRegionalLoadHour,
+        },
+      };
+    }
+
+    case 'eere/SET_EV_DEPLOYMENT_LOCATION_OPTIONS': {
+      const { evDeploymentLocationOptions } = action.payload;
+      return {
+        ...state,
+        selectOptions: {
+          ...state.selectOptions,
+          evDeploymentLocationOptions,
         },
       };
     }
@@ -534,6 +566,54 @@ export default function reducer(
 }
 
 // action creators
+export function setEVDeploymentLocationOptions({
+  regionId,
+  stateId,
+}: {
+  regionId?: string;
+  stateId?: string;
+}): AppThunk {
+  // NOTE: set every time the selected geography changes (region or state)
+  return (dispatch, getState) => {
+    const { geography } = getState();
+    const { focus, regions, states } = geography;
+
+    const selectedRegion = Object.values(regions).find(
+      (region) => region.id === regionId,
+    );
+
+    const selectedState = Object.values(states).find(
+      (state) => state.id === stateId,
+    );
+
+    const evDeploymentLocationOptions =
+      focus === 'regions' && selectedRegion
+        ? [
+            {
+              id: `region-${selectedRegion.id}`,
+              name: `${selectedRegion.name} Region`,
+            },
+            ...Object.keys(selectedRegion.percentageByState).map((id) => ({
+              id: `state-${id}`,
+              name: states[id as StateId].name || id,
+            })),
+          ]
+        : focus === 'states' && selectedState
+        ? [
+            {
+              id: `state-${selectedState.id}`,
+              name: `State: ${selectedState.name}`,
+            },
+          ]
+        : [{ id: '', name: '' }];
+
+    dispatch({
+      type: 'eere/SET_EV_DEPLOYMENT_LOCATION_OPTIONS',
+      payload: { evDeploymentLocationOptions },
+    });
+  };
+}
+
 function validateInput(
   inputField: EERETextInputFieldName | EVTextInputFieldName,
   inputValue: string,

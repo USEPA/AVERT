@@ -1,5 +1,6 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
+import { setEVDeploymentLocationOptions } from 'app/redux/reducers/eere';
 import {
   setDailyAndMonthlyStats,
   setHourlyEVChargingPercentages,
@@ -282,17 +283,25 @@ export function selectGeography(focus: GeographicFocus) {
   };
 }
 
-export function selectRegion(regionId: RegionId) {
-  return {
-    type: 'geography/SELECT_REGION',
-    payload: { regionId },
+export function selectRegion(regionId: RegionId): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'geography/SELECT_REGION',
+      payload: { regionId },
+    });
+
+    dispatch(setEVDeploymentLocationOptions({ regionId }));
   };
 }
 
-export function selectState(stateId: string) {
-  return {
-    type: 'geography/SELECT_STATE',
-    payload: { stateId },
+export function selectState(stateId: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'geography/SELECT_STATE',
+      payload: { stateId },
+    });
+
+    dispatch(setEVDeploymentLocationOptions({ stateId }));
   };
 }
 
