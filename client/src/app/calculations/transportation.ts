@@ -1,5 +1,5 @@
 // reducers
-import { RegionalLoadData } from 'app/redux/reducers/geography';
+import { RegionalLoadData, RegionState } from 'app/redux/reducers/geography';
 // config
 import type { EVProfileName, EVModelYear } from 'app/config';
 import {
@@ -19,6 +19,17 @@ import movesEmissionsRates from 'app/data/moves-emissions-rates.json';
  * 8: Default EV load profiles" table in the "Library" sheet).
  */
 import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
+/**
+ * Excel: "CountyFIPS" sheet.
+ */
+import countyFips from 'app/data/county-fips.json';
+/**
+ * Excel: "Table 10: LDV Sales and Stock" and "Table 11: Transit and School Bus
+ * Sales and Stock" tables in the "Library" sheet (B468:D519 and B529:F580).
+ */
+import stateSalesAndStock from 'app/data/state-sales-and-stock.json';
+
+type SalesAndStockStateId = keyof typeof stateSalesAndStock;
 
 type MovesData = {
   year: string;
@@ -108,6 +119,9 @@ export type TotalYearlyEVEnergyUsage = ReturnType<
   typeof calculateTotalYearlyEVEnergyUsage
 >;
 export type HourlyEVLoad = ReturnType<typeof calculateHourlyEVLoad>;
+export type VehicleSalesAndStock = ReturnType<
+  typeof calculateVehicleSalesAndStock
+>;
 
 /**
  * Vehicle miles traveled (VMT) totals for each month from MOVES data, and the
@@ -954,4 +968,92 @@ export function calculateHourlyEVLoad(options: {
       monthlyDailyEVEnergyUsage[month].schoolBuses[dayTypeField];
 
   return evLoad;
+}
+
+/**
+ * Vehicle sales and stock for each state in the selected region, and the region
+ * as a whole (sum of each state's sales and stock), for each vehicle type.
+ *
+ * Excel: "Table 9: List of states in region for purposes of calculating
+ * vehicle sales and stock" table in the "Library" sheet (C440:I457).
+ */
+export function calculateVehicleSalesAndStock(options: {
+  selectedRegion: RegionState | undefined;
+  evDeploymentLocations: string[];
+}) {
+  const { selectedRegion, evDeploymentLocations } = options;
+
+  const result: {
+    [locationId: string]: {
+      lightDutyVehicles: { sales: number; stock: number };
+      transitBuses: { sales: number; stock: number };
+      schoolBuses: { sales: number; stock: number };
+    };
+  } = {};
+
+  if (!selectedRegion || evDeploymentLocations[0] === '') return result;
+
+  // conditionally remove 'region-' option, as it will be added later as the sum
+  // of each state's data
+  const stateIds = evDeploymentLocations.reduce((ids, id) => {
+    return id.startsWith('region-') ? ids : ids.concat(id);
+  }, [] as string[]);
+
+  countyFips.forEach((data) => {
+    const id = data['Postal State Code'];
+    const stateId = `state-${id}`;
+
+    if (
+      data['AVERT Region'] === selectedRegion.name &&
+      stateIds.includes(stateId)
+    ) {
+      const lightDutyVehiclesVMTShare = data['Share of State VMT - Passenger Cars']; // prettier-ignore
+      const transitBusesVMTShare = data['Share of State VMT - Transit Buses'];
+      const schoolBusesVMTShare = data['Share of State VMT - School Buses'];
+      const salesAndStock = stateSalesAndStock[id as SalesAndStockStateId];
+
+      // initialize and then increment state data by vehicle type
+      result[stateId] ??= {
+        lightDutyVehicles: { sales: 0, stock: 0 },
+        transitBuses: { sales: 0, stock: 0 },
+        schoolBuses: { sales: 0, stock: 0 },
+      };
+
+      result[stateId].lightDutyVehicles.sales +=
+        lightDutyVehiclesVMTShare * salesAndStock.lightDutyVehicles.sales;
+      result[stateId].lightDutyVehicles.stock +=
+        lightDutyVehiclesVMTShare * salesAndStock.lightDutyVehicles.stock;
+      result[stateId].transitBuses.sales +=
+        transitBusesVMTShare * salesAndStock.transitBuses.sales;
+      result[stateId].transitBuses.stock +=
+        transitBusesVMTShare * salesAndStock.transitBuses.stock;
+      result[stateId].schoolBuses.sales +=
+        schoolBusesVMTShare * salesAndStock.schoolBuses.sales;
+      result[stateId].schoolBuses.stock +=
+        schoolBusesVMTShare * salesAndStock.schoolBuses.stock;
+    }
+  });
+
+  // conditionally add 'region-' to result as the sum of each state's data
+  const resultStateIds = Object.keys(result);
+  const regionId = evDeploymentLocations.find((id) => id.startsWith('region-'));
+
+  if (regionId) {
+    result[regionId] = {
+      lightDutyVehicles: { sales: 0, stock: 0 },
+      transitBuses: { sales: 0, stock: 0 },
+      schoolBuses: { sales: 0, stock: 0 },
+    };
+
+    resultStateIds.forEach((id) => {
+      result[regionId].lightDutyVehicles.sales += result[id].lightDutyVehicles.sales; // prettier-ignore
+      result[regionId].lightDutyVehicles.stock += result[id].lightDutyVehicles.stock; // prettier-ignore
+      result[regionId].transitBuses.sales += result[id].transitBuses.sales;
+      result[regionId].transitBuses.stock += result[id].transitBuses.stock;
+      result[regionId].schoolBuses.sales += result[id].schoolBuses.sales;
+      result[regionId].schoolBuses.stock += result[id].schoolBuses.stock;
+    });
+  }
+
+  return result;
 }

@@ -2,14 +2,13 @@
 
 // components
 import { subheadingStyles } from 'app/components/Panels';
-import {
-  SalesAndStockByVehicleType,
-  RegionREDefaultsAverages,
-} from 'app/components/EEREInputs';
+import { RegionREDefaultsAverages } from 'app/components/EEREInputs';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 // hooks
 import { useSelectedRegion } from 'app/hooks';
+// calculations
+import type { VehicleSalesAndStock } from 'app/calculations/transportation';
 /**
  * Excel: "Table 12: Historical renewable and energy efficiency addition data"
  * table in the "Library" sheet (B589:E603).
@@ -35,9 +34,7 @@ function calculatePercent(numerator: number, denominator: number) {
 
 function EVSalesAndStockTable(props: {
   evDeploymentLocationName: string | undefined;
-  vehicleSalesAndStock: {
-    [locationId: string]: SalesAndStockByVehicleType;
-  };
+  vehicleSalesAndStock: VehicleSalesAndStock;
 }) {
   const { evDeploymentLocationName, vehicleSalesAndStock } = props;
 
