@@ -12,6 +12,7 @@ import type {
   MonthlyEVEnergyUsageGW,
   MonthlyEVEnergyUsageMW,
   MonthlyDailyEVEnergyUsage,
+  MonthlyEmissionRates,
 } from 'app/calculations/transportation';
 import {
   calculateMonthlyVMTTotalsAndPercentages,
@@ -23,6 +24,7 @@ import {
   calculateMonthlyEVEnergyUsageGW,
   calculateMonthlyEVEnergyUsageMW,
   calculateMonthlyDailyEVEnergyUsage,
+  calculateMonthlyEmissionRates,
 } from 'app/calculations/transportation';
 
 type TransportationAction =
@@ -65,6 +67,10 @@ type TransportationAction =
   | {
       type: 'transportation/SET_MONTHLY_DAILY_EV_ENERGY_USAGE';
       payload: { monthlyDailyEVEnergyUsage: MonthlyDailyEVEnergyUsage };
+    }
+  | {
+      type: 'transportation/SET_MONTHLY_EMISSION_RATES';
+      payload: { monthlyEmissionRates: MonthlyEmissionRates };
     };
 
 type TransportationState = {
@@ -77,6 +83,7 @@ type TransportationState = {
   monthlyEVEnergyUsageGW: MonthlyEVEnergyUsageGW;
   monthlyEVEnergyUsageMW: MonthlyEVEnergyUsageMW;
   monthlyDailyEVEnergyUsage: MonthlyDailyEVEnergyUsage;
+  monthlyEmissionRates: MonthlyEmissionRates;
 };
 
 // reducer
@@ -99,6 +106,7 @@ const initialState: TransportationState = {
   monthlyEVEnergyUsageGW: {},
   monthlyEVEnergyUsageMW: {},
   monthlyDailyEVEnergyUsage: {},
+  monthlyEmissionRates: {},
 };
 
 export default function reducer(
@@ -184,6 +192,15 @@ export default function reducer(
       return {
         ...state,
         monthlyDailyEVEnergyUsage,
+      };
+    }
+
+    case 'transportation/SET_MONTHLY_EMISSION_RATES': {
+      const { monthlyEmissionRates } = action.payload;
+
+      return {
+        ...state,
+        monthlyEmissionRates,
       };
     }
 
@@ -331,6 +348,26 @@ export function setMonthlyDailyEVEnergyUsage(): AppThunk {
     dispatch({
       type: 'transportation/SET_MONTHLY_DAILY_EV_ENERGY_USAGE',
       payload: { monthlyDailyEVEnergyUsage },
+    });
+  };
+}
+
+export function setMonthlyEmissionRates(): AppThunk {
+  // NOTE: set whenever EV deployment location, EV model year, or ICE replacement vehicle changes
+  return (dispatch, getState) => {
+    const { eere } = getState();
+    const { evDeploymentLocation, evModelYear, iceReplacementVehicle } =
+      eere.inputs;
+
+    const monthlyEmissionRates = calculateMonthlyEmissionRates({
+      evDeploymentLocation,
+      evModelYear,
+      iceReplacementVehicle,
+    });
+
+    dispatch({
+      type: 'transportation/SET_MONTHLY_EMISSION_RATES',
+      payload: { monthlyEmissionRates },
     });
   };
 }

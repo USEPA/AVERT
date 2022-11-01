@@ -9,6 +9,7 @@ import {
   setHourlyEVChargingPercentages,
   setVehiclesDisplaced,
   setMonthlyEVEnergyUsage,
+  setMonthlyEmissionRates,
 } from 'app/redux/reducers/transportation';
 // calculations
 import { calculateEere } from 'app/calculations';
@@ -751,6 +752,8 @@ export function updateEereEVDeploymentLocation(input: string): AppThunk {
       type: 'eere/UPDATE_EERE_EV_DEPLOYMENT_LOCATION',
       payload: { option: input },
     });
+
+    dispatch(setMonthlyEmissionRates());
   };
 }
 
@@ -762,6 +765,8 @@ export function updateEereEVModelYear(input: string): AppThunk {
     });
 
     dispatch(setMonthlyEVEnergyUsage());
+
+    dispatch(setMonthlyEmissionRates());
   };
 }
 
@@ -771,6 +776,8 @@ export function updateEereICEReplacementVehicle(input: string): AppThunk {
       type: 'eere/UPDATE_EERE_ICE_REPLACEMENT_VEHICLE',
       payload: { option: input },
     });
+
+    dispatch(setMonthlyEmissionRates());
   };
 }
 
@@ -910,12 +917,8 @@ export function calculateEereProfile(): AppThunk {
         hourlyEVChargingPercentages: transportation.hourlyEVChargingPercentages,
         vehiclesDisplaced: transportation.vehiclesDisplaced,
         monthlyDailyEVEnergyUsage: transportation.monthlyDailyEVEnergyUsage,
+        monthlyEmissionRates: transportation.monthlyEmissionRates,
         eereTextInputs: scaledEereTextInputs,
-        eereSelectInputs: {
-          evDeploymentLocation: eere.inputs.evDeploymentLocation,
-          evModelYear: eere.inputs.evModelYear,
-          iceReplacementVehicle: eere.inputs.iceReplacementVehicle,
-        },
       });
 
       const regionalProfile = {

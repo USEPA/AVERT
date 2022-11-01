@@ -15,11 +15,8 @@ import type {
   VehiclesDisplaced,
   MonthlyEVEnergyUsageGW,
   MonthlyDailyEVEnergyUsage,
+  MonthlyEmissionRates,
 } from 'app/calculations/transportation';
-/**
- * Excel: "MOVESEmissionRates" sheet.
- */
-import movesEmissionsRates from 'app/data/moves-emissions-rates.json';
 
 const pollutants = ['CO2', 'NOX', 'SO2', 'PM25', 'VOCs', 'NH3'] as const;
 
@@ -59,91 +56,6 @@ export function calculateTotalYearlyEVEnergyUsage(
 }
 
 /**
- * Monthly emission rates by vehicle type.
- *
- * Excel: "Table 6: Emission rates of various vehicle types" table in the
- * "Library" sheet (G255:R290).
- */
-export function calculateMonthlyEmissionRatesByType(options: {
-  evDeploymentLocation: string;
-  evModelYear: string;
-  iceReplacementVehicle: string;
-}) {
-  const { evDeploymentLocation, evModelYear, iceReplacementVehicle } = options;
-
-  const result: {
-    [month: number]: {
-      [vehicleType in GeneralVehicleType]: {
-        [pollutant in Pollutant]: number;
-      };
-    };
-  } = {};
-
-  const locationIsRegion = evDeploymentLocation.startsWith('region-');
-  const locationIsState = evDeploymentLocation.startsWith('state-');
-
-  movesEmissionsRates.forEach((data) => {
-    const { vehicleType, fuelType } = data;
-    const month = Number(data.month);
-
-    result[month] ??= {
-      cars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      trucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      transitBusesDiesel: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      transitBusesCNG: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      transitBusesGasoline: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
-      schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-    };
-
-    const vehicle =
-      vehicleType === 'Passenger Car'
-        ? 'cars'
-        : vehicleType === 'Passenger Truck'
-        ? 'trucks'
-        : vehicleType === 'Transit Bus' && fuelType === 'Diesel'
-        ? 'transitBusesDiesel'
-        : vehicleType === 'Transit Bus' && fuelType === 'CNG'
-        ? 'transitBusesCNG'
-        : vehicleType === 'Transit Bus' && fuelType === 'Gasoline'
-        ? 'transitBusesGasoline'
-        : vehicleType === 'School Bus'
-        ? 'schoolBuses'
-        : null; // NOTE: fallback (vehicle should never be null)
-
-    if (vehicle) {
-      const modelYearMatch =
-        iceReplacementVehicle === 'new'
-          ? data.modelYear === evModelYear
-          : data.modelYear === 'Fleet Average';
-
-      const conditionalYearMatch =
-        iceReplacementVehicle === 'new'
-          ? true //
-          : data.year === evModelYear;
-
-      const conditionalStateMatch = locationIsState
-        ? data.state === evDeploymentLocation.replace('state-', '')
-        : true;
-
-      const locationFactor = locationIsRegion
-        ? data.regionalWeight //
-        : 1;
-
-      if (modelYearMatch && conditionalYearMatch && conditionalStateMatch) {
-        result[month][vehicle].CO2 += data.CO2 * locationFactor;
-        result[month][vehicle].NOX += data.NOX * locationFactor;
-        result[month][vehicle].SO2 += data.SO2 * locationFactor;
-        result[month][vehicle].PM25 += data.PM25 * locationFactor;
-        result[month][vehicle].VOCs += data.VOCs * locationFactor;
-        result[month][vehicle].NH3 += data.NH3 * locationFactor;
-      }
-    }
-  });
-
-  return result;
-}
-
-/**
  * Monthly emission changes by EV type.
  *
  * Excel: Top half of the "Emission Changes" data from "Table 7: Calculated
@@ -153,13 +65,7 @@ export function calculateMonthlyEmissionRatesByType(options: {
 function calculateMonthlyEmissionChangesByEVType(options: {
   monthlyVMTPerVehicle: MonthlyVMTPerVehicle;
   vehiclesDisplaced: VehiclesDisplaced;
-  monthlyEmissionRates: {
-    [month: number]: {
-      [vehicleType in GeneralVehicleType]: {
-        [pollutant in Pollutant]: number;
-      };
-    };
-  };
+  monthlyEmissionRates: MonthlyEmissionRates;
 }) {
   const { monthlyVMTPerVehicle, vehiclesDisplaced, monthlyEmissionRates } =
     options;
@@ -394,8 +300,8 @@ export function calculateEere({
   hourlyEVChargingPercentages, // transportation.hourlyEVChargingPercentages
   vehiclesDisplaced, // transportation.vehiclesDisplaced
   monthlyDailyEVEnergyUsage, // transportation.monthlyDailyEVEnergyUsage
+  monthlyEmissionRates, // transportation.monthlyEmissionRates
   eereTextInputs, // eere.inputs (scaled for each region)
-  eereSelectInputs, // eere.inputs
 }: {
   regionMaxEEPercent: number;
   regionLineLoss: number;
@@ -406,13 +312,8 @@ export function calculateEere({
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
   vehiclesDisplaced: VehiclesDisplaced;
   monthlyDailyEVEnergyUsage: MonthlyDailyEVEnergyUsage;
+  monthlyEmissionRates: MonthlyEmissionRates;
   eereTextInputs: { [field in EereTextInputFieldName]: number };
-  eereSelectInputs: {
-    [field in
-      | 'evDeploymentLocation'
-      | 'evModelYear'
-      | 'iceReplacementVehicle']: string;
-  };
 }) {
   const {
     // A: Reductions spread evenly throughout the year
@@ -430,13 +331,6 @@ export function calculateEere({
     rooftopSolar,
   } = eereTextInputs;
 
-  const {
-    // E: Electric Vehicles
-    evModelYear,
-    evDeploymentLocation,
-    iceReplacementVehicle,
-  } = eereSelectInputs;
-
   const lineLoss = 1 / (1 - regionLineLoss);
 
   const hourlyMwReduction =
@@ -449,13 +343,6 @@ export function calculateEere({
 
   const percentHours = broadProgram ? 100 : topHours;
   const topPercentile = stats.percentile(hourlyLoads, 1 - percentHours / 100);
-
-  // TODO: recalculate EERE profile whenever any of the inputs change
-  const monthlyEmissionRates = calculateMonthlyEmissionRatesByType({
-    evDeploymentLocation,
-    evModelYear,
-    iceReplacementVehicle,
-  });
 
   const monthlyEmissionChangesByEVType =
     calculateMonthlyEmissionChangesByEVType({

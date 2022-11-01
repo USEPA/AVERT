@@ -64,9 +64,12 @@ const expandedVehicleTypes = [
   'schoolBuses',
 ] as const;
 
+const pollutants = ['CO2', 'NOX', 'SO2', 'PM25', 'VOCs', 'NH3'] as const;
+
 // type AbridgedVehicleType = typeof abridgedVehicleTypes[number];
 type GeneralVehicleType = typeof generalVehicleTypes[number];
 type ExpandedVehicleType = typeof expandedVehicleTypes[number];
+type Pollutant = typeof pollutants[number];
 
 export type MonthlyVMTTotalsAndPercentages = ReturnType<
   typeof calculateMonthlyVMTTotalsAndPercentages
@@ -88,6 +91,9 @@ export type MonthlyEVEnergyUsageMW = ReturnType<
 >;
 export type MonthlyDailyEVEnergyUsage = ReturnType<
   typeof calculateMonthlyDailyEVEnergyUsage
+>;
+export type MonthlyEmissionRates = ReturnType<
+  typeof calculateMonthlyEmissionRates
 >;
 
 /**
@@ -583,6 +589,101 @@ export function calculateMonthlyDailyEVEnergyUsage(options: {
         weekend: schoolBusesWeekday * weekenedToWeekdayRatio,
       },
     };
+  });
+
+  return result;
+}
+
+/**
+ * Monthly emission rates by vehicle type.
+ *
+ * Excel: "Table 6: Emission rates of various vehicle types" table in the
+ * "Library" sheet (G255:R290).
+ */
+export function calculateMonthlyEmissionRates(options: {
+  evDeploymentLocation: string;
+  evModelYear: string;
+  iceReplacementVehicle: string;
+}) {
+  const { evDeploymentLocation, evModelYear, iceReplacementVehicle } = options;
+
+  const result: {
+    [month: number]: {
+      [vehicleType in GeneralVehicleType]: {
+        [pollutant in Pollutant]: number;
+      };
+    };
+  } = {};
+
+  if (
+    evDeploymentLocation === '' ||
+    evModelYear === '' ||
+    iceReplacementVehicle === ''
+  ) {
+    return result;
+  }
+
+  const locationIsRegion = evDeploymentLocation.startsWith('region-');
+  const locationIsState = evDeploymentLocation.startsWith('state-');
+
+  // NOTE: explicitly declaring the type with a type assertion because
+  // TypeScript isn't able to infer types from large JSON files
+  // (https://github.com/microsoft/TypeScript/issues/42761)
+  (movesEmissionsRates as MovesData[]).forEach((data) => {
+    const month = Number(data.month);
+
+    result[month] ??= {
+      cars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      trucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      transitBusesDiesel: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      transitBusesCNG: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      transitBusesGasoline: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
+      schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+    };
+
+    const vehicleType: GeneralVehicleType | null =
+      data.vehicleType === 'Passenger Car'
+        ? 'cars'
+        : data.vehicleType === 'Passenger Truck'
+        ? 'trucks'
+        : data.vehicleType === 'Transit Bus' && data.fuelType === 'Diesel'
+        ? 'transitBusesDiesel'
+        : data.vehicleType === 'Transit Bus' && data.fuelType === 'CNG'
+        ? 'transitBusesCNG'
+        : data.vehicleType === 'Transit Bus' && data.fuelType === 'Gasoline'
+        ? 'transitBusesGasoline'
+        : data.vehicleType === 'School Bus'
+        ? 'schoolBuses'
+        : null; // NOTE: fallback (vehicleType should never actually be null)
+
+    if (vehicleType) {
+      const modelYearMatch =
+        iceReplacementVehicle === 'new'
+          ? data.modelYear === evModelYear
+          : data.modelYear === 'Fleet Average';
+
+      const conditionalYearMatch =
+        iceReplacementVehicle === 'new'
+          ? true //
+          : data.year === evModelYear;
+
+      const conditionalStateMatch = locationIsState
+        ? data.state === evDeploymentLocation.replace('state-', '')
+        : true;
+
+      const locationFactor = locationIsRegion
+        ? data.regionalWeight //
+        : 1;
+
+      if (modelYearMatch && conditionalYearMatch && conditionalStateMatch) {
+        result[month][vehicleType].CO2 += data.CO2 * locationFactor;
+        result[month][vehicleType].NOX += data.NOX * locationFactor;
+        result[month][vehicleType].SO2 += data.SO2 * locationFactor;
+        result[month][vehicleType].PM25 += data.PM25 * locationFactor;
+        result[month][vehicleType].VOCs += data.VOCs * locationFactor;
+        result[month][vehicleType].NH3 += data.NH3 * locationFactor;
+      }
+    }
   });
 
   return result;
