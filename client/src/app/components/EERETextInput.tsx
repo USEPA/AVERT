@@ -7,7 +7,10 @@ import type { ReactNode } from 'react';
 import Tooltip from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import { calculateEereProfile } from 'app/redux/reducers/eere';
-import type { EereTextInputFieldName } from 'app/redux/reducers/eere';
+import type {
+  EERETextInputFieldName,
+  EVTextInputFieldName,
+} from 'app/redux/reducers/eere';
 
 const labelStyles = css`
   font-size: inherit;
@@ -100,7 +103,9 @@ export function EERETextInput({
 
       {tooltip && <Tooltip id={fieldName}>{tooltip}</Tooltip>}
 
-      {errors.includes(fieldName as EereTextInputFieldName) && (
+      {errors.includes(
+        fieldName as EERETextInputFieldName | EVTextInputFieldName,
+      ) && (
         <p css={errorStyles} data-input-error>
           <span css={errorHeadingStyles}>Please enter a positive number.</span>
           If you wish to model a reverse EE/RE scenario (i.e., a negative

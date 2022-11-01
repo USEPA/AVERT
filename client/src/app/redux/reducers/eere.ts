@@ -48,7 +48,7 @@ type EereAction =
   | { type: 'eere/RESET_EERE_INPUTS' }
   | {
       type: 'eere/VALIDATE_EERE';
-      payload: { errors: EereTextInputFieldName[] };
+      payload: { errors: (EERETextInputFieldName | EVTextInputFieldName)[] };
     }
   | {
       type: 'eere/UPDATE_EERE_ANNUAL_GWH';
@@ -140,7 +140,7 @@ type EereAction =
       payload: CombinedProfile;
     };
 
-export type EereTextInputFieldName =
+export type EERETextInputFieldName =
   | 'annualGwh'
   | 'constantMwh'
   | 'broadProgram'
@@ -149,13 +149,15 @@ export type EereTextInputFieldName =
   | 'onshoreWind'
   | 'offshoreWind'
   | 'utilitySolar'
-  | 'rooftopSolar'
+  | 'rooftopSolar';
+
+export type EVTextInputFieldName =
   | 'batteryEVs'
   | 'hybridEVs'
   | 'transitBuses'
   | 'schoolBuses';
 
-export type EereSelectInputFieldName =
+type EVSelectInputFieldName =
   | 'batteryEVsProfile'
   | 'hybridEVsProfile'
   | 'transitBusesProfile'
@@ -164,19 +166,22 @@ export type EereSelectInputFieldName =
   | 'evModelYear'
   | 'iceReplacementVehicle';
 
-type EereInputFieldName = EereTextInputFieldName | EereSelectInputFieldName;
+type InputFieldName =
+  | EERETextInputFieldName
+  | EVTextInputFieldName
+  | EVSelectInputFieldName;
 
-export type EereInputs = { [field in EereInputFieldName]: string };
+export type EEREInputs = { [field in InputFieldName]: string };
 
 type EereState = {
   status: 'ready' | 'started' | 'complete';
-  errors: EereTextInputFieldName[];
-  inputs: EereInputs;
+  errors: (EERETextInputFieldName | EVTextInputFieldName)[];
+  inputs: EEREInputs;
   regionalProfiles: Partial<{ [key in RegionId]: RegionalProfile }>;
   combinedProfile: CombinedProfile;
 };
 
-const emptyEereInputs = {
+const emptyEEREInputs = {
   annualGwh: '',
   constantMwh: '',
   broadProgram: '',
@@ -213,7 +218,7 @@ const emptyRegionalLoadHour = {
 const initialState: EereState = {
   status: 'ready',
   errors: [],
-  inputs: emptyEereInputs,
+  inputs: emptyEEREInputs,
   regionalProfiles: {},
   combinedProfile: {
     hourlyEere: [],
@@ -236,7 +241,7 @@ export default function reducer(
       return {
         status: 'ready',
         errors: [],
-        inputs: emptyEereInputs,
+        inputs: emptyEEREInputs,
         regionalProfiles: {},
         combinedProfile: {
           hourlyEere: [],
@@ -530,7 +535,7 @@ export default function reducer(
 
 // action creators
 function validateInput(
-  inputField: EereTextInputFieldName,
+  inputField: EERETextInputFieldName | EVTextInputFieldName,
   inputValue: string,
 ): AppThunk {
   return (dispatch, getState) => {
@@ -893,10 +898,6 @@ export function calculateEereProfile(): AppThunk {
         offshoreWind: Number(eere.inputs.offshoreWind) * offshoreWindFactor,
         utilitySolar: Number(eere.inputs.utilitySolar) * regionalScalingFactor,
         rooftopSolar: Number(eere.inputs.rooftopSolar) * regionalScalingFactor,
-        batteryEVs: Number(eere.inputs.batteryEVs) * regionalScalingFactor,
-        hybridEVs: Number(eere.inputs.hybridEVs) * regionalScalingFactor,
-        transitBuses: Number(eere.inputs.transitBuses) * regionalScalingFactor,
-        schoolBuses: Number(eere.inputs.schoolBuses) * regionalScalingFactor,
       };
 
       const {
@@ -1022,6 +1023,6 @@ export function calculateEereProfile(): AppThunk {
   };
 }
 
-export function resetEereInputs() {
+export function resetEEREInputs() {
   return { type: 'eere/RESET_EERE_INPUTS' };
 }

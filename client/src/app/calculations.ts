@@ -4,54 +4,14 @@ import {
   RegionalLoadData,
   EereDefaultData,
 } from 'app/redux/reducers/geography';
-import { EereTextInputFieldName } from 'app/redux/reducers/eere';
+import { EERETextInputFieldName } from 'app/redux/reducers/eere';
 // calculations
 import type {
   DailyStats,
   HourlyEVChargingPercentages,
   MonthlyDailyEVEnergyUsage,
 } from 'app/calculations/transportation';
-
-/**
- * Hourly EV load.
- *
- * Excel: Data in column Y of the "CalculateEERE" sheet.
- */
-function calculateHourlyEVLoad(options: {
-  regionalLoadData: RegionalLoadData;
-  dailyStats: DailyStats;
-  hourlyEVChargingPercentages: HourlyEVChargingPercentages;
-  monthlyDailyEVEnergyUsage: MonthlyDailyEVEnergyUsage;
-}) {
-  const {
-    regionalLoadData,
-    dailyStats,
-    hourlyEVChargingPercentages,
-    monthlyDailyEVEnergyUsage,
-  } = options;
-
-  // NOTE: `rdf.regional_load` data's hour value is zero indexed, so to match
-  // it with the hours stored as keys in our `hourlyEVChargingPercentages`
-  // object, we need to add 1 to the `rdf.regional_load` data's hour value
-  const hour = regionalLoadData.hour + 1;
-  const day = regionalLoadData.day;
-  const month = regionalLoadData.month;
-
-  const evChargingPercentage = hourlyEVChargingPercentages[hour];
-  const dayTypeField = dailyStats[month][day].isWeekend ? 'weekend' : 'weekday';
-
-  const evLoad =
-    evChargingPercentage.batteryEVs[dayTypeField] *
-      monthlyDailyEVEnergyUsage[month].batteryEVs[dayTypeField] +
-    evChargingPercentage.hybridEVs[dayTypeField] *
-      monthlyDailyEVEnergyUsage[month].hybridEVs[dayTypeField] +
-    evChargingPercentage.transitBuses[dayTypeField] *
-      monthlyDailyEVEnergyUsage[month].transitBuses[dayTypeField] +
-    evChargingPercentage.schoolBuses[dayTypeField] *
-      monthlyDailyEVEnergyUsage[month].schoolBuses[dayTypeField];
-
-  return evLoad;
-}
+import { calculateHourlyEVLoad } from 'app/calculations/transportation';
 
 /**
  * TODO...
@@ -87,7 +47,7 @@ export function calculateEere({
   dailyStats: DailyStats;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
   monthlyDailyEVEnergyUsage: MonthlyDailyEVEnergyUsage;
-  eereTextInputs: { [field in EereTextInputFieldName]: number };
+  eereTextInputs: { [field in EERETextInputFieldName]: number };
 }) {
   const {
     // A: Reductions spread evenly throughout the year

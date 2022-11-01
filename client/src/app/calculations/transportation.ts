@@ -107,6 +107,7 @@ export type TotalYearlyEmissionChanges = ReturnType<
 export type TotalYearlyEVEnergyUsage = ReturnType<
   typeof calculateTotalYearlyEVEnergyUsage
 >;
+export type HourlyEVLoad = ReturnType<typeof calculateHourlyEVLoad>;
 
 /**
  * Vehicle miles traveled (VMT) totals for each month from MOVES data, and the
@@ -541,6 +542,10 @@ export function calculateMonthlyEVEnergyUsageMW(
 export function calculateTotalYearlyEVEnergyUsage(
   monthlyEVEnergyUsageGW: MonthlyEVEnergyUsageGW,
 ) {
+  if (Object.keys(monthlyEVEnergyUsageGW).length === 0) {
+    return 0;
+  }
+
   const result = Object.values(monthlyEVEnergyUsageGW).reduce(
     (total, month) => total + Object.values(month).reduce((a, b) => a + b, 0),
     0,
@@ -882,6 +887,10 @@ export function calculateTotalMonthlyEmissionChanges(
 export function calculateTotalYearlyEmissionChanges(
   totalMonthlyEmissionChanges: TotalMonthlyEmissionChanges,
 ) {
+  if (Object.keys(totalMonthlyEmissionChanges).length === 0) {
+    return { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 };
+  }
+
   const result = Object.values(totalMonthlyEmissionChanges).reduce(
     (totals, month) => {
       pollutants.forEach((pollutant) => {
@@ -894,4 +903,55 @@ export function calculateTotalYearlyEmissionChanges(
   );
 
   return result;
+}
+
+/**
+ * Hourly EV load.
+ *
+ * Excel: Data in column Y of the "CalculateEERE" sheet.
+ */
+export function calculateHourlyEVLoad(options: {
+  regionalLoadData: RegionalLoadData;
+  dailyStats: DailyStats;
+  hourlyEVChargingPercentages: HourlyEVChargingPercentages;
+  monthlyDailyEVEnergyUsage: MonthlyDailyEVEnergyUsage;
+}) {
+  const {
+    regionalLoadData,
+    dailyStats,
+    hourlyEVChargingPercentages,
+    monthlyDailyEVEnergyUsage,
+  } = options;
+  if (
+    !regionalLoadData.hour ||
+    !regionalLoadData.day ||
+    !regionalLoadData.month ||
+    Object.keys(dailyStats).length === 0 ||
+    Object.keys(hourlyEVChargingPercentages).length === 0 ||
+    Object.keys(monthlyDailyEVEnergyUsage).length === 0
+  ) {
+    return 0;
+  }
+
+  // NOTE: `rdf.regional_load` data's hour value is zero indexed, so to match
+  // it with the hours stored as keys in our `hourlyEVChargingPercentages`
+  // object, we need to add 1 to the `rdf.regional_load` data's hour value
+  const hour = regionalLoadData.hour + 1;
+  const day = regionalLoadData.day;
+  const month = regionalLoadData.month;
+
+  const evChargingPercentage = hourlyEVChargingPercentages[hour];
+  const dayTypeField = dailyStats[month][day].isWeekend ? 'weekend' : 'weekday';
+
+  const evLoad =
+    evChargingPercentage.batteryEVs[dayTypeField] *
+      monthlyDailyEVEnergyUsage[month].batteryEVs[dayTypeField] +
+    evChargingPercentage.hybridEVs[dayTypeField] *
+      monthlyDailyEVEnergyUsage[month].hybridEVs[dayTypeField] +
+    evChargingPercentage.transitBuses[dayTypeField] *
+      monthlyDailyEVEnergyUsage[month].transitBuses[dayTypeField] +
+    evChargingPercentage.schoolBuses[dayTypeField] *
+      monthlyDailyEVEnergyUsage[month].schoolBuses[dayTypeField];
+
+  return evLoad;
 }
