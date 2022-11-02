@@ -2,7 +2,7 @@ import stats from 'stats-lite';
 // reducers
 import {
   RegionalLoadData,
-  EereDefaultData,
+  EEREDefaultData,
 } from 'app/redux/reducers/geography';
 import { EERETextInputFieldName } from 'app/redux/reducers/eere';
 // calculations
@@ -43,7 +43,7 @@ export function calculateEere({
   regionMaxEEPercent: number;
   regionLineLoss: number;
   regionalLoad: RegionalLoadData[];
-  eereDefaults: EereDefaultData[];
+  eereDefaults: EEREDefaultData[];
   dailyStats: DailyStats;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
   monthlyDailyEVEnergyUsage: MonthlyDailyEVEnergyUsage;

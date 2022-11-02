@@ -1,5 +1,6 @@
 // reducers
 import { RegionalLoadData } from 'app/redux/reducers/geography';
+import type { EEREDefaultData } from 'app/redux/reducers/geography';
 // config
 import type { EVProfileName, EVModelYear } from 'app/config';
 import {
@@ -121,6 +122,9 @@ export type TotalYearlyEVEnergyUsage = ReturnType<
 export type HourlyEVLoad = ReturnType<typeof calculateHourlyEVLoad>;
 export type VehicleSalesAndStock = ReturnType<
   typeof calculateVehicleSalesAndStock
+>;
+export type RegionREDefaultsAverages = ReturnType<
+  typeof calculateRegionREDefaultsAverages
 >;
 
 /**
@@ -1054,6 +1058,45 @@ export function calculateVehicleSalesAndStock(options: {
       result[regionId].schoolBuses.stock += result[id].schoolBuses.stock;
     });
   }
+
+  return result;
+}
+
+/**
+ * Calculates averages of a selected region's hourly EERE Defaults for both
+ * onshore wind and utility solar. These average RE values are used in setting
+ * the historical RE data for Onshore Wind and Unitity Solar's GWh values in the
+ * `EEREEVComparisonTable` component.
+ *
+ * Excel: Used in calculating values for cells F664 and G664 of the "Table 12:
+ * Historical renewable and energy efficiency addition data" table in the
+ * "Library" sheet.
+ */
+export function calculateRegionREDefaultsAverages(
+  selectedRegionEEREDefaults: EEREDefaultData[],
+) {
+  const result = {
+    onshore_wind: 0,
+    utility_pv: 0,
+  };
+
+  if (selectedRegionEEREDefaults.length === 0) {
+    return result;
+  }
+
+  const reDefaultsTotals = selectedRegionEEREDefaults.reduce(
+    (total, hourlyEereDefault) => {
+      total.onshore_wind += hourlyEereDefault.onshore_wind;
+      total.utility_pv += hourlyEereDefault.utility_pv;
+      return total;
+    },
+    { onshore_wind: 0, utility_pv: 0 },
+  );
+
+  const totalHours = selectedRegionEEREDefaults.length;
+
+  result.onshore_wind = reDefaultsTotals.onshore_wind / totalHours;
+  result.utility_pv = reDefaultsTotals.utility_pv / totalHours;
 
   return result;
 }

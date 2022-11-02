@@ -18,6 +18,7 @@ import type {
   TotalMonthlyEmissionChanges,
   TotalYearlyEmissionChanges,
   VehicleSalesAndStock,
+  RegionREDefaultsAverages,
 } from 'app/calculations/transportation';
 import {
   calculateMonthlyVMTTotalsAndPercentages,
@@ -35,6 +36,7 @@ import {
   calculateTotalMonthlyEmissionChanges,
   calculateTotalYearlyEmissionChanges,
   calculateVehicleSalesAndStock,
+  calculateRegionREDefaultsAverages,
 } from 'app/calculations/transportation';
 
 type TransportationAction =
@@ -101,6 +103,10 @@ type TransportationAction =
   | {
       type: 'transportation/SET_VEHICLE_SALES_AND_STOCK';
       payload: { vehicleSalesAndStock: VehicleSalesAndStock };
+    }
+  | {
+      type: 'transportation/SET_REGION_RE_DEFAULTS_AVERAGES';
+      payload: { regionREDefaultsAverages: RegionREDefaultsAverages };
     };
 
 type TransportationState = {
@@ -119,6 +125,7 @@ type TransportationState = {
   totalMonthlyEmissionChanges: TotalMonthlyEmissionChanges;
   totalYearlyEmissionChanges: TotalYearlyEmissionChanges;
   vehicleSalesAndStock: VehicleSalesAndStock;
+  regionREDefaultsAverages: RegionREDefaultsAverages;
 };
 
 // reducer
@@ -154,6 +161,10 @@ const initialState: TransportationState = {
     NH3: 0,
   },
   vehicleSalesAndStock: {},
+  regionREDefaultsAverages: {
+    onshore_wind: 0,
+    utility_pv: 0,
+  },
 };
 
 export default function reducer(
@@ -296,6 +307,15 @@ export default function reducer(
       };
     }
 
+    case 'transportation/SET_REGION_RE_DEFAULTS_AVERAGES': {
+      const { regionREDefaultsAverages } = action.payload;
+
+      return {
+        ...state,
+        regionREDefaultsAverages,
+      };
+    }
+
     default: {
       return state;
     }
@@ -328,8 +348,14 @@ export function setMonthlyVMTData(): AppThunk {
 export function setDailyAndMonthlyStats(
   regionalLoad: RegionalLoadData[],
 ): AppThunk {
-  // NOTE: set every time RDFs are fetched
-  return (dispatch) => {
+  // NOTE: set the first time RDFs are fetched
+  return (dispatch, getState) => {
+    const { transportation } = getState();
+
+    // all RDFs for a given year have the same number of hours, so no need to
+    // re-calculate daily and monthly stats again if it's already been set
+    if (Object.keys(transportation.dailyStats).length !== 0) return;
+
     const dailyStats = calculateDailyStats(regionalLoad);
     const monthlyStats = calculateMonthlyStats(dailyStats);
 
@@ -525,15 +551,14 @@ export function setVehicleSalesAndStock(): AppThunk {
     const { evDeploymentLocationOptions } = eere.selectOptions;
 
     const selectedRegion = Object.values(regions).find((r) => r.selected);
+    const evDeploymentLocations = evDeploymentLocationOptions.map((o) => o.id);
+
     const selectedRegionName =
       focus === 'regions'
         ? selectedRegion?.name || ''
         : ''; /* NOTE: selected states can be in more than one region */
-    const evDeploymentLocations = evDeploymentLocationOptions.map((o) => o.id);
 
-    // TODO: right now when a state is selected, `vehicleSalesAndStock` gets set
-    // to an empty object, since `selectedRegionName` is an empty string. If we
-    // want to support selected states, the function needs to be updated.
+    // TODO: update if we need to support selected states
     const vehicleSalesAndStock = calculateVehicleSalesAndStock({
       selectedRegionName,
       evDeploymentLocations,
@@ -542,6 +567,31 @@ export function setVehicleSalesAndStock(): AppThunk {
     dispatch({
       type: 'transportation/SET_VEHICLE_SALES_AND_STOCK',
       payload: { vehicleSalesAndStock },
+    });
+  };
+}
+
+export function setRegionREDefaultsAverages(): AppThunk {
+  // NOTE: set every time RDFs are fetched
+  return (dispatch, getState) => {
+    const { geography } = getState();
+    const { focus, regions } = geography;
+
+    const selectedRegion = Object.values(regions).find((r) => r.selected);
+
+    const selectedRegionEEREDefaults =
+      focus === 'regions'
+        ? selectedRegion?.eereDefaults.data || []
+        : []; /* NOTE: selected states can be in more than one region */
+
+    // TODO: update if we need to support selected states
+    const regionREDefaultsAverages = calculateRegionREDefaultsAverages(
+      selectedRegionEEREDefaults,
+    );
+
+    dispatch({
+      type: 'transportation/SET_REGION_RE_DEFAULTS_AVERAGES',
+      payload: { regionREDefaultsAverages },
     });
   };
 }

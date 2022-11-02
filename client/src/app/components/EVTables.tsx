@@ -2,11 +2,12 @@
 
 // components
 import { subheadingStyles } from 'app/components/Panels';
-import { RegionREDefaultsAverages } from 'app/components/EEREInputs';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 // hooks
 import { useSelectedRegion } from 'app/hooks';
+// calculations
+import type { RegionREDefaultsAverages } from 'app/calculations/transportation';
 /**
  * Excel: "Table 12: Historical renewable and energy efficiency addition data"
  * table in the "Library" sheet (B589:E603).
@@ -31,6 +32,7 @@ function calculatePercent(numerator: number, denominator: number) {
 }
 
 function EVSalesAndStockTable() {
+  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   // TODO: determine if regionalScalingFactor is needed if geographicFocus is states
   const batteryEVs = useTypedSelector(({ eere }) => eere.inputs.batteryEVs);
   const hybridEVs = useTypedSelector(({ eere }) => eere.inputs.hybridEVs);
@@ -50,7 +52,7 @@ function EVSalesAndStockTable() {
     return opt.id === evDeploymentLocation;
   })?.name;
 
-  if (Object.keys(vehicleSalesAndStock).length === 0) return null;
+  if (geographicFocus === 'states') return null;
 
   const locationSalesAndStock = vehicleSalesAndStock[evDeploymentLocation];
   if (!locationSalesAndStock) return null;
@@ -186,11 +188,7 @@ function formatNumber(number: number) {
   });
 }
 
-function EEREEVComparisonTable(props: {
-  regionREDefaultsAverages: RegionREDefaultsAverages;
-}) {
-  const { regionREDefaultsAverages } = props;
-
+function EEREEVComparisonTable() {
   // TODO: determine if regionalScalingFactor is needed if geographicFocus is states
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const totalYearlyEVEnergyUsage = useTypedSelector(
@@ -199,8 +197,13 @@ function EEREEVComparisonTable(props: {
   const evDeploymentLocation = useTypedSelector(
     ({ eere }) => eere.inputs.evDeploymentLocation,
   );
+  const regionREDefaultsAverages = useTypedSelector(
+    ({ transportation }) => transportation.regionREDefaultsAverages,
+  );
 
   const selectedRegion = useSelectedRegion();
+
+  if (geographicFocus === 'states') return null;
 
   const lineLoss =
     geographicFocus === 'regions' && selectedRegion

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { useMemo, useEffect } from 'react';
+import { useEffect } from 'react';
 import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // components
@@ -13,7 +13,6 @@ import {
 import Tooltip from 'app/components/Tooltip';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
-import { RegionState } from 'app/redux/reducers/geography';
 import {
   updateEereAnnualGwh,
   updateEereConstantMw,
@@ -39,11 +38,6 @@ import {
 } from 'app/redux/reducers/eere';
 // hooks
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
-
-export type RegionREDefaultsAverages = {
-  onshore_wind: number;
-  utility_pv: number;
-};
 
 const inputsBlockStyles = css`
   margin: 1rem 0;
@@ -221,38 +215,6 @@ const impactsButtonStyles = css`
   margin-bottom: 1rem;
 `;
 
-/**
- * Calculates averages of a selected region's hourly EERE Defaults for both
- * onshore wind and utility solar. These average RE values are used in setting
- * the historical RE data for Onshore Wind and Unitity Solar's GWh values in the
- * `EEREEVComparisonTable` component.
- *
- * Excel: Used in calculating values for cells F664 and G664 of the "Table 12:
- * Historical renewable and energy efficiency addition data" table in the
- * "Library" sheet.
- */
-function calculateREDefaultsAverages(selectedRegion: RegionState | undefined) {
-  const result: RegionREDefaultsAverages = { onshore_wind: 0, utility_pv: 0 };
-
-  if (!selectedRegion) return result;
-
-  const reDefaultsTotals = selectedRegion.eereDefaults.data.reduce(
-    (total, hourlyEereDefault) => {
-      total.onshore_wind += hourlyEereDefault.onshore_wind;
-      total.utility_pv += hourlyEereDefault.utility_pv;
-      return total;
-    },
-    { onshore_wind: 0, utility_pv: 0 },
-  );
-
-  const totalHours = selectedRegion.eereDefaults.data.length;
-
-  result.onshore_wind = reDefaultsTotals.onshore_wind / totalHours;
-  result.utility_pv = reDefaultsTotals.utility_pv / totalHours;
-
-  return result;
-}
-
 function EEREInputs() {
   const dispatch = useDispatch();
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
@@ -305,10 +267,6 @@ function EEREInputs() {
 
   const selectedRegion = useSelectedRegion();
   const selectedStateRegions = useSelectedStateRegions();
-
-  const regionREDefaultsAverages = useMemo(() => {
-    return calculateREDefaultsAverages(selectedRegion);
-  }, [selectedRegion]);
 
   // initially set `evDeploymentLocation` to the first calculated location option
   useEffect(() => {
@@ -765,10 +723,7 @@ function EEREInputs() {
             </p>
 
             <EVSalesAndStockTable />
-
-            <EEREEVComparisonTable
-              regionREDefaultsAverages={regionREDefaultsAverages}
-            />
+            <EEREEVComparisonTable />
           </section>
         </details>
       </div>

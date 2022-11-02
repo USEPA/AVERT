@@ -4,6 +4,7 @@ import { setEVDeploymentLocationOptions } from 'app/redux/reducers/eere';
 import {
   setDailyAndMonthlyStats,
   setVehicleSalesAndStock,
+  setRegionREDefaultsAverages,
 } from 'app/redux/reducers/transportation';
 // config
 import {
@@ -41,7 +42,7 @@ export type EGUData = {
   medians: number[];
 };
 
-type RdfJSON = {
+type RDFJSON = {
   region: {
     region_abbv: string;
     region_name: string;
@@ -71,7 +72,7 @@ type RdfJSON = {
   };
 };
 
-export type EereDefaultData = {
+export type EEREDefaultData = {
   date: string;
   hour: number;
   onshore_wind: number;
@@ -80,9 +81,9 @@ export type EereDefaultData = {
   rooftop_pv: number;
 };
 
-type EereJSON = {
+type EEREJSON = {
   region: string;
-  data: EereDefaultData[];
+  data: EEREDefaultData[];
 };
 
 type GeographyAction =
@@ -104,21 +105,21 @@ type GeographyAction =
       type: 'geography/RECEIVE_REGION_RDF';
       payload: {
         regionId: RegionId;
-        regionRdf: RdfJSON;
+        regionRdf: RDFJSON;
       };
     }
   | {
       type: 'geography/RECEIVE_REGION_DEFAULTS';
       payload: {
         regionId: RegionId;
-        regionDefaults: EereJSON;
+        regionDefaults: EEREJSON;
       };
     };
 
 export type RegionState = Region & {
   selected: boolean;
-  eereDefaults: EereJSON;
-  rdf: RdfJSON;
+  eereDefaults: EEREJSON;
+  rdf: RDFJSON;
 };
 
 export type StateState = State & {
@@ -365,7 +366,7 @@ export function fetchRegionsData(): AppThunk {
     Promise.all([rdfRequests, eereRequests].map(Promise.all, Promise))
       .then(([rdfResponses, eereResponses]) => {
         const rdfsData = (rdfResponses as Response[]).map((rdfResponse) => {
-          return rdfResponse.json().then((rdfJson: RdfJSON) => {
+          return rdfResponse.json().then((rdfJson: RDFJSON) => {
             dispatch({
               type: 'geography/RECEIVE_REGION_RDF',
               payload: {
@@ -378,7 +379,7 @@ export function fetchRegionsData(): AppThunk {
         });
 
         const eeresData = (eereResponses as Response[]).map((eereResponse) => {
-          return eereResponse.json().then((eereJson: EereJSON) => {
+          return eereResponse.json().then((eereJson: EEREJSON) => {
             dispatch({
               type: 'geography/RECEIVE_REGION_DEFAULTS',
               payload: {
@@ -400,7 +401,7 @@ export function fetchRegionsData(): AppThunk {
 
         // build up regionalDataFiles from either just fetched rdfs,
         // or previously fetched (and stored) rdfs
-        let regionalDataFiles: RdfJSON[] = [];
+        let regionalDataFiles: RDFJSON[] = [];
 
         if (selectedRegion && selectedRegionId) {
           // when a region is selected, `rdfs` will either contain just that one
@@ -437,6 +438,7 @@ export function fetchRegionsData(): AppThunk {
       })
       .then((rdfs) => {
         dispatch(setDailyAndMonthlyStats(rdfs[0].regional_load));
+        dispatch(setRegionREDefaultsAverages());
       });
   };
 }
