@@ -6,21 +6,6 @@ import { subheadingStyles } from 'app/components/Panels';
 import { useTypedSelector } from 'app/redux/index';
 // hooks
 import { useSelectedRegion } from 'app/hooks';
-// calculations
-import type { RegionREDefaultsAverages } from 'app/calculations/transportation';
-/**
- * Excel: "Table 12: Historical renewable and energy efficiency addition data"
- * table in the "Library" sheet (B589:E603).
- */
-import regionEereAverages from 'app/data/region-eere-averages.json';
-/**
- * Excel: "Table 12: Historical renewable and energy efficiency addition data"
- * table in the "Library" sheet (B609:E658).
- */
-import stateEereAverages from 'app/data/state-eere-averages.json';
-
-type RegionId = keyof typeof regionEereAverages;
-type StateId = keyof typeof stateEereAverages;
 
 function calculatePercent(numerator: number, denominator: number) {
   return denominator !== 0
@@ -135,52 +120,6 @@ function EVSalesAndStockTable() {
   );
 }
 
-/**
- * Historical EERE data for the EV deployment location (entire region or state).
- *
- * Excel: "Table 12: Historical renewable and energy efficiency addition data"
- * table in the "Library" sheet (C664:H664).
- */
-function setDeploymentLocationHistoricalEERE(options: {
-  regionREDefaultsAverages: RegionREDefaultsAverages;
-  evDeploymentLocation: string;
-}) {
-  const { regionREDefaultsAverages, evDeploymentLocation } = options;
-
-  const result = {
-    eeRetail: { mw: 0, gwh: 0 },
-    onshoreWind: { mw: 0, gwh: 0 },
-    utilitySolar: { mw: 0, gwh: 0 },
-  };
-
-  const locationIsRegion = evDeploymentLocation.startsWith('region-');
-  const locationIsState = evDeploymentLocation.startsWith('state-');
-
-  const fallbackAverage = {
-    capacity_added_mw: { onshore_wind: 0, utility_pv: 0 },
-    retail_impacts_ghw: { ee_retail: 0 },
-  };
-
-  // averages for selected EV deployment location (region or state)
-  const locationAverage = locationIsRegion
-    ? regionEereAverages[evDeploymentLocation.replace('region-', '') as RegionId] // prettier-ignore
-    : locationIsState
-    ? stateEereAverages[evDeploymentLocation.replace('state-', '') as StateId]
-    : fallbackAverage;
-
-  const hoursInYear = 8760;
-  const GWtoMW = 1000;
-
-  result.eeRetail.mw = (locationAverage.retail_impacts_ghw.ee_retail * GWtoMW) / hoursInYear; // prettier-ignore
-  result.onshoreWind.mw = locationAverage.capacity_added_mw.onshore_wind;
-  result.utilitySolar.mw = locationAverage.capacity_added_mw.utility_pv;
-  result.eeRetail.gwh = locationAverage.retail_impacts_ghw.ee_retail;
-  result.onshoreWind.gwh = regionREDefaultsAverages.onshore_wind * hoursInYear * result.onshoreWind.mw / GWtoMW // prettier-ignore
-  result.utilitySolar.gwh = regionREDefaultsAverages.utility_pv * hoursInYear * result.utilitySolar.mw / GWtoMW; // prettier-ignore
-
-  return result;
-}
-
 function formatNumber(number: number) {
   return number.toLocaleString(undefined, {
     minimumFractionDigits: 0,
@@ -194,11 +133,8 @@ function EEREEVComparisonTable() {
   const totalYearlyEVEnergyUsage = useTypedSelector(
     ({ transportation }) => transportation.totalYearlyEVEnergyUsage,
   );
-  const evDeploymentLocation = useTypedSelector(
-    ({ eere }) => eere.inputs.evDeploymentLocation,
-  );
-  const regionREDefaultsAverages = useTypedSelector(
-    ({ transportation }) => transportation.regionREDefaultsAverages,
+  const evDeploymentLocationHistoricalEERE = useTypedSelector(
+    ({ transportation }) => transportation.evDeploymentLocationHistoricalEERE,
   );
 
   const selectedRegion = useSelectedRegion();
@@ -210,19 +146,14 @@ function EEREEVComparisonTable() {
       ? selectedRegion.lineLoss
       : 1; // TODO: determine best way to set lineloss if a state is selected
 
-  const historicalEERE = setDeploymentLocationHistoricalEERE({
-    regionREDefaultsAverages,
-    evDeploymentLocation,
-  });
+  const historicalEERetailMw = evDeploymentLocationHistoricalEERE.eeRetail.mw;
+  const historicalEERetailGWh = evDeploymentLocationHistoricalEERE.eeRetail.gwh;
 
-  const historicalEERetailMw = historicalEERE.eeRetail.mw;
-  const historicalEERetailGWh = historicalEERE.eeRetail.gwh;
+  const historicalOnshoreWindMw = evDeploymentLocationHistoricalEERE.onshoreWind.mw; // prettier-ignore
+  const historicalOnshoreWindGWh = evDeploymentLocationHistoricalEERE.onshoreWind.gwh; // prettier-ignore
 
-  const historicalOnshoreWindMw = historicalEERE.onshoreWind.mw;
-  const historicalOnshoreWindGWh = historicalEERE.onshoreWind.gwh;
-
-  const historicalUtilitySolarMw = historicalEERE.utilitySolar.mw;
-  const historicalUtilitySolarGWh = historicalEERE.utilitySolar.gwh;
+  const historicalUtilitySolarMw = evDeploymentLocationHistoricalEERE.utilitySolar.mw; // prettier-ignore
+  const historicalUtilitySolarGWh = evDeploymentLocationHistoricalEERE.utilitySolar.gwh; // prettier-ignore
 
   const historicalTotalMw =
     historicalEERetailMw / (1 - lineLoss) +

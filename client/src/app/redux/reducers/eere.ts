@@ -10,6 +10,7 @@ import {
   setVehiclesDisplaced,
   setMonthlyEVEnergyUsage,
   setMonthlyEmissionRates,
+  setEVDeploymentLocationHistoricalEERE,
 } from 'app/redux/reducers/transportation';
 // calculations
 import { calculateEere } from 'app/calculations';
@@ -828,6 +829,7 @@ export function updateEereEVDeploymentLocation(input: string): AppThunk {
     });
 
     dispatch(setMonthlyEmissionRates());
+    dispatch(setEVDeploymentLocationHistoricalEERE());
   };
 }
 
@@ -839,7 +841,6 @@ export function updateEereEVModelYear(input: string): AppThunk {
     });
 
     dispatch(setMonthlyEVEnergyUsage());
-
     dispatch(setMonthlyEmissionRates());
   };
 }

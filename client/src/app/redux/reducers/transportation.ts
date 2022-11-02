@@ -19,6 +19,7 @@ import type {
   TotalYearlyEmissionChanges,
   VehicleSalesAndStock,
   RegionREDefaultsAverages,
+  EVDeploymentLocationHistoricalEERE,
 } from 'app/calculations/transportation';
 import {
   calculateMonthlyVMTTotalsAndPercentages,
@@ -37,6 +38,7 @@ import {
   calculateTotalYearlyEmissionChanges,
   calculateVehicleSalesAndStock,
   calculateRegionREDefaultsAverages,
+  calculateEVDeploymentLocationHistoricalEERE,
 } from 'app/calculations/transportation';
 
 type TransportationAction =
@@ -107,6 +109,12 @@ type TransportationAction =
   | {
       type: 'transportation/SET_REGION_RE_DEFAULTS_AVERAGES';
       payload: { regionREDefaultsAverages: RegionREDefaultsAverages };
+    }
+  | {
+      type: 'transportation/SET_EV_DEPLOYMENT_LOCATION_HISTORICAL_EERE';
+      payload: {
+        evDeploymentLocationHistoricalEERE: EVDeploymentLocationHistoricalEERE;
+      };
     };
 
 type TransportationState = {
@@ -126,6 +134,7 @@ type TransportationState = {
   totalYearlyEmissionChanges: TotalYearlyEmissionChanges;
   vehicleSalesAndStock: VehicleSalesAndStock;
   regionREDefaultsAverages: RegionREDefaultsAverages;
+  evDeploymentLocationHistoricalEERE: EVDeploymentLocationHistoricalEERE;
 };
 
 // reducer
@@ -164,6 +173,11 @@ const initialState: TransportationState = {
   regionREDefaultsAverages: {
     onshore_wind: 0,
     utility_pv: 0,
+  },
+  evDeploymentLocationHistoricalEERE: {
+    eeRetail: { mw: 0, gwh: 0 },
+    onshoreWind: { mw: 0, gwh: 0 },
+    utilitySolar: { mw: 0, gwh: 0 },
   },
 };
 
@@ -313,6 +327,15 @@ export default function reducer(
       return {
         ...state,
         regionREDefaultsAverages,
+      };
+    }
+
+    case 'transportation/SET_EV_DEPLOYMENT_LOCATION_HISTORICAL_EERE': {
+      const { evDeploymentLocationHistoricalEERE } = action.payload;
+
+      return {
+        ...state,
+        evDeploymentLocationHistoricalEERE,
       };
     }
 
@@ -592,6 +615,28 @@ export function setRegionREDefaultsAverages(): AppThunk {
     dispatch({
       type: 'transportation/SET_REGION_RE_DEFAULTS_AVERAGES',
       payload: { regionREDefaultsAverages },
+    });
+
+    dispatch(setEVDeploymentLocationHistoricalEERE());
+  };
+}
+
+export function setEVDeploymentLocationHistoricalEERE(): AppThunk {
+  // NOTE: set whenever RDFs are fetched or EV deployment location changes
+  return (dispatch, getState) => {
+    const { eere, transportation } = getState();
+    const { evDeploymentLocation } = eere.inputs;
+    const { regionREDefaultsAverages } = transportation;
+
+    const evDeploymentLocationHistoricalEERE =
+      calculateEVDeploymentLocationHistoricalEERE({
+        regionREDefaultsAverages,
+        evDeploymentLocation,
+      });
+
+    dispatch({
+      type: 'transportation/SET_EV_DEPLOYMENT_LOCATION_HISTORICAL_EERE',
+      payload: { evDeploymentLocationHistoricalEERE },
     });
   };
 }

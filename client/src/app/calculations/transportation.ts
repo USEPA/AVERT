@@ -29,8 +29,20 @@ import countyFips from 'app/data/county-fips.json';
  * Sales and Stock" tables in the "Library" sheet (B468:D519 and B529:F580).
  */
 import stateSalesAndStock from 'app/data/state-sales-and-stock.json';
+/**
+ * Excel: "Table 12: Historical renewable and energy efficiency addition data"
+ * table in the "Library" sheet (B589:E603).
+ */
+import regionEereAverages from 'app/data/region-eere-averages.json';
+/**
+ * Excel: "Table 12: Historical renewable and energy efficiency addition data"
+ * table in the "Library" sheet (B609:E658).
+ */
+import stateEereAverages from 'app/data/state-eere-averages.json';
 
 type SalesAndStockStateId = keyof typeof stateSalesAndStock;
+type RegionEereAveragesRegionId = keyof typeof regionEereAverages;
+type RegionEereAveragesStateId = keyof typeof stateEereAverages;
 
 type MovesData = {
   year: string;
@@ -125,6 +137,9 @@ export type VehicleSalesAndStock = ReturnType<
 >;
 export type RegionREDefaultsAverages = ReturnType<
   typeof calculateRegionREDefaultsAverages
+>;
+export type EVDeploymentLocationHistoricalEERE = ReturnType<
+  typeof calculateEVDeploymentLocationHistoricalEERE
 >;
 
 /**
@@ -1097,6 +1112,59 @@ export function calculateRegionREDefaultsAverages(
 
   result.onshore_wind = reDefaultsTotals.onshore_wind / totalHours;
   result.utility_pv = reDefaultsTotals.utility_pv / totalHours;
+
+  return result;
+}
+
+/**
+ * Historical EERE data for the EV deployment location (entire region or state).
+ *
+ * Excel: "Table 12: Historical renewable and energy efficiency addition data"
+ * table in the "Library" sheet (C664:H664).
+ */
+export function calculateEVDeploymentLocationHistoricalEERE(options: {
+  regionREDefaultsAverages: RegionREDefaultsAverages;
+  evDeploymentLocation: string;
+}) {
+  const { regionREDefaultsAverages, evDeploymentLocation } = options;
+
+  const result = {
+    eeRetail: { mw: 0, gwh: 0 },
+    onshoreWind: { mw: 0, gwh: 0 },
+    utilitySolar: { mw: 0, gwh: 0 },
+  };
+
+  if (!evDeploymentLocation) {
+    return result;
+  }
+
+  const locationIsRegion = evDeploymentLocation.startsWith('region-');
+  const locationIsState = evDeploymentLocation.startsWith('state-');
+
+  const fallbackAverage = {
+    capacity_added_mw: { onshore_wind: 0, utility_pv: 0 },
+    retail_impacts_ghw: { ee_retail: 0 },
+  };
+
+  const regionId = evDeploymentLocation.replace('region-', '') as RegionEereAveragesRegionId; // prettier-ignore
+  const stateId = evDeploymentLocation.replace('state-', '') as RegionEereAveragesStateId; // prettier-ignore
+
+  // averages for selected EV deployment location (region or state)
+  const locationAverage = locationIsRegion
+    ? regionEereAverages[regionId]
+    : locationIsState
+    ? stateEereAverages[stateId]
+    : fallbackAverage;
+
+  const hoursInYear = 8760;
+  const GWtoMW = 1000;
+
+  result.eeRetail.mw = (locationAverage.retail_impacts_ghw.ee_retail * GWtoMW) / hoursInYear; // prettier-ignore
+  result.onshoreWind.mw = locationAverage.capacity_added_mw.onshore_wind;
+  result.utilitySolar.mw = locationAverage.capacity_added_mw.utility_pv;
+  result.eeRetail.gwh = locationAverage.retail_impacts_ghw.ee_retail;
+  result.onshoreWind.gwh = regionREDefaultsAverages.onshore_wind * hoursInYear * result.onshoreWind.mw / GWtoMW // prettier-ignore
+  result.utilitySolar.gwh = regionREDefaultsAverages.utility_pv * hoursInYear * result.utilitySolar.mw / GWtoMW; // prettier-ignore
 
   return result;
 }
