@@ -7,8 +7,6 @@ import { RegionREDefaultsAverages } from 'app/components/EEREInputs';
 import { useTypedSelector } from 'app/redux/index';
 // hooks
 import { useSelectedRegion } from 'app/hooks';
-// calculations
-import type { VehicleSalesAndStock } from 'app/calculations/transportation';
 /**
  * Excel: "Table 12: Historical renewable and energy efficiency addition data"
  * table in the "Library" sheet (B589:E603).
@@ -32,11 +30,7 @@ function calculatePercent(numerator: number, denominator: number) {
     : '-';
 }
 
-function EVSalesAndStockTable(props: {
-  vehicleSalesAndStock: VehicleSalesAndStock;
-}) {
-  const { vehicleSalesAndStock } = props;
-
+function EVSalesAndStockTable() {
   // TODO: determine if regionalScalingFactor is needed if geographicFocus is states
   const batteryEVs = useTypedSelector(({ eere }) => eere.inputs.batteryEVs);
   const hybridEVs = useTypedSelector(({ eere }) => eere.inputs.hybridEVs);
@@ -48,10 +42,15 @@ function EVSalesAndStockTable(props: {
   const evDeploymentLocationOptions = useTypedSelector(
     ({ eere }) => eere.selectOptions.evDeploymentLocationOptions,
   );
+  const vehicleSalesAndStock = useTypedSelector(
+    ({ transportation }) => transportation.vehicleSalesAndStock,
+  );
 
   const evDeploymentLocationName = evDeploymentLocationOptions.find((opt) => {
     return opt.id === evDeploymentLocation;
   })?.name;
+
+  if (Object.keys(vehicleSalesAndStock).length === 0) return null;
 
   const locationSalesAndStock = vehicleSalesAndStock[evDeploymentLocation];
   if (!locationSalesAndStock) return null;

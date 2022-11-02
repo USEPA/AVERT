@@ -26,7 +26,10 @@ import { modalLinkStyles } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import { toggleModalOverlay, resetActiveModal } from 'app/redux/reducers/panel';
 import { selectGeography } from 'app/redux/reducers/geography';
-import { setMonthlyVMTData } from 'app/redux/reducers/transportation';
+import {
+  setMonthlyVMTData,
+  setHourlyEVChargingPercentages,
+} from 'app/redux/reducers/transportation';
 // hooks
 import {
   useSelectedRegion,
@@ -405,6 +408,7 @@ function Panels() {
 
   useEffect(() => {
     dispatch(setMonthlyVMTData());
+    dispatch(setHourlyEVChargingPercentages());
   }, [dispatch]);
 
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);

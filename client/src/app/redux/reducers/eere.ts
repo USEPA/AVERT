@@ -566,25 +566,14 @@ export default function reducer(
 }
 
 // action creators
-export function setEVDeploymentLocationOptions({
-  regionId,
-  stateId,
-}: {
-  regionId?: string;
-  stateId?: string;
-}): AppThunk {
-  // NOTE: set every time the selected geography changes (region or state)
+export function setEVDeploymentLocationOptions(): AppThunk {
+  // NOTE: set every time a region or state is selected
   return (dispatch, getState) => {
     const { geography } = getState();
     const { focus, regions, states } = geography;
 
-    const selectedRegion = Object.values(regions).find(
-      (region) => region.id === regionId,
-    );
-
-    const selectedState = Object.values(states).find(
-      (state) => state.id === stateId,
-    );
+    const selectedRegion = Object.values(regions).find((r) => r.selected);
+    const selectedState = Object.values(states).find((s) => s.selected);
 
     const evDeploymentLocationOptions =
       focus === 'regions' && selectedRegion

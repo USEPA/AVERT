@@ -3,7 +3,7 @@ import { AppThunk } from 'app/redux/index';
 import { setEVDeploymentLocationOptions } from 'app/redux/reducers/eere';
 import {
   setDailyAndMonthlyStats,
-  setHourlyEVChargingPercentages,
+  setVehicleSalesAndStock,
 } from 'app/redux/reducers/transportation';
 // config
 import {
@@ -290,7 +290,8 @@ export function selectRegion(regionId: RegionId): AppThunk {
       payload: { regionId },
     });
 
-    dispatch(setEVDeploymentLocationOptions({ regionId }));
+    dispatch(setEVDeploymentLocationOptions());
+    dispatch(setVehicleSalesAndStock());
   };
 }
 
@@ -301,7 +302,8 @@ export function selectState(stateId: string): AppThunk {
       payload: { stateId },
     });
 
-    dispatch(setEVDeploymentLocationOptions({ stateId }));
+    dispatch(setEVDeploymentLocationOptions());
+    dispatch(setVehicleSalesAndStock());
   };
 }
 
@@ -435,7 +437,6 @@ export function fetchRegionsData(): AppThunk {
       })
       .then((rdfs) => {
         dispatch(setDailyAndMonthlyStats(rdfs[0].regional_load));
-        dispatch(setHourlyEVChargingPercentages());
       });
   };
 }

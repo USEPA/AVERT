@@ -17,6 +17,7 @@ import type {
   MonthlyEmissionChanges,
   TotalMonthlyEmissionChanges,
   TotalYearlyEmissionChanges,
+  VehicleSalesAndStock,
 } from 'app/calculations/transportation';
 import {
   calculateMonthlyVMTTotalsAndPercentages,
@@ -33,6 +34,7 @@ import {
   calculateMonthlyEmissionChanges,
   calculateTotalMonthlyEmissionChanges,
   calculateTotalYearlyEmissionChanges,
+  calculateVehicleSalesAndStock,
 } from 'app/calculations/transportation';
 
 type TransportationAction =
@@ -95,6 +97,10 @@ type TransportationAction =
   | {
       type: 'transportation/SET_TOTAL_YEARLY_EMISSION_CHANGES';
       payload: { totalYearlyEmissionChanges: TotalYearlyEmissionChanges };
+    }
+  | {
+      type: 'transportation/SET_VEHICLE_SALES_AND_STOCK';
+      payload: { vehicleSalesAndStock: VehicleSalesAndStock };
     };
 
 type TransportationState = {
@@ -112,6 +118,7 @@ type TransportationState = {
   monthlyEmissionChanges: MonthlyEmissionChanges;
   totalMonthlyEmissionChanges: TotalMonthlyEmissionChanges;
   totalYearlyEmissionChanges: TotalYearlyEmissionChanges;
+  vehicleSalesAndStock: VehicleSalesAndStock;
 };
 
 // reducer
@@ -146,6 +153,7 @@ const initialState: TransportationState = {
     VOCs: 0,
     NH3: 0,
   },
+  vehicleSalesAndStock: {},
 };
 
 export default function reducer(
@@ -279,6 +287,15 @@ export default function reducer(
       };
     }
 
+    case 'transportation/SET_VEHICLE_SALES_AND_STOCK': {
+      const { vehicleSalesAndStock } = action.payload;
+
+      return {
+        ...state,
+        vehicleSalesAndStock,
+      };
+    }
+
     default: {
       return state;
     }
@@ -287,7 +304,7 @@ export default function reducer(
 
 // action creators
 export function setMonthlyVMTData(): AppThunk {
-  // NOTE: set when the app starts (only once, and never re-set)
+  // NOTE: set when the app starts
   return (dispatch) => {
     const monthlyVMTTotalsAndPercentages =
       calculateMonthlyVMTTotalsAndPercentages();
@@ -311,7 +328,7 @@ export function setMonthlyVMTData(): AppThunk {
 export function setDailyAndMonthlyStats(
   regionalLoad: RegionalLoadData[],
 ): AppThunk {
-  // NOTE: set every time the selected geography changes (region or state)
+  // NOTE: set every time RDFs are fetched
   return (dispatch) => {
     const dailyStats = calculateDailyStats(regionalLoad);
     const monthlyStats = calculateMonthlyStats(dailyStats);
@@ -331,7 +348,7 @@ export function setDailyAndMonthlyStats(
 }
 
 export function setHourlyEVChargingPercentages(): AppThunk {
-  // NOTE: set whenever an EV profile changes
+  // NOTE: set when the app starts and whenever an EV profile changes
   return (dispatch, getState) => {
     const { eere } = getState();
     const {
@@ -375,7 +392,6 @@ export function setVehiclesDisplaced(): AppThunk {
     });
 
     dispatch(setMonthlyEVEnergyUsage());
-
     dispatch(setMonthlyEmissionChanges());
   };
 }
@@ -421,7 +437,8 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
 }
 
 export function setMonthlyDailyEVEnergyUsage(): AppThunk {
-  // NOTE: set whenever an EV number, EV model year, or the selected geography changes
+  // NOTE: set whenever an EV number, EV model year, or the selected geography
+  // (region or state) changes
   return (dispatch, getState) => {
     const { transportation } = getState();
     const { monthlyStats, monthlyEVEnergyUsageMW } = transportation;
@@ -496,6 +513,35 @@ export function setMonthlyEmissionChanges(): AppThunk {
     dispatch({
       type: 'transportation/SET_TOTAL_YEARLY_EMISSION_CHANGES',
       payload: { totalYearlyEmissionChanges },
+    });
+  };
+}
+
+export function setVehicleSalesAndStock(): AppThunk {
+  // NOTE: set every time a region or state is selected
+  return (dispatch, getState) => {
+    const { geography, eere } = getState();
+    const { focus, regions } = geography;
+    const { evDeploymentLocationOptions } = eere.selectOptions;
+
+    const selectedRegion = Object.values(regions).find((r) => r.selected);
+    const selectedRegionName =
+      focus === 'regions'
+        ? selectedRegion?.name || ''
+        : ''; /* NOTE: selected states can be in more than one region */
+    const evDeploymentLocations = evDeploymentLocationOptions.map((o) => o.id);
+
+    // TODO: right now when a state is selected, `vehicleSalesAndStock` gets set
+    // to an empty object, since `selectedRegionName` is an empty string. If we
+    // want to support selected states, the function needs to be updated.
+    const vehicleSalesAndStock = calculateVehicleSalesAndStock({
+      selectedRegionName,
+      evDeploymentLocations,
+    });
+
+    dispatch({
+      type: 'transportation/SET_VEHICLE_SALES_AND_STOCK',
+      payload: { vehicleSalesAndStock },
     });
   };
 }

@@ -1,5 +1,5 @@
 // reducers
-import { RegionalLoadData, RegionState } from 'app/redux/reducers/geography';
+import { RegionalLoadData } from 'app/redux/reducers/geography';
 // config
 import type { EVProfileName, EVModelYear } from 'app/config';
 import {
@@ -978,10 +978,10 @@ export function calculateHourlyEVLoad(options: {
  * vehicle sales and stock" table in the "Library" sheet (C440:I457).
  */
 export function calculateVehicleSalesAndStock(options: {
-  selectedRegion: RegionState | undefined;
+  selectedRegionName: string;
   evDeploymentLocations: string[];
 }) {
-  const { selectedRegion, evDeploymentLocations } = options;
+  const { selectedRegionName, evDeploymentLocations } = options;
 
   const result: {
     [locationId: string]: {
@@ -991,7 +991,7 @@ export function calculateVehicleSalesAndStock(options: {
     };
   } = {};
 
-  if (!selectedRegion || evDeploymentLocations[0] === '') return result;
+  if (!selectedRegionName || evDeploymentLocations[0] === '') return result;
 
   // conditionally remove 'region-' option, as it will be added later as the sum
   // of each state's data
@@ -1004,7 +1004,7 @@ export function calculateVehicleSalesAndStock(options: {
     const stateId = `state-${id}`;
 
     if (
-      data['AVERT Region'] === selectedRegion.name &&
+      data['AVERT Region'] === selectedRegionName &&
       stateIds.includes(stateId)
     ) {
       const lightDutyVehiclesVMTShare = data['Share of State VMT - Passenger Cars']; // prettier-ignore

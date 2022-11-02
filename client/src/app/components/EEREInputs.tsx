@@ -39,8 +39,6 @@ import {
 } from 'app/redux/reducers/eere';
 // hooks
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
-// calculations
-import { calculateVehicleSalesAndStock } from 'app/calculations/transportation';
 
 export type RegionREDefaultsAverages = {
   onshore_wind: number;
@@ -307,14 +305,6 @@ function EEREInputs() {
 
   const selectedRegion = useSelectedRegion();
   const selectedStateRegions = useSelectedStateRegions();
-
-  // TODO: consider moving into transportation redux state
-  const vehicleSalesAndStock = useMemo(() => {
-    return calculateVehicleSalesAndStock({
-      selectedRegion,
-      evDeploymentLocations: evDeploymentLocationOptions.map((opt) => opt.id),
-    });
-  }, [selectedRegion, evDeploymentLocationOptions]);
 
   const regionREDefaultsAverages = useMemo(() => {
     return calculateREDefaultsAverages(selectedRegion);
@@ -774,7 +764,7 @@ function EEREInputs() {
               </Tooltip>
             </p>
 
-            <EVSalesAndStockTable vehicleSalesAndStock={vehicleSalesAndStock} />
+            <EVSalesAndStockTable />
 
             <EEREEVComparisonTable
               regionREDefaultsAverages={regionREDefaultsAverages}
