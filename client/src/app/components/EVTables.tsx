@@ -16,9 +16,16 @@ function calculatePercent(numerator: number, denominator: number) {
     : '-';
 }
 
+function formatNumber(number: number) {
+  return number.toLocaleString(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+}
+
 function EVSalesAndStockTable() {
-  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   // TODO: determine if regionalScalingFactor is needed if geographicFocus is states
+  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const batteryEVs = useTypedSelector(({ eere }) => eere.inputs.batteryEVs);
   const hybridEVs = useTypedSelector(({ eere }) => eere.inputs.hybridEVs);
   const transitBuses = useTypedSelector(({ eere }) => eere.inputs.transitBuses);
@@ -118,13 +125,6 @@ function EVSalesAndStockTable() {
       </table>
     </>
   );
-}
-
-function formatNumber(number: number) {
-  return number.toLocaleString(undefined, {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  });
 }
 
 function EEREEVComparisonTable() {
