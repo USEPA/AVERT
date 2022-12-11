@@ -717,7 +717,7 @@ export type EVModelYear = '2020' | '2021' | '2022' | '2023' | '2024' | '2025';
  * Percentages of vehicle types displaced by new EVs.
  *
  * Excel: "Part II. Vehicle Composition" table in the "EV_Detail" sheet
- * (D100:G104).
+ * (D63:G67).
  */
 export const percentVehiclesDisplacedByEVs = {
   batteryEVCars: 27.6046368502288,
@@ -731,13 +731,13 @@ export const percentVehiclesDisplacedByEVs = {
 };
 
 /**
- * Average vehicle miles traveled (VMT) per vehicle type, per year.
+ * National average vehicle miles traveled (VMT) per vehicle type, per year.
  *
- * Excel: "Table 4: EV data inputs" table in the "Library" sheet (E180:E183).
+ * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E177:E180).
  */
-export const averageVMTPerYear = {
-  cars: 11599,
-  trucks: 11263,
+export const nationalAverageVMTPerYear = {
+  cars: 11543.2484297778,
+  trucks: 11543.2484297778,
   transitBuses: 43647,
   schoolBuses: 12000,
 };
@@ -745,61 +745,63 @@ export const averageVMTPerYear = {
 /**
  * Efficiency factor (kWh/VMT) for each vehicle type, for each EV model year.
  *
- * Excel: "Table 4: EV data inputs" table in the "Library" sheet (E195:J201).
+ * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
+ * (E194:J200).
  */
 export const evEfficiencyByModelYear = {
   '2020': {
-    batteryEVCars: 0.3,
-    hybridEVCars: 0.28,
-    batteryEVTrucks: 0.51,
-    hybridEVTrucks: 0.47,
-    transitBuses: 1.95,
-    schoolBuses: 1.95,
+    batteryEVCars: 0.268539869,
+    hybridEVCars: 0.313068266,
+    batteryEVTrucks: 0.361450857,
+    hybridEVTrucks: 0.410800574,
+    transitBuses: 1.9523647,
+    schoolBuses: 1.171772738,
   },
   '2021': {
-    batteryEVCars: 0.29,
-    hybridEVCars: 0.28,
-    batteryEVTrucks: 0.51,
-    hybridEVTrucks: 0.47,
-    transitBuses: 1.93,
-    schoolBuses: 1.93,
+    batteryEVCars: 0.259387509,
+    hybridEVCars: 0.302963412,
+    batteryEVTrucks: 0.349052185,
+    hybridEVTrucks: 0.397213533,
+    transitBuses: 1.9523647,
+    schoolBuses: 1.171772738,
   },
   '2022': {
-    batteryEVCars: 0.29,
-    hybridEVCars: 0.28,
-    batteryEVTrucks: 0.5,
-    hybridEVTrucks: 0.46,
-    transitBuses: 1.9,
-    schoolBuses: 1.9,
+    batteryEVCars: 0.25023515,
+    hybridEVCars: 0.292858558,
+    batteryEVTrucks: 0.336653513,
+    hybridEVTrucks: 0.383626492,
+    transitBuses: 1.9523647,
+    schoolBuses: 1.171772738,
   },
   '2023': {
-    batteryEVCars: 0.28,
-    hybridEVCars: 0.28,
-    batteryEVTrucks: 0.5,
-    hybridEVTrucks: 0.46,
-    transitBuses: 1.87,
-    schoolBuses: 1.87,
+    batteryEVCars: 0.241082791,
+    hybridEVCars: 0.282753704,
+    batteryEVTrucks: 0.324254841,
+    hybridEVTrucks: 0.370039452,
+    transitBuses: 1.9523647,
+    schoolBuses: 1.171772738,
   },
   '2024': {
-    batteryEVCars: 0.28,
-    hybridEVCars: 0.28,
-    batteryEVTrucks: 0.5,
-    hybridEVTrucks: 0.45,
-    transitBuses: 1.85,
-    schoolBuses: 1.85,
+    batteryEVCars: 0.231930431,
+    hybridEVCars: 0.27264885,
+    batteryEVTrucks: 0.311856169,
+    hybridEVTrucks: 0.356452411,
+    transitBuses: 1.9523647,
+    schoolBuses: 1.171772738,
   },
   '2025': {
-    batteryEVCars: 0.27,
-    hybridEVCars: 0.27,
-    batteryEVTrucks: 0.49,
-    hybridEVTrucks: 0.45,
-    transitBuses: 1.83,
-    schoolBuses: 1.83,
+    batteryEVCars: 0.222778072,
+    hybridEVCars: 0.262543996,
+    batteryEVTrucks: 0.299457497,
+    hybridEVTrucks: 0.34286537,
+    transitBuses: 1.9523647,
+    schoolBuses: 1.171772738,
   },
 };
 
 /**
- * Excel: "Table 4: EV data inputs" table in the "Library" sheet (E203).
+ * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
+ * (E202).
  */
 export const percentHybridEVMilesDrivenOnElectricity = 54;
 
@@ -807,10 +809,10 @@ export const percentHybridEVMilesDrivenOnElectricity = 54;
  * Ratio of typical weekend energy consumption as a share of typical weekday
  * energy consumption.
  *
- * Excel: "Table D. Set ratio of weekend to weekday energy" table in the
- * "EV_Detail" sheet (D91).
+ * Excel: "Table C. Set ratio of weekend to weekday energy" table in the
+ * "EV_Detail" sheet (D53).
  */
-export const percentWeekendToWeekdayEVConsumption = 95;
+export const percentWeekendToWeekdayEVConsumption = 97.3015982802952;
 
 /**
  * TODO

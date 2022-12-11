@@ -5,7 +5,7 @@ import type { EEREDefaultData } from 'app/redux/reducers/geography';
 import type { EVModelYear } from 'app/config';
 import {
   percentVehiclesDisplacedByEVs,
-  averageVMTPerYear,
+  nationalAverageVMTPerYear,
   evEfficiencyByModelYear,
   percentHybridEVMilesDrivenOnElectricity,
   percentWeekendToWeekdayEVConsumption,
@@ -15,9 +15,10 @@ import {
  */
 import movesEmissionsRates from 'app/data/moves-emissions-rates.json';
 /**
- * Excel: "Table B1. View charging profiles or set a manual charging profile for
- * Weekdays" table in the "EV_Detail" sheet (C25:H49), which comes from "Table
- * 8: Default EV load profiles" table in the "Library" sheet).
+ * Excel: "Table B. View charging profiles or set a manual charging profile
+ * for Weekdays" table in the "EV_Detail" sheet (C23:H47), which comes from
+ * "Table 9: Default EV load profiles and related values from EVI-Pro Lite"
+ * table in the "Library" sheet).
  */
 import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
 /**
@@ -25,18 +26,18 @@ import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
  */
 import countyFips from 'app/data/county-fips.json';
 /**
- * Excel: "Table 10: LDV Sales and Stock" and "Table 11: Transit and School Bus
- * Sales and Stock" tables in the "Library" sheet (B468:D519 and B529:F580).
+ * Excel: "Table 11: LDV Sales and Stock" and "Table 12: Transit and School Bus
+ * Sales and Stock" tables in the "Library" sheet (B485:D535 and B546:F596).
  */
 import stateSalesAndStock from 'app/data/state-sales-and-stock.json';
 /**
- * Excel: "Table 12: Historical renewable and energy efficiency addition data"
- * table in the "Library" sheet (B589:E603).
+ * Excel: "Table 13: Historical renewable and energy efficiency addition data"
+ * table in the "Library" sheet (B606:E619).
  */
 import regionEereAverages from 'app/data/region-eere-averages.json';
 /**
- * Excel: "Table 12: Historical renewable and energy efficiency addition data"
- * table in the "Library" sheet (B609:E658).
+ * Excel: "Table 13: Historical renewable and energy efficiency addition data"
+ * table in the "Library" sheet (B626:E674).
  */
 import stateEereAverages from 'app/data/state-eere-averages.json';
 
@@ -146,8 +147,8 @@ export type EVDeploymentLocationHistoricalEERE = ReturnType<
  * Vehicle miles traveled (VMT) totals for each month from MOVES data, and the
  * percentage/share of the yearly totals each month has, for each vehicle type.
  *
- * Excel: "Table 5: EV weather adjustments and monthly VMT adjustments" table
- * in the "Library" sheet (totals: E220:P225, percentages: E227:P232).
+ * Excel: "Table 6: Monthly VMT and efficiency adjustments" table in the
+ * "Library" sheet (totals: E218:P223, percentages: E225:P230).
  */
 export function calculateMonthlyVMTTotalsAndPercentages() {
   const result: {
@@ -162,7 +163,7 @@ export function calculateMonthlyVMTTotalsAndPercentages() {
   /**
    * Yearly total vehicle miles traveled (VMT) for each vehicle type.
    *
-   * Excel: Total column of Table 5 in the "Library" sheet (Q220:Q225).
+   * Excel: Total column of Table 6 in the "Library" sheet (Q218:Q223).
    */
   const yearlyTotals = {
     cars: 0,
@@ -224,8 +225,8 @@ export function calculateMonthlyVMTTotalsAndPercentages() {
 /**
  * Monthly vehicle miles traveled (VMT) for each vehicle type.
  *
- * Excel: "Table 5: EV weather adjustments and monthly VMT adjustments" table
- * in the "Library" sheet (E234:P239).
+ * Excel: "Table 6: Monthly VMT and efficiency adjustments" table in the
+ * "Library" sheet (E232:P237).
  */
 export function calculateMonthlyVMTPerVehicle(
   monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages,
@@ -253,7 +254,7 @@ export function calculateMonthlyVMTPerVehicle(
     };
 
     generalVehicleTypes.forEach((vehicleType) => {
-      // NOTE: averageVMTPerYear's vehicle types are abridged
+      // NOTE: nationalAverageVMTPerYear's vehicle types are abridged
       // (don't include transit buses broken out by fuel type)
       const averageVMTPerYearVehicleType =
         vehicleType === 'transitBusesDiesel' ||
@@ -263,7 +264,7 @@ export function calculateMonthlyVMTPerVehicle(
           : vehicleType;
 
       result[month][vehicleType] =
-        averageVMTPerYear[averageVMTPerYearVehicleType] *
+        nationalAverageVMTPerYear[averageVMTPerYearVehicleType] *
         data[vehicleType].percent;
     });
   });
@@ -383,9 +384,9 @@ export function calculateHourlyEVChargingPercentages() {
 /**
  * Number of vehicles displaced by new EVs.
  *
- * Excel: "Sales Changes" section of Table 7 in the "Library" sheet
- * (E299:E306), which uses "Part II. Vehicle Composition" table in the
- * "EV_Detail" sheet (L99:O104).
+ * Excel: "Sales Changes" data from "Table 8: Calculated changes for the
+ * transportation sector" table in the "Library" sheet (E297:E304), which uses
+ * "Part II. Vehicle Composition" table in the "EV_Detail" sheet (L63:O67).
  */
 export function calculateVehiclesDisplaced(options: {
   batteryEVs: number;
@@ -420,8 +421,8 @@ export function calculateVehiclesDisplaced(options: {
 /**
  * Monthly EV energy use in GW for all the EV types we have data for.
  *
- * Excel: "Sales Changes" data from "Table 7: Calculated changes for the
- * transportation sector" table in the "Library" sheet (G298:R306).
+ * Excel: "Sales Changes" data from "Table 8: Calculated changes for the
+ * transportation sector" table in the "Library" sheet (G297:R304).
  */
 export function calculateMonthlyEVEnergyUsageGW(options: {
   monthlyVMTPerVehicle: MonthlyVMTPerVehicle;
@@ -443,10 +444,10 @@ export function calculateMonthlyEVEnergyUsageGW(options: {
   /**
    * Efficiency factor for each vehicle type for the selected model year.
    *
-   * Excel: "Table 5: EV weather adjustments and monthly VMT adjustments" table
-   * in the "Library" sheet (E212:E217). NOTE: the Excel version duplicates
-   * these values in the columns to the right for each month, but they're the
-   * same value for all months.
+   * Excel: "Table 6: Monthly VMT and efficiency adjustments" table in the
+   * "Library" sheet (E210:E215). NOTE: the Excel version duplicates these
+   * values in the columns to the right for each month, but they're the same
+   * value for all months.
    */
   const evEfficiency = evEfficiencyByModelYear[evModelYear as EVModelYear];
 
@@ -641,8 +642,8 @@ export function calculateMonthlyDailyEVEnergyUsage(options: {
 /**
  * Monthly emission rates by vehicle type.
  *
- * Excel: "Table 6: Emission rates of various vehicle types" table in the
- * "Library" sheet (G255:R290).
+ * Excel: "Table 7: Emission rates of various vehicle types" table in the
+ * "Library" sheet (G253:R288).
  */
 export function calculateMonthlyEmissionRates(options: {
   evDeploymentLocation: string;
@@ -736,9 +737,9 @@ export function calculateMonthlyEmissionRates(options: {
 /**
  * Monthly emission changes by EV type.
  *
- * Excel: Top half of the "Emission Changes" data from "Table 7: Calculated
+ * Excel: Top half of the "Emission Changes" data from "Table 8: Calculated
  * changes for the transportation sector" table in the "Library" sheet
- * (G316:R336).
+ * (F314:R361).
  */
 export function calculateMonthlyEmissionChanges(options: {
   monthlyVMTPerVehicle: MonthlyVMTPerVehicle;
@@ -828,9 +829,9 @@ export function calculateMonthlyEmissionChanges(options: {
 /**
  * Totals monthly emission changes from each EV type.
  *
- * Excel: Bottom half of the "Emission Changes" data from "Table 7: Calculated
+ * Excel: Bottom half of the "Emission Changes" data from "Table 8: Calculated
  * changes for the transportation sector" table in the "Library" sheet
- * (G336:R394).
+ * (F363:R392).
  */
 export function calculateTotalMonthlyEmissionChanges(
   monthlyEmissionChanges: MonthlyEmissionChanges,
@@ -893,8 +894,8 @@ export function calculateTotalMonthlyEmissionChanges(
  * the year to a single total emission changes value for the year for each
  * pollutant.
  *
- * Excel: Yearly pollutant totals from the "Table 7: Calculated changes for the
- * transportation sector" table in the "Library" sheet (S389:S394).
+ * Excel: Yearly pollutant totals from the "Table 8: Calculated changes for the
+ * transportation sector" table in the "Library" sheet (S387:S392).
  */
 export function calculateTotalYearlyEmissionChanges(
   totalMonthlyEmissionChanges: TotalMonthlyEmissionChanges,
@@ -972,8 +973,8 @@ export function calculateHourlyEVLoad(options: {
  * Vehicle sales and stock for each state in the selected region, and the region
  * as a whole (sum of each state's sales and stock), for each vehicle type.
  *
- * Excel: "Table 9: List of states in region for purposes of calculating
- * vehicle sales and stock" table in the "Library" sheet (C440:I457).
+ * Excel: "Table 10: List of states in region for purposes of calculating
+ * vehicle sales and stock" table in the "Library" sheet (C457:I474).
  */
 export function calculateVehicleSalesAndStock(options: {
   selectedRegionName: string;
@@ -1062,7 +1063,7 @@ export function calculateVehicleSalesAndStock(options: {
  * the historical RE data for Onshore Wind and Unitity Solar's GWh values in the
  * `EEREEVComparisonTable` component.
  *
- * Excel: Used in calculating values for cells F664 and G664 of the "Table 12:
+ * Excel: Used in calculating values for cells F680 and G680 of the "Table 13:
  * Historical renewable and energy efficiency addition data" table in the
  * "Library" sheet.
  */
@@ -1098,8 +1099,8 @@ export function calculateRegionREDefaultsAverages(
 /**
  * Historical EERE data for the EV deployment location (entire region or state).
  *
- * Excel: "Table 12: Historical renewable and energy efficiency addition data"
- * table in the "Library" sheet (C664:H664).
+ * Excel: "Table 13: Historical renewable and energy efficiency addition data"
+ * table in the "Library" sheet (C680:H680).
  */
 export function calculateEVDeploymentLocationHistoricalEERE(options: {
   regionREDefaultsAverages: RegionREDefaultsAverages;
