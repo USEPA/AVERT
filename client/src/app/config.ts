@@ -711,14 +711,6 @@ export const states: { [key in StateId]: State } = {
   },
 };
 
-export type EVProfileName =
-  | 'fleetwide'
-  | 'residentialLevel1'
-  | 'residentialLevel2'
-  | 'workLevel2'
-  | 'publicLevel2'
-  | 'dcFastCharging';
-
 export type EVModelYear = '2020' | '2021' | '2022' | '2023' | '2024' | '2025';
 
 /**
@@ -819,18 +811,6 @@ export const percentHybridEVMilesDrivenOnElectricity = 54;
  * "EV_Detail" sheet (D91).
  */
 export const percentWeekendToWeekdayEVConsumption = 95;
-
-/**
- * TODO
- */
-export const evChargingProfileOptions = [
-  { id: 'fleetwide', name: 'Fleetwide' },
-  { id: 'residentialLevel1', name: 'Residential Level 1' },
-  { id: 'residentialLevel2', name: 'Residential Level 2' },
-  { id: 'workLevel2', name: 'Work Level 2' },
-  { id: 'publicLevel2', name: 'Public Level 2' },
-  { id: 'dcFastCharging', name: 'DC Fast Charging' },
-];
 
 /**
  * TODO

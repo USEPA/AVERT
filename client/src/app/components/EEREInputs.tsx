@@ -24,13 +24,9 @@ import {
   updateEereUtilitySolar,
   updateEereRooftopSolar,
   updateEereBatteryEVs,
-  updateEereBatteryEVsProfile,
   updateEereHybridEVs,
-  updateEereHybridEVsProfile,
   updateEereTransitBuses,
-  updateEereTransitBusesProfile,
   updateEereSchoolBuses,
-  updateEereSchoolBusesProfile,
   updateEereEVDeploymentLocation,
   updateEereEVModelYear,
   updateEereICEReplacementVehicle,
@@ -186,7 +182,7 @@ const inputTextStyles = css`
 
 const evInputsStyles = css`
   display: grid;
-  grid-template-columns: max-content 1fr 1fr;
+  grid-template-columns: max-content 1fr;
   grid-gap: 0.5rem;
   align-items: center;
   margin-bottom: 1rem;
@@ -230,30 +226,15 @@ function EEREInputs() {
   const utilitySolar = useTypedSelector(({ eere }) => eere.inputs.utilitySolar);
   const rooftopSolar = useTypedSelector(({ eere }) => eere.inputs.rooftopSolar);
   const batteryEVs = useTypedSelector(({ eere }) => eere.inputs.batteryEVs);
-  const batteryEVsProfile = useTypedSelector(
-    ({ eere }) => eere.inputs.batteryEVsProfile,
-  );
   const hybridEVs = useTypedSelector(({ eere }) => eere.inputs.hybridEVs);
-  const hybridEVsProfile = useTypedSelector(
-    ({ eere }) => eere.inputs.hybridEVsProfile,
-  );
   const transitBuses = useTypedSelector(({ eere }) => eere.inputs.transitBuses);
-  const transitBusesProfile = useTypedSelector(
-    ({ eere }) => eere.inputs.transitBusesProfile,
-  );
   const schoolBuses = useTypedSelector(({ eere }) => eere.inputs.schoolBuses);
-  const schoolBusesProfile = useTypedSelector(
-    ({ eere }) => eere.inputs.schoolBusesProfile,
-  );
   const evDeploymentLocation = useTypedSelector(
     ({ eere }) => eere.inputs.evDeploymentLocation,
   );
   const evModelYear = useTypedSelector(({ eere }) => eere.inputs.evModelYear);
   const iceReplacementVehicle = useTypedSelector(
     ({ eere }) => eere.inputs.iceReplacementVehicle,
-  );
-  const evChargingProfileOptions = useTypedSelector(
-    ({ eere }) => eere.selectOptions.evChargingProfileOptions,
   );
   const evModelYearOptions = useTypedSelector(
     ({ eere }) => eere.selectOptions.evModelYearOptions,
@@ -577,31 +558,12 @@ function EEREInputs() {
 
           <section css={inputsSectionStyles}>
             <div css={evInputsStyles}>
-              <p>&nbsp;</p>
-              <p>
-                <strong>Number of Vehicles</strong>
-              </p>
-              <p>
-                <strong>Charging Profile</strong>
-              </p>
-
               <EERETextInput
                 label="Light-duty battery EVs:"
                 ariaLabel="TODO"
                 value={batteryEVs}
                 fieldName="batteryEVs"
                 onChange={(text) => dispatch(updateEereBatteryEVs(text))}
-              />
-
-              <EERESelectInput
-                ariaLabel="TODO"
-                options={evChargingProfileOptions}
-                value={batteryEVsProfile}
-                fieldName="batteryEVsProfile"
-                disabled={!batteryEVs}
-                onChange={(option) =>
-                  dispatch(updateEereBatteryEVsProfile(option))
-                }
               />
 
               <EERETextInput
@@ -612,17 +574,6 @@ function EEREInputs() {
                 onChange={(text) => dispatch(updateEereHybridEVs(text))}
               />
 
-              <EERESelectInput
-                ariaLabel="TODO"
-                options={evChargingProfileOptions}
-                value={hybridEVsProfile}
-                fieldName="hybridEVsProfile"
-                disabled={!hybridEVs}
-                onChange={(option) =>
-                  dispatch(updateEereHybridEVsProfile(option))
-                }
-              />
-
               <EERETextInput
                 label="Electric transit buses:"
                 ariaLabel="TODO"
@@ -631,34 +582,12 @@ function EEREInputs() {
                 onChange={(text) => dispatch(updateEereTransitBuses(text))}
               />
 
-              <EERESelectInput
-                ariaLabel="TODO"
-                options={evChargingProfileOptions}
-                value={transitBusesProfile}
-                fieldName="transitBusesProfile"
-                disabled={!transitBuses}
-                onChange={(option) =>
-                  dispatch(updateEereTransitBusesProfile(option))
-                }
-              />
-
               <EERETextInput
                 label="Electric school buses:"
                 ariaLabel="TODO"
                 value={schoolBuses}
                 fieldName="schoolBuses"
                 onChange={(text) => dispatch(updateEereSchoolBuses(text))}
-              />
-
-              <EERESelectInput
-                ariaLabel="TODO"
-                options={evChargingProfileOptions}
-                value={schoolBusesProfile}
-                fieldName="schoolBusesProfile"
-                disabled={!schoolBuses}
-                onChange={(option) =>
-                  dispatch(updateEereSchoolBusesProfile(option))
-                }
               />
             </div>
 

@@ -2,7 +2,7 @@
 import { RegionalLoadData } from 'app/redux/reducers/geography';
 import type { EEREDefaultData } from 'app/redux/reducers/geography';
 // config
-import type { EVProfileName, EVModelYear } from 'app/config';
+import type { EVModelYear } from 'app/config';
 import {
   percentVehiclesDisplacedByEVs,
   averageVMTPerYear,
@@ -346,19 +346,7 @@ export function calculateMonthlyStats(dailyStats: DailyStats) {
  * Excel: Data in the first EV table (to the right of the "Calculate Changes"
  * table) in the "CalculateEERE" sheet (P8:X32).
  */
-export function calculateHourlyEVChargingPercentages(options: {
-  batteryEVsProfile: string;
-  hybridEVsProfile: string;
-  transitBusesProfile: string;
-  schoolBusesProfile: string;
-}) {
-  const {
-    batteryEVsProfile,
-    hybridEVsProfile,
-    transitBusesProfile,
-    schoolBusesProfile,
-  } = options;
-
+export function calculateHourlyEVChargingPercentages() {
   const result: {
     [hour: number]: {
       batteryEVs: { weekday: number; weekend: number };
@@ -368,32 +356,23 @@ export function calculateHourlyEVChargingPercentages(options: {
     };
   } = {};
 
-  if (
-    batteryEVsProfile === '' ||
-    hybridEVsProfile === '' ||
-    transitBusesProfile === '' ||
-    schoolBusesProfile === ''
-  ) {
-    return result;
-  }
-
   evChargingProfiles.forEach((data) => {
     result[data.hour] = {
       batteryEVs: {
-        weekday: data[batteryEVsProfile as EVProfileName].weekday,
-        weekend: data[batteryEVsProfile as EVProfileName].weekend,
+        weekday: data.lightDutyVehicles.weekday,
+        weekend: data.lightDutyVehicles.weekend,
       },
       hybridEVs: {
-        weekday: data[hybridEVsProfile as EVProfileName].weekday,
-        weekend: data[hybridEVsProfile as EVProfileName].weekend,
+        weekday: data.lightDutyVehicles.weekday,
+        weekend: data.lightDutyVehicles.weekend,
       },
       transitBuses: {
-        weekday: data[transitBusesProfile as EVProfileName].weekday,
-        weekend: data[transitBusesProfile as EVProfileName].weekend,
+        weekday: data.buses.weekday,
+        weekend: data.buses.weekend,
       },
       schoolBuses: {
-        weekday: data[schoolBusesProfile as EVProfileName].weekday,
-        weekend: data[schoolBusesProfile as EVProfileName].weekend,
+        weekday: data.buses.weekday,
+        weekend: data.buses.weekend,
       },
     };
   });

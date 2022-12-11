@@ -397,22 +397,9 @@ export function setDailyAndMonthlyStats(
 }
 
 export function setHourlyEVChargingPercentages(): AppThunk {
-  // NOTE: set when the app starts and whenever an EV profile changes
-  return (dispatch, getState) => {
-    const { eere } = getState();
-    const {
-      batteryEVsProfile,
-      hybridEVsProfile,
-      transitBusesProfile,
-      schoolBusesProfile,
-    } = eere.inputs;
-
-    const hourlyEVChargingPercentages = calculateHourlyEVChargingPercentages({
-      batteryEVsProfile,
-      hybridEVsProfile,
-      transitBusesProfile,
-      schoolBusesProfile,
-    });
+  // NOTE: set when the app starts
+  return (dispatch) => {
+    const hourlyEVChargingPercentages = calculateHourlyEVChargingPercentages();
 
     dispatch({
       type: 'transportation/SET_HOURLY_EV_CHARGING_PERCENTAGES',

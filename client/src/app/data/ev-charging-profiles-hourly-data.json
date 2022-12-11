@@ -1,650 +1,266 @@
 [
   {
     "hour": 1,
-    "residentialLevel1": {
-      "weekday": 0.069809338,
-      "weekend": 0.065930443
+    "lightDutyVehicles": {
+      "weekday": 0.039999191,
+      "weekend": 0.043317773
     },
-    "residentialLevel2": {
-      "weekday": 0.086264101,
-      "weekend": 0.085978836
-    },
-    "workLevel2": {
-      "weekday": 0,
-      "weekend": 0
-    },
-    "publicLevel2": {
-      "weekday": 0,
-      "weekend": 0.028632785
-    },
-    "dcFastCharging": {
-      "weekday": 0,
-      "weekend": 0
-    },
-    "fleetwide": {
-      "weekday": 0.057756889,
-      "weekend": 0.057756404
+    "buses": {
+      "weekday": 0.135,
+      "weekend": 0.135
     }
   },
   {
     "hour": 2,
-    "residentialLevel1": {
-      "weekday": 0.055547215,
-      "weekend": 0.053238833
+    "lightDutyVehicles": {
+      "weekday": 0.030053748,
+      "weekend": 0.031365551
     },
-    "residentialLevel2": {
-      "weekday": 0.0398142,
-      "weekend": 0.062830688
-    },
-    "workLevel2": {
-      "weekday": 0,
-      "weekend": 0
-    },
-    "publicLevel2": {
-      "weekday": 0,
-      "weekend": 0.003579098
-    },
-    "dcFastCharging": {
-      "weekday": 0,
-      "weekend": 0
-    },
-    "fleetwide": {
-      "weekday": 0.041689754,
-      "weekend": 0.042945885
+    "buses": {
+      "weekday": 0.07,
+      "weekend": 0.07
     }
   },
   {
     "hour": 3,
-    "residentialLevel1": {
-      "weekday": 0.04203573,
-      "weekend": 0.042525136
+    "lightDutyVehicles": {
+      "weekday": 0.022140106,
+      "weekend": 0.024264638
     },
-    "residentialLevel2": {
-      "weekday": 0.02189781,
-      "weekend": 0.034391534
-    },
-    "workLevel2": {
-      "weekday": 0,
-      "weekend": 0
-    },
-    "publicLevel2": {
-      "weekday": 0,
-      "weekend": 0.00071582
-    },
-    "dcFastCharging": {
-      "weekday": 0,
-      "weekend": 0
-    },
-    "fleetwide": {
-      "weekday": 0.030330379,
-      "weekend": 0.031550393
+    "buses": {
+      "weekday": 0.04,
+      "weekend": 0.04
     }
   },
   {
     "hour": 4,
-    "residentialLevel1": {
-      "weekday": 0.031526798,
-      "weekend": 0.032635569
+    "lightDutyVehicles": {
+      "weekday": 0.016554794,
+      "weekend": 0.018483205
     },
-    "residentialLevel2": {
-      "weekday": 0.00995355,
-      "weekend": 0.022486772
-    },
-    "workLevel2": {
-      "weekday": 0,
-      "weekend": 0
-    },
-    "publicLevel2": {
-      "weekday": 0,
-      "weekend": 0
-    },
-    "dcFastCharging": {
-      "weekday": 0,
-      "weekend": 0
-    },
-    "fleetwide": {
-      "weekday": 0.021790009,
-      "weekend": 0.02352951
+    "buses": {
+      "weekday": 0.03,
+      "weekend": 0.03
     }
   },
   {
     "hour": 5,
-    "residentialLevel1": {
-      "weekday": 0.021768503,
-      "weekend": 0.024723916
+    "lightDutyVehicles": {
+      "weekday": 0.012605035,
+      "weekend": 0.013578127
     },
-    "residentialLevel2": {
-      "weekday": 0.00995355,
-      "weekend": 0.013227513
-    },
-    "workLevel2": {
-      "weekday": 0,
-      "weekend": 0
-    },
-    "publicLevel2": {
-      "weekday": 0,
-      "weekend": 0
-    },
-    "dcFastCharging": {
-      "weekday": 0,
-      "weekend": 0
-    },
-    "fleetwide": {
-      "weekday": 0.015501566,
-      "weekend": 0.017232104
+    "buses": {
+      "weekday": 0.025,
+      "weekend": 0.025
     }
   },
   {
     "hour": 6,
-    "residentialLevel1": {
-      "weekday": 0.015012761,
-      "weekend": 0.018130872
+    "lightDutyVehicles": {
+      "weekday": 0.01086246,
+      "weekend": 0.010565911
     },
-    "residentialLevel2": {
-      "weekday": 0,
-      "weekend": 0.001984127
-    },
-    "workLevel2": {
-      "weekday": 0.019027484,
-      "weekend": 0.010380623
-    },
-    "publicLevel2": {
-      "weekday": 0,
-      "weekend": 0.002863278
-    },
-    "dcFastCharging": {
-      "weekday": 0,
-      "weekend": 0.007102273
-    },
-    "fleetwide": {
-      "weekday": 0.011302309,
-      "weekend": 0.012584194
+    "buses": {
+      "weekday": 0.02,
+      "weekend": 0.02
     }
   },
   {
     "hour": 7,
-    "residentialLevel1": {
-      "weekday": 0.009758295,
-      "weekend": 0.012856436
+    "lightDutyVehicles": {
+      "weekday": 0.012496789,
+      "weekend": 0.010757291
     },
-    "residentialLevel2": {
-      "weekday": 0,
-      "weekend": 0.001322751
-    },
-    "workLevel2": {
-      "weekday": 0.045454545,
-      "weekend": 0.062283737
-    },
-    "publicLevel2": {
-      "weekday": 0.002155172,
-      "weekend": 0
-    },
-    "dcFastCharging": {
-      "weekday": 0.009501188,
-      "weekend": 0
-    },
-    "fleetwide": {
-      "weekday": 0.010719624,
-      "weekend": 0.009803068
+    "buses": {
+      "weekday": 0.02,
+      "weekend": 0.02
     }
   },
   {
     "hour": 8,
-    "residentialLevel1": {
-      "weekday": 0.006005104,
-      "weekend": 0.008735784
+    "lightDutyVehicles": {
+      "weekday": 0.01949487,
+      "weekend": 0.013201985
     },
-    "residentialLevel2": {
-      "weekday": 0,
-      "weekend": 0.00462963
-    },
-    "workLevel2": {
-      "weekday": 0.100422833,
-      "weekend": 0.117647059
-    },
-    "publicLevel2": {
-      "weekday": 0.016163793,
-      "weekend": 0.004294918
-    },
-    "dcFastCharging": {
-      "weekday": 0.023752969,
-      "weekend": 0.011363636
-    },
-    "fleetwide": {
-      "weekday": 0.014721683,
-      "weekend": 0.01065262
+    "buses": {
+      "weekday": 0.02,
+      "weekend": 0.02
     }
   },
   {
     "hour": 9,
-    "residentialLevel1": {
-      "weekday": 0.004503828,
-      "weekend": 0.007087523
+    "lightDutyVehicles": {
+      "weekday": 0.027620149,
+      "weekend": 0.016782679
     },
-    "residentialLevel2": {
-      "weekday": 0.00331785,
-      "weekend": 0.003306878
-    },
-    "workLevel2": {
-      "weekday": 0.174418605,
-      "weekend": 0.14532872
-    },
-    "publicLevel2": {
-      "weekday": 0.032327586,
-      "weekend": 0.021474588
-    },
-    "dcFastCharging": {
-      "weekday": 0.047505938,
-      "weekend": 0.049715909
-    },
-    "fleetwide": {
-      "weekday": 0.022836462,
-      "weekend": 0.015098575
+    "buses": {
+      "weekday": 0.02,
+      "weekend": 0.02
     }
   },
   {
     "hour": 10,
-    "residentialLevel1": {
-      "weekday": 0.004503828,
-      "weekend": 0.005768914
+    "lightDutyVehicles": {
+      "weekday": 0.028946123,
+      "weekend": 0.020418638
     },
-    "residentialLevel2": {
-      "weekday": 0.0066357,
-      "weekend": 0.006613757
-    },
-    "workLevel2": {
-      "weekday": 0.195560254,
-      "weekend": 0.138408304
-    },
-    "publicLevel2": {
-      "weekday": 0.05387931,
-      "weekend": 0.041517538
-    },
-    "dcFastCharging": {
-      "weekday": 0.047505938,
-      "weekend": 0.045454545
-    },
-    "fleetwide": {
-      "weekday": 0.02694492,
-      "weekend": 0.017063104
+    "buses": {
+      "weekday": 0.02,
+      "weekend": 0.02
     }
   },
   {
     "hour": 11,
-    "residentialLevel1": {
-      "weekday": 0.005254466,
-      "weekend": 0.007087523
+    "lightDutyVehicles": {
+      "weekday": 0.0273468,
+      "weekend": 0.025763781
     },
-    "residentialLevel2": {
-      "weekday": 0.00331785,
-      "weekend": 0.007936508
-    },
-    "workLevel2": {
-      "weekday": 0.142706131,
-      "weekend": 0.103806228
-    },
-    "publicLevel2": {
-      "weekday": 0.0625,
-      "weekend": 0.057265569
-    },
-    "dcFastCharging": {
-      "weekday": 0.040380048,
-      "weekend": 0.078125
-    },
-    "fleetwide": {
-      "weekday": 0.022868027,
-      "weekend": 0.021459093
+    "buses": {
+      "weekday": 0.02,
+      "weekend": 0.02
     }
   },
   {
     "hour": 12,
-    "residentialLevel1": {
-      "weekday": 0.006005104,
-      "weekend": 0.012197132
+    "lightDutyVehicles": {
+      "weekday": 0.024479711,
+      "weekend": 0.032229582
     },
-    "residentialLevel2": {
-      "weekday": 0.00995355,
-      "weekend": 0.007275132
-    },
-    "workLevel2": {
-      "weekday": 0.080338266,
-      "weekend": 0.069204152
-    },
-    "publicLevel2": {
-      "weekday": 0.068965517,
-      "weekend": 0.075161059
-    },
-    "dcFastCharging": {
-      "weekday": 0.071258907,
-      "weekend": 0.063920455
-    },
-    "fleetwide": {
-      "weekday": 0.020716796,
-      "weekend": 0.025033785
+    "buses": {
+      "weekday": 0.02,
+      "weekend": 0.02
     }
   },
   {
     "hour": 13,
-    "residentialLevel1": {
-      "weekday": 0.010208677,
-      "weekend": 0.019284655
+    "lightDutyVehicles": {
+      "weekday": 0.026298122,
+      "weekend": 0.041031932
     },
-    "residentialLevel2": {
-      "weekday": 0.0066357,
-      "weekend": 0.008597884
-    },
-    "workLevel2": {
-      "weekday": 0.049682875,
-      "weekend": 0.051903114
-    },
-    "publicLevel2": {
-      "weekday": 0.075431034,
-      "weekend": 0.085898354
-    },
-    "dcFastCharging": {
-      "weekday": 0.071258907,
-      "weekend": 0.085227273
-    },
-    "fleetwide": {
-      "weekday": 0.020854556,
-      "weekend": 0.032001852
+    "buses": {
+      "weekday": 0.02,
+      "weekend": 0.02
     }
   },
   {
     "hour": 14,
-    "residentialLevel1": {
-      "weekday": 0.015012761,
-      "weekend": 0.0296687
+    "lightDutyVehicles": {
+      "weekday": 0.029022489,
+      "weekend": 0.046345482
     },
-    "residentialLevel2": {
-      "weekday": 0.01128069,
-      "weekend": 0.017857143
-    },
-    "workLevel2": {
-      "weekday": 0.041226216,
-      "weekend": 0.020761246
-    },
-    "publicLevel2": {
-      "weekday": 0.076508621,
-      "weekend": 0.090909091
-    },
-    "dcFastCharging": {
-      "weekday": 0.078384798,
-      "weekend": 0.085227273
-    },
-    "fleetwide": {
-      "weekday": 0.024276309,
-      "weekend": 0.039645628
+    "buses": {
+      "weekday": 0.02,
+      "weekend": 0.02
     }
   },
   {
     "hour": 15,
-    "residentialLevel1": {
-      "weekday": 0.019216334,
-      "weekend": 0.035107961
+    "lightDutyVehicles": {
+      "weekday": 0.032476411,
+      "weekend": 0.04964006
     },
-    "residentialLevel2": {
-      "weekday": 0.01459854,
-      "weekend": 0.01984127
-    },
-    "workLevel2": {
-      "weekday": 0.042283298,
-      "weekend": 0.041522491
-    },
-    "publicLevel2": {
-      "weekday": 0.075431034,
-      "weekend": 0.09305655
-    },
-    "dcFastCharging": {
-      "weekday": 0.071258907,
-      "weekend": 0.080965909
-    },
-    "fleetwide": {
-      "weekday": 0.027205047,
-      "weekend": 0.043869894
+    "buses": {
+      "weekday": 0.02,
+      "weekend": 0.02
     }
   },
   {
     "hour": 16,
-    "residentialLevel1": {
-      "weekday": 0.026272331,
-      "weekend": 0.042854788
+    "lightDutyVehicles": {
+      "weekday": 0.044151233,
+      "weekend": 0.053199945
     },
-    "residentialLevel2": {
-      "weekday": 0.0199071,
-      "weekend": 0.028439153
-    },
-    "workLevel2": {
-      "weekday": 0.042283298,
-      "weekend": 0.048442907
-    },
-    "publicLevel2": {
-      "weekday": 0.07112069,
-      "weekend": 0.083035075
-    },
-    "dcFastCharging": {
-      "weekday": 0.06888361,
-      "weekend": 0.059659091
-    },
-    "fleetwide": {
-      "weekday": 0.03208578,
-      "weekend": 0.047363166
+    "buses": {
+      "weekday": 0.02,
+      "weekend": 0.02
     }
   },
   {
     "hour": 17,
-    "residentialLevel1": {
-      "weekday": 0.041285092,
-      "weekend": 0.051425746
+    "lightDutyVehicles": {
+      "weekday": 0.056461236,
+      "weekend": 0.062814207
     },
-    "residentialLevel2": {
-      "weekday": 0.0331785,
-      "weekend": 0.041666667
-    },
-    "workLevel2": {
-      "weekday": 0.026427061,
-      "weekend": 0.027681661
-    },
-    "publicLevel2": {
-      "weekday": 0.075431034,
-      "weekend": 0.070866142
-    },
-    "dcFastCharging": {
-      "weekday": 0.083135392,
-      "weekend": 0.068181818
-    },
-    "fleetwide": {
-      "weekday": 0.043272814,
-      "weekend": 0.053024159
+    "buses": {
+      "weekday": 0.02,
+      "weekend": 0.02
     }
   },
   {
     "hour": 18,
-    "residentialLevel1": {
-      "weekday": 0.058549767,
-      "weekend": 0.061809791
+    "lightDutyVehicles": {
+      "weekday": 0.075283702,
+      "weekend": 0.070119888
     },
-    "residentialLevel2": {
-      "weekday": 0.053085601,
-      "weekend": 0.049603175
-    },
-    "workLevel2": {
-      "weekday": 0.010570825,
-      "weekend": 0.034602076
-    },
-    "publicLevel2": {
-      "weekday": 0.075431034,
-      "weekend": 0.075161059
-    },
-    "dcFastCharging": {
-      "weekday": 0.071258907,
-      "weekend": 0.063920455
-    },
-    "fleetwide": {
-      "weekday": 0.055536876,
-      "weekend": 0.06112333
+    "buses": {
+      "weekday": 0.02,
+      "weekend": 0.02
     }
   },
   {
     "hour": 19,
-    "residentialLevel1": {
-      "weekday": 0.081068909,
-      "weekend": 0.071699357
+    "lightDutyVehicles": {
+      "weekday": 0.090787496,
+      "weekend": 0.07508865
     },
-    "residentialLevel2": {
-      "weekday": 0.086264101,
-      "weekend": 0.066137566
-    },
-    "workLevel2": {
-      "weekday": 0.005285412,
-      "weekend": 0.051903114
-    },
-    "publicLevel2": {
-      "weekday": 0.080818966,
-      "weekend": 0.064423765
-    },
-    "dcFastCharging": {
-      "weekday": 0.066508314,
-      "weekend": 0.085227273
-    },
-    "fleetwide": {
-      "weekday": 0.07477947,
-      "weekend": 0.070201592
+    "buses": {
+      "weekday": 0.025,
+      "weekend": 0.025
     }
   },
   {
     "hour": 20,
-    "residentialLevel1": {
-      "weekday": 0.097582946,
-      "weekend": 0.078292402
+    "lightDutyVehicles": {
+      "weekday": 0.09029907,
+      "weekend": 0.077164233
     },
-    "residentialLevel2": {
-      "weekday": 0.109489051,
-      "weekend": 0.085978836
-    },
-    "workLevel2": {
-      "weekday": 0.010570825,
-      "weekend": 0.034602076
-    },
-    "publicLevel2": {
-      "weekday": 0.091594828,
-      "weekend": 0.071581961
-    },
-    "dcFastCharging": {
-      "weekday": 0.095011876,
-      "weekend": 0.071022727
-    },
-    "fleetwide": {
-      "weekday": 0.091301288,
-      "weekend": 0.076891307
+    "buses": {
+      "weekday": 0.03,
+      "weekend": 0.03
     }
   },
   {
     "hour": 21,
-    "residentialLevel1": {
-      "weekday": 0.101336136,
-      "weekend": 0.081588924
+    "lightDutyVehicles": {
+      "weekday": 0.083479055,
+      "weekend": 0.074651883
     },
-    "residentialLevel2": {
-      "weekday": 0.122760451,
-      "weekend": 0.099206349
-    },
-    "workLevel2": {
-      "weekday": 0.00845666,
-      "weekend": 0.017301038
-    },
-    "publicLevel2": {
-      "weekday": 0.072198276,
-      "weekend": 0.053686471
-    },
-    "dcFastCharging": {
-      "weekday": 0.047505938,
-      "weekend": 0.049715909
-    },
-    "fleetwide": {
-      "weekday": 0.092067296,
-      "weekend": 0.076637238
+    "buses": {
+      "weekday": 0.04,
+      "weekend": 0.04
     }
   },
   {
     "hour": 22,
-    "residentialLevel1": {
-      "weekday": 0.099084222,
-      "weekend": 0.082413054
+    "lightDutyVehicles": {
+      "weekday": 0.075564082,
+      "weekend": 0.069877126
     },
-    "residentialLevel2": {
-      "weekday": 0.129396151,
-      "weekend": 0.105820106
-    },
-    "workLevel2": {
-      "weekday": 0.005285412,
-      "weekend": 0.017301038
-    },
-    "publicLevel2": {
-      "weekday": 0.037715517,
-      "weekend": 0.03793844
-    },
-    "dcFastCharging": {
-      "weekday": 0.023752969,
-      "weekend": 0.045454545
-    },
-    "fleetwide": {
-      "weekday": 0.087528998,
-      "weekend": 0.075741472
+    "buses": {
+      "weekday": 0.07,
+      "weekend": 0.07
     }
   },
   {
     "hour": 23,
-    "residentialLevel1": {
-      "weekday": 0.094580393,
-      "weekend": 0.080764793
+    "lightDutyVehicles": {
+      "weekday": 0.068151723,
+      "weekend": 0.063678129
     },
-    "residentialLevel2": {
-      "weekday": 0.122760451,
-      "weekend": 0.112433862
-    },
-    "workLevel2": {
-      "weekday": 0,
-      "weekend": 0.006920415
-    },
-    "publicLevel2": {
-      "weekday": 0.021551724,
-      "weekend": 0.020042949
-    },
-    "dcFastCharging": {
-      "weekday": 0.035629454,
-      "weekend": 0.028409091
-    },
-    "fleetwide": {
-      "weekday": 0.082287823,
-      "weekend": 0.071897147
+    "buses": {
+      "weekday": 0.135,
+      "weekend": 0.135
     }
   },
   {
     "hour": 24,
-    "residentialLevel1": {
-      "weekday": 0.084071461,
-      "weekend": 0.074171749
+    "lightDutyVehicles": {
+      "weekday": 0.055425606,
+      "weekend": 0.055659308
     },
-    "residentialLevel2": {
-      "weekday": 0.099535501,
-      "weekend": 0.112433862
-    },
-    "workLevel2": {
-      "weekday": 0,
-      "weekend": 0
-    },
-    "publicLevel2": {
-      "weekday": 0.010775862,
-      "weekend": 0.01789549
-    },
-    "dcFastCharging": {
-      "weekday": 0.047505938,
-      "weekend": 0.021306818
-    },
-    "fleetwide": {
-      "weekday": 0.071625325,
-      "weekend": 0.06689448
+    "buses": {
+      "weekday": 0.14,
+      "weekend": 0.14
     }
   }
 ]

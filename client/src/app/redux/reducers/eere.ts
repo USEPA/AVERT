@@ -6,7 +6,6 @@ import {
   StateState,
 } from 'app/redux/reducers/geography';
 import {
-  setHourlyEVChargingPercentages,
   setVehiclesDisplaced,
   setMonthlyEVEnergyUsage,
   setMonthlyEmissionRates,
@@ -19,7 +18,6 @@ import {
   RegionId,
   StateId,
   regions,
-  evChargingProfileOptions,
   evModelYearOptions,
   iceReplacementVehicleOptions,
 } from 'app/config';
@@ -98,32 +96,16 @@ type EereAction =
       payload: { text: string };
     }
   | {
-      type: 'eere/UPDATE_EERE_BATTERY_EVS_PROFILE';
-      payload: { option: string };
-    }
-  | {
       type: 'eere/UPDATE_EERE_HYBRID_EVS';
       payload: { text: string };
-    }
-  | {
-      type: 'eere/UPDATE_EERE_HYBRID_EVS_PROFILE';
-      payload: { option: string };
     }
   | {
       type: 'eere/UPDATE_EERE_TRANSIT_BUSES';
       payload: { text: string };
     }
   | {
-      type: 'eere/UPDATE_EERE_TRANSIT_BUSES_PROFILE';
-      payload: { option: string };
-    }
-  | {
       type: 'eere/UPDATE_EERE_SCHOOL_BUSES';
       payload: { text: string };
-    }
-  | {
-      type: 'eere/UPDATE_EERE_SCHOOL_BUSES_PROFILE';
-      payload: { option: string };
     }
   | {
       type: 'eere/UPDATE_EERE_EV_DEPLOYMENT_LOCATION';
@@ -165,10 +147,6 @@ export type EVTextInputFieldName =
   | 'schoolBuses';
 
 type EVSelectInputFieldName =
-  | 'batteryEVsProfile'
-  | 'hybridEVsProfile'
-  | 'transitBusesProfile'
-  | 'schoolBusesProfile'
   | 'evDeploymentLocation'
   | 'evModelYear'
   | 'iceReplacementVehicle';
@@ -179,7 +157,6 @@ type InputFieldName =
   | EVSelectInputFieldName;
 
 type SelectOptionsFieldName =
-  | 'evChargingProfileOptions'
   | 'evDeploymentLocationOptions'
   | 'evModelYearOptions'
   | 'iceReplacementVehicleOptions';
@@ -206,13 +183,9 @@ const emptyEEREInputs = {
   utilitySolar: '',
   rooftopSolar: '',
   batteryEVs: '',
-  batteryEVsProfile: evChargingProfileOptions[0].id,
   hybridEVs: '',
-  hybridEVsProfile: evChargingProfileOptions[0].id,
   transitBuses: '',
-  transitBusesProfile: evChargingProfileOptions[0].id,
   schoolBuses: '',
-  schoolBusesProfile: evChargingProfileOptions[0].id,
   evDeploymentLocation: '',
   evModelYear: evModelYearOptions[0].id,
   iceReplacementVehicle: iceReplacementVehicleOptions[0].id,
@@ -234,7 +207,6 @@ const initialState: EereState = {
   errors: [],
   inputs: emptyEEREInputs,
   selectOptions: {
-    evChargingProfileOptions,
     evDeploymentLocationOptions: [{ id: '', name: '' }],
     evModelYearOptions,
     iceReplacementVehicleOptions,
@@ -406,17 +378,6 @@ export default function reducer(
       };
     }
 
-    case 'eere/UPDATE_EERE_BATTERY_EVS_PROFILE': {
-      const { option } = action.payload;
-      return {
-        ...state,
-        inputs: {
-          ...state.inputs,
-          batteryEVsProfile: option,
-        },
-      };
-    }
-
     case 'eere/UPDATE_EERE_HYBRID_EVS': {
       const { text } = action.payload;
       return {
@@ -424,17 +385,6 @@ export default function reducer(
         inputs: {
           ...state.inputs,
           hybridEVs: text,
-        },
-      };
-    }
-
-    case 'eere/UPDATE_EERE_HYBRID_EVS_PROFILE': {
-      const { option } = action.payload;
-      return {
-        ...state,
-        inputs: {
-          ...state.inputs,
-          hybridEVsProfile: option,
         },
       };
     }
@@ -450,17 +400,6 @@ export default function reducer(
       };
     }
 
-    case 'eere/UPDATE_EERE_TRANSIT_BUSES_PROFILE': {
-      const { option } = action.payload;
-      return {
-        ...state,
-        inputs: {
-          ...state.inputs,
-          transitBusesProfile: option,
-        },
-      };
-    }
-
     case 'eere/UPDATE_EERE_SCHOOL_BUSES': {
       const { text } = action.payload;
       return {
@@ -468,17 +407,6 @@ export default function reducer(
         inputs: {
           ...state.inputs,
           schoolBuses: text,
-        },
-      };
-    }
-
-    case 'eere/UPDATE_EERE_SCHOOL_BUSES_PROFILE': {
-      const { option } = action.payload;
-      return {
-        ...state,
-        inputs: {
-          ...state.inputs,
-          schoolBusesProfile: option,
         },
       };
     }
@@ -738,17 +666,6 @@ export function updateEereBatteryEVs(input: string): AppThunk {
   };
 }
 
-export function updateEereBatteryEVsProfile(input: string): AppThunk {
-  return (dispatch) => {
-    dispatch({
-      type: 'eere/UPDATE_EERE_BATTERY_EVS_PROFILE',
-      payload: { option: input },
-    });
-
-    dispatch(setHourlyEVChargingPercentages());
-  };
-}
-
 export function updateEereHybridEVs(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
@@ -759,17 +676,6 @@ export function updateEereHybridEVs(input: string): AppThunk {
     dispatch(validateInput('hybridEVs', input));
 
     dispatch(setVehiclesDisplaced());
-  };
-}
-
-export function updateEereHybridEVsProfile(input: string): AppThunk {
-  return (dispatch) => {
-    dispatch({
-      type: 'eere/UPDATE_EERE_HYBRID_EVS_PROFILE',
-      payload: { option: input },
-    });
-
-    dispatch(setHourlyEVChargingPercentages());
   };
 }
 
@@ -786,17 +692,6 @@ export function updateEereTransitBuses(input: string): AppThunk {
   };
 }
 
-export function updateEereTransitBusesProfile(input: string): AppThunk {
-  return (dispatch) => {
-    dispatch({
-      type: 'eere/UPDATE_EERE_TRANSIT_BUSES_PROFILE',
-      payload: { option: input },
-    });
-
-    dispatch(setHourlyEVChargingPercentages());
-  };
-}
-
 export function updateEereSchoolBuses(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
@@ -807,17 +702,6 @@ export function updateEereSchoolBuses(input: string): AppThunk {
     dispatch(validateInput('schoolBuses', input));
 
     dispatch(setVehiclesDisplaced());
-  };
-}
-
-export function updateEereSchoolBusesProfile(input: string): AppThunk {
-  return (dispatch) => {
-    dispatch({
-      type: 'eere/UPDATE_EERE_SCHOOL_BUSES_PROFILE',
-      payload: { option: input },
-    });
-
-    dispatch(setHourlyEVChargingPercentages());
   };
 }
 
