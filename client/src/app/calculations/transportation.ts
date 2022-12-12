@@ -97,7 +97,9 @@ type GeneralVehicleType = typeof generalVehicleTypes[number];
 type ExpandedVehicleType = typeof expandedVehicleTypes[number];
 type Pollutant = typeof pollutants[number];
 
-export type VMTAllocation = ReturnType<typeof calculateVMTAllocation>;
+export type VMTAllocationTotalsAndPercentages = ReturnType<
+  typeof calculateVMTAllocationTotalsAndPercentages
+>;
 export type MonthlyVMTTotalsAndPercentages = ReturnType<
   typeof calculateMonthlyVMTTotalsAndPercentages
 >;
@@ -150,7 +152,7 @@ export type EVDeploymentLocationHistoricalEERE = ReturnType<
  *
  * Excel: First table in the "RegionStateAllocate" sheet (B6:BF107)
  */
-export function calculateVMTAllocation() {
+export function calculateVMTAllocationTotalsAndPercentages() {
   // initialize result object with state keys
   const result = Object.keys(states).reduce(
     (data, stateId) => {
