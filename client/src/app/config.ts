@@ -29,6 +29,22 @@ export type RegionId =
   | 'TE'
   | 'TN';
 
+export type RegionName =
+  | 'California'
+  | 'Central'
+  | 'Florida'
+  | 'Mid-Atlantic'
+  | 'Midwest'
+  | 'Carolinas'
+  | 'New England'
+  | 'Northwest'
+  | 'New York'
+  | 'Rocky Mountains'
+  | 'Southeast'
+  | 'Southwest'
+  | 'Texas'
+  | 'Tennessee';
+
 /**
  * NOTE: actual emissions for each region stored in the "Table 3: EGUs with
  * infrequent SO2 emission events" found in the "Library" sheet of the Excel
@@ -43,7 +59,7 @@ export type RegionId =
  */
 export type Region = {
   id: RegionId;
-  name: string;
+  name: RegionName;
   lineLoss: number;
   offshoreWind: boolean;
   percentageByState: Partial<{ [key in StateId]: number }>;
