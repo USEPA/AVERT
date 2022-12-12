@@ -3,6 +3,7 @@ import { AppThunk } from 'app/redux/index';
 import { RegionalLoadData } from 'app/redux/reducers/geography';
 // calculations
 import type {
+  VMTAllocation,
   MonthlyVMTTotalsAndPercentages,
   MonthlyVMTPerVehicle,
   DailyStats,
@@ -22,6 +23,7 @@ import type {
   EVDeploymentLocationHistoricalEERE,
 } from 'app/calculations/transportation';
 import {
+  calculateVMTAllocation,
   calculateMonthlyVMTTotalsAndPercentages,
   calculateMonthlyVMTPerVehicle,
   calculateDailyStats,
@@ -42,6 +44,12 @@ import {
 } from 'app/calculations/transportation';
 
 type TransportationAction =
+  | {
+      type: 'transportation/SET_VMT_ALLOCATION';
+      payload: {
+        vmtAllocation: VMTAllocation;
+      };
+    }
   | {
       type: 'transportation/SET_MONTHLY_VMT_TOTALS_AND_PERCENTAGES';
       payload: {
@@ -118,6 +126,7 @@ type TransportationAction =
     };
 
 type TransportationState = {
+  vmtAllocation: VMTAllocation | {};
   monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
   monthlyVMTPerVehicle: MonthlyVMTPerVehicle;
   dailyStats: DailyStats;
@@ -139,6 +148,7 @@ type TransportationState = {
 
 // reducer
 const initialState: TransportationState = {
+  vmtAllocation: {},
   monthlyVMTTotalsAndPercentages: {},
   monthlyVMTPerVehicle: {},
   dailyStats: {},
@@ -186,6 +196,15 @@ export default function reducer(
   action: TransportationAction,
 ): TransportationState {
   switch (action.type) {
+    case 'transportation/SET_VMT_ALLOCATION': {
+      const { vmtAllocation } = action.payload;
+
+      return {
+        ...state,
+        vmtAllocation,
+      };
+    }
+
     case 'transportation/SET_MONTHLY_VMT_TOTALS_AND_PERCENTAGES': {
       const { monthlyVMTTotalsAndPercentages } = action.payload;
 
@@ -346,15 +365,22 @@ export default function reducer(
 }
 
 // action creators
-export function setMonthlyVMTData(): AppThunk {
+export function setVMTData(): AppThunk {
   // NOTE: set when the app starts
   return (dispatch) => {
+    const vmtAllocation = calculateVMTAllocation();
+
     const monthlyVMTTotalsAndPercentages =
       calculateMonthlyVMTTotalsAndPercentages();
 
     const monthlyVMTPerVehicle = calculateMonthlyVMTPerVehicle(
       monthlyVMTTotalsAndPercentages,
     );
+
+    dispatch({
+      type: 'transportation/SET_VMT_ALLOCATION',
+      payload: { vmtAllocation },
+    });
 
     dispatch({
       type: 'transportation/SET_MONTHLY_VMT_TOTALS_AND_PERCENTAGES',

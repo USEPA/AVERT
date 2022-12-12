@@ -97,6 +97,7 @@ type GeneralVehicleType = typeof generalVehicleTypes[number];
 type ExpandedVehicleType = typeof expandedVehicleTypes[number];
 type Pollutant = typeof pollutants[number];
 
+export type VMTAllocation = ReturnType<typeof calculateVMTAllocation>;
 export type MonthlyVMTTotalsAndPercentages = ReturnType<
   typeof calculateMonthlyVMTTotalsAndPercentages
 >;
@@ -143,6 +144,105 @@ export type RegionREDefaultsAverages = ReturnType<
 export type EVDeploymentLocationHistoricalEERE = ReturnType<
   typeof calculateEVDeploymentLocationHistoricalEERE
 >;
+
+/**
+ * VMT Allocation by state and AVERT region (in billions and percentages)
+ *
+ * Excel: First table in the "RegionStateAllocate" sheet (B6:BF107)
+ */
+export function calculateVMTAllocation() {
+  // initialize result object with state keys
+  const result = Object.keys(states).reduce(
+    (data, stateId) => {
+      data[stateId as StateId] = {};
+      return data;
+    },
+    {} as {
+      [stateId in StateId | 'total']: Partial<{
+        [region in RegionName]: {
+          cars: { total: number; percent: number };
+          trucks: { total: number; percent: number };
+          transitBuses: { total: number; percent: number };
+          schoolBuses: { total: number; percent: number };
+        };
+      }>;
+    },
+  );
+
+  // initialize regionalTotals object for calculating percentages across states
+  const regionalTotals = {} as Partial<{
+    [region in RegionName]: {
+      cars: number;
+      trucks: number;
+      transitBuses: number;
+      schoolBuses: number;
+    };
+  }>;
+
+  // populate vmt totals data for each state, organized by region
+  countyFips.forEach((data) => {
+    const stateId = data['Postal State Code'] as StateId;
+    const region = data['AVERT Region'] as RegionName;
+    const carsVMT = data['Passenger Cars VMT'];
+    const trucksVMT = data['Passenger Trucks and Light Commercial Trucks VMT'];
+    const transitBusesVMT = data['Transit Buses VMT'];
+    const schoolBusesVMT = data['School Buses VMT'];
+
+    if (result[stateId]) {
+      result[stateId][region] ??= {
+        cars: { total: 0, percent: 0 },
+        trucks: { total: 0, percent: 0 },
+        transitBuses: { total: 0, percent: 0 },
+        schoolBuses: { total: 0, percent: 0 },
+      };
+
+      const regionValues = result[stateId][region];
+
+      if (regionValues) {
+        regionValues.cars.total += carsVMT / 1_000_000_000;
+        regionValues.trucks.total += trucksVMT / 1_000_000_000;
+        regionValues.transitBuses.total += transitBusesVMT / 1_000_000_000;
+        regionValues.schoolBuses.total += schoolBusesVMT / 1_000_000_000;
+      }
+    }
+  });
+
+  // total up vmt data for each region, across all states
+  Object.values(result).forEach((regions) => {
+    Object.entries(regions).forEach(([region, data]) => {
+      regionalTotals[region as RegionName] ??= {
+        cars: 0,
+        trucks: 0,
+        transitBuses: 0,
+        schoolBuses: 0,
+      };
+
+      const regionTotals = regionalTotals[region as RegionName];
+
+      if (regionTotals) {
+        regionTotals.cars += data.cars.total;
+        regionTotals.trucks += data.trucks.total;
+        regionTotals.transitBuses += data.transitBuses.total;
+        regionTotals.schoolBuses += data.schoolBuses.total;
+      }
+    });
+  });
+
+  // calculate percentages of vmt data for each state across all states
+  Object.values(result).forEach((regions) => {
+    Object.entries(regions).forEach(([region, data]) => {
+      const regionTotals = regionalTotals[region as RegionName];
+      if (regionTotals) {
+        data.cars.percent = data.cars.total / regionTotals.cars;
+        data.trucks.percent = data.trucks.total / regionTotals.trucks;
+        data.transitBuses.percent = data.transitBuses.total / regionTotals.transitBuses; // prettier-ignore
+        data.schoolBuses.percent = data.schoolBuses.total / regionTotals.schoolBuses; // prettier-ignore
+      }
+    });
+  });
+
+  return result;
+}
 
 /**
  * Vehicle miles traveled (VMT) totals for each month from MOVES data, and the
@@ -222,88 +322,6 @@ export function calculateMonthlyVMTTotalsAndPercentages() {
 
   return result;
 }
-
-/**
- * VMT Allocation by state and AVERT region (in billions)
- *
- * Excel: Top half of the first table in the "RegionStateAllocate" sheet
- * (B6:BF55)
- */
-function calculateVMTAllocation() {
-  // initialize result object with state keys
-  const result = Object.keys(states).reduce(
-    (data, stateId) => {
-      data[stateId as StateId] = {};
-      return data;
-    },
-    {} as {
-      [stateId in StateId | 'total']: Partial<{
-        [region in RegionName]: {
-          cars: number;
-          trucks: number;
-          transitBuses: number;
-          schoolBuses: number;
-        };
-      }>;
-    },
-  );
-
-  // populate vmt data for each state, organized by region
-  countyFips.forEach((data) => {
-    const stateId = data['Postal State Code'] as StateId;
-    const region = data['AVERT Region'] as RegionName;
-    const carsVMT = data['Passenger Cars VMT'];
-    const trucksVMT = data['Passenger Trucks and Light Commercial Trucks VMT'];
-    const transitBusesVMT = data['Transit Buses VMT'];
-    const schoolBusesVMT = data['School Buses VMT'];
-
-    if (result[stateId]) {
-      result[stateId][region] ??= {
-        cars: 0,
-        trucks: 0,
-        transitBuses: 0,
-        schoolBuses: 0,
-      };
-
-      // @ts-ignore
-      result[stateId][region].cars += carsVMT / 1_000_000_000;
-      // @ts-ignore
-      result[stateId][region].trucks += trucksVMT / 1_000_000_000;
-      // @ts-ignore
-      result[stateId][region].transitBuses += transitBusesVMT / 1_000_000_000;
-      // @ts-ignore
-      result[stateId][region].schoolBuses += schoolBusesVMT / 1_000_000_000;
-    }
-  });
-
-  // build up totals of vmt data for each region, across all states
-  Object.values(result).forEach((stateId) => {
-    Object.entries(stateId).forEach(([region, data]) => {
-      result.total ??= {};
-      result.total[region as RegionName] ??= {
-        cars: 0,
-        trucks: 0,
-        transitBuses: 0,
-        schoolBuses: 0,
-      };
-
-      // @ts-ignore
-      result.total[region as RegionName].cars += data.cars;
-      // @ts-ignore
-      result.total[region as RegionName].trucks += data.trucks;
-      // @ts-ignore
-      result.total[region as RegionName].transitBuses += data.transitBuses;
-      // @ts-ignore
-      result.total[region as RegionName].schoolBuses += data.schoolBuses;
-    });
-  });
-
-  return result;
-}
-
-// TODO: calculate and store data appropriately
-const vmtAllocation = calculateVMTAllocation();
-console.log(vmtAllocation);
 
 /**
  * Monthly vehicle miles traveled (VMT) for each vehicle type.

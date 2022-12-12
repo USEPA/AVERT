@@ -27,7 +27,7 @@ import { useTypedSelector } from 'app/redux/index';
 import { toggleModalOverlay, resetActiveModal } from 'app/redux/reducers/panel';
 import { selectGeography } from 'app/redux/reducers/geography';
 import {
-  setMonthlyVMTData,
+  setVMTData,
   setHourlyEVChargingPercentages,
 } from 'app/redux/reducers/transportation';
 // hooks
@@ -407,7 +407,7 @@ function Panels() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setMonthlyVMTData());
+    dispatch(setVMTData());
     dispatch(setHourlyEVChargingPercentages());
   }, [dispatch]);
 
