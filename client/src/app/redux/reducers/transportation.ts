@@ -460,10 +460,6 @@ export function setVMTData(): AppThunk {
     const monthlyVMTTotalsAndPercentages =
       calculateMonthlyVMTTotalsAndPercentages();
 
-    const monthlyVMTPerVehicle = calculateMonthlyVMTPerVehicle(
-      monthlyVMTTotalsAndPercentages,
-    );
-
     dispatch({
       type: 'transportation/SET_VMT_ALLOCATION_TOTALS_AND_PERCENTAGES',
       payload: { vmtAllocationTotalsAndPercentages },
@@ -478,11 +474,6 @@ export function setVMTData(): AppThunk {
       type: 'transportation/SET_MONTHLY_VMT_TOTALS_AND_PERCENTAGES',
       payload: { monthlyVMTTotalsAndPercentages },
     });
-
-    dispatch({
-      type: 'transportation/SET_MONTHLY_VMT_PER_VEHICLE',
-      payload: { monthlyVMTPerVehicle },
-    });
   };
 }
 
@@ -494,8 +485,11 @@ export function setSelectedRegionVMTData(): AppThunk {
     const selectedRegionName =
       Object.values(geography.regions).find((r) => r.selected)?.name || '';
 
-    const { vmtAllocationTotalsAndPercentages, vmtAllocationPerVehicle } =
-      transportation;
+    const {
+      vmtAllocationTotalsAndPercentages,
+      vmtAllocationPerVehicle,
+      monthlyVMTTotalsAndPercentages,
+    } = transportation;
 
     const selectedRegionStatesVMTPercentages =
       calculateSelectedRegionStatesVMTPercentages({
@@ -511,6 +505,11 @@ export function setSelectedRegionVMTData(): AppThunk {
     const selectedRegionAverageVMTPerYear =
       calculateSelectedRegionAverageVMTPerYear(selectedRegionVMTPercentages);
 
+    const monthlyVMTPerVehicle = calculateMonthlyVMTPerVehicle({
+      selectedRegionAverageVMTPerYear,
+      monthlyVMTTotalsAndPercentages,
+    });
+
     dispatch({
       type: 'transportation/SET_SELECTED_REGION_STATES_VMT_PERCENTAGES',
       payload: { selectedRegionStatesVMTPercentages },
@@ -524,6 +523,11 @@ export function setSelectedRegionVMTData(): AppThunk {
     dispatch({
       type: 'transportation/SET_SELECTED_REGION_AVERAGE_VMT_PER_YEAR',
       payload: { selectedRegionAverageVMTPerYear },
+    });
+
+    dispatch({
+      type: 'transportation/SET_MONTHLY_VMT_PER_VEHICLE',
+      payload: { monthlyVMTPerVehicle },
     });
   };
 }

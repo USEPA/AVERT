@@ -558,9 +558,13 @@ export function calculateMonthlyVMTTotalsAndPercentages() {
  * Excel: "Table 6: Monthly VMT and efficiency adjustments" table in the
  * "Library" sheet (E232:P237).
  */
-export function calculateMonthlyVMTPerVehicle(
-  monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages,
-) {
+export function calculateMonthlyVMTPerVehicle(options: {
+  selectedRegionAverageVMTPerYear: SelectedRegionAverageVMTPerYear;
+  monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
+}) {
+  const { selectedRegionAverageVMTPerYear, monthlyVMTTotalsAndPercentages } =
+    options;
+
   const result: {
     [month: number]: {
       [vehicleType in GeneralVehicleType]: number;
@@ -584,7 +588,7 @@ export function calculateMonthlyVMTPerVehicle(
     };
 
     generalVehicleTypes.forEach((vehicleType) => {
-      // NOTE: nationalAverageVMTPerYear's vehicle types are abridged
+      // NOTE: selectedRegionAverageVMTPerYear's vehicle types are abridged
       // (don't include transit buses broken out by fuel type)
       const averageVMTPerYearVehicleType =
         vehicleType === 'transitBusesDiesel' ||
@@ -594,7 +598,7 @@ export function calculateMonthlyVMTPerVehicle(
           : vehicleType;
 
       result[month][vehicleType] =
-        nationalAverageVMTPerYear[averageVMTPerYearVehicleType] *
+        selectedRegionAverageVMTPerYear[averageVMTPerYearVehicleType] *
         data[vehicleType].percent;
     });
   });
