@@ -104,6 +104,9 @@ type Pollutant = typeof pollutants[number];
 export type VMTAllocationTotalsAndPercentages = ReturnType<
   typeof calculateVMTAllocationTotalsAndPercentages
 >;
+export type SelectedRegionVMTAllocationPercentages = ReturnType<
+  typeof calculateSelectedRegionVMTAllocationPercentages
+>;
 export type VMTAllocationPerVehicle = ReturnType<
   typeof calculateVMTAllocationPerVehicle
 >;
@@ -235,6 +238,7 @@ export function calculateVMTAllocationTotalsAndPercentages() {
         regionTotals.cars.total += data.cars.total;
         regionTotals.trucks.total += data.trucks.total;
         regionTotals.transitBuses.total += data.transitBuses.total;
+        regionTotals.schoolBuses.total += data.schoolBuses.total;
         regionTotals.allLDVs.total += data.allLDVs.total;
         regionTotals.allBuses.total += data.allBuses.total;
       }
@@ -255,6 +259,57 @@ export function calculateVMTAllocationTotalsAndPercentages() {
       }
     });
   });
+
+  return result;
+}
+
+/**
+ * VMT allocation percentages for the selected region
+ *
+ * Excel: First table in the "RegionStateAllocate" sheet (CI58:CN107)
+ */
+export function calculateSelectedRegionVMTAllocationPercentages(options: {
+  selectedRegionName: RegionName;
+  vmtAllocationTotalsAndPercentages: VMTAllocationTotalsAndPercentages;
+}) {
+  const { selectedRegionName, vmtAllocationTotalsAndPercentages } = options;
+
+  const result = Object.entries(vmtAllocationTotalsAndPercentages).reduce(
+    (object, [key, data]) => {
+      if (key === 'total') return object;
+
+      const stateId = key as StateId;
+      const stateRegionNames = Object.keys(data);
+
+      if (stateRegionNames.includes(selectedRegionName)) {
+        const selectedRegionData =
+          vmtAllocationTotalsAndPercentages[stateId][selectedRegionName];
+
+        if (selectedRegionData) {
+          object[stateId] = {
+            cars: selectedRegionData.cars.percent,
+            trucks: selectedRegionData.trucks.percent,
+            transitBuses: selectedRegionData.transitBuses.percent,
+            schoolBuses: selectedRegionData.schoolBuses.percent,
+            allLDVs: selectedRegionData.allLDVs.percent,
+            allBuses: selectedRegionData.allBuses.percent,
+          };
+        }
+      }
+
+      return object;
+    },
+    {} as {
+      [stateId in StateId]: {
+        cars: number;
+        trucks: number;
+        transitBuses: number;
+        schoolBuses: number;
+        allLDVs: number;
+        allBuses: number;
+      };
+    },
+  );
 
   return result;
 }
