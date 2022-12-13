@@ -157,7 +157,7 @@ export type EVDeploymentLocationHistoricalEERE = ReturnType<
 /**
  * VMT allocation by state and AVERT region (in billions and percentages)
  *
- * Excel: First table in the "RegionStateAllocate" sheet (B6:BF107)
+ * Excel: First table in the "RegionStateAllocate" sheet (B6:BF108)
  */
 export function calculateVMTAllocationTotalsAndPercentages() {
   // initialize result object with state keys and total key

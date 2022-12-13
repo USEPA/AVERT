@@ -4,6 +4,7 @@ import { RegionalLoadData } from 'app/redux/reducers/geography';
 // calculations
 import type {
   VMTAllocationTotalsAndPercentages,
+  VMTAllocationPerVehicle,
   MonthlyVMTTotalsAndPercentages,
   MonthlyVMTPerVehicle,
   DailyStats,
@@ -24,6 +25,7 @@ import type {
 } from 'app/calculations/transportation';
 import {
   calculateVMTAllocationTotalsAndPercentages,
+  calculateVMTAllocationPerVehicle,
   calculateMonthlyVMTTotalsAndPercentages,
   calculateMonthlyVMTPerVehicle,
   calculateDailyStats,
@@ -45,9 +47,15 @@ import {
 
 type TransportationAction =
   | {
-      type: 'transportation/SET_VMT_ALLOCATION';
+      type: 'transportation/SET_VMT_ALLOCATION_TOTALS_AND_PERCENTAGES';
       payload: {
         vmtAllocationTotalsAndPercentages: VMTAllocationTotalsAndPercentages;
+      };
+    }
+  | {
+      type: 'transportation/SET_VMT_ALLOCATION_PER_VEHICLE';
+      payload: {
+        vmtAllocationPerVehicle: VMTAllocationPerVehicle;
       };
     }
   | {
@@ -127,6 +135,7 @@ type TransportationAction =
 
 type TransportationState = {
   vmtAllocationTotalsAndPercentages: VMTAllocationTotalsAndPercentages | {};
+  vmtAllocationPerVehicle: VMTAllocationPerVehicle | {};
   monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
   monthlyVMTPerVehicle: MonthlyVMTPerVehicle;
   dailyStats: DailyStats;
@@ -149,6 +158,7 @@ type TransportationState = {
 // reducer
 const initialState: TransportationState = {
   vmtAllocationTotalsAndPercentages: {},
+  vmtAllocationPerVehicle: {},
   monthlyVMTTotalsAndPercentages: {},
   monthlyVMTPerVehicle: {},
   dailyStats: {},
@@ -196,12 +206,21 @@ export default function reducer(
   action: TransportationAction,
 ): TransportationState {
   switch (action.type) {
-    case 'transportation/SET_VMT_ALLOCATION': {
+    case 'transportation/SET_VMT_ALLOCATION_TOTALS_AND_PERCENTAGES': {
       const { vmtAllocationTotalsAndPercentages } = action.payload;
 
       return {
         ...state,
         vmtAllocationTotalsAndPercentages,
+      };
+    }
+
+    case 'transportation/SET_VMT_ALLOCATION_PER_VEHICLE': {
+      const { vmtAllocationPerVehicle } = action.payload;
+
+      return {
+        ...state,
+        vmtAllocationPerVehicle,
       };
     }
 
@@ -371,6 +390,8 @@ export function setVMTData(): AppThunk {
     const vmtAllocationTotalsAndPercentages =
       calculateVMTAllocationTotalsAndPercentages();
 
+    const vmtAllocationPerVehicle = calculateVMTAllocationPerVehicle();
+
     const monthlyVMTTotalsAndPercentages =
       calculateMonthlyVMTTotalsAndPercentages();
 
@@ -379,8 +400,13 @@ export function setVMTData(): AppThunk {
     );
 
     dispatch({
-      type: 'transportation/SET_VMT_ALLOCATION',
+      type: 'transportation/SET_VMT_ALLOCATION_TOTALS_AND_PERCENTAGES',
       payload: { vmtAllocationTotalsAndPercentages },
+    });
+
+    dispatch({
+      type: 'transportation/SET_VMT_ALLOCATION_PER_VEHICLE',
+      payload: { vmtAllocationPerVehicle },
     });
 
     dispatch({
