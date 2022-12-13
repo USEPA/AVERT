@@ -4,6 +4,7 @@ import { RegionalLoadData } from 'app/redux/reducers/geography';
 // calculations
 import type {
   VMTAllocationTotalsAndPercentages,
+  SelectedRegionVMTAllocationPercentages,
   VMTAllocationPerVehicle,
   MonthlyVMTTotalsAndPercentages,
   MonthlyVMTPerVehicle,
@@ -25,6 +26,7 @@ import type {
 } from 'app/calculations/transportation';
 import {
   calculateVMTAllocationTotalsAndPercentages,
+  calculateSelectedRegionVMTAllocationPercentages,
   calculateVMTAllocationPerVehicle,
   calculateMonthlyVMTTotalsAndPercentages,
   calculateMonthlyVMTPerVehicle,
@@ -50,6 +52,12 @@ type TransportationAction =
       type: 'transportation/SET_VMT_ALLOCATION_TOTALS_AND_PERCENTAGES';
       payload: {
         vmtAllocationTotalsAndPercentages: VMTAllocationTotalsAndPercentages;
+      };
+    }
+  | {
+      type: 'transportation/SET_SELECTED_REGION_VMT_ALLOCATION_PERCENTAGES';
+      payload: {
+        selectedRegionVMTAllocationPercentages: SelectedRegionVMTAllocationPercentages;
       };
     }
   | {
@@ -135,6 +143,7 @@ type TransportationAction =
 
 type TransportationState = {
   vmtAllocationTotalsAndPercentages: VMTAllocationTotalsAndPercentages | {};
+  selectedRegionVMTAllocationPercentages: SelectedRegionVMTAllocationPercentages | {}; // prettier-ignore
   vmtAllocationPerVehicle: VMTAllocationPerVehicle | {};
   monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
   monthlyVMTPerVehicle: MonthlyVMTPerVehicle;
@@ -158,6 +167,7 @@ type TransportationState = {
 // reducer
 const initialState: TransportationState = {
   vmtAllocationTotalsAndPercentages: {},
+  selectedRegionVMTAllocationPercentages: {},
   vmtAllocationPerVehicle: {},
   monthlyVMTTotalsAndPercentages: {},
   monthlyVMTPerVehicle: {},
@@ -212,6 +222,15 @@ export default function reducer(
       return {
         ...state,
         vmtAllocationTotalsAndPercentages,
+      };
+    }
+
+    case 'transportation/SET_SELECTED_REGION_VMT_ALLOCATION_PERCENTAGES': {
+      const { selectedRegionVMTAllocationPercentages } = action.payload;
+
+      return {
+        ...state,
+        selectedRegionVMTAllocationPercentages,
       };
     }
 
@@ -417,6 +436,29 @@ export function setVMTData(): AppThunk {
     dispatch({
       type: 'transportation/SET_MONTHLY_VMT_PER_VEHICLE',
       payload: { monthlyVMTPerVehicle },
+    });
+  };
+}
+
+export function setSelectedRegionVMTData(): AppThunk {
+  // NOTE: set every time a region is selected
+  return (dispatch, getState) => {
+    const { geography, transportation } = getState();
+
+    const selectedRegionName =
+      Object.values(geography.regions).find((r) => r.selected)?.name || '';
+
+    const { vmtAllocationTotalsAndPercentages } = transportation;
+
+    const selectedRegionVMTAllocationPercentages =
+      calculateSelectedRegionVMTAllocationPercentages({
+        selectedRegionName,
+        vmtAllocationTotalsAndPercentages,
+      });
+
+    dispatch({
+      type: 'transportation/SET_SELECTED_REGION_VMT_ALLOCATION_PERCENTAGES',
+      payload: { selectedRegionVMTAllocationPercentages },
     });
   };
 }

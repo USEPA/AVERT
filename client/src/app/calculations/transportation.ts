@@ -269,21 +269,27 @@ export function calculateVMTAllocationTotalsAndPercentages() {
  * Excel: First table in the "RegionStateAllocate" sheet (CI58:CN107)
  */
 export function calculateSelectedRegionVMTAllocationPercentages(options: {
-  selectedRegionName: RegionName;
-  vmtAllocationTotalsAndPercentages: VMTAllocationTotalsAndPercentages;
+  selectedRegionName: RegionName | '';
+  vmtAllocationTotalsAndPercentages: VMTAllocationTotalsAndPercentages | {};
 }) {
   const { selectedRegionName, vmtAllocationTotalsAndPercentages } = options;
+
+  // ensure valid inputs are passed
+  if (!selectedRegionName) return {};
+  if (Object.keys(vmtAllocationTotalsAndPercentages).length === 0) return {};
 
   const result = Object.entries(vmtAllocationTotalsAndPercentages).reduce(
     (object, [key, data]) => {
       if (key === 'total') return object;
 
+      const vmtAllocation =
+        vmtAllocationTotalsAndPercentages as VMTAllocationTotalsAndPercentages;
+
       const stateId = key as StateId;
       const stateRegionNames = Object.keys(data);
 
       if (stateRegionNames.includes(selectedRegionName)) {
-        const selectedRegionData =
-          vmtAllocationTotalsAndPercentages[stateId][selectedRegionName];
+        const selectedRegionData = vmtAllocation[stateId][selectedRegionName];
 
         if (selectedRegionData) {
           object[stateId] = {

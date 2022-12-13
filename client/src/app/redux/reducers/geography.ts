@@ -2,6 +2,7 @@
 import { AppThunk } from 'app/redux/index';
 import { setEVDeploymentLocationOptions } from 'app/redux/reducers/eere';
 import {
+  setSelectedRegionVMTData,
   setDailyAndMonthlyStats,
   setVehicleSalesAndStock,
   setRegionREDefaultsAverages,
@@ -293,6 +294,7 @@ export function selectRegion(regionId: RegionId): AppThunk {
 
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setVehicleSalesAndStock());
+    dispatch(setSelectedRegionVMTData());
   };
 }
 
