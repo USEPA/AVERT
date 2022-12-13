@@ -113,6 +113,9 @@ export type SelectedRegionStatesVMTPercentages = ReturnType<
 export type SelectedRegionVMTPercentages = ReturnType<
   typeof calculateSelectedRegionVMTPercentages
 >;
+export type SelectedRegionAverageVMTPerYear = ReturnType<
+  typeof calculateSelectedRegionAverageVMTPerYear
+>;
 export type MonthlyVMTTotalsAndPercentages = ReturnType<
   typeof calculateMonthlyVMTTotalsAndPercentages
 >;
@@ -445,6 +448,27 @@ export function calculateSelectedRegionVMTPercentages(options: {
       vmtPerBusPercent: 0,
     },
   );
+
+  return result;
+}
+
+/**
+ * Selected region's average vehicle miles traveled (VMT) per vehicle type,
+ * per year.
+ *
+ * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E183:E186).
+ */
+export function calculateSelectedRegionAverageVMTPerYear(
+  selectedRegionVMTPercentages: SelectedRegionVMTPercentages,
+) {
+  const { vmtPerLDVPercent, vmtPerBusPercent } = selectedRegionVMTPercentages;
+
+  const result = {
+    cars: nationalAverageVMTPerYear.cars * vmtPerLDVPercent,
+    trucks: nationalAverageVMTPerYear.trucks * vmtPerLDVPercent,
+    transitBuses: nationalAverageVMTPerYear.transitBuses * vmtPerBusPercent,
+    schoolBuses: nationalAverageVMTPerYear.schoolBuses * vmtPerBusPercent,
+  };
 
   return result;
 }
