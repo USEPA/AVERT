@@ -104,11 +104,14 @@ type Pollutant = typeof pollutants[number];
 export type VMTAllocationTotalsAndPercentages = ReturnType<
   typeof calculateVMTAllocationTotalsAndPercentages
 >;
-export type SelectedRegionVMTAllocationPercentages = ReturnType<
-  typeof calculateSelectedRegionVMTAllocationPercentages
->;
 export type VMTAllocationPerVehicle = ReturnType<
   typeof calculateVMTAllocationPerVehicle
+>;
+export type SelectedRegionStatesVMTPercentages = ReturnType<
+  typeof calculateSelectedRegionStatesVMTPercentages
+>;
+export type SelectedRegionVMTPercentages = ReturnType<
+  typeof calculateSelectedRegionVMTPercentages
 >;
 export type MonthlyVMTTotalsAndPercentages = ReturnType<
   typeof calculateMonthlyVMTTotalsAndPercentages
@@ -264,62 +267,6 @@ export function calculateVMTAllocationTotalsAndPercentages() {
 }
 
 /**
- * VMT allocation percentages for the selected region
- *
- * Excel: First table in the "RegionStateAllocate" sheet (CI58:CN107)
- */
-export function calculateSelectedRegionVMTAllocationPercentages(options: {
-  selectedRegionName: RegionName | '';
-  vmtAllocationTotalsAndPercentages: VMTAllocationTotalsAndPercentages | {};
-}) {
-  const { selectedRegionName, vmtAllocationTotalsAndPercentages } = options;
-
-  const result = Object.entries(vmtAllocationTotalsAndPercentages).reduce(
-    (object, [key, data]) => {
-      if (key === 'total') return object;
-
-      const stateId = key as StateId;
-      const stateRegionNames = Object.keys(data);
-
-      const vmtAllocationData =
-        Object.keys(vmtAllocationTotalsAndPercentages).length !== 0
-          ? (vmtAllocationTotalsAndPercentages as VMTAllocationTotalsAndPercentages)
-          : null;
-
-      if (vmtAllocationData && stateRegionNames.includes(selectedRegionName)) {
-        const selectedRegionData =
-          vmtAllocationData[stateId][selectedRegionName as RegionName];
-
-        if (selectedRegionData) {
-          object[stateId] = {
-            cars: selectedRegionData.cars.percent,
-            trucks: selectedRegionData.trucks.percent,
-            transitBuses: selectedRegionData.transitBuses.percent,
-            schoolBuses: selectedRegionData.schoolBuses.percent,
-            allLDVs: selectedRegionData.allLDVs.percent,
-            allBuses: selectedRegionData.allBuses.percent,
-          };
-        }
-      }
-
-      return object;
-    },
-    {} as {
-      [stateId in StateId]: {
-        cars: number;
-        trucks: number;
-        transitBuses: number;
-        schoolBuses: number;
-        allLDVs: number;
-        allBuses: number;
-      };
-    },
-  );
-
-  return result;
-}
-
-/**
  * VMT allocation per vehicle by state
  *
  * Excel: Second table in the "RegionStateAllocate" sheet (B118:J168)
@@ -404,29 +351,92 @@ export function calculateVMTAllocationPerVehicle() {
 }
 
 /**
+ * VMT allocation percentages for the selected region's states
+ *
+ * Excel: First table in the "RegionStateAllocate" sheet (CI58:CN107)
+ */
+export function calculateSelectedRegionStatesVMTPercentages(options: {
+  selectedRegionName: RegionName | '';
+  vmtAllocationTotalsAndPercentages: VMTAllocationTotalsAndPercentages | {};
+}) {
+  const { selectedRegionName, vmtAllocationTotalsAndPercentages } = options;
+
+  const result = Object.entries(vmtAllocationTotalsAndPercentages).reduce(
+    (object, [key, data]) => {
+      if (key === 'total') return object;
+
+      const stateId = key as StateId;
+      const stateRegionNames = Object.keys(data);
+
+      const vmtAllocationData =
+        Object.keys(vmtAllocationTotalsAndPercentages).length !== 0
+          ? (vmtAllocationTotalsAndPercentages as VMTAllocationTotalsAndPercentages)
+          : null;
+
+      if (vmtAllocationData && stateRegionNames.includes(selectedRegionName)) {
+        const selectedRegionData =
+          vmtAllocationData[stateId][selectedRegionName as RegionName];
+
+        if (selectedRegionData) {
+          object[stateId] = {
+            cars: selectedRegionData.cars.percent,
+            trucks: selectedRegionData.trucks.percent,
+            transitBuses: selectedRegionData.transitBuses.percent,
+            schoolBuses: selectedRegionData.schoolBuses.percent,
+            allLDVs: selectedRegionData.allLDVs.percent,
+            allBuses: selectedRegionData.allBuses.percent,
+          };
+        }
+      }
+
+      return object;
+    },
+    {} as {
+      [stateId in StateId]: {
+        cars: number;
+        trucks: number;
+        transitBuses: number;
+        schoolBuses: number;
+        allLDVs: number;
+        allBuses: number;
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
  * VMT allocation per vehicle for the selected region
  *
  * Excel: Second table in the "RegionStateAllocate" sheet (H169 and J169)
  */
-export function calculateSelectedRegionVMTAllocation(options: {
-  selectedRegionVMTAllocationPercentages: SelectedRegionVMTAllocationPercentages;
-  vmtAllocationPerVehicle: VMTAllocationPerVehicle;
+export function calculateSelectedRegionVMTPercentages(options: {
+  selectedRegionStatesVMTPercentages: SelectedRegionStatesVMTPercentages | {};
+  vmtAllocationPerVehicle: VMTAllocationPerVehicle | {};
 }) {
-  const { selectedRegionVMTAllocationPercentages, vmtAllocationPerVehicle } =
+  const { selectedRegionStatesVMTPercentages, vmtAllocationPerVehicle } =
     options;
 
-  const result = Object.entries(selectedRegionVMTAllocationPercentages).reduce(
+  const result = Object.entries(selectedRegionStatesVMTPercentages).reduce(
     (total, [key, data]) => {
       const stateId = key as StateId;
 
-      const allLDVsPercent = data.allLDVs;
-      const allBusesPercent = data.allBuses;
+      const vmtAllocationData =
+        Object.keys(vmtAllocationPerVehicle).length !== 0
+          ? (vmtAllocationPerVehicle as VMTAllocationPerVehicle)
+          : null;
 
-      const vmtPerLDVPercent = vmtAllocationPerVehicle[stateId].vmtPerLDV.percent; // prettier-ignore
-      const vmtPerBusPercent = vmtAllocationPerVehicle[stateId].vmtPerBus.percent; // prettier-ignore
+      if (vmtAllocationData) {
+        const allLDVsPercent = data.allLDVs;
+        const allBusesPercent = data.allBuses;
 
-      total.vmtPerLDVPercent += allLDVsPercent * vmtPerLDVPercent;
-      total.vmtPerBusPercent += allBusesPercent * vmtPerBusPercent;
+        const vmtPerLDVPercent = vmtAllocationData[stateId].vmtPerLDV.percent;
+        const vmtPerBusPercent = vmtAllocationData[stateId].vmtPerBus.percent;
+
+        total.vmtPerLDVPercent += allLDVsPercent * vmtPerLDVPercent;
+        total.vmtPerBusPercent += allBusesPercent * vmtPerBusPercent;
+      }
 
       return total;
     },
