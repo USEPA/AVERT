@@ -173,6 +173,8 @@ export function calculateVMTAllocationTotalsAndPercentages() {
           trucks: { total: number; percent: number };
           transitBuses: { total: number; percent: number };
           schoolBuses: { total: number; percent: number };
+          allLDVs: { total: number; percent: number };
+          allBuses: { total: number; percent: number };
         };
       }>;
     },
@@ -193,15 +195,24 @@ export function calculateVMTAllocationTotalsAndPercentages() {
         trucks: { total: 0, percent: 0 },
         transitBuses: { total: 0, percent: 0 },
         schoolBuses: { total: 0, percent: 0 },
+        allLDVs: { total: 0, percent: 0 },
+        allBuses: { total: 0, percent: 0 },
       };
 
       const regionValues = result[stateId][region];
 
       if (regionValues) {
-        regionValues.cars.total += carsVMT / 1_000_000_000;
-        regionValues.trucks.total += trucksVMT / 1_000_000_000;
-        regionValues.transitBuses.total += transitBusesVMT / 1_000_000_000;
-        regionValues.schoolBuses.total += schoolBusesVMT / 1_000_000_000;
+        const cars = carsVMT / 1_000_000_000;
+        const trucks = trucksVMT / 1_000_000_000;
+        const transitBuses = transitBusesVMT / 1_000_000_000;
+        const schoolBuses = schoolBusesVMT / 1_000_000_000;
+
+        regionValues.cars.total += cars;
+        regionValues.trucks.total += trucks;
+        regionValues.transitBuses.total += transitBuses;
+        regionValues.schoolBuses.total += schoolBuses;
+        regionValues.allLDVs.total += cars + trucks;
+        regionValues.allBuses.total += transitBuses + schoolBuses;
       }
     }
   });
@@ -214,6 +225,8 @@ export function calculateVMTAllocationTotalsAndPercentages() {
         trucks: { total: 0, percent: 1 },
         transitBuses: { total: 0, percent: 1 },
         schoolBuses: { total: 0, percent: 1 },
+        allLDVs: { total: 0, percent: 1 },
+        allBuses: { total: 0, percent: 1 },
       };
 
       const regionTotals = result.total[region as RegionName];
@@ -222,7 +235,8 @@ export function calculateVMTAllocationTotalsAndPercentages() {
         regionTotals.cars.total += data.cars.total;
         regionTotals.trucks.total += data.trucks.total;
         regionTotals.transitBuses.total += data.transitBuses.total;
-        regionTotals.schoolBuses.total += data.schoolBuses.total;
+        regionTotals.allLDVs.total += data.allLDVs.total;
+        regionTotals.allBuses.total += data.allBuses.total;
       }
     });
   });
@@ -236,6 +250,8 @@ export function calculateVMTAllocationTotalsAndPercentages() {
         data.trucks.percent = data.trucks.total / regionTotals.trucks.total;
         data.transitBuses.percent = data.transitBuses.total / regionTotals.transitBuses.total; // prettier-ignore
         data.schoolBuses.percent = data.schoolBuses.total / regionTotals.schoolBuses.total; // prettier-ignore
+        data.allLDVs.percent = data.allLDVs.total / regionTotals.allLDVs.total;
+        data.allBuses.percent = data.allBuses.total / regionTotals.allBuses.total; // prettier-ignore
       }
     });
   });
@@ -266,11 +282,11 @@ export function calculateVMTAllocationPerVehicle() {
           1_000_000;
 
         object[key as StateId] = {
-          vmtLightDutyVehicles: annualVMTLightDutyVehicles,
+          vmtLDVs: annualVMTLightDutyVehicles,
           vmtBuses: annualVMTBuses,
-          registeredLightDutyVehicles,
+          registeredLDVs: registeredLightDutyVehicles,
           registeredBuses,
-          vmtPerLightDutyVehicle: { total: 0, percent: 0 },
+          vmtPerLDV: { total: 0, percent: 0 },
           vmtPerBus: { total: 0, percent: 0 },
         };
       }
@@ -279,20 +295,20 @@ export function calculateVMTAllocationPerVehicle() {
     },
     {
       total: {
-        vmtLightDutyVehicles: 0,
+        vmtLDVs: 0,
         vmtBuses: 0,
-        registeredLightDutyVehicles: 0,
+        registeredLDVs: 0,
         registeredBuses: 0,
-        vmtPerLightDutyVehicle: { total: 0, percent: 0 },
+        vmtPerLDV: { total: 0, percent: 0 },
         vmtPerBus: { total: 0, percent: 0 },
       },
     } as {
       [stateId in StateId | 'total']: {
-        vmtLightDutyVehicles: number;
+        vmtLDVs: number;
         vmtBuses: number;
-        registeredLightDutyVehicles: number;
+        registeredLDVs: number;
         registeredBuses: number;
-        vmtPerLightDutyVehicle: { total: number; percent: number };
+        vmtPerLDV: { total: number; percent: number };
         vmtPerBus: { total: number; percent: number };
       };
     },
@@ -301,9 +317,9 @@ export function calculateVMTAllocationPerVehicle() {
   // sum totals across states
   Object.entries(result).forEach(([key, data]) => {
     if (key !== 'total') {
-      result.total.vmtLightDutyVehicles += data.vmtLightDutyVehicles;
+      result.total.vmtLDVs += data.vmtLDVs;
       result.total.vmtBuses += data.vmtBuses;
-      result.total.registeredLightDutyVehicles += data.registeredLightDutyVehicles; // prettier-ignore
+      result.total.registeredLDVs += data.registeredLDVs;
       result.total.registeredBuses += data.registeredBuses;
     }
   });
@@ -311,10 +327,7 @@ export function calculateVMTAllocationPerVehicle() {
   // calculate vmt per vehicle totals for each state or totals object
   Object.keys(result).forEach((key) => {
     const item = result[key as StateId | 'total'];
-
-    item.vmtPerLightDutyVehicle.total =
-      item.vmtLightDutyVehicles / item.registeredLightDutyVehicles;
-
+    item.vmtPerLDV.total = item.vmtLDVs / item.registeredLDVs;
     item.vmtPerBus.total = item.vmtBuses / item.registeredBuses;
   });
 
@@ -322,13 +335,8 @@ export function calculateVMTAllocationPerVehicle() {
   Object.keys(result).forEach((key) => {
     if (key !== 'total') {
       const item = result[key as StateId];
-
-      item.vmtPerLightDutyVehicle.percent =
-        item.vmtPerLightDutyVehicle.total /
-        result.total.vmtPerLightDutyVehicle.total;
-
-      item.vmtPerBus.percent =
-        item.vmtPerBus.total / result.total.vmtPerBus.total;
+      item.vmtPerLDV.percent = item.vmtPerLDV.total / result.total.vmtPerLDV.total; // prettier-ignore
+      item.vmtPerBus.percent = item.vmtPerBus.total / result.total.vmtPerBus.total; // prettier-ignore
     }
   });
 
