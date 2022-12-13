@@ -274,22 +274,21 @@ export function calculateSelectedRegionVMTAllocationPercentages(options: {
 }) {
   const { selectedRegionName, vmtAllocationTotalsAndPercentages } = options;
 
-  // ensure valid inputs are passed
-  if (!selectedRegionName) return {};
-  if (Object.keys(vmtAllocationTotalsAndPercentages).length === 0) return {};
-
   const result = Object.entries(vmtAllocationTotalsAndPercentages).reduce(
     (object, [key, data]) => {
       if (key === 'total') return object;
 
-      const vmtAllocation =
-        vmtAllocationTotalsAndPercentages as VMTAllocationTotalsAndPercentages;
-
       const stateId = key as StateId;
       const stateRegionNames = Object.keys(data);
 
-      if (stateRegionNames.includes(selectedRegionName)) {
-        const selectedRegionData = vmtAllocation[stateId][selectedRegionName];
+      const vmtAllocationData =
+        Object.keys(vmtAllocationTotalsAndPercentages).length !== 0
+          ? (vmtAllocationTotalsAndPercentages as VMTAllocationTotalsAndPercentages)
+          : null;
+
+      if (vmtAllocationData && stateRegionNames.includes(selectedRegionName)) {
+        const selectedRegionData =
+          vmtAllocationData[stateId][selectedRegionName as RegionName];
 
         if (selectedRegionData) {
           object[stateId] = {
@@ -400,6 +399,42 @@ export function calculateVMTAllocationPerVehicle() {
       item.vmtPerBus.percent = item.vmtPerBus.total / result.total.vmtPerBus.total; // prettier-ignore
     }
   });
+
+  return result;
+}
+
+/**
+ * VMT allocation per vehicle for the selected region
+ *
+ * Excel: Second table in the "RegionStateAllocate" sheet (H169 and J169)
+ */
+export function calculateSelectedRegionVMTAllocation(options: {
+  selectedRegionVMTAllocationPercentages: SelectedRegionVMTAllocationPercentages;
+  vmtAllocationPerVehicle: VMTAllocationPerVehicle;
+}) {
+  const { selectedRegionVMTAllocationPercentages, vmtAllocationPerVehicle } =
+    options;
+
+  const result = Object.entries(selectedRegionVMTAllocationPercentages).reduce(
+    (total, [key, data]) => {
+      const stateId = key as StateId;
+
+      const allLDVsPercent = data.allLDVs;
+      const allBusesPercent = data.allBuses;
+
+      const vmtPerLDVPercent = vmtAllocationPerVehicle[stateId].vmtPerLDV.percent; // prettier-ignore
+      const vmtPerBusPercent = vmtAllocationPerVehicle[stateId].vmtPerBus.percent; // prettier-ignore
+
+      total.vmtPerLDVPercent += allLDVsPercent * vmtPerLDVPercent;
+      total.vmtPerBusPercent += allBusesPercent * vmtPerBusPercent;
+
+      return total;
+    },
+    {
+      vmtPerLDVPercent: 0,
+      vmtPerBusPercent: 0,
+    },
+  );
 
   return result;
 }
