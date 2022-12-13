@@ -7,6 +7,7 @@ import type {
   VMTAllocationPerVehicle,
   SelectedRegionStatesVMTPercentages,
   SelectedRegionVMTPercentages,
+  SelectedRegionAverageVMTPerYear,
   MonthlyVMTTotalsAndPercentages,
   MonthlyVMTPerVehicle,
   DailyStats,
@@ -30,6 +31,7 @@ import {
   calculateVMTAllocationPerVehicle,
   calculateSelectedRegionStatesVMTPercentages,
   calculateSelectedRegionVMTPercentages,
+  calculateSelectedRegionAverageVMTPerYear,
   calculateMonthlyVMTTotalsAndPercentages,
   calculateMonthlyVMTPerVehicle,
   calculateDailyStats,
@@ -72,6 +74,12 @@ type TransportationAction =
       type: 'transportation/SET_SELECTED_REGION_VMT_PERCENTAGES';
       payload: {
         selectedRegionVMTPercentages: SelectedRegionVMTPercentages;
+      };
+    }
+  | {
+      type: 'transportation/SET_SELECTED_REGION_AVERAGE_VMT_PER_YEAR';
+      payload: {
+        selectedRegionAverageVMTPerYear: SelectedRegionAverageVMTPerYear;
       };
     }
   | {
@@ -154,6 +162,7 @@ type TransportationState = {
   vmtAllocationPerVehicle: VMTAllocationPerVehicle | {};
   selectedRegionStatesVMTPercentages: SelectedRegionStatesVMTPercentages | {};
   selectedRegionVMTPercentages: SelectedRegionVMTPercentages;
+  selectedRegionAverageVMTPerYear: SelectedRegionAverageVMTPerYear;
   monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
   monthlyVMTPerVehicle: MonthlyVMTPerVehicle;
   dailyStats: DailyStats;
@@ -181,6 +190,12 @@ const initialState: TransportationState = {
   selectedRegionVMTPercentages: {
     vmtPerLDVPercent: 0,
     vmtPerBusPercent: 0,
+  },
+  selectedRegionAverageVMTPerYear: {
+    cars: 0,
+    trucks: 0,
+    transitBuses: 0,
+    schoolBuses: 0,
   },
   monthlyVMTTotalsAndPercentages: {},
   monthlyVMTPerVehicle: {},
@@ -262,6 +277,15 @@ export default function reducer(
       return {
         ...state,
         selectedRegionVMTPercentages,
+      };
+    }
+
+    case 'transportation/SET_SELECTED_REGION_AVERAGE_VMT_PER_YEAR': {
+      const { selectedRegionAverageVMTPerYear } = action.payload;
+
+      return {
+        ...state,
+        selectedRegionAverageVMTPerYear,
       };
     }
 
@@ -484,6 +508,9 @@ export function setSelectedRegionVMTData(): AppThunk {
       vmtAllocationPerVehicle,
     });
 
+    const selectedRegionAverageVMTPerYear =
+      calculateSelectedRegionAverageVMTPerYear(selectedRegionVMTPercentages);
+
     dispatch({
       type: 'transportation/SET_SELECTED_REGION_STATES_VMT_PERCENTAGES',
       payload: { selectedRegionStatesVMTPercentages },
@@ -492,6 +519,11 @@ export function setSelectedRegionVMTData(): AppThunk {
     dispatch({
       type: 'transportation/SET_SELECTED_REGION_VMT_PERCENTAGES',
       payload: { selectedRegionVMTPercentages },
+    });
+
+    dispatch({
+      type: 'transportation/SET_SELECTED_REGION_AVERAGE_VMT_PER_YEAR',
+      payload: { selectedRegionAverageVMTPerYear },
     });
   };
 }
