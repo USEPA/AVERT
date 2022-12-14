@@ -1,0 +1,10 @@
+{
+  "batteryEVCars": 27.6046368502288,
+  "batteryEVTrucks": 72.3953631497712,
+  "hybridEVCars": 27.6046368502288,
+  "hybridEVTrucks": 72.3953631497712,
+  "transitBusesDiesel": 78.8731353789831,
+  "transitBusesCNG": 6.55779483731649,
+  "transitBusesGasoline": 14.5690697837004,
+  "schoolBuses": 100
+}

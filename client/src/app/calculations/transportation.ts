@@ -2,15 +2,8 @@
 import { RegionalLoadData } from 'app/redux/reducers/geography';
 import type { EEREDefaultData } from 'app/redux/reducers/geography';
 // config
-import { RegionName, StateId, EVModelYear } from 'app/config';
-import {
-  states,
-  percentVehiclesDisplacedByEVs,
-  nationalAverageVMTPerYear,
-  evEfficiencyByModelYear,
-  percentHybridEVMilesDrivenOnElectricity,
-  percentWeekendToWeekdayEVConsumption,
-} from 'app/config';
+import type { RegionName, StateId, EVModelYear } from 'app/config';
+import { states } from 'app/config';
 /**
  * Excel: "MOVESEmissionRates" sheet.
  */
@@ -23,9 +16,23 @@ import movesEmissionsRates from 'app/data/moves-emissions-rates.json';
  */
 import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
 /**
+ * Excel: "Part II. Vehicle Composition" table in the "EV_Detail" sheet
+ * (D63:G67).
+ */
+import percentVehiclesDisplacedByEVs from 'app/data/percent-vehicles-displaced-by-evs.json';
+/**
  * Excel: "CountyFIPS" sheet.
  */
 import countyFips from 'app/data/county-fips.json';
+/**
+ * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E177:E180).
+ */
+import nationalAverageVMTPerYear from 'app/data/national-average-vmt-per-year.json';
+/**
+ * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
+ * (E194:J200).
+ */
+import evEfficiencyByModelYear from 'app/data/ev-efficiency-by-model-year.json';
 /**
  * Excel: "Table 11: LDV Sales and Stock" and "Table 12: Transit and School Bus
  * Sales and Stock" tables in the "Library" sheet (B485:D535 and B546:F596).
@@ -45,6 +52,21 @@ import stateEereAverages from 'app/data/state-eere-averages.json';
  * Excel: Second table in the "RegionStateAllocate" sheet (B118:E167)
  */
 import vmtAllocationAndRegisteredVehicles from 'app/data/vmt-allocation-and-registered-vehicles.json';
+
+/**
+ * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
+ * (E202).
+ */
+const percentHybridEVMilesDrivenOnElectricity = 54;
+
+/**
+ * Ratio of typical weekend energy consumption as a share of typical weekday
+ * energy consumption.
+ *
+ * Excel: "Table C. Set ratio of weekend to weekday energy" table in the
+ * "EV_Detail" sheet (D53).
+ */
+const percentWeekendToWeekdayEVConsumption = 97.3015982802952;
 
 type SalesAndStockStateId = keyof typeof stateSalesAndStock;
 type RegionEereAveragesRegionId = keyof typeof regionEereAverages;
