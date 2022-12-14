@@ -19,7 +19,7 @@ import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
  * Excel: "Part II. Vehicle Composition" table in the "EV_Detail" sheet
  * (D63:G67).
  */
-import percentVehiclesDisplacedByEVs from 'app/data/percent-vehicles-displaced-by-evs.json';
+import percentageVehiclesDisplacedByEVs from 'app/data/percentage-vehicles-displaced-by-evs.json';
 /**
  * Excel: "CountyFIPS" sheet.
  */
@@ -57,7 +57,7 @@ import vmtAllocationAndRegisteredVehicles from 'app/data/vmt-allocation-and-regi
  * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
  * (E202).
  */
-const percentHybridEVMilesDrivenOnElectricity = 54;
+const percentageHybridEVMilesDrivenOnElectricity = 0.54;
 
 /**
  * Ratio of typical weekend energy consumption as a share of typical weekday
@@ -753,22 +753,14 @@ export function calculateVehiclesDisplaced(options: {
   const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = options;
 
   const result = {
-    batteryEVCars:
-      batteryEVs * (percentVehiclesDisplacedByEVs.batteryEVCars / 100),
-    hybridEVCars:
-      hybridEVs * (percentVehiclesDisplacedByEVs.hybridEVCars / 100),
-    batteryEVTrucks:
-      batteryEVs * (percentVehiclesDisplacedByEVs.batteryEVTrucks / 100),
-    hybridEVTrucks:
-      hybridEVs * (percentVehiclesDisplacedByEVs.hybridEVTrucks / 100),
-    transitBusesDiesel:
-      transitBuses * (percentVehiclesDisplacedByEVs.transitBusesDiesel / 100),
-    transitBusesCNG:
-      transitBuses * (percentVehiclesDisplacedByEVs.transitBusesCNG / 100),
-    transitBusesGasoline:
-      transitBuses * (percentVehiclesDisplacedByEVs.transitBusesGasoline / 100),
-    schoolBuses:
-      schoolBuses * (percentVehiclesDisplacedByEVs.schoolBuses / 100),
+    batteryEVCars: batteryEVs * percentageVehiclesDisplacedByEVs.batteryEVCars,
+    hybridEVCars: hybridEVs * percentageVehiclesDisplacedByEVs.hybridEVCars,
+    batteryEVTrucks: batteryEVs * percentageVehiclesDisplacedByEVs.batteryEVTrucks, // prettier-ignore
+    hybridEVTrucks: hybridEVs * percentageVehiclesDisplacedByEVs.hybridEVTrucks,
+    transitBusesDiesel: transitBuses * percentageVehiclesDisplacedByEVs.transitBusesDiesel, // prettier-ignore
+    transitBusesCNG: transitBuses * percentageVehiclesDisplacedByEVs.transitBusesCNG, // prettier-ignore
+    transitBusesGasoline: transitBuses * percentageVehiclesDisplacedByEVs.transitBusesGasoline, // prettier-ignore
+    schoolBuses: schoolBuses * percentageVehiclesDisplacedByEVs.schoolBuses,
   };
 
   return result;
@@ -823,7 +815,7 @@ export function calculateMonthlyEVEnergyUsageGW(options: {
         monthlyVMTPerVehicle[month].cars *
         evEfficiency.hybridEVCars *
         kWtoGW *
-        (percentHybridEVMilesDrivenOnElectricity / 100),
+        percentageHybridEVMilesDrivenOnElectricity,
       batteryEVTrucks:
         vehiclesDisplaced.batteryEVTrucks *
         monthlyVMTPerVehicle[month].trucks *
@@ -834,7 +826,7 @@ export function calculateMonthlyEVEnergyUsageGW(options: {
         monthlyVMTPerVehicle[month].trucks *
         evEfficiency.batteryEVTrucks *
         kWtoGW *
-        (percentHybridEVMilesDrivenOnElectricity / 100),
+        percentageHybridEVMilesDrivenOnElectricity,
       transitBusesDiesel:
         vehiclesDisplaced.transitBusesDiesel *
         monthlyVMTPerVehicle[month].transitBusesDiesel *
@@ -1144,7 +1136,7 @@ export function calculateMonthlyEmissionChanges(options: {
         data.cars[pollutant] *
         monthlyVMTPerVehicle[month].cars *
         vehiclesDisplaced.hybridEVCars *
-        (percentHybridEVMilesDrivenOnElectricity / 100);
+        percentageHybridEVMilesDrivenOnElectricity;
 
       result[month].batteryEVTrucks[pollutant] =
         data.trucks[pollutant] *
@@ -1155,7 +1147,7 @@ export function calculateMonthlyEmissionChanges(options: {
         data.trucks[pollutant] *
         monthlyVMTPerVehicle[month].trucks *
         vehiclesDisplaced.hybridEVTrucks *
-        (percentHybridEVMilesDrivenOnElectricity / 100);
+        percentageHybridEVMilesDrivenOnElectricity;
 
       result[month].transitBusesDiesel[pollutant] =
         data.transitBusesDiesel[pollutant] *
