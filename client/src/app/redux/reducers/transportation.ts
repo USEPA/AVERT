@@ -659,11 +659,13 @@ export function setMonthlyEmissionRates(): AppThunk {
   // NOTE: set whenever EV deployment location, EV model year, or ICE
   // replacement vehicle changes
   return (dispatch, getState) => {
-    const { eere } = getState();
+    const { transportation, eere } = getState();
+    const { selectedRegionStatesVMTPercentages } = transportation;
     const { evDeploymentLocation, evModelYear, iceReplacementVehicle } =
       eere.inputs;
 
     const monthlyEmissionRates = calculateMonthlyEmissionRates({
+      selectedRegionStatesVMTPercentages,
       evDeploymentLocation,
       evModelYear,
       iceReplacementVehicle,

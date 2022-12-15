@@ -86,15 +86,14 @@ type MovesData = {
   PM25: number;
   VOCs: number;
   NH3: number;
-  regionalWeight: number;
 };
 
-// const abridgedVehicleTypes = [
-//   'cars',
-//   'trucks',
-//   'transitBuses',
-//   'schoolBuses',
-// ] as const;
+const abridgedVehicleTypes = [
+  'cars',
+  'trucks',
+  'transitBuses',
+  'schoolBuses',
+] as const;
 
 const generalVehicleTypes = [
   'cars',
@@ -118,7 +117,7 @@ const expandedVehicleTypes = [
 
 const pollutants = ['CO2', 'NOX', 'SO2', 'PM25', 'VOCs', 'NH3'] as const;
 
-// type AbridgedVehicleType = typeof abridgedVehicleTypes[number];
+type AbridgedVehicleType = typeof abridgedVehicleTypes[number];
 type GeneralVehicleType = typeof generalVehicleTypes[number];
 type ExpandedVehicleType = typeof expandedVehicleTypes[number];
 type Pollutant = typeof pollutants[number];
@@ -542,7 +541,7 @@ export function calculateMonthlyVMTTotalsAndPercentages() {
         schoolBuses: { total: 0, percent: 0 },
       };
 
-      const vehicleType: GeneralVehicleType | null =
+      const generalVehicleType: GeneralVehicleType | null =
         data.vehicleType === 'Passenger Car'
           ? 'cars'
           : data.vehicleType === 'Passenger Truck'
@@ -555,11 +554,11 @@ export function calculateMonthlyVMTTotalsAndPercentages() {
           ? 'transitBusesGasoline'
           : data.vehicleType === 'School Bus'
           ? 'schoolBuses'
-          : null; // NOTE: fallback (vehicleType should never actually be null)
+          : null; // NOTE: fallback (generalVehicleType should never actually be null)
 
-      if (vehicleType) {
-        result[month][vehicleType].total += data.VMT;
-        yearlyTotals[vehicleType] += data.VMT;
+      if (generalVehicleType) {
+        result[month][generalVehicleType].total += data.VMT;
+        yearlyTotals[generalVehicleType] += data.VMT;
       }
     }
   });
@@ -994,11 +993,17 @@ export function calculateMonthlyDailyEVEnergyUsage(options: {
  * "Library" sheet (G253:R288).
  */
 export function calculateMonthlyEmissionRates(options: {
+  selectedRegionStatesVMTPercentages: SelectedRegionStatesVMTPercentages | {};
   evDeploymentLocation: string;
   evModelYear: string;
   iceReplacementVehicle: string;
 }) {
-  const { evDeploymentLocation, evModelYear, iceReplacementVehicle } = options;
+  const {
+    selectedRegionStatesVMTPercentages,
+    evDeploymentLocation,
+    evModelYear,
+    iceReplacementVehicle,
+  } = options;
 
   const result: {
     [month: number]: {
@@ -1034,7 +1039,7 @@ export function calculateMonthlyEmissionRates(options: {
       schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
     };
 
-    const vehicleType: GeneralVehicleType | null =
+    const generalVehicleType: GeneralVehicleType | null =
       data.vehicleType === 'Passenger Car'
         ? 'cars'
         : data.vehicleType === 'Passenger Truck'
@@ -1047,9 +1052,20 @@ export function calculateMonthlyEmissionRates(options: {
         ? 'transitBusesGasoline'
         : data.vehicleType === 'School Bus'
         ? 'schoolBuses'
-        : null; // NOTE: fallback (vehicleType should never actually be null)
+        : null; // NOTE: fallback (generalVehicleType should never actually be null)
 
-    if (vehicleType) {
+    const abridgedVehicleType: AbridgedVehicleType | null =
+      data.vehicleType === 'Passenger Car'
+        ? 'cars'
+        : data.vehicleType === 'Passenger Truck'
+        ? 'trucks'
+        : data.vehicleType === 'Transit Bus'
+        ? 'transitBuses'
+        : data.vehicleType === 'School Bus'
+        ? 'schoolBuses'
+        : null; // NOTE: fallback (abridgedVehicleType should never actually be null)
+
+    if (generalVehicleType && abridgedVehicleType) {
       const modelYearMatch =
         iceReplacementVehicle === 'new'
           ? data.modelYear === evModelYear
@@ -1064,17 +1080,30 @@ export function calculateMonthlyEmissionRates(options: {
         ? data.state === evDeploymentLocation.replace('state-', '')
         : true;
 
-      const locationFactor = locationIsRegion
-        ? data.regionalWeight //
-        : 1;
+      const statesVMTPercentages =
+        Object.keys(selectedRegionStatesVMTPercentages).length !== 0
+          ? (selectedRegionStatesVMTPercentages as SelectedRegionStatesVMTPercentages)
+          : null;
 
-      if (modelYearMatch && conditionalYearMatch && conditionalStateMatch) {
-        result[month][vehicleType].CO2 += data.CO2 * locationFactor;
-        result[month][vehicleType].NOX += data.NOX * locationFactor;
-        result[month][vehicleType].SO2 += data.SO2 * locationFactor;
-        result[month][vehicleType].PM25 += data.PM25 * locationFactor;
-        result[month][vehicleType].VOCs += data.VOCs * locationFactor;
-        result[month][vehicleType].NH3 += data.NH3 * locationFactor;
+      const movesRegionalWeightPercentage =
+        statesVMTPercentages?.[data.state as StateId]?.[abridgedVehicleType] || 0; // prettier-ignore
+
+      const locationFactor = locationIsRegion
+        ? movesRegionalWeightPercentage
+        : 1; // location is state, so no MOVES regional weight factor is applied
+
+      if (
+        modelYearMatch &&
+        conditionalYearMatch &&
+        conditionalStateMatch &&
+        statesVMTPercentages
+      ) {
+        result[month][generalVehicleType].CO2 += data.CO2 * locationFactor;
+        result[month][generalVehicleType].NOX += data.NOX * locationFactor;
+        result[month][generalVehicleType].SO2 += data.SO2 * locationFactor;
+        result[month][generalVehicleType].PM25 += data.PM25 * locationFactor;
+        result[month][generalVehicleType].VOCs += data.VOCs * locationFactor;
+        result[month][generalVehicleType].NH3 += data.NH3 * locationFactor;
       }
     }
   });
