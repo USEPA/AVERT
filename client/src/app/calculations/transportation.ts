@@ -214,10 +214,10 @@ export function calculateVMTAllocationTotalsAndPercentages() {
   countyFips.forEach((data) => {
     const stateId = data['Postal State Code'] as StateId;
     const region = data['AVERT Region'] as RegionName;
-    const carsVMT = data['Passenger Cars VMT'];
-    const trucksVMT = data['Passenger Trucks and Light Commercial Trucks VMT'];
-    const transitBusesVMT = data['Transit Buses VMT'];
-    const schoolBusesVMT = data['School Buses VMT'];
+    const carsVMT = data['Passenger Cars VMT'] || 0;
+    const trucksVMT = data['Passenger Trucks and Light Commercial Trucks VMT'] || 0; // prettier-ignore
+    const transitBusesVMT = data['Transit Buses VMT'] || 0;
+    const schoolBusesVMT = data['School Buses VMT'] || 0;
 
     if (result[stateId]) {
       result[stateId][region] ??= {
@@ -1383,9 +1383,9 @@ export function calculateVehicleSalesAndStock(options: {
       data['AVERT Region'] === selectedRegionName &&
       stateIds.includes(stateId)
     ) {
-      const lightDutyVehiclesVMTShare = data['Share of State VMT - Passenger Cars']; // prettier-ignore
-      const transitBusesVMTShare = data['Share of State VMT - Transit Buses'];
-      const schoolBusesVMTShare = data['Share of State VMT - School Buses'];
+      const lightDutyVehiclesVMTShare = data['Share of State VMT - Passenger Cars'] || 0; // prettier-ignore
+      const transitBusesVMTShare = data['Share of State VMT - Transit Buses'] || 0; // prettier-ignore
+      const schoolBusesVMTShare = data['Share of State VMT - School Buses'] || 0; // prettier-ignore
       const salesAndStock = stateSalesAndStock[id as SalesAndStockStateId];
 
       // initialize and then increment state data by vehicle type
