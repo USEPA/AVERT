@@ -68,3 +68,19 @@ function convertJsonStringsToNumbers({ filename, fields }) {
 //   filename: "./data/moves-emissions-rates.json",
 //   fields: ["VMT", "CO2", "NOX", "SO2", "PM25", "VOCs", "NH3", "regionalWeight"],
 // });
+
+// convertTsvToJson("./data/county-fips.txt");
+
+// convertJsonStringsToNumbers({
+//   filename: "./data/county-fips.json",
+//   fields: [
+//     "Passenger Cars VMT",
+//     "Passenger Trucks and Light Commercial Trucks VMT",
+//     "Transit Buses VMT",
+//     "School Buses VMT",
+//     "Share of State VMT - Passenger Cars",
+//     "Share of State VMT - Passenger Trucks and Light Commercial trucks",
+//     "Share of State VMT - Transit Buses",
+//     "Share of State VMT - School Buses",
+//   ],
+// });
