@@ -2,8 +2,8 @@
   {
     "hour": 1,
     "lightDutyVehicles": {
-      "weekday": 0.039999191,
-      "weekend": 0.043317773
+      "weekday": 0.0399991909536798,
+      "weekend": 0.0433177728248505
     },
     "buses": {
       "weekday": 0.135,
@@ -13,8 +13,8 @@
   {
     "hour": 2,
     "lightDutyVehicles": {
-      "weekday": 0.030053748,
-      "weekend": 0.031365551
+      "weekday": 0.0300537483757846,
+      "weekend": 0.0313655508143565
     },
     "buses": {
       "weekday": 0.07,
@@ -24,8 +24,8 @@
   {
     "hour": 3,
     "lightDutyVehicles": {
-      "weekday": 0.022140106,
-      "weekend": 0.024264638
+      "weekday": 0.0221401057097557,
+      "weekend": 0.0242646376280895
     },
     "buses": {
       "weekday": 0.04,
@@ -35,8 +35,8 @@
   {
     "hour": 4,
     "lightDutyVehicles": {
-      "weekday": 0.016554794,
-      "weekend": 0.018483205
+      "weekday": 0.0165547936332277,
+      "weekend": 0.0184832047579579
     },
     "buses": {
       "weekday": 0.03,
@@ -46,8 +46,8 @@
   {
     "hour": 5,
     "lightDutyVehicles": {
-      "weekday": 0.012605035,
-      "weekend": 0.013578127
+      "weekday": 0.012605034565195,
+      "weekend": 0.0135781272735865
     },
     "buses": {
       "weekday": 0.025,
@@ -57,8 +57,8 @@
   {
     "hour": 6,
     "lightDutyVehicles": {
-      "weekday": 0.01086246,
-      "weekend": 0.010565911
+      "weekday": 0.0108624602676339,
+      "weekend": 0.0105659105913541
     },
     "buses": {
       "weekday": 0.02,
@@ -68,8 +68,8 @@
   {
     "hour": 7,
     "lightDutyVehicles": {
-      "weekday": 0.012496789,
-      "weekend": 0.010757291
+      "weekday": 0.012496788727941,
+      "weekend": 0.0107572905681395
     },
     "buses": {
       "weekday": 0.02,
@@ -79,8 +79,8 @@
   {
     "hour": 8,
     "lightDutyVehicles": {
-      "weekday": 0.01949487,
-      "weekend": 0.013201985
+      "weekday": 0.0194948704943172,
+      "weekend": 0.0132019853350862
     },
     "buses": {
       "weekday": 0.02,
@@ -90,8 +90,8 @@
   {
     "hour": 9,
     "lightDutyVehicles": {
-      "weekday": 0.027620149,
-      "weekend": 0.016782679
+      "weekday": 0.027620148867901,
+      "weekend": 0.0167826786626471
     },
     "buses": {
       "weekday": 0.02,
@@ -101,8 +101,8 @@
   {
     "hour": 10,
     "lightDutyVehicles": {
-      "weekday": 0.028946123,
-      "weekend": 0.020418638
+      "weekday": 0.0289461234266878,
+      "weekend": 0.0204186378406471
     },
     "buses": {
       "weekday": 0.02,
@@ -112,8 +112,8 @@
   {
     "hour": 11,
     "lightDutyVehicles": {
-      "weekday": 0.0273468,
-      "weekend": 0.025763781
+      "weekday": 0.0273468001542424,
+      "weekend": 0.0257637807795744
     },
     "buses": {
       "weekday": 0.02,
@@ -123,8 +123,8 @@
   {
     "hour": 12,
     "lightDutyVehicles": {
-      "weekday": 0.024479711,
-      "weekend": 0.032229582
+      "weekday": 0.0244797105877477,
+      "weekend": 0.032229581503199
     },
     "buses": {
       "weekday": 0.02,
@@ -134,8 +134,8 @@
   {
     "hour": 13,
     "lightDutyVehicles": {
-      "weekday": 0.026298122,
-      "weekend": 0.041031932
+      "weekday": 0.026298122421376,
+      "weekend": 0.0410319321179996
     },
     "buses": {
       "weekday": 0.02,
@@ -145,8 +145,8 @@
   {
     "hour": 14,
     "lightDutyVehicles": {
-      "weekday": 0.029022489,
-      "weekend": 0.046345482
+      "weekday": 0.0290224887852499,
+      "weekend": 0.0463454821718702
     },
     "buses": {
       "weekday": 0.02,
@@ -156,8 +156,8 @@
   {
     "hour": 15,
     "lightDutyVehicles": {
-      "weekday": 0.032476411,
-      "weekend": 0.04964006
+      "weekday": 0.0324764114015739,
+      "weekend": 0.0496400602642962
     },
     "buses": {
       "weekday": 0.02,
@@ -167,8 +167,8 @@
   {
     "hour": 16,
     "lightDutyVehicles": {
-      "weekday": 0.044151233,
-      "weekend": 0.053199945
+      "weekday": 0.0441512327146578,
+      "weekend": 0.0531999448166035
     },
     "buses": {
       "weekday": 0.02,
@@ -178,8 +178,8 @@
   {
     "hour": 17,
     "lightDutyVehicles": {
-      "weekday": 0.056461236,
-      "weekend": 0.062814207
+      "weekday": 0.0564612356181038,
+      "weekend": 0.0628142065392672
     },
     "buses": {
       "weekday": 0.02,
@@ -189,8 +189,8 @@
   {
     "hour": 18,
     "lightDutyVehicles": {
-      "weekday": 0.075283702,
-      "weekend": 0.070119888
+      "weekday": 0.0752837024797185,
+      "weekend": 0.0701198876213305
     },
     "buses": {
       "weekday": 0.02,
@@ -200,8 +200,8 @@
   {
     "hour": 19,
     "lightDutyVehicles": {
-      "weekday": 0.090787496,
-      "weekend": 0.07508865
+      "weekday": 0.0907874959611023,
+      "weekend": 0.0750886499392466
     },
     "buses": {
       "weekday": 0.025,
@@ -211,8 +211,8 @@
   {
     "hour": 20,
     "lightDutyVehicles": {
-      "weekday": 0.09029907,
-      "weekend": 0.077164233
+      "weekday": 0.090299070137222,
+      "weekend": 0.0771642330525545
     },
     "buses": {
       "weekday": 0.03,
@@ -222,8 +222,8 @@
   {
     "hour": 21,
     "lightDutyVehicles": {
-      "weekday": 0.083479055,
-      "weekend": 0.074651883
+      "weekday": 0.0834790545677252,
+      "weekend": 0.0746518826430208
     },
     "buses": {
       "weekday": 0.04,
@@ -233,8 +233,8 @@
   {
     "hour": 22,
     "lightDutyVehicles": {
-      "weekday": 0.075564082,
-      "weekend": 0.069877126
+      "weekday": 0.0755640817890092,
+      "weekend": 0.069877125809508
     },
     "buses": {
       "weekday": 0.07,
@@ -244,8 +244,8 @@
   {
     "hour": 23,
     "lightDutyVehicles": {
-      "weekday": 0.068151723,
-      "weekend": 0.063678129
+      "weekday": 0.0681517227028363,
+      "weekend": 0.0636781287360594
     },
     "buses": {
       "weekday": 0.135,
@@ -255,8 +255,8 @@
   {
     "hour": 24,
     "lightDutyVehicles": {
-      "weekday": 0.055425606,
-      "weekend": 0.055659308
+      "weekday": 0.0554256056573113,
+      "weekend": 0.0556593077087551
     },
     "buses": {
       "weekday": 0.14,
