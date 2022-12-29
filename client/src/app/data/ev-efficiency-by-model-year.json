@@ -1,0 +1,50 @@
+{
+  "2020": {
+    "batteryEVCars": 0.268539868798016,
+    "hybridEVCars": 0.313068265894517,
+    "batteryEVTrucks": 0.361450856668597,
+    "hybridEVTrucks": 0.410800573987464,
+    "transitBuses": 1.95236469969444,
+    "schoolBuses": 1.17177273791504
+  },
+  "2021": {
+    "batteryEVCars": 0.259387509447748,
+    "hybridEVCars": 0.302963411964503,
+    "batteryEVTrucks": 0.349052184781034,
+    "hybridEVTrucks": 0.397213533207753,
+    "transitBuses": 1.95236469969444,
+    "schoolBuses": 1.17177273791504
+  },
+  "2022": {
+    "batteryEVCars": 0.250235150097479,
+    "hybridEVCars": 0.29285855803449,
+    "batteryEVTrucks": 0.336653512893472,
+    "hybridEVTrucks": 0.383626492428042,
+    "transitBuses": 1.95236469969444,
+    "schoolBuses": 1.17177273791504
+  },
+  "2023": {
+    "batteryEVCars": 0.241082790747211,
+    "hybridEVCars": 0.282753704104476,
+    "batteryEVTrucks": 0.324254841005909,
+    "hybridEVTrucks": 0.370039451648331,
+    "transitBuses": 1.95236469969444,
+    "schoolBuses": 1.17177273791504
+  },
+  "2024": {
+    "batteryEVCars": 0.231930431396943,
+    "hybridEVCars": 0.272648850174462,
+    "batteryEVTrucks": 0.311856169118347,
+    "hybridEVTrucks": 0.35645241086862,
+    "transitBuses": 1.95236469969444,
+    "schoolBuses": 1.17177273791504
+  },
+  "2025": {
+    "batteryEVCars": 0.222778072046674,
+    "hybridEVCars": 0.262543996244449,
+    "batteryEVTrucks": 0.299457497230784,
+    "hybridEVTrucks": 0.342865370088909,
+    "transitBuses": 1.95236469969444,
+    "schoolBuses": 1.17177273791504
+  }
+}

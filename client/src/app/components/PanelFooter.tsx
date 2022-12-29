@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 // reducers
 import { useTypedSelector } from 'app/redux/index';
 import { setActiveStep } from 'app/redux/reducers/panel';
-import { resetEereInputs } from 'app/redux/reducers/eere';
+import { resetEEREInputs } from 'app/redux/reducers/eere';
 import { fetchRegionsData } from 'app/redux/reducers/geography';
 import {
   calculateDisplacement,
@@ -112,7 +112,7 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
         // prevButtonText isn't provided to first step's use of PanelFooter,
         // so we can safely always assume we're on step 2 or 3
         dispatch(setActiveStep(activeStep - 1));
-        dispatch(resetEereInputs());
+        dispatch(resetEEREInputs());
 
         if (onStepThree) {
           dispatch(resetDisplacement());
@@ -163,7 +163,7 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
 
         if (onStepThree) {
           scrollToTop();
-          dispatch(resetEereInputs());
+          dispatch(resetEEREInputs());
           dispatch(resetDisplacement());
           dispatch(resetMonthlyEmissions());
         }

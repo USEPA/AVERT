@@ -1,0 +1,128 @@
+{
+  "CA": {
+    "capacity_added_mw": {
+      "onshore_wind": 111.5666667,
+      "utility_pv": 1340.166667
+    },
+    "retail_impacts_ghw": {
+      "ee_retail": 3019.686942
+    }
+  },
+  "NCSC": {
+    "capacity_added_mw": {
+      "onshore_wind": 0,
+      "utility_pv": 557.9
+    },
+    "retail_impacts_ghw": {
+      "ee_retail": 1639.764719
+    }
+  },
+  "CENT": {
+    "capacity_added_mw": {
+      "onshore_wind": 2488.733333,
+      "utility_pv": 27.13333333
+    },
+    "retail_impacts_ghw": {
+      "ee_retail": 764.82406
+    }
+  },
+  "FL": {
+    "capacity_added_mw": {
+      "onshore_wind": 0,
+      "utility_pv": 1061.633333
+    },
+    "retail_impacts_ghw": {
+      "ee_retail": 298.949766
+    }
+  },
+  "MIDA": {
+    "capacity_added_mw": {
+      "onshore_wind": 621.6,
+      "utility_pv": 770.0333333
+    },
+    "retail_impacts_ghw": {
+      "ee_retail": 7187.354727
+    }
+  },
+  "MIDW": {
+    "capacity_added_mw": {
+      "onshore_wind": 3074.366667,
+      "utility_pv": 393.3333333
+    },
+    "retail_impacts_ghw": {
+      "ee_retail": 5481.462236
+    }
+  },
+  "NE": {
+    "capacity_added_mw": {
+      "onshore_wind": 44.5,
+      "utility_pv": 189.7333333
+    },
+    "retail_impacts_ghw": {
+      "ee_retail": 2634.126202
+    }
+  },
+  "NY": {
+    "capacity_added_mw": {
+      "onshore_wind": 53.23333333,
+      "utility_pv": 142.0666667
+    },
+    "retail_impacts_ghw": {
+      "ee_retail": 2144.061355
+    }
+  },
+  "NW": {
+    "capacity_added_mw": {
+      "onshore_wind": 596.3,
+      "utility_pv": 435.7666667
+    },
+    "retail_impacts_ghw": {
+      "ee_retail": 2158.2927
+    }
+  },
+  "RM": {
+    "capacity_added_mw": {
+      "onshore_wind": 678.2333333,
+      "utility_pv": 75.06666667
+    },
+    "retail_impacts_ghw": {
+      "ee_retail": 528.360873
+    }
+  },
+  "SE": {
+    "capacity_added_mw": {
+      "onshore_wind": 0,
+      "utility_pv": 462.8
+    },
+    "retail_impacts_ghw": {
+      "ee_retail": 412.09759
+    }
+  },
+  "SW": {
+    "capacity_added_mw": {
+      "onshore_wind": 207.1333333,
+      "utility_pv": 163.6666667
+    },
+    "retail_impacts_ghw": {
+      "ee_retail": 1083.672802
+    }
+  },
+  "TN": {
+    "capacity_added_mw": {
+      "onshore_wind": 0,
+      "utility_pv": 37.76666667
+    },
+    "retail_impacts_ghw": {
+      "ee_retail": 120.5723667
+    }
+  },
+  "TE": {
+    "capacity_added_mw": {
+      "onshore_wind": 2409.433333,
+      "utility_pv": 1223.033333
+    },
+    "retail_impacts_ghw": {
+      "ee_retail": 764.722015
+    }
+  }
+}

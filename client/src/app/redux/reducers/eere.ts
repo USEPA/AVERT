@@ -5,10 +5,24 @@ import {
   RegionState,
   StateState,
 } from 'app/redux/reducers/geography';
+import {
+  setEVEfficiency,
+  setVehiclesDisplaced,
+  setMonthlyEVEnergyUsage,
+  setMonthlyEmissionRates,
+  setEVDeploymentLocationHistoricalEERE,
+} from 'app/redux/reducers/transportation';
 // calculations
+import { calculateHourlyEVLoad } from 'app/calculations/transportation';
 import { calculateEere } from 'app/calculations';
 // config
-import { RegionId, StateId, regions } from 'app/config';
+import {
+  RegionId,
+  StateId,
+  regions,
+  evModelYearOptions,
+  iceReplacementVehicleOptions,
+} from 'app/config';
 
 type RegionalProfile = {
   regionId: RegionId;
@@ -31,11 +45,17 @@ type CombinedProfile = {
   hardTopExceedanceTimestamp: RegionalLoadData;
 };
 
+type SelectOption = { id: string; name: string };
+
 type EereAction =
   | { type: 'eere/RESET_EERE_INPUTS' }
   | {
+      type: 'eere/SET_EV_DEPLOYMENT_LOCATION_OPTIONS';
+      payload: { evDeploymentLocationOptions: SelectOption[] };
+    }
+  | {
       type: 'eere/VALIDATE_EERE';
-      payload: { errors: EereInputFields[] };
+      payload: { errors: (EERETextInputFieldName | EVTextInputFieldName)[] };
     }
   | {
       type: 'eere/UPDATE_EERE_ANNUAL_GWH';
@@ -73,6 +93,34 @@ type EereAction =
       type: 'eere/UPDATE_EERE_ROOFTOP_SOLAR';
       payload: { text: string };
     }
+  | {
+      type: 'eere/UPDATE_EERE_BATTERY_EVS';
+      payload: { text: string };
+    }
+  | {
+      type: 'eere/UPDATE_EERE_HYBRID_EVS';
+      payload: { text: string };
+    }
+  | {
+      type: 'eere/UPDATE_EERE_TRANSIT_BUSES';
+      payload: { text: string };
+    }
+  | {
+      type: 'eere/UPDATE_EERE_SCHOOL_BUSES';
+      payload: { text: string };
+    }
+  | {
+      type: 'eere/UPDATE_EERE_EV_DEPLOYMENT_LOCATION';
+      payload: { option: string };
+    }
+  | {
+      type: 'eere/UPDATE_EERE_EV_MODEL_YEAR';
+      payload: { option: string };
+    }
+  | {
+      type: 'eere/UPDATE_EERE_ICE_REPLACEMENT_VEHICLE';
+      payload: { option: string };
+    }
   | { type: 'eere/START_EERE_CALCULATIONS' }
   | {
       type: 'eere/CALCULATE_REGIONAL_EERE_PROFILE';
@@ -83,7 +131,7 @@ type EereAction =
       payload: CombinedProfile;
     };
 
-export type EereInputFields =
+export type EERETextInputFieldName =
   | 'annualGwh'
   | 'constantMwh'
   | 'broadProgram'
@@ -94,17 +142,39 @@ export type EereInputFields =
   | 'utilitySolar'
   | 'rooftopSolar';
 
-export type EereInputs = { [field in EereInputFields]: string };
+export type EVTextInputFieldName =
+  | 'batteryEVs'
+  | 'hybridEVs'
+  | 'transitBuses'
+  | 'schoolBuses';
+
+type EVSelectInputFieldName =
+  | 'evDeploymentLocation'
+  | 'evModelYear'
+  | 'iceReplacementVehicle';
+
+type InputFieldName =
+  | EERETextInputFieldName
+  | EVTextInputFieldName
+  | EVSelectInputFieldName;
+
+type SelectOptionsFieldName =
+  | 'evDeploymentLocationOptions'
+  | 'evModelYearOptions'
+  | 'iceReplacementVehicleOptions';
+
+export type EEREInputs = { [field in InputFieldName]: string };
 
 type EereState = {
   status: 'ready' | 'started' | 'complete';
-  errors: EereInputFields[];
-  inputs: EereInputs;
+  errors: (EERETextInputFieldName | EVTextInputFieldName)[];
+  inputs: EEREInputs;
+  selectOptions: { [field in SelectOptionsFieldName]: SelectOption[] };
   regionalProfiles: Partial<{ [key in RegionId]: RegionalProfile }>;
   combinedProfile: CombinedProfile;
 };
 
-const emptyEereInputs = {
+const emptyEEREInputs = {
   annualGwh: '',
   constantMwh: '',
   broadProgram: '',
@@ -114,6 +184,13 @@ const emptyEereInputs = {
   offshoreWind: '',
   utilitySolar: '',
   rooftopSolar: '',
+  batteryEVs: '',
+  hybridEVs: '',
+  transitBuses: '',
+  schoolBuses: '',
+  evDeploymentLocation: '',
+  evModelYear: evModelYearOptions[0].id,
+  iceReplacementVehicle: iceReplacementVehicleOptions[0].id,
 };
 
 const emptyRegionalLoadHour = {
@@ -130,7 +207,12 @@ const emptyRegionalLoadHour = {
 const initialState: EereState = {
   status: 'ready',
   errors: [],
-  inputs: emptyEereInputs,
+  inputs: emptyEEREInputs,
+  selectOptions: {
+    evDeploymentLocationOptions: [{ id: '', name: '' }],
+    evModelYearOptions,
+    iceReplacementVehicleOptions,
+  },
   regionalProfiles: {},
   combinedProfile: {
     hourlyEere: [],
@@ -151,9 +233,11 @@ export default function reducer(
     case 'eere/RESET_EERE_INPUTS': {
       // initial state
       return {
+        ...state,
         status: 'ready',
         errors: [],
-        inputs: emptyEereInputs,
+        inputs: emptyEEREInputs,
+        // NOTE: selectOptions should not be reset
         regionalProfiles: {},
         combinedProfile: {
           hourlyEere: [],
@@ -167,9 +251,19 @@ export default function reducer(
       };
     }
 
+    case 'eere/SET_EV_DEPLOYMENT_LOCATION_OPTIONS': {
+      const { evDeploymentLocationOptions } = action.payload;
+      return {
+        ...state,
+        selectOptions: {
+          ...state.selectOptions,
+          evDeploymentLocationOptions,
+        },
+      };
+    }
+
     case 'eere/VALIDATE_EERE': {
       const { errors } = action.payload;
-
       return {
         ...state,
         errors,
@@ -178,7 +272,6 @@ export default function reducer(
 
     case 'eere/UPDATE_EERE_ANNUAL_GWH': {
       const { text } = action.payload;
-
       return {
         ...state,
         inputs: {
@@ -190,7 +283,6 @@ export default function reducer(
 
     case 'eere/UPDATE_EERE_CONSTANT_MW': {
       const { text } = action.payload;
-
       return {
         ...state,
         inputs: {
@@ -202,7 +294,6 @@ export default function reducer(
 
     case 'eere/UPDATE_EERE_BROAD_BASE_PROGRAM': {
       const { text } = action.payload;
-
       return {
         ...state,
         inputs: {
@@ -214,7 +305,6 @@ export default function reducer(
 
     case 'eere/UPDATE_EERE_REDUCTION': {
       const { text } = action.payload;
-
       return {
         ...state,
         inputs: {
@@ -226,7 +316,6 @@ export default function reducer(
 
     case 'eere/UPDATE_EERE_TOP_HOURS': {
       const { text } = action.payload;
-
       return {
         ...state,
         inputs: {
@@ -238,7 +327,6 @@ export default function reducer(
 
     case 'eere/UPDATE_EERE_ONSHORE_WIND': {
       const { text } = action.payload;
-
       return {
         ...state,
         inputs: {
@@ -250,7 +338,6 @@ export default function reducer(
 
     case 'eere/UPDATE_EERE_OFFSHORE_WIND': {
       const { text } = action.payload;
-
       return {
         ...state,
         inputs: {
@@ -262,7 +349,6 @@ export default function reducer(
 
     case 'eere/UPDATE_EERE_UTILITY_SOLAR': {
       const { text } = action.payload;
-
       return {
         ...state,
         inputs: {
@@ -274,12 +360,88 @@ export default function reducer(
 
     case 'eere/UPDATE_EERE_ROOFTOP_SOLAR': {
       const { text } = action.payload;
-
       return {
         ...state,
         inputs: {
           ...state.inputs,
           rooftopSolar: text,
+        },
+      };
+    }
+
+    case 'eere/UPDATE_EERE_BATTERY_EVS': {
+      const { text } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          batteryEVs: text,
+        },
+      };
+    }
+
+    case 'eere/UPDATE_EERE_HYBRID_EVS': {
+      const { text } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          hybridEVs: text,
+        },
+      };
+    }
+
+    case 'eere/UPDATE_EERE_TRANSIT_BUSES': {
+      const { text } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          transitBuses: text,
+        },
+      };
+    }
+
+    case 'eere/UPDATE_EERE_SCHOOL_BUSES': {
+      const { text } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          schoolBuses: text,
+        },
+      };
+    }
+
+    case 'eere/UPDATE_EERE_EV_DEPLOYMENT_LOCATION': {
+      const { option } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          evDeploymentLocation: option,
+        },
+      };
+    }
+
+    case 'eere/UPDATE_EERE_EV_MODEL_YEAR': {
+      const { option } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          evModelYear: option,
+        },
+      };
+    }
+
+    case 'eere/UPDATE_EERE_ICE_REPLACEMENT_VEHICLE': {
+      const { option } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          iceReplacementVehicle: option,
         },
       };
     }
@@ -303,7 +465,6 @@ export default function reducer(
         hardTopExceedanceValue,
         hardTopExceedanceIndex,
       } = action.payload;
-
       return {
         ...state,
         regionalProfiles: {
@@ -336,21 +497,51 @@ export default function reducer(
 }
 
 // action creators
+export function setEVDeploymentLocationOptions(): AppThunk {
+  // NOTE: set every time a region or state is selected
+  return (dispatch, getState) => {
+    const { geography } = getState();
+    const { focus, regions, states } = geography;
+
+    const selectedRegion = Object.values(regions).find((r) => r.selected);
+    const selectedState = Object.values(states).find((s) => s.selected);
+
+    const evDeploymentLocationOptions =
+      focus === 'regions' && selectedRegion
+        ? [
+            {
+              id: `region-${selectedRegion.id}`,
+              name: `${selectedRegion.name} Region`,
+            },
+            ...Object.keys(selectedRegion.percentageByState).map((id) => ({
+              id: `state-${id}`,
+              name: states[id as StateId].name || id,
+            })),
+          ]
+        : focus === 'states' && selectedState
+        ? [
+            {
+              id: `state-${selectedState.id}`,
+              name: `State: ${selectedState.name}`,
+            },
+          ]
+        : [{ id: '', name: '' }];
+
+    dispatch({
+      type: 'eere/SET_EV_DEPLOYMENT_LOCATION_OPTIONS',
+      payload: { evDeploymentLocationOptions },
+    });
+  };
+}
+
 function validateInput(
-  inputField: EereInputFields,
+  inputField: EERETextInputFieldName | EVTextInputFieldName,
   inputValue: string,
-  _upperLimit: number, // no longer using upper limit for validation (see NOTE)
 ): AppThunk {
   return (dispatch, getState) => {
     const { eere } = getState();
 
     const value = Number(inputValue);
-
-    // NOTE: we're no longer validationg against an upper limit, but leaving
-    // code below commented out for now. we should condiser removing it entirely
-    // if its decided the upper limit for input validation is never coming back
-    // const invalidInput = isNaN(value) || value < 0 || value > _upperLimit;
-
     const invalidInput = isNaN(value) || value < 0;
 
     // remove input field being validated from existing fields with errors
@@ -365,111 +556,201 @@ function validateInput(
   };
 }
 
-export function updateEereAnnualGwh(input: string, limit: number): AppThunk {
+export function updateEereAnnualGwh(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_ANNUAL_GWH',
       payload: { text: input },
     });
 
-    dispatch(validateInput('annualGwh', input, limit));
+    dispatch(validateInput('annualGwh', input));
   };
 }
 
-export function updateEereConstantMw(input: string, limit: number): AppThunk {
+export function updateEereConstantMw(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_CONSTANT_MW',
       payload: { text: input },
     });
 
-    dispatch(validateInput('constantMwh', input, limit));
+    dispatch(validateInput('constantMwh', input));
   };
 }
 
-export function updateEereBroadBasedProgram(
-  input: string,
-  limit: number,
-): AppThunk {
+export function updateEereBroadBasedProgram(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_BROAD_BASE_PROGRAM',
       payload: { text: input },
     });
 
-    dispatch(validateInput('reduction', input, limit));
+    dispatch(validateInput('broadProgram', input));
   };
 }
 
-export function updateEereReduction(input: string, limit: number): AppThunk {
+export function updateEereReduction(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_REDUCTION',
       payload: { text: input },
     });
 
-    dispatch(validateInput('reduction', input, limit));
+    dispatch(validateInput('reduction', input));
   };
 }
 
-export function updateEereTopHours(input: string, limit: number): AppThunk {
+export function updateEereTopHours(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_TOP_HOURS',
       payload: { text: input },
     });
 
-    dispatch(validateInput('topHours', input, limit));
+    dispatch(validateInput('topHours', input));
   };
 }
 
-export function updateEereOnshoreWind(input: string, limit: number): AppThunk {
+export function updateEereOnshoreWind(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_ONSHORE_WIND',
       payload: { text: input },
     });
 
-    dispatch(validateInput('onshoreWind', input, limit));
+    dispatch(validateInput('onshoreWind', input));
   };
 }
 
-export function updateEereOffshoreWind(input: string, limit: number): AppThunk {
+export function updateEereOffshoreWind(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_OFFSHORE_WIND',
       payload: { text: input },
     });
 
-    dispatch(validateInput('offshoreWind', input, limit));
+    dispatch(validateInput('offshoreWind', input));
   };
 }
 
-export function updateEereUtilitySolar(input: string, limit: number): AppThunk {
+export function updateEereUtilitySolar(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_UTILITY_SOLAR',
       payload: { text: input },
     });
 
-    dispatch(validateInput('utilitySolar', input, limit));
+    dispatch(validateInput('utilitySolar', input));
   };
 }
 
-export function updateEereRooftopSolar(input: string, limit: number): AppThunk {
+export function updateEereRooftopSolar(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'eere/UPDATE_EERE_ROOFTOP_SOLAR',
       payload: { text: input },
     });
 
-    dispatch(validateInput('rooftopSolar', input, limit));
+    dispatch(validateInput('rooftopSolar', input));
+  };
+}
+
+export function updateEereBatteryEVs(input: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'eere/UPDATE_EERE_BATTERY_EVS',
+      payload: { text: input },
+    });
+
+    dispatch(validateInput('batteryEVs', input));
+
+    dispatch(setVehiclesDisplaced());
+  };
+}
+
+export function updateEereHybridEVs(input: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'eere/UPDATE_EERE_HYBRID_EVS',
+      payload: { text: input },
+    });
+
+    dispatch(validateInput('hybridEVs', input));
+
+    dispatch(setVehiclesDisplaced());
+  };
+}
+
+export function updateEereTransitBuses(input: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'eere/UPDATE_EERE_TRANSIT_BUSES',
+      payload: { text: input },
+    });
+
+    dispatch(validateInput('transitBuses', input));
+
+    dispatch(setVehiclesDisplaced());
+  };
+}
+
+export function updateEereSchoolBuses(input: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'eere/UPDATE_EERE_SCHOOL_BUSES',
+      payload: { text: input },
+    });
+
+    dispatch(validateInput('schoolBuses', input));
+
+    dispatch(setVehiclesDisplaced());
+  };
+}
+
+export function updateEereEVDeploymentLocation(input: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'eere/UPDATE_EERE_EV_DEPLOYMENT_LOCATION',
+      payload: { option: input },
+    });
+
+    dispatch(setMonthlyEmissionRates());
+    dispatch(setEVDeploymentLocationHistoricalEERE());
+  };
+}
+
+export function updateEereEVModelYear(input: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'eere/UPDATE_EERE_EV_MODEL_YEAR',
+      payload: { option: input },
+    });
+
+    dispatch(setEVEfficiency());
+    dispatch(setMonthlyEVEnergyUsage());
+    dispatch(setMonthlyEmissionRates());
+  };
+}
+
+export function updateEereICEReplacementVehicle(input: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'eere/UPDATE_EERE_ICE_REPLACEMENT_VEHICLE',
+      payload: { option: input },
+    });
+
+    dispatch(setMonthlyEmissionRates());
   };
 }
 
 export function calculateEereProfile(): AppThunk {
   return (dispatch, getState) => {
-    const { geography, eere } = getState();
+    const { geography, transportation, eere } = getState();
+    const {
+      dailyStats,
+      hourlyEVChargingPercentages,
+      monthlyDailyEVEnergyUsage,
+    } = transportation;
 
     // select region(s), based on geographic focus:
     // single region if geographic focus is 'regions'
@@ -522,7 +803,9 @@ export function calculateEereProfile(): AppThunk {
       // - if a region is selected, the regional scaling factor will always be 1
       // - if a state is selected, the regional scaling factor comes from the
       //   selected state's percentage by region value for the given region, as
-      //   defined in the config file (`app/config.ts`)
+      //   defined in the config file (`app/config.ts`). for example, if the
+      //   state falls exactly equally between the two regions, the regional
+      //   scaling factor would be 0.5 for each of those two regions.
       const regionalScalingFactor = !selectedState ? 1 : regionalPercent / 100;
 
       // the percent reduction factor also is a number between 0 and 1, and
@@ -567,7 +850,14 @@ export function calculateEereProfile(): AppThunk {
         ? regionalPercent / totalOffshoreWindPercent
         : 0;
 
-      const scaledEereInputs = {
+      const hourlyEVLoad = calculateHourlyEVLoad({
+        regionalLoad: region.rdf.regional_load,
+        dailyStats,
+        hourlyEVChargingPercentages,
+        monthlyDailyEVEnergyUsage,
+      });
+
+      const scaledEereTextInputs = {
         annualGwh: Number(eere.inputs.annualGwh) * regionalScalingFactor,
         constantMwh: Number(eere.inputs.constantMwh) * regionalScalingFactor,
         broadProgram: Number(eere.inputs.broadProgram) * percentReductionFactor,
@@ -590,9 +880,10 @@ export function calculateEereProfile(): AppThunk {
       } = calculateEere({
         regionMaxEEPercent: region.rdf.limits.max_ee_percent,
         regionLineLoss: region.lineLoss,
-        eereLoads: region.rdf.regional_load.map((hr) => hr.regional_load_mw),
+        regionalLoad: region.rdf.regional_load,
         eereDefaults: region.eereDefaults.data,
-        eereInputs: scaledEereInputs,
+        hourlyEVLoad,
+        eereTextInputs: scaledEereTextInputs,
       });
 
       const regionalProfile = {
@@ -699,6 +990,6 @@ export function calculateEereProfile(): AppThunk {
   };
 }
 
-export function resetEereInputs() {
+export function resetEEREInputs() {
   return { type: 'eere/RESET_EERE_INPUTS' };
 }

@@ -9,8 +9,8 @@ describe('Get Results – reduction & topHours', () => {
     cy.findAllByText('Set EE/RE Impacts').filter('.avert-button').click();
 
     cy.findByText('Percentage reductions in some or all hours').click();
-    cy.findByText('Targeted program: Reduce generation by').next().type('15');
-    cy.findByText('% during the peak').next().type('50');
+    cy.findByText('Targeted program: Reduce generation by:').next().type('15');
+    cy.findByText('% during the peak:').next().type('50');
     cy.findByText('Calculate EE/RE Impacts').click();
     cy.findAllByText('Get Results').filter('.avert-button').click();
     cy.findByText('LOADING...', { timeout: 120000 }).should('not.exist');

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
@@ -26,6 +26,10 @@ import { modalLinkStyles } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import { toggleModalOverlay, resetActiveModal } from 'app/redux/reducers/panel';
 import { selectGeography } from 'app/redux/reducers/geography';
+import {
+  setVMTData,
+  setHourlyEVChargingPercentages,
+} from 'app/redux/reducers/transportation';
 // hooks
 import {
   useSelectedRegion,
@@ -402,6 +406,11 @@ export const errorMessageStyles = css`
 function Panels() {
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(setVMTData());
+    dispatch(setHourlyEVChargingPercentages());
+  }, [dispatch]);
+
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
   const loading = useTypedSelector(({ panel }) => panel.loading);
   const loadingSteps = useTypedSelector(({ panel }) => panel.loadingSteps);
@@ -621,7 +630,7 @@ function Panels() {
           </p>
 
           <p className="avert-small-text">
-            Several types of programs are listed below (A through D). You can
+            Several types of programs are listed below (A through E). You can
             enter impacts for any or all types of programs, in any combination.
             AVERT will calculate cumulative impacts.
           </p>

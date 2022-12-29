@@ -9,7 +9,7 @@ describe('Get Results – broadProgram', () => {
     cy.findAllByText('Set EE/RE Impacts').filter('.avert-button').click();
 
     cy.findByText('Percentage reductions in some or all hours').click();
-    cy.findByText('Broad-based program: Reduce generation by')
+    cy.findByText('Broad-based program: Reduce generation by:')
       .next()
       .type('10');
     cy.findByText('Calculate EE/RE Impacts').click();

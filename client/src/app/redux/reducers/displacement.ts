@@ -10,9 +10,12 @@ import {
   RegionId,
   StateId,
   states,
-  fipsCodes,
   regions,
 } from 'app/config';
+/**
+ * Excel: "CountyFIPS" sheet.
+ */
+import countyFips from 'app/data/county-fips.json';
 
 type PollutantName = 'generation' | Pollutant;
 
@@ -60,17 +63,17 @@ type PollutantDisplacement = {
   };
 };
 
-type PollutantsDisplacements = Partial<
-  { [key in PollutantName]: PollutantDisplacement }
->;
+type PollutantsDisplacements = Partial<{
+  [key in PollutantName]: PollutantDisplacement;
+}>;
 
 type RegionalDisplacement = {
   [key in PollutantName]: PollutantDisplacement;
 };
 
-type RegionalDisplacements = Partial<
-  { [key in RegionId]: RegionalDisplacement }
->;
+type RegionalDisplacements = Partial<{
+  [key in RegionId]: RegionalDisplacement;
+}>;
 
 type StatesAndCounties = Partial<{ [key in StateId]: string[] }>;
 
@@ -95,9 +98,9 @@ type StatesDisplacementsByPollutant = {
 };
 
 type CountiesDisplacementsByPollutant = {
-  [key in Pollutant]: Partial<
-    { [key in StateId]: { [countyName: string]: MonthlyDisplacement } }
-  >;
+  [key in Pollutant]: Partial<{
+    [key in StateId]: { [countyName: string]: MonthlyDisplacement };
+  }>;
 };
 
 type CountyDataRow = {
@@ -1135,33 +1138,12 @@ function formatCobraDataRow({
   vocsCountyEmissions: number[];
   nh3CountyEmissions: number[];
 }): CobraDataRow {
-  /**
-   * All items in the `fipsCodes` array (which is data converted from the main
-   * AVERT Excel file) have the word 'County' at the end of their county names.
-   * This is correct in most cases but incorrect for two:
-   * - counties in Louisiana are called parishes
-   * - cities shouldn't have the word 'County' at the end of their name
-   *
-   * So we first handle Louisiana parishes by converting the passed county name
-   * to use 'County' instead of 'Parish', so we can match it to its correct FIPS
-   * code (e.g. the passed county 'Acadia Parish' becomes 'Avadia County')
-   *
-   * Then when we match on county names, we need to trim off the extra 'County'
-   * string if its actually a city. For example, in the `fipsCodes` array,
-   * the city of Baltimore is stored as 'Baltimore city County', but in the RDF
-   * it's stored as 'Baltimore city', so we need to use that name for matching
-   */
-  const fipsCounty =
-    stateId === 'LA' ? countyName.replace(/ Parish$/, ' County') : countyName;
-
-  const matchedFipsCodeItem = fipsCodes.filter((item) => {
+  const match = countyFips.find((data) => {
     return (
-      item['state'] === states[stateId as StateId].name &&
-      item['county'].replace(/city County$/, 'city') === fipsCounty
+      data['State Name'] === states[stateId as StateId].name &&
+      data['County Name Long'] === countyName
     );
-  })[0];
-
-  const fipsCode = matchedFipsCodeItem ? matchedFipsCodeItem['code'] : '';
+  });
 
   const so2Tons = so2CountyEmissions.reduce((a, b) => a + b, 0) / 2000;
   const noxTons = noxCountyEmissions.reduce((a, b) => a + b, 0) / 2000;
@@ -1170,7 +1152,7 @@ function formatCobraDataRow({
   const nh3Tons = nh3CountyEmissions.reduce((a, b) => a + b, 0) / 2000;
 
   return {
-    FIPS: fipsCode,
+    FIPS: match ? match['State and County FIPS Code'] : '',
     STATE: states[stateId as StateId].name,
     COUNTY: countyName.replace(/city/, '(City)'), // format 'city'
     TIER1NAME: 'FUEL COMB. ELEC. UTIL.',

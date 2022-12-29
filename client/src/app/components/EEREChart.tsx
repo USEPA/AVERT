@@ -181,7 +181,7 @@ function EEREChart() {
         <h3 className="avert-chart-title">
           EE/RE profile based on values entered:{' '}
           <span css={modalStyles}>
-            <Tooltip id={10}>
+            <Tooltip id="eere-profile">
               This graph shows the hourly changes in load that will result from
               the inputs entered above. It reflects a combination of all inputs,
               typical capacity factors for wind and solar, and adjustments for
