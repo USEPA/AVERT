@@ -34,6 +34,11 @@ import nationalAverageVMTPerYear from 'app/data/national-average-vmt-per-year.js
  */
 import evEfficiencyByModelYear from 'app/data/ev-efficiency-by-model-year.json';
 /**
+ * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
+ * Lite" table in the "Library" sheet (B432:C445)
+ */
+import regionAverageTemperatures from 'app/data/region-average-temperature.json';
+/**
  * Excel: "Table 11: LDV Sales and Stock" and "Table 12: Transit and School Bus
  * Sales and Stock" tables in the "Library" sheet (B485:D535 and B546:F596).
  */
@@ -58,6 +63,15 @@ import vmtAllocationAndRegisteredVehicles from 'app/data/vmt-allocation-and-regi
  * (E202).
  */
 const percentageHybridEVMilesDrivenOnElectricity = 0.54;
+
+/**
+ * Additional energy consumed in climates with +/-18F differential from
+ * St. Louis, MO
+ *
+ * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
+ * Lite" table in the "Library" sheet (F428)
+ */
+const percentageAdditionalEnergyConsumedFactor = 0.0766194804959222;
 
 /**
  * Ratio of typical weekend energy consumption as a share of typical weekday
@@ -142,6 +156,9 @@ export type MonthlyVMTTotalsAndPercentages = ReturnType<
 >;
 export type MonthlyVMTPerVehicle = ReturnType<
   typeof calculateMonthlyVMTPerVehicle
+>;
+export type EVEfficiencyPerVehicle = ReturnType<
+  typeof calculateEVEfficiencyPerVehicle
 >;
 export type DailyStats = ReturnType<typeof calculateDailyStats>;
 export type MonthlyStats = ReturnType<typeof calculateMonthlyStats>;
@@ -622,6 +639,58 @@ export function calculateMonthlyVMTPerVehicle(options: {
         selectedRegionAverageVMTPerYear[averageVMTPerYearVehicleType] *
         data[vehicleType].percent;
     });
+  });
+
+  return result;
+}
+
+/**
+ * Efficiency factor for each vehicle type for the selected model year.
+ *
+ * Excel: "Table 6: Monthly VMT and efficiency adjustments" table in the
+ * "Library" sheet (E210:E215). NOTE: the Excel version duplicates these
+ * values in the columns to the right for each month, but they're the same
+ * value for all months.
+ */
+export function calculateEVEfficiencyPerVehicle(options: {
+  selectedRegionName: RegionName | '';
+  evModelYear: string;
+}) {
+  const { selectedRegionName, evModelYear } = options;
+
+  const result = {
+    batteryEVCars: 0,
+    hybridEVCars: 0,
+    batteryEVTrucks: 0,
+    hybridEVTrucks: 0,
+    transitBuses: 0,
+    schoolBuses: 0,
+  };
+
+  if (!selectedRegionName) return result;
+
+  const regionAverageTemperature = regionAverageTemperatures[selectedRegionName]; // prettier-ignore
+  const modelYearEVEfficiency = evEfficiencyByModelYear[evModelYear as EVModelYear]; // prettier-ignore
+
+  if (Object.keys(modelYearEVEfficiency).length === 0) return result;
+
+  Object.entries(modelYearEVEfficiency).forEach(([key, data]) => {
+    const vehicleType = key as keyof typeof result;
+
+    if (vehicleType in result) {
+      /**
+       * adjustment factor for regions whose climate is more than +/-18F
+       * different from St. Louis, MO
+       */
+      const adjustmentFactor =
+        regionAverageTemperature === 68
+          ? 1
+          : regionAverageTemperature === 50 || regionAverageTemperature === 86
+          ? 1 + percentageAdditionalEnergyConsumedFactor
+          : 1 + percentageAdditionalEnergyConsumedFactor / 2;
+
+      result[vehicleType] = data * adjustmentFactor;
+    }
   });
 
   return result;
