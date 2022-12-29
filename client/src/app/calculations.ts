@@ -23,21 +23,23 @@ function calculateHourlyExceedance(
   return 0;
 }
 
-export function calculateEere({
-  regionMaxEEPercent, // region.rdf.limits.max_ee_percent (15 for all RDFs)
-  regionLineLoss, // region.lineLoss
-  regionalLoad, // region.rdf.regional_load
-  eereDefaults, // region.eereDefaults.data
-  hourlyEVLoad, // transportation.hourlyEVLoad
-  eereTextInputs, // eere.inputs (text inputs, scaled for each region)
-}: {
-  regionMaxEEPercent: number;
-  regionLineLoss: number;
-  regionalLoad: RegionalLoadData[];
-  eereDefaults: EEREDefaultData[];
-  hourlyEVLoad: number[];
-  eereTextInputs: { [field in EERETextInputFieldName]: number };
+export function calculateEere(options: {
+  regionMaxEEPercent: number; // region.rdf.limits.max_ee_percent (15 for all RDFs)
+  regionLineLoss: number; // region.lineLoss
+  regionalLoad: RegionalLoadData[]; // region.rdf.regional_load
+  eereDefaults: EEREDefaultData[]; // region.eereDefaults.data
+  hourlyEVLoad: number[]; // result of calculateHourlyEVLoad()
+  eereTextInputs: { [field in EERETextInputFieldName]: number }; // eere.inputs (text inputs, scaled for each region)
 }) {
+  const {
+    regionMaxEEPercent,
+    regionLineLoss,
+    regionalLoad,
+    eereDefaults,
+    hourlyEVLoad,
+    eereTextInputs,
+  } = options;
+
   const {
     // A: Reductions spread evenly throughout the year
     annualGwh,
