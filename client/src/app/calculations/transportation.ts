@@ -645,7 +645,8 @@ export function calculateMonthlyVMTPerVehicle(options: {
 }
 
 /**
- * Efficiency factor for each vehicle type for the selected model year.
+ * Efficiency factor for each vehicle type for the selected region and EV model
+ * year.
  *
  * Excel: "Table 6: Monthly VMT and efficiency adjustments" table in the
  * "Library" sheet (E210:E215). NOTE: the Excel version duplicates these

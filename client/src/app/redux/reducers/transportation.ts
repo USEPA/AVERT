@@ -10,6 +10,7 @@ import type {
   SelectedRegionAverageVMTPerYear,
   MonthlyVMTTotalsAndPercentages,
   MonthlyVMTPerVehicle,
+  EVEfficiencyPerVehicle,
   DailyStats,
   MonthlyStats,
   HourlyEVChargingPercentages,
@@ -34,6 +35,7 @@ import {
   calculateSelectedRegionAverageVMTPerYear,
   calculateMonthlyVMTTotalsAndPercentages,
   calculateMonthlyVMTPerVehicle,
+  calculateEVEfficiencyPerVehicle,
   calculateDailyStats,
   calculateMonthlyStats,
   calculateHourlyEVChargingPercentages,
@@ -92,6 +94,12 @@ type TransportationAction =
       type: 'transportation/SET_MONTHLY_VMT_PER_VEHICLE';
       payload: {
         monthlyVMTPerVehicle: MonthlyVMTPerVehicle;
+      };
+    }
+  | {
+      type: 'transportation/SET_EV_EFFICIENCY_PER_VEHICLE';
+      payload: {
+        evEfficiencyPerVehicle: EVEfficiencyPerVehicle;
       };
     }
   | {
@@ -165,6 +173,7 @@ type TransportationState = {
   selectedRegionAverageVMTPerYear: SelectedRegionAverageVMTPerYear;
   monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
   monthlyVMTPerVehicle: MonthlyVMTPerVehicle;
+  evEfficiencyPerVehicle: EVEfficiencyPerVehicle;
   dailyStats: DailyStats;
   monthlyStats: MonthlyStats;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
@@ -199,6 +208,14 @@ const initialState: TransportationState = {
   },
   monthlyVMTTotalsAndPercentages: {},
   monthlyVMTPerVehicle: {},
+  evEfficiencyPerVehicle: {
+    batteryEVCars: 0,
+    hybridEVCars: 0,
+    batteryEVTrucks: 0,
+    hybridEVTrucks: 0,
+    transitBuses: 0,
+    schoolBuses: 0,
+  },
   dailyStats: {},
   monthlyStats: {},
   hourlyEVChargingPercentages: {},
@@ -304,6 +321,15 @@ export default function reducer(
       return {
         ...state,
         monthlyVMTPerVehicle,
+      };
+    }
+
+    case 'transportation/SET_EV_EFFICIENCY_PER_VEHICLE': {
+      const { evEfficiencyPerVehicle } = action.payload;
+
+      return {
+        ...state,
+        evEfficiencyPerVehicle,
       };
     }
 
@@ -528,6 +554,27 @@ export function setSelectedRegionVMTData(): AppThunk {
     dispatch({
       type: 'transportation/SET_MONTHLY_VMT_PER_VEHICLE',
       payload: { monthlyVMTPerVehicle },
+    });
+  };
+}
+
+export function setEVEfficiency(): AppThunk {
+  // NOTE: set every time a region is selected or EV model year changes
+  return (dispatch, getState) => {
+    const { geography, eere } = getState();
+    const { evModelYear } = eere.inputs;
+
+    const selectedRegionName =
+      Object.values(geography.regions).find((r) => r.selected)?.name || '';
+
+    const evEfficiencyPerVehicle = calculateEVEfficiencyPerVehicle({
+      selectedRegionName,
+      evModelYear,
+    });
+
+    dispatch({
+      type: 'transportation/SET_EV_EFFICIENCY_PER_VEHICLE',
+      payload: { evEfficiencyPerVehicle },
     });
   };
 }

@@ -6,6 +6,7 @@ import {
   StateState,
 } from 'app/redux/reducers/geography';
 import {
+  setEVEfficiency,
   setVehiclesDisplaced,
   setMonthlyEVEnergyUsage,
   setMonthlyEmissionRates,
@@ -724,6 +725,7 @@ export function updateEereEVModelYear(input: string): AppThunk {
       payload: { option: input },
     });
 
+    dispatch(setEVEfficiency());
     dispatch(setMonthlyEVEnergyUsage());
     dispatch(setMonthlyEmissionRates());
   };

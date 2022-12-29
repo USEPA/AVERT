@@ -1,5 +1,6 @@
 // reducers
 import { AppThunk } from 'app/redux/index';
+import { setEVEfficiency } from 'app/redux/reducers/transportation';
 import { setEVDeploymentLocationOptions } from 'app/redux/reducers/eere';
 import {
   setSelectedRegionVMTData,
@@ -292,6 +293,7 @@ export function selectRegion(regionId: RegionId): AppThunk {
       payload: { regionId },
     });
 
+    dispatch(setEVEfficiency());
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setVehicleSalesAndStock());
     dispatch(setSelectedRegionVMTData());
