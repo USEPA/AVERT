@@ -58,8 +58,6 @@
  * @property {EguData[]} co2_not
  * @property {EguData[]} heat
  * @property {EguData[]} heat_not
- * @property {EguData[]} pm25
- * @property {EguData[]} pm25_not
  */
 
 /**
@@ -226,24 +224,25 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad, debug }) {
   /** @type {EguData[]} */
   const ozoneSeasonData =
     metric === "nei"
-      ? rdfJson.data["heat"] //
+      ? rdfJson.data["heat"] // ozone season heat input (MMBtu)
       : rdfJson.data[metric];
 
   /** @type {EguData[]|false} */
   const nonOzoneSeasonData =
     metric === "nei"
-      ? rdfJson.data["heat_not"]
+      ? rdfJson.data["heat_not"] // non-ozone season heat input (MMBtu)
       : rdfJson.data[`${metric}_not`] || false; // false fallback for generation, as there's no non-ozone season generation data
 
   // ozone season and non-ozone season medians
-  const ozoneSeasonMedians = ozoneSeasonData.map((data) => data.medians);
+  const ozoneSeasonMedians = ozoneSeasonData.map((eguData) => eguData.medians);
   const nonOzoneSeasonMedians = nonOzoneSeasonData
-    ? nonOzoneSeasonData.map((data) => data.medians)
+    ? nonOzoneSeasonData.map((eguData) => eguData.medians)
     : false;
 
   // load bin edges
-  const firstEdge = rdfJson.load_bin_edges[0];
-  const lastEdge = rdfJson.load_bin_edges[rdfJson.load_bin_edges.length - 1];
+  const loadBinEdges = rdfJson.load_bin_edges;
+  const firstLoadBinEdge = loadBinEdges[0];
+  const lastLoadBinEdge = loadBinEdges[loadBinEdges.length - 1];
 
   // array of pollutants, based on passed metric argument:
   // - if the passed metric is "nei", the pollutants array will be ["pm25", "vocs", "nh3"]
@@ -272,29 +271,31 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad, debug }) {
   /** @type {Object.<string, number[]} - used to calculate 'postEereTotal' returned data, by pollutant */
   const hourlyPostEereTotals = {};
 
+  const totalHours = rdfJson.regional_load.length;
+
   pollutants.forEach((pollutant) => {
     regionalData[pollutant] = {};
     stateData[pollutant] = {};
     countyData[pollutant] = {};
-    hourlyOriginalTotals[pollutant] = new Array(rdfJson.regional_load.length).fill(0); // prettier-ignore
-    hourlyPostEereTotals[pollutant] = new Array(rdfJson.regional_load.length).fill(0); // prettier-ignore
+    hourlyOriginalTotals[pollutant] = new Array(totalHours).fill(0);
+    hourlyPostEereTotals[pollutant] = new Array(totalHours).fill(0);
   });
 
   // iterate over each hour in the year (8760 in non-leap years)
-  for (let i = 0; i < rdfJson.regional_load.length; i++) {
-    const month = rdfJson.regional_load[i].month; // numeric month of load
-    const originalLoad = rdfJson.regional_load[i].regional_load_mw; // original regional load (mwh)
-    const postEereLoad = originalLoad + eereLoad[i]; // EERE-merged regional load (mwh)
+  for (const [i, hourlyLoadData] of rdfJson.regional_load.entries()) {
+    const month = hourlyLoadData.month; // numeric month of load
+    const originalLoad = hourlyLoadData.regional_load_mw; // original regional load (mwh) for the hour
+    const postEereLoad = originalLoad + eereLoad[i]; // EERE-merged regional load (mwh) for the hour
 
-    const originalLoadInBounds = originalLoad >= firstEdge && originalLoad <= lastEdge; // prettier-ignore
-    const postEereLoadInBounds = postEereLoad >= firstEdge && postEereLoad <= lastEdge; // prettier-ignore
+    const originalLoadInBounds = originalLoad >= firstLoadBinEdge && originalLoad <= lastLoadBinEdge; // prettier-ignore
+    const postEereLoadInBounds = postEereLoad >= firstLoadBinEdge && postEereLoad <= lastLoadBinEdge; // prettier-ignore
 
     // filter out outliers
     if (!(originalLoadInBounds && postEereLoadInBounds)) continue;
 
-    // get index of item closest to originalLoad or postEereLoad in load_bin_edges array
-    const originalLoadBinIndex = excelMatch(rdfJson.load_bin_edges, originalLoad); // prettier-ignore
-    const postEereLoadBinIndex = excelMatch(rdfJson.load_bin_edges, postEereLoad); // prettier-ignore
+    // get index of item closest to originalLoad or postEereLoad in loadBinEdges array
+    const originalLoadBinEdgeIndex = excelMatch(loadBinEdges, originalLoad);
+    const postEereLoadBinEdgeIndex = excelMatch(loadBinEdges, postEereLoad);
 
     // set datasetMedians, based on nonOzoneSeasonMedians value and the current month
     // NOTE: if nonOzoneSeasonMedians doesn't exist (in the case of generation),
@@ -309,17 +310,17 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad, debug }) {
     // (e.g. rdfJson.data.generation, rdfJson.data.so2, etc.)
     // the total number of EGUs varies per region...
     // (less than 100 for the RM region; more than 1000 for the SE region)
-    ozoneSeasonData.forEach((egu, index) => {
-      const medians = datasetMedians[index];
+    ozoneSeasonData.forEach((egu, eguIndex) => {
+      const medians = datasetMedians[eguIndex]; // use the medians from either the ozone season or non-ozone season datasets
       const stateId = egu.state;
       const county = egu.county;
 
       const calculatedOriginal = calculateLinear({
         load: originalLoad,
-        genA: medians[originalLoadBinIndex],
-        genB: medians[originalLoadBinIndex + 1],
-        edgeA: rdfJson.load_bin_edges[originalLoadBinIndex],
-        edgeB: rdfJson.load_bin_edges[originalLoadBinIndex + 1],
+        genA: medians[originalLoadBinEdgeIndex],
+        genB: medians[originalLoadBinEdgeIndex + 1],
+        edgeA: loadBinEdges[originalLoadBinEdgeIndex],
+        edgeB: loadBinEdges[originalLoadBinEdgeIndex + 1],
       });
 
       // handle special exclusions for emissions changes at specific EGUs
@@ -332,10 +333,10 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad, debug }) {
           ? calculatedOriginal
           : calculateLinear({
               load: postEereLoad,
-              genA: medians[postEereLoadBinIndex],
-              genB: medians[postEereLoadBinIndex + 1],
-              edgeA: rdfJson.load_bin_edges[postEereLoadBinIndex],
-              edgeB: rdfJson.load_bin_edges[postEereLoadBinIndex + 1],
+              genA: medians[postEereLoadBinEdgeIndex],
+              genB: medians[postEereLoadBinEdgeIndex + 1],
+              edgeA: loadBinEdges[postEereLoadBinEdgeIndex],
+              edgeB: loadBinEdges[postEereLoadBinEdgeIndex + 1],
             });
 
       // store `calculatedOriginal` and `calculatedPostEere` values in objects,
@@ -375,10 +376,12 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad, debug }) {
         // calculated original and calculated post-eere values for each day of the
         // month to arrive at cumulative total original and post-eere values for
         // the month for each data structure
+
         // NOTE: in the web app, we could just use `countyData` and derive state
         // totals and the region total by adding up values, but storing them
         // individually here is computationally smarter as it means we don't need
         // to re-iterate over data structures later to sum those totals
+
         regionalData[pollutant][`month${month}`] ??= { original: 0, postEere: 0 }; // prettier-ignore
         regionalData[pollutant][`month${month}`].original += original[pollutant]; // prettier-ignore
         regionalData[pollutant][`month${month}`].postEere += postEere[pollutant]; // prettier-ignore
@@ -399,7 +402,7 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad, debug }) {
         // hourly calculations for each EGU when developing locally.
         // to temporaily enable this, update the `calculateMetric()` method in
         // `app/controllers.js` to pass the `debug` parameter's value as `true`
-        //
+
         // AGAIN, THIS IS FOR DEBUGGING ONLY – DO NOT ENABLE THIS FOR PRODUCTION,
         // as the returned `hourlyData` object is massive, and when debug is set
         // to `true`, this function also won't return the summed regional, state,
@@ -418,7 +421,7 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad, debug }) {
           // un-comment out the code below and update it with the specific EGU's
           // ORISPL code and unit code and comment out the next several lines of
           // code inside this `if` statement block
-          //
+
           // if (egu.orispl_code === 50865 && egu.unit_code === '1') {
           //   hourlyData[pollutant][i].orisplCode ??= egu.orispl_code;
           //   hourlyData[pollutant][i].unitCode ??= egu.unit_code;
@@ -430,7 +433,7 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad, debug }) {
           // }
 
           hourlyData[pollutant][i].egus ??= [];
-          hourlyData[pollutant][i].egus[index] ??= {
+          hourlyData[pollutant][i].egus[eguIndex] ??= {
             orisplCode: egu.orispl_code,
             unitCode: egu.unit_code,
             name: egu.full_name,
