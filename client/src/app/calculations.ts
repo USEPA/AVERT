@@ -5,13 +5,6 @@ import {
   EEREDefaultData,
 } from 'app/redux/reducers/geography';
 import { EERETextInputFieldName } from 'app/redux/reducers/eere';
-// calculations
-import type {
-  DailyStats,
-  HourlyEVChargingPercentages,
-  MonthlyDailyEVEnergyUsage,
-} from 'app/calculations/transportation';
-import { calculateHourlyEVLoad } from 'app/calculations/transportation';
 
 /**
  * TODO...
@@ -35,18 +28,14 @@ export function calculateEere({
   regionLineLoss, // region.lineLoss
   regionalLoad, // region.rdf.regional_load
   eereDefaults, // region.eereDefaults.data
-  dailyStats, // transportation.dailyStats
-  hourlyEVChargingPercentages, // transportation.hourlyEVChargingPercentages
-  monthlyDailyEVEnergyUsage, // transportation.monthlyDailyEVEnergyUsage
-  eereTextInputs, // eere.inputs (scaled for each region)
+  hourlyEVLoad, // transportation.hourlyEVLoad
+  eereTextInputs, // eere.inputs (text inputs, scaled for each region)
 }: {
   regionMaxEEPercent: number;
   regionLineLoss: number;
   regionalLoad: RegionalLoadData[];
   eereDefaults: EEREDefaultData[];
-  dailyStats: DailyStats;
-  hourlyEVChargingPercentages: HourlyEVChargingPercentages;
-  monthlyDailyEVEnergyUsage: MonthlyDailyEVEnergyUsage;
+  hourlyEVLoad: number[];
   eereTextInputs: { [field in EERETextInputFieldName]: number };
 }) {
   const {
@@ -97,12 +86,7 @@ export function calculateEere({
       utilitySolar * hourlyDefault.utility_pv +
       rooftopSolar * hourlyDefault.rooftop_pv * lineLoss;
 
-    const evLoad = calculateHourlyEVLoad({
-      regionalLoadData: data,
-      dailyStats,
-      hourlyEVChargingPercentages,
-      monthlyDailyEVEnergyUsage,
-    });
+    const evLoad = hourlyEVLoad[index];
 
     const calculatedLoad =
       initialLoad -

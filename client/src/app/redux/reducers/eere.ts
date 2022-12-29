@@ -13,6 +13,7 @@ import {
   setEVDeploymentLocationHistoricalEERE,
 } from 'app/redux/reducers/transportation';
 // calculations
+import { calculateHourlyEVLoad } from 'app/calculations/transportation';
 import { calculateEere } from 'app/calculations';
 // config
 import {
@@ -745,6 +746,11 @@ export function updateEereICEReplacementVehicle(input: string): AppThunk {
 export function calculateEereProfile(): AppThunk {
   return (dispatch, getState) => {
     const { geography, transportation, eere } = getState();
+    const {
+      dailyStats,
+      hourlyEVChargingPercentages,
+      monthlyDailyEVEnergyUsage,
+    } = transportation;
 
     // select region(s), based on geographic focus:
     // single region if geographic focus is 'regions'
@@ -844,6 +850,13 @@ export function calculateEereProfile(): AppThunk {
         ? regionalPercent / totalOffshoreWindPercent
         : 0;
 
+      const hourlyEVLoad = calculateHourlyEVLoad({
+        regionalLoad: region.rdf.regional_load,
+        dailyStats,
+        hourlyEVChargingPercentages,
+        monthlyDailyEVEnergyUsage,
+      });
+
       const scaledEereTextInputs = {
         annualGwh: Number(eere.inputs.annualGwh) * regionalScalingFactor,
         constantMwh: Number(eere.inputs.constantMwh) * regionalScalingFactor,
@@ -869,9 +882,7 @@ export function calculateEereProfile(): AppThunk {
         regionLineLoss: region.lineLoss,
         regionalLoad: region.rdf.regional_load,
         eereDefaults: region.eereDefaults.data,
-        dailyStats: transportation.dailyStats,
-        hourlyEVChargingPercentages: transportation.hourlyEVChargingPercentages,
-        monthlyDailyEVEnergyUsage: transportation.monthlyDailyEVEnergyUsage,
+        hourlyEVLoad,
         eereTextInputs: scaledEereTextInputs,
       });
 
