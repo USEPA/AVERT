@@ -743,7 +743,10 @@ export function calculateDailyStats(regionalLoad: RegionalLoadData[]) {
 }
 
 /**
- * Build up monthly stats object from daily stats object.
+ * Build up monthly stats object from daily stats object
+ *
+ * Excel: Data in the third EV table (to the right of the "Calculate Changes"
+ * table) in the "CalculateEERE" sheet (P49:S61).
  */
 export function calculateMonthlyStats(dailyStats: DailyStats) {
   const result: {
@@ -966,7 +969,10 @@ export function calculateMonthlyEVEnergyUsageMW(
 
 /**
  * Totals the energy usage from each EV type for all months in the year to a
- * single total EV energy usage value for the year.
+ * single total EV energy usage value for the year in GW.
+ *
+ * Excel: "Sales Changes" data from "Table 8: Calculated changes for the
+ * transportation sector" table in the "Library" sheet (S309).
  */
 export function calculateTotalYearlyEVEnergyUsage(
   monthlyEVEnergyUsageGW: MonthlyEVEnergyUsageGW,
