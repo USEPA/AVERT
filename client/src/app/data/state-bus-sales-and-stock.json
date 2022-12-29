@@ -1,715 +1,511 @@
 {
   "AK": {
-    "lightDutyVehicles": {
-      "sales": 24552.23881,
-      "stock": 707736.1803
-    },
     "transitBuses": {
       "sales": 4,
       "stock": 111
     },
     "schoolBuses": {
-      "sales": 55.46130345,
+      "sales": 55.4613034487937,
       "stock": 729
     }
   },
   "AL": {
-    "lightDutyVehicles": {
-      "sales": 196390.5325,
-      "stock": 4921590.56
-    },
     "transitBuses": {
       "sales": 12.5,
       "stock": 219
     },
     "schoolBuses": {
-      "sales": 600.8688267,
+      "sales": 600.868826664709,
       "stock": 7898
     }
   },
   "AR": {
-    "lightDutyVehicles": {
-      "sales": 119462.3656,
-      "stock": 2531814.737
-    },
     "transitBuses": {
       "sales": 8.75,
       "stock": 119
     },
     "schoolBuses": {
-      "sales": 385.7185302,
+      "sales": 385.718530158277,
       "stock": 5070
     }
   },
   "AZ": {
-    "lightDutyVehicles": {
-      "sales": 301725.5717,
-      "stock": 5568568.465
-    },
     "transitBuses": {
       "sales": 106.25,
       "stock": 1131
     },
     "schoolBuses": {
-      "sales": 545.1792874,
+      "sales": 545.179287399254,
       "stock": 7166
     }
   },
   "CA": {
-    "lightDutyVehicles": {
-      "sales": 1946485.83,
-      "stock": 28671554.02
-    },
     "transitBuses": {
       "sales": 787.5,
       "stock": 10444
     },
     "schoolBuses": {
-      "sales": 1799.259021,
+      "sales": 1799.25902134976,
       "stock": 23650
     }
   },
   "CO": {
-    "lightDutyVehicles": {
-      "sales": 316307.1298,
-      "stock": 4967406.496
-    },
     "transitBuses": {
       "sales": 121,
       "stock": 1427
     },
     "schoolBuses": {
-      "sales": 869.779082,
-      "stock": 11432.63702
+      "sales": 869.779081953469,
+      "stock": 11432.6370156356
     }
   },
   "CT": {
-    "lightDutyVehicles": {
-      "sales": 168845.3159,
-      "stock": 2693552.81
-    },
     "transitBuses": {
       "sales": 72.5,
       "stock": 707
     },
     "schoolBuses": {
-      "sales": 654.2760078,
+      "sales": 654.276007763547,
       "stock": 8600
     }
   },
   "DC": {
-    "lightDutyVehicles": {
-      "sales": 18761.50628,
-      "stock": 322118.846
-    },
     "transitBuses": {
       "sales": 112,
       "stock": 1756
     },
     "schoolBuses": {
-      "sales": 1070.309788,
-      "stock": 14068.47274
+      "sales": 1070.30978830434,
+      "stock": 14068.4727396329
     }
   },
   "DE": {
-    "lightDutyVehicles": {
-      "sales": 46309.52381,
-      "stock": 955591.2411
-    },
     "transitBuses": {
       "sales": 3,
       "stock": 250
     },
     "schoolBuses": {
-      "sales": 134.1265816,
+      "sales": 134.126581591527,
       "stock": 1763
     }
   },
   "FL": {
-    "lightDutyVehicles": {
-      "sales": 1217844.523,
-      "stock": 16516963.22
-    },
     "transitBuses": {
       "sales": 223.75,
       "stock": 3118
     },
     "schoolBuses": {
-      "sales": 1071.871474,
+      "sales": 1071.87147364891,
       "stock": 14089
     }
   },
   "GA": {
-    "lightDutyVehicles": {
-      "sales": 424981.9495,
-      "stock": 7921338.097
-    },
     "transitBuses": {
       "sales": 72.25,
       "stock": 942
     },
     "schoolBuses": {
-      "sales": 1125.887284,
+      "sales": 1125.88728359218,
       "stock": 14799
     }
   },
   "HI": {
-    "lightDutyVehicles": {
-      "sales": 98197.02602,
-      "stock": 1191277.342
-    },
     "transitBuses": {
       "sales": 26,
       "stock": 585
     },
     "schoolBuses": {
-      "sales": 49.90756524,
+      "sales": 49.907565243359,
       "stock": 656
     }
   },
   "IA": {
-    "lightDutyVehicles": {
-      "sales": 110197.3684,
-      "stock": 3291911.561
-    },
     "transitBuses": {
       "sales": 27,
       "stock": 496
     },
     "schoolBuses": {
-      "sales": 342.353725,
+      "sales": 342.353724992554,
       "stock": 4500
     }
   },
   "ID": {
-    "lightDutyVehicles": {
-      "sales": 58567.96117,
-      "stock": 1757500.328
-    },
     "transitBuses": {
       "sales": 3.75,
       "stock": 89
     },
     "schoolBuses": {
-      "sales": 214.1612746,
+      "sales": 214.161274634231,
       "stock": 2815
     }
   },
   "IL": {
-    "lightDutyVehicles": {
-      "sales": 572526.0417,
-      "stock": 9708821.548
-    },
     "transitBuses": {
       "sales": 201.25,
       "stock": 3222
     },
     "schoolBuses": {
-      "sales": 1927.603629,
+      "sales": 1927.60362891919,
       "stock": 25337
     }
   },
   "IN": {
-    "lightDutyVehicles": {
-      "sales": 234454.8287,
-      "stock": 5402844.581
-    },
     "transitBuses": {
       "sales": 40,
       "stock": 536
     },
     "schoolBuses": {
-      "sales": 1228.517322,
+      "sales": 1228.51732248439,
       "stock": 16148
     }
   },
   "KS": {
-    "lightDutyVehicles": {
-      "sales": 85909.09091,
-      "stock": 2367766.359
-    },
     "transitBuses": {
       "sales": 14,
       "stock": 186
     },
     "schoolBuses": {
-      "sales": 306.292466,
+      "sales": 306.292465960005,
       "stock": 4026
     }
   },
   "KY": {
-    "lightDutyVehicles": {
-      "sales": 147701.6129,
-      "stock": 4024256.952
-    },
     "transitBuses": {
       "sales": 28.25,
       "stock": 488
     },
     "schoolBuses": {
-      "sales": 604.2162853,
+      "sales": 604.216285309081,
       "stock": 7942
     }
   },
   "LA": {
-    "lightDutyVehicles": {
-      "sales": 207246.3768,
-      "stock": 3521632.782
-    },
     "transitBuses": {
       "sales": 21.5,
       "stock": 391
     },
     "schoolBuses": {
-      "sales": 520.4537406,
+      "sales": 520.453740594236,
       "stock": 6841
     }
   },
   "MA": {
-    "lightDutyVehicles": {
-      "sales": 349631.068,
-      "stock": 4730670.406
-    },
     "transitBuses": {
       "sales": 139,
       "stock": 1674
     },
     "schoolBuses": {
-      "sales": 684.70745,
+      "sales": 684.707449985108,
       "stock": 9000
     }
   },
   "MD": {
-    "lightDutyVehicles": {
-      "sales": 273578.7671,
-      "stock": 3901653.959
-    },
     "transitBuses": {
       "sales": 93,
       "stock": 1413
     },
     "schoolBuses": {
-      "sales": 551.4177331,
+      "sales": 551.417733054673,
       "stock": 7248
     }
   },
   "ME": {
-    "lightDutyVehicles": {
-      "sales": 65456.73077,
-      "stock": 995610.4185
-    },
     "transitBuses": {
       "sales": 8,
       "stock": 193
     },
     "schoolBuses": {
-      "sales": 240.1040791,
+      "sales": 240.104079128111,
       "stock": 3156
     }
   },
   "MI": {
-    "lightDutyVehicles": {
-      "sales": 587490.0398,
-      "stock": 7788229.939
-    },
     "transitBuses": {
       "sales": 168,
       "stock": 2000
     },
     "schoolBuses": {
-      "sales": 1254.84052,
+      "sales": 1254.84052000604,
       "stock": 16494
     }
   },
   "MN": {
-    "lightDutyVehicles": {
-      "sales": 261042.7807,
-      "stock": 4833036.968
-    },
     "transitBuses": {
       "sales": 93.25,
       "stock": 1345
     },
     "schoolBuses": {
-      "sales": 1389.119259,
+      "sales": 1389.11925880868,
       "stock": 18259
     }
   },
   "MO": {
-    "lightDutyVehicles": {
-      "sales": 243245.9016,
-      "stock": 5035192.023
-    },
     "transitBuses": {
       "sales": 57.25,
       "stock": 749
     },
     "schoolBuses": {
-      "sales": 905.2593275,
+      "sales": 905.259327485866,
       "stock": 11899
     }
   },
   "MS": {
-    "lightDutyVehicles": {
-      "sales": 98000,
-      "stock": 1876688.809
-    },
     "transitBuses": {
       "sales": 9.25,
       "stock": 152
     },
     "schoolBuses": {
-      "sales": 408.0095616,
+      "sales": 408.00956158557,
       "stock": 5363
     }
   },
   "MT": {
-    "lightDutyVehicles": {
-      "sales": 48391.60839,
-      "stock": 1440900.072
-    },
     "transitBuses": {
       "sales": 8.25,
       "stock": 125
     },
     "schoolBuses": {
-      "sales": 264.0688399,
+      "sales": 264.06883987759,
       "stock": 3471
     }
   },
   "NC": {
-    "lightDutyVehicles": {
-      "sales": 398417.9104,
-      "stock": 7850719.255
-    },
     "transitBuses": {
       "sales": 80.5,
       "stock": 1248
     },
     "schoolBuses": {
-      "sales": 987.1199071,
+      "sales": 987.119907061864,
       "stock": 12975
     }
   },
   "ND": {
-    "lightDutyVehicles": {
-      "sales": 36164.38356,
-      "stock": 723689.1901
-    },
     "transitBuses": {
       "sales": 5,
       "stock": 65
     },
     "schoolBuses": {
-      "sales": 137.0936472,
+      "sales": 137.093647208129,
       "stock": 1802
     }
   },
   "NE": {
-    "lightDutyVehicles": {
-      "sales": 75390.07092,
-      "stock": 1656738.414
-    },
     "transitBuses": {
       "sales": 13.5,
       "stock": 183
     },
     "schoolBuses": {
-      "sales": 434.1045233,
+      "sales": 434.104523290558,
       "stock": 5706
     }
   },
   "NH": {
-    "lightDutyVehicles": {
-      "sales": 84828.57143,
-      "stock": 1220780.612
-    },
     "transitBuses": {
       "sales": 4,
       "stock": 84
     },
     "schoolBuses": {
-      "sales": 243.4515378,
+      "sales": 243.451537772483,
       "stock": 3200
     }
   },
   "NJ": {
-    "lightDutyVehicles": {
-      "sales": 572500,
-      "stock": 5579738.478
-    },
     "transitBuses": {
       "sales": 12,
       "stock": 1564
     },
     "schoolBuses": {
-      "sales": 1270.817027,
+      "sales": 1270.81702717236,
       "stock": 16704
     }
   },
   "NM": {
-    "lightDutyVehicles": {
-      "sales": 78627.96834,
-      "stock": 1653688.75
-    },
     "transitBuses": {
       "sales": 13.25,
       "stock": 263
     },
     "schoolBuses": {
-      "sales": 152.6897613,
+      "sales": 152.689761346679,
       "stock": 2007
     }
   },
   "NV": {
-    "lightDutyVehicles": {
-      "sales": 140127.6596,
-      "stock": 2390480.935
-    },
     "transitBuses": {
       "sales": 58.5,
       "stock": 498
     },
     "schoolBuses": {
-      "sales": 189.2835706,
+      "sales": 189.283570618105,
       "stock": 2488
     }
   },
   "NY": {
-    "lightDutyVehicles": {
-      "sales": 977556.1798,
-      "stock": 10524336.88
-    },
     "transitBuses": {
       "sales": 582.25,
       "stock": 7167
     },
     "schoolBuses": {
-      "sales": 3469.184413,
+      "sales": 3469.18441325788,
       "stock": 45600
     }
   },
   "OH": {
-    "lightDutyVehicles": {
-      "sales": 584602.649,
-      "stock": 9893725.245
-    },
     "transitBuses": {
       "sales": 151.5,
       "stock": 1735
     },
     "schoolBuses": {
-      "sales": 1104.81351,
+      "sales": 1104.81350985375,
       "stock": 14522
     }
   },
   "OK": {
-    "lightDutyVehicles": {
-      "sales": 236901.4085,
-      "stock": 3322565.543
-    },
     "transitBuses": {
       "sales": 12.5,
       "stock": 194
     },
     "schoolBuses": {
-      "sales": 42.75617632,
+      "sales": 42.7561763212923,
       "stock": 562
     }
   },
   "OR": {
-    "lightDutyVehicles": {
-      "sales": 161448.9572,
-      "stock": 3562759.129
-    },
     "transitBuses": {
       "sales": 90.75,
       "stock": 1027
     },
     "schoolBuses": {
-      "sales": 369.36163,
+      "sales": 369.361629964189,
       "stock": 4855
     }
   },
   "PA": {
-    "lightDutyVehicles": {
-      "sales": 635870.2065,
-      "stock": 9755719.885
-    },
     "transitBuses": {
       "sales": 235.25,
       "stock": 3167
     },
     "schoolBuses": {
-      "sales": 1642.993566,
+      "sales": 1642.99356554204,
       "stock": 21596
     }
   },
   "RI": {
-    "lightDutyVehicles": {
-      "sales": 53598.9011,
-      "stock": 812653.6184
-    },
     "transitBuses": {
       "sales": 19.5,
       "stock": 252
     },
     "schoolBuses": {
-      "sales": 128.648922,
+      "sales": 128.648921991646,
       "stock": 1691
     }
   },
   "SC": {
-    "lightDutyVehicles": {
-      "sales": 209154.9296,
-      "stock": 4104033.272
-    },
     "transitBuses": {
       "sales": 19.5,
       "stock": 290
     },
     "schoolBuses": {
-      "sales": 386.0989232,
+      "sales": 386.098923186047,
       "stock": 5075
     }
   },
   "SD": {
-    "lightDutyVehicles": {
-      "sales": 36767.67677,
-      "stock": 1031457.729
-    },
     "transitBuses": {
       "sales": 3.75,
       "stock": 46
     },
     "schoolBuses": {
-      "sales": 152.1572111,
+      "sales": 152.157211107802,
       "stock": 2000
     }
   },
   "TN": {
-    "lightDutyVehicles": {
-      "sales": 253015.2672,
-      "stock": 5415387.634
-    },
     "transitBuses": {
       "sales": 38.5,
       "stock": 582
     },
     "schoolBuses": {
-      "sales": 702.4337651,
+      "sales": 702.433765079167,
       "stock": 9233
     }
   },
   "TX": {
-    "lightDutyVehicles": {
-      "sales": 1242983.425,
-      "stock": 21429839.99
-    },
     "transitBuses": {
       "sales": 274,
       "stock": 3323
     },
     "schoolBuses": {
-      "sales": 3774.107464,
+      "sales": 3774.10746431791,
       "stock": 49608
     }
   },
   "UT": {
-    "lightDutyVehicles": {
-      "sales": 164331.0658,
-      "stock": 2205038.769
-    },
     "transitBuses": {
       "sales": 45,
       "stock": 523
     },
     "schoolBuses": {
-      "sales": 241.0170224,
+      "sales": 241.017022394758,
       "stock": 3168
     }
   },
   "VA": {
-    "lightDutyVehicles": {
-      "sales": 370796.1165,
-      "stock": 7130046.695
-    },
     "transitBuses": {
       "sales": 77.25,
       "stock": 1271
     },
     "schoolBuses": {
-      "sales": 1198.390195,
+      "sales": 1198.39019468505,
       "stock": 15752
     }
   },
   "VT": {
-    "lightDutyVehicles": {
-      "sales": 42923.64991,
-      "stock": 549010.5464
-    },
     "transitBuses": {
       "sales": 7,
       "stock": 105
     },
     "schoolBuses": {
-      "sales": 91.29432666,
+      "sales": 91.294326664681,
       "stock": 1200
     }
   },
   "WA": {
-    "lightDutyVehicles": {
-      "sales": 285629.4058,
-      "stock": 6756390.395
-    },
     "transitBuses": {
       "sales": 285.75,
       "stock": 3260
     },
     "schoolBuses": {
-      "sales": 812.3673501,
+      "sales": 812.367350104553,
       "stock": 10678
     }
   },
   "WI": {
-    "lightDutyVehicles": {
-      "sales": 241313.4328,
-      "stock": 5037687.247
-    },
     "transitBuses": {
       "sales": 43.25,
       "stock": 1064
     },
     "schoolBuses": {
-      "sales": 747.2440638,
+      "sales": 747.244063750414,
       "stock": 9822
     }
   },
   "WV": {
-    "lightDutyVehicles": {
-      "sales": 50523.80952,
-      "stock": 1527639.925
-    },
     "transitBuses": {
       "sales": 18,
       "stock": 178
     },
     "schoolBuses": {
-      "sales": 220.6279561,
+      "sales": 220.627956106312,
       "stock": 2900
     }
   },
   "WY": {
-    "lightDutyVehicles": {
-      "sales": 35222.22222,
-      "stock": 750130.8455
-    },
     "transitBuses": {
       "sales": 2.5,
       "stock": 66
     },
     "schoolBuses": {
-      "sales": 102.1735673,
+      "sales": 102.173567258889,
       "stock": 1343
     }
   }

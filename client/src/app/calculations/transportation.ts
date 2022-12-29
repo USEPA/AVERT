@@ -39,10 +39,15 @@ import evEfficiencyByModelYear from 'app/data/ev-efficiency-by-model-year.json';
  */
 import regionAverageTemperatures from 'app/data/region-average-temperature.json';
 /**
- * Excel: "Table 11: LDV Sales and Stock" and "Table 12: Transit and School Bus
- * Sales and Stock" tables in the "Library" sheet (B485:D535 and B546:F596).
+ * Excel: "Table 11: LDV Sales and Stock" table in the "Library" sheet
+ * (B485:C535).
  */
-import stateSalesAndStock from 'app/data/state-sales-and-stock.json';
+import stateLightDutyVehiclesSales from 'app/data/state-light-duty-vehicles-sales.json';
+/**
+ * Excel: "Table 12: Transit and School Bus Sales and Stock" table in the
+ * "Library" sheet (B546:F596).
+ */
+import stateBusSalesAndStock from 'app/data/state-bus-sales-and-stock.json';
 /**
  * Excel: "Table 13: Historical renewable and energy efficiency addition data"
  * table in the "Library" sheet (B606:E619).
@@ -82,7 +87,8 @@ const percentageAdditionalEnergyConsumedFactor = 0.0766194804959222;
  */
 const percentWeekendToWeekdayEVConsumption = 97.3015982802952;
 
-type SalesAndStockStateId = keyof typeof stateSalesAndStock;
+type LightDutyVehiclesSalesStateId = keyof typeof stateLightDutyVehiclesSales;
+type BusSalesAndStockStateId = keyof typeof stateBusSalesAndStock;
 type RegionEereAveragesRegionId = keyof typeof regionEereAverages;
 type RegionEereAveragesStateId = keyof typeof stateEereAverages;
 
@@ -322,11 +328,13 @@ export function calculateVMTAllocationPerVehicle() {
         registeredLightDutyVehicles, // (million)
       } = data;
 
-      const salesAndStock = stateSalesAndStock[key as SalesAndStockStateId];
+      const busSalesAndStock =
+        stateBusSalesAndStock[key as BusSalesAndStockStateId];
 
-      if (salesAndStock) {
+      if (busSalesAndStock) {
         const registeredBuses =
-          (salesAndStock.transitBuses.stock + salesAndStock.schoolBuses.stock) /
+          (busSalesAndStock.transitBuses.stock +
+            busSalesAndStock.schoolBuses.stock) /
           1_000_000;
 
         object[key as StateId] = {
@@ -1417,8 +1425,10 @@ export function calculateHourlyEVLoad(options: {
 export function calculateVehicleSalesAndStock(options: {
   selectedRegionName: string;
   evDeploymentLocations: string[];
+  vmtAllocationPerVehicle: VMTAllocationPerVehicle | {};
 }) {
-  const { selectedRegionName, evDeploymentLocations } = options;
+  const { selectedRegionName, evDeploymentLocations, vmtAllocationPerVehicle } =
+    options;
 
   const result: {
     [locationId: string]: {
@@ -1428,7 +1438,18 @@ export function calculateVehicleSalesAndStock(options: {
     };
   } = {};
 
-  if (!selectedRegionName || evDeploymentLocations[0] === '') return result;
+  const vmtAllocationData =
+    Object.keys(vmtAllocationPerVehicle).length !== 0
+      ? (vmtAllocationPerVehicle as VMTAllocationPerVehicle)
+      : null;
+
+  if (
+    !selectedRegionName ||
+    evDeploymentLocations[0] === '' ||
+    !vmtAllocationData
+  ) {
+    return result;
+  }
 
   // conditionally remove 'region-' option, as it will be added later as the sum
   // of each state's data
@@ -1447,7 +1468,15 @@ export function calculateVehicleSalesAndStock(options: {
       const lightDutyVehiclesVMTShare = data['Share of State VMT - Passenger Cars'] || 0; // prettier-ignore
       const transitBusesVMTShare = data['Share of State VMT - Transit Buses'] || 0; // prettier-ignore
       const schoolBusesVMTShare = data['Share of State VMT - School Buses'] || 0; // prettier-ignore
-      const salesAndStock = stateSalesAndStock[id as SalesAndStockStateId];
+
+      const lightDutyVehiclesSales =
+        stateLightDutyVehiclesSales[id as LightDutyVehiclesSalesStateId];
+
+      const lightDutyVehiclesStock =
+        vmtAllocationData[id as StateId].registeredLDVs * 1_000_000;
+
+      const busSalesAndStock =
+        stateBusSalesAndStock[id as BusSalesAndStockStateId];
 
       // initialize and then increment state data by vehicle type
       result[stateId] ??= {
@@ -1457,17 +1486,22 @@ export function calculateVehicleSalesAndStock(options: {
       };
 
       result[stateId].lightDutyVehicles.sales +=
-        lightDutyVehiclesVMTShare * salesAndStock.lightDutyVehicles.sales;
+        lightDutyVehiclesVMTShare * lightDutyVehiclesSales;
+
       result[stateId].lightDutyVehicles.stock +=
-        lightDutyVehiclesVMTShare * salesAndStock.lightDutyVehicles.stock;
+        lightDutyVehiclesVMTShare * lightDutyVehiclesStock;
+
       result[stateId].transitBuses.sales +=
-        transitBusesVMTShare * salesAndStock.transitBuses.sales;
+        transitBusesVMTShare * busSalesAndStock.transitBuses.sales;
+
       result[stateId].transitBuses.stock +=
-        transitBusesVMTShare * salesAndStock.transitBuses.stock;
+        transitBusesVMTShare * busSalesAndStock.transitBuses.stock;
+
       result[stateId].schoolBuses.sales +=
-        schoolBusesVMTShare * salesAndStock.schoolBuses.sales;
+        schoolBusesVMTShare * busSalesAndStock.schoolBuses.sales;
+
       result[stateId].schoolBuses.stock +=
-        schoolBusesVMTShare * salesAndStock.schoolBuses.stock;
+        schoolBusesVMTShare * busSalesAndStock.schoolBuses.stock;
     }
   });
 

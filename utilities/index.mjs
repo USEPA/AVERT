@@ -84,3 +84,15 @@ function convertJsonStringsToNumbers({ filename, fields }) {
 //     "Share of State VMT - School Buses",
 //   ],
 // });
+
+// convertTsvToJson("./data/state-bus-sales-and-stock.txt");
+
+// convertJsonStringsToNumbers({
+//   filename: "./data/state-bus-sales-and-stock.json",
+//   fields: [
+//     "transitBusesSales",
+//     "transitBusesStock",
+//     "schoolBusesSales",
+//     "schoolBusesStock",
+//   ],
+// });

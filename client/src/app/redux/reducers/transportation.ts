@@ -769,8 +769,9 @@ export function setMonthlyEmissionChanges(): AppThunk {
 export function setVehicleSalesAndStock(): AppThunk {
   // NOTE: set every time a region or state is selected
   return (dispatch, getState) => {
-    const { geography, eere } = getState();
+    const { geography, transportation, eere } = getState();
     const { focus, regions } = geography;
+    const { vmtAllocationPerVehicle } = transportation;
     const { evDeploymentLocationOptions } = eere.selectOptions;
 
     const selectedRegion = Object.values(regions).find((r) => r.selected);
@@ -785,6 +786,7 @@ export function setVehicleSalesAndStock(): AppThunk {
     const vehicleSalesAndStock = calculateVehicleSalesAndStock({
       selectedRegionName,
       evDeploymentLocations,
+      vmtAllocationPerVehicle,
     });
 
     dispatch({
