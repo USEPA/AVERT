@@ -884,7 +884,7 @@ export function calculateMonthlyEVEnergyUsageGW(options: {
       hybridEVTrucks:
         vehiclesDisplaced.hybridEVTrucks *
         monthlyVMTPerVehicle[month].trucks *
-        evEfficiencyPerVehicle.batteryEVTrucks *
+        evEfficiencyPerVehicle.hybridEVTrucks *
         kWtoGW *
         percentageHybridEVMilesDrivenOnElectricity,
       transitBusesDiesel:
