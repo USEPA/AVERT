@@ -646,14 +646,14 @@ export function setVehiclesDisplaced(): AppThunk {
 export function setMonthlyEVEnergyUsage(): AppThunk {
   // NOTE: set whenever an EV number or EV model year changes
   return (dispatch, getState) => {
-    const { transportation, eere } = getState();
-    const { monthlyVMTPerVehicle, vehiclesDisplaced } = transportation;
-    const { evModelYear } = eere.inputs;
+    const { transportation } = getState();
+    const { monthlyVMTPerVehicle, evEfficiencyPerVehicle, vehiclesDisplaced } =
+      transportation;
 
     const monthlyEVEnergyUsageGW = calculateMonthlyEVEnergyUsageGW({
       monthlyVMTPerVehicle,
+      evEfficiencyPerVehicle,
       vehiclesDisplaced,
-      evModelYear,
     });
 
     const monthlyEVEnergyUsageMW = calculateMonthlyEVEnergyUsageMW(

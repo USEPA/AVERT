@@ -580,6 +580,8 @@ export function calculateMonthlyVMTTotalsAndPercentages() {
     }
   });
 
+  // console.log(yearlyTotals); // NOTE: for debugging purposes
+
   Object.values(result).forEach((month) => {
     generalVehicleTypes.forEach((vehicleType) => {
       month[vehicleType].percent =
@@ -668,7 +670,7 @@ export function calculateEVEfficiencyPerVehicle(options: {
     schoolBuses: 0,
   };
 
-  if (!selectedRegionName) return result;
+  if (!selectedRegionName || evModelYear === '') return result;
 
   const regionAverageTemperature = regionAverageTemperatures[selectedRegionName]; // prettier-ignore
   const modelYearEVEfficiency = evEfficiencyByModelYear[evModelYear as EVModelYear]; // prettier-ignore
@@ -843,10 +845,11 @@ export function calculateVehiclesDisplaced(options: {
  */
 export function calculateMonthlyEVEnergyUsageGW(options: {
   monthlyVMTPerVehicle: MonthlyVMTPerVehicle;
+  evEfficiencyPerVehicle: EVEfficiencyPerVehicle;
   vehiclesDisplaced: VehiclesDisplaced;
-  evModelYear: string;
 }) {
-  const { monthlyVMTPerVehicle, vehiclesDisplaced, evModelYear } = options;
+  const { monthlyVMTPerVehicle, evEfficiencyPerVehicle, vehiclesDisplaced } =
+    options;
 
   const result: {
     [month: number]: {
@@ -854,19 +857,7 @@ export function calculateMonthlyEVEnergyUsageGW(options: {
     };
   } = {};
 
-  if (Object.keys(monthlyVMTPerVehicle).length === 0 || evModelYear === '') {
-    return result;
-  }
-
-  /**
-   * Efficiency factor for each vehicle type for the selected model year.
-   *
-   * Excel: "Table 6: Monthly VMT and efficiency adjustments" table in the
-   * "Library" sheet (E210:E215). NOTE: the Excel version duplicates these
-   * values in the columns to the right for each month, but they're the same
-   * value for all months.
-   */
-  const evEfficiency = evEfficiencyByModelYear[evModelYear as EVModelYear];
+  if (Object.keys(monthlyVMTPerVehicle).length === 0) return result;
 
   const kWtoGW = 0.000001;
 
@@ -877,44 +868,44 @@ export function calculateMonthlyEVEnergyUsageGW(options: {
       batteryEVCars:
         vehiclesDisplaced.batteryEVCars *
         monthlyVMTPerVehicle[month].cars *
-        evEfficiency.batteryEVCars *
+        evEfficiencyPerVehicle.batteryEVCars *
         kWtoGW,
       hybridEVCars:
         vehiclesDisplaced.hybridEVCars *
         monthlyVMTPerVehicle[month].cars *
-        evEfficiency.hybridEVCars *
+        evEfficiencyPerVehicle.hybridEVCars *
         kWtoGW *
         percentageHybridEVMilesDrivenOnElectricity,
       batteryEVTrucks:
         vehiclesDisplaced.batteryEVTrucks *
         monthlyVMTPerVehicle[month].trucks *
-        evEfficiency.batteryEVTrucks *
+        evEfficiencyPerVehicle.batteryEVTrucks *
         kWtoGW,
       hybridEVTrucks:
         vehiclesDisplaced.hybridEVTrucks *
         monthlyVMTPerVehicle[month].trucks *
-        evEfficiency.batteryEVTrucks *
+        evEfficiencyPerVehicle.batteryEVTrucks *
         kWtoGW *
         percentageHybridEVMilesDrivenOnElectricity,
       transitBusesDiesel:
         vehiclesDisplaced.transitBusesDiesel *
         monthlyVMTPerVehicle[month].transitBusesDiesel *
-        evEfficiency.transitBuses *
+        evEfficiencyPerVehicle.transitBuses *
         kWtoGW,
       transitBusesCNG:
         vehiclesDisplaced.transitBusesCNG *
         monthlyVMTPerVehicle[month].transitBusesCNG *
-        evEfficiency.transitBuses *
+        evEfficiencyPerVehicle.transitBuses *
         kWtoGW,
       transitBusesGasoline:
         vehiclesDisplaced.transitBusesGasoline *
         monthlyVMTPerVehicle[month].transitBusesGasoline *
-        evEfficiency.transitBuses *
+        evEfficiencyPerVehicle.transitBuses *
         kWtoGW,
       schoolBuses:
         vehiclesDisplaced.schoolBuses *
         monthlyVMTPerVehicle[month].schoolBuses *
-        evEfficiency.schoolBuses *
+        evEfficiencyPerVehicle.schoolBuses *
         kWtoGW,
     };
   });
