@@ -180,32 +180,6 @@ const inputTextStyles = css`
   }
 `;
 
-const evInputsStyles = css`
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  grid-gap: 0.5rem;
-  align-items: center;
-  margin-bottom: 1rem;
-
-  label {
-    text-align: right;
-  }
-
-  input[type='text'] {
-    margin: 0;
-    width: 100%;
-  }
-
-  select {
-    margin: 0;
-  }
-
-  [data-input-error] {
-    grid-column: 1 / -1;
-    grid-row-start: 6; /* NOTE: bumps the error below the header row + four rows of inputs */
-  }
-`;
-
 const impactsButtonStyles = css`
   text-align: center;
   margin-bottom: 1rem;
@@ -557,39 +531,49 @@ function EEREInputs() {
           </summary>
 
           <section css={inputsSectionStyles}>
-            <div css={evInputsStyles}>
+            <p>
               <EERETextInput
                 label="Light-duty battery EVs:"
                 ariaLabel="TODO"
                 value={batteryEVs}
                 fieldName="batteryEVs"
                 onChange={(text) => dispatch(updateEereBatteryEVs(text))}
+                tooltip={<>TODO</>}
               />
+            </p>
 
+            <p>
               <EERETextInput
                 label="Light-duty plug-in hybrid EVs:"
                 ariaLabel="TODO"
                 value={hybridEVs}
                 fieldName="hybridEVs"
                 onChange={(text) => dispatch(updateEereHybridEVs(text))}
+                tooltip={<>TODO</>}
               />
+            </p>
 
+            <p>
               <EERETextInput
                 label="Electric transit buses:"
                 ariaLabel="TODO"
                 value={transitBuses}
                 fieldName="transitBuses"
                 onChange={(text) => dispatch(updateEereTransitBuses(text))}
+                tooltip={<>TODO</>}
               />
+            </p>
 
+            <p>
               <EERETextInput
                 label="Electric school buses:"
                 ariaLabel="TODO"
                 value={schoolBuses}
                 fieldName="schoolBuses"
                 onChange={(text) => dispatch(updateEereSchoolBuses(text))}
+                tooltip={<>TODO</>}
               />
-            </div>
+            </p>
 
             <hr />
 
