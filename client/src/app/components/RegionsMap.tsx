@@ -2,21 +2,21 @@
 
 import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
-// components
-import CaliforniaRegion from 'app/components/Regions/California';
-import CarolinasRegion from 'app/components/Regions/Carolinas';
-import CentralRegion from 'app/components/Regions/Central';
-import FloridaRegion from 'app/components/Regions/Florida';
-import MidAtlanticRegion from 'app/components/Regions/MidAtlantic';
-import MidwestRegion from 'app/components/Regions/Midwest';
-import NewEnglandRegion from 'app/components/Regions/NewEngland';
-import NewYorkRegion from 'app/components/Regions/NewYork';
-import NorthwestRegion from 'app/components/Regions/Northwest';
-import RockyMountainsRegion from 'app/components/Regions/RockyMountains';
-import SoutheastRegion from 'app/components/Regions/Southeast';
-import SouthwestRegion from 'app/components/Regions/Southwest';
-import TennesseeRegion from 'app/components/Regions/Tennessee';
-import TexasRegion from 'app/components/Regions/Texas';
+// ---
+import { CaliforniaRegion } from 'app/components/Regions/California';
+import { CarolinasRegion } from 'app/components/Regions/Carolinas';
+import { CentralRegion } from 'app/components/Regions/Central';
+import { FloridaRegion } from 'app/components/Regions/Florida';
+import { MidAtlanticRegion } from 'app/components/Regions/MidAtlantic';
+import { MidwestRegion } from 'app/components/Regions/Midwest';
+import { NewEnglandRegion } from 'app/components/Regions/NewEngland';
+import { NewYorkRegion } from 'app/components/Regions/NewYork';
+import { NorthwestRegion } from 'app/components/Regions/Northwest';
+import { RockyMountainsRegion } from 'app/components/Regions/RockyMountains';
+import { SoutheastRegion } from 'app/components/Regions/Southeast';
+import { SouthwestRegion } from 'app/components/Regions/Southwest';
+import { TennesseeRegion } from 'app/components/Regions/Tennessee';
+import { TexasRegion } from 'app/components/Regions/Texas';
 import Alabama from 'app/components/States/Alabama';
 import Arkansas from 'app/components/States/Arkansas';
 import Arizona from 'app/components/States/Arizona';
@@ -66,17 +66,11 @@ import Washington from 'app/components/States/Washington';
 import Wisconsin from 'app/components/States/Wisconsin';
 import WestVirginia from 'app/components/States/WestVirginia';
 import Wyoming from 'app/components/States/Wyoming';
-// reducers
 import { selectRegion } from 'app/redux/reducers/geography';
-// hooks
 import { useSelectedRegion } from 'app/hooks';
-// config
 import { RegionId, regions } from 'app/config';
 
 const containerStyles = css`
-  position: relative;
-  margin: 1.5rem 0;
-
   /* padding-top: intrinsic aspect ratio so SVG displays property in IE */
   &::before {
     content: '';
@@ -102,9 +96,8 @@ const labelStyles = css`
   }
 
   text {
-    font-family: sans-serif;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 15px;
     fill: #fff;
   }
 `;
@@ -133,7 +126,7 @@ const regionStyles = css`
   }
 `;
 
-type RegionProps = {
+function Region(props: {
   id: RegionId;
   fill: string;
   children: React.ReactElement<
@@ -152,9 +145,9 @@ type RegionProps = {
     | typeof TennesseeRegion
     | typeof TexasRegion
   >;
-};
+}) {
+  const { id, fill, children } = props;
 
-function Region({ id, fill, children }: RegionProps) {
   const dispatch = useDispatch();
 
   const selectedRegionId = useSelectedRegion()?.id;
@@ -171,9 +164,12 @@ function Region({ id, fill, children }: RegionProps) {
   );
 }
 
-function RegionsMap() {
+export function RegionsMap() {
   return (
-    <div css={containerStyles}>
+    <div
+      css={containerStyles}
+      className="position-relative margin-x-auto margin-y-3 maxw-tablet-lg"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="720"
@@ -295,59 +291,59 @@ function RegionsMap() {
 
         <g data-id="labels">
           <g css={labelStyles}>
-            <rect x="10" y="223" width="85" height="22" />
+            <rect x="10" y="224" width="75" height="22" />
             <text transform="translate(15 240)">{regions.CA.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="565" y="253" width="83" height="22" />
+            <rect x="565" y="254" width="73" height="22" />
             <text transform="translate(570 270)">{regions.NCSC.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="315" y="228" width="65" height="22" />
+            <rect x="315" y="229" width="59" height="22" />
             <text transform="translate(320 245)">{regions.CENT.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="565" y="368" width="63" height="22" />
+            <rect x="565" y="369" width="57" height="22" />
             <text transform="translate(570 385)">{regions.FL.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="535" y="173" width="101" height="22" />
+            <rect x="535" y="174" width="91" height="22" />
             <text transform="translate(540 190)">{regions.MIDA.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="430" y="208" width="73" height="22" />
+            <rect x="430" y="209" width="66" height="22" />
             <text transform="translate(435 225)">{regions.MIDW.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="605" y="38" width="110" height="22" />
+            <rect x="605" y="39" width="96" height="22" />
             <text transform="translate(610 55)">{regions.NE.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="560" y="98" width="82" height="22" />
+            <rect x="560" y="99" width="72" height="22" />
             <text transform="translate(565 115)">{regions.NY.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="105" y="128" width="89" height="22" />
+            <rect x="105" y="129" width="80" height="22" />
             <text transform="translate(110 145)">{regions.NW.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="175" y="198" width="142" height="22" />
+            <rect x="175" y="199" width="123" height="22" />
             <text transform="translate(180 215)">{regions.RM.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="500" y="308" width="88" height="22" />
+            <rect x="500" y="309" width="78" height="22" />
             <text transform="translate(505 325)">{regions.SE.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="140" y="293" width="92" height="22" />
+            <rect x="140" y="294" width="81" height="22" />
             <text transform="translate(145 310)">{regions.SW.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="460" y="258" width="92" height="22" />
+            <rect x="460" y="259" width="79" height="22" />
             <text transform="translate(465 275)">{regions.TN.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="300" y="353" width="55" height="22" />
+            <rect x="300" y="354" width="47" height="22" />
             <text transform="translate(305 370)">{regions.TE.name}</text>
           </g>
         </g>
@@ -355,5 +351,3 @@ function RegionsMap() {
     </div>
   );
 }
-
-export default RegionsMap;

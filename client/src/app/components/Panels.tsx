@@ -10,7 +10,7 @@ import '@reach/tabs/styles.css';
 import { LoadingIcon } from 'app/components/LoadingIcon';
 import { PanelFooter } from 'app/components/PanelFooter';
 import { RegionsList } from 'app/components/RegionsList';
-import RegionsMap from 'app/components/RegionsMap';
+import { RegionsMap } from 'app/components/RegionsMap';
 import { StatesList } from 'app/components/StatesList';
 import StatesMap from 'app/components/StatesMap';
 import EEREInputs from 'app/components/EEREInputs';
