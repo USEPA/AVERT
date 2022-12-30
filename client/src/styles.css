@@ -1,0 +1,6 @@
+/* --- EPA/USWDS --- */
+@media (min-width: 64em) {
+  .usa-nav {
+    float: none;
+  }
+}
