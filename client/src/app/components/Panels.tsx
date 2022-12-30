@@ -7,11 +7,11 @@ import { useDispatch } from 'react-redux';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 // ---
-import LoadingIcon from 'app/components/LoadingIcon';
+import { LoadingIcon } from 'app/components/LoadingIcon';
 import { PanelFooter } from 'app/components/PanelFooter';
-import RegionsList from 'app/components/RegionsList';
+import { RegionsList } from 'app/components/RegionsList';
 import RegionsMap from 'app/components/RegionsMap';
-import StatesList from 'app/components/StatesList';
+import { StatesList } from 'app/components/StatesList';
 import StatesMap from 'app/components/StatesMap';
 import EEREInputs from 'app/components/EEREInputs';
 import UnitConversion from 'app/components/UnitConversion';
@@ -535,7 +535,7 @@ export function Panels() {
 
           <TabPanels>
             <TabPanel>
-              <p>
+              <p className="tablet:font-sans-md">
                 AVERT splits the contiguous 48 states into 14 independent
                 electricity regions. AVERT regions are organized by one or more
                 balancing authorities. Select a region for analysis by either
@@ -551,6 +551,7 @@ export function Panels() {
                 The online version of AVERT completes analyses using 2021
                 emissions and generation data. The Excel version of AVERT (
                 <a
+                  className="usa-link"
                   href="https://www.epa.gov/avert/download-avert"
                   target="_parent"
                 >
@@ -562,7 +563,7 @@ export function Panels() {
             </TabPanel>
 
             <TabPanel>
-              <p>
+              <p className="tablet:font-sans-md">
                 Select a state for analysis by either using the dropdown menu or
                 clicking the map. Selecting a state means AVERT will load power
                 plants and wind and solar capacity factors for all regions that
@@ -585,6 +586,7 @@ export function Panels() {
                 The online version of AVERT completes analyses using 2021
                 emissions and generation data. The Excel version of AVERT (
                 <a
+                  className="usa-link"
                   href="https://www.epa.gov/avert/download-avert"
                   target="_parent"
                 >

@@ -1,30 +1,23 @@
-/** @jsxImportSource @emotion/react */
-
 import { Fragment } from 'react';
-import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
-// reducers
+// ---
 import { selectState } from 'app/redux/reducers/geography';
-// hooks
 import { useSelectedState } from 'app/hooks';
-// config
 import { StateId, states } from 'app/config';
 
-const selectStyles = css`
-  margin: 1.5rem 25% 0;
-  width: 50%;
-`;
-
-function StatesList() {
+export function StatesList() {
   const dispatch = useDispatch();
 
   const selectedStateId = useSelectedState()?.id;
 
   return (
     <select
-      css={selectStyles}
+      className={
+        `usa-select ` + //
+        `margin-top-3 margin-bottom-0 margin-x-auto width-full`
+      }
       aria-label="Select State"
-      value={!selectedStateId ? '' : selectedStateId}
+      value={selectedStateId || ''}
       onChange={(ev) => dispatch(selectState(ev.target.value as StateId))}
       data-avert-state-select
     >
@@ -42,5 +35,3 @@ function StatesList() {
     </select>
   );
 }
-
-export default StatesList;
