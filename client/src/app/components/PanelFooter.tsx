@@ -3,7 +3,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
-// reducers
+// ---
 import { useTypedSelector } from 'app/redux/index';
 import { setActiveStep } from 'app/redux/reducers/panel';
 import { resetEEREInputs } from 'app/redux/reducers/eere';
@@ -13,20 +13,8 @@ import {
   resetDisplacement,
 } from 'app/redux/reducers/displacement';
 import { resetMonthlyEmissions } from 'app/redux/reducers/monthlyEmissions';
-// hooks
 import { useSelectedRegion, useSelectedState } from 'app/hooks';
-// icons
 import icons from 'app/icons.svg';
-
-const footerStyles = css`
-  overflow: hidden;
-  padding: 0.75rem;
-  background: #eee;
-`;
-
-const buttonsStyles = css`
-  margin-top: 0;
-`;
 
 const iconStyles = css`
   content: '';
@@ -81,7 +69,7 @@ type Props = {
   nextButtonText: string;
 };
 
-function PanelFooter({ prevButtonText, nextButtonText }: Props) {
+export function PanelFooter({ prevButtonText, nextButtonText }: Props) {
   const dispatch = useDispatch();
 
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
@@ -176,13 +164,16 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
   );
 
   return (
-    <div css={footerStyles} className="avert-step-footer">
-      <p css={buttonsStyles} className="avert-centered">
+    <div
+      className={
+        `avert-step-footer ` + //
+        `overflow-hidden padding-105 bg-base-lightest`
+      }
+    >
+      <p>
         {prevButton}
         {nextButton}
       </p>
     </div>
   );
 }
-
-export default PanelFooter;

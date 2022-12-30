@@ -160,13 +160,13 @@ function COBRAConnection() {
             cobraApiState === 'success' && successMessageStyles,
             cobraApiState === 'error' && errorMessageStyles,
           ]}
-          className="avert-centered"
+          className="text-center"
         >
           {cobraApiMessage}
         </p>
       )}
 
-      <p className="avert-centered">
+      <p className="text-center">
         <a
           className="avert-button"
           href={cobraAppUrl}

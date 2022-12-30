@@ -26,7 +26,7 @@ const inputStyles = css`
   text-align: right;
 
   &:disabled {
-    background-color: #eee;
+    background-color: #f0f0f0; // base-lightest
   }
 `;
 

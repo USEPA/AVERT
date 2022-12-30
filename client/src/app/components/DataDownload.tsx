@@ -55,7 +55,7 @@ function DataDownload() {
         this analysis, in CSV format.
       </p>
 
-      <p className="avert-centered">
+      <p className="text-center">
         <a
           className="avert-button"
           href={`data:text/csv;charset=utf-8,${countyCsvString}`}
@@ -70,7 +70,7 @@ function DataDownload() {
         Tool.
       </p>
 
-      <p className="avert-centered">
+      <p className="text-center">
         <a
           className="avert-button"
           href={`data:text/csv;charset=utf-8,${cobraCsvString}`}
@@ -83,7 +83,7 @@ function DataDownload() {
       {isDesktopSafari && (
         <p
           css={[bottomMessageStyles, warningMessageStyles]}
-          className="avert-centered"
+          className="text-center"
         >
           Please press <strong>⌘ + S</strong> to save the file after it is
           opened.

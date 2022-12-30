@@ -8,7 +8,7 @@ const selectStyles = css`
   border: 1px solid #ccc;
 
   &:disabled {
-    background-color: #eee;
+    background-color: #f0f0f0; // base-lightest
   }
 `;
 

@@ -291,7 +291,7 @@ function DisplacementsTable() {
           </tbody>
         </table>
       </div>
-      <p className="avert-small-text">
+      <p className="text-base-dark">
         Negative numbers indicate displaced generation and emissions. All
         results are rounded to the nearest ten. A dash ('–') indicates a result
         greater than zero, but lower than the level of reportable significance.

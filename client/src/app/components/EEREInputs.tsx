@@ -82,7 +82,7 @@ const inputsCategoryStyles = css`
   border-top: 0;
   padding: 0.5rem 0.625rem;
   font-weight: bold;
-  background-color: #eee;
+  background-color: #f0f0f0; // base-lightest
 `;
 
 const inputsGroupStyles = css`
@@ -133,7 +133,7 @@ const inputsSummaryStyles = css`
     text-align: center;
     text-shadow: 0 0 4px rgba(0, 0, 0, 0.125);
     color: white;
-    background-color: #aaa;
+    background-color: #a9aeb1; // base-light
 
     @media (min-width: 25em) {
       width: 1.375rem;

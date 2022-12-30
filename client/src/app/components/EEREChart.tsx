@@ -209,7 +209,7 @@ function EEREChart() {
           }}
         />
 
-        <p className="avert-small-text">
+        <p className="text-base-dark">
           This EE/RE profile will displace {totalLoadGwh.toLocaleString()} GWh
           of regional fossil fuel generation over the course of a year. For
           reference, this equals the annual electricity consumed by{' '}

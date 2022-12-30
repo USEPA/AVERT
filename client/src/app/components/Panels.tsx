@@ -6,9 +6,9 @@ import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
 import '@reach/tabs/styles.css';
-// components
+// ---
 import LoadingIcon from 'app/components/LoadingIcon';
-import PanelFooter from 'app/components/PanelFooter';
+import { PanelFooter } from 'app/components/PanelFooter';
 import RegionsList from 'app/components/RegionsList';
 import RegionsMap from 'app/components/RegionsMap';
 import StatesList from 'app/components/StatesList';
@@ -22,7 +22,6 @@ import EmissionsChart from 'app/components/EmissionsChart';
 import COBRAConnection from 'app/components/COBRAConnection';
 import DataDownload from 'app/components/DataDownload';
 import { modalLinkStyles } from 'app/components/Tooltip';
-// reducers
 import { useTypedSelector } from 'app/redux/index';
 import { toggleModalOverlay, resetActiveModal } from 'app/redux/reducers/panel';
 import { selectGeography } from 'app/redux/reducers/geography';
@@ -30,7 +29,6 @@ import {
   setVMTData,
   setHourlyEVChargingPercentages,
 } from 'app/redux/reducers/transportation';
-// hooks
 import {
   useSelectedRegion,
   useSelectedState,
@@ -43,7 +41,7 @@ type ContainerProps = {
 };
 
 const Container = styled('div')<ContainerProps>`
-  border: 1px solid #aaa;
+  border: 1px solid #a9aeb1; // base-light
 
   ${({ lightOverlay, darkOverlay }) => {
     const overlayStyles = css`
@@ -198,12 +196,12 @@ const tabsStyles = css`
   [data-reach-tab] {
     padding: 0.5625rem 1rem 0.6875rem;
     border-top: 0.375rem solid #ccc;
-    border-bottom: 1px solid #aaa;
+    border-bottom: 1px solid #a9aeb1; // base-light
     width: 50%;
     font-weight: 700;
     font-size: 0.875rem;
     line-height: 1;
-    color: #666;
+    color: #565c65; // base-dark
     background-color: whitesmoke;
     outline: none;
     user-select: none;
@@ -225,15 +223,15 @@ const tabsStyles = css`
     }
 
     &:hover {
-      border-top-color: #aaa;
+      border-top-color: #a9aeb1; // base-light
     }
 
     &:first-of-type[data-selected] {
-      border-right: 1px solid #aaa;
+      border-right: 1px solid #a9aeb1; // base-light
     }
 
     &:last-of-type[data-selected] {
-      border-left: 1px solid #aaa;
+      border-left: 1px solid #a9aeb1; // base-light
     }
 
     &[data-selected] {
@@ -549,7 +547,7 @@ export function Panels() {
               <RegionsList />
               <RegionsMap />
 
-              <p className="avert-small-text">
+              <p className="text-base-dark">
                 The online version of AVERT completes analyses using 2021
                 emissions and generation data. The Excel version of AVERT (
                 <a
@@ -574,7 +572,7 @@ export function Panels() {
               <StatesList />
               <StatesMap />
 
-              <p className="avert-small-text">
+              <p className="text-base-dark">
                 When modeling EE/RE in a state, AVERT distributes the user-input
                 EE/RE across all the AVERT regions straddled by the state. The
                 energy impacts of EE/RE programs are assigned to each AVERT
@@ -583,7 +581,7 @@ export function Panels() {
                 Appendix G of the User Manual.
               </p>
 
-              <p className="avert-small-text">
+              <p className="text-base-dark">
                 The online version of AVERT completes analyses using 2021
                 emissions and generation data. The Excel version of AVERT (
                 <a
@@ -629,7 +627,7 @@ export function Panels() {
             type below.
           </p>
 
-          <p className="avert-small-text">
+          <p className="text-base-dark">
             Several types of programs are listed below (A through E). You can
             enter impacts for any or all types of programs, in any combination.
             AVERT will calculate cumulative impacts.

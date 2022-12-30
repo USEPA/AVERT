@@ -70,7 +70,7 @@ const selectGroupStyles = css`
 
 const emissionsChartsStyles = css`
   padding: 1rem;
-  border: 1px solid #aaa;
+  border: 1px solid #a9aeb1; // base-light
 
   [data-highcharts-chart] {
     margin-bottom: 1rem;
@@ -456,7 +456,7 @@ function EmissionsChart() {
               Change in {pollutantMarkup.get(pollutant)} Emissions:{' '}
               {chartLocationTitle}
             </p>
-            <p className="avert-small-text">
+            <p className="text-base-dark">
               Percent change statistics are not available for{' '}
               {pollutantMarkup.get(pollutant)} because the geographic area
               you’ve selected features one or more power plants with an
