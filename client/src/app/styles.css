@@ -47,24 +47,6 @@ fieldset {
   border: 0;
 }
 
-/* --- copy --- */
-.avert-copy {
-  line-height: 1.375;
-  color: #444;
-}
-.avert-copy ul,
-.avert-copy ol {
-  margin-top: 0.75rem;
-  padding-left: 1.5rem;
-}
-/* remove top margin for nested list items */
-.avert-copy ul ul,
-.avert-copy ul ol,
-.avert-copy ol ul,
-.avert-copy ol ol {
-  margin-top: 0;
-}
-
 /* --- small text --- */
 .avert-small-text {
   font-size: 0.625rem;

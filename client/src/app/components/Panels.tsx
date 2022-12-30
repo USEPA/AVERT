@@ -403,7 +403,7 @@ export const errorMessageStyles = css`
   background-color: rgb(212, 57, 57);
 `;
 
-function Panels() {
+export function Panels() {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -699,5 +699,3 @@ function Panels() {
     </Container>
   );
 }
-
-export default Panels;

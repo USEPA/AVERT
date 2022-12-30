@@ -21,7 +21,7 @@ const listStyles = css`
   list-style: none;
 `;
 
-function PanelTabs() {
+export function PanelTabs() {
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
 
   return (
@@ -38,5 +38,3 @@ function PanelTabs() {
     </nav>
   );
 }
-
-export default PanelTabs;
