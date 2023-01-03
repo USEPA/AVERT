@@ -291,60 +291,60 @@ export function RegionsMap() {
 
         <g data-id="labels">
           <g css={labelStyles}>
-            <rect x="10" y="224" width="75" height="22" />
-            <text transform="translate(15 240)">{regions.CA.name}</text>
+            <rect rx="3" ry="3" x="10" y="224" width="81" height="22" />
+            <text transform="translate(18 240)">{regions.CA.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="565" y="254" width="73" height="22" />
+            <rect rx="3" ry="3" x="562" y="254" width="79" height="22" />
             <text transform="translate(570 270)">{regions.NCSC.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="315" y="229" width="59" height="22" />
-            <text transform="translate(320 245)">{regions.CENT.name}</text>
+            <rect rx="3" ry="3" x="316" y="228" width="65" height="22" />
+            <text transform="translate(324 244)">{regions.CENT.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="565" y="369" width="57" height="22" />
-            <text transform="translate(570 385)">{regions.FL.name}</text>
+            <rect rx="3" ry="3" x="564" y="370" width="63" height="22" />
+            <text transform="translate(572 386)">{regions.FL.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="535" y="174" width="91" height="22" />
-            <text transform="translate(540 190)">{regions.MIDA.name}</text>
+            <rect rx="3" ry="3" x="530" y="174" width="97" height="22" />
+            <text transform="translate(538 190)">{regions.MIDA.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="430" y="209" width="66" height="22" />
-            <text transform="translate(435 225)">{regions.MIDW.name}</text>
+            <rect rx="3" ry="3" x="430" y="206" width="72" height="22" />
+            <text transform="translate(438 222)">{regions.MIDW.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="605" y="39" width="96" height="22" />
-            <text transform="translate(610 55)">{regions.NE.name}</text>
+            <rect rx="3" ry="3" x="608" y="40" width="102" height="22" />
+            <text transform="translate(616 56)">{regions.NE.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="560" y="99" width="72" height="22" />
-            <text transform="translate(565 115)">{regions.NY.name}</text>
+            <rect rx="3" ry="3" x="560" y="96" width="78" height="22" />
+            <text transform="translate(568 112)">{regions.NY.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="105" y="129" width="80" height="22" />
-            <text transform="translate(110 145)">{regions.NW.name}</text>
+            <rect rx="3" ry="3" x="104" y="130" width="86" height="22" />
+            <text transform="translate(112 146)">{regions.NW.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="175" y="199" width="123" height="22" />
-            <text transform="translate(180 215)">{regions.RM.name}</text>
+            <rect rx="3" ry="3" x="180" y="200" width="129" height="22" />
+            <text transform="translate(188 216)">{regions.RM.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="500" y="309" width="78" height="22" />
-            <text transform="translate(505 325)">{regions.SE.name}</text>
+            <rect rx="3" ry="3" x="500" y="308" width="84" height="22" />
+            <text transform="translate(508 324)">{regions.SE.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="140" y="294" width="81" height="22" />
-            <text transform="translate(145 310)">{regions.SW.name}</text>
+            <rect rx="3" ry="3" x="140" y="292" width="87" height="22" />
+            <text transform="translate(148 308)">{regions.SW.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="460" y="259" width="79" height="22" />
-            <text transform="translate(465 275)">{regions.TN.name}</text>
+            <rect rx="3" ry="3" x="460" y="258" width="85" height="22" />
+            <text transform="translate(468 274)">{regions.TN.name}</text>
           </g>
           <g css={labelStyles}>
-            <rect x="300" y="354" width="47" height="22" />
-            <text transform="translate(305 370)">{regions.TE.name}</text>
+            <rect rx="3" ry="3" x="300" y="354" width="53" height="22" />
+            <text transform="translate(308 370)">{regions.TE.name}</text>
           </g>
         </g>
       </svg>
