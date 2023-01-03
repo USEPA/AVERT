@@ -4,3 +4,12 @@
     float: none;
   }
 }
+
+/* --- AVERT --- */
+.avert-blue {
+  color: rgb(0, 128, 164);
+}
+
+.avert-light-blue {
+  color: rgb(0, 164, 200);
+}

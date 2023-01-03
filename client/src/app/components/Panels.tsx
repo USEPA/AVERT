@@ -13,8 +13,8 @@ import { RegionsList } from 'app/components/RegionsList';
 import { RegionsMap } from 'app/components/RegionsMap';
 import { StatesList } from 'app/components/StatesList';
 import { StatesMap } from 'app/components/StatesMap';
-import EEREInputs from 'app/components/EEREInputs';
-import UnitConversion from 'app/components/UnitConversion';
+import { UnitConversion } from 'app/components/UnitConversion';
+import { EEREInputs } from 'app/components/EEREInputs';
 import EEREChart from 'app/components/EEREChart';
 import DisplacementsTable from 'app/components/DisplacementsTable';
 import EmissionsTable from 'app/components/EmissionsTable';
@@ -41,8 +41,6 @@ type ContainerProps = {
 };
 
 const Container = styled('div')<ContainerProps>`
-  border: 1px solid #a9aeb1; // base-light
-
   ${({ lightOverlay, darkOverlay }) => {
     const overlayStyles = css`
       position: relative;
@@ -113,7 +111,6 @@ const overlayTextStyles = css`
 
 const overlayHeadingStyles = css`
   font-size: 1.25rem;
-  font-weight: bold;
 
   @media (min-width: 25em) {
     font-size: 1.3125rem;
@@ -133,7 +130,6 @@ const overlayHeadingStyles = css`
 `;
 
 const overlayInfoStyles = css`
-  margin-top: 0.5rem;
   font-size: 0.75rem;
 
   @media (min-width: 25em) {
@@ -153,11 +149,6 @@ const overlayInfoStyles = css`
   }
 `;
 
-const loadingProgressStyles = css`
-  margin-top: 0.5rem;
-  width: 100%;
-`;
-
 const panelStyles = css`
   &[data-active='false'] {
     display: none;
@@ -165,7 +156,6 @@ const panelStyles = css`
 `;
 
 const panelBodyStyles = css`
-  padding: 1rem;
   border-top: 0.375rem solid rgb(0, 164, 200);
   min-height: 30rem;
 
@@ -235,9 +225,9 @@ const tabsStyles = css`
     }
 
     &[data-selected] {
-      border-top-color: rgb(0, 164, 200);
+      border-top-color: rgb(0, 164, 200); // avert-light-blue
       border-bottom-color: white;
-      color: rgb(0, 128, 164);
+      color: rgb(0, 128, 164); // avert-blue
       background-color: white;
     }
   }
@@ -252,18 +242,16 @@ const tabsStyles = css`
 
   [data-reach-tab-panels] {
     ${panelBodyStyles}
+
+    padding: 1rem;
     border-top: none;
     min-height: 0;
   }
 `;
 
 const headingStyles = css`
-  margin-top: 0;
   margin-bottom: 0.75rem;
-  padding-bottom: 0.25rem;
-  border-bottom: 2px solid currentColor;
   font-size: 1rem;
-  color: rgb(0, 128, 164);
 
   @media (min-width: 25em) {
     margin-bottom: 0.8125rem;
@@ -288,7 +276,6 @@ const headingStyles = css`
 
 export const subheadingStyles = css`
   font-size: 0.875rem;
-  color: rgb(0, 128, 164);
 
   @media (min-width: 25em) {
     font-size: 0.9375rem;
@@ -344,11 +331,13 @@ const messageStyles = css`
 
 const topMessageStyles = css`
   ${messageStyles};
+
   top: 0;
 `;
 
 export const bottomMessageStyles = css`
   ${messageStyles};
+
   bottom: -1rem;
 
   @media (min-width: 25em) {
@@ -369,9 +358,6 @@ export const bottomMessageStyles = css`
 `;
 
 export const messageHeadingStyles = css`
-  display: block;
-  margin-bottom: 0.25rem;
-  font-weight: bold;
   font-size: 0.75rem;
 
   @media (min-width: 30em) {
@@ -443,7 +429,7 @@ export function Panels() {
   // determined by the selected geography (regions or states)
   const displacementsTable = (
     <Fragment>
-      <h3 css={subheadingStyles}>
+      <h3 css={subheadingStyles} className="avert-blue">
         Annual Regional Displacements:
         <br />
         <small>{resultsHeading}</small>
@@ -454,7 +440,7 @@ export function Panels() {
 
   const emissionsTable = (
     <Fragment>
-      <h3 css={subheadingStyles}>
+      <h3 css={subheadingStyles} className="avert-blue">
         Annual State Emission Changes:
         <br />
         <small>{resultsHeading}</small>
@@ -465,6 +451,7 @@ export function Panels() {
 
   return (
     <Container
+      className="border-width-1px border-solid border-base-light"
       lightOverlay={modalOverlay}
       darkOverlay={loading || serverCalcError}
       onClick={(ev) => {
@@ -488,19 +475,21 @@ export function Panels() {
         loading && !serverCalcError && (
           <div css={overlayTextStyles}>
             <LoadingIcon />
-            <p css={overlayHeadingStyles}>LOADING...</p>
+            <p css={overlayHeadingStyles} className="text-bold">
+              LOADING...
+            </p>
             {
               // conditionally display progress bar
               activeStep === 3 && (
                 <div>
                   <progress
-                    css={loadingProgressStyles}
+                    className="margin-top-1 width-full"
                     value={loadingProgress}
                     max={loadingSteps}
                   >
                     {(loadingProgress * 100) / loadingSteps}%
                   </progress>
-                  <p css={overlayInfoStyles}>
+                  <p css={overlayInfoStyles} className="margin-top-1">
                     These calculations may take several minutes.
                   </p>
                 </div>
@@ -514,8 +503,12 @@ export function Panels() {
         // conditionally display web server error
         serverCalcError && (
           <div css={overlayTextStyles}>
-            <p css={overlayHeadingStyles}>Web Server Error</p>
-            <p css={overlayInfoStyles}>Please try reloading the page.</p>
+            <p css={overlayHeadingStyles} className="text-bold">
+              Web Server Error
+            </p>
+            <p css={overlayInfoStyles} className="margin-top-1">
+              Please try reloading the page.
+            </p>
           </div>
         )
       }
@@ -553,7 +546,8 @@ export function Panels() {
                 <a
                   className="usa-link"
                   href="https://www.epa.gov/avert/download-avert"
-                  target="_parent"
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   available for download here
                 </a>
@@ -588,7 +582,8 @@ export function Panels() {
                 <a
                   className="usa-link"
                   href="https://www.epa.gov/avert/download-avert"
-                  target="_parent"
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   available for download here
                 </a>
@@ -603,10 +598,24 @@ export function Panels() {
       </section>
 
       <section css={panelStyles} data-active={activeStep === 2}>
-        <div css={panelBodyStyles}>
-          <h2 css={headingStyles}>Set Energy Scenario</h2>
+        <div css={panelBodyStyles} className="padding-2">
+          <h2
+            css={headingStyles}
+            className={
+              `avert-blue ` + //
+              `padding-bottom-05 border-bottom-2px`
+            }
+          >
+            Set Energy Scenario
+          </h2>
 
-          <h3 css={[subheadingStyles, { marginTop: 0 }]}>
+          <h3
+            css={subheadingStyles}
+            className={
+              `avert-blue ` + //
+              `margin-top-0`
+            }
+          >
             {geographicFocus === 'regions'
               ? `Region: ${selectedRegionName}`
               : `State: ${selectedStateName}`}
@@ -614,14 +623,15 @@ export function Panels() {
 
           <UnitConversion />
 
-          <p>
+          <p className="tablet:font-sans-md">
             AVERT quantifies avoided emissions and electricity generation
             displaced by EE/RE policies and programs. Specify the impacts of
             EE/RE programs below, and AVERT will use these inputs to generate
             results. For more information about inputs, please consult the{' '}
             <a
               href="https://www.epa.gov/statelocalenergy/avert-user-manual"
-              target="_parent"
+              target="_blank"
+              rel="noreferrer"
             >
               AVERT user manual
             </a>{' '}
@@ -636,6 +646,7 @@ export function Panels() {
           </p>
 
           <EEREInputs />
+
           <EEREChart />
         </div>
 
@@ -646,8 +657,14 @@ export function Panels() {
       </section>
 
       <section css={panelStyles} data-active={activeStep === 3}>
-        <div css={panelBodyStyles}>
-          <h2 css={headingStyles}>
+        <div css={panelBodyStyles} className="padding-2">
+          <h2
+            css={headingStyles}
+            className={
+              `avert-blue ` + //
+              `padding-bottom-05 border-bottom-2px`
+            }
+          >
             Results: Avoided Regional, State, and County-Level Emissions
           </h2>
 
@@ -655,7 +672,12 @@ export function Panels() {
             // conditionally display validation warning
             !softValid && (
               <p css={[topMessageStyles, warningMessageStyles]}>
-                <span css={messageHeadingStyles}>WARNING:</span>
+                <span
+                  css={messageHeadingStyles}
+                  className="dislay-block margin-bottom-05 text-bold"
+                >
+                  WARNING:
+                </span>
                 The proposed EE/RE programs would collectively displace more
                 than 15% of regional fossil generation in one or more hours of
                 the year. AVERT works best with displacements of 15% or less, as
@@ -678,7 +700,7 @@ export function Panels() {
             </Fragment>
           )}
 
-          <h3 css={subheadingStyles}>
+          <h3 css={subheadingStyles} className="avert-blue">
             Monthly Emission Changes:
             <br />
             <small>{resultsHeading}</small>

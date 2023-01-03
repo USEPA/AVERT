@@ -3,15 +3,14 @@
 import { useEffect } from 'react';
 import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
-// components
+// ---
 import { EERETextInput } from 'app/components/EERETextInput';
 import { EERESelectInput } from 'app/components/EERESelectInput';
 import {
   EVSalesAndStockTable,
   EEREEVComparisonTable,
 } from 'app/components/EVTables';
-import Tooltip from 'app/components/Tooltip';
-// reducers
+import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import {
   updateEereAnnualGwh,
@@ -32,7 +31,6 @@ import {
   updateEereICEReplacementVehicle,
   calculateEereProfile,
 } from 'app/redux/reducers/eere';
-// hooks
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 
 const inputsBlockStyles = css`
@@ -94,7 +92,7 @@ const inputsGroupStyles = css`
   /* highlight letter when details is open */
   /* (summary is styled with inputsSummaryStyles) */
   &[open] > summary::after {
-    background-color: rgb(0, 164, 200);
+    background-color: rgb(0, 164, 200); // avert-light-blue
   }
 `;
 
@@ -158,7 +156,7 @@ const inputsSummaryStyles = css`
 
   /* highlight letter on hover */
   &:hover::after {
-    background-color: rgb(0, 164, 200);
+    background-color: rgb(0, 164, 200); // avert-light-blue
   }
 `;
 
@@ -185,7 +183,7 @@ const impactsButtonStyles = css`
   margin-bottom: 1rem;
 `;
 
-function EEREInputs() {
+export function EEREInputs() {
   const dispatch = useDispatch();
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const status = useTypedSelector(({ eere }) => eere.status);
@@ -658,5 +656,3 @@ function EEREInputs() {
     </>
   );
 }
-
-export default EEREInputs;

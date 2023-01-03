@@ -5,17 +5,15 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-// components
-import Tooltip from 'app/components/Tooltip';
+// ---
+import { Tooltip } from 'app/components/Tooltip';
 import {
   bottomMessageStyles,
   messageHeadingStyles,
   errorMessageStyles,
   warningMessageStyles,
 } from 'app/components/Panels';
-// reducers
 import { useTypedSelector } from 'app/redux/index';
-// hooks
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 
 const chartSubtitleStyles = css`
@@ -267,7 +265,12 @@ function EEREChart() {
 
     return (
       <ValidationMessage type={type}>
-        <span css={messageHeadingStyles}>{x.heading}:</span>
+        <span
+          css={messageHeadingStyles}
+          className="display-block margin-bottom-05 text-bold"
+        >
+          {x.heading}:
+        </span>
         The combined impact of your proposed programs would displace more than{' '}
         <strong>{x.threshold}%</strong> of regional fossil generation in at
         least one hour of the year. (Maximum value:{' '}

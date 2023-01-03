@@ -3,14 +3,13 @@
 import { ReactNode, Fragment, useRef, useEffect } from 'react';
 import { css, keyframes } from '@emotion/react';
 import { useDispatch } from 'react-redux';
-// reducers
+// ---
 import { useTypedSelector } from 'app/redux/index';
 import {
   toggleModalOverlay,
   storeActiveModal,
   resetActiveModal,
 } from 'app/redux/reducers/panel';
-// icons
 import icons from 'app/icons.svg';
 
 const scaleUpAnimation = keyframes`
@@ -133,7 +132,7 @@ type Props = {
   children: ReactNode;
 };
 
-function Tooltip({ id, children }: Props) {
+export function Tooltip({ id, children }: Props) {
   const dispatch = useDispatch();
   const activeModalId = useTypedSelector(({ panel }) => panel.activeModalId);
   const closingModalId = useTypedSelector(({ panel }) => panel.closingModalId);
@@ -182,5 +181,3 @@ function Tooltip({ id, children }: Props) {
     </Fragment>
   );
 }
-
-export default Tooltip;

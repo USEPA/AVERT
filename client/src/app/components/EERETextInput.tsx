@@ -4,7 +4,7 @@ import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 import type { ReactNode } from 'react';
 // ---
-import Tooltip from 'app/components/Tooltip';
+import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import { calculateEereProfile } from 'app/redux/reducers/eere';
 import type {
@@ -36,7 +36,7 @@ const suffixStyles = css`
 
 export const errorStyles = css`
   font-style: italic;
-  color: rgb(206, 29, 29);
+  color: rgb(206, 29, 29); // TODO: change to text-secondary
 `;
 
 const errorHeadingStyles = css`

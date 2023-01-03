@@ -2,76 +2,17 @@
 
 import { useState } from 'react';
 import { css } from '@emotion/react';
-// components
-import Tooltip from 'app/components/Tooltip';
+// ---
+import { Tooltip } from 'app/components/Tooltip';
 
 const unitConversionStyles = css`
-  margin-bottom: 1rem;
-  padding: 0.5rem 0.625rem 0.75rem;
-  border: 1px solid #dbdbdb;
-  background-color: #fbfbfb;
-
-  @media (min-width: 30em) {
+  @media (min-width: 40em) {
     float: right;
-    margin-left: 1rem;
     width: calc(100% / 3);
   }
 `;
 
-const textStyles = css`
-  margin: 0;
-  line-height: 1;
-  text-align: center;
-`;
-
-const headingStyles = css`
-  font-size: 0.8125rem;
-  font-weight: bold;
-`;
-
-// override inherited textStyles
-const modalStyles = css`
-  line-height: 1.375;
-  text-align: left;
-`;
-
-const unitGroupStyles = css`
-  display: flex;
-  align-items: baseline;
-  margin-top: 0.5rem;
-  width: 100%;
-`;
-
-const unitPrefixStyles = css`
-  flex: 1 0 auto;
-  min-width: 0.5rem;
-  font-size: 0.75rem;
-`;
-
-const unitPostfixStyles = css`
-  flex: 1 0 auto;
-  min-width: 1.5rem;
-  font-size: 0.75rem;
-`;
-
-const unitInputStyles = css`
-  margin: 0 0.25rem;
-  padding: 0.125rem 0.25rem;
-  border: 1px solid #ccc;
-  width: 100%;
-  font-size: 0.8125rem;
-  font-weight: bold;
-  text-align: right;
-`;
-
-const errorStyles = css`
-  margin-top: 0.75rem;
-  font-size: 0.75rem;
-  font-weight: bold;
-  color: rgb(206, 29, 29);
-`;
-
-function UnitConversion() {
+export function UnitConversion() {
   const [error, setError] = useState(false);
   const [kw, setKw] = useState(1e6);
   const [mw, setMw] = useState(1e3);
@@ -85,7 +26,7 @@ function UnitConversion() {
       return;
     }
 
-    const factor = 1e3;
+    const factor = 1000;
     const computed = { kw, mw, gw };
     computed[unit] = input;
 
@@ -111,10 +52,20 @@ function UnitConversion() {
   }
 
   return (
-    <div css={unitConversionStyles}>
-      <p css={textStyles}>
-        <span css={headingStyles}>Helpful Unit Conversions</span>{' '}
-        <span css={modalStyles}>
+    <div
+      css={unitConversionStyles}
+      className={
+        `margin-bottom-2 padding-105 ` +
+        `border-width-1px border-solid border-base-light ` +
+        `bg-base-lightest ` +
+        `tablet:margin-left-2`
+      }
+    >
+      <p className="margin-bottom-105 text-center line-height-sans-2">
+        <span className="font-sans-2xs text-bold text-base-darker">
+          Helpful Unit Conversions
+        </span>{' '}
+        <span className="text-left">
           <Tooltip id="unit-conversion">
             To convert units from power (<strong>kW, MW, GW</strong>) to energy
             (<strong>kWh, MWh, GWh</strong>), multiply by the total number of
@@ -133,45 +84,67 @@ function UnitConversion() {
         </span>
       </p>
 
-      <div css={unitGroupStyles}>
-        <span css={unitPrefixStyles} />
+      <div className="display-flex flex-align-baseline margin-top-1 width-full font-sans-3xs">
+        <span className="minw-2" />
         <input
-          css={unitInputStyles}
+          className={
+            `usa-input ` +
+            `margin-top-0 margin-right-05 padding-05 height-auto ` +
+            `border-width-1px border-solid border-base-light ` +
+            `text-right text-bold font-sans-xs`
+          }
           aria-label="Kilowatts"
           type="text"
           value={kw}
           onChange={(ev) => updateInputs(ev.target.value, 'kw')}
         />
-        <span css={unitPostfixStyles}> kW</span>
+        <span className="minw-3"> kW</span>
       </div>
 
-      <div css={unitGroupStyles}>
-        <span css={unitPrefixStyles}>= </span>
+      <div className="display-flex flex-align-baseline margin-top-1 width-full font-sans-3xs">
+        <span className="minw-2">= </span>
         <input
-          css={unitInputStyles}
+          className={
+            `usa-input ` +
+            `margin-top-0 margin-right-05 padding-05 height-auto ` +
+            `border-width-1px border-solid border-base-light ` +
+            `text-right text-bold font-sans-xs`
+          }
           aria-label="Megawatts"
           type="text"
           value={mw}
           onChange={(ev) => updateInputs(ev.target.value, 'mw')}
         />
-        <span css={unitPostfixStyles}> MW</span>
+        <span className="minw-3"> MW</span>
       </div>
 
-      <div css={unitGroupStyles}>
-        <span css={unitPrefixStyles}>= </span>
+      <div className="display-flex flex-align-baseline margin-top-1 width-full font-sans-3xs">
+        <span className="minw-2">= </span>
         <input
-          css={unitInputStyles}
+          className={
+            `usa-input ` +
+            `margin-top-0 margin-right-05 padding-05 height-auto ` +
+            `border-width-1px border-solid border-base-light ` +
+            `text-right text-bold font-sans-xs`
+          }
           aria-label="Gigawatts"
           type="text"
           value={gw}
           onChange={(ev) => updateInputs(ev.target.value, 'gw')}
         />
-        <span css={unitPostfixStyles}> GW</span>
+        <span className="minw-3"> GW</span>
       </div>
 
-      {error && <p css={errorStyles}>Please enter a positive number.</p>}
+      {error && (
+        <p
+          className={
+            `margin-top-105 margin-bottom-0 ` +
+            `font-sans-2xs line-height-sans-2 text-bold text-secondary`
+          }
+        >
+          Please enter a positive number.
+        </p>
+      )}
     </div>
   );
 }
-
-export default UnitConversion;

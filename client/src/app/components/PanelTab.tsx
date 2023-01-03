@@ -57,12 +57,12 @@ const Tab = styled('li')<{ step: number }>`
 
     /* active tab – right arrow */
     a[data-active='true']::after {
-      border-left-color: rgb(0, 128, 164);
+      border-left-color: rgb(0, 128, 164); // avert-blue
     }
 
     /* active tab – fill behind right arrow */
     a[data-active='true']::before {
-      background-color: rgb(0, 128, 164);
+      background-color: rgb(0, 128, 164); // avert-blue
     }
   }
 `;
@@ -75,7 +75,7 @@ const anchorStyles = css`
 
   &[data-active='true'] {
     color: white;
-    background-color: rgb(0, 128, 164);
+    background-color: rgb(0, 128, 164); // avert-blue
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
   }
 `;
@@ -95,7 +95,7 @@ export function PanelTab(props: {
           `position-relative display-block margin-top-1 padding-105 ` +
           `border-width-1px border-solid border-base-light ` +
           `text-no-underline text-center text-base-dark bg-base-lightest ` +
-          `text-bold line-height-mono-1 cursor-default usa-js-no-click ` +
+          `text-bold line-height-sans-1 cursor-default usa-js-no-click ` +
           `tablet:margin-top-0 tablet:border-0`
         }
         href="/"

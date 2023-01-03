@@ -2,9 +2,8 @@
 
 import { ReactNode, Fragment } from 'react';
 import { css } from '@emotion/react';
-// components
-import Tooltip from 'app/components/Tooltip';
-// reducers
+// ---
+import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import { ReplacementPollutantName } from 'app/redux/reducers/displacement';
 
