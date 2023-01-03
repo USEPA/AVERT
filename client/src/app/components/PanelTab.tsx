@@ -48,7 +48,7 @@ const Tab = styled('li')<{ step: number }>`
             top: 0;
             left: -1.25rem;
             width: 1.25rem;
-            height: 2.5rem;
+            height: 100%;
             background-color: #f0f0f0; // base-lightest
           }
         `;
