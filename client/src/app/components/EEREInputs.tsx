@@ -33,154 +33,33 @@ import {
 } from 'app/redux/reducers/eere';
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 
-const inputsBlockStyles = css`
-  margin: 1rem 0;
-  border-top: 1px solid #ccc;
-
-  & ul {
-    padding-left: 1.5rem !important;
-  }
-
-  & :is(p, ul) {
-    margin-top: 0 !important;
-  }
-
-  & :is(label, input, select, p, li) {
-    font-size: 0.625rem;
-  }
-
-  @media (min-width: 25em) {
-    & :is(label, input, select, p, li) {
-      font-size: 0.6875rem;
-    }
-  }
-
-  @media (min-width: 30em) {
-    & :is(label, input, select, p, li) {
-      font-size: 0.75rem;
-    }
-  }
-
-  @media (min-width: 35em) {
-    & :is(label, input, select, p, li) {
-      font-size: 0.8125rem;
-    }
-  }
-
-  @media (min-width: 40em) {
-    & :is(label, input, select, p, li) {
-      font-size: 0.875rem;
-    }
-  }
-`;
-
-const inputsCategoryStyles = css`
-  overflow: hidden;
-  border: 1px solid #ccc;
-  border-top: 0;
-  padding: 0.5rem 0.625rem;
-  font-weight: bold;
-  background-color: #f0f0f0; // base-lightest
-`;
-
 const inputsGroupStyles = css`
-  display: block; /* IE */
-  overflow: hidden;
-  border: 1px solid #ccc;
-  border-top: 0;
-
   /* highlight letter when details is open */
-  /* (summary is styled with inputsSummaryStyles) */
-  &[open] > summary::after {
+  &[open] > summary::before {
     background-color: rgb(0, 164, 200); // avert-light-blue
   }
 `;
 
 const inputsSummaryStyles = css`
-  display: block; /* IE */
-  padding: 1rem 0.625rem;
-  font-size: 0.625rem;
-  font-weight: bold;
-  cursor: pointer;
-
-  @media (min-width: 25em) {
-    font-size: 0.6875rem;
-  }
-
-  @media (min-width: 30em) {
-    font-size: 0.75rem;
-  }
-
-  @media (min-width: 35em) {
-    font-size: 0.8125rem;
-  }
-
-  @media (min-width: 40em) {
-    font-size: 0.875rem;
-  }
-
-  /* letter (A, B, C, D, E, F, G, or H) */
-  &::after {
+  /* letter (A, B, C, D, or E) */
+  &::before {
     content: attr(data-label);
-    float: left;
-    margin-top: -0.375rem;
+    flex-shrink: 0;
     margin-right: 0.5rem;
     border-radius: 3px;
-    width: 1.25rem;
-    font-size: 1rem;
+    width: 1.75rem;
+    font-size: 1.5rem;
+    line-height: 2rem;
     text-align: center;
     text-shadow: 0 0 4px rgba(0, 0, 0, 0.125);
     color: white;
     background-color: #a9aeb1; // base-light
-
-    @media (min-width: 25em) {
-      width: 1.375rem;
-      font-size: 1.125rem;
-    }
-
-    @media (min-width: 30em) {
-      width: 1.5rem;
-      font-size: 1.25rem;
-    }
-
-    @media (min-width: 35em) {
-      width: 1.625rem;
-      font-size: 1.375rem;
-    }
-
-    @media (min-width: 40em) {
-      width: 1.75rem;
-      font-size: 1.5rem;
-    }
   }
 
   /* highlight letter on hover */
-  &:hover::after {
+  &:hover::before {
     background-color: rgb(0, 164, 200); // avert-light-blue
   }
-`;
-
-const inputsSectionStyles = css`
-  padding: 0 1rem 0.75rem;
-
-  hr {
-    margin: 0.75rem 0;
-    border: none;
-    border-top: 1px solid #ccc;
-  }
-`;
-
-const inputTextStyles = css`
-  display: block;
-
-  @media (min-width: 35em) {
-    display: inline;
-  }
-`;
-
-const impactsButtonStyles = css`
-  text-align: center;
-  margin-bottom: 1rem;
 `;
 
 export function EEREInputs() {
@@ -256,8 +135,6 @@ export function EEREInputs() {
   const calculationDisabled =
     !textInputsAreValid || textInputsAreEmpty || status === 'started';
 
-  const disabledClass = calculationDisabled ? ' avert-button-disabled' : '';
-
   const eereButtonOptions = {
     ready: 'Calculate EE/RE Impacts',
     started: 'Calculating...',
@@ -266,23 +143,46 @@ export function EEREInputs() {
 
   return (
     <>
-      <div css={inputsBlockStyles} data-avert-eere-inputs>
-        <header css={inputsCategoryStyles}>
-          <p>Energy Efficiency</p>
+      <div
+        className={
+          `margin-y-2 ` +
+          `border-width-1px border-x-width-0 border-bottom-width-0 border-solid border-base-light ` +
+          `font-sans-xs text-base-darker`
+        }
+        data-avert-eere-inputs
+      >
+        <header
+          className={
+            `padding-y-1 padding-x-105 ` +
+            `border-width-1px border-top-width-0 border-solid border-base-light ` +
+            `text-bold bg-base-lightest`
+          }
+        >
+          <p className="margin-0">Energy Efficiency</p>
         </header>
 
-        <details css={inputsGroupStyles}>
-          <summary css={inputsSummaryStyles} data-label="A">
+        <details
+          css={inputsGroupStyles}
+          className="border-width-1px border-top-width-0 border-solid border-base-light"
+        >
+          <summary
+            css={inputsSummaryStyles}
+            className={
+              `display-flex flex-align-center padding-105 ` +
+              `line-height-sans-2 text-bold cursor-pointer`
+            }
+            data-label="A"
+          >
             Reductions spread evenly throughout the year
           </summary>
 
-          <section css={inputsSectionStyles}>
-            <p>
+          <section className="padding-top-0 padding-x-2 padding-bottom-105">
+            <p className="margin-0">
               <strong>Choose one:</strong>
             </p>
 
-            <ul>
-              <li>
+            <ul className="margin-0 padding-left-3">
+              <li className="margin-0">
                 <EERETextInput
                   label="Reduce total annual generation by:"
                   ariaLabel="Number of GWh expected to be saved in a single year"
@@ -304,7 +204,7 @@ export function EEREInputs() {
                 />
               </li>
 
-              <li>
+              <li className="margin-0">
                 <EERETextInput
                   label="Reduce hourly generation by:"
                   ariaLabel="Constant reduction for every hour of the year, in MW"
@@ -329,18 +229,28 @@ export function EEREInputs() {
           </section>
         </details>
 
-        <details css={inputsGroupStyles}>
-          <summary css={inputsSummaryStyles} data-label="B">
+        <details
+          css={inputsGroupStyles}
+          className="border-width-1px border-top-width-0 border-solid border-base-light"
+        >
+          <summary
+            css={inputsSummaryStyles}
+            className={
+              `display-flex flex-align-center padding-105 ` +
+              `line-height-sans-2 text-bold cursor-pointer`
+            }
+            data-label="B"
+          >
             Percentage reductions in some or all hours
           </summary>
 
-          <section css={inputsSectionStyles}>
-            <p>
+          <section className="padding-top-0 padding-x-2 padding-bottom-105">
+            <p className="margin-0">
               <strong>Choose one:</strong>
             </p>
 
-            <ul>
-              <li>
+            <ul className="margin-0 padding-left-3">
+              <li className="margin-0">
                 <EERETextInput
                   label="Broad-based program: Reduce generation by:"
                   ariaLabel="Load reduction percentage applied to all hours of the year"
@@ -361,7 +271,7 @@ export function EEREInputs() {
                 />
               </li>
 
-              <li>
+              <li className="margin-0">
                 <EERETextInput
                   label="Targeted program: Reduce generation by:"
                   ariaLabel="Load reduction (as a fraction of peaking load) that would be targeted"
@@ -394,17 +304,33 @@ export function EEREInputs() {
           </section>
         </details>
 
-        <header css={inputsCategoryStyles}>
-          <p>Renewable Energy</p>
+        <header
+          className={
+            `padding-y-1 padding-x-105 ` +
+            `border-width-1px border-top-width-0 border-solid border-base-light ` +
+            `text-bold bg-base-lightest`
+          }
+        >
+          <p className="margin-0">Renewable Energy</p>
         </header>
 
-        <details css={inputsGroupStyles}>
-          <summary css={inputsSummaryStyles} data-label="C">
+        <details
+          css={inputsGroupStyles}
+          className="border-width-1px border-top-width-0 border-solid border-base-light"
+        >
+          <summary
+            css={inputsSummaryStyles}
+            className={
+              `display-flex flex-align-center padding-105 ` +
+              `line-height-sans-2 text-bold cursor-pointer`
+            }
+            data-label="C"
+          >
             Wind
           </summary>
 
-          <section css={inputsSectionStyles}>
-            <p>
+          <section className="padding-top-0 padding-x-2 padding-bottom-105">
+            <p className="margin-0">
               <EERETextInput
                 label="Onshore wind total capacity:"
                 ariaLabel="Total capacity (maximum potential electricity generation) in MW"
@@ -423,7 +349,7 @@ export function EEREInputs() {
               />
             </p>
 
-            <p>
+            <p className="margin-0">
               {atLeastOneRegionSupportsOffshoreWind ? (
                 <EERETextInput
                   label="Offshore wind total capacity:"
@@ -442,7 +368,7 @@ export function EEREInputs() {
                   }
                 />
               ) : geographicFocus === 'regions' ? (
-                <span css={inputTextStyles}>
+                <span className="display-block">
                   <em>
                     Offshore wind calculations are not available in this AVERT
                     region{' '}
@@ -455,7 +381,7 @@ export function EEREInputs() {
                   </Tooltip>
                 </span>
               ) : (
-                <span css={inputTextStyles}>
+                <span className="display-block">
                   <em>
                     Offshore wind calculations are not available in the AVERT
                     region(s) that this state is part of{' '}
@@ -473,13 +399,23 @@ export function EEREInputs() {
           </section>
         </details>
 
-        <details css={inputsGroupStyles}>
-          <summary css={inputsSummaryStyles} data-label="D">
+        <details
+          css={inputsGroupStyles}
+          className="border-width-1px border-top-width-0 border-solid border-base-light"
+        >
+          <summary
+            css={inputsSummaryStyles}
+            className={
+              `display-flex flex-align-center padding-105 ` +
+              `line-height-sans-2 text-bold cursor-pointer`
+            }
+            data-label="D"
+          >
             Solar photovoltaic
           </summary>
 
-          <section css={inputsSectionStyles}>
-            <p>
+          <section className="padding-top-0 padding-x-2 padding-bottom-105">
+            <p className="margin-0">
               <EERETextInput
                 label="Utility-scale solar photovoltaic total capacity:"
                 ariaLabel="Total capacity (maximum potential electricity generation) in MW"
@@ -498,7 +434,7 @@ export function EEREInputs() {
               />
             </p>
 
-            <p>
+            <p className="margin-0">
               <EERETextInput
                 label="Distributed (rooftop) solar photovoltaic total capacity:"
                 ariaLabel="Total capacity (maximum potential electricity generation) in MW"
@@ -519,17 +455,33 @@ export function EEREInputs() {
           </section>
         </details>
 
-        <header css={inputsCategoryStyles}>
-          <p>Electric Vehicles</p>
+        <header
+          className={
+            `padding-y-1 padding-x-105 ` +
+            `border-width-1px border-top-width-0 border-solid border-base-light ` +
+            `text-bold bg-base-lightest`
+          }
+        >
+          <p className="margin-0">Electric Vehicles</p>
         </header>
 
-        <details css={inputsGroupStyles}>
-          <summary css={inputsSummaryStyles} data-label="E">
+        <details
+          css={inputsGroupStyles}
+          className="border-width-1px border-top-width-0 border-solid border-base-light"
+        >
+          <summary
+            css={inputsSummaryStyles}
+            className={
+              `display-flex flex-align-center padding-105 ` +
+              `line-height-sans-2 text-bold cursor-pointer`
+            }
+            data-label="E"
+          >
             Electric Vehicles
           </summary>
 
-          <section css={inputsSectionStyles}>
-            <p>
+          <section className="padding-top-0 padding-x-2 padding-bottom-105">
+            <p className="margin-0">
               <EERETextInput
                 label="Light-duty battery EVs:"
                 ariaLabel="TODO"
@@ -540,7 +492,7 @@ export function EEREInputs() {
               />
             </p>
 
-            <p>
+            <p className="margin-0">
               <EERETextInput
                 label="Light-duty plug-in hybrid EVs:"
                 ariaLabel="TODO"
@@ -551,7 +503,7 @@ export function EEREInputs() {
               />
             </p>
 
-            <p>
+            <p className="margin-0">
               <EERETextInput
                 label="Electric transit buses:"
                 ariaLabel="TODO"
@@ -562,7 +514,7 @@ export function EEREInputs() {
               />
             </p>
 
-            <p>
+            <p className="margin-0">
               <EERETextInput
                 label="Electric school buses:"
                 ariaLabel="TODO"
@@ -573,9 +525,14 @@ export function EEREInputs() {
               />
             </p>
 
-            <hr />
+            <hr
+              className={
+                `margin-y-105 ` +
+                `border-width-1px border-x-width-0 border-bottom-width-0 border-solid border-base-light`
+              }
+            />
 
-            <p>
+            <p className="margin-0">
               <label htmlFor="evDeploymentLocation">
                 Location of EV deployment:
               </label>
@@ -595,9 +552,14 @@ export function EEREInputs() {
               </Tooltip>
             </p>
 
-            <hr />
+            <hr
+              className={
+                `margin-y-105 ` +
+                `border-width-1px border-x-width-0 border-bottom-width-0 border-solid border-base-light`
+              }
+            />
 
-            <p>
+            <p className="margin-0">
               <label htmlFor="evModelYear">EV model year:</label>
 
               <EERESelectInput
@@ -613,7 +575,7 @@ export function EEREInputs() {
               </Tooltip>
             </p>
 
-            <p>
+            <p className="margin-0">
               <label htmlFor="iceReplacementVehicle">
                 Internal combustion engine vehicle being replaced:
               </label>
@@ -639,9 +601,13 @@ export function EEREInputs() {
         </details>
       </div>
 
-      <p css={impactsButtonStyles}>
+      <p className="margin-bottom-2 text-center">
         <a
-          className={`avert-button${disabledClass}`}
+          className={
+            calculationDisabled
+              ? 'avert-button avert-button-disabled'
+              : 'avert-button'
+          }
           href="/"
           onClick={(ev) => {
             ev.preventDefault();
