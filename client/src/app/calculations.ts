@@ -88,7 +88,8 @@ export function calculateEere(options: {
       utilitySolar * hourlyDefault.utility_pv +
       rooftopSolar * hourlyDefault.rooftop_pv * lineLoss;
 
-    const evLoad = hourlyEVLoad[index];
+    // NOTE: hourlyEVLoad will be an empty array if there are no EV inputs entered
+    const evLoad = hourlyEVLoad[index] || 0;
 
     const calculatedLoad =
       initialLoad -
