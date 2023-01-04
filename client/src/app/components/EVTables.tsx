@@ -155,6 +155,7 @@ function EEREEVComparisonTable() {
     historicalEERetailMw / (1 - lineLoss) +
     historicalOnshoreWindMw +
     historicalUtilitySolarMw;
+
   const historicalTotalGWh =
     historicalEERetailGWh / (1 - lineLoss) +
     historicalOnshoreWindGWh +
@@ -163,22 +164,28 @@ function EEREEVComparisonTable() {
   const requiredOffsetTotalGWh = totalYearlyEVEnergyUsage / (1 - lineLoss);
 
   const requiredOffsetEERetailGWh =
-    (historicalEERetailGWh / (1 - lineLoss) / historicalTotalGWh) *
+    (historicalEERetailGWh / (1 - lineLoss) / (historicalTotalGWh || 1)) *
     requiredOffsetTotalGWh;
+
   const requiredOffsetEERetailMw =
-    (historicalEERetailMw * requiredOffsetEERetailGWh) / historicalEERetailGWh;
+    (historicalEERetailMw * requiredOffsetEERetailGWh) /
+    (historicalEERetailGWh || 1);
 
   const requiredOffsetOnshoreWindGWh =
-    (historicalOnshoreWindGWh / historicalTotalGWh) * requiredOffsetTotalGWh;
+    (historicalOnshoreWindGWh / (historicalTotalGWh || 1)) *
+    requiredOffsetTotalGWh;
+
   const requiredOffsetOnshoreWindMw =
     (historicalOnshoreWindMw * requiredOffsetOnshoreWindGWh) /
-    historicalOnshoreWindGWh;
+    (historicalOnshoreWindGWh || 1);
 
   const requiredOffsetUtilitySolarGWh =
-    (historicalUtilitySolarGWh / historicalTotalGWh) * requiredOffsetTotalGWh;
+    (historicalUtilitySolarGWh / (historicalTotalGWh || 1)) *
+    requiredOffsetTotalGWh;
+
   const requiredOffsetUtilitySolarMw =
     (historicalUtilitySolarMw * requiredOffsetUtilitySolarGWh) /
-    historicalUtilitySolarGWh;
+    (historicalUtilitySolarGWh || 1);
 
   const requiredOffsetTotalMw =
     requiredOffsetEERetailMw +
@@ -186,19 +193,22 @@ function EEREEVComparisonTable() {
     requiredOffsetUtilitySolarMw;
 
   const precentDifferenceEERetailMw =
-    requiredOffsetEERetailMw / historicalEERetailMw;
+    requiredOffsetEERetailMw / (historicalEERetailMw || 1);
+
   const precentDifferenceEERetailGWh =
-    requiredOffsetEERetailGWh / historicalEERetailGWh;
+    requiredOffsetEERetailGWh / (historicalEERetailGWh || 1);
 
   const precentDifferenceOnshoreWindMw =
-    requiredOffsetOnshoreWindMw / historicalOnshoreWindMw;
+    requiredOffsetOnshoreWindMw / (historicalOnshoreWindMw || 1);
+
   const precentDifferenceOnshoreWindGWh =
-    requiredOffsetOnshoreWindGWh / historicalOnshoreWindGWh;
+    requiredOffsetOnshoreWindGWh / (historicalOnshoreWindGWh || 1);
 
   const precentDifferenceUtilitySolarMw =
-    requiredOffsetUtilitySolarMw / historicalUtilitySolarMw;
+    requiredOffsetUtilitySolarMw / (historicalUtilitySolarMw || 1);
+
   const precentDifferenceUtilitySolarGWh =
-    requiredOffsetUtilitySolarGWh / historicalUtilitySolarGWh;
+    requiredOffsetUtilitySolarGWh / (historicalUtilitySolarGWh || 1);
 
   return (
     <>
