@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 
-import { Fragment } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Highcharts from 'highcharts';
@@ -14,22 +13,6 @@ import {
 } from 'app/components/Panels';
 import { useTypedSelector } from 'app/redux/index';
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
-
-const chartSubtitleStyles = css`
-  margin-top: 0.5rem;
-  font-size: 0.625rem;
-  line-height: 1.125;
-  text-align: center;
-  color: #444;
-
-  @media (min-width: 30em) {
-    font-size: 0.6875rem;
-  }
-
-  @media (min-width: 40em) {
-    font-size: 0.75rem;
-  }
-`;
 
 const ValidationMessage = styled('p')<{ type: 'error' | 'warning' }>`
   ${({ type }) => {
@@ -47,13 +30,6 @@ const ValidationMessage = styled('p')<{ type: 'error' | 'warning' }>`
       `;
     }
   }}
-`;
-
-// override inherited chart title styles
-const modalStyles = css`
-  font-weight: normal;
-  line-height: 1.375;
-  text-align: left;
 `;
 
 require('highcharts/modules/exporting')(Highcharts);
@@ -165,31 +141,32 @@ function EEREChart() {
 
   let chart = null;
   // conditionally re-define chart when readyToRender (hourlyEere exists)
+
   if (readyToRender) {
     const totalLoadMwh = hourlyEere.reduce((a, b) => a + b, 0);
-    const totalLoadGwh = Math.round(totalLoadMwh / -1e3);
+    const totalLoadGwh = Math.round(totalLoadMwh / -1000);
 
     // calculate the total equivalent number of american homes
     // (annual kwh of electricity used by the average american home is 12,146)
-    const equivalentHomes = Math.round((totalLoadMwh / 12_146) * -1e3);
+    const equivalentHomes = Math.round((totalLoadMwh / 12_146) * -1000);
 
     chart = (
-      <Fragment>
-        <h3 className="avert-chart-title">
-          EE/RE profile based on values entered:{' '}
-          <span css={modalStyles}>
-            <Tooltip id="eere-profile">
+      <>
+        <h3 className="margin-0 font-sans-md line-height-sans-2 text-base-darker text-center">
+          EE/RE profile based on values entered:&nbsp;
+          <Tooltip id="eere-profile">
+            <p className="margin-0 font-sans-sm text-base-darkest text-normal text-left">
               This graph shows the hourly changes in load that will result from
               the inputs entered above. It reflects a combination of all inputs,
               typical capacity factors for wind and solar, and adjustments for
               avoided transmission and distribution line loss, where applicable.
               This hourly EE/RE profile will be used to calculate the avoided
               emissions for this AVERT region.
-            </Tooltip>
-          </span>
+            </p>
+          </Tooltip>
         </h3>
 
-        <h4 css={chartSubtitleStyles}>
+        <h4 className="margin-top-1 font-sans-2xs text-base-darker text-normal text-center">
           Adjusted for transmission and distribution line loss and wind and
           solar capacity factors, where applicable.
         </h4>
@@ -206,13 +183,15 @@ function EEREChart() {
           }}
         />
 
-        <p className="text-base-dark">
-          This EE/RE profile will displace {totalLoadGwh.toLocaleString()} GWh
-          of regional fossil fuel generation over the course of a year. For
-          reference, this equals the annual electricity consumed by{' '}
-          {equivalentHomes.toLocaleString()} average homes in the United States.
+        <p className="margin-top-2 text-base-dark">
+          This EE/RE profile will displace{' '}
+          <strong>{totalLoadGwh.toLocaleString()} GWh</strong> of regional
+          fossil fuel generation over the course of a year. For reference, this
+          equals the annual electricity consumed by{' '}
+          <strong>{equivalentHomes.toLocaleString()}</strong> average homes in
+          the United States.
         </p>
-      </Fragment>
+      </>
     );
   }
 

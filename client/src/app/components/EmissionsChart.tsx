@@ -270,7 +270,9 @@ function EmissionsChart() {
       : '';
 
   function formatTitle(pollutant: string) {
-    return `<tspan class='avert-chart-title'>Change in ${pollutant} Emissions: ${chartLocationTitle}</tspan>`;
+    return `<tspan class='font-sans-md line-height-sans-2 text-base-darker text-center'>
+      Change in ${pollutant} Emissions: ${chartLocationTitle}
+    </tspan>`;
   }
 
   function formatYAxis(emissionsUnit: string) {
@@ -452,10 +454,11 @@ function EmissionsChart() {
       if (flaggedRegion || flaggedState || flaggedCounty) {
         return (
           <div css={noChartStyles}>
-            <p className="avert-chart-title">
+            <p className="font-sans-md line-height-sans-2 text-base-darker text-center">
               Change in {pollutantMarkup.get(pollutant)} Emissions:{' '}
               {chartLocationTitle}
             </p>
+
             <p className="text-base-dark">
               Percent change statistics are not available for{' '}
               {pollutantMarkup.get(pollutant)} because the geographic area

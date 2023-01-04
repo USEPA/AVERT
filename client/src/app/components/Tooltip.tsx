@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { ReactNode, Fragment, useRef, useEffect } from 'react';
+import { ReactNode, useRef, useEffect } from 'react';
 import { css, keyframes } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // ---
@@ -35,54 +35,27 @@ const scaleDownAnimation = keyframes`
 `;
 
 export const modalLinkStyles = css`
-  display: inline-block;
-  margin-top: -1rem;
-  width: 1rem;
-  height: 1rem;
+  left: 1px;
+  bottom: -3px;
+  border-radius: 50%;
   background-image: url(${icons});
   background-size: 400px 200px;
   background-position: -10px -10px;
-
-  position: relative;
-  left: 1px;
-  bottom: -3px;
-  transform: scale(0.75);
-
   /* hide text */
   text-indent: 400%;
   white-space: nowrap;
   overflow: hidden;
-
-  @media (min-width: 25em) {
-    transform: scale(0.8125);
-  }
-
-  @media (min-width: 30em) {
-    transform: scale(0.875);
-  }
-
-  @media (min-width: 35em) {
-    transform: scale(0.9375);
-  }
-
-  @media (min-width: 40em) {
-    transform: none;
-  }
 `;
 
 const modalStyles = css`
-  position: fixed;
   z-index: 2;
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
-  width: calc(100% - 3rem);
+  width: calc(100% - 4rem);
   max-width: 30rem;
   max-height: calc(100vh - 1rem);
-  padding: 1.5rem 1.75rem;
-  font-size: 0.875rem !important;
   box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.33);
-  background-color: white;
 
   animation-timing-function: ease-out;
   animation-fill-mode: both;
@@ -101,29 +74,25 @@ const modalStyles = css`
     /* animation-name: ${scaleDownAnimation}; */
     animation-duration: 0.3s;
   }
-
-  p {
-    font-size: 0.875rem;
-  }
 `;
 
 const modalCloseStyles = css`
-  position: absolute;
   z-index: 1;
   top: 0;
   right: 0;
-  padding: 0 0.5rem;
-  font-weight: bold;
-  font-size: 1.25rem;
-  color: white;
-  background-color: rgba(0, 0, 0, 0.66);
+  width: 28px;
+  height: 28px;
+  background-color: rgb(0, 164, 200); // avert-light-blue;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
-  text-decoration: none;
-  opacity: 0.25;
+  opacity: 0.625;
+
+  &:visited {
+    color: white;
+  }
 
   &:hover,
   &:focus {
-    opacity: 0.75;
+    opacity: 1;
   }
 `;
 
@@ -140,9 +109,10 @@ export function Tooltip(props: { id: string; children: ReactNode }) {
   }, [closeLinkRef]);
 
   return (
-    <Fragment>
+    <>
       <a
         css={modalLinkStyles}
+        className="position-relative display-inline-block width-2 height-2"
         href="/"
         onClick={(ev) => {
           ev.preventDefault();
@@ -155,12 +125,17 @@ export function Tooltip(props: { id: string; children: ReactNode }) {
 
       <span
         css={modalStyles}
+        className="position-fixed padding-x-4 padding-y-3 bg-white"
         data-modal-id={id}
         data-modal-active={activeModalId === id}
         data-modal-closing={closingModalId === id}
       >
         <a
           css={modalCloseStyles}
+          className={
+            `position-absolute display-flex flex-align-center flex-justify-center ` +
+            `font-sans-md text-center text-bold text-no-underline text-white`
+          }
           href="/"
           ref={closeLinkRef}
           data-modal-close
@@ -175,6 +150,6 @@ export function Tooltip(props: { id: string; children: ReactNode }) {
 
         {children}
       </span>
-    </Fragment>
+    </>
   );
 }

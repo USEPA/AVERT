@@ -351,6 +351,7 @@ export function Panels() {
               </p>
 
               <RegionsList />
+
               <RegionsMap />
 
               <p className="text-base-dark">
@@ -378,6 +379,7 @@ export function Panels() {
               </p>
 
               <StatesList />
+
               <StatesMap />
 
               <p className="text-base-dark">
@@ -436,8 +438,12 @@ export function Panels() {
             >
               AVERT user manual
             </a>{' '}
-            or click the <span css={modalLinkStyles} /> icon for each program
-            type below.
+            or click the &nbsp;
+            <span
+              css={modalLinkStyles}
+              className="position-relative display-inline-block width-2 height-2"
+            />
+            &nbsp; icon for each program type below.
           </p>
 
           <p className="text-base-dark">

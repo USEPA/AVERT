@@ -259,7 +259,7 @@ export function EEREInputs() {
                 <EERETextInput
                   label="Broad-based program: Reduce generation by:"
                   ariaLabel="Load reduction percentage applied to all hours of the year"
-                  suffix="% in all hours"
+                  suffix="%&nbsp;in&nbsp;all&nbsp;hours"
                   value={broadProgram}
                   fieldName="broadProgram"
                   disabled={reduction || topHours}
@@ -281,7 +281,7 @@ export function EEREInputs() {
                   className="margin-top-1 tablet:margin-top-0"
                   label="Targeted program: Reduce generation by:"
                   ariaLabel="Load reduction (as a fraction of peaking load) that would be targeted"
-                  suffix="% during the peak: &nbsp;"
+                  suffix="%&nbsp;during&nbsp;the&nbsp;peak:&nbsp;&nbsp;"
                   value={reduction}
                   fieldName="reduction"
                   disabled={broadProgram}
@@ -289,9 +289,8 @@ export function EEREInputs() {
                 />
 
                 <EERETextInput
-                  className="margin-top-1 tablet:margin-top-0"
                   ariaLabel="Fraction of high-demand hours that the program is expected to affect"
-                  suffix="% of hours"
+                  suffix="%&nbsp;of&nbsp;hours"
                   value={topHours}
                   fieldName="topHours"
                   disabled={broadProgram}
