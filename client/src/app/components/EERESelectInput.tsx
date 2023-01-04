@@ -39,7 +39,7 @@ export function EERESelectInput(props: {
           id={fieldName}
           className={
             `usa-select ` +
-            `display-inline-block height-auto ` +
+            `display-inline-block height-auto maxw-full ` +
             `margin-y-05 padding-left-1 padding-y-05 padding-right-4 ` +
             `border-width-1px border-solid border-base-light ` +
             `text-bold font-sans-xs`

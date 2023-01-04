@@ -56,7 +56,7 @@ export function EERETextInput(props: {
           id={fieldName}
           className={
             `usa-input ` +
-            `display-inline-block margin-y-05 padding-05 height-auto width-auto ` +
+            `display-inline-block margin-y-05 padding-05 height-auto maxw-full ` +
             `border-width-1px border-solid border-base-light ` +
             `text-right text-bold font-sans-xs`
           }

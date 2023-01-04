@@ -75,7 +75,7 @@ function EVSalesAndStockTable(props: { className?: string }) {
         EV Sales and Stock Comparison
       </h3>
 
-      <div className="overflow-auto">
+      <div className="overflow-x-scroll">
         <table className={`avert-table ${className ? className : ''}`}>
           <thead>
             <tr>
@@ -228,7 +228,7 @@ function EEREEVComparisonTable(props: { className?: string }) {
         EE/RE and EV Comparison
       </h3>
 
-      <div className="overflow-auto">
+      <div className="overflow-x-scroll">
         <table className={`avert-table ${className ? className : ''}`}>
           <thead>
             <tr>

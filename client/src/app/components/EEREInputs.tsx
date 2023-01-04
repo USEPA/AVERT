@@ -185,8 +185,8 @@ export function EEREInputs() {
               <strong>Choose one:</strong>
             </p>
 
-            <ul className="margin-0 padding-left-3">
-              <li className="margin-0">
+            <div className="tablet:display-flex">
+              <div className="flex-1 tablet:margin-right-2">
                 <EERETextInput
                   label="Reduce total annual generation by:"
                   ariaLabel="Number of GWh expected to be saved in a single year"
@@ -206,9 +206,9 @@ export function EEREInputs() {
                     </>
                   }
                 />
-              </li>
+              </div>
 
-              <li className="margin-0">
+              <div className="flex-1 tablet:margin-left-2">
                 <EERETextInput
                   label="Reduce hourly generation by:"
                   ariaLabel="Constant reduction for every hour of the year, in MW"
@@ -228,8 +228,8 @@ export function EEREInputs() {
                     </>
                   }
                 />
-              </li>
-            </ul>
+              </div>
+            </div>
           </section>
         </details>
 
@@ -253,8 +253,8 @@ export function EEREInputs() {
               <strong>Choose one:</strong>
             </p>
 
-            <ul className="margin-0 padding-left-3">
-              <li className="margin-0">
+            <div className="tablet:display-flex">
+              <div className="flex-1 tablet:margin-right-2">
                 <EERETextInput
                   label="Broad-based program: Reduce generation by:"
                   ariaLabel="Load reduction percentage applied to all hours of the year"
@@ -273,9 +273,9 @@ export function EEREInputs() {
                     </>
                   }
                 />
-              </li>
+              </div>
 
-              <li className="margin-0">
+              <div className="flex-1 tablet:margin-left-2">
                 <EERETextInput
                   label="Targeted program: Reduce generation by:"
                   ariaLabel="Load reduction (as a fraction of peaking load) that would be targeted"
@@ -303,8 +303,8 @@ export function EEREInputs() {
                     </>
                   }
                 />
-              </li>
-            </ul>
+              </div>
+            </div>
           </section>
         </details>
 
@@ -334,34 +334,15 @@ export function EEREInputs() {
           </summary>
 
           <section className="padding-top-0 padding-x-2 padding-bottom-105">
-            <p className="margin-0">
-              <EERETextInput
-                label="Onshore wind total capacity:"
-                ariaLabel="Total capacity (maximum potential electricity generation) in MW"
-                suffix="MW"
-                value={onshoreWind}
-                fieldName="onshoreWind"
-                onChange={(text) => dispatch(updateEereOnshoreWind(text))}
-                tooltip={
-                  <>
-                    Enter the total capacity (maximum potential electricity
-                    generation) for this type of resource, measured in MW. The
-                    model uses these inputs along with hourly capacity factors
-                    that vary by resource type and region.
-                  </>
-                }
-              />
-            </p>
-
-            <p className="margin-0">
-              {atLeastOneRegionSupportsOffshoreWind ? (
+            <div className="tablet:display-flex">
+              <div className="flex-1 tablet:margin-right-2">
                 <EERETextInput
-                  label="Offshore wind total capacity:"
+                  label="Onshore wind total capacity:"
                   ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                   suffix="MW"
-                  value={offshoreWind}
-                  fieldName="offshoreWind"
-                  onChange={(text) => dispatch(updateEereOffshoreWind(text))}
+                  value={onshoreWind}
+                  fieldName="onshoreWind"
+                  onChange={(text) => dispatch(updateEereOnshoreWind(text))}
                   tooltip={
                     <>
                       Enter the total capacity (maximum potential electricity
@@ -371,35 +352,57 @@ export function EEREInputs() {
                     </>
                   }
                 />
-              ) : geographicFocus === 'regions' ? (
-                <span className="display-block">
-                  <em>
-                    Offshore wind calculations are not available in this AVERT
-                    region{' '}
-                  </em>
+              </div>
 
-                  <Tooltip id="no-offshoreWind-region">
-                    AVERT does not support offshore wind modeling in this
-                    region. It is unlikely that offshore areas suitable for wind
-                    farms would connect to the electrical grid in this region.
-                  </Tooltip>
-                </span>
-              ) : (
-                <span className="display-block">
-                  <em>
-                    Offshore wind calculations are not available in the AVERT
-                    region(s) that this state is part of{' '}
-                  </em>
+              <div className="flex-1 tablet:margin-left-2">
+                {atLeastOneRegionSupportsOffshoreWind ? (
+                  <EERETextInput
+                    label="Offshore wind total capacity:"
+                    ariaLabel="Total capacity (maximum potential electricity generation) in MW"
+                    suffix="MW"
+                    value={offshoreWind}
+                    fieldName="offshoreWind"
+                    onChange={(text) => dispatch(updateEereOffshoreWind(text))}
+                    tooltip={
+                      <>
+                        Enter the total capacity (maximum potential electricity
+                        generation) for this type of resource, measured in MW.
+                        The model uses these inputs along with hourly capacity
+                        factors that vary by resource type and region.
+                      </>
+                    }
+                  />
+                ) : geographicFocus === 'regions' ? (
+                  <span className="display-block">
+                    <em>
+                      Offshore wind calculations are not available in this AVERT
+                      region{' '}
+                    </em>
 
-                  <Tooltip id="no-offshoreWind-state">
-                    AVERT does not support offshore wind modeling in the
-                    region(s) that this state is part of. It is unlikely that
-                    offshore areas suitable for wind farms would connect to the
-                    electrical grid in these regions.
-                  </Tooltip>
-                </span>
-              )}
-            </p>
+                    <Tooltip id="no-offshoreWind-region">
+                      AVERT does not support offshore wind modeling in this
+                      region. It is unlikely that offshore areas suitable for
+                      wind farms would connect to the electrical grid in this
+                      region.
+                    </Tooltip>
+                  </span>
+                ) : (
+                  <span className="display-block">
+                    <em>
+                      Offshore wind calculations are not available in the AVERT
+                      region(s) that this state is part of{' '}
+                    </em>
+
+                    <Tooltip id="no-offshoreWind-state">
+                      AVERT does not support offshore wind modeling in the
+                      region(s) that this state is part of. It is unlikely that
+                      offshore areas suitable for wind farms would connect to
+                      the electrical grid in these regions.
+                    </Tooltip>
+                  </span>
+                )}
+              </div>
+            </div>
           </section>
         </details>
 
@@ -419,43 +422,45 @@ export function EEREInputs() {
           </summary>
 
           <section className="padding-top-0 padding-x-2 padding-bottom-105">
-            <p className="margin-0">
-              <EERETextInput
-                label="Utility-scale solar photovoltaic total capacity:"
-                ariaLabel="Total capacity (maximum potential electricity generation) in MW"
-                suffix="MW"
-                value={utilitySolar}
-                fieldName="utilitySolar"
-                onChange={(text) => dispatch(updateEereUtilitySolar(text))}
-                tooltip={
-                  <>
-                    Enter the total capacity (maximum potential electricity
-                    generation) for this type of resource, measured in MW. The
-                    model uses these inputs along with hourly capacity factors
-                    that vary by resource type and region.
-                  </>
-                }
-              />
-            </p>
+            <div className="tablet:display-flex">
+              <div className="flex-1 tablet:margin-right-2">
+                <EERETextInput
+                  label="Utility-scale solar photovoltaic total capacity:"
+                  ariaLabel="Total capacity (maximum potential electricity generation) in MW"
+                  suffix="MW"
+                  value={utilitySolar}
+                  fieldName="utilitySolar"
+                  onChange={(text) => dispatch(updateEereUtilitySolar(text))}
+                  tooltip={
+                    <>
+                      Enter the total capacity (maximum potential electricity
+                      generation) for this type of resource, measured in MW. The
+                      model uses these inputs along with hourly capacity factors
+                      that vary by resource type and region.
+                    </>
+                  }
+                />
+              </div>
 
-            <p className="margin-0">
-              <EERETextInput
-                label="Distributed (rooftop) solar photovoltaic total capacity:"
-                ariaLabel="Total capacity (maximum potential electricity generation) in MW"
-                suffix="MW"
-                value={rooftopSolar}
-                fieldName="rooftopSolar"
-                onChange={(text) => dispatch(updateEereRooftopSolar(text))}
-                tooltip={
-                  <>
-                    Enter the total capacity (maximum potential electricity
-                    generation) for this type of resource, measured in MW. The
-                    model uses these inputs along with hourly capacity factors
-                    that vary by resource type and region.
-                  </>
-                }
-              />
-            </p>
+              <div className="flex-1 tablet:margin-left-2">
+                <EERETextInput
+                  label="Distributed (rooftop) solar photovoltaic total capacity:"
+                  ariaLabel="Total capacity (maximum potential electricity generation) in MW"
+                  suffix="MW"
+                  value={rooftopSolar}
+                  fieldName="rooftopSolar"
+                  onChange={(text) => dispatch(updateEereRooftopSolar(text))}
+                  tooltip={
+                    <>
+                      Enter the total capacity (maximum potential electricity
+                      generation) for this type of resource, measured in MW. The
+                      model uses these inputs along with hourly capacity factors
+                      that vary by resource type and region.
+                    </>
+                  }
+                />
+              </div>
+            </div>
           </section>
         </details>
 
@@ -485,54 +490,58 @@ export function EEREInputs() {
           </summary>
 
           <section className="padding-top-0 padding-x-2 padding-bottom-105">
-            <div className="display-flex">
-              <div className="margin-right-2">
-                <EERETextInput
-                  label="Light-duty battery EVs:"
-                  ariaLabel="TODO"
-                  value={batteryEVs}
-                  fieldName="batteryEVs"
-                  onChange={(text) => dispatch(updateEereBatteryEVs(text))}
-                  tooltip={<>TODO</>}
-                />
+            <div className="desktop:display-flex">
+              <div className="tablet:display-flex desktop:display-block desktop:margin-right-2">
+                <div className="flex-1 tablet:margin-right-2 desktop:margin-0">
+                  <EERETextInput
+                    label="Light-duty battery EVs:"
+                    ariaLabel="TODO"
+                    value={batteryEVs}
+                    fieldName="batteryEVs"
+                    onChange={(text) => dispatch(updateEereBatteryEVs(text))}
+                    tooltip={<>TODO</>}
+                  />
 
-                <EERETextInput
-                  label="Light-duty plug-in hybrid EVs:"
-                  ariaLabel="TODO"
-                  value={hybridEVs}
-                  fieldName="hybridEVs"
-                  onChange={(text) => dispatch(updateEereHybridEVs(text))}
-                  tooltip={<>TODO</>}
-                />
+                  <EERETextInput
+                    label="Light-duty plug-in hybrid EVs:"
+                    ariaLabel="TODO"
+                    value={hybridEVs}
+                    fieldName="hybridEVs"
+                    onChange={(text) => dispatch(updateEereHybridEVs(text))}
+                    tooltip={<>TODO</>}
+                  />
+                </div>
 
-                <EERETextInput
-                  label="Electric transit buses:"
-                  ariaLabel="TODO"
-                  value={transitBuses}
-                  fieldName="transitBuses"
-                  onChange={(text) => dispatch(updateEereTransitBuses(text))}
-                  tooltip={<>TODO</>}
-                />
+                <div className="flex-1 tablet:margin-left-2 desktop:margin-0">
+                  <EERETextInput
+                    label="Electric transit buses:"
+                    ariaLabel="TODO"
+                    value={transitBuses}
+                    fieldName="transitBuses"
+                    onChange={(text) => dispatch(updateEereTransitBuses(text))}
+                    tooltip={<>TODO</>}
+                  />
 
-                <EERETextInput
-                  label="Electric school buses:"
-                  ariaLabel="TODO"
-                  value={schoolBuses}
-                  fieldName="schoolBuses"
-                  onChange={(text) => dispatch(updateEereSchoolBuses(text))}
-                  tooltip={<>TODO</>}
-                />
+                  <EERETextInput
+                    label="Electric school buses:"
+                    ariaLabel="TODO"
+                    value={schoolBuses}
+                    fieldName="schoolBuses"
+                    onChange={(text) => dispatch(updateEereSchoolBuses(text))}
+                    tooltip={<>TODO</>}
+                  />
+                </div>
               </div>
 
-              <div className="flex-1 margin-left-2">
+              <div className="margin-top-2 flex-1 desktop:margin-top-0 desktop:margin-left-2">
                 <EVSalesAndStockTable className="width-full" />
               </div>
             </div>
 
             <hr className="border-width-1px border-x-width-0 border-bottom-width-0 border-solid border-base-light" />
 
-            <div className="display-flex">
-              <div className="flex-1 margin-right-2">
+            <div className="desktop:display-flex">
+              <div className="flex-1 desktop:margin-right-2">
                 <EERESelectInput
                   label="Location of EV deployment:"
                   ariaLabel="TODO"
@@ -546,7 +555,7 @@ export function EEREInputs() {
                 />
               </div>
 
-              <div className="flex-1 margin-x-2">
+              <div className="flex-1 desktop:margin-x-2">
                 <EERESelectInput
                   label="EV model year:"
                   ariaLabel="TODO"
@@ -558,7 +567,7 @@ export function EEREInputs() {
                 />
               </div>
 
-              <div className="flex-1 margin-left-2">
+              <div className="flex-1 desktop:margin-left-2">
                 <EERESelectInput
                   label="ICE vehicle being replaced:"
                   ariaLabel="TODO"
