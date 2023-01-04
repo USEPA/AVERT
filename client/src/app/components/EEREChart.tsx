@@ -35,7 +35,7 @@ const ValidationMessage = styled('p')<{ type: 'error' | 'warning' }>`
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 
-function EEREChart() {
+export function EEREChart() {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const softValid = useTypedSelector(
     ({ eere }) => eere.combinedProfile.softValid,
@@ -285,5 +285,3 @@ function EEREChart() {
     </div>
   );
 }
-
-export default EEREChart;

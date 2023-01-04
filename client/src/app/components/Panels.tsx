@@ -15,9 +15,9 @@ import { StatesList } from 'app/components/StatesList';
 import { StatesMap } from 'app/components/StatesMap';
 import { UnitConversion } from 'app/components/UnitConversion';
 import { EEREInputs } from 'app/components/EEREInputs';
-import EEREChart from 'app/components/EEREChart';
-import DisplacementsTable from 'app/components/DisplacementsTable';
-import EmissionsTable from 'app/components/EmissionsTable';
+import { EEREChart } from 'app/components/EEREChart';
+import { DisplacementsTable } from 'app/components/DisplacementsTable';
+import { EmissionsTable } from 'app/components/EmissionsTable';
 import EmissionsChart from 'app/components/EmissionsChart';
 import COBRAConnection from 'app/components/COBRAConnection';
 import DataDownload from 'app/components/DataDownload';
@@ -233,7 +233,7 @@ export function Panels() {
       <h3 className="avert-blue margin-bottom-1 font-serif-md">
         Annual Regional Displacements:
         <br />
-        <span className="display-block margin-top-05 font-serif-sm">
+        <span className="display-block margin-top-05 font-serif-xs">
           {resultsHeading}
         </span>
       </h3>
@@ -247,7 +247,7 @@ export function Panels() {
       <h3 className="avert-blue margin-bottom-1 font-serif-md">
         Annual State Emission Changes:
         <br />
-        <span className="display-block margin-top-05 font-serif-sm">
+        <span className="display-block margin-top-05 font-serif-xs">
           {resultsHeading}
         </span>
       </h3>

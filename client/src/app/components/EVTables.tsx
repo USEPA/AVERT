@@ -101,6 +101,7 @@ function EVSalesAndStockTable(props: { className?: string }) {
                 </th>
               </tr>
             </thead>
+
             <tbody>
               <tr>
                 <td>Light-duty vehicles</td>
@@ -277,6 +278,7 @@ function EEREEVComparisonTable(props: { className?: string }) {
                 </th>
               </tr>
             </thead>
+
             <tbody>
               <tr>
                 <td>EE&nbsp;(retail)</td>

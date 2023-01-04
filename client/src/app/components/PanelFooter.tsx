@@ -166,12 +166,7 @@ export function PanelFooter(props: {
   );
 
   return (
-    <div
-      className={
-        `avert-step-footer ` + //
-        `overflow-hidden padding-105 bg-base-lightest`
-      }
-    >
+    <div className="avert-step-footer overflow-hidden padding-105 bg-base-lightest">
       <p>
         {prevButton}
         {nextButton}
