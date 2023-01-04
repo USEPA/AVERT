@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { Fragment, useEffect } from 'react';
+import { useEffect } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
@@ -35,12 +35,10 @@ import {
   useSelectedStateRegions,
 } from 'app/hooks';
 
-type ContainerProps = {
+const Container = styled('div')<{
   lightOverlay: boolean;
   darkOverlay: boolean;
-};
-
-const Container = styled('div')<ContainerProps>`
+}>`
   ${({ lightOverlay, darkOverlay }) => {
     const overlayStyles = css`
       position: relative;
@@ -79,74 +77,11 @@ const Container = styled('div')<ContainerProps>`
 `;
 
 const overlayTextStyles = css`
-  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
-  text-align: center;
   color: #00bee6;
-
-  svg {
-    width: 100%;
-    transform: scale(0.75);
-
-    @media (min-width: 25em) {
-      transform: scale(0.8125);
-    }
-
-    @media (min-width: 30em) {
-      transform: scale(0.875);
-    }
-
-    @media (min-width: 35em) {
-      transform: scale(0.9375);
-    }
-
-    @media (min-width: 40em) {
-      transform: none;
-    }
-  }
-`;
-
-const overlayHeadingStyles = css`
-  font-size: 1.25rem;
-
-  @media (min-width: 25em) {
-    font-size: 1.3125rem;
-  }
-
-  @media (min-width: 30em) {
-    font-size: 1.375rem;
-  }
-
-  @media (min-width: 35em) {
-    font-size: 1.4375rem;
-  }
-
-  @media (min-width: 40em) {
-    font-size: 1.5rem;
-  }
-`;
-
-const overlayInfoStyles = css`
-  font-size: 0.75rem;
-
-  @media (min-width: 25em) {
-    font-size: 0.8125rem;
-  }
-
-  @media (min-width: 30em) {
-    font-size: 0.875rem;
-  }
-
-  @media (min-width: 35em) {
-    font-size: 0.9375rem;
-  }
-
-  @media (min-width: 40em) {
-    font-size: 1rem;
-  }
 `;
 
 const panelStyles = css`
@@ -156,24 +91,7 @@ const panelStyles = css`
 `;
 
 const panelBodyStyles = css`
-  border-top: 0.375rem solid rgb(0, 164, 200);
-  min-height: 30rem;
-
-  @media (min-width: 25em) {
-    padding: 1.125rem;
-  }
-
-  @media (min-width: 30em) {
-    padding: 1.25rem;
-  }
-
-  @media (min-width: 35em) {
-    padding: 1.375rem;
-  }
-
-  @media (min-width: 40em) {
-    padding: 1.5rem;
-  }
+  border-top: 0.375rem solid rgb(0, 164, 200); // avert-light-blue
 `;
 
 const tabsStyles = css`
@@ -189,27 +107,18 @@ const tabsStyles = css`
     border-bottom: 1px solid #a9aeb1; // base-light
     width: 50%;
     font-weight: 700;
-    font-size: 0.875rem;
+    font-size: 1rem;
     line-height: 1;
     color: #565c65; // base-dark
     background-color: whitesmoke;
-    outline: none;
     user-select: none;
-
-    @media (min-width: 25em) {
-      font-size: 0.9375rem;
-    }
-
-    @media (min-width: 30em) {
-      font-size: 1rem;
-    }
-
-    @media (min-width: 35em) {
-      font-size: 1.0625rem;
-    }
 
     @media (min-width: 40em) {
       font-size: 1.125rem;
+    }
+
+    &:focus {
+      outline: none;
     }
 
     &:hover {
@@ -234,54 +143,19 @@ const tabsStyles = css`
 
   [data-reach-tab-panel] {
     outline: none;
-
-    p:first-of-type {
-      margin-top: 0;
-    }
   }
 
   [data-reach-tab-panels] {
-    ${panelBodyStyles}
-
-    padding: 1rem;
-    border-top: none;
-    min-height: 0;
+    padding: 1.5rem;
   }
 `;
 
 const messageStyles = css`
   position: relative;
-  left: -1rem;
-  width: calc(100% + 2rem);
-  padding: 1rem;
+  left: -1.5rem;
+  width: calc(100% + 3rem);
+  padding: 1.5rem;
   margin-top: 0;
-  font-size: 0.625rem;
-
-  @media (min-width: 25em) {
-    left: -1.125rem;
-    width: calc(100% + 2.25rem);
-    padding: 1.125rem;
-  }
-
-  @media (min-width: 30em) {
-    left: -1.25rem;
-    width: calc(100% + 2.5rem);
-    padding: 1.25rem;
-    font-size: 0.6875rem;
-  }
-
-  @media (min-width: 35em) {
-    left: -1.375rem;
-    width: calc(100% + 2.75rem);
-    padding: 1.375rem;
-  }
-
-  @media (min-width: 40em) {
-    left: -1.5rem;
-    width: calc(100% + 3rem);
-    padding: 1.5rem;
-    font-size: 0.75rem;
-  }
 `;
 
 const topMessageStyles = css`
@@ -293,35 +167,7 @@ const topMessageStyles = css`
 export const bottomMessageStyles = css`
   ${messageStyles};
 
-  bottom: -1rem;
-
-  @media (min-width: 25em) {
-    bottom: -1.125rem;
-  }
-
-  @media (min-width: 30em) {
-    bottom: -1.25rem;
-  }
-
-  @media (min-width: 35em) {
-    bottom: -1.375rem;
-  }
-
-  @media (min-width: 40em) {
-    bottom: -1.5rem;
-  }
-`;
-
-export const messageHeadingStyles = css`
-  font-size: 0.75rem;
-
-  @media (min-width: 30em) {
-    font-size: 0.8125rem;
-  }
-
-  @media (min-width: 40em) {
-    font-size: 0.875rem;
-  }
+  bottom: -1.5rem;
 `;
 
 export const infoMessageStyles = css`
@@ -383,7 +229,7 @@ export function Panels() {
   // the order of the displacements table and emissions table will be
   // determined by the selected geography (regions or states)
   const displacementsTable = (
-    <Fragment>
+    <>
       <h3 className="avert-blue margin-bottom-1 font-serif-md">
         Annual Regional Displacements:
         <br />
@@ -391,12 +237,13 @@ export function Panels() {
           {resultsHeading}
         </span>
       </h3>
+
       <DisplacementsTable />
-    </Fragment>
+    </>
   );
 
   const emissionsTable = (
-    <Fragment>
+    <>
       <h3 className="avert-blue margin-bottom-1 font-serif-md">
         Annual State Emission Changes:
         <br />
@@ -404,8 +251,9 @@ export function Panels() {
           {resultsHeading}
         </span>
       </h3>
+
       <EmissionsTable />
-    </Fragment>
+    </>
   );
 
   return (
@@ -432,11 +280,14 @@ export function Panels() {
       {
         // conditionally display loading indicator
         loading && !serverCalcError && (
-          <div css={overlayTextStyles}>
+          <div
+            css={overlayTextStyles}
+            className="position-absolute text-center"
+          >
             <LoadingIcon />
-            <p css={overlayHeadingStyles} className="text-bold">
-              LOADING...
-            </p>
+
+            <p className="font-sans-lg text-bold">LOADING...</p>
+
             {
               // conditionally display progress bar
               activeStep === 3 && (
@@ -448,7 +299,8 @@ export function Panels() {
                   >
                     {(loadingProgress * 100) / loadingSteps}%
                   </progress>
-                  <p css={overlayInfoStyles} className="margin-top-1">
+
+                  <p className="margin-top-1 font-sans-sm">
                     These calculations may take several minutes.
                   </p>
                 </div>
@@ -461,11 +313,13 @@ export function Panels() {
       {
         // conditionally display web server error
         serverCalcError && (
-          <div css={overlayTextStyles}>
-            <p css={overlayHeadingStyles} className="text-bold">
-              Web Server Error
-            </p>
-            <p css={overlayInfoStyles} className="margin-top-1">
+          <div
+            css={overlayTextStyles}
+            className="position-absolute text-center"
+          >
+            <p className="font-sans-lg text-bold">Web Server Error</p>
+
+            <p className="margin-top-1 font-sans-sm">
               Please try reloading the page.
             </p>
           </div>
@@ -557,7 +411,7 @@ export function Panels() {
       </section>
 
       <section css={panelStyles} data-active={activeStep === 2}>
-        <div css={panelBodyStyles} className="padding-2">
+        <div css={panelBodyStyles} className="padding-3 minh-mobile-lg">
           <h2 className="avert-blue margin-bottom-105 padding-bottom-05 border-bottom-2px font-serif-lg">
             Set Energy Scenario
           </h2>
@@ -604,7 +458,7 @@ export function Panels() {
       </section>
 
       <section css={panelStyles} data-active={activeStep === 3}>
-        <div css={panelBodyStyles} className="padding-2">
+        <div css={panelBodyStyles} className="padding-3 minh-mobile-lg">
           <h2 className="avert-blue margin-bottom-105 padding-bottom-05 border-bottom-2px font-serif-lg">
             Results: Avoided Regional, State, and County-Level Emissions
           </h2>
@@ -612,11 +466,11 @@ export function Panels() {
           {
             // conditionally display validation warning
             !softValid && (
-              <p css={[topMessageStyles, warningMessageStyles]}>
-                <span
-                  css={messageHeadingStyles}
-                  className="dislay-block margin-bottom-05 text-bold"
-                >
+              <p
+                css={[topMessageStyles, warningMessageStyles]}
+                className="font-sans-xs"
+              >
+                <span className="dislay-block margin-bottom-05 text-bold">
                   WARNING:
                 </span>
                 The proposed EE/RE programs would collectively displace more
@@ -630,15 +484,15 @@ export function Panels() {
           }
 
           {geographicFocus === 'regions' ? (
-            <Fragment>
+            <>
               {displacementsTable}
               {emissionsTable}
-            </Fragment>
+            </>
           ) : (
-            <Fragment>
+            <>
               {emissionsTable}
               {displacementsTable}
-            </Fragment>
+            </>
           )}
 
           <h3 className="avert-blue margin-bottom-1 font-serif-md">

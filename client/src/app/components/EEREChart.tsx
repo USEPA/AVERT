@@ -9,7 +9,6 @@ import HighchartsReact from 'highcharts-react-official';
 import { Tooltip } from 'app/components/Tooltip';
 import {
   bottomMessageStyles,
-  messageHeadingStyles,
   errorMessageStyles,
   warningMessageStyles,
 } from 'app/components/Panels';
@@ -264,11 +263,8 @@ function EEREChart() {
     const ampm = x.timestamp.hour > 12 ? 'PM' : 'AM';
 
     return (
-      <ValidationMessage type={type}>
-        <span
-          css={messageHeadingStyles}
-          className="display-block margin-bottom-05 text-bold"
-        >
+      <ValidationMessage type={type} className="margin-bottom-0 font-sans-xs">
+        <span className="display-block margin-bottom-05 text-bold">
           {x.heading}:
         </span>
         The combined impact of your proposed programs would displace more than{' '}

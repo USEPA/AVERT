@@ -82,7 +82,7 @@ function DataDownload() {
       {isDesktopSafari && (
         <p
           css={[bottomMessageStyles, warningMessageStyles]}
-          className="text-center"
+          className="margin-bottom-0 font-sans-xs text-center"
         >
           Please press <strong>⌘ + S</strong> to save the file after it is
           opened.
