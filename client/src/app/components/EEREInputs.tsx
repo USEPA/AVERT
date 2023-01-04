@@ -279,7 +279,7 @@ export function EEREInputs() {
                 <EERETextInput
                   label="Targeted program: Reduce generation by:"
                   ariaLabel="Load reduction (as a fraction of peaking load) that would be targeted"
-                  suffix="% during the peak:"
+                  suffix="% during the peak: &nbsp;"
                   value={reduction}
                   fieldName="reduction"
                   disabled={broadProgram}
@@ -485,123 +485,95 @@ export function EEREInputs() {
           </summary>
 
           <section className="padding-top-0 padding-x-2 padding-bottom-105">
-            <p className="margin-0">
-              <EERETextInput
-                label="Light-duty battery EVs:"
-                ariaLabel="TODO"
-                value={batteryEVs}
-                fieldName="batteryEVs"
-                onChange={(text) => dispatch(updateEereBatteryEVs(text))}
-                tooltip={<>TODO</>}
-              />
-            </p>
+            <div className="display-flex">
+              <div className="margin-right-2">
+                <EERETextInput
+                  label="Light-duty battery EVs:"
+                  ariaLabel="TODO"
+                  value={batteryEVs}
+                  fieldName="batteryEVs"
+                  onChange={(text) => dispatch(updateEereBatteryEVs(text))}
+                  tooltip={<>TODO</>}
+                />
 
-            <p className="margin-0">
-              <EERETextInput
-                label="Light-duty plug-in hybrid EVs:"
-                ariaLabel="TODO"
-                value={hybridEVs}
-                fieldName="hybridEVs"
-                onChange={(text) => dispatch(updateEereHybridEVs(text))}
-                tooltip={<>TODO</>}
-              />
-            </p>
+                <EERETextInput
+                  label="Light-duty plug-in hybrid EVs:"
+                  ariaLabel="TODO"
+                  value={hybridEVs}
+                  fieldName="hybridEVs"
+                  onChange={(text) => dispatch(updateEereHybridEVs(text))}
+                  tooltip={<>TODO</>}
+                />
 
-            <p className="margin-0">
-              <EERETextInput
-                label="Electric transit buses:"
-                ariaLabel="TODO"
-                value={transitBuses}
-                fieldName="transitBuses"
-                onChange={(text) => dispatch(updateEereTransitBuses(text))}
-                tooltip={<>TODO</>}
-              />
-            </p>
+                <EERETextInput
+                  label="Electric transit buses:"
+                  ariaLabel="TODO"
+                  value={transitBuses}
+                  fieldName="transitBuses"
+                  onChange={(text) => dispatch(updateEereTransitBuses(text))}
+                  tooltip={<>TODO</>}
+                />
 
-            <p className="margin-0">
-              <EERETextInput
-                label="Electric school buses:"
-                ariaLabel="TODO"
-                value={schoolBuses}
-                fieldName="schoolBuses"
-                onChange={(text) => dispatch(updateEereSchoolBuses(text))}
-                tooltip={<>TODO</>}
-              />
-            </p>
+                <EERETextInput
+                  label="Electric school buses:"
+                  ariaLabel="TODO"
+                  value={schoolBuses}
+                  fieldName="schoolBuses"
+                  onChange={(text) => dispatch(updateEereSchoolBuses(text))}
+                  tooltip={<>TODO</>}
+                />
+              </div>
 
-            <hr
-              className={
-                `margin-y-105 ` +
-                `border-width-1px border-x-width-0 border-bottom-width-0 border-solid border-base-light`
-              }
-            />
+              <div className="flex-1 margin-left-2">
+                <EVSalesAndStockTable className="width-full" />
+              </div>
+            </div>
 
-            <p className="margin-0">
-              <label htmlFor="evDeploymentLocation">
-                Location of EV deployment:
-              </label>
+            <hr className="border-width-1px border-x-width-0 border-bottom-width-0 border-solid border-base-light" />
 
-              <EERESelectInput
-                ariaLabel="TODO"
-                options={evDeploymentLocationOptions}
-                value={evDeploymentLocation}
-                fieldName="evDeploymentLocation"
-                onChange={(option) =>
-                  dispatch(updateEereEVDeploymentLocation(option))
-                }
-              />
+            <div className="display-flex">
+              <div className="flex-1 margin-right-2">
+                <EERESelectInput
+                  label="Location of EV deployment:"
+                  ariaLabel="TODO"
+                  options={evDeploymentLocationOptions}
+                  value={evDeploymentLocation}
+                  fieldName="evDeploymentLocation"
+                  onChange={(option) =>
+                    dispatch(updateEereEVDeploymentLocation(option))
+                  }
+                  tooltip={<>TODO</>}
+                />
+              </div>
 
-              <Tooltip id="evDeploymentLocation">
-                <>TODO</>
-              </Tooltip>
-            </p>
+              <div className="flex-1 margin-x-2">
+                <EERESelectInput
+                  label="EV model year:"
+                  ariaLabel="TODO"
+                  options={evModelYearOptions}
+                  value={evModelYear}
+                  fieldName="evModelYear"
+                  onChange={(option) => dispatch(updateEereEVModelYear(option))}
+                  tooltip={<>TODO</>}
+                />
+              </div>
 
-            <hr
-              className={
-                `margin-y-105 ` +
-                `border-width-1px border-x-width-0 border-bottom-width-0 border-solid border-base-light`
-              }
-            />
+              <div className="flex-1 margin-left-2">
+                <EERESelectInput
+                  label="ICE vehicle being replaced:"
+                  ariaLabel="TODO"
+                  options={iceReplacementVehicleOptions}
+                  value={iceReplacementVehicle}
+                  fieldName="iceReplacementVehicle"
+                  onChange={(option) =>
+                    dispatch(updateEereICEReplacementVehicle(option))
+                  }
+                  tooltip={<>TODO</>}
+                />
+              </div>
+            </div>
 
-            <p className="margin-0">
-              <label htmlFor="evModelYear">EV model year:</label>
-
-              <EERESelectInput
-                ariaLabel="TODO"
-                options={evModelYearOptions}
-                value={evModelYear}
-                fieldName="evModelYear"
-                onChange={(option) => dispatch(updateEereEVModelYear(option))}
-              />
-
-              <Tooltip id="evModelYear">
-                <>TODO</>
-              </Tooltip>
-            </p>
-
-            <p className="margin-0">
-              <label htmlFor="iceReplacementVehicle">
-                Internal combustion engine vehicle being replaced:
-              </label>
-
-              <EERESelectInput
-                ariaLabel="TODO"
-                options={iceReplacementVehicleOptions}
-                value={iceReplacementVehicle}
-                fieldName="iceReplacementVehicle"
-                onChange={(option) =>
-                  dispatch(updateEereICEReplacementVehicle(option))
-                }
-              />
-
-              <Tooltip id="iceReplacementVehicle">
-                <>TODO</>
-              </Tooltip>
-            </p>
-
-            <EVSalesAndStockTable />
-
-            <EEREEVComparisonTable />
+            <EEREEVComparisonTable className="width-full" />
           </section>
         </details>
       </div>

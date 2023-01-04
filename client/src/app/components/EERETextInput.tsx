@@ -42,31 +42,46 @@ export function EERETextInput(props: {
 
   return (
     <>
-      {label && <label htmlFor={fieldName}>{label}</label>}
+      {label && (
+        <>
+          <label htmlFor={fieldName} className="display-inline-block">
+            {label}
+          </label>
+          <br />
+        </>
+      )}
 
-      <input
-        id={fieldName}
-        className={
-          `usa-input ` +
-          `display-inline-block margin-y-05 margin-x-1 padding-05 height-auto width-8 ` +
-          `border-width-1px border-solid border-base-light ` +
-          `text-right text-bold font-sans-xs`
-        }
-        aria-label={ariaLabel}
-        type="text"
-        value={value}
-        data-avert-eere-input={fieldName}
-        disabled={Boolean(disabled)}
-        onChange={(ev) => onChange(ev.target.value)}
-        onKeyPress={(ev) => {
-          if (calculationDisabled) return;
-          if (ev.key === 'Enter') dispatch(calculateEereProfile());
-        }}
-      />
+      <div className="display-flex flex-align-center">
+        <input
+          id={fieldName}
+          className={
+            `usa-input ` +
+            `display-inline-block margin-y-05 padding-05 height-auto width-auto ` +
+            `border-width-1px border-solid border-base-light ` +
+            `text-right text-bold font-sans-xs`
+          }
+          aria-label={ariaLabel}
+          type="text"
+          value={value}
+          data-avert-eere-input={fieldName}
+          disabled={Boolean(disabled)}
+          onChange={(ev) => onChange(ev.target.value)}
+          onKeyPress={(ev) => {
+            if (calculationDisabled) return;
+            if (ev.key === 'Enter') dispatch(calculateEereProfile());
+          }}
+        />
 
-      {suffix && <span className="font-sans-3xs">{suffix}&nbsp;</span>}
+        {suffix && (
+          <span className="margin-left-1 font-sans-3xs">{suffix}</span>
+        )}
 
-      {tooltip && <Tooltip id={fieldName}>{tooltip}</Tooltip>}
+        {tooltip && (
+          <span className="margin-left-05">
+            <Tooltip id={fieldName}>{tooltip}</Tooltip>
+          </span>
+        )}
+      </div>
 
       {errors.includes(
         fieldName as EERETextInputFieldName | EVTextInputFieldName,

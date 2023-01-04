@@ -384,7 +384,7 @@ export function Panels() {
   // determined by the selected geography (regions or states)
   const displacementsTable = (
     <Fragment>
-      <h3 className="avert-blue font-serif-md">
+      <h3 className="avert-blue margin-bottom-1 font-serif-md">
         Annual Regional Displacements:
         <br />
         <span className="display-block margin-top-05 font-serif-sm">
@@ -397,7 +397,7 @@ export function Panels() {
 
   const emissionsTable = (
     <Fragment>
-      <h3 className="avert-blue font-serif-md">
+      <h3 className="avert-blue margin-bottom-1 font-serif-md">
         Annual State Emission Changes:
         <br />
         <span className="display-block margin-top-05 font-serif-sm">
@@ -558,11 +558,11 @@ export function Panels() {
 
       <section css={panelStyles} data-active={activeStep === 2}>
         <div css={panelBodyStyles} className="padding-2">
-          <h2 className="avert-blue padding-bottom-05 border-bottom-2px font-serif-lg">
+          <h2 className="avert-blue margin-bottom-105 padding-bottom-05 border-bottom-2px font-serif-lg">
             Set Energy Scenario
           </h2>
 
-          <h3 className="avert-blue margin-top-0 font-serif-md">
+          <h3 className="avert-blue margin-top-0 margin-bottom-1 font-serif-md">
             {geographicFocus === 'regions'
               ? `Region: ${selectedRegionName}`
               : `State: ${selectedStateName}`}
@@ -605,7 +605,7 @@ export function Panels() {
 
       <section css={panelStyles} data-active={activeStep === 3}>
         <div css={panelBodyStyles} className="padding-2">
-          <h2 className="avert-blue padding-bottom-05 border-bottom-2px font-serif-lg">
+          <h2 className="avert-blue margin-bottom-105 padding-bottom-05 border-bottom-2px font-serif-lg">
             Results: Avoided Regional, State, and County-Level Emissions
           </h2>
 
@@ -641,7 +641,7 @@ export function Panels() {
             </Fragment>
           )}
 
-          <h3 className="avert-blue font-serif-md">
+          <h3 className="avert-blue margin-bottom-1 font-serif-md">
             Monthly Emission Changes:
             <br />
             <span className="display-block margin-top-05 font-serif-sm">
