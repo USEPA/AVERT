@@ -1,6 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
-import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 import type { ReactNode } from 'react';
 // ---
@@ -12,40 +9,7 @@ import type {
   EVTextInputFieldName,
 } from 'app/redux/reducers/eere';
 
-const labelStyles = css`
-  font-size: inherit;
-`;
-
-const inputStyles = css`
-  margin: 0.25rem;
-  padding: 0.125rem 0.25rem;
-  border: 1px solid #ccc;
-  width: 4rem;
-  font-size: inherit;
-  font-weight: bold;
-  text-align: right;
-
-  &:disabled {
-    background-color: #f0f0f0; // base-lightest
-  }
-`;
-
-const suffixStyles = css`
-  font-size: 0.875em;
-`;
-
-export const errorStyles = css`
-  font-style: italic;
-  color: rgb(206, 29, 29); // TODO: change to text-secondary
-`;
-
-const errorHeadingStyles = css`
-  display: block;
-  font-weight: bold;
-  font-style: normal;
-`;
-
-type Props = {
+export function EERETextInput(props: {
   label?: string;
   ariaLabel: string;
   suffix?: string;
@@ -54,18 +18,18 @@ type Props = {
   disabled?: string;
   onChange: (value: string) => void;
   tooltip?: ReactNode;
-};
+}) {
+  const {
+    label,
+    ariaLabel,
+    suffix,
+    value,
+    fieldName,
+    disabled,
+    onChange,
+    tooltip,
+  } = props;
 
-export function EERETextInput({
-  label,
-  ariaLabel,
-  suffix,
-  value,
-  fieldName,
-  disabled,
-  onChange,
-  tooltip,
-}: Props) {
   const dispatch = useDispatch();
   const status = useTypedSelector(({ eere }) => eere.status);
   const errors = useTypedSelector(({ eere }) => eere.errors);
@@ -78,20 +42,21 @@ export function EERETextInput({
 
   return (
     <>
-      {label && (
-        <label css={labelStyles} htmlFor={fieldName}>
-          {label}
-        </label>
-      )}
+      {label && <label htmlFor={fieldName}>{label}</label>}
 
       <input
         id={fieldName}
-        css={inputStyles}
+        className={
+          `usa-input ` +
+          `display-inline-block margin-y-05 margin-x-1 padding-05 height-auto width-8 ` +
+          `border-width-1px border-solid border-base-light ` +
+          `text-right text-bold font-sans-xs`
+        }
         aria-label={ariaLabel}
         type="text"
         value={value}
         data-avert-eere-input={fieldName}
-        disabled={disabled ? true : false}
+        disabled={Boolean(disabled)}
         onChange={(ev) => onChange(ev.target.value)}
         onKeyPress={(ev) => {
           if (calculationDisabled) return;
@@ -99,15 +64,17 @@ export function EERETextInput({
         }}
       />
 
-      {suffix && <span css={suffixStyles}>{suffix}&nbsp;</span>}
+      {suffix && <span className="font-sans-3xs">{suffix}&nbsp;</span>}
 
       {tooltip && <Tooltip id={fieldName}>{tooltip}</Tooltip>}
 
       {errors.includes(
         fieldName as EERETextInputFieldName | EVTextInputFieldName,
       ) && (
-        <p css={errorStyles} data-input-error>
-          <span css={errorHeadingStyles}>Please enter a positive number.</span>
+        <p className="text-italic text-secondary" data-input-error>
+          <span className="display-block text-bold text-no-italic">
+            Please enter a positive number.
+          </span>
           If you wish to model a reverse EE/RE scenario (i.e., a negative
           number), use the Excel version of the AVERT Main Module.
         </p>

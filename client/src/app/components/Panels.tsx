@@ -249,51 +249,6 @@ const tabsStyles = css`
   }
 `;
 
-const headingStyles = css`
-  margin-bottom: 0.75rem;
-  font-size: 1rem;
-
-  @media (min-width: 25em) {
-    margin-bottom: 0.8125rem;
-    font-size: 1.0625rem;
-  }
-
-  @media (min-width: 30em) {
-    margin-bottom: 0.875rem;
-    font-size: 1.125rem;
-  }
-
-  @media (min-width: 35em) {
-    margin-bottom: 0.9375rem;
-    font-size: 1.1875rem;
-  }
-
-  @media (min-width: 40em) {
-    margin-bottom: 1rem;
-    font-size: 1.25rem;
-  }
-`;
-
-export const subheadingStyles = css`
-  font-size: 0.875rem;
-
-  @media (min-width: 25em) {
-    font-size: 0.9375rem;
-  }
-
-  @media (min-width: 30em) {
-    font-size: 1rem;
-  }
-
-  @media (min-width: 35em) {
-    font-size: 1.0625rem;
-  }
-
-  @media (min-width: 40em) {
-    font-size: 1.125rem;
-  }
-`;
-
 const messageStyles = css`
   position: relative;
   left: -1rem;
@@ -429,10 +384,12 @@ export function Panels() {
   // determined by the selected geography (regions or states)
   const displacementsTable = (
     <Fragment>
-      <h3 css={subheadingStyles} className="avert-blue">
+      <h3 className="avert-blue font-serif-md">
         Annual Regional Displacements:
         <br />
-        <small>{resultsHeading}</small>
+        <span className="display-block margin-top-05 font-serif-sm">
+          {resultsHeading}
+        </span>
       </h3>
       <DisplacementsTable />
     </Fragment>
@@ -440,10 +397,12 @@ export function Panels() {
 
   const emissionsTable = (
     <Fragment>
-      <h3 css={subheadingStyles} className="avert-blue">
+      <h3 className="avert-blue font-serif-md">
         Annual State Emission Changes:
         <br />
-        <small>{resultsHeading}</small>
+        <span className="display-block margin-top-05 font-serif-sm">
+          {resultsHeading}
+        </span>
       </h3>
       <EmissionsTable />
     </Fragment>
@@ -599,23 +558,11 @@ export function Panels() {
 
       <section css={panelStyles} data-active={activeStep === 2}>
         <div css={panelBodyStyles} className="padding-2">
-          <h2
-            css={headingStyles}
-            className={
-              `avert-blue ` + //
-              `padding-bottom-05 border-bottom-2px`
-            }
-          >
+          <h2 className="avert-blue padding-bottom-05 border-bottom-2px font-serif-lg">
             Set Energy Scenario
           </h2>
 
-          <h3
-            css={subheadingStyles}
-            className={
-              `avert-blue ` + //
-              `margin-top-0`
-            }
-          >
+          <h3 className="avert-blue margin-top-0 font-serif-md">
             {geographicFocus === 'regions'
               ? `Region: ${selectedRegionName}`
               : `State: ${selectedStateName}`}
@@ -658,13 +605,7 @@ export function Panels() {
 
       <section css={panelStyles} data-active={activeStep === 3}>
         <div css={panelBodyStyles} className="padding-2">
-          <h2
-            css={headingStyles}
-            className={
-              `avert-blue ` + //
-              `padding-bottom-05 border-bottom-2px`
-            }
-          >
+          <h2 className="avert-blue padding-bottom-05 border-bottom-2px font-serif-lg">
             Results: Avoided Regional, State, and County-Level Emissions
           </h2>
 
@@ -700,10 +641,12 @@ export function Panels() {
             </Fragment>
           )}
 
-          <h3 css={subheadingStyles} className="avert-blue">
+          <h3 className="avert-blue font-serif-md">
             Monthly Emission Changes:
             <br />
-            <small>{resultsHeading}</small>
+            <span className="display-block margin-top-05 font-serif-sm">
+              {resultsHeading}
+            </span>
           </h3>
 
           <EmissionsChart />

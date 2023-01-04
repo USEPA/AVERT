@@ -34,6 +34,10 @@ import {
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 
 const inputsGroupStyles = css`
+  ul {
+    margin-bottom: 0;
+  }
+
   /* highlight letter when details is open */
   &[open] > summary::before {
     background-color: rgb(0, 164, 200); // avert-light-blue
@@ -596,6 +600,7 @@ export function EEREInputs() {
             </p>
 
             <EVSalesAndStockTable />
+
             <EEREEVComparisonTable />
           </section>
         </details>

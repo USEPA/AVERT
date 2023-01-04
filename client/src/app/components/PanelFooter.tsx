@@ -31,6 +31,7 @@ const PrevButton = styled('a')`
 
   &::before {
     ${iconStyles};
+
     margin-right: 0.375rem;
     transform: rotate(180deg);
   }
@@ -41,6 +42,7 @@ const NextButton = styled('a')<{ resultsShown: boolean }>`
 
   &::after {
     ${iconStyles};
+
     margin-left: 0.375rem;
   }
 
@@ -64,12 +66,12 @@ const NextButton = styled('a')<{ resultsShown: boolean }>`
   }}
 `;
 
-type Props = {
+export function PanelFooter(props: {
   prevButtonText?: string;
   nextButtonText: string;
-};
+}) {
+  const { prevButtonText, nextButtonText } = props;
 
-export function PanelFooter({ prevButtonText, nextButtonText }: Props) {
   const dispatch = useDispatch();
 
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);

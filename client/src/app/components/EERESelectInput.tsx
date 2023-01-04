@@ -1,43 +1,28 @@
-/** @jsxImportSource @emotion/react */
-
-import { css } from '@emotion/react';
-
-const selectStyles = css`
-  margin: 0.25rem;
-  padding: 0.125rem 0.25rem;
-  border: 1px solid #ccc;
-
-  &:disabled {
-    background-color: #f0f0f0; // base-lightest
-  }
-`;
-
-type Props = {
+export function EERESelectInput(props: {
   ariaLabel: string;
   options: { id: string; name: string }[];
   value: string;
   fieldName: string;
   disabled?: boolean;
   onChange: (value: string) => void;
-};
+}) {
+  const { ariaLabel, options, value, fieldName, disabled, onChange } = props;
 
-export function EERESelectInput({
-  ariaLabel,
-  options,
-  value,
-  fieldName,
-  disabled,
-  onChange,
-}: Props) {
   return (
     <>
       <select
         id={fieldName}
-        css={selectStyles}
+        className={
+          `usa-select ` +
+          `display-inline-block height-auto width-auto ` +
+          `margin-y-05 margin-x-1 padding-left-1 padding-y-05 padding-right-4 ` +
+          `border-width-1px border-solid border-base-light ` +
+          `text-bold font-sans-xs`
+        }
         aria-label={ariaLabel}
         value={value}
         data-avert-eere-input={fieldName}
-        disabled={disabled ? true : false}
+        disabled={Boolean(disabled)}
         onChange={(ev) => onChange(ev.target.value)}
       >
         {options.map(({ id, name }) => (

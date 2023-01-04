@@ -127,12 +127,9 @@ const modalCloseStyles = css`
   }
 `;
 
-type Props = {
-  id: string;
-  children: ReactNode;
-};
+export function Tooltip(props: { id: string; children: ReactNode }) {
+  const { id, children } = props;
 
-export function Tooltip({ id, children }: Props) {
   const dispatch = useDispatch();
   const activeModalId = useTypedSelector(({ panel }) => panel.activeModalId);
   const closingModalId = useTypedSelector(({ panel }) => panel.closingModalId);

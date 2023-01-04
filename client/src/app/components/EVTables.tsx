@@ -1,10 +1,4 @@
-/** @jsxImportSource @emotion/react */
-
-// components
-import { subheadingStyles } from 'app/components/Panels';
-// reducers
 import { useTypedSelector } from 'app/redux/index';
-// hooks
 import { useSelectedRegion } from 'app/hooks';
 
 function calculatePercent(numerator: number, denominator: number) {
@@ -75,7 +69,9 @@ function EVSalesAndStockTable() {
 
   return (
     <>
-      <h3 css={subheadingStyles}>EV Sales and Stock Comparison</h3>
+      <h3 className="avert-blue font-serif-md">
+        EV Sales and Stock Comparison
+      </h3>
 
       <table className="avert-table">
         <thead>
@@ -206,7 +202,7 @@ function EEREEVComparisonTable() {
 
   return (
     <>
-      <h3 css={subheadingStyles}>EE/RE and EV Comparison</h3>
+      <h3 className="avert-blue font-serif-md">EE/RE and EV Comparison</h3>
 
       <table className="avert-table">
         <thead>
