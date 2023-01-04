@@ -210,6 +210,7 @@ export function EEREInputs() {
 
               <div className="flex-1 tablet:margin-left-2">
                 <EERETextInput
+                  className="margin-top-1 tablet:margin-top-0"
                   label="Reduce hourly generation by:"
                   ariaLabel="Constant reduction for every hour of the year, in MW"
                   suffix="MW"
@@ -277,6 +278,7 @@ export function EEREInputs() {
 
               <div className="flex-1 tablet:margin-left-2">
                 <EERETextInput
+                  className="margin-top-1 tablet:margin-top-0"
                   label="Targeted program: Reduce generation by:"
                   ariaLabel="Load reduction (as a fraction of peaking load) that would be targeted"
                   suffix="% during the peak: &nbsp;"
@@ -287,6 +289,7 @@ export function EEREInputs() {
                 />
 
                 <EERETextInput
+                  className="margin-top-1 tablet:margin-top-0"
                   ariaLabel="Fraction of high-demand hours that the program is expected to affect"
                   suffix="% of hours"
                   value={topHours}
@@ -373,10 +376,10 @@ export function EEREInputs() {
                     }
                   />
                 ) : geographicFocus === 'regions' ? (
-                  <span className="display-block">
+                  <div className="margin-top-1 tablet:margin-top-0">
                     <em>
                       Offshore wind calculations are not available in this AVERT
-                      region{' '}
+                      region
                     </em>
 
                     <Tooltip id="no-offshoreWind-region">
@@ -385,9 +388,9 @@ export function EEREInputs() {
                       wind farms would connect to the electrical grid in this
                       region.
                     </Tooltip>
-                  </span>
+                  </div>
                 ) : (
-                  <span className="display-block">
+                  <div className="margin-top-1 tablet:margin-top-0">
                     <em>
                       Offshore wind calculations are not available in the AVERT
                       region(s) that this state is part of{' '}
@@ -399,7 +402,7 @@ export function EEREInputs() {
                       offshore areas suitable for wind farms would connect to
                       the electrical grid in these regions.
                     </Tooltip>
-                  </span>
+                  </div>
                 )}
               </div>
             </div>
@@ -444,6 +447,7 @@ export function EEREInputs() {
 
               <div className="flex-1 tablet:margin-left-2">
                 <EERETextInput
+                  className="margin-top-1 tablet:margin-top-0"
                   label="Distributed (rooftop) solar photovoltaic total capacity:"
                   ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                   suffix="MW"
@@ -503,6 +507,7 @@ export function EEREInputs() {
                   />
 
                   <EERETextInput
+                    className="margin-top-1"
                     label="Light-duty plug-in hybrid EVs:"
                     ariaLabel="TODO"
                     value={hybridEVs}
@@ -514,6 +519,7 @@ export function EEREInputs() {
 
                 <div className="flex-1 tablet:margin-left-2 desktop:margin-0">
                   <EERETextInput
+                    className="margin-top-1 tablet:margin-top-0 desktop:margin-top-1"
                     label="Electric transit buses:"
                     ariaLabel="TODO"
                     value={transitBuses}
@@ -523,6 +529,7 @@ export function EEREInputs() {
                   />
 
                   <EERETextInput
+                    className="margin-top-1"
                     label="Electric school buses:"
                     ariaLabel="TODO"
                     value={schoolBuses}
@@ -557,6 +564,7 @@ export function EEREInputs() {
 
               <div className="flex-1 desktop:margin-x-2">
                 <EERESelectInput
+                  className="margin-top-1 desktop:margin-top-0"
                   label="EV model year:"
                   ariaLabel="TODO"
                   options={evModelYearOptions}
@@ -569,6 +577,7 @@ export function EEREInputs() {
 
               <div className="flex-1 desktop:margin-left-2">
                 <EERESelectInput
+                  className="margin-top-1 desktop:margin-top-0"
                   label="ICE vehicle being replaced:"
                   ariaLabel="TODO"
                   options={iceReplacementVehicleOptions}
@@ -581,6 +590,8 @@ export function EEREInputs() {
                 />
               </div>
             </div>
+
+            <hr className="border-width-1px border-x-width-0 border-bottom-width-0 border-solid border-base-light" />
 
             <EEREEVComparisonTable className="width-full" />
           </section>

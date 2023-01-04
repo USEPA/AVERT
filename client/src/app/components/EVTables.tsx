@@ -75,59 +75,65 @@ function EVSalesAndStockTable(props: { className?: string }) {
         EV Sales and Stock Comparison
       </h3>
 
-      <div className="overflow-x-scroll">
-        <table className={`avert-table ${className ? className : ''}`}>
-          <thead>
-            <tr>
-              <th>Electric Vehicle Type</th>
-              <th>
-                % of Annual Vehicle Sales
-                {evDeploymentLocationName && (
-                  <>
-                    <br />
-                    <small>in {evDeploymentLocationName}</small>
-                  </>
-                )}
-              </th>
-              <th>
-                % of Vehicles on the Road
-                {evDeploymentLocationName && (
-                  <>
-                    <br />
-                    <small>in {evDeploymentLocationName}</small>
-                  </>
-                )}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Light-duty vehicles</td>
-              <td>
-                {calculatePercent(
-                  totalLightDutyVehicles,
-                  lightDutyVehicleSales,
-                )}
-              </td>
-              <td>
-                {calculatePercent(
-                  totalLightDutyVehicles,
-                  lightDutyVehicleStock,
-                )}
-              </td>
-            </tr>
-            <tr>
-              <td>Transit buses</td>
-              <td>{calculatePercent(totalTransitBuses, transitBusesSales)}</td>
-              <td>{calculatePercent(totalTransitBuses, transitBusesStock)}</td>
-            </tr>
-            <tr>
-              <td>School buses</td>
-              <td>{calculatePercent(totalSchoolBuses, schoolBusesSales)}</td>
-              <td>{calculatePercent(totalSchoolBuses, schoolBusesStock)}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div className="overflow-auto">
+        <div className="avert-table-container">
+          <table className={`avert-table ${className ? className : ''}`}>
+            <thead>
+              <tr>
+                <th>Electric Vehicle Type</th>
+                <th>
+                  % of Annual Vehicle Sales
+                  {evDeploymentLocationName && (
+                    <>
+                      <br />
+                      <small>in {evDeploymentLocationName}</small>
+                    </>
+                  )}
+                </th>
+                <th>
+                  % of Vehicles on the Road
+                  {evDeploymentLocationName && (
+                    <>
+                      <br />
+                      <small>in {evDeploymentLocationName}</small>
+                    </>
+                  )}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Light-duty vehicles</td>
+                <td>
+                  {calculatePercent(
+                    totalLightDutyVehicles,
+                    lightDutyVehicleSales,
+                  )}
+                </td>
+                <td>
+                  {calculatePercent(
+                    totalLightDutyVehicles,
+                    lightDutyVehicleStock,
+                  )}
+                </td>
+              </tr>
+              <tr>
+                <td>Transit buses</td>
+                <td>
+                  {calculatePercent(totalTransitBuses, transitBusesSales)}
+                </td>
+                <td>
+                  {calculatePercent(totalTransitBuses, transitBusesStock)}
+                </td>
+              </tr>
+              <tr>
+                <td>School buses</td>
+                <td>{calculatePercent(totalSchoolBuses, schoolBusesSales)}</td>
+                <td>{calculatePercent(totalSchoolBuses, schoolBusesStock)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   );
@@ -228,135 +234,139 @@ function EEREEVComparisonTable(props: { className?: string }) {
         EE/RE and EV Comparison
       </h3>
 
-      <div className="overflow-x-scroll">
-        <table className={`avert-table ${className ? className : ''}`}>
-          <thead>
-            <tr>
-              <th rowSpan={2}>EE/RE Type</th>
-              <th colSpan={2}>
-                Historical Additions
-                <br />
-                <small>(Annual Avg. 2018&ndash;2020)</small>
-              </th>
-              <th colSpan={2}>
-                EE/RE Required
-                <br />
-                <small>to Offset EV Demand</small>
-              </th>
-              <th colSpan={2}>
-                EE/RE Required
-                <br />
-                <small>÷ Historical Additions</small>
-              </th>
-            </tr>
-            <tr>
-              <th>
-                <small>MW</small>
-              </th>
-              <th>
-                <small>GWh</small>
-              </th>
-              <th>
-                <small>MW</small>
-              </th>
-              <th>
-                <small>GWh</small>
-              </th>
-              <th>
-                <small>MW</small>
-              </th>
-              <th>
-                <small>GWh</small>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>EE&nbsp;(retail)</td>
-              <td>{formatNumber(historicalEERetailMw)}</td>
-              <td>{formatNumber(historicalEERetailGWh)}</td>
-              <td>
-                {historicalEERetailGWh === 0
-                  ? '-'
-                  : formatNumber(requiredOffsetEERetailMw)}
-              </td>
-              <td>
-                {historicalEERetailGWh === 0
-                  ? '-'
-                  : formatNumber(requiredOffsetEERetailGWh)}
-              </td>
-              <td>
-                {historicalEERetailMw === 0
-                  ? '-'
-                  : `${formatNumber(precentDifferenceEERetailMw * 100)}%`}
-              </td>
-              <td>
-                {historicalEERetailGWh === 0
-                  ? '-'
-                  : `${formatNumber(precentDifferenceEERetailGWh * 100)}%`}
-              </td>
-            </tr>
-            <tr>
-              <td>Onshore&nbsp;Wind</td>
-              <td>{formatNumber(historicalOnshoreWindMw)}</td>
-              <td>{formatNumber(historicalOnshoreWindGWh)}</td>
-              <td>
-                {historicalOnshoreWindGWh === 0
-                  ? '-'
-                  : formatNumber(requiredOffsetOnshoreWindMw)}
-              </td>
-              <td>
-                {historicalOnshoreWindGWh === 0
-                  ? '-'
-                  : formatNumber(requiredOffsetOnshoreWindGWh)}
-              </td>
-              <td>
-                {historicalOnshoreWindMw === 0
-                  ? '-'
-                  : `${formatNumber(precentDifferenceOnshoreWindMw * 100)}%`}
-              </td>
-              <td>
-                {historicalOnshoreWindGWh === 0
-                  ? '-'
-                  : `${formatNumber(precentDifferenceOnshoreWindGWh * 100)}%`}
-              </td>
-            </tr>
-            <tr>
-              <td>Utility&nbsp;Solar</td>
-              <td>{formatNumber(historicalUtilitySolarMw)}</td>
-              <td>{formatNumber(historicalUtilitySolarGWh)}</td>
-              <td>
-                {historicalUtilitySolarGWh === 0
-                  ? '-'
-                  : formatNumber(requiredOffsetUtilitySolarMw)}
-              </td>
-              <td>
-                {historicalUtilitySolarGWh === 0
-                  ? '-'
-                  : formatNumber(requiredOffsetUtilitySolarGWh)}
-              </td>
-              <td>
-                {historicalUtilitySolarMw === 0
-                  ? '-'
-                  : `${formatNumber(precentDifferenceUtilitySolarMw * 100)}%`}
-              </td>
-              <td>
-                {historicalUtilitySolarGWh === 0
-                  ? '-'
-                  : `${formatNumber(precentDifferenceUtilitySolarGWh * 100)}%`}
-              </td>
-            </tr>
-            <tr>
-              <td>Total</td>
-              <td>{formatNumber(historicalTotalMw)}</td>
-              <td>{formatNumber(historicalTotalGWh)}</td>
-              <td>{formatNumber(requiredOffsetTotalMw)}</td>
-              <td>{formatNumber(requiredOffsetTotalGWh)}</td>
-              <td>{'-'}</td>
-              <td>{'-'}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div className="overflow-auto">
+        <div className="avert-table-container">
+          <table className={`avert-table ${className ? className : ''}`}>
+            <thead>
+              <tr>
+                <th rowSpan={2}>EE/RE Type</th>
+                <th colSpan={2}>
+                  Historical Additions
+                  <br />
+                  <small>(Annual Avg. 2018&ndash;2020)</small>
+                </th>
+                <th colSpan={2}>
+                  EE/RE Required
+                  <br />
+                  <small>to Offset EV Demand</small>
+                </th>
+                <th colSpan={2}>
+                  EE/RE Required
+                  <br />
+                  <small>÷ Historical Additions</small>
+                </th>
+              </tr>
+              <tr>
+                <th>
+                  <small>MW</small>
+                </th>
+                <th>
+                  <small>GWh</small>
+                </th>
+                <th>
+                  <small>MW</small>
+                </th>
+                <th>
+                  <small>GWh</small>
+                </th>
+                <th>
+                  <small>MW</small>
+                </th>
+                <th>
+                  <small>GWh</small>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>EE&nbsp;(retail)</td>
+                <td>{formatNumber(historicalEERetailMw)}</td>
+                <td>{formatNumber(historicalEERetailGWh)}</td>
+                <td>
+                  {historicalEERetailGWh === 0
+                    ? '-'
+                    : formatNumber(requiredOffsetEERetailMw)}
+                </td>
+                <td>
+                  {historicalEERetailGWh === 0
+                    ? '-'
+                    : formatNumber(requiredOffsetEERetailGWh)}
+                </td>
+                <td>
+                  {historicalEERetailMw === 0
+                    ? '-'
+                    : `${formatNumber(precentDifferenceEERetailMw * 100)}%`}
+                </td>
+                <td>
+                  {historicalEERetailGWh === 0
+                    ? '-'
+                    : `${formatNumber(precentDifferenceEERetailGWh * 100)}%`}
+                </td>
+              </tr>
+              <tr>
+                <td>Onshore&nbsp;Wind</td>
+                <td>{formatNumber(historicalOnshoreWindMw)}</td>
+                <td>{formatNumber(historicalOnshoreWindGWh)}</td>
+                <td>
+                  {historicalOnshoreWindGWh === 0
+                    ? '-'
+                    : formatNumber(requiredOffsetOnshoreWindMw)}
+                </td>
+                <td>
+                  {historicalOnshoreWindGWh === 0
+                    ? '-'
+                    : formatNumber(requiredOffsetOnshoreWindGWh)}
+                </td>
+                <td>
+                  {historicalOnshoreWindMw === 0
+                    ? '-'
+                    : `${formatNumber(precentDifferenceOnshoreWindMw * 100)}%`}
+                </td>
+                <td>
+                  {historicalOnshoreWindGWh === 0
+                    ? '-'
+                    : `${formatNumber(precentDifferenceOnshoreWindGWh * 100)}%`}
+                </td>
+              </tr>
+              <tr>
+                <td>Utility&nbsp;Solar</td>
+                <td>{formatNumber(historicalUtilitySolarMw)}</td>
+                <td>{formatNumber(historicalUtilitySolarGWh)}</td>
+                <td>
+                  {historicalUtilitySolarGWh === 0
+                    ? '-'
+                    : formatNumber(requiredOffsetUtilitySolarMw)}
+                </td>
+                <td>
+                  {historicalUtilitySolarGWh === 0
+                    ? '-'
+                    : formatNumber(requiredOffsetUtilitySolarGWh)}
+                </td>
+                <td>
+                  {historicalUtilitySolarMw === 0
+                    ? '-'
+                    : `${formatNumber(precentDifferenceUtilitySolarMw * 100)}%`}
+                </td>
+                <td>
+                  {historicalUtilitySolarGWh === 0
+                    ? '-'
+                    : `${formatNumber(
+                        precentDifferenceUtilitySolarGWh * 100,
+                      )}%`}
+                </td>
+              </tr>
+              <tr>
+                <td>Total</td>
+                <td>{formatNumber(historicalTotalMw)}</td>
+                <td>{formatNumber(historicalTotalGWh)}</td>
+                <td>{formatNumber(requiredOffsetTotalMw)}</td>
+                <td>{formatNumber(requiredOffsetTotalGWh)}</td>
+                <td>{'-'}</td>
+                <td>{'-'}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   );

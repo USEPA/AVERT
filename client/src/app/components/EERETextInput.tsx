@@ -10,6 +10,7 @@ import type {
 } from 'app/redux/reducers/eere';
 
 export function EERETextInput(props: {
+  className?: string;
   label?: string;
   ariaLabel: string;
   suffix?: string;
@@ -20,6 +21,7 @@ export function EERETextInput(props: {
   tooltip?: ReactNode;
 }) {
   const {
+    className,
     label,
     ariaLabel,
     suffix,
@@ -41,7 +43,7 @@ export function EERETextInput(props: {
     !inputsAreValid || inputIsEmpty || status === 'started';
 
   return (
-    <>
+    <div className={className ? className : ''}>
       {label && (
         <>
           <label htmlFor={fieldName} className="display-inline-block">
@@ -94,6 +96,6 @@ export function EERETextInput(props: {
           number), use the Excel version of the AVERT Main Module.
         </p>
       )}
-    </>
+    </div>
   );
 }

@@ -24,6 +24,11 @@
 }
 
 /* --- tables --- */
+.avert-table-container {
+  /* account for 1px border when table is in an overflow scrollable container */
+  width: calc(100% - 1px);
+}
+
 .avert-table {
   overflow: auto;
   margin: 0;

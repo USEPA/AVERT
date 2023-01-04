@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { Tooltip } from 'app/components/Tooltip';
 
 export function EERESelectInput(props: {
+  className?: string;
   label?: string;
   ariaLabel: string;
   options: { id: string; name: string }[];
@@ -13,6 +14,7 @@ export function EERESelectInput(props: {
   tooltip?: ReactNode;
 }) {
   const {
+    className,
     label,
     ariaLabel,
     options,
@@ -24,7 +26,7 @@ export function EERESelectInput(props: {
   } = props;
 
   return (
-    <>
+    <div className={className ? className : ''}>
       {label && (
         <>
           <label htmlFor={fieldName} className="display-inline-block">
@@ -63,6 +65,6 @@ export function EERESelectInput(props: {
           </span>
         )}
       </div>
-    </>
+    </div>
   );
 }
