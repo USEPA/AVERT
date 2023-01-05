@@ -47,7 +47,7 @@ export function DataDownload() {
 
       <p className="text-center">
         <a
-          className="avert-button"
+          className="usa-button avert-button"
           href={`data:text/csv;charset=utf-8,${countyCsvString}`}
           download={`AVERT Monthly Emission Changes (${geographyText}).csv`}
         >
@@ -62,7 +62,7 @@ export function DataDownload() {
 
       <p className="text-center">
         <a
-          className="avert-button"
+          className="usa-button avert-button"
           href={`data:text/csv;charset=utf-8,${cobraCsvString}`}
           download={`AVERT COBRA (${geographyText}).csv`}
         >

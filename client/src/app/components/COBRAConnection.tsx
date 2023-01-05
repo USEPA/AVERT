@@ -141,7 +141,7 @@ export function COBRAConnection() {
 
       <p className="text-center">
         <a
-          className="avert-button"
+          className="usa-button avert-button"
           href={cobraAppUrl}
           target="_blank"
           rel="noopener noreferrer"

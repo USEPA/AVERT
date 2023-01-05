@@ -145,6 +145,10 @@ export function EEREInputs() {
     complete: 'Recalculate EE/RE Impacts',
   };
 
+  const disabledButtonClassName = calculationDisabled
+    ? 'avert-button-disabled'
+    : '';
+
   return (
     <>
       <div
@@ -599,11 +603,7 @@ export function EEREInputs() {
 
       <p className="margin-bottom-2 text-center">
         <a
-          className={
-            calculationDisabled
-              ? 'avert-button avert-button-disabled'
-              : 'avert-button'
-          }
+          className={`usa-button avert-button ${disabledButtonClassName}`}
           href="/"
           onClick={(ev) => {
             ev.preventDefault();

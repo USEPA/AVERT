@@ -94,7 +94,7 @@ export function PanelFooter(props: {
 
   const prevButton = !prevButtonText ? null : (
     <PrevButton
-      className="avert-button"
+      className="usa-button avert-button"
       href="/"
       onClick={(ev) => {
         ev.preventDefault();
@@ -122,7 +122,7 @@ export function PanelFooter(props: {
   const calculationRunning = onStepTwo && eereStatus !== 'complete';
   const exceedsHardValidationLimit = onStepTwo && !hardValid;
 
-  const disabledClass =
+  const disabledButtonClassName =
     noGeographySelected || calculationRunning || exceedsHardValidationLimit
       ? 'avert-button-disabled'
       : '';
@@ -130,7 +130,7 @@ export function PanelFooter(props: {
   const nextButton = (
     <NextButton
       resultsShown={onStepThree}
-      className={`avert-button ${disabledClass}`}
+      className={`usa-button avert-button ${disabledButtonClassName}`}
       href="/"
       onClick={(ev) => {
         ev.preventDefault();
