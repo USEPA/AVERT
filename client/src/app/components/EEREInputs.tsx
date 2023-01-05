@@ -40,7 +40,7 @@ const inputsGroupStyles = css`
 
   /* highlight letter when details is open */
   &[open] > summary::before {
-    background-color: rgb(0, 164, 200); // avert-light-blue
+    background-color: var(--avert-light-blue);
   }
 `;
 
@@ -62,7 +62,7 @@ const inputsSummaryStyles = css`
 
   /* highlight letter on hover */
   &:hover::before {
-    background-color: rgb(0, 164, 200); // avert-light-blue
+    background-color: var(--avert-light-blue);
   }
 `;
 

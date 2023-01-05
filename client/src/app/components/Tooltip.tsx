@@ -82,7 +82,7 @@ const modalCloseStyles = css`
   right: 0;
   width: 28px;
   height: 28px;
-  background-color: rgb(0, 164, 200); // avert-light-blue;
+  background-color: var(--avert-light-blue);
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
   opacity: 0.625;
 

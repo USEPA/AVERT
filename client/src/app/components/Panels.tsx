@@ -91,7 +91,7 @@ const panelStyles = css`
 `;
 
 const panelBodyStyles = css`
-  border-top: 0.375rem solid rgb(0, 164, 200); // avert-light-blue
+  border-top: 0.375rem solid var(--avert-light-blue);
 `;
 
 const tabsStyles = css`
@@ -134,9 +134,9 @@ const tabsStyles = css`
     }
 
     &[data-selected] {
-      border-top-color: rgb(0, 164, 200); // avert-light-blue
+      border-top-color: var(--avert-light-blue);
       border-bottom-color: white;
-      color: rgb(0, 128, 164); // avert-blue
+      color: var(--avert-blue);
       background-color: white;
     }
   }
