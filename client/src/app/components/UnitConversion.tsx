@@ -61,7 +61,7 @@ export function UnitConversion() {
         `tablet:margin-left-2`
       }
     >
-      <p className="margin-bottom-105 text-center line-height-sans-2">
+      <div className="margin-bottom-105 text-center line-height-sans-2">
         <span className="font-sans-2xs text-bold text-base-darker">
           Helpful Unit Conversions
         </span>{' '}
@@ -84,7 +84,7 @@ export function UnitConversion() {
             </p>
           </Tooltip>
         </span>
-      </p>
+      </div>
 
       <div className="display-flex flex-align-baseline margin-top-1 width-full font-sans-3xs">
         <span className="minw-2" />
