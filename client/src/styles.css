@@ -1,4 +1,10 @@
 /* --- EPA/USWDS --- */
+.usa-alert--info,
+.usa-alert--success,
+.usa-alert--error {
+  padding: 0;
+}
+
 @media (min-width: 64em) {
   .usa-nav {
     float: none;

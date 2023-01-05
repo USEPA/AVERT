@@ -1,17 +1,8 @@
-/** @jsxImportSource @emotion/react */
-
-import { Fragment, useState, useEffect } from 'react';
-import { css } from '@emotion/react';
-// components
-import {
-  infoMessageStyles,
-  successMessageStyles,
-  errorMessageStyles,
-} from 'app/components/Panels';
-// reducers
+import { useState, useEffect } from 'react';
+// ---
 import { useTypedSelector } from 'app/redux/index';
 
-type CobraApiState = 'ready' | 'loading' | 'success' | 'error';
+type CobraApiState = 'idle' | 'pending' | 'success' | 'failure';
 
 type CobraApiData = {
   stateCountyBadgesList: string[];
@@ -37,36 +28,7 @@ type CobraApiData = {
   tiertree_items_selected: ['1'];
 };
 
-const cobraMessageStyles = css`
-  padding: 1rem;
-  font-size: 0.625rem;
-
-  a {
-    color: #fff;
-    font-weight: bold;
-    text-decoration: underline;
-  }
-
-  @media (min-width: 25em) {
-    padding: 1.125rem;
-  }
-
-  @media (min-width: 30em) {
-    padding: 1.25rem;
-    font-size: 0.6875rem;
-  }
-
-  @media (min-width: 35em) {
-    padding: 1.375rem;
-  }
-
-  @media (min-width: 40em) {
-    padding: 1.5rem;
-    font-size: 0.75rem;
-  }
-`;
-
-function COBRAConnection() {
+export function COBRAConnection() {
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
   const cobraApiUrl = useTypedSelector(({ api }) => api.cobraApiUrl);
   const cobraAppUrl = useTypedSelector(({ api }) => api.cobraAppUrl);
@@ -97,12 +59,10 @@ function COBRAConnection() {
       });
   }, [activeStep, cobraApiUrl]);
 
-  const [cobraApiState, setCobraApiState] = useState<CobraApiState>('ready');
-  const [cobraApiMessage, setCobraApiMessage] = useState(<Fragment />);
+  const [cobraApiState, setCobraApiState] = useState<CobraApiState>('idle');
 
   useEffect(() => {
-    setCobraApiState('ready');
-    setCobraApiMessage(<Fragment />);
+    setCobraApiState('idle');
   }, [activeStep]);
 
   const cobraApiData: CobraApiData[] = cobraData.map((row) => {
@@ -151,18 +111,32 @@ function COBRAConnection() {
         and load your AVERT results directly into the COBRA Web Edition.
       </p>
 
-      {cobraApiState !== 'ready' && (
-        <p
-          css={[
-            cobraMessageStyles,
-            cobraApiState === 'loading' && infoMessageStyles,
-            cobraApiState === 'success' && successMessageStyles,
-            cobraApiState === 'error' && errorMessageStyles,
-          ]}
-          className="text-center"
-        >
-          {cobraApiMessage}
-        </p>
+      {cobraApiState === 'pending' && (
+        <div className="usa-alert usa-alert--slim usa-alert--info">
+          <div className="usa-alert__body">
+            <p className="usa-alert__text">Sending data to COBRA...</p>
+          </div>
+        </div>
+      )}
+
+      {cobraApiState === 'success' && (
+        <div className="usa-alert usa-alert--slim usa-alert--success">
+          <div className="usa-alert__body">
+            <p className="usa-alert__text">Succesfully posted data to COBRA.</p>
+          </div>
+        </div>
+      )}
+
+      {cobraApiState === 'failure' && (
+        <div className="usa-alert usa-alert--slim usa-alert--error">
+          <div className="usa-alert__body">
+            <p className="usa-alert__text">
+              Error connecting with COBRA application. Please try again later.
+              If connection problems persist, please contact AVERT support at{' '}
+              <a href="mailto:avert@epa.gov">avert@epa.gov</a>.
+            </p>
+          </div>
+        </div>
       )}
 
       <p className="text-center">
@@ -173,13 +147,15 @@ function COBRAConnection() {
           rel="noopener noreferrer"
           onClick={(ev) => {
             ev.preventDefault();
+
             const cobraAppWindow = window.open('', '_blank');
+
             if (cobraAppWindow) {
               cobraAppWindow.document.write('Sending data to COBRA...');
               cobraAppWindow.document.body.style.fontFamily = 'sans-serif';
             }
-            setCobraApiState('loading');
-            setCobraApiMessage(<>Sending data to COBRA...</>);
+
+            setCobraApiState('pending');
 
             fetch(`${cobraApiUrl}/api/Token`)
               .then((tokenRes) => {
@@ -194,24 +170,18 @@ function COBRAConnection() {
                   body: JSON.stringify({ token, queueElements: cobraApiData }),
                 }).then((queueRes) => {
                   if (!queueRes.ok) throw new Error(queueRes.statusText);
+
                   if (cobraAppWindow) {
                     cobraAppWindow.location.href = `${cobraAppUrl}/externalscenario/${token}`;
                   }
+
                   setCobraApiState('success');
-                  setCobraApiMessage(<>Succesfully posted data to COBRA.</>);
                 });
               })
               .catch((error) => {
                 console.log(error);
                 cobraAppWindow?.close();
-                setCobraApiState('error');
-                setCobraApiMessage(
-                  <>
-                    Error connecting with COBRA application. Please try again
-                    later. If connection problems persist, please contact AVERT
-                    support at <a href="mailto:avert@epa.gov">avert@epa.gov</a>.
-                  </>,
-                );
+                setCobraApiState('failure');
               });
           }}
         >
@@ -221,5 +191,3 @@ function COBRAConnection() {
     </>
   );
 }
-
-export default COBRAConnection;

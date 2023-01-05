@@ -18,9 +18,9 @@ import { EEREInputs } from 'app/components/EEREInputs';
 import { EEREChart } from 'app/components/EEREChart';
 import { DisplacementsTable } from 'app/components/DisplacementsTable';
 import { EmissionsTable } from 'app/components/EmissionsTable';
-import EmissionsChart from 'app/components/EmissionsChart';
-import COBRAConnection from 'app/components/COBRAConnection';
-import DataDownload from 'app/components/DataDownload';
+import { EmissionsChart } from 'app/components/EmissionsChart';
+import { COBRAConnection } from 'app/components/COBRAConnection';
+import { DataDownload } from 'app/components/DataDownload';
 import { modalLinkStyles } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import { toggleModalOverlay, resetActiveModal } from 'app/redux/reducers/panel';
@@ -168,15 +168,6 @@ export const bottomMessageStyles = css`
   ${messageStyles};
 
   bottom: -1.5rem;
-`;
-
-export const infoMessageStyles = css`
-  background-color: rgb(211, 239, 245);
-`;
-
-export const successMessageStyles = css`
-  color: white;
-  background-color: rgb(90, 170, 60);
 `;
 
 export const warningMessageStyles = css`
