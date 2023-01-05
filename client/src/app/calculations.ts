@@ -59,7 +59,7 @@ export function calculateEere(options: {
   const lineLoss = 1 / (1 - regionLineLoss);
 
   const hourlyMwReduction =
-    ((annualGwh * 1000) / regionalLoad.length) * lineLoss;
+    ((annualGwh * 1_000) / regionalLoad.length) * lineLoss;
 
   const percentReduction =
     ((-1 * (broadProgram || reduction)) / 100) * lineLoss;
@@ -88,7 +88,8 @@ export function calculateEere(options: {
       utilitySolar * hourlyDefault.utility_pv +
       rooftopSolar * hourlyDefault.rooftop_pv * lineLoss;
 
-    const evLoad = hourlyEVLoad[index];
+    // NOTE: hourlyEVLoad will be an empty array if there are no EV inputs entered
+    const evLoad = hourlyEVLoad[index] || 0;
 
     const calculatedLoad =
       initialLoad -

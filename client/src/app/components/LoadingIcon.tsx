@@ -33,7 +33,7 @@ const turbineCapStyles = css`
   fill: #03d5e5;
 `;
 
-function LoadingIcon() {
+export function LoadingIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -56,5 +56,3 @@ function LoadingIcon() {
     </svg>
   );
 }
-
-export default LoadingIcon;

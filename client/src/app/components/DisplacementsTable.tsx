@@ -1,29 +1,8 @@
-/** @jsxImportSource @emotion/react */
-
-import { ReactNode, Fragment } from 'react';
-import { css } from '@emotion/react';
-// components
-import Tooltip from 'app/components/Tooltip';
-// reducers
+import { ReactNode } from 'react';
+// ---
+import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import { ReplacementPollutantName } from 'app/redux/reducers/displacement';
-
-const tableContainerStyles = css`
-  overflow: scroll;
-`;
-
-const rowLabelStyles = css`
-  padding-left: 1.25rem !important;
-`;
-
-const altRowLabelStyles = css`
-  padding-left: 1.875rem !important;
-  font-style: italic;
-`;
-
-const tableDataHeadingStyles = css`
-  text-align: right;
-`;
 
 function formatNumber(number: any) {
   if (number < 10 && number > -10) return '--';
@@ -31,7 +10,7 @@ function formatNumber(number: any) {
   return output.toLocaleString();
 }
 
-function DisplacementsTable() {
+export function DisplacementsTable() {
   const status = useTypedSelector(({ displacement }) => displacement.status);
   const data = useTypedSelector(
     ({ displacement }) => displacement.annualRegionalDisplacements,
@@ -81,19 +60,21 @@ function DisplacementsTable() {
   function replacementTooltip(pollutant: ReplacementPollutantName) {
     // prettier-ignore
     const pollutantMarkup = new Map<ReplacementPollutantName, ReactNode>()
-      .set('generation', <Fragment>Generation</Fragment>)
-      .set('so2', <Fragment>SO<sub>2</sub></Fragment>)
-      .set('nox', <Fragment>NO<sub>X</sub></Fragment>)
-      .set('co2', <Fragment>CO<sub>2</sub></Fragment>);
+      .set('generation', <>Generation</>)
+      .set('so2', <>SO<sub>2</sub></>)
+      .set('nox', <>NO<sub>X</sub></>)
+      .set('co2', <>CO<sub>2</sub></>);
 
     return (
       <Tooltip id={pollutant}>
-        This region features one or more power plants with an infrequent{' '}
-        {pollutantMarkup.get(pollutant)} emissions event.{' '}
-        {pollutantMarkup.get(pollutant)} emissions changes from these plants are
-        not included in this analysis. See Section 2 of the{' '}
-        <a href="https://www.epa.gov/avert">AVERT User Manual</a> for more
-        information.
+        <p className="margin-0">
+          This region features one or more power plants with an infrequent{' '}
+          {pollutantMarkup.get(pollutant)} emissions event.{' '}
+          {pollutantMarkup.get(pollutant)} emissions changes from these plants
+          are not included in this analysis. See Section 2 of the{' '}
+          <a href="https://www.epa.gov/avert">AVERT User Manual</a> for more
+          information.
+        </p>
       </Tooltip>
     );
   }
@@ -101,203 +82,287 @@ function DisplacementsTable() {
   if (status !== 'complete') return null;
 
   return (
-    <Fragment>
-      <div css={tableContainerStyles}>
-        <table className="avert-table">
-          <thead>
-            <tr>
-              <th>&nbsp;</th>
-              <th>Original</th>
-              <th>Post-EE/RE</th>
-              <th>EE/RE Impacts</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td css={rowLabelStyles}>
-                Generation <small>(MWh)</small>{' '}
-                {egusNeedingReplacement.generation.length > 0 &&
-                  replacementTooltip('generation')}
-              </td>
-              <td className="avert-table-data">{formatNumber(genOrig)}</td>
-              <td className="avert-table-data">{formatNumber(genPost)}</td>
-              <td className="avert-table-data">{formatNumber(genImpacts)}</td>
-            </tr>
-            <tr className="avert-table-group">
-              <td colSpan={4}>Total Emissions from Fossil Generation Fleet</td>
-            </tr>
-            <tr>
-              <td css={rowLabelStyles}>
-                SO<sub>2</sub> <small>(lb)</small>{' '}
-                {egusNeedingReplacement.so2.length > 0 &&
-                  replacementTooltip('so2')}
-              </td>
-              <td className="avert-table-data">{formatNumber(so2Orig)}</td>
-              <td className="avert-table-data">{formatNumber(so2Post)}</td>
-              <td className="avert-table-data">{formatNumber(so2Impacts)}</td>
-            </tr>
-            <tr>
-              <td css={rowLabelStyles}>
-                NO<sub>X</sub> <small>(lb)</small>{' '}
-                {egusNeedingReplacement.nox.length > 0 &&
-                  replacementTooltip('nox')}
-              </td>
-              <td className="avert-table-data">{formatNumber(noxOrig)}</td>
-              <td className="avert-table-data">{formatNumber(noxPost)}</td>
-              <td className="avert-table-data">{formatNumber(noxImpacts)}</td>
-            </tr>
-            <tr>
-              <td css={altRowLabelStyles}>
-                Ozone season NO<sub>X</sub> <small>(lb)</small>{' '}
-                <Tooltip id="ozone-season-nox-total">
-                  Ozone season is defined as May 1 — September 30. Ozone season
-                  emissions are a subset of annual emissions.
-                </Tooltip>
-              </td>
-              <td className="avert-table-data">{formatNumber(ozoneNoxOrig)}</td>
-              <td className="avert-table-data">{formatNumber(ozoneNoxPost)}</td>
-              <td className="avert-table-data">
-                {formatNumber(ozoneNoxImpacts)}
-              </td>
-            </tr>
-            <tr>
-              <td css={rowLabelStyles}>
-                CO<sub>2</sub> <small>(tons)</small>{' '}
-                {egusNeedingReplacement.co2.length > 0 &&
-                  replacementTooltip('co2')}
-              </td>
-              <td className="avert-table-data">{formatNumber(co2Orig)}</td>
-              <td className="avert-table-data">{formatNumber(co2Post)}</td>
-              <td className="avert-table-data">{formatNumber(co2Impacts)}</td>
-            </tr>
-            <tr>
-              <td css={rowLabelStyles}>
-                PM<sub>2.5</sub> <small>(lb)</small>
-              </td>
-              <td className="avert-table-data">{formatNumber(pm25Orig)}</td>
-              <td className="avert-table-data">{formatNumber(pm25Post)}</td>
-              <td className="avert-table-data">{formatNumber(pm25Impacts)}</td>
-            </tr>
-            <tr>
-              <td css={rowLabelStyles}>
-                VOCs <small>(lb)</small>
-              </td>
-              <td className="avert-table-data">{formatNumber(vocsOrig)}</td>
-              <td className="avert-table-data">{formatNumber(vocsPost)}</td>
-              <td className="avert-table-data">{formatNumber(vocsImpacts)}</td>
-            </tr>
-            <tr>
-              <td css={rowLabelStyles}>
-                NH<sub>3</sub> <small>(lb)</small>
-              </td>
-              <td className="avert-table-data">{formatNumber(nh3Orig)}</td>
-              <td className="avert-table-data">{formatNumber(nh3Post)}</td>
-              <td className="avert-table-data">{formatNumber(nh3Impacts)}</td>
-            </tr>
-            <tr className="avert-table-group">
-              <td>AVERT-derived Emission Rates:</td>
-              <td css={tableDataHeadingStyles}>Average Fossil</td>
-              <td css={tableDataHeadingStyles}>&nbsp;</td>
-              <td css={tableDataHeadingStyles}>Marginal Fossil</td>
-            </tr>
-            <tr>
-              <td css={rowLabelStyles}>
-                SO<sub>2</sub> <small>(lb/MWh)</small>
-              </td>
-              <td className="avert-table-data">
-                {(so2Orig / genOrig).toFixed(3)}
-              </td>
-              <td className="avert-table-data">&nbsp;</td>
-              <td className="avert-table-data">
-                {(so2Impacts / genImpacts).toFixed(3)}
-              </td>
-            </tr>
-            <tr>
-              <td css={rowLabelStyles}>
-                NO<sub>X</sub> <small>(lb/MWh)</small>
-              </td>
-              <td className="avert-table-data">
-                {(noxOrig / genOrig).toFixed(3)}
-              </td>
-              <td className="avert-table-data">&nbsp;</td>
-              <td className="avert-table-data">
-                {(noxImpacts / genImpacts).toFixed(3)}
-              </td>
-            </tr>
-            <tr>
-              <td css={altRowLabelStyles}>
-                Ozone season NO<sub>X</sub> <small>(lb/MWh)</small>{' '}
-                <Tooltip id="ozone-season-nox-rates">
-                  Ozone season is defined as May 1 — September 30. Ozone season
-                  emissions are a subset of annual emissions.
-                </Tooltip>
-              </td>
-              <td className="avert-table-data">
-                {(ozoneNoxOrig / ozoneGenOrig).toFixed(3)}
-              </td>
-              <td className="avert-table-data">&nbsp;</td>
-              <td className="avert-table-data">
-                {(ozoneNoxImpacts / ozoneGenImpacts).toFixed(3)}
-              </td>
-            </tr>
-            <tr>
-              <td css={rowLabelStyles}>
-                CO<sub>2</sub> <small>(tons/MWh)</small>
-              </td>
-              <td className="avert-table-data">
-                {(co2Orig / genOrig).toFixed(3)}
-              </td>
-              <td className="avert-table-data">&nbsp;</td>
-              <td className="avert-table-data">
-                {(co2Impacts / genImpacts).toFixed(3)}
-              </td>
-            </tr>
-            <tr>
-              <td css={rowLabelStyles}>
-                PM<sub>2.5</sub> <small>(lb/MWh)</small>
-              </td>
-              <td className="avert-table-data">
-                {(pm25Orig / genOrig).toFixed(3)}
-              </td>
-              <td className="avert-table-data">&nbsp;</td>
-              <td className="avert-table-data">
-                {(pm25Impacts / genImpacts).toFixed(3)}
-              </td>
-            </tr>
-            <tr>
-              <td css={rowLabelStyles}>
-                VOCs <small>(lb/MWh)</small>
-              </td>
-              <td className="avert-table-data">
-                {(vocsOrig / genOrig).toFixed(3)}
-              </td>
-              <td className="avert-table-data">&nbsp;</td>
-              <td className="avert-table-data">
-                {(vocsImpacts / genImpacts).toFixed(3)}
-              </td>
-            </tr>
-            <tr>
-              <td css={rowLabelStyles}>
-                NH<sub>3</sub> <small>(lb/MWh)</small>
-              </td>
-              <td className="avert-table-data">
-                {(nh3Orig / genOrig).toFixed(3)}
-              </td>
-              <td className="avert-table-data">&nbsp;</td>
-              <td className="avert-table-data">
-                {(nh3Impacts / genImpacts).toFixed(3)}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    <>
+      <div className="overflow-auto">
+        <div className="avert-table-container">
+          <table className="avert-table width-full">
+            <thead>
+              <tr>
+                <th>&nbsp;</th>
+                <th>Original</th>
+                <th>Post-EE/RE</th>
+                <th>EE/RE Impacts</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>
+                  <span className="padding-left-105">
+                    Generation <small>(MWh)</small>&nbsp;
+                    {egusNeedingReplacement.generation.length > 0 &&
+                      replacementTooltip('generation')}
+                  </span>
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(genOrig)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(genPost)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(genImpacts)}
+                </td>
+              </tr>
+              <tr>
+                <td colSpan={4} className="text-bold">
+                  Total Emissions from Fossil Generation Fleet
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span className="padding-left-105">
+                    SO<sub>2</sub> <small>(lb)</small>&nbsp;
+                    {egusNeedingReplacement.so2.length > 0 &&
+                      replacementTooltip('so2')}
+                  </span>
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(so2Orig)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(so2Post)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(so2Impacts)}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span className="padding-left-105">
+                    NO<sub>X</sub> <small>(lb)</small>&nbsp;
+                    {egusNeedingReplacement.nox.length > 0 &&
+                      replacementTooltip('nox')}
+                  </span>
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(noxOrig)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(noxPost)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(noxImpacts)}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span className="padding-left-3 text-italic">
+                    Ozone season NO<sub>X</sub> <small>(lb)</small>{' '}
+                    <Tooltip id="ozone-season-nox-total">
+                      <p className="margin-0 text-no-italic">
+                        Ozone season is defined as May 1 — September 30. Ozone
+                        season emissions are a subset of annual emissions.
+                      </p>
+                    </Tooltip>
+                  </span>
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(ozoneNoxOrig)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(ozoneNoxPost)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(ozoneNoxImpacts)}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span className="padding-left-105">
+                    CO<sub>2</sub> <small>(tons)</small>&nbsp;
+                    {egusNeedingReplacement.co2.length > 0 &&
+                      replacementTooltip('co2')}
+                  </span>
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(co2Orig)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(co2Post)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(co2Impacts)}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span className="padding-left-105">
+                    PM<sub>2.5</sub> <small>(lb)</small>
+                  </span>
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(pm25Orig)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(pm25Post)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(pm25Impacts)}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span className="padding-left-105">
+                    VOCs <small>(lb)</small>
+                  </span>
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(vocsOrig)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(vocsPost)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(vocsImpacts)}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span className="padding-left-105">
+                    NH<sub>3</sub> <small>(lb)</small>
+                  </span>
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(nh3Orig)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(nh3Post)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(nh3Impacts)}
+                </td>
+              </tr>
+              <tr>
+                <td className="text-bold">AVERT-derived Emission Rates:</td>
+                <td className="text-bold text-right">Average Fossil</td>
+                <td className="text-bold text-right">&nbsp;</td>
+                <td className="text-bold text-right">Marginal Fossil</td>
+              </tr>
+              <tr>
+                <td>
+                  <span className="padding-left-105">
+                    SO<sub>2</sub> <small>(lb/MWh)</small>
+                  </span>
+                </td>
+                <td className="font-mono-xs text-right">
+                  {(so2Orig / genOrig).toFixed(3)}
+                </td>
+                <td className="font-mono-xs text-right">&nbsp;</td>
+                <td className="font-mono-xs text-right">
+                  {(so2Impacts / genImpacts).toFixed(3)}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span className="padding-left-105">
+                    NO<sub>X</sub> <small>(lb/MWh)</small>
+                  </span>
+                </td>
+                <td className="font-mono-xs text-right">
+                  {(noxOrig / genOrig).toFixed(3)}
+                </td>
+                <td className="font-mono-xs text-right">&nbsp;</td>
+                <td className="font-mono-xs text-right">
+                  {(noxImpacts / genImpacts).toFixed(3)}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span className="padding-left-3 text-italic">
+                    Ozone season NO<sub>X</sub> <small>(lb/MWh)</small>{' '}
+                    <Tooltip id="ozone-season-nox-rates">
+                      <p className="margin-0 text-no-italic">
+                        Ozone season is defined as May 1 — September 30. Ozone
+                        season emissions are a subset of annual emissions.
+                      </p>
+                    </Tooltip>
+                  </span>
+                </td>
+                <td className="font-mono-xs text-right">
+                  {(ozoneNoxOrig / ozoneGenOrig).toFixed(3)}
+                </td>
+                <td className="font-mono-xs text-right">&nbsp;</td>
+                <td className="font-mono-xs text-right">
+                  {(ozoneNoxImpacts / ozoneGenImpacts).toFixed(3)}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span className="padding-left-105">
+                    CO<sub>2</sub> <small>(tons/MWh)</small>
+                  </span>
+                </td>
+                <td className="font-mono-xs text-right">
+                  {(co2Orig / genOrig).toFixed(3)}
+                </td>
+                <td className="font-mono-xs text-right">&nbsp;</td>
+                <td className="font-mono-xs text-right">
+                  {(co2Impacts / genImpacts).toFixed(3)}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span className="padding-left-105">
+                    PM<sub>2.5</sub> <small>(lb/MWh)</small>
+                  </span>
+                </td>
+                <td className="font-mono-xs text-right">
+                  {(pm25Orig / genOrig).toFixed(3)}
+                </td>
+                <td className="font-mono-xs text-right">&nbsp;</td>
+                <td className="font-mono-xs text-right">
+                  {(pm25Impacts / genImpacts).toFixed(3)}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span className="padding-left-105">
+                    VOCs <small>(lb/MWh)</small>
+                  </span>
+                </td>
+                <td className="font-mono-xs text-right">
+                  {(vocsOrig / genOrig).toFixed(3)}
+                </td>
+                <td className="font-mono-xs text-right">&nbsp;</td>
+                <td className="font-mono-xs text-right">
+                  {(vocsImpacts / genImpacts).toFixed(3)}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span className="padding-left-105">
+                    NH<sub>3</sub> <small>(lb/MWh)</small>
+                  </span>
+                </td>
+                <td className="font-mono-xs text-right">
+                  {(nh3Orig / genOrig).toFixed(3)}
+                </td>
+                <td className="font-mono-xs text-right">&nbsp;</td>
+                <td className="font-mono-xs text-right">
+                  {(nh3Impacts / genImpacts).toFixed(3)}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <p className="avert-small-text">
+
+      <p className="margin-top-2 text-base-dark">
         Negative numbers indicate displaced generation and emissions. All
         results are rounded to the nearest ten. A dash ('–') indicates a result
         greater than zero, but lower than the level of reportable significance.
       </p>
-    </Fragment>
+    </>
   );
 }
-
-export default DisplacementsTable;

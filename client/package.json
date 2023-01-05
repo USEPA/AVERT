@@ -10,7 +10,7 @@
   ],
   "license": "CC0-1.0",
   "engines": {
-    "node": "14.x"
+    "node": "18.x"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -44,11 +44,10 @@
     "@emotion/react": "11.8.2",
     "@emotion/styled": "11.8.1",
     "@reach/tabs": "0.16.4",
-    "core-js": "3.21.1",
+    "@uswds/uswds": "3.3.0",
     "highcharts": "10.0.0",
     "highcharts-react-official": "3.1.0",
     "react": "17.0.2",
-    "react-app-polyfill": "3.0.0",
     "react-dom": "17.0.2",
     "react-redux": "7.2.6",
     "redux": "4.1.2",

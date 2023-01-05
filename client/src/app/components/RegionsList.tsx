@@ -1,29 +1,19 @@
-/** @jsxImportSource @emotion/react */
-
-import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
-// reducers
+// ---
 import { selectRegion } from 'app/redux/reducers/geography';
-// hooks
 import { useSelectedRegion } from 'app/hooks';
-// config
 import { RegionId, regions } from 'app/config';
 
-const selectStyles = css`
-  margin: 1.5rem 25% 0;
-  width: 50%;
-`;
-
-function RegionsList() {
+export function RegionsList() {
   const dispatch = useDispatch();
 
   const selectedRegionId = useSelectedRegion()?.id;
 
   return (
     <select
-      css={selectStyles}
+      className="usa-select margin-top-3 margin-bottom-0 margin-x-auto width-full"
       aria-label="Select Region"
-      value={!selectedRegionId ? '' : selectedRegionId}
+      value={selectedRegionId || ''}
       onChange={(ev) => dispatch(selectRegion(ev.target.value as RegionId))}
       data-avert-region-select
     >
@@ -47,5 +37,3 @@ function RegionsList() {
     </select>
   );
 }
-
-export default RegionsList;

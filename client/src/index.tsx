@@ -1,13 +1,10 @@
-import 'react-app-polyfill/ie11';
-import 'react-app-polyfill/stable';
-import 'core-js/features/array/includes';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import reportWebVitals from './reportWebVitals';
-// components
-import App from 'app/components/App';
-// store
-import store from 'app/redux/store';
+// ---
+import { App } from 'app/components/App';
+import { store } from 'app/redux/store';
+import './styles.css';
 
 const container = document.getElementById('root') as HTMLElement;
 

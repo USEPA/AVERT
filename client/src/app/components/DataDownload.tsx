@@ -1,14 +1,4 @@
-/** @jsxImportSource @emotion/react */
-
-// components
-import {
-  subheadingStyles,
-  bottomMessageStyles,
-  warningMessageStyles,
-} from 'app/components/Panels';
-// reducers
 import { useTypedSelector } from 'app/redux/index';
-// hooks
 import { useSelectedRegion, useSelectedState } from 'app/hooks';
 
 function convertToCSVString(data: { [key: string]: any }[]) {
@@ -21,7 +11,7 @@ function convertToCSVString(data: { [key: string]: any }[]) {
   return [keys.map((key) => `"${key}"`).join(',')].concat(rows).join('\r\n');
 }
 
-function DataDownload() {
+export function DataDownload() {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const countyData = useTypedSelector(
     ({ displacement }) => displacement.downloadableCountyData,
@@ -48,16 +38,16 @@ function DataDownload() {
 
   return (
     <>
-      <h3 css={subheadingStyles}>Data Download</h3>
+      <h3 className="avert-blue font-serif-md">Data Download</h3>
 
       <p>
         Download monthly displacement data for each county, state, and region in
         this analysis, in CSV format.
       </p>
 
-      <p className="avert-centered">
+      <p className="text-center">
         <a
-          className="avert-button"
+          className="usa-button avert-button"
           href={`data:text/csv;charset=utf-8,${countyCsvString}`}
           download={`AVERT Monthly Emission Changes (${geographyText}).csv`}
         >
@@ -70,9 +60,9 @@ function DataDownload() {
         Tool.
       </p>
 
-      <p className="avert-centered">
+      <p className="text-center">
         <a
-          className="avert-button"
+          className="usa-button avert-button"
           href={`data:text/csv;charset=utf-8,${cobraCsvString}`}
           download={`AVERT COBRA (${geographyText}).csv`}
         >
@@ -81,16 +71,15 @@ function DataDownload() {
       </p>
 
       {isDesktopSafari && (
-        <p
-          css={[bottomMessageStyles, warningMessageStyles]}
-          className="avert-centered"
-        >
-          Please press <strong>⌘ + S</strong> to save the file after it is
-          opened.
-        </p>
+        <div className="usa-alert usa-alert--slim usa-alert--warning margin-bottom-0">
+          <div className="usa-alert__body">
+            <p className="usa-alert__text">
+              Please press <strong>⌘ + S</strong> to save the file after it is
+              opened.
+            </p>
+          </div>
+        </div>
       )}
     </>
   );
 }
-
-export default DataDownload;

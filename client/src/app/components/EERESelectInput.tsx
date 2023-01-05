@@ -1,51 +1,70 @@
-/** @jsxImportSource @emotion/react */
+import type { ReactNode } from 'react';
+// ---
+import { Tooltip } from 'app/components/Tooltip';
 
-import { css } from '@emotion/react';
-
-const selectStyles = css`
-  margin: 0.25rem;
-  padding: 0.125rem 0.25rem;
-  border: 1px solid #ccc;
-
-  &:disabled {
-    background-color: #eee;
-  }
-`;
-
-type Props = {
+export function EERESelectInput(props: {
+  className?: string;
+  label?: string;
   ariaLabel: string;
   options: { id: string; name: string }[];
   value: string;
   fieldName: string;
   disabled?: boolean;
   onChange: (value: string) => void;
-};
+  tooltip?: ReactNode;
+}) {
+  const {
+    className,
+    label,
+    ariaLabel,
+    options,
+    value,
+    fieldName,
+    disabled,
+    onChange,
+    tooltip,
+  } = props;
 
-export function EERESelectInput({
-  ariaLabel,
-  options,
-  value,
-  fieldName,
-  disabled,
-  onChange,
-}: Props) {
   return (
-    <>
-      <select
-        id={fieldName}
-        css={selectStyles}
-        aria-label={ariaLabel}
-        value={value}
-        data-avert-eere-input={fieldName}
-        disabled={disabled ? true : false}
-        onChange={(ev) => onChange(ev.target.value)}
-      >
-        {options.map(({ id, name }) => (
-          <option key={id} value={id}>
-            {name}
-          </option>
-        ))}
-      </select>
-    </>
+    <div className={className ? className : ''}>
+      {label && (
+        <>
+          <label htmlFor={fieldName} className="display-inline-block">
+            {label}
+          </label>
+          <br />
+        </>
+      )}
+
+      <div className="display-flex flex-align-center">
+        <select
+          id={fieldName}
+          className={
+            `usa-select ` +
+            `display-inline-block height-auto maxw-full ` +
+            `margin-y-05 padding-left-1 padding-y-05 padding-right-4 ` +
+            `border-width-1px border-solid border-base-light ` +
+            `text-bold font-sans-xs`
+          }
+          aria-label={ariaLabel}
+          value={value}
+          data-avert-eere-input={fieldName}
+          disabled={Boolean(disabled)}
+          onChange={(ev) => onChange(ev.target.value)}
+        >
+          {options.map(({ id, name }) => (
+            <option key={id} value={id}>
+              {name}
+            </option>
+          ))}
+        </select>
+
+        {tooltip && (
+          <span className="margin-left-05">
+            <Tooltip id={fieldName}>{tooltip}</Tooltip>
+          </span>
+        )}
+      </div>
+    </div>
   );
 }

@@ -1,24 +1,14 @@
-/** @jsxImportSource @emotion/react */
+import '@uswds/uswds';
+import '@uswds/uswds/css/uswds.css';
+// ---
+import { PanelTabs } from 'app/components/PanelTabs';
+import { Panels } from 'app/components/Panels';
 
-import { css } from '@emotion/react';
-// components
-import PanelTabs from 'app/components/PanelTabs';
-import Panels from 'app/components/Panels';
-// styles
-import 'app/styles.css';
-
-const containerStyles = css`
-  margin: 0rem auto;
-  max-width: 45rem;
-`;
-
-function App() {
+export function App() {
   return (
-    <div css={containerStyles} className="avert-copy">
+    <>
       <PanelTabs />
       <Panels />
-    </div>
+    </>
   );
 }
-
-export default App;

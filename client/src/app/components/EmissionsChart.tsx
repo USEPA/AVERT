@@ -1,11 +1,8 @@
-/** @jsxImportSource @emotion/react */
-
-import { ReactNode, Fragment } from 'react';
-import { css } from '@emotion/react';
+import { ReactNode } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useDispatch } from 'react-redux';
-// reducers
+// ---
 import { useTypedSelector } from 'app/redux/index';
 import {
   ReplacementPollutantName,
@@ -20,75 +17,13 @@ import {
   selectMonthlyState,
   selectMonthlyCounty,
 } from 'app/redux/reducers/monthlyEmissions';
-// hooks
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
-// config
 import { Pollutant, RegionId, StateId, regions, states } from 'app/config';
 
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 
-const filterGroupStyles = css`
-  overflow: hidden;
-  margin-bottom: 1rem;
-
-  label {
-    display: block;
-    margin-left: 0.75rem;
-
-    @media (min-width: 25em) {
-      display: inline-block;
-    }
-  }
-
-  input {
-    margin-right: 0.375rem;
-  }
-`;
-
-const filterTextStyles = css`
-  margin-top: 0;
-
-  @media (min-width: 35em) {
-    display: inline-block;
-  }
-`;
-
-const geographyFilterStyles = css`
-  overflow: hidden;
-`;
-
-const selectGroupStyles = css`
-  float: left;
-  margin: 0 0.5rem 1rem;
-  width: calc(50% - 1rem);
-
-  select {
-    width: 100%;
-  }
-`;
-
-const emissionsChartsStyles = css`
-  padding: 1rem;
-  border: 1px solid #aaa;
-
-  [data-highcharts-chart] {
-    margin-bottom: 1rem;
-
-    &:last-of-type {
-      margin-bottom: 0;
-    }
-  }
-`;
-
-const noChartStyles = css`
-  margin-bottom: 1rem;
-  padding: 0 1rem 1rem;
-  border: 1px solid #ddd;
-  background-color: whitesmoke;
-`;
-
-function EmissionsChart() {
+export function EmissionsChart() {
   const dispatch = useDispatch();
   const status = useTypedSelector(({ displacement }) => displacement.status);
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
@@ -270,7 +205,9 @@ function EmissionsChart() {
       : '';
 
   function formatTitle(pollutant: string) {
-    return `<tspan class='avert-chart-title'>Change in ${pollutant} Emissions: ${chartLocationTitle}</tspan>`;
+    return `<tspan class='font-sans-md line-height-sans-2 text-base-darker text-center'>
+      Change in ${pollutant} Emissions: ${chartLocationTitle}
+    </tspan>`;
   }
 
   function formatYAxis(emissionsUnit: string) {
@@ -433,12 +370,12 @@ function EmissionsChart() {
 
     // prettier-ignore
     const pollutantMarkup = new Map<Pollutant, ReactNode>()
-      .set('so2', <Fragment>SO<sub>2</sub></Fragment>)
-      .set('nox', <Fragment>NO<sub>X</sub></Fragment>)
-      .set('co2', <Fragment>CO<sub>2</sub></Fragment>)
-      .set('pm25', <Fragment>PM<sub>2.5</sub></Fragment>)
-      .set('vocs', <Fragment>VOC</Fragment>)
-      .set('nh3', <Fragment>NH<sub>2</sub></Fragment>);
+      .set('so2', <>SO<sub>2</sub></>)
+      .set('nox', <>NO<sub>X</sub></>)
+      .set('co2', <>CO<sub>2</sub></>)
+      .set('pm25', <>PM<sub>2.5</sub></>)
+      .set('vocs', <>VOC</>)
+      .set('nh3', <>NH<sub>2</sub></>);
 
     const chartConfig = new Map<Pollutant, Object>()
       .set('so2', so2Config)
@@ -451,12 +388,18 @@ function EmissionsChart() {
     if (selectedUnit === 'percentages') {
       if (flaggedRegion || flaggedState || flaggedCounty) {
         return (
-          <div css={noChartStyles}>
-            <p className="avert-chart-title">
+          <div
+            className={
+              `margin-bottom-2 padding-2 bg-base-lightest ` +
+              `border-width-1px border-solid border-base-light`
+            }
+          >
+            <p className="font-sans-md line-height-sans-2 text-base-darker text-center">
               Change in {pollutantMarkup.get(pollutant)} Emissions:{' '}
               {chartLocationTitle}
             </p>
-            <p className="avert-small-text">
+
+            <p className="margin-0 font-sans-xs text-base-dark">
               Percent change statistics are not available for{' '}
               {pollutantMarkup.get(pollutant)} because the geographic area
               you’ve selected features one or more power plants with an
@@ -486,191 +429,257 @@ function EmissionsChart() {
   }
 
   return (
-    <Fragment>
-      <div css={filterGroupStyles}>
-        <p css={filterTextStyles}>Select level of aggregation:</p>
+    <>
+      <p className="margin-0 text-italic">Select level of aggregation:</p>
 
-        <label>
-          <input
-            type="radio"
-            name="aggregation"
-            value="region"
-            checked={selectedAggregation === 'region'}
-            onChange={(ev) => {
-              dispatch(selectMonthlyAggregation('region'));
-            }}
-            data-avert-aggregation-toggle="region"
-          />
-          Region
-        </label>
+      <div className="tablet:display-flex">
+        <div className="flex-1 tablet:margin-right-2">
+          <div className="usa-radio">
+            <input
+              id="aggregation-region"
+              className="usa-radio__input"
+              type="radio"
+              name="aggregation"
+              value="region"
+              checked={selectedAggregation === 'region'}
+              onChange={(ev) => {
+                dispatch(selectMonthlyAggregation('region'));
+              }}
+              data-avert-aggregation-toggle="region"
+            />
 
-        <label>
-          <input
-            type="radio"
-            name="aggregation"
-            value="state"
-            checked={selectedAggregation === 'state'}
-            onChange={(ev) => {
-              dispatch(selectMonthlyAggregation('state'));
-              if (selectedStateId) {
-                dispatch(selectMonthlyState(selectedStateId));
-              }
-            }}
-            data-avert-aggregation-toggle="state"
-          />
-          State
-        </label>
+            <label className="usa-radio__label" htmlFor="aggregation-region">
+              Region
+            </label>
+          </div>
+        </div>
 
-        <label>
-          <input
-            type="radio"
-            name="aggregation"
-            value="county"
-            checked={selectedAggregation === 'county'}
-            onChange={(ev) => {
-              dispatch(selectMonthlyAggregation('county'));
-              if (selectedCountyName) {
-                dispatch(selectMonthlyCounty(selectedCountyName));
-              }
-            }}
-            data-avert-aggregation-toggle="county"
-          />
-          County
-        </label>
+        <div className="flex-1 tablet:margin-x-2">
+          <div className="usa-radio">
+            <input
+              id="aggregation-state"
+              className="usa-radio__input"
+              type="radio"
+              name="aggregation"
+              value="state"
+              checked={selectedAggregation === 'state'}
+              onChange={(ev) => {
+                dispatch(selectMonthlyAggregation('state'));
+                if (selectedStateId) {
+                  dispatch(selectMonthlyState(selectedStateId));
+                }
+              }}
+              data-avert-aggregation-toggle="state"
+            />
+
+            <label className="usa-radio__label" htmlFor="aggregation-state">
+              State
+            </label>
+          </div>
+        </div>
+
+        <div className="flex-1 tablet:margin-left-2">
+          <div className="usa-radio">
+            <input
+              id="aggregation-county"
+              className="usa-radio__input"
+              type="radio"
+              name="aggregation"
+              value="county"
+              checked={selectedAggregation === 'county'}
+              onChange={(ev) => {
+                dispatch(selectMonthlyAggregation('county'));
+                if (selectedCountyName) {
+                  dispatch(selectMonthlyCounty(selectedCountyName));
+                }
+              }}
+              data-avert-aggregation-toggle="county"
+            />
+
+            <label className="usa-radio__label" htmlFor="aggregation-county">
+              County
+            </label>
+          </div>
+        </div>
       </div>
 
-      <div css={geographyFilterStyles} data-avert-geography-selects>
+      <div
+        className="margin-top-2 overflow-hidden"
+        data-avert-geography-selects
+      >
         {geographicFocus === 'states' &&
           selectedAggregation === 'region' &&
           selectedStateRegions.length > 1 && (
-            <div css={selectGroupStyles}>
-              <select
-                value={selectedRegionId}
-                onChange={(ev) =>
-                  dispatch(selectMonthlyRegion(ev.target.value))
-                }
-                data-avert-geography-select="region"
-              >
-                <option value="" disabled>
-                  Select Region(s)
-                </option>
+            <div className="tablet:display-flex">
+              <div className="flex-1 tablet:margin-right-2">
+                <select
+                  className={
+                    `usa-select ` +
+                    `display-inline-block height-auto maxw-full ` +
+                    `margin-y-05 padding-left-1 padding-y-05 padding-right-4 ` +
+                    `border-width-1px border-solid border-base-light font-sans-xs`
+                  }
+                  value={selectedRegionId}
+                  onChange={(ev) =>
+                    dispatch(selectMonthlyRegion(ev.target.value))
+                  }
+                  data-avert-geography-select="region"
+                >
+                  <option value="" disabled>
+                    Select Region(s)
+                  </option>
 
-                <option value="ALL">All Affected Regions</option>
+                  <option value="ALL">All Affected Regions</option>
 
-                {selectedStateRegions.map((region) => {
-                  return (
-                    <Fragment key={region.id}>
-                      <option value={region.id}>{region.name}</option>
-                    </Fragment>
-                  );
-                })}
-              </select>
+                  {selectedStateRegions.map(({ id, name }) => (
+                    <option key={id} value={id}>
+                      {name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex-1 tablet:margin-left-2">&nbsp;</div>
             </div>
           )}
 
         {(selectedAggregation === 'state' ||
           selectedAggregation === 'county') && (
-          <div css={selectGroupStyles}>
-            <select
-              value={selectedStateId}
-              onChange={(ev) => dispatch(selectMonthlyState(ev.target.value))}
-              data-avert-geography-select="state"
-            >
-              <option value="" disabled>
-                Select State
-              </option>
-
-              {availableStates.map((stateId) => {
-                return (
-                  <Fragment key={stateId}>
-                    <option value={stateId}>
-                      {states[stateId as StateId].name}
-                    </option>
-                  </Fragment>
-                );
-              })}
-            </select>
-          </div>
-        )}
-
-        {selectedAggregation === 'county' && (
-          <div css={selectGroupStyles}>
-            <select
-              value={selectedCountyName}
-              onChange={(ev) => dispatch(selectMonthlyCounty(ev.target.value))}
-              data-avert-geography-select="county"
-            >
-              <option value="" disabled>
-                Select County
-              </option>
-
-              {availableCounties?.map((county, index) => (
-                <option key={index} value={county}>
-                  {/* format 'city' if found in county name */}
-                  {county.replace(/city/, '(City)')}
+          <div className="tablet:display-flex">
+            <div className="flex-1 tablet:margin-right-2">
+              <select
+                className={
+                  `usa-select ` +
+                  `display-inline-block height-auto maxw-full ` +
+                  `margin-y-05 padding-left-1 padding-y-05 padding-right-4 ` +
+                  `border-width-1px border-solid border-base-light font-sans-xs`
+                }
+                value={selectedStateId}
+                onChange={(ev) => dispatch(selectMonthlyState(ev.target.value))}
+                data-avert-geography-select="state"
+              >
+                <option value="" disabled>
+                  Select State
                 </option>
-              ))}
-            </select>
+
+                {availableStates.map((id) => (
+                  <option key={id} value={id}>
+                    {states[id as StateId].name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex-1 tablet:margin-left-2">
+              {selectedAggregation === 'county' && (
+                <select
+                  className={
+                    `usa-select ` +
+                    `display-inline-block height-auto maxw-full ` +
+                    `margin-y-05 padding-left-1 padding-y-05 padding-right-4 ` +
+                    `border-width-1px border-solid border-base-light font-sans-xs`
+                  }
+                  value={selectedCountyName}
+                  onChange={(ev) =>
+                    dispatch(selectMonthlyCounty(ev.target.value))
+                  }
+                  data-avert-geography-select="county"
+                >
+                  <option value="" disabled>
+                    Select County
+                  </option>
+
+                  {availableCounties?.map((county, index) => (
+                    <option key={index} value={county}>
+                      {/* format 'city' if found in county name */}
+                      {county.replace(/city/, '(City)')}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
           </div>
         )}
       </div>
 
-      <div css={filterGroupStyles}>
-        <p css={filterTextStyles}>Select units:</p>
+      <p className="margin-top-2 margin-bottom-0 text-italic">Select units:</p>
 
-        <label>
-          <input
-            type="radio"
-            name="unit"
-            value="emissions"
-            checked={selectedUnit === 'emissions'}
-            onChange={(ev) => {
-              const unit = ev.target.value as MonthlyUnit;
-              dispatch(selectMonthlyUnit(unit));
-            }}
-            data-avert-unit-toggle="emissions"
-          />
-          Emission changes (lb or tons)
-        </label>
+      <div className="tablet:display-flex">
+        <div className="flex-1 tablet:margin-right-2">
+          <div className="usa-radio">
+            <input
+              id="units-emissions"
+              className="usa-radio__input"
+              type="radio"
+              value="emissions"
+              checked={selectedUnit === 'emissions'}
+              onChange={(ev) => {
+                const unit = ev.target.value as MonthlyUnit;
+                dispatch(selectMonthlyUnit(unit));
+              }}
+              data-avert-unit-toggle="emissions"
+            />
 
-        <label>
-          <input
-            type="radio"
-            name="unit"
-            value="percentages"
-            checked={selectedUnit === 'percentages'}
-            onChange={(ev) => {
-              const unit = ev.target.value as MonthlyUnit;
-              dispatch(selectMonthlyUnit(unit));
-            }}
-            data-avert-unit-toggle="percentages"
-          />
-          Percent change
-        </label>
+            <label className="usa-radio__label" htmlFor="units-emissions">
+              Emission changes <span className="text-italic">(lb or tons)</span>
+            </label>
+          </div>
+        </div>
+
+        <div className="flex-1 tablet:margin-x-2">
+          <div className="usa-radio">
+            <input
+              id="units-percentages"
+              className="usa-radio__input"
+              type="radio"
+              value="percentages"
+              checked={selectedUnit === 'percentages'}
+              onChange={(ev) => {
+                const unit = ev.target.value as MonthlyUnit;
+                dispatch(selectMonthlyUnit(unit));
+              }}
+              data-avert-unit-toggle="percentages"
+            />
+
+            <label className="usa-radio__label" htmlFor="units-percentages">
+              Percent change
+            </label>
+          </div>
+        </div>
+
+        <div className="flex-1 tablet:margin-left-2">&nbsp;</div>
       </div>
 
-      <div css={emissionsChartsStyles}>
+      <div
+        className={
+          `margin-top-2 padding-2 ` +
+          `border-width-1px border-solid border-base-light`
+        }
+      >
         <div data-avert-chart>
           {status === 'complete' && renderChart('so2')}
         </div>
-        <div data-avert-chart>
+
+        <div className="margin-top-2" data-avert-chart>
           {status === 'complete' && renderChart('nox')}
         </div>
-        <div data-avert-chart>
+
+        <div className="margin-top-2" data-avert-chart>
           {status === 'complete' && renderChart('co2')}
         </div>
-        <div data-avert-chart>
+
+        <div className="margin-top-2" data-avert-chart>
           {status === 'complete' && renderChart('pm25')}
         </div>
-        <div data-avert-chart>
+
+        <div className="margin-top-2" data-avert-chart>
           {status === 'complete' && renderChart('vocs')}
         </div>
-        <div data-avert-chart>
+
+        <div className="margin-top-2" data-avert-chart>
           {status === 'complete' && renderChart('nh3')}
         </div>
       </div>
-    </Fragment>
+    </>
   );
 }
-
-export default EmissionsChart;

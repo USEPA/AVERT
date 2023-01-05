@@ -4,18 +4,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const Tab = styled('li')<{ step: number }>`
-  /* remove space above first tab */
-  ${({ step }) => {
-    if (step === 1) {
-      return css`
-        a {
-          margin-top: 0;
-        }
-      `;
-    }
-  }}
-
-  @media (min-width: 35em) {
+  @media (min-width: 40em) {
     float: left;
     width: calc((100% - 2.5rem) * 0.333333);
 
@@ -43,7 +32,7 @@ const Tab = styled('li')<{ step: number }>`
             height: 0;
             border-top: 1.25rem solid transparent;
             border-bottom: 1.25rem solid transparent;
-            border-left: 1.25rem solid #eee;
+            border-left: 1.25rem solid #f0f0f0; // base-lightest
           }
         `;
       }
@@ -59,8 +48,8 @@ const Tab = styled('li')<{ step: number }>`
             top: 0;
             left: -1.25rem;
             width: 1.25rem;
-            height: 2.5rem;
-            background-color: #eee;
+            height: 100%;
+            background-color: #f0f0f0; // base-lightest
           }
         `;
       }
@@ -68,53 +57,47 @@ const Tab = styled('li')<{ step: number }>`
 
     /* active tab – right arrow */
     a[data-active='true']::after {
-      border-left-color: rgb(0, 128, 164);
+      border-left-color: var(--avert-blue);
     }
 
     /* active tab – fill behind right arrow */
     a[data-active='true']::before {
-      background-color: rgb(0, 128, 164);
+      background-color: var(--avert-blue);
     }
   }
 `;
 
 const anchorStyles = css`
-  display: block;
-  margin-top: 0.375rem;
-  padding: 0.75rem;
-  border: 1px solid #aaa;
-  line-height: 1;
-  font-weight: bold;
-  text-align: center;
-  color: #666;
-  background-color: #eee;
-  cursor: default;
-  user-select: none;
+  &:hover,
+  &:visited {
+    color: #565c65; // base-dark
+  }
 
   &[data-active='true'] {
     color: white;
-    background-color: rgb(0, 128, 164);
+    background-color: var(--avert-blue);
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
-  }
-
-  @media (min-width: 35em) {
-    position: relative;
-    margin-top: 0;
-    border: 0;
   }
 `;
 
-type Props = {
+export function PanelTab(props: {
   step: number;
   active: boolean;
   title: string;
-};
+}) {
+  const { step, active, title } = props;
 
-function PanelTab({ step, active, title }: Props) {
   return (
     <Tab step={step}>
       <a
         css={anchorStyles}
+        className={
+          `position-relative display-block margin-top-1 padding-105 ` +
+          `border-width-1px border-solid border-base-light ` +
+          `text-no-underline text-center text-base-dark bg-base-lightest ` +
+          `text-bold line-height-sans-1 cursor-default usa-js-no-click ` +
+          `tablet:margin-top-0 tablet:border-0`
+        }
         href="/"
         data-active={active}
         onClick={(ev) => ev.preventDefault()}
@@ -124,5 +107,3 @@ function PanelTab({ step, active, title }: Props) {
     </Tab>
   );
 }
-
-export default PanelTab;

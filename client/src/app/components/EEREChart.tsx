@@ -1,68 +1,14 @@
-/** @jsxImportSource @emotion/react */
-
-import { Fragment } from 'react';
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-// components
-import Tooltip from 'app/components/Tooltip';
-import {
-  bottomMessageStyles,
-  messageHeadingStyles,
-  errorMessageStyles,
-  warningMessageStyles,
-} from 'app/components/Panels';
-// reducers
+// ---
+import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
-// hooks
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
-
-const chartSubtitleStyles = css`
-  margin-top: 0.5rem;
-  font-size: 0.625rem;
-  line-height: 1.125;
-  text-align: center;
-  color: #444;
-
-  @media (min-width: 30em) {
-    font-size: 0.6875rem;
-  }
-
-  @media (min-width: 40em) {
-    font-size: 0.75rem;
-  }
-`;
-
-const ValidationMessage = styled('p')<{ type: 'error' | 'warning' }>`
-  ${({ type }) => {
-    if (type === 'error') {
-      return css`
-        ${bottomMessageStyles};
-        ${errorMessageStyles}
-      `;
-    }
-
-    if (type === 'warning') {
-      return css`
-        ${bottomMessageStyles};
-        ${warningMessageStyles}
-      `;
-    }
-  }}
-`;
-
-// override inherited chart title styles
-const modalStyles = css`
-  font-weight: normal;
-  line-height: 1.375;
-  text-align: left;
-`;
 
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 
-function EEREChart() {
+export function EEREChart() {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const softValid = useTypedSelector(
     ({ eere }) => eere.combinedProfile.softValid,
@@ -98,7 +44,7 @@ function EEREChart() {
 
   const hourlyData = hourlyEere.map((eere, hour) => {
     const firstHourOfYear = Date.UTC(year, 0, 1);
-    const hourlyMs = hour * 60 * 60 * 1000;
+    const hourlyMs = hour * 60 * 60 * 1_000;
     return [new Date().setTime(firstHourOfYear + hourlyMs), eere];
   });
 
@@ -138,7 +84,7 @@ function EEREChart() {
       dateTimeLabelFormats: {
         month: '%b',
       },
-      tickInterval: 30 * 24 * 3600 * 1000,
+      tickInterval: 30 * 24 * 3600 * 1_000,
       title: {
         text: undefined,
       },
@@ -168,31 +114,32 @@ function EEREChart() {
 
   let chart = null;
   // conditionally re-define chart when readyToRender (hourlyEere exists)
+
   if (readyToRender) {
     const totalLoadMwh = hourlyEere.reduce((a, b) => a + b, 0);
-    const totalLoadGwh = Math.round(totalLoadMwh / -1e3);
+    const totalLoadGwh = Math.round(totalLoadMwh / -1_000);
 
     // calculate the total equivalent number of american homes
     // (annual kwh of electricity used by the average american home is 12,146)
-    const equivalentHomes = Math.round((totalLoadMwh / 12_146) * -1e3);
+    const equivalentHomes = Math.round((totalLoadMwh / 12_146) * -1_000);
 
     chart = (
-      <Fragment>
-        <h3 className="avert-chart-title">
-          EE/RE profile based on values entered:{' '}
-          <span css={modalStyles}>
-            <Tooltip id="eere-profile">
+      <>
+        <h3 className="margin-0 font-sans-md line-height-sans-2 text-base-darker text-center">
+          EE/RE profile based on values entered:&nbsp;
+          <Tooltip id="eere-profile">
+            <p className="margin-0 font-sans-sm text-base-darkest text-normal text-left">
               This graph shows the hourly changes in load that will result from
               the inputs entered above. It reflects a combination of all inputs,
               typical capacity factors for wind and solar, and adjustments for
               avoided transmission and distribution line loss, where applicable.
               This hourly EE/RE profile will be used to calculate the avoided
               emissions for this AVERT region.
-            </Tooltip>
-          </span>
+            </p>
+          </Tooltip>
         </h3>
 
-        <h4 css={chartSubtitleStyles}>
+        <h4 className="margin-top-1 font-sans-2xs text-base-darker text-normal text-center">
           Adjusted for transmission and distribution line loss and wind and
           solar capacity factors, where applicable.
         </h4>
@@ -209,13 +156,15 @@ function EEREChart() {
           }}
         />
 
-        <p className="avert-small-text">
-          This EE/RE profile will displace {totalLoadGwh.toLocaleString()} GWh
-          of regional fossil fuel generation over the course of a year. For
-          reference, this equals the annual electricity consumed by{' '}
-          {equivalentHomes.toLocaleString()} average homes in the United States.
+        <p className="margin-top-2 text-base-dark">
+          This EE/RE profile will displace{' '}
+          <strong>{totalLoadGwh.toLocaleString()} GWh</strong> of regional
+          fossil fuel generation over the course of a year. For reference, this
+          equals the annual electricity consumed by{' '}
+          <strong>{equivalentHomes.toLocaleString()}</strong> average homes in
+          the United States.
         </p>
-      </Fragment>
+      </>
     );
   }
 
@@ -264,28 +213,36 @@ function EEREChart() {
         ? x.timestamp.hour - 12
         : x.timestamp.hour;
     const ampm = x.timestamp.hour > 12 ? 'PM' : 'AM';
+    const percentage = x.value.toLocaleString(undefined, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    });
 
     return (
-      <ValidationMessage type={type}>
-        <span css={messageHeadingStyles}>{x.heading}:</span>
-        The combined impact of your proposed programs would displace more than{' '}
-        <strong>{x.threshold}%</strong> of regional fossil generation in at
-        least one hour of the year. (Maximum value:{' '}
-        <strong>
-          {x.value.toLocaleString(undefined, {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2,
-          })}
-        </strong>
-        % on{' '}
-        <strong>
-          {month} {day} at {hour}:00 {ampm}
-        </strong>
-        ). The recommended limit for AVERT is 15%, as AVERT is designed to
-        simulate marginal operational changes in load, rather than large-scale
-        changes that may change fundamental dynamics. Please reduce one or more
-        of your inputs to ensure more reliable results.
-      </ValidationMessage>
+      <div className={`usa-alert usa-alert--${type} margin-bottom-0`}>
+        <div className="usa-alert__body">
+          <h4 className="usa-alert__heading">{x.heading}</h4>
+          <p>
+            The combined impact of your proposed programs would displace more
+            than <strong>{x.threshold}%</strong> of regional fossil generation
+            in at least one hour of the year.&nbsp;&nbsp;
+            <em>
+              (Maximum value: <strong>{percentage}</strong>% on{' '}
+              <strong>
+                {month} {day} at {hour}:00 {ampm}
+              </strong>
+              ).
+            </em>
+          </p>
+
+          <p className="margin-0">
+            The recommended limit for AVERT is 15%, as AVERT is designed to
+            simulate marginal operational changes in load, rather than
+            large-scale changes that may change fundamental dynamics. Please
+            reduce one or more of your inputs to ensure more reliable results.
+          </p>
+        </div>
+      </div>
     );
   }
 
@@ -307,5 +264,3 @@ function EEREChart() {
     </div>
   );
 }
-
-export default EEREChart;

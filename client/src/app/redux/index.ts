@@ -1,16 +1,16 @@
 import { Action, combineReducers } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
-// reducers
-import api from './reducers/api';
-import panel from './reducers/panel';
-import geography from './reducers/geography';
-import transportation from './reducers/transportation';
-import eere from './reducers/eere';
-import displacement from './reducers/displacement';
-import monthlyEmissions from './reducers/monthlyEmissions';
+// ---
+import api from 'app/redux/reducers/api';
+import panel from 'app/redux/reducers/panel';
+import geography from 'app/redux/reducers/geography';
+import transportation from 'app/redux/reducers/transportation';
+import eere from 'app/redux/reducers/eere';
+import displacement from 'app/redux/reducers/displacement';
+import monthlyEmissions from 'app/redux/reducers/monthlyEmissions';
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   api,
   panel,
   geography,
@@ -19,8 +19,6 @@ const rootReducer = combineReducers({
   displacement,
   monthlyEmissions,
 });
-
-export default rootReducer;
 
 type RootState = ReturnType<typeof rootReducer>;
 

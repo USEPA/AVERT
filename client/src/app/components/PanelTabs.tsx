@@ -1,32 +1,18 @@
-/** @jsxImportSource @emotion/react */
-
-import { css } from '@emotion/react';
-// components
-import PanelTab from 'app/components/PanelTab';
-// reducers
+import { PanelTab } from 'app/components/PanelTab';
 import { useTypedSelector } from 'app/redux/index';
 
-const navStyles = css`
-  overflow: hidden;
-  margin-bottom: 1rem;
-
-  @media (min-width: 35em) {
-    border: 1px solid #aaa;
-  }
-`;
-
-const listStyles = css`
-  margin: 0 !important;
-  padding: 0 !important;
-  list-style: none;
-`;
-
-function PanelTabs() {
+export function PanelTabs() {
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
 
   return (
-    <nav css={navStyles}>
-      <ol css={listStyles}>
+    <nav
+      className={
+        `overflow-hidden margin-bottom-2 ` +
+        `border-width-1px border-solid border-white ` +
+        `tablet:border-base-light`
+      }
+    >
+      <ol className="usa-list--unstyled">
         <PanelTab step={1} active={activeStep === 1} title="Select Geography" />
         <PanelTab
           step={2}
@@ -38,5 +24,3 @@ function PanelTabs() {
     </nav>
   );
 }
-
-export default PanelTabs;

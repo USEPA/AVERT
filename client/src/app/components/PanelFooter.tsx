@@ -3,7 +3,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
-// reducers
+// ---
 import { useTypedSelector } from 'app/redux/index';
 import { setActiveStep } from 'app/redux/reducers/panel';
 import { resetEEREInputs } from 'app/redux/reducers/eere';
@@ -13,20 +13,8 @@ import {
   resetDisplacement,
 } from 'app/redux/reducers/displacement';
 import { resetMonthlyEmissions } from 'app/redux/reducers/monthlyEmissions';
-// hooks
 import { useSelectedRegion, useSelectedState } from 'app/hooks';
-// icons
 import icons from 'app/icons.svg';
-
-const footerStyles = css`
-  overflow: hidden;
-  padding: 0.75rem;
-  background: #eee;
-`;
-
-const buttonsStyles = css`
-  margin-top: 0;
-`;
 
 const iconStyles = css`
   content: '';
@@ -43,6 +31,7 @@ const PrevButton = styled('a')`
 
   &::before {
     ${iconStyles};
+
     margin-right: 0.375rem;
     transform: rotate(180deg);
   }
@@ -53,6 +42,7 @@ const NextButton = styled('a')<{ resultsShown: boolean }>`
 
   &::after {
     ${iconStyles};
+
     margin-left: 0.375rem;
   }
 
@@ -76,12 +66,12 @@ const NextButton = styled('a')<{ resultsShown: boolean }>`
   }}
 `;
 
-type Props = {
+export function PanelFooter(props: {
   prevButtonText?: string;
   nextButtonText: string;
-};
+}) {
+  const { prevButtonText, nextButtonText } = props;
 
-function PanelFooter({ prevButtonText, nextButtonText }: Props) {
   const dispatch = useDispatch();
 
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
@@ -104,7 +94,7 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
 
   const prevButton = !prevButtonText ? null : (
     <PrevButton
-      className="avert-button"
+      className="usa-button avert-button"
       href="/"
       onClick={(ev) => {
         ev.preventDefault();
@@ -132,7 +122,7 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
   const calculationRunning = onStepTwo && eereStatus !== 'complete';
   const exceedsHardValidationLimit = onStepTwo && !hardValid;
 
-  const disabledClass =
+  const disabledButtonClassName =
     noGeographySelected || calculationRunning || exceedsHardValidationLimit
       ? 'avert-button-disabled'
       : '';
@@ -140,7 +130,7 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
   const nextButton = (
     <NextButton
       resultsShown={onStepThree}
-      className={`avert-button ${disabledClass}`}
+      className={`usa-button avert-button ${disabledButtonClassName}`}
       href="/"
       onClick={(ev) => {
         ev.preventDefault();
@@ -176,13 +166,11 @@ function PanelFooter({ prevButtonText, nextButtonText }: Props) {
   );
 
   return (
-    <div css={footerStyles} className="avert-step-footer">
-      <p css={buttonsStyles} className="avert-centered">
+    <div className="avert-step-footer overflow-hidden padding-105 bg-base-lightest">
+      <p>
         {prevButton}
         {nextButton}
       </p>
     </div>
   );
 }
-
-export default PanelFooter;
