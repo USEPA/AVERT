@@ -14,8 +14,8 @@ const unitConversionStyles = css`
 
 export function UnitConversion() {
   const [error, setError] = useState(false);
-  const [kw, setKw] = useState(1e6);
-  const [mw, setMw] = useState(1e3);
+  const [kw, setKw] = useState(1_000_000);
+  const [mw, setMw] = useState(1_000);
   const [gw, setGw] = useState(1);
 
   function updateInputs(value: string, unit: 'kw' | 'mw' | 'gw') {
@@ -26,7 +26,7 @@ export function UnitConversion() {
       return;
     }
 
-    const factor = 1000;
+    const factor = 1_000;
     const computed = { kw, mw, gw };
     computed[unit] = input;
 

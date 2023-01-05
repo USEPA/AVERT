@@ -563,7 +563,7 @@ function receiveDisplacement(): AppThunk {
 
     // recursively call function if data is still fetching
     if (panel.loadingProgress !== panel.loadingSteps) {
-      return setTimeout(() => dispatch(receiveDisplacement()), 1000);
+      return setTimeout(() => dispatch(receiveDisplacement()), 1_000);
     }
 
     const statesAndCounties = setStatesAndCounties(regionalDisplacements);

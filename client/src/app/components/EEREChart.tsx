@@ -44,7 +44,7 @@ export function EEREChart() {
 
   const hourlyData = hourlyEere.map((eere, hour) => {
     const firstHourOfYear = Date.UTC(year, 0, 1);
-    const hourlyMs = hour * 60 * 60 * 1000;
+    const hourlyMs = hour * 60 * 60 * 1_000;
     return [new Date().setTime(firstHourOfYear + hourlyMs), eere];
   });
 
@@ -84,7 +84,7 @@ export function EEREChart() {
       dateTimeLabelFormats: {
         month: '%b',
       },
-      tickInterval: 30 * 24 * 3600 * 1000,
+      tickInterval: 30 * 24 * 3600 * 1_000,
       title: {
         text: undefined,
       },
@@ -117,11 +117,11 @@ export function EEREChart() {
 
   if (readyToRender) {
     const totalLoadMwh = hourlyEere.reduce((a, b) => a + b, 0);
-    const totalLoadGwh = Math.round(totalLoadMwh / -1000);
+    const totalLoadGwh = Math.round(totalLoadMwh / -1_000);
 
     // calculate the total equivalent number of american homes
     // (annual kwh of electricity used by the average american home is 12,146)
-    const equivalentHomes = Math.round((totalLoadMwh / 12_146) * -1000);
+    const equivalentHomes = Math.round((totalLoadMwh / 12_146) * -1_000);
 
     chart = (
       <>

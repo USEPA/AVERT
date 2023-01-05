@@ -947,7 +947,7 @@ export function calculateMonthlyEVEnergyUsageMW(
     return result;
   }
 
-  const GWtoMW = 1000;
+  const GWtoMW = 1_000;
 
   Object.entries(monthlyEVEnergyUsageGW).forEach(([key, data]) => {
     const month = Number(key);
@@ -1628,7 +1628,7 @@ export function calculateEVDeploymentLocationHistoricalEERE(options: {
     : fallbackAverage;
 
   const hoursInYear = 8760;
-  const GWtoMW = 1000;
+  const GWtoMW = 1_000;
 
   result.eeRetail.mw = (locationAverage.retail_impacts_ghw.ee_retail * GWtoMW) / hoursInYear; // prettier-ignore
   result.onshoreWind.mw = locationAverage.capacity_added_mw.onshore_wind;
