@@ -150,35 +150,6 @@ const tabsStyles = css`
   }
 `;
 
-const messageStyles = css`
-  position: relative;
-  left: -1.5rem;
-  width: calc(100% + 3rem);
-  padding: 1.5rem;
-  margin-top: 0;
-`;
-
-const topMessageStyles = css`
-  ${messageStyles};
-
-  top: 0;
-`;
-
-export const bottomMessageStyles = css`
-  ${messageStyles};
-
-  bottom: -1.5rem;
-`;
-
-export const warningMessageStyles = css`
-  background-color: rgb(249, 201, 114);
-`;
-
-export const errorMessageStyles = css`
-  color: white;
-  background-color: rgb(212, 57, 57);
-`;
-
 export function Panels() {
   const dispatch = useDispatch();
 
@@ -460,25 +431,21 @@ export function Panels() {
             Results: Avoided Regional, State, and County-Level Emissions
           </h2>
 
-          {
-            // conditionally display validation warning
-            !softValid && (
-              <p
-                css={[topMessageStyles, warningMessageStyles]}
-                className="font-sans-xs"
-              >
-                <span className="dislay-block margin-bottom-05 text-bold">
-                  WARNING:
-                </span>
-                The proposed EE/RE programs would collectively displace more
-                than 15% of regional fossil generation in one or more hours of
-                the year. AVERT works best with displacements of 15% or less, as
-                it is designed to simulate marginal operational changes in load,
-                rather than large-scale changes that may change fundamental
-                dynamics.
-              </p>
-            )
-          }
+          {!softValid && (
+            <div className="usa-alert usa-alert--warning">
+              <div className="usa-alert__body">
+                <h4 className="usa-alert__heading">WARNING</h4>
+                <p className="usa-alert__text">
+                  The proposed EE/RE programs would collectively displace more
+                  than 15% of regional fossil generation in one or more hours of
+                  the year. AVERT works best with displacements of 15% or less,
+                  as it is designed to simulate marginal operational changes in
+                  load, rather than large-scale changes that may change
+                  fundamental dynamics.
+                </p>
+              </div>
+            </div>
+          )}
 
           {geographicFocus === 'regions' ? (
             <>

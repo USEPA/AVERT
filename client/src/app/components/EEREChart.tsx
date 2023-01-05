@@ -1,36 +1,9 @@
-/** @jsxImportSource @emotion/react */
-
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 // ---
 import { Tooltip } from 'app/components/Tooltip';
-import {
-  bottomMessageStyles,
-  errorMessageStyles,
-  warningMessageStyles,
-} from 'app/components/Panels';
 import { useTypedSelector } from 'app/redux/index';
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
-
-const ValidationMessage = styled('p')<{ type: 'error' | 'warning' }>`
-  ${({ type }) => {
-    if (type === 'error') {
-      return css`
-        ${bottomMessageStyles};
-        ${errorMessageStyles}
-      `;
-    }
-
-    if (type === 'warning') {
-      return css`
-        ${bottomMessageStyles};
-        ${warningMessageStyles}
-      `;
-    }
-  }}
-`;
 
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
@@ -240,30 +213,36 @@ export function EEREChart() {
         ? x.timestamp.hour - 12
         : x.timestamp.hour;
     const ampm = x.timestamp.hour > 12 ? 'PM' : 'AM';
+    const percentage = x.value.toLocaleString(undefined, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    });
 
     return (
-      <ValidationMessage type={type} className="margin-bottom-0 font-sans-xs">
-        <span className="display-block margin-bottom-05 text-bold">
-          {x.heading}:
-        </span>
-        The combined impact of your proposed programs would displace more than{' '}
-        <strong>{x.threshold}%</strong> of regional fossil generation in at
-        least one hour of the year. (Maximum value:{' '}
-        <strong>
-          {x.value.toLocaleString(undefined, {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2,
-          })}
-        </strong>
-        % on{' '}
-        <strong>
-          {month} {day} at {hour}:00 {ampm}
-        </strong>
-        ). The recommended limit for AVERT is 15%, as AVERT is designed to
-        simulate marginal operational changes in load, rather than large-scale
-        changes that may change fundamental dynamics. Please reduce one or more
-        of your inputs to ensure more reliable results.
-      </ValidationMessage>
+      <div className={`usa-alert usa-alert--${type} margin-bottom-0`}>
+        <div className="usa-alert__body">
+          <h4 className="usa-alert__heading">{x.heading}</h4>
+          <p>
+            The combined impact of your proposed programs would displace more
+            than <strong>{x.threshold}%</strong> of regional fossil generation
+            in at least one hour of the year.&nbsp;&nbsp;
+            <em>
+              (Maximum value: <strong>{percentage}</strong>% on{' '}
+              <strong>
+                {month} {day} at {hour}:00 {ampm}
+              </strong>
+              ).
+            </em>
+          </p>
+
+          <p className="margin-0">
+            The recommended limit for AVERT is 15%, as AVERT is designed to
+            simulate marginal operational changes in load, rather than
+            large-scale changes that may change fundamental dynamics. Please
+            reduce one or more of your inputs to ensure more reliable results.
+          </p>
+        </div>
+      </div>
     );
   }
 

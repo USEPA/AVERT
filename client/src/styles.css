@@ -1,8 +1,16 @@
 /* --- EPA/USWDS --- */
 .usa-alert--info,
+.usa-alert--warning,
 .usa-alert--success,
 .usa-alert--error {
   padding: 0;
+}
+
+.usa-alert--info::before,
+.usa-alert--warning::before,
+.usa-alert--success::before,
+.usa-alert--error::before {
+  display: none;
 }
 
 @media (min-width: 64em) {

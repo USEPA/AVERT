@@ -1,13 +1,4 @@
-/** @jsxImportSource @emotion/react */
-
-// components
-import {
-  bottomMessageStyles,
-  warningMessageStyles,
-} from 'app/components/Panels';
-// reducers
 import { useTypedSelector } from 'app/redux/index';
-// hooks
 import { useSelectedRegion, useSelectedState } from 'app/hooks';
 
 function convertToCSVString(data: { [key: string]: any }[]) {
@@ -20,7 +11,7 @@ function convertToCSVString(data: { [key: string]: any }[]) {
   return [keys.map((key) => `"${key}"`).join(',')].concat(rows).join('\r\n');
 }
 
-function DataDownload() {
+export function DataDownload() {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const countyData = useTypedSelector(
     ({ displacement }) => displacement.downloadableCountyData,
@@ -80,16 +71,15 @@ function DataDownload() {
       </p>
 
       {isDesktopSafari && (
-        <p
-          css={[bottomMessageStyles, warningMessageStyles]}
-          className="margin-bottom-0 font-sans-xs text-center"
-        >
-          Please press <strong>⌘ + S</strong> to save the file after it is
-          opened.
-        </p>
+        <div className="usa-alert usa-alert--slim usa-alert--warning margin-bottom-0">
+          <div className="usa-alert__body">
+            <p className="usa-alert__text">
+              Please press <strong>⌘ + S</strong> to save the file after it is
+              opened.
+            </p>
+          </div>
+        </div>
       )}
     </>
   );
 }
-
-export default DataDownload;
