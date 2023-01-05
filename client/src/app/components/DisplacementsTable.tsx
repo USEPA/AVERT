@@ -67,7 +67,7 @@ export function DisplacementsTable() {
 
     return (
       <Tooltip id={pollutant}>
-        <p>
+        <p className="margin-0">
           This region features one or more power plants with an infrequent{' '}
           {pollutantMarkup.get(pollutant)} emissions event.{' '}
           {pollutantMarkup.get(pollutant)} emissions changes from these plants

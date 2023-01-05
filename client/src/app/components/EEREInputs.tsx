@@ -200,14 +200,14 @@ export function EEREInputs() {
                   disabled={constantMwh}
                   onChange={(text) => dispatch(updateEereAnnualGwh(text))}
                   tooltip={
-                    <>
+                    <p className="margin-0">
                       Enter the total number of GWh expected to be saved in a
                       single year. This option simply distributes the total
                       annual savings evenly over all hours of the year. An
                       industrial or refrigeration efficiency program may be well
                       represented by a constant reduction across most hours of
                       the year.
-                    </>
+                    </p>
                   }
                 />
               </div>
@@ -223,14 +223,14 @@ export function EEREInputs() {
                   disabled={annualGwh}
                   onChange={(text) => dispatch(updateEereConstantMw(text))}
                   tooltip={
-                    <>
+                    <p className="margin-0">
                       “Reduce hourly generation” is identical in effect to
                       reducing total annual generation. It allows you to enter a
                       constant reduction for every hour of the year, in MW. An
                       industrial or refrigeration efficiency program may be well
                       represented by a constant reduction across most hours of
                       the year.
-                    </>
+                    </p>
                   }
                 />
               </div>
@@ -271,11 +271,11 @@ export function EEREInputs() {
                     dispatch(updateEereBroadBasedProgram(text))
                   }
                   tooltip={
-                    <>
+                    <p className="margin-0">
                       To simulate a broad-based efficiency program, enter an
                       estimated load reduction fraction. This percentage
                       reduction will be applied to all hours of the year.
-                    </>
+                    </p>
                   }
                 />
               </div>
@@ -300,13 +300,13 @@ export function EEREInputs() {
                   disabled={broadProgram}
                   onChange={(text) => dispatch(updateEereTopHours(text))}
                   tooltip={
-                    <>
+                    <p className="margin-0">
                       To simulate a peak-reduction targeting program such as
                       demand response, enter the load reduction (as a fraction
                       of peaking load) that would be targeted, as well as the
                       fraction of high-demand hours that the program is expected
                       to affect (e.g., 1%–3%).
-                    </>
+                    </p>
                   }
                 />
               </div>
@@ -350,12 +350,12 @@ export function EEREInputs() {
                   fieldName="onshoreWind"
                   onChange={(text) => dispatch(updateEereOnshoreWind(text))}
                   tooltip={
-                    <>
+                    <p className="margin-0">
                       Enter the total capacity (maximum potential electricity
                       generation) for this type of resource, measured in MW. The
                       model uses these inputs along with hourly capacity factors
                       that vary by resource type and region.
-                    </>
+                    </p>
                   }
                 />
               </div>
@@ -370,26 +370,28 @@ export function EEREInputs() {
                     fieldName="offshoreWind"
                     onChange={(text) => dispatch(updateEereOffshoreWind(text))}
                     tooltip={
-                      <>
+                      <p className="margin-0">
                         Enter the total capacity (maximum potential electricity
                         generation) for this type of resource, measured in MW.
                         The model uses these inputs along with hourly capacity
                         factors that vary by resource type and region.
-                      </>
+                      </p>
                     }
                   />
                 ) : geographicFocus === 'regions' ? (
                   <div className="margin-top-1 tablet:margin-top-0">
                     <em>
-                      Offshore wind calculations are not available in this AVERT
-                      region
+                      Offshore wind calculations are not available in the
+                      selected AVERT region{' '}
                     </em>
 
                     <Tooltip id="no-offshoreWind-region">
-                      AVERT does not support offshore wind modeling in this
-                      region. It is unlikely that offshore areas suitable for
-                      wind farms would connect to the electrical grid in this
-                      region.
+                      <p className="margin-0">
+                        AVERT does not support offshore wind modeling in this
+                        region. It is unlikely that offshore areas suitable for
+                        wind farms would connect to the electrical grid in this
+                        region.
+                      </p>
                     </Tooltip>
                   </div>
                 ) : (
@@ -400,10 +402,12 @@ export function EEREInputs() {
                     </em>
 
                     <Tooltip id="no-offshoreWind-state">
-                      AVERT does not support offshore wind modeling in the
-                      region(s) that this state is part of. It is unlikely that
-                      offshore areas suitable for wind farms would connect to
-                      the electrical grid in these regions.
+                      <p className="margin-0">
+                        AVERT does not support offshore wind modeling in the
+                        region(s) that this state is part of. It is unlikely
+                        that offshore areas suitable for wind farms would
+                        connect to the electrical grid in these regions.
+                      </p>
                     </Tooltip>
                   </div>
                 )}
@@ -438,12 +442,12 @@ export function EEREInputs() {
                   fieldName="utilitySolar"
                   onChange={(text) => dispatch(updateEereUtilitySolar(text))}
                   tooltip={
-                    <>
+                    <p className="margin-0">
                       Enter the total capacity (maximum potential electricity
                       generation) for this type of resource, measured in MW. The
                       model uses these inputs along with hourly capacity factors
                       that vary by resource type and region.
-                    </>
+                    </p>
                   }
                 />
               </div>
@@ -458,12 +462,12 @@ export function EEREInputs() {
                   fieldName="rooftopSolar"
                   onChange={(text) => dispatch(updateEereRooftopSolar(text))}
                   tooltip={
-                    <>
+                    <p className="margin-0">
                       Enter the total capacity (maximum potential electricity
                       generation) for this type of resource, measured in MW. The
                       model uses these inputs along with hourly capacity factors
                       that vary by resource type and region.
-                    </>
+                    </p>
                   }
                 />
               </div>
@@ -506,7 +510,7 @@ export function EEREInputs() {
                     value={batteryEVs}
                     fieldName="batteryEVs"
                     onChange={(text) => dispatch(updateEereBatteryEVs(text))}
-                    tooltip={<>TODO</>}
+                    tooltip={<p className="margin-0">TODO</p>}
                   />
 
                   <EERETextInput
@@ -516,7 +520,7 @@ export function EEREInputs() {
                     value={hybridEVs}
                     fieldName="hybridEVs"
                     onChange={(text) => dispatch(updateEereHybridEVs(text))}
-                    tooltip={<>TODO</>}
+                    tooltip={<p className="margin-0">TODO</p>}
                   />
                 </div>
 
@@ -528,7 +532,7 @@ export function EEREInputs() {
                     value={transitBuses}
                     fieldName="transitBuses"
                     onChange={(text) => dispatch(updateEereTransitBuses(text))}
-                    tooltip={<>TODO</>}
+                    tooltip={<p className="margin-0">TODO</p>}
                   />
 
                   <EERETextInput
@@ -538,7 +542,7 @@ export function EEREInputs() {
                     value={schoolBuses}
                     fieldName="schoolBuses"
                     onChange={(text) => dispatch(updateEereSchoolBuses(text))}
-                    tooltip={<>TODO</>}
+                    tooltip={<p className="margin-0">TODO</p>}
                   />
                 </div>
               </div>
@@ -561,7 +565,7 @@ export function EEREInputs() {
                   onChange={(option) =>
                     dispatch(updateEereEVDeploymentLocation(option))
                   }
-                  tooltip={<>TODO</>}
+                  tooltip={<p className="margin-0">TODO</p>}
                 />
               </div>
 
@@ -574,7 +578,7 @@ export function EEREInputs() {
                   value={evModelYear}
                   fieldName="evModelYear"
                   onChange={(option) => dispatch(updateEereEVModelYear(option))}
-                  tooltip={<>TODO</>}
+                  tooltip={<p className="margin-0">TODO</p>}
                 />
               </div>
 
@@ -589,7 +593,7 @@ export function EEREInputs() {
                   onChange={(option) =>
                     dispatch(updateEereICEReplacementVehicle(option))
                   }
-                  tooltip={<>TODO</>}
+                  tooltip={<p className="margin-0">TODO</p>}
                 />
               </div>
             </div>
