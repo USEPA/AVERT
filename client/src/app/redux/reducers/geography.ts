@@ -288,6 +288,7 @@ export function selectGeography(focus: GeographicFocus): AppThunk {
     });
 
     dispatch(setSelectedGeographyVMTData());
+    dispatch(setEVEfficiency());
     // TODO: determine if other EV functions should be dispatched when the selected geography changes
   };
 }
@@ -305,8 +306,8 @@ export function selectRegion(regionId: RegionId): AppThunk {
 
     dispatch(setSelectedGeographyVMTData());
     dispatch(setEVEfficiency());
-    dispatch(setEVDeploymentLocationOptions());
     dispatch(setVehicleSalesAndStock());
+    dispatch(setEVDeploymentLocationOptions());
   };
 }
 
@@ -322,8 +323,9 @@ export function selectState(stateId: string): AppThunk {
     });
 
     dispatch(setSelectedGeographyVMTData());
-    dispatch(setEVDeploymentLocationOptions());
+    dispatch(setEVEfficiency());
     dispatch(setVehicleSalesAndStock());
+    dispatch(setEVDeploymentLocationOptions());
   };
 }
 
