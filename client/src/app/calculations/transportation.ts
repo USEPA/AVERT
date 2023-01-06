@@ -3,7 +3,7 @@ import type {
   GeographicFocus,
   EEREDefaultData,
 } from 'app/redux/reducers/geography';
-import type { RegionName, StateId, EVModelYear } from 'app/config';
+import type { RegionName, StateId } from 'app/config';
 import { states } from 'app/config';
 /**
  * Excel: "MOVESEmissionRates" sheet.
@@ -811,33 +811,41 @@ export function calculateEVEfficiencyPerVehicleType(options: {
     schoolBuses: 0,
   };
 
-  // TODO: update logic to support selected states...
+  const evEfficiencyModelYear =
+    evModelYear as keyof typeof evEfficiencyByModelYear;
 
-  if (!selectedRegionName || evModelYear === '') return result;
+  if (geographicFocus === 'regions' && selectedRegionName !== '') {
+    const regionAverageTemperature =
+      regionAverageTemperatures[selectedRegionName];
 
-  const regionAverageTemperature = regionAverageTemperatures[selectedRegionName]; // prettier-ignore
-  const modelYearEVEfficiency = evEfficiencyByModelYear[evModelYear as EVModelYear]; // prettier-ignore
+    const evEfficiency = evEfficiencyByModelYear[evEfficiencyModelYear];
 
-  if (Object.keys(modelYearEVEfficiency).length === 0) return result;
+    if (evEfficiency && Object.keys(evEfficiency).length === 0) return result;
 
-  Object.entries(modelYearEVEfficiency).forEach(([key, data]) => {
-    const vehicleType = key as keyof typeof result;
+    Object.entries(evEfficiency).forEach(([key, data]) => {
+      const vehicleType = key as keyof typeof result;
 
-    if (result.hasOwnProperty(vehicleType)) {
-      /**
-       * adjustment factor for regions whose climate is more than +/-18F
-       * different from St. Louis, MO
-       */
-      const adjustmentFactor =
-        regionAverageTemperature === 68
-          ? 1
-          : regionAverageTemperature === 50 || regionAverageTemperature === 86
-          ? 1 + percentageAdditionalEnergyConsumedFactor
-          : 1 + percentageAdditionalEnergyConsumedFactor / 2;
+      if (result.hasOwnProperty(vehicleType)) {
+        /**
+         * adjustment factor for regions whose climate is more than +/-18F
+         * different from St. Louis, MO
+         */
+        const adjustmentFactor =
+          regionAverageTemperature === 68
+            ? 1
+            : regionAverageTemperature === 50 || regionAverageTemperature === 86
+            ? 1 + percentageAdditionalEnergyConsumedFactor
+            : 1 + percentageAdditionalEnergyConsumedFactor / 2;
 
-      result[vehicleType] = data * adjustmentFactor;
-    }
-  });
+        result[vehicleType] = data * adjustmentFactor;
+      }
+    });
+  }
+
+  if (geographicFocus === 'states' && selectedStateId !== '') {
+    // TODO
+    console.log(selectedStateId);
+  }
 
   return result;
 }
@@ -1168,9 +1176,7 @@ export function calculateMonthlyDailyEVEnergyUsage(options: {
  * "Library" sheet (G253:R288).
  */
 export function calculateMonthlyEmissionRates(options: {
-  selectedGeographyStatesVMTPercentages:
-    | SelectedGeographyStatesVMTPercentages
-    | {};
+  selectedGeographyStatesVMTPercentages: SelectedGeographyStatesVMTPercentages | {}; // prettier-ignore
   evDeploymentLocation: string;
   evModelYear: string;
   iceReplacementVehicle: string;
@@ -1190,13 +1196,7 @@ export function calculateMonthlyEmissionRates(options: {
     };
   } = {};
 
-  if (
-    evDeploymentLocation === '' ||
-    evModelYear === '' ||
-    iceReplacementVehicle === ''
-  ) {
-    return result;
-  }
+  if (evDeploymentLocation === '') return result;
 
   const locationIsRegion = evDeploymentLocation.startsWith('region-');
   const locationIsState = evDeploymentLocation.startsWith('state-');

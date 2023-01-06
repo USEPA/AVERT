@@ -1,4 +1,3 @@
-// reducers
 import { AppThunk } from 'app/redux/index';
 import {
   RegionalLoadData,
@@ -12,13 +11,10 @@ import {
   setMonthlyEmissionRates,
   setEVDeploymentLocationHistoricalEERE,
 } from 'app/redux/reducers/transportation';
-// calculations
 import { calculateHourlyEVLoad } from 'app/calculations/transportation';
 import { calculateEere } from 'app/calculations';
-// config
+import type { RegionId, StateId } from 'app/config';
 import {
-  RegionId,
-  StateId,
   regions,
   evModelYearOptions,
   iceReplacementVehicleOptions,
@@ -203,7 +199,6 @@ const emptyRegionalLoadHour = {
   hourly_limit: 0,
 };
 
-// reducer
 const initialState: EereState = {
   status: 'ready',
   errors: [],
@@ -496,7 +491,6 @@ export default function reducer(
   }
 }
 
-// action creators
 export function setEVDeploymentLocationOptions(): AppThunk {
   // NOTE: set every time a region or state is selected
   return (dispatch, getState) => {
@@ -663,7 +657,6 @@ export function updateEereBatteryEVs(input: string): AppThunk {
     });
 
     dispatch(validateInput('batteryEVs', input));
-
     dispatch(setVehiclesDisplaced());
   };
 }
@@ -676,7 +669,6 @@ export function updateEereHybridEVs(input: string): AppThunk {
     });
 
     dispatch(validateInput('hybridEVs', input));
-
     dispatch(setVehiclesDisplaced());
   };
 }
@@ -689,7 +681,6 @@ export function updateEereTransitBuses(input: string): AppThunk {
     });
 
     dispatch(validateInput('transitBuses', input));
-
     dispatch(setVehiclesDisplaced());
   };
 }
@@ -702,7 +693,6 @@ export function updateEereSchoolBuses(input: string): AppThunk {
     });
 
     dispatch(validateInput('schoolBuses', input));
-
     dispatch(setVehiclesDisplaced());
   };
 }
