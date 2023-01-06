@@ -277,7 +277,8 @@ export default function reducer(
 }
 
 /**
- * Called every time the "Select Region" or "Select State" tabs are clicked
+ * Called every time the "Select Region" or "Select State" tabs are clicked on
+ * the "Select Geography" page
  */
 export function selectGeography(focus: GeographicFocus): AppThunk {
   return (dispatch) => {
@@ -292,7 +293,8 @@ export function selectGeography(focus: GeographicFocus): AppThunk {
 }
 
 /**
- * Called every time a region is clicked on the map or selected from the select
+ * Called every time a region is clicked on the map or selected from the regions
+ * dropdown list on the "Select Geography" page
  */
 export function selectRegion(regionId: RegionId): AppThunk {
   return (dispatch) => {
@@ -309,7 +311,8 @@ export function selectRegion(regionId: RegionId): AppThunk {
 }
 
 /**
- * Called every time a state is clicked on the map or selected from the select
+ * Called every time a state is clicked on the map or selected from the states
+ * dropdown list on the "Select Geography" page
  */
 export function selectState(stateId: string): AppThunk {
   return (dispatch) => {

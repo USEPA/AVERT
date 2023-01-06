@@ -158,14 +158,14 @@ export type HourlyEVChargingPercentages = ReturnType<
 export type SelectedGeographyStatesVMTPercentages = ReturnType<
   typeof calculateSelectedGeographyStatesVMTPercentages
 >;
-export type SelectedRegionVMTPercentages = ReturnType<
-  typeof calculateSelectedRegionVMTPercentages
+export type SelectedGeographyVMTPercentagesPerVehicleType = ReturnType<
+  typeof calculateSelectedGeographyVMTPercentagesPerVehicleType
 >;
-export type SelectedRegionAverageVMTPerYear = ReturnType<
-  typeof calculateSelectedRegionAverageVMTPerYear
+export type SelectedGeographyAverageVMTPerYear = ReturnType<
+  typeof calculateSelectedGeographyAverageVMTPerYear
 >;
-export type MonthlyVMTPerVehicle = ReturnType<
-  typeof calculateMonthlyVMTPerVehicle
+export type MonthlyVMTPerVehicleType = ReturnType<
+  typeof calculateMonthlyVMTPerVehicleType
 >;
 export type EVEfficiencyPerVehicle = ReturnType<
   typeof calculateEVEfficiencyPerVehicle
@@ -209,7 +209,7 @@ export type EVDeploymentLocationHistoricalEERE = ReturnType<
 >;
 
 /**
- * VMT allocation by state and AVERT region (in billions and percentages)
+ * VMT allocation by state and AVERT region (in billions and percentages).
  *
  * Excel: First table in the "RegionStateAllocate" sheet (B6:BF108)
  */
@@ -369,7 +369,7 @@ export function calculateVMTAllocationTotalsAndPercentages() {
 }
 
 /**
- * VMT allocation per vehicle by state
+ * VMT allocation per vehicle by state.
  *
  * Excel: Second table in the "RegionStateAllocate" sheet (B118:J168)
  */
@@ -575,7 +575,7 @@ export function calculateHourlyEVChargingPercentages() {
 
 /**
  * VMT allocation percentages for the selected state or the selected region's
- * states
+ * states.
  *
  * Excel: First table in the "RegionStateAllocate" sheet (CI58:CN107)
  */
@@ -599,12 +599,12 @@ export function calculateSelectedGeographyStatesVMTPercentages(options: {
       const stateId = key as StateId;
       const stateRegionNames = Object.keys(data);
 
-      const vmtAllocationData =
+      const vmtStatesData =
         Object.keys(vmtAllocationTotalsAndPercentages).length !== 0
           ? (vmtAllocationTotalsAndPercentages as VMTAllocationTotalsAndPercentages)
           : null;
 
-      const vmtStateData = vmtAllocationData?.[stateId];
+      const vmtStateData = vmtStatesData?.[stateId];
 
       if (
         vmtStateData &&
@@ -664,11 +664,11 @@ export function calculateSelectedGeographyStatesVMTPercentages(options: {
 }
 
 /**
- * VMT allocation per vehicle for the selected region
+ * VMT allocation percentages per vehicle type for the selected geography.
  *
  * Excel: Second table in the "RegionStateAllocate" sheet (H169 and J169)
  */
-export function calculateSelectedRegionVMTPercentages(options: {
+export function calculateSelectedGeographyVMTPercentagesPerVehicleType(options: {
   selectedGeographyStatesVMTPercentages: SelectedGeographyStatesVMTPercentages | {}; // prettier-ignore
   vmtAllocationPerVehicle: VMTAllocationPerVehicle | {};
 }) {
@@ -679,12 +679,12 @@ export function calculateSelectedRegionVMTPercentages(options: {
     (total, [key, stateData]) => {
       const stateId = key as StateId;
 
-      const vmtAllocationData =
+      const vmtStatesData =
         Object.keys(vmtAllocationPerVehicle).length !== 0
           ? (vmtAllocationPerVehicle as VMTAllocationPerVehicle)
           : null;
 
-      const vmtStateData = vmtAllocationData?.[stateId];
+      const vmtStateData = vmtStatesData?.[stateId];
 
       if (vmtStateData) {
         const allLDVsPercent = stateData.allLDVs;
@@ -709,15 +709,16 @@ export function calculateSelectedRegionVMTPercentages(options: {
 }
 
 /**
- * Selected region's average vehicle miles traveled (VMT) per vehicle type,
- * per year.
+ * Average vehicle miles traveled (VMT) per vehicle type per year for the
+ * selected geography.
  *
  * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E183:E186).
  */
-export function calculateSelectedRegionAverageVMTPerYear(
-  selectedRegionVMTPercentages: SelectedRegionVMTPercentages,
+export function calculateSelectedGeographyAverageVMTPerYear(
+  selectedGeographyVMTPercentagesPerVehicleType: SelectedGeographyVMTPercentagesPerVehicleType,
 ) {
-  const { vmtPerLDVPercent, vmtPerBusPercent } = selectedRegionVMTPercentages;
+  const { vmtPerLDVPercent, vmtPerBusPercent } =
+    selectedGeographyVMTPercentagesPerVehicleType;
 
   const result = {
     cars: nationalAverageVMTPerYear.cars * vmtPerLDVPercent,
@@ -735,11 +736,11 @@ export function calculateSelectedRegionAverageVMTPerYear(
  * Excel: "Table 6: Monthly VMT and efficiency adjustments" table in the
  * "Library" sheet (E232:P237).
  */
-export function calculateMonthlyVMTPerVehicle(options: {
-  selectedRegionAverageVMTPerYear: SelectedRegionAverageVMTPerYear;
+export function calculateMonthlyVMTPerVehicleType(options: {
+  selectedGeographyAverageVMTPerYear: SelectedGeographyAverageVMTPerYear;
   monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
 }) {
-  const { selectedRegionAverageVMTPerYear, monthlyVMTTotalsAndPercentages } =
+  const { selectedGeographyAverageVMTPerYear, monthlyVMTTotalsAndPercentages } =
     options;
 
   const result: {
@@ -765,7 +766,7 @@ export function calculateMonthlyVMTPerVehicle(options: {
     };
 
     generalVehicleTypes.forEach((vehicleType) => {
-      // NOTE: selectedRegionAverageVMTPerYear's vehicle types are abridged
+      // NOTE: selectedGeographyAverageVMTPerYear's vehicle types are abridged
       // (don't include transit buses broken out by fuel type)
       const averageVMTPerYearVehicleType =
         vehicleType === 'transitBusesDiesel' ||
@@ -775,7 +776,7 @@ export function calculateMonthlyVMTPerVehicle(options: {
           : vehicleType;
 
       result[month][vehicleType] =
-        selectedRegionAverageVMTPerYear[averageVMTPerYearVehicleType] *
+        selectedGeographyAverageVMTPerYear[averageVMTPerYearVehicleType] *
         data[vehicleType].percent;
     });
   });
@@ -946,12 +947,15 @@ export function calculateVehiclesDisplaced(options: {
  * transportation sector" table in the "Library" sheet (G297:R304).
  */
 export function calculateMonthlyEVEnergyUsageGW(options: {
-  monthlyVMTPerVehicle: MonthlyVMTPerVehicle;
+  monthlyVMTPerVehicleType: MonthlyVMTPerVehicleType;
   evEfficiencyPerVehicle: EVEfficiencyPerVehicle;
   vehiclesDisplaced: VehiclesDisplaced;
 }) {
-  const { monthlyVMTPerVehicle, evEfficiencyPerVehicle, vehiclesDisplaced } =
-    options;
+  const {
+    monthlyVMTPerVehicleType,
+    evEfficiencyPerVehicle,
+    vehiclesDisplaced,
+  } = options;
 
   const result: {
     [month: number]: {
@@ -959,7 +963,7 @@ export function calculateMonthlyEVEnergyUsageGW(options: {
     };
   } = {};
 
-  if (Object.keys(monthlyVMTPerVehicle).length === 0) return result;
+  if (Object.keys(monthlyVMTPerVehicleType).length === 0) return result;
 
   const kWtoGW = 0.000001;
 
@@ -969,44 +973,44 @@ export function calculateMonthlyEVEnergyUsageGW(options: {
     result[month] = {
       batteryEVCars:
         vehiclesDisplaced.batteryEVCars *
-        monthlyVMTPerVehicle[month].cars *
+        monthlyVMTPerVehicleType[month].cars *
         evEfficiencyPerVehicle.batteryEVCars *
         kWtoGW,
       hybridEVCars:
         vehiclesDisplaced.hybridEVCars *
-        monthlyVMTPerVehicle[month].cars *
+        monthlyVMTPerVehicleType[month].cars *
         evEfficiencyPerVehicle.hybridEVCars *
         kWtoGW *
         percentageHybridEVMilesDrivenOnElectricity,
       batteryEVTrucks:
         vehiclesDisplaced.batteryEVTrucks *
-        monthlyVMTPerVehicle[month].trucks *
+        monthlyVMTPerVehicleType[month].trucks *
         evEfficiencyPerVehicle.batteryEVTrucks *
         kWtoGW,
       hybridEVTrucks:
         vehiclesDisplaced.hybridEVTrucks *
-        monthlyVMTPerVehicle[month].trucks *
+        monthlyVMTPerVehicleType[month].trucks *
         evEfficiencyPerVehicle.hybridEVTrucks *
         kWtoGW *
         percentageHybridEVMilesDrivenOnElectricity,
       transitBusesDiesel:
         vehiclesDisplaced.transitBusesDiesel *
-        monthlyVMTPerVehicle[month].transitBusesDiesel *
+        monthlyVMTPerVehicleType[month].transitBusesDiesel *
         evEfficiencyPerVehicle.transitBuses *
         kWtoGW,
       transitBusesCNG:
         vehiclesDisplaced.transitBusesCNG *
-        monthlyVMTPerVehicle[month].transitBusesCNG *
+        monthlyVMTPerVehicleType[month].transitBusesCNG *
         evEfficiencyPerVehicle.transitBuses *
         kWtoGW,
       transitBusesGasoline:
         vehiclesDisplaced.transitBusesGasoline *
-        monthlyVMTPerVehicle[month].transitBusesGasoline *
+        monthlyVMTPerVehicleType[month].transitBusesGasoline *
         evEfficiencyPerVehicle.transitBuses *
         kWtoGW,
       schoolBuses:
         vehiclesDisplaced.schoolBuses *
-        monthlyVMTPerVehicle[month].schoolBuses *
+        monthlyVMTPerVehicleType[month].schoolBuses *
         evEfficiencyPerVehicle.schoolBuses *
         kWtoGW,
     };
@@ -1287,11 +1291,11 @@ export function calculateMonthlyEmissionRates(options: {
  * (F314:R361).
  */
 export function calculateMonthlyEmissionChanges(options: {
-  monthlyVMTPerVehicle: MonthlyVMTPerVehicle;
+  monthlyVMTPerVehicleType: MonthlyVMTPerVehicleType;
   vehiclesDisplaced: VehiclesDisplaced;
   monthlyEmissionRates: MonthlyEmissionRates;
 }) {
-  const { monthlyVMTPerVehicle, vehiclesDisplaced, monthlyEmissionRates } =
+  const { monthlyVMTPerVehicleType, vehiclesDisplaced, monthlyEmissionRates } =
     options;
 
   const result: {
@@ -1303,7 +1307,7 @@ export function calculateMonthlyEmissionChanges(options: {
   } = {};
 
   if (
-    Object.values(monthlyVMTPerVehicle).length === 0 ||
+    Object.values(monthlyVMTPerVehicleType).length === 0 ||
     Object.values(monthlyEmissionRates).length === 0
   ) {
     return result;
@@ -1326,44 +1330,44 @@ export function calculateMonthlyEmissionChanges(options: {
     pollutants.forEach((pollutant) => {
       result[month].batteryEVCars[pollutant] =
         data.cars[pollutant] *
-        monthlyVMTPerVehicle[month].cars *
+        monthlyVMTPerVehicleType[month].cars *
         vehiclesDisplaced.batteryEVCars;
 
       result[month].hybridEVCars[pollutant] =
         data.cars[pollutant] *
-        monthlyVMTPerVehicle[month].cars *
+        monthlyVMTPerVehicleType[month].cars *
         vehiclesDisplaced.hybridEVCars *
         percentageHybridEVMilesDrivenOnElectricity;
 
       result[month].batteryEVTrucks[pollutant] =
         data.trucks[pollutant] *
-        monthlyVMTPerVehicle[month].trucks *
+        monthlyVMTPerVehicleType[month].trucks *
         vehiclesDisplaced.batteryEVTrucks;
 
       result[month].hybridEVTrucks[pollutant] =
         data.trucks[pollutant] *
-        monthlyVMTPerVehicle[month].trucks *
+        monthlyVMTPerVehicleType[month].trucks *
         vehiclesDisplaced.hybridEVTrucks *
         percentageHybridEVMilesDrivenOnElectricity;
 
       result[month].transitBusesDiesel[pollutant] =
         data.transitBusesDiesel[pollutant] *
-        monthlyVMTPerVehicle[month].transitBusesDiesel *
+        monthlyVMTPerVehicleType[month].transitBusesDiesel *
         vehiclesDisplaced.transitBusesDiesel;
 
       result[month].transitBusesCNG[pollutant] =
         data.transitBusesCNG[pollutant] *
-        monthlyVMTPerVehicle[month].transitBusesCNG *
+        monthlyVMTPerVehicleType[month].transitBusesCNG *
         vehiclesDisplaced.transitBusesCNG;
 
       result[month].transitBusesGasoline[pollutant] =
         data.transitBusesGasoline[pollutant] *
-        monthlyVMTPerVehicle[month].transitBusesGasoline *
+        monthlyVMTPerVehicleType[month].transitBusesGasoline *
         vehiclesDisplaced.transitBusesGasoline;
 
       result[month].schoolBuses[pollutant] =
         data.schoolBuses[pollutant] *
-        monthlyVMTPerVehicle[month].schoolBuses *
+        monthlyVMTPerVehicleType[month].schoolBuses *
         vehiclesDisplaced.schoolBuses;
     });
   });
