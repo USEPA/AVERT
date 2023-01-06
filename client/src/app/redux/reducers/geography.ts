@@ -1,14 +1,12 @@
-// reducers
 import { AppThunk } from 'app/redux/index';
-import { setEVEfficiency } from 'app/redux/reducers/transportation';
 import { setEVDeploymentLocationOptions } from 'app/redux/reducers/eere';
 import {
-  setSelectedRegionVMTData,
+  setSelectedGeographyVMTData,
+  setEVEfficiency,
   setDailyAndMonthlyStats,
   setVehicleSalesAndStock,
   setRegionREDefaultsAverages,
 } from 'app/redux/reducers/transportation';
-// config
 import {
   RdfDataKey,
   RegionId,
@@ -19,7 +17,7 @@ import {
   states,
 } from 'app/config';
 
-type GeographicFocus = 'regions' | 'states';
+export type GeographicFocus = 'regions' | 'states';
 
 export type RegionalLoadData = {
   day: number;
@@ -278,14 +276,24 @@ export default function reducer(
   }
 }
 
-// action creators
-export function selectGeography(focus: GeographicFocus) {
-  return {
-    type: 'geography/SELECT_GEOGRAPHY',
-    payload: { focus },
+/**
+ * Called every time the "Select Region" or "Select State" tabs are clicked
+ */
+export function selectGeography(focus: GeographicFocus): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'geography/SELECT_GEOGRAPHY',
+      payload: { focus },
+    });
+
+    dispatch(setSelectedGeographyVMTData());
+    // TODO: determine if other EV functions should be dispatched when the selected geography changes
   };
 }
 
+/**
+ * Called every time a region is clicked on the map or selected from the select
+ */
 export function selectRegion(regionId: RegionId): AppThunk {
   return (dispatch) => {
     dispatch({
@@ -293,13 +301,16 @@ export function selectRegion(regionId: RegionId): AppThunk {
       payload: { regionId },
     });
 
+    dispatch(setSelectedGeographyVMTData());
     dispatch(setEVEfficiency());
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setVehicleSalesAndStock());
-    dispatch(setSelectedRegionVMTData());
   };
 }
 
+/**
+ * Called every time a state is clicked on the map or selected from the select
+ */
 export function selectState(stateId: string): AppThunk {
   return (dispatch) => {
     dispatch({
@@ -307,6 +318,7 @@ export function selectState(stateId: string): AppThunk {
       payload: { stateId },
     });
 
+    dispatch(setSelectedGeographyVMTData());
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setVehicleSalesAndStock());
   };

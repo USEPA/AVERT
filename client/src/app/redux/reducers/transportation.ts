@@ -1,19 +1,17 @@
-// reducers
 import { AppThunk } from 'app/redux/index';
 import { RegionalLoadData } from 'app/redux/reducers/geography';
-// calculations
 import type {
   VMTAllocationTotalsAndPercentages,
   VMTAllocationPerVehicle,
-  SelectedRegionStatesVMTPercentages,
+  MonthlyVMTTotalsAndPercentages,
+  HourlyEVChargingPercentages,
+  SelectedGeographyStatesVMTPercentages,
   SelectedRegionVMTPercentages,
   SelectedRegionAverageVMTPerYear,
-  MonthlyVMTTotalsAndPercentages,
   MonthlyVMTPerVehicle,
   EVEfficiencyPerVehicle,
   DailyStats,
   MonthlyStats,
-  HourlyEVChargingPercentages,
   VehiclesDisplaced,
   MonthlyEVEnergyUsageGW,
   MonthlyEVEnergyUsageMW,
@@ -30,15 +28,15 @@ import type {
 import {
   calculateVMTAllocationTotalsAndPercentages,
   calculateVMTAllocationPerVehicle,
-  calculateSelectedRegionStatesVMTPercentages,
+  calculateMonthlyVMTTotalsAndPercentages,
+  calculateHourlyEVChargingPercentages,
+  calculateSelectedGeographyStatesVMTPercentages,
   calculateSelectedRegionVMTPercentages,
   calculateSelectedRegionAverageVMTPerYear,
-  calculateMonthlyVMTTotalsAndPercentages,
   calculateMonthlyVMTPerVehicle,
   calculateEVEfficiencyPerVehicle,
   calculateDailyStats,
   calculateMonthlyStats,
-  calculateHourlyEVChargingPercentages,
   calculateVehiclesDisplaced,
   calculateMonthlyEVEnergyUsageGW,
   calculateMonthlyEVEnergyUsageMW,
@@ -67,9 +65,19 @@ type TransportationAction =
       };
     }
   | {
-      type: 'transportation/SET_SELECTED_REGION_STATES_VMT_PERCENTAGES';
+      type: 'transportation/SET_MONTHLY_VMT_TOTALS_AND_PERCENTAGES';
       payload: {
-        selectedRegionStatesVMTPercentages: SelectedRegionStatesVMTPercentages;
+        monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
+      };
+    }
+  | {
+      type: 'transportation/SET_HOURLY_EV_CHARGING_PERCENTAGES';
+      payload: { hourlyEVChargingPercentages: HourlyEVChargingPercentages };
+    }
+  | {
+      type: 'transportation/SET_SELECTED_GEOGRAPHY_STATES_VMT_PERCENTAGES';
+      payload: {
+        selectedGeographyStatesVMTPercentages: SelectedGeographyStatesVMTPercentages;
       };
     }
   | {
@@ -82,12 +90,6 @@ type TransportationAction =
       type: 'transportation/SET_SELECTED_REGION_AVERAGE_VMT_PER_YEAR';
       payload: {
         selectedRegionAverageVMTPerYear: SelectedRegionAverageVMTPerYear;
-      };
-    }
-  | {
-      type: 'transportation/SET_MONTHLY_VMT_TOTALS_AND_PERCENTAGES';
-      payload: {
-        monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
       };
     }
   | {
@@ -109,10 +111,6 @@ type TransportationAction =
   | {
       type: 'transportation/SET_MONTHLY_STATS';
       payload: { monthlyStats: MonthlyStats };
-    }
-  | {
-      type: 'transportation/SET_HOURLY_EV_CHARGING_PERCENTAGES';
-      payload: { hourlyEVChargingPercentages: HourlyEVChargingPercentages };
     }
   | {
       type: 'transportation/SET_VEHICLES_DISPLACED';
@@ -168,15 +166,15 @@ type TransportationAction =
 type TransportationState = {
   vmtAllocationTotalsAndPercentages: VMTAllocationTotalsAndPercentages | {};
   vmtAllocationPerVehicle: VMTAllocationPerVehicle | {};
-  selectedRegionStatesVMTPercentages: SelectedRegionStatesVMTPercentages | {};
+  monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
+  hourlyEVChargingPercentages: HourlyEVChargingPercentages;
+  selectedGeographyStatesVMTPercentages: SelectedGeographyStatesVMTPercentages | {}; // prettier-ignore
   selectedRegionVMTPercentages: SelectedRegionVMTPercentages;
   selectedRegionAverageVMTPerYear: SelectedRegionAverageVMTPerYear;
-  monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
   monthlyVMTPerVehicle: MonthlyVMTPerVehicle;
   evEfficiencyPerVehicle: EVEfficiencyPerVehicle;
   dailyStats: DailyStats;
   monthlyStats: MonthlyStats;
-  hourlyEVChargingPercentages: HourlyEVChargingPercentages;
   vehiclesDisplaced: VehiclesDisplaced;
   monthlyEVEnergyUsageGW: MonthlyEVEnergyUsageGW;
   monthlyEVEnergyUsageMW: MonthlyEVEnergyUsageMW;
@@ -191,11 +189,12 @@ type TransportationState = {
   evDeploymentLocationHistoricalEERE: EVDeploymentLocationHistoricalEERE;
 };
 
-// reducer
 const initialState: TransportationState = {
   vmtAllocationTotalsAndPercentages: {},
   vmtAllocationPerVehicle: {},
-  selectedRegionStatesVMTPercentages: {},
+  monthlyVMTTotalsAndPercentages: {},
+  hourlyEVChargingPercentages: {},
+  selectedGeographyStatesVMTPercentages: {},
   selectedRegionVMTPercentages: {
     vmtPerLDVPercent: 0,
     vmtPerBusPercent: 0,
@@ -206,7 +205,6 @@ const initialState: TransportationState = {
     transitBuses: 0,
     schoolBuses: 0,
   },
-  monthlyVMTTotalsAndPercentages: {},
   monthlyVMTPerVehicle: {},
   evEfficiencyPerVehicle: {
     batteryEVCars: 0,
@@ -218,7 +216,6 @@ const initialState: TransportationState = {
   },
   dailyStats: {},
   monthlyStats: {},
-  hourlyEVChargingPercentages: {},
   vehiclesDisplaced: {
     batteryEVCars: 0,
     hybridEVCars: 0,
@@ -279,12 +276,30 @@ export default function reducer(
       };
     }
 
-    case 'transportation/SET_SELECTED_REGION_STATES_VMT_PERCENTAGES': {
-      const { selectedRegionStatesVMTPercentages } = action.payload;
+    case 'transportation/SET_MONTHLY_VMT_TOTALS_AND_PERCENTAGES': {
+      const { monthlyVMTTotalsAndPercentages } = action.payload;
 
       return {
         ...state,
-        selectedRegionStatesVMTPercentages,
+        monthlyVMTTotalsAndPercentages,
+      };
+    }
+
+    case 'transportation/SET_HOURLY_EV_CHARGING_PERCENTAGES': {
+      const { hourlyEVChargingPercentages } = action.payload;
+
+      return {
+        ...state,
+        hourlyEVChargingPercentages,
+      };
+    }
+
+    case 'transportation/SET_SELECTED_GEOGRAPHY_STATES_VMT_PERCENTAGES': {
+      const { selectedGeographyStatesVMTPercentages } = action.payload;
+
+      return {
+        ...state,
+        selectedGeographyStatesVMTPercentages,
       };
     }
 
@@ -303,15 +318,6 @@ export default function reducer(
       return {
         ...state,
         selectedRegionAverageVMTPerYear,
-      };
-    }
-
-    case 'transportation/SET_MONTHLY_VMT_TOTALS_AND_PERCENTAGES': {
-      const { monthlyVMTTotalsAndPercentages } = action.payload;
-
-      return {
-        ...state,
-        monthlyVMTTotalsAndPercentages,
       };
     }
 
@@ -348,15 +354,6 @@ export default function reducer(
       return {
         ...state,
         monthlyStats,
-      };
-    }
-
-    case 'transportation/SET_HOURLY_EV_CHARGING_PERCENTAGES': {
-      const { hourlyEVChargingPercentages } = action.payload;
-
-      return {
-        ...state,
-        hourlyEVChargingPercentages,
       };
     }
 
@@ -474,9 +471,10 @@ export default function reducer(
   }
 }
 
-// action creators
+/**
+ * Called when the app starts
+ */
 export function setVMTData(): AppThunk {
-  // NOTE: set when the app starts
   return (dispatch) => {
     const vmtAllocationTotalsAndPercentages =
       calculateVMTAllocationTotalsAndPercentages();
@@ -503,42 +501,68 @@ export function setVMTData(): AppThunk {
   };
 }
 
-export function setSelectedRegionVMTData(): AppThunk {
-  // NOTE: set every time a region is selected
+/**
+ * Called when the app starts
+ */
+export function setHourlyEVChargingPercentages(): AppThunk {
+  return (dispatch) => {
+    const hourlyEVChargingPercentages = calculateHourlyEVChargingPercentages();
+
+    dispatch({
+      type: 'transportation/SET_HOURLY_EV_CHARGING_PERCENTAGES',
+      payload: { hourlyEVChargingPercentages },
+    });
+  };
+}
+
+/**
+ * Called every time the `geography` reducer's `selectGeography()`,
+ * `selectRegion()`, and `selectState()` functions are called
+ */
+export function setSelectedGeographyVMTData(): AppThunk {
   return (dispatch, getState) => {
     const { geography, transportation } = getState();
-
-    const selectedRegionName =
-      Object.values(geography.regions).find((r) => r.selected)?.name || '';
-
     const {
       vmtAllocationTotalsAndPercentages,
       vmtAllocationPerVehicle,
       monthlyVMTTotalsAndPercentages,
     } = transportation;
 
-    const selectedRegionStatesVMTPercentages =
-      calculateSelectedRegionStatesVMTPercentages({
+    const geographicFocus = geography.focus;
+
+    const selectedRegionName =
+      Object.values(geography.regions).find((r) => r.selected)?.name || '';
+
+    const selectedStateId =
+      Object.values(geography.states).find((s) => s.selected)?.id || '';
+
+    const selectedGeographyStatesVMTPercentages =
+      calculateSelectedGeographyStatesVMTPercentages({
+        geographicFocus,
         selectedRegionName,
+        selectedStateId,
         vmtAllocationTotalsAndPercentages,
       });
 
+    // TODO: rename to selectedGeography...
     const selectedRegionVMTPercentages = calculateSelectedRegionVMTPercentages({
-      selectedRegionStatesVMTPercentages,
+      selectedGeographyStatesVMTPercentages,
       vmtAllocationPerVehicle,
     });
 
+    // TODO: rename to selectedGeography...
     const selectedRegionAverageVMTPerYear =
       calculateSelectedRegionAverageVMTPerYear(selectedRegionVMTPercentages);
 
+    // TODO: rename?
     const monthlyVMTPerVehicle = calculateMonthlyVMTPerVehicle({
       selectedRegionAverageVMTPerYear,
       monthlyVMTTotalsAndPercentages,
     });
 
     dispatch({
-      type: 'transportation/SET_SELECTED_REGION_STATES_VMT_PERCENTAGES',
-      payload: { selectedRegionStatesVMTPercentages },
+      type: 'transportation/SET_SELECTED_GEOGRAPHY_STATES_VMT_PERCENTAGES',
+      payload: { selectedGeographyStatesVMTPercentages },
     });
 
     dispatch({
@@ -604,18 +628,6 @@ export function setDailyAndMonthlyStats(
     });
 
     dispatch(setMonthlyDailyEVEnergyUsage());
-  };
-}
-
-export function setHourlyEVChargingPercentages(): AppThunk {
-  // NOTE: set when the app starts
-  return (dispatch) => {
-    const hourlyEVChargingPercentages = calculateHourlyEVChargingPercentages();
-
-    dispatch({
-      type: 'transportation/SET_HOURLY_EV_CHARGING_PERCENTAGES',
-      payload: { hourlyEVChargingPercentages },
-    });
   };
 }
 
@@ -707,12 +719,12 @@ export function setMonthlyEmissionRates(): AppThunk {
   // replacement vehicle changes
   return (dispatch, getState) => {
     const { transportation, eere } = getState();
-    const { selectedRegionStatesVMTPercentages } = transportation;
+    const { selectedGeographyStatesVMTPercentages } = transportation;
     const { evDeploymentLocation, evModelYear, iceReplacementVehicle } =
       eere.inputs;
 
     const monthlyEmissionRates = calculateMonthlyEmissionRates({
-      selectedRegionStatesVMTPercentages,
+      selectedGeographyStatesVMTPercentages,
       evDeploymentLocation,
       evModelYear,
       iceReplacementVehicle,
