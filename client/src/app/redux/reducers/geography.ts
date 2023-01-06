@@ -454,11 +454,9 @@ export function fetchRegionsData(): AppThunk {
         }
 
         dispatch({ type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' });
-
-        return rdfs;
       })
-      .then((rdfs) => {
-        dispatch(setDailyAndMonthlyStats(rdfs[0].regional_load));
+      .then(() => {
+        dispatch(setDailyAndMonthlyStats());
         dispatch(setRegionREDefaultsAverages());
       });
   };

@@ -1,5 +1,4 @@
 import { AppThunk } from 'app/redux/index';
-import { RegionalLoadData } from 'app/redux/reducers/geography';
 import type {
   VMTAllocationTotalsAndPercentages,
   VMTAllocationPerVehicle,
@@ -519,7 +518,7 @@ export function setHourlyEVChargingPercentages(): AppThunk {
  * Called every time the `geography` reducer's `selectGeography()`,
  * `selectRegion()`, or `selectState()` functions are called.
  *
- * (e.g. anytime the selected geography changes)
+ * _(e.g. anytime the selected geography changes)_
  */
 export function setSelectedGeographyVMTData(): AppThunk {
   return (dispatch, getState) => {
@@ -589,7 +588,7 @@ export function setSelectedGeographyVMTData(): AppThunk {
  * `selectRegion()`, or `selectState()` functions, or the `eere` reducer's
  * `updateEereEVModelYear()` function is called.
  *
- * (e.g. anytime the selected geography or EV model year changes)
+ * _(e.g. anytime the selected geography or EV model year changes)_
  */
 export function setEVEfficiency(): AppThunk {
   return (dispatch, getState) => {
@@ -618,12 +617,20 @@ export function setEVEfficiency(): AppThunk {
   };
 }
 
-export function setDailyAndMonthlyStats(
-  regionalLoad: RegionalLoadData[],
-): AppThunk {
-  // NOTE: set the first time RDFs are fetched
+/**
+ * Called every time the `geography` reducer's `fetchRegionsData()` function is
+ * called.
+ *
+ * _(e.g. whenever the "Set EE/RE Impacts" button is clicked  on the "Select
+ * Geography" page)_
+ */
+export function setDailyAndMonthlyStats(): AppThunk {
   return (dispatch, getState) => {
-    const { transportation } = getState();
+    const { geography, transportation } = getState();
+
+    const regionalLoad = Object.values(geography.regions).find((region) => {
+      return region.selected;
+    })?.rdf.regional_load;
 
     // all RDFs for a given year have the same number of hours, so no need to
     // re-calculate daily and monthly stats again if it's already been set
@@ -642,6 +649,7 @@ export function setDailyAndMonthlyStats(
       payload: { monthlyStats },
     });
 
+    // TODO: determine if this should move elsewhere...
     dispatch(setMonthlyDailyEVEnergyUsage());
   };
 }
@@ -713,9 +721,13 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
   };
 }
 
+/**
+ * Called after monthlyStats is first set in `setDailyAndMonthlyStats()`
+ * (will only be called from there once, due to the early return in that
+ * function, preventing it from re-setting monthlyStats), or whenever an EV
+ * number or EV model year changes.
+ */
 export function setMonthlyDailyEVEnergyUsage(): AppThunk {
-  // NOTE: set whenever an EV number, EV model year, or the selected geography
-  // (region or state) changes
   return (dispatch, getState) => {
     const { transportation } = getState();
     const { monthlyStats, monthlyEVEnergyUsageMW } = transportation;

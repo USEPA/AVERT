@@ -814,20 +814,20 @@ export function calculateEVEfficiencyPerVehicleType(options: {
   const evEfficiencyModelYear =
     evModelYear as keyof typeof evEfficiencyByModelYear;
 
-  if (geographicFocus === 'regions' && selectedRegionName !== '') {
-    const regionAverageTemperature =
-      regionAverageTemperatures[selectedRegionName];
+  const evEfficiency = evEfficiencyByModelYear[evEfficiencyModelYear];
 
-    const evEfficiency = evEfficiencyByModelYear[evEfficiencyModelYear];
+  if (!evEfficiency) return result;
 
-    if (evEfficiency && Object.keys(evEfficiency).length === 0) return result;
+  Object.entries(evEfficiency).forEach(([key, data]) => {
+    const vehicleType = key as keyof typeof result;
 
-    Object.entries(evEfficiency).forEach(([key, data]) => {
-      const vehicleType = key as keyof typeof result;
+    if (result.hasOwnProperty(vehicleType)) {
+      if (geographicFocus === 'regions' && selectedRegionName !== '') {
+        const regionAverageTemperature =
+          regionAverageTemperatures[selectedRegionName];
 
-      if (result.hasOwnProperty(vehicleType)) {
         /**
-         * adjustment factor for regions whose climate is more than +/-18F
+         * Adjustment factor for regions whose climate is more than +/-18F
          * different from St. Louis, MO
          */
         const adjustmentFactor =
@@ -839,31 +839,29 @@ export function calculateEVEfficiencyPerVehicleType(options: {
 
         result[vehicleType] = data * adjustmentFactor;
       }
-    });
-  }
 
-  if (geographicFocus === 'states' && selectedStateId !== '') {
-    // TODO
-    console.log(selectedStateId);
-  }
+      if (geographicFocus === 'states' && selectedStateId !== '') {
+        // TODO: determine how to set the adjustment factor when a state is selected
+        result[vehicleType] = data;
+      }
+    }
+  });
 
   return result;
 }
 
 /**
  * Build up daily stats object by looping through every hour of the year,
- * (only creates objects and sets their keys in the first hour of each month)
+ * (only creates objects and sets their keys in the first hour of each month).
  */
-export function calculateDailyStats(regionalLoad: RegionalLoadData[]) {
+export function calculateDailyStats(regionalLoad?: RegionalLoadData[]) {
   const result: {
     [month: number]: {
       [day: number]: { _done: boolean; dayOfWeek: number; isWeekend: boolean };
     };
   } = {};
 
-  if (regionalLoad.length === 0) {
-    return result;
-  }
+  if (!regionalLoad || regionalLoad.length === 0) return result;
 
   regionalLoad.forEach((data) => {
     result[data.month] ??= {};
@@ -886,7 +884,7 @@ export function calculateDailyStats(regionalLoad: RegionalLoadData[]) {
 }
 
 /**
- * Build up monthly stats object from daily stats object
+ * Build up monthly stats object from daily stats object.
  *
  * Excel: Data in the third EV table (to the right of the "Calculate Changes"
  * table) in the "CalculateEERE" sheet (P49:S61).
@@ -900,9 +898,7 @@ export function calculateMonthlyStats(dailyStats: DailyStats) {
     };
   } = {};
 
-  if (Object.keys(dailyStats).length === 0) {
-    return result;
-  }
+  if (Object.keys(dailyStats).length === 0) return result;
 
   [...Array(12)].forEach((_item, index) => {
     const month = index + 1;
