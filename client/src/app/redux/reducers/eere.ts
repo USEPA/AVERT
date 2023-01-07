@@ -11,6 +11,7 @@ import {
   setMonthlyEmissionRates,
   setEVDeploymentLocationHistoricalEERE,
 } from 'app/redux/reducers/transportation';
+import { calculateRegionalScalingFactors } from 'app/calculations/geography';
 import { calculateHourlyEVLoad } from 'app/calculations/transportation';
 import { calculateEere } from 'app/calculations';
 import type { RegionId, StateId } from 'app/config';
@@ -785,6 +786,12 @@ export function calculateEereProfile(): AppThunk {
       return region.offshoreWind ? (total += regionalPercent) : total;
     }, 0);
 
+    const regionalScalingFactors = calculateRegionalScalingFactors({
+      geographicFocus: geography.focus,
+      selectedRegion: Object.values(geography.regions).find((r) => r.selected),
+      selectedState: Object.values(geography.states).find((s) => s.selected),
+    });
+
     selectedRegions.forEach((region) => {
       const regionalPercent = selectedState?.percentageByRegion[region.id] || 0;
 
@@ -796,7 +803,7 @@ export function calculateEereProfile(): AppThunk {
       //   defined in the config file (`app/config.ts`). for example, if the
       //   state falls exactly equally between the two regions, the regional
       //   scaling factor would be 0.5 for each of those two regions.
-      const regionalScalingFactor = !selectedState ? 1 : regionalPercent / 100;
+      const regionalScalingFactor = regionalScalingFactors[region.id] || 0;
 
       // the percent reduction factor also is a number between 0 and 1, and
       // is used to scale the user's input for broad-based program reduction
