@@ -13,6 +13,10 @@
   display: none;
 }
 
+.highcharts-menu hr {
+  margin: 0;
+}
+
 @media (min-width: 64em) {
   .usa-nav {
     float: none;
