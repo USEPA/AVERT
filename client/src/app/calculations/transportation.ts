@@ -3,7 +3,7 @@ import type {
   GeographicFocus,
   EEREDefaultData,
 } from 'app/redux/reducers/geography';
-import type { RegionName, StateId } from 'app/config';
+import type { RegionId, RegionName, StateId } from 'app/config';
 import { states } from 'app/config';
 /**
  * Excel: "MOVESEmissionRates" sheet.
@@ -795,11 +795,11 @@ export function calculateMonthlyVMTPerVehicleType(options: {
  */
 export function calculateEVEfficiencyPerVehicleType(options: {
   geographicFocus: GeographicFocus;
-  selectedRegionName: RegionName | '';
+  selectedRegionId: RegionId | '';
   selectedStateId: StateId | '';
   evModelYear: string;
 }) {
-  const { geographicFocus, selectedRegionName, selectedStateId, evModelYear } =
+  const { geographicFocus, selectedRegionId, selectedStateId, evModelYear } =
     options;
 
   const result = {
@@ -822,9 +822,9 @@ export function calculateEVEfficiencyPerVehicleType(options: {
     const vehicleType = key as keyof typeof result;
 
     if (result.hasOwnProperty(vehicleType)) {
-      if (geographicFocus === 'regions' && selectedRegionName !== '') {
+      if (geographicFocus === 'regions' && selectedRegionId !== '') {
         const regionAverageTemperature =
-          regionAverageTemperatures[selectedRegionName];
+          regionAverageTemperatures[selectedRegionId];
 
         /**
          * Adjustment factor for regions whose climate is more than +/-18F

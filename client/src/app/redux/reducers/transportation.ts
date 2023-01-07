@@ -597,15 +597,15 @@ export function setEVEfficiency(): AppThunk {
 
     const geographicFocus = geography.focus;
 
-    const selectedRegionName =
-      Object.values(geography.regions).find((r) => r.selected)?.name || '';
+    const selectedRegionId =
+      Object.values(geography.regions).find((r) => r.selected)?.id || '';
 
     const selectedStateId =
       Object.values(geography.states).find((s) => s.selected)?.id || '';
 
     const evEfficiencyPerVehicleType = calculateEVEfficiencyPerVehicleType({
       geographicFocus,
-      selectedRegionName,
+      selectedRegionId,
       selectedStateId,
       evModelYear,
     });
@@ -654,8 +654,14 @@ export function setDailyAndMonthlyStats(): AppThunk {
   };
 }
 
+/**
+ * Called every time the `eere` reducer's `updateEereBatteryEVs()`,
+ * `updateEereHybridEVs()`, `updateEereTransitBuses()`, or
+ * `updateEereSchoolBuses()` function are called.
+ *
+ * (e.g. whenever an EV input number changes)
+ */
 export function setVehiclesDisplaced(): AppThunk {
-  // NOTE: set whenever an EV number changes
   return (dispatch, getState) => {
     const { eere } = getState();
     const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = eere.inputs;
@@ -673,6 +679,7 @@ export function setVehiclesDisplaced(): AppThunk {
       payload: { vehiclesDisplaced },
     });
 
+    // TODO: determine if these should move elsewhere...
     dispatch(setMonthlyEVEnergyUsage());
     dispatch(setMonthlyEmissionChanges());
   };
