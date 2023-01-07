@@ -827,17 +827,20 @@ export function calculateEVEfficiencyPerVehicleType(options: {
           regionAverageTemperatures[selectedRegionId];
 
         /**
-         * Adjustment factor for regions whose climate is more than +/-18F
-         * different from St. Louis, MO
+         * Climate adjustment factor for regions whose climate is more than
+         * +/-18F different from St. Louis, MO
+         *
+         * Excel: "Table 9: Default EV load profiles and related values from
+         * EVI-Pro Lite" table in the "Library" sheet (D432:D445)
          */
-        const adjustmentFactor =
+        const climateAdjustmentFactor =
           regionAverageTemperature === 68
             ? 1
             : regionAverageTemperature === 50 || regionAverageTemperature === 86
             ? 1 + percentageAdditionalEnergyConsumedFactor
             : 1 + percentageAdditionalEnergyConsumedFactor / 2;
 
-        result[vehicleType] = data * adjustmentFactor;
+        result[vehicleType] = data * climateAdjustmentFactor;
       }
 
       if (geographicFocus === 'states' && selectedStateId !== '') {
