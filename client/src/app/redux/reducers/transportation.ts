@@ -660,15 +660,16 @@ export function setDailyAndMonthlyStats(): AppThunk {
  */
 export function setVehiclesDisplaced(): AppThunk {
   return (dispatch, getState) => {
-    const { eere } = getState();
+    const { transportation, eere } = getState();
+    const { monthlyVMTTotalsAndPercentages } = transportation;
     const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = eere.inputs;
 
-    // TODO: do we need the `regionalScalingFactor` for these inputs?
     const vehiclesDisplaced = calculateVehiclesDisplaced({
       batteryEVs: Number(batteryEVs),
       hybridEVs: Number(hybridEVs),
       transitBuses: Number(transitBuses),
       schoolBuses: Number(schoolBuses),
+      monthlyVMTTotalsAndPercentages,
     });
 
     dispatch({

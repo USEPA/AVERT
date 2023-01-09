@@ -18,11 +18,6 @@ import movesEmissionsRates from 'app/data/moves-emissions-rates.json';
  */
 import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
 /**
- * Excel: "Part II. Vehicle Composition" table in the "EV_Detail" sheet
- * (D63:G67).
- */
-import percentageVehiclesDisplacedByEVs from 'app/data/percentage-vehicles-displaced-by-evs.json';
-/**
  * Excel: "CountyFIPS" sheet.
  */
 import countyFips from 'app/data/county-fips.json';
@@ -88,6 +83,15 @@ const percentageAdditionalEnergyConsumedFactor = 0.0766194804959222;
  * "EV_Detail" sheet (D53).
  */
 const percentWeekendToWeekdayEVConsumption = 97.3015982802952;
+
+/**
+ * Excel: "Table 14: Light-duty vehicle sales by type" table in the "Library"
+ * sheet (D727:E727)
+ */
+const percentageLDVsDisplacedByEVs = {
+  cars: 0.276046368502288,
+  trucks: 0.723953631497712,
+};
 
 type LightDutyVehiclesSalesStateId = keyof typeof stateLightDutyVehiclesSales;
 type BusSalesAndStockStateId = keyof typeof stateBusSalesAndStock;
@@ -976,18 +980,57 @@ export function calculateVehiclesDisplaced(options: {
   hybridEVs: number;
   transitBuses: number;
   schoolBuses: number;
+  monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
 }) {
-  const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = options;
+  const {
+    batteryEVs,
+    hybridEVs,
+    transitBuses,
+    schoolBuses,
+    monthlyVMTTotalsAndPercentages,
+  } = options;
+
+  const yearlyTransitBusesVMTTotals = Object.values(
+    monthlyVMTTotalsAndPercentages,
+  ).reduce(
+    (data, monthlyData) => {
+      data.diesel += monthlyData.transitBusesDiesel.total;
+      data.cng += monthlyData.transitBusesCNG.total;
+      data.gasoline += monthlyData.transitBusesGasoline.total;
+      return data;
+    },
+    { diesel: 0, cng: 0, gasoline: 0 },
+  );
+
+  // console.log(yearlyTransitBusesVMTTotals); // NOTE: for debugging purposes
+
+  const totalYearlyTransitBusesVMT =
+    yearlyTransitBusesVMTTotals.diesel +
+    yearlyTransitBusesVMTTotals.cng +
+    yearlyTransitBusesVMTTotals.gasoline;
+
+  /**
+   * Excel: "Part II. Vehicle Composition" table in the "EV_Detail" sheet
+   * (F65:F67), which comes from "Table 6: Monthly VMT and efficiency
+   * adjustments" (Q220:Q222)
+   */
+  const percentageTransitBusesDisplacedByEVs = {
+    diesel: yearlyTransitBusesVMTTotals.diesel / totalYearlyTransitBusesVMT,
+    cng: yearlyTransitBusesVMTTotals.cng / totalYearlyTransitBusesVMT,
+    gasoline: yearlyTransitBusesVMTTotals.gasoline / totalYearlyTransitBusesVMT,
+  };
+
+  // console.log(percentageTransitBusesDisplacedByEVs); // NOTE: for debugging purposes
 
   const result = {
-    batteryEVCars: batteryEVs * percentageVehiclesDisplacedByEVs.batteryEVCars,
-    hybridEVCars: hybridEVs * percentageVehiclesDisplacedByEVs.hybridEVCars,
-    batteryEVTrucks: batteryEVs * percentageVehiclesDisplacedByEVs.batteryEVTrucks, // prettier-ignore
-    hybridEVTrucks: hybridEVs * percentageVehiclesDisplacedByEVs.hybridEVTrucks,
-    transitBusesDiesel: transitBuses * percentageVehiclesDisplacedByEVs.transitBusesDiesel, // prettier-ignore
-    transitBusesCNG: transitBuses * percentageVehiclesDisplacedByEVs.transitBusesCNG, // prettier-ignore
-    transitBusesGasoline: transitBuses * percentageVehiclesDisplacedByEVs.transitBusesGasoline, // prettier-ignore
-    schoolBuses: schoolBuses * percentageVehiclesDisplacedByEVs.schoolBuses,
+    batteryEVCars: batteryEVs * percentageLDVsDisplacedByEVs.cars,
+    hybridEVCars: hybridEVs * percentageLDVsDisplacedByEVs.cars,
+    batteryEVTrucks: batteryEVs * percentageLDVsDisplacedByEVs.trucks,
+    hybridEVTrucks: hybridEVs * percentageLDVsDisplacedByEVs.trucks,
+    transitBusesDiesel: transitBuses * percentageTransitBusesDisplacedByEVs.diesel, // prettier-ignore
+    transitBusesCNG: transitBuses * percentageTransitBusesDisplacedByEVs.cng,
+    transitBusesGasoline: transitBuses * percentageTransitBusesDisplacedByEVs.gasoline, // prettier-ignore
+    schoolBuses: schoolBuses * 1,
   };
 
   return result;
