@@ -24,6 +24,7 @@ import type {
   RegionREDefaultsAverages,
   EVDeploymentLocationHistoricalEERE,
 } from 'app/calculations/transportation';
+import { calculateRegionalScalingFactors } from 'app/calculations/geography';
 import {
   calculateVMTAllocationTotalsAndPercentages,
   calculateVMTAllocationPerVehicle,
@@ -595,18 +596,14 @@ export function setEVEfficiency(): AppThunk {
     const { geography, eere } = getState();
     const { evModelYear } = eere.inputs;
 
-    const geographicFocus = geography.focus;
-
-    const selectedRegionId =
-      Object.values(geography.regions).find((r) => r.selected)?.id || '';
-
-    const selectedStateId =
-      Object.values(geography.states).find((s) => s.selected)?.id || '';
+    const regionalScalingFactors = calculateRegionalScalingFactors({
+      geographicFocus: geography.focus,
+      selectedRegion: Object.values(geography.regions).find((r) => r.selected),
+      selectedState: Object.values(geography.states).find((s) => s.selected),
+    });
 
     const evEfficiencyPerVehicleType = calculateEVEfficiencyPerVehicleType({
-      geographicFocus,
-      selectedRegionId,
-      selectedStateId,
+      regionalScalingFactors,
       evModelYear,
     });
 

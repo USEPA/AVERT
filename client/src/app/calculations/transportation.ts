@@ -3,6 +3,7 @@ import type {
   GeographicFocus,
   EEREDefaultData,
 } from 'app/redux/reducers/geography';
+import type { RegionalScalingFactors } from 'app/calculations/geography';
 import type { RegionId, RegionName, StateId } from 'app/config';
 import { states } from 'app/config';
 /**
@@ -794,13 +795,10 @@ export function calculateMonthlyVMTPerVehicleType(options: {
  * value for all months.
  */
 export function calculateEVEfficiencyPerVehicleType(options: {
-  geographicFocus: GeographicFocus;
-  selectedRegionId: RegionId | '';
-  selectedStateId: StateId | '';
+  regionalScalingFactors: RegionalScalingFactors;
   evModelYear: string;
 }) {
-  const { geographicFocus, selectedRegionId, selectedStateId, evModelYear } =
-    options;
+  const { regionalScalingFactors, evModelYear } = options;
 
   const result = {
     batteryEVCars: 0,
@@ -811,6 +809,17 @@ export function calculateEVEfficiencyPerVehicleType(options: {
     schoolBuses: 0,
   };
 
+  const resultsByRegion: Partial<{
+    [regionId in RegionId]: {
+      batteryEVCars: number;
+      hybridEVCars: number;
+      batteryEVTrucks: number;
+      hybridEVTrucks: number;
+      transitBuses: number;
+      schoolBuses: number;
+    };
+  }> = {};
+
   const evEfficiencyModelYear =
     evModelYear as keyof typeof evEfficiencyByModelYear;
 
@@ -818,35 +827,67 @@ export function calculateEVEfficiencyPerVehicleType(options: {
 
   if (!evEfficiency) return result;
 
-  Object.entries(evEfficiency).forEach(([key, data]) => {
-    const vehicleType = key as keyof typeof result;
+  // build up results by region, using the regional scaling factor
+  Object.entries(regionalScalingFactors).forEach(
+    ([id, regionalScalingFactor]) => {
+      const regionId = id as RegionId;
 
-    if (result.hasOwnProperty(vehicleType)) {
-      if (geographicFocus === 'regions' && selectedRegionId !== '') {
-        const regionAverageTemperature =
-          regionAverageTemperatures[selectedRegionId];
+      resultsByRegion[regionId] ??= {
+        batteryEVCars: regionalScalingFactor,
+        hybridEVCars: regionalScalingFactor,
+        batteryEVTrucks: regionalScalingFactor,
+        hybridEVTrucks: regionalScalingFactor,
+        transitBuses: regionalScalingFactor,
+        schoolBuses: regionalScalingFactor,
+      };
 
-        /**
-         * Climate adjustment factor for regions whose climate is more than
-         * +/-18F different from St. Louis, MO
-         *
-         * Excel: "Table 9: Default EV load profiles and related values from
-         * EVI-Pro Lite" table in the "Library" sheet (D432:D445)
-         */
-        const climateAdjustmentFactor =
-          regionAverageTemperature === 68
-            ? 1
-            : regionAverageTemperature === 50 || regionAverageTemperature === 86
-            ? 1 + percentageAdditionalEnergyConsumedFactor
-            : 1 + percentageAdditionalEnergyConsumedFactor / 2;
+      const regionResult = resultsByRegion[regionId];
 
-        result[vehicleType] = data * climateAdjustmentFactor;
-      }
+      if (!regionResult) return result;
 
-      if (geographicFocus === 'states' && selectedStateId !== '') {
-        // TODO: determine how to set the adjustment factor when a state is selected
-        result[vehicleType] = data;
-      }
+      Object.entries(evEfficiency).forEach(([type, data]) => {
+        const vehicleType = type as keyof typeof evEfficiency;
+
+        if (regionResult.hasOwnProperty(vehicleType)) {
+          const regionAverageTemperature = regionAverageTemperatures[regionId];
+
+          /**
+           * Climate adjustment factor for regions whose climate is more than
+           * +/-18F different from St. Louis, MO
+           *
+           * Excel: "Table 9: Default EV load profiles and related values from
+           * EVI-Pro Lite" table in the "Library" sheet (D432:D445)
+           */
+          const climateAdjustmentFactor =
+            regionAverageTemperature === 68
+              ? 1
+              : regionAverageTemperature === 50 ||
+                regionAverageTemperature === 86
+              ? 1 + percentageAdditionalEnergyConsumedFactor
+              : 1 + percentageAdditionalEnergyConsumedFactor / 2;
+
+          regionResult[vehicleType] *= data * climateAdjustmentFactor;
+        }
+      });
+    },
+  );
+
+  // console.log(resultsByRegion); // NOTE: for debugging purposes
+
+  // reduce results by region into single result object by combining each
+  // region's vehicle type values
+  Object.keys(resultsByRegion).forEach((id) => {
+    const regionId = id as RegionId;
+    const regionResult = resultsByRegion[regionId];
+
+    if (regionResult) {
+      Object.keys(regionResult).forEach((type) => {
+        const vehicleType = type as keyof typeof regionResult;
+
+        if (result.hasOwnProperty(vehicleType)) {
+          result[vehicleType] += regionResult[vehicleType];
+        }
+      });
     }
   });
 
