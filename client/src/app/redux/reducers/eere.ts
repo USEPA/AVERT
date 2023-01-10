@@ -523,7 +523,7 @@ export function setEVDeploymentLocationOptions(): AppThunk {
         ? [
             {
               id: `state-${selectedState.id}`,
-              name: `State: ${selectedState.name}`,
+              name: `${selectedState.name}`,
             },
           ]
         : [{ id: '', name: '' }];

@@ -20,8 +20,6 @@ function formatNumber(number: number) {
 function EVSalesAndStockTable(props: { className?: string }) {
   const { className } = props;
 
-  // TODO: determine if regionalScalingFactor is needed if geographicFocus is states
-  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const batteryEVs = useTypedSelector(({ eere }) => eere.inputs.batteryEVs);
   const hybridEVs = useTypedSelector(({ eere }) => eere.inputs.hybridEVs);
   const transitBuses = useTypedSelector(({ eere }) => eere.inputs.transitBuses);
@@ -39,8 +37,6 @@ function EVSalesAndStockTable(props: { className?: string }) {
   const evDeploymentLocationName = evDeploymentLocationOptions.find((opt) => {
     return opt.id === evDeploymentLocation;
   })?.name;
-
-  if (geographicFocus === 'states') return null;
 
   const locationSalesAndStock = vehicleSalesAndStock[evDeploymentLocation];
   if (!locationSalesAndStock) return null;
