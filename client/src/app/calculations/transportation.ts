@@ -990,6 +990,19 @@ export function calculateVehiclesDisplaced(options: {
     monthlyVMTTotalsAndPercentages,
   } = options;
 
+  const result = {
+    batteryEVCars: 0,
+    hybridEVCars: 0,
+    batteryEVTrucks: 0,
+    hybridEVTrucks: 0,
+    transitBusesDiesel: 0,
+    transitBusesCNG: 0,
+    transitBusesGasoline: 0,
+    schoolBuses: 0,
+  };
+
+  if (Object.keys(monthlyVMTTotalsAndPercentages).length === 0) return result;
+
   const yearlyTransitBusesVMTTotals = Object.values(
     monthlyVMTTotalsAndPercentages,
   ).reduce(
@@ -1009,6 +1022,8 @@ export function calculateVehiclesDisplaced(options: {
     yearlyTransitBusesVMTTotals.cng +
     yearlyTransitBusesVMTTotals.gasoline;
 
+  if (totalYearlyTransitBusesVMT === 0) return result;
+
   /**
    * Excel: "Part II. Vehicle Composition" table in the "EV_Detail" sheet
    * (F65:F67), which comes from "Table 6: Monthly VMT and efficiency
@@ -1022,16 +1037,14 @@ export function calculateVehiclesDisplaced(options: {
 
   // console.log(percentageTransitBusesDisplacedByEVs); // NOTE: for debugging purposes
 
-  const result = {
-    batteryEVCars: batteryEVs * percentageLDVsDisplacedByEVs.cars,
-    hybridEVCars: hybridEVs * percentageLDVsDisplacedByEVs.cars,
-    batteryEVTrucks: batteryEVs * percentageLDVsDisplacedByEVs.trucks,
-    hybridEVTrucks: hybridEVs * percentageLDVsDisplacedByEVs.trucks,
-    transitBusesDiesel: transitBuses * percentageTransitBusesDisplacedByEVs.diesel, // prettier-ignore
-    transitBusesCNG: transitBuses * percentageTransitBusesDisplacedByEVs.cng,
-    transitBusesGasoline: transitBuses * percentageTransitBusesDisplacedByEVs.gasoline, // prettier-ignore
-    schoolBuses: schoolBuses * 1,
-  };
+  result.batteryEVCars = batteryEVs * percentageLDVsDisplacedByEVs.cars;
+  result.hybridEVCars = hybridEVs * percentageLDVsDisplacedByEVs.cars;
+  result.batteryEVTrucks = batteryEVs * percentageLDVsDisplacedByEVs.trucks;
+  result.hybridEVTrucks = hybridEVs * percentageLDVsDisplacedByEVs.trucks;
+  result.transitBusesDiesel = transitBuses * percentageTransitBusesDisplacedByEVs.diesel; // prettier-ignore
+  result.transitBusesCNG = transitBuses * percentageTransitBusesDisplacedByEVs.cng; // prettier-ignore
+  result.transitBusesGasoline = transitBuses * percentageTransitBusesDisplacedByEVs.gasoline; // prettier-ignore
+  result.schoolBuses = schoolBuses * 1;
 
   return result;
 }
@@ -1061,54 +1074,57 @@ export function calculateMonthlyEVEnergyUsageGW(options: {
 
   if (Object.keys(monthlyVMTPerVehicleType).length === 0) return result;
 
-  const kWtoGW = 0.000001;
+  const KWtoGW = 0.000_001;
 
   [...Array(12)].forEach((_item, index) => {
     const month = index + 1;
+    const monthlyVmt = monthlyVMTPerVehicleType[month];
+
+    if (!monthlyVmt) return result;
 
     result[month] = {
       batteryEVCars:
         vehiclesDisplaced.batteryEVCars *
-        monthlyVMTPerVehicleType[month].cars *
+        monthlyVmt.cars *
         evEfficiencyPerVehicleType.batteryEVCars *
-        kWtoGW,
+        KWtoGW,
       hybridEVCars:
         vehiclesDisplaced.hybridEVCars *
-        monthlyVMTPerVehicleType[month].cars *
+        monthlyVmt.cars *
         evEfficiencyPerVehicleType.hybridEVCars *
-        kWtoGW *
+        KWtoGW *
         percentageHybridEVMilesDrivenOnElectricity,
       batteryEVTrucks:
         vehiclesDisplaced.batteryEVTrucks *
-        monthlyVMTPerVehicleType[month].trucks *
+        monthlyVmt.trucks *
         evEfficiencyPerVehicleType.batteryEVTrucks *
-        kWtoGW,
+        KWtoGW,
       hybridEVTrucks:
         vehiclesDisplaced.hybridEVTrucks *
-        monthlyVMTPerVehicleType[month].trucks *
+        monthlyVmt.trucks *
         evEfficiencyPerVehicleType.hybridEVTrucks *
-        kWtoGW *
+        KWtoGW *
         percentageHybridEVMilesDrivenOnElectricity,
       transitBusesDiesel:
         vehiclesDisplaced.transitBusesDiesel *
-        monthlyVMTPerVehicleType[month].transitBusesDiesel *
+        monthlyVmt.transitBusesDiesel *
         evEfficiencyPerVehicleType.transitBuses *
-        kWtoGW,
+        KWtoGW,
       transitBusesCNG:
         vehiclesDisplaced.transitBusesCNG *
-        monthlyVMTPerVehicleType[month].transitBusesCNG *
+        monthlyVmt.transitBusesCNG *
         evEfficiencyPerVehicleType.transitBuses *
-        kWtoGW,
+        KWtoGW,
       transitBusesGasoline:
         vehiclesDisplaced.transitBusesGasoline *
-        monthlyVMTPerVehicleType[month].transitBusesGasoline *
+        monthlyVmt.transitBusesGasoline *
         evEfficiencyPerVehicleType.transitBuses *
-        kWtoGW,
+        KWtoGW,
       schoolBuses:
         vehiclesDisplaced.schoolBuses *
-        monthlyVMTPerVehicleType[month].schoolBuses *
+        monthlyVmt.schoolBuses *
         evEfficiencyPerVehicleType.schoolBuses *
-        kWtoGW,
+        KWtoGW,
     };
   });
 
@@ -1217,36 +1233,38 @@ export function calculateMonthlyDailyEVEnergyUsage(options: {
     const scaledWeekdayDays =
       weekdayDays + weekenedToWeekdayRatio * weekendDays;
 
-    const batteryEVsWeekday =
-      monthlyEVEnergyUsageMW[month].batteryEVs / scaledWeekdayDays;
+    if (scaledWeekdayDays !== 0) {
+      const batteryEVsWeekday =
+        monthlyEVEnergyUsageMW[month].batteryEVs / scaledWeekdayDays;
 
-    const hybridEVsWeekday =
-      monthlyEVEnergyUsageMW[month].hybridEVs / scaledWeekdayDays;
+      const hybridEVsWeekday =
+        monthlyEVEnergyUsageMW[month].hybridEVs / scaledWeekdayDays;
 
-    const transitBusesWeekday =
-      monthlyEVEnergyUsageMW[month].transitBuses / scaledWeekdayDays;
+      const transitBusesWeekday =
+        monthlyEVEnergyUsageMW[month].transitBuses / scaledWeekdayDays;
 
-    const schoolBusesWeekday =
-      monthlyEVEnergyUsageMW[month].schoolBuses / scaledWeekdayDays;
+      const schoolBusesWeekday =
+        monthlyEVEnergyUsageMW[month].schoolBuses / scaledWeekdayDays;
 
-    result[month] = {
-      batteryEVs: {
-        weekday: batteryEVsWeekday,
-        weekend: batteryEVsWeekday * weekenedToWeekdayRatio,
-      },
-      hybridEVs: {
-        weekday: hybridEVsWeekday,
-        weekend: hybridEVsWeekday * weekenedToWeekdayRatio,
-      },
-      transitBuses: {
-        weekday: transitBusesWeekday,
-        weekend: transitBusesWeekday * weekenedToWeekdayRatio,
-      },
-      schoolBuses: {
-        weekday: schoolBusesWeekday,
-        weekend: schoolBusesWeekday * weekenedToWeekdayRatio,
-      },
-    };
+      result[month] = {
+        batteryEVs: {
+          weekday: batteryEVsWeekday,
+          weekend: batteryEVsWeekday * weekenedToWeekdayRatio,
+        },
+        hybridEVs: {
+          weekday: hybridEVsWeekday,
+          weekend: hybridEVsWeekday * weekenedToWeekdayRatio,
+        },
+        transitBuses: {
+          weekday: transitBusesWeekday,
+          weekend: transitBusesWeekday * weekenedToWeekdayRatio,
+        },
+        schoolBuses: {
+          weekday: schoolBusesWeekday,
+          weekend: schoolBusesWeekday * weekenedToWeekdayRatio,
+        },
+      };
+    }
   });
 
   return result;
