@@ -206,8 +206,8 @@ export type HourlyEVLoad = ReturnType<typeof calculateHourlyEVLoad>;
 export type VehicleSalesAndStock = ReturnType<
   typeof calculateVehicleSalesAndStock
 >;
-export type RegionREDefaultsAverages = ReturnType<
-  typeof calculateRegionREDefaultsAverages
+export type SelectedGeographyEEREDefaultsAverages = ReturnType<
+  typeof calculateSelectedGeographyEEREDefaultsAverages
 >;
 export type EVDeploymentLocationHistoricalEERE = ReturnType<
   typeof calculateEVDeploymentLocationHistoricalEERE
@@ -1690,8 +1690,6 @@ export function calculateVehicleSalesAndStock(options: {
         : true;
 
     if (conditionalRegionMatch && stateIds.includes(stateId)) {
-      console.log(stateId);
-
       const lightDutyVehiclesVMTShare = data['Share of State VMT - Passenger Cars'] || 0; // prettier-ignore
       const transitBusesVMTShare = data['Share of State VMT - Transit Buses'] || 0; // prettier-ignore
       const schoolBusesVMTShare = data['Share of State VMT - School Buses'] || 0; // prettier-ignore
@@ -1757,7 +1755,7 @@ export function calculateVehicleSalesAndStock(options: {
 }
 
 /**
- * Calculates averages of a selected region's hourly EERE Defaults for both
+ * Calculates averages of a selected geography's hourly EERE Defaults for both
  * onshore wind and utility solar. These average RE values are used in setting
  * the historical RE data for Onshore Wind and Unitity Solar's GWh values in the
  * `EEREEVComparisonTable` component.
@@ -1766,31 +1764,79 @@ export function calculateVehicleSalesAndStock(options: {
  * Historical renewable and energy efficiency addition data" table in the
  * "Library" sheet.
  */
-export function calculateRegionREDefaultsAverages(
-  selectedRegionEEREDefaults: EEREDefaultData[],
-) {
+export function calculateSelectedGeographyEEREDefaultsAverages(options: {
+  regionalScalingFactors: RegionalScalingFactors;
+  selectedGeographyEEREDefaults: Partial<{
+    [regionId in RegionId]: EEREDefaultData[];
+  }>;
+}) {
+  const { regionalScalingFactors, selectedGeographyEEREDefaults } = options;
+
   const result = {
     onshore_wind: 0,
     utility_pv: 0,
   };
 
-  if (selectedRegionEEREDefaults.length === 0) {
+  const resultsByRegion: Partial<{
+    [regionId in RegionId]: {
+      onshore_wind: number;
+      utility_pv: number;
+    };
+  }> = {};
+
+  if (Object.keys(selectedGeographyEEREDefaults).length === 0) {
     return result;
   }
 
-  const reDefaultsTotals = selectedRegionEEREDefaults.reduce(
-    (total, hourlyEereDefault) => {
-      total.onshore_wind += hourlyEereDefault.onshore_wind;
-      total.utility_pv += hourlyEereDefault.utility_pv;
-      return total;
+  // build up results by region, using the regional scaling factor
+  Object.entries(regionalScalingFactors).forEach(
+    ([id, regionalScalingFactor]) => {
+      const regionId = id as RegionId;
+
+      resultsByRegion[regionId] ??= {
+        onshore_wind: regionalScalingFactor,
+        utility_pv: regionalScalingFactor,
+      };
+
+      const regionResult = resultsByRegion[regionId];
+      const regionEEREDefaults = selectedGeographyEEREDefaults[regionId];
+
+      if (!regionResult || !regionEEREDefaults) return result;
+
+      const renewableEnergyDefaultsTotals = regionEEREDefaults.reduce(
+        (total, hourlyEereDefault) => {
+          total.onshore_wind += hourlyEereDefault.onshore_wind;
+          total.utility_pv += hourlyEereDefault.utility_pv;
+          return total;
+        },
+        { onshore_wind: 0, utility_pv: 0 },
+      );
+
+      const totalHours = regionEEREDefaults.length;
+
+      regionResult.onshore_wind *= renewableEnergyDefaultsTotals.onshore_wind / totalHours; // prettier-ignore
+      regionResult.utility_pv *= renewableEnergyDefaultsTotals.utility_pv / totalHours; // prettier-ignore
     },
-    { onshore_wind: 0, utility_pv: 0 },
   );
 
-  const totalHours = selectedRegionEEREDefaults.length;
+  // console.log(resultsByRegion); // NOTE: for debugging purposes
 
-  result.onshore_wind = reDefaultsTotals.onshore_wind / totalHours;
-  result.utility_pv = reDefaultsTotals.utility_pv / totalHours;
+  // reduce results by region into single result object by combining each
+  // region's renewable energy values
+  Object.keys(resultsByRegion).forEach((id) => {
+    const regionId = id as RegionId;
+    const regionResult = resultsByRegion[regionId];
+
+    if (regionResult) {
+      Object.keys(regionResult).forEach((type) => {
+        const renewableEnergyField = type as keyof typeof regionResult;
+
+        if (result.hasOwnProperty(renewableEnergyField)) {
+          result[renewableEnergyField] += regionResult[renewableEnergyField];
+        }
+      });
+    }
+  });
 
   return result;
 }
@@ -1802,10 +1848,11 @@ export function calculateRegionREDefaultsAverages(
  * table in the "Library" sheet (C680:H680).
  */
 export function calculateEVDeploymentLocationHistoricalEERE(options: {
-  regionREDefaultsAverages: RegionREDefaultsAverages;
+  selectedGeographyEEREDefaultsAverages: SelectedGeographyEEREDefaultsAverages;
   evDeploymentLocation: string;
 }) {
-  const { regionREDefaultsAverages, evDeploymentLocation } = options;
+  const { selectedGeographyEEREDefaultsAverages, evDeploymentLocation } =
+    options;
 
   const result = {
     eeRetail: { mw: 0, gwh: 0 },
@@ -1842,8 +1889,8 @@ export function calculateEVDeploymentLocationHistoricalEERE(options: {
   result.onshoreWind.mw = locationAverage.capacity_added_mw.onshore_wind;
   result.utilitySolar.mw = locationAverage.capacity_added_mw.utility_pv;
   result.eeRetail.gwh = locationAverage.retail_impacts_ghw.ee_retail;
-  result.onshoreWind.gwh = regionREDefaultsAverages.onshore_wind * hoursInYear * result.onshoreWind.mw / GWtoMW // prettier-ignore
-  result.utilitySolar.gwh = regionREDefaultsAverages.utility_pv * hoursInYear * result.utilitySolar.mw / GWtoMW; // prettier-ignore
+  result.onshoreWind.gwh = selectedGeographyEEREDefaultsAverages.onshore_wind * hoursInYear * result.onshoreWind.mw / GWtoMW // prettier-ignore
+  result.utilitySolar.gwh = selectedGeographyEEREDefaultsAverages.utility_pv * hoursInYear * result.utilitySolar.mw / GWtoMW; // prettier-ignore
 
   return result;
 }

@@ -29,7 +29,7 @@ export function calculateRegionalScalingFactors(options: {
 }) {
   const { geographicFocus, selectedRegion, selectedState } = options;
 
-  const result = {} as Partial<{ [stateId in RegionId]: number }>;
+  const result = {} as Partial<{ [regionId in RegionId]: number }>;
 
   if (geographicFocus === 'regions' && selectedRegion) {
     result[selectedRegion.id] = 1;

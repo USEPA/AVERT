@@ -4,7 +4,7 @@ import {
   setSelectedGeographyVMTData,
   setEVEfficiency,
   setDailyAndMonthlyStats,
-  setRegionREDefaultsAverages,
+  setSelectedGeographyEEREDefaultsAverages,
 } from 'app/redux/reducers/transportation';
 import {
   RdfDataKey,
@@ -454,7 +454,7 @@ export function fetchRegionsData(): AppThunk {
       })
       .then(() => {
         dispatch(setDailyAndMonthlyStats());
-        dispatch(setRegionREDefaultsAverages());
+        dispatch(setSelectedGeographyEEREDefaultsAverages());
       });
   };
 }

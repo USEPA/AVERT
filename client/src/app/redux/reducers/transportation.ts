@@ -1,4 +1,5 @@
 import { AppThunk } from 'app/redux/index';
+import type { EEREDefaultData } from 'app/redux/reducers/geography';
 import type {
   VMTAllocationTotalsAndPercentages,
   VMTAllocationPerVehicle,
@@ -21,7 +22,7 @@ import type {
   TotalMonthlyEmissionChanges,
   TotalYearlyEmissionChanges,
   VehicleSalesAndStock,
-  RegionREDefaultsAverages,
+  SelectedGeographyEEREDefaultsAverages,
   EVDeploymentLocationHistoricalEERE,
 } from 'app/calculations/transportation';
 import { calculateRegionalScalingFactors } from 'app/calculations/geography';
@@ -47,9 +48,10 @@ import {
   calculateTotalMonthlyEmissionChanges,
   calculateTotalYearlyEmissionChanges,
   calculateVehicleSalesAndStock,
-  calculateRegionREDefaultsAverages,
+  calculateSelectedGeographyEEREDefaultsAverages,
   calculateEVDeploymentLocationHistoricalEERE,
 } from 'app/calculations/transportation';
+import type { RegionId } from 'app/config';
 
 type TransportationAction =
   | {
@@ -153,8 +155,10 @@ type TransportationAction =
       payload: { vehicleSalesAndStock: VehicleSalesAndStock };
     }
   | {
-      type: 'transportation/SET_REGION_RE_DEFAULTS_AVERAGES';
-      payload: { regionREDefaultsAverages: RegionREDefaultsAverages };
+      type: 'transportation/SET_SELECTED_GEOGRAPHY_EERE_DEFAULTS_AVERAGES';
+      payload: {
+        selectedGeographyEEREDefaultsAverages: SelectedGeographyEEREDefaultsAverages;
+      };
     }
   | {
       type: 'transportation/SET_EV_DEPLOYMENT_LOCATION_HISTORICAL_EERE';
@@ -185,7 +189,7 @@ type TransportationState = {
   totalMonthlyEmissionChanges: TotalMonthlyEmissionChanges;
   totalYearlyEmissionChanges: TotalYearlyEmissionChanges;
   vehicleSalesAndStock: VehicleSalesAndStock;
-  regionREDefaultsAverages: RegionREDefaultsAverages;
+  selectedGeographyEEREDefaultsAverages: SelectedGeographyEEREDefaultsAverages;
   evDeploymentLocationHistoricalEERE: EVDeploymentLocationHistoricalEERE;
 };
 
@@ -242,7 +246,7 @@ const initialState: TransportationState = {
     NH3: 0,
   },
   vehicleSalesAndStock: {},
-  regionREDefaultsAverages: {
+  selectedGeographyEEREDefaultsAverages: {
     onshore_wind: 0,
     utility_pv: 0,
   },
@@ -447,12 +451,12 @@ export default function reducer(
       };
     }
 
-    case 'transportation/SET_REGION_RE_DEFAULTS_AVERAGES': {
-      const { regionREDefaultsAverages } = action.payload;
+    case 'transportation/SET_SELECTED_GEOGRAPHY_EERE_DEFAULTS_AVERAGES': {
+      const { selectedGeographyEEREDefaultsAverages } = action.payload;
 
       return {
         ...state,
-        regionREDefaultsAverages,
+        selectedGeographyEEREDefaultsAverages,
       };
     }
 
@@ -606,12 +610,13 @@ export function setSelectedGeographyVMTData(): AppThunk {
 export function setEVEfficiency(): AppThunk {
   return (dispatch, getState) => {
     const { geography, eere } = getState();
+    const { focus, regions, states } = geography;
     const { evModelYear } = eere.inputs;
 
     const regionalScalingFactors = calculateRegionalScalingFactors({
-      geographicFocus: geography.focus,
-      selectedRegion: Object.values(geography.regions).find((r) => r.selected),
-      selectedState: Object.values(geography.states).find((s) => s.selected),
+      geographicFocus: focus,
+      selectedRegion: Object.values(regions).find((r) => r.selected),
+      selectedState: Object.values(states).find((s) => s.selected),
     });
 
     const evEfficiencyPerVehicleType = calculateEVEfficiencyPerVehicleType({
@@ -898,27 +903,48 @@ export function setVehicleSalesAndStock(): AppThunk {
   };
 }
 
-export function setRegionREDefaultsAverages(): AppThunk {
-  // NOTE: set every time RDFs are fetched
+/**
+ * Called every time the `geography` reducer's `fetchRegionsData()` function is
+ * called.
+ *
+ * _(e.g. whenever the "Set EE/RE Impacts" button is clicked  on the "Select
+ * Geography" page)_
+ */
+export function setSelectedGeographyEEREDefaultsAverages(): AppThunk {
   return (dispatch, getState) => {
     const { geography } = getState();
-    const { focus, regions } = geography;
+    const { focus, regions, states } = geography;
 
-    const selectedRegion = Object.values(regions).find((r) => r.selected);
+    const regionalScalingFactors = calculateRegionalScalingFactors({
+      geographicFocus: focus,
+      selectedRegion: Object.values(regions).find((r) => r.selected),
+      selectedState: Object.values(states).find((s) => s.selected),
+    });
 
-    const selectedRegionEEREDefaults =
-      focus === 'regions'
-        ? selectedRegion?.eereDefaults.data || []
-        : []; /* NOTE: selected states can be in more than one region */
+    const selectedGeographyStates = Object.keys(regionalScalingFactors);
 
-    // TODO: update if we need to support selected states
-    const regionREDefaultsAverages = calculateRegionREDefaultsAverages(
-      selectedRegionEEREDefaults,
+    const selectedGeographyEEREDefaults = Object.entries(regions).reduce(
+      (result, [id, regionData]) => {
+        const regionId = id as RegionId;
+
+        if (selectedGeographyStates.includes(regionData.id)) {
+          result[regionId] = regionData.eereDefaults.data;
+        }
+
+        return result;
+      },
+      {} as Partial<{ [regionId in RegionId]: EEREDefaultData[] }>,
     );
 
+    const selectedGeographyEEREDefaultsAverages =
+      calculateSelectedGeographyEEREDefaultsAverages({
+        regionalScalingFactors,
+        selectedGeographyEEREDefaults,
+      });
+
     dispatch({
-      type: 'transportation/SET_REGION_RE_DEFAULTS_AVERAGES',
-      payload: { regionREDefaultsAverages },
+      type: 'transportation/SET_SELECTED_GEOGRAPHY_EERE_DEFAULTS_AVERAGES',
+      payload: { selectedGeographyEEREDefaultsAverages },
     });
 
     dispatch(setEVDeploymentLocationHistoricalEERE());
@@ -930,11 +956,11 @@ export function setEVDeploymentLocationHistoricalEERE(): AppThunk {
   return (dispatch, getState) => {
     const { eere, transportation } = getState();
     const { evDeploymentLocation } = eere.inputs;
-    const { regionREDefaultsAverages } = transportation;
+    const { selectedGeographyEEREDefaultsAverages } = transportation;
 
     const evDeploymentLocationHistoricalEERE =
       calculateEVDeploymentLocationHistoricalEERE({
-        regionREDefaultsAverages,
+        selectedGeographyEEREDefaultsAverages,
         evDeploymentLocation,
       });
 
