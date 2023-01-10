@@ -4,7 +4,6 @@ import {
   setSelectedGeographyVMTData,
   setEVEfficiency,
   setDailyAndMonthlyStats,
-  setVehicleSalesAndStock,
   setRegionREDefaultsAverages,
 } from 'app/redux/reducers/transportation';
 import {
@@ -287,9 +286,9 @@ export function selectGeography(focus: GeographicFocus): AppThunk {
       payload: { focus },
     });
 
+    dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
     dispatch(setEVEfficiency());
-    // TODO: determine if other EV functions should be dispatched when the selected geography changes
   };
 }
 
@@ -304,10 +303,9 @@ export function selectRegion(regionId: RegionId): AppThunk {
       payload: { regionId },
     });
 
+    dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
     dispatch(setEVEfficiency());
-    dispatch(setVehicleSalesAndStock());
-    dispatch(setEVDeploymentLocationOptions());
   };
 }
 
@@ -322,10 +320,9 @@ export function selectState(stateId: string): AppThunk {
       payload: { stateId },
     });
 
+    dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
     dispatch(setEVEfficiency());
-    dispatch(setVehicleSalesAndStock());
-    dispatch(setEVDeploymentLocationOptions());
   };
 }
 

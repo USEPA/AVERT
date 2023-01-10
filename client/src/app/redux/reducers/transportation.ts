@@ -498,6 +498,9 @@ export function setVMTData(): AppThunk {
       type: 'transportation/SET_MONTHLY_VMT_TOTALS_AND_PERCENTAGES',
       payload: { monthlyVMTTotalsAndPercentages },
     });
+
+    // NOTE: `vehicleSalesAndStock` uses `vmtAllocationPerVehicle`
+    dispatch(setVehicleSalesAndStock());
   };
 }
 
@@ -859,24 +862,30 @@ export function setMonthlyEmissionChanges(): AppThunk {
   };
 }
 
+/**
+ * Called when time this `transportation` reducer's `setVMTData()` function is
+ * called or every time the `eere` reducer's `setEVDeploymentLocationOptions()`
+ * function is called.
+ *
+ * _(e.g. when the app starts or anytime the selected geography changes)_
+ */
 export function setVehicleSalesAndStock(): AppThunk {
-  // NOTE: set every time a region or state is selected
   return (dispatch, getState) => {
     const { geography, transportation, eere } = getState();
-    const { focus, regions } = geography;
+    const { regions } = geography;
     const { vmtAllocationPerVehicle } = transportation;
     const { evDeploymentLocationOptions } = eere.selectOptions;
+
+    const geographicFocus = geography.focus;
 
     const selectedRegion = Object.values(regions).find((r) => r.selected);
     const evDeploymentLocations = evDeploymentLocationOptions.map((o) => o.id);
 
     const selectedRegionName =
-      focus === 'regions'
-        ? selectedRegion?.name || ''
-        : ''; /* NOTE: selected states can be in more than one region */
+      geographicFocus === 'regions' ? selectedRegion?.name || '' : '';
 
-    // TODO: update if we need to support selected states
     const vehicleSalesAndStock = calculateVehicleSalesAndStock({
+      geographicFocus,
       selectedRegionName,
       evDeploymentLocations,
       vmtAllocationPerVehicle,

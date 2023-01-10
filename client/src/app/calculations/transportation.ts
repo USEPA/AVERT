@@ -1645,12 +1645,17 @@ export function calculateHourlyEVLoad(options: {
  * vehicle sales and stock" table in the "Library" sheet (C457:I474).
  */
 export function calculateVehicleSalesAndStock(options: {
+  geographicFocus: GeographicFocus;
   selectedRegionName: string;
   evDeploymentLocations: string[];
   vmtAllocationPerVehicle: VMTAllocationPerVehicle | {};
 }) {
-  const { selectedRegionName, evDeploymentLocations, vmtAllocationPerVehicle } =
-    options;
+  const {
+    geographicFocus,
+    selectedRegionName,
+    evDeploymentLocations,
+    vmtAllocationPerVehicle,
+  } = options;
 
   const result: {
     [locationId: string]: {
@@ -1665,11 +1670,7 @@ export function calculateVehicleSalesAndStock(options: {
       ? (vmtAllocationPerVehicle as VMTAllocationPerVehicle)
       : null;
 
-  if (
-    !selectedRegionName ||
-    evDeploymentLocations[0] === '' ||
-    !vmtAllocationData
-  ) {
+  if (evDeploymentLocations[0] === '' || !vmtAllocationData) {
     return result;
   }
 
@@ -1683,10 +1684,14 @@ export function calculateVehicleSalesAndStock(options: {
     const id = data['Postal State Code'];
     const stateId = `state-${id}`;
 
-    if (
-      data['AVERT Region'] === selectedRegionName &&
-      stateIds.includes(stateId)
-    ) {
+    const conditionalRegionMatch =
+      geographicFocus === 'regions'
+        ? data['AVERT Region'] === selectedRegionName
+        : true;
+
+    if (conditionalRegionMatch && stateIds.includes(stateId)) {
+      console.log(stateId);
+
       const lightDutyVehiclesVMTShare = data['Share of State VMT - Passenger Cars'] || 0; // prettier-ignore
       const transitBusesVMTShare = data['Share of State VMT - Transit Buses'] || 0; // prettier-ignore
       const schoolBusesVMTShare = data['Share of State VMT - School Buses'] || 0; // prettier-ignore

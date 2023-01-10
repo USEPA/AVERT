@@ -9,6 +9,7 @@ import {
   setVehiclesDisplaced,
   setMonthlyEVEnergyUsage,
   setMonthlyEmissionRates,
+  setVehicleSalesAndStock,
   setEVDeploymentLocationHistoricalEERE,
 } from 'app/redux/reducers/transportation';
 import { calculateRegionalScalingFactors } from 'app/calculations/geography';
@@ -492,8 +493,13 @@ export default function reducer(
   }
 }
 
+/**
+ * Called every time the `geography` reducer's `selectGeography()`,
+ * `selectRegion()`, or `selectState()` function is called.
+ *
+ * _(e.g. anytime the selected geography changes)_
+ */
 export function setEVDeploymentLocationOptions(): AppThunk {
-  // NOTE: set every time a region or state is selected
   return (dispatch, getState) => {
     const { geography } = getState();
     const { focus, regions, states } = geography;
@@ -526,6 +532,9 @@ export function setEVDeploymentLocationOptions(): AppThunk {
       type: 'eere/SET_EV_DEPLOYMENT_LOCATION_OPTIONS',
       payload: { evDeploymentLocationOptions },
     });
+
+    // NOTE: `vehicleSalesAndStock` uses `evDeploymentLocationOptions`
+    dispatch(setVehicleSalesAndStock());
   };
 }
 
