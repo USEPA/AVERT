@@ -868,8 +868,8 @@ export function setMonthlyEmissionChanges(): AppThunk {
 }
 
 /**
- * Called when time this `transportation` reducer's `setVMTData()` function is
- * called or every time the `eere` reducer's `setEVDeploymentLocationOptions()`
+ * Called when this `transportation` reducer's `setVMTData()` function is called
+ * or every time the `eere` reducer's `setEVDeploymentLocationOptions()`
  * function is called.
  *
  * _(e.g. when the app starts or anytime the selected geography changes)_
@@ -947,12 +947,19 @@ export function setSelectedGeographyEEREDefaultsAverages(): AppThunk {
       payload: { selectedGeographyEEREDefaultsAverages },
     });
 
+    // NOTE: `evDeploymentLocationHistoricalEERE` uses `selectedGeographyEEREDefaultsAverages`
     dispatch(setEVDeploymentLocationHistoricalEERE());
   };
 }
 
+/**
+ * Called every time this `transportation` reducer's
+ * `setSelectedGeographyEEREDefaultsAverages()` function is called.
+ *
+ * _(e.g. whenever the "Set EE/RE Impacts" button is clicked  on the "Select
+ * Geography" page)_
+ */
 export function setEVDeploymentLocationHistoricalEERE(): AppThunk {
-  // NOTE: set whenever RDFs are fetched or EV deployment location changes
   return (dispatch, getState) => {
     const { eere, transportation } = getState();
     const { evDeploymentLocation } = eere.inputs;

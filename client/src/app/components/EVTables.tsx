@@ -139,7 +139,6 @@ function EVSalesAndStockTable(props: { className?: string }) {
 function EEREEVComparisonTable(props: { className?: string }) {
   const { className } = props;
 
-  // TODO: determine if regionalScalingFactor is needed if geographicFocus is states
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const totalYearlyEVEnergyUsage = useTypedSelector(
     ({ transportation }) => transportation.totalYearlyEVEnergyUsage,
@@ -150,12 +149,10 @@ function EEREEVComparisonTable(props: { className?: string }) {
 
   const selectedRegion = useSelectedRegion();
 
-  if (geographicFocus === 'states') return null;
-
   const lineLoss =
     geographicFocus === 'regions' && selectedRegion
       ? selectedRegion.lineLoss
-      : 1; // TODO: determine best way to set lineloss if a state is selected
+      : 0; // TODO: determine best way to set lineloss if a state is selected
 
   const historicalEERetailMw = evDeploymentLocationHistoricalEERE.eeRetail.mw;
   const historicalEERetailGWh = evDeploymentLocationHistoricalEERE.eeRetail.gwh;
