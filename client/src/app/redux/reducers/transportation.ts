@@ -584,6 +584,12 @@ export function setSelectedGeographyVMTData(): AppThunk {
 
     // NOTE: `monthlyEVEnergyUsageGW` uses `monthlyVMTPerVehicleType`
     dispatch(setMonthlyEVEnergyUsage());
+
+    // NOTE: `monthlyEmissionRates` uses `selectedGeographyStatesVMTPercentages`
+    dispatch(setMonthlyEmissionRates());
+
+    // NOTE: `monthlyEmissionChanges` uses `monthlyVMTPerVehicleType`
+    dispatch(setMonthlyEmissionChanges());
   };
 }
 
@@ -686,7 +692,7 @@ export function setVehiclesDisplaced(): AppThunk {
     // NOTE: `monthlyEVEnergyUsageGW` uses `vehiclesDisplaced`
     dispatch(setMonthlyEVEnergyUsage());
 
-    // TODO: determine if these should move elsewhere...
+    // NOTE: `monthlyEmissionChanges` uses `vehiclesDisplaced`
     dispatch(setMonthlyEmissionChanges());
   };
 }
@@ -744,9 +750,9 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
 
 /**
  * Called the first time this `transportation` reducer's
- * `setDailyAndMonthlyStats()` is called (will only be called from there once,
- * due to the early return in that function, preventing it from re-setting
- * monthlyStats), or anytime this `transportation` reducer's
+ * `setDailyAndMonthlyStats()` function is called (will only be called from
+ * there once, due to the early return in that function, preventing it from
+ * re-setting monthlyStats), or anytime this `transportation` reducer's
  * `setMonthlyEVEnergyUsage()` function is called.
  *
  * _(e.g. whenever the "Set EE/RE Impacts" button is clicked  on the "Select
@@ -770,6 +776,15 @@ export function setMonthlyDailyEVEnergyUsage(): AppThunk {
   };
 }
 
+/**
+ * Called every time this `transportation` reducer's
+ * `setSelectedGeographyVMTData()` function is called, or anytime the `eere`
+ * reducer's `updateEereEVDeploymentLocation()`, `updateEereEVModelYear()`, or
+ * `updateEereICEReplacementVehicle` function is called.
+ *
+ * _(e.g. anytime the selected geography, EV deployment location, EV model year,
+ * or ICE replacement vehicle changes)_
+ */
 export function setMonthlyEmissionRates(): AppThunk {
   // NOTE: set whenever EV deployment location, EV model year, or ICE
   // replacement vehicle changes
@@ -791,13 +806,20 @@ export function setMonthlyEmissionRates(): AppThunk {
       payload: { monthlyEmissionRates },
     });
 
+    // NOTE: `monthlyEmissionChanges` uses `monthlyEmissionRates`
     dispatch(setMonthlyEmissionChanges());
   };
 }
 
+/**
+ * Called every time this `transportation` reducer's
+ * `setSelectedGeographyVMTData()`, `setVehiclesDisplaced()`, or
+ * `setMonthlyEmissionRates()` function is called.
+ *
+ * _(e.g. anytime the selected geography, an EV input number, the EV deployment
+ * location, EV model year, or ICE replacement vehicle changes)_
+ */
 export function setMonthlyEmissionChanges(): AppThunk {
-  // NOTE: set whenever an EV number, EV deployment location, EV model year, or
-  // ICE replacement vehicle changes changes
   return (dispatch, getState) => {
     const { transportation } = getState();
     const {
