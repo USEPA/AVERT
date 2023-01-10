@@ -1,9 +1,9 @@
 import { RegionalLoadData } from 'app/redux/reducers/geography';
+import type { GeographicFocus } from 'app/redux/reducers/geography';
 import type {
-  GeographicFocus,
-  EEREDefaultData,
-} from 'app/redux/reducers/geography';
-import type { RegionalScalingFactors } from 'app/calculations/geography';
+  RegionalScalingFactors,
+  SelectedGeographyRegions,
+} from 'app/calculations/geography';
 import type { RegionId, RegionName, StateId } from 'app/config';
 import { states } from 'app/config';
 /**
@@ -1766,11 +1766,9 @@ export function calculateVehicleSalesAndStock(options: {
  */
 export function calculateSelectedGeographyEEREDefaultsAverages(options: {
   regionalScalingFactors: RegionalScalingFactors;
-  selectedGeographyEEREDefaults: Partial<{
-    [regionId in RegionId]: EEREDefaultData[];
-  }>;
+  selectedGeographyRegions: SelectedGeographyRegions;
 }) {
-  const { regionalScalingFactors, selectedGeographyEEREDefaults } = options;
+  const { regionalScalingFactors, selectedGeographyRegions } = options;
 
   const result = {
     onshore_wind: 0,
@@ -1784,9 +1782,7 @@ export function calculateSelectedGeographyEEREDefaultsAverages(options: {
     };
   }> = {};
 
-  if (Object.keys(selectedGeographyEEREDefaults).length === 0) {
-    return result;
-  }
+  if (Object.keys(selectedGeographyRegions).length === 0) return result;
 
   // build up results by region, using the regional scaling factor
   Object.entries(regionalScalingFactors).forEach(
@@ -1799,7 +1795,9 @@ export function calculateSelectedGeographyEEREDefaultsAverages(options: {
       };
 
       const regionResult = resultsByRegion[regionId];
-      const regionEEREDefaults = selectedGeographyEEREDefaults[regionId];
+
+      const regionEEREDefaults =
+        selectedGeographyRegions[regionId]?.eereDefaults.data;
 
       if (!regionResult || !regionEEREDefaults) return result;
 

@@ -1,5 +1,4 @@
 import { AppThunk } from 'app/redux/index';
-import type { EEREDefaultData } from 'app/redux/reducers/geography';
 import type {
   VMTAllocationTotalsAndPercentages,
   VMTAllocationPerVehicle,
@@ -25,7 +24,10 @@ import type {
   SelectedGeographyEEREDefaultsAverages,
   EVDeploymentLocationHistoricalEERE,
 } from 'app/calculations/transportation';
-import { calculateRegionalScalingFactors } from 'app/calculations/geography';
+import {
+  calculateRegionalScalingFactors,
+  getSelectedGeographyRegions,
+} from 'app/calculations/geography';
 import {
   calculateVMTAllocationTotalsAndPercentages,
   calculateVMTAllocationPerVehicle,
@@ -921,25 +923,19 @@ export function setSelectedGeographyEEREDefaultsAverages(): AppThunk {
       selectedState: Object.values(states).find((s) => s.selected),
     });
 
-    const selectedGeographyStates = Object.keys(regionalScalingFactors);
+    const selectedGeographyRegionIds = Object.keys(
+      regionalScalingFactors,
+    ) as RegionId[];
 
-    const selectedGeographyEEREDefaults = Object.entries(regions).reduce(
-      (result, [id, regionData]) => {
-        const regionId = id as RegionId;
-
-        if (selectedGeographyStates.includes(regionData.id)) {
-          result[regionId] = regionData.eereDefaults.data;
-        }
-
-        return result;
-      },
-      {} as Partial<{ [regionId in RegionId]: EEREDefaultData[] }>,
-    );
+    const selectedGeographyRegions = getSelectedGeographyRegions({
+      regions,
+      selectedGeographyRegionIds,
+    });
 
     const selectedGeographyEEREDefaultsAverages =
       calculateSelectedGeographyEEREDefaultsAverages({
         regionalScalingFactors,
-        selectedGeographyEEREDefaults,
+        selectedGeographyRegions,
       });
 
     dispatch({

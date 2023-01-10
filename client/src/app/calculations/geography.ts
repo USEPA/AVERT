@@ -8,6 +8,9 @@ import { RegionId } from 'app/config';
 export type RegionalScalingFactors = ReturnType<
   typeof calculateRegionalScalingFactors
 >;
+export type SelectedGeographyRegions = ReturnType<
+  typeof getSelectedGeographyRegions
+>;
 
 /**
  * Each regional scaling factor is a number between 0 and 1, representing the
@@ -42,6 +45,25 @@ export function calculateRegionalScalingFactors(options: {
       },
     );
   }
+
+  return result;
+}
+
+/**
+ * Returns regions data for selected geography
+ */
+export function getSelectedGeographyRegions(options: {
+  regions: { [regionId in RegionId]: RegionState };
+  selectedGeographyRegionIds: RegionId[];
+}) {
+  const { regions, selectedGeographyRegionIds } = options;
+
+  const result = Object.entries(regions).reduce((object, [id, regionData]) => {
+    if (selectedGeographyRegionIds.includes(regionData.id)) {
+      object[id as RegionId] = regionData;
+    }
+    return object;
+  }, {} as Partial<{ [regionId in RegionId]: RegionState }>);
 
   return result;
 }
