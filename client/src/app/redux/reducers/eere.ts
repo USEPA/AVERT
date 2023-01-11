@@ -996,6 +996,24 @@ export function calculateEereProfile(): AppThunk {
   };
 }
 
-export function resetEEREInputs() {
-  return { type: 'eere/RESET_EERE_INPUTS' };
+export function resetEEREInputs(): AppThunk {
+  return (dispatch, getState) => {
+    const { eere } = getState();
+    const { evDeploymentLocationOptions } = eere.selectOptions;
+
+    const evDeploymentLocation = evDeploymentLocationOptions[0].id;
+    const evModelYear = evModelYearOptions[0].id;
+    const iceReplacementVehicle = iceReplacementVehicleOptions[0].id;
+
+    dispatch({ type: 'eere/RESET_EERE_INPUTS' });
+
+    // reset all EV inputs so dependant transportation calculations are re-run
+    dispatch(updateEereBatteryEVs(''));
+    dispatch(updateEereHybridEVs(''));
+    dispatch(updateEereTransitBuses(''));
+    dispatch(updateEereSchoolBuses(''));
+    dispatch(updateEereEVDeploymentLocation(evDeploymentLocation));
+    dispatch(updateEereEVModelYear(evModelYear));
+    dispatch(updateEereICEReplacementVehicle(iceReplacementVehicle));
+  };
 }
