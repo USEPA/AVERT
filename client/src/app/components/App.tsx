@@ -6,9 +6,9 @@ import { Panels } from 'app/components/Panels';
 
 export function App() {
   return (
-    <>
+    <div className="avert-container">
       <PanelTabs />
       <Panels />
-    </>
+    </div>
   );
 }
