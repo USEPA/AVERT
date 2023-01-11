@@ -1,5 +1,9 @@
 import { useTypedSelector } from 'app/redux/index';
-import { useSelectedRegion } from 'app/hooks';
+import {
+  calculateRegionalScalingFactors,
+  getSelectedGeographyRegions,
+} from 'app/calculations/geography';
+import type { RegionId } from 'app/config';
 
 function calculatePercent(numerator: number, denominator: number) {
   return denominator !== 0
@@ -17,11 +21,9 @@ function formatNumber(number: number) {
   });
 }
 
-function EVSalesAndStockTable(props: { className?: string }) {
+export function EVSalesAndStockTable(props: { className?: string }) {
   const { className } = props;
 
-  // TODO: determine if regionalScalingFactor is needed if geographicFocus is states
-  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const batteryEVs = useTypedSelector(({ eere }) => eere.inputs.batteryEVs);
   const hybridEVs = useTypedSelector(({ eere }) => eere.inputs.hybridEVs);
   const transitBuses = useTypedSelector(({ eere }) => eere.inputs.transitBuses);
@@ -39,8 +41,6 @@ function EVSalesAndStockTable(props: { className?: string }) {
   const evDeploymentLocationName = evDeploymentLocationOptions.find((opt) => {
     return opt.id === evDeploymentLocation;
   })?.name;
-
-  if (geographicFocus === 'states') return null;
 
   const locationSalesAndStock = vehicleSalesAndStock[evDeploymentLocation];
   if (!locationSalesAndStock) return null;
@@ -140,11 +140,12 @@ function EVSalesAndStockTable(props: { className?: string }) {
   );
 }
 
-function EEREEVComparisonTable(props: { className?: string }) {
+export function EEREEVComparisonTable(props: { className?: string }) {
   const { className } = props;
 
-  // TODO: determine if regionalScalingFactor is needed if geographicFocus is states
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
+  const regions = useTypedSelector(({ geography }) => geography.regions);
+  const states = useTypedSelector(({ geography }) => geography.states);
   const totalYearlyEVEnergyUsage = useTypedSelector(
     ({ transportation }) => transportation.totalYearlyEVEnergyUsage,
   );
@@ -152,14 +153,38 @@ function EEREEVComparisonTable(props: { className?: string }) {
     ({ transportation }) => transportation.evDeploymentLocationHistoricalEERE,
   );
 
-  const selectedRegion = useSelectedRegion();
+  const regionalScalingFactors = calculateRegionalScalingFactors({
+    geographicFocus,
+    selectedRegion: Object.values(regions).find((r) => r.selected),
+    selectedState: Object.values(states).find((s) => s.selected),
+  });
 
-  if (geographicFocus === 'states') return null;
+  const selectedGeographyRegionIds = Object.keys(
+    regionalScalingFactors,
+  ) as RegionId[];
 
-  const lineLoss =
-    geographicFocus === 'regions' && selectedRegion
-      ? selectedRegion.lineLoss
-      : 1; // TODO: determine best way to set lineloss if a state is selected
+  const selectedGeographyRegions = getSelectedGeographyRegions({
+    regions,
+    selectedGeographyRegionIds,
+  });
+
+  /**
+   * Build up line loss from the selected geography's regions using the regional
+   * scaling factors.
+   *
+   * NOTE: this is to support selected states – if a region is selected, the
+   * result will be the same as the region's line loss value
+   */
+  const lineLoss = Object.entries(selectedGeographyRegions).reduce(
+    (result, [id, regionData]) => {
+      const regionalScalingFactor = regionalScalingFactors[id as RegionId];
+      if (regionalScalingFactor) {
+        result += regionData.lineLoss * regionalScalingFactor;
+      }
+      return result;
+    },
+    0,
+  );
 
   const historicalEERetailMw = evDeploymentLocationHistoricalEERE.eeRetail.mw;
   const historicalEERetailGWh = evDeploymentLocationHistoricalEERE.eeRetail.gwh;
@@ -373,5 +398,3 @@ function EEREEVComparisonTable(props: { className?: string }) {
     </>
   );
 }
-
-export { EVSalesAndStockTable, EEREEVComparisonTable };

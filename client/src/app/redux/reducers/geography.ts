@@ -1,14 +1,11 @@
-// reducers
 import { AppThunk } from 'app/redux/index';
-import { setEVEfficiency } from 'app/redux/reducers/transportation';
 import { setEVDeploymentLocationOptions } from 'app/redux/reducers/eere';
 import {
-  setSelectedRegionVMTData,
+  setSelectedGeographyVMTData,
+  setEVEfficiency,
   setDailyAndMonthlyStats,
-  setVehicleSalesAndStock,
-  setRegionREDefaultsAverages,
+  setSelectedGeographyEEREDefaultsAverages,
 } from 'app/redux/reducers/transportation';
-// config
 import {
   RdfDataKey,
   RegionId,
@@ -19,7 +16,7 @@ import {
   states,
 } from 'app/config';
 
-type GeographicFocus = 'regions' | 'states';
+export type GeographicFocus = 'regions' | 'states';
 
 export type RegionalLoadData = {
   day: number;
@@ -278,14 +275,27 @@ export default function reducer(
   }
 }
 
-// action creators
-export function selectGeography(focus: GeographicFocus) {
-  return {
-    type: 'geography/SELECT_GEOGRAPHY',
-    payload: { focus },
+/**
+ * Called every time the "Select Region" or "Select State" tabs are clicked on
+ * the "Select Geography" page
+ */
+export function selectGeography(focus: GeographicFocus): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'geography/SELECT_GEOGRAPHY',
+      payload: { focus },
+    });
+
+    dispatch(setEVDeploymentLocationOptions());
+    dispatch(setSelectedGeographyVMTData());
+    dispatch(setEVEfficiency());
   };
 }
 
+/**
+ * Called every time a region is clicked on the map or selected from the regions
+ * dropdown list on the "Select Geography" page
+ */
 export function selectRegion(regionId: RegionId): AppThunk {
   return (dispatch) => {
     dispatch({
@@ -293,13 +303,16 @@ export function selectRegion(regionId: RegionId): AppThunk {
       payload: { regionId },
     });
 
-    dispatch(setEVEfficiency());
     dispatch(setEVDeploymentLocationOptions());
-    dispatch(setVehicleSalesAndStock());
-    dispatch(setSelectedRegionVMTData());
+    dispatch(setSelectedGeographyVMTData());
+    dispatch(setEVEfficiency());
   };
 }
 
+/**
+ * Called every time a state is clicked on the map or selected from the states
+ * dropdown list on the "Select Geography" page
+ */
 export function selectState(stateId: string): AppThunk {
   return (dispatch) => {
     dispatch({
@@ -308,7 +321,8 @@ export function selectState(stateId: string): AppThunk {
     });
 
     dispatch(setEVDeploymentLocationOptions());
-    dispatch(setVehicleSalesAndStock());
+    dispatch(setSelectedGeographyVMTData());
+    dispatch(setEVEfficiency());
   };
 }
 
@@ -437,12 +451,10 @@ export function fetchRegionsData(): AppThunk {
         }
 
         dispatch({ type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' });
-
-        return rdfs;
       })
-      .then((rdfs) => {
-        dispatch(setDailyAndMonthlyStats(rdfs[0].regional_load));
-        dispatch(setRegionREDefaultsAverages());
+      .then(() => {
+        dispatch(setDailyAndMonthlyStats());
+        dispatch(setSelectedGeographyEEREDefaultsAverages());
       });
   };
 }

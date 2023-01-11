@@ -1,4 +1,3 @@
-// reducers
 import { AppThunk } from 'app/redux/index';
 import {
   RegionalLoadData,
@@ -10,15 +9,14 @@ import {
   setVehiclesDisplaced,
   setMonthlyEVEnergyUsage,
   setMonthlyEmissionRates,
+  setVehicleSalesAndStock,
   setEVDeploymentLocationHistoricalEERE,
 } from 'app/redux/reducers/transportation';
-// calculations
+import { calculateRegionalScalingFactors } from 'app/calculations/geography';
 import { calculateHourlyEVLoad } from 'app/calculations/transportation';
 import { calculateEere } from 'app/calculations';
-// config
+import type { RegionId, StateId } from 'app/config';
 import {
-  RegionId,
-  StateId,
   regions,
   evModelYearOptions,
   iceReplacementVehicleOptions,
@@ -203,7 +201,6 @@ const emptyRegionalLoadHour = {
   hourly_limit: 0,
 };
 
-// reducer
 const initialState: EereState = {
   status: 'ready',
   errors: [],
@@ -496,9 +493,13 @@ export default function reducer(
   }
 }
 
-// action creators
+/**
+ * Called every time the `geography` reducer's `selectGeography()`,
+ * `selectRegion()`, or `selectState()` function is called.
+ *
+ * _(e.g. anytime the selected geography changes)_
+ */
 export function setEVDeploymentLocationOptions(): AppThunk {
-  // NOTE: set every time a region or state is selected
   return (dispatch, getState) => {
     const { geography } = getState();
     const { focus, regions, states } = geography;
@@ -522,7 +523,7 @@ export function setEVDeploymentLocationOptions(): AppThunk {
         ? [
             {
               id: `state-${selectedState.id}`,
-              name: `State: ${selectedState.name}`,
+              name: `${selectedState.name}`,
             },
           ]
         : [{ id: '', name: '' }];
@@ -531,6 +532,9 @@ export function setEVDeploymentLocationOptions(): AppThunk {
       type: 'eere/SET_EV_DEPLOYMENT_LOCATION_OPTIONS',
       payload: { evDeploymentLocationOptions },
     });
+
+    // NOTE: `vehicleSalesAndStock` uses `evDeploymentLocationOptions`
+    dispatch(setVehicleSalesAndStock());
   };
 }
 
@@ -663,7 +667,6 @@ export function updateEereBatteryEVs(input: string): AppThunk {
     });
 
     dispatch(validateInput('batteryEVs', input));
-
     dispatch(setVehiclesDisplaced());
   };
 }
@@ -676,7 +679,6 @@ export function updateEereHybridEVs(input: string): AppThunk {
     });
 
     dispatch(validateInput('hybridEVs', input));
-
     dispatch(setVehiclesDisplaced());
   };
 }
@@ -689,7 +691,6 @@ export function updateEereTransitBuses(input: string): AppThunk {
     });
 
     dispatch(validateInput('transitBuses', input));
-
     dispatch(setVehiclesDisplaced());
   };
 }
@@ -702,7 +703,6 @@ export function updateEereSchoolBuses(input: string): AppThunk {
     });
 
     dispatch(validateInput('schoolBuses', input));
-
     dispatch(setVehiclesDisplaced());
   };
 }
@@ -795,6 +795,12 @@ export function calculateEereProfile(): AppThunk {
       return region.offshoreWind ? (total += regionalPercent) : total;
     }, 0);
 
+    const regionalScalingFactors = calculateRegionalScalingFactors({
+      geographicFocus: geography.focus,
+      selectedRegion: Object.values(geography.regions).find((r) => r.selected),
+      selectedState: Object.values(geography.states).find((s) => s.selected),
+    });
+
     selectedRegions.forEach((region) => {
       const regionalPercent = selectedState?.percentageByRegion[region.id] || 0;
 
@@ -806,7 +812,7 @@ export function calculateEereProfile(): AppThunk {
       //   defined in the config file (`app/config.ts`). for example, if the
       //   state falls exactly equally between the two regions, the regional
       //   scaling factor would be 0.5 for each of those two regions.
-      const regionalScalingFactor = !selectedState ? 1 : regionalPercent / 100;
+      const regionalScalingFactor = regionalScalingFactors[region.id] || 0;
 
       // the percent reduction factor also is a number between 0 and 1, and
       // is used to scale the user's input for broad-based program reduction
@@ -990,6 +996,24 @@ export function calculateEereProfile(): AppThunk {
   };
 }
 
-export function resetEEREInputs() {
-  return { type: 'eere/RESET_EERE_INPUTS' };
+export function resetEEREInputs(): AppThunk {
+  return (dispatch, getState) => {
+    const { eere } = getState();
+    const { evDeploymentLocationOptions } = eere.selectOptions;
+
+    const evDeploymentLocation = evDeploymentLocationOptions[0].id;
+    const evModelYear = evModelYearOptions[0].id;
+    const iceReplacementVehicle = iceReplacementVehicleOptions[0].id;
+
+    dispatch({ type: 'eere/RESET_EERE_INPUTS' });
+
+    // reset all EV inputs so dependant transportation calculations are re-run
+    dispatch(updateEereBatteryEVs(''));
+    dispatch(updateEereHybridEVs(''));
+    dispatch(updateEereTransitBuses(''));
+    dispatch(updateEereSchoolBuses(''));
+    dispatch(updateEereEVDeploymentLocation(evDeploymentLocation));
+    dispatch(updateEereEVModelYear(evModelYear));
+    dispatch(updateEereICEReplacementVehicle(iceReplacementVehicle));
+  };
 }
