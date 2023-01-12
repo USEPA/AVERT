@@ -16,9 +16,9 @@ import { StatesMap } from 'app/components/StatesMap';
 import { UnitConversion } from 'app/components/UnitConversion';
 import { EEREInputs } from 'app/components/EEREInputs';
 import { EEREChart } from 'app/components/EEREChart';
-import { DisplacementsTable } from 'app/components/DisplacementsTable';
-import { EmissionsTable } from 'app/components/EmissionsTable';
-import { EmissionsChart } from 'app/components/EmissionsChart';
+import { PowerSectorEmissionsTable } from 'app/components/PowerSectorEmissionsTable';
+import { StateEmissionsTable } from 'app/components/StateEmissionsTable';
+import { MonthlyEmissionsCharts } from 'app/components/MonthlyEmissionsCharts';
 import { COBRAConnection } from 'app/components/COBRAConnection';
 import { DataDownload } from 'app/components/DataDownload';
 import { modalLinkStyles } from 'app/components/Tooltip';
@@ -150,6 +150,42 @@ const tabsStyles = css`
   }
 `;
 
+function SectorTables(props: { location: string }) {
+  const { location } = props;
+
+  return (
+    <>
+      <h3 className="avert-blue margin-bottom-1 font-serif-md">
+        Annual Regional Emissions Changes – Power Sector Only
+        <br />
+        <span className="display-block margin-top-05 font-serif-xs">
+          {location}
+        </span>
+      </h3>
+
+      <PowerSectorEmissionsTable />
+    </>
+  );
+}
+
+function StateTable(props: { location: string }) {
+  const { location } = props;
+
+  return (
+    <>
+      <h3 className="avert-blue margin-bottom-1 font-serif-md">
+        Annual Regional Emissions Changes By State
+        <br />
+        <span className="display-block margin-top-05 font-serif-xs">
+          {location}
+        </span>
+      </h3>
+
+      <StateEmissionsTable />
+    </>
+  );
+}
+
 export function Panels() {
   const dispatch = useDispatch();
 
@@ -183,40 +219,10 @@ export function Panels() {
       ? `${selectedStateRegionNames} Region`
       : `${selectedStateRegionNames.join(', ')} Regions`;
 
-  const resultsHeading =
+  const geographicLocation =
     geographicFocus === 'regions'
       ? `${selectedRegionName} Region`
       : `${selectedStateRegions} (due to changes in ${selectedStateName})`;
-
-  // the order of the displacements table and emissions table will be
-  // determined by the selected geography (regions or states)
-  const displacementsTable = (
-    <>
-      <h3 className="avert-blue margin-bottom-1 font-serif-md">
-        Annual Regional Displacements:
-        <br />
-        <span className="display-block margin-top-05 font-serif-xs">
-          {resultsHeading}
-        </span>
-      </h3>
-
-      <DisplacementsTable />
-    </>
-  );
-
-  const emissionsTable = (
-    <>
-      <h3 className="avert-blue margin-bottom-1 font-serif-md">
-        Annual State Emission Changes:
-        <br />
-        <span className="display-block margin-top-05 font-serif-xs">
-          {resultsHeading}
-        </span>
-      </h3>
-
-      <EmissionsTable />
-    </>
-  );
 
   return (
     <Container
@@ -322,7 +328,7 @@ export function Panels() {
                 <a
                   className="usa-link"
                   href="https://www.epa.gov/avert/download-avert"
-                  target="_blank"
+                  target="_parent"
                   rel="noreferrer"
                 >
                   available for download here
@@ -359,7 +365,7 @@ export function Panels() {
                 <a
                   className="usa-link"
                   href="https://www.epa.gov/avert/download-avert"
-                  target="_blank"
+                  target="_parent"
                   rel="noreferrer"
                 >
                   available for download here
@@ -394,8 +400,9 @@ export function Panels() {
             EE/RE programs below, and AVERT will use these inputs to generate
             results. For more information about inputs, please consult the{' '}
             <a
+              className="usa-link"
               href="https://www.epa.gov/statelocalenergy/avert-user-manual"
-              target="_blank"
+              target="_parent"
               rel="noreferrer"
             >
               AVERT user manual
@@ -449,13 +456,13 @@ export function Panels() {
 
           {geographicFocus === 'regions' ? (
             <>
-              {displacementsTable}
-              {emissionsTable}
+              <SectorTables location={geographicLocation} />
+              <StateTable location={geographicLocation} />
             </>
           ) : (
             <>
-              {emissionsTable}
-              {displacementsTable}
+              <StateTable location={geographicLocation} />
+              <SectorTables location={geographicLocation} />
             </>
           )}
 
@@ -463,11 +470,11 @@ export function Panels() {
             Monthly Emission Changes:
             <br />
             <span className="display-block margin-top-05 font-serif-sm">
-              {resultsHeading}
+              {geographicLocation}
             </span>
           </h3>
 
-          <EmissionsChart />
+          <MonthlyEmissionsCharts />
 
           <COBRAConnection />
 

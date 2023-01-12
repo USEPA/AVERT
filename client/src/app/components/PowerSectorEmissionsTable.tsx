@@ -10,7 +10,7 @@ function formatNumber(number: any) {
   return output.toLocaleString();
 }
 
-export function DisplacementsTable() {
+export function PowerSectorEmissionsTable() {
   const status = useTypedSelector(({ displacement }) => displacement.status);
   const data = useTypedSelector(
     ({ displacement }) => displacement.annualRegionalDisplacements,

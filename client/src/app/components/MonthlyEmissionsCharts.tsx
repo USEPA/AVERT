@@ -23,7 +23,7 @@ import { Pollutant, RegionId, StateId, regions, states } from 'app/config';
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 
-export function EmissionsChart() {
+export function MonthlyEmissionsCharts() {
   const dispatch = useDispatch();
   const status = useTypedSelector(({ displacement }) => displacement.status);
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
