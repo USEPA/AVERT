@@ -176,6 +176,7 @@ export function EEREInputs() {
           <summary
             css={inputsSummaryStyles}
             className={
+              `avert-summary ` +
               `display-flex flex-align-center padding-105 ` +
               `line-height-sans-2 text-bold cursor-pointer`
             }
@@ -245,6 +246,7 @@ export function EEREInputs() {
           <summary
             css={inputsSummaryStyles}
             className={
+              `avert-summary ` +
               `display-flex flex-align-center padding-105 ` +
               `line-height-sans-2 text-bold cursor-pointer`
             }
@@ -331,6 +333,7 @@ export function EEREInputs() {
           <summary
             css={inputsSummaryStyles}
             className={
+              `avert-summary ` +
               `display-flex flex-align-center padding-105 ` +
               `line-height-sans-2 text-bold cursor-pointer`
             }
@@ -423,6 +426,7 @@ export function EEREInputs() {
           <summary
             css={inputsSummaryStyles}
             className={
+              `avert-summary ` +
               `display-flex flex-align-center padding-105 ` +
               `line-height-sans-2 text-bold cursor-pointer`
             }
@@ -492,6 +496,7 @@ export function EEREInputs() {
           <summary
             css={inputsSummaryStyles}
             className={
+              `avert-summary ` +
               `display-flex flex-align-center padding-105 ` +
               `line-height-sans-2 text-bold cursor-pointer`
             }

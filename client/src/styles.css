@@ -13,18 +13,31 @@
   display: none;
 }
 
-.usa-radio {
+.usa-radio,
+.usa-checkbox {
   background-color: inherit;
 }
 
-.usa-radio__label {
-  padding-left: 1.5rem;
+.usa-radio__label,
+.usa-checkbox__label {
+  padding-left: 1.625rem;
   font-size: 0.93rem; /* font-sans-2xs */
 }
 
-.usa-radio__label::before {
+.usa-radio__label::before,
+.usa-checkbox__label::before {
   width: 1rem;
   height: 1rem;
+}
+
+input:not([disabled]):focus,
+select:not([disabled]):focus,
+textarea:not([disabled]):focus,
+button:not([disabled]):focus,
+[href]:focus,
+.usa-radio__input:focus + [class*='__label']::before,
+.usa-checkbox__input:focus + [class*='__label']::before {
+  outline-width: 0.1875rem;
 }
 
 .highcharts-menu hr {
@@ -59,6 +72,21 @@
 .avert-box {
   border: 1px solid rgba(0, 128, 164, 0.375);
   background-color: rgba(0, 169, 204, 0.0625);
+}
+
+.avert-box-heading {
+  margin: 0;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid rgba(0, 128, 164, 0.1875);
+  color: var(--avert-blue);
+}
+
+.avert-summary:focus {
+  outline: 0.1875rem solid #2491ff;
+}
+
+.avert-tooltip-icon:focus {
+  outline-offset: 0.125rem;
 }
 
 .avert-button {
