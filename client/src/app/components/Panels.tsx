@@ -407,34 +407,36 @@ export function Panels() {
               : `State: ${selectedStateName}`}
           </h3>
 
-          <UnitConversion />
+          <div className="overflow-hidden">
+            <UnitConversion />
 
-          <p className="tablet:font-sans-md">
-            AVERT quantifies avoided emissions and electricity generation
-            displaced by EE/RE policies and programs. Specify the impacts of
-            EE/RE programs below, and AVERT will use these inputs to generate
-            results. For more information about inputs, please consult the{' '}
-            <a
-              className="usa-link"
-              href="https://www.epa.gov/statelocalenergy/avert-user-manual"
-              target="_parent"
-              rel="noreferrer"
-            >
-              AVERT user manual
-            </a>{' '}
-            or click the &nbsp;
-            <span
-              css={modalLinkStyles}
-              className="position-relative display-inline-block width-2 height-2"
-            />
-            &nbsp; icon for each program type below.
-          </p>
+            <p className="tablet:font-sans-md">
+              AVERT quantifies avoided emissions and electricity generation
+              displaced by EE/RE policies and programs. Specify the impacts of
+              EE/RE programs below, and AVERT will use these inputs to generate
+              results. For more information about inputs, please consult the{' '}
+              <a
+                className="usa-link"
+                href="https://www.epa.gov/statelocalenergy/avert-user-manual"
+                target="_parent"
+                rel="noreferrer"
+              >
+                AVERT user manual
+              </a>{' '}
+              or click the &nbsp;
+              <span
+                css={modalLinkStyles}
+                className="position-relative display-inline-block width-2 height-2"
+              />
+              &nbsp; icon for each program type below.
+            </p>
 
-          <p className="text-base-dark">
-            Several types of programs are listed below (A through E). You can
-            enter impacts for any or all types of programs, in any combination.
-            AVERT will calculate cumulative impacts.
-          </p>
+            <p className="margin-bottom-0 text-base-dark">
+              Several types of programs are listed below (A through E). You can
+              enter impacts for any or all types of programs, in any
+              combination. AVERT will calculate cumulative impacts.
+            </p>
+          </div>
 
           <EEREInputs />
 

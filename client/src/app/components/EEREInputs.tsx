@@ -153,7 +153,7 @@ export function EEREInputs() {
     <>
       <div
         className={
-          `margin-y-2 ` +
+          `margin-y-3 ` +
           `border-width-1px border-x-width-0 border-bottom-width-0 border-solid border-base-light ` +
           `font-sans-xs text-base-darker`
         }

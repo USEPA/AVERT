@@ -13,6 +13,20 @@
   display: none;
 }
 
+.usa-radio {
+  background-color: inherit;
+}
+
+.usa-radio__label {
+  padding-left: 1.5rem;
+  font-size: 0.93rem; /* font-sans-2xs */
+}
+
+.usa-radio__label::before {
+  width: 1rem;
+  height: 1rem;
+}
+
 .highcharts-menu hr {
   margin: 0;
 }
@@ -40,6 +54,11 @@
 
 .avert-light-blue {
   color: var(--avert-light-blue);
+}
+
+.avert-box {
+  border: 1px solid rgba(0, 128, 164, 0.375);
+  background-color: rgba(0, 169, 204, 0.0625);
 }
 
 .avert-button {
