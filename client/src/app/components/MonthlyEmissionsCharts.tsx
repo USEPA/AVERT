@@ -434,12 +434,12 @@ export function MonthlyEmissionsCharts() {
         <div className="flex-1 tablet:display-flex desktop:margin-right-1">
           <div className="flex-1 margin-bottom-2 tablet:margin-right-1">
             <div className="avert-box padding-105">
-              <p className="margin-0 font-sans-2xs line-height-sans-2 text-italic">
+              <p className="avert-box-heading font-serif-2xs line-height-serif-2">
                 Select level of aggregation:
               </p>
 
-              <div className="tablet:display-flex">
-                <div className="flex-1 tablet:margin-right-1">
+              <div className="mobile-lg:display-flex">
+                <div className="flex-1 mobile-lg:margin-right-1">
                   <div className="usa-radio">
                     <input
                       id="aggregation-region"
@@ -463,7 +463,7 @@ export function MonthlyEmissionsCharts() {
                   </div>
                 </div>
 
-                <div className="flex-1 tablet:margin-x-1">
+                <div className="flex-1 mobile-lg:margin-x-1">
                   <div className="usa-radio">
                     <input
                       id="aggregation-state"
@@ -610,9 +610,159 @@ export function MonthlyEmissionsCharts() {
 
           <div className="flex-1 margin-bottom-2 tablet:margin-left-1">
             <div className="avert-box padding-105">
-              <p className="margin-0 font-sans-2xs line-height-sans-2 text-italic">
+              <p className="avert-box-heading font-serif-2xs line-height-serif-2">
                 Select pollutants:
               </p>
+
+              <div className="display-flex mobile-lg:display-block">
+                <div className="flex-1 mobile-lg:display-flex">
+                  <div className="flex-1 mobile-lg:margin-right-1">
+                    <div className="usa-checkbox">
+                      <input
+                        id="pollutants-so2"
+                        className="usa-checkbox__input"
+                        type="checkbox"
+                        name="pollutants"
+                        value="so2"
+                        // checked={true}
+                        // onChange={(ev) => {
+                        //   const pollutant = ev.target.value as MonthlyPollutant;
+                        //   dispatch(selectMonthlyPollutant(pollutant));
+                        // }}
+                        data-avert-pollutants-checkbox="so2"
+                      />
+                      <label
+                        className="usa-checkbox__label"
+                        htmlFor="pollutants-so2"
+                      >
+                        SO<sub>2</sub>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className="flex-1 mobile-lg:margin-x-1">
+                    <div className="usa-checkbox">
+                      <input
+                        id="pollutants-nox"
+                        className="usa-checkbox__input"
+                        type="checkbox"
+                        name="pollutants"
+                        value="nox"
+                        // checked={true}
+                        // onChange={(ev) => {
+                        //   const pollutant = ev.target.value as MonthlyPollutant;
+                        //   dispatch(selectMonthlyPollutant(pollutant));
+                        // }}
+                        data-avert-pollutants-checkbox="nox"
+                      />
+                      <label
+                        className="usa-checkbox__label"
+                        htmlFor="pollutants-nox"
+                      >
+                        NO<sub>X</sub>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className="flex-1 tablet:margin-left-1">
+                    <div className="usa-checkbox">
+                      <input
+                        id="pollutants-co2"
+                        className="usa-checkbox__input"
+                        type="checkbox"
+                        name="pollutants"
+                        value="co2"
+                        // checked={true}
+                        // onChange={(ev) => {
+                        //   const pollutant = ev.target.value as MonthlyPollutant;
+                        //   dispatch(selectMonthlyPollutant(pollutant));
+                        // }}
+                        data-avert-pollutants-checkbox="co2"
+                      />
+                      <label
+                        className="usa-checkbox__label"
+                        htmlFor="pollutants-co2"
+                      >
+                        CO<sub>2</sub>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex-1 mobile-lg:display-flex">
+                  <div className="flex-1 mobile-lg:margin-right-1">
+                    <div className="usa-checkbox">
+                      <input
+                        id="pollutants-pm25"
+                        className="usa-checkbox__input"
+                        type="checkbox"
+                        name="pollutants"
+                        value="pm25"
+                        // checked={true}
+                        // onChange={(ev) => {
+                        //   const pollutant = ev.target.value as MonthlyPollutant;
+                        //   dispatch(selectMonthlyPollutant(pollutant));
+                        // }}
+                        data-avert-pollutants-checkbox="pm25"
+                      />
+                      <label
+                        className="usa-checkbox__label"
+                        htmlFor="pollutants-pm25"
+                      >
+                        PM<sub>2.5</sub>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className="flex-1 mobile-lg:margin-x-1">
+                    <div className="usa-checkbox">
+                      <input
+                        id="pollutants-vocs"
+                        className="usa-checkbox__input"
+                        type="checkbox"
+                        name="pollutants"
+                        value="vocs"
+                        // checked={true}
+                        // onChange={(ev) => {
+                        //   const pollutant = ev.target.value as MonthlyPollutant;
+                        //   dispatch(selectMonthlyPollutant(pollutant));
+                        // }}
+                        data-avert-pollutants-checkbox="vocs"
+                      />
+                      <label
+                        className="usa-checkbox__label"
+                        htmlFor="pollutants-vocs"
+                      >
+                        VOCs
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className="flex-1 tablet:margin-left-1">
+                    <div className="usa-checkbox">
+                      <input
+                        id="pollutants-nh3"
+                        className="usa-checkbox__input"
+                        type="checkbox"
+                        name="pollutants"
+                        value="nh3"
+                        // checked={true}
+                        // onChange={(ev) => {
+                        //   const pollutant = ev.target.value as MonthlyPollutant;
+                        //   dispatch(selectMonthlyPollutant(pollutant));
+                        // }}
+                        data-avert-pollutants-checkbox="nh3"
+                      />
+                      <label
+                        className="usa-checkbox__label"
+                        htmlFor="pollutants-nh3"
+                      >
+                        NH<sub>3</sub>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -620,25 +770,75 @@ export function MonthlyEmissionsCharts() {
         <div className="flex-1 tablet:display-flex desktop:margin-left-1">
           <div className="flex-1 margin-bottom-2 tablet:margin-right-1">
             <div className="avert-box padding-105">
-              <p className="margin-0 font-sans-2xs line-height-sans-2 text-italic">
+              <p className="avert-box-heading font-serif-2xs line-height-serif-2">
                 Select emissions source:
               </p>
+
+              <div className="mobile-lg:display-flex">
+                <div className="flex-1 mobile-lg:margin-right-1">
+                  <div className="usa-radio">
+                    <input
+                      id="source-power"
+                      className="usa-radio__input"
+                      type="radio"
+                      name="source"
+                      value="power"
+                      // checked={selectedSource === 'power'}
+                      // onChange={(ev) => {
+                      //   const source = ev.target.value as MonthlyUnit;
+                      //   dispatch(selectMonthlySource(source));
+                      // }}
+                      data-avert-source-toggle="power"
+                    />
+
+                    <label className="usa-radio__label" htmlFor="source-power">
+                      Power sector only
+                    </label>
+                  </div>
+                </div>
+
+                <div className="flex-1 mobile-lg:margin-left-1">
+                  <div className="usa-radio">
+                    <input
+                      id="source-power-vehicles"
+                      className="usa-radio__input"
+                      type="radio"
+                      name="source"
+                      value="power-vehicles"
+                      // checked={selectedSource === 'power-vehicles'}
+                      // onChange={(ev) => {
+                      //   const source = ev.target.value as MonthlyUnit;
+                      //   dispatch(selectMonthlySource(source));
+                      // }}
+                      data-avert-source-toggle="power-vehicles"
+                    />
+
+                    <label
+                      className="usa-radio__label"
+                      htmlFor="source-power-vehicles"
+                    >
+                      Power sector and vehicles
+                    </label>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           <div className="flex-1 margin-bottom-2 tablet:margin-left-1">
             <div className="avert-box padding-105">
-              <p className="margin-0 font-sans-2xs line-height-sans-2 text-italic">
+              <p className="avert-box-heading font-serif-2xs line-height-serif-2">
                 Select units:
               </p>
 
-              <div className="tablet:display-flex">
-                <div className="flex-1 tablet:margin-right-1">
+              <div className="mobile-lg:display-flex">
+                <div className="flex-1 mobile-lg:margin-right-1">
                   <div className="usa-radio">
                     <input
                       id="units-emissions"
                       className="usa-radio__input"
                       type="radio"
+                      name="units"
                       value="emissions"
                       checked={selectedUnit === 'emissions'}
                       onChange={(ev) => {
@@ -658,12 +858,13 @@ export function MonthlyEmissionsCharts() {
                   </div>
                 </div>
 
-                <div className="flex-1 tablet:margin-left-1">
+                <div className="flex-1 mobile-lg:margin-left-1">
                   <div className="usa-radio">
                     <input
                       id="units-percentages"
                       className="usa-radio__input"
                       type="radio"
+                      name="units"
                       value="percentages"
                       checked={selectedUnit === 'percentages'}
                       onChange={(ev) => {
