@@ -83,7 +83,7 @@
 .avert-table td {
   padding: 0.375rem 0.625rem;
   border-color: inherit;
-  line-height: 1.375;
+  line-height: 1.25;
 }
 
 .avert-table th:not(.font-mono-xs),

@@ -17,6 +17,7 @@ import { UnitConversion } from 'app/components/UnitConversion';
 import { EEREInputs } from 'app/components/EEREInputs';
 import { EEREChart } from 'app/components/EEREChart';
 import { PowerSectorEmissionsTable } from 'app/components/PowerSectorEmissionsTable';
+import { TransportationSectorEmissionsTable } from 'app/components/TransportationSectorEmissionsTable';
 import { StateEmissionsTable } from 'app/components/StateEmissionsTable';
 import { MonthlyEmissionsCharts } from 'app/components/MonthlyEmissionsCharts';
 import { COBRAConnection } from 'app/components/COBRAConnection';
@@ -154,17 +155,31 @@ function SectorTables(props: { location: string }) {
   const { location } = props;
 
   return (
-    <>
-      <h3 className="avert-blue margin-bottom-1 font-serif-md">
-        Annual Regional Emissions Changes – Power Sector Only
-        <br />
-        <span className="display-block margin-top-05 font-serif-xs">
-          {location}
-        </span>
-      </h3>
+    <div className="desktop:display-flex">
+      <div className="flex-1 desktop:margin-right-105">
+        <h3 className="avert-blue margin-bottom-1 font-serif-md">
+          Annual Emissions Changes • <small>Power Sector Only</small>
+          <br />
+          <span className="display-block margin-top-05 font-serif-xs">
+            {location}
+          </span>
+        </h3>
 
-      <PowerSectorEmissionsTable />
-    </>
+        <PowerSectorEmissionsTable />
+      </div>
+
+      <div className="flex-1 desktop:margin-left-105">
+        <h3 className="avert-blue margin-bottom-1 font-serif-md">
+          Annual Emissions Changes • <small>Including Vehicles</small>
+          <br />
+          <span className="display-block margin-top-05 font-serif-xs">
+            {location}
+          </span>
+        </h3>
+
+        <TransportationSectorEmissionsTable />
+      </div>
+    </div>
   );
 }
 
@@ -174,7 +189,7 @@ function StateTable(props: { location: string }) {
   return (
     <>
       <h3 className="avert-blue margin-bottom-1 font-serif-md">
-        Annual Regional Emissions Changes By State
+        Annual Emissions Changes By State
         <br />
         <span className="display-block margin-top-05 font-serif-xs">
           {location}

@@ -66,7 +66,7 @@ export function PowerSectorEmissionsTable() {
       .set('co2', <>CO<sub>2</sub></>);
 
     return (
-      <Tooltip id={pollutant}>
+      <Tooltip id={`power-sector-${pollutant}-infrequent-emissions-event`}>
         <p className="margin-0">
           This region features one or more power plants with an infrequent{' '}
           {pollutantMarkup.get(pollutant)} emissions event.{' '}
@@ -159,7 +159,7 @@ export function PowerSectorEmissionsTable() {
                 <td>
                   <span className="padding-left-3 text-italic">
                     Ozone season NO<sub>X</sub> <small>(lb)</small>{' '}
-                    <Tooltip id="ozone-season-nox-total">
+                    <Tooltip id="power-sector-ozone-season-nox-total">
                       <p className="margin-0 text-no-italic">
                         Ozone season is defined as May 1 — September 30. Ozone
                         season emissions are a subset of annual emissions.
@@ -281,7 +281,7 @@ export function PowerSectorEmissionsTable() {
                 <td>
                   <span className="padding-left-3 text-italic">
                     Ozone season NO<sub>X</sub> <small>(lb/MWh)</small>{' '}
-                    <Tooltip id="ozone-season-nox-rates">
+                    <Tooltip id="power-sector-ozone-season-nox-rates">
                       <p className="margin-0 text-no-italic">
                         Ozone season is defined as May 1 — September 30. Ozone
                         season emissions are a subset of annual emissions.
@@ -358,11 +358,18 @@ export function PowerSectorEmissionsTable() {
         </div>
       </div>
 
-      <p className="margin-top-2 text-base-dark">
-        Negative numbers indicate displaced generation and emissions. All
-        results are rounded to the nearest ten. A dash ('–') indicates a result
-        greater than zero, but lower than the level of reportable significance.
-      </p>
+      <ul className="margin-top-2 font-sans-3xs line-height-sans-3 text-base-dark">
+        <li>Negative numbers indicate displaced generation and emissions.</li>
+        <li>All results are rounded to the nearest ten.</li>
+        <li>
+          A dash (“–”) indicates a result greater than zero, but lower than the
+          level of reportable significance.
+        </li>
+        <li>
+          Data does not include changes to ICE vehicle emissions (e.g.,
+          emissions from tailpipes).
+        </li>
+      </ul>
     </>
   );
 }
