@@ -430,6 +430,44 @@ export function MonthlyEmissionsCharts() {
 
   return (
     <>
+      <div className="margin-top-2 desktop:display-flex">
+        <div className="flex-1 tablet:display-flex desktop:margin-right-1">
+          <div className="flex-1 margin-bottom-2 tablet:margin-right-1">
+            <div className="padding-105 border-width-1px border-solid border-base-light bg-base-lightest">
+              <p className="margin-0 font-sans-2xs line-height-sans-2">
+                Select level of aggregation:
+              </p>
+            </div>
+          </div>
+
+          <div className="flex-1 margin-bottom-2 tablet:margin-left-1">
+            <div className="padding-105 border-width-1px border-solid border-base-light bg-base-lightest">
+              <p className="margin-0 font-sans-2xs line-height-sans-2">
+                Select pollutants:
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex-1 tablet:display-flex desktop:margin-left-1">
+          <div className="flex-1 margin-bottom-2 tablet:margin-right-1">
+            <div className="padding-105 border-width-1px border-solid border-base-light bg-base-lightest">
+              <p className="margin-0 font-sans-2xs line-height-sans-2">
+                Select emissions source:
+              </p>
+            </div>
+          </div>
+
+          <div className="flex-1 margin-bottom-2 tablet:margin-left-1">
+            <div className="padding-105 border-width-1px border-solid border-base-light bg-base-lightest">
+              <p className="margin-0 font-sans-2xs line-height-sans-2">
+                Select units:
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <p className="margin-0 text-italic">Select level of aggregation:</p>
 
       <div className="tablet:display-flex">
