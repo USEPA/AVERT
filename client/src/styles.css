@@ -31,7 +31,7 @@
 
 .avert-container {
   margin: 0 auto;
-  max-width: 60rem;
+  max-width: 1400px; /* USWDS breakpoint: widescreen */
 }
 
 .avert-blue {
