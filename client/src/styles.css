@@ -29,6 +29,11 @@
   --avert-light-blue: rgb(0, 164, 200);
 }
 
+.avert-container {
+  margin: 0 auto;
+  max-width: 60rem;
+}
+
 .avert-blue {
   color: var(--avert-blue);
 }
