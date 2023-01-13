@@ -1,5 +1,7 @@
 type Aggregation = 'region' | 'state' | 'county';
 
+type Source = 'power' | 'power-vehicles';
+
 export type Unit = 'emissions' | 'percentages';
 
 type Action =
@@ -21,6 +23,10 @@ type Action =
       payload: { countyName: string };
     }
   | {
+      type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_SOURCE';
+      payload: { source: Source };
+    }
+  | {
       type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_UNIT';
       payload: { unit: Unit };
     };
@@ -30,6 +36,7 @@ type State = {
   regionId: string;
   stateId: string;
   countyName: string;
+  source: Source;
   unit: Unit;
 };
 
@@ -38,6 +45,7 @@ const initialState: State = {
   regionId: '',
   stateId: '',
   countyName: '',
+  source: 'power',
   unit: 'emissions',
 };
 
@@ -53,6 +61,7 @@ export default function reducer(
         regionId: '',
         stateId: '',
         countyName: '',
+        source: 'power',
         unit: 'emissions',
       };
     }
@@ -94,6 +103,15 @@ export default function reducer(
       };
     }
 
+    case 'monthlyEmissions/SET_MONTHLY_EMISSIONS_SOURCE': {
+      const { source } = action.payload;
+
+      return {
+        ...state,
+        source,
+      };
+    }
+
     case 'monthlyEmissions/SET_MONTHLY_EMISSIONS_UNIT': {
       const { unit } = action.payload;
 
@@ -107,6 +125,10 @@ export default function reducer(
       return state;
     }
   }
+}
+
+export function resetMonthlyEmissions() {
+  return { type: 'monthlyEmissions/RESET_MONTHLY_EMISSIONS' };
 }
 
 export function setMonthlyEmissionsAggregation(aggregation: Aggregation) {
@@ -137,13 +159,16 @@ export function setMonthlyEmissionsCountyName(countyName: string) {
   };
 }
 
+export function setMonthlyEmissionsSource(source: Source) {
+  return {
+    type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_SOURCE',
+    payload: { source },
+  };
+}
+
 export function seMonthlyEmissionsUnit(unit: Unit) {
   return {
     type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_UNIT',
     payload: { unit },
   };
-}
-
-export function resetMonthlyEmissions() {
-  return { type: 'monthlyEmissions/RESET_MONTHLY_EMISSIONS' };
 }

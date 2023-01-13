@@ -14,6 +14,7 @@ import {
   setMonthlyEmissionsRegionId,
   setMonthlyEmissionsStateId,
   setMonthlyEmissionsCountyName,
+  setMonthlyEmissionsSource,
   seMonthlyEmissionsUnit,
 } from 'app/redux/reducers/monthlyEmissions';
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
@@ -367,6 +368,9 @@ export function MonthlyEmissionsCharts() {
   const currentCountyName = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.countyName,
   );
+  const currentSource = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.source,
+  );
   const currentUnit = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.unit,
   );
@@ -484,6 +488,7 @@ export function MonthlyEmissionsCharts() {
                       checked={currentAggregation === 'state'}
                       onChange={(_ev) => {
                         dispatch(setMonthlyEmissionsAggregation('state'));
+                        dispatch(setMonthlyEmissionsSource('power'));
                         if (!currentStateId) return;
                         dispatch(setMonthlyEmissionsStateId(currentStateId));
                       }}
@@ -510,6 +515,7 @@ export function MonthlyEmissionsCharts() {
                       checked={currentAggregation === 'county'}
                       onChange={(_ev) => {
                         dispatch(setMonthlyEmissionsAggregation('county'));
+                        dispatch(setMonthlyEmissionsSource('power'));
                         if (!currentCountyName) return;
                         dispatch(
                           setMonthlyEmissionsCountyName(currentCountyName),
@@ -791,11 +797,10 @@ export function MonthlyEmissionsCharts() {
                       type="radio"
                       name="source"
                       value="power"
-                      // checked={selectedSource === 'power'}
-                      // onChange={(ev) => {
-                      //   const source = ev.target.value as MonthlyUnit;
-                      //   dispatch(selectMonthlySource(source));
-                      // }}
+                      checked={currentSource === 'power'}
+                      onChange={(_ev) => {
+                        dispatch(setMonthlyEmissionsSource('power'));
+                      }}
                       data-avert-source-toggle="power"
                     />
 
@@ -813,11 +818,14 @@ export function MonthlyEmissionsCharts() {
                       type="radio"
                       name="source"
                       value="power-vehicles"
-                      // checked={selectedSource === 'power-vehicles'}
-                      // onChange={(ev) => {
-                      //   const source = ev.target.value as MonthlyUnit;
-                      //   dispatch(selectMonthlySource(source));
-                      // }}
+                      checked={currentSource === 'power-vehicles'}
+                      disabled={
+                        currentAggregation === 'state' ||
+                        currentAggregation === 'county'
+                      }
+                      onChange={(_ev) => {
+                        dispatch(setMonthlyEmissionsSource('power-vehicles'));
+                      }}
                       data-avert-source-toggle="power-vehicles"
                     />
 
