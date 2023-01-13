@@ -4,18 +4,17 @@ import HighchartsReact from 'highcharts-react-official';
 import { useDispatch } from 'react-redux';
 // ---
 import { useTypedSelector } from 'app/redux/index';
-import {
+import type {
   ReplacementPollutantName,
   MonthlyDisplacement,
-  calculateMonthlyData,
 } from 'app/redux/reducers/displacement';
+import { calculateMonthlyData } from 'app/redux/reducers/displacement';
 import {
-  MonthlyUnit,
-  selectMonthlyAggregation,
-  selectMonthlyUnit,
-  selectMonthlyRegion,
-  selectMonthlyState,
-  selectMonthlyCounty,
+  setMonthlyEmissionsAggregation,
+  setMonthlyEmissionsRegionId,
+  setMonthlyEmissionsStateId,
+  setMonthlyEmissionsCountyName,
+  seMonthlyEmissionsUnit,
 } from 'app/redux/reducers/monthlyEmissions';
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 import { Pollutant, RegionId, StateId, regions, states } from 'app/config';
@@ -27,26 +26,30 @@ export function MonthlyEmissionsCharts() {
   const dispatch = useDispatch();
   const status = useTypedSelector(({ displacement }) => displacement.status);
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const selectedAggregation = useTypedSelector(
-    ({ monthlyEmissions }) => monthlyEmissions.selectedAggregation,
+  const currentAggregation = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.aggregation,
   );
-  const selectedUnit = useTypedSelector(
-    ({ monthlyEmissions }) => monthlyEmissions.selectedUnit,
+  const currentRegionId = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.regionId,
   );
-  const selectedRegionId = useTypedSelector(
-    ({ monthlyEmissions }) => monthlyEmissions.selectedRegionId,
+  const currentStateId = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.stateId,
   );
-  const selectedStateId = useTypedSelector(
-    ({ monthlyEmissions }) => monthlyEmissions.selectedStateId,
+  const currentCountyName = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.countyName,
   );
-  const selectedCountyName = useTypedSelector(
-    ({ monthlyEmissions }) => monthlyEmissions.selectedCountyName,
+  const currentUnit = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.unit,
   );
+  // const data = useTypedSelector(
+  //   ({ monthlyEmissions }) => monthlyEmissions.data,
+  // );
+
   const availableStates = useTypedSelector(({ displacement }) => {
     return Object.keys(displacement.statesAndCounties).sort();
   });
   const availableCounties = useTypedSelector(({ displacement }) => {
-    return displacement.statesAndCounties[selectedStateId as StateId]?.sort();
+    return displacement.statesAndCounties[currentStateId as StateId]?.sort();
   });
   const egusNeedingReplacement = useTypedSelector(
     ({ displacement }) => displacement.egusNeedingReplacement,
@@ -83,35 +86,35 @@ export function MonthlyEmissionsCharts() {
     nh3: { ...initialMonthlyData },
   };
 
+  const regionId =
+    geographicFocus === 'regions' && selectedRegion
+      ? selectedRegion.id
+      : geographicFocus === 'states' && selectedStateRegions.length === 1
+      ? selectedStateRegions[0].id
+      : (currentRegionId as RegionId);
+
+  const stateId = currentStateId as StateId;
+
   for (const item of ['so2', 'nox', 'co2', 'pm25', 'vocs', 'nh3']) {
     const pollutant = item as Pollutant;
 
-    const regionId =
-      selectedStateRegions.length === 1
-        ? selectedStateRegions[0].id
-        : (selectedRegionId as RegionId);
-
-    const stateId = selectedStateId as StateId;
-
-    if (selectedAggregation === 'region') {
-      const displacement =
-        geographicFocus === 'regions' && selectedRegion
-          ? monthlyEmissionChanges.regions[pollutant][selectedRegion.id]
-          : monthlyEmissionChanges.regions[pollutant][regionId];
+    if (currentAggregation === 'region') {
+      const displacement = monthlyEmissionChanges.regions[pollutant][regionId];
       monthlyData[pollutant] = displacement || initialMonthlyData;
     }
 
-    if (selectedAggregation === 'state') {
+    if (currentAggregation === 'state') {
       const displacement = monthlyEmissionChanges.states[pollutant][stateId];
       monthlyData[pollutant] = displacement || initialMonthlyData;
     }
 
-    if (selectedAggregation === 'county') {
-      /* prettier-ignore */
-      const displacement = monthlyEmissionChanges.counties[pollutant][stateId]?.[selectedCountyName];
+    if (currentAggregation === 'county') {
+      const displacement = monthlyEmissionChanges.counties[pollutant][stateId]?.[currentCountyName]; // prettier-ignore
       monthlyData[pollutant] = displacement || initialMonthlyData;
     }
   }
+
+  // console.log(monthlyData); // NOTE: for debugging purposes
 
   // charts config
   const commonConfig: Highcharts.Options = {
@@ -136,8 +139,8 @@ export function MonthlyEmissionsCharts() {
         });
 
         const suffix =
-          selectedUnit === 'emissions'
-            ? ` ${(this.series.options as any).emissionsUnit}`
+          currentUnit === 'emissions'
+            ? ` ${(this.series.options as any).unit}`
             : '%';
 
         return `<strong>${dataPoint}</strong>${suffix}`;
@@ -168,7 +171,7 @@ export function MonthlyEmissionsCharts() {
   };
 
   // format 'city' if found in county name
-  const countyName = selectedCountyName.replace(/city/, '(City)');
+  const countyName = currentCountyName.replace(/city/, '(City)');
 
   const regionChartTitle =
     geographicFocus === 'regions'
@@ -176,31 +179,31 @@ export function MonthlyEmissionsCharts() {
       : geographicFocus === 'states'
       ? selectedStateRegions.length === 1
         ? `${regions[selectedStateRegions[0].id]?.name} Region`
-        : selectedRegionId === ''
+        : currentRegionId === ''
         ? '' // multiple regions but a region has not yet been selected
-        : selectedRegionId === 'ALL'
+        : currentRegionId === 'ALL'
         ? `${selectedStateRegions
             .map((region) => regions[region.id]?.name)
             .join(', ')} Regions`
-        : `${regions[selectedRegionId as RegionId]?.name} Region`
+        : `${regions[currentRegionId as RegionId]?.name} Region`
       : '';
 
   const stateChartTitle =
-    selectedStateId === ''
+    currentStateId === ''
       ? '' // state has not yet been selected
-      : `${states[selectedStateId as StateId].name}`;
+      : `${states[currentStateId as StateId].name}`;
 
   const countyChartTitle =
-    selectedCountyName === ''
+    currentCountyName === ''
       ? '' // county has not yet been selected
-      : `${countyName}, ${states[selectedStateId as StateId].name}`;
+      : `${countyName}, ${states[currentStateId as StateId].name}`;
 
   const chartLocationTitle =
-    selectedAggregation === 'region'
+    currentAggregation === 'region'
       ? regionChartTitle
-      : selectedAggregation === 'state'
+      : currentAggregation === 'state'
       ? stateChartTitle
-      : selectedAggregation === 'county'
+      : currentAggregation === 'county'
       ? countyChartTitle
       : '';
 
@@ -210,10 +213,10 @@ export function MonthlyEmissionsCharts() {
     </tspan>`;
   }
 
-  function formatYAxis(emissionsUnit: string) {
-    return selectedUnit === 'percentages'
+  function formatYAxis(unit: string) {
+    return currentUnit === 'percentages'
       ? 'Percent change'
-      : `Emission changes (${emissionsUnit})`;
+      : `Emission changes (${unit})`;
   }
 
   const so2Config = {
@@ -230,9 +233,9 @@ export function MonthlyEmissionsCharts() {
     series: [
       {
         name: 'SO₂',
-        data: calculateMonthlyData(monthlyData.so2, selectedUnit),
+        data: calculateMonthlyData(monthlyData.so2, currentUnit),
         color: '#058dc7',
-        emissionsUnit: 'lb',
+        unit: 'lb',
       },
     ],
   };
@@ -251,9 +254,9 @@ export function MonthlyEmissionsCharts() {
     series: [
       {
         name: 'NOₓ',
-        data: calculateMonthlyData(monthlyData.nox, selectedUnit),
+        data: calculateMonthlyData(monthlyData.nox, currentUnit),
         color: '#ed561b',
-        emissionsUnit: 'lb',
+        unit: 'lb',
       },
     ],
   };
@@ -272,9 +275,9 @@ export function MonthlyEmissionsCharts() {
     series: [
       {
         name: 'CO₂',
-        data: calculateMonthlyData(monthlyData.co2, selectedUnit),
+        data: calculateMonthlyData(monthlyData.co2, currentUnit),
         color: '#50b432',
-        emissionsUnit: 'tons',
+        unit: 'tons',
       },
     ],
   };
@@ -293,9 +296,9 @@ export function MonthlyEmissionsCharts() {
     series: [
       {
         name: 'PM₂₅',
-        data: calculateMonthlyData(monthlyData.pm25, selectedUnit),
+        data: calculateMonthlyData(monthlyData.pm25, currentUnit),
         color: '#665683',
-        emissionsUnit: 'lb',
+        unit: 'lb',
       },
     ],
   };
@@ -314,9 +317,9 @@ export function MonthlyEmissionsCharts() {
     series: [
       {
         name: 'VOC',
-        data: calculateMonthlyData(monthlyData.vocs, selectedUnit),
+        data: calculateMonthlyData(monthlyData.vocs, currentUnit),
         color: '#ffc107',
-        emissionsUnit: 'lb',
+        unit: 'lb',
       },
     ],
   };
@@ -335,9 +338,9 @@ export function MonthlyEmissionsCharts() {
     series: [
       {
         name: 'NH₃',
-        data: calculateMonthlyData(monthlyData.nh3, selectedUnit),
+        data: calculateMonthlyData(monthlyData.nh3, currentUnit),
         color: '#009688',
-        emissionsUnit: 'lb',
+        unit: 'lb',
       },
     ],
   };
@@ -350,23 +353,22 @@ export function MonthlyEmissionsCharts() {
       : [];
 
     const flaggedRegion =
-      selectedAggregation === 'region' &&
+      currentAggregation === 'region' &&
       (geographicFocus === 'regions'
         ? flaggedEGUs.length > 0
-        : (flaggedEGUs.length > 0 && selectedRegionId === 'ALL') ||
-          flaggedEGUs.filter((egu) => egu.regionId === selectedRegionId)
-            .length > 0);
+        : (flaggedEGUs.length > 0 && currentRegionId === 'ALL') ||
+          flaggedEGUs.filter((egu) => egu.regionId === currentRegionId).length >
+            0);
 
     const flaggedState =
-      selectedAggregation === 'state' &&
-      flaggedEGUs.some((egu) => egu.state === selectedStateId);
+      currentAggregation === 'state' &&
+      flaggedEGUs.some((egu) => egu.state === currentStateId);
 
     const flaggedCounty =
-      selectedAggregation === 'county' &&
-      flaggedEGUs.some(
-        (egu) =>
-          egu.state === selectedStateId && egu.county === selectedCountyName,
-      );
+      currentAggregation === 'county' &&
+      flaggedEGUs.some((egu) => {
+        return egu.state === currentStateId && egu.county === currentCountyName;
+      });
 
     // prettier-ignore
     const pollutantMarkup = new Map<Pollutant, ReactNode>()
@@ -385,7 +387,7 @@ export function MonthlyEmissionsCharts() {
       .set('vocs', vocsConfig)
       .set('nh3', nh3Config);
 
-    if (selectedUnit === 'percentages') {
+    if (currentUnit === 'percentages') {
       if (flaggedRegion || flaggedState || flaggedCounty) {
         return (
           <div
@@ -447,9 +449,9 @@ export function MonthlyEmissionsCharts() {
                       type="radio"
                       name="aggregation"
                       value="region"
-                      checked={selectedAggregation === 'region'}
-                      onChange={(ev) => {
-                        dispatch(selectMonthlyAggregation('region'));
+                      checked={currentAggregation === 'region'}
+                      onChange={(_ev) => {
+                        dispatch(setMonthlyEmissionsAggregation('region'));
                       }}
                       data-avert-aggregation-toggle="region"
                     />
@@ -471,12 +473,11 @@ export function MonthlyEmissionsCharts() {
                       type="radio"
                       name="aggregation"
                       value="state"
-                      checked={selectedAggregation === 'state'}
-                      onChange={(ev) => {
-                        dispatch(selectMonthlyAggregation('state'));
-                        if (selectedStateId) {
-                          dispatch(selectMonthlyState(selectedStateId));
-                        }
+                      checked={currentAggregation === 'state'}
+                      onChange={(_ev) => {
+                        dispatch(setMonthlyEmissionsAggregation('state'));
+                        if (!currentStateId) return;
+                        dispatch(setMonthlyEmissionsStateId(currentStateId));
                       }}
                       data-avert-aggregation-toggle="state"
                     />
@@ -498,12 +499,13 @@ export function MonthlyEmissionsCharts() {
                       type="radio"
                       name="aggregation"
                       value="county"
-                      checked={selectedAggregation === 'county'}
-                      onChange={(ev) => {
-                        dispatch(selectMonthlyAggregation('county'));
-                        if (selectedCountyName) {
-                          dispatch(selectMonthlyCounty(selectedCountyName));
-                        }
+                      checked={currentAggregation === 'county'}
+                      onChange={(_ev) => {
+                        dispatch(setMonthlyEmissionsAggregation('county'));
+                        if (!currentCountyName) return;
+                        dispatch(
+                          setMonthlyEmissionsCountyName(currentCountyName),
+                        );
                       }}
                       data-avert-aggregation-toggle="county"
                     />
@@ -520,7 +522,7 @@ export function MonthlyEmissionsCharts() {
 
               <div data-avert-geography-selects>
                 {geographicFocus === 'states' &&
-                  selectedAggregation === 'region' &&
+                  currentAggregation === 'region' &&
                   selectedStateRegions.length > 1 && (
                     <select
                       className={
@@ -529,10 +531,10 @@ export function MonthlyEmissionsCharts() {
                         `margin-top-105 padding-left-1 padding-y-05 padding-right-4 ` +
                         `border-width-1px border-solid border-base-light font-sans-xs`
                       }
-                      value={selectedRegionId}
-                      onChange={(ev) =>
-                        dispatch(selectMonthlyRegion(ev.target.value))
-                      }
+                      value={currentRegionId}
+                      onChange={(ev) => {
+                        dispatch(setMonthlyEmissionsRegionId(ev.target.value));
+                      }}
                       data-avert-geography-select="region"
                     >
                       <option value="" disabled>
@@ -549,8 +551,8 @@ export function MonthlyEmissionsCharts() {
                     </select>
                   )}
 
-                {(selectedAggregation === 'state' ||
-                  selectedAggregation === 'county') && (
+                {(currentAggregation === 'state' ||
+                  currentAggregation === 'county') && (
                   <>
                     <select
                       className={
@@ -559,9 +561,9 @@ export function MonthlyEmissionsCharts() {
                         `margin-top-105 padding-left-1 padding-y-05 padding-right-4 ` +
                         `border-width-1px border-solid border-base-light font-sans-xs`
                       }
-                      value={selectedStateId}
+                      value={currentStateId}
                       onChange={(ev) =>
-                        dispatch(selectMonthlyState(ev.target.value))
+                        dispatch(setMonthlyEmissionsStateId(ev.target.value))
                       }
                       data-avert-geography-select="state"
                     >
@@ -576,7 +578,7 @@ export function MonthlyEmissionsCharts() {
                       ))}
                     </select>
 
-                    {selectedAggregation === 'county' && (
+                    {currentAggregation === 'county' && (
                       <select
                         className={
                           `usa-select ` +
@@ -584,10 +586,10 @@ export function MonthlyEmissionsCharts() {
                           `margin-top-105 padding-left-1 padding-y-05 padding-right-4 ` +
                           `border-width-1px border-solid border-base-light font-sans-xs`
                         }
-                        value={selectedCountyName}
-                        onChange={(ev) =>
-                          dispatch(selectMonthlyCounty(ev.target.value))
-                        }
+                        value={currentCountyName}
+                        onChange={(ev) => {
+                          dispatch(setMonthlyEmissionsCountyName(ev.target.value)); // prettier-ignore
+                        }}
                         data-avert-geography-select="county"
                       >
                         <option value="" disabled>
@@ -840,10 +842,9 @@ export function MonthlyEmissionsCharts() {
                       type="radio"
                       name="units"
                       value="emissions"
-                      checked={selectedUnit === 'emissions'}
-                      onChange={(ev) => {
-                        const unit = ev.target.value as MonthlyUnit;
-                        dispatch(selectMonthlyUnit(unit));
+                      checked={currentUnit === 'emissions'}
+                      onChange={(_ev) => {
+                        dispatch(seMonthlyEmissionsUnit('emissions'));
                       }}
                       data-avert-unit-toggle="emissions"
                     />
@@ -866,10 +867,9 @@ export function MonthlyEmissionsCharts() {
                       type="radio"
                       name="units"
                       value="percentages"
-                      checked={selectedUnit === 'percentages'}
-                      onChange={(ev) => {
-                        const unit = ev.target.value as MonthlyUnit;
-                        dispatch(selectMonthlyUnit(unit));
+                      checked={currentUnit === 'percentages'}
+                      onChange={(_ev) => {
+                        dispatch(seMonthlyEmissionsUnit('percentages'));
                       }}
                       data-avert-unit-toggle="percentages"
                     />

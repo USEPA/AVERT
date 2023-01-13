@@ -1,106 +1,105 @@
-export type MonthlyAggregation = 'region' | 'state' | 'county';
+type Aggregation = 'region' | 'state' | 'county';
 
-export type MonthlyUnit = 'emissions' | 'percentages';
+export type Unit = 'emissions' | 'percentages';
 
-type MonthlyEmissionsAction =
+type Action =
   | { type: 'monthlyEmissions/RESET_MONTHLY_EMISSIONS' }
   | {
-      type: 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION';
-      payload: { selectedAggregation: MonthlyAggregation };
+      type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_AGGREGATION';
+      payload: { aggregation: Aggregation };
     }
   | {
-      type: 'monthlyEmissions/SELECT_MONTHLY_UNIT';
-      payload: { selectedUnit: MonthlyUnit };
+      type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_REGION_ID';
+      payload: { regionId: string };
     }
   | {
-      type: 'monthlyEmissions/SELECT_MONTHLY_REGION';
-      payload: { selectedRegionId: string };
+      type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_STATE_ID';
+      payload: { stateId: string };
     }
   | {
-      type: 'monthlyEmissions/SELECT_MONTHLY_STATE';
-      payload: { selectedStateId: string };
+      type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_COUNTY_NAME';
+      payload: { countyName: string };
     }
   | {
-      type: 'monthlyEmissions/SELECT_MONTHLY_COUNTY';
-      payload: { selectedCountyName: string };
+      type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_UNIT';
+      payload: { unit: Unit };
     };
 
-type MonthlyEmissionsState = {
-  selectedAggregation: MonthlyAggregation;
-  selectedUnit: MonthlyUnit;
-  selectedRegionId: string;
-  selectedStateId: string;
-  selectedCountyName: string;
+type State = {
+  aggregation: Aggregation;
+  regionId: string;
+  stateId: string;
+  countyName: string;
+  unit: Unit;
 };
 
-// reducer
-const initialState: MonthlyEmissionsState = {
-  selectedAggregation: 'region',
-  selectedUnit: 'emissions',
-  selectedRegionId: '',
-  selectedStateId: '',
-  selectedCountyName: '',
+const initialState: State = {
+  aggregation: 'region',
+  regionId: '',
+  stateId: '',
+  countyName: '',
+  unit: 'emissions',
 };
 
 export default function reducer(
-  state: MonthlyEmissionsState = initialState,
-  action: MonthlyEmissionsAction,
-): MonthlyEmissionsState {
+  state: State = initialState,
+  action: Action,
+): State {
   switch (action.type) {
     case 'monthlyEmissions/RESET_MONTHLY_EMISSIONS': {
       // initial state
       return {
-        selectedAggregation: 'region',
-        selectedUnit: 'emissions',
-        selectedRegionId: '',
-        selectedStateId: '',
-        selectedCountyName: '',
+        aggregation: 'region',
+        regionId: '',
+        stateId: '',
+        countyName: '',
+        unit: 'emissions',
       };
     }
 
-    case 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION': {
-      const { selectedAggregation } = action.payload;
+    case 'monthlyEmissions/SET_MONTHLY_EMISSIONS_AGGREGATION': {
+      const { aggregation } = action.payload;
 
       return {
         ...state,
-        selectedAggregation,
+        aggregation,
       };
     }
 
-    case 'monthlyEmissions/SELECT_MONTHLY_UNIT': {
-      const { selectedUnit } = action.payload;
+    case 'monthlyEmissions/SET_MONTHLY_EMISSIONS_REGION_ID': {
+      const { regionId } = action.payload;
 
       return {
         ...state,
-        selectedUnit,
+        regionId,
       };
     }
 
-    case 'monthlyEmissions/SELECT_MONTHLY_REGION': {
-      const { selectedRegionId } = action.payload;
+    case 'monthlyEmissions/SET_MONTHLY_EMISSIONS_STATE_ID': {
+      const { stateId } = action.payload;
 
       return {
         ...state,
-        selectedRegionId,
+        stateId,
+        countyName: '',
       };
     }
 
-    case 'monthlyEmissions/SELECT_MONTHLY_STATE': {
-      const { selectedStateId } = action.payload;
+    case 'monthlyEmissions/SET_MONTHLY_EMISSIONS_COUNTY_NAME': {
+      const { countyName } = action.payload;
 
       return {
         ...state,
-        selectedStateId,
-        selectedCountyName: '',
+        countyName,
       };
     }
 
-    case 'monthlyEmissions/SELECT_MONTHLY_COUNTY': {
-      const { selectedCountyName } = action.payload;
+    case 'monthlyEmissions/SET_MONTHLY_EMISSIONS_UNIT': {
+      const { unit } = action.payload;
 
       return {
         ...state,
-        selectedCountyName,
+        unit,
       };
     }
 
@@ -110,40 +109,38 @@ export default function reducer(
   }
 }
 
-export function selectMonthlyAggregation(
-  selectedAggregation: MonthlyAggregation,
-) {
+export function setMonthlyEmissionsAggregation(aggregation: Aggregation) {
   return {
-    type: 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION',
-    payload: { selectedAggregation },
+    type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_AGGREGATION',
+    payload: { aggregation },
   };
 }
 
-export function selectMonthlyUnit(selectedUnit: MonthlyUnit) {
+export function setMonthlyEmissionsRegionId(regionId: string) {
   return {
-    type: 'monthlyEmissions/SELECT_MONTHLY_UNIT',
-    payload: { selectedUnit },
+    type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_REGION_ID',
+    payload: { regionId },
   };
 }
 
-export function selectMonthlyRegion(selectedRegionId: string) {
+export function setMonthlyEmissionsStateId(stateId: string) {
   return {
-    type: 'monthlyEmissions/SELECT_MONTHLY_REGION',
-    payload: { selectedRegionId },
+    type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_STATE_ID',
+    payload: { stateId },
   };
 }
 
-export function selectMonthlyState(selectedStateId: string) {
+export function setMonthlyEmissionsCountyName(countyName: string) {
   return {
-    type: 'monthlyEmissions/SELECT_MONTHLY_STATE',
-    payload: { selectedStateId },
+    type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_COUNTY_NAME',
+    payload: { countyName },
   };
 }
 
-export function selectMonthlyCounty(selectedCountyName: string) {
+export function seMonthlyEmissionsUnit(unit: Unit) {
   return {
-    type: 'monthlyEmissions/SELECT_MONTHLY_COUNTY',
-    payload: { selectedCountyName },
+    type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_UNIT',
+    payload: { unit },
   };
 }
 
