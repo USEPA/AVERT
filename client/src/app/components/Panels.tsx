@@ -154,8 +154,14 @@ const tabsStyles = css`
 function SectorTables(props: { location: string }) {
   const { location } = props;
 
+  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
+
+  // NOTE: add top margin if states are selected, as `StateTable` will first
+  const topMarginClassName =
+    geographicFocus === 'states' ? `margin-top-3` : `margin-top-0`;
+
   return (
-    <div className="desktop:display-flex">
+    <div className={`desktop:display-flex ${topMarginClassName}`}>
       <div className="flex-1 desktop:margin-right-105">
         <h3 className="avert-blue margin-bottom-1 font-serif-md">
           Annual Emissions Changes • <small>Power Sector Only</small>
@@ -168,7 +174,7 @@ function SectorTables(props: { location: string }) {
         <PowerSectorEmissionsTable />
       </div>
 
-      <div className="flex-1 desktop:margin-left-105">
+      <div className="flex-1 margin-top-3 desktop:margin-left-105 desktop:margin-top-0">
         <h3 className="avert-blue margin-bottom-1 font-serif-md">
           Annual Emissions Changes • <small>Including Vehicles</small>
           <br />
@@ -186,8 +192,14 @@ function SectorTables(props: { location: string }) {
 function StateTable(props: { location: string }) {
   const { location } = props;
 
+  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
+
+  // NOTE: add top margin if regions are selected, as `SectorTables` will first
+  const topMarginClassName =
+    geographicFocus === 'regions' ? `margin-top-3` : `margin-top-0`;
+
   return (
-    <>
+    <div className={topMarginClassName}>
       <h3 className="avert-blue margin-bottom-1 font-serif-md">
         Annual Emissions Changes By State
         <br />
@@ -197,7 +209,7 @@ function StateTable(props: { location: string }) {
       </h3>
 
       <StateEmissionsTable />
-    </>
+    </div>
   );
 }
 
@@ -483,15 +495,17 @@ export function Panels() {
             </>
           )}
 
-          <h3 className="avert-blue margin-bottom-1 font-serif-md">
-            Monthly Emission Changes:
-            <br />
-            <span className="display-block margin-top-05 font-serif-sm">
-              {geographicLocation}
-            </span>
-          </h3>
+          <div className="margin-top-3">
+            <h3 className="avert-blue margin-bottom-1 font-serif-md">
+              Monthly Emission Changes:
+              <br />
+              <span className="display-block margin-top-05 font-serif-sm">
+                {geographicLocation}
+              </span>
+            </h3>
 
-          <MonthlyEmissionsCharts />
+            <MonthlyEmissionsCharts />
+          </div>
 
           <COBRAConnection />
 

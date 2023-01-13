@@ -109,7 +109,7 @@ export function TransportationSectorEmissionsTable() {
         </div>
       </div>
 
-      <ul className="margin-top-2 font-sans-3xs line-height-sans-3 text-base-dark">
+      <ul className="margin-top-2 margin-bottom-0 font-sans-3xs line-height-sans-3 text-base-dark">
         <li>Negative numbers indicate displaced generation and emissions.</li>
         <li>All results are rounded to the nearest ten.</li>
         <li>
@@ -121,6 +121,12 @@ export function TransportationSectorEmissionsTable() {
           (including EVs).
         </li>
       </ul>
+
+      <p className="display-none">
+        {/* NOTE: hidden paragraph is intentional to get around EPA's
+         * `ul:last-child { margin-bottom: revert; }` style
+         */}
+      </p>
     </>
   );
 }
