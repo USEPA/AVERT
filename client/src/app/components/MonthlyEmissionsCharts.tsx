@@ -440,10 +440,10 @@ export function MonthlyEmissionsCharts() {
 
   return (
     <>
-      <div className="margin-top-2 desktop:display-flex">
-        <div className="flex-1 tablet:display-flex desktop:margin-right-1">
-          <div className="flex-1 margin-bottom-2 tablet:margin-right-1">
-            <div className="avert-box padding-105">
+      <div className="grid-container padding-0 maxw-full">
+        <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
+          <div className="padding-1 tablet:grid-col-6 desktop:grid-col-3">
+            <div className="avert-box padding-105 height-full">
               <p className="avert-box-heading font-serif-2xs line-height-serif-2">
                 Select level of aggregation:
               </p>
@@ -618,8 +618,8 @@ export function MonthlyEmissionsCharts() {
             </div>
           </div>
 
-          <div className="flex-1 margin-bottom-2 tablet:margin-left-1">
-            <div className="avert-box padding-105">
+          <div className="padding-1 tablet:grid-col-6 desktop:grid-col-3">
+            <div className="avert-box padding-105 height-full">
               <p className="avert-box-heading font-serif-2xs line-height-serif-2">
                 Select pollutants:
               </p>
@@ -775,11 +775,9 @@ export function MonthlyEmissionsCharts() {
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="flex-1 tablet:display-flex desktop:margin-left-1">
-          <div className="flex-1 margin-bottom-2 tablet:margin-right-1">
-            <div className="avert-box padding-105">
+          <div className="padding-1 tablet:grid-col-6 desktop:grid-col-3">
+            <div className="avert-box padding-105 height-full">
               <p className="avert-box-heading font-serif-2xs line-height-serif-2">
                 Select emissions source:
               </p>
@@ -835,8 +833,8 @@ export function MonthlyEmissionsCharts() {
             </div>
           </div>
 
-          <div className="flex-1 margin-bottom-2 tablet:margin-left-1">
-            <div className="avert-box padding-105">
+          <div className="padding-1 tablet:grid-col-6 desktop:grid-col-3">
+            <div className="avert-box padding-105 height-full">
               <p className="avert-box-heading font-serif-2xs line-height-serif-2">
                 Select units:
               </p>
@@ -899,32 +897,32 @@ export function MonthlyEmissionsCharts() {
       <div className="grid-container padding-0 maxw-full">
         <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
           <div className="padding-1 tablet:grid-col-6 desktop:grid-col-4">
-            <div className="avert-box padding-1 height-full">
+            <div className="avert-box padding-105 height-full">
               <span>Chart 1</span>
             </div>
           </div>
           <div className="padding-1 tablet:grid-col-6 desktop:grid-col-4">
-            <div className="avert-box padding-1 height-full">
+            <div className="avert-box padding-105 height-full">
               <span>Chart 2</span>
             </div>
           </div>
           <div className="padding-1 tablet:grid-col-6 desktop:grid-col-4">
-            <div className="avert-box padding-1 height-full">
+            <div className="avert-box padding-105 height-full">
               <span>Chart 3</span>
             </div>
           </div>
           <div className="padding-1 tablet:grid-col-6 desktop:grid-col-4">
-            <div className="avert-box padding-1 height-full">
+            <div className="avert-box padding-105 height-full">
               <span>Chart 4</span>
             </div>
           </div>
           <div className="padding-1 tablet:grid-col-6 desktop:grid-col-4">
-            <div className="avert-box padding-1 height-full">
+            <div className="avert-box padding-105 height-full">
               <span>Chart 5</span>
             </div>
           </div>
           <div className="padding-1 tablet:grid-col-6 desktop:grid-col-4">
-            <div className="avert-box padding-1 height-full">
+            <div className="avert-box padding-105 height-full">
               <span>Chart 6</span>
             </div>
           </div>
