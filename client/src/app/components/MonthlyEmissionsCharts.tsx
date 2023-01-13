@@ -116,8 +116,9 @@ function Chart(props: {
       : '';
 
   function formatTitle(pollutant: string) {
-    return `<tspan class='font-sans-md line-height-sans-2 text-base-darker text-center'>
-        Change in ${pollutant} Emissions: ${chartLocationTitle}
+    return `<tspan class='font-sans-2xs text-base-darker'>
+        <tspan class='font-sans-xs text-bold'>Change in ${pollutant} Emissions:</tspan>
+        ${chartLocationTitle}
       </tspan>`;
   }
 
@@ -138,10 +139,22 @@ function Chart(props: {
     credits: {
       enabled: false,
     },
+    exporting: {
+      allowHTML: true,
+    },
+    lang: {
+      contextButtonTitle: 'Export options',
+    },
     legend: {
       enabled: false,
     },
+    plotOptions: {
+      series: {
+        animation: false,
+      },
+    },
     tooltip: {
+      animation: false,
       pointFormatter: function () {
         const dataPoint = this.y?.toLocaleString(undefined, {
           minimumFractionDigits: 0,
@@ -155,12 +168,6 @@ function Chart(props: {
 
         return `<strong>${dataPoint}</strong>${suffix}`;
       },
-    },
-    lang: {
-      contextButtonTitle: 'Export options',
-    },
-    exporting: {
-      allowHTML: true,
     },
     xAxis: {
       categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], // prettier-ignore
@@ -313,24 +320,24 @@ function Chart(props: {
   if (currentUnit === 'percentages') {
     if (flaggedRegion || flaggedState || flaggedCounty) {
       return (
-        <div
-          className={
-            `margin-bottom-2 padding-2 bg-base-lightest ` +
-            `border-width-1px border-solid border-base-light`
-          }
-        >
-          <p className="font-sans-md line-height-sans-2 text-base-darker text-center">
-            Change in {pollutantMarkup.get(pollutant)} Emissions:{' '}
+        <div className="avert-box padding-105 height-full">
+          <p className="font-sans-2xs line-height-sans-3 text-center text-base-darker">
+            <span className="font-sans-xs text-bold">
+              Change in {pollutantMarkup.get(pollutant)} Emissions:
+            </span>{' '}
             {chartLocationTitle}
           </p>
 
-          <p className="margin-0 font-sans-xs text-base-dark">
+          <p className="margin-0 font-sans-3xs text-base-dark">
             Percent change statistics are not available for{' '}
             {pollutantMarkup.get(pollutant)} because the geographic area you’ve
             selected features one or more power plants with an infrequent{' '}
             {pollutantMarkup.get(pollutant)} emissions event. See Section 2 of
-            the <a href="https://www.epa.gov/avert">AVERT User Manual</a> for
-            more information.
+            the{' '}
+            <a className="usa-link" href="https://www.epa.gov/avert">
+              AVERT User Manual
+            </a>{' '}
+            for more information.
           </p>
         </div>
       );
@@ -915,14 +922,33 @@ export function MonthlyEmissionsCharts() {
                   </div>
                 </div>
               ) : (
-                currentPollutants.map((pollutant) => (
-                  <div
-                    key={pollutant}
-                    className="padding-1 tablet:grid-col-6 desktop:grid-col-4"
-                  >
-                    <Chart pollutant={pollutant} data={data} />
-                  </div>
-                ))
+                currentPollutants.map((pollutant) => {
+                  const className =
+                    currentPollutants.length === 1
+                      ? 'padding-1 grid-col-12'
+                      : currentPollutants.length === 2 ||
+                        currentPollutants.length === 4
+                      ? 'padding-1 tablet:grid-col-6'
+                      : 'padding-1 tablet:grid-col-6 desktop:grid-col-4';
+
+                  /**
+                   * NOTE: The HighchartsReact (inside the Chart component)
+                   * component's width is set whenever it initially renders. If
+                   * the number of selected pollutants changes, the parent div's
+                   * width can change (see `className` above), so we need to
+                   * force the Chart component to re-render whenever the number
+                   * of selected pollutants changes – we do that by passing in
+                   * the number of selected pollutants as the `key` prop to the
+                   * Chart component
+                   */
+                  const key = currentPollutants.length;
+
+                  return (
+                    <div key={pollutant} className={className}>
+                      <Chart key={key} pollutant={pollutant} data={data} />
+                    </div>
+                  );
+                })
               )}
             </div>
           </div>
