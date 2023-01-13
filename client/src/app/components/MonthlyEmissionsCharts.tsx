@@ -14,11 +14,13 @@ import {
   setMonthlyEmissionsRegionId,
   setMonthlyEmissionsStateId,
   setMonthlyEmissionsCountyName,
+  setMonthlyEmissionsPollutant,
   setMonthlyEmissionsSource,
   seMonthlyEmissionsUnit,
 } from 'app/redux/reducers/monthlyEmissions';
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
-import { Pollutant, RegionId, StateId, regions, states } from 'app/config';
+import type { Pollutant, RegionId, StateId } from 'app/config';
+import { regions, states } from 'app/config';
 
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
@@ -368,6 +370,9 @@ export function MonthlyEmissionsCharts() {
   const currentCountyName = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.countyName,
   );
+  const currentPollutants = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.pollutants,
+  );
   const currentSource = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.source,
   );
@@ -640,11 +645,10 @@ export function MonthlyEmissionsCharts() {
                         type="checkbox"
                         name="pollutants"
                         value="so2"
-                        // checked={true}
-                        // onChange={(ev) => {
-                        //   const pollutant = ev.target.value as MonthlyPollutant;
-                        //   dispatch(selectMonthlyPollutant(pollutant));
-                        // }}
+                        checked={currentPollutants.includes('so2')}
+                        onChange={(_ev) => {
+                          dispatch(setMonthlyEmissionsPollutant('so2'));
+                        }}
                         data-avert-pollutants-checkbox="so2"
                       />
                       <label
@@ -664,11 +668,10 @@ export function MonthlyEmissionsCharts() {
                         type="checkbox"
                         name="pollutants"
                         value="nox"
-                        // checked={true}
-                        // onChange={(ev) => {
-                        //   const pollutant = ev.target.value as MonthlyPollutant;
-                        //   dispatch(selectMonthlyPollutant(pollutant));
-                        // }}
+                        checked={currentPollutants.includes('nox')}
+                        onChange={(_ev) => {
+                          dispatch(setMonthlyEmissionsPollutant('nox'));
+                        }}
                         data-avert-pollutants-checkbox="nox"
                       />
                       <label
@@ -688,11 +691,10 @@ export function MonthlyEmissionsCharts() {
                         type="checkbox"
                         name="pollutants"
                         value="co2"
-                        // checked={true}
-                        // onChange={(ev) => {
-                        //   const pollutant = ev.target.value as MonthlyPollutant;
-                        //   dispatch(selectMonthlyPollutant(pollutant));
-                        // }}
+                        checked={currentPollutants.includes('co2')}
+                        onChange={(_ev) => {
+                          dispatch(setMonthlyEmissionsPollutant('co2'));
+                        }}
                         data-avert-pollutants-checkbox="co2"
                       />
                       <label
@@ -714,11 +716,10 @@ export function MonthlyEmissionsCharts() {
                         type="checkbox"
                         name="pollutants"
                         value="pm25"
-                        // checked={true}
-                        // onChange={(ev) => {
-                        //   const pollutant = ev.target.value as MonthlyPollutant;
-                        //   dispatch(selectMonthlyPollutant(pollutant));
-                        // }}
+                        checked={currentPollutants.includes('pm25')}
+                        onChange={(_ev) => {
+                          dispatch(setMonthlyEmissionsPollutant('pm25'));
+                        }}
                         data-avert-pollutants-checkbox="pm25"
                       />
                       <label
@@ -738,11 +739,10 @@ export function MonthlyEmissionsCharts() {
                         type="checkbox"
                         name="pollutants"
                         value="vocs"
-                        // checked={true}
-                        // onChange={(ev) => {
-                        //   const pollutant = ev.target.value as MonthlyPollutant;
-                        //   dispatch(selectMonthlyPollutant(pollutant));
-                        // }}
+                        checked={currentPollutants.includes('vocs')}
+                        onChange={(_ev) => {
+                          dispatch(setMonthlyEmissionsPollutant('vocs'));
+                        }}
                         data-avert-pollutants-checkbox="vocs"
                       />
                       <label
@@ -762,11 +762,10 @@ export function MonthlyEmissionsCharts() {
                         type="checkbox"
                         name="pollutants"
                         value="nh3"
-                        // checked={true}
-                        // onChange={(ev) => {
-                        //   const pollutant = ev.target.value as MonthlyPollutant;
-                        //   dispatch(selectMonthlyPollutant(pollutant));
-                        // }}
+                        checked={currentPollutants.includes('nh3')}
+                        onChange={(_ev) => {
+                          dispatch(setMonthlyEmissionsPollutant('nh3'));
+                        }}
                         data-avert-pollutants-checkbox="nh3"
                       />
                       <label
@@ -902,70 +901,32 @@ export function MonthlyEmissionsCharts() {
         </div>
       </div>
 
-      <div className="grid-container padding-0 maxw-full">
-        <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
-          <div className="padding-1 tablet:grid-col-6 desktop:grid-col-4">
-            <div className="avert-box padding-105 height-full">
-              <span>Chart 1</span>
+      <div data-avert-charts>
+        {status === 'complete' && (
+          <div className="grid-container padding-0 maxw-full">
+            <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
+              {currentPollutants.length === 0 ? (
+                <div className="padding-1 grid-col-12">
+                  <div className="avert-box padding-105">
+                    <p className="margin-0 text-center">
+                      <strong>No pollutants selected.</strong> Please select at
+                      least one pollutant to see monthly emissions data charted.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                currentPollutants.map((pollutant) => (
+                  <div
+                    key={pollutant}
+                    className="padding-1 tablet:grid-col-6 desktop:grid-col-4"
+                  >
+                    <Chart pollutant={pollutant} data={data} />
+                  </div>
+                ))
+              )}
             </div>
           </div>
-          <div className="padding-1 tablet:grid-col-6 desktop:grid-col-4">
-            <div className="avert-box padding-105 height-full">
-              <span>Chart 2</span>
-            </div>
-          </div>
-          <div className="padding-1 tablet:grid-col-6 desktop:grid-col-4">
-            <div className="avert-box padding-105 height-full">
-              <span>Chart 3</span>
-            </div>
-          </div>
-          <div className="padding-1 tablet:grid-col-6 desktop:grid-col-4">
-            <div className="avert-box padding-105 height-full">
-              <span>Chart 4</span>
-            </div>
-          </div>
-          <div className="padding-1 tablet:grid-col-6 desktop:grid-col-4">
-            <div className="avert-box padding-105 height-full">
-              <span>Chart 5</span>
-            </div>
-          </div>
-          <div className="padding-1 tablet:grid-col-6 desktop:grid-col-4">
-            <div className="avert-box padding-105 height-full">
-              <span>Chart 6</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div
-        className={
-          `margin-top-2 padding-2 ` +
-          `border-width-1px border-solid border-base-light`
-        }
-      >
-        <div className="margin-top-0">
-          {status === 'complete' && <Chart pollutant="so2" data={data} />}
-        </div>
-
-        <div className="margin-top-2">
-          {status === 'complete' && <Chart pollutant="nox" data={data} />}
-        </div>
-
-        <div className="margin-top-2">
-          {status === 'complete' && <Chart pollutant="co2" data={data} />}
-        </div>
-
-        <div className="margin-top-2">
-          {status === 'complete' && <Chart pollutant="pm25" data={data} />}
-        </div>
-
-        <div className="margin-top-2">
-          {status === 'complete' && <Chart pollutant="vocs" data={data} />}
-        </div>
-
-        <div className="margin-top-2">
-          {status === 'complete' && <Chart pollutant="nh3" data={data} />}
-        </div>
+        )}
       </div>
     </>
   );

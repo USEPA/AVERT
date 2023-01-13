@@ -1,3 +1,5 @@
+import type { Pollutant } from 'app/config';
+
 type Aggregation = 'region' | 'state' | 'county';
 
 type Source = 'power' | 'power-vehicles';
@@ -23,6 +25,10 @@ type Action =
       payload: { countyName: string };
     }
   | {
+      type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_POLLUTANT';
+      payload: { pollutant: Pollutant };
+    }
+  | {
       type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_SOURCE';
       payload: { source: Source };
     }
@@ -36,6 +42,7 @@ type State = {
   regionId: string;
   stateId: string;
   countyName: string;
+  pollutants: Pollutant[];
   source: Source;
   unit: Unit;
 };
@@ -45,6 +52,7 @@ const initialState: State = {
   regionId: '',
   stateId: '',
   countyName: '',
+  pollutants: [],
   source: 'power',
   unit: 'emissions',
 };
@@ -61,6 +69,7 @@ export default function reducer(
         regionId: '',
         stateId: '',
         countyName: '',
+        pollutants: [],
         source: 'power',
         unit: 'emissions',
       };
@@ -100,6 +109,19 @@ export default function reducer(
       return {
         ...state,
         countyName,
+      };
+    }
+
+    case 'monthlyEmissions/SET_MONTHLY_EMISSIONS_POLLUTANT': {
+      const { pollutant } = action.payload;
+
+      const pollutants = state.pollutants.includes(pollutant)
+        ? [...state.pollutants].filter((p) => p !== pollutant)
+        : [...state.pollutants].concat(pollutant);
+
+      return {
+        ...state,
+        pollutants,
       };
     }
 
@@ -156,6 +178,13 @@ export function setMonthlyEmissionsCountyName(countyName: string) {
   return {
     type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_COUNTY_NAME',
     payload: { countyName },
+  };
+}
+
+export function setMonthlyEmissionsPollutant(pollutant: Pollutant) {
+  return {
+    type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_POLLUTANT',
+    payload: { pollutant },
   };
 }
 
