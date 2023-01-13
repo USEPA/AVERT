@@ -335,17 +335,19 @@ function Chart(props: {
   }
 
   return (
-    <HighchartsReact
-      highcharts={Highcharts}
-      options={chartConfig.get(pollutant)}
-      callback={(_chart: any) => {
-        // as this entire react app is ultimately served in an iframe
-        // on another page, this document has a click handler that sends
-        // the document's height to other window, which can then set the
-        // embedded iframe's height (see public/post-message.js)
-        document.querySelector('html')?.click();
-      }}
-    />
+    <div data-avert-chart={pollutant}>
+      <HighchartsReact
+        highcharts={Highcharts}
+        options={chartConfig.get(pollutant)}
+        callback={(_chart: any) => {
+          // as this entire react app is ultimately served in an iframe
+          // on another page, this document has a click handler that sends
+          // the document's height to other window, which can then set the
+          // embedded iframe's height (see public/post-message.js)
+          document.querySelector('html')?.click();
+        }}
+      />
+    </div>
   );
 }
 
@@ -894,33 +896,68 @@ export function MonthlyEmissionsCharts() {
         </div>
       </div>
 
+      <div className="grid-container padding-0 maxw-full">
+        <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
+          <div className="padding-1 tablet:grid-col-6 desktop:grid-col-4">
+            <div className="avert-box padding-1 height-full">
+              <span>Chart 1</span>
+            </div>
+          </div>
+          <div className="padding-1 tablet:grid-col-6 desktop:grid-col-4">
+            <div className="avert-box padding-1 height-full">
+              <span>Chart 2</span>
+            </div>
+          </div>
+          <div className="padding-1 tablet:grid-col-6 desktop:grid-col-4">
+            <div className="avert-box padding-1 height-full">
+              <span>Chart 3</span>
+            </div>
+          </div>
+          <div className="padding-1 tablet:grid-col-6 desktop:grid-col-4">
+            <div className="avert-box padding-1 height-full">
+              <span>Chart 4</span>
+            </div>
+          </div>
+          <div className="padding-1 tablet:grid-col-6 desktop:grid-col-4">
+            <div className="avert-box padding-1 height-full">
+              <span>Chart 5</span>
+            </div>
+          </div>
+          <div className="padding-1 tablet:grid-col-6 desktop:grid-col-4">
+            <div className="avert-box padding-1 height-full">
+              <span>Chart 6</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div
         className={
           `margin-top-2 padding-2 ` +
           `border-width-1px border-solid border-base-light`
         }
       >
-        <div className="margin-top-0" data-avert-chart="so2">
+        <div className="margin-top-0">
           {status === 'complete' && <Chart pollutant="so2" data={data} />}
         </div>
 
-        <div className="margin-top-2" data-avert-chart="nox">
+        <div className="margin-top-2">
           {status === 'complete' && <Chart pollutant="nox" data={data} />}
         </div>
 
-        <div className="margin-top-2" data-avert-chart="co2">
+        <div className="margin-top-2">
           {status === 'complete' && <Chart pollutant="co2" data={data} />}
         </div>
 
-        <div className="margin-top-2" data-avert-chart="pm25">
+        <div className="margin-top-2">
           {status === 'complete' && <Chart pollutant="pm25" data={data} />}
         </div>
 
-        <div className="margin-top-2" data-avert-chart="vocs">
+        <div className="margin-top-2">
           {status === 'complete' && <Chart pollutant="vocs" data={data} />}
         </div>
 
-        <div className="margin-top-2" data-avert-chart="nh3">
+        <div className="margin-top-2">
           {status === 'complete' && <Chart pollutant="nh3" data={data} />}
         </div>
       </div>
