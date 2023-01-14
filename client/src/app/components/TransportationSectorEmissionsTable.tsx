@@ -19,13 +19,13 @@ export function TransportationSectorEmissionsTable() {
             <thead>
               <tr>
                 <th>&nbsp;</th>
-                <th>
+                <th className="text-right">
                   <small>From</small> Fossil Generation
                 </th>
-                <th>
+                <th className="text-right">
                   <small>From</small> Vehicles
                 </th>
-                <th>Net Change</th>
+                <th className="text-right">Net Change</th>
               </tr>
             </thead>
 

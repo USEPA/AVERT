@@ -91,9 +91,9 @@ export function PowerSectorEmissionsTable() {
             <thead>
               <tr>
                 <th>&nbsp;</th>
-                <th>Original</th>
-                <th>Post-EE/RE</th>
-                <th>EE/RE Impacts</th>
+                <th className="text-right">Original</th>
+                <th className="text-right">Post-EE/RE</th>
+                <th className="text-right">EE/RE Impacts</th>
               </tr>
             </thead>
 
