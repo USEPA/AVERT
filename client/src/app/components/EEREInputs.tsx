@@ -435,31 +435,28 @@ export function EEREInputs() {
                           Offshore wind calculations are not available in the
                           selected AVERT region{' '}
                           <Tooltip id="no-offshoreWind-region">
-                            <p className="margin-0 line-height-sans-3 text-no-italic">
+                            <span className="margin-0 line-height-sans-3 text-no-italic">
                               AVERT does not support offshore wind modeling in
                               this region. It is unlikely that offshore areas
                               suitable for wind farms would connect to the
                               electrical grid in this region.
-                            </p>
+                            </span>
                           </Tooltip>
                         </p>
                       ) : (
-                        <div className="margin-top-1 tablet:margin-top-0">
-                          <em>
-                            Offshore wind calculations are not available in the
-                            AVERT region(s) that this state is part of{' '}
-                          </em>
-
+                        <p className="margin-y-05 font-sans-2xs line-height-sans-2 text-italic">
+                          Offshore wind calculations are not available in the
+                          AVERT region(s) that this state is part of{' '}
                           <Tooltip id="no-offshoreWind-state">
-                            <p className="margin-0">
+                            <span className="margin-0 line-height-sans-3 text-no-italic">
                               AVERT does not support offshore wind modeling in
                               the region(s) that this state is part of. It is
                               unlikely that offshore areas suitable for wind
                               farms would connect to the electrical grid in
                               these regions.
-                            </p>
+                            </span>
                           </Tooltip>
-                        </div>
+                        </p>
                       )}
                     </div>
                   </div>
