@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
-import { ReactNode, useRef, useEffect } from 'react';
+import type { ReactNode } from 'react';
+import { useRef, useEffect } from 'react';
 import { css, keyframes } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // ---
@@ -148,7 +149,7 @@ export function Tooltip(props: { id: string; children: ReactNode }) {
           ×
         </a>
 
-        {children}
+        <span className="font-sans-2xs line-height-sans-3">{children}</span>
       </span>
     </>
   );
