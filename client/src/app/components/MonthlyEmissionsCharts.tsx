@@ -914,8 +914,8 @@ export function MonthlyEmissionsCharts() {
             <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
               {currentPollutants.length === 0 ? (
                 <div className="padding-1 grid-col-12">
-                  <div className="avert-box padding-105">
-                    <p className="margin-0 text-center">
+                  <div className="avert-box padding-3">
+                    <p className="margin-0 font-sans-xs text-center">
                       <strong>No pollutants selected.</strong> Please select at
                       least one pollutant to see monthly emissions data charted.
                     </p>
