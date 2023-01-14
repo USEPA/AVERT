@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // ---
@@ -109,6 +109,12 @@ export function EEREInputs() {
     dispatch(updateEereEVDeploymentLocation(evDeploymentLocationOptions[0].id));
   }, [dispatch, evDeploymentLocationOptions]);
 
+  const [detailsAOpen, setDetailsAOpen] = useState(false);
+  const [detailsBOpen, setDetailsBOpen] = useState(false);
+  const [detailsCOpen, setDetailsCOpen] = useState(false);
+  const [detailsDOpen, setDetailsDOpen] = useState(false);
+  const [detailsEOpen, setDetailsEOpen] = useState(false);
+
   const atLeastOneRegionSupportsOffshoreWind =
     geographicFocus === 'regions'
       ? selectedRegion?.offshoreWind
@@ -173,6 +179,12 @@ export function EEREInputs() {
               <details
                 css={inputsGroupStyles}
                 className="border-width-1px border-x-width-0 border-bottom-width-0 border-solid border-base-light"
+                open={detailsAOpen}
+                onToggle={(ev) => {
+                  const details = ev.currentTarget as HTMLDetailsElement;
+                  setDetailsAOpen(details.open);
+                  setDetailsBOpen(details.open);
+                }}
               >
                 <summary
                   css={inputsSummaryStyles}
@@ -247,6 +259,12 @@ export function EEREInputs() {
               <details
                 css={inputsGroupStyles}
                 className="border-width-1px border-x-width-0 border-bottom-width-0 border-solid border-base-light"
+                open={detailsBOpen}
+                onToggle={(ev) => {
+                  const details = ev.currentTarget as HTMLDetailsElement;
+                  setDetailsBOpen(details.open);
+                  setDetailsAOpen(details.open);
+                }}
               >
                 <summary
                   css={inputsSummaryStyles}
@@ -348,6 +366,12 @@ export function EEREInputs() {
               <details
                 css={inputsGroupStyles}
                 className="border-width-1px border-x-width-0 border-bottom-width-0 border-solid border-base-light"
+                open={detailsCOpen}
+                onToggle={(ev) => {
+                  const details = ev.currentTarget as HTMLDetailsElement;
+                  setDetailsCOpen(details.open);
+                  setDetailsDOpen(details.open);
+                }}
               >
                 <summary
                   css={inputsSummaryStyles}
@@ -447,6 +471,12 @@ export function EEREInputs() {
               <details
                 css={inputsGroupStyles}
                 className="border-width-1px border-x-width-0 border-bottom-width-0 border-solid border-base-light"
+                open={detailsDOpen}
+                onToggle={(ev) => {
+                  const details = ev.currentTarget as HTMLDetailsElement;
+                  setDetailsDOpen(details.open);
+                  setDetailsCOpen(details.open);
+                }}
               >
                 <summary
                   css={inputsSummaryStyles}
@@ -535,6 +565,11 @@ export function EEREInputs() {
               <details
                 css={inputsGroupStyles}
                 className="border-width-1px border-x-width-0 border-bottom-width-0 border-solid border-base-light"
+                open={detailsEOpen}
+                onToggle={(ev) => {
+                  const details = ev.currentTarget as HTMLDetailsElement;
+                  setDetailsEOpen(details.open);
+                }}
               >
                 <summary
                   css={inputsSummaryStyles}
