@@ -7,7 +7,7 @@ function formatNumber(number: number) {
   return output.toLocaleString();
 }
 
-export function EmissionsTable() {
+export function StateEmissionsTable() {
   const status = useTypedSelector(({ displacement }) => displacement.status);
   const annualStateEmissionChanges = useTypedSelector(
     ({ displacement }) => displacement.annualStateEmissionChanges,

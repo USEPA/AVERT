@@ -36,29 +36,6 @@ export function COBRAConnection() {
     ({ displacement }) => displacement.downloadableCobraData,
   );
 
-  const [cobraApiReady, setCobraApiReady] = useState(false);
-
-  useEffect(() => {
-    if (activeStep !== 3) return;
-
-    fetch(`${cobraApiUrl}/api/Token`)
-      .then((tokenRes) => {
-        if (!tokenRes.ok) throw new Error(tokenRes.statusText);
-        return tokenRes.json();
-      })
-      .then((tokenData) => {
-        const token = tokenData.value;
-        return fetch(`${cobraApiUrl}/api/Queue/${token}`).then((queueRes) => {
-          if (!queueRes.ok) throw new Error(queueRes.statusText);
-          setCobraApiReady(true);
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-        setCobraApiReady(false);
-      });
-  }, [activeStep, cobraApiUrl]);
-
   const [cobraApiState, setCobraApiState] = useState<CobraApiState>('idle');
 
   useEffect(() => {
@@ -92,15 +69,15 @@ export function COBRAConnection() {
     };
   });
 
-  if (!cobraApiReady) return null;
-
   return (
     <>
-      <h3 className="avert-blue font-serif-md">Direct Connection to COBRA</h3>
+      <h3 className="avert-blue margin-bottom-1 font-serif-md">
+        Direct Connection to COBRA
+      </h3>
 
       <p>
         EPA’s{' '}
-        <a href="https://www.epa.gov/cobra">
+        <a className="usa-link" href="https://www.epa.gov/cobra">
           CO-Benefits Risk Assessment (COBRA) Health Impacts Screening and
           Mapping Tool
         </a>{' '}
@@ -133,18 +110,21 @@ export function COBRAConnection() {
             <p className="usa-alert__text">
               Error connecting with COBRA application. Please try again later.
               If connection problems persist, please contact AVERT support at{' '}
-              <a href="mailto:avert@epa.gov">avert@epa.gov</a>.
+              <a className="usa-link" href="mailto:avert@epa.gov">
+                avert@epa.gov
+              </a>
+              .
             </p>
           </div>
         </div>
       )}
 
-      <p className="text-center">
+      <p className="margin-bottom-0 text-center">
         <a
           className="usa-button avert-button"
           href={cobraAppUrl}
           target="_blank"
-          rel="noopener noreferrer"
+          rel="noreferrer"
           onClick={(ev) => {
             ev.preventDefault();
 

@@ -11,7 +11,7 @@
     <title>AVERT Web Edition | US EPA</title>
   </head>
 
-  <body id="top">
+  <body id="top" class="has-wide-template">
     <div class="skiplinks" role="navigation" aria-labelledby="skip-to-main">
       <a
         id="skip-to-main"
@@ -254,7 +254,7 @@
             </div>
           </div>
 
-          <article class="article">
+          <article class="article margin-x-auto maxw-widescreen">
             <h1 class="page-title">AVERT Web Edition</h1>
 
             <p>(Placeholder text above iframe).</p>
@@ -279,6 +279,9 @@
                 iframe.height = eventData + "px";
               });
             </script>
+
+            <!-- NOTE: USWDS script added so the usa-banner toggle works (included in EPA's Drupal template) -->
+            <script src="https://unpkg.com/@uswds/uswds@3.3.0/dist/js/uswds.js"></script>
           </article>
         </div>
       </div>

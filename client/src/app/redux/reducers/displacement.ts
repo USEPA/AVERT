@@ -1,9 +1,6 @@
-// reducers
 import { AppThunk } from 'app/redux/index';
-// action creators
-import { EGUData, RegionState } from './geography';
-import { MonthlyUnit } from './monthlyEmissions';
-// config
+import type { EGUData, RegionState } from 'app/redux/reducers/geography';
+import type { Unit } from 'app/redux/reducers/monthlyEmissions';
 import {
   RdfDataKey,
   Pollutant,
@@ -12,6 +9,7 @@ import {
   states,
   regions,
 } from 'app/config';
+
 /**
  * Excel: "CountyFIPS" sheet.
  */
@@ -616,10 +614,7 @@ export function resetDisplacement(): DisplacementAction {
   return { type: 'displacement/RESET_DISPLACEMENT' };
 }
 
-export function calculateMonthlyData(
-  data: MonthlyDisplacement,
-  unit: MonthlyUnit,
-) {
+export function calculateMonthlyData(data: MonthlyDisplacement, unit: Unit) {
   const monthlyEmissionsChanges: number[] = [];
   const monthlyPercentageChanges: number[] = [];
 

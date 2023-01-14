@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
@@ -16,9 +16,10 @@ import { StatesMap } from 'app/components/StatesMap';
 import { UnitConversion } from 'app/components/UnitConversion';
 import { EEREInputs } from 'app/components/EEREInputs';
 import { EEREChart } from 'app/components/EEREChart';
-import { DisplacementsTable } from 'app/components/DisplacementsTable';
-import { EmissionsTable } from 'app/components/EmissionsTable';
-import { EmissionsChart } from 'app/components/EmissionsChart';
+import { PowerSectorEmissionsTable } from 'app/components/PowerSectorEmissionsTable';
+import { TransportationSectorEmissionsTable } from 'app/components/TransportationSectorEmissionsTable';
+import { StateEmissionsTable } from 'app/components/StateEmissionsTable';
+import { MonthlyEmissionsCharts } from 'app/components/MonthlyEmissionsCharts';
 import { COBRAConnection } from 'app/components/COBRAConnection';
 import { DataDownload } from 'app/components/DataDownload';
 import { modalLinkStyles } from 'app/components/Tooltip';
@@ -150,6 +151,68 @@ const tabsStyles = css`
   }
 `;
 
+function SectorTables(props: { location: string }) {
+  const { location } = props;
+
+  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
+
+  // NOTE: add top margin if states are selected, as `StateTable` will first
+  const topMarginClassName =
+    geographicFocus === 'states' ? `margin-top-3` : `margin-top-0`;
+
+  return (
+    <div className={`desktop:display-flex ${topMarginClassName}`}>
+      <div className="flex-1 desktop:margin-right-105">
+        <h3 className="avert-blue margin-bottom-1 font-serif-md">
+          Annual Emissions Changes • <small>Power Sector Only</small>
+          <br />
+          <span className="display-block margin-top-05 font-serif-xs">
+            {location}
+          </span>
+        </h3>
+
+        <PowerSectorEmissionsTable />
+      </div>
+
+      <div className="flex-1 margin-top-3 desktop:margin-left-105 desktop:margin-top-0">
+        <h3 className="avert-blue margin-bottom-1 font-serif-md">
+          Annual Emissions Changes • <small>Including Vehicles</small>
+          <br />
+          <span className="display-block margin-top-05 font-serif-xs">
+            {location}
+          </span>
+        </h3>
+
+        <TransportationSectorEmissionsTable />
+      </div>
+    </div>
+  );
+}
+
+function StateTable(props: { location: string }) {
+  const { location } = props;
+
+  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
+
+  // NOTE: add top margin if regions are selected, as `SectorTables` will first
+  const topMarginClassName =
+    geographicFocus === 'regions' ? `margin-top-3` : `margin-top-0`;
+
+  return (
+    <div className={topMarginClassName}>
+      <h3 className="avert-blue margin-bottom-1 font-serif-md">
+        Annual Emissions Changes By State
+        <br />
+        <span className="display-block margin-top-05 font-serif-xs">
+          {location}
+        </span>
+      </h3>
+
+      <StateEmissionsTable />
+    </div>
+  );
+}
+
 export function Panels() {
   const dispatch = useDispatch();
 
@@ -164,6 +227,7 @@ export function Panels() {
   const loadingProgress = useTypedSelector(
     ({ panel }) => panel.loadingProgress,
   );
+  const cobraApiUrl = useTypedSelector(({ api }) => api.cobraApiUrl);
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const modalOverlay = useTypedSelector(({ panel }) => panel.modalOverlay);
   const activeModalId = useTypedSelector(({ panel }) => panel.activeModalId);
@@ -174,6 +238,28 @@ export function Panels() {
     ({ displacement }) => displacement.status === 'error',
   );
 
+  const [cobraApiReady, setCobraApiReady] = useState(false);
+
+  useEffect(() => {
+    if (activeStep !== 3) return;
+
+    fetch(`${cobraApiUrl}/api/Token`)
+      .then((tokenRes) => {
+        if (!tokenRes.ok) throw new Error(tokenRes.statusText);
+        return tokenRes.json();
+      })
+      .then(async (tokenData) => {
+        const token = tokenData.value;
+        const queueRes = await fetch(`${cobraApiUrl}/api/Queue/${token}`);
+        if (!queueRes.ok) throw new Error(queueRes.statusText);
+        setCobraApiReady(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setCobraApiReady(false);
+      });
+  }, [activeStep, cobraApiUrl]);
+
   const selectedRegionName = useSelectedRegion()?.name || '';
   const selectedStateName = useSelectedState()?.name || '';
   const selectedStateRegionNames = useSelectedStateRegions().map((r) => r.name);
@@ -183,40 +269,10 @@ export function Panels() {
       ? `${selectedStateRegionNames} Region`
       : `${selectedStateRegionNames.join(', ')} Regions`;
 
-  const resultsHeading =
+  const geographicLocation =
     geographicFocus === 'regions'
       ? `${selectedRegionName} Region`
       : `${selectedStateRegions} (due to changes in ${selectedStateName})`;
-
-  // the order of the displacements table and emissions table will be
-  // determined by the selected geography (regions or states)
-  const displacementsTable = (
-    <>
-      <h3 className="avert-blue margin-bottom-1 font-serif-md">
-        Annual Regional Displacements:
-        <br />
-        <span className="display-block margin-top-05 font-serif-xs">
-          {resultsHeading}
-        </span>
-      </h3>
-
-      <DisplacementsTable />
-    </>
-  );
-
-  const emissionsTable = (
-    <>
-      <h3 className="avert-blue margin-bottom-1 font-serif-md">
-        Annual State Emission Changes:
-        <br />
-        <span className="display-block margin-top-05 font-serif-xs">
-          {resultsHeading}
-        </span>
-      </h3>
-
-      <EmissionsTable />
-    </>
-  );
 
   return (
     <Container
@@ -322,7 +378,7 @@ export function Panels() {
                 <a
                   className="usa-link"
                   href="https://www.epa.gov/avert/download-avert"
-                  target="_blank"
+                  target="_parent"
                   rel="noreferrer"
                 >
                   available for download here
@@ -359,7 +415,7 @@ export function Panels() {
                 <a
                   className="usa-link"
                   href="https://www.epa.gov/avert/download-avert"
-                  target="_blank"
+                  target="_parent"
                   rel="noreferrer"
                 >
                   available for download here
@@ -386,33 +442,36 @@ export function Panels() {
               : `State: ${selectedStateName}`}
           </h3>
 
-          <UnitConversion />
+          <div className="overflow-hidden">
+            <UnitConversion />
 
-          <p className="tablet:font-sans-md">
-            AVERT quantifies avoided emissions and electricity generation
-            displaced by EE/RE policies and programs. Specify the impacts of
-            EE/RE programs below, and AVERT will use these inputs to generate
-            results. For more information about inputs, please consult the{' '}
-            <a
-              href="https://www.epa.gov/statelocalenergy/avert-user-manual"
-              target="_blank"
-              rel="noreferrer"
-            >
-              AVERT user manual
-            </a>{' '}
-            or click the &nbsp;
-            <span
-              css={modalLinkStyles}
-              className="position-relative display-inline-block width-2 height-2"
-            />
-            &nbsp; icon for each program type below.
-          </p>
+            <p className="tablet:font-sans-md">
+              AVERT quantifies avoided emissions and electricity generation
+              displaced by EE/RE policies and programs. Specify the impacts of
+              EE/RE programs below, and AVERT will use these inputs to generate
+              results. For more information about inputs, please consult the{' '}
+              <a
+                className="usa-link"
+                href="https://www.epa.gov/statelocalenergy/avert-user-manual"
+                target="_parent"
+                rel="noreferrer"
+              >
+                AVERT user manual
+              </a>{' '}
+              or click the &nbsp;
+              <span
+                css={modalLinkStyles}
+                className="position-relative display-inline-block width-2 height-2"
+              />
+              &nbsp; icon for each program type below.
+            </p>
 
-          <p className="text-base-dark">
-            Several types of programs are listed below (A through E). You can
-            enter impacts for any or all types of programs, in any combination.
-            AVERT will calculate cumulative impacts.
-          </p>
+            <p className="margin-bottom-0 text-base-dark">
+              Several types of programs are listed below (A through E). You can
+              enter impacts for any or all types of programs, in any
+              combination. AVERT will calculate cumulative impacts.
+            </p>
+          </div>
 
           <EEREInputs />
 
@@ -449,29 +508,53 @@ export function Panels() {
 
           {geographicFocus === 'regions' ? (
             <>
-              {displacementsTable}
-              {emissionsTable}
+              <SectorTables location={geographicLocation} />
+              <StateTable location={geographicLocation} />
             </>
           ) : (
             <>
-              {emissionsTable}
-              {displacementsTable}
+              <StateTable location={geographicLocation} />
+              <SectorTables location={geographicLocation} />
             </>
           )}
 
-          <h3 className="avert-blue margin-bottom-1 font-serif-md">
-            Monthly Emission Changes:
-            <br />
-            <span className="display-block margin-top-05 font-serif-sm">
-              {resultsHeading}
-            </span>
-          </h3>
+          <div className="margin-top-3">
+            <h3 className="avert-blue margin-bottom-1 font-serif-md">
+              Monthly Emission Changes
+              <br />
+              <span className="display-block margin-top-05 font-serif-sm">
+                {geographicLocation}
+              </span>
+            </h3>
 
-          <EmissionsChart />
+            <MonthlyEmissionsCharts />
+          </div>
 
-          <COBRAConnection />
+          <hr />
 
-          <DataDownload />
+          <div className="grid-container padding-0 maxw-full">
+            <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
+              {cobraApiReady ? (
+                <>
+                  <div className="padding-1 tablet:grid-col-6">
+                    <div className="tablet:margin-right-105">
+                      <COBRAConnection />
+                    </div>
+                  </div>
+
+                  <div className="padding-1 tablet:grid-col-6">
+                    <div className="margin-top-2 tablet:margin-top-0 tablet:margin-left-105">
+                      <DataDownload />
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="padding-1 margin-x-auto maxw-tablet">
+                  <DataDownload />
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         <PanelFooter

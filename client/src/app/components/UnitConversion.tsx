@@ -8,6 +8,7 @@ import { Tooltip } from 'app/components/Tooltip';
 const unitConversionStyles = css`
   @media (min-width: 40em) {
     float: right;
+    margin-bottom: 0;
     width: calc(100% / 3);
   }
 `;
@@ -54,18 +55,11 @@ export function UnitConversion() {
   return (
     <div
       css={unitConversionStyles}
-      className={
-        `margin-bottom-2 padding-105 ` +
-        `border-width-1px border-solid border-base-light ` +
-        `bg-base-lightest ` +
-        `tablet:margin-left-2`
-      }
+      className="avert-box margin-bottom-2 padding-105 tablet:margin-left-2"
     >
-      <div className="margin-bottom-105 text-center line-height-sans-2">
-        <span className="font-sans-2xs text-bold text-base-darker">
-          Helpful Unit Conversions
-        </span>{' '}
-        <span className="text-left">
+      <div className="avert-box-heading font-serif-2xs line-height-serif-2">
+        Helpful Unit Conversions{' '}
+        <span className="font-sans-xs text-base-darker">
           <Tooltip id="unit-conversion">
             <p>
               To convert units from power (<strong>kW, MW, GW</strong>) to

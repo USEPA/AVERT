@@ -1,106 +1,145 @@
-export type MonthlyAggregation = 'region' | 'state' | 'county';
+import type { Pollutant } from 'app/config';
 
-export type MonthlyUnit = 'emissions' | 'percentages';
+type Aggregation = 'region' | 'state' | 'county';
 
-type MonthlyEmissionsAction =
+type Source = 'power' | 'power-vehicles';
+
+export type Unit = 'emissions' | 'percentages';
+
+type Action =
   | { type: 'monthlyEmissions/RESET_MONTHLY_EMISSIONS' }
   | {
-      type: 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION';
-      payload: { selectedAggregation: MonthlyAggregation };
+      type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_AGGREGATION';
+      payload: { aggregation: Aggregation };
     }
   | {
-      type: 'monthlyEmissions/SELECT_MONTHLY_UNIT';
-      payload: { selectedUnit: MonthlyUnit };
+      type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_REGION_ID';
+      payload: { regionId: string };
     }
   | {
-      type: 'monthlyEmissions/SELECT_MONTHLY_REGION';
-      payload: { selectedRegionId: string };
+      type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_STATE_ID';
+      payload: { stateId: string };
     }
   | {
-      type: 'monthlyEmissions/SELECT_MONTHLY_STATE';
-      payload: { selectedStateId: string };
+      type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_COUNTY_NAME';
+      payload: { countyName: string };
     }
   | {
-      type: 'monthlyEmissions/SELECT_MONTHLY_COUNTY';
-      payload: { selectedCountyName: string };
+      type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_POLLUTANT';
+      payload: { pollutant: Pollutant };
+    }
+  | {
+      type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_SOURCE';
+      payload: { source: Source };
+    }
+  | {
+      type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_UNIT';
+      payload: { unit: Unit };
     };
 
-type MonthlyEmissionsState = {
-  selectedAggregation: MonthlyAggregation;
-  selectedUnit: MonthlyUnit;
-  selectedRegionId: string;
-  selectedStateId: string;
-  selectedCountyName: string;
+type State = {
+  aggregation: Aggregation;
+  regionId: string;
+  stateId: string;
+  countyName: string;
+  pollutants: Pollutant[];
+  source: Source;
+  unit: Unit;
 };
 
-// reducer
-const initialState: MonthlyEmissionsState = {
-  selectedAggregation: 'region',
-  selectedUnit: 'emissions',
-  selectedRegionId: '',
-  selectedStateId: '',
-  selectedCountyName: '',
+const initialState: State = {
+  aggregation: 'region',
+  regionId: '',
+  stateId: '',
+  countyName: '',
+  pollutants: [],
+  source: 'power',
+  unit: 'emissions',
 };
 
 export default function reducer(
-  state: MonthlyEmissionsState = initialState,
-  action: MonthlyEmissionsAction,
-): MonthlyEmissionsState {
+  state: State = initialState,
+  action: Action,
+): State {
   switch (action.type) {
     case 'monthlyEmissions/RESET_MONTHLY_EMISSIONS': {
       // initial state
       return {
-        selectedAggregation: 'region',
-        selectedUnit: 'emissions',
-        selectedRegionId: '',
-        selectedStateId: '',
-        selectedCountyName: '',
+        aggregation: 'region',
+        regionId: '',
+        stateId: '',
+        countyName: '',
+        pollutants: [],
+        source: 'power',
+        unit: 'emissions',
       };
     }
 
-    case 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION': {
-      const { selectedAggregation } = action.payload;
+    case 'monthlyEmissions/SET_MONTHLY_EMISSIONS_AGGREGATION': {
+      const { aggregation } = action.payload;
 
       return {
         ...state,
-        selectedAggregation,
+        aggregation,
       };
     }
 
-    case 'monthlyEmissions/SELECT_MONTHLY_UNIT': {
-      const { selectedUnit } = action.payload;
+    case 'monthlyEmissions/SET_MONTHLY_EMISSIONS_REGION_ID': {
+      const { regionId } = action.payload;
 
       return {
         ...state,
-        selectedUnit,
+        regionId,
       };
     }
 
-    case 'monthlyEmissions/SELECT_MONTHLY_REGION': {
-      const { selectedRegionId } = action.payload;
+    case 'monthlyEmissions/SET_MONTHLY_EMISSIONS_STATE_ID': {
+      const { stateId } = action.payload;
 
       return {
         ...state,
-        selectedRegionId,
+        stateId,
+        countyName: '',
       };
     }
 
-    case 'monthlyEmissions/SELECT_MONTHLY_STATE': {
-      const { selectedStateId } = action.payload;
+    case 'monthlyEmissions/SET_MONTHLY_EMISSIONS_COUNTY_NAME': {
+      const { countyName } = action.payload;
 
       return {
         ...state,
-        selectedStateId,
-        selectedCountyName: '',
+        countyName,
       };
     }
 
-    case 'monthlyEmissions/SELECT_MONTHLY_COUNTY': {
-      const { selectedCountyName } = action.payload;
+    case 'monthlyEmissions/SET_MONTHLY_EMISSIONS_POLLUTANT': {
+      const { pollutant } = action.payload;
+
+      const pollutants = state.pollutants.includes(pollutant)
+        ? [...state.pollutants].filter((p) => p !== pollutant)
+        : [...state.pollutants].concat(pollutant);
 
       return {
         ...state,
-        selectedCountyName,
+        pollutants,
+      };
+    }
+
+    case 'monthlyEmissions/SET_MONTHLY_EMISSIONS_SOURCE': {
+      const { source } = action.payload;
+
+      return {
+        ...state,
+        source,
+      };
+    }
+
+    case 'monthlyEmissions/SET_MONTHLY_EMISSIONS_UNIT': {
+      const { unit } = action.payload;
+
+      return {
+        ...state,
+        unit,
       };
     }
 
@@ -110,43 +149,55 @@ export default function reducer(
   }
 }
 
-export function selectMonthlyAggregation(
-  selectedAggregation: MonthlyAggregation,
-) {
-  return {
-    type: 'monthlyEmissions/SELECT_MONTHLY_AGGREGATION',
-    payload: { selectedAggregation },
-  };
-}
-
-export function selectMonthlyUnit(selectedUnit: MonthlyUnit) {
-  return {
-    type: 'monthlyEmissions/SELECT_MONTHLY_UNIT',
-    payload: { selectedUnit },
-  };
-}
-
-export function selectMonthlyRegion(selectedRegionId: string) {
-  return {
-    type: 'monthlyEmissions/SELECT_MONTHLY_REGION',
-    payload: { selectedRegionId },
-  };
-}
-
-export function selectMonthlyState(selectedStateId: string) {
-  return {
-    type: 'monthlyEmissions/SELECT_MONTHLY_STATE',
-    payload: { selectedStateId },
-  };
-}
-
-export function selectMonthlyCounty(selectedCountyName: string) {
-  return {
-    type: 'monthlyEmissions/SELECT_MONTHLY_COUNTY',
-    payload: { selectedCountyName },
-  };
-}
-
 export function resetMonthlyEmissions() {
   return { type: 'monthlyEmissions/RESET_MONTHLY_EMISSIONS' };
+}
+
+export function setMonthlyEmissionsAggregation(aggregation: Aggregation) {
+  return {
+    type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_AGGREGATION',
+    payload: { aggregation },
+  };
+}
+
+export function setMonthlyEmissionsRegionId(regionId: string) {
+  return {
+    type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_REGION_ID',
+    payload: { regionId },
+  };
+}
+
+export function setMonthlyEmissionsStateId(stateId: string) {
+  return {
+    type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_STATE_ID',
+    payload: { stateId },
+  };
+}
+
+export function setMonthlyEmissionsCountyName(countyName: string) {
+  return {
+    type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_COUNTY_NAME',
+    payload: { countyName },
+  };
+}
+
+export function setMonthlyEmissionsPollutant(pollutant: Pollutant) {
+  return {
+    type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_POLLUTANT',
+    payload: { pollutant },
+  };
+}
+
+export function setMonthlyEmissionsSource(source: Source) {
+  return {
+    type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_SOURCE',
+    payload: { source },
+  };
+}
+
+export function seMonthlyEmissionsUnit(unit: Unit) {
+  return {
+    type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_UNIT',
+    payload: { unit },
+  };
 }

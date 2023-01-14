@@ -112,7 +112,7 @@ export function Tooltip(props: { id: string; children: ReactNode }) {
     <>
       <a
         css={modalLinkStyles}
-        className="position-relative display-inline-block width-2 height-2"
+        className="avert-tooltip-icon position-relative display-inline-block width-2 height-2"
         href="/"
         onClick={(ev) => {
           ev.preventDefault();

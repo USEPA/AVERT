@@ -38,11 +38,14 @@ export function DataDownload() {
 
   return (
     <>
-      <h3 className="avert-blue font-serif-md">Data Download</h3>
+      <h3 className="avert-blue margin-bottom-1 font-serif-md">
+        Data Download
+      </h3>
 
       <p>
         Download monthly displacement data for each county, state, and region in
-        this analysis, in CSV format.
+        this analysis, in CSV format, or download formatted outputs for use in
+        EPA’s COBRA Screening and Mapping Tool.
       </p>
 
       <p className="text-center">
@@ -55,12 +58,7 @@ export function DataDownload() {
         </a>
       </p>
 
-      <p>
-        Download formatted outputs for use in EPA’s COBRA Screening and Mapping
-        Tool.
-      </p>
-
-      <p className="text-center">
+      <p className="margin-bottom-0 text-center">
         <a
           className="usa-button avert-button"
           href={`data:text/csv;charset=utf-8,${cobraCsvString}`}
