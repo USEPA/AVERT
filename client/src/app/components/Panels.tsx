@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
@@ -227,6 +227,7 @@ export function Panels() {
   const loadingProgress = useTypedSelector(
     ({ panel }) => panel.loadingProgress,
   );
+  const cobraApiUrl = useTypedSelector(({ api }) => api.cobraApiUrl);
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const modalOverlay = useTypedSelector(({ panel }) => panel.modalOverlay);
   const activeModalId = useTypedSelector(({ panel }) => panel.activeModalId);
@@ -236,6 +237,28 @@ export function Panels() {
   const serverCalcError = useTypedSelector(
     ({ displacement }) => displacement.status === 'error',
   );
+
+  const [cobraApiReady, setCobraApiReady] = useState(false);
+
+  useEffect(() => {
+    if (activeStep !== 3) return;
+
+    fetch(`${cobraApiUrl}/api/Token`)
+      .then((tokenRes) => {
+        if (!tokenRes.ok) throw new Error(tokenRes.statusText);
+        return tokenRes.json();
+      })
+      .then(async (tokenData) => {
+        const token = tokenData.value;
+        const queueRes = await fetch(`${cobraApiUrl}/api/Queue/${token}`);
+        if (!queueRes.ok) throw new Error(queueRes.statusText);
+        setCobraApiReady(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setCobraApiReady(false);
+      });
+  }, [activeStep, cobraApiUrl]);
 
   const selectedRegionName = useSelectedRegion()?.name || '';
   const selectedStateName = useSelectedState()?.name || '';
@@ -497,7 +520,7 @@ export function Panels() {
 
           <div className="margin-top-3">
             <h3 className="avert-blue margin-bottom-1 font-serif-md">
-              Monthly Emission Changes:
+              Monthly Emission Changes
               <br />
               <span className="display-block margin-top-05 font-serif-sm">
                 {geographicLocation}
@@ -507,9 +530,31 @@ export function Panels() {
             <MonthlyEmissionsCharts />
           </div>
 
-          <COBRAConnection />
+          <hr />
 
-          <DataDownload />
+          <div className="grid-container padding-0 maxw-full">
+            <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
+              {cobraApiReady ? (
+                <>
+                  <div className="padding-1 tablet:grid-col-6">
+                    <div className="tablet:margin-right-105">
+                      <COBRAConnection />
+                    </div>
+                  </div>
+
+                  <div className="padding-1 tablet:grid-col-6">
+                    <div className="margin-top-2 tablet:margin-top-0 tablet:margin-left-105">
+                      <DataDownload />
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="padding-1 margin-x-auto maxw-tablet">
+                  <DataDownload />
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         <PanelFooter

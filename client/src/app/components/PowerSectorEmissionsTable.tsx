@@ -72,8 +72,10 @@ export function PowerSectorEmissionsTable() {
           {pollutantMarkup.get(pollutant)} emissions event.{' '}
           {pollutantMarkup.get(pollutant)} emissions changes from these plants
           are not included in this analysis. See Section 2 of the{' '}
-          <a href="https://www.epa.gov/avert">AVERT User Manual</a> for more
-          information.
+          <a className="usa-link" href="https://www.epa.gov/avert">
+            AVERT User Manual
+          </a>{' '}
+          for more information.
         </p>
       </Tooltip>
     );
