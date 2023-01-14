@@ -464,7 +464,7 @@ export function MonthlyEmissionsCharts() {
                 Select level of aggregation:
               </p>
 
-              <div className="mobile-lg:display-flex overflow-auto">
+              <div className="mobile-lg:display-flex">
                 <div className="flex-1 mobile-lg:margin-right-1">
                   <div className="usa-radio">
                     <input
@@ -794,7 +794,7 @@ export function MonthlyEmissionsCharts() {
                 Select emissions source:
               </p>
 
-              <div className="mobile-lg:display-flex overflow-auto">
+              <div className="mobile-lg:display-flex">
                 <div className="flex-1 mobile-lg:margin-right-1">
                   <div className="usa-radio">
                     <input
@@ -853,7 +853,7 @@ export function MonthlyEmissionsCharts() {
                 Select units:
               </p>
 
-              <div className="mobile-lg:display-flex overflow-auto">
+              <div className="mobile-lg:display-flex">
                 <div className="flex-1 mobile-lg:margin-right-1">
                   <div className="usa-radio">
                     <input
