@@ -1,6 +1,16 @@
-import { Tooltip } from 'app/components/Tooltip';
+import { useTypedSelector } from 'app/redux/index';
+
+function formatNumber(number: any) {
+  if (number < 10 && number > -10) return '--';
+  const output = Math.round(number / 10) * 10;
+  return output.toLocaleString();
+}
 
 export function TransportationSectorEmissionsTable() {
+  const totalYearlyEmissionChanges = useTypedSelector(
+    ({ transportation }) => transportation.totalYearlyEmissionChanges,
+  );
+
   return (
     <>
       <div className="overflow-auto">
@@ -35,7 +45,9 @@ export function TransportationSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(-1 * totalYearlyEmissionChanges.SO2)}
+                </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
               </tr>
               <tr>
@@ -45,24 +57,13 @@ export function TransportationSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-              </tr>
-              <tr>
-                <td>
-                  <span className="padding-left-3 text-italic">
-                    Ozone season NO<sub>X</sub> <small>(lb)</small>{' '}
-                    <Tooltip id="transportation-sector-ozone-season-nox-total">
-                      <p className="margin-0 text-no-italic">
-                        Ozone season is defined as May 1 — September 30. Ozone
-                        season emissions are a subset of annual emissions.
-                      </p>
-                    </Tooltip>
-                  </span>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(-1 * totalYearlyEmissionChanges.NOX)}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
+              </tr>
+              <tr className="display-none desktop:display-table-row">
+                <td colSpan={4}>&nbsp;</td>
               </tr>
               <tr>
                 <td>
@@ -71,7 +72,9 @@ export function TransportationSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(-1 * totalYearlyEmissionChanges.CO2)}
+                </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
               </tr>
               <tr>
@@ -81,7 +84,9 @@ export function TransportationSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(-1 * totalYearlyEmissionChanges.PM25)}
+                </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
               </tr>
               <tr>
@@ -91,7 +96,9 @@ export function TransportationSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(-1 * totalYearlyEmissionChanges.VOCs)}
+                </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
               </tr>
               <tr>
@@ -101,7 +108,9 @@ export function TransportationSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(-1 * totalYearlyEmissionChanges.NH3)}
+                </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
               </tr>
             </tbody>
