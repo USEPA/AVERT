@@ -1,5 +1,5 @@
-import { useDispatch } from 'react-redux';
 import type { ReactNode } from 'react';
+import { useDispatch } from 'react-redux';
 // ---
 import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
@@ -11,7 +11,7 @@ import type {
 
 export function EERETextInput(props: {
   className?: string;
-  label?: string;
+  label?: ReactNode;
   ariaLabel: string;
   suffix?: string;
   value: string;
@@ -46,7 +46,10 @@ export function EERETextInput(props: {
     <div className={className ? className : ''}>
       {label && (
         <>
-          <label htmlFor={fieldName} className="display-inline-block">
+          <label
+            htmlFor={fieldName}
+            className="display-inline-block font-sans-2xs line-height-sans-2"
+          >
             {label}
           </label>
           <br />
