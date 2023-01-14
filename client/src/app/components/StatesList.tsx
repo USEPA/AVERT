@@ -12,7 +12,7 @@ export function StatesList() {
 
   return (
     <select
-      className="usa-select margin-top-3 margin-bottom-0 margin-x-auto width-full"
+      className="usa-select margin-top-3 margin-bottom-0 margin-x-auto width-full tablet:margin-top-5"
       aria-label="Select State"
       value={selectedStateId || ''}
       onChange={(ev) => dispatch(selectState(ev.target.value as StateId))}
