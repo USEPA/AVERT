@@ -191,7 +191,7 @@ export function EEREInputs() {
                     <strong>Choose one:</strong>
                   </p>
 
-                  <div className="tablet:display-flex">
+                  <div className="tablet:display-flex flex-align-end">
                     <div className="flex-1 tablet:margin-right-2">
                       <EERETextInput
                         label={<>Reduce total annual generation by:</>}
@@ -265,7 +265,7 @@ export function EEREInputs() {
                     <strong>Choose one:</strong>
                   </p>
 
-                  <div className="tablet:display-flex">
+                  <div className="tablet:display-flex flex-align-start">
                     <div className="flex-1 tablet:margin-right-2">
                       <EERETextInput
                         label={
@@ -362,7 +362,7 @@ export function EEREInputs() {
                 </summary>
 
                 <section className="padding-top-0 padding-x-2 padding-bottom-105">
-                  <div className="tablet:display-flex">
+                  <div className="tablet:display-flex flex-align-end">
                     <div className="flex-1 tablet:margin-right-2">
                       <EERETextInput
                         label={<>Onshore wind total capacity:</>}
@@ -407,20 +407,18 @@ export function EEREInputs() {
                           }
                         />
                       ) : geographicFocus === 'regions' ? (
-                        <div className="margin-top-1 tablet:margin-top-0">
-                          <p className="margin-0 font-sans-2xs line-height-sans-2 text-italic">
-                            Offshore wind calculations are not available in the
-                            selected AVERT region{' '}
-                            <Tooltip id="no-offshoreWind-region">
-                              <p className="margin-0 line-height-sans-3 text-no-italic">
-                                AVERT does not support offshore wind modeling in
-                                this region. It is unlikely that offshore areas
-                                suitable for wind farms would connect to the
-                                electrical grid in this region.
-                              </p>
-                            </Tooltip>
-                          </p>
-                        </div>
+                        <p className="margin-y-05 font-sans-2xs line-height-sans-2 text-italic">
+                          Offshore wind calculations are not available in the
+                          selected AVERT region{' '}
+                          <Tooltip id="no-offshoreWind-region">
+                            <p className="margin-0 line-height-sans-3 text-no-italic">
+                              AVERT does not support offshore wind modeling in
+                              this region. It is unlikely that offshore areas
+                              suitable for wind farms would connect to the
+                              electrical grid in this region.
+                            </p>
+                          </Tooltip>
+                        </p>
                       ) : (
                         <div className="margin-top-1 tablet:margin-top-0">
                           <em>
@@ -463,7 +461,7 @@ export function EEREInputs() {
                 </summary>
 
                 <section className="padding-top-0 padding-x-2 padding-bottom-105">
-                  <div className="tablet:display-flex">
+                  <div className="tablet:display-flex flex-align-end">
                     <div className="flex-1 tablet:margin-right-2">
                       <EERETextInput
                         label={
@@ -552,7 +550,7 @@ export function EEREInputs() {
 
                 <section className="padding-top-0 padding-x-2 padding-bottom-105">
                   <div className="desktop:display-flex">
-                    <div className="tablet:display-flex desktop:display-block desktop:margin-right-2">
+                    <div className="tablet:display-flex flex-align-end desktop:display-block desktop:margin-right-2">
                       <div className="flex-1 tablet:margin-right-2 desktop:margin-0">
                         <EERETextInput
                           label={<>Light-duty battery EVs:</>}
