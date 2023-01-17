@@ -1,10 +1,7 @@
 import stats from 'stats-lite';
-// reducers
-import {
-  RegionalLoadData,
-  EEREDefaultData,
-} from 'app/redux/reducers/geography';
-import { EERETextInputFieldName } from 'app/redux/reducers/eere';
+// ---
+import { RegionalLoadData } from 'app/redux/reducers/geography';
+import { EnergyEfficiencyFieldName } from 'app/redux/reducers/eere';
 
 /**
  * TODO...
@@ -27,17 +24,17 @@ export function calculateEere(options: {
   regionMaxEEPercent: number; // region.rdf.limits.max_ee_percent (15 for all RDFs)
   regionLineLoss: number; // region.lineLoss
   regionalLoad: RegionalLoadData[]; // region.rdf.regional_load
-  eereDefaults: EEREDefaultData[]; // region.eereDefaults.data
+  hourlyRenewableEnergyProfile: number[]; // result of calculateHourlyRenewableEnergyProfile()
   hourlyEVLoad: number[]; // result of calculateHourlyEVLoad()
-  eereTextInputs: { [field in EERETextInputFieldName]: number }; // eere.inputs (text inputs, scaled for each region)
+  energyEfficiencyInputs: { [field in EnergyEfficiencyFieldName]: number }; // eere.inputs (text inputs, scaled for each region)
 }) {
   const {
     regionMaxEEPercent,
     regionLineLoss,
     regionalLoad,
-    eereDefaults,
+    hourlyRenewableEnergyProfile,
     hourlyEVLoad,
-    eereTextInputs,
+    energyEfficiencyInputs,
   } = options;
 
   const {
@@ -48,13 +45,7 @@ export function calculateEere(options: {
     broadProgram,
     reduction,
     topHours,
-    // C: Wind
-    onshoreWind,
-    offshoreWind,
-    // D: Solar photovoltaic
-    utilitySolar,
-    rooftopSolar,
-  } = eereTextInputs;
+  } = energyEfficiencyInputs;
 
   const lineLoss = 1 / (1 - regionLineLoss);
 
@@ -69,6 +60,8 @@ export function calculateEere(options: {
   const percentHours = broadProgram ? 100 : topHours;
   const topPercentile = stats.percentile(hourlyLoads, 1 - percentHours / 100);
 
+  // console.log(topPercentile); // NOTE: for debugging purposes
+
   // build up exceedances (soft and hard) and hourly eere for each hour of the year
   const softLimitHourlyExceedances: number[] = [];
   const hardLimitHourlyExceedances: number[] = [];
@@ -80,17 +73,12 @@ export function calculateEere(options: {
     const initialLoad =
       hourlyLoad >= topPercentile ? hourlyLoad * percentReduction : 0;
 
-    const hourlyDefault = eereDefaults[index];
-
-    const renewableProfile =
-      onshoreWind * hourlyDefault.onshore_wind +
-      offshoreWind * (hourlyDefault.offshore_wind || 0) +
-      utilitySolar * hourlyDefault.utility_pv +
-      rooftopSolar * hourlyDefault.rooftop_pv * lineLoss;
+    const renewableProfile = hourlyRenewableEnergyProfile[index] || 0;
 
     // NOTE: hourlyEVLoad will be an empty array if there are no EV inputs entered
     const evLoad = hourlyEVLoad[index] || 0;
 
+    // Excel: TODO
     const calculatedLoad =
       initialLoad -
       constantMwh * lineLoss -

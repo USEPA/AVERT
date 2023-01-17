@@ -1,4 +1,7 @@
-import { RegionalLoadData } from 'app/redux/reducers/geography';
+import {
+  RegionalLoadData,
+  EEREDefaultData,
+} from 'app/redux/reducers/geography';
 import type { GeographicFocus } from 'app/redux/reducers/geography';
 import type {
   RegionalScalingFactors,
@@ -203,6 +206,9 @@ export type TotalYearlyEVEnergyUsage = ReturnType<
   typeof calculateTotalYearlyEVEnergyUsage
 >;
 export type HourlyEVLoad = ReturnType<typeof calculateHourlyEVLoad>;
+export type HourlyRenewableEnergyProfile = ReturnType<
+  typeof calculateHourlyRenewableEnergyProfile
+>;
 export type VehicleSalesAndStock = ReturnType<
   typeof calculateVehicleSalesAndStock
 >;
@@ -1632,6 +1638,42 @@ export function calculateHourlyEVLoad(options: {
         monthlyDailyEVEnergyUsage[month].schoolBuses[dayTypeField];
 
     return evLoad;
+  });
+
+  return result;
+}
+
+/**
+ * Hourly Renewable Energy Profile.
+ *
+ * Excel: Data in column H of the "CalculateEERE" sheet (H5:H8788).
+ */
+export function calculateHourlyRenewableEnergyProfile(options: {
+  eereDefaults: EEREDefaultData[];
+  lineLoss: number;
+  onshoreWind: number;
+  offshoreWind: number;
+  utilitySolar: number;
+  rooftopSolar: number;
+}) {
+  const {
+    eereDefaults,
+    lineLoss,
+    onshoreWind: onshoreWindInput,
+    offshoreWind: offshoreWindInput,
+    utilitySolar: utilitySolarInput,
+    rooftopSolar: rooftopSolarInput,
+  } = options;
+
+  if (eereDefaults.length === 0) return [];
+
+  const result = eereDefaults.map((data) => {
+    const onshoreWind = onshoreWindInput * data.onshore_wind;
+    const offshoreWind = offshoreWindInput * (data.offshore_wind || 0);
+    const utilitySolar = utilitySolarInput * data.utility_pv;
+    const rooftopSolar = (rooftopSolarInput * data.rooftop_pv) / (1 - lineLoss);
+
+    return -1 * (onshoreWind + offshoreWind + utilitySolar + rooftopSolar);
   });
 
   return result;

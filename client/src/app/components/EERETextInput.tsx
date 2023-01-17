@@ -5,8 +5,9 @@ import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import { calculateEereProfile } from 'app/redux/reducers/eere';
 import type {
-  EERETextInputFieldName,
-  EVTextInputFieldName,
+  EnergyEfficiencyFieldName,
+  RenewableEnergyFieldName,
+  ElectricVehiclesFieldName,
 } from 'app/redux/reducers/eere';
 
 export function EERETextInput(props: {
@@ -89,7 +90,10 @@ export function EERETextInput(props: {
       </div>
 
       {errors.includes(
-        fieldName as EERETextInputFieldName | EVTextInputFieldName,
+        fieldName as
+          | EnergyEfficiencyFieldName
+          | RenewableEnergyFieldName
+          | ElectricVehiclesFieldName,
       ) && (
         <p className="text-italic text-secondary" data-input-error>
           <span className="display-block text-bold text-no-italic">
