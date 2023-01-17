@@ -23,11 +23,9 @@ export function calculateEere(options: {
   regionalLoad: RegionalLoadData[]; // region.rdf.regional_load
   hourlyRenewableEnergyProfile: number[]; // result of calculateHourlyRenewableEnergyProfile()
   hourlyEVLoad: number[]; // result of calculateHourlyEVLoad()
-  topPercentGeneration: number; // result of calculateTopPercentGeneration()
+  hourlyTopPercentReduction: number[]; // result of calculateHourlyTopPercentReduction()
   annualGwh: number; // eere.inputs.annualGwh
   constantMwh: number; // eere.inputs.annualGwh
-  broadProgram: number; // eere.inputs.annualGwh
-  reduction: number; // eere.inputs.annualGwh
 }) {
   const {
     regionMaxEEPercent,
@@ -35,23 +33,16 @@ export function calculateEere(options: {
     regionalLoad,
     hourlyRenewableEnergyProfile,
     hourlyEVLoad,
-    topPercentGeneration,
+    hourlyTopPercentReduction,
     annualGwh,
     constantMwh,
-    broadProgram,
-    reduction,
   } = options;
 
   // A: Reductions spread evenly throughout the year: annualGwh, constantMwh
-  // B: Percentage reductions in some or all hours: broadProgram, reduction
 
   const lineLoss = 1 / (1 - regionLineLoss);
 
-  const hourlyMwReduction =
-    ((annualGwh * 1_000) / regionalLoad.length) * lineLoss;
-
-  const percentReduction =
-    ((-1 * (broadProgram || reduction)) / 100) * lineLoss;
+  const hourlyMwReduction = (annualGwh * 1_000) / regionalLoad.length;
 
   // build up exceedances (soft and hard) and hourly eere for each hour of the year
   const softLimitHourlyExceedances: number[] = [];
@@ -61,21 +52,17 @@ export function calculateEere(options: {
   regionalLoad.forEach((data, index) => {
     const hourlyLoad = data.regional_load_mw;
 
-    const topPercentReduction =
-      hourlyLoad >= topPercentGeneration ? hourlyLoad * percentReduction : 0;
-
+    const topPercentReduction = hourlyTopPercentReduction[index] || 0;
     const renewableProfile = hourlyRenewableEnergyProfile[index] || 0;
-
-    // NOTE: hourlyEVLoad will be an empty array if there are no EV inputs entered
     const evLoad = hourlyEVLoad[index] || 0;
 
     /**
      * Excel: Data in column I of the "CalculateEERE" sheet (I5:I8788).
      */
     const calculatedLoad =
-      topPercentReduction -
+      topPercentReduction * lineLoss -
       constantMwh * lineLoss -
-      hourlyMwReduction -
+      hourlyMwReduction * lineLoss -
       renewableProfile +
       evLoad;
 

@@ -19,8 +19,6 @@ export type TopPercentGeneration = ReturnType<
 >;
 
 /**
- * Hourly Renewable Energy Profile.
- *
  * Excel: Data in column H of the "CalculateEERE" sheet (H5:H8788).
  */
 export function calculateHourlyRenewableEnergyProfile(options: {
@@ -55,8 +53,6 @@ export function calculateHourlyRenewableEnergyProfile(options: {
 }
 
 /**
- * Hourly EV load.
- *
  * Excel: Data in column Y of the "CalculateEERE" sheet (Y5:Y8788).
  */
 export function calculateHourlyEVLoad(options: {
@@ -119,8 +115,6 @@ export function calculateHourlyEVLoad(options: {
 }
 
 /**
- * Top percent generation
- *
  * Excel: "CalculateEERE" sheet (N9).
  */
 export function calculateTopPercentGeneration(options: {
@@ -136,4 +130,36 @@ export function calculateTopPercentGeneration(options: {
   const percentHours = broadProgram ? 100 : topHours;
 
   return percentile(hourlyLoads, 1 - percentHours / 100);
+}
+
+/**
+ *
+ * Excel: Used to calculate data in column I of "CalculateEERE" sheet
+ *
+ * NOTE: The result is not broken out into its own cell, but the relevant part
+ * of the formula is below (using row 5 as an example):
+ *
+ * `IF(Data!F4>=TopPrctGen,Data!F4*-$N$10,0)`
+ */
+export function calculateHourlyTopPercentReduction(options: {
+  regionalLoad: RegionalLoadData[];
+  topPercentGeneration: TopPercentGeneration;
+  broadProgram: number;
+  reduction: number;
+}) {
+  const { regionalLoad, topPercentGeneration, broadProgram, reduction } =
+    options;
+
+  if (regionalLoad.length === 0) return [];
+
+  const result = regionalLoad.map((data) => {
+    const hourlyLoad = data.regional_load_mw;
+    const percentReduction = (broadProgram || reduction) / 100;
+
+    return hourlyLoad >= topPercentGeneration
+      ? hourlyLoad * -1 * percentReduction
+      : 0;
+  });
+
+  return result;
 }

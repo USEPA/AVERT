@@ -17,6 +17,7 @@ import {
   calculateHourlyRenewableEnergyProfile,
   calculateHourlyEVLoad,
   calculateTopPercentGeneration,
+  calculateHourlyTopPercentReduction,
 } from 'app/calculations/eere';
 import { calculateEere } from 'app/calculations';
 import type { RegionId, StateId } from 'app/config';
@@ -819,6 +820,8 @@ export function calculateEereProfile(): AppThunk {
     });
 
     selectedRegions.forEach((region) => {
+      const regionalLoad = region.rdf.regional_load;
+
       const regionalPercent = selectedState?.percentageByRegion[region.id] || 0;
 
       // the regional scaling factor is a number between 0 and 1, representing
@@ -894,16 +897,23 @@ export function calculateEereProfile(): AppThunk {
         });
 
       const hourlyEVLoad = calculateHourlyEVLoad({
-        regionalLoad: region.rdf.regional_load,
+        regionalLoad,
         dailyStats,
         hourlyEVChargingPercentages,
         monthlyDailyEVEnergyUsage,
       });
 
       const topPercentGeneration = calculateTopPercentGeneration({
-        regionalLoad: region.rdf.regional_load,
+        regionalLoad,
         broadProgram,
         topHours,
+      });
+
+      const hourlyTopPercentReduction = calculateHourlyTopPercentReduction({
+        regionalLoad,
+        topPercentGeneration,
+        broadProgram,
+        reduction,
       });
 
       const {
@@ -917,14 +927,12 @@ export function calculateEereProfile(): AppThunk {
       } = calculateEere({
         regionMaxEEPercent: region.rdf.limits.max_ee_percent,
         regionLineLoss: region.lineLoss,
-        regionalLoad: region.rdf.regional_load,
+        regionalLoad,
         hourlyRenewableEnergyProfile,
         hourlyEVLoad,
-        topPercentGeneration,
+        hourlyTopPercentReduction,
         annualGwh,
         constantMwh,
-        broadProgram,
-        reduction,
       });
 
       const regionalProfile = {
