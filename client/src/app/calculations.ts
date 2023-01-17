@@ -4,11 +4,11 @@ import type { RegionalLoadData } from 'app/redux/reducers/geography';
  * TODO...
  */
 function calculateHourlyExceedance(
-  calculatedLoad: number,
+  valueMw: number,
   softOrHardLimit: number,
   amount: 15 | 30,
 ) {
-  const load = Math.abs(calculatedLoad);
+  const load = Math.abs(valueMw);
   const limit = Math.abs(softOrHardLimit);
   if (load > limit) {
     const exceedance = load / limit - 1;
@@ -38,10 +38,6 @@ export function calculateEere(options: {
     constantMwh,
   } = options;
 
-  // A: Reductions spread evenly throughout the year: annualGwh, constantMwh
-
-  const lineLoss = 1 / (1 - regionLineLoss);
-
   const hourlyMwReduction = (annualGwh * 1_000) / regionalLoad.length;
 
   // build up exceedances (soft and hard) and hourly eere for each hour of the year
@@ -59,28 +55,26 @@ export function calculateEere(options: {
     /**
      * Excel: Data in column I of the "CalculateEERE" sheet (I5:I8788).
      */
-    const calculatedLoad =
-      topPercentReduction * lineLoss -
-      constantMwh * lineLoss -
-      hourlyMwReduction * lineLoss -
-      renewableProfile +
-      evLoad;
+    const finalMw =
+      (topPercentReduction - hourlyMwReduction - constantMwh + evLoad) /
+        (1 - regionLineLoss) +
+      renewableProfile;
 
     const softLimitHourlyExceedance = calculateHourlyExceedance(
-      calculatedLoad,
+      finalMw,
       (hourlyLoad * -1 * regionMaxEEPercent) / 100,
       15,
     );
 
     const hardLimitHourlyExceedance = calculateHourlyExceedance(
-      calculatedLoad,
+      finalMw,
       hourlyLoad * -0.3,
       30,
     );
 
     softLimitHourlyExceedances[index] = softLimitHourlyExceedance;
     hardLimitHourlyExceedances[index] = hardLimitHourlyExceedance;
-    hourlyEere[index] = calculatedLoad;
+    hourlyEere[index] = finalMw;
   });
 
   // calculate soft and hard exceedances to determine the hour that exceeded
