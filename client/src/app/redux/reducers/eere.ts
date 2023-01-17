@@ -14,9 +14,10 @@ import {
 } from 'app/redux/reducers/transportation';
 import { calculateRegionalScalingFactors } from 'app/calculations/geography';
 import {
-  calculateHourlyEVLoad,
   calculateHourlyRenewableEnergyProfile,
-} from 'app/calculations/transportation';
+  calculateHourlyEVLoad,
+  calculateTopPercentGeneration,
+} from 'app/calculations/eere';
 import { calculateEere } from 'app/calculations';
 import type { RegionId, StateId } from 'app/config';
 import {
@@ -872,6 +873,11 @@ export function calculateEereProfile(): AppThunk {
         ? regionalPercent / totalOffshoreWindPercent
         : 0;
 
+      const annualGwh = Number(eere.inputs.annualGwh) * regionalScalingFactor;
+      const constantMwh = Number(eere.inputs.constantMwh) * regionalScalingFactor; // prettier-ignore
+      const broadProgram = Number(eere.inputs.broadProgram) * percentReductionFactor; // prettier-ignore
+      const reduction = Number(eere.inputs.reduction) * percentReductionFactor;
+      const topHours = Number(eere.inputs.topHours);
       const onshoreWind = Number(eere.inputs.onshoreWind) * regionalScalingFactor; // prettier-ignore
       const offshoreWind = Number(eere.inputs.offshoreWind) * offshoreWindFactor; // prettier-ignore
       const utilitySolar = Number(eere.inputs.utilitySolar) * regionalScalingFactor; // prettier-ignore
@@ -894,6 +900,12 @@ export function calculateEereProfile(): AppThunk {
         monthlyDailyEVEnergyUsage,
       });
 
+      const topPercentGeneration = calculateTopPercentGeneration({
+        regionalLoad: region.rdf.regional_load,
+        broadProgram,
+        topHours,
+      });
+
       const {
         hourlyEere,
         softValid,
@@ -906,15 +918,13 @@ export function calculateEereProfile(): AppThunk {
         regionMaxEEPercent: region.rdf.limits.max_ee_percent,
         regionLineLoss: region.lineLoss,
         regionalLoad: region.rdf.regional_load,
-        hourlyEVLoad,
         hourlyRenewableEnergyProfile,
-        energyEfficiencyInputs: {
-          annualGwh: Number(eere.inputs.annualGwh) * regionalScalingFactor,
-          constantMwh: Number(eere.inputs.constantMwh) * regionalScalingFactor,
-          broadProgram: Number(eere.inputs.broadProgram) * percentReductionFactor, // prettier-ignore
-          reduction: Number(eere.inputs.reduction) * percentReductionFactor,
-          topHours: Number(eere.inputs.topHours),
-        },
+        hourlyEVLoad,
+        topPercentGeneration,
+        annualGwh,
+        constantMwh,
+        broadProgram,
+        reduction,
       });
 
       const regionalProfile = {

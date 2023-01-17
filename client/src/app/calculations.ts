@@ -1,7 +1,4 @@
-import stats from 'stats-lite';
-// ---
-import { RegionalLoadData } from 'app/redux/reducers/geography';
-import { EnergyEfficiencyFieldName } from 'app/redux/reducers/eere';
+import type { RegionalLoadData } from 'app/redux/reducers/geography';
 
 /**
  * TODO...
@@ -26,7 +23,11 @@ export function calculateEere(options: {
   regionalLoad: RegionalLoadData[]; // region.rdf.regional_load
   hourlyRenewableEnergyProfile: number[]; // result of calculateHourlyRenewableEnergyProfile()
   hourlyEVLoad: number[]; // result of calculateHourlyEVLoad()
-  energyEfficiencyInputs: { [field in EnergyEfficiencyFieldName]: number }; // eere.inputs (text inputs, scaled for each region)
+  topPercentGeneration: number; // result of calculateTopPercentGeneration()
+  annualGwh: number; // eere.inputs.annualGwh
+  constantMwh: number; // eere.inputs.annualGwh
+  broadProgram: number; // eere.inputs.annualGwh
+  reduction: number; // eere.inputs.annualGwh
 }) {
   const {
     regionMaxEEPercent,
@@ -34,18 +35,15 @@ export function calculateEere(options: {
     regionalLoad,
     hourlyRenewableEnergyProfile,
     hourlyEVLoad,
-    energyEfficiencyInputs,
-  } = options;
-
-  const {
-    // A: Reductions spread evenly throughout the year
+    topPercentGeneration,
     annualGwh,
     constantMwh,
-    // B: Percentage reductions in some or all hours
     broadProgram,
     reduction,
-    topHours,
-  } = energyEfficiencyInputs;
+  } = options;
+
+  // A: Reductions spread evenly throughout the year: annualGwh, constantMwh
+  // B: Percentage reductions in some or all hours: broadProgram, reduction
 
   const lineLoss = 1 / (1 - regionLineLoss);
 
@@ -55,13 +53,6 @@ export function calculateEere(options: {
   const percentReduction =
     ((-1 * (broadProgram || reduction)) / 100) * lineLoss;
 
-  const hourlyLoads = regionalLoad.map((data) => data.regional_load_mw);
-
-  const percentHours = broadProgram ? 100 : topHours;
-  const topPercentile = stats.percentile(hourlyLoads, 1 - percentHours / 100);
-
-  // console.log(topPercentile); // NOTE: for debugging purposes
-
   // build up exceedances (soft and hard) and hourly eere for each hour of the year
   const softLimitHourlyExceedances: number[] = [];
   const hardLimitHourlyExceedances: number[] = [];
@@ -70,17 +61,19 @@ export function calculateEere(options: {
   regionalLoad.forEach((data, index) => {
     const hourlyLoad = data.regional_load_mw;
 
-    const initialLoad =
-      hourlyLoad >= topPercentile ? hourlyLoad * percentReduction : 0;
+    const topPercentReduction =
+      hourlyLoad >= topPercentGeneration ? hourlyLoad * percentReduction : 0;
 
     const renewableProfile = hourlyRenewableEnergyProfile[index] || 0;
 
     // NOTE: hourlyEVLoad will be an empty array if there are no EV inputs entered
     const evLoad = hourlyEVLoad[index] || 0;
 
-    // Excel: TODO
+    /**
+     * Excel: Data in column I of the "CalculateEERE" sheet (I5:I8788).
+     */
     const calculatedLoad =
-      initialLoad -
+      topPercentReduction -
       constantMwh * lineLoss -
       hourlyMwReduction -
       renewableProfile +
