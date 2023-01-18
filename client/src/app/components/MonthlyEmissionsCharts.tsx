@@ -57,14 +57,15 @@ function Chart(props: {
     ({ displacement }) => displacement.egusNeedingReplacement,
   );
 
-  const vehicleData = Object.values(totalMonthlyEmissionChanges).reduce(
+  const vehicleEmissions = Object.values(totalMonthlyEmissionChanges).reduce(
     (object, data) => {
       ['CO2', 'NOX', 'SO2', 'PM25', 'VOCs', 'NH3'].forEach((item) => {
         const pollutant = item as keyof typeof data.total;
-        const pollutantTotalData = data.total[pollutant];
+        const value = -1 * data.total[pollutant];
 
-        if (pollutantTotalData) {
-          object[pollutant].push(pollutantTotalData);
+        if (value) {
+          const result = pollutant === 'CO2' ? value / 2_000 : value;
+          object[pollutant].push(result);
         }
       });
 
@@ -89,7 +90,7 @@ function Chart(props: {
     },
     {
       name: 'Vehicles',
-      data: vehicleData.SO2,
+      data: vehicleEmissions.SO2,
       color: 'rgba(5, 141, 199, 0.5)',
       unit: 'lb',
     },
@@ -104,7 +105,7 @@ function Chart(props: {
     },
     {
       name: 'Vehicles',
-      data: vehicleData.NOX,
+      data: vehicleEmissions.NOX,
       color: 'rgba(237, 86, 27, 0.5)',
       unit: 'lb',
     },
@@ -119,7 +120,7 @@ function Chart(props: {
     },
     {
       name: 'Vehicles',
-      data: vehicleData.CO2,
+      data: vehicleEmissions.CO2,
       color: 'rgba(80, 180, 50, 0.5)',
       unit: 'tons',
     },
@@ -134,7 +135,7 @@ function Chart(props: {
     },
     {
       name: 'Vehicles',
-      data: vehicleData.PM25,
+      data: vehicleEmissions.PM25,
       color: 'rgba(102, 86, 131, 0.5)',
       unit: 'lb',
     },
@@ -149,7 +150,7 @@ function Chart(props: {
     },
     {
       name: 'Vehicles',
-      data: vehicleData.VOCs,
+      data: vehicleEmissions.VOCs,
       color: 'rgba(255, 193, 7, 0.5)',
       unit: 'lb',
     },
@@ -164,7 +165,7 @@ function Chart(props: {
     },
     {
       name: 'Vehicles',
-      data: vehicleData.NH3,
+      data: vehicleEmissions.NH3,
       color: 'rgba(0, 150, 136, 0.5)',
       unit: 'lb',
     },
