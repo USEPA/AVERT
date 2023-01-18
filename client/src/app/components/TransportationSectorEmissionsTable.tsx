@@ -7,10 +7,10 @@ function formatNumber(number: number) {
 }
 
 export function TransportationSectorEmissionsTable() {
+  const status = useTypedSelector(({ displacement }) => displacement.status);
   const totalYearlyVehicleEmissionsChanges = useTypedSelector(
     ({ transportation }) => transportation.totalYearlyEmissionChanges,
   );
-
   const annualStateEmissionChanges = useTypedSelector(
     ({ displacement }) => displacement.annualStateEmissionChanges,
   );
@@ -50,6 +50,8 @@ export function TransportationSectorEmissionsTable() {
   const totalYearlyNetPM25 = totalYearlyVehiclePM25 + totalYearlyPowerPM25;
   const totalYearlyNetVOCs = totalYearlyVehicleVOCs + totalYearlyPowerVOCs;
   const totalYearlyNetNH3 = totalYearlyVehicleNH3 + totalYearlyPowerNH3;
+
+  if (status !== 'complete') return null;
 
   return (
     <>
