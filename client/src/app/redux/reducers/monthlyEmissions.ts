@@ -195,7 +195,7 @@ export function setMonthlyEmissionsSource(source: Source) {
   };
 }
 
-export function seMonthlyEmissionsUnit(unit: Unit) {
+export function setMonthlyEmissionsUnit(unit: Unit) {
   return {
     type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_UNIT',
     payload: { unit },
