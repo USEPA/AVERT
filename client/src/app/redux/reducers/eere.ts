@@ -769,6 +769,7 @@ export function calculateEereProfile(): AppThunk {
       hourlyEVChargingPercentages,
       monthlyDailyEVEnergyUsage,
     } = transportation;
+    const { inputs } = eere;
 
     // select region(s), based on geographic focus:
     // single region if geographic focus is 'regions'
@@ -822,6 +823,7 @@ export function calculateEereProfile(): AppThunk {
     selectedRegions.forEach((region) => {
       const regionalLoad = region.rdf.regional_load;
       const lineLoss = region.lineLoss;
+      const eereDefaults = region.eereDefaults.data;
 
       const regionalPercent = selectedState?.percentageByRegion[region.id] || 0;
 
@@ -877,19 +879,19 @@ export function calculateEereProfile(): AppThunk {
         ? regionalPercent / totalOffshoreWindPercent
         : 0;
 
-      const annualGwh = Number(eere.inputs.annualGwh) * regionalScalingFactor;
-      const constantMwh = Number(eere.inputs.constantMwh) * regionalScalingFactor; // prettier-ignore
-      const broadProgram = Number(eere.inputs.broadProgram) * percentReductionFactor; // prettier-ignore
-      const reduction = Number(eere.inputs.reduction) * percentReductionFactor;
-      const topHours = Number(eere.inputs.topHours);
-      const onshoreWind = Number(eere.inputs.onshoreWind) * regionalScalingFactor; // prettier-ignore
-      const offshoreWind = Number(eere.inputs.offshoreWind) * offshoreWindFactor; // prettier-ignore
-      const utilitySolar = Number(eere.inputs.utilitySolar) * regionalScalingFactor; // prettier-ignore
-      const rooftopSolar = Number(eere.inputs.rooftopSolar) * regionalScalingFactor; // prettier-ignore
+      const annualGwh = Number(inputs.annualGwh) * regionalScalingFactor;
+      const constantMwh = Number(inputs.constantMwh) * regionalScalingFactor;
+      const broadProgram = Number(inputs.broadProgram) * percentReductionFactor;
+      const reduction = Number(inputs.reduction) * percentReductionFactor;
+      const topHours = Number(inputs.topHours);
+      const onshoreWind = Number(inputs.onshoreWind) * regionalScalingFactor;
+      const offshoreWind = Number(inputs.offshoreWind) * offshoreWindFactor;
+      const utilitySolar = Number(inputs.utilitySolar) * regionalScalingFactor;
+      const rooftopSolar = Number(inputs.rooftopSolar) * regionalScalingFactor;
 
       const hourlyRenewableEnergyProfile =
         calculateHourlyRenewableEnergyProfile({
-          eereDefaults: region.eereDefaults.data,
+          eereDefaults,
           lineLoss,
           onshoreWind,
           offshoreWind,
