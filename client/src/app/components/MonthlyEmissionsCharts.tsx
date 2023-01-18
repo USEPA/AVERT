@@ -57,6 +57,119 @@ function Chart(props: {
     ({ displacement }) => displacement.egusNeedingReplacement,
   );
 
+  const vehicleData = Object.values(totalMonthlyEmissionChanges).reduce(
+    (object, data) => {
+      ['CO2', 'NOX', 'SO2', 'PM25', 'VOCs', 'NH3'].forEach((item) => {
+        const pollutant = item as keyof typeof data.total;
+        const pollutantTotalData = data.total[pollutant];
+
+        if (pollutantTotalData) {
+          object[pollutant].push(pollutantTotalData);
+        }
+      });
+
+      return object;
+    },
+    { SO2: [], NOX: [], CO2: [], PM25: [], VOCs: [], NH3: [] } as {
+      SO2: number[];
+      NOX: number[];
+      CO2: number[];
+      PM25: number[];
+      VOCs: number[];
+      NH3: number[];
+    },
+  );
+
+  const so2Data = [
+    {
+      name: 'Power Sector',
+      data: calculateMonthlyData(powerData.so2, currentUnit),
+      color: 'rgba(5, 141, 199, 1)',
+      unit: 'lb',
+    },
+    {
+      name: 'Vehicles',
+      data: vehicleData.SO2,
+      color: 'rgba(5, 141, 199, 0.5)',
+      unit: 'lb',
+    },
+  ];
+
+  const noxData = [
+    {
+      name: 'Power Sector',
+      data: calculateMonthlyData(powerData.nox, currentUnit),
+      color: 'rgba(237, 86, 27, 1)',
+      unit: 'lb',
+    },
+    {
+      name: 'Vehicles',
+      data: vehicleData.NOX,
+      color: 'rgba(237, 86, 27, 0.5)',
+      unit: 'lb',
+    },
+  ];
+
+  const co2Data = [
+    {
+      name: 'Power Sector',
+      data: calculateMonthlyData(powerData.co2, currentUnit),
+      color: 'rgba(80, 180, 50, 1)',
+      unit: 'tons',
+    },
+    {
+      name: 'Vehicles',
+      data: vehicleData.CO2,
+      color: 'rgba(80, 180, 50, 0.5)',
+      unit: 'tons',
+    },
+  ];
+
+  const pm25Data = [
+    {
+      name: 'Power Sector',
+      data: calculateMonthlyData(powerData.pm25, currentUnit),
+      color: 'rgba(102, 86, 131, 1)',
+      unit: 'lb',
+    },
+    {
+      name: 'Vehicles',
+      data: vehicleData.PM25,
+      color: 'rgba(102, 86, 131, 0.5)',
+      unit: 'lb',
+    },
+  ];
+
+  const vocsData = [
+    {
+      name: 'Power Sector',
+      data: calculateMonthlyData(powerData.vocs, currentUnit),
+      color: 'rgba(255, 193, 7, 1)',
+      unit: 'lb',
+    },
+    {
+      name: 'Vehicles',
+      data: vehicleData.VOCs,
+      color: 'rgba(255, 193, 7, 0.5)',
+      unit: 'lb',
+    },
+  ];
+
+  const nh3Data = [
+    {
+      name: 'Power Sector',
+      data: calculateMonthlyData(powerData.nh3, currentUnit),
+      color: 'rgba(0, 150, 136, 1)',
+      unit: 'lb',
+    },
+    {
+      name: 'Vehicles',
+      data: vehicleData.NH3,
+      color: 'rgba(0, 150, 136, 0.5)',
+      unit: 'lb',
+    },
+  ];
+
   const selectedRegion = useSelectedRegion();
   const selectedStateRegions = useSelectedStateRegions();
 
@@ -187,128 +300,44 @@ function Chart(props: {
 
   const so2Config = {
     ...commonConfig,
-    title: {
-      text: formatTitle('SO<sub>2</sub>'),
-      useHTML: true,
-    },
-    yAxis: {
-      title: {
-        text: formatYAxis('lb'),
-      },
-    },
-    series: [
-      {
-        name: 'Power Sector',
-        data: calculateMonthlyData(powerData.so2, currentUnit),
-        color: 'rgba(5, 141, 199, 1)',
-        unit: 'lb',
-      },
-    ],
+    title: { text: formatTitle('SO<sub>2</sub>'), useHTML: true },
+    yAxis: { title: { text: formatYAxis('lb') } },
+    series: currentSource === 'power' ? so2Data.slice(0, 1) : so2Data,
   };
 
   const noxConfig = {
     ...commonConfig,
-    title: {
-      text: formatTitle('NO<sub>X</sub>'),
-      useHTML: true,
-    },
-    yAxis: {
-      title: {
-        text: formatYAxis('lb'),
-      },
-    },
-    series: [
-      {
-        name: 'Power Sector',
-        data: calculateMonthlyData(powerData.nox, currentUnit),
-        color: 'rgba(237, 86, 27, 1)',
-        unit: 'lb',
-      },
-    ],
+    title: { text: formatTitle('NO<sub>X</sub>'), useHTML: true },
+    yAxis: { title: { text: formatYAxis('lb') } },
+    series: currentSource === 'power' ? noxData.slice(0, 1) : noxData,
   };
 
   const co2Config = {
     ...commonConfig,
-    title: {
-      text: formatTitle('CO<sub>2</sub>'),
-      useHTML: true,
-    },
-    yAxis: {
-      title: {
-        text: formatYAxis('tons'),
-      },
-    },
-    series: [
-      {
-        name: 'Power Sector',
-        data: calculateMonthlyData(powerData.co2, currentUnit),
-        color: 'rgba(80, 180, 50, 1)',
-        unit: 'tons',
-      },
-    ],
+    title: { text: formatTitle('CO<sub>2</sub>'), useHTML: true },
+    yAxis: { title: { text: formatYAxis('tons') } },
+    series: currentSource === 'power' ? co2Data.slice(0, 1) : co2Data,
   };
 
   const pm25Config = {
     ...commonConfig,
-    title: {
-      text: formatTitle('PM<sub>2.5</sub>'),
-      useHTML: true,
-    },
-    yAxis: {
-      title: {
-        text: formatYAxis('lb'),
-      },
-    },
-    series: [
-      {
-        name: 'Power Sector',
-        data: calculateMonthlyData(powerData.pm25, currentUnit),
-        color: 'rgba(102, 86, 131, 1)',
-        unit: 'lb',
-      },
-    ],
+    title: { text: formatTitle('PM<sub>2.5</sub>'), useHTML: true },
+    yAxis: { title: { text: formatYAxis('lb') } },
+    series: currentSource === 'power' ? pm25Data.slice(0, 1) : pm25Data,
   };
 
   const vocsConfig = {
     ...commonConfig,
-    title: {
-      text: formatTitle('VOC'),
-      useHTML: true,
-    },
-    yAxis: {
-      title: {
-        text: formatYAxis('lb'),
-      },
-    },
-    series: [
-      {
-        name: 'Power Sector',
-        data: calculateMonthlyData(powerData.vocs, currentUnit),
-        color: 'rgba(255, 193, 7, 1)',
-        unit: 'lb',
-      },
-    ],
+    title: { text: formatTitle('VOC'), useHTML: true },
+    yAxis: { title: { text: formatYAxis('lb') } },
+    series: currentSource === 'power' ? vocsData.slice(0, 1) : vocsData,
   };
 
   const nh3Config = {
     ...commonConfig,
-    title: {
-      text: formatTitle('NH<sub>3</sub>'),
-      useHTML: true,
-    },
-    yAxis: {
-      title: {
-        text: formatYAxis('lb'),
-      },
-    },
-    series: [
-      {
-        name: 'Power Sector',
-        data: calculateMonthlyData(powerData.nh3, currentUnit),
-        color: 'rgba(0, 150, 136, 1)',
-        unit: 'lb',
-      },
-    ],
+    title: { text: formatTitle('NH<sub>3</sub>'), useHTML: true },
+    yAxis: { title: { text: formatYAxis('lb') } },
+    series: currentSource === 'power' ? nh3Data.slice(0, 1) : nh3Data,
   };
 
   // prettier-ignore
