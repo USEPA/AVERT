@@ -276,6 +276,7 @@ function Chart(props: {
             return false;
           },
         },
+        stacking: 'normal',
       },
     },
     tooltip: {
