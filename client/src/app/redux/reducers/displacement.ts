@@ -1140,11 +1140,11 @@ function formatCobraDataRow({
     );
   });
 
-  const so2Tons = so2CountyEmissions.reduce((a, b) => a + b, 0) / 2000;
-  const noxTons = noxCountyEmissions.reduce((a, b) => a + b, 0) / 2000;
-  const pm25Tons = pm25CountyEmissions.reduce((a, b) => a + b, 0) / 2000;
-  const vocsTons = vocsCountyEmissions.reduce((a, b) => a + b, 0) / 2000;
-  const nh3Tons = nh3CountyEmissions.reduce((a, b) => a + b, 0) / 2000;
+  const so2Tons = so2CountyEmissions.reduce((a, b) => a + b, 0) / 2_000;
+  const noxTons = noxCountyEmissions.reduce((a, b) => a + b, 0) / 2_000;
+  const pm25Tons = pm25CountyEmissions.reduce((a, b) => a + b, 0) / 2_000;
+  const vocsTons = vocsCountyEmissions.reduce((a, b) => a + b, 0) / 2_000;
+  const nh3Tons = nh3CountyEmissions.reduce((a, b) => a + b, 0) / 2_000;
 
   return {
     FIPS: match ? match['State and County FIPS Code'] : '',
