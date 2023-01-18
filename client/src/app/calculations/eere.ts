@@ -17,6 +17,9 @@ export type HourlyEVLoad = ReturnType<typeof calculateHourlyEVLoad>;
 export type TopPercentGeneration = ReturnType<
   typeof calculateTopPercentGeneration
 >;
+export type HourlyTopPercentReduction = ReturnType<
+  typeof calculateHourlyTopPercentReduction
+>;
 
 /**
  * Excel: Data in column H of the "CalculateEERE" sheet (H5:H8788).

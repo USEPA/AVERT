@@ -821,6 +821,7 @@ export function calculateEereProfile(): AppThunk {
 
     selectedRegions.forEach((region) => {
       const regionalLoad = region.rdf.regional_load;
+      const lineLoss = region.lineLoss;
 
       const regionalPercent = selectedState?.percentageByRegion[region.id] || 0;
 
@@ -889,7 +890,7 @@ export function calculateEereProfile(): AppThunk {
       const hourlyRenewableEnergyProfile =
         calculateHourlyRenewableEnergyProfile({
           eereDefaults: region.eereDefaults.data,
-          lineLoss: region.lineLoss,
+          lineLoss,
           onshoreWind,
           offshoreWind,
           utilitySolar,
@@ -925,8 +926,7 @@ export function calculateEereProfile(): AppThunk {
         hardTopExceedanceValue,
         hardTopExceedanceIndex,
       } = calculateEere({
-        regionMaxEEPercent: region.rdf.limits.max_ee_percent,
-        regionLineLoss: region.lineLoss,
+        lineLoss,
         regionalLoad,
         hourlyRenewableEnergyProfile,
         hourlyEVLoad,

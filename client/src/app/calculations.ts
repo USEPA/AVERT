@@ -4,12 +4,12 @@ import type { RegionalLoadData } from 'app/redux/reducers/geography';
  * TODO...
  */
 function calculateHourlyExceedance(
-  valueMw: number,
-  softOrHardLimit: number,
+  calculatedLoad: number,
+  exceedanceLimit: number,
   amount: 15 | 30,
 ) {
-  const load = Math.abs(valueMw);
-  const limit = Math.abs(softOrHardLimit);
+  const load = Math.abs(calculatedLoad);
+  const limit = Math.abs(exceedanceLimit);
   if (load > limit) {
     const exceedance = load / limit - 1;
     return exceedance * amount + amount;
@@ -18,8 +18,7 @@ function calculateHourlyExceedance(
 }
 
 export function calculateEere(options: {
-  regionMaxEEPercent: number; // region.rdf.limits.max_ee_percent (15 for all RDFs)
-  regionLineLoss: number; // region.lineLoss
+  lineLoss: number; // region.lineLoss
   regionalLoad: RegionalLoadData[]; // region.rdf.regional_load
   hourlyRenewableEnergyProfile: number[]; // result of calculateHourlyRenewableEnergyProfile()
   hourlyEVLoad: number[]; // result of calculateHourlyEVLoad()
@@ -28,8 +27,7 @@ export function calculateEere(options: {
   constantMwh: number; // eere.inputs.annualGwh
 }) {
   const {
-    regionMaxEEPercent,
-    regionLineLoss,
+    lineLoss,
     regionalLoad,
     hourlyRenewableEnergyProfile,
     hourlyEVLoad,
@@ -55,26 +53,26 @@ export function calculateEere(options: {
     /**
      * Excel: Data in column I of the "CalculateEERE" sheet (I5:I8788).
      */
-    const finalMw =
+    const calculatedLoad =
       (topPercentReduction - hourlyMwReduction - constantMwh + evLoad) /
-        (1 - regionLineLoss) +
+        (1 - lineLoss) +
       renewableProfile;
 
     const softLimitHourlyExceedance = calculateHourlyExceedance(
-      finalMw,
-      (hourlyLoad * -1 * regionMaxEEPercent) / 100,
+      calculatedLoad,
+      hourlyLoad * -0.15,
       15,
     );
 
     const hardLimitHourlyExceedance = calculateHourlyExceedance(
-      finalMw,
+      calculatedLoad,
       hourlyLoad * -0.3,
       30,
     );
 
     softLimitHourlyExceedances[index] = softLimitHourlyExceedance;
     hardLimitHourlyExceedances[index] = hardLimitHourlyExceedance;
-    hourlyEere[index] = finalMw;
+    hourlyEere[index] = calculatedLoad;
   });
 
   // calculate soft and hard exceedances to determine the hour that exceeded
