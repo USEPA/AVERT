@@ -27,11 +27,14 @@ require('highcharts/modules/accessibility')(Highcharts);
 
 function Chart(props: {
   pollutant: Pollutant;
-  data: { [key in Pollutant]: MonthlyDisplacement };
+  powerData: { [key in Pollutant]: MonthlyDisplacement };
 }) {
-  const { pollutant, data } = props;
+  const { pollutant, powerData } = props;
 
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
+  const totalMonthlyEmissionChanges = useTypedSelector(
+    ({ transportation }) => transportation.totalMonthlyEmissionChanges,
+  );
   const currentAggregation = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.aggregation,
   );
@@ -43,6 +46,9 @@ function Chart(props: {
   );
   const currentCountyName = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.countyName,
+  );
+  const currentSource = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.source,
   );
   const currentUnit = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.unit,
@@ -131,7 +137,7 @@ function Chart(props: {
   const commonConfig: Highcharts.Options = {
     chart: {
       type: 'column',
-      height: 240,
+      height: 300,
       style: {
         fontFamily: '"Open Sans", sans-serif',
       },
@@ -146,11 +152,16 @@ function Chart(props: {
       contextButtonTitle: 'Export options',
     },
     legend: {
-      enabled: false,
+      enabled: true,
     },
     plotOptions: {
       series: {
         animation: false,
+        events: {
+          legendItemClick: function () {
+            return false;
+          },
+        },
       },
     },
     tooltip: {
@@ -187,9 +198,9 @@ function Chart(props: {
     },
     series: [
       {
-        name: 'SO₂',
-        data: calculateMonthlyData(data.so2, currentUnit),
-        color: '#058dc7',
+        name: 'Power Sector',
+        data: calculateMonthlyData(powerData.so2, currentUnit),
+        color: 'rgba(5, 141, 199, 1)',
         unit: 'lb',
       },
     ],
@@ -208,9 +219,9 @@ function Chart(props: {
     },
     series: [
       {
-        name: 'NOₓ',
-        data: calculateMonthlyData(data.nox, currentUnit),
-        color: '#ed561b',
+        name: 'Power Sector',
+        data: calculateMonthlyData(powerData.nox, currentUnit),
+        color: 'rgba(237, 86, 27, 1)',
         unit: 'lb',
       },
     ],
@@ -229,9 +240,9 @@ function Chart(props: {
     },
     series: [
       {
-        name: 'CO₂',
-        data: calculateMonthlyData(data.co2, currentUnit),
-        color: '#50b432',
+        name: 'Power Sector',
+        data: calculateMonthlyData(powerData.co2, currentUnit),
+        color: 'rgba(80, 180, 50, 1)',
         unit: 'tons',
       },
     ],
@@ -250,9 +261,9 @@ function Chart(props: {
     },
     series: [
       {
-        name: 'PM₂₅',
-        data: calculateMonthlyData(data.pm25, currentUnit),
-        color: '#665683',
+        name: 'Power Sector',
+        data: calculateMonthlyData(powerData.pm25, currentUnit),
+        color: 'rgba(102, 86, 131, 1)',
         unit: 'lb',
       },
     ],
@@ -271,9 +282,9 @@ function Chart(props: {
     },
     series: [
       {
-        name: 'VOC',
-        data: calculateMonthlyData(data.vocs, currentUnit),
-        color: '#ffc107',
+        name: 'Power Sector',
+        data: calculateMonthlyData(powerData.vocs, currentUnit),
+        color: 'rgba(255, 193, 7, 1)',
         unit: 'lb',
       },
     ],
@@ -292,9 +303,9 @@ function Chart(props: {
     },
     series: [
       {
-        name: 'NH₃',
-        data: calculateMonthlyData(data.nh3, currentUnit),
-        color: '#009688',
+        name: 'Power Sector',
+        data: calculateMonthlyData(powerData.nh3, currentUnit),
+        color: 'rgba(0, 150, 136, 1)',
         unit: 'lb',
       },
     ],
@@ -415,7 +426,7 @@ export function MonthlyEmissionsCharts() {
     month12: { original: 0, postEere: 0 },
   };
 
-  const data: { [key in Pollutant]: MonthlyDisplacement } = {
+  const powerData: { [key in Pollutant]: MonthlyDisplacement } = {
     so2: { ...initialMonthlyData },
     nox: { ...initialMonthlyData },
     co2: { ...initialMonthlyData },
@@ -438,21 +449,21 @@ export function MonthlyEmissionsCharts() {
 
     if (currentAggregation === 'region') {
       const displacement = monthlyEmissionChanges.regions[pollutant][regionId];
-      data[pollutant] = displacement || initialMonthlyData;
+      powerData[pollutant] = displacement || initialMonthlyData;
     }
 
     if (currentAggregation === 'state') {
       const displacement = monthlyEmissionChanges.states[pollutant][stateId];
-      data[pollutant] = displacement || initialMonthlyData;
+      powerData[pollutant] = displacement || initialMonthlyData;
     }
 
     if (currentAggregation === 'county') {
       const displacement = monthlyEmissionChanges.counties[pollutant][stateId]?.[currentCountyName]; // prettier-ignore
-      data[pollutant] = displacement || initialMonthlyData;
+      powerData[pollutant] = displacement || initialMonthlyData;
     }
   }
 
-  // console.log(data); // NOTE: for debugging purposes
+  // console.log(powerData); // NOTE: for debugging purposes
 
   return (
     <>
@@ -945,7 +956,11 @@ export function MonthlyEmissionsCharts() {
 
                   return (
                     <div key={pollutant} className={className}>
-                      <Chart key={key} pollutant={pollutant} data={data} />
+                      <Chart
+                        key={key}
+                        pollutant={pollutant}
+                        powerData={powerData}
+                      />
                     </div>
                   );
                 })
