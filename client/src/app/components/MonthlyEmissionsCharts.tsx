@@ -16,7 +16,7 @@ import {
   setMonthlyEmissionsCountyName,
   setMonthlyEmissionsPollutant,
   setMonthlyEmissionsSource,
-  seMonthlyEmissionsUnit,
+  setMonthlyEmissionsUnit,
 } from 'app/redux/reducers/monthlyEmissions';
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 import type { Pollutant, RegionId, StateId } from 'app/config';
@@ -906,7 +906,7 @@ export function MonthlyEmissionsCharts() {
                       value="emissions"
                       checked={currentUnit === 'emissions'}
                       onChange={(_ev) => {
-                        dispatch(seMonthlyEmissionsUnit('emissions'));
+                        dispatch(setMonthlyEmissionsUnit('emissions'));
                       }}
                       data-avert-unit-toggle="emissions"
                     />
@@ -931,7 +931,8 @@ export function MonthlyEmissionsCharts() {
                       value="percentages"
                       checked={currentUnit === 'percentages'}
                       onChange={(_ev) => {
-                        dispatch(seMonthlyEmissionsUnit('percentages'));
+                        dispatch(setMonthlyEmissionsUnit('percentages'));
+                        dispatch(setMonthlyEmissionsSource('power'));
                       }}
                       data-avert-unit-toggle="percentages"
                     />
