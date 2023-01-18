@@ -4,7 +4,7 @@ import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import { ReplacementPollutantName } from 'app/redux/reducers/displacement';
 
-function formatNumber(number: any) {
+function formatNumber(number: number) {
   if (number < 10 && number > -10) return '--';
   const output = Math.round(number / 10) * 10;
   return output.toLocaleString();
@@ -91,9 +91,9 @@ export function PowerSectorEmissionsTable() {
             <thead>
               <tr>
                 <th>&nbsp;</th>
-                <th>Original</th>
-                <th>Post-EE/RE</th>
-                <th>EE/RE Impacts</th>
+                <th className="text-right">Original</th>
+                <th className="text-right">Post-EE/RE</th>
+                <th className="text-right">EE/RE Impacts</th>
               </tr>
             </thead>
 
@@ -116,11 +116,13 @@ export function PowerSectorEmissionsTable() {
                   {formatNumber(genImpacts)}
                 </td>
               </tr>
+
               <tr>
                 <td colSpan={4} className="text-bold">
                   Total Emissions from Fossil Generation Fleet
                 </td>
               </tr>
+
               <tr>
                 <td>
                   <span className="padding-left-105">
@@ -139,6 +141,7 @@ export function PowerSectorEmissionsTable() {
                   {formatNumber(so2Impacts)}
                 </td>
               </tr>
+
               <tr>
                 <td>
                   <span className="padding-left-105">
@@ -157,6 +160,7 @@ export function PowerSectorEmissionsTable() {
                   {formatNumber(noxImpacts)}
                 </td>
               </tr>
+
               <tr>
                 <td>
                   <span className="padding-left-3 text-italic">
@@ -179,6 +183,7 @@ export function PowerSectorEmissionsTable() {
                   {formatNumber(ozoneNoxImpacts)}
                 </td>
               </tr>
+
               <tr>
                 <td>
                   <span className="padding-left-105">
@@ -197,6 +202,7 @@ export function PowerSectorEmissionsTable() {
                   {formatNumber(co2Impacts)}
                 </td>
               </tr>
+
               <tr>
                 <td>
                   <span className="padding-left-105">
@@ -213,6 +219,7 @@ export function PowerSectorEmissionsTable() {
                   {formatNumber(pm25Impacts)}
                 </td>
               </tr>
+
               <tr>
                 <td>
                   <span className="padding-left-105">
@@ -229,6 +236,7 @@ export function PowerSectorEmissionsTable() {
                   {formatNumber(vocsImpacts)}
                 </td>
               </tr>
+
               <tr>
                 <td>
                   <span className="padding-left-105">
@@ -245,12 +253,14 @@ export function PowerSectorEmissionsTable() {
                   {formatNumber(nh3Impacts)}
                 </td>
               </tr>
+
               <tr>
                 <td className="text-bold">AVERT-derived Emission Rates:</td>
                 <td className="text-bold text-right">Average Fossil</td>
                 <td className="text-bold text-right">&nbsp;</td>
                 <td className="text-bold text-right">Marginal Fossil</td>
               </tr>
+
               <tr>
                 <td>
                   <span className="padding-left-105">
@@ -265,6 +275,7 @@ export function PowerSectorEmissionsTable() {
                   {(so2Impacts / genImpacts).toFixed(3)}
                 </td>
               </tr>
+
               <tr>
                 <td>
                   <span className="padding-left-105">
@@ -279,6 +290,7 @@ export function PowerSectorEmissionsTable() {
                   {(noxImpacts / genImpacts).toFixed(3)}
                 </td>
               </tr>
+
               <tr>
                 <td>
                   <span className="padding-left-3 text-italic">
@@ -299,6 +311,7 @@ export function PowerSectorEmissionsTable() {
                   {(ozoneNoxImpacts / ozoneGenImpacts).toFixed(3)}
                 </td>
               </tr>
+
               <tr>
                 <td>
                   <span className="padding-left-105">
@@ -313,6 +326,7 @@ export function PowerSectorEmissionsTable() {
                   {(co2Impacts / genImpacts).toFixed(3)}
                 </td>
               </tr>
+
               <tr>
                 <td>
                   <span className="padding-left-105">
@@ -327,6 +341,7 @@ export function PowerSectorEmissionsTable() {
                   {(pm25Impacts / genImpacts).toFixed(3)}
                 </td>
               </tr>
+
               <tr>
                 <td>
                   <span className="padding-left-105">
@@ -341,6 +356,7 @@ export function PowerSectorEmissionsTable() {
                   {(vocsImpacts / genImpacts).toFixed(3)}
                 </td>
               </tr>
+
               <tr>
                 <td>
                   <span className="padding-left-105">

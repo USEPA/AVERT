@@ -29,22 +29,22 @@ export function StateEmissionsTable() {
           <thead>
             <tr>
               <th>State</th>
-              <th>
+              <th className="text-right">
                 SO<sub>2</sub> <small>(lb)</small>
               </th>
-              <th>
+              <th className="text-right">
                 NO<sub>X</sub> <small>(lb)</small>
               </th>
-              <th>
+              <th className="text-right">
                 CO<sub>2</sub> <small>(tons)</small>
               </th>
-              <th>
+              <th className="text-right">
                 PM<sub>2.5</sub> <small>(lb)</small>
               </th>
-              <th>
+              <th className="text-right">
                 VOCs <small>(lb)</small>
               </th>
-              <th>
+              <th className="text-right">
                 NH<sub>3</sub> <small>(lb)</small>
               </th>
             </tr>

@@ -13,7 +13,12 @@ import {
   setEVDeploymentLocationHistoricalEERE,
 } from 'app/redux/reducers/transportation';
 import { calculateRegionalScalingFactors } from 'app/calculations/geography';
-import { calculateHourlyEVLoad } from 'app/calculations/transportation';
+import {
+  calculateHourlyRenewableEnergyProfile,
+  calculateHourlyEVLoad,
+  calculateTopPercentGeneration,
+  calculateHourlyTopPercentReduction,
+} from 'app/calculations/eere';
 import { calculateEere } from 'app/calculations';
 import type { RegionId, StateId } from 'app/config';
 import {
@@ -53,7 +58,13 @@ type EereAction =
     }
   | {
       type: 'eere/VALIDATE_EERE';
-      payload: { errors: (EERETextInputFieldName | EVTextInputFieldName)[] };
+      payload: {
+        errors: (
+          | EnergyEfficiencyFieldName
+          | RenewableEnergyFieldName
+          | ElectricVehiclesFieldName
+        )[];
+      };
     }
   | {
       type: 'eere/UPDATE_EERE_ANNUAL_GWH';
@@ -129,43 +140,47 @@ type EereAction =
       payload: CombinedProfile;
     };
 
-export type EERETextInputFieldName =
+export type EnergyEfficiencyFieldName =
   | 'annualGwh'
   | 'constantMwh'
   | 'broadProgram'
   | 'reduction'
-  | 'topHours'
+  | 'topHours';
+
+export type RenewableEnergyFieldName =
   | 'onshoreWind'
   | 'offshoreWind'
   | 'utilitySolar'
   | 'rooftopSolar';
 
-export type EVTextInputFieldName =
+export type ElectricVehiclesFieldName =
   | 'batteryEVs'
   | 'hybridEVs'
   | 'transitBuses'
   | 'schoolBuses';
-
-type EVSelectInputFieldName =
-  | 'evDeploymentLocation'
-  | 'evModelYear'
-  | 'iceReplacementVehicle';
-
-type InputFieldName =
-  | EERETextInputFieldName
-  | EVTextInputFieldName
-  | EVSelectInputFieldName;
 
 type SelectOptionsFieldName =
   | 'evDeploymentLocationOptions'
   | 'evModelYearOptions'
   | 'iceReplacementVehicleOptions';
 
-export type EEREInputs = { [field in InputFieldName]: string };
+export type EEREInputs = {
+  [field in
+    | EnergyEfficiencyFieldName
+    | RenewableEnergyFieldName
+    | ElectricVehiclesFieldName
+    | 'evDeploymentLocation'
+    | 'evModelYear'
+    | 'iceReplacementVehicle']: string;
+};
 
 type EereState = {
   status: 'ready' | 'started' | 'complete';
-  errors: (EERETextInputFieldName | EVTextInputFieldName)[];
+  errors: (
+    | EnergyEfficiencyFieldName
+    | RenewableEnergyFieldName
+    | ElectricVehiclesFieldName
+  )[];
   inputs: EEREInputs;
   selectOptions: { [field in SelectOptionsFieldName]: SelectOption[] };
   regionalProfiles: Partial<{ [key in RegionId]: RegionalProfile }>;
@@ -539,7 +554,10 @@ export function setEVDeploymentLocationOptions(): AppThunk {
 }
 
 function validateInput(
-  inputField: EERETextInputFieldName | EVTextInputFieldName,
+  inputField:
+    | EnergyEfficiencyFieldName
+    | RenewableEnergyFieldName
+    | ElectricVehiclesFieldName,
   inputValue: string,
 ): AppThunk {
   return (dispatch, getState) => {
@@ -751,6 +769,7 @@ export function calculateEereProfile(): AppThunk {
       hourlyEVChargingPercentages,
       monthlyDailyEVEnergyUsage,
     } = transportation;
+    const { inputs } = eere;
 
     // select region(s), based on geographic focus:
     // single region if geographic focus is 'regions'
@@ -802,6 +821,10 @@ export function calculateEereProfile(): AppThunk {
     });
 
     selectedRegions.forEach((region) => {
+      const regionalLoad = region.rdf.regional_load;
+      const lineLoss = region.lineLoss;
+      const eereDefaults = region.eereDefaults.data;
+
       const regionalPercent = selectedState?.percentageByRegion[region.id] || 0;
 
       // the regional scaling factor is a number between 0 and 1, representing
@@ -856,24 +879,45 @@ export function calculateEereProfile(): AppThunk {
         ? regionalPercent / totalOffshoreWindPercent
         : 0;
 
+      const annualGwh = Number(inputs.annualGwh) * regionalScalingFactor;
+      const constantMwh = Number(inputs.constantMwh) * regionalScalingFactor;
+      const broadProgram = Number(inputs.broadProgram) * percentReductionFactor;
+      const reduction = Number(inputs.reduction) * percentReductionFactor;
+      const topHours = Number(inputs.topHours);
+      const onshoreWind = Number(inputs.onshoreWind) * regionalScalingFactor;
+      const offshoreWind = Number(inputs.offshoreWind) * offshoreWindFactor;
+      const utilitySolar = Number(inputs.utilitySolar) * regionalScalingFactor;
+      const rooftopSolar = Number(inputs.rooftopSolar) * regionalScalingFactor;
+
+      const hourlyRenewableEnergyProfile =
+        calculateHourlyRenewableEnergyProfile({
+          eereDefaults,
+          lineLoss,
+          onshoreWind,
+          offshoreWind,
+          utilitySolar,
+          rooftopSolar,
+        });
+
       const hourlyEVLoad = calculateHourlyEVLoad({
-        regionalLoad: region.rdf.regional_load,
+        regionalLoad,
         dailyStats,
         hourlyEVChargingPercentages,
         monthlyDailyEVEnergyUsage,
       });
 
-      const scaledEereTextInputs = {
-        annualGwh: Number(eere.inputs.annualGwh) * regionalScalingFactor,
-        constantMwh: Number(eere.inputs.constantMwh) * regionalScalingFactor,
-        broadProgram: Number(eere.inputs.broadProgram) * percentReductionFactor,
-        reduction: Number(eere.inputs.reduction) * percentReductionFactor,
-        topHours: Number(eere.inputs.topHours),
-        onshoreWind: Number(eere.inputs.onshoreWind) * regionalScalingFactor,
-        offshoreWind: Number(eere.inputs.offshoreWind) * offshoreWindFactor,
-        utilitySolar: Number(eere.inputs.utilitySolar) * regionalScalingFactor,
-        rooftopSolar: Number(eere.inputs.rooftopSolar) * regionalScalingFactor,
-      };
+      const topPercentGeneration = calculateTopPercentGeneration({
+        regionalLoad,
+        broadProgram,
+        topHours,
+      });
+
+      const hourlyTopPercentReduction = calculateHourlyTopPercentReduction({
+        regionalLoad,
+        topPercentGeneration,
+        broadProgram,
+        reduction,
+      });
 
       const {
         hourlyEere,
@@ -884,12 +928,13 @@ export function calculateEereProfile(): AppThunk {
         hardTopExceedanceValue,
         hardTopExceedanceIndex,
       } = calculateEere({
-        regionMaxEEPercent: region.rdf.limits.max_ee_percent,
-        regionLineLoss: region.lineLoss,
-        regionalLoad: region.rdf.regional_load,
-        eereDefaults: region.eereDefaults.data,
+        lineLoss,
+        regionalLoad,
+        hourlyRenewableEnergyProfile,
         hourlyEVLoad,
-        eereTextInputs: scaledEereTextInputs,
+        hourlyTopPercentReduction,
+        annualGwh,
+        constantMwh,
       });
 
       const regionalProfile = {

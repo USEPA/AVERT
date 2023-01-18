@@ -1,6 +1,56 @@
-import { Tooltip } from 'app/components/Tooltip';
+import { useTypedSelector } from 'app/redux/index';
+
+function formatNumber(number: number) {
+  if (number < 10 && number > -10) return '--';
+  const output = Math.round(number / 10) * 10;
+  return output.toLocaleString();
+}
 
 export function TransportationSectorEmissionsTable() {
+  const totalYearlyVehicleEmissionsChanges = useTypedSelector(
+    ({ transportation }) => transportation.totalYearlyEmissionChanges,
+  );
+
+  const annualStateEmissionChanges = useTypedSelector(
+    ({ displacement }) => displacement.annualStateEmissionChanges,
+  );
+
+  const totalYearlyPowerEmissionsChanges = Object.values(
+    annualStateEmissionChanges,
+  ).reduce(
+    (object, data) => {
+      object.so2 += data.so2;
+      object.nox += data.nox;
+      object.co2 += data.co2;
+      object.pm25 += data.pm25;
+      object.vocs += data.vocs;
+      object.nh3 += data.nh3;
+      return object;
+    },
+    { so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 },
+  );
+
+  const totalYearlyVehicleSO2 = -1 * totalYearlyVehicleEmissionsChanges.SO2;
+  const totalYearlyVehicleNOX = -1 * totalYearlyVehicleEmissionsChanges.NOX;
+  const totalYearlyVehicleCO2 = -1 * totalYearlyVehicleEmissionsChanges.CO2 / 2_000; // prettier-ignore
+  const totalYearlyVehiclePM25 = -1 * totalYearlyVehicleEmissionsChanges.PM25;
+  const totalYearlyVehicleVOCs = -1 * totalYearlyVehicleEmissionsChanges.VOCs;
+  const totalYearlyVehicleNH3 = -1 * totalYearlyVehicleEmissionsChanges.NH3;
+
+  const totalYearlyPowerSO2 = totalYearlyPowerEmissionsChanges.so2;
+  const totalYearlyPowerNOX = totalYearlyPowerEmissionsChanges.nox;
+  const totalYearlyPowerCO2 = totalYearlyPowerEmissionsChanges.co2;
+  const totalYearlyPowerPM25 = totalYearlyPowerEmissionsChanges.pm25;
+  const totalYearlyPowerVOCs = totalYearlyPowerEmissionsChanges.vocs;
+  const totalYearlyPowerNH3 = totalYearlyPowerEmissionsChanges.nh3;
+
+  const totalYearlyNetSO2 = totalYearlyVehicleSO2 + totalYearlyPowerSO2;
+  const totalYearlyNetNOX = totalYearlyVehicleNOX + totalYearlyPowerNOX;
+  const totalYearlyNetCO2 = totalYearlyVehicleCO2 + totalYearlyPowerCO2;
+  const totalYearlyNetPM25 = totalYearlyVehiclePM25 + totalYearlyPowerPM25;
+  const totalYearlyNetVOCs = totalYearlyVehicleVOCs + totalYearlyPowerVOCs;
+  const totalYearlyNetNH3 = totalYearlyVehicleNH3 + totalYearlyPowerNH3;
+
   return (
     <>
       <div className="overflow-auto">
@@ -9,13 +59,13 @@ export function TransportationSectorEmissionsTable() {
             <thead>
               <tr>
                 <th>&nbsp;</th>
-                <th>
+                <th className="text-right">
                   <small>From</small> Fossil Generation
                 </th>
-                <th>
+                <th className="text-right">
                   <small>From</small> Vehicles
                 </th>
-                <th>Net Change</th>
+                <th className="text-right">Net Change</th>
               </tr>
             </thead>
 
@@ -28,81 +78,111 @@ export function TransportationSectorEmissionsTable() {
                   Total Emissions
                 </td>
               </tr>
+
               <tr>
                 <td>
                   <span className="padding-left-105">
                     SO<sub>2</sub> <small>(lb)</small>
                   </span>
                 </td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(totalYearlyPowerSO2)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(totalYearlyVehicleSO2)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(totalYearlyNetSO2)}
+                </td>
               </tr>
+
               <tr>
                 <td>
                   <span className="padding-left-105">
                     NO<sub>X</sub> <small>(lb)</small>
                   </span>
                 </td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-              </tr>
-              <tr>
-                <td>
-                  <span className="padding-left-3 text-italic">
-                    Ozone season NO<sub>X</sub> <small>(lb)</small>{' '}
-                    <Tooltip id="transportation-sector-ozone-season-nox-total">
-                      <p className="margin-0 text-no-italic">
-                        Ozone season is defined as May 1 — September 30. Ozone
-                        season emissions are a subset of annual emissions.
-                      </p>
-                    </Tooltip>
-                  </span>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(totalYearlyPowerNOX)}
                 </td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(totalYearlyVehicleNOX)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(totalYearlyNetNOX)}
+                </td>
               </tr>
+
+              <tr className="display-none desktop:display-table-row">
+                <td colSpan={4}>&nbsp;</td>
+              </tr>
+
               <tr>
                 <td>
                   <span className="padding-left-105">
                     CO<sub>2</sub> <small>(tons)</small>
                   </span>
                 </td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(totalYearlyPowerCO2)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(totalYearlyVehicleCO2)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(totalYearlyNetCO2)}
+                </td>
               </tr>
+
               <tr>
                 <td>
                   <span className="padding-left-105">
                     PM<sub>2.5</sub> <small>(lb)</small>
                   </span>
                 </td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(totalYearlyPowerPM25)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(totalYearlyVehiclePM25)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(totalYearlyNetPM25)}
+                </td>
               </tr>
+
               <tr>
                 <td>
                   <span className="padding-left-105">
                     VOCs <small>(lb)</small>
                   </span>
                 </td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(totalYearlyPowerVOCs)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(totalYearlyVehicleVOCs)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(totalYearlyNetVOCs)}
+                </td>
               </tr>
+
               <tr>
                 <td>
                   <span className="padding-left-105">
                     NH<sub>3</sub> <small>(lb)</small>
                   </span>
                 </td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(totalYearlyPowerNH3)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(totalYearlyVehicleNH3)}
+                </td>
+                <td className="font-mono-xs text-right">
+                  {formatNumber(totalYearlyNetNH3)}
+                </td>
               </tr>
             </tbody>
           </table>
