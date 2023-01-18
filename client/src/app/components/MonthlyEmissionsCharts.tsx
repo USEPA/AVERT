@@ -873,6 +873,7 @@ export function MonthlyEmissionsCharts() {
                       }
                       onChange={(_ev) => {
                         dispatch(setMonthlyEmissionsSource('power-vehicles'));
+                        dispatch(setMonthlyEmissionsUnit('emissions'));
                       }}
                       data-avert-source-toggle="power-vehicles"
                     />
