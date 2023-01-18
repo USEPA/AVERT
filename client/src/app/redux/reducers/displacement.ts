@@ -25,22 +25,8 @@ type ReplacementEGUsByPollutant = {
   [key in ReplacementPollutantName]: (EGUData & { regionId: RegionId })[];
 };
 
-type MonthKey =
-  | 'month1'
-  | 'month2'
-  | 'month3'
-  | 'month4'
-  | 'month5'
-  | 'month6'
-  | 'month7'
-  | 'month8'
-  | 'month9'
-  | 'month10'
-  | 'month11'
-  | 'month12';
-
 export type MonthlyDisplacement = {
-  [month in MonthKey]: {
+  [month: number]: {
     original: number;
     postEere: number;
   };
@@ -507,8 +493,9 @@ function fetchDisplacementData(
 
                 // total each month's state emissions change for the given state
                 let stateEmissionsChange = 0;
-                for (const month in stateData) {
-                  const { original, postEere } = stateData[month as MonthKey];
+                for (const stateDataKey in stateData) {
+                  const month = Number(stateDataKey);
+                  const { original, postEere } = stateData[month];
                   stateEmissionsChange += postEere - original;
                 }
 
@@ -618,8 +605,9 @@ export function calculateMonthlyData(data: MonthlyDisplacement, unit: Unit) {
   const monthlyEmissionsChanges: number[] = [];
   const monthlyPercentageChanges: number[] = [];
 
-  for (const month in data) {
-    const { original, postEere } = data[month as MonthKey];
+  for (const dataKey in data) {
+    const month = Number(dataKey);
+    const { original, postEere } = data[month];
     const emissionsChange = postEere - original;
     const percentChange = (emissionsChange / original) * 100 || 0;
     monthlyEmissionsChanges.push(emissionsChange);
@@ -768,23 +756,19 @@ function setAnnualRegionalDisplacements(
       // each region's regional generation and nox data from the months of May
       // through September
       if (item === 'ozoneGeneration' || item === 'ozoneNox') {
-        const ozoneMonths = ['month5', 'month6', 'month7', 'month8', 'month9'];
+        const ozoneMonths = [5, 6, 7, 8, 9];
 
         if (item === 'ozoneGeneration') {
           ozoneMonths.forEach((month) => {
-            const m = month as MonthKey;
-            data.ozoneGeneration.original +=
-              displacement.generation.regionalData[m].original;
-            data.ozoneGeneration.postEere +=
-              displacement.generation.regionalData[m].postEere;
+            data.ozoneGeneration.original += displacement.generation.regionalData[month].original; // prettier-ignore
+            data.ozoneGeneration.postEere += displacement.generation.regionalData[month].postEere; // prettier-ignore
           });
         }
 
         if (item === 'ozoneNox') {
           ozoneMonths.forEach((month) => {
-            const m = month as MonthKey;
-            data.ozoneNox.original += displacement.nox.regionalData[m].original;
-            data.ozoneNox.postEere += displacement.nox.regionalData[m].postEere;
+            data.ozoneNox.original += displacement.nox.regionalData[month].original; // prettier-ignore
+            data.ozoneNox.postEere += displacement.nox.regionalData[month].postEere; // prettier-ignore
           });
         }
       }
@@ -874,98 +858,98 @@ function setMonthlyEmissionChanges(
   const regionsDisplacements: RegionsDisplacementsByPollutant = {
     so2: {
       ['ALL' as RegionId]: {
-        month1: { original: 0, postEere: 0 },
-        month2: { original: 0, postEere: 0 },
-        month3: { original: 0, postEere: 0 },
-        month4: { original: 0, postEere: 0 },
-        month5: { original: 0, postEere: 0 },
-        month6: { original: 0, postEere: 0 },
-        month7: { original: 0, postEere: 0 },
-        month8: { original: 0, postEere: 0 },
-        month9: { original: 0, postEere: 0 },
-        month10: { original: 0, postEere: 0 },
-        month11: { original: 0, postEere: 0 },
-        month12: { original: 0, postEere: 0 },
+        1: { original: 0, postEere: 0 },
+        2: { original: 0, postEere: 0 },
+        3: { original: 0, postEere: 0 },
+        4: { original: 0, postEere: 0 },
+        5: { original: 0, postEere: 0 },
+        6: { original: 0, postEere: 0 },
+        7: { original: 0, postEere: 0 },
+        8: { original: 0, postEere: 0 },
+        9: { original: 0, postEere: 0 },
+        10: { original: 0, postEere: 0 },
+        11: { original: 0, postEere: 0 },
+        12: { original: 0, postEere: 0 },
       },
     },
     nox: {
       ['ALL' as RegionId]: {
-        month1: { original: 0, postEere: 0 },
-        month2: { original: 0, postEere: 0 },
-        month3: { original: 0, postEere: 0 },
-        month4: { original: 0, postEere: 0 },
-        month5: { original: 0, postEere: 0 },
-        month6: { original: 0, postEere: 0 },
-        month7: { original: 0, postEere: 0 },
-        month8: { original: 0, postEere: 0 },
-        month9: { original: 0, postEere: 0 },
-        month10: { original: 0, postEere: 0 },
-        month11: { original: 0, postEere: 0 },
-        month12: { original: 0, postEere: 0 },
+        1: { original: 0, postEere: 0 },
+        2: { original: 0, postEere: 0 },
+        3: { original: 0, postEere: 0 },
+        4: { original: 0, postEere: 0 },
+        5: { original: 0, postEere: 0 },
+        6: { original: 0, postEere: 0 },
+        7: { original: 0, postEere: 0 },
+        8: { original: 0, postEere: 0 },
+        9: { original: 0, postEere: 0 },
+        10: { original: 0, postEere: 0 },
+        11: { original: 0, postEere: 0 },
+        12: { original: 0, postEere: 0 },
       },
     },
     co2: {
       ['ALL' as RegionId]: {
-        month1: { original: 0, postEere: 0 },
-        month2: { original: 0, postEere: 0 },
-        month3: { original: 0, postEere: 0 },
-        month4: { original: 0, postEere: 0 },
-        month5: { original: 0, postEere: 0 },
-        month6: { original: 0, postEere: 0 },
-        month7: { original: 0, postEere: 0 },
-        month8: { original: 0, postEere: 0 },
-        month9: { original: 0, postEere: 0 },
-        month10: { original: 0, postEere: 0 },
-        month11: { original: 0, postEere: 0 },
-        month12: { original: 0, postEere: 0 },
+        1: { original: 0, postEere: 0 },
+        2: { original: 0, postEere: 0 },
+        3: { original: 0, postEere: 0 },
+        4: { original: 0, postEere: 0 },
+        5: { original: 0, postEere: 0 },
+        6: { original: 0, postEere: 0 },
+        7: { original: 0, postEere: 0 },
+        8: { original: 0, postEere: 0 },
+        9: { original: 0, postEere: 0 },
+        10: { original: 0, postEere: 0 },
+        11: { original: 0, postEere: 0 },
+        12: { original: 0, postEere: 0 },
       },
     },
     pm25: {
       ['ALL' as RegionId]: {
-        month1: { original: 0, postEere: 0 },
-        month2: { original: 0, postEere: 0 },
-        month3: { original: 0, postEere: 0 },
-        month4: { original: 0, postEere: 0 },
-        month5: { original: 0, postEere: 0 },
-        month6: { original: 0, postEere: 0 },
-        month7: { original: 0, postEere: 0 },
-        month8: { original: 0, postEere: 0 },
-        month9: { original: 0, postEere: 0 },
-        month10: { original: 0, postEere: 0 },
-        month11: { original: 0, postEere: 0 },
-        month12: { original: 0, postEere: 0 },
+        1: { original: 0, postEere: 0 },
+        2: { original: 0, postEere: 0 },
+        3: { original: 0, postEere: 0 },
+        4: { original: 0, postEere: 0 },
+        5: { original: 0, postEere: 0 },
+        6: { original: 0, postEere: 0 },
+        7: { original: 0, postEere: 0 },
+        8: { original: 0, postEere: 0 },
+        9: { original: 0, postEere: 0 },
+        10: { original: 0, postEere: 0 },
+        11: { original: 0, postEere: 0 },
+        12: { original: 0, postEere: 0 },
       },
     },
     vocs: {
       ['ALL' as RegionId]: {
-        month1: { original: 0, postEere: 0 },
-        month2: { original: 0, postEere: 0 },
-        month3: { original: 0, postEere: 0 },
-        month4: { original: 0, postEere: 0 },
-        month5: { original: 0, postEere: 0 },
-        month6: { original: 0, postEere: 0 },
-        month7: { original: 0, postEere: 0 },
-        month8: { original: 0, postEere: 0 },
-        month9: { original: 0, postEere: 0 },
-        month10: { original: 0, postEere: 0 },
-        month11: { original: 0, postEere: 0 },
-        month12: { original: 0, postEere: 0 },
+        1: { original: 0, postEere: 0 },
+        2: { original: 0, postEere: 0 },
+        3: { original: 0, postEere: 0 },
+        4: { original: 0, postEere: 0 },
+        5: { original: 0, postEere: 0 },
+        6: { original: 0, postEere: 0 },
+        7: { original: 0, postEere: 0 },
+        8: { original: 0, postEere: 0 },
+        9: { original: 0, postEere: 0 },
+        10: { original: 0, postEere: 0 },
+        11: { original: 0, postEere: 0 },
+        12: { original: 0, postEere: 0 },
       },
     },
     nh3: {
       ['ALL' as RegionId]: {
-        month1: { original: 0, postEere: 0 },
-        month2: { original: 0, postEere: 0 },
-        month3: { original: 0, postEere: 0 },
-        month4: { original: 0, postEere: 0 },
-        month5: { original: 0, postEere: 0 },
-        month6: { original: 0, postEere: 0 },
-        month7: { original: 0, postEere: 0 },
-        month8: { original: 0, postEere: 0 },
-        month9: { original: 0, postEere: 0 },
-        month10: { original: 0, postEere: 0 },
-        month11: { original: 0, postEere: 0 },
-        month12: { original: 0, postEere: 0 },
+        1: { original: 0, postEere: 0 },
+        2: { original: 0, postEere: 0 },
+        3: { original: 0, postEere: 0 },
+        4: { original: 0, postEere: 0 },
+        5: { original: 0, postEere: 0 },
+        6: { original: 0, postEere: 0 },
+        7: { original: 0, postEere: 0 },
+        8: { original: 0, postEere: 0 },
+        9: { original: 0, postEere: 0 },
+        10: { original: 0, postEere: 0 },
+        11: { original: 0, postEere: 0 },
+        12: { original: 0, postEere: 0 },
       },
     },
   };
@@ -1007,22 +991,22 @@ function setMonthlyEmissionChanges(
         // add up total displacements for the pollutant for all regions
         const allRegions = regionsDisplacements[pollutant]['ALL' as RegionId];
 
-        for (const key in allRegions) {
-          const month = key as MonthKey;
+        for (const allRegionsKey in allRegions) {
+          const month = Number(allRegionsKey);
           allRegions[month].original += regionalData[month].original;
           allRegions[month].postEere += regionalData[month].postEere;
         }
 
         // add (and potentially combine) state data for the pollutant
-        for (const key in stateData) {
-          const stateId = key as StateId;
+        for (const stateDataKey in stateData) {
+          const stateId = stateDataKey as StateId;
           // if a state's pollutant data already exists for the pollutant,
           // it was already added from another region, so add this regions's
           // monthly displacement data for the pollutant for the state
           if (statesDisplacements[pollutant][stateId]) {
             const dataset = statesDisplacements[pollutant][stateId];
-            for (const key in dataset) {
-              const month = key as MonthKey;
+            for (const datasetKey in dataset) {
+              const month = Number(datasetKey);
               dataset[month].original += stateData[stateId][month].original;
               dataset[month].postEere += stateData[stateId][month].postEere;
             }

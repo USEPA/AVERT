@@ -412,18 +412,18 @@ export function MonthlyEmissionsCharts() {
 
   // set monthlyData for each pollutant, based on selected aggregation
   const initialMonthlyData = {
-    month1: { original: 0, postEere: 0 },
-    month2: { original: 0, postEere: 0 },
-    month3: { original: 0, postEere: 0 },
-    month4: { original: 0, postEere: 0 },
-    month5: { original: 0, postEere: 0 },
-    month6: { original: 0, postEere: 0 },
-    month7: { original: 0, postEere: 0 },
-    month8: { original: 0, postEere: 0 },
-    month9: { original: 0, postEere: 0 },
-    month10: { original: 0, postEere: 0 },
-    month11: { original: 0, postEere: 0 },
-    month12: { original: 0, postEere: 0 },
+    1: { original: 0, postEere: 0 },
+    2: { original: 0, postEere: 0 },
+    3: { original: 0, postEere: 0 },
+    4: { original: 0, postEere: 0 },
+    5: { original: 0, postEere: 0 },
+    6: { original: 0, postEere: 0 },
+    7: { original: 0, postEere: 0 },
+    8: { original: 0, postEere: 0 },
+    9: { original: 0, postEere: 0 },
+    10: { original: 0, postEere: 0 },
+    11: { original: 0, postEere: 0 },
+    12: { original: 0, postEere: 0 },
   };
 
   const powerData: { [key in Pollutant]: MonthlyDisplacement } = {

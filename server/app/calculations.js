@@ -107,19 +107,20 @@
  */
 
 /**
- * @typedef {Object} MonthlyDisplacement
- * @property {Displacement} month1
- * @property {Displacement} month2
- * @property {Displacement} month3
- * @property {Displacement} month4
- * @property {Displacement} month5
- * @property {Displacement} month6
- * @property {Displacement} month7
- * @property {Displacement} month8
- * @property {Displacement} month9
- * @property {Displacement} month10
- * @property {Displacement} month11
- * @property {Displacement} month12
+ * @typedef {{
+ *  1: Displacement,
+ *  2: Displacement,
+ *  3: Displacement,
+ *  4: Displacement,
+ *  5: Displacement,
+ *  6: Displacement,
+ *  7: Displacement,
+ *  8: Displacement,
+ *  9: Displacement,
+ *  10: Displacement,
+ *  11: Displacement,
+ *  12: Displacement,
+ * }} MonthlyDisplacement
  */
 
 /**
@@ -382,20 +383,20 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad, debug }) {
         // individually here is computationally smarter as it means we don't need
         // to re-iterate over data structures later to sum those totals
 
-        regionalData[pollutant][`month${month}`] ??= { original: 0, postEere: 0 }; // prettier-ignore
-        regionalData[pollutant][`month${month}`].original += original[pollutant]; // prettier-ignore
-        regionalData[pollutant][`month${month}`].postEere += postEere[pollutant]; // prettier-ignore
+        regionalData[pollutant][month] ??= { original: 0, postEere: 0 };
+        regionalData[pollutant][month].original += original[pollutant];
+        regionalData[pollutant][month].postEere += postEere[pollutant];
 
         stateData[pollutant][stateId] ??= {};
-        stateData[pollutant][stateId][`month${month}`] ??= { original: 0, postEere: 0 }; // prettier-ignore
-        stateData[pollutant][stateId][`month${month}`].original += original[pollutant]; // prettier-ignore
-        stateData[pollutant][stateId][`month${month}`].postEere += postEere[pollutant]; // prettier-ignore
+        stateData[pollutant][stateId][month] ??= { original: 0, postEere: 0 };
+        stateData[pollutant][stateId][month].original += original[pollutant];
+        stateData[pollutant][stateId][month].postEere += postEere[pollutant];
 
         countyData[pollutant][stateId] ??= {};
         countyData[pollutant][stateId][county] ??= {};
-        countyData[pollutant][stateId][county][`month${month}`] ??= { original: 0, postEere: 0 }; // prettier-ignore
-        countyData[pollutant][stateId][county][`month${month}`].original += original[pollutant]; // prettier-ignore
-        countyData[pollutant][stateId][county][`month${month}`].postEere += postEere[pollutant]; // prettier-ignore
+        countyData[pollutant][stateId][county][month] ??= { original: 0, postEere: 0 }; // prettier-ignore
+        countyData[pollutant][stateId][county][month].original += original[pollutant]; // prettier-ignore
+        countyData[pollutant][stateId][county][month].postEere += postEere[pollutant]; // prettier-ignore
 
         // NOTE: hourlyData isn't returned normally as the resulting object is
         // huge (several hundred MB). this is just added as a means to verify
