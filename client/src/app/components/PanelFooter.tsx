@@ -8,6 +8,7 @@ import { useTypedSelector } from 'app/redux/index';
 import { setActiveStep } from 'app/redux/reducers/panel';
 import { resetEEREInputs } from 'app/redux/reducers/eere';
 import { fetchRegionsData } from 'app/redux/reducers/geography';
+import { calculateEmissionsChanges } from 'app/redux/reducers/emissions';
 import {
   calculateDisplacement,
   resetDisplacement,
@@ -145,6 +146,7 @@ export function PanelFooter(props: {
         if (onStepTwo) {
           if (eereStatus === 'complete' && hardValid) {
             scrollToTop();
+            dispatch(calculateEmissionsChanges());
             dispatch(calculateDisplacement());
           } else {
             return;
