@@ -87,25 +87,7 @@ type CountiesDisplacementsByPollutant = {
   }>;
 };
 
-type CountyDataRow = {
-  Pollutant: 'SO2' | 'NOX' | 'CO2' | 'PM25' | 'VOCS' | 'NH3';
-  'Aggregation level': string;
-  State: string | null;
-  County: string | null;
-  'Unit of measure': 'emissions (pounds)' | 'emissions (tons)' | 'percent';
-  January: number;
-  February: number;
-  March: number;
-  April: number;
-  May: number;
-  June: number;
-  July: number;
-  August: number;
-  September: number;
-  October: number;
-  November: number;
-  December: number;
-};
+type CountyDataRow = ReturnType<typeof formatCountyDataRow>;
 
 type CobraDataRow = {
   FIPS: string;
@@ -1070,7 +1052,7 @@ function formatCountyDataRow({
   regionId?: RegionId;
   stateId?: StateId;
   countyName?: string;
-}): CountyDataRow {
+}) {
   return {
     Pollutant: pollutant,
     'Aggregation level': regionId
@@ -1085,18 +1067,18 @@ function formatCountyDataRow({
     State: stateId ? stateId : null,
     County: countyName ? countyName.replace(/city/, '(City)') : null, // format 'city'
     'Unit of measure': unit,
-    January: monthlyData[0],
-    February: monthlyData[1],
-    March: monthlyData[2],
-    April: monthlyData[3],
-    May: monthlyData[4],
-    June: monthlyData[5],
-    July: monthlyData[6],
-    August: monthlyData[7],
-    September: monthlyData[8],
-    October: monthlyData[9],
-    November: monthlyData[10],
-    December: monthlyData[11],
+    'Power Sector: January': monthlyData[0],
+    'Power Sector: February': monthlyData[1],
+    'Power Sector: March': monthlyData[2],
+    'Power Sector: April': monthlyData[3],
+    'Power Sector: May': monthlyData[4],
+    'Power Sector: June': monthlyData[5],
+    'Power Sector: July': monthlyData[6],
+    'Power Sector: August': monthlyData[7],
+    'Power Sector: September': monthlyData[8],
+    'Power Sector: October': monthlyData[9],
+    'Power Sector: November': monthlyData[10],
+    'Power Sector: December': monthlyData[11],
   };
 }
 
