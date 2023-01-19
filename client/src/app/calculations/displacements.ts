@@ -77,9 +77,9 @@ export function calculateRegionalDisplacement(options: {
    * uses `data.generation`, regardless of ozone season.
    *
    * Emissions rates for pm2.5, vocs, and nh3 are calculated with both annual
-   * point-source data from the National Emissions Inventory (`neiData` file)
-   * and the `heat` and `heat_not` fields in the RDF's `data` object (for ozone
-   * and non-ozone season respectively).
+   * point-source data from the National Emissions Inventory (`neiData`) and the
+   * `heat` and `heat_not` fields in the RDF's `data` object (for ozone and
+   * non-ozone season respectively).
    */
   const result = {} as {
     [egu: string]: {

@@ -166,13 +166,27 @@ function calculateLinear(options) {
  *  year: number,
  *  metric: 'generation'|'so2'|'nox'|'co2'|'nei',
  *  rdf: RDFJSON,
- *  neiData: ?NEIData,
+ *  neiData: NEIData
  *  hourlyEere: number[],
  *  debug: boolean
  * }} options
  */
 function getDisplacement(options) {
   const { year, metric, rdf, neiData, hourlyEere, debug } = options;
+
+  /**
+   * NOTE: Emissions rates for generation, so2, nox, and co2 are calculated with
+   * data in the RDF's `data` object under it's corresponding key: ozone season
+   * data matches the field exactly (e.g. `data.so2`, `data.nox`) and non-ozone
+   * season data has a `_not` suffix in the field name (e.g. `data.so2_not`,
+   * `data.nox_not`). There's no non-ozone season for generation, so it always
+   * uses `data.generation`, regardless of ozone season.
+   *
+   * Emissions rates for pm2.5, vocs, and nh3 are calculated with both annual
+   * point-source data from the National Emissions Inventory (`neiData`) and the
+   * `heat` and `heat_not` fields in the RDF's `data` object (for ozone and
+   * non-ozone season respectively).
+   */
 
   /**
    * this displacements object's keys will be one of type `Pollutant`, with
@@ -186,20 +200,9 @@ function getDisplacement(options) {
    */
   const displacements = {};
 
-  // NOTE: displacement data for PM2.5, VOCs, and NH3 pollutants are all
-  // calculated when the provided `metric` parameter equals "nei". emissions
-  // rates for those pollutants are calculated with both the data in the "heat"
-  // (and related "heat_not") keys of the `rdf` data object and data stored
-  // in the `app/data/annual-emission-factors.json` file, whose data is passed
-  // as the `neiData` parameter to this function as well (`neiData` will be null
-  // unless the `metric` parameter equals "nei" – see `calculateMetric()` in
-  // `app/controllers.js`). that `neiData` data contains annual point-source
-  // data from the National Emissions Inventory (NEI) for every EGU, organized
-  // by region.
-
   /** used to calculate PM2.5, VOCs, and NH3's emission rates */
   const regionalNeiEgus =
-    metric === "nei" && neiData
+    metric === "nei"
       ? neiData.regions.find((r) => r.name === rdf.region.region_name).egus
       : [];
 
