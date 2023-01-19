@@ -498,7 +498,43 @@ function fetchDisplacementData(
 }
 
 export function calculateDisplacement(): AppThunk {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const { api, eere } = getState();
+    const { regionalProfiles } = eere;
+
+    // build up displacement requests for selected regions
+    const requests: Promise<Response>[] = [];
+
+    for (const regionId in regionalProfiles) {
+      const hourlyEere = regionalProfiles[regionId as RegionId]?.hourlyEere;
+
+      if (hourlyEere) {
+        requests.push(
+          fetch(`${api.baseUrl}/api/v1/displacement`, {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ regionId, hourlyEere }),
+          }),
+        );
+      }
+    }
+
+    // request all displacement data for selected regions in parallel
+    Promise.all(requests)
+      .then((responses) => Promise.all(responses.map((res) => res.json())))
+      .then((regionsData) => {
+        // flatten array of regionData objects into a single object
+        const data = regionsData.reduce((result, regionData) => {
+          return { ...result, ...regionData };
+        }, {});
+
+        // TODO
+        console.log(data);
+      });
+
     dispatch({ type: 'displacement/START_DISPLACEMENT' });
     // whenever we call `incrementProgress()` the progress bar in
     // `components/Panels.tsx` is incremented. we'll initially increment it

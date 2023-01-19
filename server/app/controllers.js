@@ -1,7 +1,10 @@
 const { readFile } = require("node:fs/promises");
 // ---
 const config = require("./config");
-const getDisplacement = require("./calculations");
+const {
+  getDisplacement,
+  calculateRegionalDisplacement,
+} = require("./calculations");
 
 /**
  * RDF Controller
@@ -72,7 +75,21 @@ async function calculateMetric(ctx, metric) {
  * Displacement Controller
  */
 const displacement = {
-  // todo: (ctx) => calculateRegionalDisplacement(),
+  calculate: async (ctx) => {
+    const year = config.year;
+    const body = await ctx.request.body;
+    const { regionId, hourlyEere } = body;
+
+    const rdfFileName = `app/data/${config.regions[regionId].rdf}`;
+    const rdfFileData = await readFile(rdfFileName, { encoding: "utf8" });
+    const rdf = JSON.parse(rdfFileData);
+
+    const neiFileName = "app/data/annual-emission-factors.json";
+    const neiFileData = await readFile(neiFileName, { encoding: "utf8" });
+    const neiData = JSON.parse(neiFileData);
+
+    ctx.body = calculateRegionalDisplacement({ year, rdf, neiData, hourlyEere }); // prettier-ignore
+  },
   calculateGeneration: (ctx) => calculateMetric(ctx, "generation"),
   calculateSO2: (ctx) => calculateMetric(ctx, "so2"),
   calculateNOx: (ctx) => calculateMetric(ctx, "nox"),

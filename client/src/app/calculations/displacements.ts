@@ -3,7 +3,7 @@ import type { RDFJSON } from 'app/redux/reducers/geography';
  * Annual point-source data from the National Emissions Inventory (NEI) for
  * every electric generating unit (EGU), organized by AVERT region
  */
-import neiData from 'app/data/annual-emission-factors.json';
+// import neiData from 'app/data/annual-emission-factors.json';
 
 type NEIData = {
   regions: {
@@ -59,14 +59,15 @@ function calculateLinear(options: {
 }
 
 /**
- * TODO
+ * Calculates displacement for a provided region.
  */
 export function calculateRegionalDisplacement(options: {
   year: number;
   rdf: RDFJSON;
+  neiData: NEIData;
   hourlyEere: number[];
 }) {
-  const { year, rdf, hourlyEere } = options;
+  const { year, rdf, neiData, hourlyEere } = options;
 
   /**
    * NOTE: Emissions rates for generation, so2, nox, and co2 are calculated with
@@ -82,7 +83,7 @@ export function calculateRegionalDisplacement(options: {
    * non-ozone season respectively).
    */
   const result = {} as {
-    [egu: string]: {
+    [eguId: string]: {
       region: string;
       state: string;
       county: string;
@@ -106,9 +107,11 @@ export function calculateRegionalDisplacement(options: {
 
   const dataFields = ['generation', 'so2', 'nox', 'co2', 'pm25', 'vocs', 'nh3'] as const; // prettier-ignore
 
-  const regionalNeiEgus = (neiData as NEIData).regions.find((region) => {
+  const regionalNeiEgus = neiData.regions.find((region) => {
     return region.name === rdf.region.region_name;
   })?.egus;
+
+  const regionId = rdf.region.region_abbv;
 
   const loadBinEdges = rdf.load_bin_edges;
   const firstLoadBinEdge = loadBinEdges[0];
@@ -176,7 +179,19 @@ export function calculateRegionalDisplacement(options: {
        * 1000 for the SE region)
        */
       ozoneSeasonData.forEach((egu, eguIndex) => {
-        const eguCode = `${egu.state}_${egu.orispl_code}_${egu.unit_code}`;
+        const {
+          state,
+          county,
+          lat,
+          lon,
+          fuel_type,
+          orispl_code,
+          unit_code,
+          full_name,
+          infreq_emissions_flag,
+        } = egu;
+
+        const eguId = `${regionId}_${state}_${orispl_code}_${unit_code}`;
         const medians = datasetMedians[eguIndex];
 
         const calculatedOriginal = calculateLinear({
@@ -195,7 +210,7 @@ export function calculateRegionalDisplacement(options: {
          * excluded in the future)
          */
         const calculatedPostEere =
-          egu.infreq_emissions_flag === 1
+          infreq_emissions_flag === 1
             ? calculatedOriginal
             : calculateLinear({
                 load: postEereLoad,
@@ -209,9 +224,9 @@ export function calculateRegionalDisplacement(options: {
          * Conditionally multiply NEI factor to calculated original and postEere
          * values
          */
-        const matchedEgu = regionalNeiEgus?.find((n) => {
-          const orisplCodeMatches = n.orispl_code === egu.orispl_code;
-          const unitCodeMatches = n.unit_code === egu.unit_code;
+        const matchedEgu = regionalNeiEgus?.find((neiEgu) => {
+          const orisplCodeMatches = neiEgu.orispl_code === orispl_code;
+          const unitCodeMatches = neiEgu.unit_code === unit_code;
           return orisplCodeMatches && unitCodeMatches;
         });
         const neiEguData = matchedEgu?.annual_data.find((d) => d.year === year);
@@ -230,16 +245,16 @@ export function calculateRegionalDisplacement(options: {
         /**
          * Conditionally initialize each EGU's metadata
          */
-        result[eguCode] ??= {
-          region: rdf.region.region_abbv,
-          state: egu.state,
-          county: egu.county,
-          lat: egu.lat,
-          lon: egu.lon,
-          fuelType: egu.fuel_type,
-          orisplCode: egu.orispl_code,
-          unitCode: egu.unit_code,
-          name: egu.full_name,
+        result[eguId] ??= {
+          region: regionId,
+          state: state,
+          county: county,
+          lat: lat,
+          lon: lon,
+          fuelType: fuel_type,
+          orisplCode: orispl_code,
+          unitCode: unit_code,
+          name: full_name,
           data: {
             generation: {},
             so2: {},
@@ -254,13 +269,13 @@ export function calculateRegionalDisplacement(options: {
         /**
          * Conditionally initialize the field's monthly data
          */
-        result[eguCode].data[field][month] ??= { original: 0, postEere: 0 };
+        result[eguId].data[field][month] ??= { original: 0, postEere: 0 };
 
         /**
          * Increment the field's monthly original and postEere values
          */
-        result[eguCode].data[field][month].original += original;
-        result[eguCode].data[field][month].postEere += postEere;
+        result[eguId].data[field][month].original += original;
+        result[eguId].data[field][month].postEere += postEere;
       });
     });
   }

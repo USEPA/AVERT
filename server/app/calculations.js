@@ -465,4 +465,235 @@ function getDisplacement(options) {
   return displacements;
 }
 
-module.exports = getDisplacement;
+/**
+ * Calculates displacement for a provided region.
+ *
+ * @param {{
+ *  year: number,
+ *  rdf: RDFJSON,
+ *  neiData: NEIData
+ *  hourlyEere: number[]
+ * }} options
+ */
+function calculateRegionalDisplacement(options) {
+  const { year, rdf, neiData, hourlyEere } = options;
+
+  /**
+   * NOTE: Emissions rates for generation, so2, nox, and co2 are calculated with
+   * data in the RDF's `data` object under it's corresponding key: ozone season
+   * data matches the field exactly (e.g. `data.so2`, `data.nox`) and non-ozone
+   * season data has a `_not` suffix in the field name (e.g. `data.so2_not`,
+   * `data.nox_not`). There's no non-ozone season for generation, so it always
+   * uses `data.generation`, regardless of ozone season.
+   *
+   * Emissions rates for pm2.5, vocs, and nh3 are calculated with both annual
+   * point-source data from the National Emissions Inventory (`neiData`) and the
+   * `heat` and `heat_not` fields in the RDF's `data` object (for ozone and
+   * non-ozone season respectively).
+   *
+   * @type {{
+   *  [eguId: string]: {
+   *    region: string,
+   *    state: string,
+   *    county: string,
+   *    lat: number,
+   *    lon: number,
+   *    fuelType: string,
+   *    orisplCode: number,
+   *    unitCode: string,
+   *    name: string,
+   *    data: {
+   *      generation: { [month: number]: { original: number; postEere: number } },
+   *      so2: { [month: number]: { original: number; postEere: number } },
+   *      nox: { [month: number]: { original: number; postEere: number } },
+   *      co2: { [month: number]: { original: number; postEere: number } },
+   *      pm25: { [month: number]: { original: number; postEere: number } },
+   *      vocs: { [month: number]: { original: number; postEere: number } },
+   *      nh3: { [month: number]: { original: number; postEere: number } }
+   *    }}
+   * }}
+   */
+  const result = {};
+
+  const dataFields = ["generation", "so2", "nox", "co2", "pm25", "vocs", "nh3"];
+
+  const regionalNeiEgus = neiData.regions.find((region) => {
+    return region.name === rdf.region.region_name;
+  })?.egus;
+
+  const regionId = rdf.region.region_abbv;
+
+  const loadBinEdges = rdf.load_bin_edges;
+  const firstLoadBinEdge = loadBinEdges[0];
+  const lastLoadBinEdge = loadBinEdges[loadBinEdges.length - 1];
+
+  /**
+   * Iterate over each hour in the year (8760 in non-leap years)
+   */
+  for (const [i, hourlyLoad] of rdf.regional_load.entries()) {
+    const month = hourlyLoad.month; // numeric month of load
+
+    const originalLoad = hourlyLoad.regional_load_mw; // original regional load (mwh) for the hour
+    const postEereLoad = originalLoad + hourlyEere[i]; // EERE-merged regional load (mwh) for the hour
+
+    const originalLoadInBounds = originalLoad >= firstLoadBinEdge && originalLoad <= lastLoadBinEdge; // prettier-ignore
+    const postEereLoadInBounds = postEereLoad >= firstLoadBinEdge && postEereLoad <= lastLoadBinEdge; // prettier-ignore
+
+    // filter out outliers
+    if (!(originalLoadInBounds && postEereLoadInBounds)) continue;
+
+    // get index of load bin edge closest to originalLoad or postEereLoad
+    const originalLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, originalLoad); // prettier-ignore
+    const postEereLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, postEereLoad); // prettier-ignore
+
+    /**
+     * Iterate over each data field: generation, so2, nox, co2...
+     */
+    dataFields.forEach((field) => {
+      /**
+       * NOTE: PM2.5, VOCs, and NH3 always use the `heat` or `heat_not` fields
+       * of the RDF's `data` object
+       */
+      const neiFields = ["pm25", "vocs", "nh3"];
+
+      const ozoneSeasonData = neiFields.includes(field)
+        ? rdf.data.heat
+        : rdf.data[field];
+
+      const nonOzoneSeasonData =
+        field === "generation"
+          ? null // NOTE: there's no non-ozone season for generation
+          : neiFields.includes(field)
+          ? rdf.data.heat_not
+          : rdf.data[`${field}_not`];
+
+      const ozoneSeasonMedians = ozoneSeasonData.map((egu) => egu.medians);
+
+      const nonOzoneSeasonMedians = nonOzoneSeasonData
+        ? nonOzoneSeasonData.map((egu) => egu.medians)
+        : null;
+
+      /**
+       * Ozone season is between May and September, so use the correct medians
+       * dataset for the current month
+       */
+      const datasetMedians = !nonOzoneSeasonMedians
+        ? ozoneSeasonMedians
+        : month >= 5 && month <= 9
+        ? ozoneSeasonMedians
+        : nonOzoneSeasonMedians;
+
+      /**
+       * Iterate over each electric generating unit (EGU). The total number of
+       * EGUs varries per region (less than 100 for the RM region; more than
+       * 1000 for the SE region)
+       */
+      ozoneSeasonData.forEach((egu, eguIndex) => {
+        const {
+          state,
+          county,
+          lat,
+          lon,
+          fuel_type,
+          orispl_code,
+          unit_code,
+          full_name,
+          infreq_emissions_flag,
+        } = egu;
+
+        const eguId = `${regionId}_${state}_${orispl_code}_${unit_code}`;
+        const medians = datasetMedians[eguIndex];
+
+        const calculatedOriginal = calculateLinear({
+          load: originalLoad,
+          genA: medians[originalLoadBinEdgeIndex],
+          genB: medians[originalLoadBinEdgeIndex + 1],
+          edgeA: loadBinEdges[originalLoadBinEdgeIndex],
+          edgeB: loadBinEdges[originalLoadBinEdgeIndex + 1],
+        });
+
+        /**
+         * Handle special exclusions for emissions changes at specific EGUs
+         * (specifically added for errors with SO2 reporting, but the RDFs were
+         * updated to include the `infreq_emissions_flag` for all pollutants for
+         * consistency, which allows other pollutants at specific EGUs to be
+         * excluded in the future)
+         */
+        const calculatedPostEere =
+          infreq_emissions_flag === 1
+            ? calculatedOriginal
+            : calculateLinear({
+                load: postEereLoad,
+                genA: medians[postEereLoadBinEdgeIndex],
+                genB: medians[postEereLoadBinEdgeIndex + 1],
+                edgeA: loadBinEdges[postEereLoadBinEdgeIndex],
+                edgeB: loadBinEdges[postEereLoadBinEdgeIndex + 1],
+              });
+
+        /**
+         * Conditionally multiply NEI factor to calculated original and postEere
+         * values
+         */
+        const matchedEgu = regionalNeiEgus?.find((neiEgu) => {
+          const orisplCodeMatches = neiEgu.orispl_code === orispl_code;
+          const unitCodeMatches = neiEgu.unit_code === unit_code;
+          return orisplCodeMatches && unitCodeMatches;
+        });
+        const neiEguData = matchedEgu?.annual_data.find((d) => d.year === year);
+        const neiFieldData = neiEguData?.[field];
+
+        const original =
+          neiFields.includes(field) && neiFieldData
+            ? calculatedOriginal * neiFieldData
+            : calculatedOriginal;
+
+        const postEere =
+          neiFields.includes(field) && neiFieldData
+            ? calculatedPostEere * neiFieldData
+            : calculatedPostEere;
+
+        /**
+         * Conditionally initialize each EGU's metadata
+         */
+        result[eguId] ??= {
+          region: regionId,
+          state: state,
+          county: county,
+          lat: lat,
+          lon: lon,
+          fuelType: fuel_type,
+          orisplCode: orispl_code,
+          unitCode: unit_code,
+          name: full_name,
+          data: {
+            generation: {},
+            so2: {},
+            nox: {},
+            co2: {},
+            pm25: {},
+            vocs: {},
+            nh3: {},
+          },
+        };
+
+        /**
+         * Conditionally initialize the field's monthly data
+         */
+        result[eguId].data[field][month] ??= { original: 0, postEere: 0 };
+
+        /**
+         * Increment the field's monthly original and postEere values
+         */
+        result[eguId].data[field][month].original += original;
+        result[eguId].data[field][month].postEere += postEere;
+      });
+    });
+  }
+
+  return result;
+}
+
+module.exports = {
+  getDisplacement,
+  calculateRegionalDisplacement,
+};
