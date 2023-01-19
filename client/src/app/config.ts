@@ -1,15 +1,13 @@
 export type RdfDataKey =
   | 'generation'
-  | 'heat'
-  | 'heat_not'
-  | 'co2'
-  | 'co2_not'
+  | 'so2'
+  | 'so2_not'
   | 'nox'
   | 'nox_not'
-  | 'pm25'
-  | 'pm25_not'
-  | 'so2'
-  | 'so2_not';
+  | 'co2'
+  | 'co2_not'
+  | 'heat'
+  | 'heat_not';
 
 export type Pollutant = 'so2' | 'nox' | 'co2' | 'pm25' | 'vocs' | 'nh3';
 

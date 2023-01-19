@@ -1,67 +1,5 @@
 /**
- * @typedef {Object} RdfJson
- * @property {RdfRegion} region
- * @property {RdfRun} run
- * @property {RdfLimits} limits
- * @property {RdfRegionalLoad[]} regional_load
- * @property {number[]} load_bin_edges
- * @property {RdfData} data
- */
-
-/**
- * @typedef {Object} RdfRegion
- * @property {string} region_abbv
- * @property {string} region_name
- * @property {string} region_states
- */
-
-/**
- * @typedef {Object} RdfRun
- * @property {number} region_id
- * @property {number} year
- * @property {string[]} file_name
- * @property {number} mc_runs
- * @property {number} mc_gen_runs
- */
-
-/**
- * @typedef {Object} RdfLimits
- * @property {number} id
- * @property {number} region_id
- * @property {number} year
- * @property {number} max_solar_wind_mwh
- * @property {number} max_ee_yearly_gwh
- * @property {number} max_ee_percent
- * @property {?string[]} created_at
- * @property {?string[]} updated_at
- */
-
-/**
- * @typedef {Object} RdfRegionalLoad
- * @property {number} hour_of_year
- * @property {number} year
- * @property {1|2|3|4|5|6|7|8|9|10|11|12} month
- * @property {number} day
- * @property {number} hour
- * @property {number} regional_load_mw
- * @property {number} hourly_limit
- */
-
-/**
- * @typedef {Object} RdfData
- * @property {EguData[]} generation
- * @property {EguData[]} so2
- * @property {EguData[]} so2_not
- * @property {EguData[]} nox
- * @property {EguData[]} nox_not
- * @property {EguData[]} co2
- * @property {EguData[]} co2_not
- * @property {EguData[]} heat
- * @property {EguData[]} heat_not
- */
-
-/**
- * @typedef {Object} EguData
+ * @typedef {Object} EGUData
  * @property {string} state
  * @property {string} county
  * @property {number} lat
@@ -75,58 +13,94 @@
  */
 
 /**
- * @typedef {Object} NeiJson
- * @property {NeiRegion[]} regions
+ * @typedef {Object} RDFJSON
+ * @property {{
+ *  region_abbv: string,
+ *  region_name: string,
+ *  region_states: string
+ * }} region
+ * @property {{
+ *  file_name: string[],
+ *  mc_gen_runs: number,
+ *  mc_runs: number,
+ *  region_id: number,
+ *  year: number
+ * }} run
+ * @property {{
+ *  created_at: ?string[],
+ *  id: number,
+ *  max_ee_percent: number,
+ *  max_ee_yearly_gwh: number,
+ *  max_solar_wind_mwh: number,
+ *  region_id: number,
+ *  updated_at: ?string[],
+ *  year: number
+ * }} limits
+ * @property {{
+ *  day: number,
+ *  hour: number,
+ *  hour_of_year: number,
+ *  hourly_limit: number,
+ *  month: 1|2|3|4|5|6|7|8|9|10|11|12,
+ *  regional_load_mw: number,
+ *  year: number
+ * }[]} regional_load
+ * @property {number[]} load_bin_edges
+ * @property {{
+ *  generation: EGUData[],
+ *  so2: EGUData[],
+ *  so2_not: EGUData[],
+ *  nox: EGUData[],
+ *  nox_not: EGUData[],
+ *  co2: EGUData[],
+ *  co2_not: EGUData[],
+ *  heat: EGUData[],
+ *  heat_not: EGUData[]
+ * }} data
  */
 
 /**
- * @typedef {Object} NeiRegion
- * @property {string} name
- * @property {NeiEgu[]} egus
+ * @typedef {Object} NEIData
+ * @property {{
+ *  name: string,
+ *  egus: {
+ *    state: string,
+ *    county: string,
+ *    plant: string,
+ *    orispl_code: number,
+ *    unit_code: string,
+ *    full_name: string,
+ *    annual_data: {
+ *      year: number,
+ *      generation: number,
+ *      heat: number,
+ *      pm25: number,
+ *      vocs: number,
+ *      nh3: number
+ *    }[]
+ *  }[]
+ * }[]} regions
  */
 
 /**
- * @typedef {Object} NeiEgu
- * @property {string} state
- * @property {string} county
- * @property {string} plant
- * @property {number} orispl_code
- * @property {string} unit_code
- * @property {string} full_name
- * @property {NeiData[]} annual_data
- */
-
-/**
- * @typedef {Object} NeiData
- * @property {number} year
- * @property {number} generation
- * @property {number} heat
- * @property {?number} pm25
- * @property {?number} vocs
- * @property {?number} nh3
+ * @typedef {'generation'|'so2'|'nox'|'co2'|'pm25'|'vocs'|'nh3'} Pollutant
  */
 
 /**
  * @typedef {{
- *  1: Displacement,
- *  2: Displacement,
- *  3: Displacement,
- *  4: Displacement,
- *  5: Displacement,
- *  6: Displacement,
- *  7: Displacement,
- *  8: Displacement,
- *  9: Displacement,
- *  10: Displacement,
- *  11: Displacement,
- *  12: Displacement,
+ *  1: { original: number, postEere: number },
+ *  2: { original: number, postEere: number },
+ *  3: { original: number, postEere: number },
+ *  4: { original: number, postEere: number },
+ *  5: { original: number, postEere: number },
+ *  6: { original: number, postEere: number },
+ *  7: { original: number, postEere: number },
+ *  8: { original: number, postEere: number },
+ *  9: { original: number, postEere: number },
+ *  10: { original: number, postEere: number },
+ *  11: { original: number, postEere: number },
+ *  12: { original: number, postEere: number },
  * }} MonthlyDisplacement
- */
-
-/**
- * @typedef {Object} Displacement
- * @property {number} original
- * @property {number} postEere
  */
 
 /**
@@ -152,46 +126,54 @@
  */
 
 /**
- * @typedef {'generation'|'so2'|'nox'|'co2'|'pm25'|'vocs'|'nh3'} Pollutant
+ * Adds a number to an array of numbers, sorts it, and returns the index of the
+ * number directly before the one that was inserted
+ *
+ * @param {number[]} array
+ * @param {number} number
  */
+function getPrecedingIndex(array, number) {
+  // insert provided number into the provided array and sort it
+  const sortedArray = array.concat(number).sort((a, b) => a - b);
+  const numberIndex = sortedArray.indexOf(number);
+  // return the index of the number directly before the inserted number
+  if (array[numberIndex] === number) return numberIndex;
+  return numberIndex - 1;
+}
 
 /**
- * @param {Object} options
- * @param {number} options.load
- * @param {number} options.genA
- * @param {number} options.genB
- * @param {number} options.edgeA
- * @param {number} options.edgeB
+ * TODO
+ *
+ * @param {{
+ *  load: number,
+ *  genA: number,
+ *  genB: number,
+ *  edgeA: number,
+ *  edgeB: number
+ * }} options
  */
-function calculateLinear({ load, genA, genB, edgeA, edgeB }) {
+function calculateLinear(options) {
+  const { load, genA, genB, edgeA, edgeB } = options;
   const slope = (genA - genB) / (edgeA - edgeB);
   const intercept = genA - slope * edgeA;
   return load * slope + intercept;
 }
 
 /**
- * @param {number[]} array
- * @param {number} lookup
- */
-function excelMatch(array, lookup) {
-  const sortedArray = array.concat(lookup).sort((a, b) => a - b);
-  const index = sortedArray.indexOf(lookup);
-  // return index of item directly before lookup item in sorted array
-  if (array[index] === lookup) return index;
-  return index - 1;
-}
-
-/**
  * Caclulates displacement for a given metric.
- * @param {Object} options
- * @param {number} options.year
- * @param {'generation'|'so2'|'nox'|'co2'|'nei'} options.metric
- * @param {RdfJson} options.rdfJson
- * @param {?NeiJson} options.neiJson
- * @param {number[]} options.eereLoad
- * @param {boolean} options.debug
+ *
+ * @param {{
+ *  year: number,
+ *  metric: 'generation'|'so2'|'nox'|'co2'|'nei',
+ *  rdf: RDFJSON,
+ *  neiData: ?NEIData,
+ *  hourlyEere: number[],
+ *  debug: boolean
+ * }} options
  */
-function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad, debug }) {
+function getDisplacement(options) {
+  const { year, metric, rdf, neiData, hourlyEere, debug } = options;
+
   /**
    * this displacements object's keys will be one of type `Pollutant`, with
    * the key's values being the calculated displacement data for that pollutant.
@@ -207,41 +189,39 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad, debug }) {
   // NOTE: displacement data for PM2.5, VOCs, and NH3 pollutants are all
   // calculated when the provided `metric` parameter equals "nei". emissions
   // rates for those pollutants are calculated with both the data in the "heat"
-  // (and related "heat_not") keys of the `rdfJson` data object and data stored
+  // (and related "heat_not") keys of the `rdf` data object and data stored
   // in the `app/data/annual-emission-factors.json` file, whose data is passed
-  // as the `neiJson` parameter to this function as well (`neiJson` will be null
+  // as the `neiData` parameter to this function as well (`neiData` will be null
   // unless the `metric` parameter equals "nei" – see `calculateMetric()` in
-  // `app/controllers.js`). that `neiJson` data contains annual point-source
+  // `app/controllers.js`). that `neiData` data contains annual point-source
   // data from the National Emissions Inventory (NEI) for every EGU, organized
   // by region.
 
-  /** @type {NeiEgu[]} - used to calculate PM2.5, VOCs, and NH3's emission rates */
+  /** used to calculate PM2.5, VOCs, and NH3's emission rates */
   const regionalNeiEgus =
-    metric === "nei" && neiJson
-      ? neiJson.regions.find((r) => r.name === rdfJson.region.region_name).egus
+    metric === "nei" && neiData
+      ? neiData.regions.find((r) => r.name === rdf.region.region_name).egus
       : [];
 
   // set ozoneSeasonData and nonOzoneSeasonData based on provided metric
-  /** @type {EguData[]} */
   const ozoneSeasonData =
     metric === "nei"
-      ? rdfJson.data["heat"] // ozone season heat input (MMBtu)
-      : rdfJson.data[metric];
+      ? rdf.data.heat // ozone season heat input (MMBtu)
+      : rdf.data[metric];
 
-  /** @type {EguData[]|false} */
+  /** @type {EGUData[]|null} */
   const nonOzoneSeasonData =
     metric === "nei"
-      ? rdfJson.data["heat_not"] // non-ozone season heat input (MMBtu)
-      : rdfJson.data[`${metric}_not`] || false; // false fallback for generation, as there's no non-ozone season generation data
+      ? rdf.data.heat_not // non-ozone season heat input (MMBtu)
+      : rdf.data[`${metric}_not`] || null; // NOTE: there's no non-ozone season for generation
 
-  // ozone season and non-ozone season medians
   const ozoneSeasonMedians = ozoneSeasonData.map((eguData) => eguData.medians);
+
   const nonOzoneSeasonMedians = nonOzoneSeasonData
     ? nonOzoneSeasonData.map((eguData) => eguData.medians)
-    : false;
+    : null;
 
-  // load bin edges
-  const loadBinEdges = rdfJson.load_bin_edges;
+  const loadBinEdges = rdf.load_bin_edges;
   const firstLoadBinEdge = loadBinEdges[0];
   const lastLoadBinEdge = loadBinEdges[loadBinEdges.length - 1];
 
@@ -272,7 +252,7 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad, debug }) {
   /** @type {Object.<string, number[]} - used to calculate 'postEereTotal' returned data, by pollutant */
   const hourlyPostEereTotals = {};
 
-  const totalHours = rdfJson.regional_load.length;
+  const totalHours = rdf.regional_load.length;
 
   pollutants.forEach((pollutant) => {
     regionalData[pollutant] = {};
@@ -282,11 +262,14 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad, debug }) {
     hourlyPostEereTotals[pollutant] = new Array(totalHours).fill(0);
   });
 
-  // iterate over each hour in the year (8760 in non-leap years)
-  for (const [i, hourlyLoadData] of rdfJson.regional_load.entries()) {
+  /**
+   * Iterate over each hour in the year (8760 in non-leap years)
+   */
+  for (const [i, hourlyLoadData] of rdf.regional_load.entries()) {
     const month = hourlyLoadData.month; // numeric month of load
+
     const originalLoad = hourlyLoadData.regional_load_mw; // original regional load (mwh) for the hour
-    const postEereLoad = originalLoad + eereLoad[i]; // EERE-merged regional load (mwh) for the hour
+    const postEereLoad = originalLoad + hourlyEere[i]; // EERE-merged regional load (mwh) for the hour
 
     const originalLoadInBounds = originalLoad >= firstLoadBinEdge && originalLoad <= lastLoadBinEdge; // prettier-ignore
     const postEereLoadInBounds = postEereLoad >= firstLoadBinEdge && postEereLoad <= lastLoadBinEdge; // prettier-ignore
@@ -294,23 +277,25 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad, debug }) {
     // filter out outliers
     if (!(originalLoadInBounds && postEereLoadInBounds)) continue;
 
-    // get index of item closest to originalLoad or postEereLoad in loadBinEdges array
-    const originalLoadBinEdgeIndex = excelMatch(loadBinEdges, originalLoad);
-    const postEereLoadBinEdgeIndex = excelMatch(loadBinEdges, postEereLoad);
+    // get index of load bin edge closest to originalLoad or postEereLoad
+    const originalLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, originalLoad); // prettier-ignore
+    const postEereLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, postEereLoad); // prettier-ignore
 
-    // set datasetMedians, based on nonOzoneSeasonMedians value and the current month
-    // NOTE: if nonOzoneSeasonMedians doesn't exist (in the case of generation),
-    // datasetMedians will be the same as ozoneSeasonMedians (which is rdfJson.data.generation)
-    const datasetMedians = nonOzoneSeasonMedians
-      ? month >= 5 && month <= 9
-        ? ozoneSeasonMedians
-        : nonOzoneSeasonMedians
-      : ozoneSeasonMedians;
+    /**
+     * Ozone season is between May and September, so use the correct medians
+     * dataset for the current month
+     */
+    const datasetMedians = !nonOzoneSeasonMedians
+      ? ozoneSeasonMedians
+      : month >= 5 && month <= 9
+      ? ozoneSeasonMedians
+      : nonOzoneSeasonMedians;
 
-    // iterate over each EGU (electric generating unit) in ozoneSeasonData
-    // (e.g. rdfJson.data.generation, rdfJson.data.so2, etc.)
-    // the total number of EGUs varies per region...
-    // (less than 100 for the RM region; more than 1000 for the SE region)
+    /**
+     * Iterate over each electric generating unit (EGU). The total number of
+     * EGUs varries per region (less than 100 for the RM region; more than
+     * 1000 for the SE region)
+     */
     ozoneSeasonData.forEach((egu, eguIndex) => {
       const medians = datasetMedians[eguIndex]; // use the medians from either the ozone season or non-ozone season datasets
       const stateId = egu.state;
@@ -324,11 +309,13 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad, debug }) {
         edgeB: loadBinEdges[originalLoadBinEdgeIndex + 1],
       });
 
-      // handle special exclusions for emissions changes at specific EGUs
-      // (specifically added for errors with SO2 reporting, but the RDFs have
-      // been updated to include the `infreq_emissions_flag` for all metrics
-      // for consistency, which allows other metrics at specific EGUs
-      // to be excluded in the future)
+      /**
+       * Handle special exclusions for emissions changes at specific EGUs
+       * (specifically added for errors with SO2 reporting, but the RDFs were
+       * updated to include the `infreq_emissions_flag` for all pollutants for
+       * consistency, which allows other pollutants at specific EGUs to be
+       * excluded in the future)
+       */
       const calculatedPostEere =
         egu.infreq_emissions_flag === 1
           ? calculatedOriginal
@@ -454,7 +441,7 @@ function getDisplacement({ year, metric, rdfJson, neiJson, eereLoad, debug }) {
 
   pollutants.forEach((pollutant) => {
     displacements[pollutant] = {
-      regionId: rdfJson.region.region_abbv,
+      regionId: rdf.region.region_abbv,
       originalTotal: hourlyOriginalTotals[pollutant].reduce((a, b) => a + (b || 0), 0), // prettier-ignore
       postEereTotal: hourlyPostEereTotals[pollutant].reduce((a, b) => a + (b || 0), 0), // prettier-ignore
       regionalData: regionalData[pollutant],
