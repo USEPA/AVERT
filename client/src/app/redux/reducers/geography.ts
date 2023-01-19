@@ -41,7 +41,7 @@ export type EGUData = {
   medians: number[];
 };
 
-type RDFJSON = {
+export type RDFJSON = {
   region: {
     region_abbv: string;
     region_name: string;
