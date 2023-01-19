@@ -466,7 +466,7 @@ function getDisplacement(options) {
 }
 
 /**
- * Calculates displacement for a provided region.
+ * Calculates emissions changes for a provided region.
  *
  * @param {{
  *  year: number,
@@ -475,7 +475,7 @@ function getDisplacement(options) {
  *  hourlyEere: number[]
  * }} options
  */
-function calculateRegionalDisplacement(options) {
+function calculateEmissionsChanges(options) {
   const { year, rdf, neiData, hourlyEere } = options;
 
   /**
@@ -695,5 +695,5 @@ function calculateRegionalDisplacement(options) {
 
 module.exports = {
   getDisplacement,
-  calculateRegionalDisplacement,
+  calculateEmissionsChanges,
 };

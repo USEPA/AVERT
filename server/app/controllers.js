@@ -3,7 +3,7 @@ const { readFile } = require("node:fs/promises");
 const config = require("./config");
 const {
   getDisplacement,
-  calculateRegionalDisplacement,
+  calculateEmissionsChanges,
 } = require("./calculations");
 
 /**
@@ -44,6 +44,27 @@ const eere = {
 };
 
 /**
+ * Emissions Controller
+ */
+const emissions = {
+  calculate: async (ctx) => {
+    const year = config.year;
+    const body = await ctx.request.body;
+    const { regionId, hourlyEere } = body;
+
+    const rdfFileName = `app/data/${config.regions[regionId].rdf}`;
+    const rdfFileData = await readFile(rdfFileName, { encoding: "utf8" });
+    const rdf = JSON.parse(rdfFileData);
+
+    const neiFileName = "app/data/annual-emission-factors.json";
+    const neiFileData = await readFile(neiFileName, { encoding: "utf8" });
+    const neiData = JSON.parse(neiFileData);
+
+    ctx.body = calculateEmissionsChanges({ year, rdf, neiData, hourlyEere });
+  },
+};
+
+/**
  * Receives EERE data and region, and returns displacement data.
  *
  * @param {*} ctx
@@ -75,21 +96,6 @@ async function calculateMetric(ctx, metric) {
  * Displacement Controller
  */
 const displacement = {
-  calculate: async (ctx) => {
-    const year = config.year;
-    const body = await ctx.request.body;
-    const { regionId, hourlyEere } = body;
-
-    const rdfFileName = `app/data/${config.regions[regionId].rdf}`;
-    const rdfFileData = await readFile(rdfFileName, { encoding: "utf8" });
-    const rdf = JSON.parse(rdfFileData);
-
-    const neiFileName = "app/data/annual-emission-factors.json";
-    const neiFileData = await readFile(neiFileName, { encoding: "utf8" });
-    const neiData = JSON.parse(neiFileData);
-
-    ctx.body = calculateRegionalDisplacement({ year, rdf, neiData, hourlyEere }); // prettier-ignore
-  },
   calculateGeneration: (ctx) => calculateMetric(ctx, "generation"),
   calculateSO2: (ctx) => calculateMetric(ctx, "so2"),
   calculateNOx: (ctx) => calculateMetric(ctx, "nox"),
@@ -100,5 +106,6 @@ const displacement = {
 module.exports = {
   rdf,
   eere,
+  emissions,
   displacement,
 };
