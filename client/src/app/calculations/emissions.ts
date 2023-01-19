@@ -29,6 +29,8 @@ type NEIData = {
 
 type RDFDataField = keyof RDFJSON['data'];
 
+export type EmissionsChanges = ReturnType<typeof calculateEmissionsChanges>;
+
 /**
  * Adds a number to an array of numbers, sorts it, and returns the index of the
  * number directly before the one that was inserted
@@ -59,9 +61,9 @@ function calculateLinear(options: {
 }
 
 /**
- * Calculates displacement for a provided region.
+ * Calculates emissions changes for a provided region.
  */
-export function calculateRegionalDisplacement(options: {
+export function calculateEmissionsChanges(options: {
   year: number;
   rdf: RDFJSON;
   neiData: NEIData;
