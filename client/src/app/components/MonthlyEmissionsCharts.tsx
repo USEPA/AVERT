@@ -465,7 +465,6 @@ function totalEguEmissions(egus: EmissionsChanges) {
 
 export function MonthlyEmissionsCharts() {
   const dispatch = useDispatch();
-  const status = useTypedSelector(({ displacement }) => displacement.status);
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const emissionsChanges = useTypedSelector(
     ({ results }) => results.emissionsChanges,
@@ -975,7 +974,7 @@ export function MonthlyEmissionsCharts() {
       </div>
 
       <div data-avert-charts>
-        {status === 'complete' && (
+        {emissionsChanges.status === 'success' && (
           <div className="grid-container padding-0 maxw-full">
             <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
               {currentPollutants.length === 0 ? (

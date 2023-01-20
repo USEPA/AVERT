@@ -3,7 +3,7 @@ import type { Pollutant, StateId } from 'app/config';
 
 type StatesAndCounties = Partial<{ [key in StateId]: string[] }>;
 
-type Aggregation = 'region' | 'state' | 'county';
+export type Aggregation = 'region' | 'state' | 'county';
 
 type Source = 'power' | 'power-vehicles';
 
