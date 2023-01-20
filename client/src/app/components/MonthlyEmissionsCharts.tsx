@@ -4,10 +4,7 @@ import HighchartsReact from 'highcharts-react-official';
 import { useDispatch } from 'react-redux';
 // ---
 import { useTypedSelector } from 'app/redux/index';
-import type {
-  ReplacementPollutantName,
-  MonthlyDisplacement,
-} from 'app/redux/reducers/displacement';
+import type { MonthlyDisplacement } from 'app/redux/reducers/displacement';
 import { calculateMonthlyData } from 'app/redux/reducers/displacement';
 import type { Aggregation } from 'app/redux/reducers/monthlyEmissions';
 import {
@@ -37,6 +34,12 @@ function Chart(props: {
   const totalMonthlyEmissionChanges = useTypedSelector(
     ({ transportation }) => transportation.totalMonthlyEmissionChanges,
   );
+  const egusNeedingEmissionsReplacement = useTypedSelector(
+    ({ results }) => results.egusNeedingEmissionsReplacement,
+  );
+  const emissionsReplacements = useTypedSelector(
+    ({ results }) => results.emissionsReplacements,
+  );
   const currentAggregation = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.aggregation,
   );
@@ -54,9 +57,6 @@ function Chart(props: {
   );
   const currentUnit = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.unit,
-  );
-  const egusNeedingReplacement = useTypedSelector(
-    ({ displacement }) => displacement.egusNeedingReplacement,
   );
 
   const vehicleEmissions = Object.values(totalMonthlyEmissionChanges).reduce(
@@ -178,10 +178,8 @@ function Chart(props: {
   const selectedRegion = useSelectedRegion();
   const selectedStateRegions = useSelectedStateRegions();
 
-  const replacementPotentiallyNeeded = ['generation', 'so2', 'nox', 'co2'];
-
-  const flaggedEGUs = replacementPotentiallyNeeded.includes(pollutant)
-    ? egusNeedingReplacement[pollutant as ReplacementPollutantName]
+  const flaggedEGUs = Object.keys(emissionsReplacements).includes(pollutant)
+    ? Object.values(egusNeedingEmissionsReplacement)
     : [];
 
   const flaggedRegion =
@@ -189,8 +187,7 @@ function Chart(props: {
     (geographicFocus === 'regions'
       ? flaggedEGUs.length > 0
       : (flaggedEGUs.length > 0 && currentRegionId === 'ALL') ||
-        flaggedEGUs.filter((egu) => egu.regionId === currentRegionId).length >
-          0);
+        flaggedEGUs.filter((egu) => egu.region === currentRegionId).length > 0);
 
   const flaggedState =
     currentAggregation === 'state' &&
