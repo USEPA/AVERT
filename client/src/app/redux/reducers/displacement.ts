@@ -17,8 +17,6 @@ import countyFips from 'app/data/county-fips.json';
 
 type PollutantName = 'generation' | Pollutant;
 
-type AnnualPollutantName = 'ozoneGeneration' | 'ozoneNox' | PollutantName;
-
 export type ReplacementPollutantName = 'generation' | 'so2' | 'nox' | 'co2';
 
 type ReplacementEGUsByPollutant = {
@@ -118,21 +116,6 @@ type DisplacementAction =
       };
     }
   | {
-      type: 'displacement/STORE_ANNUAL_REGIONAL_DISPLACEMENTS';
-      payload: {
-        annualRegionalDisplacements: {
-          [key in AnnualPollutantName]: {
-            original: number;
-            postEere: number;
-            impacts: number;
-            replacedOriginal: number;
-            replacedPostEere: number;
-          };
-        };
-        egusNeedingReplacement: ReplacementEGUsByPollutant;
-      };
-    }
-  | {
       type: 'displacement/STORE_DOWNLOADABLE_DATA';
       payload: {
         countyData: CountyDataRow[];
@@ -143,49 +126,14 @@ type DisplacementAction =
 type DisplacementState = {
   status: 'ready' | 'started' | 'complete' | 'error';
   regionalDisplacements: RegionalDisplacements;
-  annualRegionalDisplacements: {
-    [key in AnnualPollutantName]: {
-      original: number;
-      postEere: number;
-      impacts: number;
-      replacedOriginal: number;
-      replacedPostEere: number;
-    };
-  };
-  egusNeedingReplacement: ReplacementEGUsByPollutant;
   downloadableCountyData: CountyDataRow[];
   downloadableCobraData: CobraDataRow[];
-};
-
-const initialPollutantDisplacement = {
-  original: 0,
-  postEere: 0,
-  impacts: 0,
-  replacedOriginal: 0,
-  replacedPostEere: 0,
 };
 
 // reducer
 const initialState: DisplacementState = {
   status: 'ready',
   regionalDisplacements: {},
-  annualRegionalDisplacements: {
-    generation: initialPollutantDisplacement,
-    ozoneGeneration: initialPollutantDisplacement,
-    so2: initialPollutantDisplacement,
-    nox: initialPollutantDisplacement,
-    ozoneNox: initialPollutantDisplacement,
-    co2: initialPollutantDisplacement,
-    pm25: initialPollutantDisplacement,
-    vocs: initialPollutantDisplacement,
-    nh3: initialPollutantDisplacement,
-  },
-  egusNeedingReplacement: {
-    generation: [],
-    so2: [],
-    nox: [],
-    co2: [],
-  },
   downloadableCountyData: [],
   downloadableCobraData: [],
 };
@@ -200,23 +148,6 @@ export default function reducer(
       return {
         status: 'ready',
         regionalDisplacements: {},
-        annualRegionalDisplacements: {
-          generation: initialPollutantDisplacement,
-          ozoneGeneration: initialPollutantDisplacement,
-          so2: initialPollutantDisplacement,
-          nox: initialPollutantDisplacement,
-          ozoneNox: initialPollutantDisplacement,
-          co2: initialPollutantDisplacement,
-          pm25: initialPollutantDisplacement,
-          vocs: initialPollutantDisplacement,
-          nh3: initialPollutantDisplacement,
-        },
-        egusNeedingReplacement: {
-          generation: [],
-          so2: [],
-          nox: [],
-          co2: [],
-        },
         downloadableCountyData: [],
         downloadableCobraData: [],
       };
@@ -274,17 +205,6 @@ export default function reducer(
       }
 
       return updatedState;
-    }
-
-    case 'displacement/STORE_ANNUAL_REGIONAL_DISPLACEMENTS': {
-      const { annualRegionalDisplacements, egusNeedingReplacement } =
-        action.payload;
-
-      return {
-        ...state,
-        annualRegionalDisplacements,
-        egusNeedingReplacement,
-      };
     }
 
     case 'displacement/STORE_DOWNLOADABLE_DATA': {
@@ -389,13 +309,10 @@ function receiveDisplacement(): AppThunk {
       return setTimeout(() => dispatch(receiveDisplacement()), 1_000);
     }
 
-    const { annualRegionalDisplacements, egusNeedingReplacement } =
-      setAnnualRegionalDisplacements(regionalDisplacements, geography.regions);
-
-    dispatch({
-      type: 'displacement/STORE_ANNUAL_REGIONAL_DISPLACEMENTS',
-      payload: { annualRegionalDisplacements, egusNeedingReplacement },
-    });
+    const { egusNeedingReplacement } = setAnnualRegionalDisplacements(
+      regionalDisplacements,
+      geography.regions,
+    );
 
     const { regionsDisplacements, statesDisplacements, countiesDisplacements } =
       setMonthlyEmissionChanges(regionalDisplacements);
@@ -630,7 +547,6 @@ function setAnnualRegionalDisplacements(
   }
 
   return {
-    annualRegionalDisplacements: data,
     egusNeedingReplacement,
   };
 }
