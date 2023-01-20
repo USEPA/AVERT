@@ -9,6 +9,7 @@ import type {
   MonthlyDisplacement,
 } from 'app/redux/reducers/displacement';
 import { calculateMonthlyData } from 'app/redux/reducers/displacement';
+import type { Aggregation } from 'app/redux/reducers/monthlyEmissions';
 import {
   setMonthlyEmissionsAggregation,
   setMonthlyEmissionsRegionId,
@@ -18,6 +19,7 @@ import {
   setMonthlyEmissionsSource,
   setMonthlyEmissionsUnit,
 } from 'app/redux/reducers/monthlyEmissions';
+import type { EmissionsChanges } from 'app/calculations/emissions';
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 import type { Pollutant, RegionId, StateId } from 'app/config';
 import { regions, states } from 'app/config';
@@ -80,6 +82,8 @@ function Chart(props: {
       NH3: number[];
     },
   );
+
+  // console.log({ powerData, vehicleEmissions }); // NOTE: for debugging purposes
 
   const so2Data = [
     {
@@ -403,10 +407,69 @@ function Chart(props: {
   );
 }
 
+/**
+ * Returns EGUs filtered by current aggregation (and also current state and
+ * county if either of those levels of aggregation are currently selected).
+ */
+function setFilteredEgus(options: {
+  egus: EmissionsChanges;
+  aggregation: Aggregation;
+  regionId: RegionId | 'ALL';
+  stateId: StateId;
+  county: string;
+}) {
+  const { egus, aggregation, regionId, stateId, county } = options;
+
+  if (Object.keys(egus).length === 0) {
+    return {};
+  }
+
+  const result = Object.entries(egus).reduce((object, [eguId, eguData]) => {
+    const regionMatch =
+      aggregation === 'region' &&
+      (regionId === 'ALL' || eguData.region === regionId);
+    const stateMatch = aggregation === 'state' && eguData.state === stateId;
+    const countyMatch = aggregation === 'county' && eguData.county === county;
+
+    if (regionMatch || stateMatch || countyMatch) {
+      object[eguId] = eguData;
+    }
+
+    return object;
+  }, {} as EmissionsChanges);
+
+  return result;
+}
+
+/**
+ * Total up the pollutant emissions data of all provided EGUs.
+ */
+function totalEguEmissions(egus: EmissionsChanges) {
+  const result = Object.values(egus).reduce((object, eguData) => {
+    Object.entries(eguData.data).forEach(([key, annualData]) => {
+      const pollutant = key as keyof EmissionsChanges[string]['data'];
+      object[pollutant] ??= {};
+
+      Object.entries(annualData).forEach(([month, monthlyData]) => {
+        object[pollutant][Number(month)] ??= { original: 0, postEere: 0 };
+        object[pollutant][Number(month)].original += monthlyData.original;
+        object[pollutant][Number(month)].postEere += monthlyData.postEere;
+      });
+    });
+
+    return object;
+  }, {} as EmissionsChanges[string]['data']);
+
+  return result;
+}
+
 export function MonthlyEmissionsCharts() {
   const dispatch = useDispatch();
   const status = useTypedSelector(({ displacement }) => displacement.status);
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
+  const emissionsChanges = useTypedSelector(
+    ({ results }) => results.emissionsChanges,
+  );
   const currentAggregation = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.aggregation,
   );
@@ -434,37 +497,9 @@ export function MonthlyEmissionsCharts() {
   const availableCounties = useTypedSelector(({ monthlyEmissions }) => {
     return monthlyEmissions.statesAndCounties[currentStateId as StateId]?.sort(); // prettier-ignore
   });
-  const monthlyEmissionChanges = useTypedSelector(
-    ({ displacement }) => displacement.monthlyEmissionChanges,
-  );
 
   const selectedRegion = useSelectedRegion();
   const selectedStateRegions = useSelectedStateRegions();
-
-  // set monthlyData for each pollutant, based on selected aggregation
-  const initialMonthlyData = {
-    1: { original: 0, postEere: 0 },
-    2: { original: 0, postEere: 0 },
-    3: { original: 0, postEere: 0 },
-    4: { original: 0, postEere: 0 },
-    5: { original: 0, postEere: 0 },
-    6: { original: 0, postEere: 0 },
-    7: { original: 0, postEere: 0 },
-    8: { original: 0, postEere: 0 },
-    9: { original: 0, postEere: 0 },
-    10: { original: 0, postEere: 0 },
-    11: { original: 0, postEere: 0 },
-    12: { original: 0, postEere: 0 },
-  };
-
-  const powerData: { [key in Pollutant]: MonthlyDisplacement } = {
-    so2: { ...initialMonthlyData },
-    nox: { ...initialMonthlyData },
-    co2: { ...initialMonthlyData },
-    pm25: { ...initialMonthlyData },
-    vocs: { ...initialMonthlyData },
-    nh3: { ...initialMonthlyData },
-  };
 
   const regionId =
     geographicFocus === 'regions' && selectedRegion
@@ -473,28 +508,15 @@ export function MonthlyEmissionsCharts() {
       ? selectedStateRegions[0].id
       : (currentRegionId as RegionId);
 
-  const stateId = currentStateId as StateId;
+  const filteredEgus = setFilteredEgus({
+    egus: emissionsChanges.data,
+    aggregation: currentAggregation,
+    regionId,
+    stateId: currentStateId as StateId,
+    county: currentCountyName,
+  });
 
-  for (const item of ['so2', 'nox', 'co2', 'pm25', 'vocs', 'nh3']) {
-    const pollutant = item as Pollutant;
-
-    if (currentAggregation === 'region') {
-      const displacement = monthlyEmissionChanges.regions[pollutant][regionId];
-      powerData[pollutant] = displacement || initialMonthlyData;
-    }
-
-    if (currentAggregation === 'state') {
-      const displacement = monthlyEmissionChanges.states[pollutant][stateId];
-      powerData[pollutant] = displacement || initialMonthlyData;
-    }
-
-    if (currentAggregation === 'county') {
-      const displacement = monthlyEmissionChanges.counties[pollutant][stateId]?.[currentCountyName]; // prettier-ignore
-      powerData[pollutant] = displacement || initialMonthlyData;
-    }
-  }
-
-  // console.log(powerData); // NOTE: for debugging purposes
+  const powerData = totalEguEmissions(filteredEgus);
 
   return (
     <>
