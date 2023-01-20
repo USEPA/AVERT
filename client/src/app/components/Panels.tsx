@@ -235,7 +235,7 @@ export function Panels() {
     ({ eere }) => eere.combinedProfile.softValid,
   );
   const serverCalcError = useTypedSelector(
-    ({ displacement }) => displacement.status === 'error',
+    ({ results }) => results.emissionsChanges.status === 'failure',
   );
 
   const [cobraApiReady, setCobraApiReady] = useState(false);
