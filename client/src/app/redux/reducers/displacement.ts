@@ -133,14 +133,6 @@ type DisplacementAction =
       };
     }
   | {
-      type: 'displacement/STORE_MONTHLY_EMISSION_CHANGES';
-      payload: {
-        regions: RegionsDisplacementsByPollutant;
-        states: StatesDisplacementsByPollutant;
-        counties: CountiesDisplacementsByPollutant;
-      };
-    }
-  | {
       type: 'displacement/STORE_DOWNLOADABLE_DATA';
       payload: {
         countyData: CountyDataRow[];
@@ -162,11 +154,6 @@ type DisplacementState = {
   };
   egusNeedingReplacement: ReplacementEGUsByPollutant;
   annualStateEmissionChanges: Partial<{ [key in StateId]: StateChange }>;
-  monthlyEmissionChanges: {
-    regions: RegionsDisplacementsByPollutant;
-    states: StatesDisplacementsByPollutant;
-    counties: CountiesDisplacementsByPollutant;
-  };
   downloadableCountyData: CountyDataRow[];
   downloadableCobraData: CobraDataRow[];
 };
@@ -177,15 +164,6 @@ const initialPollutantDisplacement = {
   impacts: 0,
   replacedOriginal: 0,
   replacedPostEere: 0,
-};
-
-const initialDisplacementByPollutant = {
-  so2: {},
-  nox: {},
-  co2: {},
-  pm25: {},
-  vocs: {},
-  nh3: {},
 };
 
 // reducer
@@ -210,11 +188,6 @@ const initialState: DisplacementState = {
     co2: [],
   },
   annualStateEmissionChanges: {},
-  monthlyEmissionChanges: {
-    regions: initialDisplacementByPollutant,
-    states: initialDisplacementByPollutant,
-    counties: initialDisplacementByPollutant,
-  },
   downloadableCountyData: [],
   downloadableCobraData: [],
 };
@@ -247,11 +220,6 @@ export default function reducer(
           co2: [],
         },
         annualStateEmissionChanges: {},
-        monthlyEmissionChanges: {
-          regions: initialDisplacementByPollutant,
-          states: initialDisplacementByPollutant,
-          counties: initialDisplacementByPollutant,
-        },
         downloadableCountyData: [],
         downloadableCobraData: [],
       };
@@ -355,19 +323,6 @@ export default function reducer(
         ...state,
         annualRegionalDisplacements,
         egusNeedingReplacement,
-      };
-    }
-
-    case 'displacement/STORE_MONTHLY_EMISSION_CHANGES': {
-      const { regions, states, counties } = action.payload;
-
-      return {
-        ...state,
-        monthlyEmissionChanges: {
-          regions,
-          states,
-          counties,
-        },
       };
     }
 
@@ -525,15 +480,6 @@ function receiveDisplacement(): AppThunk {
 
     const { regionsDisplacements, statesDisplacements, countiesDisplacements } =
       setMonthlyEmissionChanges(regionalDisplacements);
-
-    dispatch({
-      type: 'displacement/STORE_MONTHLY_EMISSION_CHANGES',
-      payload: {
-        regions: regionsDisplacements,
-        states: statesDisplacements,
-        counties: countiesDisplacements,
-      },
-    });
 
     const { countyData, cobraData } = setDownloadableData({
       egusNeedingReplacement,
