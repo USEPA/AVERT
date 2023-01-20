@@ -643,12 +643,12 @@ function calculateEmissionsChanges(options) {
         const neiFieldData = neiEguData?.[field];
 
         const original =
-          neiFields.includes(field) && neiFieldData
+          neiFields.includes(field) && neiFieldData !== undefined
             ? calculatedOriginal * neiFieldData
             : calculatedOriginal;
 
         const postEere =
-          neiFields.includes(field) && neiFieldData
+          neiFields.includes(field) && neiFieldData !== undefined
             ? calculatedPostEere * neiFieldData
             : calculatedPostEere;
 
