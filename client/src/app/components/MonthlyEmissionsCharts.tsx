@@ -428,11 +428,11 @@ export function MonthlyEmissionsCharts() {
   const currentUnit = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.unit,
   );
-  const availableStates = useTypedSelector(({ displacement }) => {
-    return Object.keys(displacement.statesAndCounties).sort();
+  const availableStates = useTypedSelector(({ monthlyEmissions }) => {
+    return Object.keys(monthlyEmissions.statesAndCounties).sort();
   });
-  const availableCounties = useTypedSelector(({ displacement }) => {
-    return displacement.statesAndCounties[currentStateId as StateId]?.sort();
+  const availableCounties = useTypedSelector(({ monthlyEmissions }) => {
+    return monthlyEmissions.statesAndCounties[currentStateId as StateId]?.sort(); // prettier-ignore
   });
   const monthlyEmissionChanges = useTypedSelector(
     ({ displacement }) => displacement.monthlyEmissionChanges,

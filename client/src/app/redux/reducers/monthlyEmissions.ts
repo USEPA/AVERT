@@ -1,4 +1,7 @@
-import type { Pollutant } from 'app/config';
+import type { AppThunk } from 'app/redux/index';
+import type { Pollutant, StateId } from 'app/config';
+
+type StatesAndCounties = Partial<{ [key in StateId]: string[] }>;
 
 type Aggregation = 'region' | 'state' | 'county';
 
@@ -8,6 +11,10 @@ export type Unit = 'emissions' | 'percentages';
 
 type Action =
   | { type: 'monthlyEmissions/RESET_MONTHLY_EMISSIONS' }
+  | {
+      type: 'monthlyEmissions/SET_STATES_AND_COUNTIES';
+      payload: { statesAndCounties: StatesAndCounties };
+    }
   | {
       type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_AGGREGATION';
       payload: { aggregation: Aggregation };
@@ -38,6 +45,7 @@ type Action =
     };
 
 type State = {
+  statesAndCounties: StatesAndCounties;
   aggregation: Aggregation;
   regionId: string;
   stateId: string;
@@ -48,6 +56,7 @@ type State = {
 };
 
 const initialState: State = {
+  statesAndCounties: {},
   aggregation: 'region',
   regionId: '',
   stateId: '',
@@ -63,15 +72,15 @@ export default function reducer(
 ): State {
   switch (action.type) {
     case 'monthlyEmissions/RESET_MONTHLY_EMISSIONS': {
-      // initial state
+      return initialState;
+    }
+
+    case 'monthlyEmissions/SET_STATES_AND_COUNTIES': {
+      const { statesAndCounties } = action.payload;
+
       return {
-        aggregation: 'region',
-        regionId: '',
-        stateId: '',
-        countyName: '',
-        pollutants: [],
-        source: 'power',
-        unit: 'emissions',
+        ...state,
+        statesAndCounties,
       };
     }
 
@@ -199,5 +208,40 @@ export function setMonthlyEmissionsUnit(unit: Unit) {
   return {
     type: 'monthlyEmissions/SET_MONTHLY_EMISSIONS_UNIT',
     payload: { unit },
+  };
+}
+
+/**
+ * Called every time the `results` reducer's `calculateEmissionsChanges()`
+ * function is called.
+ *
+ * _(e.g. whenever the "Get Results" button is clicked on the "Set EE/RE
+ * Impacts" page)_
+ */
+export function setStatesAndCounties(): AppThunk {
+  return (dispatch, getState) => {
+    const { results } = getState();
+    const { emissionsChanges } = results;
+
+    if (emissionsChanges.status !== 'success') return;
+
+    const statesAndCounties: StatesAndCounties = {};
+
+    Object.values(emissionsChanges.data).forEach((egu) => {
+      statesAndCounties[egu.state as StateId] ??= [];
+      const state = statesAndCounties[egu.state as StateId];
+      if (state && !state.includes(egu.county)) state.push(egu.county);
+    });
+
+    // sort county names within each state
+    for (const key in statesAndCounties) {
+      const stateId = key as StateId;
+      statesAndCounties[stateId] = statesAndCounties[stateId]?.sort();
+    }
+
+    dispatch({
+      type: 'monthlyEmissions/SET_STATES_AND_COUNTIES',
+      payload: { statesAndCounties },
+    });
   };
 }

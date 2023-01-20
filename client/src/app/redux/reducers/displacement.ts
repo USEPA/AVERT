@@ -59,8 +59,6 @@ type RegionalDisplacements = Partial<{
   [key in RegionId]: RegionalDisplacement;
 }>;
 
-type StatesAndCounties = Partial<{ [key in StateId]: string[] }>;
-
 export type StateChange = {
   id: StateId;
   name: string;
@@ -120,10 +118,6 @@ type DisplacementAction =
       };
     }
   | {
-      type: 'displacement/STORE_STATES_AND_COUNTIES';
-      payload: { statesAndCounties: StatesAndCounties };
-    }
-  | {
       type: 'displacement/STORE_ANNUAL_REGIONAL_DISPLACEMENTS';
       payload: {
         annualRegionalDisplacements: {
@@ -157,7 +151,6 @@ type DisplacementAction =
 type DisplacementState = {
   status: 'ready' | 'started' | 'complete' | 'error';
   regionalDisplacements: RegionalDisplacements;
-  statesAndCounties: StatesAndCounties;
   annualRegionalDisplacements: {
     [key in AnnualPollutantName]: {
       original: number;
@@ -199,7 +192,6 @@ const initialDisplacementByPollutant = {
 const initialState: DisplacementState = {
   status: 'ready',
   regionalDisplacements: {},
-  statesAndCounties: {},
   annualRegionalDisplacements: {
     generation: initialPollutantDisplacement,
     ozoneGeneration: initialPollutantDisplacement,
@@ -237,7 +229,6 @@ export default function reducer(
       return {
         status: 'ready',
         regionalDisplacements: {},
-        statesAndCounties: {},
         annualRegionalDisplacements: {
           generation: initialPollutantDisplacement,
           ozoneGeneration: initialPollutantDisplacement,
@@ -353,15 +344,6 @@ export default function reducer(
             [pollutantName]: previousPollutantValue + pollutantValue,
           },
         },
-      };
-    }
-
-    case 'displacement/STORE_STATES_AND_COUNTIES': {
-      const { statesAndCounties } = action.payload;
-
-      return {
-        ...state,
-        statesAndCounties,
       };
     }
 
@@ -533,13 +515,6 @@ function receiveDisplacement(): AppThunk {
       return setTimeout(() => dispatch(receiveDisplacement()), 1_000);
     }
 
-    const statesAndCounties = setStatesAndCounties(regionalDisplacements);
-
-    dispatch({
-      type: 'displacement/STORE_STATES_AND_COUNTIES',
-      payload: { statesAndCounties },
-    });
-
     const { annualRegionalDisplacements, egusNeedingReplacement } =
       setAnnualRegionalDisplacements(regionalDisplacements, geography.regions);
 
@@ -599,44 +574,6 @@ export function calculateMonthlyData(data: MonthlyDisplacement, unit: Unit) {
   return unit === 'emissions'
     ? monthlyEmissionsChanges
     : monthlyPercentageChanges;
-}
-
-function setStatesAndCounties(regionalDisplacements: RegionalDisplacements) {
-  // build up states and counties from each region's county data
-  const statesAndCounties: StatesAndCounties = {};
-
-  for (const regionId in regionalDisplacements) {
-    const displacement = regionalDisplacements[regionId as RegionId];
-
-    if (displacement) {
-      // states and counties are the same for all pollutants, so we'll
-      // just use generation (it really doesn't matter which we use)
-      const { countyData } = displacement.generation;
-
-      for (const key in countyData) {
-        const stateId = key as StateId;
-        const stateCountyNames = Object.keys(countyData[stateId]).sort();
-        // initialize counties array for state, if state doesn't already exist
-        // in `statesAndCounties` and add state county names to array
-        // (we initialize and push counties instead of directly assigning
-        // counties to a state because states exist within multiple regions,
-        // but counties only exist within a single region, so different
-        // regions share states but have different counties)
-        if (!statesAndCounties[stateId]) {
-          statesAndCounties[stateId] = [];
-        }
-        statesAndCounties[stateId]?.push(...stateCountyNames);
-      }
-    }
-  }
-
-  // sort county names within each state
-  for (const key in statesAndCounties) {
-    const stateId = key as StateId;
-    statesAndCounties[stateId] = statesAndCounties[stateId]?.sort();
-  }
-
-  return statesAndCounties;
 }
 
 function setAnnualRegionalDisplacements(

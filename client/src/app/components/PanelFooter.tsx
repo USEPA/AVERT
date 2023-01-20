@@ -8,7 +8,7 @@ import { useTypedSelector } from 'app/redux/index';
 import { setActiveStep } from 'app/redux/reducers/panel';
 import { resetEEREInputs } from 'app/redux/reducers/eere';
 import { fetchRegionsData } from 'app/redux/reducers/geography';
-import { calculateEmissionsChanges } from 'app/redux/reducers/emissions';
+import { calculateEmissionsChanges } from 'app/redux/reducers/results';
 import {
   calculateDisplacement,
   resetDisplacement,
