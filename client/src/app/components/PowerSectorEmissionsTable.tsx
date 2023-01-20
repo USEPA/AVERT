@@ -1,14 +1,12 @@
 import { ReactNode } from 'react';
-import type { EmissionsChanges } from 'app/calculations/emissions';
-import type { RegionId } from 'app/config';
-import { regions } from 'app/config';
 // ---
 import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import { ReplacementPollutantName } from 'app/redux/reducers/displacement';
+import type { EmissionsReplacements } from 'app/redux/reducers/results';
+import type { EmissionsChanges } from 'app/calculations/emissions';
 
 type EGUsAnnualData = ReturnType<typeof sumEgusAnnualData>;
-type EmissionsReplacements = ReturnType<typeof setEmissionsReplacements>;
 
 function formatNumber(number: number) {
   if (number < 10 && number > -10) return '--';
@@ -87,76 +85,13 @@ function sumEgusAnnualData(egus: EmissionsChanges) {
 }
 
 /**
- * An EGU is marked as needing emissions "replacement" if it's `emissionsFlag`
- * array isn't empty. In calculating the emissions changes (via the server app's
- * `calculateEmissionsChanges()` function), a pollutant that needs replacement
- * will have the `infreq_emissions_flag` property's value of 1 for the given
- * given in the region's RDF.
- */
-function getEgusNeedingEmissionsReplacement(egus: EmissionsChanges) {
-  if (Object.keys(egus).length === 0) return {};
-
-  const result = Object.entries(egus).reduce((object, [eguId, eguData]) => {
-    if (eguData.emissionsFlags.length !== 0) {
-      object[eguId] = eguData;
-    }
-
-    return object;
-  }, {} as EmissionsChanges);
-
-  return result;
-}
-
-/**
- * Build up emissions replacement values for each pollutant from provided EGUs
- * needing emissions replacement, and the region's actual emissions value for
- * that particular pollutant.
- */
-function setEmissionsReplacements(egus: EmissionsChanges) {
-  type EmissionsFlagsField = EmissionsChanges[string]['emissionsFlags'][number];
-
-  if (Object.keys(egus).length === 0) {
-    return {} as { [pollutant in EmissionsFlagsField]: number };
-  }
-
-  const replacementsByRegion = Object.values(egus).reduce(
-    (object, egu) => {
-      const regionId = egu.region as RegionId;
-
-      egu.emissionsFlags.forEach((pollutant) => {
-        object[pollutant] ??= {};
-        object[pollutant][regionId] = regions[regionId].actualEmissions[pollutant]; // prettier-ignore
-      });
-
-      return object;
-    },
-    {} as {
-      [pollutant in EmissionsFlagsField]: Partial<{
-        [regionId in RegionId]: number;
-      }>;
-    },
-  );
-
-  const result = Object.entries(replacementsByRegion).reduce(
-    (object, [key, regionData]) => {
-      const pollutant = key as EmissionsFlagsField;
-      object[pollutant] = Object.values(regionData).reduce((a, b) => (a += b));
-      return object;
-    },
-    {} as { [pollutant in EmissionsFlagsField]: number },
-  );
-
-  return result;
-}
-
-/**
  * If "replacement" is needed for a pollutant, we'll change the calculated
  * `original` value for that pollutant to the pollutant's replacement value for
  * the region (found in the config file), and change the `postEere` value to be
  * the sum of the replaced `original` value and the calculated `impacts` value.
  */
 function applyEmissionsReplacement(options: {
-  emissionsReplacements: EmissionsReplacements;
+  emissionsReplacements: EmissionsReplacements | {};
   egusAnnualData: EGUsAnnualData;
 }) {
   const { emissionsReplacements, egusAnnualData } = options;
@@ -210,16 +145,11 @@ export function PowerSectorEmissionsTable() {
   const emissionsChanges = useTypedSelector(
     ({ results }) => results.emissionsChanges,
   );
+  const emissionsReplacements = useTypedSelector(
+    ({ results }) => results.emissionsReplacements,
+  );
 
   const egusAnnualData = sumEgusAnnualData(emissionsChanges.data);
-
-  const egusNeedingEmissionsReplacement = getEgusNeedingEmissionsReplacement(
-    emissionsChanges.data,
-  );
-
-  const emissionsReplacements = setEmissionsReplacements(
-    egusNeedingEmissionsReplacement,
-  );
 
   const annualData = applyEmissionsReplacement({
     emissionsReplacements,
@@ -259,7 +189,7 @@ export function PowerSectorEmissionsTable() {
                 <td>
                   <span className="padding-left-105">
                     Generation <small>(MWh)</small>&nbsp;
-                    {emissionsReplacements.generation !== undefined && (
+                    {emissionsReplacements.hasOwnProperty('generation') && (
                       <EmissionsReplacementTooltip field="generation" />
                     )}
                   </span>
@@ -285,7 +215,7 @@ export function PowerSectorEmissionsTable() {
                 <td>
                   <span className="padding-left-105">
                     SO<sub>2</sub> <small>(lb)</small>&nbsp;
-                    {emissionsReplacements.so2 !== undefined && (
+                    {emissionsReplacements.hasOwnProperty('so2') && (
                       <EmissionsReplacementTooltip field="so2" />
                     )}
                   </span>
@@ -305,7 +235,7 @@ export function PowerSectorEmissionsTable() {
                 <td>
                   <span className="padding-left-105">
                     NO<sub>X</sub> <small>(lb)</small>&nbsp;
-                    {emissionsReplacements.nox !== undefined && (
+                    {emissionsReplacements.hasOwnProperty('nox') && (
                       <EmissionsReplacementTooltip field="nox" />
                     )}
                   </span>
@@ -348,7 +278,7 @@ export function PowerSectorEmissionsTable() {
                 <td>
                   <span className="padding-left-105">
                     CO<sub>2</sub> <small>(tons)</small>&nbsp;
-                    {emissionsReplacements.co2 !== undefined && (
+                    {emissionsReplacements.hasOwnProperty('co2') && (
                       <EmissionsReplacementTooltip field="co2" />
                     )}
                   </span>
