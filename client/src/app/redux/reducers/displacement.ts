@@ -153,7 +153,6 @@ type DisplacementState = {
     };
   };
   egusNeedingReplacement: ReplacementEGUsByPollutant;
-  annualStateEmissionChanges: Partial<{ [key in StateId]: StateChange }>;
   downloadableCountyData: CountyDataRow[];
   downloadableCobraData: CobraDataRow[];
 };
@@ -187,7 +186,6 @@ const initialState: DisplacementState = {
     nox: [],
     co2: [],
   },
-  annualStateEmissionChanges: {},
   downloadableCountyData: [],
   downloadableCobraData: [],
 };
@@ -219,7 +217,6 @@ export default function reducer(
           nox: [],
           co2: [],
         },
-        annualStateEmissionChanges: {},
         downloadableCountyData: [],
         downloadableCobraData: [],
       };
@@ -277,42 +274,6 @@ export default function reducer(
       }
 
       return updatedState;
-    }
-
-    case 'displacement/ADD_STATE_CHANGES': {
-      const updatedState = { ...state };
-      const { stateId, pollutantName, pollutantValue } = action.payload;
-
-      // if state hasn't already been added to annualStateEmissionChanges,
-      // add it with initial zero values for each pollutant
-      if (!updatedState.annualStateEmissionChanges[stateId]) {
-        updatedState.annualStateEmissionChanges[stateId] = {
-          id: stateId,
-          name: states[stateId].name,
-          generation: 0,
-          so2: 0,
-          nox: 0,
-          co2: 0,
-          pm25: 0,
-          vocs: 0,
-          nh3: 0,
-        };
-      }
-
-      // add dispatched pollutant value to previous pollutant value
-      const previousPollutantValue =
-        updatedState.annualStateEmissionChanges[stateId]?.[pollutantName] || 0;
-
-      return {
-        ...updatedState,
-        annualStateEmissionChanges: {
-          ...updatedState.annualStateEmissionChanges,
-          [stateId]: {
-            ...updatedState.annualStateEmissionChanges[stateId],
-            [pollutantName]: previousPollutantValue + pollutantValue,
-          },
-        },
-      };
     }
 
     case 'displacement/STORE_ANNUAL_REGIONAL_DISPLACEMENTS': {
@@ -377,60 +338,18 @@ function fetchDisplacementData(
     }
 
     // request all displacement data for selected regions in parallel
-    Promise.all(displacementRequests)
-      .then((responses) => {
-        const displacementData = responses.map((response) => {
-          return response.json().then((data: PollutantsDisplacements) => {
-            dispatch({
-              type: 'displacement/RECEIVE_DISPLACEMENT_DATA',
-              payload: { data },
-            });
-            return data;
+    Promise.all(displacementRequests).then((responses) => {
+      responses.forEach((response) => {
+        response.json().then((data: PollutantsDisplacements) => {
+          dispatch({
+            type: 'displacement/RECEIVE_DISPLACEMENT_DATA',
+            payload: { data },
           });
         });
-
-        return Promise.all(displacementData);
-      })
-      .then((regionalDisplacements) => {
-        dispatch(incrementProgress());
-
-        // build up changes by state for each region (the payload is additive
-        // within the reducer, as a state can exist within multiple regions)
-        regionalDisplacements.forEach((displacement) => {
-          // each displacement object could contain multiple pollutants as keys:
-          // - if `fetchDisplacementData('generation')` is called, there will
-          //   only be one key for 'generation' (same for 'so2', 'nox', and 'co2').
-          // - if `fetchDisplacementData('nei')` is called, there will be a key
-          //   for 'pm25', 'vocs', and 'nh3'
-          for (const item in displacement) {
-            const pollutant = item as PollutantName;
-            const pollutantDisplacement = displacement[pollutant];
-            if (pollutantDisplacement) {
-              for (const key in pollutantDisplacement.stateData) {
-                const stateId = key as StateId;
-                const stateData = pollutantDisplacement.stateData[stateId];
-
-                // total each month's state emissions change for the given state
-                let stateEmissionsChange = 0;
-                for (const stateDataKey in stateData) {
-                  const month = Number(stateDataKey);
-                  const { original, postEere } = stateData[month];
-                  stateEmissionsChange += postEere - original;
-                }
-
-                dispatch({
-                  type: 'displacement/ADD_STATE_CHANGES',
-                  payload: {
-                    stateId,
-                    pollutantName: pollutant,
-                    pollutantValue: stateEmissionsChange,
-                  },
-                });
-              }
-            }
-          }
-        });
       });
+
+      dispatch(incrementProgress());
+    });
   };
 }
 
