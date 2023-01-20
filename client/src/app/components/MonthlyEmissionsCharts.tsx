@@ -440,18 +440,20 @@ function setFilteredEgus(options: {
 }
 
 /**
- * Sum the provided EGUs emissions data into a single monthly dataset.
+ * Sum the provided EGUs emissions data into monthly original and post-EERE
+ * values for each pollutant.
  */
-function totalEgusMonthlyData(egus: EmissionsChanges) {
+function sumEgusMonthlyData(egus: EmissionsChanges) {
   const result = Object.values(egus).reduce((object, eguData) => {
     Object.entries(eguData.data).forEach(([key, annualData]) => {
       const pollutant = key as keyof EmissionsChanges[string]['data'];
       object[pollutant] ??= {};
 
-      Object.entries(annualData).forEach(([month, monthlyData]) => {
-        object[pollutant][Number(month)] ??= { original: 0, postEere: 0 };
-        object[pollutant][Number(month)].original += monthlyData.original;
-        object[pollutant][Number(month)].postEere += monthlyData.postEere;
+      Object.entries(annualData).forEach(([key, monthlyData]) => {
+        const month = Number(key);
+        object[pollutant][month] ??= { original: 0, postEere: 0 };
+        object[pollutant][month].original += monthlyData.original;
+        object[pollutant][month].postEere += monthlyData.postEere;
       });
     });
 
@@ -513,7 +515,7 @@ export function MonthlyEmissionsCharts() {
     county: currentCountyName,
   });
 
-  const powerData = totalEgusMonthlyData(filteredEgus);
+  const powerData = sumEgusMonthlyData(filteredEgus);
 
   return (
     <>

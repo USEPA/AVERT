@@ -11,7 +11,7 @@ function formatNumber(number: number) {
  * Sum the provided EGUs emissions data into total annual changes for each
  * pollutant.
  */
-function totalEgusAnnualChanges(egus: EmissionsChanges) {
+function sumEgusAnnualChanges(egus: EmissionsChanges) {
   if (Object.keys(egus).length === 0) {
     return { generation: 0, so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 };
   }
@@ -42,7 +42,7 @@ export function TransportationSectorEmissionsTable() {
     ({ results }) => results.emissionsChanges,
   );
 
-  const totalYearlyPowerEmissionsChanges = totalEgusAnnualChanges(
+  const totalYearlyPowerEmissionsChanges = sumEgusAnnualChanges(
     emissionsChanges.data,
   );
 
