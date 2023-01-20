@@ -420,9 +420,7 @@ function setFilteredEgus(options: {
 }) {
   const { egus, aggregation, regionId, stateId, county } = options;
 
-  if (Object.keys(egus).length === 0) {
-    return {};
-  }
+  if (Object.keys(egus).length === 0) return {};
 
   const result = Object.entries(egus).reduce((object, [eguId, eguData]) => {
     const regionMatch =
@@ -442,9 +440,9 @@ function setFilteredEgus(options: {
 }
 
 /**
- * Total up the pollutant emissions data of all provided EGUs.
+ * Sum the provided EGUs emissions data into a single monthly dataset.
  */
-function totalEguEmissions(egus: EmissionsChanges) {
+function totalEgusMonthlyData(egus: EmissionsChanges) {
   const result = Object.values(egus).reduce((object, eguData) => {
     Object.entries(eguData.data).forEach(([key, annualData]) => {
       const pollutant = key as keyof EmissionsChanges[string]['data'];
@@ -515,7 +513,7 @@ export function MonthlyEmissionsCharts() {
     county: currentCountyName,
   });
 
-  const powerData = totalEguEmissions(filteredEgus);
+  const powerData = totalEgusMonthlyData(filteredEgus);
 
   return (
     <>

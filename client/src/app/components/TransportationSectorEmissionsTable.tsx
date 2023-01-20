@@ -1,4 +1,5 @@
 import { useTypedSelector } from 'app/redux/index';
+import type { EmissionsChanges } from 'app/calculations/emissions';
 
 function formatNumber(number: number) {
   if (number < 10 && number > -10) return '--';
@@ -6,28 +7,43 @@ function formatNumber(number: number) {
   return output.toLocaleString();
 }
 
+/**
+ * Sum the provided EGUs emissions data into total annual changes for each
+ * pollutant.
+ */
+function totalEgusAnnualChanges(egus: EmissionsChanges) {
+  if (Object.keys(egus).length === 0) {
+    return { generation: 0, so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 };
+  }
+
+  const result = Object.values(egus).reduce(
+    (object, eguData) => {
+      Object.entries(eguData.data).forEach(([key, annualData]) => {
+        const pollutant = key as keyof EmissionsChanges[string]['data'];
+
+        Object.values(annualData).forEach((monthlyData) => {
+          object[pollutant] += monthlyData.postEere - monthlyData.original;
+        });
+      });
+
+      return object;
+    },
+    { generation: 0, so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 },
+  );
+
+  return result;
+}
+
 export function TransportationSectorEmissionsTable() {
-  const status = useTypedSelector(({ displacement }) => displacement.status);
   const totalYearlyVehicleEmissionsChanges = useTypedSelector(
     ({ transportation }) => transportation.totalYearlyEmissionChanges,
   );
-  const annualStateEmissionChanges = useTypedSelector(
-    ({ displacement }) => displacement.annualStateEmissionChanges,
+  const emissionsChanges = useTypedSelector(
+    ({ results }) => results.emissionsChanges,
   );
 
-  const totalYearlyPowerEmissionsChanges = Object.values(
-    annualStateEmissionChanges,
-  ).reduce(
-    (object, data) => {
-      object.so2 += data.so2;
-      object.nox += data.nox;
-      object.co2 += data.co2;
-      object.pm25 += data.pm25;
-      object.vocs += data.vocs;
-      object.nh3 += data.nh3;
-      return object;
-    },
-    { so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 },
+  const totalYearlyPowerEmissionsChanges = totalEgusAnnualChanges(
+    emissionsChanges.data,
   );
 
   const totalYearlyVehicleSO2 = -1 * totalYearlyVehicleEmissionsChanges.SO2;
@@ -51,7 +67,7 @@ export function TransportationSectorEmissionsTable() {
   const totalYearlyNetVOCs = totalYearlyVehicleVOCs + totalYearlyPowerVOCs;
   const totalYearlyNetNH3 = totalYearlyVehicleNH3 + totalYearlyPowerNH3;
 
-  if (status !== 'complete') return null;
+  if (emissionsChanges.status !== 'success') return null;
 
   return (
     <>

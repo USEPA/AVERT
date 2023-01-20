@@ -9,7 +9,8 @@ function formatNumber(number: number) {
 }
 
 /**
- * Total up the pollutant emissions data of all provided EGUs.
+ * Sum the provided EGUs emissions data into total annual changes for each
+ * pollutant by state.
  */
 function totalEgusStateChanges(egus: EmissionsChanges) {
   if (Object.keys(egus).length === 0) return [];
