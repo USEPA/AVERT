@@ -3,12 +3,12 @@ import type { EmissionsChanges } from 'app/calculations/emissions';
 import type { RegionId } from 'app/config';
 
 type Action =
-  | { type: 'emissions/FETCH_EMISSIONS_CHANGES_REQUEST' }
+  | { type: 'results/FETCH_EMISSIONS_CHANGES_REQUEST' }
   | {
-      type: 'emissions/FETCH_EMISSIONS_CHANGES_SUCCESS';
+      type: 'results/FETCH_EMISSIONS_CHANGES_SUCCESS';
       payload: { emissionsChanges: EmissionsChanges };
     }
-  | { type: 'emissions/FETCH_EMISSIONS_CHANGES_FAILURE' };
+  | { type: 'results/FETCH_EMISSIONS_CHANGES_FAILURE' };
 
 type State = {
   emissionsChanges:
@@ -30,7 +30,7 @@ export default function reducer(
   action: Action,
 ): State {
   switch (action.type) {
-    case 'emissions/FETCH_EMISSIONS_CHANGES_REQUEST': {
+    case 'results/FETCH_EMISSIONS_CHANGES_REQUEST': {
       return {
         ...state,
         emissionsChanges: {
@@ -40,7 +40,7 @@ export default function reducer(
       };
     }
 
-    case 'emissions/FETCH_EMISSIONS_CHANGES_SUCCESS': {
+    case 'results/FETCH_EMISSIONS_CHANGES_SUCCESS': {
       const { emissionsChanges } = action.payload;
       return {
         ...state,
@@ -51,7 +51,7 @@ export default function reducer(
       };
     }
 
-    case 'emissions/FETCH_EMISSIONS_CHANGES_FAILURE': {
+    case 'results/FETCH_EMISSIONS_CHANGES_FAILURE': {
       return {
         ...state,
         emissionsChanges: {
@@ -76,7 +76,7 @@ export function calculateEmissionsChanges(): AppThunk {
     const { api, eere } = getState();
     const { regionalProfiles } = eere;
 
-    dispatch({ type: 'emissions/FETCH_EMISSIONS_CHANGES_REQUEST' });
+    dispatch({ type: 'results/FETCH_EMISSIONS_CHANGES_REQUEST' });
 
     // build up requests for selected regions
     const requests: Promise<Response>[] = [];
@@ -108,12 +108,12 @@ export function calculateEmissionsChanges(): AppThunk {
         }, {});
 
         dispatch({
-          type: 'emissions/FETCH_EMISSIONS_CHANGES_SUCCESS',
+          type: 'results/FETCH_EMISSIONS_CHANGES_SUCCESS',
           payload: { emissionsChanges },
         });
       })
       .catch((err) => {
-        dispatch({ type: 'emissions/FETCH_EMISSIONS_CHANGES_FAILURE' });
+        dispatch({ type: 'results/FETCH_EMISSIONS_CHANGES_FAILURE' });
       });
   };
 }

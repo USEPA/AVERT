@@ -7,7 +7,7 @@ import panel from 'app/redux/reducers/panel';
 import geography from 'app/redux/reducers/geography';
 import transportation from 'app/redux/reducers/transportation';
 import eere from 'app/redux/reducers/eere';
-import emissions from 'app/redux/reducers/emissions';
+import results from 'app/redux/reducers/results';
 import displacement from 'app/redux/reducers/displacement';
 import monthlyEmissions from 'app/redux/reducers/monthlyEmissions';
 
@@ -17,7 +17,7 @@ export const rootReducer = combineReducers({
   geography,
   transportation,
   eere,
-  emissions,
+  results,
   displacement,
   monthlyEmissions,
 });
