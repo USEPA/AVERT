@@ -95,6 +95,7 @@ export function calculateEmissionsChanges(options: {
       orisplCode: number;
       unitCode: string;
       name: string;
+      emissionsFlags: ('generation' | 'so2' | 'nox' | 'co2' | 'heat')[];
       data: {
         generation: { [month: number]: { original: number; postEere: number } };
         so2: { [month: number]: { original: number; postEere: number } };
@@ -108,6 +109,11 @@ export function calculateEmissionsChanges(options: {
   };
 
   const dataFields = ['generation', 'so2', 'nox', 'co2', 'pm25', 'vocs', 'nh3'] as const; // prettier-ignore
+  const neiFields = ['pm25', 'vocs', 'nh3'];
+
+  type OzoneSeasonDataField =
+    | (RDFDataField & typeof dataFields[number])
+    | 'heat';
 
   const regionalNeiEgus = neiData.regions.find((region) => {
     return region.name === rdf.region.region_name;
@@ -146,8 +152,6 @@ export function calculateEmissionsChanges(options: {
        * NOTE: PM2.5, VOCs, and NH3 always use the `heat` or `heat_not` fields
        * of the RDF's `data` object
        */
-      const neiFields = ['pm25', 'vocs', 'nh3'];
-
       const ozoneSeasonData = neiFields.includes(field)
         ? rdf.data.heat
         : rdf.data[field as RDFDataField];
@@ -235,12 +239,12 @@ export function calculateEmissionsChanges(options: {
         const neiFieldData = neiEguData?.[field as keyof typeof neiEguData];
 
         const original =
-          neiFields.includes(field) && neiFieldData
+          neiFields.includes(field) && neiFieldData !== undefined
             ? calculatedOriginal * neiFieldData
             : calculatedOriginal;
 
         const postEere =
-          neiFields.includes(field) && neiFieldData
+          neiFields.includes(field) && neiFieldData !== undefined
             ? calculatedPostEere * neiFieldData
             : calculatedPostEere;
 
@@ -257,6 +261,7 @@ export function calculateEmissionsChanges(options: {
           orisplCode: orispl_code,
           unitCode: unit_code,
           name: full_name,
+          emissionsFlags: [],
           data: {
             generation: {},
             so2: {},
@@ -267,6 +272,17 @@ export function calculateEmissionsChanges(options: {
             nh3: {},
           },
         };
+
+        /**
+         * Conditionally add field (e.g. so2, nox, co2) to EGU's emissions
+         * flags, as emissions "replacement" will be needed for that pollutant
+         */
+        if (
+          infreq_emissions_flag === 1 &&
+          !result[eguId].emissionsFlags.includes(field as OzoneSeasonDataField)
+        ) {
+          result[eguId].emissionsFlags.push(field as OzoneSeasonDataField);
+        }
 
         /**
          * Conditionally initialize the field's monthly data
