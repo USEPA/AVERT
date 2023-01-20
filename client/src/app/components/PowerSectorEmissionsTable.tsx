@@ -210,9 +210,6 @@ export function PowerSectorEmissionsTable() {
   const emissionsChanges = useTypedSelector(
     ({ results }) => results.emissionsChanges,
   );
-  const egusNeedingReplacement = useTypedSelector(
-    ({ displacement }) => displacement.egusNeedingReplacement,
-  );
 
   const egusAnnualData = sumEgusAnnualData(emissionsChanges.data);
 
@@ -262,7 +259,7 @@ export function PowerSectorEmissionsTable() {
                 <td>
                   <span className="padding-left-105">
                     Generation <small>(MWh)</small>&nbsp;
-                    {egusNeedingReplacement.generation.length > 0 && (
+                    {emissionsReplacements.generation !== undefined && (
                       <EmissionsReplacementTooltip field="generation" />
                     )}
                   </span>
@@ -288,7 +285,7 @@ export function PowerSectorEmissionsTable() {
                 <td>
                   <span className="padding-left-105">
                     SO<sub>2</sub> <small>(lb)</small>&nbsp;
-                    {egusNeedingReplacement.so2.length > 0 && (
+                    {emissionsReplacements.so2 !== undefined && (
                       <EmissionsReplacementTooltip field="so2" />
                     )}
                   </span>
@@ -308,7 +305,7 @@ export function PowerSectorEmissionsTable() {
                 <td>
                   <span className="padding-left-105">
                     NO<sub>X</sub> <small>(lb)</small>&nbsp;
-                    {egusNeedingReplacement.nox.length > 0 && (
+                    {emissionsReplacements.nox !== undefined && (
                       <EmissionsReplacementTooltip field="nox" />
                     )}
                   </span>
@@ -351,7 +348,7 @@ export function PowerSectorEmissionsTable() {
                 <td>
                   <span className="padding-left-105">
                     CO<sub>2</sub> <small>(tons)</small>&nbsp;
-                    {egusNeedingReplacement.co2.length > 0 && (
+                    {emissionsReplacements.co2 !== undefined && (
                       <EmissionsReplacementTooltip field="co2" />
                     )}
                   </span>
