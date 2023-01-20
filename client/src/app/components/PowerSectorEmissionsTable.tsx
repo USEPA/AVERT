@@ -178,6 +178,34 @@ function applyEmissionsReplacement(options: {
   return result;
 }
 
+function EmissionsReplacementTooltip(props: {
+  field: ReplacementPollutantName;
+}) {
+  const { field } = props;
+
+  // prettier-ignore
+  const fieldMarkup = new Map<ReplacementPollutantName, ReactNode>()
+    .set('generation', <>Generation</>)
+    .set('so2', <>SO<sub>2</sub></>)
+    .set('nox', <>NO<sub>X</sub></>)
+    .set('co2', <>CO<sub>2</sub></>);
+
+  return (
+    <Tooltip id={`power-sector-${field}-infrequent-emissions-event`}>
+      <p className="margin-0">
+        This region features one or more power plants with an infrequent{' '}
+        {fieldMarkup.get(field)} emissions event. {fieldMarkup.get(field)}{' '}
+        emissions changes from these plants are not included in this analysis.
+        See Section 2 of the{' '}
+        <a className="usa-link" href="https://www.epa.gov/avert">
+          AVERT User Manual
+        </a>{' '}
+        for more information.
+      </p>
+    </Tooltip>
+  );
+}
+
 export function PowerSectorEmissionsTable() {
   const emissionsChanges = useTypedSelector(
     ({ results }) => results.emissionsChanges,
@@ -213,30 +241,6 @@ export function PowerSectorEmissionsTable() {
     nh3,
   } = annualData;
 
-  function replacementTooltip(pollutant: ReplacementPollutantName) {
-    // prettier-ignore
-    const pollutantMarkup = new Map<ReplacementPollutantName, ReactNode>()
-      .set('generation', <>Generation</>)
-      .set('so2', <>SO<sub>2</sub></>)
-      .set('nox', <>NO<sub>X</sub></>)
-      .set('co2', <>CO<sub>2</sub></>);
-
-    return (
-      <Tooltip id={`power-sector-${pollutant}-infrequent-emissions-event`}>
-        <p className="margin-0">
-          This region features one or more power plants with an infrequent{' '}
-          {pollutantMarkup.get(pollutant)} emissions event.{' '}
-          {pollutantMarkup.get(pollutant)} emissions changes from these plants
-          are not included in this analysis. See Section 2 of the{' '}
-          <a className="usa-link" href="https://www.epa.gov/avert">
-            AVERT User Manual
-          </a>{' '}
-          for more information.
-        </p>
-      </Tooltip>
-    );
-  }
-
   if (emissionsChanges.status !== 'success') return null;
 
   return (
@@ -258,8 +262,9 @@ export function PowerSectorEmissionsTable() {
                 <td>
                   <span className="padding-left-105">
                     Generation <small>(MWh)</small>&nbsp;
-                    {egusNeedingReplacement.generation.length > 0 &&
-                      replacementTooltip('generation')}
+                    {egusNeedingReplacement.generation.length > 0 && (
+                      <EmissionsReplacementTooltip field="generation" />
+                    )}
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
@@ -283,8 +288,9 @@ export function PowerSectorEmissionsTable() {
                 <td>
                   <span className="padding-left-105">
                     SO<sub>2</sub> <small>(lb)</small>&nbsp;
-                    {egusNeedingReplacement.so2.length > 0 &&
-                      replacementTooltip('so2')}
+                    {egusNeedingReplacement.so2.length > 0 && (
+                      <EmissionsReplacementTooltip field="so2" />
+                    )}
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
@@ -302,8 +308,9 @@ export function PowerSectorEmissionsTable() {
                 <td>
                   <span className="padding-left-105">
                     NO<sub>X</sub> <small>(lb)</small>&nbsp;
-                    {egusNeedingReplacement.nox.length > 0 &&
-                      replacementTooltip('nox')}
+                    {egusNeedingReplacement.nox.length > 0 && (
+                      <EmissionsReplacementTooltip field="nox" />
+                    )}
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
@@ -344,8 +351,9 @@ export function PowerSectorEmissionsTable() {
                 <td>
                   <span className="padding-left-105">
                     CO<sub>2</sub> <small>(tons)</small>&nbsp;
-                    {egusNeedingReplacement.co2.length > 0 &&
-                      replacementTooltip('co2')}
+                    {egusNeedingReplacement.co2.length > 0 && (
+                      <EmissionsReplacementTooltip field="co2" />
+                    )}
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
