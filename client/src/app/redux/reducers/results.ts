@@ -2,9 +2,10 @@ import type { AppThunk } from 'app/redux/index';
 import { setStatesAndCounties } from 'app/redux/reducers/monthlyEmissions';
 import { setDownloadData } from 'app/redux/reducers/downloads';
 import type { EmissionsChanges } from 'app/calculations/emissions';
-import type { RegionId } from 'app/config';
+import type { RegionId, StateId } from 'app/config';
 import { regions } from 'app/config';
 
+type EmissionsMonthlyData = ReturnType<typeof sumEmissionsMonthlyData>;
 export type EmissionsReplacements = ReturnType<typeof setEmissionsReplacements>;
 
 type Action =
@@ -14,6 +15,10 @@ type Action =
       payload: { emissionsChanges: EmissionsChanges };
     }
   | { type: 'results/FETCH_EMISSIONS_CHANGES_FAILURE' }
+  | {
+      type: 'results/SET_EMISSIONS_MONTHLY_DATA';
+      payload: { emissionsMonthlyData: EmissionsMonthlyData };
+    }
   | {
       type: 'results/SET_EGUS_NEEDING_EMISSIONS_REPLACEMENT';
       payload: { egusNeedingEmissionsReplacement: EmissionsChanges };
@@ -29,6 +34,7 @@ type State = {
     | { status: 'pending'; data: {} }
     | { status: 'success'; data: EmissionsChanges }
     | { status: 'failure'; data: {} };
+  emissionsMonthlyData: EmissionsMonthlyData | {};
   egusNeedingEmissionsReplacement: EmissionsChanges | {};
   emissionsReplacements: EmissionsReplacements | {};
 };
@@ -38,6 +44,7 @@ const initialState: State = {
     status: 'idle',
     data: {},
   },
+  emissionsMonthlyData: {},
   egusNeedingEmissionsReplacement: {},
   emissionsReplacements: {},
 };
@@ -77,6 +84,14 @@ export default function reducer(
           status: 'failure',
           data: {},
         },
+      };
+    }
+
+    case 'results/SET_EMISSIONS_MONTHLY_DATA': {
+      const { emissionsMonthlyData } = action.payload;
+      return {
+        ...state,
+        emissionsMonthlyData,
       };
     }
 
@@ -142,10 +157,7 @@ export function calculateEmissionsChanges(): AppThunk {
           return { ...result, ...regionData };
         }, {});
 
-        dispatch({
-          type: 'results/FETCH_EMISSIONS_CHANGES_SUCCESS',
-          payload: { emissionsChanges },
-        });
+        const emissionsMonthlyData = sumEmissionsMonthlyData(emissionsChanges);
 
         const egusNeedingEmissionsReplacement =
           setEgusNeedingEmissionsReplacement(emissionsChanges);
@@ -153,6 +165,16 @@ export function calculateEmissionsChanges(): AppThunk {
         const emissionsReplacements = setEmissionsReplacements(
           egusNeedingEmissionsReplacement,
         );
+
+        dispatch({
+          type: 'results/FETCH_EMISSIONS_CHANGES_SUCCESS',
+          payload: { emissionsChanges },
+        });
+
+        dispatch({
+          type: 'results/SET_EMISSIONS_MONTHLY_DATA',
+          payload: { emissionsMonthlyData },
+        });
 
         dispatch({
           type: 'results/SET_EGUS_NEEDING_EMISSIONS_REPLACEMENT',
@@ -171,6 +193,81 @@ export function calculateEmissionsChanges(): AppThunk {
         dispatch({ type: 'results/FETCH_EMISSIONS_CHANGES_FAILURE' });
       });
   };
+}
+
+/**
+ * Creates the intial structure of monthly emissions data for each pollutant.
+ */
+function createInitialEmissionsData() {
+  type EmissionsData = EmissionsChanges[string]['data'];
+
+  const fields = ["generation", "so2", "nox", "co2", "pm25", "vocs", "nh3"] as const; // prettier-ignore
+
+  const result = fields.reduce((object, field) => {
+    object[field] = [...Array(12)].reduce((object, _item, index) => {
+      const month = index + 1;
+      object[month] = { original: 0, postEere: 0 };
+      return object;
+    }, {} as EmissionsData[typeof fields[number]]);
+
+    return object;
+  }, {} as EmissionsData);
+
+  return result;
+}
+
+/**
+ * Sum the provided EGUs emissions data into monthly original and post-EERE
+ * values for each pollutant.
+ */
+function sumEmissionsMonthlyData(egus: EmissionsChanges) {
+  type EmissionsData = EmissionsChanges[string]['data'];
+
+  if (Object.keys(egus).length === 0) {
+    return { regions: {}, states: {}, counties: {} };
+  }
+
+  const initialEmissionsData = createInitialEmissionsData();
+
+  const result = Object.values(egus).reduce(
+    (object, eguData) => {
+      const regionId = eguData.region as RegionId;
+      const stateId = eguData.state as StateId;
+      const county = eguData.county;
+
+      object.regions[regionId] ??= { ...initialEmissionsData };
+      object.states[stateId] ??= { ...initialEmissionsData };
+      object.counties[stateId] ??= {};
+      object.counties[stateId][county] ??= { ...initialEmissionsData };
+
+      Object.entries(eguData.data).forEach(([annualKey, annualData]) => {
+        const pollutant = annualKey as keyof EmissionsChanges[string]['data'];
+
+        Object.entries(annualData).forEach(([monthlyKey, monthlyData]) => {
+          const month = Number(monthlyKey);
+          const { original, postEere } = monthlyData;
+
+          object.regions[regionId][pollutant][month].original += original;
+          object.regions[regionId][pollutant][month].postEere += postEere;
+
+          object.states[stateId][pollutant][month].original += original;
+          object.states[stateId][pollutant][month].postEere += postEere;
+
+          object.counties[stateId][county][pollutant][month].original += original; // prettier-ignore
+          object.counties[stateId][county][pollutant][month].postEere += postEere; // prettier-ignore
+        });
+      });
+
+      return object;
+    },
+    { regions: {}, states: {}, counties: {} } as {
+      regions: { [regionId in RegionId]: EmissionsData };
+      states: { [stateId in StateId]: EmissionsData };
+      counties: { [stateId in StateId]: { [county: string]: EmissionsData } };
+    },
+  );
+
+  return result;
 }
 
 /**
