@@ -1,5 +1,6 @@
 import type { AppThunk } from 'app/redux/index';
 import { setStatesAndCounties } from 'app/redux/reducers/monthlyEmissions';
+import { setDownloadData } from 'app/redux/reducers/downloads';
 import type { EmissionsChanges } from 'app/calculations/emissions';
 import type { RegionId } from 'app/config';
 import { regions } from 'app/config';
@@ -164,6 +165,7 @@ export function calculateEmissionsChanges(): AppThunk {
         });
 
         dispatch(setStatesAndCounties());
+        dispatch(setDownloadData());
       })
       .catch((err) => {
         dispatch({ type: 'results/FETCH_EMISSIONS_CHANGES_FAILURE' });
