@@ -35,11 +35,11 @@ function sumEgusAnnualData(egus: EmissionsChanges) {
 
   const result = Object.values(egus).reduce(
     (object, eguData) => {
-      Object.entries(eguData.data).forEach(([key, annualData]) => {
-        const pollutant = key as keyof EmissionsChanges[string]['data'];
+      Object.entries(eguData.data).forEach(([annualKey, annualData]) => {
+        const pollutant = annualKey as keyof EmissionsChanges[string]['data'];
 
-        Object.entries(annualData).forEach(([key, monthlyData]) => {
-          const month = Number(key);
+        Object.entries(annualData).forEach(([monthlyKey, monthlyData]) => {
+          const month = Number(monthlyKey);
           const { original, postEere } = monthlyData;
 
           /**
