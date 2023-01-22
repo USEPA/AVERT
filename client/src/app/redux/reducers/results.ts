@@ -267,7 +267,29 @@ function sumEmissionsMonthlyData(egus: EmissionsChanges) {
     },
   );
 
+  // sort results alphabetically
+  result.regions = sortObjectByKeys(result.regions);
+  result.states = sortObjectByKeys(result.states);
+  result.counties = sortObjectByKeys(result.counties);
+  result.counties = Object.entries(result.counties).reduce(
+    (object, [stateId, counties]) => {
+      object[stateId as StateId] = sortObjectByKeys(counties);
+      return object;
+    },
+    {} as typeof result.counties,
+  );
+
   return result;
+}
+
+/**
+ * Return an object, sorted alphabetically by it's keys
+ */
+function sortObjectByKeys<T extends Record<string, unknown>>(object: T) {
+  return (Object.keys(object) as (keyof T)[]).sort().reduce((result, key) => {
+    result[key] = object[key];
+    return result;
+  }, {} as T);
 }
 
 /**
