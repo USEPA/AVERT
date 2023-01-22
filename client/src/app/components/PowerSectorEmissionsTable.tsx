@@ -2,7 +2,6 @@ import { ReactNode } from 'react';
 // ---
 import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
-import { ReplacementPollutantName } from 'app/redux/reducers/displacement';
 import type { EmissionsReplacements } from 'app/redux/reducers/results';
 import type { EmissionsChanges } from 'app/calculations/emissions';
 
@@ -114,12 +113,12 @@ function applyEmissionsReplacement(options: {
 }
 
 function EmissionsReplacementTooltip(props: {
-  field: ReplacementPollutantName;
+  field: 'generation' | 'so2' | 'nox' | 'co2';
 }) {
   const { field } = props;
 
   // prettier-ignore
-  const fieldMarkup = new Map<ReplacementPollutantName, ReactNode>()
+  const fieldMarkup = new Map<'generation' | 'so2' | 'nox' | 'co2', ReactNode>()
     .set('generation', <>Generation</>)
     .set('so2', <>SO<sub>2</sub></>)
     .set('nox', <>NO<sub>X</sub></>)

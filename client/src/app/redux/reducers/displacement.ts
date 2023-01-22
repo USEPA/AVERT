@@ -17,10 +17,10 @@ import countyFips from 'app/data/county-fips.json';
 
 type PollutantName = 'generation' | Pollutant;
 
-export type ReplacementPollutantName = 'generation' | 'so2' | 'nox' | 'co2';
-
 type ReplacementEGUsByPollutant = {
-  [key in ReplacementPollutantName]: (EGUData & { regionId: RegionId })[];
+  [key in 'generation' | 'so2' | 'nox' | 'co2']: (EGUData & {
+    regionId: RegionId;
+  })[];
 };
 
 export type MonthlyDisplacement = {
@@ -309,7 +309,7 @@ function receiveDisplacement(): AppThunk {
       return setTimeout(() => dispatch(receiveDisplacement()), 1_000);
     }
 
-    const { egusNeedingReplacement } = setAnnualRegionalDisplacements(
+    const egusNeedingReplacement = setEgusNeedingReplacement(
       regionalDisplacements,
       geography.regions,
     );
@@ -358,85 +358,10 @@ export function calculateMonthlyData(data: MonthlyDisplacement, unit: Unit) {
     : monthlyPercentageChanges;
 }
 
-function setAnnualRegionalDisplacements(
+function setEgusNeedingReplacement(
   regionalDisplacements: RegionalDisplacements,
   regions: { [key in RegionId]: RegionState },
 ) {
-  const data = {
-    generation: {
-      original: 0,
-      postEere: 0,
-      impacts: 0,
-      replacedOriginal: 0,
-      replacedPostEere: 0,
-    },
-    ozoneGeneration: {
-      original: 0,
-      postEere: 0,
-      impacts: 0,
-      replacedOriginal: 0,
-      replacedPostEere: 0,
-    },
-    so2: {
-      original: 0,
-      postEere: 0,
-      impacts: 0,
-      replacedOriginal: 0,
-      replacedPostEere: 0,
-    },
-    nox: {
-      original: 0,
-      postEere: 0,
-      impacts: 0,
-      replacedOriginal: 0,
-      replacedPostEere: 0,
-    },
-    ozoneNox: {
-      original: 0,
-      postEere: 0,
-      impacts: 0,
-      replacedOriginal: 0,
-      replacedPostEere: 0,
-    },
-    co2: {
-      original: 0,
-      postEere: 0,
-      impacts: 0,
-      replacedOriginal: 0,
-      replacedPostEere: 0,
-    },
-    pm25: {
-      original: 0,
-      postEere: 0,
-      impacts: 0,
-      replacedOriginal: 0,
-      replacedPostEere: 0,
-    },
-    vocs: {
-      original: 0,
-      postEere: 0,
-      impacts: 0,
-      replacedOriginal: 0,
-      replacedPostEere: 0,
-    },
-    nh3: {
-      original: 0,
-      postEere: 0,
-      impacts: 0,
-      replacedOriginal: 0,
-      replacedPostEere: 0,
-    },
-  };
-
-  // emissions "replacement" is needed for a pollutant if a region has at least
-  // one EGU that has the `infreq_emissions_flag` property set to 1 in the for
-  // the given pollutant. usually emissions "replacement" isn't needed, so we'll
-  // initially set each pollutant's replacement needed flag to false, and will
-  // conditionally reset its value to true as needed. if "replacement" is needed
-  // for a pollutant, we'll set `replacedOriginal` and `replacedPostEere` values
-  // for each pollutant as well.
-  const replacementPotentiallyNeeded = ['generation', 'so2', 'nox', 'co2'];
-
   const egusNeedingReplacement: ReplacementEGUsByPollutant = {
     generation: [],
     so2: [],
@@ -444,7 +369,7 @@ function setAnnualRegionalDisplacements(
     co2: [],
   };
 
-  for (const item in data) {
+  for (const item in egusNeedingReplacement) {
     const pollutant = item as PollutantName;
 
     for (const key in regionalDisplacements) {
@@ -452,103 +377,20 @@ function setAnnualRegionalDisplacements(
       const displacement = regionalDisplacements[regionId];
       if (!displacement) break;
 
-      // ozone season generation and ozone season nox are not calculated in the
-      // server app's getDisplacement() method, so they're derived by totaling
-      // each region's regional generation and nox data from the months of May
-      // through September
-      if (item === 'ozoneGeneration' || item === 'ozoneNox') {
-        const ozoneMonths = [5, 6, 7, 8, 9];
+      const rdfPollutantData =
+        regions[regionId].rdf.data[pollutant as RdfDataKey];
 
-        if (item === 'ozoneGeneration') {
-          ozoneMonths.forEach((month) => {
-            data.ozoneGeneration.original += displacement.generation.regionalData[month].original; // prettier-ignore
-            data.ozoneGeneration.postEere += displacement.generation.regionalData[month].postEere; // prettier-ignore
-          });
-        }
+      const regionalEGUsNeedingReplacement = rdfPollutantData
+        .filter((egu) => egu.infreq_emissions_flag === 1)
+        .map((egu) => ({ ...egu, regionId }));
 
-        if (item === 'ozoneNox') {
-          ozoneMonths.forEach((month) => {
-            data.ozoneNox.original += displacement.nox.regionalData[month].original; // prettier-ignore
-            data.ozoneNox.postEere += displacement.nox.regionalData[month].postEere; // prettier-ignore
-          });
-        }
-      }
-      // data for all other pollutants is already calculated for each region in
-      // the server app's getDisplacement() method (stored as `originalTotal`
-      // and `postEereTotal`), so it just needs to be totaled for each region
-      else {
-        // sum each pollutant's original and postEere values for each region
-        data[pollutant].original += displacement[pollutant].originalTotal;
-        data[pollutant].postEere += displacement[pollutant].postEereTotal;
-
-        // add any regional egus needing replacement
-        if (replacementPotentiallyNeeded.includes(pollutant)) {
-          const rdfPollutantData =
-            regions[regionId].rdf.data[pollutant as RdfDataKey];
-
-          const regionalEGUsNeedingReplacement = rdfPollutantData
-            .filter((egu) => egu.infreq_emissions_flag === 1)
-            .map((egu) => ({ ...egu, regionId }));
-
-          egusNeedingReplacement[pollutant as ReplacementPollutantName].push(
-            ...regionalEGUsNeedingReplacement,
-          );
-        }
-      }
+      egusNeedingReplacement[
+        pollutant as 'generation' | 'so2' | 'nox' | 'co2'
+      ].push(...regionalEGUsNeedingReplacement);
     }
   }
 
-  // looping through the pollutants a second time is necessary,
-  // as all the data above needed to be set first
-  for (const item in data) {
-    const pollutant = item as PollutantName;
-
-    // set each pollutant's impacts as the difference between the cumulative
-    // original and postEere values
-    data[pollutant].impacts =
-      data[pollutant].postEere - data[pollutant].original;
-
-    // if replacement is needed, set each pollutant's replacedOriginal and
-    // replacedPostEere values
-    if (
-      pollutant in egusNeedingReplacement &&
-      egusNeedingReplacement[pollutant as ReplacementPollutantName].length > 0
-    ) {
-      // we need to loop over each region again to determine which number to use
-      // in incrementing the replacedOriginal value
-      for (const key in regionalDisplacements) {
-        const regionId = key as RegionId;
-        const displacement = regionalDisplacements[regionId];
-
-        const rdfPollutantData =
-          regions[regionId].rdf.data[pollutant as RdfDataKey];
-
-        const regionalPollutantReplacementNeeded = rdfPollutantData.some(
-          (egu) => egu.infreq_emissions_flag === 1,
-        );
-
-        // if replacement is needed for the region and pollutant, use the
-        // replacement value from the config file, else use the regions' total
-        // (as was use in incrementing the pollutant's original value)
-        const value = regionalPollutantReplacementNeeded
-          ? regions[regionId].actualEmissions[pollutant as RdfDataKey]
-          : displacement?.[pollutant].originalTotal;
-
-        // increment replacedOriginal for the region by the above set value
-        data[pollutant].replacedOriginal += value || 0;
-      }
-
-      // finally, set the pollutant's replacedPostEere by adding up the
-      // cumulative replacedOriginal value and the calculated impacts
-      // (impacts will be negative)
-      data[pollutant].replacedPostEere =
-        data[pollutant].replacedOriginal + data[pollutant].impacts;
-    }
-  }
-
-  return {
-    egusNeedingReplacement,
-  };
+  return egusNeedingReplacement;
 }
 
 function setMonthlyEmissionChanges(
