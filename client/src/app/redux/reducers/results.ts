@@ -34,7 +34,7 @@ type State = {
     | { status: 'pending'; data: {} }
     | { status: 'success'; data: EmissionsChanges }
     | { status: 'failure'; data: {} };
-  emissionsMonthlyData: EmissionsMonthlyData | {};
+  emissionsMonthlyData: EmissionsMonthlyData;
   egusNeedingEmissionsReplacement: EmissionsChanges | {};
   emissionsReplacements: EmissionsReplacements | {};
 };
@@ -44,7 +44,7 @@ const initialState: State = {
     status: 'idle',
     data: {},
   },
-  emissionsMonthlyData: {},
+  emissionsMonthlyData: { total: {}, regions: {}, states: {}, counties: {} },
   egusNeedingEmissionsReplacement: {},
   emissionsReplacements: {},
 };
@@ -56,13 +56,11 @@ export default function reducer(
   switch (action.type) {
     case 'results/FETCH_EMISSIONS_CHANGES_REQUEST': {
       return {
-        ...state,
+        ...initialState,
         emissionsChanges: {
           status: 'pending',
           data: {},
         },
-        egusNeedingEmissionsReplacement: {},
-        emissionsReplacements: {},
       };
     }
 
@@ -224,7 +222,7 @@ function sumEmissionsMonthlyData(egus: EmissionsChanges) {
   type EmissionsData = EmissionsChanges[string]['data'];
 
   if (Object.keys(egus).length === 0) {
-    return { regions: {}, states: {}, counties: {} };
+    return { total: {}, regions: {}, states: {}, counties: {} };
   }
 
   const initialEmissionsData = createInitialEmissionsData();
@@ -247,6 +245,9 @@ function sumEmissionsMonthlyData(egus: EmissionsChanges) {
           const month = Number(monthlyKey);
           const { original, postEere } = monthlyData;
 
+          object.total[pollutant][month].original += original;
+          object.total[pollutant][month].postEere += postEere;
+
           object.regions[regionId][pollutant][month].original += original;
           object.regions[regionId][pollutant][month].postEere += postEere;
 
@@ -260,7 +261,13 @@ function sumEmissionsMonthlyData(egus: EmissionsChanges) {
 
       return object;
     },
-    { regions: {}, states: {}, counties: {} } as {
+    {
+      total: { ...initialEmissionsData },
+      regions: {},
+      states: {},
+      counties: {},
+    } as {
+      total: EmissionsData;
       regions: { [regionId in RegionId]: EmissionsData };
       states: { [stateId in StateId]: EmissionsData };
       counties: { [stateId in StateId]: { [county: string]: EmissionsData } };
