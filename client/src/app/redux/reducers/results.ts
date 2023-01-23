@@ -225,18 +225,16 @@ function sumEmissionsMonthlyData(egus: EmissionsChanges) {
     return { total: {}, regions: {}, states: {}, counties: {} };
   }
 
-  const initialEmissionsData = createInitialEmissionsData();
-
   const result = Object.values(egus).reduce(
     (object, eguData) => {
       const regionId = eguData.region as RegionId;
       const stateId = eguData.state as StateId;
       const county = eguData.county;
 
-      object.regions[regionId] ??= { ...initialEmissionsData };
-      object.states[stateId] ??= { ...initialEmissionsData };
+      object.regions[regionId] ??= createInitialEmissionsData();
+      object.states[stateId] ??= createInitialEmissionsData();
       object.counties[stateId] ??= {};
-      object.counties[stateId][county] ??= { ...initialEmissionsData };
+      object.counties[stateId][county] ??= createInitialEmissionsData();
 
       Object.entries(eguData.data).forEach(([annualKey, annualData]) => {
         const pollutant = annualKey as keyof EmissionsChanges[string]['data'];
@@ -262,7 +260,7 @@ function sumEmissionsMonthlyData(egus: EmissionsChanges) {
       return object;
     },
     {
-      total: { ...initialEmissionsData },
+      total: createInitialEmissionsData(),
       regions: {},
       states: {},
       counties: {},
