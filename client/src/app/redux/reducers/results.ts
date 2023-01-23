@@ -5,7 +5,7 @@ import type { EmissionsChanges } from 'app/calculations/emissions';
 import type { RegionId, StateId } from 'app/config';
 import { regions } from 'app/config';
 
-type EmissionsMonthlyData = ReturnType<typeof sumEmissionsMonthlyData>;
+export type EmissionsMonthlyData = ReturnType<typeof sumEmissionsMonthlyData>;
 export type EmissionsReplacements = ReturnType<typeof setEmissionsReplacements>;
 
 type Action =
