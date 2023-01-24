@@ -4,7 +4,6 @@ import HighchartsReact from 'highcharts-react-official';
 import { useDispatch } from 'react-redux';
 // ---
 import { useTypedSelector } from 'app/redux/index';
-import type { MonthlyDisplacement } from 'app/redux/reducers/displacement';
 import type { Aggregation, Unit } from 'app/redux/reducers/monthlyEmissions';
 import {
   setMonthlyEmissionsAggregation,
@@ -23,11 +22,14 @@ import { regions, states } from 'app/config';
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 
+type EgusMonthlyData = ReturnType<typeof sumEgusMonthlyData>;
+type MonthlyData = EgusMonthlyData[keyof EgusMonthlyData];
+
 /**
  * Creates monthly emissions data for either emissions changes or percentage
  * changes, for display in the monthly charts.
  */
-function calculateMonthlyData(monthlyData: MonthlyDisplacement, unit: Unit) {
+function calculateMonthlyData(monthlyData: MonthlyData, unit: Unit) {
   const monthlyEmissionsChanges: number[] = [];
   const monthlyPercentageChanges: number[] = [];
 
@@ -49,7 +51,7 @@ function calculateMonthlyData(monthlyData: MonthlyDisplacement, unit: Unit) {
 
 function Chart(props: {
   pollutant: Pollutant;
-  powerData: { [key in Pollutant]: MonthlyDisplacement };
+  powerData: { [key in Pollutant]: MonthlyData };
 }) {
   const { pollutant, powerData } = props;
 
