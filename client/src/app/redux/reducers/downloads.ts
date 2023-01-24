@@ -46,15 +46,13 @@ type CobraData = {
   NH3_REDUCTIONS_TONS: number;
 };
 
-type Action =
-  | {
-      type: 'downloads/SET_DOWNLOAD_DATA';
-      payload: {
-        countyData: CountyData[];
-        cobraData: CobraData[];
-      };
-    }
-  | { type: 'downloads/TODO' };
+type Action = {
+  type: 'downloads/SET_DOWNLOAD_DATA';
+  payload: {
+    countyData: CountyData[];
+    cobraData: CobraData[];
+  };
+};
 
 type State = {
   countyData: CountyData[];
