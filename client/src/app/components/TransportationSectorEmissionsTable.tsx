@@ -1,4 +1,5 @@
 import { useTypedSelector } from 'app/redux/index';
+import type { EmissionsData } from 'app/redux/reducers/results';
 import type { EmissionsChanges } from 'app/calculations/emissions';
 
 function formatNumber(number: number) {
@@ -19,7 +20,7 @@ function sumEgusAnnualChanges(egus: EmissionsChanges) {
   const result = Object.values(egus).reduce(
     (object, eguData) => {
       Object.entries(eguData.data).forEach(([key, annualData]) => {
-        const pollutant = key as keyof EmissionsChanges[string]['data'];
+        const pollutant = key as keyof EmissionsData;
 
         Object.values(annualData).forEach((monthlyData) => {
           object[pollutant] += monthlyData.postEere - monthlyData.original;

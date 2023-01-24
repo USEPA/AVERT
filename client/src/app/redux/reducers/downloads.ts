@@ -1,6 +1,10 @@
 import type { AppThunk } from 'app/redux/index';
-import type { EmissionsChanges } from 'app/calculations/emissions';
-import type { EmissionsMonthlyData } from 'app/redux/reducers/results';
+import type {
+  EmissionsData,
+  EmissionsFlagsField,
+  EmissionsMonthlyData,
+  EgusNeeingEmissionsReplacement,
+} from 'app/redux/reducers/results';
 import type { RegionId, StateId } from 'app/config';
 import { regions as regionsConfig, states as statesConfig } from 'app/config';
 /**
@@ -8,8 +12,6 @@ import { regions as regionsConfig, states as statesConfig } from 'app/config';
  */
 import countyFips from 'app/data/county-fips.json';
 
-type EmissionsData = EmissionsChanges[string]['data'];
-type EmissionsFlagsField = EmissionsChanges[string]['emissionsFlags'][number];
 type MonthlyData = EmissionsData[keyof EmissionsData];
 
 type Pollutant = 'SO2' | 'NOX' | 'CO2' | 'PM25' | 'VOCS' | 'NH3';
@@ -114,7 +116,7 @@ export function setDownloadData(): AppThunk {
  */
 function formatCountyDownloadData(options: {
   emissionsMonthlyData: EmissionsMonthlyData;
-  egusNeedingEmissionsReplacement: EmissionsChanges;
+  egusNeedingEmissionsReplacement: EgusNeeingEmissionsReplacement;
 }) {
   const { emissionsMonthlyData, egusNeedingEmissionsReplacement } = options;
 

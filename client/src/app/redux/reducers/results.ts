@@ -8,6 +8,7 @@ import { regions } from 'app/config';
 export type EmissionsData = EmissionsChanges[string]['data'];
 export type EmissionsFlagsField = EmissionsChanges[string]['emissionsFlags'][number]; // prettier-ignore
 export type EmissionsMonthlyData = ReturnType<typeof sumEmissionsMonthlyData>;
+export type EgusNeeingEmissionsReplacement = ReturnType<typeof setEgusNeedingEmissionsReplacement>; // prettier-ignore
 export type EmissionsReplacements = ReturnType<typeof setEmissionsReplacements>;
 
 type Action =
@@ -24,7 +25,9 @@ type Action =
     }
   | {
       type: 'results/SET_EGUS_NEEDING_EMISSIONS_REPLACEMENT';
-      payload: { egusNeedingEmissionsReplacement: EmissionsChanges };
+      payload: {
+        egusNeedingEmissionsReplacement: EgusNeeingEmissionsReplacement;
+      };
     }
   | {
       type: 'results/SET_EMISSIONS_REPLACEMENTS';
@@ -38,7 +41,7 @@ type State = {
     | { status: 'success'; data: EmissionsChanges }
     | { status: 'failure'; data: {} };
   emissionsMonthlyData: EmissionsMonthlyData;
-  egusNeedingEmissionsReplacement: EmissionsChanges | {};
+  egusNeedingEmissionsReplacement: EgusNeeingEmissionsReplacement;
   emissionsReplacements: EmissionsReplacements | {};
 };
 

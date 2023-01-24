@@ -1,4 +1,5 @@
 import { useTypedSelector } from 'app/redux/index';
+import type { EmissionsData } from 'app/redux/reducers/results';
 import type { EmissionsChanges } from 'app/calculations/emissions';
 import type { StateId } from 'app/config';
 import { states } from 'app/config';
@@ -38,7 +39,7 @@ function totalEgusStateChanges(egus: EmissionsChanges) {
 
       if (state) {
         Object.entries(eguData.data).forEach(([key, annualData]) => {
-          const pollutant = key as keyof EmissionsChanges[string]['data'];
+          const pollutant = key as keyof EmissionsData;
 
           Object.values(annualData).forEach((monthlyData) => {
             state[pollutant] += monthlyData.postEere - monthlyData.original;
