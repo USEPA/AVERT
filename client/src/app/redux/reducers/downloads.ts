@@ -117,14 +117,13 @@ function formatCountyDownloadData(options: {
   egusNeedingEmissionsReplacement: EmissionsChanges;
 }) {
   const { emissionsMonthlyData, egusNeedingEmissionsReplacement } = options;
-  const { total, regions, states, counties } = emissionsMonthlyData;
 
   const result: CountyData[] = [];
 
-  if (Object.keys(total).length === 0) return result;
+  if (!emissionsMonthlyData) return result;
 
+  const { total, regions, states, counties } = emissionsMonthlyData;
   const pollutantsRows = createOrderedPollutantsRows();
-
   const egusNeedingReplacement = Object.values(egusNeedingEmissionsReplacement);
 
   /**
@@ -348,11 +347,12 @@ function formatCobraDownloadData(options: {
   emissionsMonthlyData: EmissionsMonthlyData;
 }) {
   const { emissionsMonthlyData } = options;
-  const { total, counties } = emissionsMonthlyData;
 
   const result: CobraData[] = [];
 
-  if (Object.keys(total).length === 0) return result;
+  if (!emissionsMonthlyData) return result;
+
+  const { counties } = emissionsMonthlyData;
 
   Object.entries(counties).forEach(([stateId, stateData]) => {
     Object.entries(stateData).forEach(([countyName, countyData]) => {

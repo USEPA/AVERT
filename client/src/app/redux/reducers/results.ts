@@ -45,7 +45,7 @@ const initialState: State = {
     status: 'idle',
     data: {},
   },
-  emissionsMonthlyData: { total: {}, regions: {}, states: {}, counties: {} },
+  emissionsMonthlyData: null,
   egusNeedingEmissionsReplacement: {},
   emissionsReplacements: {},
 };
@@ -234,9 +234,7 @@ function createInitialEmissionsData() {
 function sumEmissionsMonthlyData(egus: EmissionsChanges) {
   type EmissionsData = EmissionsChanges[string]['data'];
 
-  if (Object.keys(egus).length === 0) {
-    return { total: {}, regions: {}, states: {}, counties: {} };
-  }
+  if (Object.keys(egus).length === 0) return null;
 
   const result = Object.values(egus).reduce(
     (object, eguData) => {

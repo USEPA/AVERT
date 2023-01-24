@@ -4,6 +4,7 @@ import HighchartsReact from 'highcharts-react-official';
 import { useDispatch } from 'react-redux';
 // ---
 import { useTypedSelector } from 'app/redux/index';
+import type { EmissionsMonthlyData } from 'app/redux/reducers/results';
 import type { Aggregation, Unit } from 'app/redux/reducers/monthlyEmissions';
 import {
   setMonthlyEmissionsAggregation,
@@ -22,8 +23,8 @@ import { regions, states } from 'app/config';
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 
-type EgusMonthlyData = ReturnType<typeof sumEgusMonthlyData>;
-type MonthlyData = EgusMonthlyData[keyof EgusMonthlyData];
+type EmissionsData = EmissionsChanges[string]['data'];
+type MonthlyData = EmissionsData[keyof EmissionsData];
 
 /**
  * Creates monthly emissions data for either emissions changes or percentage
@@ -430,57 +431,32 @@ function Chart(props: {
 }
 
 /**
- * Returns EGUs filtered by current aggregation (and also current state and
- * county if either of those levels of aggregation are currently selected).
+ * Sets the monthly emissions data based on the currently selected filters.
  */
-function setFilteredEgus(options: {
-  egus: EmissionsChanges;
+function setFilteredMonthlyData(options: {
+  emissionsMonthlyData: EmissionsMonthlyData;
   aggregation: Aggregation;
   regionId: RegionId | 'ALL';
   stateId: StateId;
   county: string;
 }) {
-  const { egus, aggregation, regionId, stateId, county } = options;
+  const { emissionsMonthlyData, aggregation, regionId, stateId, county } =
+    options;
 
-  if (Object.keys(egus).length === 0) return {};
+  if (!emissionsMonthlyData) return {} as EmissionsData;
 
-  const result = Object.entries(egus).reduce((object, [eguId, eguData]) => {
-    const regionMatch =
-      aggregation === 'region' &&
-      (regionId === 'ALL' || eguData.region === regionId);
-    const stateMatch = aggregation === 'state' && eguData.state === stateId;
-    const countyMatch = aggregation === 'county' && eguData.county === county;
+  const { total, regions, states, counties } = emissionsMonthlyData;
 
-    if (regionMatch || stateMatch || countyMatch) {
-      object[eguId] = eguData;
-    }
-
-    return object;
-  }, {} as EmissionsChanges);
-
-  return result;
-}
-
-/**
- * Sum the provided EGUs emissions data into monthly original and post-EERE
- * values for each pollutant.
- */
-function sumEgusMonthlyData(egus: EmissionsChanges) {
-  const result = Object.values(egus).reduce((object, eguData) => {
-    Object.entries(eguData.data).forEach(([key, annualData]) => {
-      const pollutant = key as keyof EmissionsChanges[string]['data'];
-      object[pollutant] ??= {};
-
-      Object.entries(annualData).forEach(([key, monthlyData]) => {
-        const month = Number(key);
-        object[pollutant][month] ??= { original: 0, postEere: 0 };
-        object[pollutant][month].original += monthlyData.original;
-        object[pollutant][month].postEere += monthlyData.postEere;
-      });
-    });
-
-    return object;
-  }, {} as EmissionsChanges[string]['data']);
+  const result =
+    aggregation === 'region'
+      ? regionId === 'ALL'
+        ? total
+        : regions[regionId] || {}
+      : aggregation === 'state'
+      ? states[stateId] || {}
+      : aggregation === 'county'
+      ? counties[stateId][county] || {}
+      : ({} as EmissionsData);
 
   return result;
 }
@@ -488,8 +464,8 @@ function sumEgusMonthlyData(egus: EmissionsChanges) {
 export function MonthlyEmissionsCharts() {
   const dispatch = useDispatch();
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const emissionsChanges = useTypedSelector(
-    ({ results }) => results.emissionsChanges,
+  const emissionsMonthlyData = useTypedSelector(
+    ({ results }) => results.emissionsMonthlyData,
   );
   const currentAggregation = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.aggregation,
@@ -529,15 +505,13 @@ export function MonthlyEmissionsCharts() {
       ? selectedStateRegions[0].id
       : (currentRegionId as RegionId);
 
-  const filteredEgus = setFilteredEgus({
-    egus: emissionsChanges.data,
+  const powerData = setFilteredMonthlyData({
+    emissionsMonthlyData,
     aggregation: currentAggregation,
     regionId,
     stateId: currentStateId as StateId,
     county: currentCountyName,
   });
-
-  const powerData = sumEgusMonthlyData(filteredEgus);
 
   return (
     <>
@@ -996,7 +970,7 @@ export function MonthlyEmissionsCharts() {
       </div>
 
       <div data-avert-charts>
-        {emissionsChanges.status === 'success' && (
+        {emissionsMonthlyData && (
           <div className="grid-container padding-0 maxw-full">
             <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
               {currentPollutants.length === 0 ? (
