@@ -5,8 +5,7 @@ import { useDispatch } from 'react-redux';
 // ---
 import { useTypedSelector } from 'app/redux/index';
 import type { MonthlyDisplacement } from 'app/redux/reducers/displacement';
-import { calculateMonthlyData } from 'app/redux/reducers/displacement';
-import type { Aggregation } from 'app/redux/reducers/monthlyEmissions';
+import type { Aggregation, Unit } from 'app/redux/reducers/monthlyEmissions';
 import {
   setMonthlyEmissionsAggregation,
   setMonthlyEmissionsRegionId,
@@ -23,6 +22,30 @@ import { regions, states } from 'app/config';
 
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
+
+/**
+ * Creates monthly emissions data for either emissions changes or percentage
+ * changes, for display in the monthly charts.
+ */
+function calculateMonthlyData(monthlyData: MonthlyDisplacement, unit: Unit) {
+  const monthlyEmissionsChanges: number[] = [];
+  const monthlyPercentageChanges: number[] = [];
+
+  for (const dataKey in monthlyData) {
+    const month = Number(dataKey);
+    const { original, postEere } = monthlyData[month];
+
+    const emissionsChange = postEere - original;
+    const percentChange = (emissionsChange / original) * 100 || 0;
+
+    monthlyEmissionsChanges.push(emissionsChange);
+    monthlyPercentageChanges.push(percentChange);
+  }
+
+  return unit === 'emissions'
+    ? monthlyEmissionsChanges
+    : monthlyPercentageChanges;
+}
 
 function Chart(props: {
   pollutant: Pollutant;

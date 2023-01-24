@@ -1,5 +1,4 @@
 import { AppThunk } from 'app/redux/index';
-import type { Unit } from 'app/redux/reducers/monthlyEmissions';
 import { Pollutant, RegionId } from 'app/config';
 
 type PollutantName = 'generation' | Pollutant;
@@ -223,22 +222,4 @@ function receiveDisplacement(): AppThunk {
 
 export function resetDisplacement(): Action {
   return { type: 'displacement/RESET_DISPLACEMENT' };
-}
-
-export function calculateMonthlyData(data: MonthlyDisplacement, unit: Unit) {
-  const monthlyEmissionsChanges: number[] = [];
-  const monthlyPercentageChanges: number[] = [];
-
-  for (const dataKey in data) {
-    const month = Number(dataKey);
-    const { original, postEere } = data[month];
-    const emissionsChange = postEere - original;
-    const percentChange = (emissionsChange / original) * 100 || 0;
-    monthlyEmissionsChanges.push(emissionsChange);
-    monthlyPercentageChanges.push(percentChange);
-  }
-
-  return unit === 'emissions'
-    ? monthlyEmissionsChanges
-    : monthlyPercentageChanges;
 }
