@@ -24,11 +24,6 @@ const routes = [
   // web app method: calculateDisplacement()
   // (from panel 2, user clicks 'Get Results' button)
   route.post("/api/v1/emissions", controllers.emissions.calculate),
-  route.post('/api/v1/displacement/generation', controllers.displacement.calculateGeneration), // prettier-ignore
-  route.post("/api/v1/displacement/so2", controllers.displacement.calculateSO2),
-  route.post("/api/v1/displacement/nox", controllers.displacement.calculateNOx),
-  route.post("/api/v1/displacement/co2", controllers.displacement.calculateCO2),
-  route.post('/api/v1/displacement/nei', controllers.displacement.calculateNEIMetrics), // prettier-ignore
 ];
 
 module.exports = routes;
