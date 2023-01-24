@@ -223,10 +223,6 @@ export function Panels() {
 
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
   const loading = useTypedSelector(({ panel }) => panel.loading);
-  const loadingSteps = useTypedSelector(({ panel }) => panel.loadingSteps);
-  const loadingProgress = useTypedSelector(
-    ({ panel }) => panel.loadingProgress,
-  );
   const cobraApiUrl = useTypedSelector(({ api }) => api.cobraApiUrl);
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const modalOverlay = useTypedSelector(({ panel }) => panel.modalOverlay);
@@ -306,24 +302,12 @@ export function Panels() {
 
             <p className="font-sans-lg text-bold">LOADING...</p>
 
-            {
-              // conditionally display progress bar
-              activeStep === 3 && (
-                <div>
-                  <progress
-                    className="margin-top-1 width-full"
-                    value={loadingProgress}
-                    max={loadingSteps}
-                  >
-                    {(loadingProgress * 100) / loadingSteps}%
-                  </progress>
-
-                  <p className="margin-top-1 font-sans-sm">
-                    These calculations may take several minutes.
-                  </p>
-                </div>
-              )
-            }
+            {/* conditionally display message for results calculations */}
+            {activeStep === 3 && (
+              <p className="margin-top-1 font-sans-sm">
+                These calculations may take several minutes.
+              </p>
+            )}
           </div>
         )
       }

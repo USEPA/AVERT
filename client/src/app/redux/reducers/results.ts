@@ -9,6 +9,7 @@ export type EmissionsMonthlyData = ReturnType<typeof sumEmissionsMonthlyData>;
 export type EmissionsReplacements = ReturnType<typeof setEmissionsReplacements>;
 
 type Action =
+  | { type: 'results/RESET_RESULTS' }
   | { type: 'results/FETCH_EMISSIONS_CHANGES_REQUEST' }
   | {
       type: 'results/FETCH_EMISSIONS_CHANGES_SUCCESS';
@@ -54,6 +55,10 @@ export default function reducer(
   action: Action,
 ): State {
   switch (action.type) {
+    case 'results/RESET_RESULTS': {
+      return initialState;
+    }
+
     case 'results/FETCH_EMISSIONS_CHANGES_REQUEST': {
       return {
         ...initialState,
@@ -116,8 +121,16 @@ export default function reducer(
 }
 
 /**
+ * Called every time the "Back to EE/RE Impacts" button or the "Reselect
+ * Geography" button is clicked on the "Get Results" page.
+ */
+export function resetResults(): Action {
+  return { type: 'results/RESET_RESULTS' };
+}
+
+/**
  * Called every time the "Get Results" button is clicked on the "Set EE/RE
- * Impacts" page
+ * Impacts" page.
  */
 export function calculateEmissionsChanges(): AppThunk {
   return (dispatch, getState) => {
