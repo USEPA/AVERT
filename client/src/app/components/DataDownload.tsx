@@ -13,12 +13,8 @@ function convertToCSVString(data: { [key: string]: any }[]) {
 
 export function DataDownload() {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const countyData = useTypedSelector(
-    ({ displacement }) => displacement.downloadableCountyData,
-  );
-  const cobraData = useTypedSelector(
-    ({ displacement }) => displacement.downloadableCobraData,
-  );
+  const countyData = useTypedSelector(({ downloads }) => downloads.countyData);
+  const cobraData = useTypedSelector(({ downloads }) => downloads.cobraData);
 
   const selectedRegionName = useSelectedRegion()?.name || '';
   const selectedStateName = useSelectedState()?.name || '';
