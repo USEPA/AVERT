@@ -5,6 +5,8 @@ import type { EmissionsChanges } from 'app/calculations/emissions';
 import type { RegionId, StateId } from 'app/config';
 import { regions } from 'app/config';
 
+export type EmissionsData = EmissionsChanges[string]['data'];
+export type EmissionsFlagsField = EmissionsChanges[string]['emissionsFlags'][number]; // prettier-ignore
 export type EmissionsMonthlyData = ReturnType<typeof sumEmissionsMonthlyData>;
 export type EmissionsReplacements = ReturnType<typeof setEmissionsReplacements>;
 
@@ -210,8 +212,6 @@ export function calculateEmissionsChanges(): AppThunk {
  * Creates the intial structure of monthly emissions data for each pollutant.
  */
 function createInitialEmissionsData() {
-  type EmissionsData = EmissionsChanges[string]['data'];
-
   const fields = ["generation", "so2", "nox", "co2", "pm25", "vocs", "nh3"] as const; // prettier-ignore
 
   const result = fields.reduce((object, field) => {
@@ -232,8 +232,6 @@ function createInitialEmissionsData() {
  * values for each pollutant.
  */
 function sumEmissionsMonthlyData(egus: EmissionsChanges) {
-  type EmissionsData = EmissionsChanges[string]['data'];
-
   if (Object.keys(egus).length === 0) return null;
 
   const result = Object.values(egus).reduce(
@@ -248,7 +246,7 @@ function sumEmissionsMonthlyData(egus: EmissionsChanges) {
       object.counties[stateId][county] ??= createInitialEmissionsData();
 
       Object.entries(eguData.data).forEach(([annualKey, annualData]) => {
-        const pollutant = annualKey as keyof EmissionsChanges[string]['data'];
+        const pollutant = annualKey as keyof EmissionsData;
 
         Object.entries(annualData).forEach(([monthlyKey, monthlyData]) => {
           const month = Number(monthlyKey);
@@ -335,8 +333,6 @@ function setEgusNeedingEmissionsReplacement(egus: EmissionsChanges) {
  * that particular pollutant.
  */
 function setEmissionsReplacements(egus: EmissionsChanges) {
-  type EmissionsFlagsField = EmissionsChanges[string]['emissionsFlags'][number];
-
   if (Object.keys(egus).length === 0) {
     return {} as { [pollutant in EmissionsFlagsField]: number };
   }

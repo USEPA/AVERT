@@ -2,10 +2,13 @@ import { ReactNode } from 'react';
 // ---
 import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
-import type { EmissionsReplacements } from 'app/redux/reducers/results';
-import type { EmissionsChanges } from 'app/calculations/emissions';
+import type {
+  EmissionsData,
+  EmissionsMonthlyData,
+  EmissionsReplacements,
+} from 'app/redux/reducers/results';
 
-type EGUsAnnualData = ReturnType<typeof sumEgusAnnualData>;
+type AnnualMonthlyData = ReturnType<typeof setAnnualMonthlyData>;
 
 function formatNumber(number: number) {
   if (number < 10 && number > -10) return '--';
@@ -14,11 +17,11 @@ function formatNumber(number: number) {
 }
 
 /**
- * Sum the provided EGUs emissions data into total annual original, post-EERE,
- * and impacts (difference between the two) values for each pollutant.
+ * Sum the the total annual original, post-EERE, and impacts (difference between
+ * the two) values for each pollutant.
  */
-function sumEgusAnnualData(egus: EmissionsChanges) {
-  if (Object.keys(egus).length === 0) {
+function setAnnualMonthlyData(emissionsMonthlyData: EmissionsMonthlyData) {
+  if (!emissionsMonthlyData) {
     return {
       generation: { original: 0, postEere: 0, impacts: 0 },
       ozoneGeneration: { original: 0, postEere: 0, impacts: 0 },
@@ -32,37 +35,37 @@ function sumEgusAnnualData(egus: EmissionsChanges) {
     };
   }
 
-  const result = Object.values(egus).reduce(
-    (object, eguData) => {
-      Object.entries(eguData.data).forEach(([annualKey, annualData]) => {
-        const pollutant = annualKey as keyof EmissionsChanges[string]['data'];
+  const { total } = emissionsMonthlyData;
 
-        Object.entries(annualData).forEach(([monthlyKey, monthlyData]) => {
-          const month = Number(monthlyKey);
-          const { original, postEere } = monthlyData;
+  const result = Object.entries(total).reduce(
+    (object, [annualKey, annualData]) => {
+      const pollutant = annualKey as keyof EmissionsData;
 
-          /**
-           * Build up ozone season generation and ozone season nox
-           * (Ozone season is between May and September)
-           */
-          if (month >= 5 && month <= 9) {
-            if (pollutant === 'generation') {
-              object.ozoneGeneration.original += original;
-              object.ozoneGeneration.postEere += postEere;
-              object.ozoneGeneration.impacts += postEere - original;
-            }
+      Object.entries(annualData).forEach(([monthlyKey, monthlyData]) => {
+        const month = Number(monthlyKey);
+        const { original, postEere } = monthlyData;
 
-            if (pollutant === 'nox') {
-              object.ozoneNox.original += original;
-              object.ozoneNox.postEere += postEere;
-              object.ozoneNox.impacts += postEere - original;
-            }
+        /**
+         * Build up ozone season generation and ozone season nox
+         * (Ozone season is between May and September)
+         */
+        if (month >= 5 && month <= 9) {
+          if (pollutant === 'generation') {
+            object.ozoneGeneration.original += original;
+            object.ozoneGeneration.postEere += postEere;
+            object.ozoneGeneration.impacts += postEere - original;
           }
 
-          object[pollutant].original += original;
-          object[pollutant].postEere += postEere;
-          object[pollutant].impacts += postEere - original;
-        });
+          if (pollutant === 'nox') {
+            object.ozoneNox.original += original;
+            object.ozoneNox.postEere += postEere;
+            object.ozoneNox.impacts += postEere - original;
+          }
+        }
+
+        object[pollutant].original += original;
+        object[pollutant].postEere += postEere;
+        object[pollutant].impacts += postEere - original;
       });
 
       return object;
@@ -90,18 +93,18 @@ function sumEgusAnnualData(egus: EmissionsChanges) {
  * the sum of the replaced `original` value and the calculated `impacts` value.
  */
 function applyEmissionsReplacement(options: {
+  annualMonthlyData: AnnualMonthlyData;
   emissionsReplacements: EmissionsReplacements | {};
-  egusAnnualData: EGUsAnnualData;
 }) {
-  const { emissionsReplacements, egusAnnualData } = options;
-  const result = { ...egusAnnualData };
+  const { annualMonthlyData, emissionsReplacements } = options;
+  const result = { ...annualMonthlyData };
 
   if (Object.keys(emissionsReplacements).length === 0) return result;
 
   Object.entries(emissionsReplacements).forEach(([key, replacementValue]) => {
-    const pollutant = key as keyof typeof egusAnnualData;
+    const pollutant = key as keyof typeof annualMonthlyData;
 
-    const pollutantData = egusAnnualData[pollutant];
+    const pollutantData = annualMonthlyData[pollutant];
 
     if (pollutantData) {
       pollutantData.original = replacementValue;
@@ -141,18 +144,18 @@ function EmissionsReplacementTooltip(props: {
 }
 
 export function PowerSectorEmissionsTable() {
-  const emissionsChanges = useTypedSelector(
-    ({ results }) => results.emissionsChanges,
+  const emissionsMonthlyData = useTypedSelector(
+    ({ results }) => results.emissionsMonthlyData,
   );
   const emissionsReplacements = useTypedSelector(
     ({ results }) => results.emissionsReplacements,
   );
 
-  const egusAnnualData = sumEgusAnnualData(emissionsChanges.data);
+  const annualMonthlyData = setAnnualMonthlyData(emissionsMonthlyData);
 
-  const annualData = applyEmissionsReplacement({
+  const data = applyEmissionsReplacement({
+    annualMonthlyData,
     emissionsReplacements,
-    egusAnnualData,
   });
 
   const {
@@ -165,9 +168,9 @@ export function PowerSectorEmissionsTable() {
     pm25,
     vocs,
     nh3,
-  } = annualData;
+  } = data;
 
-  if (emissionsChanges.status !== 'success') return null;
+  if (!emissionsMonthlyData) return null;
 
   return (
     <>
