@@ -9,9 +9,9 @@ import { setActiveStep } from 'app/redux/reducers/panel';
 import { resetEEREInputs } from 'app/redux/reducers/eere';
 import { fetchRegionsData } from 'app/redux/reducers/geography';
 import {
-  calculateDisplacement,
-  resetDisplacement,
-} from 'app/redux/reducers/displacement';
+  fetchEmissionsChanges,
+  resetResults,
+} from 'app/redux/reducers/results';
 import { resetMonthlyEmissions } from 'app/redux/reducers/monthlyEmissions';
 import { useSelectedRegion, useSelectedState } from 'app/hooks';
 import icons from 'app/icons.svg';
@@ -105,7 +105,7 @@ export function PanelFooter(props: {
         dispatch(resetEEREInputs());
 
         if (onStepThree) {
-          dispatch(resetDisplacement());
+          dispatch(resetResults());
           dispatch(resetMonthlyEmissions());
         }
       }}
@@ -145,7 +145,7 @@ export function PanelFooter(props: {
         if (onStepTwo) {
           if (eereStatus === 'complete' && hardValid) {
             scrollToTop();
-            dispatch(calculateDisplacement());
+            dispatch(fetchEmissionsChanges());
           } else {
             return;
           }
@@ -154,7 +154,7 @@ export function PanelFooter(props: {
         if (onStepThree) {
           scrollToTop();
           dispatch(resetEEREInputs());
-          dispatch(resetDisplacement());
+          dispatch(resetResults());
           dispatch(resetMonthlyEmissions());
         }
 

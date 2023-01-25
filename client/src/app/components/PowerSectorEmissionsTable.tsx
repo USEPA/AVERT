@@ -2,7 +2,13 @@ import { ReactNode } from 'react';
 // ---
 import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
-import { ReplacementPollutantName } from 'app/redux/reducers/displacement';
+import type {
+  EmissionsData,
+  EmissionsMonthlyData,
+  EmissionsReplacements,
+} from 'app/redux/reducers/results';
+
+type AnnualMonthlyData = ReturnType<typeof setAnnualMonthlyData>;
 
 function formatNumber(number: number) {
   if (number < 10 && number > -10) return '--';
@@ -10,78 +16,161 @@ function formatNumber(number: number) {
   return output.toLocaleString();
 }
 
-export function PowerSectorEmissionsTable() {
-  const status = useTypedSelector(({ displacement }) => displacement.status);
-  const data = useTypedSelector(
-    ({ displacement }) => displacement.annualRegionalDisplacements,
-  );
-  const egusNeedingReplacement = useTypedSelector(
-    ({ displacement }) => displacement.egusNeedingReplacement,
-  );
-
-  const genOrig = data.generation.replacedOriginal || data.generation.original;
-  const genPost = data.generation.replacedPostEere || data.generation.postEere;
-  const genImpacts = data.generation.impacts;
-
-  const ozoneGenOrig =
-    data.ozoneGeneration.replacedOriginal || data.ozoneGeneration.original;
-  // const ozoneGenPost =
-  //   data.ozoneGeneration.replacedPostEere || data.ozoneGeneration.postEere;
-  const ozoneGenImpacts = data.ozoneGeneration.impacts;
-
-  const so2Orig = data.so2.replacedOriginal || data.so2.original;
-  const so2Post = data.so2.replacedPostEere || data.so2.postEere;
-  const so2Impacts = data.so2.impacts;
-
-  const noxOrig = data.nox.replacedOriginal || data.nox.original;
-  const noxPost = data.nox.replacedPostEere || data.nox.postEere;
-  const noxImpacts = data.nox.impacts;
-
-  const ozoneNoxOrig = data.ozoneNox.replacedOriginal || data.ozoneNox.original;
-  const ozoneNoxPost = data.ozoneNox.replacedPostEere || data.ozoneNox.postEere;
-  const ozoneNoxImpacts = data.ozoneNox.impacts;
-
-  const co2Orig = data.co2.replacedOriginal || data.co2.original;
-  const co2Post = data.co2.replacedPostEere || data.co2.postEere;
-  const co2Impacts = data.co2.impacts;
-
-  const pm25Orig = data.pm25.original;
-  const pm25Post = data.pm25.postEere;
-  const pm25Impacts = data.pm25.impacts;
-
-  const vocsOrig = data.vocs.original;
-  const vocsPost = data.vocs.postEere;
-  const vocsImpacts = data.vocs.impacts;
-
-  const nh3Orig = data.nh3.original;
-  const nh3Post = data.nh3.postEere;
-  const nh3Impacts = data.nh3.impacts;
-
-  function replacementTooltip(pollutant: ReplacementPollutantName) {
-    // prettier-ignore
-    const pollutantMarkup = new Map<ReplacementPollutantName, ReactNode>()
-      .set('generation', <>Generation</>)
-      .set('so2', <>SO<sub>2</sub></>)
-      .set('nox', <>NO<sub>X</sub></>)
-      .set('co2', <>CO<sub>2</sub></>);
-
-    return (
-      <Tooltip id={`power-sector-${pollutant}-infrequent-emissions-event`}>
-        <p className="margin-0">
-          This region features one or more power plants with an infrequent{' '}
-          {pollutantMarkup.get(pollutant)} emissions event.{' '}
-          {pollutantMarkup.get(pollutant)} emissions changes from these plants
-          are not included in this analysis. See Section 2 of the{' '}
-          <a className="usa-link" href="https://www.epa.gov/avert">
-            AVERT User Manual
-          </a>{' '}
-          for more information.
-        </p>
-      </Tooltip>
-    );
+/**
+ * Sum the the total annual original, post-EERE, and impacts (difference between
+ * the two) values for each pollutant.
+ */
+function setAnnualMonthlyData(emissionsMonthlyData: EmissionsMonthlyData) {
+  if (!emissionsMonthlyData) {
+    return {
+      generation: { original: 0, postEere: 0, impacts: 0 },
+      ozoneGeneration: { original: 0, postEere: 0, impacts: 0 },
+      so2: { original: 0, postEere: 0, impacts: 0 },
+      nox: { original: 0, postEere: 0, impacts: 0 },
+      ozoneNox: { original: 0, postEere: 0, impacts: 0 },
+      co2: { original: 0, postEere: 0, impacts: 0 },
+      pm25: { original: 0, postEere: 0, impacts: 0 },
+      vocs: { original: 0, postEere: 0, impacts: 0 },
+      nh3: { original: 0, postEere: 0, impacts: 0 },
+    };
   }
 
-  if (status !== 'complete') return null;
+  const { total } = emissionsMonthlyData;
+
+  const result = Object.entries(total).reduce(
+    (object, [annualKey, annualData]) => {
+      const pollutant = annualKey as keyof EmissionsData;
+
+      Object.entries(annualData).forEach(([monthlyKey, monthlyData]) => {
+        const month = Number(monthlyKey);
+        const { original, postEere } = monthlyData;
+
+        /**
+         * Build up ozone season generation and ozone season nox
+         * (Ozone season is between May and September)
+         */
+        if (month >= 5 && month <= 9) {
+          if (pollutant === 'generation') {
+            object.ozoneGeneration.original += original;
+            object.ozoneGeneration.postEere += postEere;
+            object.ozoneGeneration.impacts += postEere - original;
+          }
+
+          if (pollutant === 'nox') {
+            object.ozoneNox.original += original;
+            object.ozoneNox.postEere += postEere;
+            object.ozoneNox.impacts += postEere - original;
+          }
+        }
+
+        object[pollutant].original += original;
+        object[pollutant].postEere += postEere;
+        object[pollutant].impacts += postEere - original;
+      });
+
+      return object;
+    },
+    {
+      generation: { original: 0, postEere: 0, impacts: 0 },
+      ozoneGeneration: { original: 0, postEere: 0, impacts: 0 },
+      so2: { original: 0, postEere: 0, impacts: 0 },
+      nox: { original: 0, postEere: 0, impacts: 0 },
+      ozoneNox: { original: 0, postEere: 0, impacts: 0 },
+      co2: { original: 0, postEere: 0, impacts: 0 },
+      pm25: { original: 0, postEere: 0, impacts: 0 },
+      vocs: { original: 0, postEere: 0, impacts: 0 },
+      nh3: { original: 0, postEere: 0, impacts: 0 },
+    },
+  );
+
+  return result;
+}
+
+/**
+ * If "replacement" is needed for a pollutant, we'll change the calculated
+ * `original` value for that pollutant to the pollutant's replacement value for
+ * the region (found in the config file), and change the `postEere` value to be
+ * the sum of the replaced `original` value and the calculated `impacts` value.
+ */
+function applyEmissionsReplacement(options: {
+  annualMonthlyData: AnnualMonthlyData;
+  emissionsReplacements: EmissionsReplacements | {};
+}) {
+  const { annualMonthlyData, emissionsReplacements } = options;
+  const result = { ...annualMonthlyData };
+
+  if (Object.keys(emissionsReplacements).length === 0) return result;
+
+  Object.entries(emissionsReplacements).forEach(([key, replacementValue]) => {
+    const pollutant = key as keyof typeof annualMonthlyData;
+
+    const pollutantData = annualMonthlyData[pollutant];
+
+    if (pollutantData) {
+      pollutantData.original = replacementValue;
+      pollutantData.postEere = replacementValue + pollutantData.impacts;
+    }
+  });
+
+  return result;
+}
+
+function EmissionsReplacementTooltip(props: {
+  field: 'generation' | 'so2' | 'nox' | 'co2';
+}) {
+  const { field } = props;
+
+  // prettier-ignore
+  const fieldMarkup = new Map<'generation' | 'so2' | 'nox' | 'co2', ReactNode>()
+    .set('generation', <>Generation</>)
+    .set('so2', <>SO<sub>2</sub></>)
+    .set('nox', <>NO<sub>X</sub></>)
+    .set('co2', <>CO<sub>2</sub></>);
+
+  return (
+    <Tooltip id={`power-sector-${field}-infrequent-emissions-event`}>
+      <p className="margin-0">
+        This region features one or more power plants with an infrequent{' '}
+        {fieldMarkup.get(field)} emissions event. {fieldMarkup.get(field)}{' '}
+        emissions changes from these plants are not included in this analysis.
+        See Section 2 of the{' '}
+        <a className="usa-link" href="https://www.epa.gov/avert">
+          AVERT User Manual
+        </a>{' '}
+        for more information.
+      </p>
+    </Tooltip>
+  );
+}
+
+export function PowerSectorEmissionsTable() {
+  const emissionsMonthlyData = useTypedSelector(
+    ({ results }) => results.emissionsMonthlyData,
+  );
+  const emissionsReplacements = useTypedSelector(
+    ({ results }) => results.emissionsReplacements,
+  );
+
+  const annualMonthlyData = setAnnualMonthlyData(emissionsMonthlyData);
+
+  const data = applyEmissionsReplacement({
+    annualMonthlyData,
+    emissionsReplacements,
+  });
+
+  const {
+    generation,
+    ozoneGeneration,
+    so2,
+    nox,
+    ozoneNox,
+    co2,
+    pm25,
+    vocs,
+    nh3,
+  } = data;
+
+  if (!emissionsMonthlyData) return null;
 
   return (
     <>
@@ -102,18 +191,19 @@ export function PowerSectorEmissionsTable() {
                 <td>
                   <span className="padding-left-105">
                     Generation <small>(MWh)</small>&nbsp;
-                    {egusNeedingReplacement.generation.length > 0 &&
-                      replacementTooltip('generation')}
+                    {emissionsReplacements.hasOwnProperty('generation') && (
+                      <EmissionsReplacementTooltip field="generation" />
+                    )}
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(genOrig)}
+                  {formatNumber(generation.original)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(genPost)}
+                  {formatNumber(generation.postEere)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(genImpacts)}
+                  {formatNumber(generation.impacts)}
                 </td>
               </tr>
 
@@ -127,18 +217,19 @@ export function PowerSectorEmissionsTable() {
                 <td>
                   <span className="padding-left-105">
                     SO<sub>2</sub> <small>(lb)</small>&nbsp;
-                    {egusNeedingReplacement.so2.length > 0 &&
-                      replacementTooltip('so2')}
+                    {emissionsReplacements.hasOwnProperty('so2') && (
+                      <EmissionsReplacementTooltip field="so2" />
+                    )}
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(so2Orig)}
+                  {formatNumber(so2.original)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(so2Post)}
+                  {formatNumber(so2.postEere)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(so2Impacts)}
+                  {formatNumber(so2.impacts)}
                 </td>
               </tr>
 
@@ -146,18 +237,19 @@ export function PowerSectorEmissionsTable() {
                 <td>
                   <span className="padding-left-105">
                     NO<sub>X</sub> <small>(lb)</small>&nbsp;
-                    {egusNeedingReplacement.nox.length > 0 &&
-                      replacementTooltip('nox')}
+                    {emissionsReplacements.hasOwnProperty('nox') && (
+                      <EmissionsReplacementTooltip field="nox" />
+                    )}
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(noxOrig)}
+                  {formatNumber(nox.original)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(noxPost)}
+                  {formatNumber(nox.postEere)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(noxImpacts)}
+                  {formatNumber(nox.impacts)}
                 </td>
               </tr>
 
@@ -174,13 +266,13 @@ export function PowerSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(ozoneNoxOrig)}
+                  {formatNumber(ozoneNox.original)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(ozoneNoxPost)}
+                  {formatNumber(ozoneNox.postEere)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(ozoneNoxImpacts)}
+                  {formatNumber(ozoneNox.impacts)}
                 </td>
               </tr>
 
@@ -188,18 +280,19 @@ export function PowerSectorEmissionsTable() {
                 <td>
                   <span className="padding-left-105">
                     CO<sub>2</sub> <small>(tons)</small>&nbsp;
-                    {egusNeedingReplacement.co2.length > 0 &&
-                      replacementTooltip('co2')}
+                    {emissionsReplacements.hasOwnProperty('co2') && (
+                      <EmissionsReplacementTooltip field="co2" />
+                    )}
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(co2Orig)}
+                  {formatNumber(co2.original)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(co2Post)}
+                  {formatNumber(co2.postEere)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(co2Impacts)}
+                  {formatNumber(co2.impacts)}
                 </td>
               </tr>
 
@@ -210,13 +303,13 @@ export function PowerSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(pm25Orig)}
+                  {formatNumber(pm25.original)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(pm25Post)}
+                  {formatNumber(pm25.postEere)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(pm25Impacts)}
+                  {formatNumber(pm25.impacts)}
                 </td>
               </tr>
 
@@ -227,13 +320,13 @@ export function PowerSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(vocsOrig)}
+                  {formatNumber(vocs.original)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(vocsPost)}
+                  {formatNumber(vocs.postEere)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(vocsImpacts)}
+                  {formatNumber(vocs.impacts)}
                 </td>
               </tr>
 
@@ -244,13 +337,13 @@ export function PowerSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(nh3Orig)}
+                  {formatNumber(nh3.original)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(nh3Post)}
+                  {formatNumber(nh3.postEere)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(nh3Impacts)}
+                  {formatNumber(nh3.impacts)}
                 </td>
               </tr>
 
@@ -268,11 +361,11 @@ export function PowerSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {(so2Orig / genOrig).toFixed(3)}
+                  {(so2.original / generation.original).toFixed(3)}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {(so2Impacts / genImpacts).toFixed(3)}
+                  {(so2.impacts / generation.impacts).toFixed(3)}
                 </td>
               </tr>
 
@@ -283,11 +376,11 @@ export function PowerSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {(noxOrig / genOrig).toFixed(3)}
+                  {(nox.original / generation.original).toFixed(3)}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {(noxImpacts / genImpacts).toFixed(3)}
+                  {(nox.impacts / generation.impacts).toFixed(3)}
                 </td>
               </tr>
 
@@ -304,11 +397,11 @@ export function PowerSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {(ozoneNoxOrig / ozoneGenOrig).toFixed(3)}
+                  {(ozoneNox.original / ozoneGeneration.original).toFixed(3)}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {(ozoneNoxImpacts / ozoneGenImpacts).toFixed(3)}
+                  {(ozoneNox.impacts / ozoneGeneration.impacts).toFixed(3)}
                 </td>
               </tr>
 
@@ -319,11 +412,11 @@ export function PowerSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {(co2Orig / genOrig).toFixed(3)}
+                  {(co2.original / generation.original).toFixed(3)}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {(co2Impacts / genImpacts).toFixed(3)}
+                  {(co2.impacts / generation.impacts).toFixed(3)}
                 </td>
               </tr>
 
@@ -334,11 +427,11 @@ export function PowerSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {(pm25Orig / genOrig).toFixed(3)}
+                  {(pm25.original / generation.original).toFixed(3)}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {(pm25Impacts / genImpacts).toFixed(3)}
+                  {(pm25.impacts / generation.impacts).toFixed(3)}
                 </td>
               </tr>
 
@@ -349,11 +442,11 @@ export function PowerSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {(vocsOrig / genOrig).toFixed(3)}
+                  {(vocs.original / generation.original).toFixed(3)}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {(vocsImpacts / genImpacts).toFixed(3)}
+                  {(vocs.impacts / generation.impacts).toFixed(3)}
                 </td>
               </tr>
 
@@ -364,11 +457,11 @@ export function PowerSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {(nh3Orig / genOrig).toFixed(3)}
+                  {(nh3.original / generation.original).toFixed(3)}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {(nh3Impacts / genImpacts).toFixed(3)}
+                  {(nh3.impacts / generation.impacts).toFixed(3)}
                 </td>
               </tr>
             </tbody>

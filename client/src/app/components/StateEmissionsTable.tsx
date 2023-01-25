@@ -1,26 +1,80 @@
 import { useTypedSelector } from 'app/redux/index';
-import { StateChange } from 'app/redux/reducers/displacement';
-import { StateId } from 'app/config';
+import type {
+  EmissionsData,
+  EmissionsMonthlyData,
+} from 'app/redux/reducers/results';
+import type { StateId } from 'app/config';
+import { states as statesConfig } from 'app/config';
 
 function formatNumber(number: number) {
   const output = Math.round(number / 10) * 10;
   return output.toLocaleString();
 }
 
-export function StateEmissionsTable() {
-  const status = useTypedSelector(({ displacement }) => displacement.status);
-  const annualStateEmissionChanges = useTypedSelector(
-    ({ displacement }) => displacement.annualStateEmissionChanges,
+/**
+ * Sum the emissions monthly data into total annual state changes for each
+ * pollutant.
+ */
+function setAnnualStateEmissionsChanges(
+  emissionsMonthlyData: EmissionsMonthlyData,
+) {
+  if (!emissionsMonthlyData) return [];
+
+  const { states } = emissionsMonthlyData;
+
+  const result = Object.entries(states).reduce(
+    (array, [stateKey, stateData]) => {
+      const stateId = stateKey as StateId;
+
+      const state = {
+        id: stateId,
+        name: statesConfig[stateId].name,
+        generation: 0,
+        so2: 0,
+        nox: 0,
+        co2: 0,
+        pm25: 0,
+        vocs: 0,
+        nh3: 0,
+      };
+
+      Object.entries(stateData).forEach(([key, annualData]) => {
+        const pollutant = key as keyof EmissionsData;
+
+        Object.values(annualData).forEach((monthlyData) => {
+          state[pollutant] += monthlyData.postEere - monthlyData.original;
+        });
+      });
+
+      array.push(state);
+
+      return array;
+    },
+    [] as {
+      id: StateId;
+      name: string;
+      generation: number;
+      so2: number;
+      nox: number;
+      co2: number;
+      pm25: number;
+      vocs: number;
+      nh3: number;
+    }[],
   );
 
-  // convert object of annual state changes to an array of changes by state
-  const changesByState: StateChange[] = [];
-  for (const stateId in annualStateEmissionChanges) {
-    const stateChange = annualStateEmissionChanges[stateId as StateId];
-    if (stateChange) changesByState.push(stateChange);
-  }
+  return result;
+}
 
-  if (status !== 'complete') return null;
+export function StateEmissionsTable() {
+  const emissionsMonthlyData = useTypedSelector(
+    ({ results }) => results.emissionsMonthlyData,
+  );
+
+  const annualStateEmissionsChanges =
+    setAnnualStateEmissionsChanges(emissionsMonthlyData);
+
+  if (!emissionsMonthlyData) return null;
 
   return (
     <div className="overflow-auto">
@@ -51,7 +105,7 @@ export function StateEmissionsTable() {
           </thead>
 
           <tbody>
-            {changesByState
+            {annualStateEmissionsChanges
               .sort((stateA, stateB) => stateA.name.localeCompare(stateB.name))
               .map((stateData) => {
                 return (

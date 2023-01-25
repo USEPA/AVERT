@@ -44,7 +44,7 @@ export function calculateEere(options: {
   const hourlyEere: number[] = [];
 
   regionalLoad.forEach((data, index) => {
-    const hourlyLoad = data.regional_load_mw;
+    const originalLoad = data.regional_load_mw;
 
     const topPercentReduction = hourlyTopPercentReduction[index] || 0;
     const renewableProfile = hourlyRenewableEnergyProfile[index] || 0;
@@ -60,13 +60,13 @@ export function calculateEere(options: {
 
     const softLimitHourlyExceedance = calculateHourlyExceedance(
       calculatedLoad,
-      hourlyLoad * -0.15,
+      originalLoad * -0.15,
       15,
     );
 
     const hardLimitHourlyExceedance = calculateHourlyExceedance(
       calculatedLoad,
-      hourlyLoad * -0.3,
+      originalLoad * -0.3,
       30,
     );
 

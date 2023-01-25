@@ -1,4 +1,4 @@
-type PanelAction =
+type Action =
   | {
       type: 'panel/CHANGE_ACTIVE_STEP';
       payload: { stepNumber: number };
@@ -16,43 +16,31 @@ type PanelAction =
   | { type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' }
   | { type: 'eere/START_EERE_CALCULATIONS' }
   | { type: 'eere/COMPLETE_EERE_CALCULATIONS' }
-  | { type: 'displacement/INCREMENT_PROGRESS' }
-  | { type: 'displacement/START_DISPLACEMENT' }
-  | { type: 'displacement/COMPLETE_DISPLACEMENT' };
+  | { type: 'results/FETCH_EMISSIONS_CHANGES_REQUEST' }
+  | { type: 'results/FETCH_EMISSIONS_CHANGES_SUCCESS' };
 
-type PanelState = {
+type State = {
   activeStep: number;
   loading: boolean;
-  loadingSteps: number;
-  loadingProgress: number;
   modalOverlay: boolean;
   activeModalId: string;
   closingModalId: string;
 };
 
 // reducer
-const initialState: PanelState = {
+const initialState: State = {
   activeStep: 1,
   loading: false,
-  loadingSteps: 6, // total number of pollutant displacements + 1
-  loadingProgress: 0,
   modalOverlay: false,
   activeModalId: '',
   closingModalId: '',
 };
 
 export default function reducer(
-  state: PanelState = initialState,
-  action: PanelAction,
-): PanelState {
+  state: State = initialState,
+  action: Action,
+): State {
   switch (action.type) {
-    case 'displacement/INCREMENT_PROGRESS': {
-      return {
-        ...state,
-        loadingProgress: ++state.loadingProgress,
-      };
-    }
-
     case 'panel/CHANGE_ACTIVE_STEP': {
       const { stepNumber } = action.payload;
 
@@ -91,17 +79,16 @@ export default function reducer(
 
     case 'geography/REQUEST_SELECTED_REGIONS_DATA':
     case 'eere/START_EERE_CALCULATIONS':
-    case 'displacement/START_DISPLACEMENT': {
+    case 'results/FETCH_EMISSIONS_CHANGES_REQUEST': {
       return {
         ...state,
         loading: true,
-        loadingProgress: 0,
       };
     }
 
     case 'geography/RECEIVE_SELECTED_REGIONS_DATA':
     case 'eere/COMPLETE_EERE_CALCULATIONS':
-    case 'displacement/COMPLETE_DISPLACEMENT': {
+    case 'results/FETCH_EMISSIONS_CHANGES_SUCCESS': {
       return {
         ...state,
         loading: false,
@@ -114,7 +101,6 @@ export default function reducer(
   }
 }
 
-// action creators
 export function setActiveStep(stepNumber: number) {
   return {
     type: 'panel/CHANGE_ACTIVE_STEP',

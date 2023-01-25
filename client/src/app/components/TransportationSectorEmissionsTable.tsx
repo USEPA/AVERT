@@ -1,4 +1,8 @@
 import { useTypedSelector } from 'app/redux/index';
+import type {
+  EmissionsData,
+  EmissionsMonthlyData,
+} from 'app/redux/reducers/results';
 
 function formatNumber(number: number) {
   if (number < 10 && number > -10) return '--';
@@ -6,29 +10,42 @@ function formatNumber(number: number) {
   return output.toLocaleString();
 }
 
+/**
+ * Sum the emissions monthly data into total annual changes for each pollutant.
+ */
+function setAnnualEmissionsChanges(emissionsMonthlyData: EmissionsMonthlyData) {
+  if (!emissionsMonthlyData) {
+    return { generation: 0, so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 };
+  }
+
+  const { total } = emissionsMonthlyData;
+
+  const result = Object.entries(total).reduce(
+    (object, [annualKey, annualData]) => {
+      const pollutant = annualKey as keyof EmissionsData;
+
+      Object.values(annualData).forEach((monthlyData) => {
+        object[pollutant] += monthlyData.postEere - monthlyData.original;
+      });
+
+      return object;
+    },
+    { generation: 0, so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 },
+  );
+
+  return result;
+}
+
 export function TransportationSectorEmissionsTable() {
-  const status = useTypedSelector(({ displacement }) => displacement.status);
   const totalYearlyVehicleEmissionsChanges = useTypedSelector(
     ({ transportation }) => transportation.totalYearlyEmissionChanges,
   );
-  const annualStateEmissionChanges = useTypedSelector(
-    ({ displacement }) => displacement.annualStateEmissionChanges,
+  const emissionsMonthlyData = useTypedSelector(
+    ({ results }) => results.emissionsMonthlyData,
   );
 
-  const totalYearlyPowerEmissionsChanges = Object.values(
-    annualStateEmissionChanges,
-  ).reduce(
-    (object, data) => {
-      object.so2 += data.so2;
-      object.nox += data.nox;
-      object.co2 += data.co2;
-      object.pm25 += data.pm25;
-      object.vocs += data.vocs;
-      object.nh3 += data.nh3;
-      return object;
-    },
-    { so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 },
-  );
+  const annualEmissionsChanges =
+    setAnnualEmissionsChanges(emissionsMonthlyData);
 
   const totalYearlyVehicleSO2 = -1 * totalYearlyVehicleEmissionsChanges.SO2;
   const totalYearlyVehicleNOX = -1 * totalYearlyVehicleEmissionsChanges.NOX;
@@ -37,12 +54,12 @@ export function TransportationSectorEmissionsTable() {
   const totalYearlyVehicleVOCs = -1 * totalYearlyVehicleEmissionsChanges.VOCs;
   const totalYearlyVehicleNH3 = -1 * totalYearlyVehicleEmissionsChanges.NH3;
 
-  const totalYearlyPowerSO2 = totalYearlyPowerEmissionsChanges.so2;
-  const totalYearlyPowerNOX = totalYearlyPowerEmissionsChanges.nox;
-  const totalYearlyPowerCO2 = totalYearlyPowerEmissionsChanges.co2;
-  const totalYearlyPowerPM25 = totalYearlyPowerEmissionsChanges.pm25;
-  const totalYearlyPowerVOCs = totalYearlyPowerEmissionsChanges.vocs;
-  const totalYearlyPowerNH3 = totalYearlyPowerEmissionsChanges.nh3;
+  const totalYearlyPowerSO2 = annualEmissionsChanges.so2;
+  const totalYearlyPowerNOX = annualEmissionsChanges.nox;
+  const totalYearlyPowerCO2 = annualEmissionsChanges.co2;
+  const totalYearlyPowerPM25 = annualEmissionsChanges.pm25;
+  const totalYearlyPowerVOCs = annualEmissionsChanges.vocs;
+  const totalYearlyPowerNH3 = annualEmissionsChanges.nh3;
 
   const totalYearlyNetSO2 = totalYearlyVehicleSO2 + totalYearlyPowerSO2;
   const totalYearlyNetNOX = totalYearlyVehicleNOX + totalYearlyPowerNOX;
@@ -51,7 +68,7 @@ export function TransportationSectorEmissionsTable() {
   const totalYearlyNetVOCs = totalYearlyVehicleVOCs + totalYearlyPowerVOCs;
   const totalYearlyNetNH3 = totalYearlyVehicleNH3 + totalYearlyPowerNH3;
 
-  if (status !== 'complete') return null;
+  if (!emissionsMonthlyData) return null;
 
   return (
     <>

@@ -5,10 +5,10 @@ import { useDispatch } from 'react-redux';
 // ---
 import { useTypedSelector } from 'app/redux/index';
 import type {
-  ReplacementPollutantName,
-  MonthlyDisplacement,
-} from 'app/redux/reducers/displacement';
-import { calculateMonthlyData } from 'app/redux/reducers/displacement';
+  EmissionsData,
+  EmissionsMonthlyData,
+} from 'app/redux/reducers/results';
+import type { Aggregation, Unit } from 'app/redux/reducers/monthlyEmissions';
 import {
   setMonthlyEmissionsAggregation,
   setMonthlyEmissionsRegionId,
@@ -25,15 +25,47 @@ import { regions, states } from 'app/config';
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 
+type MonthlyData = EmissionsData[keyof EmissionsData];
+
+/**
+ * Creates monthly emissions data for either emissions changes or percentage
+ * changes, for display in the monthly charts.
+ */
+function calculateMonthlyData(monthlyData: MonthlyData, unit: Unit) {
+  const monthlyEmissionsChanges: number[] = [];
+  const monthlyPercentageChanges: number[] = [];
+
+  for (const dataKey in monthlyData) {
+    const month = Number(dataKey);
+    const { original, postEere } = monthlyData[month];
+
+    const emissionsChange = postEere - original;
+    const percentChange = (emissionsChange / original) * 100 || 0;
+
+    monthlyEmissionsChanges.push(emissionsChange);
+    monthlyPercentageChanges.push(percentChange);
+  }
+
+  return unit === 'emissions'
+    ? monthlyEmissionsChanges
+    : monthlyPercentageChanges;
+}
+
 function Chart(props: {
   pollutant: Pollutant;
-  powerData: { [key in Pollutant]: MonthlyDisplacement };
+  powerData: { [key in Pollutant]: MonthlyData };
 }) {
   const { pollutant, powerData } = props;
 
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const totalMonthlyEmissionChanges = useTypedSelector(
     ({ transportation }) => transportation.totalMonthlyEmissionChanges,
+  );
+  const egusNeedingEmissionsReplacement = useTypedSelector(
+    ({ results }) => results.egusNeedingEmissionsReplacement,
+  );
+  const emissionsReplacements = useTypedSelector(
+    ({ results }) => results.emissionsReplacements,
   );
   const currentAggregation = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.aggregation,
@@ -52,9 +84,6 @@ function Chart(props: {
   );
   const currentUnit = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.unit,
-  );
-  const egusNeedingReplacement = useTypedSelector(
-    ({ displacement }) => displacement.egusNeedingReplacement,
   );
 
   const vehicleEmissions = Object.values(totalMonthlyEmissionChanges).reduce(
@@ -80,6 +109,8 @@ function Chart(props: {
       NH3: number[];
     },
   );
+
+  // console.log({ powerData, vehicleEmissions }); // NOTE: for debugging purposes
 
   const so2Data = [
     {
@@ -174,10 +205,8 @@ function Chart(props: {
   const selectedRegion = useSelectedRegion();
   const selectedStateRegions = useSelectedStateRegions();
 
-  const replacementPotentiallyNeeded = ['generation', 'so2', 'nox', 'co2'];
-
-  const flaggedEGUs = replacementPotentiallyNeeded.includes(pollutant)
-    ? egusNeedingReplacement[pollutant as ReplacementPollutantName]
+  const flaggedEGUs = Object.keys(emissionsReplacements).includes(pollutant)
+    ? Object.values(egusNeedingEmissionsReplacement)
     : [];
 
   const flaggedRegion =
@@ -185,8 +214,7 @@ function Chart(props: {
     (geographicFocus === 'regions'
       ? flaggedEGUs.length > 0
       : (flaggedEGUs.length > 0 && currentRegionId === 'ALL') ||
-        flaggedEGUs.filter((egu) => egu.regionId === currentRegionId).length >
-          0);
+        flaggedEGUs.filter((egu) => egu.region === currentRegionId).length > 0);
 
   const flaggedState =
     currentAggregation === 'state' &&
@@ -403,10 +431,43 @@ function Chart(props: {
   );
 }
 
+/**
+ * Sets the monthly emissions data based on the currently selected filters.
+ */
+function setFilteredMonthlyData(options: {
+  emissionsMonthlyData: EmissionsMonthlyData;
+  aggregation: Aggregation;
+  regionId: RegionId | 'ALL';
+  stateId: StateId;
+  county: string;
+}) {
+  const { emissionsMonthlyData, aggregation, regionId, stateId, county } =
+    options;
+
+  if (!emissionsMonthlyData) return {} as EmissionsData;
+
+  const { total, regions, states, counties } = emissionsMonthlyData;
+
+  const result =
+    aggregation === 'region'
+      ? regionId === 'ALL'
+        ? total
+        : regions[regionId] || {}
+      : aggregation === 'state'
+      ? states[stateId] || {}
+      : aggregation === 'county'
+      ? counties[stateId][county] || {}
+      : ({} as EmissionsData);
+
+  return result;
+}
+
 export function MonthlyEmissionsCharts() {
   const dispatch = useDispatch();
-  const status = useTypedSelector(({ displacement }) => displacement.status);
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
+  const emissionsMonthlyData = useTypedSelector(
+    ({ results }) => results.emissionsMonthlyData,
+  );
   const currentAggregation = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.aggregation,
   );
@@ -428,43 +489,15 @@ export function MonthlyEmissionsCharts() {
   const currentUnit = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.unit,
   );
-  const availableStates = useTypedSelector(({ displacement }) => {
-    return Object.keys(displacement.statesAndCounties).sort();
+  const availableStates = useTypedSelector(({ monthlyEmissions }) => {
+    return Object.keys(monthlyEmissions.statesAndCounties).sort();
   });
-  const availableCounties = useTypedSelector(({ displacement }) => {
-    return displacement.statesAndCounties[currentStateId as StateId]?.sort();
+  const availableCounties = useTypedSelector(({ monthlyEmissions }) => {
+    return monthlyEmissions.statesAndCounties[currentStateId as StateId]?.sort(); // prettier-ignore
   });
-  const monthlyEmissionChanges = useTypedSelector(
-    ({ displacement }) => displacement.monthlyEmissionChanges,
-  );
 
   const selectedRegion = useSelectedRegion();
   const selectedStateRegions = useSelectedStateRegions();
-
-  // set monthlyData for each pollutant, based on selected aggregation
-  const initialMonthlyData = {
-    1: { original: 0, postEere: 0 },
-    2: { original: 0, postEere: 0 },
-    3: { original: 0, postEere: 0 },
-    4: { original: 0, postEere: 0 },
-    5: { original: 0, postEere: 0 },
-    6: { original: 0, postEere: 0 },
-    7: { original: 0, postEere: 0 },
-    8: { original: 0, postEere: 0 },
-    9: { original: 0, postEere: 0 },
-    10: { original: 0, postEere: 0 },
-    11: { original: 0, postEere: 0 },
-    12: { original: 0, postEere: 0 },
-  };
-
-  const powerData: { [key in Pollutant]: MonthlyDisplacement } = {
-    so2: { ...initialMonthlyData },
-    nox: { ...initialMonthlyData },
-    co2: { ...initialMonthlyData },
-    pm25: { ...initialMonthlyData },
-    vocs: { ...initialMonthlyData },
-    nh3: { ...initialMonthlyData },
-  };
 
   const regionId =
     geographicFocus === 'regions' && selectedRegion
@@ -473,28 +506,13 @@ export function MonthlyEmissionsCharts() {
       ? selectedStateRegions[0].id
       : (currentRegionId as RegionId);
 
-  const stateId = currentStateId as StateId;
-
-  for (const item of ['so2', 'nox', 'co2', 'pm25', 'vocs', 'nh3']) {
-    const pollutant = item as Pollutant;
-
-    if (currentAggregation === 'region') {
-      const displacement = monthlyEmissionChanges.regions[pollutant][regionId];
-      powerData[pollutant] = displacement || initialMonthlyData;
-    }
-
-    if (currentAggregation === 'state') {
-      const displacement = monthlyEmissionChanges.states[pollutant][stateId];
-      powerData[pollutant] = displacement || initialMonthlyData;
-    }
-
-    if (currentAggregation === 'county') {
-      const displacement = monthlyEmissionChanges.counties[pollutant][stateId]?.[currentCountyName]; // prettier-ignore
-      powerData[pollutant] = displacement || initialMonthlyData;
-    }
-  }
-
-  // console.log(powerData); // NOTE: for debugging purposes
+  const powerData = setFilteredMonthlyData({
+    emissionsMonthlyData,
+    aggregation: currentAggregation,
+    regionId,
+    stateId: currentStateId as StateId,
+    county: currentCountyName,
+  });
 
   return (
     <>
@@ -953,7 +971,7 @@ export function MonthlyEmissionsCharts() {
       </div>
 
       <div data-avert-charts>
-        {status === 'complete' && (
+        {emissionsMonthlyData && (
           <div className="grid-container padding-0 maxw-full">
             <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
               {currentPollutants.length === 0 ? (

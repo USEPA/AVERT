@@ -32,9 +32,7 @@ export function COBRAConnection() {
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
   const cobraApiUrl = useTypedSelector(({ api }) => api.cobraApiUrl);
   const cobraAppUrl = useTypedSelector(({ api }) => api.cobraAppUrl);
-  const cobraData = useTypedSelector(
-    ({ displacement }) => displacement.downloadableCobraData,
-  );
+  const cobraData = useTypedSelector(({ downloads }) => downloads.cobraData);
 
   const [cobraApiState, setCobraApiState] = useState<CobraApiState>('idle');
 

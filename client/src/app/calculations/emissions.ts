@@ -1,95 +1,41 @@
+import type { RDFJSON } from 'app/redux/reducers/geography';
 /**
- * @typedef {Object} EGUData
- * @property {string} state
- * @property {string} county
- * @property {number} lat
- * @property {number} lon
- * @property {string} fuel_type
- * @property {number} orispl_code
- * @property {string} unit_code
- * @property {string} full_name
- * @property {0|1} infreq_emissions_flag
- * @property {number[]} medians
+ * Annual point-source data from the National Emissions Inventory (NEI) for
+ * every electric generating unit (EGU), organized by AVERT region
  */
+// import neiData from 'app/data/annual-emission-factors.json';
 
-/**
- * @typedef {Object} RDFJSON
- * @property {{
- *  region_abbv: string,
- *  region_name: string,
- *  region_states: string
- * }} region
- * @property {{
- *  file_name: string[],
- *  mc_gen_runs: number,
- *  mc_runs: number,
- *  region_id: number,
- *  year: number
- * }} run
- * @property {{
- *  created_at: ?string[],
- *  id: number,
- *  max_ee_percent: number,
- *  max_ee_yearly_gwh: number,
- *  max_solar_wind_mwh: number,
- *  region_id: number,
- *  updated_at: ?string[],
- *  year: number
- * }} limits
- * @property {{
- *  day: number,
- *  hour: number,
- *  hour_of_year: number,
- *  hourly_limit: number,
- *  month: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12,
- *  regional_load_mw: number,
- *  year: number
- * }[]} regional_load
- * @property {number[]} load_bin_edges
- * @property {{
- *  generation: EGUData[],
- *  so2: EGUData[],
- *  so2_not: EGUData[],
- *  nox: EGUData[],
- *  nox_not: EGUData[],
- *  co2: EGUData[],
- *  co2_not: EGUData[],
- *  heat: EGUData[],
- *  heat_not: EGUData[]
- * }} data
- */
+type NEIData = {
+  regions: {
+    name: string;
+    egus: {
+      state: string;
+      county: string;
+      plant: string;
+      orispl_code: number;
+      unit_code: string;
+      full_name: string;
+      annual_data: {
+        year: number;
+        generation: number;
+        heat: number;
+        pm25: number;
+        vocs: number;
+        nh3: number;
+      }[];
+    }[];
+  }[];
+};
 
-/**
- * @typedef {Object} NEIData
- * @property {{
- *  name: string,
- *  egus: {
- *    state: string,
- *    county: string,
- *    plant: string,
- *    orispl_code: number,
- *    unit_code: string,
- *    full_name: string,
- *    annual_data: {
- *      year: number,
- *      generation: number,
- *      heat: number,
- *      pm25: number,
- *      vocs: number,
- *      nh3: number
- *    }[]
- *  }[]
- * }[]} regions
- */
+type RDFDataField = keyof RDFJSON['data'];
+
+export type EmissionsChanges = ReturnType<typeof calculateEmissionsChanges>;
 
 /**
  * Adds a number to an array of numbers, sorts it, and returns the index of the
  * number directly before the one that was inserted
- *
- * @param {number[]} array
- * @param {number} number
  */
-function getPrecedingIndex(array, number) {
+function getPrecedingIndex(array: number[], number: number) {
   // insert provided number into the provided array and sort it
   const sortedArray = array.concat(number).sort((a, b) => a - b);
   const numberIndex = sortedArray.indexOf(number);
@@ -100,16 +46,14 @@ function getPrecedingIndex(array, number) {
 
 /**
  * TODO
- *
- * @param {{
- *  load: number,
- *  genA: number,
- *  genB: number,
- *  edgeA: number,
- *  edgeB: number
- * }} options
  */
-function calculateLinear(options) {
+function calculateLinear(options: {
+  load: number;
+  genA: number;
+  genB: number;
+  edgeA: number;
+  edgeB: number;
+}) {
   const { load, genA, genB, edgeA, edgeB } = options;
   const slope = (genA - genB) / (edgeA - edgeB);
   const intercept = genA - slope * edgeA;
@@ -117,16 +61,29 @@ function calculateLinear(options) {
 }
 
 /**
- * Calculates emissions changes for a provided region.
+ * *****************************************************************************
+ * NOTE: This is a TypeScript version of the `calculateEmissionsChanges()`
+ * function found in the server app (`server/app/calculations.js`). This
+ * TypeScript version of the function isn't actually used in the client app, but
+ * it's return type (`EmissionsChanges`) is used. Ideally, we'd use this version
+ * within the client app and calculate the emissions changes in the client app,
+ * but the calculations are too intesive and lock the UI, which is why we
+ * offload them to the server app, and receive the results through API calls.
  *
- * @param {{
- *  year: number,
- *  rdf: RDFJSON,
- *  neiData: NEIData
- *  hourlyEere: number[]
- * }} options
+ * TLDR; much of the code in this file is for reference only (except for the
+ * return type, which is currently used) in case we're able update the client
+ * app at some point in the future in a way where we can handle the emissions
+ * calculations in the client app alone.
+ * *****************************************************************************
+ *
+ * Calculates emissions changes for a provided region.
  */
-function calculateEmissionsChanges(options) {
+function calculateEmissionsChanges(options: {
+  year: number;
+  rdf: RDFJSON;
+  neiData: NEIData;
+  hourlyEere: number[];
+}) {
   const { year, rdf, neiData, hourlyEere } = options;
 
   /**
@@ -141,37 +98,37 @@ function calculateEmissionsChanges(options) {
    * point-source data from the National Emissions Inventory (`neiData`) and the
    * `heat` and `heat_not` fields in the RDF's `data` object (for ozone and
    * non-ozone season respectively).
-   *
-   * @type {{
-   *  [eguId: string]: {
-   *    region: string,
-   *    state: string,
-   *    county: string,
-   *    lat: number,
-   *    lon: number,
-   *    fuelType: string,
-   *    orisplCode: number,
-   *    unitCode: string,
-   *    name: string,
-   *    emissionsFlags: ('generation' | 'so2' | 'nox' | 'co2' | 'heat')[];
-   *    data: {
-   *      generation: { [month: number]: { original: number; postEere: number } },
-   *      so2: { [month: number]: { original: number; postEere: number } },
-   *      nox: { [month: number]: { original: number; postEere: number } },
-   *      co2: { [month: number]: { original: number; postEere: number } },
-   *      pm25: { [month: number]: { original: number; postEere: number } },
-   *      vocs: { [month: number]: { original: number; postEere: number } },
-   *      nh3: { [month: number]: { original: number; postEere: number } }
-   *    }}
-   * }}
    */
-  const result = {};
+  const result = {} as {
+    [eguId: string]: {
+      region: string;
+      state: string;
+      county: string;
+      lat: number;
+      lon: number;
+      fuelType: string;
+      orisplCode: number;
+      unitCode: string;
+      name: string;
+      emissionsFlags: ('generation' | 'so2' | 'nox' | 'co2' | 'heat')[];
+      data: {
+        generation: { [month: number]: { original: number; postEere: number } };
+        so2: { [month: number]: { original: number; postEere: number } };
+        nox: { [month: number]: { original: number; postEere: number } };
+        co2: { [month: number]: { original: number; postEere: number } };
+        pm25: { [month: number]: { original: number; postEere: number } };
+        vocs: { [month: number]: { original: number; postEere: number } };
+        nh3: { [month: number]: { original: number; postEere: number } };
+      };
+    };
+  };
 
-  /** @type {("generation" | "so2" | "nox" | "co2" | "pm25" | "vocs" | "nh3")[]} */
-  const dataFields = ["generation", "so2", "nox", "co2", "pm25", "vocs", "nh3"];
+  const dataFields = ['generation', 'so2', 'nox', 'co2', 'pm25', 'vocs', 'nh3'] as const; // prettier-ignore
+  const neiFields = ['pm25', 'vocs', 'nh3'];
 
-  /** @type {("pm25" | "vocs" | "nh3")[]} */
-  const neiFields = ["pm25", "vocs", "nh3"];
+  type OzoneSeasonDataField =
+    | (RDFDataField & typeof dataFields[number])
+    | 'heat';
 
   const regionalNeiEgus = neiData.regions.find((region) => {
     return region.name === rdf.region.region_name;
@@ -210,19 +167,16 @@ function calculateEmissionsChanges(options) {
        * NOTE: PM2.5, VOCs, and NH3 always use the `heat` or `heat_not` fields
        * of the RDF's `data` object
        */
-
-      /** @type {EGUData[]} */
       const ozoneSeasonData = neiFields.includes(field)
         ? rdf.data.heat
-        : rdf.data[field];
+        : rdf.data[field as RDFDataField];
 
-      /** @type {?EGUData[]} */
       const nonOzoneSeasonData =
-        field === "generation"
+        field === 'generation'
           ? null // NOTE: there's no non-ozone season for generation
           : neiFields.includes(field)
           ? rdf.data.heat_not
-          : rdf.data[`${field}_not`];
+          : rdf.data[`${field}_not` as RDFDataField];
 
       const ozoneSeasonMedians = ozoneSeasonData.map((egu) => egu.medians);
 
@@ -297,7 +251,7 @@ function calculateEmissionsChanges(options) {
           return orisplCodeMatches && unitCodeMatches;
         });
         const neiEguData = matchedEgu?.annual_data.find((d) => d.year === year);
-        const neiFieldData = neiEguData?.[field];
+        const neiFieldData = neiEguData?.[field as keyof typeof neiEguData];
 
         const original =
           neiFields.includes(field) && neiFieldData !== undefined
@@ -340,9 +294,9 @@ function calculateEmissionsChanges(options) {
          */
         if (
           infreq_emissions_flag === 1 &&
-          !result[eguId].emissionsFlags.includes(field)
+          !result[eguId].emissionsFlags.includes(field as OzoneSeasonDataField)
         ) {
-          result[eguId].emissionsFlags.push(field);
+          result[eguId].emissionsFlags.push(field as OzoneSeasonDataField);
         }
 
         /**
@@ -361,5 +315,3 @@ function calculateEmissionsChanges(options) {
 
   return result;
 }
-
-module.exports = { calculateEmissionsChanges };
