@@ -61,9 +61,24 @@ function calculateLinear(options: {
 }
 
 /**
+ * *****************************************************************************
+ * NOTE: This is a TypeScript version of the `calculateEmissionsChanges()`
+ * function found in the server app (`server/app/calculations.js`). This
+ * TypeScript version of the function isn't actually used in the client app, but
+ * it's return type (`EmissionsChanges`) is used. Ideally, we'd use this version
+ * within the client app and calculate the emissions changes in the client app,
+ * but the calculations are too intesive and lock the UI, which is why we
+ * offload them to the server app, and receive the results through API calls.
+ *
+ * TLDR; much of the code in this file is for reference only (except for the
+ * return type, which is currently used) in case we're able update the client
+ * app at some point in the future in a way where we can handle the emissions
+ * calculations in the client app alone.
+ * *****************************************************************************
+ *
  * Calculates emissions changes for a provided region.
  */
-export function calculateEmissionsChanges(options: {
+function calculateEmissionsChanges(options: {
   year: number;
   rdf: RDFJSON;
   neiData: NEIData;
