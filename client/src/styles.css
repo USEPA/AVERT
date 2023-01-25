@@ -77,6 +77,14 @@ button:not([disabled]):focus,
   color: var(--avert-light-blue);
 }
 
+.avert-border {
+  border-color: rgba(0, 128, 164, 0.375);
+}
+
+.avert-box-background {
+  background-color: rgba(0, 169, 204, 0.0625);
+}
+
 .avert-box {
   border: 1px solid rgba(0, 128, 164, 0.375);
   background-color: rgba(0, 169, 204, 0.0625);
