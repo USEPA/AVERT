@@ -444,20 +444,35 @@ function setFilteredMonthlyData(options: {
   const { emissionsMonthlyData, aggregation, regionId, stateId, county } =
     options;
 
-  if (!emissionsMonthlyData) return {} as EmissionsData;
+  const emptyResult = {} as EmissionsData;
+
+  if (!emissionsMonthlyData) return emptyResult;
 
   const { total, regions, states, counties } = emissionsMonthlyData;
 
+  const regionResult =
+    regionId === 'ALL'
+      ? total
+      : Boolean(regions?.[regionId])
+      ? regions[regionId]
+      : emptyResult;
+
+  const stateResult = Boolean(states?.[stateId])
+    ? states[stateId]
+    : emptyResult;
+
+  const countyResult = Boolean(counties?.[stateId]?.[county])
+    ? counties[stateId][county]
+    : emptyResult;
+
   const result =
     aggregation === 'region'
-      ? regionId === 'ALL'
-        ? total
-        : regions[regionId] || {}
+      ? regionResult
       : aggregation === 'state'
-      ? states[stateId] || {}
+      ? stateResult
       : aggregation === 'county'
-      ? counties[stateId][county] || {}
-      : ({} as EmissionsData);
+      ? countyResult
+      : emptyResult;
 
   return result;
 }
