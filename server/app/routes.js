@@ -21,7 +21,7 @@ const routes = [
   // (from panel 1, user clicks 'Set EE/RE Impacts' button)
   route.get("/api/v1/eere/:region", controllers.eere.show),
 
-  // web app method: calculateDisplacement()
+  // web app method: fetchEmissionsChanges()
   // (from panel 2, user clicks 'Get Results' button)
   route.post("/api/v1/emissions", controllers.emissions.calculate),
 ];
