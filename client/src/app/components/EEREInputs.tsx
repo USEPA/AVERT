@@ -159,14 +159,16 @@ export function EEREInputs() {
     <>
       <div
         className={
-          `border-width-1px border-top-width-0 border-x-width-0 border-solid border-base-light ` +
+          `avert-border ` +
+          `border-width-1px border-top-width-0 border-x-width-0 border-solid ` +
           `margin-y-3 font-sans-xs text-base-darker`
         }
         data-avert-eere-inputs
       >
         <header
           className={
-            `border-width-1px border-bottom-width-0 border-solid border-base-light ` +
+            `avert-border avert-box-background ` +
+            `border-width-1px border-bottom-width-0 border-solid ` +
             `padding-y-1 padding-x-105 text-bold bg-base-lightest`
           }
         >
@@ -174,11 +176,11 @@ export function EEREInputs() {
         </header>
 
         <div className="grid-container padding-0 maxw-full">
-          <div className="grid-row border-width-1px border-y-width-0 border-solid border-base-light">
+          <div className="grid-row avert-border border-width-1px border-y-width-0 border-solid">
             <div className="desktop:grid-col-6">
               <details
                 css={inputsGroupStyles}
-                className="border-width-1px border-x-width-0 border-bottom-width-0 border-solid border-base-light"
+                className="avert-border border-width-1px border-x-width-0 border-bottom-width-0 border-solid"
                 open={detailsAOpen}
                 onToggle={(ev) => {
                   const details = ev.currentTarget as HTMLDetailsElement;
@@ -258,7 +260,7 @@ export function EEREInputs() {
             <div className="desktop:grid-col-6">
               <details
                 css={inputsGroupStyles}
-                className="border-width-1px border-x-width-0 border-bottom-width-0 border-solid border-base-light"
+                className="avert-border border-width-1px border-x-width-0 border-bottom-width-0 border-solid"
                 open={detailsBOpen}
                 onToggle={(ev) => {
                   const details = ev.currentTarget as HTMLDetailsElement;
@@ -353,7 +355,8 @@ export function EEREInputs() {
 
         <header
           className={
-            `border-width-1px border-bottom-width-0 border-solid border-base-light ` +
+            `avert-border avert-box-background ` +
+            `border-width-1px border-bottom-width-0 border-solid ` +
             `padding-y-1 padding-x-105 text-bold bg-base-lightest`
           }
         >
@@ -361,11 +364,11 @@ export function EEREInputs() {
         </header>
 
         <div className="grid-container padding-0 maxw-full">
-          <div className="grid-row border-width-1px border-y-width-0 border-solid border-base-light">
+          <div className="grid-row avert-border border-width-1px border-y-width-0 border-solid">
             <div className="desktop:grid-col-6">
               <details
                 css={inputsGroupStyles}
-                className="border-width-1px border-x-width-0 border-bottom-width-0 border-solid border-base-light"
+                className="avert-border border-width-1px border-x-width-0 border-bottom-width-0 border-solid"
                 open={detailsCOpen}
                 onToggle={(ev) => {
                   const details = ev.currentTarget as HTMLDetailsElement;
@@ -467,7 +470,7 @@ export function EEREInputs() {
             <div className="desktop:grid-col-6">
               <details
                 css={inputsGroupStyles}
-                className="border-width-1px border-x-width-0 border-bottom-width-0 border-solid border-base-light"
+                className="avert-border border-width-1px border-x-width-0 border-bottom-width-0 border-solid"
                 open={detailsDOpen}
                 onToggle={(ev) => {
                   const details = ev.currentTarget as HTMLDetailsElement;
@@ -549,7 +552,8 @@ export function EEREInputs() {
 
         <header
           className={
-            `border-width-1px border-bottom-width-0 border-solid border-base-light ` +
+            `avert-border avert-box-background ` +
+            `border-width-1px border-bottom-width-0 border-solid ` +
             `padding-y-1 padding-x-105 text-bold bg-base-lightest`
           }
         >
@@ -557,11 +561,11 @@ export function EEREInputs() {
         </header>
 
         <div className="grid-container padding-0 maxw-full">
-          <div className="grid-row border-width-1px border-y-width-0 border-solid border-base-light">
+          <div className="grid-row avert-border border-width-1px border-y-width-0 border-solid">
             <div className="desktop:grid-col-12">
               <details
                 css={inputsGroupStyles}
-                className="border-width-1px border-x-width-0 border-bottom-width-0 border-solid border-base-light"
+                className="avert-border border-width-1px border-x-width-0 border-bottom-width-0 border-solid"
                 open={detailsEOpen}
                 onToggle={(ev) => {
                   const details = ev.currentTarget as HTMLDetailsElement;
