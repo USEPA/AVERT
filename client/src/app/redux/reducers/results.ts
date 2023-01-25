@@ -137,7 +137,7 @@ export function resetResults(): Action {
  * Called every time the "Get Results" button is clicked on the "Set EE/RE
  * Impacts" page.
  */
-export function calculateEmissionsChanges(): AppThunk {
+export function fetchEmissionsChanges(): AppThunk {
   return (dispatch, getState) => {
     const { api, eere } = getState();
     const { regionalProfiles } = eere;

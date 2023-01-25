@@ -9,7 +9,7 @@ import { setActiveStep } from 'app/redux/reducers/panel';
 import { resetEEREInputs } from 'app/redux/reducers/eere';
 import { fetchRegionsData } from 'app/redux/reducers/geography';
 import {
-  calculateEmissionsChanges,
+  fetchEmissionsChanges,
   resetResults,
 } from 'app/redux/reducers/results';
 import { resetMonthlyEmissions } from 'app/redux/reducers/monthlyEmissions';
@@ -145,7 +145,7 @@ export function PanelFooter(props: {
         if (onStepTwo) {
           if (eereStatus === 'complete' && hardValid) {
             scrollToTop();
-            dispatch(calculateEmissionsChanges());
+            dispatch(fetchEmissionsChanges());
           } else {
             return;
           }
