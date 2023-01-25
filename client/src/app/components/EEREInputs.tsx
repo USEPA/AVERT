@@ -581,62 +581,72 @@ export function EEREInputs() {
                 </summary>
 
                 <section className="padding-top-0 padding-x-2 padding-bottom-105">
-                  <div className="desktop:display-flex">
-                    <div className="tablet:display-flex flex-align-end desktop:display-block desktop:margin-right-2">
-                      <div className="flex-1 tablet:margin-right-2 desktop:margin-0">
-                        <EERETextInput
-                          label={<>Light-duty battery EVs:</>}
-                          ariaLabel="TODO"
-                          value={batteryEVs}
-                          fieldName="batteryEVs"
-                          onChange={(text) =>
-                            dispatch(updateEereBatteryEVs(text))
-                          }
-                          tooltip={<p className="margin-0">TODO</p>}
-                        />
+                  <div className="grid-row">
+                    <div className="desktop:grid-col-6">
+                      <div className="tablet:display-flex flex-align-end desktop:margin-right-2">
+                        <div className="flex-1 tablet:margin-right-2">
+                          <EERETextInput
+                            label={<>Light-duty battery EVs:</>}
+                            ariaLabel="TODO"
+                            value={batteryEVs}
+                            fieldName="batteryEVs"
+                            onChange={(text) =>
+                              dispatch(updateEereBatteryEVs(text))
+                            }
+                            tooltip={<p className="margin-0">TODO</p>}
+                          />
+                        </div>
 
-                        <EERETextInput
-                          className="margin-top-1"
-                          label={<>Light-duty plug-in hybrid EVs:</>}
-                          ariaLabel="TODO"
-                          value={hybridEVs}
-                          fieldName="hybridEVs"
-                          onChange={(text) =>
-                            dispatch(updateEereHybridEVs(text))
-                          }
-                          tooltip={<p className="margin-0">TODO</p>}
-                        />
+                        <div className="flex-1 tablet:margin-left-2">
+                          <EERETextInput
+                            className="margin-top-1"
+                            label={<>Light-duty plug-in hybrid EVs:</>}
+                            ariaLabel="TODO"
+                            value={hybridEVs}
+                            fieldName="hybridEVs"
+                            onChange={(text) =>
+                              dispatch(updateEereHybridEVs(text))
+                            }
+                            tooltip={<p className="margin-0">TODO</p>}
+                          />
+                        </div>
                       </div>
 
-                      <div className="flex-1 tablet:margin-left-2 desktop:margin-0">
-                        <EERETextInput
-                          className="margin-top-1 tablet:margin-top-0 desktop:margin-top-1"
-                          label={<>Electric transit buses:</>}
-                          ariaLabel="TODO"
-                          value={transitBuses}
-                          fieldName="transitBuses"
-                          onChange={(text) =>
-                            dispatch(updateEereTransitBuses(text))
-                          }
-                          tooltip={<p className="margin-0">TODO</p>}
-                        />
+                      <div className="tablet:display-flex flex-align-end desktop:margin-right-2">
+                        <div className="flex-1 tablet:margin-right-2">
+                          <EERETextInput
+                            className="margin-top-1 tablet:margin-top-0 desktop:margin-top-1"
+                            label={<>Electric transit buses:</>}
+                            ariaLabel="TODO"
+                            value={transitBuses}
+                            fieldName="transitBuses"
+                            onChange={(text) =>
+                              dispatch(updateEereTransitBuses(text))
+                            }
+                            tooltip={<p className="margin-0">TODO</p>}
+                          />
+                        </div>
 
-                        <EERETextInput
-                          className="margin-top-1"
-                          label={<>Electric school buses:</>}
-                          ariaLabel="TODO"
-                          value={schoolBuses}
-                          fieldName="schoolBuses"
-                          onChange={(text) =>
-                            dispatch(updateEereSchoolBuses(text))
-                          }
-                          tooltip={<p className="margin-0">TODO</p>}
-                        />
+                        <div className="flex-1 tablet:margin-left-2">
+                          <EERETextInput
+                            className="margin-top-1"
+                            label={<>Electric school buses:</>}
+                            ariaLabel="TODO"
+                            value={schoolBuses}
+                            fieldName="schoolBuses"
+                            onChange={(text) =>
+                              dispatch(updateEereSchoolBuses(text))
+                            }
+                            tooltip={<p className="margin-0">TODO</p>}
+                          />
+                        </div>
                       </div>
                     </div>
 
-                    <div className="margin-top-2 flex-1 desktop:margin-top-0 desktop:margin-left-2">
-                      <EVSalesAndStockTable className="width-full" />
+                    <div className="desktop:grid-col-6">
+                      <div className="margin-top-2 desktop:margin-top-0 desktop:margin-left-2">
+                        <EVSalesAndStockTable className="width-full" />
+                      </div>
                     </div>
                   </div>
 
