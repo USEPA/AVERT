@@ -387,6 +387,33 @@ function Chart(props: {
     .set('vocs', vocsConfig)
     .set('nh3', nh3Config);
 
+  if (Object.keys(powerData).length === 0) {
+    return (
+      <div className="avert-box padding-105 height-full">
+        <p className="font-sans-2xs line-height-sans-3 text-center text-base-darker">
+          <span className="font-sans-xs text-bold">
+            Change in {pollutantMarkup.get(pollutant)} Emissions:
+          </span>{' '}
+          {chartLocationTitle}
+        </p>
+
+        <p className="margin-0 font-sans-3xs text-center text-base-dark">
+          {currentAggregation === 'region' && !currentRegionId && (
+            <>Please select a region.</>
+          )}
+
+          {currentAggregation === 'state' && !currentStateId && (
+            <>Please select a state.</>
+          )}
+
+          {currentAggregation === 'county' && !currentCountyName && (
+            <>Please select a county.</>
+          )}
+        </p>
+      </div>
+    );
+  }
+
   if (currentUnit === 'percentages') {
     if (flaggedRegion || flaggedState || flaggedCounty) {
       return (
