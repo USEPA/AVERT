@@ -240,12 +240,11 @@ const initialState: TransportationState = {
   monthlyEmissionChanges: {},
   totalMonthlyEmissionChanges: {},
   totalYearlyEmissionChanges: {
-    CO2: 0,
-    NOX: 0,
-    SO2: 0,
-    PM25: 0,
-    VOCs: 0,
-    NH3: 0,
+    cars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+    trucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+    transitBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+    schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+    total: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
   },
   vehicleSalesAndStock: {},
   selectedGeographyEEREDefaultsAverages: {

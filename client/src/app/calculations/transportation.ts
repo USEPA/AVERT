@@ -1544,29 +1544,45 @@ export function calculateTotalMonthlyEmissionChanges(
 }
 
 /**
- * Totals the monthly emission changes from each vehicle type for all months in
- * the year to a single total emission changes value for the year for each
- * pollutant.
+ * Totals monthly emission changes to yearly total values for each EV type and
+ * each pollutant, and also an overall yearly total value for each pollutant
+ * (across all EV types).
  *
  * Excel: Yearly pollutant totals from the "Table 8: Calculated changes for the
- * transportation sector" table in the "Library" sheet (S387:S392).
+ * transportation sector" table in the "Library" sheet (S363:S392).
  */
 export function calculateTotalYearlyEmissionChanges(
   totalMonthlyEmissionChanges: TotalMonthlyEmissionChanges,
 ) {
   if (Object.keys(totalMonthlyEmissionChanges).length === 0) {
-    return { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 };
+    return {
+      cars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      trucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      transitBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      total: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+    };
   }
 
   const result = Object.values(totalMonthlyEmissionChanges).reduce(
-    (totals, month) => {
-      pollutants.forEach((pollutant) => {
-        totals[pollutant] += month.total[pollutant];
+    (object, monthlyData) => {
+      Object.entries(monthlyData).forEach(([key, value]) => {
+        const field = key as keyof typeof monthlyData;
+
+        pollutants.forEach((pollutant) => {
+          object[field][pollutant] += value[pollutant];
+        });
       });
 
-      return totals;
+      return object;
     },
-    { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+    {
+      cars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      trucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      transitBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      total: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+    },
   );
 
   return result;

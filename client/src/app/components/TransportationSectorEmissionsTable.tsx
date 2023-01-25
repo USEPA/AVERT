@@ -47,12 +47,12 @@ export function TransportationSectorEmissionsTable() {
   const annualEmissionsChanges =
     setAnnualEmissionsChanges(emissionsMonthlyData);
 
-  const totalYearlyVehicleSO2 = -1 * totalYearlyVehicleEmissionsChanges.SO2;
-  const totalYearlyVehicleNOX = -1 * totalYearlyVehicleEmissionsChanges.NOX;
-  const totalYearlyVehicleCO2 = -1 * totalYearlyVehicleEmissionsChanges.CO2 / 2_000; // prettier-ignore
-  const totalYearlyVehiclePM25 = -1 * totalYearlyVehicleEmissionsChanges.PM25;
-  const totalYearlyVehicleVOCs = -1 * totalYearlyVehicleEmissionsChanges.VOCs;
-  const totalYearlyVehicleNH3 = -1 * totalYearlyVehicleEmissionsChanges.NH3;
+  const totalYearlyVehicleSO2 = -1 * totalYearlyVehicleEmissionsChanges.total.SO2; // prettier-ignore
+  const totalYearlyVehicleNOX = -1 * totalYearlyVehicleEmissionsChanges.total.NOX; // prettier-ignore
+  const totalYearlyVehicleCO2 = -1 * totalYearlyVehicleEmissionsChanges.total.CO2 / 2_000; // prettier-ignore
+  const totalYearlyVehiclePM25 = -1 * totalYearlyVehicleEmissionsChanges.total.PM25; // prettier-ignore
+  const totalYearlyVehicleVOCs = -1 * totalYearlyVehicleEmissionsChanges.total.VOCs; // prettier-ignore
+  const totalYearlyVehicleNH3 = -1 * totalYearlyVehicleEmissionsChanges.total.NH3; // prettier-ignore
 
   const totalYearlyPowerSO2 = annualEmissionsChanges.so2;
   const totalYearlyPowerNOX = annualEmissionsChanges.nox;
