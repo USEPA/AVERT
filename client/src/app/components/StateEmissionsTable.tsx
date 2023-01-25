@@ -1,8 +1,10 @@
 import { useTypedSelector } from 'app/redux/index';
-import type { EmissionsData } from 'app/redux/reducers/results';
-import type { EmissionsChanges } from 'app/calculations/emissions';
+import type {
+  EmissionsData,
+  EmissionsMonthlyData,
+} from 'app/redux/reducers/results';
 import type { StateId } from 'app/config';
-import { states } from 'app/config';
+import { states as statesConfig } from 'app/config';
 
 function formatNumber(number: number) {
   const output = Math.round(number / 10) * 10;
@@ -10,42 +12,41 @@ function formatNumber(number: number) {
 }
 
 /**
- * Sum the provided EGUs emissions data into total annual changes for each
- * pollutant by state.
+ * Sum the emissions monthly data into total annual state changes for each
+ * pollutant.
  */
-function totalEgusStateChanges(egus: EmissionsChanges) {
-  if (Object.keys(egus).length === 0) return [];
+function setAnnualStateEmissionsChanges(
+  emissionsMonthlyData: EmissionsMonthlyData,
+) {
+  if (!emissionsMonthlyData) return [];
 
-  const result = Object.values(egus).reduce(
-    (array, eguData) => {
-      const stateId = eguData.state as StateId;
+  const { states } = emissionsMonthlyData;
 
-      // conditionally initialize the state data
-      if (!array.some((state) => state.id === stateId)) {
-        array.push({
-          id: stateId,
-          name: states[stateId].name,
-          generation: 0,
-          so2: 0,
-          nox: 0,
-          co2: 0,
-          pm25: 0,
-          vocs: 0,
-          nh3: 0,
+  const result = Object.entries(states).reduce(
+    (array, [stateKey, stateData]) => {
+      const stateId = stateKey as StateId;
+
+      const state = {
+        id: stateId,
+        name: statesConfig[stateId].name,
+        generation: 0,
+        so2: 0,
+        nox: 0,
+        co2: 0,
+        pm25: 0,
+        vocs: 0,
+        nh3: 0,
+      };
+
+      Object.entries(stateData).forEach(([key, annualData]) => {
+        const pollutant = key as keyof EmissionsData;
+
+        Object.values(annualData).forEach((monthlyData) => {
+          state[pollutant] += monthlyData.postEere - monthlyData.original;
         });
-      }
+      });
 
-      const state = array.find((state) => state.id === stateId);
-
-      if (state) {
-        Object.entries(eguData.data).forEach(([key, annualData]) => {
-          const pollutant = key as keyof EmissionsData;
-
-          Object.values(annualData).forEach((monthlyData) => {
-            state[pollutant] += monthlyData.postEere - monthlyData.original;
-          });
-        });
-      }
+      array.push(state);
 
       return array;
     },
@@ -66,13 +67,14 @@ function totalEgusStateChanges(egus: EmissionsChanges) {
 }
 
 export function StateEmissionsTable() {
-  const emissionsChanges = useTypedSelector(
-    ({ results }) => results.emissionsChanges,
+  const emissionsMonthlyData = useTypedSelector(
+    ({ results }) => results.emissionsMonthlyData,
   );
 
-  const changesByState = totalEgusStateChanges(emissionsChanges.data);
+  const annualStateEmissionsChanges =
+    setAnnualStateEmissionsChanges(emissionsMonthlyData);
 
-  if (emissionsChanges.status !== 'success') return null;
+  if (!emissionsMonthlyData) return null;
 
   return (
     <div className="overflow-auto">
@@ -103,7 +105,7 @@ export function StateEmissionsTable() {
           </thead>
 
           <tbody>
-            {changesByState
+            {annualStateEmissionsChanges
               .sort((stateA, stateB) => stateA.name.localeCompare(stateB.name))
               .map((stateData) => {
                 return (
