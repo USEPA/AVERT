@@ -640,9 +640,7 @@ export function EEREInputs() {
                     </div>
                   </div>
 
-                  <hr className="border-width-1px border-x-width-0 border-bottom-width-0 border-solid border-base-light" />
-
-                  <div className="desktop:display-flex">
+                  <div className="margin-top-2 desktop:display-flex">
                     <div className="flex-1 desktop:margin-right-2">
                       <EERESelectInput
                         label="Location of EV deployment:"
@@ -687,8 +685,6 @@ export function EEREInputs() {
                       />
                     </div>
                   </div>
-
-                  <hr className="border-width-1px border-x-width-0 border-bottom-width-0 border-solid border-base-light" />
 
                   <EEREEVComparisonTable className="width-full" />
                 </section>

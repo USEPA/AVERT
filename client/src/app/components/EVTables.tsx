@@ -255,7 +255,7 @@ export function EEREEVComparisonTable(props: { className?: string }) {
     requiredOffsetUtilitySolarGWh / (historicalUtilitySolarGWh || 1);
 
   return (
-    <>
+    <div className="margin-top-2">
       <h3 className="avert-blue margin-bottom-1 font-serif-md">
         EE/RE and EV Comparison
       </h3>
@@ -395,6 +395,6 @@ export function EEREEVComparisonTable(props: { className?: string }) {
           </table>
         </div>
       </div>
-    </>
+    </div>
   );
 }
