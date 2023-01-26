@@ -1,15 +1,22 @@
-import {
+import type {
   GeographicFocus,
   RegionState,
   StateState,
 } from 'app/redux/reducers/geography';
-import { RegionId } from 'app/config';
+import type { RegionId, RegionName, StateId } from 'app/config';
+/**
+ * Excel: "CountyFIPS" sheet.
+ */
+import countyFips from 'app/data/county-fips.json';
 
 export type RegionalScalingFactors = ReturnType<
   typeof calculateRegionalScalingFactors
 >;
 export type SelectedGeographyRegions = ReturnType<
   typeof getSelectedGeographyRegions
+>;
+export type SelectedGeographyCounties = ReturnType<
+  typeof getSelectedGeographyCounties
 >;
 
 /**
@@ -50,7 +57,7 @@ export function calculateRegionalScalingFactors(options: {
 }
 
 /**
- * Returns regions data for selected geography
+ * Returns regions data for the selected geography.
  */
 export function getSelectedGeographyRegions(options: {
   regions: { [regionId in RegionId]: RegionState };
@@ -64,6 +71,34 @@ export function getSelectedGeographyRegions(options: {
     }
     return object;
   }, {} as Partial<{ [regionId in RegionId]: RegionState }>);
+
+  return result;
+}
+
+/**
+ * Returns the counties for the selected geography.
+ */
+export function getSelectedGeographyCounties(options: {
+  selectedGeographyRegions: SelectedGeographyRegions;
+}) {
+  const { selectedGeographyRegions } = options;
+
+  const result = {} as Partial<{ [stateId in StateId]: string[] }>;
+
+  const regionNames = Object.values(selectedGeographyRegions).map((region) => {
+    return region.name;
+  });
+
+  countyFips.forEach((data) => {
+    const regionName = data['AVERT Region'] as RegionName;
+    const stateId = data['Postal State Code'] as StateId;
+    const county = data['County Name Long'];
+
+    if (regionNames.includes(regionName)) {
+      result[stateId] ??= [];
+      result[stateId]?.push(county);
+    }
+  });
 
   return result;
 }

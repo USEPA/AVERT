@@ -6,7 +6,15 @@ import {
   setDailyAndMonthlyStats,
   setSelectedGeographyEEREDefaultsAverages,
 } from 'app/redux/reducers/transportation';
-import type { RegionalScalingFactors } from 'app/calculations/geography';
+import type {
+  RegionalScalingFactors,
+  SelectedGeographyCounties,
+} from 'app/calculations/geography';
+import {
+  calculateRegionalScalingFactors,
+  getSelectedGeographyRegions,
+  getSelectedGeographyCounties,
+} from 'app/calculations/geography';
 import {
   RdfDataKey,
   RegionId,
@@ -105,6 +113,10 @@ type GeographyAction =
         regionalScalingFactors: RegionalScalingFactors;
       };
     }
+  | {
+      type: 'geography/SET_SELECTED_GEOGRAPHY_COUNTIES';
+      payload: { selectedGeographyCounties: SelectedGeographyCounties };
+    }
   | { type: 'geography/REQUEST_SELECTED_REGIONS_DATA' }
   | { type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' }
   | {
@@ -137,6 +149,7 @@ type GeographyState = {
   regions: { [key in RegionId]: RegionState };
   states: { [key in StateId]: StateState };
   regionalScalingFactors: RegionalScalingFactors;
+  selectedGeographyCounties: SelectedGeographyCounties;
 };
 
 const initialRegionEereDefaults = {
@@ -204,6 +217,7 @@ const initialState: GeographyState = {
   regions: updatedRegions,
   states: updatedStates,
   regionalScalingFactors: {},
+  selectedGeographyCounties: {},
 };
 
 export default function reducer(
@@ -249,6 +263,15 @@ export default function reducer(
       return {
         ...state,
         regionalScalingFactors,
+      };
+    }
+
+    case 'geography/SET_SELECTED_GEOGRAPHY_COUNTIES': {
+      const { selectedGeographyCounties } = action.payload;
+
+      return {
+        ...state,
+        selectedGeographyCounties,
       };
     }
 
@@ -305,6 +328,7 @@ export function selectGeography(focus: GeographicFocus): AppThunk {
     });
 
     dispatch(setRegionalScalingFactors());
+    dispatch(setSelectedGeographyCounties());
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
     dispatch(setEVEfficiency());
@@ -323,6 +347,7 @@ export function selectRegion(regionId: RegionId): AppThunk {
     });
 
     dispatch(setRegionalScalingFactors());
+    dispatch(setSelectedGeographyCounties());
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
     dispatch(setEVEfficiency());
@@ -341,6 +366,7 @@ export function selectState(stateId: string): AppThunk {
     });
 
     dispatch(setRegionalScalingFactors());
+    dispatch(setSelectedGeographyCounties());
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
     dispatch(setEVEfficiency());
@@ -367,6 +393,37 @@ function setRegionalScalingFactors(): AppThunk {
     dispatch({
       type: 'geography/SET_REGIONAL_SCALING_FACTORS',
       payload: { regionalScalingFactors },
+    });
+  };
+}
+
+/**
+ * Called every time this `geography` reducer's `selectGeography()`,
+ * `selectRegion()`, or `selectState()` functions are called.
+ *
+ * _(e.g. anytime the selected geography changes)_
+ */
+function setSelectedGeographyCounties(): AppThunk {
+  return (dispatch, getState) => {
+    const { geography } = getState();
+    const { regions, regionalScalingFactors } = geography;
+
+    const selectedGeographyRegionIds = Object.keys(
+      regionalScalingFactors,
+    ) as RegionId[];
+
+    const selectedGeographyRegions = getSelectedGeographyRegions({
+      regions,
+      selectedGeographyRegionIds,
+    });
+
+    const selectedGeographyCounties = getSelectedGeographyCounties({
+      selectedGeographyRegions,
+    });
+
+    dispatch({
+      type: 'geography/SET_SELECTED_GEOGRAPHY_COUNTIES',
+      payload: { selectedGeographyCounties },
     });
   };
 }
