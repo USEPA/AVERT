@@ -1,6 +1,7 @@
 import type { AppThunk } from 'app/redux/index';
 import { setStatesAndCounties } from 'app/redux/reducers/monthlyEmissions';
 import { setDownloadData } from 'app/redux/reducers/downloads';
+import { sortObjectByKeys } from 'app/calculations/utilities';
 import type { EmissionsChanges } from 'app/calculations/emissions';
 import type { RegionId, StateId } from 'app/config';
 import { regions } from 'app/config';
@@ -297,16 +298,6 @@ function sumEmissionsMonthlyData(egus: EmissionsChanges) {
   );
 
   return result;
-}
-
-/**
- * Return an object, sorted alphabetically by it's keys
- */
-function sortObjectByKeys<T extends Record<string, unknown>>(object: T) {
-  return (Object.keys(object) as (keyof T)[]).sort().reduce((result, key) => {
-    result[key] = object[key];
-    return result;
-  }, {} as T);
 }
 
 /**

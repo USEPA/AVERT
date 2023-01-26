@@ -4,8 +4,9 @@ import type {
   RegionalScalingFactors,
   SelectedGeographyRegions,
 } from 'app/calculations/geography';
+import { sortObjectByKeys } from 'app/calculations/utilities';
 import type { RegionId, RegionName, StateId } from 'app/config';
-import { states } from 'app/config';
+import { regions, states } from 'app/config';
 /**
  * Excel: "MOVESEmissionRates" sheet.
  */
@@ -148,6 +149,9 @@ type GeneralVehicleType = typeof generalVehicleTypes[number];
 type ExpandedVehicleType = typeof expandedVehicleTypes[number];
 type Pollutant = typeof pollutants[number];
 
+export type VMTPerVehicleTypeByGeography = ReturnType<
+  typeof calculateVMTPerVehicleTypeByGeography
+>;
 export type VMTAllocationTotalsAndPercentages = ReturnType<
   typeof calculateVMTAllocationTotalsAndPercentages
 >;
@@ -211,6 +215,83 @@ export type SelectedGeographyEEREDefaultsAverages = ReturnType<
 export type EVDeploymentLocationHistoricalEERE = ReturnType<
   typeof calculateEVDeploymentLocationHistoricalEERE
 >;
+
+/**
+ * Accumulated VMT data per vehicle type by AVERT region, state, and county.
+ */
+export function calculateVMTPerVehicleTypeByGeography() {
+  const regionIds = Object.values(regions).reduce((object, { id, name }) => {
+    object[name] = id;
+    return object;
+  }, {} as { [regionName: string]: RegionId });
+
+  const result = countyFips.reduce(
+    (object, data) => {
+      const regionName = data['AVERT Region'] as RegionName;
+      const regionId = regionIds[regionName];
+      const stateId = data['Postal State Code'] as StateId;
+      const county = data['County Name Long'];
+      const vmtData = {
+        cars: data['Passenger Cars VMT'] || 0,
+        trucks: data['Passenger Trucks and Light Commercial Trucks VMT'] || 0,
+        transitBuses: data['Transit Buses VMT'] || 0,
+        schoolBuses: data['School Buses VMT'] || 0,
+      };
+
+      if (regionId) {
+        object.regions[regionId] ??= { cars: 0, trucks: 0, transitBuses: 0, schoolBuses: 0 }; // prettier-ignore
+        object.states[stateId] ??= { cars: 0, trucks: 0, transitBuses: 0, schoolBuses: 0 }; // prettier-ignore
+        object.counties[stateId] ??= {};
+        object.counties[stateId][county] ??= { cars: 0, trucks: 0, transitBuses: 0, schoolBuses: 0 }; // prettier-ignore
+
+        abridgedVehicleTypes.forEach((vehicleType) => {
+          object.regions[regionId][vehicleType] += vmtData[vehicleType];
+          object.states[stateId][vehicleType] += vmtData[vehicleType];
+          object.counties[stateId][county][vehicleType] += vmtData[vehicleType];
+        });
+      }
+
+      return object;
+    },
+    {
+      regions: {},
+      states: {},
+      counties: {},
+    } as {
+      regions: {
+        [regionId in RegionId]: {
+          [vehicleType in AbridgedVehicleType]: number;
+        };
+      };
+      states: {
+        [stateId in StateId]: {
+          [vehicleType in AbridgedVehicleType]: number;
+        };
+      };
+      counties: {
+        [stateId in StateId]: {
+          [county: string]: {
+            [vehicleType in AbridgedVehicleType]: number;
+          };
+        };
+      };
+    },
+  );
+
+  // sort results alphabetically
+  result.regions = sortObjectByKeys(result.regions);
+  result.states = sortObjectByKeys(result.states);
+  result.counties = sortObjectByKeys(result.counties);
+  result.counties = Object.entries(result.counties).reduce(
+    (object, [stateId, counties]) => {
+      object[stateId as StateId] = sortObjectByKeys(counties);
+      return object;
+    },
+    {} as typeof result.counties,
+  );
+
+  return result;
+}
 
 /**
  * VMT allocation by state and AVERT region (in billions and percentages).
