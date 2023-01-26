@@ -21,6 +21,7 @@ import type {
   MonthlyEmissionChanges,
   TotalMonthlyEmissionChanges,
   TotalYearlyEmissionChanges,
+  VehicleEmissionChangesByCounty,
   VehicleSalesAndStock,
   SelectedGeographyEEREDefaultsAverages,
   EVDeploymentLocationHistoricalEERE,
@@ -51,11 +52,12 @@ import {
   calculateMonthlyEmissionChanges,
   calculateTotalMonthlyEmissionChanges,
   calculateTotalYearlyEmissionChanges,
+  calculateVehicleEmissionChangesByCounty,
   calculateVehicleSalesAndStock,
   calculateSelectedGeographyEEREDefaultsAverages,
   calculateEVDeploymentLocationHistoricalEERE,
 } from 'app/calculations/transportation';
-import type { RegionId } from 'app/config';
+import type { RegionId, StateId } from 'app/config';
 
 type TransportationAction =
   | {
@@ -153,6 +155,12 @@ type TransportationAction =
       payload: { totalYearlyEmissionChanges: TotalYearlyEmissionChanges };
     }
   | {
+      type: 'transportation/SET_VEHICLE_EMISSION_CHANGES_BY_COUNTY';
+      payload: {
+        vehicleEmissionChangesByCounty: VehicleEmissionChangesByCounty;
+      };
+    }
+  | {
       type: 'transportation/SET_VEHICLE_SALES_AND_STOCK';
       payload: { vehicleSalesAndStock: VehicleSalesAndStock };
     }
@@ -191,6 +199,7 @@ type TransportationState = {
   monthlyEmissionChanges: MonthlyEmissionChanges;
   totalMonthlyEmissionChanges: TotalMonthlyEmissionChanges;
   totalYearlyEmissionChanges: TotalYearlyEmissionChanges;
+  vehicleEmissionChangesByCounty: VehicleEmissionChangesByCounty | {};
   vehicleSalesAndStock: VehicleSalesAndStock;
   selectedGeographyEEREDefaultsAverages: SelectedGeographyEEREDefaultsAverages;
   evDeploymentLocationHistoricalEERE: EVDeploymentLocationHistoricalEERE;
@@ -248,6 +257,7 @@ const initialState: TransportationState = {
     schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
     total: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
   },
+  vehicleEmissionChangesByCounty: {},
   vehicleSalesAndStock: {},
   selectedGeographyEEREDefaultsAverages: {
     onshore_wind: 0,
@@ -442,6 +452,15 @@ export default function reducer(
       return {
         ...state,
         totalYearlyEmissionChanges,
+      };
+    }
+
+    case 'transportation/SET_VEHICLE_EMISSION_CHANGES_BY_COUNTY': {
+      const { vehicleEmissionChangesByCounty } = action.payload;
+
+      return {
+        ...state,
+        vehicleEmissionChangesByCounty,
       };
     }
 
@@ -849,12 +868,23 @@ export function setMonthlyEmissionRates(): AppThunk {
  */
 export function setMonthlyEmissionChanges(): AppThunk {
   return (dispatch, getState) => {
-    const { transportation } = getState();
+    const { transportation, eere } = getState();
     const {
+      vmtPerVehicleTypeByGeography,
       monthlyVMTPerVehicleType,
       vehiclesDisplaced,
       monthlyEmissionRates,
     } = transportation;
+
+    const { evDeploymentLocation } = eere.inputs;
+
+    const selectedGeographyStates =
+      eere.selectOptions.evDeploymentLocationOptions.reduce((array, option) => {
+        if (!option.id.startsWith('region-')) {
+          array.push(option.id.replace('state-', '') as StateId);
+        }
+        return array;
+      }, [] as StateId[]);
 
     const monthlyEmissionChanges = calculateMonthlyEmissionChanges({
       monthlyVMTPerVehicleType,
@@ -870,6 +900,14 @@ export function setMonthlyEmissionChanges(): AppThunk {
       totalMonthlyEmissionChanges,
     );
 
+    const vehicleEmissionChangesByCounty =
+      calculateVehicleEmissionChangesByCounty({
+        vmtPerVehicleTypeByGeography,
+        totalYearlyEmissionChanges,
+        selectedGeographyStates,
+        evDeploymentLocation,
+      });
+
     dispatch({
       type: 'transportation/SET_MONTHLY_EMISSION_CHANGES',
       payload: { monthlyEmissionChanges },
@@ -883,6 +921,11 @@ export function setMonthlyEmissionChanges(): AppThunk {
     dispatch({
       type: 'transportation/SET_TOTAL_YEARLY_EMISSION_CHANGES',
       payload: { totalYearlyEmissionChanges },
+    });
+
+    dispatch({
+      type: 'transportation/SET_VEHICLE_EMISSION_CHANGES_BY_COUNTY',
+      payload: { vehicleEmissionChangesByCounty },
     });
   };
 }
