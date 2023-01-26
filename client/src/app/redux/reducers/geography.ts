@@ -6,6 +6,7 @@ import {
   setDailyAndMonthlyStats,
   setSelectedGeographyEEREDefaultsAverages,
 } from 'app/redux/reducers/transportation';
+import type { RegionalScalingFactors } from 'app/calculations/geography';
 import {
   RdfDataKey,
   RegionId,
@@ -98,6 +99,12 @@ type GeographyAction =
       type: 'geography/SELECT_STATE';
       payload: { stateId: StateId };
     }
+  | {
+      type: 'geography/SET_REGIONAL_SCALING_FACTORS';
+      payload: {
+        regionalScalingFactors: RegionalScalingFactors;
+      };
+    }
   | { type: 'geography/REQUEST_SELECTED_REGIONS_DATA' }
   | { type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' }
   | {
@@ -129,6 +136,7 @@ type GeographyState = {
   focus: GeographicFocus;
   regions: { [key in RegionId]: RegionState };
   states: { [key in StateId]: StateState };
+  regionalScalingFactors: RegionalScalingFactors;
 };
 
 const initialRegionEereDefaults = {
@@ -195,6 +203,7 @@ const initialState: GeographyState = {
   focus: 'regions',
   regions: updatedRegions,
   states: updatedStates,
+  regionalScalingFactors: {},
 };
 
 export default function reducer(
@@ -232,6 +241,15 @@ export default function reducer(
         updatedState.states[stateId].selected = stateIsSelected;
       }
       return updatedState;
+    }
+
+    case 'geography/SET_REGIONAL_SCALING_FACTORS': {
+      const { regionalScalingFactors } = action.payload;
+
+      return {
+        ...state,
+        regionalScalingFactors,
+      };
     }
 
     case 'geography/REQUEST_SELECTED_REGIONS_DATA':
@@ -286,6 +304,7 @@ export function selectGeography(focus: GeographicFocus): AppThunk {
       payload: { focus },
     });
 
+    dispatch(setRegionalScalingFactors());
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
     dispatch(setEVEfficiency());
@@ -303,6 +322,7 @@ export function selectRegion(regionId: RegionId): AppThunk {
       payload: { regionId },
     });
 
+    dispatch(setRegionalScalingFactors());
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
     dispatch(setEVEfficiency());
@@ -320,9 +340,34 @@ export function selectState(stateId: string): AppThunk {
       payload: { stateId },
     });
 
+    dispatch(setRegionalScalingFactors());
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
     dispatch(setEVEfficiency());
+  };
+}
+
+/**
+ * Called every time this `geography` reducer's `selectGeography()`,
+ * `selectRegion()`, or `selectState()` functions are called.
+ *
+ * _(e.g. anytime the selected geography changes)_
+ */
+function setRegionalScalingFactors(): AppThunk {
+  return (dispatch, getState) => {
+    const { geography } = getState();
+    const { focus, regions, states } = geography;
+
+    const regionalScalingFactors = calculateRegionalScalingFactors({
+      geographicFocus: focus,
+      selectedRegion: Object.values(regions).find((r) => r.selected),
+      selectedState: Object.values(states).find((s) => s.selected),
+    });
+
+    dispatch({
+      type: 'geography/SET_REGIONAL_SCALING_FACTORS',
+      payload: { regionalScalingFactors },
+    });
   };
 }
 

@@ -1,8 +1,5 @@
 import { useTypedSelector } from 'app/redux/index';
-import {
-  calculateRegionalScalingFactors,
-  getSelectedGeographyRegions,
-} from 'app/calculations/geography';
+import { getSelectedGeographyRegions } from 'app/calculations/geography';
 import type { RegionId } from 'app/config';
 
 function calculatePercent(numerator: number, denominator: number) {
@@ -143,21 +140,16 @@ export function EVSalesAndStockTable(props: { className?: string }) {
 export function EEREEVComparisonTable(props: { className?: string }) {
   const { className } = props;
 
-  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const regions = useTypedSelector(({ geography }) => geography.regions);
-  const states = useTypedSelector(({ geography }) => geography.states);
+  const regionalScalingFactors = useTypedSelector(
+    ({ geography }) => geography.regionalScalingFactors,
+  );
   const totalYearlyEVEnergyUsage = useTypedSelector(
     ({ transportation }) => transportation.totalYearlyEVEnergyUsage,
   );
   const evDeploymentLocationHistoricalEERE = useTypedSelector(
     ({ transportation }) => transportation.evDeploymentLocationHistoricalEERE,
   );
-
-  const regionalScalingFactors = calculateRegionalScalingFactors({
-    geographicFocus,
-    selectedRegion: Object.values(regions).find((r) => r.selected),
-    selectedState: Object.values(states).find((s) => s.selected),
-  });
 
   const selectedGeographyRegionIds = Object.keys(
     regionalScalingFactors,
