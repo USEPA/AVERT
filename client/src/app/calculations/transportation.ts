@@ -203,6 +203,9 @@ export type TotalMonthlyEmissionChanges = ReturnType<
 export type TotalYearlyEmissionChanges = ReturnType<
   typeof calculateTotalYearlyEmissionChanges
 >;
+export type VehicleEmissionChangesByCounty = ReturnType<
+  typeof calculateVehicleEmissionChangesByCounty
+>;
 export type TotalYearlyEVEnergyUsage = ReturnType<
   typeof calculateTotalYearlyEVEnergyUsage
 >;
@@ -227,8 +230,7 @@ export function calculateVMTPerVehicleTypeByGeography() {
 
   const result = countyFips.reduce(
     (object, data) => {
-      const regionName = data['AVERT Region'] as RegionName;
-      const regionId = regionIds[regionName];
+      const regionId = regionIds[data['AVERT Region']];
       const stateId = data['Postal State Code'] as StateId;
       const county = data['County Name Long'];
       const vmtData = {
@@ -1663,6 +1665,89 @@ export function calculateTotalYearlyEmissionChanges(
       transitBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
       schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
       total: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Calculates vehicle emission changes at the county level for the selected
+ * geography's states.
+ *
+ * Excel: "From vehicles" column in the table in the "11_VehicleCty" sheet
+ * (column H).
+ */
+export function calculateVehicleEmissionChangesByCounty(options: {
+  vmtPerVehicleTypeByGeography: VMTPerVehicleTypeByGeography;
+  totalYearlyEmissionChanges: TotalYearlyEmissionChanges;
+  selectedGeographyStates: StateId[];
+  evDeploymentLocation: string;
+}) {
+  const {
+    vmtPerVehicleTypeByGeography,
+    totalYearlyEmissionChanges,
+    selectedGeographyStates,
+    evDeploymentLocation,
+  } = options;
+
+  const result = {} as {
+    [stateId in StateId]: {
+      [county: string]: {
+        [pollutant in Pollutant]: number;
+      };
+    };
+  };
+
+  if (evDeploymentLocation === '') return result;
+
+  const regionId = evDeploymentLocation.replace('region-', '') as RegionId;
+  const regionVMT = vmtPerVehicleTypeByGeography.regions[regionId];
+
+  if (!regionVMT) return result;
+
+  Object.entries(vmtPerVehicleTypeByGeography.counties).forEach(
+    ([key, stateCountiesVMT]) => {
+      const stateId = key as keyof typeof vmtPerVehicleTypeByGeography.counties;
+
+      if (selectedGeographyStates.includes(stateId)) {
+        result[stateId] ??= {};
+
+        Object.entries(stateCountiesVMT).forEach(([county, countyVMT]) => {
+          result[stateId][county] ??= { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }; // prettier-ignore
+
+          pollutants.forEach((pollutant) => {
+            // conditionally convert CO2 tons into pounds
+            const pollutantUnitFactor = pollutant === 'CO2' ? 2_000 : 1;
+
+            const cars =
+              (totalYearlyEmissionChanges.cars[pollutant] * countyVMT.cars) /
+              regionVMT.cars /
+              pollutantUnitFactor;
+
+            const trucks =
+              (totalYearlyEmissionChanges.trucks[pollutant] *
+                countyVMT.trucks) /
+              regionVMT.trucks /
+              pollutantUnitFactor;
+
+            const transitBuses =
+              (totalYearlyEmissionChanges.transitBuses[pollutant] *
+                countyVMT.transitBuses) /
+              regionVMT.transitBuses /
+              pollutantUnitFactor;
+
+            const schoolBuses =
+              (totalYearlyEmissionChanges.schoolBuses[pollutant] *
+                countyVMT.schoolBuses) /
+              regionVMT.schoolBuses /
+              pollutantUnitFactor;
+
+            result[stateId][county][pollutant] =
+              -cars - trucks - transitBuses - schoolBuses;
+          });
+        });
+      }
     },
   );
 
