@@ -635,7 +635,7 @@ export function setSelectedGeographyVMTData(): AppThunk {
     dispatch(setMonthlyEmissionRates());
 
     // NOTE: `monthlyEmissionChanges` uses `monthlyVMTPerVehicleType`
-    dispatch(setMonthlyEmissionChanges());
+    dispatch(setEmissionChanges());
   };
 }
 
@@ -740,7 +740,7 @@ export function setVehiclesDisplaced(): AppThunk {
     dispatch(setMonthlyEVEnergyUsage());
 
     // NOTE: `monthlyEmissionChanges` uses `vehiclesDisplaced`
-    dispatch(setMonthlyEmissionChanges());
+    dispatch(setEmissionChanges());
   };
 }
 
@@ -854,7 +854,7 @@ export function setMonthlyEmissionRates(): AppThunk {
     });
 
     // NOTE: `monthlyEmissionChanges` uses `monthlyEmissionRates`
-    dispatch(setMonthlyEmissionChanges());
+    dispatch(setEmissionChanges());
   };
 }
 
@@ -866,7 +866,7 @@ export function setMonthlyEmissionRates(): AppThunk {
  * _(e.g. anytime the selected geography, an EV input number, the EV deployment
  * location, EV model year, or ICE replacement vehicle changes)_
  */
-export function setMonthlyEmissionChanges(): AppThunk {
+export function setEmissionChanges(): AppThunk {
   return (dispatch, getState) => {
     const { transportation, eere } = getState();
     const {
