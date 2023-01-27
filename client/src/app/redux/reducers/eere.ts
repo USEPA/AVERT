@@ -12,7 +12,6 @@ import {
   setVehicleSalesAndStock,
   setEVDeploymentLocationHistoricalEERE,
 } from 'app/redux/reducers/transportation';
-import { calculateRegionalScalingFactors } from 'app/calculations/geography';
 import {
   calculateHourlyRenewableEnergyProfile,
   calculateHourlyEVLoad,
@@ -764,6 +763,7 @@ export function updateEereICEReplacementVehicle(input: string): AppThunk {
 export function calculateEereProfile(): AppThunk {
   return (dispatch, getState) => {
     const { geography, transportation, eere } = getState();
+    const { regionalScalingFactors } = geography;
     const {
       dailyStats,
       hourlyEVChargingPercentages,
@@ -813,12 +813,6 @@ export function calculateEereProfile(): AppThunk {
       const regionalPercent = selectedState?.percentageByRegion[region.id] || 0;
       return region.offshoreWind ? (total += regionalPercent) : total;
     }, 0);
-
-    const regionalScalingFactors = calculateRegionalScalingFactors({
-      geographicFocus: geography.focus,
-      selectedRegion: Object.values(geography.regions).find((r) => r.selected),
-      selectedState: Object.values(geography.states).find((s) => s.selected),
-    });
 
     selectedRegions.forEach((region) => {
       const regionalLoad = region.rdf.regional_load;

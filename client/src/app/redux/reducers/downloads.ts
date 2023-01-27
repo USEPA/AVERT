@@ -1,4 +1,5 @@
 import type { AppThunk } from 'app/redux/index';
+import type { VehicleEmissionChangesByCounty } from 'app/calculations/transportation';
 import type {
   EmissionsData,
   EmissionsFlagsField,
@@ -40,7 +41,7 @@ type CobraData = {
   FIPS: string;
   STATE: string;
   COUNTY: string;
-  TIER1NAME: string;
+  TIER1NAME: 'FUEL COMB. ELEC. UTIL.' | 'Highway Vehicles';
   NOx_REDUCTIONS_TONS: number;
   SO2_REDUCTIONS_TONS: number;
   PM25_REDUCTIONS_TONS: number;
@@ -89,7 +90,8 @@ export default function reducer(
 
 export function setDownloadData(): AppThunk {
   return (dispatch, getState) => {
-    const { results } = getState();
+    const { transportation, results } = getState();
+    const { vehicleEmissionChangesByCounty } = transportation;
     const { emissionsMonthlyData, egusNeedingEmissionsReplacement } = results;
 
     const countyData = formatCountyDownloadData({
@@ -97,7 +99,10 @@ export function setDownloadData(): AppThunk {
       egusNeedingEmissionsReplacement,
     });
 
-    const cobraData = formatCobraDownloadData({ emissionsMonthlyData });
+    const cobraData = formatCobraDownloadData({
+      emissionsMonthlyData,
+      vehicleEmissionChangesByCounty,
+    });
 
     dispatch({
       type: 'downloads/SET_DOWNLOAD_DATA',
@@ -347,39 +352,84 @@ function createMonthlyEmissionsDataFields(options: {
  */
 function formatCobraDownloadData(options: {
   emissionsMonthlyData: EmissionsMonthlyData;
+  vehicleEmissionChangesByCounty: VehicleEmissionChangesByCounty | {};
 }) {
-  const { emissionsMonthlyData } = options;
+  const { emissionsMonthlyData, vehicleEmissionChangesByCounty } = options;
 
   const result: CobraData[] = [];
 
-  if (!emissionsMonthlyData) return result;
+  const vehicleEmissionChanges =
+    Object.keys(vehicleEmissionChangesByCounty).length !== 0
+      ? (vehicleEmissionChangesByCounty as VehicleEmissionChangesByCounty)
+      : null;
+
+  if (!emissionsMonthlyData || !vehicleEmissionChanges) return result;
 
   const { counties } = emissionsMonthlyData;
 
+  // add power sector data
   Object.entries(counties).forEach(([stateId, stateData]) => {
     Object.entries(stateData).forEach(([countyName, countyData]) => {
       const totalEmissionsChanges = calculateTotalEmissionsChanges(countyData);
 
-      const matchedCounty = countyFips.find((data) => {
-        return (
-          data['State Name'] === statesConfig[stateId as StateId].name &&
-          data['County Name Long'] === countyName
-        );
+      const state = statesConfig[stateId as StateId].name;
+      const county = countyName.replace(/city/, '(City)'); // format 'city'
+      const fipsCode =
+        countyFips.find(
+          (data) =>
+            data['State Name'] === state &&
+            data['County Name Long'] === countyName,
+        )?.['State and County FIPS Code'] || '';
+
+      const noxTons = Number((totalEmissionsChanges.nox / 2_000).toFixed(3));
+      const so2Tons = Number((totalEmissionsChanges.so2 / 2_000).toFixed(3));
+      const pm25Tons = Number((totalEmissionsChanges.pm25 / 2_000).toFixed(3));
+      const vocsTons = Number((totalEmissionsChanges.vocs / 2_000).toFixed(3));
+      const nh3Tons = Number((totalEmissionsChanges.nh3 / 2_000).toFixed(3));
+
+      result.push({
+        FIPS: fipsCode,
+        STATE: state,
+        COUNTY: county,
+        TIER1NAME: 'FUEL COMB. ELEC. UTIL.' as const,
+        NOx_REDUCTIONS_TONS: noxTons,
+        SO2_REDUCTIONS_TONS: so2Tons,
+        PM25_REDUCTIONS_TONS: pm25Tons,
+        VOCS_REDUCTIONS_TONS: vocsTons,
+        NH3_REDUCTIONS_TONS: nh3Tons,
       });
+    });
+  });
 
-      const countyRow = {
-        FIPS: matchedCounty ? matchedCounty['State and County FIPS Code'] : '',
-        STATE: statesConfig[stateId as StateId].name,
-        COUNTY: countyName.replace(/city/, '(City)'), // format 'city'
-        TIER1NAME: 'FUEL COMB. ELEC. UTIL.',
-        NOx_REDUCTIONS_TONS: formatNumber(totalEmissionsChanges.nox / 2_000),
-        SO2_REDUCTIONS_TONS: formatNumber(totalEmissionsChanges.so2 / 2_000),
-        PM25_REDUCTIONS_TONS: formatNumber(totalEmissionsChanges.pm25 / 2_000),
-        VOCS_REDUCTIONS_TONS: formatNumber(totalEmissionsChanges.vocs / 2_000),
-        NH3_REDUCTIONS_TONS: formatNumber(totalEmissionsChanges.nh3 / 2_000),
-      };
+  // add transportation sector data
+  Object.entries(vehicleEmissionChanges).forEach(([stateId, stateData]) => {
+    Object.entries(stateData).forEach(([countyName, countyData]) => {
+      const state = statesConfig[stateId as StateId].name;
+      const county = countyName.replace(/city/, '(City)'); // format 'city'
+      const fipsCode =
+        countyFips.find(
+          (data) =>
+            data['State Name'] === state &&
+            data['County Name Long'] === countyName,
+        )?.['State and County FIPS Code'] || '';
 
-      result.push(countyRow);
+      const noxTons = Number((countyData.NOX / 2_000).toFixed(3));
+      const so2Tons = Number((countyData.SO2 / 2_000).toFixed(3));
+      const pm25Tons = Number((countyData.PM25 / 2_000).toFixed(3));
+      const vocsTons = Number((countyData.VOCs / 2_000).toFixed(3));
+      const nh3Tons = Number((countyData.NH3 / 2_000).toFixed(3));
+
+      result.push({
+        FIPS: fipsCode,
+        STATE: state,
+        COUNTY: county,
+        TIER1NAME: 'Highway Vehicles' as const,
+        NOx_REDUCTIONS_TONS: noxTons,
+        SO2_REDUCTIONS_TONS: so2Tons,
+        PM25_REDUCTIONS_TONS: pm25Tons,
+        VOCS_REDUCTIONS_TONS: vocsTons,
+        NH3_REDUCTIONS_TONS: nh3Tons,
+      });
     });
   });
 
@@ -404,16 +454,4 @@ function calculateTotalEmissionsChanges(emissionsData: EmissionsData) {
   );
 
   return result;
-}
-
-/**
- * Formats a number with up to three digits after the decimal
- */
-function formatNumber(number: number) {
-  return Number(
-    number.toLocaleString(undefined, {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 3,
-    }),
-  );
 }
