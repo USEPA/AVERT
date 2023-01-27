@@ -86,9 +86,6 @@ export function TransportationSectorEmissionsTable() {
             </thead>
 
             <tbody>
-              <tr className="display-none desktop:display-table-row">
-                <td colSpan={4}>&nbsp;</td>
-              </tr>
               <tr>
                 <td colSpan={4} className="text-bold">
                   Total Emissions
@@ -127,10 +124,6 @@ export function TransportationSectorEmissionsTable() {
                 <td className="font-mono-xs text-right">
                   {formatNumber(annualPowerNOX + annualVehicleNOX)}
                 </td>
-              </tr>
-
-              <tr className="display-none desktop:display-table-row">
-                <td colSpan={4}>&nbsp;</td>
               </tr>
 
               <tr>

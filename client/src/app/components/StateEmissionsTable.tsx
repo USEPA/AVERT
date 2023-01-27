@@ -161,7 +161,7 @@ export function StateEmissionsTable() {
               /** add visual space below the last state row, unless its the last state */
               const stateSpacingClassName =
                 index !== array.length - 1
-                  ? 'border-width-1 border-top-width-0 border-x-width-0 border-solid'
+                  ? 'border-width-1 border-top-width-0 border-x-width-0 border-solid border-white'
                   : '';
 
               return (

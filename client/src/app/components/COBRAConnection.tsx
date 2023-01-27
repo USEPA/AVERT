@@ -6,7 +6,7 @@ type CobraApiState = 'idle' | 'pending' | 'success' | 'failure';
 
 type CobraApiData = {
   stateCountyBadgesList: string[];
-  tier1Text: 'Fuel Combustion: Electric Utility';
+  tier1Text: 'Fuel Combustion: Electric Utility' | 'Highway Vehicles';
   tier2Text: null;
   tier3Text: null;
   PM25ri: 'reduce' | 'increase';
@@ -25,7 +25,7 @@ type CobraApiData = {
   NH3pt: 'tons' | 'percent';
   VOCpt: 'tons' | 'percent';
   statetree_items_selected: string[];
-  tiertree_items_selected: ['1'];
+  tiertree_items_selected: ['1' | '11'];
 };
 
 export function COBRAConnection() {
@@ -44,7 +44,10 @@ export function COBRAConnection() {
     const countyState = `${row.COUNTY.replace(/ County$/, '')}, ${row.STATE}`;
     return {
       stateCountyBadgesList: [countyState],
-      tier1Text: 'Fuel Combustion: Electric Utility',
+      tier1Text:
+        row.TIER1NAME === 'FUEL COMB. ELEC. UTIL.'
+          ? 'Fuel Combustion: Electric Utility'
+          : 'Highway Vehicles',
       tier2Text: null,
       tier3Text: null,
       PM25ri: row.PM25_REDUCTIONS_TONS <= 0 ? 'reduce' : 'increase',
@@ -63,7 +66,9 @@ export function COBRAConnection() {
       NH3pt: 'tons',
       VOCpt: 'tons',
       statetree_items_selected: [row.FIPS],
-      tiertree_items_selected: ['1'],
+      tiertree_items_selected: [
+        row.TIER1NAME === 'FUEL COMB. ELEC. UTIL.' ? '1' : '11',
+      ],
     };
   });
 
