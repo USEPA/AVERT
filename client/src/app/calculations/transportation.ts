@@ -1391,8 +1391,8 @@ export function calculateMonthlyEmissionRates(options: {
 
   if (evDeploymentLocation === '') return result;
 
-  const locationIsRegion = evDeploymentLocation.startsWith('region-');
-  const locationIsState = evDeploymentLocation.startsWith('state-');
+  const deploymentLocationIsRegion = evDeploymentLocation.startsWith('region-');
+  const deploymentLocationIsState = evDeploymentLocation.startsWith('state-');
 
   // NOTE: explicitly declaring the type with a type assertion because
   // TypeScript isn't able to infer types from large JSON files
@@ -1446,7 +1446,7 @@ export function calculateMonthlyEmissionRates(options: {
           ? true //
           : data.year === evModelYear;
 
-      const conditionalStateMatch = locationIsState
+      const conditionalStateMatch = deploymentLocationIsState
         ? data.state === evDeploymentLocation.replace('state-', '')
         : true;
 
@@ -1458,7 +1458,7 @@ export function calculateMonthlyEmissionRates(options: {
       const movesRegionalWeightPercentage =
         statesVMTPercentages?.[data.state as StateId]?.[abridgedVehicleType] || 0; // prettier-ignore
 
-      const locationFactor = locationIsRegion
+      const locationFactor = deploymentLocationIsRegion
         ? movesRegionalWeightPercentage
         : 1; // location is state, so no MOVES regional weight factor is applied
 
@@ -2027,8 +2027,8 @@ export function calculateEVDeploymentLocationHistoricalEERE(options: {
     return result;
   }
 
-  const locationIsRegion = evDeploymentLocation.startsWith('region-');
-  const locationIsState = evDeploymentLocation.startsWith('state-');
+  const deploymentLocationIsRegion = evDeploymentLocation.startsWith('region-');
+  const deploymentLocationIsState = evDeploymentLocation.startsWith('state-');
 
   const fallbackAverage = {
     capacity_added_mw: { onshore_wind: 0, utility_pv: 0 },
@@ -2039,9 +2039,9 @@ export function calculateEVDeploymentLocationHistoricalEERE(options: {
   const stateId = evDeploymentLocation.replace('state-', '') as RegionEereAveragesStateId; // prettier-ignore
 
   // averages for selected EV deployment location (region or state)
-  const locationAverage = locationIsRegion
+  const locationAverage = deploymentLocationIsRegion
     ? regionEereAverages[regionId]
-    : locationIsState
+    : deploymentLocationIsState
     ? stateEereAverages[stateId]
     : fallbackAverage;
 
