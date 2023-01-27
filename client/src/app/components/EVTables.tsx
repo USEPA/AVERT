@@ -74,7 +74,9 @@ export function EVSalesAndStockTable(props: { className?: string }) {
 
       <div className="overflow-auto">
         <div className="avert-table-container">
-          <table className={`avert-table ${className ? className : ''}`}>
+          <table
+            className={`avert-table avert-table-striped ${className ?? ''}`}
+          >
             <thead>
               <tr>
                 <th>Electric Vehicle Type</th>
@@ -254,7 +256,9 @@ export function EEREEVComparisonTable(props: { className?: string }) {
 
       <div className="overflow-auto">
         <div className="avert-table-container">
-          <table className={`avert-table ${className ? className : ''}`}>
+          <table
+            className={`avert-table avert-table-striped ${className ?? ''}`}
+          >
             <thead>
               <tr>
                 <th rowSpan={2}>EE/RE Type</th>

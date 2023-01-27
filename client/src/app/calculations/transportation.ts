@@ -204,8 +204,8 @@ export type TotalMonthlyEmissionChanges = ReturnType<
 export type TotalYearlyEmissionChanges = ReturnType<
   typeof calculateTotalYearlyEmissionChanges
 >;
-export type VehicleEmissionChangesByCounty = ReturnType<
-  typeof calculateVehicleEmissionChangesByCounty
+export type VehicleEmissionChangesByGeography = ReturnType<
+  typeof calculateVehicleEmissionChangesByGeography
 >;
 export type TotalYearlyEVEnergyUsage = ReturnType<
   typeof calculateTotalYearlyEVEnergyUsage
@@ -1682,13 +1682,15 @@ export function calculateTotalYearlyEmissionChanges(
 }
 
 /**
- * Calculates vehicle emission changes at the county level for the selected
- * geography.
+ * Calculates vehicle emission changes at the county, state, and total levels
+ * for the selected geography.
  *
- * Excel: "From vehicles" column in the table in the "11_VehicleCty" sheet
- * (column H).
+ * Excel: County level data calculations in "From vehicles" column in the table
+ * in the "11_VehicleCty" sheet (column H) – we just roll those county level
+ * values up to the state and total levels in this same function too, as they're
+ * used at those aggregate levels as well.
  */
-export function calculateVehicleEmissionChangesByCounty(options: {
+export function calculateVehicleEmissionChangesByGeography(options: {
   geographicFocus: GeographicFocus;
   selectedRegionId: RegionId | '';
   selectedStateId: StateId | '';
@@ -1707,10 +1709,24 @@ export function calculateVehicleEmissionChangesByCounty(options: {
     evDeploymentLocation,
   } = options;
 
-  const result = {} as {
-    [stateId in StateId]: {
-      [county: string]: {
+  const result = {
+    total: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+    states: {},
+    counties: {},
+  } as {
+    total: {
+      [pollutant in Pollutant]: number;
+    };
+    states: {
+      [stateId in StateId]: {
         [pollutant in Pollutant]: number;
+      };
+    };
+    counties: {
+      [stateId in StateId]: {
+        [county: string]: {
+          [pollutant in Pollutant]: number;
+        };
       };
     };
   };
@@ -1745,19 +1761,13 @@ export function calculateVehicleEmissionChangesByCounty(options: {
       selectedGeographyCounties[stateId] &&
       (regionSelected || (stateSelected && selectedStateId === stateId))
     ) {
-      result[stateId] ??= {};
+      result.counties[stateId] ??= {};
 
       Object.entries(stateCountiesVMT).forEach(([county, countyVMT]) => {
         if (selectedGeographyCounties[stateId]?.includes(county)) {
-          // initialize each county's values for each pollutant
-          result[stateId][county] ??= {
-            CO2: 0,
-            NOX: 0,
-            SO2: 0,
-            PM25: 0,
-            VOCs: 0,
-            NH3: 0,
-          };
+          // initialize each state and county's values for each pollutant
+          result.states[stateId] ??= { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }; // prettier-ignore
+          result.counties[stateId][county] ??= { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }; // prettier-ignore
 
           if (
             deploymentLocationIsRegion ||
@@ -1790,8 +1800,12 @@ export function calculateVehicleEmissionChangesByCounty(options: {
                 locationVMT.schoolBuses /
                 unitFactor;
 
-              result[stateId][county][pollutant] =
+              const emissionChanges =
                 -cars - trucks - transitBuses - schoolBuses;
+
+              result.total[pollutant] += emissionChanges;
+              result.states[stateId][pollutant] += emissionChanges;
+              result.counties[stateId][county][pollutant] = emissionChanges;
             });
           }
         }

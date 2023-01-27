@@ -132,6 +132,10 @@ button:not([disabled]):focus,
   border-color: white;
 }
 
+.avert-table tr {
+  background-color: rgba(0, 169, 204, 0.0625);
+}
+
 .avert-table th {
   color: white;
   background-color: var(--avert-blue);
@@ -154,10 +158,7 @@ button:not([disabled]):focus,
   font-size: 1rem;
 }
 
-.avert-table tbody tr:nth-of-type(odd) {
+.avert-table-striped tbody tr:nth-of-type(odd),
+.avert-table tbody tr.avert-table-striped-row {
   background-color: rgba(0, 169, 204, 0.125);
-}
-
-.avert-table tbody tr:nth-of-type(even) {
-  background-color: rgba(0, 169, 204, 0.0625);
 }

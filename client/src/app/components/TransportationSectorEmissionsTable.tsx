@@ -4,10 +4,14 @@ import type {
   EmissionsMonthlyData,
 } from 'app/redux/reducers/results';
 
+/**
+ * Round number to the nearest 10 and conditionally display '--' if number is
+ * within 10 of zero.
+ */
 function formatNumber(number: number) {
   if (number < 10 && number > -10) return '--';
-  const output = Math.round(number / 10) * 10;
-  return output.toLocaleString();
+  const result = Math.round(number / 10) * 10;
+  return result.toLocaleString();
 }
 
 /**
@@ -47,26 +51,19 @@ export function TransportationSectorEmissionsTable() {
   const annualEmissionsChanges =
     setAnnualEmissionsChanges(emissionsMonthlyData);
 
-  const totalYearlyVehicleSO2 = -1 * totalYearlyVehicleEmissionsChanges.total.SO2; // prettier-ignore
-  const totalYearlyVehicleNOX = -1 * totalYearlyVehicleEmissionsChanges.total.NOX; // prettier-ignore
-  const totalYearlyVehicleCO2 = -1 * totalYearlyVehicleEmissionsChanges.total.CO2 / 2_000; // prettier-ignore
-  const totalYearlyVehiclePM25 = -1 * totalYearlyVehicleEmissionsChanges.total.PM25; // prettier-ignore
-  const totalYearlyVehicleVOCs = -1 * totalYearlyVehicleEmissionsChanges.total.VOCs; // prettier-ignore
-  const totalYearlyVehicleNH3 = -1 * totalYearlyVehicleEmissionsChanges.total.NH3; // prettier-ignore
+  const annualVehicleSO2 = -1 * totalYearlyVehicleEmissionsChanges.total.SO2;
+  const annualVehicleNOX = -1 * totalYearlyVehicleEmissionsChanges.total.NOX;
+  const annualVehicleCO2 = -1 * totalYearlyVehicleEmissionsChanges.total.CO2 / 2_000; // prettier-ignore
+  const annualVehiclePM25 = -1 * totalYearlyVehicleEmissionsChanges.total.PM25;
+  const annualVehicleVOCs = -1 * totalYearlyVehicleEmissionsChanges.total.VOCs;
+  const annualVehicleNH3 = -1 * totalYearlyVehicleEmissionsChanges.total.NH3;
 
-  const totalYearlyPowerSO2 = annualEmissionsChanges.so2;
-  const totalYearlyPowerNOX = annualEmissionsChanges.nox;
-  const totalYearlyPowerCO2 = annualEmissionsChanges.co2;
-  const totalYearlyPowerPM25 = annualEmissionsChanges.pm25;
-  const totalYearlyPowerVOCs = annualEmissionsChanges.vocs;
-  const totalYearlyPowerNH3 = annualEmissionsChanges.nh3;
-
-  const totalYearlyNetSO2 = totalYearlyVehicleSO2 + totalYearlyPowerSO2;
-  const totalYearlyNetNOX = totalYearlyVehicleNOX + totalYearlyPowerNOX;
-  const totalYearlyNetCO2 = totalYearlyVehicleCO2 + totalYearlyPowerCO2;
-  const totalYearlyNetPM25 = totalYearlyVehiclePM25 + totalYearlyPowerPM25;
-  const totalYearlyNetVOCs = totalYearlyVehicleVOCs + totalYearlyPowerVOCs;
-  const totalYearlyNetNH3 = totalYearlyVehicleNH3 + totalYearlyPowerNH3;
+  const annualPowerSO2 = annualEmissionsChanges.so2;
+  const annualPowerNOX = annualEmissionsChanges.nox;
+  const annualPowerCO2 = annualEmissionsChanges.co2;
+  const annualPowerPM25 = annualEmissionsChanges.pm25;
+  const annualPowerVOCs = annualEmissionsChanges.vocs;
+  const annualPowerNH3 = annualEmissionsChanges.nh3;
 
   if (!emissionsMonthlyData) return null;
 
@@ -74,7 +71,7 @@ export function TransportationSectorEmissionsTable() {
     <>
       <div className="overflow-auto">
         <div className="avert-table-container">
-          <table className="avert-table width-full">
+          <table className="avert-table avert-table-striped width-full">
             <thead>
               <tr>
                 <th>&nbsp;</th>
@@ -105,13 +102,13 @@ export function TransportationSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(totalYearlyPowerSO2)}
+                  {formatNumber(annualPowerSO2)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(totalYearlyVehicleSO2)}
+                  {formatNumber(annualVehicleSO2)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(totalYearlyNetSO2)}
+                  {formatNumber(annualPowerSO2 + annualVehicleSO2)}
                 </td>
               </tr>
 
@@ -122,13 +119,13 @@ export function TransportationSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(totalYearlyPowerNOX)}
+                  {formatNumber(annualPowerNOX)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(totalYearlyVehicleNOX)}
+                  {formatNumber(annualVehicleNOX)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(totalYearlyNetNOX)}
+                  {formatNumber(annualPowerNOX + annualVehicleNOX)}
                 </td>
               </tr>
 
@@ -143,13 +140,13 @@ export function TransportationSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(totalYearlyPowerCO2)}
+                  {formatNumber(annualPowerCO2)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(totalYearlyVehicleCO2)}
+                  {formatNumber(annualVehicleCO2)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(totalYearlyNetCO2)}
+                  {formatNumber(annualPowerCO2 + annualVehicleCO2)}
                 </td>
               </tr>
 
@@ -160,13 +157,13 @@ export function TransportationSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(totalYearlyPowerPM25)}
+                  {formatNumber(annualPowerPM25)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(totalYearlyVehiclePM25)}
+                  {formatNumber(annualVehiclePM25)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(totalYearlyNetPM25)}
+                  {formatNumber(annualPowerPM25 + annualVehiclePM25)}
                 </td>
               </tr>
 
@@ -177,13 +174,13 @@ export function TransportationSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(totalYearlyPowerVOCs)}
+                  {formatNumber(annualPowerVOCs)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(totalYearlyVehicleVOCs)}
+                  {formatNumber(annualVehicleVOCs)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(totalYearlyNetVOCs)}
+                  {formatNumber(annualPowerVOCs + annualVehicleVOCs)}
                 </td>
               </tr>
 
@@ -194,13 +191,13 @@ export function TransportationSectorEmissionsTable() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(totalYearlyPowerNH3)}
+                  {formatNumber(annualPowerNH3)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(totalYearlyVehicleNH3)}
+                  {formatNumber(annualVehicleNH3)}
                 </td>
                 <td className="font-mono-xs text-right">
-                  {formatNumber(totalYearlyNetNH3)}
+                  {formatNumber(annualPowerNH3 + annualVehicleNH3)}
                 </td>
               </tr>
             </tbody>
