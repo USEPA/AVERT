@@ -27,6 +27,7 @@
   padding-left: 1.625rem;
   font-size: 0.93rem; /* font-sans-2xs */
   user-select: none;
+  text-indent: 0;
 }
 
 .usa-radio__label::before,
