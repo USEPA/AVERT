@@ -26,10 +26,7 @@ import type {
   SelectedGeographyEEREDefaultsAverages,
   EVDeploymentLocationHistoricalEERE,
 } from 'app/calculations/transportation';
-import {
-  calculateRegionalScalingFactors,
-  getSelectedGeographyRegions,
-} from 'app/calculations/geography';
+import { getSelectedGeographyRegions } from 'app/calculations/geography';
 import {
   calculateVMTPerVehicleTypeByGeography,
   calculateVMTAllocationTotalsAndPercentages,
@@ -57,7 +54,7 @@ import {
   calculateSelectedGeographyEEREDefaultsAverages,
   calculateEVDeploymentLocationHistoricalEERE,
 } from 'app/calculations/transportation';
-import type { RegionId, StateId } from 'app/config';
+import type { RegionId } from 'app/config';
 
 type TransportationAction =
   | {
@@ -649,14 +646,8 @@ export function setSelectedGeographyVMTData(): AppThunk {
 export function setEVEfficiency(): AppThunk {
   return (dispatch, getState) => {
     const { geography, eere } = getState();
-    const { focus, regions, states } = geography;
+    const { regionalScalingFactors } = geography;
     const { evModelYear } = eere.inputs;
-
-    const regionalScalingFactors = calculateRegionalScalingFactors({
-      geographicFocus: focus,
-      selectedRegion: Object.values(regions).find((r) => r.selected),
-      selectedState: Object.values(states).find((s) => s.selected),
-    });
 
     const evEfficiencyPerVehicleType = calculateEVEfficiencyPerVehicleType({
       regionalScalingFactors,
@@ -969,13 +960,7 @@ export function setVehicleSalesAndStock(): AppThunk {
 export function setSelectedGeographyEEREDefaultsAverages(): AppThunk {
   return (dispatch, getState) => {
     const { geography } = getState();
-    const { focus, regions, states } = geography;
-
-    const regionalScalingFactors = calculateRegionalScalingFactors({
-      geographicFocus: focus,
-      selectedRegion: Object.values(regions).find((r) => r.selected),
-      selectedState: Object.values(states).find((s) => s.selected),
-    });
+    const { regions, regionalScalingFactors } = geography;
 
     const selectedGeographyRegionIds = Object.keys(
       regionalScalingFactors,
