@@ -67,7 +67,7 @@ function setAnnualStateEmissionsChanges(options: {
 
         Object.values(annualData).forEach((monthlyData) => {
           const { original, postEere } = monthlyData;
-          object[pollutant] = postEere - original;
+          object[pollutant] += postEere - original;
         });
 
         return object;
@@ -221,12 +221,24 @@ export function StateEmissionsTable() {
                     <td className="width-1px text-no-wrap text-right">
                       Net Change
                     </td>
-                    <td className="font-mono-xs text-right">{'---'}</td>
-                    <td className="font-mono-xs text-right">{'---'}</td>
-                    <td className="font-mono-xs text-right">{'---'}</td>
-                    <td className="font-mono-xs text-right">{'---'}</td>
-                    <td className="font-mono-xs text-right">{'---'}</td>
-                    <td className="font-mono-xs text-right">{'---'}</td>
+                    <td className="font-mono-xs text-right">
+                      {formatNumber(data.power.so2 + data.transportation.SO2)}
+                    </td>
+                    <td className="font-mono-xs text-right">
+                      {formatNumber(data.power.nox + data.transportation.NOX)}
+                    </td>
+                    <td className="font-mono-xs text-right">
+                      {formatNumber(data.power.co2 + data.transportation.CO2)}
+                    </td>
+                    <td className="font-mono-xs text-right">
+                      {formatNumber(data.power.pm25 + data.transportation.PM25)}
+                    </td>
+                    <td className="font-mono-xs text-right">
+                      {formatNumber(data.power.vocs + data.transportation.VOCs)}
+                    </td>
+                    <td className="font-mono-xs text-right">
+                      {formatNumber(data.power.nh3 + data.transportation.NH3)}
+                    </td>
                   </tr>
                 </Fragment>
               );
