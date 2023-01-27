@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { useTypedSelector } from 'app/redux/index';
 import type {
   EmissionsData,
@@ -82,7 +83,7 @@ export function StateEmissionsTable() {
         <table className="avert-table width-full">
           <thead>
             <tr>
-              <th>State</th>
+              <th colSpan={2}>State</th>
               <th className="text-right">
                 SO<sub>2</sub> <small>(lb)</small>
               </th>
@@ -109,27 +110,56 @@ export function StateEmissionsTable() {
               .sort((stateA, stateB) => stateA.name.localeCompare(stateB.name))
               .map((stateData) => {
                 return (
-                  <tr key={stateData.id}>
-                    <td>{stateData.name}</td>
-                    <td className="font-mono-xs text-right">
-                      {formatNumber(stateData.so2)}
-                    </td>
-                    <td className="font-mono-xs text-right">
-                      {formatNumber(stateData.nox)}
-                    </td>
-                    <td className="font-mono-xs text-right">
-                      {formatNumber(stateData.co2)}
-                    </td>
-                    <td className="font-mono-xs text-right">
-                      {formatNumber(stateData.pm25)}
-                    </td>
-                    <td className="font-mono-xs text-right">
-                      {formatNumber(stateData.vocs)}
-                    </td>
-                    <td className="font-mono-xs text-right">
-                      {formatNumber(stateData.nh3)}
-                    </td>
-                  </tr>
+                  <Fragment key={stateData.id}>
+                    <tr>
+                      <td rowSpan={3}>{stateData.name}</td>
+                      <td className="width-1px text-no-wrap text-right">
+                        <small>From</small> Fossil Generation
+                      </td>
+                      <td className="font-mono-xs text-right">
+                        {formatNumber(stateData.so2)}
+                      </td>
+                      <td className="font-mono-xs text-right">
+                        {formatNumber(stateData.nox)}
+                      </td>
+                      <td className="font-mono-xs text-right">
+                        {formatNumber(stateData.co2)}
+                      </td>
+                      <td className="font-mono-xs text-right">
+                        {formatNumber(stateData.pm25)}
+                      </td>
+                      <td className="font-mono-xs text-right">
+                        {formatNumber(stateData.vocs)}
+                      </td>
+                      <td className="font-mono-xs text-right">
+                        {formatNumber(stateData.nh3)}
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td className="width-1px text-no-wrap text-right">
+                        <small>From</small> Vehicles
+                      </td>
+                      <td className="font-mono-xs text-right">{'---'}</td>
+                      <td className="font-mono-xs text-right">{'---'}</td>
+                      <td className="font-mono-xs text-right">{'---'}</td>
+                      <td className="font-mono-xs text-right">{'---'}</td>
+                      <td className="font-mono-xs text-right">{'---'}</td>
+                      <td className="font-mono-xs text-right">{'---'}</td>
+                    </tr>
+
+                    <tr className="border-width-1 border-top-width-0 border-x-width-0 border-solid">
+                      <td className="width-1px text-no-wrap text-right">
+                        Net Change
+                      </td>
+                      <td className="font-mono-xs text-right">{'---'}</td>
+                      <td className="font-mono-xs text-right">{'---'}</td>
+                      <td className="font-mono-xs text-right">{'---'}</td>
+                      <td className="font-mono-xs text-right">{'---'}</td>
+                      <td className="font-mono-xs text-right">{'---'}</td>
+                      <td className="font-mono-xs text-right">{'---'}</td>
+                    </tr>
+                  </Fragment>
                 );
               })}
           </tbody>
