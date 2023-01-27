@@ -1689,18 +1689,22 @@ export function calculateTotalYearlyEmissionChanges(
  * (column H).
  */
 export function calculateVehicleEmissionChangesByCounty(options: {
+  geographicFocus: GeographicFocus;
+  selectedRegionId: RegionId | '';
+  selectedStateId: StateId | '';
   vmtPerVehicleTypeByGeography: VMTPerVehicleTypeByGeography | {};
   totalYearlyEmissionChanges: TotalYearlyEmissionChanges;
   selectedGeographyCounties: SelectedGeographyCounties;
   evDeploymentLocation: string;
-  selectedRegionId: RegionId | '';
 }) {
   const {
+    geographicFocus,
+    selectedRegionId,
+    selectedStateId,
     vmtPerVehicleTypeByGeography,
     totalYearlyEmissionChanges,
     selectedGeographyCounties,
     evDeploymentLocation,
-    selectedRegionId,
   } = options;
 
   const result = {} as {
@@ -1711,28 +1715,36 @@ export function calculateVehicleEmissionChangesByCounty(options: {
     };
   };
 
+  const regionSelected = geographicFocus === 'regions' && selectedRegionId !== ''; // prettier-ignore
+  const stateSelected = geographicFocus === 'states' && selectedStateId !== '';
+
   const vmtData =
     Object.keys(vmtPerVehicleTypeByGeography).length !== 0
       ? (vmtPerVehicleTypeByGeography as VMTPerVehicleTypeByGeography)
       : null;
 
-  if (!vmtData || evDeploymentLocation === '' || selectedRegionId === '') {
-    return result;
-  }
+  if (!vmtData || evDeploymentLocation === '') return result;
 
-  const locationIsRegion = evDeploymentLocation.startsWith('region-');
-  const locationIsState = evDeploymentLocation.startsWith('state-');
+  const deploymentLocationIsRegion = evDeploymentLocation.startsWith('region-');
+  const deploymentLocationIsState = evDeploymentLocation.startsWith('state-');
+  const deploymentLocationStateId = evDeploymentLocation.replace('state-', '') as StateId; // prettier-ignore
 
-  const locationStateId = evDeploymentLocation.replace('state-', '') as StateId;
-
-  const locationVMT = locationIsRegion
-    ? vmtData.regions[selectedRegionId].total
-    : vmtData.regions[selectedRegionId].states?.[locationStateId];
+  const locationVMT = regionSelected
+    ? deploymentLocationIsRegion
+      ? vmtData.regions[selectedRegionId].total
+      : vmtData.regions[selectedRegionId].states?.[deploymentLocationStateId]
+    : stateSelected
+    ? vmtData.states[selectedStateId]
+    : null;
 
   Object.entries(vmtData.counties).forEach(([key, stateCountiesVMT]) => {
     const stateId = key as keyof typeof vmtData.counties;
 
-    if (selectedGeographyCounties[stateId] && locationVMT) {
+    if (
+      locationVMT &&
+      selectedGeographyCounties[stateId] &&
+      (regionSelected || (stateSelected && selectedStateId === stateId))
+    ) {
       result[stateId] ??= {};
 
       Object.entries(stateCountiesVMT).forEach(([county, countyVMT]) => {
@@ -1748,8 +1760,8 @@ export function calculateVehicleEmissionChangesByCounty(options: {
           };
 
           if (
-            locationIsRegion ||
-            (locationIsState && stateId === locationStateId)
+            deploymentLocationIsRegion ||
+            (deploymentLocationIsState && deploymentLocationStateId === stateId)
           ) {
             pollutants.forEach((pollutant) => {
               // conditionally convert CO2 tons into pounds

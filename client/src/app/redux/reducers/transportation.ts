@@ -884,16 +884,23 @@ export function setEmissionChanges(): AppThunk {
       totalMonthlyEmissionChanges,
     );
 
+    const geographicFocus = geography.focus;
+
     const selectedRegionId =
       Object.values(geography.regions).find((r) => r.selected)?.id || '';
 
+    const selectedStateId =
+      Object.values(geography.states).find((s) => s.selected)?.id || '';
+
     const vehicleEmissionChangesByCounty =
       calculateVehicleEmissionChangesByCounty({
+        geographicFocus,
+        selectedRegionId,
+        selectedStateId,
         vmtPerVehicleTypeByGeography,
         totalYearlyEmissionChanges,
         selectedGeographyCounties,
         evDeploymentLocation,
-        selectedRegionId,
       });
 
     dispatch({
