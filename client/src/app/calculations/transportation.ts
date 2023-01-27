@@ -3,6 +3,7 @@ import type { GeographicFocus } from 'app/redux/reducers/geography';
 import type {
   RegionalScalingFactors,
   SelectedGeographyRegions,
+  SelectedGeographyCounties,
 } from 'app/calculations/geography';
 import { sortObjectByKeys } from 'app/calculations/utilities';
 import type { RegionId, RegionName, StateId } from 'app/config';
@@ -1684,13 +1685,13 @@ export function calculateTotalYearlyEmissionChanges(
 export function calculateVehicleEmissionChangesByCounty(options: {
   vmtPerVehicleTypeByGeography: VMTPerVehicleTypeByGeography | {};
   totalYearlyEmissionChanges: TotalYearlyEmissionChanges;
-  selectedGeographyStates: StateId[];
+  selectedGeographyCounties: SelectedGeographyCounties;
   evDeploymentLocation: string;
 }) {
   const {
     vmtPerVehicleTypeByGeography,
     totalYearlyEmissionChanges,
-    selectedGeographyStates,
+    selectedGeographyCounties,
     evDeploymentLocation,
   } = options;
 
@@ -1717,41 +1718,44 @@ export function calculateVehicleEmissionChangesByCounty(options: {
   Object.entries(vmtData.counties).forEach(([key, stateCountiesVMT]) => {
     const stateId = key as keyof typeof vmtData.counties;
 
-    if (selectedGeographyStates.includes(stateId)) {
+    if (selectedGeographyCounties[stateId]) {
       result[stateId] ??= {};
 
       Object.entries(stateCountiesVMT).forEach(([county, countyVMT]) => {
-        result[stateId][county] ??= { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }; // prettier-ignore
+        if (selectedGeographyCounties[stateId]?.includes(county)) {
+          result[stateId][county] ??= { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }; // prettier-ignore
 
-        pollutants.forEach((pollutant) => {
-          // conditionally convert CO2 tons into pounds
-          const pollutantUnitFactor = pollutant === 'CO2' ? 2_000 : 1;
+          pollutants.forEach((pollutant) => {
+            // conditionally convert CO2 tons into pounds
+            const pollutantUnitFactor = pollutant === 'CO2' ? 2_000 : 1;
 
-          const cars =
-            (totalYearlyEmissionChanges.cars[pollutant] * countyVMT.cars) /
-            regionVMT.cars /
-            pollutantUnitFactor;
+            const cars =
+              (totalYearlyEmissionChanges.cars[pollutant] * countyVMT.cars) /
+              regionVMT.cars /
+              pollutantUnitFactor;
 
-          const trucks =
-            (totalYearlyEmissionChanges.trucks[pollutant] * countyVMT.trucks) /
-            regionVMT.trucks /
-            pollutantUnitFactor;
+            const trucks =
+              (totalYearlyEmissionChanges.trucks[pollutant] *
+                countyVMT.trucks) /
+              regionVMT.trucks /
+              pollutantUnitFactor;
 
-          const transitBuses =
-            (totalYearlyEmissionChanges.transitBuses[pollutant] *
-              countyVMT.transitBuses) /
-            regionVMT.transitBuses /
-            pollutantUnitFactor;
+            const transitBuses =
+              (totalYearlyEmissionChanges.transitBuses[pollutant] *
+                countyVMT.transitBuses) /
+              regionVMT.transitBuses /
+              pollutantUnitFactor;
 
-          const schoolBuses =
-            (totalYearlyEmissionChanges.schoolBuses[pollutant] *
-              countyVMT.schoolBuses) /
-            regionVMT.schoolBuses /
-            pollutantUnitFactor;
+            const schoolBuses =
+              (totalYearlyEmissionChanges.schoolBuses[pollutant] *
+                countyVMT.schoolBuses) /
+              regionVMT.schoolBuses /
+              pollutantUnitFactor;
 
-          result[stateId][county][pollutant] =
-            -cars - trucks - transitBuses - schoolBuses;
-        });
+            result[stateId][county][pollutant] =
+              -cars - trucks - transitBuses - schoolBuses;
+          });
+        }
       });
     }
   });
