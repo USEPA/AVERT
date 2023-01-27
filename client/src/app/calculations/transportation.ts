@@ -1683,7 +1683,7 @@ export function calculateTotalYearlyEmissionChanges(
 
 /**
  * Calculates vehicle emission changes at the county level for the selected
- * geography's states.
+ * geography.
  *
  * Excel: "From vehicles" column in the table in the "11_VehicleCty" sheet
  * (column H).
@@ -1693,12 +1693,14 @@ export function calculateVehicleEmissionChangesByCounty(options: {
   totalYearlyEmissionChanges: TotalYearlyEmissionChanges;
   selectedGeographyCounties: SelectedGeographyCounties;
   evDeploymentLocation: string;
+  selectedRegionId: RegionId | '';
 }) {
   const {
     vmtPerVehicleTypeByGeography,
     totalYearlyEmissionChanges,
     selectedGeographyCounties,
     evDeploymentLocation,
+    selectedRegionId,
   } = options;
 
   const result = {} as {
@@ -1714,53 +1716,72 @@ export function calculateVehicleEmissionChangesByCounty(options: {
       ? (vmtPerVehicleTypeByGeography as VMTPerVehicleTypeByGeography)
       : null;
 
-  if (evDeploymentLocation === '' || !vmtData) return result;
+  if (!vmtData || evDeploymentLocation === '' || selectedRegionId === '') {
+    return result;
+  }
 
-  const regionId = evDeploymentLocation.replace('region-', '') as RegionId;
-  const regionVMT = vmtData.regions[regionId]?.total;
+  const locationIsRegion = evDeploymentLocation.startsWith('region-');
+  const locationIsState = evDeploymentLocation.startsWith('state-');
 
-  if (!regionVMT) return result;
+  const locationStateId = evDeploymentLocation.replace('state-', '') as StateId;
+
+  const locationVMT = locationIsRegion
+    ? vmtData.regions[selectedRegionId].total
+    : vmtData.regions[selectedRegionId].states?.[locationStateId];
 
   Object.entries(vmtData.counties).forEach(([key, stateCountiesVMT]) => {
     const stateId = key as keyof typeof vmtData.counties;
 
-    if (selectedGeographyCounties[stateId]) {
+    if (selectedGeographyCounties[stateId] && locationVMT) {
       result[stateId] ??= {};
 
       Object.entries(stateCountiesVMT).forEach(([county, countyVMT]) => {
         if (selectedGeographyCounties[stateId]?.includes(county)) {
-          result[stateId][county] ??= { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }; // prettier-ignore
+          // initialize each county's values for each pollutant
+          result[stateId][county] ??= {
+            CO2: 0,
+            NOX: 0,
+            SO2: 0,
+            PM25: 0,
+            VOCs: 0,
+            NH3: 0,
+          };
 
-          pollutants.forEach((pollutant) => {
-            // conditionally convert CO2 tons into pounds
-            const pollutantUnitFactor = pollutant === 'CO2' ? 2_000 : 1;
+          if (
+            locationIsRegion ||
+            (locationIsState && stateId === locationStateId)
+          ) {
+            pollutants.forEach((pollutant) => {
+              // conditionally convert CO2 tons into pounds
+              const unitFactor = pollutant === 'CO2' ? 2_000 : 1;
 
-            const cars =
-              (totalYearlyEmissionChanges.cars[pollutant] * countyVMT.cars) /
-              regionVMT.cars /
-              pollutantUnitFactor;
+              const cars =
+                (totalYearlyEmissionChanges.cars[pollutant] * countyVMT.cars) /
+                locationVMT.cars /
+                unitFactor;
 
-            const trucks =
-              (totalYearlyEmissionChanges.trucks[pollutant] *
-                countyVMT.trucks) /
-              regionVMT.trucks /
-              pollutantUnitFactor;
+              const trucks =
+                (totalYearlyEmissionChanges.trucks[pollutant] *
+                  countyVMT.trucks) /
+                locationVMT.trucks /
+                unitFactor;
 
-            const transitBuses =
-              (totalYearlyEmissionChanges.transitBuses[pollutant] *
-                countyVMT.transitBuses) /
-              regionVMT.transitBuses /
-              pollutantUnitFactor;
+              const transitBuses =
+                (totalYearlyEmissionChanges.transitBuses[pollutant] *
+                  countyVMT.transitBuses) /
+                locationVMT.transitBuses /
+                unitFactor;
 
-            const schoolBuses =
-              (totalYearlyEmissionChanges.schoolBuses[pollutant] *
-                countyVMT.schoolBuses) /
-              regionVMT.schoolBuses /
-              pollutantUnitFactor;
+              const schoolBuses =
+                (totalYearlyEmissionChanges.schoolBuses[pollutant] *
+                  countyVMT.schoolBuses) /
+                locationVMT.schoolBuses /
+                unitFactor;
 
-            result[stateId][county][pollutant] =
-              -cars - trucks - transitBuses - schoolBuses;
-          });
+              result[stateId][county][pollutant] =
+                -cars - trucks - transitBuses - schoolBuses;
+            });
+          }
         }
       });
     }
