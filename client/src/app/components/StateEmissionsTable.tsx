@@ -108,10 +108,20 @@ export function StateEmissionsTable() {
           <tbody>
             {annualStateEmissionsChanges
               .sort((stateA, stateB) => stateA.name.localeCompare(stateB.name))
-              .map((stateData) => {
+              .map((stateData, index, array) => {
+                /** apply zebra striping to groups of state data rows */
+                const stripedRowClassName =
+                  index % 2 ? '' : 'avert-table-striped-row';
+
+                /** add visual space below the last state row, unless its the last state */
+                const stateSpacingClassName =
+                  index !== array.length - 1
+                    ? 'border-width-1 border-top-width-0 border-x-width-0 border-solid'
+                    : '';
+
                 return (
                   <Fragment key={stateData.id}>
-                    <tr>
+                    <tr className={stripedRowClassName}>
                       <td rowSpan={3}>{stateData.name}</td>
                       <td className="width-1px text-no-wrap text-right">
                         <small>From</small> Fossil Generation
@@ -136,7 +146,7 @@ export function StateEmissionsTable() {
                       </td>
                     </tr>
 
-                    <tr>
+                    <tr className={stripedRowClassName}>
                       <td className="width-1px text-no-wrap text-right">
                         <small>From</small> Vehicles
                       </td>
@@ -148,7 +158,9 @@ export function StateEmissionsTable() {
                       <td className="font-mono-xs text-right">{'---'}</td>
                     </tr>
 
-                    <tr className="border-width-1 border-top-width-0 border-x-width-0 border-solid">
+                    <tr
+                      className={`${stripedRowClassName} ${stateSpacingClassName}`}
+                    >
                       <td className="width-1px text-no-wrap text-right">
                         Net Change
                       </td>

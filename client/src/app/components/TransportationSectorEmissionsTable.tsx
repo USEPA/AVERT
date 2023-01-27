@@ -74,7 +74,7 @@ export function TransportationSectorEmissionsTable() {
     <>
       <div className="overflow-auto">
         <div className="avert-table-container">
-          <table className="avert-table width-full">
+          <table className="avert-table avert-table-striped width-full">
             <thead>
               <tr>
                 <th>&nbsp;</th>
