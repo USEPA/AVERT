@@ -227,6 +227,8 @@ export type EVDeploymentLocationHistoricalEERE = ReturnType<
  * vehicles" column in the table in the "11_VehicleCty" sheet (column H).
  */
 export function calculateVMTPerVehicleTypeByGeography() {
+  type VMTPerVehicleType = { [vehicleType in AbridgedVehicleType]: number };
+
   const regionIds = Object.values(regions).reduce((object, { id, name }) => {
     object[name] = id;
     return object;
@@ -245,13 +247,18 @@ export function calculateVMTPerVehicleTypeByGeography() {
       };
 
       if (regionId) {
-        object.regions[regionId] ??= { cars: 0, trucks: 0, transitBuses: 0, schoolBuses: 0 }; // prettier-ignore
+        object.regions[regionId] ??= {
+          total: { cars: 0, trucks: 0, transitBuses: 0, schoolBuses: 0 },
+          states: {} as { [stateId in StateId]: VMTPerVehicleType },
+        };
+        object.regions[regionId].states[stateId] ??= { cars: 0, trucks: 0, transitBuses: 0, schoolBuses: 0 } // prettier-ignore
         object.states[stateId] ??= { cars: 0, trucks: 0, transitBuses: 0, schoolBuses: 0 }; // prettier-ignore
         object.counties[stateId] ??= {};
         object.counties[stateId][county] ??= { cars: 0, trucks: 0, transitBuses: 0, schoolBuses: 0 }; // prettier-ignore
 
         abridgedVehicleTypes.forEach((vehicleType) => {
-          object.regions[regionId][vehicleType] += vmtData[vehicleType];
+          object.regions[regionId].total[vehicleType] += vmtData[vehicleType];
+          object.regions[regionId].states[stateId][vehicleType] += vmtData[vehicleType]; // prettier-ignore
           object.states[stateId][vehicleType] += vmtData[vehicleType];
           object.counties[stateId][county][vehicleType] += vmtData[vehicleType];
         });
@@ -266,19 +273,18 @@ export function calculateVMTPerVehicleTypeByGeography() {
     } as {
       regions: {
         [regionId in RegionId]: {
-          [vehicleType in AbridgedVehicleType]: number;
+          total: VMTPerVehicleType;
+          states: {
+            [stateId in StateId]: VMTPerVehicleType;
+          };
         };
       };
       states: {
-        [stateId in StateId]: {
-          [vehicleType in AbridgedVehicleType]: number;
-        };
+        [stateId in StateId]: VMTPerVehicleType;
       };
       counties: {
         [stateId in StateId]: {
-          [county: string]: {
-            [vehicleType in AbridgedVehicleType]: number;
-          };
+          [county: string]: VMTPerVehicleType;
         };
       };
     },
@@ -1711,7 +1717,7 @@ export function calculateVehicleEmissionChangesByCounty(options: {
   if (evDeploymentLocation === '' || !vmtData) return result;
 
   const regionId = evDeploymentLocation.replace('region-', '') as RegionId;
-  const regionVMT = vmtData.regions[regionId];
+  const regionVMT = vmtData.regions[regionId]?.total;
 
   if (!regionVMT) return result;
 
