@@ -21,6 +21,9 @@ function EquivalentHomesText(props: { hourlyEere: number[] }) {
    */
   const equivalentHomes = Math.round((totalLoadMwh / 12_146) * -1_000);
 
+  // TODO: determine which message to display for an increased load from EVs
+  if (totalLoadGwh < 0) return null;
+
   return (
     <p className="margin-top-2 text-base-dark">
       This EE/RE profile will displace{' '}
