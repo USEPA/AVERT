@@ -98,6 +98,73 @@ function ValidationMessage(props: {
   );
 }
 
+export function EVWarningMessage() {
+  const constantMwh = useTypedSelector(({ eere }) => eere.inputs.constantMwh);
+  const annualGwh = useTypedSelector(({ eere }) => eere.inputs.annualGwh);
+  const broadProgram = useTypedSelector(({ eere }) => eere.inputs.broadProgram);
+  const reduction = useTypedSelector(({ eere }) => eere.inputs.reduction);
+  const topHours = useTypedSelector(({ eere }) => eere.inputs.topHours);
+  const onshoreWind = useTypedSelector(({ eere }) => eere.inputs.onshoreWind);
+  const offshoreWind = useTypedSelector(({ eere }) => eere.inputs.offshoreWind);
+  const utilitySolar = useTypedSelector(({ eere }) => eere.inputs.utilitySolar);
+  const rooftopSolar = useTypedSelector(({ eere }) => eere.inputs.rooftopSolar);
+  const batteryEVs = useTypedSelector(({ eere }) => eere.inputs.batteryEVs);
+  const hybridEVs = useTypedSelector(({ eere }) => eere.inputs.hybridEVs);
+  const transitBuses = useTypedSelector(({ eere }) => eere.inputs.transitBuses);
+  const schoolBuses = useTypedSelector(({ eere }) => eere.inputs.schoolBuses);
+
+  const eeInputsEmpty =
+    constantMwh === '' &&
+    annualGwh === '' &&
+    broadProgram === '' &&
+    reduction === '' &&
+    topHours === '';
+
+  const reInputsEmpty =
+    onshoreWind === '' &&
+    offshoreWind === '' &&
+    utilitySolar === '' &&
+    rooftopSolar === '';
+
+  const evInputsEmpty =
+    batteryEVs === '' &&
+    hybridEVs === '' &&
+    transitBuses === '' &&
+    schoolBuses === '';
+
+  if (eeInputsEmpty && reInputsEmpty && !evInputsEmpty) {
+    return (
+      <div className="usa-alert usa-alert--warning">
+        <div className="usa-alert__body">
+          <h4 className="usa-alert__heading">WARNING</h4>
+          <p>
+            <strong>
+              You have entered a quantity of EVs, but have not entered any
+              energy efficiency or renewable energy.
+            </strong>
+          </p>
+
+          <p>
+            Recent trends show significant amounts of energy efficiency and
+            renewables coming online. Consider adding these resources alongside
+            EVs in order to examine the portfolio effects of adding multiple
+            resources at the same time. The “EE/RE and EV Comparison” table
+            above summarizes recent historical ERE additions and compares these
+            with the EERE required to offset your entered EV demand.
+          </p>
+
+          <p>
+            For more ideas on how to model EVs in AVERT, see Appendix J in the
+            AVERT user manual.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
+}
+
 function EEREChartContent() {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const softValid = useTypedSelector(
@@ -235,6 +302,8 @@ function EEREChartContent() {
           />
 
           <EquivalentHomesText hourlyEere={hourlyEere} />
+
+          <EVWarningMessage />
 
           {!hardValid && (
             <ValidationMessage
