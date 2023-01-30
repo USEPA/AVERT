@@ -1004,6 +1004,13 @@ function MonthlyEmissionsChartsContent() {
                   </div>
                 </div>
               </div>
+
+              {currentAggregation !== 'region' && (
+                <p className="margin-top-105 margin-bottom-0 font-sans-3xs line-height-sans-3">
+                  <strong>NOTE:</strong> Monthly emissions data for vehicles is
+                  only available at the regional level.
+                </p>
+              )}
             </div>
           </div>
 
@@ -1063,6 +1070,13 @@ function MonthlyEmissionsChartsContent() {
                   </div>
                 </div>
               </div>
+
+              {currentUnit === 'percentages' && (
+                <p className="margin-top-105 margin-bottom-0 font-sans-3xs line-height-sans-3">
+                  <strong>NOTE:</strong> Percent change data only exists for the
+                  power sector.
+                </p>
+              )}
             </div>
           </div>
         </div>
