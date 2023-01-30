@@ -5,7 +5,7 @@ type StatesAndCounties = Partial<{ [key in StateId]: string[] }>;
 
 export type Aggregation = 'region' | 'state' | 'county';
 
-type Source = 'power' | 'power-vehicles';
+export type Source = 'power' | 'vehicles';
 
 export type Unit = 'emissions' | 'percentages';
 
@@ -51,7 +51,7 @@ type State = {
   stateId: string;
   countyName: string;
   pollutants: Pollutant[];
-  source: Source;
+  sources: Source[];
   unit: Unit;
 };
 
@@ -62,7 +62,7 @@ const initialState: State = {
   stateId: '',
   countyName: '',
   pollutants: [],
-  source: 'power',
+  sources: ['power'],
   unit: 'emissions',
 };
 
@@ -137,9 +137,13 @@ export default function reducer(
     case 'monthlyEmissions/SET_MONTHLY_EMISSIONS_SOURCE': {
       const { source } = action.payload;
 
+      const sources = state.sources.includes(source)
+        ? [...state.sources].filter((s) => s !== source)
+        : [...state.sources].concat(source);
+
       return {
         ...state,
-        source,
+        sources,
       };
     }
 
