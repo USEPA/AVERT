@@ -1,10 +1,11 @@
 import { useDispatch } from 'react-redux';
 // ---
+import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { selectRegion } from 'app/redux/reducers/geography';
 import { useSelectedRegion } from 'app/hooks';
 import { RegionId, regions } from 'app/config';
 
-export function RegionsList() {
+function RegionsListContent() {
   const dispatch = useDispatch();
 
   const selectedRegionId = useSelectedRegion()?.id;
@@ -35,5 +36,22 @@ export function RegionsList() {
       <option value={regions.TN.id}>{regions.TN.name}</option>
       <option value={regions.TE.id}>{regions.TE.name}</option>
     </select>
+  );
+}
+
+export function RegionsList() {
+  return (
+    <ErrorBoundary
+      message={
+        <>
+          AVERT Regions select error. Please contact AVERT support at{' '}
+          <a className="usa-link" href="mailto:avert@epa.gov">
+            avert@epa.gov
+          </a>
+        </>
+      }
+    >
+      <RegionsListContent />
+    </ErrorBoundary>
   );
 }

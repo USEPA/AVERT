@@ -1,3 +1,4 @@
+import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { useTypedSelector } from 'app/redux/index';
 import type {
   EmissionsData,
@@ -40,7 +41,7 @@ function setAnnualEmissionsChanges(emissionsMonthlyData: EmissionsMonthlyData) {
   return result;
 }
 
-export function TransportationSectorEmissionsTable() {
+function TransportationSectorEmissionsTableContent() {
   const totalYearlyVehicleEmissionsChanges = useTypedSelector(
     ({ transportation }) => transportation.totalYearlyEmissionChanges,
   );
@@ -217,5 +218,23 @@ export function TransportationSectorEmissionsTable() {
          */}
       </p>
     </>
+  );
+}
+
+export function TransportationSectorEmissionsTable() {
+  return (
+    <ErrorBoundary
+      message={
+        <>
+          Error loading transportation sector emissions table. Please contact
+          AVERT support at{' '}
+          <a className="usa-link" href="mailto:avert@epa.gov">
+            avert@epa.gov
+          </a>
+        </>
+      }
+    >
+      <TransportationSectorEmissionsTableContent />
+    </ErrorBoundary>
   );
 }

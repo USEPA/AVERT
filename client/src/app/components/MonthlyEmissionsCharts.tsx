@@ -3,6 +3,7 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useDispatch } from 'react-redux';
 // ---
+import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { useTypedSelector } from 'app/redux/index';
 import type {
   EmissionsData,
@@ -504,7 +505,7 @@ function setFilteredMonthlyData(options: {
   return result;
 }
 
-export function MonthlyEmissionsCharts() {
+function MonthlyEmissionsChartsContent() {
   const dispatch = useDispatch();
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const emissionsMonthlyData = useTypedSelector(
@@ -1063,5 +1064,23 @@ export function MonthlyEmissionsCharts() {
         )}
       </div>
     </>
+  );
+}
+
+export function MonthlyEmissionsCharts() {
+  return (
+    <ErrorBoundary
+      message={
+        <>
+          Error loading monthly emissions changes charts. Please contact AVERT
+          support at{' '}
+          <a className="usa-link" href="mailto:avert@epa.gov">
+            avert@epa.gov
+          </a>
+        </>
+      }
+    >
+      <MonthlyEmissionsChartsContent />
+    </ErrorBoundary>
   );
 }

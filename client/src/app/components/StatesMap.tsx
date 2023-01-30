@@ -3,6 +3,7 @@
 import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // ---
+import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { Alabama } from 'app/components/States/Alabama';
 import { Arkansas } from 'app/components/States/Arkansas';
 import { Arizona } from 'app/components/States/Arizona';
@@ -163,7 +164,7 @@ function State(props: {
   );
 }
 
-export function StatesMap() {
+function StatesMapContent() {
   return (
     <div
       css={containerStyles}
@@ -377,5 +378,22 @@ export function StatesMap() {
         </g>
       </svg>
     </div>
+  );
+}
+
+export function StatesMap() {
+  return (
+    <ErrorBoundary
+      message={
+        <>
+          States map error. Please contact AVERT support at{' '}
+          <a className="usa-link" href="mailto:avert@epa.gov">
+            avert@epa.gov
+          </a>
+        </>
+      }
+    >
+      <StatesMapContent />
+    </ErrorBoundary>
   );
 }

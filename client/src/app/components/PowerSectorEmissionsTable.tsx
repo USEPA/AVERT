@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 // ---
+import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import type {
@@ -143,7 +144,7 @@ function EmissionsReplacementTooltip(props: {
   );
 }
 
-export function PowerSectorEmissionsTable() {
+function PowerSectorEmissionsTableContent() {
   const emissionsMonthlyData = useTypedSelector(
     ({ results }) => results.emissionsMonthlyData,
   );
@@ -488,5 +489,23 @@ export function PowerSectorEmissionsTable() {
          */}
       </p>
     </>
+  );
+}
+
+export function PowerSectorEmissionsTable() {
+  return (
+    <ErrorBoundary
+      message={
+        <>
+          Error loading power sector emissions table. Please contact AVERT
+          support at{' '}
+          <a className="usa-link" href="mailto:avert@epa.gov">
+            avert@epa.gov
+          </a>
+        </>
+      }
+    >
+      <PowerSectorEmissionsTableContent />
+    </ErrorBoundary>
   );
 }

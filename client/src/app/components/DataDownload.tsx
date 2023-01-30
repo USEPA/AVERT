@@ -1,3 +1,4 @@
+import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { useTypedSelector } from 'app/redux/index';
 import { useSelectedRegion, useSelectedState } from 'app/hooks';
 
@@ -11,7 +12,7 @@ function convertToCSVString(data: { [key: string]: any }[]) {
   return [keys.map((key) => `"${key}"`).join(',')].concat(rows).join('\r\n');
 }
 
-export function DataDownload() {
+function DataDownloadContent() {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const countyData = useTypedSelector(({ downloads }) => downloads.countyData);
   const cobraData = useTypedSelector(({ downloads }) => downloads.cobraData);
@@ -75,5 +76,22 @@ export function DataDownload() {
         </div>
       )}
     </>
+  );
+}
+
+export function DataDownload() {
+  return (
+    <ErrorBoundary
+      message={
+        <>
+          AVERT data download error. Please contact AVERT support at{' '}
+          <a className="usa-link" href="mailto:avert@epa.gov">
+            avert@epa.gov
+          </a>
+        </>
+      }
+    >
+      <DataDownloadContent />
+    </ErrorBoundary>
   );
 }

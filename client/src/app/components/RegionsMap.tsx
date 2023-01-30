@@ -3,6 +3,7 @@
 import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // ---
+import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { CaliforniaRegion } from 'app/components/Regions/California';
 import { CarolinasRegion } from 'app/components/Regions/Carolinas';
 import { CentralRegion } from 'app/components/Regions/Central';
@@ -164,7 +165,7 @@ function Region(props: {
   );
 }
 
-export function RegionsMap() {
+function RegionsMapContent() {
   return (
     <div
       css={containerStyles}
@@ -349,5 +350,22 @@ export function RegionsMap() {
         </g>
       </svg>
     </div>
+  );
+}
+
+export function RegionsMap() {
+  return (
+    <ErrorBoundary
+      message={
+        <>
+          AVERT Regions map error. Please contact AVERT support at{' '}
+          <a className="usa-link" href="mailto:avert@epa.gov">
+            avert@epa.gov
+          </a>
+        </>
+      }
+    >
+      <RegionsMapContent />
+    </ErrorBoundary>
   );
 }
