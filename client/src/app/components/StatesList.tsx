@@ -1,11 +1,12 @@
 import { Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 // ---
+import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { selectState } from 'app/redux/reducers/geography';
 import { useSelectedState } from 'app/hooks';
 import { StateId, states } from 'app/config';
 
-export function StatesList() {
+function StatesListContent() {
   const dispatch = useDispatch();
 
   const selectedStateId = useSelectedState()?.id;
@@ -30,5 +31,22 @@ export function StatesList() {
         );
       })}
     </select>
+  );
+}
+
+export function StatesList() {
+  return (
+    <ErrorBoundary
+      message={
+        <>
+          States select error. Please contact AVERT support at{' '}
+          <a className="usa-link" href="mailto:avert@epa.gov">
+            avert@epa.gov
+          </a>
+        </>
+      }
+    >
+      <StatesListContent />
+    </ErrorBoundary>
   );
 }

@@ -1,4 +1,6 @@
 import { Fragment } from 'react';
+// ---
+import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { useTypedSelector } from 'app/redux/index';
 import type {
   EmissionsData,
@@ -109,7 +111,7 @@ function setAnnualStateEmissionsChanges(options: {
   return result.sort((a, b) => a.name.localeCompare(b.name));
 }
 
-export function StateEmissionsTable() {
+function StateEmissionsTableContent() {
   const emissionsMonthlyData = useTypedSelector(
     ({ results }) => results.emissionsMonthlyData,
   );
@@ -247,5 +249,22 @@ export function StateEmissionsTable() {
         </table>
       </div>
     </div>
+  );
+}
+
+export function StateEmissionsTable() {
+  return (
+    <ErrorBoundary
+      message={
+        <>
+          Error loading state emissions table. Please contact AVERT support at{' '}
+          <a className="usa-link" href="mailto:avert@epa.gov">
+            avert@epa.gov
+          </a>
+        </>
+      }
+    >
+      <StateEmissionsTableContent />
+    </ErrorBoundary>
   );
 }

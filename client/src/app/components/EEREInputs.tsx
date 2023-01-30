@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // ---
+import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { EERETextInput } from 'app/components/EERETextInput';
 import { EERESelectInput } from 'app/components/EERESelectInput';
 import {
@@ -66,7 +67,7 @@ const inputsSummaryStyles = css`
   }
 `;
 
-export function EEREInputs() {
+function EEREInputsContent() {
   const dispatch = useDispatch();
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const status = useTypedSelector(({ eere }) => eere.status);
@@ -723,5 +724,22 @@ export function EEREInputs() {
         </a>
       </p>
     </>
+  );
+}
+
+export function EEREInputs() {
+  return (
+    <ErrorBoundary
+      message={
+        <>
+          EE/RE Impacts inputs error. Please contact AVERT support at{' '}
+          <a className="usa-link" href="mailto:avert@epa.gov">
+            avert@epa.gov
+          </a>
+        </>
+      }
+    >
+      <EEREInputsContent />
+    </ErrorBoundary>
   );
 }

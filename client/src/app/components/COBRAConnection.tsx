@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 // ---
+import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { useTypedSelector } from 'app/redux/index';
 
 type CobraApiState = 'idle' | 'pending' | 'success' | 'failure';
@@ -28,7 +29,7 @@ type CobraApiData = {
   tiertree_items_selected: ['1' | '11'];
 };
 
-export function COBRAConnection() {
+function COBRAConnectionContent() {
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
   const cobraApiUrl = useTypedSelector(({ api }) => api.cobraApiUrl);
   const cobraAppUrl = useTypedSelector(({ api }) => api.cobraAppUrl);
@@ -172,5 +173,22 @@ export function COBRAConnection() {
         </a>
       </p>
     </>
+  );
+}
+
+export function COBRAConnection() {
+  return (
+    <ErrorBoundary
+      message={
+        <>
+          COBRA connection error. Please contact AVERT support at{' '}
+          <a className="usa-link" href="mailto:avert@epa.gov">
+            avert@epa.gov
+          </a>
+        </>
+      }
+    >
+      <COBRAConnectionContent />
+    </ErrorBoundary>
   );
 }

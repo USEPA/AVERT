@@ -1,6 +1,7 @@
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 // ---
+import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
@@ -8,7 +9,7 @@ import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 
-export function EEREChart() {
+function EEREChartContent() {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const softValid = useTypedSelector(
     ({ eere }) => eere.combinedProfile.softValid,
@@ -262,5 +263,22 @@ export function EEREChart() {
       {validationError}
       {validationWarning}
     </div>
+  );
+}
+
+export function EEREChart() {
+  return (
+    <ErrorBoundary
+      message={
+        <>
+          EE/RE Impacts chart error. Please contact AVERT support at{' '}
+          <a className="usa-link" href="mailto:avert@epa.gov">
+            avert@epa.gov
+          </a>
+        </>
+      }
+    >
+      <EEREChartContent />
+    </ErrorBoundary>
   );
 }
