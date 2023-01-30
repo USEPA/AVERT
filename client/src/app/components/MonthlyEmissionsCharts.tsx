@@ -452,33 +452,6 @@ function Chart(props: {
     .set('vocs', vocsConfig)
     .set('nh3', nh3Config);
 
-  if (Object.keys(powerData).length === 0) {
-    return (
-      <div className="avert-box padding-105 height-full">
-        <p className="font-sans-2xs line-height-sans-3 text-center text-base-darker">
-          <span className="font-sans-xs text-bold">
-            Change in {pollutantMarkup.get(pollutant)} Emissions:
-          </span>{' '}
-          {chartLocationTitle}
-        </p>
-
-        <p className="margin-0 font-sans-3xs text-center text-base-dark">
-          {currentAggregation === 'region' && !currentRegionId && (
-            <>Please select a region.</>
-          )}
-
-          {currentAggregation === 'state' && !currentStateId && (
-            <>Please select a state.</>
-          )}
-
-          {currentAggregation === 'county' && !currentCountyName && (
-            <>Please select a county.</>
-          )}
-        </p>
-      </div>
-    );
-  }
-
   if (currentUnit === 'percentages') {
     if (flaggedRegion || flaggedState || flaggedCounty) {
       return (
@@ -1099,7 +1072,40 @@ function MonthlyEmissionsChartsContent() {
         {emissionsMonthlyData && (
           <div className="grid-container padding-0 maxw-full">
             <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
-              {currentPollutants.length === 0 ? (
+              {geographicFocus === 'states' &&
+              currentAggregation === 'region' &&
+              selectedStateRegions.length > 1 &&
+              !currentRegionId ? (
+                <div className="padding-1 grid-col-12">
+                  <div className="avert-box padding-3">
+                    <p className="margin-0 font-sans-xs text-center">
+                      <strong>No region selected.</strong>
+                      <br />
+                      Please select a region.
+                    </p>
+                  </div>
+                </div>
+              ) : currentAggregation === 'state' && !currentStateId ? (
+                <div className="padding-1 grid-col-12">
+                  <div className="avert-box padding-3">
+                    <p className="margin-0 font-sans-xs text-center">
+                      <strong>No state selected.</strong>
+                      <br />
+                      Please select a state.
+                    </p>
+                  </div>
+                </div>
+              ) : currentAggregation === 'county' && !currentCountyName ? (
+                <div className="padding-1 grid-col-12">
+                  <div className="avert-box padding-3">
+                    <p className="margin-0 font-sans-xs text-center">
+                      <strong>No county selected.</strong>
+                      <br />
+                      Please select a county.
+                    </p>
+                  </div>
+                </div>
+              ) : currentPollutants.length === 0 ? (
                 <div className="padding-1 grid-col-12">
                   <div className="avert-box padding-3">
                     <p className="margin-0 font-sans-xs text-center">
