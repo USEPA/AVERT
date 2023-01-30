@@ -63,6 +63,35 @@ function calculateMonthlyData(monthlyData: MonthlyData, unit: Unit) {
     : monthlyPercentageChanges;
 }
 
+/**
+ * Sets chart series data based on the currently selected source(s) and unit.
+ */
+function setChartSeriesData(options: {
+  seriesData: { power: ChartData; vehicles: ChartData };
+  currentSources: Source[];
+  currentUnit: Unit;
+}) {
+  const { seriesData, currentSources, currentUnit } = options;
+
+  const result = Object.entries(seriesData).reduce((array, [key, data]) => {
+    const source = key as Source;
+
+    if (currentSources.includes(source)) {
+      /** NOTE: we don't have percent change data for vehicles */
+      if (
+        currentUnit === 'emissions' ||
+        (currentUnit === 'percentages' && source !== 'vehicles')
+      ) {
+        array.push(data);
+      }
+    }
+
+    return array;
+  }, [] as ChartData[]);
+
+  return result;
+}
+
 function Chart(props: {
   pollutant: Pollutant;
   powerData: { [key in Pollutant]: MonthlyData };
@@ -344,60 +373,66 @@ function Chart(props: {
     ...commonConfig,
     title: { text: formatTitle('SO<sub>2</sub>'), useHTML: true },
     yAxis: { title: { text: formatYAxis('lb') } },
-    series: Object.entries(so2Data).reduce((array, [source, data]) => {
-      if (currentSources.includes(source as Source)) array.push(data);
-      return array;
-    }, [] as ChartData[]),
+    series: setChartSeriesData({
+      seriesData: so2Data,
+      currentSources,
+      currentUnit,
+    }),
   };
 
   const noxConfig = {
     ...commonConfig,
     title: { text: formatTitle('NO<sub>X</sub>'), useHTML: true },
     yAxis: { title: { text: formatYAxis('lb') } },
-    series: Object.entries(noxData).reduce((array, [source, data]) => {
-      if (currentSources.includes(source as Source)) array.push(data);
-      return array;
-    }, [] as ChartData[]),
+    series: setChartSeriesData({
+      seriesData: noxData,
+      currentSources,
+      currentUnit,
+    }),
   };
 
   const co2Config = {
     ...commonConfig,
     title: { text: formatTitle('CO<sub>2</sub>'), useHTML: true },
     yAxis: { title: { text: formatYAxis('tons') } },
-    series: Object.entries(co2Data).reduce((array, [source, data]) => {
-      if (currentSources.includes(source as Source)) array.push(data);
-      return array;
-    }, [] as ChartData[]),
+    series: setChartSeriesData({
+      seriesData: co2Data,
+      currentSources,
+      currentUnit,
+    }),
   };
 
   const pm25Config = {
     ...commonConfig,
     title: { text: formatTitle('PM<sub>2.5</sub>'), useHTML: true },
     yAxis: { title: { text: formatYAxis('lb') } },
-    series: Object.entries(pm25Data).reduce((array, [source, data]) => {
-      if (currentSources.includes(source as Source)) array.push(data);
-      return array;
-    }, [] as ChartData[]),
+    series: setChartSeriesData({
+      seriesData: pm25Data,
+      currentSources,
+      currentUnit,
+    }),
   };
 
   const vocsConfig = {
     ...commonConfig,
     title: { text: formatTitle('VOC'), useHTML: true },
     yAxis: { title: { text: formatYAxis('lb') } },
-    series: Object.entries(vocsData).reduce((array, [source, data]) => {
-      if (currentSources.includes(source as Source)) array.push(data);
-      return array;
-    }, [] as ChartData[]),
+    series: setChartSeriesData({
+      seriesData: vocsData,
+      currentSources,
+      currentUnit,
+    }),
   };
 
   const nh3Config = {
     ...commonConfig,
     title: { text: formatTitle('NH<sub>3</sub>'), useHTML: true },
     yAxis: { title: { text: formatYAxis('lb') } },
-    series: Object.entries(nh3Data).reduce((array, [source, data]) => {
-      if (currentSources.includes(source as Source)) array.push(data);
-      return array;
-    }, [] as ChartData[]),
+    series: setChartSeriesData({
+      seriesData: nh3Data,
+      currentSources,
+      currentUnit,
+    }),
   };
 
   // prettier-ignore
@@ -632,9 +667,18 @@ function MonthlyEmissionsChartsContent() {
                       checked={currentAggregation === 'state'}
                       onChange={(_ev) => {
                         dispatch(setMonthlyEmissionsAggregation('state'));
-                        dispatch(setMonthlyEmissionsSource('power'));
-                        if (!currentStateId) return;
-                        dispatch(setMonthlyEmissionsStateId(currentStateId));
+
+                        /**
+                         * conditionally uncheck vehicles, as there's no monthly
+                         * transportation level data at the state level
+                         */
+                        if (currentSources.includes('vehicles')) {
+                          dispatch(setMonthlyEmissionsSource('vehicles'));
+                        }
+
+                        if (currentStateId) {
+                          dispatch(setMonthlyEmissionsStateId(currentStateId));
+                        }
                       }}
                       data-avert-aggregation-toggle="state"
                     />
@@ -659,11 +703,20 @@ function MonthlyEmissionsChartsContent() {
                       checked={currentAggregation === 'county'}
                       onChange={(_ev) => {
                         dispatch(setMonthlyEmissionsAggregation('county'));
-                        dispatch(setMonthlyEmissionsSource('power'));
-                        if (!currentCountyName) return;
-                        dispatch(
-                          setMonthlyEmissionsCountyName(currentCountyName),
-                        );
+
+                        /**
+                         * conditionally uncheck vehicles, as there's no monthly
+                         * transportation level data at the county level
+                         */
+                        if (currentSources.includes('vehicles')) {
+                          dispatch(setMonthlyEmissionsSource('vehicles'));
+                        }
+
+                        if (currentCountyName) {
+                          dispatch(
+                            setMonthlyEmissionsCountyName(currentCountyName),
+                          );
+                        }
                       }}
                       data-avert-aggregation-toggle="county"
                     />
@@ -965,7 +1018,6 @@ function MonthlyEmissionsChartsContent() {
                       }
                       onChange={(_ev) => {
                         dispatch(setMonthlyEmissionsSource('vehicles'));
-                        dispatch(setMonthlyEmissionsUnit('emissions'));
                       }}
                       data-avert-source-checkbox="vehicles"
                     />
@@ -1025,7 +1077,6 @@ function MonthlyEmissionsChartsContent() {
                       checked={currentUnit === 'percentages'}
                       onChange={(_ev) => {
                         dispatch(setMonthlyEmissionsUnit('percentages'));
-                        dispatch(setMonthlyEmissionsSource('power'));
                       }}
                       data-avert-unit-toggle="percentages"
                     />
@@ -1052,8 +1103,10 @@ function MonthlyEmissionsChartsContent() {
                 <div className="padding-1 grid-col-12">
                   <div className="avert-box padding-3">
                     <p className="margin-0 font-sans-xs text-center">
-                      <strong>No pollutants selected.</strong> Please select at
-                      least one pollutant to see monthly emissions data charted.
+                      <strong>No pollutants selected.</strong>
+                      <br />
+                      Please select at least one pollutant to see monthly
+                      emissions data charted.
                     </p>
                   </div>
                 </div>
@@ -1061,9 +1114,26 @@ function MonthlyEmissionsChartsContent() {
                 <div className="padding-1 grid-col-12">
                   <div className="avert-box padding-3">
                     <p className="margin-0 font-sans-xs text-center">
-                      <strong>No emissions sources selected.</strong> Please
-                      select at least one emissions source to see monthly
+                      <strong>No emissions sources selected.</strong>
+                      <br />
+                      Please select at least one emissions source to see monthly
                       emissions data charted.
+                    </p>
+                  </div>
+                </div>
+              ) : currentSources.length === 1 &&
+                currentSources.includes('vehicles') &&
+                currentUnit === 'percentages' ? (
+                <div className="padding-1 grid-col-12">
+                  <div className="avert-box padding-3">
+                    <p className="margin-0 font-sans-xs text-center">
+                      <strong>
+                        No percent change data exists for vehicles.
+                      </strong>
+                      <br />
+                      Please also select “Power sector” as an emissions source
+                      or change the selected units to “Emission changes” to see
+                      monthly emissions data charted.
                     </p>
                   </div>
                 </div>
