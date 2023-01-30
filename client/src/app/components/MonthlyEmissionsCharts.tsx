@@ -9,7 +9,11 @@ import type {
   EmissionsData,
   EmissionsMonthlyData,
 } from 'app/redux/reducers/results';
-import type { Aggregation, Unit } from 'app/redux/reducers/monthlyEmissions';
+import type {
+  Aggregation,
+  Source,
+  Unit,
+} from 'app/redux/reducers/monthlyEmissions';
 import {
   setMonthlyEmissionsAggregation,
   setMonthlyEmissionsRegionId,
@@ -27,6 +31,13 @@ require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 
 type MonthlyData = EmissionsData[keyof EmissionsData];
+
+type ChartData = {
+  name: string;
+  data: number[];
+  color: string;
+  unit: string;
+};
 
 /**
  * Creates monthly emissions data for either emissions changes or percentage
@@ -80,8 +91,8 @@ function Chart(props: {
   const currentCountyName = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.countyName,
   );
-  const currentSource = useTypedSelector(
-    ({ monthlyEmissions }) => monthlyEmissions.source,
+  const currentSources = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.sources,
   );
   const currentUnit = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.unit,
@@ -113,95 +124,95 @@ function Chart(props: {
 
   // console.log({ powerData, vehicleEmissions }); // NOTE: for debugging purposes
 
-  const so2Data = [
-    {
+  const so2Data = {
+    power: {
       name: 'Power Sector',
       data: calculateMonthlyData(powerData.so2, currentUnit),
       color: 'rgba(5, 141, 199, 1)',
       unit: 'lb',
     },
-    {
+    vehicles: {
       name: 'Vehicles',
       data: vehicleEmissions.SO2,
       color: 'rgba(5, 141, 199, 0.5)',
       unit: 'lb',
     },
-  ];
+  };
 
-  const noxData = [
-    {
+  const noxData = {
+    power: {
       name: 'Power Sector',
       data: calculateMonthlyData(powerData.nox, currentUnit),
       color: 'rgba(237, 86, 27, 1)',
       unit: 'lb',
     },
-    {
+    vehicles: {
       name: 'Vehicles',
       data: vehicleEmissions.NOX,
       color: 'rgba(237, 86, 27, 0.5)',
       unit: 'lb',
     },
-  ];
+  };
 
-  const co2Data = [
-    {
+  const co2Data = {
+    power: {
       name: 'Power Sector',
       data: calculateMonthlyData(powerData.co2, currentUnit),
       color: 'rgba(80, 180, 50, 1)',
       unit: 'tons',
     },
-    {
+    vehicles: {
       name: 'Vehicles',
       data: vehicleEmissions.CO2,
       color: 'rgba(80, 180, 50, 0.5)',
       unit: 'tons',
     },
-  ];
+  };
 
-  const pm25Data = [
-    {
+  const pm25Data = {
+    power: {
       name: 'Power Sector',
       data: calculateMonthlyData(powerData.pm25, currentUnit),
       color: 'rgba(102, 86, 131, 1)',
       unit: 'lb',
     },
-    {
+    vehicles: {
       name: 'Vehicles',
       data: vehicleEmissions.PM25,
       color: 'rgba(102, 86, 131, 0.5)',
       unit: 'lb',
     },
-  ];
+  };
 
-  const vocsData = [
-    {
+  const vocsData = {
+    power: {
       name: 'Power Sector',
       data: calculateMonthlyData(powerData.vocs, currentUnit),
       color: 'rgba(255, 193, 7, 1)',
       unit: 'lb',
     },
-    {
+    vehicles: {
       name: 'Vehicles',
       data: vehicleEmissions.VOCs,
       color: 'rgba(255, 193, 7, 0.5)',
       unit: 'lb',
     },
-  ];
+  };
 
-  const nh3Data = [
-    {
+  const nh3Data = {
+    power: {
       name: 'Power Sector',
       data: calculateMonthlyData(powerData.nh3, currentUnit),
       color: 'rgba(0, 150, 136, 1)',
       unit: 'lb',
     },
-    {
+    vehicles: {
       name: 'Vehicles',
       data: vehicleEmissions.NH3,
       color: 'rgba(0, 150, 136, 0.5)',
       unit: 'lb',
     },
-  ];
+  };
 
   const selectedRegion = useSelectedRegion();
   const selectedStateRegions = useSelectedStateRegions();
@@ -333,42 +344,60 @@ function Chart(props: {
     ...commonConfig,
     title: { text: formatTitle('SO<sub>2</sub>'), useHTML: true },
     yAxis: { title: { text: formatYAxis('lb') } },
-    series: currentSource === 'power' ? so2Data.slice(0, 1) : so2Data,
+    series: Object.entries(so2Data).reduce((array, [source, data]) => {
+      if (currentSources.includes(source as Source)) array.push(data);
+      return array;
+    }, [] as ChartData[]),
   };
 
   const noxConfig = {
     ...commonConfig,
     title: { text: formatTitle('NO<sub>X</sub>'), useHTML: true },
     yAxis: { title: { text: formatYAxis('lb') } },
-    series: currentSource === 'power' ? noxData.slice(0, 1) : noxData,
+    series: Object.entries(noxData).reduce((array, [source, data]) => {
+      if (currentSources.includes(source as Source)) array.push(data);
+      return array;
+    }, [] as ChartData[]),
   };
 
   const co2Config = {
     ...commonConfig,
     title: { text: formatTitle('CO<sub>2</sub>'), useHTML: true },
     yAxis: { title: { text: formatYAxis('tons') } },
-    series: currentSource === 'power' ? co2Data.slice(0, 1) : co2Data,
+    series: Object.entries(co2Data).reduce((array, [source, data]) => {
+      if (currentSources.includes(source as Source)) array.push(data);
+      return array;
+    }, [] as ChartData[]),
   };
 
   const pm25Config = {
     ...commonConfig,
     title: { text: formatTitle('PM<sub>2.5</sub>'), useHTML: true },
     yAxis: { title: { text: formatYAxis('lb') } },
-    series: currentSource === 'power' ? pm25Data.slice(0, 1) : pm25Data,
+    series: Object.entries(pm25Data).reduce((array, [source, data]) => {
+      if (currentSources.includes(source as Source)) array.push(data);
+      return array;
+    }, [] as ChartData[]),
   };
 
   const vocsConfig = {
     ...commonConfig,
     title: { text: formatTitle('VOC'), useHTML: true },
     yAxis: { title: { text: formatYAxis('lb') } },
-    series: currentSource === 'power' ? vocsData.slice(0, 1) : vocsData,
+    series: Object.entries(vocsData).reduce((array, [source, data]) => {
+      if (currentSources.includes(source as Source)) array.push(data);
+      return array;
+    }, [] as ChartData[]),
   };
 
   const nh3Config = {
     ...commonConfig,
     title: { text: formatTitle('NH<sub>3</sub>'), useHTML: true },
     yAxis: { title: { text: formatYAxis('lb') } },
-    series: currentSource === 'power' ? nh3Data.slice(0, 1) : nh3Data,
+    series: Object.entries(nh3Data).reduce((array, [source, data]) => {
+      if (currentSources.includes(source as Source)) array.push(data);
+      return array;
+    }, [] as ChartData[]),
   };
 
   // prettier-ignore
@@ -526,8 +555,8 @@ function MonthlyEmissionsChartsContent() {
   const currentPollutants = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.pollutants,
   );
-  const currentSource = useTypedSelector(
-    ({ monthlyEmissions }) => monthlyEmissions.source,
+  const currentSources = useTypedSelector(
+    ({ monthlyEmissions }) => monthlyEmissions.sources,
   );
   const currentUnit = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.unit,
@@ -894,56 +923,58 @@ function MonthlyEmissionsChartsContent() {
           <div className="padding-1 tablet:grid-col-6 desktop:grid-col-3">
             <div className="avert-box padding-105 height-full">
               <p className="avert-box-heading font-serif-2xs line-height-serif-2">
-                Select emissions source:
+                Select emissions sources:
               </p>
 
               <div className="mobile-lg:display-flex">
                 <div className="flex-1 mobile-lg:margin-right-1">
-                  <div className="usa-radio">
+                  <div className="usa-checkbox">
                     <input
                       id="source-power"
-                      className="usa-radio__input"
-                      type="radio"
+                      className="usa-checkbox__input"
+                      type="checkbox"
                       name="source"
                       value="power"
-                      checked={currentSource === 'power'}
+                      checked={currentSources.includes('power')}
                       onChange={(_ev) => {
                         dispatch(setMonthlyEmissionsSource('power'));
                       }}
-                      data-avert-source-toggle="power"
+                      data-avert-source-checkbox="power"
                     />
-
-                    <label className="usa-radio__label" htmlFor="source-power">
-                      Power sector only
+                    <label
+                      className="usa-checkbox__label"
+                      htmlFor="source-power"
+                    >
+                      Power sector
                     </label>
                   </div>
                 </div>
 
                 <div className="flex-1 mobile-lg:margin-left-1">
-                  <div className="usa-radio">
+                  <div className="usa-checkbox">
                     <input
-                      id="source-power-vehicles"
-                      className="usa-radio__input"
-                      type="radio"
+                      id="source-vehicles"
+                      className="usa-checkbox__input"
+                      type="checkbox"
                       name="source"
-                      value="power-vehicles"
-                      checked={currentSource === 'power-vehicles'}
+                      value="vehicles"
+                      checked={currentSources.includes('vehicles')}
                       disabled={
                         currentAggregation === 'state' ||
                         currentAggregation === 'county'
                       }
                       onChange={(_ev) => {
-                        dispatch(setMonthlyEmissionsSource('power-vehicles'));
+                        dispatch(setMonthlyEmissionsSource('vehicles'));
                         dispatch(setMonthlyEmissionsUnit('emissions'));
                       }}
-                      data-avert-source-toggle="power-vehicles"
+                      data-avert-source-checkbox="vehicles"
                     />
 
                     <label
-                      className="usa-radio__label"
-                      htmlFor="source-power-vehicles"
+                      className="usa-checkbox__label"
+                      htmlFor="source-vehicles"
                     >
-                      Power sector and vehicles
+                      Vehicles
                     </label>
                   </div>
                 </div>
@@ -1023,6 +1054,16 @@ function MonthlyEmissionsChartsContent() {
                     <p className="margin-0 font-sans-xs text-center">
                       <strong>No pollutants selected.</strong> Please select at
                       least one pollutant to see monthly emissions data charted.
+                    </p>
+                  </div>
+                </div>
+              ) : currentSources.length === 0 ? (
+                <div className="padding-1 grid-col-12">
+                  <div className="avert-box padding-3">
+                    <p className="margin-0 font-sans-xs text-center">
+                      <strong>No emissions sources selected.</strong> Please
+                      select at least one emissions source to see monthly
+                      emissions data charted.
                     </p>
                   </div>
                 </div>
