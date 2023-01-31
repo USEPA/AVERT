@@ -103,14 +103,14 @@ export function PanelFooter(props: {
    * Recalculation of the EERE profile is needed if the EERE inputs have changed
    * from the ones used in the EERE profile calculation
    */
-  const eereProfileRecalculationNeeded = !Object.keys(eereInputs).every(
-    (field) => {
+  const eereProfileRecalculationNeeded =
+    onStepTwo &&
+    !Object.keys(eereInputs).every((field) => {
       return (
         eereInputs[field as keyof typeof eereInputs] ===
         eereCalculationInputs[field as keyof typeof eereCalculationInputs]
       );
-    },
-  );
+    });
 
   const eereProfileCalculationNotComplete =
     onStepTwo && eereCalculationStatus !== 'success';
