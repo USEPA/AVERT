@@ -174,7 +174,7 @@ export type EEREInputs = {
 };
 
 type EereState = {
-  status: 'ready' | 'started' | 'complete';
+  calculationStatus: 'idle' | 'pending' | 'success';
   errors: (
     | EnergyEfficiencyFieldName
     | RenewableEnergyFieldName
@@ -216,7 +216,7 @@ const emptyRegionalLoadHour = {
 };
 
 const initialState: EereState = {
-  status: 'ready',
+  calculationStatus: 'idle',
   errors: [],
   inputs: emptyEEREInputs,
   selectOptions: {
@@ -245,7 +245,7 @@ export default function reducer(
       // initial state
       return {
         ...state,
-        status: 'ready',
+        calculationStatus: 'idle',
         errors: [],
         inputs: emptyEEREInputs,
         // NOTE: selectOptions should not be reset
@@ -460,7 +460,7 @@ export default function reducer(
     case 'eere/START_EERE_CALCULATIONS': {
       return {
         ...state,
-        status: 'started',
+        calculationStatus: 'pending',
         regionalProfiles: {},
       };
     }
@@ -496,7 +496,7 @@ export default function reducer(
     case 'eere/COMPLETE_EERE_CALCULATIONS': {
       return {
         ...state,
-        status: 'complete',
+        calculationStatus: 'success',
         combinedProfile: action.payload,
       };
     }

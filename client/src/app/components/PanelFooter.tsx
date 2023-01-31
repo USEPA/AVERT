@@ -76,7 +76,9 @@ export function PanelFooter(props: {
 
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const eereStatus = useTypedSelector(({ eere }) => eere.status);
+  const calculationStatus = useTypedSelector(
+    ({ eere }) => eere.calculationStatus,
+  );
   const hardValid = useTypedSelector(
     ({ eere }) => eere.combinedProfile.hardValid,
   );
@@ -119,7 +121,7 @@ export function PanelFooter(props: {
   const noGeographySelected =
     geographicFocus === 'regions' ? noRegionsSelected : noStateSelected;
 
-  const calculationRunning = onStepTwo && eereStatus !== 'complete';
+  const calculationRunning = onStepTwo && calculationStatus !== 'success';
   const exceedsHardValidationLimit = onStepTwo && !hardValid;
 
   const disabledButtonClassName =
@@ -143,7 +145,7 @@ export function PanelFooter(props: {
         }
 
         if (onStepTwo) {
-          if (eereStatus === 'complete' && hardValid) {
+          if (calculationStatus === 'success' && hardValid) {
             scrollToTop();
             dispatch(fetchEmissionsChanges());
           } else {

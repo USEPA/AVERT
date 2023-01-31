@@ -70,7 +70,9 @@ const inputsSummaryStyles = css`
 function EEREInputsContent() {
   const dispatch = useDispatch();
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const status = useTypedSelector(({ eere }) => eere.status);
+  const calculationStatus = useTypedSelector(
+    ({ eere }) => eere.calculationStatus,
+  );
   const errors = useTypedSelector(({ eere }) => eere.errors);
   const constantMwh = useTypedSelector(({ eere }) => eere.inputs.constantMwh);
   const annualGwh = useTypedSelector(({ eere }) => eere.inputs.annualGwh);
@@ -144,12 +146,14 @@ function EEREInputsContent() {
     textInputsFields.filter((field) => field?.length > 0).length === 0;
 
   const calculationDisabled =
-    !textInputsAreValid || textInputsAreEmpty || status === 'started';
+    !textInputsAreValid ||
+    textInputsAreEmpty ||
+    calculationStatus === 'pending';
 
   const eereButtonOptions = {
-    ready: 'Calculate EE/RE Impacts',
-    started: 'Calculating...',
-    complete: 'Recalculate EE/RE Impacts',
+    idle: 'Calculate EE/RE Impacts',
+    pending: 'Calculating...',
+    success: 'Recalculate EE/RE Impacts',
   };
 
   const disabledButtonClassName = calculationDisabled
@@ -720,7 +724,7 @@ function EEREInputsContent() {
           }}
           data-avert-calculate-impacts-btn
         >
-          {eereButtonOptions[status]}
+          {eereButtonOptions[calculationStatus]}
         </a>
       </p>
     </>

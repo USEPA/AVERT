@@ -34,14 +34,16 @@ export function EERETextInput(props: {
   } = props;
 
   const dispatch = useDispatch();
-  const status = useTypedSelector(({ eere }) => eere.status);
+  const calculationStatus = useTypedSelector(
+    ({ eere }) => eere.calculationStatus,
+  );
   const errors = useTypedSelector(({ eere }) => eere.errors);
 
   const inputsAreValid = errors.length === 0;
   const inputIsEmpty = value.length === 0;
 
   const calculationDisabled =
-    !inputsAreValid || inputIsEmpty || status === 'started';
+    !inputsAreValid || inputIsEmpty || calculationStatus === 'pending';
 
   return (
     <div className={className ? className : ''}>
