@@ -129,7 +129,10 @@ type EereAction =
       type: 'eere/UPDATE_EERE_ICE_REPLACEMENT_VEHICLE';
       payload: { option: string };
     }
-  | { type: 'eere/START_EERE_CALCULATIONS' }
+  | {
+      type: 'eere/START_EERE_CALCULATIONS';
+      payload: { calculationInputs: EEREInputs };
+    }
   | {
       type: 'eere/CALCULATE_REGIONAL_EERE_PROFILE';
       payload: RegionalProfile;
@@ -174,7 +177,6 @@ export type EEREInputs = {
 };
 
 type EereState = {
-  status: 'ready' | 'started' | 'complete';
   errors: (
     | EnergyEfficiencyFieldName
     | RenewableEnergyFieldName
@@ -182,11 +184,13 @@ type EereState = {
   )[];
   inputs: EEREInputs;
   selectOptions: { [field in SelectOptionsFieldName]: SelectOption[] };
+  calculationStatus: 'idle' | 'pending' | 'success';
+  calculationInputs: EEREInputs;
   regionalProfiles: Partial<{ [key in RegionId]: RegionalProfile }>;
   combinedProfile: CombinedProfile;
 };
 
-const emptyEEREInputs = {
+const initialEEREInputs = {
   annualGwh: '',
   constantMwh: '',
   broadProgram: '',
@@ -216,14 +220,15 @@ const emptyRegionalLoadHour = {
 };
 
 const initialState: EereState = {
-  status: 'ready',
   errors: [],
-  inputs: emptyEEREInputs,
+  inputs: initialEEREInputs,
   selectOptions: {
     evDeploymentLocationOptions: [{ id: '', name: '' }],
     evModelYearOptions,
     iceReplacementVehicleOptions,
   },
+  calculationStatus: 'idle',
+  calculationInputs: initialEEREInputs,
   regionalProfiles: {},
   combinedProfile: {
     hourlyEere: [],
@@ -242,13 +247,14 @@ export default function reducer(
 ): EereState {
   switch (action.type) {
     case 'eere/RESET_EERE_INPUTS': {
-      // initial state
+      // initial state, excluding for selectOptions
       return {
         ...state,
-        status: 'ready',
         errors: [],
-        inputs: emptyEEREInputs,
+        inputs: initialEEREInputs,
         // NOTE: selectOptions should not be reset
+        calculationStatus: 'idle',
+        calculationInputs: initialEEREInputs,
         regionalProfiles: {},
         combinedProfile: {
           hourlyEere: [],
@@ -458,9 +464,11 @@ export default function reducer(
     }
 
     case 'eere/START_EERE_CALCULATIONS': {
+      const { calculationInputs } = action.payload;
       return {
         ...state,
-        status: 'started',
+        calculationStatus: 'pending',
+        calculationInputs,
         regionalProfiles: {},
       };
     }
@@ -494,10 +502,11 @@ export default function reducer(
     }
 
     case 'eere/COMPLETE_EERE_CALCULATIONS': {
+      const combinedProfile = action.payload;
       return {
         ...state,
-        status: 'complete',
-        combinedProfile: action.payload,
+        calculationStatus: 'success',
+        combinedProfile,
       };
     }
 
@@ -800,7 +809,10 @@ export function calculateEereProfile(): AppThunk {
       }
     }
 
-    dispatch({ type: 'eere/START_EERE_CALCULATIONS' });
+    dispatch({
+      type: 'eere/START_EERE_CALCULATIONS',
+      payload: { calculationInputs: inputs },
+    });
 
     // selected regional profiles are stored individually to pass to the
     // displacements calculation, and also combined for all selected regions to

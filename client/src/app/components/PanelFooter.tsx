@@ -76,8 +76,14 @@ export function PanelFooter(props: {
 
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const eereStatus = useTypedSelector(({ eere }) => eere.status);
-  const hardValid = useTypedSelector(
+  const eereInputs = useTypedSelector(({ eere }) => eere.inputs);
+  const eereCalculationStatus = useTypedSelector(
+    ({ eere }) => eere.calculationStatus,
+  );
+  const eereCalculationInputs = useTypedSelector(
+    ({ eere }) => eere.calculationInputs,
+  );
+  const eereHardValid = useTypedSelector(
     ({ eere }) => eere.combinedProfile.hardValid,
   );
 
@@ -88,9 +94,36 @@ export function PanelFooter(props: {
   const onStepTwo = activeStep === 2;
   const onStepThree = activeStep === 3;
 
-  function scrollToTop() {
-    window.scrollTo(0, 0);
-  }
+  const noRegionsSelected = onStepOne && !selectedRegionId;
+  const noStateSelected = onStepOne && !selectedStateId;
+  const noGeographySelected =
+    geographicFocus === 'regions' ? noRegionsSelected : noStateSelected;
+
+  /**
+   * Recalculation of the EERE profile is needed if the EERE inputs have changed
+   * from the ones used in the EERE profile calculation
+   */
+  const eereProfileRecalculationNeeded = !Object.keys(eereInputs).every(
+    (field) => {
+      return (
+        eereInputs[field as keyof typeof eereInputs] ===
+        eereCalculationInputs[field as keyof typeof eereCalculationInputs]
+      );
+    },
+  );
+
+  const eereProfileCalculationNotComplete =
+    onStepTwo && eereCalculationStatus !== 'success';
+
+  const eereProfileExceedsHardValidationLimit = onStepTwo && !eereHardValid;
+
+  const disabledButtonClassName =
+    noGeographySelected ||
+    eereProfileCalculationNotComplete ||
+    eereProfileRecalculationNeeded ||
+    eereProfileExceedsHardValidationLimit
+      ? 'avert-button-disabled'
+      : '';
 
   const prevButton = !prevButtonText ? null : (
     <PrevButton
@@ -98,7 +131,7 @@ export function PanelFooter(props: {
       href="/"
       onClick={(ev) => {
         ev.preventDefault();
-        scrollToTop();
+        window.scrollTo(0, 0);
         // prevButtonText isn't provided to first step's use of PanelFooter,
         // so we can safely always assume we're on step 2 or 3
         dispatch(setActiveStep(activeStep - 1));
@@ -114,19 +147,6 @@ export function PanelFooter(props: {
     </PrevButton>
   );
 
-  const noRegionsSelected = onStepOne && !selectedRegionId;
-  const noStateSelected = onStepOne && !selectedStateId;
-  const noGeographySelected =
-    geographicFocus === 'regions' ? noRegionsSelected : noStateSelected;
-
-  const calculationRunning = onStepTwo && eereStatus !== 'complete';
-  const exceedsHardValidationLimit = onStepTwo && !hardValid;
-
-  const disabledButtonClassName =
-    noGeographySelected || calculationRunning || exceedsHardValidationLimit
-      ? 'avert-button-disabled'
-      : '';
-
   const nextButton = (
     <NextButton
       resultsShown={onStepThree}
@@ -138,13 +158,17 @@ export function PanelFooter(props: {
         if (noGeographySelected) return;
 
         if (onStepOne) {
-          scrollToTop();
+          window.scrollTo(0, 0);
           dispatch(fetchRegionsData());
         }
 
         if (onStepTwo) {
-          if (eereStatus === 'complete' && hardValid) {
-            scrollToTop();
+          if (
+            eereCalculationStatus === 'success' &&
+            !eereProfileRecalculationNeeded &&
+            eereHardValid
+          ) {
+            window.scrollTo(0, 0);
             dispatch(fetchEmissionsChanges());
           } else {
             return;
@@ -152,7 +176,7 @@ export function PanelFooter(props: {
         }
 
         if (onStepThree) {
-          scrollToTop();
+          window.scrollTo(0, 0);
           dispatch(resetEEREInputs());
           dispatch(resetResults());
           dispatch(resetMonthlyEmissions());

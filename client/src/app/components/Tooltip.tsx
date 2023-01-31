@@ -49,7 +49,6 @@ export const modalLinkStyles = css`
 `;
 
 const modalStyles = css`
-  z-index: 2;
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
@@ -126,7 +125,7 @@ export function Tooltip(props: { id: string; children: ReactNode }) {
 
       <span
         css={modalStyles}
-        className="position-fixed padding-x-4 padding-y-3 bg-white"
+        className="position-fixed z-200 padding-x-4 padding-y-3 bg-white"
         data-modal-id={id}
         data-modal-active={activeModalId === id}
         data-modal-closing={closingModalId === id}
