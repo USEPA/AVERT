@@ -16,6 +16,7 @@ import { StatesMap } from 'app/components/StatesMap';
 import { UnitConversion } from 'app/components/UnitConversion';
 import { EEREInputs } from 'app/components/EEREInputs';
 import { EEREChart } from 'app/components/EEREChart';
+import { EEREMessages } from 'app/components/EEREMessages';
 import { PowerSectorEmissionsTable } from 'app/components/PowerSectorEmissionsTable';
 import { TransportationSectorEmissionsTable } from 'app/components/TransportationSectorEmissionsTable';
 import { StateEmissionsTable } from 'app/components/StateEmissionsTable';
@@ -357,7 +358,6 @@ export function Panels() {
                     </p>
 
                     <RegionsList />
-
                     <RegionsMap />
 
                     <div className="margin-x-auto maxw-tablet-lg">
@@ -393,7 +393,6 @@ export function Panels() {
                   </p>
 
                   <StatesList />
-
                   <StatesMap />
 
                   <div className="margin-x-auto maxw-tablet-lg">
@@ -476,8 +475,8 @@ export function Panels() {
           </div>
 
           <EEREInputs />
-
           <EEREChart />
+          <EEREMessages />
         </div>
 
         <PanelFooter
