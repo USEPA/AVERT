@@ -2046,7 +2046,7 @@ export function calculateEVDeploymentLocationHistoricalEERE(options: {
 
   const fallbackAverage = {
     capacity_added_mw: { onshore_wind: 0, utility_pv: 0 },
-    retail_impacts_ghw: { ee_retail: 0 },
+    retail_impacts_gwh: { ee_retail: 0 },
   };
 
   const regionId = evDeploymentLocation.replace('region-', '') as RegionEereAveragesRegionId; // prettier-ignore
@@ -2062,10 +2062,10 @@ export function calculateEVDeploymentLocationHistoricalEERE(options: {
   const hoursInYear = 8760;
   const GWtoMW = 1_000;
 
-  result.eeRetail.mw = (locationAverage.retail_impacts_ghw.ee_retail * GWtoMW) / hoursInYear; // prettier-ignore
+  result.eeRetail.mw = (locationAverage.retail_impacts_gwh.ee_retail * GWtoMW) / hoursInYear; // prettier-ignore
   result.onshoreWind.mw = locationAverage.capacity_added_mw.onshore_wind;
   result.utilitySolar.mw = locationAverage.capacity_added_mw.utility_pv;
-  result.eeRetail.gwh = locationAverage.retail_impacts_ghw.ee_retail;
+  result.eeRetail.gwh = locationAverage.retail_impacts_gwh.ee_retail;
   result.onshoreWind.gwh = selectedGeographyEEREDefaultsAverages.onshore_wind * hoursInYear * result.onshoreWind.mw / GWtoMW // prettier-ignore
   result.utilitySolar.gwh = selectedGeographyEEREDefaultsAverages.utility_pv * hoursInYear * result.utilitySolar.mw / GWtoMW; // prettier-ignore
 
