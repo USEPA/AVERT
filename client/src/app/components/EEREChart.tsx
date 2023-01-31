@@ -11,9 +11,24 @@ require('highcharts/modules/accessibility')(Highcharts);
 
 function EEREChartContent() {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
+  const inputs = useTypedSelector(({ eere }) => eere.inputs);
+  const calculationInputs = useTypedSelector(
+    ({ eere }) => eere.calculationInputs,
+  );
   const hourlyEere = useTypedSelector(
     ({ eere }) => eere.combinedProfile.hourlyEere,
   );
+
+  /**
+   * Recalculation of the EERE profile is needed if the EERE inputs have changed
+   * from the ones used in the EERE profile calculation
+   */
+  const eereProfileRecalculationNeeded = !Object.keys(inputs).every((field) => {
+    return (
+      inputs[field as keyof typeof inputs] ===
+      calculationInputs[field as keyof typeof calculationInputs]
+    );
+  });
 
   const selectedRegion = useSelectedRegion();
   const selectedStateRegions = useSelectedStateRegions();
@@ -115,17 +130,35 @@ function EEREChartContent() {
             solar capacity factors, where applicable.
           </h4>
 
-          <HighchartsReact
-            highcharts={Highcharts}
-            options={chartConfig}
-            callback={(_chart: Highcharts.Chart) => {
-              // callback for after highcharts chart renders
-              // as this entire react app is ultimately served in an iframe on another page,
-              // this document has a click handler that sends document's height to other window,
-              // which can then set the embedded iframe's height (see public/post-message.js)
-              document.querySelector('html')?.click();
-            }}
-          />
+          <div className="position-relative height-full">
+            {eereProfileRecalculationNeeded && (
+              <div className="pin-all z-100 bg-black opacity-80">
+                <div className="display-flex flex-column flex-align-center flex-justify-center height-full">
+                  <p className="margin-0 padding-2 text-center text-white">
+                    Inputs have changed since this EE/RE profile has been
+                    calculated.
+                  </p>
+
+                  <p className="margin-0 padding-2 text-center text-white">
+                    Please click the “Recalculate EE/RE Impacts” button above to
+                    recalcualte with the latest EE/RE input values.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            <HighchartsReact
+              highcharts={Highcharts}
+              options={chartConfig}
+              callback={(_chart: Highcharts.Chart) => {
+                // callback for after highcharts chart renders
+                // as this entire react app is ultimately served in an iframe on another page,
+                // this document has a click handler that sends document's height to other window,
+                // which can then set the embedded iframe's height (see public/post-message.js)
+                document.querySelector('html')?.click();
+              }}
+            />
+          </div>
         </>
       )}
     </div>
