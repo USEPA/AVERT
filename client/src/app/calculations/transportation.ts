@@ -97,8 +97,6 @@ const percentageLDVsDisplacedByEVs = {
 
 type LightDutyVehiclesSalesStateId = keyof typeof stateLightDutyVehiclesSales;
 type BusSalesAndStockStateId = keyof typeof stateBusSalesAndStock;
-type RegionEereAveragesRegionId = keyof typeof regionEereAverages;
-type RegionEereAveragesStateId = keyof typeof stateEereAverages;
 
 type MovesData = {
   year: string;
@@ -1996,7 +1994,7 @@ export function calculateSelectedGeographyEEREDefaultsAverages(options: {
     },
   );
 
-  // console.log(resultsByRegion); // NOTE: for debugging purposes
+  console.log(resultsByRegion); // NOTE: for debugging purposes
 
   // reduce results by region into single result object by combining each
   // region's renewable energy values
@@ -2027,47 +2025,62 @@ export function calculateSelectedGeographyEEREDefaultsAverages(options: {
 export function calculateEVDeploymentLocationHistoricalEERE(options: {
   selectedGeographyEEREDefaultsAverages: SelectedGeographyEEREDefaultsAverages;
   evDeploymentLocation: string;
+  regionalLineLoss: number;
+  selectedRegionId: RegionId | '';
 }) {
-  const { selectedGeographyEEREDefaultsAverages, evDeploymentLocation } =
-    options;
+  const {
+    selectedGeographyEEREDefaultsAverages,
+    evDeploymentLocation,
+    regionalLineLoss,
+    selectedRegionId,
+  } = options;
 
   const result = {
-    eeRetail: { mw: 0, gwh: 0 },
     onshoreWind: { mw: 0, gwh: 0 },
     utilitySolar: { mw: 0, gwh: 0 },
+    eeRetail: { mw: 0, gwh: 0 },
   };
 
-  if (!evDeploymentLocation) {
-    return result;
-  }
+  if (!evDeploymentLocation) return result;
 
   const deploymentLocationIsRegion = evDeploymentLocation.startsWith('region-');
-  const deploymentLocationIsState = evDeploymentLocation.startsWith('state-');
+  const deploymentLocationStateId = evDeploymentLocation.replace('state-', '') as StateId; // prettier-ignore
 
-  const fallbackAverage = {
+  const fallbackEereAverage = {
     capacity_added_mw: { onshore_wind: 0, utility_pv: 0 },
     retail_impacts_gwh: { ee_retail: 0 },
   };
 
-  const regionId = evDeploymentLocation.replace('region-', '') as RegionEereAveragesRegionId; // prettier-ignore
-  const stateId = evDeploymentLocation.replace('state-', '') as RegionEereAveragesStateId; // prettier-ignore
+  const regionEereAverage = regionEereAverages[selectedRegionId as RegionId] || fallbackEereAverage; // prettier-ignore
+  const stateEereAverage = stateEereAverages[deploymentLocationStateId] || fallbackEereAverage; // prettier-ignore
 
-  // averages for selected EV deployment location (region or state)
-  const locationAverage = deploymentLocationIsRegion
-    ? regionEereAverages[regionId]
-    : deploymentLocationIsState
-    ? stateEereAverages[stateId]
-    : fallbackAverage;
-
-  const hoursInYear = 8760;
   const GWtoMW = 1_000;
+  const hoursInYear = 8_760;
 
-  result.eeRetail.mw = (locationAverage.retail_impacts_gwh.ee_retail * GWtoMW) / hoursInYear; // prettier-ignore
-  result.onshoreWind.mw = locationAverage.capacity_added_mw.onshore_wind;
-  result.utilitySolar.mw = locationAverage.capacity_added_mw.utility_pv;
-  result.eeRetail.gwh = locationAverage.retail_impacts_gwh.ee_retail;
-  result.onshoreWind.gwh = selectedGeographyEEREDefaultsAverages.onshore_wind * hoursInYear * result.onshoreWind.mw / GWtoMW // prettier-ignore
-  result.utilitySolar.gwh = selectedGeographyEEREDefaultsAverages.utility_pv * hoursInYear * result.utilitySolar.mw / GWtoMW; // prettier-ignore
+  result.onshoreWind.mw = deploymentLocationIsRegion
+    ? regionEereAverage.capacity_added_mw.onshore_wind
+    : stateEereAverage.capacity_added_mw.onshore_wind;
+
+  result.utilitySolar.mw = deploymentLocationIsRegion
+    ? regionEereAverage.capacity_added_mw.utility_pv
+    : stateEereAverage.capacity_added_mw.utility_pv;
+
+  // prettier-ignore
+  result.eeRetail.mw = deploymentLocationIsRegion
+    ? (regionEereAverage.retail_impacts_gwh.ee_retail * GWtoMW) / hoursInYear * 1 - regionalLineLoss
+    : (stateEereAverage.retail_impacts_gwh.ee_retail * GWtoMW) / hoursInYear;
+
+  // prettier-ignore
+  result.onshoreWind.gwh = selectedGeographyEEREDefaultsAverages.onshore_wind *
+    hoursInYear * regionEereAverage.capacity_added_mw.onshore_wind / GWtoMW;
+
+  // prettier-ignore
+  result.utilitySolar.gwh = selectedGeographyEEREDefaultsAverages.utility_pv *
+    hoursInYear * regionEereAverage.capacity_added_mw.utility_pv / GWtoMW;
+
+  result.eeRetail.gwh = deploymentLocationIsRegion
+    ? regionEereAverage.retail_impacts_gwh.ee_retail
+    : stateEereAverage.retail_impacts_gwh.ee_retail;
 
   return result;
 }

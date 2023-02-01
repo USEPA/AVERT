@@ -824,8 +824,6 @@ export function setMonthlyDailyEVEnergyUsage(): AppThunk {
  * or ICE replacement vehicle changes)_
  */
 export function setMonthlyEmissionRates(): AppThunk {
-  // NOTE: set whenever EV deployment location, EV model year, or ICE
-  // replacement vehicle changes
   return (dispatch, getState) => {
     const { transportation, eere } = getState();
     const { selectedGeographyStatesVMTPercentages } = transportation;
@@ -930,7 +928,8 @@ export function setEmissionChanges(): AppThunk {
  * or every time the `eere` reducer's `setEVDeploymentLocationOptions()`
  * function is called.
  *
- * _(e.g. when the app starts or anytime the selected geography changes)_
+ * _(e.g. when the app starts or anytime the selected geography or the EV
+ * deployment location changes)_
  */
 export function setVehicleSalesAndStock(): AppThunk {
   return (dispatch, getState) => {
@@ -1000,21 +999,55 @@ export function setSelectedGeographyEEREDefaultsAverages(): AppThunk {
 
 /**
  * Called every time this `transportation` reducer's
- * `setSelectedGeographyEEREDefaultsAverages()` function is called.
+ * `setSelectedGeographyEEREDefaultsAverages()` function is called or anytime
+ * the `eere` reducer's `updateEereEVDeploymentLocation()` function is called.
  *
  * _(e.g. whenever the "Set EE/RE Impacts" button is clicked  on the "Select
- * Geography" page)_
+ * Geography" page or anytime the EV deployment location changes)_
  */
 export function setEVDeploymentLocationHistoricalEERE(): AppThunk {
   return (dispatch, getState) => {
-    const { eere, transportation } = getState();
+    const { geography, eere, transportation } = getState();
+    const { regions, regionalScalingFactors } = geography;
     const { evDeploymentLocation } = eere.inputs;
     const { selectedGeographyEEREDefaultsAverages } = transportation;
+
+    const selectedGeographyRegionIds = Object.keys(
+      regionalScalingFactors,
+    ) as RegionId[];
+
+    const selectedGeographyRegions = getSelectedGeographyRegions({
+      regions,
+      selectedGeographyRegionIds,
+    });
+
+    /**
+     * Build up line loss from the selected geography's regions using the
+     * regional scaling factors.
+     *
+     * NOTE: this is to support selected states – if a region is selected, the
+     * result will be the same as the region's line loss value
+     */
+    const regionalLineLoss = Object.entries(selectedGeographyRegions).reduce(
+      (result, [id, regionData]) => {
+        const regionalScalingFactor = regionalScalingFactors[id as RegionId];
+        if (regionalScalingFactor) {
+          result += regionData.lineLoss * regionalScalingFactor;
+        }
+        return result;
+      },
+      0,
+    );
+
+    const selectedRegionId =
+      Object.values(geography.regions).find((r) => r.selected)?.id || '';
 
     const evDeploymentLocationHistoricalEERE =
       calculateEVDeploymentLocationHistoricalEERE({
         selectedGeographyEEREDefaultsAverages,
         evDeploymentLocation,
+        regionalLineLoss,
+        selectedRegionId,
       });
 
     dispatch({
