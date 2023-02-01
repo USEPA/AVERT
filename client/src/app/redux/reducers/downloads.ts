@@ -36,6 +36,7 @@ type CountyData = {
   'Power Sector: October': number | null;
   'Power Sector: November': number | null;
   'Power Sector: December': number | null;
+  'Power Sector: Annual': number | null;
 };
 
 type CobraData = {
@@ -330,6 +331,19 @@ function createMonthlyEmissionsDataFields(options: {
 }) {
   const { pollutantNeedsReplacement, monthlyData, unit } = options;
 
+  /** annual totals */
+  const total = Object.values(monthlyData).reduce(
+    (object, data) => {
+      object.original += data.original;
+      object.postEere += data.postEere;
+      return object;
+    },
+    { original: 0, postEere: 0 },
+  );
+
+  const totalEmissionsChange = total.postEere - total.original;
+  const totalPercentChange = (totalEmissionsChange / total.original) * 100 || 0;
+
   const result = Object.entries(monthlyData).reduce((object, [key, data]) => {
     const month = Number(key);
     const { original, postEere } = data;
@@ -360,6 +374,8 @@ function createMonthlyEmissionsDataFields(options: {
     'Power Sector: October': result[10],
     'Power Sector: November': result[11],
     'Power Sector: December': result[12],
+    'Power Sector: Annual':
+      unit === 'percent' ? totalPercentChange : totalEmissionsChange,
   };
 }
 
