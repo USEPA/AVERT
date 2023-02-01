@@ -7,7 +7,7 @@ import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { useTypedSelector } from 'app/redux/index';
 import type {
   EmissionsData,
-  EmissionsMonthlyData,
+  AggregatedEmissionsData,
 } from 'app/redux/reducers/results';
 import type {
   Aggregation,
@@ -30,8 +30,6 @@ import { regions, states } from 'app/config';
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 
-type MonthlyData = EmissionsData[keyof EmissionsData];
-
 type ChartData = {
   name: string;
   data: number[];
@@ -43,7 +41,10 @@ type ChartData = {
  * Creates monthly emissions data for either emissions changes or percentage
  * changes, for display in the monthly charts.
  */
-function calculateMonthlyData(monthlyData: MonthlyData, unit: Unit) {
+function calculateMonthlyData(
+  monthlyData: EmissionsData[keyof EmissionsData],
+  unit: Unit,
+) {
   const monthlyEmissionsChanges: number[] = [];
   const monthlyPercentageChanges: number[] = [];
 
@@ -94,7 +95,12 @@ function setChartSeriesData(options: {
 
 function Chart(props: {
   pollutant: Pollutant;
-  powerData: { [key in Pollutant]: MonthlyData };
+  powerData: {
+    [key in Pollutant]: {
+      monthly: EmissionsData[keyof EmissionsData];
+      annual: { original: 0; postEere: 0 };
+    };
+  };
 }) {
   const { pollutant, powerData } = props;
 
@@ -156,7 +162,7 @@ function Chart(props: {
   const so2Data = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyData(powerData.so2, currentUnit),
+      data: calculateMonthlyData(powerData.so2.monthly, currentUnit),
       color: 'rgba(5, 141, 199, 1)',
       unit: 'lb',
     },
@@ -171,7 +177,7 @@ function Chart(props: {
   const noxData = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyData(powerData.nox, currentUnit),
+      data: calculateMonthlyData(powerData.nox.monthly, currentUnit),
       color: 'rgba(237, 86, 27, 1)',
       unit: 'lb',
     },
@@ -186,7 +192,7 @@ function Chart(props: {
   const co2Data = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyData(powerData.co2, currentUnit),
+      data: calculateMonthlyData(powerData.co2.monthly, currentUnit),
       color: 'rgba(80, 180, 50, 1)',
       unit: 'tons',
     },
@@ -201,7 +207,7 @@ function Chart(props: {
   const pm25Data = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyData(powerData.pm25, currentUnit),
+      data: calculateMonthlyData(powerData.pm25.monthly, currentUnit),
       color: 'rgba(102, 86, 131, 1)',
       unit: 'lb',
     },
@@ -216,7 +222,7 @@ function Chart(props: {
   const vocsData = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyData(powerData.vocs, currentUnit),
+      data: calculateMonthlyData(powerData.vocs.monthly, currentUnit),
       color: 'rgba(255, 193, 7, 1)',
       unit: 'lb',
     },
@@ -231,7 +237,7 @@ function Chart(props: {
   const nh3Data = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyData(powerData.nh3, currentUnit),
+      data: calculateMonthlyData(powerData.nh3.monthly, currentUnit),
       color: 'rgba(0, 150, 136, 1)',
       unit: 'lb',
     },
@@ -497,23 +503,28 @@ function Chart(props: {
 }
 
 /**
- * Sets the monthly emissions data based on the currently selected filters.
+ * Sets the power sector emissions data based on the currently selected filters.
  */
-function setFilteredMonthlyData(options: {
-  emissionsMonthlyData: EmissionsMonthlyData;
+function setFilteredPowerData(options: {
+  aggregatedEmissionsData: AggregatedEmissionsData;
   aggregation: Aggregation;
   regionId: RegionId | 'ALL';
   stateId: StateId;
   county: string;
 }) {
-  const { emissionsMonthlyData, aggregation, regionId, stateId, county } =
+  const { aggregatedEmissionsData, aggregation, regionId, stateId, county } =
     options;
 
-  const emptyResult = {} as EmissionsData;
+  const emptyResult = {} as {
+    [key in Pollutant]: {
+      monthly: EmissionsData[keyof EmissionsData];
+      annual: { original: 0; postEere: 0 };
+    };
+  };
 
-  if (!emissionsMonthlyData) return emptyResult;
+  if (!aggregatedEmissionsData) return emptyResult;
 
-  const { total, regions, states, counties } = emissionsMonthlyData;
+  const { total, regions, states, counties } = aggregatedEmissionsData;
 
   const regionResult =
     regionId === 'ALL'
@@ -545,8 +556,8 @@ function setFilteredMonthlyData(options: {
 function MonthlyEmissionsChartsContent() {
   const dispatch = useDispatch();
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const emissionsMonthlyData = useTypedSelector(
-    ({ results }) => results.emissionsMonthlyData,
+  const aggregatedEmissionsData = useTypedSelector(
+    ({ results }) => results.aggregatedEmissionsData,
   );
   const currentAggregation = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.aggregation,
@@ -586,8 +597,8 @@ function MonthlyEmissionsChartsContent() {
       ? selectedStateRegions[0].id
       : (currentRegionId as RegionId);
 
-  const powerData = setFilteredMonthlyData({
-    emissionsMonthlyData,
+  const powerData = setFilteredPowerData({
+    aggregatedEmissionsData,
     aggregation: currentAggregation,
     regionId,
     stateId: currentStateId as StateId,
@@ -1083,7 +1094,7 @@ function MonthlyEmissionsChartsContent() {
       </div>
 
       <div data-avert-charts>
-        {emissionsMonthlyData && (
+        {aggregatedEmissionsData && (
           <div className="grid-container padding-0 maxw-full">
             <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
               {geographicFocus === 'states' &&

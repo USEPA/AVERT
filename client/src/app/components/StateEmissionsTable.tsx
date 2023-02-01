@@ -2,10 +2,7 @@ import { Fragment } from 'react';
 // ---
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { useTypedSelector } from 'app/redux/index';
-import type {
-  EmissionsData,
-  EmissionsMonthlyData,
-} from 'app/redux/reducers/results';
+import type { AggregatedEmissionsData } from 'app/redux/reducers/results';
 import type { VehicleEmissionChangesByGeography } from 'app/calculations/transportation';
 import type { StateId } from 'app/config';
 import { states as statesConfig } from 'app/config';
@@ -19,15 +16,15 @@ function formatNumber(number: number) {
 }
 
 /**
- * Sum the power sector emissions monthly data into total annual changes for
- * each pollutant at each state, and returns those state power sector results
- * with state transportation sector results.
+ * Combine the power sector emissions annual data changes for each pollutant at
+ * each state with state transportation sector results.
  */
 function setAnnualStateEmissionsChanges(options: {
-  emissionsMonthlyData: EmissionsMonthlyData;
+  aggregatedEmissionsData: AggregatedEmissionsData;
   vehicleEmissionChangesByGeography: VehicleEmissionChangesByGeography | {};
 }) {
-  const { emissionsMonthlyData, vehicleEmissionChangesByGeography } = options;
+  const { aggregatedEmissionsData, vehicleEmissionChangesByGeography } =
+    options;
 
   const result = [] as {
     id: StateId;
@@ -56,22 +53,18 @@ function setAnnualStateEmissionsChanges(options: {
       ? (vehicleEmissionChangesByGeography as VehicleEmissionChangesByGeography)
       : null;
 
-  if (!emissionsMonthlyData || !vehicleEmissionChanges) return [];
+  if (!aggregatedEmissionsData || !vehicleEmissionChanges) return [];
 
   /** Add power sector data */
-  Object.entries(emissionsMonthlyData.states).forEach(([key, stateData]) => {
+  Object.entries(aggregatedEmissionsData.states).forEach(([key, stateData]) => {
     const stateId = key as StateId;
     const stateName = statesConfig[stateId].name;
 
     const power = Object.entries(stateData).reduce(
-      (object, [key, annualData]) => {
-        const pollutant = key as keyof EmissionsData;
-
-        Object.values(annualData).forEach((monthlyData) => {
-          const { original, postEere } = monthlyData;
-          object[pollutant] += postEere - original;
-        });
-
+      (object, [stateDataKey, stateDataValue]) => {
+        const pollutant = stateDataKey as keyof typeof stateData;
+        const { original, postEere } = stateDataValue.annual;
+        object[pollutant] += postEere - original;
         return object;
       },
       { generation: 0, so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 },
@@ -112,19 +105,19 @@ function setAnnualStateEmissionsChanges(options: {
 }
 
 function StateEmissionsTableContent() {
-  const emissionsMonthlyData = useTypedSelector(
-    ({ results }) => results.emissionsMonthlyData,
+  const aggregatedEmissionsData = useTypedSelector(
+    ({ results }) => results.aggregatedEmissionsData,
   );
   const vehicleEmissionChangesByGeography = useTypedSelector(
     ({ transportation }) => transportation.vehicleEmissionChangesByGeography,
   );
 
   const annualStateEmissionsChanges = setAnnualStateEmissionsChanges({
-    emissionsMonthlyData,
+    aggregatedEmissionsData,
     vehicleEmissionChangesByGeography,
   });
 
-  if (!emissionsMonthlyData) return null;
+  if (!aggregatedEmissionsData) return null;
 
   return (
     <div className="overflow-auto">

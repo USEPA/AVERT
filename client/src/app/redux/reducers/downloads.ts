@@ -3,7 +3,7 @@ import type { VehicleEmissionChangesByGeography } from 'app/calculations/transpo
 import type {
   EmissionsData,
   EmissionsFlagsField,
-  EmissionsMonthlyData,
+  AggregatedEmissionsData,
   EgusNeeingEmissionsReplacement,
 } from 'app/redux/reducers/results';
 import type { RegionId, StateId } from 'app/config';
@@ -12,8 +12,6 @@ import { regions as regionsConfig, states as statesConfig } from 'app/config';
  * Excel: "CountyFIPS" sheet.
  */
 import countyFips from 'app/data/county-fips.json';
-
-type MonthlyData = EmissionsData[keyof EmissionsData];
 
 type Pollutant = 'SO2' | 'NOX' | 'CO2' | 'PM25' | 'VOCS' | 'NH3';
 
@@ -94,15 +92,16 @@ export function setDownloadData(): AppThunk {
   return (dispatch, getState) => {
     const { transportation, results } = getState();
     const { vehicleEmissionChangesByGeography } = transportation;
-    const { emissionsMonthlyData, egusNeedingEmissionsReplacement } = results;
+    const { aggregatedEmissionsData, egusNeedingEmissionsReplacement } =
+      results;
 
     const countyData = formatCountyDownloadData({
-      emissionsMonthlyData,
+      aggregatedEmissionsData,
       egusNeedingEmissionsReplacement,
     });
 
     const cobraData = formatCobraDownloadData({
-      emissionsMonthlyData,
+      aggregatedEmissionsData,
       vehicleEmissionChangesByGeography,
     });
 
@@ -122,21 +121,21 @@ export function setDownloadData(): AppThunk {
  * level.
  */
 function formatCountyDownloadData(options: {
-  emissionsMonthlyData: EmissionsMonthlyData;
+  aggregatedEmissionsData: AggregatedEmissionsData;
   egusNeedingEmissionsReplacement: EgusNeeingEmissionsReplacement;
 }) {
-  const { emissionsMonthlyData, egusNeedingEmissionsReplacement } = options;
+  const { aggregatedEmissionsData, egusNeedingEmissionsReplacement } = options;
 
   const result: CountyData[] = [];
 
-  if (!emissionsMonthlyData) return result;
+  if (!aggregatedEmissionsData) return result;
 
-  const { total, regions, states, counties } = emissionsMonthlyData;
+  const { total, regions, states, counties } = aggregatedEmissionsData;
   const pollutantsRows = createOrderedPollutantsRows();
   const egusNeedingReplacement = Object.values(egusNeedingEmissionsReplacement);
 
   /**
-   * Conditionally add all affected regions data
+   * Conditionally add all affected regions power sector data
    * (will only occur a state was selected that's part of multiple regions)
    */
   if (Object.keys(regions).length > 1) {
@@ -147,10 +146,9 @@ function formatCountyDownloadData(options: {
         return egu.emissionsFlags.includes(pollutant as EmissionsFlagsField);
       });
 
-      const monthlyData = (total as EmissionsData)[pollutant];
-      const monthlyFields = createMonthlyEmissionsDataFields({
+      const powerSectorEmissionsFields = createPowerSectorEmissionsFields({
         pollutantNeedsReplacement,
-        monthlyData,
+        data: total[pollutant],
         unit,
       });
 
@@ -161,7 +159,7 @@ function formatCountyDownloadData(options: {
         State: null,
         County: null,
         'Unit of measure': unit,
-        ...monthlyFields,
+        ...powerSectorEmissionsFields,
       };
     });
 
@@ -169,7 +167,7 @@ function formatCountyDownloadData(options: {
   }
 
   /**
-   * Add data from each region
+   * Add power sector region data
    */
   Object.entries(regions).forEach(([regionId, regionData]) => {
     const regionsRows = [...pollutantsRows].map((row) => {
@@ -182,10 +180,9 @@ function formatCountyDownloadData(options: {
         );
       });
 
-      const monthlyData = regionData[pollutant];
-      const monthlyFields = createMonthlyEmissionsDataFields({
+      const powerSectorEmissionsFields = createPowerSectorEmissionsFields({
         pollutantNeedsReplacement,
-        monthlyData,
+        data: regionData[pollutant],
         unit,
       });
 
@@ -196,7 +193,7 @@ function formatCountyDownloadData(options: {
         State: null,
         County: null,
         'Unit of measure': unit,
-        ...monthlyFields,
+        ...powerSectorEmissionsFields,
       };
     });
 
@@ -204,7 +201,7 @@ function formatCountyDownloadData(options: {
   });
 
   /**
-   * Add data from each state
+   * Add power sector state data
    */
   Object.entries(states).forEach(([stateId, stateData]) => {
     const fipsCode =
@@ -222,10 +219,9 @@ function formatCountyDownloadData(options: {
         );
       });
 
-      const monthlyData = stateData[pollutant];
-      const monthlyFields = createMonthlyEmissionsDataFields({
+      const powerSectorEmissionsFields = createPowerSectorEmissionsFields({
         pollutantNeedsReplacement,
-        monthlyData,
+        data: stateData[pollutant],
         unit,
       });
 
@@ -236,7 +232,7 @@ function formatCountyDownloadData(options: {
         State: stateId,
         County: null,
         'Unit of measure': unit,
-        ...monthlyFields,
+        ...powerSectorEmissionsFields,
       };
     });
 
@@ -244,7 +240,7 @@ function formatCountyDownloadData(options: {
   });
 
   /**
-   * Add data from each county
+   * Add power sector county data
    */
   Object.entries(counties).forEach(([stateId, stateData]) => {
     Object.entries(stateData).forEach(([countyName, countyData]) => {
@@ -266,10 +262,9 @@ function formatCountyDownloadData(options: {
           );
         });
 
-        const monthlyData = countyData[pollutant];
-        const monthlyFields = createMonthlyEmissionsDataFields({
+        const powerSectorEmissionsFields = createPowerSectorEmissionsFields({
           pollutantNeedsReplacement,
-          monthlyData,
+          data: countyData[pollutant],
           unit,
         });
 
@@ -280,7 +275,7 @@ function formatCountyDownloadData(options: {
           State: stateId,
           County: countyName.replace(/city/, '(City)'), // format 'city'
           'Unit of measure': unit,
-          ...monthlyFields,
+          ...powerSectorEmissionsFields,
         };
       });
 
@@ -321,61 +316,57 @@ function createOrderedPollutantsRows() {
 }
 
 /**
- * Creates monthly power sector data fields for either emissions changes or
- * percentage changes, for use in the downloadable county data.
+ * Creates annual and monthly power sector data fields for either emissions
+ * changes or percentage changes, for use in the downloadable county data.
  */
-function createMonthlyEmissionsDataFields(options: {
+function createPowerSectorEmissionsFields(options: {
   pollutantNeedsReplacement: boolean;
-  monthlyData: MonthlyData;
+  data: {
+    monthly: EmissionsData[keyof EmissionsData];
+    annual: { original: 0; postEere: 0 };
+  };
   unit: 'percent' | 'emissions (tons)' | 'emissions (pounds)';
 }) {
-  const { pollutantNeedsReplacement, monthlyData, unit } = options;
+  const { pollutantNeedsReplacement, data, unit } = options;
 
-  /** annual totals */
-  const total = Object.values(monthlyData).reduce(
-    (object, data) => {
-      object.original += data.original;
-      object.postEere += data.postEere;
+  const annualEmissionsChange = data.annual.postEere - data.annual.original;
+  const annualPercentChange = (annualEmissionsChange / data.annual.original) * 100 || 0; // prettier-ignore
+
+  const monthlyData = Object.entries(data.monthly).reduce(
+    (object, [key, values]) => {
+      const month = Number(key);
+      const { original, postEere } = values;
+
+      const monthlyEmissionsChange = postEere - original;
+      const monthlyPercentChange = (monthlyEmissionsChange / original) * 100 || 0; // prettier-ignore
+
+      object[month] =
+        unit === 'percent'
+          ? pollutantNeedsReplacement
+            ? null
+            : monthlyPercentChange
+          : monthlyEmissionsChange;
+
       return object;
     },
-    { original: 0, postEere: 0 },
+    {} as { [month: number]: number | null },
   );
 
-  const totalEmissionsChange = total.postEere - total.original;
-  const totalPercentChange = (totalEmissionsChange / total.original) * 100 || 0;
-
-  const result = Object.entries(monthlyData).reduce((object, [key, data]) => {
-    const month = Number(key);
-    const { original, postEere } = data;
-
-    const emissionsChange = postEere - original;
-    const percentChange = (emissionsChange / original) * 100 || 0;
-
-    object[month] =
-      unit === 'percent'
-        ? pollutantNeedsReplacement
-          ? null
-          : percentChange
-        : emissionsChange;
-
-    return object;
-  }, {} as { [month: number]: number | null });
-
   return {
-    'Power Sector: January': result[1],
-    'Power Sector: February': result[2],
-    'Power Sector: March': result[3],
-    'Power Sector: April': result[4],
-    'Power Sector: May': result[5],
-    'Power Sector: June': result[6],
-    'Power Sector: July': result[7],
-    'Power Sector: August': result[8],
-    'Power Sector: September': result[9],
-    'Power Sector: October': result[10],
-    'Power Sector: November': result[11],
-    'Power Sector: December': result[12],
+    'Power Sector: January': monthlyData[1],
+    'Power Sector: February': monthlyData[2],
+    'Power Sector: March': monthlyData[3],
+    'Power Sector: April': monthlyData[4],
+    'Power Sector: May': monthlyData[5],
+    'Power Sector: June': monthlyData[6],
+    'Power Sector: July': monthlyData[7],
+    'Power Sector: August': monthlyData[8],
+    'Power Sector: September': monthlyData[9],
+    'Power Sector: October': monthlyData[10],
+    'Power Sector: November': monthlyData[11],
+    'Power Sector: December': monthlyData[12],
     'Power Sector: Annual':
-      unit === 'percent' ? totalPercentChange : totalEmissionsChange,
+      unit === 'percent' ? annualPercentChange : annualEmissionsChange,
   };
 }
 
@@ -384,10 +375,11 @@ function createMonthlyEmissionsDataFields(options: {
  * for use within the COBRA application.
  */
 function formatCobraDownloadData(options: {
-  emissionsMonthlyData: EmissionsMonthlyData;
+  aggregatedEmissionsData: AggregatedEmissionsData;
   vehicleEmissionChangesByGeography: VehicleEmissionChangesByGeography | {};
 }) {
-  const { emissionsMonthlyData, vehicleEmissionChangesByGeography } = options;
+  const { aggregatedEmissionsData, vehicleEmissionChangesByGeography } =
+    options;
 
   const result: CobraData[] = [];
 
@@ -396,11 +388,13 @@ function formatCobraDownloadData(options: {
       ? (vehicleEmissionChangesByGeography as VehicleEmissionChangesByGeography)
       : null;
 
-  if (!emissionsMonthlyData || !vehicleEmissionChanges) return result;
+  if (!aggregatedEmissionsData || !vehicleEmissionChanges) return result;
 
-  const { counties } = emissionsMonthlyData;
+  const { counties } = aggregatedEmissionsData;
 
-  // add power sector data
+  /**
+   * add power sector county data
+   */
   Object.entries(counties).forEach(([stateId, stateData]) => {
     Object.entries(stateData).forEach(([countyName, countyData]) => {
       const totalEmissionsChanges = calculateTotalEmissionsChanges(countyData);
@@ -434,7 +428,9 @@ function formatCobraDownloadData(options: {
     });
   });
 
-  // add transportation sector data
+  /**
+   * add transportation sector county data
+   */
   Object.entries(vehicleEmissionChanges.counties).forEach(
     ([stateId, stateData]) => {
       Object.entries(stateData).forEach(([countyName, countyData]) => {
