@@ -25,7 +25,7 @@ function setAnnualEmissionsChanges(
   const result = Object.entries(aggregatedEmissionsData.total).reduce(
     (object, [key, value]) => {
       const pollutant = key as keyof typeof aggregatedEmissionsData.total;
-      const { original, postEere } = value.annual;
+      const { original, postEere } = value.power.annual;
       object[pollutant] += postEere - original;
       return object;
     },

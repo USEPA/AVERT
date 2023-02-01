@@ -6,7 +6,7 @@ import type {
   AggregatedEmissionsData,
   EgusNeeingEmissionsReplacement,
 } from 'app/redux/reducers/results';
-import type { RegionId, StateId } from 'app/config';
+import type { RegionId } from 'app/config';
 import { regions as regionsConfig, states as statesConfig } from 'app/config';
 /**
  * Excel: "CountyFIPS" sheet.
@@ -321,18 +321,15 @@ function createOrderedPollutantsRows() {
  */
 function createPowerSectorEmissionsFields(options: {
   pollutantNeedsReplacement: boolean;
-  data: {
-    monthly: EmissionsData[keyof EmissionsData];
-    annual: { original: 0; postEere: 0 };
-  };
+  data: EmissionsData[keyof EmissionsData];
   unit: 'percent' | 'emissions (tons)' | 'emissions (pounds)';
 }) {
   const { pollutantNeedsReplacement, data, unit } = options;
 
-  const annualEmissionsChange = data.annual.postEere - data.annual.original;
-  const annualPercentChange = (annualEmissionsChange / data.annual.original) * 100 || 0; // prettier-ignore
+  const annualEmissionsChange = data.power.annual.postEere - data.power.annual.original; // prettier-ignore
+  const annualPercentChange = (annualEmissionsChange / data.power.annual.original) * 100 || 0; // prettier-ignore
 
-  const monthlyData = Object.entries(data.monthly).reduce(
+  const monthlyData = Object.entries(data.power.monthly).reduce(
     (object, [key, values]) => {
       const month = Number(key);
       const { original, postEere } = values;
@@ -390,16 +387,15 @@ function formatCobraDownloadData(options: {
 
   if (!aggregatedEmissionsData || !vehicleEmissionChanges) return result;
 
-  const { counties } = aggregatedEmissionsData;
-
   /**
    * add power sector county data
    */
-  Object.entries(counties).forEach(([stateId, stateData]) => {
-    Object.entries(stateData).forEach(([countyName, countyData]) => {
+  Object.entries(aggregatedEmissionsData.counties).forEach(([key, value]) => {
+    Object.entries(value).forEach(([countyName, countyData]) => {
+      const stateId = key as keyof typeof aggregatedEmissionsData.counties;
       const totalEmissionsChanges = calculateTotalEmissionsChanges(countyData);
 
-      const state = statesConfig[stateId as StateId].name;
+      const state = statesConfig[stateId].name;
       const county = countyName.replace(/city/, '(City)'); // format 'city'
       const fipsCode =
         countyFips.find(
@@ -431,38 +427,38 @@ function formatCobraDownloadData(options: {
   /**
    * add transportation sector county data
    */
-  Object.entries(vehicleEmissionChanges.counties).forEach(
-    ([stateId, stateData]) => {
-      Object.entries(stateData).forEach(([countyName, countyData]) => {
-        const state = statesConfig[stateId as StateId].name;
-        const county = countyName.replace(/city/, '(City)'); // format 'city'
-        const fipsCode =
-          countyFips.find(
-            (data) =>
-              data['State Name'] === state &&
-              data['County Name Long'] === countyName,
-          )?.['State and County FIPS Code'] || '';
+  Object.entries(vehicleEmissionChanges.counties).forEach(([key, value]) => {
+    Object.entries(value).forEach(([countyName, countyData]) => {
+      const stateId = key as keyof typeof vehicleEmissionChanges.counties;
 
-        const noxTons = Number((countyData.NOX / 2_000).toFixed(3));
-        const so2Tons = Number((countyData.SO2 / 2_000).toFixed(3));
-        const pm25Tons = Number((countyData.PM25 / 2_000).toFixed(3));
-        const vocsTons = Number((countyData.VOCs / 2_000).toFixed(3));
-        const nh3Tons = Number((countyData.NH3 / 2_000).toFixed(3));
+      const state = statesConfig[stateId].name;
+      const county = countyName.replace(/city/, '(City)'); // format 'city'
+      const fipsCode =
+        countyFips.find(
+          (data) =>
+            data['State Name'] === state &&
+            data['County Name Long'] === countyName,
+        )?.['State and County FIPS Code'] || '';
 
-        result.push({
-          FIPS: fipsCode,
-          STATE: state,
-          COUNTY: county,
-          TIER1NAME: 'Highway Vehicles' as const,
-          NOx_REDUCTIONS_TONS: noxTons,
-          SO2_REDUCTIONS_TONS: so2Tons,
-          PM25_REDUCTIONS_TONS: pm25Tons,
-          VOCS_REDUCTIONS_TONS: vocsTons,
-          NH3_REDUCTIONS_TONS: nh3Tons,
-        });
+      const noxTons = Number((countyData.NOX / 2_000).toFixed(3));
+      const so2Tons = Number((countyData.SO2 / 2_000).toFixed(3));
+      const pm25Tons = Number((countyData.PM25 / 2_000).toFixed(3));
+      const vocsTons = Number((countyData.VOCs / 2_000).toFixed(3));
+      const nh3Tons = Number((countyData.NH3 / 2_000).toFixed(3));
+
+      result.push({
+        FIPS: fipsCode,
+        STATE: state,
+        COUNTY: county,
+        TIER1NAME: 'Highway Vehicles' as const,
+        NOx_REDUCTIONS_TONS: noxTons,
+        SO2_REDUCTIONS_TONS: so2Tons,
+        PM25_REDUCTIONS_TONS: pm25Tons,
+        VOCS_REDUCTIONS_TONS: vocsTons,
+        NH3_REDUCTIONS_TONS: nh3Tons,
       });
-    },
-  );
+    });
+  });
 
   return result;
 }
@@ -472,12 +468,13 @@ function formatCobraDownloadData(options: {
  */
 function calculateTotalEmissionsChanges(emissionsData: EmissionsData) {
   const result = Object.entries(emissionsData).reduce(
-    (object, [key, monthlyData]) => {
-      const pollutant = key as keyof EmissionsData;
+    (object, [key, value]) => {
+      const pollutant = key as keyof typeof emissionsData;
 
-      object[pollutant] = Object.values(monthlyData).reduce((total, data) => {
-        return (total += data.postEere - data.original);
-      }, 0);
+      object[pollutant] = Object.values(value.power.monthly).reduce(
+        (total, data) => (total += data.postEere - data.original),
+        0,
+      );
 
       return object;
     },

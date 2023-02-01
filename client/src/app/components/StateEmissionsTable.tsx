@@ -63,7 +63,7 @@ function setAnnualStateEmissionsChanges(options: {
     const power = Object.entries(stateData).reduce(
       (object, [stateDataKey, stateDataValue]) => {
         const pollutant = stateDataKey as keyof typeof stateData;
-        const { original, postEere } = stateDataValue.annual;
+        const { original, postEere } = stateDataValue.power.annual;
         object[pollutant] += postEere - original;
         return object;
       },

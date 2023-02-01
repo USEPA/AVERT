@@ -42,7 +42,7 @@ type ChartData = {
  * changes, for display in the monthly charts.
  */
 function calculateMonthlyData(
-  monthlyData: EmissionsData[keyof EmissionsData],
+  monthlyData: EmissionsData[keyof EmissionsData]['power']['monthly'],
   unit: Unit,
 ) {
   const monthlyEmissionsChanges: number[] = [];
@@ -93,16 +93,8 @@ function setChartSeriesData(options: {
   return result;
 }
 
-function Chart(props: {
-  pollutant: Pollutant;
-  powerData: {
-    [key in Pollutant]: {
-      monthly: EmissionsData[keyof EmissionsData];
-      annual: { original: 0; postEere: 0 };
-    };
-  };
-}) {
-  const { pollutant, powerData } = props;
+function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
+  const { pollutant, data } = props;
 
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const totalMonthlyEmissionChanges = useTypedSelector(
@@ -157,12 +149,12 @@ function Chart(props: {
     },
   );
 
-  // console.log({ powerData, vehicleEmissions }); // NOTE: for debugging purposes
+  // console.log({ data, vehicleEmissions }); // NOTE: for debugging purposes
 
   const so2Data = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyData(powerData.so2.monthly, currentUnit),
+      data: calculateMonthlyData(data.so2.power.monthly, currentUnit),
       color: 'rgba(5, 141, 199, 1)',
       unit: 'lb',
     },
@@ -177,7 +169,7 @@ function Chart(props: {
   const noxData = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyData(powerData.nox.monthly, currentUnit),
+      data: calculateMonthlyData(data.nox.power.monthly, currentUnit),
       color: 'rgba(237, 86, 27, 1)',
       unit: 'lb',
     },
@@ -192,7 +184,7 @@ function Chart(props: {
   const co2Data = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyData(powerData.co2.monthly, currentUnit),
+      data: calculateMonthlyData(data.co2.power.monthly, currentUnit),
       color: 'rgba(80, 180, 50, 1)',
       unit: 'tons',
     },
@@ -207,7 +199,7 @@ function Chart(props: {
   const pm25Data = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyData(powerData.pm25.monthly, currentUnit),
+      data: calculateMonthlyData(data.pm25.power.monthly, currentUnit),
       color: 'rgba(102, 86, 131, 1)',
       unit: 'lb',
     },
@@ -222,7 +214,7 @@ function Chart(props: {
   const vocsData = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyData(powerData.vocs.monthly, currentUnit),
+      data: calculateMonthlyData(data.vocs.power.monthly, currentUnit),
       color: 'rgba(255, 193, 7, 1)',
       unit: 'lb',
     },
@@ -237,7 +229,7 @@ function Chart(props: {
   const nh3Data = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyData(powerData.nh3.monthly, currentUnit),
+      data: calculateMonthlyData(data.nh3.power.monthly, currentUnit),
       color: 'rgba(0, 150, 136, 1)',
       unit: 'lb',
     },
@@ -503,9 +495,9 @@ function Chart(props: {
 }
 
 /**
- * Sets the power sector emissions data based on the currently selected filters.
+ * Sets emissions data based on the currently selected filters.
  */
-function setFilteredPowerData(options: {
+function setFilteredData(options: {
   aggregatedEmissionsData: AggregatedEmissionsData;
   aggregation: Aggregation;
   regionId: RegionId | 'ALL';
@@ -515,12 +507,7 @@ function setFilteredPowerData(options: {
   const { aggregatedEmissionsData, aggregation, regionId, stateId, county } =
     options;
 
-  const emptyResult = {} as {
-    [key in Pollutant]: {
-      monthly: EmissionsData[keyof EmissionsData];
-      annual: { original: 0; postEere: 0 };
-    };
-  };
+  const emptyResult = {} as EmissionsData;
 
   if (!aggregatedEmissionsData) return emptyResult;
 
@@ -597,7 +584,7 @@ function MonthlyEmissionsChartsContent() {
       ? selectedStateRegions[0].id
       : (currentRegionId as RegionId);
 
-  const powerData = setFilteredPowerData({
+  const data = setFilteredData({
     aggregatedEmissionsData,
     aggregation: currentAggregation,
     regionId,
@@ -1192,11 +1179,7 @@ function MonthlyEmissionsChartsContent() {
 
                   return (
                     <div key={pollutant} className={className}>
-                      <Chart
-                        key={key}
-                        pollutant={pollutant}
-                        powerData={powerData}
-                      />
+                      <Chart key={key} pollutant={pollutant} data={data} />
                     </div>
                   );
                 })
