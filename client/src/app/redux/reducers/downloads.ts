@@ -20,6 +20,7 @@ type Pollutant = 'SO2' | 'NOX' | 'CO2' | 'PM25' | 'VOCS' | 'NH3';
 type CountyData = {
   Pollutant: Pollutant;
   'Aggregation level': string;
+  'FIPS Code': string | null;
   State: string | null;
   County: string | null;
   'Unit of measure': 'percent' | 'emissions (tons)' | 'emissions (pounds)';
@@ -155,6 +156,7 @@ function formatCountyDownloadData(options: {
       return {
         Pollutant: pollutant.toUpperCase() as Pollutant,
         'Aggregation level': 'All Affected Regions',
+        'FIPS Code': null,
         State: null,
         County: null,
         'Unit of measure': unit,
@@ -189,6 +191,7 @@ function formatCountyDownloadData(options: {
       return {
         Pollutant: pollutant.toUpperCase() as Pollutant,
         'Aggregation level': `${regionsConfig[regionId as RegionId].name} Region`, // prettier-ignore
+        'FIPS Code': null,
         State: null,
         County: null,
         'Unit of measure': unit,
@@ -203,6 +206,11 @@ function formatCountyDownloadData(options: {
    * Add data from each state
    */
   Object.entries(states).forEach(([stateId, stateData]) => {
+    const fipsCode =
+      countyFips.find((data) => {
+        return data['Postal State Code'] === stateId;
+      })?.['State and County FIPS Code'] || '';
+
     const statesRows = [...pollutantsRows].map((row) => {
       const { pollutant, unit } = row;
 
@@ -223,6 +231,7 @@ function formatCountyDownloadData(options: {
       return {
         Pollutant: pollutant.toUpperCase() as Pollutant,
         'Aggregation level': 'State',
+        'FIPS Code': fipsCode ? fipsCode.substring(0, 2) : null,
         State: stateId,
         County: null,
         'Unit of measure': unit,
@@ -238,6 +247,13 @@ function formatCountyDownloadData(options: {
    */
   Object.entries(counties).forEach(([stateId, stateData]) => {
     Object.entries(stateData).forEach(([countyName, countyData]) => {
+      const fipsCode =
+        countyFips.find(
+          (data) =>
+            data['Postal State Code'] === stateId &&
+            data['County Name Long'] === countyName,
+        )?.['State and County FIPS Code'] || '';
+
       const countiesRows = [...pollutantsRows].map((row) => {
         const { pollutant, unit } = row;
 
@@ -259,6 +275,7 @@ function formatCountyDownloadData(options: {
         return {
           Pollutant: pollutant.toUpperCase() as Pollutant,
           'Aggregation level': 'County',
+          'FIPS Code': fipsCode,
           State: stateId,
           County: countyName.replace(/city/, '(City)'), // format 'city'
           'Unit of measure': unit,
