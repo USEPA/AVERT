@@ -1005,36 +1005,9 @@ export function setSelectedRegionsEEREDefaultsAverages(): AppThunk {
 export function setEVDeploymentLocationHistoricalEERE(): AppThunk {
   return (dispatch, getState) => {
     const { geography, eere, transportation } = getState();
-    const { regions, regionalScalingFactors } = geography;
+    const { regionalLineLoss } = geography;
     const { evDeploymentLocation } = eere.inputs;
     const { selectedRegionsEEREDefaultsAverages } = transportation;
-
-    const selectedGeographyRegionIds = Object.keys(
-      regionalScalingFactors,
-    ) as RegionId[];
-
-    const selectedGeographyRegions = getSelectedGeographyRegions({
-      regions,
-      selectedGeographyRegionIds,
-    });
-
-    /**
-     * Build up line loss from the selected geography's regions using the
-     * regional scaling factors.
-     *
-     * NOTE: this is to support selected states – if a region is selected, the
-     * result will be the same as the region's line loss value
-     */
-    const regionalLineLoss = Object.entries(selectedGeographyRegions).reduce(
-      (result, [id, regionData]) => {
-        const regionalScalingFactor = regionalScalingFactors[id as RegionId];
-        if (regionalScalingFactor) {
-          result += regionData.lineLoss * regionalScalingFactor;
-        }
-        return result;
-      },
-      0,
-    );
 
     const selectedRegionId =
       Object.values(geography.regions).find((r) => r.selected)?.id || '';

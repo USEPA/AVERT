@@ -114,6 +114,10 @@ type GeographyAction =
       };
     }
   | {
+      type: 'geography/SET_REGIONAL_LINE_LOSS';
+      payload: { regionalLineLoss: number };
+    }
+  | {
       type: 'geography/SET_SELECTED_GEOGRAPHY_COUNTIES';
       payload: { selectedGeographyCounties: SelectedGeographyCounties };
     }
@@ -149,6 +153,7 @@ type GeographyState = {
   regions: { [key in RegionId]: RegionState };
   states: { [key in StateId]: StateState };
   regionalScalingFactors: RegionalScalingFactors;
+  regionalLineLoss: number;
   selectedGeographyCounties: SelectedGeographyCounties;
 };
 
@@ -217,6 +222,7 @@ const initialState: GeographyState = {
   regions: updatedRegions,
   states: updatedStates,
   regionalScalingFactors: {},
+  regionalLineLoss: 0,
   selectedGeographyCounties: {},
 };
 
@@ -263,6 +269,15 @@ export default function reducer(
       return {
         ...state,
         regionalScalingFactors,
+      };
+    }
+
+    case 'geography/SET_REGIONAL_LINE_LOSS': {
+      const { regionalLineLoss } = action.payload;
+
+      return {
+        ...state,
+        regionalLineLoss,
       };
     }
 
@@ -328,6 +343,7 @@ export function selectGeography(focus: GeographicFocus): AppThunk {
     });
 
     dispatch(setRegionalScalingFactors());
+    dispatch(setRegionalLineLoss());
     dispatch(setSelectedGeographyCounties());
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
@@ -347,6 +363,7 @@ export function selectRegion(regionId: RegionId): AppThunk {
     });
 
     dispatch(setRegionalScalingFactors());
+    dispatch(setRegionalLineLoss());
     dispatch(setSelectedGeographyCounties());
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
@@ -366,6 +383,7 @@ export function selectState(stateId: string): AppThunk {
     });
 
     dispatch(setRegionalScalingFactors());
+    dispatch(setRegionalLineLoss());
     dispatch(setSelectedGeographyCounties());
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
@@ -393,6 +411,51 @@ function setRegionalScalingFactors(): AppThunk {
     dispatch({
       type: 'geography/SET_REGIONAL_SCALING_FACTORS',
       payload: { regionalScalingFactors },
+    });
+  };
+}
+
+/**
+ * Called every time this `geography` reducer's `selectGeography()`,
+ * `selectRegion()`, or `selectState()` functions are called.
+ *
+ * _(e.g. anytime the selected geography changes)_
+ */
+function setRegionalLineLoss(): AppThunk {
+  return (dispatch, getState) => {
+    const { geography } = getState();
+    const { regions, regionalScalingFactors } = geography;
+
+    const selectedGeographyRegionIds = Object.keys(
+      regionalScalingFactors,
+    ) as RegionId[];
+
+    const selectedGeographyRegions = getSelectedGeographyRegions({
+      regions,
+      selectedGeographyRegionIds,
+    });
+
+    /**
+     * Build up line loss from the selected geography's regions using the
+     * regional scaling factors.
+     *
+     * NOTE: this is to support selected states – if a region is selected, the
+     * result will be the same as the region's line loss value
+     */
+    const regionalLineLoss = Object.entries(selectedGeographyRegions).reduce(
+      (result, [id, regionData]) => {
+        const regionalScalingFactor = regionalScalingFactors[id as RegionId];
+        if (regionalScalingFactor) {
+          result += regionData.lineLoss * regionalScalingFactor;
+        }
+        return result;
+      },
+      0,
+    );
+
+    dispatch({
+      type: 'geography/SET_REGIONAL_LINE_LOSS',
+      payload: { regionalLineLoss },
     });
   };
 }
