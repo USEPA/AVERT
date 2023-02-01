@@ -1,11 +1,11 @@
 import type { AppThunk } from 'app/redux/index';
+import type { EgusNeeingEmissionsReplacement } from 'app/redux/reducers/results';
 import type { VehicleEmissionChangesByGeography } from 'app/calculations/transportation';
 import type {
   EmissionsData,
   EmissionsFlagsField,
   AggregatedEmissionsData,
-  EgusNeeingEmissionsReplacement,
-} from 'app/redux/reducers/results';
+} from 'app/calculations/emissions';
 import type { RegionId } from 'app/config';
 import { regions as regionsConfig, states as statesConfig } from 'app/config';
 /**

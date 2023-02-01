@@ -3,10 +3,8 @@ import { ReactNode } from 'react';
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
-import type {
-  AggregatedEmissionsData,
-  EmissionsReplacements,
-} from 'app/redux/reducers/results';
+import type { EmissionsReplacements } from 'app/redux/reducers/results';
+import type { AggregatedEmissionsData } from 'app/calculations/emissions';
 
 type AnnualMonthlyData = ReturnType<typeof setAnnualMonthlyData>;
 

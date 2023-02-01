@@ -1,9 +1,32 @@
+import { sortObjectByKeys } from 'app/calculations/utilities';
+import type { RegionId, StateId } from 'app/config';
 import type { RDFJSON } from 'app/redux/reducers/geography';
 /**
  * Annual point-source data from the National Emissions Inventory (NEI) for
  * every electric generating unit (EGU), organized by AVERT region
  */
 // import neiData from 'app/data/annual-emission-factors.json';
+
+const emissionsFields = ["generation", "so2", "nox", "co2", "pm25", "vocs", "nh3"] as const; // prettier-ignore
+
+export type EmissionsChanges = ReturnType<typeof calculateEmissionsChanges>; // TODO: determine if this needs to be exported
+export type AggregatedEmissionsData = ReturnType<
+  typeof calculateAggregatedEmissionsData
+>;
+
+type EguData = EmissionsChanges[string];
+
+export type EmissionsData = {
+  [field in typeof emissionsFields[number]]: {
+    power: {
+      monthly: EguData['data'][keyof EguData['data']];
+      annual: { original: number; postEere: number };
+    };
+    vehicle: number | null;
+  };
+};
+
+export type EmissionsFlagsField = EguData['emissionsFlags'][number];
 
 type NEIData = {
   regions: {
@@ -28,8 +51,6 @@ type NEIData = {
 };
 
 type RDFDataField = keyof RDFJSON['data'];
-
-export type EmissionsChanges = ReturnType<typeof calculateEmissionsChanges>;
 
 /**
  * Adds a number to an array of numbers, sorts it, and returns the index of the
@@ -312,6 +333,109 @@ function calculateEmissionsChanges(options: {
       });
     });
   }
+
+  return result;
+}
+
+/**
+ * Creates the intial structure of monthly and annual emissions data for each
+ * pollutant.
+ */
+function createInitialEmissionsData() {
+  const result = emissionsFields.reduce((object, field) => {
+    const monthlyData = [...Array(12)].reduce((data, _item, index) => {
+      const month = index + 1;
+      data[month] = { original: 0, postEere: 0 };
+      return data;
+    }, {} as EguData['data'][keyof EguData['data']]);
+
+    object[field] = {
+      power: {
+        monthly: monthlyData,
+        annual: { original: 0, postEere: 0 },
+      },
+      vehicle: null,
+    };
+
+    return object;
+  }, {} as EmissionsData);
+
+  return result;
+}
+
+/**
+ * Sum the provided EGUs emissions data into monthly and annual original and
+ * post-EERE values for each pollutant.
+ */
+export function calculateAggregatedEmissionsData(egus: EmissionsChanges) {
+  if (Object.keys(egus).length === 0) return null;
+
+  const result = Object.values(egus).reduce(
+    (object, eguData) => {
+      const regionId = eguData.region as RegionId;
+      const stateId = eguData.state as StateId;
+      const county = eguData.county;
+
+      object.regions[regionId] ??= createInitialEmissionsData();
+      object.states[stateId] ??= createInitialEmissionsData();
+      object.counties[stateId] ??= {};
+      object.counties[stateId][county] ??= createInitialEmissionsData();
+
+      Object.entries(eguData.data).forEach(([annualKey, annualData]) => {
+        const pollutant = annualKey as keyof typeof eguData.data;
+
+        Object.entries(annualData).forEach(([monthlyKey, monthlyData]) => {
+          const month = Number(monthlyKey);
+          const { original, postEere } = monthlyData;
+
+          object.total[pollutant].power.monthly[month].original += original;
+          object.total[pollutant].power.monthly[month].postEere += postEere;
+          object.total[pollutant].power.annual.original += original;
+          object.total[pollutant].power.annual.postEere += postEere;
+
+          object.regions[regionId][pollutant].power.monthly[month].original += original; // prettier-ignore
+          object.regions[regionId][pollutant].power.monthly[month].postEere += postEere; // prettier-ignore
+          object.regions[regionId][pollutant].power.annual.original += original;
+          object.regions[regionId][pollutant].power.annual.postEere += postEere;
+
+          object.states[stateId][pollutant].power.monthly[month].original += original; // prettier-ignore
+          object.states[stateId][pollutant].power.monthly[month].postEere += postEere; // prettier-ignore
+          object.states[stateId][pollutant].power.annual.original += original;
+          object.states[stateId][pollutant].power.annual.postEere += postEere;
+
+          object.counties[stateId][county][pollutant].power.monthly[month].original += original; // prettier-ignore
+          object.counties[stateId][county][pollutant].power.monthly[month].postEere += postEere; // prettier-ignore
+          object.counties[stateId][county][pollutant].power.annual.original += original; // prettier-ignore
+          object.counties[stateId][county][pollutant].power.annual.postEere += postEere; // prettier-ignore
+        });
+      });
+
+      return object;
+    },
+    {
+      total: createInitialEmissionsData(),
+      regions: {},
+      states: {},
+      counties: {},
+    } as {
+      total: EmissionsData;
+      regions: { [regionId in RegionId]: EmissionsData };
+      states: { [stateId in StateId]: EmissionsData };
+      counties: { [stateId in StateId]: { [county: string]: EmissionsData } };
+    },
+  );
+
+  // sort results alphabetically
+  result.regions = sortObjectByKeys(result.regions);
+  result.states = sortObjectByKeys(result.states);
+  result.counties = sortObjectByKeys(result.counties);
+  result.counties = Object.entries(result.counties).reduce(
+    (object, [stateId, counties]) => {
+      object[stateId as StateId] = sortObjectByKeys(counties);
+      return object;
+    },
+    {} as typeof result.counties,
+  );
 
   return result;
 }

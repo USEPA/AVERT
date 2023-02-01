@@ -1,6 +1,6 @@
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { useTypedSelector } from 'app/redux/index';
-import type { AggregatedEmissionsData } from 'app/redux/reducers/results';
+import type { AggregatedEmissionsData } from 'app/calculations/emissions';
 
 /**
  * Round number to the nearest 10 and conditionally display '--' if number is
