@@ -4,7 +4,7 @@ import {
   setSelectedGeographyVMTData,
   setEVEfficiency,
   setDailyAndMonthlyStats,
-  setSelectedGeographyEEREDefaultsAverages,
+  setSelectedRegionsEEREDefaultsAverages,
 } from 'app/redux/reducers/transportation';
 import type {
   RegionalScalingFactors,
@@ -556,7 +556,7 @@ export function fetchRegionsData(): AppThunk {
       })
       .then(() => {
         dispatch(setDailyAndMonthlyStats());
-        dispatch(setSelectedGeographyEEREDefaultsAverages());
+        dispatch(setSelectedRegionsEEREDefaultsAverages());
       });
   };
 }
