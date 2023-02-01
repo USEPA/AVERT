@@ -1,6 +1,4 @@
 import { useTypedSelector } from 'app/redux/index';
-import { getSelectedGeographyRegions } from 'app/calculations/geography';
-import type { RegionId } from 'app/config';
 
 function calculatePercent(numerator: number, denominator: number) {
   return denominator !== 0
@@ -142,42 +140,14 @@ export function EVSalesAndStockTable(props: { className?: string }) {
 export function EEREEVComparisonTable(props: { className?: string }) {
   const { className } = props;
 
-  const regions = useTypedSelector(({ geography }) => geography.regions);
-  const regionalScalingFactors = useTypedSelector(
-    ({ geography }) => geography.regionalScalingFactors,
+  const regionalLineLoss = useTypedSelector(
+    ({ geography }) => geography.regionalLineLoss,
   );
   const totalYearlyEVEnergyUsage = useTypedSelector(
     ({ transportation }) => transportation.totalYearlyEVEnergyUsage,
   );
   const evDeploymentLocationHistoricalEERE = useTypedSelector(
     ({ transportation }) => transportation.evDeploymentLocationHistoricalEERE,
-  );
-
-  const selectedGeographyRegionIds = Object.keys(
-    regionalScalingFactors,
-  ) as RegionId[];
-
-  const selectedGeographyRegions = getSelectedGeographyRegions({
-    regions,
-    selectedGeographyRegionIds,
-  });
-
-  /**
-   * Build up line loss from the selected geography's regions using the regional
-   * scaling factors.
-   *
-   * NOTE: this is to support selected states – if a region is selected, the
-   * result will be the same as the region's line loss value
-   */
-  const lineLoss = Object.entries(selectedGeographyRegions).reduce(
-    (result, [id, regionData]) => {
-      const regionalScalingFactor = regionalScalingFactors[id as RegionId];
-      if (regionalScalingFactor) {
-        result += regionData.lineLoss * regionalScalingFactor;
-      }
-      return result;
-    },
-    0,
   );
 
   const historicalEERetailMw = evDeploymentLocationHistoricalEERE.eeRetail.mw;
@@ -190,19 +160,22 @@ export function EEREEVComparisonTable(props: { className?: string }) {
   const historicalUtilitySolarGWh = evDeploymentLocationHistoricalEERE.utilitySolar.gwh; // prettier-ignore
 
   const historicalTotalMw =
-    historicalEERetailMw / (1 - lineLoss) +
+    historicalEERetailMw / (1 - regionalLineLoss) +
     historicalOnshoreWindMw +
     historicalUtilitySolarMw;
 
   const historicalTotalGWh =
-    historicalEERetailGWh / (1 - lineLoss) +
+    historicalEERetailGWh / (1 - regionalLineLoss) +
     historicalOnshoreWindGWh +
     historicalUtilitySolarGWh;
 
-  const requiredOffsetTotalGWh = totalYearlyEVEnergyUsage / (1 - lineLoss);
+  const requiredOffsetTotalGWh =
+    totalYearlyEVEnergyUsage / (1 - regionalLineLoss);
 
   const requiredOffsetEERetailGWh =
-    (historicalEERetailGWh / (1 - lineLoss) / (historicalTotalGWh || 1)) *
+    (historicalEERetailGWh /
+      (1 - regionalLineLoss) /
+      (historicalTotalGWh || 1)) *
     requiredOffsetTotalGWh;
 
   const requiredOffsetEERetailMw =

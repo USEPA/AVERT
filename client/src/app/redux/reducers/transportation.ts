@@ -23,7 +23,7 @@ import type {
   TotalYearlyEmissionChanges,
   VehicleEmissionChangesByGeography,
   VehicleSalesAndStock,
-  SelectedGeographyEEREDefaultsAverages,
+  SelectedRegionsEEREDefaultsAverages,
   EVDeploymentLocationHistoricalEERE,
 } from 'app/calculations/transportation';
 import { getSelectedGeographyRegions } from 'app/calculations/geography';
@@ -51,7 +51,7 @@ import {
   calculateTotalYearlyEmissionChanges,
   calculateVehicleEmissionChangesByGeography,
   calculateVehicleSalesAndStock,
-  calculateSelectedGeographyEEREDefaultsAverages,
+  calculateSelectedRegionsEEREDefaultsAverages,
   calculateEVDeploymentLocationHistoricalEERE,
 } from 'app/calculations/transportation';
 import type { RegionId } from 'app/config';
@@ -162,9 +162,9 @@ type TransportationAction =
       payload: { vehicleSalesAndStock: VehicleSalesAndStock };
     }
   | {
-      type: 'transportation/SET_SELECTED_GEOGRAPHY_EERE_DEFAULTS_AVERAGES';
+      type: 'transportation/SET_SELECTED_REGIONS_EERE_DEFAULTS_AVERAGES';
       payload: {
-        selectedGeographyEEREDefaultsAverages: SelectedGeographyEEREDefaultsAverages;
+        selectedRegionsEEREDefaultsAverages: SelectedRegionsEEREDefaultsAverages;
       };
     }
   | {
@@ -198,7 +198,7 @@ type TransportationState = {
   totalYearlyEmissionChanges: TotalYearlyEmissionChanges;
   vehicleEmissionChangesByGeography: VehicleEmissionChangesByGeography | {};
   vehicleSalesAndStock: VehicleSalesAndStock;
-  selectedGeographyEEREDefaultsAverages: SelectedGeographyEEREDefaultsAverages;
+  selectedRegionsEEREDefaultsAverages: SelectedRegionsEEREDefaultsAverages;
   evDeploymentLocationHistoricalEERE: EVDeploymentLocationHistoricalEERE;
 };
 
@@ -256,10 +256,7 @@ const initialState: TransportationState = {
   },
   vehicleEmissionChangesByGeography: {},
   vehicleSalesAndStock: {},
-  selectedGeographyEEREDefaultsAverages: {
-    onshore_wind: 0,
-    utility_pv: 0,
-  },
+  selectedRegionsEEREDefaultsAverages: {},
   evDeploymentLocationHistoricalEERE: {
     eeRetail: { mw: 0, gwh: 0 },
     onshoreWind: { mw: 0, gwh: 0 },
@@ -479,12 +476,12 @@ export default function reducer(
       };
     }
 
-    case 'transportation/SET_SELECTED_GEOGRAPHY_EERE_DEFAULTS_AVERAGES': {
-      const { selectedGeographyEEREDefaultsAverages } = action.payload;
+    case 'transportation/SET_SELECTED_REGIONS_EERE_DEFAULTS_AVERAGES': {
+      const { selectedRegionsEEREDefaultsAverages } = action.payload;
 
       return {
         ...state,
-        selectedGeographyEEREDefaultsAverages,
+        selectedRegionsEEREDefaultsAverages,
       };
     }
 
@@ -824,8 +821,6 @@ export function setMonthlyDailyEVEnergyUsage(): AppThunk {
  * or ICE replacement vehicle changes)_
  */
 export function setMonthlyEmissionRates(): AppThunk {
-  // NOTE: set whenever EV deployment location, EV model year, or ICE
-  // replacement vehicle changes
   return (dispatch, getState) => {
     const { transportation, eere } = getState();
     const { selectedGeographyStatesVMTPercentages } = transportation;
@@ -930,7 +925,8 @@ export function setEmissionChanges(): AppThunk {
  * or every time the `eere` reducer's `setEVDeploymentLocationOptions()`
  * function is called.
  *
- * _(e.g. when the app starts or anytime the selected geography changes)_
+ * _(e.g. when the app starts or anytime the selected geography or the EV
+ * deployment location changes)_
  */
 export function setVehicleSalesAndStock(): AppThunk {
   return (dispatch, getState) => {
@@ -968,7 +964,7 @@ export function setVehicleSalesAndStock(): AppThunk {
  * _(e.g. whenever the "Set EE/RE Impacts" button is clicked  on the "Select
  * Geography" page)_
  */
-export function setSelectedGeographyEEREDefaultsAverages(): AppThunk {
+export function setSelectedRegionsEEREDefaultsAverages(): AppThunk {
   return (dispatch, getState) => {
     const { geography } = getState();
     const { regions, regionalScalingFactors } = geography;
@@ -982,39 +978,46 @@ export function setSelectedGeographyEEREDefaultsAverages(): AppThunk {
       selectedGeographyRegionIds,
     });
 
-    const selectedGeographyEEREDefaultsAverages =
-      calculateSelectedGeographyEEREDefaultsAverages({
+    const selectedRegionsEEREDefaultsAverages =
+      calculateSelectedRegionsEEREDefaultsAverages({
         regionalScalingFactors,
         selectedGeographyRegions,
       });
 
     dispatch({
-      type: 'transportation/SET_SELECTED_GEOGRAPHY_EERE_DEFAULTS_AVERAGES',
-      payload: { selectedGeographyEEREDefaultsAverages },
+      type: 'transportation/SET_SELECTED_REGIONS_EERE_DEFAULTS_AVERAGES',
+      payload: { selectedRegionsEEREDefaultsAverages },
     });
 
-    // NOTE: `evDeploymentLocationHistoricalEERE` uses `selectedGeographyEEREDefaultsAverages`
+    // NOTE: `evDeploymentLocationHistoricalEERE` uses `selectedRegionsEEREDefaultsAverages`
     dispatch(setEVDeploymentLocationHistoricalEERE());
   };
 }
 
 /**
  * Called every time this `transportation` reducer's
- * `setSelectedGeographyEEREDefaultsAverages()` function is called.
+ * `setSelectedRegionsEEREDefaultsAverages()` function is called or anytime
+ * the `eere` reducer's `updateEereEVDeploymentLocation()` function is called.
  *
  * _(e.g. whenever the "Set EE/RE Impacts" button is clicked  on the "Select
- * Geography" page)_
+ * Geography" page or anytime the EV deployment location changes)_
  */
 export function setEVDeploymentLocationHistoricalEERE(): AppThunk {
   return (dispatch, getState) => {
-    const { eere, transportation } = getState();
+    const { geography, eere, transportation } = getState();
+    const { regionalLineLoss } = geography;
     const { evDeploymentLocation } = eere.inputs;
-    const { selectedGeographyEEREDefaultsAverages } = transportation;
+    const { selectedRegionsEEREDefaultsAverages } = transportation;
+
+    const selectedRegionId =
+      Object.values(geography.regions).find((r) => r.selected)?.id || '';
 
     const evDeploymentLocationHistoricalEERE =
       calculateEVDeploymentLocationHistoricalEERE({
-        selectedGeographyEEREDefaultsAverages,
+        selectedRegionsEEREDefaultsAverages,
         evDeploymentLocation,
+        regionalLineLoss,
+        selectedRegionId,
       });
 
     dispatch({
