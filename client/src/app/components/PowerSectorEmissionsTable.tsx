@@ -3,11 +3,8 @@ import { ReactNode } from 'react';
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
-import type {
-  EmissionsData,
-  EmissionsMonthlyData,
-  EmissionsReplacements,
-} from 'app/redux/reducers/results';
+import type { EmissionsReplacements } from 'app/redux/reducers/results';
+import type { CombinedSectorsEmissionsData } from 'app/calculations/emissions';
 
 type AnnualMonthlyData = ReturnType<typeof setAnnualMonthlyData>;
 
@@ -19,10 +16,16 @@ function formatNumber(number: number) {
 
 /**
  * Sum the the total annual original, post-EERE, and impacts (difference between
- * the two) values for each pollutant.
+ * the two) values from the monthly values for each field (pollutant).
+ *
+ * NOTE: normally we'd just use the annual data from each field, but we need
+ * to use the monthly data for ozone season generation and ozone season nox, so
+ * we might as well build up every field from their monthly values.
  */
-function setAnnualMonthlyData(emissionsMonthlyData: EmissionsMonthlyData) {
-  if (!emissionsMonthlyData) {
+function setAnnualMonthlyData(
+  combinedSectorsEmissionsData: CombinedSectorsEmissionsData,
+) {
+  if (!combinedSectorsEmissionsData) {
     return {
       generation: { original: 0, postEere: 0, impacts: 0 },
       ozoneGeneration: { original: 0, postEere: 0, impacts: 0 },
@@ -36,38 +39,41 @@ function setAnnualMonthlyData(emissionsMonthlyData: EmissionsMonthlyData) {
     };
   }
 
-  const { total } = emissionsMonthlyData;
+  const result = Object.entries(combinedSectorsEmissionsData.total).reduce(
+    (object, [key, value]) => {
+      const field = key as keyof typeof combinedSectorsEmissionsData.total;
+      const totalPowerData = value.power;
 
-  const result = Object.entries(total).reduce(
-    (object, [annualKey, annualData]) => {
-      const pollutant = annualKey as keyof EmissionsData;
+      if (totalPowerData) {
+        Object.entries(totalPowerData.monthly).forEach(
+          ([monthlyKey, monthlyData]) => {
+            const month = Number(monthlyKey);
+            const { original, postEere } = monthlyData;
 
-      Object.entries(annualData).forEach(([monthlyKey, monthlyData]) => {
-        const month = Number(monthlyKey);
-        const { original, postEere } = monthlyData;
+            /**
+             * Build up ozone season generation and ozone season nox
+             * (Ozone season is between May and September)
+             */
+            if (month >= 5 && month <= 9) {
+              if (field === 'generation') {
+                object.ozoneGeneration.original += original;
+                object.ozoneGeneration.postEere += postEere;
+                object.ozoneGeneration.impacts += postEere - original;
+              }
 
-        /**
-         * Build up ozone season generation and ozone season nox
-         * (Ozone season is between May and September)
-         */
-        if (month >= 5 && month <= 9) {
-          if (pollutant === 'generation') {
-            object.ozoneGeneration.original += original;
-            object.ozoneGeneration.postEere += postEere;
-            object.ozoneGeneration.impacts += postEere - original;
-          }
+              if (field === 'nox') {
+                object.ozoneNox.original += original;
+                object.ozoneNox.postEere += postEere;
+                object.ozoneNox.impacts += postEere - original;
+              }
+            }
 
-          if (pollutant === 'nox') {
-            object.ozoneNox.original += original;
-            object.ozoneNox.postEere += postEere;
-            object.ozoneNox.impacts += postEere - original;
-          }
-        }
-
-        object[pollutant].original += original;
-        object[pollutant].postEere += postEere;
-        object[pollutant].impacts += postEere - original;
-      });
+            object[field].original += original;
+            object[field].postEere += postEere;
+            object[field].impacts += postEere - original;
+          },
+        );
+      }
 
       return object;
     },
@@ -145,14 +151,14 @@ function EmissionsReplacementTooltip(props: {
 }
 
 function PowerSectorEmissionsTableContent() {
-  const emissionsMonthlyData = useTypedSelector(
-    ({ results }) => results.emissionsMonthlyData,
+  const combinedSectorsEmissionsData = useTypedSelector(
+    ({ results }) => results.combinedSectorsEmissionsData,
   );
   const emissionsReplacements = useTypedSelector(
     ({ results }) => results.emissionsReplacements,
   );
 
-  const annualMonthlyData = setAnnualMonthlyData(emissionsMonthlyData);
+  const annualMonthlyData = setAnnualMonthlyData(combinedSectorsEmissionsData);
 
   const data = applyEmissionsReplacement({
     annualMonthlyData,
@@ -171,7 +177,7 @@ function PowerSectorEmissionsTableContent() {
     nh3,
   } = data;
 
-  if (!emissionsMonthlyData) return null;
+  if (!combinedSectorsEmissionsData) return null;
 
   return (
     <>

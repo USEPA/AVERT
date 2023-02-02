@@ -2,11 +2,7 @@ import { Fragment } from 'react';
 // ---
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { useTypedSelector } from 'app/redux/index';
-import type {
-  EmissionsData,
-  EmissionsMonthlyData,
-} from 'app/redux/reducers/results';
-import type { VehicleEmissionChangesByGeography } from 'app/calculations/transportation';
+import type { CombinedSectorsEmissionsData } from 'app/calculations/emissions';
 import type { StateId } from 'app/config';
 import { states as statesConfig } from 'app/config';
 
@@ -19,112 +15,73 @@ function formatNumber(number: number) {
 }
 
 /**
- * Sum the power sector emissions monthly data into total annual changes for
- * each pollutant at each state, and returns those state power sector results
- * with state transportation sector results.
+ * Format the state emissions data from the power and transportation sectors for
+ * easier use in displaying in a table.
  */
-function setAnnualStateEmissionsChanges(options: {
-  emissionsMonthlyData: EmissionsMonthlyData;
-  vehicleEmissionChangesByGeography: VehicleEmissionChangesByGeography | {};
-}) {
-  const { emissionsMonthlyData, vehicleEmissionChangesByGeography } = options;
+function setAnnualStateEmissionsChanges(
+  combinedSectorsEmissionsData: CombinedSectorsEmissionsData,
+) {
+  if (!combinedSectorsEmissionsData) return [];
 
-  const result = [] as {
-    id: StateId;
-    name: string;
-    power: {
-      generation: number;
-      so2: number;
-      nox: number;
-      co2: number;
-      pm25: number;
-      vocs: number;
-      nh3: number;
-    };
-    transportation: {
-      CO2: number;
-      NOX: number;
-      SO2: number;
-      PM25: number;
-      VOCs: number;
-      NH3: number;
-    };
-  }[];
+  const stateEmissionsData = combinedSectorsEmissionsData.states;
 
-  const vehicleEmissionChanges =
-    Object.keys(vehicleEmissionChangesByGeography).length !== 0
-      ? (vehicleEmissionChangesByGeography as VehicleEmissionChangesByGeography)
-      : null;
+  const result = Object.entries(stateEmissionsData).reduce(
+    (array, [key, stateData]) => {
+      const stateId = key as keyof typeof stateEmissionsData;
+      const stateName = statesConfig[stateId].name;
 
-  if (!emissionsMonthlyData || !vehicleEmissionChanges) return [];
+      const { power, vehicle } = Object.entries(stateData).reduce(
+        (object, [stateDataKey, stateDataValue]) => {
+          const pollutant = stateDataKey as keyof typeof stateData;
+          const statePowerData = stateDataValue.power;
+          const stateVehicleData = stateDataValue.vehicle;
 
-  /** Add power sector data */
-  Object.entries(emissionsMonthlyData.states).forEach(([key, stateData]) => {
-    const stateId = key as StateId;
-    const stateName = statesConfig[stateId].name;
+          if (pollutant !== 'generation') {
+            if (statePowerData !== null) {
+              const { original, postEere } = statePowerData.annual;
+              object.power[pollutant] += postEere - original;
+            }
 
-    const power = Object.entries(stateData).reduce(
-      (object, [key, annualData]) => {
-        const pollutant = key as keyof EmissionsData;
+            if (stateVehicleData !== null) {
+              object.vehicle[pollutant] = stateVehicleData;
+            }
+          }
 
-        Object.values(annualData).forEach((monthlyData) => {
-          const { original, postEere } = monthlyData;
-          object[pollutant] += postEere - original;
-        });
+          return object;
+        },
+        {
+          power: { so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 },
+          vehicle: { so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 },
+        },
+      );
 
-        return object;
-      },
-      { generation: 0, so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 },
-    );
+      if (stateName) {
+        array.push({ id: stateId, name: stateName, power, vehicle });
+      }
 
-    if (stateName) {
-      result.push({
-        id: stateId,
-        name: stateName,
-        power,
-        transportation: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      });
-    }
-  });
+      return array;
+    },
+    [] as {
+      id: StateId;
+      name: string;
+      power: { so2: number; nox: number; co2: number; pm25: number; vocs: number; nh3: number }; // prettier-ignore
+      vehicle: { so2: number; nox: number; co2: number; pm25: number; vocs: number; nh3: number }; // prettier-ignore
+    }[],
+  );
 
-  /** Add transportation sector data */
-  Object.entries(vehicleEmissionChanges.states).forEach(([key, stateData]) => {
-    const stateId = key as StateId;
-    const stateName = statesConfig[stateId].name;
-
-    const existingState = result.find((state) => state.id === stateId);
-
-    if (existingState) {
-      existingState.transportation = stateData;
-    }
-
-    if (!existingState && stateName) {
-      result.push({
-        id: stateId,
-        name: stateName,
-        power: { generation: 0, so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 }, // prettier-ignore
-        transportation: stateData,
-      });
-    }
-  });
-
-  return result.sort((a, b) => a.name.localeCompare(b.name));
+  return result;
 }
 
 function StateEmissionsTableContent() {
-  const emissionsMonthlyData = useTypedSelector(
-    ({ results }) => results.emissionsMonthlyData,
-  );
-  const vehicleEmissionChangesByGeography = useTypedSelector(
-    ({ transportation }) => transportation.vehicleEmissionChangesByGeography,
+  const combinedSectorsEmissionsData = useTypedSelector(
+    ({ results }) => results.combinedSectorsEmissionsData,
   );
 
-  const annualStateEmissionsChanges = setAnnualStateEmissionsChanges({
-    emissionsMonthlyData,
-    vehicleEmissionChangesByGeography,
-  });
+  const annualStateEmissionsChanges = setAnnualStateEmissionsChanges(
+    combinedSectorsEmissionsData,
+  );
 
-  if (!emissionsMonthlyData) return null;
+  if (!combinedSectorsEmissionsData) return null;
 
   return (
     <div className="overflow-auto">
@@ -198,22 +155,22 @@ function StateEmissionsTableContent() {
                       <small>From</small> Vehicles
                     </td>
                     <td className="font-mono-xs text-right">
-                      {formatNumber(data.transportation.SO2)}
+                      {formatNumber(data.vehicle.so2)}
                     </td>
                     <td className="font-mono-xs text-right">
-                      {formatNumber(data.transportation.NOX)}
+                      {formatNumber(data.vehicle.nox)}
                     </td>
                     <td className="font-mono-xs text-right">
-                      {formatNumber(data.transportation.CO2)}
+                      {formatNumber(data.vehicle.co2)}
                     </td>
                     <td className="font-mono-xs text-right">
-                      {formatNumber(data.transportation.PM25)}
+                      {formatNumber(data.vehicle.pm25)}
                     </td>
                     <td className="font-mono-xs text-right">
-                      {formatNumber(data.transportation.VOCs)}
+                      {formatNumber(data.vehicle.vocs)}
                     </td>
                     <td className="font-mono-xs text-right">
-                      {formatNumber(data.transportation.NH3)}
+                      {formatNumber(data.vehicle.nh3)}
                     </td>
                   </tr>
 
@@ -224,22 +181,22 @@ function StateEmissionsTableContent() {
                       Net Change
                     </td>
                     <td className="font-mono-xs text-right">
-                      {formatNumber(data.power.so2 + data.transportation.SO2)}
+                      {formatNumber(data.power.so2 + data.vehicle.so2)}
                     </td>
                     <td className="font-mono-xs text-right">
-                      {formatNumber(data.power.nox + data.transportation.NOX)}
+                      {formatNumber(data.power.nox + data.vehicle.nox)}
                     </td>
                     <td className="font-mono-xs text-right">
-                      {formatNumber(data.power.co2 + data.transportation.CO2)}
+                      {formatNumber(data.power.co2 + data.vehicle.co2)}
                     </td>
                     <td className="font-mono-xs text-right">
-                      {formatNumber(data.power.pm25 + data.transportation.PM25)}
+                      {formatNumber(data.power.pm25 + data.vehicle.pm25)}
                     </td>
                     <td className="font-mono-xs text-right">
-                      {formatNumber(data.power.vocs + data.transportation.VOCs)}
+                      {formatNumber(data.power.vocs + data.vehicle.vocs)}
                     </td>
                     <td className="font-mono-xs text-right">
-                      {formatNumber(data.power.nh3 + data.transportation.NH3)}
+                      {formatNumber(data.power.nh3 + data.vehicle.nh3)}
                     </td>
                   </tr>
                 </Fragment>

@@ -1,9 +1,6 @@
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { useTypedSelector } from 'app/redux/index';
-import type {
-  EmissionsData,
-  EmissionsMonthlyData,
-} from 'app/redux/reducers/results';
+import type { CombinedSectorsEmissionsData } from 'app/calculations/emissions';
 
 /**
  * Round number to the nearest 10 and conditionally display '--' if number is
@@ -16,22 +13,24 @@ function formatNumber(number: number) {
 }
 
 /**
- * Sum the emissions monthly data into total annual changes for each pollutant.
+ * Calculate the annual emissions changes for each pollutant.
  */
-function setAnnualEmissionsChanges(emissionsMonthlyData: EmissionsMonthlyData) {
-  if (!emissionsMonthlyData) {
+function setAnnualEmissionsChanges(
+  combinedSectorsEmissionsData: CombinedSectorsEmissionsData,
+) {
+  if (!combinedSectorsEmissionsData) {
     return { generation: 0, so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 };
   }
 
-  const { total } = emissionsMonthlyData;
+  const result = Object.entries(combinedSectorsEmissionsData.total).reduce(
+    (object, [key, value]) => {
+      const pollutant = key as keyof typeof combinedSectorsEmissionsData.total;
+      const totalPowerData = value.power;
 
-  const result = Object.entries(total).reduce(
-    (object, [annualKey, annualData]) => {
-      const pollutant = annualKey as keyof EmissionsData;
-
-      Object.values(annualData).forEach((monthlyData) => {
-        object[pollutant] += monthlyData.postEere - monthlyData.original;
-      });
+      if (totalPowerData) {
+        const { original, postEere } = totalPowerData.annual;
+        object[pollutant] += postEere - original;
+      }
 
       return object;
     },
@@ -45,12 +44,13 @@ function TransportationSectorEmissionsTableContent() {
   const totalYearlyVehicleEmissionsChanges = useTypedSelector(
     ({ transportation }) => transportation.totalYearlyEmissionChanges,
   );
-  const emissionsMonthlyData = useTypedSelector(
-    ({ results }) => results.emissionsMonthlyData,
+  const combinedSectorsEmissionsData = useTypedSelector(
+    ({ results }) => results.combinedSectorsEmissionsData,
   );
 
-  const annualEmissionsChanges =
-    setAnnualEmissionsChanges(emissionsMonthlyData);
+  const annualEmissionsChanges = setAnnualEmissionsChanges(
+    combinedSectorsEmissionsData,
+  );
 
   const annualVehicleSO2 = -1 * totalYearlyVehicleEmissionsChanges.total.SO2;
   const annualVehicleNOX = -1 * totalYearlyVehicleEmissionsChanges.total.NOX;
@@ -66,7 +66,7 @@ function TransportationSectorEmissionsTableContent() {
   const annualPowerVOCs = annualEmissionsChanges.vocs;
   const annualPowerNH3 = annualEmissionsChanges.nh3;
 
-  if (!emissionsMonthlyData) return null;
+  if (!combinedSectorsEmissionsData) return null;
 
   return (
     <>
