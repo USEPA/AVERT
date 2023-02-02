@@ -141,7 +141,7 @@ function formatCountyDownloadData(options: {
    * (will only occur a state was selected that's part of multiple regions)
    */
   if (Object.keys(regions).length > 1) {
-    const totalRows = [...pollutantsRows].map((row) => {
+    const totalRows = [...pollutantsRows].reduce((array, row) => {
       const { pollutant, unit } = row;
 
       const pollutantNeedsReplacement = egusNeedingReplacement.some((egu) => {
@@ -154,16 +154,20 @@ function formatCountyDownloadData(options: {
         unit,
       });
 
-      return {
-        Pollutant: pollutant.toUpperCase() as Pollutant,
-        'Aggregation level': 'All Affected Regions',
-        'FIPS Code': null,
-        State: null,
-        County: null,
-        'Unit of measure': unit,
-        ...emissionsFields,
-      };
-    });
+      if (emissionsFields) {
+        array.push({
+          Pollutant: pollutant.toUpperCase() as Pollutant,
+          'Aggregation level': 'All Affected Regions',
+          'FIPS Code': null,
+          State: null,
+          County: null,
+          'Unit of measure': unit,
+          ...emissionsFields,
+        });
+      }
+
+      return array;
+    }, [] as CountyData[]);
 
     result.push(...totalRows);
   }
@@ -172,7 +176,7 @@ function formatCountyDownloadData(options: {
    * Add power sector region data
    */
   Object.entries(regions).forEach(([regionId, regionData]) => {
-    const regionsRows = [...pollutantsRows].map((row) => {
+    const regionsRows = [...pollutantsRows].reduce((array, row) => {
       const { pollutant, unit } = row;
 
       const pollutantNeedsReplacement = egusNeedingReplacement.some((egu) => {
@@ -188,16 +192,20 @@ function formatCountyDownloadData(options: {
         unit,
       });
 
-      return {
-        Pollutant: pollutant.toUpperCase() as Pollutant,
-        'Aggregation level': `${regionsConfig[regionId as RegionId].name} Region`, // prettier-ignore
-        'FIPS Code': null,
-        State: null,
-        County: null,
-        'Unit of measure': unit,
-        ...emissionsFields,
-      };
-    });
+      if (emissionsFields) {
+        array.push({
+          Pollutant: pollutant.toUpperCase() as Pollutant,
+          'Aggregation level': `${regionsConfig[regionId as RegionId].name} Region`, // prettier-ignore
+          'FIPS Code': null,
+          State: null,
+          County: null,
+          'Unit of measure': unit,
+          ...emissionsFields,
+        });
+      }
+
+      return array;
+    }, [] as CountyData[]);
 
     result.push(...regionsRows);
   });
@@ -211,7 +219,7 @@ function formatCountyDownloadData(options: {
         return data['Postal State Code'] === stateId;
       })?.['State and County FIPS Code'] || '';
 
-    const statesRows = [...pollutantsRows].map((row) => {
+    const statesRows = [...pollutantsRows].reduce((array, row) => {
       const { pollutant, unit } = row;
 
       const pollutantNeedsReplacement = egusNeedingReplacement.some((egu) => {
@@ -227,16 +235,20 @@ function formatCountyDownloadData(options: {
         unit,
       });
 
-      return {
-        Pollutant: pollutant.toUpperCase() as Pollutant,
-        'Aggregation level': 'State',
-        'FIPS Code': fipsCode ? fipsCode.substring(0, 2) : null,
-        State: stateId,
-        County: null,
-        'Unit of measure': unit,
-        ...emissionsFields,
-      };
-    });
+      if (emissionsFields) {
+        array.push({
+          Pollutant: pollutant.toUpperCase() as Pollutant,
+          'Aggregation level': 'State',
+          'FIPS Code': fipsCode ? fipsCode.substring(0, 2) : null,
+          State: stateId,
+          County: null,
+          'Unit of measure': unit,
+          ...emissionsFields,
+        });
+      }
+
+      return array;
+    }, [] as CountyData[]);
 
     result.push(...statesRows);
   });
@@ -253,7 +265,7 @@ function formatCountyDownloadData(options: {
             data['County Name Long'] === countyName,
         )?.['State and County FIPS Code'] || '';
 
-      const countiesRows = [...pollutantsRows].map((row) => {
+      const countiesRows = [...pollutantsRows].reduce((array, row) => {
         const { pollutant, unit } = row;
 
         const pollutantNeedsReplacement = egusNeedingReplacement.some((egu) => {
@@ -270,16 +282,20 @@ function formatCountyDownloadData(options: {
           unit,
         });
 
-        return {
-          Pollutant: pollutant.toUpperCase() as Pollutant,
-          'Aggregation level': 'County',
-          'FIPS Code': fipsCode,
-          State: stateId,
-          County: countyName.replace(/city/, '(City)'), // format 'city'
-          'Unit of measure': unit,
-          ...emissionsFields,
-        };
-      });
+        if (emissionsFields) {
+          array.push({
+            Pollutant: pollutant.toUpperCase() as Pollutant,
+            'Aggregation level': 'County',
+            'FIPS Code': fipsCode,
+            State: stateId,
+            County: countyName.replace(/city/, '(City)'), // format 'city'
+            'Unit of measure': unit,
+            ...emissionsFields,
+          });
+        }
+
+        return array;
+      }, [] as CountyData[]);
 
       result.push(...countiesRows);
     });
@@ -331,6 +347,10 @@ function createEmissionsFields(options: {
 
   const powerData = data.power;
   const vehicleData = data.vehicle;
+
+  if (!powerData && (!vehicleData || (vehicleData && unit === 'percent'))) {
+    return null;
+  }
 
   const result = {
     'Power Sector: January': null,
