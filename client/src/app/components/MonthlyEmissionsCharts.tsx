@@ -21,7 +21,7 @@ import {
 } from 'app/redux/reducers/monthlyEmissions';
 import type {
   EmissionsData,
-  AggregatedEmissionsData,
+  CombinedSectorsEmissionsData,
 } from 'app/calculations/emissions';
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 import type { Pollutant, RegionId, StateId } from 'app/config';
@@ -501,20 +501,25 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
  * Sets emissions data based on the currently selected filters.
  */
 function setFilteredData(options: {
-  aggregatedEmissionsData: AggregatedEmissionsData;
+  combinedSectorsEmissionsData: CombinedSectorsEmissionsData;
   aggregation: Aggregation;
   regionId: RegionId | 'ALL';
   stateId: StateId;
   county: string;
 }) {
-  const { aggregatedEmissionsData, aggregation, regionId, stateId, county } =
-    options;
+  const {
+    combinedSectorsEmissionsData,
+    aggregation,
+    regionId,
+    stateId,
+    county,
+  } = options;
 
   const emptyResult = {} as EmissionsData;
 
-  if (!aggregatedEmissionsData) return emptyResult;
+  if (!combinedSectorsEmissionsData) return emptyResult;
 
-  const { total, regions, states, counties } = aggregatedEmissionsData;
+  const { total, regions, states, counties } = combinedSectorsEmissionsData;
 
   const regionResult =
     regionId === 'ALL'
@@ -546,8 +551,8 @@ function setFilteredData(options: {
 function MonthlyEmissionsChartsContent() {
   const dispatch = useDispatch();
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const aggregatedEmissionsData = useTypedSelector(
-    ({ results }) => results.aggregatedEmissionsData,
+  const combinedSectorsEmissionsData = useTypedSelector(
+    ({ results }) => results.combinedSectorsEmissionsData,
   );
   const currentAggregation = useTypedSelector(
     ({ monthlyEmissions }) => monthlyEmissions.aggregation,
@@ -588,7 +593,7 @@ function MonthlyEmissionsChartsContent() {
       : (currentRegionId as RegionId);
 
   const data = setFilteredData({
-    aggregatedEmissionsData,
+    combinedSectorsEmissionsData,
     aggregation: currentAggregation,
     regionId,
     stateId: currentStateId as StateId,
@@ -1084,7 +1089,7 @@ function MonthlyEmissionsChartsContent() {
       </div>
 
       <div data-avert-charts>
-        {aggregatedEmissionsData && (
+        {combinedSectorsEmissionsData && (
           <div className="grid-container padding-0 maxw-full">
             <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
               {geographicFocus === 'states' &&

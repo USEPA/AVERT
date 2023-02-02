@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { useTypedSelector } from 'app/redux/index';
 import type { VehicleEmissionChangesByGeography } from 'app/calculations/transportation';
-import type { AggregatedEmissionsData } from 'app/calculations/emissions';
+import type { CombinedSectorsEmissionsData } from 'app/calculations/emissions';
 import type { StateId } from 'app/config';
 import { states as statesConfig } from 'app/config';
 
@@ -20,10 +20,10 @@ function formatNumber(number: number) {
  * each state with state transportation sector results.
  */
 function setAnnualStateEmissionsChanges(options: {
-  aggregatedEmissionsData: AggregatedEmissionsData;
+  combinedSectorsEmissionsData: CombinedSectorsEmissionsData;
   vehicleEmissionChangesByGeography: VehicleEmissionChangesByGeography | {};
 }) {
-  const { aggregatedEmissionsData, vehicleEmissionChangesByGeography } =
+  const { combinedSectorsEmissionsData, vehicleEmissionChangesByGeography } =
     options;
 
   const result = [] as {
@@ -53,37 +53,39 @@ function setAnnualStateEmissionsChanges(options: {
       ? (vehicleEmissionChangesByGeography as VehicleEmissionChangesByGeography)
       : null;
 
-  if (!aggregatedEmissionsData || !vehicleEmissionChanges) return [];
+  if (!combinedSectorsEmissionsData || !vehicleEmissionChanges) return [];
 
   /** Add power sector data */
-  Object.entries(aggregatedEmissionsData.states).forEach(([key, stateData]) => {
-    const stateId = key as keyof typeof aggregatedEmissionsData.states;
-    const stateName = statesConfig[stateId].name;
+  Object.entries(combinedSectorsEmissionsData.states).forEach(
+    ([key, stateData]) => {
+      const stateId = key as keyof typeof combinedSectorsEmissionsData.states;
+      const stateName = statesConfig[stateId].name;
 
-    const power = Object.entries(stateData).reduce(
-      (object, [stateDataKey, stateDataValue]) => {
-        const pollutant = stateDataKey as keyof typeof stateData;
-        const statePowerData = stateDataValue.power;
+      const power = Object.entries(stateData).reduce(
+        (object, [stateDataKey, stateDataValue]) => {
+          const pollutant = stateDataKey as keyof typeof stateData;
+          const statePowerData = stateDataValue.power;
 
-        if (statePowerData) {
-          const { original, postEere } = statePowerData.annual;
-          object[pollutant] += postEere - original;
-        }
+          if (statePowerData) {
+            const { original, postEere } = statePowerData.annual;
+            object[pollutant] += postEere - original;
+          }
 
-        return object;
-      },
-      { generation: 0, so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 },
-    );
+          return object;
+        },
+        { generation: 0, so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 },
+      );
 
-    if (stateName) {
-      result.push({
-        id: stateId,
-        name: stateName,
-        power,
-        transportation: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      });
-    }
-  });
+      if (stateName) {
+        result.push({
+          id: stateId,
+          name: stateName,
+          power,
+          transportation: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+        });
+      }
+    },
+  );
 
   /** Add transportation sector data */
   Object.entries(vehicleEmissionChanges.states).forEach(([key, stateData]) => {
@@ -110,19 +112,19 @@ function setAnnualStateEmissionsChanges(options: {
 }
 
 function StateEmissionsTableContent() {
-  const aggregatedEmissionsData = useTypedSelector(
-    ({ results }) => results.aggregatedEmissionsData,
+  const combinedSectorsEmissionsData = useTypedSelector(
+    ({ results }) => results.combinedSectorsEmissionsData,
   );
   const vehicleEmissionChangesByGeography = useTypedSelector(
     ({ transportation }) => transportation.vehicleEmissionChangesByGeography,
   );
 
   const annualStateEmissionsChanges = setAnnualStateEmissionsChanges({
-    aggregatedEmissionsData,
+    combinedSectorsEmissionsData,
     vehicleEmissionChangesByGeography,
   });
 
-  if (!aggregatedEmissionsData) return null;
+  if (!combinedSectorsEmissionsData) return null;
 
   return (
     <div className="overflow-auto">

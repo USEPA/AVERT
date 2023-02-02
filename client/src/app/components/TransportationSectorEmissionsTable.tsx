@@ -1,6 +1,6 @@
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { useTypedSelector } from 'app/redux/index';
-import type { AggregatedEmissionsData } from 'app/calculations/emissions';
+import type { CombinedSectorsEmissionsData } from 'app/calculations/emissions';
 
 /**
  * Round number to the nearest 10 and conditionally display '--' if number is
@@ -16,15 +16,15 @@ function formatNumber(number: number) {
  * Calculate the annual emissions changes for each pollutant.
  */
 function setAnnualEmissionsChanges(
-  aggregatedEmissionsData: AggregatedEmissionsData,
+  combinedSectorsEmissionsData: CombinedSectorsEmissionsData,
 ) {
-  if (!aggregatedEmissionsData) {
+  if (!combinedSectorsEmissionsData) {
     return { generation: 0, so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 };
   }
 
-  const result = Object.entries(aggregatedEmissionsData.total).reduce(
+  const result = Object.entries(combinedSectorsEmissionsData.total).reduce(
     (object, [key, value]) => {
-      const pollutant = key as keyof typeof aggregatedEmissionsData.total;
+      const pollutant = key as keyof typeof combinedSectorsEmissionsData.total;
       const totalPowerData = value.power;
 
       if (totalPowerData) {
@@ -44,12 +44,12 @@ function TransportationSectorEmissionsTableContent() {
   const totalYearlyVehicleEmissionsChanges = useTypedSelector(
     ({ transportation }) => transportation.totalYearlyEmissionChanges,
   );
-  const aggregatedEmissionsData = useTypedSelector(
-    ({ results }) => results.aggregatedEmissionsData,
+  const combinedSectorsEmissionsData = useTypedSelector(
+    ({ results }) => results.combinedSectorsEmissionsData,
   );
 
   const annualEmissionsChanges = setAnnualEmissionsChanges(
-    aggregatedEmissionsData,
+    combinedSectorsEmissionsData,
   );
 
   const annualVehicleSO2 = -1 * totalYearlyVehicleEmissionsChanges.total.SO2;
@@ -66,7 +66,7 @@ function TransportationSectorEmissionsTableContent() {
   const annualPowerVOCs = annualEmissionsChanges.vocs;
   const annualPowerNH3 = annualEmissionsChanges.nh3;
 
-  if (!aggregatedEmissionsData) return null;
+  if (!combinedSectorsEmissionsData) return null;
 
   return (
     <>

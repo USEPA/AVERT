@@ -4,7 +4,7 @@ import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import type { EmissionsReplacements } from 'app/redux/reducers/results';
-import type { AggregatedEmissionsData } from 'app/calculations/emissions';
+import type { CombinedSectorsEmissionsData } from 'app/calculations/emissions';
 
 type AnnualMonthlyData = ReturnType<typeof setAnnualMonthlyData>;
 
@@ -23,9 +23,9 @@ function formatNumber(number: number) {
  * we might as well build up every field from their monthly values.
  */
 function setAnnualMonthlyData(
-  aggregatedEmissionsData: AggregatedEmissionsData,
+  combinedSectorsEmissionsData: CombinedSectorsEmissionsData,
 ) {
-  if (!aggregatedEmissionsData) {
+  if (!combinedSectorsEmissionsData) {
     return {
       generation: { original: 0, postEere: 0, impacts: 0 },
       ozoneGeneration: { original: 0, postEere: 0, impacts: 0 },
@@ -39,9 +39,9 @@ function setAnnualMonthlyData(
     };
   }
 
-  const result = Object.entries(aggregatedEmissionsData.total).reduce(
+  const result = Object.entries(combinedSectorsEmissionsData.total).reduce(
     (object, [key, value]) => {
-      const field = key as keyof typeof aggregatedEmissionsData.total;
+      const field = key as keyof typeof combinedSectorsEmissionsData.total;
       const totalPowerData = value.power;
 
       if (totalPowerData) {
@@ -151,14 +151,14 @@ function EmissionsReplacementTooltip(props: {
 }
 
 function PowerSectorEmissionsTableContent() {
-  const aggregatedEmissionsData = useTypedSelector(
-    ({ results }) => results.aggregatedEmissionsData,
+  const combinedSectorsEmissionsData = useTypedSelector(
+    ({ results }) => results.combinedSectorsEmissionsData,
   );
   const emissionsReplacements = useTypedSelector(
     ({ results }) => results.emissionsReplacements,
   );
 
-  const annualMonthlyData = setAnnualMonthlyData(aggregatedEmissionsData);
+  const annualMonthlyData = setAnnualMonthlyData(combinedSectorsEmissionsData);
 
   const data = applyEmissionsReplacement({
     annualMonthlyData,
@@ -177,7 +177,7 @@ function PowerSectorEmissionsTableContent() {
     nh3,
   } = data;
 
-  if (!aggregatedEmissionsData) return null;
+  if (!combinedSectorsEmissionsData) return null;
 
   return (
     <>

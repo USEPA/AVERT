@@ -454,7 +454,7 @@ export function createCombinedSectorsEmissionsData(options: {
       ? (vehicleEmissionChangesByGeography as VehicleEmissionChangesByGeography)
       : null;
 
-  if (!aggregatedEmissionsData || !vehicleEmissionChanges) return {};
+  if (!aggregatedEmissionsData || !vehicleEmissionChanges) return null;
 
   /** start with power sector emissions data */
   const result = { ...aggregatedEmissionsData };

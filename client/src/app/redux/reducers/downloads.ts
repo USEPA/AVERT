@@ -4,7 +4,7 @@ import type { VehicleEmissionChangesByGeography } from 'app/calculations/transpo
 import type {
   EmissionsData,
   EmissionsFlagsField,
-  AggregatedEmissionsData,
+  CombinedSectorsEmissionsData,
 } from 'app/calculations/emissions';
 import type { RegionId } from 'app/config';
 import { regions as regionsConfig, states as statesConfig } from 'app/config';
@@ -97,16 +97,16 @@ export function setDownloadData(): AppThunk {
   return (dispatch, getState) => {
     const { transportation, results } = getState();
     const { vehicleEmissionChangesByGeography } = transportation;
-    const { aggregatedEmissionsData, egusNeedingEmissionsReplacement } =
+    const { combinedSectorsEmissionsData, egusNeedingEmissionsReplacement } =
       results;
 
     const countyData = formatCountyDownloadData({
-      aggregatedEmissionsData,
+      combinedSectorsEmissionsData,
       egusNeedingEmissionsReplacement,
     });
 
     const cobraData = formatCobraDownloadData({
-      aggregatedEmissionsData,
+      combinedSectorsEmissionsData,
       vehicleEmissionChangesByGeography,
     });
 
@@ -126,16 +126,17 @@ export function setDownloadData(): AppThunk {
  * level.
  */
 function formatCountyDownloadData(options: {
-  aggregatedEmissionsData: AggregatedEmissionsData;
+  combinedSectorsEmissionsData: CombinedSectorsEmissionsData;
   egusNeedingEmissionsReplacement: EgusNeeingEmissionsReplacement;
 }) {
-  const { aggregatedEmissionsData, egusNeedingEmissionsReplacement } = options;
+  const { combinedSectorsEmissionsData, egusNeedingEmissionsReplacement } =
+    options;
 
   const result: CountyData[] = [];
 
-  if (!aggregatedEmissionsData) return result;
+  if (!combinedSectorsEmissionsData) return result;
 
-  const { total, regions, states, counties } = aggregatedEmissionsData;
+  const { total, regions, states, counties } = combinedSectorsEmissionsData;
   const pollutantsRows = createOrderedPollutantsRows();
   const egusNeedingReplacement = Object.values(egusNeedingEmissionsReplacement);
 
@@ -397,10 +398,10 @@ function createPowerSectorEmissionsFields(options: {
  * for use within the COBRA application.
  */
 function formatCobraDownloadData(options: {
-  aggregatedEmissionsData: AggregatedEmissionsData;
+  combinedSectorsEmissionsData: CombinedSectorsEmissionsData;
   vehicleEmissionChangesByGeography: VehicleEmissionChangesByGeography | {};
 }) {
-  const { aggregatedEmissionsData, vehicleEmissionChangesByGeography } =
+  const { combinedSectorsEmissionsData, vehicleEmissionChangesByGeography } =
     options;
 
   const result: CobraData[] = [];
@@ -410,14 +411,16 @@ function formatCobraDownloadData(options: {
       ? (vehicleEmissionChangesByGeography as VehicleEmissionChangesByGeography)
       : null;
 
-  if (!aggregatedEmissionsData || !vehicleEmissionChanges) return result;
+  if (!combinedSectorsEmissionsData || !vehicleEmissionChanges) return result;
 
   /**
    * add power sector county data
    */
-  Object.entries(aggregatedEmissionsData.counties).forEach(([key, value]) => {
+  const countyEmissionsData = combinedSectorsEmissionsData.counties;
+
+  Object.entries(countyEmissionsData).forEach(([key, value]) => {
     Object.entries(value).forEach(([countyName, countyData]) => {
-      const stateId = key as keyof typeof aggregatedEmissionsData.counties;
+      const stateId = key as keyof typeof countyEmissionsData;
       const totalEmissionsChanges = calculateTotalEmissionsChanges(countyData);
 
       const state = statesConfig[stateId].name;
