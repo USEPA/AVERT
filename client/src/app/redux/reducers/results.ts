@@ -1,11 +1,14 @@
 import type { AppThunk } from 'app/redux/index';
 import { setStatesAndCounties } from 'app/redux/reducers/monthlyEmissions';
 import { setDownloadData } from 'app/redux/reducers/downloads';
-import { calculateAggregatedEmissionsData } from 'app/calculations/emissions';
+import {
+  calculateAggregatedEmissionsData,
+  createCombinedSectorsEmissionsData,
+} from 'app/calculations/emissions';
 import type {
   EmissionsChanges,
   EmissionsFlagsField,
-  AggregatedEmissionsData,
+  CombinedSectorsEmissionsData,
 } from 'app/calculations/emissions';
 import type { RegionId } from 'app/config';
 import { regions } from 'app/config';
@@ -22,8 +25,8 @@ type Action =
     }
   | { type: 'results/FETCH_EMISSIONS_CHANGES_FAILURE' }
   | {
-      type: 'results/SET_AGGREGATED_EMISSIONS_DATA';
-      payload: { aggregatedEmissionsData: AggregatedEmissionsData };
+      type: 'results/SET_COMBINED_SECTORS_EMISSIONS_DATA';
+      payload: { combinedSectorsEmissionsData: CombinedSectorsEmissionsData };
     }
   | {
       type: 'results/SET_EGUS_NEEDING_EMISSIONS_REPLACEMENT';
@@ -42,7 +45,7 @@ type State = {
     | { status: 'pending'; data: {} }
     | { status: 'success'; data: EmissionsChanges }
     | { status: 'failure'; data: {} };
-  aggregatedEmissionsData: AggregatedEmissionsData;
+  combinedSectorsEmissionsData: CombinedSectorsEmissionsData;
   egusNeedingEmissionsReplacement: EgusNeeingEmissionsReplacement;
   emissionsReplacements: EmissionsReplacements | {};
 };
@@ -52,7 +55,7 @@ const initialState: State = {
     status: 'idle',
     data: {},
   },
-  aggregatedEmissionsData: null,
+  combinedSectorsEmissionsData: null,
   egusNeedingEmissionsReplacement: {},
   emissionsReplacements: {},
 };
@@ -97,11 +100,11 @@ export default function reducer(
       };
     }
 
-    case 'results/SET_AGGREGATED_EMISSIONS_DATA': {
-      const { aggregatedEmissionsData } = action.payload;
+    case 'results/SET_COMBINED_SECTORS_EMISSIONS_DATA': {
+      const { combinedSectorsEmissionsData } = action.payload;
       return {
         ...state,
-        aggregatedEmissionsData,
+        combinedSectorsEmissionsData,
       };
     }
 
@@ -141,7 +144,8 @@ export function resetResults(): Action {
  */
 export function fetchEmissionsChanges(): AppThunk {
   return (dispatch, getState) => {
-    const { api, eere } = getState();
+    const { api, transportation, eere } = getState();
+    const { vehicleEmissionChangesByGeography } = transportation;
     const { regionalProfiles } = eere;
 
     dispatch({ type: 'results/FETCH_EMISSIONS_CHANGES_REQUEST' });
@@ -178,6 +182,12 @@ export function fetchEmissionsChanges(): AppThunk {
         const aggregatedEmissionsData =
           calculateAggregatedEmissionsData(emissionsChanges);
 
+        // prettier-ignore
+        const combinedSectorsEmissionsData = createCombinedSectorsEmissionsData({
+          aggregatedEmissionsData,
+          vehicleEmissionChangesByGeography,
+        });
+
         const egusNeedingEmissionsReplacement =
           setEgusNeedingEmissionsReplacement(emissionsChanges);
 
@@ -191,8 +201,8 @@ export function fetchEmissionsChanges(): AppThunk {
         });
 
         dispatch({
-          type: 'results/SET_AGGREGATED_EMISSIONS_DATA',
-          payload: { aggregatedEmissionsData },
+          type: 'results/SET_COMBINED_SECTORS_EMISSIONS_DATA',
+          payload: { combinedSectorsEmissionsData },
         });
 
         dispatch({
