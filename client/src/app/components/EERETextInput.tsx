@@ -19,6 +19,7 @@ export function EERETextInput(props: {
   fieldName: string;
   disabled?: string;
   onChange: (value: string) => void;
+  onBlur?: (value: string) => void;
   tooltip?: ReactNode;
 }) {
   const {
@@ -30,6 +31,7 @@ export function EERETextInput(props: {
     fieldName,
     disabled,
     onChange,
+    onBlur,
     tooltip,
   } = props;
 
@@ -74,6 +76,7 @@ export function EERETextInput(props: {
           data-avert-eere-input={fieldName}
           disabled={Boolean(disabled)}
           onChange={(ev) => onChange(ev.target.value)}
+          onBlur={(ev) => onBlur && onBlur(ev.target.value)}
           onKeyPress={(ev) => {
             if (calculationDisabled) return;
             if (ev.key === 'Enter') dispatch(calculateEereProfile());
