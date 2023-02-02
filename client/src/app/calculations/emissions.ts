@@ -459,12 +459,49 @@ export function createCombinedSectorsEmissionsData(options: {
   /** start with power sector emissions data */
   const result = { ...aggregatedEmissionsData };
 
-  /** TODO: add region (and total) level transportation sector emissions data */
+  /** add total level transportation sector emissions data */
+  result.total.so2.vehicle = vehicleEmissionChanges.total.SO2;
+  result.total.nox.vehicle = vehicleEmissionChanges.total.NOX;
+  result.total.co2.vehicle = vehicleEmissionChanges.total.CO2;
+  result.total.pm25.vehicle = vehicleEmissionChanges.total.PM25;
+  result.total.vocs.vehicle = vehicleEmissionChanges.total.VOCs;
+  result.total.nh3.vehicle = vehicleEmissionChanges.total.NH3;
+
+  /** add region level transportation sector emissions data */
+  Object.entries(vehicleEmissionChanges.regions).forEach(([key, value]) => {
+    const regionId = key as keyof typeof vehicleEmissionChanges.regions;
+    const { SO2, NOX, CO2, PM25, VOCs, NH3 } = value;
+
+    /**
+     * if region already exists in power sector data, add transportation sector
+     * data to it; otherwise, create it with only transportation sector data
+     */
+    const existingRegion = result.regions?.[regionId];
+
+    if (existingRegion) {
+      existingRegion.so2.vehicle = SO2;
+      existingRegion.nox.vehicle = NOX;
+      existingRegion.co2.vehicle = CO2;
+      existingRegion.pm25.vehicle = PM25;
+      existingRegion.vocs.vehicle = VOCs;
+      existingRegion.nh3.vehicle = NH3;
+    } else {
+      result.regions[regionId] = {
+        generation: { power: null, vehicle: null },
+        so2: { power: null, vehicle: SO2 },
+        nox: { power: null, vehicle: NOX },
+        co2: { power: null, vehicle: CO2 },
+        pm25: { power: null, vehicle: PM25 },
+        vocs: { power: null, vehicle: VOCs },
+        nh3: { power: null, vehicle: NH3 },
+      };
+    }
+  });
 
   /** add state level transportation sector emissions data */
-  Object.entries(vehicleEmissionChanges.states).forEach(([key, stateData]) => {
-    const stateId = key as keyof typeof vehicleEmissionChanges.counties;
-    const { SO2, NOX, CO2, PM25, VOCs, NH3 } = stateData;
+  Object.entries(vehicleEmissionChanges.states).forEach(([key, value]) => {
+    const stateId = key as keyof typeof vehicleEmissionChanges.states;
+    const { SO2, NOX, CO2, PM25, VOCs, NH3 } = value;
 
     /**
      * if state already exists in power sector data, add transportation sector
@@ -497,8 +534,8 @@ export function createCombinedSectorsEmissionsData(options: {
     const stateId = key as keyof typeof vehicleEmissionChanges.counties;
     result.counties[stateId] ??= {};
 
-    Object.entries(value).forEach(([countyName, countyData]) => {
-      const { SO2, NOX, CO2, PM25, VOCs, NH3 } = countyData;
+    Object.entries(value).forEach(([countyName, countyValue]) => {
+      const { SO2, NOX, CO2, PM25, VOCs, NH3 } = countyValue;
 
       /**
        * if county already exists in power sector data, add transportation sector
