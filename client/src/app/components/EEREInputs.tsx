@@ -70,8 +70,8 @@ const inputsSummaryStyles = css`
 function EEREInputsContent() {
   const dispatch = useDispatch();
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const calculationStatus = useTypedSelector(
-    ({ eere }) => eere.calculationStatus,
+  const eereProfileCalculationStatus = useTypedSelector(
+    ({ eere }) => eere.profileCalculationStatus,
   );
   const errors = useTypedSelector(({ eere }) => eere.errors);
   const constantMwh = useTypedSelector(({ eere }) => eere.inputs.constantMwh);
@@ -145,10 +145,10 @@ function EEREInputsContent() {
   const textInputsAreEmpty =
     textInputsFields.filter((field) => field?.length > 0).length === 0;
 
-  const calculationDisabled =
+  const eereProfileCalculationDisabled =
     !textInputsAreValid ||
     textInputsAreEmpty ||
-    calculationStatus === 'pending';
+    eereProfileCalculationStatus === 'pending';
 
   const eereButtonOptions = {
     idle: 'Calculate EE/RE Impacts',
@@ -156,7 +156,7 @@ function EEREInputsContent() {
     success: 'Recalculate EE/RE Impacts',
   };
 
-  const disabledButtonClassName = calculationDisabled
+  const disabledButtonClassName = eereProfileCalculationDisabled
     ? 'avert-button-disabled'
     : '';
 
@@ -719,12 +719,12 @@ function EEREInputsContent() {
           href="/"
           onClick={(ev) => {
             ev.preventDefault();
-            if (calculationDisabled) return;
+            if (eereProfileCalculationDisabled) return;
             dispatch(calculateEereProfile());
           }}
           data-avert-calculate-impacts-btn
         >
-          {eereButtonOptions[calculationStatus]}
+          {eereButtonOptions[eereProfileCalculationStatus]}
         </a>
       </p>
     </>

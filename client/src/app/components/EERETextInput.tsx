@@ -36,16 +36,18 @@ export function EERETextInput(props: {
   } = props;
 
   const dispatch = useDispatch();
-  const calculationStatus = useTypedSelector(
-    ({ eere }) => eere.calculationStatus,
+  const eereProfileCalculationStatus = useTypedSelector(
+    ({ eere }) => eere.profileCalculationStatus,
   );
   const errors = useTypedSelector(({ eere }) => eere.errors);
 
   const inputsAreValid = errors.length === 0;
   const inputIsEmpty = value.length === 0;
 
-  const calculationDisabled =
-    !inputsAreValid || inputIsEmpty || calculationStatus === 'pending';
+  const eereProfileCalculationDisabled =
+    !inputsAreValid ||
+    inputIsEmpty ||
+    eereProfileCalculationStatus === 'pending';
 
   return (
     <div className={className ? className : ''}>
@@ -78,7 +80,7 @@ export function EERETextInput(props: {
           onChange={(ev) => onChange(ev.target.value)}
           onBlur={(ev) => onBlur && onBlur(ev.target.value)}
           onKeyPress={(ev) => {
-            if (calculationDisabled) return;
+            if (eereProfileCalculationDisabled) return;
             if (ev.key === 'Enter') dispatch(calculateEereProfile());
           }}
         />

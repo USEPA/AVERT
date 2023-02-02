@@ -11,9 +11,9 @@ require('highcharts/modules/accessibility')(Highcharts);
 
 function EEREChartContent() {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const inputs = useTypedSelector(({ eere }) => eere.inputs);
-  const calculationInputs = useTypedSelector(
-    ({ eere }) => eere.calculationInputs,
+  const eereInputs = useTypedSelector(({ eere }) => eere.inputs);
+  const eereProfileCalculationInputs = useTypedSelector(
+    ({ eere }) => eere.profileCalculationInputs,
   );
   const hourlyEere = useTypedSelector(
     ({ eere }) => eere.combinedProfile.hourlyEere,
@@ -23,12 +23,14 @@ function EEREChartContent() {
    * Recalculation of the EERE profile is needed if the EERE inputs have changed
    * from the ones used in the EERE profile calculation
    */
-  const eereProfileRecalculationNeeded = !Object.keys(inputs).every((field) => {
-    return (
-      inputs[field as keyof typeof inputs] ===
-      calculationInputs[field as keyof typeof calculationInputs]
-    );
-  });
+  const eereProfileRecalculationNeeded = !Object.keys(eereInputs).every(
+    (field) => {
+      return (
+        eereInputs[field as keyof typeof eereInputs] ===
+        eereProfileCalculationInputs[field as keyof typeof eereProfileCalculationInputs] // prettier-ignore
+      );
+    },
+  );
 
   const selectedRegion = useSelectedRegion();
   const selectedStateRegions = useSelectedStateRegions();

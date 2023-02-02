@@ -130,15 +130,15 @@ type EereAction =
       payload: { option: string };
     }
   | {
-      type: 'eere/START_EERE_CALCULATIONS';
-      payload: { calculationInputs: EEREInputs };
+      type: 'eere/START_EERE_PROFILE_CALCULATIONS';
+      payload: { profileCalculationInputs: EEREInputs };
     }
   | {
       type: 'eere/CALCULATE_REGIONAL_EERE_PROFILE';
       payload: RegionalProfile;
     }
   | {
-      type: 'eere/COMPLETE_EERE_CALCULATIONS';
+      type: 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS';
       payload: CombinedProfile;
     };
 
@@ -184,8 +184,8 @@ type EereState = {
   )[];
   inputs: EEREInputs;
   selectOptions: { [field in SelectOptionsFieldName]: SelectOption[] };
-  calculationStatus: 'idle' | 'pending' | 'success';
-  calculationInputs: EEREInputs;
+  profileCalculationStatus: 'idle' | 'pending' | 'success';
+  profileCalculationInputs: EEREInputs;
   regionalProfiles: Partial<{ [key in RegionId]: RegionalProfile }>;
   combinedProfile: CombinedProfile;
 };
@@ -232,8 +232,8 @@ const initialState: EereState = {
     evModelYearOptions,
     iceReplacementVehicleOptions,
   },
-  calculationStatus: 'idle',
-  calculationInputs: initialEEREInputs,
+  profileCalculationStatus: 'idle',
+  profileCalculationInputs: initialEEREInputs,
   regionalProfiles: {},
   combinedProfile: {
     hourlyEere: [],
@@ -258,8 +258,8 @@ export default function reducer(
         errors: [],
         inputs: initialEEREInputs,
         // NOTE: selectOptions should not be reset
-        calculationStatus: 'idle',
-        calculationInputs: initialEEREInputs,
+        profileCalculationStatus: 'idle',
+        profileCalculationInputs: initialEEREInputs,
         regionalProfiles: {},
         combinedProfile: {
           hourlyEere: [],
@@ -468,12 +468,12 @@ export default function reducer(
       };
     }
 
-    case 'eere/START_EERE_CALCULATIONS': {
-      const { calculationInputs } = action.payload;
+    case 'eere/START_EERE_PROFILE_CALCULATIONS': {
+      const { profileCalculationInputs } = action.payload;
       return {
         ...state,
-        calculationStatus: 'pending',
-        calculationInputs,
+        profileCalculationStatus: 'pending',
+        profileCalculationInputs,
         regionalProfiles: {},
       };
     }
@@ -506,11 +506,11 @@ export default function reducer(
       };
     }
 
-    case 'eere/COMPLETE_EERE_CALCULATIONS': {
+    case 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS': {
       const combinedProfile = action.payload;
       return {
         ...state,
-        calculationStatus: 'success',
+        profileCalculationStatus: 'success',
         combinedProfile,
       };
     }
@@ -815,8 +815,8 @@ export function calculateEereProfile(): AppThunk {
     }
 
     dispatch({
-      type: 'eere/START_EERE_CALCULATIONS',
-      payload: { calculationInputs: inputs },
+      type: 'eere/START_EERE_PROFILE_CALCULATIONS',
+      payload: { profileCalculationInputs: inputs },
     });
 
     // selected regional profiles are stored individually to pass to the
@@ -1038,7 +1038,7 @@ export function calculateEereProfile(): AppThunk {
       : emptyRegionalLoadHour;
 
     dispatch({
-      type: 'eere/COMPLETE_EERE_CALCULATIONS',
+      type: 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS',
       payload: {
         hourlyEere: combinedHourlyEeres,
         softValid,
