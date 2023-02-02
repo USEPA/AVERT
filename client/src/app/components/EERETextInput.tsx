@@ -81,7 +81,10 @@ export function EERETextInput(props: {
           onBlur={(ev) => onBlur && onBlur(ev.target.value)}
           onKeyPress={(ev) => {
             if (eereProfileCalculationDisabled) return;
-            if (ev.key === 'Enter') dispatch(calculateEereProfile());
+            if (ev.key === 'Enter') {
+              onBlur && onBlur((ev.target as HTMLInputElement).value);
+              dispatch(calculateEereProfile());
+            }
           }}
         />
 
