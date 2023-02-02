@@ -19,6 +19,7 @@ export function EERETextInput(props: {
   fieldName: string;
   disabled?: string;
   onChange: (value: string) => void;
+  onBlur?: (value: string) => void;
   tooltip?: ReactNode;
 }) {
   const {
@@ -30,20 +31,23 @@ export function EERETextInput(props: {
     fieldName,
     disabled,
     onChange,
+    onBlur,
     tooltip,
   } = props;
 
   const dispatch = useDispatch();
-  const calculationStatus = useTypedSelector(
-    ({ eere }) => eere.calculationStatus,
+  const eereProfileCalculationStatus = useTypedSelector(
+    ({ eere }) => eere.profileCalculationStatus,
   );
   const errors = useTypedSelector(({ eere }) => eere.errors);
 
   const inputsAreValid = errors.length === 0;
   const inputIsEmpty = value.length === 0;
 
-  const calculationDisabled =
-    !inputsAreValid || inputIsEmpty || calculationStatus === 'pending';
+  const eereProfileCalculationDisabled =
+    !inputsAreValid ||
+    inputIsEmpty ||
+    eereProfileCalculationStatus === 'pending';
 
   return (
     <div className={className ? className : ''}>
@@ -74,9 +78,13 @@ export function EERETextInput(props: {
           data-avert-eere-input={fieldName}
           disabled={Boolean(disabled)}
           onChange={(ev) => onChange(ev.target.value)}
+          onBlur={(ev) => onBlur && onBlur(ev.target.value)}
           onKeyPress={(ev) => {
-            if (calculationDisabled) return;
-            if (ev.key === 'Enter') dispatch(calculateEereProfile());
+            if (eereProfileCalculationDisabled) return;
+            if (ev.key === 'Enter') {
+              onBlur && onBlur((ev.target as HTMLInputElement).value);
+              dispatch(calculateEereProfile());
+            }
           }}
         />
 

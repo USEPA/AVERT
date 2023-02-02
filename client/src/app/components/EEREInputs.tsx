@@ -24,9 +24,13 @@ import {
   updateEereUtilitySolar,
   updateEereRooftopSolar,
   updateEereBatteryEVs,
+  runEereBatteryEVsCalculations,
   updateEereHybridEVs,
+  runEereHybridEVsCalculations,
   updateEereTransitBuses,
+  runEereTransitBusesCalculations,
   updateEereSchoolBuses,
+  runEereSchoolBusesCalculations,
   updateEereEVDeploymentLocation,
   updateEereEVModelYear,
   updateEereICEReplacementVehicle,
@@ -70,8 +74,8 @@ const inputsSummaryStyles = css`
 function EEREInputsContent() {
   const dispatch = useDispatch();
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const calculationStatus = useTypedSelector(
-    ({ eere }) => eere.calculationStatus,
+  const eereProfileCalculationStatus = useTypedSelector(
+    ({ eere }) => eere.profileCalculationStatus,
   );
   const errors = useTypedSelector(({ eere }) => eere.errors);
   const constantMwh = useTypedSelector(({ eere }) => eere.inputs.constantMwh);
@@ -145,10 +149,10 @@ function EEREInputsContent() {
   const textInputsAreEmpty =
     textInputsFields.filter((field) => field?.length > 0).length === 0;
 
-  const calculationDisabled =
+  const eereProfileCalculationDisabled =
     !textInputsAreValid ||
     textInputsAreEmpty ||
-    calculationStatus === 'pending';
+    eereProfileCalculationStatus === 'pending';
 
   const eereButtonOptions = {
     idle: 'Calculate EE/RE Impacts',
@@ -156,7 +160,7 @@ function EEREInputsContent() {
     success: 'Recalculate EE/RE Impacts',
   };
 
-  const disabledButtonClassName = calculationDisabled
+  const disabledButtonClassName = eereProfileCalculationDisabled
     ? 'avert-button-disabled'
     : '';
 
@@ -602,6 +606,9 @@ function EEREInputsContent() {
                             onChange={(text) =>
                               dispatch(updateEereBatteryEVs(text))
                             }
+                            onBlur={(text) =>
+                              dispatch(runEereBatteryEVsCalculations(text))
+                            }
                             tooltip={<p className="margin-0">TODO</p>}
                           />
                         </div>
@@ -615,6 +622,9 @@ function EEREInputsContent() {
                             fieldName="hybridEVs"
                             onChange={(text) =>
                               dispatch(updateEereHybridEVs(text))
+                            }
+                            onBlur={(text) =>
+                              dispatch(runEereHybridEVsCalculations(text))
                             }
                             tooltip={<p className="margin-0">TODO</p>}
                           />
@@ -632,6 +642,9 @@ function EEREInputsContent() {
                             onChange={(text) =>
                               dispatch(updateEereTransitBuses(text))
                             }
+                            onBlur={(text) =>
+                              dispatch(runEereTransitBusesCalculations(text))
+                            }
                             tooltip={<p className="margin-0">TODO</p>}
                           />
                         </div>
@@ -645,6 +658,9 @@ function EEREInputsContent() {
                             fieldName="schoolBuses"
                             onChange={(text) =>
                               dispatch(updateEereSchoolBuses(text))
+                            }
+                            onBlur={(text) =>
+                              dispatch(runEereSchoolBusesCalculations(text))
                             }
                             tooltip={<p className="margin-0">TODO</p>}
                           />
@@ -719,12 +735,12 @@ function EEREInputsContent() {
           href="/"
           onClick={(ev) => {
             ev.preventDefault();
-            if (calculationDisabled) return;
+            if (eereProfileCalculationDisabled) return;
             dispatch(calculateEereProfile());
           }}
           data-avert-calculate-impacts-btn
         >
-          {eereButtonOptions[calculationStatus]}
+          {eereButtonOptions[eereProfileCalculationStatus]}
         </a>
       </p>
     </>

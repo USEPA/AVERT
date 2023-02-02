@@ -106,7 +106,15 @@ type EereAction =
       payload: { text: string };
     }
   | {
+      type: 'eere/UPDATE_EERE_BATTERY_EVS_CALCULATIONS_INPUT';
+      payload: { text: string };
+    }
+  | {
       type: 'eere/UPDATE_EERE_HYBRID_EVS';
+      payload: { text: string };
+    }
+  | {
+      type: 'eere/UPDATE_EERE_HYBRID_EVS_CALCULATIONS_INPUT';
       payload: { text: string };
     }
   | {
@@ -114,7 +122,15 @@ type EereAction =
       payload: { text: string };
     }
   | {
+      type: 'eere/UPDATE_EERE_TRANSIT_BUSES_CALCULATIONS_INPUT';
+      payload: { text: string };
+    }
+  | {
       type: 'eere/UPDATE_EERE_SCHOOL_BUSES';
+      payload: { text: string };
+    }
+  | {
+      type: 'eere/UPDATE_EERE_SCHOOL_BUSES_CALCULATIONS_INPUT';
       payload: { text: string };
     }
   | {
@@ -130,15 +146,15 @@ type EereAction =
       payload: { option: string };
     }
   | {
-      type: 'eere/START_EERE_CALCULATIONS';
-      payload: { calculationInputs: EEREInputs };
+      type: 'eere/START_EERE_PROFILE_CALCULATIONS';
+      payload: { profileCalculationInputs: EEREInputs };
     }
   | {
       type: 'eere/CALCULATE_REGIONAL_EERE_PROFILE';
       payload: RegionalProfile;
     }
   | {
-      type: 'eere/COMPLETE_EERE_CALCULATIONS';
+      type: 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS';
       payload: CombinedProfile;
     };
 
@@ -184,8 +200,9 @@ type EereState = {
   )[];
   inputs: EEREInputs;
   selectOptions: { [field in SelectOptionsFieldName]: SelectOption[] };
-  calculationStatus: 'idle' | 'pending' | 'success';
-  calculationInputs: EEREInputs;
+  evCalculationsInputs: { [field in ElectricVehiclesFieldName]: string };
+  profileCalculationStatus: 'idle' | 'pending' | 'success';
+  profileCalculationInputs: EEREInputs;
   regionalProfiles: Partial<{ [key in RegionId]: RegionalProfile }>;
   combinedProfile: CombinedProfile;
 };
@@ -232,8 +249,14 @@ const initialState: EereState = {
     evModelYearOptions,
     iceReplacementVehicleOptions,
   },
-  calculationStatus: 'idle',
-  calculationInputs: initialEEREInputs,
+  evCalculationsInputs: {
+    batteryEVs: '',
+    hybridEVs: '',
+    transitBuses: '',
+    schoolBuses: '',
+  },
+  profileCalculationStatus: 'idle',
+  profileCalculationInputs: initialEEREInputs,
   regionalProfiles: {},
   combinedProfile: {
     hourlyEere: [],
@@ -258,8 +281,14 @@ export default function reducer(
         errors: [],
         inputs: initialEEREInputs,
         // NOTE: selectOptions should not be reset
-        calculationStatus: 'idle',
-        calculationInputs: initialEEREInputs,
+        evCalculationsInputs: {
+          batteryEVs: '',
+          hybridEVs: '',
+          transitBuses: '',
+          schoolBuses: '',
+        },
+        profileCalculationStatus: 'idle',
+        profileCalculationInputs: initialEEREInputs,
         regionalProfiles: {},
         combinedProfile: {
           hourlyEere: [],
@@ -402,12 +431,34 @@ export default function reducer(
       };
     }
 
+    case 'eere/UPDATE_EERE_BATTERY_EVS_CALCULATIONS_INPUT': {
+      const { text } = action.payload;
+      return {
+        ...state,
+        evCalculationsInputs: {
+          ...state.evCalculationsInputs,
+          batteryEVs: text,
+        },
+      };
+    }
+
     case 'eere/UPDATE_EERE_HYBRID_EVS': {
       const { text } = action.payload;
       return {
         ...state,
         inputs: {
           ...state.inputs,
+          hybridEVs: text,
+        },
+      };
+    }
+
+    case 'eere/UPDATE_EERE_HYBRID_EVS_CALCULATIONS_INPUT': {
+      const { text } = action.payload;
+      return {
+        ...state,
+        evCalculationsInputs: {
+          ...state.evCalculationsInputs,
           hybridEVs: text,
         },
       };
@@ -424,12 +475,34 @@ export default function reducer(
       };
     }
 
+    case 'eere/UPDATE_EERE_TRANSIT_BUSES_CALCULATIONS_INPUT': {
+      const { text } = action.payload;
+      return {
+        ...state,
+        evCalculationsInputs: {
+          ...state.evCalculationsInputs,
+          transitBuses: text,
+        },
+      };
+    }
+
     case 'eere/UPDATE_EERE_SCHOOL_BUSES': {
       const { text } = action.payload;
       return {
         ...state,
         inputs: {
           ...state.inputs,
+          schoolBuses: text,
+        },
+      };
+    }
+
+    case 'eere/UPDATE_EERE_SCHOOL_BUSES_CALCULATIONS_INPUT': {
+      const { text } = action.payload;
+      return {
+        ...state,
+        evCalculationsInputs: {
+          ...state.evCalculationsInputs,
           schoolBuses: text,
         },
       };
@@ -468,12 +541,12 @@ export default function reducer(
       };
     }
 
-    case 'eere/START_EERE_CALCULATIONS': {
-      const { calculationInputs } = action.payload;
+    case 'eere/START_EERE_PROFILE_CALCULATIONS': {
+      const { profileCalculationInputs } = action.payload;
       return {
         ...state,
-        calculationStatus: 'pending',
-        calculationInputs,
+        profileCalculationStatus: 'pending',
+        profileCalculationInputs,
         regionalProfiles: {},
       };
     }
@@ -506,11 +579,11 @@ export default function reducer(
       };
     }
 
-    case 'eere/COMPLETE_EERE_CALCULATIONS': {
+    case 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS': {
       const combinedProfile = action.payload;
       return {
         ...state,
-        calculationStatus: 'success',
+        profileCalculationStatus: 'success',
         combinedProfile,
       };
     }
@@ -698,7 +771,26 @@ export function updateEereBatteryEVs(input: string): AppThunk {
     });
 
     dispatch(validateInput('batteryEVs', input));
-    dispatch(setVehiclesDisplaced());
+  };
+}
+
+/**
+ * Called every time the batteryEVs inputs loses focus (e.g. onBlur)
+ */
+export function runEereBatteryEVsCalculations(input: string): AppThunk {
+  return (dispatch, getState) => {
+    const { eere } = getState();
+    const { batteryEVs } = eere.evCalculationsInputs;
+
+    /** only run calculations if the input has changed since the last onBlur */
+    if (input !== batteryEVs) {
+      dispatch(setVehiclesDisplaced());
+    }
+
+    dispatch({
+      type: 'eere/UPDATE_EERE_BATTERY_EVS_CALCULATIONS_INPUT',
+      payload: { text: input },
+    });
   };
 }
 
@@ -710,7 +802,26 @@ export function updateEereHybridEVs(input: string): AppThunk {
     });
 
     dispatch(validateInput('hybridEVs', input));
-    dispatch(setVehiclesDisplaced());
+  };
+}
+
+/**
+ * Called every time the hybridEVs inputs loses focus (e.g. onBlur)
+ */
+export function runEereHybridEVsCalculations(input: string): AppThunk {
+  return (dispatch, getState) => {
+    const { eere } = getState();
+    const { hybridEVs } = eere.evCalculationsInputs;
+
+    /** only run calculations if the input has changed since the last onBlur */
+    if (input !== hybridEVs) {
+      dispatch(setVehiclesDisplaced());
+    }
+
+    dispatch({
+      type: 'eere/UPDATE_EERE_HYBRID_EVS_CALCULATIONS_INPUT',
+      payload: { text: input },
+    });
   };
 }
 
@@ -722,7 +833,26 @@ export function updateEereTransitBuses(input: string): AppThunk {
     });
 
     dispatch(validateInput('transitBuses', input));
-    dispatch(setVehiclesDisplaced());
+  };
+}
+
+/**
+ * Called every time the transitBuses inputs loses focus (e.g. onBlur)
+ */
+export function runEereTransitBusesCalculations(input: string): AppThunk {
+  return (dispatch, getState) => {
+    const { eere } = getState();
+    const { transitBuses } = eere.evCalculationsInputs;
+
+    /** only run calculations if the input has changed since the last onBlur */
+    if (input !== transitBuses) {
+      dispatch(setVehiclesDisplaced());
+    }
+
+    dispatch({
+      type: 'eere/UPDATE_EERE_TRANSIT_BUSES_CALCULATIONS_INPUT',
+      payload: { text: input },
+    });
   };
 }
 
@@ -734,7 +864,26 @@ export function updateEereSchoolBuses(input: string): AppThunk {
     });
 
     dispatch(validateInput('schoolBuses', input));
-    dispatch(setVehiclesDisplaced());
+  };
+}
+
+/**
+ * Called every time the schoolBuses inputs loses focus (e.g. onBlur)
+ */
+export function runEereSchoolBusesCalculations(input: string): AppThunk {
+  return (dispatch, getState) => {
+    const { eere } = getState();
+    const { schoolBuses } = eere.evCalculationsInputs;
+
+    /** only run calculations if the input has changed since the last onBlur */
+    if (input !== schoolBuses) {
+      dispatch(setVehiclesDisplaced());
+    }
+
+    dispatch({
+      type: 'eere/UPDATE_EERE_SCHOOL_BUSES_CALCULATIONS_INPUT',
+      payload: { text: input },
+    });
   };
 }
 
@@ -815,8 +964,8 @@ export function calculateEereProfile(): AppThunk {
     }
 
     dispatch({
-      type: 'eere/START_EERE_CALCULATIONS',
-      payload: { calculationInputs: inputs },
+      type: 'eere/START_EERE_PROFILE_CALCULATIONS',
+      payload: { profileCalculationInputs: inputs },
     });
 
     // selected regional profiles are stored individually to pass to the
@@ -1038,7 +1187,7 @@ export function calculateEereProfile(): AppThunk {
       : emptyRegionalLoadHour;
 
     dispatch({
-      type: 'eere/COMPLETE_EERE_CALCULATIONS',
+      type: 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS',
       payload: {
         hourlyEere: combinedHourlyEeres,
         softValid,
@@ -1063,11 +1212,9 @@ export function resetEEREInputs(): AppThunk {
 
     dispatch({ type: 'eere/RESET_EERE_INPUTS' });
 
-    // reset all EV inputs so dependant transportation calculations are re-run
-    dispatch(updateEereBatteryEVs(''));
-    dispatch(updateEereHybridEVs(''));
-    dispatch(updateEereTransitBuses(''));
-    dispatch(updateEereSchoolBuses(''));
+    // re-run dependant transportation calculations after resetting EV inputs
+    dispatch(setVehiclesDisplaced());
+
     dispatch(updateEereEVDeploymentLocation(evDeploymentLocation));
     dispatch(updateEereEVModelYear(evModelYear));
     dispatch(updateEereICEReplacementVehicle(iceReplacementVehicle));

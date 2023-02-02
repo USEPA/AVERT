@@ -77,11 +77,11 @@ export function PanelFooter(props: {
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const eereInputs = useTypedSelector(({ eere }) => eere.inputs);
-  const eereCalculationStatus = useTypedSelector(
-    ({ eere }) => eere.calculationStatus,
+  const eereProfileCalculationStatus = useTypedSelector(
+    ({ eere }) => eere.profileCalculationStatus,
   );
-  const eereCalculationInputs = useTypedSelector(
-    ({ eere }) => eere.calculationInputs,
+  const eereProfileCalculationInputs = useTypedSelector(
+    ({ eere }) => eere.profileCalculationInputs,
   );
   const eereHardValid = useTypedSelector(
     ({ eere }) => eere.combinedProfile.hardValid,
@@ -108,12 +108,12 @@ export function PanelFooter(props: {
     !Object.keys(eereInputs).every((field) => {
       return (
         eereInputs[field as keyof typeof eereInputs] ===
-        eereCalculationInputs[field as keyof typeof eereCalculationInputs]
+        eereProfileCalculationInputs[field as keyof typeof eereProfileCalculationInputs] // prettier-ignore
       );
     });
 
   const eereProfileCalculationNotComplete =
-    onStepTwo && eereCalculationStatus !== 'success';
+    onStepTwo && eereProfileCalculationStatus !== 'success';
 
   const eereProfileExceedsHardValidationLimit = onStepTwo && !eereHardValid;
 
@@ -164,7 +164,7 @@ export function PanelFooter(props: {
 
         if (onStepTwo) {
           if (
-            eereCalculationStatus === 'success' &&
+            eereProfileCalculationStatus === 'success' &&
             !eereProfileRecalculationNeeded &&
             eereHardValid
           ) {

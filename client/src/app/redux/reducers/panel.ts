@@ -14,8 +14,8 @@ type Action =
     }
   | { type: 'geography/REQUEST_SELECTED_REGIONS_DATA' }
   | { type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' }
-  | { type: 'eere/START_EERE_CALCULATIONS' }
-  | { type: 'eere/COMPLETE_EERE_CALCULATIONS' }
+  | { type: 'eere/START_EERE_PROFILE_CALCULATIONS' }
+  | { type: 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS' }
   | { type: 'results/FETCH_EMISSIONS_CHANGES_REQUEST' }
   | { type: 'results/FETCH_EMISSIONS_CHANGES_SUCCESS' };
 
@@ -78,7 +78,7 @@ export default function reducer(
     }
 
     case 'geography/REQUEST_SELECTED_REGIONS_DATA':
-    case 'eere/START_EERE_CALCULATIONS':
+    case 'eere/START_EERE_PROFILE_CALCULATIONS':
     case 'results/FETCH_EMISSIONS_CHANGES_REQUEST': {
       return {
         ...state,
@@ -87,7 +87,7 @@ export default function reducer(
     }
 
     case 'geography/RECEIVE_SELECTED_REGIONS_DATA':
-    case 'eere/COMPLETE_EERE_CALCULATIONS':
+    case 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS':
     case 'results/FETCH_EMISSIONS_CHANGES_SUCCESS': {
       return {
         ...state,
