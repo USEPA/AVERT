@@ -12,7 +12,7 @@ import { regions as regionsConfig, states as statesConfig } from 'app/config';
  */
 import countyFips from 'app/data/county-fips.json';
 
-const powerSectorFields = [
+const emissionsFields = [
   'Power Sector: January',
   'Power Sector: February',
   'Power Sector: March',
@@ -26,6 +26,7 @@ const powerSectorFields = [
   'Power Sector: November',
   'Power Sector: December',
   'Power Sector: Annual',
+  'Vehicles',
 ] as const;
 
 type Pollutant = 'SO2' | 'NOX' | 'CO2' | 'PM25' | 'VOCS' | 'NH3';
@@ -38,7 +39,7 @@ type CountyData = {
   County: string | null;
   'Unit of measure': 'percent' | 'emissions (tons)' | 'emissions (pounds)';
 } & {
-  [field in typeof powerSectorFields[number]]: number | null;
+  [field in typeof emissionsFields[number]]: number | null;
 };
 
 type CobraData = {
@@ -147,7 +148,7 @@ function formatCountyDownloadData(options: {
         return egu.emissionsFlags.includes(pollutant as EmissionsFlagsField);
       });
 
-      const powerSectorEmissionsFields = createPowerSectorEmissionsFields({
+      const emissionsFields = createEmissionsFields({
         pollutantNeedsReplacement,
         data: total[pollutant],
         unit,
@@ -160,7 +161,7 @@ function formatCountyDownloadData(options: {
         State: null,
         County: null,
         'Unit of measure': unit,
-        ...powerSectorEmissionsFields,
+        ...emissionsFields,
       };
     });
 
@@ -181,7 +182,7 @@ function formatCountyDownloadData(options: {
         );
       });
 
-      const powerSectorEmissionsFields = createPowerSectorEmissionsFields({
+      const emissionsFields = createEmissionsFields({
         pollutantNeedsReplacement,
         data: regionData[pollutant],
         unit,
@@ -194,7 +195,7 @@ function formatCountyDownloadData(options: {
         State: null,
         County: null,
         'Unit of measure': unit,
-        ...powerSectorEmissionsFields,
+        ...emissionsFields,
       };
     });
 
@@ -220,7 +221,7 @@ function formatCountyDownloadData(options: {
         );
       });
 
-      const powerSectorEmissionsFields = createPowerSectorEmissionsFields({
+      const emissionsFields = createEmissionsFields({
         pollutantNeedsReplacement,
         data: stateData[pollutant],
         unit,
@@ -233,7 +234,7 @@ function formatCountyDownloadData(options: {
         State: stateId,
         County: null,
         'Unit of measure': unit,
-        ...powerSectorEmissionsFields,
+        ...emissionsFields,
       };
     });
 
@@ -263,7 +264,7 @@ function formatCountyDownloadData(options: {
           );
         });
 
-        const powerSectorEmissionsFields = createPowerSectorEmissionsFields({
+        const emissionsFields = createEmissionsFields({
           pollutantNeedsReplacement,
           data: countyData[pollutant],
           unit,
@@ -276,7 +277,7 @@ function formatCountyDownloadData(options: {
           State: stateId,
           County: countyName.replace(/city/, '(City)'), // format 'city'
           'Unit of measure': unit,
-          ...powerSectorEmissionsFields,
+          ...emissionsFields,
         };
       });
 
@@ -318,14 +319,18 @@ function createOrderedPollutantsRows() {
 
 /**
  * Creates annual and monthly power sector data fields for either emissions
- * changes or percentage changes, for use in the downloadable county data.
+ * changes or percentage changes, and transportation sector annual emission
+ * changes for use in the downloadable county data.
  */
-function createPowerSectorEmissionsFields(options: {
+function createEmissionsFields(options: {
   pollutantNeedsReplacement: boolean;
   data: EmissionsData[keyof EmissionsData];
   unit: 'percent' | 'emissions (tons)' | 'emissions (pounds)';
 }) {
   const { pollutantNeedsReplacement, data, unit } = options;
+
+  const powerData = data.power;
+  const vehicleData = data.vehicle;
 
   const result = {
     'Power Sector: January': null,
@@ -341,49 +346,53 @@ function createPowerSectorEmissionsFields(options: {
     'Power Sector: November': null,
     'Power Sector: December': null,
     'Power Sector: Annual': null,
-  } as { [field in typeof powerSectorFields[number]]: number | null };
+    Vehicles: null,
+  } as { [field in typeof emissionsFields[number]]: number | null };
 
-  const powerData = data.power;
+  if (powerData) {
+    const annualData = powerData.annual;
+    const annualEmissionsChange = annualData.postEere - annualData.original;
+    const annualPercentChange = (annualEmissionsChange / annualData.original) * 100 || 0; // prettier-ignore
 
-  if (!powerData) return result;
+    const monthlyData = Object.entries(powerData.monthly).reduce(
+      (object, [key, values]) => {
+        const month = Number(key);
+        const { original, postEere } = values;
 
-  const annualEmissionsChange = powerData.annual.postEere - powerData.annual.original; // prettier-ignore
-  const annualPercentChange = (annualEmissionsChange / powerData.annual.original) * 100 || 0; // prettier-ignore
+        const monthlyEmissionsChange = postEere - original;
+        const monthlyPercentChange = (monthlyEmissionsChange / original) * 100 || 0; // prettier-ignore
 
-  const monthlyData = Object.entries(powerData.monthly).reduce(
-    (object, [key, values]) => {
-      const month = Number(key);
-      const { original, postEere } = values;
+        object[month] =
+          unit === 'percent'
+            ? pollutantNeedsReplacement
+              ? null
+              : monthlyPercentChange
+            : monthlyEmissionsChange;
 
-      const emissionsChange = postEere - original;
-      const percentChange = (emissionsChange / original) * 100 || 0;
+        return object;
+      },
+      {} as { [month: number]: number | null },
+    );
 
-      object[month] =
-        unit === 'percent'
-          ? pollutantNeedsReplacement
-            ? null
-            : percentChange
-          : emissionsChange;
+    result['Power Sector: January'] = monthlyData[1];
+    result['Power Sector: February'] = monthlyData[2];
+    result['Power Sector: March'] = monthlyData[3];
+    result['Power Sector: April'] = monthlyData[4];
+    result['Power Sector: May'] = monthlyData[5];
+    result['Power Sector: June'] = monthlyData[6];
+    result['Power Sector: July'] = monthlyData[7];
+    result['Power Sector: August'] = monthlyData[8];
+    result['Power Sector: September'] = monthlyData[9];
+    result['Power Sector: October'] = monthlyData[10];
+    result['Power Sector: November'] = monthlyData[11];
+    result['Power Sector: December'] = monthlyData[12];
+    result['Power Sector: Annual'] =
+      unit === 'percent' ? annualPercentChange : annualEmissionsChange;
+  }
 
-      return object;
-    },
-    {} as { [month: number]: number | null },
-  );
-
-  result['Power Sector: January'] = monthlyData[1];
-  result['Power Sector: February'] = monthlyData[2];
-  result['Power Sector: March'] = monthlyData[3];
-  result['Power Sector: April'] = monthlyData[4];
-  result['Power Sector: May'] = monthlyData[5];
-  result['Power Sector: June'] = monthlyData[6];
-  result['Power Sector: July'] = monthlyData[7];
-  result['Power Sector: August'] = monthlyData[8];
-  result['Power Sector: September'] = monthlyData[9];
-  result['Power Sector: October'] = monthlyData[10];
-  result['Power Sector: November'] = monthlyData[11];
-  result['Power Sector: December'] = monthlyData[12];
-  result['Power Sector: Annual'] =
-    unit === 'percent' ? annualPercentChange : annualEmissionsChange;
+  if (vehicleData && unit !== 'percent') {
+    result['Vehicles'] = vehicleData;
+  }
 
   return result;
 }
