@@ -69,7 +69,7 @@ function setAnnualStateEmissionsChanges(
     }[],
   );
 
-  return result;
+  return result.sort((a, b) => a.name.localeCompare(b.name));
 }
 
 function StateEmissionsTableContent() {
