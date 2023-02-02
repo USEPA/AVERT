@@ -38,19 +38,22 @@ type ChartData = {
 };
 
 /**
- * Creates monthly emissions data for either emissions changes or percentage
- * changes, for display in the monthly charts.
+ * Creates monthly power sector emissions data for either emissions changes or
+ * percentage changes, for display in the monthly charts.
  */
-function calculateMonthlyData(
-  monthlyData: EmissionsData[keyof EmissionsData]['power']['monthly'],
+function calculateMonthlyPowerData(
+  data: EmissionsData[keyof EmissionsData],
   unit: Unit,
 ) {
   const monthlyEmissionsChanges: number[] = [];
   const monthlyPercentageChanges: number[] = [];
 
-  for (const dataKey in monthlyData) {
-    const month = Number(dataKey);
-    const { original, postEere } = monthlyData[month];
+  const powerData = data.power;
+  if (!powerData) return [];
+
+  for (const key in powerData.monthly) {
+    const month = Number(key);
+    const { original, postEere } = powerData.monthly[month];
 
     const emissionsChange = postEere - original;
     const percentChange = (emissionsChange / original) * 100 || 0;
@@ -154,7 +157,7 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
   const so2Data = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyData(data.so2.power.monthly, currentUnit),
+      data: calculateMonthlyPowerData(data.so2, currentUnit),
       color: 'rgba(5, 141, 199, 1)',
       unit: 'lb',
     },
@@ -169,7 +172,7 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
   const noxData = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyData(data.nox.power.monthly, currentUnit),
+      data: calculateMonthlyPowerData(data.nox, currentUnit),
       color: 'rgba(237, 86, 27, 1)',
       unit: 'lb',
     },
@@ -184,7 +187,7 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
   const co2Data = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyData(data.co2.power.monthly, currentUnit),
+      data: calculateMonthlyPowerData(data.co2, currentUnit),
       color: 'rgba(80, 180, 50, 1)',
       unit: 'tons',
     },
@@ -199,7 +202,7 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
   const pm25Data = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyData(data.pm25.power.monthly, currentUnit),
+      data: calculateMonthlyPowerData(data.pm25, currentUnit),
       color: 'rgba(102, 86, 131, 1)',
       unit: 'lb',
     },
@@ -214,7 +217,7 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
   const vocsData = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyData(data.vocs.power.monthly, currentUnit),
+      data: calculateMonthlyPowerData(data.vocs, currentUnit),
       color: 'rgba(255, 193, 7, 1)',
       unit: 'lb',
     },
@@ -229,7 +232,7 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
   const nh3Data = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyData(data.nh3.power.monthly, currentUnit),
+      data: calculateMonthlyPowerData(data.nh3, currentUnit),
       color: 'rgba(0, 150, 136, 1)',
       unit: 'lb',
     },

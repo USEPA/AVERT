@@ -1,6 +1,8 @@
-import { sortObjectByKeys } from 'app/calculations/utilities';
-import type { RegionId, StateId } from 'app/config';
 import type { RDFJSON } from 'app/redux/reducers/geography';
+import { sortObjectByKeys } from 'app/calculations/utilities';
+import type { VehicleEmissionChangesByGeography } from 'app/calculations/transportation';
+import type { RegionId, StateId } from 'app/config';
+
 /**
  * Annual point-source data from the National Emissions Inventory (NEI) for
  * every electric generating unit (EGU), organized by AVERT region
@@ -21,7 +23,7 @@ export type EmissionsData = {
     power: {
       monthly: EguData['data'][keyof EguData['data']];
       annual: { original: number; postEere: number };
-    };
+    } | null;
     vehicle: number | null;
   };
 };
@@ -388,25 +390,32 @@ export function calculateAggregatedEmissionsData(egus: EmissionsChanges) {
           const month = Number(monthlyKey);
           const { original, postEere } = monthlyData;
 
-          object.total[pollutant].power.monthly[month].original += original;
-          object.total[pollutant].power.monthly[month].postEere += postEere;
-          object.total[pollutant].power.annual.original += original;
-          object.total[pollutant].power.annual.postEere += postEere;
+          const powerTotal = object.total[pollutant].power;
+          const powerRegions = object.regions[regionId][pollutant].power;
+          const powerStates = object.states[stateId][pollutant].power;
+          const powerCounties = object.counties[stateId][county][pollutant].power; // prettier-ignore
 
-          object.regions[regionId][pollutant].power.monthly[month].original += original; // prettier-ignore
-          object.regions[regionId][pollutant].power.monthly[month].postEere += postEere; // prettier-ignore
-          object.regions[regionId][pollutant].power.annual.original += original;
-          object.regions[regionId][pollutant].power.annual.postEere += postEere;
+          if (powerTotal && powerRegions && powerStates && powerCounties) {
+            powerTotal.monthly[month].original += original;
+            powerTotal.monthly[month].postEere += postEere;
+            powerTotal.annual.original += original;
+            powerTotal.annual.postEere += postEere;
 
-          object.states[stateId][pollutant].power.monthly[month].original += original; // prettier-ignore
-          object.states[stateId][pollutant].power.monthly[month].postEere += postEere; // prettier-ignore
-          object.states[stateId][pollutant].power.annual.original += original;
-          object.states[stateId][pollutant].power.annual.postEere += postEere;
+            powerRegions.monthly[month].original += original;
+            powerRegions.monthly[month].postEere += postEere;
+            powerRegions.annual.original += original;
+            powerRegions.annual.postEere += postEere;
 
-          object.counties[stateId][county][pollutant].power.monthly[month].original += original; // prettier-ignore
-          object.counties[stateId][county][pollutant].power.monthly[month].postEere += postEere; // prettier-ignore
-          object.counties[stateId][county][pollutant].power.annual.original += original; // prettier-ignore
-          object.counties[stateId][county][pollutant].power.annual.postEere += postEere; // prettier-ignore
+            powerStates.monthly[month].original += original;
+            powerStates.monthly[month].postEere += postEere;
+            powerStates.annual.original += original;
+            powerStates.annual.postEere += postEere;
+
+            powerCounties.monthly[month].original += original;
+            powerCounties.monthly[month].postEere += postEere;
+            powerCounties.annual.original += original;
+            powerCounties.annual.postEere += postEere;
+          }
         });
       });
 

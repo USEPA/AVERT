@@ -57,14 +57,19 @@ function setAnnualStateEmissionsChanges(options: {
 
   /** Add power sector data */
   Object.entries(aggregatedEmissionsData.states).forEach(([key, stateData]) => {
-    const stateId = key as StateId;
+    const stateId = key as keyof typeof aggregatedEmissionsData.states;
     const stateName = statesConfig[stateId].name;
 
     const power = Object.entries(stateData).reduce(
       (object, [stateDataKey, stateDataValue]) => {
         const pollutant = stateDataKey as keyof typeof stateData;
-        const { original, postEere } = stateDataValue.power.annual;
-        object[pollutant] += postEere - original;
+        const statePowerData = stateDataValue.power;
+
+        if (statePowerData) {
+          const { original, postEere } = statePowerData.annual;
+          object[pollutant] += postEere - original;
+        }
+
         return object;
       },
       { generation: 0, so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 },

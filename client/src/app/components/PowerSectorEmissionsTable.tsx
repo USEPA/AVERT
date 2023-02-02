@@ -42,35 +42,38 @@ function setAnnualMonthlyData(
   const result = Object.entries(aggregatedEmissionsData.total).reduce(
     (object, [key, value]) => {
       const field = key as keyof typeof aggregatedEmissionsData.total;
+      const totalPowerData = value.power;
 
-      Object.entries(value.power.monthly).forEach(
-        ([monthlyKey, monthlyData]) => {
-          const month = Number(monthlyKey);
-          const { original, postEere } = monthlyData;
+      if (totalPowerData) {
+        Object.entries(totalPowerData.monthly).forEach(
+          ([monthlyKey, monthlyData]) => {
+            const month = Number(monthlyKey);
+            const { original, postEere } = monthlyData;
 
-          /**
-           * Build up ozone season generation and ozone season nox
-           * (Ozone season is between May and September)
-           */
-          if (month >= 5 && month <= 9) {
-            if (field === 'generation') {
-              object.ozoneGeneration.original += original;
-              object.ozoneGeneration.postEere += postEere;
-              object.ozoneGeneration.impacts += postEere - original;
+            /**
+             * Build up ozone season generation and ozone season nox
+             * (Ozone season is between May and September)
+             */
+            if (month >= 5 && month <= 9) {
+              if (field === 'generation') {
+                object.ozoneGeneration.original += original;
+                object.ozoneGeneration.postEere += postEere;
+                object.ozoneGeneration.impacts += postEere - original;
+              }
+
+              if (field === 'nox') {
+                object.ozoneNox.original += original;
+                object.ozoneNox.postEere += postEere;
+                object.ozoneNox.impacts += postEere - original;
+              }
             }
 
-            if (field === 'nox') {
-              object.ozoneNox.original += original;
-              object.ozoneNox.postEere += postEere;
-              object.ozoneNox.impacts += postEere - original;
-            }
-          }
-
-          object[field].original += original;
-          object[field].postEere += postEere;
-          object[field].impacts += postEere - original;
-        },
-      );
+            object[field].original += original;
+            object[field].postEere += postEere;
+            object[field].impacts += postEere - original;
+          },
+        );
+      }
 
       return object;
     },

@@ -13,6 +13,22 @@ import { regions as regionsConfig, states as statesConfig } from 'app/config';
  */
 import countyFips from 'app/data/county-fips.json';
 
+const powerSectorFields = [
+  'Power Sector: January',
+  'Power Sector: February',
+  'Power Sector: March',
+  'Power Sector: April',
+  'Power Sector: May',
+  'Power Sector: June',
+  'Power Sector: July',
+  'Power Sector: August',
+  'Power Sector: September',
+  'Power Sector: October',
+  'Power Sector: November',
+  'Power Sector: December',
+  'Power Sector: Annual',
+] as const;
+
 type Pollutant = 'SO2' | 'NOX' | 'CO2' | 'PM25' | 'VOCS' | 'NH3';
 
 type CountyData = {
@@ -22,19 +38,8 @@ type CountyData = {
   State: string | null;
   County: string | null;
   'Unit of measure': 'percent' | 'emissions (tons)' | 'emissions (pounds)';
-  'Power Sector: January': number | null;
-  'Power Sector: February': number | null;
-  'Power Sector: March': number | null;
-  'Power Sector: April': number | null;
-  'Power Sector: May': number | null;
-  'Power Sector: June': number | null;
-  'Power Sector: July': number | null;
-  'Power Sector: August': number | null;
-  'Power Sector: September': number | null;
-  'Power Sector: October': number | null;
-  'Power Sector: November': number | null;
-  'Power Sector: December': number | null;
-  'Power Sector: Annual': number | null;
+} & {
+  [field in typeof powerSectorFields[number]]: number | null;
 };
 
 type CobraData = {
@@ -326,45 +331,65 @@ function createPowerSectorEmissionsFields(options: {
 }) {
   const { pollutantNeedsReplacement, data, unit } = options;
 
-  const annualEmissionsChange = data.power.annual.postEere - data.power.annual.original; // prettier-ignore
-  const annualPercentChange = (annualEmissionsChange / data.power.annual.original) * 100 || 0; // prettier-ignore
+  const result = {
+    'Power Sector: January': null,
+    'Power Sector: February': null,
+    'Power Sector: March': null,
+    'Power Sector: April': null,
+    'Power Sector: May': null,
+    'Power Sector: June': null,
+    'Power Sector: July': null,
+    'Power Sector: August': null,
+    'Power Sector: September': null,
+    'Power Sector: October': null,
+    'Power Sector: November': null,
+    'Power Sector: December': null,
+    'Power Sector: Annual': null,
+  } as { [field in typeof powerSectorFields[number]]: number | null };
 
-  const monthlyData = Object.entries(data.power.monthly).reduce(
+  const powerData = data.power;
+
+  if (!powerData) return result;
+
+  const annualEmissionsChange = powerData.annual.postEere - powerData.annual.original; // prettier-ignore
+  const annualPercentChange = (annualEmissionsChange / powerData.annual.original) * 100 || 0; // prettier-ignore
+
+  const monthlyData = Object.entries(powerData.monthly).reduce(
     (object, [key, values]) => {
       const month = Number(key);
       const { original, postEere } = values;
 
-      const monthlyEmissionsChange = postEere - original;
-      const monthlyPercentChange = (monthlyEmissionsChange / original) * 100 || 0; // prettier-ignore
+      const emissionsChange = postEere - original;
+      const percentChange = (emissionsChange / original) * 100 || 0;
 
       object[month] =
         unit === 'percent'
           ? pollutantNeedsReplacement
             ? null
-            : monthlyPercentChange
-          : monthlyEmissionsChange;
+            : percentChange
+          : emissionsChange;
 
       return object;
     },
     {} as { [month: number]: number | null },
   );
 
-  return {
-    'Power Sector: January': monthlyData[1],
-    'Power Sector: February': monthlyData[2],
-    'Power Sector: March': monthlyData[3],
-    'Power Sector: April': monthlyData[4],
-    'Power Sector: May': monthlyData[5],
-    'Power Sector: June': monthlyData[6],
-    'Power Sector: July': monthlyData[7],
-    'Power Sector: August': monthlyData[8],
-    'Power Sector: September': monthlyData[9],
-    'Power Sector: October': monthlyData[10],
-    'Power Sector: November': monthlyData[11],
-    'Power Sector: December': monthlyData[12],
-    'Power Sector: Annual':
-      unit === 'percent' ? annualPercentChange : annualEmissionsChange,
-  };
+  result['Power Sector: January'] = monthlyData[1];
+  result['Power Sector: February'] = monthlyData[2];
+  result['Power Sector: March'] = monthlyData[3];
+  result['Power Sector: April'] = monthlyData[4];
+  result['Power Sector: May'] = monthlyData[5];
+  result['Power Sector: June'] = monthlyData[6];
+  result['Power Sector: July'] = monthlyData[7];
+  result['Power Sector: August'] = monthlyData[8];
+  result['Power Sector: September'] = monthlyData[9];
+  result['Power Sector: October'] = monthlyData[10];
+  result['Power Sector: November'] = monthlyData[11];
+  result['Power Sector: December'] = monthlyData[12];
+  result['Power Sector: Annual'] =
+    unit === 'percent' ? annualPercentChange : annualEmissionsChange;
+
+  return result;
 }
 
 /**
@@ -470,11 +495,14 @@ function calculateTotalEmissionsChanges(emissionsData: EmissionsData) {
   const result = Object.entries(emissionsData).reduce(
     (object, [key, value]) => {
       const pollutant = key as keyof typeof emissionsData;
+      const powerCounty = value.power;
 
-      object[pollutant] = Object.values(value.power.monthly).reduce(
-        (total, data) => (total += data.postEere - data.original),
-        0,
-      );
+      if (powerCounty) {
+        object[pollutant] = Object.values(powerCounty.monthly).reduce(
+          (total, data) => (total += data.postEere - data.original),
+          0,
+        );
+      }
 
       return object;
     },
