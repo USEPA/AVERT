@@ -23,7 +23,11 @@ import type {
   EmissionsData,
   CombinedSectorsEmissionsData,
 } from 'app/calculations/emissions';
-import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
+import {
+  useSelectedRegion,
+  useSelectedState,
+  useSelectedStateRegions,
+} from 'app/hooks';
 import type { Pollutant, RegionId, StateId } from 'app/config';
 import { regions, states } from 'app/config';
 
@@ -32,7 +36,7 @@ require('highcharts/modules/accessibility')(Highcharts);
 
 type ChartData = {
   name: string;
-  data: number[];
+  data: number[] | null;
   color: string;
   unit: string;
 };
@@ -41,7 +45,7 @@ type ChartData = {
  * Creates monthly power sector emissions data for either emissions changes or
  * percentage changes, for display in the monthly charts.
  */
-function calculateMonthlyPowerData(
+function setMonthlyPowerData(
   data: EmissionsData[keyof EmissionsData],
   unit: Unit,
 ) {
@@ -77,16 +81,16 @@ function setChartSeriesData(options: {
 }) {
   const { seriesData, currentSources, currentUnit } = options;
 
-  const result = Object.entries(seriesData).reduce((array, [key, data]) => {
+  const result = Object.entries(seriesData).reduce((array, [key, value]) => {
     const source = key as Source;
 
-    if (currentSources.includes(source)) {
+    if (currentSources.includes(source) && value.data) {
       /** NOTE: we don't have percent change data for vehicles */
       if (
         currentUnit === 'emissions' ||
         (currentUnit === 'percentages' && source !== 'vehicles')
       ) {
-        array.push(data);
+        array.push(value);
       }
     }
 
@@ -96,8 +100,12 @@ function setChartSeriesData(options: {
   return result;
 }
 
-function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
-  const { pollutant, data } = props;
+function Chart(props: {
+  pollutant: Pollutant;
+  data: EmissionsData;
+  vehicleDataExists: boolean;
+}) {
+  const { pollutant, data, vehicleDataExists } = props;
 
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const totalMonthlyEmissionChanges = useTypedSelector(
@@ -128,6 +136,9 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
     ({ monthlyEmissions }) => monthlyEmissions.unit,
   );
 
+  const selectedRegion = useSelectedRegion();
+  const selectedStateRegions = useSelectedStateRegions();
+
   const vehicleEmissions = Object.values(totalMonthlyEmissionChanges).reduce(
     (object, data) => {
       ['CO2', 'NOX', 'SO2', 'PM25', 'VOCs', 'NH3'].forEach((item) => {
@@ -157,13 +168,13 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
   const so2Data = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyPowerData(data.so2, currentUnit),
+      data: setMonthlyPowerData(data.so2, currentUnit),
       color: 'rgba(5, 141, 199, 1)',
       unit: 'lb',
     },
     vehicles: {
       name: 'Vehicles',
-      data: vehicleEmissions.SO2,
+      data: vehicleDataExists ? vehicleEmissions.SO2 : null,
       color: 'rgba(5, 141, 199, 0.5)',
       unit: 'lb',
     },
@@ -172,13 +183,13 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
   const noxData = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyPowerData(data.nox, currentUnit),
+      data: setMonthlyPowerData(data.nox, currentUnit),
       color: 'rgba(237, 86, 27, 1)',
       unit: 'lb',
     },
     vehicles: {
       name: 'Vehicles',
-      data: vehicleEmissions.NOX,
+      data: vehicleDataExists ? vehicleEmissions.NOX : null,
       color: 'rgba(237, 86, 27, 0.5)',
       unit: 'lb',
     },
@@ -187,13 +198,13 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
   const co2Data = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyPowerData(data.co2, currentUnit),
+      data: setMonthlyPowerData(data.co2, currentUnit),
       color: 'rgba(80, 180, 50, 1)',
       unit: 'tons',
     },
     vehicles: {
       name: 'Vehicles',
-      data: vehicleEmissions.CO2,
+      data: vehicleDataExists ? vehicleEmissions.CO2 : null,
       color: 'rgba(80, 180, 50, 0.5)',
       unit: 'tons',
     },
@@ -202,13 +213,13 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
   const pm25Data = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyPowerData(data.pm25, currentUnit),
+      data: setMonthlyPowerData(data.pm25, currentUnit),
       color: 'rgba(102, 86, 131, 1)',
       unit: 'lb',
     },
     vehicles: {
       name: 'Vehicles',
-      data: vehicleEmissions.PM25,
+      data: vehicleDataExists ? vehicleEmissions.PM25 : null,
       color: 'rgba(102, 86, 131, 0.5)',
       unit: 'lb',
     },
@@ -217,13 +228,13 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
   const vocsData = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyPowerData(data.vocs, currentUnit),
+      data: setMonthlyPowerData(data.vocs, currentUnit),
       color: 'rgba(255, 193, 7, 1)',
       unit: 'lb',
     },
     vehicles: {
       name: 'Vehicles',
-      data: vehicleEmissions.VOCs,
+      data: vehicleDataExists ? vehicleEmissions.VOCs : null,
       color: 'rgba(255, 193, 7, 0.5)',
       unit: 'lb',
     },
@@ -232,20 +243,17 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
   const nh3Data = {
     power: {
       name: 'Power Sector',
-      data: calculateMonthlyPowerData(data.nh3, currentUnit),
+      data: setMonthlyPowerData(data.nh3, currentUnit),
       color: 'rgba(0, 150, 136, 1)',
       unit: 'lb',
     },
     vehicles: {
       name: 'Vehicles',
-      data: vehicleEmissions.NH3,
+      data: vehicleDataExists ? vehicleEmissions.NH3 : null,
       color: 'rgba(0, 150, 136, 0.5)',
       unit: 'lb',
     },
   };
-
-  const selectedRegion = useSelectedRegion();
-  const selectedStateRegions = useSelectedStateRegions();
 
   const flaggedEGUs = Object.keys(emissionsReplacements).includes(pollutant)
     ? Object.values(egusNeedingEmissionsReplacement)
@@ -583,7 +591,36 @@ function MonthlyEmissionsChartsContent() {
   });
 
   const selectedRegion = useSelectedRegion();
+  const selectedStateName = useSelectedState()?.name;
   const selectedStateRegions = useSelectedStateRegions();
+
+  /**
+   * NOTE: We only have monthly vehicle emission data at the regional level (if
+   * a region was selected on the "Select Geography" screen) or the combined
+   * regions level (if a state was selected on the "Select Geography" screen).
+   * That monthly emission data is stored in `totalMonthlyEmissionChanges`.
+   *
+   * That means we only have monthly vehicle emission data to display if:
+   * - the selected level of aggregation is "region"
+   *   **AND**
+   * - the following condition is true:
+   *   - a region was selected on the "Select Geography" screen
+   *     **OR**
+   *   - a state was selected on the "Select Geography" screen, so the following
+   *     condition is true:
+   *     - the selected state exists only within one region
+   *       **OR**
+   *     - more than one region exist for that selected state, but the user has
+   *       selected "All Affected Regions" in the Region select menu
+   */
+  const vehicleDataExists =
+    currentAggregation === 'region'
+      ? geographicFocus === 'regions'
+        ? true
+        : selectedStateRegions.length === 1
+        ? true
+        : currentRegionId === 'ALL'
+      : false;
 
   const regionId =
     geographicFocus === 'regions' && selectedRegion
@@ -1163,6 +1200,24 @@ function MonthlyEmissionsChartsContent() {
                     </p>
                   </div>
                 </div>
+              ) : currentSources.length === 1 &&
+                currentSources.includes('vehicles') &&
+                !vehicleDataExists ? (
+                <div className="padding-1 grid-col-12">
+                  <div className="avert-box padding-3">
+                    <p className="margin-0 font-sans-xs text-center">
+                      <strong>
+                        No emission changes data exists for vehicles at this
+                        level of aggregation.
+                      </strong>
+                      <br />
+                      Please select “All Affected Regions” from the{' '}
+                      <em>Select Regions</em> dropdown list to see vehicle
+                      emission changes for all affected AVERT regions{' '}
+                      {selectedStateName ?? 'the selected state'} is a part of.
+                    </p>
+                  </div>
+                </div>
               ) : (
                 currentPollutants.map((pollutant) => {
                   const className =
@@ -1187,7 +1242,12 @@ function MonthlyEmissionsChartsContent() {
 
                   return (
                     <div key={pollutant} className={className}>
-                      <Chart key={key} pollutant={pollutant} data={data} />
+                      <Chart
+                        key={key}
+                        pollutant={pollutant}
+                        data={data}
+                        vehicleDataExists={vehicleDataExists}
+                      />
                     </div>
                   );
                 })
