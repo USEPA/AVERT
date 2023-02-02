@@ -190,6 +190,11 @@ type EereState = {
   combinedProfile: CombinedProfile;
 };
 
+/** NOTE: Excel version defaults EV model year to 2021 */
+const initialEVModelYear = evModelYearOptions[1].id;
+
+const initialICEReplacementVehicle = iceReplacementVehicleOptions[0].id;
+
 const initialEEREInputs = {
   annualGwh: '',
   constantMwh: '',
@@ -205,8 +210,8 @@ const initialEEREInputs = {
   transitBuses: '',
   schoolBuses: '',
   evDeploymentLocation: '',
-  evModelYear: evModelYearOptions[0].id,
-  iceReplacementVehicle: iceReplacementVehicleOptions[0].id,
+  evModelYear: initialEVModelYear,
+  iceReplacementVehicle: initialICEReplacementVehicle,
 };
 
 const emptyRegionalLoadHour = {
@@ -1053,8 +1058,8 @@ export function resetEEREInputs(): AppThunk {
     const { evDeploymentLocationOptions } = eere.selectOptions;
 
     const evDeploymentLocation = evDeploymentLocationOptions[0].id;
-    const evModelYear = evModelYearOptions[0].id;
-    const iceReplacementVehicle = iceReplacementVehicleOptions[0].id;
+    const evModelYear = initialEVModelYear;
+    const iceReplacementVehicle = initialICEReplacementVehicle;
 
     dispatch({ type: 'eere/RESET_EERE_INPUTS' });
 
