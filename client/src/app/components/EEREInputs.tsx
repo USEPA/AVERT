@@ -24,9 +24,13 @@ import {
   updateEereUtilitySolar,
   updateEereRooftopSolar,
   updateEereBatteryEVs,
+  runEereBatteryEVsCalculations,
   updateEereHybridEVs,
+  runEereHybridEVsCalculations,
   updateEereTransitBuses,
+  runEereTransitBusesCalculations,
   updateEereSchoolBuses,
+  runEereSchoolBusesCalculations,
   updateEereEVDeploymentLocation,
   updateEereEVModelYear,
   updateEereICEReplacementVehicle,
@@ -602,6 +606,9 @@ function EEREInputsContent() {
                             onChange={(text) =>
                               dispatch(updateEereBatteryEVs(text))
                             }
+                            onBlur={(text) =>
+                              dispatch(runEereBatteryEVsCalculations(text))
+                            }
                             tooltip={<p className="margin-0">TODO</p>}
                           />
                         </div>
@@ -615,6 +622,9 @@ function EEREInputsContent() {
                             fieldName="hybridEVs"
                             onChange={(text) =>
                               dispatch(updateEereHybridEVs(text))
+                            }
+                            onBlur={(text) =>
+                              dispatch(runEereHybridEVsCalculations(text))
                             }
                             tooltip={<p className="margin-0">TODO</p>}
                           />
@@ -632,6 +642,9 @@ function EEREInputsContent() {
                             onChange={(text) =>
                               dispatch(updateEereTransitBuses(text))
                             }
+                            onBlur={(text) =>
+                              dispatch(runEereTransitBusesCalculations(text))
+                            }
                             tooltip={<p className="margin-0">TODO</p>}
                           />
                         </div>
@@ -645,6 +658,9 @@ function EEREInputsContent() {
                             fieldName="schoolBuses"
                             onChange={(text) =>
                               dispatch(updateEereSchoolBuses(text))
+                            }
+                            onBlur={(text) =>
+                              dispatch(runEereSchoolBusesCalculations(text))
                             }
                             tooltip={<p className="margin-0">TODO</p>}
                           />

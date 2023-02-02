@@ -699,11 +699,12 @@ export function setDailyAndMonthlyStats(): AppThunk {
 }
 
 /**
- * Called every time the `eere` reducer's `updateEereBatteryEVs()`,
- * `updateEereHybridEVs()`, `updateEereTransitBuses()`, or
- * `updateEereSchoolBuses()` function are called.
+ * Called every time the `eere` reducer's `runEereBatteryEVsCalculations()`,
+ * `runEereHybridEVsCalculations()`, `runEereTransitBusesCalculations()`, or
+ * `runEereSchoolBusesCalculations()` function are called.
  *
- * (e.g. whenever an EV input number changes)
+ * _(e.g. onBlur / whenever an EV input loses focus, but only if the input's
+ * value has changed since the last time it was used in this calculation)_
  */
 export function setVehiclesDisplaced(): AppThunk {
   return (dispatch, getState) => {
