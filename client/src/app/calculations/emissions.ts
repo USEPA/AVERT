@@ -2,7 +2,6 @@ import type { RDFJSON } from 'app/redux/reducers/geography';
 import { sortObjectByKeys } from 'app/calculations/utilities';
 import type { VehicleEmissionChangesByGeography } from 'app/calculations/transportation';
 import type { RegionId, StateId } from 'app/config';
-
 /**
  * Annual point-source data from the National Emissions Inventory (NEI) for
  * every electric generating unit (EGU), organized by AVERT region
@@ -11,9 +10,12 @@ import type { RegionId, StateId } from 'app/config';
 
 const emissionsFields = ["generation", "so2", "nox", "co2", "pm25", "vocs", "nh3"] as const; // prettier-ignore
 
-export type EmissionsChanges = ReturnType<typeof calculateEmissionsChanges>; // TODO: determine if this needs to be exported
+export type EmissionsChanges = ReturnType<typeof calculateEmissionsChanges>;
 export type AggregatedEmissionsData = ReturnType<
   typeof calculateAggregatedEmissionsData
+>;
+export type CombinedSectorsEmissionsData = ReturnType<
+  typeof createCombinedSectorsEmissionsData
 >;
 
 type EguData = EmissionsChanges[string];
@@ -433,6 +435,95 @@ export function calculateAggregatedEmissionsData(egus: EmissionsChanges) {
       counties: { [stateId in StateId]: { [county: string]: EmissionsData } };
     },
   );
+
+  return result;
+}
+
+/**
+ * Combines transportation sector and power sector emissions data.
+ */
+export function createCombinedSectorsEmissionsData(options: {
+  aggregatedEmissionsData: AggregatedEmissionsData;
+  vehicleEmissionChangesByGeography: VehicleEmissionChangesByGeography | {};
+}) {
+  const { aggregatedEmissionsData, vehicleEmissionChangesByGeography } =
+    options;
+
+  const vehicleEmissionChanges =
+    Object.keys(vehicleEmissionChangesByGeography).length !== 0
+      ? (vehicleEmissionChangesByGeography as VehicleEmissionChangesByGeography)
+      : null;
+
+  if (!aggregatedEmissionsData || !vehicleEmissionChanges) return {};
+
+  /** start with power sector emissions data */
+  const result = { ...aggregatedEmissionsData };
+
+  /** add state level transportation sector emissions data */
+  Object.entries(vehicleEmissionChanges.states).forEach(([key, stateData]) => {
+    const stateId = key as keyof typeof vehicleEmissionChanges.counties;
+    const { SO2, NOX, CO2, PM25, VOCs, NH3 } = stateData;
+
+    /**
+     * if state already exists in power sector data, add transportation sector
+     * data to it; otherwise, create it with only transportation sector data
+     */
+    const existingState = result.states?.[stateId];
+
+    if (existingState) {
+      existingState.so2.vehicle = SO2;
+      existingState.nox.vehicle = NOX;
+      existingState.co2.vehicle = CO2;
+      existingState.pm25.vehicle = PM25;
+      existingState.vocs.vehicle = VOCs;
+      existingState.nh3.vehicle = NH3;
+    } else {
+      result.states[stateId] = {
+        generation: { power: null, vehicle: null },
+        so2: { power: null, vehicle: SO2 },
+        nox: { power: null, vehicle: NOX },
+        co2: { power: null, vehicle: CO2 },
+        pm25: { power: null, vehicle: PM25 },
+        vocs: { power: null, vehicle: VOCs },
+        nh3: { power: null, vehicle: NH3 },
+      };
+    }
+  });
+
+  /** add county level transportation sector emissions data */
+  Object.entries(vehicleEmissionChanges.counties).forEach(([key, value]) => {
+    const stateId = key as keyof typeof vehicleEmissionChanges.counties;
+    result.counties[stateId] ??= {};
+
+    Object.entries(value).forEach(([countyName, countyData]) => {
+      const { SO2, NOX, CO2, PM25, VOCs, NH3 } = countyData;
+
+      /**
+       * if county already exists in power sector data, add transportation sector
+       * data to it; otherwise, create it with only transportation sector data
+       */
+      const existingCounty = result.counties[stateId]?.[countyName];
+
+      if (existingCounty) {
+        existingCounty.so2.vehicle = SO2;
+        existingCounty.nox.vehicle = NOX;
+        existingCounty.co2.vehicle = CO2;
+        existingCounty.pm25.vehicle = PM25;
+        existingCounty.vocs.vehicle = VOCs;
+        existingCounty.nh3.vehicle = NH3;
+      } else {
+        result.counties[stateId][countyName] = {
+          generation: { power: null, vehicle: null },
+          so2: { power: null, vehicle: SO2 },
+          nox: { power: null, vehicle: NOX },
+          co2: { power: null, vehicle: CO2 },
+          pm25: { power: null, vehicle: PM25 },
+          vocs: { power: null, vehicle: VOCs },
+          nh3: { power: null, vehicle: NH3 },
+        };
+      }
+    });
+  });
 
   // sort results alphabetically
   result.regions = sortObjectByKeys(result.regions);
