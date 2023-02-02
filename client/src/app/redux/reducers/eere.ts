@@ -1212,11 +1212,9 @@ export function resetEEREInputs(): AppThunk {
 
     dispatch({ type: 'eere/RESET_EERE_INPUTS' });
 
-    // reset all EV inputs so dependant transportation calculations are re-run
-    dispatch(updateEereBatteryEVs(''));
-    dispatch(updateEereHybridEVs(''));
-    dispatch(updateEereTransitBuses(''));
-    dispatch(updateEereSchoolBuses(''));
+    // re-run dependant transportation calculations after resetting EV inputs
+    dispatch(setVehiclesDisplaced());
+
     dispatch(updateEereEVDeploymentLocation(evDeploymentLocation));
     dispatch(updateEereEVModelYear(evModelYear));
     dispatch(updateEereICEReplacementVehicle(iceReplacementVehicle));
