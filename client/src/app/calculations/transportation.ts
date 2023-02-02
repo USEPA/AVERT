@@ -1685,8 +1685,8 @@ export function calculateTotalYearlyEmissionChanges(
  *
  * Excel: County level data calculations in "From vehicles" column in the table
  * in the "11_VehicleCty" sheet (column H) – we just roll those county level
- * values up to the state and total levels in this same function too, as they're
- * used at those aggregate levels as well.
+ * values up to the state, region, and total levels in this same function too,
+ * as they're used at those aggregate levels as well.
  */
 export function calculateVehicleEmissionChangesByGeography(options: {
   geographicFocus: GeographicFocus;
@@ -1709,11 +1709,17 @@ export function calculateVehicleEmissionChangesByGeography(options: {
 
   const result = {
     total: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+    regions: {},
     states: {},
     counties: {},
   } as {
     total: {
       [pollutant in Pollutant]: number;
+    };
+    regions: {
+      [regionId in RegionId]: {
+        [pollutant in Pollutant]: number;
+      };
     };
     states: {
       [stateId in StateId]: {
@@ -1756,14 +1762,26 @@ export function calculateVehicleEmissionChangesByGeography(options: {
 
     if (
       locationVMT &&
-      selectedGeographyCounties[stateId] &&
       (regionSelected || (stateSelected && selectedStateId === stateId))
     ) {
       result.counties[stateId] ??= {};
 
       Object.entries(stateCountiesVMT).forEach(([county, countyVMT]) => {
-        if (selectedGeographyCounties[stateId]?.includes(county)) {
-          // initialize each state and county's values for each pollutant
+        /** determine which region the county falls within */
+        const regionId = Object.entries(selectedGeographyCounties).find(
+          ([_, regionData]) => {
+            return Object.entries(regionData).some(([key, value]) => {
+              return (key as StateId) === stateId && value.includes(county);
+            });
+          },
+        )?.[0] as RegionId | undefined;
+
+        if (
+          regionId &&
+          selectedGeographyCounties[regionId]?.[stateId]?.includes(county)
+        ) {
+          // initialize each region, state, and county's values for each pollutant
+          result.regions[regionId] ??= { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }; // prettier-ignore
           result.states[stateId] ??= { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }; // prettier-ignore
           result.counties[stateId][county] ??= { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }; // prettier-ignore
 
@@ -1802,6 +1820,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
                 -cars - trucks - transitBuses - schoolBuses;
 
               result.total[pollutant] += emissionChanges;
+              result.regions[regionId][pollutant] += emissionChanges;
               result.states[stateId][pollutant] += emissionChanges;
               result.counties[stateId][county][pollutant] = emissionChanges;
             });
