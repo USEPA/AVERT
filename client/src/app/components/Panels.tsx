@@ -214,6 +214,36 @@ function StateTable(props: { location: string }) {
   );
 }
 
+function ExcelAppText() {
+  return (
+    <p className="text-base-dark font-sans-2xs tablet:font-sans-xs desktop:font-sans-sm">
+      The online version of AVERT completes analyses using 2021 emissions and
+      generation data. The Excel version of AVERT (
+      <a
+        className="usa-link"
+        href="https://www.epa.gov/avert/download-avert"
+        target="_parent"
+        rel="noreferrer"
+      >
+        available for download here
+      </a>
+      ) allows analyses for years 2017–2021 or for a future year scenario.
+    </p>
+  );
+}
+
+function StateGeographyText() {
+  return (
+    <p className="text-base-dark font-sans-2xs tablet:font-sans-xs desktop:font-sans-sm">
+      When modeling EE/RE in a state, AVERT distributes the user-input EE/RE
+      across all the AVERT regions straddled by the state. The energy impacts of
+      EE/RE programs are assigned to each AVERT region based on the proportional
+      generation provided to the state by EGUs in each AVERT region. For more
+      information, see Appendix G of the User Manual.
+    </p>
+  );
+}
+
 export function Panels() {
   const dispatch = useDispatch();
 
@@ -346,36 +376,33 @@ export function Panels() {
             <TabPanel>
               <div className="grid-container padding-0 maxw-full">
                 <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
-                  <div className="padding-1 margin-x-auto maxw-desktop">
-                    <p className="margin-bottom-0 tablet:margin-top-2 font-sans-xs tablet:font-sans-sm desktop:font-sans-md">
-                      AVERT splits the contiguous 48 states into 14 independent
-                      electricity regions. AVERT regions are organized by one or
-                      more balancing authorities. Select a region for analysis
-                      by either using the dropdown menu or clicking the map.
-                      Selecting a region loads the power plants operating within
-                      each region and region-specific wind and solar capacity
-                      data.
-                    </p>
-
-                    <RegionsList />
-                    <RegionsMap />
-
-                    <div className="margin-x-auto maxw-tablet-lg">
-                      <p className="text-base-dark font-sans-2xs tablet:font-sans-xs desktop:font-sans-sm">
-                        The online version of AVERT completes analyses using
-                        2021 emissions and generation data. The Excel version of
-                        AVERT (
-                        <a
-                          className="usa-link"
-                          href="https://www.epa.gov/avert/download-avert"
-                          target="_parent"
-                          rel="noreferrer"
-                        >
-                          available for download here
-                        </a>
-                        ) allows analyses for years 2017–2021 or for a future
-                        year scenario.
+                  <div className="desktop:grid-col-6 desktop:order-last">
+                    <div className="padding-x-2">
+                      <p className="margin-bottom-0 tablet:margin-top-2 font-sans-xs tablet:font-sans-sm desktop:font-sans-md">
+                        AVERT splits the contiguous 48 states into 14
+                        independent electricity regions. AVERT regions are
+                        organized by one or more balancing authorities. Select a
+                        region for analysis by either using the dropdown menu or
+                        clicking the map. Selecting a region loads the power
+                        plants operating within each region and region-specific
+                        wind and solar capacity data.
                       </p>
+
+                      <RegionsList />
+
+                      <div className="display-none desktop:display-block desktop:margin-top-4">
+                        <ExcelAppText />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="desktop:grid-col-6">
+                    <div className="padding-x-2">
+                      <RegionsMap />
+
+                      <div className="desktop:display-none">
+                        <ExcelAppText />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -383,44 +410,35 @@ export function Panels() {
             </TabPanel>
 
             <TabPanel>
-              <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
-                <div className="padding-1 margin-x-auto maxw-desktop">
-                  <p className="margin-bottom-0 tablet:margin-top-2 font-sans-xs tablet:font-sans-sm desktop:font-sans-md">
-                    Select a state for analysis by either using the dropdown
-                    menu or clicking the map. Selecting a state means AVERT will
-                    load power plants and wind and solar capacity factors for
-                    all regions that the state is part of.
-                  </p>
+              <div className="grid-container padding-0 maxw-full">
+                <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
+                  <div className="desktop:grid-col-6 desktop:order-last">
+                    <div className="padding-x-2">
+                      <p className="margin-bottom-0 tablet:margin-top-2 font-sans-xs tablet:font-sans-sm desktop:font-sans-md">
+                        Select a state for analysis by either using the dropdown
+                        menu or clicking the map. Selecting a state means AVERT
+                        will load power plants and wind and solar capacity
+                        factors for all regions that the state is part of.
+                      </p>
 
-                  <StatesList />
-                  <StatesMap />
+                      <StatesList />
 
-                  <div className="margin-x-auto maxw-tablet-lg">
-                    <p className="text-base-dark font-sans-2xs tablet:font-sans-xs desktop:font-sans-sm">
-                      When modeling EE/RE in a state, AVERT distributes the
-                      user-input EE/RE across all the AVERT regions straddled by
-                      the state. The energy impacts of EE/RE programs are
-                      assigned to each AVERT region based on the proportional
-                      generation provided to the state by EGUs in each AVERT
-                      region. For more information, see Appendix G of the User
-                      Manual.
-                    </p>
+                      <div className="display-none desktop:display-block desktop:margin-top-4">
+                        <StateGeographyText />
+                        <ExcelAppText />
+                      </div>
+                    </div>
+                  </div>
 
-                    <p className="text-base-dark font-sans-2xs tablet:font-sans-xs desktop:font-sans-sm">
-                      The online version of AVERT completes analyses using 2021
-                      emissions and generation data. The Excel version of AVERT
-                      (
-                      <a
-                        className="usa-link"
-                        href="https://www.epa.gov/avert/download-avert"
-                        target="_parent"
-                        rel="noreferrer"
-                      >
-                        available for download here
-                      </a>
-                      ) allows analyses for years 2017–2021 or for a future year
-                      scenario.
-                    </p>
+                  <div className="desktop:grid-col-6">
+                    <div className="padding-x-2">
+                      <StatesMap />
+
+                      <div className="desktop:display-none">
+                        <StateGeographyText />
+                        <ExcelAppText />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

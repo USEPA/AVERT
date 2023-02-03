@@ -12,7 +12,7 @@ function RegionsListContent() {
 
   return (
     <select
-      className="usa-select margin-top-3 margin-bottom-0 margin-x-auto width-full tablet:margin-top-5"
+      className="usa-select margin-top-3 margin-bottom-0 margin-x-auto width-full tablet:margin-top-4"
       aria-label="Select Region"
       value={selectedRegionId || ''}
       onChange={(ev) => dispatch(selectRegion(ev.target.value as RegionId))}
