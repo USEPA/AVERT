@@ -67,9 +67,14 @@ import { Washington } from 'app/components/States/Washington';
 import { Wisconsin } from 'app/components/States/Wisconsin';
 import { WestVirginia } from 'app/components/States/WestVirginia';
 import { Wyoming } from 'app/components/States/Wyoming';
-import { selectRegion } from 'app/redux/reducers/geography';
+import {
+  selectRegion,
+  setRegionSelectStateId,
+  setRegionSelectCounty,
+} from 'app/redux/reducers/geography';
 import { useSelectedRegion } from 'app/hooks';
-import { RegionId, regions } from 'app/config';
+import type { RegionId } from 'app/config';
+import { regions } from 'app/config';
 
 const containerStyles = css`
   /* padding-top: intrinsic aspect ratio so SVG displays property in IE */
@@ -157,7 +162,11 @@ function Region(props: {
     <g
       css={regionStyles}
       fill={fill}
-      onClick={(ev) => dispatch(selectRegion(id))}
+      onClick={(_ev) => {
+        dispatch(selectRegion(id));
+        dispatch(setRegionSelectStateId(''));
+        dispatch(setRegionSelectCounty(''));
+      }}
       data-active={selectedRegionId === id}
     >
       {children}

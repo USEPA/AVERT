@@ -3,21 +3,76 @@ import type {
   RegionState,
   StateState,
 } from 'app/redux/reducers/geography';
+import { sortObjectByKeys } from 'app/calculations/utilities';
 import type { RegionId, RegionName, StateId } from 'app/config';
 /**
  * Excel: "CountyFIPS" sheet.
  */
 import countyFips from 'app/data/county-fips.json';
 
+export type CountiesByGeography = ReturnType<
+  typeof organizeCountiesByGeography
+>;
 export type RegionalScalingFactors = ReturnType<
   typeof calculateRegionalScalingFactors
 >;
 export type SelectedGeographyRegions = ReturnType<
   typeof getSelectedGeographyRegions
 >;
-export type SelectedGeographyCounties = ReturnType<
-  typeof getSelectedGeographyCounties
->;
+
+/**
+ * Organizes counties by state and by AVERT regions.
+ */
+export function organizeCountiesByGeography(options: {
+  regions: { [regionId in RegionId]: RegionState };
+}) {
+  const { regions } = options;
+
+  const result = {
+    regions: {},
+    states: {},
+  } as {
+    regions: {
+      [regionId in RegionId]: Partial<{
+        [stateId in StateId]: string[];
+      }>;
+    };
+    states: {
+      [stateId in StateId]: string[];
+    };
+  };
+
+  countyFips.forEach((data) => {
+    const regionName = data['AVERT Region'] as RegionName;
+    const stateId = data['Postal State Code'] as StateId;
+    const county = data['County Name Long'];
+
+    const regionId = Object.entries(regions).find(([_, region]) => {
+      return region.name === regionName;
+    })?.[0] as RegionId | undefined;
+
+    if (regionId) {
+      result.regions[regionId] ??= {} as Partial<{
+        [stateId in StateId]: string[];
+      }>;
+
+      const regionResult = result.regions[regionId];
+
+      if (regionResult) {
+        regionResult[stateId] ??= [];
+        regionResult[stateId]?.push(county);
+
+        result.states[stateId] ??= [];
+        result.states[stateId]?.push(county);
+      }
+    }
+  });
+
+  result.regions = sortObjectByKeys(result.regions);
+  result.states = sortObjectByKeys(result.states);
+
+  return result;
+}
 
 /**
  * Each regional scaling factor is a number between 0 and 1, representing the
@@ -71,55 +126,6 @@ export function getSelectedGeographyRegions(options: {
     }
     return object;
   }, {} as Partial<{ [regionId in RegionId]: RegionState }>);
-
-  return result;
-}
-
-/**
- * Returns the counties for the selected geography.
- */
-export function getSelectedGeographyCounties(options: {
-  selectedGeographyRegions: SelectedGeographyRegions;
-}) {
-  const { selectedGeographyRegions } = options;
-
-  const result = {} as Partial<{
-    [regionId in RegionId]: Partial<{
-      [stateId in StateId]: string[];
-    }>;
-  }>;
-
-  const selectedRegions = Object.entries(selectedGeographyRegions).reduce(
-    (object, [key, value]) => {
-      const regionId = key as keyof typeof selectedGeographyRegions;
-      object[regionId] = value.name;
-      return object;
-    },
-    {} as { [regionId in RegionId]: string },
-  );
-
-  countyFips.forEach((data) => {
-    const regionName = data['AVERT Region'] as RegionName;
-    const stateId = data['Postal State Code'] as StateId;
-    const county = data['County Name Long'];
-
-    if (Object.values(selectedRegions).includes(regionName)) {
-      const regionId = Object.entries(selectedRegions).find(([_, name]) => {
-        return name === regionName;
-      })?.[0] as RegionId | undefined;
-
-      if (regionId) {
-        result[regionId] ??= {} as Partial<{ [stateId in StateId]: string[] }>;
-
-        const regionResult = result[regionId];
-
-        if (regionResult) {
-          regionResult[stateId] ??= [];
-          regionResult[stateId]?.push(county);
-        }
-      }
-    }
-  });
 
   return result;
 }

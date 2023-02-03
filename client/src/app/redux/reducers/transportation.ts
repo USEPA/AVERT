@@ -856,7 +856,7 @@ export function setMonthlyEmissionRates(): AppThunk {
 export function setEmissionChanges(): AppThunk {
   return (dispatch, getState) => {
     const { geography, transportation, eere } = getState();
-    const { selectedGeographyCounties } = geography;
+    const { countiesByGeography, regionalScalingFactors } = geography;
     const {
       vmtPerVehicleTypeByGeography,
       monthlyVMTPerVehicleType,
@@ -888,14 +888,19 @@ export function setEmissionChanges(): AppThunk {
     const selectedStateId =
       Object.values(geography.states).find((s) => s.selected)?.id || '';
 
+    const selectedGeographyRegionIds = Object.keys(
+      regionalScalingFactors,
+    ) as RegionId[];
+
     const vehicleEmissionChangesByGeography =
       calculateVehicleEmissionChangesByGeography({
         geographicFocus,
         selectedRegionId,
         selectedStateId,
+        countiesByGeography,
+        selectedGeographyRegionIds,
         vmtPerVehicleTypeByGeography,
         totalYearlyEmissionChanges,
-        selectedGeographyCounties,
         evDeploymentLocation,
       });
 

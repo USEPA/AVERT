@@ -1,9 +1,9 @@
 import { RegionalLoadData } from 'app/redux/reducers/geography';
 import type { GeographicFocus } from 'app/redux/reducers/geography';
 import type {
+  CountiesByGeography,
   RegionalScalingFactors,
   SelectedGeographyRegions,
-  SelectedGeographyCounties,
 } from 'app/calculations/geography';
 import { sortObjectByKeys } from 'app/calculations/utilities';
 import type { RegionId, RegionName, StateId } from 'app/config';
@@ -1692,18 +1692,20 @@ export function calculateVehicleEmissionChangesByGeography(options: {
   geographicFocus: GeographicFocus;
   selectedRegionId: RegionId | '';
   selectedStateId: StateId | '';
+  countiesByGeography: CountiesByGeography | {};
+  selectedGeographyRegionIds: RegionId[];
   vmtPerVehicleTypeByGeography: VMTPerVehicleTypeByGeography | {};
   totalYearlyEmissionChanges: TotalYearlyEmissionChanges;
-  selectedGeographyCounties: SelectedGeographyCounties;
   evDeploymentLocation: string;
 }) {
   const {
     geographicFocus,
     selectedRegionId,
     selectedStateId,
+    countiesByGeography,
+    selectedGeographyRegionIds,
     vmtPerVehicleTypeByGeography,
     totalYearlyEmissionChanges,
-    selectedGeographyCounties,
     evDeploymentLocation,
   } = options;
 
@@ -1743,7 +1745,33 @@ export function calculateVehicleEmissionChangesByGeography(options: {
       ? (vmtPerVehicleTypeByGeography as VMTPerVehicleTypeByGeography)
       : null;
 
-  if (!vmtData || evDeploymentLocation === '') return result;
+  const countiesByGeographyData =
+    Object.keys(countiesByGeography).length !== 0
+      ? (countiesByGeography as CountiesByGeography)
+      : null;
+
+  if (!countiesByGeographyData || !vmtData || evDeploymentLocation === '') {
+    return result;
+  }
+
+  const countiesByRegion = countiesByGeographyData.regions;
+
+  const selectedRegionsCounties = Object.entries(countiesByRegion).reduce(
+    (object, [key, value]) => {
+      const regionId = key as keyof typeof countiesByRegion;
+
+      if (selectedGeographyRegionIds.includes(regionId)) {
+        object[regionId] = value;
+      }
+
+      return object;
+    },
+    {} as Partial<{
+      [regionId in RegionId]: Partial<{
+        [stateId in StateId]: string[];
+      }>;
+    }>,
+  );
 
   const deploymentLocationIsRegion = evDeploymentLocation.startsWith('region-');
   const deploymentLocationIsState = evDeploymentLocation.startsWith('state-');
@@ -1768,7 +1796,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
 
       Object.entries(stateCountiesVMT).forEach(([county, countyVMT]) => {
         /** determine which region the county falls within */
-        const regionId = Object.entries(selectedGeographyCounties).find(
+        const regionId = Object.entries(selectedRegionsCounties).find(
           ([_, regionData]) => {
             return Object.entries(regionData).some(([key, value]) => {
               return (key as StateId) === stateId && value.includes(county);
@@ -1778,7 +1806,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
 
         if (
           regionId &&
-          selectedGeographyCounties[regionId]?.[stateId]?.includes(county)
+          selectedRegionsCounties[regionId]?.[stateId]?.includes(county)
         ) {
           // initialize each region, state, and county's values for each pollutant
           result.regions[regionId] ??= { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }; // prettier-ignore
