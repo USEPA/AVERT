@@ -1,7 +1,7 @@
 import { RegionalLoadData } from 'app/redux/reducers/geography';
 import type { GeographicFocus } from 'app/redux/reducers/geography';
 import type {
-  CountiesByRegion,
+  CountiesByGeography,
   RegionalScalingFactors,
   SelectedGeographyRegions,
 } from 'app/calculations/geography';
@@ -1692,7 +1692,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
   geographicFocus: GeographicFocus;
   selectedRegionId: RegionId | '';
   selectedStateId: StateId | '';
-  countiesByRegion: CountiesByRegion | {};
+  countiesByGeography: CountiesByGeography | {};
   selectedGeographyRegionIds: RegionId[];
   vmtPerVehicleTypeByGeography: VMTPerVehicleTypeByGeography | {};
   totalYearlyEmissionChanges: TotalYearlyEmissionChanges;
@@ -1702,7 +1702,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
     geographicFocus,
     selectedRegionId,
     selectedStateId,
-    countiesByRegion,
+    countiesByGeography,
     selectedGeographyRegionIds,
     vmtPerVehicleTypeByGeography,
     totalYearlyEmissionChanges,
@@ -1745,18 +1745,18 @@ export function calculateVehicleEmissionChangesByGeography(options: {
       ? (vmtPerVehicleTypeByGeography as VMTPerVehicleTypeByGeography)
       : null;
 
-  const countiesByRegionData =
-    Object.keys(countiesByRegion).length !== 0
-      ? (countiesByRegion as CountiesByRegion)
+  const countiesByRegion =
+    Object.keys(countiesByGeography).length !== 0
+      ? (countiesByGeography as CountiesByGeography)
       : null;
 
-  if (!countiesByRegionData || !vmtData || evDeploymentLocation === '') {
+  if (!countiesByRegion || !vmtData || evDeploymentLocation === '') {
     return result;
   }
 
-  const selectedRegionsCounties = Object.entries(countiesByRegionData).reduce(
+  const selectedRegionsCounties = Object.entries(countiesByRegion).reduce(
     (object, [key, value]) => {
-      const regionId = key as keyof typeof countiesByRegionData;
+      const regionId = key as keyof typeof countiesByRegion;
 
       if (selectedGeographyRegionIds.includes(regionId)) {
         object[regionId] = value;

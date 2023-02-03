@@ -1,11 +1,11 @@
 import { AppThunk } from 'app/redux/index';
 import { setEVDeploymentLocationOptions } from 'app/redux/reducers/eere';
 import type {
-  CountiesByRegion,
+  CountiesByGeography,
   RegionalScalingFactors,
 } from 'app/calculations/geography';
 import {
-  organizeCountiesByRegion,
+  organizeCountiesByGeography,
   calculateRegionalScalingFactors,
   getSelectedGeographyRegions,
 } from 'app/calculations/geography';
@@ -96,8 +96,8 @@ type EEREJSON = {
 
 type GeographyAction =
   | {
-      type: 'geography/SET_COUNTIES_BY_REGION';
-      payload: { countiesByRegion: CountiesByRegion };
+      type: 'geography/SET_COUNTIES_BY_GEOGRAPHY';
+      payload: { countiesByGeography: CountiesByGeography };
     }
   | {
       type: 'geography/SELECT_GEOGRAPHY';
@@ -152,7 +152,7 @@ type GeographyState = {
   focus: GeographicFocus;
   regions: { [key in RegionId]: RegionState };
   states: { [key in StateId]: StateState };
-  countiesByRegion: CountiesByRegion | {};
+  countiesByGeography: CountiesByGeography | {};
   regionalScalingFactors: RegionalScalingFactors;
   regionalLineLoss: number;
 };
@@ -221,7 +221,7 @@ const initialState: GeographyState = {
   focus: 'regions',
   regions: updatedRegions,
   states: updatedStates,
-  countiesByRegion: {},
+  countiesByGeography: {},
   regionalScalingFactors: {},
   regionalLineLoss: 0,
 };
@@ -231,12 +231,12 @@ export default function reducer(
   action: GeographyAction,
 ): GeographyState {
   switch (action.type) {
-    case 'geography/SET_COUNTIES_BY_REGION': {
-      const { countiesByRegion } = action.payload;
+    case 'geography/SET_COUNTIES_BY_GEOGRAPHY': {
+      const { countiesByGeography } = action.payload;
 
       return {
         ...state,
-        countiesByRegion,
+        countiesByGeography,
       };
     }
 
@@ -338,11 +338,11 @@ export function setCountiesByRegion(): AppThunk {
   return (dispatch, getState) => {
     const { geography } = getState();
     const { regions } = geography;
-    const countiesByRegion = organizeCountiesByRegion({ regions });
+    const countiesByGeography = organizeCountiesByGeography({ regions });
 
     dispatch({
-      type: 'geography/SET_COUNTIES_BY_REGION',
-      payload: { countiesByRegion },
+      type: 'geography/SET_COUNTIES_BY_GEOGRAPHY',
+      payload: { countiesByGeography },
     });
   };
 }

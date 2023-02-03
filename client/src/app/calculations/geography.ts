@@ -10,7 +10,9 @@ import type { RegionId, RegionName, StateId } from 'app/config';
  */
 import countyFips from 'app/data/county-fips.json';
 
-export type CountiesByRegion = ReturnType<typeof organizeCountiesByRegion>;
+export type CountiesByGeography = ReturnType<
+  typeof organizeCountiesByGeography
+>;
 export type RegionalScalingFactors = ReturnType<
   typeof calculateRegionalScalingFactors
 >;
@@ -19,9 +21,9 @@ export type SelectedGeographyRegions = ReturnType<
 >;
 
 /**
- * Organizes counties into AVERT regions.
+ * Organizes counties by state and by AVERT regions.
  */
-export function organizeCountiesByRegion(options: {
+export function organizeCountiesByGeography(options: {
   regions: { [regionId in RegionId]: RegionState };
 }) {
   const { regions } = options;
