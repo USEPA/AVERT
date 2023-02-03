@@ -382,15 +382,15 @@ export function Panels() {
                         AVERT splits the contiguous 48 states into 14
                         independent electricity regions. AVERT regions are
                         organized by one or more balancing authorities. Select a
-                        region for analysis by either using the dropdown menu or
-                        clicking the map. Selecting a region loads the power
+                        region for analysis by either using the dropdown menus
+                        or clicking the map. Selecting a region loads the power
                         plants operating within each region and region-specific
                         wind and solar capacity data.
                       </p>
 
                       <RegionsList />
 
-                      <div className="display-none desktop:display-block desktop:margin-top-4">
+                      <div className="display-none desktop:display-block desktop:margin-top-3">
                         <ExcelAppText />
                       </div>
                     </div>
@@ -423,7 +423,7 @@ export function Panels() {
 
                       <StatesList />
 
-                      <div className="display-none desktop:display-block desktop:margin-top-4">
+                      <div className="display-none desktop:display-block desktop:margin-top-3">
                         <StateGeographyText />
                         <ExcelAppText />
                       </div>
