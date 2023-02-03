@@ -1,23 +1,50 @@
+import { Fragment, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 // ---
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
+import { useTypedSelector } from 'app/redux/index';
 import { selectRegion } from 'app/redux/reducers/geography';
 import { useSelectedRegion } from 'app/hooks';
-import { RegionId, regions } from 'app/config';
+import type { CountiesByGeography } from 'app/calculations/geography';
+import type { RegionId, StateId } from 'app/config';
+import { regions, states } from 'app/config';
 
 function RegionsListContent() {
   const dispatch = useDispatch();
+  const countiesByGeography = useTypedSelector(
+    ({ geography }) => geography.countiesByGeography,
+  );
 
   const selectedRegionId = useSelectedRegion()?.id;
 
-  // TODO: replace with data stored in redux state
-  const selectedRegionStateId = '';
-  const selectedRegionCounty = '';
+  const [selectRegionStateId, setSelectRegionStateId] = useState('');
+  const [selectRegionCounty, setSelectRegionCounty] = useState('');
+  const [selectRegionCounties, setSelectRegionCounties] = useState<string[]>(
+    [],
+  );
+
+  useEffect(() => {
+    const countiesByGeographyData =
+      Object.keys(countiesByGeography).length !== 0
+        ? (countiesByGeography as CountiesByGeography)
+        : null;
+
+    if (countiesByGeographyData) {
+      const stateId = selectRegionStateId as StateId;
+      const selectedStateCounties = countiesByGeographyData.states[stateId];
+
+      if (selectedStateCounties) {
+        setSelectRegionCounties(selectedStateCounties.sort());
+      }
+    }
+  }, [countiesByGeography, selectRegionStateId]);
 
   return (
-    <>
-      <p className="margin-top-2 margin-bottom-05">
-        <strong>Select a state and county:</strong>
+    <div className="text-base-darker">
+      <p className="margin-top-205 margin-bottom-1 line-height-sans-2">
+        <strong>
+          Select a state and county, which will select an AVERT region:
+        </strong>
       </p>
 
       <div className="display-flex">
@@ -25,13 +52,26 @@ function RegionsListContent() {
           <select
             className="usa-select margin-0 maxw-full"
             aria-label="Select State"
-            value={selectedRegionStateId || ''}
-            // onChange={(ev) => dispatch(selectRegionState(ev.target.value as StateId))}
+            value={selectRegionStateId || ''}
+            onChange={(ev) => {
+              setSelectRegionStateId(ev.target.value as StateId);
+              setSelectRegionCounty('');
+            }}
             data-avert-region-state-select
           >
             <option value={''} disabled>
               Select State
             </option>
+
+            {Object.keys(states).map((stateId) => {
+              return (
+                <Fragment key={stateId}>
+                  <option value={stateId}>
+                    {states[stateId as StateId].name}
+                  </option>
+                </Fragment>
+              );
+            })}
           </select>
         </div>
 
@@ -39,19 +79,29 @@ function RegionsListContent() {
           <select
             className="usa-select margin-0 maxw-full"
             aria-label="Select County"
-            value={selectedRegionCounty || ''}
-            // onChange={(ev) => dispatch(selectRegionCounty(ev.target.value))}
+            value={selectRegionCounty || ''}
+            onChange={(ev) => {
+              setSelectRegionCounty(ev.target.value);
+            }}
             data-avert-region-county-select
           >
             <option value={''} disabled>
               Select County
             </option>
+
+            {selectRegionCounties.map((county) => {
+              return (
+                <Fragment key={county}>
+                  <option value={county}>{county}</option>
+                </Fragment>
+              );
+            })}
           </select>
         </div>
       </div>
 
-      <p className="margin-top-2 margin-bottom-05">
-        <strong>Or select a region directly:</strong>
+      <p className="margin-top-205 margin-bottom-1 line-height-sans-2">
+        <strong>Or select an AVERT region directly:</strong>
       </p>
 
       <div className="display-flex">
@@ -60,9 +110,9 @@ function RegionsListContent() {
             className="usa-select margin-0 maxw-full"
             aria-label="Select Region"
             value={selectedRegionId || ''}
-            onChange={(ev) =>
-              dispatch(selectRegion(ev.target.value as RegionId))
-            }
+            onChange={(ev) => {
+              dispatch(selectRegion(ev.target.value as RegionId));
+            }}
             data-avert-region-select
           >
             <option value={''} disabled>
@@ -85,7 +135,7 @@ function RegionsListContent() {
           </select>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

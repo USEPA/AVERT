@@ -4,7 +4,8 @@ import { useDispatch } from 'react-redux';
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { selectState } from 'app/redux/reducers/geography';
 import { useSelectedState } from 'app/hooks';
-import { StateId, states } from 'app/config';
+import type { StateId } from 'app/config';
+import { states } from 'app/config';
 
 function StatesListContent() {
   const dispatch = useDispatch();
@@ -12,7 +13,7 @@ function StatesListContent() {
   const selectedStateId = useSelectedState()?.id;
 
   return (
-    <div className="margin-top-3">
+    <div className="margin-top-3 text-base-darker">
       <div className="display-flex">
         <div className="flex-1">
           <select
