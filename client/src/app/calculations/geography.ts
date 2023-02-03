@@ -28,10 +28,18 @@ export function organizeCountiesByGeography(options: {
 }) {
   const { regions } = options;
 
-  const result = {} as {
-    [regionId in RegionId]: Partial<{
+  const result = {
+    regions: {},
+    states: {},
+  } as {
+    regions: {
+      [regionId in RegionId]: Partial<{
+        [stateId in StateId]: string[];
+      }>;
+    };
+    states: {
       [stateId in StateId]: string[];
-    }>;
+    };
   };
 
   countyFips.forEach((data) => {
@@ -44,18 +52,26 @@ export function organizeCountiesByGeography(options: {
     })?.[0] as RegionId | undefined;
 
     if (regionId) {
-      result[regionId] ??= {} as Partial<{ [stateId in StateId]: string[] }>;
+      result.regions[regionId] ??= {} as Partial<{
+        [stateId in StateId]: string[];
+      }>;
 
-      const regionResult = result[regionId];
+      const regionResult = result.regions[regionId];
 
       if (regionResult) {
         regionResult[stateId] ??= [];
         regionResult[stateId]?.push(county);
+
+        result.states[stateId] ??= [];
+        result.states[stateId]?.push(county);
       }
     }
   });
 
-  return sortObjectByKeys(result);
+  result.regions = sortObjectByKeys(result.regions);
+  result.states = sortObjectByKeys(result.states);
+
+  return result;
 }
 
 /**

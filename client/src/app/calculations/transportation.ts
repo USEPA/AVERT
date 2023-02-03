@@ -1745,14 +1745,16 @@ export function calculateVehicleEmissionChangesByGeography(options: {
       ? (vmtPerVehicleTypeByGeography as VMTPerVehicleTypeByGeography)
       : null;
 
-  const countiesByRegion =
+  const countiesByGeographyData =
     Object.keys(countiesByGeography).length !== 0
       ? (countiesByGeography as CountiesByGeography)
       : null;
 
-  if (!countiesByRegion || !vmtData || evDeploymentLocation === '') {
+  if (!countiesByGeographyData || !vmtData || evDeploymentLocation === '') {
     return result;
   }
+
+  const countiesByRegion = countiesByGeographyData.regions;
 
   const selectedRegionsCounties = Object.entries(countiesByRegion).reduce(
     (object, [key, value]) => {
