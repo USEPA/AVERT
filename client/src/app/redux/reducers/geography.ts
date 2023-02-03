@@ -375,8 +375,7 @@ export function selectGeography(focus: GeographicFocus): AppThunk {
       payload: { focus },
     });
 
-    dispatch(setRegionalScalingFactors());
-    dispatch(setRegionalLineLoss());
+    dispatch(setRegionalScalingFactorsAndLineLoss());
     dispatch(setSelectedGeographyCounties());
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
@@ -395,8 +394,7 @@ export function selectRegion(regionId: RegionId): AppThunk {
       payload: { regionId },
     });
 
-    dispatch(setRegionalScalingFactors());
-    dispatch(setRegionalLineLoss());
+    dispatch(setRegionalScalingFactorsAndLineLoss());
     dispatch(setSelectedGeographyCounties());
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
@@ -415,8 +413,7 @@ export function selectState(stateId: string): AppThunk {
       payload: { stateId },
     });
 
-    dispatch(setRegionalScalingFactors());
-    dispatch(setRegionalLineLoss());
+    dispatch(setRegionalScalingFactorsAndLineLoss());
     dispatch(setSelectedGeographyCounties());
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
@@ -430,7 +427,7 @@ export function selectState(stateId: string): AppThunk {
  *
  * _(e.g. anytime the selected geography changes)_
  */
-function setRegionalScalingFactors(): AppThunk {
+function setRegionalScalingFactorsAndLineLoss(): AppThunk {
   return (dispatch, getState) => {
     const { geography } = getState();
     const { focus, regions, states } = geography;
@@ -440,24 +437,6 @@ function setRegionalScalingFactors(): AppThunk {
       selectedRegion: Object.values(regions).find((r) => r.selected),
       selectedState: Object.values(states).find((s) => s.selected),
     });
-
-    dispatch({
-      type: 'geography/SET_REGIONAL_SCALING_FACTORS',
-      payload: { regionalScalingFactors },
-    });
-  };
-}
-
-/**
- * Called every time this `geography` reducer's `selectGeography()`,
- * `selectRegion()`, or `selectState()` functions are called.
- *
- * _(e.g. anytime the selected geography changes)_
- */
-function setRegionalLineLoss(): AppThunk {
-  return (dispatch, getState) => {
-    const { geography } = getState();
-    const { regions, regionalScalingFactors } = geography;
 
     const selectedGeographyRegionIds = Object.keys(
       regionalScalingFactors,
@@ -485,6 +464,11 @@ function setRegionalLineLoss(): AppThunk {
       },
       0,
     );
+
+    dispatch({
+      type: 'geography/SET_REGIONAL_SCALING_FACTORS',
+      payload: { regionalScalingFactors },
+    });
 
     dispatch({
       type: 'geography/SET_REGIONAL_LINE_LOSS',
