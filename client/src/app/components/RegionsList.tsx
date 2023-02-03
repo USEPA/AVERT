@@ -87,6 +87,7 @@ function RegionsListContent() {
             aria-label="Select State"
             value={regionSelectStateId || ''}
             onChange={(ev) => {
+              dispatch(selectRegion('' as RegionId));
               dispatch(setRegionSelectStateId(ev.target.value as StateId));
               dispatch(setRegionSelectCounty(''));
             }}
