@@ -17,9 +17,6 @@ export type RegionalScalingFactors = ReturnType<
 export type SelectedGeographyRegions = ReturnType<
   typeof getSelectedGeographyRegions
 >;
-export type SelectedGeographyCounties = ReturnType<
-  typeof getSelectedGeographyCounties
->;
 
 /**
  * Organizes counties into AVERT regions.
@@ -111,55 +108,6 @@ export function getSelectedGeographyRegions(options: {
     }
     return object;
   }, {} as Partial<{ [regionId in RegionId]: RegionState }>);
-
-  return result;
-}
-
-/**
- * Returns the counties for the selected geography.
- */
-export function getSelectedGeographyCounties(options: {
-  selectedGeographyRegions: SelectedGeographyRegions;
-}) {
-  const { selectedGeographyRegions } = options;
-
-  const result = {} as Partial<{
-    [regionId in RegionId]: Partial<{
-      [stateId in StateId]: string[];
-    }>;
-  }>;
-
-  const selectedRegions = Object.entries(selectedGeographyRegions).reduce(
-    (object, [key, value]) => {
-      const regionId = key as keyof typeof selectedGeographyRegions;
-      object[regionId] = value.name;
-      return object;
-    },
-    {} as { [regionId in RegionId]: string },
-  );
-
-  countyFips.forEach((data) => {
-    const regionName = data['AVERT Region'] as RegionName;
-    const stateId = data['Postal State Code'] as StateId;
-    const county = data['County Name Long'];
-
-    if (Object.values(selectedRegions).includes(regionName)) {
-      const regionId = Object.entries(selectedRegions).find(([_, name]) => {
-        return name === regionName;
-      })?.[0] as RegionId | undefined;
-
-      if (regionId) {
-        result[regionId] ??= {} as Partial<{ [stateId in StateId]: string[] }>;
-
-        const regionResult = result[regionId];
-
-        if (regionResult) {
-          regionResult[stateId] ??= [];
-          regionResult[stateId]?.push(county);
-        }
-      }
-    }
-  });
 
   return result;
 }

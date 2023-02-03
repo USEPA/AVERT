@@ -3,13 +3,11 @@ import { setEVDeploymentLocationOptions } from 'app/redux/reducers/eere';
 import type {
   CountiesByRegion,
   RegionalScalingFactors,
-  SelectedGeographyCounties,
 } from 'app/calculations/geography';
 import {
   organizeCountiesByRegion,
   calculateRegionalScalingFactors,
   getSelectedGeographyRegions,
-  getSelectedGeographyCounties,
 } from 'app/calculations/geography';
 import {
   setSelectedGeographyVMTData,
@@ -123,10 +121,6 @@ type GeographyAction =
       type: 'geography/SET_REGIONAL_LINE_LOSS';
       payload: { regionalLineLoss: number };
     }
-  | {
-      type: 'geography/SET_SELECTED_GEOGRAPHY_COUNTIES';
-      payload: { selectedGeographyCounties: SelectedGeographyCounties };
-    }
   | { type: 'geography/REQUEST_SELECTED_REGIONS_DATA' }
   | { type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' }
   | {
@@ -161,7 +155,6 @@ type GeographyState = {
   countiesByRegion: CountiesByRegion | {};
   regionalScalingFactors: RegionalScalingFactors;
   regionalLineLoss: number;
-  selectedGeographyCounties: SelectedGeographyCounties;
 };
 
 const initialRegionEereDefaults = {
@@ -231,7 +224,6 @@ const initialState: GeographyState = {
   countiesByRegion: {},
   regionalScalingFactors: {},
   regionalLineLoss: 0,
-  selectedGeographyCounties: {},
 };
 
 export default function reducer(
@@ -295,15 +287,6 @@ export default function reducer(
       return {
         ...state,
         regionalLineLoss,
-      };
-    }
-
-    case 'geography/SET_SELECTED_GEOGRAPHY_COUNTIES': {
-      const { selectedGeographyCounties } = action.payload;
-
-      return {
-        ...state,
-        selectedGeographyCounties,
       };
     }
 
@@ -376,7 +359,6 @@ export function selectGeography(focus: GeographicFocus): AppThunk {
     });
 
     dispatch(setRegionalScalingFactorsAndLineLoss());
-    dispatch(setSelectedGeographyCounties());
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
     dispatch(setEVEfficiency());
@@ -395,7 +377,6 @@ export function selectRegion(regionId: RegionId): AppThunk {
     });
 
     dispatch(setRegionalScalingFactorsAndLineLoss());
-    dispatch(setSelectedGeographyCounties());
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
     dispatch(setEVEfficiency());
@@ -414,7 +395,6 @@ export function selectState(stateId: string): AppThunk {
     });
 
     dispatch(setRegionalScalingFactorsAndLineLoss());
-    dispatch(setSelectedGeographyCounties());
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
     dispatch(setEVEfficiency());
@@ -473,37 +453,6 @@ function setRegionalScalingFactorsAndLineLoss(): AppThunk {
     dispatch({
       type: 'geography/SET_REGIONAL_LINE_LOSS',
       payload: { regionalLineLoss },
-    });
-  };
-}
-
-/**
- * Called every time this `geography` reducer's `selectGeography()`,
- * `selectRegion()`, or `selectState()` functions are called.
- *
- * _(e.g. anytime the selected geography changes)_
- */
-function setSelectedGeographyCounties(): AppThunk {
-  return (dispatch, getState) => {
-    const { geography } = getState();
-    const { regions, regionalScalingFactors } = geography;
-
-    const selectedGeographyRegionIds = Object.keys(
-      regionalScalingFactors,
-    ) as RegionId[];
-
-    const selectedGeographyRegions = getSelectedGeographyRegions({
-      regions,
-      selectedGeographyRegionIds,
-    });
-
-    const selectedGeographyCounties = getSelectedGeographyCounties({
-      selectedGeographyRegions,
-    });
-
-    dispatch({
-      type: 'geography/SET_SELECTED_GEOGRAPHY_COUNTIES',
-      payload: { selectedGeographyCounties },
     });
   };
 }
