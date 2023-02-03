@@ -26,7 +26,10 @@ import { DataDownload } from 'app/components/DataDownload';
 import { modalLinkStyles } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import { toggleModalOverlay, resetActiveModal } from 'app/redux/reducers/panel';
-import { selectGeography } from 'app/redux/reducers/geography';
+import {
+  setCountiesByRegion,
+  selectGeography,
+} from 'app/redux/reducers/geography';
 import {
   setVMTData,
   setHourlyEVChargingPercentages,
@@ -248,6 +251,7 @@ export function Panels() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(setCountiesByRegion());
     dispatch(setVMTData());
     dispatch(setHourlyEVChargingPercentages());
   }, [dispatch]);

@@ -3,12 +3,14 @@ import type {
   RegionState,
   StateState,
 } from 'app/redux/reducers/geography';
+import { sortObjectByKeys } from 'app/calculations/utilities';
 import type { RegionId, RegionName, StateId } from 'app/config';
 /**
  * Excel: "CountyFIPS" sheet.
  */
 import countyFips from 'app/data/county-fips.json';
 
+export type CountiesByRegion = ReturnType<typeof organizeCountiesByRegion>;
 export type RegionalScalingFactors = ReturnType<
   typeof calculateRegionalScalingFactors
 >;
@@ -18,6 +20,44 @@ export type SelectedGeographyRegions = ReturnType<
 export type SelectedGeographyCounties = ReturnType<
   typeof getSelectedGeographyCounties
 >;
+
+/**
+ * Organizes counties into AVERT regions.
+ */
+export function organizeCountiesByRegion(options: {
+  regions: { [regionId in RegionId]: RegionState };
+}) {
+  const { regions } = options;
+
+  const result = {} as {
+    [regionId in RegionId]: Partial<{
+      [stateId in StateId]: string[];
+    }>;
+  };
+
+  countyFips.forEach((data) => {
+    const regionName = data['AVERT Region'] as RegionName;
+    const stateId = data['Postal State Code'] as StateId;
+    const county = data['County Name Long'];
+
+    const regionId = Object.entries(regions).find(([_, region]) => {
+      return region.name === regionName;
+    })?.[0] as RegionId | undefined;
+
+    if (regionId) {
+      result[regionId] ??= {} as Partial<{ [stateId in StateId]: string[] }>;
+
+      const regionResult = result[regionId];
+
+      if (regionResult) {
+        regionResult[stateId] ??= [];
+        regionResult[stateId]?.push(county);
+      }
+    }
+  });
+
+  return sortObjectByKeys(result);
+}
 
 /**
  * Each regional scaling factor is a number between 0 and 1, representing the

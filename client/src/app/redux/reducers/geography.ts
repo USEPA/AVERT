@@ -1,20 +1,22 @@
 import { AppThunk } from 'app/redux/index';
 import { setEVDeploymentLocationOptions } from 'app/redux/reducers/eere';
+import type {
+  CountiesByRegion,
+  RegionalScalingFactors,
+  SelectedGeographyCounties,
+} from 'app/calculations/geography';
+import {
+  organizeCountiesByRegion,
+  calculateRegionalScalingFactors,
+  getSelectedGeographyRegions,
+  getSelectedGeographyCounties,
+} from 'app/calculations/geography';
 import {
   setSelectedGeographyVMTData,
   setEVEfficiency,
   setDailyAndMonthlyStats,
   setSelectedRegionsEEREDefaultsAverages,
 } from 'app/redux/reducers/transportation';
-import type {
-  RegionalScalingFactors,
-  SelectedGeographyCounties,
-} from 'app/calculations/geography';
-import {
-  calculateRegionalScalingFactors,
-  getSelectedGeographyRegions,
-  getSelectedGeographyCounties,
-} from 'app/calculations/geography';
 import {
   RdfDataKey,
   RegionId,
@@ -96,6 +98,10 @@ type EEREJSON = {
 
 type GeographyAction =
   | {
+      type: 'geography/SET_COUNTIES_BY_REGION';
+      payload: { countiesByRegion: CountiesByRegion };
+    }
+  | {
       type: 'geography/SELECT_GEOGRAPHY';
       payload: { focus: GeographicFocus };
     }
@@ -152,6 +158,7 @@ type GeographyState = {
   focus: GeographicFocus;
   regions: { [key in RegionId]: RegionState };
   states: { [key in StateId]: StateState };
+  countiesByRegion: CountiesByRegion | {};
   regionalScalingFactors: RegionalScalingFactors;
   regionalLineLoss: number;
   selectedGeographyCounties: SelectedGeographyCounties;
@@ -221,6 +228,7 @@ const initialState: GeographyState = {
   focus: 'regions',
   regions: updatedRegions,
   states: updatedStates,
+  countiesByRegion: {},
   regionalScalingFactors: {},
   regionalLineLoss: 0,
   selectedGeographyCounties: {},
@@ -231,6 +239,15 @@ export default function reducer(
   action: GeographyAction,
 ): GeographyState {
   switch (action.type) {
+    case 'geography/SET_COUNTIES_BY_REGION': {
+      const { countiesByRegion } = action.payload;
+
+      return {
+        ...state,
+        countiesByRegion,
+      };
+    }
+
     case 'geography/SELECT_GEOGRAPHY': {
       const { focus } = action.payload;
 
@@ -329,6 +346,22 @@ export default function reducer(
       return state;
     }
   }
+}
+
+/**
+ * Called when the app starts.
+ */
+export function setCountiesByRegion(): AppThunk {
+  return (dispatch, getState) => {
+    const { geography } = getState();
+    const { regions } = geography;
+    const countiesByRegion = organizeCountiesByRegion({ regions });
+
+    dispatch({
+      type: 'geography/SET_COUNTIES_BY_REGION',
+      payload: { countiesByRegion },
+    });
+  };
 }
 
 /**
