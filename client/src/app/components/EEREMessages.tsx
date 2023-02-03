@@ -109,23 +109,23 @@ export function EVWarningMessage() {
   const schoolBuses = useTypedSelector(({ eere }) => eere.inputs.schoolBuses);
 
   const eeInputsEmpty =
-    constantMwh === '' &&
-    annualGwh === '' &&
-    broadProgram === '' &&
-    reduction === '' &&
-    topHours === '';
+    (constantMwh === '' || constantMwh === '0') &&
+    (annualGwh === '' || annualGwh === '0') &&
+    (broadProgram === '' || broadProgram === '0') &&
+    (reduction === '' || reduction === '0') &&
+    (topHours === '' || topHours === '0');
 
   const reInputsEmpty =
-    onshoreWind === '' &&
-    offshoreWind === '' &&
-    utilitySolar === '' &&
-    rooftopSolar === '';
+    (onshoreWind === '' || onshoreWind === '0') &&
+    (offshoreWind === '' || offshoreWind === '0') &&
+    (utilitySolar === '' || utilitySolar === '0') &&
+    (rooftopSolar === '' || rooftopSolar === '0');
 
   const evInputsEmpty =
-    batteryEVs === '' &&
-    hybridEVs === '' &&
-    transitBuses === '' &&
-    schoolBuses === '';
+    (batteryEVs === '' || batteryEVs === '0') &&
+    (hybridEVs === '' || hybridEVs === '0') &&
+    (transitBuses === '' || transitBuses === '0') &&
+    (schoolBuses === '' || schoolBuses === '0');
 
   if (eeInputsEmpty && reInputsEmpty && !evInputsEmpty) {
     return (
