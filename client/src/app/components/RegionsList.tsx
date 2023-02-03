@@ -3,7 +3,11 @@ import { useDispatch } from 'react-redux';
 // ---
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { useTypedSelector } from 'app/redux/index';
-import { selectRegion } from 'app/redux/reducers/geography';
+import {
+  selectRegion,
+  setRegionSelectStateId,
+  setRegionSelectCounty,
+} from 'app/redux/reducers/geography';
 import { useSelectedRegion } from 'app/hooks';
 import type { CountiesByGeography } from 'app/calculations/geography';
 import type { RegionId, StateId } from 'app/config';
@@ -14,31 +18,33 @@ function RegionsListContent() {
   const countiesByGeography = useTypedSelector(
     ({ geography }) => geography.countiesByGeography,
   );
+  const regionSelectStateId = useTypedSelector(
+    ({ geography }) => geography.regionSelect.stateId,
+  );
+  const regionSelectCounty = useTypedSelector(
+    ({ geography }) => geography.regionSelect.county,
+  );
 
   const selectedRegionId = useSelectedRegion()?.id;
 
-  const [selectRegionStateId, setSelectRegionStateId] = useState('');
-  const [selectRegionCounty, setSelectRegionCounty] = useState('');
-  const [selectRegionCounties, setSelectRegionCounties] = useState<string[]>(
-    [],
-  );
+  const [countyNames, setCountyNames] = useState<string[]>([]);
 
-  // update county options, based on selected state
+  // update county select options, based on selected state
   useEffect(() => {
     const countiesByGeographyData =
       Object.keys(countiesByGeography).length !== 0
         ? (countiesByGeography as CountiesByGeography)
         : null;
 
-    if (countiesByGeographyData) {
-      const stateId = selectRegionStateId as StateId;
+    if (countiesByGeographyData && regionSelectStateId !== '') {
+      const stateId = regionSelectStateId;
       const selectedStateCounties = countiesByGeographyData.states[stateId];
 
       if (selectedStateCounties) {
-        setSelectRegionCounties(selectedStateCounties.sort());
+        setCountyNames(selectedStateCounties.sort());
       }
     }
-  }, [countiesByGeography, selectRegionStateId]);
+  }, [countiesByGeography, regionSelectStateId]);
 
   // update selected region, based on selected county
   useEffect(() => {
@@ -47,9 +53,9 @@ function RegionsListContent() {
         ? (countiesByGeography as CountiesByGeography)
         : null;
 
-    if (countiesByGeographyData) {
-      const stateId = selectRegionStateId as StateId;
-      const county = selectRegionCounty;
+    if (countiesByGeographyData && regionSelectStateId !== '') {
+      const stateId = regionSelectStateId;
+      const county = regionSelectCounty;
 
       /** determine which region the county falls within */
       const regionId = Object.entries(countiesByGeographyData.regions).find(
@@ -64,7 +70,7 @@ function RegionsListContent() {
         dispatch(selectRegion(regionId));
       }
     }
-  }, [countiesByGeography, selectRegionStateId, selectRegionCounty, dispatch]);
+  }, [countiesByGeography, regionSelectStateId, regionSelectCounty, dispatch]);
 
   return (
     <div className="text-base-darker">
@@ -79,10 +85,10 @@ function RegionsListContent() {
           <select
             className="usa-select margin-0 maxw-full"
             aria-label="Select State"
-            value={selectRegionStateId || ''}
+            value={regionSelectStateId || ''}
             onChange={(ev) => {
-              setSelectRegionStateId(ev.target.value as StateId);
-              setSelectRegionCounty('');
+              dispatch(setRegionSelectStateId(ev.target.value as StateId));
+              dispatch(setRegionSelectCounty(''));
             }}
             data-avert-region-state-select
           >
@@ -106,9 +112,9 @@ function RegionsListContent() {
           <select
             className="usa-select margin-0 maxw-full"
             aria-label="Select County"
-            value={selectRegionCounty || ''}
+            value={regionSelectCounty || ''}
             onChange={(ev) => {
-              setSelectRegionCounty(ev.target.value);
+              dispatch(setRegionSelectCounty(ev.target.value));
             }}
             data-avert-region-county-select
           >
@@ -116,7 +122,7 @@ function RegionsListContent() {
               Select County
             </option>
 
-            {selectRegionCounties.map((county) => {
+            {countyNames.map((county) => {
               return (
                 <Fragment key={county}>
                   <option value={county}>
@@ -141,8 +147,8 @@ function RegionsListContent() {
             value={selectedRegionId || ''}
             onChange={(ev) => {
               dispatch(selectRegion(ev.target.value as RegionId));
-              setSelectRegionStateId('');
-              setSelectRegionCounty('');
+              dispatch(setRegionSelectStateId(''));
+              dispatch(setRegionSelectCounty(''));
             }}
             data-avert-region-select
           >

@@ -112,6 +112,14 @@ type GeographyAction =
       payload: { stateId: StateId };
     }
   | {
+      type: 'geography/SET_REGION_SELECT_STATE_ID';
+      payload: { stateId: StateId | '' };
+    }
+  | {
+      type: 'geography/SET_REGION_SELECT_COUNTY';
+      payload: { county: string };
+    }
+  | {
       type: 'geography/SET_REGIONAL_SCALING_FACTORS';
       payload: {
         regionalScalingFactors: RegionalScalingFactors;
@@ -153,6 +161,10 @@ type GeographyState = {
   regions: { [key in RegionId]: RegionState };
   states: { [key in StateId]: StateState };
   countiesByGeography: CountiesByGeography | {};
+  regionSelect: {
+    stateId: StateId | '';
+    county: string;
+  };
   regionalScalingFactors: RegionalScalingFactors;
   regionalLineLoss: number;
 };
@@ -222,6 +234,10 @@ const initialState: GeographyState = {
   regions: updatedRegions,
   states: updatedStates,
   countiesByGeography: {},
+  regionSelect: {
+    stateId: '',
+    county: '',
+  },
   regionalScalingFactors: {},
   regionalLineLoss: 0,
 };
@@ -270,6 +286,30 @@ export default function reducer(
         updatedState.states[stateId].selected = stateIsSelected;
       }
       return updatedState;
+    }
+
+    case 'geography/SET_REGION_SELECT_STATE_ID': {
+      const { stateId } = action.payload;
+
+      return {
+        ...state,
+        regionSelect: {
+          ...state.regionSelect,
+          stateId,
+        },
+      };
+    }
+
+    case 'geography/SET_REGION_SELECT_COUNTY': {
+      const { county } = action.payload;
+
+      return {
+        ...state,
+        regionSelect: {
+          ...state.regionSelect,
+          county,
+        },
+      };
     }
 
     case 'geography/SET_REGIONAL_SCALING_FACTORS': {
@@ -367,7 +407,7 @@ export function selectGeography(focus: GeographicFocus): AppThunk {
 
 /**
  * Called every time a region is clicked on the map or selected from the regions
- * dropdown list on the "Select Geography" page
+ * dropdown list in the "Select Region" tab on the "Select Geography" page.
  */
 export function selectRegion(regionId: RegionId): AppThunk {
   return (dispatch) => {
@@ -385,7 +425,7 @@ export function selectRegion(regionId: RegionId): AppThunk {
 
 /**
  * Called every time a state is clicked on the map or selected from the states
- * dropdown list on the "Select Geography" page
+ * dropdown list in the "Select State" tab of the "Select Geography" page.
  */
 export function selectState(stateId: string): AppThunk {
   return (dispatch) => {
@@ -398,6 +438,30 @@ export function selectState(stateId: string): AppThunk {
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
     dispatch(setEVEfficiency());
+  };
+}
+
+/**
+ * Called every time a region is clicked on the map or a state is selected from
+ * the states dropdown list in the "Select Region" tab of the "Select Geography"
+ * page.
+ */
+export function setRegionSelectStateId(stateId: StateId | ''): GeographyAction {
+  return {
+    type: 'geography/SET_REGION_SELECT_STATE_ID',
+    payload: { stateId },
+  };
+}
+
+/**
+ * Called every time a region is clicked on the map or a county is selected from
+ * the counties dropdown list in the "Select Region" tab of the "Select
+ * Geography" page.
+ */
+export function setRegionSelectCounty(county: string): GeographyAction {
+  return {
+    type: 'geography/SET_REGION_SELECT_COUNTY',
+    payload: { county },
   };
 }
 
