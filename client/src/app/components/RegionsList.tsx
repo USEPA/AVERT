@@ -23,6 +23,7 @@ function RegionsListContent() {
     [],
   );
 
+  // update county options, based on selected state
   useEffect(() => {
     const countiesByGeographyData =
       Object.keys(countiesByGeography).length !== 0
@@ -38,6 +39,32 @@ function RegionsListContent() {
       }
     }
   }, [countiesByGeography, selectRegionStateId]);
+
+  // update selected region, based on selected county
+  useEffect(() => {
+    const countiesByGeographyData =
+      Object.keys(countiesByGeography).length !== 0
+        ? (countiesByGeography as CountiesByGeography)
+        : null;
+
+    if (countiesByGeographyData) {
+      const stateId = selectRegionStateId as StateId;
+      const county = selectRegionCounty;
+
+      /** determine which region the county falls within */
+      const regionId = Object.entries(countiesByGeographyData.regions).find(
+        ([_, regionData]) => {
+          return Object.entries(regionData).some(([key, value]) => {
+            return (key as StateId) === stateId && value.includes(county);
+          });
+        },
+      )?.[0] as RegionId | undefined;
+
+      if (regionId) {
+        dispatch(selectRegion(regionId));
+      }
+    }
+  }, [countiesByGeography, selectRegionStateId, selectRegionCounty, dispatch]);
 
   return (
     <div className="text-base-darker">
@@ -92,7 +119,9 @@ function RegionsListContent() {
             {selectRegionCounties.map((county) => {
               return (
                 <Fragment key={county}>
-                  <option value={county}>{county}</option>
+                  <option value={county}>
+                    {county.replace(/city/, '(City)')}
+                  </option>
                 </Fragment>
               );
             })}
@@ -112,6 +141,8 @@ function RegionsListContent() {
             value={selectedRegionId || ''}
             onChange={(ev) => {
               dispatch(selectRegion(ev.target.value as RegionId));
+              setSelectRegionStateId('');
+              setSelectRegionCounty('');
             }}
             data-avert-region-select
           >
