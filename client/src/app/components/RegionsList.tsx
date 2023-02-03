@@ -31,13 +31,19 @@ function RegionsListContent() {
 
   // update county select options, based on selected state
   useEffect(() => {
+    const stateId = regionSelectStateId;
+
     const countiesByGeographyData =
       Object.keys(countiesByGeography).length !== 0
         ? (countiesByGeography as CountiesByGeography)
         : null;
 
-    if (countiesByGeographyData && regionSelectStateId !== '') {
-      const stateId = regionSelectStateId;
+    if (stateId === '') {
+      setCountyNames([]);
+      return;
+    }
+
+    if (countiesByGeographyData) {
       const selectedStateCounties = countiesByGeographyData.states[stateId];
 
       if (selectedStateCounties) {
@@ -48,15 +54,19 @@ function RegionsListContent() {
 
   // update selected region, based on selected county
   useEffect(() => {
+    const stateId = regionSelectStateId;
+    const county = regionSelectCounty;
+
     const countiesByGeographyData =
       Object.keys(countiesByGeography).length !== 0
         ? (countiesByGeography as CountiesByGeography)
         : null;
 
-    if (countiesByGeographyData && regionSelectStateId !== '') {
-      const stateId = regionSelectStateId;
-      const county = regionSelectCounty;
+    if (stateId === '') {
+      return;
+    }
 
+    if (countiesByGeographyData) {
       /** determine which region the county falls within */
       const regionId = Object.entries(countiesByGeographyData.regions).find(
         ([_, regionData]) => {
