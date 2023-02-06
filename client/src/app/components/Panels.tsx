@@ -450,7 +450,7 @@ export function Panels() {
           </TabPanels>
         </Tabs>
 
-        <PanelFooter nextButtonText="Set EE/RE Impacts" />
+        <PanelFooter prevButton={null} nextButton="Set EE/RE Impacts" />
       </section>
 
       <section css={panelStyles} data-active={activeStep === 2}>
@@ -501,10 +501,7 @@ export function Panels() {
           <EEREMessages />
         </div>
 
-        <PanelFooter
-          prevButtonText="Back to Geography"
-          nextButtonText="Get Results"
-        />
+        <PanelFooter prevButton="Back to Geography" nextButton="Get Results" />
       </section>
 
       <section css={panelStyles} data-active={activeStep === 3}>
@@ -581,8 +578,8 @@ export function Panels() {
         </div>
 
         <PanelFooter
-          prevButtonText="Back to EE/RE Impacts"
-          nextButtonText="Reselect Geography"
+          prevButton="Back to EE/RE Impacts"
+          nextButton="Reselect Geography"
         />
       </section>
     </Container>
