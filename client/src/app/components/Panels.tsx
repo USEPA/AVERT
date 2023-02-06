@@ -151,7 +151,7 @@ const tabsStyles = css`
   }
 
   [data-reach-tab-panels] {
-    padding: 1.5rem;
+    padding: 1rem;
   }
 `;
 
@@ -379,9 +379,9 @@ export function Panels() {
           <TabPanels>
             <TabPanel>
               <div className="grid-container padding-0 maxw-full">
-                <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
+                <div className="grid-row">
                   <div className="desktop:grid-col-6 desktop:order-last">
-                    <div className="padding-x-2">
+                    <div className="padding-x-1">
                       <p className="margin-bottom-0 tablet:margin-top-2 font-sans-xs tablet:font-sans-sm desktop:font-sans-md">
                         AVERT splits the contiguous 48 states into 14
                         independent electricity regions. AVERT regions are
@@ -401,7 +401,7 @@ export function Panels() {
                   </div>
 
                   <div className="desktop:grid-col-6">
-                    <div className="padding-x-2">
+                    <div className="padding-x-1">
                       <RegionsMap />
 
                       <div className="desktop:display-none">
@@ -415,9 +415,9 @@ export function Panels() {
 
             <TabPanel>
               <div className="grid-container padding-0 maxw-full">
-                <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
+                <div className="grid-row">
                   <div className="desktop:grid-col-6 desktop:order-last">
-                    <div className="padding-x-2">
+                    <div className="padding-x-1">
                       <p className="margin-bottom-0 tablet:margin-top-2 font-sans-xs tablet:font-sans-sm desktop:font-sans-md">
                         Select a state for analysis by either using the dropdown
                         menu or clicking the map. Selecting a state means AVERT
@@ -435,7 +435,7 @@ export function Panels() {
                   </div>
 
                   <div className="desktop:grid-col-6">
-                    <div className="padding-x-2">
+                    <div className="padding-x-1">
                       <StatesMap />
 
                       <div className="desktop:display-none">
@@ -556,7 +556,7 @@ export function Panels() {
           <hr />
 
           <div className="grid-container padding-0 maxw-full">
-            <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
+            <div className="grid-row">
               {cobraApiReady ? (
                 <>
                   <div className="padding-1 tablet:grid-col-6">
