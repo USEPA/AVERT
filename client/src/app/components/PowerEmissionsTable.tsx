@@ -8,10 +8,22 @@ import type { CombinedSectorsEmissionsData } from 'app/calculations/emissions';
 
 type AnnualMonthlyData = ReturnType<typeof setAnnualMonthlyData>;
 
+/**
+ * Round number to the nearest 10 and conditionally display '--' if number is
+ * within 10 of zero.
+ */
 function formatNumber(number: number) {
   if (number < 10 && number > -10) return '--';
   const output = Math.round(number / 10) * 10;
   return output.toLocaleString();
+}
+
+/**
+ * Calculate numerator ÷ denominator, formatted to three decimal places, but
+ * display '--' if the denominator is zero.
+ */
+function calculateNumber(numerator: number, denominator: number) {
+  return denominator !== 0 ? (numerator / denominator).toFixed(3) : '--';
 }
 
 /**
@@ -150,7 +162,7 @@ function EmissionsReplacementTooltip(props: {
   );
 }
 
-function PowerSectorEmissionsTableContent() {
+function PowerEmissionsTableContent() {
   const combinedSectorsEmissionsData = useTypedSelector(
     ({ results }) => results.combinedSectorsEmissionsData,
   );
@@ -368,11 +380,11 @@ function PowerSectorEmissionsTableContent() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {(so2.original / generation.original).toFixed(3)}
+                  {calculateNumber(so2.original, generation.original)}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {(so2.impacts / generation.impacts).toFixed(3)}
+                  {calculateNumber(so2.impacts, generation.impacts)}
                 </td>
               </tr>
 
@@ -383,11 +395,11 @@ function PowerSectorEmissionsTableContent() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {(nox.original / generation.original).toFixed(3)}
+                  {calculateNumber(nox.original, generation.original)}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {(nox.impacts / generation.impacts).toFixed(3)}
+                  {calculateNumber(nox.impacts, generation.impacts)}
                 </td>
               </tr>
 
@@ -404,11 +416,11 @@ function PowerSectorEmissionsTableContent() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {(ozoneNox.original / ozoneGeneration.original).toFixed(3)}
+                  {calculateNumber(ozoneNox.original, ozoneGeneration.original)}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {(ozoneNox.impacts / ozoneGeneration.impacts).toFixed(3)}
+                  {calculateNumber(ozoneNox.impacts, ozoneGeneration.impacts)}
                 </td>
               </tr>
 
@@ -419,11 +431,11 @@ function PowerSectorEmissionsTableContent() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {(co2.original / generation.original).toFixed(3)}
+                  {calculateNumber(co2.original, generation.original)}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {(co2.impacts / generation.impacts).toFixed(3)}
+                  {calculateNumber(co2.impacts, generation.impacts)}
                 </td>
               </tr>
 
@@ -434,11 +446,11 @@ function PowerSectorEmissionsTableContent() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {(pm25.original / generation.original).toFixed(3)}
+                  {calculateNumber(pm25.original, generation.original)}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {(pm25.impacts / generation.impacts).toFixed(3)}
+                  {calculateNumber(pm25.impacts, generation.impacts)}
                 </td>
               </tr>
 
@@ -449,11 +461,11 @@ function PowerSectorEmissionsTableContent() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {(vocs.original / generation.original).toFixed(3)}
+                  {calculateNumber(vocs.original, generation.original)}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {(vocs.impacts / generation.impacts).toFixed(3)}
+                  {calculateNumber(vocs.impacts, generation.impacts)}
                 </td>
               </tr>
 
@@ -464,11 +476,11 @@ function PowerSectorEmissionsTableContent() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {(nh3.original / generation.original).toFixed(3)}
+                  {calculateNumber(nh3.original, generation.original)}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {(nh3.impacts / generation.impacts).toFixed(3)}
+                  {calculateNumber(nh3.impacts, generation.impacts)}
                 </td>
               </tr>
             </tbody>
@@ -498,7 +510,7 @@ function PowerSectorEmissionsTableContent() {
   );
 }
 
-export function PowerSectorEmissionsTable() {
+export function PowerEmissionsTable() {
   return (
     <ErrorBoundary
       message={
@@ -511,7 +523,7 @@ export function PowerSectorEmissionsTable() {
         </>
       }
     >
-      <PowerSectorEmissionsTableContent />
+      <PowerEmissionsTableContent />
     </ErrorBoundary>
   );
 }

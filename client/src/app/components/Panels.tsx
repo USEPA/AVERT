@@ -17,8 +17,8 @@ import { UnitConversion } from 'app/components/UnitConversion';
 import { EEREInputs } from 'app/components/EEREInputs';
 import { EEREChart } from 'app/components/EEREChart';
 import { EEREMessages } from 'app/components/EEREMessages';
-import { PowerSectorEmissionsTable } from 'app/components/PowerSectorEmissionsTable';
-import { TransportationSectorEmissionsTable } from 'app/components/TransportationSectorEmissionsTable';
+import { PowerEmissionsTable } from 'app/components/PowerEmissionsTable';
+import { VehiclesEmissionsTable } from 'app/components/VehiclesEmissionsTable';
 import { StateEmissionsTable } from 'app/components/StateEmissionsTable';
 import { MonthlyEmissionsCharts } from 'app/components/MonthlyEmissionsCharts';
 import { COBRAConnection } from 'app/components/COBRAConnection';
@@ -175,7 +175,7 @@ function SectorTables(props: { location: string }) {
           </span>
         </h3>
 
-        <PowerSectorEmissionsTable />
+        <PowerEmissionsTable />
       </div>
 
       <div className="flex-1 margin-top-3 desktop:margin-left-105 desktop:margin-top-0">
@@ -187,7 +187,7 @@ function SectorTables(props: { location: string }) {
           </span>
         </h3>
 
-        <TransportationSectorEmissionsTable />
+        <VehiclesEmissionsTable />
       </div>
     </div>
   );
