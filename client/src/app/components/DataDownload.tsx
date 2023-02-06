@@ -28,11 +28,6 @@ function DataDownloadContent() {
   const countyCsvString = encodeURIComponent(convertToCSVString(countyData));
   const cobraCsvString = encodeURIComponent(convertToCSVString(cobraData));
 
-  const isDesktopSafari =
-    navigator.userAgent.toLowerCase().indexOf('safari') !== -1 &&
-    navigator.userAgent.toLowerCase().indexOf('chrome') === -1 &&
-    navigator.userAgent.toLowerCase().indexOf('mobi') === -1;
-
   return (
     <>
       <h3 className="avert-blue margin-bottom-1 font-serif-md">
@@ -64,17 +59,6 @@ function DataDownloadContent() {
           Download COBRA Results
         </a>
       </p>
-
-      {isDesktopSafari && (
-        <div className="usa-alert usa-alert--slim usa-alert--warning margin-bottom-0">
-          <div className="usa-alert__body">
-            <p className="usa-alert__text">
-              Please press <strong>⌘ + S</strong> to save the file after it is
-              opened.
-            </p>
-          </div>
-        </div>
-      )}
     </>
   );
 }
