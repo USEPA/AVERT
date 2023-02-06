@@ -162,7 +162,7 @@ function EmissionsReplacementTooltip(props: {
   );
 }
 
-function PowerSectorEmissionsTableContent() {
+function PowerEmissionsTableContent() {
   const combinedSectorsEmissionsData = useTypedSelector(
     ({ results }) => results.combinedSectorsEmissionsData,
   );
@@ -510,7 +510,7 @@ function PowerSectorEmissionsTableContent() {
   );
 }
 
-export function PowerSectorEmissionsTable() {
+export function PowerEmissionsTable() {
   return (
     <ErrorBoundary
       message={
@@ -523,7 +523,7 @@ export function PowerSectorEmissionsTable() {
         </>
       }
     >
-      <PowerSectorEmissionsTableContent />
+      <PowerEmissionsTableContent />
     </ErrorBoundary>
   );
 }

@@ -40,7 +40,7 @@ function setAnnualEmissionsChanges(
   return result;
 }
 
-function TransportationSectorEmissionsTableContent() {
+function VehiclesEmissionsTableContent() {
   const totalYearlyVehicleEmissionsChanges = useTypedSelector(
     ({ transportation }) => transportation.totalYearlyEmissionChanges,
   );
@@ -221,7 +221,7 @@ function TransportationSectorEmissionsTableContent() {
   );
 }
 
-export function TransportationSectorEmissionsTable() {
+export function VehiclesEmissionsTable() {
   return (
     <ErrorBoundary
       message={
@@ -234,7 +234,7 @@ export function TransportationSectorEmissionsTable() {
         </>
       }
     >
-      <TransportationSectorEmissionsTableContent />
+      <VehiclesEmissionsTableContent />
     </ErrorBoundary>
   );
 }
