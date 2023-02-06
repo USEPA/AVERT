@@ -26,9 +26,7 @@ const iconStyles = css`
   background-position: -36px -10px;
 `;
 
-const PrevButton = styled('a')`
-  float: left;
-
+const PrevButtonAnchor = styled('a')`
   &::before {
     ${iconStyles};
 
@@ -37,9 +35,7 @@ const PrevButton = styled('a')`
   }
 `;
 
-const NextButton = styled('a')<{ resultsShown: boolean }>`
-  float: right;
-
+const NextButtonAnchor = styled('a')<{ resultsShown: boolean }>`
   &::after {
     ${iconStyles};
 
@@ -66,14 +62,47 @@ const NextButton = styled('a')<{ resultsShown: boolean }>`
   }}
 `;
 
-export function PanelFooter(props: {
-  prevButtonText?: string;
-  nextButtonText: string;
-}) {
-  const { prevButtonText, nextButtonText } = props;
+function PrevButton(props: { text: string | null }) {
+  const { text } = props;
 
   const dispatch = useDispatch();
+  const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
 
+  const onStepThree = activeStep === 3;
+
+  /**
+   * if no button text is provided, render an empty element so the next button
+   * is still floated right
+   */
+  if (!text) return <span />;
+
+  return (
+    <PrevButtonAnchor
+      className="usa-button avert-button margin-0 margin-top-105"
+      href="/"
+      onClick={(ev) => {
+        ev.preventDefault();
+        window.scrollTo(0, 0);
+        // prevButtonText isn't provided to first step's use of PanelFooter,
+        // so we can safely always assume we're on step 2 or 3
+        dispatch(setActiveStep(activeStep - 1));
+        dispatch(resetEEREInputs());
+
+        if (onStepThree) {
+          dispatch(resetResults());
+          dispatch(resetMonthlyEmissions());
+        }
+      }}
+    >
+      {text}
+    </PrevButtonAnchor>
+  );
+}
+
+function NextButton(props: { text: string }) {
+  const { text } = props;
+
+  const dispatch = useDispatch();
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const eereInputs = useTypedSelector(({ eere }) => eere.inputs);
@@ -125,32 +154,10 @@ export function PanelFooter(props: {
       ? 'avert-button-disabled'
       : '';
 
-  const prevButton = !prevButtonText ? null : (
-    <PrevButton
-      className="usa-button avert-button"
-      href="/"
-      onClick={(ev) => {
-        ev.preventDefault();
-        window.scrollTo(0, 0);
-        // prevButtonText isn't provided to first step's use of PanelFooter,
-        // so we can safely always assume we're on step 2 or 3
-        dispatch(setActiveStep(activeStep - 1));
-        dispatch(resetEEREInputs());
-
-        if (onStepThree) {
-          dispatch(resetResults());
-          dispatch(resetMonthlyEmissions());
-        }
-      }}
-    >
-      {prevButtonText}
-    </PrevButton>
-  );
-
-  const nextButton = (
-    <NextButton
+  return (
+    <NextButtonAnchor
       resultsShown={onStepThree}
-      className={`usa-button avert-button ${disabledButtonClassName}`}
+      className={`usa-button avert-button order-last margin-0 margin-top-105 ${disabledButtonClassName}`}
       href="/"
       onClick={(ev) => {
         ev.preventDefault();
@@ -185,15 +192,22 @@ export function PanelFooter(props: {
         dispatch(setActiveStep(onStepThree ? 1 : activeStep + 1));
       }}
     >
-      {nextButtonText}
-    </NextButton>
+      {text}
+    </NextButtonAnchor>
   );
+}
+
+export function PanelFooter(props: {
+  prevButton: string | null;
+  nextButton: string;
+}) {
+  const { prevButton, nextButton } = props;
 
   return (
-    <div className="avert-step-footer overflow-hidden padding-105 bg-base-lightest">
-      <p>
-        {prevButton}
-        {nextButton}
+    <div className="avert-step-footer overflow-hidden padding-x-105 padding-bottom-105 bg-base-lightest">
+      <p className="margin-0 mobile-lg:display-flex mobile-lg:flex-justify">
+        <NextButton text={nextButton} />
+        <PrevButton text={prevButton} />
       </p>
     </div>
   );

@@ -7,7 +7,7 @@ export function PanelTabs() {
   return (
     <nav
       className={
-        `overflow-hidden margin-bottom-2 ` +
+        `overflow-hidden margin-bottom-1 ` +
         `border-width-1px border-solid border-white ` +
         `tablet:border-base-light`
       }

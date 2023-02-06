@@ -647,9 +647,12 @@ function MonthlyEmissionsChartsContent() {
                 Select level of aggregation:
               </p>
 
-              <div className="mobile-lg:display-flex">
-                <div className="flex-1 mobile-lg:margin-right-1">
-                  <div className="usa-radio">
+              <div
+                className="mobile-lg:display-flex flex-wrap"
+                style={{ margin: '0 -0.5rem' }}
+              >
+                <div className="flex-1">
+                  <div className="usa-radio padding-x-1">
                     <input
                       id="aggregation-region"
                       className="usa-radio__input"
@@ -672,8 +675,8 @@ function MonthlyEmissionsChartsContent() {
                   </div>
                 </div>
 
-                <div className="flex-1 mobile-lg:margin-x-1">
-                  <div className="usa-radio">
+                <div className="flex-1">
+                  <div className="usa-radio padding-x-1">
                     <input
                       id="aggregation-state"
                       className="usa-radio__input"
@@ -708,8 +711,8 @@ function MonthlyEmissionsChartsContent() {
                   </div>
                 </div>
 
-                <div className="flex-1 tablet:margin-left-1">
-                  <div className="usa-radio">
+                <div className="flex-1">
+                  <div className="usa-radio padding-x-1">
                     <input
                       id="aggregation-county"
                       className="usa-radio__input"

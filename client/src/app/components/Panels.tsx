@@ -82,11 +82,13 @@ const Container = styled('div')<{
 `;
 
 const overlayTextStyles = css`
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
   color: #00bee6;
+  text-align: center;
 `;
 
 const panelStyles = css`
@@ -151,7 +153,7 @@ const tabsStyles = css`
   }
 
   [data-reach-tab-panels] {
-    padding: 1.5rem;
+    padding: 1rem;
   }
 `;
 
@@ -329,10 +331,7 @@ export function Panels() {
       {
         // conditionally display loading indicator
         loading && !serverCalcError && (
-          <div
-            css={overlayTextStyles}
-            className="position-absolute text-center"
-          >
+          <div css={overlayTextStyles}>
             <LoadingIcon />
 
             <p className="font-sans-lg text-bold">LOADING...</p>
@@ -350,10 +349,7 @@ export function Panels() {
       {
         // conditionally display web server error
         serverCalcError && (
-          <div
-            css={overlayTextStyles}
-            className="position-absolute text-center"
-          >
+          <div css={overlayTextStyles}>
             <p className="font-sans-lg text-bold">Web Server Error</p>
 
             <p className="margin-top-1 font-sans-sm">
@@ -379,9 +375,9 @@ export function Panels() {
           <TabPanels>
             <TabPanel>
               <div className="grid-container padding-0 maxw-full">
-                <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
+                <div className="grid-row">
                   <div className="desktop:grid-col-6 desktop:order-last">
-                    <div className="padding-x-2">
+                    <div className="padding-x-1">
                       <p className="margin-bottom-0 tablet:margin-top-2 font-sans-xs tablet:font-sans-sm desktop:font-sans-md">
                         AVERT splits the contiguous 48 states into 14
                         independent electricity regions. AVERT regions are
@@ -401,7 +397,7 @@ export function Panels() {
                   </div>
 
                   <div className="desktop:grid-col-6">
-                    <div className="padding-x-2">
+                    <div className="padding-x-1">
                       <RegionsMap />
 
                       <div className="desktop:display-none">
@@ -415,9 +411,9 @@ export function Panels() {
 
             <TabPanel>
               <div className="grid-container padding-0 maxw-full">
-                <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
+                <div className="grid-row">
                   <div className="desktop:grid-col-6 desktop:order-last">
-                    <div className="padding-x-2">
+                    <div className="padding-x-1">
                       <p className="margin-bottom-0 tablet:margin-top-2 font-sans-xs tablet:font-sans-sm desktop:font-sans-md">
                         Select a state for analysis by either using the dropdown
                         menu or clicking the map. Selecting a state means AVERT
@@ -435,7 +431,7 @@ export function Panels() {
                   </div>
 
                   <div className="desktop:grid-col-6">
-                    <div className="padding-x-2">
+                    <div className="padding-x-1">
                       <StatesMap />
 
                       <div className="desktop:display-none">
@@ -450,7 +446,7 @@ export function Panels() {
           </TabPanels>
         </Tabs>
 
-        <PanelFooter nextButtonText="Set EE/RE Impacts" />
+        <PanelFooter prevButton={null} nextButton="Set EE/RE Impacts" />
       </section>
 
       <section css={panelStyles} data-active={activeStep === 2}>
@@ -501,10 +497,7 @@ export function Panels() {
           <EEREMessages />
         </div>
 
-        <PanelFooter
-          prevButtonText="Back to Geography"
-          nextButtonText="Get Results"
-        />
+        <PanelFooter prevButton="Back to Geography" nextButton="Get Results" />
       </section>
 
       <section css={panelStyles} data-active={activeStep === 3}>
@@ -556,7 +549,7 @@ export function Panels() {
           <hr />
 
           <div className="grid-container padding-0 maxw-full">
-            <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
+            <div className="grid-row">
               {cobraApiReady ? (
                 <>
                   <div className="padding-1 tablet:grid-col-6">
@@ -581,8 +574,8 @@ export function Panels() {
         </div>
 
         <PanelFooter
-          prevButtonText="Back to EE/RE Impacts"
-          nextButtonText="Reselect Geography"
+          prevButton="Back to EE/RE Impacts"
+          nextButton="Reselect Geography"
         />
       </section>
     </Container>

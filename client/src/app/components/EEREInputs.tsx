@@ -50,6 +50,12 @@ const inputsGroupStyles = css`
 `;
 
 const inputsSummaryStyles = css`
+  &::-webkit-details-marker,
+  &::marker {
+    display: none;
+    content: '';
+  }
+
   /* letter (A, B, C, D, or E) */
   &::before {
     content: attr(data-label);

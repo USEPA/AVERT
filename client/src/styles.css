@@ -74,6 +74,10 @@ button:not([disabled]):focus,
   max-width: 1400px; /* USWDS breakpoint: widescreen */
 }
 
+.avert-container nav .usa-list--unstyled {
+  margin-bottom: 0;
+}
+
 .avert-blue {
   color: var(--avert-blue);
 }
