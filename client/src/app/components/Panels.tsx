@@ -82,11 +82,13 @@ const Container = styled('div')<{
 `;
 
 const overlayTextStyles = css`
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
   color: #00bee6;
+  text-align: center;
 `;
 
 const panelStyles = css`
@@ -329,10 +331,7 @@ export function Panels() {
       {
         // conditionally display loading indicator
         loading && !serverCalcError && (
-          <div
-            css={overlayTextStyles}
-            className="position-absolute text-center"
-          >
+          <div css={overlayTextStyles}>
             <LoadingIcon />
 
             <p className="font-sans-lg text-bold">LOADING...</p>
@@ -350,10 +349,7 @@ export function Panels() {
       {
         // conditionally display web server error
         serverCalcError && (
-          <div
-            css={overlayTextStyles}
-            className="position-absolute text-center"
-          >
+          <div css={overlayTextStyles}>
             <p className="font-sans-lg text-bold">Web Server Error</p>
 
             <p className="margin-top-1 font-sans-sm">
