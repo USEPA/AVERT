@@ -1,3 +1,4 @@
+import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { useTypedSelector } from 'app/redux/index';
 
 function calculatePercent(numerator: number, denominator: number) {
@@ -16,7 +17,7 @@ function formatNumber(number: number) {
   });
 }
 
-export function EVSalesAndStockTable(props: { className?: string }) {
+function EVSalesAndStockTableContent(props: { className?: string }) {
   const { className } = props;
 
   const batteryEVs = useTypedSelector(({ eere }) => eere.inputs.batteryEVs);
@@ -137,7 +138,7 @@ export function EVSalesAndStockTable(props: { className?: string }) {
   );
 }
 
-export function EEREEVComparisonTable(props: { className?: string }) {
+function EEREEVComparisonTableContent(props: { className?: string }) {
   const { className } = props;
 
   const regionalLineLoss = useTypedSelector(
@@ -365,5 +366,45 @@ export function EEREEVComparisonTable(props: { className?: string }) {
         </div>
       </div>
     </div>
+  );
+}
+
+export function EVSalesAndStockTable(props: { className?: string }) {
+  const { className } = props;
+
+  return (
+    <ErrorBoundary
+      message={
+        <>
+          Error loading EV Sales and Stock Comparison table. Please contact
+          AVERT support at{' '}
+          <a className="usa-link" href="mailto:avert@epa.gov">
+            avert@epa.gov
+          </a>
+        </>
+      }
+    >
+      <EVSalesAndStockTableContent className={className} />
+    </ErrorBoundary>
+  );
+}
+
+export function EEREEVComparisonTable(props: { className?: string }) {
+  const { className } = props;
+
+  return (
+    <ErrorBoundary
+      message={
+        <>
+          Error loading EE/RE and EV Comparison table. Please contact AVERT
+          support at{' '}
+          <a className="usa-link" href="mailto:avert@epa.gov">
+            avert@epa.gov
+          </a>
+        </>
+      }
+    >
+      <EEREEVComparisonTableContent className={className} />
+    </ErrorBoundary>
   );
 }
