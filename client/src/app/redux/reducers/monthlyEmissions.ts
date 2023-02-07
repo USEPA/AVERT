@@ -124,13 +124,17 @@ export default function reducer(
     case 'monthlyEmissions/SET_MONTHLY_EMISSIONS_POLLUTANT': {
       const { pollutant } = action.payload;
 
+      const order = ['so2', 'nox', 'co2', 'pm25', 'vocs', 'nh3'];
+
       const pollutants = state.pollutants.includes(pollutant)
         ? [...state.pollutants].filter((p) => p !== pollutant)
         : [...state.pollutants].concat(pollutant);
 
       return {
         ...state,
-        pollutants,
+        pollutants: pollutants.sort(
+          (a, b) => order.indexOf(a) - order.indexOf(b),
+        ),
       };
     }
 
