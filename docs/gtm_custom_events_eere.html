@@ -1,65 +1,67 @@
 <script>
-  (function() {
-    var calculateBtn = document.querySelector('[data-avert-calculate-impacts-btn]');
+  (function () {
+    var calculateBtn = document.querySelector('[data-avert-calculate-impacts-btn]'); // prettier-ignore
+    var inputsContainer = document.querySelector("[data-avert-eere-inputs]");
+    if (!calculateBtn || !inputsContainer) return;
 
-    // NOTE: We need to use `getElementsByTagName()` to select the eere inputs,
-    // as it returns a live HTMLCollection instead of a static NodeList (that
-    // `querySelectorAll()` would have returned). This is necessary because
-    // the offshore wind input is conditionally rendered only if the region
-    // supports offshore wind...which means when this JavaScript code is added
-    // to the page on DOM Ready (as set up in Google Tag Manager), that input
-    // element might not yet exist in the DOM.
-    var inputsContainer = document.querySelector('[data-avert-eere-inputs]');
-    var eereInputs = inputsContainer && inputsContainer.getElementsByTagName('input');
-
-    if (!calculateBtn || !eereInputs) return;
+    /**
+     * NOTE: We need to use `getElementsByTagName()` to select the eere inputs,
+     * as it returns a live HTMLCollection instead of a static NodeList (that
+     * `querySelectorAll()` would have returned). This is necessary because the
+     * offshore wind input is conditionally rendered only if the region supports
+     * offshore wind...which means when this JavaScript code is added to the
+     * page on DOM Ready (as set up in Google Tag Manager), that input element
+     * might not yet exist in the DOM.
+     */
+    var eereInputs = inputsContainer.getElementsByTagName("input");
 
     function captureEereImpacts() {
       var eereImpacts = {};
-      eereInputs.forEach(function(input) {
+
+      Array.from(eereInputs).forEach(function (input) {
         eereImpacts[input.dataset.avertEereInput] = input.value;
       });
 
       window.dataLayer.push({
-        event: 'eereImpactsCalculated',
+        event: "eereImpactsCalculated",
         eereImpacts: JSON.stringify(eereImpacts),
       });
-    };
+    }
 
-    calculateBtn.addEventListener('click', function(ev) {
+    calculateBtn.addEventListener("click", function (ev) {
       captureEereImpacts();
-    }, false);
+    });
 
-    eereInputs.forEach(function(input) {
-      input.addEventListener('keypress', function(ev) {
-        if (ev.key === 'Enter') captureEereImpacts();
-      }, false);
+    Array.from(eereInputs).forEach(function (input) {
+      input.addEventListener("keypress", function (ev) {
+        if (ev.key === "Enter") captureEereImpacts();
+      });
     });
   })();
 </script>
 
 <script>
-  (function() {
-    var chartContainers = document.querySelectorAll('[data-avert-chart]');
+  (function () {
+    var chartContainers = document.querySelectorAll("[data-avert-chart]");
     if (!chartContainers) return;
 
-    chartContainers.forEach(function(chartContainer) {
-      chartContainer.addEventListener('mousedown', function(ev) {
-        if (ev.target.className !== 'highcharts-menu-item') return;
+    Array.from(chartContainers).forEach(function (chartContainer) {
+      chartContainer.addEventListener("mousedown", function (ev) {
+        if (ev.target.className !== "highcharts-menu-item") return;
 
-        var chart = ev.target.closest('[data-highcharts-chart]');
+        var chart = ev.target.closest("[data-highcharts-chart]");
         if (!chart) return;
 
         // EE/RE Profile chart doesn't have title, so set it explicitly
-        var titleEl = chart.querySelector('.avert-chart-title');
-        var chartTitle = titleEl ? titleEl.innerText : 'EE/RE Profile';
+        var titleEl = chart.querySelector(".avert-chart-title");
+        var chartTitle = titleEl ? titleEl.innerText : "EE/RE Profile";
 
         window.dataLayer.push({
-          event: 'chartExportClicked',
+          event: "chartExportClicked",
           exportedChartTitle: chartTitle,
           exportedChartAction: ev.target.innerText,
         });
-      }, false);
+      });
     });
   })();
 </script>
