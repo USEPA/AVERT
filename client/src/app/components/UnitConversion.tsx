@@ -59,25 +59,23 @@ export function UnitConversion() {
     >
       <div className="avert-box-heading font-serif-2xs line-height-serif-2">
         Helpful Unit Conversions{' '}
-        <span className="font-sans-xs text-base-darker">
-          <Tooltip id="unit-conversion">
-            <p>
-              To convert units from power (<strong>kW, MW, GW</strong>) to
-              energy (<strong>kWh, MWh, GWh</strong>), multiply by the total
-              number of hours in the year. To convert in the other direction,
-              divide by the total number of hours in the year. There are{' '}
-              <strong>8,760 hours</strong> in a non-leap year and{' '}
-              <strong>8,784 hours</strong> in a leap year.
-            </p>
+        <Tooltip id="unit-conversion">
+          <p>
+            To convert units from power (<strong>kW, MW, GW</strong>) to energy
+            (<strong>kWh, MWh, GWh</strong>), multiply by the total number of
+            hours in the year. To convert in the other direction, divide by the
+            total number of hours in the year. There are{' '}
+            <strong>8,760 hours</strong> in a non-leap year and{' '}
+            <strong>8,784 hours</strong> in a leap year.
+          </p>
 
-            <p className="margin-0">
-              <strong>Example:</strong>&nbsp;
-              <em>converting energy to power for 2016 (leap year):</em>
-              <br />
-              10,000 kWh ÷ 8,784 h = 1.14 kW
-            </p>
-          </Tooltip>
-        </span>
+          <p className="margin-0">
+            <strong>Example:</strong>&nbsp;
+            <em>converting energy to power for 2016 (leap year):</em>
+            <br />
+            10,000 kWh ÷ 8,784 h = 1.14 kW
+          </p>
+        </Tooltip>
       </div>
 
       <div className="display-flex flex-align-baseline margin-top-1 width-full font-sans-3xs">

@@ -148,7 +148,9 @@ export function Tooltip(props: { id: string; children: ReactNode }) {
           ×
         </a>
 
-        <span className="font-sans-2xs line-height-sans-3">{children}</span>
+        <span className="font-sans-xs line-height-sans-5 text-base-darker">
+          {children}
+        </span>
       </span>
     </>
   );
