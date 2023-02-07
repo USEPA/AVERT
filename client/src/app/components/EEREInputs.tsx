@@ -220,7 +220,7 @@ function EEREInputsContent() {
                     <strong>Choose one:</strong>
                   </p>
 
-                  <div className="tablet:display-flex flex-align-end">
+                  <div className="tablet:display-flex">
                     <div className="flex-1 tablet:margin-right-2">
                       <EERETextInput
                         label={<>Reduce total annual generation by:</>}
@@ -300,7 +300,7 @@ function EEREInputsContent() {
                     <strong>Choose one:</strong>
                   </p>
 
-                  <div className="tablet:display-flex flex-align-start">
+                  <div className="tablet:display-flex">
                     <div className="flex-1 tablet:margin-right-2">
                       <EERETextInput
                         label={
@@ -404,7 +404,7 @@ function EEREInputsContent() {
                 </summary>
 
                 <section className="padding-top-0 padding-x-2 padding-bottom-105">
-                  <div className="tablet:display-flex flex-align-end">
+                  <div className="tablet:display-flex">
                     <div className="flex-1 tablet:margin-right-2">
                       <EERETextInput
                         label={<>Onshore wind total capacity:</>}
@@ -506,7 +506,7 @@ function EEREInputsContent() {
                 </summary>
 
                 <section className="padding-top-0 padding-x-2 padding-bottom-105">
-                  <div className="tablet:display-flex flex-align-end">
+                  <div className="tablet:display-flex">
                     <div className="flex-1 tablet:margin-right-2">
                       <EERETextInput
                         label={
@@ -602,7 +602,7 @@ function EEREInputsContent() {
                 <section className="padding-top-0 padding-x-2 padding-bottom-105">
                   <div className="grid-row">
                     <div className="desktop:grid-col-6">
-                      <div className="tablet:display-flex flex-align-end desktop:margin-right-2">
+                      <div className="tablet:display-flex desktop:margin-right-2">
                         <div className="flex-1 tablet:margin-right-2">
                           <EERETextInput
                             label={<>Light-duty battery EVs:</>}
@@ -637,7 +637,7 @@ function EEREInputsContent() {
                         </div>
                       </div>
 
-                      <div className="tablet:display-flex flex-align-end desktop:margin-right-2">
+                      <div className="tablet:display-flex desktop:margin-right-2">
                         <div className="flex-1 tablet:margin-right-2">
                           <EERETextInput
                             className="margin-top-1 tablet:margin-top-0 desktop:margin-top-1"
