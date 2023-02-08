@@ -13,17 +13,14 @@ function EquivalentHomesText(props: { hourlyEere: number[] }) {
    */
   const equivalentHomes = Math.round((totalLoadMwh / 12_146) * -1_000);
 
-  // TODO: determine which message to display for an increased load from EVs
-  if (totalLoadGwh < 0) return null;
-
   return (
     <p className="margin-top-2 text-base-dark">
-      This EE/RE profile will displace{' '}
-      <strong>{totalLoadGwh.toLocaleString()} GWh</strong> of regional fossil
-      fuel generation over the course of a year. For reference, this equals the
-      annual electricity consumed by{' '}
-      <strong>{equivalentHomes.toLocaleString()}</strong> average homes in the
-      United States.
+      This EE/RE profile will {totalLoadMwh < 0 ? 'displace' : 'add'}{' '}
+      <strong>{Math.abs(totalLoadGwh).toLocaleString()} GWh</strong> of regional
+      fossil fuel generation over the course of a year. For reference, this
+      equals the annual electricity consumed by{' '}
+      <strong>{Math.abs(equivalentHomes).toLocaleString()}</strong> average
+      homes in the United States.
     </p>
   );
 }
