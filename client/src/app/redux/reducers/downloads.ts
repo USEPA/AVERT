@@ -13,6 +13,7 @@ import { regions as regionsConfig, states as statesConfig } from 'app/config';
 import countyFips from 'app/data/county-fips.json';
 
 const emissionsFields = [
+  'Power Sector: Annual',
   'Power Sector: January',
   'Power Sector: February',
   'Power Sector: March',
@@ -25,18 +26,30 @@ const emissionsFields = [
   'Power Sector: October',
   'Power Sector: November',
   'Power Sector: December',
-  'Power Sector: Annual',
-  'Vehicles',
+  'Vehicles: Annual',
+  // 'Vehicles: January',
+  // 'Vehicles: February',
+  // 'Vehicles: March',
+  // 'Vehicles: April',
+  // 'Vehicles: May',
+  // 'Vehicles: June',
+  // 'Vehicles: July',
+  // 'Vehicles: August',
+  // 'Vehicles: September',
+  // 'Vehicles: October',
+  // 'Vehicles: November',
+  // 'Vehicles: December',
 ] as const;
 
 type Pollutant = 'SO2' | 'NOX' | 'CO2' | 'PM25' | 'VOCS' | 'NH3';
 
 type CountyData = {
-  Pollutant: Pollutant;
   'Aggregation level': string;
-  'FIPS Code': string | null;
   State: string | null;
   County: string | null;
+  'State FIPS Code': string | null;
+  'County FIPS Code': string | null;
+  Pollutant: Pollutant;
   'Unit of measure': 'percent' | 'emissions (tons)' | 'emissions (pounds)';
 } & {
   [field in typeof emissionsFields[number]]: number | null;
@@ -156,11 +169,12 @@ function formatCountyDownloadData(options: {
 
       if (emissionsFields) {
         array.push({
-          Pollutant: pollutant.toUpperCase() as Pollutant,
           'Aggregation level': 'All Affected Regions',
-          'FIPS Code': null,
           State: null,
           County: null,
+          'State FIPS Code': null,
+          'County FIPS Code': null,
+          Pollutant: pollutant.toUpperCase() as Pollutant,
           'Unit of measure': unit,
           ...emissionsFields,
         });
@@ -194,11 +208,12 @@ function formatCountyDownloadData(options: {
 
       if (emissionsFields) {
         array.push({
-          Pollutant: pollutant.toUpperCase() as Pollutant,
           'Aggregation level': `${regionsConfig[regionId as RegionId].name} Region`, // prettier-ignore
-          'FIPS Code': null,
           State: null,
           County: null,
+          'State FIPS Code': null,
+          'County FIPS Code': null,
+          Pollutant: pollutant.toUpperCase() as Pollutant,
           'Unit of measure': unit,
           ...emissionsFields,
         });
@@ -237,11 +252,12 @@ function formatCountyDownloadData(options: {
 
       if (emissionsFields) {
         array.push({
-          Pollutant: pollutant.toUpperCase() as Pollutant,
           'Aggregation level': 'State',
-          'FIPS Code': fipsCode ? fipsCode.substring(0, 2) : null,
           State: stateId,
           County: null,
+          'State FIPS Code': fipsCode ? fipsCode.substring(0, 2) : null,
+          'County FIPS Code': null,
+          Pollutant: pollutant.toUpperCase() as Pollutant,
           'Unit of measure': unit,
           ...emissionsFields,
         });
@@ -284,11 +300,12 @@ function formatCountyDownloadData(options: {
 
         if (emissionsFields) {
           array.push({
-            Pollutant: pollutant.toUpperCase() as Pollutant,
             'Aggregation level': 'County',
-            'FIPS Code': fipsCode,
             State: stateId,
             County: countyName.replace(/city/, '(City)'), // format 'city'
+            'State FIPS Code': null,
+            'County FIPS Code': fipsCode,
+            Pollutant: pollutant.toUpperCase() as Pollutant,
             'Unit of measure': unit,
             ...emissionsFields,
           });
@@ -353,6 +370,7 @@ function createEmissionsFields(options: {
   }
 
   const result = {
+    'Power Sector: Annual': null,
     'Power Sector: January': null,
     'Power Sector: February': null,
     'Power Sector: March': null,
@@ -365,8 +383,19 @@ function createEmissionsFields(options: {
     'Power Sector: October': null,
     'Power Sector: November': null,
     'Power Sector: December': null,
-    'Power Sector: Annual': null,
-    Vehicles: null,
+    'Vehicles: Annual': null,
+    // 'Vehicles: January': null,
+    // 'Vehicles: February': null,
+    // 'Vehicles: March': null,
+    // 'Vehicles: April': null,
+    // 'Vehicles: May': null,
+    // 'Vehicles: June': null,
+    // 'Vehicles: July': null,
+    // 'Vehicles: August': null,
+    // 'Vehicles: September': null,
+    // 'Vehicles: October': null,
+    // 'Vehicles: November': null,
+    // 'Vehicles: December': null,
   } as { [field in typeof emissionsFields[number]]: number | null };
 
   if (powerData) {
@@ -394,6 +423,8 @@ function createEmissionsFields(options: {
       {} as { [month: number]: number | null },
     );
 
+    result['Power Sector: Annual'] =
+      unit === 'percent' ? annualPercentChange : annualEmissionsChange;
     result['Power Sector: January'] = monthlyData[1];
     result['Power Sector: February'] = monthlyData[2];
     result['Power Sector: March'] = monthlyData[3];
@@ -406,12 +437,10 @@ function createEmissionsFields(options: {
     result['Power Sector: October'] = monthlyData[10];
     result['Power Sector: November'] = monthlyData[11];
     result['Power Sector: December'] = monthlyData[12];
-    result['Power Sector: Annual'] =
-      unit === 'percent' ? annualPercentChange : annualEmissionsChange;
   }
 
   if (vehicleData && unit !== 'percent') {
-    result['Vehicles'] = vehicleData;
+    result['Vehicles: Annual'] = vehicleData;
   }
 
   return result;
