@@ -32,11 +32,11 @@ const emissionsFields = [
 type Pollutant = 'SO2' | 'NOX' | 'CO2' | 'PM25' | 'VOCS' | 'NH3';
 
 type CountyData = {
-  Pollutant: Pollutant;
   'Aggregation level': string;
   'FIPS Code': string | null;
   State: string | null;
   County: string | null;
+  Pollutant: Pollutant;
   'Unit of measure': 'percent' | 'emissions (tons)' | 'emissions (pounds)';
 } & {
   [field in typeof emissionsFields[number]]: number | null;
@@ -156,11 +156,11 @@ function formatCountyDownloadData(options: {
 
       if (emissionsFields) {
         array.push({
-          Pollutant: pollutant.toUpperCase() as Pollutant,
           'Aggregation level': 'All Affected Regions',
           'FIPS Code': null,
           State: null,
           County: null,
+          Pollutant: pollutant.toUpperCase() as Pollutant,
           'Unit of measure': unit,
           ...emissionsFields,
         });
@@ -194,11 +194,11 @@ function formatCountyDownloadData(options: {
 
       if (emissionsFields) {
         array.push({
-          Pollutant: pollutant.toUpperCase() as Pollutant,
           'Aggregation level': `${regionsConfig[regionId as RegionId].name} Region`, // prettier-ignore
           'FIPS Code': null,
           State: null,
           County: null,
+          Pollutant: pollutant.toUpperCase() as Pollutant,
           'Unit of measure': unit,
           ...emissionsFields,
         });
@@ -237,11 +237,11 @@ function formatCountyDownloadData(options: {
 
       if (emissionsFields) {
         array.push({
-          Pollutant: pollutant.toUpperCase() as Pollutant,
           'Aggregation level': 'State',
           'FIPS Code': fipsCode ? fipsCode.substring(0, 2) : null,
           State: stateId,
           County: null,
+          Pollutant: pollutant.toUpperCase() as Pollutant,
           'Unit of measure': unit,
           ...emissionsFields,
         });
@@ -284,11 +284,11 @@ function formatCountyDownloadData(options: {
 
         if (emissionsFields) {
           array.push({
-            Pollutant: pollutant.toUpperCase() as Pollutant,
             'Aggregation level': 'County',
             'FIPS Code': fipsCode,
             State: stateId,
             County: countyName.replace(/city/, '(City)'), // format 'city'
+            Pollutant: pollutant.toUpperCase() as Pollutant,
             'Unit of measure': unit,
             ...emissionsFields,
           });
