@@ -621,7 +621,7 @@ function EEREInputsContent() {
 
                         <div className="flex-1 tablet:margin-left-2">
                           <EERETextInput
-                            className="margin-top-1"
+                            className="margin-top-1 tablet:margin-top-0"
                             label={<>Light-duty plug-in hybrid EVs:</>}
                             ariaLabel="TODO"
                             value={hybridEVs}
@@ -640,7 +640,7 @@ function EEREInputsContent() {
                       <div className="tablet:display-flex desktop:margin-right-2">
                         <div className="flex-1 tablet:margin-right-2">
                           <EERETextInput
-                            className="margin-top-1 tablet:margin-top-0 desktop:margin-top-1"
+                            className="margin-top-1"
                             label={<>Electric transit buses:</>}
                             ariaLabel="TODO"
                             value={transitBuses}
