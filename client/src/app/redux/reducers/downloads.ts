@@ -13,6 +13,7 @@ import { regions as regionsConfig, states as statesConfig } from 'app/config';
 import countyFips from 'app/data/county-fips.json';
 
 const emissionsFields = [
+  'Power Sector: Annual',
   'Power Sector: January',
   'Power Sector: February',
   'Power Sector: March',
@@ -25,7 +26,6 @@ const emissionsFields = [
   'Power Sector: October',
   'Power Sector: November',
   'Power Sector: December',
-  'Power Sector: Annual',
   'Vehicles',
 ] as const;
 
@@ -358,6 +358,7 @@ function createEmissionsFields(options: {
   }
 
   const result = {
+    'Power Sector: Annual': null,
     'Power Sector: January': null,
     'Power Sector: February': null,
     'Power Sector: March': null,
@@ -370,7 +371,6 @@ function createEmissionsFields(options: {
     'Power Sector: October': null,
     'Power Sector: November': null,
     'Power Sector: December': null,
-    'Power Sector: Annual': null,
     Vehicles: null,
   } as { [field in typeof emissionsFields[number]]: number | null };
 
@@ -399,6 +399,8 @@ function createEmissionsFields(options: {
       {} as { [month: number]: number | null },
     );
 
+    result['Power Sector: Annual'] =
+      unit === 'percent' ? annualPercentChange : annualEmissionsChange;
     result['Power Sector: January'] = monthlyData[1];
     result['Power Sector: February'] = monthlyData[2];
     result['Power Sector: March'] = monthlyData[3];
@@ -411,8 +413,6 @@ function createEmissionsFields(options: {
     result['Power Sector: October'] = monthlyData[10];
     result['Power Sector: November'] = monthlyData[11];
     result['Power Sector: December'] = monthlyData[12];
-    result['Power Sector: Annual'] =
-      unit === 'percent' ? annualPercentChange : annualEmissionsChange;
   }
 
   if (vehicleData && unit !== 'percent') {
