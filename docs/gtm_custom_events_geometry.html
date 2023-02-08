@@ -19,9 +19,11 @@
     }
 
     regionStateSelect.addEventListener("change", function (ev) {
+      var value = ev.target.options[ev.target.selectedIndex].value;
+
       window.dataLayer.push({
         event: "geographyRegionStateSelected",
-        geographyRegionState: ev.target.options[ev.target.selectedIndex].value,
+        geographyRegionState: value,
         geographyRegionCounty: undefined,
         geographyRegion: undefined,
         geographyState: undefined,
@@ -29,10 +31,14 @@
     });
 
     regionCountySelect.addEventListener("change", function (ev) {
+      var state = regionStateSelect.options[regionStateSelect.selectedIndex].value; // prettier-ignore
+      var county = ev.target.options[ev.target.selectedIndex].value;
+      var value = state && county ? county + ", " + state : county;
+
       window.dataLayer.push({
         event: "geographyRegionCountySelected",
         geographyRegionState: undefined,
-        geographyRegionCounty: ev.target.options[ev.target.selectedIndex].value,
+        geographyRegionCounty: value,
         geographyRegion: undefined,
         geographyState: undefined,
       });
@@ -43,32 +49,38 @@
     });
 
     regionSelect.addEventListener("change", function (ev) {
+      var value = ev.target.options[ev.target.selectedIndex].value;
+
       window.dataLayer.push({
         event: "geographyRegionSelected",
         geographyRegionState: undefined,
         geographyRegionCounty: undefined,
-        geographyRegion: ev.target.options[ev.target.selectedIndex].value,
+        geographyRegion: value,
         geographyState: undefined,
       });
     });
 
     stateSelect.addEventListener("change", function (ev) {
+      var value = ev.target.options[ev.target.selectedIndex].value;
+
       window.dataLayer.push({
         event: "geographyStateSelected",
         geographyRegionState: undefined,
         geographyRegionCounty: undefined,
         geographyRegion: undefined,
-        geographyState: ev.target.options[ev.target.selectedIndex].value,
+        geographyState: value,
       });
     });
 
     regionMap.addEventListener("click", function (ev) {
       if (ev.target.parentNode.hasAttribute("data-region")) {
+        var value = ev.target.parentNode.getAttribute("data-region");
+
         window.dataLayer.push({
           event: "geographyRegionClicked",
           geographyRegionState: undefined,
           geographyRegionCounty: undefined,
-          geographyRegion: ev.target.parentNode.getAttribute("data-region"),
+          geographyRegion: value,
           geographyState: undefined,
         });
       }
@@ -76,12 +88,14 @@
 
     stateMap.addEventListener("click", function (ev) {
       if (ev.target.parentNode.hasAttribute("data-state")) {
+        var value = ev.target.parentNode.getAttribute("data-state");
+
         window.dataLayer.push({
           event: "geographyStateClicked",
           geographyRegionState: undefined,
           geographyRegionCounty: undefined,
           geographyRegion: undefined,
-          geographyState: ev.target.parentNode.getAttribute("data-state"),
+          geographyState: value,
         });
       }
     });
