@@ -26,7 +26,7 @@ const emissionsFields = [
   'Power Sector: October',
   'Power Sector: November',
   'Power Sector: December',
-  'Vehicles',
+  'Vehicles: Annual',
 ] as const;
 
 type Pollutant = 'SO2' | 'NOX' | 'CO2' | 'PM25' | 'VOCS' | 'NH3';
@@ -371,7 +371,7 @@ function createEmissionsFields(options: {
     'Power Sector: October': null,
     'Power Sector: November': null,
     'Power Sector: December': null,
-    Vehicles: null,
+    'Vehicles: Annual': null,
   } as { [field in typeof emissionsFields[number]]: number | null };
 
   if (powerData) {
@@ -416,7 +416,7 @@ function createEmissionsFields(options: {
   }
 
   if (vehicleData && unit !== 'percent') {
-    result['Vehicles'] = vehicleData;
+    result['Vehicles: Annual'] = vehicleData;
   }
 
   return result;
