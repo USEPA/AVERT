@@ -663,7 +663,7 @@ function MonthlyEmissionsChartsContent() {
                       onChange={(_ev) => {
                         dispatch(setMonthlyEmissionsAggregation('region'));
                       }}
-                      data-avert-aggregation-toggle="region"
+                      data-avert-monthly-aggregation="region"
                     />
 
                     <label
@@ -699,7 +699,7 @@ function MonthlyEmissionsChartsContent() {
                           dispatch(setMonthlyEmissionsStateId(currentStateId));
                         }
                       }}
-                      data-avert-aggregation-toggle="state"
+                      data-avert-monthly-aggregation="state"
                     />
 
                     <label
@@ -737,7 +737,7 @@ function MonthlyEmissionsChartsContent() {
                           );
                         }
                       }}
-                      data-avert-aggregation-toggle="county"
+                      data-avert-monthly-aggregation="county"
                     />
 
                     <label
@@ -750,7 +750,7 @@ function MonthlyEmissionsChartsContent() {
                 </div>
               </div>
 
-              <div data-avert-geography-selects>
+              <div data-avert-monthly-geography-selects>
                 {geographicFocus === 'states' &&
                   currentAggregation === 'region' &&
                   selectedStateRegions.length > 1 && (
@@ -765,7 +765,7 @@ function MonthlyEmissionsChartsContent() {
                       onChange={(ev) => {
                         dispatch(setMonthlyEmissionsRegionId(ev.target.value));
                       }}
-                      data-avert-geography-select="region"
+                      data-avert-monthly-geography="region"
                     >
                       <option value="" disabled>
                         Select Region(s)
@@ -795,7 +795,7 @@ function MonthlyEmissionsChartsContent() {
                       onChange={(ev) =>
                         dispatch(setMonthlyEmissionsStateId(ev.target.value))
                       }
-                      data-avert-geography-select="state"
+                      data-avert-monthly-geography="state"
                     >
                       <option value="" disabled>
                         Select State
@@ -820,7 +820,7 @@ function MonthlyEmissionsChartsContent() {
                         onChange={(ev) => {
                           dispatch(setMonthlyEmissionsCountyName(ev.target.value)); // prettier-ignore
                         }}
-                        data-avert-geography-select="county"
+                        data-avert-monthly-geography="county"
                       >
                         <option value="" disabled>
                           Select County
@@ -846,7 +846,10 @@ function MonthlyEmissionsChartsContent() {
                 Select pollutants:
               </p>
 
-              <div className="display-flex mobile-lg:display-block">
+              <div
+                className="display-flex mobile-lg:display-block"
+                data-avert-monthly-pollutants
+              >
                 <div className="flex-1 mobile-lg:display-flex">
                   <div className="flex-1 mobile-lg:margin-right-1">
                     <div className="usa-checkbox">
@@ -860,7 +863,6 @@ function MonthlyEmissionsChartsContent() {
                         onChange={(_ev) => {
                           dispatch(setMonthlyEmissionsPollutant('so2'));
                         }}
-                        data-avert-pollutants-checkbox="so2"
                       />
                       <label
                         className="usa-checkbox__label"
@@ -883,7 +885,6 @@ function MonthlyEmissionsChartsContent() {
                         onChange={(_ev) => {
                           dispatch(setMonthlyEmissionsPollutant('nox'));
                         }}
-                        data-avert-pollutants-checkbox="nox"
                       />
                       <label
                         className="usa-checkbox__label"
@@ -906,7 +907,6 @@ function MonthlyEmissionsChartsContent() {
                         onChange={(_ev) => {
                           dispatch(setMonthlyEmissionsPollutant('co2'));
                         }}
-                        data-avert-pollutants-checkbox="co2"
                       />
                       <label
                         className="usa-checkbox__label"
@@ -931,7 +931,6 @@ function MonthlyEmissionsChartsContent() {
                         onChange={(_ev) => {
                           dispatch(setMonthlyEmissionsPollutant('pm25'));
                         }}
-                        data-avert-pollutants-checkbox="pm25"
                       />
                       <label
                         className="usa-checkbox__label"
@@ -954,7 +953,6 @@ function MonthlyEmissionsChartsContent() {
                         onChange={(_ev) => {
                           dispatch(setMonthlyEmissionsPollutant('vocs'));
                         }}
-                        data-avert-pollutants-checkbox="vocs"
                       />
                       <label
                         className="usa-checkbox__label"
@@ -977,7 +975,6 @@ function MonthlyEmissionsChartsContent() {
                         onChange={(_ev) => {
                           dispatch(setMonthlyEmissionsPollutant('nh3'));
                         }}
-                        data-avert-pollutants-checkbox="nh3"
                       />
                       <label
                         className="usa-checkbox__label"
@@ -998,7 +995,10 @@ function MonthlyEmissionsChartsContent() {
                 Select emissions sources:
               </p>
 
-              <div className="mobile-lg:display-flex">
+              <div
+                className="mobile-lg:display-flex"
+                data-avert-monthly-sources
+              >
                 <div className="flex-1 mobile-lg:margin-right-1">
                   <div className="usa-checkbox">
                     <input
@@ -1011,7 +1011,6 @@ function MonthlyEmissionsChartsContent() {
                       onChange={(_ev) => {
                         dispatch(setMonthlyEmissionsSource('power'));
                       }}
-                      data-avert-source-checkbox="power"
                     />
                     <label
                       className="usa-checkbox__label"
@@ -1038,7 +1037,6 @@ function MonthlyEmissionsChartsContent() {
                       onChange={(_ev) => {
                         dispatch(setMonthlyEmissionsSource('vehicles'));
                       }}
-                      data-avert-source-checkbox="vehicles"
                     />
 
                     <label
@@ -1079,7 +1077,7 @@ function MonthlyEmissionsChartsContent() {
                       onChange={(_ev) => {
                         dispatch(setMonthlyEmissionsUnit('emissions'));
                       }}
-                      data-avert-unit-toggle="emissions"
+                      data-avert-monthly-unit="emissions"
                     />
 
                     <label
@@ -1104,7 +1102,7 @@ function MonthlyEmissionsChartsContent() {
                       onChange={(_ev) => {
                         dispatch(setMonthlyEmissionsUnit('percentages'));
                       }}
-                      data-avert-unit-toggle="percentages"
+                      data-avert-monthly-unit="percentages"
                     />
 
                     <label
