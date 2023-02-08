@@ -1,19 +1,26 @@
 <script>
-  (function() {
-    var regionAggregationToggle = document.querySelector('[data-avert-aggregation-toggle="region"]');
-    var stateAggregationToggle = document.querySelector('[data-avert-aggregation-toggle="state"]');
-    var countyAggregationToggle = document.querySelector('[data-avert-aggregation-toggle="county"]');
-    var emissionsUnitToggle = document.querySelector('[data-avert-unit-toggle="emissions"]');
-    var percentagesUnitToggle = document.querySelector('[data-avert-unit-toggle="percentages"]');
-    var geographySelects = document.querySelector('[data-avert-geography-selects]');
+  (function () {
+    var regionAggregationRadio = document.querySelector("[data-avert-monthly-aggregation='region']"); // prettier-ignore
+    var stateAggregationRadio = document.querySelector("[data-avert-monthly-aggregation='state']"); // prettier-ignore
+    var countyAggregationRadio = document.querySelector("[data-avert-monthly-aggregation='county']"); // prettier-ignore
+    var geographySelects = document.querySelector("[data-avert-monthly-geography-selects]"); // prettier-ignore
+
+    var pollutantsCheckboxes = document.querySelector("[data-avert-monthly-pollutants]"); // prettier-ignore
+
+    var sourcesCheckboxes = document.querySelector("[data-avert-monthly-sources]"); // prettier-ignore
+
+    var emissionsUnitRadio = document.querySelector("[data-avert-monthly-unit='emissions']"); // prettier-ignore
+    var percentagesUnitRadio = document.querySelector("[data-avert-monthly-unit='percentages']"); // prettier-ignore
 
     if (
-      !regionAggregationToggle ||
-      !stateAggregationToggle ||
-      !countyAggregationToggle ||
-      !emissionsUnitToggle ||
-      !percentagesUnitToggle ||
-      !geographySelects
+      !regionAggregationRadio ||
+      !stateAggregationRadio ||
+      !countyAggregationRadio ||
+      !geographySelects ||
+      !pollutantsCheckboxes ||
+      !sourcesCheckboxes ||
+      !emissionsUnitRadio ||
+      !percentagesUnitRadio
     ) {
       return;
     }
@@ -21,54 +28,77 @@
     /** @param {Event} ev */
     function captureAggrigationChange(ev) {
       window.dataLayer.push({
-        event: 'emissionAggregationChanged',
-        emissionAggregation: ev.target.value,
+        event: "monthlyEmissionAggregationChanged",
+        monthlyEmissionAggregation: ev.target.value,
       });
     }
+
+    regionAggregationRadio.addEventListener("change", captureAggrigationChange);
+    stateAggregationRadio.addEventListener("change", captureAggrigationChange);
+    countyAggregationRadio.addEventListener("change", captureAggrigationChange);
+
+    geographySelects.addEventListener("change", function (ev) {
+      var select = ev.target.dataset.avertMonthlyGeography;
+
+      if (select === "region" && regionAggregationRadio.checked) {
+        window.dataLayer.push({
+          event: "monthlyEmissionRegionChanged",
+          monthlyEmissionRegion: ev.target.value,
+        });
+      }
+
+      if (select === "state" && stateAggregationRadio.checked) {
+        window.dataLayer.push({
+          event: "monthlyEmissionStateChanged",
+          monthlyEmissionState: ev.target.value,
+        });
+      }
+
+      if (select === "county" && countyAggregationRadio.checked) {
+        var state = geographySelects.querySelector("[data-avert-monthly-geography='state']"); // prettier-ignore
+        var value =
+          state && state.value
+            ? ev.target.value + ", " + state.value
+            : ev.target.value;
+
+        window.dataLayer.push({
+          event: "monthlyEmissionCountyChanged",
+          monthlyEmissionCounty: value,
+        });
+      }
+    });
+
+    pollutantsCheckboxes.addEventListener("change", function (ev) {
+      if (ev.target.checked) {
+        var value = ev.target.value;
+
+        window.dataLayer.push({
+          event: "monthlyEmissionPollutantDisplayed",
+          monthlyEmissionPollutant: value,
+        });
+      }
+    });
+
+    sourcesCheckboxes.addEventListener("change", function (ev) {
+      if (ev.target.checked) {
+        var value = ev.target.value;
+
+        window.dataLayer.push({
+          event: "monthlyEmissionSourceDisplayed",
+          monthlyEmissionSource: value,
+        });
+      }
+    });
 
     /** @param {Event} ev */
     function captureUnitChange(ev) {
       window.dataLayer.push({
-        event: 'emissionUnitsChanged',
-        emissionUnits: ev.target.value,
+        event: "monthlyEmissionUnitsChanged",
+        monthlyEmissionUnits: ev.target.value,
       });
     }
 
-    regionAggregationToggle.addEventListener('change', captureAggrigationChange, false);
-    stateAggregationToggle.addEventListener('change', captureAggrigationChange, false);
-    countyAggregationToggle.addEventListener('change', captureAggrigationChange, false);
-
-    emissionsUnitToggle.addEventListener('change', captureUnitChange, false);
-    percentagesUnitToggle.addEventListener('change', captureUnitChange, false);
-
-    geographySelects.addEventListener('change', function(ev) {
-      var select = ev.target.dataset.avertGeographySelect;
-
-      if (select === 'region' && regionAggregationToggle.checked) {
-        window.dataLayer.push({
-          event: 'emissionRegionChanged',
-          emissionRegion: ev.target.value,
-        });
-      }
-
-      if (select === 'state' && stateAggregationToggle.checked) {
-        window.dataLayer.push({
-          event: 'emissionStateChanged',
-          emissionState: ev.target.value,
-        });
-      }
-
-      if (select === 'county' && countyAggregationToggle.checked) {
-        var stateSelect = geographySelects.querySelector('[data-avert-geography-select="state"]');
-        var countyAndState = stateSelect && stateSelect.value
-          ? ev.target.value + ', ' + stateSelect.value
-          : ev.target.value;
-
-        window.dataLayer.push({
-          event: 'emissionCountyChanged',
-          emissionCounty: countyAndState,
-        });
-      }
-    }, false);
+    emissionsUnitRadio.addEventListener("change", captureUnitChange);
+    percentagesUnitRadio.addEventListener("change", captureUnitChange);
   })();
 </script>
