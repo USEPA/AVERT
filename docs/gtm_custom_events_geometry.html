@@ -1,80 +1,103 @@
 <script>
-  (function() {
-    var regionSelect = document.querySelector('[data-avert-region-select]');
-    var stateSelect = document.querySelector('[data-avert-state-select]');
-    var regionMap = document.querySelector('[data-avert-region-map]');
-    var stateMap = document.querySelector('[data-avert-state-map]');
+  (function () {
+    var regionStateSelect = document.querySelector("[data-avert-region-state-select]"); // prettier-ignore
+    var regionCountySelect = document.querySelector("[data-avert-region-county-select]"); // prettier-ignore
+    var regionSelect = document.querySelector("[data-avert-region-select]");
+    var stateSelect = document.querySelector("[data-avert-state-select]");
+    var regionMap = document.querySelector("[data-avert-region-map]");
+    var stateMap = document.querySelector("[data-avert-state-map]");
 
-    if (!regionSelect || !stateSelect || !regionMap || !stateMap) return;
-
-    /**
-     * @param {'region'|'state'} geography
-     * @param {HTMLSelectElement} selectEl
-    */
-    function captureSelectedGeography(geography, selectEl) {
-      if (geography === 'region') {
-        window.dataLayer.push({
-          event: 'regionSelected',
-          selectedRegion: selectEl.options[selectEl.selectedIndex].value,
-          selectedState: undefined,
-          clickedRegion: undefined,
-          clickedState: undefined,
-        });
-      }
-
-      if (geography === 'state') {
-        window.dataLayer.push({
-          event: 'stateSelected',
-          selectedRegion: undefined,
-          selectedState: selectEl.options[selectEl.selectedIndex].value,
-          clickedRegion: undefined,
-          clickedState: undefined,
-        });
-      }
-    };
-
-    /**
-     * @param {'region'|'state'} geography
-     * @param {SVGSVGElement} svgEl
-    */
-    function captureClickedGeography(geography, svgEl) {
-      if (geography === 'region') {
-        if (!svgEl.parentNode.hasAttribute('data-region')) return;
-        window.dataLayer.push({
-          event: 'regionClicked',
-          selectedRegion: undefined,
-          selectedState: undefined,
-          clickedRegion: svgEl.parentNode.getAttribute('data-region'),
-          clickedState: undefined,
-        });
-      }
-
-      if (geography === 'state') {
-        if (!svgEl.parentNode.hasAttribute('data-state')) return;
-        window.dataLayer.push({
-          event: 'stateClicked',
-          selectedRegion: undefined,
-          selectedState: undefined,
-          clickedRegion: undefined,
-          clickedState: svgEl.parentNode.getAttribute('data-state'),
-        });
-      }
+    if (
+      !regionStateSelect ||
+      !regionCountySelect ||
+      !regionSelect ||
+      !stateSelect ||
+      !regionMap ||
+      !stateMap
+    ) {
+      return;
     }
 
-    regionSelect.addEventListener('change', function(ev) {
-      captureSelectedGeography('region', ev.target);
-    }, false);
+    regionStateSelect.addEventListener("change", function (ev) {
+      var value = ev.target.options[ev.target.selectedIndex].value;
 
-    stateSelect.addEventListener('change', function(ev) {
-      captureSelectedGeography('state', ev.target);
-    }, false);
+      window.dataLayer.push({
+        event: "geographyRegionStateSelected",
+        geographyRegionState: value,
+        geographyRegionCounty: undefined,
+        geographyRegion: undefined,
+        geographyState: undefined,
+      });
+    });
 
-    regionMap.addEventListener('click', function(ev) {
-      captureClickedGeography('region', ev.target);
-    }, false);
+    regionCountySelect.addEventListener("change", function (ev) {
+      var state = regionStateSelect.options[regionStateSelect.selectedIndex].value; // prettier-ignore
+      var county = ev.target.options[ev.target.selectedIndex].value;
+      var value = state && county ? county + ", " + state : county;
 
-    stateMap.addEventListener('click', function(ev) {
-      captureClickedGeography('state', ev.target);
-    }, false);
+      window.dataLayer.push({
+        event: "geographyRegionCountySelected",
+        geographyRegionState: undefined,
+        geographyRegionCounty: value,
+        geographyRegion: undefined,
+        geographyState: undefined,
+      });
+
+      setTimeout(function () {
+        regionSelect.dispatchEvent(new Event("change"));
+      }, 100);
+    });
+
+    regionSelect.addEventListener("change", function (ev) {
+      var value = ev.target.options[ev.target.selectedIndex].value;
+
+      window.dataLayer.push({
+        event: "geographyRegionSelected",
+        geographyRegionState: undefined,
+        geographyRegionCounty: undefined,
+        geographyRegion: value,
+        geographyState: undefined,
+      });
+    });
+
+    stateSelect.addEventListener("change", function (ev) {
+      var value = ev.target.options[ev.target.selectedIndex].value;
+
+      window.dataLayer.push({
+        event: "geographyStateSelected",
+        geographyRegionState: undefined,
+        geographyRegionCounty: undefined,
+        geographyRegion: undefined,
+        geographyState: value,
+      });
+    });
+
+    regionMap.addEventListener("click", function (ev) {
+      if (ev.target.parentNode.hasAttribute("data-region")) {
+        var value = ev.target.parentNode.getAttribute("data-region");
+
+        window.dataLayer.push({
+          event: "geographyRegionClicked",
+          geographyRegionState: undefined,
+          geographyRegionCounty: undefined,
+          geographyRegion: value,
+          geographyState: undefined,
+        });
+      }
+    });
+
+    stateMap.addEventListener("click", function (ev) {
+      if (ev.target.parentNode.hasAttribute("data-state")) {
+        var value = ev.target.parentNode.getAttribute("data-state");
+
+        window.dataLayer.push({
+          event: "geographyStateClicked",
+          geographyRegionState: undefined,
+          geographyRegionCounty: undefined,
+          geographyRegion: undefined,
+          geographyState: value,
+        });
+      }
+    });
   })();
 </script>
