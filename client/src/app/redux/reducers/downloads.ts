@@ -27,6 +27,18 @@ const emissionsFields = [
   'Power Sector: November',
   'Power Sector: December',
   'Vehicles: Annual',
+  // 'Vehicles: January',
+  // 'Vehicles: February',
+  // 'Vehicles: March',
+  // 'Vehicles: April',
+  // 'Vehicles: May',
+  // 'Vehicles: June',
+  // 'Vehicles: July',
+  // 'Vehicles: August',
+  // 'Vehicles: September',
+  // 'Vehicles: October',
+  // 'Vehicles: November',
+  // 'Vehicles: December',
 ] as const;
 
 type Pollutant = 'SO2' | 'NOX' | 'CO2' | 'PM25' | 'VOCS' | 'NH3';
@@ -372,6 +384,18 @@ function createEmissionsFields(options: {
     'Power Sector: November': null,
     'Power Sector: December': null,
     'Vehicles: Annual': null,
+    // 'Vehicles: January': null,
+    // 'Vehicles: February': null,
+    // 'Vehicles: March': null,
+    // 'Vehicles: April': null,
+    // 'Vehicles: May': null,
+    // 'Vehicles: June': null,
+    // 'Vehicles: July': null,
+    // 'Vehicles: August': null,
+    // 'Vehicles: September': null,
+    // 'Vehicles: October': null,
+    // 'Vehicles: November': null,
+    // 'Vehicles: December': null,
   } as { [field in typeof emissionsFields[number]]: number | null };
 
   if (powerData) {
