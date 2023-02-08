@@ -14,17 +14,22 @@
      * might not yet exist in the DOM.
      */
     var eereInputs = inputsContainer.getElementsByTagName("input");
+    var eereSelects = inputsContainer.getElementsByTagName("select");
 
     function captureEereImpacts() {
-      var eereImpacts = {};
+      var inputs = {};
+
+      Array.from(eereSelects).forEach(function (select) {
+        inputs[select.dataset.avertEereInput] = select.value;
+      });
 
       Array.from(eereInputs).forEach(function (input) {
-        eereImpacts[input.dataset.avertEereInput] = input.value;
+        inputs[input.dataset.avertEereInput] = input.value;
       });
 
       window.dataLayer.push({
         event: "eereImpactsCalculated",
-        eereImpacts: JSON.stringify(eereImpacts),
+        eereImpacts: JSON.stringify(inputs),
       });
     }
 
