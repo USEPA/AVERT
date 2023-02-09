@@ -9,6 +9,7 @@ import type {
   HourlyEVChargingPercentages,
   MonthlyDailyEVEnergyUsage,
 } from 'app/calculations/transportation';
+import type { RegionId } from 'app/config';
 
 export type HourlyRenewableEnergyProfile = ReturnType<
   typeof calculateHourlyRenewableEnergyProfile
@@ -21,6 +22,9 @@ export type HourlyTopPercentReduction = ReturnType<
   typeof calculateHourlyTopPercentReduction
 >;
 export type HourlyImpacts = ReturnType<typeof calculateHourlyImpacts>;
+export type HourlyImpactsValidation = ReturnType<
+  typeof calculateHourlyImpactsValidation
+>;
 
 /**
  * Excel: Data in column H of the "CalculateEERE" sheet (H5:H8788).
@@ -227,6 +231,59 @@ export function calculateHourlyImpacts(options: {
       };
     },
   );
+
+  return result;
+}
+
+/**
+ * Determines if the regional hourly impacts exceeds the upper or lower limits:
+ * - upper limit error > 10%
+ * - lower limit warning < 15%
+ * - lower limit error < 30%
+ */
+export function calculateHourlyImpactsValidation(
+  regionalHourlyImpacts: Partial<{ [key in RegionId]: HourlyImpacts }>,
+) {
+  const result = {
+    upperError: null,
+    lowerWarning: null,
+    lowerError: null,
+  } as {
+    upperError: null | { hour: number; percentChange: number };
+    lowerWarning: null | { hour: number; percentChange: number };
+    lowerError: null | { hour: number; percentChange: number };
+  };
+
+  Object.values(regionalHourlyImpacts).forEach((regionHourlyImpacts) => {
+    Object.entries(regionHourlyImpacts).forEach(([key, value]) => {
+      const hour = Number(key);
+      const { percentChange } = value;
+
+      if (percentChange > 10) {
+        result.upperError ??= { hour, percentChange };
+
+        if (percentChange < result.upperError.percentChange) {
+          result.upperError = { hour, percentChange };
+        }
+      }
+
+      if (percentChange < -15 && percentChange >= -30) {
+        result.lowerWarning ??= { hour, percentChange };
+
+        if (percentChange < result.lowerWarning.percentChange) {
+          result.lowerWarning = { hour, percentChange };
+        }
+      }
+
+      if (percentChange < -30) {
+        result.lowerError ??= { hour, percentChange };
+
+        if (percentChange < result.lowerError.percentChange) {
+          result.lowerError = { hour, percentChange };
+        }
+      }
+    });
+  });
 
   return result;
 }

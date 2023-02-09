@@ -12,13 +12,17 @@ import {
   setVehicleSalesAndStock,
   setEVDeploymentLocationHistoricalEERE,
 } from 'app/redux/reducers/transportation';
-import type { HourlyImpacts } from 'app/calculations/eere';
+import type {
+  HourlyImpacts,
+  HourlyImpactsValidation,
+} from 'app/calculations/eere';
 import {
   calculateHourlyRenewableEnergyProfile,
   calculateHourlyEVLoad,
   calculateTopPercentGeneration,
   calculateHourlyTopPercentReduction,
   calculateHourlyImpacts,
+  calculateHourlyImpactsValidation,
 } from 'app/calculations/eere';
 import { calculateEere } from 'app/calculations';
 import type { RegionId, StateId } from 'app/config';
@@ -163,6 +167,10 @@ type EereAction =
       payload: { totalHourlyImpacts: { [hour: number]: number } };
     }
   | {
+      type: 'eere/SET_HOURLY_IMPACTS_VALIDATION';
+      payload: { hourlyImpactsValidation: HourlyImpactsValidation };
+    }
+  | {
       type: 'eere/CALCULATE_REGIONAL_EERE_PROFILE';
       payload: RegionalProfile;
     }
@@ -218,6 +226,7 @@ type EereState = {
   profileCalculationInputs: EEREInputs;
   regionalHourlyImpacts: Partial<{ [key in RegionId]: HourlyImpacts }>;
   totalHourlyImpacts: { [hour: number]: number };
+  hourlyImpactsValidation: HourlyImpactsValidation;
   regionalProfiles: Partial<{ [key in RegionId]: RegionalProfile }>;
   combinedProfile: CombinedProfile;
 };
@@ -274,6 +283,11 @@ const initialState: EereState = {
   profileCalculationInputs: initialEEREInputs,
   regionalHourlyImpacts: {},
   totalHourlyImpacts: {},
+  hourlyImpactsValidation: {
+    upperError: null,
+    lowerWarning: null,
+    lowerError: null,
+  },
   regionalProfiles: {},
   combinedProfile: {
     hourlyEere: [],
@@ -614,6 +628,15 @@ export default function reducer(
       return {
         ...state,
         totalHourlyImpacts,
+      };
+    }
+
+    case 'eere/SET_HOURLY_IMPACTS_VALIDATION': {
+      const { hourlyImpactsValidation } = action.payload;
+
+      return {
+        ...state,
+        hourlyImpactsValidation,
       };
     }
 
@@ -1196,6 +1219,15 @@ export function calculateEereProfile(): AppThunk {
     dispatch({
       type: 'eere/SET_TOTAL_HOURLY_IMPACTS',
       payload: { totalHourlyImpacts },
+    });
+
+    const hourlyImpactsValidation = calculateHourlyImpactsValidation(
+      regionalHourlyImpacts,
+    );
+
+    dispatch({
+      type: 'eere/SET_HOURLY_IMPACTS_VALIDATION',
+      payload: { hourlyImpactsValidation },
     });
 
     // construct an object of properties from selectedRegionalProfiles, so we
