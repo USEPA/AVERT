@@ -15,8 +15,8 @@ function EEREChartContent() {
   const eereProfileCalculationInputs = useTypedSelector(
     ({ eere }) => eere.profileCalculationInputs,
   );
-  const hourlyEere = useTypedSelector(
-    ({ eere }) => eere.combinedProfile.hourlyEere,
+  const totalHourlyImpacts = useTypedSelector(
+    ({ eere }) => eere.totalHourlyImpacts,
   );
 
   /**
@@ -42,7 +42,7 @@ function EEREChartContent() {
 
   const year = rdfYear || new Date().getFullYear();
 
-  const hourlyData = hourlyEere.map((eere, hour) => {
+  const hourlyData = Object.values(totalHourlyImpacts).map((eere, hour) => {
     const firstHourOfYear = Date.UTC(year, 0, 1);
     const hourlyMs = hour * 60 * 60 * 1_000;
     return [new Date().setTime(firstHourOfYear + hourlyMs), eere];
@@ -111,7 +111,7 @@ function EEREChartContent() {
 
   return (
     <div data-avert-chart>
-      {hourlyEere?.length > 0 && (
+      {Object.keys(totalHourlyImpacts)?.length > 0 && (
         <>
           <h3 className="margin-0 font-sans-md line-height-sans-2 text-base-darker text-center">
             EE/RE profile based on values entered:&nbsp;

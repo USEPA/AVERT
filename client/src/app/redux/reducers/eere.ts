@@ -152,11 +152,15 @@ type EereAction =
       payload: { profileCalculationInputs: EEREInputs };
     }
   | {
-      type: 'eere/CALCULATE_REGIONAL_HOURLY_IMPACTS';
+      type: 'eere/SET_REGIONAL_HOURLY_IMPACTS';
       payload: {
         regionId: RegionId;
         hourlyImpacts: HourlyImpacts;
       };
+    }
+  | {
+      type: 'eere/SET_TOTAL_HOURLY_IMPACTS';
+      payload: { totalHourlyImpacts: { [hour: number]: number } };
     }
   | {
       type: 'eere/CALCULATE_REGIONAL_EERE_PROFILE';
@@ -213,6 +217,7 @@ type EereState = {
   profileCalculationStatus: 'idle' | 'pending' | 'success';
   profileCalculationInputs: EEREInputs;
   regionalHourlyImpacts: Partial<{ [key in RegionId]: HourlyImpacts }>;
+  totalHourlyImpacts: { [hour: number]: number };
   regionalProfiles: Partial<{ [key in RegionId]: RegionalProfile }>;
   combinedProfile: CombinedProfile;
 };
@@ -268,6 +273,7 @@ const initialState: EereState = {
   profileCalculationStatus: 'idle',
   profileCalculationInputs: initialEEREInputs,
   regionalHourlyImpacts: {},
+  totalHourlyImpacts: {},
   regionalProfiles: {},
   combinedProfile: {
     hourlyEere: [],
@@ -590,7 +596,7 @@ export default function reducer(
       };
     }
 
-    case 'eere/CALCULATE_REGIONAL_HOURLY_IMPACTS': {
+    case 'eere/SET_REGIONAL_HOURLY_IMPACTS': {
       const { regionId, hourlyImpacts } = action.payload;
 
       return {
@@ -599,6 +605,15 @@ export default function reducer(
           ...state.regionalHourlyImpacts,
           [regionId]: hourlyImpacts,
         },
+      };
+    }
+
+    case 'eere/SET_TOTAL_HOURLY_IMPACTS': {
+      const { totalHourlyImpacts } = action.payload;
+
+      return {
+        ...state,
+        totalHourlyImpacts,
       };
     }
 
@@ -991,9 +1006,15 @@ export function calculateEereProfile(): AppThunk {
       payload: { profileCalculationInputs: inputs },
     });
 
-    // selected regional profiles are stored individually to pass to the
-    // displacements calculation, and also combined for all selected regions to
-    // create the eere profile chart and show validation warning/error message
+    /**
+     * NOTE: selected regional profiles are stored individually to pass to the
+     * displacements calculation, and also combined for all selected regions to
+     * create the eere profile chart and show validation warning/error message
+     */
+    const regionalHourlyImpacts = {} as Partial<{
+      [key in RegionId]: HourlyImpacts;
+    }>;
+
     const selectedRegionalProfiles: RegionalProfile[] = [];
 
     // build up total percentage of selected state in all selected regions that
@@ -1112,8 +1133,10 @@ export function calculateEereProfile(): AppThunk {
         constantMwh,
       });
 
+      regionalHourlyImpacts[region.id] = hourlyImpacts;
+
       dispatch({
-        type: 'eere/CALCULATE_REGIONAL_HOURLY_IMPACTS',
+        type: 'eere/SET_REGIONAL_HOURLY_IMPACTS',
         payload: {
           regionId: region.id,
           hourlyImpacts,
@@ -1155,6 +1178,24 @@ export function calculateEereProfile(): AppThunk {
         type: 'eere/CALCULATE_REGIONAL_EERE_PROFILE',
         payload: regionalProfile,
       });
+    });
+
+    const totalHourlyImpacts = Object.values(regionalHourlyImpacts).reduce(
+      (object, regionHourlyImpacts) => {
+        Object.entries(regionHourlyImpacts).forEach(([key, value]) => {
+          const hour = Number(key);
+          object[hour] ??= 0;
+          object[hour] += value.calculatedLoad;
+        });
+
+        return object;
+      },
+      {} as { [hour: number]: number },
+    );
+
+    dispatch({
+      type: 'eere/SET_TOTAL_HOURLY_IMPACTS',
+      payload: { totalHourlyImpacts },
     });
 
     // construct an object of properties from selectedRegionalProfiles, so we
