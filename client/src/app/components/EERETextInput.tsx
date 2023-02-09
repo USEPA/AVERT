@@ -36,8 +36,8 @@ export function EERETextInput(props: {
   } = props;
 
   const dispatch = useDispatch();
-  const eereProfileCalculationStatus = useTypedSelector(
-    ({ eere }) => eere.profileCalculationStatus,
+  const hourlyImpactsCalculationStatus = useTypedSelector(
+    ({ eere }) => eere.hourlyImpactsCalculationStatus,
   );
   const errors = useTypedSelector(({ eere }) => eere.errors);
 
@@ -47,7 +47,7 @@ export function EERETextInput(props: {
   const eereProfileCalculationDisabled =
     !inputsAreValid ||
     inputIsEmpty ||
-    eereProfileCalculationStatus === 'pending';
+    hourlyImpactsCalculationStatus === 'pending';
 
   return (
     <div className={className ? className : ''}>

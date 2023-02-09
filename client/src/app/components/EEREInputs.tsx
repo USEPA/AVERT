@@ -80,8 +80,8 @@ const inputsSummaryStyles = css`
 function EEREInputsContent() {
   const dispatch = useDispatch();
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const eereProfileCalculationStatus = useTypedSelector(
-    ({ eere }) => eere.profileCalculationStatus,
+  const hourlyImpactsCalculationStatus = useTypedSelector(
+    ({ eere }) => eere.hourlyImpactsCalculationStatus,
   );
   const errors = useTypedSelector(({ eere }) => eere.errors);
   const constantMwh = useTypedSelector(({ eere }) => eere.inputs.constantMwh);
@@ -158,7 +158,7 @@ function EEREInputsContent() {
   const eereProfileCalculationDisabled =
     !textInputsAreValid ||
     textInputsAreEmpty ||
-    eereProfileCalculationStatus === 'pending';
+    hourlyImpactsCalculationStatus === 'pending';
 
   const eereButtonOptions = {
     idle: 'Calculate EE/RE Impacts',
@@ -746,7 +746,7 @@ function EEREInputsContent() {
           }}
           data-avert-calculate-impacts-btn
         >
-          {eereButtonOptions[eereProfileCalculationStatus]}
+          {eereButtonOptions[hourlyImpactsCalculationStatus]}
         </a>
       </p>
     </>

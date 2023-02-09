@@ -12,8 +12,8 @@ require('highcharts/modules/accessibility')(Highcharts);
 function EEREChartContent() {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const eereInputs = useTypedSelector(({ eere }) => eere.inputs);
-  const eereProfileCalculationInputs = useTypedSelector(
-    ({ eere }) => eere.profileCalculationInputs,
+  const hourlyImpactsCalculationInputs = useTypedSelector(
+    ({ eere }) => eere.hourlyImpactsCalculationInputs,
   );
   const totalHourlyImpacts = useTypedSelector(
     ({ eere }) => eere.totalHourlyImpacts,
@@ -27,7 +27,7 @@ function EEREChartContent() {
     (field) => {
       return (
         eereInputs[field as keyof typeof eereInputs] ===
-        eereProfileCalculationInputs[field as keyof typeof eereProfileCalculationInputs] // prettier-ignore
+        hourlyImpactsCalculationInputs[field as keyof typeof hourlyImpactsCalculationInputs] // prettier-ignore
       );
     },
   );
