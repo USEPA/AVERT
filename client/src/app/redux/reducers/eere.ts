@@ -196,8 +196,10 @@ type EereState = {
   hourlyImpacts: {
     status: 'idle' | 'pending' | 'success';
     inputs: EEREInputs;
+    data: {
+      regions: Partial<{ [key in RegionId]: HourlyImpacts }>;
+    };
   };
-  regionalHourlyImpacts: Partial<{ [key in RegionId]: HourlyImpacts }>;
   totalHourlyImpacts: { [hour: number]: number };
   hourlyImpactsValidation: HourlyImpactsValidation;
 };
@@ -243,8 +245,10 @@ const initialState: EereState = {
   hourlyImpacts: {
     status: 'idle',
     inputs: initialEEREInputs,
+    data: {
+      regions: {},
+    },
   },
-  regionalHourlyImpacts: {},
   totalHourlyImpacts: {},
   hourlyImpactsValidation: {
     upperError: null,
@@ -274,8 +278,10 @@ export default function reducer(
         hourlyImpacts: {
           status: 'idle',
           inputs: initialEEREInputs,
+          data: {
+            regions: {},
+          },
         },
-        regionalHourlyImpacts: {},
         totalHourlyImpacts: {},
         hourlyImpactsValidation: {
           upperError: null,
@@ -531,8 +537,10 @@ export default function reducer(
         hourlyImpacts: {
           status: 'pending',
           inputs,
+          data: {
+            regions: {},
+          },
         },
-        regionalHourlyImpacts: {},
         totalHourlyImpacts: {},
         hourlyImpactsValidation: {
           upperError: null,
@@ -547,9 +555,15 @@ export default function reducer(
 
       return {
         ...state,
-        regionalHourlyImpacts: {
-          ...state.regionalHourlyImpacts,
-          [regionId]: hourlyImpacts,
+        hourlyImpacts: {
+          ...state.hourlyImpacts,
+          data: {
+            ...state.hourlyImpacts.data,
+            regions: {
+              ...state.hourlyImpacts.data.regions,
+              [regionId]: hourlyImpacts,
+            },
+          },
         },
       };
     }

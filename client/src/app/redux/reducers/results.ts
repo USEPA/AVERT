@@ -146,15 +146,15 @@ export function fetchEmissionsChanges(): AppThunk {
   return (dispatch, getState) => {
     const { api, transportation, eere } = getState();
     const { vehicleEmissionChangesByGeography } = transportation;
-    const { regionalHourlyImpacts } = eere;
+    const { hourlyImpacts } = eere;
 
     dispatch({ type: 'results/FETCH_EMISSIONS_CHANGES_REQUEST' });
 
     // build up requests for selected regions
     const requests: Promise<Response>[] = [];
 
-    for (const regionId in regionalHourlyImpacts) {
-      const regionHourlyImpacts = regionalHourlyImpacts[regionId as RegionId];
+    for (const regionId in hourlyImpacts.data.regions) {
+      const regionHourlyImpacts = hourlyImpacts.data.regions[regionId as RegionId]; // prettier-ignore
 
       if (regionHourlyImpacts) {
         const hourlyEere = Object.values(regionHourlyImpacts).map((d) => {
