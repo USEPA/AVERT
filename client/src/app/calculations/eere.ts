@@ -242,44 +242,58 @@ export function calculateHourlyImpacts(options: {
  * - lower limit error < 30%
  */
 export function calculateHourlyImpactsValidation(
-  regionalHourlyImpacts: Partial<{ [key in RegionId]: HourlyImpacts }>,
+  selectedRegionalData: Partial<{
+    [key in RegionId]: {
+      regionalLoad: RegionalLoadData[];
+      hourlyImpacts: HourlyImpacts;
+    };
+  }>,
 ) {
+  type ExceedanceData = {
+    hourOfYear: number;
+    month: number;
+    day: number;
+    hour: number;
+    percentChange: number;
+  };
+
   const result = {
     upperError: null,
     lowerWarning: null,
     lowerError: null,
   } as {
-    upperError: null | { hour: number; percentChange: number };
-    lowerWarning: null | { hour: number; percentChange: number };
-    lowerError: null | { hour: number; percentChange: number };
+    upperError: null | ExceedanceData;
+    lowerWarning: null | ExceedanceData;
+    lowerError: null | ExceedanceData;
   };
 
-  Object.values(regionalHourlyImpacts).forEach((regionHourlyImpacts) => {
-    Object.entries(regionHourlyImpacts).forEach(([key, value]) => {
-      const hour = Number(key);
+  Object.values(selectedRegionalData).forEach((regionalData) => {
+    Object.entries(regionalData.hourlyImpacts).forEach(([key, value]) => {
+      const hourOfYear = Number(key);
       const { percentChange } = value;
+      const { month, day, hour } = regionalData.regionalLoad[hourOfYear - 1];
 
       if (percentChange > 10) {
-        result.upperError ??= { hour, percentChange };
+        result.upperError ??= { hourOfYear, month, day, hour, percentChange };
 
         if (percentChange > result.upperError.percentChange) {
-          result.upperError = { hour, percentChange };
+          result.upperError = { hourOfYear, month, day, hour, percentChange };
         }
       }
 
       if (percentChange < -15 && percentChange >= -30) {
-        result.lowerWarning ??= { hour, percentChange };
+        result.lowerWarning ??= { hourOfYear, month, day, hour, percentChange };
 
         if (percentChange < result.lowerWarning.percentChange) {
-          result.lowerWarning = { hour, percentChange };
+          result.lowerWarning = { hourOfYear, month, day, hour, percentChange };
         }
       }
 
       if (percentChange < -30) {
-        result.lowerError ??= { hour, percentChange };
+        result.lowerError ??= { hourOfYear, month, day, hour, percentChange };
 
         if (percentChange < result.lowerError.percentChange) {
-          result.lowerError = { hour, percentChange };
+          result.lowerError = { hourOfYear, month, day, hour, percentChange };
         }
       }
     });

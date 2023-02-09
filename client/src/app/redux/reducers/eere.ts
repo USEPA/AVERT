@@ -320,6 +320,13 @@ export default function reducer(
         },
         profileCalculationStatus: 'idle',
         profileCalculationInputs: initialEEREInputs,
+        regionalHourlyImpacts: {},
+        totalHourlyImpacts: {},
+        hourlyImpactsValidation: {
+          upperError: null,
+          lowerWarning: null,
+          lowerError: null,
+        },
         regionalProfiles: {},
         combinedProfile: {
           hourlyEere: [],
@@ -1030,12 +1037,16 @@ export function calculateEereProfile(): AppThunk {
     });
 
     /**
-     * NOTE: selected regional profiles are stored individually to pass to the
-     * displacements calculation, and also combined for all selected regions to
-     * create the eere profile chart and show validation warning/error message
+     * NOTE: selected regional hourly impacts are stored individually to pass to
+     * the displacements calculation, and also combined for all selected regions
+     * to create the eere profile chart and show validation warning/error
+     * messages
      */
-    const regionalHourlyImpacts = {} as Partial<{
-      [key in RegionId]: HourlyImpacts;
+    const selectedRegionalData = {} as Partial<{
+      [key in RegionId]: {
+        regionalLoad: RegionalLoadData[];
+        hourlyImpacts: HourlyImpacts;
+      };
     }>;
 
     const selectedRegionalProfiles: RegionalProfile[] = [];
@@ -1156,7 +1167,7 @@ export function calculateEereProfile(): AppThunk {
         constantMwh,
       });
 
-      regionalHourlyImpacts[region.id] = hourlyImpacts;
+      selectedRegionalData[region.id] = { regionalLoad, hourlyImpacts };
 
       dispatch({
         type: 'eere/SET_REGIONAL_HOURLY_IMPACTS',
@@ -1203,9 +1214,9 @@ export function calculateEereProfile(): AppThunk {
       });
     });
 
-    const totalHourlyImpacts = Object.values(regionalHourlyImpacts).reduce(
-      (object, regionHourlyImpacts) => {
-        Object.entries(regionHourlyImpacts).forEach(([key, value]) => {
+    const totalHourlyImpacts = Object.values(selectedRegionalData).reduce(
+      (object, regionalData) => {
+        Object.entries(regionalData.hourlyImpacts).forEach(([key, value]) => {
           const hour = Number(key);
           object[hour] ??= 0;
           object[hour] += value.calculatedLoad;
@@ -1221,9 +1232,8 @@ export function calculateEereProfile(): AppThunk {
       payload: { totalHourlyImpacts },
     });
 
-    const hourlyImpactsValidation = calculateHourlyImpactsValidation(
-      regionalHourlyImpacts,
-    );
+    const hourlyImpactsValidation =
+      calculateHourlyImpactsValidation(selectedRegionalData);
 
     dispatch({
       type: 'eere/SET_HOURLY_IMPACTS_VALIDATION',
