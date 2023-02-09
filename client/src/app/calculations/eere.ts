@@ -262,7 +262,7 @@ export function calculateHourlyImpactsValidation(
       if (percentChange > 10) {
         result.upperError ??= { hour, percentChange };
 
-        if (percentChange < result.upperError.percentChange) {
+        if (percentChange > result.upperError.percentChange) {
           result.upperError = { hour, percentChange };
         }
       }
