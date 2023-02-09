@@ -26,10 +26,11 @@ function EquivalentHomesText(props: { hourlyImpacts: number[] }) {
 }
 
 function ValidationMessage(props: {
-  type: 'error' | 'warning';
+  direction: 'upper' | 'lower';
+  severity: 'error' | 'warning';
   exceedanceData: HourlyImpactsValidation[keyof HourlyImpactsValidation];
 }) {
-  const { type, exceedanceData } = props;
+  const { direction, severity, exceedanceData } = props;
 
   if (!exceedanceData) return null;
 
@@ -61,16 +62,25 @@ function ValidationMessage(props: {
     { minimumFractionDigits: 0, maximumFractionDigits: 2 },
   );
 
+  const limit =
+    direction === 'upper' // NOTE: only error level for upper limit (over 10%)
+      ? 10
+      : severity === 'error'
+      ? 30
+      : 15;
+
   return (
-    <div className={`usa-alert usa-alert--${type} margin-bottom-0`}>
+    <div className={`usa-alert usa-alert--${severity} margin-bottom-0`}>
       <div className="usa-alert__body">
         <h4 className="usa-alert__heading">
-          {type === 'error' ? 'ERROR' : 'WARNING'}
+          {severity === 'error' ? 'ERROR' : 'WARNING'}
         </h4>
+
         <p>
-          The combined impact of your proposed programs would displace more than{' '}
-          <strong>{type === 'error' ? '30' : '15'}%</strong> of regional fossil
-          generation in at least one hour of the year.&nbsp;&nbsp;
+          The combined impact of your proposed programs would{' '}
+          {direction === 'upper' ? 'add' : 'displace'} more than{' '}
+          <strong>{limit}%</strong> of regional fossil generation in at least
+          one hour of the year.&nbsp;&nbsp;
           <em>
             (Maximum value: <strong>{percentage}</strong>% on{' '}
             <strong>
@@ -80,12 +90,16 @@ function ValidationMessage(props: {
           </em>
         </p>
 
-        <p className="margin-0">
-          The recommended limit for AVERT is 15%, as AVERT is designed to
-          simulate marginal operational changes in load, rather than large-scale
-          changes that may change fundamental dynamics. Please reduce one or
-          more of your inputs to ensure more reliable results.
-        </p>
+        {/* TODO: determine if another paragraph should show below for upper level validation errors */}
+
+        {direction === 'lower' && (
+          <p className="margin-0">
+            The recommended limit for AVERT is 15%, as AVERT is designed to
+            simulate marginal operational changes in load, rather than
+            large-scale changes that may change fundamental dynamics. Please
+            reduce one or more of your inputs to ensure more reliable results.
+          </p>
+        )}
       </div>
     </div>
   );
@@ -162,8 +176,6 @@ function EEREMessagesContent() {
   const hourlyImpacts = useTypedSelector(({ eere }) => eere.hourlyImpacts);
   const { data, validation } = hourlyImpacts;
 
-  // TODO: account for upper level validation error
-
   if (Object.keys(data.total).length === 0) return null;
 
   return (
@@ -172,17 +184,27 @@ function EEREMessagesContent() {
 
       <EVWarningMessage />
 
-      {validation.lowerError !== null && (
+      {validation.upperError !== null && (
         <ValidationMessage
-          type="error"
-          exceedanceData={validation.lowerError}
+          direction="upper"
+          severity="error"
+          exceedanceData={validation.upperError}
         />
       )}
 
-      {validation.lowerError === null && validation.lowerWarning !== null && (
+      {validation.lowerWarning !== null && validation.lowerError === null && (
         <ValidationMessage
-          type="warning"
+          direction="lower"
+          severity="warning"
           exceedanceData={validation.lowerWarning}
+        />
+      )}
+
+      {validation.lowerError !== null && (
+        <ValidationMessage
+          direction="lower"
+          severity="error"
+          exceedanceData={validation.lowerError}
         />
       )}
     </>
