@@ -43,16 +43,6 @@ type RegionalProfile = {
   hardTopExceedanceIndex: number;
 };
 
-type CombinedProfile = {
-  hourlyEere: number[];
-  softValid: boolean;
-  softTopExceedanceValue: number;
-  softTopExceedanceTimestamp: RegionalLoadData;
-  hardValid: boolean;
-  hardTopExceedanceValue: number;
-  hardTopExceedanceTimestamp: RegionalLoadData;
-};
-
 type SelectOption = { id: string; name: string };
 
 type EereAction =
@@ -174,10 +164,7 @@ type EereAction =
       type: 'eere/CALCULATE_REGIONAL_EERE_PROFILE';
       payload: RegionalProfile;
     }
-  | {
-      type: 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS';
-      payload: CombinedProfile;
-    };
+  | { type: 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS' };
 
 export type EnergyEfficiencyFieldName =
   | 'annualGwh'
@@ -228,7 +215,6 @@ type EereState = {
   totalHourlyImpacts: { [hour: number]: number };
   hourlyImpactsValidation: HourlyImpactsValidation;
   regionalProfiles: Partial<{ [key in RegionId]: RegionalProfile }>;
-  combinedProfile: CombinedProfile;
 };
 
 /** NOTE: Excel version defaults EV model year to 2021 */
@@ -255,16 +241,6 @@ const initialEEREInputs = {
   iceReplacementVehicle: initialICEReplacementVehicle,
 };
 
-const emptyRegionalLoadHour = {
-  hour_of_year: 0,
-  year: 0,
-  month: 0,
-  day: 0,
-  hour: 0,
-  regional_load_mw: 0,
-  hourly_limit: 0,
-};
-
 const initialState: EereState = {
   errors: [],
   inputs: initialEEREInputs,
@@ -289,15 +265,6 @@ const initialState: EereState = {
     lowerError: null,
   },
   regionalProfiles: {},
-  combinedProfile: {
-    hourlyEere: [],
-    softValid: true,
-    softTopExceedanceValue: 0,
-    softTopExceedanceTimestamp: emptyRegionalLoadHour,
-    hardValid: true,
-    hardTopExceedanceValue: 0,
-    hardTopExceedanceTimestamp: emptyRegionalLoadHour,
-  },
 };
 
 export default function reducer(
@@ -328,15 +295,6 @@ export default function reducer(
           lowerError: null,
         },
         regionalProfiles: {},
-        combinedProfile: {
-          hourlyEere: [],
-          softValid: true,
-          softTopExceedanceValue: 0,
-          softTopExceedanceTimestamp: emptyRegionalLoadHour,
-          hardValid: true,
-          hardTopExceedanceValue: 0,
-          hardTopExceedanceTimestamp: emptyRegionalLoadHour,
-        },
       };
     }
 
@@ -648,11 +606,9 @@ export default function reducer(
     }
 
     case 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS': {
-      const combinedProfile = action.payload;
       return {
         ...state,
         profileCalculationStatus: 'success',
-        combinedProfile,
       };
     }
 
@@ -1049,8 +1005,6 @@ export function calculateEereProfile(): AppThunk {
       };
     }>;
 
-    const selectedRegionalProfiles: RegionalProfile[] = [];
-
     // build up total percentage of selected state in all selected regions that
     // support offshore wind
     const totalOffshoreWindPercent = selectedRegions.reduce((total, region) => {
@@ -1061,7 +1015,7 @@ export function calculateEereProfile(): AppThunk {
     selectedRegions.forEach((region) => {
       const regionalLoad = region.rdf.regional_load;
       const lineLoss = region.lineLoss;
-      const eereDefaults = region.eereDefaults.data;
+      const eereDefaults = region.eereDefaults.data; // TODO: properly account for leap years
 
       const regionalPercent = selectedState?.percentageByRegion[region.id] || 0;
 
@@ -1206,8 +1160,6 @@ export function calculateEereProfile(): AppThunk {
         hardTopExceedanceIndex,
       };
 
-      selectedRegionalProfiles.push(regionalProfile);
-
       dispatch({
         type: 'eere/CALCULATE_REGIONAL_EERE_PROFILE',
         payload: regionalProfile,
@@ -1240,88 +1192,7 @@ export function calculateEereProfile(): AppThunk {
       payload: { hourlyImpactsValidation },
     });
 
-    // construct an object of properties from selectedRegionalProfiles, so we
-    // don't need to map over it multiple times to work with each property
-    const profiles = {
-      regionIds: [] as RegionId[],
-      hourlyEeres: [] as number[][],
-      softValids: [] as boolean[],
-      softTopExceedanceVals: [] as number[],
-      softTopExceedanceIdxs: [] as number[],
-      hardValids: [] as boolean[],
-      hardTopExceedanceVals: [] as number[],
-      hardTopExceedanceIdxs: [] as number[],
-    };
-
-    selectedRegionalProfiles.forEach((p) => {
-      profiles.regionIds.push(p.regionId);
-      profiles.hourlyEeres.push(p.hourlyEere);
-      profiles.softValids.push(p.softValid);
-      profiles.softTopExceedanceVals.push(p.softTopExceedanceValue);
-      profiles.softTopExceedanceIdxs.push(p.softTopExceedanceIndex);
-      profiles.hardValids.push(p.hardValid);
-      profiles.hardTopExceedanceVals.push(p.hardTopExceedanceValue);
-      profiles.hardTopExceedanceIdxs.push(p.hardTopExceedanceIndex);
-    });
-
-    // add up hourly eeres from each selected region into one hourlyEere array
-    const combinedHourlyEeres = profiles.hourlyEeres.reduce(
-      (combinedHourlyEere, regionalHourlyEere) => {
-        return combinedHourlyEere.map((hourlyLoad, index) => {
-          return hourlyLoad + regionalHourlyEere[index];
-        });
-      },
-    );
-
-    // if one region's not valid, the combined profile is not valid
-    const softValid = profiles.softValids.every((isValid) => isValid);
-    const hardValid = profiles.hardValids.every((isValid) => isValid);
-
-    // if a region is invalid...
-    //   get the first hour of exceedance across all of the selected regions
-    // else, a region is valid...
-    //   so use the first index value
-    const softTopExceedanceIdx = !softValid
-      ? Math.min(...profiles.softTopExceedanceIdxs.filter((d) => d !== -1))
-      : profiles.softTopExceedanceIdxs[0];
-    const hardTopExceedanceIdx = !hardValid
-      ? Math.min(...profiles.hardTopExceedanceIdxs.filter((d) => d !== -1))
-      : profiles.hardTopExceedanceIdxs[0];
-
-    // get the index of that first hour of exceedance in the profiles object in
-    // order to get the corresponding top value and corresponding region id
-    const sIdx = profiles.softTopExceedanceIdxs.indexOf(softTopExceedanceIdx);
-    const hIdx = profiles.hardTopExceedanceIdxs.indexOf(hardTopExceedanceIdx);
-
-    // get the corresponding value from that first hour of exceedance
-    const softTopExceedanceValue = profiles.softTopExceedanceVals[sIdx];
-    const hardTopExceedanceValue = profiles.hardTopExceedanceVals[hIdx];
-
-    // get the corresponding region id from the first hour of exceedance
-    const softRegionId = profiles.regionIds[sIdx];
-    const hardRegionId = profiles.regionIds[hIdx];
-
-    // get the timestamp of the first hour of exceedance
-    const softTopExceedanceTimestamp = !softValid
-      ? geography.regions[softRegionId].rdf.regional_load[softTopExceedanceIdx]
-      : emptyRegionalLoadHour;
-
-    const hardTopExceedanceTimestamp = !hardValid
-      ? geography.regions[hardRegionId].rdf.regional_load[hardTopExceedanceIdx]
-      : emptyRegionalLoadHour;
-
-    dispatch({
-      type: 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS',
-      payload: {
-        hourlyEere: combinedHourlyEeres,
-        softValid,
-        softTopExceedanceValue,
-        softTopExceedanceTimestamp,
-        hardValid,
-        hardTopExceedanceValue,
-        hardTopExceedanceTimestamp,
-      },
-    });
+    dispatch({ type: 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS' });
   };
 }
 
