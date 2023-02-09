@@ -264,8 +264,8 @@ export function Panels() {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const modalOverlay = useTypedSelector(({ panel }) => panel.modalOverlay);
   const activeModalId = useTypedSelector(({ panel }) => panel.activeModalId);
-  const softValid = useTypedSelector(
-    ({ eere }) => eere.combinedProfile.softValid,
+  const hourlyImpactsValidation = useTypedSelector(
+    ({ eere }) => eere.hourlyImpactsValidation,
   );
   const serverCalcError = useTypedSelector(
     ({ results }) => results.emissionsChanges.status === 'failure',
@@ -506,7 +506,7 @@ export function Panels() {
             Results: Avoided Regional, State, and County-Level Emissions
           </h2>
 
-          {!softValid && (
+          {hourlyImpactsValidation.lowerWarning !== null && (
             <div className="usa-alert usa-alert--warning">
               <div className="usa-alert__body">
                 <h4 className="usa-alert__heading">WARNING</h4>

@@ -112,8 +112,8 @@ function NextButton(props: { text: string }) {
   const eereProfileCalculationInputs = useTypedSelector(
     ({ eere }) => eere.profileCalculationInputs,
   );
-  const eereHardValid = useTypedSelector(
-    ({ eere }) => eere.combinedProfile.hardValid,
+  const hourlyImpactsValidation = useTypedSelector(
+    ({ eere }) => eere.hourlyImpactsValidation,
   );
 
   const selectedRegionId = useSelectedRegion()?.id;
@@ -128,6 +128,15 @@ function NextButton(props: { text: string }) {
   const noGeographySelected =
     geographicFocus === 'regions' ? noRegionsSelected : noStateSelected;
 
+  const eereProfileInvalid =
+    hourlyImpactsValidation.lowerError !== null ||
+    hourlyImpactsValidation.upperError !== null;
+
+  const eereProfileCalculationNotComplete =
+    onStepTwo && eereProfileCalculationStatus !== 'success';
+
+  const eereProfileExceedsValidationLimit = onStepTwo && eereProfileInvalid;
+
   /**
    * Recalculation of the EERE profile is needed if the EERE inputs have changed
    * from the ones used in the EERE profile calculation
@@ -141,16 +150,11 @@ function NextButton(props: { text: string }) {
       );
     });
 
-  const eereProfileCalculationNotComplete =
-    onStepTwo && eereProfileCalculationStatus !== 'success';
-
-  const eereProfileExceedsHardValidationLimit = onStepTwo && !eereHardValid;
-
   const disabledButtonClassName =
     noGeographySelected ||
     eereProfileCalculationNotComplete ||
-    eereProfileRecalculationNeeded ||
-    eereProfileExceedsHardValidationLimit
+    eereProfileExceedsValidationLimit ||
+    eereProfileRecalculationNeeded
       ? 'avert-button-disabled'
       : '';
 
@@ -173,7 +177,7 @@ function NextButton(props: { text: string }) {
           if (
             eereProfileCalculationStatus === 'success' &&
             !eereProfileRecalculationNeeded &&
-            eereHardValid
+            !eereProfileInvalid
           ) {
             window.scrollTo(0, 0);
             dispatch(fetchEmissionsChanges());
