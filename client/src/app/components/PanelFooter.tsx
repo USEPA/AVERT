@@ -120,20 +120,20 @@ function NextButton(props: { text: string }) {
   const noGeographySelected =
     geographicFocus === 'regions' ? noRegionsSelected : noStateSelected;
 
-  const eereProfileInvalid =
+  const hourlyImpactsInvalid =
     hourlyImpacts.validation.lowerError !== null ||
     hourlyImpacts.validation.upperError !== null;
 
-  const eereProfileCalculationNotComplete =
+  const hourlyImpactsCalculationNotComplete =
     onStepTwo && hourlyImpacts.status !== 'success';
 
-  const eereProfileExceedsValidationLimit = onStepTwo && eereProfileInvalid;
+  const hourlyImpactsExceedsValidationLimit = onStepTwo && hourlyImpactsInvalid;
 
   /**
-   * Recalculation of the EERE profile is needed if the EERE inputs have changed
-   * from the ones used in the EERE profile calculation
+   * Recalculation of the hourly impacts is needed if the EERE inputs have
+   * changed from the ones used in the hourly impacts calculation
    */
-  const eereProfileRecalculationNeeded =
+  const hourlyImpactsRecalculationNeeded =
     onStepTwo &&
     !Object.keys(eereInputs).every((field) => {
       return (
@@ -144,9 +144,9 @@ function NextButton(props: { text: string }) {
 
   const disabledButtonClassName =
     noGeographySelected ||
-    eereProfileCalculationNotComplete ||
-    eereProfileExceedsValidationLimit ||
-    eereProfileRecalculationNeeded
+    hourlyImpactsCalculationNotComplete ||
+    hourlyImpactsExceedsValidationLimit ||
+    hourlyImpactsRecalculationNeeded
       ? 'avert-button-disabled'
       : '';
 
@@ -168,8 +168,8 @@ function NextButton(props: { text: string }) {
         if (onStepTwo) {
           if (
             hourlyImpacts.status === 'success' &&
-            !eereProfileRecalculationNeeded &&
-            !eereProfileInvalid
+            !hourlyImpactsRecalculationNeeded &&
+            !hourlyImpactsInvalid
           ) {
             window.scrollTo(0, 0);
             dispatch(fetchEmissionsChanges());

@@ -15,10 +15,10 @@ function EEREChartContent() {
   const hourlyImpacts = useTypedSelector(({ eere }) => eere.hourlyImpacts);
 
   /**
-   * Recalculation of the EERE profile is needed if the EERE inputs have changed
-   * from the ones used in the EERE profile calculation
+   * Recalculation of the hourly impacts is needed if the EERE inputs have
+   * changed from the ones used in the hourly impacts calculation
    */
-  const eereProfileRecalculationNeeded = !Object.keys(eereInputs).every(
+  const hourlyImpactsRecalculationNeeded = !Object.keys(eereInputs).every(
     (field) => {
       return (
         eereInputs[field as keyof typeof eereInputs] ===
@@ -130,7 +130,7 @@ function EEREChartContent() {
           </h4>
 
           <div className="position-relative height-full">
-            {eereProfileRecalculationNeeded && (
+            {hourlyImpactsRecalculationNeeded && (
               <div className="pin-all z-100 bg-black opacity-80">
                 <div className="display-flex flex-column flex-align-center flex-justify-center height-full">
                   <p className="margin-0 padding-2 text-center text-white">

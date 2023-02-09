@@ -42,7 +42,7 @@ export function EERETextInput(props: {
   const inputsAreValid = errors.length === 0;
   const inputIsEmpty = value.length === 0;
 
-  const eereProfileCalculationDisabled =
+  const hourlyImpactsCalculationDisabled =
     !inputsAreValid || inputIsEmpty || hourlyImpacts.status === 'pending';
 
   return (
@@ -76,7 +76,7 @@ export function EERETextInput(props: {
           onChange={(ev) => onChange(ev.target.value)}
           onBlur={(ev) => onBlur && onBlur(ev.target.value)}
           onKeyPress={(ev) => {
-            if (eereProfileCalculationDisabled) return;
+            if (hourlyImpactsCalculationDisabled) return;
             if (ev.key === 'Enter') {
               onBlur && onBlur((ev.target as HTMLInputElement).value);
               dispatch(calculateEereProfile());

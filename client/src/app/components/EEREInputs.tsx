@@ -153,7 +153,7 @@ function EEREInputsContent() {
   const textInputsAreEmpty =
     textInputsFields.filter((field) => field?.length > 0).length === 0;
 
-  const eereProfileCalculationDisabled =
+  const hourlyImpactsCalculationDisabled =
     !textInputsAreValid ||
     textInputsAreEmpty ||
     hourlyImpacts.status === 'pending';
@@ -164,7 +164,7 @@ function EEREInputsContent() {
     success: 'Recalculate EE/RE Impacts',
   };
 
-  const disabledButtonClassName = eereProfileCalculationDisabled
+  const disabledButtonClassName = hourlyImpactsCalculationDisabled
     ? 'avert-button-disabled'
     : '';
 
@@ -739,7 +739,7 @@ function EEREInputsContent() {
           href="/"
           onClick={(ev) => {
             ev.preventDefault();
-            if (eereProfileCalculationDisabled) return;
+            if (hourlyImpactsCalculationDisabled) return;
             dispatch(calculateEereProfile());
           }}
           data-avert-calculate-impacts-btn
