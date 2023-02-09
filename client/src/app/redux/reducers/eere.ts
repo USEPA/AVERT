@@ -988,7 +988,7 @@ export function calculateHourlyImpacts(): AppThunk {
     /**
      * NOTE: selected regional hourly impacts are stored individually to pass to
      * the displacements calculation, and also combined for all selected regions
-     * to create the eere profile chart and show validation warning/error
+     * to create the hourly impacts chart and show validation warning/error
      * messages
      */
     const selectedRegionalData = {} as Partial<{
