@@ -1,11 +1,11 @@
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { useTypedSelector } from 'app/redux/index';
-import type { RegionalLoadData } from 'app/redux/reducers/geography';
+import type { HourlyImpactsValidation } from 'app/calculations/eere';
 
-function EquivalentHomesText(props: { hourlyEere: number[] }) {
-  const { hourlyEere } = props;
+function EquivalentHomesText(props: { hourlyImpacts: number[] }) {
+  const { hourlyImpacts } = props;
 
-  const totalLoadMwh = hourlyEere.reduce((a, b) => a + b, 0);
+  const totalLoadMwh = hourlyImpacts.reduce((a, b) => a + b, 0);
   const totalLoadGwh = Math.round(totalLoadMwh / -1_000);
 
   /**
@@ -27,10 +27,11 @@ function EquivalentHomesText(props: { hourlyEere: number[] }) {
 
 function ValidationMessage(props: {
   type: 'error' | 'warning';
-  value: number;
-  timestamp: RegionalLoadData;
+  exceedanceData: HourlyImpactsValidation[keyof HourlyImpactsValidation];
 }) {
-  const { type, value, timestamp } = props;
+  const { type, exceedanceData } = props;
+
+  if (!exceedanceData) return null;
 
   const months = [
     'January',
@@ -46,19 +47,19 @@ function ValidationMessage(props: {
     'November',
     'December',
   ];
-  const month = months[timestamp.month - 1];
-  const day = timestamp.day;
+  const month = months[exceedanceData.month - 1];
+  const day = exceedanceData.day;
   const hour =
-    timestamp.hour === 0
+    exceedanceData.hour === 0
       ? 12
-      : timestamp.hour > 12
-      ? timestamp.hour - 12
-      : timestamp.hour;
-  const ampm = timestamp.hour > 12 ? 'PM' : 'AM';
-  const percentage = value.toLocaleString(undefined, {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  });
+      : exceedanceData.hour > 12
+      ? exceedanceData.hour - 12
+      : exceedanceData.hour;
+  const ampm = exceedanceData.hour > 12 ? 'PM' : 'AM';
+  const percentage = Math.abs(exceedanceData.percentChange).toLocaleString(
+    undefined,
+    { minimumFractionDigits: 0, maximumFractionDigits: 2 },
+  );
 
   return (
     <div className={`usa-alert usa-alert--${type} margin-bottom-0`}>
@@ -158,50 +159,30 @@ export function EVWarningMessage() {
 }
 
 function EEREMessagesContent() {
-  const softValid = useTypedSelector(
-    ({ eere }) => eere.combinedProfile.softValid,
+  const totalHourlyImpacts = useTypedSelector(
+    ({ eere }) => eere.totalHourlyImpacts,
   );
-  const softTopExceedanceValue = useTypedSelector(
-    ({ eere }) => eere.combinedProfile.softTopExceedanceValue,
-  );
-  const softTopExceedanceTimestamp = useTypedSelector(
-    ({ eere }) => eere.combinedProfile.softTopExceedanceTimestamp,
-  );
-  const hardValid = useTypedSelector(
-    ({ eere }) => eere.combinedProfile.hardValid,
-  );
-  const hardTopExceedanceValue = useTypedSelector(
-    ({ eere }) => eere.combinedProfile.hardTopExceedanceValue,
-  );
-  const hardTopExceedanceTimestamp = useTypedSelector(
-    ({ eere }) => eere.combinedProfile.hardTopExceedanceTimestamp,
-  );
-  const hourlyEere = useTypedSelector(
-    ({ eere }) => eere.combinedProfile.hourlyEere,
+  const hourlyImpactsValidation = useTypedSelector(
+    ({ eere }) => eere.hourlyImpactsValidation,
   );
 
-  if (hourlyEere?.length === 0) return null;
+  // TODO: account for upper level validation error
+  const { lowerWarning, lowerError } = hourlyImpactsValidation;
+
+  if (Object.keys(totalHourlyImpacts).length === 0) return null;
 
   return (
     <>
-      <EquivalentHomesText hourlyEere={hourlyEere} />
+      <EquivalentHomesText hourlyImpacts={Object.values(totalHourlyImpacts)} />
 
       <EVWarningMessage />
 
-      {!hardValid && (
-        <ValidationMessage
-          type="error"
-          value={hardTopExceedanceValue}
-          timestamp={hardTopExceedanceTimestamp}
-        />
+      {lowerError !== null && (
+        <ValidationMessage type="error" exceedanceData={lowerError} />
       )}
 
-      {hardValid && !softValid && (
-        <ValidationMessage
-          type="warning"
-          value={softTopExceedanceValue}
-          timestamp={softTopExceedanceTimestamp}
-        />
+      {lowerError === null && lowerWarning !== null && (
+        <ValidationMessage type="warning" exceedanceData={lowerWarning} />
       )}
     </>
   );
