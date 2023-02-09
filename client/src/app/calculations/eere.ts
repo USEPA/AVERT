@@ -21,7 +21,9 @@ export type TopPercentGeneration = ReturnType<
 export type HourlyTopPercentReduction = ReturnType<
   typeof calculateHourlyTopPercentReduction
 >;
-export type HourlyImpacts = ReturnType<typeof calculateHourlyImpacts>;
+export type RegionalHourlyImpacts = ReturnType<
+  typeof calculateRegionalHourlyImpacts
+>;
 export type HourlyImpactsValidation = ReturnType<
   typeof calculateHourlyImpactsValidation
 >;
@@ -175,7 +177,7 @@ export function calculateHourlyTopPercentReduction(options: {
 /**
  * Calculates regional hourly impacts of the entered EE/RE/EV inputs.
  */
-export function calculateHourlyImpacts(options: {
+export function calculateRegionalHourlyImpacts(options: {
   lineLoss: number; // region.lineLoss
   regionalLoad: RegionalLoadData[]; // region.rdf.regional_load
   hourlyRenewableEnergyProfile: HourlyRenewableEnergyProfile;
@@ -245,7 +247,7 @@ export function calculateHourlyImpactsValidation(
   selectedRegionalData: Partial<{
     [key in RegionId]: {
       regionalLoad: RegionalLoadData[];
-      hourlyImpacts: HourlyImpacts;
+      regionalHourlyImpacts: RegionalHourlyImpacts;
     };
   }>,
 ) {
@@ -268,10 +270,12 @@ export function calculateHourlyImpactsValidation(
   };
 
   Object.values(selectedRegionalData).forEach((regionalData) => {
-    Object.entries(regionalData.hourlyImpacts).forEach(([key, value]) => {
+    const { regionalLoad, regionalHourlyImpacts } = regionalData;
+
+    Object.entries(regionalHourlyImpacts).forEach(([key, value]) => {
       const hourOfYear = Number(key);
       const { percentChange } = value;
-      const { month, day, hour } = regionalData.regionalLoad[hourOfYear - 1];
+      const { month, day, hour } = regionalLoad[hourOfYear - 1];
 
       if (percentChange > 10) {
         result.upperError ??= { hourOfYear, month, day, hour, percentChange };
