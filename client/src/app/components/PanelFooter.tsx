@@ -107,9 +107,6 @@ function NextButton(props: { text: string }) {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const eereInputs = useTypedSelector(({ eere }) => eere.inputs);
   const hourlyImpacts = useTypedSelector(({ eere }) => eere.hourlyImpacts);
-  const hourlyImpactsValidation = useTypedSelector(
-    ({ eere }) => eere.hourlyImpactsValidation,
-  );
 
   const selectedRegionId = useSelectedRegion()?.id;
   const selectedStateId = useSelectedState()?.id;
@@ -124,8 +121,8 @@ function NextButton(props: { text: string }) {
     geographicFocus === 'regions' ? noRegionsSelected : noStateSelected;
 
   const eereProfileInvalid =
-    hourlyImpactsValidation.lowerError !== null ||
-    hourlyImpactsValidation.upperError !== null;
+    hourlyImpacts.validation.lowerError !== null ||
+    hourlyImpacts.validation.upperError !== null;
 
   const eereProfileCalculationNotComplete =
     onStepTwo && hourlyImpacts.status !== 'success';

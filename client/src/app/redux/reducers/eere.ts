@@ -146,7 +146,7 @@ type EereAction =
     }
   | {
       type: 'eere/SET_HOURLY_IMPACTS_VALIDATION';
-      payload: { hourlyImpactsValidation: HourlyImpactsValidation };
+      payload: { validation: HourlyImpactsValidation };
     }
   | { type: 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS' };
 
@@ -200,8 +200,8 @@ type EereState = {
       regions: Partial<{ [key in RegionId]: HourlyImpacts }>;
       total: { [hour: number]: number };
     };
+    validation: HourlyImpactsValidation;
   };
-  hourlyImpactsValidation: HourlyImpactsValidation;
 };
 
 /** NOTE: Excel version defaults EV model year to 2021 */
@@ -249,11 +249,11 @@ const initialState: EereState = {
       regions: {},
       total: {},
     },
-  },
-  hourlyImpactsValidation: {
-    upperError: null,
-    lowerWarning: null,
-    lowerError: null,
+    validation: {
+      upperError: null,
+      lowerWarning: null,
+      lowerError: null,
+    },
   },
 };
 
@@ -282,11 +282,11 @@ export default function reducer(
             regions: {},
             total: {},
           },
-        },
-        hourlyImpactsValidation: {
-          upperError: null,
-          lowerWarning: null,
-          lowerError: null,
+          validation: {
+            upperError: null,
+            lowerWarning: null,
+            lowerError: null,
+          },
         },
       };
     }
@@ -541,11 +541,11 @@ export default function reducer(
             regions: {},
             total: {},
           },
-        },
-        hourlyImpactsValidation: {
-          upperError: null,
-          lowerWarning: null,
-          lowerError: null,
+          validation: {
+            upperError: null,
+            lowerWarning: null,
+            lowerError: null,
+          },
         },
       };
     }
@@ -584,11 +584,14 @@ export default function reducer(
     }
 
     case 'eere/SET_HOURLY_IMPACTS_VALIDATION': {
-      const { hourlyImpactsValidation } = action.payload;
+      const { validation } = action.payload;
 
       return {
         ...state,
-        hourlyImpactsValidation,
+        hourlyImpacts: {
+          ...state.hourlyImpacts,
+          validation,
+        },
       };
     }
 
@@ -1145,7 +1148,7 @@ export function calculateEereProfile(): AppThunk {
 
     dispatch({
       type: 'eere/SET_HOURLY_IMPACTS_VALIDATION',
-      payload: { hourlyImpactsValidation },
+      payload: { validation: hourlyImpactsValidation },
     });
 
     dispatch({ type: 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS' });

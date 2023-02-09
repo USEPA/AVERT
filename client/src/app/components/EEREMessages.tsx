@@ -160,29 +160,30 @@ export function EVWarningMessage() {
 
 function EEREMessagesContent() {
   const hourlyImpacts = useTypedSelector(({ eere }) => eere.hourlyImpacts);
-  const hourlyImpactsValidation = useTypedSelector(
-    ({ eere }) => eere.hourlyImpactsValidation,
-  );
+  const { data, validation } = hourlyImpacts;
 
   // TODO: account for upper level validation error
-  const { lowerWarning, lowerError } = hourlyImpactsValidation;
 
-  if (Object.keys(hourlyImpacts.data.total).length === 0) return null;
+  if (Object.keys(data.total).length === 0) return null;
 
   return (
     <>
-      <EquivalentHomesText
-        hourlyImpacts={Object.values(hourlyImpacts.data.total)}
-      />
+      <EquivalentHomesText hourlyImpacts={Object.values(data.total)} />
 
       <EVWarningMessage />
 
-      {lowerError !== null && (
-        <ValidationMessage type="error" exceedanceData={lowerError} />
+      {validation.lowerError !== null && (
+        <ValidationMessage
+          type="error"
+          exceedanceData={validation.lowerError}
+        />
       )}
 
-      {lowerError === null && lowerWarning !== null && (
-        <ValidationMessage type="warning" exceedanceData={lowerWarning} />
+      {validation.lowerError === null && validation.lowerWarning !== null && (
+        <ValidationMessage
+          type="warning"
+          exceedanceData={validation.lowerWarning}
+        />
       )}
     </>
   );
