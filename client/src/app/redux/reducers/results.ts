@@ -146,17 +146,21 @@ export function fetchEmissionsChanges(): AppThunk {
   return (dispatch, getState) => {
     const { api, transportation, eere } = getState();
     const { vehicleEmissionChangesByGeography } = transportation;
-    const { regionalProfiles } = eere;
+    const { regionalHourlyImpacts } = eere;
 
     dispatch({ type: 'results/FETCH_EMISSIONS_CHANGES_REQUEST' });
 
     // build up requests for selected regions
     const requests: Promise<Response>[] = [];
 
-    for (const regionId in regionalProfiles) {
-      const hourlyEere = regionalProfiles[regionId as RegionId]?.hourlyEere;
+    for (const regionId in regionalHourlyImpacts) {
+      const regionHourlyImpacts = regionalHourlyImpacts[regionId as RegionId];
 
-      if (hourlyEere) {
+      if (regionHourlyImpacts) {
+        const hourlyEere = Object.values(regionHourlyImpacts).map((d) => {
+          return d.calculatedLoad;
+        });
+
         requests.push(
           fetch(`${api.baseUrl}/api/v1/emissions`, {
             method: 'POST',
