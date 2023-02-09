@@ -14,8 +14,8 @@ type Action =
     }
   | { type: 'geography/REQUEST_SELECTED_REGIONS_DATA' }
   | { type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' }
-  | { type: 'eere/START_EERE_PROFILE_CALCULATIONS' }
-  | { type: 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS' }
+  | { type: 'eere/START_EERE_PROFILE_CALCULATIONS' } // TODO: rename
+  | { type: 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS' } // TODO: rename
   | { type: 'results/FETCH_EMISSIONS_CHANGES_REQUEST' }
   | { type: 'results/FETCH_EMISSIONS_CHANGES_SUCCESS' };
 

@@ -106,11 +106,8 @@ function NextButton(props: { text: string }) {
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const eereInputs = useTypedSelector(({ eere }) => eere.inputs);
-  const hourlyImpactsCalculationStatus = useTypedSelector(
-    ({ eere }) => eere.hourlyImpactsCalculationStatus,
-  );
-  const hourlyImpactsCalculationInputs = useTypedSelector(
-    ({ eere }) => eere.hourlyImpactsCalculationInputs,
+  const hourlyImpactsCalculation = useTypedSelector(
+    ({ eere }) => eere.hourlyImpactsCalculation,
   );
   const hourlyImpactsValidation = useTypedSelector(
     ({ eere }) => eere.hourlyImpactsValidation,
@@ -133,7 +130,7 @@ function NextButton(props: { text: string }) {
     hourlyImpactsValidation.upperError !== null;
 
   const eereProfileCalculationNotComplete =
-    onStepTwo && hourlyImpactsCalculationStatus !== 'success';
+    onStepTwo && hourlyImpactsCalculation.status !== 'success';
 
   const eereProfileExceedsValidationLimit = onStepTwo && eereProfileInvalid;
 
@@ -146,7 +143,7 @@ function NextButton(props: { text: string }) {
     !Object.keys(eereInputs).every((field) => {
       return (
         eereInputs[field as keyof typeof eereInputs] ===
-        hourlyImpactsCalculationInputs[field as keyof typeof hourlyImpactsCalculationInputs] // prettier-ignore
+        hourlyImpactsCalculation.inputs[field as keyof typeof hourlyImpactsCalculation.inputs] // prettier-ignore
       );
     });
 
@@ -175,7 +172,7 @@ function NextButton(props: { text: string }) {
 
         if (onStepTwo) {
           if (
-            hourlyImpactsCalculationStatus === 'success' &&
+            hourlyImpactsCalculation.status === 'success' &&
             !eereProfileRecalculationNeeded &&
             !eereProfileInvalid
           ) {

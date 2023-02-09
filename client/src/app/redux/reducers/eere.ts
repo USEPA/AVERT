@@ -131,7 +131,7 @@ type EereAction =
     }
   | {
       type: 'eere/START_EERE_PROFILE_CALCULATIONS';
-      payload: { hourlyImpactsCalculationInputs: EEREInputs };
+      payload: { inputs: EEREInputs };
     }
   | {
       type: 'eere/SET_REGIONAL_HOURLY_IMPACTS';
@@ -193,8 +193,10 @@ type EereState = {
   inputs: EEREInputs;
   selectOptions: { [field in SelectOptionsFieldName]: SelectOption[] };
   evCalculationsInputs: { [field in ElectricVehiclesFieldName]: string };
-  hourlyImpactsCalculationStatus: 'idle' | 'pending' | 'success';
-  hourlyImpactsCalculationInputs: EEREInputs;
+  hourlyImpactsCalculation: {
+    status: 'idle' | 'pending' | 'success';
+    inputs: EEREInputs;
+  };
   regionalHourlyImpacts: Partial<{ [key in RegionId]: HourlyImpacts }>;
   totalHourlyImpacts: { [hour: number]: number };
   hourlyImpactsValidation: HourlyImpactsValidation;
@@ -238,8 +240,10 @@ const initialState: EereState = {
     transitBuses: '',
     schoolBuses: '',
   },
-  hourlyImpactsCalculationStatus: 'idle',
-  hourlyImpactsCalculationInputs: initialEEREInputs,
+  hourlyImpactsCalculation: {
+    status: 'idle',
+    inputs: initialEEREInputs,
+  },
   regionalHourlyImpacts: {},
   totalHourlyImpacts: {},
   hourlyImpactsValidation: {
@@ -267,8 +271,10 @@ export default function reducer(
           transitBuses: '',
           schoolBuses: '',
         },
-        hourlyImpactsCalculationStatus: 'idle',
-        hourlyImpactsCalculationInputs: initialEEREInputs,
+        hourlyImpactsCalculation: {
+          status: 'idle',
+          inputs: initialEEREInputs,
+        },
         regionalHourlyImpacts: {},
         totalHourlyImpacts: {},
         hourlyImpactsValidation: {
@@ -519,11 +525,13 @@ export default function reducer(
     }
 
     case 'eere/START_EERE_PROFILE_CALCULATIONS': {
-      const { hourlyImpactsCalculationInputs } = action.payload;
+      const { inputs } = action.payload;
       return {
         ...state,
-        hourlyImpactsCalculationStatus: 'pending',
-        hourlyImpactsCalculationInputs,
+        hourlyImpactsCalculation: {
+          status: 'pending',
+          inputs,
+        },
         regionalHourlyImpacts: {},
         totalHourlyImpacts: {},
         hourlyImpactsValidation: {
@@ -567,7 +575,10 @@ export default function reducer(
     case 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS': {
       return {
         ...state,
-        hourlyImpactsCalculationStatus: 'success',
+        hourlyImpactsCalculation: {
+          ...state.hourlyImpactsCalculation,
+          status: 'success',
+        },
       };
     }
 
@@ -948,7 +959,7 @@ export function calculateEereProfile(): AppThunk {
 
     dispatch({
       type: 'eere/START_EERE_PROFILE_CALCULATIONS',
-      payload: { hourlyImpactsCalculationInputs: inputs },
+      payload: { inputs },
     });
 
     /**
