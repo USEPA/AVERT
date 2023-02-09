@@ -24,24 +24,12 @@ import {
   calculateHourlyImpacts,
   calculateHourlyImpactsValidation,
 } from 'app/calculations/eere';
-import { calculateEere } from 'app/calculations';
 import type { RegionId, StateId } from 'app/config';
 import {
   regions,
   evModelYearOptions,
   iceReplacementVehicleOptions,
 } from 'app/config';
-
-type RegionalProfile = {
-  regionId: RegionId;
-  hourlyEere: number[];
-  softValid: boolean;
-  softTopExceedanceValue: number;
-  softTopExceedanceIndex: number;
-  hardValid: boolean;
-  hardTopExceedanceValue: number;
-  hardTopExceedanceIndex: number;
-};
 
 type SelectOption = { id: string; name: string };
 
@@ -160,10 +148,6 @@ type EereAction =
       type: 'eere/SET_HOURLY_IMPACTS_VALIDATION';
       payload: { hourlyImpactsValidation: HourlyImpactsValidation };
     }
-  | {
-      type: 'eere/CALCULATE_REGIONAL_EERE_PROFILE';
-      payload: RegionalProfile;
-    }
   | { type: 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS' };
 
 export type EnergyEfficiencyFieldName =
@@ -214,7 +198,6 @@ type EereState = {
   regionalHourlyImpacts: Partial<{ [key in RegionId]: HourlyImpacts }>;
   totalHourlyImpacts: { [hour: number]: number };
   hourlyImpactsValidation: HourlyImpactsValidation;
-  regionalProfiles: Partial<{ [key in RegionId]: RegionalProfile }>;
 };
 
 /** NOTE: Excel version defaults EV model year to 2021 */
@@ -264,7 +247,6 @@ const initialState: EereState = {
     lowerWarning: null,
     lowerError: null,
   },
-  regionalProfiles: {},
 };
 
 export default function reducer(
@@ -294,7 +276,6 @@ export default function reducer(
           lowerWarning: null,
           lowerError: null,
         },
-        regionalProfiles: {},
       };
     }
 
@@ -543,34 +524,12 @@ export default function reducer(
         ...state,
         profileCalculationStatus: 'pending',
         profileCalculationInputs,
-        regionalProfiles: {},
-      };
-    }
-
-    case 'eere/CALCULATE_REGIONAL_EERE_PROFILE': {
-      const {
-        regionId,
-        hourlyEere,
-        softValid,
-        softTopExceedanceValue,
-        softTopExceedanceIndex,
-        hardValid,
-        hardTopExceedanceValue,
-        hardTopExceedanceIndex,
-      } = action.payload;
-      return {
-        ...state,
-        regionalProfiles: {
-          ...state.regionalProfiles,
-          [regionId]: {
-            hourlyEere,
-            softValid,
-            softTopExceedanceValue,
-            softTopExceedanceIndex,
-            hardValid,
-            hardTopExceedanceValue,
-            hardTopExceedanceIndex,
-          },
+        regionalHourlyImpacts: {},
+        totalHourlyImpacts: {},
+        hourlyImpactsValidation: {
+          upperError: null,
+          lowerWarning: null,
+          lowerError: null,
         },
       };
     }
@@ -1129,40 +1088,6 @@ export function calculateEereProfile(): AppThunk {
           regionId: region.id,
           hourlyImpacts,
         },
-      });
-
-      const {
-        hourlyEere,
-        softValid,
-        softTopExceedanceValue,
-        softTopExceedanceIndex,
-        hardValid,
-        hardTopExceedanceValue,
-        hardTopExceedanceIndex,
-      } = calculateEere({
-        lineLoss,
-        regionalLoad,
-        hourlyRenewableEnergyProfile,
-        hourlyEVLoad,
-        hourlyTopPercentReduction,
-        annualGwh,
-        constantMwh,
-      });
-
-      const regionalProfile = {
-        regionId: region.id,
-        hourlyEere,
-        softValid,
-        softTopExceedanceValue,
-        softTopExceedanceIndex,
-        hardValid,
-        hardTopExceedanceValue,
-        hardTopExceedanceIndex,
-      };
-
-      dispatch({
-        type: 'eere/CALCULATE_REGIONAL_EERE_PROFILE',
-        payload: regionalProfile,
       });
     });
 
