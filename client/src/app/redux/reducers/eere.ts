@@ -12,11 +12,13 @@ import {
   setVehicleSalesAndStock,
   setEVDeploymentLocationHistoricalEERE,
 } from 'app/redux/reducers/transportation';
+import type { HourlyImpacts } from 'app/calculations/eere';
 import {
   calculateHourlyRenewableEnergyProfile,
   calculateHourlyEVLoad,
   calculateTopPercentGeneration,
   calculateHourlyTopPercentReduction,
+  calculateHourlyImpacts,
 } from 'app/calculations/eere';
 import { calculateEere } from 'app/calculations';
 import type { RegionId, StateId } from 'app/config';
@@ -150,6 +152,13 @@ type EereAction =
       payload: { profileCalculationInputs: EEREInputs };
     }
   | {
+      type: 'eere/CALCULATE_REGIONAL_HOURLY_IMPACTS';
+      payload: {
+        regionId: RegionId;
+        hourlyImpacts: HourlyImpacts;
+      };
+    }
+  | {
       type: 'eere/CALCULATE_REGIONAL_EERE_PROFILE';
       payload: RegionalProfile;
     }
@@ -203,6 +212,7 @@ type EereState = {
   evCalculationsInputs: { [field in ElectricVehiclesFieldName]: string };
   profileCalculationStatus: 'idle' | 'pending' | 'success';
   profileCalculationInputs: EEREInputs;
+  regionalHourlyImpacts: Partial<{ [key in RegionId]: HourlyImpacts }>;
   regionalProfiles: Partial<{ [key in RegionId]: RegionalProfile }>;
   combinedProfile: CombinedProfile;
 };
@@ -257,6 +267,7 @@ const initialState: EereState = {
   },
   profileCalculationStatus: 'idle',
   profileCalculationInputs: initialEEREInputs,
+  regionalHourlyImpacts: {},
   regionalProfiles: {},
   combinedProfile: {
     hourlyEere: [],
@@ -575,6 +586,18 @@ export default function reducer(
             hardTopExceedanceValue,
             hardTopExceedanceIndex,
           },
+        },
+      };
+    }
+
+    case 'eere/CALCULATE_REGIONAL_HOURLY_IMPACTS': {
+      const { regionId, hourlyImpacts } = action.payload;
+
+      return {
+        ...state,
+        regionalHourlyImpacts: {
+          ...state.regionalHourlyImpacts,
+          [regionId]: hourlyImpacts,
         },
       };
     }
@@ -1077,6 +1100,24 @@ export function calculateEereProfile(): AppThunk {
         topPercentGeneration,
         broadProgram,
         reduction,
+      });
+
+      const hourlyImpacts = calculateHourlyImpacts({
+        lineLoss,
+        regionalLoad,
+        hourlyRenewableEnergyProfile,
+        hourlyEVLoad,
+        hourlyTopPercentReduction,
+        annualGwh,
+        constantMwh,
+      });
+
+      dispatch({
+        type: 'eere/CALCULATE_REGIONAL_HOURLY_IMPACTS',
+        payload: {
+          regionId: region.id,
+          hourlyImpacts,
+        },
       });
 
       const {

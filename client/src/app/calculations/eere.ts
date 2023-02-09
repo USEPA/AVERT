@@ -20,6 +20,7 @@ export type TopPercentGeneration = ReturnType<
 export type HourlyTopPercentReduction = ReturnType<
   typeof calculateHourlyTopPercentReduction
 >;
+export type HourlyImpacts = ReturnType<typeof calculateHourlyImpacts>;
 
 /**
  * Excel: Data in column H of the "CalculateEERE" sheet (H5:H8788).
@@ -163,6 +164,69 @@ export function calculateHourlyTopPercentReduction(options: {
       ? hourlyLoad * -1 * percentReduction
       : 0;
   });
+
+  return result;
+}
+
+/**
+ * Calculates regional hourly impacts of the entered EE/RE/EV inputs.
+ */
+export function calculateHourlyImpacts(options: {
+  lineLoss: number; // region.lineLoss
+  regionalLoad: RegionalLoadData[]; // region.rdf.regional_load
+  hourlyRenewableEnergyProfile: HourlyRenewableEnergyProfile;
+  hourlyEVLoad: HourlyEVLoad;
+  hourlyTopPercentReduction: HourlyTopPercentReduction;
+  annualGwh: number; // eere.inputs.annualGwh
+  constantMwh: number; // eere.inputs.annualGwh
+}) {
+  const {
+    lineLoss,
+    regionalLoad,
+    hourlyRenewableEnergyProfile,
+    hourlyEVLoad,
+    hourlyTopPercentReduction,
+    annualGwh,
+    constantMwh,
+  } = options;
+
+  const hourlyMwReduction = (annualGwh * 1_000) / regionalLoad.length;
+
+  const result = regionalLoad.reduce(
+    (object, data, index) => {
+      const hour = data.hour_of_year;
+      const originalLoad = data.regional_load_mw;
+
+      const topPercentReduction = hourlyTopPercentReduction[index] || 0;
+      const renewableProfile = hourlyRenewableEnergyProfile[index] || 0;
+      const evLoad = hourlyEVLoad[index] || 0;
+
+      /**
+       * Excel: Data in column I of the "CalculateEERE" sheet (I5:I8788).
+       */
+      const calculatedLoad =
+        (topPercentReduction - hourlyMwReduction - constantMwh + evLoad) /
+          (1 - lineLoss) +
+        renewableProfile;
+
+      const percentChange = (calculatedLoad / originalLoad) * 100;
+
+      object[hour] = {
+        originalLoad,
+        calculatedLoad,
+        percentChange,
+      };
+
+      return object;
+    },
+    {} as {
+      [hour: number]: {
+        originalLoad: number;
+        calculatedLoad: number;
+        percentChange: number;
+      };
+    },
+  );
 
   return result;
 }
