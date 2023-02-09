@@ -142,7 +142,7 @@ type EereAction =
     }
   | {
       type: 'eere/SET_TOTAL_HOURLY_IMPACTS';
-      payload: { totalHourlyImpacts: { [hour: number]: number } };
+      payload: { total: { [hour: number]: number } };
     }
   | {
       type: 'eere/SET_HOURLY_IMPACTS_VALIDATION';
@@ -198,9 +198,9 @@ type EereState = {
     inputs: EEREInputs;
     data: {
       regions: Partial<{ [key in RegionId]: HourlyImpacts }>;
+      total: { [hour: number]: number };
     };
   };
-  totalHourlyImpacts: { [hour: number]: number };
   hourlyImpactsValidation: HourlyImpactsValidation;
 };
 
@@ -247,9 +247,9 @@ const initialState: EereState = {
     inputs: initialEEREInputs,
     data: {
       regions: {},
+      total: {},
     },
   },
-  totalHourlyImpacts: {},
   hourlyImpactsValidation: {
     upperError: null,
     lowerWarning: null,
@@ -280,9 +280,9 @@ export default function reducer(
           inputs: initialEEREInputs,
           data: {
             regions: {},
+            total: {},
           },
         },
-        totalHourlyImpacts: {},
         hourlyImpactsValidation: {
           upperError: null,
           lowerWarning: null,
@@ -539,9 +539,9 @@ export default function reducer(
           inputs,
           data: {
             regions: {},
+            total: {},
           },
         },
-        totalHourlyImpacts: {},
         hourlyImpactsValidation: {
           upperError: null,
           lowerWarning: null,
@@ -569,11 +569,17 @@ export default function reducer(
     }
 
     case 'eere/SET_TOTAL_HOURLY_IMPACTS': {
-      const { totalHourlyImpacts } = action.payload;
+      const { total } = action.payload;
 
       return {
         ...state,
-        totalHourlyImpacts,
+        hourlyImpacts: {
+          ...state.hourlyImpacts,
+          data: {
+            ...state.hourlyImpacts.data,
+            total,
+          },
+        },
       };
     }
 
@@ -1131,7 +1137,7 @@ export function calculateEereProfile(): AppThunk {
 
     dispatch({
       type: 'eere/SET_TOTAL_HOURLY_IMPACTS',
-      payload: { totalHourlyImpacts },
+      payload: { total: totalHourlyImpacts },
     });
 
     const hourlyImpactsValidation =

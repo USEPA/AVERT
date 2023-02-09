@@ -13,9 +13,6 @@ function EEREChartContent() {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const eereInputs = useTypedSelector(({ eere }) => eere.inputs);
   const hourlyImpacts = useTypedSelector(({ eere }) => eere.hourlyImpacts);
-  const totalHourlyImpacts = useTypedSelector(
-    ({ eere }) => eere.totalHourlyImpacts,
-  );
 
   /**
    * Recalculation of the EERE profile is needed if the EERE inputs have changed
@@ -40,11 +37,13 @@ function EEREChartContent() {
 
   const year = rdfYear || new Date().getFullYear();
 
-  const hourlyData = Object.values(totalHourlyImpacts).map((eere, hour) => {
-    const firstHourOfYear = Date.UTC(year, 0, 1);
-    const hourlyMs = hour * 60 * 60 * 1_000;
-    return [new Date().setTime(firstHourOfYear + hourlyMs), eere];
-  });
+  const hourlyData = Object.values(hourlyImpacts.data.total).map(
+    (eere, hour) => {
+      const firstHourOfYear = Date.UTC(year, 0, 1);
+      const hourlyMs = hour * 60 * 60 * 1_000;
+      return [new Date().setTime(firstHourOfYear + hourlyMs), eere];
+    },
+  );
 
   const chartConfig: Highcharts.Options = {
     chart: {
@@ -109,7 +108,7 @@ function EEREChartContent() {
 
   return (
     <div data-avert-chart>
-      {Object.keys(totalHourlyImpacts)?.length > 0 && (
+      {Object.keys(hourlyImpacts.data.total)?.length > 0 && (
         <>
           <h3 className="margin-0 font-sans-md line-height-sans-2 text-base-darker text-center">
             EE/RE profile based on values entered:&nbsp;
