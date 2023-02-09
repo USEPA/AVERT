@@ -130,7 +130,7 @@ type EereAction =
       payload: { option: string };
     }
   | {
-      type: 'eere/START_EERE_PROFILE_CALCULATIONS';
+      type: 'eere/START_HOURLY_IMPACTS_CALCULATIONS';
       payload: { inputs: EEREInputs };
     }
   | {
@@ -148,7 +148,7 @@ type EereAction =
       type: 'eere/SET_HOURLY_IMPACTS_VALIDATION';
       payload: { validation: HourlyImpactsValidation };
     }
-  | { type: 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS' };
+  | { type: 'eere/COMPLETE_HOURLY_IMPACTS_CALCULATIONS' };
 
 export type EnergyEfficiencyFieldName =
   | 'annualGwh'
@@ -530,7 +530,7 @@ export default function reducer(
       };
     }
 
-    case 'eere/START_EERE_PROFILE_CALCULATIONS': {
+    case 'eere/START_HOURLY_IMPACTS_CALCULATIONS': {
       const { inputs } = action.payload;
       return {
         ...state,
@@ -595,7 +595,7 @@ export default function reducer(
       };
     }
 
-    case 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS': {
+    case 'eere/COMPLETE_HOURLY_IMPACTS_CALCULATIONS': {
       return {
         ...state,
         hourlyImpacts: {
@@ -981,7 +981,7 @@ export function calculateEereProfile(): AppThunk {
     }
 
     dispatch({
-      type: 'eere/START_EERE_PROFILE_CALCULATIONS',
+      type: 'eere/START_HOURLY_IMPACTS_CALCULATIONS',
       payload: { inputs },
     });
 
@@ -1151,7 +1151,7 @@ export function calculateEereProfile(): AppThunk {
       payload: { validation: hourlyImpactsValidation },
     });
 
-    dispatch({ type: 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS' });
+    dispatch({ type: 'eere/COMPLETE_HOURLY_IMPACTS_CALCULATIONS' });
   };
 }
 
