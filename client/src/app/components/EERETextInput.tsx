@@ -36,18 +36,14 @@ export function EERETextInput(props: {
   } = props;
 
   const dispatch = useDispatch();
-  const hourlyImpactsCalculation = useTypedSelector(
-    ({ eere }) => eere.hourlyImpactsCalculation,
-  );
+  const hourlyImpacts = useTypedSelector(({ eere }) => eere.hourlyImpacts);
   const errors = useTypedSelector(({ eere }) => eere.errors);
 
   const inputsAreValid = errors.length === 0;
   const inputIsEmpty = value.length === 0;
 
   const eereProfileCalculationDisabled =
-    !inputsAreValid ||
-    inputIsEmpty ||
-    hourlyImpactsCalculation.status === 'pending';
+    !inputsAreValid || inputIsEmpty || hourlyImpacts.status === 'pending';
 
   return (
     <div className={className ? className : ''}>

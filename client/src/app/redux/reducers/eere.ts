@@ -193,7 +193,7 @@ type EereState = {
   inputs: EEREInputs;
   selectOptions: { [field in SelectOptionsFieldName]: SelectOption[] };
   evCalculationsInputs: { [field in ElectricVehiclesFieldName]: string };
-  hourlyImpactsCalculation: {
+  hourlyImpacts: {
     status: 'idle' | 'pending' | 'success';
     inputs: EEREInputs;
   };
@@ -240,7 +240,7 @@ const initialState: EereState = {
     transitBuses: '',
     schoolBuses: '',
   },
-  hourlyImpactsCalculation: {
+  hourlyImpacts: {
     status: 'idle',
     inputs: initialEEREInputs,
   },
@@ -271,7 +271,7 @@ export default function reducer(
           transitBuses: '',
           schoolBuses: '',
         },
-        hourlyImpactsCalculation: {
+        hourlyImpacts: {
           status: 'idle',
           inputs: initialEEREInputs,
         },
@@ -528,7 +528,7 @@ export default function reducer(
       const { inputs } = action.payload;
       return {
         ...state,
-        hourlyImpactsCalculation: {
+        hourlyImpacts: {
           status: 'pending',
           inputs,
         },
@@ -575,8 +575,8 @@ export default function reducer(
     case 'eere/COMPLETE_EERE_PROFILE_CALCULATIONS': {
       return {
         ...state,
-        hourlyImpactsCalculation: {
-          ...state.hourlyImpactsCalculation,
+        hourlyImpacts: {
+          ...state.hourlyImpacts,
           status: 'success',
         },
       };
