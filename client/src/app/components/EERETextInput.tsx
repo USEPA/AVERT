@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 // ---
 import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
-import { calculateEereProfile } from 'app/redux/reducers/eere';
+import { calculateHourlyImpacts } from 'app/redux/reducers/eere';
 import type {
   EnergyEfficiencyFieldName,
   RenewableEnergyFieldName,
@@ -79,7 +79,7 @@ export function EERETextInput(props: {
             if (hourlyImpactsCalculationDisabled) return;
             if (ev.key === 'Enter') {
               onBlur && onBlur((ev.target as HTMLInputElement).value);
-              dispatch(calculateEereProfile());
+              dispatch(calculateHourlyImpacts());
             }
           }}
         />

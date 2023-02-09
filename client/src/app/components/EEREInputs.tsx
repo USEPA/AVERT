@@ -34,7 +34,7 @@ import {
   updateEereEVDeploymentLocation,
   updateEereEVModelYear,
   updateEereICEReplacementVehicle,
-  calculateEereProfile,
+  calculateHourlyImpacts,
 } from 'app/redux/reducers/eere';
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 
@@ -740,7 +740,7 @@ function EEREInputsContent() {
           onClick={(ev) => {
             ev.preventDefault();
             if (hourlyImpactsCalculationDisabled) return;
-            dispatch(calculateEereProfile());
+            dispatch(calculateHourlyImpacts());
           }}
           data-avert-calculate-impacts-btn
         >
