@@ -106,15 +106,7 @@ function NextButton(props: { text: string }) {
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const eereInputs = useTypedSelector(({ eere }) => eere.inputs);
-  const eereProfileCalculationStatus = useTypedSelector(
-    ({ eere }) => eere.profileCalculationStatus,
-  );
-  const eereProfileCalculationInputs = useTypedSelector(
-    ({ eere }) => eere.profileCalculationInputs,
-  );
-  const eereHardValid = useTypedSelector(
-    ({ eere }) => eere.combinedProfile.hardValid,
-  );
+  const hourlyImpacts = useTypedSelector(({ eere }) => eere.hourlyImpacts);
 
   const selectedRegionId = useSelectedRegion()?.id;
   const selectedStateId = useSelectedState()?.id;
@@ -128,29 +120,33 @@ function NextButton(props: { text: string }) {
   const noGeographySelected =
     geographicFocus === 'regions' ? noRegionsSelected : noStateSelected;
 
+  const hourlyImpactsInvalid =
+    hourlyImpacts.validation.lowerError !== null ||
+    hourlyImpacts.validation.upperError !== null;
+
+  const hourlyImpactsCalculationNotComplete =
+    onStepTwo && hourlyImpacts.status !== 'success';
+
+  const hourlyImpactsExceedsValidationLimit = onStepTwo && hourlyImpactsInvalid;
+
   /**
-   * Recalculation of the EERE profile is needed if the EERE inputs have changed
-   * from the ones used in the EERE profile calculation
+   * Recalculation of the hourly impacts is needed if the EERE inputs have
+   * changed from the ones used in the hourly impacts calculation
    */
-  const eereProfileRecalculationNeeded =
+  const hourlyImpactsRecalculationNeeded =
     onStepTwo &&
     !Object.keys(eereInputs).every((field) => {
       return (
         eereInputs[field as keyof typeof eereInputs] ===
-        eereProfileCalculationInputs[field as keyof typeof eereProfileCalculationInputs] // prettier-ignore
+        hourlyImpacts.inputs[field as keyof typeof hourlyImpacts.inputs]
       );
     });
 
-  const eereProfileCalculationNotComplete =
-    onStepTwo && eereProfileCalculationStatus !== 'success';
-
-  const eereProfileExceedsHardValidationLimit = onStepTwo && !eereHardValid;
-
   const disabledButtonClassName =
     noGeographySelected ||
-    eereProfileCalculationNotComplete ||
-    eereProfileRecalculationNeeded ||
-    eereProfileExceedsHardValidationLimit
+    hourlyImpactsCalculationNotComplete ||
+    hourlyImpactsExceedsValidationLimit ||
+    hourlyImpactsRecalculationNeeded
       ? 'avert-button-disabled'
       : '';
 
@@ -171,9 +167,9 @@ function NextButton(props: { text: string }) {
 
         if (onStepTwo) {
           if (
-            eereProfileCalculationStatus === 'success' &&
-            !eereProfileRecalculationNeeded &&
-            eereHardValid
+            hourlyImpacts.status === 'success' &&
+            !hourlyImpactsRecalculationNeeded &&
+            !hourlyImpactsInvalid
           ) {
             window.scrollTo(0, 0);
             dispatch(fetchEmissionsChanges());

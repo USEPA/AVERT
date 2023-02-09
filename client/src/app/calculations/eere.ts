@@ -9,6 +9,7 @@ import type {
   HourlyEVChargingPercentages,
   MonthlyDailyEVEnergyUsage,
 } from 'app/calculations/transportation';
+import type { RegionId } from 'app/config';
 
 export type HourlyRenewableEnergyProfile = ReturnType<
   typeof calculateHourlyRenewableEnergyProfile
@@ -19,6 +20,12 @@ export type TopPercentGeneration = ReturnType<
 >;
 export type HourlyTopPercentReduction = ReturnType<
   typeof calculateHourlyTopPercentReduction
+>;
+export type RegionalHourlyImpacts = ReturnType<
+  typeof calculateRegionalHourlyImpacts
+>;
+export type HourlyImpactsValidation = ReturnType<
+  typeof calculateHourlyImpactsValidation
 >;
 
 /**
@@ -162,6 +169,138 @@ export function calculateHourlyTopPercentReduction(options: {
     return hourlyLoad >= topPercentGeneration
       ? hourlyLoad * -1 * percentReduction
       : 0;
+  });
+
+  return result;
+}
+
+/**
+ * Calculates regional hourly impacts of the entered EE/RE/EV inputs.
+ */
+export function calculateRegionalHourlyImpacts(options: {
+  lineLoss: number; // region.lineLoss
+  regionalLoad: RegionalLoadData[]; // region.rdf.regional_load
+  hourlyRenewableEnergyProfile: HourlyRenewableEnergyProfile;
+  hourlyEVLoad: HourlyEVLoad;
+  hourlyTopPercentReduction: HourlyTopPercentReduction;
+  annualGwh: number; // eere.inputs.annualGwh
+  constantMwh: number; // eere.inputs.annualGwh
+}) {
+  const {
+    lineLoss,
+    regionalLoad,
+    hourlyRenewableEnergyProfile,
+    hourlyEVLoad,
+    hourlyTopPercentReduction,
+    annualGwh,
+    constantMwh,
+  } = options;
+
+  const hourlyMwReduction = (annualGwh * 1_000) / regionalLoad.length;
+
+  const result = regionalLoad.reduce(
+    (object, data, index) => {
+      const hour = data.hour_of_year;
+      const originalLoad = data.regional_load_mw;
+
+      const topPercentReduction = hourlyTopPercentReduction[index] || 0;
+      const renewableProfile = hourlyRenewableEnergyProfile[index] || 0;
+      const evLoad = hourlyEVLoad[index] || 0;
+
+      /**
+       * Excel: Data in column I of the "CalculateEERE" sheet (I5:I8788).
+       */
+      const calculatedLoad =
+        (topPercentReduction - hourlyMwReduction - constantMwh + evLoad) /
+          (1 - lineLoss) +
+        renewableProfile;
+
+      const percentChange = (calculatedLoad / originalLoad) * 100;
+
+      object[hour] = {
+        originalLoad,
+        calculatedLoad,
+        percentChange,
+      };
+
+      return object;
+    },
+    {} as {
+      [hour: number]: {
+        originalLoad: number;
+        calculatedLoad: number;
+        percentChange: number;
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Determines if the regional hourly impacts exceeds the upper or lower limits:
+ * - upper limit error > 10%
+ * - lower limit warning < 15%
+ * - lower limit error < 30%
+ */
+export function calculateHourlyImpactsValidation(
+  selectedRegionalData: Partial<{
+    [key in RegionId]: {
+      regionalLoad: RegionalLoadData[];
+      regionalHourlyImpacts: RegionalHourlyImpacts;
+    };
+  }>,
+) {
+  type ExceedanceData = {
+    hourOfYear: number;
+    month: number;
+    day: number;
+    hour: number;
+    percentChange: number;
+  };
+
+  const result = {
+    upperError: null,
+    lowerWarning: null,
+    lowerError: null,
+  } as {
+    upperError: null | ExceedanceData;
+    lowerWarning: null | ExceedanceData;
+    lowerError: null | ExceedanceData;
+  };
+
+  Object.values(selectedRegionalData).forEach((regionalData) => {
+    const { regionalLoad, regionalHourlyImpacts } = regionalData;
+
+    Object.entries(regionalHourlyImpacts).forEach(([key, value]) => {
+      const hourOfYear = Number(key);
+      const { percentChange } = value;
+      const { month, day, hour } = regionalLoad[hourOfYear - 1];
+
+      if (percentChange > 10) {
+        result.upperError ??= { hourOfYear, month, day, hour, percentChange };
+
+        if (percentChange > result.upperError.percentChange) {
+          result.upperError = { hourOfYear, month, day, hour, percentChange };
+        }
+      }
+
+      if (percentChange < -15 && percentChange >= -30) {
+        result.lowerWarning ??= { hourOfYear, month, day, hour, percentChange };
+
+        if (percentChange < result.lowerWarning.percentChange) {
+          result.lowerWarning = { hourOfYear, month, day, hour, percentChange };
+        }
+      }
+
+      if (percentChange < -30) {
+        result.lowerError ??= { hourOfYear, month, day, hour, percentChange };
+
+        if (percentChange < result.lowerError.percentChange) {
+          result.lowerError = { hourOfYear, month, day, hour, percentChange };
+        }
+      }
+    });
   });
 
   return result;

@@ -1,11 +1,11 @@
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { useTypedSelector } from 'app/redux/index';
-import type { RegionalLoadData } from 'app/redux/reducers/geography';
+import type { HourlyImpactsValidation } from 'app/calculations/eere';
 
-function EquivalentHomesText(props: { hourlyEere: number[] }) {
-  const { hourlyEere } = props;
+function EquivalentHomesText(props: { hourlyImpacts: number[] }) {
+  const { hourlyImpacts } = props;
 
-  const totalLoadMwh = hourlyEere.reduce((a, b) => a + b, 0);
+  const totalLoadMwh = hourlyImpacts.reduce((a, b) => a + b, 0);
   const totalLoadGwh = Math.round(totalLoadMwh / -1_000);
 
   /**
@@ -26,11 +26,13 @@ function EquivalentHomesText(props: { hourlyEere: number[] }) {
 }
 
 function ValidationMessage(props: {
-  type: 'error' | 'warning';
-  value: number;
-  timestamp: RegionalLoadData;
+  direction: 'upper' | 'lower';
+  severity: 'error' | 'warning';
+  exceedanceData: HourlyImpactsValidation[keyof HourlyImpactsValidation];
 }) {
-  const { type, value, timestamp } = props;
+  const { direction, severity, exceedanceData } = props;
+
+  if (!exceedanceData) return null;
 
   const months = [
     'January',
@@ -46,30 +48,39 @@ function ValidationMessage(props: {
     'November',
     'December',
   ];
-  const month = months[timestamp.month - 1];
-  const day = timestamp.day;
+  const month = months[exceedanceData.month - 1];
+  const day = exceedanceData.day;
   const hour =
-    timestamp.hour === 0
+    exceedanceData.hour === 0
       ? 12
-      : timestamp.hour > 12
-      ? timestamp.hour - 12
-      : timestamp.hour;
-  const ampm = timestamp.hour > 12 ? 'PM' : 'AM';
-  const percentage = value.toLocaleString(undefined, {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  });
+      : exceedanceData.hour > 12
+      ? exceedanceData.hour - 12
+      : exceedanceData.hour;
+  const ampm = exceedanceData.hour > 12 ? 'PM' : 'AM';
+  const percentage = Math.abs(exceedanceData.percentChange).toLocaleString(
+    undefined,
+    { minimumFractionDigits: 0, maximumFractionDigits: 2 },
+  );
+
+  const limit =
+    direction === 'upper' // NOTE: only error level for upper limit (over 10%)
+      ? 10
+      : severity === 'error'
+      ? 30
+      : 15;
 
   return (
-    <div className={`usa-alert usa-alert--${type} margin-bottom-0`}>
+    <div className={`usa-alert usa-alert--${severity} margin-bottom-0`}>
       <div className="usa-alert__body">
         <h4 className="usa-alert__heading">
-          {type === 'error' ? 'ERROR' : 'WARNING'}
+          {severity === 'error' ? 'ERROR' : 'WARNING'}
         </h4>
+
         <p>
-          The combined impact of your proposed programs would displace more than{' '}
-          <strong>{type === 'error' ? '30' : '15'}%</strong> of regional fossil
-          generation in at least one hour of the year.&nbsp;&nbsp;
+          The combined impact of your proposed programs would{' '}
+          {direction === 'upper' ? 'add' : 'displace'} more than{' '}
+          <strong>{limit}%</strong> of regional fossil generation in at least
+          one hour of the year.&nbsp;&nbsp;
           <em>
             (Maximum value: <strong>{percentage}</strong>% on{' '}
             <strong>
@@ -79,12 +90,16 @@ function ValidationMessage(props: {
           </em>
         </p>
 
-        <p className="margin-0">
-          The recommended limit for AVERT is 15%, as AVERT is designed to
-          simulate marginal operational changes in load, rather than large-scale
-          changes that may change fundamental dynamics. Please reduce one or
-          more of your inputs to ensure more reliable results.
-        </p>
+        {/* TODO: determine if another paragraph should show below for upper level validation errors */}
+
+        {direction === 'lower' && (
+          <p className="margin-0">
+            The recommended limit for AVERT is 15%, as AVERT is designed to
+            simulate marginal operational changes in load, rather than
+            large-scale changes that may change fundamental dynamics. Please
+            reduce one or more of your inputs to ensure more reliable results.
+          </p>
+        )}
       </div>
     </div>
   );
@@ -158,49 +173,38 @@ export function EVWarningMessage() {
 }
 
 function EEREMessagesContent() {
-  const softValid = useTypedSelector(
-    ({ eere }) => eere.combinedProfile.softValid,
-  );
-  const softTopExceedanceValue = useTypedSelector(
-    ({ eere }) => eere.combinedProfile.softTopExceedanceValue,
-  );
-  const softTopExceedanceTimestamp = useTypedSelector(
-    ({ eere }) => eere.combinedProfile.softTopExceedanceTimestamp,
-  );
-  const hardValid = useTypedSelector(
-    ({ eere }) => eere.combinedProfile.hardValid,
-  );
-  const hardTopExceedanceValue = useTypedSelector(
-    ({ eere }) => eere.combinedProfile.hardTopExceedanceValue,
-  );
-  const hardTopExceedanceTimestamp = useTypedSelector(
-    ({ eere }) => eere.combinedProfile.hardTopExceedanceTimestamp,
-  );
-  const hourlyEere = useTypedSelector(
-    ({ eere }) => eere.combinedProfile.hourlyEere,
-  );
+  const hourlyImpacts = useTypedSelector(({ eere }) => eere.hourlyImpacts);
+  const { data, validation } = hourlyImpacts;
 
-  if (hourlyEere?.length === 0) return null;
+  if (Object.keys(data.total).length === 0) return null;
 
   return (
     <>
-      <EquivalentHomesText hourlyEere={hourlyEere} />
+      <EquivalentHomesText hourlyImpacts={Object.values(data.total)} />
 
       <EVWarningMessage />
 
-      {!hardValid && (
+      {validation.upperError !== null && (
         <ValidationMessage
-          type="error"
-          value={hardTopExceedanceValue}
-          timestamp={hardTopExceedanceTimestamp}
+          direction="upper"
+          severity="error"
+          exceedanceData={validation.upperError}
         />
       )}
 
-      {hardValid && !softValid && (
+      {validation.lowerWarning !== null && validation.lowerError === null && (
         <ValidationMessage
-          type="warning"
-          value={softTopExceedanceValue}
-          timestamp={softTopExceedanceTimestamp}
+          direction="lower"
+          severity="warning"
+          exceedanceData={validation.lowerWarning}
+        />
+      )}
+
+      {validation.lowerError !== null && (
+        <ValidationMessage
+          direction="lower"
+          severity="error"
+          exceedanceData={validation.lowerError}
         />
       )}
     </>

@@ -34,7 +34,7 @@ import {
   updateEereEVDeploymentLocation,
   updateEereEVModelYear,
   updateEereICEReplacementVehicle,
-  calculateEereProfile,
+  calculateHourlyImpacts,
 } from 'app/redux/reducers/eere';
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 
@@ -80,9 +80,7 @@ const inputsSummaryStyles = css`
 function EEREInputsContent() {
   const dispatch = useDispatch();
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const eereProfileCalculationStatus = useTypedSelector(
-    ({ eere }) => eere.profileCalculationStatus,
-  );
+  const hourlyImpacts = useTypedSelector(({ eere }) => eere.hourlyImpacts);
   const errors = useTypedSelector(({ eere }) => eere.errors);
   const constantMwh = useTypedSelector(({ eere }) => eere.inputs.constantMwh);
   const annualGwh = useTypedSelector(({ eere }) => eere.inputs.annualGwh);
@@ -155,10 +153,10 @@ function EEREInputsContent() {
   const textInputsAreEmpty =
     textInputsFields.filter((field) => field?.length > 0).length === 0;
 
-  const eereProfileCalculationDisabled =
+  const hourlyImpactsCalculationDisabled =
     !textInputsAreValid ||
     textInputsAreEmpty ||
-    eereProfileCalculationStatus === 'pending';
+    hourlyImpacts.status === 'pending';
 
   const eereButtonOptions = {
     idle: 'Calculate EE/RE Impacts',
@@ -166,7 +164,7 @@ function EEREInputsContent() {
     success: 'Recalculate EE/RE Impacts',
   };
 
-  const disabledButtonClassName = eereProfileCalculationDisabled
+  const disabledButtonClassName = hourlyImpactsCalculationDisabled
     ? 'avert-button-disabled'
     : '';
 
@@ -741,12 +739,12 @@ function EEREInputsContent() {
           href="/"
           onClick={(ev) => {
             ev.preventDefault();
-            if (eereProfileCalculationDisabled) return;
-            dispatch(calculateEereProfile());
+            if (hourlyImpactsCalculationDisabled) return;
+            dispatch(calculateHourlyImpacts());
           }}
           data-avert-calculate-impacts-btn
         >
-          {eereButtonOptions[eereProfileCalculationStatus]}
+          {eereButtonOptions[hourlyImpacts.status]}
         </a>
       </p>
     </>

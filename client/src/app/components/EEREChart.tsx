@@ -12,22 +12,17 @@ require('highcharts/modules/accessibility')(Highcharts);
 function EEREChartContent() {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const eereInputs = useTypedSelector(({ eere }) => eere.inputs);
-  const eereProfileCalculationInputs = useTypedSelector(
-    ({ eere }) => eere.profileCalculationInputs,
-  );
-  const hourlyEere = useTypedSelector(
-    ({ eere }) => eere.combinedProfile.hourlyEere,
-  );
+  const hourlyImpacts = useTypedSelector(({ eere }) => eere.hourlyImpacts);
 
   /**
-   * Recalculation of the EERE profile is needed if the EERE inputs have changed
-   * from the ones used in the EERE profile calculation
+   * Recalculation of the hourly impacts is needed if the EERE inputs have
+   * changed from the ones used in the hourly impacts calculation
    */
-  const eereProfileRecalculationNeeded = !Object.keys(eereInputs).every(
+  const hourlyImpactsRecalculationNeeded = !Object.keys(eereInputs).every(
     (field) => {
       return (
         eereInputs[field as keyof typeof eereInputs] ===
-        eereProfileCalculationInputs[field as keyof typeof eereProfileCalculationInputs] // prettier-ignore
+        hourlyImpacts.inputs[field as keyof typeof hourlyImpacts.inputs]
       );
     },
   );
@@ -42,11 +37,13 @@ function EEREChartContent() {
 
   const year = rdfYear || new Date().getFullYear();
 
-  const hourlyData = hourlyEere.map((eere, hour) => {
-    const firstHourOfYear = Date.UTC(year, 0, 1);
-    const hourlyMs = hour * 60 * 60 * 1_000;
-    return [new Date().setTime(firstHourOfYear + hourlyMs), eere];
-  });
+  const hourlyData = Object.values(hourlyImpacts.data.total).map(
+    (eere, hour) => {
+      const firstHourOfYear = Date.UTC(year, 0, 1);
+      const hourlyMs = hour * 60 * 60 * 1_000;
+      return [new Date().setTime(firstHourOfYear + hourlyMs), eere];
+    },
+  );
 
   const chartConfig: Highcharts.Options = {
     chart: {
@@ -111,7 +108,7 @@ function EEREChartContent() {
 
   return (
     <div data-avert-chart>
-      {hourlyEere?.length > 0 && (
+      {Object.keys(hourlyImpacts.data.total)?.length > 0 && (
         <>
           <h3 className="margin-0 font-sans-md line-height-sans-2 text-base-darker text-center">
             EE/RE profile based on values entered:&nbsp;
@@ -133,7 +130,7 @@ function EEREChartContent() {
           </h4>
 
           <div className="position-relative height-full">
-            {eereProfileRecalculationNeeded && (
+            {hourlyImpactsRecalculationNeeded && (
               <div className="pin-all z-100 bg-black opacity-80">
                 <div className="display-flex flex-column flex-align-center flex-justify-center height-full">
                   <p className="margin-0 padding-2 text-center text-white">
