@@ -5,7 +5,7 @@ import type {
   VMTAllocationPerVehicle,
   MonthlyVMTTotalsAndPercentages,
   HourlyEVChargingPercentages,
-  SelectedGeographyStatesVMTPercentages,
+  SelectedRegionsStatesVMTPercentages,
   SelectedGeographyVMTPercentagesPerVehicleType,
   SelectedGeographyAverageVMTPerYear,
   MonthlyVMTPerVehicleType,
@@ -33,7 +33,7 @@ import {
   calculateVMTAllocationPerVehicle,
   calculateMonthlyVMTTotalsAndPercentages,
   calculateHourlyEVChargingPercentages,
-  calculateSelectedGeographyStatesVMTPercentages,
+  calculateSelectedRegionsStatesVMTPercentages,
   calculateSelectedGeographyVMTPercentagesPerVehicleType,
   calculateSelectedGeographyAverageVMTPerYear,
   calculateMonthlyVMTPerVehicleType,
@@ -82,9 +82,9 @@ type TransportationAction =
       payload: { hourlyEVChargingPercentages: HourlyEVChargingPercentages };
     }
   | {
-      type: 'transportation/SET_SELECTED_GEOGRAPHY_STATES_VMT_PERCENTAGES';
+      type: 'transportation/SET_SELECTED_REGIONS_STATES_VMT_PERCENTAGES';
       payload: {
-        selectedGeographyStatesVMTPercentages: SelectedGeographyStatesVMTPercentages;
+        selectedRegionsStatesVMTPercentages: SelectedRegionsStatesVMTPercentages;
       };
     }
   | {
@@ -180,7 +180,7 @@ type TransportationState = {
   vmtAllocationPerVehicle: VMTAllocationPerVehicle | {};
   monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
-  selectedGeographyStatesVMTPercentages: SelectedGeographyStatesVMTPercentages | {}; // prettier-ignore
+  selectedRegionsStatesVMTPercentages: SelectedRegionsStatesVMTPercentages | {};
   selectedGeographyVMTPercentagesPerVehicleType: SelectedGeographyVMTPercentagesPerVehicleType;
   selectedGeographyAverageVMTPerYear: SelectedGeographyAverageVMTPerYear;
   monthlyVMTPerVehicleType: MonthlyVMTPerVehicleType;
@@ -208,7 +208,7 @@ const initialState: TransportationState = {
   vmtAllocationPerVehicle: {},
   monthlyVMTTotalsAndPercentages: {},
   hourlyEVChargingPercentages: {},
-  selectedGeographyStatesVMTPercentages: {},
+  selectedRegionsStatesVMTPercentages: {},
   selectedGeographyVMTPercentagesPerVehicleType: {
     vmtPerLDVPercent: 0,
     vmtPerBusPercent: 0,
@@ -314,12 +314,12 @@ export default function reducer(
       };
     }
 
-    case 'transportation/SET_SELECTED_GEOGRAPHY_STATES_VMT_PERCENTAGES': {
-      const { selectedGeographyStatesVMTPercentages } = action.payload;
+    case 'transportation/SET_SELECTED_REGIONS_STATES_VMT_PERCENTAGES': {
+      const { selectedRegionsStatesVMTPercentages } = action.payload;
 
       return {
         ...state,
-        selectedGeographyStatesVMTPercentages,
+        selectedRegionsStatesVMTPercentages,
       };
     }
 
@@ -578,8 +578,8 @@ export function setSelectedGeographyVMTData(): AppThunk {
     const selectedStateId =
       Object.values(geography.states).find((s) => s.selected)?.id || '';
 
-    const selectedGeographyStatesVMTPercentages =
-      calculateSelectedGeographyStatesVMTPercentages({
+    const selectedRegionsStatesVMTPercentages =
+      calculateSelectedRegionsStatesVMTPercentages({
         geographicFocus,
         selectedRegionId,
         selectedStateId,
@@ -588,7 +588,7 @@ export function setSelectedGeographyVMTData(): AppThunk {
 
     const selectedGeographyVMTPercentagesPerVehicleType =
       calculateSelectedGeographyVMTPercentagesPerVehicleType({
-        selectedGeographyStatesVMTPercentages,
+        selectedRegionsStatesVMTPercentages,
         vmtAllocationPerVehicle,
       });
 
@@ -603,8 +603,8 @@ export function setSelectedGeographyVMTData(): AppThunk {
     });
 
     dispatch({
-      type: 'transportation/SET_SELECTED_GEOGRAPHY_STATES_VMT_PERCENTAGES',
-      payload: { selectedGeographyStatesVMTPercentages },
+      type: 'transportation/SET_SELECTED_REGIONS_STATES_VMT_PERCENTAGES',
+      payload: { selectedRegionsStatesVMTPercentages },
     });
 
     dispatch({
@@ -824,12 +824,12 @@ export function setMonthlyDailyEVEnergyUsage(): AppThunk {
 export function setMonthlyEmissionRates(): AppThunk {
   return (dispatch, getState) => {
     const { transportation, eere } = getState();
-    const { selectedGeographyStatesVMTPercentages } = transportation;
+    const { selectedRegionsStatesVMTPercentages } = transportation;
     const { evDeploymentLocation, evModelYear, iceReplacementVehicle } =
       eere.inputs;
 
     const monthlyEmissionRates = calculateMonthlyEmissionRates({
-      selectedGeographyStatesVMTPercentages,
+      selectedRegionsStatesVMTPercentages,
       evDeploymentLocation,
       evModelYear,
       iceReplacementVehicle,

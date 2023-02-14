@@ -163,8 +163,8 @@ export type MonthlyVMTTotalsAndPercentages = ReturnType<
 export type HourlyEVChargingPercentages = ReturnType<
   typeof calculateHourlyEVChargingPercentages
 >;
-export type SelectedGeographyStatesVMTPercentages = ReturnType<
-  typeof calculateSelectedGeographyStatesVMTPercentages
+export type SelectedRegionsStatesVMTPercentages = ReturnType<
+  typeof calculateSelectedRegionsStatesVMTPercentages
 >;
 export type SelectedGeographyVMTPercentagesPerVehicleType = ReturnType<
   typeof calculateSelectedGeographyVMTPercentagesPerVehicleType
@@ -679,7 +679,7 @@ export function calculateHourlyEVChargingPercentages() {
  *
  * Excel: First table in the "RegionStateAllocate" sheet (CI58:CN107)
  */
-export function calculateSelectedGeographyStatesVMTPercentages(options: {
+export function calculateSelectedRegionsStatesVMTPercentages(options: {
   geographicFocus: GeographicFocus;
   selectedRegionId: RegionId | '';
   selectedStateId: StateId | '';
@@ -691,6 +691,15 @@ export function calculateSelectedGeographyStatesVMTPercentages(options: {
     selectedStateId,
     vmtAllocationTotalsAndPercentages,
   } = options;
+
+  type StateVMTPercentages = {
+    cars: number;
+    trucks: number;
+    transitBuses: number;
+    schoolBuses: number;
+    allLDVs: number;
+    allBuses: number;
+  };
 
   const result = Object.entries(vmtAllocationTotalsAndPercentages).reduce(
     (object, [key, data]) => {
@@ -715,7 +724,11 @@ export function calculateSelectedGeographyStatesVMTPercentages(options: {
         const selectedRegionData = vmtStateData[selectedRegionId];
 
         if (selectedRegionData) {
-          object[stateId] = {
+          object[selectedRegionId] ??= {} as {
+            [stateId in StateId]: StateVMTPercentages;
+          };
+
+          object[selectedRegionId][stateId] = {
             cars: selectedRegionData.cars.percent,
             trucks: selectedRegionData.trucks.percent,
             transitBuses: selectedRegionData.transitBuses.percent,
@@ -732,30 +745,29 @@ export function calculateSelectedGeographyStatesVMTPercentages(options: {
         selectedStateId !== '' &&
         stateId === selectedStateId
       ) {
-        const selectedStateData = vmtStateData.allRegions;
+        Object.entries(vmtStateData).forEach(([stateKey, stateData]) => {
+          if (stateKey !== 'allRegions') {
+            object[stateKey as RegionId] ??= {} as {
+              [stateId in StateId]: StateVMTPercentages;
+            };
 
-        if (selectedStateData) {
-          object[stateId] = {
-            cars: selectedStateData.cars.percent,
-            trucks: selectedStateData.trucks.percent,
-            transitBuses: selectedStateData.transitBuses.percent,
-            schoolBuses: selectedStateData.schoolBuses.percent,
-            allLDVs: selectedStateData.allLDVs.percent,
-            allBuses: selectedStateData.allBuses.percent,
-          };
-        }
+            object[stateKey as RegionId][stateId] = {
+              cars: stateData.cars.percent,
+              trucks: stateData.trucks.percent,
+              transitBuses: stateData.transitBuses.percent,
+              schoolBuses: stateData.schoolBuses.percent,
+              allLDVs: stateData.allLDVs.percent,
+              allBuses: stateData.allBuses.percent,
+            };
+          }
+        });
       }
 
       return object;
     },
     {} as {
-      [stateId in StateId]: {
-        cars: number;
-        trucks: number;
-        transitBuses: number;
-        schoolBuses: number;
-        allLDVs: number;
-        allBuses: number;
+      [regionId in RegionId]: {
+        [stateId in StateId]: StateVMTPercentages;
       };
     },
   );
@@ -769,13 +781,13 @@ export function calculateSelectedGeographyStatesVMTPercentages(options: {
  * Excel: Second table in the "RegionStateAllocate" sheet (H169 and J169)
  */
 export function calculateSelectedGeographyVMTPercentagesPerVehicleType(options: {
-  selectedGeographyStatesVMTPercentages: SelectedGeographyStatesVMTPercentages | {}; // prettier-ignore
+  selectedRegionsStatesVMTPercentages: SelectedRegionsStatesVMTPercentages | {};
   vmtAllocationPerVehicle: VMTAllocationPerVehicle | {};
 }) {
-  const { selectedGeographyStatesVMTPercentages, vmtAllocationPerVehicle } =
+  const { selectedRegionsStatesVMTPercentages, vmtAllocationPerVehicle } =
     options;
 
-  const result = Object.entries(selectedGeographyStatesVMTPercentages).reduce(
+  const result = Object.entries(selectedRegionsStatesVMTPercentages).reduce(
     (total, [key, stateData]) => {
       const stateId = key as StateId;
 
@@ -1372,13 +1384,13 @@ export function calculateMonthlyDailyEVEnergyUsage(options: {
  * "Library" sheet (G253:R288).
  */
 export function calculateMonthlyEmissionRates(options: {
-  selectedGeographyStatesVMTPercentages: SelectedGeographyStatesVMTPercentages | {}; // prettier-ignore
+  selectedRegionsStatesVMTPercentages: SelectedRegionsStatesVMTPercentages | {};
   evDeploymentLocation: string;
   evModelYear: string;
   iceReplacementVehicle: string;
 }) {
   const {
-    selectedGeographyStatesVMTPercentages,
+    selectedRegionsStatesVMTPercentages,
     evDeploymentLocation,
     evModelYear,
     iceReplacementVehicle,
@@ -1454,8 +1466,8 @@ export function calculateMonthlyEmissionRates(options: {
         : true;
 
       const statesVMTPercentages =
-        Object.keys(selectedGeographyStatesVMTPercentages).length !== 0
-          ? (selectedGeographyStatesVMTPercentages as SelectedGeographyStatesVMTPercentages)
+        Object.keys(selectedRegionsStatesVMTPercentages).length !== 0
+          ? (selectedRegionsStatesVMTPercentages as SelectedRegionsStatesVMTPercentages)
           : null;
 
       const movesRegionalWeightPercentage =
