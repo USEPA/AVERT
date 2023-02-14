@@ -7,7 +7,7 @@ import type {
   HourlyEVChargingPercentages,
   SelectedRegionsStatesVMTPercentages,
   SelectedRegionsVMTPercentagesPerVehicleType,
-  SelectedGeographyAverageVMTPerYear,
+  SelectedRegionsAverageVMTPerYear,
   MonthlyVMTPerVehicleType,
   EVEfficiencyPerVehicleType,
   DailyStats,
@@ -35,7 +35,7 @@ import {
   calculateHourlyEVChargingPercentages,
   calculateSelectedRegionsStatesVMTPercentages,
   calculateSelectedRegionsVMTPercentagesPerVehicleType,
-  calculateSelectedGeographyAverageVMTPerYear,
+  calculateSelectedRegionsAverageVMTPerYear,
   calculateMonthlyVMTPerVehicleType,
   calculateEVEfficiencyPerVehicleType,
   calculateDailyStats,
@@ -94,9 +94,9 @@ type Action =
       };
     }
   | {
-      type: 'transportation/SET_SELECTED_GEOGRAPHY_AVERAGE_VMT_PER_YEAR';
+      type: 'transportation/SET_SELECTED_REGIONS_AVERAGE_VMT_PER_YEAR';
       payload: {
-        selectedGeographyAverageVMTPerYear: SelectedGeographyAverageVMTPerYear;
+        selectedRegionsAverageVMTPerYear: SelectedRegionsAverageVMTPerYear;
       };
     }
   | {
@@ -182,7 +182,7 @@ type State = {
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
   selectedRegionsStatesVMTPercentages: SelectedRegionsStatesVMTPercentages | {};
   selectedRegionsVMTPercentagesPerVehicleType: SelectedRegionsVMTPercentagesPerVehicleType | {}; // prettier-ignore
-  selectedGeographyAverageVMTPerYear: SelectedGeographyAverageVMTPerYear;
+  selectedRegionsAverageVMTPerYear: SelectedRegionsAverageVMTPerYear | {};
   monthlyVMTPerVehicleType: MonthlyVMTPerVehicleType;
   evEfficiencyPerVehicleType: EVEfficiencyPerVehicleType;
   dailyStats: DailyStats;
@@ -210,12 +210,7 @@ const initialState: State = {
   hourlyEVChargingPercentages: {},
   selectedRegionsStatesVMTPercentages: {},
   selectedRegionsVMTPercentagesPerVehicleType: {},
-  selectedGeographyAverageVMTPerYear: {
-    cars: 0,
-    trucks: 0,
-    transitBuses: 0,
-    schoolBuses: 0,
-  },
+  selectedRegionsAverageVMTPerYear: {},
   monthlyVMTPerVehicleType: {},
   evEfficiencyPerVehicleType: {
     batteryEVCars: 0,
@@ -329,12 +324,12 @@ export default function reducer(
       };
     }
 
-    case 'transportation/SET_SELECTED_GEOGRAPHY_AVERAGE_VMT_PER_YEAR': {
-      const { selectedGeographyAverageVMTPerYear } = action.payload;
+    case 'transportation/SET_SELECTED_REGIONS_AVERAGE_VMT_PER_YEAR': {
+      const { selectedRegionsAverageVMTPerYear } = action.payload;
 
       return {
         ...state,
-        selectedGeographyAverageVMTPerYear,
+        selectedRegionsAverageVMTPerYear,
       };
     }
 
@@ -589,13 +584,13 @@ export function setSelectedGeographyVMTData(): AppThunk {
         vmtAllocationPerVehicle,
       });
 
-    const selectedGeographyAverageVMTPerYear =
-      calculateSelectedGeographyAverageVMTPerYear(
+    const selectedRegionsAverageVMTPerYear =
+      calculateSelectedRegionsAverageVMTPerYear({
         selectedRegionsVMTPercentagesPerVehicleType,
-      );
+      });
 
     const monthlyVMTPerVehicleType = calculateMonthlyVMTPerVehicleType({
-      selectedGeographyAverageVMTPerYear,
+      selectedRegionsAverageVMTPerYear,
       monthlyVMTTotalsAndPercentages,
     });
 
@@ -610,8 +605,8 @@ export function setSelectedGeographyVMTData(): AppThunk {
     });
 
     dispatch({
-      type: 'transportation/SET_SELECTED_GEOGRAPHY_AVERAGE_VMT_PER_YEAR',
-      payload: { selectedGeographyAverageVMTPerYear },
+      type: 'transportation/SET_SELECTED_REGIONS_AVERAGE_VMT_PER_YEAR',
+      payload: { selectedRegionsAverageVMTPerYear },
     });
 
     dispatch({
