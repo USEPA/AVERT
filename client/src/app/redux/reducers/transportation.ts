@@ -8,7 +8,7 @@ import type {
   SelectedRegionsStatesVMTPercentages,
   SelectedRegionsVMTPercentagesPerVehicleType,
   SelectedRegionsAverageVMTPerYear,
-  MonthlyVMTPerVehicleType,
+  SelectedRegionsMonthlyVMTPerVehicleType,
   EVEfficiencyPerVehicleType,
   DailyStats,
   MonthlyStats,
@@ -36,7 +36,7 @@ import {
   calculateSelectedRegionsStatesVMTPercentages,
   calculateSelectedRegionsVMTPercentagesPerVehicleType,
   calculateSelectedRegionsAverageVMTPerYear,
-  calculateMonthlyVMTPerVehicleType,
+  calculateSelectedRegionsMonthlyVMTPerVehicleType,
   calculateEVEfficiencyPerVehicleType,
   calculateDailyStats,
   calculateMonthlyStats,
@@ -100,8 +100,10 @@ type Action =
       };
     }
   | {
-      type: 'transportation/SET_MONTHLY_VMT_PER_VEHICLE_TYPE';
-      payload: { monthlyVMTPerVehicleType: MonthlyVMTPerVehicleType };
+      type: 'transportation/SET_SELECTED_REGIONS_MONTHLY_VMT_PER_VEHICLE_TYPE';
+      payload: {
+        selectedRegionsMonthlyVMTPerVehicleType: SelectedRegionsMonthlyVMTPerVehicleType;
+      };
     }
   | {
       type: 'transportation/SET_EV_EFFICIENCY_PER_VEHICLE_TYPE';
@@ -183,7 +185,7 @@ type State = {
   selectedRegionsStatesVMTPercentages: SelectedRegionsStatesVMTPercentages | {};
   selectedRegionsVMTPercentagesPerVehicleType: SelectedRegionsVMTPercentagesPerVehicleType | {}; // prettier-ignore
   selectedRegionsAverageVMTPerYear: SelectedRegionsAverageVMTPerYear | {};
-  monthlyVMTPerVehicleType: MonthlyVMTPerVehicleType;
+  selectedRegionsMonthlyVMTPerVehicleType: SelectedRegionsMonthlyVMTPerVehicleType | {}; // prettier-ignore
   evEfficiencyPerVehicleType: EVEfficiencyPerVehicleType;
   dailyStats: DailyStats;
   monthlyStats: MonthlyStats;
@@ -211,7 +213,7 @@ const initialState: State = {
   selectedRegionsStatesVMTPercentages: {},
   selectedRegionsVMTPercentagesPerVehicleType: {},
   selectedRegionsAverageVMTPerYear: {},
-  monthlyVMTPerVehicleType: {},
+  selectedRegionsMonthlyVMTPerVehicleType: {},
   evEfficiencyPerVehicleType: {
     batteryEVCars: 0,
     hybridEVCars: 0,
@@ -333,12 +335,12 @@ export default function reducer(
       };
     }
 
-    case 'transportation/SET_MONTHLY_VMT_PER_VEHICLE_TYPE': {
-      const { monthlyVMTPerVehicleType } = action.payload;
+    case 'transportation/SET_SELECTED_REGIONS_MONTHLY_VMT_PER_VEHICLE_TYPE': {
+      const { selectedRegionsMonthlyVMTPerVehicleType } = action.payload;
 
       return {
         ...state,
-        monthlyVMTPerVehicleType,
+        selectedRegionsMonthlyVMTPerVehicleType,
       };
     }
 
@@ -589,10 +591,11 @@ export function setSelectedGeographyVMTData(): AppThunk {
         selectedRegionsVMTPercentagesPerVehicleType,
       });
 
-    const monthlyVMTPerVehicleType = calculateMonthlyVMTPerVehicleType({
-      selectedRegionsAverageVMTPerYear,
-      monthlyVMTTotalsAndPercentages,
-    });
+    const selectedRegionsMonthlyVMTPerVehicleType =
+      calculateSelectedRegionsMonthlyVMTPerVehicleType({
+        selectedRegionsAverageVMTPerYear,
+        monthlyVMTTotalsAndPercentages,
+      });
 
     dispatch({
       type: 'transportation/SET_SELECTED_REGIONS_STATES_VMT_PERCENTAGES',
@@ -610,17 +613,17 @@ export function setSelectedGeographyVMTData(): AppThunk {
     });
 
     dispatch({
-      type: 'transportation/SET_MONTHLY_VMT_PER_VEHICLE_TYPE',
-      payload: { monthlyVMTPerVehicleType },
+      type: 'transportation/SET_SELECTED_REGIONS_MONTHLY_VMT_PER_VEHICLE_TYPE',
+      payload: { selectedRegionsMonthlyVMTPerVehicleType },
     });
 
-    // NOTE: `monthlyEVEnergyUsageGW` uses `monthlyVMTPerVehicleType`
+    // NOTE: `monthlyEVEnergyUsageGW` uses `selectedRegionsMonthlyVMTPerVehicleType`
     dispatch(setMonthlyEVEnergyUsage());
 
     // NOTE: `monthlyEmissionRates` uses `selectedGeographyStatesVMTPercentages`
     dispatch(setMonthlyEmissionRates());
 
-    // NOTE: `monthlyEmissionChanges` uses `monthlyVMTPerVehicleType`
+    // NOTE: `monthlyEmissionChanges` uses `selectedRegionsMonthlyVMTPerVehicleType`
     dispatch(setEmissionChanges());
   };
 }
@@ -737,13 +740,13 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
   return (dispatch, getState) => {
     const { transportation } = getState();
     const {
-      monthlyVMTPerVehicleType,
+      selectedRegionsMonthlyVMTPerVehicleType,
       evEfficiencyPerVehicleType,
       vehiclesDisplaced,
     } = transportation;
 
     const monthlyEVEnergyUsageGW = calculateMonthlyEVEnergyUsageGW({
-      monthlyVMTPerVehicleType,
+      selectedRegionsMonthlyVMTPerVehicleType,
       evEfficiencyPerVehicleType,
       vehiclesDisplaced,
     });
@@ -851,7 +854,7 @@ export function setEmissionChanges(): AppThunk {
     const { countiesByGeography, regionalScalingFactors } = geography;
     const {
       vmtPerVehicleTypeByGeography,
-      monthlyVMTPerVehicleType,
+      selectedRegionsMonthlyVMTPerVehicleType,
       vehiclesDisplaced,
       monthlyEmissionRates,
     } = transportation;
@@ -859,7 +862,7 @@ export function setEmissionChanges(): AppThunk {
     const { evDeploymentLocation } = eere.inputs;
 
     const monthlyEmissionChanges = calculateMonthlyEmissionChanges({
-      monthlyVMTPerVehicleType,
+      selectedRegionsMonthlyVMTPerVehicleType,
       vehiclesDisplaced,
       monthlyEmissionRates,
     });
