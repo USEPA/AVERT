@@ -572,8 +572,8 @@ export function setSelectedGeographyVMTData(): AppThunk {
 
     const geographicFocus = geography.focus;
 
-    const selectedRegionName =
-      Object.values(geography.regions).find((r) => r.selected)?.name || '';
+    const selectedRegionId =
+      Object.values(geography.regions).find((r) => r.selected)?.id || '';
 
     const selectedStateId =
       Object.values(geography.states).find((s) => s.selected)?.id || '';
@@ -581,7 +581,7 @@ export function setSelectedGeographyVMTData(): AppThunk {
     const selectedGeographyStatesVMTPercentages =
       calculateSelectedGeographyStatesVMTPercentages({
         geographicFocus,
-        selectedRegionName,
+        selectedRegionId,
         selectedStateId,
         vmtAllocationTotalsAndPercentages,
       });

@@ -6,7 +6,7 @@ import type {
   SelectedGeographyRegions,
 } from 'app/calculations/geography';
 import { sortObjectByKeys } from 'app/calculations/utilities';
-import type { RegionId, RegionName, StateId } from 'app/config';
+import type { RegionId, StateId } from 'app/config';
 import { regions, states } from 'app/config';
 /**
  * Excel: "MOVESEmissionRates" sheet.
@@ -317,7 +317,7 @@ export function calculateVMTAllocationTotalsAndPercentages() {
     },
     { regionTotals: {} } as {
       [stateId in StateId | 'regionTotals']: Partial<{
-        [region in RegionName | 'allRegions']: {
+        [regionId in RegionId | 'allRegions']: {
           cars: { total: number; percent: number };
           trucks: { total: number; percent: number };
           transitBuses: { total: number; percent: number };
@@ -329,11 +329,16 @@ export function calculateVMTAllocationTotalsAndPercentages() {
     },
   );
 
+  const regionIds = Object.values(regions).reduce((object, { id, name }) => {
+    object[name] = id;
+    return object;
+  }, {} as { [regionName: string]: RegionId });
+
   // populate vmt totals data for each state, organized by region, and initialize
   // allRegions object for storing totals of all region data in the state
   countyFips.forEach((data) => {
     const stateId = data['Postal State Code'] as StateId;
-    const region = data['AVERT Region'] as RegionName;
+    const regionId = regionIds[data['AVERT Region']];
     const carsVMT = data['Passenger Cars VMT'] || 0;
     const trucksVMT = data['Passenger Trucks and Light Commercial Trucks VMT'] || 0; // prettier-ignore
     const transitBusesVMT = data['Transit Buses VMT'] || 0;
@@ -349,7 +354,7 @@ export function calculateVMTAllocationTotalsAndPercentages() {
         allBuses: { total: 0, percent: 0 },
       };
 
-      result[stateId][region] ??= {
+      result[stateId][regionId] ??= {
         cars: { total: 0, percent: 0 },
         trucks: { total: 0, percent: 0 },
         transitBuses: { total: 0, percent: 0 },
@@ -358,7 +363,7 @@ export function calculateVMTAllocationTotalsAndPercentages() {
         allBuses: { total: 0, percent: 0 },
       };
 
-      const regionValues = result[stateId][region];
+      const regionValues = result[stateId][regionId];
 
       if (regionValues) {
         const cars = carsVMT / 1_000_000_000;
@@ -381,10 +386,10 @@ export function calculateVMTAllocationTotalsAndPercentages() {
   Object.entries(result).forEach(([stateId, stateData]) => {
     // NOTE: stateData is really 'regionTotals' on the first loop, so skip it
     if (stateId !== 'regionTotals') {
-      Object.entries(stateData).forEach(([regionName, regionData]) => {
-        // NOTE: regionName is really be 'allRegions' on the first loop, so skip it
-        if (regionName !== 'allRegions') {
-          result.regionTotals[regionName as RegionName] ??= {
+      Object.entries(stateData).forEach(([regionId, regionData]) => {
+        // NOTE: regionId is really 'allRegions' on the first loop, so skip it
+        if (regionId !== 'allRegions') {
+          result.regionTotals[regionId as RegionId] ??= {
             cars: { total: 0, percent: 1 },
             trucks: { total: 0, percent: 1 },
             transitBuses: { total: 0, percent: 1 },
@@ -393,7 +398,7 @@ export function calculateVMTAllocationTotalsAndPercentages() {
             allBuses: { total: 0, percent: 1 },
           };
 
-          const regionTotalData = result.regionTotals[regionName as RegionName];
+          const regionTotalData = result.regionTotals[regionId as RegionId];
 
           if (regionTotalData) {
             regionTotalData.cars.total += regionData.cars.total;
@@ -413,10 +418,10 @@ export function calculateVMTAllocationTotalsAndPercentages() {
   Object.entries(result).forEach(([stateId, stateData]) => {
     // NOTE: stateData is really 'regionTotals' on the first loop, so skip it
     if (stateId !== 'regionTotals') {
-      Object.entries(stateData).forEach(([regionName, regionData]) => {
-        // NOTE: regionName is really be 'allRegions' on the first loop, so skip it
-        if (regionName !== 'allRegions') {
-          const regionTotalData = result.regionTotals[regionName as RegionName];
+      Object.entries(stateData).forEach(([regionId, regionData]) => {
+        // NOTE: regionId is really 'allRegions' on the first loop, so skip it
+        if (regionId !== 'allRegions') {
+          const regionTotalData = result.regionTotals[regionId as RegionId];
           const allRegionsData = result[stateId as StateId].allRegions;
 
           if (regionTotalData && allRegionsData) {
@@ -676,13 +681,13 @@ export function calculateHourlyEVChargingPercentages() {
  */
 export function calculateSelectedGeographyStatesVMTPercentages(options: {
   geographicFocus: GeographicFocus;
-  selectedRegionName: RegionName | '';
+  selectedRegionId: RegionId | '';
   selectedStateId: StateId | '';
   vmtAllocationTotalsAndPercentages: VMTAllocationTotalsAndPercentages | {};
 }) {
   const {
     geographicFocus,
-    selectedRegionName,
+    selectedRegionId,
     selectedStateId,
     vmtAllocationTotalsAndPercentages,
   } = options;
@@ -692,7 +697,7 @@ export function calculateSelectedGeographyStatesVMTPercentages(options: {
       if (key === 'regionTotals') return object;
 
       const stateId = key as StateId;
-      const stateRegionNames = Object.keys(data);
+      const stateRegionIds = Object.keys(data); // NOTE: also includes 'allRegions' key
 
       const vmtStatesData =
         Object.keys(vmtAllocationTotalsAndPercentages).length !== 0
@@ -704,10 +709,10 @@ export function calculateSelectedGeographyStatesVMTPercentages(options: {
       if (
         vmtStateData &&
         geographicFocus === 'regions' &&
-        selectedRegionName !== '' &&
-        stateRegionNames.includes(selectedRegionName)
+        selectedRegionId !== '' &&
+        stateRegionIds.includes(selectedRegionId)
       ) {
-        const selectedRegionData = vmtStateData[selectedRegionName];
+        const selectedRegionData = vmtStateData[selectedRegionId];
 
         if (selectedRegionData) {
           object[stateId] = {
