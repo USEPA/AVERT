@@ -1,5 +1,6 @@
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { useTypedSelector } from 'app/redux/index';
+import type { SelectedRegionsTotalYearlyEVEnergyUsage } from 'app/calculations/transportation';
 
 function calculatePercent(numerator: number, denominator: number) {
   return denominator !== 0
@@ -144,12 +145,22 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
   const regionalLineLoss = useTypedSelector(
     ({ geography }) => geography.regionalLineLoss,
   );
-  const totalYearlyEVEnergyUsage = useTypedSelector(
-    ({ transportation }) => transportation.totalYearlyEVEnergyUsage,
+  const selectedRegionsTotalYearlyEVEnergyUsage = useTypedSelector(
+    ({ transportation }) =>
+      transportation.selectedRegionsTotalYearlyEVEnergyUsage,
   );
   const evDeploymentLocationHistoricalEERE = useTypedSelector(
     ({ transportation }) => transportation.evDeploymentLocationHistoricalEERE,
   );
+
+  const selectedRegionsEnergyData =
+    Object.keys(selectedRegionsTotalYearlyEVEnergyUsage).length !== 0
+      ? (selectedRegionsTotalYearlyEVEnergyUsage as SelectedRegionsTotalYearlyEVEnergyUsage)
+      : null;
+
+  const totalYearlyEVEnergyUsage = selectedRegionsEnergyData
+    ? Object.values(selectedRegionsEnergyData).reduce((a, b) => a + b, 0)
+    : 0;
 
   const historicalEERetailMw = evDeploymentLocationHistoricalEERE.eeRetail.mw;
   const historicalEERetailGWh = evDeploymentLocationHistoricalEERE.eeRetail.gwh;
