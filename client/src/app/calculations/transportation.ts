@@ -701,27 +701,35 @@ export function calculateSelectedRegionsStatesVMTPercentages(options: {
     allBuses: number;
   };
 
-  const result = Object.entries(vmtAllocationTotalsAndPercentages).reduce(
-    (object, [key, data]) => {
-      if (key === 'regionTotals') return object;
+  const vmtAllocationData =
+    Object.keys(vmtAllocationTotalsAndPercentages).length !== 0
+      ? (vmtAllocationTotalsAndPercentages as VMTAllocationTotalsAndPercentages)
+      : null;
 
-      const stateId = key as StateId;
-      const stateRegionIds = Object.keys(data); // NOTE: also includes 'allRegions' key
+  if (!vmtAllocationData) {
+    return {} as {
+      [regionId in RegionId]: {
+        [stateId in StateId]: StateVMTPercentages;
+      };
+    };
+  }
 
-      const vmtStatesData =
-        Object.keys(vmtAllocationTotalsAndPercentages).length !== 0
-          ? (vmtAllocationTotalsAndPercentages as VMTAllocationTotalsAndPercentages)
-          : null;
+  const result = Object.entries(vmtAllocationData).reduce(
+    (object, [key, value]) => {
+      const stateId = key as keyof typeof vmtAllocationData;
 
-      const vmtStateData = vmtStatesData?.[stateId];
+      if (stateId === 'regionTotals') return object;
+
+      const stateRegionIds = Object.keys(value); // NOTE: also includes 'allRegions' key
+      const stateVMTData = vmtAllocationData?.[stateId];
 
       if (
-        vmtStateData &&
+        stateVMTData &&
         geographicFocus === 'regions' &&
         selectedRegionId !== '' &&
         stateRegionIds.includes(selectedRegionId)
       ) {
-        const selectedRegionData = vmtStateData[selectedRegionId];
+        const selectedRegionData = stateVMTData[selectedRegionId];
 
         if (selectedRegionData) {
           object[selectedRegionId] ??= {} as {
@@ -740,12 +748,12 @@ export function calculateSelectedRegionsStatesVMTPercentages(options: {
       }
 
       if (
-        vmtStateData &&
+        stateVMTData &&
         geographicFocus === 'states' &&
         selectedStateId !== '' &&
         stateId === selectedStateId
       ) {
-        Object.entries(vmtStateData).forEach(([stateKey, stateData]) => {
+        Object.entries(stateVMTData).forEach(([stateKey, stateData]) => {
           if (stateKey !== 'allRegions') {
             object[stateKey as RegionId] ??= {} as {
               [stateId in StateId]: StateVMTPercentages;
