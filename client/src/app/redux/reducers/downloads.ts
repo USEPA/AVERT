@@ -27,18 +27,18 @@ const emissionsFields = [
   'Power Sector: November',
   'Power Sector: December',
   'Vehicles: Annual',
-  // 'Vehicles: January',
-  // 'Vehicles: February',
-  // 'Vehicles: March',
-  // 'Vehicles: April',
-  // 'Vehicles: May',
-  // 'Vehicles: June',
-  // 'Vehicles: July',
-  // 'Vehicles: August',
-  // 'Vehicles: September',
-  // 'Vehicles: October',
-  // 'Vehicles: November',
-  // 'Vehicles: December',
+  'Vehicles: January',
+  'Vehicles: February',
+  'Vehicles: March',
+  'Vehicles: April',
+  'Vehicles: May',
+  'Vehicles: June',
+  'Vehicles: July',
+  'Vehicles: August',
+  'Vehicles: September',
+  'Vehicles: October',
+  'Vehicles: November',
+  'Vehicles: December',
 ] as const;
 
 type Pollutant = 'SO2' | 'NOX' | 'CO2' | 'PM25' | 'VOCS' | 'NH3';
@@ -384,18 +384,18 @@ function createEmissionsFields(options: {
     'Power Sector: November': null,
     'Power Sector: December': null,
     'Vehicles: Annual': null,
-    // 'Vehicles: January': null,
-    // 'Vehicles: February': null,
-    // 'Vehicles: March': null,
-    // 'Vehicles: April': null,
-    // 'Vehicles: May': null,
-    // 'Vehicles: June': null,
-    // 'Vehicles: July': null,
-    // 'Vehicles: August': null,
-    // 'Vehicles: September': null,
-    // 'Vehicles: October': null,
-    // 'Vehicles: November': null,
-    // 'Vehicles: December': null,
+    'Vehicles: January': null,
+    'Vehicles: February': null,
+    'Vehicles: March': null,
+    'Vehicles: April': null,
+    'Vehicles: May': null,
+    'Vehicles: June': null,
+    'Vehicles: July': null,
+    'Vehicles: August': null,
+    'Vehicles: September': null,
+    'Vehicles: October': null,
+    'Vehicles: November': null,
+    'Vehicles: December': null,
   } as { [field in typeof emissionsFields[number]]: number | null };
 
   if (powerData) {
@@ -403,7 +403,7 @@ function createEmissionsFields(options: {
     const annualEmissionsChange = annualData.postEere - annualData.original;
     const annualPercentChange = (annualEmissionsChange / annualData.original) * 100 || 0; // prettier-ignore
 
-    const monthlyData = Object.entries(powerData.monthly).reduce(
+    const monthlyPowerData = Object.entries(powerData.monthly).reduce(
       (object, [key, values]) => {
         const month = Number(key);
         const { original, postEere } = values;
@@ -425,22 +425,37 @@ function createEmissionsFields(options: {
 
     result['Power Sector: Annual'] =
       unit === 'percent' ? annualPercentChange : annualEmissionsChange;
-    result['Power Sector: January'] = monthlyData[1];
-    result['Power Sector: February'] = monthlyData[2];
-    result['Power Sector: March'] = monthlyData[3];
-    result['Power Sector: April'] = monthlyData[4];
-    result['Power Sector: May'] = monthlyData[5];
-    result['Power Sector: June'] = monthlyData[6];
-    result['Power Sector: July'] = monthlyData[7];
-    result['Power Sector: August'] = monthlyData[8];
-    result['Power Sector: September'] = monthlyData[9];
-    result['Power Sector: October'] = monthlyData[10];
-    result['Power Sector: November'] = monthlyData[11];
-    result['Power Sector: December'] = monthlyData[12];
+    result['Power Sector: January'] = monthlyPowerData[1];
+    result['Power Sector: February'] = monthlyPowerData[2];
+    result['Power Sector: March'] = monthlyPowerData[3];
+    result['Power Sector: April'] = monthlyPowerData[4];
+    result['Power Sector: May'] = monthlyPowerData[5];
+    result['Power Sector: June'] = monthlyPowerData[6];
+    result['Power Sector: July'] = monthlyPowerData[7];
+    result['Power Sector: August'] = monthlyPowerData[8];
+    result['Power Sector: September'] = monthlyPowerData[9];
+    result['Power Sector: October'] = monthlyPowerData[10];
+    result['Power Sector: November'] = monthlyPowerData[11];
+    result['Power Sector: December'] = monthlyPowerData[12];
   }
 
   if (vehicleData && unit !== 'percent') {
     result['Vehicles: Annual'] = vehicleData.annual;
+
+    if (vehicleData.monthly) {
+      result['Vehicles: January'] = vehicleData.monthly[1];
+      result['Vehicles: February'] = vehicleData.monthly[2];
+      result['Vehicles: March'] = vehicleData.monthly[3];
+      result['Vehicles: April'] = vehicleData.monthly[4];
+      result['Vehicles: May'] = vehicleData.monthly[5];
+      result['Vehicles: June'] = vehicleData.monthly[6];
+      result['Vehicles: July'] = vehicleData.monthly[7];
+      result['Vehicles: August'] = vehicleData.monthly[8];
+      result['Vehicles: September'] = vehicleData.monthly[9];
+      result['Vehicles: October'] = vehicleData.monthly[10];
+      result['Vehicles: November'] = vehicleData.monthly[11];
+      result['Vehicles: December'] = vehicleData.monthly[12];
+    }
   }
 
   return result;
