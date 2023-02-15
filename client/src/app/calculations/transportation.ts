@@ -181,8 +181,8 @@ export type EVEfficiencyPerVehicleType = ReturnType<
 export type DailyStats = ReturnType<typeof calculateDailyStats>;
 export type MonthlyStats = ReturnType<typeof calculateMonthlyStats>;
 export type VehiclesDisplaced = ReturnType<typeof calculateVehiclesDisplaced>;
-export type MonthlyEVEnergyUsageGW = ReturnType<
-  typeof calculateMonthlyEVEnergyUsageGW
+export type SelectedRegionsMonthlyEVEnergyUsageGW = ReturnType<
+  typeof calculateSelectedRegionsMonthlyEVEnergyUsageGW
 >;
 export type MonthlyEVEnergyUsageMW = ReturnType<
   typeof calculateMonthlyEVEnergyUsageMW
@@ -1253,7 +1253,7 @@ export function calculateVehiclesDisplaced(options: {
  * Excel: "Sales Changes" data from "Table 8: Calculated changes for the
  * transportation sector" table in the "Library" sheet (G297:R304).
  */
-export function calculateMonthlyEVEnergyUsageGW(options: {
+export function calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
   selectedRegionsMonthlyVMTPerVehicleType: SelectedRegionsMonthlyVMTPerVehicleType | {}; // prettier-ignore
   evEfficiencyPerVehicleType: EVEfficiencyPerVehicleType;
   vehiclesDisplaced: VehiclesDisplaced;
@@ -1264,13 +1264,20 @@ export function calculateMonthlyEVEnergyUsageGW(options: {
     vehiclesDisplaced,
   } = options;
 
-  const result: {
-    [month: number]: {
-      [vehicleType in ExpandedVehicleType]: number;
+  const result = {} as {
+    [regionId in RegionId]: {
+      [month: number]: {
+        [vehicleType in ExpandedVehicleType]: number;
+      };
     };
-  } = {};
+  };
 
-  if (Object.keys(selectedRegionsMonthlyVMTPerVehicleType).length === 0) {
+  const selectedRegionsVMTData =
+    Object.keys(selectedRegionsMonthlyVMTPerVehicleType).length !== 0
+      ? (selectedRegionsMonthlyVMTPerVehicleType as SelectedRegionsMonthlyVMTPerVehicleType)
+      : null;
+
+  if (!selectedRegionsVMTData) {
     return result;
   }
 
@@ -1278,54 +1285,62 @@ export function calculateMonthlyEVEnergyUsageGW(options: {
 
   [...Array(12)].forEach((_item, index) => {
     const month = index + 1;
-    const monthlyVmt = selectedRegionsMonthlyVMTPerVehicleType[month];
 
-    if (!monthlyVmt) return result;
+    Object.entries(selectedRegionsVMTData).forEach(
+      ([regionKey, regionValue]) => {
+        const regionId = regionKey as keyof typeof selectedRegionsVMTData;
+        const monthlyVmt = regionValue[month];
 
-    result[month] = {
-      batteryEVCars:
-        vehiclesDisplaced.batteryEVCars *
-        monthlyVmt.cars *
-        evEfficiencyPerVehicleType.batteryEVCars *
-        KWtoGW,
-      hybridEVCars:
-        vehiclesDisplaced.hybridEVCars *
-        monthlyVmt.cars *
-        evEfficiencyPerVehicleType.hybridEVCars *
-        KWtoGW *
-        percentageHybridEVMilesDrivenOnElectricity,
-      batteryEVTrucks:
-        vehiclesDisplaced.batteryEVTrucks *
-        monthlyVmt.trucks *
-        evEfficiencyPerVehicleType.batteryEVTrucks *
-        KWtoGW,
-      hybridEVTrucks:
-        vehiclesDisplaced.hybridEVTrucks *
-        monthlyVmt.trucks *
-        evEfficiencyPerVehicleType.hybridEVTrucks *
-        KWtoGW *
-        percentageHybridEVMilesDrivenOnElectricity,
-      transitBusesDiesel:
-        vehiclesDisplaced.transitBusesDiesel *
-        monthlyVmt.transitBusesDiesel *
-        evEfficiencyPerVehicleType.transitBuses *
-        KWtoGW,
-      transitBusesCNG:
-        vehiclesDisplaced.transitBusesCNG *
-        monthlyVmt.transitBusesCNG *
-        evEfficiencyPerVehicleType.transitBuses *
-        KWtoGW,
-      transitBusesGasoline:
-        vehiclesDisplaced.transitBusesGasoline *
-        monthlyVmt.transitBusesGasoline *
-        evEfficiencyPerVehicleType.transitBuses *
-        KWtoGW,
-      schoolBuses:
-        vehiclesDisplaced.schoolBuses *
-        monthlyVmt.schoolBuses *
-        evEfficiencyPerVehicleType.schoolBuses *
-        KWtoGW,
-    };
+        result[regionId] ??= {};
+
+        if (monthlyVmt) {
+          result[regionId][month] = {
+            batteryEVCars:
+              vehiclesDisplaced.batteryEVCars *
+              monthlyVmt.cars *
+              evEfficiencyPerVehicleType.batteryEVCars *
+              KWtoGW,
+            hybridEVCars:
+              vehiclesDisplaced.hybridEVCars *
+              monthlyVmt.cars *
+              evEfficiencyPerVehicleType.hybridEVCars *
+              KWtoGW *
+              percentageHybridEVMilesDrivenOnElectricity,
+            batteryEVTrucks:
+              vehiclesDisplaced.batteryEVTrucks *
+              monthlyVmt.trucks *
+              evEfficiencyPerVehicleType.batteryEVTrucks *
+              KWtoGW,
+            hybridEVTrucks:
+              vehiclesDisplaced.hybridEVTrucks *
+              monthlyVmt.trucks *
+              evEfficiencyPerVehicleType.hybridEVTrucks *
+              KWtoGW *
+              percentageHybridEVMilesDrivenOnElectricity,
+            transitBusesDiesel:
+              vehiclesDisplaced.transitBusesDiesel *
+              monthlyVmt.transitBusesDiesel *
+              evEfficiencyPerVehicleType.transitBuses *
+              KWtoGW,
+            transitBusesCNG:
+              vehiclesDisplaced.transitBusesCNG *
+              monthlyVmt.transitBusesCNG *
+              evEfficiencyPerVehicleType.transitBuses *
+              KWtoGW,
+            transitBusesGasoline:
+              vehiclesDisplaced.transitBusesGasoline *
+              monthlyVmt.transitBusesGasoline *
+              evEfficiencyPerVehicleType.transitBuses *
+              KWtoGW,
+            schoolBuses:
+              vehiclesDisplaced.schoolBuses *
+              monthlyVmt.schoolBuses *
+              evEfficiencyPerVehicleType.schoolBuses *
+              KWtoGW,
+          };
+        }
+      },
+    );
   });
 
   return result;
@@ -1338,9 +1353,11 @@ export function calculateMonthlyEVEnergyUsageGW(options: {
  * Excel: Data in the third EV table (to the right of the "Calculate Changes"
  * table) in the "CalculateEERE" sheet (T49:W61).
  */
-export function calculateMonthlyEVEnergyUsageMW(
-  monthlyEVEnergyUsageGW: MonthlyEVEnergyUsageGW,
-) {
+export function calculateMonthlyEVEnergyUsageMW(options: {
+  selectedRegionsMonthlyEVEnergyUsageGW: SelectedRegionsMonthlyEVEnergyUsageGW;
+}) {
+  const { selectedRegionsMonthlyEVEnergyUsageGW } = options;
+
   const result: {
     [month: number]: {
       batteryEVs: number;
@@ -1350,13 +1367,14 @@ export function calculateMonthlyEVEnergyUsageMW(
     };
   } = {};
 
-  if (Object.keys(monthlyEVEnergyUsageGW).length === 0) {
+  if (Object.keys(selectedRegionsMonthlyEVEnergyUsageGW).length === 0) {
     return result;
   }
 
   const GWtoMW = 1_000;
 
-  Object.entries(monthlyEVEnergyUsageGW).forEach(([key, data]) => {
+  // prettier-ignore
+  Object.entries(selectedRegionsMonthlyEVEnergyUsageGW).forEach(([key, data]) => {
     const month = Number(key);
 
     result[month] = {
@@ -1381,14 +1399,16 @@ export function calculateMonthlyEVEnergyUsageMW(
  * Excel: "Sales Changes" data from "Table 8: Calculated changes for the
  * transportation sector" table in the "Library" sheet (S309).
  */
-export function calculateTotalYearlyEVEnergyUsage(
-  monthlyEVEnergyUsageGW: MonthlyEVEnergyUsageGW,
-) {
-  if (Object.keys(monthlyEVEnergyUsageGW).length === 0) {
+export function calculateTotalYearlyEVEnergyUsage(options: {
+  selectedRegionsMonthlyEVEnergyUsageGW: SelectedRegionsMonthlyEVEnergyUsageGW;
+}) {
+  const { selectedRegionsMonthlyEVEnergyUsageGW } = options;
+
+  if (Object.keys(selectedRegionsMonthlyEVEnergyUsageGW).length === 0) {
     return 0;
   }
 
-  const result = Object.values(monthlyEVEnergyUsageGW).reduce(
+  const result = Object.values(selectedRegionsMonthlyEVEnergyUsageGW).reduce(
     (total, month) => total + Object.values(month).reduce((a, b) => a + b, 0),
     0,
   );
