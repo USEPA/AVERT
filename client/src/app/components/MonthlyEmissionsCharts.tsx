@@ -23,11 +23,7 @@ import type {
   EmissionsData,
   CombinedSectorsEmissionsData,
 } from 'app/calculations/emissions';
-import {
-  useSelectedRegion,
-  useSelectedState,
-  useSelectedStateRegions,
-} from 'app/hooks';
+import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 import type { Pollutant, RegionId, StateId } from 'app/config';
 import { regions, states } from 'app/config';
 
@@ -49,11 +45,11 @@ function setMonthlyPowerData(
   data: EmissionsData[keyof EmissionsData],
   unit: Unit,
 ) {
+  const powerData = data.power;
+  if (!powerData) return null;
+
   const monthlyEmissionsChanges: number[] = [];
   const monthlyPercentageChanges: number[] = [];
-
-  const powerData = data.power;
-  if (!powerData) return [];
 
   for (const key in powerData.monthly) {
     const month = Number(key);
@@ -69,6 +65,28 @@ function setMonthlyPowerData(
   return unit === 'emissions'
     ? monthlyEmissionsChanges
     : monthlyPercentageChanges;
+}
+
+/**
+ * Creates monthly transportation sector emissions data for display in the
+ * monthly charts.
+ */
+function setMonthlyVehicleData(
+  data: EmissionsData[keyof EmissionsData],
+  aggregation: Aggregation,
+) {
+  const vehicleData = data.vehicle;
+  if (!vehicleData || aggregation !== 'region') return null;
+
+  const monthlyEmissionsChanges: number[] = [];
+
+  for (const key in vehicleData.monthly) {
+    const month = Number(key);
+    const data = vehicleData.monthly[month];
+    monthlyEmissionsChanges.push(data);
+  }
+
+  return monthlyEmissionsChanges;
 }
 
 /**
@@ -100,17 +118,10 @@ function setChartSeriesData(options: {
   return result;
 }
 
-function Chart(props: {
-  pollutant: Pollutant;
-  data: EmissionsData;
-  vehicleDataExists: boolean;
-}) {
-  const { pollutant, data, vehicleDataExists } = props;
+function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
+  const { pollutant, data } = props;
 
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const totalMonthlyEmissionChanges = useTypedSelector(
-    ({ transportation }) => transportation.totalMonthlyEmissionChanges,
-  );
   const egusNeedingEmissionsReplacement = useTypedSelector(
     ({ results }) => results.egusNeedingEmissionsReplacement,
   );
@@ -139,30 +150,6 @@ function Chart(props: {
   const selectedRegion = useSelectedRegion();
   const selectedStateRegions = useSelectedStateRegions();
 
-  const vehicleEmissions = Object.values(totalMonthlyEmissionChanges).reduce(
-    (object, data) => {
-      ['CO2', 'NOX', 'SO2', 'PM25', 'VOCs', 'NH3'].forEach((item) => {
-        const pollutant = item as keyof typeof data.total;
-        const value = -1 * data.total[pollutant];
-
-        if (value) {
-          const result = pollutant === 'CO2' ? value / 2_000 : value;
-          object[pollutant].push(result);
-        }
-      });
-
-      return object;
-    },
-    { SO2: [], NOX: [], CO2: [], PM25: [], VOCs: [], NH3: [] } as {
-      SO2: number[];
-      NOX: number[];
-      CO2: number[];
-      PM25: number[];
-      VOCs: number[];
-      NH3: number[];
-    },
-  );
-
   // console.log({ data, vehicleEmissions }); // NOTE: for debugging purposes
 
   const so2Data = {
@@ -174,7 +161,7 @@ function Chart(props: {
     },
     vehicles: {
       name: 'Vehicles',
-      data: vehicleDataExists ? vehicleEmissions.SO2 : null,
+      data: setMonthlyVehicleData(data.so2, currentAggregation),
       color: 'rgba(5, 141, 199, 0.5)',
       unit: 'lb',
     },
@@ -189,7 +176,7 @@ function Chart(props: {
     },
     vehicles: {
       name: 'Vehicles',
-      data: vehicleDataExists ? vehicleEmissions.NOX : null,
+      data: setMonthlyVehicleData(data.nox, currentAggregation),
       color: 'rgba(237, 86, 27, 0.5)',
       unit: 'lb',
     },
@@ -204,7 +191,7 @@ function Chart(props: {
     },
     vehicles: {
       name: 'Vehicles',
-      data: vehicleDataExists ? vehicleEmissions.CO2 : null,
+      data: setMonthlyVehicleData(data.co2, currentAggregation),
       color: 'rgba(80, 180, 50, 0.5)',
       unit: 'tons',
     },
@@ -219,7 +206,7 @@ function Chart(props: {
     },
     vehicles: {
       name: 'Vehicles',
-      data: vehicleDataExists ? vehicleEmissions.PM25 : null,
+      data: setMonthlyVehicleData(data.pm25, currentAggregation),
       color: 'rgba(102, 86, 131, 0.5)',
       unit: 'lb',
     },
@@ -234,7 +221,7 @@ function Chart(props: {
     },
     vehicles: {
       name: 'Vehicles',
-      data: vehicleDataExists ? vehicleEmissions.VOCs : null,
+      data: setMonthlyVehicleData(data.vocs, currentAggregation),
       color: 'rgba(255, 193, 7, 0.5)',
       unit: 'lb',
     },
@@ -249,7 +236,7 @@ function Chart(props: {
     },
     vehicles: {
       name: 'Vehicles',
-      data: vehicleDataExists ? vehicleEmissions.NH3 : null,
+      data: setMonthlyVehicleData(data.nh3, currentAggregation),
       color: 'rgba(0, 150, 136, 0.5)',
       unit: 'lb',
     },
@@ -591,36 +578,7 @@ function MonthlyEmissionsChartsContent() {
   });
 
   const selectedRegion = useSelectedRegion();
-  const selectedStateName = useSelectedState()?.name;
   const selectedStateRegions = useSelectedStateRegions();
-
-  /**
-   * NOTE: We only have monthly vehicle emission data at the regional level (if
-   * a region was selected on the "Select Geography" screen) or the combined
-   * regions level (if a state was selected on the "Select Geography" screen).
-   * That monthly emission data is stored in `totalMonthlyEmissionChanges`.
-   *
-   * That means we only have monthly vehicle emission data to display if:
-   * - the selected level of aggregation is "region"
-   *   **AND**
-   * - the following condition is true:
-   *   - a region was selected on the "Select Geography" screen
-   *     **OR**
-   *   - a state was selected on the "Select Geography" screen, so the following
-   *     condition is true:
-   *     - the selected state exists only within one region
-   *       **OR**
-   *     - more than one region exist for that selected state, but the user has
-   *       selected "All Affected Regions" in the Region select menu
-   */
-  const vehicleDataExists =
-    currentAggregation === 'region'
-      ? geographicFocus === 'regions'
-        ? true
-        : selectedStateRegions.length === 1
-        ? true
-        : currentRegionId === 'ALL'
-      : false;
 
   const regionId =
     geographicFocus === 'regions' && selectedRegion
@@ -1201,24 +1159,6 @@ function MonthlyEmissionsChartsContent() {
                     </p>
                   </div>
                 </div>
-              ) : currentSources.length === 1 &&
-                currentSources.includes('vehicles') &&
-                !vehicleDataExists ? (
-                <div className="padding-1 grid-col-12">
-                  <div className="avert-box padding-3">
-                    <p className="margin-0 font-sans-xs text-center">
-                      <strong>
-                        No emission changes data exists for vehicles at this
-                        level of aggregation.
-                      </strong>
-                      <br />
-                      Please select “All Affected Regions” from the{' '}
-                      <em>Select Regions</em> dropdown list to see vehicle
-                      emission changes for all affected AVERT regions{' '}
-                      {selectedStateName ?? 'the selected state'} is a part of.
-                    </p>
-                  </div>
-                </div>
               ) : (
                 currentPollutants.map((pollutant) => {
                   const className =
@@ -1243,12 +1183,7 @@ function MonthlyEmissionsChartsContent() {
 
                   return (
                     <div key={pollutant} className={className}>
-                      <Chart
-                        key={key}
-                        pollutant={pollutant}
-                        data={data}
-                        vehicleDataExists={vehicleDataExists}
-                      />
+                      <Chart key={key} pollutant={pollutant} data={data} />
                     </div>
                   );
                 })

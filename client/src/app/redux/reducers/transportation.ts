@@ -5,22 +5,22 @@ import type {
   VMTAllocationPerVehicle,
   MonthlyVMTTotalsAndPercentages,
   HourlyEVChargingPercentages,
-  SelectedGeographyStatesVMTPercentages,
-  SelectedGeographyVMTPercentagesPerVehicleType,
-  SelectedGeographyAverageVMTPerYear,
-  MonthlyVMTPerVehicleType,
-  EVEfficiencyPerVehicleType,
+  SelectedRegionsStatesVMTPercentages,
+  SelectedRegionsVMTPercentagesPerVehicleType,
+  SelectedRegionsAverageVMTPerYear,
+  SelectedRegionsMonthlyVMTPerVehicleType,
+  SelectedRegionsEVEfficiencyPerVehicleType,
   DailyStats,
   MonthlyStats,
   VehiclesDisplaced,
-  MonthlyEVEnergyUsageGW,
-  MonthlyEVEnergyUsageMW,
-  TotalYearlyEVEnergyUsage,
-  MonthlyDailyEVEnergyUsage,
-  MonthlyEmissionRates,
-  MonthlyEmissionChanges,
-  TotalMonthlyEmissionChanges,
-  TotalYearlyEmissionChanges,
+  SelectedRegionsMonthlyEVEnergyUsageGW,
+  SelectedRegionsMonthlyEVEnergyUsageMW,
+  SelectedRegionsTotalYearlyEVEnergyUsage,
+  SelectedRegionsMonthlyDailyEVEnergyUsage,
+  SelectedRegionsMonthlyEmissionRates,
+  SelectedRegionsMonthlyEmissionChanges,
+  SelectedRegionsTotalMonthlyEmissionChanges,
+  SelectedRegionsTotalYearlyEmissionChanges,
   VehicleEmissionChangesByGeography,
   VehicleSalesAndStock,
   SelectedRegionsEEREDefaultsAverages,
@@ -33,22 +33,22 @@ import {
   calculateVMTAllocationPerVehicle,
   calculateMonthlyVMTTotalsAndPercentages,
   calculateHourlyEVChargingPercentages,
-  calculateSelectedGeographyStatesVMTPercentages,
-  calculateSelectedGeographyVMTPercentagesPerVehicleType,
-  calculateSelectedGeographyAverageVMTPerYear,
-  calculateMonthlyVMTPerVehicleType,
-  calculateEVEfficiencyPerVehicleType,
+  calculateSelectedRegionsStatesVMTPercentages,
+  calculateSelectedRegionsVMTPercentagesPerVehicleType,
+  calculateSelectedRegionsAverageVMTPerYear,
+  calculateSelectedRegionsMonthlyVMTPerVehicleType,
+  calculateSelectedRegionsEVEfficiencyPerVehicleType,
   calculateDailyStats,
   calculateMonthlyStats,
   calculateVehiclesDisplaced,
-  calculateMonthlyEVEnergyUsageGW,
-  calculateMonthlyEVEnergyUsageMW,
-  calculateTotalYearlyEVEnergyUsage,
-  calculateMonthlyDailyEVEnergyUsage,
-  calculateMonthlyEmissionRates,
-  calculateMonthlyEmissionChanges,
-  calculateTotalMonthlyEmissionChanges,
-  calculateTotalYearlyEmissionChanges,
+  calculateSelectedRegionsMonthlyEVEnergyUsageGW,
+  calculateSelectedRegionsMonthlyEVEnergyUsageMW,
+  calculateSelectedRegionsTotalYearlyEVEnergyUsage,
+  calculateSelectedRegionsMonthlyDailyEVEnergyUsage,
+  calculateSelectedRegionsMonthlyEmissionRates,
+  calculateSelectedRegionsMonthlyEmissionChanges,
+  calculateSelectedRegionsTotalMonthlyEmissionChanges,
+  calculateSelectedRegionsTotalYearlyEmissionChanges,
   calculateVehicleEmissionChangesByGeography,
   calculateVehicleSalesAndStock,
   calculateSelectedRegionsEEREDefaultsAverages,
@@ -56,7 +56,7 @@ import {
 } from 'app/calculations/transportation';
 import type { RegionId } from 'app/config';
 
-type TransportationAction =
+type Action =
   | {
       type: 'transportation/SET_VMT_PER_VEHICLE_TYPE_BY_GEOGRAPHY';
       payload: { vmtPerVehicleTypeByGeography: VMTPerVehicleTypeByGeography };
@@ -82,30 +82,34 @@ type TransportationAction =
       payload: { hourlyEVChargingPercentages: HourlyEVChargingPercentages };
     }
   | {
-      type: 'transportation/SET_SELECTED_GEOGRAPHY_STATES_VMT_PERCENTAGES';
+      type: 'transportation/SET_SELECTED_REGIONS_STATES_VMT_PERCENTAGES';
       payload: {
-        selectedGeographyStatesVMTPercentages: SelectedGeographyStatesVMTPercentages;
+        selectedRegionsStatesVMTPercentages: SelectedRegionsStatesVMTPercentages;
       };
     }
   | {
-      type: 'transportation/SET_SELECTED_GEOGRAPHY_VMT_PERCENTAGES_PER_VEHICLE_TYPE';
+      type: 'transportation/SET_SELECTED_REGIONS_VMT_PERCENTAGES_PER_VEHICLE_TYPE';
       payload: {
-        selectedGeographyVMTPercentagesPerVehicleType: SelectedGeographyVMTPercentagesPerVehicleType;
+        selectedRegionsVMTPercentagesPerVehicleType: SelectedRegionsVMTPercentagesPerVehicleType;
       };
     }
   | {
-      type: 'transportation/SET_SELECTED_GEOGRAPHY_AVERAGE_VMT_PER_YEAR';
+      type: 'transportation/SET_SELECTED_REGIONS_AVERAGE_VMT_PER_YEAR';
       payload: {
-        selectedGeographyAverageVMTPerYear: SelectedGeographyAverageVMTPerYear;
+        selectedRegionsAverageVMTPerYear: SelectedRegionsAverageVMTPerYear;
       };
     }
   | {
-      type: 'transportation/SET_MONTHLY_VMT_PER_VEHICLE_TYPE';
-      payload: { monthlyVMTPerVehicleType: MonthlyVMTPerVehicleType };
+      type: 'transportation/SET_SELECTED_REGIONS_MONTHLY_VMT_PER_VEHICLE_TYPE';
+      payload: {
+        selectedRegionsMonthlyVMTPerVehicleType: SelectedRegionsMonthlyVMTPerVehicleType;
+      };
     }
   | {
-      type: 'transportation/SET_EV_EFFICIENCY_PER_VEHICLE_TYPE';
-      payload: { evEfficiencyPerVehicleType: EVEfficiencyPerVehicleType };
+      type: 'transportation/SET_SELECTED_REGIONS_EV_EFFICIENCY_PER_VEHICLE_TYPE';
+      payload: {
+        selectedRegionsEVEfficiencyPerVehicleType: SelectedRegionsEVEfficiencyPerVehicleType;
+      };
     }
   | {
       type: 'transportation/SET_DAILY_STATS';
@@ -120,36 +124,52 @@ type TransportationAction =
       payload: { vehiclesDisplaced: VehiclesDisplaced };
     }
   | {
-      type: 'transportation/SET_MONTHLY_EV_ENERGY_USAGE_GW';
-      payload: { monthlyEVEnergyUsageGW: MonthlyEVEnergyUsageGW };
+      type: 'transportation/SET_SELECTED_REGIONS_MONTHLY_EV_ENERGY_USAGE_GW';
+      payload: {
+        selectedRegionsMonthlyEVEnergyUsageGW: SelectedRegionsMonthlyEVEnergyUsageGW;
+      };
     }
   | {
-      type: 'transportation/SET_MONTHLY_EV_ENERGY_USAGE_MW';
-      payload: { monthlyEVEnergyUsageMW: MonthlyEVEnergyUsageMW };
+      type: 'transportation/SET_SELECTED_REGIONS_MONTHLY_EV_ENERGY_USAGE_MW';
+      payload: {
+        selectedRegionsMonthlyEVEnergyUsageMW: SelectedRegionsMonthlyEVEnergyUsageMW;
+      };
     }
   | {
-      type: 'transportation/SET_TOTAL_YEARLY_EV_ENERGY_USAGE';
-      payload: { totalYearlyEVEnergyUsage: TotalYearlyEVEnergyUsage };
+      type: 'transportation/SET_SELECTED_REGIONS_TOTAL_YEARLY_EV_ENERGY_USAGE';
+      payload: {
+        selectedRegionsTotalYearlyEVEnergyUsage: SelectedRegionsTotalYearlyEVEnergyUsage;
+      };
     }
   | {
-      type: 'transportation/SET_MONTHLY_DAILY_EV_ENERGY_USAGE';
-      payload: { monthlyDailyEVEnergyUsage: MonthlyDailyEVEnergyUsage };
+      type: 'transportation/SET_SELECTED_REGIONS_MONTHLY_DAILY_EV_ENERGY_USAGE';
+      payload: {
+        selectedRegionsMonthlyDailyEVEnergyUsage: SelectedRegionsMonthlyDailyEVEnergyUsage;
+      };
     }
   | {
-      type: 'transportation/SET_MONTHLY_EMISSION_RATES';
-      payload: { monthlyEmissionRates: MonthlyEmissionRates };
+      type: 'transportation/SET_SELECTED_REGIONS_MONTHLY_EMISSION_RATES';
+      payload: {
+        selectedRegionsMonthlyEmissionRates: SelectedRegionsMonthlyEmissionRates;
+      };
     }
   | {
-      type: 'transportation/SET_MONTHLY_EMISSION_CHANGES';
-      payload: { monthlyEmissionChanges: MonthlyEmissionChanges };
+      type: 'transportation/SET_SELECTED_REGIONS_MONTHLY_EMISSION_CHANGES';
+      payload: {
+        selectedRegionsMonthlyEmissionChanges: SelectedRegionsMonthlyEmissionChanges;
+      };
     }
   | {
-      type: 'transportation/SET_TOTAL_MONTHLY_EMISSION_CHANGES';
-      payload: { totalMonthlyEmissionChanges: TotalMonthlyEmissionChanges };
+      type: 'transportation/SET_SELECTED_REGIONS_TOTAL_MONTHLY_EMISSION_CHANGES';
+      payload: {
+        selectedRegionsTotalMonthlyEmissionChanges: SelectedRegionsTotalMonthlyEmissionChanges;
+      };
     }
   | {
-      type: 'transportation/SET_TOTAL_YEARLY_EMISSION_CHANGES';
-      payload: { totalYearlyEmissionChanges: TotalYearlyEmissionChanges };
+      type: 'transportation/SET_SELECTED_REGIONS_TOTAL_YEARLY_EMISSION_CHANGES';
+      payload: {
+        selectedRegionsTotalYearlyEmissionChanges: SelectedRegionsTotalYearlyEmissionChanges;
+      };
     }
   | {
       type: 'transportation/SET_VEHICLE_EMISSION_CHANGES_BY_GEOGRAPHY';
@@ -174,60 +194,45 @@ type TransportationAction =
       };
     };
 
-type TransportationState = {
+type State = {
   vmtPerVehicleTypeByGeography: VMTPerVehicleTypeByGeography | {};
   vmtAllocationTotalsAndPercentages: VMTAllocationTotalsAndPercentages | {};
   vmtAllocationPerVehicle: VMTAllocationPerVehicle | {};
   monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
-  selectedGeographyStatesVMTPercentages: SelectedGeographyStatesVMTPercentages | {}; // prettier-ignore
-  selectedGeographyVMTPercentagesPerVehicleType: SelectedGeographyVMTPercentagesPerVehicleType;
-  selectedGeographyAverageVMTPerYear: SelectedGeographyAverageVMTPerYear;
-  monthlyVMTPerVehicleType: MonthlyVMTPerVehicleType;
-  evEfficiencyPerVehicleType: EVEfficiencyPerVehicleType;
+  selectedRegionsStatesVMTPercentages: SelectedRegionsStatesVMTPercentages | {};
+  selectedRegionsVMTPercentagesPerVehicleType: SelectedRegionsVMTPercentagesPerVehicleType | {}; // prettier-ignore
+  selectedRegionsAverageVMTPerYear: SelectedRegionsAverageVMTPerYear | {};
+  selectedRegionsMonthlyVMTPerVehicleType: SelectedRegionsMonthlyVMTPerVehicleType | {}; // prettier-ignore
+  selectedRegionsEVEfficiencyPerVehicleType: SelectedRegionsEVEfficiencyPerVehicleType | {}; // prettier-ignore
   dailyStats: DailyStats;
   monthlyStats: MonthlyStats;
   vehiclesDisplaced: VehiclesDisplaced;
-  monthlyEVEnergyUsageGW: MonthlyEVEnergyUsageGW;
-  monthlyEVEnergyUsageMW: MonthlyEVEnergyUsageMW;
-  totalYearlyEVEnergyUsage: TotalYearlyEVEnergyUsage;
-  monthlyDailyEVEnergyUsage: MonthlyDailyEVEnergyUsage;
-  monthlyEmissionRates: MonthlyEmissionRates;
-  monthlyEmissionChanges: MonthlyEmissionChanges;
-  totalMonthlyEmissionChanges: TotalMonthlyEmissionChanges;
-  totalYearlyEmissionChanges: TotalYearlyEmissionChanges;
+  selectedRegionsMonthlyEVEnergyUsageGW: SelectedRegionsMonthlyEVEnergyUsageGW | {}; // prettier-ignore
+  selectedRegionsMonthlyEVEnergyUsageMW: SelectedRegionsMonthlyEVEnergyUsageMW | {}; // prettier-ignore
+  selectedRegionsTotalYearlyEVEnergyUsage: SelectedRegionsTotalYearlyEVEnergyUsage | {}; // prettier-ignore
+  selectedRegionsMonthlyDailyEVEnergyUsage: SelectedRegionsMonthlyDailyEVEnergyUsage | {}; // prettier-ignore
+  selectedRegionsMonthlyEmissionRates: SelectedRegionsMonthlyEmissionRates | {};
+  selectedRegionsMonthlyEmissionChanges: SelectedRegionsMonthlyEmissionChanges | {}; // prettier-ignore
+  selectedRegionsTotalMonthlyEmissionChanges: SelectedRegionsTotalMonthlyEmissionChanges | {}; // prettier-ignore
+  selectedRegionsTotalYearlyEmissionChanges: SelectedRegionsTotalYearlyEmissionChanges | {}; // prettier-ignore
   vehicleEmissionChangesByGeography: VehicleEmissionChangesByGeography | {};
   vehicleSalesAndStock: VehicleSalesAndStock;
   selectedRegionsEEREDefaultsAverages: SelectedRegionsEEREDefaultsAverages;
   evDeploymentLocationHistoricalEERE: EVDeploymentLocationHistoricalEERE;
 };
 
-const initialState: TransportationState = {
+const initialState: State = {
   vmtPerVehicleTypeByGeography: {},
   vmtAllocationTotalsAndPercentages: {},
   vmtAllocationPerVehicle: {},
   monthlyVMTTotalsAndPercentages: {},
   hourlyEVChargingPercentages: {},
-  selectedGeographyStatesVMTPercentages: {},
-  selectedGeographyVMTPercentagesPerVehicleType: {
-    vmtPerLDVPercent: 0,
-    vmtPerBusPercent: 0,
-  },
-  selectedGeographyAverageVMTPerYear: {
-    cars: 0,
-    trucks: 0,
-    transitBuses: 0,
-    schoolBuses: 0,
-  },
-  monthlyVMTPerVehicleType: {},
-  evEfficiencyPerVehicleType: {
-    batteryEVCars: 0,
-    hybridEVCars: 0,
-    batteryEVTrucks: 0,
-    hybridEVTrucks: 0,
-    transitBuses: 0,
-    schoolBuses: 0,
-  },
+  selectedRegionsStatesVMTPercentages: {},
+  selectedRegionsVMTPercentagesPerVehicleType: {},
+  selectedRegionsAverageVMTPerYear: {},
+  selectedRegionsMonthlyVMTPerVehicleType: {},
+  selectedRegionsEVEfficiencyPerVehicleType: {},
   dailyStats: {},
   monthlyStats: {},
   vehiclesDisplaced: {
@@ -240,20 +245,14 @@ const initialState: TransportationState = {
     transitBusesGasoline: 0,
     schoolBuses: 0,
   },
-  monthlyEVEnergyUsageGW: {},
-  monthlyEVEnergyUsageMW: {},
-  totalYearlyEVEnergyUsage: 0,
-  monthlyDailyEVEnergyUsage: {},
-  monthlyEmissionRates: {},
-  monthlyEmissionChanges: {},
-  totalMonthlyEmissionChanges: {},
-  totalYearlyEmissionChanges: {
-    cars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-    trucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-    transitBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-    schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-    total: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-  },
+  selectedRegionsMonthlyEVEnergyUsageGW: {},
+  selectedRegionsMonthlyEVEnergyUsageMW: {},
+  selectedRegionsTotalYearlyEVEnergyUsage: {},
+  selectedRegionsMonthlyDailyEVEnergyUsage: {},
+  selectedRegionsMonthlyEmissionRates: {},
+  selectedRegionsMonthlyEmissionChanges: {},
+  selectedRegionsTotalMonthlyEmissionChanges: {},
+  selectedRegionsTotalYearlyEmissionChanges: {},
   vehicleEmissionChangesByGeography: {},
   vehicleSalesAndStock: {},
   selectedRegionsEEREDefaultsAverages: {},
@@ -265,9 +264,9 @@ const initialState: TransportationState = {
 };
 
 export default function reducer(
-  state: TransportationState = initialState,
-  action: TransportationAction,
-): TransportationState {
+  state: State = initialState,
+  action: Action,
+): State {
   switch (action.type) {
     case 'transportation/SET_VMT_PER_VEHICLE_TYPE_BY_GEOGRAPHY': {
       const { vmtPerVehicleTypeByGeography } = action.payload;
@@ -314,48 +313,48 @@ export default function reducer(
       };
     }
 
-    case 'transportation/SET_SELECTED_GEOGRAPHY_STATES_VMT_PERCENTAGES': {
-      const { selectedGeographyStatesVMTPercentages } = action.payload;
+    case 'transportation/SET_SELECTED_REGIONS_STATES_VMT_PERCENTAGES': {
+      const { selectedRegionsStatesVMTPercentages } = action.payload;
 
       return {
         ...state,
-        selectedGeographyStatesVMTPercentages,
+        selectedRegionsStatesVMTPercentages,
       };
     }
 
-    case 'transportation/SET_SELECTED_GEOGRAPHY_VMT_PERCENTAGES_PER_VEHICLE_TYPE': {
-      const { selectedGeographyVMTPercentagesPerVehicleType } = action.payload;
+    case 'transportation/SET_SELECTED_REGIONS_VMT_PERCENTAGES_PER_VEHICLE_TYPE': {
+      const { selectedRegionsVMTPercentagesPerVehicleType } = action.payload;
 
       return {
         ...state,
-        selectedGeographyVMTPercentagesPerVehicleType,
+        selectedRegionsVMTPercentagesPerVehicleType,
       };
     }
 
-    case 'transportation/SET_SELECTED_GEOGRAPHY_AVERAGE_VMT_PER_YEAR': {
-      const { selectedGeographyAverageVMTPerYear } = action.payload;
+    case 'transportation/SET_SELECTED_REGIONS_AVERAGE_VMT_PER_YEAR': {
+      const { selectedRegionsAverageVMTPerYear } = action.payload;
 
       return {
         ...state,
-        selectedGeographyAverageVMTPerYear,
+        selectedRegionsAverageVMTPerYear,
       };
     }
 
-    case 'transportation/SET_MONTHLY_VMT_PER_VEHICLE_TYPE': {
-      const { monthlyVMTPerVehicleType } = action.payload;
+    case 'transportation/SET_SELECTED_REGIONS_MONTHLY_VMT_PER_VEHICLE_TYPE': {
+      const { selectedRegionsMonthlyVMTPerVehicleType } = action.payload;
 
       return {
         ...state,
-        monthlyVMTPerVehicleType,
+        selectedRegionsMonthlyVMTPerVehicleType,
       };
     }
 
-    case 'transportation/SET_EV_EFFICIENCY_PER_VEHICLE_TYPE': {
-      const { evEfficiencyPerVehicleType } = action.payload;
+    case 'transportation/SET_SELECTED_REGIONS_EV_EFFICIENCY_PER_VEHICLE_TYPE': {
+      const { selectedRegionsEVEfficiencyPerVehicleType } = action.payload;
 
       return {
         ...state,
-        evEfficiencyPerVehicleType,
+        selectedRegionsEVEfficiencyPerVehicleType,
       };
     }
 
@@ -386,66 +385,66 @@ export default function reducer(
       };
     }
 
-    case 'transportation/SET_MONTHLY_EV_ENERGY_USAGE_GW': {
-      const { monthlyEVEnergyUsageGW } = action.payload;
+    case 'transportation/SET_SELECTED_REGIONS_MONTHLY_EV_ENERGY_USAGE_GW': {
+      const { selectedRegionsMonthlyEVEnergyUsageGW } = action.payload;
 
       return {
         ...state,
-        monthlyEVEnergyUsageGW,
+        selectedRegionsMonthlyEVEnergyUsageGW,
       };
     }
 
-    case 'transportation/SET_MONTHLY_EV_ENERGY_USAGE_MW': {
-      const { monthlyEVEnergyUsageMW } = action.payload;
+    case 'transportation/SET_SELECTED_REGIONS_MONTHLY_EV_ENERGY_USAGE_MW': {
+      const { selectedRegionsMonthlyEVEnergyUsageMW } = action.payload;
 
       return {
         ...state,
-        monthlyEVEnergyUsageMW,
+        selectedRegionsMonthlyEVEnergyUsageMW,
       };
     }
 
-    case 'transportation/SET_MONTHLY_DAILY_EV_ENERGY_USAGE': {
-      const { monthlyDailyEVEnergyUsage } = action.payload;
+    case 'transportation/SET_SELECTED_REGIONS_MONTHLY_DAILY_EV_ENERGY_USAGE': {
+      const { selectedRegionsMonthlyDailyEVEnergyUsage } = action.payload;
 
       return {
         ...state,
-        monthlyDailyEVEnergyUsage,
+        selectedRegionsMonthlyDailyEVEnergyUsage,
       };
     }
 
-    case 'transportation/SET_MONTHLY_EMISSION_RATES': {
-      const { monthlyEmissionRates } = action.payload;
+    case 'transportation/SET_SELECTED_REGIONS_MONTHLY_EMISSION_RATES': {
+      const { selectedRegionsMonthlyEmissionRates } = action.payload;
 
       return {
         ...state,
-        monthlyEmissionRates,
+        selectedRegionsMonthlyEmissionRates,
       };
     }
 
-    case 'transportation/SET_MONTHLY_EMISSION_CHANGES': {
-      const { monthlyEmissionChanges } = action.payload;
+    case 'transportation/SET_SELECTED_REGIONS_MONTHLY_EMISSION_CHANGES': {
+      const { selectedRegionsMonthlyEmissionChanges } = action.payload;
 
       return {
         ...state,
-        monthlyEmissionChanges,
+        selectedRegionsMonthlyEmissionChanges,
       };
     }
 
-    case 'transportation/SET_TOTAL_MONTHLY_EMISSION_CHANGES': {
-      const { totalMonthlyEmissionChanges } = action.payload;
+    case 'transportation/SET_SELECTED_REGIONS_TOTAL_MONTHLY_EMISSION_CHANGES': {
+      const { selectedRegionsTotalMonthlyEmissionChanges } = action.payload;
 
       return {
         ...state,
-        totalMonthlyEmissionChanges,
+        selectedRegionsTotalMonthlyEmissionChanges,
       };
     }
 
-    case 'transportation/SET_TOTAL_YEARLY_EMISSION_CHANGES': {
-      const { totalYearlyEmissionChanges } = action.payload;
+    case 'transportation/SET_SELECTED_REGIONS_TOTAL_YEARLY_EMISSION_CHANGES': {
+      const { selectedRegionsTotalYearlyEmissionChanges } = action.payload;
 
       return {
         ...state,
-        totalYearlyEmissionChanges,
+        selectedRegionsTotalYearlyEmissionChanges,
       };
     }
 
@@ -458,12 +457,12 @@ export default function reducer(
       };
     }
 
-    case 'transportation/SET_TOTAL_YEARLY_EV_ENERGY_USAGE': {
-      const { totalYearlyEVEnergyUsage } = action.payload;
+    case 'transportation/SET_SELECTED_REGIONS_TOTAL_YEARLY_EV_ENERGY_USAGE': {
+      const { selectedRegionsTotalYearlyEVEnergyUsage } = action.payload;
 
       return {
         ...state,
-        totalYearlyEVEnergyUsage,
+        selectedRegionsTotalYearlyEVEnergyUsage,
       };
     }
 
@@ -572,63 +571,64 @@ export function setSelectedGeographyVMTData(): AppThunk {
 
     const geographicFocus = geography.focus;
 
-    const selectedRegionName =
-      Object.values(geography.regions).find((r) => r.selected)?.name || '';
+    const selectedRegionId =
+      Object.values(geography.regions).find((r) => r.selected)?.id || '';
 
     const selectedStateId =
       Object.values(geography.states).find((s) => s.selected)?.id || '';
 
-    const selectedGeographyStatesVMTPercentages =
-      calculateSelectedGeographyStatesVMTPercentages({
+    const selectedRegionsStatesVMTPercentages =
+      calculateSelectedRegionsStatesVMTPercentages({
         geographicFocus,
-        selectedRegionName,
+        selectedRegionId,
         selectedStateId,
         vmtAllocationTotalsAndPercentages,
       });
 
-    const selectedGeographyVMTPercentagesPerVehicleType =
-      calculateSelectedGeographyVMTPercentagesPerVehicleType({
-        selectedGeographyStatesVMTPercentages,
+    const selectedRegionsVMTPercentagesPerVehicleType =
+      calculateSelectedRegionsVMTPercentagesPerVehicleType({
+        selectedRegionsStatesVMTPercentages,
         vmtAllocationPerVehicle,
       });
 
-    const selectedGeographyAverageVMTPerYear =
-      calculateSelectedGeographyAverageVMTPerYear(
-        selectedGeographyVMTPercentagesPerVehicleType,
-      );
+    const selectedRegionsAverageVMTPerYear =
+      calculateSelectedRegionsAverageVMTPerYear({
+        selectedRegionsVMTPercentagesPerVehicleType,
+      });
 
-    const monthlyVMTPerVehicleType = calculateMonthlyVMTPerVehicleType({
-      selectedGeographyAverageVMTPerYear,
-      monthlyVMTTotalsAndPercentages,
+    const selectedRegionsMonthlyVMTPerVehicleType =
+      calculateSelectedRegionsMonthlyVMTPerVehicleType({
+        selectedRegionsAverageVMTPerYear,
+        monthlyVMTTotalsAndPercentages,
+      });
+
+    dispatch({
+      type: 'transportation/SET_SELECTED_REGIONS_STATES_VMT_PERCENTAGES',
+      payload: { selectedRegionsStatesVMTPercentages },
     });
 
     dispatch({
-      type: 'transportation/SET_SELECTED_GEOGRAPHY_STATES_VMT_PERCENTAGES',
-      payload: { selectedGeographyStatesVMTPercentages },
+      type: 'transportation/SET_SELECTED_REGIONS_VMT_PERCENTAGES_PER_VEHICLE_TYPE',
+      payload: { selectedRegionsVMTPercentagesPerVehicleType },
     });
 
     dispatch({
-      type: 'transportation/SET_SELECTED_GEOGRAPHY_VMT_PERCENTAGES_PER_VEHICLE_TYPE',
-      payload: { selectedGeographyVMTPercentagesPerVehicleType },
+      type: 'transportation/SET_SELECTED_REGIONS_AVERAGE_VMT_PER_YEAR',
+      payload: { selectedRegionsAverageVMTPerYear },
     });
 
     dispatch({
-      type: 'transportation/SET_SELECTED_GEOGRAPHY_AVERAGE_VMT_PER_YEAR',
-      payload: { selectedGeographyAverageVMTPerYear },
+      type: 'transportation/SET_SELECTED_REGIONS_MONTHLY_VMT_PER_VEHICLE_TYPE',
+      payload: { selectedRegionsMonthlyVMTPerVehicleType },
     });
 
-    dispatch({
-      type: 'transportation/SET_MONTHLY_VMT_PER_VEHICLE_TYPE',
-      payload: { monthlyVMTPerVehicleType },
-    });
-
-    // NOTE: `monthlyEVEnergyUsageGW` uses `monthlyVMTPerVehicleType`
+    // NOTE: `monthlyEVEnergyUsageGW` uses `selectedRegionsMonthlyVMTPerVehicleType`
     dispatch(setMonthlyEVEnergyUsage());
 
-    // NOTE: `monthlyEmissionRates` uses `selectedGeographyStatesVMTPercentages`
+    // NOTE: `selectedRegionsMonthlyEmissionRates` uses `selectedRegionsStatesVMTPercentages`
     dispatch(setMonthlyEmissionRates());
 
-    // NOTE: `monthlyEmissionChanges` uses `monthlyVMTPerVehicleType`
+    // NOTE: `selectedRegionsMonthlyEmissionChanges` uses `selectedRegionsMonthlyVMTPerVehicleType`
     dispatch(setEmissionChanges());
   };
 }
@@ -646,17 +646,22 @@ export function setEVEfficiency(): AppThunk {
     const { regionalScalingFactors } = geography;
     const { evModelYear } = eere.inputs;
 
-    const evEfficiencyPerVehicleType = calculateEVEfficiencyPerVehicleType({
+    const selectedGeographyRegionIds = Object.keys(
       regionalScalingFactors,
-      evModelYear,
-    });
+    ) as RegionId[];
+
+    const selectedRegionsEVEfficiencyPerVehicleType =
+      calculateSelectedRegionsEVEfficiencyPerVehicleType({
+        selectedGeographyRegionIds,
+        evModelYear,
+      });
 
     dispatch({
-      type: 'transportation/SET_EV_EFFICIENCY_PER_VEHICLE_TYPE',
-      payload: { evEfficiencyPerVehicleType },
+      type: 'transportation/SET_SELECTED_REGIONS_EV_EFFICIENCY_PER_VEHICLE_TYPE',
+      payload: { selectedRegionsEVEfficiencyPerVehicleType },
     });
 
-    // NOTE: `monthlyEVEnergyUsageGW` uses `evEfficiencyPerVehicleType`
+    // NOTE: `monthlyEVEnergyUsageGW` uses `selectedRegionsEVEfficiencyPerVehicleType`
     dispatch(setMonthlyEVEnergyUsage());
   };
 }
@@ -693,7 +698,7 @@ export function setDailyAndMonthlyStats(): AppThunk {
       payload: { monthlyStats },
     });
 
-    // NOTE: `monthlyDailyEVEnergyUsage` uses `monthlyStats`
+    // NOTE: `selectedRegionsMonthlyDailyEVEnergyUsage` uses `monthlyStats`
     dispatch(setMonthlyDailyEVEnergyUsage());
   };
 }
@@ -728,7 +733,7 @@ export function setVehiclesDisplaced(): AppThunk {
     // NOTE: `monthlyEVEnergyUsageGW` uses `vehiclesDisplaced`
     dispatch(setMonthlyEVEnergyUsage());
 
-    // NOTE: `monthlyEmissionChanges` uses `vehiclesDisplaced`
+    // NOTE: `selectedRegionsMonthlyEmissionChanges` uses `vehiclesDisplaced`
     dispatch(setEmissionChanges());
   };
 }
@@ -745,41 +750,44 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
   return (dispatch, getState) => {
     const { transportation } = getState();
     const {
-      monthlyVMTPerVehicleType,
-      evEfficiencyPerVehicleType,
+      selectedRegionsMonthlyVMTPerVehicleType,
+      selectedRegionsEVEfficiencyPerVehicleType,
       vehiclesDisplaced,
     } = transportation;
 
-    const monthlyEVEnergyUsageGW = calculateMonthlyEVEnergyUsageGW({
-      monthlyVMTPerVehicleType,
-      evEfficiencyPerVehicleType,
-      vehiclesDisplaced,
-    });
+    const selectedRegionsMonthlyEVEnergyUsageGW =
+      calculateSelectedRegionsMonthlyEVEnergyUsageGW({
+        selectedRegionsMonthlyVMTPerVehicleType,
+        selectedRegionsEVEfficiencyPerVehicleType,
+        vehiclesDisplaced,
+      });
 
-    const monthlyEVEnergyUsageMW = calculateMonthlyEVEnergyUsageMW(
-      monthlyEVEnergyUsageGW,
-    );
+    const selectedRegionsMonthlyEVEnergyUsageMW =
+      calculateSelectedRegionsMonthlyEVEnergyUsageMW({
+        selectedRegionsMonthlyEVEnergyUsageGW,
+      });
 
-    const totalYearlyEVEnergyUsage = calculateTotalYearlyEVEnergyUsage(
-      monthlyEVEnergyUsageGW,
-    );
-
-    dispatch({
-      type: 'transportation/SET_MONTHLY_EV_ENERGY_USAGE_GW',
-      payload: { monthlyEVEnergyUsageGW },
-    });
+    const selectedRegionsTotalYearlyEVEnergyUsage =
+      calculateSelectedRegionsTotalYearlyEVEnergyUsage({
+        selectedRegionsMonthlyEVEnergyUsageGW,
+      });
 
     dispatch({
-      type: 'transportation/SET_MONTHLY_EV_ENERGY_USAGE_MW',
-      payload: { monthlyEVEnergyUsageMW },
+      type: 'transportation/SET_SELECTED_REGIONS_MONTHLY_EV_ENERGY_USAGE_GW',
+      payload: { selectedRegionsMonthlyEVEnergyUsageGW },
     });
 
     dispatch({
-      type: 'transportation/SET_TOTAL_YEARLY_EV_ENERGY_USAGE',
-      payload: { totalYearlyEVEnergyUsage },
+      type: 'transportation/SET_SELECTED_REGIONS_MONTHLY_EV_ENERGY_USAGE_MW',
+      payload: { selectedRegionsMonthlyEVEnergyUsageMW },
     });
 
-    // NOTE: `monthlyDailyEVEnergyUsage` uses `monthlyEVEnergyUsageMW`
+    dispatch({
+      type: 'transportation/SET_SELECTED_REGIONS_TOTAL_YEARLY_EV_ENERGY_USAGE',
+      payload: { selectedRegionsTotalYearlyEVEnergyUsage },
+    });
+
+    // NOTE: `selectedRegionsMonthlyDailyEVEnergyUsage` uses `selectedRegionsMonthlyEVEnergyUsageMW`
     dispatch(setMonthlyDailyEVEnergyUsage());
   };
 }
@@ -798,16 +806,18 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
 export function setMonthlyDailyEVEnergyUsage(): AppThunk {
   return (dispatch, getState) => {
     const { transportation } = getState();
-    const { monthlyStats, monthlyEVEnergyUsageMW } = transportation;
+    const { monthlyStats, selectedRegionsMonthlyEVEnergyUsageMW } =
+      transportation;
 
-    const monthlyDailyEVEnergyUsage = calculateMonthlyDailyEVEnergyUsage({
-      monthlyEVEnergyUsageMW,
-      monthlyStats,
-    });
+    const selectedRegionsMonthlyDailyEVEnergyUsage =
+      calculateSelectedRegionsMonthlyDailyEVEnergyUsage({
+        selectedRegionsMonthlyEVEnergyUsageMW,
+        monthlyStats,
+      });
 
     dispatch({
-      type: 'transportation/SET_MONTHLY_DAILY_EV_ENERGY_USAGE',
-      payload: { monthlyDailyEVEnergyUsage },
+      type: 'transportation/SET_SELECTED_REGIONS_MONTHLY_DAILY_EV_ENERGY_USAGE',
+      payload: { selectedRegionsMonthlyDailyEVEnergyUsage },
     });
   };
 }
@@ -824,23 +834,24 @@ export function setMonthlyDailyEVEnergyUsage(): AppThunk {
 export function setMonthlyEmissionRates(): AppThunk {
   return (dispatch, getState) => {
     const { transportation, eere } = getState();
-    const { selectedGeographyStatesVMTPercentages } = transportation;
+    const { selectedRegionsStatesVMTPercentages } = transportation;
     const { evDeploymentLocation, evModelYear, iceReplacementVehicle } =
       eere.inputs;
 
-    const monthlyEmissionRates = calculateMonthlyEmissionRates({
-      selectedGeographyStatesVMTPercentages,
-      evDeploymentLocation,
-      evModelYear,
-      iceReplacementVehicle,
-    });
+    const selectedRegionsMonthlyEmissionRates =
+      calculateSelectedRegionsMonthlyEmissionRates({
+        selectedRegionsStatesVMTPercentages,
+        evDeploymentLocation,
+        evModelYear,
+        iceReplacementVehicle,
+      });
 
     dispatch({
-      type: 'transportation/SET_MONTHLY_EMISSION_RATES',
-      payload: { monthlyEmissionRates },
+      type: 'transportation/SET_SELECTED_REGIONS_MONTHLY_EMISSION_RATES',
+      payload: { selectedRegionsMonthlyEmissionRates },
     });
 
-    // NOTE: `monthlyEmissionChanges` uses `monthlyEmissionRates`
+    // NOTE: `selectedRegionsMonthlyEmissionChanges` uses `selectedRegionsMonthlyEmissionRates`
     dispatch(setEmissionChanges());
   };
 }
@@ -859,26 +870,29 @@ export function setEmissionChanges(): AppThunk {
     const { countiesByGeography, regionalScalingFactors } = geography;
     const {
       vmtPerVehicleTypeByGeography,
-      monthlyVMTPerVehicleType,
+      selectedRegionsMonthlyVMTPerVehicleType,
       vehiclesDisplaced,
-      monthlyEmissionRates,
+      selectedRegionsMonthlyEmissionRates,
     } = transportation;
 
     const { evDeploymentLocation } = eere.inputs;
 
-    const monthlyEmissionChanges = calculateMonthlyEmissionChanges({
-      monthlyVMTPerVehicleType,
-      vehiclesDisplaced,
-      monthlyEmissionRates,
-    });
+    const selectedRegionsMonthlyEmissionChanges =
+      calculateSelectedRegionsMonthlyEmissionChanges({
+        selectedRegionsMonthlyVMTPerVehicleType,
+        vehiclesDisplaced,
+        selectedRegionsMonthlyEmissionRates,
+      });
 
-    const totalMonthlyEmissionChanges = calculateTotalMonthlyEmissionChanges(
-      monthlyEmissionChanges,
-    );
+    const selectedRegionsTotalMonthlyEmissionChanges =
+      calculateSelectedRegionsTotalMonthlyEmissionChanges({
+        selectedRegionsMonthlyEmissionChanges,
+      });
 
-    const totalYearlyEmissionChanges = calculateTotalYearlyEmissionChanges(
-      totalMonthlyEmissionChanges,
-    );
+    const selectedRegionsTotalYearlyEmissionChanges =
+      calculateSelectedRegionsTotalYearlyEmissionChanges({
+        selectedRegionsTotalMonthlyEmissionChanges,
+      });
 
     const geographicFocus = geography.focus;
 
@@ -900,23 +914,23 @@ export function setEmissionChanges(): AppThunk {
         countiesByGeography,
         selectedGeographyRegionIds,
         vmtPerVehicleTypeByGeography,
-        totalYearlyEmissionChanges,
+        selectedRegionsTotalYearlyEmissionChanges,
         evDeploymentLocation,
       });
 
     dispatch({
-      type: 'transportation/SET_MONTHLY_EMISSION_CHANGES',
-      payload: { monthlyEmissionChanges },
+      type: 'transportation/SET_SELECTED_REGIONS_MONTHLY_EMISSION_CHANGES',
+      payload: { selectedRegionsMonthlyEmissionChanges },
     });
 
     dispatch({
-      type: 'transportation/SET_TOTAL_MONTHLY_EMISSION_CHANGES',
-      payload: { totalMonthlyEmissionChanges },
+      type: 'transportation/SET_SELECTED_REGIONS_TOTAL_MONTHLY_EMISSION_CHANGES',
+      payload: { selectedRegionsTotalMonthlyEmissionChanges },
     });
 
     dispatch({
-      type: 'transportation/SET_TOTAL_YEARLY_EMISSION_CHANGES',
-      payload: { totalYearlyEmissionChanges },
+      type: 'transportation/SET_SELECTED_REGIONS_TOTAL_YEARLY_EMISSION_CHANGES',
+      payload: { selectedRegionsTotalYearlyEmissionChanges },
     });
 
     dispatch({

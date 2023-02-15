@@ -440,7 +440,7 @@ function createEmissionsFields(options: {
   }
 
   if (vehicleData && unit !== 'percent') {
-    result['Vehicles: Annual'] = vehicleData;
+    result['Vehicles: Annual'] = vehicleData.annual;
   }
 
   return result;
@@ -490,7 +490,7 @@ function formatCobraDownloadData(
 
             if (countyVehicleData !== null) {
               object.vehicle ??= { so2: 0, nox: 0, pm25: 0, vocs: 0, nh3: 0 };
-              object.vehicle[pollutant] = countyVehicleData;
+              object.vehicle[pollutant] = countyVehicleData.annual;
             }
           }
 

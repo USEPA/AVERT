@@ -43,7 +43,7 @@ function setAnnualStateEmissionsChanges(
             }
 
             if (stateVehicleData !== null) {
-              object.vehicle[pollutant] = stateVehicleData;
+              object.vehicle[pollutant] = stateVehicleData.annual;
             }
           }
 

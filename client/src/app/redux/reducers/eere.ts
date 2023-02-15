@@ -33,7 +33,7 @@ import {
 
 type SelectOption = { id: string; name: string };
 
-type EereAction =
+type Action =
   | { type: 'eere/RESET_EERE_INPUTS' }
   | {
       type: 'eere/SET_EV_DEPLOYMENT_LOCATION_OPTIONS';
@@ -184,7 +184,7 @@ export type EEREInputs = {
     | 'iceReplacementVehicle']: string;
 };
 
-type EereState = {
+type State = {
   errors: (
     | EnergyEfficiencyFieldName
     | RenewableEnergyFieldName
@@ -228,7 +228,7 @@ const initialEEREInputs = {
   iceReplacementVehicle: initialICEReplacementVehicle,
 };
 
-const initialState: EereState = {
+const initialState: State = {
   errors: [],
   inputs: initialEEREInputs,
   selectOptions: {
@@ -258,9 +258,9 @@ const initialState: EereState = {
 };
 
 export default function reducer(
-  state: EereState = initialState,
-  action: EereAction,
-): EereState {
+  state: State = initialState,
+  action: Action,
+): State {
   switch (action.type) {
     case 'eere/RESET_EERE_INPUTS': {
       // initial state, excluding for selectOptions
@@ -947,7 +947,7 @@ export function calculateHourlyImpacts(): AppThunk {
     const {
       dailyStats,
       hourlyEVChargingPercentages,
-      monthlyDailyEVEnergyUsage,
+      selectedRegionsMonthlyDailyEVEnergyUsage,
     } = transportation;
     const { inputs } = eere;
 
@@ -1085,10 +1085,11 @@ export function calculateHourlyImpacts(): AppThunk {
         });
 
       const hourlyEVLoad = calculateHourlyEVLoad({
+        regionId: region.id,
         regionalLoad,
         dailyStats,
         hourlyEVChargingPercentages,
-        monthlyDailyEVEnergyUsage,
+        selectedRegionsMonthlyDailyEVEnergyUsage,
       });
 
       const topPercentGeneration = calculateTopPercentGeneration({

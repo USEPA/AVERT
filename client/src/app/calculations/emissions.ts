@@ -1,6 +1,9 @@
 import type { RDFJSON } from 'app/redux/reducers/geography';
 import { sortObjectByKeys } from 'app/calculations/utilities';
-import type { VehicleEmissionChangesByGeography } from 'app/calculations/transportation';
+import type {
+  SelectedRegionsTotalMonthlyEmissionChanges,
+  VehicleEmissionChangesByGeography,
+} from 'app/calculations/transportation';
 import type { RegionId, StateId } from 'app/config';
 /**
  * Annual point-source data from the National Emissions Inventory (NEI) for
@@ -26,7 +29,10 @@ export type EmissionsData = {
       monthly: EguData['data'][keyof EguData['data']];
       annual: { original: number; postEere: number };
     } | null;
-    vehicle: number | null;
+    vehicle: {
+      monthly: { [month: number]: number } | null;
+      annual: number;
+    } | null;
   };
 };
 
@@ -444,123 +450,195 @@ export function calculateAggregatedEmissionsData(egus: EmissionsChanges) {
  */
 export function createCombinedSectorsEmissionsData(options: {
   aggregatedEmissionsData: AggregatedEmissionsData;
+  selectedRegionsTotalMonthlyEmissionChanges: SelectedRegionsTotalMonthlyEmissionChanges | {}; // prettier-ignore
   vehicleEmissionChangesByGeography: VehicleEmissionChangesByGeography | {};
 }) {
-  const { aggregatedEmissionsData, vehicleEmissionChangesByGeography } =
-    options;
+  const {
+    aggregatedEmissionsData,
+    selectedRegionsTotalMonthlyEmissionChanges,
+    vehicleEmissionChangesByGeography,
+  } = options;
+
+  const selectedRegionsChangesData =
+    Object.keys(selectedRegionsTotalMonthlyEmissionChanges).length !== 0
+      ? (selectedRegionsTotalMonthlyEmissionChanges as SelectedRegionsTotalMonthlyEmissionChanges)
+      : null;
 
   const vehicleEmissionChanges =
     Object.keys(vehicleEmissionChangesByGeography).length !== 0
       ? (vehicleEmissionChangesByGeography as VehicleEmissionChangesByGeography)
       : null;
 
-  if (!aggregatedEmissionsData || !vehicleEmissionChanges) return null;
+  if (
+    !aggregatedEmissionsData ||
+    !selectedRegionsChangesData ||
+    !vehicleEmissionChanges
+  ) {
+    return null;
+  }
+
+  /**
+   * Format `selectedRegionsChangesData` for storing regional and total monthly
+   * emission changes per pollutant.
+   */
+  const monthlyChangesData = Object.entries(selectedRegionsChangesData).reduce(
+    (object, [regionKey, regionValue]) => {
+      const regionId = regionKey as keyof typeof selectedRegionsChangesData;
+
+      object[regionId] ??= { CO2: {}, NOX: {}, SO2: {}, PM25: {}, VOCs: {}, NH3: {} }; // prettier-ignore
+
+      Object.entries(regionValue).forEach(
+        ([regionMonthKey, regionMonthValue]) => {
+          const month = Number(regionMonthKey);
+
+          Object.entries(regionMonthValue.total).forEach(([key, value]) => {
+            const pollutant = key as keyof typeof regionMonthValue.total;
+            // conditionally convert CO2 pounds into tons
+            const result = pollutant === 'CO2' ? value / 2_000 : value;
+
+            object[regionId][pollutant][month] = -1 * result;
+            object.regionTotals[pollutant][month] ??= 0;
+            object.regionTotals[pollutant][month] += -1 * result;
+          });
+        },
+      );
+
+      return object;
+    },
+    {
+      regionTotals: { CO2: {}, NOX: {}, SO2: {}, PM25: {}, VOCs: {}, NH3: {} },
+    } as {
+      [regionId in RegionId | 'regionTotals']: {
+        [pollutant in 'CO2' | 'NOX' | 'SO2' | 'PM25' | 'VOCs' | 'NH3']: {
+          [month: number]: number;
+        };
+      };
+    },
+  );
+
+  /**
+   * pollutant key mapping between `aggregatedEmissionsData` and
+   * `vehicleEmissionChanges` datasets
+   */
+  const pollutantKeyMap = new Map<
+    keyof typeof aggregatedEmissionsData.total,
+    keyof typeof vehicleEmissionChanges.total | null
+  >()
+    .set('generation', null)
+    .set('so2', 'SO2')
+    .set('nox', 'NOX')
+    .set('co2', 'CO2')
+    .set('pm25', 'PM25')
+    .set('vocs', 'VOCs')
+    .set('nh3', 'NH3');
 
   /** start with power sector emissions data */
   const result = { ...aggregatedEmissionsData };
 
-  /** add total level transportation sector emissions data */
-  result.total.so2.vehicle = vehicleEmissionChanges.total.SO2;
-  result.total.nox.vehicle = vehicleEmissionChanges.total.NOX;
-  result.total.co2.vehicle = vehicleEmissionChanges.total.CO2;
-  result.total.pm25.vehicle = vehicleEmissionChanges.total.PM25;
-  result.total.vocs.vehicle = vehicleEmissionChanges.total.VOCs;
-  result.total.nh3.vehicle = vehicleEmissionChanges.total.NH3;
+  /** add total transportation sector emissions data */
+  Object.keys(result.total).forEach((key) => {
+    const pollutant = key as keyof typeof result.total;
+    const vehiclePollutant = pollutantKeyMap.get(pollutant);
+
+    result.total[pollutant].vehicle = vehiclePollutant
+      ? {
+          monthly: monthlyChangesData.regionTotals[vehiclePollutant],
+          annual: vehicleEmissionChanges.total[vehiclePollutant],
+        }
+      : null;
+  });
 
   /** add region level transportation sector emissions data */
-  Object.entries(vehicleEmissionChanges.regions).forEach(([key, value]) => {
+  Object.keys(vehicleEmissionChanges.regions).forEach((key) => {
     const regionId = key as keyof typeof vehicleEmissionChanges.regions;
-    const { SO2, NOX, CO2, PM25, VOCs, NH3 } = value;
 
-    /**
-     * if region already exists in power sector data, add transportation sector
-     * data to it; otherwise, create it with only transportation sector data
-     */
-    const existingRegion = result.regions?.[regionId];
+    /** initialize region data if it doesn't already exist */
+    result.regions[regionId] ??= {
+      generation: { power: null, vehicle: null },
+      so2: { power: null, vehicle: null },
+      nox: { power: null, vehicle: null },
+      co2: { power: null, vehicle: null },
+      pm25: { power: null, vehicle: null },
+      vocs: { power: null, vehicle: null },
+      nh3: { power: null, vehicle: null },
+    };
 
-    if (existingRegion) {
-      existingRegion.so2.vehicle = SO2;
-      existingRegion.nox.vehicle = NOX;
-      existingRegion.co2.vehicle = CO2;
-      existingRegion.pm25.vehicle = PM25;
-      existingRegion.vocs.vehicle = VOCs;
-      existingRegion.nh3.vehicle = NH3;
-    } else {
-      result.regions[regionId] = {
-        generation: { power: null, vehicle: null },
-        so2: { power: null, vehicle: SO2 },
-        nox: { power: null, vehicle: NOX },
-        co2: { power: null, vehicle: CO2 },
-        pm25: { power: null, vehicle: PM25 },
-        vocs: { power: null, vehicle: VOCs },
-        nh3: { power: null, vehicle: NH3 },
-      };
-    }
+    const region = result.regions[regionId];
+
+    Object.keys(region).forEach((key) => {
+      const pollutant = key as keyof typeof region;
+      const vehiclePollutant = pollutantKeyMap.get(pollutant);
+
+      region[pollutant].vehicle = vehiclePollutant
+        ? {
+            monthly: monthlyChangesData[regionId]?.[vehiclePollutant] || null,
+            annual: vehicleEmissionChanges.regions[regionId][vehiclePollutant],
+          }
+        : null;
+    });
   });
 
   /** add state level transportation sector emissions data */
-  Object.entries(vehicleEmissionChanges.states).forEach(([key, value]) => {
+  Object.keys(vehicleEmissionChanges.states).forEach((key) => {
     const stateId = key as keyof typeof vehicleEmissionChanges.states;
-    const { SO2, NOX, CO2, PM25, VOCs, NH3 } = value;
 
-    /**
-     * if state already exists in power sector data, add transportation sector
-     * data to it; otherwise, create it with only transportation sector data
-     */
-    const existingState = result.states?.[stateId];
+    /** initialize state data if it doesn't already exist */
+    result.states[stateId] ??= {
+      generation: { power: null, vehicle: null },
+      so2: { power: null, vehicle: null },
+      nox: { power: null, vehicle: null },
+      co2: { power: null, vehicle: null },
+      pm25: { power: null, vehicle: null },
+      vocs: { power: null, vehicle: null },
+      nh3: { power: null, vehicle: null },
+    };
 
-    if (existingState) {
-      existingState.so2.vehicle = SO2;
-      existingState.nox.vehicle = NOX;
-      existingState.co2.vehicle = CO2;
-      existingState.pm25.vehicle = PM25;
-      existingState.vocs.vehicle = VOCs;
-      existingState.nh3.vehicle = NH3;
-    } else {
-      result.states[stateId] = {
-        generation: { power: null, vehicle: null },
-        so2: { power: null, vehicle: SO2 },
-        nox: { power: null, vehicle: NOX },
-        co2: { power: null, vehicle: CO2 },
-        pm25: { power: null, vehicle: PM25 },
-        vocs: { power: null, vehicle: VOCs },
-        nh3: { power: null, vehicle: NH3 },
-      };
-    }
+    const state = result.states[stateId];
+
+    Object.keys(state).forEach((key) => {
+      const pollutant = key as keyof typeof state;
+      const vehiclePollutant = pollutantKeyMap.get(pollutant);
+
+      state[pollutant].vehicle = vehiclePollutant
+        ? {
+            monthly: null,
+            annual: vehicleEmissionChanges.states[stateId][vehiclePollutant],
+          }
+        : null;
+    });
   });
 
   /** add county level transportation sector emissions data */
   Object.entries(vehicleEmissionChanges.counties).forEach(([key, value]) => {
     const stateId = key as keyof typeof vehicleEmissionChanges.counties;
-    result.counties[stateId] ??= {};
 
-    Object.entries(value).forEach(([countyName, countyValue]) => {
-      const { SO2, NOX, CO2, PM25, VOCs, NH3 } = countyValue;
+    Object.keys(value).forEach((countyName) => {
+      result.counties[stateId] ??= {};
 
-      /**
-       * if county already exists in power sector data, add transportation sector
-       * data to it; otherwise, create it with only transportation sector data
-       */
-      const existingCounty = result.counties[stateId]?.[countyName];
+      /** initialize county data if it doesn't already exist */
+      result.counties[stateId][countyName] ??= {
+        generation: { power: null, vehicle: null },
+        so2: { power: null, vehicle: null },
+        nox: { power: null, vehicle: null },
+        co2: { power: null, vehicle: null },
+        pm25: { power: null, vehicle: null },
+        vocs: { power: null, vehicle: null },
+        nh3: { power: null, vehicle: null },
+      };
 
-      if (existingCounty) {
-        existingCounty.so2.vehicle = SO2;
-        existingCounty.nox.vehicle = NOX;
-        existingCounty.co2.vehicle = CO2;
-        existingCounty.pm25.vehicle = PM25;
-        existingCounty.vocs.vehicle = VOCs;
-        existingCounty.nh3.vehicle = NH3;
-      } else {
-        result.counties[stateId][countyName] = {
-          generation: { power: null, vehicle: null },
-          so2: { power: null, vehicle: SO2 },
-          nox: { power: null, vehicle: NOX },
-          co2: { power: null, vehicle: CO2 },
-          pm25: { power: null, vehicle: PM25 },
-          vocs: { power: null, vehicle: VOCs },
-          nh3: { power: null, vehicle: NH3 },
-        };
-      }
+      const county = result.counties[stateId][countyName];
+
+      Object.keys(county).forEach((key) => {
+        const pollutant = key as keyof typeof county;
+        const vehiclePollutant = pollutantKeyMap.get(pollutant);
+
+        county[pollutant].vehicle = vehiclePollutant
+          ? {
+              monthly: null,
+              annual: vehicleEmissionChanges.counties[stateId][countyName][vehiclePollutant], // prettier-ignore
+            }
+          : null;
+      });
     });
   });
 
