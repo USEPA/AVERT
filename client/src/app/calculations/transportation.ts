@@ -193,8 +193,8 @@ export type MonthlyDailyEVEnergyUsage = ReturnType<
 export type SelectedRegionsMonthlyEmissionRates = ReturnType<
   typeof calculateSelectedRegionsMonthlyEmissionRates
 >;
-export type MonthlyEmissionChanges = ReturnType<
-  typeof calculateMonthlyEmissionChanges
+export type SelectedRegionsMonthlyEmissionChanges = ReturnType<
+  typeof calculateSelectedRegionsMonthlyEmissionChanges
 >;
 export type TotalMonthlyEmissionChanges = ReturnType<
   typeof calculateTotalMonthlyEmissionChanges
@@ -1609,7 +1609,7 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
  * changes for the transportation sector" table in the "Library" sheet
  * (F314:R361).
  */
-export function calculateMonthlyEmissionChanges(options: {
+export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
   selectedRegionsMonthlyVMTPerVehicleType: SelectedRegionsMonthlyVMTPerVehicleType | {}; // prettier-ignore
   vehiclesDisplaced: VehiclesDisplaced;
   selectedRegionsMonthlyEmissionRates: SelectedRegionsMonthlyEmissionRates | {};
@@ -1620,79 +1620,113 @@ export function calculateMonthlyEmissionChanges(options: {
     selectedRegionsMonthlyEmissionRates,
   } = options;
 
-  const result: {
-    [month: number]: {
-      [vehicleType in ExpandedVehicleType]: {
-        [pollutant in Pollutant]: number;
+  const selectedRegionsVMTData =
+    Object.keys(selectedRegionsMonthlyVMTPerVehicleType).length !== 0
+      ? (selectedRegionsMonthlyVMTPerVehicleType as SelectedRegionsMonthlyVMTPerVehicleType)
+      : null;
+
+  const selectedRegionsRatesData =
+    Object.keys(selectedRegionsMonthlyEmissionRates).length !== 0
+      ? (selectedRegionsMonthlyEmissionRates as SelectedRegionsMonthlyEmissionRates)
+      : null;
+
+  if (!selectedRegionsVMTData || !selectedRegionsRatesData) {
+    return {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          [vehicleType in ExpandedVehicleType]: {
+            [pollutant in Pollutant]: number;
+          };
+        };
       };
     };
-  } = {};
-
-  if (
-    Object.values(selectedRegionsMonthlyVMTPerVehicleType).length === 0 ||
-    Object.values(selectedRegionsMonthlyEmissionRates).length === 0
-  ) {
-    return result;
   }
 
-  Object.entries(selectedRegionsMonthlyEmissionRates).forEach(([key, data]) => {
-    const month = Number(key);
+  const result = Object.entries(selectedRegionsVMTData).reduce(
+    (object, [regionVMTKey, regionVMTValue]) => {
+      const regionId = regionVMTKey as keyof typeof selectedRegionsVMTData;
 
-    result[month] ??= {
-      batteryEVCars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      hybridEVCars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      batteryEVTrucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      hybridEVTrucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      transitBusesDiesel: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      transitBusesCNG: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      transitBusesGasoline: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
-      schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-    };
+      object[regionId] ??= {};
 
-    pollutants.forEach((pollutant) => {
-      result[month].batteryEVCars[pollutant] =
-        data.cars[pollutant] *
-        selectedRegionsMonthlyVMTPerVehicleType[month].cars *
-        vehiclesDisplaced.batteryEVCars;
+      Object.entries(selectedRegionsRatesData).forEach(
+        ([regionRatesKey, regionRatesValue]) => {
+          if (regionRatesKey === regionVMTKey) {
+            Object.entries(regionRatesValue).forEach(
+              ([regionRatesMonthkey, regionRatesMonthValue]) => {
+                const month = Number(regionRatesMonthkey);
 
-      result[month].hybridEVCars[pollutant] =
-        data.cars[pollutant] *
-        selectedRegionsMonthlyVMTPerVehicleType[month].cars *
-        vehiclesDisplaced.hybridEVCars *
-        percentageHybridEVMilesDrivenOnElectricity;
+                object[regionId][month] ??= {
+                  batteryEVCars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
+                  hybridEVCars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
+                  batteryEVTrucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
+                  hybridEVTrucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
+                  transitBusesDiesel: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
+                  transitBusesCNG: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
+                  transitBusesGasoline: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
+                  schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
+                };
 
-      result[month].batteryEVTrucks[pollutant] =
-        data.trucks[pollutant] *
-        selectedRegionsMonthlyVMTPerVehicleType[month].trucks *
-        vehiclesDisplaced.batteryEVTrucks;
+                pollutants.forEach((pollutant) => {
+                  object[regionId][month].batteryEVCars[pollutant] =
+                    regionRatesMonthValue.cars[pollutant] *
+                    regionVMTValue[month].cars *
+                    vehiclesDisplaced.batteryEVCars;
 
-      result[month].hybridEVTrucks[pollutant] =
-        data.trucks[pollutant] *
-        selectedRegionsMonthlyVMTPerVehicleType[month].trucks *
-        vehiclesDisplaced.hybridEVTrucks *
-        percentageHybridEVMilesDrivenOnElectricity;
+                  object[regionId][month].hybridEVCars[pollutant] =
+                    regionRatesMonthValue.cars[pollutant] *
+                    regionVMTValue[month].cars *
+                    vehiclesDisplaced.hybridEVCars *
+                    percentageHybridEVMilesDrivenOnElectricity;
 
-      result[month].transitBusesDiesel[pollutant] =
-        data.transitBusesDiesel[pollutant] *
-        selectedRegionsMonthlyVMTPerVehicleType[month].transitBusesDiesel *
-        vehiclesDisplaced.transitBusesDiesel;
+                  object[regionId][month].batteryEVTrucks[pollutant] =
+                    regionRatesMonthValue.trucks[pollutant] *
+                    regionVMTValue[month].trucks *
+                    vehiclesDisplaced.batteryEVTrucks;
 
-      result[month].transitBusesCNG[pollutant] =
-        data.transitBusesCNG[pollutant] *
-        selectedRegionsMonthlyVMTPerVehicleType[month].transitBusesCNG *
-        vehiclesDisplaced.transitBusesCNG;
+                  object[regionId][month].hybridEVTrucks[pollutant] =
+                    regionRatesMonthValue.trucks[pollutant] *
+                    regionVMTValue[month].trucks *
+                    vehiclesDisplaced.hybridEVTrucks *
+                    percentageHybridEVMilesDrivenOnElectricity;
 
-      result[month].transitBusesGasoline[pollutant] =
-        data.transitBusesGasoline[pollutant] *
-        selectedRegionsMonthlyVMTPerVehicleType[month].transitBusesGasoline *
-        vehiclesDisplaced.transitBusesGasoline;
+                  object[regionId][month].transitBusesDiesel[pollutant] =
+                    regionRatesMonthValue.transitBusesDiesel[pollutant] *
+                    regionVMTValue[month].transitBusesDiesel *
+                    vehiclesDisplaced.transitBusesDiesel;
 
-      result[month].schoolBuses[pollutant] =
-        data.schoolBuses[pollutant] *
-        selectedRegionsMonthlyVMTPerVehicleType[month].schoolBuses *
-        vehiclesDisplaced.schoolBuses;
-    });
-  });
+                  object[regionId][month].transitBusesCNG[pollutant] =
+                    regionRatesMonthValue.transitBusesCNG[pollutant] *
+                    regionVMTValue[month].transitBusesCNG *
+                    vehiclesDisplaced.transitBusesCNG;
+
+                  object[regionId][month].transitBusesGasoline[pollutant] =
+                    regionRatesMonthValue.transitBusesGasoline[pollutant] *
+                    regionVMTValue[month].transitBusesGasoline *
+                    vehiclesDisplaced.transitBusesGasoline;
+
+                  object[regionId][month].schoolBuses[pollutant] =
+                    regionRatesMonthValue.schoolBuses[pollutant] *
+                    regionVMTValue[month].schoolBuses *
+                    vehiclesDisplaced.schoolBuses;
+                });
+              },
+            );
+          }
+        },
+      );
+
+      return object;
+    },
+    {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          [vehicleType in ExpandedVehicleType]: {
+            [pollutant in Pollutant]: number;
+          };
+        };
+      };
+    },
+  );
 
   return result;
 }
@@ -1704,14 +1738,16 @@ export function calculateMonthlyEmissionChanges(options: {
  * changes for the transportation sector" table in the "Library" sheet
  * (F363:R392).
  */
-export function calculateTotalMonthlyEmissionChanges(
-  monthlyEmissionChanges: MonthlyEmissionChanges,
-) {
-  if (Object.values(monthlyEmissionChanges).length === 0) {
+export function calculateTotalMonthlyEmissionChanges(options: {
+  selectedRegionsMonthlyEmissionChanges: SelectedRegionsMonthlyEmissionChanges;
+}) {
+  const { selectedRegionsMonthlyEmissionChanges } = options;
+
+  if (Object.values(selectedRegionsMonthlyEmissionChanges).length === 0) {
     return {};
   }
 
-  const result = Object.entries(monthlyEmissionChanges).reduce(
+  const result = Object.entries(selectedRegionsMonthlyEmissionChanges).reduce(
     (totals, [key, data]) => {
       const month = Number(key);
 
