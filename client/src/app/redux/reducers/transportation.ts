@@ -815,8 +815,6 @@ export function setMonthlyDailyEVEnergyUsage(): AppThunk {
         monthlyStats,
       });
 
-    console.log(selectedRegionsMonthlyDailyEVEnergyUsage);
-
     dispatch({
       type: 'transportation/SET_SELECTED_REGIONS_MONTHLY_DAILY_EV_ENERGY_USAGE',
       payload: { selectedRegionsMonthlyDailyEVEnergyUsage },

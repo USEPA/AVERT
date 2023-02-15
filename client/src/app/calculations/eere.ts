@@ -7,7 +7,7 @@ import type {
 import type {
   DailyStats,
   HourlyEVChargingPercentages,
-  MonthlyDailyEVEnergyUsage,
+  SelectedRegionsMonthlyDailyEVEnergyUsage,
 } from 'app/calculations/transportation';
 import type { RegionId } from 'app/config';
 
@@ -66,23 +66,32 @@ export function calculateHourlyRenewableEnergyProfile(options: {
  * Excel: Data in column Y of the "CalculateEERE" sheet (Y5:Y8788).
  */
 export function calculateHourlyEVLoad(options: {
+  regionId: RegionId;
   regionalLoad: RegionalLoadData[];
   dailyStats: DailyStats;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
-  monthlyDailyEVEnergyUsage: MonthlyDailyEVEnergyUsage;
+  selectedRegionsMonthlyDailyEVEnergyUsage: SelectedRegionsMonthlyDailyEVEnergyUsage | {}; // prettier-ignore
 }) {
   const {
+    regionId,
     regionalLoad,
     dailyStats,
     hourlyEVChargingPercentages,
-    monthlyDailyEVEnergyUsage,
+    selectedRegionsMonthlyDailyEVEnergyUsage,
   } = options;
+
+  const selectedRegionsEnergyData =
+    Object.keys(selectedRegionsMonthlyDailyEVEnergyUsage).length !== 0
+      ? (selectedRegionsMonthlyDailyEVEnergyUsage as SelectedRegionsMonthlyDailyEVEnergyUsage)
+      : null;
+
+  const monthlyDailyEVEnergyUsage = selectedRegionsEnergyData?.[regionId];
 
   if (
     regionalLoad.length === 0 ||
     Object.keys(dailyStats).length === 0 ||
     Object.keys(hourlyEVChargingPercentages).length === 0 ||
-    Object.keys(monthlyDailyEVEnergyUsage).length === 0
+    !monthlyDailyEVEnergyUsage
   ) {
     return [];
   }
