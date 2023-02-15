@@ -1,6 +1,9 @@
 import type { RDFJSON } from 'app/redux/reducers/geography';
 import { sortObjectByKeys } from 'app/calculations/utilities';
-import type { VehicleEmissionChangesByGeography } from 'app/calculations/transportation';
+import type {
+  SelectedRegionsTotalMonthlyEmissionChanges,
+  VehicleEmissionChangesByGeography,
+} from 'app/calculations/transportation';
 import type { RegionId, StateId } from 'app/config';
 /**
  * Annual point-source data from the National Emissions Inventory (NEI) for
@@ -447,21 +450,69 @@ export function calculateAggregatedEmissionsData(egus: EmissionsChanges) {
  */
 export function createCombinedSectorsEmissionsData(options: {
   aggregatedEmissionsData: AggregatedEmissionsData;
+  selectedRegionsTotalMonthlyEmissionChanges: SelectedRegionsTotalMonthlyEmissionChanges | {}; // prettier-ignore
   vehicleEmissionChangesByGeography: VehicleEmissionChangesByGeography | {};
-  // selectedRegionsTotalMonthlyEmissionChanges: SelectedRegionsTotalMonthlyEmissionChanges | {}; // TODO: add monthly emission changes
 }) {
-  const { aggregatedEmissionsData, vehicleEmissionChangesByGeography } =
-    options;
+  const {
+    aggregatedEmissionsData,
+    selectedRegionsTotalMonthlyEmissionChanges,
+    vehicleEmissionChangesByGeography,
+  } = options;
+
+  const selectedRegionsChangesData =
+    Object.keys(selectedRegionsTotalMonthlyEmissionChanges).length !== 0
+      ? (selectedRegionsTotalMonthlyEmissionChanges as SelectedRegionsTotalMonthlyEmissionChanges)
+      : null;
 
   const vehicleEmissionChanges =
     Object.keys(vehicleEmissionChangesByGeography).length !== 0
       ? (vehicleEmissionChangesByGeography as VehicleEmissionChangesByGeography)
       : null;
 
-  if (!aggregatedEmissionsData || !vehicleEmissionChanges) return null;
+  if (
+    !aggregatedEmissionsData ||
+    !selectedRegionsChangesData ||
+    !vehicleEmissionChanges
+  ) {
+    return null;
+  }
 
-  /** start with power sector emissions data */
-  const result = { ...aggregatedEmissionsData };
+  /**
+   * Format `selectedRegionsChangesData` for storing regional and total monthly
+   * emission changes per pollutant.
+   */
+  const monthlyChangesData = Object.entries(selectedRegionsChangesData).reduce(
+    (object, [regionKey, regionValue]) => {
+      const regionId = regionKey as keyof typeof selectedRegionsChangesData;
+
+      object[regionId] ??= { CO2: {}, NOX: {}, SO2: {}, PM25: {}, VOCs: {}, NH3: {} }; // prettier-ignore
+
+      Object.entries(regionValue).forEach(
+        ([regionMonthKey, regionMonthValue]) => {
+          const month = Number(regionMonthKey);
+
+          Object.entries(regionMonthValue.total).forEach(([key, value]) => {
+            const pollutant = key as keyof typeof regionMonthValue.total;
+
+            object[regionId][pollutant][month] = -1 * value;
+            object.regionTotals[pollutant][month] ??= 0;
+            object.regionTotals[pollutant][month] += -1 * value;
+          });
+        },
+      );
+
+      return object;
+    },
+    {
+      regionTotals: { CO2: {}, NOX: {}, SO2: {}, PM25: {}, VOCs: {}, NH3: {} },
+    } as {
+      [regionId in RegionId | 'regionTotals']: {
+        [pollutant in 'CO2' | 'NOX' | 'SO2' | 'PM25' | 'VOCs' | 'NH3']: {
+          [month: number]: number;
+        };
+      };
+    },
+  );
 
   /**
    * pollutant key mapping between `aggregatedEmissionsData` and
@@ -479,6 +530,9 @@ export function createCombinedSectorsEmissionsData(options: {
     .set('vocs', 'VOCs')
     .set('nh3', 'NH3');
 
+  /** start with power sector emissions data */
+  const result = { ...aggregatedEmissionsData };
+
   /** add total transportation sector emissions data */
   Object.keys(result.total).forEach((key) => {
     const pollutant = key as keyof typeof result.total;
@@ -486,7 +540,7 @@ export function createCombinedSectorsEmissionsData(options: {
 
     result.total[pollutant].vehicle = vehiclePollutant
       ? {
-          monthly: null,
+          monthly: monthlyChangesData.regionTotals[vehiclePollutant],
           annual: vehicleEmissionChanges.total[vehiclePollutant],
         }
       : null;
@@ -515,7 +569,7 @@ export function createCombinedSectorsEmissionsData(options: {
 
       region[pollutant].vehicle = vehiclePollutant
         ? {
-            monthly: null,
+            monthly: monthlyChangesData[regionId]?.[vehiclePollutant] || null,
             annual: vehicleEmissionChanges.regions[regionId][vehiclePollutant],
           }
         : null;
