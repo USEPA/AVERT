@@ -184,8 +184,8 @@ export type VehiclesDisplaced = ReturnType<typeof calculateVehiclesDisplaced>;
 export type SelectedRegionsMonthlyEVEnergyUsageGW = ReturnType<
   typeof calculateSelectedRegionsMonthlyEVEnergyUsageGW
 >;
-export type MonthlyEVEnergyUsageMW = ReturnType<
-  typeof calculateMonthlyEVEnergyUsageMW
+export type SelectedRegionsMonthlyEVEnergyUsageMW = ReturnType<
+  typeof calculateSelectedRegionsMonthlyEVEnergyUsageMW
 >;
 export type MonthlyDailyEVEnergyUsage = ReturnType<
   typeof calculateMonthlyDailyEVEnergyUsage
@@ -1353,41 +1353,73 @@ export function calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
  * Excel: Data in the third EV table (to the right of the "Calculate Changes"
  * table) in the "CalculateEERE" sheet (T49:W61).
  */
-export function calculateMonthlyEVEnergyUsageMW(options: {
-  selectedRegionsMonthlyEVEnergyUsageGW: SelectedRegionsMonthlyEVEnergyUsageGW;
+export function calculateSelectedRegionsMonthlyEVEnergyUsageMW(options: {
+  selectedRegionsMonthlyEVEnergyUsageGW: SelectedRegionsMonthlyEVEnergyUsageGW | {}; // prettier-ignore
 }) {
   const { selectedRegionsMonthlyEVEnergyUsageGW } = options;
 
-  const result: {
-    [month: number]: {
-      batteryEVs: number;
-      hybridEVs: number;
-      transitBuses: number;
-      schoolBuses: number;
-    };
-  } = {};
+  const selectedRegionsEnergyData =
+    Object.keys(selectedRegionsMonthlyEVEnergyUsageGW).length !== 0
+      ? (selectedRegionsMonthlyEVEnergyUsageGW as SelectedRegionsMonthlyEVEnergyUsageGW)
+      : null;
 
-  if (Object.keys(selectedRegionsMonthlyEVEnergyUsageGW).length === 0) {
-    return result;
+  if (!selectedRegionsEnergyData) {
+    return {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          batteryEVs: number;
+          hybridEVs: number;
+          transitBuses: number;
+          schoolBuses: number;
+        };
+      };
+    };
   }
 
   const GWtoMW = 1_000;
 
-  // prettier-ignore
-  Object.entries(selectedRegionsMonthlyEVEnergyUsageGW).forEach(([key, data]) => {
-    const month = Number(key);
+  const result = Object.entries(selectedRegionsEnergyData).reduce(
+    (object, [regionKey, regionValue]) => {
+      const regionId = regionKey as keyof typeof selectedRegionsEnergyData;
 
-    result[month] = {
-      batteryEVs: (data.batteryEVCars + data.batteryEVTrucks) * GWtoMW,
-      hybridEVs: (data.hybridEVCars + data.hybridEVTrucks) * GWtoMW,
-      transitBuses:
-        (data.transitBusesDiesel +
-          data.transitBusesCNG +
-          data.transitBusesGasoline) *
-        GWtoMW,
-      schoolBuses: data.schoolBuses * GWtoMW,
-    };
-  });
+      object[regionId] ??= {};
+
+      Object.entries(regionValue).forEach(
+        ([regionMonthKey, regionMonthValue]) => {
+          const month = Number(regionMonthKey);
+          const {
+            batteryEVCars,
+            batteryEVTrucks,
+            hybridEVCars,
+            hybridEVTrucks,
+            transitBusesDiesel,
+            transitBusesCNG,
+            transitBusesGasoline,
+            schoolBuses,
+          } = regionMonthValue;
+
+          object[regionId][month] = {
+            batteryEVs: (batteryEVCars + batteryEVTrucks) * GWtoMW,
+            hybridEVs: (hybridEVCars + hybridEVTrucks) * GWtoMW,
+            transitBuses: (transitBusesDiesel + transitBusesCNG + transitBusesGasoline) * GWtoMW, // prettier-ignore
+            schoolBuses: schoolBuses * GWtoMW,
+          };
+        },
+      );
+
+      return object;
+    },
+    {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          batteryEVs: number;
+          hybridEVs: number;
+          transitBuses: number;
+          schoolBuses: number;
+        };
+      };
+    },
+  );
 
   return result;
 }
@@ -1423,10 +1455,10 @@ export function calculateTotalYearlyEVEnergyUsage(options: {
  * table) in the "CalculateEERE" sheet (P35:X47).
  */
 export function calculateMonthlyDailyEVEnergyUsage(options: {
-  monthlyEVEnergyUsageMW: MonthlyEVEnergyUsageMW;
+  selectedRegionsMonthlyEVEnergyUsageMW: SelectedRegionsMonthlyEVEnergyUsageMW | {}; // prettier-ignore
   monthlyStats: MonthlyStats;
 }) {
-  const { monthlyEVEnergyUsageMW, monthlyStats } = options;
+  const { selectedRegionsMonthlyEVEnergyUsageMW, monthlyStats } = options;
 
   const result: {
     [month: number]: {
@@ -1438,7 +1470,7 @@ export function calculateMonthlyDailyEVEnergyUsage(options: {
   } = {};
 
   if (
-    Object.keys(monthlyEVEnergyUsageMW).length === 0 ||
+    Object.keys(selectedRegionsMonthlyEVEnergyUsageMW).length === 0 ||
     Object.keys(monthlyStats).length === 0
   ) {
     return result;
@@ -1455,16 +1487,20 @@ export function calculateMonthlyDailyEVEnergyUsage(options: {
 
     if (scaledWeekdayDays !== 0) {
       const batteryEVsWeekday =
-        monthlyEVEnergyUsageMW[month].batteryEVs / scaledWeekdayDays;
+        selectedRegionsMonthlyEVEnergyUsageMW[month].batteryEVs /
+        scaledWeekdayDays;
 
       const hybridEVsWeekday =
-        monthlyEVEnergyUsageMW[month].hybridEVs / scaledWeekdayDays;
+        selectedRegionsMonthlyEVEnergyUsageMW[month].hybridEVs /
+        scaledWeekdayDays;
 
       const transitBusesWeekday =
-        monthlyEVEnergyUsageMW[month].transitBuses / scaledWeekdayDays;
+        selectedRegionsMonthlyEVEnergyUsageMW[month].transitBuses /
+        scaledWeekdayDays;
 
       const schoolBusesWeekday =
-        monthlyEVEnergyUsageMW[month].schoolBuses / scaledWeekdayDays;
+        selectedRegionsMonthlyEVEnergyUsageMW[month].schoolBuses /
+        scaledWeekdayDays;
 
       result[month] = {
         batteryEVs: {

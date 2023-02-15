@@ -14,7 +14,7 @@ import type {
   MonthlyStats,
   VehiclesDisplaced,
   SelectedRegionsMonthlyEVEnergyUsageGW,
-  MonthlyEVEnergyUsageMW,
+  SelectedRegionsMonthlyEVEnergyUsageMW,
   TotalYearlyEVEnergyUsage,
   MonthlyDailyEVEnergyUsage,
   SelectedRegionsMonthlyEmissionRates,
@@ -42,7 +42,7 @@ import {
   calculateMonthlyStats,
   calculateVehiclesDisplaced,
   calculateSelectedRegionsMonthlyEVEnergyUsageGW,
-  calculateMonthlyEVEnergyUsageMW,
+  calculateSelectedRegionsMonthlyEVEnergyUsageMW,
   calculateTotalYearlyEVEnergyUsage,
   calculateMonthlyDailyEVEnergyUsage,
   calculateSelectedRegionsMonthlyEmissionRates,
@@ -128,8 +128,10 @@ type Action =
       };
     }
   | {
-      type: 'transportation/SET_MONTHLY_EV_ENERGY_USAGE_MW';
-      payload: { monthlyEVEnergyUsageMW: MonthlyEVEnergyUsageMW };
+      type: 'transportation/SET_SELECTED_REGIONS_MONTHLY_EV_ENERGY_USAGE_MW';
+      payload: {
+        selectedRegionsMonthlyEVEnergyUsageMW: SelectedRegionsMonthlyEVEnergyUsageMW;
+      };
     }
   | {
       type: 'transportation/SET_TOTAL_YEARLY_EV_ENERGY_USAGE';
@@ -201,7 +203,7 @@ type State = {
   monthlyStats: MonthlyStats;
   vehiclesDisplaced: VehiclesDisplaced;
   selectedRegionsMonthlyEVEnergyUsageGW: SelectedRegionsMonthlyEVEnergyUsageGW | {}; // prettier-ignore
-  monthlyEVEnergyUsageMW: MonthlyEVEnergyUsageMW;
+  selectedRegionsMonthlyEVEnergyUsageMW: SelectedRegionsMonthlyEVEnergyUsageMW | {}; // prettier-ignore
   totalYearlyEVEnergyUsage: TotalYearlyEVEnergyUsage;
   monthlyDailyEVEnergyUsage: MonthlyDailyEVEnergyUsage;
   selectedRegionsMonthlyEmissionRates: SelectedRegionsMonthlyEmissionRates | {};
@@ -245,7 +247,7 @@ const initialState: State = {
     schoolBuses: 0,
   },
   selectedRegionsMonthlyEVEnergyUsageGW: {},
-  monthlyEVEnergyUsageMW: {},
+  selectedRegionsMonthlyEVEnergyUsageMW: {},
   totalYearlyEVEnergyUsage: 0,
   monthlyDailyEVEnergyUsage: {},
   selectedRegionsMonthlyEmissionRates: {},
@@ -393,12 +395,12 @@ export default function reducer(
       };
     }
 
-    case 'transportation/SET_MONTHLY_EV_ENERGY_USAGE_MW': {
-      const { monthlyEVEnergyUsageMW } = action.payload;
+    case 'transportation/SET_SELECTED_REGIONS_MONTHLY_EV_ENERGY_USAGE_MW': {
+      const { selectedRegionsMonthlyEVEnergyUsageMW } = action.payload;
 
       return {
         ...state,
-        monthlyEVEnergyUsageMW,
+        selectedRegionsMonthlyEVEnergyUsageMW,
       };
     }
 
@@ -756,9 +758,10 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
         vehiclesDisplaced,
       });
 
-    const monthlyEVEnergyUsageMW = calculateMonthlyEVEnergyUsageMW({
-      selectedRegionsMonthlyEVEnergyUsageGW,
-    });
+    const selectedRegionsMonthlyEVEnergyUsageMW =
+      calculateSelectedRegionsMonthlyEVEnergyUsageMW({
+        selectedRegionsMonthlyEVEnergyUsageGW,
+      });
 
     const totalYearlyEVEnergyUsage = calculateTotalYearlyEVEnergyUsage({
       selectedRegionsMonthlyEVEnergyUsageGW,
@@ -770,8 +773,8 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
     });
 
     dispatch({
-      type: 'transportation/SET_MONTHLY_EV_ENERGY_USAGE_MW',
-      payload: { monthlyEVEnergyUsageMW },
+      type: 'transportation/SET_SELECTED_REGIONS_MONTHLY_EV_ENERGY_USAGE_MW',
+      payload: { selectedRegionsMonthlyEVEnergyUsageMW },
     });
 
     dispatch({
@@ -779,7 +782,7 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
       payload: { totalYearlyEVEnergyUsage },
     });
 
-    // NOTE: `monthlyDailyEVEnergyUsage` uses `monthlyEVEnergyUsageMW`
+    // NOTE: `monthlyDailyEVEnergyUsage` uses `selectedRegionsMonthlyEVEnergyUsageMW`
     dispatch(setMonthlyDailyEVEnergyUsage());
   };
 }
@@ -798,10 +801,11 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
 export function setMonthlyDailyEVEnergyUsage(): AppThunk {
   return (dispatch, getState) => {
     const { transportation } = getState();
-    const { monthlyStats, monthlyEVEnergyUsageMW } = transportation;
+    const { monthlyStats, selectedRegionsMonthlyEVEnergyUsageMW } =
+      transportation;
 
     const monthlyDailyEVEnergyUsage = calculateMonthlyDailyEVEnergyUsage({
-      monthlyEVEnergyUsageMW,
+      selectedRegionsMonthlyEVEnergyUsageMW,
       monthlyStats,
     });
 
