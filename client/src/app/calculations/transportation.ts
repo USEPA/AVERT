@@ -1254,7 +1254,12 @@ export function calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
       ? (selectedRegionsMonthlyVMTPerVehicleType as SelectedRegionsMonthlyVMTPerVehicleType)
       : null;
 
-  if (!selectedRegionsVMTData) {
+  const selectedRegionsEfficiencyData =
+    Object.keys(selectedRegionsEVEfficiencyPerVehicleType).length !== 0
+      ? (selectedRegionsEVEfficiencyPerVehicleType as SelectedRegionsEVEfficiencyPerVehicleType)
+      : null;
+
+  if (!selectedRegionsVMTData || !selectedRegionsEfficiencyData) {
     return result;
   }
 
@@ -1267,52 +1272,52 @@ export function calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
       ([regionKey, regionValue]) => {
         const regionId = regionKey as keyof typeof selectedRegionsVMTData;
         const monthlyVmt = regionValue[month];
+        const regionEVEfficiency = selectedRegionsEfficiencyData[regionId];
 
-        result[regionId] ??= {};
-
-        if (monthlyVmt) {
+        if (monthlyVmt && regionEVEfficiency) {
+          result[regionId] ??= {};
           result[regionId][month] = {
             batteryEVCars:
               vehiclesDisplaced.batteryEVCars *
               monthlyVmt.cars *
-              selectedRegionsEVEfficiencyPerVehicleType.batteryEVCars *
+              regionEVEfficiency.batteryEVCars *
               KWtoGW,
             hybridEVCars:
               vehiclesDisplaced.hybridEVCars *
               monthlyVmt.cars *
-              selectedRegionsEVEfficiencyPerVehicleType.hybridEVCars *
+              regionEVEfficiency.hybridEVCars *
               KWtoGW *
               percentageHybridEVMilesDrivenOnElectricity,
             batteryEVTrucks:
               vehiclesDisplaced.batteryEVTrucks *
               monthlyVmt.trucks *
-              selectedRegionsEVEfficiencyPerVehicleType.batteryEVTrucks *
+              regionEVEfficiency.batteryEVTrucks *
               KWtoGW,
             hybridEVTrucks:
               vehiclesDisplaced.hybridEVTrucks *
               monthlyVmt.trucks *
-              selectedRegionsEVEfficiencyPerVehicleType.hybridEVTrucks *
+              regionEVEfficiency.hybridEVTrucks *
               KWtoGW *
               percentageHybridEVMilesDrivenOnElectricity,
             transitBusesDiesel:
               vehiclesDisplaced.transitBusesDiesel *
               monthlyVmt.transitBusesDiesel *
-              selectedRegionsEVEfficiencyPerVehicleType.transitBuses *
+              regionEVEfficiency.transitBuses *
               KWtoGW,
             transitBusesCNG:
               vehiclesDisplaced.transitBusesCNG *
               monthlyVmt.transitBusesCNG *
-              selectedRegionsEVEfficiencyPerVehicleType.transitBuses *
+              regionEVEfficiency.transitBuses *
               KWtoGW,
             transitBusesGasoline:
               vehiclesDisplaced.transitBusesGasoline *
               monthlyVmt.transitBusesGasoline *
-              selectedRegionsEVEfficiencyPerVehicleType.transitBuses *
+              regionEVEfficiency.transitBuses *
               KWtoGW,
             schoolBuses:
               vehiclesDisplaced.schoolBuses *
               monthlyVmt.schoolBuses *
-              selectedRegionsEVEfficiencyPerVehicleType.schoolBuses *
+              regionEVEfficiency.schoolBuses *
               KWtoGW,
           };
         }
