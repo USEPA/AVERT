@@ -66,6 +66,7 @@ function setAnnualVehicleEmissionsChanges(options: {
       ['CO2', 'NOX', 'SO2', 'PM25', 'VOCs', 'NH3'].forEach((item) => {
         const pollutant = item as keyof typeof regionChanges.total;
         const value = -1 * regionChanges.total[pollutant];
+        // conditionally convert CO2 tons into pounds
         const result = pollutant === 'CO2' ? value / 2_000 : value;
 
         object[pollutant] += result;

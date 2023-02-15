@@ -493,10 +493,12 @@ export function createCombinedSectorsEmissionsData(options: {
 
           Object.entries(regionMonthValue.total).forEach(([key, value]) => {
             const pollutant = key as keyof typeof regionMonthValue.total;
+            // conditionally convert CO2 tons into pounds
+            const result = pollutant === 'CO2' ? value / 2_000 : value;
 
-            object[regionId][pollutant][month] = -1 * value;
+            object[regionId][pollutant][month] = -1 * result;
             object.regionTotals[pollutant][month] ??= 0;
-            object.regionTotals[pollutant][month] += -1 * value;
+            object.regionTotals[pollutant][month] += -1 * result;
           });
         },
       );
