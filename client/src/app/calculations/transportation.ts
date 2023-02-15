@@ -190,8 +190,8 @@ export type MonthlyEVEnergyUsageMW = ReturnType<
 export type MonthlyDailyEVEnergyUsage = ReturnType<
   typeof calculateMonthlyDailyEVEnergyUsage
 >;
-export type MonthlyEmissionRates = ReturnType<
-  typeof calculateMonthlyEmissionRates
+export type SelectedRegionsMonthlyEmissionRates = ReturnType<
+  typeof calculateSelectedRegionsMonthlyEmissionRates
 >;
 export type MonthlyEmissionChanges = ReturnType<
   typeof calculateMonthlyEmissionChanges
@@ -1476,7 +1476,7 @@ export function calculateMonthlyDailyEVEnergyUsage(options: {
  * Excel: "Table 7: Emission rates of various vehicle types" table in the
  * "Library" sheet (G253:R288).
  */
-export function calculateMonthlyEmissionRates(options: {
+export function calculateSelectedRegionsMonthlyEmissionRates(options: {
   selectedRegionsStatesVMTPercentages: SelectedRegionsStatesVMTPercentages | {};
   evDeploymentLocation: string;
   evModelYear: string;
@@ -1489,15 +1489,24 @@ export function calculateMonthlyEmissionRates(options: {
     iceReplacementVehicle,
   } = options;
 
-  const result: {
-    [month: number]: {
-      [vehicleType in GeneralVehicleType]: {
-        [pollutant in Pollutant]: number;
+  const result = {} as {
+    [regionId in RegionId]: {
+      [month: number]: {
+        [vehicleType in GeneralVehicleType]: {
+          [pollutant in Pollutant]: number;
+        };
       };
     };
-  } = {};
+  };
 
-  if (evDeploymentLocation === '') return result;
+  const selectedRegionsVMTData =
+    Object.keys(selectedRegionsStatesVMTPercentages).length !== 0
+      ? (selectedRegionsStatesVMTPercentages as SelectedRegionsStatesVMTPercentages)
+      : null;
+
+  if (!selectedRegionsVMTData || evDeploymentLocation === '') {
+    return result;
+  }
 
   const deploymentLocationIsRegion = evDeploymentLocation.startsWith('region-');
   const deploymentLocationIsState = evDeploymentLocation.startsWith('state-');
@@ -1508,82 +1517,86 @@ export function calculateMonthlyEmissionRates(options: {
   (movesEmissionsRates as MovesData[]).forEach((data) => {
     const month = Number(data.month);
 
-    result[month] ??= {
-      cars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      trucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      transitBusesDiesel: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      transitBusesCNG: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      transitBusesGasoline: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
-      schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-    };
+    Object.entries(selectedRegionsVMTData).forEach(
+      ([regionKey, regionValue]) => {
+        const regionId = regionKey as keyof typeof selectedRegionsVMTData;
 
-    const generalVehicleType: GeneralVehicleType | null =
-      data.vehicleType === 'Passenger Car'
-        ? 'cars'
-        : data.vehicleType === 'Passenger Truck'
-        ? 'trucks'
-        : data.vehicleType === 'Transit Bus' && data.fuelType === 'Diesel'
-        ? 'transitBusesDiesel'
-        : data.vehicleType === 'Transit Bus' && data.fuelType === 'CNG'
-        ? 'transitBusesCNG'
-        : data.vehicleType === 'Transit Bus' && data.fuelType === 'Gasoline'
-        ? 'transitBusesGasoline'
-        : data.vehicleType === 'School Bus'
-        ? 'schoolBuses'
-        : null; // NOTE: fallback (generalVehicleType should never actually be null)
+        result[regionId] ??= {} as {
+          [month: number]: {
+            [vehicleType in GeneralVehicleType]: {
+              [pollutant in Pollutant]: number;
+            };
+          };
+        };
 
-    const abridgedVehicleType: AbridgedVehicleType | null =
-      data.vehicleType === 'Passenger Car'
-        ? 'cars'
-        : data.vehicleType === 'Passenger Truck'
-        ? 'trucks'
-        : data.vehicleType === 'Transit Bus'
-        ? 'transitBuses'
-        : data.vehicleType === 'School Bus'
-        ? 'schoolBuses'
-        : null; // NOTE: fallback (abridgedVehicleType should never actually be null)
+        result[regionId][month] ??= {
+          cars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+          trucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+          transitBusesDiesel: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
+          transitBusesCNG: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+          transitBusesGasoline: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
+          schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+        };
 
-    if (generalVehicleType && abridgedVehicleType) {
-      const modelYearMatch =
-        iceReplacementVehicle === 'new'
-          ? data.modelYear === evModelYear
-          : data.modelYear === 'Fleet Average';
+        const generalVehicleType: GeneralVehicleType | null =
+          data.vehicleType === 'Passenger Car'
+            ? 'cars'
+            : data.vehicleType === 'Passenger Truck'
+            ? 'trucks'
+            : data.vehicleType === 'Transit Bus' && data.fuelType === 'Diesel'
+            ? 'transitBusesDiesel'
+            : data.vehicleType === 'Transit Bus' && data.fuelType === 'CNG'
+            ? 'transitBusesCNG'
+            : data.vehicleType === 'Transit Bus' && data.fuelType === 'Gasoline'
+            ? 'transitBusesGasoline'
+            : data.vehicleType === 'School Bus'
+            ? 'schoolBuses'
+            : null; // NOTE: fallback (generalVehicleType should never actually be null)
 
-      const conditionalYearMatch =
-        iceReplacementVehicle === 'new'
-          ? true //
-          : data.year === evModelYear;
+        const abridgedVehicleType: AbridgedVehicleType | null =
+          data.vehicleType === 'Passenger Car'
+            ? 'cars'
+            : data.vehicleType === 'Passenger Truck'
+            ? 'trucks'
+            : data.vehicleType === 'Transit Bus'
+            ? 'transitBuses'
+            : data.vehicleType === 'School Bus'
+            ? 'schoolBuses'
+            : null; // NOTE: fallback (abridgedVehicleType should never actually be null)
 
-      const conditionalStateMatch = deploymentLocationIsState
-        ? data.state === evDeploymentLocation.replace('state-', '')
-        : true;
+        if (generalVehicleType && abridgedVehicleType) {
+          const modelYearMatch =
+            iceReplacementVehicle === 'new'
+              ? data.modelYear === evModelYear
+              : data.modelYear === 'Fleet Average';
 
-      const statesVMTPercentages =
-        Object.keys(selectedRegionsStatesVMTPercentages).length !== 0
-          ? (selectedRegionsStatesVMTPercentages as SelectedRegionsStatesVMTPercentages)
-          : null;
+          const conditionalYearMatch =
+            iceReplacementVehicle === 'new'
+              ? true //
+              : data.year === evModelYear;
 
-      const movesRegionalWeightPercentage =
-        statesVMTPercentages?.[data.state as StateId]?.[abridgedVehicleType] || 0; // prettier-ignore
+          const conditionalStateMatch = deploymentLocationIsState
+            ? data.state === evDeploymentLocation.replace('state-', '')
+            : true;
 
-      const locationFactor = deploymentLocationIsRegion
-        ? movesRegionalWeightPercentage
-        : 1; // location is state, so no MOVES regional weight factor is applied
+          const movesRegionalWeightPercentage =
+            regionValue?.[data.state as StateId]?.[abridgedVehicleType] || 0;
 
-      if (
-        modelYearMatch &&
-        conditionalYearMatch &&
-        conditionalStateMatch &&
-        statesVMTPercentages
-      ) {
-        result[month][generalVehicleType].CO2 += data.CO2 * locationFactor;
-        result[month][generalVehicleType].NOX += data.NOX * locationFactor;
-        result[month][generalVehicleType].SO2 += data.SO2 * locationFactor;
-        result[month][generalVehicleType].PM25 += data.PM25 * locationFactor;
-        result[month][generalVehicleType].VOCs += data.VOCs * locationFactor;
-        result[month][generalVehicleType].NH3 += data.NH3 * locationFactor;
-      }
-    }
+          const locationFactor = deploymentLocationIsRegion
+            ? movesRegionalWeightPercentage
+            : 1; // location is state, so no MOVES regional weight factor is applied
+
+          if (modelYearMatch && conditionalYearMatch && conditionalStateMatch) {
+            result[regionId][month][generalVehicleType].CO2 += data.CO2 * locationFactor; // prettier-ignore
+            result[regionId][month][generalVehicleType].NOX += data.NOX * locationFactor; // prettier-ignore
+            result[regionId][month][generalVehicleType].SO2 += data.SO2 * locationFactor; // prettier-ignore
+            result[regionId][month][generalVehicleType].PM25 += data.PM25 * locationFactor; // prettier-ignore
+            result[regionId][month][generalVehicleType].VOCs += data.VOCs * locationFactor; // prettier-ignore
+            result[regionId][month][generalVehicleType].NH3 += data.NH3 * locationFactor; // prettier-ignore
+          }
+        }
+      },
+    );
   });
 
   return result;
@@ -1599,12 +1612,12 @@ export function calculateMonthlyEmissionRates(options: {
 export function calculateMonthlyEmissionChanges(options: {
   selectedRegionsMonthlyVMTPerVehicleType: SelectedRegionsMonthlyVMTPerVehicleType | {}; // prettier-ignore
   vehiclesDisplaced: VehiclesDisplaced;
-  monthlyEmissionRates: MonthlyEmissionRates;
+  selectedRegionsMonthlyEmissionRates: SelectedRegionsMonthlyEmissionRates | {};
 }) {
   const {
     selectedRegionsMonthlyVMTPerVehicleType,
     vehiclesDisplaced,
-    monthlyEmissionRates,
+    selectedRegionsMonthlyEmissionRates,
   } = options;
 
   const result: {
@@ -1617,12 +1630,12 @@ export function calculateMonthlyEmissionChanges(options: {
 
   if (
     Object.values(selectedRegionsMonthlyVMTPerVehicleType).length === 0 ||
-    Object.values(monthlyEmissionRates).length === 0
+    Object.values(selectedRegionsMonthlyEmissionRates).length === 0
   ) {
     return result;
   }
 
-  Object.entries(monthlyEmissionRates).forEach(([key, data]) => {
+  Object.entries(selectedRegionsMonthlyEmissionRates).forEach(([key, data]) => {
     const month = Number(key);
 
     result[month] ??= {
