@@ -205,8 +205,8 @@ export type SelectedRegionsTotalYearlyEmissionChanges = ReturnType<
 export type VehicleEmissionChangesByGeography = ReturnType<
   typeof calculateVehicleEmissionChangesByGeography
 >;
-export type TotalYearlyEVEnergyUsage = ReturnType<
-  typeof calculateTotalYearlyEVEnergyUsage
+export type SelectedRegionsTotalYearlyEVEnergyUsage = ReturnType<
+  typeof calculateSelectedRegionsTotalYearlyEVEnergyUsage
 >;
 export type VehicleSalesAndStock = ReturnType<
   typeof calculateVehicleSalesAndStock
@@ -1431,18 +1431,37 @@ export function calculateSelectedRegionsMonthlyEVEnergyUsageMW(options: {
  * Excel: "Sales Changes" data from "Table 8: Calculated changes for the
  * transportation sector" table in the "Library" sheet (S309).
  */
-export function calculateTotalYearlyEVEnergyUsage(options: {
-  selectedRegionsMonthlyEVEnergyUsageGW: SelectedRegionsMonthlyEVEnergyUsageGW;
+export function calculateSelectedRegionsTotalYearlyEVEnergyUsage(options: {
+  selectedRegionsMonthlyEVEnergyUsageGW: SelectedRegionsMonthlyEVEnergyUsageGW | {}; // prettier-ignore
 }) {
   const { selectedRegionsMonthlyEVEnergyUsageGW } = options;
 
-  if (Object.keys(selectedRegionsMonthlyEVEnergyUsageGW).length === 0) {
-    return 0;
+  const selectedRegionsEnergyData =
+    Object.keys(selectedRegionsMonthlyEVEnergyUsageGW).length !== 0
+      ? (selectedRegionsMonthlyEVEnergyUsageGW as SelectedRegionsMonthlyEVEnergyUsageGW)
+      : null;
+
+  if (!selectedRegionsEnergyData) {
+    return {} as {
+      [regionId in RegionId]: number;
+    };
   }
 
-  const result = Object.values(selectedRegionsMonthlyEVEnergyUsageGW).reduce(
-    (total, month) => total + Object.values(month).reduce((a, b) => a + b, 0),
-    0,
+  const result = Object.entries(selectedRegionsEnergyData).reduce(
+    (object, [regionKey, regionValue]) => {
+      const regionId = regionKey as keyof typeof selectedRegionsEnergyData;
+
+      object[regionId] = Object.values(regionValue).reduce(
+        (number, regionMonthValue) =>
+          number + Object.values(regionMonthValue).reduce((a, b) => a + b, 0),
+        0,
+      );
+
+      return object;
+    },
+    {} as {
+      [regionId in RegionId]: number;
+    },
   );
 
   return result;
