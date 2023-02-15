@@ -555,9 +555,10 @@ export function createCombinedSectorsEmissionsData(options: {
   /** add county level transportation sector emissions data */
   Object.entries(vehicleEmissionChanges.counties).forEach(([key, value]) => {
     const stateId = key as keyof typeof vehicleEmissionChanges.counties;
-    result.counties[stateId] ??= {};
 
     Object.keys(value).forEach((countyName) => {
+      result.counties[stateId] ??= {};
+
       /** initialize county data if it doesn't already exist */
       result.counties[stateId][countyName] ??= {
         generation: { power: null, vehicle: null },

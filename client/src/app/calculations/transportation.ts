@@ -2106,8 +2106,6 @@ export function calculateVehicleEmissionChangesByGeography(options: {
       locationVMT &&
       (regionSelected || (stateSelected && selectedStateId === stateId))
     ) {
-      result.counties[stateId] ??= {};
-
       Object.entries(stateCountiesVMT).forEach(([county, countyVMT]) => {
         /** determine which region the county falls within */
         const regionId = Object.entries(selectedRegionsCounties).find(
@@ -2125,6 +2123,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
           // initialize each region, state, and county's values for each pollutant
           result.regions[regionId] ??= { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }; // prettier-ignore
           result.states[stateId] ??= { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }; // prettier-ignore
+          result.counties[stateId] ??= {};
           result.counties[stateId][county] ??= { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }; // prettier-ignore
 
           if (
