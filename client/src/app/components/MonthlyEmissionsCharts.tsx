@@ -72,6 +72,25 @@ function setMonthlyPowerData(
 }
 
 /**
+ * Creates monthly transportation sector emissions data for display in the
+ * monthly charts.
+ */
+function setMonthlyVehicleData(data: EmissionsData[keyof EmissionsData]) {
+  const monthlyEmissionsChanges: number[] = [];
+
+  const vehicleData = data.vehicle;
+  if (!vehicleData) return [];
+
+  for (const key in vehicleData.monthly) {
+    const month = Number(key);
+    const data = vehicleData.monthly[month];
+    monthlyEmissionsChanges.push(data);
+  }
+
+  return monthlyEmissionsChanges;
+}
+
+/**
  * Sets chart series data based on the currently selected source(s) and unit.
  */
 function setChartSeriesData(options: {
@@ -108,9 +127,6 @@ function Chart(props: {
   const { pollutant, data, vehicleDataExists } = props;
 
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const totalMonthlyEmissionChanges = useTypedSelector(
-    ({ transportation }) => transportation.totalMonthlyEmissionChanges,
-  );
   const egusNeedingEmissionsReplacement = useTypedSelector(
     ({ results }) => results.egusNeedingEmissionsReplacement,
   );
@@ -139,30 +155,6 @@ function Chart(props: {
   const selectedRegion = useSelectedRegion();
   const selectedStateRegions = useSelectedStateRegions();
 
-  const vehicleEmissions = Object.values(totalMonthlyEmissionChanges).reduce(
-    (object, data) => {
-      ['CO2', 'NOX', 'SO2', 'PM25', 'VOCs', 'NH3'].forEach((item) => {
-        const pollutant = item as keyof typeof data.total;
-        const value = -1 * data.total[pollutant];
-
-        if (value) {
-          const result = pollutant === 'CO2' ? value / 2_000 : value;
-          object[pollutant].push(result);
-        }
-      });
-
-      return object;
-    },
-    { SO2: [], NOX: [], CO2: [], PM25: [], VOCs: [], NH3: [] } as {
-      SO2: number[];
-      NOX: number[];
-      CO2: number[];
-      PM25: number[];
-      VOCs: number[];
-      NH3: number[];
-    },
-  );
-
   // console.log({ data, vehicleEmissions }); // NOTE: for debugging purposes
 
   const so2Data = {
@@ -174,7 +166,7 @@ function Chart(props: {
     },
     vehicles: {
       name: 'Vehicles',
-      data: vehicleDataExists ? vehicleEmissions.SO2 : null,
+      data: vehicleDataExists ? setMonthlyVehicleData(data.so2) : null,
       color: 'rgba(5, 141, 199, 0.5)',
       unit: 'lb',
     },
@@ -189,7 +181,7 @@ function Chart(props: {
     },
     vehicles: {
       name: 'Vehicles',
-      data: vehicleDataExists ? vehicleEmissions.NOX : null,
+      data: vehicleDataExists ? setMonthlyVehicleData(data.nox) : null,
       color: 'rgba(237, 86, 27, 0.5)',
       unit: 'lb',
     },
@@ -204,7 +196,7 @@ function Chart(props: {
     },
     vehicles: {
       name: 'Vehicles',
-      data: vehicleDataExists ? vehicleEmissions.CO2 : null,
+      data: vehicleDataExists ? setMonthlyVehicleData(data.co2) : null,
       color: 'rgba(80, 180, 50, 0.5)',
       unit: 'tons',
     },
@@ -219,7 +211,7 @@ function Chart(props: {
     },
     vehicles: {
       name: 'Vehicles',
-      data: vehicleDataExists ? vehicleEmissions.PM25 : null,
+      data: vehicleDataExists ? setMonthlyVehicleData(data.pm25) : null,
       color: 'rgba(102, 86, 131, 0.5)',
       unit: 'lb',
     },
@@ -234,7 +226,7 @@ function Chart(props: {
     },
     vehicles: {
       name: 'Vehicles',
-      data: vehicleDataExists ? vehicleEmissions.VOCs : null,
+      data: vehicleDataExists ? setMonthlyVehicleData(data.vocs) : null,
       color: 'rgba(255, 193, 7, 0.5)',
       unit: 'lb',
     },
@@ -249,7 +241,7 @@ function Chart(props: {
     },
     vehicles: {
       name: 'Vehicles',
-      data: vehicleDataExists ? vehicleEmissions.NH3 : null,
+      data: vehicleDataExists ? setMonthlyVehicleData(data.nh3) : null,
       color: 'rgba(0, 150, 136, 0.5)',
       unit: 'lb',
     },
