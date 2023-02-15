@@ -860,13 +860,29 @@ export function calculateSelectedRegionsAverageVMTPerYear(options: {
 }) {
   const { selectedRegionsVMTPercentagesPerVehicleType } = options;
 
-  const result = Object.entries(
-    selectedRegionsVMTPercentagesPerVehicleType,
-  ).reduce(
-    (object, [key, data]) => {
-      const { vmtPerLDVPercent, vmtPerBusPercent } = data;
+  const selectedRegionsVMTData =
+    Object.keys(selectedRegionsVMTPercentagesPerVehicleType).length !== 0
+      ? (selectedRegionsVMTPercentagesPerVehicleType as SelectedRegionsVMTPercentagesPerVehicleType)
+      : null;
 
-      object[key as RegionId] = {
+  if (!selectedRegionsVMTData) {
+    return {} as {
+      [regionId in RegionId]: {
+        cars: number;
+        trucks: number;
+        transitBuses: number;
+        schoolBuses: number;
+      };
+    };
+  }
+
+  const result = Object.entries(selectedRegionsVMTData).reduce(
+    (object, [regionKey, regionValue]) => {
+      const regionId = regionKey as keyof typeof selectedRegionsVMTData;
+
+      const { vmtPerLDVPercent, vmtPerBusPercent } = regionValue;
+
+      object[regionId] = {
         cars: nationalAverageVMTPerYear.cars * vmtPerLDVPercent,
         trucks: nationalAverageVMTPerYear.trucks * vmtPerLDVPercent,
         transitBuses: nationalAverageVMTPerYear.transitBuses * vmtPerBusPercent,
