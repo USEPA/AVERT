@@ -715,12 +715,12 @@ export function calculateSelectedRegionsStatesVMTPercentages(options: {
   }
 
   const result = Object.entries(vmtAllocationData).reduce(
-    (object, [key, value]) => {
-      const stateId = key as keyof typeof vmtAllocationData;
+    (object, [stateKey, stateValue]) => {
+      const stateId = stateKey as keyof typeof vmtAllocationData;
 
       if (stateId === 'regionTotals') return object;
 
-      const stateRegionIds = Object.keys(value); // NOTE: also includes 'allRegions' key
+      const stateRegionIds = Object.keys(stateValue); // NOTE: also includes 'allRegions' key
       const stateVMTData = vmtAllocationData?.[stateId];
 
       if (
@@ -795,26 +795,39 @@ export function calculateSelectedRegionsVMTPercentagesPerVehicleType(options: {
   const { selectedRegionsStatesVMTPercentages, vmtAllocationPerVehicle } =
     options;
 
-  const result = Object.entries(selectedRegionsStatesVMTPercentages).reduce(
-    (object, [regionKey, regionData]) => {
-      const regionId = regionKey as RegionId;
+  const selectedRegionsVMTData =
+    Object.keys(selectedRegionsStatesVMTPercentages).length !== 0
+      ? (selectedRegionsStatesVMTPercentages as SelectedRegionsStatesVMTPercentages)
+      : null;
 
-      Object.entries(regionData).forEach(([stateKey, stateData]) => {
+  const statesVMTData =
+    Object.keys(vmtAllocationPerVehicle).length !== 0
+      ? (vmtAllocationPerVehicle as VMTAllocationPerVehicle)
+      : null;
+
+  if (!selectedRegionsVMTData) {
+    return {} as {
+      [regionId in RegionId]: {
+        vmtPerLDVPercent: 0;
+        vmtPerBusPercent: 0;
+      };
+    };
+  }
+
+  const result = Object.entries(selectedRegionsVMTData).reduce(
+    (object, [regionKey, regionValue]) => {
+      const regionId = regionKey as keyof typeof selectedRegionsVMTData;
+
+      Object.entries(regionValue).forEach(([stateKey, stateValue]) => {
         const stateId = stateKey as StateId;
+        const stateVMTData = statesVMTData?.[stateId];
 
-        const vmtStatesData =
-          Object.keys(vmtAllocationPerVehicle).length !== 0
-            ? (vmtAllocationPerVehicle as VMTAllocationPerVehicle)
-            : null;
+        if (stateVMTData) {
+          const allLDVsPercent = stateValue.allLDVs;
+          const allBusesPercent = stateValue.allBuses;
 
-        const vmtStateData = vmtStatesData?.[stateId];
-
-        if (vmtStateData) {
-          const allLDVsPercent = stateData.allLDVs;
-          const allBusesPercent = stateData.allBuses;
-
-          const vmtPerLDVPercent = vmtStateData.vmtPerLDV.percent;
-          const vmtPerBusPercent = vmtStateData.vmtPerBus.percent;
+          const vmtPerLDVPercent = stateVMTData.vmtPerLDV.percent;
+          const vmtPerBusPercent = stateVMTData.vmtPerBus.percent;
 
           object[regionId] ??= { vmtPerLDVPercent: 0, vmtPerBusPercent: 0 };
 
