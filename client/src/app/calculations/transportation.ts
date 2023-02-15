@@ -2132,7 +2132,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
           ) {
             Object.values(selectedRegionsChangesData).forEach((changes) => {
               pollutants.forEach((pollutant) => {
-                // conditionally convert CO2 tons into pounds
+                // conditionally convert CO2 pounds into tons
                 const unitFactor = pollutant === 'CO2' ? 2_000 : 1;
 
                 const cars =
