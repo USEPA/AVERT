@@ -856,7 +856,7 @@ export function calculateSelectedRegionsVMTPercentagesPerVehicleType(options: {
  * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E183:E186).
  */
 export function calculateSelectedRegionsAverageVMTPerYear(options: {
-  selectedRegionsVMTPercentagesPerVehicleType: SelectedRegionsVMTPercentagesPerVehicleType;
+  selectedRegionsVMTPercentagesPerVehicleType: SelectedRegionsVMTPercentagesPerVehicleType | {}; // prettier-ignore
 }) {
   const { selectedRegionsVMTPercentagesPerVehicleType } = options;
 
@@ -911,35 +911,41 @@ export function calculateSelectedRegionsAverageVMTPerYear(options: {
  * "Library" sheet (E232:P237).
  */
 export function calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
-  selectedRegionsAverageVMTPerYear: SelectedRegionsAverageVMTPerYear;
+  selectedRegionsAverageVMTPerYear: SelectedRegionsAverageVMTPerYear | {};
   monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
 }) {
   const { selectedRegionsAverageVMTPerYear, monthlyVMTTotalsAndPercentages } =
     options;
 
-  const result = {} as {
-    [regionId in RegionId]: {
-      [month: number]: {
-        [vehicleType in GeneralVehicleType]: number;
+  const selectedRegionsVMTData =
+    Object.keys(selectedRegionsAverageVMTPerYear).length !== 0
+      ? (selectedRegionsAverageVMTPerYear as SelectedRegionsAverageVMTPerYear)
+      : null;
+
+  if (
+    !selectedRegionsVMTData ||
+    Object.keys(monthlyVMTTotalsAndPercentages).length === 0
+  ) {
+    return {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          [vehicleType in GeneralVehicleType]: number;
+        };
       };
     };
-  };
-
-  if (Object.keys(monthlyVMTTotalsAndPercentages).length === 0) {
-    return result;
   }
 
-  Object.entries(selectedRegionsAverageVMTPerYear).forEach(
-    ([regionKey, regionData]) => {
-      const regionId = regionKey as RegionId;
+  const result = Object.entries(selectedRegionsVMTData).reduce(
+    (object, [regionKey, regionValue]) => {
+      const regionId = regionKey as keyof typeof selectedRegionsVMTData;
 
-      result[regionId] ??= {};
+      object[regionId] ??= {};
 
       Object.entries(monthlyVMTTotalsAndPercentages).forEach(
-        ([vmtKey, vmtData]) => {
+        ([vmtKey, vmtValue]) => {
           const month = Number(vmtKey);
 
-          result[regionId][month] ??= {
+          object[regionId][month] ??= {
             cars: 0,
             trucks: 0,
             transitBusesDiesel: 0,
@@ -949,8 +955,10 @@ export function calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
           };
 
           generalVehicleTypes.forEach((vehicleType) => {
-            // NOTE: selectedRegionsAverageVMTPerYear's regions's vehicle types
-            // are abridged (don't include transit buses broken out by fuel type)
+            /**
+             * NOTE: selectedRegionsVMTData's regions's vehicle types are
+             * abridged (don't include transit buses broken out by fuel type)
+             */
             const averageVMTPerYearVehicleType =
               vehicleType === 'transitBusesDiesel' ||
               vehicleType === 'transitBusesCNG' ||
@@ -958,12 +966,21 @@ export function calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
                 ? 'transitBuses'
                 : vehicleType;
 
-            result[regionId][month][vehicleType] =
-              regionData[averageVMTPerYearVehicleType] *
-              vmtData[vehicleType].percent;
+            object[regionId][month][vehicleType] =
+              regionValue[averageVMTPerYearVehicleType] *
+              vmtValue[vehicleType].percent;
           });
         },
       );
+
+      return object;
+    },
+    {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          [vehicleType in GeneralVehicleType]: number;
+        };
+      };
     },
   );
 
