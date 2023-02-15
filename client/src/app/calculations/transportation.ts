@@ -175,8 +175,8 @@ export type SelectedRegionsAverageVMTPerYear = ReturnType<
 export type SelectedRegionsMonthlyVMTPerVehicleType = ReturnType<
   typeof calculateSelectedRegionsMonthlyVMTPerVehicleType
 >;
-export type EVEfficiencyPerVehicleType = ReturnType<
-  typeof calculateEVEfficiencyPerVehicleType
+export type SelectedRegionsEVEfficiencyPerVehicleType = ReturnType<
+  typeof calculateSelectedRegionsEVEfficiencyPerVehicleType
 >;
 export type DailyStats = ReturnType<typeof calculateDailyStats>;
 export type MonthlyStats = ReturnType<typeof calculateMonthlyStats>;
@@ -996,61 +996,45 @@ export function calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
  * values in the columns to the right for each month, but they're the same
  * value for all months.
  */
-export function calculateEVEfficiencyPerVehicleType(options: {
-  regionalScalingFactors: RegionalScalingFactors;
+export function calculateSelectedRegionsEVEfficiencyPerVehicleType(options: {
+  selectedGeographyRegionIds: RegionId[];
   evModelYear: string;
 }) {
-  const { regionalScalingFactors, evModelYear } = options;
-
-  const result = {
-    batteryEVCars: 0,
-    hybridEVCars: 0,
-    batteryEVTrucks: 0,
-    hybridEVTrucks: 0,
-    transitBuses: 0,
-    schoolBuses: 0,
-  };
-
-  const resultsByRegion: Partial<{
-    [regionId in RegionId]: {
-      batteryEVCars: number;
-      hybridEVCars: number;
-      batteryEVTrucks: number;
-      hybridEVTrucks: number;
-      transitBuses: number;
-      schoolBuses: number;
-    };
-  }> = {};
+  const { selectedGeographyRegionIds, evModelYear } = options;
 
   const evEfficiencyModelYear =
     evModelYear as keyof typeof evEfficiencyByModelYear;
 
   const evEfficiency = evEfficiencyByModelYear[evEfficiencyModelYear];
 
-  if (!evEfficiency) return result;
-
-  // build up results by region, using the regional scaling factor
-  Object.entries(regionalScalingFactors).forEach(
-    ([id, regionalScalingFactor]) => {
-      const regionId = id as RegionId;
-
-      resultsByRegion[regionId] ??= {
-        batteryEVCars: regionalScalingFactor,
-        hybridEVCars: regionalScalingFactor,
-        batteryEVTrucks: regionalScalingFactor,
-        hybridEVTrucks: regionalScalingFactor,
-        transitBuses: regionalScalingFactor,
-        schoolBuses: regionalScalingFactor,
+  if (selectedGeographyRegionIds.length === 0 || !evEfficiency) {
+    return {} as {
+      [regionId in RegionId]: {
+        batteryEVCars: number;
+        hybridEVCars: number;
+        batteryEVTrucks: number;
+        hybridEVTrucks: number;
+        transitBuses: number;
+        schoolBuses: number;
       };
+    };
+  }
 
-      const regionResult = resultsByRegion[regionId];
-
-      if (!regionResult) return result;
+  const result = selectedGeographyRegionIds.reduce(
+    (object, regionId) => {
+      object[regionId] ??= {
+        batteryEVCars: 1,
+        hybridEVCars: 1,
+        batteryEVTrucks: 1,
+        hybridEVTrucks: 1,
+        transitBuses: 1,
+        schoolBuses: 1,
+      };
 
       Object.entries(evEfficiency).forEach(([type, data]) => {
         const vehicleType = type as keyof typeof evEfficiency;
 
-        if (regionResult.hasOwnProperty(vehicleType)) {
+        if (object[regionId].hasOwnProperty(vehicleType)) {
           const regionAverageTemperature = regionAverageTemperatures[regionId];
 
           /**
@@ -1068,30 +1052,23 @@ export function calculateEVEfficiencyPerVehicleType(options: {
               ? 1 + percentageAdditionalEnergyConsumedFactor
               : 1 + percentageAdditionalEnergyConsumedFactor / 2;
 
-          regionResult[vehicleType] *= data * climateAdjustmentFactor;
+          object[regionId][vehicleType] = data * climateAdjustmentFactor;
         }
       });
+
+      return object;
+    },
+    {} as {
+      [regionId in RegionId]: {
+        batteryEVCars: number;
+        hybridEVCars: number;
+        batteryEVTrucks: number;
+        hybridEVTrucks: number;
+        transitBuses: number;
+        schoolBuses: number;
+      };
     },
   );
-
-  // console.log(resultsByRegion); // NOTE: for debugging purposes
-
-  // reduce results by region into single result object by combining each
-  // region's vehicle type values
-  Object.keys(resultsByRegion).forEach((id) => {
-    const regionId = id as RegionId;
-    const regionResult = resultsByRegion[regionId];
-
-    if (regionResult) {
-      Object.keys(regionResult).forEach((type) => {
-        const vehicleType = type as keyof typeof regionResult;
-
-        if (result.hasOwnProperty(vehicleType)) {
-          result[vehicleType] += regionResult[vehicleType];
-        }
-      });
-    }
-  });
 
   return result;
 }
@@ -1255,12 +1232,12 @@ export function calculateVehiclesDisplaced(options: {
  */
 export function calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
   selectedRegionsMonthlyVMTPerVehicleType: SelectedRegionsMonthlyVMTPerVehicleType | {}; // prettier-ignore
-  evEfficiencyPerVehicleType: EVEfficiencyPerVehicleType;
+  selectedRegionsEVEfficiencyPerVehicleType: SelectedRegionsEVEfficiencyPerVehicleType | {}; // prettier-ignore
   vehiclesDisplaced: VehiclesDisplaced;
 }) {
   const {
     selectedRegionsMonthlyVMTPerVehicleType,
-    evEfficiencyPerVehicleType,
+    selectedRegionsEVEfficiencyPerVehicleType,
     vehiclesDisplaced,
   } = options;
 
@@ -1298,44 +1275,44 @@ export function calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
             batteryEVCars:
               vehiclesDisplaced.batteryEVCars *
               monthlyVmt.cars *
-              evEfficiencyPerVehicleType.batteryEVCars *
+              selectedRegionsEVEfficiencyPerVehicleType.batteryEVCars *
               KWtoGW,
             hybridEVCars:
               vehiclesDisplaced.hybridEVCars *
               monthlyVmt.cars *
-              evEfficiencyPerVehicleType.hybridEVCars *
+              selectedRegionsEVEfficiencyPerVehicleType.hybridEVCars *
               KWtoGW *
               percentageHybridEVMilesDrivenOnElectricity,
             batteryEVTrucks:
               vehiclesDisplaced.batteryEVTrucks *
               monthlyVmt.trucks *
-              evEfficiencyPerVehicleType.batteryEVTrucks *
+              selectedRegionsEVEfficiencyPerVehicleType.batteryEVTrucks *
               KWtoGW,
             hybridEVTrucks:
               vehiclesDisplaced.hybridEVTrucks *
               monthlyVmt.trucks *
-              evEfficiencyPerVehicleType.hybridEVTrucks *
+              selectedRegionsEVEfficiencyPerVehicleType.hybridEVTrucks *
               KWtoGW *
               percentageHybridEVMilesDrivenOnElectricity,
             transitBusesDiesel:
               vehiclesDisplaced.transitBusesDiesel *
               monthlyVmt.transitBusesDiesel *
-              evEfficiencyPerVehicleType.transitBuses *
+              selectedRegionsEVEfficiencyPerVehicleType.transitBuses *
               KWtoGW,
             transitBusesCNG:
               vehiclesDisplaced.transitBusesCNG *
               monthlyVmt.transitBusesCNG *
-              evEfficiencyPerVehicleType.transitBuses *
+              selectedRegionsEVEfficiencyPerVehicleType.transitBuses *
               KWtoGW,
             transitBusesGasoline:
               vehiclesDisplaced.transitBusesGasoline *
               monthlyVmt.transitBusesGasoline *
-              evEfficiencyPerVehicleType.transitBuses *
+              selectedRegionsEVEfficiencyPerVehicleType.transitBuses *
               KWtoGW,
             schoolBuses:
               vehiclesDisplaced.schoolBuses *
               monthlyVmt.schoolBuses *
-              evEfficiencyPerVehicleType.schoolBuses *
+              selectedRegionsEVEfficiencyPerVehicleType.schoolBuses *
               KWtoGW,
           };
         }
