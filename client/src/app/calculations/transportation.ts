@@ -199,8 +199,8 @@ export type SelectedRegionsMonthlyEmissionChanges = ReturnType<
 export type SelectedRegionsTotalMonthlyEmissionChanges = ReturnType<
   typeof calculateSelectedRegionsTotalMonthlyEmissionChanges
 >;
-export type TotalYearlyEmissionChanges = ReturnType<
-  typeof calculateTotalYearlyEmissionChanges
+export type SelectedRegionsTotalYearlyEmissionChanges = ReturnType<
+  typeof calculateSelectedRegionsTotalYearlyEmissionChanges
 >;
 export type VehicleEmissionChangesByGeography = ReturnType<
   typeof calculateVehicleEmissionChangesByGeography
@@ -1827,40 +1827,62 @@ export function calculateSelectedRegionsTotalMonthlyEmissionChanges(options: {
  * Excel: Yearly pollutant totals from the "Table 8: Calculated changes for the
  * transportation sector" table in the "Library" sheet (S363:S392).
  */
-export function calculateTotalYearlyEmissionChanges(options: {
+export function calculateSelectedRegionsTotalYearlyEmissionChanges(options: {
   selectedRegionsTotalMonthlyEmissionChanges: SelectedRegionsTotalMonthlyEmissionChanges;
 }) {
   const { selectedRegionsTotalMonthlyEmissionChanges } = options;
 
-  if (Object.keys(selectedRegionsTotalMonthlyEmissionChanges).length === 0) {
-    return {
-      cars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      trucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      transitBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      total: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+  const selectedRegionsChangesData =
+    Object.keys(selectedRegionsTotalMonthlyEmissionChanges).length !== 0
+      ? (selectedRegionsTotalMonthlyEmissionChanges as SelectedRegionsTotalMonthlyEmissionChanges)
+      : null;
+
+  if (!selectedRegionsChangesData) {
+    return {} as {
+      [regionId in RegionId]: {
+        cars: { CO2: 0; NOX: 0; SO2: 0; PM25: 0; VOCs: 0; NH3: 0 };
+        trucks: { CO2: 0; NOX: 0; SO2: 0; PM25: 0; VOCs: 0; NH3: 0 };
+        transitBuses: { CO2: 0; NOX: 0; SO2: 0; PM25: 0; VOCs: 0; NH3: 0 };
+        schoolBuses: { CO2: 0; NOX: 0; SO2: 0; PM25: 0; VOCs: 0; NH3: 0 };
+        total: { CO2: 0; NOX: 0; SO2: 0; PM25: 0; VOCs: 0; NH3: 0 };
+      };
     };
   }
 
-  // prettier-ignore
-  const result = Object.values(selectedRegionsTotalMonthlyEmissionChanges).reduce(
-    (object, monthlyData) => {
-      Object.entries(monthlyData).forEach(([key, value]) => {
-        const field = key as keyof typeof monthlyData;
+  const result = Object.entries(selectedRegionsChangesData).reduce(
+    (object, [regionKey, regionValue]) => {
+      const regionId = regionKey as keyof typeof selectedRegionsChangesData;
 
-        pollutants.forEach((pollutant) => {
-          object[field][pollutant] += value[pollutant];
-        });
+      object[regionId] ??= {
+        cars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+        trucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+        transitBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+        schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+        total: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+      };
+
+      Object.values(regionValue).forEach((regionMonthData) => {
+        Object.entries(regionMonthData).forEach(
+          ([regionMonthKey, regionMonthValue]) => {
+            const field = regionMonthKey as keyof typeof regionMonthData;
+
+            pollutants.forEach((pollutant) => {
+              object[regionId][field][pollutant] += regionMonthValue[pollutant];
+            });
+          },
+        );
       });
 
       return object;
     },
-    {
-      cars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      trucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      transitBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      total: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+    {} as {
+      [regionId in RegionId]: {
+        cars: { CO2: 0; NOX: 0; SO2: 0; PM25: 0; VOCs: 0; NH3: 0 };
+        trucks: { CO2: 0; NOX: 0; SO2: 0; PM25: 0; VOCs: 0; NH3: 0 };
+        transitBuses: { CO2: 0; NOX: 0; SO2: 0; PM25: 0; VOCs: 0; NH3: 0 };
+        schoolBuses: { CO2: 0; NOX: 0; SO2: 0; PM25: 0; VOCs: 0; NH3: 0 };
+        total: { CO2: 0; NOX: 0; SO2: 0; PM25: 0; VOCs: 0; NH3: 0 };
+      };
     },
   );
 
@@ -1883,7 +1905,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
   countiesByGeography: CountiesByGeography | {};
   selectedGeographyRegionIds: RegionId[];
   vmtPerVehicleTypeByGeography: VMTPerVehicleTypeByGeography | {};
-  totalYearlyEmissionChanges: TotalYearlyEmissionChanges;
+  selectedRegionsTotalYearlyEmissionChanges: SelectedRegionsTotalYearlyEmissionChanges;
   evDeploymentLocation: string;
 }) {
   const {
@@ -1893,7 +1915,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
     countiesByGeography,
     selectedGeographyRegionIds,
     vmtPerVehicleTypeByGeography,
-    totalYearlyEmissionChanges,
+    selectedRegionsTotalYearlyEmissionChanges,
     evDeploymentLocation,
   } = options;
 
@@ -2009,25 +2031,29 @@ export function calculateVehicleEmissionChangesByGeography(options: {
               // conditionally convert CO2 tons into pounds
               const unitFactor = pollutant === 'CO2' ? 2_000 : 1;
 
+              // prettier-ignore
               const cars =
-                (totalYearlyEmissionChanges.cars[pollutant] * countyVMT.cars) /
+                (selectedRegionsTotalYearlyEmissionChanges.cars[pollutant] * countyVMT.cars) /
                 locationVMT.cars /
                 unitFactor;
 
+              // prettier-ignore
               const trucks =
-                (totalYearlyEmissionChanges.trucks[pollutant] *
+                (selectedRegionsTotalYearlyEmissionChanges.trucks[pollutant] *
                   countyVMT.trucks) /
                 locationVMT.trucks /
                 unitFactor;
 
+              // prettier-ignore
               const transitBuses =
-                (totalYearlyEmissionChanges.transitBuses[pollutant] *
+                (selectedRegionsTotalYearlyEmissionChanges.transitBuses[pollutant] *
                   countyVMT.transitBuses) /
                 locationVMT.transitBuses /
                 unitFactor;
 
+              // prettier-ignore
               const schoolBuses =
-                (totalYearlyEmissionChanges.schoolBuses[pollutant] *
+                (selectedRegionsTotalYearlyEmissionChanges.schoolBuses[pollutant] *
                   countyVMT.schoolBuses) /
                 locationVMT.schoolBuses /
                 unitFactor;

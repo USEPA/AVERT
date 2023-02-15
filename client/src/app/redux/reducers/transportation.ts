@@ -20,7 +20,7 @@ import type {
   SelectedRegionsMonthlyEmissionRates,
   SelectedRegionsMonthlyEmissionChanges,
   SelectedRegionsTotalMonthlyEmissionChanges,
-  TotalYearlyEmissionChanges,
+  SelectedRegionsTotalYearlyEmissionChanges,
   VehicleEmissionChangesByGeography,
   VehicleSalesAndStock,
   SelectedRegionsEEREDefaultsAverages,
@@ -48,7 +48,7 @@ import {
   calculateSelectedRegionsMonthlyEmissionRates,
   calculateSelectedRegionsMonthlyEmissionChanges,
   calculateSelectedRegionsTotalMonthlyEmissionChanges,
-  calculateTotalYearlyEmissionChanges,
+  calculateSelectedRegionsTotalYearlyEmissionChanges,
   calculateVehicleEmissionChangesByGeography,
   calculateVehicleSalesAndStock,
   calculateSelectedRegionsEEREDefaultsAverages,
@@ -156,8 +156,10 @@ type Action =
       };
     }
   | {
-      type: 'transportation/SET_TOTAL_YEARLY_EMISSION_CHANGES';
-      payload: { totalYearlyEmissionChanges: TotalYearlyEmissionChanges };
+      type: 'transportation/SET_SELECTED_REGIONS_TOTAL_YEARLY_EMISSION_CHANGES';
+      payload: {
+        selectedRegionsTotalYearlyEmissionChanges: SelectedRegionsTotalYearlyEmissionChanges;
+      };
     }
   | {
       type: 'transportation/SET_VEHICLE_EMISSION_CHANGES_BY_GEOGRAPHY';
@@ -203,7 +205,7 @@ type State = {
   selectedRegionsMonthlyEmissionRates: SelectedRegionsMonthlyEmissionRates | {};
   selectedRegionsMonthlyEmissionChanges: SelectedRegionsMonthlyEmissionChanges | {}; // prettier-ignore
   selectedRegionsTotalMonthlyEmissionChanges: SelectedRegionsTotalMonthlyEmissionChanges | {}; // prettier-ignore
-  totalYearlyEmissionChanges: TotalYearlyEmissionChanges;
+  selectedRegionsTotalYearlyEmissionChanges: SelectedRegionsTotalYearlyEmissionChanges | {}; // prettier-ignore
   vehicleEmissionChangesByGeography: VehicleEmissionChangesByGeography | {};
   vehicleSalesAndStock: VehicleSalesAndStock;
   selectedRegionsEEREDefaultsAverages: SelectedRegionsEEREDefaultsAverages;
@@ -247,13 +249,7 @@ const initialState: State = {
   selectedRegionsMonthlyEmissionRates: {},
   selectedRegionsMonthlyEmissionChanges: {},
   selectedRegionsTotalMonthlyEmissionChanges: {},
-  totalYearlyEmissionChanges: {
-    cars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-    trucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-    transitBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-    schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-    total: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-  },
+  selectedRegionsTotalYearlyEmissionChanges: {},
   vehicleEmissionChangesByGeography: {},
   vehicleSalesAndStock: {},
   selectedRegionsEEREDefaultsAverages: {},
@@ -440,12 +436,12 @@ export default function reducer(
       };
     }
 
-    case 'transportation/SET_TOTAL_YEARLY_EMISSION_CHANGES': {
-      const { totalYearlyEmissionChanges } = action.payload;
+    case 'transportation/SET_SELECTED_REGIONS_TOTAL_YEARLY_EMISSION_CHANGES': {
+      const { selectedRegionsTotalYearlyEmissionChanges } = action.payload;
 
       return {
         ...state,
-        totalYearlyEmissionChanges,
+        selectedRegionsTotalYearlyEmissionChanges,
       };
     }
 
@@ -880,9 +876,10 @@ export function setEmissionChanges(): AppThunk {
         selectedRegionsMonthlyEmissionChanges,
       });
 
-    const totalYearlyEmissionChanges = calculateTotalYearlyEmissionChanges({
-      selectedRegionsTotalMonthlyEmissionChanges,
-    });
+    const selectedRegionsTotalYearlyEmissionChanges =
+      calculateSelectedRegionsTotalYearlyEmissionChanges({
+        selectedRegionsTotalMonthlyEmissionChanges,
+      });
 
     const geographicFocus = geography.focus;
 
@@ -904,7 +901,7 @@ export function setEmissionChanges(): AppThunk {
         countiesByGeography,
         selectedGeographyRegionIds,
         vmtPerVehicleTypeByGeography,
-        totalYearlyEmissionChanges,
+        selectedRegionsTotalYearlyEmissionChanges,
         evDeploymentLocation,
       });
 
@@ -919,8 +916,8 @@ export function setEmissionChanges(): AppThunk {
     });
 
     dispatch({
-      type: 'transportation/SET_TOTAL_YEARLY_EMISSION_CHANGES',
-      payload: { totalYearlyEmissionChanges },
+      type: 'transportation/SET_SELECTED_REGIONS_TOTAL_YEARLY_EMISSION_CHANGES',
+      payload: { selectedRegionsTotalYearlyEmissionChanges },
     });
 
     dispatch({
