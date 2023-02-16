@@ -613,7 +613,12 @@ function EEREInputsContent() {
                             onBlur={(text) =>
                               dispatch(runEereBatteryEVsCalculations(text))
                             }
-                            tooltip={<p className="margin-0">TODO</p>}
+                            tooltip={
+                              <p className="margin-0">
+                                Enter the number of light-duty battery EVs to be
+                                added to the road.
+                              </p>
+                            }
                           />
                         </div>
 
@@ -630,7 +635,12 @@ function EEREInputsContent() {
                             onBlur={(text) =>
                               dispatch(runEereHybridEVsCalculations(text))
                             }
-                            tooltip={<p className="margin-0">TODO</p>}
+                            tooltip={
+                              <p className="margin-0">
+                                Enter the number of light-duty plug-in hybrid
+                                EVs to be added to the road.
+                              </p>
+                            }
                           />
                         </div>
                       </div>
@@ -649,7 +659,12 @@ function EEREInputsContent() {
                             onBlur={(text) =>
                               dispatch(runEereTransitBusesCalculations(text))
                             }
-                            tooltip={<p className="margin-0">TODO</p>}
+                            tooltip={
+                              <p className="margin-0">
+                                Enter the number of electric transit buses to be
+                                added to the road.
+                              </p>
+                            }
                           />
                         </div>
 
@@ -666,7 +681,12 @@ function EEREInputsContent() {
                             onBlur={(text) =>
                               dispatch(runEereSchoolBusesCalculations(text))
                             }
-                            tooltip={<p className="margin-0">TODO</p>}
+                            tooltip={
+                              <p className="margin-0">
+                                Enter the number of electric school buses to be
+                                added to the road.
+                              </p>
+                            }
                           />
                         </div>
                       </div>
@@ -690,7 +710,16 @@ function EEREInputsContent() {
                         onChange={(option) =>
                           dispatch(updateEereEVDeploymentLocation(option))
                         }
-                        tooltip={<p className="margin-0">TODO</p>}
+                        tooltip={
+                          <p className="margin-0">
+                            Select the location of EV deployment. While AVERT’s
+                            power sector modeling algorithm is agnostic to where
+                            electricity load changes occur within an AVERT
+                            region, this parameter determines where emission
+                            decreases from displaced internal combustion engine
+                            vehicles occur.
+                          </p>
+                        }
                       />
                     </div>
 
@@ -705,7 +734,16 @@ function EEREInputsContent() {
                         onChange={(option) =>
                           dispatch(updateEereEVModelYear(option))
                         }
-                        tooltip={<p className="margin-0">TODO</p>}
+                        tooltip={
+                          <p className="margin-0">
+                            Select the model year of the modeled electric
+                            vehicles. This parameter determines the modeled EVs’
+                            efficiencies and the emission rates of the displaced
+                            internal combustion engine vehicles if “new” is
+                            selected for the internal combustion engine vehicles
+                            being replaced.
+                          </p>
+                        }
                       />
                     </div>
 
@@ -720,7 +758,20 @@ function EEREInputsContent() {
                         onChange={(option) =>
                           dispatch(updateEereICEReplacementVehicle(option))
                         }
-                        tooltip={<p className="margin-0">TODO</p>}
+                        tooltip={
+                          <p className="margin-0">
+                            Select “new” or “existing” based on whether the new
+                            EV will displace a “new” internal combustion engine
+                            vehicle with the same model year as the EV model
+                            year or the average “existing” internal combustion
+                            engine vehicle. “New” internal combustion engine
+                            model years will have lower avoided vehicle
+                            emissions than “existing.” A selection of “existing”
+                            is likely the most useful for performing a
+                            comparison of the existing fleet with a future
+                            alternative featuring EVs.
+                          </p>
+                        }
                       />
                     </div>
                   </div>
