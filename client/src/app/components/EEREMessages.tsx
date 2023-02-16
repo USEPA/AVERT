@@ -86,11 +86,9 @@ function ValidationMessage(props: {
             <strong>
               {month} {day} at {hour}:00 {ampm}
             </strong>
-            ).
+            .)
           </em>
         </p>
-
-        {/* TODO: determine if another paragraph should show below for upper level validation errors */}
 
         {direction === 'lower' && (
           <p className="margin-0">
@@ -98,6 +96,18 @@ function ValidationMessage(props: {
             simulate marginal operational changes in load, rather than
             large-scale changes that may change fundamental dynamics. Please
             reduce one or more of your inputs to ensure more reliable results.
+          </p>
+        )}
+
+        {direction === 'upper' && (
+          <p className="margin-0">
+            The limit for AVERT’s web edition is 10% above the historical
+            region-wide load, as there are some circumstances under which
+            modeling a larger addition could lead to unreliable results. AVERT
+            is designed to simulate marginal operational changes in load, rather
+            than large-scale changes that may change fundamental dynamics.
+            Please reduce one or more of your inputs to ensure more reliable
+            results.
           </p>
         )}
       </div>
