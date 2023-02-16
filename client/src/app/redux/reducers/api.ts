@@ -13,7 +13,7 @@ if (!process.env.REACT_APP_COBRA_APP_URL) {
   throw new Error('COBRA App URL required!');
 }
 
-type ApiAction =
+type Action =
   | {
       type: 'api/SET_BASE_URL';
       payload: { url: string };
@@ -27,23 +27,22 @@ type ApiAction =
       payload: { url: string };
     };
 
-type ApiState = {
+type State = {
   baseUrl: string;
   cobraApiUrl: string;
   cobraAppUrl: string;
 };
 
-// reducer
-const initialState: ApiState = {
+const initialState: State = {
   baseUrl: process.env.REACT_APP_URL,
   cobraApiUrl: process.env.REACT_APP_COBRA_API_URL,
   cobraAppUrl: process.env.REACT_APP_COBRA_APP_URL,
 };
 
 export default function reducer(
-  state: ApiState = initialState,
-  action: ApiAction,
-): ApiState {
+  state: State = initialState,
+  action: Action,
+): State {
   switch (action.type) {
     case 'api/SET_BASE_URL': {
       const { url } = action.payload;
@@ -78,7 +77,6 @@ export default function reducer(
   }
 }
 
-// action creators
 export function setBaseUrl(url: string) {
   return {
     type: 'api/SET_BASE_URL',
