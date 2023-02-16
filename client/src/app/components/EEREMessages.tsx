@@ -166,13 +166,19 @@ export function EVWarningMessage() {
             renewables coming online. Consider adding these resources alongside
             EVs in order to examine the portfolio effects of adding multiple
             resources at the same time. The “EE/RE and EV Comparison” table
-            above summarizes recent historical ERE additions and compares these
-            with the EERE required to offset your entered EV demand.
+            above summarizes recent historical EE/RE additions and compares
+            these with the EE/RE required to offset your entered EV demand.
           </p>
 
           <p>
-            For more ideas on how to model EVs in AVERT, see Appendix J in the
-            AVERT user manual.
+            For more ideas on how to model EVs in AVERT, see Appendix J in the{' '}
+            <a
+              className="usa-link"
+              href="https://www.epa.gov/avert/avert-user-manual"
+            >
+              AVERT user manual
+            </a>
+            .
           </p>
         </div>
       </div>
