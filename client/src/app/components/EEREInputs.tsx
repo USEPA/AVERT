@@ -604,7 +604,7 @@ function EEREInputsContent() {
                         <div className="flex-1 tablet:margin-right-2">
                           <EERETextInput
                             label={<>Light-duty battery EVs:</>}
-                            ariaLabel="TODO"
+                            ariaLabel="Number of light-duty battery EVs to be added to the road"
                             value={batteryEVs}
                             fieldName="batteryEVs"
                             onChange={(text) =>
@@ -626,7 +626,7 @@ function EEREInputsContent() {
                           <EERETextInput
                             className="margin-top-1 tablet:margin-top-0"
                             label={<>Light-duty plug-in hybrid EVs:</>}
-                            ariaLabel="TODO"
+                            ariaLabel="Number of light-duty plug-in hybrid EVs to be added to the road"
                             value={hybridEVs}
                             fieldName="hybridEVs"
                             onChange={(text) =>
@@ -650,7 +650,7 @@ function EEREInputsContent() {
                           <EERETextInput
                             className="margin-top-1"
                             label={<>Electric transit buses:</>}
-                            ariaLabel="TODO"
+                            ariaLabel="Number of electric transit buses to be added to the road"
                             value={transitBuses}
                             fieldName="transitBuses"
                             onChange={(text) =>
@@ -672,7 +672,7 @@ function EEREInputsContent() {
                           <EERETextInput
                             className="margin-top-1"
                             label={<>Electric school buses:</>}
-                            ariaLabel="TODO"
+                            ariaLabel="Number of electric school buses to be added to the road"
                             value={schoolBuses}
                             fieldName="schoolBuses"
                             onChange={(text) =>
@@ -703,7 +703,7 @@ function EEREInputsContent() {
                     <div className="flex-1 desktop:margin-right-2">
                       <EERESelectInput
                         label="Location of EV deployment:"
-                        ariaLabel="TODO"
+                        ariaLabel="Location of EV deployment"
                         options={evDeploymentLocationOptions}
                         value={evDeploymentLocation}
                         fieldName="evDeploymentLocation"
@@ -727,7 +727,7 @@ function EEREInputsContent() {
                       <EERESelectInput
                         className="margin-top-1 desktop:margin-top-0"
                         label="EV model year:"
-                        ariaLabel="TODO"
+                        ariaLabel="Model year of the modeled electric vehicles"
                         options={evModelYearOptions}
                         value={evModelYear}
                         fieldName="evModelYear"
@@ -751,7 +751,7 @@ function EEREInputsContent() {
                       <EERESelectInput
                         className="margin-top-1 desktop:margin-top-0"
                         label="ICE vehicles being replaced:"
-                        ariaLabel="TODO"
+                        ariaLabel="EV to displace a “new” or the average “existing” internal combustion engine vehicle"
                         options={iceReplacementVehicleOptions}
                         value={iceReplacementVehicle}
                         fieldName="iceReplacementVehicle"
