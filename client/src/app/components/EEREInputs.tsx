@@ -594,7 +594,7 @@ function EEREInputsContent() {
                   }
                   data-label="E"
                 >
-                  Electric Vehicles
+                  Electric vehicles
                 </summary>
 
                 <section className="padding-top-0 padding-x-2 padding-bottom-105">
@@ -712,7 +712,7 @@ function EEREInputsContent() {
                     <div className="flex-1 desktop:margin-left-2">
                       <EERESelectInput
                         className="margin-top-1 desktop:margin-top-0"
-                        label="ICE vehicle being replaced:"
+                        label="ICE vehicles being replaced:"
                         ariaLabel="TODO"
                         options={iceReplacementVehicleOptions}
                         value={iceReplacementVehicle}
