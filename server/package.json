@@ -1,6 +1,6 @@
 {
   "name": "epa-avert-server",
-  "version": "3.2.0",
+  "version": "4.0.0",
   "description": "Web server for performing calculations and serving the built client side AVERT web app.",
   "homepage": "https://www.epa.gov/avert",
   "author": "USEPA (https://www.epa.gov)",
