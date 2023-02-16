@@ -1008,7 +1008,7 @@ export function calculateHourlyImpacts(): AppThunk {
     selectedRegions.forEach((region) => {
       const regionalLoad = region.rdf.regional_load;
       const lineLoss = region.lineLoss;
-      const eereDefaults = region.eereDefaults.data; // TODO: properly account for leap years
+      const eereDefaults = region.eereDefaults.data;
 
       const regionalPercent = selectedState?.percentageByRegion[region.id] || 0;
 
