@@ -1009,7 +1009,7 @@ function MonthlyEmissionsChartsContent() {
 
               {currentAggregation !== 'region' && (
                 <p className="margin-top-105 margin-bottom-0 font-sans-3xs line-height-sans-3">
-                  <strong>NOTE:</strong> Monthly emissions data for vehicles is
+                  <strong>NOTE:</strong> Monthly emissions data for vehicles are
                   only available at the regional level.
                 </p>
               )}
