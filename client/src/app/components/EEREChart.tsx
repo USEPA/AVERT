@@ -134,13 +134,12 @@ function EEREChartContent() {
               <div className="pin-all z-100 bg-black opacity-80">
                 <div className="display-flex flex-column flex-align-center flex-justify-center height-full">
                   <p className="margin-0 padding-2 text-center text-white">
-                    Inputs have changed since this EE/RE profile has been
-                    calculated.
+                    Inputs have changed since this EE/RE profile was calculated.
                   </p>
 
                   <p className="margin-0 padding-2 text-center text-white">
                     Please click the “Recalculate EE/RE Impacts” button above to
-                    recalcualte with the latest EE/RE input values.
+                    recalculate with the latest EE/RE input values.
                   </p>
                 </div>
               </div>

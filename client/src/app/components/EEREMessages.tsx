@@ -86,11 +86,9 @@ function ValidationMessage(props: {
             <strong>
               {month} {day} at {hour}:00 {ampm}
             </strong>
-            ).
+            .)
           </em>
         </p>
-
-        {/* TODO: determine if another paragraph should show below for upper level validation errors */}
 
         {direction === 'lower' && (
           <p className="margin-0">
@@ -98,6 +96,18 @@ function ValidationMessage(props: {
             simulate marginal operational changes in load, rather than
             large-scale changes that may change fundamental dynamics. Please
             reduce one or more of your inputs to ensure more reliable results.
+          </p>
+        )}
+
+        {direction === 'upper' && (
+          <p className="margin-0">
+            The limit for AVERT’s web edition is 10% above the historical
+            region-wide load, as there are some circumstances under which
+            modeling a larger addition could lead to unreliable results. AVERT
+            is designed to simulate marginal operational changes in load, rather
+            than large-scale changes that may change fundamental dynamics.
+            Please reduce one or more of your inputs to ensure more reliable
+            results.
           </p>
         )}
       </div>
@@ -156,13 +166,19 @@ export function EVWarningMessage() {
             renewables coming online. Consider adding these resources alongside
             EVs in order to examine the portfolio effects of adding multiple
             resources at the same time. The “EE/RE and EV Comparison” table
-            above summarizes recent historical ERE additions and compares these
-            with the EERE required to offset your entered EV demand.
+            above summarizes recent historical EE/RE additions and compares
+            these with the EE/RE required to offset your entered EV demand.
           </p>
 
           <p>
-            For more ideas on how to model EVs in AVERT, see Appendix J in the
-            AVERT user manual.
+            For more ideas on how to model EVs in AVERT, see Appendix J in the{' '}
+            <a
+              className="usa-link"
+              href="https://www.epa.gov/avert/avert-user-manual"
+            >
+              AVERT user manual
+            </a>
+            .
           </p>
         </div>
       </div>

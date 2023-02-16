@@ -27,7 +27,6 @@ type State = {
   closingModalId: string;
 };
 
-// reducer
 const initialState: State = {
   activeStep: 1,
   loading: false,
