@@ -726,7 +726,7 @@ export const states: { [key in StateId]: State } = {
 };
 
 /**
- * TODO
+ * Excel: "EV model year" select options in the "EV_Detail" sheet (E79).
  */
 export const evModelYearOptions = [
   { id: '2020', name: '2020' },
@@ -738,7 +738,8 @@ export const evModelYearOptions = [
 ];
 
 /**
- * TODO
+ * Excel: "ICE vehicle being replaced" select options in the "EV_Detail" sheet
+ * (E80).
  */
 export const iceReplacementVehicleOptions = [
   { id: 'new', name: 'New' },

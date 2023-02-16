@@ -99,7 +99,7 @@ function getPrecedingIndex(array, number) {
 }
 
 /**
- * TODO
+ * Excel: "Pre" and "Post" calculation from "m_3_displaced_gen_emissions" module
  *
  * @param {{
  *  load: number,

@@ -76,7 +76,7 @@ function getPrecedingIndex(array: number[], number: number) {
 }
 
 /**
- * TODO
+ * Excel: "Pre" and "Post" calculation from "m_3_displaced_gen_emissions" module
  */
 function calculateLinear(options: {
   load: number;
