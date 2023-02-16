@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   description: "AVoided Emissions and geneRation Tool"
-  version: "2.0.0"
+  version: "4.0.0"
   title: "AVERT API"
   license:
     name: "Creative Commons Zero Public Domain Dedication"
@@ -18,7 +18,7 @@ paths:
       summary: na
       description: na
       produces:
-      - "text/plain"
+        - "text/plain"
       responses:
         "200":
           description: na
@@ -29,7 +29,7 @@ paths:
       summary: na
       description: na
       produces:
-      - "application/json"
+        - "application/json"
       responses:
         "200":
           description: na
@@ -42,14 +42,14 @@ paths:
       summary: na
       description: na
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: regionID
-        in: path
-        description: na
-        default: NCSC
-        required: true
-        type: string
+        - name: regionID
+          in: path
+          description: na
+          default: NCSC
+          required: true
+          type: string
       responses:
         "200":
           description: na
@@ -60,7 +60,7 @@ paths:
       summary: "na"
       description: "na"
       produces:
-      - "application/json"
+        - "application/json"
       responses:
         "200":
           description: na
@@ -73,107 +73,31 @@ paths:
       summary: na
       description: na
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: regionID
-        in: path
-        description: na
-        default: NCSC
-        required: true
-        type: string
+        - name: regionID
+          in: path
+          description: na
+          default: NCSC
+          required: true
+          type: string
       responses:
         "200":
           description: na
           schema:
             $ref: "#/definitions/Dummy"
-  /v1/generation:
+  /v1/emissions:
     post:
       summary: na
       description: na
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - in: body
-        name: requestBody
-        description: na
-        schema:
-          $ref: "#/definitions/DefaultPost"
-      responses:
-        "200":
+        - in: body
+          name: requestBody
           description: na
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/Dummy"
-  /v1/so2:
-    post:
-      summary: na
-      description: na
-      produces:
-      - "application/json"
-      parameters:
-      - in: body
-        name: requestBody2
-        description: na
-        schema:
-          $ref: "#/definitions/DefaultPost"
-      responses:
-        "200":
-          description: na
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/Dummy"
-  /v1/nox:
-    post:
-      summary: na
-      description: na
-      produces:
-      - "application/json"
-      parameters:
-      - in: body
-        name: requestBody2
-        description: na
-        schema:
-          $ref: "#/definitions/DefaultPost"
-      responses:
-        "200":
-          description: na
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/Dummy"
-  /v1/co2:
-    post:
-      summary: na
-      description: na
-      produces:
-      - "application/json"
-      parameters:
-      - in: body
-        name: requestBody2
-        description: na
-        schema:
-          $ref: "#/definitions/DefaultPost"
-      responses:
-        "200":
-          description: na
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/Dummy"
-  /v1/nei:
-    post:
-      summary: na
-      description: na
-      produces:
-      - "application/json"
-      parameters:
-      - in: body
-        name: requestBody2
-        description: na
-        schema:
-          $ref: "#/definitions/DefaultPost"
+            $ref: "#/definitions/DefaultPost"
       responses:
         "200":
           description: na
@@ -202,4 +126,3 @@ definitions:
 securityDefinitions:
   basicAuth:
     type: basic
-    
