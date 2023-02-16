@@ -1,0 +1,128 @@
+swagger: "2.0"
+info:
+  description: "AVoided Emissions and geneRation Tool"
+  version: "4.0.0"
+  title: "AVERT API"
+  license:
+    name: "Creative Commons Zero Public Domain Dedication"
+    url: "https://edg.epa.gov/EPA_Data_License.html"
+host: "avert-dev.app.cloud.gov"
+basePath: "/api"
+schemes:
+  - "https"
+security:
+  - basicAuth: []
+paths:
+  /v1:
+    get:
+      summary: na
+      description: na
+      produces:
+        - "text/plain"
+      responses:
+        "200":
+          description: na
+          schema:
+            type: string
+  /v1/rdf:
+    get:
+      summary: na
+      description: na
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: na
+          schema:
+            type: array
+            items:
+              type: string
+  /v1/rdf/{regionID}:
+    get:
+      summary: na
+      description: na
+      produces:
+        - "application/json"
+      parameters:
+        - name: regionID
+          in: path
+          description: na
+          default: NCSC
+          required: true
+          type: string
+      responses:
+        "200":
+          description: na
+          schema:
+            $ref: "#/definitions/Dummy"
+  /v1/eere:
+    get:
+      summary: "na"
+      description: "na"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: na
+          schema:
+            type: "array"
+            items:
+              type: "string"
+  /v1/eere/{regionID}:
+    get:
+      summary: na
+      description: na
+      produces:
+        - "application/json"
+      parameters:
+        - name: regionID
+          in: path
+          description: na
+          default: NCSC
+          required: true
+          type: string
+      responses:
+        "200":
+          description: na
+          schema:
+            $ref: "#/definitions/Dummy"
+  /v1/emissions:
+    post:
+      summary: na
+      description: na
+      produces:
+        - "application/json"
+      parameters:
+        - in: body
+          name: requestBody
+          description: na
+          schema:
+            $ref: "#/definitions/DefaultPost"
+      responses:
+        "200":
+          description: na
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Dummy"
+definitions:
+  Dummy:
+    type: "object"
+    properties:
+      Dummy:
+        type: integer
+        format: int64
+  DefaultPost:
+    type: "object"
+    properties:
+      region:
+        type: string
+        example: NCSC
+      eereLoad:
+        type: array
+        items:
+          type: integer
+          example: 1
+securityDefinitions:
+  basicAuth:
+    type: basic
