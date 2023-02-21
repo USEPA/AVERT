@@ -680,17 +680,11 @@ export function calculateHourlyEVChargingPercentages() {
  * Excel: First table in the "RegionStateAllocate" sheet (CI58:CN107)
  */
 export function calculateSelectedRegionsStatesVMTPercentages(options: {
-  geographicFocus: GeographicFocus;
-  selectedRegionId: RegionId | '';
-  selectedStateId: StateId | '';
+  selectedGeographyRegionIds: RegionId[];
   vmtAllocationTotalsAndPercentages: VMTAllocationTotalsAndPercentages | {};
 }) {
-  const {
-    geographicFocus,
-    selectedRegionId,
-    selectedStateId,
-    vmtAllocationTotalsAndPercentages,
-  } = options;
+  const { selectedGeographyRegionIds, vmtAllocationTotalsAndPercentages } =
+    options;
 
   type StateVMTPercentages = {
     cars: number;
@@ -706,7 +700,7 @@ export function calculateSelectedRegionsStatesVMTPercentages(options: {
       ? (vmtAllocationTotalsAndPercentages as VMTAllocationTotalsAndPercentages)
       : null;
 
-  if (!vmtAllocationData) {
+  if (selectedGeographyRegionIds.length === 0 || !vmtAllocationData) {
     return {} as {
       [regionId in RegionId]: {
         [stateId in StateId]: StateVMTPercentages;
@@ -723,53 +717,26 @@ export function calculateSelectedRegionsStatesVMTPercentages(options: {
       const stateRegionIds = Object.keys(stateValue); // NOTE: also includes 'allRegions' key
       const stateVMTData = vmtAllocationData?.[stateId];
 
-      if (
-        stateVMTData &&
-        geographicFocus === 'regions' &&
-        selectedRegionId !== '' &&
-        stateRegionIds.includes(selectedRegionId)
-      ) {
-        const selectedRegionData = stateVMTData[selectedRegionId];
+      selectedGeographyRegionIds.forEach((regionId) => {
+        if (stateVMTData && stateRegionIds.includes(regionId)) {
+          const selectedRegionData = stateVMTData[regionId];
 
-        if (selectedRegionData) {
-          object[selectedRegionId] ??= {} as {
-            [stateId in StateId]: StateVMTPercentages;
-          };
-
-          object[selectedRegionId][stateId] = {
-            cars: selectedRegionData.cars.percent,
-            trucks: selectedRegionData.trucks.percent,
-            transitBuses: selectedRegionData.transitBuses.percent,
-            schoolBuses: selectedRegionData.schoolBuses.percent,
-            allLDVs: selectedRegionData.allLDVs.percent,
-            allBuses: selectedRegionData.allBuses.percent,
-          };
-        }
-      }
-
-      if (
-        stateVMTData &&
-        geographicFocus === 'states' &&
-        selectedStateId !== '' &&
-        stateId === selectedStateId
-      ) {
-        Object.entries(stateVMTData).forEach(([stateKey, stateData]) => {
-          if (stateKey !== 'allRegions') {
-            object[stateKey as RegionId] ??= {} as {
+          if (selectedRegionData) {
+            object[regionId] ??= {} as {
               [stateId in StateId]: StateVMTPercentages;
             };
 
-            object[stateKey as RegionId][stateId] = {
-              cars: stateData.cars.percent,
-              trucks: stateData.trucks.percent,
-              transitBuses: stateData.transitBuses.percent,
-              schoolBuses: stateData.schoolBuses.percent,
-              allLDVs: stateData.allLDVs.percent,
-              allBuses: stateData.allBuses.percent,
+            object[regionId][stateId] = {
+              cars: selectedRegionData.cars.percent,
+              trucks: selectedRegionData.trucks.percent,
+              transitBuses: selectedRegionData.transitBuses.percent,
+              schoolBuses: selectedRegionData.schoolBuses.percent,
+              allLDVs: selectedRegionData.allLDVs.percent,
+              allBuses: selectedRegionData.allBuses.percent,
             };
           }
-        });
-      }
+        }
+      });
 
       return object;
     },
