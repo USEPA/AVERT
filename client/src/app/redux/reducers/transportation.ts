@@ -563,25 +563,20 @@ export function setHourlyEVChargingPercentages(): AppThunk {
 export function setSelectedGeographyVMTData(): AppThunk {
   return (dispatch, getState) => {
     const { geography, transportation } = getState();
+    const { regionalScalingFactors } = geography;
     const {
       vmtAllocationTotalsAndPercentages,
       vmtAllocationPerVehicle,
       monthlyVMTTotalsAndPercentages,
     } = transportation;
 
-    const geographicFocus = geography.focus;
-
-    const selectedRegionId =
-      Object.values(geography.regions).find((r) => r.selected)?.id || '';
-
-    const selectedStateId =
-      Object.values(geography.states).find((s) => s.selected)?.id || '';
+    const selectedGeographyRegionIds = Object.keys(
+      regionalScalingFactors,
+    ) as RegionId[];
 
     const selectedRegionsStatesVMTPercentages =
       calculateSelectedRegionsStatesVMTPercentages({
-        geographicFocus,
-        selectedRegionId,
-        selectedStateId,
+        selectedGeographyRegionIds,
         vmtAllocationTotalsAndPercentages,
       });
 
