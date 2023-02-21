@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-// ---
+// —-
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
@@ -9,21 +9,21 @@ import type { CombinedSectorsEmissionsData } from 'app/calculations/emissions';
 type AnnualMonthlyData = ReturnType<typeof setAnnualMonthlyData>;
 
 /**
- * Round number to the nearest 10 and conditionally display '--' if number is
+ * Round number to the nearest 10 and conditionally display '—' if number is
  * within 10 of zero.
  */
 function formatNumber(number: number) {
-  if (number < 10 && number > -10) return '--';
+  if (number < 10 && number > -10) return '—';
   const output = Math.round(number / 10) * 10;
   return output.toLocaleString();
 }
 
 /**
  * Calculate numerator ÷ denominator, formatted to three decimal places, but
- * display '--' if the denominator is zero.
+ * display '—' if the denominator is zero.
  */
 function calculateNumber(numerator: number, denominator: number) {
-  return denominator !== 0 ? (numerator / denominator).toFixed(3) : '--';
+  return denominator !== 0 ? (numerator / denominator).toFixed(3) : '—';
 }
 
 /**
@@ -492,7 +492,7 @@ function PowerEmissionsTableContent() {
         <li>Negative numbers indicate displaced generation and emissions.</li>
         <li>All results are rounded to the nearest ten.</li>
         <li>
-          A dash (“–”) indicates a result greater than zero, but lower than the
+          A dash (“—”) indicates a result greater than zero, but lower than the
           level of reportable significance.
         </li>
         <li>
