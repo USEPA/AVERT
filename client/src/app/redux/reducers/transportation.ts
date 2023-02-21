@@ -676,9 +676,21 @@ export function setEVEfficiency(): AppThunk {
 export function setDailyAndMonthlyStats(): AppThunk {
   return (dispatch, getState) => {
     const { geography, transportation } = getState();
+    const { regions, regionalScalingFactors } = geography;
 
-    const regionalLoad = Object.values(geography.regions).find((region) => {
-      return region.selected;
+    const selectedGeographyRegionIds = Object.keys(
+      regionalScalingFactors,
+    ) as RegionId[];
+
+    /**
+     * NOTE: the `regionalLoad` data passed to `calculateDailyStats()` is only
+     * concerned with the year, month, day, and hour values, which will be the
+     * same for all RDFs, so it really doesn't matter which RDF is passed (if a
+     * region is selected, it will always be that region's RDF, but if a state
+     * is selected, it will be one of the region's the state falls within).
+     */
+    const regionalLoad = Object.values(regions).find((region) => {
+      return selectedGeographyRegionIds.includes(region.id);
     })?.rdf.regional_load;
 
     // all RDFs for a given year have the same number of hours, so no need to
