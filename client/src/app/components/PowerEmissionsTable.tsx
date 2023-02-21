@@ -178,13 +178,43 @@ function PowerEmissionsTableContent() {
     emissionsReplacements,
   });
 
-  const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = inputs;
+  const {
+    constantMwh,
+    annualGwh,
+    broadProgram,
+    reduction,
+    topHours,
+    onshoreWind,
+    offshoreWind,
+    utilitySolar,
+    rooftopSolar,
+    batteryEVs,
+    hybridEVs,
+    transitBuses,
+    schoolBuses,
+  } = inputs;
+
+  const eeInputsEmpty =
+    (constantMwh === '' || constantMwh === '0') &&
+    (annualGwh === '' || annualGwh === '0') &&
+    (broadProgram === '' || broadProgram === '0') &&
+    (reduction === '' || reduction === '0') &&
+    (topHours === '' || topHours === '0');
+
+  const reInputsEmpty =
+    (onshoreWind === '' || onshoreWind === '0') &&
+    (offshoreWind === '' || offshoreWind === '0') &&
+    (utilitySolar === '' || utilitySolar === '0') &&
+    (rooftopSolar === '' || rooftopSolar === '0');
 
   const evInputsEmpty =
     (batteryEVs === '' || batteryEVs === '0') &&
     (hybridEVs === '' || hybridEVs === '0') &&
     (transitBuses === '' || transitBuses === '0') &&
     (schoolBuses === '' || schoolBuses === '0');
+
+  const eereAndEvInputsEntered =
+    (!eeInputsEmpty || !reInputsEmpty) && !evInputsEmpty;
 
   const {
     generation,
@@ -393,10 +423,10 @@ function PowerEmissionsTableContent() {
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {evInputsEmpty ? (
-                    calculateNumber(so2.impacts, generation.impacts)
-                  ) : (
+                  {eereAndEvInputsEntered ? (
                     <span className="font-sans-2xs text-italic">Ø</span>
+                  ) : (
+                    calculateNumber(so2.impacts, generation.impacts)
                   )}
                 </td>
               </tr>
@@ -412,10 +442,10 @@ function PowerEmissionsTableContent() {
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {evInputsEmpty ? (
-                    calculateNumber(nox.impacts, generation.impacts)
-                  ) : (
+                  {eereAndEvInputsEntered ? (
                     <span className="font-sans-2xs text-italic">Ø</span>
+                  ) : (
+                    calculateNumber(nox.impacts, generation.impacts)
                   )}
                 </td>
               </tr>
@@ -437,10 +467,10 @@ function PowerEmissionsTableContent() {
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {evInputsEmpty ? (
-                    calculateNumber(ozoneNox.impacts, ozoneGeneration.impacts)
-                  ) : (
+                  {eereAndEvInputsEntered ? (
                     <span className="font-sans-2xs text-italic">Ø</span>
+                  ) : (
+                    calculateNumber(ozoneNox.impacts, ozoneGeneration.impacts)
                   )}
                 </td>
               </tr>
@@ -456,10 +486,10 @@ function PowerEmissionsTableContent() {
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {evInputsEmpty ? (
-                    calculateNumber(co2.impacts, generation.impacts)
-                  ) : (
+                  {eereAndEvInputsEntered ? (
                     <span className="font-sans-2xs text-italic">Ø</span>
+                  ) : (
+                    calculateNumber(co2.impacts, generation.impacts)
                   )}
                 </td>
               </tr>
@@ -475,10 +505,10 @@ function PowerEmissionsTableContent() {
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {evInputsEmpty ? (
-                    calculateNumber(pm25.impacts, generation.impacts)
-                  ) : (
+                  {eereAndEvInputsEntered ? (
                     <span className="font-sans-2xs text-italic">Ø</span>
+                  ) : (
+                    calculateNumber(pm25.impacts, generation.impacts)
                   )}
                 </td>
               </tr>
@@ -494,10 +524,10 @@ function PowerEmissionsTableContent() {
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {evInputsEmpty ? (
-                    calculateNumber(vocs.impacts, generation.impacts)
-                  ) : (
+                  {eereAndEvInputsEntered ? (
                     <span className="font-sans-2xs text-italic">Ø</span>
+                  ) : (
+                    calculateNumber(vocs.impacts, generation.impacts)
                   )}
                 </td>
               </tr>
@@ -513,10 +543,10 @@ function PowerEmissionsTableContent() {
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {evInputsEmpty ? (
-                    calculateNumber(nh3.impacts, generation.impacts)
-                  ) : (
+                  {eereAndEvInputsEntered ? (
                     <span className="font-sans-2xs text-italic">Ø</span>
+                  ) : (
+                    calculateNumber(nh3.impacts, generation.impacts)
                   )}
                 </td>
               </tr>
