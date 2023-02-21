@@ -234,8 +234,8 @@ function VehiclesEmissionsTableContent() {
         <li>Negative numbers indicate displaced generation and emissions.</li>
         <li>All results are rounded to the nearest ten.</li>
         <li>
-          A dash (“—”) indicates a result greater than zero, but lower than the
-          level of reportable significance.
+          A dash (“&thinsp;—&thinsp;”) indicates a result greater than zero, but
+          lower than the level of reportable significance.
         </li>
         <li>
           Fossil results include combined changes from all modeled resources
