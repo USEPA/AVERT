@@ -4,11 +4,11 @@ import type { SelectedRegionsTotalYearlyEmissionChanges } from 'app/calculations
 import type { CombinedSectorsEmissionsData } from 'app/calculations/emissions';
 
 /**
- * Round number to the nearest 10 and conditionally display '--' if number is
+ * Round number to the nearest 10 and conditionally display '—' if number is
  * within 10 of zero.
  */
 function formatNumber(number: number) {
-  if (number < 10 && number > -10) return '--';
+  if (number < 10 && number > -10) return '—';
   const result = Math.round(number / 10) * 10;
   return result.toLocaleString();
 }
@@ -234,8 +234,8 @@ function VehiclesEmissionsTableContent() {
         <li>Negative numbers indicate displaced generation and emissions.</li>
         <li>All results are rounded to the nearest ten.</li>
         <li>
-          A dash (“–”) indicates a result greater than zero, but lower than the
-          level of reportable significance.
+          A dash (“&thinsp;—&thinsp;”) indicates a result greater than zero, but
+          lower than the level of reportable significance.
         </li>
         <li>
           Fossil results include combined changes from all modeled resources

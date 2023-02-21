@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-// ---
+// —-
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
@@ -9,21 +9,21 @@ import type { CombinedSectorsEmissionsData } from 'app/calculations/emissions';
 type AnnualMonthlyData = ReturnType<typeof setAnnualMonthlyData>;
 
 /**
- * Round number to the nearest 10 and conditionally display '--' if number is
+ * Round number to the nearest 10 and conditionally display '—' if number is
  * within 10 of zero.
  */
 function formatNumber(number: number) {
-  if (number < 10 && number > -10) return '--';
+  if (number < 10 && number > -10) return '—';
   const output = Math.round(number / 10) * 10;
   return output.toLocaleString();
 }
 
 /**
  * Calculate numerator ÷ denominator, formatted to three decimal places, but
- * display '--' if the denominator is zero.
+ * display '—' if the denominator is zero.
  */
 function calculateNumber(numerator: number, denominator: number) {
-  return denominator !== 0 ? (numerator / denominator).toFixed(3) : '--';
+  return denominator !== 0 ? (numerator / denominator).toFixed(3) : '—';
 }
 
 /**
@@ -163,6 +163,7 @@ function EmissionsReplacementTooltip(props: {
 }
 
 function PowerEmissionsTableContent() {
+  const inputs = useTypedSelector(({ eere }) => eere.inputs);
   const combinedSectorsEmissionsData = useTypedSelector(
     ({ results }) => results.combinedSectorsEmissionsData,
   );
@@ -176,6 +177,44 @@ function PowerEmissionsTableContent() {
     annualMonthlyData,
     emissionsReplacements,
   });
+
+  const {
+    constantMwh,
+    annualGwh,
+    broadProgram,
+    reduction,
+    topHours,
+    onshoreWind,
+    offshoreWind,
+    utilitySolar,
+    rooftopSolar,
+    batteryEVs,
+    hybridEVs,
+    transitBuses,
+    schoolBuses,
+  } = inputs;
+
+  const eeInputsEmpty =
+    (constantMwh === '' || constantMwh === '0') &&
+    (annualGwh === '' || annualGwh === '0') &&
+    (broadProgram === '' || broadProgram === '0') &&
+    (reduction === '' || reduction === '0') &&
+    (topHours === '' || topHours === '0');
+
+  const reInputsEmpty =
+    (onshoreWind === '' || onshoreWind === '0') &&
+    (offshoreWind === '' || offshoreWind === '0') &&
+    (utilitySolar === '' || utilitySolar === '0') &&
+    (rooftopSolar === '' || rooftopSolar === '0');
+
+  const evInputsEmpty =
+    (batteryEVs === '' || batteryEVs === '0') &&
+    (hybridEVs === '' || hybridEVs === '0') &&
+    (transitBuses === '' || transitBuses === '0') &&
+    (schoolBuses === '' || schoolBuses === '0');
+
+  const eereAndEvInputsEntered =
+    (!eeInputsEmpty || !reInputsEmpty) && !evInputsEmpty;
 
   const {
     generation,
@@ -384,7 +423,11 @@ function PowerEmissionsTableContent() {
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {calculateNumber(so2.impacts, generation.impacts)}
+                  {eereAndEvInputsEntered ? (
+                    <span className="font-sans-2xs text-italic">Ø</span>
+                  ) : (
+                    calculateNumber(so2.impacts, generation.impacts)
+                  )}
                 </td>
               </tr>
 
@@ -399,7 +442,11 @@ function PowerEmissionsTableContent() {
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {calculateNumber(nox.impacts, generation.impacts)}
+                  {eereAndEvInputsEntered ? (
+                    <span className="font-sans-2xs text-italic">Ø</span>
+                  ) : (
+                    calculateNumber(nox.impacts, generation.impacts)
+                  )}
                 </td>
               </tr>
 
@@ -420,7 +467,11 @@ function PowerEmissionsTableContent() {
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {calculateNumber(ozoneNox.impacts, ozoneGeneration.impacts)}
+                  {eereAndEvInputsEntered ? (
+                    <span className="font-sans-2xs text-italic">Ø</span>
+                  ) : (
+                    calculateNumber(ozoneNox.impacts, ozoneGeneration.impacts)
+                  )}
                 </td>
               </tr>
 
@@ -435,7 +486,11 @@ function PowerEmissionsTableContent() {
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {calculateNumber(co2.impacts, generation.impacts)}
+                  {eereAndEvInputsEntered ? (
+                    <span className="font-sans-2xs text-italic">Ø</span>
+                  ) : (
+                    calculateNumber(co2.impacts, generation.impacts)
+                  )}
                 </td>
               </tr>
 
@@ -450,7 +505,11 @@ function PowerEmissionsTableContent() {
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {calculateNumber(pm25.impacts, generation.impacts)}
+                  {eereAndEvInputsEntered ? (
+                    <span className="font-sans-2xs text-italic">Ø</span>
+                  ) : (
+                    calculateNumber(pm25.impacts, generation.impacts)
+                  )}
                 </td>
               </tr>
 
@@ -465,7 +524,11 @@ function PowerEmissionsTableContent() {
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {calculateNumber(vocs.impacts, generation.impacts)}
+                  {eereAndEvInputsEntered ? (
+                    <span className="font-sans-2xs text-italic">Ø</span>
+                  ) : (
+                    calculateNumber(vocs.impacts, generation.impacts)
+                  )}
                 </td>
               </tr>
 
@@ -480,7 +543,11 @@ function PowerEmissionsTableContent() {
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
-                  {calculateNumber(nh3.impacts, generation.impacts)}
+                  {eereAndEvInputsEntered ? (
+                    <span className="font-sans-2xs text-italic">Ø</span>
+                  ) : (
+                    calculateNumber(nh3.impacts, generation.impacts)
+                  )}
                 </td>
               </tr>
             </tbody>
@@ -492,8 +559,13 @@ function PowerEmissionsTableContent() {
         <li>Negative numbers indicate displaced generation and emissions.</li>
         <li>All results are rounded to the nearest ten.</li>
         <li>
-          A dash (“–”) indicates a result greater than zero, but lower than the
-          level of reportable significance.
+          A dash (“&thinsp;—&thinsp;”) indicates a result greater than zero, but
+          lower than the level of reportable significance.
+        </li>
+        <li>
+          When users evaluate a portfolio scenario including EVs and EE or RE,
+          marginal fossil values are not reported and a null sign (“&thinsp;
+          <span className="text-italic">Ø</span>&thinsp;”) is shown.
         </li>
         <li>
           Data does not include changes to ICE vehicle emissions (e.g.,
