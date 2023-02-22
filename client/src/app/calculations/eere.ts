@@ -22,8 +22,8 @@ export type HourlyTopPercentReduction = ReturnType<
   typeof calculateHourlyTopPercentReduction
 >;
 export type HourlyImpacts = ReturnType<typeof calculateHourlyImpacts>;
-export type HourlyImpactsValidation = ReturnType<
-  typeof calculateHourlyImpactsValidation
+export type HourlyChangesValidation = ReturnType<
+  typeof calculateHourlyChangesValidation
 >;
 
 /**
@@ -245,12 +245,12 @@ export function calculateHourlyImpacts(options: {
 }
 
 /**
- * Determines if the regional hourly impacts exceeds the upper or lower limits:
+ * Determines if the regional hourly changes exceeds the upper or lower limits:
  * - upper limit error > 10%
  * - lower limit warning < 15%
  * - lower limit error < 30%
  */
-export function calculateHourlyImpactsValidation(
+export function calculateHourlyChangesValidation(
   selectedRegionalData: Partial<{
     [key in RegionId]: {
       regionalLoad: RegionalLoadData[];

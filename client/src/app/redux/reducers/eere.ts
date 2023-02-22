@@ -14,7 +14,7 @@ import {
 } from 'app/redux/reducers/transportation';
 import type {
   HourlyImpacts,
-  HourlyImpactsValidation,
+  HourlyChangesValidation,
 } from 'app/calculations/eere';
 import {
   calculateHourlyRenewableEnergyProfile,
@@ -22,7 +22,7 @@ import {
   calculateTopPercentGeneration,
   calculateHourlyTopPercentReduction,
   calculateHourlyImpacts,
-  calculateHourlyImpactsValidation,
+  calculateHourlyChangesValidation,
 } from 'app/calculations/eere';
 import type { RegionId, StateId } from 'app/config';
 import {
@@ -145,8 +145,8 @@ type Action =
       payload: { totalHourlyChanges: { [hour: number]: number } };
     }
   | {
-      type: 'eere/SET_HOURLY_IMPACTS_VALIDATION';
-      payload: { validation: HourlyImpactsValidation };
+      type: 'eere/SET_HOURLY_CHANGES_VALIDATION';
+      payload: { validation: HourlyChangesValidation };
     }
   | { type: 'eere/COMPLETE_HOURLY_ENERGY_PROFILE_CALCULATIONS' };
 
@@ -200,7 +200,7 @@ type State = {
       regions: Partial<{ [key in RegionId]: HourlyImpacts }>;
       total: { hourlyChanges: { [hour: number]: number } };
     };
-    validation: HourlyImpactsValidation;
+    validation: HourlyChangesValidation;
   };
 };
 
@@ -591,7 +591,7 @@ export default function reducer(
       };
     }
 
-    case 'eere/SET_HOURLY_IMPACTS_VALIDATION': {
+    case 'eere/SET_HOURLY_CHANGES_VALIDATION': {
       const { validation } = action.payload;
 
       return {
@@ -1155,12 +1155,12 @@ export function calculateHourlyEnergyProfile(): AppThunk {
       payload: { totalHourlyChanges },
     });
 
-    const hourlyImpactsValidation =
-      calculateHourlyImpactsValidation(selectedRegionalData);
+    const hourlyChangesValidation =
+      calculateHourlyChangesValidation(selectedRegionalData);
 
     dispatch({
-      type: 'eere/SET_HOURLY_IMPACTS_VALIDATION',
-      payload: { validation: hourlyImpactsValidation },
+      type: 'eere/SET_HOURLY_CHANGES_VALIDATION',
+      payload: { validation: hourlyChangesValidation },
     });
 
     dispatch({ type: 'eere/COMPLETE_HOURLY_ENERGY_PROFILE_CALCULATIONS' });
