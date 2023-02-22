@@ -47,7 +47,7 @@ const emissions = {
   calculate: async (ctx) => {
     const year = config.year;
     const body = await ctx.request.body;
-    const { regionId, hourlyEere } = body;
+    const { regionId, hourlyChanges } = body;
 
     const rdfFileName = `app/data/${config.regions[regionId].rdf}`;
     const rdfFileData = await readFile(rdfFileName, { encoding: "utf8" });
@@ -57,7 +57,7 @@ const emissions = {
     const neiFileData = await readFile(neiFileName, { encoding: "utf8" });
     const neiData = JSON.parse(neiFileData);
 
-    ctx.body = calculateEmissionsChanges({ year, rdf, neiData, hourlyEere });
+    ctx.body = calculateEmissionsChanges({ year, rdf, neiData, hourlyChanges });
   },
 };
 

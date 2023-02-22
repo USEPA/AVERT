@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 // ---
 import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
-import { calculateHourlyImpacts } from 'app/redux/reducers/eere';
+import { calculateHourlyEnergyProfile } from 'app/redux/reducers/eere';
 import type {
   EnergyEfficiencyFieldName,
   RenewableEnergyFieldName,
@@ -36,14 +36,16 @@ export function EERETextInput(props: {
   } = props;
 
   const dispatch = useDispatch();
-  const hourlyImpacts = useTypedSelector(({ eere }) => eere.hourlyImpacts);
+  const hourlyEnergyProfile = useTypedSelector(
+    ({ eere }) => eere.hourlyEnergyProfile,
+  );
   const errors = useTypedSelector(({ eere }) => eere.errors);
 
   const inputsAreValid = errors.length === 0;
   const inputIsEmpty = value.length === 0;
 
-  const hourlyImpactsCalculationDisabled =
-    !inputsAreValid || inputIsEmpty || hourlyImpacts.status === 'pending';
+  const hourlyEnergyProfileCalculationDisabled =
+    !inputsAreValid || inputIsEmpty || hourlyEnergyProfile.status === 'pending';
 
   return (
     <div className={className ? className : ''}>
@@ -76,10 +78,10 @@ export function EERETextInput(props: {
           onChange={(ev) => onChange(ev.target.value)}
           onBlur={(ev) => onBlur && onBlur(ev.target.value)}
           onKeyPress={(ev) => {
-            if (hourlyImpactsCalculationDisabled) return;
+            if (hourlyEnergyProfileCalculationDisabled) return;
             if (ev.key === 'Enter') {
               onBlur && onBlur((ev.target as HTMLInputElement).value);
-              dispatch(calculateHourlyImpacts());
+              dispatch(calculateHourlyEnergyProfile());
             }
           }}
         />

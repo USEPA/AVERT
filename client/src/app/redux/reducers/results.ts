@@ -149,20 +149,20 @@ export function fetchEmissionsChanges(): AppThunk {
       selectedRegionsTotalMonthlyEmissionChanges,
       vehicleEmissionChangesByGeography,
     } = transportation;
-    const { hourlyImpacts } = eere;
+    const { hourlyEnergyProfile } = eere;
 
     dispatch({ type: 'results/FETCH_EMISSIONS_CHANGES_REQUEST' });
 
     // build up requests for selected regions
     const requests: Promise<Response>[] = [];
 
-    for (const regionId in hourlyImpacts.data.regions) {
-      const regionHourlyImpacts = hourlyImpacts.data.regions[regionId as RegionId]; // prettier-ignore
+    for (const regionId in hourlyEnergyProfile.data.regions) {
+      const regionalProfile = hourlyEnergyProfile.data.regions[regionId as RegionId]; // prettier-ignore
 
-      if (regionHourlyImpacts) {
-        const hourlyEere = Object.values(regionHourlyImpacts).map((d) => {
-          return d.calculatedLoad;
-        });
+      if (regionalProfile) {
+        const hourlyChanges = Object.values(regionalProfile.hourlyImpacts).map(
+          (d) => d.finalMw,
+        );
 
         requests.push(
           fetch(`${api.baseUrl}/api/v1/emissions`, {
@@ -171,7 +171,7 @@ export function fetchEmissionsChanges(): AppThunk {
               Accept: 'application/json',
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ regionId, hourlyEere }),
+            body: JSON.stringify({ regionId, hourlyChanges }),
           }),
         );
       }

@@ -113,9 +113,9 @@ function calculateEmissionsChanges(options: {
   year: number;
   rdf: RDFJSON;
   neiData: NEIData;
-  hourlyEere: number[];
+  hourlyChanges: number[];
 }) {
-  const { year, rdf, neiData, hourlyEere } = options;
+  const { year, rdf, neiData, hourlyChanges } = options;
 
   /**
    * NOTE: Emissions rates for generation, so2, nox, and co2 are calculated with
@@ -178,7 +178,7 @@ function calculateEmissionsChanges(options: {
     const month = hourlyLoad.month; // numeric month of load
 
     const originalLoad = hourlyLoad.regional_load_mw; // original regional load (mwh) for the hour
-    const postEereLoad = originalLoad + hourlyEere[i]; // EERE-merged regional load (mwh) for the hour
+    const postEereLoad = originalLoad + hourlyChanges[i]; // merged regional energy profile (mwh) for the hour
 
     const originalLoadInBounds = originalLoad >= firstLoadBinEdge && originalLoad <= lastLoadBinEdge; // prettier-ignore
     const postEereLoadInBounds = postEereLoad >= firstLoadBinEdge && postEereLoad <= lastLoadBinEdge; // prettier-ignore
