@@ -2,10 +2,10 @@ import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { useTypedSelector } from 'app/redux/index';
 import type { HourlyImpactsValidation } from 'app/calculations/eere';
 
-function EquivalentHomesText(props: { hourlyImpacts: number[] }) {
-  const { hourlyImpacts } = props;
+function EquivalentHomesText(props: { hourlyChanges: number[] }) {
+  const { hourlyChanges } = props;
 
-  const totalLoadMwh = hourlyImpacts.reduce((a, b) => a + b, 0);
+  const totalLoadMwh = hourlyChanges.reduce((a, b) => a + b, 0);
   const totalLoadGwh = Math.round(totalLoadMwh / -1_000);
 
   /**
@@ -192,13 +192,14 @@ function EEREMessagesContent() {
   const hourlyEnergyProfile = useTypedSelector(
     ({ eere }) => eere.hourlyEnergyProfile,
   );
-  const { data, validation } = hourlyEnergyProfile;
+  const { validation } = hourlyEnergyProfile;
+  const totalHourlyChanges = hourlyEnergyProfile.data.total.hourlyChanges;
 
-  if (Object.keys(data.total).length === 0) return null;
+  if (Object.keys(totalHourlyChanges).length === 0) return null;
 
   return (
     <>
-      <EquivalentHomesText hourlyImpacts={Object.values(data.total)} />
+      <EquivalentHomesText hourlyChanges={Object.values(totalHourlyChanges)} />
 
       <EVWarningMessage />
 

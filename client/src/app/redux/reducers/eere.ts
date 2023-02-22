@@ -141,8 +141,8 @@ type Action =
       };
     }
   | {
-      type: 'eere/SET_TOTAL_HOURLY_IMPACTS';
-      payload: { total: { [hour: number]: number } };
+      type: 'eere/SET_TOTAL_HOURLY_CHANGES';
+      payload: { totalHourlyChanges: { [hour: number]: number } };
     }
   | {
       type: 'eere/SET_HOURLY_IMPACTS_VALIDATION';
@@ -198,7 +198,7 @@ type State = {
     inputs: EEREInputs;
     data: {
       regions: Partial<{ [key in RegionId]: HourlyImpacts }>;
-      total: { [hour: number]: number };
+      total: { hourlyChanges: { [hour: number]: number } };
     };
     validation: HourlyImpactsValidation;
   };
@@ -247,7 +247,9 @@ const initialState: State = {
     inputs: initialEEREInputs,
     data: {
       regions: {},
-      total: {},
+      total: {
+        hourlyChanges: {},
+      },
     },
     validation: {
       upperError: null,
@@ -280,7 +282,9 @@ export default function reducer(
           inputs: initialEEREInputs,
           data: {
             regions: {},
-            total: {},
+            total: {
+              hourlyChanges: {},
+            },
           },
           validation: {
             upperError: null,
@@ -539,7 +543,9 @@ export default function reducer(
           inputs,
           data: {
             regions: {},
-            total: {},
+            total: {
+              hourlyChanges: {},
+            },
           },
           validation: {
             upperError: null,
@@ -568,8 +574,8 @@ export default function reducer(
       };
     }
 
-    case 'eere/SET_TOTAL_HOURLY_IMPACTS': {
-      const { total } = action.payload;
+    case 'eere/SET_TOTAL_HOURLY_CHANGES': {
+      const { totalHourlyChanges } = action.payload;
 
       return {
         ...state,
@@ -577,7 +583,9 @@ export default function reducer(
           ...state.hourlyEnergyProfile,
           data: {
             ...state.hourlyEnergyProfile.data,
-            total,
+            total: {
+              hourlyChanges: totalHourlyChanges,
+            },
           },
         },
       };
@@ -1129,7 +1137,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
       });
     });
 
-    const totalHourlyImpacts = Object.values(selectedRegionalData).reduce(
+    const totalHourlyChanges = Object.values(selectedRegionalData).reduce(
       (object, regionalData) => {
         Object.entries(regionalData.hourlyImpacts).forEach(([key, value]) => {
           const hour = Number(key);
@@ -1143,8 +1151,8 @@ export function calculateHourlyEnergyProfile(): AppThunk {
     );
 
     dispatch({
-      type: 'eere/SET_TOTAL_HOURLY_IMPACTS',
-      payload: { total: totalHourlyImpacts },
+      type: 'eere/SET_TOTAL_HOURLY_CHANGES',
+      payload: { totalHourlyChanges },
     });
 
     const hourlyImpactsValidation =

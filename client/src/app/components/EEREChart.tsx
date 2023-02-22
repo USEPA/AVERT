@@ -16,6 +16,8 @@ function EEREChartContent() {
     ({ eere }) => eere.hourlyEnergyProfile,
   );
 
+  const totalHourlyChanges = hourlyEnergyProfile.data.total.hourlyChanges;
+
   /**
    * Recalculation of the hourly energy profile is needed if the EERE inputs
    * have changed from the ones used in the hourly energy profile calculation
@@ -39,13 +41,11 @@ function EEREChartContent() {
 
   const year = rdfYear || new Date().getFullYear();
 
-  const hourlyData = Object.values(hourlyEnergyProfile.data.total).map(
-    (eere, hour) => {
-      const firstHourOfYear = Date.UTC(year, 0, 1);
-      const hourlyMs = hour * 60 * 60 * 1_000;
-      return [new Date().setTime(firstHourOfYear + hourlyMs), eere];
-    },
-  );
+  const hourlyData = Object.values(totalHourlyChanges).map((eere, hour) => {
+    const firstHourOfYear = Date.UTC(year, 0, 1);
+    const hourlyMs = hour * 60 * 60 * 1_000;
+    return [new Date().setTime(firstHourOfYear + hourlyMs), eere];
+  });
 
   const chartConfig: Highcharts.Options = {
     chart: {
@@ -110,7 +110,7 @@ function EEREChartContent() {
 
   return (
     <div data-avert-chart>
-      {Object.keys(hourlyEnergyProfile.data.total)?.length > 0 && (
+      {Object.keys(totalHourlyChanges).length > 0 && (
         <>
           <h3 className="margin-0 font-sans-md line-height-sans-2 text-base-darker text-center">
             EE/RE profile based on values entered:&nbsp;
