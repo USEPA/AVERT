@@ -13,7 +13,7 @@ import {
   setEVDeploymentLocationHistoricalEERE,
 } from 'app/redux/reducers/transportation';
 import type {
-  RegionalHourlyImpacts,
+  HourlyImpacts,
   HourlyImpactsValidation,
 } from 'app/calculations/eere';
 import {
@@ -21,7 +21,7 @@ import {
   calculateHourlyEVLoad,
   calculateTopPercentGeneration,
   calculateHourlyTopPercentReduction,
-  calculateRegionalHourlyImpacts,
+  calculateHourlyImpacts,
   calculateHourlyImpactsValidation,
 } from 'app/calculations/eere';
 import type { RegionId, StateId } from 'app/config';
@@ -137,7 +137,7 @@ type Action =
       type: 'eere/SET_REGIONAL_HOURLY_IMPACTS';
       payload: {
         regionId: RegionId;
-        regionalHourlyImpacts: RegionalHourlyImpacts;
+        hourlyImpacts: HourlyImpacts;
       };
     }
   | {
@@ -197,7 +197,7 @@ type State = {
     status: 'idle' | 'pending' | 'success';
     inputs: EEREInputs;
     data: {
-      regions: Partial<{ [key in RegionId]: RegionalHourlyImpacts }>;
+      regions: Partial<{ [key in RegionId]: HourlyImpacts }>;
       total: { [hour: number]: number };
     };
     validation: HourlyImpactsValidation;
@@ -551,7 +551,7 @@ export default function reducer(
     }
 
     case 'eere/SET_REGIONAL_HOURLY_IMPACTS': {
-      const { regionId, regionalHourlyImpacts } = action.payload;
+      const { regionId, hourlyImpacts } = action.payload;
 
       return {
         ...state,
@@ -561,7 +561,7 @@ export default function reducer(
             ...state.hourlyEnergyProfile.data,
             regions: {
               ...state.hourlyEnergyProfile.data.regions,
-              [regionId]: regionalHourlyImpacts,
+              [regionId]: hourlyImpacts,
             },
           },
         },
@@ -994,7 +994,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
     const selectedRegionalData = {} as Partial<{
       [key in RegionId]: {
         regionalLoad: RegionalLoadData[];
-        regionalHourlyImpacts: RegionalHourlyImpacts;
+        hourlyImpacts: HourlyImpacts;
       };
     }>;
 
@@ -1105,7 +1105,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
         reduction,
       });
 
-      const regionalHourlyImpacts = calculateRegionalHourlyImpacts({
+      const hourlyImpacts = calculateHourlyImpacts({
         lineLoss,
         regionalLoad,
         hourlyRenewableEnergyProfile,
@@ -1117,27 +1117,25 @@ export function calculateHourlyEnergyProfile(): AppThunk {
 
       selectedRegionalData[region.id] = {
         regionalLoad,
-        regionalHourlyImpacts,
+        hourlyImpacts,
       };
 
       dispatch({
         type: 'eere/SET_REGIONAL_HOURLY_IMPACTS',
         payload: {
           regionId: region.id,
-          regionalHourlyImpacts,
+          hourlyImpacts,
         },
       });
     });
 
     const totalHourlyImpacts = Object.values(selectedRegionalData).reduce(
       (object, regionalData) => {
-        Object.entries(regionalData.regionalHourlyImpacts).forEach(
-          ([key, value]) => {
-            const hour = Number(key);
-            object[hour] ??= 0;
-            object[hour] += value.calculatedLoad;
-          },
-        );
+        Object.entries(regionalData.hourlyImpacts).forEach(([key, value]) => {
+          const hour = Number(key);
+          object[hour] ??= 0;
+          object[hour] += value.calculatedLoad;
+        });
 
         return object;
       },
