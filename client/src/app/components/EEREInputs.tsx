@@ -34,7 +34,7 @@ import {
   updateEereEVDeploymentLocation,
   updateEereEVModelYear,
   updateEereICEReplacementVehicle,
-  calculateHourlyImpacts,
+  calculateHourlyEnergyProfile,
 } from 'app/redux/reducers/eere';
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 
@@ -153,7 +153,7 @@ function EEREInputsContent() {
   const textInputsAreEmpty =
     textInputsFields.filter((field) => field?.length > 0).length === 0;
 
-  const hourlyImpactsCalculationDisabled =
+  const hourlyEnergyProfileCalculationDisabled =
     !textInputsAreValid ||
     textInputsAreEmpty ||
     hourlyImpacts.status === 'pending';
@@ -164,7 +164,7 @@ function EEREInputsContent() {
     success: 'Recalculate EE/RE Impacts',
   };
 
-  const disabledButtonClassName = hourlyImpactsCalculationDisabled
+  const disabledButtonClassName = hourlyEnergyProfileCalculationDisabled
     ? 'avert-button-disabled'
     : '';
 
@@ -790,8 +790,8 @@ function EEREInputsContent() {
           href="/"
           onClick={(ev) => {
             ev.preventDefault();
-            if (hourlyImpactsCalculationDisabled) return;
-            dispatch(calculateHourlyImpacts());
+            if (hourlyEnergyProfileCalculationDisabled) return;
+            dispatch(calculateHourlyEnergyProfile());
           }}
           data-avert-calculate-impacts-btn
         >

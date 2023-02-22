@@ -940,7 +940,7 @@ export function updateEereICEReplacementVehicle(input: string): AppThunk {
   };
 }
 
-export function calculateHourlyImpacts(): AppThunk {
+export function calculateHourlyEnergyProfile(): AppThunk {
   return (dispatch, getState) => {
     const { geography, transportation, eere } = getState();
     const { regionalScalingFactors } = geography;

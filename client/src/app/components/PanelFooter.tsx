@@ -124,7 +124,7 @@ function NextButton(props: { text: string }) {
     hourlyImpacts.validation.lowerError !== null ||
     hourlyImpacts.validation.upperError !== null;
 
-  const hourlyImpactsCalculationNotComplete =
+  const hourlyEnergyProfileCalculationNotComplete =
     onStepTwo && hourlyImpacts.status !== 'success';
 
   const hourlyImpactsExceedsValidationLimit = onStepTwo && hourlyImpactsInvalid;
@@ -144,7 +144,7 @@ function NextButton(props: { text: string }) {
 
   const disabledButtonClassName =
     noGeographySelected ||
-    hourlyImpactsCalculationNotComplete ||
+    hourlyEnergyProfileCalculationNotComplete ||
     hourlyImpactsExceedsValidationLimit ||
     hourlyImpactsRecalculationNeeded
       ? 'avert-button-disabled'
