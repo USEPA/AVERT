@@ -13,6 +13,10 @@ import {
   setEVDeploymentLocationHistoricalEERE,
 } from 'app/redux/reducers/transportation';
 import type {
+  HourlyRenewableEnergyProfile,
+  HourlyEVLoad,
+  TopPercentGeneration,
+  HourlyTopPercentReduction,
   HourlyImpacts,
   HourlyChangesValidation,
 } from 'app/calculations/eere';
@@ -134,9 +138,13 @@ type Action =
       payload: { inputs: EEREInputs };
     }
   | {
-      type: 'eere/SET_REGIONAL_HOURLY_IMPACTS';
+      type: 'eere/SET_REGIONAL_HOURLY_ENERGY_PROFILE_DATA';
       payload: {
         regionId: RegionId;
+        hourlyRenewableEnergyProfile: HourlyRenewableEnergyProfile;
+        hourlyEVLoad: HourlyEVLoad;
+        topPercentGeneration: TopPercentGeneration;
+        hourlyTopPercentReduction: HourlyTopPercentReduction;
         hourlyImpacts: HourlyImpacts;
       };
     }
@@ -203,6 +211,10 @@ type State = {
     data: {
       regions: Partial<{
         [key in RegionId]: {
+          hourlyRenewableEnergyProfile: HourlyRenewableEnergyProfile;
+          hourlyEVLoad: HourlyEVLoad;
+          topPercentGeneration: TopPercentGeneration;
+          hourlyTopPercentReduction: HourlyTopPercentReduction;
           hourlyImpacts: HourlyImpacts;
         };
       }>;
@@ -564,8 +576,15 @@ export default function reducer(
       };
     }
 
-    case 'eere/SET_REGIONAL_HOURLY_IMPACTS': {
-      const { regionId, hourlyImpacts } = action.payload;
+    case 'eere/SET_REGIONAL_HOURLY_ENERGY_PROFILE_DATA': {
+      const {
+        regionId,
+        hourlyRenewableEnergyProfile,
+        hourlyEVLoad,
+        topPercentGeneration,
+        hourlyTopPercentReduction,
+        hourlyImpacts,
+      } = action.payload;
 
       return {
         ...state,
@@ -576,6 +595,10 @@ export default function reducer(
             regions: {
               ...state.hourlyEnergyProfile.data.regions,
               [regionId]: {
+                hourlyRenewableEnergyProfile,
+                hourlyEVLoad,
+                topPercentGeneration,
+                hourlyTopPercentReduction,
                 hourlyImpacts,
               },
             },
@@ -1009,7 +1032,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
      * to create the hourly impacts chart and show validation warning/error
      * messages
      */
-    const selectedRegionalData = {} as Partial<{
+    const regionalHourlyImpacts = {} as Partial<{
       [key in RegionId]: {
         regionalLoad: RegionalLoadData[];
         hourlyImpacts: HourlyImpacts;
@@ -1102,6 +1125,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
           rooftopSolar,
         });
 
+      // TODO: determine if each calculated hour should be multiplied by the regional scaling factor
       const hourlyEVLoad = calculateHourlyEVLoad({
         regionId: region.id,
         regionalLoad,
@@ -1133,21 +1157,22 @@ export function calculateHourlyEnergyProfile(): AppThunk {
         constantMwh,
       });
 
-      selectedRegionalData[region.id] = {
-        regionalLoad,
-        hourlyImpacts,
-      };
+      regionalHourlyImpacts[region.id] = { regionalLoad, hourlyImpacts };
 
       dispatch({
-        type: 'eere/SET_REGIONAL_HOURLY_IMPACTS',
+        type: 'eere/SET_REGIONAL_HOURLY_ENERGY_PROFILE_DATA',
         payload: {
           regionId: region.id,
+          hourlyRenewableEnergyProfile,
+          hourlyEVLoad,
+          topPercentGeneration,
+          hourlyTopPercentReduction,
           hourlyImpacts,
         },
       });
     });
 
-    const totalHourlyChanges = Object.values(selectedRegionalData).reduce(
+    const totalHourlyChanges = Object.values(regionalHourlyImpacts).reduce(
       (object, regionalData) => {
         Object.entries(regionalData.hourlyImpacts).forEach(([key, value]) => {
           const hour = Number(key);
@@ -1165,8 +1190,9 @@ export function calculateHourlyEnergyProfile(): AppThunk {
       payload: { totalHourlyChanges },
     });
 
-    const hourlyChangesValidation =
-      calculateHourlyChangesValidation(selectedRegionalData);
+    const hourlyChangesValidation = calculateHourlyChangesValidation({
+      regionalHourlyImpacts,
+    });
 
     dispatch({
       type: 'eere/SET_HOURLY_CHANGES_VALIDATION',

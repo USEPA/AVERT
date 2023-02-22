@@ -250,14 +250,16 @@ export function calculateHourlyImpacts(options: {
  * - lower limit warning < 15%
  * - lower limit error < 30%
  */
-export function calculateHourlyChangesValidation(
-  selectedRegionalData: Partial<{
+export function calculateHourlyChangesValidation(options: {
+  regionalHourlyImpacts: Partial<{
     [key in RegionId]: {
       regionalLoad: RegionalLoadData[];
       hourlyImpacts: HourlyImpacts;
     };
-  }>,
-) {
+  }>;
+}) {
+  const { regionalHourlyImpacts } = options;
+
   type ExceedanceData = {
     hourOfYear: number;
     month: number;
@@ -276,7 +278,7 @@ export function calculateHourlyChangesValidation(
     lowerError: null | ExceedanceData;
   };
 
-  Object.values(selectedRegionalData).forEach((regionalData) => {
+  Object.values(regionalHourlyImpacts).forEach((regionalData) => {
     const { regionalLoad, hourlyImpacts } = regionalData;
 
     Object.entries(hourlyImpacts).forEach(([key, value]) => {
