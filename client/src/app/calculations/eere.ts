@@ -208,7 +208,7 @@ export function calculateHourlyImpacts(options: {
   const result = regionalLoad.reduce(
     (object, data, index) => {
       const hour = data.hour_of_year;
-      const originalLoad = data.regional_load_mw;
+      const currentLoadMw = data.regional_load_mw;
 
       const topPercentReduction = hourlyTopPercentReduction[index] || 0;
       const renewableProfile = hourlyRenewableEnergyProfile[index] || 0;
@@ -217,16 +217,16 @@ export function calculateHourlyImpacts(options: {
       /**
        * Excel: Data in column I of the "CalculateEERE" sheet (I5:I8788).
        */
-      const calculatedLoad =
+      const finalMw =
         (topPercentReduction - hourlyMwReduction - constantMwh + evLoad) /
           (1 - lineLoss) +
         renewableProfile;
 
-      const percentChange = (calculatedLoad / originalLoad) * 100;
+      const percentChange = (finalMw / currentLoadMw) * 100;
 
       object[hour] = {
-        originalLoad,
-        calculatedLoad,
+        currentLoadMw,
+        finalMw,
         percentChange,
       };
 
@@ -234,8 +234,8 @@ export function calculateHourlyImpacts(options: {
     },
     {} as {
       [hour: number]: {
-        originalLoad: number;
-        calculatedLoad: number;
+        currentLoadMw: number;
+        finalMw: number;
         percentChange: number;
       };
     },

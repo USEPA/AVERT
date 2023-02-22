@@ -1177,7 +1177,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
         Object.entries(regionalData.hourlyImpacts).forEach(([key, value]) => {
           const hour = Number(key);
           object[hour] ??= 0;
-          object[hour] += value.calculatedLoad;
+          object[hour] += value.finalMw;
         });
 
         return object;
