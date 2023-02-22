@@ -160,7 +160,7 @@ export function fetchEmissionsChanges(): AppThunk {
       const regionalProfile = hourlyEnergyProfile.data.regions[regionId as RegionId]; // prettier-ignore
 
       if (regionalProfile) {
-        const hourlyEere = Object.values(regionalProfile.hourlyImpacts).map(
+        const hourlyChanges = Object.values(regionalProfile.hourlyImpacts).map(
           (d) => d.calculatedLoad,
         );
 
@@ -171,7 +171,7 @@ export function fetchEmissionsChanges(): AppThunk {
               Accept: 'application/json',
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ regionId, hourlyEere }),
+            body: JSON.stringify({ regionId, hourlyChanges }),
           }),
         );
       }

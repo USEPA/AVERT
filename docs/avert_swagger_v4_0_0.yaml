@@ -115,10 +115,10 @@ definitions:
   DefaultPost:
     type: "object"
     properties:
-      region:
+      regionId:
         type: string
         example: NCSC
-      eereLoad:
+      hourlyChanges:
         type: array
         items:
           type: integer
