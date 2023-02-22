@@ -142,11 +142,15 @@ type Action =
     }
   | {
       type: 'eere/SET_TOTAL_HOURLY_CHANGES';
-      payload: { totalHourlyChanges: { [hour: number]: number } };
+      payload: {
+        totalHourlyChanges: { [hour: number]: number };
+      };
     }
   | {
       type: 'eere/SET_HOURLY_CHANGES_VALIDATION';
-      payload: { validation: HourlyChangesValidation };
+      payload: {
+        hourlyChangesValidation: HourlyChangesValidation;
+      };
     }
   | { type: 'eere/COMPLETE_HOURLY_ENERGY_PROFILE_CALCULATIONS' };
 
@@ -197,7 +201,11 @@ type State = {
     status: 'idle' | 'pending' | 'success';
     inputs: EEREInputs;
     data: {
-      regions: Partial<{ [key in RegionId]: HourlyImpacts }>;
+      regions: Partial<{
+        [key in RegionId]: {
+          hourlyImpacts: HourlyImpacts;
+        };
+      }>;
       total: { hourlyChanges: { [hour: number]: number } };
     };
     validation: HourlyChangesValidation;
@@ -567,7 +575,9 @@ export default function reducer(
             ...state.hourlyEnergyProfile.data,
             regions: {
               ...state.hourlyEnergyProfile.data.regions,
-              [regionId]: hourlyImpacts,
+              [regionId]: {
+                hourlyImpacts,
+              },
             },
           },
         },
@@ -592,13 +602,13 @@ export default function reducer(
     }
 
     case 'eere/SET_HOURLY_CHANGES_VALIDATION': {
-      const { validation } = action.payload;
+      const { hourlyChangesValidation } = action.payload;
 
       return {
         ...state,
         hourlyEnergyProfile: {
           ...state.hourlyEnergyProfile,
-          validation,
+          validation: hourlyChangesValidation,
         },
       };
     }
@@ -1160,7 +1170,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
 
     dispatch({
       type: 'eere/SET_HOURLY_CHANGES_VALIDATION',
-      payload: { validation: hourlyChangesValidation },
+      payload: { hourlyChangesValidation },
     });
 
     dispatch({ type: 'eere/COMPLETE_HOURLY_ENERGY_PROFILE_CALCULATIONS' });

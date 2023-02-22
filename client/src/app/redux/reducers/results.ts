@@ -157,12 +157,12 @@ export function fetchEmissionsChanges(): AppThunk {
     const requests: Promise<Response>[] = [];
 
     for (const regionId in hourlyEnergyProfile.data.regions) {
-      const regionHourlyImpacts = hourlyEnergyProfile.data.regions[regionId as RegionId]; // prettier-ignore
+      const regionalProfile = hourlyEnergyProfile.data.regions[regionId as RegionId]; // prettier-ignore
 
-      if (regionHourlyImpacts) {
-        const hourlyEere = Object.values(regionHourlyImpacts).map((d) => {
-          return d.calculatedLoad;
-        });
+      if (regionalProfile) {
+        const hourlyEere = Object.values(regionalProfile.hourlyImpacts).map(
+          (d) => d.calculatedLoad,
+        );
 
         requests.push(
           fetch(`${api.baseUrl}/api/v1/emissions`, {
