@@ -189,8 +189,10 @@ export function EVWarningMessage() {
 }
 
 function EEREMessagesContent() {
-  const hourlyImpacts = useTypedSelector(({ eere }) => eere.hourlyImpacts);
-  const { data, validation } = hourlyImpacts;
+  const hourlyEnergyProfile = useTypedSelector(
+    ({ eere }) => eere.hourlyEnergyProfile,
+  );
+  const { data, validation } = hourlyEnergyProfile;
 
   if (Object.keys(data.total).length === 0) return null;
 

@@ -106,7 +106,9 @@ function NextButton(props: { text: string }) {
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const eereInputs = useTypedSelector(({ eere }) => eere.inputs);
-  const hourlyImpacts = useTypedSelector(({ eere }) => eere.hourlyImpacts);
+  const hourlyEnergyProfile = useTypedSelector(
+    ({ eere }) => eere.hourlyEnergyProfile,
+  );
 
   const selectedRegionId = useSelectedRegion()?.id;
   const selectedStateId = useSelectedState()?.id;
@@ -120,33 +122,34 @@ function NextButton(props: { text: string }) {
   const noGeographySelected =
     geographicFocus === 'regions' ? noRegionsSelected : noStateSelected;
 
-  const hourlyImpactsInvalid =
-    hourlyImpacts.validation.lowerError !== null ||
-    hourlyImpacts.validation.upperError !== null;
+  const hourlyEnergyProfileInvalid =
+    hourlyEnergyProfile.validation.lowerError !== null ||
+    hourlyEnergyProfile.validation.upperError !== null;
 
   const hourlyEnergyProfileCalculationNotComplete =
-    onStepTwo && hourlyImpacts.status !== 'success';
+    onStepTwo && hourlyEnergyProfile.status !== 'success';
 
-  const hourlyImpactsExceedsValidationLimit = onStepTwo && hourlyImpactsInvalid;
+  const hourlyEnergyProfileExceedsValidationLimit =
+    onStepTwo && hourlyEnergyProfileInvalid;
 
   /**
-   * Recalculation of the hourly impacts is needed if the EERE inputs have
-   * changed from the ones used in the hourly impacts calculation
+   * Recalculation of the hourly energy profile is needed if the EERE inputs
+   * have changed from the ones used in the hourly energy profile calculation
    */
-  const hourlyImpactsRecalculationNeeded =
+  const hourlyEnergyProfileRecalculationNeeded =
     onStepTwo &&
     !Object.keys(eereInputs).every((field) => {
       return (
         eereInputs[field as keyof typeof eereInputs] ===
-        hourlyImpacts.inputs[field as keyof typeof hourlyImpacts.inputs]
+        hourlyEnergyProfile.inputs[field as keyof typeof hourlyEnergyProfile.inputs] // prettier-ignore
       );
     });
 
   const disabledButtonClassName =
     noGeographySelected ||
     hourlyEnergyProfileCalculationNotComplete ||
-    hourlyImpactsExceedsValidationLimit ||
-    hourlyImpactsRecalculationNeeded
+    hourlyEnergyProfileExceedsValidationLimit ||
+    hourlyEnergyProfileRecalculationNeeded
       ? 'avert-button-disabled'
       : '';
 
@@ -167,9 +170,9 @@ function NextButton(props: { text: string }) {
 
         if (onStepTwo) {
           if (
-            hourlyImpacts.status === 'success' &&
-            !hourlyImpactsRecalculationNeeded &&
-            !hourlyImpactsInvalid
+            hourlyEnergyProfile.status === 'success' &&
+            !hourlyEnergyProfileRecalculationNeeded &&
+            !hourlyEnergyProfileInvalid
           ) {
             window.scrollTo(0, 0);
             dispatch(fetchEmissionsChanges());

@@ -130,7 +130,7 @@ type Action =
       payload: { option: string };
     }
   | {
-      type: 'eere/START_HOURLY_IMPACTS_CALCULATIONS';
+      type: 'eere/START_HOURLY_ENERGY_PROFILE_CALCULATIONS';
       payload: { inputs: EEREInputs };
     }
   | {
@@ -148,7 +148,7 @@ type Action =
       type: 'eere/SET_HOURLY_IMPACTS_VALIDATION';
       payload: { validation: HourlyImpactsValidation };
     }
-  | { type: 'eere/COMPLETE_HOURLY_IMPACTS_CALCULATIONS' };
+  | { type: 'eere/COMPLETE_HOURLY_ENERGY_PROFILE_CALCULATIONS' };
 
 export type EnergyEfficiencyFieldName =
   | 'annualGwh'
@@ -193,7 +193,7 @@ type State = {
   inputs: EEREInputs;
   selectOptions: { [field in SelectOptionsFieldName]: SelectOption[] };
   evCalculationsInputs: { [field in ElectricVehiclesFieldName]: string };
-  hourlyImpacts: {
+  hourlyEnergyProfile: {
     status: 'idle' | 'pending' | 'success';
     inputs: EEREInputs;
     data: {
@@ -242,7 +242,7 @@ const initialState: State = {
     transitBuses: '',
     schoolBuses: '',
   },
-  hourlyImpacts: {
+  hourlyEnergyProfile: {
     status: 'idle',
     inputs: initialEEREInputs,
     data: {
@@ -275,7 +275,7 @@ export default function reducer(
           transitBuses: '',
           schoolBuses: '',
         },
-        hourlyImpacts: {
+        hourlyEnergyProfile: {
           status: 'idle',
           inputs: initialEEREInputs,
           data: {
@@ -530,11 +530,11 @@ export default function reducer(
       };
     }
 
-    case 'eere/START_HOURLY_IMPACTS_CALCULATIONS': {
+    case 'eere/START_HOURLY_ENERGY_PROFILE_CALCULATIONS': {
       const { inputs } = action.payload;
       return {
         ...state,
-        hourlyImpacts: {
+        hourlyEnergyProfile: {
           status: 'pending',
           inputs,
           data: {
@@ -555,12 +555,12 @@ export default function reducer(
 
       return {
         ...state,
-        hourlyImpacts: {
-          ...state.hourlyImpacts,
+        hourlyEnergyProfile: {
+          ...state.hourlyEnergyProfile,
           data: {
-            ...state.hourlyImpacts.data,
+            ...state.hourlyEnergyProfile.data,
             regions: {
-              ...state.hourlyImpacts.data.regions,
+              ...state.hourlyEnergyProfile.data.regions,
               [regionId]: regionalHourlyImpacts,
             },
           },
@@ -573,10 +573,10 @@ export default function reducer(
 
       return {
         ...state,
-        hourlyImpacts: {
-          ...state.hourlyImpacts,
+        hourlyEnergyProfile: {
+          ...state.hourlyEnergyProfile,
           data: {
-            ...state.hourlyImpacts.data,
+            ...state.hourlyEnergyProfile.data,
             total,
           },
         },
@@ -588,18 +588,18 @@ export default function reducer(
 
       return {
         ...state,
-        hourlyImpacts: {
-          ...state.hourlyImpacts,
+        hourlyEnergyProfile: {
+          ...state.hourlyEnergyProfile,
           validation,
         },
       };
     }
 
-    case 'eere/COMPLETE_HOURLY_IMPACTS_CALCULATIONS': {
+    case 'eere/COMPLETE_HOURLY_ENERGY_PROFILE_CALCULATIONS': {
       return {
         ...state,
-        hourlyImpacts: {
-          ...state.hourlyImpacts,
+        hourlyEnergyProfile: {
+          ...state.hourlyEnergyProfile,
           status: 'success',
         },
       };
@@ -981,7 +981,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
     }
 
     dispatch({
-      type: 'eere/START_HOURLY_IMPACTS_CALCULATIONS',
+      type: 'eere/START_HOURLY_ENERGY_PROFILE_CALCULATIONS',
       payload: { inputs },
     });
 
@@ -1115,7 +1115,10 @@ export function calculateHourlyEnergyProfile(): AppThunk {
         constantMwh,
       });
 
-      selectedRegionalData[region.id] = { regionalLoad, regionalHourlyImpacts };
+      selectedRegionalData[region.id] = {
+        regionalLoad,
+        regionalHourlyImpacts,
+      };
 
       dispatch({
         type: 'eere/SET_REGIONAL_HOURLY_IMPACTS',
@@ -1154,7 +1157,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
       payload: { validation: hourlyImpactsValidation },
     });
 
-    dispatch({ type: 'eere/COMPLETE_HOURLY_IMPACTS_CALCULATIONS' });
+    dispatch({ type: 'eere/COMPLETE_HOURLY_ENERGY_PROFILE_CALCULATIONS' });
   };
 }
 

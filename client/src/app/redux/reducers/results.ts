@@ -149,15 +149,15 @@ export function fetchEmissionsChanges(): AppThunk {
       selectedRegionsTotalMonthlyEmissionChanges,
       vehicleEmissionChangesByGeography,
     } = transportation;
-    const { hourlyImpacts } = eere;
+    const { hourlyEnergyProfile } = eere;
 
     dispatch({ type: 'results/FETCH_EMISSIONS_CHANGES_REQUEST' });
 
     // build up requests for selected regions
     const requests: Promise<Response>[] = [];
 
-    for (const regionId in hourlyImpacts.data.regions) {
-      const regionHourlyImpacts = hourlyImpacts.data.regions[regionId as RegionId]; // prettier-ignore
+    for (const regionId in hourlyEnergyProfile.data.regions) {
+      const regionHourlyImpacts = hourlyEnergyProfile.data.regions[regionId as RegionId]; // prettier-ignore
 
       if (regionHourlyImpacts) {
         const hourlyEere = Object.values(regionHourlyImpacts).map((d) => {
