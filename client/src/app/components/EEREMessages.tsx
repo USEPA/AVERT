@@ -57,17 +57,14 @@ function ValidationMessage(props: {
       ? exceedanceData.hour - 12
       : exceedanceData.hour;
   const ampm = exceedanceData.hour > 12 ? 'PM' : 'AM';
+  const value = exceedanceData.hourlyTotal.toLocaleString(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  });
   const percentage = Math.abs(exceedanceData.percentChange).toLocaleString(
     undefined,
     { minimumFractionDigits: 0, maximumFractionDigits: 2 },
   );
-
-  const limit =
-    direction === 'upper' // NOTE: only error level for upper limit (over 10%)
-      ? 10
-      : severity === 'error'
-      ? 30
-      : 15;
 
   return (
     <div className={`usa-alert usa-alert--${severity} margin-bottom-0`}>
@@ -76,39 +73,45 @@ function ValidationMessage(props: {
           {severity === 'error' ? 'ERROR' : 'WARNING'}
         </h4>
 
-        <p>
-          The combined impact of your proposed programs would{' '}
-          {direction === 'upper' ? 'add' : 'displace'} more than{' '}
-          <strong>{limit}%</strong> of regional fossil generation in at least
-          one hour of the year.&nbsp;&nbsp;
-          <em>
-            (Maximum value: <strong>{percentage}</strong>% on{' '}
-            <strong>
-              {month} {day} at {hour}:00 {ampm}
-            </strong>
-            .)
-          </em>
-        </p>
-
-        {direction === 'lower' && (
-          <p className="margin-0">
-            The recommended limit for AVERT is 15%, as AVERT is designed to
-            simulate marginal operational changes in load, rather than
-            large-scale changes that may change fundamental dynamics. Please
-            reduce one or more of your inputs to ensure more reliable results.
-          </p>
+        {direction === 'upper' && (
+          <>
+            <p>
+              You have entered an energy change profile that exceeds the
+              calculable range for hourly energy changes.&nbsp;&nbsp;
+              <em>
+                (Maximum value: <strong>{value}</strong> on{' '}
+                <strong>
+                  {month} {day} at {hour}:00 {ampm}
+                </strong>
+                .)
+              </em>
+            </p>
+          </>
         )}
 
-        {direction === 'upper' && (
-          <p className="margin-0">
-            The limit for AVERT’s web edition is 10% above the historical
-            region-wide load, as there are some circumstances under which
-            modeling a larger addition could lead to unreliable results. AVERT
-            is designed to simulate marginal operational changes in load, rather
-            than large-scale changes that may change fundamental dynamics.
-            Please reduce one or more of your inputs to ensure more reliable
-            results.
-          </p>
+        {direction === 'lower' && (
+          <>
+            <p>
+              The combined impact of your proposed programs would displace more
+              than <strong>{severity === 'error' ? 30 : 15}%</strong> of
+              regional fossil generation in at least one hour of the
+              year.&nbsp;&nbsp;
+              <em>
+                (Maximum value: <strong>{percentage}</strong>% on{' '}
+                <strong>
+                  {month} {day} at {hour}:00 {ampm}
+                </strong>
+                .)
+              </em>
+            </p>
+
+            <p className="margin-0">
+              The recommended limit for AVERT is 15%, as AVERT is designed to
+              simulate marginal operational changes in load, rather than
+              large-scale changes that may change fundamental dynamics. Please
+              reduce one or more of your inputs to ensure more reliable results.
+            </p>
+          </>
         )}
       </div>
     </div>
