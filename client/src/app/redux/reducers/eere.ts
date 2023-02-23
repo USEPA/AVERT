@@ -138,7 +138,7 @@ type Action =
       payload: { inputs: EEREInputs };
     }
   | {
-      type: 'eere/SET_REGIONAL_HOURLY_ENERGY_PROFILE_DATA';
+      type: 'eere/SET_HOURLY_ENERGY_PROFILE_REGIONAL_DATA';
       payload: {
         regionId: RegionId;
         hourlyRenewableEnergyProfile: HourlyRenewableEnergyProfile;
@@ -149,13 +149,13 @@ type Action =
       };
     }
   | {
-      type: 'eere/SET_TOTAL_HOURLY_CHANGES';
+      type: 'eere/SET_HOURLY_ENERGY_PROFILE_TOTAL_HOURLY_CHANGES';
       payload: {
         totalHourlyChanges: { [hour: number]: number };
       };
     }
   | {
-      type: 'eere/SET_HOURLY_CHANGES_VALIDATION';
+      type: 'eere/SET_HOURLY_ENERGY_PROFILE_VALIDATION';
       payload: {
         hourlyChangesValidation: HourlyChangesValidation;
       };
@@ -576,7 +576,7 @@ export default function reducer(
       };
     }
 
-    case 'eere/SET_REGIONAL_HOURLY_ENERGY_PROFILE_DATA': {
+    case 'eere/SET_HOURLY_ENERGY_PROFILE_REGIONAL_DATA': {
       const {
         regionId,
         hourlyRenewableEnergyProfile,
@@ -607,7 +607,7 @@ export default function reducer(
       };
     }
 
-    case 'eere/SET_TOTAL_HOURLY_CHANGES': {
+    case 'eere/SET_HOURLY_ENERGY_PROFILE_TOTAL_HOURLY_CHANGES': {
       const { totalHourlyChanges } = action.payload;
 
       return {
@@ -624,7 +624,7 @@ export default function reducer(
       };
     }
 
-    case 'eere/SET_HOURLY_CHANGES_VALIDATION': {
+    case 'eere/SET_HOURLY_ENERGY_PROFILE_VALIDATION': {
       const { hourlyChangesValidation } = action.payload;
 
       return {
@@ -1160,7 +1160,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
       regionalHourlyImpacts[region.id] = { regionalLoad, hourlyImpacts };
 
       dispatch({
-        type: 'eere/SET_REGIONAL_HOURLY_ENERGY_PROFILE_DATA',
+        type: 'eere/SET_HOURLY_ENERGY_PROFILE_REGIONAL_DATA',
         payload: {
           regionId: region.id,
           hourlyRenewableEnergyProfile,
@@ -1186,7 +1186,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
     );
 
     dispatch({
-      type: 'eere/SET_TOTAL_HOURLY_CHANGES',
+      type: 'eere/SET_HOURLY_ENERGY_PROFILE_TOTAL_HOURLY_CHANGES',
       payload: { totalHourlyChanges },
     });
 
@@ -1195,7 +1195,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
     });
 
     dispatch({
-      type: 'eere/SET_HOURLY_CHANGES_VALIDATION',
+      type: 'eere/SET_HOURLY_ENERGY_PROFILE_VALIDATION',
       payload: { hourlyChangesValidation },
     });
 
