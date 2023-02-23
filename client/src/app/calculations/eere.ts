@@ -10,6 +10,12 @@ import type {
   SelectedRegionsMonthlyDailyEVEnergyUsage,
 } from 'app/calculations/transportation';
 import type { RegionId } from 'app/config';
+/**
+ * EV hourly limits by region
+ *
+ * (NOTE: not in Excel file, but sent by Pat via email 02/21/23)
+ */
+import regionEvHourlyLimits from 'app/data/region-ev-hourly-limits.json';
 
 export type HourlyRenewableEnergyProfile = ReturnType<
   typeof calculateHourlyRenewableEnergyProfile
@@ -246,9 +252,9 @@ export function calculateHourlyImpacts(options: {
 
 /**
  * Determines if the regional hourly changes exceeds the upper or lower limits:
- * - upper limit error > 10%
- * - lower limit warning < 15%
- * - lower limit error < 30%
+ * - upper limit error: at least one hourly total > the region's hourly EV limit
+ * - lower limit warning: at least one hourly change < 15%
+ * - lower limit error: at least one hourly change < 30%
  */
 export function calculateHourlyChangesValidation(options: {
   regionalHourlyImpacts: Partial<{
@@ -261,10 +267,13 @@ export function calculateHourlyChangesValidation(options: {
   const { regionalHourlyImpacts } = options;
 
   type ExceedanceData = {
+    regionId: RegionId;
     hourOfYear: number;
     month: number;
     day: number;
     hour: number;
+    hourlyLimit: number;
+    hourlyTotal: number;
     percentChange: number;
   };
 
@@ -278,38 +287,56 @@ export function calculateHourlyChangesValidation(options: {
     lowerError: null | ExceedanceData;
   };
 
-  Object.values(regionalHourlyImpacts).forEach((regionalData) => {
-    const { regionalLoad, hourlyImpacts } = regionalData;
+  Object.entries(regionalHourlyImpacts).forEach(([regionKey, regionValue]) => {
+    const regionId = regionKey as keyof typeof regionalHourlyImpacts;
+    const { regionalLoad, hourlyImpacts } = regionValue;
 
-    Object.entries(hourlyImpacts).forEach(([key, value]) => {
-      const hourOfYear = Number(key);
-      const { percentChange } = value;
-      const { month, day, hour } = regionalLoad[hourOfYear - 1];
+    const hourlyLimit = regionEvHourlyLimits[regionId];
 
-      if (percentChange > 10) {
-        result.upperError ??= { hourOfYear, month, day, hour, percentChange };
+    if (hourlyLimit) {
+      Object.entries(hourlyImpacts).forEach(([hourKey, hourValue]) => {
+        const hourOfYear = Number(hourKey);
+        const { currentLoadMw, finalMw, percentChange } = hourValue;
+        const { month, day, hour } = regionalLoad[hourOfYear - 1];
 
-        if (percentChange > result.upperError.percentChange) {
-          result.upperError = { hourOfYear, month, day, hour, percentChange };
+        const hourlyTotal = currentLoadMw + finalMw;
+
+        const hourlyExceedance = {
+          regionId,
+          hourOfYear,
+          month,
+          day,
+          hour,
+          hourlyLimit,
+          hourlyTotal,
+          percentChange,
+        };
+
+        if (hourlyTotal > hourlyLimit) {
+          result.upperError ??= hourlyExceedance;
+
+          if (hourlyTotal > result.upperError.hourlyTotal) {
+            result.upperError = hourlyExceedance;
+          }
         }
-      }
 
-      if (percentChange < -15 && percentChange >= -30) {
-        result.lowerWarning ??= { hourOfYear, month, day, hour, percentChange };
+        if (percentChange < -15 && percentChange >= -30) {
+          result.lowerWarning ??= hourlyExceedance;
 
-        if (percentChange < result.lowerWarning.percentChange) {
-          result.lowerWarning = { hourOfYear, month, day, hour, percentChange };
+          if (percentChange < result.lowerWarning.percentChange) {
+            result.lowerWarning = hourlyExceedance;
+          }
         }
-      }
 
-      if (percentChange < -30) {
-        result.lowerError ??= { hourOfYear, month, day, hour, percentChange };
+        if (percentChange < -30) {
+          result.lowerError ??= hourlyExceedance;
 
-        if (percentChange < result.lowerError.percentChange) {
-          result.lowerError = { hourOfYear, month, day, hour, percentChange };
+          if (percentChange < result.lowerError.percentChange) {
+            result.lowerError = hourlyExceedance;
+          }
         }
-      }
-    });
+      });
+    }
   });
 
   return result;
