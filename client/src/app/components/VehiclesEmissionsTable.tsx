@@ -8,7 +8,7 @@ import type { CombinedSectorsEmissionsData } from 'app/calculations/emissions';
  * within 10 of zero.
  */
 function formatNumber(number: number) {
-  if (number < 10 && number > -10) return '—';
+  if (number < 10 && number > -10) return '—'; // TODO: should this check if number === 0 too?
   const result = Math.round(number / 10) * 10;
   return result.toLocaleString();
 }
