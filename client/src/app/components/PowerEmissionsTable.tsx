@@ -13,7 +13,7 @@ type AnnualMonthlyData = ReturnType<typeof setAnnualMonthlyData>;
  * within 10 of zero.
  */
 function formatNumber(number: number) {
-  if (number < 10 && number > -10) return '—';
+  if (number < 10 && number > -10) return '—'; // TODO: should this check if number === 0 too?
   const output = Math.round(number / 10) * 10;
   return output.toLocaleString();
 }
@@ -23,7 +23,7 @@ function formatNumber(number: number) {
  * display '—' if the denominator is zero.
  */
 function calculateNumber(numerator: number, denominator: number) {
-  return denominator !== 0 ? (numerator / denominator).toFixed(3) : '—';
+  return denominator !== 0 ? (numerator / denominator).toFixed(3) : '—'; // TODO: should this not render '—' but maybe an empty string?
 }
 
 /**
