@@ -148,8 +148,8 @@ type GeneralVehicleType = typeof generalVehicleTypes[number];
 type ExpandedVehicleType = typeof expandedVehicleTypes[number];
 type Pollutant = typeof pollutants[number];
 
-export type VMTPerVehicleTypeByGeography = ReturnType<
-  typeof calculateVMTPerVehicleTypeByGeography
+export type VMTTotalsByGeography = ReturnType<
+  typeof calculateVMTTotalsByGeography
 >;
 export type VMTAllocationTotalsAndPercentages = ReturnType<
   typeof calculateVMTAllocationTotalsAndPercentages
@@ -219,12 +219,17 @@ export type EVDeploymentLocationHistoricalEERE = ReturnType<
 >;
 
 /**
- * Accumulated VMT data per vehicle type by AVERT region, state, and county.
+ * Accumulated county level VMT data per vehicle type by AVERT region, state,
+ * and county.
+ *
+ * Aggregates totals of cars, trucks, transit buses and school buses for each
+ * county, state, region (region total, as well as state totals within each
+ * region) from County FIPs data.
  *
  * Excel: Not stored in any table, but used in calculating values in the "From
  * vehicles" column in the table in the "11_VehicleCty" sheet (column H).
  */
-export function calculateVMTPerVehicleTypeByGeography() {
+export function calculateVMTTotalsByGeography() {
   type VMTPerVehicleType = { [vehicleType in AbridgedVehicleType]: number };
 
   const regionIds = Object.values(regions).reduce((object, { id, name }) => {
@@ -1947,7 +1952,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
   selectedStateId: StateId | '';
   countiesByGeography: CountiesByGeography | {};
   selectedGeographyRegionIds: RegionId[];
-  vmtPerVehicleTypeByGeography: VMTPerVehicleTypeByGeography | {};
+  vmtTotalsByGeography: VMTTotalsByGeography | {};
   selectedRegionsTotalYearlyEmissionChanges: SelectedRegionsTotalYearlyEmissionChanges | {}; // prettier-ignore
   evDeploymentLocation: string;
 }) {
@@ -1957,7 +1962,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
     selectedStateId,
     countiesByGeography,
     selectedGeographyRegionIds,
-    vmtPerVehicleTypeByGeography,
+    vmtTotalsByGeography,
     selectedRegionsTotalYearlyEmissionChanges,
     evDeploymentLocation,
   } = options;
@@ -1999,8 +2004,8 @@ export function calculateVehicleEmissionChangesByGeography(options: {
       : null;
 
   const vmtData =
-    Object.keys(vmtPerVehicleTypeByGeography).length !== 0
-      ? (vmtPerVehicleTypeByGeography as VMTPerVehicleTypeByGeography)
+    Object.keys(vmtTotalsByGeography).length !== 0
+      ? (vmtTotalsByGeography as VMTTotalsByGeography)
       : null;
 
   const selectedRegionsChangesData =

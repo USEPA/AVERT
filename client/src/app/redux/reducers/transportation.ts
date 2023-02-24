@@ -1,6 +1,6 @@
 import { AppThunk } from 'app/redux/index';
 import type {
-  VMTPerVehicleTypeByGeography,
+  VMTTotalsByGeography,
   VMTAllocationTotalsAndPercentages,
   VMTAllocationPerVehicle,
   MonthlyVMTTotalsAndPercentages,
@@ -28,7 +28,7 @@ import type {
 } from 'app/calculations/transportation';
 import { getSelectedGeographyRegions } from 'app/calculations/geography';
 import {
-  calculateVMTPerVehicleTypeByGeography,
+  calculateVMTTotalsByGeography,
   calculateVMTAllocationTotalsAndPercentages,
   calculateVMTAllocationPerVehicle,
   calculateMonthlyVMTTotalsAndPercentages,
@@ -58,8 +58,8 @@ import type { RegionId } from 'app/config';
 
 type Action =
   | {
-      type: 'transportation/SET_VMT_PER_VEHICLE_TYPE_BY_GEOGRAPHY';
-      payload: { vmtPerVehicleTypeByGeography: VMTPerVehicleTypeByGeography };
+      type: 'transportation/SET_VMT_TOTALS_BY_GEOGRAPHY';
+      payload: { vmtTotalsByGeography: VMTTotalsByGeography };
     }
   | {
       type: 'transportation/SET_VMT_ALLOCATION_TOTALS_AND_PERCENTAGES';
@@ -195,7 +195,7 @@ type Action =
     };
 
 type State = {
-  vmtPerVehicleTypeByGeography: VMTPerVehicleTypeByGeography | {};
+  vmtTotalsByGeography: VMTTotalsByGeography | {};
   vmtAllocationTotalsAndPercentages: VMTAllocationTotalsAndPercentages | {};
   vmtAllocationPerVehicle: VMTAllocationPerVehicle | {};
   monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
@@ -223,7 +223,7 @@ type State = {
 };
 
 const initialState: State = {
-  vmtPerVehicleTypeByGeography: {},
+  vmtTotalsByGeography: {},
   vmtAllocationTotalsAndPercentages: {},
   vmtAllocationPerVehicle: {},
   monthlyVMTTotalsAndPercentages: {},
@@ -268,12 +268,12 @@ export default function reducer(
   action: Action,
 ): State {
   switch (action.type) {
-    case 'transportation/SET_VMT_PER_VEHICLE_TYPE_BY_GEOGRAPHY': {
-      const { vmtPerVehicleTypeByGeography } = action.payload;
+    case 'transportation/SET_VMT_TOTALS_BY_GEOGRAPHY': {
+      const { vmtTotalsByGeography } = action.payload;
 
       return {
         ...state,
-        vmtPerVehicleTypeByGeography,
+        vmtTotalsByGeography,
       };
     }
 
@@ -504,8 +504,7 @@ export default function reducer(
  */
 export function setVMTData(): AppThunk {
   return (dispatch) => {
-    const vmtPerVehicleTypeByGeography =
-      calculateVMTPerVehicleTypeByGeography();
+    const vmtTotalsByGeography = calculateVMTTotalsByGeography();
 
     const vmtAllocationTotalsAndPercentages =
       calculateVMTAllocationTotalsAndPercentages();
@@ -516,8 +515,8 @@ export function setVMTData(): AppThunk {
       calculateMonthlyVMTTotalsAndPercentages();
 
     dispatch({
-      type: 'transportation/SET_VMT_PER_VEHICLE_TYPE_BY_GEOGRAPHY',
-      payload: { vmtPerVehicleTypeByGeography },
+      type: 'transportation/SET_VMT_TOTALS_BY_GEOGRAPHY',
+      payload: { vmtTotalsByGeography },
     });
 
     dispatch({
@@ -876,7 +875,7 @@ export function setEmissionChanges(): AppThunk {
     const { geography, transportation, eere } = getState();
     const { countiesByGeography, regionalScalingFactors } = geography;
     const {
-      vmtPerVehicleTypeByGeography,
+      vmtTotalsByGeography,
       selectedRegionsMonthlyVMTPerVehicleType,
       vehiclesDisplaced,
       selectedRegionsMonthlyEmissionRates,
@@ -920,7 +919,7 @@ export function setEmissionChanges(): AppThunk {
         selectedStateId,
         countiesByGeography,
         selectedGeographyRegionIds,
-        vmtPerVehicleTypeByGeography,
+        vmtTotalsByGeography,
         selectedRegionsTotalYearlyEmissionChanges,
         evDeploymentLocation,
       });
