@@ -71,6 +71,7 @@ export function calculateHourlyRenewableEnergyProfile(options: {
  */
 export function calculateHourlyEVLoad(options: {
   regionId: RegionId;
+  regionalScalingFactor: number;
   regionalLoad: RegionalLoadData[];
   dailyStats: DailyStats;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
@@ -78,6 +79,7 @@ export function calculateHourlyEVLoad(options: {
 }) {
   const {
     regionId,
+    regionalScalingFactor,
     regionalLoad,
     dailyStats,
     hourlyEVChargingPercentages,
@@ -131,7 +133,7 @@ export function calculateHourlyEVLoad(options: {
       evChargingPercentage.schoolBuses[dayTypeField] *
         monthlyDailyEVEnergyUsage[month].schoolBuses[dayTypeField];
 
-    return evLoad;
+    return evLoad * regionalScalingFactor;
   });
 
   return result;

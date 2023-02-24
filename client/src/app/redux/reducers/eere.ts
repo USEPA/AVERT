@@ -1125,9 +1125,9 @@ export function calculateHourlyEnergyProfile(): AppThunk {
           rooftopSolar,
         });
 
-      // TODO: determine if each calculated hour should be multiplied by the regional scaling factor
       const hourlyEVLoad = calculateHourlyEVLoad({
         regionId: region.id,
+        regionalScalingFactor,
         regionalLoad,
         dailyStats,
         hourlyEVChargingPercentages,
