@@ -151,8 +151,8 @@ type Pollutant = typeof pollutants[number];
 export type VMTTotalsByGeography = ReturnType<
   typeof calculateVMTTotalsByGeography
 >;
-export type VMTAllocationTotalsAndPercentages = ReturnType<
-  typeof calculateVMTAllocationTotalsAndPercentages
+export type VMTBillionsAndPercentages = ReturnType<
+  typeof calculateVMTBillionsAndPercentages
 >;
 export type VMTAllocationPerVehicle = ReturnType<
   typeof calculateVMTAllocationPerVehicle
@@ -313,7 +313,7 @@ export function calculateVMTTotalsByGeography() {
  *
  * Excel: First table in the "RegionStateAllocate" sheet (B6:BF108)
  */
-export function calculateVMTAllocationTotalsAndPercentages() {
+export function calculateVMTBillionsAndPercentages() {
   // initialize result object with state keys and regionTotals key
   const result = Object.keys(states).reduce(
     (data, stateId) => {
@@ -686,10 +686,9 @@ export function calculateHourlyEVChargingPercentages() {
  */
 export function calculateSelectedRegionsStatesVMTPercentages(options: {
   selectedGeographyRegionIds: RegionId[];
-  vmtAllocationTotalsAndPercentages: VMTAllocationTotalsAndPercentages | {};
+  vmtBillionsAndPercentages: VMTBillionsAndPercentages | {};
 }) {
-  const { selectedGeographyRegionIds, vmtAllocationTotalsAndPercentages } =
-    options;
+  const { selectedGeographyRegionIds, vmtBillionsAndPercentages } = options;
 
   type StateVMTPercentages = {
     cars: number;
@@ -700,12 +699,12 @@ export function calculateSelectedRegionsStatesVMTPercentages(options: {
     allBuses: number;
   };
 
-  const vmtAllocationData =
-    Object.keys(vmtAllocationTotalsAndPercentages).length !== 0
-      ? (vmtAllocationTotalsAndPercentages as VMTAllocationTotalsAndPercentages)
+  const vmtData =
+    Object.keys(vmtBillionsAndPercentages).length !== 0
+      ? (vmtBillionsAndPercentages as VMTBillionsAndPercentages)
       : null;
 
-  if (selectedGeographyRegionIds.length === 0 || !vmtAllocationData) {
+  if (selectedGeographyRegionIds.length === 0 || !vmtData) {
     return {} as {
       [regionId in RegionId]: {
         [stateId in StateId]: StateVMTPercentages;
@@ -713,14 +712,14 @@ export function calculateSelectedRegionsStatesVMTPercentages(options: {
     };
   }
 
-  const result = Object.entries(vmtAllocationData).reduce(
+  const result = Object.entries(vmtData).reduce(
     (object, [stateKey, stateValue]) => {
-      const stateId = stateKey as keyof typeof vmtAllocationData;
+      const stateId = stateKey as keyof typeof vmtData;
 
       if (stateId === 'regionTotals') return object;
 
       const stateRegionIds = Object.keys(stateValue); // NOTE: also includes 'allRegions' key
-      const stateVMTData = vmtAllocationData?.[stateId];
+      const stateVMTData = vmtData?.[stateId];
 
       selectedGeographyRegionIds.forEach((regionId) => {
         if (stateVMTData && stateRegionIds.includes(regionId)) {
