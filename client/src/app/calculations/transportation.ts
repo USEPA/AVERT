@@ -483,25 +483,25 @@ export function calculateVMTAllocationPerVehicle() {
   const result = Object.entries(vmtAllocationAndRegisteredVehicles).reduce(
     (object, [key, data]) => {
       const {
-        annualVMTLightDutyVehicles, // (million miles)
-        annualVMTBuses, // (million miles)
-        registeredLightDutyVehicles, // (million)
+        annualVMTLightDutyVehicles,
+        annualVMTBuses,
+        registeredLightDutyVehicles,
       } = data;
 
       const busSalesAndStock =
         stateBusSalesAndStock[key as BusSalesAndStockStateId];
 
       if (busSalesAndStock) {
-        const registeredBuses =
+        const millionRegisteredBuses =
           (busSalesAndStock.transitBuses.stock +
             busSalesAndStock.schoolBuses.stock) /
           1_000_000;
 
         object[key as StateId] = {
-          vmtLDVs: annualVMTLightDutyVehicles,
-          vmtBuses: annualVMTBuses,
-          registeredLDVs: registeredLightDutyVehicles,
-          registeredBuses,
+          millionVmtLDVs: annualVMTLightDutyVehicles,
+          millionVmtBuses: annualVMTBuses,
+          millionRegisteredLDVs: registeredLightDutyVehicles,
+          millionRegisteredBuses,
           vmtPerLDV: { total: 0, percent: 0 },
           vmtPerBus: { total: 0, percent: 0 },
         };
@@ -511,19 +511,19 @@ export function calculateVMTAllocationPerVehicle() {
     },
     {
       total: {
-        vmtLDVs: 0,
-        vmtBuses: 0,
-        registeredLDVs: 0,
-        registeredBuses: 0,
+        millionVmtLDVs: 0,
+        millionVmtBuses: 0,
+        millionRegisteredLDVs: 0,
+        millionRegisteredBuses: 0,
         vmtPerLDV: { total: 0, percent: 0 },
         vmtPerBus: { total: 0, percent: 0 },
       },
     } as {
       [stateId in StateId | 'total']: {
-        vmtLDVs: number;
-        vmtBuses: number;
-        registeredLDVs: number;
-        registeredBuses: number;
+        millionVmtLDVs: number;
+        millionVmtBuses: number;
+        millionRegisteredLDVs: number;
+        millionRegisteredBuses: number;
         vmtPerLDV: { total: number; percent: number };
         vmtPerBus: { total: number; percent: number };
       };
@@ -533,18 +533,18 @@ export function calculateVMTAllocationPerVehicle() {
   // sum totals across states
   Object.entries(result).forEach(([key, data]) => {
     if (key !== 'total') {
-      result.total.vmtLDVs += data.vmtLDVs;
-      result.total.vmtBuses += data.vmtBuses;
-      result.total.registeredLDVs += data.registeredLDVs;
-      result.total.registeredBuses += data.registeredBuses;
+      result.total.millionVmtLDVs += data.millionVmtLDVs;
+      result.total.millionVmtBuses += data.millionVmtBuses;
+      result.total.millionRegisteredLDVs += data.millionRegisteredLDVs;
+      result.total.millionRegisteredBuses += data.millionRegisteredBuses;
     }
   });
 
   // calculate vmt per vehicle totals for each state or totals object
   Object.keys(result).forEach((key) => {
     const item = result[key as StateId | 'total'];
-    item.vmtPerLDV.total = item.vmtLDVs / item.registeredLDVs;
-    item.vmtPerBus.total = item.vmtBuses / item.registeredBuses;
+    item.vmtPerLDV.total = item.millionVmtLDVs / item.millionRegisteredLDVs;
+    item.vmtPerBus.total = item.millionVmtBuses / item.millionRegisteredBuses;
   });
 
   // calculate vmt per vehicle percentages for each state
@@ -2187,7 +2187,7 @@ export function calculateVehicleSalesAndStock(options: {
         stateLightDutyVehiclesSales[id as LightDutyVehiclesSalesStateId];
 
       const lightDutyVehiclesStock =
-        vmtAllocationData[id as StateId].registeredLDVs * 1_000_000;
+        vmtAllocationData[id as StateId].millionRegisteredLDVs * 1_000_000;
 
       const busSalesAndStock =
         stateBusSalesAndStock[id as BusSalesAndStockStateId];
