@@ -9,6 +9,7 @@ import { sortObjectByKeys } from 'app/calculations/utilities';
 import type {
   CountyFips,
   MovesEmissionsRates,
+  VMTAllocationAndRegisteredVehicles,
   RegionId,
   StateId,
 } from 'app/config';
@@ -54,10 +55,6 @@ import regionEereAverages from 'app/data/region-eere-averages.json';
  * table in the "Library" sheet (B626:E674).
  */
 import stateEereAverages from 'app/data/state-eere-averages.json';
-/**
- * Excel: Second table in the "RegionStateAllocate" sheet (B118:E167)
- */
-import vmtAllocationAndRegisteredVehicles from 'app/data/vmt-allocation-and-registered-vehicles.json';
 
 /**
  * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
@@ -467,7 +464,11 @@ export function calculateVMTBillionsAndPercentages(options: {
  *
  * Excel: Second table in the "RegionStateAllocate" sheet (B118:J168)
  */
-export function calculateVMTAllocationPerVehicle() {
+export function calculateVMTAllocationPerVehicle(options: {
+  vmtAllocationAndRegisteredVehicles: VMTAllocationAndRegisteredVehicles;
+}) {
+  const { vmtAllocationAndRegisteredVehicles } = options;
+
   // initialize result object with state keys and total key
   const result = Object.entries(vmtAllocationAndRegisteredVehicles).reduce(
     (object, [key, data]) => {

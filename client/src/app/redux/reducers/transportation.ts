@@ -60,6 +60,10 @@ import type { MovesEmissionsRates, RegionId } from 'app/config';
  */
 import countyFips from 'app/data/county-fips.json';
 /**
+ * Excel: Second table in the "RegionStateAllocate" sheet (B118:E167)
+ */
+import vmtAllocationAndRegisteredVehicles from 'app/data/vmt-allocation-and-registered-vehicles.json';
+/**
  * Excel: "MOVESEmissionRates" sheet.
  */
 import movesEmissionsRatesData from 'app/data/moves-emissions-rates.json';
@@ -523,7 +527,9 @@ export function setVMTData(): AppThunk {
       countyFips,
     });
 
-    const vmtAllocationPerVehicle = calculateVMTAllocationPerVehicle();
+    const vmtAllocationPerVehicle = calculateVMTAllocationPerVehicle({
+      vmtAllocationAndRegisteredVehicles,
+    });
 
     const monthlyVMTTotalsAndPercentages =
       calculateMonthlyVMTTotalsAndPercentages({ movesEmissionsRates });

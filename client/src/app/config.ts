@@ -2,8 +2,15 @@
  * Excel: "CountyFIPS" sheet.
  */
 import countyFips from 'app/data/county-fips.json';
+/**
+ * Excel: Second table in the "RegionStateAllocate" sheet (B118:E167)
+ */
+import vmtAllocationAndRegisteredVehicles from 'app/data/vmt-allocation-and-registered-vehicles.json';
 
 export type CountyFips = typeof countyFips;
+
+export type VMTAllocationAndRegisteredVehicles =
+  typeof vmtAllocationAndRegisteredVehicles;
 
 /**
  * NOTE: normally we'd import 'app/data/moves-emissions-rates.json' and export
