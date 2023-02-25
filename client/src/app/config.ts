@@ -93,6 +93,39 @@ export type RegionEereAverages = typeof regionEereAverages;
 
 export type StateEereAverages = typeof stateEereAverages;
 
+/**
+ * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
+ * (E202).
+ */
+export const percentageHybridEVMilesDrivenOnElectricity = 0.54;
+
+/**
+ * Additional energy consumed in climates with +/-18F differential from
+ * St. Louis, MO
+ *
+ * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
+ * Lite" table in the "Library" sheet (F428)
+ */
+export const percentageAdditionalEnergyConsumedFactor = 0.0766194804959222;
+
+/**
+ * Ratio of typical weekend energy consumption as a share of typical weekday
+ * energy consumption.
+ *
+ * Excel: "Table C. Set ratio of weekend to weekday energy" table in the
+ * "EV_Detail" sheet (D53).
+ */
+export const percentWeekendToWeekdayEVConsumption = 97.3015982802952;
+
+/**
+ * Excel: "Table 14: Light-duty vehicle sales by type" table in the "Library"
+ * sheet (D727:E727)
+ */
+export const percentageLDVsDisplacedByEVs = {
+  cars: 0.276046368502288,
+  trucks: 0.723953631497712,
+};
+
 export type RdfDataKey =
   | 'generation'
   | 'so2'
