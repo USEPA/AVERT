@@ -6,12 +6,13 @@ import type {
   SelectedGeographyRegions,
 } from 'app/calculations/geography';
 import { sortObjectByKeys } from 'app/calculations/utilities';
-import type { CountyFips, RegionId, StateId } from 'app/config';
+import type {
+  CountyFips,
+  MovesEmissionsRates,
+  RegionId,
+  StateId,
+} from 'app/config';
 import { regions, states } from 'app/config';
-/**
- * Excel: "MOVESEmissionRates" sheet.
- */
-import movesEmissionsRates from 'app/data/moves-emissions-rates.json';
 /**
  * Excel: "Table B. View charging profiles or set a manual charging profile
  * for Weekdays" table in the "EV_Detail" sheet (C23:H47), which comes from
@@ -93,22 +94,6 @@ const percentageLDVsDisplacedByEVs = {
 
 type LightDutyVehiclesSalesStateId = keyof typeof stateLightDutyVehiclesSales;
 type BusSalesAndStockStateId = keyof typeof stateBusSalesAndStock;
-
-type MovesData = {
-  year: string;
-  month: string;
-  modelYear: string;
-  state: string;
-  vehicleType: string;
-  fuelType: string;
-  VMT: number;
-  CO2: number;
-  NOX: number;
-  SO2: number;
-  PM25: number;
-  VOCs: number;
-  NH3: number;
-};
 
 const abridgedVehicleTypes = [
   'cars',
@@ -570,7 +555,11 @@ export function calculateVMTAllocationPerVehicle() {
  * Excel: "Table 6: Monthly VMT and efficiency adjustments" table in the
  * "Library" sheet (totals: E218:P223, percentages: E225:P230).
  */
-export function calculateMonthlyVMTTotalsAndPercentages() {
+export function calculateMonthlyVMTTotalsAndPercentages(options: {
+  movesEmissionsRates: MovesEmissionsRates;
+}) {
+  const { movesEmissionsRates } = options;
+
   const result: {
     [month: number]: {
       [vehicleType in GeneralVehicleType]: {
@@ -594,10 +583,7 @@ export function calculateMonthlyVMTTotalsAndPercentages() {
     schoolBuses: 0,
   };
 
-  // NOTE: explicitly declaring the type with a type assertion because
-  // TypeScript isn't able to infer types from large JSON files
-  // (https://github.com/microsoft/TypeScript/issues/42761)
-  (movesEmissionsRates as MovesData[]).forEach((data) => {
+  movesEmissionsRates.forEach((data) => {
     const month = Number(data.month);
 
     if (data.year === '2020') {
@@ -1528,12 +1514,14 @@ export function calculateSelectedRegionsMonthlyDailyEVEnergyUsage(options: {
  * "Library" sheet (G253:R288).
  */
 export function calculateSelectedRegionsMonthlyEmissionRates(options: {
+  movesEmissionsRates: MovesEmissionsRates;
   selectedRegionsStatesVMTPercentages: SelectedRegionsStatesVMTPercentages | {};
   evDeploymentLocation: string;
   evModelYear: string;
   iceReplacementVehicle: string;
 }) {
   const {
+    movesEmissionsRates,
     selectedRegionsStatesVMTPercentages,
     evDeploymentLocation,
     evModelYear,
@@ -1562,10 +1550,7 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
   const deploymentLocationIsRegion = evDeploymentLocation.startsWith('region-');
   const deploymentLocationIsState = evDeploymentLocation.startsWith('state-');
 
-  // NOTE: explicitly declaring the type with a type assertion because
-  // TypeScript isn't able to infer types from large JSON files
-  // (https://github.com/microsoft/TypeScript/issues/42761)
-  (movesEmissionsRates as MovesData[]).forEach((data) => {
+  movesEmissionsRates.forEach((data) => {
     const month = Number(data.month);
 
     Object.entries(selectedRegionsVMTData).forEach(

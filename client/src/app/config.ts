@@ -5,6 +5,29 @@ import countyFips from 'app/data/county-fips.json';
 
 export type CountyFips = typeof countyFips;
 
+/**
+ * NOTE: normally we'd import 'app/data/moves-emissions-rates.json' and export
+ * the typeof the imported JSON file, but TypeScript isn't able to infer types
+ * from large JSON files (https://github.com/microsoft/TypeScript/issues/42761),
+ * so that exported type would just be `{}`, so we need to explicitly declare
+ * the type of the MOVES emissions rates data.
+ */
+export type MovesEmissionsRates = {
+  year: string;
+  month: string;
+  modelYear: string;
+  state: string;
+  vehicleType: string;
+  fuelType: string;
+  VMT: number;
+  CO2: number;
+  NOX: number;
+  SO2: number;
+  PM25: number;
+  VOCs: number;
+  NH3: number;
+}[];
+
 export type RdfDataKey =
   | 'generation'
   | 'so2'
