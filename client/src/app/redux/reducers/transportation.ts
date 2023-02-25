@@ -78,6 +78,11 @@ import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
  * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E177:E180).
  */
 import nationalAverageVMTPerYear from 'app/data/national-average-vmt-per-year.json';
+/**
+ * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
+ * (E194:J200).
+ */
+import evEfficiencyByModelYear from 'app/data/ev-efficiency-by-model-year.json';
 
 /**
  * Work around due to TypeScript inability to infer types from large JSON files.
@@ -680,6 +685,7 @@ export function setEVEfficiency(): AppThunk {
 
     const selectedRegionsEVEfficiencyPerVehicleType =
       calculateSelectedRegionsEVEfficiencyPerVehicleType({
+        evEfficiencyByModelYear,
         selectedGeographyRegionIds,
         evModelYear,
       });

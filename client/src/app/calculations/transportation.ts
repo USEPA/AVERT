@@ -12,15 +12,11 @@ import type {
   VMTAllocationAndRegisteredVehicles,
   EVChargingProfiles,
   NationalAverageVMTPerYear,
+  EVEfficiencyByModelYear,
   RegionId,
   StateId,
 } from 'app/config';
 import { regions, states } from 'app/config';
-/**
- * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
- * (E194:J200).
- */
-import evEfficiencyByModelYear from 'app/data/ev-efficiency-by-model-year.json';
 /**
  * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
  * Lite" table in the "Library" sheet (B432:C445)
@@ -958,10 +954,12 @@ export function calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
  * value for all months.
  */
 export function calculateSelectedRegionsEVEfficiencyPerVehicleType(options: {
+  evEfficiencyByModelYear: EVEfficiencyByModelYear;
   selectedGeographyRegionIds: RegionId[];
   evModelYear: string;
 }) {
-  const { selectedGeographyRegionIds, evModelYear } = options;
+  const { evEfficiencyByModelYear, selectedGeographyRegionIds, evModelYear } =
+    options;
 
   const evEfficiencyModelYear =
     evModelYear as keyof typeof evEfficiencyByModelYear;
