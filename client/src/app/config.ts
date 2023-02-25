@@ -13,6 +13,10 @@ import vmtAllocationAndRegisteredVehicles from 'app/data/vmt-allocation-and-regi
  * table in the "Library" sheet).
  */
 import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
+/**
+ * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E177:E180).
+ */
+import nationalAverageVMTPerYear from 'app/data/national-average-vmt-per-year.json';
 
 export type CountyFips = typeof countyFips;
 
@@ -44,6 +48,8 @@ export type MovesEmissionsRates = {
 }[];
 
 export type EVChargingProfiles = typeof evChargingProfiles;
+
+export type NationalAverageVMTPerYear = typeof nationalAverageVMTPerYear;
 
 export type RdfDataKey =
   | 'generation'

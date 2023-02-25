@@ -11,14 +11,11 @@ import type {
   MovesEmissionsRates,
   VMTAllocationAndRegisteredVehicles,
   EVChargingProfiles,
+  NationalAverageVMTPerYear,
   RegionId,
   StateId,
 } from 'app/config';
 import { regions, states } from 'app/config';
-/**
- * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E177:E180).
- */
-import nationalAverageVMTPerYear from 'app/data/national-average-vmt-per-year.json';
 /**
  * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
  * (E194:J200).
@@ -816,9 +813,13 @@ export function calculateSelectedRegionsVMTPercentagesPerVehicleType(options: {
  * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E183:E186).
  */
 export function calculateSelectedRegionsAverageVMTPerYear(options: {
+  nationalAverageVMTPerYear: NationalAverageVMTPerYear;
   selectedRegionsVMTPercentagesPerVehicleType: SelectedRegionsVMTPercentagesPerVehicleType | {}; // prettier-ignore
 }) {
-  const { selectedRegionsVMTPercentagesPerVehicleType } = options;
+  const {
+    nationalAverageVMTPerYear,
+    selectedRegionsVMTPercentagesPerVehicleType,
+  } = options;
 
   const selectedRegionsVMTData =
     Object.keys(selectedRegionsVMTPercentagesPerVehicleType).length !== 0

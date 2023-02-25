@@ -74,6 +74,10 @@ import movesEmissionsRatesData from 'app/data/moves-emissions-rates.json';
  * table in the "Library" sheet).
  */
 import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
+/**
+ * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E177:E180).
+ */
+import nationalAverageVMTPerYear from 'app/data/national-average-vmt-per-year.json';
 
 /**
  * Work around due to TypeScript inability to infer types from large JSON files.
@@ -616,6 +620,7 @@ export function setSelectedGeographyVMTData(): AppThunk {
 
     const selectedRegionsAverageVMTPerYear =
       calculateSelectedRegionsAverageVMTPerYear({
+        nationalAverageVMTPerYear,
         selectedRegionsVMTPercentagesPerVehicleType,
       });
 
