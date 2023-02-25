@@ -14,15 +14,11 @@ import type {
   NationalAverageVMTPerYear,
   EVEfficiencyByModelYear,
   RegionAverageTemperatures,
+  StateLightDutyVehiclesSales,
   RegionId,
   StateId,
 } from 'app/config';
 import { regions, states } from 'app/config';
-/**
- * Excel: "Table 11: LDV Sales and Stock" table in the "Library" sheet
- * (B485:C535).
- */
-import stateLightDutyVehiclesSales from 'app/data/state-light-duty-vehicles-sales.json';
 /**
  * Excel: "Table 12: Transit and School Bus Sales and Stock" table in the
  * "Library" sheet (B546:F596).
@@ -72,7 +68,6 @@ const percentageLDVsDisplacedByEVs = {
   trucks: 0.723953631497712,
 };
 
-type LightDutyVehiclesSalesStateId = keyof typeof stateLightDutyVehiclesSales;
 type BusSalesAndStockStateId = keyof typeof stateBusSalesAndStock;
 
 const abridgedVehicleTypes = [
@@ -2123,6 +2118,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
  */
 export function calculateVehicleSalesAndStock(options: {
   countyFips: CountyFips;
+  stateLightDutyVehiclesSales: StateLightDutyVehiclesSales;
   geographicFocus: GeographicFocus;
   selectedRegionName: string;
   evDeploymentLocations: string[];
@@ -2130,6 +2126,7 @@ export function calculateVehicleSalesAndStock(options: {
 }) {
   const {
     countyFips,
+    stateLightDutyVehiclesSales,
     geographicFocus,
     selectedRegionName,
     evDeploymentLocations,
@@ -2174,7 +2171,7 @@ export function calculateVehicleSalesAndStock(options: {
       const schoolBusesVMTShare = data['Share of State VMT - School Buses'] || 0; // prettier-ignore
 
       const lightDutyVehiclesSales =
-        stateLightDutyVehiclesSales[id as LightDutyVehiclesSalesStateId];
+        stateLightDutyVehiclesSales[id as keyof StateLightDutyVehiclesSales];
 
       const lightDutyVehiclesStock =
         vmtAllocationData[id as StateId].millionRegisteredLDVs * 1_000_000;

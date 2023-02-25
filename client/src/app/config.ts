@@ -27,6 +27,11 @@ import evEfficiencyByModelYear from 'app/data/ev-efficiency-by-model-year.json';
  * Lite" table in the "Library" sheet (B432:C445)
  */
 import regionAverageTemperatures from 'app/data/region-average-temperature.json';
+/**
+ * Excel: "Table 11: LDV Sales and Stock" table in the "Library" sheet
+ * (B485:C535).
+ */
+import stateLightDutyVehiclesSales from 'app/data/state-light-duty-vehicles-sales.json';
 
 export type CountyFips = typeof countyFips;
 
@@ -64,6 +69,8 @@ export type NationalAverageVMTPerYear = typeof nationalAverageVMTPerYear;
 export type EVEfficiencyByModelYear = typeof evEfficiencyByModelYear;
 
 export type RegionAverageTemperatures = typeof regionAverageTemperatures;
+
+export type StateLightDutyVehiclesSales = typeof stateLightDutyVehiclesSales;
 
 export type RdfDataKey =
   | 'generation'

@@ -88,6 +88,11 @@ import evEfficiencyByModelYear from 'app/data/ev-efficiency-by-model-year.json';
  * Lite" table in the "Library" sheet (B432:C445)
  */
 import regionAverageTemperatures from 'app/data/region-average-temperature.json';
+/**
+ * Excel: "Table 11: LDV Sales and Stock" table in the "Library" sheet
+ * (B485:C535).
+ */
+import stateLightDutyVehiclesSales from 'app/data/state-light-duty-vehicles-sales.json';
 
 /**
  * Work around due to TypeScript inability to infer types from large JSON files.
@@ -1018,6 +1023,7 @@ export function setVehicleSalesAndStock(): AppThunk {
 
     const vehicleSalesAndStock = calculateVehicleSalesAndStock({
       countyFips,
+      stateLightDutyVehiclesSales,
       geographicFocus,
       selectedRegionName,
       evDeploymentLocations,
