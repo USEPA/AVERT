@@ -83,6 +83,11 @@ import nationalAverageVMTPerYear from 'app/data/national-average-vmt-per-year.js
  * (E194:J200).
  */
 import evEfficiencyByModelYear from 'app/data/ev-efficiency-by-model-year.json';
+/**
+ * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
+ * Lite" table in the "Library" sheet (B432:C445)
+ */
+import regionAverageTemperatures from 'app/data/region-average-temperature.json';
 
 /**
  * Work around due to TypeScript inability to infer types from large JSON files.
@@ -686,6 +691,7 @@ export function setEVEfficiency(): AppThunk {
     const selectedRegionsEVEfficiencyPerVehicleType =
       calculateSelectedRegionsEVEfficiencyPerVehicleType({
         evEfficiencyByModelYear,
+        regionAverageTemperatures,
         selectedGeographyRegionIds,
         evModelYear,
       });
