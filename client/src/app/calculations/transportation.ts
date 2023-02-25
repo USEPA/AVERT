@@ -10,17 +10,11 @@ import type {
   CountyFips,
   MovesEmissionsRates,
   VMTAllocationAndRegisteredVehicles,
+  EVChargingProfiles,
   RegionId,
   StateId,
 } from 'app/config';
 import { regions, states } from 'app/config';
-/**
- * Excel: "Table B. View charging profiles or set a manual charging profile
- * for Weekdays" table in the "EV_Detail" sheet (C23:H47), which comes from
- * "Table 9: Default EV load profiles and related values from EVI-Pro Lite"
- * table in the "Library" sheet).
- */
-import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
 /**
  * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E177:E180).
  */
@@ -635,7 +629,11 @@ export function calculateMonthlyVMTTotalsAndPercentages(options: {
  * Excel: Data in the first EV table (to the right of the "Calculate Changes"
  * table) in the "CalculateEERE" sheet (P8:X32).
  */
-export function calculateHourlyEVChargingPercentages() {
+export function calculateHourlyEVChargingPercentages(options: {
+  evChargingProfiles: EVChargingProfiles;
+}) {
+  const { evChargingProfiles } = options;
+
   const result: {
     [hour: number]: {
       batteryEVs: { weekday: number; weekend: number };

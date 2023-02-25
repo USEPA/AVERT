@@ -6,6 +6,13 @@ import countyFips from 'app/data/county-fips.json';
  * Excel: Second table in the "RegionStateAllocate" sheet (B118:E167)
  */
 import vmtAllocationAndRegisteredVehicles from 'app/data/vmt-allocation-and-registered-vehicles.json';
+/**
+ * Excel: "Table B. View charging profiles or set a manual charging profile
+ * for Weekdays" table in the "EV_Detail" sheet (C23:H47), which comes from
+ * "Table 9: Default EV load profiles and related values from EVI-Pro Lite"
+ * table in the "Library" sheet).
+ */
+import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
 
 export type CountyFips = typeof countyFips;
 
@@ -13,11 +20,12 @@ export type VMTAllocationAndRegisteredVehicles =
   typeof vmtAllocationAndRegisteredVehicles;
 
 /**
- * NOTE: normally we'd import 'app/data/moves-emissions-rates.json' and export
- * the typeof the imported JSON file, but TypeScript isn't able to infer types
- * from large JSON files (https://github.com/microsoft/TypeScript/issues/42761),
- * so that exported type would just be `{}`, so we need to explicitly declare
- * the type of the MOVES emissions rates data.
+ * NOTE: normally we'd import 'app/data/moves-emissions-rates.json' (Excel:
+ * "MOVESEmissionRates" sheet) and export the typeof the imported JSON file,
+ * but TypeScript isn't able to infer types from large JSON files
+ * (https://github.com/microsoft/TypeScript/issues/42761), so that exported
+ * type would just be `{}`, so we need to explicitly declare the type of the
+ * MOVES emissions rates data.
  */
 export type MovesEmissionsRates = {
   year: string;
@@ -34,6 +42,8 @@ export type MovesEmissionsRates = {
   VOCs: number;
   NH3: number;
 }[];
+
+export type EVChargingProfiles = typeof evChargingProfiles;
 
 export type RdfDataKey =
   | 'generation'
