@@ -15,15 +15,11 @@ import type {
   EVEfficiencyByModelYear,
   RegionAverageTemperatures,
   StateLightDutyVehiclesSales,
+  StateBusSalesAndStock,
   RegionId,
   StateId,
 } from 'app/config';
 import { regions, states } from 'app/config';
-/**
- * Excel: "Table 12: Transit and School Bus Sales and Stock" table in the
- * "Library" sheet (B546:F596).
- */
-import stateBusSalesAndStock from 'app/data/state-bus-sales-and-stock.json';
 /**
  * Excel: "Table 13: Historical renewable and energy efficiency addition data"
  * table in the "Library" sheet (B606:E619).
@@ -67,8 +63,6 @@ const percentageLDVsDisplacedByEVs = {
   cars: 0.276046368502288,
   trucks: 0.723953631497712,
 };
-
-type BusSalesAndStockStateId = keyof typeof stateBusSalesAndStock;
 
 const abridgedVehicleTypes = [
   'cars',
@@ -444,8 +438,9 @@ export function calculateVMTBillionsAndPercentages(options: {
  */
 export function calculateVMTAllocationPerVehicle(options: {
   vmtAllocationAndRegisteredVehicles: VMTAllocationAndRegisteredVehicles;
+  stateBusSalesAndStock: StateBusSalesAndStock;
 }) {
-  const { vmtAllocationAndRegisteredVehicles } = options;
+  const { vmtAllocationAndRegisteredVehicles, stateBusSalesAndStock } = options;
 
   // initialize result object with state keys and total key
   const result = Object.entries(vmtAllocationAndRegisteredVehicles).reduce(
@@ -457,7 +452,7 @@ export function calculateVMTAllocationPerVehicle(options: {
       } = data;
 
       const busSalesAndStock =
-        stateBusSalesAndStock[key as BusSalesAndStockStateId];
+        stateBusSalesAndStock[key as keyof StateBusSalesAndStock];
 
       if (busSalesAndStock) {
         const millionRegisteredBuses =
@@ -2119,6 +2114,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
 export function calculateVehicleSalesAndStock(options: {
   countyFips: CountyFips;
   stateLightDutyVehiclesSales: StateLightDutyVehiclesSales;
+  stateBusSalesAndStock: StateBusSalesAndStock;
   geographicFocus: GeographicFocus;
   selectedRegionName: string;
   evDeploymentLocations: string[];
@@ -2127,6 +2123,7 @@ export function calculateVehicleSalesAndStock(options: {
   const {
     countyFips,
     stateLightDutyVehiclesSales,
+    stateBusSalesAndStock,
     geographicFocus,
     selectedRegionName,
     evDeploymentLocations,
@@ -2177,7 +2174,7 @@ export function calculateVehicleSalesAndStock(options: {
         vmtAllocationData[id as StateId].millionRegisteredLDVs * 1_000_000;
 
       const busSalesAndStock =
-        stateBusSalesAndStock[id as BusSalesAndStockStateId];
+        stateBusSalesAndStock[id as keyof StateBusSalesAndStock];
 
       // initialize and then increment state data by vehicle type
       result[stateId] ??= {

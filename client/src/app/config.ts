@@ -32,6 +32,11 @@ import regionAverageTemperatures from 'app/data/region-average-temperature.json'
  * (B485:C535).
  */
 import stateLightDutyVehiclesSales from 'app/data/state-light-duty-vehicles-sales.json';
+/**
+ * Excel: "Table 12: Transit and School Bus Sales and Stock" table in the
+ * "Library" sheet (B546:F596).
+ */
+import stateBusSalesAndStock from 'app/data/state-bus-sales-and-stock.json';
 
 export type CountyFips = typeof countyFips;
 
@@ -71,6 +76,8 @@ export type EVEfficiencyByModelYear = typeof evEfficiencyByModelYear;
 export type RegionAverageTemperatures = typeof regionAverageTemperatures;
 
 export type StateLightDutyVehiclesSales = typeof stateLightDutyVehiclesSales;
+
+export type StateBusSalesAndStock = typeof stateBusSalesAndStock;
 
 export type RdfDataKey =
   | 'generation'

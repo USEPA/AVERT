@@ -93,6 +93,11 @@ import regionAverageTemperatures from 'app/data/region-average-temperature.json'
  * (B485:C535).
  */
 import stateLightDutyVehiclesSales from 'app/data/state-light-duty-vehicles-sales.json';
+/**
+ * Excel: "Table 12: Transit and School Bus Sales and Stock" table in the
+ * "Library" sheet (B546:F596).
+ */
+import stateBusSalesAndStock from 'app/data/state-bus-sales-and-stock.json';
 
 /**
  * Work around due to TypeScript inability to infer types from large JSON files.
@@ -555,6 +560,7 @@ export function setVMTData(): AppThunk {
 
     const vmtAllocationPerVehicle = calculateVMTAllocationPerVehicle({
       vmtAllocationAndRegisteredVehicles,
+      stateBusSalesAndStock,
     });
 
     const monthlyVMTTotalsAndPercentages =
@@ -1024,6 +1030,7 @@ export function setVehicleSalesAndStock(): AppThunk {
     const vehicleSalesAndStock = calculateVehicleSalesAndStock({
       countyFips,
       stateLightDutyVehiclesSales,
+      stateBusSalesAndStock,
       geographicFocus,
       selectedRegionName,
       evDeploymentLocations,
