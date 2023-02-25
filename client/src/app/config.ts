@@ -1,3 +1,10 @@
+/**
+ * Excel: "CountyFIPS" sheet.
+ */
+import countyFips from 'app/data/county-fips.json';
+
+export type CountyFips = typeof countyFips;
+
 export type RdfDataKey =
   | 'generation'
   | 'so2'

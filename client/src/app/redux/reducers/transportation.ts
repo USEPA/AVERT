@@ -55,6 +55,10 @@ import {
   calculateEVDeploymentLocationHistoricalEERE,
 } from 'app/calculations/transportation';
 import type { RegionId } from 'app/config';
+/**
+ * Excel: "CountyFIPS" sheet.
+ */
+import countyFips from 'app/data/county-fips.json';
 
 type Action =
   | {
@@ -504,9 +508,11 @@ export default function reducer(
  */
 export function setVMTData(): AppThunk {
   return (dispatch) => {
-    const vmtTotalsByGeography = calculateVMTTotalsByGeography();
+    const vmtTotalsByGeography = calculateVMTTotalsByGeography({ countyFips });
 
-    const vmtBillionsAndPercentages = calculateVMTBillionsAndPercentages();
+    const vmtBillionsAndPercentages = calculateVMTBillionsAndPercentages({
+      countyFips,
+    });
 
     const vmtAllocationPerVehicle = calculateVMTAllocationPerVehicle();
 
@@ -969,6 +975,7 @@ export function setVehicleSalesAndStock(): AppThunk {
       geographicFocus === 'regions' ? selectedRegion?.name || '' : '';
 
     const vehicleSalesAndStock = calculateVehicleSalesAndStock({
+      countyFips,
       geographicFocus,
       selectedRegionName,
       evDeploymentLocations,

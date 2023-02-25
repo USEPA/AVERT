@@ -6,7 +6,7 @@ import type {
   SelectedGeographyRegions,
 } from 'app/calculations/geography';
 import { sortObjectByKeys } from 'app/calculations/utilities';
-import type { RegionId, StateId } from 'app/config';
+import type { CountyFips, RegionId, StateId } from 'app/config';
 import { regions, states } from 'app/config';
 /**
  * Excel: "MOVESEmissionRates" sheet.
@@ -19,10 +19,6 @@ import movesEmissionsRates from 'app/data/moves-emissions-rates.json';
  * table in the "Library" sheet).
  */
 import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
-/**
- * Excel: "CountyFIPS" sheet.
- */
-import countyFips from 'app/data/county-fips.json';
 /**
  * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E177:E180).
  */
@@ -229,7 +225,11 @@ export type EVDeploymentLocationHistoricalEERE = ReturnType<
  * Excel: Not stored in any table, but used in calculating values in the "From
  * vehicles" column in the table in the "11_VehicleCty" sheet (column H).
  */
-export function calculateVMTTotalsByGeography() {
+export function calculateVMTTotalsByGeography(options: {
+  countyFips: CountyFips;
+}) {
+  const { countyFips } = options;
+
   type VMTPerVehicleType = { [vehicleType in AbridgedVehicleType]: number };
 
   const regionIds = Object.values(regions).reduce((object, { id, name }) => {
@@ -313,7 +313,11 @@ export function calculateVMTTotalsByGeography() {
  *
  * Excel: First table in the "RegionStateAllocate" sheet (B6:BF108)
  */
-export function calculateVMTBillionsAndPercentages() {
+export function calculateVMTBillionsAndPercentages(options: {
+  countyFips: CountyFips;
+}) {
+  const { countyFips } = options;
+
   // initialize result object with state keys and regionTotals key
   const result = Object.keys(states).reduce(
     (data, stateId) => {
@@ -2134,12 +2138,14 @@ export function calculateVehicleEmissionChangesByGeography(options: {
  * vehicle sales and stock" table in the "Library" sheet (C457:I474).
  */
 export function calculateVehicleSalesAndStock(options: {
+  countyFips: CountyFips;
   geographicFocus: GeographicFocus;
   selectedRegionName: string;
   evDeploymentLocations: string[];
   vmtAllocationPerVehicle: VMTAllocationPerVehicle | {};
 }) {
   const {
+    countyFips,
     geographicFocus,
     selectedRegionName,
     evDeploymentLocations,
