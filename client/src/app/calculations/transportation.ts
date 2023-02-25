@@ -16,15 +16,11 @@ import type {
   RegionAverageTemperatures,
   StateLightDutyVehiclesSales,
   StateBusSalesAndStock,
+  RegionEereAverages,
   RegionId,
   StateId,
 } from 'app/config';
 import { regions, states } from 'app/config';
-/**
- * Excel: "Table 13: Historical renewable and energy efficiency addition data"
- * table in the "Library" sheet (B606:E619).
- */
-import regionEereAverages from 'app/data/region-eere-averages.json';
 /**
  * Excel: "Table 13: Historical renewable and energy efficiency addition data"
  * table in the "Library" sheet (B626:E674).
@@ -2295,12 +2291,14 @@ export function calculateSelectedRegionsEEREDefaultsAverages(options: {
  * table in the "Library" sheet (C680:H680).
  */
 export function calculateEVDeploymentLocationHistoricalEERE(options: {
+  regionEereAverages: RegionEereAverages;
   selectedRegionsEEREDefaultsAverages: SelectedRegionsEEREDefaultsAverages;
   evDeploymentLocation: string;
   regionalLineLoss: number;
   selectedRegionId: RegionId | '';
 }) {
   const {
+    regionEereAverages,
     selectedRegionsEEREDefaultsAverages,
     evDeploymentLocation,
     regionalLineLoss,

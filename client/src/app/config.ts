@@ -37,6 +37,11 @@ import stateLightDutyVehiclesSales from 'app/data/state-light-duty-vehicles-sale
  * "Library" sheet (B546:F596).
  */
 import stateBusSalesAndStock from 'app/data/state-bus-sales-and-stock.json';
+/**
+ * Excel: "Table 13: Historical renewable and energy efficiency addition data"
+ * table in the "Library" sheet (B606:E619).
+ */
+import regionEereAverages from 'app/data/region-eere-averages.json';
 
 export type CountyFips = typeof countyFips;
 
@@ -78,6 +83,8 @@ export type RegionAverageTemperatures = typeof regionAverageTemperatures;
 export type StateLightDutyVehiclesSales = typeof stateLightDutyVehiclesSales;
 
 export type StateBusSalesAndStock = typeof stateBusSalesAndStock;
+
+export type RegionEereAverages = typeof regionEereAverages;
 
 export type RdfDataKey =
   | 'generation'

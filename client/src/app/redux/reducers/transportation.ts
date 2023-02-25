@@ -98,6 +98,11 @@ import stateLightDutyVehiclesSales from 'app/data/state-light-duty-vehicles-sale
  * "Library" sheet (B546:F596).
  */
 import stateBusSalesAndStock from 'app/data/state-bus-sales-and-stock.json';
+/**
+ * Excel: "Table 13: Historical renewable and energy efficiency addition data"
+ * table in the "Library" sheet (B606:E619).
+ */
+import regionEereAverages from 'app/data/region-eere-averages.json';
 
 /**
  * Work around due to TypeScript inability to infer types from large JSON files.
@@ -1101,6 +1106,7 @@ export function setEVDeploymentLocationHistoricalEERE(): AppThunk {
 
     const evDeploymentLocationHistoricalEERE =
       calculateEVDeploymentLocationHistoricalEERE({
+        regionEereAverages,
         selectedRegionsEEREDefaultsAverages,
         evDeploymentLocation,
         regionalLineLoss,
