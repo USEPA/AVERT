@@ -6,113 +6,29 @@ import type {
   SelectedGeographyRegions,
 } from 'app/calculations/geography';
 import { sortObjectByKeys } from 'app/calculations/utilities';
-import type { RegionId, StateId } from 'app/config';
-import { regions, states } from 'app/config';
-/**
- * Excel: "MOVESEmissionRates" sheet.
- */
-import movesEmissionsRates from 'app/data/moves-emissions-rates.json';
-/**
- * Excel: "Table B. View charging profiles or set a manual charging profile
- * for Weekdays" table in the "EV_Detail" sheet (C23:H47), which comes from
- * "Table 9: Default EV load profiles and related values from EVI-Pro Lite"
- * table in the "Library" sheet).
- */
-import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
-/**
- * Excel: "CountyFIPS" sheet.
- */
-import countyFips from 'app/data/county-fips.json';
-/**
- * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E177:E180).
- */
-import nationalAverageVMTPerYear from 'app/data/national-average-vmt-per-year.json';
-/**
- * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
- * (E194:J200).
- */
-import evEfficiencyByModelYear from 'app/data/ev-efficiency-by-model-year.json';
-/**
- * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
- * Lite" table in the "Library" sheet (B432:C445)
- */
-import regionAverageTemperatures from 'app/data/region-average-temperature.json';
-/**
- * Excel: "Table 11: LDV Sales and Stock" table in the "Library" sheet
- * (B485:C535).
- */
-import stateLightDutyVehiclesSales from 'app/data/state-light-duty-vehicles-sales.json';
-/**
- * Excel: "Table 12: Transit and School Bus Sales and Stock" table in the
- * "Library" sheet (B546:F596).
- */
-import stateBusSalesAndStock from 'app/data/state-bus-sales-and-stock.json';
-/**
- * Excel: "Table 13: Historical renewable and energy efficiency addition data"
- * table in the "Library" sheet (B606:E619).
- */
-import regionEereAverages from 'app/data/region-eere-averages.json';
-/**
- * Excel: "Table 13: Historical renewable and energy efficiency addition data"
- * table in the "Library" sheet (B626:E674).
- */
-import stateEereAverages from 'app/data/state-eere-averages.json';
-/**
- * Excel: Second table in the "RegionStateAllocate" sheet (B118:E167)
- */
-import vmtAllocationAndRegisteredVehicles from 'app/data/vmt-allocation-and-registered-vehicles.json';
-
-/**
- * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
- * (E202).
- */
-const percentageHybridEVMilesDrivenOnElectricity = 0.54;
-
-/**
- * Additional energy consumed in climates with +/-18F differential from
- * St. Louis, MO
- *
- * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
- * Lite" table in the "Library" sheet (F428)
- */
-const percentageAdditionalEnergyConsumedFactor = 0.0766194804959222;
-
-/**
- * Ratio of typical weekend energy consumption as a share of typical weekday
- * energy consumption.
- *
- * Excel: "Table C. Set ratio of weekend to weekday energy" table in the
- * "EV_Detail" sheet (D53).
- */
-const percentWeekendToWeekdayEVConsumption = 97.3015982802952;
-
-/**
- * Excel: "Table 14: Light-duty vehicle sales by type" table in the "Library"
- * sheet (D727:E727)
- */
-const percentageLDVsDisplacedByEVs = {
-  cars: 0.276046368502288,
-  trucks: 0.723953631497712,
-};
-
-type LightDutyVehiclesSalesStateId = keyof typeof stateLightDutyVehiclesSales;
-type BusSalesAndStockStateId = keyof typeof stateBusSalesAndStock;
-
-type MovesData = {
-  year: string;
-  month: string;
-  modelYear: string;
-  state: string;
-  vehicleType: string;
-  fuelType: string;
-  VMT: number;
-  CO2: number;
-  NOX: number;
-  SO2: number;
-  PM25: number;
-  VOCs: number;
-  NH3: number;
-};
+import type {
+  CountyFips,
+  MovesEmissionsRates,
+  VMTAllocationAndRegisteredVehicles,
+  EVChargingProfiles,
+  NationalAverageVMTPerYear,
+  EVEfficiencyByModelYear,
+  RegionAverageTemperatures,
+  StateLightDutyVehiclesSales,
+  StateBusSalesAndStock,
+  RegionEereAverages,
+  StateEereAverages,
+  RegionId,
+  StateId,
+} from 'app/config';
+import {
+  percentageHybridEVMilesDrivenOnElectricity,
+  percentageAdditionalEnergyConsumedFactor,
+  percentWeekendToWeekdayEVConsumption,
+  percentageLDVsDisplacedByEVs,
+  regions,
+  states,
+} from 'app/config';
 
 const abridgedVehicleTypes = [
   'cars',
@@ -229,7 +145,11 @@ export type EVDeploymentLocationHistoricalEERE = ReturnType<
  * Excel: Not stored in any table, but used in calculating values in the "From
  * vehicles" column in the table in the "11_VehicleCty" sheet (column H).
  */
-export function calculateVMTTotalsByGeography() {
+export function calculateVMTTotalsByGeography(options: {
+  countyFips: CountyFips;
+}) {
+  const { countyFips } = options;
+
   type VMTPerVehicleType = { [vehicleType in AbridgedVehicleType]: number };
 
   const regionIds = Object.values(regions).reduce((object, { id, name }) => {
@@ -313,7 +233,11 @@ export function calculateVMTTotalsByGeography() {
  *
  * Excel: First table in the "RegionStateAllocate" sheet (B6:BF108)
  */
-export function calculateVMTBillionsAndPercentages() {
+export function calculateVMTBillionsAndPercentages(options: {
+  countyFips: CountyFips;
+}) {
+  const { countyFips } = options;
+
   // initialize result object with state keys and regionTotals key
   const result = Object.keys(states).reduce(
     (data, stateId) => {
@@ -478,7 +402,12 @@ export function calculateVMTBillionsAndPercentages() {
  *
  * Excel: Second table in the "RegionStateAllocate" sheet (B118:J168)
  */
-export function calculateVMTAllocationPerVehicle() {
+export function calculateVMTAllocationPerVehicle(options: {
+  vmtAllocationAndRegisteredVehicles: VMTAllocationAndRegisteredVehicles;
+  stateBusSalesAndStock: StateBusSalesAndStock;
+}) {
+  const { vmtAllocationAndRegisteredVehicles, stateBusSalesAndStock } = options;
+
   // initialize result object with state keys and total key
   const result = Object.entries(vmtAllocationAndRegisteredVehicles).reduce(
     (object, [key, data]) => {
@@ -489,7 +418,7 @@ export function calculateVMTAllocationPerVehicle() {
       } = data;
 
       const busSalesAndStock =
-        stateBusSalesAndStock[key as BusSalesAndStockStateId];
+        stateBusSalesAndStock[key as keyof StateBusSalesAndStock];
 
       if (busSalesAndStock) {
         const millionRegisteredBuses =
@@ -566,7 +495,11 @@ export function calculateVMTAllocationPerVehicle() {
  * Excel: "Table 6: Monthly VMT and efficiency adjustments" table in the
  * "Library" sheet (totals: E218:P223, percentages: E225:P230).
  */
-export function calculateMonthlyVMTTotalsAndPercentages() {
+export function calculateMonthlyVMTTotalsAndPercentages(options: {
+  movesEmissionsRates: MovesEmissionsRates;
+}) {
+  const { movesEmissionsRates } = options;
+
   const result: {
     [month: number]: {
       [vehicleType in GeneralVehicleType]: {
@@ -590,10 +523,7 @@ export function calculateMonthlyVMTTotalsAndPercentages() {
     schoolBuses: 0,
   };
 
-  // NOTE: explicitly declaring the type with a type assertion because
-  // TypeScript isn't able to infer types from large JSON files
-  // (https://github.com/microsoft/TypeScript/issues/42761)
-  (movesEmissionsRates as MovesData[]).forEach((data) => {
+  movesEmissionsRates.forEach((data) => {
     const month = Number(data.month);
 
     if (data.year === '2020') {
@@ -644,7 +574,11 @@ export function calculateMonthlyVMTTotalsAndPercentages() {
  * Excel: Data in the first EV table (to the right of the "Calculate Changes"
  * table) in the "CalculateEERE" sheet (P8:X32).
  */
-export function calculateHourlyEVChargingPercentages() {
+export function calculateHourlyEVChargingPercentages(options: {
+  evChargingProfiles: EVChargingProfiles;
+}) {
+  const { evChargingProfiles } = options;
+
   const result: {
     [hour: number]: {
       batteryEVs: { weekday: number; weekend: number };
@@ -827,9 +761,13 @@ export function calculateSelectedRegionsVMTPercentagesPerVehicleType(options: {
  * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E183:E186).
  */
 export function calculateSelectedRegionsAverageVMTPerYear(options: {
+  nationalAverageVMTPerYear: NationalAverageVMTPerYear;
   selectedRegionsVMTPercentagesPerVehicleType: SelectedRegionsVMTPercentagesPerVehicleType | {}; // prettier-ignore
 }) {
-  const { selectedRegionsVMTPercentagesPerVehicleType } = options;
+  const {
+    nationalAverageVMTPerYear,
+    selectedRegionsVMTPercentagesPerVehicleType,
+  } = options;
 
   const selectedRegionsVMTData =
     Object.keys(selectedRegionsVMTPercentagesPerVehicleType).length !== 0
@@ -968,10 +906,17 @@ export function calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
  * value for all months.
  */
 export function calculateSelectedRegionsEVEfficiencyPerVehicleType(options: {
+  evEfficiencyByModelYear: EVEfficiencyByModelYear;
+  regionAverageTemperatures: RegionAverageTemperatures;
   selectedGeographyRegionIds: RegionId[];
   evModelYear: string;
 }) {
-  const { selectedGeographyRegionIds, evModelYear } = options;
+  const {
+    evEfficiencyByModelYear,
+    regionAverageTemperatures,
+    selectedGeographyRegionIds,
+    evModelYear,
+  } = options;
 
   const evEfficiencyModelYear =
     evModelYear as keyof typeof evEfficiencyByModelYear;
@@ -1524,12 +1469,14 @@ export function calculateSelectedRegionsMonthlyDailyEVEnergyUsage(options: {
  * "Library" sheet (G253:R288).
  */
 export function calculateSelectedRegionsMonthlyEmissionRates(options: {
+  movesEmissionsRates: MovesEmissionsRates;
   selectedRegionsStatesVMTPercentages: SelectedRegionsStatesVMTPercentages | {};
   evDeploymentLocation: string;
   evModelYear: string;
   iceReplacementVehicle: string;
 }) {
   const {
+    movesEmissionsRates,
     selectedRegionsStatesVMTPercentages,
     evDeploymentLocation,
     evModelYear,
@@ -1558,10 +1505,7 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
   const deploymentLocationIsRegion = evDeploymentLocation.startsWith('region-');
   const deploymentLocationIsState = evDeploymentLocation.startsWith('state-');
 
-  // NOTE: explicitly declaring the type with a type assertion because
-  // TypeScript isn't able to infer types from large JSON files
-  // (https://github.com/microsoft/TypeScript/issues/42761)
-  (movesEmissionsRates as MovesData[]).forEach((data) => {
+  movesEmissionsRates.forEach((data) => {
     const month = Number(data.month);
 
     Object.entries(selectedRegionsVMTData).forEach(
@@ -2134,12 +2078,18 @@ export function calculateVehicleEmissionChangesByGeography(options: {
  * vehicle sales and stock" table in the "Library" sheet (C457:I474).
  */
 export function calculateVehicleSalesAndStock(options: {
+  countyFips: CountyFips;
+  stateLightDutyVehiclesSales: StateLightDutyVehiclesSales;
+  stateBusSalesAndStock: StateBusSalesAndStock;
   geographicFocus: GeographicFocus;
   selectedRegionName: string;
   evDeploymentLocations: string[];
   vmtAllocationPerVehicle: VMTAllocationPerVehicle | {};
 }) {
   const {
+    countyFips,
+    stateLightDutyVehiclesSales,
+    stateBusSalesAndStock,
     geographicFocus,
     selectedRegionName,
     evDeploymentLocations,
@@ -2184,13 +2134,13 @@ export function calculateVehicleSalesAndStock(options: {
       const schoolBusesVMTShare = data['Share of State VMT - School Buses'] || 0; // prettier-ignore
 
       const lightDutyVehiclesSales =
-        stateLightDutyVehiclesSales[id as LightDutyVehiclesSalesStateId];
+        stateLightDutyVehiclesSales[id as keyof StateLightDutyVehiclesSales];
 
       const lightDutyVehiclesStock =
         vmtAllocationData[id as StateId].millionRegisteredLDVs * 1_000_000;
 
       const busSalesAndStock =
-        stateBusSalesAndStock[id as BusSalesAndStockStateId];
+        stateBusSalesAndStock[id as keyof StateBusSalesAndStock];
 
       // initialize and then increment state data by vehicle type
       result[stateId] ??= {
@@ -2311,12 +2261,16 @@ export function calculateSelectedRegionsEEREDefaultsAverages(options: {
  * table in the "Library" sheet (C680:H680).
  */
 export function calculateEVDeploymentLocationHistoricalEERE(options: {
+  regionEereAverages: RegionEereAverages;
+  stateEereAverages: StateEereAverages;
   selectedRegionsEEREDefaultsAverages: SelectedRegionsEEREDefaultsAverages;
   evDeploymentLocation: string;
   regionalLineLoss: number;
   selectedRegionId: RegionId | '';
 }) {
   const {
+    regionEereAverages,
+    stateEereAverages,
     selectedRegionsEEREDefaultsAverages,
     evDeploymentLocation,
     regionalLineLoss,

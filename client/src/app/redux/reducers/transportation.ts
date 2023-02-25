@@ -54,7 +54,65 @@ import {
   calculateSelectedRegionsEEREDefaultsAverages,
   calculateEVDeploymentLocationHistoricalEERE,
 } from 'app/calculations/transportation';
-import type { RegionId } from 'app/config';
+import type { MovesEmissionsRates, RegionId } from 'app/config';
+/**
+ * Excel: "CountyFIPS" sheet.
+ */
+import countyFips from 'app/data/county-fips.json';
+/**
+ * Excel: Second table in the "RegionStateAllocate" sheet (B118:E167)
+ */
+import vmtAllocationAndRegisteredVehicles from 'app/data/vmt-allocation-and-registered-vehicles.json';
+/**
+ * Excel: "MOVESEmissionRates" sheet.
+ */
+import movesEmissionsRatesData from 'app/data/moves-emissions-rates.json';
+/**
+ * Excel: "Table B. View charging profiles or set a manual charging profile
+ * for Weekdays" table in the "EV_Detail" sheet (C23:H47), which comes from
+ * "Table 9: Default EV load profiles and related values from EVI-Pro Lite"
+ * table in the "Library" sheet).
+ */
+import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
+/**
+ * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E177:E180).
+ */
+import nationalAverageVMTPerYear from 'app/data/national-average-vmt-per-year.json';
+/**
+ * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
+ * (E194:J200).
+ */
+import evEfficiencyByModelYear from 'app/data/ev-efficiency-by-model-year.json';
+/**
+ * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
+ * Lite" table in the "Library" sheet (B432:C445)
+ */
+import regionAverageTemperatures from 'app/data/region-average-temperature.json';
+/**
+ * Excel: "Table 11: LDV Sales and Stock" table in the "Library" sheet
+ * (B485:C535).
+ */
+import stateLightDutyVehiclesSales from 'app/data/state-light-duty-vehicles-sales.json';
+/**
+ * Excel: "Table 12: Transit and School Bus Sales and Stock" table in the
+ * "Library" sheet (B546:F596).
+ */
+import stateBusSalesAndStock from 'app/data/state-bus-sales-and-stock.json';
+/**
+ * Excel: "Table 13: Historical renewable and energy efficiency addition data"
+ * table in the "Library" sheet (B606:E619).
+ */
+import regionEereAverages from 'app/data/region-eere-averages.json';
+/**
+ * Excel: "Table 13: Historical renewable and energy efficiency addition data"
+ * table in the "Library" sheet (B626:E674).
+ */
+import stateEereAverages from 'app/data/state-eere-averages.json';
+
+/**
+ * Work around due to TypeScript inability to infer types from large JSON files.
+ */
+const movesEmissionsRates = movesEmissionsRatesData as MovesEmissionsRates;
 
 type Action =
   | {
@@ -504,14 +562,19 @@ export default function reducer(
  */
 export function setVMTData(): AppThunk {
   return (dispatch) => {
-    const vmtTotalsByGeography = calculateVMTTotalsByGeography();
+    const vmtTotalsByGeography = calculateVMTTotalsByGeography({ countyFips });
 
-    const vmtBillionsAndPercentages = calculateVMTBillionsAndPercentages();
+    const vmtBillionsAndPercentages = calculateVMTBillionsAndPercentages({
+      countyFips,
+    });
 
-    const vmtAllocationPerVehicle = calculateVMTAllocationPerVehicle();
+    const vmtAllocationPerVehicle = calculateVMTAllocationPerVehicle({
+      vmtAllocationAndRegisteredVehicles,
+      stateBusSalesAndStock,
+    });
 
     const monthlyVMTTotalsAndPercentages =
-      calculateMonthlyVMTTotalsAndPercentages();
+      calculateMonthlyVMTTotalsAndPercentages({ movesEmissionsRates });
 
     dispatch({
       type: 'transportation/SET_VMT_TOTALS_BY_GEOGRAPHY',
@@ -543,7 +606,9 @@ export function setVMTData(): AppThunk {
  */
 export function setHourlyEVChargingPercentages(): AppThunk {
   return (dispatch) => {
-    const hourlyEVChargingPercentages = calculateHourlyEVChargingPercentages();
+    const hourlyEVChargingPercentages = calculateHourlyEVChargingPercentages({
+      evChargingProfiles,
+    });
 
     dispatch({
       type: 'transportation/SET_HOURLY_EV_CHARGING_PERCENTAGES',
@@ -586,6 +651,7 @@ export function setSelectedGeographyVMTData(): AppThunk {
 
     const selectedRegionsAverageVMTPerYear =
       calculateSelectedRegionsAverageVMTPerYear({
+        nationalAverageVMTPerYear,
         selectedRegionsVMTPercentagesPerVehicleType,
       });
 
@@ -645,6 +711,8 @@ export function setEVEfficiency(): AppThunk {
 
     const selectedRegionsEVEfficiencyPerVehicleType =
       calculateSelectedRegionsEVEfficiencyPerVehicleType({
+        evEfficiencyByModelYear,
+        regionAverageTemperatures,
         selectedGeographyRegionIds,
         evModelYear,
       });
@@ -845,6 +913,7 @@ export function setMonthlyEmissionRates(): AppThunk {
 
     const selectedRegionsMonthlyEmissionRates =
       calculateSelectedRegionsMonthlyEmissionRates({
+        movesEmissionsRates,
         selectedRegionsStatesVMTPercentages,
         evDeploymentLocation,
         evModelYear,
@@ -969,6 +1038,9 @@ export function setVehicleSalesAndStock(): AppThunk {
       geographicFocus === 'regions' ? selectedRegion?.name || '' : '';
 
     const vehicleSalesAndStock = calculateVehicleSalesAndStock({
+      countyFips,
+      stateLightDutyVehiclesSales,
+      stateBusSalesAndStock,
       geographicFocus,
       selectedRegionName,
       evDeploymentLocations,
@@ -1039,6 +1111,8 @@ export function setEVDeploymentLocationHistoricalEERE(): AppThunk {
 
     const evDeploymentLocationHistoricalEERE =
       calculateEVDeploymentLocationHistoricalEERE({
+        regionEereAverages,
+        stateEereAverages,
         selectedRegionsEEREDefaultsAverages,
         evDeploymentLocation,
         regionalLineLoss,
