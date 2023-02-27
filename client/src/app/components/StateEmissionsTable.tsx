@@ -88,23 +88,56 @@ function StateEmissionsTableContent() {
 
   if (!combinedSectorsEmissionsData) return null;
 
+  const allStatesSelected =
+    annualStateEmissionsChanges.length === selectedStates.length;
+
   return (
     <>
-      <Select
-        className="avert-select margin-bottom-2"
-        classNamePrefix="avert-select"
-        placeholder="Select States"
-        isMulti={true}
-        options={annualStateEmissionsChanges}
-        getOptionValue={(option) => option.id}
-        getOptionLabel={(option) => option.name}
-        onChange={(options) => {
-          const states = Array.isArray(options)
-            ? (options as typeof annualStateEmissionsChanges)
-            : [];
-          setSelectedStates(states);
-        }}
-      />
+      <div className="margin-bottom-2 mobile-lg:display-flex flex-align-center">
+        <div className="flex-1 mobile-lg:margin-right-1">
+          <Select
+            className="avert-select"
+            classNamePrefix="avert-select"
+            placeholder="Select States..."
+            isMulti={true}
+            value={selectedStates}
+            options={annualStateEmissionsChanges}
+            getOptionValue={(option) => option.id}
+            getOptionLabel={(option) => option.name}
+            onChange={(options) => {
+              const states = Array.isArray(options)
+                ? (options as typeof annualStateEmissionsChanges)
+                : [];
+              setSelectedStates(states);
+            }}
+          />
+        </div>
+
+        <div className="mobile-lg:margin-left-1">
+          <div className="usa-checkbox">
+            <input
+              id="all-states"
+              className="usa-checkbox__input"
+              type="checkbox"
+              name="states"
+              value="all"
+              checked={allStatesSelected}
+              onChange={(_ev) => {
+                const states = allStatesSelected
+                  ? []
+                  : annualStateEmissionsChanges;
+                setSelectedStates(states);
+              }}
+            />
+            <label
+              className="usa-checkbox__label mobile-lg:margin-top-0"
+              htmlFor="all-states"
+            >
+              All states
+            </label>
+          </div>
+        </div>
+      </div>
 
       {selectedStates.length === 0 ? (
         <div className="grid-col-12 margin-bottom-2">
