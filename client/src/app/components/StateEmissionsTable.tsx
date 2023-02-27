@@ -91,7 +91,8 @@ function StateEmissionsTableContent() {
   return (
     <>
       <Select
-        className="margin-bottom-2"
+        className="avert-select margin-bottom-2"
+        classNamePrefix="avert-select"
         placeholder="Select States"
         isMulti={true}
         options={annualStateEmissionsChanges}
