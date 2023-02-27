@@ -157,68 +157,6 @@ const tabsStyles = css`
   }
 `;
 
-function SectorTables(props: { location: string }) {
-  const { location } = props;
-
-  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-
-  // NOTE: add top margin if states are selected, as `StateTable` will first
-  const topMarginClassName =
-    geographicFocus === 'states' ? `margin-top-3` : `margin-top-0`;
-
-  return (
-    <div className={`desktop:display-flex ${topMarginClassName}`}>
-      <div className="flex-1 desktop:margin-right-105">
-        <h3 className="avert-blue margin-bottom-1 font-serif-md">
-          Annual Emissions Changes • <small>Power Sector Only</small>
-          <br />
-          <span className="display-block margin-top-05 font-serif-xs">
-            {location}
-          </span>
-        </h3>
-
-        <PowerEmissionsTable />
-      </div>
-
-      <div className="flex-1 margin-top-3 desktop:margin-left-105 desktop:margin-top-0">
-        <h3 className="avert-blue margin-bottom-1 font-serif-md">
-          Annual Emissions Changes • <small>Including Vehicles</small>
-          <br />
-          <span className="display-block margin-top-05 font-serif-xs">
-            {location}
-          </span>
-        </h3>
-
-        <VehiclesEmissionsTable />
-      </div>
-    </div>
-  );
-}
-
-function StateTable(props: { location: string }) {
-  const { location } = props;
-
-  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-
-  // NOTE: add top margin if regions are selected, as `SectorTables` will first
-  const topMarginClassName =
-    geographicFocus === 'regions' ? `margin-top-3` : `margin-top-0`;
-
-  return (
-    <div className={topMarginClassName}>
-      <h3 className="avert-blue margin-bottom-1 font-serif-md">
-        Annual Emissions Changes By State
-        <br />
-        <span className="display-block margin-top-05 font-serif-xs">
-          {location}
-        </span>
-      </h3>
-
-      <StateEmissionsTable />
-    </div>
-  );
-}
-
 function ExcelAppText() {
   return (
     <p className="text-base-dark font-sans-2xs tablet:font-sans-xs desktop:font-sans-sm">
@@ -522,17 +460,43 @@ export function Panels() {
             </div>
           )}
 
-          {geographicFocus === 'regions' ? (
-            <>
-              <SectorTables location={geographicLocation} />
-              <StateTable location={geographicLocation} />
-            </>
-          ) : (
-            <>
-              <StateTable location={geographicLocation} />
-              <SectorTables location={geographicLocation} />
-            </>
-          )}
+          <div className="margin-top-0 desktop:display-flex">
+            <div className="flex-1 desktop:margin-right-105">
+              <h3 className="avert-blue margin-bottom-1 font-serif-md">
+                Annual Emissions Changes • <small>Power Sector Only</small>
+                <br />
+                <span className="display-block margin-top-05 font-serif-xs">
+                  {geographicLocation}
+                </span>
+              </h3>
+
+              <PowerEmissionsTable />
+            </div>
+
+            <div className="flex-1 margin-top-3 desktop:margin-left-105 desktop:margin-top-0">
+              <h3 className="avert-blue margin-bottom-1 font-serif-md">
+                Annual Emissions Changes • <small>Including Vehicles</small>
+                <br />
+                <span className="display-block margin-top-05 font-serif-xs">
+                  {geographicLocation}
+                </span>
+              </h3>
+
+              <VehiclesEmissionsTable />
+            </div>
+          </div>
+
+          <div className="margin-top-3">
+            <h3 className="avert-blue margin-bottom-1 font-serif-md">
+              Annual Emissions Changes By State
+              <br />
+              <span className="display-block margin-top-05 font-serif-xs">
+                {geographicLocation}
+              </span>
+            </h3>
+
+            <StateEmissionsTable />
+          </div>
 
           <div className="margin-top-3">
             <h3 className="avert-blue margin-bottom-1 font-serif-md">
