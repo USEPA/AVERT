@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Select from 'react-select';
 // ---
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
@@ -86,6 +86,15 @@ function StateEmissionsTableContent() {
     typeof annualStateEmissionsChanges
   >([]);
 
+  useEffect(() => {
+    if (
+      annualStateEmissionsChanges.length === 0 &&
+      selectedStates.length !== 0
+    ) {
+      setSelectedStates([]);
+    }
+  }, [annualStateEmissionsChanges, selectedStates]);
+
   if (!combinedSectorsEmissionsData) return null;
 
   const allStatesSelected =
@@ -98,7 +107,7 @@ function StateEmissionsTableContent() {
           <Select
             className="avert-select"
             classNamePrefix="avert-select"
-            placeholder="Select States..."
+            placeholder="Select States"
             isMulti={true}
             value={selectedStates}
             options={annualStateEmissionsChanges}
