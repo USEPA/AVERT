@@ -464,9 +464,12 @@ function createEmissionsFields(options: {
 function formatCobraDownloadData(
   combinedSectorsEmissionsData: CombinedSectorsEmissionsData,
 ) {
-  const result: CobraData[] = [];
+  const powerData: CobraData[] = [];
+  const vehicleData: CobraData[] = [];
 
-  if (!combinedSectorsEmissionsData) return result;
+  if (!combinedSectorsEmissionsData) {
+    return [];
+  }
 
   const countyEmissionsData = combinedSectorsEmissionsData.counties;
 
@@ -514,7 +517,7 @@ function formatCobraDownloadData(
       );
 
       if (power) {
-        result.push({
+        powerData.push({
           FIPS: fipsCode,
           STATE: state,
           COUNTY: county,
@@ -527,7 +530,7 @@ function formatCobraDownloadData(
         });
       }
 
-      result.push({
+      vehicleData.push({
         FIPS: fipsCode,
         STATE: state,
         COUNTY: county,
@@ -541,5 +544,5 @@ function formatCobraDownloadData(
     });
   });
 
-  return result;
+  return [...powerData, ...vehicleData];
 }
