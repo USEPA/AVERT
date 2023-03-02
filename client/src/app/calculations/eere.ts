@@ -3,13 +3,14 @@ import { percentile } from 'stats-lite';
 import type {
   RegionalLoadData,
   EEREDefaultData,
+  RegionState,
 } from 'app/redux/reducers/geography';
 import type {
   DailyStats,
   HourlyEVChargingPercentages,
   SelectedRegionsMonthlyDailyEVEnergyUsage,
 } from 'app/calculations/transportation';
-import type { RegionId } from 'app/config';
+import type { RegionId, RegionName } from 'app/config';
 /**
  * EV hourly limits by region
  *
@@ -259,6 +260,7 @@ export function calculateHourlyImpacts(options: {
  * - lower limit error: at least one hourly change < 30%
  */
 export function calculateHourlyChangesValidation(options: {
+  regions: { [regionId in RegionId]: RegionState };
   regionalHourlyImpacts: Partial<{
     [key in RegionId]: {
       regionalLoad: RegionalLoadData[];
@@ -266,10 +268,11 @@ export function calculateHourlyChangesValidation(options: {
     };
   }>;
 }) {
-  const { regionalHourlyImpacts } = options;
+  const { regions, regionalHourlyImpacts } = options;
 
   type ExceedanceData = {
     regionId: RegionId;
+    regionName: RegionName;
     hourOfYear: number;
     month: number;
     day: number;
@@ -293,9 +296,13 @@ export function calculateHourlyChangesValidation(options: {
     const regionId = regionKey as keyof typeof regionalHourlyImpacts;
     const { regionalLoad, hourlyImpacts } = regionValue;
 
+    const regionName = Object.entries(regions).find(([_, region]) => {
+      return region.id === regionId;
+    })?.[1].name as RegionName | undefined;
+
     const hourlyLimit = regionEvHourlyLimits[regionId];
 
-    if (hourlyLimit) {
+    if (regionName && hourlyLimit) {
       Object.entries(hourlyImpacts).forEach(([hourKey, hourValue]) => {
         const hourOfYear = Number(hourKey);
         const { currentLoadMw, finalMw, percentChange } = hourValue;
@@ -305,6 +312,7 @@ export function calculateHourlyChangesValidation(options: {
 
         const hourlyExceedance = {
           regionId,
+          regionName,
           hourOfYear,
           month,
           day,
