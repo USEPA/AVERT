@@ -10,7 +10,7 @@ describe('Get Results – constantMwh', () => {
 
     cy.findByText('Reductions spread evenly throughout the year').click();
     cy.findByText('Reduce hourly generation by:').next().type('500');
-    cy.findByText('Calculate EE/RE Impacts').click();
+    cy.findByText('Calculate Energy Impacts').click();
     cy.findAllByText('Get Results').filter('.avert-button').click();
     cy.findByText('LOADING...', { timeout: 120000 }).should('not.exist');
   });

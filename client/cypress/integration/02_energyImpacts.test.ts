@@ -41,16 +41,16 @@ describe('Set Energy Impacts', () => {
       .as('rooftopSolar');
     cy.get('@toggleD').click();
 
-    cy.findByText('Calculate EE/RE Impacts').as('calculateBtn');
+    cy.findByText('Calculate Energy Impacts').as('calculateBtn');
     cy.findAllByText('Get Results').filter('.avert-button').as('resultsBtn');
   });
 
-  it('Entering a value for onshore wind capacity displays the EE/RE profile chart and enables the “Get Results” button', () => {
+  it('Entering a value for onshore wind capacity displays the electric power load profile chart and enables the “Get Results” button', () => {
     cy.get('@toggleC').click();
     cy.get('@onshoreWind').type('1000');
     cy.get('@resultsBtn').should('have.class', 'avert-button-disabled');
     cy.get('@calculateBtn').click();
-    cy.findByText('EE/RE profile based on values entered:');
+    cy.findByText('Electric power load profile based on values entered:');
     cy.get('@resultsBtn').should('not.have.class', 'avert-button-disabled');
   });
 

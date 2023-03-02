@@ -10,7 +10,7 @@ describe('Get Results – annualGwh', () => {
 
     cy.findByText('Reductions spread evenly throughout the year').click();
     cy.findByText('Reduce total annual generation by:').next().type('5000');
-    cy.findByText('Calculate EE/RE Impacts').click();
+    cy.findByText('Calculate Energy Impacts').click();
     cy.findAllByText('Get Results').filter('.avert-button').click();
     cy.findByText('LOADING...', { timeout: 120000 }).should('not.exist');
   });

@@ -223,7 +223,7 @@ export function setMonthlyEmissionsUnit(unit: Unit) {
  * Called every time the `results` reducer's `calculateEmissionsChanges()`
  * function is called.
  *
- * _(e.g. whenever the "Get Results" button is clicked on the "Set EE/RE
+ * _(e.g. whenever the "Get Results" button is clicked on the "Set Energy
  * Impacts" page)_
  */
 export function setStatesAndCounties(): AppThunk {

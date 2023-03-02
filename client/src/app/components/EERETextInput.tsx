@@ -107,8 +107,8 @@ export function EERETextInput(props: {
           <span className="display-block text-bold text-no-italic">
             Please enter a positive number.
           </span>
-          If you wish to model a reverse EE/RE scenario (i.e., a negative
-          number), use the Excel version of the AVERT Main Module.
+          If you wish to model a reverse energy impacts scenario (i.e., a
+          negative number), use the Excel version of the AVERT Main Module.
         </p>
       )}
     </div>

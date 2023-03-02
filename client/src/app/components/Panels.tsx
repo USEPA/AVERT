@@ -178,10 +178,13 @@ function ExcelAppText() {
 function StateGeographyText() {
   return (
     <p className="text-base-dark font-sans-2xs tablet:font-sans-xs desktop:font-sans-sm">
-      When modeling EE/RE in a state, AVERT distributes the user-input EE/RE
-      across all the AVERT regions straddled by the state. The energy impacts of
-      EE/RE programs are assigned to each AVERT region based on the proportional
-      generation provided to the state by EGUs in each AVERT region. For more
+      When modeling energy programs for a single state that is split among
+      multiple AVERT regions, AVERT distributes the user-input EE, RE, and EVs
+      across all portions of the state. The power sector impacts of these
+      programs are assigned to each AVERT region based on the proportional
+      generation provided to the state by EGUs in each AVERT region. EV impacts
+      are assigned based on the proportion of the state’s vehicle miles traveled
+      that occur within each AVERT region, by vehicle type. For more
       information, see Appendix G of the User Manual.
     </p>
   );
@@ -403,10 +406,11 @@ export function Panels() {
             <UnitConversion />
 
             <p className="font-sans-xs tablet:font-sans-sm desktop:font-sans-md">
-              AVERT quantifies avoided emissions and electricity generation
-              displaced by EE/RE policies and programs. Specify the impacts of
-              EE/RE programs below, and AVERT will use these inputs to generate
-              results. For more information about inputs, please consult the{' '}
+              AVERT quantifies changes in electricity generation and emissions
+              that result from energy policies and programs. Specify the impacts
+              of energy programs below, and AVERT will use these inputs to
+              generate results. For more information about inputs, please
+              consult the{' '}
               <a
                 className="usa-link"
                 href="https://www.epa.gov/statelocalenergy/avert-user-manual"

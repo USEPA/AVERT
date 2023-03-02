@@ -12,7 +12,7 @@ describe('Get Results – broadProgram', () => {
     cy.findByText('Broad-based program: Reduce generation by:')
       .next()
       .type('10');
-    cy.findByText('Calculate EE/RE Impacts').click();
+    cy.findByText('Calculate Energy Impacts').click();
     cy.findAllByText('Get Results').filter('.avert-button').click();
     cy.findByText('LOADING...', { timeout: 120000 }).should('not.exist');
   });

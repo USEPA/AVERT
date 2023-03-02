@@ -190,7 +190,7 @@ export function calculateHourlyTopPercentReduction(options: {
 }
 
 /**
- * Calculates regional hourly impacts of the entered EE/RE/EV inputs.
+ * Calculates regional hourly impacts of the entered energy impacts inputs.
  */
 export function calculateHourlyImpacts(options: {
   lineLoss: number; // region.lineLoss

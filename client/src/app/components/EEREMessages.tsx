@@ -15,7 +15,7 @@ function EquivalentHomesText(props: { hourlyChanges: number[] }) {
 
   return (
     <p className="margin-top-2 text-base-dark">
-      This EE/RE profile will {totalLoadMwh < 0 ? 'displace' : 'add'}{' '}
+      This load profile will {totalLoadMwh < 0 ? 'displace' : 'add'}{' '}
       <strong>{Math.abs(totalLoadGwh).toLocaleString()} GWh</strong> of regional
       fossil fuel generation over the course of a year. For reference, this
       equals the annual electricity consumed by{' '}

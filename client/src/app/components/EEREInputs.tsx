@@ -161,9 +161,9 @@ function EEREInputsContent() {
     hourlyEnergyProfile.status === 'pending';
 
   const eereButtonOptions = {
-    idle: 'Calculate EE/RE Impacts',
+    idle: 'Calculate Energy Impacts',
     pending: 'Calculating...',
-    success: 'Recalculate EE/RE Impacts',
+    success: 'Recalculate Energy Impacts',
   };
 
   const disabledButtonClassName = hourlyEnergyProfileCalculationDisabled
@@ -809,7 +809,7 @@ export function EEREInputs() {
     <ErrorBoundary
       message={
         <>
-          EE/RE Impacts inputs error. Please contact AVERT support at{' '}
+          Energy Impacts inputs error. Please contact AVERT support at{' '}
           <a className="usa-link" href="mailto:avert@epa.gov">
             avert@epa.gov
           </a>

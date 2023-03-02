@@ -55,7 +55,7 @@ function EEREChartContent() {
       },
     },
     accessibility: {
-      description: 'EE/RE profile',
+      description: 'Electric power load profile',
     },
     title: {
       text: undefined,
@@ -113,15 +113,16 @@ function EEREChartContent() {
       {Object.keys(totalHourlyChanges).length > 0 && (
         <>
           <h3 className="margin-0 font-sans-md line-height-sans-2 text-base-darker text-center">
-            EE/RE profile based on values entered:&nbsp;
+            Electric power load profile based on values entered:&nbsp;
             <Tooltip id="eere-profile">
               <p className="margin-0 text-normal text-left">
                 This graph shows the hourly changes in load that will result
                 from the inputs entered above. It reflects a combination of all
                 inputs, typical capacity factors for wind and solar, and
                 adjustments for avoided transmission and distribution line loss,
-                where applicable. This hourly EE/RE profile will be used to
-                calculate the avoided emissions for this AVERT region.
+                where applicable. This hourly load profile will be used to
+                calculate the change in emissions from the electric power
+                sector.
               </p>
             </Tooltip>
           </h3>
@@ -136,12 +137,13 @@ function EEREChartContent() {
               <div className="pin-all z-100 bg-black opacity-80">
                 <div className="display-flex flex-column flex-align-center flex-justify-center height-full">
                   <p className="margin-0 padding-2 text-center text-white">
-                    Inputs have changed since this EE/RE profile was calculated.
+                    Inputs have changed since this electric power load profile
+                    was calculated.
                   </p>
 
                   <p className="margin-0 padding-2 text-center text-white">
-                    Please click the “Recalculate EE/RE Impacts” button above to
-                    recalculate with the latest EE/RE input values.
+                    Please click the “Recalculate Energy Impacts” button above
+                    to recalculate with the latest energy impacts input values.
                   </p>
                 </div>
               </div>
@@ -170,7 +172,8 @@ export function EEREChart() {
     <ErrorBoundary
       message={
         <>
-          EE/RE Impacts chart error. Please contact AVERT support at{' '}
+          Electric power load profile chart error. Please contact AVERT support
+          at{' '}
           <a className="usa-link" href="mailto:avert@epa.gov">
             avert@epa.gov
           </a>
