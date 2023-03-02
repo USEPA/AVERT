@@ -29,11 +29,7 @@ import {
   calculateHourlyChangesValidation,
 } from 'app/calculations/eere';
 import type { RegionId, StateId } from 'app/config';
-import {
-  regions,
-  evModelYearOptions,
-  iceReplacementVehicleOptions,
-} from 'app/config';
+import { evModelYearOptions, iceReplacementVehicleOptions } from 'app/config';
 
 type SelectOption = { id: string; name: string };
 
@@ -984,13 +980,15 @@ export function updateEereICEReplacementVehicle(input: string): AppThunk {
 export function calculateHourlyEnergyProfile(): AppThunk {
   return (dispatch, getState) => {
     const { geography, transportation, eere } = getState();
-    const { regionalScalingFactors } = geography;
+    const { regions, states, regionalScalingFactors } = geography;
     const {
       dailyStats,
       hourlyEVChargingPercentages,
       selectedRegionsMonthlyDailyEVEnergyUsage,
     } = transportation;
     const { inputs } = eere;
+
+    const geographicFocus = geography.focus;
 
     // select region(s), based on geographic focus:
     // single region if geographic focus is 'regions'
@@ -999,22 +997,22 @@ export function calculateHourlyEnergyProfile(): AppThunk {
 
     let selectedState: StateState | undefined;
 
-    if (geography.focus === 'regions') {
-      for (const regionId in geography.regions) {
-        const region = geography.regions[regionId as RegionId];
+    if (geographicFocus === 'regions') {
+      for (const regionId in regions) {
+        const region = regions[regionId as RegionId];
         if (region.selected) {
           selectedRegions.push(region);
         }
       }
     }
 
-    if (geography.focus === 'states') {
-      for (const stateId in geography.states) {
-        const state = geography.states[stateId as StateId];
+    if (geographicFocus === 'states') {
+      for (const stateId in states) {
+        const state = states[stateId as StateId];
         if (state.selected) {
           selectedState = state;
           Object.keys(state.percentageByRegion).forEach((regionId) => {
-            const region = geography.regions[regionId as RegionId];
+            const region = regions[regionId as RegionId];
             selectedRegions.push(region);
           });
         }
@@ -1177,7 +1175,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
         Object.entries(regionalData.hourlyImpacts).forEach(([key, value]) => {
           const hour = Number(key);
           object[hour] ??= 0;
-          object[hour] += value.finalMw;
+          object[hour] += value.impactsLoad;
         });
 
         return object;
@@ -1191,6 +1189,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
     });
 
     const hourlyChangesValidation = calculateHourlyChangesValidation({
+      regions,
       regionalHourlyImpacts,
     });
 

@@ -152,9 +152,9 @@ function StateEmissionsTableContent() {
         <div className="grid-col-12 margin-bottom-2">
           <div className="avert-box padding-3">
             <p className="margin-0 font-sans-xs text-center">
-              <strong>No state selected.</strong>
+              <strong>No states selected.</strong>
               <br />
-              Please select a state.
+              Please select one or more states.
             </p>
           </div>
         </div>

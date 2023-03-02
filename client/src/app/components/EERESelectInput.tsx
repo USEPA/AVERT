@@ -48,7 +48,7 @@ export function EERESelectInput(props: {
           }
           aria-label={ariaLabel}
           value={value}
-          data-avert-eere-input={fieldName}
+          data-avert-energy-impacts-input={fieldName}
           disabled={Boolean(disabled)}
           onChange={(ev) => onChange(ev.target.value)}
         >

@@ -15,7 +15,7 @@ function EquivalentHomesText(props: { hourlyChanges: number[] }) {
 
   return (
     <p className="margin-top-2 text-base-dark">
-      This EE/RE profile will {totalLoadMwh < 0 ? 'displace' : 'add'}{' '}
+      This load profile will {totalLoadMwh < 0 ? 'displace' : 'add'}{' '}
       <strong>{Math.abs(totalLoadGwh).toLocaleString()} GWh</strong> of regional
       fossil fuel generation over the course of a year. For reference, this
       equals the annual electricity consumed by{' '}
@@ -34,7 +34,17 @@ function ValidationMessage(props: {
 
   if (!exceedanceData) return null;
 
-  const months = [
+  const {
+    regionName,
+    regionHourlyLimit,
+    month,
+    day,
+    hour,
+    percentChange,
+    postImpactsLoad,
+  } = exceedanceData;
+
+  const monthName = [
     'January',
     'February',
     'March',
@@ -47,24 +57,21 @@ function ValidationMessage(props: {
     'October',
     'November',
     'December',
-  ];
-  const month = months[exceedanceData.month - 1];
-  const day = exceedanceData.day;
-  const hour =
-    exceedanceData.hour === 0
-      ? 12
-      : exceedanceData.hour > 12
-      ? exceedanceData.hour - 12
-      : exceedanceData.hour;
-  const ampm = exceedanceData.hour > 12 ? 'PM' : 'AM';
-  const value = exceedanceData.hourlyTotal.toLocaleString(undefined, {
+  ][month - 1];
+  const hourNumber = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+  const meridiem = hour > 12 ? 'PM' : 'AM';
+
+  const percentOverRegionalLimit = (postImpactsLoad - regionHourlyLimit) * 100;
+
+  const upperLimitPercent = percentOverRegionalLimit.toLocaleString(undefined, {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   });
-  const percentage = Math.abs(exceedanceData.percentChange).toLocaleString(
-    undefined,
-    { minimumFractionDigits: 0, maximumFractionDigits: 2 },
-  );
+
+  const lowerLimitPercent = Math.abs(percentChange).toLocaleString(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  });
 
   return (
     <div className={`usa-alert usa-alert--${severity} margin-bottom-0`}>
@@ -76,12 +83,14 @@ function ValidationMessage(props: {
         {direction === 'upper' && (
           <>
             <p>
-              You have entered an energy change profile that exceeds the
-              calculable range for hourly energy changes.&nbsp;&nbsp;
+              The combined impact of your proposed programs would exceed the
+              range of hourly energy changes that AVERT is able to calculate.
+              &nbsp;&nbsp;
               <em>
-                (Maximum value: <strong>{value}</strong> on{' '}
+                (Maximum value: <strong>{upperLimitPercent}</strong>% above the
+                maximum calculable load for the {regionName} region on{' '}
                 <strong>
-                  {month} {day} at {hour}:00 {ampm}
+                  {monthName} {day} at {hourNumber}:00 {meridiem}
                 </strong>
                 .)
               </em>
@@ -97,9 +106,9 @@ function ValidationMessage(props: {
               regional fossil generation in at least one hour of the
               year.&nbsp;&nbsp;
               <em>
-                (Maximum value: <strong>{percentage}</strong>% on{' '}
+                (Maximum value: <strong>{lowerLimitPercent}</strong>% on{' '}
                 <strong>
-                  {month} {day} at {hour}:00 {ampm}
+                  {monthName} {day} at {hourNumber}:00 {meridiem}
                 </strong>
                 .)
               </em>
@@ -109,7 +118,8 @@ function ValidationMessage(props: {
               The recommended limit for AVERT is 15%, as AVERT is designed to
               simulate marginal operational changes in load, rather than
               large-scale changes that may change fundamental dynamics. Please
-              reduce one or more of your inputs to ensure more reliable results.
+              reduce one or more of your energy efficiency or renewable energy
+              inputs to ensure more reliable results.
             </p>
           </>
         )}

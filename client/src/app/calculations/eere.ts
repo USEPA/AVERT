@@ -3,13 +3,14 @@ import { percentile } from 'stats-lite';
 import type {
   RegionalLoadData,
   EEREDefaultData,
+  RegionState,
 } from 'app/redux/reducers/geography';
 import type {
   DailyStats,
   HourlyEVChargingPercentages,
   SelectedRegionsMonthlyDailyEVEnergyUsage,
 } from 'app/calculations/transportation';
-import type { RegionId } from 'app/config';
+import type { RegionId, RegionName } from 'app/config';
 /**
  * EV hourly limits by region
  *
@@ -190,7 +191,7 @@ export function calculateHourlyTopPercentReduction(options: {
 }
 
 /**
- * Calculates regional hourly impacts of the entered EE/RE/EV inputs.
+ * Calculates regional hourly impacts of the entered energy impacts inputs.
  */
 export function calculateHourlyImpacts(options: {
   lineLoss: number; // region.lineLoss
@@ -216,7 +217,7 @@ export function calculateHourlyImpacts(options: {
   const result = regionalLoad.reduce(
     (object, data, index) => {
       const hour = data.hour_of_year;
-      const currentLoadMw = data.regional_load_mw;
+      const originalLoad = data.regional_load_mw;
 
       const topPercentReduction = hourlyTopPercentReduction[index] || 0;
       const renewableProfile = hourlyRenewableEnergyProfile[index] || 0;
@@ -225,16 +226,16 @@ export function calculateHourlyImpacts(options: {
       /**
        * Excel: Data in column I of the "CalculateEERE" sheet (I5:I8788).
        */
-      const finalMw =
+      const impactsLoad =
         (topPercentReduction - hourlyMwReduction - constantMwh + evLoad) /
           (1 - lineLoss) +
         renewableProfile;
 
-      const percentChange = (finalMw / currentLoadMw) * 100;
+      const percentChange = (impactsLoad / originalLoad) * 100;
 
       object[hour] = {
-        currentLoadMw,
-        finalMw,
+        originalLoad,
+        impactsLoad,
         percentChange,
       };
 
@@ -242,8 +243,8 @@ export function calculateHourlyImpacts(options: {
     },
     {} as {
       [hour: number]: {
-        currentLoadMw: number;
-        finalMw: number;
+        originalLoad: number;
+        impactsLoad: number;
         percentChange: number;
       };
     },
@@ -259,6 +260,7 @@ export function calculateHourlyImpacts(options: {
  * - lower limit error: at least one hourly change < 30%
  */
 export function calculateHourlyChangesValidation(options: {
+  regions: { [regionId in RegionId]: RegionState };
   regionalHourlyImpacts: Partial<{
     [key in RegionId]: {
       regionalLoad: RegionalLoadData[];
@@ -266,17 +268,20 @@ export function calculateHourlyChangesValidation(options: {
     };
   }>;
 }) {
-  const { regionalHourlyImpacts } = options;
+  const { regions, regionalHourlyImpacts } = options;
 
   type ExceedanceData = {
     regionId: RegionId;
+    regionName: RegionName;
+    regionHourlyLimit: number;
     hourOfYear: number;
     month: number;
     day: number;
     hour: number;
-    hourlyLimit: number;
-    hourlyTotal: number;
+    originalLoad: number;
+    impactsLoad: number;
     percentChange: number;
+    postImpactsLoad: number;
   };
 
   const result = {
@@ -293,31 +298,38 @@ export function calculateHourlyChangesValidation(options: {
     const regionId = regionKey as keyof typeof regionalHourlyImpacts;
     const { regionalLoad, hourlyImpacts } = regionValue;
 
-    const hourlyLimit = regionEvHourlyLimits[regionId];
+    const regionName = Object.entries(regions).find(([_, region]) => {
+      return region.id === regionId;
+    })?.[1].name as RegionName | undefined;
 
-    if (hourlyLimit) {
+    const regionHourlyLimit = regionEvHourlyLimits[regionId];
+
+    if (regionName && regionHourlyLimit) {
       Object.entries(hourlyImpacts).forEach(([hourKey, hourValue]) => {
         const hourOfYear = Number(hourKey);
-        const { currentLoadMw, finalMw, percentChange } = hourValue;
+        const { originalLoad, impactsLoad, percentChange } = hourValue;
         const { month, day, hour } = regionalLoad[hourOfYear - 1];
 
-        const hourlyTotal = currentLoadMw + finalMw;
+        const postImpactsLoad = originalLoad + impactsLoad;
 
         const hourlyExceedance = {
           regionId,
+          regionName,
+          regionHourlyLimit,
           hourOfYear,
           month,
           day,
           hour,
-          hourlyLimit,
-          hourlyTotal,
+          originalLoad,
+          impactsLoad,
           percentChange,
+          postImpactsLoad,
         };
 
-        if (hourlyTotal > hourlyLimit) {
+        if (postImpactsLoad > regionHourlyLimit) {
           result.upperError ??= hourlyExceedance;
 
-          if (hourlyTotal > result.upperError.hourlyTotal) {
+          if (postImpactsLoad > result.upperError.postImpactsLoad) {
             result.upperError = hourlyExceedance;
           }
         }

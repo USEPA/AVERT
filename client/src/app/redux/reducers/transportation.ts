@@ -759,7 +759,7 @@ export function setEVEfficiency(): AppThunk {
  * Called every time the `geography` reducer's `fetchRegionsData()` function is
  * called.
  *
- * _(e.g. whenever the "Set EE/RE Impacts" button is clicked  on the "Select
+ * _(e.g. whenever the "Set Energy Impacts" button is clicked  on the "Select
  * Geography" page)_
  */
 export function setDailyAndMonthlyStats(): AppThunk {
@@ -900,7 +900,7 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
  * re-setting monthlyStats), or anytime this `transportation` reducer's
  * `setMonthlyEVEnergyUsage()` function is called.
  *
- * _(e.g. whenever the "Set EE/RE Impacts" button is clicked  on the "Select
+ * _(e.g. whenever the "Set Energy Impacts" button is clicked  on the "Select
  * Geography" page or anytime the selected geography, EV model year, or an EV
  * input number changes)_
  */
@@ -1090,7 +1090,7 @@ export function setVehicleSalesAndStock(): AppThunk {
  * Called every time the `geography` reducer's `fetchRegionsData()` function is
  * called.
  *
- * _(e.g. whenever the "Set EE/RE Impacts" button is clicked  on the "Select
+ * _(e.g. whenever the "Set Energy Impacts" button is clicked  on the "Select
  * Geography" page)_
  */
 export function setSelectedRegionsEEREDefaultsAverages(): AppThunk {
@@ -1128,7 +1128,7 @@ export function setSelectedRegionsEEREDefaultsAverages(): AppThunk {
  * `setSelectedRegionsEEREDefaultsAverages()` function is called or anytime
  * the `eere` reducer's `updateEereEVDeploymentLocation()` function is called.
  *
- * _(e.g. whenever the "Set EE/RE Impacts" button is clicked  on the "Select
+ * _(e.g. whenever the "Set Energy Impacts" button is clicked  on the "Select
  * Geography" page or anytime the EV deployment location changes)_
  */
 export function setEVDeploymentLocationHistoricalEERE(): AppThunk {

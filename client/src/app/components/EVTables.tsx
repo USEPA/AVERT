@@ -1,4 +1,5 @@
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
+import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import type { SelectedRegionsTotalYearlyEVEnergyUsage } from 'app/calculations/transportation';
 
@@ -69,7 +70,16 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
   return (
     <>
       <h3 className="avert-blue margin-bottom-1 font-serif-md">
-        EV Sales and Stock Comparison
+        EV Sales and Stock Comparison{' '}
+        <Tooltip id="ev-sales-and-stock-table">
+          <span className="text-normal">
+            This table translates the user-specified number of EVs into shares
+            of vehicle sales and shares of vehicles on the road (i.e., vehicle
+            stock). These shares are based on recent historical data aggregated
+            for the location of EV deployment selected by the user. This table
+            can assist the user in entering the number of EVs to model.
+          </span>
+        </Tooltip>
       </h3>
 
       <div className="overflow-auto">
@@ -236,7 +246,19 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
   return (
     <div className="margin-top-2">
       <h3 className="avert-blue margin-bottom-1 font-serif-md">
-        EE/RE and EV Comparison
+        EE/RE and EV Comparison{' '}
+        <Tooltip id="ee-re-ev-comparison-table">
+          <span className="text-normal">
+            This table provides a comparison between the total annual energy
+            impact of the EVs entered and recent trends in RE capacity
+            installation and EE programs in the location of EV deployment. AVERT
+            compares the generation required to power the EVs entered against
+            the average first-year GWh generation from wind, solar, and EE
+            resources deployed in the selected state or region between 2018 and
+            2020. This table helps users build more likely scenarios combining
+            EVs, EE, and RE.
+          </span>
+        </Tooltip>
       </h3>
 
       <div className="overflow-auto">

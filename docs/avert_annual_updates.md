@@ -22,9 +22,9 @@ All changes should happen on a new feature branch:
    mentioned this is a manual process on their end.
 
 5. Run web app locally with updated files – run through the entire user flow
-   (select region, enter EE/RE inputs, see results) for each of the 14 regions,
-   and test a couple states too for good measure. If the new files are valid
-   there should be no errors.
+   (select region, enter energy impacts inputs, see results) for each of the 14
+   regions, and test a couple states too for good measure. If the new files are
+   valid there should be no errors.
 
 6. Update `regions` object in `client/src/app/config.ts` file to include latest
    "actual emissions values" from Table 3 in the "Library" sheet of the Excel
@@ -60,12 +60,12 @@ All changes should happen on a new feature branch:
     package update.
 
 12. Run web app locally one final time and run through the entire user flow
-    (select region, enter EE/RE inputs, see results) for a few of the regions,
-    and a few of the states. Really just one final test that nothing has broken
-    as a result of all the previous changes made. It's also a good idea to
-    compare the results from a few runs in the web version with the results from
-    the same run in the Excel version, to ensure they're the same (although our
-    QA testing should also do this).
+    (select region, enter energy impacts inputs, see results) for a few of the
+    regions, and a few of the states. Really just one final test that nothing
+    has broken as a result of all the previous changes made. It's also a good
+    idea to compare the results from a few runs in the web version with the
+    results from the same run in the Excel version, to ensure they're the same
+    (although our QA testing should also do this).
 
 13. Update the version number of all three apps ("client" app, "server" app, and
     top-level "orchestrating" app) in each project's `package.json` file to

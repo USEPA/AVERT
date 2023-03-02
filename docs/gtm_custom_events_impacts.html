@@ -1,0 +1,72 @@
+<script>
+  (function () {
+    var calculateBtn = document.querySelector('[data-avert-calculate-impacts-btn]'); // prettier-ignore
+    var inputsContainer = document.querySelector("[data-avert-energy-impacts-inputs]"); // prettier-ignore
+    if (!calculateBtn || !inputsContainer) return;
+
+    /**
+     * NOTE: We need to use `getElementsByTagName()` to select the energy
+     * impacts inputs, as it returns a live HTMLCollection instead of a static
+     * NodeList (that `querySelectorAll()` would have returned). This is
+     * necessary because the offshore wind input is conditionally rendered only
+     * if the region supports offshore wind...which means when this JavaScript
+     * code is added to the page on DOM Ready (as set up in Google Tag Manager),
+     * that input element might not yet exist in the DOM.
+     */
+    var energyImpactsInputs = inputsContainer.getElementsByTagName("input");
+    var energyImpactsSelects = inputsContainer.getElementsByTagName("select");
+
+    function captureEnergyImpacts() {
+      var inputs = {};
+
+      Array.from(energyImpactsSelects).forEach(function (select) {
+        inputs[select.dataset.avertEnergyImpactsInput] = select.value;
+      });
+
+      Array.from(energyImpactsInputs).forEach(function (input) {
+        inputs[input.dataset.avertEnergyImpactsInput] = input.value;
+      });
+
+      window.dataLayer.push({
+        event: "energyImpactsCalculated",
+        energyImpacts: JSON.stringify(inputs),
+      });
+    }
+
+    calculateBtn.addEventListener("click", function (ev) {
+      captureEnergyImpacts();
+    });
+
+    Array.from(energyImpactsInputs).forEach(function (input) {
+      input.addEventListener("keypress", function (ev) {
+        if (ev.key === "Enter") captureEnergyImpacts();
+      });
+    });
+  })();
+</script>
+
+<script>
+  (function () {
+    var chartContainers = document.querySelectorAll("[data-avert-chart]");
+    if (!chartContainers) return;
+
+    Array.from(chartContainers).forEach(function (chartContainer) {
+      chartContainer.addEventListener("mousedown", function (ev) {
+        if (ev.target.className !== "highcharts-menu-item") return;
+
+        var chart = ev.target.closest("[data-highcharts-chart]");
+        if (!chart) return;
+
+        // Electric Power Load Profile chart doesn't have title, so set it explicitly
+        var titleEl = chart.querySelector(".avert-chart-title");
+        var chartTitle = titleEl ? titleEl.innerText : "Electric Power Load Profile"; // prettier-ignore
+
+        window.dataLayer.push({
+          event: "chartExportClicked",
+          exportedChartTitle: chartTitle,
+          exportedChartAction: ev.target.innerText,
+        });
+      });
+    });
+  })();
+</script>
