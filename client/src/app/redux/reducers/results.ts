@@ -161,7 +161,7 @@ export function fetchEmissionsChanges(): AppThunk {
 
       if (regionalProfile) {
         const hourlyChanges = Object.values(regionalProfile.hourlyImpacts).map(
-          (d) => d.finalMw,
+          (d) => d.impactsLoad,
         );
 
         requests.push(
