@@ -6,7 +6,7 @@ describe('Get Results – reduction & topHours', () => {
       .filter('option')
       .parent()
       .select('New England');
-    cy.findAllByText('Set EE/RE Impacts').filter('.avert-button').click();
+    cy.findAllByText('Set Energy Impacts').filter('.avert-button').click();
 
     cy.findByText('Percentage reductions in some or all hours').click();
     cy.findByText('Targeted program: Reduce generation by:').next().type('15');

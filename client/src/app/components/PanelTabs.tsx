@@ -17,7 +17,7 @@ export function PanelTabs() {
         <PanelTab
           step={2}
           active={activeStep === 2}
-          title="Set EE/RE Impacts"
+          title="Set Energy Impacts"
         />
         <PanelTab step={3} active={activeStep === 3} title="Get Results" />
       </ol>

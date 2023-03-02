@@ -384,7 +384,7 @@ export function Panels() {
           </TabPanels>
         </Tabs>
 
-        <PanelFooter prevButton={null} nextButton="Set EE/RE Impacts" />
+        <PanelFooter prevButton={null} nextButton="Set Energy Impacts" />
       </section>
 
       <section css={panelStyles} data-active={activeStep === 2}>

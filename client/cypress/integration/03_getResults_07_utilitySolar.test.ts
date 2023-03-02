@@ -6,7 +6,7 @@ describe('Get Results – utilitySolar', () => {
       .filter('option')
       .parent()
       .select('Central');
-    cy.findAllByText('Set EE/RE Impacts').filter('.avert-button').click();
+    cy.findAllByText('Set Energy Impacts').filter('.avert-button').click();
 
     cy.findByText('Solar photovoltaic').click();
     cy.findByText('Utility-scale solar photovoltaic total capacity:')

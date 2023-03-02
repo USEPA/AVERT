@@ -6,7 +6,7 @@ describe('Get Results – annualGwh', () => {
       .filter('option')
       .parent()
       .select('Southwest');
-    cy.findAllByText('Set EE/RE Impacts').filter('.avert-button').click();
+    cy.findAllByText('Set Energy Impacts').filter('.avert-button').click();
 
     cy.findByText('Reductions spread evenly throughout the year').click();
     cy.findByText('Reduce total annual generation by:').next().type('5000');

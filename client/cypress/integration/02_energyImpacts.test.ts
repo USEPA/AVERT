@@ -1,4 +1,4 @@
-describe('Set EE/RE Impacts', () => {
+describe('Set Energy Impacts', () => {
   beforeEach(() => {
     cy.visit('/');
 
@@ -6,7 +6,7 @@ describe('Set EE/RE Impacts', () => {
       .filter('option')
       .parent()
       .select('Carolinas');
-    cy.findAllByText('Set EE/RE Impacts').filter('.avert-button').click();
+    cy.findAllByText('Set Energy Impacts').filter('.avert-button').click();
 
     cy.findByText('Reductions spread evenly throughout the year').as('toggleA');
     cy.get('@toggleA').click();

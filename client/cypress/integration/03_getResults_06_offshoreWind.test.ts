@@ -6,7 +6,7 @@ describe('Get Results – offshoreWind', () => {
       .filter('option')
       .parent()
       .select('Northwest');
-    cy.findAllByText('Set EE/RE Impacts').filter('.avert-button').click();
+    cy.findAllByText('Set Energy Impacts').filter('.avert-button').click();
 
     cy.findByText('Wind').click();
     cy.findByText('Offshore wind total capacity:').next().type('1000');
