@@ -73,7 +73,7 @@ export function EERETextInput(props: {
           aria-label={ariaLabel}
           type="text"
           value={value}
-          data-avert-eere-input={fieldName}
+          data-avert-energy-impacts-input={fieldName}
           disabled={Boolean(disabled)}
           onChange={(ev) => onChange(ev.target.value)}
           onBlur={(ev) => onBlur && onBlur(ev.target.value)}

@@ -178,7 +178,7 @@ function EEREInputsContent() {
           `border-width-1px border-top-width-0 border-x-width-0 border-solid ` +
           `margin-y-3 font-sans-xs text-base-darker`
         }
-        data-avert-eere-inputs
+        data-avert-energy-impacts-inputs
       >
         <header
           className={
