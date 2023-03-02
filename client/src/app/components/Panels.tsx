@@ -453,7 +453,7 @@ export function Panels() {
               <div className="usa-alert__body">
                 <h4 className="usa-alert__heading">WARNING</h4>
                 <p className="usa-alert__text">
-                  The proposed EE/RE programs would collectively displace more
+                  The proposed energy programs would collectively displace more
                   than 15% of regional fossil generation in one or more hours of
                   the year. AVERT works best with displacements of 15% or less,
                   as it is designed to simulate marginal operational changes in
