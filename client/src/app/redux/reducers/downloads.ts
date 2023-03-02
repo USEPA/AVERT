@@ -365,7 +365,7 @@ function createEmissionsFields(options: {
   const powerData = data.power;
   const vehicleData = data.vehicle;
 
-  if (!powerData && (!vehicleData || (vehicleData && unit === 'percent'))) {
+  if (!powerData) {
     return null;
   }
 
@@ -439,7 +439,7 @@ function createEmissionsFields(options: {
     result['Power Sector: December'] = monthlyPowerData[12];
   }
 
-  if (vehicleData && unit !== 'percent') {
+  if (unit !== 'percent') {
     result['Vehicles: Annual'] = vehicleData.annual;
 
     if (vehicleData.monthly) {
@@ -503,20 +503,17 @@ function formatCobraDownloadData(
               );
             }
 
-            if (countyVehicleData !== null) {
-              object.vehicle ??= { so2: 0, nox: 0, pm25: 0, vocs: 0, nh3: 0 };
-              object.vehicle[pollutant] = countyVehicleData.annual;
-            }
+            object.vehicle[pollutant] = countyVehicleData.annual;
           }
 
           return object;
         },
         {
           power: null,
-          vehicle: null,
+          vehicle: { so2: 0, nox: 0, pm25: 0, vocs: 0, nh3: 0 },
         } as {
           power: { so2: number; nox: number; pm25: number; vocs: number; nh3: number } | null; // prettier-ignore
-          vehicle: { so2: number; nox: number; pm25: number; vocs: number; nh3: number } | null; // prettier-ignore
+          vehicle: { so2: number; nox: number; pm25: number; vocs: number; nh3: number }; // prettier-ignore
         },
       );
 
@@ -534,19 +531,17 @@ function formatCobraDownloadData(
         });
       }
 
-      if (vehicle) {
-        result.push({
-          FIPS: fipsCode,
-          STATE: state,
-          COUNTY: county,
-          TIER1NAME: 'Highway Vehicles' as const,
-          NOx_REDUCTIONS_TONS: Number((vehicle.nox / 2_000).toFixed(3)),
-          SO2_REDUCTIONS_TONS: Number((vehicle.so2 / 2_000).toFixed(3)),
-          PM25_REDUCTIONS_TONS: Number((vehicle.pm25 / 2_000).toFixed(3)),
-          VOCS_REDUCTIONS_TONS: Number((vehicle.vocs / 2_000).toFixed(3)),
-          NH3_REDUCTIONS_TONS: Number((vehicle.nh3 / 2_000).toFixed(3)),
-        });
-      }
+      result.push({
+        FIPS: fipsCode,
+        STATE: state,
+        COUNTY: county,
+        TIER1NAME: 'Highway Vehicles' as const,
+        NOx_REDUCTIONS_TONS: Number((vehicle.nox / 2_000).toFixed(3)),
+        SO2_REDUCTIONS_TONS: Number((vehicle.so2 / 2_000).toFixed(3)),
+        PM25_REDUCTIONS_TONS: Number((vehicle.pm25 / 2_000).toFixed(3)),
+        VOCS_REDUCTIONS_TONS: Number((vehicle.vocs / 2_000).toFixed(3)),
+        NH3_REDUCTIONS_TONS: Number((vehicle.nh3 / 2_000).toFixed(3)),
+      });
     });
   });
 

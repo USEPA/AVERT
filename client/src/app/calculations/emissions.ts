@@ -32,7 +32,7 @@ export type EmissionsData = {
     vehicle: {
       monthly: { [month: number]: number } | null;
       annual: number;
-    } | null;
+    };
   };
 };
 
@@ -364,7 +364,10 @@ function createInitialEmissionsData() {
         monthly: monthlyData,
         annual: { original: 0, postEere: 0 },
       },
-      vehicle: null,
+      vehicle: {
+        monthly: null,
+        annual: 0,
+      },
     };
 
     return object;
@@ -540,12 +543,14 @@ export function createCombinedSectorsEmissionsData(options: {
     const pollutant = key as keyof typeof result.total;
     const vehiclePollutant = pollutantKeyMap.get(pollutant);
 
-    result.total[pollutant].vehicle = vehiclePollutant
-      ? {
-          monthly: monthlyChangesData.regionTotals[vehiclePollutant],
-          annual: vehicleEmissionChanges.total[vehiclePollutant],
-        }
-      : null;
+    result.total[pollutant].vehicle = {
+      monthly: vehiclePollutant
+        ? monthlyChangesData.regionTotals[vehiclePollutant]
+        : null,
+      annual: vehiclePollutant
+        ? vehicleEmissionChanges.total[vehiclePollutant]
+        : 0,
+    };
   });
 
   /** add region level transportation sector emissions data */
@@ -554,13 +559,13 @@ export function createCombinedSectorsEmissionsData(options: {
 
     /** initialize region data if it doesn't already exist */
     result.regions[regionId] ??= {
-      generation: { power: null, vehicle: null },
-      so2: { power: null, vehicle: null },
-      nox: { power: null, vehicle: null },
-      co2: { power: null, vehicle: null },
-      pm25: { power: null, vehicle: null },
-      vocs: { power: null, vehicle: null },
-      nh3: { power: null, vehicle: null },
+      generation: { power: null, vehicle: { monthly: null, annual: 0 } },
+      so2: { power: null, vehicle: { monthly: null, annual: 0 } },
+      nox: { power: null, vehicle: { monthly: null, annual: 0 } },
+      co2: { power: null, vehicle: { monthly: null, annual: 0 } },
+      pm25: { power: null, vehicle: { monthly: null, annual: 0 } },
+      vocs: { power: null, vehicle: { monthly: null, annual: 0 } },
+      nh3: { power: null, vehicle: { monthly: null, annual: 0 } },
     };
 
     const region = result.regions[regionId];
@@ -569,12 +574,14 @@ export function createCombinedSectorsEmissionsData(options: {
       const pollutant = key as keyof typeof region;
       const vehiclePollutant = pollutantKeyMap.get(pollutant);
 
-      region[pollutant].vehicle = vehiclePollutant
-        ? {
-            monthly: monthlyChangesData[regionId]?.[vehiclePollutant] || null,
-            annual: vehicleEmissionChanges.regions[regionId][vehiclePollutant],
-          }
-        : null;
+      region[pollutant].vehicle = {
+        monthly: vehiclePollutant
+          ? monthlyChangesData[regionId]?.[vehiclePollutant] || null
+          : null,
+        annual: vehiclePollutant
+          ? vehicleEmissionChanges.regions[regionId][vehiclePollutant]
+          : 0,
+      };
     });
   });
 
@@ -584,13 +591,13 @@ export function createCombinedSectorsEmissionsData(options: {
 
     /** initialize state data if it doesn't already exist */
     result.states[stateId] ??= {
-      generation: { power: null, vehicle: null },
-      so2: { power: null, vehicle: null },
-      nox: { power: null, vehicle: null },
-      co2: { power: null, vehicle: null },
-      pm25: { power: null, vehicle: null },
-      vocs: { power: null, vehicle: null },
-      nh3: { power: null, vehicle: null },
+      generation: { power: null, vehicle: { monthly: null, annual: 0 } },
+      so2: { power: null, vehicle: { monthly: null, annual: 0 } },
+      nox: { power: null, vehicle: { monthly: null, annual: 0 } },
+      co2: { power: null, vehicle: { monthly: null, annual: 0 } },
+      pm25: { power: null, vehicle: { monthly: null, annual: 0 } },
+      vocs: { power: null, vehicle: { monthly: null, annual: 0 } },
+      nh3: { power: null, vehicle: { monthly: null, annual: 0 } },
     };
 
     const state = result.states[stateId];
@@ -599,12 +606,12 @@ export function createCombinedSectorsEmissionsData(options: {
       const pollutant = key as keyof typeof state;
       const vehiclePollutant = pollutantKeyMap.get(pollutant);
 
-      state[pollutant].vehicle = vehiclePollutant
-        ? {
-            monthly: null,
-            annual: vehicleEmissionChanges.states[stateId][vehiclePollutant],
-          }
-        : null;
+      state[pollutant].vehicle = {
+        monthly: null,
+        annual: vehiclePollutant
+          ? vehicleEmissionChanges.states[stateId][vehiclePollutant]
+          : 0,
+      };
     });
   });
 
@@ -617,13 +624,13 @@ export function createCombinedSectorsEmissionsData(options: {
 
       /** initialize county data if it doesn't already exist */
       result.counties[stateId][countyName] ??= {
-        generation: { power: null, vehicle: null },
-        so2: { power: null, vehicle: null },
-        nox: { power: null, vehicle: null },
-        co2: { power: null, vehicle: null },
-        pm25: { power: null, vehicle: null },
-        vocs: { power: null, vehicle: null },
-        nh3: { power: null, vehicle: null },
+        generation: { power: null, vehicle: { monthly: null, annual: 0 } },
+        so2: { power: null, vehicle: { monthly: null, annual: 0 } },
+        nox: { power: null, vehicle: { monthly: null, annual: 0 } },
+        co2: { power: null, vehicle: { monthly: null, annual: 0 } },
+        pm25: { power: null, vehicle: { monthly: null, annual: 0 } },
+        vocs: { power: null, vehicle: { monthly: null, annual: 0 } },
+        nh3: { power: null, vehicle: { monthly: null, annual: 0 } },
       };
 
       const county = result.counties[stateId][countyName];
@@ -632,12 +639,12 @@ export function createCombinedSectorsEmissionsData(options: {
         const pollutant = key as keyof typeof county;
         const vehiclePollutant = pollutantKeyMap.get(pollutant);
 
-        county[pollutant].vehicle = vehiclePollutant
-          ? {
-              monthly: null,
-              annual: vehicleEmissionChanges.counties[stateId][countyName][vehiclePollutant], // prettier-ignore
-            }
-          : null;
+        county[pollutant].vehicle = {
+          monthly: null,
+          annual: vehiclePollutant
+            ? vehicleEmissionChanges.counties[stateId][countyName][vehiclePollutant] // prettier-ignore
+            : 0,
+        };
       });
     });
   });
