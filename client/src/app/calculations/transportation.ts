@@ -403,7 +403,8 @@ export function calculateVMTBillionsAndPercentages(options: {
 /**
  * Regional share of state VMT per vehicle type.
  *
- * (NOTE: not in Excel).
+ * (NOTE: not in the Excel version, but derived from `vmtBillionsAndPercentages`
+ * which is data from the first table in the "RegionStateAllocate" sheet).
  */
 export function calculateStateVMTPercentagesByRegion(options: {
   vmtBillionsAndPercentages: VMTBillionsAndPercentages | {};
