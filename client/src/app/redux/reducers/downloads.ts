@@ -398,6 +398,8 @@ function createEmissionsFields(options: {
     const annualData = powerData.annual;
     const annualEmissionsChange = annualData.postEere - annualData.original;
     const annualPercentChange = (annualEmissionsChange / annualData.original) * 100 || 0; // prettier-ignore
+    const annualPowerData =
+      unit === 'percent' ? annualPercentChange : annualEmissionsChange;
 
     const monthlyPowerData = Object.entries(powerData.monthly).reduce(
       (object, [key, values]) => {
@@ -419,8 +421,7 @@ function createEmissionsFields(options: {
       {} as { [month: number]: number | null },
     );
 
-    result['Power Sector: Annual'] =
-      unit === 'percent' ? annualPercentChange : annualEmissionsChange;
+    result['Power Sector: Annual'] = annualPowerData;
     result['Power Sector: January'] = monthlyPowerData[1];
     result['Power Sector: February'] = monthlyPowerData[2];
     result['Power Sector: March'] = monthlyPowerData[3];
