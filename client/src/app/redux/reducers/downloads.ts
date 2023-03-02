@@ -365,10 +365,6 @@ function createEmissionsFields(options: {
   const powerData = data.power;
   const vehicleData = data.vehicle;
 
-  if (!powerData && (!vehicleData || (vehicleData && unit === 'percent'))) {
-    return null;
-  }
-
   const result = {
     'Power Sector: Annual': null,
     'Power Sector: January': null,
@@ -402,6 +398,8 @@ function createEmissionsFields(options: {
     const annualData = powerData.annual;
     const annualEmissionsChange = annualData.postEere - annualData.original;
     const annualPercentChange = (annualEmissionsChange / annualData.original) * 100 || 0; // prettier-ignore
+    const annualPowerData =
+      unit === 'percent' ? annualPercentChange : annualEmissionsChange;
 
     const monthlyPowerData = Object.entries(powerData.monthly).reduce(
       (object, [key, values]) => {
@@ -423,8 +421,7 @@ function createEmissionsFields(options: {
       {} as { [month: number]: number | null },
     );
 
-    result['Power Sector: Annual'] =
-      unit === 'percent' ? annualPercentChange : annualEmissionsChange;
+    result['Power Sector: Annual'] = annualPowerData;
     result['Power Sector: January'] = monthlyPowerData[1];
     result['Power Sector: February'] = monthlyPowerData[2];
     result['Power Sector: March'] = monthlyPowerData[3];
@@ -439,7 +436,7 @@ function createEmissionsFields(options: {
     result['Power Sector: December'] = monthlyPowerData[12];
   }
 
-  if (vehicleData && unit !== 'percent') {
+  if (unit !== 'percent') {
     result['Vehicles: Annual'] = vehicleData.annual;
 
     if (vehicleData.monthly) {
@@ -468,9 +465,12 @@ function createEmissionsFields(options: {
 function formatCobraDownloadData(
   combinedSectorsEmissionsData: CombinedSectorsEmissionsData,
 ) {
-  const result: CobraData[] = [];
+  const powerData: CobraData[] = [];
+  const vehicleData: CobraData[] = [];
 
-  if (!combinedSectorsEmissionsData) return result;
+  if (!combinedSectorsEmissionsData) {
+    return [];
+  }
 
   const countyEmissionsData = combinedSectorsEmissionsData.counties;
 
@@ -503,25 +503,22 @@ function formatCobraDownloadData(
               );
             }
 
-            if (countyVehicleData !== null) {
-              object.vehicle ??= { so2: 0, nox: 0, pm25: 0, vocs: 0, nh3: 0 };
-              object.vehicle[pollutant] = countyVehicleData.annual;
-            }
+            object.vehicle[pollutant] = countyVehicleData.annual;
           }
 
           return object;
         },
         {
           power: null,
-          vehicle: null,
+          vehicle: { so2: 0, nox: 0, pm25: 0, vocs: 0, nh3: 0 },
         } as {
           power: { so2: number; nox: number; pm25: number; vocs: number; nh3: number } | null; // prettier-ignore
-          vehicle: { so2: number; nox: number; pm25: number; vocs: number; nh3: number } | null; // prettier-ignore
+          vehicle: { so2: number; nox: number; pm25: number; vocs: number; nh3: number }; // prettier-ignore
         },
       );
 
       if (power) {
-        result.push({
+        powerData.push({
           FIPS: fipsCode,
           STATE: state,
           COUNTY: county,
@@ -534,21 +531,19 @@ function formatCobraDownloadData(
         });
       }
 
-      if (vehicle) {
-        result.push({
-          FIPS: fipsCode,
-          STATE: state,
-          COUNTY: county,
-          TIER1NAME: 'Highway Vehicles' as const,
-          NOx_REDUCTIONS_TONS: Number((vehicle.nox / 2_000).toFixed(3)),
-          SO2_REDUCTIONS_TONS: Number((vehicle.so2 / 2_000).toFixed(3)),
-          PM25_REDUCTIONS_TONS: Number((vehicle.pm25 / 2_000).toFixed(3)),
-          VOCS_REDUCTIONS_TONS: Number((vehicle.vocs / 2_000).toFixed(3)),
-          NH3_REDUCTIONS_TONS: Number((vehicle.nh3 / 2_000).toFixed(3)),
-        });
-      }
+      vehicleData.push({
+        FIPS: fipsCode,
+        STATE: state,
+        COUNTY: county,
+        TIER1NAME: 'Highway Vehicles' as const,
+        NOx_REDUCTIONS_TONS: Number((vehicle.nox / 2_000).toFixed(3)),
+        SO2_REDUCTIONS_TONS: Number((vehicle.so2 / 2_000).toFixed(3)),
+        PM25_REDUCTIONS_TONS: Number((vehicle.pm25 / 2_000).toFixed(3)),
+        VOCS_REDUCTIONS_TONS: Number((vehicle.vocs / 2_000).toFixed(3)),
+        NH3_REDUCTIONS_TONS: Number((vehicle.nh3 / 2_000).toFixed(3)),
+      });
     });
   });
 
-  return result;
+  return [...powerData, ...vehicleData];
 }
