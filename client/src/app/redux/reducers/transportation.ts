@@ -971,16 +971,32 @@ export function setEmissionChanges(): AppThunk {
     const { geography, transportation, eere } = getState();
     const { countiesByGeography, regionalScalingFactors } = geography;
     const {
+      stateVMTPercentagesByRegion,
       vmtTotalsByGeography,
       selectedRegionsMonthlyVMTPerVehicleType,
       vehiclesDisplaced,
       selectedRegionsMonthlyEmissionRates,
     } = transportation;
 
+    const geographicFocus = geography.focus;
+
+    const selectedRegionId =
+      Object.values(geography.regions).find((r) => r.selected)?.id || '';
+
+    const selectedStateId =
+      Object.values(geography.states).find((s) => s.selected)?.id || '';
+
+    const selectedGeographyRegionIds = Object.keys(
+      regionalScalingFactors,
+    ) as RegionId[];
+
     const { evDeploymentLocation } = eere.inputs;
 
     const selectedRegionsMonthlyEmissionChanges =
       calculateSelectedRegionsMonthlyEmissionChanges({
+        geographicFocus,
+        selectedStateId,
+        stateVMTPercentagesByRegion,
         selectedRegionsMonthlyVMTPerVehicleType,
         vehiclesDisplaced,
         selectedRegionsMonthlyEmissionRates,
@@ -995,18 +1011,6 @@ export function setEmissionChanges(): AppThunk {
       calculateSelectedRegionsTotalYearlyEmissionChanges({
         selectedRegionsTotalMonthlyEmissionChanges,
       });
-
-    const geographicFocus = geography.focus;
-
-    const selectedRegionId =
-      Object.values(geography.regions).find((r) => r.selected)?.id || '';
-
-    const selectedStateId =
-      Object.values(geography.states).find((s) => s.selected)?.id || '';
-
-    const selectedGeographyRegionIds = Object.keys(
-      regionalScalingFactors,
-    ) as RegionId[];
 
     const vehicleEmissionChangesByGeography =
       calculateVehicleEmissionChangesByGeography({

@@ -1684,15 +1684,26 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
  * (F314:R361).
  */
 export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
+  geographicFocus: GeographicFocus;
+  stateVMTPercentagesByRegion: StateVMTPercentagesByRegion | {};
+  selectedStateId: StateId | '';
   selectedRegionsMonthlyVMTPerVehicleType: SelectedRegionsMonthlyVMTPerVehicleType | {}; // prettier-ignore
   vehiclesDisplaced: VehiclesDisplaced;
   selectedRegionsMonthlyEmissionRates: SelectedRegionsMonthlyEmissionRates | {};
 }) {
   const {
+    geographicFocus,
+    stateVMTPercentagesByRegion,
+    selectedStateId,
     selectedRegionsMonthlyVMTPerVehicleType,
     vehiclesDisplaced,
     selectedRegionsMonthlyEmissionRates,
   } = options;
+
+  const stateVMTPercentages =
+    Object.keys(stateVMTPercentagesByRegion).length !== 0
+      ? (stateVMTPercentagesByRegion as StateVMTPercentagesByRegion)
+      : null;
 
   const selectedRegionsVMTData =
     Object.keys(selectedRegionsMonthlyVMTPerVehicleType).length !== 0
@@ -1722,6 +1733,15 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
 
       object[regionId] ??= {};
 
+      /**
+       * NOTE: if a state is selected, we'll need to multiply each monthly
+       * result by the percentage of that state's VMT in the given region
+       */
+      const stateVMTFactors =
+        geographicFocus === 'states' && selectedStateId !== ''
+          ? stateVMTPercentages?.[selectedStateId][regionId] || null
+          : null;
+
       Object.entries(selectedRegionsRatesData).forEach(
         ([regionRatesKey, regionRatesValue]) => {
           if (regionRatesKey === regionVMTKey) {
@@ -1742,43 +1762,51 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
 
                 pollutants.forEach((pollutant) => {
                   object[regionId][month].batteryEVCars[pollutant] =
+                    (stateVMTFactors ? stateVMTFactors.cars : 1) *
                     regionRatesMonthValue.cars[pollutant] *
                     regionVMTValue[month].cars *
                     vehiclesDisplaced.batteryEVCars;
 
                   object[regionId][month].hybridEVCars[pollutant] =
+                    (stateVMTFactors ? stateVMTFactors.cars : 1) *
                     regionRatesMonthValue.cars[pollutant] *
                     regionVMTValue[month].cars *
                     vehiclesDisplaced.hybridEVCars *
                     percentageHybridEVMilesDrivenOnElectricity;
 
                   object[regionId][month].batteryEVTrucks[pollutant] =
+                    (stateVMTFactors ? stateVMTFactors.trucks : 1) *
                     regionRatesMonthValue.trucks[pollutant] *
                     regionVMTValue[month].trucks *
                     vehiclesDisplaced.batteryEVTrucks;
 
                   object[regionId][month].hybridEVTrucks[pollutant] =
+                    (stateVMTFactors ? stateVMTFactors.trucks : 1) *
                     regionRatesMonthValue.trucks[pollutant] *
                     regionVMTValue[month].trucks *
                     vehiclesDisplaced.hybridEVTrucks *
                     percentageHybridEVMilesDrivenOnElectricity;
 
                   object[regionId][month].transitBusesDiesel[pollutant] =
+                    (stateVMTFactors ? stateVMTFactors.transitBuses : 1) *
                     regionRatesMonthValue.transitBusesDiesel[pollutant] *
                     regionVMTValue[month].transitBusesDiesel *
                     vehiclesDisplaced.transitBusesDiesel;
 
                   object[regionId][month].transitBusesCNG[pollutant] =
+                    (stateVMTFactors ? stateVMTFactors.transitBuses : 1) *
                     regionRatesMonthValue.transitBusesCNG[pollutant] *
                     regionVMTValue[month].transitBusesCNG *
                     vehiclesDisplaced.transitBusesCNG;
 
                   object[regionId][month].transitBusesGasoline[pollutant] =
+                    (stateVMTFactors ? stateVMTFactors.transitBuses : 1) *
                     regionRatesMonthValue.transitBusesGasoline[pollutant] *
                     regionVMTValue[month].transitBusesGasoline *
                     vehiclesDisplaced.transitBusesGasoline;
 
                   object[regionId][month].schoolBuses[pollutant] =
+                    (stateVMTFactors ? stateVMTFactors.schoolBuses : 1) *
                     regionRatesMonthValue.schoolBuses[pollutant] *
                     regionVMTValue[month].schoolBuses *
                     vehiclesDisplaced.schoolBuses;
