@@ -538,7 +538,7 @@ export function Panels() {
         </div>
 
         <PanelFooter
-          prevButton="Back to EE/RE Impacts"
+          prevButton="Back to Energy Impacts"
           nextButton="Reselect Geography"
         />
       </section>

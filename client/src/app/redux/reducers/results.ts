@@ -131,7 +131,7 @@ export default function reducer(
 }
 
 /**
- * Called every time the "Back to EE/RE Impacts" button or the "Reselect
+ * Called every time the "Back to Energy Impacts" button or the "Reselect
  * Geography" button is clicked on the "Get Results" page.
  */
 export function resetResults(): Action {
@@ -139,7 +139,7 @@ export function resetResults(): Action {
 }
 
 /**
- * Called every time the "Get Results" button is clicked on the "Set EE/RE
+ * Called every time the "Get Results" button is clicked on the "Set Energy
  * Impacts" page.
  */
 export function fetchEmissionsChanges(): AppThunk {
