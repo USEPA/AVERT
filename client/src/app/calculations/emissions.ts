@@ -348,21 +348,39 @@ function calculateEmissionsChanges(options: {
 }
 
 /**
+ * Creates initial (empty) monthly power sector data.
+ */
+function createEmptyMonthlyPowerData() {
+  const result = [...Array(12)].reduce((object, _item, index) => {
+    object[index + 1] = { original: 0, postEere: 0 };
+    return object;
+  }, {} as EguData['data'][keyof EguData['data']]);
+
+  return result;
+}
+
+/**
+ * Creates initial (empty) monthly transportation sector data.
+ */
+function createEmptyMonthlyVehicleData() {
+  const result = [...Array(12)].reduce((object, _item, index) => {
+    object[index + 1] = 0;
+    return object;
+  }, {} as { [month: number]: number });
+
+  return result;
+}
+
+/**
  * Creates the intial structure of monthly and annual emissions data for each
  * pollutant.
  */
 function createInitialEmissionsData() {
   const result = emissionsFields.reduce((object, field) => {
-    const monthlyData = [...Array(12)].reduce((data, _item, index) => {
-      const month = index + 1;
-      data[month] = { original: 0, postEere: 0 };
-      return data;
-    }, {} as EguData['data'][keyof EguData['data']]);
-
     object[field] = {
       power: {
         annual: { original: 0, postEere: 0 },
-        monthly: monthlyData,
+        monthly: createEmptyMonthlyPowerData(),
       },
       vehicle: {
         annual: 0,
@@ -551,10 +569,8 @@ export function createCombinedSectorsEmissionsData(options: {
       ? monthlyChangesData.regionTotals[vehiclePollutant]
       : null;
 
-    result.total[pollutant].vehicle = {
-      annual: annualVehicleData,
-      monthly: monthlyVehicleData,
-    };
+    result.total[pollutant].vehicle.annual = annualVehicleData;
+    result.total[pollutant].vehicle.monthly = monthlyVehicleData;
   });
 
   /** add region level transportation sector emissions data */
@@ -586,14 +602,12 @@ export function createCombinedSectorsEmissionsData(options: {
         ? monthlyChangesData[regionId]?.[vehiclePollutant] || null
         : null;
 
-      region[pollutant].vehicle = {
-        annual: annualVehicleData,
-        monthly: monthlyVehicleData,
-      };
+      region[pollutant].vehicle.annual = annualVehicleData;
+      region[pollutant].vehicle.monthly = monthlyVehicleData;
     });
   });
 
-  /** add state level transportation sector emissions data */
+  /** add state level transportation sector annual emissions data */
   Object.keys(vehicleEmissionChanges.states).forEach((key) => {
     const stateId = key as keyof typeof vehicleEmissionChanges.states;
 
@@ -618,16 +632,26 @@ export function createCombinedSectorsEmissionsData(options: {
         ? vehicleEmissionChanges.states[stateId][vehiclePollutant]
         : 0;
 
-      const monthlyVehicleData = null;
-
-      state[pollutant].vehicle = {
-        annual: annualVehicleData,
-        monthly: monthlyVehicleData,
-      };
+      state[pollutant].vehicle.annual = annualVehicleData;
     });
   });
 
-  /** add county level transportation sector emissions data */
+  /** update state level transportation sector monthly emissions data */
+  Object.keys(result.states).forEach((key) => {
+    const stateId = key as keyof typeof result.states;
+    const state = result.states[stateId];
+
+    Object.keys(state).forEach((key) => {
+      const pollutant = key as keyof typeof state;
+
+      state[pollutant].vehicle.monthly =
+        state[pollutant].vehicle.annual === 0
+          ? createEmptyMonthlyVehicleData()
+          : null;
+    });
+  });
+
+  /** add county level transportation sector annual emissions data */
   Object.entries(vehicleEmissionChanges.counties).forEach(([key, value]) => {
     const stateId = key as keyof typeof vehicleEmissionChanges.counties;
 
@@ -655,12 +679,25 @@ export function createCombinedSectorsEmissionsData(options: {
           ? vehicleEmissionChanges.counties[stateId][countyName][vehiclePollutant] // prettier-ignore
           : 0;
 
-        const monthlyVehicleData = null;
+        county[pollutant].vehicle.annual = annualVehicleData;
+      });
+    });
+  });
 
-        county[pollutant].vehicle = {
-          annual: annualVehicleData,
-          monthly: monthlyVehicleData,
-        };
+  /** update county level transportation sector monthly emissions data */
+  Object.entries(result.counties).forEach(([key, value]) => {
+    const stateId = key as keyof typeof result.counties;
+
+    Object.keys(value).forEach((countyName) => {
+      const county = result.counties[stateId][countyName];
+
+      Object.keys(county).forEach((key) => {
+        const pollutant = key as keyof typeof county;
+
+        county[pollutant].vehicle.monthly =
+          county[pollutant].vehicle.annual === 0
+            ? createEmptyMonthlyVehicleData()
+            : null;
       });
     });
   });
