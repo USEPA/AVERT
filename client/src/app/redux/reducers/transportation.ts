@@ -2,6 +2,7 @@ import { AppThunk } from 'app/redux/index';
 import type {
   VMTTotalsByGeography,
   VMTBillionsAndPercentages,
+  StateVMTPercentagesByRegion,
   VMTAllocationPerVehicle,
   MonthlyVMTTotalsAndPercentages,
   HourlyEVChargingPercentages,
@@ -30,6 +31,7 @@ import { getSelectedGeographyRegions } from 'app/calculations/geography';
 import {
   calculateVMTTotalsByGeography,
   calculateVMTBillionsAndPercentages,
+  calculateStateVMTPercentagesByRegion,
   calculateVMTAllocationPerVehicle,
   calculateMonthlyVMTTotalsAndPercentages,
   calculateHourlyEVChargingPercentages,
@@ -123,6 +125,12 @@ type Action =
       type: 'transportation/SET_VMT_BILLIONS_AND_PERCENTAGES';
       payload: {
         vmtBillionsAndPercentages: VMTBillionsAndPercentages;
+      };
+    }
+  | {
+      type: 'transportation/SET_STATE_VMT_PERCENTAGES_BY_REGION';
+      payload: {
+        stateVMTPercentagesByRegion: StateVMTPercentagesByRegion;
       };
     }
   | {
@@ -255,6 +263,7 @@ type Action =
 type State = {
   vmtTotalsByGeography: VMTTotalsByGeography | {};
   vmtBillionsAndPercentages: VMTBillionsAndPercentages | {};
+  stateVMTPercentagesByRegion: StateVMTPercentagesByRegion | {};
   vmtAllocationPerVehicle: VMTAllocationPerVehicle | {};
   monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
@@ -283,6 +292,7 @@ type State = {
 const initialState: State = {
   vmtTotalsByGeography: {},
   vmtBillionsAndPercentages: {},
+  stateVMTPercentagesByRegion: {},
   vmtAllocationPerVehicle: {},
   monthlyVMTTotalsAndPercentages: {},
   hourlyEVChargingPercentages: {},
@@ -341,6 +351,15 @@ export default function reducer(
       return {
         ...state,
         vmtBillionsAndPercentages,
+      };
+    }
+
+    case 'transportation/SET_STATE_VMT_PERCENTAGES_BY_REGION': {
+      const { stateVMTPercentagesByRegion } = action.payload;
+
+      return {
+        ...state,
+        stateVMTPercentagesByRegion,
       };
     }
 
@@ -568,6 +587,10 @@ export function setVMTData(): AppThunk {
       countyFips,
     });
 
+    const stateVMTPercentagesByRegion = calculateStateVMTPercentagesByRegion({
+      vmtBillionsAndPercentages,
+    });
+
     const vmtAllocationPerVehicle = calculateVMTAllocationPerVehicle({
       vmtAllocationAndRegisteredVehicles,
       stateBusSalesAndStock,
@@ -584,6 +607,11 @@ export function setVMTData(): AppThunk {
     dispatch({
       type: 'transportation/SET_VMT_BILLIONS_AND_PERCENTAGES',
       payload: { vmtBillionsAndPercentages },
+    });
+
+    dispatch({
+      type: 'transportation/SET_STATE_VMT_PERCENTAGES_BY_REGION',
+      payload: { stateVMTPercentagesByRegion },
     });
 
     dispatch({
@@ -943,16 +971,32 @@ export function setEmissionChanges(): AppThunk {
     const { geography, transportation, eere } = getState();
     const { countiesByGeography, regionalScalingFactors } = geography;
     const {
+      stateVMTPercentagesByRegion,
       vmtTotalsByGeography,
       selectedRegionsMonthlyVMTPerVehicleType,
       vehiclesDisplaced,
       selectedRegionsMonthlyEmissionRates,
     } = transportation;
 
+    const geographicFocus = geography.focus;
+
+    const selectedRegionId =
+      Object.values(geography.regions).find((r) => r.selected)?.id || '';
+
+    const selectedStateId =
+      Object.values(geography.states).find((s) => s.selected)?.id || '';
+
+    const selectedGeographyRegionIds = Object.keys(
+      regionalScalingFactors,
+    ) as RegionId[];
+
     const { evDeploymentLocation } = eere.inputs;
 
     const selectedRegionsMonthlyEmissionChanges =
       calculateSelectedRegionsMonthlyEmissionChanges({
+        geographicFocus,
+        selectedStateId,
+        stateVMTPercentagesByRegion,
         selectedRegionsMonthlyVMTPerVehicleType,
         vehiclesDisplaced,
         selectedRegionsMonthlyEmissionRates,
@@ -967,18 +1011,6 @@ export function setEmissionChanges(): AppThunk {
       calculateSelectedRegionsTotalYearlyEmissionChanges({
         selectedRegionsTotalMonthlyEmissionChanges,
       });
-
-    const geographicFocus = geography.focus;
-
-    const selectedRegionId =
-      Object.values(geography.regions).find((r) => r.selected)?.id || '';
-
-    const selectedStateId =
-      Object.values(geography.states).find((s) => s.selected)?.id || '';
-
-    const selectedGeographyRegionIds = Object.keys(
-      regionalScalingFactors,
-    ) as RegionId[];
 
     const vehicleEmissionChangesByGeography =
       calculateVehicleEmissionChangesByGeography({
