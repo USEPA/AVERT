@@ -365,10 +365,6 @@ function createEmissionsFields(options: {
   const powerData = data.power;
   const vehicleData = data.vehicle;
 
-  if (!powerData) {
-    return null;
-  }
-
   const result = {
     'Power Sector: Annual': null,
     'Power Sector: January': null,
