@@ -10,7 +10,7 @@ import type {
   ElectricVehiclesFieldName,
 } from 'app/redux/reducers/eere';
 
-export function EERETextInput(props: {
+export function ImpactsTextInput(props: {
   className?: string;
   label?: ReactNode;
   ariaLabel: string;

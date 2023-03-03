@@ -5,7 +5,7 @@ import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // ---
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
-import { EERETextInput } from 'app/components/EERETextInput';
+import { ImpactsTextInput } from 'app/components/ImpactsTextInput';
 import { EERESelectInput } from 'app/components/EERESelectInput';
 import {
   EVSalesAndStockTable,
@@ -222,7 +222,7 @@ function EEREInputsContent() {
 
                   <div className="tablet:display-flex">
                     <div className="flex-1 tablet:margin-right-2">
-                      <EERETextInput
+                      <ImpactsTextInput
                         label={<>Reduce total annual generation by:</>}
                         ariaLabel="Number of GWh expected to be saved in a single year"
                         suffix="GWh"
@@ -244,7 +244,7 @@ function EEREInputsContent() {
                     </div>
 
                     <div className="flex-1 tablet:margin-left-2">
-                      <EERETextInput
+                      <ImpactsTextInput
                         className="margin-top-1 tablet:margin-top-0"
                         label={<>Reduce hourly generation by:</>}
                         ariaLabel="Constant reduction for every hour of the year, in MW"
@@ -302,7 +302,7 @@ function EEREInputsContent() {
 
                   <div className="tablet:display-flex">
                     <div className="flex-1 tablet:margin-right-2">
-                      <EERETextInput
+                      <ImpactsTextInput
                         label={
                           <>
                             <em>Broad-based program:</em> Reduce generation by:
@@ -328,7 +328,7 @@ function EEREInputsContent() {
                     </div>
 
                     <div className="flex-1 tablet:margin-left-2">
-                      <EERETextInput
+                      <ImpactsTextInput
                         className="margin-top-1 tablet:margin-top-0"
                         label={
                           <>
@@ -343,7 +343,7 @@ function EEREInputsContent() {
                         onChange={(text) => dispatch(updateEereReduction(text))}
                       />
 
-                      <EERETextInput
+                      <ImpactsTextInput
                         ariaLabel="Fraction of high-demand hours that the program is expected to affect"
                         suffix="%&nbsp;of&nbsp;hours"
                         value={topHours}
@@ -406,7 +406,7 @@ function EEREInputsContent() {
                 <section className="padding-top-0 padding-x-2 padding-bottom-105">
                   <div className="tablet:display-flex">
                     <div className="flex-1 tablet:margin-right-2">
-                      <EERETextInput
+                      <ImpactsTextInput
                         label={<>Onshore wind total capacity:</>}
                         ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                         suffix="MW"
@@ -429,7 +429,7 @@ function EEREInputsContent() {
 
                     <div className="flex-1 tablet:margin-left-2">
                       {atLeastOneRegionSupportsOffshoreWind ? (
-                        <EERETextInput
+                        <ImpactsTextInput
                           label={<>Offshore wind total capacity:</>}
                           ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                           suffix="MW"
@@ -508,7 +508,7 @@ function EEREInputsContent() {
                 <section className="padding-top-0 padding-x-2 padding-bottom-105">
                   <div className="tablet:display-flex">
                     <div className="flex-1 tablet:margin-right-2">
-                      <EERETextInput
+                      <ImpactsTextInput
                         label={
                           <>Utility-scale solar photovoltaic total capacity:</>
                         }
@@ -532,7 +532,7 @@ function EEREInputsContent() {
                     </div>
 
                     <div className="flex-1 tablet:margin-left-2">
-                      <EERETextInput
+                      <ImpactsTextInput
                         className="margin-top-1 tablet:margin-top-0"
                         label={
                           <>
@@ -604,7 +604,7 @@ function EEREInputsContent() {
                     <div className="desktop:grid-col-6">
                       <div className="tablet:display-flex desktop:margin-right-2">
                         <div className="flex-1 tablet:margin-right-2">
-                          <EERETextInput
+                          <ImpactsTextInput
                             label={<>Light-duty battery EVs:</>}
                             ariaLabel="Number of light-duty battery EVs to be added to the road"
                             value={batteryEVs}
@@ -625,7 +625,7 @@ function EEREInputsContent() {
                         </div>
 
                         <div className="flex-1 tablet:margin-left-2">
-                          <EERETextInput
+                          <ImpactsTextInput
                             className="margin-top-1 tablet:margin-top-0"
                             label={<>Light-duty plug-in hybrid EVs:</>}
                             ariaLabel="Number of light-duty plug-in hybrid EVs to be added to the road"
@@ -649,7 +649,7 @@ function EEREInputsContent() {
 
                       <div className="tablet:display-flex desktop:margin-right-2">
                         <div className="flex-1 tablet:margin-right-2">
-                          <EERETextInput
+                          <ImpactsTextInput
                             className="margin-top-1"
                             label={<>Electric transit buses:</>}
                             ariaLabel="Number of electric transit buses to be added to the road"
@@ -671,7 +671,7 @@ function EEREInputsContent() {
                         </div>
 
                         <div className="flex-1 tablet:margin-left-2">
-                          <EERETextInput
+                          <ImpactsTextInput
                             className="margin-top-1"
                             label={<>Electric school buses:</>}
                             ariaLabel="Number of electric school buses to be added to the road"
