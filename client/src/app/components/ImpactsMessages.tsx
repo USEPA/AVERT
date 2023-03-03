@@ -208,7 +208,7 @@ export function EVWarningMessage() {
   return null;
 }
 
-function EEREMessagesContent() {
+function ImpactsMessagesContent() {
   const hourlyEnergyProfile = useTypedSelector(
     ({ eere }) => eere.hourlyEnergyProfile,
   );
@@ -252,19 +252,19 @@ function EEREMessagesContent() {
   );
 }
 
-export function EEREMessages() {
+export function ImpactsMessages() {
   return (
     <ErrorBoundary
       message={
         <>
-          EE/RE Impacts messages error. Please contact AVERT support at{' '}
+          Energy Impacts messages error. Please contact AVERT support at{' '}
           <a className="usa-link" href="mailto:avert@epa.gov">
             avert@epa.gov
           </a>
         </>
       }
     >
-      <EEREMessagesContent />
+      <ImpactsMessagesContent />
     </ErrorBoundary>
   );
 }
