@@ -131,7 +131,7 @@ type Action =
     }
   | {
       type: 'impacts/START_HOURLY_ENERGY_PROFILE_CALCULATIONS';
-      payload: { inputs: EEREInputs };
+      payload: { inputs: ImpactsInputs };
     }
   | {
       type: 'impacts/SET_HOURLY_ENERGY_PROFILE_REGIONAL_DATA';
@@ -182,7 +182,7 @@ type SelectOptionsFieldName =
   | 'evModelYearOptions'
   | 'iceReplacementVehicleOptions';
 
-export type EEREInputs = {
+export type ImpactsInputs = {
   [field in
     | EnergyEfficiencyFieldName
     | RenewableEnergyFieldName
@@ -198,12 +198,12 @@ type State = {
     | RenewableEnergyFieldName
     | ElectricVehiclesFieldName
   )[];
-  inputs: EEREInputs;
+  inputs: ImpactsInputs;
   selectOptions: { [field in SelectOptionsFieldName]: SelectOption[] };
   evCalculationsInputs: { [field in ElectricVehiclesFieldName]: string };
   hourlyEnergyProfile: {
     status: 'idle' | 'pending' | 'success';
-    inputs: EEREInputs;
+    inputs: ImpactsInputs;
     data: {
       regions: Partial<{
         [key in RegionId]: {
@@ -225,7 +225,7 @@ const initialEVModelYear = evModelYearOptions[1].id;
 
 const initialICEReplacementVehicle = iceReplacementVehicleOptions[0].id;
 
-const initialEEREInputs = {
+const initialImpactsInputs = {
   annualGwh: '',
   constantMwh: '',
   broadProgram: '',
@@ -246,7 +246,7 @@ const initialEEREInputs = {
 
 const initialState: State = {
   errors: [],
-  inputs: initialEEREInputs,
+  inputs: initialImpactsInputs,
   selectOptions: {
     evDeploymentLocationOptions: [{ id: '', name: '' }],
     evModelYearOptions,
@@ -260,7 +260,7 @@ const initialState: State = {
   },
   hourlyEnergyProfile: {
     status: 'idle',
-    inputs: initialEEREInputs,
+    inputs: initialImpactsInputs,
     data: {
       regions: {},
       total: {
@@ -285,7 +285,7 @@ export default function reducer(
       return {
         ...state,
         errors: [],
-        inputs: initialEEREInputs,
+        inputs: initialImpactsInputs,
         // NOTE: selectOptions should not be reset
         evCalculationsInputs: {
           batteryEVs: '',
@@ -295,7 +295,7 @@ export default function reducer(
         },
         hourlyEnergyProfile: {
           status: 'idle',
-          inputs: initialEEREInputs,
+          inputs: initialImpactsInputs,
           data: {
             regions: {},
             total: {
