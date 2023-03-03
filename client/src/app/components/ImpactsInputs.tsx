@@ -77,7 +77,7 @@ const inputsSummaryStyles = css`
   }
 `;
 
-function EEREInputsContent() {
+function ImpactsInputsContent() {
   const dispatch = useDispatch();
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const hourlyEnergyProfile = useTypedSelector(
@@ -804,7 +804,7 @@ function EEREInputsContent() {
   );
 }
 
-export function EEREInputs() {
+export function ImpactsInputs() {
   return (
     <ErrorBoundary
       message={
@@ -816,7 +816,7 @@ export function EEREInputs() {
         </>
       }
     >
-      <EEREInputsContent />
+      <ImpactsInputsContent />
     </ErrorBoundary>
   );
 }
