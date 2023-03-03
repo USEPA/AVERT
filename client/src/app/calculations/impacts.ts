@@ -199,8 +199,8 @@ export function calculateHourlyImpacts(options: {
   hourlyRenewableEnergyProfile: HourlyRenewableEnergyProfile;
   hourlyEVLoad: HourlyEVLoad;
   hourlyTopPercentReduction: HourlyTopPercentReduction;
-  annualGwh: number; // eere.inputs.annualGwh
-  constantMwh: number; // eere.inputs.annualGwh
+  annualGwh: number; // impacts.inputs.annualGwh
+  constantMwh: number; // impacts.inputs.annualGwh
 }) {
   const {
     lineLoss,

@@ -163,7 +163,7 @@ function EmissionsReplacementTooltip(props: {
 }
 
 function PowerEmissionsTableContent() {
-  const inputs = useTypedSelector(({ eere }) => eere.inputs);
+  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
   const combinedSectorsEmissionsData = useTypedSelector(
     ({ results }) => results.combinedSectorsEmissionsData,
   );

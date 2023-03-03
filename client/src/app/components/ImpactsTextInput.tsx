@@ -3,14 +3,14 @@ import { useDispatch } from 'react-redux';
 // ---
 import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
-import { calculateHourlyEnergyProfile } from 'app/redux/reducers/eere';
+import { calculateHourlyEnergyProfile } from 'app/redux/reducers/impacts';
 import type {
   EnergyEfficiencyFieldName,
   RenewableEnergyFieldName,
   ElectricVehiclesFieldName,
-} from 'app/redux/reducers/eere';
+} from 'app/redux/reducers/impacts';
 
-export function EERETextInput(props: {
+export function ImpactsTextInput(props: {
   className?: string;
   label?: ReactNode;
   ariaLabel: string;
@@ -37,9 +37,9 @@ export function EERETextInput(props: {
 
   const dispatch = useDispatch();
   const hourlyEnergyProfile = useTypedSelector(
-    ({ eere }) => eere.hourlyEnergyProfile,
+    ({ impacts }) => impacts.hourlyEnergyProfile,
   );
-  const errors = useTypedSelector(({ eere }) => eere.errors);
+  const errors = useTypedSelector(({ impacts }) => impacts.errors);
 
   const inputsAreValid = errors.length === 0;
   const inputIsEmpty = value.length === 0;

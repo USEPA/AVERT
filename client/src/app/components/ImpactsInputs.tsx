@@ -5,8 +5,8 @@ import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // ---
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
-import { EERETextInput } from 'app/components/EERETextInput';
-import { EERESelectInput } from 'app/components/EERESelectInput';
+import { ImpactsTextInput } from 'app/components/ImpactsTextInput';
+import { ImpactsSelectInput } from 'app/components/ImpactsSelectInput';
 import {
   EVSalesAndStockTable,
   EEREEVComparisonTable,
@@ -14,28 +14,28 @@ import {
 import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import {
-  updateEereAnnualGwh,
-  updateEereConstantMw,
-  updateEereBroadBasedProgram,
-  updateEereReduction,
-  updateEereTopHours,
-  updateEereOnshoreWind,
-  updateEereOffshoreWind,
-  updateEereUtilitySolar,
-  updateEereRooftopSolar,
-  updateEereBatteryEVs,
-  runEereBatteryEVsCalculations,
-  updateEereHybridEVs,
-  runEereHybridEVsCalculations,
-  updateEereTransitBuses,
-  runEereTransitBusesCalculations,
-  updateEereSchoolBuses,
-  runEereSchoolBusesCalculations,
-  updateEereEVDeploymentLocation,
-  updateEereEVModelYear,
-  updateEereICEReplacementVehicle,
+  updateEEAnnualGwh,
+  updateEEConstantMw,
+  updateEEBroadBasedProgram,
+  updateEEReduction,
+  updateEETopHours,
+  updateREOnshoreWind,
+  updateREOffshoreWind,
+  updateREUtilitySolar,
+  updateRERooftopSolar,
+  updateEVBatteryEVs,
+  runEVBatteryEVsCalculations,
+  updateEVHybridEVs,
+  runEVHybridEVsCalculations,
+  updateEVTransitBuses,
+  runEVTransitBusesCalculations,
+  updateEVSchoolBuses,
+  runEVSchoolBusesCalculations,
+  updateEVDeploymentLocation,
+  updateEVModelYear,
+  updateEVICEReplacementVehicle,
   calculateHourlyEnergyProfile,
-} from 'app/redux/reducers/eere';
+} from 'app/redux/reducers/impacts';
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 
 const inputsGroupStyles = css`
@@ -77,49 +77,49 @@ const inputsSummaryStyles = css`
   }
 `;
 
-function EEREInputsContent() {
+function ImpactsInputsContent() {
   const dispatch = useDispatch();
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const hourlyEnergyProfile = useTypedSelector(
-    ({ eere }) => eere.hourlyEnergyProfile,
+    ({ impacts }) => impacts.hourlyEnergyProfile,
   );
-  const errors = useTypedSelector(({ eere }) => eere.errors);
-  const constantMwh = useTypedSelector(({ eere }) => eere.inputs.constantMwh);
-  const annualGwh = useTypedSelector(({ eere }) => eere.inputs.annualGwh);
-  const broadProgram = useTypedSelector(({ eere }) => eere.inputs.broadProgram);
-  const reduction = useTypedSelector(({ eere }) => eere.inputs.reduction);
-  const topHours = useTypedSelector(({ eere }) => eere.inputs.topHours);
-  const onshoreWind = useTypedSelector(({ eere }) => eere.inputs.onshoreWind);
-  const offshoreWind = useTypedSelector(({ eere }) => eere.inputs.offshoreWind);
-  const utilitySolar = useTypedSelector(({ eere }) => eere.inputs.utilitySolar);
-  const rooftopSolar = useTypedSelector(({ eere }) => eere.inputs.rooftopSolar);
-  const batteryEVs = useTypedSelector(({ eere }) => eere.inputs.batteryEVs);
-  const hybridEVs = useTypedSelector(({ eere }) => eere.inputs.hybridEVs);
-  const transitBuses = useTypedSelector(({ eere }) => eere.inputs.transitBuses);
-  const schoolBuses = useTypedSelector(({ eere }) => eere.inputs.schoolBuses);
-  const evDeploymentLocation = useTypedSelector(
-    ({ eere }) => eere.inputs.evDeploymentLocation,
+  const errors = useTypedSelector(({ impacts }) => impacts.errors);
+  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
+  const selectOptions = useTypedSelector(
+    ({ impacts }) => impacts.selectOptions,
   );
-  const evModelYear = useTypedSelector(({ eere }) => eere.inputs.evModelYear);
-  const iceReplacementVehicle = useTypedSelector(
-    ({ eere }) => eere.inputs.iceReplacementVehicle,
-  );
-  const evModelYearOptions = useTypedSelector(
-    ({ eere }) => eere.selectOptions.evModelYearOptions,
-  );
-  const iceReplacementVehicleOptions = useTypedSelector(
-    ({ eere }) => eere.selectOptions.iceReplacementVehicleOptions,
-  );
-  const evDeploymentLocationOptions = useTypedSelector(
-    ({ eere }) => eere.selectOptions.evDeploymentLocationOptions,
-  );
+
+  const {
+    constantMwh,
+    annualGwh,
+    broadProgram,
+    reduction,
+    topHours,
+    onshoreWind,
+    offshoreWind,
+    utilitySolar,
+    rooftopSolar,
+    batteryEVs,
+    hybridEVs,
+    transitBuses,
+    schoolBuses,
+    evDeploymentLocation,
+    evModelYear,
+    iceReplacementVehicle,
+  } = inputs;
+
+  const {
+    evModelYearOptions,
+    iceReplacementVehicleOptions,
+    evDeploymentLocationOptions,
+  } = selectOptions;
 
   const selectedRegion = useSelectedRegion();
   const selectedStateRegions = useSelectedStateRegions();
 
   // initially set `evDeploymentLocation` to the first calculated location option
   useEffect(() => {
-    dispatch(updateEereEVDeploymentLocation(evDeploymentLocationOptions[0].id));
+    dispatch(updateEVDeploymentLocation(evDeploymentLocationOptions[0].id));
   }, [dispatch, evDeploymentLocationOptions]);
 
   const [detailsAOpen, setDetailsAOpen] = useState(false);
@@ -160,7 +160,7 @@ function EEREInputsContent() {
     textInputsAreEmpty ||
     hourlyEnergyProfile.status === 'pending';
 
-  const eereButtonOptions = {
+  const impactsButtonOptions = {
     idle: 'Calculate Energy Impacts',
     pending: 'Calculating...',
     success: 'Recalculate Energy Impacts',
@@ -222,14 +222,14 @@ function EEREInputsContent() {
 
                   <div className="tablet:display-flex">
                     <div className="flex-1 tablet:margin-right-2">
-                      <EERETextInput
+                      <ImpactsTextInput
                         label={<>Reduce total annual generation by:</>}
                         ariaLabel="Number of GWh expected to be saved in a single year"
                         suffix="GWh"
                         value={annualGwh}
                         fieldName="annualGwh"
                         disabled={constantMwh}
-                        onChange={(text) => dispatch(updateEereAnnualGwh(text))}
+                        onChange={(text) => dispatch(updateEEAnnualGwh(text))}
                         tooltip={
                           <p className="margin-0">
                             Enter the total number of GWh expected to be saved
@@ -244,7 +244,7 @@ function EEREInputsContent() {
                     </div>
 
                     <div className="flex-1 tablet:margin-left-2">
-                      <EERETextInput
+                      <ImpactsTextInput
                         className="margin-top-1 tablet:margin-top-0"
                         label={<>Reduce hourly generation by:</>}
                         ariaLabel="Constant reduction for every hour of the year, in MW"
@@ -252,9 +252,7 @@ function EEREInputsContent() {
                         value={constantMwh}
                         fieldName="constantMwh"
                         disabled={annualGwh}
-                        onChange={(text) =>
-                          dispatch(updateEereConstantMw(text))
-                        }
+                        onChange={(text) => dispatch(updateEEConstantMw(text))}
                         tooltip={
                           <p className="margin-0">
                             “Reduce hourly generation” is identical in effect to
@@ -302,7 +300,7 @@ function EEREInputsContent() {
 
                   <div className="tablet:display-flex">
                     <div className="flex-1 tablet:margin-right-2">
-                      <EERETextInput
+                      <ImpactsTextInput
                         label={
                           <>
                             <em>Broad-based program:</em> Reduce generation by:
@@ -314,7 +312,7 @@ function EEREInputsContent() {
                         fieldName="broadProgram"
                         disabled={reduction || topHours}
                         onChange={(text) =>
-                          dispatch(updateEereBroadBasedProgram(text))
+                          dispatch(updateEEBroadBasedProgram(text))
                         }
                         tooltip={
                           <p className="margin-0">
@@ -328,7 +326,7 @@ function EEREInputsContent() {
                     </div>
 
                     <div className="flex-1 tablet:margin-left-2">
-                      <EERETextInput
+                      <ImpactsTextInput
                         className="margin-top-1 tablet:margin-top-0"
                         label={
                           <>
@@ -340,16 +338,16 @@ function EEREInputsContent() {
                         value={reduction}
                         fieldName="reduction"
                         disabled={broadProgram}
-                        onChange={(text) => dispatch(updateEereReduction(text))}
+                        onChange={(text) => dispatch(updateEEReduction(text))}
                       />
 
-                      <EERETextInput
+                      <ImpactsTextInput
                         ariaLabel="Fraction of high-demand hours that the program is expected to affect"
                         suffix="%&nbsp;of&nbsp;hours"
                         value={topHours}
                         fieldName="topHours"
                         disabled={broadProgram}
-                        onChange={(text) => dispatch(updateEereTopHours(text))}
+                        onChange={(text) => dispatch(updateEETopHours(text))}
                         tooltip={
                           <p className="margin-0">
                             To simulate a peak-reduction targeting program such
@@ -406,15 +404,13 @@ function EEREInputsContent() {
                 <section className="padding-top-0 padding-x-2 padding-bottom-105">
                   <div className="tablet:display-flex">
                     <div className="flex-1 tablet:margin-right-2">
-                      <EERETextInput
+                      <ImpactsTextInput
                         label={<>Onshore wind total capacity:</>}
                         ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                         suffix="MW"
                         value={onshoreWind}
                         fieldName="onshoreWind"
-                        onChange={(text) =>
-                          dispatch(updateEereOnshoreWind(text))
-                        }
+                        onChange={(text) => dispatch(updateREOnshoreWind(text))}
                         tooltip={
                           <p className="margin-0">
                             Enter the total capacity (maximum potential
@@ -429,14 +425,14 @@ function EEREInputsContent() {
 
                     <div className="flex-1 tablet:margin-left-2">
                       {atLeastOneRegionSupportsOffshoreWind ? (
-                        <EERETextInput
+                        <ImpactsTextInput
                           label={<>Offshore wind total capacity:</>}
                           ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                           suffix="MW"
                           value={offshoreWind}
                           fieldName="offshoreWind"
                           onChange={(text) =>
-                            dispatch(updateEereOffshoreWind(text))
+                            dispatch(updateREOffshoreWind(text))
                           }
                           tooltip={
                             <p className="margin-0">
@@ -508,7 +504,7 @@ function EEREInputsContent() {
                 <section className="padding-top-0 padding-x-2 padding-bottom-105">
                   <div className="tablet:display-flex">
                     <div className="flex-1 tablet:margin-right-2">
-                      <EERETextInput
+                      <ImpactsTextInput
                         label={
                           <>Utility-scale solar photovoltaic total capacity:</>
                         }
@@ -517,7 +513,7 @@ function EEREInputsContent() {
                         value={utilitySolar}
                         fieldName="utilitySolar"
                         onChange={(text) =>
-                          dispatch(updateEereUtilitySolar(text))
+                          dispatch(updateREUtilitySolar(text))
                         }
                         tooltip={
                           <p className="margin-0">
@@ -532,7 +528,7 @@ function EEREInputsContent() {
                     </div>
 
                     <div className="flex-1 tablet:margin-left-2">
-                      <EERETextInput
+                      <ImpactsTextInput
                         className="margin-top-1 tablet:margin-top-0"
                         label={
                           <>
@@ -545,7 +541,7 @@ function EEREInputsContent() {
                         value={rooftopSolar}
                         fieldName="rooftopSolar"
                         onChange={(text) =>
-                          dispatch(updateEereRooftopSolar(text))
+                          dispatch(updateRERooftopSolar(text))
                         }
                         tooltip={
                           <p className="margin-0">
@@ -604,16 +600,16 @@ function EEREInputsContent() {
                     <div className="desktop:grid-col-6">
                       <div className="tablet:display-flex desktop:margin-right-2">
                         <div className="flex-1 tablet:margin-right-2">
-                          <EERETextInput
+                          <ImpactsTextInput
                             label={<>Light-duty battery EVs:</>}
                             ariaLabel="Number of light-duty battery EVs to be added to the road"
                             value={batteryEVs}
                             fieldName="batteryEVs"
                             onChange={(text) =>
-                              dispatch(updateEereBatteryEVs(text))
+                              dispatch(updateEVBatteryEVs(text))
                             }
                             onBlur={(text) =>
-                              dispatch(runEereBatteryEVsCalculations(text))
+                              dispatch(runEVBatteryEVsCalculations(text))
                             }
                             tooltip={
                               <p className="margin-0">
@@ -625,17 +621,17 @@ function EEREInputsContent() {
                         </div>
 
                         <div className="flex-1 tablet:margin-left-2">
-                          <EERETextInput
+                          <ImpactsTextInput
                             className="margin-top-1 tablet:margin-top-0"
                             label={<>Light-duty plug-in hybrid EVs:</>}
                             ariaLabel="Number of light-duty plug-in hybrid EVs to be added to the road"
                             value={hybridEVs}
                             fieldName="hybridEVs"
                             onChange={(text) =>
-                              dispatch(updateEereHybridEVs(text))
+                              dispatch(updateEVHybridEVs(text))
                             }
                             onBlur={(text) =>
-                              dispatch(runEereHybridEVsCalculations(text))
+                              dispatch(runEVHybridEVsCalculations(text))
                             }
                             tooltip={
                               <p className="margin-0">
@@ -649,17 +645,17 @@ function EEREInputsContent() {
 
                       <div className="tablet:display-flex desktop:margin-right-2">
                         <div className="flex-1 tablet:margin-right-2">
-                          <EERETextInput
+                          <ImpactsTextInput
                             className="margin-top-1"
                             label={<>Electric transit buses:</>}
                             ariaLabel="Number of electric transit buses to be added to the road"
                             value={transitBuses}
                             fieldName="transitBuses"
                             onChange={(text) =>
-                              dispatch(updateEereTransitBuses(text))
+                              dispatch(updateEVTransitBuses(text))
                             }
                             onBlur={(text) =>
-                              dispatch(runEereTransitBusesCalculations(text))
+                              dispatch(runEVTransitBusesCalculations(text))
                             }
                             tooltip={
                               <p className="margin-0">
@@ -671,17 +667,17 @@ function EEREInputsContent() {
                         </div>
 
                         <div className="flex-1 tablet:margin-left-2">
-                          <EERETextInput
+                          <ImpactsTextInput
                             className="margin-top-1"
                             label={<>Electric school buses:</>}
                             ariaLabel="Number of electric school buses to be added to the road"
                             value={schoolBuses}
                             fieldName="schoolBuses"
                             onChange={(text) =>
-                              dispatch(updateEereSchoolBuses(text))
+                              dispatch(updateEVSchoolBuses(text))
                             }
                             onBlur={(text) =>
-                              dispatch(runEereSchoolBusesCalculations(text))
+                              dispatch(runEVSchoolBusesCalculations(text))
                             }
                             tooltip={
                               <p className="margin-0">
@@ -703,14 +699,14 @@ function EEREInputsContent() {
 
                   <div className="margin-top-2 desktop:display-flex">
                     <div className="flex-1 desktop:margin-right-2">
-                      <EERESelectInput
+                      <ImpactsSelectInput
                         label="Location of EV deployment:"
                         ariaLabel="Location of EV deployment"
                         options={evDeploymentLocationOptions}
                         value={evDeploymentLocation}
                         fieldName="evDeploymentLocation"
                         onChange={(option) =>
-                          dispatch(updateEereEVDeploymentLocation(option))
+                          dispatch(updateEVDeploymentLocation(option))
                         }
                         tooltip={
                           <p className="margin-0">
@@ -726,7 +722,7 @@ function EEREInputsContent() {
                     </div>
 
                     <div className="flex-1 desktop:margin-x-2">
-                      <EERESelectInput
+                      <ImpactsSelectInput
                         className="margin-top-1 desktop:margin-top-0"
                         label="EV model year:"
                         ariaLabel="Model year of the modeled electric vehicles"
@@ -734,7 +730,7 @@ function EEREInputsContent() {
                         value={evModelYear}
                         fieldName="evModelYear"
                         onChange={(option) =>
-                          dispatch(updateEereEVModelYear(option))
+                          dispatch(updateEVModelYear(option))
                         }
                         tooltip={
                           <p className="margin-0">
@@ -750,7 +746,7 @@ function EEREInputsContent() {
                     </div>
 
                     <div className="flex-1 desktop:margin-left-2">
-                      <EERESelectInput
+                      <ImpactsSelectInput
                         className="margin-top-1 desktop:margin-top-0"
                         label="ICE vehicles being replaced:"
                         ariaLabel="EV to displace a “new” or the average “existing” internal combustion engine vehicle"
@@ -758,7 +754,7 @@ function EEREInputsContent() {
                         value={iceReplacementVehicle}
                         fieldName="iceReplacementVehicle"
                         onChange={(option) =>
-                          dispatch(updateEereICEReplacementVehicle(option))
+                          dispatch(updateEVICEReplacementVehicle(option))
                         }
                         tooltip={
                           <p className="margin-0">
@@ -797,14 +793,14 @@ function EEREInputsContent() {
           }}
           data-avert-calculate-impacts-btn
         >
-          {eereButtonOptions[hourlyEnergyProfile.status]}
+          {impactsButtonOptions[hourlyEnergyProfile.status]}
         </a>
       </p>
     </>
   );
 }
 
-export function EEREInputs() {
+export function ImpactsInputs() {
   return (
     <ErrorBoundary
       message={
@@ -816,7 +812,7 @@ export function EEREInputs() {
         </>
       }
     >
-      <EEREInputsContent />
+      <ImpactsInputsContent />
     </ErrorBoundary>
   );
 }

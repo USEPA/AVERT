@@ -722,16 +722,16 @@ export function setSelectedGeographyVMTData(): AppThunk {
 
 /**
  * Called every time the `geography` reducer's `selectGeography()`,
- * `selectRegion()`, or `selectState()` functions, or the `eere` reducer's
- * `updateEereEVModelYear()` function is called.
+ * `selectRegion()`, or `selectState()` functions, or the `impacts` reducer's
+ * `updateEVModelYear()` function is called.
  *
  * _(e.g. anytime the selected geography or EV model year changes)_
  */
 export function setEVEfficiency(): AppThunk {
   return (dispatch, getState) => {
-    const { geography, eere } = getState();
+    const { geography, impacts } = getState();
     const { regionalScalingFactors } = geography;
-    const { evModelYear } = eere.inputs;
+    const { evModelYear } = impacts.inputs;
 
     const selectedGeographyRegionIds = Object.keys(
       regionalScalingFactors,
@@ -805,18 +805,18 @@ export function setDailyAndMonthlyStats(): AppThunk {
 }
 
 /**
- * Called every time the `eere` reducer's `runEereBatteryEVsCalculations()`,
- * `runEereHybridEVsCalculations()`, `runEereTransitBusesCalculations()`, or
- * `runEereSchoolBusesCalculations()` function are called.
+ * Called every time the `impacts` reducer's `runEVBatteryEVsCalculations()`,
+ * `runEVHybridEVsCalculations()`, `runEVTransitBusesCalculations()`, or
+ * `runEVSchoolBusesCalculations()` function are called.
  *
  * _(e.g. onBlur / whenever an EV input loses focus, but only if the input's
  * value has changed since the last time it was used in this calculation)_
  */
 export function setVehiclesDisplaced(): AppThunk {
   return (dispatch, getState) => {
-    const { transportation, eere } = getState();
+    const { transportation, impacts } = getState();
     const { monthlyVMTTotalsAndPercentages } = transportation;
-    const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = eere.inputs;
+    const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = impacts.inputs;
 
     const vehiclesDisplaced = calculateVehiclesDisplaced({
       batteryEVs: Number(batteryEVs),
@@ -925,19 +925,19 @@ export function setMonthlyDailyEVEnergyUsage(): AppThunk {
 
 /**
  * Called every time this `transportation` reducer's
- * `setSelectedGeographyVMTData()` function is called, or anytime the `eere`
- * reducer's `updateEereEVDeploymentLocation()`, `updateEereEVModelYear()`, or
- * `updateEereICEReplacementVehicle` function is called.
+ * `setSelectedGeographyVMTData()` function is called, or anytime the `impacts`
+ * reducer's `updateEVDeploymentLocation()`, `updateEVModelYear()`, or
+ * `updateEVICEReplacementVehicle` function is called.
  *
  * _(e.g. anytime the selected geography, EV deployment location, EV model year,
  * or ICE replacement vehicle changes)_
  */
 export function setMonthlyEmissionRates(): AppThunk {
   return (dispatch, getState) => {
-    const { transportation, eere } = getState();
+    const { transportation, impacts } = getState();
     const { selectedRegionsStatesVMTPercentages } = transportation;
     const { evDeploymentLocation, evModelYear, iceReplacementVehicle } =
-      eere.inputs;
+      impacts.inputs;
 
     const selectedRegionsMonthlyEmissionRates =
       calculateSelectedRegionsMonthlyEmissionRates({
@@ -968,7 +968,7 @@ export function setMonthlyEmissionRates(): AppThunk {
  */
 export function setEmissionChanges(): AppThunk {
   return (dispatch, getState) => {
-    const { geography, transportation, eere } = getState();
+    const { geography, transportation, impacts } = getState();
     const { countiesByGeography, regionalScalingFactors } = geography;
     const {
       stateVMTPercentagesByRegion,
@@ -990,7 +990,7 @@ export function setEmissionChanges(): AppThunk {
       regionalScalingFactors,
     ) as RegionId[];
 
-    const { evDeploymentLocation } = eere.inputs;
+    const { evDeploymentLocation } = impacts.inputs;
 
     const selectedRegionsMonthlyEmissionChanges =
       calculateSelectedRegionsMonthlyEmissionChanges({
@@ -1048,7 +1048,7 @@ export function setEmissionChanges(): AppThunk {
 
 /**
  * Called when this `transportation` reducer's `setVMTData()` function is called
- * or every time the `eere` reducer's `setEVDeploymentLocationOptions()`
+ * or every time the `impacts` reducer's `setEVDeploymentLocationOptions()`
  * function is called.
  *
  * _(e.g. when the app starts or anytime the selected geography or the EV
@@ -1056,10 +1056,10 @@ export function setEmissionChanges(): AppThunk {
  */
 export function setVehicleSalesAndStock(): AppThunk {
   return (dispatch, getState) => {
-    const { geography, transportation, eere } = getState();
+    const { geography, transportation, impacts } = getState();
     const { regions } = geography;
     const { vmtAllocationPerVehicle } = transportation;
-    const { evDeploymentLocationOptions } = eere.selectOptions;
+    const { evDeploymentLocationOptions } = impacts.selectOptions;
 
     const geographicFocus = geography.focus;
 
@@ -1125,17 +1125,17 @@ export function setSelectedRegionsEEREDefaultsAverages(): AppThunk {
 
 /**
  * Called every time this `transportation` reducer's
- * `setSelectedRegionsEEREDefaultsAverages()` function is called or anytime
- * the `eere` reducer's `updateEereEVDeploymentLocation()` function is called.
+ * `setSelectedRegionsEEREDefaultsAverages()` function is called or anytime the
+ * `impacts` reducer's `updateEVDeploymentLocation()` function is called.
  *
  * _(e.g. whenever the "Set Energy Impacts" button is clicked  on the "Select
  * Geography" page or anytime the EV deployment location changes)_
  */
 export function setEVDeploymentLocationHistoricalEERE(): AppThunk {
   return (dispatch, getState) => {
-    const { geography, eere, transportation } = getState();
+    const { geography, impacts, transportation } = getState();
     const { regionalLineLoss } = geography;
-    const { evDeploymentLocation } = eere.inputs;
+    const { evDeploymentLocation } = impacts.inputs;
     const { selectedRegionsEEREDefaultsAverages } = transportation;
 
     const selectedRegionId =

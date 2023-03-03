@@ -22,19 +22,23 @@ function formatNumber(number: number) {
 function EVSalesAndStockTableContent(props: { className?: string }) {
   const { className } = props;
 
-  const batteryEVs = useTypedSelector(({ eere }) => eere.inputs.batteryEVs);
-  const hybridEVs = useTypedSelector(({ eere }) => eere.inputs.hybridEVs);
-  const transitBuses = useTypedSelector(({ eere }) => eere.inputs.transitBuses);
-  const schoolBuses = useTypedSelector(({ eere }) => eere.inputs.schoolBuses);
-  const evDeploymentLocation = useTypedSelector(
-    ({ eere }) => eere.inputs.evDeploymentLocation,
-  );
-  const evDeploymentLocationOptions = useTypedSelector(
-    ({ eere }) => eere.selectOptions.evDeploymentLocationOptions,
+  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
+  const selectOptions = useTypedSelector(
+    ({ impacts }) => impacts.selectOptions,
   );
   const vehicleSalesAndStock = useTypedSelector(
     ({ transportation }) => transportation.vehicleSalesAndStock,
   );
+
+  const {
+    batteryEVs,
+    hybridEVs,
+    transitBuses,
+    schoolBuses,
+    evDeploymentLocation,
+  } = inputs;
+
+  const { evDeploymentLocationOptions } = selectOptions;
 
   const evDeploymentLocationName = evDeploymentLocationOptions.find((opt) => {
     return opt.id === evDeploymentLocation;

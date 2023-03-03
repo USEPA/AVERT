@@ -14,9 +14,9 @@ import { RegionsMap } from 'app/components/RegionsMap';
 import { StatesList } from 'app/components/StatesList';
 import { StatesMap } from 'app/components/StatesMap';
 import { UnitConversion } from 'app/components/UnitConversion';
-import { EEREInputs } from 'app/components/EEREInputs';
-import { EEREChart } from 'app/components/EEREChart';
-import { EEREMessages } from 'app/components/EEREMessages';
+import { ImpactsInputs } from 'app/components/ImpactsInputs';
+import { ImpactsChart } from 'app/components/ImpactsChart';
+import { ImpactsMessages } from 'app/components/ImpactsMessages';
 import { PowerEmissionsTable } from 'app/components/PowerEmissionsTable';
 import { VehiclesEmissionsTable } from 'app/components/VehiclesEmissionsTable';
 import { StateEmissionsTable } from 'app/components/StateEmissionsTable';
@@ -206,7 +206,7 @@ export function Panels() {
   const modalOverlay = useTypedSelector(({ panel }) => panel.modalOverlay);
   const activeModalId = useTypedSelector(({ panel }) => panel.activeModalId);
   const hourlyEnergyProfile = useTypedSelector(
-    ({ eere }) => eere.hourlyEnergyProfile,
+    ({ impacts }) => impacts.hourlyEnergyProfile,
   );
   const serverCalcError = useTypedSelector(
     ({ results }) => results.emissionsChanges.status === 'failure',
@@ -434,9 +434,9 @@ export function Panels() {
             </p>
           </div>
 
-          <EEREInputs />
-          <EEREChart />
-          <EEREMessages />
+          <ImpactsInputs />
+          <ImpactsChart />
+          <ImpactsMessages />
         </div>
 
         <PanelFooter prevButton="Back to Geography" nextButton="Get Results" />
