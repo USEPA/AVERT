@@ -61,7 +61,8 @@ function ValidationMessage(props: {
   const hourNumber = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
   const meridiem = hour > 12 ? 'PM' : 'AM';
 
-  const percentOverRegionalLimit = (postImpactsLoad - regionHourlyLimit) * 100;
+  const percentOverRegionalLimit =
+    ((postImpactsLoad - regionHourlyLimit) / regionHourlyLimit) * 100;
 
   const upperLimitPercent = percentOverRegionalLimit.toLocaleString(undefined, {
     minimumFractionDigits: 0,
@@ -94,6 +95,12 @@ function ValidationMessage(props: {
                 </strong>
                 .)
               </em>
+            </p>
+
+            <p className="margin-0">
+              Please reduce your electric vehicle inputs or add energy
+              efficiency or renewable energy inputs to keep total load within
+              the calculable range.
             </p>
           </>
         )}
@@ -205,10 +212,12 @@ function EEREMessagesContent() {
   const hourlyEnergyProfile = useTypedSelector(
     ({ eere }) => eere.hourlyEnergyProfile,
   );
-  const { validation } = hourlyEnergyProfile;
-  const totalHourlyChanges = hourlyEnergyProfile.data.total.hourlyChanges;
+  const { data, validation } = hourlyEnergyProfile;
+  const totalHourlyChanges = data.total.hourlyChanges;
 
-  if (Object.keys(totalHourlyChanges).length === 0) return null;
+  if (Object.keys(totalHourlyChanges).length === 0) {
+    return null;
+  }
 
   return (
     <>
