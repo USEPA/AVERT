@@ -1,6 +1,6 @@
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { useTypedSelector } from 'app/redux/index';
-import type { HourlyChangesValidation } from 'app/calculations/eere';
+import type { HourlyChangesValidation } from 'app/calculations/impacts';
 
 function EquivalentHomesText(props: { hourlyChanges: number[] }) {
   const { hourlyChanges } = props;

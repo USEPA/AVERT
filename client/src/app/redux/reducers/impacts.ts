@@ -19,7 +19,7 @@ import type {
   HourlyTopPercentReduction,
   HourlyImpacts,
   HourlyChangesValidation,
-} from 'app/calculations/eere';
+} from 'app/calculations/impacts';
 import {
   calculateHourlyRenewableEnergyProfile,
   calculateHourlyEVLoad,
@@ -27,7 +27,7 @@ import {
   calculateHourlyTopPercentReduction,
   calculateHourlyImpacts,
   calculateHourlyChangesValidation,
-} from 'app/calculations/eere';
+} from 'app/calculations/impacts';
 import type { RegionId, StateId } from 'app/config';
 import { evModelYearOptions, iceReplacementVehicleOptions } from 'app/config';
 
