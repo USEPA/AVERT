@@ -9,7 +9,7 @@ import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 
-function EEREChartContent() {
+function ImpactsChartContent() {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const eereInputs = useTypedSelector(({ eere }) => eere.inputs);
   const hourlyEnergyProfile = useTypedSelector(
@@ -167,7 +167,7 @@ function EEREChartContent() {
   );
 }
 
-export function EEREChart() {
+export function ImpactsChart() {
   return (
     <ErrorBoundary
       message={
@@ -180,7 +180,7 @@ export function EEREChart() {
         </>
       }
     >
-      <EEREChartContent />
+      <ImpactsChartContent />
     </ErrorBoundary>
   );
 }
