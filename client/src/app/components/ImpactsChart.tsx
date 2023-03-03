@@ -101,7 +101,7 @@ function ImpactsChartContent() {
     series: [
       {
         type: 'line',
-        name: 'EERE Load Output',
+        name: 'Electric power load profile',
         data: hourlyData,
         color: '#058dc7',
       },
