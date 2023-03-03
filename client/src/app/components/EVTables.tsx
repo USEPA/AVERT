@@ -166,6 +166,17 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
   const evDeploymentLocationHistoricalEERE = useTypedSelector(
     ({ transportation }) => transportation.evDeploymentLocationHistoricalEERE,
   );
+  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
+  const selectOptions = useTypedSelector(
+    ({ impacts }) => impacts.selectOptions,
+  );
+
+  const { evDeploymentLocation } = inputs;
+  const { evDeploymentLocationOptions } = selectOptions;
+
+  const evDeploymentLocationName = evDeploymentLocationOptions.find((opt) => {
+    return opt.id === evDeploymentLocation;
+  })?.name;
 
   const selectedRegionsEnergyData =
     Object.keys(selectedRegionsTotalYearlyEVEnergyUsage).length !== 0
@@ -276,7 +287,12 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
                 <th colSpan={2}>
                   Historical Additions
                   <br />
-                  <small>(Annual Avg. 2018&ndash;2020)</small>
+                  <small>
+                    {evDeploymentLocationName && (
+                      <>for {evDeploymentLocationName} </>
+                    )}
+                    (Annual Avg. 2018&ndash;2020)
+                  </small>
                 </th>
                 <th colSpan={2}>
                   EE/RE Required
