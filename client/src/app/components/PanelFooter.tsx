@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 // ---
 import { useTypedSelector } from 'app/redux/index';
 import { setActiveStep } from 'app/redux/reducers/panel';
-import { resetEEREInputs } from 'app/redux/reducers/impacts';
+import { resetImpactsInputs } from 'app/redux/reducers/impacts';
 import { fetchRegionsData } from 'app/redux/reducers/geography';
 import {
   fetchEmissionsChanges,
@@ -86,7 +86,7 @@ function PrevButton(props: { text: string | null }) {
         // prevButtonText isn't provided to first step's use of PanelFooter,
         // so we can safely always assume we're on step 2 or 3
         dispatch(setActiveStep(activeStep - 1));
-        dispatch(resetEEREInputs());
+        dispatch(resetImpactsInputs());
 
         if (onStepThree) {
           dispatch(resetResults());
@@ -183,7 +183,7 @@ function NextButton(props: { text: string }) {
 
         if (onStepThree) {
           window.scrollTo(0, 0);
-          dispatch(resetEEREInputs());
+          dispatch(resetImpactsInputs());
           dispatch(resetResults());
           dispatch(resetMonthlyEmissions());
         }
