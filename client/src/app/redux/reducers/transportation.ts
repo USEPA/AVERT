@@ -723,7 +723,7 @@ export function setSelectedGeographyVMTData(): AppThunk {
 /**
  * Called every time the `geography` reducer's `selectGeography()`,
  * `selectRegion()`, or `selectState()` functions, or the `impacts` reducer's
- * `updateEereEVModelYear()` function is called.
+ * `updateEVModelYear()` function is called.
  *
  * _(e.g. anytime the selected geography or EV model year changes)_
  */
@@ -805,9 +805,9 @@ export function setDailyAndMonthlyStats(): AppThunk {
 }
 
 /**
- * Called every time the `impacts` reducer's `runEereBatteryEVsCalculations()`,
- * `runEereHybridEVsCalculations()`, `runEereTransitBusesCalculations()`, or
- * `runEereSchoolBusesCalculations()` function are called.
+ * Called every time the `impacts` reducer's `runEVBatteryEVsCalculations()`,
+ * `runEVHybridEVsCalculations()`, `runEVTransitBusesCalculations()`, or
+ * `runEVSchoolBusesCalculations()` function are called.
  *
  * _(e.g. onBlur / whenever an EV input loses focus, but only if the input's
  * value has changed since the last time it was used in this calculation)_
@@ -926,8 +926,8 @@ export function setMonthlyDailyEVEnergyUsage(): AppThunk {
 /**
  * Called every time this `transportation` reducer's
  * `setSelectedGeographyVMTData()` function is called, or anytime the `impacts`
- * reducer's `updateEereEVDeploymentLocation()`, `updateEereEVModelYear()`, or
- * `updateEereICEReplacementVehicle` function is called.
+ * reducer's `updateEVDeploymentLocation()`, `updateEVModelYear()`, or
+ * `updateEVICEReplacementVehicle` function is called.
  *
  * _(e.g. anytime the selected geography, EV deployment location, EV model year,
  * or ICE replacement vehicle changes)_
@@ -1126,7 +1126,7 @@ export function setSelectedRegionsEEREDefaultsAverages(): AppThunk {
 /**
  * Called every time this `transportation` reducer's
  * `setSelectedRegionsEEREDefaultsAverages()` function is called or anytime the
- * `impacts` reducer's `updateEereEVDeploymentLocation()` function is called.
+ * `impacts` reducer's `updateEVDeploymentLocation()` function is called.
  *
  * _(e.g. whenever the "Set Energy Impacts" button is clicked  on the "Select
  * Geography" page or anytime the EV deployment location changes)_

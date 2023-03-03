@@ -718,7 +718,7 @@ function validateInput(
   };
 }
 
-export function updateEereAnnualGwh(input: string): AppThunk {
+export function updateEEAnnualGwh(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EE_ANNUAL_GWH',
@@ -729,7 +729,7 @@ export function updateEereAnnualGwh(input: string): AppThunk {
   };
 }
 
-export function updateEereConstantMw(input: string): AppThunk {
+export function updateEEConstantMw(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EE_CONSTANT_MW',
@@ -740,7 +740,7 @@ export function updateEereConstantMw(input: string): AppThunk {
   };
 }
 
-export function updateEereBroadBasedProgram(input: string): AppThunk {
+export function updateEEBroadBasedProgram(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EE_BROAD_BASE_PROGRAM',
@@ -751,7 +751,7 @@ export function updateEereBroadBasedProgram(input: string): AppThunk {
   };
 }
 
-export function updateEereReduction(input: string): AppThunk {
+export function updateEEReduction(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EE_REDUCTION',
@@ -762,7 +762,7 @@ export function updateEereReduction(input: string): AppThunk {
   };
 }
 
-export function updateEereTopHours(input: string): AppThunk {
+export function updateEETopHours(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EE_TOP_HOURS',
@@ -773,7 +773,7 @@ export function updateEereTopHours(input: string): AppThunk {
   };
 }
 
-export function updateEereOnshoreWind(input: string): AppThunk {
+export function updateREOnshoreWind(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_RE_ONSHORE_WIND',
@@ -784,7 +784,7 @@ export function updateEereOnshoreWind(input: string): AppThunk {
   };
 }
 
-export function updateEereOffshoreWind(input: string): AppThunk {
+export function updateREOffshoreWind(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_RE_OFFSHORE_WIND',
@@ -795,7 +795,7 @@ export function updateEereOffshoreWind(input: string): AppThunk {
   };
 }
 
-export function updateEereUtilitySolar(input: string): AppThunk {
+export function updateREUtilitySolar(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_RE_UTILITY_SOLAR',
@@ -806,7 +806,7 @@ export function updateEereUtilitySolar(input: string): AppThunk {
   };
 }
 
-export function updateEereRooftopSolar(input: string): AppThunk {
+export function updateRERooftopSolar(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_RE_ROOFTOP_SOLAR',
@@ -817,7 +817,7 @@ export function updateEereRooftopSolar(input: string): AppThunk {
   };
 }
 
-export function updateEereBatteryEVs(input: string): AppThunk {
+export function updateEVBatteryEVs(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EV_BATTERY_EVS',
@@ -831,7 +831,7 @@ export function updateEereBatteryEVs(input: string): AppThunk {
 /**
  * Called every time the batteryEVs inputs loses focus (e.g. onBlur)
  */
-export function runEereBatteryEVsCalculations(input: string): AppThunk {
+export function runEVBatteryEVsCalculations(input: string): AppThunk {
   return (dispatch, getState) => {
     const { impacts } = getState();
     const { batteryEVs } = impacts.evCalculationsInputs;
@@ -848,7 +848,7 @@ export function runEereBatteryEVsCalculations(input: string): AppThunk {
   };
 }
 
-export function updateEereHybridEVs(input: string): AppThunk {
+export function updateEVHybridEVs(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EV_HYBRID_EVS',
@@ -862,7 +862,7 @@ export function updateEereHybridEVs(input: string): AppThunk {
 /**
  * Called every time the hybridEVs inputs loses focus (e.g. onBlur)
  */
-export function runEereHybridEVsCalculations(input: string): AppThunk {
+export function runEVHybridEVsCalculations(input: string): AppThunk {
   return (dispatch, getState) => {
     const { impacts } = getState();
     const { hybridEVs } = impacts.evCalculationsInputs;
@@ -879,7 +879,7 @@ export function runEereHybridEVsCalculations(input: string): AppThunk {
   };
 }
 
-export function updateEereTransitBuses(input: string): AppThunk {
+export function updateEVTransitBuses(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EV_TRANSIT_BUSES',
@@ -893,7 +893,7 @@ export function updateEereTransitBuses(input: string): AppThunk {
 /**
  * Called every time the transitBuses inputs loses focus (e.g. onBlur)
  */
-export function runEereTransitBusesCalculations(input: string): AppThunk {
+export function runEVTransitBusesCalculations(input: string): AppThunk {
   return (dispatch, getState) => {
     const { impacts } = getState();
     const { transitBuses } = impacts.evCalculationsInputs;
@@ -910,7 +910,7 @@ export function runEereTransitBusesCalculations(input: string): AppThunk {
   };
 }
 
-export function updateEereSchoolBuses(input: string): AppThunk {
+export function updateEVSchoolBuses(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EV_SCHOOL_BUSES',
@@ -924,7 +924,7 @@ export function updateEereSchoolBuses(input: string): AppThunk {
 /**
  * Called every time the schoolBuses inputs loses focus (e.g. onBlur)
  */
-export function runEereSchoolBusesCalculations(input: string): AppThunk {
+export function runEVSchoolBusesCalculations(input: string): AppThunk {
   return (dispatch, getState) => {
     const { impacts } = getState();
     const { schoolBuses } = impacts.evCalculationsInputs;
@@ -941,7 +941,7 @@ export function runEereSchoolBusesCalculations(input: string): AppThunk {
   };
 }
 
-export function updateEereEVDeploymentLocation(input: string): AppThunk {
+export function updateEVDeploymentLocation(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EV_DEPLOYMENT_LOCATION',
@@ -953,7 +953,7 @@ export function updateEereEVDeploymentLocation(input: string): AppThunk {
   };
 }
 
-export function updateEereEVModelYear(input: string): AppThunk {
+export function updateEVModelYear(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EV_MODEL_YEAR',
@@ -966,7 +966,7 @@ export function updateEereEVModelYear(input: string): AppThunk {
   };
 }
 
-export function updateEereICEReplacementVehicle(input: string): AppThunk {
+export function updateEVICEReplacementVehicle(input: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EV_ICE_REPLACEMENT_VEHICLE',
@@ -1216,8 +1216,8 @@ export function resetImpactsInputs(): AppThunk {
     // re-run dependant transportation calculations after resetting EV inputs
     dispatch(setVehiclesDisplaced());
 
-    dispatch(updateEereEVDeploymentLocation(evDeploymentLocation));
-    dispatch(updateEereEVModelYear(evModelYear));
-    dispatch(updateEereICEReplacementVehicle(iceReplacementVehicle));
+    dispatch(updateEVDeploymentLocation(evDeploymentLocation));
+    dispatch(updateEVModelYear(evModelYear));
+    dispatch(updateEVICEReplacementVehicle(iceReplacementVehicle));
   };
 }

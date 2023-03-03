@@ -14,26 +14,26 @@ import {
 import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import {
-  updateEereAnnualGwh,
-  updateEereConstantMw,
-  updateEereBroadBasedProgram,
-  updateEereReduction,
-  updateEereTopHours,
-  updateEereOnshoreWind,
-  updateEereOffshoreWind,
-  updateEereUtilitySolar,
-  updateEereRooftopSolar,
-  updateEereBatteryEVs,
-  runEereBatteryEVsCalculations,
-  updateEereHybridEVs,
-  runEereHybridEVsCalculations,
-  updateEereTransitBuses,
-  runEereTransitBusesCalculations,
-  updateEereSchoolBuses,
-  runEereSchoolBusesCalculations,
-  updateEereEVDeploymentLocation,
-  updateEereEVModelYear,
-  updateEereICEReplacementVehicle,
+  updateEEAnnualGwh,
+  updateEEConstantMw,
+  updateEEBroadBasedProgram,
+  updateEEReduction,
+  updateEETopHours,
+  updateREOnshoreWind,
+  updateREOffshoreWind,
+  updateREUtilitySolar,
+  updateRERooftopSolar,
+  updateEVBatteryEVs,
+  runEVBatteryEVsCalculations,
+  updateEVHybridEVs,
+  runEVHybridEVsCalculations,
+  updateEVTransitBuses,
+  runEVTransitBusesCalculations,
+  updateEVSchoolBuses,
+  runEVSchoolBusesCalculations,
+  updateEVDeploymentLocation,
+  updateEVModelYear,
+  updateEVICEReplacementVehicle,
   calculateHourlyEnergyProfile,
 } from 'app/redux/reducers/impacts';
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
@@ -119,7 +119,7 @@ function ImpactsInputsContent() {
 
   // initially set `evDeploymentLocation` to the first calculated location option
   useEffect(() => {
-    dispatch(updateEereEVDeploymentLocation(evDeploymentLocationOptions[0].id));
+    dispatch(updateEVDeploymentLocation(evDeploymentLocationOptions[0].id));
   }, [dispatch, evDeploymentLocationOptions]);
 
   const [detailsAOpen, setDetailsAOpen] = useState(false);
@@ -229,7 +229,7 @@ function ImpactsInputsContent() {
                         value={annualGwh}
                         fieldName="annualGwh"
                         disabled={constantMwh}
-                        onChange={(text) => dispatch(updateEereAnnualGwh(text))}
+                        onChange={(text) => dispatch(updateEEAnnualGwh(text))}
                         tooltip={
                           <p className="margin-0">
                             Enter the total number of GWh expected to be saved
@@ -252,9 +252,7 @@ function ImpactsInputsContent() {
                         value={constantMwh}
                         fieldName="constantMwh"
                         disabled={annualGwh}
-                        onChange={(text) =>
-                          dispatch(updateEereConstantMw(text))
-                        }
+                        onChange={(text) => dispatch(updateEEConstantMw(text))}
                         tooltip={
                           <p className="margin-0">
                             “Reduce hourly generation” is identical in effect to
@@ -314,7 +312,7 @@ function ImpactsInputsContent() {
                         fieldName="broadProgram"
                         disabled={reduction || topHours}
                         onChange={(text) =>
-                          dispatch(updateEereBroadBasedProgram(text))
+                          dispatch(updateEEBroadBasedProgram(text))
                         }
                         tooltip={
                           <p className="margin-0">
@@ -340,7 +338,7 @@ function ImpactsInputsContent() {
                         value={reduction}
                         fieldName="reduction"
                         disabled={broadProgram}
-                        onChange={(text) => dispatch(updateEereReduction(text))}
+                        onChange={(text) => dispatch(updateEEReduction(text))}
                       />
 
                       <ImpactsTextInput
@@ -349,7 +347,7 @@ function ImpactsInputsContent() {
                         value={topHours}
                         fieldName="topHours"
                         disabled={broadProgram}
-                        onChange={(text) => dispatch(updateEereTopHours(text))}
+                        onChange={(text) => dispatch(updateEETopHours(text))}
                         tooltip={
                           <p className="margin-0">
                             To simulate a peak-reduction targeting program such
@@ -412,9 +410,7 @@ function ImpactsInputsContent() {
                         suffix="MW"
                         value={onshoreWind}
                         fieldName="onshoreWind"
-                        onChange={(text) =>
-                          dispatch(updateEereOnshoreWind(text))
-                        }
+                        onChange={(text) => dispatch(updateREOnshoreWind(text))}
                         tooltip={
                           <p className="margin-0">
                             Enter the total capacity (maximum potential
@@ -436,7 +432,7 @@ function ImpactsInputsContent() {
                           value={offshoreWind}
                           fieldName="offshoreWind"
                           onChange={(text) =>
-                            dispatch(updateEereOffshoreWind(text))
+                            dispatch(updateREOffshoreWind(text))
                           }
                           tooltip={
                             <p className="margin-0">
@@ -517,7 +513,7 @@ function ImpactsInputsContent() {
                         value={utilitySolar}
                         fieldName="utilitySolar"
                         onChange={(text) =>
-                          dispatch(updateEereUtilitySolar(text))
+                          dispatch(updateREUtilitySolar(text))
                         }
                         tooltip={
                           <p className="margin-0">
@@ -545,7 +541,7 @@ function ImpactsInputsContent() {
                         value={rooftopSolar}
                         fieldName="rooftopSolar"
                         onChange={(text) =>
-                          dispatch(updateEereRooftopSolar(text))
+                          dispatch(updateRERooftopSolar(text))
                         }
                         tooltip={
                           <p className="margin-0">
@@ -610,10 +606,10 @@ function ImpactsInputsContent() {
                             value={batteryEVs}
                             fieldName="batteryEVs"
                             onChange={(text) =>
-                              dispatch(updateEereBatteryEVs(text))
+                              dispatch(updateEVBatteryEVs(text))
                             }
                             onBlur={(text) =>
-                              dispatch(runEereBatteryEVsCalculations(text))
+                              dispatch(runEVBatteryEVsCalculations(text))
                             }
                             tooltip={
                               <p className="margin-0">
@@ -632,10 +628,10 @@ function ImpactsInputsContent() {
                             value={hybridEVs}
                             fieldName="hybridEVs"
                             onChange={(text) =>
-                              dispatch(updateEereHybridEVs(text))
+                              dispatch(updateEVHybridEVs(text))
                             }
                             onBlur={(text) =>
-                              dispatch(runEereHybridEVsCalculations(text))
+                              dispatch(runEVHybridEVsCalculations(text))
                             }
                             tooltip={
                               <p className="margin-0">
@@ -656,10 +652,10 @@ function ImpactsInputsContent() {
                             value={transitBuses}
                             fieldName="transitBuses"
                             onChange={(text) =>
-                              dispatch(updateEereTransitBuses(text))
+                              dispatch(updateEVTransitBuses(text))
                             }
                             onBlur={(text) =>
-                              dispatch(runEereTransitBusesCalculations(text))
+                              dispatch(runEVTransitBusesCalculations(text))
                             }
                             tooltip={
                               <p className="margin-0">
@@ -678,10 +674,10 @@ function ImpactsInputsContent() {
                             value={schoolBuses}
                             fieldName="schoolBuses"
                             onChange={(text) =>
-                              dispatch(updateEereSchoolBuses(text))
+                              dispatch(updateEVSchoolBuses(text))
                             }
                             onBlur={(text) =>
-                              dispatch(runEereSchoolBusesCalculations(text))
+                              dispatch(runEVSchoolBusesCalculations(text))
                             }
                             tooltip={
                               <p className="margin-0">
@@ -710,7 +706,7 @@ function ImpactsInputsContent() {
                         value={evDeploymentLocation}
                         fieldName="evDeploymentLocation"
                         onChange={(option) =>
-                          dispatch(updateEereEVDeploymentLocation(option))
+                          dispatch(updateEVDeploymentLocation(option))
                         }
                         tooltip={
                           <p className="margin-0">
@@ -734,7 +730,7 @@ function ImpactsInputsContent() {
                         value={evModelYear}
                         fieldName="evModelYear"
                         onChange={(option) =>
-                          dispatch(updateEereEVModelYear(option))
+                          dispatch(updateEVModelYear(option))
                         }
                         tooltip={
                           <p className="margin-0">
@@ -758,7 +754,7 @@ function ImpactsInputsContent() {
                         value={iceReplacementVehicle}
                         fieldName="iceReplacementVehicle"
                         onChange={(option) =>
-                          dispatch(updateEereICEReplacementVehicle(option))
+                          dispatch(updateEVICEReplacementVehicle(option))
                         }
                         tooltip={
                           <p className="margin-0">
