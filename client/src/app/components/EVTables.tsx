@@ -173,7 +173,7 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
       : null;
 
   const totalYearlyEVEnergyUsage = selectedRegionsEnergyData
-    ? Object.values(selectedRegionsEnergyData).reduce((a, b) => a + b, 0)
+    ? Object.values(selectedRegionsEnergyData).reduce((a, b) => (a || 0) + (b || 0), 0) // prettier-ignore
     : 0;
 
   const historicalEERetailMw = evDeploymentLocationHistoricalEERE.eeRetail.mw;
