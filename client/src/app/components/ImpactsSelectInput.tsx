@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 // ---
 import { Tooltip } from 'app/components/Tooltip';
 
-export function EERESelectInput(props: {
+export function ImpactsSelectInput(props: {
   className?: string;
   label?: string;
   ariaLabel: string;

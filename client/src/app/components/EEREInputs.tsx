@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 // ---
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { ImpactsTextInput } from 'app/components/ImpactsTextInput';
-import { EERESelectInput } from 'app/components/EERESelectInput';
+import { ImpactsSelectInput } from 'app/components/ImpactsSelectInput';
 import {
   EVSalesAndStockTable,
   EEREEVComparisonTable,
@@ -703,7 +703,7 @@ function EEREInputsContent() {
 
                   <div className="margin-top-2 desktop:display-flex">
                     <div className="flex-1 desktop:margin-right-2">
-                      <EERESelectInput
+                      <ImpactsSelectInput
                         label="Location of EV deployment:"
                         ariaLabel="Location of EV deployment"
                         options={evDeploymentLocationOptions}
@@ -726,7 +726,7 @@ function EEREInputsContent() {
                     </div>
 
                     <div className="flex-1 desktop:margin-x-2">
-                      <EERESelectInput
+                      <ImpactsSelectInput
                         className="margin-top-1 desktop:margin-top-0"
                         label="EV model year:"
                         ariaLabel="Model year of the modeled electric vehicles"
@@ -750,7 +750,7 @@ function EEREInputsContent() {
                     </div>
 
                     <div className="flex-1 desktop:margin-left-2">
-                      <EERESelectInput
+                      <ImpactsSelectInput
                         className="margin-top-1 desktop:margin-top-0"
                         label="ICE vehicles being replaced:"
                         ariaLabel="EV to displace a “new” or the average “existing” internal combustion engine vehicle"
