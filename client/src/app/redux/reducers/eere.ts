@@ -701,13 +701,13 @@ function validateInput(
   inputValue: string,
 ): AppThunk {
   return (dispatch, getState) => {
-    const { eere } = getState();
+    const { impacts } = getState();
 
     const value = Number(inputValue);
     const invalidInput = isNaN(value) || value < 0;
 
     // remove input field being validated from existing fields with errors
-    const errors = eere.errors.filter((field) => field !== inputField);
+    const errors = impacts.errors.filter((field) => field !== inputField);
 
     return dispatch({
       type: 'eere/VALIDATE_EERE',
@@ -833,8 +833,8 @@ export function updateEereBatteryEVs(input: string): AppThunk {
  */
 export function runEereBatteryEVsCalculations(input: string): AppThunk {
   return (dispatch, getState) => {
-    const { eere } = getState();
-    const { batteryEVs } = eere.evCalculationsInputs;
+    const { impacts } = getState();
+    const { batteryEVs } = impacts.evCalculationsInputs;
 
     /** only run calculations if the input has changed since the last onBlur */
     if (input !== batteryEVs) {
@@ -864,8 +864,8 @@ export function updateEereHybridEVs(input: string): AppThunk {
  */
 export function runEereHybridEVsCalculations(input: string): AppThunk {
   return (dispatch, getState) => {
-    const { eere } = getState();
-    const { hybridEVs } = eere.evCalculationsInputs;
+    const { impacts } = getState();
+    const { hybridEVs } = impacts.evCalculationsInputs;
 
     /** only run calculations if the input has changed since the last onBlur */
     if (input !== hybridEVs) {
@@ -895,8 +895,8 @@ export function updateEereTransitBuses(input: string): AppThunk {
  */
 export function runEereTransitBusesCalculations(input: string): AppThunk {
   return (dispatch, getState) => {
-    const { eere } = getState();
-    const { transitBuses } = eere.evCalculationsInputs;
+    const { impacts } = getState();
+    const { transitBuses } = impacts.evCalculationsInputs;
 
     /** only run calculations if the input has changed since the last onBlur */
     if (input !== transitBuses) {
@@ -926,8 +926,8 @@ export function updateEereSchoolBuses(input: string): AppThunk {
  */
 export function runEereSchoolBusesCalculations(input: string): AppThunk {
   return (dispatch, getState) => {
-    const { eere } = getState();
-    const { schoolBuses } = eere.evCalculationsInputs;
+    const { impacts } = getState();
+    const { schoolBuses } = impacts.evCalculationsInputs;
 
     /** only run calculations if the input has changed since the last onBlur */
     if (input !== schoolBuses) {
@@ -979,14 +979,14 @@ export function updateEereICEReplacementVehicle(input: string): AppThunk {
 
 export function calculateHourlyEnergyProfile(): AppThunk {
   return (dispatch, getState) => {
-    const { geography, transportation, eere } = getState();
+    const { geography, transportation, impacts } = getState();
     const { regions, states, regionalScalingFactors } = geography;
     const {
       dailyStats,
       hourlyEVChargingPercentages,
       selectedRegionsMonthlyDailyEVEnergyUsage,
     } = transportation;
-    const { inputs } = eere;
+    const { inputs } = impacts;
 
     const geographicFocus = geography.focus;
 
@@ -1204,8 +1204,8 @@ export function calculateHourlyEnergyProfile(): AppThunk {
 
 export function resetEEREInputs(): AppThunk {
   return (dispatch, getState) => {
-    const { eere } = getState();
-    const { evDeploymentLocationOptions } = eere.selectOptions;
+    const { impacts } = getState();
+    const { evDeploymentLocationOptions } = impacts.selectOptions;
 
     const evDeploymentLocation = evDeploymentLocationOptions[0].id;
     const evModelYear = initialEVModelYear;

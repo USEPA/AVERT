@@ -37,9 +37,9 @@ export function ImpactsTextInput(props: {
 
   const dispatch = useDispatch();
   const hourlyEnergyProfile = useTypedSelector(
-    ({ eere }) => eere.hourlyEnergyProfile,
+    ({ impacts }) => impacts.hourlyEnergyProfile,
   );
-  const errors = useTypedSelector(({ eere }) => eere.errors);
+  const errors = useTypedSelector(({ impacts }) => impacts.errors);
 
   const inputsAreValid = errors.length === 0;
   const inputIsEmpty = value.length === 0;

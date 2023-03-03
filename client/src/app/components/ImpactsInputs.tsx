@@ -81,38 +81,38 @@ function ImpactsInputsContent() {
   const dispatch = useDispatch();
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
   const hourlyEnergyProfile = useTypedSelector(
-    ({ eere }) => eere.hourlyEnergyProfile,
+    ({ impacts }) => impacts.hourlyEnergyProfile,
   );
-  const errors = useTypedSelector(({ eere }) => eere.errors);
-  const constantMwh = useTypedSelector(({ eere }) => eere.inputs.constantMwh);
-  const annualGwh = useTypedSelector(({ eere }) => eere.inputs.annualGwh);
-  const broadProgram = useTypedSelector(({ eere }) => eere.inputs.broadProgram);
-  const reduction = useTypedSelector(({ eere }) => eere.inputs.reduction);
-  const topHours = useTypedSelector(({ eere }) => eere.inputs.topHours);
-  const onshoreWind = useTypedSelector(({ eere }) => eere.inputs.onshoreWind);
-  const offshoreWind = useTypedSelector(({ eere }) => eere.inputs.offshoreWind);
-  const utilitySolar = useTypedSelector(({ eere }) => eere.inputs.utilitySolar);
-  const rooftopSolar = useTypedSelector(({ eere }) => eere.inputs.rooftopSolar);
-  const batteryEVs = useTypedSelector(({ eere }) => eere.inputs.batteryEVs);
-  const hybridEVs = useTypedSelector(({ eere }) => eere.inputs.hybridEVs);
-  const transitBuses = useTypedSelector(({ eere }) => eere.inputs.transitBuses);
-  const schoolBuses = useTypedSelector(({ eere }) => eere.inputs.schoolBuses);
-  const evDeploymentLocation = useTypedSelector(
-    ({ eere }) => eere.inputs.evDeploymentLocation,
+  const errors = useTypedSelector(({ impacts }) => impacts.errors);
+  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
+  const selectOptions = useTypedSelector(
+    ({ impacts }) => impacts.selectOptions,
   );
-  const evModelYear = useTypedSelector(({ eere }) => eere.inputs.evModelYear);
-  const iceReplacementVehicle = useTypedSelector(
-    ({ eere }) => eere.inputs.iceReplacementVehicle,
-  );
-  const evModelYearOptions = useTypedSelector(
-    ({ eere }) => eere.selectOptions.evModelYearOptions,
-  );
-  const iceReplacementVehicleOptions = useTypedSelector(
-    ({ eere }) => eere.selectOptions.iceReplacementVehicleOptions,
-  );
-  const evDeploymentLocationOptions = useTypedSelector(
-    ({ eere }) => eere.selectOptions.evDeploymentLocationOptions,
-  );
+
+  const {
+    constantMwh,
+    annualGwh,
+    broadProgram,
+    reduction,
+    topHours,
+    onshoreWind,
+    offshoreWind,
+    utilitySolar,
+    rooftopSolar,
+    batteryEVs,
+    hybridEVs,
+    transitBuses,
+    schoolBuses,
+    evDeploymentLocation,
+    evModelYear,
+    iceReplacementVehicle,
+  } = inputs;
+
+  const {
+    evModelYearOptions,
+    iceReplacementVehicleOptions,
+    evDeploymentLocationOptions,
+  } = selectOptions;
 
   const selectedRegion = useSelectedRegion();
   const selectedStateRegions = useSelectedStateRegions();
@@ -160,7 +160,7 @@ function ImpactsInputsContent() {
     textInputsAreEmpty ||
     hourlyEnergyProfile.status === 'pending';
 
-  const eereButtonOptions = {
+  const impactsButtonOptions = {
     idle: 'Calculate Energy Impacts',
     pending: 'Calculating...',
     success: 'Recalculate Energy Impacts',
@@ -797,7 +797,7 @@ function ImpactsInputsContent() {
           }}
           data-avert-calculate-impacts-btn
         >
-          {eereButtonOptions[hourlyEnergyProfile.status]}
+          {impactsButtonOptions[hourlyEnergyProfile.status]}
         </a>
       </p>
     </>

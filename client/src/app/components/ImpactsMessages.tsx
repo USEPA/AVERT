@@ -136,19 +136,23 @@ function ValidationMessage(props: {
 }
 
 export function EVWarningMessage() {
-  const constantMwh = useTypedSelector(({ eere }) => eere.inputs.constantMwh);
-  const annualGwh = useTypedSelector(({ eere }) => eere.inputs.annualGwh);
-  const broadProgram = useTypedSelector(({ eere }) => eere.inputs.broadProgram);
-  const reduction = useTypedSelector(({ eere }) => eere.inputs.reduction);
-  const topHours = useTypedSelector(({ eere }) => eere.inputs.topHours);
-  const onshoreWind = useTypedSelector(({ eere }) => eere.inputs.onshoreWind);
-  const offshoreWind = useTypedSelector(({ eere }) => eere.inputs.offshoreWind);
-  const utilitySolar = useTypedSelector(({ eere }) => eere.inputs.utilitySolar);
-  const rooftopSolar = useTypedSelector(({ eere }) => eere.inputs.rooftopSolar);
-  const batteryEVs = useTypedSelector(({ eere }) => eere.inputs.batteryEVs);
-  const hybridEVs = useTypedSelector(({ eere }) => eere.inputs.hybridEVs);
-  const transitBuses = useTypedSelector(({ eere }) => eere.inputs.transitBuses);
-  const schoolBuses = useTypedSelector(({ eere }) => eere.inputs.schoolBuses);
+  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
+
+  const {
+    constantMwh,
+    annualGwh,
+    broadProgram,
+    reduction,
+    topHours,
+    onshoreWind,
+    offshoreWind,
+    utilitySolar,
+    rooftopSolar,
+    batteryEVs,
+    hybridEVs,
+    transitBuses,
+    schoolBuses,
+  } = inputs;
 
   const eeInputsEmpty =
     (constantMwh === '' || constantMwh === '0') &&
@@ -210,7 +214,7 @@ export function EVWarningMessage() {
 
 function ImpactsMessagesContent() {
   const hourlyEnergyProfile = useTypedSelector(
-    ({ eere }) => eere.hourlyEnergyProfile,
+    ({ impacts }) => impacts.hourlyEnergyProfile,
   );
   const { data, validation } = hourlyEnergyProfile;
   const totalHourlyChanges = data.total.hourlyChanges;

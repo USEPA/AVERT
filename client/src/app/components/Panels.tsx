@@ -206,7 +206,7 @@ export function Panels() {
   const modalOverlay = useTypedSelector(({ panel }) => panel.modalOverlay);
   const activeModalId = useTypedSelector(({ panel }) => panel.activeModalId);
   const hourlyEnergyProfile = useTypedSelector(
-    ({ eere }) => eere.hourlyEnergyProfile,
+    ({ impacts }) => impacts.hourlyEnergyProfile,
   );
   const serverCalcError = useTypedSelector(
     ({ results }) => results.emissionsChanges.status === 'failure',

@@ -11,21 +11,21 @@ require('highcharts/modules/accessibility')(Highcharts);
 
 function ImpactsChartContent() {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const eereInputs = useTypedSelector(({ eere }) => eere.inputs);
+  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
   const hourlyEnergyProfile = useTypedSelector(
-    ({ eere }) => eere.hourlyEnergyProfile,
+    ({ impacts }) => impacts.hourlyEnergyProfile,
   );
 
   const totalHourlyChanges = hourlyEnergyProfile.data.total.hourlyChanges;
 
   /**
-   * Recalculation of the hourly energy profile is needed if the EERE inputs
+   * Recalculation of the hourly energy profile is needed if the impacts inputs
    * have changed from the ones used in the hourly energy profile calculation
    */
-  const hourlyEnergyProfileRecalculationNeeded = !Object.keys(eereInputs).every(
+  const hourlyEnergyProfileRecalculationNeeded = !Object.keys(inputs).every(
     (field) => {
       return (
-        eereInputs[field as keyof typeof eereInputs] ===
+        inputs[field as keyof typeof inputs] ===
         hourlyEnergyProfile.inputs[field as keyof typeof hourlyEnergyProfile.inputs] // prettier-ignore
       );
     },
@@ -41,10 +41,10 @@ function ImpactsChartContent() {
 
   const year = rdfYear || new Date().getFullYear();
 
-  const hourlyData = Object.values(totalHourlyChanges).map((eere, hour) => {
+  const hourlyData = Object.values(totalHourlyChanges).map((change, hour) => {
     const firstHourOfYear = Date.UTC(year, 0, 1);
     const hourlyMs = hour * 60 * 60 * 1_000;
-    return [new Date().setTime(firstHourOfYear + hourlyMs), eere];
+    return [new Date().setTime(firstHourOfYear + hourlyMs), change];
   });
 
   const chartConfig: Highcharts.Options = {
@@ -114,7 +114,7 @@ function ImpactsChartContent() {
         <>
           <h3 className="margin-0 font-sans-md line-height-sans-2 text-base-darker text-center">
             Electric power load profile based on values entered:&nbsp;
-            <Tooltip id="eere-profile">
+            <Tooltip id="hourly-electric-power-load-profile">
               <p className="margin-0 text-normal text-left">
                 This graph shows the hourly changes in load that will result
                 from the inputs entered above. It reflects a combination of all

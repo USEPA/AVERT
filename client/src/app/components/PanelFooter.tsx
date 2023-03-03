@@ -105,9 +105,9 @@ function NextButton(props: { text: string }) {
   const dispatch = useDispatch();
   const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const eereInputs = useTypedSelector(({ eere }) => eere.inputs);
+  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
   const hourlyEnergyProfile = useTypedSelector(
-    ({ eere }) => eere.hourlyEnergyProfile,
+    ({ impacts }) => impacts.hourlyEnergyProfile,
   );
 
   const selectedRegionId = useSelectedRegion()?.id;
@@ -133,14 +133,14 @@ function NextButton(props: { text: string }) {
     onStepTwo && hourlyEnergyProfileInvalid;
 
   /**
-   * Recalculation of the hourly energy profile is needed if the EERE inputs
+   * Recalculation of the hourly energy profile is needed if the impacts inputs
    * have changed from the ones used in the hourly energy profile calculation
    */
   const hourlyEnergyProfileRecalculationNeeded =
     onStepTwo &&
-    !Object.keys(eereInputs).every((field) => {
+    !Object.keys(inputs).every((field) => {
       return (
-        eereInputs[field as keyof typeof eereInputs] ===
+        inputs[field as keyof typeof inputs] ===
         hourlyEnergyProfile.inputs[field as keyof typeof hourlyEnergyProfile.inputs] // prettier-ignore
       );
     });
