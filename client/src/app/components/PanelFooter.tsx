@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 // ---
 import { useTypedSelector } from 'app/redux/index';
 import { setActiveStep } from 'app/redux/reducers/panel';
-import { resetEEREInputs } from 'app/redux/reducers/eere';
+import { resetEEREInputs } from 'app/redux/reducers/impacts';
 import { fetchRegionsData } from 'app/redux/reducers/geography';
 import {
   fetchEmissionsChanges,

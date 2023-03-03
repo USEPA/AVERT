@@ -1,5 +1,5 @@
 import { AppThunk } from 'app/redux/index';
-import { setEVDeploymentLocationOptions } from 'app/redux/reducers/eere';
+import { setEVDeploymentLocationOptions } from 'app/redux/reducers/impacts';
 import type {
   CountiesByGeography,
   RegionalScalingFactors,

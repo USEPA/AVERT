@@ -35,7 +35,7 @@ import {
   updateEereEVModelYear,
   updateEereICEReplacementVehicle,
   calculateHourlyEnergyProfile,
-} from 'app/redux/reducers/eere';
+} from 'app/redux/reducers/impacts';
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 
 const inputsGroupStyles = css`
