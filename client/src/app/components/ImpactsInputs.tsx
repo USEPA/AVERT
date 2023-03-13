@@ -504,16 +504,14 @@ function ImpactsInputsContent() {
                   }
                   data-label="D"
                 >
-                  Solar photovoltaic
+                  Solar PV
                 </summary>
 
                 <section className="padding-top-0 padding-x-2 padding-bottom-105">
                   <div className="tablet:display-flex">
                     <div className="flex-1 tablet:margin-right-2">
                       <ImpactsTextInput
-                        label={
-                          <>Utility-scale solar photovoltaic total capacity:</>
-                        }
+                        label={<>Utility-scale solar PV total capacity:</>}
                         ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                         suffix="MW"
                         value={utilitySolar}
@@ -537,10 +535,7 @@ function ImpactsInputsContent() {
                       <ImpactsTextInput
                         className="margin-top-1 tablet:margin-top-0"
                         label={
-                          <>
-                            Distributed (rooftop) solar photovoltaic total
-                            capacity:
-                          </>
+                          <>Distributed (rooftop) solar PV total capacity:</>
                         }
                         ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                         suffix="MW"
