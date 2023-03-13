@@ -85,8 +85,46 @@ function RegionsListContent() {
   return (
     <div className="text-base-darker">
       <p className="margin-top-205 margin-bottom-1 line-height-sans-2">
+        <strong>Select an AVERT region directly:</strong>
+      </p>
+
+      <div className="display-flex">
+        <div className="flex-1">
+          <select
+            className="usa-select margin-0 maxw-full"
+            aria-label="Select Region"
+            value={selectedRegionId || ''}
+            onChange={(ev) => {
+              dispatch(selectRegion(ev.target.value as RegionId));
+              dispatch(setRegionSelectStateId(''));
+              dispatch(setRegionSelectCounty(''));
+            }}
+            data-avert-region-select
+          >
+            <option value={''} disabled>
+              Select Region
+            </option>
+            <option value={regions.CA.id}>{regions.CA.name}</option>
+            <option value={regions.NCSC.id}>{regions.NCSC.name}</option>
+            <option value={regions.CENT.id}>{regions.CENT.name}</option>
+            <option value={regions.FL.id}>{regions.FL.name}</option>
+            <option value={regions.MIDA.id}>{regions.MIDA.name}</option>
+            <option value={regions.MIDW.id}>{regions.MIDW.name}</option>
+            <option value={regions.NE.id}>{regions.NE.name}</option>
+            <option value={regions.NY.id}>{regions.NY.name}</option>
+            <option value={regions.NW.id}>{regions.NW.name}</option>
+            <option value={regions.RM.id}>{regions.RM.name}</option>
+            <option value={regions.SE.id}>{regions.SE.name}</option>
+            <option value={regions.SW.id}>{regions.SW.name}</option>
+            <option value={regions.TN.id}>{regions.TN.name}</option>
+            <option value={regions.TE.id}>{regions.TE.name}</option>
+          </select>
+        </div>
+      </div>
+
+      <p className="margin-top-205 margin-bottom-1 line-height-sans-2">
         <strong>
-          Select a state and county, which will select an AVERT region:
+          Or select a state and county, which will select an AVERT region:
         </strong>
       </p>
 
@@ -142,44 +180,6 @@ function RegionsListContent() {
                 </Fragment>
               );
             })}
-          </select>
-        </div>
-      </div>
-
-      <p className="margin-top-205 margin-bottom-1 line-height-sans-2">
-        <strong>Or select an AVERT region directly:</strong>
-      </p>
-
-      <div className="display-flex">
-        <div className="flex-1">
-          <select
-            className="usa-select margin-0 maxw-full"
-            aria-label="Select Region"
-            value={selectedRegionId || ''}
-            onChange={(ev) => {
-              dispatch(selectRegion(ev.target.value as RegionId));
-              dispatch(setRegionSelectStateId(''));
-              dispatch(setRegionSelectCounty(''));
-            }}
-            data-avert-region-select
-          >
-            <option value={''} disabled>
-              Select Region
-            </option>
-            <option value={regions.CA.id}>{regions.CA.name}</option>
-            <option value={regions.NCSC.id}>{regions.NCSC.name}</option>
-            <option value={regions.CENT.id}>{regions.CENT.name}</option>
-            <option value={regions.FL.id}>{regions.FL.name}</option>
-            <option value={regions.MIDA.id}>{regions.MIDA.name}</option>
-            <option value={regions.MIDW.id}>{regions.MIDW.name}</option>
-            <option value={regions.NE.id}>{regions.NE.name}</option>
-            <option value={regions.NY.id}>{regions.NY.name}</option>
-            <option value={regions.NW.id}>{regions.NW.name}</option>
-            <option value={regions.RM.id}>{regions.RM.name}</option>
-            <option value={regions.SE.id}>{regions.SE.name}</option>
-            <option value={regions.SW.id}>{regions.SW.name}</option>
-            <option value={regions.TN.id}>{regions.TN.name}</option>
-            <option value={regions.TE.id}>{regions.TE.name}</option>
           </select>
         </div>
       </div>
