@@ -173,11 +173,7 @@ function ImpactsInputsContent() {
   return (
     <>
       <div
-        className={
-          `avert-border ` +
-          `border-width-1px border-top-width-0 border-x-width-0 border-solid ` +
-          `margin-y-3 font-sans-xs text-base-darker`
-        }
+        className="margin-y-3 font-sans-xs text-base-darker"
         data-avert-energy-impacts-inputs
       >
         <header
@@ -191,7 +187,12 @@ function ImpactsInputsContent() {
         </header>
 
         <div className="grid-container padding-0 maxw-full">
-          <div className="grid-row avert-border border-width-1px border-y-width-0 border-solid">
+          <div
+            className={
+              `grid-row ` +
+              `avert-border border-width-1px border-top-width-0 border-solid`
+            }
+          >
             <div className="desktop:grid-col-6">
               <details
                 css={inputsGroupStyles}
@@ -370,14 +371,19 @@ function ImpactsInputsContent() {
           className={
             `avert-border avert-box-background ` +
             `border-width-1px border-bottom-width-0 border-solid ` +
-            `padding-y-1 padding-x-105 text-bold bg-base-lightest`
+            `margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest`
           }
         >
           <p className="margin-0">Renewable Energy</p>
         </header>
 
         <div className="grid-container padding-0 maxw-full">
-          <div className="grid-row avert-border border-width-1px border-y-width-0 border-solid">
+          <div
+            className={
+              `grid-row ` +
+              `avert-border border-width-1px border-top-width-0 border-solid`
+            }
+          >
             <div className="desktop:grid-col-6">
               <details
                 css={inputsGroupStyles}
@@ -565,14 +571,19 @@ function ImpactsInputsContent() {
           className={
             `avert-border avert-box-background ` +
             `border-width-1px border-bottom-width-0 border-solid ` +
-            `padding-y-1 padding-x-105 text-bold bg-base-lightest`
+            `margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest`
           }
         >
           <p className="margin-0">Electric Vehicles</p>
         </header>
 
         <div className="grid-container padding-0 maxw-full">
-          <div className="grid-row avert-border border-width-1px border-y-width-0 border-solid">
+          <div
+            className={
+              `grid-row ` +
+              `avert-border border-width-1px border-top-width-0 border-solid`
+            }
+          >
             <div className="desktop:grid-col-12">
               <details
                 css={inputsGroupStyles}
