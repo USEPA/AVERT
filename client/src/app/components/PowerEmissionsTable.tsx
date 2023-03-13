@@ -559,10 +559,10 @@ function PowerEmissionsTableContent() {
 
       <ul className="margin-top-2 margin-bottom-0 font-sans-3xs line-height-sans-3 text-base-dark">
         <li>Negative numbers indicate displaced generation and emissions.</li>
-        <li>All results are rounded to the nearest ten.</li>
         <li>
-          A dash (“&thinsp;—&thinsp;”) indicates a result greater than zero, but
-          lower than the level of reportable significance.
+          All results are rounded to the nearest 10. A dash
+          (“&thinsp;—&thinsp;”) indicates non-zero results, but within +/- 10
+          units.
         </li>
         <li>
           When users evaluate a portfolio scenario including EVs and EE or RE,
