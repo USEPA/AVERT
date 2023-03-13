@@ -504,7 +504,7 @@ function ImpactsInputsContent() {
                   }
                   data-label="D"
                 >
-                  Solar PV
+                  Solar photovoltaic (PV)
                 </summary>
 
                 <section className="padding-top-0 padding-x-2 padding-bottom-105">
