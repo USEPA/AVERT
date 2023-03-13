@@ -546,6 +546,7 @@ function setFilteredData(options: {
 function MonthlyEmissionsChartsContent() {
   const dispatch = useDispatch();
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
+  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
   const combinedSectorsEmissionsData = useTypedSelector(
     ({ results }) => results.combinedSectorsEmissionsData,
   );
@@ -576,6 +577,14 @@ function MonthlyEmissionsChartsContent() {
   const availableCounties = useTypedSelector(({ monthlyEmissions }) => {
     return monthlyEmissions.statesAndCounties[currentStateId as StateId]?.sort(); // prettier-ignore
   });
+
+  const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = inputs;
+
+  const evInputsEmpty =
+    (batteryEVs === '' || batteryEVs === '0') &&
+    (hybridEVs === '' || hybridEVs === '0') &&
+    (transitBuses === '' || transitBuses === '0') &&
+    (schoolBuses === '' || schoolBuses === '0');
 
   const selectedRegion = useSelectedRegion();
   const selectedStateRegions = useSelectedStateRegions();
@@ -989,8 +998,7 @@ function MonthlyEmissionsChartsContent() {
                       value="vehicles"
                       checked={currentSources.includes('vehicles')}
                       disabled={
-                        currentAggregation === 'state' ||
-                        currentAggregation === 'county'
+                        evInputsEmpty || currentAggregation !== 'region'
                       }
                       onChange={(_ev) => {
                         dispatch(setMonthlyEmissionsSource('vehicles'));
@@ -1007,12 +1015,16 @@ function MonthlyEmissionsChartsContent() {
                 </div>
               </div>
 
-              {currentAggregation !== 'region' && (
+              {evInputsEmpty ? (
+                <p className="margin-top-105 margin-bottom-0 font-sans-3xs line-height-sans-3">
+                  <strong>NOTE:</strong> No EVs entered.
+                </p>
+              ) : currentAggregation !== 'region' ? (
                 <p className="margin-top-105 margin-bottom-0 font-sans-3xs line-height-sans-3">
                   <strong>NOTE:</strong> Monthly emissions data for vehicles are
                   only available at the regional level.
                 </p>
-              )}
+              ) : null}
             </div>
           </div>
 
