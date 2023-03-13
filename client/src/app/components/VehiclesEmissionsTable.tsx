@@ -85,9 +85,18 @@ function VehiclesEmissionsTableContent() {
     ({ transportation }) =>
       transportation.selectedRegionsTotalYearlyEmissionChanges,
   );
+  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
   const combinedSectorsEmissionsData = useTypedSelector(
     ({ results }) => results.combinedSectorsEmissionsData,
   );
+
+  const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = inputs;
+
+  const evInputsEmpty =
+    (batteryEVs === '' || batteryEVs === '0') &&
+    (hybridEVs === '' || hybridEVs === '0') &&
+    (transitBuses === '' || transitBuses === '0') &&
+    (schoolBuses === '' || schoolBuses === '0');
 
   const annualPower = setAnnualPowerEmissionsChanges({
     combinedSectorsEmissionsData,
@@ -98,6 +107,18 @@ function VehiclesEmissionsTableContent() {
   });
 
   if (!combinedSectorsEmissionsData) return null;
+
+  if (evInputsEmpty) {
+    return (
+      <div className="grid-col-12">
+        <div className="avert-box padding-3">
+          <p className="margin-0 font-sans-xs text-center">
+            <strong>No vehicle inputs entered.</strong>
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
