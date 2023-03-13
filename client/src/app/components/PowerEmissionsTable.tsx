@@ -238,8 +238,8 @@ function PowerEmissionsTableContent() {
               <tr>
                 <th>&nbsp;</th>
                 <th className="text-right">Original</th>
-                <th className="text-right">Post-EE/RE</th>
-                <th className="text-right">EE/RE Impacts</th>
+                <th className="text-right">Post Change</th>
+                <th className="text-right">Change</th>
               </tr>
             </thead>
 

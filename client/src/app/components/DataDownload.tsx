@@ -36,8 +36,12 @@ function DataDownloadContent() {
 
       <p>
         Download monthly displacement data for each county, state, and region in
-        this analysis, in CSV format, or download formatted outputs for use in
-        EPA’s COBRA Screening and Mapping Tool.
+        this analysis, in CSV format, or download your results formatted as
+        inputs for use in{' '}
+        <a className="usa-link" href="https://www.epa.gov/cobra">
+          COBRA
+        </a>
+        .
       </p>
 
       <p className="text-center">
@@ -56,7 +60,7 @@ function DataDownloadContent() {
           href={`data:text/csv;charset=utf-8,${cobraCsvString}`}
           download={`AVERT COBRA (${geographyText}).csv`}
         >
-          Download COBRA Results
+          Download COBRA Inputs
         </a>
       </p>
     </>
