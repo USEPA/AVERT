@@ -190,13 +190,18 @@ function ImpactsInputsContent() {
           <div
             className={
               `grid-row ` +
-              `avert-border border-width-1px border-top-width-0 border-solid`
+              `avert-border border-width-1px border-top-width-0 border-right-width-0 border-solid`
             }
           >
-            <div className="desktop:grid-col-6">
+            <div
+              className={
+                `desktop:grid-col-6 ` +
+                `avert-border border-width-1px border-y-width-0 border-left-width-0 border-solid`
+              }
+            >
               <details
                 css={inputsGroupStyles}
-                className="avert-border border-width-1px border-x-width-0 border-bottom-width-0 border-solid"
+                className="avert-border border-width-1px border-bottom-width-0 border-x-width-0 border-solid"
                 open={detailsAOpen}
                 onToggle={(ev) => {
                   const details = ev.currentTarget as HTMLDetailsElement;
@@ -271,10 +276,15 @@ function ImpactsInputsContent() {
               </details>
             </div>
 
-            <div className="desktop:grid-col-6">
+            <div
+              className={
+                `desktop:grid-col-6 ` +
+                `avert-border border-width-1px border-y-width-0 border-left-width-0 border-solid`
+              }
+            >
               <details
                 css={inputsGroupStyles}
-                className="avert-border border-width-1px border-x-width-0 border-bottom-width-0 border-solid"
+                className="avert-border border-width-1px border-bottom-width-0 border-x-width-0 border-solid"
                 open={detailsBOpen}
                 onToggle={(ev) => {
                   const details = ev.currentTarget as HTMLDetailsElement;
@@ -381,13 +391,18 @@ function ImpactsInputsContent() {
           <div
             className={
               `grid-row ` +
-              `avert-border border-width-1px border-top-width-0 border-solid`
+              `avert-border border-width-1px border-top-width-0 border-right-width-0 border-solid`
             }
           >
-            <div className="desktop:grid-col-6">
+            <div
+              className={
+                `desktop:grid-col-6 ` +
+                `avert-border border-width-1px border-y-width-0 border-left-width-0 border-solid`
+              }
+            >
               <details
                 css={inputsGroupStyles}
-                className="avert-border border-width-1px border-x-width-0 border-bottom-width-0 border-solid"
+                className="avert-border border-width-1px border-bottom-width-0 border-x-width-0 border-solid"
                 open={detailsCOpen}
                 onToggle={(ev) => {
                   const details = ev.currentTarget as HTMLDetailsElement;
@@ -484,10 +499,15 @@ function ImpactsInputsContent() {
               </details>
             </div>
 
-            <div className="desktop:grid-col-6">
+            <div
+              className={
+                `desktop:grid-col-6 ` +
+                `avert-border border-width-1px border-y-width-0 border-left-width-0 border-solid`
+              }
+            >
               <details
                 css={inputsGroupStyles}
-                className="avert-border border-width-1px border-x-width-0 border-bottom-width-0 border-solid"
+                className="avert-border border-width-1px border-bottom-width-0 border-x-width-0 border-solid"
                 open={detailsDOpen}
                 onToggle={(ev) => {
                   const details = ev.currentTarget as HTMLDetailsElement;
@@ -576,13 +596,18 @@ function ImpactsInputsContent() {
           <div
             className={
               `grid-row ` +
-              `avert-border border-width-1px border-top-width-0 border-solid`
+              `avert-border border-width-1px border-top-width-0 border-right-width-0 border-solid`
             }
           >
-            <div className="desktop:grid-col-12">
+            <div
+              className={
+                `desktop:grid-col-12 ` +
+                `avert-border border-width-1px border-y-width-0 border-left-width-0 border-solid`
+              }
+            >
               <details
                 css={inputsGroupStyles}
-                className="avert-border border-width-1px border-x-width-0 border-bottom-width-0 border-solid"
+                className="avert-border border-width-1px border-bottom-width-0 border-x-width-0 border-solid"
                 open={detailsEOpen}
                 onToggle={(ev) => {
                   const details = ev.currentTarget as HTMLDetailsElement;
