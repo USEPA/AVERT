@@ -69,7 +69,7 @@ import { WestVirginia } from 'app/components/States/WestVirginia';
 import { Wyoming } from 'app/components/States/Wyoming';
 import {
   selectRegion,
-  setRegionSelectStateId,
+  setRegionSelectStateIdAndRegionIds,
   setRegionSelectCounty,
 } from 'app/redux/reducers/geography';
 import { useSelectedRegion } from 'app/hooks';
@@ -164,7 +164,7 @@ function Region(props: {
       fill={fill}
       onClick={(_ev) => {
         dispatch(selectRegion(id));
-        dispatch(setRegionSelectStateId(''));
+        dispatch(setRegionSelectStateIdAndRegionIds(''));
         dispatch(setRegionSelectCounty(''));
       }}
       data-active={selectedRegionId === id}

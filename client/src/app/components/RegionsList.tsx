@@ -5,7 +5,7 @@ import { ErrorBoundary } from 'app/components/ErrorBoundary';
 import { useTypedSelector } from 'app/redux/index';
 import {
   selectRegion,
-  setRegionSelectStateId,
+  setRegionSelectStateIdAndRegionIds,
   setRegionSelectCounty,
 } from 'app/redux/reducers/geography';
 import { useSelectedRegion } from 'app/hooks';
@@ -21,6 +21,9 @@ function RegionsListContent() {
   const regionSelectStateId = useTypedSelector(
     ({ geography }) => geography.regionSelect.stateId,
   );
+  const regionSelectStateRegionIds = useTypedSelector(
+    ({ geography }) => geography.regionSelect.stateRegionIds,
+  );
   const regionSelectCounty = useTypedSelector(
     ({ geography }) => geography.regionSelect.county,
   );
@@ -32,6 +35,7 @@ function RegionsListContent() {
   // update county select options, based on selected state
   useEffect(() => {
     const stateId = regionSelectStateId;
+    const stateRegionIds = regionSelectStateRegionIds;
 
     const countiesByGeographyData =
       Object.keys(countiesByGeography).length !== 0
@@ -44,13 +48,21 @@ function RegionsListContent() {
     }
 
     if (countiesByGeographyData) {
-      const selectedStateCounties = countiesByGeographyData.states[stateId];
+      const { states } = countiesByGeographyData;
+      const stateCounties = states[stateId];
 
-      if (selectedStateCounties) {
-        setCountyNames(selectedStateCounties.sort());
+      if (stateCounties) {
+        /**
+         * if an entire state is within one AVERT region, use ["All Counties"]
+         * instead of an array of county names within that state.
+         */
+        const countyNames =
+          stateRegionIds.length === 1 ? ['All Counties'] : stateCounties.sort();
+
+        setCountyNames(countyNames);
       }
     }
-  }, [countiesByGeography, regionSelectStateId]);
+  }, [countiesByGeography, regionSelectStateId, regionSelectStateRegionIds]);
 
   // update selected region, based on selected county
   useEffect(() => {
@@ -63,6 +75,16 @@ function RegionsListContent() {
         : null;
 
     if (stateId === '') {
+      return;
+    }
+
+    /**
+     * if an entire state is within one AVERT region, and user has selected
+     * "All Counties", select that region.
+     */
+    if (regionSelectStateRegionIds.length === 1 && county === 'All Counties') {
+      const regionId = regionSelectStateRegionIds[0];
+      dispatch(selectRegion(regionId));
       return;
     }
 
@@ -80,7 +102,13 @@ function RegionsListContent() {
         dispatch(selectRegion(regionId));
       }
     }
-  }, [countiesByGeography, regionSelectStateId, regionSelectCounty, dispatch]);
+  }, [
+    countiesByGeography,
+    regionSelectStateId,
+    regionSelectStateRegionIds,
+    regionSelectCounty,
+    dispatch,
+  ]);
 
   return (
     <div className="text-base-darker">
@@ -95,8 +123,9 @@ function RegionsListContent() {
             aria-label="Select Region"
             value={selectedRegionId || ''}
             onChange={(ev) => {
-              dispatch(selectRegion(ev.target.value as RegionId));
-              dispatch(setRegionSelectStateId(''));
+              const regionId = ev.target.value as RegionId;
+              dispatch(selectRegion(regionId));
+              dispatch(setRegionSelectStateIdAndRegionIds(''));
               dispatch(setRegionSelectCounty(''));
             }}
             data-avert-region-select
@@ -135,8 +164,9 @@ function RegionsListContent() {
             aria-label="Select State"
             value={regionSelectStateId || ''}
             onChange={(ev) => {
+              const stateId = ev.target.value as StateId;
               dispatch(selectRegion('' as RegionId));
-              dispatch(setRegionSelectStateId(ev.target.value as StateId));
+              dispatch(setRegionSelectStateIdAndRegionIds(stateId));
               dispatch(setRegionSelectCounty(''));
             }}
             data-avert-region-state-select
@@ -163,7 +193,8 @@ function RegionsListContent() {
             aria-label="Select County"
             value={regionSelectCounty || ''}
             onChange={(ev) => {
-              dispatch(setRegionSelectCounty(ev.target.value));
+              const county = ev.target.value;
+              dispatch(setRegionSelectCounty(county));
             }}
             data-avert-region-county-select
           >
