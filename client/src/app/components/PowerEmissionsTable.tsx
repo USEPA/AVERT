@@ -13,17 +13,16 @@ type AnnualMonthlyData = ReturnType<typeof setAnnualMonthlyData>;
  * within 10 of zero.
  */
 function formatNumber(number: number) {
-  if (number < 10 && number > -10) return '—'; // TODO: should this check if number === 0 too?
-  const output = Math.round(number / 10) * 10;
-  return output.toLocaleString();
+  if (number !== 0 && number < 10 && number > -10) return '—';
+  const result = Math.round(number / 10) * 10;
+  return result.toLocaleString();
 }
 
 /**
- * Calculate numerator ÷ denominator, formatted to three decimal places, but
- * display '—' if the denominator is zero.
+ * Calculate numerator ÷ denominator, formatted to three decimal places
  */
-function calculateNumber(numerator: number, denominator: number) {
-  return denominator !== 0 ? (numerator / denominator).toFixed(3) : '—'; // TODO: should this not render '—' but maybe an empty string?
+function calculateFraction(numerator: number, denominator: number) {
+  return denominator !== 0 ? (numerator / denominator).toFixed(3) : '';
 }
 
 /**
@@ -419,14 +418,14 @@ function PowerEmissionsTableContent() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {calculateNumber(so2.original, generation.original)}
+                  {calculateFraction(so2.original, generation.original)}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
                   {eereAndEvInputsEntered ? (
                     <span className="font-sans-2xs text-italic">Ø</span>
                   ) : (
-                    calculateNumber(so2.impacts, generation.impacts)
+                    calculateFraction(so2.impacts, generation.impacts)
                   )}
                 </td>
               </tr>
@@ -438,14 +437,14 @@ function PowerEmissionsTableContent() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {calculateNumber(nox.original, generation.original)}
+                  {calculateFraction(nox.original, generation.original)}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
                   {eereAndEvInputsEntered ? (
                     <span className="font-sans-2xs text-italic">Ø</span>
                   ) : (
-                    calculateNumber(nox.impacts, generation.impacts)
+                    calculateFraction(nox.impacts, generation.impacts)
                   )}
                 </td>
               </tr>
@@ -463,14 +462,17 @@ function PowerEmissionsTableContent() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {calculateNumber(ozoneNox.original, ozoneGeneration.original)}
+                  {calculateFraction(
+                    ozoneNox.original,
+                    ozoneGeneration.original,
+                  )}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
                   {eereAndEvInputsEntered ? (
                     <span className="font-sans-2xs text-italic">Ø</span>
                   ) : (
-                    calculateNumber(ozoneNox.impacts, ozoneGeneration.impacts)
+                    calculateFraction(ozoneNox.impacts, ozoneGeneration.impacts)
                   )}
                 </td>
               </tr>
@@ -482,14 +484,14 @@ function PowerEmissionsTableContent() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {calculateNumber(co2.original, generation.original)}
+                  {calculateFraction(co2.original, generation.original)}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
                   {eereAndEvInputsEntered ? (
                     <span className="font-sans-2xs text-italic">Ø</span>
                   ) : (
-                    calculateNumber(co2.impacts, generation.impacts)
+                    calculateFraction(co2.impacts, generation.impacts)
                   )}
                 </td>
               </tr>
@@ -501,14 +503,14 @@ function PowerEmissionsTableContent() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {calculateNumber(pm25.original, generation.original)}
+                  {calculateFraction(pm25.original, generation.original)}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
                   {eereAndEvInputsEntered ? (
                     <span className="font-sans-2xs text-italic">Ø</span>
                   ) : (
-                    calculateNumber(pm25.impacts, generation.impacts)
+                    calculateFraction(pm25.impacts, generation.impacts)
                   )}
                 </td>
               </tr>
@@ -520,14 +522,14 @@ function PowerEmissionsTableContent() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {calculateNumber(vocs.original, generation.original)}
+                  {calculateFraction(vocs.original, generation.original)}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
                   {eereAndEvInputsEntered ? (
                     <span className="font-sans-2xs text-italic">Ø</span>
                   ) : (
-                    calculateNumber(vocs.impacts, generation.impacts)
+                    calculateFraction(vocs.impacts, generation.impacts)
                   )}
                 </td>
               </tr>
@@ -539,14 +541,14 @@ function PowerEmissionsTableContent() {
                   </span>
                 </td>
                 <td className="font-mono-xs text-right">
-                  {calculateNumber(nh3.original, generation.original)}
+                  {calculateFraction(nh3.original, generation.original)}
                 </td>
                 <td className="font-mono-xs text-right">&nbsp;</td>
                 <td className="font-mono-xs text-right">
                   {eereAndEvInputsEntered ? (
                     <span className="font-sans-2xs text-italic">Ø</span>
                   ) : (
-                    calculateNumber(nh3.impacts, generation.impacts)
+                    calculateFraction(nh3.impacts, generation.impacts)
                   )}
                 </td>
               </tr>
