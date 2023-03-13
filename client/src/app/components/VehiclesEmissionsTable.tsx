@@ -1,4 +1,5 @@
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
+import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import type { SelectedRegionsTotalYearlyEmissionChanges } from 'app/calculations/transportation';
 import type { CombinedSectorsEmissionsData } from 'app/calculations/emissions';
@@ -129,10 +130,16 @@ function VehiclesEmissionsTableContent() {
               <tr>
                 <th>&nbsp;</th>
                 <th className="text-right">
-                  <small>From</small> Fossil Generation
+                  <small>From</small> Fossil Generation&nbsp;
+                  <Tooltip id="vehicle-sector-from-fossil-generation" reversed>
+                    <p className="margin-0 text-normal text-left">TODO</p>
+                  </Tooltip>
                 </th>
                 <th className="text-right">
-                  <small>From</small> Vehicles
+                  <small>From</small> Vehicles&nbsp;
+                  <Tooltip id="vehicle-sector-from-vehicles" reversed>
+                    <p className="margin-0 text-normal text-left">TODO</p>
+                  </Tooltip>
                 </th>
                 <th className="text-right">Net Change</th>
               </tr>
