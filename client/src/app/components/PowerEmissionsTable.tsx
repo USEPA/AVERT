@@ -14,8 +14,8 @@ type AnnualMonthlyData = ReturnType<typeof setAnnualMonthlyData>;
  */
 function formatNumber(number: number) {
   if (number !== 0 && number < 10 && number > -10) return '—';
-  const output = Math.round(number / 10) * 10;
-  return output.toLocaleString();
+  const result = Math.round(number / 10) * 10;
+  return result.toLocaleString();
 }
 
 /**
