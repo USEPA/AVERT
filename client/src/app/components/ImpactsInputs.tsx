@@ -173,11 +173,7 @@ function ImpactsInputsContent() {
   return (
     <>
       <div
-        className={
-          `avert-border ` +
-          `border-width-1px border-top-width-0 border-x-width-0 border-solid ` +
-          `margin-y-3 font-sans-xs text-base-darker`
-        }
+        className="margin-y-3 font-sans-xs text-base-darker"
         data-avert-energy-impacts-inputs
       >
         <header
@@ -191,7 +187,12 @@ function ImpactsInputsContent() {
         </header>
 
         <div className="grid-container padding-0 maxw-full">
-          <div className="grid-row avert-border border-width-1px border-y-width-0 border-solid">
+          <div
+            className={
+              `grid-row ` +
+              `avert-border border-width-1px border-top-width-0 border-solid`
+            }
+          >
             <div className="desktop:grid-col-6">
               <details
                 css={inputsGroupStyles}
@@ -370,14 +371,19 @@ function ImpactsInputsContent() {
           className={
             `avert-border avert-box-background ` +
             `border-width-1px border-bottom-width-0 border-solid ` +
-            `padding-y-1 padding-x-105 text-bold bg-base-lightest`
+            `margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest`
           }
         >
           <p className="margin-0">Renewable Energy</p>
         </header>
 
         <div className="grid-container padding-0 maxw-full">
-          <div className="grid-row avert-border border-width-1px border-y-width-0 border-solid">
+          <div
+            className={
+              `grid-row ` +
+              `avert-border border-width-1px border-top-width-0 border-solid`
+            }
+          >
             <div className="desktop:grid-col-6">
               <details
                 css={inputsGroupStyles}
@@ -498,16 +504,14 @@ function ImpactsInputsContent() {
                   }
                   data-label="D"
                 >
-                  Solar photovoltaic
+                  Solar PV
                 </summary>
 
                 <section className="padding-top-0 padding-x-2 padding-bottom-105">
                   <div className="tablet:display-flex">
                     <div className="flex-1 tablet:margin-right-2">
                       <ImpactsTextInput
-                        label={
-                          <>Utility-scale solar photovoltaic total capacity:</>
-                        }
+                        label={<>Utility-scale solar PV total capacity:</>}
                         ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                         suffix="MW"
                         value={utilitySolar}
@@ -531,10 +535,7 @@ function ImpactsInputsContent() {
                       <ImpactsTextInput
                         className="margin-top-1 tablet:margin-top-0"
                         label={
-                          <>
-                            Distributed (rooftop) solar photovoltaic total
-                            capacity:
-                          </>
+                          <>Distributed (rooftop) solar PV total capacity:</>
                         }
                         ariaLabel="Total capacity (maximum potential electricity generation) in MW"
                         suffix="MW"
@@ -565,14 +566,19 @@ function ImpactsInputsContent() {
           className={
             `avert-border avert-box-background ` +
             `border-width-1px border-bottom-width-0 border-solid ` +
-            `padding-y-1 padding-x-105 text-bold bg-base-lightest`
+            `margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest`
           }
         >
           <p className="margin-0">Electric Vehicles</p>
         </header>
 
         <div className="grid-container padding-0 maxw-full">
-          <div className="grid-row avert-border border-width-1px border-y-width-0 border-solid">
+          <div
+            className={
+              `grid-row ` +
+              `avert-border border-width-1px border-top-width-0 border-solid`
+            }
+          >
             <div className="desktop:grid-col-12">
               <details
                 css={inputsGroupStyles}
