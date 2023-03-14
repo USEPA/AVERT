@@ -699,7 +699,7 @@ function validateInput(
     | RenewableEnergyFieldName
     | ElectricVehiclesFieldName,
   inputValue: string,
-  invalidCharacters?: string[],
+  invalidCharacters: string[],
 ): AppThunk {
   return (dispatch, getState) => {
     const { impacts } = getState();
@@ -708,7 +708,7 @@ function validateInput(
     const invalidInput =
       isNaN(value) ||
       value < 0 ||
-      (invalidCharacters || []).some((c) => inputValue.includes(c));
+      invalidCharacters.some((c) => inputValue.includes(c));
 
     // remove input field being validated from existing fields with errors
     const errors = impacts.errors.filter((field) => field !== inputField);
@@ -729,7 +729,7 @@ export function updateEEAnnualGwh(input: string): AppThunk {
       payload: { text: input },
     });
 
-    dispatch(validateInput('annualGwh', input));
+    dispatch(validateInput('annualGwh', input, []));
   };
 }
 
@@ -740,7 +740,7 @@ export function updateEEConstantMw(input: string): AppThunk {
       payload: { text: input },
     });
 
-    dispatch(validateInput('constantMwh', input));
+    dispatch(validateInput('constantMwh', input, []));
   };
 }
 
@@ -751,7 +751,7 @@ export function updateEEBroadBasedProgram(input: string): AppThunk {
       payload: { text: input },
     });
 
-    dispatch(validateInput('broadProgram', input));
+    dispatch(validateInput('broadProgram', input, []));
   };
 }
 
@@ -762,7 +762,7 @@ export function updateEEReduction(input: string): AppThunk {
       payload: { text: input },
     });
 
-    dispatch(validateInput('reduction', input));
+    dispatch(validateInput('reduction', input, []));
   };
 }
 
@@ -773,7 +773,7 @@ export function updateEETopHours(input: string): AppThunk {
       payload: { text: input },
     });
 
-    dispatch(validateInput('topHours', input));
+    dispatch(validateInput('topHours', input, []));
   };
 }
 
@@ -784,7 +784,7 @@ export function updateREOnshoreWind(input: string): AppThunk {
       payload: { text: input },
     });
 
-    dispatch(validateInput('onshoreWind', input));
+    dispatch(validateInput('onshoreWind', input, []));
   };
 }
 
@@ -795,7 +795,7 @@ export function updateREOffshoreWind(input: string): AppThunk {
       payload: { text: input },
     });
 
-    dispatch(validateInput('offshoreWind', input));
+    dispatch(validateInput('offshoreWind', input, []));
   };
 }
 
@@ -806,7 +806,7 @@ export function updateREUtilitySolar(input: string): AppThunk {
       payload: { text: input },
     });
 
-    dispatch(validateInput('utilitySolar', input));
+    dispatch(validateInput('utilitySolar', input, []));
   };
 }
 
@@ -817,7 +817,7 @@ export function updateRERooftopSolar(input: string): AppThunk {
       payload: { text: input },
     });
 
-    dispatch(validateInput('rooftopSolar', input));
+    dispatch(validateInput('rooftopSolar', input, []));
   };
 }
 
