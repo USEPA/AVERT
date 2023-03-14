@@ -21,6 +21,7 @@ export function ImpactsTextInput(props: {
   onChange: (value: string) => void;
   onBlur?: (value: string) => void;
   tooltip?: ReactNode;
+  errorMessage?: ReactNode;
 }) {
   const {
     className,
@@ -33,6 +34,7 @@ export function ImpactsTextInput(props: {
     onChange,
     onBlur,
     tooltip,
+    errorMessage,
   } = props;
 
   const dispatch = useDispatch();
@@ -104,11 +106,15 @@ export function ImpactsTextInput(props: {
           | ElectricVehiclesFieldName,
       ) && (
         <p className="text-italic text-secondary" data-input-error>
-          <span className="display-block text-bold text-no-italic">
-            Please enter a positive number.
-          </span>
-          If you wish to model a reverse energy impacts scenario (i.e., a
-          negative number), use the Excel version of the AVERT Main Module.
+          {errorMessage ?? (
+            <>
+              <span className="display-block text-bold text-no-italic">
+                Please enter a positive number.
+              </span>
+              If you wish to model a reverse energy impacts scenario (i.e., a
+              negative number), use the Excel version of the AVERT Main Module.
+            </>
+          )}
         </p>
       )}
     </div>

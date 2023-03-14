@@ -170,6 +170,16 @@ function ImpactsInputsContent() {
     ? 'avert-button-disabled'
     : '';
 
+  const evInputErrorMessage = (
+    <>
+      <span className="display-block text-bold text-no-italic">
+        Please enter a positive whole number.
+      </span>
+      If you wish to model a reverse energy impacts scenario (i.e., a negative
+      number), use the Excel version of the AVERT Main Module.
+    </>
+  );
+
   return (
     <>
       <div
@@ -648,6 +658,7 @@ function ImpactsInputsContent() {
                                 added to the road.
                               </p>
                             }
+                            errorMessage={evInputErrorMessage}
                           />
                         </div>
 
@@ -670,6 +681,7 @@ function ImpactsInputsContent() {
                                 EVs to be added to the road.
                               </p>
                             }
+                            errorMessage={evInputErrorMessage}
                           />
                         </div>
                       </div>
@@ -694,6 +706,7 @@ function ImpactsInputsContent() {
                                 added to the road.
                               </p>
                             }
+                            errorMessage={evInputErrorMessage}
                           />
                         </div>
 
@@ -716,6 +729,7 @@ function ImpactsInputsContent() {
                                 added to the road.
                               </p>
                             }
+                            errorMessage={evInputErrorMessage}
                           />
                         </div>
                       </div>
