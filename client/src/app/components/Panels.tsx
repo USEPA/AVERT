@@ -517,7 +517,7 @@ export function Panels() {
             <MonthlyEmissionsCharts />
           </div>
 
-          <hr />
+          <hr className="avert-rule" />
 
           <div className="grid-container padding-0 maxw-full">
             <div className="grid-row">
