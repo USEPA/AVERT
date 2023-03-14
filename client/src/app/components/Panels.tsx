@@ -17,6 +17,7 @@ import { UnitConversion } from 'app/components/UnitConversion';
 import { ImpactsInputs } from 'app/components/ImpactsInputs';
 import { ImpactsChart } from 'app/components/ImpactsChart';
 import { ImpactsMessages } from 'app/components/ImpactsMessages';
+import { ResultsImpactsInputs } from 'app/components/ResultsImpactsInputs';
 import { PowerEmissionsTable } from 'app/components/PowerEmissionsTable';
 import { VehiclesEmissionsTable } from 'app/components/VehiclesEmissionsTable';
 import { StateEmissionsTable } from 'app/components/StateEmissionsTable';
@@ -464,7 +465,9 @@ export function Panels() {
             </div>
           )}
 
-          <div className="margin-top-0 desktop:display-flex">
+          <ResultsImpactsInputs />
+
+          <div className="margin-top-3 desktop:display-flex">
             <div className="flex-1 desktop:margin-right-105">
               <h3 className="avert-blue margin-bottom-1 font-serif-md">
                 Annual Emissions Changes • <small>Power Sector Only</small>
