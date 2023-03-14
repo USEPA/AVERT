@@ -703,7 +703,7 @@ function validateInput(
   return (dispatch, getState) => {
     const { impacts } = getState();
 
-    const value = Number(inputValue);
+    const value = Number(inputValue.replaceAll(',', ''));
     const invalidInput = isNaN(value) || value < 0;
 
     // remove input field being validated from existing fields with errors
