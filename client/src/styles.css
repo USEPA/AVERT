@@ -46,6 +46,12 @@ button:not([disabled]):focus,
   outline-width: 0.1875rem;
 }
 
+.usa-input:disabled,
+.usa-select:disabled {
+  opacity: 1;
+  background-color: #f3f9fc;
+}
+
 .highcharts-menu hr {
   margin: 0;
 }
@@ -232,4 +238,8 @@ button:not([disabled]):focus,
 .avert-table-striped tbody tr:nth-of-type(odd),
 .avert-table tbody tr.avert-table-striped-row {
   background-color: rgba(0, 169, 204, 0.125);
+}
+
+.avert-rule {
+  border-top-color: rgba(0, 128, 164, 0.1875);
 }

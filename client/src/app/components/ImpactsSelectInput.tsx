@@ -9,7 +9,7 @@ export function ImpactsSelectInput(props: {
   options: { id: string; name: string }[];
   value: string;
   fieldName: string;
-  disabled?: boolean;
+  disabled?: string;
   onChange: (value: string) => void;
   tooltip?: ReactNode;
 }) {

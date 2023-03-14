@@ -1,4 +1,5 @@
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
+import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import type { SelectedRegionsTotalYearlyEmissionChanges } from 'app/calculations/transportation';
 import type { CombinedSectorsEmissionsData } from 'app/calculations/emissions';
@@ -85,9 +86,18 @@ function VehiclesEmissionsTableContent() {
     ({ transportation }) =>
       transportation.selectedRegionsTotalYearlyEmissionChanges,
   );
+  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
   const combinedSectorsEmissionsData = useTypedSelector(
     ({ results }) => results.combinedSectorsEmissionsData,
   );
+
+  const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = inputs;
+
+  const evInputsEmpty =
+    (batteryEVs === '' || batteryEVs === '0') &&
+    (hybridEVs === '' || hybridEVs === '0') &&
+    (transitBuses === '' || transitBuses === '0') &&
+    (schoolBuses === '' || schoolBuses === '0');
 
   const annualPower = setAnnualPowerEmissionsChanges({
     combinedSectorsEmissionsData,
@@ -99,6 +109,18 @@ function VehiclesEmissionsTableContent() {
 
   if (!combinedSectorsEmissionsData) return null;
 
+  if (evInputsEmpty) {
+    return (
+      <div className="grid-col-12">
+        <div className="avert-box padding-3">
+          <p className="margin-0 font-sans-xs text-center">
+            <strong>No electric vehicles inputs entered.</strong>
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="overflow-auto">
@@ -108,10 +130,30 @@ function VehiclesEmissionsTableContent() {
               <tr>
                 <th>&nbsp;</th>
                 <th className="text-right">
-                  <small>From</small> Fossil Generation
+                  <small>From</small> Fossil Generation&nbsp;
+                  <Tooltip id="vehicle-sector-from-fossil-generation" reversed>
+                    <p className="margin-0 text-normal text-left">
+                      This column shows the annual emissions impacts from the
+                      electric power sector. This column includes emissions
+                      changes from fossil fuel power plants that are affected by
+                      the combined load change from all modeled resources,
+                      including energy efficiency, renewable energy, and
+                      electric vehicle charging load.
+                    </p>
+                  </Tooltip>
                 </th>
                 <th className="text-right">
-                  <small>From</small> Vehicles
+                  <small>From</small> Vehicles&nbsp;
+                  <Tooltip id="vehicle-sector-from-vehicles" reversed>
+                    <p className="margin-0 text-normal text-left">
+                      This column shows the annual avoided emissions from
+                      internal combustion engine vehicles displaced due to the
+                      user-inputted addition of electric vehicles to the road.
+                      Avoided vehicle emissions refers to emissions from vehicle
+                      tailpipes and other emissions closely related to the
+                      driving and fueling of vehicles.
+                    </p>
+                  </Tooltip>
                 </th>
                 <th className="text-right">Net Change</th>
               </tr>
@@ -232,10 +274,10 @@ function VehiclesEmissionsTableContent() {
 
       <ul className="margin-top-2 margin-bottom-0 font-sans-3xs line-height-sans-3 text-base-dark">
         <li>Negative numbers indicate displaced generation and emissions.</li>
-        <li>All results are rounded to the nearest ten.</li>
         <li>
-          A dash (“&thinsp;—&thinsp;”) indicates a result greater than zero, but
-          lower than the level of reportable significance.
+          All results are rounded to the nearest 10. A dash
+          (“&thinsp;—&thinsp;”) indicates non-zero results, but within +/- 10
+          units.
         </li>
         <li>
           Fossil results include combined changes from all modeled resources

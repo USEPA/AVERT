@@ -170,6 +170,16 @@ function ImpactsInputsContent() {
     ? 'avert-button-disabled'
     : '';
 
+  const evInputErrorMessage = (
+    <>
+      <span className="display-block text-bold text-no-italic">
+        Please enter a positive whole number.
+      </span>
+      If you wish to model a reverse energy impacts scenario (i.e., a negative
+      number), use the Excel version of the AVERT Main Module.
+    </>
+  );
+
   return (
     <>
       <div
@@ -190,13 +200,18 @@ function ImpactsInputsContent() {
           <div
             className={
               `grid-row ` +
-              `avert-border border-width-1px border-top-width-0 border-solid`
+              `avert-border border-width-1px border-top-width-0 border-right-width-0 border-solid`
             }
           >
-            <div className="desktop:grid-col-6">
+            <div
+              className={
+                `desktop:grid-col-6 ` +
+                `avert-border border-width-1px border-y-width-0 border-left-width-0 border-solid`
+              }
+            >
               <details
                 css={inputsGroupStyles}
-                className="avert-border border-width-1px border-x-width-0 border-bottom-width-0 border-solid"
+                className="avert-border border-width-1px border-bottom-width-0 border-x-width-0 border-solid"
                 open={detailsAOpen}
                 onToggle={(ev) => {
                   const details = ev.currentTarget as HTMLDetailsElement;
@@ -230,7 +245,9 @@ function ImpactsInputsContent() {
                         value={annualGwh}
                         fieldName="annualGwh"
                         disabled={constantMwh}
-                        onChange={(text) => dispatch(updateEEAnnualGwh(text))}
+                        onChange={(value) => {
+                          dispatch(updateEEAnnualGwh(value));
+                        }}
                         tooltip={
                           <p className="margin-0">
                             Enter the total number of GWh expected to be saved
@@ -253,7 +270,9 @@ function ImpactsInputsContent() {
                         value={constantMwh}
                         fieldName="constantMwh"
                         disabled={annualGwh}
-                        onChange={(text) => dispatch(updateEEConstantMw(text))}
+                        onChange={(value) => {
+                          dispatch(updateEEConstantMw(value));
+                        }}
                         tooltip={
                           <p className="margin-0">
                             “Reduce hourly generation” is identical in effect to
@@ -271,10 +290,15 @@ function ImpactsInputsContent() {
               </details>
             </div>
 
-            <div className="desktop:grid-col-6">
+            <div
+              className={
+                `desktop:grid-col-6 ` +
+                `avert-border border-width-1px border-y-width-0 border-left-width-0 border-solid`
+              }
+            >
               <details
                 css={inputsGroupStyles}
-                className="avert-border border-width-1px border-x-width-0 border-bottom-width-0 border-solid"
+                className="avert-border border-width-1px border-bottom-width-0 border-x-width-0 border-solid"
                 open={detailsBOpen}
                 onToggle={(ev) => {
                   const details = ev.currentTarget as HTMLDetailsElement;
@@ -312,9 +336,9 @@ function ImpactsInputsContent() {
                         value={broadProgram}
                         fieldName="broadProgram"
                         disabled={reduction || topHours}
-                        onChange={(text) =>
-                          dispatch(updateEEBroadBasedProgram(text))
-                        }
+                        onChange={(value) => {
+                          dispatch(updateEEBroadBasedProgram(value));
+                        }}
                         tooltip={
                           <p className="margin-0">
                             To simulate a broad-based efficiency program, enter
@@ -339,7 +363,9 @@ function ImpactsInputsContent() {
                         value={reduction}
                         fieldName="reduction"
                         disabled={broadProgram}
-                        onChange={(text) => dispatch(updateEEReduction(text))}
+                        onChange={(value) => {
+                          dispatch(updateEEReduction(value));
+                        }}
                       />
 
                       <ImpactsTextInput
@@ -348,7 +374,9 @@ function ImpactsInputsContent() {
                         value={topHours}
                         fieldName="topHours"
                         disabled={broadProgram}
-                        onChange={(text) => dispatch(updateEETopHours(text))}
+                        onChange={(value) => {
+                          dispatch(updateEETopHours(value));
+                        }}
                         tooltip={
                           <p className="margin-0">
                             To simulate a peak-reduction targeting program such
@@ -381,13 +409,18 @@ function ImpactsInputsContent() {
           <div
             className={
               `grid-row ` +
-              `avert-border border-width-1px border-top-width-0 border-solid`
+              `avert-border border-width-1px border-top-width-0 border-right-width-0 border-solid`
             }
           >
-            <div className="desktop:grid-col-6">
+            <div
+              className={
+                `desktop:grid-col-6 ` +
+                `avert-border border-width-1px border-y-width-0 border-left-width-0 border-solid`
+              }
+            >
               <details
                 css={inputsGroupStyles}
-                className="avert-border border-width-1px border-x-width-0 border-bottom-width-0 border-solid"
+                className="avert-border border-width-1px border-bottom-width-0 border-x-width-0 border-solid"
                 open={detailsCOpen}
                 onToggle={(ev) => {
                   const details = ev.currentTarget as HTMLDetailsElement;
@@ -416,7 +449,9 @@ function ImpactsInputsContent() {
                         suffix="MW"
                         value={onshoreWind}
                         fieldName="onshoreWind"
-                        onChange={(text) => dispatch(updateREOnshoreWind(text))}
+                        onChange={(value) => {
+                          dispatch(updateREOnshoreWind(value));
+                        }}
                         tooltip={
                           <p className="margin-0">
                             Enter the total capacity (maximum potential
@@ -437,9 +472,9 @@ function ImpactsInputsContent() {
                           suffix="MW"
                           value={offshoreWind}
                           fieldName="offshoreWind"
-                          onChange={(text) =>
-                            dispatch(updateREOffshoreWind(text))
-                          }
+                          onChange={(value) => {
+                            dispatch(updateREOffshoreWind(value));
+                          }}
                           tooltip={
                             <p className="margin-0">
                               Enter the total capacity (maximum potential
@@ -484,10 +519,15 @@ function ImpactsInputsContent() {
               </details>
             </div>
 
-            <div className="desktop:grid-col-6">
+            <div
+              className={
+                `desktop:grid-col-6 ` +
+                `avert-border border-width-1px border-y-width-0 border-left-width-0 border-solid`
+              }
+            >
               <details
                 css={inputsGroupStyles}
-                className="avert-border border-width-1px border-x-width-0 border-bottom-width-0 border-solid"
+                className="avert-border border-width-1px border-bottom-width-0 border-x-width-0 border-solid"
                 open={detailsDOpen}
                 onToggle={(ev) => {
                   const details = ev.currentTarget as HTMLDetailsElement;
@@ -504,7 +544,7 @@ function ImpactsInputsContent() {
                   }
                   data-label="D"
                 >
-                  Solar PV
+                  Solar photovoltaic (PV)
                 </summary>
 
                 <section className="padding-top-0 padding-x-2 padding-bottom-105">
@@ -516,9 +556,9 @@ function ImpactsInputsContent() {
                         suffix="MW"
                         value={utilitySolar}
                         fieldName="utilitySolar"
-                        onChange={(text) =>
-                          dispatch(updateREUtilitySolar(text))
-                        }
+                        onChange={(value) => {
+                          dispatch(updateREUtilitySolar(value));
+                        }}
                         tooltip={
                           <p className="margin-0">
                             Enter the total capacity (maximum potential
@@ -541,9 +581,9 @@ function ImpactsInputsContent() {
                         suffix="MW"
                         value={rooftopSolar}
                         fieldName="rooftopSolar"
-                        onChange={(text) =>
-                          dispatch(updateRERooftopSolar(text))
-                        }
+                        onChange={(value) => {
+                          dispatch(updateRERooftopSolar(value));
+                        }}
                         tooltip={
                           <p className="margin-0">
                             Enter the total capacity (maximum potential
@@ -576,13 +616,18 @@ function ImpactsInputsContent() {
           <div
             className={
               `grid-row ` +
-              `avert-border border-width-1px border-top-width-0 border-solid`
+              `avert-border border-width-1px border-top-width-0 border-right-width-0 border-solid`
             }
           >
-            <div className="desktop:grid-col-12">
+            <div
+              className={
+                `desktop:grid-col-12 ` +
+                `avert-border border-width-1px border-y-width-0 border-left-width-0 border-solid`
+              }
+            >
               <details
                 css={inputsGroupStyles}
-                className="avert-border border-width-1px border-x-width-0 border-bottom-width-0 border-solid"
+                className="avert-border border-width-1px border-bottom-width-0 border-x-width-0 border-solid"
                 open={detailsEOpen}
                 onToggle={(ev) => {
                   const details = ev.currentTarget as HTMLDetailsElement;
@@ -611,18 +656,19 @@ function ImpactsInputsContent() {
                             ariaLabel="Number of light-duty battery EVs to be added to the road"
                             value={batteryEVs}
                             fieldName="batteryEVs"
-                            onChange={(text) =>
-                              dispatch(updateEVBatteryEVs(text))
-                            }
-                            onBlur={(text) =>
-                              dispatch(runEVBatteryEVsCalculations(text))
-                            }
+                            onChange={(value) => {
+                              dispatch(updateEVBatteryEVs(value));
+                            }}
+                            onBlur={(value) => {
+                              dispatch(runEVBatteryEVsCalculations(value));
+                            }}
                             tooltip={
                               <p className="margin-0">
                                 Enter the number of light-duty battery EVs to be
                                 added to the road.
                               </p>
                             }
+                            errorMessage={evInputErrorMessage}
                           />
                         </div>
 
@@ -633,18 +679,19 @@ function ImpactsInputsContent() {
                             ariaLabel="Number of light-duty plug-in hybrid EVs to be added to the road"
                             value={hybridEVs}
                             fieldName="hybridEVs"
-                            onChange={(text) =>
-                              dispatch(updateEVHybridEVs(text))
-                            }
-                            onBlur={(text) =>
-                              dispatch(runEVHybridEVsCalculations(text))
-                            }
+                            onChange={(value) => {
+                              dispatch(updateEVHybridEVs(value));
+                            }}
+                            onBlur={(value) => {
+                              dispatch(runEVHybridEVsCalculations(value));
+                            }}
                             tooltip={
                               <p className="margin-0">
                                 Enter the number of light-duty plug-in hybrid
                                 EVs to be added to the road.
                               </p>
                             }
+                            errorMessage={evInputErrorMessage}
                           />
                         </div>
                       </div>
@@ -657,18 +704,19 @@ function ImpactsInputsContent() {
                             ariaLabel="Number of electric transit buses to be added to the road"
                             value={transitBuses}
                             fieldName="transitBuses"
-                            onChange={(text) =>
-                              dispatch(updateEVTransitBuses(text))
-                            }
-                            onBlur={(text) =>
-                              dispatch(runEVTransitBusesCalculations(text))
-                            }
+                            onChange={(value) => {
+                              dispatch(updateEVTransitBuses(value));
+                            }}
+                            onBlur={(value) => {
+                              dispatch(runEVTransitBusesCalculations(value));
+                            }}
                             tooltip={
                               <p className="margin-0">
                                 Enter the number of electric transit buses to be
                                 added to the road.
                               </p>
                             }
+                            errorMessage={evInputErrorMessage}
                           />
                         </div>
 
@@ -679,18 +727,19 @@ function ImpactsInputsContent() {
                             ariaLabel="Number of electric school buses to be added to the road"
                             value={schoolBuses}
                             fieldName="schoolBuses"
-                            onChange={(text) =>
-                              dispatch(updateEVSchoolBuses(text))
-                            }
-                            onBlur={(text) =>
-                              dispatch(runEVSchoolBusesCalculations(text))
-                            }
+                            onChange={(value) => {
+                              dispatch(updateEVSchoolBuses(value));
+                            }}
+                            onBlur={(value) => {
+                              dispatch(runEVSchoolBusesCalculations(value));
+                            }}
                             tooltip={
                               <p className="margin-0">
                                 Enter the number of electric school buses to be
                                 added to the road.
                               </p>
                             }
+                            errorMessage={evInputErrorMessage}
                           />
                         </div>
                       </div>
@@ -711,9 +760,9 @@ function ImpactsInputsContent() {
                         options={evDeploymentLocationOptions}
                         value={evDeploymentLocation}
                         fieldName="evDeploymentLocation"
-                        onChange={(option) =>
-                          dispatch(updateEVDeploymentLocation(option))
-                        }
+                        onChange={(option) => {
+                          dispatch(updateEVDeploymentLocation(option));
+                        }}
                         tooltip={
                           <p className="margin-0">
                             Select the location of EV deployment. While AVERT’s
@@ -735,9 +784,9 @@ function ImpactsInputsContent() {
                         options={evModelYearOptions}
                         value={evModelYear}
                         fieldName="evModelYear"
-                        onChange={(option) =>
-                          dispatch(updateEVModelYear(option))
-                        }
+                        onChange={(option) => {
+                          dispatch(updateEVModelYear(option));
+                        }}
                         tooltip={
                           <p className="margin-0">
                             Select the model year of the modeled electric
@@ -759,9 +808,9 @@ function ImpactsInputsContent() {
                         options={iceReplacementVehicleOptions}
                         value={iceReplacementVehicle}
                         fieldName="iceReplacementVehicle"
-                        onChange={(option) =>
-                          dispatch(updateEVICEReplacementVehicle(option))
-                        }
+                        onChange={(option) => {
+                          dispatch(updateEVICEReplacementVehicle(option));
+                        }}
                         tooltip={
                           <p className="margin-0">
                             Select “new” or “existing” based on whether the new

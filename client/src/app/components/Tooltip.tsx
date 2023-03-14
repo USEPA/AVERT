@@ -96,8 +96,12 @@ const modalCloseStyles = css`
   }
 `;
 
-export function Tooltip(props: { id: string; children: ReactNode }) {
-  const { id, children } = props;
+export function Tooltip(props: {
+  id: string;
+  children: ReactNode;
+  reversed?: boolean;
+}) {
+  const { id, children, reversed } = props;
 
   const dispatch = useDispatch();
   const activeModalId = useTypedSelector(({ panel }) => panel.activeModalId);
@@ -111,7 +115,10 @@ export function Tooltip(props: { id: string; children: ReactNode }) {
   return (
     <>
       <a
-        css={modalLinkStyles}
+        css={[
+          modalLinkStyles,
+          reversed && { backgroundPosition: '-10px -40px' },
+        ]}
         className="avert-tooltip-icon position-relative display-inline-block width-2 height-2"
         href="/"
         onClick={(ev) => {

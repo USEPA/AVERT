@@ -112,8 +112,11 @@ type GeographyAction =
       payload: { stateId: StateId };
     }
   | {
-      type: 'geography/SET_REGION_SELECT_STATE_ID';
-      payload: { stateId: StateId | '' };
+      type: 'geography/SET_REGION_SELECT_STATE_ID_AND_REGION_IDS';
+      payload: {
+        stateId: StateId | '';
+        stateRegionIds: RegionId[];
+      };
     }
   | {
       type: 'geography/SET_REGION_SELECT_COUNTY';
@@ -163,6 +166,7 @@ type GeographyState = {
   countiesByGeography: CountiesByGeography | {};
   regionSelect: {
     stateId: StateId | '';
+    stateRegionIds: RegionId[];
     county: string;
   };
   regionalScalingFactors: RegionalScalingFactors;
@@ -236,6 +240,7 @@ const initialState: GeographyState = {
   countiesByGeography: {},
   regionSelect: {
     stateId: '',
+    stateRegionIds: [],
     county: '',
   },
   regionalScalingFactors: {},
@@ -288,14 +293,15 @@ export default function reducer(
       return updatedState;
     }
 
-    case 'geography/SET_REGION_SELECT_STATE_ID': {
-      const { stateId } = action.payload;
+    case 'geography/SET_REGION_SELECT_STATE_ID_AND_REGION_IDS': {
+      const { stateId, stateRegionIds } = action.payload;
 
       return {
         ...state,
         regionSelect: {
           ...state.regionSelect,
           stateId,
+          stateRegionIds,
         },
       };
     }
@@ -446,10 +452,38 @@ export function selectState(stateId: string): AppThunk {
  * the states dropdown list in the "Select Region" tab of the "Select Geography"
  * page.
  */
-export function setRegionSelectStateId(stateId: StateId | ''): GeographyAction {
-  return {
-    type: 'geography/SET_REGION_SELECT_STATE_ID',
-    payload: { stateId },
+export function setRegionSelectStateIdAndRegionIds(
+  stateId: StateId | '',
+): AppThunk {
+  return (dispatch, getState) => {
+    const { geography } = getState();
+    const { countiesByGeography } = geography;
+
+    const countiesByGeographyData =
+      Object.keys(countiesByGeography).length !== 0
+        ? (countiesByGeography as CountiesByGeography)
+        : null;
+
+    if (countiesByGeographyData) {
+      const { regions } = countiesByGeographyData;
+
+      const stateRegionIds = Object.entries(regions).reduce(
+        (array, [key, value]) => {
+          const regionId = key as keyof typeof regions;
+          if (Object.keys(value).includes(stateId)) array.push(regionId);
+          return array;
+        },
+        [] as RegionId[],
+      );
+
+      dispatch({
+        type: 'geography/SET_REGION_SELECT_STATE_ID_AND_REGION_IDS',
+        payload: {
+          stateId,
+          stateRegionIds,
+        },
+      });
+    }
   };
 }
 

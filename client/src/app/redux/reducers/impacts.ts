@@ -51,71 +51,71 @@ type Action =
     }
   | {
       type: 'impacts/UPDATE_EE_ANNUAL_GWH';
-      payload: { text: string };
+      payload: { value: string };
     }
   | {
       type: 'impacts/UPDATE_EE_CONSTANT_MW';
-      payload: { text: string };
+      payload: { value: string };
     }
   | {
       type: 'impacts/UPDATE_EE_BROAD_BASE_PROGRAM';
-      payload: { text: string };
+      payload: { value: string };
     }
   | {
       type: 'impacts/UPDATE_EE_REDUCTION';
-      payload: { text: string };
+      payload: { value: string };
     }
   | {
       type: 'impacts/UPDATE_EE_TOP_HOURS';
-      payload: { text: string };
+      payload: { value: string };
     }
   | {
       type: 'impacts/UPDATE_RE_ONSHORE_WIND';
-      payload: { text: string };
+      payload: { value: string };
     }
   | {
       type: 'impacts/UPDATE_RE_OFFSHORE_WIND';
-      payload: { text: string };
+      payload: { value: string };
     }
   | {
       type: 'impacts/UPDATE_RE_UTILITY_SOLAR';
-      payload: { text: string };
+      payload: { value: string };
     }
   | {
       type: 'impacts/UPDATE_RE_ROOFTOP_SOLAR';
-      payload: { text: string };
+      payload: { value: string };
     }
   | {
       type: 'impacts/UPDATE_EV_BATTERY_EVS';
-      payload: { text: string };
+      payload: { value: string };
     }
   | {
       type: 'impacts/UPDATE_EV_BATTERY_EVS_CALCULATIONS_INPUT';
-      payload: { text: string };
+      payload: { value: string };
     }
   | {
       type: 'impacts/UPDATE_EV_HYBRID_EVS';
-      payload: { text: string };
+      payload: { value: string };
     }
   | {
       type: 'impacts/UPDATE_EV_HYBRID_EVS_CALCULATIONS_INPUT';
-      payload: { text: string };
+      payload: { value: string };
     }
   | {
       type: 'impacts/UPDATE_EV_TRANSIT_BUSES';
-      payload: { text: string };
+      payload: { value: string };
     }
   | {
       type: 'impacts/UPDATE_EV_TRANSIT_BUSES_CALCULATIONS_INPUT';
-      payload: { text: string };
+      payload: { value: string };
     }
   | {
       type: 'impacts/UPDATE_EV_SCHOOL_BUSES';
-      payload: { text: string };
+      payload: { value: string };
     }
   | {
       type: 'impacts/UPDATE_EV_SCHOOL_BUSES_CALCULATIONS_INPUT';
-      payload: { text: string };
+      payload: { value: string };
     }
   | {
       type: 'impacts/UPDATE_EV_DEPLOYMENT_LOCATION';
@@ -331,188 +331,188 @@ export default function reducer(
     }
 
     case 'impacts/UPDATE_EE_ANNUAL_GWH': {
-      const { text } = action.payload;
+      const { value } = action.payload;
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          annualGwh: text,
+          annualGwh: value,
         },
       };
     }
 
     case 'impacts/UPDATE_EE_CONSTANT_MW': {
-      const { text } = action.payload;
+      const { value } = action.payload;
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          constantMwh: text,
+          constantMwh: value,
         },
       };
     }
 
     case 'impacts/UPDATE_EE_BROAD_BASE_PROGRAM': {
-      const { text } = action.payload;
+      const { value } = action.payload;
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          broadProgram: text,
+          broadProgram: value,
         },
       };
     }
 
     case 'impacts/UPDATE_EE_REDUCTION': {
-      const { text } = action.payload;
+      const { value } = action.payload;
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          reduction: text,
+          reduction: value,
         },
       };
     }
 
     case 'impacts/UPDATE_EE_TOP_HOURS': {
-      const { text } = action.payload;
+      const { value } = action.payload;
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          topHours: text,
+          topHours: value,
         },
       };
     }
 
     case 'impacts/UPDATE_RE_ONSHORE_WIND': {
-      const { text } = action.payload;
+      const { value } = action.payload;
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          onshoreWind: text,
+          onshoreWind: value,
         },
       };
     }
 
     case 'impacts/UPDATE_RE_OFFSHORE_WIND': {
-      const { text } = action.payload;
+      const { value } = action.payload;
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          offshoreWind: text,
+          offshoreWind: value,
         },
       };
     }
 
     case 'impacts/UPDATE_RE_UTILITY_SOLAR': {
-      const { text } = action.payload;
+      const { value } = action.payload;
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          utilitySolar: text,
+          utilitySolar: value,
         },
       };
     }
 
     case 'impacts/UPDATE_RE_ROOFTOP_SOLAR': {
-      const { text } = action.payload;
+      const { value } = action.payload;
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          rooftopSolar: text,
+          rooftopSolar: value,
         },
       };
     }
 
     case 'impacts/UPDATE_EV_BATTERY_EVS': {
-      const { text } = action.payload;
+      const { value } = action.payload;
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          batteryEVs: text,
+          batteryEVs: value,
         },
       };
     }
 
     case 'impacts/UPDATE_EV_BATTERY_EVS_CALCULATIONS_INPUT': {
-      const { text } = action.payload;
+      const { value } = action.payload;
       return {
         ...state,
         evCalculationsInputs: {
           ...state.evCalculationsInputs,
-          batteryEVs: text,
+          batteryEVs: value,
         },
       };
     }
 
     case 'impacts/UPDATE_EV_HYBRID_EVS': {
-      const { text } = action.payload;
+      const { value } = action.payload;
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          hybridEVs: text,
+          hybridEVs: value,
         },
       };
     }
 
     case 'impacts/UPDATE_EV_HYBRID_EVS_CALCULATIONS_INPUT': {
-      const { text } = action.payload;
+      const { value } = action.payload;
       return {
         ...state,
         evCalculationsInputs: {
           ...state.evCalculationsInputs,
-          hybridEVs: text,
+          hybridEVs: value,
         },
       };
     }
 
     case 'impacts/UPDATE_EV_TRANSIT_BUSES': {
-      const { text } = action.payload;
+      const { value } = action.payload;
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          transitBuses: text,
+          transitBuses: value,
         },
       };
     }
 
     case 'impacts/UPDATE_EV_TRANSIT_BUSES_CALCULATIONS_INPUT': {
-      const { text } = action.payload;
+      const { value } = action.payload;
       return {
         ...state,
         evCalculationsInputs: {
           ...state.evCalculationsInputs,
-          transitBuses: text,
+          transitBuses: value,
         },
       };
     }
 
     case 'impacts/UPDATE_EV_SCHOOL_BUSES': {
-      const { text } = action.payload;
+      const { value } = action.payload;
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          schoolBuses: text,
+          schoolBuses: value,
         },
       };
     }
 
     case 'impacts/UPDATE_EV_SCHOOL_BUSES_CALCULATIONS_INPUT': {
-      const { text } = action.payload;
+      const { value } = action.payload;
       return {
         ...state,
         evCalculationsInputs: {
           ...state.evCalculationsInputs,
-          schoolBuses: text,
+          schoolBuses: value,
         },
       };
     }
@@ -699,12 +699,16 @@ function validateInput(
     | RenewableEnergyFieldName
     | ElectricVehiclesFieldName,
   inputValue: string,
+  invalidCharacters: string[],
 ): AppThunk {
   return (dispatch, getState) => {
     const { impacts } = getState();
 
-    const value = Number(inputValue);
-    const invalidInput = isNaN(value) || value < 0;
+    const value = Number(inputValue.replaceAll(',', ''));
+    const invalidInput =
+      isNaN(value) ||
+      value < 0 ||
+      invalidCharacters.some((c) => inputValue.includes(c));
 
     // remove input field being validated from existing fields with errors
     const errors = impacts.errors.filter((field) => field !== inputField);
@@ -718,234 +722,234 @@ function validateInput(
   };
 }
 
-export function updateEEAnnualGwh(input: string): AppThunk {
+export function updateEEAnnualGwh(value: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EE_ANNUAL_GWH',
-      payload: { text: input },
+      payload: { value },
     });
 
-    dispatch(validateInput('annualGwh', input));
+    dispatch(validateInput('annualGwh', value, []));
   };
 }
 
-export function updateEEConstantMw(input: string): AppThunk {
+export function updateEEConstantMw(value: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EE_CONSTANT_MW',
-      payload: { text: input },
+      payload: { value },
     });
 
-    dispatch(validateInput('constantMwh', input));
+    dispatch(validateInput('constantMwh', value, []));
   };
 }
 
-export function updateEEBroadBasedProgram(input: string): AppThunk {
+export function updateEEBroadBasedProgram(value: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EE_BROAD_BASE_PROGRAM',
-      payload: { text: input },
+      payload: { value },
     });
 
-    dispatch(validateInput('broadProgram', input));
+    dispatch(validateInput('broadProgram', value, []));
   };
 }
 
-export function updateEEReduction(input: string): AppThunk {
+export function updateEEReduction(value: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EE_REDUCTION',
-      payload: { text: input },
+      payload: { value },
     });
 
-    dispatch(validateInput('reduction', input));
+    dispatch(validateInput('reduction', value, []));
   };
 }
 
-export function updateEETopHours(input: string): AppThunk {
+export function updateEETopHours(value: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EE_TOP_HOURS',
-      payload: { text: input },
+      payload: { value },
     });
 
-    dispatch(validateInput('topHours', input));
+    dispatch(validateInput('topHours', value, []));
   };
 }
 
-export function updateREOnshoreWind(input: string): AppThunk {
+export function updateREOnshoreWind(value: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_RE_ONSHORE_WIND',
-      payload: { text: input },
+      payload: { value },
     });
 
-    dispatch(validateInput('onshoreWind', input));
+    dispatch(validateInput('onshoreWind', value, []));
   };
 }
 
-export function updateREOffshoreWind(input: string): AppThunk {
+export function updateREOffshoreWind(value: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_RE_OFFSHORE_WIND',
-      payload: { text: input },
+      payload: { value },
     });
 
-    dispatch(validateInput('offshoreWind', input));
+    dispatch(validateInput('offshoreWind', value, []));
   };
 }
 
-export function updateREUtilitySolar(input: string): AppThunk {
+export function updateREUtilitySolar(value: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_RE_UTILITY_SOLAR',
-      payload: { text: input },
+      payload: { value },
     });
 
-    dispatch(validateInput('utilitySolar', input));
+    dispatch(validateInput('utilitySolar', value, []));
   };
 }
 
-export function updateRERooftopSolar(input: string): AppThunk {
+export function updateRERooftopSolar(value: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_RE_ROOFTOP_SOLAR',
-      payload: { text: input },
+      payload: { value },
     });
 
-    dispatch(validateInput('rooftopSolar', input));
+    dispatch(validateInput('rooftopSolar', value, []));
   };
 }
 
-export function updateEVBatteryEVs(input: string): AppThunk {
+export function updateEVBatteryEVs(value: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EV_BATTERY_EVS',
-      payload: { text: input },
+      payload: { value },
     });
 
-    dispatch(validateInput('batteryEVs', input));
+    dispatch(validateInput('batteryEVs', value, ['.']));
   };
 }
 
 /**
  * Called every time the batteryEVs inputs loses focus (e.g. onBlur)
  */
-export function runEVBatteryEVsCalculations(input: string): AppThunk {
+export function runEVBatteryEVsCalculations(value: string): AppThunk {
   return (dispatch, getState) => {
     const { impacts } = getState();
     const { batteryEVs } = impacts.evCalculationsInputs;
 
     /** only run calculations if the input has changed since the last onBlur */
-    if (input !== batteryEVs) {
+    if (value !== batteryEVs) {
       dispatch(setVehiclesDisplaced());
     }
 
     dispatch({
       type: 'impacts/UPDATE_EV_BATTERY_EVS_CALCULATIONS_INPUT',
-      payload: { text: input },
+      payload: { value },
     });
   };
 }
 
-export function updateEVHybridEVs(input: string): AppThunk {
+export function updateEVHybridEVs(value: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EV_HYBRID_EVS',
-      payload: { text: input },
+      payload: { value },
     });
 
-    dispatch(validateInput('hybridEVs', input));
+    dispatch(validateInput('hybridEVs', value, ['.']));
   };
 }
 
 /**
  * Called every time the hybridEVs inputs loses focus (e.g. onBlur)
  */
-export function runEVHybridEVsCalculations(input: string): AppThunk {
+export function runEVHybridEVsCalculations(value: string): AppThunk {
   return (dispatch, getState) => {
     const { impacts } = getState();
     const { hybridEVs } = impacts.evCalculationsInputs;
 
     /** only run calculations if the input has changed since the last onBlur */
-    if (input !== hybridEVs) {
+    if (value !== hybridEVs) {
       dispatch(setVehiclesDisplaced());
     }
 
     dispatch({
       type: 'impacts/UPDATE_EV_HYBRID_EVS_CALCULATIONS_INPUT',
-      payload: { text: input },
+      payload: { value },
     });
   };
 }
 
-export function updateEVTransitBuses(input: string): AppThunk {
+export function updateEVTransitBuses(value: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EV_TRANSIT_BUSES',
-      payload: { text: input },
+      payload: { value },
     });
 
-    dispatch(validateInput('transitBuses', input));
+    dispatch(validateInput('transitBuses', value, ['.']));
   };
 }
 
 /**
  * Called every time the transitBuses inputs loses focus (e.g. onBlur)
  */
-export function runEVTransitBusesCalculations(input: string): AppThunk {
+export function runEVTransitBusesCalculations(value: string): AppThunk {
   return (dispatch, getState) => {
     const { impacts } = getState();
     const { transitBuses } = impacts.evCalculationsInputs;
 
     /** only run calculations if the input has changed since the last onBlur */
-    if (input !== transitBuses) {
+    if (value !== transitBuses) {
       dispatch(setVehiclesDisplaced());
     }
 
     dispatch({
       type: 'impacts/UPDATE_EV_TRANSIT_BUSES_CALCULATIONS_INPUT',
-      payload: { text: input },
+      payload: { value },
     });
   };
 }
 
-export function updateEVSchoolBuses(input: string): AppThunk {
+export function updateEVSchoolBuses(value: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EV_SCHOOL_BUSES',
-      payload: { text: input },
+      payload: { value },
     });
 
-    dispatch(validateInput('schoolBuses', input));
+    dispatch(validateInput('schoolBuses', value, ['.']));
   };
 }
 
 /**
  * Called every time the schoolBuses inputs loses focus (e.g. onBlur)
  */
-export function runEVSchoolBusesCalculations(input: string): AppThunk {
+export function runEVSchoolBusesCalculations(value: string): AppThunk {
   return (dispatch, getState) => {
     const { impacts } = getState();
     const { schoolBuses } = impacts.evCalculationsInputs;
 
     /** only run calculations if the input has changed since the last onBlur */
-    if (input !== schoolBuses) {
+    if (value !== schoolBuses) {
       dispatch(setVehiclesDisplaced());
     }
 
     dispatch({
       type: 'impacts/UPDATE_EV_SCHOOL_BUSES_CALCULATIONS_INPUT',
-      payload: { text: input },
+      payload: { value },
     });
   };
 }
 
-export function updateEVDeploymentLocation(input: string): AppThunk {
+export function updateEVDeploymentLocation(option: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EV_DEPLOYMENT_LOCATION',
-      payload: { option: input },
+      payload: { option },
     });
 
     dispatch(setMonthlyEmissionRates());
@@ -953,11 +957,11 @@ export function updateEVDeploymentLocation(input: string): AppThunk {
   };
 }
 
-export function updateEVModelYear(input: string): AppThunk {
+export function updateEVModelYear(option: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EV_MODEL_YEAR',
-      payload: { option: input },
+      payload: { option },
     });
 
     dispatch(setEVEfficiency());
@@ -966,11 +970,11 @@ export function updateEVModelYear(input: string): AppThunk {
   };
 }
 
-export function updateEVICEReplacementVehicle(input: string): AppThunk {
+export function updateEVICEReplacementVehicle(option: string): AppThunk {
   return (dispatch) => {
     dispatch({
       type: 'impacts/UPDATE_EV_ICE_REPLACEMENT_VEHICLE',
-      payload: { option: input },
+      payload: { option },
     });
 
     dispatch(setMonthlyEmissionRates());
