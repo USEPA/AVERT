@@ -132,13 +132,27 @@ function VehiclesEmissionsTableContent() {
                 <th className="text-right">
                   <small>From</small> Fossil Generation&nbsp;
                   <Tooltip id="vehicle-sector-from-fossil-generation" reversed>
-                    <p className="margin-0 text-normal text-left">TODO</p>
+                    <p className="margin-0 text-normal text-left">
+                      This column shows the annual emissions impacts from the
+                      electric power sector. This column includes emissions
+                      changes from fossil fuel power plants that are affected by
+                      the combined load change from all modeled resources,
+                      including energy efficiency, renewable energy, and
+                      electric vehicle charging load.
+                    </p>
                   </Tooltip>
                 </th>
                 <th className="text-right">
                   <small>From</small> Vehicles&nbsp;
                   <Tooltip id="vehicle-sector-from-vehicles" reversed>
-                    <p className="margin-0 text-normal text-left">TODO</p>
+                    <p className="margin-0 text-normal text-left">
+                      This column shows the annual avoided emissions from
+                      internal combustion engine vehicles displaced due to the
+                      user-inputted addition of electric vehicles to the road.
+                      Avoided vehicle emissions refers to emissions from vehicle
+                      tailpipes and other emissions closely related to the
+                      driving and fueling of vehicles.
+                    </p>
                   </Tooltip>
                 </th>
                 <th className="text-right">Net Change</th>
