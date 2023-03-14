@@ -699,12 +699,16 @@ function validateInput(
     | RenewableEnergyFieldName
     | ElectricVehiclesFieldName,
   inputValue: string,
+  invalidCharacters?: string[],
 ): AppThunk {
   return (dispatch, getState) => {
     const { impacts } = getState();
 
     const value = Number(inputValue.replaceAll(',', ''));
-    const invalidInput = isNaN(value) || value < 0;
+    const invalidInput =
+      isNaN(value) ||
+      value < 0 ||
+      (invalidCharacters || []).some((c) => inputValue.includes(c));
 
     // remove input field being validated from existing fields with errors
     const errors = impacts.errors.filter((field) => field !== inputField);
@@ -824,7 +828,7 @@ export function updateEVBatteryEVs(input: string): AppThunk {
       payload: { text: input },
     });
 
-    dispatch(validateInput('batteryEVs', input));
+    dispatch(validateInput('batteryEVs', input, ['.']));
   };
 }
 
@@ -855,7 +859,7 @@ export function updateEVHybridEVs(input: string): AppThunk {
       payload: { text: input },
     });
 
-    dispatch(validateInput('hybridEVs', input));
+    dispatch(validateInput('hybridEVs', input, ['.']));
   };
 }
 
@@ -886,7 +890,7 @@ export function updateEVTransitBuses(input: string): AppThunk {
       payload: { text: input },
     });
 
-    dispatch(validateInput('transitBuses', input));
+    dispatch(validateInput('transitBuses', input, ['.']));
   };
 }
 
@@ -917,7 +921,7 @@ export function updateEVSchoolBuses(input: string): AppThunk {
       payload: { text: input },
     });
 
-    dispatch(validateInput('schoolBuses', input));
+    dispatch(validateInput('schoolBuses', input, ['.']));
   };
 }
 
