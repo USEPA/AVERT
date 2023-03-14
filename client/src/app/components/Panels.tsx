@@ -445,7 +445,7 @@ export function Panels() {
       <section css={panelStyles} data-active={activeStep === 3}>
         <div css={panelBodyStyles} className="padding-3 minh-mobile-lg">
           <h2 className="avert-blue margin-bottom-105 padding-bottom-05 border-bottom-2px font-serif-lg">
-            Results: Avoided Regional, State, and County-Level Emissions
+            Regional, State, and County-Level Emissions Changes
           </h2>
 
           {hourlyEnergyProfile.validation.lowerWarning !== null && (
