@@ -46,9 +46,10 @@ button:not([disabled]):focus,
   outline-width: 0.1875rem;
 }
 
+.usa-input:disabled,
 .usa-select:disabled {
   opacity: 1;
-  background-color: rgba(239, 239, 239, 0.3);
+  background-color: #f3f9fc;
 }
 
 .highcharts-menu hr {

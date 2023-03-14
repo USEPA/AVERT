@@ -114,7 +114,7 @@ function VehiclesEmissionsTableContent() {
       <div className="grid-col-12">
         <div className="avert-box padding-3">
           <p className="margin-0 font-sans-xs text-center">
-            <strong>No vehicle inputs entered.</strong>
+            <strong>No electric vehicles inputs entered.</strong>
           </p>
         </div>
       </div>

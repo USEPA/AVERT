@@ -1017,7 +1017,7 @@ function MonthlyEmissionsChartsContent() {
 
               {evInputsEmpty ? (
                 <p className="margin-top-105 margin-bottom-0 font-sans-3xs line-height-sans-3">
-                  <strong>NOTE:</strong> No vehicle inputs entered.
+                  <strong>NOTE:</strong> No electric vehicles inputs entered.
                 </p>
               ) : currentAggregation !== 'region' ? (
                 <p className="margin-top-105 margin-bottom-0 font-sans-3xs line-height-sans-3">
