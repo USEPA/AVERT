@@ -127,10 +127,10 @@ function ImpactsChartContent() {
             </Tooltip>
           </h3>
 
-          <h4 className="margin-top-1 font-sans-2xs text-base-darker text-normal text-center">
+          <p className="margin-top-1 font-sans-2xs text-base-darker text-center">
             Adjusted for transmission and distribution line loss and wind and
             solar capacity factors, where applicable.
-          </h4>
+          </p>
 
           <div className="position-relative height-full">
             {hourlyEnergyProfileRecalculationNeeded && (
