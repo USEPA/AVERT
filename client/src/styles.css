@@ -131,6 +131,10 @@ button:not([disabled]):focus,
   outline: 0.1875rem solid #2491ff !important;
 }
 
+.avert-select .avert-select__placeholder {
+  color: #71767a; /* text-base */
+}
+
 /* --- AVERT --- */
 :root {
   --avert-blue: rgb(0, 128, 164);
