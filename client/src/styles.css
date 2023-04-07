@@ -134,6 +134,7 @@ button:not([disabled]):focus,
 /* --- AVERT --- */
 :root {
   --avert-blue: rgb(0, 128, 164);
+  --avert-dark-blue: rgb(0, 108, 150);
   --avert-light-blue: rgb(0, 164, 200);
 }
 
@@ -171,7 +172,7 @@ button:not([disabled]):focus,
   margin: 0;
   padding-bottom: 0.25rem;
   border-bottom: 1px solid rgba(0, 128, 164, 0.1875);
-  color: var(--avert-blue);
+  color: var(--avert-dark-blue);
 }
 
 .avert-summary:focus {
