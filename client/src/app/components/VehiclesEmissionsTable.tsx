@@ -128,8 +128,8 @@ function VehiclesEmissionsTableContent() {
           <table className="avert-table avert-table-striped width-full">
             <thead>
               <tr>
-                <th>&nbsp;</th>
-                <th className="text-right">
+                <th scope="col">&nbsp;</th>
+                <th scope="col" className="text-right">
                   <small>From</small> Fossil Generation&nbsp;
                   <Tooltip id="vehicle-sector-from-fossil-generation" reversed>
                     <p className="margin-0 text-normal text-left">
@@ -142,7 +142,7 @@ function VehiclesEmissionsTableContent() {
                     </p>
                   </Tooltip>
                 </th>
-                <th className="text-right">
+                <th scope="col" className="text-right">
                   <small>From</small> Vehicles&nbsp;
                   <Tooltip id="vehicle-sector-from-vehicles" reversed>
                     <p className="margin-0 text-normal text-left">
@@ -155,23 +155,25 @@ function VehiclesEmissionsTableContent() {
                     </p>
                   </Tooltip>
                 </th>
-                <th className="text-right">Net Change</th>
+                <th scope="col" className="text-right">
+                  Net Change
+                </th>
               </tr>
             </thead>
 
             <tbody>
               <tr>
-                <td colSpan={4} className="text-bold">
+                <th scope="row" colSpan={4} className="text-bold">
                   Total Emissions
-                </td>
+                </th>
               </tr>
 
               <tr>
-                <td>
+                <th scope="row">
                   <span className="padding-left-105">
                     SO<sub>2</sub> <small>(lb)</small>
                   </span>
-                </td>
+                </th>
                 <td className="font-mono-xs text-right">
                   {formatNumber(annualPower.so2)}
                 </td>
@@ -184,11 +186,11 @@ function VehiclesEmissionsTableContent() {
               </tr>
 
               <tr>
-                <td>
+                <th scope="row">
                   <span className="padding-left-105">
                     NO<sub>X</sub> <small>(lb)</small>
                   </span>
-                </td>
+                </th>
                 <td className="font-mono-xs text-right">
                   {formatNumber(annualPower.nox)}
                 </td>
@@ -201,11 +203,11 @@ function VehiclesEmissionsTableContent() {
               </tr>
 
               <tr>
-                <td>
+                <th scope="row">
                   <span className="padding-left-105">
                     CO<sub>2</sub> <small>(tons)</small>
                   </span>
-                </td>
+                </th>
                 <td className="font-mono-xs text-right">
                   {formatNumber(annualPower.co2)}
                 </td>
@@ -218,11 +220,11 @@ function VehiclesEmissionsTableContent() {
               </tr>
 
               <tr>
-                <td>
+                <th scope="row">
                   <span className="padding-left-105">
                     PM<sub>2.5</sub> <small>(lb)</small>
                   </span>
-                </td>
+                </th>
                 <td className="font-mono-xs text-right">
                   {formatNumber(annualPower.pm25)}
                 </td>
@@ -235,11 +237,11 @@ function VehiclesEmissionsTableContent() {
               </tr>
 
               <tr>
-                <td>
+                <th scope="row">
                   <span className="padding-left-105">
                     VOCs <small>(lb)</small>
                   </span>
-                </td>
+                </th>
                 <td className="font-mono-xs text-right">
                   {formatNumber(annualPower.vocs)}
                 </td>
@@ -252,11 +254,11 @@ function VehiclesEmissionsTableContent() {
               </tr>
 
               <tr>
-                <td>
+                <th scope="row">
                   <span className="padding-left-105">
                     NH<sub>3</sub> <small>(lb)</small>
                   </span>
-                </td>
+                </th>
                 <td className="font-mono-xs text-right">
                   {formatNumber(annualPower.nh3)}
                 </td>

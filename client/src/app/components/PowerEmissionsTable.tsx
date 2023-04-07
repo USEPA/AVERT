@@ -236,23 +236,29 @@ function PowerEmissionsTableContent() {
           <table className="avert-table avert-table-striped width-full">
             <thead>
               <tr>
-                <th>&nbsp;</th>
-                <th className="text-right">Original</th>
-                <th className="text-right">Post Change</th>
-                <th className="text-right">Change</th>
+                <th scope="col">&nbsp;</th>
+                <th scope="col" className="text-right">
+                  Original
+                </th>
+                <th scope="col" className="text-right">
+                  Post Change
+                </th>
+                <th scope="col" className="text-right">
+                  Change
+                </th>
               </tr>
             </thead>
 
             <tbody>
               <tr>
-                <td>
+                <th scope="row">
                   <span className="padding-left-105">
                     Generation <small>(MWh)</small>&nbsp;
                     {emissionsReplacements.hasOwnProperty('generation') && (
                       <EmissionsReplacementTooltip field="generation" />
                     )}
                   </span>
-                </td>
+                </th>
                 <td className="font-mono-xs text-right">
                   {formatNumber(generation.original)}
                 </td>
@@ -265,20 +271,20 @@ function PowerEmissionsTableContent() {
               </tr>
 
               <tr>
-                <td colSpan={4} className="text-bold">
+                <th scope="row" colSpan={4} className="text-bold">
                   Total Emissions from Fossil Generation Fleet
-                </td>
+                </th>
               </tr>
 
               <tr>
-                <td>
+                <th scope="row">
                   <span className="padding-left-105">
                     SO<sub>2</sub> <small>(lb)</small>&nbsp;
                     {emissionsReplacements.hasOwnProperty('so2') && (
                       <EmissionsReplacementTooltip field="so2" />
                     )}
                   </span>
-                </td>
+                </th>
                 <td className="font-mono-xs text-right">
                   {formatNumber(so2.original)}
                 </td>
@@ -291,14 +297,14 @@ function PowerEmissionsTableContent() {
               </tr>
 
               <tr>
-                <td>
+                <th scope="row">
                   <span className="padding-left-105">
                     NO<sub>X</sub> <small>(lb)</small>&nbsp;
                     {emissionsReplacements.hasOwnProperty('nox') && (
                       <EmissionsReplacementTooltip field="nox" />
                     )}
                   </span>
-                </td>
+                </th>
                 <td className="font-mono-xs text-right">
                   {formatNumber(nox.original)}
                 </td>
@@ -311,7 +317,7 @@ function PowerEmissionsTableContent() {
               </tr>
 
               <tr>
-                <td>
+                <th scope="row">
                   <span className="padding-left-3 text-italic">
                     Ozone season NO<sub>X</sub> <small>(lb)</small>{' '}
                     <Tooltip id="power-sector-ozone-season-nox-total">
@@ -321,7 +327,7 @@ function PowerEmissionsTableContent() {
                       </p>
                     </Tooltip>
                   </span>
-                </td>
+                </th>
                 <td className="font-mono-xs text-right">
                   {formatNumber(ozoneNox.original)}
                 </td>
@@ -334,14 +340,14 @@ function PowerEmissionsTableContent() {
               </tr>
 
               <tr>
-                <td>
+                <th scope="row">
                   <span className="padding-left-105">
                     CO<sub>2</sub> <small>(tons)</small>&nbsp;
                     {emissionsReplacements.hasOwnProperty('co2') && (
                       <EmissionsReplacementTooltip field="co2" />
                     )}
                   </span>
-                </td>
+                </th>
                 <td className="font-mono-xs text-right">
                   {formatNumber(co2.original)}
                 </td>
@@ -354,11 +360,11 @@ function PowerEmissionsTableContent() {
               </tr>
 
               <tr>
-                <td>
+                <th scope="row">
                   <span className="padding-left-105">
                     PM<sub>2.5</sub> <small>(lb)</small>
                   </span>
-                </td>
+                </th>
                 <td className="font-mono-xs text-right">
                   {formatNumber(pm25.original)}
                 </td>
@@ -371,11 +377,11 @@ function PowerEmissionsTableContent() {
               </tr>
 
               <tr>
-                <td>
+                <th scope="row">
                   <span className="padding-left-105">
                     VOCs <small>(lb)</small>
                   </span>
-                </td>
+                </th>
                 <td className="font-mono-xs text-right">
                   {formatNumber(vocs.original)}
                 </td>
@@ -388,11 +394,11 @@ function PowerEmissionsTableContent() {
               </tr>
 
               <tr>
-                <td>
+                <th scope="row">
                   <span className="padding-left-105">
                     NH<sub>3</sub> <small>(lb)</small>
                   </span>
-                </td>
+                </th>
                 <td className="font-mono-xs text-right">
                   {formatNumber(nh3.original)}
                 </td>
@@ -405,18 +411,20 @@ function PowerEmissionsTableContent() {
               </tr>
 
               <tr>
-                <td className="text-bold">AVERT-derived Emission Rates:</td>
+                <th scope="row" className="text-bold">
+                  AVERT-derived Emission Rates:
+                </th>
                 <td className="text-bold text-right">Average Fossil</td>
                 <td className="text-bold text-right">&nbsp;</td>
                 <td className="text-bold text-right">Marginal Fossil</td>
               </tr>
 
               <tr>
-                <td>
+                <th scope="row">
                   <span className="padding-left-105">
                     SO<sub>2</sub> <small>(lb/MWh)</small>
                   </span>
-                </td>
+                </th>
                 <td className="font-mono-xs text-right">
                   {calculateFraction(so2.original, generation.original)}
                 </td>
@@ -431,11 +439,11 @@ function PowerEmissionsTableContent() {
               </tr>
 
               <tr>
-                <td>
+                <th scope="row">
                   <span className="padding-left-105">
                     NO<sub>X</sub> <small>(lb/MWh)</small>
                   </span>
-                </td>
+                </th>
                 <td className="font-mono-xs text-right">
                   {calculateFraction(nox.original, generation.original)}
                 </td>
@@ -450,7 +458,7 @@ function PowerEmissionsTableContent() {
               </tr>
 
               <tr>
-                <td>
+                <th scope="row">
                   <span className="padding-left-3 text-italic">
                     Ozone season NO<sub>X</sub> <small>(lb/MWh)</small>{' '}
                     <Tooltip id="power-sector-ozone-season-nox-rates">
@@ -460,7 +468,7 @@ function PowerEmissionsTableContent() {
                       </p>
                     </Tooltip>
                   </span>
-                </td>
+                </th>
                 <td className="font-mono-xs text-right">
                   {calculateFraction(
                     ozoneNox.original,
@@ -478,11 +486,11 @@ function PowerEmissionsTableContent() {
               </tr>
 
               <tr>
-                <td>
+                <th scope="row">
                   <span className="padding-left-105">
                     CO<sub>2</sub> <small>(tons/MWh)</small>
                   </span>
-                </td>
+                </th>
                 <td className="font-mono-xs text-right">
                   {calculateFraction(co2.original, generation.original)}
                 </td>
@@ -497,11 +505,11 @@ function PowerEmissionsTableContent() {
               </tr>
 
               <tr>
-                <td>
+                <th scope="row">
                   <span className="padding-left-105">
                     PM<sub>2.5</sub> <small>(lb/MWh)</small>
                   </span>
-                </td>
+                </th>
                 <td className="font-mono-xs text-right">
                   {calculateFraction(pm25.original, generation.original)}
                 </td>
@@ -516,11 +524,11 @@ function PowerEmissionsTableContent() {
               </tr>
 
               <tr>
-                <td>
+                <th scope="row">
                   <span className="padding-left-105">
                     VOCs <small>(lb/MWh)</small>
                   </span>
-                </td>
+                </th>
                 <td className="font-mono-xs text-right">
                   {calculateFraction(vocs.original, generation.original)}
                 </td>
@@ -535,11 +543,11 @@ function PowerEmissionsTableContent() {
               </tr>
 
               <tr>
-                <td>
+                <th scope="row">
                   <span className="padding-left-105">
                     NH<sub>3</sub> <small>(lb/MWh)</small>
                   </span>
-                </td>
+                </th>
                 <td className="font-mono-xs text-right">
                   {calculateFraction(nh3.original, generation.original)}
                 </td>

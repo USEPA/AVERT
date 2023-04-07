@@ -21,7 +21,7 @@ const Tab = styled('li')<{ step: number }>`
     ${({ step }) => {
       if (step === 1 || step === 2) {
         return css`
-          a::after {
+          span::after {
             content: '';
             position: absolute;
             z-index: 1;
@@ -42,7 +42,7 @@ const Tab = styled('li')<{ step: number }>`
     ${({ step }) => {
       if (step === 2 || step === 3) {
         return css`
-          a::before {
+          span::before {
             content: '';
             position: absolute;
             top: 0;
@@ -56,22 +56,19 @@ const Tab = styled('li')<{ step: number }>`
     }}
 
     /* active tab – right arrow */
-    a[data-active='true']::after {
+    span[data-active='true']::after {
       border-left-color: var(--avert-blue);
     }
 
     /* active tab – fill behind right arrow */
-    a[data-active='true']::before {
+    span[data-active='true']::before {
       background-color: var(--avert-blue);
     }
   }
 `;
 
-const anchorStyles = css`
-  &:hover,
-  &:visited {
-    color: #565c65; // base-dark
-  }
+const spanStyles = css`
+  user-select: none;
 
   &[data-active='true'] {
     color: white;
@@ -89,21 +86,18 @@ export function PanelTab(props: {
 
   return (
     <Tab step={step}>
-      <a
-        css={anchorStyles}
+      <span
+        css={spanStyles}
         className={
           `position-relative display-block margin-top-1 padding-105 ` +
           `border-width-1px border-solid border-base-light ` +
-          `text-no-underline text-center text-base-dark bg-base-lightest ` +
-          `text-bold line-height-sans-1 cursor-default usa-js-no-click ` +
+          `text-center text-base-dark bg-base-lightest text-bold line-height-sans-1 ` +
           `tablet:margin-top-0 tablet:border-0`
         }
-        href="/"
         data-active={active}
-        onClick={(ev) => ev.preventDefault()}
       >
         {title}
-      </a>
+      </span>
     </Tab>
   );
 }
