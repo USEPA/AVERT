@@ -129,6 +129,10 @@ const tabsStyles = css`
       outline: none;
     }
 
+    &:focus-visible {
+      outline: 0.1875rem solid #2491ff;
+    }
+
     &:hover {
       border-top-color: #a9aeb1; // base-light
     }
@@ -150,7 +154,13 @@ const tabsStyles = css`
   }
 
   [data-reach-tab-panel] {
-    outline: none;
+    &:focus {
+      outline: none;
+    }
+
+    &:focus-visible {
+      outline: 0.1875rem solid #2491ff;
+    }
   }
 
   [data-reach-tab-panels] {
