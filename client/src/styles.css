@@ -243,3 +243,13 @@ button:not([disabled]):focus,
 .avert-rule {
   border-top-color: rgba(0, 128, 164, 0.1875);
 }
+
+.avert-columns {
+  columns: 1;
+}
+
+@media (min-width: 64em) {
+  .avert-columns {
+    columns: 2;
+  }
+}
