@@ -164,23 +164,25 @@ function StateEmissionsTableContent() {
             <table className="avert-table width-full">
               <thead>
                 <tr>
-                  <th colSpan={2}>State</th>
-                  <th className="text-right">
+                  <th scope="col" colSpan={2}>
+                    State
+                  </th>
+                  <th scope="col" className="text-right">
                     SO<sub>2</sub> <small>(lb)</small>
                   </th>
-                  <th className="text-right">
+                  <th scope="col" className="text-right">
                     NO<sub>X</sub> <small>(lb)</small>
                   </th>
-                  <th className="text-right">
+                  <th scope="col" className="text-right">
                     CO<sub>2</sub> <small>(tons)</small>
                   </th>
-                  <th className="text-right">
+                  <th scope="col" className="text-right">
                     PM<sub>2.5</sub> <small>(lb)</small>
                   </th>
-                  <th className="text-right">
+                  <th scope="col" className="text-right">
                     VOCs <small>(lb)</small>
                   </th>
-                  <th className="text-right">
+                  <th scope="col" className="text-right">
                     NH<sub>3</sub> <small>(lb)</small>
                   </th>
                 </tr>
@@ -201,10 +203,15 @@ function StateEmissionsTableContent() {
                   return (
                     <Fragment key={data.id}>
                       <tr className={stripedRowClassName}>
-                        <td rowSpan={3}>{data.name}</td>
-                        <td className="width-1px text-no-wrap text-right">
+                        <th scope="row" rowSpan={3}>
+                          {data.name}
+                        </th>
+                        <th
+                          scope="row"
+                          className="width-1px text-no-wrap text-right"
+                        >
                           <small>From</small> Fossil Generation
-                        </td>
+                        </th>
                         <td className="font-mono-xs text-right">
                           {formatNumber(data.power.so2)}
                         </td>
@@ -226,9 +233,12 @@ function StateEmissionsTableContent() {
                       </tr>
 
                       <tr className={stripedRowClassName}>
-                        <td className="width-1px text-no-wrap text-right">
+                        <th
+                          scope="row"
+                          className="width-1px text-no-wrap text-right"
+                        >
                           <small>From</small> Vehicles
-                        </td>
+                        </th>
                         <td className="font-mono-xs text-right">
                           {formatNumber(data.vehicle.so2)}
                         </td>
@@ -252,9 +262,12 @@ function StateEmissionsTableContent() {
                       <tr
                         className={`${stripedRowClassName} ${stateSpacingClassName}`}
                       >
-                        <td className="width-1px text-no-wrap text-right">
+                        <th
+                          scope="row"
+                          className="width-1px text-no-wrap text-right"
+                        >
                           Net Change
-                        </td>
+                        </th>
                         <td className="font-mono-xs text-right">
                           {formatNumber(data.power.so2 + data.vehicle.so2)}
                         </td>

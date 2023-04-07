@@ -93,8 +93,8 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
           >
             <thead>
               <tr>
-                <th>Electric Vehicle Type</th>
-                <th>
+                <th scope="col">Electric Vehicle Type</th>
+                <th scope="col">
                   % of Annual Vehicle Sales
                   {evDeploymentLocationName && (
                     <>
@@ -103,7 +103,7 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
                     </>
                   )}
                 </th>
-                <th>
+                <th scope="col">
                   % of Vehicles on the Road
                   {evDeploymentLocationName && (
                     <>
@@ -117,7 +117,7 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
 
             <tbody>
               <tr>
-                <td>Light-duty vehicles</td>
+                <th scope="row">Light-duty vehicles</th>
                 <td>
                   {calculatePercent(
                     totalLightDutyVehicles,
@@ -131,8 +131,9 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
                   )}
                 </td>
               </tr>
+
               <tr>
-                <td>Transit buses</td>
+                <th scope="row">Transit buses</th>
                 <td>
                   {calculatePercent(totalTransitBuses, transitBusesSales)}
                 </td>
@@ -140,8 +141,9 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
                   {calculatePercent(totalTransitBuses, transitBusesStock)}
                 </td>
               </tr>
+
               <tr>
-                <td>School buses</td>
+                <th scope="row">School buses</th>
                 <td>{calculatePercent(totalSchoolBuses, schoolBusesSales)}</td>
                 <td>{calculatePercent(totalSchoolBuses, schoolBusesStock)}</td>
               </tr>
@@ -283,8 +285,10 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
           >
             <thead>
               <tr>
-                <th rowSpan={2}>EE/RE Type</th>
-                <th colSpan={2}>
+                <th scope="col" rowSpan={2}>
+                  EE/RE Type
+                </th>
+                <th scope="col" colSpan={2}>
                   Historical Additions
                   <br />
                   <small>
@@ -294,34 +298,35 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
                     (Annual Avg. 2018&ndash;2020)
                   </small>
                 </th>
-                <th colSpan={2}>
+                <th scope="col" colSpan={2}>
                   EE/RE Required
                   <br />
                   <small>to Offset EV Demand</small>
                 </th>
-                <th colSpan={2}>
+                <th scope="col" colSpan={2}>
                   EE/RE Required
                   <br />
                   <small>÷ Historical Additions</small>
                 </th>
               </tr>
+
               <tr>
-                <th>
+                <th scope="col">
                   <small>MW</small>
                 </th>
-                <th>
+                <th scope="col">
                   <small>GWh</small>
                 </th>
-                <th>
+                <th scope="col">
                   <small>MW</small>
                 </th>
-                <th>
+                <th scope="col">
                   <small>GWh</small>
                 </th>
-                <th>
+                <th scope="col">
                   <small>MW</small>
                 </th>
-                <th>
+                <th scope="col">
                   <small>GWh</small>
                 </th>
               </tr>
@@ -329,7 +334,7 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
 
             <tbody>
               <tr>
-                <td>EE&nbsp;(retail)</td>
+                <th scope="row">EE&nbsp;(retail)</th>
                 <td>{formatNumber(historicalEERetailMw)}</td>
                 <td>{formatNumber(historicalEERetailGWh)}</td>
                 <td>
@@ -353,8 +358,9 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
                     : `${formatNumber(precentDifferenceEERetailGWh * 100)}%`}
                 </td>
               </tr>
+
               <tr>
-                <td>Onshore&nbsp;Wind</td>
+                <th scope="row">Onshore&nbsp;Wind</th>
                 <td>{formatNumber(historicalOnshoreWindMw)}</td>
                 <td>{formatNumber(historicalOnshoreWindGWh)}</td>
                 <td>
@@ -378,8 +384,9 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
                     : `${formatNumber(precentDifferenceOnshoreWindGWh * 100)}%`}
                 </td>
               </tr>
+
               <tr>
-                <td>Utility&nbsp;Solar</td>
+                <th scope="row">Utility&nbsp;Solar</th>
                 <td>{formatNumber(historicalUtilitySolarMw)}</td>
                 <td>{formatNumber(historicalUtilitySolarGWh)}</td>
                 <td>
@@ -405,8 +412,9 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
                       )}%`}
                 </td>
               </tr>
+
               <tr>
-                <td>Total</td>
+                <th scope="row">Total</th>
                 <td>{formatNumber(historicalTotalMw)}</td>
                 <td>{formatNumber(historicalTotalGWh)}</td>
                 <td>{formatNumber(requiredOffsetTotalMw)}</td>
