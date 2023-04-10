@@ -59,7 +59,7 @@ export function UnitConversion() {
     >
       <h4 className="avert-box-heading font-serif-xs">
         Helpful Unit Conversions{' '}
-        <Tooltip id="unit-conversion">
+        <Tooltip>
           <p className="text-normal">
             To convert units from power (<strong>kW, MW, GW</strong>) to energy
             (<strong>kWh, MWh, GWh</strong>), multiply by the total number of

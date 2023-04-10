@@ -131,7 +131,7 @@ function VehiclesEmissionsTableContent() {
                 <td>&nbsp;</td>
                 <th scope="col" className="text-right">
                   <small>From</small> Fossil Generation&nbsp;
-                  <Tooltip id="vehicle-sector-from-fossil-generation" reversed>
+                  <Tooltip reversed>
                     <p className="margin-0 text-normal text-left">
                       This column shows the annual emissions impacts from the
                       electric power sector. This column includes emissions
@@ -144,7 +144,7 @@ function VehiclesEmissionsTableContent() {
                 </th>
                 <th scope="col" className="text-right">
                   <small>From</small> Vehicles&nbsp;
-                  <Tooltip id="vehicle-sector-from-vehicles" reversed>
+                  <Tooltip reversed>
                     <p className="margin-0 text-normal text-left">
                       This column shows the annual avoided emissions from
                       internal combustion engine vehicles displaced due to the

@@ -75,7 +75,7 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
     <>
       <h4 className="avert-blue margin-bottom-1 font-serif-md">
         EV Sales and Stock Comparison{' '}
-        <Tooltip id="ev-sales-and-stock-table">
+        <Tooltip>
           <span className="text-normal">
             This table translates the user-specified number of EVs into shares
             of vehicle sales and shares of vehicles on the road (i.e., vehicle
@@ -264,7 +264,7 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
     <div className="margin-top-2">
       <h4 className="avert-blue margin-bottom-1 font-serif-md">
         EE/RE and EV Comparison{' '}
-        <Tooltip id="ee-re-ev-comparison-table">
+        <Tooltip>
           <span className="text-normal">
             This table provides a comparison between the total annual energy
             impact of the EVs entered and recent trends in RE capacity

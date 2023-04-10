@@ -496,7 +496,7 @@ function ImpactsInputsContent() {
                         <p className="margin-y-05 font-sans-2xs line-height-sans-2 text-italic">
                           Offshore wind calculations are not available in the
                           selected AVERT region{' '}
-                          <Tooltip id="no-offshoreWind-region">
+                          <Tooltip>
                             <span className="text-no-italic">
                               AVERT does not support offshore wind modeling in
                               this region. It is unlikely that offshore areas
@@ -509,7 +509,7 @@ function ImpactsInputsContent() {
                         <p className="margin-y-05 font-sans-2xs line-height-sans-2 text-italic">
                           Offshore wind calculations are not available in the
                           AVERT region(s) that this state is part of{' '}
-                          <Tooltip id="no-offshoreWind-state">
+                          <Tooltip>
                             <span className="text-no-italic">
                               AVERT does not support offshore wind modeling in
                               the region(s) that this state is part of. It is

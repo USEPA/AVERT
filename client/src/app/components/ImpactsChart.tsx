@@ -114,7 +114,7 @@ function ImpactsChartContent() {
         <>
           <h3 className="margin-0 font-sans-md line-height-sans-2 text-base-darker text-center">
             Electric power load profile based on values entered:&nbsp;
-            <Tooltip id="hourly-electric-power-load-profile">
+            <Tooltip>
               <p className="margin-0 text-normal text-left">
                 This graph shows the hourly changes in load that will result
                 from the inputs entered above. It reflects a combination of all

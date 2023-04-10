@@ -20,11 +20,7 @@ export const modalLinkStyles = css`
   overflow: hidden;
 `;
 
-export function Tooltip(props: {
-  id: string; // TODO: remove
-  children: ReactNode;
-  reversed?: boolean;
-}) {
+export function Tooltip(props: { children: ReactNode; reversed?: boolean }) {
   const { children, reversed } = props;
   const dispatch = useDispatch();
 
