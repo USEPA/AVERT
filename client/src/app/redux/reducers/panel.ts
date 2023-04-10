@@ -1,8 +1,15 @@
+import { ReactNode } from 'react';
+
 type Action =
   | {
       type: 'panel/CHANGE_ACTIVE_STEP';
       payload: { stepNumber: number };
     }
+  | {
+      type: 'panel/DISPLAY_MODAL_DIALOG';
+      payload: { description: ReactNode };
+    }
+  | { type: 'panel/RESET_MODAL_DIALOG' }
   | { type: 'panel/TOGGLE_MODAL_OVERLAY' }
   | {
       type: 'panel/STORE_ACTIVE_MODAL';
@@ -22,6 +29,10 @@ type Action =
 type State = {
   activeStep: number;
   loading: boolean;
+  modalDialog: {
+    displayed: boolean;
+    description: ReactNode;
+  };
   modalOverlay: boolean;
   activeModalId: string;
   closingModalId: string;
@@ -30,6 +41,10 @@ type State = {
 const initialState: State = {
   activeStep: 1,
   loading: false,
+  modalDialog: {
+    displayed: false,
+    description: null,
+  },
   modalOverlay: false,
   activeModalId: '',
   closingModalId: '',
@@ -46,6 +61,28 @@ export default function reducer(
       return {
         ...state,
         activeStep: stepNumber,
+      };
+    }
+
+    case 'panel/DISPLAY_MODAL_DIALOG': {
+      const { description } = action.payload;
+
+      return {
+        ...state,
+        modalDialog: {
+          displayed: true,
+          description,
+        },
+      };
+    }
+
+    case 'panel/RESET_MODAL_DIALOG': {
+      return {
+        ...state,
+        modalDialog: {
+          displayed: false,
+          description: null,
+        },
       };
     }
 
@@ -105,6 +142,17 @@ export function setActiveStep(stepNumber: number) {
     type: 'panel/CHANGE_ACTIVE_STEP',
     payload: { stepNumber },
   };
+}
+
+export function displayModalDialog(description: ReactNode) {
+  return {
+    type: 'panel/DISPLAY_MODAL_DIALOG',
+    payload: { description },
+  };
+}
+
+export function resetModalDialog() {
+  return { type: 'panel/RESET_MODAL_DIALOG' };
 }
 
 export function toggleModalOverlay() {
