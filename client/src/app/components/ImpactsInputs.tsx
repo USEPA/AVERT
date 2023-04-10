@@ -45,7 +45,7 @@ const inputsGroupStyles = css`
 
   /* highlight letter when details is open */
   &[open] > summary::before {
-    background-color: var(--avert-light-blue);
+    background-color: var(--avert-blue);
   }
 `;
 
@@ -73,7 +73,7 @@ const inputsSummaryStyles = css`
 
   /* highlight letter on hover */
   &:hover::before {
-    background-color: var(--avert-light-blue);
+    background-color: var(--avert-blue);
   }
 `;
 
