@@ -57,7 +57,7 @@ export function UnitConversion() {
       css={unitConversionStyles}
       className="avert-box margin-bottom-2 padding-105 tablet:margin-left-2"
     >
-      <h3 className="avert-box-heading font-serif-xs">
+      <h4 className="avert-box-heading font-serif-xs">
         Helpful Unit Conversions{' '}
         <Tooltip id="unit-conversion">
           <p className="text-normal">
@@ -76,7 +76,7 @@ export function UnitConversion() {
             10,000 kWh ÷ 8,784 h = 1.14 kW
           </p>
         </Tooltip>
-      </h3>
+      </h4>
 
       <div className="display-flex flex-align-baseline margin-top-1 width-full font-sans-3xs">
         <span className="minw-2" />

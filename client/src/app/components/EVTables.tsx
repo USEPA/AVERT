@@ -73,7 +73,7 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
 
   return (
     <>
-      <h3 className="avert-blue margin-bottom-1 font-serif-md">
+      <h4 className="avert-blue margin-bottom-1 font-serif-md">
         EV Sales and Stock Comparison{' '}
         <Tooltip id="ev-sales-and-stock-table">
           <span className="text-normal">
@@ -84,7 +84,7 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
             can assist the user in entering the number of EVs to model.
           </span>
         </Tooltip>
-      </h3>
+      </h4>
 
       <div className="overflow-auto">
         <div className="avert-table-container">
@@ -262,7 +262,7 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
 
   return (
     <div className="margin-top-2">
-      <h3 className="avert-blue margin-bottom-1 font-serif-md">
+      <h4 className="avert-blue margin-bottom-1 font-serif-md">
         EE/RE and EV Comparison{' '}
         <Tooltip id="ee-re-ev-comparison-table">
           <span className="text-normal">
@@ -276,7 +276,7 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
             EVs, EE, and RE.
           </span>
         </Tooltip>
-      </h3>
+      </h4>
 
       <div className="overflow-auto">
         <div className="avert-table-container">

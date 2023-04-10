@@ -193,7 +193,9 @@ function ImpactsInputsContent() {
             `padding-y-1 padding-x-105 text-bold bg-base-lightest`
           }
         >
-          <p className="margin-0">Energy Efficiency</p>
+          <h3 className="margin-0 font-sans-xs line-height-sans-3">
+            Energy Efficiency
+          </h3>
         </header>
 
         <div className="grid-container padding-0 maxw-full">
@@ -404,7 +406,9 @@ function ImpactsInputsContent() {
             `margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest`
           }
         >
-          <p className="margin-0">Renewable Energy</p>
+          <h3 className="margin-0 font-sans-xs line-height-sans-3">
+            Renewable Energy
+          </h3>
         </header>
 
         <div className="grid-container padding-0 maxw-full">
@@ -613,7 +617,9 @@ function ImpactsInputsContent() {
             `margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest`
           }
         >
-          <p className="margin-0">Electric Vehicles</p>
+          <h3 className="margin-0 font-sans-xs line-height-sans-3">
+            Electric Vehicles
+          </h3>
         </header>
 
         <div className="grid-container padding-0 maxw-full">
