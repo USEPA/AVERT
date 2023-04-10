@@ -127,7 +127,7 @@ export function Tooltip(props: {
           dispatch(toggleModalOverlay());
         }}
       >
-        info
+        click for additional information
       </a>
 
       <span

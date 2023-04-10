@@ -434,6 +434,7 @@ export function Panels() {
               <span
                 css={modalLinkStyles}
                 className="position-relative display-inline-block width-2 height-2"
+                title="additional information"
               />
               &nbsp; icon for each program type below.
             </p>
