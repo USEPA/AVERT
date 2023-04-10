@@ -236,7 +236,7 @@ function PowerEmissionsTableContent() {
           <table className="avert-table avert-table-striped width-full">
             <thead>
               <tr>
-                <th scope="col">&nbsp;</th>
+                <td>&nbsp;</td>
                 <th scope="col" className="text-right">
                   Original
                 </th>

@@ -128,7 +128,7 @@ function VehiclesEmissionsTableContent() {
           <table className="avert-table avert-table-striped width-full">
             <thead>
               <tr>
-                <th scope="col">&nbsp;</th>
+                <td>&nbsp;</td>
                 <th scope="col" className="text-right">
                   <small>From</small> Fossil Generation&nbsp;
                   <Tooltip id="vehicle-sector-from-fossil-generation" reversed>
