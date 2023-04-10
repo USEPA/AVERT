@@ -228,6 +228,7 @@ function ImpactsInputsContent() {
                   }
                   data-label="A"
                 >
+                  <span className="display-none">A.</span>
                   Reductions spread evenly throughout the year
                 </summary>
 
@@ -315,6 +316,7 @@ function ImpactsInputsContent() {
                   }
                   data-label="B"
                 >
+                  <span className="display-none">B.</span>
                   Percentage reductions in some or all hours
                 </summary>
 
@@ -437,6 +439,7 @@ function ImpactsInputsContent() {
                   }
                   data-label="C"
                 >
+                  <span className="display-none">C.</span>
                   Wind
                 </summary>
 
@@ -544,6 +547,7 @@ function ImpactsInputsContent() {
                   }
                   data-label="D"
                 >
+                  <span className="display-none">D.</span>
                   Solar photovoltaic (PV)
                 </summary>
 
@@ -643,6 +647,7 @@ function ImpactsInputsContent() {
                   }
                   data-label="E"
                 >
+                  <span className="display-none">E.</span>
                   Electric vehicles
                 </summary>
 
