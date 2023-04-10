@@ -62,9 +62,9 @@ function ResultsImpactsInputsContent() {
 
   return (
     <div className="avert-box padding-105">
-      <p className="avert-box-heading font-serif-2xs line-height-serif-2">
+      <h3 className="avert-box-heading font-serif-2xs line-height-serif-2">
         Energy Impacts Inputs:
-      </p>
+      </h3>
 
       <div className="avert-columns">
         {inputExists(annualGwh) && (
