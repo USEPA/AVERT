@@ -23,6 +23,6 @@
     "setup": "npm ci && npm run setup:client && npm run setup:server"
   },
   "devDependencies": {
-    "concurrently": "7.0.0"
+    "concurrently": "8.0.1"
   }
 }
