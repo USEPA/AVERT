@@ -122,8 +122,8 @@ export const percentWeekendToWeekdayEVConsumption = 97.3015982802952;
  * sheet (D727:E727)
  */
 export const percentageLDVsDisplacedByEVs = {
-  cars: 0.276046368502288,
-  trucks: 0.723953631497712,
+  cars: 0.222602981346491,
+  trucks: 0.777397018653509,
 };
 
 export type RdfDataKey =
