@@ -14,9 +14,9 @@ import vmtAllocationAndRegisteredVehicles from 'app/data/vmt-allocation-and-regi
  */
 import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
 /**
- * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E177:E180).
+ * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E179:E180).
  */
-import nationalAverageVMTPerYear from 'app/data/national-average-vmt-per-year.json';
+import nationalAverageVMTBusPerYear from 'app/data/national-average-bus-vmt-per-year.json';
 /**
  * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
  * (E194:J200).
@@ -79,7 +79,7 @@ export type MovesEmissionsRates = {
 
 export type EVChargingProfiles = typeof evChargingProfiles;
 
-export type NationalAverageVMTPerYear = typeof nationalAverageVMTPerYear;
+export type NationalAverageBusVMTPerYear = typeof nationalAverageVMTBusPerYear;
 
 export type EVEfficiencyByModelYear = typeof evEfficiencyByModelYear;
 
@@ -122,8 +122,8 @@ export const percentWeekendToWeekdayEVConsumption = 97.3015982802952;
  * sheet (D727:E727)
  */
 export const percentageLDVsDisplacedByEVs = {
-  cars: 0.276046368502288,
-  trucks: 0.723953631497712,
+  cars: 0.222602981346491,
+  trucks: 0.777397018653509,
 };
 
 export type RdfDataKey =
@@ -197,9 +197,9 @@ export type Region = {
  * sheet of the Excel workbook.
  */
 const lineLoss = {
-  texas: 0.0495352907853342,
-  eastern: 0.0750240831578937,
-  western: 0.0838715063900653,
+  texas: 0.0457913819880058,
+  eastern: 0.0723064644134105,
+  western: 0.0866994954028822,
 };
 
 export const regions: { [key in RegionId]: Region } = {
@@ -244,7 +244,7 @@ export const regions: { [key in RegionId]: Region } = {
       FL: 100,
     },
     actualEmissions: {
-      so2: 32_186_626,
+      so2: 25_756_210,
     },
   },
   MIDA: {
@@ -329,7 +329,7 @@ export const regions: { [key in RegionId]: Region } = {
       NY: 100,
     },
     actualEmissions: {
-      so2: 3_060_272,
+      so2: 5_023_480,
     },
   },
   NW: {
@@ -375,7 +375,9 @@ export const regions: { [key in RegionId]: Region } = {
       GA: 59.8372,
       MS: 5.1415,
     },
-    actualEmissions: {},
+    actualEmissions: {
+      so2: 22_835_652,
+    },
   },
   SW: {
     id: 'SW',
@@ -387,7 +389,9 @@ export const regions: { [key in RegionId]: Region } = {
       NM: 14.6254,
       TX: 6.4536,
     },
-    actualEmissions: {},
+    actualEmissions: {
+      so2: 20_267_868,
+    },
   },
   TE: {
     id: 'TE',

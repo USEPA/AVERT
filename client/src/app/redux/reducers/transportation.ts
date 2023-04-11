@@ -4,6 +4,7 @@ import type {
   VMTBillionsAndPercentages,
   StateVMTPercentagesByRegion,
   VMTAllocationPerVehicle,
+  NationalAverageLDVsVMTPerYear,
   MonthlyVMTTotalsAndPercentages,
   HourlyEVChargingPercentages,
   SelectedRegionsStatesVMTPercentages,
@@ -33,6 +34,7 @@ import {
   calculateVMTBillionsAndPercentages,
   calculateStateVMTPercentagesByRegion,
   calculateVMTAllocationPerVehicle,
+  calculateNationalAverageLDVsVMTPerYear,
   calculateMonthlyVMTTotalsAndPercentages,
   calculateHourlyEVChargingPercentages,
   calculateSelectedRegionsStatesVMTPercentages,
@@ -77,9 +79,9 @@ import movesEmissionsRatesData from 'app/data/moves-emissions-rates.json';
  */
 import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
 /**
- * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E177:E180).
+ * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E179:E180).
  */
-import nationalAverageVMTPerYear from 'app/data/national-average-vmt-per-year.json';
+import nationalAverageBusVMTPerYear from 'app/data/national-average-bus-vmt-per-year.json';
 /**
  * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
  * (E194:J200).
@@ -136,6 +138,10 @@ type Action =
   | {
       type: 'transportation/SET_VMT_ALLOCATION_PER_VEHICLE';
       payload: { vmtAllocationPerVehicle: VMTAllocationPerVehicle };
+    }
+  | {
+      type: 'transportation/SET_NATIONAL_AVERAGE_LDVS_VMT_PER_YEAR';
+      payload: { nationalAverageLDVsVMTPerYear: NationalAverageLDVsVMTPerYear };
     }
   | {
       type: 'transportation/SET_MONTHLY_VMT_TOTALS_AND_PERCENTAGES';
@@ -265,6 +271,7 @@ type State = {
   vmtBillionsAndPercentages: VMTBillionsAndPercentages | {};
   stateVMTPercentagesByRegion: StateVMTPercentagesByRegion | {};
   vmtAllocationPerVehicle: VMTAllocationPerVehicle | {};
+  nationalAverageLDVsVMTPerYear: NationalAverageLDVsVMTPerYear;
   monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
   selectedRegionsStatesVMTPercentages: SelectedRegionsStatesVMTPercentages | {};
@@ -294,6 +301,7 @@ const initialState: State = {
   vmtBillionsAndPercentages: {},
   stateVMTPercentagesByRegion: {},
   vmtAllocationPerVehicle: {},
+  nationalAverageLDVsVMTPerYear: 0,
   monthlyVMTTotalsAndPercentages: {},
   hourlyEVChargingPercentages: {},
   selectedRegionsStatesVMTPercentages: {},
@@ -369,6 +377,15 @@ export default function reducer(
       return {
         ...state,
         vmtAllocationPerVehicle,
+      };
+    }
+
+    case 'transportation/SET_NATIONAL_AVERAGE_LDVS_VMT_PER_YEAR': {
+      const { nationalAverageLDVsVMTPerYear } = action.payload;
+
+      return {
+        ...state,
+        nationalAverageLDVsVMTPerYear,
       };
     }
 
@@ -596,6 +613,11 @@ export function setVMTData(): AppThunk {
       stateBusSalesAndStock,
     });
 
+    const nationalAverageLDVsVMTPerYear =
+      calculateNationalAverageLDVsVMTPerYear({
+        vmtAllocationAndRegisteredVehicles,
+      });
+
     const monthlyVMTTotalsAndPercentages =
       calculateMonthlyVMTTotalsAndPercentages({ movesEmissionsRates });
 
@@ -617,6 +639,11 @@ export function setVMTData(): AppThunk {
     dispatch({
       type: 'transportation/SET_VMT_ALLOCATION_PER_VEHICLE',
       payload: { vmtAllocationPerVehicle },
+    });
+
+    dispatch({
+      type: 'transportation/SET_NATIONAL_AVERAGE_LDVS_VMT_PER_YEAR',
+      payload: { nationalAverageLDVsVMTPerYear },
     });
 
     dispatch({
@@ -658,6 +685,7 @@ export function setSelectedGeographyVMTData(): AppThunk {
     const {
       vmtBillionsAndPercentages,
       vmtAllocationPerVehicle,
+      nationalAverageLDVsVMTPerYear,
       monthlyVMTTotalsAndPercentages,
     } = transportation;
 
@@ -679,7 +707,8 @@ export function setSelectedGeographyVMTData(): AppThunk {
 
     const selectedRegionsAverageVMTPerYear =
       calculateSelectedRegionsAverageVMTPerYear({
-        nationalAverageVMTPerYear,
+        nationalAverageLDVsVMTPerYear,
+        nationalAverageBusVMTPerYear,
         selectedRegionsVMTPercentagesPerVehicleType,
       });
 

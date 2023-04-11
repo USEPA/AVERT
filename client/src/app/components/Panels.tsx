@@ -146,7 +146,7 @@ const tabsStyles = css`
 function ExcelAppText() {
   return (
     <p className="text-base-dark font-sans-2xs tablet:font-sans-xs desktop:font-sans-sm">
-      The online version of AVERT completes analyses using 2021 emissions and
+      The online version of AVERT completes analyses using 2022 emissions and
       generation data. The Excel version of AVERT (
       <a
         className="usa-link"
@@ -156,7 +156,7 @@ function ExcelAppText() {
       >
         available for download here
       </a>
-      ) allows analyses for years 2017–2021 or for a future year scenario.
+      ) allows analyses for years 2017–2022 or for a future year scenario.
     </p>
   );
 }
