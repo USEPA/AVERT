@@ -197,9 +197,9 @@ export type Region = {
  * sheet of the Excel workbook.
  */
 const lineLoss = {
-  texas: 0.0495352907853342,
-  eastern: 0.0750240831578937,
-  western: 0.0838715063900653,
+  texas: 0.0457913819880058,
+  eastern: 0.0723064644134105,
+  western: 0.0866994954028822,
 };
 
 export const regions: { [key in RegionId]: Region } = {
