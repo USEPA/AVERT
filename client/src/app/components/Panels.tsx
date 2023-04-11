@@ -26,7 +26,6 @@ import { COBRAConnection } from 'app/components/COBRAConnection';
 import { DataDownload } from 'app/components/DataDownload';
 import { modalLinkStyles } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
-import { toggleModalOverlay, resetActiveModal } from 'app/redux/reducers/panel';
 import {
   setCountiesByRegion,
   selectGeography,
@@ -41,40 +40,16 @@ import {
   useSelectedStateRegions,
 } from 'app/hooks';
 
-const Container = styled('div')<{
-  lightOverlay: boolean;
-  darkOverlay: boolean;
-}>`
-  ${({ lightOverlay, darkOverlay }) => {
-    const overlayStyles = css`
-      position: relative;
-
-      &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-      }
-    `;
-
-    if (lightOverlay) {
+const Container = styled('div')<{ overlay: boolean }>`
+  ${({ overlay }) => {
+    if (overlay) {
       return css`
-        ${overlayStyles};
+        position: relative;
 
         &::after {
-          z-index: 1;
-          background-color: rgba(0, 0, 0, 0.5);
-        }
-      `;
-    }
-
-    if (darkOverlay) {
-      return css`
-        ${overlayStyles};
-
-        &::after {
+          content: '';
+          position: absolute;
+          inset: 0;
           background-color: rgba(0, 0, 0, 0.875);
         }
       `;
@@ -214,8 +189,6 @@ export function Panels() {
   const loading = useTypedSelector(({ panel }) => panel.loading);
   const cobraApiUrl = useTypedSelector(({ api }) => api.cobraApiUrl);
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const modalOverlay = useTypedSelector(({ panel }) => panel.modalOverlay);
-  const activeModalId = useTypedSelector(({ panel }) => panel.activeModalId);
   const hourlyEnergyProfile = useTypedSelector(
     ({ impacts }) => impacts.hourlyEnergyProfile,
   );
@@ -262,23 +235,7 @@ export function Panels() {
   return (
     <Container
       className="border-width-1px border-solid border-base-light"
-      lightOverlay={modalOverlay}
-      darkOverlay={loading || serverCalcError}
-      onClick={(ev) => {
-        if (!modalOverlay) return;
-        const target = ev.target as HTMLDivElement;
-        if (!target.dataset['modalId'] && !target.dataset['modalClose']) {
-          dispatch(resetActiveModal(activeModalId));
-          dispatch(toggleModalOverlay());
-        }
-      }}
-      onKeyDown={(ev) => {
-        if (!modalOverlay) return;
-        if (ev.keyCode === 27 /* escape key */) {
-          dispatch(resetActiveModal(activeModalId));
-          dispatch(toggleModalOverlay());
-        }
-      }}
+      overlay={loading || serverCalcError}
     >
       {
         // conditionally display loading indicator

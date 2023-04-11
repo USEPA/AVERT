@@ -10,15 +10,6 @@ type Action =
       payload: { description: ReactNode };
     }
   | { type: 'panel/RESET_MODAL_DIALOG' }
-  | { type: 'panel/TOGGLE_MODAL_OVERLAY' }
-  | {
-      type: 'panel/STORE_ACTIVE_MODAL';
-      payload: { activeModalId: string };
-    }
-  | {
-      type: 'panel/RESET_ACTIVE_MODAL';
-      payload: { activeModalId: string };
-    }
   | { type: 'geography/REQUEST_SELECTED_REGIONS_DATA' }
   | { type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' }
   | { type: 'impacts/START_HOURLY_ENERGY_PROFILE_CALCULATIONS' }
@@ -33,9 +24,6 @@ type State = {
     displayed: boolean;
     description: ReactNode;
   };
-  modalOverlay: boolean;
-  activeModalId: string;
-  closingModalId: string;
 };
 
 const initialState: State = {
@@ -45,9 +33,6 @@ const initialState: State = {
     displayed: false,
     description: null,
   },
-  modalOverlay: false,
-  activeModalId: '',
-  closingModalId: '',
 };
 
 export default function reducer(
@@ -83,33 +68,6 @@ export default function reducer(
           displayed: false,
           description: null,
         },
-      };
-    }
-
-    case 'panel/TOGGLE_MODAL_OVERLAY': {
-      return {
-        ...state,
-        modalOverlay: !state.modalOverlay,
-      };
-    }
-
-    case 'panel/STORE_ACTIVE_MODAL': {
-      const { activeModalId } = action.payload;
-
-      return {
-        ...state,
-        activeModalId,
-        closingModalId: '',
-      };
-    }
-
-    case 'panel/RESET_ACTIVE_MODAL': {
-      const { activeModalId } = action.payload;
-
-      return {
-        ...state,
-        activeModalId: '',
-        closingModalId: activeModalId,
       };
     }
 
@@ -153,22 +111,4 @@ export function displayModalDialog(description: ReactNode) {
 
 export function resetModalDialog() {
   return { type: 'panel/RESET_MODAL_DIALOG' };
-}
-
-export function toggleModalOverlay() {
-  return { type: 'panel/TOGGLE_MODAL_OVERLAY' };
-}
-
-export function storeActiveModal(modalId: string) {
-  return {
-    type: 'panel/STORE_ACTIVE_MODAL',
-    payload: { activeModalId: modalId },
-  };
-}
-
-export function resetActiveModal(modalId: string) {
-  return {
-    type: 'panel/RESET_ACTIVE_MODAL',
-    payload: { activeModalId: modalId },
-  };
 }
