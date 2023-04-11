@@ -11,7 +11,7 @@ import type {
   MovesEmissionsRates,
   VMTAllocationAndRegisteredVehicles,
   EVChargingProfiles,
-  NationalAverageVMTPerYear,
+  NationalAverageBusVMTPerYear,
   EVEfficiencyByModelYear,
   RegionAverageTemperatures,
   StateLightDutyVehiclesSales,
@@ -845,11 +845,11 @@ export function calculateSelectedRegionsVMTPercentagesPerVehicleType(options: {
  * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E183:E186).
  */
 export function calculateSelectedRegionsAverageVMTPerYear(options: {
-  nationalAverageVMTPerYear: NationalAverageVMTPerYear;
+  nationalAverageBusVMTPerYear: NationalAverageBusVMTPerYear;
   selectedRegionsVMTPercentagesPerVehicleType: SelectedRegionsVMTPercentagesPerVehicleType | {}; // prettier-ignore
 }) {
   const {
-    nationalAverageVMTPerYear,
+    nationalAverageBusVMTPerYear,
     selectedRegionsVMTPercentagesPerVehicleType,
   } = options;
 
@@ -876,10 +876,12 @@ export function calculateSelectedRegionsAverageVMTPerYear(options: {
       const { vmtPerLDVPercent, vmtPerBusPercent } = regionValue;
 
       object[regionId] = {
-        cars: nationalAverageVMTPerYear.cars * vmtPerLDVPercent,
-        trucks: nationalAverageVMTPerYear.trucks * vmtPerLDVPercent,
-        transitBuses: nationalAverageVMTPerYear.transitBuses * vmtPerBusPercent,
-        schoolBuses: nationalAverageVMTPerYear.schoolBuses * vmtPerBusPercent,
+        cars: nationalAverageBusVMTPerYear.cars * vmtPerLDVPercent,
+        trucks: nationalAverageBusVMTPerYear.trucks * vmtPerLDVPercent,
+        transitBuses:
+          nationalAverageBusVMTPerYear.transitBuses * vmtPerBusPercent,
+        schoolBuses:
+          nationalAverageBusVMTPerYear.schoolBuses * vmtPerBusPercent,
       };
 
       return object;
