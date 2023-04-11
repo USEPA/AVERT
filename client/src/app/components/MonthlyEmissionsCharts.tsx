@@ -610,7 +610,7 @@ function MonthlyEmissionsChartsContent() {
         <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
           <div className="padding-1 tablet:grid-col-6 desktop:grid-col-3">
             <div className="avert-box padding-105 height-full">
-              <p className="avert-box-heading font-serif-2xs line-height-serif-2">
+              <p className="avert-box-heading font-serif-2xs line-height-serif-2 text-bold">
                 Select level of aggregation:
               </p>
 
@@ -809,7 +809,7 @@ function MonthlyEmissionsChartsContent() {
 
           <div className="padding-1 tablet:grid-col-6 desktop:grid-col-3">
             <div className="avert-box padding-105 height-full">
-              <p className="avert-box-heading font-serif-2xs line-height-serif-2">
+              <p className="avert-box-heading font-serif-2xs line-height-serif-2 text-bold">
                 Select pollutants:
               </p>
 
@@ -958,7 +958,7 @@ function MonthlyEmissionsChartsContent() {
 
           <div className="padding-1 tablet:grid-col-6 desktop:grid-col-3">
             <div className="avert-box padding-105 height-full">
-              <p className="avert-box-heading font-serif-2xs line-height-serif-2">
+              <p className="avert-box-heading font-serif-2xs line-height-serif-2 text-bold">
                 Select emissions sources:
               </p>
 
@@ -1030,7 +1030,7 @@ function MonthlyEmissionsChartsContent() {
 
           <div className="padding-1 tablet:grid-col-6 desktop:grid-col-3">
             <div className="avert-box padding-105 height-full">
-              <p className="avert-box-heading font-serif-2xs line-height-serif-2">
+              <p className="avert-box-heading font-serif-2xs line-height-serif-2 text-bold">
                 Select units:
               </p>
 

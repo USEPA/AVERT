@@ -61,7 +61,7 @@ export function ImpactsSelectInput(props: {
 
         {tooltip && (
           <span className="margin-left-05">
-            <Tooltip id={fieldName}>{tooltip}</Tooltip>
+            <Tooltip>{tooltip}</Tooltip>
           </span>
         )}
       </div>

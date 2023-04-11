@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* --- EPA/USWDS --- */
 .usa-alert--info,
 .usa-alert--warning,
@@ -230,7 +234,8 @@ button:not([disabled]):focus,
   font-size: 1rem;
 }
 
-.avert-table thead th {
+.avert-table thead th,
+.avert-table thead td {
   color: white;
   background-color: var(--avert-blue);
 }

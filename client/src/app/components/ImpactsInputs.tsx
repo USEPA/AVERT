@@ -45,7 +45,7 @@ const inputsGroupStyles = css`
 
   /* highlight letter when details is open */
   &[open] > summary::before {
-    background-color: var(--avert-light-blue);
+    background-color: var(--avert-blue);
   }
 `;
 
@@ -73,7 +73,7 @@ const inputsSummaryStyles = css`
 
   /* highlight letter on hover */
   &:hover::before {
-    background-color: var(--avert-light-blue);
+    background-color: var(--avert-blue);
   }
 `;
 
@@ -193,7 +193,9 @@ function ImpactsInputsContent() {
             `padding-y-1 padding-x-105 text-bold bg-base-lightest`
           }
         >
-          <p className="margin-0">Energy Efficiency</p>
+          <h3 className="margin-0 font-sans-xs line-height-sans-3">
+            Energy Efficiency
+          </h3>
         </header>
 
         <div className="grid-container padding-0 maxw-full">
@@ -228,6 +230,7 @@ function ImpactsInputsContent() {
                   }
                   data-label="A"
                 >
+                  <span className="display-none">A.</span>
                   Reductions spread evenly throughout the year
                 </summary>
 
@@ -315,6 +318,7 @@ function ImpactsInputsContent() {
                   }
                   data-label="B"
                 >
+                  <span className="display-none">B.</span>
                   Percentage reductions in some or all hours
                 </summary>
 
@@ -402,7 +406,9 @@ function ImpactsInputsContent() {
             `margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest`
           }
         >
-          <p className="margin-0">Renewable Energy</p>
+          <h3 className="margin-0 font-sans-xs line-height-sans-3">
+            Renewable Energy
+          </h3>
         </header>
 
         <div className="grid-container padding-0 maxw-full">
@@ -437,6 +443,7 @@ function ImpactsInputsContent() {
                   }
                   data-label="C"
                 >
+                  <span className="display-none">C.</span>
                   Wind
                 </summary>
 
@@ -489,7 +496,7 @@ function ImpactsInputsContent() {
                         <p className="margin-y-05 font-sans-2xs line-height-sans-2 text-italic">
                           Offshore wind calculations are not available in the
                           selected AVERT region{' '}
-                          <Tooltip id="no-offshoreWind-region">
+                          <Tooltip>
                             <span className="text-no-italic">
                               AVERT does not support offshore wind modeling in
                               this region. It is unlikely that offshore areas
@@ -502,7 +509,7 @@ function ImpactsInputsContent() {
                         <p className="margin-y-05 font-sans-2xs line-height-sans-2 text-italic">
                           Offshore wind calculations are not available in the
                           AVERT region(s) that this state is part of{' '}
-                          <Tooltip id="no-offshoreWind-state">
+                          <Tooltip>
                             <span className="text-no-italic">
                               AVERT does not support offshore wind modeling in
                               the region(s) that this state is part of. It is
@@ -544,6 +551,7 @@ function ImpactsInputsContent() {
                   }
                   data-label="D"
                 >
+                  <span className="display-none">D.</span>
                   Solar photovoltaic (PV)
                 </summary>
 
@@ -609,7 +617,9 @@ function ImpactsInputsContent() {
             `margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest`
           }
         >
-          <p className="margin-0">Electric Vehicles</p>
+          <h3 className="margin-0 font-sans-xs line-height-sans-3">
+            Electric Vehicles
+          </h3>
         </header>
 
         <div className="grid-container padding-0 maxw-full">
@@ -643,6 +653,7 @@ function ImpactsInputsContent() {
                   }
                   data-label="E"
                 >
+                  <span className="display-none">E.</span>
                   Electric vehicles
                 </summary>
 
