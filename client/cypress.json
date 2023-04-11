@@ -1,6 +1,0 @@
-{
-  "baseUrl": "http://localhost:3000",
-  "blockHosts": ["*.google-analytics.com", "*.googletagmanager.com"],
-  "viewportWidth": 1280,
-  "viewportHeight": 800
-}
