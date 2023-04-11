@@ -244,7 +244,7 @@ export const regions: { [key in RegionId]: Region } = {
       FL: 100,
     },
     actualEmissions: {
-      so2: 32_186_626,
+      so2: 25_756_210,
     },
   },
   MIDA: {
@@ -329,7 +329,7 @@ export const regions: { [key in RegionId]: Region } = {
       NY: 100,
     },
     actualEmissions: {
-      so2: 3_060_272,
+      so2: 5_023_480,
     },
   },
   NW: {
@@ -375,7 +375,9 @@ export const regions: { [key in RegionId]: Region } = {
       GA: 59.8372,
       MS: 5.1415,
     },
-    actualEmissions: {},
+    actualEmissions: {
+      so2: 22_835_652,
+    },
   },
   SW: {
     id: 'SW',
@@ -387,7 +389,9 @@ export const regions: { [key in RegionId]: Region } = {
       NM: 14.6254,
       TX: 6.4536,
     },
-    actualEmissions: {},
+    actualEmissions: {
+      so2: 20_267_868,
+    },
   },
   TE: {
     id: 'TE',
