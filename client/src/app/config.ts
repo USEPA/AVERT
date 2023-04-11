@@ -14,7 +14,7 @@ import vmtAllocationAndRegisteredVehicles from 'app/data/vmt-allocation-and-regi
  */
 import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
 /**
- * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E177:E178).
+ * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E179:E180).
  */
 import nationalAverageVMTBusPerYear from 'app/data/national-average-bus-vmt-per-year.json';
 /**
