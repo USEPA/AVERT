@@ -587,8 +587,8 @@ function PowerEmissionsTableContent() {
           emissions from tailpipes).
         </li>
         <li>
-          Estimated marginal CO2 emission rates for future years are available
-          in the current{' '}
+          Estimated marginal CO<sub>2</sub> emission rates for future years are
+          available in the current{' '}
           <a
             className="usa-link"
             href="https://www.epa.gov/avert/download-avert"

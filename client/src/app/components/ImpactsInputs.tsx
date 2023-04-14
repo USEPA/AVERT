@@ -14,7 +14,10 @@ import {
 import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import { displayModalDialog } from 'app/redux/reducers/panel';
-import { RegionState } from 'app/redux/reducers/geography';
+import type {
+  GeographicFocus,
+  RegionState,
+} from 'app/redux/reducers/geography';
 import {
   updateEEAnnualGwh,
   updateEEConstantMw,
@@ -84,13 +87,20 @@ const inputsSummaryStyles = css`
  * warning modal dialog.
  */
 function checkTransitBusesWarningScenario(options: {
+  geographicFocus: GeographicFocus;
   selectedRegion: RegionState | undefined;
   evDeploymentLocation: string;
   transitBuses: string;
 }) {
-  const { selectedRegion, evDeploymentLocation, transitBuses } = options;
+  const {
+    geographicFocus,
+    selectedRegion,
+    evDeploymentLocation,
+    transitBuses,
+  } = options;
 
   return (
+    geographicFocus === 'regions' &&
     selectedRegion?.id === 'RM' &&
     ['state-MT', 'state-UT'].includes(evDeploymentLocation) &&
     transitBuses !== '' &&
@@ -758,6 +768,7 @@ function ImpactsInputsContent() {
 
                               if (
                                 checkTransitBusesWarningScenario({
+                                  geographicFocus,
                                   selectedRegion,
                                   evDeploymentLocation,
                                   transitBuses: value,
@@ -825,6 +836,7 @@ function ImpactsInputsContent() {
 
                           if (
                             checkTransitBusesWarningScenario({
+                              geographicFocus,
                               selectedRegion,
                               evDeploymentLocation: option,
                               transitBuses,
