@@ -34,7 +34,7 @@ function DataDownloadContent() {
         Data Download
       </h3>
 
-      <p>
+      <p className="margin-top-0">
         Download monthly displacement data for each county, state, and region in
         this analysis, in CSV format, or download your results formatted as
         inputs for use in{' '}
@@ -49,7 +49,7 @@ function DataDownloadContent() {
         .
       </p>
 
-      <p className="text-center">
+      <p className="margin-top-0 text-center">
         <a
           className="usa-button avert-button"
           href={`data:text/csv;charset=utf-8,${countyCsvString}`}
@@ -59,7 +59,7 @@ function DataDownloadContent() {
         </a>
       </p>
 
-      <p className="margin-bottom-0 text-center">
+      <p className="margin-0 text-center">
         <a
           className="usa-button avert-button"
           href={`data:text/csv;charset=utf-8,${cobraCsvString}`}

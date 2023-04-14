@@ -83,7 +83,7 @@ function ValidationMessage(props: {
 
         {direction === 'upper' && (
           <>
-            <p>
+            <p className="margin-top-0">
               The combined impact of your proposed programs would exceed the
               range of hourly energy changes that AVERT is able to calculate.
               &nbsp;&nbsp;
@@ -107,7 +107,7 @@ function ValidationMessage(props: {
 
         {direction === 'lower' && (
           <>
-            <p>
+            <p className="margin-top-0">
               The combined impact of your proposed programs would displace more
               than <strong>{severity === 'error' ? 30 : 15}%</strong> of
               regional fossil generation in at least one hour of the
@@ -178,14 +178,14 @@ export function EVWarningMessage() {
       <div className="usa-alert usa-alert--warning">
         <div className="usa-alert__body">
           <h4 className="usa-alert__heading">WARNING</h4>
-          <p>
+          <p className="margin-top-0">
             <strong>
               You have entered a quantity of EVs, but have not entered any
               energy efficiency or renewable energy.
             </strong>
           </p>
 
-          <p>
+          <p className="margin-top-0">
             Recent trends show significant amounts of energy efficiency and
             renewables coming online. Consider adding these resources alongside
             EVs in order to examine the portfolio effects of adding multiple
@@ -194,7 +194,7 @@ export function EVWarningMessage() {
             these with the EE/RE required to offset your entered EV demand.
           </p>
 
-          <p>
+          <p className="margin-top-0">
             For more ideas on how to model EVs in AVERT, see Appendix J in the{' '}
             <a
               className="usa-link"

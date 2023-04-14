@@ -105,7 +105,10 @@ export function ImpactsTextInput(props: {
           | RenewableEnergyFieldName
           | ElectricVehiclesFieldName,
       ) && (
-        <p className="text-italic text-secondary" data-input-error>
+        <p
+          className="margin-0 line-height-sans-3 text-italic text-secondary"
+          data-input-error
+        >
           {errorMessage ?? (
             <>
               <span className="display-block text-bold text-no-italic">
