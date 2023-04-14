@@ -38,7 +38,12 @@ function DataDownloadContent() {
         Download monthly displacement data for each county, state, and region in
         this analysis, in CSV format, or download your results formatted as
         inputs for use in{' '}
-        <a className="usa-link" href="https://www.epa.gov/cobra">
+        <a
+          className="usa-link"
+          href="https://www.epa.gov/cobra"
+          target="_parent"
+          rel="noreferrer"
+        >
           COBRA
         </a>
         .
@@ -73,7 +78,12 @@ export function DataDownload() {
       message={
         <>
           AVERT data download error. Please contact AVERT support at{' '}
-          <a className="usa-link" href="mailto:avert@epa.gov">
+          <a
+            className="usa-link"
+            href="mailto:avert@epa.gov"
+            target="_parent"
+            rel="noreferrer"
+          >
             avert@epa.gov
           </a>
         </>

@@ -148,7 +148,7 @@ function VehiclesEmissionsTableContent() {
                     <p className="margin-0 text-normal text-left">
                       This column shows the annual avoided emissions from
                       internal combustion engine vehicles displaced due to the
-                      user-inputted addition of electric vehicles to the road.
+                      addition of electric vehicles defined in the scenario.
                       Avoided vehicle emissions refers to emissions from vehicle
                       tailpipes and other emissions closely related to the
                       driving and fueling of vehicles.
@@ -303,7 +303,12 @@ export function VehiclesEmissionsTable() {
         <>
           Error loading transportation sector emissions table. Please contact
           AVERT support at{' '}
-          <a className="usa-link" href="mailto:avert@epa.gov">
+          <a
+            className="usa-link"
+            href="mailto:avert@epa.gov"
+            target="_parent"
+            rel="noreferrer"
+          >
             avert@epa.gov
           </a>
         </>

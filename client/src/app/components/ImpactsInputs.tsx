@@ -800,11 +800,11 @@ function ImpactsInputsContent() {
                         }}
                         tooltip={
                           <p className="margin-0">
-                            Select the model year of the modeled electric
-                            vehicles. This parameter determines the modeled EVs’
-                            efficiencies and the emission rates of the displaced
-                            internal combustion engine vehicles if “new” is
-                            selected for the internal combustion engine vehicles
+                            Select the model year of the electric vehicles
+                            entered in the scenario. This parameter determines
+                            the modeled EVs’ efficiencies and the emission rates
+                            of the displaced internal combustion engine (ICE)
+                            vehicles if “new” is selected for the ICE vehicles
                             being replaced.
                           </p>
                         }
@@ -824,16 +824,16 @@ function ImpactsInputsContent() {
                         }}
                         tooltip={
                           <p className="margin-0">
-                            Select “new” or “existing” based on whether the new
-                            EV will displace a “new” internal combustion engine
-                            vehicle with the same model year as the EV model
-                            year or the average “existing” internal combustion
-                            engine vehicle. “New” internal combustion engine
-                            model years will have lower avoided vehicle
-                            emissions than “existing.” A selection of “existing”
-                            is likely the most useful for performing a
-                            comparison of the existing fleet with a future
-                            alternative featuring EVs.
+                            Select “new” or “existing” based on whether the EVs
+                            entered in the scenario will displace a “new”
+                            internal combustion engine (ICE) vehicle with the
+                            same model year as the EV model year or the average
+                            “existing” ICE vehicle. “New” ICE model years will
+                            have lower avoided vehicle emissions than
+                            “existing.” A selection of “existing” is likely the
+                            most useful for performing a comparison of the
+                            existing fleet with a future alternative featuring
+                            EVs.
                           </p>
                         }
                       />
@@ -872,7 +872,12 @@ export function ImpactsInputs() {
       message={
         <>
           Energy Impacts inputs error. Please contact AVERT support at{' '}
-          <a className="usa-link" href="mailto:avert@epa.gov">
+          <a
+            className="usa-link"
+            href="mailto:avert@epa.gov"
+            target="_parent"
+            rel="noreferrer"
+          >
             avert@epa.gov
           </a>
         </>

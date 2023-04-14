@@ -81,7 +81,12 @@ function COBRAConnectionContent() {
 
       <p>
         EPA’s{' '}
-        <a className="usa-link" href="https://www.epa.gov/cobra">
+        <a
+          className="usa-link"
+          href="https://www.epa.gov/cobra"
+          target="_parent"
+          rel="noreferrer"
+        >
           CO-Benefits Risk Assessment (COBRA) Health Impacts Screening and
           Mapping Tool
         </a>{' '}
@@ -114,7 +119,12 @@ function COBRAConnectionContent() {
             <p className="usa-alert__text">
               Error connecting with COBRA application. Please try again later.
               If connection problems persist, please contact AVERT support at{' '}
-              <a className="usa-link" href="mailto:avert@epa.gov">
+              <a
+                className="usa-link"
+                href="mailto:avert@epa.gov"
+                target="_parent"
+                rel="noreferrer"
+              >
                 avert@epa.gov
               </a>
               .
@@ -182,7 +192,12 @@ export function COBRAConnection() {
       message={
         <>
           COBRA connection error. Please contact AVERT support at{' '}
-          <a className="usa-link" href="mailto:avert@epa.gov">
+          <a
+            className="usa-link"
+            href="mailto:avert@epa.gov"
+            target="_parent"
+            rel="noreferrer"
+          >
             avert@epa.gov
           </a>
         </>

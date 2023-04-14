@@ -152,7 +152,12 @@ function EmissionsReplacementTooltip(props: {
         {fieldMarkup.get(field)} emissions event. {fieldMarkup.get(field)}{' '}
         emissions changes from these plants are not included in this analysis.
         See Section 2 of the{' '}
-        <a className="usa-link" href="https://www.epa.gov/avert">
+        <a
+          className="usa-link"
+          href="https://www.epa.gov/avert"
+          target="_parent"
+          rel="noreferrer"
+        >
           AVERT User Manual
         </a>{' '}
         for more information.
@@ -581,6 +586,19 @@ function PowerEmissionsTableContent() {
           Data does not include changes to ICE vehicle emissions (e.g.,
           emissions from tailpipes).
         </li>
+        <li>
+          Estimated marginal CO2 emission rates for future years are available
+          in the current{' '}
+          <a
+            className="usa-link"
+            href="https://www.epa.gov/avert/download-avert"
+            target="_parent"
+            rel="noreferrer"
+          >
+            AVERT Main Module
+          </a>
+          .
+        </li>
       </ul>
 
       <p className="display-none">
@@ -599,7 +617,12 @@ export function PowerEmissionsTable() {
         <>
           Error loading power sector emissions table. Please contact AVERT
           support at{' '}
-          <a className="usa-link" href="mailto:avert@epa.gov">
+          <a
+            className="usa-link"
+            href="mailto:avert@epa.gov"
+            target="_parent"
+            rel="noreferrer"
+          >
             avert@epa.gov
           </a>
         </>
