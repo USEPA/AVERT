@@ -154,9 +154,10 @@ function ExcelAppText() {
         target="_parent"
         rel="noreferrer"
       >
-        AVERT Main Module v4.1 in Excel
+        AVERT Main Module
       </a>{' '}
-      allows analyses for years 2017–2022 or for a future year scenario.
+      v4.1 in Excel allows analyses for years 2017–2022 or for a future year
+      scenario.
     </p>
   );
 }
