@@ -199,6 +199,8 @@ export function EVWarningMessage() {
             <a
               className="usa-link"
               href="https://www.epa.gov/avert/avert-user-manual"
+              target="_parent"
+              rel="noreferrer"
             >
               AVERT user manual
             </a>
@@ -262,7 +264,12 @@ export function ImpactsMessages() {
       message={
         <>
           Energy Impacts messages error. Please contact AVERT support at{' '}
-          <a className="usa-link" href="mailto:avert@epa.gov">
+          <a
+            className="usa-link"
+            href="mailto:avert@epa.gov"
+            target="_parent"
+            rel="noreferrer"
+          >
             avert@epa.gov
           </a>
         </>

@@ -439,7 +439,12 @@ export function EVSalesAndStockTable(props: { className?: string }) {
         <>
           Error loading EV Sales and Stock Comparison table. Please contact
           AVERT support at{' '}
-          <a className="usa-link" href="mailto:avert@epa.gov">
+          <a
+            className="usa-link"
+            href="mailto:avert@epa.gov"
+            target="_parent"
+            rel="noreferrer"
+          >
             avert@epa.gov
           </a>
         </>
@@ -459,7 +464,12 @@ export function EEREEVComparisonTable(props: { className?: string }) {
         <>
           Error loading EE/RE and EV Comparison table. Please contact AVERT
           support at{' '}
-          <a className="usa-link" href="mailto:avert@epa.gov">
+          <a
+            className="usa-link"
+            href="mailto:avert@epa.gov"
+            target="_parent"
+            rel="noreferrer"
+          >
             avert@epa.gov
           </a>
         </>

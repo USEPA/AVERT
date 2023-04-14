@@ -174,7 +174,12 @@ export function ImpactsChart() {
         <>
           Electric power load profile chart error. Please contact AVERT support
           at{' '}
-          <a className="usa-link" href="mailto:avert@epa.gov">
+          <a
+            className="usa-link"
+            href="mailto:avert@epa.gov"
+            target="_parent"
+            rel="noreferrer"
+          >
             avert@epa.gov
           </a>
         </>

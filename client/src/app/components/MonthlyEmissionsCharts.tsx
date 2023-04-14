@@ -465,7 +465,12 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
             selected features one or more power plants with an infrequent{' '}
             {pollutantMarkup.get(pollutant)} emissions event. See Section 2 of
             the{' '}
-            <a className="usa-link" href="https://www.epa.gov/avert">
+            <a
+              className="usa-link"
+              href="https://www.epa.gov/avert"
+              target="_parent"
+              rel="noreferrer"
+            >
               AVERT User Manual
             </a>{' '}
             for more information.
@@ -1215,7 +1220,12 @@ export function MonthlyEmissionsCharts() {
         <>
           Error loading monthly emissions changes charts. Please contact AVERT
           support at{' '}
-          <a className="usa-link" href="mailto:avert@epa.gov">
+          <a
+            className="usa-link"
+            href="mailto:avert@epa.gov"
+            target="_parent"
+            rel="noreferrer"
+          >
             avert@epa.gov
           </a>
         </>
