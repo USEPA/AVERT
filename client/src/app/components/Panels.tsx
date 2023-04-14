@@ -146,17 +146,17 @@ const tabsStyles = css`
 function ExcelAppText() {
   return (
     <p className="text-base-dark font-sans-2xs tablet:font-sans-xs desktop:font-sans-sm">
-      The online version of AVERT completes analyses using 2022 emissions and
-      generation data. The Excel version of AVERT (
+      AVERT Web Edition completes analyses using 2022 power sector emissions and
+      generation data and AVERT Main Module v4.1. The{' '}
       <a
         className="usa-link"
         href="https://www.epa.gov/avert/download-avert"
         target="_parent"
         rel="noreferrer"
       >
-        available for download here
-      </a>
-      ) allows analyses for years 2017–2022 or for a future year scenario.
+        AVERT Main Module v4.1 in Excel
+      </a>{' '}
+      allows analyses for years 2017–2022 or for a future year scenario.
     </p>
   );
 }
