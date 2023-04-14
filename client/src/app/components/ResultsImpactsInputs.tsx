@@ -68,7 +68,7 @@ function ResultsImpactsInputsContent() {
 
       <div className="avert-columns">
         {inputExists(annualGwh) && (
-          <p className="margin-bottom-0 padding-top-1 line-height-sans-2">
+          <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">
               Reduce total annual generation by:
             </span>{' '}
@@ -78,7 +78,7 @@ function ResultsImpactsInputsContent() {
         )}
 
         {inputExists(constantMwh) && (
-          <p className="margin-bottom-0 padding-top-1 line-height-sans-2">
+          <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">Reduce hourly generation by:</span>{' '}
             <span className="font-mono-xs text-bold">{constantMwh}</span>{' '}
             <span className="font-sans-3xs">MW</span>
@@ -86,7 +86,7 @@ function ResultsImpactsInputsContent() {
         )}
 
         {inputExists(broadProgram) && (
-          <p className="margin-bottom-0 padding-top-1 line-height-sans-2">
+          <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">
               <em>Broad-based program:</em> Reduce generation by:
             </span>{' '}
@@ -96,7 +96,7 @@ function ResultsImpactsInputsContent() {
         )}
 
         {(inputExists(reduction) || inputExists(topHours)) && (
-          <p className="margin-bottom-0 padding-top-1 line-height-sans-2">
+          <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">
               <em>Targeted program:</em> Reduce generation by:
             </span>{' '}
@@ -110,7 +110,7 @@ function ResultsImpactsInputsContent() {
         )}
 
         {inputExists(onshoreWind) && (
-          <p className="margin-bottom-0 padding-top-1 line-height-sans-2">
+          <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">Onshore wind total capacity:</span>{' '}
             <span className="font-mono-xs text-bold">{onshoreWind}</span>{' '}
             <span className="font-sans-3xs">MW</span>
@@ -118,7 +118,7 @@ function ResultsImpactsInputsContent() {
         )}
 
         {inputExists(offshoreWind) && (
-          <p className="margin-bottom-0 padding-top-1 line-height-sans-2">
+          <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">Offshore wind total capacity:</span>{' '}
             <span className="font-mono-xs text-bold">{offshoreWind}</span>{' '}
             <span className="font-sans-3xs">MW</span>
@@ -126,7 +126,7 @@ function ResultsImpactsInputsContent() {
         )}
 
         {inputExists(utilitySolar) && (
-          <p className="margin-bottom-0 padding-top-1 line-height-sans-2">
+          <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">
               Utility-scale solar PV total capacity:
             </span>{' '}
@@ -136,7 +136,7 @@ function ResultsImpactsInputsContent() {
         )}
 
         {inputExists(rooftopSolar) && (
-          <p className="margin-bottom-0 padding-top-1 line-height-sans-2">
+          <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">
               Distributed (rooftop) solar PV total capacity:
             </span>{' '}
@@ -146,14 +146,14 @@ function ResultsImpactsInputsContent() {
         )}
 
         {inputExists(batteryEVs) && (
-          <p className="margin-bottom-0 padding-top-1 line-height-sans-2">
+          <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">Light-duty battery EVs:</span>{' '}
             <span className="font-mono-xs text-bold">{batteryEVs}</span>
           </p>
         )}
 
         {inputExists(hybridEVs) && (
-          <p className="margin-bottom-0 padding-top-1 line-height-sans-2">
+          <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">
               Light-duty plug-in hybrid EVs:
             </span>{' '}
@@ -162,21 +162,21 @@ function ResultsImpactsInputsContent() {
         )}
 
         {inputExists(transitBuses) && (
-          <p className="margin-bottom-0 padding-top-1 line-height-sans-2">
+          <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">Electric transit buses:</span>{' '}
             <span className="font-mono-xs text-bold">{transitBuses}</span>
           </p>
         )}
 
         {inputExists(schoolBuses) && (
-          <p className="margin-bottom-0 padding-top-1 line-height-sans-2">
+          <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">Electric school buses:</span>{' '}
             <span className="font-mono-xs text-bold">{schoolBuses}</span>
           </p>
         )}
 
         {evInputsNotEmpty && evDeploymentLocationName && (
-          <p className="margin-bottom-0 padding-top-1 line-height-sans-2">
+          <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">Location of EV deployment:</span>{' '}
             <span className="font-mono-xs text-bold">
               {evDeploymentLocationName}
@@ -185,14 +185,14 @@ function ResultsImpactsInputsContent() {
         )}
 
         {evInputsNotEmpty && evModelYearName && (
-          <p className="margin-bottom-0 padding-top-1 line-height-sans-2">
+          <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">EV model year:</span>{' '}
             <span className="font-mono-xs text-bold">{evModelYearName}</span>
           </p>
         )}
 
         {evInputsNotEmpty && iceReplacementVehicleName && (
-          <p className="margin-bottom-0 padding-top-1 line-height-sans-2">
+          <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">ICE vehicles being replaced:</span>{' '}
             <span className="font-mono-xs text-bold">
               {iceReplacementVehicleName}

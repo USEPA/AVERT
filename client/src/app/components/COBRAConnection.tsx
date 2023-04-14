@@ -79,7 +79,7 @@ function COBRAConnectionContent() {
         Direct Connection to COBRA
       </h3>
 
-      <p>
+      <p className="margin-top-0">
         EPA’s{' '}
         <a
           className="usa-link"
@@ -133,7 +133,7 @@ function COBRAConnectionContent() {
         </div>
       )}
 
-      <p className="margin-bottom-0 text-center">
+      <p className="margin-0 text-center">
         <a
           className="usa-button avert-button"
           href={cobraAppUrl}

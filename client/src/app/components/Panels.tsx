@@ -374,7 +374,7 @@ export function Panels() {
           <div className="overflow-hidden">
             <UnitConversion />
 
-            <p className="font-sans-xs tablet:font-sans-sm desktop:font-sans-md">
+            <p className="margin-top-0 font-sans-xs tablet:font-sans-sm desktop:font-sans-md">
               AVERT quantifies changes in electricity generation and emissions
               that result from energy policies and programs. Specify the impacts
               of energy programs below, and AVERT will use these inputs to
@@ -397,7 +397,7 @@ export function Panels() {
               &nbsp; icon for each program type below.
             </p>
 
-            <p className="margin-bottom-0 text-base-dark font-sans-2xs tablet:font-sans-xs desktop:font-sans-sm">
+            <p className="margin-0 text-base-dark font-sans-2xs tablet:font-sans-xs desktop:font-sans-sm">
               Several types of programs are listed below <em>(A through E)</em>.
               You can enter impacts for any or all types of programs, in any
               combination. AVERT will calculate cumulative impacts.
