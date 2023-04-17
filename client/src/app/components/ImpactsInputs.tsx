@@ -878,7 +878,9 @@ function ImpactsInputsContent() {
                             the modeled EVs’ efficiencies and the emission rates
                             of the displaced internal combustion engine (ICE)
                             vehicles if “new” is selected for the ICE vehicles
-                            being replaced.
+                            being replaced. This parameter determines only the
+                            modeled EVs’ efficiencies if “existing” is selected
+                            for the ICE vehicles being replaced.
                           </p>
                         }
                       />
