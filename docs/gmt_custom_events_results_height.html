@@ -1,0 +1,59 @@
+<script>
+  (function () {
+    var svgs = document.getElementsByTagName("svg");
+    var emissionChangesCharts = document.querySelector("[data-avert-charts]");
+
+    if (!emissionChangesCharts) {
+      return;
+    }
+
+    /** The loading component is an SVG element with a title of "Wind Turbine" */
+    function getLoadingElement(elements, callback) {
+      Array.from(elements).forEach(function (element) {
+        if (element.textContent.includes("Wind Turbine")) {
+          callback(element);
+        }
+      });
+    }
+
+    function onDisplayed(element, callback) {
+      new IntersectionObserver(function (entries, observer) {
+        entries.forEach(function (entry) {
+          if (entry.intersectionRatio > 0) {
+            callback(element);
+            observer.disconnect();
+          }
+        });
+      }).observe(element);
+    }
+
+    function onHidden(element, callback) {
+      new IntersectionObserver(function (entries, observer) {
+        entries.forEach(function (entry) {
+          if (entry.intersectionRatio === 0) {
+            callback(element);
+            observer.disconnect();
+          }
+        });
+      }).observe(element);
+    }
+
+    /**
+     * When the emission changes charts are visible (on the "Get Results" panel)
+     * and the loading indicator is no longer displayed, trigger a click event
+     * which will fire the sendHeight() function in the app's post-message.js
+     * (which gets the height of the current document, and send it to the parent
+     * window – this is necessary because the app is displayed in an iframe).
+     */
+    onDisplayed(emissionChangesCharts, function (charts) {
+      getLoadingElement(svgs, function (svg) {
+        onHidden(svg, function (el) {
+          emissionChangesCharts.click();
+          // also manually send the height in case the click event doesn't work
+          var height = document.querySelector("body").offsetHeight;
+          window.parent.postMessage(["setHeight", height], "*");
+        });
+      });
+    });
+  })();
+</script>
