@@ -1,7 +1,7 @@
 ---
 applications:
   - name: avert-dev
-    stack: cflinuxfs3
+    stack: cflinuxfs4
     buildpacks:
       - nodejs_buildpack
     command: npm start
