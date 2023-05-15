@@ -1,9 +1,9 @@
 ---
 applications:
-- name: avert
-  stack: cflinuxfs3
-  buildpacks:
-    - nodejs_buildpack
-  command: npm start
-  memory: 192M
-  instances: 16
+  - name: avert
+    stack: cflinuxfs4
+    buildpacks:
+      - nodejs_buildpack
+    command: npm start
+    memory: 192M
+    instances: 16
