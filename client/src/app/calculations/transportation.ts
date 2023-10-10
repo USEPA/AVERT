@@ -638,10 +638,12 @@ export function calculateMonthlyVMTTotalsAndPercentages(options: {
     schoolBuses: 0,
   };
 
+  const initialYear = movesEmissionsRates[0].year;
+
   movesEmissionsRates.forEach((data) => {
     const month = Number(data.month);
 
-    if (data.year === '2020') {
+    if (data.year === initialYear) {
       result[month] ??= {
         cars: { total: 0, percent: 0 },
         trucks: { total: 0, percent: 0 },
