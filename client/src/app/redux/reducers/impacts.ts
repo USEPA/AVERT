@@ -220,8 +220,8 @@ type State = {
   };
 };
 
-/** NOTE: Excel version defaults EV model year to 2022 */
-const initialEVModelYear = evModelYearOptions[2].id;
+/** NOTE: Excel version defaults EV model year to 2023 */
+const initialEVModelYear = evModelYearOptions[0].id;
 
 const initialICEReplacementVehicle = iceReplacementVehicleOptions[0].id;
 
