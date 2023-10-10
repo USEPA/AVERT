@@ -66,7 +66,7 @@ function convertJsonStringsToNumbers({ filename, fields }) {
 
 // convertJsonStringsToNumbers({
 //   filename: "./data/moves-emissions-rates.json",
-//   fields: ["VMT", "CO2", "NOX", "SO2", "PM25", "VOCs", "NH3", "regionalWeight"],
+//   fields: ["VMT", "CO2", "NOX", "SO2", "PM25", "VOCs", "NH3"],
 // });
 
 // convertTsvToJson("./data/county-fips.txt");
