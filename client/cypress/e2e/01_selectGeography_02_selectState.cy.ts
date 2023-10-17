@@ -9,6 +9,7 @@ describe('Select State', () => {
 
     cy.findAllByText('Select State')
       .filter('option')
+      .filter(':visible')
       .parent()
       .as('statesSelect');
   });
