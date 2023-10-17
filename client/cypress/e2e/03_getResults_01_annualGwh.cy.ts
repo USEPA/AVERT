@@ -23,7 +23,7 @@ describe('Get Results – annualGwh', () => {
     cy.findByText('LOADING...', { timeout: 120000 }).should('not.exist');
   });
 
-  it('Annual Regional Displacements table displays the correct results', () => {
+  it('Annual Emissions Changes (Power Sector Only) table displays the correct results', () => {
     /* prettier-ignore */
     cy.findByText('Generation')
       .parent().parent().children().as('geneartion')
@@ -96,7 +96,7 @@ describe('Get Results – annualGwh', () => {
     cy.get('@nh3Rates').eq(3).should('contain', '0.030');
   });
 
-  it('Annual State Emission Changes table displays the correct results', () => {
+  it('Annual Emissions Changes By State table displays the correct results', () => {
     cy.findByLabelText('All states').click({ force: true });
 
     /* prettier-ignore */
