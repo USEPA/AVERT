@@ -10,35 +10,27 @@ describe('Set Energy Impacts', () => {
 
     cy.findByText('Reductions spread evenly throughout the year').as('toggleA');
     cy.get('@toggleA').click();
-    cy.findByText('Reduce total annual generation by:').next().as('annualGwh');
-    cy.findByText('Reduce hourly generation by:').next().as('constantMwh');
+    cy.findByLabelText('Reduce total annual generation by:').as('annualGwh');
+    cy.findByLabelText('Reduce hourly generation by:').as('constantMwh');
     cy.get('@toggleA').click();
 
     cy.findByText('Percentage reductions in some or all hours').as('toggleB');
     cy.get('@toggleB').click();
-    cy.findByText('Broad-based program: Reduce generation by:')
-      .next()
-      .as('broadProgram');
-    cy.findByText('Targeted program: Reduce generation by:')
-      .next()
-      .as('reduction');
-    cy.findByText('% during the peak:').next().as('topHours');
+    cy.findByLabelText('Broad-based program:', { exact: false }).as('broadProgram'); // prettier-ignore
+    cy.findByLabelText('Targeted program:', { exact: false }).as('reduction');
+    cy.findByText('% of hours').prev().as('topHours');
     cy.get('@toggleB').click();
 
     cy.findByText('Wind').as('toggleC');
     cy.get('@toggleC').click();
-    cy.findByText('Onshore wind total capacity:').next().as('onshoreWind');
-    cy.findByText('Offshore wind total capacity:').next().as('offshoreWind');
+    cy.findByLabelText('Onshore wind total capacity:').as('onshoreWind');
+    cy.findByLabelText('Offshore wind total capacity:').as('offshoreWind');
     cy.get('@toggleC').click();
 
-    cy.findByText('Solar photovoltaic').as('toggleD');
+    cy.findByText('Solar photovoltaic (PV)').as('toggleD');
     cy.get('@toggleD').click();
-    cy.findByText('Utility-scale solar photovoltaic total capacity:')
-      .next()
-      .as('utilitySolar');
-    cy.findByText('Distributed (rooftop) solar photovoltaic total capacity:')
-      .next()
-      .as('rooftopSolar');
+    cy.findByLabelText('Utility-scale solar PV total capacity:').as('utilitySolar'); // prettier-ignore
+    cy.findByLabelText('Distributed (rooftop) solar PV total capacity:').as('rooftopSolar'); // prettier-ignore
     cy.get('@toggleD').click();
 
     cy.findByText('Calculate Energy Impacts').as('calculateBtn');
@@ -60,9 +52,9 @@ describe('Set Energy Impacts', () => {
     cy.get('@toggleC').click();
     cy.get('@onshoreWind').type('1000');
     cy.get('@calculateBtn').click();
-    cy.findAllByText('WARNING:').filter(':visible');
-    cy.findByText('25.05');
-    cy.findByText('March 1 at 2:00 AM');
+    cy.findAllByText('WARNING').filter(':visible');
+    cy.findByText('22.5');
+    cy.findByText('April 16 at 3:00 AM');
   });
 
   it('Entering a value over the 30% threshold for annual generation and onshore wind capacity displays the error message below the chart', () => {
@@ -71,24 +63,15 @@ describe('Set Energy Impacts', () => {
     cy.get('@toggleC').click();
     cy.get('@onshoreWind').type('1000');
     cy.get('@calculateBtn').click();
-    cy.findAllByText('ERROR:').filter(':visible');
-    cy.findByText('37.12');
-    cy.findByText('March 1 at 2:00 AM');
+    cy.findAllByText('ERROR').filter(':visible');
+    cy.findByText('33.45');
+    cy.findByText('April 16 at 3:00 AM');
   });
 
   it('Entering a negative value for annual generation displays the error message below the input', () => {
     cy.get('@toggleA').click();
     cy.get('@annualGwh').type('-1');
     cy.findByText('Please enter a positive number.');
-    cy.get('@calculateBtn').should('have.class', 'avert-button-disabled');
-    cy.get('@resultsBtn').should('have.class', 'avert-button-disabled');
-  });
-
-  // NOTE: input validation message for max value was removed in a previous application update
-  it.skip('Entering a value over the vaild limit for onshore wind capacity displays the error message below the input', () => {
-    cy.get('@toggleC').click();
-    cy.get('@onshoreWind').type('1376');
-    cy.findByText('Please enter a number between 0 and 1375.5.');
     cy.get('@calculateBtn').should('have.class', 'avert-button-disabled');
     cy.get('@resultsBtn').should('have.class', 'avert-button-disabled');
   });

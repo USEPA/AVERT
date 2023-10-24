@@ -59,10 +59,10 @@ const expandedVehicleTypes = [
 
 const pollutants = ['CO2', 'NOX', 'SO2', 'PM25', 'VOCs', 'NH3'] as const;
 
-type AbridgedVehicleType = typeof abridgedVehicleTypes[number];
-type GeneralVehicleType = typeof generalVehicleTypes[number];
-type ExpandedVehicleType = typeof expandedVehicleTypes[number];
-type Pollutant = typeof pollutants[number];
+type AbridgedVehicleType = (typeof abridgedVehicleTypes)[number];
+type GeneralVehicleType = (typeof generalVehicleTypes)[number];
+type ExpandedVehicleType = (typeof expandedVehicleTypes)[number];
+type Pollutant = (typeof pollutants)[number];
 
 export type VMTTotalsByGeography = ReturnType<
   typeof calculateVMTTotalsByGeography
@@ -638,10 +638,12 @@ export function calculateMonthlyVMTTotalsAndPercentages(options: {
     schoolBuses: 0,
   };
 
+  const initialYear = movesEmissionsRates[0].year;
+
   movesEmissionsRates.forEach((data) => {
     const month = Number(data.month);
 
-    if (data.year === '2020') {
+    if (data.year === initialYear) {
       result[month] ??= {
         cars: { total: 0, percent: 0 },
         trucks: { total: 0, percent: 0 },
@@ -656,9 +658,9 @@ export function calculateMonthlyVMTTotalsAndPercentages(options: {
           ? 'cars'
           : data.vehicleType === 'Passenger Truck'
           ? 'trucks'
-          : data.vehicleType === 'Transit Bus' && data.fuelType === 'Diesel'
+          : data.vehicleType === 'Transit Bus' && data.fuelType === 'Diesel Fuel' // prettier-ignore
           ? 'transitBusesDiesel'
-          : data.vehicleType === 'Transit Bus' && data.fuelType === 'CNG'
+          : data.vehicleType === 'Transit Bus' && data.fuelType === 'Compressed Natural Gas (CNG)' // prettier-ignore
           ? 'transitBusesCNG'
           : data.vehicleType === 'Transit Bus' && data.fuelType === 'Gasoline'
           ? 'transitBusesGasoline'
@@ -1656,9 +1658,9 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
             ? 'cars'
             : data.vehicleType === 'Passenger Truck'
             ? 'trucks'
-            : data.vehicleType === 'Transit Bus' && data.fuelType === 'Diesel'
+            : data.vehicleType === 'Transit Bus' && data.fuelType === 'Diesel Fuel' // prettier-ignore
             ? 'transitBusesDiesel'
-            : data.vehicleType === 'Transit Bus' && data.fuelType === 'CNG'
+            : data.vehicleType === 'Transit Bus' && data.fuelType === 'Compressed Natural Gas (CNG)' // prettier-ignore
             ? 'transitBusesCNG'
             : data.vehicleType === 'Transit Bus' && data.fuelType === 'Gasoline'
             ? 'transitBusesGasoline'

@@ -62,13 +62,15 @@ function convertJsonStringsToNumbers({ filename, fields }) {
   });
 }
 
+// ------------ MOVES Emissions Rates ------------
 // convertTsvToJson("./data/moves-emissions-rates.txt");
 
 // convertJsonStringsToNumbers({
 //   filename: "./data/moves-emissions-rates.json",
-//   fields: ["VMT", "CO2", "NOX", "SO2", "PM25", "VOCs", "NH3", "regionalWeight"],
+//   fields: ["VMT", "CO2", "NOX", "SO2", "PM25", "VOCs", "NH3"],
 // });
 
+// ------------ County FIPS ------------
 // convertTsvToJson("./data/county-fips.txt");
 
 // convertJsonStringsToNumbers({
@@ -85,6 +87,7 @@ function convertJsonStringsToNumbers({ filename, fields }) {
 //   ],
 // });
 
+// ------------ State Bus Sales and Stock ------------
 // convertTsvToJson("./data/state-bus-sales-and-stock.txt");
 
 // convertJsonStringsToNumbers({
