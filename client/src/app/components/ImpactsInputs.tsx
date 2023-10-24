@@ -903,12 +903,10 @@ function ImpactsInputsContent() {
                             entered in the scenario will displace a “new”
                             internal combustion engine (ICE) vehicle with the
                             same model year as the EV model year or the average
-                            “existing” ICE vehicle. “New” ICE model years will
-                            have lower avoided vehicle emissions than
-                            “existing.” A selection of “existing” is likely the
-                            most useful for performing a comparison of the
-                            existing fleet with a future alternative featuring
-                            EVs.
+                            “existing” ICE vehicle. “New” ICE model years have
+                            lower avoided vehicle emissions than the “existing”
+                            fleet, which is the fleet average of the “EV model
+                            year” selected.
                           </p>
                         }
                       />
