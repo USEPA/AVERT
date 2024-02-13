@@ -28,6 +28,8 @@ import {
   updateREOffshoreWind,
   updateREUtilitySolar,
   updateRERooftopSolar,
+  updateESUtilityStorage,
+  updateESRooftopStorage,
   updateEVBatteryEVs,
   runEVBatteryEVsCalculations,
   updateEVHybridEVs,
@@ -39,8 +41,6 @@ import {
   updateEVDeploymentLocation,
   updateEVModelYear,
   updateEVICEReplacementVehicle,
-  updateUtilityStorage,
-  updateRooftopStorage,
   calculateHourlyEnergyProfile,
 } from 'app/redux/reducers/impacts';
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
@@ -146,6 +146,8 @@ function ImpactsInputsContent() {
     offshoreWind,
     utilitySolar,
     rooftopSolar,
+    utilityStorage,
+    rooftopStorage,
     batteryEVs,
     hybridEVs,
     transitBuses,
@@ -153,8 +155,6 @@ function ImpactsInputsContent() {
     evDeploymentLocation,
     evModelYear,
     iceReplacementVehicle,
-    utilityStorage,
-    rooftopStorage,
   } = inputs;
 
   const {
@@ -176,7 +176,6 @@ function ImpactsInputsContent() {
   const [detailsCOpen, setDetailsCOpen] = useState(false);
   const [detailsDOpen, setDetailsDOpen] = useState(false);
   const [detailsEOpen, setDetailsEOpen] = useState(false);
-  const [detailsFOpen, setDetailsFOpen] = useState(false);
 
   const atLeastOneRegionSupportsOffshoreWind =
     geographicFocus === 'regions'
@@ -602,7 +601,7 @@ function ImpactsInputsContent() {
                   data-label="D"
                 >
                   <span className="display-none">D.</span>
-                  Solar photovoltaic (PV)
+                  Solar photovoltaic (PV) and paired battery storage
                 </summary>
 
                 <section className="padding-top-0 padding-x-2 padding-bottom-105">
@@ -651,6 +650,42 @@ function ImpactsInputsContent() {
                             type and region.
                           </p>
                         }
+                      />
+                    </div>
+                  </div>
+
+                  <p className="margin-top-1 margin-bottom-0 font-sans-2xs line-height-sans-2 text-bold">
+                    Battery storage (paired with solar):
+                  </p>
+
+                  <div className="tablet:display-flex">
+                    <div className="flex-1 tablet:margin-right-2">
+                      <ImpactsTextInput
+                        className="margin-top-1"
+                        label={<>Utility-scale storage capacity:</>}
+                        ariaLabel="Max theoretical power that the utility-scale resource can discharge"
+                        suffix="MW"
+                        value={utilityStorage}
+                        fieldName="utilityStorage"
+                        onChange={(value) => {
+                          dispatch(updateESUtilityStorage(value));
+                        }}
+                        tooltip={<p className="margin-0">(TODO)</p>}
+                      />
+                    </div>
+
+                    <div className="flex-1 tablet:margin-left-2">
+                      <ImpactsTextInput
+                        className="margin-top-1"
+                        label={<>Distributed storage capacity:</>}
+                        ariaLabel="Max theoretical power that the distributed resource can discharge"
+                        suffix="MW"
+                        value={rooftopStorage}
+                        fieldName="rooftopStorage"
+                        onChange={(value) => {
+                          dispatch(updateESRooftopStorage(value));
+                        }}
+                        tooltip={<p className="margin-0">(TODO)</p>}
                       />
                     </div>
                   </div>
@@ -919,100 +954,6 @@ function ImpactsInputsContent() {
                   </div>
 
                   <EEREEVComparisonTable className="width-full" />
-                </section>
-              </details>
-            </div>
-          </div>
-        </div>
-
-        <header
-          className={
-            `avert-border avert-box-background ` +
-            `border-width-1px border-bottom-width-0 border-solid ` +
-            `margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest`
-          }
-        >
-          <h3 className="margin-0 font-sans-xs line-height-sans-3">
-            Energy Storage
-          </h3>
-        </header>
-
-        <div className="grid-container padding-0 maxw-full">
-          <div
-            className={
-              `grid-row ` +
-              `avert-border border-width-1px border-top-width-0 border-right-width-0 border-solid`
-            }
-          >
-            <div
-              className={
-                `desktop:grid-col-12 ` +
-                `avert-border border-width-1px border-y-width-0 border-left-width-0 border-solid`
-              }
-            >
-              <details
-                css={inputsGroupStyles}
-                className="avert-border border-width-1px border-bottom-width-0 border-x-width-0 border-solid"
-                open={detailsFOpen}
-                onToggle={(ev) => {
-                  const details = ev.currentTarget as HTMLDetailsElement;
-                  setDetailsFOpen(details.open);
-                }}
-              >
-                <summary
-                  css={inputsSummaryStyles}
-                  className={
-                    `avert-summary ` +
-                    `display-flex flex-align-center padding-105 ` +
-                    `line-height-sans-2 text-bold cursor-pointer`
-                  }
-                  data-label="F"
-                >
-                  <span className="display-none">F.</span>
-                  Energy storage
-                </summary>
-
-                <section className="padding-top-0 padding-x-2 padding-bottom-105">
-                  <div className="grid-row">
-                    <div className="desktop:grid-col-6">
-                      <div className="tablet:display-flex desktop:margin-right-2">
-                        <div className="flex-1 tablet:margin-right-2">
-                          <ImpactsTextInput
-                            label={<>Utility-scale storage capacity:</>}
-                            ariaLabel="Max theoretical power that the utility-scale resource can discharge"
-                            suffix="MW"
-                            value={utilityStorage}
-                            fieldName="utilityStorage"
-                            onChange={(value) => {
-                              dispatch(updateUtilityStorage(value));
-                            }}
-                            tooltip={<p className="margin-0">(TODO)</p>}
-                          />
-                        </div>
-
-                        <div className="flex-1 tablet:margin-left-2">
-                          <ImpactsTextInput
-                            className="margin-top-1 tablet:margin-top-0"
-                            label={<>Distributed storage capacity:</>}
-                            ariaLabel="Max theoretical power that the distributed resource can discharge"
-                            suffix="MW"
-                            value={rooftopStorage}
-                            fieldName="rooftopStorage"
-                            onChange={(value) => {
-                              dispatch(updateRooftopStorage(value));
-                            }}
-                            tooltip={<p className="margin-0">(TODO)</p>}
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/*
-                    <div className="desktop:grid-col-6">
-                      <div className="desktop:margin-left-2">&nbsp;</div>
-                    </div>
-                    */}
-                  </div>
                 </section>
               </details>
             </div>
