@@ -130,11 +130,11 @@ type Action =
       payload: { option: string };
     }
   | {
-      type: 'impacts/UPDATE_UTILITY_STORAGE';
+      type: 'impacts/UPDATE_ES_UTILITY_STORAGE';
       payload: { value: string };
     }
   | {
-      type: 'impacts/UPDATE_ROOFTOP_STORAGE';
+      type: 'impacts/UPDATE_ES_ROOFTOP_STORAGE';
       payload: { value: string };
     }
   | {
@@ -563,7 +563,7 @@ export default function reducer(
       };
     }
 
-    case 'impacts/UPDATE_UTILITY_STORAGE': {
+    case 'impacts/UPDATE_ES_UTILITY_STORAGE': {
       const { value } = action.payload;
       return {
         ...state,
@@ -574,7 +574,7 @@ export default function reducer(
       };
     }
 
-    case 'impacts/UPDATE_ROOFTOP_STORAGE': {
+    case 'impacts/UPDATE_ES_ROOFTOP_STORAGE': {
       const { value } = action.payload;
       return {
         ...state,
@@ -1020,7 +1020,7 @@ export function updateEVICEReplacementVehicle(option: string): AppThunk {
 export function updateUtilityStorage(value: string): AppThunk {
   return (dispatch) => {
     dispatch({
-      type: 'impacts/UPDATE_UTILITY_STORAGE',
+      type: 'impacts/UPDATE_ES_UTILITY_STORAGE',
       payload: { value },
     });
 
@@ -1031,7 +1031,7 @@ export function updateUtilityStorage(value: string): AppThunk {
 export function updateRooftopStorage(value: string): AppThunk {
   return (dispatch) => {
     dispatch({
-      type: 'impacts/UPDATE_ROOFTOP_STORAGE',
+      type: 'impacts/UPDATE_ES_ROOFTOP_STORAGE',
       payload: { value },
     });
 
