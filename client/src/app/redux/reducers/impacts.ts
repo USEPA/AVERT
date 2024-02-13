@@ -86,6 +86,14 @@ type Action =
       payload: { value: string };
     }
   | {
+      type: 'impacts/UPDATE_ES_UTILITY_STORAGE';
+      payload: { value: string };
+    }
+  | {
+      type: 'impacts/UPDATE_ES_ROOFTOP_STORAGE';
+      payload: { value: string };
+    }
+  | {
       type: 'impacts/UPDATE_EV_BATTERY_EVS';
       payload: { value: string };
     }
@@ -130,14 +138,6 @@ type Action =
       payload: { option: string };
     }
   | {
-      type: 'impacts/UPDATE_ES_UTILITY_STORAGE';
-      payload: { value: string };
-    }
-  | {
-      type: 'impacts/UPDATE_ES_ROOFTOP_STORAGE';
-      payload: { value: string };
-    }
-  | {
       type: 'impacts/START_HOURLY_ENERGY_PROFILE_CALCULATIONS';
       payload: { inputs: ImpactsInputs };
     }
@@ -179,13 +179,13 @@ export type RenewableEnergyFieldName =
   | 'utilitySolar'
   | 'rooftopSolar';
 
+type EnergyStorageFieldName = 'utilityStorage' | 'rooftopStorage';
+
 export type ElectricVehiclesFieldName =
   | 'batteryEVs'
   | 'hybridEVs'
   | 'transitBuses'
   | 'schoolBuses';
-
-type StorageFieldName = 'utilityStorage' | 'rooftopStorage';
 
 type SelectOptionsFieldName =
   | 'evDeploymentLocationOptions'
@@ -196,11 +196,11 @@ export type ImpactsInputs = {
   [field in
     | EnergyEfficiencyFieldName
     | RenewableEnergyFieldName
+    | EnergyStorageFieldName
     | ElectricVehiclesFieldName
     | 'evDeploymentLocation'
     | 'evModelYear'
-    | 'iceReplacementVehicle'
-    | StorageFieldName]: string;
+    | 'iceReplacementVehicle']: string;
 };
 
 type State = {
@@ -442,6 +442,28 @@ export default function reducer(
       };
     }
 
+    case 'impacts/UPDATE_ES_UTILITY_STORAGE': {
+      const { value } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          utilityStorage: value,
+        },
+      };
+    }
+
+    case 'impacts/UPDATE_ES_ROOFTOP_STORAGE': {
+      const { value } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          rooftopStorage: value,
+        },
+      };
+    }
+
     case 'impacts/UPDATE_EV_BATTERY_EVS': {
       const { value } = action.payload;
       return {
@@ -559,28 +581,6 @@ export default function reducer(
         inputs: {
           ...state.inputs,
           iceReplacementVehicle: option,
-        },
-      };
-    }
-
-    case 'impacts/UPDATE_ES_UTILITY_STORAGE': {
-      const { value } = action.payload;
-      return {
-        ...state,
-        inputs: {
-          ...state.inputs,
-          utilityStorage: value,
-        },
-      };
-    }
-
-    case 'impacts/UPDATE_ES_ROOFTOP_STORAGE': {
-      const { value } = action.payload;
-      return {
-        ...state,
-        inputs: {
-          ...state.inputs,
-          rooftopStorage: value,
         },
       };
     }
@@ -732,8 +732,8 @@ function validateInput(
   inputField:
     | EnergyEfficiencyFieldName
     | RenewableEnergyFieldName
-    | ElectricVehiclesFieldName
-    | StorageFieldName,
+    | EnergyStorageFieldName
+    | ElectricVehiclesFieldName,
   inputValue: string,
   invalidCharacters: string[],
 ): AppThunk {
@@ -854,6 +854,28 @@ export function updateRERooftopSolar(value: string): AppThunk {
     });
 
     dispatch(validateInput('rooftopSolar', value, []));
+  };
+}
+
+export function updateESUtilityStorage(value: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'impacts/UPDATE_ES_UTILITY_STORAGE',
+      payload: { value },
+    });
+
+    dispatch(validateInput('utilityStorage', value, []));
+  };
+}
+
+export function updateESRooftopStorage(value: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'impacts/UPDATE_ES_ROOFTOP_STORAGE',
+      payload: { value },
+    });
+
+    dispatch(validateInput('rooftopStorage', value, []));
   };
 }
 
@@ -1014,28 +1036,6 @@ export function updateEVICEReplacementVehicle(option: string): AppThunk {
     });
 
     dispatch(setMonthlyEmissionRates());
-  };
-}
-
-export function updateUtilityStorage(value: string): AppThunk {
-  return (dispatch) => {
-    dispatch({
-      type: 'impacts/UPDATE_ES_UTILITY_STORAGE',
-      payload: { value },
-    });
-
-    dispatch(validateInput('utilityStorage', value, []));
-  };
-}
-
-export function updateRooftopStorage(value: string): AppThunk {
-  return (dispatch) => {
-    dispatch({
-      type: 'impacts/UPDATE_ES_ROOFTOP_STORAGE',
-      payload: { value },
-    });
-
-    dispatch(validateInput('rooftopStorage', value, []));
   };
 }
 
