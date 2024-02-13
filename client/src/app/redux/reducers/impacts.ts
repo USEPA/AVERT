@@ -246,6 +246,8 @@ const initialImpactsInputs = {
   offshoreWind: '',
   utilitySolar: '',
   rooftopSolar: '',
+  utilityStorage: '',
+  rooftopStorage: '',
   batteryEVs: '',
   hybridEVs: '',
   transitBuses: '',
@@ -253,8 +255,6 @@ const initialImpactsInputs = {
   evDeploymentLocation: '',
   evModelYear: initialEVModelYear,
   iceReplacementVehicle: initialICEReplacementVehicle,
-  utilityStorage: '',
-  rooftopStorage: '',
 };
 
 const initialState: State = {
