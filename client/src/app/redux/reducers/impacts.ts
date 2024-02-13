@@ -130,6 +130,14 @@ type Action =
       payload: { option: string };
     }
   | {
+      type: 'impacts/UPDATE_UTILITY_STORAGE';
+      payload: { value: string };
+    }
+  | {
+      type: 'impacts/UPDATE_ROOFTOP_STORAGE';
+      payload: { value: string };
+    }
+  | {
       type: 'impacts/START_HOURLY_ENERGY_PROFILE_CALCULATIONS';
       payload: { inputs: ImpactsInputs };
     }
@@ -177,6 +185,8 @@ export type ElectricVehiclesFieldName =
   | 'transitBuses'
   | 'schoolBuses';
 
+type StorageFieldName = 'utilityStorage' | 'rooftopStorage';
+
 type SelectOptionsFieldName =
   | 'evDeploymentLocationOptions'
   | 'evModelYearOptions'
@@ -189,7 +199,8 @@ export type ImpactsInputs = {
     | ElectricVehiclesFieldName
     | 'evDeploymentLocation'
     | 'evModelYear'
-    | 'iceReplacementVehicle']: string;
+    | 'iceReplacementVehicle'
+    | StorageFieldName]: string;
 };
 
 type State = {
@@ -242,6 +253,8 @@ const initialImpactsInputs = {
   evDeploymentLocation: '',
   evModelYear: initialEVModelYear,
   iceReplacementVehicle: initialICEReplacementVehicle,
+  utilityStorage: '',
+  rooftopStorage: '',
 };
 
 const initialState: State = {
@@ -550,6 +563,28 @@ export default function reducer(
       };
     }
 
+    case 'impacts/UPDATE_UTILITY_STORAGE': {
+      const { value } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          utilityStorage: value,
+        },
+      };
+    }
+
+    case 'impacts/UPDATE_ROOFTOP_STORAGE': {
+      const { value } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          rooftopStorage: value,
+        },
+      };
+    }
+
     case 'impacts/START_HOURLY_ENERGY_PROFILE_CALCULATIONS': {
       const { inputs } = action.payload;
       return {
@@ -697,7 +732,8 @@ function validateInput(
   inputField:
     | EnergyEfficiencyFieldName
     | RenewableEnergyFieldName
-    | ElectricVehiclesFieldName,
+    | ElectricVehiclesFieldName
+    | StorageFieldName,
   inputValue: string,
   invalidCharacters: string[],
 ): AppThunk {
@@ -978,6 +1014,28 @@ export function updateEVICEReplacementVehicle(option: string): AppThunk {
     });
 
     dispatch(setMonthlyEmissionRates());
+  };
+}
+
+export function updateUtilityStorage(value: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'impacts/UPDATE_UTILITY_STORAGE',
+      payload: { value },
+    });
+
+    dispatch(validateInput('utilityStorage', value, []));
+  };
+}
+
+export function updateRooftopStorage(value: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'impacts/UPDATE_ROOFTOP_STORAGE',
+      payload: { value },
+    });
+
+    dispatch(validateInput('rooftopStorage', value, []));
   };
 }
 
