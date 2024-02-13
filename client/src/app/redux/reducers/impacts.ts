@@ -13,7 +13,7 @@ import {
   setEVDeploymentLocationHistoricalEERE,
 } from 'app/redux/reducers/transportation';
 import type {
-  HourlyRenewableEnergyProfile,
+  HourlyRenewableEnergyProfiles,
   HourlyEVLoad,
   TopPercentGeneration,
   HourlyTopPercentReduction,
@@ -21,7 +21,7 @@ import type {
   HourlyChangesValidation,
 } from 'app/calculations/impacts';
 import {
-  calculateHourlyRenewableEnergyProfile,
+  calculateHourlyRenewableEnergyProfiles,
   calculateHourlyEVLoad,
   calculateTopPercentGeneration,
   calculateHourlyTopPercentReduction,
@@ -145,7 +145,7 @@ type Action =
       type: 'impacts/SET_HOURLY_ENERGY_PROFILE_REGIONAL_DATA';
       payload: {
         regionId: RegionId;
-        hourlyRenewableEnergyProfile: HourlyRenewableEnergyProfile;
+        hourlyRenewableEnergyProfiles: HourlyRenewableEnergyProfiles;
         hourlyEVLoad: HourlyEVLoad;
         topPercentGeneration: TopPercentGeneration;
         hourlyTopPercentReduction: HourlyTopPercentReduction;
@@ -218,7 +218,7 @@ type State = {
     data: {
       regions: Partial<{
         [key in RegionId]: {
-          hourlyRenewableEnergyProfile: HourlyRenewableEnergyProfile;
+          hourlyRenewableEnergyProfiles: HourlyRenewableEnergyProfiles;
           hourlyEVLoad: HourlyEVLoad;
           topPercentGeneration: TopPercentGeneration;
           hourlyTopPercentReduction: HourlyTopPercentReduction;
@@ -610,7 +610,7 @@ export default function reducer(
     case 'impacts/SET_HOURLY_ENERGY_PROFILE_REGIONAL_DATA': {
       const {
         regionId,
-        hourlyRenewableEnergyProfile,
+        hourlyRenewableEnergyProfiles,
         hourlyEVLoad,
         topPercentGeneration,
         hourlyTopPercentReduction,
@@ -626,7 +626,7 @@ export default function reducer(
             regions: {
               ...state.hourlyEnergyProfile.data.regions,
               [regionId]: {
-                hourlyRenewableEnergyProfile,
+                hourlyRenewableEnergyProfiles,
                 hourlyEVLoad,
                 topPercentGeneration,
                 hourlyTopPercentReduction,
@@ -1175,8 +1175,8 @@ export function calculateHourlyEnergyProfile(): AppThunk {
       const utilitySolar = Number(inputs.utilitySolar) * regionalScalingFactor;
       const rooftopSolar = Number(inputs.rooftopSolar) * regionalScalingFactor;
 
-      const hourlyRenewableEnergyProfile =
-        calculateHourlyRenewableEnergyProfile({
+      const hourlyRenewableEnergyProfiles =
+        calculateHourlyRenewableEnergyProfiles({
           eereDefaults,
           lineLoss,
           onshoreWind,
@@ -1210,7 +1210,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
       const hourlyImpacts = calculateHourlyImpacts({
         lineLoss,
         regionalLoad,
-        hourlyRenewableEnergyProfile,
+        hourlyRenewableEnergyProfiles,
         hourlyEVLoad,
         hourlyTopPercentReduction,
         annualGwh,
@@ -1223,7 +1223,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
         type: 'impacts/SET_HOURLY_ENERGY_PROFILE_REGIONAL_DATA',
         payload: {
           regionId: region.id,
-          hourlyRenewableEnergyProfile,
+          hourlyRenewableEnergyProfiles,
           hourlyEVLoad,
           topPercentGeneration,
           hourlyTopPercentReduction,

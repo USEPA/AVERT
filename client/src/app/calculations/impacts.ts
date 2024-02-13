@@ -18,8 +18,8 @@ import type { RegionId, RegionName } from 'app/config';
  */
 import regionEvHourlyLimits from 'app/data/region-ev-hourly-limits.json';
 
-export type HourlyRenewableEnergyProfile = ReturnType<
-  typeof calculateHourlyRenewableEnergyProfile
+export type HourlyRenewableEnergyProfiles = ReturnType<
+  typeof calculateHourlyRenewableEnergyProfiles
 >;
 export type HourlyEVLoad = ReturnType<typeof calculateHourlyEVLoad>;
 export type TopPercentGeneration = ReturnType<
@@ -34,9 +34,13 @@ export type HourlyChangesValidation = ReturnType<
 >;
 
 /**
- * Excel: Data in column H of the "CalculateEERE" sheet (H5:H8788).
+ * Excel: Data in columns I, J, and K of the "CalculateEERE" sheet (I5:K8788).
+ *
+ * NOTE: The Excel version actually combines onshore and offshore wind profiles
+ * into one value (column I), but we're keeping them separate for consistency
+ * with the two solar profiles.
  */
-export function calculateHourlyRenewableEnergyProfile(options: {
+export function calculateHourlyRenewableEnergyProfiles(options: {
   eereDefaults: EEREDefaultData[];
   lineLoss: number;
   onshoreWind: number;
@@ -56,12 +60,12 @@ export function calculateHourlyRenewableEnergyProfile(options: {
   if (eereDefaults.length === 0) return [];
 
   const result = eereDefaults.map((data) => {
-    const onshoreWind = onshoreWindInput * data.onshore_wind;
-    const offshoreWind = offshoreWindInput * (data.offshore_wind || 0);
-    const utilitySolar = utilitySolarInput * data.utility_pv;
-    const rooftopSolar = (rooftopSolarInput * data.rooftop_pv) / (1 - lineLoss);
-
-    return -1 * (onshoreWind + offshoreWind + utilitySolar + rooftopSolar);
+    return {
+      onshoreWind: onshoreWindInput * data.onshore_wind,
+      offshoreWind: offshoreWindInput * (data.offshore_wind || 0),
+      utilitySolar: utilitySolarInput * data.utility_pv,
+      rooftopSolar: (rooftopSolarInput * data.rooftop_pv) / (1 - lineLoss),
+    };
   });
 
   return result;
@@ -196,7 +200,7 @@ export function calculateHourlyTopPercentReduction(options: {
 export function calculateHourlyImpacts(options: {
   lineLoss: number; // region.lineLoss
   regionalLoad: RegionalLoadData[]; // region.rdf.regional_load
-  hourlyRenewableEnergyProfile: HourlyRenewableEnergyProfile;
+  hourlyRenewableEnergyProfiles: HourlyRenewableEnergyProfiles;
   hourlyEVLoad: HourlyEVLoad;
   hourlyTopPercentReduction: HourlyTopPercentReduction;
   annualGwh: number; // impacts.inputs.annualGwh
@@ -205,7 +209,7 @@ export function calculateHourlyImpacts(options: {
   const {
     lineLoss,
     regionalLoad,
-    hourlyRenewableEnergyProfile,
+    hourlyRenewableEnergyProfiles,
     hourlyEVLoad,
     hourlyTopPercentReduction,
     annualGwh,
@@ -220,7 +224,16 @@ export function calculateHourlyImpacts(options: {
       const originalLoad = data.regional_load_mw;
 
       const topPercentReduction = hourlyTopPercentReduction[index] || 0;
-      const renewableProfile = hourlyRenewableEnergyProfile[index] || 0;
+
+      const renewableEnergyProfiles = hourlyRenewableEnergyProfiles[index] || {}; // prettier-ignore
+      const onshoreWind = renewableEnergyProfiles?.onshoreWind || 0;
+      const offshoreWind = renewableEnergyProfiles?.offshoreWind || 0;
+      const utilitySolar = renewableEnergyProfiles?.utilitySolar || 0;
+      const rooftopSolar = renewableEnergyProfiles?.rooftopSolar || 0;
+
+      const renewableProfile =
+        -1 * (onshoreWind + offshoreWind + utilitySolar + rooftopSolar);
+
       const evLoad = hourlyEVLoad[index] || 0;
 
       /**
