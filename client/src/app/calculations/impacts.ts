@@ -2,7 +2,7 @@ import { percentile } from 'stats-lite';
 // ---
 import type {
   RegionalLoadData,
-  EEREDefaultData,
+  EEREDefaultsData,
   RegionState,
 } from 'app/redux/reducers/geography';
 import type {
@@ -41,7 +41,7 @@ export type HourlyChangesValidation = ReturnType<
  * with the two solar profiles.
  */
 export function calculateHourlyRenewableEnergyProfiles(options: {
-  eereDefaults: EEREDefaultData[];
+  eereDefaults: EEREDefaultsData[];
   lineLoss: number;
   onshoreWind: number;
   offshoreWind: number;

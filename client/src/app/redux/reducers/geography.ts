@@ -80,7 +80,7 @@ export type RDFJSON = {
   };
 };
 
-export type EEREDefaultData = {
+export type EEREDefaultsData = {
   date: string;
   hour: number;
   onshore_wind: number;
@@ -89,9 +89,9 @@ export type EEREDefaultData = {
   rooftop_pv: number;
 };
 
-type EEREJSON = {
+type EEREDefaultsJSON = {
   region: string;
-  data: EEREDefaultData[];
+  data: EEREDefaultsData[];
 };
 
 type GeographyAction =
@@ -142,16 +142,16 @@ type GeographyAction =
       };
     }
   | {
-      type: 'geography/RECEIVE_REGION_DEFAULTS';
+      type: 'geography/RECEIVE_REGION_EERE_DEFAULTS';
       payload: {
         regionId: RegionId;
-        regionDefaults: EEREJSON;
+        regionEereDefaults: EEREDefaultsJSON;
       };
     };
 
 export type RegionState = Region & {
   selected: boolean;
-  eereDefaults: EEREJSON;
+  eereDefaults: EEREDefaultsJSON;
   rdf: RDFJSON;
 };
 
@@ -356,8 +356,8 @@ export default function reducer(
       };
     }
 
-    case 'geography/RECEIVE_REGION_DEFAULTS': {
-      const { regionId, regionDefaults } = action.payload;
+    case 'geography/RECEIVE_REGION_EERE_DEFAULTS': {
+      const { regionId, regionEereDefaults } = action.payload;
 
       return {
         ...state,
@@ -365,7 +365,7 @@ export default function reducer(
           ...state.regions,
           [regionId]: {
             ...state.regions[regionId],
-            eereDefaults: regionDefaults,
+            eereDefaults: regionEereDefaults,
           },
         },
       };
@@ -612,12 +612,12 @@ export function fetchRegionsData(): AppThunk {
     // request all rdf and eere data in parallel
     Promise.all([rdfRequests, eereRequests].map(Promise.all, Promise))
       .then(([rdfResponses, eereResponses]) => {
-        const rdfsData = (rdfResponses as Response[]).map((rdfResponse) => {
-          return rdfResponse.json().then((rdfJson: RDFJSON) => {
+        const rdfsData = (rdfResponses as Response[]).map((rdfRes) => {
+          return rdfRes.json().then((rdfJson: RDFJSON) => {
             dispatch({
               type: 'geography/RECEIVE_REGION_RDF',
               payload: {
-                regionId: rdfResponse.url.split('/').pop() as RegionId,
+                regionId: rdfRes.url.split('/').pop() as RegionId,
                 regionRdf: rdfJson,
               },
             });
@@ -625,16 +625,16 @@ export function fetchRegionsData(): AppThunk {
           });
         });
 
-        const eeresData = (eereResponses as Response[]).map((eereResponse) => {
-          return eereResponse.json().then((eereJson: EEREJSON) => {
+        const eeresData = (eereResponses as Response[]).map((eereRes) => {
+          return eereRes.json().then((eereDefaultsJson: EEREDefaultsJSON) => {
             dispatch({
-              type: 'geography/RECEIVE_REGION_DEFAULTS',
+              type: 'geography/RECEIVE_REGION_EERE_DEFAULTS',
               payload: {
-                regionId: eereResponse.url.split('/').pop() as RegionId,
-                regionDefaults: eereJson,
+                regionId: eereRes.url.split('/').pop() as RegionId,
+                regionEereDefaults: eereDefaultsJson,
               },
             });
-            return eereJson;
+            return eereDefaultsJson;
           });
         });
 
