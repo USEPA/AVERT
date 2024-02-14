@@ -12,7 +12,7 @@ const routes = [
   route.get("/api/v1/eere", controllers.eere.list),
   route.get("/api/v1/storage", controllers.storage.list),
 
-  // web app method: fetchRegion()
+  // web app method: fetchRegionsData()
   // (from panel 1, user clicks 'Set Energy Impacts' button)
   route.get("/api/v1/rdf/:region", controllers.rdf.show),
   route.get("/api/v1/eere/:region", controllers.eere.show),
