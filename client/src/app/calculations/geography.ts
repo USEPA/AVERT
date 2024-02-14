@@ -3,6 +3,7 @@ import type {
   RegionState,
   StateState,
 } from 'app/redux/reducers/geography';
+import { type HourlyRenewableEnergyProfiles } from 'app/calculations/impacts';
 import { sortObjectByKeys } from 'app/calculations/utilities';
 import type { RegionId, RegionName, StateId } from 'app/config';
 /**
@@ -139,27 +140,15 @@ export function getSelectedGeographyRegions(options: {
 /**
  * Returns hourly energy storage data
  *
- * Excel: Data from the "ES Profile (Unpaired)", "Charging needed in day", and
- * "Discharging needed in day" columns of the Utility Scale and Distributed
- * tables in the "CalculateEERE" sheet (columns AK, AM, and AN – also columns
- * AX, AZ, and BA, which is the same data).
+ * Excel: Data from the "Utility Scale" and "Distributed" tables in the
+ * "CalculateEERE" sheet (columns AK, AL, AM, AN, and AY – NOTE: columns AX, AZ,
+ * and BA, contain the same data as AK, AM, and AN).
  */
 export function calculateHourlyEnergyStorageData(options: {
-  regionalStoragesData: RegionState['storageDefaults'][];
+  regionalStorageDefaults: RegionState['storageDefaults'];
+  hourlyRenewableEnergyProfiles: HourlyRenewableEnergyProfiles;
 }) {
-  const { regionalStoragesData } = options;
-
-  type HourlyEnergyStorage = {
-    date: string;
-    dayOfYear: number;
-    hourOfYear: number;
-    battery: number;
-    chargingNeeded: number;
-    dischargingNeeded: number;
-    // availableSolar: number; // NOTE: set from the hourly solar profile data
-    // allowableCharging: number;
-    // allowableDischarging: number;
-  };
+  const { regionalStorageDefaults, hourlyRenewableEnergyProfiles } = options;
 
   /* built up charging and discharging needed for each day of the year */
   const dailyData = [] as {
@@ -168,69 +157,78 @@ export function calculateHourlyEnergyStorageData(options: {
     dischargingNeeded: number;
   }[];
 
-  const result = regionalStoragesData.reduce(
-    (object, { region, data }) => {
-      const regionData = data.reduce((array, hourlyData, hourlyIndex) => {
-        const { date, hour, battery } = hourlyData;
+  const result = regionalStorageDefaults.data.reduce(
+    (array, hourlyData, hourlyIndex) => {
+      const { date, hour, battery } = hourlyData;
 
-        const dailyIndex = Math.floor(hourlyIndex / 24);
-        const dayOfYear = dailyIndex + 1;
+      const dailyIndex = Math.floor(hourlyIndex / 24);
+      const dayOfYear = dailyIndex + 1;
 
-        const previousHourlyData = array[array.length - 1];
+      const previousHourlyData = array[array.length - 1];
 
-        /* initialize data for each day of the year */
-        if (!dailyData[dailyIndex]) {
-          dailyData[dailyIndex] = {
-            date,
-            chargingNeeded: 0,
-            dischargingNeeded: 0,
-          };
-        }
-
-        /* build up charging and discharging needed for each day of the year */
-        if (battery > 0) {
-          dailyData[dailyIndex].chargingNeeded += battery;
-        }
-
-        if (battery < 0) {
-          dailyData[dailyIndex].dischargingNeeded -= battery;
-        }
-
-        /* initialize data for each hour of the year */
-        array.push({
+      /* initialize data for each day of the year */
+      if (!dailyData[dailyIndex]) {
+        dailyData[dailyIndex] = {
           date,
-          dayOfYear,
-          hourOfYear: hour,
-          battery,
           chargingNeeded: 0,
           dischargingNeeded: 0,
-        });
+        };
+      }
 
-        /*
-         * NOTE: As soon as the day of year changes (e.g., the first hour of the
-         * next day) loop backwards through the built up array, and build up
-         * cumulative values for that previous day of the year.
-         */
-        if (dayOfYear - 1 === previousHourlyData?.dayOfYear) {
-          for (let i = array.length - 2; i >= 0; i--) {
-            /* break out of loop once the day of year changes again */
-            if (array[i].dayOfYear === dayOfYear - 2) break;
+      /* build up charging and discharging needed for each day of the year */
+      if (battery > 0) {
+        dailyData[dailyIndex].chargingNeeded += battery;
+      }
 
-            array[i].chargingNeeded = dailyData[dailyIndex - 1].chargingNeeded;
-            array[i].dischargingNeeded = dailyData[dailyIndex - 1].dischargingNeeded; // prettier-ignore
-          }
+      if (battery < 0) {
+        dailyData[dailyIndex].dischargingNeeded -= battery;
+      }
+
+      const { utilitySolarUnpaired, rooftopSolarUnpaired } =
+        hourlyRenewableEnergyProfiles[hourlyIndex];
+
+      /* initialize data for each hour of the year */
+      array.push({
+        date,
+        dayOfYear,
+        hourOfYear: hour,
+        esProfileUnpaired: battery,
+        utilitySolarUnpaired: -1 * utilitySolarUnpaired + 0,
+        rooftopSolarUnpaired: -1 * rooftopSolarUnpaired + 0,
+        dailyChargingNeeded: 0,
+        dailyDischargingNeeded: 0,
+      });
+
+      /*
+       * NOTE: As soon as the day of year changes (e.g., the first hour of the
+       * next day) loop backwards through the built up array, and add cumulative
+       * values for the previous day of the year.
+       */
+      if (dayOfYear - 1 === previousHourlyData?.dayOfYear) {
+        for (let i = array.length - 2; i >= 0; i--) {
+          /* break out of loop once the day of year changes again */
+          if (array[i].dayOfYear === dayOfYear - 2) break;
+
+          array[i].dailyChargingNeeded = dailyData[dailyIndex - 1].chargingNeeded; // prettier-ignore
+          array[i].dailyDischargingNeeded = dailyData[dailyIndex - 1].dischargingNeeded; // prettier-ignore
         }
+      }
 
-        return array;
-      }, [] as HourlyEnergyStorage[]);
-
-      object[region as RegionId] = regionData;
-
-      return object;
+      return array;
     },
-    {} as Partial<{
-      [regionId in RegionId]: HourlyEnergyStorage[];
-    }>,
+    [] as {
+      date: string;
+      dayOfYear: number;
+      hourOfYear: number;
+      esProfileUnpaired: number;
+      utilitySolarUnpaired: number;
+      rooftopSolarUnpaired: number;
+      dailyChargingNeeded: number;
+      dailyDischargingNeeded: number;
+      // availableSolar: number;
+      // allowableCharging: number;
+      // allowableDischarging: number;
+    }[],
   );
 
   return result;

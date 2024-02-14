@@ -63,8 +63,8 @@ export function calculateHourlyRenewableEnergyProfiles(options: {
     return {
       onshoreWind: onshoreWindInput * data.onshore_wind,
       offshoreWind: offshoreWindInput * (data.offshore_wind || 0),
-      utilitySolar: utilitySolarInput * data.utility_pv,
-      rooftopSolar: (rooftopSolarInput * data.rooftop_pv) / (1 - lineLoss),
+      utilitySolarUnpaired: utilitySolarInput * data.utility_pv,
+      rooftopSolarUnpaired: (rooftopSolarInput * data.rooftop_pv) / (1 - lineLoss), // prettier-ignore
     };
   });
 
@@ -228,8 +228,8 @@ export function calculateHourlyImpacts(options: {
       const renewableEnergyProfiles = hourlyRenewableEnergyProfiles[index] || {}; // prettier-ignore
       const onshoreWind = renewableEnergyProfiles?.onshoreWind || 0;
       const offshoreWind = renewableEnergyProfiles?.offshoreWind || 0;
-      const utilitySolar = renewableEnergyProfiles?.utilitySolar || 0;
-      const rooftopSolar = renewableEnergyProfiles?.rooftopSolar || 0;
+      const utilitySolar = renewableEnergyProfiles?.utilitySolarUnpaired || 0;
+      const rooftopSolar = renewableEnergyProfiles?.rooftopSolarUnpaired || 0;
 
       const renewableProfile =
         -1 * (onshoreWind + offshoreWind + utilitySolar + rooftopSolar);
