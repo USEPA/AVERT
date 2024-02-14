@@ -19,6 +19,9 @@ export type RegionalScalingFactors = ReturnType<
 export type SelectedGeographyRegions = ReturnType<
   typeof getSelectedGeographyRegions
 >;
+export type HourlyEnergyStorageData = ReturnType<
+  typeof calculateHourlyEnergyStorageData
+>;
 
 /**
  * Organizes counties by state and by AVERT regions.
@@ -133,6 +136,102 @@ export function getSelectedGeographyRegions(options: {
   return result;
 }
 
+/**
+ * Returns hourly energy storage data
+ *
+ * Excel: Data from the "ES Profile (Unpaired)", "Charging needed in day", and
+ * "Discharging needed in day" columns of the Utility Scale and Distributed
+ * tables in the "CalculateEERE" sheet (columns AK, AM, and AN – also columns
+ * AX, AZ, and BA, which is the same data).
+ */
+export function calculateHourlyEnergyStorageData(options: {
+  regionalStoragesData: RegionState['storageDefaults'][];
+}) {
+  const { regionalStoragesData } = options;
+
+  type HourlyEnergyStorage = {
+    date: string;
+    dayOfYear: number;
+    hourOfYear: number;
+    battery: number;
+    chargingNeeded: number;
+    dischargingNeeded: number;
+    // availableSolar: number; // NOTE: set from the hourly solar profile data
+    // allowableCharging: number;
+    // allowableDischarging: number;
+  };
+
+  /* built up charging and discharging needed for each day of the year */
+  const dailyData = [] as {
+    date: string;
+    chargingNeeded: number;
+    dischargingNeeded: number;
+  }[];
+
+  const result = regionalStoragesData.reduce(
+    (object, { region, data }) => {
+      const regionData = data.reduce((array, hourlyData, hourlyIndex) => {
+        const { date, hour, battery } = hourlyData;
+
+        const dailyIndex = Math.floor(hourlyIndex / 24);
+        const dayOfYear = dailyIndex + 1;
+
+        const previousHourlyData = array[array.length - 1];
+
+        /* initialize data for each day of the year */
+        if (!dailyData[dailyIndex]) {
+          dailyData[dailyIndex] = {
+            date,
+            chargingNeeded: 0,
+            dischargingNeeded: 0,
+          };
+        }
+
+        /* build up charging and discharging needed for each day of the year */
+        if (battery > 0) {
+          dailyData[dailyIndex].chargingNeeded += battery;
+        }
+
+        if (battery < 0) {
+          dailyData[dailyIndex].dischargingNeeded -= battery;
+        }
+
+        /* initialize data for each hour of the year */
+        array.push({
+          date,
+          dayOfYear,
+          hourOfYear: hour,
+          battery,
+          chargingNeeded: 0,
+          dischargingNeeded: 0,
+        });
+
+        /*
+         * NOTE: As soon as the day of year changes (e.g., the first hour of the
+         * next day) loop backwards through the built up array, and build up
+         * cumulative values for that previous day of the year.
+         */
+        if (dayOfYear - 1 === previousHourlyData?.dayOfYear) {
+          for (let i = array.length - 2; i >= 0; i--) {
+            /* break out of loop once the day of year changes again */
+            if (array[i].dayOfYear === dayOfYear - 2) break;
+
+            array[i].chargingNeeded = dailyData[dailyIndex - 1].chargingNeeded;
+            array[i].dischargingNeeded = dailyData[dailyIndex - 1].dischargingNeeded; // prettier-ignore
+          }
+        }
+
+        return array;
+      }, [] as HourlyEnergyStorage[]);
+
+      object[region as RegionId] = regionData;
+
+      return object;
+    },
+    {} as Partial<{
+      [regionId in RegionId]: HourlyEnergyStorage[];
+    }>,
+  );
 
   return result;
 }

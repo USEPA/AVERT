@@ -169,8 +169,9 @@ type GeographyAction =
 
 export type RegionState = Region & {
   selected: boolean;
-  eereDefaults: EEREDefaultsJSON;
   rdf: RDFJSON;
+  eereDefaults: EEREDefaultsJSON;
+  storageDefaults: StorageDefaultsJSON;
 };
 
 export type StateState = State & {
