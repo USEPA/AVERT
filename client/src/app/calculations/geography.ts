@@ -120,12 +120,19 @@ export function getSelectedGeographyRegions(options: {
 }) {
   const { regions, selectedGeographyRegionIds } = options;
 
-  const result = Object.entries(regions).reduce((object, [id, regionData]) => {
-    if (selectedGeographyRegionIds.includes(regionData.id)) {
-      object[id as RegionId] = regionData;
-    }
-    return object;
-  }, {} as Partial<{ [regionId in RegionId]: RegionState }>);
+  const result = Object.entries(regions).reduce(
+    (object, [id, regionData]) => {
+      if (selectedGeographyRegionIds.includes(regionData.id)) {
+        object[id as RegionId] = regionData;
+      }
+      return object;
+    },
+    {} as Partial<{ [regionId in RegionId]: RegionState }>,
+  );
+
+  return result;
+}
+
 
   return result;
 }
