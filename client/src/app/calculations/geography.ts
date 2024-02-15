@@ -147,8 +147,13 @@ export function getSelectedGeographyRegions(options: {
 export function calculateHourlyEnergyStorageData(options: {
   regionalStorageDefaults: RegionState['storageDefaults'];
   hourlyRenewableEnergyProfiles: HourlyRenewableEnergyProfiles;
+  esRoundTripEfficiency: number;
 }) {
-  const { regionalStorageDefaults, hourlyRenewableEnergyProfiles } = options;
+  const {
+    regionalStorageDefaults,
+    hourlyRenewableEnergyProfiles,
+    esRoundTripEfficiency,
+  } = options;
 
   /* built up charging and discharging needed for each day of the year */
   const dailyData = [] as {
@@ -169,8 +174,8 @@ export function calculateHourlyEnergyStorageData(options: {
       const dayOfYear = dailyIndex + 1;
 
       const hourlyProfiles = hourlyRenewableEnergyProfiles[hourlyIndex];
-      const utilitySolarUnpaired = -1 * hourlyProfiles.utilitySolarUnpaired + 0;
-      const rooftopSolarUnpaired = -1 * hourlyProfiles.rooftopSolarUnpaired + 0;
+      const utilitySolarUnpaired = -hourlyProfiles.utilitySolarUnpaired + 0;
+      const rooftopSolarUnpaired = -hourlyProfiles.rooftopSolarUnpaired + 0;
 
       /* initialize data for each day of the year */
       if (!dailyData[dailyIndex]) {
@@ -206,6 +211,10 @@ export function calculateHourlyEnergyStorageData(options: {
         dailyDischargingNeeded: 0,
         dailyAvailableUtilitySolar: 0,
         dailyAvailableRooftopSolar: 0,
+        dailyAllowableUtilitySolarCharging: 0,
+        dailyAllowableRooftopSolarCharging: 0,
+        dailyAllowableUtilitySolarDischarging: 0,
+        dailyAllowableRooftopSolarDischarging: 0,
       });
 
       /*
@@ -220,10 +229,29 @@ export function calculateHourlyEnergyStorageData(options: {
 
           const daily = dailyData[dailyIndex - 1];
 
-          array[i].dailyChargingNeeded = daily.chargingNeeded;
-          array[i].dailyDischargingNeeded = daily.dischargingNeeded;
-          array[i].dailyAvailableUtilitySolar = daily.availableUtilitySolar;
-          array[i].dailyAvailableRooftopSolar = daily.availableRooftopSolar;
+          const chargingNeeded = daily.chargingNeeded;
+          const dischargingNeeded = daily.dischargingNeeded;
+
+          const availableUtility = daily.availableUtilitySolar;
+          const availableRooftop = daily.availableRooftopSolar;
+
+          const allowableUtilityCharging = Math.min(-availableUtility + 0, chargingNeeded); // prettier-ignore
+          const allowableRooftopCharging = Math.min(-availableRooftop + 0, chargingNeeded); // prettier-ignore
+
+          const allowableUtilityDischarging = (-allowableUtilityCharging + 0) * esRoundTripEfficiency; // prettier-ignore
+          const allowableRooftopDischarging = (-allowableRooftopCharging + 0) * esRoundTripEfficiency; // prettier-ignore
+
+          array[i].dailyChargingNeeded = chargingNeeded;
+          array[i].dailyDischargingNeeded = dischargingNeeded;
+
+          array[i].dailyAvailableUtilitySolar = availableUtility;
+          array[i].dailyAvailableRooftopSolar = availableRooftop;
+
+          array[i].dailyAllowableUtilitySolarCharging = allowableUtilityCharging; // prettier-ignore
+          array[i].dailyAllowableRooftopSolarCharging = allowableRooftopCharging; // prettier-ignore
+
+          array[i].dailyAllowableUtilitySolarDischarging = allowableUtilityDischarging; // prettier-ignore
+          array[i].dailyAllowableRooftopSolarDischarging = allowableRooftopDischarging; // prettier-ignore
         }
       }
 
@@ -240,8 +268,10 @@ export function calculateHourlyEnergyStorageData(options: {
       dailyDischargingNeeded: number;
       dailyAvailableUtilitySolar: number;
       dailyAvailableRooftopSolar: number;
-      // allowableCharging: number;
-      // allowableDischarging: number;
+      dailyAllowableUtilitySolarCharging: number;
+      dailyAllowableRooftopSolarCharging: number;
+      dailyAllowableUtilitySolarDischarging: number;
+      dailyAllowableRooftopSolarDischarging: number;
     }[],
   );
 

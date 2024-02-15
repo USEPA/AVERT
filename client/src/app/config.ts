@@ -126,6 +126,12 @@ export const percentageLDVsDisplacedByEVs = {
   trucks: 0.777397018653509,
 };
 
+/**
+ * Excel: "Table 15: Lithium Ion Storage Defaults" table in the "Library" sheet
+ * (D736)
+ */
+export const esRoundTripEfficiency = 0.85;
+
 export type RdfDataKey =
   | 'generation'
   | 'so2'
