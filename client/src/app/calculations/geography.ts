@@ -170,12 +170,13 @@ export function calculateHourlyEnergyStorageData(options: {
 
       const previousHourlyData = array[array.length - 1];
 
-      const dailyIndex = Math.floor(hourlyIndex / 24);
-      const dayOfYear = dailyIndex + 1;
-
+      const esProfileUnpaired = battery * 10;
       const hourlyProfiles = hourlyRenewableEnergyProfiles[hourlyIndex];
       const utilitySolarUnpaired = -hourlyProfiles.utilitySolarUnpaired + 0;
       const rooftopSolarUnpaired = -hourlyProfiles.rooftopSolarUnpaired + 0;
+
+      const dailyIndex = Math.floor(hourlyIndex / 24);
+      const dayOfYear = dailyIndex + 1;
 
       /* initialize data for each day of the year */
       if (!dailyData[dailyIndex]) {
@@ -188,15 +189,15 @@ export function calculateHourlyEnergyStorageData(options: {
         };
       }
 
-      /* build up daily data, based on battery's hourly value */
-      if (battery > 0) {
-        dailyData[dailyIndex].chargingNeeded += battery;
+      /* build up daily data, based on ES Profile's hourly value */
+      if (esProfileUnpaired > 0) {
+        dailyData[dailyIndex].chargingNeeded += esProfileUnpaired;
         dailyData[dailyIndex].availableUtilitySolar += utilitySolarUnpaired;
         dailyData[dailyIndex].availableRooftopSolar += rooftopSolarUnpaired;
       }
 
-      if (battery < 0) {
-        dailyData[dailyIndex].dischargingNeeded -= battery;
+      if (esProfileUnpaired < 0) {
+        dailyData[dailyIndex].dischargingNeeded -= esProfileUnpaired;
       }
 
       /* initialize data for each hour of the year */
@@ -204,7 +205,7 @@ export function calculateHourlyEnergyStorageData(options: {
         /* column B */ date,
         /* column F */ dayOfYear,
         /* column _ */ hourOfYear: hour,
-        /* column AK and AX */ esProfileUnpaired: battery,
+        /* column AK and AX */ esProfileUnpaired,
         /* column AL */ utilitySolarUnpaired,
         /* column AY */ rooftopSolarUnpaired,
         /* column AM and AZ */ dailyChargingNeeded: 0,
@@ -217,6 +218,8 @@ export function calculateHourlyEnergyStorageData(options: {
         /* column BD */ dailyAllowableRooftopSolarDischarging: 0,
         /* column AP */ overloadedHourUtilitySolar: false,
         /* column BE */ overloadedHourRooftopSolar: false,
+        /* column AS */ overloadedDayUtilitySolar: false,
+        /* column BF */ overloadedDayRooftopSolar: false,
       });
 
       /*
@@ -225,6 +228,11 @@ export function calculateHourlyEnergyStorageData(options: {
        * values for the previous day of the year.
        */
       if (dayOfYear - 1 === previousHourlyData?.dayOfYear) {
+        /* overloaded day values will be assigned in the second loop */
+        let overloadedDayUtilitySolar = false;
+        let overloadedDayRooftopSolar = false;
+
+        /* loop backwards through the built up array */
         for (let i = array.length - 2; i >= 0; i--) {
           /* break out of loop once the day of year changes again */
           if (array[i].dayOfYear === dayOfYear - 2) break;
@@ -267,6 +275,19 @@ export function calculateHourlyEnergyStorageData(options: {
 
           array[i].overloadedHourUtilitySolar = overloadedHourUtilitySolar;
           array[i].overloadedHourRooftopSolar = overloadedHourRooftopSolar;
+
+          /* set overloadedDay values to true if any hour of the day is overloaded */
+          if (overloadedHourUtilitySolar) overloadedDayUtilitySolar = true;
+          if (overloadedHourRooftopSolar) overloadedDayRooftopSolar = true;
+        }
+
+        /* repeat loop a second time to set overloadedDay values */
+        for (let i = array.length - 2; i >= 0; i--) {
+          /* break out of loop once the day of year changes again */
+          if (array[i].dayOfYear === dayOfYear - 2) break;
+
+          array[i].overloadedDayUtilitySolar = overloadedDayUtilitySolar;
+          array[i].overloadedDayRooftopSolar = overloadedDayRooftopSolar;
         }
       }
 
@@ -289,6 +310,8 @@ export function calculateHourlyEnergyStorageData(options: {
       dailyAllowableRooftopSolarDischarging: number;
       overloadedHourUtilitySolar: boolean;
       overloadedHourRooftopSolar: boolean;
+      overloadedDayUtilitySolar: boolean;
+      overloadedDayRooftopSolar: boolean;
     }[],
   );
 
