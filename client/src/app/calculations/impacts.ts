@@ -240,8 +240,8 @@ export function calculateHourlyEnergyStorageData(options: {
         /*
          * NOTE: loop backwards through the built-up array, starting at either
          * the last item (if on the final day of the year) or the item just
-         * before the last one (because the last item is part of the next day
-         * of the year)
+         * before the last one (because in that case, the last item is part of
+         * the next day of the year)
          */
         for (let i = indexOfLastHourOfDay; i >= 0; i--) {
           const item = array[i];
@@ -316,9 +316,10 @@ export function calculateHourlyEnergyStorageData(options: {
 
         /*
          * NOTE: loop a second time, this time forwards through the built-up
-         * array, starting with the first hour of the day and ending with the
-         * item just before the last one (because the last item is part of the
-         * next day of the year)
+         * array, starting with the first hour of the day and ending with either
+         * the last item (if on the final day of the year) or the item just
+         * before the last one (because in that case, the last item is part of
+         * the next day of the year)
          */
         for (let i = indexOfFirstHourOfDay; i <= indexOfLastHourOfDay; i++) {
           const item = array[i];
