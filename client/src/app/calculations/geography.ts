@@ -141,18 +141,19 @@ export function getSelectedGeographyRegions(options: {
  * Returns hourly energy storage data
  *
  * Excel: Data from the "Utility Scale" and "Distributed" tables in the
- * "CalculateEERE" sheet (columns AK, AL, AM, AN, and AY – NOTE: columns AX, AZ,
- * and BA, contain the same data as AK, AM, and AN).
+ * "CalculateEERE" sheet (columns indicated in comments below).
  */
 export function calculateHourlyEnergyStorageData(options: {
   regionalStorageDefaults: RegionState['storageDefaults'];
   hourlyRenewableEnergyProfiles: HourlyRenewableEnergyProfiles;
-  esRoundTripEfficiency: number;
+  batteryRoundTripEfficiency: number;
+  batteryStorageDuration: number;
 }) {
   const {
     regionalStorageDefaults,
     hourlyRenewableEnergyProfiles,
-    esRoundTripEfficiency,
+    batteryRoundTripEfficiency,
+    batteryStorageDuration,
   } = options;
 
   /* built up charging and discharging needed for each day of the year */
@@ -224,6 +225,8 @@ export function calculateHourlyEnergyStorageData(options: {
         /* column BG */ dailyCumulativeAvailableRooftopSolarCharge: 0,
         /* column AU */ dailyMaxAllowableUtilitySolarCharge: 0,
         /* column BH */ dailyMaxAllowableRooftopSolarCharge: 0,
+        /* column AV */ esProfilePairedUtilitySolar: 0,
+        /* column BI */ esProfilePairedRooftopSolar: 0,
       });
 
       /*
@@ -281,8 +284,8 @@ export function calculateHourlyEnergyStorageData(options: {
           array[i].dailyAllowableUtilitySolarCharging = allowableUtilityCharging; // prettier-ignore
           array[i].dailyAllowableRooftopSolarCharging = allowableRooftopCharging; // prettier-ignore
 
-          const allowableUtilityDischarging = (-allowableUtilityCharging + 0) * esRoundTripEfficiency; // prettier-ignore
-          const allowableRooftopDischarging = (-allowableRooftopCharging + 0) * esRoundTripEfficiency; // prettier-ignore
+          const allowableUtilityDischarging = (-allowableUtilityCharging + 0) * batteryRoundTripEfficiency; // prettier-ignore
+          const allowableRooftopDischarging = (-allowableRooftopCharging + 0) * batteryRoundTripEfficiency; // prettier-ignore
 
           array[i].dailyAllowableUtilitySolarDischarging = allowableUtilityDischarging; // prettier-ignore
           array[i].dailyAllowableRooftopSolarDischarging = allowableRooftopDischarging; // prettier-ignore
@@ -355,6 +358,35 @@ export function calculateHourlyEnergyStorageData(options: {
 
           array[i].dailyMaxAllowableUtilitySolarCharge = maxAllowableUtilityCharge; // prettier-ignore
           array[i].dailyMaxAllowableRooftopSolarCharge = maxAllowableRooftopCharge; // prettier-ignore
+
+          const esProfilePairedUtilitySolar =
+            array[i].esProfileUnpaired === 0
+              ? 0
+              : array[i].esProfileUnpaired < 0
+              ? array[i].dailyAllowableUtilitySolarDischarging /
+                batteryStorageDuration
+              : overloadedDayUtilitySolar
+              ? array[i].dailyMaxAllowableUtilitySolarCharge
+              : array[i].dailyChargingNeeded >
+                array[i].dailyAllowableUtilitySolarCharging
+              ? -array[i].utilitySolarUnpaired
+              : array[i].esProfileUnpaired;
+
+          const esProfilePairedRooftopSolar =
+            array[i].esProfileUnpaired === 0
+              ? 0
+              : array[i].esProfileUnpaired < 0
+              ? array[i].dailyAllowableRooftopSolarDischarging /
+                batteryStorageDuration
+              : overloadedDayRooftopSolar
+              ? array[i].dailyMaxAllowableRooftopSolarCharge
+              : array[i].dailyChargingNeeded >
+                array[i].dailyAllowableRooftopSolarCharging
+              ? -array[i].rooftopSolarUnpaired
+              : array[i].esProfileUnpaired;
+
+          array[i].esProfilePairedUtilitySolar = esProfilePairedUtilitySolar;
+          array[i].esProfilePairedRooftopSolar = esProfilePairedRooftopSolar;
         }
       }
 
@@ -383,6 +415,8 @@ export function calculateHourlyEnergyStorageData(options: {
       dailyCumulativeAvailableRooftopSolarCharge: number;
       dailyMaxAllowableUtilitySolarCharge: number;
       dailyMaxAllowableRooftopSolarCharge: number;
+      esProfilePairedUtilitySolar: number;
+      esProfilePairedRooftopSolar: number;
     }[],
   );
 

@@ -33,7 +33,8 @@ import type { RegionId, StateId } from 'app/config';
 import {
   evModelYearOptions,
   iceReplacementVehicleOptions,
-  esRoundTripEfficiency,
+  batteryRoundTripEfficiency,
+  batteryStorageDuration,
 } from 'app/config';
 
 type SelectOption = { id: string; name: string };
@@ -1195,7 +1196,8 @@ export function calculateHourlyEnergyProfile(): AppThunk {
       const hourlyEnergyStorageData = calculateHourlyEnergyStorageData({
         regionalStorageDefaults: region.storageDefaults,
         hourlyRenewableEnergyProfiles,
-        esRoundTripEfficiency,
+        batteryRoundTripEfficiency,
+        batteryStorageDuration,
       });
 
       console.log(hourlyEnergyStorageData); // TODO

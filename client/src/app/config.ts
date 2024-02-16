@@ -130,7 +130,12 @@ export const percentageLDVsDisplacedByEVs = {
  * Excel: "Table 15: Lithium Ion Storage Defaults" table in the "Library" sheet
  * (D736)
  */
-export const esRoundTripEfficiency = 0.85;
+export const batteryRoundTripEfficiency = 0.85;
+
+/**
+ * Excel: Total battery storage duration in hours "CalculateEERE" sheet (AG34)
+ */
+export const batteryStorageDuration = 4;
 
 export type RdfDataKey =
   | 'generation'
