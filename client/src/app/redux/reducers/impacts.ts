@@ -12,7 +12,6 @@ import {
   setVehicleSalesAndStock,
   setEVDeploymentLocationHistoricalEERE,
 } from 'app/redux/reducers/transportation';
-import { calculateHourlyEnergyStorageData } from 'app/calculations/geography';
 import type {
   HourlyRenewableEnergyProfiles,
   HourlyEVLoad,
@@ -23,6 +22,7 @@ import type {
 } from 'app/calculations/impacts';
 import {
   calculateHourlyRenewableEnergyProfiles,
+  calculateHourlyEnergyStorageData,
   calculateHourlyEVLoad,
   calculateTopPercentGeneration,
   calculateHourlyTopPercentReduction,
