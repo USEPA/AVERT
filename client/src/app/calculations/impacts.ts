@@ -44,7 +44,6 @@ export type HourlyChangesValidation = ReturnType<
  */
 export function calculateHourlyRenewableEnergyProfiles(options: {
   eereDefaults: RegionState['eereDefaults']['data'];
-  lineLoss: number;
   onshoreWind: number;
   offshoreWind: number;
   utilitySolar: number;
@@ -52,7 +51,6 @@ export function calculateHourlyRenewableEnergyProfiles(options: {
 }) {
   const {
     eereDefaults,
-    lineLoss,
     onshoreWind: onshoreWindInput,
     offshoreWind: offshoreWindInput,
     utilitySolar: utilitySolarInput,
@@ -65,8 +63,8 @@ export function calculateHourlyRenewableEnergyProfiles(options: {
     return {
       onshoreWind: onshoreWindInput * data.onshore_wind,
       offshoreWind: offshoreWindInput * (data.offshore_wind || 0),
-      utilitySolarUnpaired: utilitySolarInput * data.utility_pv,
-      rooftopSolarUnpaired: (rooftopSolarInput * data.rooftop_pv) / (1 - lineLoss), // prettier-ignore
+      utilitySolar: utilitySolarInput * data.utility_pv,
+      rooftopSolar: rooftopSolarInput * data.rooftop_pv,
     };
   });
 
@@ -118,8 +116,8 @@ export function calculateHourlyEnergyStorageData(options: {
       const hourlyProfiles = hourlyRenewableEnergyProfiles[hourlyIndex];
 
       const solarUnpaired = {
-        utility: -hourlyProfiles.utilitySolarUnpaired + 0,
-        rooftop: -hourlyProfiles.rooftopSolarUnpaired + 0,
+        utility: -hourlyProfiles.utilitySolar + 0,
+        rooftop: -hourlyProfiles.rooftopSolar + 0,
       };
 
       const dailyIndex = Math.floor(hourlyIndex / 24);
@@ -158,7 +156,7 @@ export function calculateHourlyEnergyStorageData(options: {
       array.push({
         /* column B */ date,
         /* column F */ dayOfYear,
-        /* column _ */ hourOfYear: hour,
+        hourOfYear: hour,
         esProfileUnpaired: {
           /* column AK */ utility: esProfileUnpaired.utility,
           /* column AX */ rooftop: esProfileUnpaired.rooftop,
@@ -549,6 +547,7 @@ export function calculateHourlyImpacts(options: {
   lineLoss: number; // region.lineLoss
   regionalLoad: RegionalLoadData[]; // region.rdf.regional_load
   hourlyRenewableEnergyProfiles: HourlyRenewableEnergyProfiles;
+  hourlyEnergyStorageData: HourlyEnergyStorageData;
   hourlyEVLoad: HourlyEVLoad;
   hourlyTopPercentReduction: HourlyTopPercentReduction;
   annualGwh: number; // impacts.inputs.annualGwh
@@ -558,6 +557,7 @@ export function calculateHourlyImpacts(options: {
     lineLoss,
     regionalLoad,
     hourlyRenewableEnergyProfiles,
+    hourlyEnergyStorageData,
     hourlyEVLoad,
     hourlyTopPercentReduction,
     annualGwh,
@@ -573,39 +573,64 @@ export function calculateHourlyImpacts(options: {
 
       const topPercentReduction = hourlyTopPercentReduction[index] || 0;
 
-      const renewableEnergyProfiles = hourlyRenewableEnergyProfiles[index] || {}; // prettier-ignore
-      const onshoreWind = renewableEnergyProfiles?.onshoreWind || 0;
-      const offshoreWind = renewableEnergyProfiles?.offshoreWind || 0;
-      const utilitySolar = renewableEnergyProfiles?.utilitySolarUnpaired || 0;
-      const rooftopSolar = renewableEnergyProfiles?.rooftopSolarUnpaired || 0;
+      const reProfiles = hourlyRenewableEnergyProfiles[index] || {};
+      const onshoreWindProfile = reProfiles?.onshoreWind || 0;
+      const offshoreWindProfile = reProfiles?.offshoreWind || 0;
+      const utilitySolarProfile = reProfiles?.utilitySolar || 0;
+      const rooftopSolarProfile = reProfiles?.rooftopSolar || 0;
 
-      const renewableProfile =
-        -1 * (onshoreWind + offshoreWind + utilitySolar + rooftopSolar);
+      const esData = hourlyEnergyStorageData[index] || {};
+      const date = esData?.date || '';
+      const dayOfYear = esData?.dayOfYear || 0;
+      const hourOfYear = esData?.hourOfYear || 0;
+      const utilitySolarPaired = esData?.esProfilePaired?.utility || 0;
+      const rooftopSolarPaired = esData?.esProfilePaired?.rooftop || 0;
 
       const evLoad = hourlyEVLoad[index] || 0;
 
-      /**
-       * Excel: Data in column I of the "CalculateEERE" sheet (I5:I8788).
-       */
-      const impactsLoad =
-        (topPercentReduction - hourlyMwReduction - constantMwh + evLoad) /
-          (1 - lineLoss) +
-        renewableProfile;
+      const windEnergyProfile = -(onshoreWindProfile + offshoreWindProfile) + 0;
 
-      const percentChange = (impactsLoad / originalLoad) * 100;
+      const finalUtility =
+        -windEnergyProfile - (utilitySolarProfile - utilitySolarPaired);
+
+      const finalRooftop =
+        topPercentReduction -
+        hourlyMwReduction -
+        constantMwh +
+        evLoad -
+        rooftopSolarProfile -
+        rooftopSolarPaired;
+
+      const impactsLoad = finalUtility + finalRooftop / (1 - lineLoss);
 
       object[hour] = {
-        originalLoad,
-        impactsLoad,
-        percentChange,
+        /* column B */ date,
+        /* column F */ dayOfYear,
+        hourOfYear,
+        /* column I */ windEnergyProfile,
+        /* column J */ utilitySolarProfile,
+        /* column K */ rooftopSolarProfile,
+        /* column L */ finalUtility,
+        /* column M */ finalRooftop,
+        /* column N */ impactsLoad,
+        /* column O */ originalLoad,
+        percentChange: (impactsLoad / originalLoad) * 100,
       };
 
       return object;
     },
     {} as {
       [hour: number]: {
-        originalLoad: number;
+        date: string;
+        dayOfYear: number;
+        hourOfYear: number;
+        windEnergyProfile: number;
+        utilitySolarProfile: number;
+        rooftopSolarProfile: number;
+        finalUtility: number;
+        finalRooftop: number;
         impactsLoad: number;
+        originalLoad: number;
         percentChange: number;
       };
     },

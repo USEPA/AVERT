@@ -14,6 +14,7 @@ import {
 } from 'app/redux/reducers/transportation';
 import type {
   HourlyRenewableEnergyProfiles,
+  HourlyEnergyStorageData,
   HourlyEVLoad,
   TopPercentGeneration,
   HourlyTopPercentReduction,
@@ -152,6 +153,7 @@ type Action =
       payload: {
         regionId: RegionId;
         hourlyRenewableEnergyProfiles: HourlyRenewableEnergyProfiles;
+        hourlyEnergyStorageData: HourlyEnergyStorageData;
         hourlyEVLoad: HourlyEVLoad;
         topPercentGeneration: TopPercentGeneration;
         hourlyTopPercentReduction: HourlyTopPercentReduction;
@@ -225,6 +227,7 @@ type State = {
       regions: Partial<{
         [key in RegionId]: {
           hourlyRenewableEnergyProfiles: HourlyRenewableEnergyProfiles;
+          hourlyEnergyStorageData: HourlyEnergyStorageData;
           hourlyEVLoad: HourlyEVLoad;
           topPercentGeneration: TopPercentGeneration;
           hourlyTopPercentReduction: HourlyTopPercentReduction;
@@ -617,6 +620,7 @@ export default function reducer(
       const {
         regionId,
         hourlyRenewableEnergyProfiles,
+        hourlyEnergyStorageData,
         hourlyEVLoad,
         topPercentGeneration,
         hourlyTopPercentReduction,
@@ -633,6 +637,7 @@ export default function reducer(
               ...state.hourlyEnergyProfile.data.regions,
               [regionId]: {
                 hourlyRenewableEnergyProfiles,
+                hourlyEnergyStorageData,
                 hourlyEVLoad,
                 topPercentGeneration,
                 hourlyTopPercentReduction,
@@ -1187,7 +1192,6 @@ export function calculateHourlyEnergyProfile(): AppThunk {
       const hourlyRenewableEnergyProfiles =
         calculateHourlyRenewableEnergyProfiles({
           eereDefaults,
-          lineLoss,
           onshoreWind,
           offshoreWind,
           utilitySolar,
@@ -1202,8 +1206,6 @@ export function calculateHourlyEnergyProfile(): AppThunk {
         batteryRoundTripEfficiency,
         batteryStorageDuration,
       });
-
-      console.log(hourlyEnergyStorageData); // TODO
 
       const hourlyEVLoad = calculateHourlyEVLoad({
         regionId: region.id,
@@ -1231,6 +1233,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
         lineLoss,
         regionalLoad,
         hourlyRenewableEnergyProfiles,
+        hourlyEnergyStorageData,
         hourlyEVLoad,
         hourlyTopPercentReduction,
         annualGwh,
@@ -1244,6 +1247,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
         payload: {
           regionId: region.id,
           hourlyRenewableEnergyProfiles,
+          hourlyEnergyStorageData,
           hourlyEVLoad,
           topPercentGeneration,
           hourlyTopPercentReduction,
