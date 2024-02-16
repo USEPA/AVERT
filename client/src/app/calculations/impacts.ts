@@ -166,12 +166,16 @@ export function calculateHourlyEnergyStorageData(options: {
         /* column BI */ esProfilePairedRooftopSolar: 0,
       });
 
+      const finalHourOfYear =
+        hourlyIndex === regionalStorageDefaults.data.length - 1;
+
       /*
-       * NOTE: As soon as the day of the year changes (e.g., the previous hour
-       * is in the day before), loop backwards through the built-up array and
-       * accumulate values from the previous day of the year.
+       * NOTE: If on the final hour (and therefore final day) of the year, or as
+       * soon as the day of the year changes (e.g., the previous hour is in the
+       * day before), loop backwards through the built-up array and accumulate
+       * values from the previous day of the year.
        */
-      if (previousHourData?.dayOfYear === dayOfYear - 1) {
+      if (finalHourOfYear || previousHourData?.dayOfYear === dayOfYear - 1) {
         /*
          * NOTE: overloaded day values will be possibly re-defined in the first
          * loop, and then assigned in the second loop
@@ -179,25 +183,37 @@ export function calculateHourlyEnergyStorageData(options: {
         let overloadedDayUtilitySolar = false;
         let overloadedDayRooftopSolar = false;
 
-        /** index of the first hour of the day will be set in the first loop */
-        let firstHourOfDayIndex = 0;
+        /** NOTE: will be set in the first loop */
+        let indexOfFirstHourOfDay = 0;
+
+        /**
+         * NOTE: If on the final hour of the year (which means final day of the
+         * year), the index would be the current day's last hour (which is the
+         * last item in the array). Otherwise, the index would be the previous
+         * day's last hour.
+         */
+        const indexOfLastHourOfDay = finalHourOfYear
+          ? array.length - 1
+          : array.length - 2;
 
         /*
-         * NOTE: loop backwards through the built-up array, starting at the item
-         * just before the last one (because the last item is part of the next
-         * day of the year)
+         * NOTE: loop backwards through the built-up array, starting at either
+         * the last item (if on the final day of the year) or the item just
+         * before the last one (because the last item is part of the next day
+         * of the year)
          */
-        for (let i = array.length - 2; i >= 0; i--) {
+        for (let i = indexOfLastHourOfDay; i >= 0; i--) {
+          const previousDay = finalHourOfYear ? dayOfYear - 1 : dayOfYear - 2;
           /*
            * NOTE: break out of loop once the day of year changes again
            * (ensures we don't go back too far since we're looping backwards)
            */
-          if (array[i].dayOfYear === dayOfYear - 2) {
+          if (array[i].dayOfYear === previousDay) {
             /*
              * NOTE: store the index of the first hour of the day (to be used as
              * the starting index for the second loop)
              */
-            firstHourOfDayIndex = i + 1;
+            indexOfFirstHourOfDay = i + 1;
             break;
           }
 
@@ -254,7 +270,7 @@ export function calculateHourlyEnergyStorageData(options: {
          * item just before the last one (because the last item is part of the
          * next day of the year)
          */
-        for (let i = firstHourOfDayIndex; i <= array.length - 2; i++) {
+        for (let i = indexOfFirstHourOfDay; i <= indexOfLastHourOfDay; i++) {
           array[i].overloadedDayUtilitySolar = overloadedDayUtilitySolar;
           array[i].overloadedDayRooftopSolar = overloadedDayRooftopSolar;
 
