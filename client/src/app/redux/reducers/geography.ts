@@ -80,7 +80,7 @@ export type RDFJSON = {
   };
 };
 
-export type EEREDefaultsData = {
+type EEREDefaultsData = {
   date: string;
   hour: number;
   onshore_wind: number;
