@@ -187,16 +187,26 @@ export function calculateHourlyEnergyStorageData(options: {
           /* column AQ */ utility: 0,
           /* column BD */ rooftop: 0,
         },
-        /* column AR */ overloadedHourUtilitySolar: false,
-        /* column BE */ overloadedHourRooftopSolar: false,
-        /* column AS */ overloadedDayUtilitySolar: false,
-        /* column BF */ overloadedDayRooftopSolar: false,
-        /* column AT */ dailyCumulativeAvailableUtilitySolarCharge: 0,
-        /* column BG */ dailyCumulativeAvailableRooftopSolarCharge: 0,
-        /* column AU */ dailyMaxAllowableUtilitySolarCharge: 0,
-        /* column BH */ dailyMaxAllowableRooftopSolarCharge: 0,
-        /* column AV */ esProfilePairedUtilitySolar: 0,
-        /* column BI */ esProfilePairedRooftopSolar: 0,
+        overloadedHour: {
+          /* column AR */ utility: false,
+          /* column BE */ rooftop: false,
+        },
+        overloadedDay: {
+          /* column AS */ utility: false,
+          /* column BF */ rooftop: false,
+        },
+        dailyCumulativeAvailableCharge: {
+          /* column AT */ utility: 0,
+          /* column BG */ rooftop: 0,
+        },
+        dailyMaxAllowableCharge: {
+          /* column AU */ utility: 0,
+          /* column BH */ rooftop: 0,
+        },
+        esProfilePaired: {
+          /* column AV */ utility: 0,
+          /* column BI */ rooftop: 0,
+        },
       });
 
       const finalHourOfYear = hourlyIndex === storageDefaults.length - 1;
@@ -212,8 +222,7 @@ export function calculateHourlyEnergyStorageData(options: {
          * NOTE: overloaded day values will be possibly re-defined in the first
          * loop, and then assigned in the second loop
          */
-        let overloadedDayUtilitySolar = false;
-        let overloadedDayRooftopSolar = false;
+        const overloadedDay = { utility: false, rooftop: false };
 
         /** NOTE: will be set in the first loop */
         let indexOfFirstHourOfDay = 0;
@@ -260,49 +269,49 @@ export function calculateHourlyEnergyStorageData(options: {
           array[i].dailyAvailableSolar.utility = daily.availableSolar.utility;
           array[i].dailyAvailableSolar.rooftop = daily.availableSolar.rooftop;
 
-          const allowableChargingUtility = Math.min(
+          const dailyAllowableChargingUtility = Math.min(
             -daily.availableSolar.utility + 0,
             daily.chargingNeeded.utility,
           );
 
-          const allowableChargingRooftop = Math.min(
+          const dailyAllowableChargingRooftop = Math.min(
             -daily.availableSolar.rooftop + 0,
             daily.chargingNeeded.rooftop,
           );
 
-          array[i].dailyAllowableCharging.utility = allowableChargingUtility;
-          array[i].dailyAllowableCharging.rooftop = allowableChargingRooftop;
+          array[i].dailyAllowableCharging.utility = dailyAllowableChargingUtility; // prettier-ignore
+          array[i].dailyAllowableCharging.rooftop = dailyAllowableChargingRooftop; // prettier-ignore
 
-          const allowableDischargingUtility =
-            (-allowableChargingUtility + 0) * batteryRoundTripEfficiency;
+          const dailyAllowableDischargingUtility =
+            (-dailyAllowableChargingUtility + 0) * batteryRoundTripEfficiency;
 
-          const allowableDischargingRooftop =
-            (-allowableChargingRooftop + 0) * batteryRoundTripEfficiency;
+          const dailyAllowableDischargingRooftop =
+            (-dailyAllowableChargingRooftop + 0) * batteryRoundTripEfficiency;
 
-          array[i].dailyAllowableDischarging.utility = allowableDischargingUtility; // prettier-ignore
-          array[i].dailyAllowableDischarging.rooftop = allowableDischargingRooftop; // prettier-ignore
+          array[i].dailyAllowableDischarging.utility = dailyAllowableDischargingUtility; // prettier-ignore
+          array[i].dailyAllowableDischarging.rooftop = dailyAllowableDischargingRooftop; // prettier-ignore
 
-          const overloadedHourUtilitySolar =
+          const overloadedHourUtility =
             array[i].esProfileUnpaired.utility > 0 &&
             daily.chargingNeeded.utility < -daily.availableSolar.utility &&
             array[i].esProfileUnpaired.utility >
               -array[i].solarUnpaired.utility;
 
-          const overloadedHourRooftopSolar =
+          const overloadedHourRooftop =
             array[i].esProfileUnpaired.rooftop > 0 &&
             daily.chargingNeeded.rooftop < -daily.availableSolar.rooftop &&
             array[i].esProfileUnpaired.rooftop >
               -array[i].solarUnpaired.rooftop;
 
-          array[i].overloadedHourUtilitySolar = overloadedHourUtilitySolar;
-          array[i].overloadedHourRooftopSolar = overloadedHourRooftopSolar;
+          array[i].overloadedHour.utility = overloadedHourUtility;
+          array[i].overloadedHour.rooftop = overloadedHourRooftop;
 
           /*
            * NOTE: set overloadedDay values flag to true if any hour of the day
            * is overloaded (to be used in the second loop)
            */
-          if (overloadedHourUtilitySolar) overloadedDayUtilitySolar = true;
-          if (overloadedHourRooftopSolar) overloadedDayRooftopSolar = true;
+          if (overloadedHourUtility) overloadedDay.utility = true;
+          if (overloadedHourRooftop) overloadedDay.rooftop = true;
         }
 
         /*
@@ -312,75 +321,75 @@ export function calculateHourlyEnergyStorageData(options: {
          * next day of the year)
          */
         for (let i = indexOfFirstHourOfDay; i <= indexOfLastHourOfDay; i++) {
-          array[i].overloadedDayUtilitySolar = overloadedDayUtilitySolar;
-          array[i].overloadedDayRooftopSolar = overloadedDayRooftopSolar;
+          array[i].overloadedDay.utility = overloadedDay.utility;
+          array[i].overloadedDay.rooftop = overloadedDay.rooftop;
 
-          const cumulativeAvailableUtilityCharge = overloadedDayUtilitySolar
+          const dailyCumulativeAvailableChargeUtility = overloadedDay.utility
             ? array[i].esProfileUnpaired.utility <= 0
               ? 0
               : -array[i].solarUnpaired.utility +
-                array[i - 1].dailyCumulativeAvailableUtilitySolarCharge
+                array[i - 1].dailyCumulativeAvailableCharge.utility
             : 0;
 
-          const cumulativeAvailableRooftopCharge = overloadedDayRooftopSolar
+          const dailyCumulativeAvailableChargeRooftop = overloadedDay.rooftop
             ? array[i].esProfileUnpaired.rooftop <= 0
               ? 0
               : -array[i].solarUnpaired.rooftop +
-                array[i - 1].dailyCumulativeAvailableRooftopSolarCharge
+                array[i - 1].dailyCumulativeAvailableCharge.rooftop
             : 0;
 
-          array[i].dailyCumulativeAvailableUtilitySolarCharge = cumulativeAvailableUtilityCharge; // prettier-ignore
-          array[i].dailyCumulativeAvailableRooftopSolarCharge = cumulativeAvailableRooftopCharge; // prettier-ignore
+          array[i].dailyCumulativeAvailableCharge.utility = dailyCumulativeAvailableChargeUtility; // prettier-ignore
+          array[i].dailyCumulativeAvailableCharge.rooftop = dailyCumulativeAvailableChargeRooftop; // prettier-ignore
 
-          const maxAllowableUtilityCharge =
-            cumulativeAvailableUtilityCharge === 0
+          const dailyMaxAllowableChargeUtility =
+            dailyCumulativeAvailableChargeUtility === 0
               ? 0
-              : cumulativeAvailableUtilityCharge <
+              : dailyCumulativeAvailableChargeUtility <
                 array[i].dailyAllowableCharging.utility
               ? -array[i].solarUnpaired.utility
               : array[i].dailyAllowableCharging.utility -
-                array[i - 1].dailyCumulativeAvailableUtilitySolarCharge;
+                array[i - 1].dailyCumulativeAvailableCharge.utility;
 
-          const maxAllowableRooftopCharge =
-            cumulativeAvailableRooftopCharge === 0
+          const dailyMaxAllowableChargeRooftop =
+            dailyCumulativeAvailableChargeRooftop === 0
               ? 0
-              : cumulativeAvailableRooftopCharge <
+              : dailyCumulativeAvailableChargeRooftop <
                 array[i].dailyAllowableCharging.rooftop
               ? -array[i].solarUnpaired.rooftop
               : array[i].dailyAllowableCharging.rooftop -
-                array[i - 1].dailyCumulativeAvailableRooftopSolarCharge;
+                array[i - 1].dailyCumulativeAvailableCharge.rooftop;
 
-          array[i].dailyMaxAllowableUtilitySolarCharge = maxAllowableUtilityCharge; // prettier-ignore
-          array[i].dailyMaxAllowableRooftopSolarCharge = maxAllowableRooftopCharge; // prettier-ignore
+          array[i].dailyMaxAllowableCharge.utility = dailyMaxAllowableChargeUtility; // prettier-ignore
+          array[i].dailyMaxAllowableCharge.rooftop = dailyMaxAllowableChargeRooftop; // prettier-ignore
 
-          const esProfilePairedUtilitySolar =
+          const esProfilePairedUtility =
             array[i].esProfileUnpaired.utility === 0
               ? 0
               : array[i].esProfileUnpaired.utility < 0
               ? array[i].dailyAllowableDischarging.utility /
                 batteryStorageDuration
-              : overloadedDayUtilitySolar
-              ? array[i].dailyMaxAllowableUtilitySolarCharge
+              : overloadedDay.utility
+              ? array[i].dailyMaxAllowableCharge.utility
               : array[i].dailyChargingNeeded.utility >
                 array[i].dailyAllowableCharging.utility
               ? -array[i].solarUnpaired.utility
               : array[i].esProfileUnpaired.utility;
 
-          const esProfilePairedRooftopSolar =
+          const esProfilePairedRooftop =
             array[i].esProfileUnpaired.rooftop === 0
               ? 0
               : array[i].esProfileUnpaired.rooftop < 0
               ? array[i].dailyAllowableDischarging.rooftop /
                 batteryStorageDuration
-              : overloadedDayRooftopSolar
-              ? array[i].dailyMaxAllowableRooftopSolarCharge
+              : overloadedDay.rooftop
+              ? array[i].dailyMaxAllowableCharge.rooftop
               : array[i].dailyChargingNeeded.rooftop >
                 array[i].dailyAllowableCharging.rooftop
               ? -array[i].solarUnpaired.rooftop
               : array[i].esProfileUnpaired.rooftop;
 
-          array[i].esProfilePairedUtilitySolar = esProfilePairedUtilitySolar;
-          array[i].esProfilePairedRooftopSolar = esProfilePairedRooftopSolar;
+          array[i].esProfilePaired.utility = esProfilePairedUtility;
+          array[i].esProfilePaired.rooftop = esProfilePairedRooftop;
         }
       }
 
@@ -397,16 +406,11 @@ export function calculateHourlyEnergyStorageData(options: {
       dailyAvailableSolar: { utility: number; rooftop: number };
       dailyAllowableCharging: { utility: number; rooftop: number };
       dailyAllowableDischarging: { utility: number; rooftop: number };
-      overloadedHourUtilitySolar: boolean;
-      overloadedHourRooftopSolar: boolean;
-      overloadedDayUtilitySolar: boolean;
-      overloadedDayRooftopSolar: boolean;
-      dailyCumulativeAvailableUtilitySolarCharge: number;
-      dailyCumulativeAvailableRooftopSolarCharge: number;
-      dailyMaxAllowableUtilitySolarCharge: number;
-      dailyMaxAllowableRooftopSolarCharge: number;
-      esProfilePairedUtilitySolar: number;
-      esProfilePairedRooftopSolar: number;
+      overloadedHour: { utility: boolean; rooftop: boolean };
+      overloadedDay: { utility: boolean; rooftop: boolean };
+      dailyCumulativeAvailableCharge: { utility: number; rooftop: number };
+      dailyMaxAllowableCharge: { utility: number; rooftop: number };
+      esProfilePaired: { utility: number; rooftop: number };
     }[],
   );
 
