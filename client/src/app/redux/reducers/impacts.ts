@@ -1116,8 +1116,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
       const regionalLoad = region.rdf.regional_load;
       const lineLoss = region.lineLoss;
       const eereDefaults = region.eereDefaults.data;
-      // const storageDefaults = region.storageDefaults.data;
-      // console.log(storageDefaults);
+      const storageDefaults = region.storageDefaults.data;
 
       const regionalPercent = selectedState?.percentageByRegion[region.id] || 0;
 
@@ -1194,7 +1193,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
         });
 
       const hourlyEnergyStorageData = calculateHourlyEnergyStorageData({
-        regionalStorageDefaults: region.storageDefaults,
+        storageDefaults,
         hourlyRenewableEnergyProfiles,
         batteryRoundTripEfficiency,
         batteryStorageDuration,

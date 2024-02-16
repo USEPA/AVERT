@@ -81,13 +81,13 @@ export function calculateHourlyRenewableEnergyProfiles(options: {
  * "CalculateEERE" sheet (columns indicated in comments below).
  */
 export function calculateHourlyEnergyStorageData(options: {
-  regionalStorageDefaults: RegionState['storageDefaults'];
+  storageDefaults: RegionState['storageDefaults']['data'];
   hourlyRenewableEnergyProfiles: HourlyRenewableEnergyProfiles;
   batteryRoundTripEfficiency: number;
   batteryStorageDuration: number;
 }) {
   const {
-    regionalStorageDefaults,
+    storageDefaults,
     hourlyRenewableEnergyProfiles,
     batteryRoundTripEfficiency,
     batteryStorageDuration,
@@ -102,7 +102,7 @@ export function calculateHourlyEnergyStorageData(options: {
     availableRooftopSolar: number;
   }[];
 
-  const result = regionalStorageDefaults.data.reduce(
+  const result = storageDefaults.reduce(
     (array, hourlyData, hourlyIndex) => {
       const { date, hour, battery } = hourlyData;
 
@@ -166,8 +166,7 @@ export function calculateHourlyEnergyStorageData(options: {
         /* column BI */ esProfilePairedRooftopSolar: 0,
       });
 
-      const finalHourOfYear =
-        hourlyIndex === regionalStorageDefaults.data.length - 1;
+      const finalHourOfYear = hourlyIndex === storageDefaults.length - 1;
 
       /*
        * NOTE: If on the final hour (and therefore final day) of the year, or as
