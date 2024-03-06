@@ -45,6 +45,7 @@ import {
   calculateHourlyEnergyProfile,
 } from 'app/redux/reducers/impacts';
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
+import { batteryStorageDuration } from 'app/config';
 
 const inputsGroupStyles = css`
   ul {
@@ -1050,11 +1051,17 @@ function ImpactsInputsContent() {
                               <tbody>
                                 <tr>
                                   <th scope="row">Utility-scale</th>
-                                  <td>(value)</td>
+                                  <td>
+                                    {Number(utilityStorage) *
+                                      batteryStorageDuration}
+                                  </td>
                                 </tr>
                                 <tr>
                                   <th scope="row">Distributed</th>
-                                  <td>(value)</td>
+                                  <td>
+                                    {Number(rooftopStorage) *
+                                      batteryStorageDuration}
+                                  </td>
                                 </tr>
                               </tbody>
                             </table>
