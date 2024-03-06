@@ -252,6 +252,10 @@ button:not([disabled]):focus,
   background-color: rgba(0, 169, 204, 0.125);
 }
 
+.avert-table-fixed {
+  table-layout: fixed;
+}
+
 .avert-rule {
   border-top-color: rgba(0, 128, 164, 0.1875);
 }

@@ -1038,7 +1038,7 @@ function ImpactsInputsContent() {
                       <div className="margin-top-2 desktop:margin-top-0 desktop:margin-left-2">
                         <div className="overflow-auto">
                           <div className="avert-table-container">
-                            <table className="avert-table avert-table-striped width-full">
+                            <table className="avert-table avert-table-striped avert-table-fixed width-full">
                               <thead>
                                 <tr>
                                   <th scope="col">Storage Type</th>
