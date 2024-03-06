@@ -1035,7 +1035,31 @@ function ImpactsInputsContent() {
 
                     <div className="desktop:grid-col-6">
                       <div className="margin-top-2 desktop:margin-top-0 desktop:margin-left-2">
-                        <span>(Table)</span>
+                        <div className="overflow-auto">
+                          <div className="avert-table-container">
+                            <table className="avert-table avert-table-striped width-full">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Storage Type</th>
+                                  <th scope="col">
+                                    Storage Energy <small>(MWh)</small>
+                                  </th>
+                                </tr>
+                              </thead>
+
+                              <tbody>
+                                <tr>
+                                  <th scope="row">Utility-scale</th>
+                                  <td>(value)</td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">Distributed</th>
+                                  <td>(value)</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
