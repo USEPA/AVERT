@@ -29,7 +29,10 @@ export function ImpactsSelectInput(props: {
     <div className={className ? className : ''}>
       {label && (
         <>
-          <label htmlFor={fieldName} className="display-inline-block">
+          <label
+            htmlFor={fieldName}
+            className="display-inline-block font-sans-2xs line-height-sans-2"
+          >
             {label}
           </label>
           <br />
