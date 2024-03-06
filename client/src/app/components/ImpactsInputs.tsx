@@ -206,6 +206,14 @@ function ImpactsInputsContent() {
     schoolBuses,
   ];
 
+  const utilityStorageMWh = isNaN(Number(utilityStorage))
+    ? 0
+    : Number(utilityStorage) * batteryStorageDuration;
+
+  const rooftopStorageMWh = isNaN(Number(rooftopStorage))
+    ? 0
+    : Number(rooftopStorage) * batteryStorageDuration;
+
   const textInputsAreEmpty =
     textInputsFields.filter((field) => field?.length > 0).length === 0;
 
@@ -1036,6 +1044,7 @@ function ImpactsInputsContent() {
 
                     <div className="desktop:grid-col-6">
                       <div className="margin-top-2 desktop:margin-top-0 desktop:margin-left-2">
+                        {/* TODO: swap the table and the select input's position */}
                         <div className="overflow-auto">
                           <div className="avert-table-container">
                             <table className="avert-table avert-table-striped avert-table-fixed width-full">
@@ -1051,17 +1060,11 @@ function ImpactsInputsContent() {
                               <tbody>
                                 <tr>
                                   <th scope="row">Utility-scale</th>
-                                  <td>
-                                    {Number(utilityStorage) *
-                                      batteryStorageDuration}
-                                  </td>
+                                  <td>{utilityStorageMWh}</td>
                                 </tr>
                                 <tr>
                                   <th scope="row">Distributed</th>
-                                  <td>
-                                    {Number(rooftopStorage) *
-                                      batteryStorageDuration}
-                                  </td>
+                                  <td>{rooftopStorageMWh}</td>
                                 </tr>
                               </tbody>
                             </table>
