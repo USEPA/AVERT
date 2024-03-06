@@ -32,6 +32,7 @@ import {
 } from 'app/calculations/impacts';
 import type { RegionId, StateId } from 'app/config';
 import {
+  maxAnnualDischargeCyclesOptions,
   evModelYearOptions,
   iceReplacementVehicleOptions,
   batteryRoundTripEfficiency,
@@ -99,6 +100,10 @@ type Action =
   | {
       type: 'impacts/UPDATE_ES_ROOFTOP_STORAGE';
       payload: { value: string };
+    }
+  | {
+      type: 'impacts/UPDATE_ES_MAX_ANNUAL_DISCHARGE_CYCLES';
+      payload: { option: string };
     }
   | {
       type: 'impacts/UPDATE_EV_BATTERY_EVS';
@@ -196,6 +201,7 @@ export type ElectricVehiclesFieldName =
   | 'schoolBuses';
 
 type SelectOptionsFieldName =
+  | 'maxAnnualDischargeCyclesOptions'
   | 'evDeploymentLocationOptions'
   | 'evModelYearOptions'
   | 'iceReplacementVehicleOptions';
@@ -206,6 +212,7 @@ export type ImpactsInputs = {
     | RenewableEnergyFieldName
     | EnergyStorageFieldName
     | ElectricVehiclesFieldName
+    | 'maxAnnualDischargeCycles'
     | 'evDeploymentLocation'
     | 'evModelYear'
     | 'iceReplacementVehicle']: string;
@@ -240,6 +247,9 @@ type State = {
   };
 };
 
+/** NOTE: Default to the third option (150) */
+const initialMaxAnnualDischargeCycles = maxAnnualDischargeCyclesOptions[2].id;
+
 /** NOTE: Excel version defaults EV model year to 2023 */
 const initialEVModelYear = evModelYearOptions[0].id;
 
@@ -257,6 +267,7 @@ const initialImpactsInputs = {
   rooftopSolar: '',
   utilityStorage: '',
   rooftopStorage: '',
+  maxAnnualDischargeCycles: initialMaxAnnualDischargeCycles,
   batteryEVs: '',
   hybridEVs: '',
   transitBuses: '',
@@ -270,6 +281,7 @@ const initialState: State = {
   errors: [],
   inputs: initialImpactsInputs,
   selectOptions: {
+    maxAnnualDischargeCyclesOptions,
     evDeploymentLocationOptions: [{ id: '', name: '' }],
     evModelYearOptions,
     iceReplacementVehicleOptions,
@@ -303,7 +315,7 @@ export default function reducer(
 ): State {
   switch (action.type) {
     case 'impacts/RESET_IMPACTS_INPUTS': {
-      // initial state, excluding for selectOptions
+      // initial state, excluding selectOptions
       return {
         ...state,
         errors: [],
@@ -469,6 +481,17 @@ export default function reducer(
         inputs: {
           ...state.inputs,
           rooftopStorage: value,
+        },
+      };
+    }
+
+    case 'impacts/UPDATE_ES_MAX_ANNUAL_DISCHARGE_CYCLES': {
+      const { option } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          maxAnnualDischargeCycles: option,
         },
       };
     }
@@ -887,6 +910,15 @@ export function updateESRooftopStorage(value: string): AppThunk {
     });
 
     dispatch(validateInput('rooftopStorage', value, []));
+  };
+}
+
+export function updateESMaxAnnualDischargeCycles(option: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'impacts/UPDATE_ES_MAX_ANNUAL_DISCHARGE_CYCLES',
+      payload: { option },
+    });
   };
 }
 
