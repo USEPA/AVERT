@@ -200,6 +200,8 @@ function ImpactsInputsContent() {
     offshoreWind,
     utilitySolar,
     rooftopSolar,
+    utilityStorage,
+    rooftopStorage,
     batteryEVs,
     hybridEVs,
     transitBuses,
@@ -214,12 +216,17 @@ function ImpactsInputsContent() {
     ? 0
     : Number(rooftopStorage) * batteryStorageDuration;
 
+  const utilityStorageError = Boolean(utilityStorage) && !Boolean(utilitySolar);
+  const rooftopStorageError = Boolean(rooftopStorage) && !Boolean(rooftopSolar);
+
   const textInputsAreEmpty =
     textInputsFields.filter((field) => field?.length > 0).length === 0;
 
   const hourlyEnergyProfileCalculationDisabled =
     !textInputsAreValid ||
     textInputsAreEmpty ||
+    utilityStorageError ||
+    rooftopStorageError ||
     hourlyEnergyProfile.status === 'pending';
 
   const impactsButtonOptions = {
@@ -1044,7 +1051,6 @@ function ImpactsInputsContent() {
 
                     <div className="desktop:grid-col-6">
                       <div className="margin-top-2 desktop:margin-top-0 desktop:margin-left-2">
-                        {/* TODO: swap the table and the select input's position */}
                         <div className="overflow-auto">
                           <div className="avert-table-container">
                             <table className="avert-table avert-table-striped avert-table-fixed width-full">
@@ -1073,6 +1079,26 @@ function ImpactsInputsContent() {
                       </div>
                     </div>
                   </div>
+
+                  {utilityStorageError && (
+                    <div className="usa-alert usa-alert--slim usa-alert--error">
+                      <div className="usa-alert__body">
+                        <p className="usa-alert__text">
+                          Please enter some utility solar PV capacity.
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {rooftopStorageError && (
+                    <div className="usa-alert usa-alert--slim usa-alert--error">
+                      <div className="usa-alert__body">
+                        <p className="usa-alert__text">
+                          Please enter some rooftop solar PV capacity.
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </section>
               </details>
             </div>
