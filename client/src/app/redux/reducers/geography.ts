@@ -97,7 +97,10 @@ type EEREDefaultsJSON = {
 type StorageDefaultsData = {
   date: string;
   hour: number;
-  battery: number;
+  battery_75: number;
+  battery_100: number;
+  battery_150: number;
+  battery_200: null;
 };
 
 type StorageDefaultsJSON = {

@@ -1220,6 +1220,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
       const rooftopSolar = Number(inputs.rooftopSolar) * regionalScalingFactor;
       const utilityStorage = Number(inputs.utilityStorage) * regionalScalingFactor; // prettier-ignore
       const rooftopStorage = Number(inputs.rooftopStorage) * regionalScalingFactor; // prettier-ignore
+      const maxAnnualDischargeCycles = Number(inputs.maxAnnualDischargeCycles);
 
       const hourlyRenewableEnergyProfiles =
         calculateHourlyRenewableEnergyProfiles({
@@ -1234,6 +1235,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
         storageDefaults,
         utilityStorage,
         rooftopStorage,
+        maxAnnualDischargeCycles,
         hourlyRenewableEnergyProfiles,
         batteryRoundTripEfficiency,
         batteryStorageDuration,

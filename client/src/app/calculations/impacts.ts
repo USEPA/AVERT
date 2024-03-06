@@ -81,6 +81,7 @@ export function calculateHourlyEnergyStorageData(options: {
   storageDefaults: RegionState['storageDefaults']['data'];
   utilityStorage: number;
   rooftopStorage: number;
+  maxAnnualDischargeCycles: number;
   hourlyRenewableEnergyProfiles: HourlyRenewableEnergyProfiles;
   batteryRoundTripEfficiency: number;
   batteryStorageDuration: number;
@@ -89,6 +90,7 @@ export function calculateHourlyEnergyStorageData(options: {
     storageDefaults,
     utilityStorage,
     rooftopStorage,
+    maxAnnualDischargeCycles,
     hourlyRenewableEnergyProfiles,
     batteryRoundTripEfficiency,
     batteryStorageDuration,
@@ -104,7 +106,16 @@ export function calculateHourlyEnergyStorageData(options: {
 
   const result = storageDefaults.reduce(
     (array, hourlyData, hourlyIndex) => {
-      const { date, hour, battery } = hourlyData;
+      const { date, hour, battery_75, battery_100, battery_150 } = hourlyData;
+
+      const battery =
+        maxAnnualDischargeCycles === 75
+          ? battery_75
+          : maxAnnualDischargeCycles === 100
+          ? battery_100
+          : maxAnnualDischargeCycles === 150
+          ? battery_150
+          : 0;
 
       const previousHourData = array[array.length - 1];
 
