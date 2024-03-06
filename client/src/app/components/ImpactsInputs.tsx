@@ -30,6 +30,7 @@ import {
   updateRERooftopSolar,
   updateESUtilityStorage,
   updateESRooftopStorage,
+  updateESMaxAnnualDischargeCycles,
   updateEVBatteryEVs,
   runEVBatteryEVsCalculations,
   updateEVHybridEVs,
@@ -148,6 +149,7 @@ function ImpactsInputsContent() {
     rooftopSolar,
     utilityStorage,
     rooftopStorage,
+    maxAnnualDischargeCycles,
     batteryEVs,
     hybridEVs,
     transitBuses,
@@ -158,6 +160,7 @@ function ImpactsInputsContent() {
   } = inputs;
 
   const {
+    maxAnnualDischargeCyclesOptions,
     evModelYearOptions,
     iceReplacementVehicleOptions,
     evDeploymentLocationOptions,
@@ -969,7 +972,7 @@ function ImpactsInputsContent() {
                   data-label="F"
                 >
                   <span className="display-none">F.</span>
-                  Energy storage
+                  Energy storage (paired with solar generation)
                 </summary>
 
                 <section className="padding-top-0 padding-x-2 padding-bottom-105">
@@ -1005,13 +1008,36 @@ function ImpactsInputsContent() {
                           />
                         </div>
                       </div>
+
+                      <div className="tablet:display-flex desktop:margin-right-2">
+                        <div className="flex-1 tablet:margin-right-2">
+                          <ImpactsSelectInput
+                            className="margin-top-1"
+                            label="Maximum allowable discharge cycles per year:"
+                            ariaLabel="Maximum allowable discharge cycles per year"
+                            options={maxAnnualDischargeCyclesOptions}
+                            value={maxAnnualDischargeCycles}
+                            fieldName="maxAnnualDischargeCycles"
+                            onChange={(option) => {
+                              dispatch(
+                                updateESMaxAnnualDischargeCycles(option),
+                              );
+                            }}
+                            tooltip={<p className="margin-0">(TODO)</p>}
+                          />
+                        </div>
+
+                        <div className="flex-1 tablet:margin-left-2">
+                          &nbsp;
+                        </div>
+                      </div>
                     </div>
 
-                    {/*
                     <div className="desktop:grid-col-6">
-                      <div className="desktop:margin-left-2">&nbsp;</div>
+                      <div className="margin-top-2 desktop:margin-top-0 desktop:margin-left-2">
+                        <span>(Table)</span>
+                      </div>
                     </div>
-                    */}
                   </div>
                 </section>
               </details>
