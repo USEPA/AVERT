@@ -167,6 +167,7 @@ export function calculateHourlyEnergyStorageData(options: {
       array.push({
         /* column B */ date,
         /* column F */ dayOfYear,
+        /* column C */ hourOfDay: hour % 24 || 24,
         hourOfYear: hour,
         esProfileUnpaired: {
           /* column AK */ utility: esProfileUnpaired.utility,
@@ -409,6 +410,7 @@ export function calculateHourlyEnergyStorageData(options: {
     [] as {
       date: string;
       dayOfYear: number;
+      hourOfDay: number;
       hourOfYear: number;
       esProfileUnpaired: { utility: number; rooftop: number };
       solarUnpaired: { utility: number; rooftop: number };
