@@ -126,6 +126,17 @@ export const percentageLDVsDisplacedByEVs = {
   trucks: 0.777397018653509,
 };
 
+/**
+ * Excel: "Table 15: Lithium Ion Storage Defaults" table in the "Library" sheet
+ * (D736)
+ */
+export const batteryRoundTripEfficiency = 0.85;
+
+/**
+ * Excel: Total battery storage duration in hours "CalculateEERE" sheet (AG34)
+ */
+export const batteryStorageDuration = 4;
+
 export type RdfDataKey =
   | 'generation'
   | 'so2'
@@ -856,6 +867,16 @@ export const states: { [key in StateId]: State } = {
     },
   },
 };
+
+/**
+ * NOTE: Options determined for the web version. In the Excel version, user can
+ * set the value in the "ES_Detail" sheet (D58).
+ */
+export const maxAnnualDischargeCyclesOptions = [
+  { id: '75', name: '75' },
+  { id: '100', name: '100' },
+  { id: '150', name: '150' },
+];
 
 /**
  * Excel: "EV model year" select options in the "EV_Detail" sheet (E79).

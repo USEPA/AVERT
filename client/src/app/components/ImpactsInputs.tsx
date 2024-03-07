@@ -28,6 +28,9 @@ import {
   updateREOffshoreWind,
   updateREUtilitySolar,
   updateRERooftopSolar,
+  updateESUtilityStorage,
+  updateESRooftopStorage,
+  updateESMaxAnnualDischargeCycles,
   updateEVBatteryEVs,
   runEVBatteryEVsCalculations,
   updateEVHybridEVs,
@@ -42,6 +45,7 @@ import {
   calculateHourlyEnergyProfile,
 } from 'app/redux/reducers/impacts';
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
+import { batteryStorageDuration } from 'app/config';
 
 const inputsGroupStyles = css`
   ul {
@@ -144,6 +148,9 @@ function ImpactsInputsContent() {
     offshoreWind,
     utilitySolar,
     rooftopSolar,
+    utilityStorage,
+    rooftopStorage,
+    maxAnnualDischargeCycles,
     batteryEVs,
     hybridEVs,
     transitBuses,
@@ -154,6 +161,7 @@ function ImpactsInputsContent() {
   } = inputs;
 
   const {
+    maxAnnualDischargeCyclesOptions,
     evModelYearOptions,
     iceReplacementVehicleOptions,
     evDeploymentLocationOptions,
@@ -172,6 +180,7 @@ function ImpactsInputsContent() {
   const [detailsCOpen, setDetailsCOpen] = useState(false);
   const [detailsDOpen, setDetailsDOpen] = useState(false);
   const [detailsEOpen, setDetailsEOpen] = useState(false);
+  const [detailsFOpen, setDetailsFOpen] = useState(false);
 
   const atLeastOneRegionSupportsOffshoreWind =
     geographicFocus === 'regions'
@@ -191,11 +200,24 @@ function ImpactsInputsContent() {
     offshoreWind,
     utilitySolar,
     rooftopSolar,
+    utilityStorage,
+    rooftopStorage,
     batteryEVs,
     hybridEVs,
     transitBuses,
     schoolBuses,
   ];
+
+  const utilityStorageMWh = isNaN(Number(utilityStorage))
+    ? 0
+    : Number(utilityStorage) * batteryStorageDuration;
+
+  const rooftopStorageMWh = isNaN(Number(rooftopStorage))
+    ? 0
+    : Number(rooftopStorage) * batteryStorageDuration;
+
+  const utilityStorageError = Boolean(utilityStorage) && !Boolean(utilitySolar);
+  const rooftopStorageError = Boolean(rooftopStorage) && !Boolean(rooftopSolar);
 
   const textInputsAreEmpty =
     textInputsFields.filter((field) => field?.length > 0).length === 0;
@@ -203,6 +225,8 @@ function ImpactsInputsContent() {
   const hourlyEnergyProfileCalculationDisabled =
     !textInputsAreValid ||
     textInputsAreEmpty ||
+    utilityStorageError ||
+    rooftopStorageError ||
     hourlyEnergyProfile.status === 'pending';
 
   const impactsButtonOptions = {
@@ -914,6 +938,167 @@ function ImpactsInputsContent() {
                   </div>
 
                   <EEREEVComparisonTable className="width-full" />
+                </section>
+              </details>
+            </div>
+          </div>
+        </div>
+
+        <header
+          className={
+            `avert-border avert-box-background ` +
+            `border-width-1px border-bottom-width-0 border-solid ` +
+            `margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest`
+          }
+        >
+          <h3 className="margin-0 font-sans-xs line-height-sans-3">
+            Energy Storage
+          </h3>
+        </header>
+
+        <div className="grid-container padding-0 maxw-full">
+          <div
+            className={
+              `grid-row ` +
+              `avert-border border-width-1px border-top-width-0 border-right-width-0 border-solid`
+            }
+          >
+            <div
+              className={
+                `desktop:grid-col-12 ` +
+                `avert-border border-width-1px border-y-width-0 border-left-width-0 border-solid`
+              }
+            >
+              <details
+                css={inputsGroupStyles}
+                className="avert-border border-width-1px border-bottom-width-0 border-x-width-0 border-solid"
+                open={detailsFOpen}
+                onToggle={(ev) => {
+                  const details = ev.currentTarget as HTMLDetailsElement;
+                  setDetailsFOpen(details.open);
+                }}
+              >
+                <summary
+                  css={inputsSummaryStyles}
+                  className={
+                    `avert-summary ` +
+                    `display-flex flex-align-center padding-105 ` +
+                    `line-height-sans-2 text-bold cursor-pointer`
+                  }
+                  data-label="F"
+                >
+                  <span className="display-none">F.</span>
+                  Energy storage (paired with solar generation)
+                </summary>
+
+                <section className="padding-top-0 padding-x-2 padding-bottom-105">
+                  <div className="grid-row">
+                    <div className="desktop:grid-col-6">
+                      <div className="tablet:display-flex desktop:margin-right-2">
+                        <div className="flex-1 tablet:margin-right-2">
+                          <ImpactsTextInput
+                            label={<>Utility-scale storage capacity:</>}
+                            ariaLabel="Max theoretical power that the utility-scale resource can discharge"
+                            suffix="MW"
+                            value={utilityStorage}
+                            fieldName="utilityStorage"
+                            onChange={(value) => {
+                              dispatch(updateESUtilityStorage(value));
+                            }}
+                            tooltip={<p className="margin-0">(TODO)</p>}
+                          />
+                        </div>
+
+                        <div className="flex-1 tablet:margin-left-2">
+                          <ImpactsTextInput
+                            className="margin-top-1 tablet:margin-top-0"
+                            label={<>Distributed storage capacity:</>}
+                            ariaLabel="Max theoretical power that the distributed resource can discharge"
+                            suffix="MW"
+                            value={rooftopStorage}
+                            fieldName="rooftopStorage"
+                            onChange={(value) => {
+                              dispatch(updateESRooftopStorage(value));
+                            }}
+                            tooltip={<p className="margin-0">(TODO)</p>}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="tablet:display-flex desktop:margin-right-2">
+                        <div className="flex-1 tablet:margin-right-2">
+                          <ImpactsSelectInput
+                            className="margin-top-1"
+                            label="Maximum allowable discharge cycles per year:"
+                            ariaLabel="Maximum allowable discharge cycles per year"
+                            options={maxAnnualDischargeCyclesOptions}
+                            value={maxAnnualDischargeCycles}
+                            fieldName="maxAnnualDischargeCycles"
+                            onChange={(option) => {
+                              dispatch(
+                                updateESMaxAnnualDischargeCycles(option),
+                              );
+                            }}
+                            tooltip={<p className="margin-0">(TODO)</p>}
+                          />
+                        </div>
+
+                        <div className="flex-1 tablet:margin-left-2">
+                          &nbsp;
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="desktop:grid-col-6">
+                      <div className="margin-top-2 desktop:margin-top-0 desktop:margin-left-2">
+                        <div className="overflow-auto">
+                          <div className="avert-table-container">
+                            <table className="avert-table avert-table-striped avert-table-fixed width-full">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Storage Type</th>
+                                  <th scope="col">
+                                    Storage Energy <small>(MWh)</small>
+                                  </th>
+                                </tr>
+                              </thead>
+
+                              <tbody>
+                                <tr>
+                                  <th scope="row">Utility-scale</th>
+                                  <td>{utilityStorageMWh}</td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">Distributed</th>
+                                  <td>{rooftopStorageMWh}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {utilityStorageError && (
+                    <div className="usa-alert usa-alert--slim usa-alert--error">
+                      <div className="usa-alert__body">
+                        <p className="usa-alert__text">
+                          Please enter some utility solar PV capacity.
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {rooftopStorageError && (
+                    <div className="usa-alert usa-alert--slim usa-alert--error">
+                      <div className="usa-alert__body">
+                        <p className="usa-alert__text">
+                          Please enter some rooftop solar PV capacity.
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </section>
               </details>
             </div>

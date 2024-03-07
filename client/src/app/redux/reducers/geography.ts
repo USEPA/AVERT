@@ -80,7 +80,7 @@ export type RDFJSON = {
   };
 };
 
-export type EEREDefaultData = {
+type EEREDefaultsData = {
   date: string;
   hour: number;
   onshore_wind: number;
@@ -89,9 +89,23 @@ export type EEREDefaultData = {
   rooftop_pv: number;
 };
 
-type EEREJSON = {
+type EEREDefaultsJSON = {
   region: string;
-  data: EEREDefaultData[];
+  data: EEREDefaultsData[];
+};
+
+type StorageDefaultsData = {
+  date: string;
+  hour: number;
+  battery_75: number;
+  battery_100: number;
+  battery_150: number;
+  battery_200: null;
+};
+
+type StorageDefaultsJSON = {
+  region: string;
+  data: StorageDefaultsData[];
 };
 
 type GeographyAction =
@@ -142,17 +156,25 @@ type GeographyAction =
       };
     }
   | {
-      type: 'geography/RECEIVE_REGION_DEFAULTS';
+      type: 'geography/RECEIVE_REGION_EERE_DEFAULTS';
       payload: {
         regionId: RegionId;
-        regionDefaults: EEREJSON;
+        regionEereDefaults: EEREDefaultsJSON;
+      };
+    }
+  | {
+      type: 'geography/RECEIVE_REGION_STORAGE_DEFAULTS';
+      payload: {
+        regionId: RegionId;
+        regionStorageDefaults: StorageDefaultsJSON;
       };
     };
 
 export type RegionState = Region & {
   selected: boolean;
-  eereDefaults: EEREJSON;
   rdf: RDFJSON;
+  eereDefaults: EEREDefaultsJSON;
+  storageDefaults: StorageDefaultsJSON;
 };
 
 export type StateState = State & {
@@ -171,11 +193,6 @@ type GeographyState = {
   };
   regionalScalingFactors: RegionalScalingFactors;
   regionalLineLoss: number;
-};
-
-const initialRegionEereDefaults = {
-  region: '',
-  data: [],
 };
 
 const initialRegionRdf = {
@@ -218,15 +235,26 @@ const initialRegionRdf = {
   },
 };
 
+const initialRegionEereDefaults = {
+  region: '',
+  data: [],
+};
+
+const initialRegionStorageDefaults = {
+  region: '',
+  data: [],
+};
+
 // augment regions data (from config) with additonal fields for each region
 const updatedRegions: any = { ...regions };
 for (const regionId in updatedRegions) {
   updatedRegions[regionId].selected = false;
-  updatedRegions[regionId].eereDefaults = initialRegionEereDefaults;
   updatedRegions[regionId].rdf = initialRegionRdf;
+  updatedRegions[regionId].eereDefaults = initialRegionEereDefaults;
+  updatedRegions[regionId].storageDefaults = initialRegionStorageDefaults;
 }
 
-// augment states data (from config) with additonal field afor each state
+// augment states data (from config) with additonal fields for each state
 const updatedStates: any = { ...states };
 for (const stateId in updatedStates) {
   updatedStates[stateId].selected = false;
@@ -356,8 +384,8 @@ export default function reducer(
       };
     }
 
-    case 'geography/RECEIVE_REGION_DEFAULTS': {
-      const { regionId, regionDefaults } = action.payload;
+    case 'geography/RECEIVE_REGION_EERE_DEFAULTS': {
+      const { regionId, regionEereDefaults } = action.payload;
 
       return {
         ...state,
@@ -365,7 +393,22 @@ export default function reducer(
           ...state.regions,
           [regionId]: {
             ...state.regions[regionId],
-            eereDefaults: regionDefaults,
+            eereDefaults: regionEereDefaults,
+          },
+        },
+      };
+    }
+
+    case 'geography/RECEIVE_REGION_STORAGE_DEFAULTS': {
+      const { regionId, regionStorageDefaults } = action.payload;
+
+      return {
+        ...state,
+        regions: {
+          ...state.regions,
+          [regionId]: {
+            ...state.regions[regionId],
+            storageDefaults: regionStorageDefaults,
           },
         },
       };
@@ -596,22 +639,26 @@ export function fetchRegionsData(): AppThunk {
       }
     }
 
-    // build up requests of selected regions that haven't yet fetched their RDF
+    // build up requests of selected regions that haven't yet fetched their data
     const rdfRequests: Promise<Response>[] = [];
     const eereRequests: Promise<Response>[] = [];
+    const storageRequests: Promise<Response>[] = [];
 
     selectedRegions.forEach((region) => {
       if (region.rdf.region.region_abbv === '') {
         rdfRequests.push(fetch(`${api.baseUrl}/api/v1/rdf/${region.id}`));
         eereRequests.push(fetch(`${api.baseUrl}/api/v1/eere/${region.id}`));
+        storageRequests.push(fetch(`${api.baseUrl}/api/v1/storage/${region.id}`)); // prettier-ignore
       }
     });
 
     dispatch({ type: 'geography/REQUEST_SELECTED_REGIONS_DATA' });
 
-    // request all rdf and eere data in parallel
-    Promise.all([rdfRequests, eereRequests].map(Promise.all, Promise))
-      .then(([rdfResponses, eereResponses]) => {
+    // request all rdf, eere, and storage data in parallel
+    Promise.all(
+      [rdfRequests, eereRequests, storageRequests].map(Promise.all, Promise),
+    )
+      .then(([rdfResponses, eereResponses, storageResponses]) => {
         const rdfsData = (rdfResponses as Response[]).map((rdfResponse) => {
           return rdfResponse.json().then((rdfJson: RDFJSON) => {
             dispatch({
@@ -626,21 +673,44 @@ export function fetchRegionsData(): AppThunk {
         });
 
         const eeresData = (eereResponses as Response[]).map((eereResponse) => {
-          return eereResponse.json().then((eereJson: EEREJSON) => {
-            dispatch({
-              type: 'geography/RECEIVE_REGION_DEFAULTS',
-              payload: {
-                regionId: eereResponse.url.split('/').pop() as RegionId,
-                regionDefaults: eereJson,
-              },
+          return eereResponse
+            .json()
+            .then((eereDefaultsJson: EEREDefaultsJSON) => {
+              dispatch({
+                type: 'geography/RECEIVE_REGION_EERE_DEFAULTS',
+                payload: {
+                  regionId: eereResponse.url.split('/').pop() as RegionId,
+                  regionEereDefaults: eereDefaultsJson,
+                },
+              });
+              return eereDefaultsJson;
             });
-            return eereJson;
-          });
         });
 
-        return Promise.all([Promise.all(rdfsData), Promise.all(eeresData)]);
+        const storagesData = (storageResponses as Response[]).map(
+          (storageResponse) => {
+            return storageResponse
+              .json()
+              .then((storageDefaultsJson: StorageDefaultsJSON) => {
+                dispatch({
+                  type: 'geography/RECEIVE_REGION_STORAGE_DEFAULTS',
+                  payload: {
+                    regionId: storageResponse.url.split('/').pop() as RegionId,
+                    regionStorageDefaults: storageDefaultsJson,
+                  },
+                });
+                return storageDefaultsJson;
+              });
+          },
+        );
+
+        return Promise.all([
+          Promise.all(rdfsData),
+          Promise.all(eeresData),
+          Promise.all(storagesData),
+        ]);
       })
-      .then(([rdfs, eeres]) => {
+      .then(([rdfs, _eeres, _storages]) => {
         // region ids from the rdfs that were just fetched above
         const regionIdsFromJustFetchedRdfs = rdfs.map((rdf) => {
           return rdf.region.region_abbv;

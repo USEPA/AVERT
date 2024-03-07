@@ -41,6 +41,24 @@ const eere = {
 };
 
 /**
+ * Storage Controller
+ */
+const storage = {
+  list: (ctx) => {
+    ctx.body = Object.keys(config.regions);
+  },
+  show: async (ctx, region) => {
+    if (!(region in config.regions)) {
+      ctx.throw(404, `${region} region not found`);
+    }
+    const fileName = `app/data/${config.regions[region].storage}`;
+    const fileData = await readFile(fileName, { encoding: "utf8" });
+
+    ctx.body = JSON.parse(fileData);
+  },
+};
+
+/**
  * Emissions Controller
  */
 const emissions = {
@@ -64,5 +82,6 @@ const emissions = {
 module.exports = {
   rdf,
   eere,
+  storage,
   emissions,
 };

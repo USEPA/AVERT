@@ -9,17 +9,14 @@ const routes = [
 
   // debugging only (not called in web app)
   route.get("/api/v1/rdf", controllers.rdf.list),
+  route.get("/api/v1/eere", controllers.eere.list),
+  route.get("/api/v1/storage", controllers.storage.list),
 
-  // web app method: fetchRegion()
+  // web app method: fetchRegionsData()
   // (from panel 1, user clicks 'Set Energy Impacts' button)
   route.get("/api/v1/rdf/:region", controllers.rdf.show),
-
-  // debugging only (not called in web app)
-  route.get("/api/v1/eere", controllers.eere.list),
-
-  // web app method: fetchRegion()
-  // (from panel 1, user clicks 'Set Energy Impacts' button)
   route.get("/api/v1/eere/:region", controllers.eere.show),
+  route.get("/api/v1/storage/:region", controllers.storage.show),
 
   // web app method: fetchEmissionsChanges()
   // (from panel 2, user clicks 'Get Results' button)

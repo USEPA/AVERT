@@ -13,7 +13,8 @@ import {
   setEVDeploymentLocationHistoricalEERE,
 } from 'app/redux/reducers/transportation';
 import type {
-  HourlyRenewableEnergyProfile,
+  HourlyRenewableEnergyProfiles,
+  HourlyEnergyStorageData,
   HourlyEVLoad,
   TopPercentGeneration,
   HourlyTopPercentReduction,
@@ -21,7 +22,8 @@ import type {
   HourlyChangesValidation,
 } from 'app/calculations/impacts';
 import {
-  calculateHourlyRenewableEnergyProfile,
+  calculateHourlyRenewableEnergyProfiles,
+  calculateHourlyEnergyStorageData,
   calculateHourlyEVLoad,
   calculateTopPercentGeneration,
   calculateHourlyTopPercentReduction,
@@ -29,7 +31,13 @@ import {
   calculateHourlyChangesValidation,
 } from 'app/calculations/impacts';
 import type { RegionId, StateId } from 'app/config';
-import { evModelYearOptions, iceReplacementVehicleOptions } from 'app/config';
+import {
+  maxAnnualDischargeCyclesOptions,
+  evModelYearOptions,
+  iceReplacementVehicleOptions,
+  batteryRoundTripEfficiency,
+  batteryStorageDuration,
+} from 'app/config';
 
 type SelectOption = { id: string; name: string };
 
@@ -86,6 +94,18 @@ type Action =
       payload: { value: string };
     }
   | {
+      type: 'impacts/UPDATE_ES_UTILITY_STORAGE';
+      payload: { value: string };
+    }
+  | {
+      type: 'impacts/UPDATE_ES_ROOFTOP_STORAGE';
+      payload: { value: string };
+    }
+  | {
+      type: 'impacts/UPDATE_ES_MAX_ANNUAL_DISCHARGE_CYCLES';
+      payload: { option: string };
+    }
+  | {
       type: 'impacts/UPDATE_EV_BATTERY_EVS';
       payload: { value: string };
     }
@@ -137,7 +157,8 @@ type Action =
       type: 'impacts/SET_HOURLY_ENERGY_PROFILE_REGIONAL_DATA';
       payload: {
         regionId: RegionId;
-        hourlyRenewableEnergyProfile: HourlyRenewableEnergyProfile;
+        hourlyRenewableEnergyProfiles: HourlyRenewableEnergyProfiles;
+        hourlyEnergyStorageData: HourlyEnergyStorageData;
         hourlyEVLoad: HourlyEVLoad;
         topPercentGeneration: TopPercentGeneration;
         hourlyTopPercentReduction: HourlyTopPercentReduction;
@@ -171,6 +192,8 @@ export type RenewableEnergyFieldName =
   | 'utilitySolar'
   | 'rooftopSolar';
 
+type EnergyStorageFieldName = 'utilityStorage' | 'rooftopStorage';
+
 export type ElectricVehiclesFieldName =
   | 'batteryEVs'
   | 'hybridEVs'
@@ -178,6 +201,7 @@ export type ElectricVehiclesFieldName =
   | 'schoolBuses';
 
 type SelectOptionsFieldName =
+  | 'maxAnnualDischargeCyclesOptions'
   | 'evDeploymentLocationOptions'
   | 'evModelYearOptions'
   | 'iceReplacementVehicleOptions';
@@ -186,7 +210,9 @@ export type ImpactsInputs = {
   [field in
     | EnergyEfficiencyFieldName
     | RenewableEnergyFieldName
+    | EnergyStorageFieldName
     | ElectricVehiclesFieldName
+    | 'maxAnnualDischargeCycles'
     | 'evDeploymentLocation'
     | 'evModelYear'
     | 'iceReplacementVehicle']: string;
@@ -207,7 +233,8 @@ type State = {
     data: {
       regions: Partial<{
         [key in RegionId]: {
-          hourlyRenewableEnergyProfile: HourlyRenewableEnergyProfile;
+          hourlyRenewableEnergyProfiles: HourlyRenewableEnergyProfiles;
+          hourlyEnergyStorageData: HourlyEnergyStorageData;
           hourlyEVLoad: HourlyEVLoad;
           topPercentGeneration: TopPercentGeneration;
           hourlyTopPercentReduction: HourlyTopPercentReduction;
@@ -219,6 +246,9 @@ type State = {
     validation: HourlyChangesValidation;
   };
 };
+
+/** NOTE: Default to the third option (150) */
+const initialMaxAnnualDischargeCycles = maxAnnualDischargeCyclesOptions[2].id;
 
 /** NOTE: Excel version defaults EV model year to 2023 */
 const initialEVModelYear = evModelYearOptions[0].id;
@@ -235,6 +265,9 @@ const initialImpactsInputs = {
   offshoreWind: '',
   utilitySolar: '',
   rooftopSolar: '',
+  utilityStorage: '',
+  rooftopStorage: '',
+  maxAnnualDischargeCycles: initialMaxAnnualDischargeCycles,
   batteryEVs: '',
   hybridEVs: '',
   transitBuses: '',
@@ -248,6 +281,7 @@ const initialState: State = {
   errors: [],
   inputs: initialImpactsInputs,
   selectOptions: {
+    maxAnnualDischargeCyclesOptions,
     evDeploymentLocationOptions: [{ id: '', name: '' }],
     evModelYearOptions,
     iceReplacementVehicleOptions,
@@ -281,7 +315,7 @@ export default function reducer(
 ): State {
   switch (action.type) {
     case 'impacts/RESET_IMPACTS_INPUTS': {
-      // initial state, excluding for selectOptions
+      // initial state, excluding selectOptions
       return {
         ...state,
         errors: [],
@@ -425,6 +459,39 @@ export default function reducer(
         inputs: {
           ...state.inputs,
           rooftopSolar: value,
+        },
+      };
+    }
+
+    case 'impacts/UPDATE_ES_UTILITY_STORAGE': {
+      const { value } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          utilityStorage: value,
+        },
+      };
+    }
+
+    case 'impacts/UPDATE_ES_ROOFTOP_STORAGE': {
+      const { value } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          rooftopStorage: value,
+        },
+      };
+    }
+
+    case 'impacts/UPDATE_ES_MAX_ANNUAL_DISCHARGE_CYCLES': {
+      const { option } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          maxAnnualDischargeCycles: option,
         },
       };
     }
@@ -575,7 +642,8 @@ export default function reducer(
     case 'impacts/SET_HOURLY_ENERGY_PROFILE_REGIONAL_DATA': {
       const {
         regionId,
-        hourlyRenewableEnergyProfile,
+        hourlyRenewableEnergyProfiles,
+        hourlyEnergyStorageData,
         hourlyEVLoad,
         topPercentGeneration,
         hourlyTopPercentReduction,
@@ -591,7 +659,8 @@ export default function reducer(
             regions: {
               ...state.hourlyEnergyProfile.data.regions,
               [regionId]: {
-                hourlyRenewableEnergyProfile,
+                hourlyRenewableEnergyProfiles,
+                hourlyEnergyStorageData,
                 hourlyEVLoad,
                 topPercentGeneration,
                 hourlyTopPercentReduction,
@@ -697,6 +766,7 @@ function validateInput(
   inputField:
     | EnergyEfficiencyFieldName
     | RenewableEnergyFieldName
+    | EnergyStorageFieldName
     | ElectricVehiclesFieldName,
   inputValue: string,
   invalidCharacters: string[],
@@ -818,6 +888,37 @@ export function updateRERooftopSolar(value: string): AppThunk {
     });
 
     dispatch(validateInput('rooftopSolar', value, []));
+  };
+}
+
+export function updateESUtilityStorage(value: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'impacts/UPDATE_ES_UTILITY_STORAGE',
+      payload: { value },
+    });
+
+    dispatch(validateInput('utilityStorage', value, []));
+  };
+}
+
+export function updateESRooftopStorage(value: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'impacts/UPDATE_ES_ROOFTOP_STORAGE',
+      payload: { value },
+    });
+
+    dispatch(validateInput('rooftopStorage', value, []));
+  };
+}
+
+export function updateESMaxAnnualDischargeCycles(option: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: 'impacts/UPDATE_ES_MAX_ANNUAL_DISCHARGE_CYCLES',
+      payload: { option },
+    });
   };
 }
 
@@ -1052,6 +1153,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
       const regionalLoad = region.rdf.regional_load;
       const lineLoss = region.lineLoss;
       const eereDefaults = region.eereDefaults.data;
+      const storageDefaults = region.storageDefaults.data;
 
       const regionalPercent = selectedState?.percentageByRegion[region.id] || 0;
 
@@ -1116,16 +1218,28 @@ export function calculateHourlyEnergyProfile(): AppThunk {
       const offshoreWind = Number(inputs.offshoreWind) * offshoreWindFactor;
       const utilitySolar = Number(inputs.utilitySolar) * regionalScalingFactor;
       const rooftopSolar = Number(inputs.rooftopSolar) * regionalScalingFactor;
+      const utilityStorage = Number(inputs.utilityStorage) * regionalScalingFactor; // prettier-ignore
+      const rooftopStorage = Number(inputs.rooftopStorage) * regionalScalingFactor; // prettier-ignore
+      const maxAnnualDischargeCycles = Number(inputs.maxAnnualDischargeCycles);
 
-      const hourlyRenewableEnergyProfile =
-        calculateHourlyRenewableEnergyProfile({
+      const hourlyRenewableEnergyProfiles =
+        calculateHourlyRenewableEnergyProfiles({
           eereDefaults,
-          lineLoss,
           onshoreWind,
           offshoreWind,
           utilitySolar,
           rooftopSolar,
         });
+
+      const hourlyEnergyStorageData = calculateHourlyEnergyStorageData({
+        storageDefaults,
+        utilityStorage,
+        rooftopStorage,
+        maxAnnualDischargeCycles,
+        hourlyRenewableEnergyProfiles,
+        batteryRoundTripEfficiency,
+        batteryStorageDuration,
+      });
 
       const hourlyEVLoad = calculateHourlyEVLoad({
         regionId: region.id,
@@ -1152,7 +1266,8 @@ export function calculateHourlyEnergyProfile(): AppThunk {
       const hourlyImpacts = calculateHourlyImpacts({
         lineLoss,
         regionalLoad,
-        hourlyRenewableEnergyProfile,
+        hourlyRenewableEnergyProfiles,
+        hourlyEnergyStorageData,
         hourlyEVLoad,
         hourlyTopPercentReduction,
         annualGwh,
@@ -1165,7 +1280,8 @@ export function calculateHourlyEnergyProfile(): AppThunk {
         type: 'impacts/SET_HOURLY_ENERGY_PROFILE_REGIONAL_DATA',
         payload: {
           regionId: region.id,
-          hourlyRenewableEnergyProfile,
+          hourlyRenewableEnergyProfiles,
+          hourlyEnergyStorageData,
           hourlyEVLoad,
           topPercentGeneration,
           hourlyTopPercentReduction,
