@@ -1,128 +1,128 @@
 {
   "CA": {
     "capacity_added_mw": {
-      "onshore_wind": 161.333333333333,
-      "utility_pv": 1487.73333333333
+      "onshore_wind": 118.9,
+      "utility_pv": 1807.36666666667
     },
     "retail_impacts_gwh": {
-      "ee_retail": 2973.83900266667
+      "ee_retail": 3022.387066
     }
   },
   "NCSC": {
     "capacity_added_mw": {
       "onshore_wind": 0,
-      "utility_pv": 538.966666666667
+      "utility_pv": 518.433333333333
     },
     "retail_impacts_gwh": {
-      "ee_retail": 1524.78203566667
+      "ee_retail": 1303.04013733333
     }
   },
   "CENT": {
     "capacity_added_mw": {
-      "onshore_wind": 3110.53333333333,
-      "utility_pv": 28.7666666666667
+      "onshore_wind": 3543,
+      "utility_pv": 26.9666666666667
     },
     "retail_impacts_gwh": {
-      "ee_retail": 739.257160333333
+      "ee_retail": 722.908235333333
     }
   },
   "FL": {
     "capacity_added_mw": {
       "onshore_wind": 0,
-      "utility_pv": 1111.76666666667
+      "utility_pv": 1211.46666666667
     },
     "retail_impacts_gwh": {
-      "ee_retail": 267.080727333333
+      "ee_retail": 236.541580666667
     }
   },
   "MIDA": {
     "capacity_added_mw": {
-      "onshore_wind": 666.866666666667,
-      "utility_pv": 1193.6
+      "onshore_wind": 480.366666666667,
+      "utility_pv": 1314.8
     },
     "retail_impacts_gwh": {
-      "ee_retail": 7213.77210666667
+      "ee_retail": 6095.33648566667
     }
   },
   "MIDW": {
     "capacity_added_mw": {
-      "onshore_wind": 3456.8,
-      "utility_pv": 657.466666666667
+      "onshore_wind": 2969.26666666667,
+      "utility_pv": 1029.5
     },
     "retail_impacts_gwh": {
-      "ee_retail": 5312.432942
+      "ee_retail": 5209.34062766667
     }
   },
   "NE": {
     "capacity_added_mw": {
-      "onshore_wind": 50.6,
-      "utility_pv": 294.7
+      "onshore_wind": 37.4666666666667,
+      "utility_pv": 308.366666666667
     },
     "retail_impacts_gwh": {
-      "ee_retail": 2549.42255
+      "ee_retail": 1973.50773566667
     }
   },
   "NY": {
     "capacity_added_mw": {
       "onshore_wind": 67.9,
-      "utility_pv": 162.466666666667
+      "utility_pv": 187.6
     },
     "retail_impacts_gwh": {
-      "ee_retail": 2432.18078266667
+      "ee_retail": 2302.42032133333
     }
   },
   "NW": {
     "capacity_added_mw": {
-      "onshore_wind": 808.966666666667,
-      "utility_pv": 648.9
+      "onshore_wind": 933.9,
+      "utility_pv": 741.133333333333
     },
     "retail_impacts_gwh": {
-      "ee_retail": 2095.61569
+      "ee_retail": 1933.02724933333
     }
   },
   "RM": {
     "capacity_added_mw": {
-      "onshore_wind": 571.433333333333,
-      "utility_pv": 174.866666666667
+      "onshore_wind": 567.733333333333,
+      "utility_pv": 230.933333333333
     },
     "retail_impacts_gwh": {
-      "ee_retail": 697.275254666667
+      "ee_retail": 671.877578333334
     }
   },
   "SE": {
     "capacity_added_mw": {
       "onshore_wind": 0,
-      "utility_pv": 788.2
+      "utility_pv": 817.466666666667
     },
     "retail_impacts_gwh": {
-      "ee_retail": 353.372110666667
+      "ee_retail": 392.663705
     }
   },
   "SW": {
     "capacity_added_mw": {
-      "onshore_wind": 759.5,
-      "utility_pv": 262.2
+      "onshore_wind": 734.333333333333,
+      "utility_pv": 314.766666666667
     },
     "retail_impacts_gwh": {
-      "ee_retail": 1058.345442
+      "ee_retail": 1164.86359533333
     }
   },
   "TN": {
     "capacity_added_mw": {
       "onshore_wind": 0,
-      "utility_pv": 81.8666666666667
+      "utility_pv": 136.133333333333
     },
     "retail_impacts_gwh": {
-      "ee_retail": 78.2177333333333
+      "ee_retail": 52.8740333333333
     }
   },
   "TE": {
     "capacity_added_mw": {
-      "onshore_wind": 3326.7,
-      "utility_pv": 2306.9
+      "onshore_wind": 3452.9,
+      "utility_pv": 2985.53333333333
     },
     "retail_impacts_gwh": {
-      "ee_retail": 851.881448333333
+      "ee_retail": 901.393783333333
     }
   }
 }
