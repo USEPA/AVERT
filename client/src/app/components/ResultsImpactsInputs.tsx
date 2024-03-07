@@ -25,6 +25,9 @@ function ResultsImpactsInputsContent() {
     offshoreWind,
     utilitySolar,
     rooftopSolar,
+    utilityStorage,
+    rooftopStorage,
+    maxAnnualDischargeCycles,
     batteryEVs,
     hybridEVs,
     transitBuses,
@@ -35,6 +38,7 @@ function ResultsImpactsInputsContent() {
   } = inputs;
 
   const {
+    maxAnnualDischargeCyclesOptions,
     evModelYearOptions,
     iceReplacementVehicleOptions,
     evDeploymentLocationOptions,
@@ -46,7 +50,14 @@ function ResultsImpactsInputsContent() {
     inputExists(transitBuses) ||
     inputExists(schoolBuses);
 
+  const esInputsNotEmpty =
+    inputExists(utilityStorage) || inputExists(rooftopStorage);
+
   if (!combinedSectorsEmissionsData) return null;
+
+  const maxAnnualDischargeCyclesName = maxAnnualDischargeCyclesOptions.find(
+    (opt) => opt.id === maxAnnualDischargeCycles,
+  )?.name;
 
   const evDeploymentLocationName = evDeploymentLocationOptions.find((opt) => {
     return opt.id === evDeploymentLocation;
@@ -196,6 +207,35 @@ function ResultsImpactsInputsContent() {
             <span className="font-sans-2xs">ICE vehicles being replaced:</span>{' '}
             <span className="font-mono-xs text-bold">
               {iceReplacementVehicleName}
+            </span>
+          </p>
+        )}
+
+        {inputExists(utilityStorage) && (
+          <p className="margin-0 padding-top-1 line-height-sans-2">
+            <span className="font-sans-2xs">
+              Utility-scale storage capacity:
+            </span>{' '}
+            <span className="font-mono-xs text-bold">{utilityStorage}</span>{' '}
+            <span className="font-sans-3xs">MW</span>
+          </p>
+        )}
+
+        {inputExists(rooftopStorage) && (
+          <p className="margin-0 padding-top-1 line-height-sans-2">
+            <span className="font-sans-2xs">Distributed storage capacity:</span>{' '}
+            <span className="font-mono-xs text-bold">{rooftopStorage}</span>{' '}
+            <span className="font-sans-3xs">MW</span>
+          </p>
+        )}
+
+        {esInputsNotEmpty && maxAnnualDischargeCyclesName && (
+          <p className="margin-0 padding-top-1 line-height-sans-2">
+            <span className="font-sans-2xs">
+              Maximum allowable discharge cycles per year:
+            </span>{' '}
+            <span className="font-mono-xs text-bold">
+              {maxAnnualDischargeCyclesName}
             </span>
           </p>
         )}
