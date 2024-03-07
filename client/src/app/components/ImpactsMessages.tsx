@@ -225,6 +225,9 @@ function ImpactsMessagesContent() {
     return null;
   }
 
+  // TODO: add warning message indicating there's insufficient solar if the user
+  // enters a small amount of solar and a large amount of battery storage capacity
+
   return (
     <>
       <EquivalentHomesText hourlyChanges={Object.values(totalHourlyChanges)} />
