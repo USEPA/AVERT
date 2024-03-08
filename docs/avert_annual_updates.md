@@ -3,7 +3,8 @@
 All changes should happen on a new feature branch:
 
 1. Apply text changes to the year (and any other changes needed) below map on
-   the "Select Geography" panel (`client/src/app/components/Panels.tsx`).
+   the "Select Geography" panel (`client/src/app/components/Panels.tsx`). Note
+   the Excel app version will likely need to be updated as well ("v4.3").
 
 2. Potentially replace EERE defaults JSON files (not often updated) – files
    stored in `server/app/data/` directory.

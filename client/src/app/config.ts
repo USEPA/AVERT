@@ -122,8 +122,8 @@ export const percentWeekendToWeekdayEVConsumption = 97.3015982802952;
  * sheet (D727:E727)
  */
 export const percentageLDVsDisplacedByEVs = {
-  cars: 0.222602981346491,
-  trucks: 0.777397018653509,
+  cars: 0.210961149193232,
+  trucks: 0.789038850806768,
 };
 
 /**
@@ -158,8 +158,8 @@ export type RegionId =
   | 'MIDW'
   | 'NCSC'
   | 'NE'
-  | 'NW'
   | 'NY'
+  | 'NW'
   | 'RM'
   | 'SE'
   | 'SW'
@@ -174,8 +174,8 @@ export type RegionName =
   | 'Midwest'
   | 'Carolinas'
   | 'New England'
-  | 'Northwest'
   | 'New York'
+  | 'Northwest'
   | 'Rocky Mountains'
   | 'Southeast'
   | 'Southwest'
@@ -255,7 +255,7 @@ export const regions: { [key in RegionId]: Region } = {
       FL: 100,
     },
     actualEmissions: {
-      so2: 25_756_210,
+      so2: 21_572_126,
     },
   },
   MIDA: {
@@ -279,7 +279,9 @@ export const regions: { [key in RegionId]: Region } = {
       VA: 15.3029,
       WV: 4.4088,
     },
-    actualEmissions: {},
+    actualEmissions: {
+      so2: 208_740_162,
+    },
   },
   MIDW: {
     id: 'MIDW',
@@ -314,7 +316,9 @@ export const regions: { [key in RegionId]: Region } = {
       NC: 61.6987,
       SC: 38.3013,
     },
-    actualEmissions: {},
+    actualEmissions: {
+      so2: 26_475_452,
+    },
   },
   NE: {
     id: 'NE',
@@ -331,18 +335,6 @@ export const regions: { [key in RegionId]: Region } = {
     },
     actualEmissions: {},
   },
-  NY: {
-    id: 'NY',
-    name: 'New York',
-    lineLoss: lineLoss.eastern,
-    offshoreWind: true,
-    percentageByState: {
-      NY: 100,
-    },
-    actualEmissions: {
-      so2: 5_023_480,
-    },
-  },
   NW: {
     id: 'NW',
     name: 'Northwest',
@@ -358,6 +350,18 @@ export const regions: { [key in RegionId]: Region } = {
       WY: 4.1165,
     },
     actualEmissions: {},
+  },
+  NY: {
+    id: 'NY',
+    name: 'New York',
+    lineLoss: lineLoss.eastern,
+    offshoreWind: true,
+    percentageByState: {
+      NY: 100,
+    },
+    actualEmissions: {
+      so2: 1_262_108,
+    },
   },
   RM: {
     id: 'RM',
@@ -386,9 +390,7 @@ export const regions: { [key in RegionId]: Region } = {
       GA: 59.8372,
       MS: 5.1415,
     },
-    actualEmissions: {
-      so2: 22_835_652,
-    },
+    actualEmissions: {},
   },
   SW: {
     id: 'SW',
@@ -400,9 +402,7 @@ export const regions: { [key in RegionId]: Region } = {
       NM: 14.6254,
       TX: 6.4536,
     },
-    actualEmissions: {
-      so2: 20_267_868,
-    },
+    actualEmissions: {},
   },
   TE: {
     id: 'TE',

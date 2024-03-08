@@ -1,511 +1,511 @@
 {
   "AK": {
     "transitBuses": {
-      "sales": 2.5,
-      "stock": 105
+      "sales": 2.75,
+      "stock": 108
     },
     "schoolBuses": {
-      "sales": 69.8351952802792,
-      "stock": 954
+      "sales": 68.3091779556805,
+      "stock": 962
     }
   },
   "AL": {
     "transitBuses": {
-      "sales": 8.5,
-      "stock": 163
+      "sales": 12.5,
+      "stock": 179
     },
     "schoolBuses": {
-      "sales": 579.251467770282,
-      "stock": 7913
+      "sales": 555.278348870501,
+      "stock": 7820
     }
   },
   "AR": {
     "transitBuses": {
-      "sales": 7.75,
-      "stock": 114
+      "sales": 6.25,
+      "stock": 97
     },
     "schoolBuses": {
-      "sales": 476.91435770547,
-      "stock": 6515
+      "sales": 497.05223044674,
+      "stock": 7000
     }
   },
   "AZ": {
     "transitBuses": {
-      "sales": 118.75,
-      "stock": 1172
+      "sales": 111.5,
+      "stock": 1097
     },
     "schoolBuses": {
-      "sales": 524.569192220629,
+      "sales": 508.839469054477,
       "stock": 7166
     }
   },
   "CA": {
     "transitBuses": {
-      "sales": 679.5,
-      "stock": 10059
+      "sales": 611.25,
+      "stock": 9945
     },
     "schoolBuses": {
-      "sales": 1488.42665160788,
+      "sales": 1443.79471452479,
       "stock": 20333
     }
   },
   "CO": {
     "transitBuses": {
-      "sales": 103.75,
-      "stock": 1444
+      "sales": 86.5,
+      "stock": 1367
     },
     "schoolBuses": {
-      "sales": 907.110055002576,
-      "stock": 12391.7888250945
+      "sales": 878.987536969088,
+      "stock": 12378.8052479988
     }
   },
   "CT": {
     "transitBuses": {
-      "sales": 85,
-      "stock": 706
+      "sales": 44.25,
+      "stock": 688
     },
     "schoolBuses": {
-      "sales": 629.541592673376,
+      "sales": 610.664168834566,
       "stock": 8600
     }
   },
   "DC": {
     "transitBuses": {
-      "sales": 84,
-      "stock": 1607
+      "sales": 113.25,
+      "stock": 1665
     },
     "schoolBuses": {
-      "sales": 1009.50544209774,
-      "stock": 13790.5849320823
+      "sales": 511.522953632906,
+      "stock": 7203.79158587041
     }
   },
   "DE": {
     "transitBuses": {
-      "sales": 19.75,
-      "stock": 249
+      "sales": 15,
+      "stock": 118
     },
     "schoolBuses": {
-      "sales": 114.561929364399,
-      "stock": 1565
+      "sales": 108.570408621866,
+      "stock": 1529
     }
   },
   "FL": {
     "transitBuses": {
-      "sales": 292,
-      "stock": 3215
+      "sales": 318,
+      "stock": 3053
     },
     "schoolBuses": {
-      "sales": 1329.65040573479,
-      "stock": 18164
+      "sales": 1264.92691902546,
+      "stock": 17814
     }
   },
   "GA": {
     "transitBuses": {
-      "sales": 112,
-      "stock": 917
+      "sales": 116.25,
+      "stock": 895
     },
     "schoolBuses": {
-      "sales": 1477.66588252381,
-      "stock": 20186
+      "sales": 1440.17333398868,
+      "stock": 20282
     }
   },
   "HI": {
     "transitBuses": {
-      "sales": 14,
-      "stock": 604
+      "sales": 16.5,
+      "stock": 507
     },
     "schoolBuses": {
-      "sales": 52.9986178018052,
-      "stock": 724
+      "sales": 55.7408572715272,
+      "stock": 785
     }
   },
   "IA": {
     "transitBuses": {
-      "sales": 25.25,
-      "stock": 476
+      "sales": 30.5,
+      "stock": 485
     },
     "schoolBuses": {
-      "sales": 440.679114871363,
-      "stock": 6020
+      "sales": 426.044768954348,
+      "stock": 6000
     }
   },
   "ID": {
     "transitBuses": {
-      "sales": 4,
-      "stock": 97
+      "sales": 7.5,
+      "stock": 109
     },
     "schoolBuses": {
-      "sales": 219.314722284818,
+      "sales": 212.738354631205,
       "stock": 2996
     }
   },
   "IL": {
     "transitBuses": {
-      "sales": 128.75,
-      "stock": 3132
+      "sales": 84.25,
+      "stock": 3192
     },
     "schoolBuses": {
-      "sales": 1854.73201553085,
-      "stock": 25337
+      "sales": 1876.30116247495,
+      "stock": 26424
     }
   },
   "IN": {
     "transitBuses": {
-      "sales": 42,
-      "stock": 509
+      "sales": 47,
+      "stock": 489
     },
     "schoolBuses": {
-      "sales": 1210.25711065918,
-      "stock": 16533
+      "sales": 1194.62953214799,
+      "stock": 16824
     }
   },
   "KS": {
     "transitBuses": {
-      "sales": 10.5,
-      "stock": 198
+      "sales": 8.25,
+      "stock": 199
     },
     "schoolBuses": {
-      "sales": 294.713308384071,
-      "stock": 4026
+      "sales": 305.687121724745,
+      "stock": 4305
     }
   },
   "KY": {
     "transitBuses": {
-      "sales": 22.25,
-      "stock": 450
+      "sales": 31.25,
+      "stock": 443
     },
     "schoolBuses": {
-      "sales": 694.545422242441,
+      "sales": 673.71879463981,
       "stock": 9488
     }
   },
   "LA": {
     "transitBuses": {
-      "sales": 23,
-      "stock": 379
+      "sales": 34,
+      "stock": 377
     },
     "schoolBuses": {
-      "sales": 500.778376218438,
+      "sales": 485.76204406945,
       "stock": 6841
     }
   },
   "MA": {
     "transitBuses": {
-      "sales": 104.75,
-      "stock": 1883
+      "sales": 116.25,
+      "stock": 1752
     },
     "schoolBuses": {
-      "sales": 658.822596983766,
+      "sales": 639.067153431523,
       "stock": 9000
     }
   },
   "MD": {
     "transitBuses": {
-      "sales": 86,
-      "stock": 1342
+      "sales": 126.25,
+      "stock": 1464
     },
     "schoolBuses": {
-      "sales": 530.571798104259,
-      "stock": 7248
+      "sales": 502.306782597177,
+      "stock": 7074
     }
   },
   "ME": {
     "transitBuses": {
-      "sales": 19.25,
-      "stock": 190
+      "sales": 26,
+      "stock": 206
     },
     "schoolBuses": {
-      "sales": 206.065067834367,
+      "sales": 199.886004101082,
       "stock": 2815
     }
   },
   "MI": {
     "transitBuses": {
-      "sales": 189.5,
-      "stock": 1849
+      "sales": 164.25,
+      "stock": 1841
     },
     "schoolBuses": {
-      "sales": 1233.02309151051,
+      "sales": 1196.04968137784,
       "stock": 16844
     }
   },
   "MN": {
     "transitBuses": {
-      "sales": 59.5,
-      "stock": 1047
+      "sales": 62,
+      "stock": 1042
     },
     "schoolBuses": {
-      "sales": 1245.46751834242,
-      "stock": 17014
+      "sales": 1342.18303712918,
+      "stock": 18902
     }
   },
   "MO": {
     "transitBuses": {
       "sales": 66,
-      "stock": 725
+      "stock": 710
     },
     "schoolBuses": {
-      "sales": 870.304650615554,
-      "stock": 11889
+      "sales": 829.225135308147,
+      "stock": 11678
     }
   },
   "MS": {
     "transitBuses": {
-      "sales": 10.5,
-      "stock": 142
+      "sales": 9.25,
+      "stock": 138
     },
     "schoolBuses": {
-      "sales": 260.527735851691,
-      "stock": 3559
+      "sales": 393.665366513818,
+      "stock": 5544
     }
   },
   "MT": {
     "transitBuses": {
-      "sales": 10,
-      "stock": 130
+      "sales": 13.25,
+      "stock": 135
     },
     "schoolBuses": {
-      "sales": 256.355192737461,
-      "stock": 3502
+      "sales": 262.230555291401,
+      "stock": 3693
     }
   },
   "NC": {
     "transitBuses": {
-      "sales": 105.75,
-      "stock": 1232
+      "sales": 84,
+      "stock": 1304
     },
     "schoolBuses": {
-      "sales": 949.802577318262,
-      "stock": 12975
+      "sales": 1001.48923688869,
+      "stock": 14104
     }
   },
   "ND": {
     "transitBuses": {
-      "sales": 4.5,
-      "stock": 65
+      "sales": 4.75,
+      "stock": 64
     },
     "schoolBuses": {
-      "sales": 172.099102834315,
+      "sales": 166.938541968612,
       "stock": 2351
     }
   },
   "NE": {
     "transitBuses": {
-      "sales": 19.25,
-      "stock": 200
+      "sales": 20.75,
+      "stock": 187
     },
     "schoolBuses": {
-      "sales": 417.693526487707,
+      "sales": 405.168575275585,
       "stock": 5706
     }
   },
   "NH": {
     "transitBuses": {
-      "sales": 15,
-      "stock": 72
+      "sales": 11.5,
+      "stock": 69
     },
     "schoolBuses": {
-      "sales": 234.248034483117,
+      "sales": 227.223876775652,
       "stock": 3200
     }
   },
   "NJ": {
     "transitBuses": {
-      "sales": 228,
-      "stock": 1530
+      "sales": 264.75,
+      "stock": 1550
     },
     "schoolBuses": {
-      "sales": 1222.77474000187,
+      "sales": 1186.10863676891,
       "stock": 16704
     }
   },
   "NM": {
     "transitBuses": {
-      "sales": 20.5,
-      "stock": 253
+      "sales": 13.5,
+      "stock": 252
     },
     "schoolBuses": {
-      "sales": 146.91743912738,
+      "sales": 142.51197521523,
       "stock": 2007
     }
   },
   "NV": {
     "transitBuses": {
-      "sales": 52.5,
-      "stock": 463
+      "sales": 58.75,
+      "stock": 498
     },
     "schoolBuses": {
-      "sales": 212.506888782652,
-      "stock": 2903
+      "sales": 209.258989018077,
+      "stock": 2947
     }
   },
   "NY": {
     "transitBuses": {
-      "sales": 492,
-      "stock": 7029
+      "sales": 514.5,
+      "stock": 7046
     },
     "schoolBuses": {
-      "sales": 3338.03449138441,
+      "sales": 3237.94024405305,
       "stock": 45600
     }
   },
   "OH": {
     "transitBuses": {
-      "sales": 121.75,
-      "stock": 1626
+      "sales": 130,
+      "stock": 1586
     },
     "schoolBuses": {
-      "sales": 1063.04686148869,
-      "stock": 14522
+      "sales": 1051.54949724082,
+      "stock": 14809
     }
   },
   "OK": {
     "transitBuses": {
-      "sales": 17.5,
-      "stock": 206
+      "sales": 14.5,
+      "stock": 212
     },
     "schoolBuses": {
-      "sales": 41.1398110560974,
+      "sales": 39.906193358724,
       "stock": 562
     }
   },
   "OR": {
     "transitBuses": {
-      "sales": 86.5,
-      "stock": 999
+      "sales": 73.75,
+      "stock": 1016
     },
     "schoolBuses": {
-      "sales": 359.64393544236,
+      "sales": 348.859658312119,
       "stock": 4913
     }
   },
   "PA": {
     "transitBuses": {
-      "sales": 259.75,
-      "stock": 3095
+      "sales": 274.5,
+      "stock": 3080
     },
     "schoolBuses": {
-      "sales": 2257.19941977716,
-      "stock": 30835
+      "sales": 2149.75089668215,
+      "stock": 30275
     }
   },
   "RI": {
     "transitBuses": {
-      "sales": 14.25,
-      "stock": 272
+      "sales": 15,
+      "stock": 252
     },
     "schoolBuses": {
-      "sales": 123.785445722172,
+      "sales": 120.073617383634,
       "stock": 1691
     }
   },
   "SC": {
     "transitBuses": {
-      "sales": 32.5,
-      "stock": 280
+      "sales": 30.5,
+      "stock": 291
     },
     "schoolBuses": {
-      "sales": 507.2933996775,
-      "stock": 6930
+      "sales": 406.162679736479,
+      "stock": 5720
     }
   },
   "SD": {
     "transitBuses": {
-      "sales": 3.5,
+      "sales": 2.5,
       "stock": 50
     },
     "schoolBuses": {
-      "sales": 146.405021551948,
+      "sales": 142.014922984783,
       "stock": 2000
     }
   },
   "TN": {
     "transitBuses": {
-      "sales": 43,
-      "stock": 521
+      "sales": 46,
+      "stock": 513
     },
     "schoolBuses": {
-      "sales": 675.878781994568,
-      "stock": 9233
+      "sales": 582.261184237609,
+      "stock": 8200
     }
   },
   "TX": {
     "transitBuses": {
-      "sales": 298,
-      "stock": 3256
+      "sales": 154.5,
+      "stock": 3066
     },
     "schoolBuses": {
-      "sales": 3684.06275982244,
+      "sales": 3573.59251452758,
       "stock": 50327
     }
   },
   "UT": {
     "transitBuses": {
-      "sales": 44.5,
-      "stock": 528
+      "sales": 35,
+      "stock": 568
     },
     "schoolBuses": {
-      "sales": 240.54345040985,
-      "stock": 3286
+      "sales": 230.064175235348,
+      "stock": 3240
     }
   },
   "VA": {
     "transitBuses": {
-      "sales": 91.75,
-      "stock": 1266
+      "sales": 102.25,
+      "stock": 1256
     },
     "schoolBuses": {
-      "sales": 920.301965475545,
+      "sales": 892.705805882345,
       "stock": 12572
     }
   },
   "VT": {
     "transitBuses": {
-      "sales": 10,
-      "stock": 114
+      "sales": 7.75,
+      "stock": 106
     },
     "schoolBuses": {
-      "sales": 95.1632640087661,
+      "sales": 92.3096999401088,
       "stock": 1300
     }
   },
   "WA": {
     "transitBuses": {
-      "sales": 226.5,
-      "stock": 2971
+      "sales": 212.5,
+      "stock": 3113
     },
     "schoolBuses": {
-      "sales": 776.0198167361,
-      "stock": 10601
+      "sales": 2033.30982639641,
+      "stock": 28635.1572589915
     }
   },
   "WI": {
     "transitBuses": {
-      "sales": 58.75,
-      "stock": 993
+      "sales": 62.5,
+      "stock": 986
     },
     "schoolBuses": {
-      "sales": 772.652501240405,
-      "stock": 10555
+      "sales": 713.980025305995,
+      "stock": 10055
     }
   },
   "WV": {
     "transitBuses": {
-      "sales": 23.25,
-      "stock": 187
+      "sales": 17.75,
+      "stock": 188
     },
     "schoolBuses": {
-      "sales": 212.287281250324,
-      "stock": 2900
+      "sales": 272.100592438844,
+      "stock": 3832
     }
   },
   "WY": {
     "transitBuses": {
       "sales": 4.25,
-      "stock": 67
+      "stock": 59
     },
     "schoolBuses": {
-      "sales": 98.310971972133,
+      "sales": 95.3630207842816,
       "stock": 1343
     }
   }
