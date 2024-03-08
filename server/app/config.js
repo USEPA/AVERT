@@ -1,5 +1,5 @@
 module.exports = {
-  year: 2022,
+  year: 2023,
   regions: {
     CA: {
       rdf: "rdf_CA_2023.json",
