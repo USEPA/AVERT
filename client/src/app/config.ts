@@ -158,8 +158,8 @@ export type RegionId =
   | 'MIDW'
   | 'NCSC'
   | 'NE'
-  | 'NW'
   | 'NY'
+  | 'NW'
   | 'RM'
   | 'SE'
   | 'SW'
@@ -174,8 +174,8 @@ export type RegionName =
   | 'Midwest'
   | 'Carolinas'
   | 'New England'
-  | 'Northwest'
   | 'New York'
+  | 'Northwest'
   | 'Rocky Mountains'
   | 'Southeast'
   | 'Southwest'
@@ -335,18 +335,6 @@ export const regions: { [key in RegionId]: Region } = {
     },
     actualEmissions: {},
   },
-  NY: {
-    id: 'NY',
-    name: 'New York',
-    lineLoss: lineLoss.eastern,
-    offshoreWind: true,
-    percentageByState: {
-      NY: 100,
-    },
-    actualEmissions: {
-      so2: 1_262_108,
-    },
-  },
   NW: {
     id: 'NW',
     name: 'Northwest',
@@ -362,6 +350,18 @@ export const regions: { [key in RegionId]: Region } = {
       WY: 4.1165,
     },
     actualEmissions: {},
+  },
+  NY: {
+    id: 'NY',
+    name: 'New York',
+    lineLoss: lineLoss.eastern,
+    offshoreWind: true,
+    percentageByState: {
+      NY: 100,
+    },
+    actualEmissions: {
+      so2: 1_262_108,
+    },
   },
   RM: {
     id: 'RM',
