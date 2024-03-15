@@ -1,6 +1,6 @@
 {
   "name": "epa-avert",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "description": "EPA's Avoided Emissions and Generation Tool (AVERT) is a free tool that estimates the emissions benefits of energy efficiency and renewable energy policies and programs.",
   "homepage": "https://www.epa.gov/avert",
   "author": "USEPA (https://www.epa.gov)",
@@ -10,7 +10,7 @@
   ],
   "license": "CC0-1.0",
   "engines": {
-    "node": "18.x"
+    "node": "20.x"
   },
   "scripts": {
     "client": "cd client && npm start",
@@ -23,6 +23,6 @@
     "setup": "npm ci && npm run setup:client && npm run setup:server"
   },
   "devDependencies": {
-    "concurrently": "8.2.1"
+    "concurrently": "8.2.2"
   }
 }
