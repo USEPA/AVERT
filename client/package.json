@@ -18,8 +18,7 @@
     "build": "react-scripts build && ./sync-build-with-public.sh",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "cypress": "cypress open",
-    "prepare": "cd .. && husky install client/.husky"
+    "cypress": "cypress open"
   },
   "devDependencies": {
     "@testing-library/cypress": "10.0.1",
@@ -33,7 +32,7 @@
     "@types/stats-lite": "2.2.2",
     "cypress": "13.7.0",
     "eslint-plugin-cypress": "2.15.1",
-    "husky": "8.0.3",
+    "husky": "9.0.11",
     "lint-staged": "14.0.1",
     "prettier": "3.0.3",
     "react-scripts": "5.0.1",
