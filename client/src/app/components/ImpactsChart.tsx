@@ -5,16 +5,16 @@ import HighchartsReact from 'highcharts-react-official';
 // ---
 import { ErrorBoundary } from '@/app/components/ErrorBoundary';
 import { Tooltip } from '@/app/components/Tooltip';
-import { useTypedSelector } from '@/app/redux/index';
+import { useAppSelector } from '@/app/redux/index';
 import { useSelectedRegion, useSelectedStateRegions } from '@/app/hooks';
 
 HighchartsExporting(Highcharts);
 HighchartsAccessibility(Highcharts);
 
 function ImpactsChartContent() {
-  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
-  const hourlyEnergyProfile = useTypedSelector(
+  const geographicFocus = useAppSelector(({ geography }) => geography.focus);
+  const inputs = useAppSelector(({ impacts }) => impacts.inputs);
+  const hourlyEnergyProfile = useAppSelector(
     ({ impacts }) => impacts.hourlyEnergyProfile,
   );
 

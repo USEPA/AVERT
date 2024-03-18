@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 // ---
 import { ErrorBoundary } from '@/app/components/ErrorBoundary';
-import { useTypedSelector } from '@/app/redux/index';
+import { useAppSelector } from '@/app/redux/index';
 
 type CobraApiState = 'idle' | 'pending' | 'success' | 'failure';
 
@@ -30,10 +30,10 @@ type CobraApiData = {
 };
 
 function COBRAConnectionContent() {
-  const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
-  const cobraApiUrl = useTypedSelector(({ api }) => api.cobraApiUrl);
-  const cobraAppUrl = useTypedSelector(({ api }) => api.cobraAppUrl);
-  const cobraData = useTypedSelector(({ downloads }) => downloads.cobraData);
+  const activeStep = useAppSelector(({ panel }) => panel.activeStep);
+  const cobraApiUrl = useAppSelector(({ api }) => api.cobraApiUrl);
+  const cobraAppUrl = useAppSelector(({ api }) => api.cobraAppUrl);
+  const cobraData = useAppSelector(({ downloads }) => downloads.cobraData);
 
   const [cobraApiState, setCobraApiState] = useState<CobraApiState>('idle');
 

@@ -1,6 +1,6 @@
 import { ErrorBoundary } from '@/app/components/ErrorBoundary';
 import { Tooltip } from '@/app/components/Tooltip';
-import { useTypedSelector } from '@/app/redux/index';
+import { useAppSelector } from '@/app/redux/index';
 import type { SelectedRegionsTotalYearlyEVEnergyUsage } from '@/app/calculations/transportation';
 
 function calculatePercent(numerator: number, denominator: number) {
@@ -22,11 +22,9 @@ function formatNumber(number: number) {
 function EVSalesAndStockTableContent(props: { className?: string }) {
   const { className } = props;
 
-  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
-  const selectOptions = useTypedSelector(
-    ({ impacts }) => impacts.selectOptions,
-  );
-  const vehicleSalesAndStock = useTypedSelector(
+  const inputs = useAppSelector(({ impacts }) => impacts.inputs);
+  const selectOptions = useAppSelector(({ impacts }) => impacts.selectOptions);
+  const vehicleSalesAndStock = useAppSelector(
     ({ transportation }) => transportation.vehicleSalesAndStock,
   );
 
@@ -158,20 +156,18 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
 function EEREEVComparisonTableContent(props: { className?: string }) {
   const { className } = props;
 
-  const regionalLineLoss = useTypedSelector(
+  const regionalLineLoss = useAppSelector(
     ({ geography }) => geography.regionalLineLoss,
   );
-  const selectedRegionsTotalYearlyEVEnergyUsage = useTypedSelector(
+  const selectedRegionsTotalYearlyEVEnergyUsage = useAppSelector(
     ({ transportation }) =>
       transportation.selectedRegionsTotalYearlyEVEnergyUsage,
   );
-  const evDeploymentLocationHistoricalEERE = useTypedSelector(
+  const evDeploymentLocationHistoricalEERE = useAppSelector(
     ({ transportation }) => transportation.evDeploymentLocationHistoricalEERE,
   );
-  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
-  const selectOptions = useTypedSelector(
-    ({ impacts }) => impacts.selectOptions,
-  );
+  const inputs = useAppSelector(({ impacts }) => impacts.inputs);
+  const selectOptions = useAppSelector(({ impacts }) => impacts.selectOptions);
 
   const { evDeploymentLocation } = inputs;
   const { evDeploymentLocationOptions } = selectOptions;

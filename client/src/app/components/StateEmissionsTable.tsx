@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from 'react';
 import Select from 'react-select';
 // ---
 import { ErrorBoundary } from '@/app/components/ErrorBoundary';
-import { useTypedSelector } from '@/app/redux/index';
+import { useAppSelector } from '@/app/redux/index';
 import type { CombinedSectorsEmissionsData } from '@/app/calculations/emissions';
 import type { StateId } from '@/app/config';
 import { states as statesConfig } from '@/app/config';
@@ -74,7 +74,7 @@ function setAnnualStateEmissionsChanges(
 }
 
 function StateEmissionsTableContent() {
-  const combinedSectorsEmissionsData = useTypedSelector(
+  const combinedSectorsEmissionsData = useAppSelector(
     ({ results }) => results.combinedSectorsEmissionsData,
   );
 

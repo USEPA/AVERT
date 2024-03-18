@@ -1,8 +1,8 @@
 import { PanelTab } from '@/app/components/PanelTab';
-import { useTypedSelector } from '@/app/redux/index';
+import { useAppSelector } from '@/app/redux/index';
 
 export function PanelTabs() {
-  const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
+  const activeStep = useAppSelector(({ panel }) => panel.activeStep);
 
   return (
     <nav

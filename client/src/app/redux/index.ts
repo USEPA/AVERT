@@ -30,4 +30,4 @@ export const rootReducer = combineReducers({
 export type AppThunk = ThunkAction<void, RootState, unknown, Action<string>>;
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
-export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

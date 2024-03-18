@@ -1,6 +1,6 @@
 import { ErrorBoundary } from '@/app/components/ErrorBoundary';
 import { Tooltip } from '@/app/components/Tooltip';
-import { useTypedSelector } from '@/app/redux/index';
+import { useAppSelector } from '@/app/redux/index';
 import type { SelectedRegionsTotalYearlyEmissionChanges } from '@/app/calculations/transportation';
 import type { CombinedSectorsEmissionsData } from '@/app/calculations/emissions';
 
@@ -82,12 +82,12 @@ function setAnnualVehicleEmissionsChanges(options: {
 }
 
 function VehiclesEmissionsTableContent() {
-  const selectedRegionsTotalYearlyEmissionChanges = useTypedSelector(
+  const selectedRegionsTotalYearlyEmissionChanges = useAppSelector(
     ({ transportation }) =>
       transportation.selectedRegionsTotalYearlyEmissionChanges,
   );
-  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
-  const combinedSectorsEmissionsData = useTypedSelector(
+  const inputs = useAppSelector(({ impacts }) => impacts.inputs);
+  const combinedSectorsEmissionsData = useAppSelector(
     ({ results }) => results.combinedSectorsEmissionsData,
   );
 

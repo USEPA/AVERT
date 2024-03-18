@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 // —-
 import { ErrorBoundary } from '@/app/components/ErrorBoundary';
 import { Tooltip } from '@/app/components/Tooltip';
-import { useTypedSelector } from '@/app/redux/index';
+import { useAppSelector } from '@/app/redux/index';
 import type { EmissionsReplacements } from '@/app/redux/reducers/results';
 import type { CombinedSectorsEmissionsData } from '@/app/calculations/emissions';
 
@@ -167,11 +167,11 @@ function EmissionsReplacementTooltip(props: {
 }
 
 function PowerEmissionsTableContent() {
-  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
-  const combinedSectorsEmissionsData = useTypedSelector(
+  const inputs = useAppSelector(({ impacts }) => impacts.inputs);
+  const combinedSectorsEmissionsData = useAppSelector(
     ({ results }) => results.combinedSectorsEmissionsData,
   );
-  const emissionsReplacements = useTypedSelector(
+  const emissionsReplacements = useAppSelector(
     ({ results }) => results.emissionsReplacements,
   );
 

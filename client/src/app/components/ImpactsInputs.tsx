@@ -12,7 +12,7 @@ import {
   EEREEVComparisonTable,
 } from '@/app/components/EVTables';
 import { Tooltip } from '@/app/components/Tooltip';
-import { useTypedSelector } from '@/app/redux/index';
+import { useAppSelector } from '@/app/redux/index';
 import { displayModalDialog } from '@/app/redux/reducers/panel';
 import type {
   GeographicFocus,
@@ -128,15 +128,13 @@ function TransitBusesWarningText() {
 
 function ImpactsInputsContent() {
   const dispatch = useDispatch();
-  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const hourlyEnergyProfile = useTypedSelector(
+  const geographicFocus = useAppSelector(({ geography }) => geography.focus);
+  const hourlyEnergyProfile = useAppSelector(
     ({ impacts }) => impacts.hourlyEnergyProfile,
   );
-  const errors = useTypedSelector(({ impacts }) => impacts.errors);
-  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
-  const selectOptions = useTypedSelector(
-    ({ impacts }) => impacts.selectOptions,
-  );
+  const errors = useAppSelector(({ impacts }) => impacts.errors);
+  const inputs = useAppSelector(({ impacts }) => impacts.inputs);
+  const selectOptions = useAppSelector(({ impacts }) => impacts.selectOptions);
 
   const {
     constantMwh,

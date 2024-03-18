@@ -1,5 +1,5 @@
 import { ErrorBoundary } from '@/app/components/ErrorBoundary';
-import { useTypedSelector } from '@/app/redux/index';
+import { useAppSelector } from '@/app/redux/index';
 import { useSelectedRegion, useSelectedState } from '@/app/hooks';
 
 function convertToCSVString(data: { [key: string]: any }[]) {
@@ -13,9 +13,9 @@ function convertToCSVString(data: { [key: string]: any }[]) {
 }
 
 function DataDownloadContent() {
-  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const countyData = useTypedSelector(({ downloads }) => downloads.countyData);
-  const cobraData = useTypedSelector(({ downloads }) => downloads.cobraData);
+  const geographicFocus = useAppSelector(({ geography }) => geography.focus);
+  const countyData = useAppSelector(({ downloads }) => downloads.countyData);
+  const cobraData = useAppSelector(({ downloads }) => downloads.cobraData);
 
   const selectedRegionName = useSelectedRegion()?.name || '';
   const selectedStateName = useSelectedState()?.name || '';

@@ -25,7 +25,7 @@ import { MonthlyEmissionsCharts } from '@/app/components/MonthlyEmissionsCharts'
 import { COBRAConnection } from '@/app/components/COBRAConnection';
 import { DataDownload } from '@/app/components/DataDownload';
 import { modalLinkStyles } from '@/app/components/Tooltip';
-import { useTypedSelector } from '@/app/redux/index';
+import { useAppSelector } from '@/app/redux/index';
 import {
   setCountiesByRegion,
   selectGeography,
@@ -186,14 +186,14 @@ export function Panels() {
     dispatch(setHourlyEVChargingPercentages());
   }, [dispatch]);
 
-  const activeStep = useTypedSelector(({ panel }) => panel.activeStep);
-  const loading = useTypedSelector(({ panel }) => panel.loading);
-  const cobraApiUrl = useTypedSelector(({ api }) => api.cobraApiUrl);
-  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const hourlyEnergyProfile = useTypedSelector(
+  const activeStep = useAppSelector(({ panel }) => panel.activeStep);
+  const loading = useAppSelector(({ panel }) => panel.loading);
+  const cobraApiUrl = useAppSelector(({ api }) => api.cobraApiUrl);
+  const geographicFocus = useAppSelector(({ geography }) => geography.focus);
+  const hourlyEnergyProfile = useAppSelector(
     ({ impacts }) => impacts.hourlyEnergyProfile,
   );
-  const serverCalcError = useTypedSelector(
+  const serverCalcError = useAppSelector(
     ({ results }) => results.emissionsChanges.status === 'failure',
   );
 

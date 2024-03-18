@@ -6,7 +6,7 @@ import HighchartsReact from 'highcharts-react-official';
 import { useDispatch } from 'react-redux';
 // ---
 import { ErrorBoundary } from '@/app/components/ErrorBoundary';
-import { useTypedSelector } from '@/app/redux/index';
+import { useAppSelector } from '@/app/redux/index';
 import type {
   Aggregation,
   Source,
@@ -123,29 +123,29 @@ function setChartSeriesData(options: {
 function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
   const { pollutant, data } = props;
 
-  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const egusNeedingEmissionsReplacement = useTypedSelector(
+  const geographicFocus = useAppSelector(({ geography }) => geography.focus);
+  const egusNeedingEmissionsReplacement = useAppSelector(
     ({ results }) => results.egusNeedingEmissionsReplacement,
   );
-  const emissionsReplacements = useTypedSelector(
+  const emissionsReplacements = useAppSelector(
     ({ results }) => results.emissionsReplacements,
   );
-  const currentAggregation = useTypedSelector(
+  const currentAggregation = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.aggregation,
   );
-  const currentRegionId = useTypedSelector(
+  const currentRegionId = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.regionId,
   );
-  const currentStateId = useTypedSelector(
+  const currentStateId = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.stateId,
   );
-  const currentCountyName = useTypedSelector(
+  const currentCountyName = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.countyName,
   );
-  const currentSources = useTypedSelector(
+  const currentSources = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.sources,
   );
-  const currentUnit = useTypedSelector(
+  const currentUnit = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.unit,
   );
 
@@ -552,36 +552,36 @@ function setFilteredData(options: {
 
 function MonthlyEmissionsChartsContent() {
   const dispatch = useDispatch();
-  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
-  const combinedSectorsEmissionsData = useTypedSelector(
+  const geographicFocus = useAppSelector(({ geography }) => geography.focus);
+  const inputs = useAppSelector(({ impacts }) => impacts.inputs);
+  const combinedSectorsEmissionsData = useAppSelector(
     ({ results }) => results.combinedSectorsEmissionsData,
   );
-  const currentAggregation = useTypedSelector(
+  const currentAggregation = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.aggregation,
   );
-  const currentRegionId = useTypedSelector(
+  const currentRegionId = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.regionId,
   );
-  const currentStateId = useTypedSelector(
+  const currentStateId = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.stateId,
   );
-  const currentCountyName = useTypedSelector(
+  const currentCountyName = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.countyName,
   );
-  const currentPollutants = useTypedSelector(
+  const currentPollutants = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.pollutants,
   );
-  const currentSources = useTypedSelector(
+  const currentSources = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.sources,
   );
-  const currentUnit = useTypedSelector(
+  const currentUnit = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.unit,
   );
-  const availableStates = useTypedSelector(({ monthlyEmissions }) => {
+  const availableStates = useAppSelector(({ monthlyEmissions }) => {
     return Object.keys(monthlyEmissions.statesAndCounties).sort();
   });
-  const availableCounties = useTypedSelector(({ monthlyEmissions }) => {
+  const availableCounties = useAppSelector(({ monthlyEmissions }) => {
     return monthlyEmissions.statesAndCounties[currentStateId as StateId]?.sort(); // prettier-ignore
   });
 
