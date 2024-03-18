@@ -1,3 +1,5 @@
+export type EmptyObject = Record<string, never>;
+
 /**
  * Return an object, sorted alphabetically by it's keys
  */

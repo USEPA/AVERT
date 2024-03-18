@@ -5,6 +5,7 @@ import { Tooltip } from '@/app/components/Tooltip';
 import { useAppSelector } from '@/app/redux/index';
 import type { EmissionsReplacements } from '@/app/redux/reducers/results';
 import type { CombinedSectorsEmissionsData } from '@/app/calculations/emissions';
+import { type EmptyObject } from '@/app/utilities';
 
 type AnnualMonthlyData = ReturnType<typeof setAnnualMonthlyData>;
 
@@ -112,7 +113,7 @@ function setAnnualMonthlyData(
  */
 function applyEmissionsReplacement(options: {
   annualMonthlyData: AnnualMonthlyData;
-  emissionsReplacements: EmissionsReplacements | {};
+  emissionsReplacements: EmissionsReplacements | EmptyObject;
 }) {
   const { annualMonthlyData, emissionsReplacements } = options;
   const result = { ...annualMonthlyData };

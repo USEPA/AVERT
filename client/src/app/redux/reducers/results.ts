@@ -10,6 +10,7 @@ import type {
   EmissionsFlagsField,
   CombinedSectorsEmissionsData,
 } from '@/app/calculations/emissions';
+import { type EmptyObject } from '@/app/utilities';
 import type { RegionId } from '@/app/config';
 import { regions } from '@/app/config';
 
@@ -41,13 +42,13 @@ type Action =
 
 type State = {
   emissionsChanges:
-    | { status: 'idle'; data: {} }
-    | { status: 'pending'; data: {} }
+    | { status: 'idle'; data: EmptyObject }
+    | { status: 'pending'; data: EmptyObject }
     | { status: 'success'; data: EmissionsChanges }
-    | { status: 'failure'; data: {} };
+    | { status: 'failure'; data: EmptyObject };
   combinedSectorsEmissionsData: CombinedSectorsEmissionsData;
   egusNeedingEmissionsReplacement: EgusNeeingEmissionsReplacement;
-  emissionsReplacements: EmissionsReplacements | {};
+  emissionsReplacements: EmissionsReplacements | EmptyObject;
 };
 
 const initialState: State = {
@@ -226,7 +227,7 @@ export function fetchEmissionsChanges(): AppThunk {
         dispatch(setStatesAndCounties());
         dispatch(setDownloadData());
       })
-      .catch((err) => {
+      .catch((_err) => {
         dispatch({ type: 'results/FETCH_EMISSIONS_CHANGES_FAILURE' });
       });
   };

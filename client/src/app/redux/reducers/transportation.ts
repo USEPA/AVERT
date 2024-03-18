@@ -58,6 +58,7 @@ import {
   calculateSelectedRegionsEEREDefaultsAverages,
   calculateEVDeploymentLocationHistoricalEERE,
 } from '@/app/calculations/transportation';
+import { type EmptyObject } from '@/app/utilities';
 import type { MovesEmissionsRates, RegionId } from '@/app/config';
 /**
  * Excel: "CountyFIPS" sheet.
@@ -267,30 +268,58 @@ type Action =
     };
 
 type State = {
-  vmtTotalsByGeography: VMTTotalsByGeography | {};
-  vmtBillionsAndPercentages: VMTBillionsAndPercentages | {};
-  stateVMTPercentagesByRegion: StateVMTPercentagesByRegion | {};
-  vmtAllocationPerVehicle: VMTAllocationPerVehicle | {};
+  vmtTotalsByGeography: VMTTotalsByGeography | EmptyObject;
+  vmtBillionsAndPercentages: VMTBillionsAndPercentages | EmptyObject;
+  stateVMTPercentagesByRegion: StateVMTPercentagesByRegion | EmptyObject;
+  vmtAllocationPerVehicle: VMTAllocationPerVehicle | EmptyObject;
   nationalAverageLDVsVMTPerYear: NationalAverageLDVsVMTPerYear;
   monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
-  selectedRegionsStatesVMTPercentages: SelectedRegionsStatesVMTPercentages | {};
-  selectedRegionsVMTPercentagesPerVehicleType: SelectedRegionsVMTPercentagesPerVehicleType | {}; // prettier-ignore
-  selectedRegionsAverageVMTPerYear: SelectedRegionsAverageVMTPerYear | {};
-  selectedRegionsMonthlyVMTPerVehicleType: SelectedRegionsMonthlyVMTPerVehicleType | {}; // prettier-ignore
-  selectedRegionsEVEfficiencyPerVehicleType: SelectedRegionsEVEfficiencyPerVehicleType | {}; // prettier-ignore
+  selectedRegionsStatesVMTPercentages:
+    | SelectedRegionsStatesVMTPercentages
+    | EmptyObject;
+  selectedRegionsVMTPercentagesPerVehicleType:
+    | SelectedRegionsVMTPercentagesPerVehicleType
+    | EmptyObject;
+  selectedRegionsAverageVMTPerYear:
+    | SelectedRegionsAverageVMTPerYear
+    | EmptyObject;
+  selectedRegionsMonthlyVMTPerVehicleType:
+    | SelectedRegionsMonthlyVMTPerVehicleType
+    | EmptyObject;
+  selectedRegionsEVEfficiencyPerVehicleType:
+    | SelectedRegionsEVEfficiencyPerVehicleType
+    | EmptyObject;
   dailyStats: DailyStats;
   monthlyStats: MonthlyStats;
   vehiclesDisplaced: VehiclesDisplaced;
-  selectedRegionsMonthlyEVEnergyUsageGW: SelectedRegionsMonthlyEVEnergyUsageGW | {}; // prettier-ignore
-  selectedRegionsMonthlyEVEnergyUsageMW: SelectedRegionsMonthlyEVEnergyUsageMW | {}; // prettier-ignore
-  selectedRegionsTotalYearlyEVEnergyUsage: SelectedRegionsTotalYearlyEVEnergyUsage | {}; // prettier-ignore
-  selectedRegionsMonthlyDailyEVEnergyUsage: SelectedRegionsMonthlyDailyEVEnergyUsage | {}; // prettier-ignore
-  selectedRegionsMonthlyEmissionRates: SelectedRegionsMonthlyEmissionRates | {};
-  selectedRegionsMonthlyEmissionChanges: SelectedRegionsMonthlyEmissionChanges | {}; // prettier-ignore
-  selectedRegionsTotalMonthlyEmissionChanges: SelectedRegionsTotalMonthlyEmissionChanges | {}; // prettier-ignore
-  selectedRegionsTotalYearlyEmissionChanges: SelectedRegionsTotalYearlyEmissionChanges | {}; // prettier-ignore
-  vehicleEmissionChangesByGeography: VehicleEmissionChangesByGeography | {};
+  selectedRegionsMonthlyEVEnergyUsageGW:
+    | SelectedRegionsMonthlyEVEnergyUsageGW
+    | EmptyObject;
+  selectedRegionsMonthlyEVEnergyUsageMW:
+    | SelectedRegionsMonthlyEVEnergyUsageMW
+    | EmptyObject;
+  selectedRegionsTotalYearlyEVEnergyUsage:
+    | SelectedRegionsTotalYearlyEVEnergyUsage
+    | EmptyObject;
+  selectedRegionsMonthlyDailyEVEnergyUsage:
+    | SelectedRegionsMonthlyDailyEVEnergyUsage
+    | EmptyObject;
+  selectedRegionsMonthlyEmissionRates:
+    | SelectedRegionsMonthlyEmissionRates
+    | EmptyObject;
+  selectedRegionsMonthlyEmissionChanges:
+    | SelectedRegionsMonthlyEmissionChanges
+    | EmptyObject;
+  selectedRegionsTotalMonthlyEmissionChanges:
+    | SelectedRegionsTotalMonthlyEmissionChanges
+    | EmptyObject;
+  selectedRegionsTotalYearlyEmissionChanges:
+    | SelectedRegionsTotalYearlyEmissionChanges
+    | EmptyObject;
+  vehicleEmissionChangesByGeography:
+    | VehicleEmissionChangesByGeography
+    | EmptyObject;
   vehicleSalesAndStock: VehicleSalesAndStock;
   selectedRegionsEEREDefaultsAverages: SelectedRegionsEEREDefaultsAverages;
   evDeploymentLocationHistoricalEERE: EVDeploymentLocationHistoricalEERE;

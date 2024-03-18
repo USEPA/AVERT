@@ -15,6 +15,7 @@ import {
   setDailyAndMonthlyStats,
   setSelectedRegionsEEREDefaultsAverages,
 } from '@/app/redux/reducers/transportation';
+import { type EmptyObject } from '@/app/utilities';
 import {
   RdfDataKey,
   RegionId,
@@ -185,7 +186,7 @@ type GeographyState = {
   focus: GeographicFocus;
   regions: { [key in RegionId]: RegionState };
   states: { [key in StateId]: StateState };
-  countiesByGeography: CountiesByGeography | {};
+  countiesByGeography: CountiesByGeography | EmptyObject;
   regionSelect: {
     stateId: StateId | '';
     stateRegionIds: RegionId[];

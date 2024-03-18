@@ -3,7 +3,7 @@ import type {
   SelectedRegionsTotalMonthlyEmissionChanges,
   VehicleEmissionChangesByGeography,
 } from '@/app/calculations/transportation';
-import { sortObjectByKeys } from '@/app/utilities';
+import { type EmptyObject, sortObjectByKeys } from '@/app/utilities';
 import type { RegionId, StateId } from '@/app/config';
 /**
  * Annual point-source data from the National Emissions Inventory (NEI) for
@@ -477,8 +477,12 @@ export function calculateAggregatedEmissionsData(egus: EmissionsChanges) {
  */
 export function createCombinedSectorsEmissionsData(options: {
   aggregatedEmissionsData: AggregatedEmissionsData;
-  selectedRegionsTotalMonthlyEmissionChanges: SelectedRegionsTotalMonthlyEmissionChanges | {}; // prettier-ignore
-  vehicleEmissionChangesByGeography: VehicleEmissionChangesByGeography | {};
+  selectedRegionsTotalMonthlyEmissionChanges:
+    | SelectedRegionsTotalMonthlyEmissionChanges
+    | EmptyObject;
+  vehicleEmissionChangesByGeography:
+    | VehicleEmissionChangesByGeography
+    | EmptyObject;
 }) {
   const {
     aggregatedEmissionsData,

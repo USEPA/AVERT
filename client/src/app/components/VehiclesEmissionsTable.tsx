@@ -3,6 +3,7 @@ import { Tooltip } from '@/app/components/Tooltip';
 import { useAppSelector } from '@/app/redux/index';
 import type { SelectedRegionsTotalYearlyEmissionChanges } from '@/app/calculations/transportation';
 import type { CombinedSectorsEmissionsData } from '@/app/calculations/emissions';
+import { type EmptyObject } from '@/app/utilities';
 
 /**
  * Round number to the nearest 10 and conditionally display '—' if number is
@@ -49,7 +50,9 @@ function setAnnualPowerEmissionsChanges(options: {
  * pollutant.
  */
 function setAnnualVehicleEmissionsChanges(options: {
-  selectedRegionsTotalYearlyEmissionChanges: SelectedRegionsTotalYearlyEmissionChanges | {} // prettier-ignore
+  selectedRegionsTotalYearlyEmissionChanges:
+    | SelectedRegionsTotalYearlyEmissionChanges
+    | EmptyObject;
 }) {
   const { selectedRegionsTotalYearlyEmissionChanges } = options;
 

@@ -9,6 +9,7 @@ import type {
   HourlyEVChargingPercentages,
   SelectedRegionsMonthlyDailyEVEnergyUsage,
 } from '@/app/calculations/transportation';
+import { type EmptyObject } from '@/app/utilities';
 import type { RegionId, RegionName } from '@/app/config';
 /**
  * EV hourly limits by region
@@ -439,7 +440,9 @@ export function calculateHourlyEVLoad(options: {
   regionalLoad: RegionalLoadData[];
   dailyStats: DailyStats;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
-  selectedRegionsMonthlyDailyEVEnergyUsage: SelectedRegionsMonthlyDailyEVEnergyUsage | {}; // prettier-ignore
+  selectedRegionsMonthlyDailyEVEnergyUsage:
+    | SelectedRegionsMonthlyDailyEVEnergyUsage
+    | EmptyObject;
 }) {
   const {
     regionId,

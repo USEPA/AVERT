@@ -5,7 +5,7 @@ import type {
   RegionalScalingFactors,
   SelectedGeographyRegions,
 } from '@/app/calculations/geography';
-import { sortObjectByKeys } from '@/app/utilities';
+import { type EmptyObject, sortObjectByKeys } from '@/app/utilities';
 import type {
   CountyFips,
   MovesEmissionsRates,
@@ -416,7 +416,7 @@ export function calculateVMTBillionsAndPercentages(options: {
  * which is data from the first table in the "RegionStateAllocate" sheet).
  */
 export function calculateStateVMTPercentagesByRegion(options: {
-  vmtBillionsAndPercentages: VMTBillionsAndPercentages | {};
+  vmtBillionsAndPercentages: VMTBillionsAndPercentages | EmptyObject;
 }) {
   const { vmtBillionsAndPercentages } = options;
 
@@ -743,7 +743,7 @@ export function calculateHourlyEVChargingPercentages(options: {
  */
 export function calculateSelectedRegionsStatesVMTPercentages(options: {
   selectedGeographyRegionIds: RegionId[];
-  vmtBillionsAndPercentages: VMTBillionsAndPercentages | {};
+  vmtBillionsAndPercentages: VMTBillionsAndPercentages | EmptyObject;
 }) {
   const { selectedGeographyRegionIds, vmtBillionsAndPercentages } = options;
 
@@ -817,8 +817,10 @@ export function calculateSelectedRegionsStatesVMTPercentages(options: {
  * Excel: Second table in the "RegionStateAllocate" sheet (H169 and J169)
  */
 export function calculateSelectedRegionsVMTPercentagesPerVehicleType(options: {
-  selectedRegionsStatesVMTPercentages: SelectedRegionsStatesVMTPercentages | {};
-  vmtAllocationPerVehicle: VMTAllocationPerVehicle | {};
+  selectedRegionsStatesVMTPercentages:
+    | SelectedRegionsStatesVMTPercentages
+    | EmptyObject;
+  vmtAllocationPerVehicle: VMTAllocationPerVehicle | EmptyObject;
 }) {
   const { selectedRegionsStatesVMTPercentages, vmtAllocationPerVehicle } =
     options;
@@ -886,7 +888,9 @@ export function calculateSelectedRegionsVMTPercentagesPerVehicleType(options: {
 export function calculateSelectedRegionsAverageVMTPerYear(options: {
   nationalAverageLDVsVMTPerYear: NationalAverageLDVsVMTPerYear;
   nationalAverageBusVMTPerYear: NationalAverageBusVMTPerYear;
-  selectedRegionsVMTPercentagesPerVehicleType: SelectedRegionsVMTPercentagesPerVehicleType | {}; // prettier-ignore
+  selectedRegionsVMTPercentagesPerVehicleType:
+    | SelectedRegionsVMTPercentagesPerVehicleType
+    | EmptyObject;
 }) {
   const {
     nationalAverageLDVsVMTPerYear,
@@ -950,7 +954,9 @@ export function calculateSelectedRegionsAverageVMTPerYear(options: {
  * "Library" sheet (E232:P237).
  */
 export function calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
-  selectedRegionsAverageVMTPerYear: SelectedRegionsAverageVMTPerYear | {};
+  selectedRegionsAverageVMTPerYear:
+    | SelectedRegionsAverageVMTPerYear
+    | EmptyObject;
   monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
 }) {
   const { selectedRegionsAverageVMTPerYear, monthlyVMTTotalsAndPercentages } =
@@ -1277,8 +1283,12 @@ export function calculateVehiclesDisplaced(options: {
  * transportation sector" table in the "Library" sheet (G297:R304).
  */
 export function calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
-  selectedRegionsMonthlyVMTPerVehicleType: SelectedRegionsMonthlyVMTPerVehicleType | {}; // prettier-ignore
-  selectedRegionsEVEfficiencyPerVehicleType: SelectedRegionsEVEfficiencyPerVehicleType | {}; // prettier-ignore
+  selectedRegionsMonthlyVMTPerVehicleType:
+    | SelectedRegionsMonthlyVMTPerVehicleType
+    | EmptyObject;
+  selectedRegionsEVEfficiencyPerVehicleType:
+    | SelectedRegionsEVEfficiencyPerVehicleType
+    | EmptyObject;
   vehiclesDisplaced: VehiclesDisplaced;
 }) {
   const {
@@ -1382,7 +1392,9 @@ export function calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
  * table) in the "CalculateEERE" sheet (T49:W61).
  */
 export function calculateSelectedRegionsMonthlyEVEnergyUsageMW(options: {
-  selectedRegionsMonthlyEVEnergyUsageGW: SelectedRegionsMonthlyEVEnergyUsageGW | {}; // prettier-ignore
+  selectedRegionsMonthlyEVEnergyUsageGW:
+    | SelectedRegionsMonthlyEVEnergyUsageGW
+    | EmptyObject;
 }) {
   const { selectedRegionsMonthlyEVEnergyUsageGW } = options;
 
@@ -1460,7 +1472,9 @@ export function calculateSelectedRegionsMonthlyEVEnergyUsageMW(options: {
  * transportation sector" table in the "Library" sheet (S309).
  */
 export function calculateSelectedRegionsTotalYearlyEVEnergyUsage(options: {
-  selectedRegionsMonthlyEVEnergyUsageGW: SelectedRegionsMonthlyEVEnergyUsageGW | {}; // prettier-ignore
+  selectedRegionsMonthlyEVEnergyUsageGW:
+    | SelectedRegionsMonthlyEVEnergyUsageGW
+    | EmptyObject;
 }) {
   const { selectedRegionsMonthlyEVEnergyUsageGW } = options;
 
@@ -1502,7 +1516,9 @@ export function calculateSelectedRegionsTotalYearlyEVEnergyUsage(options: {
  * table) in the "CalculateEERE" sheet (P35:X47).
  */
 export function calculateSelectedRegionsMonthlyDailyEVEnergyUsage(options: {
-  selectedRegionsMonthlyEVEnergyUsageMW: SelectedRegionsMonthlyEVEnergyUsageMW | {}; // prettier-ignore
+  selectedRegionsMonthlyEVEnergyUsageMW:
+    | SelectedRegionsMonthlyEVEnergyUsageMW
+    | EmptyObject;
   monthlyStats: MonthlyStats;
 }) {
   const { selectedRegionsMonthlyEVEnergyUsageMW, monthlyStats } = options;
@@ -1600,7 +1616,9 @@ export function calculateSelectedRegionsMonthlyDailyEVEnergyUsage(options: {
  */
 export function calculateSelectedRegionsMonthlyEmissionRates(options: {
   movesEmissionsRates: MovesEmissionsRates;
-  selectedRegionsStatesVMTPercentages: SelectedRegionsStatesVMTPercentages | {};
+  selectedRegionsStatesVMTPercentages:
+    | SelectedRegionsStatesVMTPercentages
+    | EmptyObject;
   evDeploymentLocation: string;
   evModelYear: string;
   iceReplacementVehicle: string;
@@ -1732,11 +1750,15 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
  */
 export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
   geographicFocus: GeographicFocus;
-  stateVMTPercentagesByRegion: StateVMTPercentagesByRegion | {};
+  stateVMTPercentagesByRegion: StateVMTPercentagesByRegion | EmptyObject;
   selectedStateId: StateId | '';
-  selectedRegionsMonthlyVMTPerVehicleType: SelectedRegionsMonthlyVMTPerVehicleType | {}; // prettier-ignore
+  selectedRegionsMonthlyVMTPerVehicleType:
+    | SelectedRegionsMonthlyVMTPerVehicleType
+    | EmptyObject;
   vehiclesDisplaced: VehiclesDisplaced;
-  selectedRegionsMonthlyEmissionRates: SelectedRegionsMonthlyEmissionRates | {};
+  selectedRegionsMonthlyEmissionRates:
+    | SelectedRegionsMonthlyEmissionRates
+    | EmptyObject;
 }) {
   const {
     geographicFocus,
@@ -1888,7 +1910,9 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
  * (F363:R392).
  */
 export function calculateSelectedRegionsTotalMonthlyEmissionChanges(options: {
-  selectedRegionsMonthlyEmissionChanges: SelectedRegionsMonthlyEmissionChanges | {}; // prettier-ignore
+  selectedRegionsMonthlyEmissionChanges:
+    | SelectedRegionsMonthlyEmissionChanges
+    | EmptyObject;
 }) {
   const { selectedRegionsMonthlyEmissionChanges } = options;
 
@@ -1977,7 +2001,9 @@ export function calculateSelectedRegionsTotalMonthlyEmissionChanges(options: {
  * transportation sector" table in the "Library" sheet (S363:S392).
  */
 export function calculateSelectedRegionsTotalYearlyEmissionChanges(options: {
-  selectedRegionsTotalMonthlyEmissionChanges: SelectedRegionsTotalMonthlyEmissionChanges | {}; // prettier-ignore
+  selectedRegionsTotalMonthlyEmissionChanges:
+    | SelectedRegionsTotalMonthlyEmissionChanges
+    | EmptyObject;
 }) {
   const { selectedRegionsTotalMonthlyEmissionChanges } = options;
 
@@ -2051,10 +2077,12 @@ export function calculateVehicleEmissionChangesByGeography(options: {
   geographicFocus: GeographicFocus;
   selectedRegionId: RegionId | '';
   selectedStateId: StateId | '';
-  countiesByGeography: CountiesByGeography | {};
+  countiesByGeography: CountiesByGeography | EmptyObject;
   selectedGeographyRegionIds: RegionId[];
-  vmtTotalsByGeography: VMTTotalsByGeography | {};
-  selectedRegionsTotalYearlyEmissionChanges: SelectedRegionsTotalYearlyEmissionChanges | {}; // prettier-ignore
+  vmtTotalsByGeography: VMTTotalsByGeography | EmptyObject;
+  selectedRegionsTotalYearlyEmissionChanges:
+    | SelectedRegionsTotalYearlyEmissionChanges
+    | EmptyObject;
   evDeploymentLocation: string;
 }) {
   const {
@@ -2242,7 +2270,7 @@ export function calculateVehicleSalesAndStock(options: {
   geographicFocus: GeographicFocus;
   selectedRegionName: string;
   evDeploymentLocations: string[];
-  vmtAllocationPerVehicle: VMTAllocationPerVehicle | {};
+  vmtAllocationPerVehicle: VMTAllocationPerVehicle | EmptyObject;
 }) {
   const {
     countyFips,
