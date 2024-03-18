@@ -38,12 +38,6 @@ type ChartData = {
   unit: string;
 };
 
-type ChartConfig = Highcharts.Options & {
-  title: { text: string; useHTML: boolean };
-  yAxis: { title: { text: string } };
-  series: ChartData[];
-};
-
 /**
  * Creates monthly power sector emissions data for either emissions changes or
  * percentage changes, for display in the monthly charts.
@@ -277,16 +271,16 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
     geographicFocus === 'regions'
       ? `${selectedRegion?.name} Region`
       : geographicFocus === 'states'
-      ? selectedStateRegions.length === 1
-        ? `${regions[selectedStateRegions[0].id]?.name} Region`
-        : currentRegionId === ''
-        ? '' // multiple regions but a region has not yet been selected
-        : currentRegionId === 'ALL'
-        ? `${selectedStateRegions
-            .map((region) => regions[region.id]?.name)
-            .join(', ')} Regions`
-        : `${regions[currentRegionId as RegionId]?.name} Region`
-      : '';
+        ? selectedStateRegions.length === 1
+          ? `${regions[selectedStateRegions[0].id]?.name} Region`
+          : currentRegionId === ''
+            ? '' // multiple regions but a region has not yet been selected
+            : currentRegionId === 'ALL'
+              ? `${selectedStateRegions
+                  .map((region) => regions[region.id]?.name)
+                  .join(', ')} Regions`
+              : `${regions[currentRegionId as RegionId]?.name} Region`
+        : '';
 
   const stateChartTitle =
     currentStateId === ''
@@ -302,10 +296,10 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
     currentAggregation === 'region'
       ? regionChartTitle
       : currentAggregation === 'state'
-      ? stateChartTitle
-      : currentAggregation === 'county'
-      ? countyChartTitle
-      : '';
+        ? stateChartTitle
+        : currentAggregation === 'county'
+          ? countyChartTitle
+          : '';
 
   function formatTitle(pollutant: string) {
     return `<tspan class='font-sans-2xs text-base-darker'>
@@ -359,10 +353,9 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
           maximumFractionDigits: 2,
         });
 
-        const suffix =
-          currentUnit === 'emissions'
-            ? ` ${(this.series.options as any).unit}`
-            : '%';
+        const { options } = this.series;
+        const unit = (options as typeof options & { unit: string }).unit;
+        const suffix = currentUnit === 'emissions' ? ` ${unit}` : '%';
 
         return `<strong>${dataPoint}</strong>${suffix}`;
       },
@@ -447,7 +440,7 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
       .set('vocs', <>VOC</>)
       .set('nh3', <>NH<sub>2</sub></>);
 
-  const chartConfig = new Map<Pollutant, ChartConfig>()
+  const chartConfig = new Map<Pollutant, object>()
     .set('so2', so2Config)
     .set('nox', noxConfig)
     .set('co2', co2Config)
@@ -492,7 +485,7 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
       <HighchartsReact
         highcharts={Highcharts}
         options={chartConfig.get(pollutant)}
-        callback={(_chart: any) => {
+        callback={(_chart: Highcharts.ChartCallbackFunction) => {
           // as this entire react app is ultimately served in an iframe
           // on another page, this document has a click handler that sends
           // the document's height to other window, which can then set the
@@ -532,8 +525,8 @@ function setFilteredData(options: {
     regionId === 'ALL'
       ? total
       : Boolean(regions?.[regionId])
-      ? regions[regionId]
-      : emptyResult;
+        ? regions[regionId]
+        : emptyResult;
 
   const stateResult = Boolean(states?.[stateId])
     ? states[stateId]
@@ -547,10 +540,10 @@ function setFilteredData(options: {
     aggregation === 'region'
       ? regionResult
       : aggregation === 'state'
-      ? stateResult
-      : aggregation === 'county'
-      ? countyResult
-      : emptyResult;
+        ? stateResult
+        : aggregation === 'county'
+          ? countyResult
+          : emptyResult;
 
   return result;
 }
@@ -605,8 +598,8 @@ function MonthlyEmissionsChartsContent() {
     geographicFocus === 'regions' && selectedRegion
       ? selectedRegion.id
       : geographicFocus === 'states' && selectedStateRegions.length === 1
-      ? selectedStateRegions[0].id
-      : (currentRegionId as RegionId);
+        ? selectedStateRegions[0].id
+        : (currentRegionId as RegionId);
 
   const data = setFilteredData({
     combinedSectorsEmissionsData,
@@ -1191,9 +1184,9 @@ function MonthlyEmissionsChartsContent() {
                     currentPollutants.length === 1
                       ? 'padding-1 grid-col-12'
                       : currentPollutants.length === 2 ||
-                        currentPollutants.length === 4
-                      ? 'padding-1 tablet:grid-col-6'
-                      : 'padding-1 tablet:grid-col-6 desktop:grid-col-4';
+                          currentPollutants.length === 4
+                        ? 'padding-1 tablet:grid-col-6'
+                        : 'padding-1 tablet:grid-col-6 desktop:grid-col-4';
 
                   /**
                    * NOTE: The HighchartsReact (inside the Chart component)

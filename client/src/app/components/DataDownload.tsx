@@ -2,7 +2,7 @@ import { ErrorBoundary } from '@/app/components/ErrorBoundary';
 import { useAppSelector } from '@/app/redux/index';
 import { useSelectedRegion, useSelectedState } from '@/app/hooks';
 
-function convertToCSVString(data: { [key: string]: any }[]) {
+function convertToCSVString(data: { [key: string]: unknown }[]) {
   const keys = Object.keys(data[0] || {});
   const rows = data.map((row) => {
     return keys
