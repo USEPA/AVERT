@@ -23,7 +23,6 @@ import { StateEmissionsTable } from '@/app/components/StateEmissionsTable';
 import { MonthlyEmissionsCharts } from '@/app/components/MonthlyEmissionsCharts';
 import { COBRAConnection } from '@/app/components/COBRAConnection';
 import { DataDownload } from '@/app/components/DataDownload';
-import { modalLinkStyles } from '@/app/components/Tooltip';
 import { useAppDispatch, useAppSelector } from '@/app/redux/index';
 import {
   setCountiesByRegion,
@@ -38,6 +37,7 @@ import {
   useSelectedState,
   useSelectedStateRegions,
 } from '@/app/hooks';
+import { modalLinkStyles } from '@/app/utilities';
 
 const Container = styled('div')<{ overlay: boolean }>`
   ${({ overlay }) => {

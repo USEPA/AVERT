@@ -12,7 +12,7 @@ import { states as statesConfig } from '@/app/config';
  */
 function formatNumber(number: number) {
   const result = Math.round(number / 10) * 10;
-  return (result === -0 ? 0 : result).toLocaleString();
+  return (result + 0).toLocaleString();
 }
 
 /**

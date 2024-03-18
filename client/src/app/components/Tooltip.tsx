@@ -1,24 +1,10 @@
 /** @jsxImportSource @emotion/react */
 
 import type { ReactNode } from 'react';
-import { css } from '@emotion/react';
 // ---
 import { useAppDispatch } from '@/app/redux/index';
 import { displayModalDialog } from '@/app/redux/reducers/panel';
-import icons from '@/app/icons.svg';
-
-export const modalLinkStyles = css`
-  left: 1px;
-  bottom: -3px;
-  border-radius: 50%;
-  background-image: url(${icons});
-  background-size: 400px 200px;
-  background-position: -10px -10px;
-  /* hide text */
-  text-indent: 400%;
-  white-space: nowrap;
-  overflow: hidden;
-`;
+import { modalLinkStyles } from '@/app/utilities';
 
 export function Tooltip(props: { children: ReactNode; reversed?: boolean }) {
   const { children, reversed } = props;

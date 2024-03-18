@@ -38,6 +38,12 @@ type ChartData = {
   unit: string;
 };
 
+type ChartConfig = Highcharts.Options & {
+  title: { text: string; useHTML: boolean };
+  yAxis: { title: { text: string } };
+  series: ChartData[];
+};
+
 /**
  * Creates monthly power sector emissions data for either emissions changes or
  * percentage changes, for display in the monthly charts.
@@ -441,7 +447,7 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
       .set('vocs', <>VOC</>)
       .set('nh3', <>NH<sub>2</sub></>);
 
-  const chartConfig = new Map<Pollutant, Object>()
+  const chartConfig = new Map<Pollutant, ChartConfig>()
     .set('so2', so2Config)
     .set('nox', noxConfig)
     .set('co2', co2Config)
