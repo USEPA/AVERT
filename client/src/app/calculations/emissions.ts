@@ -1,9 +1,9 @@
 import type { RDFJSON } from '@/app/redux/reducers/geography';
-import { sortObjectByKeys } from '@/app/calculations/utilities';
 import type {
   SelectedRegionsTotalMonthlyEmissionChanges,
   VehicleEmissionChangesByGeography,
 } from '@/app/calculations/transportation';
+import { sortObjectByKeys } from '@/app/utilities';
 import type { RegionId, StateId } from '@/app/config';
 /**
  * Annual point-source data from the National Emissions Inventory (NEI) for

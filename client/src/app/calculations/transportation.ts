@@ -5,7 +5,7 @@ import type {
   RegionalScalingFactors,
   SelectedGeographyRegions,
 } from '@/app/calculations/geography';
-import { sortObjectByKeys } from '@/app/calculations/utilities';
+import { sortObjectByKeys } from '@/app/utilities';
 import type {
   CountyFips,
   MovesEmissionsRates,
