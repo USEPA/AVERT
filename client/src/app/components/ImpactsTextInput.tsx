@@ -1,14 +1,14 @@
 import type { ReactNode } from 'react';
 import { useDispatch } from 'react-redux';
 // ---
-import { Tooltip } from 'app/components/Tooltip';
-import { useTypedSelector } from 'app/redux/index';
-import { calculateHourlyEnergyProfile } from 'app/redux/reducers/impacts';
+import { Tooltip } from '@/app/components/Tooltip';
+import { useTypedSelector } from '@/app/redux/index';
+import { calculateHourlyEnergyProfile } from '@/app/redux/reducers/impacts';
 import type {
   EnergyEfficiencyFieldName,
   RenewableEnergyFieldName,
   ElectricVehiclesFieldName,
-} from 'app/redux/reducers/impacts';
+} from '@/app/redux/reducers/impacts';
 
 export function ImpactsTextInput(props: {
   className?: string;

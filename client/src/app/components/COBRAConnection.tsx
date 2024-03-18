@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 // ---
-import { ErrorBoundary } from 'app/components/ErrorBoundary';
-import { useTypedSelector } from 'app/redux/index';
+import { ErrorBoundary } from '@/app/components/ErrorBoundary';
+import { useTypedSelector } from '@/app/redux/index';
 
 type CobraApiState = 'idle' | 'pending' | 'success' | 'failure';
 

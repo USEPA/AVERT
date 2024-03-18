@@ -5,13 +5,13 @@ import HighchartsAccessibility from 'highcharts/modules/accessibility';
 import HighchartsReact from 'highcharts-react-official';
 import { useDispatch } from 'react-redux';
 // ---
-import { ErrorBoundary } from 'app/components/ErrorBoundary';
-import { useTypedSelector } from 'app/redux/index';
+import { ErrorBoundary } from '@/app/components/ErrorBoundary';
+import { useTypedSelector } from '@/app/redux/index';
 import type {
   Aggregation,
   Source,
   Unit,
-} from 'app/redux/reducers/monthlyEmissions';
+} from '@/app/redux/reducers/monthlyEmissions';
 import {
   setMonthlyEmissionsAggregation,
   setMonthlyEmissionsRegionId,
@@ -20,14 +20,14 @@ import {
   setMonthlyEmissionsPollutant,
   setMonthlyEmissionsSource,
   setMonthlyEmissionsUnit,
-} from 'app/redux/reducers/monthlyEmissions';
+} from '@/app/redux/reducers/monthlyEmissions';
 import type {
   EmissionsData,
   CombinedSectorsEmissionsData,
-} from 'app/calculations/emissions';
-import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
-import type { Pollutant, RegionId, StateId } from 'app/config';
-import { regions, states } from 'app/config';
+} from '@/app/calculations/emissions';
+import { useSelectedRegion, useSelectedStateRegions } from '@/app/hooks';
+import type { Pollutant, RegionId, StateId } from '@/app/config';
+import { regions, states } from '@/app/config';
 
 HighchartsExporting(Highcharts);
 HighchartsAccessibility(Highcharts);

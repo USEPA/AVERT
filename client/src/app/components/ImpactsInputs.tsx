@@ -4,20 +4,20 @@ import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // ---
-import { ErrorBoundary } from 'app/components/ErrorBoundary';
-import { ImpactsTextInput } from 'app/components/ImpactsTextInput';
-import { ImpactsSelectInput } from 'app/components/ImpactsSelectInput';
+import { ErrorBoundary } from '@/app/components/ErrorBoundary';
+import { ImpactsTextInput } from '@/app/components/ImpactsTextInput';
+import { ImpactsSelectInput } from '@/app/components/ImpactsSelectInput';
 import {
   EVSalesAndStockTable,
   EEREEVComparisonTable,
-} from 'app/components/EVTables';
-import { Tooltip } from 'app/components/Tooltip';
-import { useTypedSelector } from 'app/redux/index';
-import { displayModalDialog } from 'app/redux/reducers/panel';
+} from '@/app/components/EVTables';
+import { Tooltip } from '@/app/components/Tooltip';
+import { useTypedSelector } from '@/app/redux/index';
+import { displayModalDialog } from '@/app/redux/reducers/panel';
 import type {
   GeographicFocus,
   RegionState,
-} from 'app/redux/reducers/geography';
+} from '@/app/redux/reducers/geography';
 import {
   updateEEAnnualGwh,
   updateEEConstantMw,
@@ -43,9 +43,9 @@ import {
   updateEVModelYear,
   updateEVICEReplacementVehicle,
   calculateHourlyEnergyProfile,
-} from 'app/redux/reducers/impacts';
-import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
-import { batteryStorageDuration } from 'app/config';
+} from '@/app/redux/reducers/impacts';
+import { useSelectedRegion, useSelectedStateRegions } from '@/app/hooks';
+import { batteryStorageDuration } from '@/app/config';
 
 const inputsGroupStyles = css`
   ul {

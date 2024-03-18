@@ -1,11 +1,11 @@
 import { Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 // ---
-import { ErrorBoundary } from 'app/components/ErrorBoundary';
-import { selectState } from 'app/redux/reducers/geography';
-import { useSelectedState } from 'app/hooks';
-import type { StateId } from 'app/config';
-import { states } from 'app/config';
+import { ErrorBoundary } from '@/app/components/ErrorBoundary';
+import { selectState } from '@/app/redux/reducers/geography';
+import { useSelectedState } from '@/app/hooks';
+import type { StateId } from '@/app/config';
+import { states } from '@/app/config';
 
 function StatesListContent() {
   const dispatch = useDispatch();

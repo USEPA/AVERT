@@ -1,6 +1,6 @@
-import { ErrorBoundary } from 'app/components/ErrorBoundary';
-import { useTypedSelector } from 'app/redux/index';
-import { useSelectedRegion, useSelectedState } from 'app/hooks';
+import { ErrorBoundary } from '@/app/components/ErrorBoundary';
+import { useTypedSelector } from '@/app/redux/index';
+import { useSelectedRegion, useSelectedState } from '@/app/hooks';
 
 function convertToCSVString(data: { [key: string]: any }[]) {
   const keys = Object.keys(data[0] || {});

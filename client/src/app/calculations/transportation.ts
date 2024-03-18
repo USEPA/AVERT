@@ -1,11 +1,11 @@
-import { RegionalLoadData } from 'app/redux/reducers/geography';
-import type { GeographicFocus } from 'app/redux/reducers/geography';
+import { RegionalLoadData } from '@/app/redux/reducers/geography';
+import type { GeographicFocus } from '@/app/redux/reducers/geography';
 import type {
   CountiesByGeography,
   RegionalScalingFactors,
   SelectedGeographyRegions,
-} from 'app/calculations/geography';
-import { sortObjectByKeys } from 'app/calculations/utilities';
+} from '@/app/calculations/geography';
+import { sortObjectByKeys } from '@/app/calculations/utilities';
 import type {
   CountyFips,
   MovesEmissionsRates,
@@ -20,7 +20,7 @@ import type {
   StateEereAverages,
   RegionId,
   StateId,
-} from 'app/config';
+} from '@/app/config';
 import {
   percentageHybridEVMilesDrivenOnElectricity,
   percentageAdditionalEnergyConsumedFactor,
@@ -28,7 +28,7 @@ import {
   percentageLDVsDisplacedByEVs,
   regions,
   states,
-} from 'app/config';
+} from '@/app/config';
 
 const abridgedVehicleTypes = [
   'cars',
@@ -158,10 +158,13 @@ export function calculateVMTTotalsByGeography(options: {
 
   type VMTPerVehicleType = { [vehicleType in AbridgedVehicleType]: number };
 
-  const regionIds = Object.values(regions).reduce((object, { id, name }) => {
-    object[name] = id;
-    return object;
-  }, {} as { [regionName: string]: RegionId });
+  const regionIds = Object.values(regions).reduce(
+    (object, { id, name }) => {
+      object[name] = id;
+      return object;
+    },
+    {} as { [regionName: string]: RegionId },
+  );
 
   const result = countyFips.reduce(
     (object, data) => {
@@ -264,10 +267,13 @@ export function calculateVMTBillionsAndPercentages(options: {
     },
   );
 
-  const regionIds = Object.values(regions).reduce((object, { id, name }) => {
-    object[name] = id;
-    return object;
-  }, {} as { [regionName: string]: RegionId });
+  const regionIds = Object.values(regions).reduce(
+    (object, { id, name }) => {
+      object[name] = id;
+      return object;
+    },
+    {} as { [regionName: string]: RegionId },
+  );
 
   // populate vmt totals data for each state, organized by region, and initialize
   // allRegions object for storing totals of all region data in the state

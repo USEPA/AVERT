@@ -4,8 +4,8 @@ import type { ReactNode } from 'react';
 import { css } from '@emotion/react';
 import { useDispatch } from 'react-redux';
 // ---
-import { displayModalDialog } from 'app/redux/reducers/panel';
-import icons from 'app/icons.svg';
+import { displayModalDialog } from '@/app/redux/reducers/panel';
+import icons from '@/app/icons.svg';
 
 export const modalLinkStyles = css`
   left: 1px;

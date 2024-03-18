@@ -1,7 +1,7 @@
-import { ErrorBoundary } from 'app/components/ErrorBoundary';
-import { Tooltip } from 'app/components/Tooltip';
-import { useTypedSelector } from 'app/redux/index';
-import type { SelectedRegionsTotalYearlyEVEnergyUsage } from 'app/calculations/transportation';
+import { ErrorBoundary } from '@/app/components/ErrorBoundary';
+import { Tooltip } from '@/app/components/Tooltip';
+import { useTypedSelector } from '@/app/redux/index';
+import type { SelectedRegionsTotalYearlyEVEnergyUsage } from '@/app/calculations/transportation';
 
 function calculatePercent(numerator: number, denominator: number) {
   return denominator !== 0

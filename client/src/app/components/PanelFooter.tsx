@@ -4,17 +4,17 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
 // ---
-import { useTypedSelector } from 'app/redux/index';
-import { setActiveStep } from 'app/redux/reducers/panel';
-import { resetImpactsInputs } from 'app/redux/reducers/impacts';
-import { fetchRegionsData } from 'app/redux/reducers/geography';
+import { useTypedSelector } from '@/app/redux/index';
+import { setActiveStep } from '@/app/redux/reducers/panel';
+import { resetImpactsInputs } from '@/app/redux/reducers/impacts';
+import { fetchRegionsData } from '@/app/redux/reducers/geography';
 import {
   fetchEmissionsChanges,
   resetResults,
-} from 'app/redux/reducers/results';
-import { resetMonthlyEmissions } from 'app/redux/reducers/monthlyEmissions';
-import { useSelectedRegion, useSelectedState } from 'app/hooks';
-import icons from 'app/icons.svg';
+} from '@/app/redux/reducers/results';
+import { resetMonthlyEmissions } from '@/app/redux/reducers/monthlyEmissions';
+import { useSelectedRegion, useSelectedState } from '@/app/hooks';
+import icons from '@/app/icons.svg';
 
 const iconStyles = css`
   content: '';

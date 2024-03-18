@@ -1,20 +1,20 @@
-import { AppThunk } from 'app/redux/index';
-import { setEVDeploymentLocationOptions } from 'app/redux/reducers/impacts';
+import { AppThunk } from '@/app/redux/index';
+import { setEVDeploymentLocationOptions } from '@/app/redux/reducers/impacts';
 import type {
   CountiesByGeography,
   RegionalScalingFactors,
-} from 'app/calculations/geography';
+} from '@/app/calculations/geography';
 import {
   organizeCountiesByGeography,
   calculateRegionalScalingFactors,
   getSelectedGeographyRegions,
-} from 'app/calculations/geography';
+} from '@/app/calculations/geography';
 import {
   setSelectedGeographyVMTData,
   setEVEfficiency,
   setDailyAndMonthlyStats,
   setSelectedRegionsEEREDefaultsAverages,
-} from 'app/redux/reducers/transportation';
+} from '@/app/redux/reducers/transportation';
 import {
   RdfDataKey,
   RegionId,
@@ -23,7 +23,7 @@ import {
   StateId,
   State,
   states,
-} from 'app/config';
+} from '@/app/config';
 
 export type GeographicFocus = 'regions' | 'states';
 

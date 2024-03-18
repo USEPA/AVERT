@@ -1,7 +1,7 @@
 import { legacy_createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 // ---
-import { rootReducer } from 'app/redux/index';
+import { rootReducer } from '@/app/redux/index';
 
 declare global {
   interface Window {

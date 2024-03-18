@@ -1,8 +1,8 @@
-import { ErrorBoundary } from 'app/components/ErrorBoundary';
-import { Tooltip } from 'app/components/Tooltip';
-import { useTypedSelector } from 'app/redux/index';
-import type { SelectedRegionsTotalYearlyEmissionChanges } from 'app/calculations/transportation';
-import type { CombinedSectorsEmissionsData } from 'app/calculations/emissions';
+import { ErrorBoundary } from '@/app/components/ErrorBoundary';
+import { Tooltip } from '@/app/components/Tooltip';
+import { useTypedSelector } from '@/app/redux/index';
+import type { SelectedRegionsTotalYearlyEmissionChanges } from '@/app/calculations/transportation';
+import type { CombinedSectorsEmissionsData } from '@/app/calculations/emissions';
 
 /**
  * Round number to the nearest 10 and conditionally display '—' if number is

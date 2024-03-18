@@ -1,9 +1,9 @@
-import { AppThunk } from 'app/redux/index';
+import { AppThunk } from '@/app/redux/index';
 import {
   RegionalLoadData,
   RegionState,
   StateState,
-} from 'app/redux/reducers/geography';
+} from '@/app/redux/reducers/geography';
 import {
   setEVEfficiency,
   setVehiclesDisplaced,
@@ -11,7 +11,7 @@ import {
   setMonthlyEmissionRates,
   setVehicleSalesAndStock,
   setEVDeploymentLocationHistoricalEERE,
-} from 'app/redux/reducers/transportation';
+} from '@/app/redux/reducers/transportation';
 import type {
   HourlyRenewableEnergyProfiles,
   HourlyEnergyStorageData,
@@ -20,7 +20,7 @@ import type {
   HourlyTopPercentReduction,
   HourlyImpacts,
   HourlyChangesValidation,
-} from 'app/calculations/impacts';
+} from '@/app/calculations/impacts';
 import {
   calculateHourlyRenewableEnergyProfiles,
   calculateHourlyEnergyStorageData,
@@ -29,15 +29,15 @@ import {
   calculateHourlyTopPercentReduction,
   calculateHourlyImpacts,
   calculateHourlyChangesValidation,
-} from 'app/calculations/impacts';
-import type { RegionId, StateId } from 'app/config';
+} from '@/app/calculations/impacts';
+import type { RegionId, StateId } from '@/app/config';
 import {
   maxAnnualDischargeCyclesOptions,
   evModelYearOptions,
   iceReplacementVehicleOptions,
   batteryRoundTripEfficiency,
   batteryStorageDuration,
-} from 'app/config';
+} from '@/app/config';
 
 type SelectOption = { id: string; name: string };
 

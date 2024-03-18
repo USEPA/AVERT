@@ -1,15 +1,15 @@
-import type { RDFJSON } from 'app/redux/reducers/geography';
-import { sortObjectByKeys } from 'app/calculations/utilities';
+import type { RDFJSON } from '@/app/redux/reducers/geography';
+import { sortObjectByKeys } from '@/app/calculations/utilities';
 import type {
   SelectedRegionsTotalMonthlyEmissionChanges,
   VehicleEmissionChangesByGeography,
-} from 'app/calculations/transportation';
-import type { RegionId, StateId } from 'app/config';
+} from '@/app/calculations/transportation';
+import type { RegionId, StateId } from '@/app/config';
 /**
  * Annual point-source data from the National Emissions Inventory (NEI) for
  * every electric generating unit (EGU), organized by AVERT region
  */
-// import neiData from 'app/data/annual-emission-factors.json';
+// import neiData from '@/app/data/annual-emission-factors.json';
 
 const emissionsFields = ["generation", "so2", "nox", "co2", "pm25", "vocs", "nh3"] as const; // prettier-ignore
 
@@ -24,7 +24,7 @@ export type CombinedSectorsEmissionsData = ReturnType<
 type EguData = EmissionsChanges[string];
 
 export type EmissionsData = {
-  [field in typeof emissionsFields[number]]: {
+  [field in (typeof emissionsFields)[number]]: {
     power: {
       annual: { original: number; postEere: number };
       monthly: EguData['data'][keyof EguData['data']];
@@ -158,7 +158,7 @@ function calculateEmissionsChanges(options: {
   const neiFields = ['pm25', 'vocs', 'nh3'];
 
   type OzoneSeasonDataField =
-    | (RDFDataField & typeof dataFields[number])
+    | (RDFDataField & (typeof dataFields)[number])
     | 'heat';
 
   const regionalNeiEgus = neiData.regions.find((region) => {
@@ -351,10 +351,13 @@ function calculateEmissionsChanges(options: {
  * Creates initial (empty) monthly power sector data.
  */
 function createEmptyMonthlyPowerData() {
-  const result = [...Array(12)].reduce((object, _item, index) => {
-    object[index + 1] = { original: 0, postEere: 0 };
-    return object;
-  }, {} as EguData['data'][keyof EguData['data']]);
+  const result = [...Array(12)].reduce(
+    (object, _item, index) => {
+      object[index + 1] = { original: 0, postEere: 0 };
+      return object;
+    },
+    {} as EguData['data'][keyof EguData['data']],
+  );
 
   return result;
 }
@@ -363,10 +366,13 @@ function createEmptyMonthlyPowerData() {
  * Creates initial (empty) monthly transportation sector data.
  */
 function createEmptyMonthlyVehicleData() {
-  const result = [...Array(12)].reduce((object, _item, index) => {
-    object[index + 1] = 0;
-    return object;
-  }, {} as { [month: number]: number });
+  const result = [...Array(12)].reduce(
+    (object, _item, index) => {
+      object[index + 1] = 0;
+      return object;
+    },
+    {} as { [month: number]: number },
+  );
 
   return result;
 }

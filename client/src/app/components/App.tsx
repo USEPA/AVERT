@@ -2,10 +2,10 @@ import '@uswds/uswds';
 import '@uswds/uswds/css/uswds.css';
 import Highcharts from 'highcharts';
 // ---
-import { ErrorBoundary } from 'app/components/ErrorBoundary';
-import { PanelTabs } from 'app/components/PanelTabs';
-import { Panels } from 'app/components/Panels';
-import { ModalDialog } from 'app/components/ModalDialog';
+import { ErrorBoundary } from '@/app/components/ErrorBoundary';
+import { PanelTabs } from '@/app/components/PanelTabs';
+import { Panels } from '@/app/components/Panels';
+import { ModalDialog } from '@/app/components/ModalDialog';
 
 /* Apply a theme like Highcharts v10 */
 const fontFamily = '"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif'; // prettier-ignore

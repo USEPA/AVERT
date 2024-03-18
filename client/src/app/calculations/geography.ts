@@ -2,13 +2,13 @@ import type {
   GeographicFocus,
   RegionState,
   StateState,
-} from 'app/redux/reducers/geography';
-import { sortObjectByKeys } from 'app/calculations/utilities';
-import type { RegionId, RegionName, StateId } from 'app/config';
+} from '@/app/redux/reducers/geography';
+import { sortObjectByKeys } from '@/app/calculations/utilities';
+import type { RegionId, RegionName, StateId } from '@/app/config';
 /**
  * Excel: "CountyFIPS" sheet.
  */
-import countyFips from 'app/data/county-fips.json';
+import countyFips from '@/app/data/county-fips.json';
 
 export type CountiesByGeography = ReturnType<
   typeof organizeCountiesByGeography

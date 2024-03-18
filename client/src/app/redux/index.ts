@@ -2,14 +2,14 @@ import { Action, combineReducers } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
 // ---
-import api from 'app/redux/reducers/api';
-import panel from 'app/redux/reducers/panel';
-import geography from 'app/redux/reducers/geography';
-import transportation from 'app/redux/reducers/transportation';
-import impacts from 'app/redux/reducers/impacts';
-import results from 'app/redux/reducers/results';
-import downloads from 'app/redux/reducers/downloads';
-import monthlyEmissions from 'app/redux/reducers/monthlyEmissions';
+import api from '@/app/redux/reducers/api';
+import panel from '@/app/redux/reducers/panel';
+import geography from '@/app/redux/reducers/geography';
+import transportation from '@/app/redux/reducers/transportation';
+import impacts from '@/app/redux/reducers/impacts';
+import results from '@/app/redux/reducers/results';
+import downloads from '@/app/redux/reducers/downloads';
+import monthlyEmissions from '@/app/redux/reducers/monthlyEmissions';
 
 export const rootReducer = combineReducers({
   api,

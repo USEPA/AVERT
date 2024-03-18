@@ -1,52 +1,52 @@
 /**
  * Excel: "CountyFIPS" sheet.
  */
-import countyFips from 'app/data/county-fips.json';
+import countyFips from '@/app/data/county-fips.json';
 /**
  * Excel: Second table in the "RegionStateAllocate" sheet (B118:E167)
  */
-import vmtAllocationAndRegisteredVehicles from 'app/data/vmt-allocation-and-registered-vehicles.json';
+import vmtAllocationAndRegisteredVehicles from '@/app/data/vmt-allocation-and-registered-vehicles.json';
 /**
  * Excel: "Table B. View charging profiles or set a manual charging profile
  * for Weekdays" table in the "EV_Detail" sheet (C23:H47), which comes from
  * "Table 9: Default EV load profiles and related values from EVI-Pro Lite"
  * table in the "Library" sheet).
  */
-import evChargingProfiles from 'app/data/ev-charging-profiles-hourly-data.json';
+import evChargingProfiles from '@/app/data/ev-charging-profiles-hourly-data.json';
 /**
  * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E179:E180).
  */
-import nationalAverageVMTBusPerYear from 'app/data/national-average-bus-vmt-per-year.json';
+import nationalAverageVMTBusPerYear from '@/app/data/national-average-bus-vmt-per-year.json';
 /**
  * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
  * (E194:J200).
  */
-import evEfficiencyByModelYear from 'app/data/ev-efficiency-by-model-year.json';
+import evEfficiencyByModelYear from '@/app/data/ev-efficiency-by-model-year.json';
 /**
  * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
  * Lite" table in the "Library" sheet (B432:C445)
  */
-import regionAverageTemperatures from 'app/data/region-average-temperature.json';
+import regionAverageTemperatures from '@/app/data/region-average-temperature.json';
 /**
  * Excel: "Table 11: LDV Sales and Stock" table in the "Library" sheet
  * (B485:C535).
  */
-import stateLightDutyVehiclesSales from 'app/data/state-light-duty-vehicles-sales.json';
+import stateLightDutyVehiclesSales from '@/app/data/state-light-duty-vehicles-sales.json';
 /**
  * Excel: "Table 12: Transit and School Bus Sales and Stock" table in the
  * "Library" sheet (B546:F596).
  */
-import stateBusSalesAndStock from 'app/data/state-bus-sales-and-stock.json';
+import stateBusSalesAndStock from '@/app/data/state-bus-sales-and-stock.json';
 /**
  * Excel: "Table 13: Historical renewable and energy efficiency addition data"
  * table in the "Library" sheet (B606:E619).
  */
-import regionEereAverages from 'app/data/region-eere-averages.json';
+import regionEereAverages from '@/app/data/region-eere-averages.json';
 /**
  * Excel: "Table 13: Historical renewable and energy efficiency addition data"
  * table in the "Library" sheet (B626:E674).
  */
-import stateEereAverages from 'app/data/state-eere-averages.json';
+import stateEereAverages from '@/app/data/state-eere-averages.json';
 
 export type CountyFips = typeof countyFips;
 

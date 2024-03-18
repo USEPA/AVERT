@@ -3,19 +3,19 @@ import { percentile } from 'stats-lite';
 import type {
   RegionalLoadData,
   RegionState,
-} from 'app/redux/reducers/geography';
+} from '@/app/redux/reducers/geography';
 import type {
   DailyStats,
   HourlyEVChargingPercentages,
   SelectedRegionsMonthlyDailyEVEnergyUsage,
-} from 'app/calculations/transportation';
-import type { RegionId, RegionName } from 'app/config';
+} from '@/app/calculations/transportation';
+import type { RegionId, RegionName } from '@/app/config';
 /**
  * EV hourly limits by region
  *
  * (NOTE: not in Excel file, but sent by Pat via email 02/21/23)
  */
-import regionEvHourlyLimits from 'app/data/region-ev-hourly-limits.json';
+import regionEvHourlyLimits from '@/app/data/region-ev-hourly-limits.json';
 
 export type HourlyRenewableEnergyProfiles = ReturnType<
   typeof calculateHourlyRenewableEnergyProfiles

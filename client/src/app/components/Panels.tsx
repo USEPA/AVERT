@@ -7,38 +7,38 @@ import { useDispatch } from 'react-redux';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 // ---
-import { LoadingIcon } from 'app/components/LoadingIcon';
-import { PanelFooter } from 'app/components/PanelFooter';
-import { RegionsList } from 'app/components/RegionsList';
-import { RegionsMap } from 'app/components/RegionsMap';
-import { StatesList } from 'app/components/StatesList';
-import { StatesMap } from 'app/components/StatesMap';
-import { UnitConversion } from 'app/components/UnitConversion';
-import { ImpactsInputs } from 'app/components/ImpactsInputs';
-import { ImpactsChart } from 'app/components/ImpactsChart';
-import { ImpactsMessages } from 'app/components/ImpactsMessages';
-import { ResultsImpactsInputs } from 'app/components/ResultsImpactsInputs';
-import { PowerEmissionsTable } from 'app/components/PowerEmissionsTable';
-import { VehiclesEmissionsTable } from 'app/components/VehiclesEmissionsTable';
-import { StateEmissionsTable } from 'app/components/StateEmissionsTable';
-import { MonthlyEmissionsCharts } from 'app/components/MonthlyEmissionsCharts';
-import { COBRAConnection } from 'app/components/COBRAConnection';
-import { DataDownload } from 'app/components/DataDownload';
-import { modalLinkStyles } from 'app/components/Tooltip';
-import { useTypedSelector } from 'app/redux/index';
+import { LoadingIcon } from '@/app/components/LoadingIcon';
+import { PanelFooter } from '@/app/components/PanelFooter';
+import { RegionsList } from '@/app/components/RegionsList';
+import { RegionsMap } from '@/app/components/RegionsMap';
+import { StatesList } from '@/app/components/StatesList';
+import { StatesMap } from '@/app/components/StatesMap';
+import { UnitConversion } from '@/app/components/UnitConversion';
+import { ImpactsInputs } from '@/app/components/ImpactsInputs';
+import { ImpactsChart } from '@/app/components/ImpactsChart';
+import { ImpactsMessages } from '@/app/components/ImpactsMessages';
+import { ResultsImpactsInputs } from '@/app/components/ResultsImpactsInputs';
+import { PowerEmissionsTable } from '@/app/components/PowerEmissionsTable';
+import { VehiclesEmissionsTable } from '@/app/components/VehiclesEmissionsTable';
+import { StateEmissionsTable } from '@/app/components/StateEmissionsTable';
+import { MonthlyEmissionsCharts } from '@/app/components/MonthlyEmissionsCharts';
+import { COBRAConnection } from '@/app/components/COBRAConnection';
+import { DataDownload } from '@/app/components/DataDownload';
+import { modalLinkStyles } from '@/app/components/Tooltip';
+import { useTypedSelector } from '@/app/redux/index';
 import {
   setCountiesByRegion,
   selectGeography,
-} from 'app/redux/reducers/geography';
+} from '@/app/redux/reducers/geography';
 import {
   setVMTData,
   setHourlyEVChargingPercentages,
-} from 'app/redux/reducers/transportation';
+} from '@/app/redux/reducers/transportation';
 import {
   useSelectedRegion,
   useSelectedState,
   useSelectedStateRegions,
-} from 'app/hooks';
+} from '@/app/hooks';
 
 const Container = styled('div')<{ overlay: boolean }>`
   ${({ overlay }) => {

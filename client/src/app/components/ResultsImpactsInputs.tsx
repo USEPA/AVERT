@@ -1,5 +1,5 @@
-import { ErrorBoundary } from 'app/components/ErrorBoundary';
-import { useTypedSelector } from 'app/redux/index';
+import { ErrorBoundary } from '@/app/components/ErrorBoundary';
+import { useTypedSelector } from '@/app/redux/index';
 
 /** Boolean check if provided input value exists or is not zero */
 function inputExists(value: string) {

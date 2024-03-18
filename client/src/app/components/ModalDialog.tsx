@@ -3,8 +3,8 @@ import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useDispatch } from 'react-redux';
 // ---
-import { useTypedSelector } from 'app/redux/index';
-import { resetModalDialog } from 'app/redux/reducers/panel';
+import { useTypedSelector } from '@/app/redux/index';
+import { resetModalDialog } from '@/app/redux/reducers/panel';
 
 export function ModalDialog() {
   const dispatch = useDispatch();

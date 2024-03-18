@@ -1,8 +1,8 @@
 // reducers
-import { useTypedSelector } from 'app/redux/index';
-import { RegionState } from 'app/redux/reducers/geography';
+import { useTypedSelector } from '@/app/redux/index';
+import { RegionState } from '@/app/redux/reducers/geography';
 // config
-import { RegionId, StateId } from 'app/config';
+import { RegionId, StateId } from '@/app/config';
 
 function useSelectedRegion() {
   return useTypedSelector(({ geography }) => {

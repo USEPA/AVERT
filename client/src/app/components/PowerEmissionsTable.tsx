@@ -1,10 +1,10 @@
 import { ReactNode } from 'react';
 // —-
-import { ErrorBoundary } from 'app/components/ErrorBoundary';
-import { Tooltip } from 'app/components/Tooltip';
-import { useTypedSelector } from 'app/redux/index';
-import type { EmissionsReplacements } from 'app/redux/reducers/results';
-import type { CombinedSectorsEmissionsData } from 'app/calculations/emissions';
+import { ErrorBoundary } from '@/app/components/ErrorBoundary';
+import { Tooltip } from '@/app/components/Tooltip';
+import { useTypedSelector } from '@/app/redux/index';
+import type { EmissionsReplacements } from '@/app/redux/reducers/results';
+import type { CombinedSectorsEmissionsData } from '@/app/calculations/emissions';
 
 type AnnualMonthlyData = ReturnType<typeof setAnnualMonthlyData>;
 

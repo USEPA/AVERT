@@ -1,11 +1,11 @@
 import { Fragment, useEffect, useState } from 'react';
 import Select from 'react-select';
 // ---
-import { ErrorBoundary } from 'app/components/ErrorBoundary';
-import { useTypedSelector } from 'app/redux/index';
-import type { CombinedSectorsEmissionsData } from 'app/calculations/emissions';
-import type { StateId } from 'app/config';
-import { states as statesConfig } from 'app/config';
+import { ErrorBoundary } from '@/app/components/ErrorBoundary';
+import { useTypedSelector } from '@/app/redux/index';
+import type { CombinedSectorsEmissionsData } from '@/app/calculations/emissions';
+import type { StateId } from '@/app/config';
+import { states as statesConfig } from '@/app/config';
 
 /**
  * Round number to the nearest 10 and conditionally format resulting -0 to 0.
