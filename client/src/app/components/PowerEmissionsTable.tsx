@@ -260,7 +260,7 @@ function PowerEmissionsTableContent() {
                 <th scope="row">
                   <span className="padding-left-105">
                     Generation <small>(MWh)</small>&nbsp;
-                    {emissionsReplacements.hasOwnProperty('generation') && (
+                    {Object.hasOwn(emissionsReplacements, 'generation') && (
                       <EmissionsReplacementTooltip field="generation" />
                     )}
                   </span>
@@ -286,7 +286,7 @@ function PowerEmissionsTableContent() {
                 <th scope="row">
                   <span className="padding-left-105">
                     SO<sub>2</sub> <small>(lb)</small>&nbsp;
-                    {emissionsReplacements.hasOwnProperty('so2') && (
+                    {Object.hasOwn(emissionsReplacements, 'so2') && (
                       <EmissionsReplacementTooltip field="so2" />
                     )}
                   </span>
@@ -306,7 +306,7 @@ function PowerEmissionsTableContent() {
                 <th scope="row">
                   <span className="padding-left-105">
                     NO<sub>X</sub> <small>(lb)</small>&nbsp;
-                    {emissionsReplacements.hasOwnProperty('nox') && (
+                    {Object.hasOwn(emissionsReplacements, 'nox') && (
                       <EmissionsReplacementTooltip field="nox" />
                     )}
                   </span>
@@ -349,7 +349,7 @@ function PowerEmissionsTableContent() {
                 <th scope="row">
                   <span className="padding-left-105">
                     CO<sub>2</sub> <small>(tons)</small>&nbsp;
-                    {emissionsReplacements.hasOwnProperty('co2') && (
+                    {Object.hasOwn(emissionsReplacements, 'co2') && (
                       <EmissionsReplacementTooltip field="co2" />
                     )}
                   </span>

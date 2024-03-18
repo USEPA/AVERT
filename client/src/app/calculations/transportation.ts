@@ -1086,7 +1086,7 @@ export function calculateSelectedRegionsEVEfficiencyPerVehicleType(options: {
       Object.entries(evEfficiency).forEach(([type, data]) => {
         const vehicleType = type as keyof typeof evEfficiency;
 
-        if (object[regionId].hasOwnProperty(vehicleType)) {
+        if (Object.hasOwn(object[regionId], vehicleType)) {
           const regionAverageTemperature = regionAverageTemperatures[regionId];
 
           /**
@@ -2069,7 +2069,7 @@ export function calculateSelectedRegionsTotalYearlyEmissionChanges(options: {
  * for the selected geography.
  *
  * Excel: County level data calculations in "From vehicles" column in the table
- * in the "11_VehicleCty" sheet (column H) – we just roll those county level
+ * in the "11_VehicleCty" sheet (column H) – we just roll those county level
  * values up to the state, region, and total levels in this same function too,
  * as they're used at those aggregate levels as well.
  */

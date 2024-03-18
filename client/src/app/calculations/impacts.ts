@@ -471,9 +471,9 @@ export function calculateHourlyEVLoad(options: {
 
   const result = regionalLoad.map((data) => {
     if (
-      !data.hasOwnProperty('hour') &&
-      !data.hasOwnProperty('day') &&
-      !data.hasOwnProperty('month')
+      !Object.hasOwn(data, 'hour') &&
+      !Object.hasOwn(data, 'day') &&
+      !Object.hasOwn(data, 'month')
     ) {
       return 0;
     }
