@@ -1,7 +1,12 @@
-import { Action, combineReducers } from 'redux';
-import { ThunkAction } from 'redux-thunk';
-import { useSelector, TypedUseSelectorHook } from 'react-redux';
+import { type Action, combineReducers } from 'redux';
+import {
+  type TypedUseSelectorHook,
+  useDispatch,
+  useSelector,
+} from 'react-redux';
+import { type ThunkAction } from 'redux-thunk';
 // ---
+import { type RootState, type AppDispatch } from '@/app/redux/store';
 import api from '@/app/redux/reducers/api';
 import panel from '@/app/redux/reducers/panel';
 import geography from '@/app/redux/reducers/geography';
@@ -22,8 +27,7 @@ export const rootReducer = combineReducers({
   monthlyEmissions,
 });
 
-type RootState = ReturnType<typeof rootReducer>;
-
 export type AppThunk = ThunkAction<void, RootState, unknown, Action<string>>;
 
+export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
