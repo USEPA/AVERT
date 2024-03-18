@@ -663,16 +663,17 @@ export function calculateMonthlyVMTTotalsAndPercentages(options: {
         data.vehicleType === 'Passenger Car'
           ? 'cars'
           : data.vehicleType === 'Passenger Truck'
-          ? 'trucks'
-          : data.vehicleType === 'Transit Bus' && data.fuelType === 'Diesel Fuel' // prettier-ignore
-          ? 'transitBusesDiesel'
-          : data.vehicleType === 'Transit Bus' && data.fuelType === 'Compressed Natural Gas (CNG)' // prettier-ignore
-          ? 'transitBusesCNG'
-          : data.vehicleType === 'Transit Bus' && data.fuelType === 'Gasoline'
-          ? 'transitBusesGasoline'
-          : data.vehicleType === 'School Bus'
-          ? 'schoolBuses'
-          : null; // NOTE: fallback (generalVehicleType should never actually be null)
+            ? 'trucks'
+            : data.vehicleType === 'Transit Bus' && data.fuelType === 'Diesel Fuel' // prettier-ignore
+              ? 'transitBusesDiesel'
+              : data.vehicleType === 'Transit Bus' && data.fuelType === 'Compressed Natural Gas (CNG)' // prettier-ignore
+                ? 'transitBusesCNG'
+                : data.vehicleType === 'Transit Bus' &&
+                    data.fuelType === 'Gasoline'
+                  ? 'transitBusesGasoline'
+                  : data.vehicleType === 'School Bus'
+                    ? 'schoolBuses'
+                    : null; // NOTE: fallback (generalVehicleType should never actually be null)
 
       if (generalVehicleType) {
         result[month][generalVehicleType].total += data.VMT;
@@ -1100,9 +1101,9 @@ export function calculateSelectedRegionsEVEfficiencyPerVehicleType(options: {
             regionAverageTemperature === 68
               ? 1
               : regionAverageTemperature === 50 ||
-                regionAverageTemperature === 86
-              ? 1 + percentageAdditionalEnergyConsumedFactor
-              : 1 + percentageAdditionalEnergyConsumedFactor / 2;
+                  regionAverageTemperature === 86
+                ? 1 + percentageAdditionalEnergyConsumedFactor
+                : 1 + percentageAdditionalEnergyConsumedFactor / 2;
 
           object[regionId][vehicleType] = data * climateAdjustmentFactor;
         }
@@ -1681,27 +1682,28 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
           data.vehicleType === 'Passenger Car'
             ? 'cars'
             : data.vehicleType === 'Passenger Truck'
-            ? 'trucks'
-            : data.vehicleType === 'Transit Bus' && data.fuelType === 'Diesel Fuel' // prettier-ignore
-            ? 'transitBusesDiesel'
-            : data.vehicleType === 'Transit Bus' && data.fuelType === 'Compressed Natural Gas (CNG)' // prettier-ignore
-            ? 'transitBusesCNG'
-            : data.vehicleType === 'Transit Bus' && data.fuelType === 'Gasoline'
-            ? 'transitBusesGasoline'
-            : data.vehicleType === 'School Bus'
-            ? 'schoolBuses'
-            : null; // NOTE: fallback (generalVehicleType should never actually be null)
+              ? 'trucks'
+              : data.vehicleType === 'Transit Bus' && data.fuelType === 'Diesel Fuel' // prettier-ignore
+                ? 'transitBusesDiesel'
+                : data.vehicleType === 'Transit Bus' && data.fuelType === 'Compressed Natural Gas (CNG)' // prettier-ignore
+                  ? 'transitBusesCNG'
+                  : data.vehicleType === 'Transit Bus' &&
+                      data.fuelType === 'Gasoline'
+                    ? 'transitBusesGasoline'
+                    : data.vehicleType === 'School Bus'
+                      ? 'schoolBuses'
+                      : null; // NOTE: fallback (generalVehicleType should never actually be null)
 
         const abridgedVehicleType: AbridgedVehicleType | null =
           data.vehicleType === 'Passenger Car'
             ? 'cars'
             : data.vehicleType === 'Passenger Truck'
-            ? 'trucks'
-            : data.vehicleType === 'Transit Bus'
-            ? 'transitBuses'
-            : data.vehicleType === 'School Bus'
-            ? 'schoolBuses'
-            : null; // NOTE: fallback (abridgedVehicleType should never actually be null)
+              ? 'trucks'
+              : data.vehicleType === 'Transit Bus'
+                ? 'transitBuses'
+                : data.vehicleType === 'School Bus'
+                  ? 'schoolBuses'
+                  : null; // NOTE: fallback (abridgedVehicleType should never actually be null)
 
         if (generalVehicleType && abridgedVehicleType) {
           const modelYearMatch =
@@ -1917,7 +1919,7 @@ export function calculateSelectedRegionsTotalMonthlyEmissionChanges(options: {
   const { selectedRegionsMonthlyEmissionChanges } = options;
 
   type MonthlyData = {
-    [key in 'cars' | 'trucks' | 'transitBuses' | 'schoolBuses' | 'total']: {
+    [field in 'cars' | 'trucks' | 'transitBuses' | 'schoolBuses' | 'total']: {
       [pollutant in Pollutant]: number;
     };
   };
@@ -2179,8 +2181,8 @@ export function calculateVehicleEmissionChangesByGeography(options: {
       ? vmtData.regions[selectedRegionId].total
       : vmtData.regions[selectedRegionId].states?.[deploymentLocationStateId]
     : stateSelected
-    ? vmtData.states[selectedStateId]
-    : null;
+      ? vmtData.states[selectedStateId]
+      : null;
 
   Object.entries(vmtData.counties).forEach(([key, stateCountiesVMT]) => {
     const stateId = key as keyof typeof vmtData.counties;

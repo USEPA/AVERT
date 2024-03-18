@@ -77,7 +77,7 @@ export type RDFJSON = {
   regional_load: RegionalLoadData[];
   load_bin_edges: number[];
   data: {
-    [key in RdfDataKey]: EGUData[];
+    [field in RdfDataKey]: EGUData[];
   };
 };
 
@@ -184,8 +184,8 @@ export type StateState = State & {
 
 type GeographyState = {
   focus: GeographicFocus;
-  regions: { [key in RegionId]: RegionState };
-  states: { [key in StateId]: StateState };
+  regions: { [regionId in RegionId]: RegionState };
+  states: { [stateId in StateId]: StateState };
   countiesByGeography: CountiesByGeography | EmptyObject;
   regionSelect: {
     stateId: StateId | '';

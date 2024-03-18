@@ -232,7 +232,7 @@ type State = {
     inputs: ImpactsInputs;
     data: {
       regions: Partial<{
-        [key in RegionId]: {
+        [regionId in RegionId]: {
           hourlyRenewableEnergyProfiles: HourlyRenewableEnergyProfiles;
           hourlyEnergyStorageData: HourlyEnergyStorageData;
           hourlyEVLoad: HourlyEVLoad;
@@ -744,13 +744,13 @@ export function setEVDeploymentLocationOptions(): AppThunk {
             })),
           ]
         : focus === 'states' && selectedState
-        ? [
-            {
-              id: `state-${selectedState.id}`,
-              name: `${selectedState.name}`,
-            },
-          ]
-        : [{ id: '', name: '' }];
+          ? [
+              {
+                id: `state-${selectedState.id}`,
+                name: `${selectedState.name}`,
+              },
+            ]
+          : [{ id: '', name: '' }];
 
     dispatch({
       type: 'impacts/SET_EV_DEPLOYMENT_LOCATION_OPTIONS',
@@ -1136,7 +1136,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
      * messages
      */
     const regionalHourlyImpacts = {} as Partial<{
-      [key in RegionId]: {
+      [regionId in RegionId]: {
         regionalLoad: RegionalLoadData[];
         hourlyImpacts: HourlyImpacts;
       };
@@ -1206,8 +1206,8 @@ export function calculateHourlyEnergyProfile(): AppThunk {
       const offshoreWindFactor = !selectedState
         ? 1
         : region.offshoreWind
-        ? regionalPercent / totalOffshoreWindPercent
-        : 0;
+          ? regionalPercent / totalOffshoreWindPercent
+          : 0;
 
       const annualGwh = Number(inputs.annualGwh) * regionalScalingFactor;
       const constantMwh = Number(inputs.constantMwh) * regionalScalingFactor;

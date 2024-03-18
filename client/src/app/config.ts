@@ -199,8 +199,8 @@ export type Region = {
   name: RegionName;
   lineLoss: number;
   offshoreWind: boolean;
-  percentageByState: Partial<{ [key in StateId]: number }>;
-  actualEmissions: Partial<{ [key in RdfDataKey]: number }>;
+  percentageByState: Partial<{ [stateId in StateId]: number }>;
+  actualEmissions: Partial<{ [field in RdfDataKey]: number }>;
 };
 
 /**
@@ -213,7 +213,7 @@ const lineLoss = {
   western: 0.0866994954028822,
 };
 
-export const regions: { [key in RegionId]: Region } = {
+export const regions: { [regionId in RegionId]: Region } = {
   CA: {
     id: 'CA',
     name: 'California',
@@ -484,14 +484,14 @@ export type StateId =
 export type State = {
   id: StateId;
   name: string;
-  percentageByRegion: Partial<{ [key in RegionId]: number }>;
+  percentageByRegion: Partial<{ [regionId in RegionId]: number }>;
 };
 
 /**
  * NOTE: each state's percentage by region stored in "Table 1: Percent of state
  * in each AVERT region" found in the "Library" sheet of the Excel workbook.
  */
-export const states: { [key in StateId]: State } = {
+export const states: { [stateId in StateId]: State } = {
   AL: {
     id: 'AL',
     name: 'Alabama',
