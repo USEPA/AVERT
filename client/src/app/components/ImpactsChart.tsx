@@ -1,4 +1,6 @@
 import Highcharts from 'highcharts';
+import HighchartsExporting from 'highcharts/modules/exporting';
+import HighchartsAccessibility from 'highcharts/modules/accessibility';
 import HighchartsReact from 'highcharts-react-official';
 // ---
 import { ErrorBoundary } from 'app/components/ErrorBoundary';
@@ -6,8 +8,8 @@ import { Tooltip } from 'app/components/Tooltip';
 import { useTypedSelector } from 'app/redux/index';
 import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 
-require('highcharts/modules/exporting')(Highcharts);
-require('highcharts/modules/accessibility')(Highcharts);
+HighchartsExporting(Highcharts);
+HighchartsAccessibility(Highcharts);
 
 function ImpactsChartContent() {
   const geographicFocus = useTypedSelector(({ geography }) => geography.focus);

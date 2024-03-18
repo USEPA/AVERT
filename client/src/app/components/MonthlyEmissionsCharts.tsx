@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
 import Highcharts from 'highcharts';
+import HighchartsExporting from 'highcharts/modules/exporting';
+import HighchartsAccessibility from 'highcharts/modules/accessibility';
 import HighchartsReact from 'highcharts-react-official';
 import { useDispatch } from 'react-redux';
 // ---
@@ -27,8 +29,8 @@ import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
 import type { Pollutant, RegionId, StateId } from 'app/config';
 import { regions, states } from 'app/config';
 
-require('highcharts/modules/exporting')(Highcharts);
-require('highcharts/modules/accessibility')(Highcharts);
+HighchartsExporting(Highcharts);
+HighchartsAccessibility(Highcharts);
 
 type ChartData = {
   name: string;
