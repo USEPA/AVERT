@@ -14,11 +14,9 @@
   },
   "scripts": {
     "dev": "vite",
-    "start": "react-scripts start",
     "build:dev": "VITE_APP_URL=https://avert-dev.app.cloud.gov npm run build",
-    "build": "react-scripts build && ./sync-build-with-public.sh",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "build": "tsc && vite build && ./sync-build-with-public.sh",
+    "preview": "vite preview",
     "cypress": "cypress open",
     "prepare": "cd .. && husky client/.husky"
   },
@@ -63,25 +61,5 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,css,md,html}": "prettier --write"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "plugin:cypress/recommended"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all",
-      "ie 11"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version",
-      "ie 11"
-    ]
   }
 }
