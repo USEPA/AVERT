@@ -222,17 +222,15 @@ const initialRegionRdf = {
   regional_load: [],
   load_bin_edges: [],
   data: {
-    generation: null,
-    heat: null,
-    heat_not: null,
-    co2: null,
-    co2_not: null,
-    nox: null,
-    nox_not: null,
-    pm25: null,
-    pm25_not: null,
-    so2: null,
-    so2_not: null,
+    generation: [],
+    so2: [],
+    so2_not: [],
+    nox: [],
+    nox_not: [],
+    co2: [],
+    co2_not: [],
+    heat: [],
+    heat_not: [],
   },
 };
 
@@ -246,18 +244,26 @@ const initialRegionStorageDefaults = {
   data: [],
 };
 
-// augment regions data (from config) with additonal fields for each region
-const updatedRegions: any = { ...regions };
-for (const regionId in updatedRegions) {
+/* augment regions data (from config) with additonal fields for each region */
+const updatedRegions = { ...regions } as {
+  [regionId in RegionId]: RegionState;
+};
+
+for (const key in updatedRegions) {
+  const regionId = key as RegionId;
   updatedRegions[regionId].selected = false;
   updatedRegions[regionId].rdf = initialRegionRdf;
   updatedRegions[regionId].eereDefaults = initialRegionEereDefaults;
   updatedRegions[regionId].storageDefaults = initialRegionStorageDefaults;
 }
 
-// augment states data (from config) with additonal fields for each state
-const updatedStates: any = { ...states };
-for (const stateId in updatedStates) {
+/* augment states data (from config) with additonal fields for each state */
+const updatedStates = { ...states } as {
+  [stateId in StateId]: StateState;
+};
+
+for (const key in updatedStates) {
+  const stateId = key as StateId;
   updatedStates[stateId].selected = false;
 }
 
