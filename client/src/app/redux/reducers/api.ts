@@ -1,15 +1,18 @@
+const { VITE_APP_URL, VITE_APP_COBRA_API_URL, VITE_APP_COBRA_APP_URL } =
+  import.meta.env;
+
 // ensure base url has been set in environment variable
-if (!process.env.REACT_APP_URL) {
+if (!VITE_APP_URL) {
   throw new Error('Base URL required!');
 }
 
 // ensure COBRA API url has been set in environment variable
-if (!process.env.REACT_APP_COBRA_API_URL) {
+if (!VITE_APP_COBRA_API_URL) {
   throw new Error('COBRA API URL required!');
 }
 
 // ensure COBRA app url has been set in environment variable
-if (!process.env.REACT_APP_COBRA_APP_URL) {
+if (!VITE_APP_COBRA_APP_URL) {
   throw new Error('COBRA App URL required!');
 }
 
@@ -34,9 +37,9 @@ type State = {
 };
 
 const initialState: State = {
-  baseUrl: process.env.REACT_APP_URL,
-  cobraApiUrl: process.env.REACT_APP_COBRA_API_URL,
-  cobraAppUrl: process.env.REACT_APP_COBRA_APP_URL,
+  baseUrl: VITE_APP_URL,
+  cobraApiUrl: VITE_APP_COBRA_API_URL,
+  cobraAppUrl: VITE_APP_COBRA_APP_URL,
 };
 
 export default function reducer(

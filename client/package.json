@@ -15,7 +15,7 @@
   "scripts": {
     "dev": "vite",
     "start": "react-scripts start",
-    "build:dev": "REACT_APP_URL=https://avert-dev.app.cloud.gov npm run build",
+    "build:dev": "VITE_APP_URL=https://avert-dev.app.cloud.gov npm run build",
     "build": "react-scripts build && ./sync-build-with-public.sh",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
