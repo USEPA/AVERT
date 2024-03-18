@@ -2,9 +2,8 @@
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useDispatch } from 'react-redux';
 // ---
-import { useAppSelector } from '@/app/redux/index';
+import { useAppDispatch, useAppSelector } from '@/app/redux/index';
 import { setActiveStep } from '@/app/redux/reducers/panel';
 import { resetImpactsInputs } from '@/app/redux/reducers/impacts';
 import { fetchRegionsData } from '@/app/redux/reducers/geography';
@@ -65,7 +64,7 @@ const NextButtonAnchor = styled('a')<{ resultsShown: boolean }>`
 function PrevButton(props: { text: string | null }) {
   const { text } = props;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const activeStep = useAppSelector(({ panel }) => panel.activeStep);
 
   const onStepThree = activeStep === 3;
@@ -102,7 +101,7 @@ function PrevButton(props: { text: string | null }) {
 function NextButton(props: { text: string }) {
   const { text } = props;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const activeStep = useAppSelector(({ panel }) => panel.activeStep);
   const geographicFocus = useAppSelector(({ geography }) => geography.focus);
   const inputs = useAppSelector(({ impacts }) => impacts.inputs);

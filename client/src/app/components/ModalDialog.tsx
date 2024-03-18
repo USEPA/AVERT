@@ -1,13 +1,12 @@
 import { Fragment, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import { useDispatch } from 'react-redux';
 // ---
-import { useAppSelector } from '@/app/redux/index';
+import { useAppDispatch, useAppSelector } from '@/app/redux/index';
 import { resetModalDialog } from '@/app/redux/reducers/panel';
 
 export function ModalDialog() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { displayed, description } = useAppSelector(
     ({ panel }) => panel.modalDialog,
   );
@@ -21,7 +20,7 @@ export function ModalDialog() {
         className="tw-relative tw-z-10"
         initialFocus={cancelRef}
         open={displayed}
-        onClose={(ev) => dispatch(resetModalDialog())}
+        onClose={(_ev) => dispatch(resetModalDialog())}
       >
         <Transition.Child
           as={Fragment}
@@ -52,7 +51,7 @@ export function ModalDialog() {
                     <button
                       type="button"
                       className="tw-rounded-md tw-bg-white tw-text-gray-400 tw-transition-none hover:tw-text-gray-700 focus:tw-text-gray-700"
-                      onClick={(ev) => dispatch(resetModalDialog())}
+                      onClick={(_ev) => dispatch(resetModalDialog())}
                     >
                       <span className="tw-sr-only">Close</span>
                       <XMarkIcon

@@ -1,8 +1,7 @@
 import { Fragment, useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 // ---
 import { ErrorBoundary } from '@/app/components/ErrorBoundary';
-import { useAppSelector } from '@/app/redux/index';
+import { useAppDispatch, useAppSelector } from '@/app/redux/index';
 import {
   selectRegion,
   setRegionSelectStateIdAndRegionIds,
@@ -14,7 +13,7 @@ import type { RegionId, StateId } from '@/app/config';
 import { regions, states } from '@/app/config';
 
 function RegionsListContent() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const countiesByGeography = useAppSelector(
     ({ geography }) => geography.countiesByGeography,
   );

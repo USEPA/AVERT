@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from '@emotion/react';
-import { useDispatch } from 'react-redux';
 // ---
 import { ErrorBoundary } from '@/app/components/ErrorBoundary';
 import { CaliforniaRegion } from '@/app/components/Regions/California';
@@ -67,6 +66,7 @@ import { Washington } from '@/app/components/States/Washington';
 import { Wisconsin } from '@/app/components/States/Wisconsin';
 import { WestVirginia } from '@/app/components/States/WestVirginia';
 import { Wyoming } from '@/app/components/States/Wyoming';
+import { useAppDispatch } from '@/app/redux/index';
 import {
   selectRegion,
   setRegionSelectStateIdAndRegionIds,
@@ -154,7 +154,7 @@ function Region(props: {
 }) {
   const { id, fill, children } = props;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const selectedRegionId = useSelectedRegion()?.id;
 

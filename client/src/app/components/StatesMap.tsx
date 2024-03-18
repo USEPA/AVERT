@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from '@emotion/react';
-import { useDispatch } from 'react-redux';
 // ---
 import { ErrorBoundary } from '@/app/components/ErrorBoundary';
 import { Alabama } from '@/app/components/States/Alabama';
@@ -53,6 +52,7 @@ import { Washington } from '@/app/components/States/Washington';
 import { Wisconsin } from '@/app/components/States/Wisconsin';
 import { WestVirginia } from '@/app/components/States/WestVirginia';
 import { Wyoming } from '@/app/components/States/Wyoming';
+import { useAppDispatch } from '@/app/redux/index';
 import { selectState } from '@/app/redux/reducers/geography';
 import { useSelectedState } from '@/app/hooks';
 import { StateId, states } from '@/app/config';
@@ -149,14 +149,14 @@ function State(props: {
 }) {
   const { id, children } = props;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const selectedStateId = useSelectedState()?.id;
 
   return (
     <g
       css={stateStyles}
-      onClick={(ev) => dispatch(selectState(id))}
+      onClick={(_ev) => dispatch(selectState(id))}
       data-active={selectedStateId === id}
     >
       {children}

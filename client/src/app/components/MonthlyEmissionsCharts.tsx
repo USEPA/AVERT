@@ -3,10 +3,9 @@ import Highcharts from 'highcharts';
 import HighchartsExporting from 'highcharts/modules/exporting';
 import HighchartsAccessibility from 'highcharts/modules/accessibility';
 import HighchartsReact from 'highcharts-react-official';
-import { useDispatch } from 'react-redux';
 // ---
 import { ErrorBoundary } from '@/app/components/ErrorBoundary';
-import { useAppSelector } from '@/app/redux/index';
+import { useAppDispatch, useAppSelector } from '@/app/redux/index';
 import type {
   Aggregation,
   Source,
@@ -551,7 +550,7 @@ function setFilteredData(options: {
 }
 
 function MonthlyEmissionsChartsContent() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const geographicFocus = useAppSelector(({ geography }) => geography.focus);
   const inputs = useAppSelector(({ impacts }) => impacts.inputs);
   const combinedSectorsEmissionsData = useAppSelector(
@@ -792,7 +791,9 @@ function MonthlyEmissionsChartsContent() {
                         }
                         value={currentCountyName}
                         onChange={(ev) => {
-                          dispatch(setMonthlyEmissionsCountyName(ev.target.value)); // prettier-ignore
+                          dispatch(
+                            setMonthlyEmissionsCountyName(ev.target.value),
+                          );
                         }}
                         data-avert-monthly-geography="county"
                       >

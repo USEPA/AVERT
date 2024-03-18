@@ -1,5 +1,5 @@
 import { legacy_createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
+import { thunk } from 'redux-thunk';
 // ---
 import { rootReducer } from '@/app/redux/index';
 

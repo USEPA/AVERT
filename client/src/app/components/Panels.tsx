@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useDispatch } from 'react-redux';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 // ---
@@ -25,7 +24,7 @@ import { MonthlyEmissionsCharts } from '@/app/components/MonthlyEmissionsCharts'
 import { COBRAConnection } from '@/app/components/COBRAConnection';
 import { DataDownload } from '@/app/components/DataDownload';
 import { modalLinkStyles } from '@/app/components/Tooltip';
-import { useAppSelector } from '@/app/redux/index';
+import { useAppDispatch, useAppSelector } from '@/app/redux/index';
 import {
   setCountiesByRegion,
   selectGeography,
@@ -178,7 +177,7 @@ function StateGeographyText() {
 }
 
 export function Panels() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(setCountiesByRegion());

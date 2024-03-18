@@ -1,8 +1,7 @@
 import type { ReactNode } from 'react';
-import { useDispatch } from 'react-redux';
 // ---
 import { Tooltip } from '@/app/components/Tooltip';
-import { useAppSelector } from '@/app/redux/index';
+import { useAppDispatch, useAppSelector } from '@/app/redux/index';
 import { calculateHourlyEnergyProfile } from '@/app/redux/reducers/impacts';
 import type {
   EnergyEfficiencyFieldName,
@@ -37,7 +36,7 @@ export function ImpactsTextInput(props: {
     errorMessage,
   } = props;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const hourlyEnergyProfile = useAppSelector(
     ({ impacts }) => impacts.hourlyEnergyProfile,
   );

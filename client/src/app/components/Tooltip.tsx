@@ -2,8 +2,8 @@
 
 import type { ReactNode } from 'react';
 import { css } from '@emotion/react';
-import { useDispatch } from 'react-redux';
 // ---
+import { useAppDispatch } from '@/app/redux/index';
 import { displayModalDialog } from '@/app/redux/reducers/panel';
 import icons from '@/app/icons.svg';
 
@@ -22,7 +22,7 @@ export const modalLinkStyles = css`
 
 export function Tooltip(props: { children: ReactNode; reversed?: boolean }) {
   const { children, reversed } = props;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   return (
     <a

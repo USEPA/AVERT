@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
-import { useDispatch } from 'react-redux';
 // ---
 import { ErrorBoundary } from '@/app/components/ErrorBoundary';
 import { ImpactsTextInput } from '@/app/components/ImpactsTextInput';
@@ -12,7 +11,7 @@ import {
   EEREEVComparisonTable,
 } from '@/app/components/EVTables';
 import { Tooltip } from '@/app/components/Tooltip';
-import { useAppSelector } from '@/app/redux/index';
+import { useAppDispatch, useAppSelector } from '@/app/redux/index';
 import { displayModalDialog } from '@/app/redux/reducers/panel';
 import type {
   GeographicFocus,
@@ -127,7 +126,7 @@ function TransitBusesWarningText() {
 }
 
 function ImpactsInputsContent() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const geographicFocus = useAppSelector(({ geography }) => geography.focus);
   const hourlyEnergyProfile = useAppSelector(
     ({ impacts }) => impacts.hourlyEnergyProfile,
