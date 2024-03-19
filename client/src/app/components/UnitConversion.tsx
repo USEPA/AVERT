@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 
-import { useState } from 'react';
-import { css } from '@emotion/react';
+import { useState } from "react";
+import { css } from "@emotion/react";
 // ---
-import { Tooltip } from '@/app/components/Tooltip';
+import { Tooltip } from "@/app/components/Tooltip";
 
 const unitConversionStyles = css`
   @media (min-width: 40em) {
@@ -19,7 +19,7 @@ export function UnitConversion() {
   const [mw, setMw] = useState(1_000);
   const [gw, setGw] = useState(1);
 
-  function updateInputs(value: string, unit: 'kw' | 'mw' | 'gw') {
+  function updateInputs(value: string, unit: "kw" | "mw" | "gw") {
     const input = Number(value);
 
     if (isNaN(input) || input < 0) {
@@ -31,17 +31,17 @@ export function UnitConversion() {
     const computed = { kw, mw, gw };
     computed[unit] = input;
 
-    if (unit === 'gw') {
+    if (unit === "gw") {
       computed.mw = input * factor;
       computed.kw = input * factor * factor;
     }
 
-    if (unit === 'mw') {
+    if (unit === "mw") {
       computed.gw = input / factor;
       computed.kw = input * factor;
     }
 
-    if (unit === 'kw') {
+    if (unit === "kw") {
       computed.gw = input / factor / factor;
       computed.mw = input / factor;
     }
@@ -58,14 +58,14 @@ export function UnitConversion() {
       className="avert-box margin-bottom-2 padding-105 tablet:margin-left-2"
     >
       <h4 className="avert-box-heading font-serif-xs">
-        Helpful Unit Conversions{' '}
+        Helpful Unit Conversions{" "}
         <Tooltip>
           <p className="text-normal">
             To convert units from power (<strong>kW, MW, GW</strong>) to energy
             (<strong>kWh, MWh, GWh</strong>), multiply by the total number of
             hours in the year. To convert in the other direction, divide by the
-            total number of hours in the year. There are{' '}
-            <strong>8,760 hours</strong> in a non-leap year and{' '}
+            total number of hours in the year. There are{" "}
+            <strong>8,760 hours</strong> in a non-leap year and{" "}
             <strong>8,784 hours</strong> in a leap year.
           </p>
 
@@ -90,7 +90,7 @@ export function UnitConversion() {
           aria-label="Kilowatts"
           type="text"
           value={kw}
-          onChange={(ev) => updateInputs(ev.target.value, 'kw')}
+          onChange={(ev) => updateInputs(ev.target.value, "kw")}
         />
         <span className="minw-3"> kW</span>
       </div>
@@ -107,7 +107,7 @@ export function UnitConversion() {
           aria-label="Megawatts"
           type="text"
           value={mw}
-          onChange={(ev) => updateInputs(ev.target.value, 'mw')}
+          onChange={(ev) => updateInputs(ev.target.value, "mw")}
         />
         <span className="minw-3"> MW</span>
       </div>
@@ -124,7 +124,7 @@ export function UnitConversion() {
           aria-label="Gigawatts"
           type="text"
           value={gw}
-          onChange={(ev) => updateInputs(ev.target.value, 'gw')}
+          onChange={(ev) => updateInputs(ev.target.value, "gw")}
         />
         <span className="minw-3"> GW</span>
       </div>

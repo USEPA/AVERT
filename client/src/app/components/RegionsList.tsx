@@ -1,16 +1,16 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState, useEffect } from "react";
 // ---
-import { ErrorBoundary } from '@/app/components/ErrorBoundary';
-import { useAppDispatch, useAppSelector } from '@/app/redux/index';
+import { ErrorBoundary } from "@/app/components/ErrorBoundary";
+import { useAppDispatch, useAppSelector } from "@/app/redux/index";
 import {
   selectRegion,
   setRegionSelectStateIdAndRegionIds,
   setRegionSelectCounty,
-} from '@/app/redux/reducers/geography';
-import { useSelectedRegion } from '@/app/hooks';
-import type { CountiesByGeography } from '@/app/calculations/geography';
-import type { RegionId, StateId } from '@/app/config';
-import { regions, states } from '@/app/config';
+} from "@/app/redux/reducers/geography";
+import { useSelectedRegion } from "@/app/hooks";
+import type { CountiesByGeography } from "@/app/calculations/geography";
+import type { RegionId, StateId } from "@/app/config";
+import { regions, states } from "@/app/config";
 
 function RegionsListContent() {
   const dispatch = useAppDispatch();
@@ -41,7 +41,7 @@ function RegionsListContent() {
         ? (countiesByGeography as CountiesByGeography)
         : null;
 
-    if (stateId === '') {
+    if (stateId === "") {
       setCountyNames([]);
       return;
     }
@@ -56,7 +56,7 @@ function RegionsListContent() {
          * instead of an array of county names within that state.
          */
         const countyNames =
-          stateRegionIds.length === 1 ? ['All Counties'] : stateCounties.sort();
+          stateRegionIds.length === 1 ? ["All Counties"] : stateCounties.sort();
 
         setCountyNames(countyNames);
       }
@@ -73,7 +73,7 @@ function RegionsListContent() {
         ? (countiesByGeography as CountiesByGeography)
         : null;
 
-    if (stateId === '') {
+    if (stateId === "") {
       return;
     }
 
@@ -81,7 +81,7 @@ function RegionsListContent() {
      * if an entire state is within one AVERT region, and user has selected
      * "All Counties", select that region.
      */
-    if (regionSelectStateRegionIds.length === 1 && county === 'All Counties') {
+    if (regionSelectStateRegionIds.length === 1 && county === "All Counties") {
       const regionId = regionSelectStateRegionIds[0];
       dispatch(selectRegion(regionId));
       return;
@@ -120,16 +120,16 @@ function RegionsListContent() {
           <select
             className="usa-select margin-0 maxw-full"
             aria-label="Select Region"
-            value={selectedRegionId || ''}
+            value={selectedRegionId || ""}
             onChange={(ev) => {
               const regionId = ev.target.value as RegionId;
               dispatch(selectRegion(regionId));
-              dispatch(setRegionSelectStateIdAndRegionIds(''));
-              dispatch(setRegionSelectCounty(''));
+              dispatch(setRegionSelectStateIdAndRegionIds(""));
+              dispatch(setRegionSelectCounty(""));
             }}
             data-avert-region-select
           >
-            <option value={''} disabled>
+            <option value={""} disabled>
               Select Region
             </option>
             <option value={regions.CA.id}>{regions.CA.name}</option>
@@ -161,16 +161,16 @@ function RegionsListContent() {
           <select
             className="usa-select margin-0 maxw-full"
             aria-label="Select State"
-            value={regionSelectStateId || ''}
+            value={regionSelectStateId || ""}
             onChange={(ev) => {
               const stateId = ev.target.value as StateId;
-              dispatch(selectRegion('' as RegionId));
+              dispatch(selectRegion("" as RegionId));
               dispatch(setRegionSelectStateIdAndRegionIds(stateId));
-              dispatch(setRegionSelectCounty(''));
+              dispatch(setRegionSelectCounty(""));
             }}
             data-avert-region-state-select
           >
-            <option value={''} disabled>
+            <option value={""} disabled>
               Select State
             </option>
 
@@ -190,14 +190,14 @@ function RegionsListContent() {
           <select
             className="usa-select margin-0 maxw-full"
             aria-label="Select County"
-            value={regionSelectCounty || ''}
+            value={regionSelectCounty || ""}
             onChange={(ev) => {
               const county = ev.target.value;
               dispatch(setRegionSelectCounty(county));
             }}
             data-avert-region-county-select
           >
-            <option value={''} disabled>
+            <option value={""} disabled>
               Select County
             </option>
 
@@ -205,7 +205,7 @@ function RegionsListContent() {
               return (
                 <Fragment key={county}>
                   <option value={county}>
-                    {county.replace(/city/, '(City)')}
+                    {county.replace(/city/, "(City)")}
                   </option>
                 </Fragment>
               );
@@ -222,7 +222,7 @@ export function RegionsList() {
     <ErrorBoundary
       message={
         <>
-          AVERT Regions select error. Please contact AVERT support at{' '}
+          AVERT Regions select error. Please contact AVERT support at{" "}
           <a
             className="usa-link"
             href="mailto:avert@epa.gov"

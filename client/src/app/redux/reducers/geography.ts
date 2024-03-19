@@ -1,21 +1,21 @@
-import { AppThunk } from '@/app/redux/index';
-import { setEVDeploymentLocationOptions } from '@/app/redux/reducers/impacts';
+import { AppThunk } from "@/app/redux/index";
+import { setEVDeploymentLocationOptions } from "@/app/redux/reducers/impacts";
 import type {
   CountiesByGeography,
   RegionalScalingFactors,
-} from '@/app/calculations/geography';
+} from "@/app/calculations/geography";
 import {
   organizeCountiesByGeography,
   calculateRegionalScalingFactors,
   getSelectedGeographyRegions,
-} from '@/app/calculations/geography';
+} from "@/app/calculations/geography";
 import {
   setSelectedGeographyVMTData,
   setEVEfficiency,
   setDailyAndMonthlyStats,
   setSelectedRegionsEEREDefaultsAverages,
-} from '@/app/redux/reducers/transportation';
-import { type EmptyObject } from '@/app/utilities';
+} from "@/app/redux/reducers/transportation";
+import { type EmptyObject } from "@/app/utilities";
 import {
   RdfDataKey,
   RegionId,
@@ -24,9 +24,9 @@ import {
   StateId,
   State,
   states,
-} from '@/app/config';
+} from "@/app/config";
 
-export type GeographicFocus = 'regions' | 'states';
+export type GeographicFocus = "regions" | "states";
 
 export type RegionalLoadData = {
   day: number;
@@ -111,60 +111,60 @@ type StorageDefaultsJSON = {
 
 type GeographyAction =
   | {
-      type: 'geography/SET_COUNTIES_BY_GEOGRAPHY';
+      type: "geography/SET_COUNTIES_BY_GEOGRAPHY";
       payload: { countiesByGeography: CountiesByGeography };
     }
   | {
-      type: 'geography/SELECT_GEOGRAPHY';
+      type: "geography/SELECT_GEOGRAPHY";
       payload: { focus: GeographicFocus };
     }
   | {
-      type: 'geography/SELECT_REGION';
+      type: "geography/SELECT_REGION";
       payload: { regionId: RegionId };
     }
   | {
-      type: 'geography/SELECT_STATE';
+      type: "geography/SELECT_STATE";
       payload: { stateId: StateId };
     }
   | {
-      type: 'geography/SET_REGION_SELECT_STATE_ID_AND_REGION_IDS';
+      type: "geography/SET_REGION_SELECT_STATE_ID_AND_REGION_IDS";
       payload: {
-        stateId: StateId | '';
+        stateId: StateId | "";
         stateRegionIds: RegionId[];
       };
     }
   | {
-      type: 'geography/SET_REGION_SELECT_COUNTY';
+      type: "geography/SET_REGION_SELECT_COUNTY";
       payload: { county: string };
     }
   | {
-      type: 'geography/SET_REGIONAL_SCALING_FACTORS';
+      type: "geography/SET_REGIONAL_SCALING_FACTORS";
       payload: {
         regionalScalingFactors: RegionalScalingFactors;
       };
     }
   | {
-      type: 'geography/SET_REGIONAL_LINE_LOSS';
+      type: "geography/SET_REGIONAL_LINE_LOSS";
       payload: { regionalLineLoss: number };
     }
-  | { type: 'geography/REQUEST_SELECTED_REGIONS_DATA' }
-  | { type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' }
+  | { type: "geography/REQUEST_SELECTED_REGIONS_DATA" }
+  | { type: "geography/RECEIVE_SELECTED_REGIONS_DATA" }
   | {
-      type: 'geography/RECEIVE_REGION_RDF';
+      type: "geography/RECEIVE_REGION_RDF";
       payload: {
         regionId: RegionId;
         regionRdf: RDFJSON;
       };
     }
   | {
-      type: 'geography/RECEIVE_REGION_EERE_DEFAULTS';
+      type: "geography/RECEIVE_REGION_EERE_DEFAULTS";
       payload: {
         regionId: RegionId;
         regionEereDefaults: EEREDefaultsJSON;
       };
     }
   | {
-      type: 'geography/RECEIVE_REGION_STORAGE_DEFAULTS';
+      type: "geography/RECEIVE_REGION_STORAGE_DEFAULTS";
       payload: {
         regionId: RegionId;
         regionStorageDefaults: StorageDefaultsJSON;
@@ -188,7 +188,7 @@ type GeographyState = {
   states: { [stateId in StateId]: StateState };
   countiesByGeography: CountiesByGeography | EmptyObject;
   regionSelect: {
-    stateId: StateId | '';
+    stateId: StateId | "";
     stateRegionIds: RegionId[];
     county: string;
   };
@@ -198,9 +198,9 @@ type GeographyState = {
 
 const initialRegionRdf = {
   region: {
-    region_abbv: '',
-    region_name: '',
-    region_states: '',
+    region_abbv: "",
+    region_name: "",
+    region_states: "",
   },
   run: {
     file_name: [],
@@ -235,12 +235,12 @@ const initialRegionRdf = {
 };
 
 const initialRegionEereDefaults = {
-  region: '',
+  region: "",
   data: [],
 };
 
 const initialRegionStorageDefaults = {
-  region: '',
+  region: "",
   data: [],
 };
 
@@ -269,14 +269,14 @@ for (const key in updatedStates) {
 
 // reducer
 const initialState: GeographyState = {
-  focus: 'regions',
+  focus: "regions",
   regions: updatedRegions,
   states: updatedStates,
   countiesByGeography: {},
   regionSelect: {
-    stateId: '',
+    stateId: "",
     stateRegionIds: [],
-    county: '',
+    county: "",
   },
   regionalScalingFactors: {},
   regionalLineLoss: 0,
@@ -287,7 +287,7 @@ export default function reducer(
   action: GeographyAction,
 ): GeographyState {
   switch (action.type) {
-    case 'geography/SET_COUNTIES_BY_GEOGRAPHY': {
+    case "geography/SET_COUNTIES_BY_GEOGRAPHY": {
       const { countiesByGeography } = action.payload;
 
       return {
@@ -296,7 +296,7 @@ export default function reducer(
       };
     }
 
-    case 'geography/SELECT_GEOGRAPHY': {
+    case "geography/SELECT_GEOGRAPHY": {
       const { focus } = action.payload;
 
       return {
@@ -305,7 +305,7 @@ export default function reducer(
       };
     }
 
-    case 'geography/SELECT_REGION': {
+    case "geography/SELECT_REGION": {
       const updatedState = { ...state };
 
       for (const key in updatedState.regions) {
@@ -317,7 +317,7 @@ export default function reducer(
       return updatedState;
     }
 
-    case 'geography/SELECT_STATE': {
+    case "geography/SELECT_STATE": {
       const updatedState = { ...state };
 
       for (const key in updatedState.states) {
@@ -328,7 +328,7 @@ export default function reducer(
       return updatedState;
     }
 
-    case 'geography/SET_REGION_SELECT_STATE_ID_AND_REGION_IDS': {
+    case "geography/SET_REGION_SELECT_STATE_ID_AND_REGION_IDS": {
       const { stateId, stateRegionIds } = action.payload;
 
       return {
@@ -341,7 +341,7 @@ export default function reducer(
       };
     }
 
-    case 'geography/SET_REGION_SELECT_COUNTY': {
+    case "geography/SET_REGION_SELECT_COUNTY": {
       const { county } = action.payload;
 
       return {
@@ -353,7 +353,7 @@ export default function reducer(
       };
     }
 
-    case 'geography/SET_REGIONAL_SCALING_FACTORS': {
+    case "geography/SET_REGIONAL_SCALING_FACTORS": {
       const { regionalScalingFactors } = action.payload;
 
       return {
@@ -362,7 +362,7 @@ export default function reducer(
       };
     }
 
-    case 'geography/SET_REGIONAL_LINE_LOSS': {
+    case "geography/SET_REGIONAL_LINE_LOSS": {
       const { regionalLineLoss } = action.payload;
 
       return {
@@ -371,12 +371,12 @@ export default function reducer(
       };
     }
 
-    case 'geography/REQUEST_SELECTED_REGIONS_DATA':
-    case 'geography/RECEIVE_SELECTED_REGIONS_DATA': {
+    case "geography/REQUEST_SELECTED_REGIONS_DATA":
+    case "geography/RECEIVE_SELECTED_REGIONS_DATA": {
       return state;
     }
 
-    case 'geography/RECEIVE_REGION_RDF': {
+    case "geography/RECEIVE_REGION_RDF": {
       const { regionId, regionRdf } = action.payload;
 
       return {
@@ -391,7 +391,7 @@ export default function reducer(
       };
     }
 
-    case 'geography/RECEIVE_REGION_EERE_DEFAULTS': {
+    case "geography/RECEIVE_REGION_EERE_DEFAULTS": {
       const { regionId, regionEereDefaults } = action.payload;
 
       return {
@@ -406,7 +406,7 @@ export default function reducer(
       };
     }
 
-    case 'geography/RECEIVE_REGION_STORAGE_DEFAULTS': {
+    case "geography/RECEIVE_REGION_STORAGE_DEFAULTS": {
       const { regionId, regionStorageDefaults } = action.payload;
 
       return {
@@ -437,7 +437,7 @@ export function setCountiesByRegion(): AppThunk {
     const countiesByGeography = organizeCountiesByGeography({ regions });
 
     dispatch({
-      type: 'geography/SET_COUNTIES_BY_GEOGRAPHY',
+      type: "geography/SET_COUNTIES_BY_GEOGRAPHY",
       payload: { countiesByGeography },
     });
   };
@@ -450,7 +450,7 @@ export function setCountiesByRegion(): AppThunk {
 export function selectGeography(focus: GeographicFocus): AppThunk {
   return (dispatch) => {
     dispatch({
-      type: 'geography/SELECT_GEOGRAPHY',
+      type: "geography/SELECT_GEOGRAPHY",
       payload: { focus },
     });
 
@@ -468,7 +468,7 @@ export function selectGeography(focus: GeographicFocus): AppThunk {
 export function selectRegion(regionId: RegionId): AppThunk {
   return (dispatch) => {
     dispatch({
-      type: 'geography/SELECT_REGION',
+      type: "geography/SELECT_REGION",
       payload: { regionId },
     });
 
@@ -486,7 +486,7 @@ export function selectRegion(regionId: RegionId): AppThunk {
 export function selectState(stateId: string): AppThunk {
   return (dispatch) => {
     dispatch({
-      type: 'geography/SELECT_STATE',
+      type: "geography/SELECT_STATE",
       payload: { stateId },
     });
 
@@ -503,7 +503,7 @@ export function selectState(stateId: string): AppThunk {
  * page.
  */
 export function setRegionSelectStateIdAndRegionIds(
-  stateId: StateId | '',
+  stateId: StateId | "",
 ): AppThunk {
   return (dispatch, getState) => {
     const { geography } = getState();
@@ -527,7 +527,7 @@ export function setRegionSelectStateIdAndRegionIds(
       );
 
       dispatch({
-        type: 'geography/SET_REGION_SELECT_STATE_ID_AND_REGION_IDS',
+        type: "geography/SET_REGION_SELECT_STATE_ID_AND_REGION_IDS",
         payload: {
           stateId,
           stateRegionIds,
@@ -544,7 +544,7 @@ export function setRegionSelectStateIdAndRegionIds(
  */
 export function setRegionSelectCounty(county: string): GeographyAction {
   return {
-    type: 'geography/SET_REGION_SELECT_COUNTY',
+    type: "geography/SET_REGION_SELECT_COUNTY",
     payload: { county },
   };
 }
@@ -594,12 +594,12 @@ function setRegionalScalingFactorsAndLineLoss(): AppThunk {
     );
 
     dispatch({
-      type: 'geography/SET_REGIONAL_SCALING_FACTORS',
+      type: "geography/SET_REGIONAL_SCALING_FACTORS",
       payload: { regionalScalingFactors },
     });
 
     dispatch({
-      type: 'geography/SET_REGIONAL_LINE_LOSS',
+      type: "geography/SET_REGIONAL_LINE_LOSS",
       payload: { regionalLineLoss },
     });
   };
@@ -620,7 +620,7 @@ export function fetchRegionsData(): AppThunk {
     let selectedState: StateState | undefined;
     let selectedStateRegionIds: RegionId[] = [];
 
-    if (geography.focus === 'regions') {
+    if (geography.focus === "regions") {
       for (const regionId in geography.regions) {
         const region = geography.regions[regionId as RegionId];
         if (region.selected) {
@@ -631,7 +631,7 @@ export function fetchRegionsData(): AppThunk {
       }
     }
 
-    if (geography.focus === 'states') {
+    if (geography.focus === "states") {
       for (const stateId in geography.states) {
         const state = geography.states[stateId as StateId];
         if (state.selected) {
@@ -652,14 +652,14 @@ export function fetchRegionsData(): AppThunk {
     const storageRequests: Promise<Response>[] = [];
 
     selectedRegions.forEach((region) => {
-      if (region.rdf.region.region_abbv === '') {
+      if (region.rdf.region.region_abbv === "") {
         rdfRequests.push(fetch(`${api.baseUrl}/api/v1/rdf/${region.id}`));
         eereRequests.push(fetch(`${api.baseUrl}/api/v1/eere/${region.id}`));
         storageRequests.push(fetch(`${api.baseUrl}/api/v1/storage/${region.id}`)); // prettier-ignore
       }
     });
 
-    dispatch({ type: 'geography/REQUEST_SELECTED_REGIONS_DATA' });
+    dispatch({ type: "geography/REQUEST_SELECTED_REGIONS_DATA" });
 
     // request all rdf, eere, and storage data in parallel
     Promise.all(
@@ -669,9 +669,9 @@ export function fetchRegionsData(): AppThunk {
         const rdfsData = (rdfResponses as Response[]).map((rdfResponse) => {
           return rdfResponse.json().then((rdfJson: RDFJSON) => {
             dispatch({
-              type: 'geography/RECEIVE_REGION_RDF',
+              type: "geography/RECEIVE_REGION_RDF",
               payload: {
-                regionId: rdfResponse.url.split('/').pop() as RegionId,
+                regionId: rdfResponse.url.split("/").pop() as RegionId,
                 regionRdf: rdfJson,
               },
             });
@@ -684,9 +684,9 @@ export function fetchRegionsData(): AppThunk {
             .json()
             .then((eereDefaultsJson: EEREDefaultsJSON) => {
               dispatch({
-                type: 'geography/RECEIVE_REGION_EERE_DEFAULTS',
+                type: "geography/RECEIVE_REGION_EERE_DEFAULTS",
                 payload: {
-                  regionId: eereResponse.url.split('/').pop() as RegionId,
+                  regionId: eereResponse.url.split("/").pop() as RegionId,
                   regionEereDefaults: eereDefaultsJson,
                 },
               });
@@ -700,9 +700,9 @@ export function fetchRegionsData(): AppThunk {
               .json()
               .then((storageDefaultsJson: StorageDefaultsJSON) => {
                 dispatch({
-                  type: 'geography/RECEIVE_REGION_STORAGE_DEFAULTS',
+                  type: "geography/RECEIVE_REGION_STORAGE_DEFAULTS",
                   payload: {
-                    regionId: storageResponse.url.split('/').pop() as RegionId,
+                    regionId: storageResponse.url.split("/").pop() as RegionId,
                     regionStorageDefaults: storageDefaultsJson,
                   },
                 });
@@ -756,7 +756,7 @@ export function fetchRegionsData(): AppThunk {
           });
         }
 
-        dispatch({ type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' });
+        dispatch({ type: "geography/RECEIVE_SELECTED_REGIONS_DATA" });
       })
       .then(() => {
         dispatch(setDailyAndMonthlyStats());

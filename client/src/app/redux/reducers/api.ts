@@ -3,30 +3,30 @@ const { VITE_APP_URL, VITE_APP_COBRA_API_URL, VITE_APP_COBRA_APP_URL } =
 
 // ensure base url has been set in environment variable
 if (!VITE_APP_URL) {
-  throw new Error('Base URL required!');
+  throw new Error("Base URL required!");
 }
 
 // ensure COBRA API url has been set in environment variable
 if (!VITE_APP_COBRA_API_URL) {
-  throw new Error('COBRA API URL required!');
+  throw new Error("COBRA API URL required!");
 }
 
 // ensure COBRA app url has been set in environment variable
 if (!VITE_APP_COBRA_APP_URL) {
-  throw new Error('COBRA App URL required!');
+  throw new Error("COBRA App URL required!");
 }
 
 type Action =
   | {
-      type: 'api/SET_BASE_URL';
+      type: "api/SET_BASE_URL";
       payload: { url: string };
     }
   | {
-      type: 'api/SET_COBRA_API_URL';
+      type: "api/SET_COBRA_API_URL";
       payload: { url: string };
     }
   | {
-      type: 'api/SET_COBRA_APP_URL';
+      type: "api/SET_COBRA_APP_URL";
       payload: { url: string };
     };
 
@@ -47,7 +47,7 @@ export default function reducer(
   action: Action,
 ): State {
   switch (action.type) {
-    case 'api/SET_BASE_URL': {
+    case "api/SET_BASE_URL": {
       const { url } = action.payload;
 
       return {
@@ -56,7 +56,7 @@ export default function reducer(
       };
     }
 
-    case 'api/SET_COBRA_API_URL': {
+    case "api/SET_COBRA_API_URL": {
       const { url } = action.payload;
 
       return {
@@ -65,7 +65,7 @@ export default function reducer(
       };
     }
 
-    case 'api/SET_COBRA_APP_URL': {
+    case "api/SET_COBRA_APP_URL": {
       const { url } = action.payload;
 
       return {
@@ -82,21 +82,21 @@ export default function reducer(
 
 export function setBaseUrl(url: string) {
   return {
-    type: 'api/SET_BASE_URL',
+    type: "api/SET_BASE_URL",
     payload: { url },
   };
 }
 
 export function setCobraApiUrl(url: string) {
   return {
-    type: 'api/SET_COBRA_API_URL',
+    type: "api/SET_COBRA_API_URL",
     payload: { url },
   };
 }
 
 export function setCobraAppUrl(url: string) {
   return {
-    type: 'api/SET_COBRA_APP_URL',
+    type: "api/SET_COBRA_APP_URL",
     payload: { url },
   };
 }

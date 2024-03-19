@@ -1,12 +1,12 @@
-import Highcharts from 'highcharts';
-import HighchartsExporting from 'highcharts/modules/exporting';
-import HighchartsAccessibility from 'highcharts/modules/accessibility';
-import HighchartsReact from 'highcharts-react-official';
+import Highcharts from "highcharts";
+import HighchartsExporting from "highcharts/modules/exporting";
+import HighchartsAccessibility from "highcharts/modules/accessibility";
+import HighchartsReact from "highcharts-react-official";
 // ---
-import { ErrorBoundary } from '@/app/components/ErrorBoundary';
-import { Tooltip } from '@/app/components/Tooltip';
-import { useAppSelector } from '@/app/redux/index';
-import { useSelectedRegion, useSelectedStateRegions } from '@/app/hooks';
+import { ErrorBoundary } from "@/app/components/ErrorBoundary";
+import { Tooltip } from "@/app/components/Tooltip";
+import { useAppSelector } from "@/app/redux/index";
+import { useSelectedRegion, useSelectedStateRegions } from "@/app/hooks";
 
 HighchartsExporting(Highcharts);
 HighchartsAccessibility(Highcharts);
@@ -37,7 +37,7 @@ function ImpactsChartContent() {
   const selectedStateRegions = useSelectedStateRegions();
 
   const rdfYear =
-    geographicFocus === 'regions'
+    geographicFocus === "regions"
       ? selectedRegion?.rdf.run.year
       : selectedStateRegions[0]?.rdf.run.year;
 
@@ -57,7 +57,7 @@ function ImpactsChartContent() {
       },
     },
     accessibility: {
-      description: 'Electric power load profile',
+      description: "Electric power load profile",
     },
     title: {
       text: undefined,
@@ -73,17 +73,17 @@ function ImpactsChartContent() {
         const x = Number(this.x);
         const y = Number(this.y);
         return `<span style="font-size: 10px">
-          ${Highcharts.dateFormat('%m/%d/%y %l:%M %P', x)}</span><br/>
+          ${Highcharts.dateFormat("%m/%d/%y %l:%M %P", x)}</span><br/>
           <strong>${Math.round(y).toLocaleString()}</strong> MW`;
       },
     },
     lang: {
-      contextButtonTitle: 'Export options',
+      contextButtonTitle: "Export options",
     },
     xAxis: {
-      type: 'datetime',
+      type: "datetime",
       dateTimeLabelFormats: {
-        month: '%b',
+        month: "%b",
       },
       tickInterval: 30 * 24 * 3600 * 1_000,
       title: {
@@ -92,7 +92,7 @@ function ImpactsChartContent() {
     },
     yAxis: {
       title: {
-        text: 'Change in load (MW)',
+        text: "Change in load (MW)",
       },
       labels: {
         formatter: function () {
@@ -102,10 +102,10 @@ function ImpactsChartContent() {
     },
     series: [
       {
-        type: 'line',
-        name: 'Electric power load profile',
+        type: "line",
+        name: "Electric power load profile",
         data: hourlyData,
-        color: '#058dc7',
+        color: "#058dc7",
       },
     ],
   };
@@ -159,7 +159,7 @@ function ImpactsChartContent() {
                 // as this entire react app is ultimately served in an iframe on another page,
                 // this document has a click handler that sends document's height to other window,
                 // which can then set the embedded iframe's height (see public/post-message.js)
-                document.querySelector('html')?.click();
+                document.querySelector("html")?.click();
               }}
             />
           </div>
@@ -175,7 +175,7 @@ export function ImpactsChart() {
       message={
         <>
           Electric power load profile chart error. Please contact AVERT support
-          at{' '}
+          at{" "}
           <a
             className="usa-link"
             href="mailto:avert@epa.gov"

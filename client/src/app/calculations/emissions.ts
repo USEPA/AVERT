@@ -1,10 +1,10 @@
-import type { RDFJSON } from '@/app/redux/reducers/geography';
+import type { RDFJSON } from "@/app/redux/reducers/geography";
 import type {
   SelectedRegionsTotalMonthlyEmissionChanges,
   VehicleEmissionChangesByGeography,
-} from '@/app/calculations/transportation';
-import { type EmptyObject, sortObjectByKeys } from '@/app/utilities';
-import type { RegionId, StateId } from '@/app/config';
+} from "@/app/calculations/transportation";
+import { type EmptyObject, sortObjectByKeys } from "@/app/utilities";
+import type { RegionId, StateId } from "@/app/config";
 /**
  * Annual point-source data from the National Emissions Inventory (NEI) for
  * every electric generating unit (EGU), organized by AVERT region
@@ -27,7 +27,7 @@ export type EmissionsData = {
   [field in (typeof emissionsFields)[number]]: {
     power: {
       annual: { original: number; postEere: number };
-      monthly: EguData['data'][keyof EguData['data']];
+      monthly: EguData["data"][keyof EguData["data"]];
     } | null;
     vehicle: {
       annual: number;
@@ -36,7 +36,7 @@ export type EmissionsData = {
   };
 };
 
-export type EmissionsFlagsField = EguData['emissionsFlags'][number];
+export type EmissionsFlagsField = EguData["emissionsFlags"][number];
 
 type NEIData = {
   regions: {
@@ -60,7 +60,7 @@ type NEIData = {
   }[];
 };
 
-type RDFDataField = keyof RDFJSON['data'];
+type RDFDataField = keyof RDFJSON["data"];
 
 /**
  * Adds a number to an array of numbers, sorts it, and returns the index of the
@@ -141,7 +141,7 @@ function calculateEmissionsChanges(options: {
       orisplCode: number;
       unitCode: string;
       name: string;
-      emissionsFlags: ('generation' | 'so2' | 'nox' | 'co2' | 'heat')[];
+      emissionsFlags: ("generation" | "so2" | "nox" | "co2" | "heat")[];
       data: {
         generation: { [month: number]: { original: number; postEere: number } };
         so2: { [month: number]: { original: number; postEere: number } };
@@ -155,11 +155,11 @@ function calculateEmissionsChanges(options: {
   };
 
   const dataFields = ['generation', 'so2', 'nox', 'co2', 'pm25', 'vocs', 'nh3'] as const; // prettier-ignore
-  const neiFields = ['pm25', 'vocs', 'nh3'];
+  const neiFields = ["pm25", "vocs", "nh3"];
 
   type OzoneSeasonDataField =
     | (RDFDataField & (typeof dataFields)[number])
-    | 'heat';
+    | "heat";
 
   const regionalNeiEgus = neiData.regions.find((region) => {
     return region.name === rdf.region.region_name;
@@ -203,11 +203,11 @@ function calculateEmissionsChanges(options: {
         : rdf.data[field as RDFDataField];
 
       const nonOzoneSeasonData =
-        field === 'generation'
+        field === "generation"
           ? null // NOTE: there's no non-ozone season for generation
           : neiFields.includes(field)
-          ? rdf.data.heat_not
-          : rdf.data[`${field}_not` as RDFDataField];
+            ? rdf.data.heat_not
+            : rdf.data[`${field}_not` as RDFDataField];
 
       const ozoneSeasonMedians = ozoneSeasonData.map((egu) => egu.medians);
 
@@ -222,8 +222,8 @@ function calculateEmissionsChanges(options: {
       const datasetMedians = !nonOzoneSeasonMedians
         ? ozoneSeasonMedians
         : month >= 5 && month <= 9
-        ? ozoneSeasonMedians
-        : nonOzoneSeasonMedians;
+          ? ozoneSeasonMedians
+          : nonOzoneSeasonMedians;
 
       /**
        * Iterate over each electric generating unit (EGU). The total number of
@@ -356,7 +356,7 @@ function createEmptyMonthlyPowerData() {
       object[index + 1] = { original: 0, postEere: 0 };
       return object;
     },
-    {} as EguData['data'][keyof EguData['data']],
+    {} as EguData["data"][keyof EguData["data"]],
   );
 
   return result;
@@ -525,7 +525,7 @@ export function createCombinedSectorsEmissionsData(options: {
           Object.entries(regionMonthValue.total).forEach(([key, value]) => {
             const pollutant = key as keyof typeof regionMonthValue.total;
             // conditionally convert CO2 pounds into tons
-            const result = pollutant === 'CO2' ? value / 2_000 : value;
+            const result = pollutant === "CO2" ? value / 2_000 : value;
 
             object[regionId][pollutant][month] = -1 * result;
             object.regionTotals[pollutant][month] ??= 0;
@@ -539,8 +539,8 @@ export function createCombinedSectorsEmissionsData(options: {
     {
       regionTotals: { CO2: {}, NOX: {}, SO2: {}, PM25: {}, VOCs: {}, NH3: {} },
     } as {
-      [regionId in RegionId | 'regionTotals']: {
-        [pollutant in 'CO2' | 'NOX' | 'SO2' | 'PM25' | 'VOCs' | 'NH3']: {
+      [regionId in RegionId | "regionTotals"]: {
+        [pollutant in "CO2" | "NOX" | "SO2" | "PM25" | "VOCs" | "NH3"]: {
           [month: number]: number;
         };
       };
@@ -555,13 +555,13 @@ export function createCombinedSectorsEmissionsData(options: {
     keyof typeof aggregatedEmissionsData.total,
     keyof typeof vehicleEmissionChanges.total | null
   >()
-    .set('generation', null)
-    .set('so2', 'SO2')
-    .set('nox', 'NOX')
-    .set('co2', 'CO2')
-    .set('pm25', 'PM25')
-    .set('vocs', 'VOCs')
-    .set('nh3', 'NH3');
+    .set("generation", null)
+    .set("so2", "SO2")
+    .set("nox", "NOX")
+    .set("co2", "CO2")
+    .set("pm25", "PM25")
+    .set("vocs", "VOCs")
+    .set("nh3", "NH3");
 
   /** start with power sector emissions data */
   const result = { ...aggregatedEmissionsData };

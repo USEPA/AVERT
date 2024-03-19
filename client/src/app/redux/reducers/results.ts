@@ -1,51 +1,51 @@
-import type { AppThunk } from '@/app/redux/index';
-import { setStatesAndCounties } from '@/app/redux/reducers/monthlyEmissions';
-import { setDownloadData } from '@/app/redux/reducers/downloads';
+import type { AppThunk } from "@/app/redux/index";
+import { setStatesAndCounties } from "@/app/redux/reducers/monthlyEmissions";
+import { setDownloadData } from "@/app/redux/reducers/downloads";
 import {
   calculateAggregatedEmissionsData,
   createCombinedSectorsEmissionsData,
-} from '@/app/calculations/emissions';
+} from "@/app/calculations/emissions";
 import type {
   EmissionsChanges,
   EmissionsFlagsField,
   CombinedSectorsEmissionsData,
-} from '@/app/calculations/emissions';
-import { type EmptyObject } from '@/app/utilities';
-import type { RegionId } from '@/app/config';
-import { regions } from '@/app/config';
+} from "@/app/calculations/emissions";
+import { type EmptyObject } from "@/app/utilities";
+import type { RegionId } from "@/app/config";
+import { regions } from "@/app/config";
 
 export type EgusNeeingEmissionsReplacement = ReturnType<typeof setEgusNeedingEmissionsReplacement>; // prettier-ignore
 export type EmissionsReplacements = ReturnType<typeof setEmissionsReplacements>;
 
 type Action =
-  | { type: 'results/RESET_RESULTS' }
-  | { type: 'results/FETCH_EMISSIONS_CHANGES_REQUEST' }
+  | { type: "results/RESET_RESULTS" }
+  | { type: "results/FETCH_EMISSIONS_CHANGES_REQUEST" }
   | {
-      type: 'results/FETCH_EMISSIONS_CHANGES_SUCCESS';
+      type: "results/FETCH_EMISSIONS_CHANGES_SUCCESS";
       payload: { emissionsChanges: EmissionsChanges };
     }
-  | { type: 'results/FETCH_EMISSIONS_CHANGES_FAILURE' }
+  | { type: "results/FETCH_EMISSIONS_CHANGES_FAILURE" }
   | {
-      type: 'results/SET_COMBINED_SECTORS_EMISSIONS_DATA';
+      type: "results/SET_COMBINED_SECTORS_EMISSIONS_DATA";
       payload: { combinedSectorsEmissionsData: CombinedSectorsEmissionsData };
     }
   | {
-      type: 'results/SET_EGUS_NEEDING_EMISSIONS_REPLACEMENT';
+      type: "results/SET_EGUS_NEEDING_EMISSIONS_REPLACEMENT";
       payload: {
         egusNeedingEmissionsReplacement: EgusNeeingEmissionsReplacement;
       };
     }
   | {
-      type: 'results/SET_EMISSIONS_REPLACEMENTS';
+      type: "results/SET_EMISSIONS_REPLACEMENTS";
       payload: { emissionsReplacements: EmissionsReplacements };
     };
 
 type State = {
   emissionsChanges:
-    | { status: 'idle'; data: EmptyObject }
-    | { status: 'pending'; data: EmptyObject }
-    | { status: 'success'; data: EmissionsChanges }
-    | { status: 'failure'; data: EmptyObject };
+    | { status: "idle"; data: EmptyObject }
+    | { status: "pending"; data: EmptyObject }
+    | { status: "success"; data: EmissionsChanges }
+    | { status: "failure"; data: EmptyObject };
   combinedSectorsEmissionsData: CombinedSectorsEmissionsData;
   egusNeedingEmissionsReplacement: EgusNeeingEmissionsReplacement;
   emissionsReplacements: EmissionsReplacements | EmptyObject;
@@ -53,7 +53,7 @@ type State = {
 
 const initialState: State = {
   emissionsChanges: {
-    status: 'idle',
+    status: "idle",
     data: {},
   },
   combinedSectorsEmissionsData: null,
@@ -66,42 +66,42 @@ export default function reducer(
   action: Action,
 ): State {
   switch (action.type) {
-    case 'results/RESET_RESULTS': {
+    case "results/RESET_RESULTS": {
       return initialState;
     }
 
-    case 'results/FETCH_EMISSIONS_CHANGES_REQUEST': {
+    case "results/FETCH_EMISSIONS_CHANGES_REQUEST": {
       return {
         ...initialState,
         emissionsChanges: {
-          status: 'pending',
+          status: "pending",
           data: {},
         },
       };
     }
 
-    case 'results/FETCH_EMISSIONS_CHANGES_SUCCESS': {
+    case "results/FETCH_EMISSIONS_CHANGES_SUCCESS": {
       const { emissionsChanges } = action.payload;
       return {
         ...state,
         emissionsChanges: {
-          status: 'success',
+          status: "success",
           data: emissionsChanges,
         },
       };
     }
 
-    case 'results/FETCH_EMISSIONS_CHANGES_FAILURE': {
+    case "results/FETCH_EMISSIONS_CHANGES_FAILURE": {
       return {
         ...state,
         emissionsChanges: {
-          status: 'failure',
+          status: "failure",
           data: {},
         },
       };
     }
 
-    case 'results/SET_COMBINED_SECTORS_EMISSIONS_DATA': {
+    case "results/SET_COMBINED_SECTORS_EMISSIONS_DATA": {
       const { combinedSectorsEmissionsData } = action.payload;
       return {
         ...state,
@@ -109,7 +109,7 @@ export default function reducer(
       };
     }
 
-    case 'results/SET_EGUS_NEEDING_EMISSIONS_REPLACEMENT': {
+    case "results/SET_EGUS_NEEDING_EMISSIONS_REPLACEMENT": {
       const { egusNeedingEmissionsReplacement } = action.payload;
       return {
         ...state,
@@ -117,7 +117,7 @@ export default function reducer(
       };
     }
 
-    case 'results/SET_EMISSIONS_REPLACEMENTS': {
+    case "results/SET_EMISSIONS_REPLACEMENTS": {
       const { emissionsReplacements } = action.payload;
       return {
         ...state,
@@ -136,7 +136,7 @@ export default function reducer(
  * Geography" button is clicked on the "Get Results" page.
  */
 export function resetResults(): Action {
-  return { type: 'results/RESET_RESULTS' };
+  return { type: "results/RESET_RESULTS" };
 }
 
 /**
@@ -152,7 +152,7 @@ export function fetchEmissionsChanges(): AppThunk {
     } = transportation;
     const { hourlyEnergyProfile } = impacts;
 
-    dispatch({ type: 'results/FETCH_EMISSIONS_CHANGES_REQUEST' });
+    dispatch({ type: "results/FETCH_EMISSIONS_CHANGES_REQUEST" });
 
     // build up requests for selected regions
     const requests: Promise<Response>[] = [];
@@ -167,10 +167,10 @@ export function fetchEmissionsChanges(): AppThunk {
 
         requests.push(
           fetch(`${api.baseUrl}/api/v1/emissions`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
+              Accept: "application/json",
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({ regionId, hourlyChanges }),
           }),
@@ -205,22 +205,22 @@ export function fetchEmissionsChanges(): AppThunk {
         );
 
         dispatch({
-          type: 'results/FETCH_EMISSIONS_CHANGES_SUCCESS',
+          type: "results/FETCH_EMISSIONS_CHANGES_SUCCESS",
           payload: { emissionsChanges },
         });
 
         dispatch({
-          type: 'results/SET_COMBINED_SECTORS_EMISSIONS_DATA',
+          type: "results/SET_COMBINED_SECTORS_EMISSIONS_DATA",
           payload: { combinedSectorsEmissionsData },
         });
 
         dispatch({
-          type: 'results/SET_EGUS_NEEDING_EMISSIONS_REPLACEMENT',
+          type: "results/SET_EGUS_NEEDING_EMISSIONS_REPLACEMENT",
           payload: { egusNeedingEmissionsReplacement },
         });
 
         dispatch({
-          type: 'results/SET_EMISSIONS_REPLACEMENTS',
+          type: "results/SET_EMISSIONS_REPLACEMENTS",
           payload: { emissionsReplacements },
         });
 
@@ -228,7 +228,7 @@ export function fetchEmissionsChanges(): AppThunk {
         dispatch(setDownloadData());
       })
       .catch((_err) => {
-        dispatch({ type: 'results/FETCH_EMISSIONS_CHANGES_FAILURE' });
+        dispatch({ type: "results/FETCH_EMISSIONS_CHANGES_FAILURE" });
       });
   };
 }

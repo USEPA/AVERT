@@ -1,15 +1,15 @@
-import { ErrorBoundary } from '@/app/components/ErrorBoundary';
-import { useAppSelector } from '@/app/redux/index';
-import { useSelectedRegion, useSelectedState } from '@/app/hooks';
+import { ErrorBoundary } from "@/app/components/ErrorBoundary";
+import { useAppSelector } from "@/app/redux/index";
+import { useSelectedRegion, useSelectedState } from "@/app/hooks";
 
 function convertToCSVString(data: { [key: string]: unknown }[]) {
   const keys = Object.keys(data[0] || {});
   const rows = data.map((row) => {
     return keys
-      .map((key) => `"${row[key] || row[key] === 0 ? row[key] : ''}"`)
-      .join(',');
+      .map((key) => `"${row[key] || row[key] === 0 ? row[key] : ""}"`)
+      .join(",");
   });
-  return [keys.map((key) => `"${key}"`).join(',')].concat(rows).join('\r\n');
+  return [keys.map((key) => `"${key}"`).join(",")].concat(rows).join("\r\n");
 }
 
 function DataDownloadContent() {
@@ -17,11 +17,11 @@ function DataDownloadContent() {
   const countyData = useAppSelector(({ downloads }) => downloads.countyData);
   const cobraData = useAppSelector(({ downloads }) => downloads.cobraData);
 
-  const selectedRegionName = useSelectedRegion()?.name || '';
-  const selectedStateName = useSelectedState()?.name || '';
+  const selectedRegionName = useSelectedRegion()?.name || "";
+  const selectedStateName = useSelectedState()?.name || "";
 
   const geographyText =
-    geographicFocus === 'regions'
+    geographicFocus === "regions"
       ? `Region – ${selectedRegionName}`
       : `State – ${selectedStateName}`;
 
@@ -37,7 +37,7 @@ function DataDownloadContent() {
       <p className="margin-top-0">
         Download monthly displacement data for each county, state, and region in
         this analysis, in CSV format, or download your results formatted as
-        inputs for use in{' '}
+        inputs for use in{" "}
         <a
           className="usa-link"
           href="https://www.epa.gov/cobra"
@@ -77,7 +77,7 @@ export function DataDownload() {
     <ErrorBoundary
       message={
         <>
-          AVERT data download error. Please contact AVERT support at{' '}
+          AVERT data download error. Please contact AVERT support at{" "}
           <a
             className="usa-link"
             href="mailto:avert@epa.gov"

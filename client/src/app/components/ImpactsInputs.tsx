@@ -1,22 +1,22 @@
 /** @jsxImportSource @emotion/react */
 
-import { useEffect, useState } from 'react';
-import { css } from '@emotion/react';
+import { useEffect, useState } from "react";
+import { css } from "@emotion/react";
 // ---
-import { ErrorBoundary } from '@/app/components/ErrorBoundary';
-import { ImpactsTextInput } from '@/app/components/ImpactsTextInput';
-import { ImpactsSelectInput } from '@/app/components/ImpactsSelectInput';
+import { ErrorBoundary } from "@/app/components/ErrorBoundary";
+import { ImpactsTextInput } from "@/app/components/ImpactsTextInput";
+import { ImpactsSelectInput } from "@/app/components/ImpactsSelectInput";
 import {
   EVSalesAndStockTable,
   EEREEVComparisonTable,
-} from '@/app/components/EVTables';
-import { Tooltip } from '@/app/components/Tooltip';
-import { useAppDispatch, useAppSelector } from '@/app/redux/index';
-import { displayModalDialog } from '@/app/redux/reducers/panel';
+} from "@/app/components/EVTables";
+import { Tooltip } from "@/app/components/Tooltip";
+import { useAppDispatch, useAppSelector } from "@/app/redux/index";
+import { displayModalDialog } from "@/app/redux/reducers/panel";
 import type {
   GeographicFocus,
   RegionState,
-} from '@/app/redux/reducers/geography';
+} from "@/app/redux/reducers/geography";
 import {
   updateEEAnnualGwh,
   updateEEConstantMw,
@@ -42,9 +42,9 @@ import {
   updateEVModelYear,
   updateEVICEReplacementVehicle,
   calculateHourlyEnergyProfile,
-} from '@/app/redux/reducers/impacts';
-import { useSelectedRegion, useSelectedStateRegions } from '@/app/hooks';
-import { batteryStorageDuration } from '@/app/config';
+} from "@/app/redux/reducers/impacts";
+import { useSelectedRegion, useSelectedStateRegions } from "@/app/hooks";
+import { batteryStorageDuration } from "@/app/config";
 
 const inputsGroupStyles = css`
   ul {
@@ -61,7 +61,7 @@ const inputsSummaryStyles = css`
   &::-webkit-details-marker,
   &::marker {
     display: none;
-    content: '';
+    content: "";
   }
 
   /* letter (A, B, C, D, or E) */
@@ -103,11 +103,11 @@ function checkTransitBusesWarningScenario(options: {
   } = options;
 
   return (
-    geographicFocus === 'regions' &&
-    selectedRegion?.id === 'RM' &&
-    ['state-MT', 'state-UT'].includes(evDeploymentLocation) &&
-    transitBuses !== '' &&
-    transitBuses !== '0'
+    geographicFocus === "regions" &&
+    selectedRegion?.id === "RM" &&
+    ["state-MT", "state-UT"].includes(evDeploymentLocation) &&
+    transitBuses !== "" &&
+    transitBuses !== "0"
   );
 }
 
@@ -180,7 +180,7 @@ function ImpactsInputsContent() {
   const [detailsFOpen, setDetailsFOpen] = useState(false);
 
   const atLeastOneRegionSupportsOffshoreWind =
-    geographicFocus === 'regions'
+    geographicFocus === "regions"
       ? selectedRegion?.offshoreWind
       : selectedStateRegions.some((region) => region.offshoreWind);
 
@@ -224,17 +224,17 @@ function ImpactsInputsContent() {
     textInputsAreEmpty ||
     utilityStorageError ||
     rooftopStorageError ||
-    hourlyEnergyProfile.status === 'pending';
+    hourlyEnergyProfile.status === "pending";
 
   const impactsButtonOptions = {
-    idle: 'Calculate Energy Impacts',
-    pending: 'Calculating...',
-    success: 'Recalculate Energy Impacts',
+    idle: "Calculate Energy Impacts",
+    pending: "Calculating...",
+    success: "Recalculate Energy Impacts",
   };
 
   const disabledButtonClassName = hourlyEnergyProfileCalculationDisabled
-    ? 'avert-button-disabled'
-    : '';
+    ? "avert-button-disabled"
+    : "";
 
   const evInputErrorMessage = (
     <>
@@ -558,10 +558,10 @@ function ImpactsInputsContent() {
                             </p>
                           }
                         />
-                      ) : geographicFocus === 'regions' ? (
+                      ) : geographicFocus === "regions" ? (
                         <p className="margin-y-05 font-sans-2xs line-height-sans-2 text-italic">
                           Offshore wind calculations are not available in the
-                          selected AVERT region{' '}
+                          selected AVERT region{" "}
                           <Tooltip>
                             <span className="text-no-italic">
                               AVERT does not support offshore wind modeling in
@@ -574,7 +574,7 @@ function ImpactsInputsContent() {
                       ) : (
                         <p className="margin-y-05 font-sans-2xs line-height-sans-2 text-italic">
                           Offshore wind calculations are not available in the
-                          AVERT region(s) that this state is part of{' '}
+                          AVERT region(s) that this state is part of{" "}
                           <Tooltip>
                             <span className="text-no-italic">
                               AVERT does not support offshore wind modeling in
@@ -1126,7 +1126,7 @@ export function ImpactsInputs() {
     <ErrorBoundary
       message={
         <>
-          Energy Impacts inputs error. Please contact AVERT support at{' '}
+          Energy Impacts inputs error. Please contact AVERT support at{" "}
           <a
             className="usa-link"
             href="mailto:avert@epa.gov"

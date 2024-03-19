@@ -14,7 +14,7 @@
 
 :where(.twpf) ::before,
 :where(.twpf) ::after {
-  --tw-content: '';
+  --tw-content: "";
 }
 
 /*
@@ -33,8 +33,8 @@ html :where(.twpf),
   -webkit-text-size-adjust: 100%; /* 2 */
   -moz-tab-size: 4; /* 3 */
   tab-size: 4; /* 3 */
-  font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; /* 4 */
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* 4 */
   font-feature-settings: normal; /* 5 */
   font-variation-settings: normal; /* 6 */
   -webkit-tap-highlight-color: transparent; /* 7 */
@@ -114,7 +114,7 @@ Add the correct font weight in Edge and Safari.
 :where(.twpf) samp,
 :where(.twpf) pre {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    'Liberation Mono', 'Courier New', monospace; /* 1 */
+    "Liberation Mono", "Courier New", monospace; /* 1 */
   font-feature-settings: normal; /* 2 */
   font-variation-settings: normal; /* 3 */
   font-size: 1em; /* 4 */
@@ -197,9 +197,9 @@ Remove the inheritance of text transform in Edge and Firefox.
 */
 
 :where(.twpf) button,
-:where(.twpf) [type='button'],
-:where(.twpf) [type='reset'],
-:where(.twpf) [type='submit'] {
+:where(.twpf) [type="button"],
+:where(.twpf) [type="reset"],
+:where(.twpf) [type="submit"] {
   -webkit-appearance: button; /* 1 */
   background-color: transparent; /* 2 */
   background-image: none; /* 2 */
@@ -243,7 +243,7 @@ Correct the cursor style of increment and decrement buttons in Safari.
 2. Correct the outline style in Safari.
 */
 
-:where(.twpf) [type='search'] {
+:where(.twpf) [type="search"] {
   -webkit-appearance: textfield; /* 1 */
   outline-offset: -2px; /* 2 */
 }
@@ -339,7 +339,7 @@ Set the default cursor for buttons.
 */
 
 :where(.twpf) button,
-:where(.twpf) [role='button'] {
+:where(.twpf) [role="button"] {
   cursor: pointer;
 }
 

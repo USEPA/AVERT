@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 
-const Tab = styled('li')<{ step: number }>`
+const Tab = styled("li")<{ step: number }>`
   @media (min-width: 40em) {
     float: left;
     width: calc((100% - 2.5rem) * 0.333333);
@@ -22,7 +22,7 @@ const Tab = styled('li')<{ step: number }>`
       if (step === 1 || step === 2) {
         return css`
           span::after {
-            content: '';
+            content: "";
             position: absolute;
             z-index: 1;
             top: 0;
@@ -43,7 +43,7 @@ const Tab = styled('li')<{ step: number }>`
       if (step === 2 || step === 3) {
         return css`
           span::before {
-            content: '';
+            content: "";
             position: absolute;
             top: 0;
             left: -1.25rem;
@@ -61,7 +61,7 @@ const Tab = styled('li')<{ step: number }>`
     }
 
     /* active tab – fill behind right arrow */
-    span[data-active='true']::before {
+    span[data-active="true"]::before {
       background-color: var(--avert-blue);
     }
   }
@@ -70,7 +70,7 @@ const Tab = styled('li')<{ step: number }>`
 const spanStyles = css`
   user-select: none;
 
-  &[data-active='true'] {
+  &[data-active="true"] {
     color: white;
     background-color: var(--avert-blue);
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.25);

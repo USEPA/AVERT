@@ -1,13 +1,13 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 // ---
-import { Tooltip } from '@/app/components/Tooltip';
-import { useAppDispatch, useAppSelector } from '@/app/redux/index';
-import { calculateHourlyEnergyProfile } from '@/app/redux/reducers/impacts';
+import { Tooltip } from "@/app/components/Tooltip";
+import { useAppDispatch, useAppSelector } from "@/app/redux/index";
+import { calculateHourlyEnergyProfile } from "@/app/redux/reducers/impacts";
 import type {
   EnergyEfficiencyFieldName,
   RenewableEnergyFieldName,
   ElectricVehiclesFieldName,
-} from '@/app/redux/reducers/impacts';
+} from "@/app/redux/reducers/impacts";
 
 export function ImpactsTextInput(props: {
   className?: string;
@@ -46,10 +46,10 @@ export function ImpactsTextInput(props: {
   const inputIsEmpty = value.length === 0;
 
   const hourlyEnergyProfileCalculationDisabled =
-    !inputsAreValid || inputIsEmpty || hourlyEnergyProfile.status === 'pending';
+    !inputsAreValid || inputIsEmpty || hourlyEnergyProfile.status === "pending";
 
   return (
-    <div className={className ? className : ''}>
+    <div className={className ? className : ""}>
       {label && (
         <>
           <label
@@ -80,7 +80,7 @@ export function ImpactsTextInput(props: {
           onBlur={(ev) => onBlur && onBlur(ev.target.value)}
           onKeyPress={(ev) => {
             if (hourlyEnergyProfileCalculationDisabled) return;
-            if (ev.key === 'Enter') {
+            if (ev.key === "Enter") {
               onBlur && onBlur((ev.target as HTMLInputElement).value);
               dispatch(calculateHourlyEnergyProfile());
             }

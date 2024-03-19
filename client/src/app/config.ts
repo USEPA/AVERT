@@ -1,52 +1,52 @@
 /**
  * Excel: "CountyFIPS" sheet.
  */
-import countyFips from '@/app/data/county-fips.json';
+import countyFips from "@/app/data/county-fips.json";
 /**
  * Excel: Second table in the "RegionStateAllocate" sheet (B118:E167)
  */
-import vmtAllocationAndRegisteredVehicles from '@/app/data/vmt-allocation-and-registered-vehicles.json';
+import vmtAllocationAndRegisteredVehicles from "@/app/data/vmt-allocation-and-registered-vehicles.json";
 /**
  * Excel: "Table B. View charging profiles or set a manual charging profile
  * for Weekdays" table in the "EV_Detail" sheet (C23:H47), which comes from
  * "Table 9: Default EV load profiles and related values from EVI-Pro Lite"
  * table in the "Library" sheet).
  */
-import evChargingProfiles from '@/app/data/ev-charging-profiles-hourly-data.json';
+import evChargingProfiles from "@/app/data/ev-charging-profiles-hourly-data.json";
 /**
  * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E179:E180).
  */
-import nationalAverageVMTBusPerYear from '@/app/data/national-average-bus-vmt-per-year.json';
+import nationalAverageVMTBusPerYear from "@/app/data/national-average-bus-vmt-per-year.json";
 /**
  * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
  * (E194:J200).
  */
-import evEfficiencyByModelYear from '@/app/data/ev-efficiency-by-model-year.json';
+import evEfficiencyByModelYear from "@/app/data/ev-efficiency-by-model-year.json";
 /**
  * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
  * Lite" table in the "Library" sheet (B432:C445)
  */
-import regionAverageTemperatures from '@/app/data/region-average-temperature.json';
+import regionAverageTemperatures from "@/app/data/region-average-temperature.json";
 /**
  * Excel: "Table 11: LDV Sales and Stock" table in the "Library" sheet
  * (B485:C535).
  */
-import stateLightDutyVehiclesSales from '@/app/data/state-light-duty-vehicles-sales.json';
+import stateLightDutyVehiclesSales from "@/app/data/state-light-duty-vehicles-sales.json";
 /**
  * Excel: "Table 12: Transit and School Bus Sales and Stock" table in the
  * "Library" sheet (B546:F596).
  */
-import stateBusSalesAndStock from '@/app/data/state-bus-sales-and-stock.json';
+import stateBusSalesAndStock from "@/app/data/state-bus-sales-and-stock.json";
 /**
  * Excel: "Table 13: Historical renewable and energy efficiency addition data"
  * table in the "Library" sheet (B606:E619).
  */
-import regionEereAverages from '@/app/data/region-eere-averages.json';
+import regionEereAverages from "@/app/data/region-eere-averages.json";
 /**
  * Excel: "Table 13: Historical renewable and energy efficiency addition data"
  * table in the "Library" sheet (B626:E674).
  */
-import stateEereAverages from '@/app/data/state-eere-averages.json';
+import stateEereAverages from "@/app/data/state-eere-averages.json";
 
 export type CountyFips = typeof countyFips;
 
@@ -138,49 +138,49 @@ export const batteryRoundTripEfficiency = 0.85;
 export const batteryStorageDuration = 4;
 
 export type RdfDataKey =
-  | 'generation'
-  | 'so2'
-  | 'so2_not'
-  | 'nox'
-  | 'nox_not'
-  | 'co2'
-  | 'co2_not'
-  | 'heat'
-  | 'heat_not';
+  | "generation"
+  | "so2"
+  | "so2_not"
+  | "nox"
+  | "nox_not"
+  | "co2"
+  | "co2_not"
+  | "heat"
+  | "heat_not";
 
-export type Pollutant = 'so2' | 'nox' | 'co2' | 'pm25' | 'vocs' | 'nh3';
+export type Pollutant = "so2" | "nox" | "co2" | "pm25" | "vocs" | "nh3";
 
 export type RegionId =
-  | 'CA'
-  | 'CENT'
-  | 'FL'
-  | 'MIDA'
-  | 'MIDW'
-  | 'NCSC'
-  | 'NE'
-  | 'NY'
-  | 'NW'
-  | 'RM'
-  | 'SE'
-  | 'SW'
-  | 'TE'
-  | 'TN';
+  | "CA"
+  | "CENT"
+  | "FL"
+  | "MIDA"
+  | "MIDW"
+  | "NCSC"
+  | "NE"
+  | "NY"
+  | "NW"
+  | "RM"
+  | "SE"
+  | "SW"
+  | "TE"
+  | "TN";
 
 export type RegionName =
-  | 'California'
-  | 'Central'
-  | 'Florida'
-  | 'Mid-Atlantic'
-  | 'Midwest'
-  | 'Carolinas'
-  | 'New England'
-  | 'New York'
-  | 'Northwest'
-  | 'Rocky Mountains'
-  | 'Southeast'
-  | 'Southwest'
-  | 'Texas'
-  | 'Tennessee';
+  | "California"
+  | "Central"
+  | "Florida"
+  | "Mid-Atlantic"
+  | "Midwest"
+  | "Carolinas"
+  | "New England"
+  | "New York"
+  | "Northwest"
+  | "Rocky Mountains"
+  | "Southeast"
+  | "Southwest"
+  | "Texas"
+  | "Tennessee";
 
 /**
  * NOTE: actual emissions for each region stored in the "Table 3: EGUs with
@@ -215,8 +215,8 @@ const lineLoss = {
 
 export const regions: { [regionId in RegionId]: Region } = {
   CA: {
-    id: 'CA',
-    name: 'California',
+    id: "CA",
+    name: "California",
     lineLoss: lineLoss.western,
     offshoreWind: true,
     percentageByState: {
@@ -225,8 +225,8 @@ export const regions: { [regionId in RegionId]: Region } = {
     actualEmissions: {},
   },
   CENT: {
-    id: 'CENT',
-    name: 'Central',
+    id: "CENT",
+    name: "Central",
     lineLoss: lineLoss.eastern,
     offshoreWind: false,
     percentageByState: {
@@ -247,8 +247,8 @@ export const regions: { [regionId in RegionId]: Region } = {
     actualEmissions: {},
   },
   FL: {
-    id: 'FL',
-    name: 'Florida',
+    id: "FL",
+    name: "Florida",
     lineLoss: lineLoss.eastern,
     offshoreWind: false,
     percentageByState: {
@@ -259,8 +259,8 @@ export const regions: { [regionId in RegionId]: Region } = {
     },
   },
   MIDA: {
-    id: 'MIDA',
-    name: 'Mid-Atlantic',
+    id: "MIDA",
+    name: "Mid-Atlantic",
     lineLoss: lineLoss.eastern,
     offshoreWind: true,
     percentageByState: {
@@ -284,8 +284,8 @@ export const regions: { [regionId in RegionId]: Region } = {
     },
   },
   MIDW: {
-    id: 'MIDW',
-    name: 'Midwest',
+    id: "MIDW",
+    name: "Midwest",
     lineLoss: lineLoss.eastern,
     offshoreWind: false,
     percentageByState: {
@@ -308,8 +308,8 @@ export const regions: { [regionId in RegionId]: Region } = {
     actualEmissions: {},
   },
   NCSC: {
-    id: 'NCSC',
-    name: 'Carolinas',
+    id: "NCSC",
+    name: "Carolinas",
     lineLoss: lineLoss.eastern,
     offshoreWind: true,
     percentageByState: {
@@ -321,8 +321,8 @@ export const regions: { [regionId in RegionId]: Region } = {
     },
   },
   NE: {
-    id: 'NE',
-    name: 'New England',
+    id: "NE",
+    name: "New England",
     lineLoss: lineLoss.eastern,
     offshoreWind: true,
     percentageByState: {
@@ -336,8 +336,8 @@ export const regions: { [regionId in RegionId]: Region } = {
     actualEmissions: {},
   },
   NW: {
-    id: 'NW',
-    name: 'Northwest',
+    id: "NW",
+    name: "Northwest",
     lineLoss: lineLoss.western,
     offshoreWind: true,
     percentageByState: {
@@ -352,8 +352,8 @@ export const regions: { [regionId in RegionId]: Region } = {
     actualEmissions: {},
   },
   NY: {
-    id: 'NY',
-    name: 'New York',
+    id: "NY",
+    name: "New York",
     lineLoss: lineLoss.eastern,
     offshoreWind: true,
     percentageByState: {
@@ -364,8 +364,8 @@ export const regions: { [regionId in RegionId]: Region } = {
     },
   },
   RM: {
-    id: 'RM',
-    name: 'Rocky Mountains',
+    id: "RM",
+    name: "Rocky Mountains",
     lineLoss: lineLoss.western,
     offshoreWind: false,
     percentageByState: {
@@ -380,8 +380,8 @@ export const regions: { [regionId in RegionId]: Region } = {
     actualEmissions: {},
   },
   SE: {
-    id: 'SE',
-    name: 'Southeast',
+    id: "SE",
+    name: "Southeast",
     lineLoss: lineLoss.eastern,
     offshoreWind: false,
     percentageByState: {
@@ -393,8 +393,8 @@ export const regions: { [regionId in RegionId]: Region } = {
     actualEmissions: {},
   },
   SW: {
-    id: 'SW',
-    name: 'Southwest',
+    id: "SW",
+    name: "Southwest",
     lineLoss: lineLoss.western,
     offshoreWind: false,
     percentageByState: {
@@ -405,8 +405,8 @@ export const regions: { [regionId in RegionId]: Region } = {
     actualEmissions: {},
   },
   TE: {
-    id: 'TE',
-    name: 'Texas',
+    id: "TE",
+    name: "Texas",
     lineLoss: lineLoss.texas,
     offshoreWind: false,
     percentageByState: {
@@ -415,8 +415,8 @@ export const regions: { [regionId in RegionId]: Region } = {
     actualEmissions: {},
   },
   TN: {
-    id: 'TN',
-    name: 'Tennessee',
+    id: "TN",
+    name: "Tennessee",
     lineLoss: lineLoss.eastern,
     offshoreWind: false,
     percentageByState: {
@@ -431,55 +431,55 @@ export const regions: { [regionId in RegionId]: Region } = {
 };
 
 export type StateId =
-  | 'AL'
-  | 'AR'
-  | 'AZ'
-  | 'CA'
-  | 'CO'
-  | 'CT'
-  | 'DC'
-  | 'DE'
-  | 'FL'
-  | 'GA'
-  | 'IA'
-  | 'ID'
-  | 'IL'
-  | 'IN'
-  | 'KS'
-  | 'KY'
-  | 'LA'
-  | 'MA'
-  | 'MD'
-  | 'ME'
-  | 'MI'
-  | 'MN'
-  | 'MO'
-  | 'MS'
-  | 'MT'
-  | 'NC'
-  | 'ND'
-  | 'NE'
-  | 'NH'
-  | 'NJ'
-  | 'NM'
-  | 'NV'
-  | 'NY'
-  | 'OH'
-  | 'OK'
-  | 'OR'
-  | 'PA'
-  | 'RI'
-  | 'SC'
-  | 'SD'
-  | 'TN'
-  | 'TX'
-  | 'UT'
-  | 'VA'
-  | 'VT'
-  | 'WA'
-  | 'WI'
-  | 'WV'
-  | 'WY';
+  | "AL"
+  | "AR"
+  | "AZ"
+  | "CA"
+  | "CO"
+  | "CT"
+  | "DC"
+  | "DE"
+  | "FL"
+  | "GA"
+  | "IA"
+  | "ID"
+  | "IL"
+  | "IN"
+  | "KS"
+  | "KY"
+  | "LA"
+  | "MA"
+  | "MD"
+  | "ME"
+  | "MI"
+  | "MN"
+  | "MO"
+  | "MS"
+  | "MT"
+  | "NC"
+  | "ND"
+  | "NE"
+  | "NH"
+  | "NJ"
+  | "NM"
+  | "NV"
+  | "NY"
+  | "OH"
+  | "OK"
+  | "OR"
+  | "PA"
+  | "RI"
+  | "SC"
+  | "SD"
+  | "TN"
+  | "TX"
+  | "UT"
+  | "VA"
+  | "VT"
+  | "WA"
+  | "WI"
+  | "WV"
+  | "WY";
 
 export type State = {
   id: StateId;
@@ -493,120 +493,120 @@ export type State = {
  */
 export const states: { [stateId in StateId]: State } = {
   AL: {
-    id: 'AL',
-    name: 'Alabama',
+    id: "AL",
+    name: "Alabama",
     percentageByRegion: {
       SE: 73.791629656774,
       TN: 26.208370343226,
     },
   },
   AR: {
-    id: 'AR',
-    name: 'Arkansas',
+    id: "AR",
+    name: "Arkansas",
     percentageByRegion: {
       MIDW: 73.757031571744,
       CENT: 26.242968428256,
     },
   },
   AZ: {
-    id: 'AZ',
-    name: 'Arizona',
+    id: "AZ",
+    name: "Arizona",
     percentageByRegion: {
       SW: 100,
     },
   },
   CA: {
-    id: 'CA',
-    name: 'California',
+    id: "CA",
+    name: "California",
     percentageByRegion: {
       CA: 100,
     },
   },
   CO: {
-    id: 'CO',
-    name: 'Colorado',
+    id: "CO",
+    name: "Colorado",
     percentageByRegion: {
       RM: 100,
     },
   },
   CT: {
-    id: 'CT',
-    name: 'Connecticut',
+    id: "CT",
+    name: "Connecticut",
     percentageByRegion: {
       NE: 100,
     },
   },
   DC: {
-    id: 'DC',
-    name: 'District of Columbia',
+    id: "DC",
+    name: "District of Columbia",
     percentageByRegion: {
       MIDA: 100,
     },
   },
   DE: {
-    id: 'DE',
-    name: 'Delaware',
+    id: "DE",
+    name: "Delaware",
     percentageByRegion: {
       MIDA: 100,
     },
   },
   FL: {
-    id: 'FL',
-    name: 'Florida',
+    id: "FL",
+    name: "Florida",
     percentageByRegion: {
       SE: 5.54204561120175,
       FL: 94.4579543887982,
     },
   },
   GA: {
-    id: 'GA',
-    name: 'Georgia',
+    id: "GA",
+    name: "Georgia",
     percentageByRegion: {
       SE: 97.5685884564487,
       TN: 2.43141154355125,
     },
   },
   IA: {
-    id: 'IA',
-    name: 'Iowa',
+    id: "IA",
+    name: "Iowa",
     percentageByRegion: {
       MIDW: 94.0739868582707,
       CENT: 5.92601314172933,
     },
   },
   ID: {
-    id: 'ID',
-    name: 'Idaho',
+    id: "ID",
+    name: "Idaho",
     percentageByRegion: {
       NW: 100,
     },
   },
   IL: {
-    id: 'IL',
-    name: 'Illinois',
+    id: "IL",
+    name: "Illinois",
     percentageByRegion: {
       MIDA: 65.2031111352377,
       MIDW: 34.7968888647623,
     },
   },
   IN: {
-    id: 'IN',
-    name: 'Indiana',
+    id: "IN",
+    name: "Indiana",
     percentageByRegion: {
       MIDA: 21.306124107215,
       MIDW: 78.693875892785,
     },
   },
   KS: {
-    id: 'KS',
-    name: 'Kansas',
+    id: "KS",
+    name: "Kansas",
     percentageByRegion: {
       CENT: 100,
     },
   },
   KY: {
-    id: 'KY',
-    name: 'Kentucky',
+    id: "KY",
+    name: "Kentucky",
     percentageByRegion: {
       TN: 14.9033170798895,
       MIDA: 29.8395825874621,
@@ -614,61 +614,61 @@ export const states: { [stateId in StateId]: State } = {
     },
   },
   LA: {
-    id: 'LA',
-    name: 'Louisiana',
+    id: "LA",
+    name: "Louisiana",
     percentageByRegion: {
       MIDW: 92.7251993267115,
       CENT: 7.27480067328851,
     },
   },
   MA: {
-    id: 'MA',
-    name: 'Massachusetts',
+    id: "MA",
+    name: "Massachusetts",
     percentageByRegion: {
       NE: 100,
     },
   },
   MD: {
-    id: 'MD',
-    name: 'Maryland',
+    id: "MD",
+    name: "Maryland",
     percentageByRegion: {
       MIDA: 100,
     },
   },
   ME: {
-    id: 'ME',
-    name: 'Maine',
+    id: "ME",
+    name: "Maine",
     percentageByRegion: {
       NE: 100,
     },
   },
   MI: {
-    id: 'MI',
-    name: 'Michigan',
+    id: "MI",
+    name: "Michigan",
     percentageByRegion: {
       MIDA: 3.87442312109519,
       MIDW: 96.1255768789048,
     },
   },
   MN: {
-    id: 'MN',
-    name: 'Minnesota',
+    id: "MN",
+    name: "Minnesota",
     percentageByRegion: {
       MIDW: 98.7057353946334,
       CENT: 1.29426460536664,
     },
   },
   MO: {
-    id: 'MO',
-    name: 'Missouri',
+    id: "MO",
+    name: "Missouri",
     percentageByRegion: {
       MIDW: 65.1822776582235,
       CENT: 34.8177223417765,
     },
   },
   MS: {
-    id: 'MS',
-    name: 'Mississippi',
+    id: "MS",
+    name: "Mississippi",
     percentageByRegion: {
       SE: 23.2693176758563,
       TN: 32.3277059280809,
@@ -676,8 +676,8 @@ export const states: { [stateId in StateId]: State } = {
     },
   },
   MT: {
-    id: 'MT',
-    name: 'Montana',
+    id: "MT",
+    name: "Montana",
     percentageByRegion: {
       NW: 90.9322053030408,
       RM: 1.63910331296,
@@ -685,46 +685,46 @@ export const states: { [stateId in StateId]: State } = {
     },
   },
   NC: {
-    id: 'NC',
-    name: 'North Carolina',
+    id: "NC",
+    name: "North Carolina",
     percentageByRegion: {
       NCSC: 95.8122354967843,
       MIDA: 4.18776450321575,
     },
   },
   ND: {
-    id: 'ND',
-    name: 'North Dakota',
+    id: "ND",
+    name: "North Dakota",
     percentageByRegion: {
       MIDW: 53.0639532459073,
       CENT: 46.9360467540927,
     },
   },
   NE: {
-    id: 'NE',
-    name: 'Nebraska',
+    id: "NE",
+    name: "Nebraska",
     percentageByRegion: {
       RM: 4.12001916514984,
       CENT: 95.8799808348502,
     },
   },
   NH: {
-    id: 'NH',
-    name: 'New Hampshire',
+    id: "NH",
+    name: "New Hampshire",
     percentageByRegion: {
       NE: 100,
     },
   },
   NJ: {
-    id: 'NJ',
-    name: 'New Jersey',
+    id: "NJ",
+    name: "New Jersey",
     percentageByRegion: {
       MIDA: 100,
     },
   },
   NM: {
-    id: 'NM',
-    name: 'New Mexico',
+    id: "NM",
+    name: "New Mexico",
     percentageByRegion: {
       RM: 4.57850916915244,
       SW: 60.2887390314291,
@@ -732,65 +732,65 @@ export const states: { [stateId in StateId]: State } = {
     },
   },
   NV: {
-    id: 'NV',
-    name: 'Nevada',
+    id: "NV",
+    name: "Nevada",
     percentageByRegion: {
       NW: 100,
     },
   },
   NY: {
-    id: 'NY',
-    name: 'New York',
+    id: "NY",
+    name: "New York",
     percentageByRegion: {
       NY: 100,
     },
   },
   OH: {
-    id: 'OH',
-    name: 'Ohio',
+    id: "OH",
+    name: "Ohio",
     percentageByRegion: {
       MIDA: 100,
     },
   },
   OK: {
-    id: 'OK',
-    name: 'Oklahoma',
+    id: "OK",
+    name: "Oklahoma",
     percentageByRegion: {
       MIDW: 4.58716009767985,
       CENT: 95.4128399023201,
     },
   },
   OR: {
-    id: 'OR',
-    name: 'Oregon',
+    id: "OR",
+    name: "Oregon",
     percentageByRegion: {
       NW: 100,
     },
   },
   PA: {
-    id: 'PA',
-    name: 'Pennsylvania',
+    id: "PA",
+    name: "Pennsylvania",
     percentageByRegion: {
       MIDA: 100,
     },
   },
   RI: {
-    id: 'RI',
-    name: 'Rhode Island',
+    id: "RI",
+    name: "Rhode Island",
     percentageByRegion: {
       NE: 100,
     },
   },
   SC: {
-    id: 'SC',
-    name: 'South Carolina',
+    id: "SC",
+    name: "South Carolina",
     percentageByRegion: {
       NCSC: 100,
     },
   },
   SD: {
-    id: 'SD',
-    name: 'South Dakota',
+    id: "SD",
+    name: "South Dakota",
     percentageByRegion: {
       RM: 24.6328808233089,
       MIDW: 25.4722557633138,
@@ -798,16 +798,16 @@ export const states: { [stateId in StateId]: State } = {
     },
   },
   TN: {
-    id: 'TN',
-    name: 'Tennessee',
+    id: "TN",
+    name: "Tennessee",
     percentageByRegion: {
       TN: 97.9705292162893,
       MIDA: 2.02947078371074,
     },
   },
   TX: {
-    id: 'TX',
-    name: 'Texas',
+    id: "TX",
+    name: "Texas",
     percentageByRegion: {
       SW: 1.49870155100264,
       TE: 85.6392226594376,
@@ -816,51 +816,51 @@ export const states: { [stateId in StateId]: State } = {
     },
   },
   UT: {
-    id: 'UT',
-    name: 'Utah',
+    id: "UT",
+    name: "Utah",
     percentageByRegion: {
       NW: 97.3172662009813,
       RM: 2.68273379901869,
     },
   },
   VA: {
-    id: 'VA',
-    name: 'Virginia',
+    id: "VA",
+    name: "Virginia",
     percentageByRegion: {
       MIDA: 100,
     },
   },
   VT: {
-    id: 'VT',
-    name: 'Vermont',
+    id: "VT",
+    name: "Vermont",
     percentageByRegion: {
       NE: 100,
     },
   },
   WA: {
-    id: 'WA',
-    name: 'Washington',
+    id: "WA",
+    name: "Washington",
     percentageByRegion: {
       NW: 100,
     },
   },
   WI: {
-    id: 'WI',
-    name: 'Wisconsin',
+    id: "WI",
+    name: "Wisconsin",
     percentageByRegion: {
       MIDW: 100,
     },
   },
   WV: {
-    id: 'WV',
-    name: 'West Virginia',
+    id: "WV",
+    name: "West Virginia",
     percentageByRegion: {
       MIDA: 100,
     },
   },
   WY: {
-    id: 'WY',
-    name: 'Wyoming',
+    id: "WY",
+    name: "Wyoming",
     percentageByRegion: {
       NW: 62.2496676189133,
       RM: 37.7503323810867,
@@ -873,21 +873,21 @@ export const states: { [stateId in StateId]: State } = {
  * set the value in the "ES_Detail" sheet (D58).
  */
 export const maxAnnualDischargeCyclesOptions = [
-  { id: '75', name: '75' },
-  { id: '100', name: '100' },
-  { id: '150', name: '150' },
+  { id: "75", name: "75" },
+  { id: "100", name: "100" },
+  { id: "150", name: "150" },
 ];
 
 /**
  * Excel: "EV model year" select options in the "EV_Detail" sheet (E79).
  */
 export const evModelYearOptions = [
-  { id: '2023', name: '2023' },
-  { id: '2024', name: '2024' },
-  { id: '2025', name: '2025' },
-  { id: '2026', name: '2026' },
-  { id: '2027', name: '2027' },
-  { id: '2028', name: '2028' },
+  { id: "2023", name: "2023" },
+  { id: "2024", name: "2024" },
+  { id: "2025", name: "2025" },
+  { id: "2026", name: "2026" },
+  { id: "2027", name: "2027" },
+  { id: "2028", name: "2028" },
 ];
 
 /**
@@ -895,6 +895,6 @@ export const evModelYearOptions = [
  * (E80).
  */
 export const iceReplacementVehicleOptions = [
-  { id: 'new', name: 'New' },
-  { id: 'existing', name: 'Existing' },
+  { id: "new", name: "New" },
+  { id: "existing", name: "Existing" },
 ];

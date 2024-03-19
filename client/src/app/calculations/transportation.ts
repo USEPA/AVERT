@@ -1,11 +1,11 @@
-import { RegionalLoadData } from '@/app/redux/reducers/geography';
-import type { GeographicFocus } from '@/app/redux/reducers/geography';
+import { RegionalLoadData } from "@/app/redux/reducers/geography";
+import type { GeographicFocus } from "@/app/redux/reducers/geography";
 import type {
   CountiesByGeography,
   RegionalScalingFactors,
   SelectedGeographyRegions,
-} from '@/app/calculations/geography';
-import { type EmptyObject, sortObjectByKeys } from '@/app/utilities';
+} from "@/app/calculations/geography";
+import { type EmptyObject, sortObjectByKeys } from "@/app/utilities";
 import type {
   CountyFips,
   MovesEmissionsRates,
@@ -20,7 +20,7 @@ import type {
   StateEereAverages,
   RegionId,
   StateId,
-} from '@/app/config';
+} from "@/app/config";
 import {
   percentageHybridEVMilesDrivenOnElectricity,
   percentageAdditionalEnergyConsumedFactor,
@@ -28,36 +28,36 @@ import {
   percentageLDVsDisplacedByEVs,
   regions,
   states,
-} from '@/app/config';
+} from "@/app/config";
 
 const abridgedVehicleTypes = [
-  'cars',
-  'trucks',
-  'transitBuses',
-  'schoolBuses',
+  "cars",
+  "trucks",
+  "transitBuses",
+  "schoolBuses",
 ] as const;
 
 const generalVehicleTypes = [
-  'cars',
-  'trucks',
-  'transitBusesDiesel',
-  'transitBusesCNG',
-  'transitBusesGasoline',
-  'schoolBuses',
+  "cars",
+  "trucks",
+  "transitBusesDiesel",
+  "transitBusesCNG",
+  "transitBusesGasoline",
+  "schoolBuses",
 ] as const;
 
 const expandedVehicleTypes = [
-  'batteryEVCars',
-  'hybridEVCars',
-  'batteryEVTrucks',
-  'hybridEVTrucks',
-  'transitBusesDiesel',
-  'transitBusesCNG',
-  'transitBusesGasoline',
-  'schoolBuses',
+  "batteryEVCars",
+  "hybridEVCars",
+  "batteryEVTrucks",
+  "hybridEVTrucks",
+  "transitBusesDiesel",
+  "transitBusesCNG",
+  "transitBusesGasoline",
+  "schoolBuses",
 ] as const;
 
-const pollutants = ['CO2', 'NOX', 'SO2', 'PM25', 'VOCs', 'NH3'] as const;
+const pollutants = ["CO2", "NOX", "SO2", "PM25", "VOCs", "NH3"] as const;
 
 type AbridgedVehicleType = (typeof abridgedVehicleTypes)[number];
 type GeneralVehicleType = (typeof generalVehicleTypes)[number];
@@ -168,14 +168,14 @@ export function calculateVMTTotalsByGeography(options: {
 
   const result = countyFips.reduce(
     (object, data) => {
-      const regionId = regionIds[data['AVERT Region']];
-      const stateId = data['Postal State Code'] as StateId;
-      const county = data['County Name Long'];
+      const regionId = regionIds[data["AVERT Region"]];
+      const stateId = data["Postal State Code"] as StateId;
+      const county = data["County Name Long"];
       const vmtData = {
-        cars: data['Passenger Cars VMT'] || 0,
-        trucks: data['Passenger Trucks and Light Commercial Trucks VMT'] || 0,
-        transitBuses: data['Transit Buses VMT'] || 0,
-        schoolBuses: data['School Buses VMT'] || 0,
+        cars: data["Passenger Cars VMT"] || 0,
+        trucks: data["Passenger Trucks and Light Commercial Trucks VMT"] || 0,
+        transitBuses: data["Transit Buses VMT"] || 0,
+        schoolBuses: data["School Buses VMT"] || 0,
       };
 
       if (regionId) {
@@ -254,8 +254,8 @@ export function calculateVMTBillionsAndPercentages(options: {
       return data;
     },
     { regionTotals: {} } as {
-      [stateId in StateId | 'regionTotals']: Partial<{
-        [regionId in RegionId | 'allRegions']: {
+      [stateId in StateId | "regionTotals"]: Partial<{
+        [regionId in RegionId | "allRegions"]: {
           cars: { total: number; percent: number };
           trucks: { total: number; percent: number };
           transitBuses: { total: number; percent: number };
@@ -278,12 +278,12 @@ export function calculateVMTBillionsAndPercentages(options: {
   // populate vmt totals data for each state, organized by region, and initialize
   // allRegions object for storing totals of all region data in the state
   countyFips.forEach((data) => {
-    const stateId = data['Postal State Code'] as StateId;
-    const regionId = regionIds[data['AVERT Region']];
-    const carsVMT = data['Passenger Cars VMT'] || 0;
+    const stateId = data["Postal State Code"] as StateId;
+    const regionId = regionIds[data["AVERT Region"]];
+    const carsVMT = data["Passenger Cars VMT"] || 0;
     const trucksVMT = data['Passenger Trucks and Light Commercial Trucks VMT'] || 0; // prettier-ignore
-    const transitBusesVMT = data['Transit Buses VMT'] || 0;
-    const schoolBusesVMT = data['School Buses VMT'] || 0;
+    const transitBusesVMT = data["Transit Buses VMT"] || 0;
+    const schoolBusesVMT = data["School Buses VMT"] || 0;
 
     if (result[stateId]) {
       result[stateId].allRegions ??= {
@@ -326,10 +326,10 @@ export function calculateVMTBillionsAndPercentages(options: {
   // data for each region, across all states
   Object.entries(result).forEach(([stateId, stateData]) => {
     // NOTE: stateData is really 'regionTotals' on the first loop, so skip it
-    if (stateId !== 'regionTotals') {
+    if (stateId !== "regionTotals") {
       Object.entries(stateData).forEach(([regionId, regionData]) => {
         // NOTE: regionId is really 'allRegions' on the first loop, so skip it
-        if (regionId !== 'allRegions') {
+        if (regionId !== "allRegions") {
           result.regionTotals[regionId as RegionId] ??= {
             cars: { total: 0, percent: 1 },
             trucks: { total: 0, percent: 1 },
@@ -358,10 +358,10 @@ export function calculateVMTBillionsAndPercentages(options: {
   // and build up each state's 'allRegions' data with values from each region
   Object.entries(result).forEach(([stateId, stateData]) => {
     // NOTE: stateData is really 'regionTotals' on the first loop, so skip it
-    if (stateId !== 'regionTotals') {
+    if (stateId !== "regionTotals") {
       Object.entries(stateData).forEach(([regionId, regionData]) => {
         // NOTE: regionId is really 'allRegions' on the first loop, so skip it
-        if (regionId !== 'allRegions') {
+        if (regionId !== "allRegions") {
           const regionTotalData = result.regionTotals[regionId as RegionId];
           const allRegionsData = result[stateId as StateId].allRegions;
 
@@ -442,11 +442,11 @@ export function calculateStateVMTPercentagesByRegion(options: {
     (object, [stateKey, stateValue]) => {
       const stateId = stateKey as keyof typeof vmtData;
       // NOTE: stateData is really 'regionTotals' on the first loop, so skip it
-      if (stateId !== 'regionTotals') {
+      if (stateId !== "regionTotals") {
         Object.entries(stateValue).forEach(([regionKey, regionValue]) => {
           const regionId = regionKey as keyof typeof stateValue;
           // NOTE: regionId is really 'allRegions' on the first loop, so skip it
-          if (regionId !== 'allRegions') {
+          if (regionId !== "allRegions") {
             object[stateId] ??= {};
             object[stateId][regionId] ??= {
               cars: 0,
@@ -462,7 +462,7 @@ export function calculateStateVMTPercentagesByRegion(options: {
               Object.keys(regionValue).forEach((key) => {
                 const vehicleType = key as keyof typeof regionValue;
 
-                if (vehicleType !== 'allLDVs' && vehicleType !== 'allBuses') {
+                if (vehicleType !== "allLDVs" && vehicleType !== "allBuses") {
                   stateRegionData[vehicleType] =
                     regionValue[vehicleType].total /
                     stateTotals[vehicleType].total;
@@ -541,7 +541,7 @@ export function calculateVMTAllocationPerVehicle(options: {
         vmtPerBus: { total: 0, percent: 0 },
       },
     } as {
-      [stateId in StateId | 'total']: {
+      [stateId in StateId | "total"]: {
         millionVmtLDVs: number;
         millionVmtBuses: number;
         millionRegisteredLDVs: number;
@@ -554,7 +554,7 @@ export function calculateVMTAllocationPerVehicle(options: {
 
   // sum totals across states
   Object.entries(result).forEach(([key, data]) => {
-    if (key !== 'total') {
+    if (key !== "total") {
       result.total.millionVmtLDVs += data.millionVmtLDVs;
       result.total.millionVmtBuses += data.millionVmtBuses;
       result.total.millionRegisteredLDVs += data.millionRegisteredLDVs;
@@ -564,14 +564,14 @@ export function calculateVMTAllocationPerVehicle(options: {
 
   // calculate vmt per vehicle totals for each state or totals object
   Object.keys(result).forEach((key) => {
-    const item = result[key as StateId | 'total'];
+    const item = result[key as StateId | "total"];
     item.vmtPerLDV.total = item.millionVmtLDVs / item.millionRegisteredLDVs;
     item.vmtPerBus.total = item.millionVmtBuses / item.millionRegisteredBuses;
   });
 
   // calculate vmt per vehicle percentages for each state
   Object.keys(result).forEach((key) => {
-    if (key !== 'total') {
+    if (key !== "total") {
       const item = result[key as StateId];
       item.vmtPerLDV.percent = item.vmtPerLDV.total / result.total.vmtPerLDV.total; // prettier-ignore
       item.vmtPerBus.percent = item.vmtPerBus.total / result.total.vmtPerBus.total; // prettier-ignore
@@ -660,19 +660,19 @@ export function calculateMonthlyVMTTotalsAndPercentages(options: {
       };
 
       const generalVehicleType: GeneralVehicleType | null =
-        data.vehicleType === 'Passenger Car'
-          ? 'cars'
-          : data.vehicleType === 'Passenger Truck'
-            ? 'trucks'
+        data.vehicleType === "Passenger Car"
+          ? "cars"
+          : data.vehicleType === "Passenger Truck"
+            ? "trucks"
             : data.vehicleType === 'Transit Bus' && data.fuelType === 'Diesel Fuel' // prettier-ignore
-              ? 'transitBusesDiesel'
+              ? "transitBusesDiesel"
               : data.vehicleType === 'Transit Bus' && data.fuelType === 'Compressed Natural Gas (CNG)' // prettier-ignore
-                ? 'transitBusesCNG'
-                : data.vehicleType === 'Transit Bus' &&
-                    data.fuelType === 'Gasoline'
-                  ? 'transitBusesGasoline'
-                  : data.vehicleType === 'School Bus'
-                    ? 'schoolBuses'
+                ? "transitBusesCNG"
+                : data.vehicleType === "Transit Bus" &&
+                    data.fuelType === "Gasoline"
+                  ? "transitBusesGasoline"
+                  : data.vehicleType === "School Bus"
+                    ? "schoolBuses"
                     : null; // NOTE: fallback (generalVehicleType should never actually be null)
 
       if (generalVehicleType) {
@@ -774,7 +774,7 @@ export function calculateSelectedRegionsStatesVMTPercentages(options: {
     (object, [stateKey, stateValue]) => {
       const stateId = stateKey as keyof typeof vmtData;
 
-      if (stateId === 'regionTotals') return object;
+      if (stateId === "regionTotals") return object;
 
       const stateRegionIds = Object.keys(stateValue); // NOTE: also includes 'allRegions' key
       const stateVMTData = vmtData?.[stateId];
@@ -1006,10 +1006,10 @@ export function calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
              * abridged (don't include transit buses broken out by fuel type)
              */
             const averageVMTPerYearVehicleType =
-              vehicleType === 'transitBusesDiesel' ||
-              vehicleType === 'transitBusesCNG' ||
-              vehicleType === 'transitBusesGasoline'
-                ? 'transitBuses'
+              vehicleType === "transitBusesDiesel" ||
+              vehicleType === "transitBusesCNG" ||
+              vehicleType === "transitBusesGasoline"
+                ? "transitBuses"
                 : vehicleType;
 
             object[regionId][month][vehicleType] =
@@ -1647,12 +1647,12 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
       ? (selectedRegionsStatesVMTPercentages as SelectedRegionsStatesVMTPercentages)
       : null;
 
-  if (!selectedRegionsVMTData || evDeploymentLocation === '') {
+  if (!selectedRegionsVMTData || evDeploymentLocation === "") {
     return result;
   }
 
-  const deploymentLocationIsRegion = evDeploymentLocation.startsWith('region-');
-  const deploymentLocationIsState = evDeploymentLocation.startsWith('state-');
+  const deploymentLocationIsRegion = evDeploymentLocation.startsWith("region-");
+  const deploymentLocationIsState = evDeploymentLocation.startsWith("state-");
 
   movesEmissionsRates.forEach((data) => {
     const month = Number(data.month);
@@ -1679,45 +1679,45 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
         };
 
         const generalVehicleType: GeneralVehicleType | null =
-          data.vehicleType === 'Passenger Car'
-            ? 'cars'
-            : data.vehicleType === 'Passenger Truck'
-              ? 'trucks'
+          data.vehicleType === "Passenger Car"
+            ? "cars"
+            : data.vehicleType === "Passenger Truck"
+              ? "trucks"
               : data.vehicleType === 'Transit Bus' && data.fuelType === 'Diesel Fuel' // prettier-ignore
-                ? 'transitBusesDiesel'
+                ? "transitBusesDiesel"
                 : data.vehicleType === 'Transit Bus' && data.fuelType === 'Compressed Natural Gas (CNG)' // prettier-ignore
-                  ? 'transitBusesCNG'
-                  : data.vehicleType === 'Transit Bus' &&
-                      data.fuelType === 'Gasoline'
-                    ? 'transitBusesGasoline'
-                    : data.vehicleType === 'School Bus'
-                      ? 'schoolBuses'
+                  ? "transitBusesCNG"
+                  : data.vehicleType === "Transit Bus" &&
+                      data.fuelType === "Gasoline"
+                    ? "transitBusesGasoline"
+                    : data.vehicleType === "School Bus"
+                      ? "schoolBuses"
                       : null; // NOTE: fallback (generalVehicleType should never actually be null)
 
         const abridgedVehicleType: AbridgedVehicleType | null =
-          data.vehicleType === 'Passenger Car'
-            ? 'cars'
-            : data.vehicleType === 'Passenger Truck'
-              ? 'trucks'
-              : data.vehicleType === 'Transit Bus'
-                ? 'transitBuses'
-                : data.vehicleType === 'School Bus'
-                  ? 'schoolBuses'
+          data.vehicleType === "Passenger Car"
+            ? "cars"
+            : data.vehicleType === "Passenger Truck"
+              ? "trucks"
+              : data.vehicleType === "Transit Bus"
+                ? "transitBuses"
+                : data.vehicleType === "School Bus"
+                  ? "schoolBuses"
                   : null; // NOTE: fallback (abridgedVehicleType should never actually be null)
 
         if (generalVehicleType && abridgedVehicleType) {
           const modelYearMatch =
-            iceReplacementVehicle === 'new'
+            iceReplacementVehicle === "new"
               ? data.modelYear === evModelYear
-              : data.modelYear === 'Fleet Average';
+              : data.modelYear === "Fleet Average";
 
           const conditionalYearMatch =
-            iceReplacementVehicle === 'new'
+            iceReplacementVehicle === "new"
               ? true //
               : data.year === evModelYear;
 
           const conditionalStateMatch = deploymentLocationIsState
-            ? data.state === evDeploymentLocation.replace('state-', '')
+            ? data.state === evDeploymentLocation.replace("state-", "")
             : true;
 
           const movesRegionalWeightPercentage =
@@ -1753,7 +1753,7 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
 export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
   geographicFocus: GeographicFocus;
   stateVMTPercentagesByRegion: StateVMTPercentagesByRegion | EmptyObject;
-  selectedStateId: StateId | '';
+  selectedStateId: StateId | "";
   selectedRegionsMonthlyVMTPerVehicleType:
     | SelectedRegionsMonthlyVMTPerVehicleType
     | EmptyObject;
@@ -1809,7 +1809,7 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
        * result by the percentage of that state's VMT in the given region
        */
       const stateVMTFactors =
-        geographicFocus === 'states' && selectedStateId !== ''
+        geographicFocus === "states" && selectedStateId !== ""
           ? stateVMTPercentages?.[selectedStateId][regionId] || null
           : null;
 
@@ -1919,7 +1919,7 @@ export function calculateSelectedRegionsTotalMonthlyEmissionChanges(options: {
   const { selectedRegionsMonthlyEmissionChanges } = options;
 
   type MonthlyData = {
-    [field in 'cars' | 'trucks' | 'transitBuses' | 'schoolBuses' | 'total']: {
+    [field in "cars" | "trucks" | "transitBuses" | "schoolBuses" | "total"]: {
       [pollutant in Pollutant]: number;
     };
   };
@@ -2077,8 +2077,8 @@ export function calculateSelectedRegionsTotalYearlyEmissionChanges(options: {
  */
 export function calculateVehicleEmissionChangesByGeography(options: {
   geographicFocus: GeographicFocus;
-  selectedRegionId: RegionId | '';
-  selectedStateId: StateId | '';
+  selectedRegionId: RegionId | "";
+  selectedStateId: StateId | "";
   countiesByGeography: CountiesByGeography | EmptyObject;
   selectedGeographyRegionIds: RegionId[];
   vmtTotalsByGeography: VMTTotalsByGeography | EmptyObject;
@@ -2127,7 +2127,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
   };
 
   const regionSelected = geographicFocus === 'regions' && selectedRegionId !== ''; // prettier-ignore
-  const stateSelected = geographicFocus === 'states' && selectedStateId !== '';
+  const stateSelected = geographicFocus === "states" && selectedStateId !== "";
 
   const countiesByGeographyData =
     Object.keys(countiesByGeography).length !== 0
@@ -2148,7 +2148,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
     !countiesByGeographyData ||
     !vmtData ||
     !selectedRegionsChangesData ||
-    evDeploymentLocation === ''
+    evDeploymentLocation === ""
   ) {
     return result;
   }
@@ -2172,8 +2172,8 @@ export function calculateVehicleEmissionChangesByGeography(options: {
     }>,
   );
 
-  const deploymentLocationIsRegion = evDeploymentLocation.startsWith('region-');
-  const deploymentLocationIsState = evDeploymentLocation.startsWith('state-');
+  const deploymentLocationIsRegion = evDeploymentLocation.startsWith("region-");
+  const deploymentLocationIsState = evDeploymentLocation.startsWith("state-");
   const deploymentLocationStateId = evDeploymentLocation.replace('state-', '') as StateId; // prettier-ignore
 
   const locationVMT = regionSelected
@@ -2218,7 +2218,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
             Object.values(selectedRegionsChangesData).forEach((changes) => {
               pollutants.forEach((pollutant) => {
                 // conditionally convert CO2 pounds into tons
-                const unitFactor = pollutant === 'CO2' ? 2_000 : 1;
+                const unitFactor = pollutant === "CO2" ? 2_000 : 1;
 
                 const cars =
                   (changes.cars[pollutant] * countyVMT.cars) /
@@ -2297,23 +2297,23 @@ export function calculateVehicleSalesAndStock(options: {
       ? (vmtAllocationPerVehicle as VMTAllocationPerVehicle)
       : null;
 
-  if (evDeploymentLocations[0] === '' || !vmtAllocationData) {
+  if (evDeploymentLocations[0] === "" || !vmtAllocationData) {
     return result;
   }
 
   // conditionally remove 'region-' option, as it will be added later as the sum
   // of each state's data
   const stateIds = evDeploymentLocations.reduce((ids, id) => {
-    return id.startsWith('region-') ? ids : ids.concat(id);
+    return id.startsWith("region-") ? ids : ids.concat(id);
   }, [] as string[]);
 
   countyFips.forEach((data) => {
-    const id = data['Postal State Code'];
+    const id = data["Postal State Code"];
     const stateId = `state-${id}`;
 
     const conditionalRegionMatch =
-      geographicFocus === 'regions'
-        ? data['AVERT Region'] === selectedRegionName
+      geographicFocus === "regions"
+        ? data["AVERT Region"] === selectedRegionName
         : true;
 
     if (conditionalRegionMatch && stateIds.includes(stateId)) {
@@ -2359,7 +2359,7 @@ export function calculateVehicleSalesAndStock(options: {
 
   // conditionally add 'region-' to result as the sum of each state's data
   const resultStateIds = Object.keys(result);
-  const regionId = evDeploymentLocations.find((id) => id.startsWith('region-'));
+  const regionId = evDeploymentLocations.find((id) => id.startsWith("region-"));
 
   if (regionId) {
     result[regionId] = {
@@ -2454,7 +2454,7 @@ export function calculateEVDeploymentLocationHistoricalEERE(options: {
   selectedRegionsEEREDefaultsAverages: SelectedRegionsEEREDefaultsAverages;
   evDeploymentLocation: string;
   regionalLineLoss: number;
-  selectedRegionId: RegionId | '';
+  selectedRegionId: RegionId | "";
 }) {
   const {
     regionEereAverages,
@@ -2478,7 +2478,7 @@ export function calculateEVDeploymentLocationHistoricalEERE(options: {
     return result;
   }
 
-  const deploymentLocationIsRegion = evDeploymentLocation.startsWith('region-');
+  const deploymentLocationIsRegion = evDeploymentLocation.startsWith("region-");
   const deploymentLocationStateId = evDeploymentLocation.replace('state-', '') as StateId; // prettier-ignore
 
   const fallbackEereAverage = {

@@ -1,11 +1,11 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 // —-
-import { ErrorBoundary } from '@/app/components/ErrorBoundary';
-import { Tooltip } from '@/app/components/Tooltip';
-import { useAppSelector } from '@/app/redux/index';
-import type { EmissionsReplacements } from '@/app/redux/reducers/results';
-import type { CombinedSectorsEmissionsData } from '@/app/calculations/emissions';
-import { type EmptyObject } from '@/app/utilities';
+import { ErrorBoundary } from "@/app/components/ErrorBoundary";
+import { Tooltip } from "@/app/components/Tooltip";
+import { useAppSelector } from "@/app/redux/index";
+import type { EmissionsReplacements } from "@/app/redux/reducers/results";
+import type { CombinedSectorsEmissionsData } from "@/app/calculations/emissions";
+import { type EmptyObject } from "@/app/utilities";
 
 type AnnualMonthlyData = ReturnType<typeof setAnnualMonthlyData>;
 
@@ -14,7 +14,7 @@ type AnnualMonthlyData = ReturnType<typeof setAnnualMonthlyData>;
  * within 10 of zero.
  */
 function formatNumber(number: number) {
-  if (number !== 0 && number < 10 && number > -10) return '—';
+  if (number !== 0 && number < 10 && number > -10) return "—";
   const result = Math.round(number / 10) * 10;
   return result.toLocaleString();
 }
@@ -23,7 +23,7 @@ function formatNumber(number: number) {
  * Calculate numerator ÷ denominator, formatted to three decimal places
  */
 function calculateFraction(numerator: number, denominator: number) {
-  return denominator !== 0 ? (numerator / denominator).toFixed(3) : '';
+  return denominator !== 0 ? (numerator / denominator).toFixed(3) : "";
 }
 
 /**
@@ -67,13 +67,13 @@ function setAnnualMonthlyData(
              * (Ozone season is between May and September)
              */
             if (month >= 5 && month <= 9) {
-              if (field === 'generation') {
+              if (field === "generation") {
                 object.ozoneGeneration.original += original;
                 object.ozoneGeneration.postEere += postEere;
                 object.ozoneGeneration.impacts += postEere - original;
               }
 
-              if (field === 'nox') {
+              if (field === "nox") {
                 object.ozoneNox.original += original;
                 object.ozoneNox.postEere += postEere;
                 object.ozoneNox.impacts += postEere - original;
@@ -135,7 +135,7 @@ function applyEmissionsReplacement(options: {
 }
 
 function EmissionsReplacementTooltip(props: {
-  field: 'generation' | 'so2' | 'nox' | 'co2';
+  field: "generation" | "so2" | "nox" | "co2";
 }) {
   const { field } = props;
 
@@ -149,10 +149,10 @@ function EmissionsReplacementTooltip(props: {
   return (
     <Tooltip>
       <p className="margin-0">
-        This region features one or more power plants with an infrequent{' '}
-        {fieldMarkup.get(field)} emissions event. {fieldMarkup.get(field)}{' '}
+        This region features one or more power plants with an infrequent{" "}
+        {fieldMarkup.get(field)} emissions event. {fieldMarkup.get(field)}{" "}
         emissions changes from these plants are not included in this analysis.
-        See Section 2 of the{' '}
+        See Section 2 of the{" "}
         <a
           className="usa-link"
           href="https://www.epa.gov/avert"
@@ -160,7 +160,7 @@ function EmissionsReplacementTooltip(props: {
           rel="noreferrer"
         >
           AVERT User Manual
-        </a>{' '}
+        </a>{" "}
         for more information.
       </p>
     </Tooltip>
@@ -200,23 +200,23 @@ function PowerEmissionsTableContent() {
   } = inputs;
 
   const eeInputsEmpty =
-    (constantMwh === '' || constantMwh === '0') &&
-    (annualGwh === '' || annualGwh === '0') &&
-    (broadProgram === '' || broadProgram === '0') &&
-    (reduction === '' || reduction === '0') &&
-    (topHours === '' || topHours === '0');
+    (constantMwh === "" || constantMwh === "0") &&
+    (annualGwh === "" || annualGwh === "0") &&
+    (broadProgram === "" || broadProgram === "0") &&
+    (reduction === "" || reduction === "0") &&
+    (topHours === "" || topHours === "0");
 
   const reInputsEmpty =
-    (onshoreWind === '' || onshoreWind === '0') &&
-    (offshoreWind === '' || offshoreWind === '0') &&
-    (utilitySolar === '' || utilitySolar === '0') &&
-    (rooftopSolar === '' || rooftopSolar === '0');
+    (onshoreWind === "" || onshoreWind === "0") &&
+    (offshoreWind === "" || offshoreWind === "0") &&
+    (utilitySolar === "" || utilitySolar === "0") &&
+    (rooftopSolar === "" || rooftopSolar === "0");
 
   const evInputsEmpty =
-    (batteryEVs === '' || batteryEVs === '0') &&
-    (hybridEVs === '' || hybridEVs === '0') &&
-    (transitBuses === '' || transitBuses === '0') &&
-    (schoolBuses === '' || schoolBuses === '0');
+    (batteryEVs === "" || batteryEVs === "0") &&
+    (hybridEVs === "" || hybridEVs === "0") &&
+    (transitBuses === "" || transitBuses === "0") &&
+    (schoolBuses === "" || schoolBuses === "0");
 
   const eereAndEvInputsEntered =
     (!eeInputsEmpty || !reInputsEmpty) && !evInputsEmpty;
@@ -260,7 +260,7 @@ function PowerEmissionsTableContent() {
                 <th scope="row">
                   <span className="padding-left-105">
                     Generation <small>(MWh)</small>&nbsp;
-                    {Object.hasOwn(emissionsReplacements, 'generation') && (
+                    {Object.hasOwn(emissionsReplacements, "generation") && (
                       <EmissionsReplacementTooltip field="generation" />
                     )}
                   </span>
@@ -286,7 +286,7 @@ function PowerEmissionsTableContent() {
                 <th scope="row">
                   <span className="padding-left-105">
                     SO<sub>2</sub> <small>(lb)</small>&nbsp;
-                    {Object.hasOwn(emissionsReplacements, 'so2') && (
+                    {Object.hasOwn(emissionsReplacements, "so2") && (
                       <EmissionsReplacementTooltip field="so2" />
                     )}
                   </span>
@@ -306,7 +306,7 @@ function PowerEmissionsTableContent() {
                 <th scope="row">
                   <span className="padding-left-105">
                     NO<sub>X</sub> <small>(lb)</small>&nbsp;
-                    {Object.hasOwn(emissionsReplacements, 'nox') && (
+                    {Object.hasOwn(emissionsReplacements, "nox") && (
                       <EmissionsReplacementTooltip field="nox" />
                     )}
                   </span>
@@ -325,7 +325,7 @@ function PowerEmissionsTableContent() {
               <tr>
                 <th scope="row">
                   <span className="padding-left-3 text-italic">
-                    Ozone season NO<sub>X</sub> <small>(lb)</small>{' '}
+                    Ozone season NO<sub>X</sub> <small>(lb)</small>{" "}
                     <Tooltip>
                       <p className="margin-0 text-no-italic">
                         Ozone season is defined as May 1 — September 30. Ozone
@@ -349,7 +349,7 @@ function PowerEmissionsTableContent() {
                 <th scope="row">
                   <span className="padding-left-105">
                     CO<sub>2</sub> <small>(tons)</small>&nbsp;
-                    {Object.hasOwn(emissionsReplacements, 'co2') && (
+                    {Object.hasOwn(emissionsReplacements, "co2") && (
                       <EmissionsReplacementTooltip field="co2" />
                     )}
                   </span>
@@ -466,7 +466,7 @@ function PowerEmissionsTableContent() {
               <tr>
                 <th scope="row">
                   <span className="padding-left-3 text-italic">
-                    Ozone season NO<sub>X</sub> <small>(lb/MWh)</small>{' '}
+                    Ozone season NO<sub>X</sub> <small>(lb/MWh)</small>{" "}
                     <Tooltip>
                       <p className="margin-0 text-no-italic">
                         Ozone season is defined as May 1 — September 30. Ozone
@@ -589,7 +589,7 @@ function PowerEmissionsTableContent() {
         </li>
         <li>
           Estimated marginal CO<sub>2</sub> emission rates for future years are
-          available in the current{' '}
+          available in the current{" "}
           <a
             className="usa-link"
             href="https://www.epa.gov/avert/download-avert"
@@ -617,7 +617,7 @@ export function PowerEmissionsTable() {
       message={
         <>
           Error loading power sector emissions table. Please contact AVERT
-          support at{' '}
+          support at{" "}
           <a
             className="usa-link"
             href="mailto:avert@epa.gov"
