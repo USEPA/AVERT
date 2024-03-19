@@ -1,8 +1,8 @@
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 // ---
-import { App } from "@/app/components/App";
-import { store } from "@/app/redux/store";
+import { App } from "@/components/App";
+import { store } from "@/redux/store";
 import "@/preflight.css"; // Tailwind CSS preflight styles, scoped to .twpf
 import "@/styles.css";
 
