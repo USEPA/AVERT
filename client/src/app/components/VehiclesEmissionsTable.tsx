@@ -1,8 +1,9 @@
-import { ErrorBoundary } from 'app/components/ErrorBoundary';
-import { Tooltip } from 'app/components/Tooltip';
-import { useTypedSelector } from 'app/redux/index';
-import type { SelectedRegionsTotalYearlyEmissionChanges } from 'app/calculations/transportation';
-import type { CombinedSectorsEmissionsData } from 'app/calculations/emissions';
+import { ErrorBoundary } from '@/app/components/ErrorBoundary';
+import { Tooltip } from '@/app/components/Tooltip';
+import { useAppSelector } from '@/app/redux/index';
+import type { SelectedRegionsTotalYearlyEmissionChanges } from '@/app/calculations/transportation';
+import type { CombinedSectorsEmissionsData } from '@/app/calculations/emissions';
+import { type EmptyObject } from '@/app/utilities';
 
 /**
  * Round number to the nearest 10 and conditionally display '—' if number is
@@ -49,7 +50,9 @@ function setAnnualPowerEmissionsChanges(options: {
  * pollutant.
  */
 function setAnnualVehicleEmissionsChanges(options: {
-  selectedRegionsTotalYearlyEmissionChanges: SelectedRegionsTotalYearlyEmissionChanges | {} // prettier-ignore
+  selectedRegionsTotalYearlyEmissionChanges:
+    | SelectedRegionsTotalYearlyEmissionChanges
+    | EmptyObject;
 }) {
   const { selectedRegionsTotalYearlyEmissionChanges } = options;
 
@@ -82,12 +85,12 @@ function setAnnualVehicleEmissionsChanges(options: {
 }
 
 function VehiclesEmissionsTableContent() {
-  const selectedRegionsTotalYearlyEmissionChanges = useTypedSelector(
+  const selectedRegionsTotalYearlyEmissionChanges = useAppSelector(
     ({ transportation }) =>
       transportation.selectedRegionsTotalYearlyEmissionChanges,
   );
-  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
-  const combinedSectorsEmissionsData = useTypedSelector(
+  const inputs = useAppSelector(({ impacts }) => impacts.inputs);
+  const combinedSectorsEmissionsData = useAppSelector(
     ({ results }) => results.combinedSectorsEmissionsData,
   );
 

@@ -1,20 +1,21 @@
-import { AppThunk } from 'app/redux/index';
-import { setEVDeploymentLocationOptions } from 'app/redux/reducers/impacts';
+import { AppThunk } from '@/app/redux/index';
+import { setEVDeploymentLocationOptions } from '@/app/redux/reducers/impacts';
 import type {
   CountiesByGeography,
   RegionalScalingFactors,
-} from 'app/calculations/geography';
+} from '@/app/calculations/geography';
 import {
   organizeCountiesByGeography,
   calculateRegionalScalingFactors,
   getSelectedGeographyRegions,
-} from 'app/calculations/geography';
+} from '@/app/calculations/geography';
 import {
   setSelectedGeographyVMTData,
   setEVEfficiency,
   setDailyAndMonthlyStats,
   setSelectedRegionsEEREDefaultsAverages,
-} from 'app/redux/reducers/transportation';
+} from '@/app/redux/reducers/transportation';
+import { type EmptyObject } from '@/app/utilities';
 import {
   RdfDataKey,
   RegionId,
@@ -23,7 +24,7 @@ import {
   StateId,
   State,
   states,
-} from 'app/config';
+} from '@/app/config';
 
 export type GeographicFocus = 'regions' | 'states';
 
@@ -76,7 +77,7 @@ export type RDFJSON = {
   regional_load: RegionalLoadData[];
   load_bin_edges: number[];
   data: {
-    [key in RdfDataKey]: EGUData[];
+    [field in RdfDataKey]: EGUData[];
   };
 };
 
@@ -183,9 +184,9 @@ export type StateState = State & {
 
 type GeographyState = {
   focus: GeographicFocus;
-  regions: { [key in RegionId]: RegionState };
-  states: { [key in StateId]: StateState };
-  countiesByGeography: CountiesByGeography | {};
+  regions: { [regionId in RegionId]: RegionState };
+  states: { [stateId in StateId]: StateState };
+  countiesByGeography: CountiesByGeography | EmptyObject;
   regionSelect: {
     stateId: StateId | '';
     stateRegionIds: RegionId[];
@@ -221,17 +222,15 @@ const initialRegionRdf = {
   regional_load: [],
   load_bin_edges: [],
   data: {
-    generation: null,
-    heat: null,
-    heat_not: null,
-    co2: null,
-    co2_not: null,
-    nox: null,
-    nox_not: null,
-    pm25: null,
-    pm25_not: null,
-    so2: null,
-    so2_not: null,
+    generation: [],
+    so2: [],
+    so2_not: [],
+    nox: [],
+    nox_not: [],
+    co2: [],
+    co2_not: [],
+    heat: [],
+    heat_not: [],
   },
 };
 
@@ -245,18 +244,26 @@ const initialRegionStorageDefaults = {
   data: [],
 };
 
-// augment regions data (from config) with additonal fields for each region
-const updatedRegions: any = { ...regions };
-for (const regionId in updatedRegions) {
+/* augment regions data (from config) with additonal fields for each region */
+const updatedRegions = { ...regions } as {
+  [regionId in RegionId]: RegionState;
+};
+
+for (const key in updatedRegions) {
+  const regionId = key as RegionId;
   updatedRegions[regionId].selected = false;
   updatedRegions[regionId].rdf = initialRegionRdf;
   updatedRegions[regionId].eereDefaults = initialRegionEereDefaults;
   updatedRegions[regionId].storageDefaults = initialRegionStorageDefaults;
 }
 
-// augment states data (from config) with additonal fields for each state
-const updatedStates: any = { ...states };
-for (const stateId in updatedStates) {
+/* augment states data (from config) with additonal fields for each state */
+const updatedStates = { ...states } as {
+  [stateId in StateId]: StateState;
+};
+
+for (const key in updatedStates) {
+  const stateId = key as StateId;
   updatedStates[stateId].selected = false;
 }
 

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 // ---
-import { Tooltip } from 'app/components/Tooltip';
+import { Tooltip } from '@/app/components/Tooltip';
 
 export function ImpactsSelectInput(props: {
   className?: string;

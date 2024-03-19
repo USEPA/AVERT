@@ -1,9 +1,9 @@
-import { AppThunk } from 'app/redux/index';
+import { AppThunk } from '@/app/redux/index';
 import {
   RegionalLoadData,
   RegionState,
   StateState,
-} from 'app/redux/reducers/geography';
+} from '@/app/redux/reducers/geography';
 import {
   setEVEfficiency,
   setVehiclesDisplaced,
@@ -11,7 +11,7 @@ import {
   setMonthlyEmissionRates,
   setVehicleSalesAndStock,
   setEVDeploymentLocationHistoricalEERE,
-} from 'app/redux/reducers/transportation';
+} from '@/app/redux/reducers/transportation';
 import type {
   HourlyRenewableEnergyProfiles,
   HourlyEnergyStorageData,
@@ -20,7 +20,7 @@ import type {
   HourlyTopPercentReduction,
   HourlyImpacts,
   HourlyChangesValidation,
-} from 'app/calculations/impacts';
+} from '@/app/calculations/impacts';
 import {
   calculateHourlyRenewableEnergyProfiles,
   calculateHourlyEnergyStorageData,
@@ -29,15 +29,15 @@ import {
   calculateHourlyTopPercentReduction,
   calculateHourlyImpacts,
   calculateHourlyChangesValidation,
-} from 'app/calculations/impacts';
-import type { RegionId, StateId } from 'app/config';
+} from '@/app/calculations/impacts';
+import type { RegionId, StateId } from '@/app/config';
 import {
   maxAnnualDischargeCyclesOptions,
   evModelYearOptions,
   iceReplacementVehicleOptions,
   batteryRoundTripEfficiency,
   batteryStorageDuration,
-} from 'app/config';
+} from '@/app/config';
 
 type SelectOption = { id: string; name: string };
 
@@ -232,7 +232,7 @@ type State = {
     inputs: ImpactsInputs;
     data: {
       regions: Partial<{
-        [key in RegionId]: {
+        [regionId in RegionId]: {
           hourlyRenewableEnergyProfiles: HourlyRenewableEnergyProfiles;
           hourlyEnergyStorageData: HourlyEnergyStorageData;
           hourlyEVLoad: HourlyEVLoad;
@@ -744,13 +744,13 @@ export function setEVDeploymentLocationOptions(): AppThunk {
             })),
           ]
         : focus === 'states' && selectedState
-        ? [
-            {
-              id: `state-${selectedState.id}`,
-              name: `${selectedState.name}`,
-            },
-          ]
-        : [{ id: '', name: '' }];
+          ? [
+              {
+                id: `state-${selectedState.id}`,
+                name: `${selectedState.name}`,
+              },
+            ]
+          : [{ id: '', name: '' }];
 
     dispatch({
       type: 'impacts/SET_EV_DEPLOYMENT_LOCATION_OPTIONS',
@@ -1136,7 +1136,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
      * messages
      */
     const regionalHourlyImpacts = {} as Partial<{
-      [key in RegionId]: {
+      [regionId in RegionId]: {
         regionalLoad: RegionalLoadData[];
         hourlyImpacts: HourlyImpacts;
       };
@@ -1206,8 +1206,8 @@ export function calculateHourlyEnergyProfile(): AppThunk {
       const offshoreWindFactor = !selectedState
         ? 1
         : region.offshoreWind
-        ? regionalPercent / totalOffshoreWindPercent
-        : 0;
+          ? regionalPercent / totalOffshoreWindPercent
+          : 0;
 
       const annualGwh = Number(inputs.annualGwh) * regionalScalingFactor;
       const constantMwh = Number(inputs.constantMwh) * regionalScalingFactor;

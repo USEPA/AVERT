@@ -1,5 +1,5 @@
-import { ErrorBoundary } from 'app/components/ErrorBoundary';
-import { useTypedSelector } from 'app/redux/index';
+import { ErrorBoundary } from '@/app/components/ErrorBoundary';
+import { useAppSelector } from '@/app/redux/index';
 
 /** Boolean check if provided input value exists or is not zero */
 function inputExists(value: string) {
@@ -7,11 +7,9 @@ function inputExists(value: string) {
 }
 
 function ResultsImpactsInputsContent() {
-  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
-  const selectOptions = useTypedSelector(
-    ({ impacts }) => impacts.selectOptions,
-  );
-  const combinedSectorsEmissionsData = useTypedSelector(
+  const inputs = useAppSelector(({ impacts }) => impacts.inputs);
+  const selectOptions = useAppSelector(({ impacts }) => impacts.selectOptions);
+  const combinedSectorsEmissionsData = useAppSelector(
     ({ results }) => results.combinedSectorsEmissionsData,
   );
 

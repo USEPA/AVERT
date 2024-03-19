@@ -1,7 +1,7 @@
-import type { AppThunk } from 'app/redux/index';
-import type { Pollutant, StateId } from 'app/config';
+import type { AppThunk } from '@/app/redux/index';
+import type { Pollutant, StateId } from '@/app/config';
 
-type StatesAndCounties = Partial<{ [key in StateId]: string[] }>;
+type StatesAndCounties = Partial<{ [stateId in StateId]: string[] }>;
 
 export type Aggregation = 'region' | 'state' | 'county';
 

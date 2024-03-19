@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { css } from '@emotion/react';
 // ---
-import { Tooltip } from 'app/components/Tooltip';
+import { Tooltip } from '@/app/components/Tooltip';
 
 const unitConversionStyles = css`
   @media (min-width: 40em) {

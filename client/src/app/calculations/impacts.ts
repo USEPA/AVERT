@@ -3,19 +3,20 @@ import { percentile } from 'stats-lite';
 import type {
   RegionalLoadData,
   RegionState,
-} from 'app/redux/reducers/geography';
+} from '@/app/redux/reducers/geography';
 import type {
   DailyStats,
   HourlyEVChargingPercentages,
   SelectedRegionsMonthlyDailyEVEnergyUsage,
-} from 'app/calculations/transportation';
-import type { RegionId, RegionName } from 'app/config';
+} from '@/app/calculations/transportation';
+import { type EmptyObject } from '@/app/utilities';
+import type { RegionId, RegionName } from '@/app/config';
 /**
  * EV hourly limits by region
  *
  * (NOTE: not in Excel file, but sent by Pat via email 02/21/23)
  */
-import regionEvHourlyLimits from 'app/data/region-ev-hourly-limits.json';
+import regionEvHourlyLimits from '@/app/data/region-ev-hourly-limits.json';
 
 export type HourlyRenewableEnergyProfiles = ReturnType<
   typeof calculateHourlyRenewableEnergyProfiles
@@ -112,10 +113,10 @@ export function calculateHourlyEnergyStorageData(options: {
         maxAnnualDischargeCycles === 75
           ? battery_75
           : maxAnnualDischargeCycles === 100
-          ? battery_100
-          : maxAnnualDischargeCycles === 150
-          ? battery_150
-          : 0;
+            ? battery_100
+            : maxAnnualDischargeCycles === 150
+              ? battery_150
+              : 0;
 
       const previousHourData = array[array.length - 1];
 
@@ -359,19 +360,19 @@ export function calculateHourlyEnergyStorageData(options: {
             dailyCumulativeAvailableChargeUtility === 0
               ? 0
               : dailyCumulativeAvailableChargeUtility <
-                item.dailyAllowableCharging.utility
-              ? -item.solarUnpaired.utility
-              : item.dailyAllowableCharging.utility -
-                previousItem.dailyCumulativeAvailableCharge.utility;
+                  item.dailyAllowableCharging.utility
+                ? -item.solarUnpaired.utility
+                : item.dailyAllowableCharging.utility -
+                  previousItem.dailyCumulativeAvailableCharge.utility;
 
           const dailyMaxAllowableChargeRooftop =
             dailyCumulativeAvailableChargeRooftop === 0
               ? 0
               : dailyCumulativeAvailableChargeRooftop <
-                item.dailyAllowableCharging.rooftop
-              ? -item.solarUnpaired.rooftop
-              : item.dailyAllowableCharging.rooftop -
-                previousItem.dailyCumulativeAvailableCharge.rooftop;
+                  item.dailyAllowableCharging.rooftop
+                ? -item.solarUnpaired.rooftop
+                : item.dailyAllowableCharging.rooftop -
+                  previousItem.dailyCumulativeAvailableCharge.rooftop;
 
           item.dailyMaxAllowableCharge.utility = dailyMaxAllowableChargeUtility;
           item.dailyMaxAllowableCharge.rooftop = dailyMaxAllowableChargeRooftop;
@@ -380,25 +381,27 @@ export function calculateHourlyEnergyStorageData(options: {
             item.esProfileUnpaired.utility === 0
               ? 0
               : item.esProfileUnpaired.utility < 0
-              ? item.dailyAllowableDischarging.utility / batteryStorageDuration
-              : overloadedDay.utility
-              ? item.dailyMaxAllowableCharge.utility
-              : item.dailyChargingNeeded.utility >
-                item.dailyAllowableCharging.utility
-              ? -item.solarUnpaired.utility
-              : item.esProfileUnpaired.utility;
+                ? item.dailyAllowableDischarging.utility /
+                  batteryStorageDuration
+                : overloadedDay.utility
+                  ? item.dailyMaxAllowableCharge.utility
+                  : item.dailyChargingNeeded.utility >
+                      item.dailyAllowableCharging.utility
+                    ? -item.solarUnpaired.utility
+                    : item.esProfileUnpaired.utility;
 
           const esProfilePairedRooftop =
             item.esProfileUnpaired.rooftop === 0
               ? 0
               : item.esProfileUnpaired.rooftop < 0
-              ? item.dailyAllowableDischarging.rooftop / batteryStorageDuration
-              : overloadedDay.rooftop
-              ? item.dailyMaxAllowableCharge.rooftop
-              : item.dailyChargingNeeded.rooftop >
-                item.dailyAllowableCharging.rooftop
-              ? -item.solarUnpaired.rooftop
-              : item.esProfileUnpaired.rooftop;
+                ? item.dailyAllowableDischarging.rooftop /
+                  batteryStorageDuration
+                : overloadedDay.rooftop
+                  ? item.dailyMaxAllowableCharge.rooftop
+                  : item.dailyChargingNeeded.rooftop >
+                      item.dailyAllowableCharging.rooftop
+                    ? -item.solarUnpaired.rooftop
+                    : item.esProfileUnpaired.rooftop;
 
           item.esProfilePaired.utility = esProfilePairedUtility;
           item.esProfilePaired.rooftop = esProfilePairedRooftop;
@@ -439,7 +442,9 @@ export function calculateHourlyEVLoad(options: {
   regionalLoad: RegionalLoadData[];
   dailyStats: DailyStats;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
-  selectedRegionsMonthlyDailyEVEnergyUsage: SelectedRegionsMonthlyDailyEVEnergyUsage | {}; // prettier-ignore
+  selectedRegionsMonthlyDailyEVEnergyUsage:
+    | SelectedRegionsMonthlyDailyEVEnergyUsage
+    | EmptyObject;
 }) {
   const {
     regionId,
@@ -468,9 +473,9 @@ export function calculateHourlyEVLoad(options: {
 
   const result = regionalLoad.map((data) => {
     if (
-      !data.hasOwnProperty('hour') &&
-      !data.hasOwnProperty('day') &&
-      !data.hasOwnProperty('month')
+      !Object.hasOwn(data, 'hour') &&
+      !Object.hasOwn(data, 'day') &&
+      !Object.hasOwn(data, 'month')
     ) {
       return 0;
     }
@@ -661,7 +666,7 @@ export function calculateHourlyImpacts(options: {
 export function calculateHourlyChangesValidation(options: {
   regions: { [regionId in RegionId]: RegionState };
   regionalHourlyImpacts: Partial<{
-    [key in RegionId]: {
+    [regionId in RegionId]: {
       regionalLoad: RegionalLoadData[];
       hourlyImpacts: HourlyImpacts;
     };

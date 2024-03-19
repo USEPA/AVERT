@@ -1,6 +1,6 @@
-import { ErrorBoundary } from 'app/components/ErrorBoundary';
-import { useTypedSelector } from 'app/redux/index';
-import type { HourlyChangesValidation } from 'app/calculations/impacts';
+import { ErrorBoundary } from '@/app/components/ErrorBoundary';
+import { useAppSelector } from '@/app/redux/index';
+import type { HourlyChangesValidation } from '@/app/calculations/impacts';
 
 function EquivalentHomesText(props: { hourlyChanges: number[] }) {
   const { hourlyChanges } = props;
@@ -136,7 +136,7 @@ function ValidationMessage(props: {
 }
 
 export function EVWarningMessage() {
-  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
+  const inputs = useAppSelector(({ impacts }) => impacts.inputs);
 
   const {
     constantMwh,
@@ -215,7 +215,7 @@ export function EVWarningMessage() {
 }
 
 function ImpactsMessagesContent() {
-  const hourlyEnergyProfile = useTypedSelector(
+  const hourlyEnergyProfile = useAppSelector(
     ({ impacts }) => impacts.hourlyEnergyProfile,
   );
   const { data, validation } = hourlyEnergyProfile;

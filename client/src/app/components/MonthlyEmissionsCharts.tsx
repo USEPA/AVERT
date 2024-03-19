@@ -1,15 +1,16 @@
 import { ReactNode } from 'react';
 import Highcharts from 'highcharts';
+import HighchartsExporting from 'highcharts/modules/exporting';
+import HighchartsAccessibility from 'highcharts/modules/accessibility';
 import HighchartsReact from 'highcharts-react-official';
-import { useDispatch } from 'react-redux';
 // ---
-import { ErrorBoundary } from 'app/components/ErrorBoundary';
-import { useTypedSelector } from 'app/redux/index';
+import { ErrorBoundary } from '@/app/components/ErrorBoundary';
+import { useAppDispatch, useAppSelector } from '@/app/redux/index';
 import type {
   Aggregation,
   Source,
   Unit,
-} from 'app/redux/reducers/monthlyEmissions';
+} from '@/app/redux/reducers/monthlyEmissions';
 import {
   setMonthlyEmissionsAggregation,
   setMonthlyEmissionsRegionId,
@@ -18,17 +19,17 @@ import {
   setMonthlyEmissionsPollutant,
   setMonthlyEmissionsSource,
   setMonthlyEmissionsUnit,
-} from 'app/redux/reducers/monthlyEmissions';
+} from '@/app/redux/reducers/monthlyEmissions';
 import type {
   EmissionsData,
   CombinedSectorsEmissionsData,
-} from 'app/calculations/emissions';
-import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
-import type { Pollutant, RegionId, StateId } from 'app/config';
-import { regions, states } from 'app/config';
+} from '@/app/calculations/emissions';
+import { useSelectedRegion, useSelectedStateRegions } from '@/app/hooks';
+import type { Pollutant, RegionId, StateId } from '@/app/config';
+import { regions, states } from '@/app/config';
 
-require('highcharts/modules/exporting')(Highcharts);
-require('highcharts/modules/accessibility')(Highcharts);
+HighchartsExporting(Highcharts);
+HighchartsAccessibility(Highcharts);
 
 type ChartData = {
   name: string;
@@ -121,29 +122,29 @@ function setChartSeriesData(options: {
 function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
   const { pollutant, data } = props;
 
-  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const egusNeedingEmissionsReplacement = useTypedSelector(
+  const geographicFocus = useAppSelector(({ geography }) => geography.focus);
+  const egusNeedingEmissionsReplacement = useAppSelector(
     ({ results }) => results.egusNeedingEmissionsReplacement,
   );
-  const emissionsReplacements = useTypedSelector(
+  const emissionsReplacements = useAppSelector(
     ({ results }) => results.emissionsReplacements,
   );
-  const currentAggregation = useTypedSelector(
+  const currentAggregation = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.aggregation,
   );
-  const currentRegionId = useTypedSelector(
+  const currentRegionId = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.regionId,
   );
-  const currentStateId = useTypedSelector(
+  const currentStateId = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.stateId,
   );
-  const currentCountyName = useTypedSelector(
+  const currentCountyName = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.countyName,
   );
-  const currentSources = useTypedSelector(
+  const currentSources = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.sources,
   );
-  const currentUnit = useTypedSelector(
+  const currentUnit = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.unit,
   );
 
@@ -270,16 +271,16 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
     geographicFocus === 'regions'
       ? `${selectedRegion?.name} Region`
       : geographicFocus === 'states'
-      ? selectedStateRegions.length === 1
-        ? `${regions[selectedStateRegions[0].id]?.name} Region`
-        : currentRegionId === ''
-        ? '' // multiple regions but a region has not yet been selected
-        : currentRegionId === 'ALL'
-        ? `${selectedStateRegions
-            .map((region) => regions[region.id]?.name)
-            .join(', ')} Regions`
-        : `${regions[currentRegionId as RegionId]?.name} Region`
-      : '';
+        ? selectedStateRegions.length === 1
+          ? `${regions[selectedStateRegions[0].id]?.name} Region`
+          : currentRegionId === ''
+            ? '' // multiple regions but a region has not yet been selected
+            : currentRegionId === 'ALL'
+              ? `${selectedStateRegions
+                  .map((region) => regions[region.id]?.name)
+                  .join(', ')} Regions`
+              : `${regions[currentRegionId as RegionId]?.name} Region`
+        : '';
 
   const stateChartTitle =
     currentStateId === ''
@@ -295,10 +296,10 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
     currentAggregation === 'region'
       ? regionChartTitle
       : currentAggregation === 'state'
-      ? stateChartTitle
-      : currentAggregation === 'county'
-      ? countyChartTitle
-      : '';
+        ? stateChartTitle
+        : currentAggregation === 'county'
+          ? countyChartTitle
+          : '';
 
   function formatTitle(pollutant: string) {
     return `<tspan class='font-sans-2xs text-base-darker'>
@@ -352,10 +353,9 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
           maximumFractionDigits: 2,
         });
 
-        const suffix =
-          currentUnit === 'emissions'
-            ? ` ${(this.series.options as any).unit}`
-            : '%';
+        const { options } = this.series;
+        const unit = (options as typeof options & { unit: string }).unit;
+        const suffix = currentUnit === 'emissions' ? ` ${unit}` : '%';
 
         return `<strong>${dataPoint}</strong>${suffix}`;
       },
@@ -440,7 +440,7 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
       .set('vocs', <>VOC</>)
       .set('nh3', <>NH<sub>2</sub></>);
 
-  const chartConfig = new Map<Pollutant, Object>()
+  const chartConfig = new Map<Pollutant, object>()
     .set('so2', so2Config)
     .set('nox', noxConfig)
     .set('co2', co2Config)
@@ -485,7 +485,7 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
       <HighchartsReact
         highcharts={Highcharts}
         options={chartConfig.get(pollutant)}
-        callback={(_chart: any) => {
+        callback={(_chart: Highcharts.ChartCallbackFunction) => {
           // as this entire react app is ultimately served in an iframe
           // on another page, this document has a click handler that sends
           // the document's height to other window, which can then set the
@@ -525,8 +525,8 @@ function setFilteredData(options: {
     regionId === 'ALL'
       ? total
       : Boolean(regions?.[regionId])
-      ? regions[regionId]
-      : emptyResult;
+        ? regions[regionId]
+        : emptyResult;
 
   const stateResult = Boolean(states?.[stateId])
     ? states[stateId]
@@ -540,46 +540,46 @@ function setFilteredData(options: {
     aggregation === 'region'
       ? regionResult
       : aggregation === 'state'
-      ? stateResult
-      : aggregation === 'county'
-      ? countyResult
-      : emptyResult;
+        ? stateResult
+        : aggregation === 'county'
+          ? countyResult
+          : emptyResult;
 
   return result;
 }
 
 function MonthlyEmissionsChartsContent() {
-  const dispatch = useDispatch();
-  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
-  const combinedSectorsEmissionsData = useTypedSelector(
+  const dispatch = useAppDispatch();
+  const geographicFocus = useAppSelector(({ geography }) => geography.focus);
+  const inputs = useAppSelector(({ impacts }) => impacts.inputs);
+  const combinedSectorsEmissionsData = useAppSelector(
     ({ results }) => results.combinedSectorsEmissionsData,
   );
-  const currentAggregation = useTypedSelector(
+  const currentAggregation = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.aggregation,
   );
-  const currentRegionId = useTypedSelector(
+  const currentRegionId = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.regionId,
   );
-  const currentStateId = useTypedSelector(
+  const currentStateId = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.stateId,
   );
-  const currentCountyName = useTypedSelector(
+  const currentCountyName = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.countyName,
   );
-  const currentPollutants = useTypedSelector(
+  const currentPollutants = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.pollutants,
   );
-  const currentSources = useTypedSelector(
+  const currentSources = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.sources,
   );
-  const currentUnit = useTypedSelector(
+  const currentUnit = useAppSelector(
     ({ monthlyEmissions }) => monthlyEmissions.unit,
   );
-  const availableStates = useTypedSelector(({ monthlyEmissions }) => {
+  const availableStates = useAppSelector(({ monthlyEmissions }) => {
     return Object.keys(monthlyEmissions.statesAndCounties).sort();
   });
-  const availableCounties = useTypedSelector(({ monthlyEmissions }) => {
+  const availableCounties = useAppSelector(({ monthlyEmissions }) => {
     return monthlyEmissions.statesAndCounties[currentStateId as StateId]?.sort(); // prettier-ignore
   });
 
@@ -598,8 +598,8 @@ function MonthlyEmissionsChartsContent() {
     geographicFocus === 'regions' && selectedRegion
       ? selectedRegion.id
       : geographicFocus === 'states' && selectedStateRegions.length === 1
-      ? selectedStateRegions[0].id
-      : (currentRegionId as RegionId);
+        ? selectedStateRegions[0].id
+        : (currentRegionId as RegionId);
 
   const data = setFilteredData({
     combinedSectorsEmissionsData,
@@ -790,7 +790,9 @@ function MonthlyEmissionsChartsContent() {
                         }
                         value={currentCountyName}
                         onChange={(ev) => {
-                          dispatch(setMonthlyEmissionsCountyName(ev.target.value)); // prettier-ignore
+                          dispatch(
+                            setMonthlyEmissionsCountyName(ev.target.value),
+                          );
                         }}
                         data-avert-monthly-geography="county"
                       >
@@ -1182,9 +1184,9 @@ function MonthlyEmissionsChartsContent() {
                     currentPollutants.length === 1
                       ? 'padding-1 grid-col-12'
                       : currentPollutants.length === 2 ||
-                        currentPollutants.length === 4
-                      ? 'padding-1 tablet:grid-col-6'
-                      : 'padding-1 tablet:grid-col-6 desktop:grid-col-4';
+                          currentPollutants.length === 4
+                        ? 'padding-1 tablet:grid-col-6'
+                        : 'padding-1 tablet:grid-col-6 desktop:grid-col-4';
 
                   /**
                    * NOTE: The HighchartsReact (inside the Chart component)

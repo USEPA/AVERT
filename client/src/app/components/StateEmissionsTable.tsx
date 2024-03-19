@@ -1,18 +1,18 @@
 import { Fragment, useEffect, useState } from 'react';
 import Select from 'react-select';
 // ---
-import { ErrorBoundary } from 'app/components/ErrorBoundary';
-import { useTypedSelector } from 'app/redux/index';
-import type { CombinedSectorsEmissionsData } from 'app/calculations/emissions';
-import type { StateId } from 'app/config';
-import { states as statesConfig } from 'app/config';
+import { ErrorBoundary } from '@/app/components/ErrorBoundary';
+import { useAppSelector } from '@/app/redux/index';
+import type { CombinedSectorsEmissionsData } from '@/app/calculations/emissions';
+import type { StateId } from '@/app/config';
+import { states as statesConfig } from '@/app/config';
 
 /**
  * Round number to the nearest 10 and conditionally format resulting -0 to 0.
  */
 function formatNumber(number: number) {
   const result = Math.round(number / 10) * 10;
-  return (result === -0 ? 0 : result).toLocaleString();
+  return (result + 0).toLocaleString();
 }
 
 /**
@@ -74,7 +74,7 @@ function setAnnualStateEmissionsChanges(
 }
 
 function StateEmissionsTableContent() {
-  const combinedSectorsEmissionsData = useTypedSelector(
+  const combinedSectorsEmissionsData = useAppSelector(
     ({ results }) => results.combinedSectorsEmissionsData,
   );
 

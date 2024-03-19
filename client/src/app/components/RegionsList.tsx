@@ -1,30 +1,29 @@
 import { Fragment, useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 // ---
-import { ErrorBoundary } from 'app/components/ErrorBoundary';
-import { useTypedSelector } from 'app/redux/index';
+import { ErrorBoundary } from '@/app/components/ErrorBoundary';
+import { useAppDispatch, useAppSelector } from '@/app/redux/index';
 import {
   selectRegion,
   setRegionSelectStateIdAndRegionIds,
   setRegionSelectCounty,
-} from 'app/redux/reducers/geography';
-import { useSelectedRegion } from 'app/hooks';
-import type { CountiesByGeography } from 'app/calculations/geography';
-import type { RegionId, StateId } from 'app/config';
-import { regions, states } from 'app/config';
+} from '@/app/redux/reducers/geography';
+import { useSelectedRegion } from '@/app/hooks';
+import type { CountiesByGeography } from '@/app/calculations/geography';
+import type { RegionId, StateId } from '@/app/config';
+import { regions, states } from '@/app/config';
 
 function RegionsListContent() {
-  const dispatch = useDispatch();
-  const countiesByGeography = useTypedSelector(
+  const dispatch = useAppDispatch();
+  const countiesByGeography = useAppSelector(
     ({ geography }) => geography.countiesByGeography,
   );
-  const regionSelectStateId = useTypedSelector(
+  const regionSelectStateId = useAppSelector(
     ({ geography }) => geography.regionSelect.stateId,
   );
-  const regionSelectStateRegionIds = useTypedSelector(
+  const regionSelectStateRegionIds = useAppSelector(
     ({ geography }) => geography.regionSelect.stateRegionIds,
   );
-  const regionSelectCounty = useTypedSelector(
+  const regionSelectCounty = useAppSelector(
     ({ geography }) => geography.regionSelect.county,
   );
 

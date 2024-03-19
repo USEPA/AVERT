@@ -1,16 +1,16 @@
-import type { AppThunk } from 'app/redux/index';
-import type { EgusNeeingEmissionsReplacement } from 'app/redux/reducers/results';
+import type { AppThunk } from '@/app/redux/index';
+import type { EgusNeeingEmissionsReplacement } from '@/app/redux/reducers/results';
 import type {
   EmissionsData,
   EmissionsFlagsField,
   CombinedSectorsEmissionsData,
-} from 'app/calculations/emissions';
-import type { RegionId } from 'app/config';
-import { regions as regionsConfig, states as statesConfig } from 'app/config';
+} from '@/app/calculations/emissions';
+import type { RegionId } from '@/app/config';
+import { regions as regionsConfig, states as statesConfig } from '@/app/config';
 /**
  * Excel: "CountyFIPS" sheet.
  */
-import countyFips from 'app/data/county-fips.json';
+import countyFips from '@/app/data/county-fips.json';
 
 const emissionsFields = [
   'Power Sector: Annual',
@@ -52,7 +52,7 @@ type CountyData = {
   Pollutant: Pollutant;
   'Unit of measure': 'percent' | 'emissions (tons)' | 'emissions (pounds)';
 } & {
-  [field in typeof emissionsFields[number]]: number | null;
+  [field in (typeof emissionsFields)[number]]: number | null;
 };
 
 type CobraData = {
@@ -392,7 +392,7 @@ function createEmissionsFields(options: {
     'Vehicles: October': null,
     'Vehicles: November': null,
     'Vehicles: December': null,
-  } as { [field in typeof emissionsFields[number]]: number | null };
+  } as { [field in (typeof emissionsFields)[number]]: number | null };
 
   if (powerData) {
     const annualData = powerData.annual;

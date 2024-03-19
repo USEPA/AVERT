@@ -1,10 +1,11 @@
 import { ReactNode } from 'react';
 // —-
-import { ErrorBoundary } from 'app/components/ErrorBoundary';
-import { Tooltip } from 'app/components/Tooltip';
-import { useTypedSelector } from 'app/redux/index';
-import type { EmissionsReplacements } from 'app/redux/reducers/results';
-import type { CombinedSectorsEmissionsData } from 'app/calculations/emissions';
+import { ErrorBoundary } from '@/app/components/ErrorBoundary';
+import { Tooltip } from '@/app/components/Tooltip';
+import { useAppSelector } from '@/app/redux/index';
+import type { EmissionsReplacements } from '@/app/redux/reducers/results';
+import type { CombinedSectorsEmissionsData } from '@/app/calculations/emissions';
+import { type EmptyObject } from '@/app/utilities';
 
 type AnnualMonthlyData = ReturnType<typeof setAnnualMonthlyData>;
 
@@ -112,7 +113,7 @@ function setAnnualMonthlyData(
  */
 function applyEmissionsReplacement(options: {
   annualMonthlyData: AnnualMonthlyData;
-  emissionsReplacements: EmissionsReplacements | {};
+  emissionsReplacements: EmissionsReplacements | EmptyObject;
 }) {
   const { annualMonthlyData, emissionsReplacements } = options;
   const result = { ...annualMonthlyData };
@@ -167,11 +168,11 @@ function EmissionsReplacementTooltip(props: {
 }
 
 function PowerEmissionsTableContent() {
-  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
-  const combinedSectorsEmissionsData = useTypedSelector(
+  const inputs = useAppSelector(({ impacts }) => impacts.inputs);
+  const combinedSectorsEmissionsData = useAppSelector(
     ({ results }) => results.combinedSectorsEmissionsData,
   );
-  const emissionsReplacements = useTypedSelector(
+  const emissionsReplacements = useAppSelector(
     ({ results }) => results.emissionsReplacements,
   );
 
@@ -259,7 +260,7 @@ function PowerEmissionsTableContent() {
                 <th scope="row">
                   <span className="padding-left-105">
                     Generation <small>(MWh)</small>&nbsp;
-                    {emissionsReplacements.hasOwnProperty('generation') && (
+                    {Object.hasOwn(emissionsReplacements, 'generation') && (
                       <EmissionsReplacementTooltip field="generation" />
                     )}
                   </span>
@@ -285,7 +286,7 @@ function PowerEmissionsTableContent() {
                 <th scope="row">
                   <span className="padding-left-105">
                     SO<sub>2</sub> <small>(lb)</small>&nbsp;
-                    {emissionsReplacements.hasOwnProperty('so2') && (
+                    {Object.hasOwn(emissionsReplacements, 'so2') && (
                       <EmissionsReplacementTooltip field="so2" />
                     )}
                   </span>
@@ -305,7 +306,7 @@ function PowerEmissionsTableContent() {
                 <th scope="row">
                   <span className="padding-left-105">
                     NO<sub>X</sub> <small>(lb)</small>&nbsp;
-                    {emissionsReplacements.hasOwnProperty('nox') && (
+                    {Object.hasOwn(emissionsReplacements, 'nox') && (
                       <EmissionsReplacementTooltip field="nox" />
                     )}
                   </span>
@@ -348,7 +349,7 @@ function PowerEmissionsTableContent() {
                 <th scope="row">
                   <span className="padding-left-105">
                     CO<sub>2</sub> <small>(tons)</small>&nbsp;
-                    {emissionsReplacements.hasOwnProperty('co2') && (
+                    {Object.hasOwn(emissionsReplacements, 'co2') && (
                       <EmissionsReplacementTooltip field="co2" />
                     )}
                   </span>

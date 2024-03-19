@@ -1,18 +1,20 @@
 import Highcharts from 'highcharts';
+import HighchartsExporting from 'highcharts/modules/exporting';
+import HighchartsAccessibility from 'highcharts/modules/accessibility';
 import HighchartsReact from 'highcharts-react-official';
 // ---
-import { ErrorBoundary } from 'app/components/ErrorBoundary';
-import { Tooltip } from 'app/components/Tooltip';
-import { useTypedSelector } from 'app/redux/index';
-import { useSelectedRegion, useSelectedStateRegions } from 'app/hooks';
+import { ErrorBoundary } from '@/app/components/ErrorBoundary';
+import { Tooltip } from '@/app/components/Tooltip';
+import { useAppSelector } from '@/app/redux/index';
+import { useSelectedRegion, useSelectedStateRegions } from '@/app/hooks';
 
-require('highcharts/modules/exporting')(Highcharts);
-require('highcharts/modules/accessibility')(Highcharts);
+HighchartsExporting(Highcharts);
+HighchartsAccessibility(Highcharts);
 
 function ImpactsChartContent() {
-  const geographicFocus = useTypedSelector(({ geography }) => geography.focus);
-  const inputs = useTypedSelector(({ impacts }) => impacts.inputs);
-  const hourlyEnergyProfile = useTypedSelector(
+  const geographicFocus = useAppSelector(({ geography }) => geography.focus);
+  const inputs = useAppSelector(({ impacts }) => impacts.inputs);
+  const hourlyEnergyProfile = useAppSelector(
     ({ impacts }) => impacts.hourlyEnergyProfile,
   );
 

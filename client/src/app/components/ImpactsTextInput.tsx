@@ -1,14 +1,13 @@
 import type { ReactNode } from 'react';
-import { useDispatch } from 'react-redux';
 // ---
-import { Tooltip } from 'app/components/Tooltip';
-import { useTypedSelector } from 'app/redux/index';
-import { calculateHourlyEnergyProfile } from 'app/redux/reducers/impacts';
+import { Tooltip } from '@/app/components/Tooltip';
+import { useAppDispatch, useAppSelector } from '@/app/redux/index';
+import { calculateHourlyEnergyProfile } from '@/app/redux/reducers/impacts';
 import type {
   EnergyEfficiencyFieldName,
   RenewableEnergyFieldName,
   ElectricVehiclesFieldName,
-} from 'app/redux/reducers/impacts';
+} from '@/app/redux/reducers/impacts';
 
 export function ImpactsTextInput(props: {
   className?: string;
@@ -37,11 +36,11 @@ export function ImpactsTextInput(props: {
     errorMessage,
   } = props;
 
-  const dispatch = useDispatch();
-  const hourlyEnergyProfile = useTypedSelector(
+  const dispatch = useAppDispatch();
+  const hourlyEnergyProfile = useAppSelector(
     ({ impacts }) => impacts.hourlyEnergyProfile,
   );
-  const errors = useTypedSelector(({ impacts }) => impacts.errors);
+  const errors = useAppSelector(({ impacts }) => impacts.errors);
 
   const inputsAreValid = errors.length === 0;
   const inputIsEmpty = value.length === 0;

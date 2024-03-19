@@ -1,17 +1,18 @@
-import type { AppThunk } from 'app/redux/index';
-import { setStatesAndCounties } from 'app/redux/reducers/monthlyEmissions';
-import { setDownloadData } from 'app/redux/reducers/downloads';
+import type { AppThunk } from '@/app/redux/index';
+import { setStatesAndCounties } from '@/app/redux/reducers/monthlyEmissions';
+import { setDownloadData } from '@/app/redux/reducers/downloads';
 import {
   calculateAggregatedEmissionsData,
   createCombinedSectorsEmissionsData,
-} from 'app/calculations/emissions';
+} from '@/app/calculations/emissions';
 import type {
   EmissionsChanges,
   EmissionsFlagsField,
   CombinedSectorsEmissionsData,
-} from 'app/calculations/emissions';
-import type { RegionId } from 'app/config';
-import { regions } from 'app/config';
+} from '@/app/calculations/emissions';
+import { type EmptyObject } from '@/app/utilities';
+import type { RegionId } from '@/app/config';
+import { regions } from '@/app/config';
 
 export type EgusNeeingEmissionsReplacement = ReturnType<typeof setEgusNeedingEmissionsReplacement>; // prettier-ignore
 export type EmissionsReplacements = ReturnType<typeof setEmissionsReplacements>;
@@ -41,13 +42,13 @@ type Action =
 
 type State = {
   emissionsChanges:
-    | { status: 'idle'; data: {} }
-    | { status: 'pending'; data: {} }
+    | { status: 'idle'; data: EmptyObject }
+    | { status: 'pending'; data: EmptyObject }
     | { status: 'success'; data: EmissionsChanges }
-    | { status: 'failure'; data: {} };
+    | { status: 'failure'; data: EmptyObject };
   combinedSectorsEmissionsData: CombinedSectorsEmissionsData;
   egusNeedingEmissionsReplacement: EgusNeeingEmissionsReplacement;
-  emissionsReplacements: EmissionsReplacements | {};
+  emissionsReplacements: EmissionsReplacements | EmptyObject;
 };
 
 const initialState: State = {
@@ -226,7 +227,7 @@ export function fetchEmissionsChanges(): AppThunk {
         dispatch(setStatesAndCounties());
         dispatch(setDownloadData());
       })
-      .catch((err) => {
+      .catch((_err) => {
         dispatch({ type: 'results/FETCH_EMISSIONS_CHANGES_FAILURE' });
       });
   };
