@@ -13,9 +13,9 @@
     "node": "20.x"
   },
   "scripts": {
-    "dev": "vite",
-    "build:dev": "VITE_APP_URL=https://avert-dev.app.cloud.gov npm run build",
-    "build": "tsc && vite build && ./sync-build-with-public.sh",
+    "dev": "VITE_APP_URL=http://localhost:3001 vite",
+    "build:dev": "tsc && vite build --mode development && ./sync-build-with-public.sh",
+    "build:prod": "tsc && vite build --mode production && ./sync-build-with-public.sh",
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "cypress": "cypress open",
