@@ -1,52 +1,52 @@
 /** @jsxImportSource @emotion/react */
 
-import { useEffect, useState } from 'react';
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
-import '@reach/tabs/styles.css';
+import { useEffect, useState } from "react";
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from "@reach/tabs";
+import "@reach/tabs/styles.css";
 // ---
-import { LoadingIcon } from '@/app/components/LoadingIcon';
-import { PanelFooter } from '@/app/components/PanelFooter';
-import { RegionsList } from '@/app/components/RegionsList';
-import { RegionsMap } from '@/app/components/RegionsMap';
-import { StatesList } from '@/app/components/StatesList';
-import { StatesMap } from '@/app/components/StatesMap';
-import { UnitConversion } from '@/app/components/UnitConversion';
-import { ImpactsInputs } from '@/app/components/ImpactsInputs';
-import { ImpactsChart } from '@/app/components/ImpactsChart';
-import { ImpactsMessages } from '@/app/components/ImpactsMessages';
-import { ResultsImpactsInputs } from '@/app/components/ResultsImpactsInputs';
-import { PowerEmissionsTable } from '@/app/components/PowerEmissionsTable';
-import { VehiclesEmissionsTable } from '@/app/components/VehiclesEmissionsTable';
-import { StateEmissionsTable } from '@/app/components/StateEmissionsTable';
-import { MonthlyEmissionsCharts } from '@/app/components/MonthlyEmissionsCharts';
-import { COBRAConnection } from '@/app/components/COBRAConnection';
-import { DataDownload } from '@/app/components/DataDownload';
-import { useAppDispatch, useAppSelector } from '@/app/redux/index';
+import { LoadingIcon } from "@/app/components/LoadingIcon";
+import { PanelFooter } from "@/app/components/PanelFooter";
+import { RegionsList } from "@/app/components/RegionsList";
+import { RegionsMap } from "@/app/components/RegionsMap";
+import { StatesList } from "@/app/components/StatesList";
+import { StatesMap } from "@/app/components/StatesMap";
+import { UnitConversion } from "@/app/components/UnitConversion";
+import { ImpactsInputs } from "@/app/components/ImpactsInputs";
+import { ImpactsChart } from "@/app/components/ImpactsChart";
+import { ImpactsMessages } from "@/app/components/ImpactsMessages";
+import { ResultsImpactsInputs } from "@/app/components/ResultsImpactsInputs";
+import { PowerEmissionsTable } from "@/app/components/PowerEmissionsTable";
+import { VehiclesEmissionsTable } from "@/app/components/VehiclesEmissionsTable";
+import { StateEmissionsTable } from "@/app/components/StateEmissionsTable";
+import { MonthlyEmissionsCharts } from "@/app/components/MonthlyEmissionsCharts";
+import { COBRAConnection } from "@/app/components/COBRAConnection";
+import { DataDownload } from "@/app/components/DataDownload";
+import { useAppDispatch, useAppSelector } from "@/app/redux/index";
 import {
   setCountiesByRegion,
   selectGeography,
-} from '@/app/redux/reducers/geography';
+} from "@/app/redux/reducers/geography";
 import {
   setVMTData,
   setHourlyEVChargingPercentages,
-} from '@/app/redux/reducers/transportation';
+} from "@/app/redux/reducers/transportation";
 import {
   useSelectedRegion,
   useSelectedState,
   useSelectedStateRegions,
-} from '@/app/hooks';
-import { modalLinkStyles } from '@/app/utilities';
+} from "@/app/hooks";
+import { modalLinkStyles } from "@/app/utilities";
 
-const Container = styled('div')<{ overlay: boolean }>`
+const Container = styled("div")<{ overlay: boolean }>`
   ${({ overlay }) => {
     if (overlay) {
       return css`
         position: relative;
 
         &::after {
-          content: '';
+          content: "";
           position: absolute;
           inset: 0;
           background-color: rgba(0, 0, 0, 0.875);
@@ -67,7 +67,7 @@ const overlayTextStyles = css`
 `;
 
 const panelStyles = css`
-  &[data-active='false'] {
+  &[data-active="false"] {
     display: none;
   }
 `;
@@ -146,7 +146,7 @@ function ExcelAppText() {
   return (
     <p className="text-base-dark font-sans-2xs tablet:font-sans-xs desktop:font-sans-sm">
       AVERT Web Edition completes analyses using 2023 power sector emissions and
-      generation data and AVERT Main Module v4.3. The{' '}
+      generation data and AVERT Main Module v4.3. The{" "}
       <a
         className="usa-link"
         href="https://www.epa.gov/avert/download-avert"
@@ -154,7 +154,7 @@ function ExcelAppText() {
         rel="noreferrer"
       >
         AVERT Main Module
-      </a>{' '}
+      </a>{" "}
       v4.3 in Excel allows analyses for years 2017–2023 or for a future year
       scenario.
     </p>
@@ -193,7 +193,7 @@ export function Panels() {
     ({ impacts }) => impacts.hourlyEnergyProfile,
   );
   const serverCalcError = useAppSelector(
-    ({ results }) => results.emissionsChanges.status === 'failure',
+    ({ results }) => results.emissionsChanges.status === "failure",
   );
 
   const [cobraApiReady, setCobraApiReady] = useState(false);
@@ -218,17 +218,17 @@ export function Panels() {
       });
   }, [activeStep, cobraApiUrl]);
 
-  const selectedRegionName = useSelectedRegion()?.name || '';
-  const selectedStateName = useSelectedState()?.name || '';
+  const selectedRegionName = useSelectedRegion()?.name || "";
+  const selectedStateName = useSelectedState()?.name || "";
   const selectedStateRegionNames = useSelectedStateRegions().map((r) => r.name);
 
   const selectedStateRegions =
     selectedStateRegionNames.length === 1
       ? `${selectedStateRegionNames} Region`
-      : `${selectedStateRegionNames.join(', ')} Regions`;
+      : `${selectedStateRegionNames.join(", ")} Regions`;
 
   const geographicLocation =
-    geographicFocus === 'regions'
+    geographicFocus === "regions"
       ? `${selectedRegionName} Region`
       : `${selectedStateRegions} (due to changes in ${selectedStateName})`;
 
@@ -271,9 +271,9 @@ export function Panels() {
       <section css={panelStyles} data-active={activeStep === 1}>
         <Tabs
           css={tabsStyles}
-          index={geographicFocus === 'regions' ? 0 : 1}
+          index={geographicFocus === "regions" ? 0 : 1}
           onChange={(index: number) => {
-            dispatch(selectGeography(index === 0 ? 'regions' : 'states'));
+            dispatch(selectGeography(index === 0 ? "regions" : "states"));
           }}
         >
           <TabList>
@@ -365,7 +365,7 @@ export function Panels() {
           </h2>
 
           <h3 className="avert-blue margin-top-0 margin-bottom-1 font-serif-md">
-            {geographicFocus === 'regions'
+            {geographicFocus === "regions"
               ? `Region: ${selectedRegionName}`
               : `State: ${selectedStateName}`}
           </h3>
@@ -378,7 +378,7 @@ export function Panels() {
               that result from energy policies and programs. Specify the impacts
               of energy programs below, and AVERT will use these inputs to
               generate results. For more information about inputs, please
-              consult the{' '}
+              consult the{" "}
               <a
                 className="usa-link"
                 href="https://www.epa.gov/statelocalenergy/avert-user-manual"
@@ -386,7 +386,7 @@ export function Panels() {
                 rel="noreferrer"
               >
                 AVERT user manual
-              </a>{' '}
+              </a>{" "}
               or click the &nbsp;
               <span
                 css={modalLinkStyles}

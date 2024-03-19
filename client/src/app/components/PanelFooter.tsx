@@ -1,31 +1,30 @@
 /** @jsxImportSource @emotion/react */
 
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 // ---
-import { useAppDispatch, useAppSelector } from '@/app/redux/index';
-import { setActiveStep } from '@/app/redux/reducers/panel';
-import { resetImpactsInputs } from '@/app/redux/reducers/impacts';
-import { fetchRegionsData } from '@/app/redux/reducers/geography';
+import { useAppDispatch, useAppSelector } from "@/app/redux/index";
+import { setActiveStep } from "@/app/redux/reducers/panel";
+import { resetImpactsInputs } from "@/app/redux/reducers/impacts";
+import { fetchRegionsData } from "@/app/redux/reducers/geography";
 import {
   fetchEmissionsChanges,
   resetResults,
-} from '@/app/redux/reducers/results';
-import { resetMonthlyEmissions } from '@/app/redux/reducers/monthlyEmissions';
-import { useSelectedRegion, useSelectedState } from '@/app/hooks';
-import icons from '@/app/icons.svg';
+} from "@/app/redux/reducers/results";
+import { resetMonthlyEmissions } from "@/app/redux/reducers/monthlyEmissions";
+import { useSelectedRegion, useSelectedState } from "@/app/hooks";
 
 const iconStyles = css`
-  content: '';
+  content: "";
   display: inline-block;
   width: 0.625rem;
   height: 0.625rem;
-  background-image: url(${icons});
+  background-image: url("/img/icons.svg");
   background-size: 400px 200px;
   background-position: -36px -10px;
 `;
 
-const PrevButtonAnchor = styled('a')`
+const PrevButtonAnchor = styled("a")`
   &::before {
     ${iconStyles};
 
@@ -34,7 +33,7 @@ const PrevButtonAnchor = styled('a')`
   }
 `;
 
-const NextButtonAnchor = styled('a')<{ resultsShown: boolean }>`
+const NextButtonAnchor = styled("a")<{ resultsShown: boolean }>`
   &::after {
     ${iconStyles};
 
@@ -119,14 +118,14 @@ function NextButton(props: { text: string }) {
   const noRegionsSelected = onStepOne && !selectedRegionId;
   const noStateSelected = onStepOne && !selectedStateId;
   const noGeographySelected =
-    geographicFocus === 'regions' ? noRegionsSelected : noStateSelected;
+    geographicFocus === "regions" ? noRegionsSelected : noStateSelected;
 
   const hourlyEnergyProfileInvalid =
     hourlyEnergyProfile.validation.lowerError !== null ||
     hourlyEnergyProfile.validation.upperError !== null;
 
   const hourlyEnergyProfileCalculationNotComplete =
-    onStepTwo && hourlyEnergyProfile.status !== 'success';
+    onStepTwo && hourlyEnergyProfile.status !== "success";
 
   const hourlyEnergyProfileExceedsValidationLimit =
     onStepTwo && hourlyEnergyProfileInvalid;
@@ -149,8 +148,8 @@ function NextButton(props: { text: string }) {
     hourlyEnergyProfileCalculationNotComplete ||
     hourlyEnergyProfileExceedsValidationLimit ||
     hourlyEnergyProfileRecalculationNeeded
-      ? 'avert-button-disabled'
-      : '';
+      ? "avert-button-disabled"
+      : "";
 
   return (
     <NextButtonAnchor
@@ -169,7 +168,7 @@ function NextButton(props: { text: string }) {
 
         if (onStepTwo) {
           if (
-            hourlyEnergyProfile.status === 'success' &&
+            hourlyEnergyProfile.status === "success" &&
             !hourlyEnergyProfileRecalculationNeeded &&
             !hourlyEnergyProfileInvalid
           ) {

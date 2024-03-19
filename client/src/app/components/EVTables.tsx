@@ -1,7 +1,7 @@
-import { ErrorBoundary } from '@/app/components/ErrorBoundary';
-import { Tooltip } from '@/app/components/Tooltip';
-import { useAppSelector } from '@/app/redux/index';
-import type { SelectedRegionsTotalYearlyEVEnergyUsage } from '@/app/calculations/transportation';
+import { ErrorBoundary } from "@/app/components/ErrorBoundary";
+import { Tooltip } from "@/app/components/Tooltip";
+import { useAppSelector } from "@/app/redux/index";
+import type { SelectedRegionsTotalYearlyEVEnergyUsage } from "@/app/calculations/transportation";
 
 function calculatePercent(numerator: number, denominator: number) {
   return denominator !== 0
@@ -9,7 +9,7 @@ function calculatePercent(numerator: number, denominator: number) {
         minimumFractionDigits: 0,
         maximumFractionDigits: 1,
       })}%`
-    : '-';
+    : "-";
 }
 
 function formatNumber(number: number) {
@@ -72,7 +72,7 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
   return (
     <>
       <h4 className="avert-blue margin-bottom-1 font-serif-md">
-        EV Sales and Stock Comparison{' '}
+        EV Sales and Stock Comparison{" "}
         <Tooltip>
           <span className="text-normal">
             This table translates the user-specified number of EVs into shares
@@ -87,7 +87,7 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
       <div className="overflow-auto">
         <div className="avert-table-container">
           <table
-            className={`avert-table avert-table-striped ${className ?? ''}`}
+            className={`avert-table avert-table-striped ${className ?? ""}`}
           >
             <thead>
               <tr>
@@ -259,7 +259,7 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
   return (
     <div className="margin-top-2">
       <h4 className="avert-blue margin-bottom-1 font-serif-md">
-        EE/RE and EV Comparison{' '}
+        EE/RE and EV Comparison{" "}
         <Tooltip>
           <span className="text-normal">
             This table provides a comparison between the total annual energy
@@ -277,7 +277,7 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
       <div className="overflow-auto">
         <div className="avert-table-container">
           <table
-            className={`avert-table avert-table-striped ${className ?? ''}`}
+            className={`avert-table avert-table-striped ${className ?? ""}`}
           >
             <thead>
               <tr>
@@ -335,22 +335,22 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
                 <td>{formatNumber(historicalEERetailGWh)}</td>
                 <td>
                   {historicalEERetailGWh === 0
-                    ? '-'
+                    ? "-"
                     : formatNumber(requiredOffsetEERetailMw)}
                 </td>
                 <td>
                   {historicalEERetailGWh === 0
-                    ? '-'
+                    ? "-"
                     : formatNumber(requiredOffsetEERetailGWh)}
                 </td>
                 <td>
                   {historicalEERetailMw === 0
-                    ? '-'
+                    ? "-"
                     : `${formatNumber(precentDifferenceEERetailMw * 100)}%`}
                 </td>
                 <td>
                   {historicalEERetailGWh === 0
-                    ? '-'
+                    ? "-"
                     : `${formatNumber(precentDifferenceEERetailGWh * 100)}%`}
                 </td>
               </tr>
@@ -361,22 +361,22 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
                 <td>{formatNumber(historicalOnshoreWindGWh)}</td>
                 <td>
                   {historicalOnshoreWindGWh === 0
-                    ? '-'
+                    ? "-"
                     : formatNumber(requiredOffsetOnshoreWindMw)}
                 </td>
                 <td>
                   {historicalOnshoreWindGWh === 0
-                    ? '-'
+                    ? "-"
                     : formatNumber(requiredOffsetOnshoreWindGWh)}
                 </td>
                 <td>
                   {historicalOnshoreWindMw === 0
-                    ? '-'
+                    ? "-"
                     : `${formatNumber(precentDifferenceOnshoreWindMw * 100)}%`}
                 </td>
                 <td>
                   {historicalOnshoreWindGWh === 0
-                    ? '-'
+                    ? "-"
                     : `${formatNumber(precentDifferenceOnshoreWindGWh * 100)}%`}
                 </td>
               </tr>
@@ -387,22 +387,22 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
                 <td>{formatNumber(historicalUtilitySolarGWh)}</td>
                 <td>
                   {historicalUtilitySolarGWh === 0
-                    ? '-'
+                    ? "-"
                     : formatNumber(requiredOffsetUtilitySolarMw)}
                 </td>
                 <td>
                   {historicalUtilitySolarGWh === 0
-                    ? '-'
+                    ? "-"
                     : formatNumber(requiredOffsetUtilitySolarGWh)}
                 </td>
                 <td>
                   {historicalUtilitySolarMw === 0
-                    ? '-'
+                    ? "-"
                     : `${formatNumber(precentDifferenceUtilitySolarMw * 100)}%`}
                 </td>
                 <td>
                   {historicalUtilitySolarGWh === 0
-                    ? '-'
+                    ? "-"
                     : `${formatNumber(
                         precentDifferenceUtilitySolarGWh * 100,
                       )}%`}
@@ -415,8 +415,8 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
                 <td>{formatNumber(historicalTotalGWh)}</td>
                 <td>{formatNumber(requiredOffsetTotalMw)}</td>
                 <td>{formatNumber(requiredOffsetTotalGWh)}</td>
-                <td>{'-'}</td>
-                <td>{'-'}</td>
+                <td>{"-"}</td>
+                <td>{"-"}</td>
               </tr>
             </tbody>
           </table>
@@ -434,7 +434,7 @@ export function EVSalesAndStockTable(props: { className?: string }) {
       message={
         <>
           Error loading EV Sales and Stock Comparison table. Please contact
-          AVERT support at{' '}
+          AVERT support at{" "}
           <a
             className="usa-link"
             href="mailto:avert@epa.gov"
@@ -459,7 +459,7 @@ export function EEREEVComparisonTable(props: { className?: string }) {
       message={
         <>
           Error loading EE/RE and EV Comparison table. Please contact AVERT
-          support at{' '}
+          support at{" "}
           <a
             className="usa-link"
             href="mailto:avert@epa.gov"

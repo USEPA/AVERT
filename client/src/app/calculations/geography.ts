@@ -2,13 +2,13 @@ import type {
   GeographicFocus,
   RegionState,
   StateState,
-} from '@/app/redux/reducers/geography';
-import { sortObjectByKeys } from '@/app/utilities';
-import type { RegionId, RegionName, StateId } from '@/app/config';
+} from "@/app/redux/reducers/geography";
+import { sortObjectByKeys } from "@/app/utilities";
+import type { RegionId, RegionName, StateId } from "@/app/config";
 /**
  * Excel: "CountyFIPS" sheet.
  */
-import countyFips from '@/app/data/county-fips.json';
+import countyFips from "@/app/data/county-fips.json";
 
 export type CountiesByGeography = ReturnType<
   typeof organizeCountiesByGeography
@@ -43,9 +43,9 @@ export function organizeCountiesByGeography(options: {
   };
 
   countyFips.forEach((data) => {
-    const regionName = data['AVERT Region'] as RegionName;
-    const stateId = data['Postal State Code'] as StateId;
-    const county = data['County Name Long'];
+    const regionName = data["AVERT Region"] as RegionName;
+    const stateId = data["Postal State Code"] as StateId;
+    const county = data["County Name Long"];
 
     const regionId = Object.entries(regions).find(([_, region]) => {
       return region.name === regionName;
@@ -96,11 +96,11 @@ export function calculateRegionalScalingFactors(options: {
 
   const result = {} as Partial<{ [regionId in RegionId]: number }>;
 
-  if (geographicFocus === 'regions' && selectedRegion) {
+  if (geographicFocus === "regions" && selectedRegion) {
     result[selectedRegion.id] = 1;
   }
 
-  if (geographicFocus === 'states' && selectedState) {
+  if (geographicFocus === "states" && selectedState) {
     Object.entries(selectedState.percentageByRegion).forEach(
       ([regionId, data]) => {
         result[regionId as RegionId] = data / 100;

@@ -1,6 +1,6 @@
-import { ErrorBoundary } from '@/app/components/ErrorBoundary';
-import { useAppSelector } from '@/app/redux/index';
-import type { HourlyChangesValidation } from '@/app/calculations/impacts';
+import { ErrorBoundary } from "@/app/components/ErrorBoundary";
+import { useAppSelector } from "@/app/redux/index";
+import type { HourlyChangesValidation } from "@/app/calculations/impacts";
 
 function EquivalentHomesText(props: { hourlyChanges: number[] }) {
   const { hourlyChanges } = props;
@@ -15,10 +15,10 @@ function EquivalentHomesText(props: { hourlyChanges: number[] }) {
 
   return (
     <p className="margin-top-2 text-base-dark">
-      This load profile will {totalLoadMwh < 0 ? 'displace' : 'add'}{' '}
+      This load profile will {totalLoadMwh < 0 ? "displace" : "add"}{" "}
       <strong>{Math.abs(totalLoadGwh).toLocaleString()} GWh</strong> of regional
       fossil fuel generation over the course of a year. For reference, this
-      equals the annual electricity consumed by{' '}
+      equals the annual electricity consumed by{" "}
       <strong>{Math.abs(equivalentHomes).toLocaleString()}</strong> average
       homes in the United States.
     </p>
@@ -26,8 +26,8 @@ function EquivalentHomesText(props: { hourlyChanges: number[] }) {
 }
 
 function ValidationMessage(props: {
-  direction: 'upper' | 'lower';
-  severity: 'error' | 'warning';
+  direction: "upper" | "lower";
+  severity: "error" | "warning";
   exceedanceData: HourlyChangesValidation[keyof HourlyChangesValidation];
 }) {
   const { direction, severity, exceedanceData } = props;
@@ -45,21 +45,21 @@ function ValidationMessage(props: {
   } = exceedanceData;
 
   const monthName = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ][month - 1];
   const hourNumber = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
-  const meridiem = hour > 12 ? 'PM' : 'AM';
+  const meridiem = hour > 12 ? "PM" : "AM";
 
   const percentOverRegionalLimit =
     ((postImpactsLoad - regionHourlyLimit) / regionHourlyLimit) * 100;
@@ -78,10 +78,10 @@ function ValidationMessage(props: {
     <div className={`usa-alert usa-alert--${severity} margin-bottom-0`}>
       <div className="usa-alert__body">
         <h4 className="usa-alert__heading">
-          {severity === 'error' ? 'ERROR' : 'WARNING'}
+          {severity === "error" ? "ERROR" : "WARNING"}
         </h4>
 
-        {direction === 'upper' && (
+        {direction === "upper" && (
           <>
             <p className="margin-top-0">
               The combined impact of your proposed programs would exceed the
@@ -89,7 +89,7 @@ function ValidationMessage(props: {
               &nbsp;&nbsp;
               <em>
                 (Maximum value: <strong>{upperLimitPercent}</strong>% above the
-                maximum calculable load for the {regionName} region on{' '}
+                maximum calculable load for the {regionName} region on{" "}
                 <strong>
                   {monthName} {day} at {hourNumber}:00 {meridiem}
                 </strong>
@@ -105,15 +105,15 @@ function ValidationMessage(props: {
           </>
         )}
 
-        {direction === 'lower' && (
+        {direction === "lower" && (
           <>
             <p className="margin-top-0">
               The combined impact of your proposed programs would displace more
-              than <strong>{severity === 'error' ? 30 : 15}%</strong> of
+              than <strong>{severity === "error" ? 30 : 15}%</strong> of
               regional fossil generation in at least one hour of the
               year.&nbsp;&nbsp;
               <em>
-                (Maximum value: <strong>{lowerLimitPercent}</strong>% on{' '}
+                (Maximum value: <strong>{lowerLimitPercent}</strong>% on{" "}
                 <strong>
                   {monthName} {day} at {hourNumber}:00 {meridiem}
                 </strong>
@@ -155,23 +155,23 @@ export function EVWarningMessage() {
   } = inputs;
 
   const eeInputsEmpty =
-    (constantMwh === '' || constantMwh === '0') &&
-    (annualGwh === '' || annualGwh === '0') &&
-    (broadProgram === '' || broadProgram === '0') &&
-    (reduction === '' || reduction === '0') &&
-    (topHours === '' || topHours === '0');
+    (constantMwh === "" || constantMwh === "0") &&
+    (annualGwh === "" || annualGwh === "0") &&
+    (broadProgram === "" || broadProgram === "0") &&
+    (reduction === "" || reduction === "0") &&
+    (topHours === "" || topHours === "0");
 
   const reInputsEmpty =
-    (onshoreWind === '' || onshoreWind === '0') &&
-    (offshoreWind === '' || offshoreWind === '0') &&
-    (utilitySolar === '' || utilitySolar === '0') &&
-    (rooftopSolar === '' || rooftopSolar === '0');
+    (onshoreWind === "" || onshoreWind === "0") &&
+    (offshoreWind === "" || offshoreWind === "0") &&
+    (utilitySolar === "" || utilitySolar === "0") &&
+    (rooftopSolar === "" || rooftopSolar === "0");
 
   const evInputsEmpty =
-    (batteryEVs === '' || batteryEVs === '0') &&
-    (hybridEVs === '' || hybridEVs === '0') &&
-    (transitBuses === '' || transitBuses === '0') &&
-    (schoolBuses === '' || schoolBuses === '0');
+    (batteryEVs === "" || batteryEVs === "0") &&
+    (hybridEVs === "" || hybridEVs === "0") &&
+    (transitBuses === "" || transitBuses === "0") &&
+    (schoolBuses === "" || schoolBuses === "0");
 
   if (eeInputsEmpty && reInputsEmpty && !evInputsEmpty) {
     return (
@@ -195,7 +195,7 @@ export function EVWarningMessage() {
           </p>
 
           <p className="margin-top-0">
-            For more ideas on how to model EVs in AVERT, see Appendix J in the{' '}
+            For more ideas on how to model EVs in AVERT, see Appendix J in the{" "}
             <a
               className="usa-link"
               href="https://www.epa.gov/avert/avert-user-manual"
@@ -266,7 +266,7 @@ export function ImpactsMessages() {
     <ErrorBoundary
       message={
         <>
-          Energy Impacts messages error. Please contact AVERT support at{' '}
+          Energy Impacts messages error. Please contact AVERT support at{" "}
           <a
             className="usa-link"
             href="mailto:avert@epa.gov"

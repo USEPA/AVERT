@@ -1,16 +1,16 @@
-import { ErrorBoundary } from '@/app/components/ErrorBoundary';
-import { Tooltip } from '@/app/components/Tooltip';
-import { useAppSelector } from '@/app/redux/index';
-import type { SelectedRegionsTotalYearlyEmissionChanges } from '@/app/calculations/transportation';
-import type { CombinedSectorsEmissionsData } from '@/app/calculations/emissions';
-import { type EmptyObject } from '@/app/utilities';
+import { ErrorBoundary } from "@/app/components/ErrorBoundary";
+import { Tooltip } from "@/app/components/Tooltip";
+import { useAppSelector } from "@/app/redux/index";
+import type { SelectedRegionsTotalYearlyEmissionChanges } from "@/app/calculations/transportation";
+import type { CombinedSectorsEmissionsData } from "@/app/calculations/emissions";
+import { type EmptyObject } from "@/app/utilities";
 
 /**
  * Round number to the nearest 10 and conditionally display '—' if number is
  * within 10 of zero.
  */
 function formatNumber(number: number) {
-  if (number !== 0 && number < 10 && number > -10) return '—';
+  if (number !== 0 && number < 10 && number > -10) return "—";
   const result = Math.round(number / 10) * 10;
   return result.toLocaleString();
 }
@@ -67,11 +67,11 @@ function setAnnualVehicleEmissionsChanges(options: {
 
   const result = Object.values(selectedRegionsChangesData).reduce(
     (object, regionChanges) => {
-      ['CO2', 'NOX', 'SO2', 'PM25', 'VOCs', 'NH3'].forEach((item) => {
+      ["CO2", "NOX", "SO2", "PM25", "VOCs", "NH3"].forEach((item) => {
         const pollutant = item as keyof typeof regionChanges.total;
         const value = -1 * regionChanges.total[pollutant];
         // conditionally convert CO2 pounds into tons
-        const result = pollutant === 'CO2' ? value / 2_000 : value;
+        const result = pollutant === "CO2" ? value / 2_000 : value;
 
         object[pollutant] += result;
       });
@@ -97,10 +97,10 @@ function VehiclesEmissionsTableContent() {
   const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = inputs;
 
   const evInputsEmpty =
-    (batteryEVs === '' || batteryEVs === '0') &&
-    (hybridEVs === '' || hybridEVs === '0') &&
-    (transitBuses === '' || transitBuses === '0') &&
-    (schoolBuses === '' || schoolBuses === '0');
+    (batteryEVs === "" || batteryEVs === "0") &&
+    (hybridEVs === "" || hybridEVs === "0") &&
+    (transitBuses === "" || transitBuses === "0") &&
+    (schoolBuses === "" || schoolBuses === "0");
 
   const annualPower = setAnnualPowerEmissionsChanges({
     combinedSectorsEmissionsData,
@@ -305,7 +305,7 @@ export function VehiclesEmissionsTable() {
       message={
         <>
           Error loading transportation sector emissions table. Please contact
-          AVERT support at{' '}
+          AVERT support at{" "}
           <a
             className="usa-link"
             href="mailto:avert@epa.gov"

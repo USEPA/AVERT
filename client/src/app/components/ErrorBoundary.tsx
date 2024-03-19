@@ -1,5 +1,5 @@
-import { Component, ErrorInfo } from 'react';
-import type { ReactNode } from 'react';
+import { Component, ErrorInfo } from "react";
+import type { ReactNode } from "react";
 
 type Props = {
   children: ReactNode;
@@ -20,7 +20,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught error:', error, errorInfo);
+    console.error("Uncaught error:", error, errorInfo);
   }
 
   public render() {
@@ -34,7 +34,7 @@ export class ErrorBoundary extends Component<Props, State> {
             <p className="usa-alert__text">
               {message ?? (
                 <>
-                  AVERT application error. Please contact AVERT support at{' '}
+                  AVERT application error. Please contact AVERT support at{" "}
                   <a
                     className="usa-link"
                     href="mailto:avert@epa.gov"

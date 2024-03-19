@@ -1,11 +1,11 @@
-import { Fragment } from 'react';
+import { Fragment } from "react";
 // ---
-import { ErrorBoundary } from '@/app/components/ErrorBoundary';
-import { useAppDispatch } from '@/app/redux/index';
-import { selectState } from '@/app/redux/reducers/geography';
-import { useSelectedState } from '@/app/hooks';
-import type { StateId } from '@/app/config';
-import { states } from '@/app/config';
+import { ErrorBoundary } from "@/app/components/ErrorBoundary";
+import { useAppDispatch } from "@/app/redux/index";
+import { selectState } from "@/app/redux/reducers/geography";
+import { useSelectedState } from "@/app/hooks";
+import type { StateId } from "@/app/config";
+import { states } from "@/app/config";
 
 function StatesListContent() {
   const dispatch = useAppDispatch();
@@ -19,11 +19,11 @@ function StatesListContent() {
           <select
             className="usa-select margin-0 maxw-full"
             aria-label="Select State"
-            value={selectedStateId || ''}
+            value={selectedStateId || ""}
             onChange={(ev) => dispatch(selectState(ev.target.value as StateId))}
             data-avert-state-select
           >
-            <option value={''} disabled>
+            <option value={""} disabled>
               Select State
             </option>
 
@@ -48,7 +48,7 @@ export function StatesList() {
     <ErrorBoundary
       message={
         <>
-          States select error. Please contact AVERT support at{' '}
+          States select error. Please contact AVERT support at{" "}
           <a
             className="usa-link"
             href="mailto:avert@epa.gov"

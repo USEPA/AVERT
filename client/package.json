@@ -29,6 +29,7 @@
     "@typescript-eslint/eslint-plugin": "7.3.0",
     "@typescript-eslint/parser": "7.3.0",
     "@vitejs/plugin-react-swc": "3.6.0",
+    "autoprefixer": "10.4.18",
     "cypress": "13.7.0",
     "eslint": "8.57.0",
     "eslint-plugin-cypress": "2.15.1",
@@ -36,7 +37,9 @@
     "eslint-plugin-react-refresh": "0.4.6",
     "husky": "9.0.11",
     "lint-staged": "15.2.2",
+    "postcss": "8.4.37",
     "prettier": "3.2.5",
+    "prettier-plugin-tailwindcss": "0.5.12",
     "tailwindcss": "3.4.1",
     "typescript": "5.4.2",
     "vite": "5.1.6"

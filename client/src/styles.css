@@ -45,8 +45,8 @@ select:not([disabled]):focus,
 textarea:not([disabled]):focus,
 button:not([disabled]):focus,
 [href]:focus,
-.usa-radio__input:focus + [class*='__label']::before,
-.usa-checkbox__input:focus + [class*='__label']::before {
+.usa-radio__input:focus + [class*="__label"]::before,
+.usa-checkbox__input:focus + [class*="__label"]::before {
   outline-width: 0.1875rem;
 }
 

@@ -1,11 +1,11 @@
-import { Fragment, useEffect, useState } from 'react';
-import Select from 'react-select';
+import { Fragment, useEffect, useState } from "react";
+import Select from "react-select";
 // ---
-import { ErrorBoundary } from '@/app/components/ErrorBoundary';
-import { useAppSelector } from '@/app/redux/index';
-import type { CombinedSectorsEmissionsData } from '@/app/calculations/emissions';
-import type { StateId } from '@/app/config';
-import { states as statesConfig } from '@/app/config';
+import { ErrorBoundary } from "@/app/components/ErrorBoundary";
+import { useAppSelector } from "@/app/redux/index";
+import type { CombinedSectorsEmissionsData } from "@/app/calculations/emissions";
+import type { StateId } from "@/app/config";
+import { states as statesConfig } from "@/app/config";
 
 /**
  * Round number to the nearest 10 and conditionally format resulting -0 to 0.
@@ -37,7 +37,7 @@ function setAnnualStateEmissionsChanges(
           const statePowerData = stateDataValue.power;
           const stateVehicleData = stateDataValue.vehicle;
 
-          if (pollutant !== 'generation') {
+          if (pollutant !== "generation") {
             if (statePowerData !== null) {
               const { original, postEere } = statePowerData.annual;
               object.power[pollutant] += postEere - original;
@@ -192,13 +192,13 @@ function StateEmissionsTableContent() {
                 {selectedStates.map((data, index, array) => {
                   /** apply zebra striping to groups of state data rows */
                   const stripedRowClassName =
-                    index % 2 ? '' : 'avert-table-striped-row';
+                    index % 2 ? "" : "avert-table-striped-row";
 
                   /** add visual space below the last state row, unless its the last state */
                   const stateSpacingClassName =
                     index !== array.length - 1
-                      ? 'border-width-1 border-top-width-0 border-x-width-0 border-solid border-white'
-                      : '';
+                      ? "border-width-1 border-top-width-0 border-x-width-0 border-solid border-white"
+                      : "";
 
                   return (
                     <Fragment key={data.id}>
@@ -304,7 +304,7 @@ export function StateEmissionsTable() {
     <ErrorBoundary
       message={
         <>
-          Error loading state emissions table. Please contact AVERT support at{' '}
+          Error loading state emissions table. Please contact AVERT support at{" "}
           <a
             className="usa-link"
             href="mailto:avert@epa.gov"

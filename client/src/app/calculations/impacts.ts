@@ -1,22 +1,22 @@
-import { percentile } from 'stats-lite';
+import { percentile } from "stats-lite";
 // ---
 import type {
   RegionalLoadData,
   RegionState,
-} from '@/app/redux/reducers/geography';
+} from "@/app/redux/reducers/geography";
 import type {
   DailyStats,
   HourlyEVChargingPercentages,
   SelectedRegionsMonthlyDailyEVEnergyUsage,
-} from '@/app/calculations/transportation';
-import { type EmptyObject } from '@/app/utilities';
-import type { RegionId, RegionName } from '@/app/config';
+} from "@/app/calculations/transportation";
+import { type EmptyObject } from "@/app/utilities";
+import type { RegionId, RegionName } from "@/app/config";
 /**
  * EV hourly limits by region
  *
  * (NOTE: not in Excel file, but sent by Pat via email 02/21/23)
  */
-import regionEvHourlyLimits from '@/app/data/region-ev-hourly-limits.json';
+import regionEvHourlyLimits from "@/app/data/region-ev-hourly-limits.json";
 
 export type HourlyRenewableEnergyProfiles = ReturnType<
   typeof calculateHourlyRenewableEnergyProfiles
@@ -44,7 +44,7 @@ export type HourlyChangesValidation = ReturnType<
  * with the two solar profiles.
  */
 export function calculateHourlyRenewableEnergyProfiles(options: {
-  eereDefaults: RegionState['eereDefaults']['data'];
+  eereDefaults: RegionState["eereDefaults"]["data"];
   onshoreWind: number;
   offshoreWind: number;
   utilitySolar: number;
@@ -79,7 +79,7 @@ export function calculateHourlyRenewableEnergyProfiles(options: {
  * "CalculateEERE" sheet (columns indicated in comments below).
  */
 export function calculateHourlyEnergyStorageData(options: {
-  storageDefaults: RegionState['storageDefaults']['data'];
+  storageDefaults: RegionState["storageDefaults"]["data"];
   utilityStorage: number;
   rooftopStorage: number;
   maxAnnualDischargeCycles: number;
@@ -473,9 +473,9 @@ export function calculateHourlyEVLoad(options: {
 
   const result = regionalLoad.map((data) => {
     if (
-      !Object.hasOwn(data, 'hour') &&
-      !Object.hasOwn(data, 'day') &&
-      !Object.hasOwn(data, 'month')
+      !Object.hasOwn(data, "hour") &&
+      !Object.hasOwn(data, "day") &&
+      !Object.hasOwn(data, "month")
     ) {
       return 0;
     }
@@ -489,8 +489,8 @@ export function calculateHourlyEVLoad(options: {
 
     const evChargingPercentage = hourlyEVChargingPercentages[hour];
     const dayTypeField = dailyStats[month][day].isWeekend
-      ? 'weekend'
-      : 'weekday';
+      ? "weekend"
+      : "weekday";
 
     const evLoad =
       evChargingPercentage.batteryEVs[dayTypeField] *
@@ -598,7 +598,7 @@ export function calculateHourlyImpacts(options: {
       const rooftopSolarProfile = reProfiles?.rooftopSolar || 0;
 
       const esData = hourlyEnergyStorageData[index] || {};
-      const date = esData?.date || '';
+      const date = esData?.date || "";
       const dayOfYear = esData?.dayOfYear || 0;
       const hourOfYear = esData?.hourOfYear || 0;
       const utilitySolarPaired = esData?.esProfilePaired?.utility || 0;

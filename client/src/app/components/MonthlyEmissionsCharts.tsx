@@ -1,16 +1,16 @@
-import { ReactNode } from 'react';
-import Highcharts from 'highcharts';
-import HighchartsExporting from 'highcharts/modules/exporting';
-import HighchartsAccessibility from 'highcharts/modules/accessibility';
-import HighchartsReact from 'highcharts-react-official';
+import { ReactNode } from "react";
+import Highcharts from "highcharts";
+import HighchartsExporting from "highcharts/modules/exporting";
+import HighchartsAccessibility from "highcharts/modules/accessibility";
+import HighchartsReact from "highcharts-react-official";
 // ---
-import { ErrorBoundary } from '@/app/components/ErrorBoundary';
-import { useAppDispatch, useAppSelector } from '@/app/redux/index';
+import { ErrorBoundary } from "@/app/components/ErrorBoundary";
+import { useAppDispatch, useAppSelector } from "@/app/redux/index";
 import type {
   Aggregation,
   Source,
   Unit,
-} from '@/app/redux/reducers/monthlyEmissions';
+} from "@/app/redux/reducers/monthlyEmissions";
 import {
   setMonthlyEmissionsAggregation,
   setMonthlyEmissionsRegionId,
@@ -19,14 +19,14 @@ import {
   setMonthlyEmissionsPollutant,
   setMonthlyEmissionsSource,
   setMonthlyEmissionsUnit,
-} from '@/app/redux/reducers/monthlyEmissions';
+} from "@/app/redux/reducers/monthlyEmissions";
 import type {
   EmissionsData,
   CombinedSectorsEmissionsData,
-} from '@/app/calculations/emissions';
-import { useSelectedRegion, useSelectedStateRegions } from '@/app/hooks';
-import type { Pollutant, RegionId, StateId } from '@/app/config';
-import { regions, states } from '@/app/config';
+} from "@/app/calculations/emissions";
+import { useSelectedRegion, useSelectedStateRegions } from "@/app/hooks";
+import type { Pollutant, RegionId, StateId } from "@/app/config";
+import { regions, states } from "@/app/config";
 
 HighchartsExporting(Highcharts);
 HighchartsAccessibility(Highcharts);
@@ -63,7 +63,7 @@ function setMonthlyPowerData(
     monthlyPercentageChanges.push(percentChange);
   }
 
-  return unit === 'emissions'
+  return unit === "emissions"
     ? monthlyEmissionsChanges
     : monthlyPercentageChanges;
 }
@@ -77,7 +77,7 @@ function setMonthlyVehicleData(
   aggregation: Aggregation,
 ) {
   const vehicleData = data.vehicle;
-  if (!vehicleData || aggregation !== 'region') return null;
+  if (!vehicleData || aggregation !== "region") return null;
 
   const monthlyEmissionsChanges: number[] = [];
 
@@ -106,8 +106,8 @@ function setChartSeriesData(options: {
     if (currentSources.includes(source) && value.data) {
       /** NOTE: we don't have percent change data for vehicles */
       if (
-        currentUnit === 'emissions' ||
-        (currentUnit === 'percentages' && source !== 'vehicles')
+        currentUnit === "emissions" ||
+        (currentUnit === "percentages" && source !== "vehicles")
       ) {
         array.push(value);
       }
@@ -155,91 +155,91 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
 
   const so2Data = {
     power: {
-      name: 'Power Sector',
+      name: "Power Sector",
       data: setMonthlyPowerData(data.so2, currentUnit),
-      color: 'rgba(5, 141, 199, 1)',
-      unit: 'lb',
+      color: "rgba(5, 141, 199, 1)",
+      unit: "lb",
     },
     vehicles: {
-      name: 'Vehicles',
+      name: "Vehicles",
       data: setMonthlyVehicleData(data.so2, currentAggregation),
-      color: 'rgba(5, 141, 199, 0.5)',
-      unit: 'lb',
+      color: "rgba(5, 141, 199, 0.5)",
+      unit: "lb",
     },
   };
 
   const noxData = {
     power: {
-      name: 'Power Sector',
+      name: "Power Sector",
       data: setMonthlyPowerData(data.nox, currentUnit),
-      color: 'rgba(237, 86, 27, 1)',
-      unit: 'lb',
+      color: "rgba(237, 86, 27, 1)",
+      unit: "lb",
     },
     vehicles: {
-      name: 'Vehicles',
+      name: "Vehicles",
       data: setMonthlyVehicleData(data.nox, currentAggregation),
-      color: 'rgba(237, 86, 27, 0.5)',
-      unit: 'lb',
+      color: "rgba(237, 86, 27, 0.5)",
+      unit: "lb",
     },
   };
 
   const co2Data = {
     power: {
-      name: 'Power Sector',
+      name: "Power Sector",
       data: setMonthlyPowerData(data.co2, currentUnit),
-      color: 'rgba(80, 180, 50, 1)',
-      unit: 'tons',
+      color: "rgba(80, 180, 50, 1)",
+      unit: "tons",
     },
     vehicles: {
-      name: 'Vehicles',
+      name: "Vehicles",
       data: setMonthlyVehicleData(data.co2, currentAggregation),
-      color: 'rgba(80, 180, 50, 0.5)',
-      unit: 'tons',
+      color: "rgba(80, 180, 50, 0.5)",
+      unit: "tons",
     },
   };
 
   const pm25Data = {
     power: {
-      name: 'Power Sector',
+      name: "Power Sector",
       data: setMonthlyPowerData(data.pm25, currentUnit),
-      color: 'rgba(102, 86, 131, 1)',
-      unit: 'lb',
+      color: "rgba(102, 86, 131, 1)",
+      unit: "lb",
     },
     vehicles: {
-      name: 'Vehicles',
+      name: "Vehicles",
       data: setMonthlyVehicleData(data.pm25, currentAggregation),
-      color: 'rgba(102, 86, 131, 0.5)',
-      unit: 'lb',
+      color: "rgba(102, 86, 131, 0.5)",
+      unit: "lb",
     },
   };
 
   const vocsData = {
     power: {
-      name: 'Power Sector',
+      name: "Power Sector",
       data: setMonthlyPowerData(data.vocs, currentUnit),
-      color: 'rgba(255, 193, 7, 1)',
-      unit: 'lb',
+      color: "rgba(255, 193, 7, 1)",
+      unit: "lb",
     },
     vehicles: {
-      name: 'Vehicles',
+      name: "Vehicles",
       data: setMonthlyVehicleData(data.vocs, currentAggregation),
-      color: 'rgba(255, 193, 7, 0.5)',
-      unit: 'lb',
+      color: "rgba(255, 193, 7, 0.5)",
+      unit: "lb",
     },
   };
 
   const nh3Data = {
     power: {
-      name: 'Power Sector',
+      name: "Power Sector",
       data: setMonthlyPowerData(data.nh3, currentUnit),
-      color: 'rgba(0, 150, 136, 1)',
-      unit: 'lb',
+      color: "rgba(0, 150, 136, 1)",
+      unit: "lb",
     },
     vehicles: {
-      name: 'Vehicles',
+      name: "Vehicles",
       data: setMonthlyVehicleData(data.nh3, currentAggregation),
-      color: 'rgba(0, 150, 136, 0.5)',
-      unit: 'lb',
+      color: "rgba(0, 150, 136, 0.5)",
+      unit: "lb",
     },
   };
 
@@ -248,58 +248,58 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
     : [];
 
   const flaggedRegion =
-    currentAggregation === 'region' &&
-    (geographicFocus === 'regions'
+    currentAggregation === "region" &&
+    (geographicFocus === "regions"
       ? flaggedEGUs.length > 0
-      : (flaggedEGUs.length > 0 && currentRegionId === 'ALL') ||
+      : (flaggedEGUs.length > 0 && currentRegionId === "ALL") ||
         flaggedEGUs.filter((egu) => egu.region === currentRegionId).length > 0);
 
   const flaggedState =
-    currentAggregation === 'state' &&
+    currentAggregation === "state" &&
     flaggedEGUs.some((egu) => egu.state === currentStateId);
 
   const flaggedCounty =
-    currentAggregation === 'county' &&
+    currentAggregation === "county" &&
     flaggedEGUs.some((egu) => {
       return egu.state === currentStateId && egu.county === currentCountyName;
     });
 
   // format 'city' if found in county name
-  const countyName = currentCountyName.replace(/city/, '(City)');
+  const countyName = currentCountyName.replace(/city/, "(City)");
 
   const regionChartTitle =
-    geographicFocus === 'regions'
+    geographicFocus === "regions"
       ? `${selectedRegion?.name} Region`
-      : geographicFocus === 'states'
+      : geographicFocus === "states"
         ? selectedStateRegions.length === 1
           ? `${regions[selectedStateRegions[0].id]?.name} Region`
-          : currentRegionId === ''
-            ? '' // multiple regions but a region has not yet been selected
-            : currentRegionId === 'ALL'
+          : currentRegionId === ""
+            ? "" // multiple regions but a region has not yet been selected
+            : currentRegionId === "ALL"
               ? `${selectedStateRegions
                   .map((region) => regions[region.id]?.name)
-                  .join(', ')} Regions`
+                  .join(", ")} Regions`
               : `${regions[currentRegionId as RegionId]?.name} Region`
-        : '';
+        : "";
 
   const stateChartTitle =
-    currentStateId === ''
-      ? '' // state has not yet been selected
+    currentStateId === ""
+      ? "" // state has not yet been selected
       : `${states[currentStateId as StateId].name}`;
 
   const countyChartTitle =
-    currentCountyName === ''
-      ? '' // county has not yet been selected
+    currentCountyName === ""
+      ? "" // county has not yet been selected
       : `${countyName}, ${states[currentStateId as StateId].name}`;
 
   const chartLocationTitle =
-    currentAggregation === 'region'
+    currentAggregation === "region"
       ? regionChartTitle
-      : currentAggregation === 'state'
+      : currentAggregation === "state"
         ? stateChartTitle
-        : currentAggregation === 'county'
+        : currentAggregation === "county"
           ? countyChartTitle
-          : '';
+          : "";
 
   function formatTitle(pollutant: string) {
     return `<tspan class='font-sans-2xs text-base-darker'>
@@ -309,14 +309,14 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
   }
 
   function formatYAxis(unit: string) {
-    return currentUnit === 'percentages'
-      ? 'Percent change'
+    return currentUnit === "percentages"
+      ? "Percent change"
       : `Emission changes (${unit})`;
   }
 
   const commonConfig: Highcharts.Options = {
     chart: {
-      type: 'column',
+      type: "column",
       height: 300,
       style: {
         fontFamily: '"Open Sans", sans-serif',
@@ -329,7 +329,7 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
       allowHTML: true,
     },
     lang: {
-      contextButtonTitle: 'Export options',
+      contextButtonTitle: "Export options",
     },
     legend: {
       enabled: true,
@@ -342,7 +342,7 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
             return false;
           },
         },
-        stacking: 'normal',
+        stacking: "normal",
       },
     },
     tooltip: {
@@ -355,7 +355,7 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
 
         const { options } = this.series;
         const unit = (options as typeof options & { unit: string }).unit;
-        const suffix = currentUnit === 'emissions' ? ` ${unit}` : '%';
+        const suffix = currentUnit === "emissions" ? ` ${unit}` : "%";
 
         return `<strong>${dataPoint}</strong>${suffix}`;
       },
@@ -367,8 +367,8 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
 
   const so2Config = {
     ...commonConfig,
-    title: { text: formatTitle('SO<sub>2</sub>'), useHTML: true },
-    yAxis: { title: { text: formatYAxis('lb') } },
+    title: { text: formatTitle("SO<sub>2</sub>"), useHTML: true },
+    yAxis: { title: { text: formatYAxis("lb") } },
     series: setChartSeriesData({
       seriesData: so2Data,
       currentSources,
@@ -378,8 +378,8 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
 
   const noxConfig = {
     ...commonConfig,
-    title: { text: formatTitle('NO<sub>X</sub>'), useHTML: true },
-    yAxis: { title: { text: formatYAxis('lb') } },
+    title: { text: formatTitle("NO<sub>X</sub>"), useHTML: true },
+    yAxis: { title: { text: formatYAxis("lb") } },
     series: setChartSeriesData({
       seriesData: noxData,
       currentSources,
@@ -389,8 +389,8 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
 
   const co2Config = {
     ...commonConfig,
-    title: { text: formatTitle('CO<sub>2</sub>'), useHTML: true },
-    yAxis: { title: { text: formatYAxis('tons') } },
+    title: { text: formatTitle("CO<sub>2</sub>"), useHTML: true },
+    yAxis: { title: { text: formatYAxis("tons") } },
     series: setChartSeriesData({
       seriesData: co2Data,
       currentSources,
@@ -400,8 +400,8 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
 
   const pm25Config = {
     ...commonConfig,
-    title: { text: formatTitle('PM<sub>2.5</sub>'), useHTML: true },
-    yAxis: { title: { text: formatYAxis('lb') } },
+    title: { text: formatTitle("PM<sub>2.5</sub>"), useHTML: true },
+    yAxis: { title: { text: formatYAxis("lb") } },
     series: setChartSeriesData({
       seriesData: pm25Data,
       currentSources,
@@ -411,8 +411,8 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
 
   const vocsConfig = {
     ...commonConfig,
-    title: { text: formatTitle('VOC'), useHTML: true },
-    yAxis: { title: { text: formatYAxis('lb') } },
+    title: { text: formatTitle("VOC"), useHTML: true },
+    yAxis: { title: { text: formatYAxis("lb") } },
     series: setChartSeriesData({
       seriesData: vocsData,
       currentSources,
@@ -422,8 +422,8 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
 
   const nh3Config = {
     ...commonConfig,
-    title: { text: formatTitle('NH<sub>3</sub>'), useHTML: true },
-    yAxis: { title: { text: formatYAxis('lb') } },
+    title: { text: formatTitle("NH<sub>3</sub>"), useHTML: true },
+    yAxis: { title: { text: formatYAxis("lb") } },
     series: setChartSeriesData({
       seriesData: nh3Data,
       currentSources,
@@ -441,30 +441,30 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
       .set('nh3', <>NH<sub>2</sub></>);
 
   const chartConfig = new Map<Pollutant, object>()
-    .set('so2', so2Config)
-    .set('nox', noxConfig)
-    .set('co2', co2Config)
-    .set('pm25', pm25Config)
-    .set('vocs', vocsConfig)
-    .set('nh3', nh3Config);
+    .set("so2", so2Config)
+    .set("nox", noxConfig)
+    .set("co2", co2Config)
+    .set("pm25", pm25Config)
+    .set("vocs", vocsConfig)
+    .set("nh3", nh3Config);
 
-  if (currentUnit === 'percentages') {
+  if (currentUnit === "percentages") {
     if (flaggedRegion || flaggedState || flaggedCounty) {
       return (
         <div className="avert-box padding-105 height-full">
           <p className="font-sans-2xs line-height-sans-3 text-center text-base-darker">
             <span className="font-sans-xs text-bold">
               Change in {pollutantMarkup.get(pollutant)} Emissions:
-            </span>{' '}
+            </span>{" "}
             {chartLocationTitle}
           </p>
 
           <p className="margin-0 font-sans-3xs text-base-dark">
-            Percent change statistics are not available for{' '}
+            Percent change statistics are not available for{" "}
             {pollutantMarkup.get(pollutant)} because the geographic area you’ve
-            selected features one or more power plants with an infrequent{' '}
+            selected features one or more power plants with an infrequent{" "}
             {pollutantMarkup.get(pollutant)} emissions event. See Section 2 of
-            the{' '}
+            the{" "}
             <a
               className="usa-link"
               href="https://www.epa.gov/avert"
@@ -472,7 +472,7 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
               rel="noreferrer"
             >
               AVERT User Manual
-            </a>{' '}
+            </a>{" "}
             for more information.
           </p>
         </div>
@@ -490,7 +490,7 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
           // on another page, this document has a click handler that sends
           // the document's height to other window, which can then set the
           // embedded iframe's height (see public/post-message.js)
-          document.querySelector('html')?.click();
+          document.querySelector("html")?.click();
         }}
       />
     </div>
@@ -503,7 +503,7 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
 function setFilteredData(options: {
   combinedSectorsEmissionsData: CombinedSectorsEmissionsData;
   aggregation: Aggregation;
-  regionId: RegionId | 'ALL';
+  regionId: RegionId | "ALL";
   stateId: StateId;
   county: string;
 }) {
@@ -522,7 +522,7 @@ function setFilteredData(options: {
   const { total, regions, states, counties } = combinedSectorsEmissionsData;
 
   const regionResult =
-    regionId === 'ALL'
+    regionId === "ALL"
       ? total
       : Boolean(regions?.[regionId])
         ? regions[regionId]
@@ -537,11 +537,11 @@ function setFilteredData(options: {
     : emptyResult;
 
   const result =
-    aggregation === 'region'
+    aggregation === "region"
       ? regionResult
-      : aggregation === 'state'
+      : aggregation === "state"
         ? stateResult
-        : aggregation === 'county'
+        : aggregation === "county"
           ? countyResult
           : emptyResult;
 
@@ -586,18 +586,18 @@ function MonthlyEmissionsChartsContent() {
   const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = inputs;
 
   const evInputsEmpty =
-    (batteryEVs === '' || batteryEVs === '0') &&
-    (hybridEVs === '' || hybridEVs === '0') &&
-    (transitBuses === '' || transitBuses === '0') &&
-    (schoolBuses === '' || schoolBuses === '0');
+    (batteryEVs === "" || batteryEVs === "0") &&
+    (hybridEVs === "" || hybridEVs === "0") &&
+    (transitBuses === "" || transitBuses === "0") &&
+    (schoolBuses === "" || schoolBuses === "0");
 
   const selectedRegion = useSelectedRegion();
   const selectedStateRegions = useSelectedStateRegions();
 
   const regionId =
-    geographicFocus === 'regions' && selectedRegion
+    geographicFocus === "regions" && selectedRegion
       ? selectedRegion.id
-      : geographicFocus === 'states' && selectedStateRegions.length === 1
+      : geographicFocus === "states" && selectedStateRegions.length === 1
         ? selectedStateRegions[0].id
         : (currentRegionId as RegionId);
 
@@ -612,7 +612,7 @@ function MonthlyEmissionsChartsContent() {
   return (
     <>
       <div className="grid-container padding-0 maxw-full">
-        <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
+        <div className="grid-row" style={{ margin: "0 -0.5rem" }}>
           <div className="padding-1 tablet:grid-col-6 desktop:grid-col-3">
             <div className="avert-box padding-105 height-full">
               <p className="avert-box-heading font-serif-2xs line-height-serif-2 text-bold">
@@ -621,7 +621,7 @@ function MonthlyEmissionsChartsContent() {
 
               <div
                 className="mobile-lg:display-flex flex-wrap"
-                style={{ margin: '0 -0.5rem' }}
+                style={{ margin: "0 -0.5rem" }}
               >
                 <div className="flex-1">
                   <div className="usa-radio padding-x-1">
@@ -631,9 +631,9 @@ function MonthlyEmissionsChartsContent() {
                       type="radio"
                       name="aggregation"
                       value="region"
-                      checked={currentAggregation === 'region'}
+                      checked={currentAggregation === "region"}
                       onChange={(_ev) => {
-                        dispatch(setMonthlyEmissionsAggregation('region'));
+                        dispatch(setMonthlyEmissionsAggregation("region"));
                       }}
                       data-avert-monthly-aggregation="region"
                     />
@@ -655,16 +655,16 @@ function MonthlyEmissionsChartsContent() {
                       type="radio"
                       name="aggregation"
                       value="state"
-                      checked={currentAggregation === 'state'}
+                      checked={currentAggregation === "state"}
                       onChange={(_ev) => {
-                        dispatch(setMonthlyEmissionsAggregation('state'));
+                        dispatch(setMonthlyEmissionsAggregation("state"));
 
                         /**
                          * conditionally uncheck vehicles, as there's no monthly
                          * transportation level data at the state level
                          */
-                        if (currentSources.includes('vehicles')) {
-                          dispatch(setMonthlyEmissionsSource('vehicles'));
+                        if (currentSources.includes("vehicles")) {
+                          dispatch(setMonthlyEmissionsSource("vehicles"));
                         }
 
                         if (currentStateId) {
@@ -691,16 +691,16 @@ function MonthlyEmissionsChartsContent() {
                       type="radio"
                       name="aggregation"
                       value="county"
-                      checked={currentAggregation === 'county'}
+                      checked={currentAggregation === "county"}
                       onChange={(_ev) => {
-                        dispatch(setMonthlyEmissionsAggregation('county'));
+                        dispatch(setMonthlyEmissionsAggregation("county"));
 
                         /**
                          * conditionally uncheck vehicles, as there's no monthly
                          * transportation level data at the county level
                          */
-                        if (currentSources.includes('vehicles')) {
-                          dispatch(setMonthlyEmissionsSource('vehicles'));
+                        if (currentSources.includes("vehicles")) {
+                          dispatch(setMonthlyEmissionsSource("vehicles"));
                         }
 
                         if (currentCountyName) {
@@ -723,8 +723,8 @@ function MonthlyEmissionsChartsContent() {
               </div>
 
               <div data-avert-monthly-geography-selects>
-                {geographicFocus === 'states' &&
-                  currentAggregation === 'region' &&
+                {geographicFocus === "states" &&
+                  currentAggregation === "region" &&
                   selectedStateRegions.length > 1 && (
                     <select
                       className={
@@ -753,8 +753,8 @@ function MonthlyEmissionsChartsContent() {
                     </select>
                   )}
 
-                {(currentAggregation === 'state' ||
-                  currentAggregation === 'county') && (
+                {(currentAggregation === "state" ||
+                  currentAggregation === "county") && (
                   <>
                     <select
                       className={
@@ -780,7 +780,7 @@ function MonthlyEmissionsChartsContent() {
                       ))}
                     </select>
 
-                    {currentAggregation === 'county' && (
+                    {currentAggregation === "county" && (
                       <select
                         className={
                           `usa-select ` +
@@ -803,7 +803,7 @@ function MonthlyEmissionsChartsContent() {
                         {availableCounties?.map((county, index) => (
                           <option key={index} value={county}>
                             {/* format 'city' if found in county name */}
-                            {county.replace(/city/, '(City)')}
+                            {county.replace(/city/, "(City)")}
                           </option>
                         ))}
                       </select>
@@ -833,9 +833,9 @@ function MonthlyEmissionsChartsContent() {
                         type="checkbox"
                         name="pollutants"
                         value="so2"
-                        checked={currentPollutants.includes('so2')}
+                        checked={currentPollutants.includes("so2")}
                         onChange={(_ev) => {
-                          dispatch(setMonthlyEmissionsPollutant('so2'));
+                          dispatch(setMonthlyEmissionsPollutant("so2"));
                         }}
                       />
                       <label
@@ -855,9 +855,9 @@ function MonthlyEmissionsChartsContent() {
                         type="checkbox"
                         name="pollutants"
                         value="nox"
-                        checked={currentPollutants.includes('nox')}
+                        checked={currentPollutants.includes("nox")}
                         onChange={(_ev) => {
-                          dispatch(setMonthlyEmissionsPollutant('nox'));
+                          dispatch(setMonthlyEmissionsPollutant("nox"));
                         }}
                       />
                       <label
@@ -877,9 +877,9 @@ function MonthlyEmissionsChartsContent() {
                         type="checkbox"
                         name="pollutants"
                         value="co2"
-                        checked={currentPollutants.includes('co2')}
+                        checked={currentPollutants.includes("co2")}
                         onChange={(_ev) => {
-                          dispatch(setMonthlyEmissionsPollutant('co2'));
+                          dispatch(setMonthlyEmissionsPollutant("co2"));
                         }}
                       />
                       <label
@@ -901,9 +901,9 @@ function MonthlyEmissionsChartsContent() {
                         type="checkbox"
                         name="pollutants"
                         value="pm25"
-                        checked={currentPollutants.includes('pm25')}
+                        checked={currentPollutants.includes("pm25")}
                         onChange={(_ev) => {
-                          dispatch(setMonthlyEmissionsPollutant('pm25'));
+                          dispatch(setMonthlyEmissionsPollutant("pm25"));
                         }}
                       />
                       <label
@@ -923,9 +923,9 @@ function MonthlyEmissionsChartsContent() {
                         type="checkbox"
                         name="pollutants"
                         value="vocs"
-                        checked={currentPollutants.includes('vocs')}
+                        checked={currentPollutants.includes("vocs")}
                         onChange={(_ev) => {
-                          dispatch(setMonthlyEmissionsPollutant('vocs'));
+                          dispatch(setMonthlyEmissionsPollutant("vocs"));
                         }}
                       />
                       <label
@@ -945,9 +945,9 @@ function MonthlyEmissionsChartsContent() {
                         type="checkbox"
                         name="pollutants"
                         value="nh3"
-                        checked={currentPollutants.includes('nh3')}
+                        checked={currentPollutants.includes("nh3")}
                         onChange={(_ev) => {
-                          dispatch(setMonthlyEmissionsPollutant('nh3'));
+                          dispatch(setMonthlyEmissionsPollutant("nh3"));
                         }}
                       />
                       <label
@@ -981,9 +981,9 @@ function MonthlyEmissionsChartsContent() {
                       type="checkbox"
                       name="source"
                       value="power"
-                      checked={currentSources.includes('power')}
+                      checked={currentSources.includes("power")}
                       onChange={(_ev) => {
-                        dispatch(setMonthlyEmissionsSource('power'));
+                        dispatch(setMonthlyEmissionsSource("power"));
                       }}
                     />
                     <label
@@ -1003,12 +1003,12 @@ function MonthlyEmissionsChartsContent() {
                       type="checkbox"
                       name="source"
                       value="vehicles"
-                      checked={currentSources.includes('vehicles')}
+                      checked={currentSources.includes("vehicles")}
                       disabled={
-                        evInputsEmpty || currentAggregation !== 'region'
+                        evInputsEmpty || currentAggregation !== "region"
                       }
                       onChange={(_ev) => {
-                        dispatch(setMonthlyEmissionsSource('vehicles'));
+                        dispatch(setMonthlyEmissionsSource("vehicles"));
                       }}
                     />
 
@@ -1026,7 +1026,7 @@ function MonthlyEmissionsChartsContent() {
                 <p className="margin-top-105 margin-bottom-0 font-sans-3xs line-height-sans-3">
                   <strong>NOTE:</strong> No electric vehicles inputs entered.
                 </p>
-              ) : currentAggregation !== 'region' ? (
+              ) : currentAggregation !== "region" ? (
                 <p className="margin-top-105 margin-bottom-0 font-sans-3xs line-height-sans-3">
                   <strong>NOTE:</strong> Monthly emissions data for vehicles are
                   only available at the regional level.
@@ -1050,9 +1050,9 @@ function MonthlyEmissionsChartsContent() {
                       type="radio"
                       name="units"
                       value="emissions"
-                      checked={currentUnit === 'emissions'}
+                      checked={currentUnit === "emissions"}
                       onChange={(_ev) => {
-                        dispatch(setMonthlyEmissionsUnit('emissions'));
+                        dispatch(setMonthlyEmissionsUnit("emissions"));
                       }}
                       data-avert-monthly-unit="emissions"
                     />
@@ -1061,7 +1061,7 @@ function MonthlyEmissionsChartsContent() {
                       className="usa-radio__label"
                       htmlFor="units-emissions"
                     >
-                      Emission changes{' '}
+                      Emission changes{" "}
                       <span className="text-italic">(lb or tons)</span>
                     </label>
                   </div>
@@ -1075,9 +1075,9 @@ function MonthlyEmissionsChartsContent() {
                       type="radio"
                       name="units"
                       value="percentages"
-                      checked={currentUnit === 'percentages'}
+                      checked={currentUnit === "percentages"}
                       onChange={(_ev) => {
-                        dispatch(setMonthlyEmissionsUnit('percentages'));
+                        dispatch(setMonthlyEmissionsUnit("percentages"));
                       }}
                       data-avert-monthly-unit="percentages"
                     />
@@ -1092,7 +1092,7 @@ function MonthlyEmissionsChartsContent() {
                 </div>
               </div>
 
-              {currentUnit === 'percentages' && (
+              {currentUnit === "percentages" && (
                 <p className="margin-top-105 margin-bottom-0 font-sans-3xs line-height-sans-3">
                   <strong>NOTE:</strong> Percent change data only exists for the
                   power sector.
@@ -1106,9 +1106,9 @@ function MonthlyEmissionsChartsContent() {
       <div data-avert-charts>
         {combinedSectorsEmissionsData && (
           <div className="grid-container padding-0 maxw-full">
-            <div className="grid-row" style={{ margin: '0 -0.5rem' }}>
-              {geographicFocus === 'states' &&
-              currentAggregation === 'region' &&
+            <div className="grid-row" style={{ margin: "0 -0.5rem" }}>
+              {geographicFocus === "states" &&
+              currentAggregation === "region" &&
               selectedStateRegions.length > 1 &&
               !currentRegionId ? (
                 <div className="padding-1 grid-col-12">
@@ -1120,7 +1120,7 @@ function MonthlyEmissionsChartsContent() {
                     </p>
                   </div>
                 </div>
-              ) : currentAggregation === 'state' && !currentStateId ? (
+              ) : currentAggregation === "state" && !currentStateId ? (
                 <div className="padding-1 grid-col-12">
                   <div className="avert-box padding-3">
                     <p className="margin-0 font-sans-xs text-center">
@@ -1130,7 +1130,7 @@ function MonthlyEmissionsChartsContent() {
                     </p>
                   </div>
                 </div>
-              ) : currentAggregation === 'county' && !currentCountyName ? (
+              ) : currentAggregation === "county" && !currentCountyName ? (
                 <div className="padding-1 grid-col-12">
                   <div className="avert-box padding-3">
                     <p className="margin-0 font-sans-xs text-center">
@@ -1163,8 +1163,8 @@ function MonthlyEmissionsChartsContent() {
                   </div>
                 </div>
               ) : currentSources.length === 1 &&
-                currentSources.includes('vehicles') &&
-                currentUnit === 'percentages' ? (
+                currentSources.includes("vehicles") &&
+                currentUnit === "percentages" ? (
                 <div className="padding-1 grid-col-12">
                   <div className="avert-box padding-3">
                     <p className="margin-0 font-sans-xs text-center">
@@ -1182,11 +1182,11 @@ function MonthlyEmissionsChartsContent() {
                 currentPollutants.map((pollutant) => {
                   const className =
                     currentPollutants.length === 1
-                      ? 'padding-1 grid-col-12'
+                      ? "padding-1 grid-col-12"
                       : currentPollutants.length === 2 ||
                           currentPollutants.length === 4
-                        ? 'padding-1 tablet:grid-col-6'
-                        : 'padding-1 tablet:grid-col-6 desktop:grid-col-4';
+                        ? "padding-1 tablet:grid-col-6"
+                        : "padding-1 tablet:grid-col-6 desktop:grid-col-4";
 
                   /**
                    * NOTE: The HighchartsReact (inside the Chart component)
@@ -1221,7 +1221,7 @@ export function MonthlyEmissionsCharts() {
       message={
         <>
           Error loading monthly emissions changes charts. Please contact AVERT
-          support at{' '}
+          support at{" "}
           <a
             className="usa-link"
             href="mailto:avert@epa.gov"

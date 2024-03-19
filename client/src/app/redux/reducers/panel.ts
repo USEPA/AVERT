@@ -1,21 +1,21 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
 type Action =
   | {
-      type: 'panel/CHANGE_ACTIVE_STEP';
+      type: "panel/CHANGE_ACTIVE_STEP";
       payload: { stepNumber: number };
     }
   | {
-      type: 'panel/DISPLAY_MODAL_DIALOG';
+      type: "panel/DISPLAY_MODAL_DIALOG";
       payload: { description: ReactNode };
     }
-  | { type: 'panel/RESET_MODAL_DIALOG' }
-  | { type: 'geography/REQUEST_SELECTED_REGIONS_DATA' }
-  | { type: 'geography/RECEIVE_SELECTED_REGIONS_DATA' }
-  | { type: 'impacts/START_HOURLY_ENERGY_PROFILE_CALCULATIONS' }
-  | { type: 'impacts/COMPLETE_HOURLY_ENERGY_PROFILE_CALCULATIONS' }
-  | { type: 'results/FETCH_EMISSIONS_CHANGES_REQUEST' }
-  | { type: 'results/FETCH_EMISSIONS_CHANGES_SUCCESS' };
+  | { type: "panel/RESET_MODAL_DIALOG" }
+  | { type: "geography/REQUEST_SELECTED_REGIONS_DATA" }
+  | { type: "geography/RECEIVE_SELECTED_REGIONS_DATA" }
+  | { type: "impacts/START_HOURLY_ENERGY_PROFILE_CALCULATIONS" }
+  | { type: "impacts/COMPLETE_HOURLY_ENERGY_PROFILE_CALCULATIONS" }
+  | { type: "results/FETCH_EMISSIONS_CHANGES_REQUEST" }
+  | { type: "results/FETCH_EMISSIONS_CHANGES_SUCCESS" };
 
 type State = {
   activeStep: number;
@@ -40,7 +40,7 @@ export default function reducer(
   action: Action,
 ): State {
   switch (action.type) {
-    case 'panel/CHANGE_ACTIVE_STEP': {
+    case "panel/CHANGE_ACTIVE_STEP": {
       const { stepNumber } = action.payload;
 
       return {
@@ -49,7 +49,7 @@ export default function reducer(
       };
     }
 
-    case 'panel/DISPLAY_MODAL_DIALOG': {
+    case "panel/DISPLAY_MODAL_DIALOG": {
       const { description } = action.payload;
 
       return {
@@ -61,7 +61,7 @@ export default function reducer(
       };
     }
 
-    case 'panel/RESET_MODAL_DIALOG': {
+    case "panel/RESET_MODAL_DIALOG": {
       return {
         ...state,
         modalDialog: {
@@ -71,18 +71,18 @@ export default function reducer(
       };
     }
 
-    case 'geography/REQUEST_SELECTED_REGIONS_DATA':
-    case 'impacts/START_HOURLY_ENERGY_PROFILE_CALCULATIONS':
-    case 'results/FETCH_EMISSIONS_CHANGES_REQUEST': {
+    case "geography/REQUEST_SELECTED_REGIONS_DATA":
+    case "impacts/START_HOURLY_ENERGY_PROFILE_CALCULATIONS":
+    case "results/FETCH_EMISSIONS_CHANGES_REQUEST": {
       return {
         ...state,
         loading: true,
       };
     }
 
-    case 'geography/RECEIVE_SELECTED_REGIONS_DATA':
-    case 'impacts/COMPLETE_HOURLY_ENERGY_PROFILE_CALCULATIONS':
-    case 'results/FETCH_EMISSIONS_CHANGES_SUCCESS': {
+    case "geography/RECEIVE_SELECTED_REGIONS_DATA":
+    case "impacts/COMPLETE_HOURLY_ENERGY_PROFILE_CALCULATIONS":
+    case "results/FETCH_EMISSIONS_CHANGES_SUCCESS": {
       return {
         ...state,
         loading: false,
@@ -97,18 +97,18 @@ export default function reducer(
 
 export function setActiveStep(stepNumber: number) {
   return {
-    type: 'panel/CHANGE_ACTIVE_STEP',
+    type: "panel/CHANGE_ACTIVE_STEP",
     payload: { stepNumber },
   };
 }
 
 export function displayModalDialog(description: ReactNode) {
   return {
-    type: 'panel/DISPLAY_MODAL_DIALOG',
+    type: "panel/DISPLAY_MODAL_DIALOG",
     payload: { description },
   };
 }
 
 export function resetModalDialog() {
-  return { type: 'panel/RESET_MODAL_DIALOG' };
+  return { type: "panel/RESET_MODAL_DIALOG" };
 }

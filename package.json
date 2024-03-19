@@ -17,7 +17,7 @@
     "server": "cd server && npm run dev",
     "start": "concurrently -kc \"green.dim,blue.dim\" \"npm:client\" \"npm:server\"",
     "build:dev": "cd client && npm run build:dev",
-    "build:prod": "cd client && npm run build",
+    "build:prod": "cd client && npm run build:prod",
     "setup:client": "cd client && npm ci",
     "setup:server": "cd server && npm ci",
     "setup": "npm ci && npm run setup:client && npm run setup:server"

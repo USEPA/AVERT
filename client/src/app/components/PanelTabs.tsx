@@ -1,5 +1,5 @@
-import { PanelTab } from '@/app/components/PanelTab';
-import { useAppSelector } from '@/app/redux/index';
+import { PanelTab } from "@/app/components/PanelTab";
+import { useAppSelector } from "@/app/redux/index";
 
 export function PanelTabs() {
   const activeStep = useAppSelector(({ panel }) => panel.activeStep);

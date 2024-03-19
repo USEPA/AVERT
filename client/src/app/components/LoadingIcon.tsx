@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { css, keyframes } from '@emotion/react';
+import { css, keyframes } from "@emotion/react";
 
 const spinAnimation = keyframes`
   0% {

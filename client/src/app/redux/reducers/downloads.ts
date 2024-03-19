@@ -1,56 +1,56 @@
-import type { AppThunk } from '@/app/redux/index';
-import type { EgusNeeingEmissionsReplacement } from '@/app/redux/reducers/results';
+import type { AppThunk } from "@/app/redux/index";
+import type { EgusNeeingEmissionsReplacement } from "@/app/redux/reducers/results";
 import type {
   EmissionsData,
   EmissionsFlagsField,
   CombinedSectorsEmissionsData,
-} from '@/app/calculations/emissions';
-import type { RegionId } from '@/app/config';
-import { regions as regionsConfig, states as statesConfig } from '@/app/config';
+} from "@/app/calculations/emissions";
+import type { RegionId } from "@/app/config";
+import { regions as regionsConfig, states as statesConfig } from "@/app/config";
 /**
  * Excel: "CountyFIPS" sheet.
  */
-import countyFips from '@/app/data/county-fips.json';
+import countyFips from "@/app/data/county-fips.json";
 
 const emissionsFields = [
-  'Power Sector: Annual',
-  'Power Sector: January',
-  'Power Sector: February',
-  'Power Sector: March',
-  'Power Sector: April',
-  'Power Sector: May',
-  'Power Sector: June',
-  'Power Sector: July',
-  'Power Sector: August',
-  'Power Sector: September',
-  'Power Sector: October',
-  'Power Sector: November',
-  'Power Sector: December',
-  'Vehicles: Annual',
-  'Vehicles: January',
-  'Vehicles: February',
-  'Vehicles: March',
-  'Vehicles: April',
-  'Vehicles: May',
-  'Vehicles: June',
-  'Vehicles: July',
-  'Vehicles: August',
-  'Vehicles: September',
-  'Vehicles: October',
-  'Vehicles: November',
-  'Vehicles: December',
+  "Power Sector: Annual",
+  "Power Sector: January",
+  "Power Sector: February",
+  "Power Sector: March",
+  "Power Sector: April",
+  "Power Sector: May",
+  "Power Sector: June",
+  "Power Sector: July",
+  "Power Sector: August",
+  "Power Sector: September",
+  "Power Sector: October",
+  "Power Sector: November",
+  "Power Sector: December",
+  "Vehicles: Annual",
+  "Vehicles: January",
+  "Vehicles: February",
+  "Vehicles: March",
+  "Vehicles: April",
+  "Vehicles: May",
+  "Vehicles: June",
+  "Vehicles: July",
+  "Vehicles: August",
+  "Vehicles: September",
+  "Vehicles: October",
+  "Vehicles: November",
+  "Vehicles: December",
 ] as const;
 
-type Pollutant = 'SO2' | 'NOX' | 'CO2' | 'PM25' | 'VOCS' | 'NH3';
+type Pollutant = "SO2" | "NOX" | "CO2" | "PM25" | "VOCS" | "NH3";
 
 type CountyData = {
-  'Aggregation level': string;
+  "Aggregation level": string;
   State: string | null;
   County: string | null;
-  'State FIPS Code': string | null;
-  'County FIPS Code': string | null;
+  "State FIPS Code": string | null;
+  "County FIPS Code": string | null;
   Pollutant: Pollutant;
-  'Unit of measure': 'percent' | 'emissions (tons)' | 'emissions (pounds)';
+  "Unit of measure": "percent" | "emissions (tons)" | "emissions (pounds)";
 } & {
   [field in (typeof emissionsFields)[number]]: number | null;
 };
@@ -59,7 +59,7 @@ type CobraData = {
   FIPS: string;
   STATE: string;
   COUNTY: string;
-  TIER1NAME: 'FUEL COMB. ELEC. UTIL.' | 'Highway Vehicles';
+  TIER1NAME: "FUEL COMB. ELEC. UTIL." | "Highway Vehicles";
   NOx_REDUCTIONS_TONS: number;
   SO2_REDUCTIONS_TONS: number;
   PM25_REDUCTIONS_TONS: number;
@@ -68,7 +68,7 @@ type CobraData = {
 };
 
 type Action = {
-  type: 'downloads/SET_DOWNLOAD_DATA';
+  type: "downloads/SET_DOWNLOAD_DATA";
   payload: {
     countyData: CountyData[];
     cobraData: CobraData[];
@@ -90,7 +90,7 @@ export default function reducer(
   action: Action,
 ): State {
   switch (action.type) {
-    case 'downloads/SET_DOWNLOAD_DATA': {
+    case "downloads/SET_DOWNLOAD_DATA": {
       const { countyData, cobraData } = action.payload;
 
       return {
@@ -120,7 +120,7 @@ export function setDownloadData(): AppThunk {
     const cobraData = formatCobraDownloadData(combinedSectorsEmissionsData);
 
     dispatch({
-      type: 'downloads/SET_DOWNLOAD_DATA',
+      type: "downloads/SET_DOWNLOAD_DATA",
       payload: {
         countyData,
         cobraData,
@@ -169,13 +169,13 @@ function formatCountyDownloadData(options: {
 
       if (emissionsFields) {
         array.push({
-          'Aggregation level': 'All Affected Regions',
+          "Aggregation level": "All Affected Regions",
           State: null,
           County: null,
-          'State FIPS Code': null,
-          'County FIPS Code': null,
+          "State FIPS Code": null,
+          "County FIPS Code": null,
           Pollutant: pollutant.toUpperCase() as Pollutant,
-          'Unit of measure': unit,
+          "Unit of measure": unit,
           ...emissionsFields,
         });
       }
@@ -211,10 +211,10 @@ function formatCountyDownloadData(options: {
           'Aggregation level': `${regionsConfig[regionId as RegionId].name} Region`, // prettier-ignore
           State: null,
           County: null,
-          'State FIPS Code': null,
-          'County FIPS Code': null,
+          "State FIPS Code": null,
+          "County FIPS Code": null,
           Pollutant: pollutant.toUpperCase() as Pollutant,
-          'Unit of measure': unit,
+          "Unit of measure": unit,
           ...emissionsFields,
         });
       }
@@ -231,8 +231,8 @@ function formatCountyDownloadData(options: {
   Object.entries(states).forEach(([stateId, stateData]) => {
     const fipsCode =
       countyFips.find((data) => {
-        return data['Postal State Code'] === stateId;
-      })?.['State and County FIPS Code'] || '';
+        return data["Postal State Code"] === stateId;
+      })?.["State and County FIPS Code"] || "";
 
     const statesRows = [...pollutantsRows].reduce((array, row) => {
       const { pollutant, unit } = row;
@@ -252,13 +252,13 @@ function formatCountyDownloadData(options: {
 
       if (emissionsFields) {
         array.push({
-          'Aggregation level': 'State',
+          "Aggregation level": "State",
           State: stateId,
           County: null,
-          'State FIPS Code': fipsCode ? fipsCode.substring(0, 2) : null,
-          'County FIPS Code': null,
+          "State FIPS Code": fipsCode ? fipsCode.substring(0, 2) : null,
+          "County FIPS Code": null,
           Pollutant: pollutant.toUpperCase() as Pollutant,
-          'Unit of measure': unit,
+          "Unit of measure": unit,
           ...emissionsFields,
         });
       }
@@ -277,9 +277,9 @@ function formatCountyDownloadData(options: {
       const fipsCode =
         countyFips.find(
           (data) =>
-            data['Postal State Code'] === stateId &&
-            data['County Name Long'] === countyName,
-        )?.['State and County FIPS Code'] || '';
+            data["Postal State Code"] === stateId &&
+            data["County Name Long"] === countyName,
+        )?.["State and County FIPS Code"] || "";
 
       const countiesRows = [...pollutantsRows].reduce((array, row) => {
         const { pollutant, unit } = row;
@@ -300,13 +300,13 @@ function formatCountyDownloadData(options: {
 
         if (emissionsFields) {
           array.push({
-            'Aggregation level': 'County',
+            "Aggregation level": "County",
             State: stateId,
-            County: countyName.replace(/city/, '(City)'), // format 'city'
-            'State FIPS Code': null,
-            'County FIPS Code': fipsCode,
+            County: countyName.replace(/city/, "(City)"), // format 'city'
+            "State FIPS Code": null,
+            "County FIPS Code": fipsCode,
             Pollutant: pollutant.toUpperCase() as Pollutant,
-            'Unit of measure': unit,
+            "Unit of measure": unit,
             ...emissionsFields,
           });
         }
@@ -331,19 +331,19 @@ function formatCountyDownloadData(options: {
  * regions), each region, each state, and each county.
  */
 function createOrderedPollutantsRows() {
-  const pollutants = ['so2', 'nox', 'co2', 'pm25', 'vocs', 'nh3'] as const;
+  const pollutants = ["so2", "nox", "co2", "pm25", "vocs", "nh3"] as const;
 
   const emissionsRows = pollutants.map((pollutant) => {
     return {
       pollutant,
-      unit: `emissions (${pollutant === 'co2' ? 'tons' : 'pounds'})` as const,
+      unit: `emissions (${pollutant === "co2" ? "tons" : "pounds"})` as const,
     };
   });
 
   const percentRows = pollutants.map((pollutant) => {
     return {
       pollutant,
-      unit: 'percent' as const,
+      unit: "percent" as const,
     };
   });
 
@@ -358,7 +358,7 @@ function createOrderedPollutantsRows() {
 function createEmissionsFields(options: {
   pollutantNeedsReplacement: boolean;
   data: EmissionsData[keyof EmissionsData];
-  unit: 'percent' | 'emissions (tons)' | 'emissions (pounds)';
+  unit: "percent" | "emissions (tons)" | "emissions (pounds)";
 }) {
   const { pollutantNeedsReplacement, data, unit } = options;
 
@@ -366,32 +366,32 @@ function createEmissionsFields(options: {
   const vehicleData = data.vehicle;
 
   const result = {
-    'Power Sector: Annual': null,
-    'Power Sector: January': null,
-    'Power Sector: February': null,
-    'Power Sector: March': null,
-    'Power Sector: April': null,
-    'Power Sector: May': null,
-    'Power Sector: June': null,
-    'Power Sector: July': null,
-    'Power Sector: August': null,
-    'Power Sector: September': null,
-    'Power Sector: October': null,
-    'Power Sector: November': null,
-    'Power Sector: December': null,
-    'Vehicles: Annual': null,
-    'Vehicles: January': null,
-    'Vehicles: February': null,
-    'Vehicles: March': null,
-    'Vehicles: April': null,
-    'Vehicles: May': null,
-    'Vehicles: June': null,
-    'Vehicles: July': null,
-    'Vehicles: August': null,
-    'Vehicles: September': null,
-    'Vehicles: October': null,
-    'Vehicles: November': null,
-    'Vehicles: December': null,
+    "Power Sector: Annual": null,
+    "Power Sector: January": null,
+    "Power Sector: February": null,
+    "Power Sector: March": null,
+    "Power Sector: April": null,
+    "Power Sector: May": null,
+    "Power Sector: June": null,
+    "Power Sector: July": null,
+    "Power Sector: August": null,
+    "Power Sector: September": null,
+    "Power Sector: October": null,
+    "Power Sector: November": null,
+    "Power Sector: December": null,
+    "Vehicles: Annual": null,
+    "Vehicles: January": null,
+    "Vehicles: February": null,
+    "Vehicles: March": null,
+    "Vehicles: April": null,
+    "Vehicles: May": null,
+    "Vehicles: June": null,
+    "Vehicles: July": null,
+    "Vehicles: August": null,
+    "Vehicles: September": null,
+    "Vehicles: October": null,
+    "Vehicles: November": null,
+    "Vehicles: December": null,
   } as { [field in (typeof emissionsFields)[number]]: number | null };
 
   if (powerData) {
@@ -399,7 +399,7 @@ function createEmissionsFields(options: {
     const annualEmissionsChange = annualData.postEere - annualData.original;
     const annualPercentChange = (annualEmissionsChange / annualData.original) * 100 || 0; // prettier-ignore
     const annualPowerData =
-      unit === 'percent' ? annualPercentChange : annualEmissionsChange;
+      unit === "percent" ? annualPercentChange : annualEmissionsChange;
 
     const monthlyPowerData = Object.entries(powerData.monthly).reduce(
       (object, [key, values]) => {
@@ -410,7 +410,7 @@ function createEmissionsFields(options: {
         const monthlyPercentChange = (monthlyEmissionsChange / original) * 100 || 0; // prettier-ignore
 
         object[month] =
-          unit === 'percent'
+          unit === "percent"
             ? pollutantNeedsReplacement
               ? null
               : monthlyPercentChange
@@ -421,37 +421,37 @@ function createEmissionsFields(options: {
       {} as { [month: number]: number | null },
     );
 
-    result['Power Sector: Annual'] = annualPowerData;
-    result['Power Sector: January'] = monthlyPowerData[1];
-    result['Power Sector: February'] = monthlyPowerData[2];
-    result['Power Sector: March'] = monthlyPowerData[3];
-    result['Power Sector: April'] = monthlyPowerData[4];
-    result['Power Sector: May'] = monthlyPowerData[5];
-    result['Power Sector: June'] = monthlyPowerData[6];
-    result['Power Sector: July'] = monthlyPowerData[7];
-    result['Power Sector: August'] = monthlyPowerData[8];
-    result['Power Sector: September'] = monthlyPowerData[9];
-    result['Power Sector: October'] = monthlyPowerData[10];
-    result['Power Sector: November'] = monthlyPowerData[11];
-    result['Power Sector: December'] = monthlyPowerData[12];
+    result["Power Sector: Annual"] = annualPowerData;
+    result["Power Sector: January"] = monthlyPowerData[1];
+    result["Power Sector: February"] = monthlyPowerData[2];
+    result["Power Sector: March"] = monthlyPowerData[3];
+    result["Power Sector: April"] = monthlyPowerData[4];
+    result["Power Sector: May"] = monthlyPowerData[5];
+    result["Power Sector: June"] = monthlyPowerData[6];
+    result["Power Sector: July"] = monthlyPowerData[7];
+    result["Power Sector: August"] = monthlyPowerData[8];
+    result["Power Sector: September"] = monthlyPowerData[9];
+    result["Power Sector: October"] = monthlyPowerData[10];
+    result["Power Sector: November"] = monthlyPowerData[11];
+    result["Power Sector: December"] = monthlyPowerData[12];
   }
 
-  if (unit !== 'percent') {
-    result['Vehicles: Annual'] = vehicleData.annual;
+  if (unit !== "percent") {
+    result["Vehicles: Annual"] = vehicleData.annual;
 
     if (vehicleData.monthly) {
-      result['Vehicles: January'] = vehicleData.monthly[1];
-      result['Vehicles: February'] = vehicleData.monthly[2];
-      result['Vehicles: March'] = vehicleData.monthly[3];
-      result['Vehicles: April'] = vehicleData.monthly[4];
-      result['Vehicles: May'] = vehicleData.monthly[5];
-      result['Vehicles: June'] = vehicleData.monthly[6];
-      result['Vehicles: July'] = vehicleData.monthly[7];
-      result['Vehicles: August'] = vehicleData.monthly[8];
-      result['Vehicles: September'] = vehicleData.monthly[9];
-      result['Vehicles: October'] = vehicleData.monthly[10];
-      result['Vehicles: November'] = vehicleData.monthly[11];
-      result['Vehicles: December'] = vehicleData.monthly[12];
+      result["Vehicles: January"] = vehicleData.monthly[1];
+      result["Vehicles: February"] = vehicleData.monthly[2];
+      result["Vehicles: March"] = vehicleData.monthly[3];
+      result["Vehicles: April"] = vehicleData.monthly[4];
+      result["Vehicles: May"] = vehicleData.monthly[5];
+      result["Vehicles: June"] = vehicleData.monthly[6];
+      result["Vehicles: July"] = vehicleData.monthly[7];
+      result["Vehicles: August"] = vehicleData.monthly[8];
+      result["Vehicles: September"] = vehicleData.monthly[9];
+      result["Vehicles: October"] = vehicleData.monthly[10];
+      result["Vehicles: November"] = vehicleData.monthly[11];
+      result["Vehicles: December"] = vehicleData.monthly[12];
     }
   }
 
@@ -478,13 +478,13 @@ function formatCobraDownloadData(
     Object.entries(value).forEach(([countyName, countyData]) => {
       const stateId = key as keyof typeof countyEmissionsData;
       const state = statesConfig[stateId].name;
-      const county = countyName.replace(/city/, '(City)'); // format 'city'
+      const county = countyName.replace(/city/, "(City)"); // format 'city'
       const fipsCode =
         countyFips.find(
           (data) =>
-            data['State Name'] === state &&
-            data['County Name Long'] === countyName,
-        )?.['State and County FIPS Code'] || '';
+            data["State Name"] === state &&
+            data["County Name Long"] === countyName,
+        )?.["State and County FIPS Code"] || "";
 
       const { power, vehicle } = Object.entries(countyData).reduce(
         (object, [countyDataKey, countyDataValue]) => {
@@ -492,7 +492,7 @@ function formatCobraDownloadData(
           const countyPowerData = countyDataValue.power;
           const countyVehicleData = countyDataValue.vehicle;
 
-          if (pollutant !== 'generation' && pollutant !== 'co2') {
+          if (pollutant !== "generation" && pollutant !== "co2") {
             if (countyPowerData !== null) {
               const monthlyPowerData = countyPowerData.monthly;
 
@@ -522,7 +522,7 @@ function formatCobraDownloadData(
           FIPS: fipsCode,
           STATE: state,
           COUNTY: county,
-          TIER1NAME: 'FUEL COMB. ELEC. UTIL.' as const,
+          TIER1NAME: "FUEL COMB. ELEC. UTIL." as const,
           NOx_REDUCTIONS_TONS: Number((power.nox / 2_000).toFixed(3)),
           SO2_REDUCTIONS_TONS: Number((power.so2 / 2_000).toFixed(3)),
           PM25_REDUCTIONS_TONS: Number((power.pm25 / 2_000).toFixed(3)),
@@ -535,7 +535,7 @@ function formatCobraDownloadData(
         FIPS: fipsCode,
         STATE: state,
         COUNTY: county,
-        TIER1NAME: 'Highway Vehicles' as const,
+        TIER1NAME: "Highway Vehicles" as const,
         NOx_REDUCTIONS_TONS: Number((vehicle.nox / 2_000).toFixed(3)),
         SO2_REDUCTIONS_TONS: Number((vehicle.so2 / 2_000).toFixed(3)),
         PM25_REDUCTIONS_TONS: Number((vehicle.pm25 / 2_000).toFixed(3)),
