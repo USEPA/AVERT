@@ -12,6 +12,7 @@
   "engines": {
     "node": "20.x"
   },
+  "type": "module",
   "scripts": {
     "dev": "VITE_APP_URL=http://localhost:3001 vite",
     "build:dev": "tsc && vite build --mode development && ./scripts/update-server-public.sh",
