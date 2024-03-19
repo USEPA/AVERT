@@ -1,6 +1,6 @@
 # EPA AVERT Web App
 
-Front end of the AVERT web app built with React and Redux (bootstrapped with [create-react-app](https://github.com/facebook/create-react-app)).
+Front end of the AVERT web app built with React and Redux (bootstrapped with [Vite](https://vitejs.dev/)).
 
 ## Local Development
 
@@ -14,7 +14,7 @@ Running the **client app** locally depends on a running local instance of the [s
 
 - The app is configured to be deployed to Cloud.gov at the following development route: https://avert-dev.app.cloud.gov
 
-  If that route ever changes, update the `REACT_APP_URL` environment variable set in the npm `build:dev` script in the `package.json` file to reflect the updated route.
+  If that route ever changes, update the `VITE_APP_URL` environment variable set in the `.env.development` file to reflect the updated route.
 
 - Ensure you're in this directory ([client](/client)) and run:  
   `npm run build:dev`
@@ -25,9 +25,9 @@ Running the **client app** locally depends on a running local instance of the [s
 
 - The app is configured to be deployed to Cloud.gov at the following production route: https://avert.app.cloud.gov
 
-  If that route ever changes, update the `REACT_APP_URL` environment variable set in the `.env.production` file to reflect the updated route.
+  If that route ever changes, update the `VITE_APP_URL` environment variable set in the `.env.production` file to reflect the updated route.
 
 - Ensure you're in this directory ([client](/client)) and run:  
-  `npm run build`
+  `npm run build:prod`
 
 - Follow the 'Production Deployment' instructions found in the [server app’s README](/server#production-deployment).
