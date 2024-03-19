@@ -13,14 +13,13 @@ import {
 } from '@/app/redux/reducers/results';
 import { resetMonthlyEmissions } from '@/app/redux/reducers/monthlyEmissions';
 import { useSelectedRegion, useSelectedState } from '@/app/hooks';
-import icons from '@/app/icons.svg';
 
 const iconStyles = css`
   content: '';
   display: inline-block;
   width: 0.625rem;
   height: 0.625rem;
-  background-image: url(${icons});
+  background-image: url('/img/icons.svg');
   background-size: 400px 200px;
   background-position: -36px -10px;
 `;

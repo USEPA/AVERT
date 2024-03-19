@@ -1,6 +1,4 @@
 import { css } from '@emotion/react';
-// ---
-import icons from '@/app/icons.svg';
 
 export type EmptyObject = Record<string, never>;
 
@@ -21,7 +19,7 @@ export const modalLinkStyles = css`
   left: 1px;
   bottom: -3px;
   border-radius: 50%;
-  background-image: url(${icons});
+  background-image: url('/img/icons.svg');
   background-size: 400px 200px;
   background-position: -10px -10px;
   /* hide text */
