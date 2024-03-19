@@ -3,17 +3,17 @@
 2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
 */
 
-.twpf *,
-.twpf ::before,
-.twpf ::after {
+:where(.twpf) *,
+:where(.twpf) ::before,
+:where(.twpf) ::after {
   box-sizing: border-box; /* 1 */
   border-width: 0; /* 2 */
   border-style: solid; /* 2 */
   border-color: currentColor; /* 2 */
 }
 
-.twpf ::before,
-.twpf ::after {
+:where(.twpf) ::before,
+:where(.twpf) ::after {
   --tw-content: '';
 }
 
@@ -23,17 +23,21 @@
 3. Use a more readable tab size.
 4. Use the user's configured `sans` font-family by default.
 5. Use the user's configured `sans` font-feature-settings by default.
+6. Use the user's configured `sans` font-variation-settings by default.
+7. Disable tap highlights on iOS.
 */
 
-html .twpf {
+html :where(.twpf),
+:host :where(.twpf) {
   line-height: 1.5; /* 1 */
   -webkit-text-size-adjust: 100%; /* 2 */
   -moz-tab-size: 4; /* 3 */
   tab-size: 4; /* 3 */
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; /* 4 */
+  font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; /* 4 */
   font-feature-settings: normal; /* 5 */
+  font-variation-settings: normal; /* 6 */
+  -webkit-tap-highlight-color: transparent; /* 7 */
 }
 
 /*
@@ -41,7 +45,7 @@ html .twpf {
 2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
 */
 
-body .twpf {
+body :where(.twpf) {
   margin: 0; /* 1 */
   line-height: inherit; /* 2 */
 }
@@ -52,7 +56,7 @@ body .twpf {
 3. Ensure horizontal rules are visible by default.
 */
 
-.twpf hr {
+:where(.twpf) hr {
   height: 0; /* 1 */
   color: inherit; /* 2 */
   border-top-width: 1px; /* 3 */
@@ -62,7 +66,7 @@ body .twpf {
 Add the correct text decoration in Chrome, Edge, and Safari.
 */
 
-.twpf abbr:where([title]) {
+:where(.twpf) abbr:where([title]) {
   text-decoration: underline dotted;
 }
 
@@ -70,12 +74,12 @@ Add the correct text decoration in Chrome, Edge, and Safari.
 Remove the default font size and weight for headings.
 */
 
-.twpf h1,
-.twpf h2,
-.twpf h3,
-.twpf h4,
-.twpf h5,
-.twpf h6 {
+:where(.twpf) h1,
+:where(.twpf) h2,
+:where(.twpf) h3,
+:where(.twpf) h4,
+:where(.twpf) h5,
+:where(.twpf) h6 {
   font-size: inherit;
   font-weight: inherit;
 }
@@ -84,7 +88,7 @@ Remove the default font size and weight for headings.
 Reset links to optimize for opt-in styling instead of opt-out.
 */
 
-.twpf a {
+:where(.twpf) a {
   color: inherit;
   text-decoration: inherit;
 }
@@ -93,30 +97,34 @@ Reset links to optimize for opt-in styling instead of opt-out.
 Add the correct font weight in Edge and Safari.
 */
 
-.twpf b,
-.twpf strong {
+:where(.twpf) b,
+:where(.twpf) strong {
   font-weight: bolder;
 }
 
 /*
-1. Use the user's configured `mono` font family by default.
-2. Correct the odd `em` font sizing in all browsers.
+1. Use the user's configured `mono` font-family by default.
+2. Use the user's configured `mono` font-feature-settings by default.
+3. Use the user's configured `mono` font-variation-settings by default.
+4. Correct the odd `em` font sizing in all browsers.
 */
 
-.twpf code,
-.twpf kbd,
-.twpf samp,
-.twpf pre {
+:where(.twpf) code,
+:where(.twpf) kbd,
+:where(.twpf) samp,
+:where(.twpf) pre {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     'Liberation Mono', 'Courier New', monospace; /* 1 */
-  font-size: 1em; /* 2 */
+  font-feature-settings: normal; /* 2 */
+  font-variation-settings: normal; /* 3 */
+  font-size: 1em; /* 4 */
 }
 
 /*
 Add the correct font size in all browsers.
 */
 
-.twpf small {
+:where(.twpf) small {
   font-size: 80%;
 }
 
@@ -124,19 +132,19 @@ Add the correct font size in all browsers.
 Prevent `sub` and `sup` elements from affecting the line height in all browsers.
 */
 
-.twpf sub,
-.twpf sup {
+:where(.twpf) sub,
+:where(.twpf) sup {
   font-size: 75%;
   line-height: 0;
   position: relative;
   vertical-align: baseline;
 }
 
-.twpf sub {
+:where(.twpf) sub {
   bottom: -0.25em;
 }
 
-.twpf sup {
+:where(.twpf) sup {
   top: -0.5em;
 }
 
@@ -146,7 +154,7 @@ Prevent `sub` and `sup` elements from affecting the line height in all browsers.
 3. Remove gaps between table borders by default.
 */
 
-.twpf table {
+:where(.twpf) table {
   text-indent: 0; /* 1 */
   border-color: inherit; /* 2 */
   border-collapse: collapse; /* 3 */
@@ -158,15 +166,18 @@ Prevent `sub` and `sup` elements from affecting the line height in all browsers.
 3. Remove default padding in all browsers.
 */
 
-.twpf button,
-.twpf input,
-.twpf optgroup,
-.twpf select,
-.twpf textarea {
+:where(.twpf) button,
+:where(.twpf) input,
+:where(.twpf) optgroup,
+:where(.twpf) select,
+:where(.twpf) textarea {
   font-family: inherit; /* 1 */
+  font-feature-settings: inherit; /* 1 */
+  font-variation-settings: inherit; /* 1 */
   font-size: 100%; /* 1 */
   font-weight: inherit; /* 1 */
   line-height: inherit; /* 1 */
+  color: inherit; /* 1 */
   margin: 0; /* 2 */
   padding: 0; /* 3 */
 }
@@ -175,8 +186,8 @@ Prevent `sub` and `sup` elements from affecting the line height in all browsers.
 Remove the inheritance of text transform in Edge and Firefox.
 */
 
-.twpf button,
-.twpf select {
+:where(.twpf) button,
+:where(.twpf) select {
   text-transform: none;
 }
 
@@ -185,10 +196,10 @@ Remove the inheritance of text transform in Edge and Firefox.
 2. Remove default button styles.
 */
 
-.twpf button,
-.twpf [type='button'],
-.twpf [type='reset'],
-.twpf [type='submit'] {
+:where(.twpf) button,
+:where(.twpf) [type='button'],
+:where(.twpf) [type='reset'],
+:where(.twpf) [type='submit'] {
   -webkit-appearance: button; /* 1 */
   background-color: transparent; /* 2 */
   background-image: none; /* 2 */
@@ -198,7 +209,7 @@ Remove the inheritance of text transform in Edge and Firefox.
 Use the modern Firefox focus style for all focusable elements.
 */
 
-.twpf :-moz-focusring {
+:where(.twpf) :-moz-focusring {
   outline: auto;
 }
 
@@ -206,7 +217,7 @@ Use the modern Firefox focus style for all focusable elements.
 Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
 */
 
-.twpf :-moz-ui-invalid {
+:where(.twpf) :-moz-ui-invalid {
   box-shadow: none;
 }
 
@@ -214,7 +225,7 @@ Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/
 Add the correct vertical alignment in Chrome and Firefox.
 */
 
-.twpf progress {
+:where(.twpf) progress {
   vertical-align: baseline;
 }
 
@@ -222,8 +233,8 @@ Add the correct vertical alignment in Chrome and Firefox.
 Correct the cursor style of increment and decrement buttons in Safari.
 */
 
-.twpf ::-webkit-inner-spin-button,
-.twpf ::-webkit-outer-spin-button {
+:where(.twpf) ::-webkit-inner-spin-button,
+:where(.twpf) ::-webkit-outer-spin-button {
   height: auto;
 }
 
@@ -232,7 +243,7 @@ Correct the cursor style of increment and decrement buttons in Safari.
 2. Correct the outline style in Safari.
 */
 
-.twpf [type='search'] {
+:where(.twpf) [type='search'] {
   -webkit-appearance: textfield; /* 1 */
   outline-offset: -2px; /* 2 */
 }
@@ -241,7 +252,7 @@ Correct the cursor style of increment and decrement buttons in Safari.
 Remove the inner padding in Chrome and Safari on macOS.
 */
 
-.twpf ::-webkit-search-decoration {
+:where(.twpf) ::-webkit-search-decoration {
   -webkit-appearance: none;
 }
 
@@ -250,7 +261,7 @@ Remove the inner padding in Chrome and Safari on macOS.
 2. Change font properties to `inherit` in Safari.
 */
 
-.twpf ::-webkit-file-upload-button {
+:where(.twpf) ::-webkit-file-upload-button {
   -webkit-appearance: button; /* 1 */
   font: inherit; /* 2 */
 }
@@ -259,44 +270,48 @@ Remove the inner padding in Chrome and Safari on macOS.
 Add the correct display in Chrome and Safari.
 */
 
-.twpf summary {
+:where(.twpf) summary {
   display: list-item;
 }
 
 /*
-Removes the default spacing and border for appropriate elements.
+Removes the default spacing for appropriate elements.
 */
 
-.twpf blockquote,
-.twpf dl,
-.twpf dd,
-.twpf h1,
-.twpf h2,
-.twpf h3,
-.twpf h4,
-.twpf h5,
-.twpf h6,
-.twpf hr,
-.twpf figure,
-.twpf p,
-.twpf pre {
+:where(.twpf) blockquote,
+:where(.twpf) dl,
+:where(.twpf) dd,
+:where(.twpf) h1,
+:where(.twpf) h2,
+:where(.twpf) h3,
+:where(.twpf) h4,
+:where(.twpf) h5,
+:where(.twpf) h6,
+:where(.twpf) hr,
+:where(.twpf) figure,
+:where(.twpf) p,
+:where(.twpf) pre {
   margin: 0;
 }
 
-.twpf fieldset {
+:where(.twpf) fieldset {
   margin: 0;
   padding: 0;
 }
 
-.twpf legend {
+:where(.twpf) legend {
   padding: 0;
 }
 
-.twpf ol,
-.twpf ul,
-.twpf menu {
+:where(.twpf) ol,
+:where(.twpf) ul,
+:where(.twpf) menu {
   list-style: none;
   margin: 0;
+  padding: 0;
+}
+
+:where(.twpf) dialog {
   padding: 0;
 }
 
@@ -304,7 +319,7 @@ Removes the default spacing and border for appropriate elements.
 Prevent resizing textareas horizontally by default.
 */
 
-.twpf textarea {
+:where(.twpf) textarea {
   resize: vertical;
 }
 
@@ -313,8 +328,8 @@ Prevent resizing textareas horizontally by default.
 2. Set the default placeholder color to the user's configured gray 400 color.
 */
 
-.twpf input::placeholder,
-.twpf textarea::placeholder {
+:where(.twpf) input::placeholder,
+:where(.twpf) textarea::placeholder {
   opacity: 1; /* 1 */
   color: #9ca3af; /* 2 */
 }
@@ -323,15 +338,16 @@ Prevent resizing textareas horizontally by default.
 Set the default cursor for buttons.
 */
 
-.twpf button,
-.twpf [role='button'] {
+:where(.twpf) button,
+:where(.twpf) [role='button'] {
   cursor: pointer;
 }
 
 /*
 Make sure disabled buttons don't get the pointer cursor.
 */
-.twpf :disabled {
+
+:where(.twpf) :disabled {
   cursor: default;
 }
 
@@ -341,14 +357,14 @@ Make sure disabled buttons don't get the pointer cursor.
    This can trigger a poorly considered lint error in some tools but is included by design.
 */
 
-.twpf img,
-.twpf svg,
-.twpf video,
-.twpf canvas,
-.twpf audio,
-.twpf iframe,
-.twpf embed,
-.twpf object {
+:where(.twpf) img,
+:where(.twpf) svg,
+:where(.twpf) video,
+:where(.twpf) canvas,
+:where(.twpf) audio,
+:where(.twpf) iframe,
+:where(.twpf) embed,
+:where(.twpf) object {
   display: block; /* 1 */
   vertical-align: middle; /* 2 */
 }
@@ -357,13 +373,16 @@ Make sure disabled buttons don't get the pointer cursor.
 Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
 */
 
-.twpf img,
-.twpf video {
+:where(.twpf) img,
+:where(.twpf) video {
   max-width: 100%;
   height: auto;
 }
 
-/* Make elements with the HTML hidden attribute stay hidden by default */
-.twpf [hidden] {
+/*
+Make elements with the HTML hidden attribute stay hidden by default.
+*/
+
+:where(.twpf) [hidden] {
   display: none;
 }
