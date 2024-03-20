@@ -10,8 +10,22 @@ import { ModalDialog } from "@/components/ModalDialog";
 import { store } from "@/redux/store";
 
 /* Apply a theme like Highcharts v10 */
-const fontFamily = '"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif'; // prettier-ignore
-const colors = ['#7cb5ec','#434348','#90ed7d','#f7a35c','#8085e9','#f15c80','#e4d354','#2b908f','#f45b5b','#91e8e1']; // prettier-ignore
+const fontFamily =
+  '"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif';
+
+const colors = [
+  "#7cb5ec",
+  "#434348",
+  "#90ed7d",
+  "#f7a35c",
+  "#8085e9",
+  "#f15c80",
+  "#e4d354",
+  "#2b908f",
+  "#f45b5b",
+  "#91e8e1",
+];
+
 const labels = { distance: 8, style: { color: "#666666", fontSize: "11px" } };
 
 Highcharts.setOptions({
