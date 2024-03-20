@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require("@headlessui/tailwindcss")],
   prefix: "tw-",
   corePlugins: {
     preflight: false,

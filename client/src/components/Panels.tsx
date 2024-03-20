@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from "@reach/tabs";
-import "@reach/tabs/styles.css";
+import { Tab } from "@headlessui/react";
+import clsx from "clsx";
 // ---
 import { LoadingIcon } from "@/components/LoadingIcon";
 import { PanelFooter } from "@/components/PanelFooter";
@@ -74,72 +74,6 @@ const panelStyles = css`
 
 const panelBodyStyles = css`
   border-top: 0.375rem solid var(--avert-light-blue);
-`;
-
-const tabsStyles = css`
-  [data-reach-tab-list] {
-    display: flex;
-    justify-content: space-between;
-    background-color: transparent;
-  }
-
-  [data-reach-tab] {
-    padding: 0.5625rem 1rem 0.6875rem;
-    border-top: 0.375rem solid #ccc;
-    border-bottom: 1px solid #a9aeb1; // base-light
-    width: 50%;
-    font-weight: 700;
-    font-size: 1rem;
-    line-height: 1;
-    color: #565c65; // base-dark
-    background-color: whitesmoke;
-    user-select: none;
-
-    @media (min-width: 40em) {
-      font-size: 1.125rem;
-    }
-
-    &:focus {
-      outline: none;
-    }
-
-    &:focus-visible {
-      outline: 0.1875rem solid #2491ff;
-    }
-
-    &:hover {
-      border-top-color: #a9aeb1; // base-light
-    }
-
-    &:first-of-type[data-selected] {
-      border-right: 1px solid #a9aeb1; // base-light
-    }
-
-    &:last-of-type[data-selected] {
-      border-left: 1px solid #a9aeb1; // base-light
-    }
-
-    &[data-selected] {
-      border-top-color: var(--avert-light-blue);
-      border-bottom-color: white;
-      color: var(--avert-blue);
-      background-color: white;
-    }
-  }
-
-  [data-reach-tab-panel] {
-    &:focus {
-      outline: none;
-    }
-
-    &:focus-visible {
-      outline: 0.1875rem solid #2491ff;
-    }
-  }
-
-  [data-reach-tab-panels] {
-    padding: 1rem;
-  }
 `;
 
 function ExcelAppText() {
@@ -269,20 +203,34 @@ export function Panels() {
       }
 
       <section css={panelStyles} data-active={activeStep === 1}>
-        <Tabs
-          css={tabsStyles}
-          index={geographicFocus === "regions" ? 0 : 1}
-          onChange={(index: number) => {
+        <Tab.Group
+          selectedIndex={geographicFocus === "regions" ? 0 : 1}
+          onChange={(index) => {
             dispatch(selectGeography(index === 0 ? "regions" : "states"));
           }}
         >
-          <TabList>
-            <Tab>Select Region</Tab>
-            <Tab>Select State</Tab>
-          </TabList>
+          <Tab.List className={clsx("tw-flex tw-justify-between")}>
+            {["Select Region", "Select State"].map((tab) => (
+              <Tab
+                key={tab}
+                className={clsx(
+                  "tw-w-1/2 tw-cursor-pointer tw-select-none tw-border-x-0 tw-border-b tw-border-t-[6px] tw-border-solid tw-border-b-[#a9aeb1] tw-border-t-[#ccc] tw-bg-neutral-100 tw-px-4 tw-pb-2.5 tw-pt-2 tw-text-base tw-font-bold tw-leading-none tw-text-[#565c65]",
+                  "sm:tw-text-lg sm:tw-leading-none",
+                  "hover:tw-border-t-[#a9aeb1]",
+                  "focus:!tw-outline-none",
+                  "focus-visible:tw-relative focus-visible:!tw-outline focus-visible:!tw-outline-[3px] focus-visible:!tw-outline-offset-0 focus-visible:!tw-outline-[#2491ff]",
+                  "ui-selected:tw-border-b-white ui-selected:tw-border-t-[--avert-light-blue] ui-selected:tw-bg-white ui-selected:tw-text-[--avert-blue]",
+                  "ui-selected:first-of-type:tw-border-r ui-selected:first-of-type:tw-border-r-[#a9aeb1]",
+                  "ui-selected:last-of-type:tw-border-l ui-selected:last-of-type:tw-border-l-[#a9aeb1]",
+                )}
+              >
+                {tab}
+              </Tab>
+            ))}
+          </Tab.List>
 
-          <TabPanels>
-            <TabPanel>
+          <Tab.Panels className={clsx("tw-p-4")}>
+            {[
               <div className="grid-container padding-0 maxw-full">
                 <div className="grid-row">
                   <div className="desktop:grid-col-6 desktop:order-last">
@@ -315,10 +263,8 @@ export function Panels() {
                     </div>
                   </div>
                 </div>
-              </div>
-            </TabPanel>
+              </div>,
 
-            <TabPanel>
               <div className="grid-container padding-0 maxw-full">
                 <div className="grid-row">
                   <div className="desktop:grid-col-6 desktop:order-last">
@@ -350,10 +296,20 @@ export function Panels() {
                     </div>
                   </div>
                 </div>
-              </div>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+              </div>,
+            ].map((panel, index) => (
+              <Tab.Panel
+                key={index}
+                className={clsx(
+                  "focus:!tw-outline-none",
+                  "focus-visible:!tw-outline focus-visible:!tw-outline-[3px] focus-visible:!tw-outline-offset-0 focus-visible:!tw-outline-[#2491ff]",
+                )}
+              >
+                {panel}
+              </Tab.Panel>
+            ))}
+          </Tab.Panels>
+        </Tab.Group>
 
         <PanelFooter prevButton={null} nextButton="Set Energy Impacts" />
       </section>
