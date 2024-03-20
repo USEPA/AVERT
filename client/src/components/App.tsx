@@ -1,11 +1,13 @@
+import { Provider } from "react-redux";
+import Highcharts from "highcharts";
 import "@uswds/uswds";
 import "@uswds/uswds/css/uswds.css";
-import Highcharts from "highcharts";
 // ---
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { PanelTabs } from "@/components/PanelTabs";
 import { Panels } from "@/components/Panels";
 import { ModalDialog } from "@/components/ModalDialog";
+import { store } from "@/redux/store";
 
 /* Apply a theme like Highcharts v10 */
 const fontFamily = '"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif'; // prettier-ignore
@@ -45,12 +47,14 @@ Highcharts.setOptions({
 
 export function App() {
   return (
-    <div className="avert-container">
-      <ErrorBoundary>
-        <PanelTabs />
-        <Panels />
-        <ModalDialog />
-      </ErrorBoundary>
-    </div>
+    <Provider store={store}>
+      <div className="avert-container">
+        <ErrorBoundary>
+          <PanelTabs />
+          <Panels />
+          <ModalDialog />
+        </ErrorBoundary>
+      </div>
+    </Provider>
   );
 }
