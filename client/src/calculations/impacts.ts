@@ -597,6 +597,7 @@ export function calculateHourlyImpacts(options: {
       const esData = hourlyEnergyStorageData[index] || {};
       const date = esData?.date || "";
       const dayOfYear = esData?.dayOfYear || 0;
+      const hourOfDay = esData?.hourOfDay || 0;
       const hourOfYear = esData?.hourOfYear || 0;
       const utilitySolarPaired = esData?.esProfilePaired?.utility || 0;
       const rooftopSolarPaired = esData?.esProfilePaired?.rooftop || 0;
@@ -620,6 +621,7 @@ export function calculateHourlyImpacts(options: {
       object[hour] = {
         /* column B */ date,
         /* column F */ dayOfYear,
+        /* column C */ hourOfDay,
         hourOfYear,
         /* column I */ windEnergyProfile,
         /* column J */ utilitySolarProfile,
@@ -637,6 +639,7 @@ export function calculateHourlyImpacts(options: {
       [hour: number]: {
         date: string;
         dayOfYear: number;
+        hourOfDay: number;
         hourOfYear: number;
         windEnergyProfile: number;
         utilitySolarProfile: number;
