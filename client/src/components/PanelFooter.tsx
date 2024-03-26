@@ -24,8 +24,6 @@ const iconStyles = css`
 const PrevButtonAnchor = styled("a")`
   &::before {
     ${iconStyles};
-
-    margin-right: 0.375rem;
     transform: rotate(180deg);
   }
 `;
@@ -33,8 +31,6 @@ const PrevButtonAnchor = styled("a")`
 const NextButtonAnchor = styled("a")<{ resultsShown: boolean }>`
   &::after {
     ${iconStyles};
-
-    margin-left: 0.375rem;
   }
 
   /* if on the'Get Results' panel, use a reset icon instead of the arrow icon */
