@@ -210,8 +210,11 @@ function ImpactsInputsContent() {
     ? 0
     : Number(rooftopStorage) * batteryStorageDuration;
 
-  const utilityStorageError = Boolean(utilityStorage) && !Boolean(utilitySolar);
-  const rooftopStorageError = Boolean(rooftopStorage) && !Boolean(rooftopSolar);
+  const utilityStorageError =
+    utilityStorage !== "" && (utilitySolar === "" || utilitySolar === "0");
+
+  const rooftopStorageError =
+    rooftopStorage !== "" && (rooftopSolar === "" || rooftopSolar === "0");
 
   const textInputsAreEmpty =
     textInputsFields.filter((field) => field?.length > 0).length === 0;
