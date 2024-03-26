@@ -613,8 +613,7 @@ export function calculateHourlyImpacts(options: {
         hourlyMwReduction -
         constantMwh +
         evLoad -
-        rooftopSolarProfile -
-        rooftopSolarPaired;
+        (rooftopSolarProfile - rooftopSolarPaired);
 
       const impactsLoad = finalUtility + finalRooftop / (1 - lineLoss);
 
