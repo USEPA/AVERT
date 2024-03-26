@@ -137,6 +137,14 @@ export const batteryRoundTripEfficiency = 0.85;
  */
 export const batteryStorageDuration = 4;
 
+/**
+ * Average annual electricity use (in kWh) for each home in the U.S.
+ *
+ * Source: "Home electricy use" section of
+ * "Calculations and References_GHGEC_2024 Update.docx".
+ */
+export const averageAnnualElectricityUsePerUSHome = 12_154;
+
 export type RdfDataKey =
   | "generation"
   | "so2"

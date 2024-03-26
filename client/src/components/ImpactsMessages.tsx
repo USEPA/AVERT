@@ -1,6 +1,7 @@
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useAppSelector } from "@/redux/index";
 import type { HourlyChangesValidation } from "@/calculations/impacts";
+import { averageAnnualElectricityUsePerUSHome } from "@/config";
 
 function EquivalentHomesText(props: { hourlyChanges: number[] }) {
   const { hourlyChanges } = props;
@@ -8,10 +9,9 @@ function EquivalentHomesText(props: { hourlyChanges: number[] }) {
   const totalLoadMwh = hourlyChanges.reduce((a, b) => a + b, 0);
   const totalLoadGwh = Math.round(totalLoadMwh / -1_000);
 
-  /**
-   * the annual kwh of electricity used by the average american home is 12,146
-   */
-  const equivalentHomes = Math.round((totalLoadMwh / 12_146) * -1_000);
+  const equivalentHomes = Math.round(
+    (totalLoadMwh / averageAnnualElectricityUsePerUSHome) * -1_000,
+  );
 
   return (
     <p className="margin-top-2 text-base-dark">
