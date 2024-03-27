@@ -604,7 +604,7 @@ export function calculateHourlyImpacts(options: {
 
       const evLoad = hourlyEVLoad[index] || 0;
 
-      const windEnergyProfile = -(onshoreWindProfile + offshoreWindProfile) + 0;
+      const windEnergyProfile = onshoreWindProfile + offshoreWindProfile;
 
       const finalUtility =
         -windEnergyProfile - (utilitySolarProfile - utilitySolarPaired);
