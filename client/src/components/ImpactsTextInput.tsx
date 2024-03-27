@@ -16,7 +16,7 @@ export function ImpactsTextInput(props: {
   suffix?: string;
   value: string;
   fieldName: string;
-  disabled?: string;
+  disabled?: boolean;
   onChange: (value: string) => void;
   onBlur?: (value: string) => void;
   tooltip?: ReactNode;

@@ -109,6 +109,13 @@ function checkTransitBusesWarningScenario(options: {
 }
 
 /**
+ * Checks if the input is not an empty string or zero.
+ */
+function nonZeroInput(input: string) {
+  return input !== "" && Number(input) !== 0;
+}
+
+/**
  * Warning dialog text to display when under the transit buses warning scenario.
  */
 function TransitBusesWarningText() {
@@ -211,10 +218,10 @@ function ImpactsInputsContent() {
     : Number(rooftopStorage) * batteryStorageDuration;
 
   const utilityStorageError =
-    utilityStorage !== "" && (utilitySolar === "" || utilitySolar === "0");
+    nonZeroInput(utilityStorage) && !nonZeroInput(utilitySolar);
 
   const rooftopStorageError =
-    rooftopStorage !== "" && (rooftopSolar === "" || rooftopSolar === "0");
+    nonZeroInput(rooftopStorage) && !nonZeroInput(rooftopSolar);
 
   const textInputsAreEmpty =
     textInputsFields.filter((field) => field?.length > 0).length === 0;
@@ -313,7 +320,7 @@ function ImpactsInputsContent() {
                         suffix="GWh"
                         value={annualGwh}
                         fieldName="annualGwh"
-                        disabled={constantMwh}
+                        disabled={nonZeroInput(constantMwh)}
                         onChange={(value) => {
                           dispatch(updateEEAnnualGwh(value));
                         }}
@@ -338,7 +345,7 @@ function ImpactsInputsContent() {
                         suffix="MW"
                         value={constantMwh}
                         fieldName="constantMwh"
-                        disabled={annualGwh}
+                        disabled={nonZeroInput(annualGwh)}
                         onChange={(value) => {
                           dispatch(updateEEConstantMw(value));
                         }}
@@ -405,7 +412,9 @@ function ImpactsInputsContent() {
                         suffix="%&nbsp;in&nbsp;all&nbsp;hours"
                         value={broadProgram}
                         fieldName="broadProgram"
-                        disabled={reduction || topHours}
+                        disabled={
+                          nonZeroInput(reduction) || nonZeroInput(topHours)
+                        }
                         onChange={(value) => {
                           dispatch(updateEEBroadBasedProgram(value));
                         }}
@@ -432,7 +441,7 @@ function ImpactsInputsContent() {
                         suffix="%&nbsp;during&nbsp;the&nbsp;peak:&nbsp;&nbsp;"
                         value={reduction}
                         fieldName="reduction"
-                        disabled={broadProgram}
+                        disabled={nonZeroInput(broadProgram)}
                         onChange={(value) => {
                           dispatch(updateEEReduction(value));
                         }}
@@ -443,7 +452,7 @@ function ImpactsInputsContent() {
                         suffix="%&nbsp;of&nbsp;hours"
                         value={topHours}
                         fieldName="topHours"
-                        disabled={broadProgram}
+                        disabled={nonZeroInput(broadProgram)}
                         onChange={(value) => {
                           dispatch(updateEETopHours(value));
                         }}
