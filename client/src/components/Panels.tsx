@@ -99,13 +99,22 @@ function StateGeographyText() {
   return (
     <p className="text-base-dark font-sans-2xs tablet:font-sans-xs desktop:font-sans-sm">
       When modeling energy programs for a single state that is split among
-      multiple AVERT regions, AVERT distributes the user-input EE, RE, and EVs
-      across all portions of the state. The power sector impacts of these
-      programs are assigned to each AVERT region based on the proportional
-      generation provided to the state by EGUs in each AVERT region. EV impacts
-      are assigned based on the proportion of the state’s vehicle miles traveled
-      that occur within each AVERT region, by vehicle type. For more
-      information, see Appendix G of the User Manual.
+      multiple AVERT regions, AVERT distributes the user-input EE, RE, EVs, and
+      energy storage across all intersecting regions. The power sector impacts
+      of these programs are assigned to each AVERT region based on the
+      proportional generation provided to the state by EGUs in each AVERT
+      region. EV impacts are assigned based on the proportion of the state’s
+      vehicle miles traveled that occur within each AVERT region, by vehicle
+      type. For more information, see Appendix G of the{" "}
+      <a
+        className="usa-link"
+        href="https://www.epa.gov/avert/avert-user-manual"
+        target="_parent"
+        rel="noreferrer"
+      >
+        user manual
+      </a>
+      .
     </p>
   );
 }
@@ -240,9 +249,10 @@ export function Panels() {
                         independent electricity regions. AVERT regions are
                         organized by one or more balancing authorities. Select a
                         region for analysis by either using the dropdown menus
-                        or clicking the map. Selecting a region loads the fossil
-                        fuel power plants operating within each region and
-                        region-specific wind and solar capacity data.
+                        or clicking the map. Choosing a region automatically
+                        selects the fossil fuel power plants operating within
+                        each region and other region-specific information, like
+                        wind and solar capacity data.
                       </p>
 
                       <RegionsList />
