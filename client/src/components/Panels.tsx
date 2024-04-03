@@ -363,9 +363,9 @@ export function Panels() {
             </p>
 
             <p className="margin-0 text-base-dark font-sans-2xs tablet:font-sans-xs desktop:font-sans-sm">
-              Several types of programs are listed below <em>(A through E)</em>.
-              You can enter impacts for any or all types of programs, in any
-              combination. AVERT will calculate cumulative impacts.
+              Several types of programs are listed below <em>(A through F)</em>.
+              You can enter impacts for any or all types of programs. AVERT will
+              calculate cumulative impacts.
             </p>
           </div>
 
