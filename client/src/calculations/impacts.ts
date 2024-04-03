@@ -11,7 +11,7 @@ import type { RegionId, RegionName } from "@/config";
 /**
  * EV hourly limits by region
  *
- * (NOTE: not in Excel file, but sent by Pat via email 02/21/23)
+ * (NOTE: not in Excel file, but sent by Pat via email 03/06/24)
  */
 import regionEvHourlyLimits from "@/data/region-ev-hourly-limits.json";
 
