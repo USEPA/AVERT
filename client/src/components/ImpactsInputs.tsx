@@ -958,10 +958,7 @@ function ImpactsInputsContent() {
           }
         >
           <h3 className="margin-0 font-sans-xs line-height-sans-4">
-            Energy Storage{" "}
-            <Tooltip>
-              <span className="text-normal">TODO</span>
-            </Tooltip>
+            Energy Storage
           </h3>
         </header>
 
