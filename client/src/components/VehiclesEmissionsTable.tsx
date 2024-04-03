@@ -140,8 +140,8 @@ function VehiclesEmissionsTableContent() {
                       electric power sector. This column includes emissions
                       changes from fossil fuel power plants that are affected by
                       the combined load change from all modeled resources,
-                      including energy efficiency, renewable energy, and
-                      electric vehicle charging load.
+                      including energy efficiency, renewable energy, electric
+                      vehicle charging load, and energy storage.
                     </p>
                   </Tooltip>
                 </th>
