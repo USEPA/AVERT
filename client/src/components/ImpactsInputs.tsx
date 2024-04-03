@@ -266,7 +266,7 @@ function ImpactsInputsContent() {
             `padding-y-1 padding-x-105 text-bold bg-base-lightest`
           }
         >
-          <h3 className="margin-0 font-sans-xs line-height-sans-3">
+          <h3 className="margin-0 font-sans-xs line-height-sans-4">
             Energy Efficiency
           </h3>
         </header>
@@ -481,7 +481,7 @@ function ImpactsInputsContent() {
             `margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest`
           }
         >
-          <h3 className="margin-0 font-sans-xs line-height-sans-3">
+          <h3 className="margin-0 font-sans-xs line-height-sans-4">
             Renewable Energy
           </h3>
         </header>
@@ -692,7 +692,7 @@ function ImpactsInputsContent() {
             `margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest`
           }
         >
-          <h3 className="margin-0 font-sans-xs line-height-sans-3">
+          <h3 className="margin-0 font-sans-xs line-height-sans-4">
             Electric Vehicles
           </h3>
         </header>
@@ -957,7 +957,7 @@ function ImpactsInputsContent() {
             `margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest`
           }
         >
-          <h3 className="margin-0 font-sans-xs line-height-sans-3">
+          <h3 className="margin-0 font-sans-xs line-height-sans-4">
             Energy Storage
           </h3>
         </header>
@@ -994,7 +994,7 @@ function ImpactsInputsContent() {
                   data-label="F"
                 >
                   <span className="display-none">F.</span>
-                  Energy storage (paired with solar generation)
+                  PV-plus-storage
                 </summary>
 
                 <section className="padding-top-0 padding-x-2 padding-bottom-105">
@@ -1011,7 +1011,43 @@ function ImpactsInputsContent() {
                             onChange={(value) => {
                               dispatch(updateESUtilityStorage(value));
                             }}
-                            tooltip={<p className="margin-0">(TODO)</p>}
+                            tooltip={
+                              <>
+                                <p className="margin-0">
+                                  Enter the total capacity (maximum potential
+                                  energy storage), measured in MW. To model
+                                  solar-plus-storage, the user must also add
+                                  some amount of utility-scale solar PV. If the
+                                  solar capacity is insufficient to fully charge
+                                  the battery, the battery will discharge below
+                                  its full capability. AVERT Web Edition models
+                                  energy storage with a midday charging pattern
+                                  where the battery will start charging in
+                                  mid-morning and discharge in the evening. Any
+                                  electricity produced by solar above the
+                                  capacity of the battery is “sent to the grid”
+                                  and modeled as a reduction in fossil
+                                  generation. The AVERT{" "}
+                                  <a
+                                    className="usa-link"
+                                    href="https://www.epa.gov/avert/download-avert"
+                                    target="_parent"
+                                    rel="noreferrer"
+                                  >
+                                    Excel Edition
+                                  </a>{" "}
+                                  has the ability to modify more energy storage
+                                  parameters like duration, depth of discharge,
+                                  round-trip efficiency, and
+                                  charging/discharging profile.
+                                </p>
+
+                                <p>
+                                  See Appendix K in the AVERT user manual for
+                                  more details.
+                                </p>
+                              </>
+                            }
                           />
                         </div>
 
@@ -1026,7 +1062,43 @@ function ImpactsInputsContent() {
                             onChange={(value) => {
                               dispatch(updateESRooftopStorage(value));
                             }}
-                            tooltip={<p className="margin-0">(TODO)</p>}
+                            tooltip={
+                              <>
+                                <p className="margin-0">
+                                  Enter the total capacity (maximum potential
+                                  energy storage), measured in MW. To model
+                                  solar-plus-storage, the user must also add
+                                  some amount of distributed (rooftop) solar PV.
+                                  If the solar capacity is insufficient to fully
+                                  charge the battery, the battery will discharge
+                                  below its full capability. AVERT Web Edition
+                                  models energy storage with a midday charging
+                                  pattern where the battery will start charging
+                                  in mid-morning and discharge in the evening.
+                                  Any electricity produced by solar above the
+                                  capacity of the battery is “sent to the grid”
+                                  and modeled as a reduction in fossil
+                                  generation. The AVERT{" "}
+                                  <a
+                                    className="usa-link"
+                                    href="https://www.epa.gov/avert/download-avert"
+                                    target="_parent"
+                                    rel="noreferrer"
+                                  >
+                                    Excel Edition
+                                  </a>{" "}
+                                  has the ability to modify more energy storage
+                                  parameters like duration, depth of discharge,
+                                  round-trip efficiency, and
+                                  charging/discharging profile.
+                                </p>
+
+                                <p>
+                                  See Appendix K in the AVERT user manual for
+                                  more details.
+                                </p>
+                              </>
+                            }
                           />
                         </div>
                       </div>
@@ -1045,7 +1117,25 @@ function ImpactsInputsContent() {
                                 updateESMaxAnnualDischargeCycles(option),
                               );
                             }}
-                            tooltip={<p className="margin-0">(TODO)</p>}
+                            tooltip={
+                              <>
+                                <p className="margin-0">
+                                  Select the maximum allowable number of cycles
+                                  the energy storage system should discharge in
+                                  a year. This number limits the numbers of days
+                                  in the year when this energy storage resource
+                                  will be used. AVERT models the energy storage
+                                  resource on the days with the highest fossil
+                                  generation on the grid, for the number of days
+                                  specified.
+                                </p>
+
+                                <p>
+                                  See Appendix K in the AVERT user manual for
+                                  more details.
+                                </p>
+                              </>
+                            }
                           />
                         </div>
 
@@ -1057,6 +1147,21 @@ function ImpactsInputsContent() {
 
                     <div className="desktop:grid-col-6">
                       <div className="margin-top-2 desktop:margin-top-0 desktop:margin-left-2">
+                        <h4 className="avert-blue margin-bottom-1 font-serif-md">
+                          Storage Energy Calculated from User Inputs{" "}
+                          <Tooltip>
+                            <span className="text-normal">
+                              AVERT Web Edition assumes a storage duration of
+                              four hours. The modeled battery is restricted to
+                              charge for four hours and then discharge for four
+                              hours within each 24-hour cycle. These values are
+                              based on the capacity of the battery entered by
+                              the user and do not include depth of discharge and
+                              round-trip efficiency loss constraints.
+                            </span>
+                          </Tooltip>
+                        </h4>
+
                         <div className="overflow-auto">
                           <div className="avert-table-container">
                             <table className="avert-table avert-table-striped avert-table-fixed width-full">
