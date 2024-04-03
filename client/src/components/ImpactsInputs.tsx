@@ -266,7 +266,7 @@ function ImpactsInputsContent() {
             `padding-y-1 padding-x-105 text-bold bg-base-lightest`
           }
         >
-          <h3 className="margin-0 font-sans-xs line-height-sans-3">
+          <h3 className="margin-0 font-sans-xs line-height-sans-4">
             Energy Efficiency
           </h3>
         </header>
@@ -481,7 +481,7 @@ function ImpactsInputsContent() {
             `margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest`
           }
         >
-          <h3 className="margin-0 font-sans-xs line-height-sans-3">
+          <h3 className="margin-0 font-sans-xs line-height-sans-4">
             Renewable Energy
           </h3>
         </header>
@@ -692,7 +692,7 @@ function ImpactsInputsContent() {
             `margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest`
           }
         >
-          <h3 className="margin-0 font-sans-xs line-height-sans-3">
+          <h3 className="margin-0 font-sans-xs line-height-sans-4">
             Electric Vehicles
           </h3>
         </header>
@@ -957,8 +957,11 @@ function ImpactsInputsContent() {
             `margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest`
           }
         >
-          <h3 className="margin-0 font-sans-xs line-height-sans-3">
-            Energy Storage
+          <h3 className="margin-0 font-sans-xs line-height-sans-4">
+            Energy Storage{" "}
+            <Tooltip>
+              <span className="text-normal">TODO</span>
+            </Tooltip>
           </h3>
         </header>
 
