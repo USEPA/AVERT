@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   description: "AVoided Emissions and geneRation Tool"
-  version: "4.0.0"
+  version: "4.3.0"
   title: "AVERT API"
   license:
     name: "Creative Commons Zero Public Domain Dedication"
@@ -69,6 +69,37 @@ paths:
             items:
               type: "string"
   /v1/eere/{regionID}:
+    get:
+      summary: na
+      description: na
+      produces:
+        - "application/json"
+      parameters:
+        - name: regionID
+          in: path
+          description: na
+          default: NCSC
+          required: true
+          type: string
+      responses:
+        "200":
+          description: na
+          schema:
+            $ref: "#/definitions/Dummy"
+  /v1/storage:
+    get:
+      summary: "na"
+      description: "na"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: na
+          schema:
+            type: "array"
+            items:
+              type: "string"
+  /v1/storage/{regionID}:
     get:
       summary: na
       description: na
