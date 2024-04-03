@@ -994,7 +994,7 @@ function ImpactsInputsContent() {
                   data-label="F"
                 >
                   <span className="display-none">F.</span>
-                  Energy storage (paired with solar generation)
+                  PV-plus-storage
                 </summary>
 
                 <section className="padding-top-0 padding-x-2 padding-bottom-105">
