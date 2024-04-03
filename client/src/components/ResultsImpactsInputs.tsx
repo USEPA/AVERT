@@ -212,7 +212,7 @@ function ResultsImpactsInputsContent() {
         {inputExists(utilityStorage) && (
           <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">
-              Utility-scale storage capacity:
+              Utility-scale storage capacity (paired with PV):
             </span>{" "}
             <span className="font-mono-xs text-bold">{utilityStorage}</span>{" "}
             <span className="font-sans-3xs">MW</span>
@@ -221,7 +221,9 @@ function ResultsImpactsInputsContent() {
 
         {inputExists(rooftopStorage) && (
           <p className="margin-0 padding-top-1 line-height-sans-2">
-            <span className="font-sans-2xs">Distributed storage capacity:</span>{" "}
+            <span className="font-sans-2xs">
+              Distributed storage capacity (paired with PV):
+            </span>{" "}
             <span className="font-mono-xs text-bold">{rooftopStorage}</span>{" "}
             <span className="font-sans-3xs">MW</span>
           </p>
