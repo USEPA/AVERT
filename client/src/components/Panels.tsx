@@ -347,7 +347,7 @@ export function Panels() {
               consult the{" "}
               <a
                 className="usa-link"
-                href="https://www.epa.gov/statelocalenergy/avert-user-manual"
+                href="https://www.epa.gov/avert/avert-user-manual"
                 target="_parent"
                 rel="noreferrer"
               >
