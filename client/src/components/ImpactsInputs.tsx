@@ -1043,8 +1043,16 @@ function ImpactsInputsContent() {
                                 </p>
 
                                 <p>
-                                  See Appendix K in the AVERT user manual for
-                                  more details.
+                                  See Appendix K in the{" "}
+                                  <a
+                                    className="usa-link"
+                                    href="https://www.epa.gov/avert/avert-user-manual"
+                                    target="_parent"
+                                    rel="noreferrer"
+                                  >
+                                    AVERT user manual
+                                  </a>{" "}
+                                  for more details.
                                 </p>
                               </>
                             }
@@ -1094,8 +1102,16 @@ function ImpactsInputsContent() {
                                 </p>
 
                                 <p>
-                                  See Appendix K in the AVERT user manual for
-                                  more details.
+                                  See Appendix K in the{" "}
+                                  <a
+                                    className="usa-link"
+                                    href="https://www.epa.gov/avert/avert-user-manual"
+                                    target="_parent"
+                                    rel="noreferrer"
+                                  >
+                                    AVERT user manual
+                                  </a>{" "}
+                                  for more details.
                                 </p>
                               </>
                             }
@@ -1131,8 +1147,16 @@ function ImpactsInputsContent() {
                                 </p>
 
                                 <p>
-                                  See Appendix K in the AVERT user manual for
-                                  more details.
+                                  See Appendix K in the{" "}
+                                  <a
+                                    className="usa-link"
+                                    href="https://www.epa.gov/avert/avert-user-manual"
+                                    target="_parent"
+                                    rel="noreferrer"
+                                  >
+                                    AVERT user manual
+                                  </a>{" "}
+                                  for more details.
                                 </p>
                               </>
                             }
