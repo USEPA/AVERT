@@ -1016,11 +1016,11 @@ function ImpactsInputsContent() {
                                 <p className="margin-0">
                                   Enter the total capacity (maximum potential
                                   energy storage), measured in MW. To model
-                                  solar-plus-storage, the user must also add
-                                  some amount of utility-scale solar PV. If the
-                                  solar capacity is insufficient to fully charge
-                                  the battery, the battery will discharge below
-                                  its full capability. AVERT Web Edition models
+                                  PV-plus-storage, the user must also add some
+                                  amount of utility-scale solar PV. If the solar
+                                  capacity is insufficient to fully charge the
+                                  battery, the battery will discharge below its
+                                  full capability. AVERT Web Edition models
                                   energy storage with a midday charging pattern
                                   where the battery will start charging in
                                   mid-morning and discharge in the evening. Any
@@ -1043,8 +1043,16 @@ function ImpactsInputsContent() {
                                 </p>
 
                                 <p>
-                                  See Appendix K in the AVERT user manual for
-                                  more details.
+                                  See Appendix K in the{" "}
+                                  <a
+                                    className="usa-link"
+                                    href="https://www.epa.gov/avert/avert-user-manual"
+                                    target="_parent"
+                                    rel="noreferrer"
+                                  >
+                                    AVERT user manual
+                                  </a>{" "}
+                                  for more details.
                                 </p>
                               </>
                             }
@@ -1067,9 +1075,9 @@ function ImpactsInputsContent() {
                                 <p className="margin-0">
                                   Enter the total capacity (maximum potential
                                   energy storage), measured in MW. To model
-                                  solar-plus-storage, the user must also add
-                                  some amount of distributed (rooftop) solar PV.
-                                  If the solar capacity is insufficient to fully
+                                  PV-plus-storage, the user must also add some
+                                  amount of distributed (rooftop) solar PV. If
+                                  the solar capacity is insufficient to fully
                                   charge the battery, the battery will discharge
                                   below its full capability. AVERT Web Edition
                                   models energy storage with a midday charging
@@ -1094,8 +1102,16 @@ function ImpactsInputsContent() {
                                 </p>
 
                                 <p>
-                                  See Appendix K in the AVERT user manual for
-                                  more details.
+                                  See Appendix K in the{" "}
+                                  <a
+                                    className="usa-link"
+                                    href="https://www.epa.gov/avert/avert-user-manual"
+                                    target="_parent"
+                                    rel="noreferrer"
+                                  >
+                                    AVERT user manual
+                                  </a>{" "}
+                                  for more details.
                                 </p>
                               </>
                             }
@@ -1131,8 +1147,16 @@ function ImpactsInputsContent() {
                                 </p>
 
                                 <p>
-                                  See Appendix K in the AVERT user manual for
-                                  more details.
+                                  See Appendix K in the{" "}
+                                  <a
+                                    className="usa-link"
+                                    href="https://www.epa.gov/avert/avert-user-manual"
+                                    target="_parent"
+                                    rel="noreferrer"
+                                  >
+                                    AVERT user manual
+                                  </a>{" "}
+                                  for more details.
                                 </p>
                               </>
                             }
