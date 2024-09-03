@@ -113,9 +113,9 @@ function COBRAConnectionContent() {
             <LoadingIcon />
 
             <div className="tw-ml-2 tw-mr-4 tw-flex tw-gap-3">
-              <div className="tw-h-3 tw-w-3 tw-animate-pulse tw-rounded-full tw-bg-[--avert-blue]"></div>
-              <div className="tw-h-3 tw-w-3 tw-animate-pulse tw-rounded-full tw-bg-[--avert-blue]"></div>
-              <div className="tw-h-3 tw-w-3 tw-animate-pulse tw-rounded-full tw-bg-[--avert-blue]"></div>
+              <div className="tw-h-3 tw-w-3 tw-animate-pulse tw-rounded-full tw-bg-[--avert-blue]" />
+              <div className="tw-h-3 tw-w-3 tw-animate-pulse tw-rounded-full tw-bg-[--avert-blue]" />
+              <div className="tw-h-3 tw-w-3 tw-animate-pulse tw-rounded-full tw-bg-[--avert-blue]" />
             </div>
 
             <COBRAHeartbeat />
@@ -163,7 +163,9 @@ function COBRAConnectionContent() {
             const cobraAppWindow = window.open("", "_blank");
 
             if (cobraAppWindow) {
-              cobraAppWindow.document.write("Sending data to COBRA...");
+              cobraAppWindow.document.write(
+                "Sending data to COBRA. This may take a few minutes.",
+              );
               cobraAppWindow.document.body.style.fontFamily = "sans-serif";
             }
 
