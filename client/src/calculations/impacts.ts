@@ -566,7 +566,7 @@ export function calculateHourlyImpacts(options: {
   hourlyEVLoad: HourlyEVLoad;
   hourlyTopPercentReduction: HourlyTopPercentReduction;
   annualGwhReduction: number; // impacts.inputs.annualGwhReduction
-  constantMwh: number; // impacts.inputs.annualGwh
+  hourlyMwReduction: number; // impacts.inputs.hourlyMwReduction
 }) {
   const {
     lineLoss,
@@ -576,10 +576,11 @@ export function calculateHourlyImpacts(options: {
     hourlyEVLoad,
     hourlyTopPercentReduction,
     annualGwhReduction,
-    constantMwh,
+    hourlyMwReduction,
   } = options;
 
-  const hourlyMwReduction = (annualGwhReduction * 1_000) / regionalLoad.length;
+  const resulingHourlyMwReductionFromAnnualGwhReduction =
+    (annualGwhReduction * 1_000) / regionalLoad.length;
 
   const result = regionalLoad.reduce(
     (object, data, index) => {
@@ -611,8 +612,8 @@ export function calculateHourlyImpacts(options: {
 
       const finalRooftop =
         topPercentReduction -
-        hourlyMwReduction -
-        constantMwh +
+        resulingHourlyMwReductionFromAnnualGwhReduction -
+        hourlyMwReduction +
         evLoad -
         (rooftopSolarProfile - rooftopSolarPaired);
 

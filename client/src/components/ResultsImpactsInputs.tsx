@@ -14,8 +14,8 @@ function ResultsImpactsInputsContent() {
   );
 
   const {
-    constantMwh,
     annualGwhReduction,
+    hourlyMwReduction,
     broadProgram,
     reduction,
     topHours,
@@ -86,10 +86,10 @@ function ResultsImpactsInputsContent() {
           </p>
         )}
 
-        {inputExists(constantMwh) && (
+        {inputExists(hourlyMwReduction) && (
           <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">Reduce hourly generation by:</span>{" "}
-            <span className="font-mono-xs text-bold">{constantMwh}</span>{" "}
+            <span className="font-mono-xs text-bold">{hourlyMwReduction}</span>{" "}
             <span className="font-sans-3xs">MW</span>
           </p>
         )}

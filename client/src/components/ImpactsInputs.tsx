@@ -16,7 +16,7 @@ import { displayModalDialog } from "@/redux/reducers/panel";
 import type { GeographicFocus, RegionState } from "@/redux/reducers/geography";
 import {
   updateEEAnnualGwhReduction,
-  updateEEConstantMw,
+  updateEEHourlyMwReduction,
   updateEEBroadBasedProgram,
   updateEEReduction,
   updateEETopHours,
@@ -140,7 +140,7 @@ function ImpactsInputsContent() {
   const selectOptions = useAppSelector(({ impacts }) => impacts.selectOptions);
 
   const {
-    constantMwh,
+    hourlyMwReduction,
     annualGwhReduction,
     broadProgram,
     reduction,
@@ -192,8 +192,8 @@ function ImpactsInputsContent() {
 
   // text input values from fields
   const textInputsFields = [
-    constantMwh,
     annualGwhReduction,
+    hourlyMwReduction,
     broadProgram,
     reduction,
     topHours,
@@ -320,7 +320,7 @@ function ImpactsInputsContent() {
                         suffix="GWh"
                         value={annualGwhReduction}
                         fieldName="annualGwhReduction"
-                        disabled={nonZeroInput(constantMwh)}
+                        disabled={nonZeroInput(hourlyMwReduction)}
                         onChange={(value) => {
                           dispatch(updateEEAnnualGwhReduction(value));
                         }}
@@ -343,11 +343,11 @@ function ImpactsInputsContent() {
                         label={<>Reduce hourly generation by:</>}
                         ariaLabel="Constant reduction for every hour of the year, in MW"
                         suffix="MW"
-                        value={constantMwh}
-                        fieldName="constantMwh"
+                        value={hourlyMwReduction}
+                        fieldName="hourlyMwReduction"
                         disabled={nonZeroInput(annualGwhReduction)}
                         onChange={(value) => {
-                          dispatch(updateEEConstantMw(value));
+                          dispatch(updateEEHourlyMwReduction(value));
                         }}
                         tooltip={
                           <p className="margin-0">

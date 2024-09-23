@@ -184,8 +184,8 @@ function PowerEmissionsTableContent() {
   });
 
   const {
-    constantMwh,
     annualGwhReduction,
+    hourlyMwReduction,
     broadProgram,
     reduction,
     topHours,
@@ -200,8 +200,8 @@ function PowerEmissionsTableContent() {
   } = inputs;
 
   const eeInputsEmpty =
-    (constantMwh === "" || constantMwh === "0") &&
     (annualGwhReduction === "" || annualGwhReduction === "0") &&
+    (hourlyMwReduction === "" || hourlyMwReduction === "0") &&
     (broadProgram === "" || broadProgram === "0") &&
     (reduction === "" || reduction === "0") &&
     (topHours === "" || topHours === "0");

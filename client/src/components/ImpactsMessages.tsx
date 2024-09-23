@@ -139,8 +139,8 @@ export function EVWarningMessage() {
   const inputs = useAppSelector(({ impacts }) => impacts.inputs);
 
   const {
-    constantMwh,
     annualGwhReduction,
+    hourlyMwReduction,
     broadProgram,
     reduction,
     topHours,
@@ -155,8 +155,8 @@ export function EVWarningMessage() {
   } = inputs;
 
   const eeInputsEmpty =
-    (constantMwh === "" || constantMwh === "0") &&
     (annualGwhReduction === "" || annualGwhReduction === "0") &&
+    (hourlyMwReduction === "" || hourlyMwReduction === "0") &&
     (broadProgram === "" || broadProgram === "0") &&
     (reduction === "" || reduction === "0") &&
     (topHours === "" || topHours === "0");
