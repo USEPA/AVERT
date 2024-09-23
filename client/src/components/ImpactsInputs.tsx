@@ -17,7 +17,7 @@ import type { GeographicFocus, RegionState } from "@/redux/reducers/geography";
 import {
   updateEEAnnualGwhReduction,
   updateEEHourlyMwReduction,
-  updateEEBroadBasedProgram,
+  updateEEBroadProgramReduction,
   updateEEReduction,
   updateEETopHours,
   updateREOnshoreWind,
@@ -142,7 +142,7 @@ function ImpactsInputsContent() {
   const {
     hourlyMwReduction,
     annualGwhReduction,
-    broadProgram,
+    broadProgramReduction,
     reduction,
     topHours,
     onshoreWind,
@@ -194,7 +194,7 @@ function ImpactsInputsContent() {
   const textInputsFields = [
     annualGwhReduction,
     hourlyMwReduction,
-    broadProgram,
+    broadProgramReduction,
     reduction,
     topHours,
     onshoreWind,
@@ -410,13 +410,13 @@ function ImpactsInputsContent() {
                         }
                         ariaLabel="Load reduction percentage applied to all hours of the year"
                         suffix="%&nbsp;in&nbsp;all&nbsp;hours"
-                        value={broadProgram}
-                        fieldName="broadProgram"
+                        value={broadProgramReduction}
+                        fieldName="broadProgramReduction"
                         disabled={
                           nonZeroInput(reduction) || nonZeroInput(topHours)
                         }
                         onChange={(value) => {
-                          dispatch(updateEEBroadBasedProgram(value));
+                          dispatch(updateEEBroadProgramReduction(value));
                         }}
                         tooltip={
                           <p className="margin-0">
@@ -441,7 +441,7 @@ function ImpactsInputsContent() {
                         suffix="%&nbsp;during&nbsp;the&nbsp;peak:&nbsp;&nbsp;"
                         value={reduction}
                         fieldName="reduction"
-                        disabled={nonZeroInput(broadProgram)}
+                        disabled={nonZeroInput(broadProgramReduction)}
                         onChange={(value) => {
                           dispatch(updateEEReduction(value));
                         }}
@@ -452,7 +452,7 @@ function ImpactsInputsContent() {
                         suffix="%&nbsp;of&nbsp;hours"
                         value={topHours}
                         fieldName="topHours"
-                        disabled={nonZeroInput(broadProgram)}
+                        disabled={nonZeroInput(broadProgramReduction)}
                         onChange={(value) => {
                           dispatch(updateEETopHours(value));
                         }}

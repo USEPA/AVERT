@@ -141,7 +141,7 @@ export function EVWarningMessage() {
   const {
     annualGwhReduction,
     hourlyMwReduction,
-    broadProgram,
+    broadProgramReduction,
     reduction,
     topHours,
     onshoreWind,
@@ -157,7 +157,7 @@ export function EVWarningMessage() {
   const eeInputsEmpty =
     (annualGwhReduction === "" || annualGwhReduction === "0") &&
     (hourlyMwReduction === "" || hourlyMwReduction === "0") &&
-    (broadProgram === "" || broadProgram === "0") &&
+    (broadProgramReduction === "" || broadProgramReduction === "0") &&
     (reduction === "" || reduction === "0") &&
     (topHours === "" || topHours === "0");
 

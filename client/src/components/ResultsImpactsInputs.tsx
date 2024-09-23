@@ -16,7 +16,7 @@ function ResultsImpactsInputsContent() {
   const {
     annualGwhReduction,
     hourlyMwReduction,
-    broadProgram,
+    broadProgramReduction,
     reduction,
     topHours,
     onshoreWind,
@@ -94,12 +94,14 @@ function ResultsImpactsInputsContent() {
           </p>
         )}
 
-        {inputExists(broadProgram) && (
+        {inputExists(broadProgramReduction) && (
           <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">
               <em>Broad-based program:</em> Reduce generation by:
             </span>{" "}
-            <span className="font-mono-xs text-bold">{broadProgram}</span>{" "}
+            <span className="font-mono-xs text-bold">
+              {broadProgramReduction}
+            </span>{" "}
             <span className="font-sans-3xs">%&nbsp;in&nbsp;all&nbsp;hours</span>
           </p>
         )}
