@@ -15,10 +15,10 @@ import { useAppDispatch, useAppSelector } from "@/redux/index";
 import { displayModalDialog } from "@/redux/reducers/panel";
 import type { GeographicFocus, RegionState } from "@/redux/reducers/geography";
 import {
-  updateEEAnnualGwh,
-  updateEEConstantMw,
-  updateEEBroadBasedProgram,
-  updateEEReduction,
+  updateEEAnnualGwhReduction,
+  updateEEHourlyMwReduction,
+  updateEEBroadProgramReduction,
+  updateEETargetedProgramReduction,
   updateEETopHours,
   updateREOnshoreWind,
   updateREOffshoreWind,
@@ -140,10 +140,10 @@ function ImpactsInputsContent() {
   const selectOptions = useAppSelector(({ impacts }) => impacts.selectOptions);
 
   const {
-    constantMwh,
-    annualGwh,
-    broadProgram,
-    reduction,
+    hourlyMwReduction,
+    annualGwhReduction,
+    broadProgramReduction,
+    targetedProgramReduction,
     topHours,
     onshoreWind,
     offshoreWind,
@@ -192,10 +192,10 @@ function ImpactsInputsContent() {
 
   // text input values from fields
   const textInputsFields = [
-    constantMwh,
-    annualGwh,
-    broadProgram,
-    reduction,
+    annualGwhReduction,
+    hourlyMwReduction,
+    broadProgramReduction,
+    targetedProgramReduction,
     topHours,
     onshoreWind,
     offshoreWind,
@@ -318,11 +318,11 @@ function ImpactsInputsContent() {
                         label={<>Reduce total annual generation by:</>}
                         ariaLabel="Number of GWh expected to be saved in a single year"
                         suffix="GWh"
-                        value={annualGwh}
-                        fieldName="annualGwh"
-                        disabled={nonZeroInput(constantMwh)}
+                        value={annualGwhReduction}
+                        fieldName="annualGwhReduction"
+                        disabled={nonZeroInput(hourlyMwReduction)}
                         onChange={(value) => {
-                          dispatch(updateEEAnnualGwh(value));
+                          dispatch(updateEEAnnualGwhReduction(value));
                         }}
                         tooltip={
                           <p className="margin-0">
@@ -343,11 +343,11 @@ function ImpactsInputsContent() {
                         label={<>Reduce hourly generation by:</>}
                         ariaLabel="Constant reduction for every hour of the year, in MW"
                         suffix="MW"
-                        value={constantMwh}
-                        fieldName="constantMwh"
-                        disabled={nonZeroInput(annualGwh)}
+                        value={hourlyMwReduction}
+                        fieldName="hourlyMwReduction"
+                        disabled={nonZeroInput(annualGwhReduction)}
                         onChange={(value) => {
-                          dispatch(updateEEConstantMw(value));
+                          dispatch(updateEEHourlyMwReduction(value));
                         }}
                         tooltip={
                           <p className="margin-0">
@@ -410,13 +410,14 @@ function ImpactsInputsContent() {
                         }
                         ariaLabel="Load reduction percentage applied to all hours of the year"
                         suffix="%&nbsp;in&nbsp;all&nbsp;hours"
-                        value={broadProgram}
-                        fieldName="broadProgram"
+                        value={broadProgramReduction}
+                        fieldName="broadProgramReduction"
                         disabled={
-                          nonZeroInput(reduction) || nonZeroInput(topHours)
+                          nonZeroInput(targetedProgramReduction) ||
+                          nonZeroInput(topHours)
                         }
                         onChange={(value) => {
-                          dispatch(updateEEBroadBasedProgram(value));
+                          dispatch(updateEEBroadProgramReduction(value));
                         }}
                         tooltip={
                           <p className="margin-0">
@@ -439,11 +440,11 @@ function ImpactsInputsContent() {
                         }
                         ariaLabel="Load reduction (as a fraction of peaking load) that would be targeted"
                         suffix="%&nbsp;during&nbsp;the&nbsp;peak:&nbsp;&nbsp;"
-                        value={reduction}
-                        fieldName="reduction"
-                        disabled={nonZeroInput(broadProgram)}
+                        value={targetedProgramReduction}
+                        fieldName="targetedProgramReduction"
+                        disabled={nonZeroInput(broadProgramReduction)}
                         onChange={(value) => {
-                          dispatch(updateEEReduction(value));
+                          dispatch(updateEETargetedProgramReduction(value));
                         }}
                       />
 
@@ -452,7 +453,7 @@ function ImpactsInputsContent() {
                         suffix="%&nbsp;of&nbsp;hours"
                         value={topHours}
                         fieldName="topHours"
-                        disabled={nonZeroInput(broadProgram)}
+                        disabled={nonZeroInput(broadProgramReduction)}
                         onChange={(value) => {
                           dispatch(updateEETopHours(value));
                         }}

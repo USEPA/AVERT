@@ -184,10 +184,10 @@ function PowerEmissionsTableContent() {
   });
 
   const {
-    constantMwh,
-    annualGwh,
-    broadProgram,
-    reduction,
+    annualGwhReduction,
+    hourlyMwReduction,
+    broadProgramReduction,
+    targetedProgramReduction,
     topHours,
     onshoreWind,
     offshoreWind,
@@ -200,10 +200,10 @@ function PowerEmissionsTableContent() {
   } = inputs;
 
   const eeInputsEmpty =
-    (constantMwh === "" || constantMwh === "0") &&
-    (annualGwh === "" || annualGwh === "0") &&
-    (broadProgram === "" || broadProgram === "0") &&
-    (reduction === "" || reduction === "0") &&
+    (annualGwhReduction === "" || annualGwhReduction === "0") &&
+    (hourlyMwReduction === "" || hourlyMwReduction === "0") &&
+    (broadProgramReduction === "" || broadProgramReduction === "0") &&
+    (targetedProgramReduction === "" || targetedProgramReduction === "0") &&
     (topHours === "" || topHours === "0");
 
   const reInputsEmpty =

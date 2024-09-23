@@ -14,10 +14,10 @@ function ResultsImpactsInputsContent() {
   );
 
   const {
-    constantMwh,
-    annualGwh,
-    broadProgram,
-    reduction,
+    annualGwhReduction,
+    hourlyMwReduction,
+    broadProgramReduction,
+    targetedProgramReduction,
     topHours,
     onshoreWind,
     offshoreWind,
@@ -76,40 +76,44 @@ function ResultsImpactsInputsContent() {
       </h3>
 
       <div className="avert-columns">
-        {inputExists(annualGwh) && (
+        {inputExists(annualGwhReduction) && (
           <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">
               Reduce total annual generation by:
             </span>{" "}
-            <span className="font-mono-xs text-bold">{annualGwh}</span>{" "}
+            <span className="font-mono-xs text-bold">{annualGwhReduction}</span>{" "}
             <span className="font-sans-3xs">GWh</span>
           </p>
         )}
 
-        {inputExists(constantMwh) && (
+        {inputExists(hourlyMwReduction) && (
           <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">Reduce hourly generation by:</span>{" "}
-            <span className="font-mono-xs text-bold">{constantMwh}</span>{" "}
+            <span className="font-mono-xs text-bold">{hourlyMwReduction}</span>{" "}
             <span className="font-sans-3xs">MW</span>
           </p>
         )}
 
-        {inputExists(broadProgram) && (
+        {inputExists(broadProgramReduction) && (
           <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">
               <em>Broad-based program:</em> Reduce generation by:
             </span>{" "}
-            <span className="font-mono-xs text-bold">{broadProgram}</span>{" "}
+            <span className="font-mono-xs text-bold">
+              {broadProgramReduction}
+            </span>{" "}
             <span className="font-sans-3xs">%&nbsp;in&nbsp;all&nbsp;hours</span>
           </p>
         )}
 
-        {(inputExists(reduction) || inputExists(topHours)) && (
+        {(inputExists(targetedProgramReduction) || inputExists(topHours)) && (
           <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">
               <em>Targeted program:</em> Reduce generation by:
             </span>{" "}
-            <span className="font-mono-xs text-bold">{reduction}</span>{" "}
+            <span className="font-mono-xs text-bold">
+              {targetedProgramReduction}
+            </span>{" "}
             <span className="font-sans-3xs">
               %&nbsp;during&nbsp;the&nbsp;peak:{" "}
             </span>{" "}
