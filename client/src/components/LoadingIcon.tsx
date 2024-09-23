@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { css, keyframes } from "@emotion/react";
+import { COBRAHeartbeat } from "@/components/COBRAHeartbeat";
 
 const spinAnimation = keyframes`
   0% {
@@ -56,3 +57,48 @@ export function LoadingIcon() {
     </svg>
   );
 }
+
+const textStyles = css`
+  text-align: center;
+`;
+
+// AVERT’s spinning wind turbine and COBRA’s beating heart
+interface CommunicatingIconsProps {
+  centerText?: boolean;
+}
+
+export const CommunicatingIcons: React.FC<CommunicatingIconsProps> = ({
+  centerText = false,
+}) => {
+  console.log(centerText);
+  return (
+    <>
+      <div className="usa-alert usa-alert--slim usa-alert--info">
+        <div className="usa-alert__body">
+          {centerText && (
+            <p className="usa-alert__text" css={textStyles}>
+              Sending data to COBRA. This may take a few minutes.
+            </p>
+          )}
+          {!centerText && (
+            <p className="usa-alert__text">
+              Sending data to COBRA. This may take a few minutes.
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div className="-tw-mb-10 -tw-mt-16 tw-flex tw-scale-50 tw-items-center tw-justify-center">
+        <LoadingIcon />
+
+        <div className="tw-ml-2 tw-mr-4 tw-flex tw-gap-3">
+          <div className="tw-h-3 tw-w-3 tw-animate-pulse tw-rounded-full tw-bg-[--avert-blue]" />
+          <div className="tw-h-3 tw-w-3 tw-animate-pulse tw-rounded-full tw-bg-[--avert-blue]" />
+          <div className="tw-h-3 tw-w-3 tw-animate-pulse tw-rounded-full tw-bg-[--avert-blue]" />
+        </div>
+
+        <COBRAHeartbeat />
+      </div>
+    </>
+  );
+};
