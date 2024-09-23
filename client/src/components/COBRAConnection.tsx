@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 // ---
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useAppSelector } from "@/redux/index";
-
+import { useSelectedState, useSelectedStateRegions } from "../hooks";
 type CobraApiState = "idle" | "pending" | "success" | "failure";
 
 type CobraApiData = {
@@ -34,8 +34,11 @@ function COBRAConnectionContent() {
   const cobraApiUrl = useAppSelector(({ api }) => api.cobraApiUrl);
   const cobraAppUrl = useAppSelector(({ api }) => api.cobraAppUrl);
   const cobraData = useAppSelector(({ downloads }) => downloads.cobraData);
+  const inputs = useAppSelector(({ impacts }) => impacts.inputs);
 
   const [cobraApiState, setCobraApiState] = useState<CobraApiState>("idle");
+  const selectedStateName = useSelectedState()?.name || "";
+  const selectedStateRegionNames = useSelectedStateRegions().map((r) => r.name);
 
   useEffect(() => {
     setCobraApiState("idle");
@@ -177,6 +180,42 @@ function COBRAConnectionContent() {
                 cobraAppWindow?.close();
                 setCobraApiState("failure");
               });
+
+            // Draft for new COBRA POST request Body.
+            // fect will sent new avertRegion, avertState, and avertInputs properties
+
+            // fetch(`${cobraApiUrl}/api/Token`)
+            //   .then((tokenRes) => {
+            //     if (!tokenRes.ok) throw new Error(tokenRes.statusText);
+            //     return tokenRes.json();
+            //   })
+            //   .then((tokenData) => {
+            //     const token = tokenData.value;
+            //     return fetch(`${cobraApiUrl}/api/Queue`, {
+            //       method: "POST",
+            //       headers: { "Content-Type": "application/json" },
+            //       body: JSON.stringify({
+            //         token,
+            //         queueElements: cobraApiData,
+            //         avertRegions: selectedStateRegionNames,
+            //         avertState: selectedStateName,
+            //         avertInputs: inputs,
+            //       }),
+            //     }).then((queueRes) => {
+            //       if (!queueRes.ok) throw new Error(queueRes.statusText);
+
+            //       if (cobraAppWindow) {
+            //         cobraAppWindow.location.href = `${cobraAppUrl}/externalscenario/${token}`;
+            //       }
+
+            //       // setCobraApiState("success");
+            //     });
+            //   })
+            //   .catch((error) => {
+            //     // console.log(error);
+            //     // cobraAppWindow?.close();
+            //     // setCobraApiState("failure");
+            //   });
           }}
         >
           Submit Results to COBRA
