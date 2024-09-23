@@ -17,7 +17,7 @@ function ResultsImpactsInputsContent() {
     annualGwhReduction,
     hourlyMwReduction,
     broadProgramReduction,
-    reduction,
+    targetedProgramReduction,
     topHours,
     onshoreWind,
     offshoreWind,
@@ -106,12 +106,14 @@ function ResultsImpactsInputsContent() {
           </p>
         )}
 
-        {(inputExists(reduction) || inputExists(topHours)) && (
+        {(inputExists(targetedProgramReduction) || inputExists(topHours)) && (
           <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">
               <em>Targeted program:</em> Reduce generation by:
             </span>{" "}
-            <span className="font-mono-xs text-bold">{reduction}</span>{" "}
+            <span className="font-mono-xs text-bold">
+              {targetedProgramReduction}
+            </span>{" "}
             <span className="font-sans-3xs">
               %&nbsp;during&nbsp;the&nbsp;peak:{" "}
             </span>{" "}

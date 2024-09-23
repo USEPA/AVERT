@@ -187,7 +187,7 @@ function PowerEmissionsTableContent() {
     annualGwhReduction,
     hourlyMwReduction,
     broadProgramReduction,
-    reduction,
+    targetedProgramReduction,
     topHours,
     onshoreWind,
     offshoreWind,
@@ -203,7 +203,7 @@ function PowerEmissionsTableContent() {
     (annualGwhReduction === "" || annualGwhReduction === "0") &&
     (hourlyMwReduction === "" || hourlyMwReduction === "0") &&
     (broadProgramReduction === "" || broadProgramReduction === "0") &&
-    (reduction === "" || reduction === "0") &&
+    (targetedProgramReduction === "" || targetedProgramReduction === "0") &&
     (topHours === "" || topHours === "0");
 
   const reInputsEmpty =

@@ -18,7 +18,7 @@ import {
   updateEEAnnualGwhReduction,
   updateEEHourlyMwReduction,
   updateEEBroadProgramReduction,
-  updateEEReduction,
+  updateEETargetedProgramReduction,
   updateEETopHours,
   updateREOnshoreWind,
   updateREOffshoreWind,
@@ -143,7 +143,7 @@ function ImpactsInputsContent() {
     hourlyMwReduction,
     annualGwhReduction,
     broadProgramReduction,
-    reduction,
+    targetedProgramReduction,
     topHours,
     onshoreWind,
     offshoreWind,
@@ -195,7 +195,7 @@ function ImpactsInputsContent() {
     annualGwhReduction,
     hourlyMwReduction,
     broadProgramReduction,
-    reduction,
+    targetedProgramReduction,
     topHours,
     onshoreWind,
     offshoreWind,
@@ -413,7 +413,8 @@ function ImpactsInputsContent() {
                         value={broadProgramReduction}
                         fieldName="broadProgramReduction"
                         disabled={
-                          nonZeroInput(reduction) || nonZeroInput(topHours)
+                          nonZeroInput(targetedProgramReduction) ||
+                          nonZeroInput(topHours)
                         }
                         onChange={(value) => {
                           dispatch(updateEEBroadProgramReduction(value));
@@ -439,11 +440,11 @@ function ImpactsInputsContent() {
                         }
                         ariaLabel="Load reduction (as a fraction of peaking load) that would be targeted"
                         suffix="%&nbsp;during&nbsp;the&nbsp;peak:&nbsp;&nbsp;"
-                        value={reduction}
-                        fieldName="reduction"
+                        value={targetedProgramReduction}
+                        fieldName="targetedProgramReduction"
                         disabled={nonZeroInput(broadProgramReduction)}
                         onChange={(value) => {
-                          dispatch(updateEEReduction(value));
+                          dispatch(updateEETargetedProgramReduction(value));
                         }}
                       />
 

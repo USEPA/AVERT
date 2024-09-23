@@ -70,7 +70,7 @@ type Action =
       payload: { value: string };
     }
   | {
-      type: "impacts/UPDATE_EE_REDUCTION";
+      type: "impacts/UPDATE_EE_TARGETED_PROGRAM_REDUCTION";
       payload: { value: string };
     }
   | {
@@ -183,7 +183,7 @@ export type EnergyEfficiencyFieldName =
   | "annualGwhReduction"
   | "hourlyMwReduction"
   | "broadProgramReduction"
-  | "reduction"
+  | "targetedProgramReduction"
   | "topHours";
 
 export type RenewableEnergyFieldName =
@@ -259,7 +259,7 @@ const initialImpactsInputs = {
   annualGwhReduction: "",
   hourlyMwReduction: "",
   broadProgramReduction: "",
-  reduction: "",
+  targetedProgramReduction: "",
   topHours: "",
   onshoreWind: "",
   offshoreWind: "",
@@ -397,13 +397,13 @@ export default function reducer(
       };
     }
 
-    case "impacts/UPDATE_EE_REDUCTION": {
+    case "impacts/UPDATE_EE_TARGETED_PROGRAM_REDUCTION": {
       const { value } = action.payload;
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          reduction: value,
+          targetedProgramReduction: value,
         },
       };
     }
@@ -825,14 +825,14 @@ export function updateEEBroadProgramReduction(value: string): AppThunk {
   };
 }
 
-export function updateEEReduction(value: string): AppThunk {
+export function updateEETargetedProgramReduction(value: string): AppThunk {
   return (dispatch) => {
     dispatch({
-      type: "impacts/UPDATE_EE_REDUCTION",
+      type: "impacts/UPDATE_EE_TARGETED_PROGRAM_REDUCTION",
       payload: { value },
     });
 
-    dispatch(validateInput("reduction", value, []));
+    dispatch(validateInput("targetedProgramReduction", value, []));
   };
 }
 
@@ -1212,7 +1212,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
       const annualGwhReduction = Number(inputs.annualGwhReduction) * regionalScalingFactor; // prettier-ignore
       const hourlyMwReduction = Number(inputs.hourlyMwReduction) * regionalScalingFactor; // prettier-ignore
       const broadProgramReduction = Number(inputs.broadProgramReduction) * percentReductionFactor; // prettier-ignore
-      const reduction = Number(inputs.reduction) * percentReductionFactor;
+      const targetedProgramReduction = Number(inputs.targetedProgramReduction) * percentReductionFactor; // prettier-ignore
       const topHours = Number(inputs.topHours);
       const onshoreWind = Number(inputs.onshoreWind) * regionalScalingFactor;
       const offshoreWind = Number(inputs.offshoreWind) * offshoreWindFactor;
@@ -1260,7 +1260,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
         regionalLoad,
         topPercentGeneration,
         broadProgramReduction,
-        reduction,
+        targetedProgramReduction,
       });
 
       const hourlyImpacts = calculateHourlyImpacts({

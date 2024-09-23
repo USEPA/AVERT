@@ -536,20 +536,21 @@ export function calculateHourlyTopPercentReduction(options: {
   regionalLoad: RegionalLoadData[];
   topPercentGeneration: TopPercentGeneration;
   broadProgramReduction: number;
-  reduction: number;
+  targetedProgramReduction: number;
 }) {
   const {
     regionalLoad,
     topPercentGeneration,
     broadProgramReduction,
-    reduction,
+    targetedProgramReduction,
   } = options;
 
   if (regionalLoad.length === 0) return [];
 
   const result = regionalLoad.map((data) => {
     const hourlyLoad = data.regional_load_mw;
-    const percentReduction = (broadProgramReduction || reduction) / 100;
+    const percentReduction =
+      (broadProgramReduction || targetedProgramReduction) / 100;
 
     return hourlyLoad >= topPercentGeneration
       ? hourlyLoad * -1 * percentReduction
