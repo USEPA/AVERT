@@ -15,7 +15,7 @@ function ResultsImpactsInputsContent() {
 
   const {
     constantMwh,
-    annualGwh,
+    annualGwhReduction,
     broadProgram,
     reduction,
     topHours,
@@ -76,12 +76,12 @@ function ResultsImpactsInputsContent() {
       </h3>
 
       <div className="avert-columns">
-        {inputExists(annualGwh) && (
+        {inputExists(annualGwhReduction) && (
           <p className="margin-0 padding-top-1 line-height-sans-2">
             <span className="font-sans-2xs">
               Reduce total annual generation by:
             </span>{" "}
-            <span className="font-mono-xs text-bold">{annualGwh}</span>{" "}
+            <span className="font-mono-xs text-bold">{annualGwhReduction}</span>{" "}
             <span className="font-sans-3xs">GWh</span>
           </p>
         )}

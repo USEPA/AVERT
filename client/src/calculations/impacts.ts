@@ -565,7 +565,7 @@ export function calculateHourlyImpacts(options: {
   hourlyEnergyStorageData: HourlyEnergyStorageData;
   hourlyEVLoad: HourlyEVLoad;
   hourlyTopPercentReduction: HourlyTopPercentReduction;
-  annualGwh: number; // impacts.inputs.annualGwh
+  annualGwhReduction: number; // impacts.inputs.annualGwhReduction
   constantMwh: number; // impacts.inputs.annualGwh
 }) {
   const {
@@ -575,11 +575,11 @@ export function calculateHourlyImpacts(options: {
     hourlyEnergyStorageData,
     hourlyEVLoad,
     hourlyTopPercentReduction,
-    annualGwh,
+    annualGwhReduction,
     constantMwh,
   } = options;
 
-  const hourlyMwReduction = (annualGwh * 1_000) / regionalLoad.length;
+  const hourlyMwReduction = (annualGwhReduction * 1_000) / regionalLoad.length;
 
   const result = regionalLoad.reduce(
     (object, data, index) => {

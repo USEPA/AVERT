@@ -15,7 +15,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/index";
 import { displayModalDialog } from "@/redux/reducers/panel";
 import type { GeographicFocus, RegionState } from "@/redux/reducers/geography";
 import {
-  updateEEAnnualGwh,
+  updateEEAnnualGwhReduction,
   updateEEConstantMw,
   updateEEBroadBasedProgram,
   updateEEReduction,
@@ -141,7 +141,7 @@ function ImpactsInputsContent() {
 
   const {
     constantMwh,
-    annualGwh,
+    annualGwhReduction,
     broadProgram,
     reduction,
     topHours,
@@ -193,7 +193,7 @@ function ImpactsInputsContent() {
   // text input values from fields
   const textInputsFields = [
     constantMwh,
-    annualGwh,
+    annualGwhReduction,
     broadProgram,
     reduction,
     topHours,
@@ -318,11 +318,11 @@ function ImpactsInputsContent() {
                         label={<>Reduce total annual generation by:</>}
                         ariaLabel="Number of GWh expected to be saved in a single year"
                         suffix="GWh"
-                        value={annualGwh}
-                        fieldName="annualGwh"
+                        value={annualGwhReduction}
+                        fieldName="annualGwhReduction"
                         disabled={nonZeroInput(constantMwh)}
                         onChange={(value) => {
-                          dispatch(updateEEAnnualGwh(value));
+                          dispatch(updateEEAnnualGwhReduction(value));
                         }}
                         tooltip={
                           <p className="margin-0">
@@ -345,7 +345,7 @@ function ImpactsInputsContent() {
                         suffix="MW"
                         value={constantMwh}
                         fieldName="constantMwh"
-                        disabled={nonZeroInput(annualGwh)}
+                        disabled={nonZeroInput(annualGwhReduction)}
                         onChange={(value) => {
                           dispatch(updateEEConstantMw(value));
                         }}

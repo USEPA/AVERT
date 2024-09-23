@@ -58,7 +58,7 @@ type Action =
       };
     }
   | {
-      type: "impacts/UPDATE_EE_ANNUAL_GWH";
+      type: "impacts/UPDATE_EE_ANNUAL_GWH_REDUCTION";
       payload: { value: string };
     }
   | {
@@ -180,7 +180,7 @@ type Action =
   | { type: "impacts/COMPLETE_HOURLY_ENERGY_PROFILE_CALCULATIONS" };
 
 export type EnergyEfficiencyFieldName =
-  | "annualGwh"
+  | "annualGwhReduction"
   | "constantMwh"
   | "broadProgram"
   | "reduction"
@@ -256,7 +256,7 @@ const initialEVModelYear = evModelYearOptions[0].id;
 const initialICEReplacementVehicle = iceReplacementVehicleOptions[0].id;
 
 const initialImpactsInputs = {
-  annualGwh: "",
+  annualGwhReduction: "",
   constantMwh: "",
   broadProgram: "",
   reduction: "",
@@ -364,13 +364,13 @@ export default function reducer(
       };
     }
 
-    case "impacts/UPDATE_EE_ANNUAL_GWH": {
+    case "impacts/UPDATE_EE_ANNUAL_GWH_REDUCTION": {
       const { value } = action.payload;
       return {
         ...state,
         inputs: {
           ...state.inputs,
-          annualGwh: value,
+          annualGwhReduction: value,
         },
       };
     }
@@ -792,14 +792,14 @@ function validateInput(
   };
 }
 
-export function updateEEAnnualGwh(value: string): AppThunk {
+export function updateEEAnnualGwhReduction(value: string): AppThunk {
   return (dispatch) => {
     dispatch({
-      type: "impacts/UPDATE_EE_ANNUAL_GWH",
+      type: "impacts/UPDATE_EE_ANNUAL_GWH_REDUCTION",
       payload: { value },
     });
 
-    dispatch(validateInput("annualGwh", value, []));
+    dispatch(validateInput("annualGwhReduction", value, []));
   };
 }
 
@@ -1209,7 +1209,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
           ? regionalPercent / totalOffshoreWindPercent
           : 0;
 
-      const annualGwh = Number(inputs.annualGwh) * regionalScalingFactor;
+      const annualGwhReduction = Number(inputs.annualGwhReduction) * regionalScalingFactor; // prettier-ignore
       const constantMwh = Number(inputs.constantMwh) * regionalScalingFactor;
       const broadProgram = Number(inputs.broadProgram) * percentReductionFactor;
       const reduction = Number(inputs.reduction) * percentReductionFactor;
@@ -1270,7 +1270,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
         hourlyEnergyStorageData,
         hourlyEVLoad,
         hourlyTopPercentReduction,
-        annualGwh,
+        annualGwhReduction,
         constantMwh,
       });
 
