@@ -58,33 +58,14 @@ export function LoadingIcon() {
   );
 }
 
-const textStyles = css`
-  text-align: center;
-`;
-
-// AVERT’s spinning wind turbine and COBRA’s beating heart
-interface CommunicatingIconsProps {
-  centerText?: boolean;
-}
-
-export const CommunicatingIcons: React.FC<CommunicatingIconsProps> = ({
-  centerText = false,
-}) => {
-  console.log(centerText);
+export const CommunicatingIcons: React.FC = () => {
   return (
     <>
       <div className="usa-alert usa-alert--slim usa-alert--info">
         <div className="usa-alert__body">
-          {centerText && (
-            <p className="usa-alert__text" css={textStyles}>
-              Sending data to COBRA. This may take a few minutes.
-            </p>
-          )}
-          {!centerText && (
-            <p className="usa-alert__text">
-              Sending data to COBRA. This may take a few minutes.
-            </p>
-          )}
+          <p className="usa-alert__text">
+            Sending data to COBRA. This may take a few minutes.
+          </p>
         </div>
       </div>
 

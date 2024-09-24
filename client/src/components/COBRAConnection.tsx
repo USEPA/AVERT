@@ -137,12 +137,7 @@ function COBRAConnectionContent() {
           onClick={(ev) => {
             ev.preventDefault();
 
-            // Step 1: Open a new window
             const cobraAppWindow = window.open("/cobra-app.html", "_blank");
-
-            if (cobraAppWindow) {
-              cobraAppWindow.document.body.style.fontFamily = "sans-serif";
-            }
 
             setCobraApiState("pending");
 

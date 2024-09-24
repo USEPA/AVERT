@@ -1,9 +1,9 @@
-import "@/preflight.css"; // Tailwind CSS preflight styles, scoped to .twpf
+import { createRoot } from "react-dom/client";
 import "@/styles.css";
-import ReactDOM from "react-dom";
+// ---
 import { CommunicatingIcons } from "./components/LoadingIcon";
 
-ReactDOM.render(
-  <CommunicatingIcons centerText={true} />,
-  document.getElementById("COBRAConnectionNewWindow"),
-);
+const container = document.getElementById("cobra-app") as HTMLElement;
+const root = createRoot(container);
+
+root.render(<CommunicatingIcons />);
