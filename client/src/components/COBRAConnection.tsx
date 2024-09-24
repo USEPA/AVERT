@@ -137,7 +137,7 @@ function COBRAConnectionContent() {
           onClick={(ev) => {
             ev.preventDefault();
 
-            const cobraAppWindow = window.open("/cobra-app.html", "_blank");
+            const cobraAppWindow = window.open("/avert-cobra.html", "_blank");
 
             setCobraApiState("pending");
 
