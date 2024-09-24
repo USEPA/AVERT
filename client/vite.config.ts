@@ -8,6 +8,10 @@ export default defineConfig({
     outDir: "build",
     sourcemap: true,
     rollupOptions: {
+      input: {
+        index: path.resolve(__dirname, "index.html"),
+        cobra: path.resolve(__dirname, "cobra/index.html"),
+      },
       output: {
         entryFileNames: "static/js/[name]-[hash].js",
         chunkFileNames: "static/js/[name]-[hash].js",
@@ -15,7 +19,7 @@ export default defineConfig({
           const css = /\.(css)$/.test(name ?? "");
           const font = /\.(woff|woff2|eot|ttf|otf)$/.test(name ?? "");
           const media = /\.(png|jpe?g|gif|svg|webp|webm|mp3)$/.test(name ?? "");
-          const type = css ? "css/" : font ? "fonts/" : media ? "media/" : "/";
+          const type = css ? "css/" : font ? "fonts/" : media ? "media/" : "";
           return `static/${type}[name]-[hash][extname]`;
         },
       },

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 // ---
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { COBRAPendingMessage } from "@/components/COBRAPendingMessage";
 import { useAppSelector } from "@/redux/index";
 
 type CobraApiState = "idle" | "pending" | "success" | "failure";
@@ -97,13 +98,7 @@ function COBRAConnectionContent() {
         and load your AVERT results directly into the COBRA Web Edition.
       </p>
 
-      {cobraApiState === "pending" && (
-        <div className="usa-alert usa-alert--slim usa-alert--info">
-          <div className="usa-alert__body">
-            <p className="usa-alert__text">Sending data to COBRA...</p>
-          </div>
-        </div>
-      )}
+      {cobraApiState === "pending" && <COBRAPendingMessage />}
 
       {cobraApiState === "success" && (
         <div className="usa-alert usa-alert--slim usa-alert--success">
@@ -142,12 +137,7 @@ function COBRAConnectionContent() {
           onClick={(ev) => {
             ev.preventDefault();
 
-            const cobraAppWindow = window.open("", "_blank");
-
-            if (cobraAppWindow) {
-              cobraAppWindow.document.write("Sending data to COBRA...");
-              cobraAppWindow.document.body.style.fontFamily = "sans-serif";
-            }
+            const cobraAppWindow = window.open("/cobra/index.html", "_blank");
 
             setCobraApiState("pending");
 
