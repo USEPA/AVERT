@@ -9,7 +9,7 @@ export default defineConfig({
     sourcemap: true,
     rollupOptions: {
       input: {
-        main: path.resolve(__dirname, "index.html"),
+        index: path.resolve(__dirname, "index.html"),
         cobra: path.resolve(__dirname, "cobra/index.html"),
       },
       output: {
