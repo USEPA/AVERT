@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 // ---
-import { CommunicatingIcons } from "./LoadingIcon";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { COBRAPendingMessage } from "@/components/COBRAPendingMessage";
 import { useAppSelector } from "@/redux/index";
 
 type CobraApiState = "idle" | "pending" | "success" | "failure";
@@ -98,7 +98,7 @@ function COBRAConnectionContent() {
         and load your AVERT results directly into the COBRA Web Edition.
       </p>
 
-      {cobraApiState === "pending" && <CommunicatingIcons />}
+      {cobraApiState === "pending" && <COBRAPendingMessage />}
 
       {cobraApiState === "success" && (
         <div className="usa-alert usa-alert--slim usa-alert--success">
