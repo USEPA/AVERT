@@ -164,7 +164,13 @@ function COBRAConnectionContent() {
                 return fetch(`${cobraApiUrl}/api/Queue`, {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ token, queueElements: cobraApiData }),
+                  body: JSON.stringify({
+                    token,
+                    queueElements: cobraApiData,
+                    avertRegions: selectedStateRegionNames,
+                    avertState: selectedStateName,
+                    avertInputs: inputs,
+                  }),
                 }).then((queueRes) => {
                   if (!queueRes.ok) throw new Error(queueRes.statusText);
 
@@ -180,42 +186,6 @@ function COBRAConnectionContent() {
                 cobraAppWindow?.close();
                 setCobraApiState("failure");
               });
-
-            // Draft for new COBRA POST request Body.
-            // fect will sent new avertRegion, avertState, and avertInputs properties
-
-            // fetch(`${cobraApiUrl}/api/Token`)
-            //   .then((tokenRes) => {
-            //     if (!tokenRes.ok) throw new Error(tokenRes.statusText);
-            //     return tokenRes.json();
-            //   })
-            //   .then((tokenData) => {
-            //     const token = tokenData.value;
-            //     return fetch(`${cobraApiUrl}/api/Queue`, {
-            //       method: "POST",
-            //       headers: { "Content-Type": "application/json" },
-            //       body: JSON.stringify({
-            //         token,
-            //         queueElements: cobraApiData,
-            //         avertRegions: selectedStateRegionNames,
-            //         avertState: selectedStateName,
-            //         avertInputs: inputs,
-            //       }),
-            //     }).then((queueRes) => {
-            //       if (!queueRes.ok) throw new Error(queueRes.statusText);
-
-            //       if (cobraAppWindow) {
-            //         cobraAppWindow.location.href = `${cobraAppUrl}/externalscenario/${token}`;
-            //       }
-
-            //       // setCobraApiState("success");
-            //     });
-            //   })
-            //   .catch((error) => {
-            //     // console.log(error);
-            //     // cobraAppWindow?.close();
-            //     // setCobraApiState("failure");
-            //   });
           }}
         >
           Submit Results to COBRA
