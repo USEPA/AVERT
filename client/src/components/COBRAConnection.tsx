@@ -3,7 +3,12 @@ import { useState, useEffect } from "react";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { COBRAPendingMessage } from "@/components/COBRAPendingMessage";
 import { useAppSelector } from "@/redux/index";
-import { useSelectedState, useSelectedStateRegions } from "../hooks";
+import {
+  useSelectedRegion,
+  useSelectedState,
+  useSelectedStateRegions,
+} from "@/hooks";
+
 type CobraApiState = "idle" | "pending" | "success" | "failure";
 
 type CobraApiData = {
@@ -31,15 +36,18 @@ type CobraApiData = {
 };
 
 function COBRAConnectionContent() {
-  const activeStep = useAppSelector(({ panel }) => panel.activeStep);
   const cobraApiUrl = useAppSelector(({ api }) => api.cobraApiUrl);
   const cobraAppUrl = useAppSelector(({ api }) => api.cobraAppUrl);
-  const cobraData = useAppSelector(({ downloads }) => downloads.cobraData);
+  const activeStep = useAppSelector(({ panel }) => panel.activeStep);
+  const geographicFocus = useAppSelector(({ geography }) => geography.focus);
   const inputs = useAppSelector(({ impacts }) => impacts.inputs);
+  const cobraData = useAppSelector(({ downloads }) => downloads.cobraData);
 
-  const [cobraApiState, setCobraApiState] = useState<CobraApiState>("idle");
+  const selectedRegionName = useSelectedRegion()?.name || "";
   const selectedStateName = useSelectedState()?.name || "";
   const selectedStateRegionNames = useSelectedStateRegions().map((r) => r.name);
+
+  const [cobraApiState, setCobraApiState] = useState<CobraApiState>("idle");
 
   useEffect(() => {
     setCobraApiState("idle");
@@ -76,6 +84,13 @@ function COBRAConnectionContent() {
       ],
     };
   });
+
+  const avertRegions =
+    geographicFocus === "regions"
+      ? [selectedRegionName]
+      : selectedStateRegionNames;
+
+  const avertState = geographicFocus === "states" ? selectedStateName : "";
 
   return (
     <>
@@ -157,8 +172,8 @@ function COBRAConnectionContent() {
                   body: JSON.stringify({
                     token,
                     queueElements: cobraApiData,
-                    avertRegions: selectedStateRegionNames,
-                    avertState: selectedStateName,
+                    avertRegions,
+                    avertState,
                     avertInputs: inputs,
                   }),
                 }).then((queueRes) => {
