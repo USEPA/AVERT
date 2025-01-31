@@ -4,8 +4,7 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useAppDispatch } from "@/redux/index";
 import { selectState } from "@/redux/reducers/geography";
 import { useSelectedState } from "@/hooks";
-import type { StateId } from "@/config";
-import { states } from "@/config";
+import { type StateId, states } from "@/config";
 
 function StatesListContent() {
   const dispatch = useAppDispatch();

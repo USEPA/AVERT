@@ -1,10 +1,10 @@
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 // —-
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Tooltip } from "@/components/Tooltip";
 import { useAppSelector } from "@/redux/index";
-import type { EmissionsReplacements } from "@/redux/reducers/results";
-import type { CombinedSectorsEmissionsData } from "@/calculations/emissions";
+import { type EmissionsReplacements } from "@/redux/reducers/results";
+import { type CombinedSectorsEmissionsData } from "@/calculations/emissions";
 import { type EmptyObject } from "@/utilities";
 
 type AnnualMonthlyData = ReturnType<typeof setAnnualMonthlyData>;

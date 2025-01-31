@@ -1,12 +1,12 @@
-import type { ReactNode } from "react";
+import { type ReactNode } from "react";
 // ---
 import { Tooltip } from "@/components/Tooltip";
 import { useAppDispatch, useAppSelector } from "@/redux/index";
-import { calculateHourlyEnergyProfile } from "@/redux/reducers/impacts";
-import type {
-  EnergyEfficiencyFieldName,
-  RenewableEnergyFieldName,
-  ElectricVehiclesFieldName,
+import {
+  type EnergyEfficiencyFieldName,
+  type RenewableEnergyFieldName,
+  type ElectricVehiclesFieldName,
+  calculateHourlyEnergyProfile,
 } from "@/redux/reducers/impacts";
 
 export function ImpactsTextInput(props: {

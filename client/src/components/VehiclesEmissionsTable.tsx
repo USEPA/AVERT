@@ -1,8 +1,8 @@
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Tooltip } from "@/components/Tooltip";
 import { useAppSelector } from "@/redux/index";
-import type { SelectedRegionsTotalYearlyEmissionChanges } from "@/calculations/transportation";
-import type { CombinedSectorsEmissionsData } from "@/calculations/emissions";
+import { type SelectedRegionsTotalYearlyEmissionChanges } from "@/calculations/transportation";
+import { type CombinedSectorsEmissionsData } from "@/calculations/emissions";
 import { type EmptyObject } from "@/utilities";
 
 /**

@@ -1,6 +1,6 @@
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useAppSelector } from "@/redux/index";
-import type { HourlyChangesValidation } from "@/calculations/impacts";
+import { type HourlyChangesValidation } from "@/calculations/impacts";
 import { averageAnnualElectricityUsePerUSHome } from "@/config";
 
 function EquivalentHomesText(props: { hourlyChanges: number[] }) {

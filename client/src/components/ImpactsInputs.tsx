@@ -13,7 +13,10 @@ import {
 import { Tooltip } from "@/components/Tooltip";
 import { useAppDispatch, useAppSelector } from "@/redux/index";
 import { displayModalDialog } from "@/redux/reducers/panel";
-import type { GeographicFocus, RegionState } from "@/redux/reducers/geography";
+import {
+  type GeographicFocus,
+  type RegionState,
+} from "@/redux/reducers/geography";
 import {
   updateEEAnnualGwhReduction,
   updateEEHourlyMwReduction,

@@ -1,13 +1,16 @@
 import { percentile } from "stats-lite";
 // ---
-import type { RegionalLoadData, RegionState } from "@/redux/reducers/geography";
-import type {
-  DailyStats,
-  HourlyEVChargingPercentages,
-  SelectedRegionsMonthlyDailyEVEnergyUsage,
+import {
+  type RegionalLoadData,
+  type RegionState,
+} from "@/redux/reducers/geography";
+import {
+  type DailyStats,
+  type HourlyEVChargingPercentages,
+  type SelectedRegionsMonthlyDailyEVEnergyUsage,
 } from "@/calculations/transportation";
 import { type EmptyObject } from "@/utilities";
-import type { RegionId, RegionName } from "@/config";
+import { type RegionId, type RegionName } from "@/config";
 /**
  * EV hourly limits by region
  *

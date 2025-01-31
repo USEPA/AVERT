@@ -1,18 +1,15 @@
-import type { AppThunk } from "@/redux/index";
+import { type AppThunk } from "@/redux/index";
 import { setStatesAndCounties } from "@/redux/reducers/monthlyEmissions";
 import { setDownloadData } from "@/redux/reducers/downloads";
 import {
+  type EmissionsChanges,
+  type EmissionsFlagsField,
+  type CombinedSectorsEmissionsData,
   calculateAggregatedEmissionsData,
   createCombinedSectorsEmissionsData,
 } from "@/calculations/emissions";
-import type {
-  EmissionsChanges,
-  EmissionsFlagsField,
-  CombinedSectorsEmissionsData,
-} from "@/calculations/emissions";
 import { type EmptyObject } from "@/utilities";
-import type { RegionId } from "@/config";
-import { regions } from "@/config";
+import { type RegionId, regions } from "@/config";
 
 export type EgusNeeingEmissionsReplacement = ReturnType<typeof setEgusNeedingEmissionsReplacement>; // prettier-ignore
 export type EmissionsReplacements = ReturnType<typeof setEmissionsReplacements>;

@@ -3,9 +3,8 @@ import Select from "react-select";
 // ---
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useAppSelector } from "@/redux/index";
-import type { CombinedSectorsEmissionsData } from "@/calculations/emissions";
-import type { StateId } from "@/config";
-import { states as statesConfig } from "@/config";
+import { type CombinedSectorsEmissionsData } from "@/calculations/emissions";
+import { type StateId, states as statesConfig } from "@/config";
 
 /**
  * Round number to the nearest 10 and conditionally format resulting -0 to 0.

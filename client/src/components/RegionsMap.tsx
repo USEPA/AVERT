@@ -73,8 +73,7 @@ import {
   setRegionSelectCounty,
 } from "@/redux/reducers/geography";
 import { useSelectedRegion } from "@/hooks";
-import type { RegionId } from "@/config";
-import { regions } from "@/config";
+import { type RegionId, regions } from "@/config";
 
 const containerStyles = css`
   /* padding-top: intrinsic aspect ratio so SVG displays property in IE */

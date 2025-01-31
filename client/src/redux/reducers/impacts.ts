@@ -1,8 +1,8 @@
-import { AppThunk } from "@/redux/index";
+import { type AppThunk } from "@/redux/index";
 import {
-  RegionalLoadData,
-  RegionState,
-  StateState,
+  type RegionalLoadData,
+  type RegionState,
+  type StateState,
 } from "@/redux/reducers/geography";
 import {
   setEVEfficiency,
@@ -12,16 +12,14 @@ import {
   setVehicleSalesAndStock,
   setEVDeploymentLocationHistoricalEERE,
 } from "@/redux/reducers/transportation";
-import type {
-  HourlyRenewableEnergyProfiles,
-  HourlyEnergyStorageData,
-  HourlyEVLoad,
-  TopPercentGeneration,
-  HourlyTopPercentReduction,
-  HourlyImpacts,
-  HourlyChangesValidation,
-} from "@/calculations/impacts";
 import {
+  type HourlyRenewableEnergyProfiles,
+  type HourlyEnergyStorageData,
+  type HourlyEVLoad,
+  type TopPercentGeneration,
+  type HourlyTopPercentReduction,
+  type HourlyImpacts,
+  type HourlyChangesValidation,
   calculateHourlyRenewableEnergyProfiles,
   calculateHourlyEnergyStorageData,
   calculateHourlyEVLoad,
@@ -30,8 +28,9 @@ import {
   calculateHourlyImpacts,
   calculateHourlyChangesValidation,
 } from "@/calculations/impacts";
-import type { RegionId, StateId } from "@/config";
 import {
+  type RegionId,
+  type StateId,
   maxAnnualDischargeCyclesOptions,
   evModelYearOptions,
   iceReplacementVehicleOptions,

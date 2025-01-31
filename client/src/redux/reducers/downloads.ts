@@ -1,12 +1,15 @@
-import type { AppThunk } from "@/redux/index";
-import type { EgusNeeingEmissionsReplacement } from "@/redux/reducers/results";
-import type {
-  EmissionsData,
-  EmissionsFlagsField,
-  CombinedSectorsEmissionsData,
+import { type AppThunk } from "@/redux/index";
+import { type EgusNeeingEmissionsReplacement } from "@/redux/reducers/results";
+import {
+  type EmissionsData,
+  type EmissionsFlagsField,
+  type CombinedSectorsEmissionsData,
 } from "@/calculations/emissions";
-import type { RegionId } from "@/config";
-import { regions as regionsConfig, states as statesConfig } from "@/config";
+import {
+  type RegionId,
+  regions as regionsConfig,
+  states as statesConfig,
+} from "@/config";
 /**
  * Excel: "CountyFIPS" sheet.
  */
