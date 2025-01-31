@@ -1,5 +1,5 @@
-import type { AppThunk } from "@/redux/index";
-import type { Pollutant, StateId } from "@/config";
+import { type AppThunk } from "@/redux/index";
+import { type Pollutant, type StateId } from "@/config";
 
 type StatesAndCounties = Partial<{ [stateId in StateId]: string[] }>;
 

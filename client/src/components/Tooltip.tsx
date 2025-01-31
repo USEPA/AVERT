@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import type { ReactNode } from "react";
+import { type ReactNode } from "react";
 // ---
 import { useAppDispatch } from "@/redux/index";
 import { displayModalDialog } from "@/redux/reducers/panel";

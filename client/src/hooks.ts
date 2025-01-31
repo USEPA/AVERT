@@ -1,6 +1,6 @@
 import { useAppSelector } from "@/redux/index";
-import { RegionState } from "@/redux/reducers/geography";
-import { RegionId, StateId } from "@/config";
+import { type RegionState } from "@/redux/reducers/geography";
+import { type RegionId, type StateId } from "@/config";
 
 function useSelectedRegion() {
   return useAppSelector(({ geography }) => {

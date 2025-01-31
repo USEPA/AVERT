@@ -1,5 +1,5 @@
-import { Component, ErrorInfo } from "react";
-import type { ReactNode } from "react";
+import { type ErrorInfo, Component } from "react";
+import { type ReactNode } from "react";
 
 type Props = {
   children: ReactNode;

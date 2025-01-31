@@ -1,10 +1,10 @@
-import type {
-  GeographicFocus,
-  RegionState,
-  StateState,
+import {
+  type GeographicFocus,
+  type RegionState,
+  type StateState,
 } from "@/redux/reducers/geography";
 import { sortObjectByKeys } from "@/utilities";
-import type { RegionId, RegionName, StateId } from "@/config";
+import { type RegionId, type RegionName, type StateId } from "@/config";
 /**
  * Excel: "CountyFIPS" sheet.
  */

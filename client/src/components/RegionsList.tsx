@@ -8,9 +8,8 @@ import {
   setRegionSelectCounty,
 } from "@/redux/reducers/geography";
 import { useSelectedRegion } from "@/hooks";
-import type { CountiesByGeography } from "@/calculations/geography";
-import type { RegionId, StateId } from "@/config";
-import { regions, states } from "@/config";
+import { type CountiesByGeography } from "@/calculations/geography";
+import { type RegionId, type StateId, regions, states } from "@/config";
 
 function RegionsListContent() {
   const dispatch = useAppDispatch();

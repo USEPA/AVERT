@@ -1,35 +1,33 @@
-import { AppThunk } from "@/redux/index";
-import type {
-  VMTTotalsByGeography,
-  VMTBillionsAndPercentages,
-  StateVMTPercentagesByRegion,
-  VMTAllocationPerVehicle,
-  NationalAverageLDVsVMTPerYear,
-  MonthlyVMTTotalsAndPercentages,
-  HourlyEVChargingPercentages,
-  SelectedRegionsStatesVMTPercentages,
-  SelectedRegionsVMTPercentagesPerVehicleType,
-  SelectedRegionsAverageVMTPerYear,
-  SelectedRegionsMonthlyVMTPerVehicleType,
-  SelectedRegionsEVEfficiencyPerVehicleType,
-  DailyStats,
-  MonthlyStats,
-  VehiclesDisplaced,
-  SelectedRegionsMonthlyEVEnergyUsageGW,
-  SelectedRegionsMonthlyEVEnergyUsageMW,
-  SelectedRegionsTotalYearlyEVEnergyUsage,
-  SelectedRegionsMonthlyDailyEVEnergyUsage,
-  SelectedRegionsMonthlyEmissionRates,
-  SelectedRegionsMonthlyEmissionChanges,
-  SelectedRegionsTotalMonthlyEmissionChanges,
-  SelectedRegionsTotalYearlyEmissionChanges,
-  VehicleEmissionChangesByGeography,
-  VehicleSalesAndStock,
-  SelectedRegionsEEREDefaultsAverages,
-  EVDeploymentLocationHistoricalEERE,
-} from "@/calculations/transportation";
+import { type AppThunk } from "@/redux/index";
 import { getSelectedGeographyRegions } from "@/calculations/geography";
 import {
+  type VMTTotalsByGeography,
+  type VMTBillionsAndPercentages,
+  type StateVMTPercentagesByRegion,
+  type VMTAllocationPerVehicle,
+  type NationalAverageLDVsVMTPerYear,
+  type MonthlyVMTTotalsAndPercentages,
+  type HourlyEVChargingPercentages,
+  type SelectedRegionsStatesVMTPercentages,
+  type SelectedRegionsVMTPercentagesPerVehicleType,
+  type SelectedRegionsAverageVMTPerYear,
+  type SelectedRegionsMonthlyVMTPerVehicleType,
+  type SelectedRegionsEVEfficiencyPerVehicleType,
+  type DailyStats,
+  type MonthlyStats,
+  type VehiclesDisplaced,
+  type SelectedRegionsMonthlyEVEnergyUsageGW,
+  type SelectedRegionsMonthlyEVEnergyUsageMW,
+  type SelectedRegionsTotalYearlyEVEnergyUsage,
+  type SelectedRegionsMonthlyDailyEVEnergyUsage,
+  type SelectedRegionsMonthlyEmissionRates,
+  type SelectedRegionsMonthlyEmissionChanges,
+  type SelectedRegionsTotalMonthlyEmissionChanges,
+  type SelectedRegionsTotalYearlyEmissionChanges,
+  type VehicleEmissionChangesByGeography,
+  type VehicleSalesAndStock,
+  type SelectedRegionsEEREDefaultsAverages,
+  type EVDeploymentLocationHistoricalEERE,
   calculateVMTTotalsByGeography,
   calculateVMTBillionsAndPercentages,
   calculateStateVMTPercentagesByRegion,
@@ -59,7 +57,7 @@ import {
   calculateEVDeploymentLocationHistoricalEERE,
 } from "@/calculations/transportation";
 import { type EmptyObject } from "@/utilities";
-import type { MovesEmissionsRates, RegionId } from "@/config";
+import { type MovesEmissionsRates, type RegionId } from "@/config";
 /**
  * Excel: "CountyFIPS" sheet.
  */

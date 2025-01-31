@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 import Highcharts from "highcharts";
 import HighchartsExporting from "highcharts/modules/exporting";
 import HighchartsAccessibility from "highcharts/modules/accessibility";
@@ -6,12 +6,10 @@ import HighchartsReact from "highcharts-react-official";
 // ---
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useAppDispatch, useAppSelector } from "@/redux/index";
-import type {
-  Aggregation,
-  Source,
-  Unit,
-} from "@/redux/reducers/monthlyEmissions";
 import {
+  type Aggregation,
+  type Source,
+  type Unit,
   setMonthlyEmissionsAggregation,
   setMonthlyEmissionsRegionId,
   setMonthlyEmissionsStateId,
@@ -20,13 +18,18 @@ import {
   setMonthlyEmissionsSource,
   setMonthlyEmissionsUnit,
 } from "@/redux/reducers/monthlyEmissions";
-import type {
-  EmissionsData,
-  CombinedSectorsEmissionsData,
+import {
+  type EmissionsData,
+  type CombinedSectorsEmissionsData,
 } from "@/calculations/emissions";
 import { useSelectedRegion, useSelectedStateRegions } from "@/hooks";
-import type { Pollutant, RegionId, StateId } from "@/config";
-import { regions, states } from "@/config";
+import {
+  type Pollutant,
+  type RegionId,
+  type StateId,
+  regions,
+  states,
+} from "@/config";
 
 HighchartsExporting(Highcharts);
 HighchartsAccessibility(Highcharts);

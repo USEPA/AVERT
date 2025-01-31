@@ -1,10 +1,8 @@
-import { AppThunk } from "@/redux/index";
+import { type AppThunk } from "@/redux/index";
 import { setEVDeploymentLocationOptions } from "@/redux/reducers/impacts";
-import type {
-  CountiesByGeography,
-  RegionalScalingFactors,
-} from "@/calculations/geography";
 import {
+  type CountiesByGeography,
+  type RegionalScalingFactors,
   organizeCountiesByGeography,
   calculateRegionalScalingFactors,
   getSelectedGeographyRegions,
@@ -17,12 +15,12 @@ import {
 } from "@/redux/reducers/transportation";
 import { type EmptyObject } from "@/utilities";
 import {
-  RdfDataKey,
-  RegionId,
-  Region,
+  type RdfDataKey,
+  type RegionId,
+  type Region,
+  type StateId,
+  type State,
   regions,
-  StateId,
-  State,
   states,
 } from "@/config";
 

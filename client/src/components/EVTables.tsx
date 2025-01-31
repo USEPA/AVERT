@@ -1,7 +1,7 @@
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Tooltip } from "@/components/Tooltip";
 import { useAppSelector } from "@/redux/index";
-import type { SelectedRegionsTotalYearlyEVEnergyUsage } from "@/calculations/transportation";
+import { type SelectedRegionsTotalYearlyEVEnergyUsage } from "@/calculations/transportation";
 
 function calculatePercent(numerator: number, denominator: number) {
   return denominator !== 0

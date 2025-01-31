@@ -1,27 +1,27 @@
-import { RegionalLoadData } from "@/redux/reducers/geography";
-import type { GeographicFocus } from "@/redux/reducers/geography";
-import type {
-  CountiesByGeography,
-  RegionalScalingFactors,
-  SelectedGeographyRegions,
+import {
+  type GeographicFocus,
+  type RegionalLoadData,
+} from "@/redux/reducers/geography";
+import {
+  type CountiesByGeography,
+  type RegionalScalingFactors,
+  type SelectedGeographyRegions,
 } from "@/calculations/geography";
 import { type EmptyObject, sortObjectByKeys } from "@/utilities";
-import type {
-  CountyFips,
-  MovesEmissionsRates,
-  VMTAllocationAndRegisteredVehicles,
-  EVChargingProfiles,
-  NationalAverageBusVMTPerYear,
-  EVEfficiencyByModelYear,
-  RegionAverageTemperatures,
-  StateLightDutyVehiclesSales,
-  StateBusSalesAndStock,
-  RegionEereAverages,
-  StateEereAverages,
-  RegionId,
-  StateId,
-} from "@/config";
 import {
+  type CountyFips,
+  type MovesEmissionsRates,
+  type VMTAllocationAndRegisteredVehicles,
+  type EVChargingProfiles,
+  type NationalAverageBusVMTPerYear,
+  type EVEfficiencyByModelYear,
+  type RegionAverageTemperatures,
+  type StateLightDutyVehiclesSales,
+  type StateBusSalesAndStock,
+  type RegionEereAverages,
+  type StateEereAverages,
+  type RegionId,
+  type StateId,
   percentageHybridEVMilesDrivenOnElectricity,
   percentageAdditionalEnergyConsumedFactor,
   percentWeekendToWeekdayEVConsumption,

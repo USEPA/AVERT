@@ -1,10 +1,10 @@
-import type { RDFJSON } from "@/redux/reducers/geography";
-import type {
-  SelectedRegionsTotalMonthlyEmissionChanges,
-  VehicleEmissionChangesByGeography,
+import { type RDFJSON } from "@/redux/reducers/geography";
+import {
+  type SelectedRegionsTotalMonthlyEmissionChanges,
+  type VehicleEmissionChangesByGeography,
 } from "@/calculations/transportation";
 import { type EmptyObject, sortObjectByKeys } from "@/utilities";
-import type { RegionId, StateId } from "@/config";
+import { type RegionId, type StateId } from "@/config";
 /**
  * Annual point-source data from the National Emissions Inventory (NEI) for
  * every electric generating unit (EGU), organized by AVERT region
