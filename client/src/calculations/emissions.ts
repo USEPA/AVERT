@@ -109,6 +109,7 @@ function calculateLinear(options: {
  *
  * Calculates emissions changes for a provided region.
  */
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 function calculateEmissionsChanges(options: {
   year: number;
   rdf: RDFJSON;

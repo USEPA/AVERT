@@ -46,6 +46,7 @@ const generalVehicleTypes = [
   "schoolBuses",
 ] as const;
 
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 const expandedVehicleTypes = [
   "batteryEVCars",
   "hybridEVCars",

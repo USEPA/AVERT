@@ -67,8 +67,8 @@ export function ImpactsTextInput(props: {
           id={fieldName}
           className={
             `usa-input ` +
-            `display-inline-block margin-y-05 padding-05 height-auto maxw-full ` +
-            `border-width-1px border-solid border-base-light ` +
+            `display-inline-block margin-y-05 padding-05 height-auto maxw-full` +
+            `border-width-1px border-solid border-base-light` +
             `text-right text-bold font-sans-xs`
           }
           aria-label={ariaLabel}
@@ -77,11 +77,11 @@ export function ImpactsTextInput(props: {
           data-avert-energy-impacts-input={fieldName}
           disabled={Boolean(disabled)}
           onChange={(ev) => onChange(ev.target.value)}
-          onBlur={(ev) => onBlur && onBlur(ev.target.value)}
+          onBlur={(ev) => onBlur?.(ev.target.value)}
           onKeyPress={(ev) => {
             if (hourlyEnergyProfileCalculationDisabled) return;
             if (ev.key === "Enter") {
-              onBlur && onBlur((ev.target as HTMLInputElement).value);
+              onBlur?.((ev.target as HTMLInputElement).value);
               dispatch(calculateHourlyEnergyProfile());
             }
           }}
