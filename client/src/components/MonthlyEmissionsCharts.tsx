@@ -1,8 +1,8 @@
 import { type ReactNode } from "react";
 import Highcharts from "highcharts";
-import HighchartsExporting from "highcharts/modules/exporting";
-import HighchartsAccessibility from "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
+import "highcharts/modules/exporting";
+import "highcharts/modules/accessibility";
 // ---
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useAppDispatch, useAppSelector } from "@/redux/index";
@@ -30,9 +30,6 @@ import {
   regions,
   states,
 } from "@/config";
-
-HighchartsExporting(Highcharts);
-HighchartsAccessibility(Highcharts);
 
 type ChartData = {
   name: string;
@@ -732,8 +729,8 @@ function MonthlyEmissionsChartsContent() {
                     <select
                       className={
                         `usa-select ` +
-                        `display-inline-block height-auto maxw-full ` +
-                        `margin-top-105 padding-left-1 padding-y-05 padding-right-4 ` +
+                        `display-inline-block height-auto maxw-full` +
+                        `margin-top-105 padding-left-1 padding-y-05 padding-right-4` +
                         `border-width-1px border-solid border-base-light font-sans-xs`
                       }
                       value={currentRegionId}
@@ -762,8 +759,8 @@ function MonthlyEmissionsChartsContent() {
                     <select
                       className={
                         `usa-select ` +
-                        `display-inline-block height-auto maxw-full ` +
-                        `margin-top-105 padding-left-1 padding-y-05 padding-right-4 ` +
+                        `display-inline-block height-auto maxw-full` +
+                        `margin-top-105 padding-left-1 padding-y-05 padding-right-4` +
                         `border-width-1px border-solid border-base-light font-sans-xs`
                       }
                       value={currentStateId}
@@ -787,8 +784,8 @@ function MonthlyEmissionsChartsContent() {
                       <select
                         className={
                           `usa-select ` +
-                          `display-inline-block height-auto maxw-full ` +
-                          `margin-top-105 padding-left-1 padding-y-05 padding-right-4 ` +
+                          `display-inline-block height-auto maxw-full` +
+                          `margin-top-105 padding-left-1 padding-y-05 padding-right-4` +
                           `border-width-1px border-solid border-base-light font-sans-xs`
                         }
                         value={currentCountyName}

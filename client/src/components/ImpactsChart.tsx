@@ -1,15 +1,12 @@
 import Highcharts from "highcharts";
-import HighchartsExporting from "highcharts/modules/exporting";
-import HighchartsAccessibility from "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
+import "highcharts/modules/exporting";
+import "highcharts/modules/accessibility";
 // ---
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Tooltip } from "@/components/Tooltip";
 import { useAppSelector } from "@/redux/index";
 import { useSelectedRegion, useSelectedStateRegions } from "@/hooks";
-
-HighchartsExporting(Highcharts);
-HighchartsAccessibility(Highcharts);
 
 function ImpactsChartContent() {
   const geographicFocus = useAppSelector(({ geography }) => geography.focus);
