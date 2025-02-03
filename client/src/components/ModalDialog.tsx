@@ -4,7 +4,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 // ---
 import { useAppDispatch, useAppSelector } from "@/redux/index";
-import { resetModalDialog } from "@/redux/reducers/panel";
+import { closeModalDialog } from "@/redux/reducers/panel";
 
 export function ModalDialog() {
   const dispatch = useAppDispatch();
@@ -19,7 +19,7 @@ export function ModalDialog() {
       className={clsx("tw:relative tw:z-10")}
       initialFocus={cancelRef}
       open={displayed}
-      onClose={(_ev) => dispatch(resetModalDialog())}
+      onClose={(_ev) => dispatch(closeModalDialog())}
     >
       <DialogBackdrop
         transition
@@ -63,7 +63,7 @@ export function ModalDialog() {
                     "tw:hover:text-gray-700",
                     "tw:focus:text-gray-700",
                   )}
-                  onClick={(_ev) => dispatch(resetModalDialog())}
+                  onClick={(_ev) => dispatch(closeModalDialog())}
                 >
                   <span className={clsx("tw:sr-only")}>Close</span>
                   <XMarkIcon

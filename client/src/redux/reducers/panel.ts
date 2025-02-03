@@ -9,7 +9,7 @@ type Action =
       type: "panel/DISPLAY_MODAL_DIALOG";
       payload: { description: ReactNode };
     }
-  | { type: "panel/RESET_MODAL_DIALOG" }
+  | { type: "panel/CLOSE_MODAL_DIALOG" }
   | { type: "geography/REQUEST_SELECTED_REGIONS_DATA" }
   | { type: "geography/RECEIVE_SELECTED_REGIONS_DATA" }
   | { type: "impacts/START_HOURLY_ENERGY_PROFILE_CALCULATIONS" }
@@ -61,12 +61,12 @@ export default function reducer(
       };
     }
 
-    case "panel/RESET_MODAL_DIALOG": {
+    case "panel/CLOSE_MODAL_DIALOG": {
       return {
         ...state,
         modalDialog: {
+          ...state.modalDialog,
           displayed: false,
-          description: null,
         },
       };
     }
@@ -109,6 +109,6 @@ export function displayModalDialog(description: ReactNode) {
   };
 }
 
-export function resetModalDialog() {
-  return { type: "panel/RESET_MODAL_DIALOG" };
+export function closeModalDialog() {
+  return { type: "panel/CLOSE_MODAL_DIALOG" };
 }
