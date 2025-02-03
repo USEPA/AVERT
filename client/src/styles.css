@@ -1,5 +1,6 @@
 @layer theme, base, components, utilities;
 
 @import "tailwindcss/theme.css" layer(theme) prefix(tw);
-/* @import "tailwindcss/preflight.css" layer(base) prefix(tw); */
+/** NOTE: Tailwind CSS v4 preflight stylesheet updated to be scoped under .twpf */
+@import "./tailwindcss-preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities) prefix(tw);
