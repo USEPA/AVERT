@@ -1,4 +1,5 @@
 import { type ReactNode } from "react";
+import clsx from "clsx";
 // —-
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Tooltip } from "@/components/Tooltip";
@@ -148,13 +149,13 @@ function EmissionsReplacementTooltip(props: {
 
   return (
     <Tooltip>
-      <p className="margin-0">
+      <p className={clsx("margin-0")}>
         This region features one or more power plants with an infrequent{" "}
         {fieldMarkup.get(field)} emissions event. {fieldMarkup.get(field)}{" "}
         emissions changes from these plants are not included in this analysis.
         See Section 2 of the{" "}
         <a
-          className="usa-link"
+          className={clsx("usa-link")}
           href="https://www.epa.gov/avert"
           target="_parent"
           rel="noreferrer"
@@ -237,19 +238,21 @@ function PowerEmissionsTableContent() {
 
   return (
     <>
-      <div className="overflow-auto">
-        <div className="avert-table-container">
-          <table className="avert-table avert-table-striped width-full">
+      <div className={clsx("overflow-auto")}>
+        <div className={clsx("avert-table-container")}>
+          <table
+            className={clsx("avert-table avert-table-striped", "width-full")}
+          >
             <thead>
               <tr>
                 <td>&nbsp;</td>
-                <th scope="col" className="text-right">
+                <th className={clsx("text-right")} scope="col">
                   Original
                 </th>
-                <th scope="col" className="text-right">
+                <th className={clsx("text-right")} scope="col">
                   Post Change
                 </th>
-                <th scope="col" className="text-right">
+                <th className={clsx("text-right")} scope="col">
                   Change
                 </th>
               </tr>
@@ -258,186 +261,188 @@ function PowerEmissionsTableContent() {
             <tbody>
               <tr>
                 <th scope="row">
-                  <span className="padding-left-105">
+                  <span className={clsx("padding-left-105")}>
                     Generation <small>(MWh)</small>&nbsp;
                     {Object.hasOwn(emissionsReplacements, "generation") && (
                       <EmissionsReplacementTooltip field="generation" />
                     )}
                   </span>
                 </th>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(generation.original)}
                 </td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(generation.postEere)}
                 </td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(generation.impacts)}
                 </td>
               </tr>
 
               <tr>
-                <th scope="row" colSpan={4} className="text-bold">
+                <th className={clsx("text-bold")} scope="row" colSpan={4}>
                   Total Emissions from Fossil Generation Fleet
                 </th>
               </tr>
 
               <tr>
                 <th scope="row">
-                  <span className="padding-left-105">
+                  <span className={clsx("padding-left-105")}>
                     SO<sub>2</sub> <small>(lb)</small>&nbsp;
                     {Object.hasOwn(emissionsReplacements, "so2") && (
                       <EmissionsReplacementTooltip field="so2" />
                     )}
                   </span>
                 </th>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(so2.original)}
                 </td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(so2.postEere)}
                 </td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(so2.impacts)}
                 </td>
               </tr>
 
               <tr>
                 <th scope="row">
-                  <span className="padding-left-105">
+                  <span className={clsx("padding-left-105")}>
                     NO<sub>X</sub> <small>(lb)</small>&nbsp;
                     {Object.hasOwn(emissionsReplacements, "nox") && (
                       <EmissionsReplacementTooltip field="nox" />
                     )}
                   </span>
                 </th>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(nox.original)}
                 </td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(nox.postEere)}
                 </td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(nox.impacts)}
                 </td>
               </tr>
 
               <tr>
                 <th scope="row">
-                  <span className="padding-left-3 text-italic">
+                  <span className={clsx("padding-left-3 text-italic")}>
                     Ozone season NO<sub>X</sub> <small>(lb)</small>{" "}
                     <Tooltip>
-                      <p className="margin-0 text-no-italic">
+                      <p className={clsx("margin-0 text-no-italic")}>
                         Ozone season is defined as May 1 — September 30. Ozone
                         season emissions are a subset of annual emissions.
                       </p>
                     </Tooltip>
                   </span>
                 </th>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(ozoneNox.original)}
                 </td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(ozoneNox.postEere)}
                 </td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(ozoneNox.impacts)}
                 </td>
               </tr>
 
               <tr>
                 <th scope="row">
-                  <span className="padding-left-105">
+                  <span className={clsx("padding-left-105")}>
                     CO<sub>2</sub> <small>(tons)</small>&nbsp;
                     {Object.hasOwn(emissionsReplacements, "co2") && (
                       <EmissionsReplacementTooltip field="co2" />
                     )}
                   </span>
                 </th>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(co2.original)}
                 </td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(co2.postEere)}
                 </td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(co2.impacts)}
                 </td>
               </tr>
 
               <tr>
                 <th scope="row">
-                  <span className="padding-left-105">
+                  <span className={clsx("padding-left-105")}>
                     PM<sub>2.5</sub> <small>(lb)</small>
                   </span>
                 </th>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(pm25.original)}
                 </td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(pm25.postEere)}
                 </td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(pm25.impacts)}
                 </td>
               </tr>
 
               <tr>
                 <th scope="row">
-                  <span className="padding-left-105">
+                  <span className={clsx("padding-left-105")}>
                     VOCs <small>(lb)</small>
                   </span>
                 </th>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(vocs.original)}
                 </td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(vocs.postEere)}
                 </td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(vocs.impacts)}
                 </td>
               </tr>
 
               <tr>
                 <th scope="row">
-                  <span className="padding-left-105">
+                  <span className={clsx("padding-left-105")}>
                     NH<sub>3</sub> <small>(lb)</small>
                   </span>
                 </th>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(nh3.original)}
                 </td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(nh3.postEere)}
                 </td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(nh3.impacts)}
                 </td>
               </tr>
 
               <tr>
-                <th scope="row" className="text-bold">
+                <th className={clsx("text-bold")} scope="row">
                   AVERT-derived Emission Rates:
                 </th>
-                <td className="text-bold text-right">Average Fossil</td>
-                <td className="text-bold text-right">&nbsp;</td>
-                <td className="text-bold text-right">Marginal Fossil</td>
+                <td className={clsx("text-bold text-right")}>Average Fossil</td>
+                <td className={clsx("text-bold text-right")}>&nbsp;</td>
+                <td className={clsx("text-bold text-right")}>
+                  Marginal Fossil
+                </td>
               </tr>
 
               <tr>
                 <th scope="row">
-                  <span className="padding-left-105">
+                  <span className={clsx("padding-left-105")}>
                     SO<sub>2</sub> <small>(lb/MWh)</small>
                   </span>
                 </th>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {calculateFraction(so2.original, generation.original)}
                 </td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>&nbsp;</td>
+                <td className={clsx("font-mono-xs text-right")}>
                   {eereAndEvInputsEntered ? (
-                    <span className="font-sans-2xs text-italic">Ø</span>
+                    <span className={clsx("font-sans-2xs text-italic")}>Ø</span>
                   ) : (
                     calculateFraction(so2.impacts, generation.impacts)
                   )}
@@ -446,17 +451,17 @@ function PowerEmissionsTableContent() {
 
               <tr>
                 <th scope="row">
-                  <span className="padding-left-105">
+                  <span className={clsx("padding-left-105")}>
                     NO<sub>X</sub> <small>(lb/MWh)</small>
                   </span>
                 </th>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {calculateFraction(nox.original, generation.original)}
                 </td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>&nbsp;</td>
+                <td className={clsx("font-mono-xs text-right")}>
                   {eereAndEvInputsEntered ? (
-                    <span className="font-sans-2xs text-italic">Ø</span>
+                    <span className={clsx("font-sans-2xs text-italic")}>Ø</span>
                   ) : (
                     calculateFraction(nox.impacts, generation.impacts)
                   )}
@@ -465,26 +470,26 @@ function PowerEmissionsTableContent() {
 
               <tr>
                 <th scope="row">
-                  <span className="padding-left-3 text-italic">
+                  <span className={clsx("padding-left-3 text-italic")}>
                     Ozone season NO<sub>X</sub> <small>(lb/MWh)</small>{" "}
                     <Tooltip>
-                      <p className="margin-0 text-no-italic">
+                      <p className={clsx("margin-0 text-no-italic")}>
                         Ozone season is defined as May 1 — September 30. Ozone
                         season emissions are a subset of annual emissions.
                       </p>
                     </Tooltip>
                   </span>
                 </th>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {calculateFraction(
                     ozoneNox.original,
                     ozoneGeneration.original,
                   )}
                 </td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>&nbsp;</td>
+                <td className={clsx("font-mono-xs text-right")}>
                   {eereAndEvInputsEntered ? (
-                    <span className="font-sans-2xs text-italic">Ø</span>
+                    <span className={clsx("font-sans-2xs text-italic")}>Ø</span>
                   ) : (
                     calculateFraction(ozoneNox.impacts, ozoneGeneration.impacts)
                   )}
@@ -493,17 +498,17 @@ function PowerEmissionsTableContent() {
 
               <tr>
                 <th scope="row">
-                  <span className="padding-left-105">
+                  <span className={clsx("padding-left-105")}>
                     CO<sub>2</sub> <small>(tons/MWh)</small>
                   </span>
                 </th>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {calculateFraction(co2.original, generation.original)}
                 </td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>&nbsp;</td>
+                <td className={clsx("font-mono-xs text-right")}>
                   {eereAndEvInputsEntered ? (
-                    <span className="font-sans-2xs text-italic">Ø</span>
+                    <span className={clsx("font-sans-2xs text-italic")}>Ø</span>
                   ) : (
                     calculateFraction(co2.impacts, generation.impacts)
                   )}
@@ -512,17 +517,17 @@ function PowerEmissionsTableContent() {
 
               <tr>
                 <th scope="row">
-                  <span className="padding-left-105">
+                  <span className={clsx("padding-left-105")}>
                     PM<sub>2.5</sub> <small>(lb/MWh)</small>
                   </span>
                 </th>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {calculateFraction(pm25.original, generation.original)}
                 </td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>&nbsp;</td>
+                <td className={clsx("font-mono-xs text-right")}>
                   {eereAndEvInputsEntered ? (
-                    <span className="font-sans-2xs text-italic">Ø</span>
+                    <span className={clsx("font-sans-2xs text-italic")}>Ø</span>
                   ) : (
                     calculateFraction(pm25.impacts, generation.impacts)
                   )}
@@ -531,17 +536,17 @@ function PowerEmissionsTableContent() {
 
               <tr>
                 <th scope="row">
-                  <span className="padding-left-105">
+                  <span className={clsx("padding-left-105")}>
                     VOCs <small>(lb/MWh)</small>
                   </span>
                 </th>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {calculateFraction(vocs.original, generation.original)}
                 </td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>&nbsp;</td>
+                <td className={clsx("font-mono-xs text-right")}>
                   {eereAndEvInputsEntered ? (
-                    <span className="font-sans-2xs text-italic">Ø</span>
+                    <span className={clsx("font-sans-2xs text-italic")}>Ø</span>
                   ) : (
                     calculateFraction(vocs.impacts, generation.impacts)
                   )}
@@ -550,17 +555,17 @@ function PowerEmissionsTableContent() {
 
               <tr>
                 <th scope="row">
-                  <span className="padding-left-105">
+                  <span className={clsx("padding-left-105")}>
                     NH<sub>3</sub> <small>(lb/MWh)</small>
                   </span>
                 </th>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>
                   {calculateFraction(nh3.original, generation.original)}
                 </td>
-                <td className="font-mono-xs text-right">&nbsp;</td>
-                <td className="font-mono-xs text-right">
+                <td className={clsx("font-mono-xs text-right")}>&nbsp;</td>
+                <td className={clsx("font-mono-xs text-right")}>
                   {eereAndEvInputsEntered ? (
-                    <span className="font-sans-2xs text-italic">Ø</span>
+                    <span className={clsx("font-sans-2xs text-italic")}>Ø</span>
                   ) : (
                     calculateFraction(nh3.impacts, generation.impacts)
                   )}
@@ -571,7 +576,11 @@ function PowerEmissionsTableContent() {
         </div>
       </div>
 
-      <ul className="margin-top-2 margin-bottom-0 font-sans-3xs line-height-sans-3 text-base-dark">
+      <ul
+        className={clsx(
+          "margin-top-2 margin-bottom-0 font-sans-3xs line-height-sans-3 text-base-dark",
+        )}
+      >
         <li>Negative numbers indicate displaced generation and emissions.</li>
         <li>
           All results are rounded to the nearest 10. A dash
@@ -581,7 +590,7 @@ function PowerEmissionsTableContent() {
         <li>
           When users evaluate a portfolio scenario including EVs and EE or RE,
           marginal fossil values are not reported and a null sign (“&thinsp;
-          <span className="text-italic">Ø</span>&thinsp;”) is shown.
+          <span className={clsx("text-italic")}>Ø</span>&thinsp;”) is shown.
         </li>
         <li>
           Data does not include changes to ICE vehicle emissions (e.g.,
@@ -591,7 +600,7 @@ function PowerEmissionsTableContent() {
           Estimated marginal CO<sub>2</sub> emission rates for future years are
           available in the current{" "}
           <a
-            className="usa-link"
+            className={clsx("usa-link")}
             href="https://www.epa.gov/avert/download-avert"
             target="_parent"
             rel="noreferrer"
@@ -602,7 +611,7 @@ function PowerEmissionsTableContent() {
         </li>
       </ul>
 
-      <p className="display-none">
+      <p className={clsx("display-none")}>
         {/* NOTE: hidden paragraph is intentional to get around EPA's
          * `ul:last-child { margin-bottom: revert; }` style
          */}
@@ -619,7 +628,7 @@ export function PowerEmissionsTable() {
           Error loading power sector emissions table. Please contact AVERT
           support at{" "}
           <a
-            className="usa-link"
+            className={clsx("usa-link")}
             href="mailto:avert@epa.gov"
             target="_parent"
             rel="noreferrer"

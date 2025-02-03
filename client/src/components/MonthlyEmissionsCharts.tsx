@@ -1,8 +1,9 @@
 import { type ReactNode } from "react";
 import Highcharts from "highcharts";
-import HighchartsExporting from "highcharts/modules/exporting";
-import HighchartsAccessibility from "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
+import "highcharts/modules/exporting";
+import "highcharts/modules/accessibility";
+import clsx from "clsx";
 // ---
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useAppDispatch, useAppSelector } from "@/redux/index";
@@ -30,9 +31,6 @@ import {
   regions,
   states,
 } from "@/config";
-
-HighchartsExporting(Highcharts);
-HighchartsAccessibility(Highcharts);
 
 type ChartData = {
   name: string;
@@ -454,22 +452,26 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
   if (currentUnit === "percentages") {
     if (flaggedRegion || flaggedState || flaggedCounty) {
       return (
-        <div className="avert-box padding-105 height-full">
-          <p className="font-sans-2xs line-height-sans-3 text-center text-base-darker">
-            <span className="font-sans-xs text-bold">
+        <div className={clsx("avert-box", "padding-105 height-full")}>
+          <p
+            className={clsx(
+              "font-sans-2xs line-height-sans-3 text-center text-base-darker",
+            )}
+          >
+            <span className={clsx("font-sans-xs text-bold")}>
               Change in {pollutantMarkup.get(pollutant)} Emissions:
             </span>{" "}
             {chartLocationTitle}
           </p>
 
-          <p className="margin-0 font-sans-3xs text-base-dark">
+          <p className={clsx("margin-0 font-sans-3xs text-base-dark")}>
             Percent change statistics are not available for{" "}
             {pollutantMarkup.get(pollutant)} because the geographic area you’ve
             selected features one or more power plants with an infrequent{" "}
             {pollutantMarkup.get(pollutant)} emissions event. See Section 2 of
             the{" "}
             <a
-              className="usa-link"
+              className={clsx("usa-link")}
               href="https://www.epa.gov/avert"
               target="_parent"
               rel="noreferrer"
@@ -614,23 +616,34 @@ function MonthlyEmissionsChartsContent() {
 
   return (
     <>
-      <div className="grid-container padding-0 maxw-full">
-        <div className="grid-row" style={{ margin: "0 -0.5rem" }}>
-          <div className="padding-1 tablet:grid-col-6 desktop:grid-col-3">
-            <div className="avert-box padding-105 height-full">
-              <p className="avert-box-heading font-serif-2xs line-height-serif-2 text-bold">
+      <div className={clsx("grid-container padding-0 maxw-full")}>
+        <div className={clsx("grid-row")} style={{ margin: "0 -0.5rem" }}>
+          <div
+            className={clsx(
+              "padding-1",
+              "tablet:grid-col-6",
+              "desktop:grid-col-3",
+            )}
+          >
+            <div className={clsx("avert-box", "padding-105 height-full")}>
+              <p
+                className={clsx(
+                  "avert-box-heading",
+                  "font-serif-2xs line-height-serif-2 text-bold",
+                )}
+              >
                 Select level of aggregation:
               </p>
 
               <div
-                className="mobile-lg:display-flex flex-wrap"
+                className={clsx("flex-wrap", "mobile-lg:display-flex")}
                 style={{ margin: "0 -0.5rem" }}
               >
-                <div className="flex-1">
-                  <div className="usa-radio padding-x-1">
+                <div className={clsx("flex-1")}>
+                  <div className={clsx("usa-radio padding-x-1")}>
                     <input
                       id="aggregation-region"
-                      className="usa-radio__input"
+                      className={clsx("usa-radio__input")}
                       type="radio"
                       name="aggregation"
                       value="region"
@@ -642,7 +655,7 @@ function MonthlyEmissionsChartsContent() {
                     />
 
                     <label
-                      className="usa-radio__label"
+                      className={clsx("usa-radio__label")}
                       htmlFor="aggregation-region"
                     >
                       Region
@@ -650,11 +663,11 @@ function MonthlyEmissionsChartsContent() {
                   </div>
                 </div>
 
-                <div className="flex-1">
-                  <div className="usa-radio padding-x-1">
+                <div className={clsx("flex-1")}>
+                  <div className={clsx("usa-radio padding-x-1")}>
                     <input
                       id="aggregation-state"
-                      className="usa-radio__input"
+                      className={clsx("usa-radio__input")}
                       type="radio"
                       name="aggregation"
                       value="state"
@@ -678,7 +691,7 @@ function MonthlyEmissionsChartsContent() {
                     />
 
                     <label
-                      className="usa-radio__label"
+                      className={clsx("usa-radio__label")}
                       htmlFor="aggregation-state"
                     >
                       State
@@ -686,11 +699,11 @@ function MonthlyEmissionsChartsContent() {
                   </div>
                 </div>
 
-                <div className="flex-1">
-                  <div className="usa-radio padding-x-1">
+                <div className={clsx("flex-1")}>
+                  <div className={clsx("usa-radio padding-x-1")}>
                     <input
                       id="aggregation-county"
-                      className="usa-radio__input"
+                      className={clsx("usa-radio__input")}
                       type="radio"
                       name="aggregation"
                       value="county"
@@ -716,7 +729,7 @@ function MonthlyEmissionsChartsContent() {
                     />
 
                     <label
-                      className="usa-radio__label"
+                      className={clsx("usa-radio__label")}
                       htmlFor="aggregation-county"
                     >
                       County
@@ -730,12 +743,10 @@ function MonthlyEmissionsChartsContent() {
                   currentAggregation === "region" &&
                   selectedStateRegions.length > 1 && (
                     <select
-                      className={
-                        `usa-select ` +
-                        `display-inline-block height-auto maxw-full ` +
-                        `margin-top-105 padding-left-1 padding-y-05 padding-right-4 ` +
-                        `border-width-1px border-solid border-base-light font-sans-xs`
-                      }
+                      className={clsx(
+                        "usa-select display-inline-block height-auto maxw-full font-sans-xs",
+                        "margin-top-105 padding-left-1 padding-y-05 padding-right-4 border-width-1px border-solid border-base-light",
+                      )}
                       value={currentRegionId}
                       onChange={(ev) => {
                         dispatch(setMonthlyEmissionsRegionId(ev.target.value));
@@ -760,12 +771,10 @@ function MonthlyEmissionsChartsContent() {
                   currentAggregation === "county") && (
                   <>
                     <select
-                      className={
-                        `usa-select ` +
-                        `display-inline-block height-auto maxw-full ` +
-                        `margin-top-105 padding-left-1 padding-y-05 padding-right-4 ` +
-                        `border-width-1px border-solid border-base-light font-sans-xs`
-                      }
+                      className={clsx(
+                        "usa-select display-inline-block height-auto maxw-full font-sans-xs",
+                        "margin-top-105 padding-left-1 padding-y-05 padding-right-4 border-width-1px border-solid border-base-light",
+                      )}
                       value={currentStateId}
                       onChange={(ev) =>
                         dispatch(setMonthlyEmissionsStateId(ev.target.value))
@@ -785,12 +794,10 @@ function MonthlyEmissionsChartsContent() {
 
                     {currentAggregation === "county" && (
                       <select
-                        className={
-                          `usa-select ` +
-                          `display-inline-block height-auto maxw-full ` +
-                          `margin-top-105 padding-left-1 padding-y-05 padding-right-4 ` +
-                          `border-width-1px border-solid border-base-light font-sans-xs`
-                        }
+                        className={clsx(
+                          "usa-select display-inline-block height-auto maxw-full font-sans-xs",
+                          "margin-top-105 padding-left-1 padding-y-05 padding-right-4 border-width-1px border-solid border-base-light",
+                        )}
                         value={currentCountyName}
                         onChange={(ev) => {
                           dispatch(
@@ -817,22 +824,33 @@ function MonthlyEmissionsChartsContent() {
             </div>
           </div>
 
-          <div className="padding-1 tablet:grid-col-6 desktop:grid-col-3">
-            <div className="avert-box padding-105 height-full">
-              <p className="avert-box-heading font-serif-2xs line-height-serif-2 text-bold">
+          <div
+            className={clsx(
+              "padding-1",
+              "tablet:grid-col-6",
+              "desktop:grid-col-3",
+            )}
+          >
+            <div className={clsx("avert-box padding-105 height-full")}>
+              <p
+                className={clsx(
+                  "avert-box-heading",
+                  "font-serif-2xs line-height-serif-2 text-bold",
+                )}
+              >
                 Select pollutants:
               </p>
 
               <div
-                className="display-flex mobile-lg:display-block"
+                className={clsx("display-flex", "mobile-lg:display-block")}
                 data-avert-monthly-pollutants
               >
-                <div className="flex-1 mobile-lg:display-flex">
-                  <div className="flex-1 mobile-lg:margin-right-1">
-                    <div className="usa-checkbox">
+                <div className={clsx("flex-1", "mobile-lg:display-flex")}>
+                  <div className={clsx("flex-1", "mobile-lg:margin-right-1")}>
+                    <div className={clsx("usa-checkbox")}>
                       <input
                         id="pollutants-so2"
-                        className="usa-checkbox__input"
+                        className={clsx("usa-checkbox__input")}
                         type="checkbox"
                         name="pollutants"
                         value="so2"
@@ -842,7 +860,7 @@ function MonthlyEmissionsChartsContent() {
                         }}
                       />
                       <label
-                        className="usa-checkbox__label"
+                        className={clsx("usa-checkbox__label")}
                         htmlFor="pollutants-so2"
                       >
                         SO<sub>2</sub>
@@ -850,11 +868,11 @@ function MonthlyEmissionsChartsContent() {
                     </div>
                   </div>
 
-                  <div className="flex-1 mobile-lg:margin-x-1">
-                    <div className="usa-checkbox">
+                  <div className={clsx("flex-1", "mobile-lg:margin-x-1")}>
+                    <div className={clsx("usa-checkbox")}>
                       <input
                         id="pollutants-nox"
-                        className="usa-checkbox__input"
+                        className={clsx("usa-checkbox__input")}
                         type="checkbox"
                         name="pollutants"
                         value="nox"
@@ -864,7 +882,7 @@ function MonthlyEmissionsChartsContent() {
                         }}
                       />
                       <label
-                        className="usa-checkbox__label"
+                        className={clsx("usa-checkbox__label")}
                         htmlFor="pollutants-nox"
                       >
                         NO<sub>X</sub>
@@ -872,11 +890,11 @@ function MonthlyEmissionsChartsContent() {
                     </div>
                   </div>
 
-                  <div className="flex-1 tablet:margin-left-1">
-                    <div className="usa-checkbox">
+                  <div className={clsx("flex-1", "tablet:margin-left-1")}>
+                    <div className={clsx("usa-checkbox")}>
                       <input
                         id="pollutants-co2"
-                        className="usa-checkbox__input"
+                        className={clsx("usa-checkbox__input")}
                         type="checkbox"
                         name="pollutants"
                         value="co2"
@@ -886,7 +904,7 @@ function MonthlyEmissionsChartsContent() {
                         }}
                       />
                       <label
-                        className="usa-checkbox__label"
+                        className={clsx("usa-checkbox__label")}
                         htmlFor="pollutants-co2"
                       >
                         CO<sub>2</sub>
@@ -895,12 +913,12 @@ function MonthlyEmissionsChartsContent() {
                   </div>
                 </div>
 
-                <div className="flex-1 mobile-lg:display-flex">
-                  <div className="flex-1 mobile-lg:margin-right-1">
-                    <div className="usa-checkbox">
+                <div className={clsx("flex-1", "mobile-lg:display-flex")}>
+                  <div className={clsx("flex-1", "mobile-lg:margin-right-1")}>
+                    <div className={clsx("usa-checkbox")}>
                       <input
                         id="pollutants-pm25"
-                        className="usa-checkbox__input"
+                        className={clsx("usa-checkbox__input")}
                         type="checkbox"
                         name="pollutants"
                         value="pm25"
@@ -910,7 +928,7 @@ function MonthlyEmissionsChartsContent() {
                         }}
                       />
                       <label
-                        className="usa-checkbox__label"
+                        className={clsx("usa-checkbox__label")}
                         htmlFor="pollutants-pm25"
                       >
                         PM<sub>2.5</sub>
@@ -918,11 +936,11 @@ function MonthlyEmissionsChartsContent() {
                     </div>
                   </div>
 
-                  <div className="flex-1 mobile-lg:margin-x-1">
-                    <div className="usa-checkbox">
+                  <div className={clsx("flex-1", "mobile-lg:margin-x-1")}>
+                    <div className={clsx("usa-checkbox")}>
                       <input
                         id="pollutants-vocs"
-                        className="usa-checkbox__input"
+                        className={clsx("usa-checkbox__input")}
                         type="checkbox"
                         name="pollutants"
                         value="vocs"
@@ -932,7 +950,7 @@ function MonthlyEmissionsChartsContent() {
                         }}
                       />
                       <label
-                        className="usa-checkbox__label"
+                        className={clsx("usa-checkbox__label")}
                         htmlFor="pollutants-vocs"
                       >
                         VOCs
@@ -940,11 +958,11 @@ function MonthlyEmissionsChartsContent() {
                     </div>
                   </div>
 
-                  <div className="flex-1 tablet:margin-left-1">
-                    <div className="usa-checkbox">
+                  <div className={clsx("flex-1", "tablet:margin-left-1")}>
+                    <div className={clsx("usa-checkbox")}>
                       <input
                         id="pollutants-nh3"
-                        className="usa-checkbox__input"
+                        className={clsx("usa-checkbox__input")}
                         type="checkbox"
                         name="pollutants"
                         value="nh3"
@@ -954,7 +972,7 @@ function MonthlyEmissionsChartsContent() {
                         }}
                       />
                       <label
-                        className="usa-checkbox__label"
+                        className={clsx("usa-checkbox__label")}
                         htmlFor="pollutants-nh3"
                       >
                         NH<sub>3</sub>
@@ -966,21 +984,32 @@ function MonthlyEmissionsChartsContent() {
             </div>
           </div>
 
-          <div className="padding-1 tablet:grid-col-6 desktop:grid-col-3">
-            <div className="avert-box padding-105 height-full">
-              <p className="avert-box-heading font-serif-2xs line-height-serif-2 text-bold">
+          <div
+            className={clsx(
+              "padding-1",
+              "tablet:grid-col-6",
+              "desktop:grid-col-3",
+            )}
+          >
+            <div className={clsx("avert-box", "padding-105 height-full")}>
+              <p
+                className={clsx(
+                  "avert-box-heading",
+                  "font-serif-2xs line-height-serif-2 text-bold",
+                )}
+              >
                 Select emissions sources:
               </p>
 
               <div
-                className="mobile-lg:display-flex"
+                className={clsx("mobile-lg:display-flex")}
                 data-avert-monthly-sources
               >
-                <div className="flex-1 mobile-lg:margin-right-1">
-                  <div className="usa-checkbox">
+                <div className={clsx("flex-1", "mobile-lg:margin-right-1")}>
+                  <div className={clsx("usa-checkbox")}>
                     <input
                       id="source-power"
-                      className="usa-checkbox__input"
+                      className={clsx("usa-checkbox__input")}
                       type="checkbox"
                       name="source"
                       value="power"
@@ -990,7 +1019,7 @@ function MonthlyEmissionsChartsContent() {
                       }}
                     />
                     <label
-                      className="usa-checkbox__label"
+                      className={clsx("usa-checkbox__label")}
                       htmlFor="source-power"
                     >
                       Power sector
@@ -998,11 +1027,11 @@ function MonthlyEmissionsChartsContent() {
                   </div>
                 </div>
 
-                <div className="flex-1 mobile-lg:margin-left-1">
-                  <div className="usa-checkbox">
+                <div className={clsx("flex-1", "mobile-lg:margin-left-1")}>
+                  <div className={clsx("usa-checkbox")}>
                     <input
                       id="source-vehicles"
-                      className="usa-checkbox__input"
+                      className={clsx("usa-checkbox__input")}
                       type="checkbox"
                       name="source"
                       value="vehicles"
@@ -1016,7 +1045,7 @@ function MonthlyEmissionsChartsContent() {
                     />
 
                     <label
-                      className="usa-checkbox__label"
+                      className={clsx("usa-checkbox__label")}
                       htmlFor="source-vehicles"
                     >
                       Vehicles
@@ -1026,11 +1055,19 @@ function MonthlyEmissionsChartsContent() {
               </div>
 
               {evInputsEmpty ? (
-                <p className="margin-top-105 margin-bottom-0 font-sans-3xs line-height-sans-3">
+                <p
+                  className={clsx(
+                    "margin-top-105 margin-bottom-0 font-sans-3xs line-height-sans-3",
+                  )}
+                >
                   <strong>NOTE:</strong> No electric vehicles inputs entered.
                 </p>
               ) : currentAggregation !== "region" ? (
-                <p className="margin-top-105 margin-bottom-0 font-sans-3xs line-height-sans-3">
+                <p
+                  className={clsx(
+                    "margin-top-105 margin-bottom-0 font-sans-3xs line-height-sans-3",
+                  )}
+                >
                   <strong>NOTE:</strong> Monthly emissions data for vehicles are
                   only available at the regional level.
                 </p>
@@ -1038,18 +1075,29 @@ function MonthlyEmissionsChartsContent() {
             </div>
           </div>
 
-          <div className="padding-1 tablet:grid-col-6 desktop:grid-col-3">
-            <div className="avert-box padding-105 height-full">
-              <p className="avert-box-heading font-serif-2xs line-height-serif-2 text-bold">
+          <div
+            className={clsx(
+              "padding-1",
+              "tablet:grid-col-6",
+              "desktop:grid-col-3",
+            )}
+          >
+            <div className={clsx("avert-box", "padding-105 height-full")}>
+              <p
+                className={clsx(
+                  "avert-box-heading",
+                  "font-serif-2xs line-height-serif-2 text-bold",
+                )}
+              >
                 Select units:
               </p>
 
-              <div className="mobile-lg:display-flex">
-                <div className="flex-1 mobile-lg:margin-right-1">
-                  <div className="usa-radio">
+              <div className={clsx("mobile-lg:display-flex")}>
+                <div className={clsx("flex-1", "mobile-lg:margin-right-1")}>
+                  <div className={clsx("usa-radio")}>
                     <input
                       id="units-emissions"
-                      className="usa-radio__input"
+                      className={clsx("usa-radio__input")}
                       type="radio"
                       name="units"
                       value="emissions"
@@ -1061,20 +1109,20 @@ function MonthlyEmissionsChartsContent() {
                     />
 
                     <label
-                      className="usa-radio__label"
+                      className={clsx("usa-radio__label")}
                       htmlFor="units-emissions"
                     >
                       Emission changes{" "}
-                      <span className="text-italic">(lb or tons)</span>
+                      <span className={clsx("text-italic")}>(lb or tons)</span>
                     </label>
                   </div>
                 </div>
 
-                <div className="flex-1 mobile-lg:margin-left-1">
-                  <div className="usa-radio">
+                <div className={clsx("flex-1", "mobile-lg:margin-left-1")}>
+                  <div className={clsx("usa-radio")}>
                     <input
                       id="units-percentages"
-                      className="usa-radio__input"
+                      className={clsx("usa-radio__input")}
                       type="radio"
                       name="units"
                       value="percentages"
@@ -1086,7 +1134,7 @@ function MonthlyEmissionsChartsContent() {
                     />
 
                     <label
-                      className="usa-radio__label"
+                      className={clsx("usa-radio__label")}
                       htmlFor="units-percentages"
                     >
                       Percent change
@@ -1096,7 +1144,11 @@ function MonthlyEmissionsChartsContent() {
               </div>
 
               {currentUnit === "percentages" && (
-                <p className="margin-top-105 margin-bottom-0 font-sans-3xs line-height-sans-3">
+                <p
+                  className={clsx(
+                    "margin-top-105 margin-bottom-0 font-sans-3xs line-height-sans-3",
+                  )}
+                >
                   <strong>NOTE:</strong> Percent change data only exists for the
                   power sector.
                 </p>
@@ -1108,15 +1160,15 @@ function MonthlyEmissionsChartsContent() {
 
       <div data-avert-charts>
         {combinedSectorsEmissionsData && (
-          <div className="grid-container padding-0 maxw-full">
-            <div className="grid-row" style={{ margin: "0 -0.5rem" }}>
+          <div className={clsx("grid-container padding-0 maxw-full")}>
+            <div className={clsx("grid-row")} style={{ margin: "0 -0.5rem" }}>
               {geographicFocus === "states" &&
               currentAggregation === "region" &&
               selectedStateRegions.length > 1 &&
               !currentRegionId ? (
-                <div className="padding-1 grid-col-12">
-                  <div className="avert-box padding-3">
-                    <p className="margin-0 font-sans-xs text-center">
+                <div className={clsx("padding-1 grid-col-12")}>
+                  <div className={clsx("avert-box", "padding-3")}>
+                    <p className={clsx("margin-0 font-sans-xs text-center")}>
                       <strong>No region selected.</strong>
                       <br />
                       Please select a region.
@@ -1124,9 +1176,9 @@ function MonthlyEmissionsChartsContent() {
                   </div>
                 </div>
               ) : currentAggregation === "state" && !currentStateId ? (
-                <div className="padding-1 grid-col-12">
-                  <div className="avert-box padding-3">
-                    <p className="margin-0 font-sans-xs text-center">
+                <div className={clsx("padding-1 grid-col-12")}>
+                  <div className={clsx("avert-box", "padding-3")}>
+                    <p className={clsx("margin-0 font-sans-xs text-center")}>
                       <strong>No state selected.</strong>
                       <br />
                       Please select a state.
@@ -1134,9 +1186,9 @@ function MonthlyEmissionsChartsContent() {
                   </div>
                 </div>
               ) : currentAggregation === "county" && !currentCountyName ? (
-                <div className="padding-1 grid-col-12">
-                  <div className="avert-box padding-3">
-                    <p className="margin-0 font-sans-xs text-center">
+                <div className={clsx("padding-1 grid-col-12")}>
+                  <div className={clsx("avert-box", "padding-3")}>
+                    <p className={clsx("margin-0 font-sans-xs text-center")}>
                       <strong>No county selected.</strong>
                       <br />
                       Please select a county.
@@ -1144,9 +1196,9 @@ function MonthlyEmissionsChartsContent() {
                   </div>
                 </div>
               ) : currentPollutants.length === 0 ? (
-                <div className="padding-1 grid-col-12">
-                  <div className="avert-box padding-3">
-                    <p className="margin-0 font-sans-xs text-center">
+                <div className={clsx("padding-1 grid-col-12")}>
+                  <div className={clsx("avert-box", "padding-3")}>
+                    <p className={clsx("margin-0 font-sans-xs text-center")}>
                       <strong>No pollutants selected.</strong>
                       <br />
                       Please select at least one pollutant to see monthly
@@ -1155,9 +1207,9 @@ function MonthlyEmissionsChartsContent() {
                   </div>
                 </div>
               ) : currentSources.length === 0 ? (
-                <div className="padding-1 grid-col-12">
-                  <div className="avert-box padding-3">
-                    <p className="margin-0 font-sans-xs text-center">
+                <div className={clsx("padding-1 grid-col-12")}>
+                  <div className={clsx("avert-box", "padding-3")}>
+                    <p className={clsx("margin-0 font-sans-xs text-center")}>
                       <strong>No emissions sources selected.</strong>
                       <br />
                       Please select at least one emissions source to see monthly
@@ -1168,9 +1220,9 @@ function MonthlyEmissionsChartsContent() {
               ) : currentSources.length === 1 &&
                 currentSources.includes("vehicles") &&
                 currentUnit === "percentages" ? (
-                <div className="padding-1 grid-col-12">
-                  <div className="avert-box padding-3">
-                    <p className="margin-0 font-sans-xs text-center">
+                <div className={clsx("padding-1 grid-col-12")}>
+                  <div className={clsx("avert-box", "padding-3")}>
+                    <p className={clsx("margin-0 font-sans-xs text-center")}>
                       <strong>
                         No percent change data exists for vehicles.
                       </strong>
@@ -1204,7 +1256,7 @@ function MonthlyEmissionsChartsContent() {
                   const key = currentPollutants.length;
 
                   return (
-                    <div key={pollutant} className={className}>
+                    <div key={pollutant} className={clsx(className)}>
                       <Chart key={key} pollutant={pollutant} data={data} />
                     </div>
                   );
@@ -1226,7 +1278,7 @@ export function MonthlyEmissionsCharts() {
           Error loading monthly emissions changes charts. Please contact AVERT
           support at{" "}
           <a
-            className="usa-link"
+            className={clsx("usa-link")}
             href="mailto:avert@epa.gov"
             target="_parent"
             rel="noreferrer"

@@ -1,3 +1,5 @@
+import clsx from "clsx";
+// ---
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useAppSelector } from "@/redux/index";
 import { useSelectedRegion, useSelectedState } from "@/hooks";
@@ -30,16 +32,16 @@ function DataDownloadContent() {
 
   return (
     <>
-      <h3 className="avert-blue margin-bottom-1 font-serif-md">
+      <h3 className={clsx("avert-blue", "margin-bottom-1 font-serif-md")}>
         Data Download
       </h3>
 
-      <p className="margin-top-0">
+      <p className={clsx("margin-top-0")}>
         Download monthly displacement data for each county, state, and region in
         this analysis, in CSV format, or download your results formatted as
         inputs for use in{" "}
         <a
-          className="usa-link"
+          className={clsx("usa-link")}
           href="https://www.epa.gov/cobra"
           target="_parent"
           rel="noreferrer"
@@ -49,9 +51,9 @@ function DataDownloadContent() {
         .
       </p>
 
-      <p className="margin-top-0 text-center">
+      <p className={clsx("margin-top-0 text-center")}>
         <a
-          className="usa-button avert-button"
+          className={clsx("avert-button", "usa-button")}
           href={`data:text/csv;charset=utf-8,${countyCsvString}`}
           download={`AVERT Monthly Emission Changes (${geographyText}).csv`}
         >
@@ -59,9 +61,9 @@ function DataDownloadContent() {
         </a>
       </p>
 
-      <p className="margin-0 text-center">
+      <p className={clsx("margin-0 text-center")}>
         <a
-          className="usa-button avert-button"
+          className={clsx("avert-button", "usa-button")}
           href={`data:text/csv;charset=utf-8,${cobraCsvString}`}
           download={`AVERT COBRA (${geographyText}).csv`}
         >
@@ -79,7 +81,7 @@ export function DataDownload() {
         <>
           AVERT data download error. Please contact AVERT support at{" "}
           <a
-            className="usa-link"
+            className={clsx("usa-link")}
             href="mailto:avert@epa.gov"
             target="_parent"
             rel="noreferrer"

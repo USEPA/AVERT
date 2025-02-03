@@ -1,4 +1,5 @@
 import { type ReactNode } from "react";
+import clsx from "clsx";
 // ---
 import { Tooltip } from "@/components/Tooltip";
 
@@ -26,12 +27,14 @@ export function ImpactsSelectInput(props: {
   } = props;
 
   return (
-    <div className={className ? className : ""}>
+    <div className={clsx(className)}>
       {label && (
         <>
           <label
             htmlFor={fieldName}
-            className="display-inline-block font-sans-2xs line-height-sans-2"
+            className={clsx(
+              "display-inline-block font-sans-2xs line-height-sans-2",
+            )}
           >
             {label}
           </label>
@@ -39,16 +42,13 @@ export function ImpactsSelectInput(props: {
         </>
       )}
 
-      <div className="display-flex flex-align-center">
+      <div className={clsx("display-flex flex-align-center")}>
         <select
           id={fieldName}
-          className={
-            `usa-select ` +
-            `display-inline-block height-auto maxw-full ` +
-            `margin-y-05 padding-left-1 padding-y-05 padding-right-4 ` +
-            `border-width-1px border-solid border-base-light ` +
-            `text-bold font-sans-xs`
-          }
+          className={clsx(
+            "usa-select display-inline-block height-auto maxw-full text-bold font-sans-xs",
+            "margin-y-05 padding-left-1 padding-y-05 padding-right-4 border-width-1px border-solid border-base-light",
+          )}
           aria-label={ariaLabel}
           value={value}
           data-avert-energy-impacts-input={fieldName}
@@ -63,7 +63,7 @@ export function ImpactsSelectInput(props: {
         </select>
 
         {tooltip && (
-          <span className="margin-left-05">
+          <span className={clsx("margin-left-05")}>
             <Tooltip>{tooltip}</Tooltip>
           </span>
         )}

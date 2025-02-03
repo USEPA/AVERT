@@ -1,5 +1,5 @@
-import { type ErrorInfo, Component } from "react";
-import { type ReactNode } from "react";
+import { type ErrorInfo, type ReactNode, Component } from "react";
+import clsx from "clsx";
 
 type Props = {
   children: ReactNode;
@@ -29,14 +29,14 @@ export class ErrorBoundary extends Component<Props, State> {
 
     if (hasError) {
       return (
-        <div className="usa-alert usa-alert--slim usa-alert--error">
-          <div className="usa-alert__body">
-            <p className="usa-alert__text">
+        <div className={clsx("usa-alert usa-alert--slim usa-alert--error")}>
+          <div className={clsx("usa-alert__body")}>
+            <p className={clsx("usa-alert__text")}>
               {message ?? (
                 <>
                   AVERT application error. Please contact AVERT support at{" "}
                   <a
-                    className="usa-link"
+                    className={clsx("usa-link")}
                     href="mailto:avert@epa.gov"
                     target="_parent"
                     rel="noreferrer"

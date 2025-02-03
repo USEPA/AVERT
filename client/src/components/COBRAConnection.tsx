@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import clsx from "clsx";
 // ---
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { COBRAPendingMessage } from "@/components/COBRAPendingMessage";
@@ -94,14 +95,14 @@ function COBRAConnectionContent() {
 
   return (
     <>
-      <h3 className="avert-blue margin-bottom-1 font-serif-md">
+      <h3 className={clsx("avert-blue", "margin-bottom-1 font-serif-md")}>
         Direct Connection to COBRA
       </h3>
 
-      <p className="margin-top-0">
+      <p className={clsx("margin-top-0")}>
         EPA’s{" "}
         <a
-          className="usa-link"
+          className={clsx("usa-link")}
           href="https://www.epa.gov/cobra"
           target="_parent"
           rel="noreferrer"
@@ -119,21 +120,23 @@ function COBRAConnectionContent() {
       {cobraApiState === "pending" && <COBRAPendingMessage />}
 
       {cobraApiState === "success" && (
-        <div className="usa-alert usa-alert--slim usa-alert--success">
-          <div className="usa-alert__body">
-            <p className="usa-alert__text">Succesfully posted data to COBRA.</p>
+        <div className={clsx("usa-alert usa-alert--slim usa-alert--success")}>
+          <div className={clsx("usa-alert__body")}>
+            <p className={clsx("usa-alert__text")}>
+              Succesfully posted data to COBRA.
+            </p>
           </div>
         </div>
       )}
 
       {cobraApiState === "failure" && (
-        <div className="usa-alert usa-alert--slim usa-alert--error">
-          <div className="usa-alert__body">
-            <p className="usa-alert__text">
+        <div className={clsx("usa-alert usa-alert--slim usa-alert--error")}>
+          <div className={clsx("usa-alert__body")}>
+            <p className={clsx("usa-alert__text")}>
               Error connecting with COBRA application. Please try again later.
               If connection problems persist, please contact AVERT support at{" "}
               <a
-                className="usa-link"
+                className={clsx("usa-link")}
                 href="mailto:avert@epa.gov"
                 target="_parent"
                 rel="noreferrer"
@@ -146,9 +149,9 @@ function COBRAConnectionContent() {
         </div>
       )}
 
-      <p className="margin-0 text-center">
+      <p className={clsx("margin-0 text-center")}>
         <a
-          className="usa-button avert-button"
+          className={clsx("avert-button", "usa-button")}
           href={cobraAppUrl}
           target="_blank"
           rel="noreferrer"
@@ -207,7 +210,7 @@ export function COBRAConnection() {
         <>
           COBRA connection error. Please contact AVERT support at{" "}
           <a
-            className="usa-link"
+            className={clsx("usa-link")}
             href="mailto:avert@epa.gov"
             target="_parent"
             rel="noreferrer"

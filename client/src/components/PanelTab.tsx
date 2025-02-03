@@ -2,6 +2,7 @@
 
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import clsx from "clsx";
 
 const Tab = styled("li")<{ step: number }>`
   @media (min-width: 40em) {
@@ -88,12 +89,11 @@ export function PanelTab(props: {
     <Tab step={step}>
       <span
         css={spanStyles}
-        className={
-          `position-relative display-block margin-top-1 padding-105 ` +
-          `border-width-1px border-solid border-base-light ` +
-          `text-center text-base-dark bg-base-lightest text-bold line-height-sans-1 ` +
-          `tablet:margin-top-0 tablet:border-0`
-        }
+        className={clsx(
+          "position-relative display-block text-center text-base-dark bg-base-lightest text-bold line-height-sans-1",
+          "margin-top-1 padding-105 border-width-1px border-solid border-base-light",
+          "tablet:margin-top-0 tablet:border-0",
+        )}
         data-active={active}
       >
         {title}

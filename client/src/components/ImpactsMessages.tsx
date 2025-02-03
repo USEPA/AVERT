@@ -1,3 +1,5 @@
+import clsx from "clsx";
+// ---
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useAppSelector } from "@/redux/index";
 import { type HourlyChangesValidation } from "@/calculations/impacts";
@@ -14,7 +16,7 @@ function EquivalentHomesText(props: { hourlyChanges: number[] }) {
   );
 
   return (
-    <p className="margin-top-2 text-base-dark">
+    <p className={clsx("margin-top-2 text-base-dark")}>
       This load profile will {totalLoadMwh < 0 ? "displace" : "add"}{" "}
       <strong>{Math.abs(totalLoadGwh).toLocaleString()} GWh</strong> of regional
       fossil fuel generation over the course of a year. For reference, this
@@ -75,15 +77,17 @@ function ValidationMessage(props: {
   });
 
   return (
-    <div className={`usa-alert usa-alert--${severity} margin-bottom-0`}>
-      <div className="usa-alert__body">
-        <h4 className="usa-alert__heading">
+    <div
+      className={clsx(`usa-alert usa-alert--${severity}`, "margin-bottom-0")}
+    >
+      <div className={clsx("usa-alert__body")}>
+        <h4 className={clsx("usa-alert__heading")}>
           {severity === "error" ? "ERROR" : "WARNING"}
         </h4>
 
         {direction === "upper" && (
           <>
-            <p className="margin-top-0">
+            <p className={clsx("margin-top-0")}>
               The combined impact of your proposed programs would exceed the
               range of hourly energy changes that AVERT is able to calculate.
               &nbsp;&nbsp;
@@ -97,7 +101,7 @@ function ValidationMessage(props: {
               </em>
             </p>
 
-            <p className="margin-0">
+            <p className={clsx("margin-0")}>
               Please reduce your electric vehicle inputs or add energy
               efficiency or renewable energy inputs to keep total load within
               the calculable range.
@@ -107,7 +111,7 @@ function ValidationMessage(props: {
 
         {direction === "lower" && (
           <>
-            <p className="margin-top-0">
+            <p className={clsx("margin-top-0")}>
               The combined impact of your proposed programs would displace more
               than <strong>{severity === "error" ? 30 : 15}%</strong> of
               regional fossil generation in at least one hour of the
@@ -121,7 +125,7 @@ function ValidationMessage(props: {
               </em>
             </p>
 
-            <p className="margin-0">
+            <p className={clsx("margin-0")}>
               The recommended limit for AVERT is 15%, as AVERT is designed to
               simulate marginal operational changes in load, rather than
               large-scale changes that may change fundamental dynamics. Please
@@ -175,17 +179,17 @@ export function EVWarningMessage() {
 
   if (eeInputsEmpty && reInputsEmpty && !evInputsEmpty) {
     return (
-      <div className="usa-alert usa-alert--warning">
-        <div className="usa-alert__body">
-          <h4 className="usa-alert__heading">WARNING</h4>
-          <p className="margin-top-0">
+      <div className={clsx("usa-alert usa-alert--warning")}>
+        <div className={clsx("usa-alert__body")}>
+          <h4 className={clsx("usa-alert__heading")}>WARNING</h4>
+          <p className={clsx("margin-top-0")}>
             <strong>
               You have entered a quantity of EVs, but have not entered any
               energy efficiency or renewable energy.
             </strong>
           </p>
 
-          <p className="margin-top-0">
+          <p className={clsx("margin-top-0")}>
             Recent trends show significant amounts of energy efficiency and
             renewables coming online. Consider adding these resources alongside
             EVs in order to examine the portfolio effects of adding multiple
@@ -194,10 +198,10 @@ export function EVWarningMessage() {
             these with the EE/RE required to offset your entered EV demand.
           </p>
 
-          <p className="margin-top-0">
+          <p className={clsx("margin-top-0")}>
             For more ideas on how to model EVs in AVERT, see Appendix J in the{" "}
             <a
-              className="usa-link"
+              className={clsx("usa-link")}
               href="https://www.epa.gov/avert/avert-user-manual"
               target="_parent"
               rel="noreferrer"
@@ -265,7 +269,7 @@ export function ImpactsMessages() {
         <>
           Energy Impacts messages error. Please contact AVERT support at{" "}
           <a
-            className="usa-link"
+            className={clsx("usa-link")}
             href="mailto:avert@epa.gov"
             target="_parent"
             rel="noreferrer"

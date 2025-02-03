@@ -2,7 +2,6 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 // ---
 import { App } from "@/components/App";
-import "@/preflight.css"; // Tailwind CSS preflight styles, scoped to .twpf
 import "@/styles.css";
 import "@/avert.css";
 

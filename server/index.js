@@ -21,14 +21,7 @@ Sentry.init({
   autoSessionTracking: false,
 });
 
-app.on("error", (err, ctx) => {
-  Sentry.withScope((scope) => {
-    scope.addEventProcessor((event) => {
-      return Sentry.Handlers.parseRequest(event, ctx.request);
-    });
-    Sentry.captureException(err);
-  });
-});
+Sentry.setupKoaErrorHandler(app);
 
 // setup initial middleware
 app.use(logger());

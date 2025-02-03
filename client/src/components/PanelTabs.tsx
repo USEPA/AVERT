@@ -1,3 +1,5 @@
+import clsx from "clsx";
+// ---
 import { PanelTab } from "@/components/PanelTab";
 import { useAppSelector } from "@/redux/index";
 
@@ -6,13 +8,12 @@ export function PanelTabs() {
 
   return (
     <nav
-      className={
-        `overflow-hidden margin-bottom-1 ` +
-        `border-width-1px border-solid border-white ` +
-        `tablet:border-base-light`
-      }
+      className={clsx(
+        "overflow-hidden margin-bottom-1 border-width-1px border-solid border-white",
+        "tablet:border-base-light",
+      )}
     >
-      <ol className="usa-list--unstyled">
+      <ol className={clsx("usa-list--unstyled")}>
         <PanelTab step={1} active={activeStep === 1} title="Select Geography" />
         <PanelTab
           step={2}

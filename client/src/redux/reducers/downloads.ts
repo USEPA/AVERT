@@ -15,6 +15,7 @@ import {
  */
 import countyFips from "@/data/county-fips.json";
 
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 const emissionsFields = [
   "Power Sector: Annual",
   "Power Sector: January",

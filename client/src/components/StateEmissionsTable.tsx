@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import Select from "react-select";
+import clsx from "clsx";
 // ---
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useAppSelector } from "@/redux/index";
@@ -101,10 +102,15 @@ function StateEmissionsTableContent() {
 
   return (
     <>
-      <div className="margin-bottom-2 mobile-lg:display-flex flex-align-center">
-        <div className="flex-1 mobile-lg:margin-right-1">
+      <div
+        className={clsx(
+          "margin-bottom-2 flex-align-center",
+          "mobile-lg:display-flex",
+        )}
+      >
+        <div className={clsx("flex-1", "mobile-lg:margin-right-1")}>
           <Select
-            className="avert-select"
+            className={clsx("avert-select")}
             classNamePrefix="avert-select"
             placeholder="Select States"
             isMulti={true}
@@ -121,11 +127,11 @@ function StateEmissionsTableContent() {
           />
         </div>
 
-        <div className="mobile-lg:margin-left-1">
-          <div className="usa-checkbox">
+        <div className={clsx("mobile-lg:margin-left-1")}>
+          <div className={clsx("usa-checkbox")}>
             <input
               id="all-states"
-              className="usa-checkbox__input"
+              className={clsx("usa-checkbox__input")}
               type="checkbox"
               name="states"
               value="all"
@@ -138,7 +144,7 @@ function StateEmissionsTableContent() {
               }}
             />
             <label
-              className="usa-checkbox__label mobile-lg:margin-top-0"
+              className={clsx("usa-checkbox__label", "mobile-lg:margin-top-0")}
               htmlFor="all-states"
             >
               All states
@@ -148,9 +154,9 @@ function StateEmissionsTableContent() {
       </div>
 
       {selectedStates.length === 0 ? (
-        <div className="grid-col-12 margin-bottom-2">
-          <div className="avert-box padding-3">
-            <p className="margin-0 font-sans-xs text-center">
+        <div className={clsx("grid-col-12 margin-bottom-2")}>
+          <div className={clsx("avert-box", "padding-3")}>
+            <p className={clsx("margin-0 font-sans-xs text-center")}>
               <strong>No states selected.</strong>
               <br />
               Please select one or more states.
@@ -158,30 +164,30 @@ function StateEmissionsTableContent() {
           </div>
         </div>
       ) : (
-        <div className="overflow-auto">
-          <div className="avert-table-container">
-            <table className="avert-table width-full">
+        <div className={clsx("overflow-auto")}>
+          <div className={clsx("avert-table-container")}>
+            <table className={clsx("avert-table", "width-full")}>
               <thead>
                 <tr>
                   <th scope="col" colSpan={2}>
                     State
                   </th>
-                  <th scope="col" className="text-right">
+                  <th className={clsx("text-right")} scope="col">
                     SO<sub>2</sub> <small>(lb)</small>
                   </th>
-                  <th scope="col" className="text-right">
+                  <th className={clsx("text-right")} scope="col">
                     NO<sub>X</sub> <small>(lb)</small>
                   </th>
-                  <th scope="col" className="text-right">
+                  <th className={clsx("text-right")} scope="col">
                     CO<sub>2</sub> <small>(tons)</small>
                   </th>
-                  <th scope="col" className="text-right">
+                  <th className={clsx("text-right")} scope="col">
                     PM<sub>2.5</sub> <small>(lb)</small>
                   </th>
-                  <th scope="col" className="text-right">
+                  <th className={clsx("text-right")} scope="col">
                     VOCs <small>(lb)</small>
                   </th>
-                  <th scope="col" className="text-right">
+                  <th className={clsx("text-right")} scope="col">
                     NH<sub>3</sub> <small>(lb)</small>
                   </th>
                 </tr>
@@ -201,88 +207,91 @@ function StateEmissionsTableContent() {
 
                   return (
                     <Fragment key={data.id}>
-                      <tr className={stripedRowClassName}>
+                      <tr className={clsx(stripedRowClassName)}>
                         <th scope="row" rowSpan={3}>
                           {data.name}
                         </th>
                         <th
                           scope="row"
-                          className="width-1px text-no-wrap text-right"
+                          className={clsx("width-1px text-no-wrap text-right")}
                         >
                           <small>From</small> Fossil Generation
                         </th>
-                        <td className="font-mono-xs text-right">
+                        <td className={clsx("font-mono-xs text-right")}>
                           {formatNumber(data.power.so2)}
                         </td>
-                        <td className="font-mono-xs text-right">
+                        <td className={clsx("font-mono-xs text-right")}>
                           {formatNumber(data.power.nox)}
                         </td>
-                        <td className="font-mono-xs text-right">
+                        <td className={clsx("font-mono-xs text-right")}>
                           {formatNumber(data.power.co2)}
                         </td>
-                        <td className="font-mono-xs text-right">
+                        <td className={clsx("font-mono-xs text-right")}>
                           {formatNumber(data.power.pm25)}
                         </td>
-                        <td className="font-mono-xs text-right">
+                        <td className={clsx("font-mono-xs text-right")}>
                           {formatNumber(data.power.vocs)}
                         </td>
-                        <td className="font-mono-xs text-right">
+                        <td className={clsx("font-mono-xs text-right")}>
                           {formatNumber(data.power.nh3)}
                         </td>
                       </tr>
 
-                      <tr className={stripedRowClassName}>
+                      <tr className={clsx(stripedRowClassName)}>
                         <th
                           scope="row"
-                          className="width-1px text-no-wrap text-right"
+                          className={clsx("width-1px text-no-wrap text-right")}
                         >
                           <small>From</small> Vehicles
                         </th>
-                        <td className="font-mono-xs text-right">
+                        <td className={clsx("font-mono-xs text-right")}>
                           {formatNumber(data.vehicle.so2)}
                         </td>
-                        <td className="font-mono-xs text-right">
+                        <td className={clsx("font-mono-xs text-right")}>
                           {formatNumber(data.vehicle.nox)}
                         </td>
-                        <td className="font-mono-xs text-right">
+                        <td className={clsx("font-mono-xs text-right")}>
                           {formatNumber(data.vehicle.co2)}
                         </td>
-                        <td className="font-mono-xs text-right">
+                        <td className={clsx("font-mono-xs text-right")}>
                           {formatNumber(data.vehicle.pm25)}
                         </td>
-                        <td className="font-mono-xs text-right">
+                        <td className={clsx("font-mono-xs text-right")}>
                           {formatNumber(data.vehicle.vocs)}
                         </td>
-                        <td className="font-mono-xs text-right">
+                        <td className={clsx("font-mono-xs text-right")}>
                           {formatNumber(data.vehicle.nh3)}
                         </td>
                       </tr>
 
                       <tr
-                        className={`${stripedRowClassName} ${stateSpacingClassName}`}
+                        className={clsx(
+                          stripedRowClassName,
+                          stateSpacingClassName,
+                        )}
                       >
                         <th
                           scope="row"
-                          className="width-1px text-no-wrap text-right"
+                          className={clsx("width-1px text-no-wrap text-right")}
                         >
                           Net Change
                         </th>
-                        <td className="font-mono-xs text-right">
+                        <td className={clsx("font-mono-xs text-right")}>
                           {formatNumber(data.power.so2 + data.vehicle.so2)}
                         </td>
-                        <td className="font-mono-xs text-right">
+                        <td className={clsx("font-mono-xs text-right")}>
                           {formatNumber(data.power.nox + data.vehicle.nox)}
                         </td>
-                        <td className="font-mono-xs text-right">
+                        <td className={clsx("font-mono-xs text-right")}>
                           {formatNumber(data.power.co2 + data.vehicle.co2)}
                         </td>
-                        <td className="font-mono-xs text-right">
+                        <td className={clsx("font-mono-xs text-right")}>
                           {formatNumber(data.power.pm25 + data.vehicle.pm25)}
                         </td>
-                        <td className="font-mono-xs text-right">
+                        <td className={clsx("font-mono-xs text-right")}>
                           {formatNumber(data.power.vocs + data.vehicle.vocs)}
                         </td>
-                        <td className="font-mono-xs text-right">
+                        <td className={clsx("font-mono-xs text-right")}>
                           {formatNumber(data.power.nh3 + data.vehicle.nh3)}
                         </td>
                       </tr>
@@ -305,7 +314,7 @@ export function StateEmissionsTable() {
         <>
           Error loading state emissions table. Please contact AVERT support at{" "}
           <a
-            className="usa-link"
+            className={clsx("usa-link")}
             href="mailto:avert@epa.gov"
             target="_parent"
             rel="noreferrer"

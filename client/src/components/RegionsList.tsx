@@ -1,4 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
+import clsx from "clsx";
 // ---
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useAppDispatch, useAppSelector } from "@/redux/index";
@@ -109,15 +110,15 @@ function RegionsListContent() {
   ]);
 
   return (
-    <div className="text-base-darker">
-      <p className="margin-top-205 margin-bottom-1 line-height-sans-2">
+    <div className={clsx("text-base-darker")}>
+      <p className={clsx("margin-top-205 margin-bottom-1 line-height-sans-2")}>
         <strong>Select an AVERT region directly:</strong>
       </p>
 
-      <div className="display-flex">
-        <div className="flex-1">
+      <div className={clsx("display-flex")}>
+        <div className={clsx("flex-1")}>
           <select
-            className="usa-select margin-0 maxw-full"
+            className={clsx("usa-select margin-0 maxw-full")}
             aria-label="Select Region"
             value={selectedRegionId || ""}
             onChange={(ev) => {
@@ -149,16 +150,16 @@ function RegionsListContent() {
         </div>
       </div>
 
-      <p className="margin-top-205 margin-bottom-1 line-height-sans-2">
+      <p className={clsx("margin-top-205 margin-bottom-1 line-height-sans-2")}>
         <strong>
           Or select a state and county, which will select an AVERT region:
         </strong>
       </p>
 
-      <div className="display-flex">
-        <div className="flex-1 margin-right-1">
+      <div className={clsx("display-flex")}>
+        <div className={clsx("flex-1 margin-right-1")}>
           <select
-            className="usa-select margin-0 maxw-full"
+            className={clsx("usa-select margin-0 maxw-full")}
             aria-label="Select State"
             value={regionSelectStateId || ""}
             onChange={(ev) => {
@@ -185,9 +186,9 @@ function RegionsListContent() {
           </select>
         </div>
 
-        <div className="flex-1 margin-left-1">
+        <div className={clsx("flex-1 margin-left-1")}>
           <select
-            className="usa-select margin-0 maxw-full"
+            className={clsx("usa-select margin-0 maxw-full")}
             aria-label="Select County"
             value={regionSelectCounty || ""}
             onChange={(ev) => {
@@ -223,7 +224,7 @@ export function RegionsList() {
         <>
           AVERT Regions select error. Please contact AVERT support at{" "}
           <a
-            className="usa-link"
+            className={clsx("usa-link")}
             href="mailto:avert@epa.gov"
             target="_parent"
             rel="noreferrer"
