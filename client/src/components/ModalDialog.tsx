@@ -1,6 +1,7 @@
 import { Fragment, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import clsx from "clsx";
 // ---
 import { useAppDispatch, useAppSelector } from "@/redux/index";
 import { resetModalDialog } from "@/redux/reducers/panel";
@@ -17,52 +18,74 @@ export function ModalDialog() {
     <Transition.Root show={displayed} as={Fragment}>
       <Dialog
         as="div"
-        className="tw-relative tw-z-10"
+        className={clsx("tw:relative tw:z-10")}
         initialFocus={cancelRef}
         open={displayed}
         onClose={(_ev) => dispatch(resetModalDialog())}
       >
         <Transition.Child
           as={Fragment}
-          enter="tw-duration-300 tw-ease-out"
-          enterFrom="tw-opacity-0"
-          enterTo="tw-opacity-100"
-          leave="tw-duration-200 tw-ease-in"
-          leaveFrom="tw-opacity-100"
-          leaveTo="tw-opacity-0"
+          enter="tw:duration-300 tw:ease-out"
+          enterFrom="tw:opacity-0"
+          enterTo="tw:opacity-100"
+          leave="tw:duration-200 tw:ease-in"
+          leaveFrom="tw:opacity-100"
+          leaveTo="tw:opacity-0"
         >
-          <div className="tw-fixed tw-inset-0 tw-bg-black/70 tw-transition-colors" />
+          <div
+            className={clsx(
+              "tw:fixed tw:inset-0 tw:bg-black/70 tw:transition-colors",
+            )}
+          />
         </Transition.Child>
 
-        <div className="tw-fixed tw-inset-0 tw-z-10 tw-overflow-y-auto">
-          <div className="tw-flex tw-min-h-full tw-items-end tw-justify-center tw-p-4 sm:tw-items-center">
+        <div className={clsx("tw:fixed tw:inset-0 tw:z-10 tw:overflow-y-auto")}>
+          <div
+            className={clsx(
+              "tw:flex tw:min-h-full tw:items-end tw:justify-center tw:p-4",
+              "tw:sm:items-center",
+            )}
+          >
             <Transition.Child
               as={Fragment}
-              enter="tw-duration-300 tw-ease-out"
-              enterFrom="tw-translate-y-4 tw-opacity-0 sm:tw-translate-y-0"
-              enterTo="tw-translate-y-0 tw-opacity-100"
-              leave="tw-duration-200 tw-ease-in"
-              leaveFrom="tw-translate-y-0 tw-opacity-100"
-              leaveTo="tw-translate-y-4 tw-opacity-0 sm:tw-translate-y-0"
+              enter="tw:duration-300 tw:ease-out"
+              enterFrom="tw:translate-y-4 tw:opacity-0 tw:sm:translate-y-0"
+              enterTo="tw:translate-y-0 tw:opacity-100"
+              leave="tw:duration-200 tw:ease-in"
+              leaveFrom="tw:translate-y-0 tw:opacity-100"
+              leaveTo="tw:translate-y-4 tw:opacity-0 tw:sm:translate-y-0"
             >
-              <Dialog.Panel className="tw-relative tw-transform tw-overflow-hidden tw-rounded-lg tw-bg-white tw-p-4 tw-shadow-xl tw-transition-all sm:tw-w-full sm:tw-max-w-xl sm:tw-p-6">
+              <Dialog.Panel
+                className={clsx(
+                  "tw:relative tw:transform tw:overflow-hidden tw:rounded-lg tw:bg-white tw:p-4 tw:shadow-xl tw:transition-all",
+                  "tw:sm:w-full tw:sm:max-w-xl tw:sm:p-6",
+                )}
+              >
                 <div className="twpf">
-                  <div className="tw-absolute tw-right-0 tw-top-0 tw-pr-4 tw-pt-4">
+                  <div
+                    className={clsx(
+                      "tw:absolute tw:top-0 tw:right-0 tw:pt-4 tw:pr-4",
+                    )}
+                  >
                     <button
                       type="button"
-                      className="tw-rounded-md tw-bg-white tw-text-gray-400 tw-transition-none hover:tw-text-gray-700 focus:tw-text-gray-700"
+                      className={clsx(
+                        "tw:rounded-md tw:bg-white tw:text-gray-400 tw:transition-none",
+                        "tw:hover:text-gray-700",
+                        "tw:focus:text-gray-700",
+                      )}
                       onClick={(_ev) => dispatch(resetModalDialog())}
                     >
-                      <span className="tw-sr-only">Close</span>
+                      <span className={clsx("tw:sr-only")}>Close</span>
                       <XMarkIcon
-                        className="tw-h-6 tw-w-6 tw-transition-none"
+                        className={clsx("tw:size-6 tw:transition-none")}
                         aria-hidden="true"
                       />
                     </button>
                   </div>
                 </div>
 
-                <div className="tw-m-4">
+                <div className={clsx("tw:m-4")}>
                   <div className="usa-prose">{description}</div>
                 </div>
               </Dialog.Panel>

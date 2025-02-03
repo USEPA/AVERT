@@ -177,7 +177,7 @@ export function Panels() {
 
   return (
     <Container
-      className="border-width-1px border-solid border-base-light"
+      className="border-width-1px border-base-light border-solid"
       overlay={loading || serverCalcError}
     >
       {
@@ -218,19 +218,21 @@ export function Panels() {
             dispatch(selectGeography(index === 0 ? "regions" : "states"));
           }}
         >
-          <Tab.List className={clsx("tw-flex tw-justify-between")}>
+          <Tab.List className={clsx("tw:flex tw:justify-between")}>
             {["Select Region", "Select State"].map((tab) => (
               <Tab
                 key={tab}
                 className={clsx(
-                  "tw-w-1/2 tw-cursor-pointer tw-select-none tw-border-x-0 tw-border-b tw-border-t-[6px] tw-border-solid tw-border-b-[#a9aeb1] tw-border-t-[#ccc] tw-bg-neutral-100 tw-px-4 tw-pb-2.5 tw-pt-2 tw-text-base tw-font-bold tw-leading-none tw-text-[#565c65]",
-                  "sm:tw-text-lg sm:tw-leading-none",
-                  "hover:tw-border-t-[#a9aeb1]",
-                  "focus:!tw-outline-none",
-                  "focus-visible:tw-relative focus-visible:!tw-outline focus-visible:!tw-outline-[3px] focus-visible:!tw-outline-offset-0 focus-visible:!tw-outline-[#2491ff]",
-                  "ui-selected:tw-border-b-white ui-selected:tw-border-t-[--avert-light-blue] ui-selected:tw-bg-white ui-selected:tw-text-[--avert-blue]",
-                  "ui-selected:first-of-type:tw-border-r ui-selected:first-of-type:tw-border-r-[#a9aeb1]",
-                  "ui-selected:last-of-type:tw-border-l ui-selected:last-of-type:tw-border-l-[#a9aeb1]",
+                  "tw:cursor-pointer tw:select-none",
+                  "tw:border-x-0 tw:border-t-[6px] tw:border-b tw:border-solid tw:border-t-[#ccc] tw:border-b-[#a9aeb1]",
+                  "tw:w-1/2 tw:bg-neutral-100 tw:px-4 tw:pt-2 tw:pb-2.5 tw:text-base tw:leading-none tw:font-bold tw:text-[#565c65]",
+                  "tw:sm:text-lg tw:sm:leading-none",
+                  "tw:hover:border-t-[#a9aeb1]",
+                  "tw:focus:!outline-hidden",
+                  "tw:focus-visible:relative tw:focus-visible:!outline-[3px] tw:focus-visible:!outline-offset-0 tw:focus-visible:!outline-[#2491ff]",
+                  "tw:data-selected:border-t-(--avert-light-blue) tw:data-selected:border-b-white tw:data-selected:bg-white tw:data-selected:text-(--avert-blue)",
+                  "tw:data-selected:first-of-type:border-r tw:data-selected:first-of-type:border-r-[#a9aeb1]",
+                  "tw:data-selected:last-of-type:border-l tw:data-selected:last-of-type:border-l-[#a9aeb1]",
                 )}
               >
                 {tab}
@@ -238,7 +240,7 @@ export function Panels() {
             ))}
           </Tab.List>
 
-          <Tab.Panels className={clsx("tw-p-4")}>
+          <Tab.Panels className={clsx("tw:p-4")}>
             {[
               <div className="grid-container padding-0 maxw-full">
                 <div className="grid-row">
@@ -311,8 +313,8 @@ export function Panels() {
               <Tab.Panel
                 key={index}
                 className={clsx(
-                  "focus:!tw-outline-none",
-                  "focus-visible:!tw-outline focus-visible:!tw-outline-[3px] focus-visible:!tw-outline-offset-0 focus-visible:!tw-outline-[#2491ff]",
+                  "tw:focus:!outline-hidden",
+                  "tw:focus-visible:!outline-[3px] tw:focus-visible:!outline-offset-0 tw:focus-visible:!outline-[#2491ff]",
                 )}
               >
                 {panel}
@@ -402,7 +404,7 @@ export function Panels() {
           <ResultsImpactsInputs />
 
           <div className="margin-top-3 desktop:display-flex">
-            <div className="flex-1 desktop:margin-right-105">
+            <div className="desktop:margin-right-105 flex-1">
               <h3 className="avert-blue margin-bottom-1 font-serif-md">
                 Annual Emissions Changes • <small>Power Sector Only</small>
                 <br />
@@ -414,7 +416,7 @@ export function Panels() {
               <PowerEmissionsTable />
             </div>
 
-            <div className="flex-1 margin-top-3 desktop:margin-left-105 desktop:margin-top-0">
+            <div className="margin-top-3 desktop:margin-left-105 desktop:margin-top-0 flex-1">
               <h3 className="avert-blue margin-bottom-1 font-serif-md">
                 Annual Emissions Changes • <small>Including Vehicles</small>
                 <br />
