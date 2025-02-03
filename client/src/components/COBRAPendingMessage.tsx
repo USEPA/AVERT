@@ -6,9 +6,9 @@ import { COBRAHeartbeat } from "@/components/COBRAHeartbeat";
 export function COBRAPendingMessage() {
   return (
     <>
-      <div className="usa-alert usa-alert--slim usa-alert--info">
-        <div className="usa-alert__body">
-          <p className="usa-alert__text">
+      <div className={clsx("usa-alert usa-alert--slim usa-alert--info")}>
+        <div className={clsx("usa-alert__body")}>
+          <p className={clsx("usa-alert__text")}>
             Sending data to COBRA. This may take a few minutes.
           </p>
         </div>

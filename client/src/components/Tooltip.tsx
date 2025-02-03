@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { type ReactNode } from "react";
+import clsx from "clsx";
 // ---
 import { useAppDispatch } from "@/redux/index";
 import { displayModalDialog } from "@/redux/reducers/panel";
@@ -13,7 +14,10 @@ export function Tooltip(props: { children: ReactNode; reversed?: boolean }) {
   return (
     <a
       css={[modalLinkStyles, reversed && { backgroundPosition: "-10px -40px" }]}
-      className="avert-tooltip-icon position-relative display-inline-block width-2 height-2"
+      className={clsx(
+        "avert-tooltip-icon",
+        "position-relative display-inline-block width-2 height-2",
+      )}
       href="/"
       onClick={(ev) => {
         ev.preventDefault();

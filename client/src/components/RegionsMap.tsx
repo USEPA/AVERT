@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from "@emotion/react";
+import clsx from "clsx";
 // ---
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { CaliforniaRegion } from "@/components/Regions/California";
@@ -177,7 +178,9 @@ function RegionsMapContent() {
   return (
     <div
       css={containerStyles}
-      className="position-relative margin-x-auto margin-y-3 maxw-tablet-lg"
+      className={clsx(
+        "position-relative margin-x-auto margin-y-3 maxw-tablet-lg",
+      )}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -368,7 +371,7 @@ export function RegionsMap() {
         <>
           AVERT Regions map error. Please contact AVERT support at{" "}
           <a
-            className="usa-link"
+            className={clsx("usa-link")}
             href="mailto:avert@epa.gov"
             target="_parent"
             rel="noreferrer"

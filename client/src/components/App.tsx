@@ -2,6 +2,7 @@ import { Provider } from "react-redux";
 import Highcharts from "highcharts";
 import "@uswds/uswds";
 import "@uswds/uswds/css/uswds.css";
+import clsx from "clsx";
 // ---
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { PanelTabs } from "@/components/PanelTabs";
@@ -62,7 +63,7 @@ Highcharts.setOptions({
 export function App() {
   return (
     <Provider store={store}>
-      <div className="avert-container">
+      <div className={clsx("avert-container")}>
         <ErrorBoundary>
           <PanelTabs />
           <Panels />

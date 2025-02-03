@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { css } from "@emotion/react";
+import clsx from "clsx";
 // ---
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ImpactsTextInput } from "@/components/ImpactsTextInput";
@@ -123,7 +124,7 @@ function nonZeroInput(input: string) {
  */
 function TransitBusesWarningText() {
   return (
-    <p className="margin-0">
+    <p className={clsx("margin-0")}>
       <strong>Error:</strong> You have entered a quantity of transit buses in a
       region/state combination that does not currently have transit buses.
       Please select a different region or state, or change the modeled quantity
@@ -248,7 +249,7 @@ function ImpactsInputsContent() {
 
   const evInputErrorMessage = (
     <>
-      <span className="display-block text-bold text-no-italic">
+      <span className={clsx("display-block text-bold text-no-italic")}>
         Please enter a positive whole number.
       </span>
       If you wish to model a reverse energy impacts scenario (i.e., a negative
@@ -259,37 +260,40 @@ function ImpactsInputsContent() {
   return (
     <>
       <div
-        className="margin-y-3 font-sans-xs text-base-darker"
+        className={clsx("margin-y-3 font-sans-xs text-base-darker")}
         data-avert-energy-impacts-inputs
       >
         <header
-          className={
-            `avert-border avert-box-background ` +
-            `border-width-1px border-bottom-width-0 border-solid ` +
-            `padding-y-1 padding-x-105 text-bold bg-base-lightest`
-          }
+          className={clsx(
+            "avert-border avert-box-background",
+            "border-width-1px border-bottom-width-0 border-solid padding-y-1 padding-x-105 text-bold bg-base-lightest",
+          )}
         >
-          <h3 className="margin-0 font-sans-xs line-height-sans-4">
+          <h3 className={clsx("margin-0 font-sans-xs line-height-sans-4")}>
             Energy Efficiency
           </h3>
         </header>
 
-        <div className="grid-container padding-0 maxw-full">
+        <div className={clsx("grid-container padding-0 maxw-full")}>
           <div
-            className={
-              `grid-row ` +
-              `avert-border border-width-1px border-top-width-0 border-right-width-0 border-solid`
-            }
+            className={clsx(
+              "avert-border",
+              "grid-row border-width-1px border-top-width-0 border-right-width-0 border-solid",
+            )}
           >
             <div
-              className={
-                `desktop:grid-col-6 ` +
-                `avert-border border-width-1px border-y-width-0 border-left-width-0 border-solid`
-              }
+              className={clsx(
+                "avert-border",
+                "border-width-1px border-y-width-0 border-left-width-0 border-solid",
+                "desktop:grid-col-6",
+              )}
             >
               <details
                 css={inputsGroupStyles}
-                className="avert-border border-width-1px border-bottom-width-0 border-x-width-0 border-solid"
+                className={clsx(
+                  "avert-border",
+                  "border-width-1px border-bottom-width-0 border-x-width-0 border-solid",
+                )}
                 open={detailsAOpen}
                 onToggle={(ev) => {
                   const details = ev.currentTarget as HTMLDetailsElement;
@@ -299,24 +303,27 @@ function ImpactsInputsContent() {
               >
                 <summary
                   css={inputsSummaryStyles}
-                  className={
-                    `avert-summary ` +
-                    `display-flex flex-align-center padding-105 ` +
-                    `line-height-sans-2 text-bold cursor-pointer`
-                  }
+                  className={clsx(
+                    "avert-summary",
+                    "display-flex flex-align-center padding-105 line-height-sans-2 text-bold cursor-pointer",
+                  )}
                   data-label="A"
                 >
-                  <span className="display-none">A.</span>
+                  <span className={clsx("display-none")}>A.</span>
                   Reductions spread evenly throughout the year
                 </summary>
 
-                <section className="padding-top-0 padding-x-2 padding-bottom-105">
-                  <p className="margin-0">
+                <section
+                  className={clsx(
+                    "padding-top-0 padding-x-2 padding-bottom-105",
+                  )}
+                >
+                  <p className={clsx("margin-0")}>
                     <strong>Choose one:</strong>
                   </p>
 
-                  <div className="tablet:display-flex">
-                    <div className="flex-1 tablet:margin-right-2">
+                  <div className={clsx("tablet:display-flex")}>
+                    <div className={clsx("flex-1", "tablet:margin-right-2")}>
                       <ImpactsTextInput
                         label={<>Reduce total annual generation by:</>}
                         ariaLabel="Number of GWh expected to be saved in a single year"
@@ -328,7 +335,7 @@ function ImpactsInputsContent() {
                           dispatch(updateEEAnnualGwhReduction(value));
                         }}
                         tooltip={
-                          <p className="margin-0">
+                          <p className={clsx("margin-0")}>
                             Enter the total number of GWh expected to be saved
                             in a single year. This option simply distributes the
                             total annual savings evenly over all hours of the
@@ -340,9 +347,9 @@ function ImpactsInputsContent() {
                       />
                     </div>
 
-                    <div className="flex-1 tablet:margin-left-2">
+                    <div className={clsx("flex-1", "tablet:margin-left-2")}>
                       <ImpactsTextInput
-                        className="margin-top-1 tablet:margin-top-0"
+                        className={clsx("margin-top-1", "tablet:margin-top-0")}
                         label={<>Reduce hourly generation by:</>}
                         ariaLabel="Constant reduction for every hour of the year, in MW"
                         suffix="MW"
@@ -353,7 +360,7 @@ function ImpactsInputsContent() {
                           dispatch(updateEEHourlyMwReduction(value));
                         }}
                         tooltip={
-                          <p className="margin-0">
+                          <p className={clsx("margin-0")}>
                             “Reduce hourly generation” is identical in effect to
                             reducing total annual generation. It allows you to
                             enter a constant reduction for every hour of the
@@ -370,14 +377,18 @@ function ImpactsInputsContent() {
             </div>
 
             <div
-              className={
-                `desktop:grid-col-6 ` +
-                `avert-border border-width-1px border-y-width-0 border-left-width-0 border-solid`
-              }
+              className={clsx(
+                "avert-border",
+                "border-width-1px border-y-width-0 border-left-width-0 border-solid",
+                "desktop:grid-col-6",
+              )}
             >
               <details
                 css={inputsGroupStyles}
-                className="avert-border border-width-1px border-bottom-width-0 border-x-width-0 border-solid"
+                className={clsx(
+                  "avert-border",
+                  "border-width-1px border-bottom-width-0 border-x-width-0 border-solid",
+                )}
                 open={detailsBOpen}
                 onToggle={(ev) => {
                   const details = ev.currentTarget as HTMLDetailsElement;
@@ -387,24 +398,27 @@ function ImpactsInputsContent() {
               >
                 <summary
                   css={inputsSummaryStyles}
-                  className={
-                    `avert-summary ` +
-                    `display-flex flex-align-center padding-105 ` +
-                    `line-height-sans-2 text-bold cursor-pointer`
-                  }
+                  className={clsx(
+                    "avert-summary",
+                    "display-flex flex-align-center padding-105 line-height-sans-2 text-bold cursor-pointer",
+                  )}
                   data-label="B"
                 >
-                  <span className="display-none">B.</span>
+                  <span className={clsx("display-none")}>B.</span>
                   Percentage reductions in some or all hours
                 </summary>
 
-                <section className="padding-top-0 padding-x-2 padding-bottom-105">
-                  <p className="margin-0">
+                <section
+                  className={clsx(
+                    "padding-top-0 padding-x-2 padding-bottom-105",
+                  )}
+                >
+                  <p className={clsx("margin-0")}>
                     <strong>Choose one:</strong>
                   </p>
 
-                  <div className="tablet:display-flex">
-                    <div className="flex-1 tablet:margin-right-2">
+                  <div className={clsx("tablet:display-flex")}>
+                    <div className={clsx("flex-1", "tablet:margin-right-2")}>
                       <ImpactsTextInput
                         label={
                           <>
@@ -423,7 +437,7 @@ function ImpactsInputsContent() {
                           dispatch(updateEEBroadProgramReduction(value));
                         }}
                         tooltip={
-                          <p className="margin-0">
+                          <p className={clsx("margin-0")}>
                             To simulate a broad-based efficiency program, enter
                             an estimated load reduction fraction. This
                             percentage reduction will be applied to all hours of
@@ -433,9 +447,9 @@ function ImpactsInputsContent() {
                       />
                     </div>
 
-                    <div className="flex-1 tablet:margin-left-2">
+                    <div className={clsx("flex-1", "tablet:margin-left-2")}>
                       <ImpactsTextInput
-                        className="margin-top-1 tablet:margin-top-0"
+                        className={clsx("margin-top-1", "tablet:margin-top-0")}
                         label={
                           <>
                             <em>Targeted program:</em> Reduce generation by:
@@ -461,7 +475,7 @@ function ImpactsInputsContent() {
                           dispatch(updateEETopHours(value));
                         }}
                         tooltip={
-                          <p className="margin-0">
+                          <p className={clsx("margin-0")}>
                             To simulate a peak-reduction targeting program such
                             as demand response, enter the load reduction (as a
                             fraction of peaking load) that would be targeted, as
@@ -479,33 +493,36 @@ function ImpactsInputsContent() {
         </div>
 
         <header
-          className={
-            `avert-border avert-box-background ` +
-            `border-width-1px border-bottom-width-0 border-solid ` +
-            `margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest`
-          }
+          className={clsx(
+            "avert-border avert-box-background",
+            "border-width-1px border-bottom-width-0 border-solid margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest",
+          )}
         >
-          <h3 className="margin-0 font-sans-xs line-height-sans-4">
+          <h3 className={clsx("margin-0 font-sans-xs line-height-sans-4")}>
             Renewable Energy
           </h3>
         </header>
 
-        <div className="grid-container padding-0 maxw-full">
+        <div className={clsx("grid-container padding-0 maxw-full")}>
           <div
-            className={
-              `grid-row ` +
-              `avert-border border-width-1px border-top-width-0 border-right-width-0 border-solid`
-            }
+            className={clsx(
+              "avert-border",
+              "grid-row border-width-1px border-top-width-0 border-right-width-0 border-solid",
+            )}
           >
             <div
-              className={
-                `desktop:grid-col-6 ` +
-                `avert-border border-width-1px border-y-width-0 border-left-width-0 border-solid`
-              }
+              className={clsx(
+                "avert-border",
+                "border-width-1px border-y-width-0 border-left-width-0 border-solid",
+                "desktop:grid-col-6",
+              )}
             >
               <details
                 css={inputsGroupStyles}
-                className="avert-border border-width-1px border-bottom-width-0 border-x-width-0 border-solid"
+                className={clsx(
+                  "avert-border",
+                  "border-width-1px border-bottom-width-0 border-x-width-0 border-solid",
+                )}
                 open={detailsCOpen}
                 onToggle={(ev) => {
                   const details = ev.currentTarget as HTMLDetailsElement;
@@ -515,20 +532,23 @@ function ImpactsInputsContent() {
               >
                 <summary
                   css={inputsSummaryStyles}
-                  className={
-                    `avert-summary ` +
-                    `display-flex flex-align-center padding-105 ` +
-                    `line-height-sans-2 text-bold cursor-pointer`
-                  }
+                  className={clsx(
+                    "avert-summary",
+                    "display-flex flex-align-center padding-105 line-height-sans-2 text-bold cursor-pointer",
+                  )}
                   data-label="C"
                 >
-                  <span className="display-none">C.</span>
+                  <span className={clsx("display-none")}>C.</span>
                   Wind
                 </summary>
 
-                <section className="padding-top-0 padding-x-2 padding-bottom-105">
-                  <div className="tablet:display-flex">
-                    <div className="flex-1 tablet:margin-right-2">
+                <section
+                  className={clsx(
+                    "padding-top-0 padding-x-2 padding-bottom-105",
+                  )}
+                >
+                  <div className={clsx("tablet:display-flex")}>
+                    <div className={clsx("flex-1", "tablet:margin-right-2")}>
                       <ImpactsTextInput
                         label={<>Onshore wind total capacity:</>}
                         ariaLabel="Total capacity (maximum potential electricity generation) in MW"
@@ -539,7 +559,7 @@ function ImpactsInputsContent() {
                           dispatch(updateREOnshoreWind(value));
                         }}
                         tooltip={
-                          <p className="margin-0">
+                          <p className={clsx("margin-0")}>
                             Enter the total capacity (maximum potential
                             electricity generation) for this type of resource,
                             measured in MW. The model uses these inputs along
@@ -550,7 +570,7 @@ function ImpactsInputsContent() {
                       />
                     </div>
 
-                    <div className="flex-1 tablet:margin-left-2">
+                    <div className={clsx("flex-1", "tablet:margin-left-2")}>
                       {atLeastOneRegionSupportsOffshoreWind ? (
                         <ImpactsTextInput
                           label={<>Offshore wind total capacity:</>}
@@ -562,7 +582,7 @@ function ImpactsInputsContent() {
                             dispatch(updateREOffshoreWind(value));
                           }}
                           tooltip={
-                            <p className="margin-0">
+                            <p className={clsx("margin-0")}>
                               Enter the total capacity (maximum potential
                               electricity generation) for this type of resource,
                               measured in MW. The model uses these inputs along
@@ -572,11 +592,15 @@ function ImpactsInputsContent() {
                           }
                         />
                       ) : geographicFocus === "regions" ? (
-                        <p className="margin-y-05 font-sans-2xs line-height-sans-2 text-italic">
+                        <p
+                          className={clsx(
+                            "margin-y-05 font-sans-2xs line-height-sans-2 text-italic",
+                          )}
+                        >
                           Offshore wind calculations are not available in the
                           selected AVERT region{" "}
                           <Tooltip>
-                            <span className="text-no-italic">
+                            <span className={clsx("text-no-italic")}>
                               AVERT does not support offshore wind modeling in
                               this region. It is unlikely that offshore areas
                               suitable for wind farms would connect to the
@@ -585,11 +609,15 @@ function ImpactsInputsContent() {
                           </Tooltip>
                         </p>
                       ) : (
-                        <p className="margin-y-05 font-sans-2xs line-height-sans-2 text-italic">
+                        <p
+                          className={clsx(
+                            "margin-y-05 font-sans-2xs line-height-sans-2 text-italic",
+                          )}
+                        >
                           Offshore wind calculations are not available in the
                           AVERT region(s) that this state is part of{" "}
                           <Tooltip>
-                            <span className="text-no-italic">
+                            <span className={clsx("text-no-italic")}>
                               AVERT does not support offshore wind modeling in
                               the region(s) that this state is part of. It is
                               unlikely that offshore areas suitable for wind
@@ -606,14 +634,18 @@ function ImpactsInputsContent() {
             </div>
 
             <div
-              className={
-                `desktop:grid-col-6 ` +
-                `avert-border border-width-1px border-y-width-0 border-left-width-0 border-solid`
-              }
+              className={clsx(
+                "avert-border",
+                "border-width-1px border-y-width-0 border-left-width-0 border-solid",
+                "desktop:grid-col-6",
+              )}
             >
               <details
                 css={inputsGroupStyles}
-                className="avert-border border-width-1px border-bottom-width-0 border-x-width-0 border-solid"
+                className={clsx(
+                  "avert-border",
+                  "border-width-1px border-bottom-width-0 border-x-width-0 border-solid",
+                )}
                 open={detailsDOpen}
                 onToggle={(ev) => {
                   const details = ev.currentTarget as HTMLDetailsElement;
@@ -623,20 +655,23 @@ function ImpactsInputsContent() {
               >
                 <summary
                   css={inputsSummaryStyles}
-                  className={
-                    `avert-summary ` +
-                    `display-flex flex-align-center padding-105 ` +
-                    `line-height-sans-2 text-bold cursor-pointer`
-                  }
+                  className={clsx(
+                    "avert-summary",
+                    "display-flex flex-align-center padding-105 line-height-sans-2 text-bold cursor-pointer",
+                  )}
                   data-label="D"
                 >
-                  <span className="display-none">D.</span>
+                  <span className={clsx("display-none")}>D.</span>
                   Solar photovoltaic (PV)
                 </summary>
 
-                <section className="padding-top-0 padding-x-2 padding-bottom-105">
-                  <div className="tablet:display-flex">
-                    <div className="flex-1 tablet:margin-right-2">
+                <section
+                  className={clsx(
+                    "padding-top-0 padding-x-2 padding-bottom-105",
+                  )}
+                >
+                  <div className={clsx("tablet:display-flex")}>
+                    <div className={clsx("flex-1", "tablet:margin-right-2")}>
                       <ImpactsTextInput
                         label={<>Utility-scale solar PV total capacity:</>}
                         ariaLabel="Total capacity (maximum potential electricity generation) in MW"
@@ -647,7 +682,7 @@ function ImpactsInputsContent() {
                           dispatch(updateREUtilitySolar(value));
                         }}
                         tooltip={
-                          <p className="margin-0">
+                          <p className={clsx("margin-0")}>
                             Enter the total capacity (maximum potential
                             electricity generation) for this type of resource,
                             measured in MW. The model uses these inputs along
@@ -658,9 +693,9 @@ function ImpactsInputsContent() {
                       />
                     </div>
 
-                    <div className="flex-1 tablet:margin-left-2">
+                    <div className={clsx("flex-1", "tablet:margin-left-2")}>
                       <ImpactsTextInput
-                        className="margin-top-1 tablet:margin-top-0"
+                        className={clsx("margin-top-1", "tablet:margin-top-0")}
                         label={
                           <>Distributed (rooftop) solar PV total capacity:</>
                         }
@@ -672,7 +707,7 @@ function ImpactsInputsContent() {
                           dispatch(updateRERooftopSolar(value));
                         }}
                         tooltip={
-                          <p className="margin-0">
+                          <p className={clsx("margin-0")}>
                             Enter the total capacity (maximum potential
                             electricity generation) for this type of resource,
                             measured in MW. The model uses these inputs along
@@ -690,33 +725,36 @@ function ImpactsInputsContent() {
         </div>
 
         <header
-          className={
-            `avert-border avert-box-background ` +
-            `border-width-1px border-bottom-width-0 border-solid ` +
-            `margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest`
-          }
+          className={clsx(
+            "avert-border avert-box-background",
+            "border-width-1px border-bottom-width-0 border-solid margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest",
+          )}
         >
-          <h3 className="margin-0 font-sans-xs line-height-sans-4">
+          <h3 className={clsx("margin-0 font-sans-xs line-height-sans-4")}>
             Electric Vehicles
           </h3>
         </header>
 
-        <div className="grid-container padding-0 maxw-full">
+        <div className={clsx("grid-container padding-0 maxw-full")}>
           <div
-            className={
-              `grid-row ` +
-              `avert-border border-width-1px border-top-width-0 border-right-width-0 border-solid`
-            }
+            className={clsx(
+              "avert-border",
+              "grid-row border-width-1px border-top-width-0 border-right-width-0 border-solid",
+            )}
           >
             <div
-              className={
-                `desktop:grid-col-12 ` +
-                `avert-border border-width-1px border-y-width-0 border-left-width-0 border-solid`
-              }
+              className={clsx(
+                "avert-border",
+                "border-width-1px border-y-width-0 border-left-width-0 border-solid",
+                "desktop:grid-col-12",
+              )}
             >
               <details
                 css={inputsGroupStyles}
-                className="avert-border border-width-1px border-bottom-width-0 border-x-width-0 border-solid"
+                className={clsx(
+                  "avert-border",
+                  "border-width-1px border-bottom-width-0 border-x-width-0 border-solid",
+                )}
                 open={detailsEOpen}
                 onToggle={(ev) => {
                   const details = ev.currentTarget as HTMLDetailsElement;
@@ -725,22 +763,32 @@ function ImpactsInputsContent() {
               >
                 <summary
                   css={inputsSummaryStyles}
-                  className={
-                    `avert-summary ` +
-                    `display-flex flex-align-center padding-105 ` +
-                    `line-height-sans-2 text-bold cursor-pointer`
-                  }
+                  className={clsx(
+                    "avert-summary",
+                    "display-flex flex-align-center padding-105 line-height-sans-2 text-bold cursor-pointer",
+                  )}
                   data-label="E"
                 >
-                  <span className="display-none">E.</span>
+                  <span className={clsx("display-none")}>E.</span>
                   Electric vehicles
                 </summary>
 
-                <section className="padding-top-0 padding-x-2 padding-bottom-105">
-                  <div className="grid-row">
-                    <div className="desktop:grid-col-6">
-                      <div className="tablet:display-flex desktop:margin-right-2">
-                        <div className="flex-1 tablet:margin-right-2">
+                <section
+                  className={clsx(
+                    "padding-top-0 padding-x-2 padding-bottom-105",
+                  )}
+                >
+                  <div className={clsx("grid-row")}>
+                    <div className={clsx("desktop:grid-col-6")}>
+                      <div
+                        className={clsx(
+                          "tablet:display-flex",
+                          "desktop:margin-right-2",
+                        )}
+                      >
+                        <div
+                          className={clsx("flex-1", "tablet:margin-right-2")}
+                        >
                           <ImpactsTextInput
                             label={<>Light-duty battery EVs:</>}
                             ariaLabel="Number of light-duty battery EVs to be added to the road"
@@ -753,7 +801,7 @@ function ImpactsInputsContent() {
                               dispatch(runEVBatteryEVsCalculations(value));
                             }}
                             tooltip={
-                              <p className="margin-0">
+                              <p className={clsx("margin-0")}>
                                 Enter the number of light-duty battery EVs to be
                                 added to the road.
                               </p>
@@ -762,9 +810,12 @@ function ImpactsInputsContent() {
                           />
                         </div>
 
-                        <div className="flex-1 tablet:margin-left-2">
+                        <div className={clsx("flex-1", "tablet:margin-left-2")}>
                           <ImpactsTextInput
-                            className="margin-top-1 tablet:margin-top-0"
+                            className={clsx(
+                              "margin-top-1",
+                              "tablet:margin-top-0",
+                            )}
                             label={<>Light-duty plug-in hybrid EVs:</>}
                             ariaLabel="Number of light-duty plug-in hybrid EVs to be added to the road"
                             value={hybridEVs}
@@ -776,7 +827,7 @@ function ImpactsInputsContent() {
                               dispatch(runEVHybridEVsCalculations(value));
                             }}
                             tooltip={
-                              <p className="margin-0">
+                              <p className={clsx("margin-0")}>
                                 Enter the number of light-duty plug-in hybrid
                                 EVs to be added to the road.
                               </p>
@@ -786,10 +837,17 @@ function ImpactsInputsContent() {
                         </div>
                       </div>
 
-                      <div className="tablet:display-flex desktop:margin-right-2">
-                        <div className="flex-1 tablet:margin-right-2">
+                      <div
+                        className={clsx(
+                          "tablet:display-flex",
+                          "desktop:margin-right-2",
+                        )}
+                      >
+                        <div
+                          className={clsx("flex-1", "tablet:margin-right-2")}
+                        >
                           <ImpactsTextInput
-                            className="margin-top-1"
+                            className={clsx("margin-top-1")}
                             label={<>Electric transit buses:</>}
                             ariaLabel="Number of electric transit buses to be added to the road"
                             value={transitBuses}
@@ -816,7 +874,7 @@ function ImpactsInputsContent() {
                               }
                             }}
                             tooltip={
-                              <p className="margin-0">
+                              <p className={clsx("margin-0")}>
                                 Enter the number of electric transit buses to be
                                 added to the road.
                               </p>
@@ -825,9 +883,9 @@ function ImpactsInputsContent() {
                           />
                         </div>
 
-                        <div className="flex-1 tablet:margin-left-2">
+                        <div className={clsx("flex-1", "tablet:margin-left-2")}>
                           <ImpactsTextInput
-                            className="margin-top-1"
+                            className={clsx("margin-top-1")}
                             label={<>Electric school buses:</>}
                             ariaLabel="Number of electric school buses to be added to the road"
                             value={schoolBuses}
@@ -839,7 +897,7 @@ function ImpactsInputsContent() {
                               dispatch(runEVSchoolBusesCalculations(value));
                             }}
                             tooltip={
-                              <p className="margin-0">
+                              <p className={clsx("margin-0")}>
                                 Enter the number of electric school buses to be
                                 added to the road.
                               </p>
@@ -850,15 +908,20 @@ function ImpactsInputsContent() {
                       </div>
                     </div>
 
-                    <div className="desktop:grid-col-6">
-                      <div className="margin-top-2 desktop:margin-top-0 desktop:margin-left-2">
-                        <EVSalesAndStockTable className="width-full" />
+                    <div className={clsx("desktop:grid-col-6")}>
+                      <div
+                        className={clsx(
+                          "margin-top-2",
+                          "desktop:margin-top-0 desktop:margin-left-2",
+                        )}
+                      >
+                        <EVSalesAndStockTable className={clsx("width-full")} />
                       </div>
                     </div>
                   </div>
 
-                  <div className="margin-top-2 desktop:display-flex">
-                    <div className="flex-1 desktop:margin-right-2">
+                  <div className={clsx("margin-top-2", "desktop:display-flex")}>
+                    <div className={clsx("flex-1", "desktop:margin-right-2")}>
                       <ImpactsSelectInput
                         label="Location of EV deployment:"
                         ariaLabel="Location of EV deployment"
@@ -882,7 +945,7 @@ function ImpactsInputsContent() {
                           }
                         }}
                         tooltip={
-                          <p className="margin-0">
+                          <p className={clsx("margin-0")}>
                             Select the location of EV deployment. While AVERT’s
                             power sector modeling algorithm is agnostic to where
                             electricity load changes occur within an AVERT
@@ -894,9 +957,9 @@ function ImpactsInputsContent() {
                       />
                     </div>
 
-                    <div className="flex-1 desktop:margin-x-2">
+                    <div className={clsx("flex-1", "desktop:margin-x-2")}>
                       <ImpactsSelectInput
-                        className="margin-top-1 desktop:margin-top-0"
+                        className={clsx("margin-top-1", "desktop:margin-top-0")}
                         label="EV model year:"
                         ariaLabel="Model year of the modeled electric vehicles"
                         options={evModelYearOptions}
@@ -906,7 +969,7 @@ function ImpactsInputsContent() {
                           dispatch(updateEVModelYear(option));
                         }}
                         tooltip={
-                          <p className="margin-0">
+                          <p className={clsx("margin-0")}>
                             Select the model year of the electric vehicles
                             entered in the scenario. This parameter determines
                             the modeled EVs’ efficiencies and the emission rates
@@ -920,9 +983,9 @@ function ImpactsInputsContent() {
                       />
                     </div>
 
-                    <div className="flex-1 desktop:margin-left-2">
+                    <div className={clsx("flex-1", "desktop:margin-left-2")}>
                       <ImpactsSelectInput
-                        className="margin-top-1 desktop:margin-top-0"
+                        className={clsx("margin-top-1", "desktop:margin-top-0")}
                         label="ICE vehicles being replaced:"
                         ariaLabel="EV to displace a “new” or the average “existing” internal combustion engine vehicle"
                         options={iceReplacementVehicleOptions}
@@ -932,7 +995,7 @@ function ImpactsInputsContent() {
                           dispatch(updateEVICEReplacementVehicle(option));
                         }}
                         tooltip={
-                          <p className="margin-0">
+                          <p className={clsx("margin-0")}>
                             Select “new” or “existing” based on whether the EVs
                             entered in the scenario will displace a “new”
                             internal combustion engine (ICE) vehicle with the
@@ -947,7 +1010,7 @@ function ImpactsInputsContent() {
                     </div>
                   </div>
 
-                  <EEREEVComparisonTable className="width-full" />
+                  <EEREEVComparisonTable className={clsx("width-full")} />
                 </section>
               </details>
             </div>
@@ -955,33 +1018,36 @@ function ImpactsInputsContent() {
         </div>
 
         <header
-          className={
-            `avert-border avert-box-background ` +
-            `border-width-1px border-bottom-width-0 border-solid ` +
-            `margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest`
-          }
+          className={clsx(
+            "avert-border avert-box-background",
+            "border-width-1px border-bottom-width-0 border-solid margin-top-3 padding-y-1 padding-x-105 text-bold bg-base-lightest",
+          )}
         >
-          <h3 className="margin-0 font-sans-xs line-height-sans-4">
+          <h3 className={clsx("margin-0 font-sans-xs line-height-sans-4")}>
             Energy Storage
           </h3>
         </header>
 
-        <div className="grid-container padding-0 maxw-full">
+        <div className={clsx("grid-container padding-0 maxw-full")}>
           <div
-            className={
-              `grid-row ` +
-              `avert-border border-width-1px border-top-width-0 border-right-width-0 border-solid`
-            }
+            className={clsx(
+              "avert-border",
+              "grid-row border-width-1px border-top-width-0 border-right-width-0 border-solid",
+            )}
           >
             <div
-              className={
-                `desktop:grid-col-12 ` +
-                `avert-border border-width-1px border-y-width-0 border-left-width-0 border-solid`
-              }
+              className={clsx(
+                "avert-border",
+                "border-width-1px border-y-width-0 border-left-width-0 border-solid",
+                "desktop:grid-col-12",
+              )}
             >
               <details
                 css={inputsGroupStyles}
-                className="avert-border border-width-1px border-bottom-width-0 border-x-width-0 border-solid"
+                className={clsx(
+                  "avert-border",
+                  "border-width-1px border-bottom-width-0 border-x-width-0 border-solid",
+                )}
                 open={detailsFOpen}
                 onToggle={(ev) => {
                   const details = ev.currentTarget as HTMLDetailsElement;
@@ -990,22 +1056,32 @@ function ImpactsInputsContent() {
               >
                 <summary
                   css={inputsSummaryStyles}
-                  className={
-                    `avert-summary ` +
-                    `display-flex flex-align-center padding-105 ` +
-                    `line-height-sans-2 text-bold cursor-pointer`
-                  }
+                  className={clsx(
+                    "avert-summary",
+                    "display-flex flex-align-center padding-105 line-height-sans-2 text-bold cursor-pointer",
+                  )}
                   data-label="F"
                 >
-                  <span className="display-none">F.</span>
+                  <span className={clsx("display-none")}>F.</span>
                   PV-plus-storage
                 </summary>
 
-                <section className="padding-top-0 padding-x-2 padding-bottom-105">
-                  <div className="grid-row">
-                    <div className="desktop:grid-col-6">
-                      <div className="tablet:display-flex desktop:margin-right-2">
-                        <div className="flex-1 tablet:margin-right-2">
+                <section
+                  className={clsx(
+                    "padding-top-0 padding-x-2 padding-bottom-105",
+                  )}
+                >
+                  <div className={clsx("grid-row")}>
+                    <div className={clsx("desktop:grid-col-6")}>
+                      <div
+                        className={clsx(
+                          "tablet:display-flex",
+                          "desktop:margin-right-2",
+                        )}
+                      >
+                        <div
+                          className={clsx("flex-1", "tablet:margin-right-2")}
+                        >
                           <ImpactsTextInput
                             label={<>Utility-scale storage capacity:</>}
                             ariaLabel="Max theoretical power that the utility-scale resource can discharge"
@@ -1017,7 +1093,7 @@ function ImpactsInputsContent() {
                             }}
                             tooltip={
                               <>
-                                <p className="margin-0">
+                                <p className={clsx("margin-0")}>
                                   Enter the total capacity (maximum potential
                                   energy storage), measured in MW. To model
                                   PV-plus-storage, the user must also add some
@@ -1033,7 +1109,7 @@ function ImpactsInputsContent() {
                                   and modeled as a reduction in fossil
                                   generation. The AVERT{" "}
                                   <a
-                                    className="usa-link"
+                                    className={clsx("usa-link")}
                                     href="https://www.epa.gov/avert/download-avert"
                                     target="_parent"
                                     rel="noreferrer"
@@ -1049,7 +1125,7 @@ function ImpactsInputsContent() {
                                 <p>
                                   See Appendix K in the{" "}
                                   <a
-                                    className="usa-link"
+                                    className={clsx("usa-link")}
                                     href="https://www.epa.gov/avert/avert-user-manual"
                                     target="_parent"
                                     rel="noreferrer"
@@ -1063,9 +1139,12 @@ function ImpactsInputsContent() {
                           />
                         </div>
 
-                        <div className="flex-1 tablet:margin-left-2">
+                        <div className={clsx("flex-1", "tablet:margin-left-2")}>
                           <ImpactsTextInput
-                            className="margin-top-1 tablet:margin-top-0"
+                            className={clsx(
+                              "margin-top-1",
+                              "tablet:margin-top-0",
+                            )}
                             label={<>Distributed storage capacity:</>}
                             ariaLabel="Max theoretical power that the distributed resource can discharge"
                             suffix="MW"
@@ -1076,7 +1155,7 @@ function ImpactsInputsContent() {
                             }}
                             tooltip={
                               <>
-                                <p className="margin-0">
+                                <p className={clsx("margin-0")}>
                                   Enter the total capacity (maximum potential
                                   energy storage), measured in MW. To model
                                   PV-plus-storage, the user must also add some
@@ -1092,7 +1171,7 @@ function ImpactsInputsContent() {
                                   and modeled as a reduction in fossil
                                   generation. The AVERT{" "}
                                   <a
-                                    className="usa-link"
+                                    className={clsx("usa-link")}
                                     href="https://www.epa.gov/avert/download-avert"
                                     target="_parent"
                                     rel="noreferrer"
@@ -1108,7 +1187,7 @@ function ImpactsInputsContent() {
                                 <p>
                                   See Appendix K in the{" "}
                                   <a
-                                    className="usa-link"
+                                    className={clsx("usa-link")}
                                     href="https://www.epa.gov/avert/avert-user-manual"
                                     target="_parent"
                                     rel="noreferrer"
@@ -1123,10 +1202,17 @@ function ImpactsInputsContent() {
                         </div>
                       </div>
 
-                      <div className="tablet:display-flex desktop:margin-right-2">
-                        <div className="flex-1 tablet:margin-right-2">
+                      <div
+                        className={clsx(
+                          "tablet:display-flex",
+                          "desktop:margin-right-2",
+                        )}
+                      >
+                        <div
+                          className={clsx("flex-1", "tablet:margin-right-2")}
+                        >
                           <ImpactsSelectInput
-                            className="margin-top-1"
+                            className={clsx("margin-top-1")}
                             label="Maximum allowable discharge cycles per year:"
                             ariaLabel="Maximum allowable discharge cycles per year"
                             options={maxAnnualDischargeCyclesOptions}
@@ -1139,7 +1225,7 @@ function ImpactsInputsContent() {
                             }}
                             tooltip={
                               <>
-                                <p className="margin-0">
+                                <p className={clsx("margin-0")}>
                                   Select the maximum allowable number of cycles
                                   the energy storage system should discharge in
                                   a year. This number limits the numbers of days
@@ -1153,7 +1239,7 @@ function ImpactsInputsContent() {
                                 <p>
                                   See Appendix K in the{" "}
                                   <a
-                                    className="usa-link"
+                                    className={clsx("usa-link")}
                                     href="https://www.epa.gov/avert/avert-user-manual"
                                     target="_parent"
                                     rel="noreferrer"
@@ -1167,18 +1253,28 @@ function ImpactsInputsContent() {
                           />
                         </div>
 
-                        <div className="flex-1 tablet:margin-left-2">
+                        <div className={clsx("flex-1", "tablet:margin-left-2")}>
                           &nbsp;
                         </div>
                       </div>
                     </div>
 
-                    <div className="desktop:grid-col-6">
-                      <div className="margin-top-2 desktop:margin-top-0 desktop:margin-left-2">
-                        <h4 className="avert-blue margin-bottom-1 font-serif-md">
+                    <div className={clsx("desktop:grid-col-6")}>
+                      <div
+                        className={clsx(
+                          "margin-top-2",
+                          "desktop:margin-top-0 desktop:margin-left-2",
+                        )}
+                      >
+                        <h4
+                          className={clsx(
+                            "avert-blue",
+                            "margin-bottom-1 font-serif-md",
+                          )}
+                        >
                           Storage Energy Calculated from User Inputs{" "}
                           <Tooltip>
-                            <span className="text-normal">
+                            <span className={clsx("text-normal")}>
                               AVERT Web Edition assumes a storage duration of
                               four hours. The modeled battery is restricted to
                               charge for four hours and then discharge for four
@@ -1190,9 +1286,14 @@ function ImpactsInputsContent() {
                           </Tooltip>
                         </h4>
 
-                        <div className="overflow-auto">
-                          <div className="avert-table-container">
-                            <table className="avert-table avert-table-striped avert-table-fixed width-full">
+                        <div className={clsx("overflow-auto")}>
+                          <div className={clsx("avert-table-container")}>
+                            <table
+                              className={clsx(
+                                "avert-table avert-table-striped avert-table-fixed",
+                                "width-full",
+                              )}
+                            >
                               <thead>
                                 <tr>
                                   <th scope="col">Storage Type</th>
@@ -1220,9 +1321,13 @@ function ImpactsInputsContent() {
                   </div>
 
                   {utilityStorageError && (
-                    <div className="usa-alert usa-alert--slim usa-alert--error">
-                      <div className="usa-alert__body">
-                        <p className="usa-alert__text">
+                    <div
+                      className={clsx(
+                        "usa-alert usa-alert--slim usa-alert--error",
+                      )}
+                    >
+                      <div className={clsx("usa-alert__body")}>
+                        <p className={clsx("usa-alert__text")}>
                           Please enter some utility solar PV capacity.
                         </p>
                       </div>
@@ -1230,9 +1335,13 @@ function ImpactsInputsContent() {
                   )}
 
                   {rooftopStorageError && (
-                    <div className="usa-alert usa-alert--slim usa-alert--error">
-                      <div className="usa-alert__body">
-                        <p className="usa-alert__text">
+                    <div
+                      className={clsx(
+                        "usa-alert usa-alert--slim usa-alert--error",
+                      )}
+                    >
+                      <div className={clsx("usa-alert__body")}>
+                        <p className={clsx("usa-alert__text")}>
                           Please enter some rooftop solar PV capacity.
                         </p>
                       </div>
@@ -1245,9 +1354,13 @@ function ImpactsInputsContent() {
         </div>
       </div>
 
-      <p className="margin-bottom-2 text-center">
+      <p className={clsx("margin-bottom-2 text-center")}>
         <a
-          className={`usa-button avert-button ${disabledButtonClassName}`}
+          className={clsx(
+            "avert-button",
+            "usa-button",
+            disabledButtonClassName,
+          )}
           href="/"
           onClick={(ev) => {
             ev.preventDefault();
@@ -1270,7 +1383,7 @@ export function ImpactsInputs() {
         <>
           Energy Impacts inputs error. Please contact AVERT support at{" "}
           <a
-            className="usa-link"
+            className={clsx("usa-link")}
             href="mailto:avert@epa.gov"
             target="_parent"
             rel="noreferrer"

@@ -2,6 +2,7 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import "highcharts/modules/exporting";
 import "highcharts/modules/accessibility";
+import clsx from "clsx";
 // ---
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Tooltip } from "@/components/Tooltip";
@@ -111,10 +112,14 @@ function ImpactsChartContent() {
     <div data-avert-chart>
       {Object.keys(totalHourlyChanges).length > 0 && (
         <>
-          <h3 className="margin-0 font-sans-md line-height-sans-2 text-base-darker text-center">
+          <h3
+            className={clsx(
+              "margin-0 font-sans-md line-height-sans-2 text-base-darker text-center",
+            )}
+          >
             Electric power load profile based on values entered:&nbsp;
             <Tooltip>
-              <p className="margin-0 text-normal text-left">
+              <p className={clsx("margin-0 text-normal text-left")}>
                 This graph shows the hourly changes in load that will result
                 from the inputs entered above. It reflects a combination of all
                 inputs, typical capacity factors for wind and solar, and
@@ -126,21 +131,37 @@ function ImpactsChartContent() {
             </Tooltip>
           </h3>
 
-          <p className="margin-top-1 font-sans-2xs text-base-darker text-center">
+          <p
+            className={clsx(
+              "margin-top-1 font-sans-2xs text-base-darker text-center",
+            )}
+          >
             Adjusted for transmission and distribution line loss and wind and
             solar capacity factors, where applicable.
           </p>
 
-          <div className="position-relative height-full">
+          <div className={clsx("position-relative height-full")}>
             {hourlyEnergyProfileRecalculationNeeded && (
-              <div className="pin-all z-100 bg-black opacity-80">
-                <div className="display-flex flex-column flex-align-center flex-justify-center height-full">
-                  <p className="margin-0 padding-2 text-center text-white">
+              <div className={clsx("pin-all z-100 bg-black opacity-80")}>
+                <div
+                  className={clsx(
+                    "display-flex flex-column flex-align-center flex-justify-center height-full",
+                  )}
+                >
+                  <p
+                    className={clsx(
+                      "margin-0 padding-2 text-center text-white",
+                    )}
+                  >
                     Inputs have changed since this electric power load profile
                     was calculated.
                   </p>
 
-                  <p className="margin-0 padding-2 text-center text-white">
+                  <p
+                    className={clsx(
+                      "margin-0 padding-2 text-center text-white",
+                    )}
+                  >
                     Please click the “Recalculate Energy Impacts” button above
                     to recalculate with the latest energy impacts input values.
                   </p>
@@ -174,7 +195,7 @@ export function ImpactsChart() {
           Electric power load profile chart error. Please contact AVERT support
           at{" "}
           <a
-            className="usa-link"
+            className={clsx("usa-link")}
             href="mailto:avert@epa.gov"
             target="_parent"
             rel="noreferrer"

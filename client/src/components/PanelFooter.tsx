@@ -2,6 +2,7 @@
 
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import clsx from "clsx";
 // ---
 import { useAppDispatch, useAppSelector } from "@/redux/index";
 import { setActiveStep } from "@/redux/reducers/panel";
@@ -69,7 +70,7 @@ function PrevButton(props: { text: string | null }) {
 
   return (
     <PrevButtonAnchor
-      className="usa-button avert-button margin-0 margin-top-105"
+      className={clsx("avert-button", "usa-button margin-0 margin-top-105")}
       href="/"
       onClick={(ev) => {
         ev.preventDefault();
@@ -147,7 +148,11 @@ function NextButton(props: { text: string }) {
   return (
     <NextButtonAnchor
       resultsShown={onStepThree}
-      className={`usa-button avert-button order-last margin-0 margin-top-105 ${disabledButtonClassName}`}
+      className={clsx(
+        "avert-button",
+        "usa-button order-last margin-0 margin-top-105",
+        disabledButtonClassName,
+      )}
       href="/"
       onClick={(ev) => {
         ev.preventDefault();
@@ -194,8 +199,18 @@ export function PanelFooter(props: {
   const { prevButton, nextButton } = props;
 
   return (
-    <div className="avert-step-footer overflow-hidden padding-x-105 padding-bottom-105 bg-base-lightest">
-      <p className="margin-0 mobile-lg:display-flex mobile-lg:flex-justify">
+    <div
+      className={clsx(
+        "avert-step-footer",
+        "overflow-hidden padding-x-105 padding-bottom-105 bg-base-lightest",
+      )}
+    >
+      <p
+        className={clsx(
+          "margin-0",
+          "mobile-lg:display-flex mobile-lg:flex-justify",
+        )}
+      >
         <NextButton text={nextButton} />
         <PrevButton text={prevButton} />
       </p>

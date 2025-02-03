@@ -1,3 +1,5 @@
+import clsx from "clsx";
+// ---
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Tooltip } from "@/components/Tooltip";
 import { useAppSelector } from "@/redux/index";
@@ -71,10 +73,10 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
 
   return (
     <>
-      <h4 className="avert-blue margin-bottom-1 font-serif-md">
+      <h4 className={clsx("avert-blue", "margin-bottom-1 font-serif-md")}>
         EV Sales and Stock Comparison{" "}
         <Tooltip>
-          <span className="text-normal">
+          <span className={clsx("text-normal")}>
             This table translates the user-specified number of EVs into shares
             of vehicle sales and shares of vehicles on the road (i.e., vehicle
             stock). These shares are based on recent historical data aggregated
@@ -84,11 +86,9 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
         </Tooltip>
       </h4>
 
-      <div className="overflow-auto">
-        <div className="avert-table-container">
-          <table
-            className={`avert-table avert-table-striped ${className ?? ""}`}
-          >
+      <div className={clsx("overflow-auto")}>
+        <div className={clsx("avert-table-container")}>
+          <table className={clsx("avert-table avert-table-striped", className)}>
             <thead>
               <tr>
                 <th scope="col">Electric Vehicle Type</th>
@@ -257,11 +257,11 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
     requiredOffsetUtilitySolarGWh / (historicalUtilitySolarGWh || 1);
 
   return (
-    <div className="margin-top-2">
-      <h4 className="avert-blue margin-bottom-1 font-serif-md">
+    <div className={clsx("margin-top-2")}>
+      <h4 className={clsx("avert-blue", "margin-bottom-1 font-serif-md")}>
         EE/RE and EV Comparison{" "}
         <Tooltip>
-          <span className="text-normal">
+          <span className={clsx("text-normal")}>
             This table provides a comparison between the total annual energy
             impact of the EVs entered and recent trends in RE capacity
             installation and EE programs in the location of EV deployment. AVERT
@@ -274,11 +274,9 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
         </Tooltip>
       </h4>
 
-      <div className="overflow-auto">
-        <div className="avert-table-container">
-          <table
-            className={`avert-table avert-table-striped ${className ?? ""}`}
-          >
+      <div className={clsx("overflow-auto")}>
+        <div className={clsx("avert-table-container")}>
+          <table className={clsx("avert-table avert-table-striped", className)}>
             <thead>
               <tr>
                 <th scope="col" rowSpan={2}>
@@ -436,7 +434,7 @@ export function EVSalesAndStockTable(props: { className?: string }) {
           Error loading EV Sales and Stock Comparison table. Please contact
           AVERT support at{" "}
           <a
-            className="usa-link"
+            className={clsx("usa-link")}
             href="mailto:avert@epa.gov"
             target="_parent"
             rel="noreferrer"
@@ -446,7 +444,7 @@ export function EVSalesAndStockTable(props: { className?: string }) {
         </>
       }
     >
-      <EVSalesAndStockTableContent className={className} />
+      <EVSalesAndStockTableContent className={clsx(className)} />
     </ErrorBoundary>
   );
 }
@@ -461,7 +459,7 @@ export function EEREEVComparisonTable(props: { className?: string }) {
           Error loading EE/RE and EV Comparison table. Please contact AVERT
           support at{" "}
           <a
-            className="usa-link"
+            className={clsx("usa-link")}
             href="mailto:avert@epa.gov"
             target="_parent"
             rel="noreferrer"
@@ -471,7 +469,7 @@ export function EEREEVComparisonTable(props: { className?: string }) {
         </>
       }
     >
-      <EEREEVComparisonTableContent className={className} />
+      <EEREEVComparisonTableContent className={clsx(className)} />
     </ErrorBoundary>
   );
 }

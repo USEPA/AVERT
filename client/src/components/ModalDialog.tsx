@@ -50,7 +50,7 @@ export function ModalDialog() {
               "tw:data-leave:ease-in",
             )}
           >
-            <div className="twpf">
+            <div className={clsx("twpf")}>
               <div
                 className={clsx(
                   "tw:absolute tw:top-0 tw:right-0 tw:pt-4 tw:pr-4",
@@ -75,7 +75,7 @@ export function ModalDialog() {
             </div>
 
             <div className={clsx("tw:m-4")}>
-              <div className="usa-prose">{description}</div>
+              <div className={clsx("usa-prose")}>{description}</div>
             </div>
           </DialogPanel>
         </div>

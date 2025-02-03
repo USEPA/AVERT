@@ -1,3 +1,5 @@
+import clsx from "clsx";
+// ---
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useAppSelector } from "@/redux/index";
 
@@ -70,175 +72,220 @@ function ResultsImpactsInputsContent() {
   })?.name;
 
   return (
-    <div className="avert-box padding-105">
-      <h3 className="avert-box-heading font-serif-2xs line-height-serif-2">
+    <div className={clsx("avert-box", "padding-105")}>
+      <h3
+        className={clsx(
+          "avert-box-heading",
+          "font-serif-2xs line-height-serif-2",
+        )}
+      >
         Energy Impacts Inputs:
       </h3>
 
-      <div className="avert-columns">
+      <div className={clsx("avert-columns")}>
         {inputExists(annualGwhReduction) && (
-          <p className="margin-0 padding-top-1 line-height-sans-2">
-            <span className="font-sans-2xs">
+          <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
+            <span className={clsx("font-sans-2xs")}>
               Reduce total annual generation by:
             </span>{" "}
-            <span className="font-mono-xs text-bold">{annualGwhReduction}</span>{" "}
-            <span className="font-sans-3xs">GWh</span>
+            <span className={clsx("font-mono-xs text-bold")}>
+              {annualGwhReduction}
+            </span>{" "}
+            <span className={clsx("font-sans-3xs")}>GWh</span>
           </p>
         )}
 
         {inputExists(hourlyMwReduction) && (
-          <p className="margin-0 padding-top-1 line-height-sans-2">
-            <span className="font-sans-2xs">Reduce hourly generation by:</span>{" "}
-            <span className="font-mono-xs text-bold">{hourlyMwReduction}</span>{" "}
-            <span className="font-sans-3xs">MW</span>
+          <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
+            <span className={clsx("font-sans-2xs")}>
+              Reduce hourly generation by:
+            </span>{" "}
+            <span className={clsx("font-mono-xs text-bold")}>
+              {hourlyMwReduction}
+            </span>{" "}
+            <span className={clsx("font-sans-3xs")}>MW</span>
           </p>
         )}
 
         {inputExists(broadProgramReduction) && (
-          <p className="margin-0 padding-top-1 line-height-sans-2">
-            <span className="font-sans-2xs">
+          <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
+            <span className={clsx("font-sans-2xs")}>
               <em>Broad-based program:</em> Reduce generation by:
             </span>{" "}
-            <span className="font-mono-xs text-bold">
+            <span className={clsx("font-mono-xs text-bold")}>
               {broadProgramReduction}
             </span>{" "}
-            <span className="font-sans-3xs">%&nbsp;in&nbsp;all&nbsp;hours</span>
+            <span className={clsx("font-sans-3xs")}>
+              %&nbsp;in&nbsp;all&nbsp;hours
+            </span>
           </p>
         )}
 
         {(inputExists(targetedProgramReduction) || inputExists(topHours)) && (
-          <p className="margin-0 padding-top-1 line-height-sans-2">
-            <span className="font-sans-2xs">
+          <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
+            <span className={clsx("font-sans-2xs")}>
               <em>Targeted program:</em> Reduce generation by:
             </span>{" "}
-            <span className="font-mono-xs text-bold">
+            <span className={clsx("font-mono-xs text-bold")}>
               {targetedProgramReduction}
             </span>{" "}
-            <span className="font-sans-3xs">
+            <span className={clsx("font-sans-3xs")}>
               %&nbsp;during&nbsp;the&nbsp;peak:{" "}
             </span>{" "}
-            <span className="font-mono-xs text-bold">{topHours}</span>{" "}
-            <span className="font-sans-3xs">%&nbsp;of&nbsp;hours</span>
+            <span className={clsx("font-mono-xs text-bold")}>{topHours}</span>{" "}
+            <span className={clsx("font-sans-3xs")}>%&nbsp;of&nbsp;hours</span>
           </p>
         )}
 
         {inputExists(onshoreWind) && (
-          <p className="margin-0 padding-top-1 line-height-sans-2">
-            <span className="font-sans-2xs">Onshore wind total capacity:</span>{" "}
-            <span className="font-mono-xs text-bold">{onshoreWind}</span>{" "}
-            <span className="font-sans-3xs">MW</span>
+          <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
+            <span className={clsx("font-sans-2xs")}>
+              Onshore wind total capacity:
+            </span>{" "}
+            <span className={clsx("font-mono-xs text-bold")}>
+              {onshoreWind}
+            </span>{" "}
+            <span className={clsx("font-sans-3xs")}>MW</span>
           </p>
         )}
 
         {inputExists(offshoreWind) && (
-          <p className="margin-0 padding-top-1 line-height-sans-2">
-            <span className="font-sans-2xs">Offshore wind total capacity:</span>{" "}
-            <span className="font-mono-xs text-bold">{offshoreWind}</span>{" "}
-            <span className="font-sans-3xs">MW</span>
+          <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
+            <span className={clsx("font-sans-2xs")}>
+              Offshore wind total capacity:
+            </span>{" "}
+            <span className={clsx("font-mono-xs text-bold")}>
+              {offshoreWind}
+            </span>{" "}
+            <span className={clsx("font-sans-3xs")}>MW</span>
           </p>
         )}
 
         {inputExists(utilitySolar) && (
-          <p className="margin-0 padding-top-1 line-height-sans-2">
-            <span className="font-sans-2xs">
+          <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
+            <span className={clsx("font-sans-2xs")}>
               Utility-scale solar PV total capacity:
             </span>{" "}
-            <span className="font-mono-xs text-bold">{utilitySolar}</span>{" "}
-            <span className="font-sans-3xs">MW</span>
+            <span className={clsx("font-mono-xs text-bold")}>
+              {utilitySolar}
+            </span>{" "}
+            <span className={clsx("font-sans-3xs")}>MW</span>
           </p>
         )}
 
         {inputExists(rooftopSolar) && (
-          <p className="margin-0 padding-top-1 line-height-sans-2">
-            <span className="font-sans-2xs">
+          <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
+            <span className={clsx("font-sans-2xs")}>
               Distributed (rooftop) solar PV total capacity:
             </span>{" "}
-            <span className="font-mono-xs text-bold">{rooftopSolar}</span>{" "}
-            <span className="font-sans-3xs">MW</span>
+            <span className={clsx("font-mono-xs text-bold")}>
+              {rooftopSolar}
+            </span>{" "}
+            <span className={clsx("font-sans-3xs")}>MW</span>
           </p>
         )}
 
         {inputExists(batteryEVs) && (
-          <p className="margin-0 padding-top-1 line-height-sans-2">
-            <span className="font-sans-2xs">Light-duty battery EVs:</span>{" "}
-            <span className="font-mono-xs text-bold">{batteryEVs}</span>
+          <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
+            <span className={clsx("font-sans-2xs")}>
+              Light-duty battery EVs:
+            </span>{" "}
+            <span className={clsx("font-mono-xs text-bold")}>{batteryEVs}</span>
           </p>
         )}
 
         {inputExists(hybridEVs) && (
-          <p className="margin-0 padding-top-1 line-height-sans-2">
-            <span className="font-sans-2xs">
+          <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
+            <span className={clsx("font-sans-2xs")}>
               Light-duty plug-in hybrid EVs:
             </span>{" "}
-            <span className="font-mono-xs text-bold">{hybridEVs}</span>
+            <span className={clsx("font-mono-xs text-bold")}>{hybridEVs}</span>
           </p>
         )}
 
         {inputExists(transitBuses) && (
-          <p className="margin-0 padding-top-1 line-height-sans-2">
-            <span className="font-sans-2xs">Electric transit buses:</span>{" "}
-            <span className="font-mono-xs text-bold">{transitBuses}</span>
+          <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
+            <span className={clsx("font-sans-2xs")}>
+              Electric transit buses:
+            </span>{" "}
+            <span className={clsx("font-mono-xs text-bold")}>
+              {transitBuses}
+            </span>
           </p>
         )}
 
         {inputExists(schoolBuses) && (
-          <p className="margin-0 padding-top-1 line-height-sans-2">
-            <span className="font-sans-2xs">Electric school buses:</span>{" "}
-            <span className="font-mono-xs text-bold">{schoolBuses}</span>
+          <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
+            <span className={clsx("font-sans-2xs")}>
+              Electric school buses:
+            </span>{" "}
+            <span className={clsx("font-mono-xs text-bold")}>
+              {schoolBuses}
+            </span>
           </p>
         )}
 
         {evInputsNotEmpty && evDeploymentLocationName && (
-          <p className="margin-0 padding-top-1 line-height-sans-2">
-            <span className="font-sans-2xs">Location of EV deployment:</span>{" "}
-            <span className="font-mono-xs text-bold">
+          <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
+            <span className={clsx("font-sans-2xs")}>
+              Location of EV deployment:
+            </span>{" "}
+            <span className={clsx("font-mono-xs text-bold")}>
               {evDeploymentLocationName}
             </span>
           </p>
         )}
 
         {evInputsNotEmpty && evModelYearName && (
-          <p className="margin-0 padding-top-1 line-height-sans-2">
-            <span className="font-sans-2xs">EV model year:</span>{" "}
-            <span className="font-mono-xs text-bold">{evModelYearName}</span>
+          <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
+            <span className={clsx("font-sans-2xs")}>EV model year:</span>{" "}
+            <span className={clsx("font-mono-xs text-bold")}>
+              {evModelYearName}
+            </span>
           </p>
         )}
 
         {evInputsNotEmpty && iceReplacementVehicleName && (
-          <p className="margin-0 padding-top-1 line-height-sans-2">
-            <span className="font-sans-2xs">ICE vehicles being replaced:</span>{" "}
-            <span className="font-mono-xs text-bold">
+          <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
+            <span className={clsx("font-sans-2xs")}>
+              ICE vehicles being replaced:
+            </span>{" "}
+            <span className={clsx("font-mono-xs text-bold")}>
               {iceReplacementVehicleName}
             </span>
           </p>
         )}
 
         {inputExists(utilityStorage) && (
-          <p className="margin-0 padding-top-1 line-height-sans-2">
-            <span className="font-sans-2xs">
+          <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
+            <span className={clsx("font-sans-2xs")}>
               Utility-scale storage capacity (paired with PV):
             </span>{" "}
-            <span className="font-mono-xs text-bold">{utilityStorage}</span>{" "}
-            <span className="font-sans-3xs">MW</span>
+            <span className={clsx("font-mono-xs text-bold")}>
+              {utilityStorage}
+            </span>{" "}
+            <span className={clsx("font-sans-3xs")}>MW</span>
           </p>
         )}
 
         {inputExists(rooftopStorage) && (
-          <p className="margin-0 padding-top-1 line-height-sans-2">
-            <span className="font-sans-2xs">
+          <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
+            <span className={clsx("font-sans-2xs")}>
               Distributed storage capacity (paired with PV):
             </span>{" "}
-            <span className="font-mono-xs text-bold">{rooftopStorage}</span>{" "}
-            <span className="font-sans-3xs">MW</span>
+            <span className={clsx("font-mono-xs text-bold")}>
+              {rooftopStorage}
+            </span>{" "}
+            <span className={clsx("font-sans-3xs")}>MW</span>
           </p>
         )}
 
         {esInputsNotEmpty && maxAnnualDischargeCyclesName && (
-          <p className="margin-0 padding-top-1 line-height-sans-2">
-            <span className="font-sans-2xs">
+          <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
+            <span className={clsx("font-sans-2xs")}>
               Maximum allowable discharge cycles per year:
             </span>{" "}
-            <span className="font-mono-xs text-bold">
+            <span className={clsx("font-mono-xs text-bold")}>
               {maxAnnualDischargeCyclesName}
             </span>
           </p>
@@ -255,7 +302,7 @@ export function ResultsImpactsInputs() {
         <>
           Error loading impacts inputs display. Please contact AVERT support at{" "}
           <a
-            className="usa-link"
+            className={clsx("usa-link")}
             href="mailto:avert@epa.gov"
             target="_parent"
             rel="noreferrer"

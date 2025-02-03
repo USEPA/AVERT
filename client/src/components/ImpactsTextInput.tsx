@@ -1,4 +1,5 @@
 import { type ReactNode } from "react";
+import clsx from "clsx";
 // ---
 import { Tooltip } from "@/components/Tooltip";
 import { useAppDispatch, useAppSelector } from "@/redux/index";
@@ -49,12 +50,14 @@ export function ImpactsTextInput(props: {
     !inputsAreValid || inputIsEmpty || hourlyEnergyProfile.status === "pending";
 
   return (
-    <div className={className ? className : ""}>
+    <div className={clsx(className)}>
       {label && (
         <>
           <label
             htmlFor={fieldName}
-            className="display-inline-block font-sans-2xs line-height-sans-2"
+            className={clsx(
+              "display-inline-block font-sans-2xs line-height-sans-2",
+            )}
           >
             {label}
           </label>
@@ -62,15 +65,13 @@ export function ImpactsTextInput(props: {
         </>
       )}
 
-      <div className="display-flex flex-align-center">
+      <div className={clsx("display-flex flex-align-center")}>
         <input
           id={fieldName}
-          className={
-            `usa-input ` +
-            `display-inline-block margin-y-05 padding-05 height-auto maxw-full` +
-            `border-width-1px border-solid border-base-light` +
-            `text-right text-bold font-sans-xs`
-          }
+          className={clsx(
+            "usa-input display-inline-block height-auto maxw-full text-right text-bold font-sans-xs",
+            "margin-y-05 padding-05 border-width-1px border-solid border-base-light",
+          )}
           aria-label={ariaLabel}
           type="text"
           value={value}
@@ -88,11 +89,11 @@ export function ImpactsTextInput(props: {
         />
 
         {suffix && (
-          <span className="margin-left-1 font-sans-3xs">{suffix}</span>
+          <span className={clsx("margin-left-1 font-sans-3xs")}>{suffix}</span>
         )}
 
         {tooltip && (
-          <span className="margin-left-05">
+          <span className={clsx("margin-left-05")}>
             <Tooltip>{tooltip}</Tooltip>
           </span>
         )}
@@ -105,12 +106,14 @@ export function ImpactsTextInput(props: {
           | ElectricVehiclesFieldName,
       ) && (
         <p
-          className="margin-0 line-height-sans-3 text-italic text-secondary"
+          className={clsx(
+            "margin-0 line-height-sans-3 text-italic text-secondary",
+          )}
           data-input-error
         >
           {errorMessage ?? (
             <>
-              <span className="display-block text-bold text-no-italic">
+              <span className={clsx("display-block text-bold text-no-italic")}>
                 Please enter a positive number.
               </span>
               If you wish to model a reverse energy impacts scenario (i.e., a
