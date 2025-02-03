@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Tab } from "@headlessui/react";
+import { Tab, TabGroup, TabList, TabPanels, TabPanel } from "@headlessui/react";
 import clsx from "clsx";
 // ---
 import { LoadingIcon } from "@/components/LoadingIcon";
@@ -212,13 +212,13 @@ export function Panels() {
       }
 
       <section css={panelStyles} data-active={activeStep === 1}>
-        <Tab.Group
+        <TabGroup
           selectedIndex={geographicFocus === "regions" ? 0 : 1}
           onChange={(index) => {
             dispatch(selectGeography(index === 0 ? "regions" : "states"));
           }}
         >
-          <Tab.List className={clsx("tw:flex tw:justify-between")}>
+          <TabList className={clsx("tw:flex tw:justify-between")}>
             {["Select Region", "Select State"].map((tab) => (
               <Tab
                 key={tab}
@@ -238,9 +238,9 @@ export function Panels() {
                 {tab}
               </Tab>
             ))}
-          </Tab.List>
+          </TabList>
 
-          <Tab.Panels className={clsx("tw:p-4")}>
+          <TabPanels className={clsx("tw:p-4")}>
             {[
               <div className="grid-container padding-0 maxw-full">
                 <div className="grid-row">
@@ -310,7 +310,7 @@ export function Panels() {
                 </div>
               </div>,
             ].map((panel, index) => (
-              <Tab.Panel
+              <TabPanel
                 key={index}
                 className={clsx(
                   "tw:focus:!outline-hidden",
@@ -318,10 +318,10 @@ export function Panels() {
                 )}
               >
                 {panel}
-              </Tab.Panel>
+              </TabPanel>
             ))}
-          </Tab.Panels>
-        </Tab.Group>
+          </TabPanels>
+        </TabGroup>
 
         <PanelFooter prevButton={null} nextButton="Set Energy Impacts" />
       </section>

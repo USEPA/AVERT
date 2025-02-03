@@ -1,5 +1,10 @@
 import { Fragment, useRef } from "react";
-import { Dialog, Transition } from "@headlessui/react";
+import {
+  Dialog,
+  DialogPanel,
+  Transition,
+  TransitionChild,
+} from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 // ---
@@ -15,7 +20,7 @@ export function ModalDialog() {
   const cancelRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <Transition.Root show={displayed} as={Fragment}>
+    <Transition show={displayed} as={Fragment}>
       <Dialog
         as="div"
         className={clsx("tw:relative tw:z-10")}
@@ -23,7 +28,7 @@ export function ModalDialog() {
         open={displayed}
         onClose={(_ev) => dispatch(resetModalDialog())}
       >
-        <Transition.Child
+        <TransitionChild
           as={Fragment}
           enter="tw:duration-300 tw:ease-out"
           enterFrom="tw:opacity-0"
@@ -37,7 +42,7 @@ export function ModalDialog() {
               "tw:fixed tw:inset-0 tw:bg-black/70 tw:transition-colors",
             )}
           />
-        </Transition.Child>
+        </TransitionChild>
 
         <div className={clsx("tw:fixed tw:inset-0 tw:z-10 tw:overflow-y-auto")}>
           <div
@@ -46,7 +51,7 @@ export function ModalDialog() {
               "tw:sm:items-center",
             )}
           >
-            <Transition.Child
+            <TransitionChild
               as={Fragment}
               enter="tw:duration-300 tw:ease-out"
               enterFrom="tw:translate-y-4 tw:opacity-0 tw:sm:translate-y-0"
@@ -55,7 +60,7 @@ export function ModalDialog() {
               leaveFrom="tw:translate-y-0 tw:opacity-100"
               leaveTo="tw:translate-y-4 tw:opacity-0 tw:sm:translate-y-0"
             >
-              <Dialog.Panel
+              <DialogPanel
                 className={clsx(
                   "tw:relative tw:transform tw:overflow-hidden tw:rounded-lg tw:bg-white tw:p-4 tw:shadow-xl tw:transition-all",
                   "tw:sm:w-full tw:sm:max-w-xl tw:sm:p-6",
@@ -88,11 +93,11 @@ export function ModalDialog() {
                 <div className={clsx("tw:m-4")}>
                   <div className="usa-prose">{description}</div>
                 </div>
-              </Dialog.Panel>
-            </Transition.Child>
+              </DialogPanel>
+            </TransitionChild>
           </div>
         </div>
       </Dialog>
-    </Transition.Root>
+    </Transition>
   );
 }
