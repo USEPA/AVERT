@@ -24,6 +24,23 @@ describe("Get Results – broadProgram", () => {
   });
 
   it("Annual Emissions Changes (Power Sector Only) table displays the correct results", () => {
+    const geneartion = ["49,108,280", "43,819,390", "-5,288,890"];
+    const so2Totals = ["1,362,440", "994,550", "-367,890"];
+    const noxTotals = ["7,209,170", "6,306,230", "-902,940"];
+    const ozoneNoxTotals = ["3,606,780", "3,052,580", "-554,190"];
+    const co2Totals = ["25,430,570", "22,794,620", "-2,635,960"];
+    const pm25Totals = ["1,380,600", "1,199,600", "-180,990"];
+    const vocsTotals = ["524,610", "459,730", "-64,880"];
+    const nh3Totals = ["820,590", "729,780", "-90,810"];
+
+    const so2Rates = ["0.028", "0.070"];
+    const noxRates = ["0.147", "0.171"];
+    const ozoneNoxRates = ["0.158", "0.225"];
+    const co2Rates = ["0.518", "0.498"];
+    const pm25Rates = ["0.028", "0.034"];
+    const vocsRates = ["0.011", "0.012"];
+    const nh3Rates = ["0.017", "0.017"];
+
     /* prettier-ignore */
     cy.findByText('Generation')
       .parent().parent().children().as('geneartion')
@@ -42,61 +59,85 @@ describe("Get Results – broadProgram", () => {
       .parent().next().children().as('vocsRates')
       .parent().next().children().as('nh3Rates');
 
-    cy.get("@geneartion").eq(1).should("contain", "49,806,940");
-    cy.get("@geneartion").eq(2).should("contain", "44,425,330");
-    cy.get("@geneartion").eq(3).should("contain", "-5,381,610");
+    cy.get("@geneartion").eq(1).should("contain", geneartion[0]);
+    cy.get("@geneartion").eq(2).should("contain", geneartion[1]);
+    cy.get("@geneartion").eq(3).should("contain", geneartion[2]);
 
-    cy.get("@so2Totals").eq(1).should("contain", "4,272,680");
-    cy.get("@so2Totals").eq(2).should("contain", "3,134,550");
-    cy.get("@so2Totals").eq(3).should("contain", "-1,138,130");
+    cy.get("@so2Totals").eq(1).should("contain", so2Totals[0]);
+    cy.get("@so2Totals").eq(2).should("contain", so2Totals[1]);
+    cy.get("@so2Totals").eq(3).should("contain", so2Totals[2]);
 
-    cy.get("@noxTotals").eq(1).should("contain", "8,742,410");
-    cy.get("@noxTotals").eq(2).should("contain", "7,412,690");
-    cy.get("@noxTotals").eq(3).should("contain", "-1,329,720");
+    cy.get("@noxTotals").eq(1).should("contain", noxTotals[0]);
+    cy.get("@noxTotals").eq(2).should("contain", noxTotals[1]);
+    cy.get("@noxTotals").eq(3).should("contain", noxTotals[2]);
 
-    cy.get("@ozoneNoxTotals").eq(1).should("contain", "4,520,620");
-    cy.get("@ozoneNoxTotals").eq(2).should("contain", "3,837,950");
-    cy.get("@ozoneNoxTotals").eq(3).should("contain", "-682,670");
+    cy.get("@ozoneNoxTotals").eq(1).should("contain", ozoneNoxTotals[0]);
+    cy.get("@ozoneNoxTotals").eq(2).should("contain", ozoneNoxTotals[1]);
+    cy.get("@ozoneNoxTotals").eq(3).should("contain", ozoneNoxTotals[2]);
 
-    cy.get("@co2Totals").eq(1).should("contain", "25,898,760");
-    cy.get("@co2Totals").eq(2).should("contain", "23,099,990");
-    cy.get("@co2Totals").eq(3).should("contain", "-2,798,770");
+    cy.get("@co2Totals").eq(1).should("contain", co2Totals[0]);
+    cy.get("@co2Totals").eq(2).should("contain", co2Totals[1]);
+    cy.get("@co2Totals").eq(3).should("contain", co2Totals[2]);
 
-    cy.get("@pm25Totals").eq(1).should("contain", "1,748,910");
-    cy.get("@pm25Totals").eq(2).should("contain", "1,520,170");
-    cy.get("@pm25Totals").eq(3).should("contain", "-228,740");
+    cy.get("@pm25Totals").eq(1).should("contain", pm25Totals[0]);
+    cy.get("@pm25Totals").eq(2).should("contain", pm25Totals[1]);
+    cy.get("@pm25Totals").eq(3).should("contain", pm25Totals[2]);
 
-    cy.get("@vocsTotals").eq(1).should("contain", "839,210");
-    cy.get("@vocsTotals").eq(2).should("contain", "725,490");
-    cy.get("@vocsTotals").eq(3).should("contain", "-113,720");
+    cy.get("@vocsTotals").eq(1).should("contain", vocsTotals[0]);
+    cy.get("@vocsTotals").eq(2).should("contain", vocsTotals[1]);
+    cy.get("@vocsTotals").eq(3).should("contain", vocsTotals[2]);
 
-    cy.get("@nh3Totals").eq(1).should("contain", "1,511,020");
-    cy.get("@nh3Totals").eq(2).should("contain", "1,343,100");
-    cy.get("@nh3Totals").eq(3).should("contain", "-167,920");
+    cy.get("@nh3Totals").eq(1).should("contain", nh3Totals[0]);
+    cy.get("@nh3Totals").eq(2).should("contain", nh3Totals[1]);
+    cy.get("@nh3Totals").eq(3).should("contain", nh3Totals[2]);
 
-    cy.get("@so2Rates").eq(1).should("contain", "0.086");
-    cy.get("@so2Rates").eq(3).should("contain", "0.211");
+    cy.get("@so2Rates").eq(1).should("contain", so2Rates[0]);
+    cy.get("@so2Rates").eq(3).should("contain", so2Rates[1]);
 
-    cy.get("@noxRates").eq(1).should("contain", "0.176");
-    cy.get("@noxRates").eq(3).should("contain", "0.247");
+    cy.get("@noxRates").eq(1).should("contain", noxRates[0]);
+    cy.get("@noxRates").eq(3).should("contain", noxRates[1]);
 
-    cy.get("@ozoneNoxRates").eq(1).should("contain", "0.185");
-    cy.get("@ozoneNoxRates").eq(3).should("contain", "0.259");
+    cy.get("@ozoneNoxRates").eq(1).should("contain", ozoneNoxRates[0]);
+    cy.get("@ozoneNoxRates").eq(3).should("contain", ozoneNoxRates[1]);
 
-    cy.get("@co2Rates").eq(1).should("contain", "0.520");
-    cy.get("@co2Rates").eq(3).should("contain", "0.520");
+    cy.get("@co2Rates").eq(1).should("contain", co2Rates[0]);
+    cy.get("@co2Rates").eq(3).should("contain", co2Rates[1]);
 
-    cy.get("@pm25Rates").eq(1).should("contain", "0.035");
-    cy.get("@pm25Rates").eq(3).should("contain", "0.043");
+    cy.get("@pm25Rates").eq(1).should("contain", pm25Rates[0]);
+    cy.get("@pm25Rates").eq(3).should("contain", pm25Rates[1]);
 
-    cy.get("@vocsRates").eq(1).should("contain", "0.017");
-    cy.get("@vocsRates").eq(3).should("contain", "0.021");
+    cy.get("@vocsRates").eq(1).should("contain", vocsRates[0]);
+    cy.get("@vocsRates").eq(3).should("contain", vocsRates[1]);
 
-    cy.get("@nh3Rates").eq(1).should("contain", "0.030");
-    cy.get("@nh3Rates").eq(3).should("contain", "0.031");
+    cy.get("@nh3Rates").eq(1).should("contain", nh3Rates[0]);
+    cy.get("@nh3Rates").eq(3).should("contain", nh3Rates[1]);
   });
 
   it("Annual Emissions Changes By State table displays the correct results", () => {
+    const ctGen = ["-75,350", "-177,200", "-715,250", "-33,660", "-10,380", "-29,500"]; // prettier-ignore
+    const ctVehicles = ["0", "0", "0", "0", "0", "0"];
+    const ctChange = ["-75,350", "-177,200", "-715,250", "-33,660", "-10,380", "-29,500"]; // prettier-ignore
+
+    const meGen = ["-110,480", "-91,040", "-370,160", "-18,570", "-6,990", "-6,530"]; // prettier-ignore
+    const meVehicles = ["0", "0", "0", "0", "0", "0"];
+    const meChange = ["-110,480", "-91,040", "-370,160", "-18,570", "-6,990", "-6,530"]; // prettier-ignore
+
+    const maGen = ["-80,720", "-325,090", "-760,480", "-62,700", "-25,570", "-28,340"]; // prettier-ignore
+    const maVehicles = ["0", "0", "0", "0", "0", "0"];
+    const maChange = ["-80,720", "-325,090", "-760,480", "-62,700", "-25,570", "-28,340"]; // prettier-ignore
+
+    const nhGen = ["-93,130", "-183,430", "-341,920", "-25,760", "-7,410", "-14,130"]; // prettier-ignore
+    const nhVehicles = ["0", "0", "0", "0", "0", "0"];
+    const nhChange = ["-93,130", "-183,430", "-341,920", "-25,760", "-7,410", "-14,130"]; // prettier-ignore
+
+    const riGen = ["-8,010", "-104,760", "-414,810", "-33,870", "-9,510", "-10,030"]; // prettier-ignore
+    const riVehicles = ["0", "0", "0", "0", "0", "0"];
+    const riChange = ["-8,010", "-104,760", "-414,810", "-33,870", "-9,510", "-10,030"]; // prettier-ignore
+
+    const vtGen = ["-200", "-21,430", "-33,340", "-6,430", "-5,030", "-2,280"]; // prettier-ignore
+    const vtVehicles = ["0", "0", "0", "0", "0", "0"];
+    const vtChange = ["-200", "-21,430", "-33,340", "-6,430", "-5,030", "-2,280"]; // prettier-ignore
+
     cy.findByLabelText("All states").click({ force: true });
 
     /* prettier-ignore */
@@ -121,135 +162,135 @@ describe("Get Results – broadProgram", () => {
       .parent().next().children().as('vtChange');
 
     // Connecticut
-    cy.get("@ctGen").eq(2).should("contain", "-257,440");
-    cy.get("@ctGen").eq(3).should("contain", "-290,560");
-    cy.get("@ctGen").eq(4).should("contain", "-595,140");
-    cy.get("@ctGen").eq(5).should("contain", "-44,310");
-    cy.get("@ctGen").eq(6).should("contain", "-17,480");
-    cy.get("@ctGen").eq(7).should("contain", "-33,650");
+    cy.get("@ctGen").eq(2).should("contain", ctGen[0]);
+    cy.get("@ctGen").eq(3).should("contain", ctGen[1]);
+    cy.get("@ctGen").eq(4).should("contain", ctGen[2]);
+    cy.get("@ctGen").eq(5).should("contain", ctGen[3]);
+    cy.get("@ctGen").eq(6).should("contain", ctGen[4]);
+    cy.get("@ctGen").eq(7).should("contain", ctGen[5]);
 
-    cy.get("@ctVehicles").eq(1).should("contain", "0");
-    cy.get("@ctVehicles").eq(2).should("contain", "0");
-    cy.get("@ctVehicles").eq(3).should("contain", "0");
-    cy.get("@ctVehicles").eq(4).should("contain", "0");
-    cy.get("@ctVehicles").eq(5).should("contain", "0");
-    cy.get("@ctVehicles").eq(6).should("contain", "0");
+    cy.get("@ctVehicles").eq(1).should("contain", ctVehicles[0]);
+    cy.get("@ctVehicles").eq(2).should("contain", ctVehicles[1]);
+    cy.get("@ctVehicles").eq(3).should("contain", ctVehicles[2]);
+    cy.get("@ctVehicles").eq(4).should("contain", ctVehicles[3]);
+    cy.get("@ctVehicles").eq(5).should("contain", ctVehicles[4]);
+    cy.get("@ctVehicles").eq(6).should("contain", ctVehicles[5]);
 
-    cy.get("@ctChange").eq(1).should("contain", "-257,440");
-    cy.get("@ctChange").eq(2).should("contain", "-290,560");
-    cy.get("@ctChange").eq(3).should("contain", "-595,140");
-    cy.get("@ctChange").eq(4).should("contain", "-44,310");
-    cy.get("@ctChange").eq(5).should("contain", "-17,480");
-    cy.get("@ctChange").eq(6).should("contain", "-33,650");
+    cy.get("@ctChange").eq(1).should("contain", ctChange[0]);
+    cy.get("@ctChange").eq(2).should("contain", ctChange[1]);
+    cy.get("@ctChange").eq(3).should("contain", ctChange[2]);
+    cy.get("@ctChange").eq(4).should("contain", ctChange[3]);
+    cy.get("@ctChange").eq(5).should("contain", ctChange[4]);
+    cy.get("@ctChange").eq(6).should("contain", ctChange[5]);
 
     // Maine
-    cy.get("@meGen").eq(2).should("contain", "-266,470");
-    cy.get("@meGen").eq(3).should("contain", "-136,730");
-    cy.get("@meGen").eq(4).should("contain", "-316,300");
-    cy.get("@meGen").eq(5).should("contain", "-14,960");
-    cy.get("@meGen").eq(6).should("contain", "-7,900");
-    cy.get("@meGen").eq(7).should("contain", "-7,220");
+    cy.get("@meGen").eq(2).should("contain", meGen[0]);
+    cy.get("@meGen").eq(3).should("contain", meGen[1]);
+    cy.get("@meGen").eq(4).should("contain", meGen[2]);
+    cy.get("@meGen").eq(5).should("contain", meGen[3]);
+    cy.get("@meGen").eq(6).should("contain", meGen[4]);
+    cy.get("@meGen").eq(7).should("contain", meGen[5]);
 
-    cy.get("@meVehicles").eq(1).should("contain", "0");
-    cy.get("@meVehicles").eq(2).should("contain", "0");
-    cy.get("@meVehicles").eq(3).should("contain", "0");
-    cy.get("@meVehicles").eq(4).should("contain", "0");
-    cy.get("@meVehicles").eq(5).should("contain", "0");
-    cy.get("@meVehicles").eq(6).should("contain", "0");
+    cy.get("@meVehicles").eq(1).should("contain", meVehicles[0]);
+    cy.get("@meVehicles").eq(2).should("contain", meVehicles[1]);
+    cy.get("@meVehicles").eq(3).should("contain", meVehicles[2]);
+    cy.get("@meVehicles").eq(4).should("contain", meVehicles[3]);
+    cy.get("@meVehicles").eq(5).should("contain", meVehicles[4]);
+    cy.get("@meVehicles").eq(6).should("contain", meVehicles[5]);
 
-    cy.get("@meChange").eq(1).should("contain", "-266,470");
-    cy.get("@meChange").eq(2).should("contain", "-136,730");
-    cy.get("@meChange").eq(3).should("contain", "-316,300");
-    cy.get("@meChange").eq(4).should("contain", "-14,960");
-    cy.get("@meChange").eq(5).should("contain", "-7,900");
-    cy.get("@meChange").eq(6).should("contain", "-7,220");
+    cy.get("@meChange").eq(1).should("contain", meChange[0]);
+    cy.get("@meChange").eq(2).should("contain", meChange[1]);
+    cy.get("@meChange").eq(3).should("contain", meChange[2]);
+    cy.get("@meChange").eq(4).should("contain", meChange[3]);
+    cy.get("@meChange").eq(5).should("contain", meChange[4]);
+    cy.get("@meChange").eq(6).should("contain", meChange[5]);
 
     // Massachusetts
-    cy.get("@maGen").eq(2).should("contain", "-337,290");
-    cy.get("@maGen").eq(3).should("contain", "-405,680");
-    cy.get("@maGen").eq(4).should("contain", "-1,077,740");
-    cy.get("@maGen").eq(5).should("contain", "-67,710");
-    cy.get("@maGen").eq(6).should("contain", "-41,380");
-    cy.get("@maGen").eq(7).should("contain", "-54,540");
+    cy.get("@maGen").eq(2).should("contain", maGen[0]);
+    cy.get("@maGen").eq(3).should("contain", maGen[1]);
+    cy.get("@maGen").eq(4).should("contain", maGen[2]);
+    cy.get("@maGen").eq(5).should("contain", maGen[3]);
+    cy.get("@maGen").eq(6).should("contain", maGen[4]);
+    cy.get("@maGen").eq(7).should("contain", maGen[5]);
 
-    cy.get("@maVehicles").eq(1).should("contain", "0");
-    cy.get("@maVehicles").eq(2).should("contain", "0");
-    cy.get("@maVehicles").eq(3).should("contain", "0");
-    cy.get("@maVehicles").eq(4).should("contain", "0");
-    cy.get("@maVehicles").eq(5).should("contain", "0");
-    cy.get("@maVehicles").eq(6).should("contain", "0");
+    cy.get("@maVehicles").eq(1).should("contain", maVehicles[0]);
+    cy.get("@maVehicles").eq(2).should("contain", maVehicles[1]);
+    cy.get("@maVehicles").eq(3).should("contain", maVehicles[2]);
+    cy.get("@maVehicles").eq(4).should("contain", maVehicles[3]);
+    cy.get("@maVehicles").eq(5).should("contain", maVehicles[4]);
+    cy.get("@maVehicles").eq(6).should("contain", maVehicles[5]);
 
-    cy.get("@maChange").eq(1).should("contain", "-337,290");
-    cy.get("@maChange").eq(2).should("contain", "-405,680");
-    cy.get("@maChange").eq(3).should("contain", "-1,077,740");
-    cy.get("@maChange").eq(4).should("contain", "-67,710");
-    cy.get("@maChange").eq(5).should("contain", "-41,380");
-    cy.get("@maChange").eq(6).should("contain", "-54,540");
+    cy.get("@maChange").eq(1).should("contain", maChange[0]);
+    cy.get("@maChange").eq(2).should("contain", maChange[1]);
+    cy.get("@maChange").eq(3).should("contain", maChange[2]);
+    cy.get("@maChange").eq(4).should("contain", maChange[3]);
+    cy.get("@maChange").eq(5).should("contain", maChange[4]);
+    cy.get("@maChange").eq(6).should("contain", maChange[5]);
 
     // New Hampshire
-    cy.get("@nhGen").eq(2).should("contain", "-269,060");
-    cy.get("@nhGen").eq(3).should("contain", "-371,710");
-    cy.get("@nhGen").eq(4).should("contain", "-387,000");
-    cy.get("@nhGen").eq(5).should("contain", "-28,870");
-    cy.get("@nhGen").eq(6).should("contain", "-7,880");
-    cy.get("@nhGen").eq(7).should("contain", "-18,550");
+    cy.get("@nhGen").eq(2).should("contain", nhGen[0]);
+    cy.get("@nhGen").eq(3).should("contain", nhGen[1]);
+    cy.get("@nhGen").eq(4).should("contain", nhGen[2]);
+    cy.get("@nhGen").eq(5).should("contain", nhGen[3]);
+    cy.get("@nhGen").eq(6).should("contain", nhGen[4]);
+    cy.get("@nhGen").eq(7).should("contain", nhGen[5]);
 
-    cy.get("@nhVehicles").eq(1).should("contain", "0");
-    cy.get("@nhVehicles").eq(2).should("contain", "0");
-    cy.get("@nhVehicles").eq(3).should("contain", "0");
-    cy.get("@nhVehicles").eq(4).should("contain", "0");
-    cy.get("@nhVehicles").eq(5).should("contain", "0");
-    cy.get("@nhVehicles").eq(6).should("contain", "0");
+    cy.get("@nhVehicles").eq(1).should("contain", nhVehicles[0]);
+    cy.get("@nhVehicles").eq(2).should("contain", nhVehicles[1]);
+    cy.get("@nhVehicles").eq(3).should("contain", nhVehicles[2]);
+    cy.get("@nhVehicles").eq(4).should("contain", nhVehicles[3]);
+    cy.get("@nhVehicles").eq(5).should("contain", nhVehicles[4]);
+    cy.get("@nhVehicles").eq(6).should("contain", nhVehicles[5]);
 
-    cy.get("@nhChange").eq(1).should("contain", "-269,060");
-    cy.get("@nhChange").eq(2).should("contain", "-371,710");
-    cy.get("@nhChange").eq(3).should("contain", "-387,000");
-    cy.get("@nhChange").eq(4).should("contain", "-28,870");
-    cy.get("@nhChange").eq(5).should("contain", "-7,880");
-    cy.get("@nhChange").eq(6).should("contain", "-18,550");
+    cy.get("@nhChange").eq(1).should("contain", nhChange[0]);
+    cy.get("@nhChange").eq(2).should("contain", nhChange[1]);
+    cy.get("@nhChange").eq(3).should("contain", nhChange[2]);
+    cy.get("@nhChange").eq(4).should("contain", nhChange[3]);
+    cy.get("@nhChange").eq(5).should("contain", nhChange[4]);
+    cy.get("@nhChange").eq(6).should("contain", nhChange[5]);
 
     // Rhode Island
-    cy.get("@riGen").eq(2).should("contain", "-7,720");
-    cy.get("@riGen").eq(3).should("contain", "-108,350");
-    cy.get("@riGen").eq(4).should("contain", "-397,170");
-    cy.get("@riGen").eq(5).should("contain", "-72,790");
-    cy.get("@riGen").eq(6).should("contain", "-36,840");
-    cy.get("@riGen").eq(7).should("contain", "-52,230");
+    cy.get("@riGen").eq(2).should("contain", riGen[0]);
+    cy.get("@riGen").eq(3).should("contain", riGen[1]);
+    cy.get("@riGen").eq(4).should("contain", riGen[2]);
+    cy.get("@riGen").eq(5).should("contain", riGen[3]);
+    cy.get("@riGen").eq(6).should("contain", riGen[4]);
+    cy.get("@riGen").eq(7).should("contain", riGen[5]);
 
-    cy.get("@riVehicles").eq(1).should("contain", "0");
-    cy.get("@riVehicles").eq(2).should("contain", "0");
-    cy.get("@riVehicles").eq(3).should("contain", "0");
-    cy.get("@riVehicles").eq(4).should("contain", "0");
-    cy.get("@riVehicles").eq(5).should("contain", "0");
-    cy.get("@riVehicles").eq(6).should("contain", "0");
+    cy.get("@riVehicles").eq(1).should("contain", riVehicles[0]);
+    cy.get("@riVehicles").eq(2).should("contain", riVehicles[1]);
+    cy.get("@riVehicles").eq(3).should("contain", riVehicles[2]);
+    cy.get("@riVehicles").eq(4).should("contain", riVehicles[3]);
+    cy.get("@riVehicles").eq(5).should("contain", riVehicles[4]);
+    cy.get("@riVehicles").eq(6).should("contain", riVehicles[5]);
 
-    cy.get("@riChange").eq(1).should("contain", "-7,720");
-    cy.get("@riChange").eq(2).should("contain", "-108,350");
-    cy.get("@riChange").eq(3).should("contain", "-397,170");
-    cy.get("@riChange").eq(4).should("contain", "-72,790");
-    cy.get("@riChange").eq(5).should("contain", "-36,840");
-    cy.get("@riChange").eq(6).should("contain", "-52,230");
+    cy.get("@riChange").eq(1).should("contain", riChange[0]);
+    cy.get("@riChange").eq(2).should("contain", riChange[1]);
+    cy.get("@riChange").eq(3).should("contain", riChange[2]);
+    cy.get("@riChange").eq(4).should("contain", riChange[3]);
+    cy.get("@riChange").eq(5).should("contain", riChange[4]);
+    cy.get("@riChange").eq(6).should("contain", riChange[5]);
 
     // Vermont
-    cy.get("@vtGen").eq(2).should("contain", "-160");
-    cy.get("@vtGen").eq(3).should("contain", "-16,680");
-    cy.get("@vtGen").eq(4).should("contain", "-25,420");
-    cy.get("@vtGen").eq(5).should("contain", "-100");
-    cy.get("@vtGen").eq(6).should("contain", "-2,220");
-    cy.get("@vtGen").eq(7).should("contain", "-1,730");
+    cy.get("@vtGen").eq(2).should("contain", vtGen[0]);
+    cy.get("@vtGen").eq(3).should("contain", vtGen[1]);
+    cy.get("@vtGen").eq(4).should("contain", vtGen[2]);
+    cy.get("@vtGen").eq(5).should("contain", vtGen[3]);
+    cy.get("@vtGen").eq(6).should("contain", vtGen[4]);
+    cy.get("@vtGen").eq(7).should("contain", vtGen[5]);
 
-    cy.get("@vtVehicles").eq(1).should("contain", "0");
-    cy.get("@vtVehicles").eq(2).should("contain", "0");
-    cy.get("@vtVehicles").eq(3).should("contain", "0");
-    cy.get("@vtVehicles").eq(4).should("contain", "0");
-    cy.get("@vtVehicles").eq(5).should("contain", "0");
-    cy.get("@vtVehicles").eq(6).should("contain", "0");
+    cy.get("@vtVehicles").eq(1).should("contain", vtVehicles[0]);
+    cy.get("@vtVehicles").eq(2).should("contain", vtVehicles[1]);
+    cy.get("@vtVehicles").eq(3).should("contain", vtVehicles[2]);
+    cy.get("@vtVehicles").eq(4).should("contain", vtVehicles[3]);
+    cy.get("@vtVehicles").eq(5).should("contain", vtVehicles[4]);
+    cy.get("@vtVehicles").eq(6).should("contain", vtVehicles[5]);
 
-    cy.get("@vtChange").eq(1).should("contain", "-160");
-    cy.get("@vtChange").eq(2).should("contain", "-16,680");
-    cy.get("@vtChange").eq(3).should("contain", "-25,420");
-    cy.get("@vtChange").eq(4).should("contain", "-100");
-    cy.get("@vtChange").eq(5).should("contain", "-2,220");
-    cy.get("@vtChange").eq(6).should("contain", "-1,730");
+    cy.get("@vtChange").eq(1).should("contain", vtChange[0]);
+    cy.get("@vtChange").eq(2).should("contain", vtChange[1]);
+    cy.get("@vtChange").eq(3).should("contain", vtChange[2]);
+    cy.get("@vtChange").eq(4).should("contain", vtChange[3]);
+    cy.get("@vtChange").eq(5).should("contain", vtChange[4]);
+    cy.get("@vtChange").eq(6).should("contain", vtChange[5]);
   });
 });
