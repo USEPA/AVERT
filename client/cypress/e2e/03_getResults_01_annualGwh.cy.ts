@@ -24,7 +24,7 @@ describe("Get Results – annualGwh", () => {
   });
 
   it("Annual Emissions Changes (Power Sector Only) table displays the correct results", () => {
-    const geneartion = ["83,154,460", "77,698,330", "-5,456,130"];
+    const generation = ["83,154,460", "77,698,330", "-5,456,130"];
     const so2Totals = ["18,903,060", "17,752,370", "-1,150,690"];
     const noxTotals = ["39,995,770", "37,516,980", "-2,478,790"];
     const ozoneNoxTotals = ["19,482,170", "18,192,350", "-1,289,820"];
@@ -43,7 +43,7 @@ describe("Get Results – annualGwh", () => {
 
     /* prettier-ignore */
     cy.findByText('Generation')
-      .parent().parent().children().as('geneartion')
+      .parent().parent().children().as('generation')
       .parent().next().next().children().as('so2Totals')
       .parent().next().children().as('noxTotals')
       .parent().next().children().as('ozoneNoxTotals')
@@ -59,9 +59,9 @@ describe("Get Results – annualGwh", () => {
       .parent().next().children().as('vocsRates')
       .parent().next().children().as('nh3Rates');
 
-    cy.get("@geneartion").eq(1).should("contain", geneartion[0]);
-    cy.get("@geneartion").eq(2).should("contain", geneartion[1]);
-    cy.get("@geneartion").eq(3).should("contain", geneartion[2]);
+    cy.get("@generation").eq(1).should("contain", generation[0]);
+    cy.get("@generation").eq(2).should("contain", generation[1]);
+    cy.get("@generation").eq(3).should("contain", generation[2]);
 
     cy.get("@so2Totals").eq(1).should("contain", so2Totals[0]);
     cy.get("@so2Totals").eq(2).should("contain", so2Totals[1]);
