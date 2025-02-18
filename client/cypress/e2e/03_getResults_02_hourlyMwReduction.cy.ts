@@ -1,4 +1,4 @@
-describe("Get Results – constantMwh", () => {
+describe("Get Results – hourlyMwReduction", () => {
   beforeEach(() => {
     cy.visit("/");
 
@@ -11,8 +11,8 @@ describe("Get Results – constantMwh", () => {
     cy.findByText("Reductions spread evenly throughout the year").as("toggleA");
     cy.get("@toggleA").click();
 
-    cy.findByLabelText("Reduce hourly generation by:").as("constantMwh");
-    cy.get("@constantMwh").type("500");
+    cy.findByLabelText("Reduce hourly generation by:").as("hourlyMwReduction");
+    cy.get("@hourlyMwReduction").type("500");
 
     cy.findByText("Calculate Energy Impacts").as("calculateBtn");
     cy.get("@calculateBtn").click();

@@ -10,8 +10,8 @@ describe("Set Energy Impacts", () => {
 
     cy.findByText("Reductions spread evenly throughout the year").as("toggleA");
     cy.get("@toggleA").click();
-    cy.findByLabelText("Reduce total annual generation by:").as("annualGwh");
-    cy.findByLabelText("Reduce hourly generation by:").as("constantMwh");
+    cy.findByLabelText("Reduce total annual generation by:").as("annualGwhReduction"); // prettier-ignore
+    cy.findByLabelText("Reduce hourly generation by:").as("hourlyMwReduction");
     cy.get("@toggleA").click();
 
     cy.findByText("Percentage reductions in some or all hours").as("toggleB");
@@ -48,7 +48,7 @@ describe("Set Energy Impacts", () => {
 
   it("Entering a value over the 15% threshold for annual generation and onshore wind capacity displays the warning message below the chart", () => {
     cy.get("@toggleA").click();
-    cy.get("@annualGwh").type("5000");
+    cy.get("@annualGwhReduction").type("5000");
     cy.get("@toggleC").click();
     cy.get("@onshoreWind").type("1000");
     cy.get("@calculateBtn").click();
@@ -59,7 +59,7 @@ describe("Set Energy Impacts", () => {
 
   it("Entering a value over the 30% threshold for annual generation and onshore wind capacity displays the error message below the chart", () => {
     cy.get("@toggleA").click();
-    cy.get("@annualGwh").type("10000");
+    cy.get("@annualGwhReduction").type("10000");
     cy.get("@toggleC").click();
     cy.get("@onshoreWind").type("1000");
     cy.get("@calculateBtn").click();
@@ -70,7 +70,7 @@ describe("Set Energy Impacts", () => {
 
   it("Entering a negative value for annual generation displays the error message below the input", () => {
     cy.get("@toggleA").click();
-    cy.get("@annualGwh").type("-1");
+    cy.get("@annualGwhReduction").type("-1");
     cy.findByText("Please enter a positive number.");
     cy.get("@calculateBtn").should("have.class", "avert-button-disabled");
     cy.get("@resultsBtn").should("have.class", "avert-button-disabled");

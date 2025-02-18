@@ -11,8 +11,8 @@ describe("Test Scenario 5", () => {
     cy.findByText("Reductions spread evenly throughout the year").as("toggleA");
     cy.get("@toggleA").click();
 
-    cy.findByLabelText("Reduce hourly generation by:").as("constantMwh");
-    cy.get("@constantMwh").type("100");
+    cy.findByLabelText("Reduce hourly generation by:").as("hourlyMwReduction");
+    cy.get("@hourlyMwReduction").type("100");
 
     cy.findByText("Wind").as("toggleC");
     cy.get("@toggleC").click();

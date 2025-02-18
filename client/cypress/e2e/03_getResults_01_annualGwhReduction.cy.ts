@@ -1,4 +1,4 @@
-describe("Get Results – annualGwh", () => {
+describe("Get Results – annualGwhReduction", () => {
   beforeEach(() => {
     cy.visit("/");
 
@@ -11,8 +11,8 @@ describe("Get Results – annualGwh", () => {
     cy.findByText("Reductions spread evenly throughout the year").as("toggleA");
     cy.get("@toggleA").click();
 
-    cy.findByLabelText("Reduce total annual generation by:").as("annualGwh");
-    cy.get("@annualGwh").type("5000");
+    cy.findByLabelText("Reduce total annual generation by:").as("annualGwhReduction"); // prettier-ignore
+    cy.get("@annualGwhReduction").type("5000");
 
     cy.findByText("Calculate Energy Impacts").as("calculateBtn");
     cy.get("@calculateBtn").click();
