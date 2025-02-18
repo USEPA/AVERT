@@ -11,8 +11,8 @@ describe("Test Scenario 10", () => {
     cy.findByText("Percentage reductions in some or all hours").as("toggleB");
     cy.get("@toggleB").click();
 
-    cy.findByLabelText("Broad-based program:", { exact: false }).as("broadProgram"); // prettier-ignore
-    cy.get("@broadProgram").type("5");
+    cy.findByLabelText("Broad-based program:", { exact: false }).as("broadProgramReduction"); // prettier-ignore
+    cy.get("@broadProgramReduction").type("5");
 
     cy.findByText("Electric vehicles").as("toggleE");
     cy.get("@toggleE").click();

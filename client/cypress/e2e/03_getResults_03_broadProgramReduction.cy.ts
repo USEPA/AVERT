@@ -1,4 +1,4 @@
-describe("Get Results – reduction & topHours", () => {
+describe("Get Results – broadProgramReduction", () => {
   beforeEach(() => {
     cy.visit("/");
 
@@ -11,11 +11,8 @@ describe("Get Results – reduction & topHours", () => {
     cy.findByText("Percentage reductions in some or all hours").as("toggleB");
     cy.get("@toggleB").click();
 
-    cy.findByLabelText("Targeted program:", { exact: false }).as("reduction");
-    cy.get("@reduction").type("15");
-
-    cy.findByText("% of hours").prev().as("topHours");
-    cy.get("@topHours").type("50");
+    cy.findByLabelText("Broad-based program:", { exact: false }).as("broadProgramReduction"); // prettier-ignore
+    cy.get("@broadProgramReduction").type("10");
 
     cy.findByText("Calculate Energy Impacts").as("calculateBtn");
     cy.get("@calculateBtn").click();
@@ -27,22 +24,22 @@ describe("Get Results – reduction & topHours", () => {
   });
 
   it("Annual Emissions Changes (Power Sector Only) table displays the correct results", () => {
-    const generation = ["49,108,280", "44,272,530", "-4,835,750"];
-    const so2Totals = ["1,362,440", "962,680", "-399,760"];
-    const noxTotals = ["7,209,170", "6,302,450", "-906,720"];
-    const ozoneNoxTotals = ["3,606,780", "2,967,190", "-639,580"];
-    const co2Totals = ["25,430,570", "22,957,890", "-2,472,680"];
-    const pm25Totals = ["1,380,600", "1,199,430", "-181,160"];
-    const vocsTotals = ["524,610", "457,340", "-67,270"];
-    const nh3Totals = ["820,590", "734,390", "-86,190"];
+    const generation = ["49,108,280", "43,819,390", "-5,288,890"];
+    const so2Totals = ["1,362,440", "994,550", "-367,890"];
+    const noxTotals = ["7,209,170", "6,306,230", "-902,940"];
+    const ozoneNoxTotals = ["3,606,780", "3,052,580", "-554,190"];
+    const co2Totals = ["25,430,570", "22,794,620", "-2,635,960"];
+    const pm25Totals = ["1,380,600", "1,199,600", "-180,990"];
+    const vocsTotals = ["524,610", "459,730", "-64,880"];
+    const nh3Totals = ["820,590", "729,780", "-90,810"];
 
-    const so2Rates = ["0.028", "0.083"];
-    const noxRates = ["0.147", "0.188"];
-    const ozoneNoxRates = ["0.158", "0.237"];
-    const co2Rates = ["0.518", "0.511"];
-    const pm25Rates = ["0.028", "0.037"];
-    const vocsRates = ["0.011", "0.014"];
-    const nh3Rates = ["0.017", "0.018"];
+    const so2Rates = ["0.028", "0.070"];
+    const noxRates = ["0.147", "0.171"];
+    const ozoneNoxRates = ["0.158", "0.225"];
+    const co2Rates = ["0.518", "0.498"];
+    const pm25Rates = ["0.028", "0.034"];
+    const vocsRates = ["0.011", "0.012"];
+    const nh3Rates = ["0.017", "0.017"];
 
     /* prettier-ignore */
     cy.findByText("Generation")
@@ -117,29 +114,29 @@ describe("Get Results – reduction & topHours", () => {
   });
 
   it("Annual Emissions Changes By State table displays the correct results", () => {
-    const ctGen = ["-92,020", "-170,630", "-578,600", "-30,200", "-10,580", "-24,240"]; // prettier-ignore
+    const ctGen = ["-75,350", "-177,200", "-715,250", "-33,660", "-10,380", "-29,500"]; // prettier-ignore
     const ctVehicles = ["0", "0", "0", "0", "0", "0"];
-    const ctChange = ["-92,020", "-170,630", "-578,600", "-30,200", "-10,580", "-24,240"]; // prettier-ignore
+    const ctChange = ["-75,350", "-177,200", "-715,250", "-33,660", "-10,380", "-29,500"]; // prettier-ignore
 
-    const meGen = ["-109,860", "-82,380", "-372,870", "-18,920", "-7,870", "-6,570"]; // prettier-ignore
+    const meGen = ["-110,480", "-91,040", "-370,160", "-18,570", "-6,990", "-6,530"]; // prettier-ignore
     const meVehicles = ["0", "0", "0", "0", "0", "0"];
-    const meChange = ["-109,860", "-82,380", "-372,870", "-18,920", "-7,870", "-6,570"]; // prettier-ignore
+    const meChange = ["-110,480", "-91,040", "-370,160", "-18,570", "-6,990", "-6,530"]; // prettier-ignore
 
-    const maGen = ["-93,790", "-383,350", "-823,030", "-74,670", "-28,730", "-32,590"]; // prettier-ignore
+    const maGen = ["-80,720", "-325,090", "-760,480", "-62,700", "-25,570", "-28,340"]; // prettier-ignore
     const maVehicles = ["0", "0", "0", "0", "0", "0"];
-    const maChange = ["-93,790", "-383,350", "-823,030", "-74,670", "-28,730", "-32,590"]; // prettier-ignore
+    const maChange = ["-80,720", "-325,090", "-760,480", "-62,700", "-25,570", "-28,340"]; // prettier-ignore
 
-    const nhGen = ["-97,170", "-172,270", "-331,460", "-22,590", "-6,470", "-12,380"]; // prettier-ignore
+    const nhGen = ["-93,130", "-183,430", "-341,920", "-25,760", "-7,410", "-14,130"]; // prettier-ignore
     const nhVehicles = ["0", "0", "0", "0", "0", "0"];
-    const nhChange = ["-97,170", "-172,270", "-331,460", "-22,590", "-6,470", "-12,380"]; // prettier-ignore
+    const nhChange = ["-93,130", "-183,430", "-341,920", "-25,760", "-7,410", "-14,130"]; // prettier-ignore
 
-    const riGen = ["-6,710", "-74,250", "-329,960", "-27,670", "-8,070", "-7,900"]; // prettier-ignore
+    const riGen = ["-8,010", "-104,760", "-414,810", "-33,870", "-9,510", "-10,030"]; // prettier-ignore
     const riVehicles = ["0", "0", "0", "0", "0", "0"];
-    const riChange = ["-6,710", "-74,250", "-329,960", "-27,670", "-8,070", "-7,900"]; // prettier-ignore
+    const riChange = ["-8,010", "-104,760", "-414,810", "-33,870", "-9,510", "-10,030"]; // prettier-ignore
 
-    const vtGen = ["-210", "-23,840", "-36,760", "-7,110", "-5,560", "-2,520"]; // prettier-ignore
+    const vtGen = ["-200", "-21,430", "-33,340", "-6,430", "-5,030", "-2,280"]; // prettier-ignore
     const vtVehicles = ["0", "0", "0", "0", "0", "0"];
-    const vtChange = ["-210", "-23,840", "-36,760", "-7,110", "-5,560", "-2,520"]; // prettier-ignore
+    const vtChange = ["-200", "-21,430", "-33,340", "-6,430", "-5,030", "-2,280"]; // prettier-ignore
 
     cy.findByLabelText("All states").click({ force: true });
 

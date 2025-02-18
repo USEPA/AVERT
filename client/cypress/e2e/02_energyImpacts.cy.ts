@@ -16,8 +16,8 @@ describe("Set Energy Impacts", () => {
 
     cy.findByText("Percentage reductions in some or all hours").as("toggleB");
     cy.get("@toggleB").click();
-    cy.findByLabelText("Broad-based program:", { exact: false }).as("broadProgram"); // prettier-ignore
-    cy.findByLabelText("Targeted program:", { exact: false }).as("reduction");
+    cy.findByLabelText("Broad-based program:", { exact: false }).as("broadProgramReduction"); // prettier-ignore
+    cy.findByLabelText("Targeted program:", { exact: false }).as("targetedProgramReduction"); // prettier-ignore
     cy.findByText("% of hours").prev().as("topHours");
     cy.get("@toggleB").click();
 

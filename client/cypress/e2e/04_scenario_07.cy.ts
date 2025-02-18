@@ -14,8 +14,8 @@ describe("Test Scenario 7", () => {
     cy.findByLabelText("Reduce hourly generation by:").as("hourlyMwReduction");
     cy.get("@hourlyMwReduction").type("100");
 
-    cy.findByLabelText("Targeted program:", { exact: false }).as("reduction");
-    cy.get("@reduction").type("10");
+    cy.findByLabelText("Targeted program:", { exact: false }).as("targetedProgramReduction"); // prettier-ignore
+    cy.get("@targetedProgramReduction").type("10");
 
     cy.findByText("% of hours").prev().as("topHours");
     cy.get("@topHours").type("10");
