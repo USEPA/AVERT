@@ -1,33 +1,33 @@
 // config
-import { RegionId, regions } from '../../src/app/config';
+import { type RegionId, regions } from "../../src/config";
 
-describe('Select Region', () => {
+describe("Select Region", () => {
   beforeEach(() => {
-    cy.visit('/');
+    cy.visit("/");
 
-    cy.findAllByText('Select Region')
-      .filter('option')
+    cy.findAllByText("Select Region")
+      .filter("option")
       .parent()
-      .as('regionsSelect');
+      .as("regionsSelect");
   });
 
-  it('Selecting a region in the “Select Region” dropdown menu highlights the corresponding region in the map', () => {
+  it("Selecting a region in the “Select Region” dropdown menu highlights the corresponding region in the map", () => {
     for (const key in regions) {
       const { id, name } = regions[key as RegionId];
-      cy.get('@regionsSelect').select(name);
+      cy.get("@regionsSelect").select(name);
       cy.get(`[data-avert-region-map] [data-region="${id}"]`)
         .parent()
-        .should('have.attr', 'data-active', 'true');
+        .should("have.attr", "data-active", "true");
     }
   });
 
-  it('Clicking a region on the map selects the corresponding region in the “Select Region” dropdown menu', () => {
+  it("Clicking a region on the map selects the corresponding region in the “Select Region” dropdown menu", () => {
     for (const key in regions) {
       const { id } = regions[key as RegionId];
       cy.get(`[data-avert-region-map] [data-region="${id}"]`)
         .parent()
         .click({ force: true });
-      cy.get('@regionsSelect').should('have.value', id);
+      cy.get("@regionsSelect").should("have.value", id);
     }
   });
 });
