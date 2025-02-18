@@ -9,7 +9,7 @@ import { type RegionId, type StateId } from "@/config";
  * Annual point-source data from the National Emissions Inventory (NEI) for
  * every electric generating unit (EGU), organized by AVERT region
  */
-// import neiData from '@/data/annual-emission-factors.json';
+// import neiData from "@/data/annual-emission-factors.json";
 
 const emissionsFields = ["generation", "so2", "nox", "co2", "pm25", "vocs", "nh3"] as const; // prettier-ignore
 
@@ -155,7 +155,7 @@ function calculateEmissionsChanges(options: {
     };
   };
 
-  const dataFields = ['generation', 'so2', 'nox', 'co2', 'pm25', 'vocs', 'nh3'] as const; // prettier-ignore
+  const dataFields = ["generation", "so2", "nox", "co2", "pm25", "vocs", "nh3"] as const; // prettier-ignore
   const neiFields = ["pm25", "vocs", "nh3"];
 
   type OzoneSeasonDataField =

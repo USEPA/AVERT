@@ -282,7 +282,7 @@ export function calculateVMTBillionsAndPercentages(options: {
     const stateId = data["Postal State Code"] as StateId;
     const regionId = regionIds[data["AVERT Region"]];
     const carsVMT = data["Passenger Cars VMT"] || 0;
-    const trucksVMT = data['Passenger Trucks and Light Commercial Trucks VMT'] || 0; // prettier-ignore
+    const trucksVMT = data["Passenger Trucks and Light Commercial Trucks VMT"] || 0; // prettier-ignore
     const transitBusesVMT = data["Transit Buses VMT"] || 0;
     const schoolBusesVMT = data["School Buses VMT"] || 0;
 
@@ -326,10 +326,10 @@ export function calculateVMTBillionsAndPercentages(options: {
   // build up the currently empty result.regionTotals object to be the total vmt
   // data for each region, across all states
   Object.entries(result).forEach(([stateId, stateData]) => {
-    // NOTE: stateData is really 'regionTotals' on the first loop, so skip it
+    // NOTE: stateData is really "regionTotals" on the first loop, so skip it
     if (stateId !== "regionTotals") {
       Object.entries(stateData).forEach(([regionId, regionData]) => {
-        // NOTE: regionId is really 'allRegions' on the first loop, so skip it
+        // NOTE: regionId is really "allRegions" on the first loop, so skip it
         if (regionId !== "allRegions") {
           result.regionTotals[regionId as RegionId] ??= {
             cars: { total: 0, percent: 1 },
@@ -356,12 +356,12 @@ export function calculateVMTBillionsAndPercentages(options: {
   });
 
   // calculate percentages of vmt data for each state across all states,
-  // and build up each state's 'allRegions' data with values from each region
+  // and build up each state's "allRegions" data with values from each region
   Object.entries(result).forEach(([stateId, stateData]) => {
-    // NOTE: stateData is really 'regionTotals' on the first loop, so skip it
+    // NOTE: stateData is really "regionTotals" on the first loop, so skip it
     if (stateId !== "regionTotals") {
       Object.entries(stateData).forEach(([regionId, regionData]) => {
-        // NOTE: regionId is really 'allRegions' on the first loop, so skip it
+        // NOTE: regionId is really "allRegions" on the first loop, so skip it
         if (regionId !== "allRegions") {
           const regionTotalData = result.regionTotals[regionId as RegionId];
           const allRegionsData = result[stateId as StateId].allRegions;
@@ -442,11 +442,11 @@ export function calculateStateVMTPercentagesByRegion(options: {
   const result = Object.entries(vmtData).reduce(
     (object, [stateKey, stateValue]) => {
       const stateId = stateKey as keyof typeof vmtData;
-      // NOTE: stateData is really 'regionTotals' on the first loop, so skip it
+      // NOTE: stateData is really "regionTotals" on the first loop, so skip it
       if (stateId !== "regionTotals") {
         Object.entries(stateValue).forEach(([regionKey, regionValue]) => {
           const regionId = regionKey as keyof typeof stateValue;
-          // NOTE: regionId is really 'allRegions' on the first loop, so skip it
+          // NOTE: regionId is really "allRegions" on the first loop, so skip it
           if (regionId !== "allRegions") {
             object[stateId] ??= {};
             object[stateId][regionId] ??= {
@@ -661,9 +661,9 @@ export function calculateMonthlyVMTTotalsAndPercentages(options: {
           ? "cars"
           : data.vehicleType === "Passenger Truck"
             ? "trucks"
-            : data.vehicleType === 'Transit Bus' && data.fuelType === 'Diesel Fuel' // prettier-ignore
+            : data.vehicleType === "Transit Bus" && data.fuelType === "Diesel Fuel" // prettier-ignore
               ? "transitBusesDiesel"
-              : data.vehicleType === 'Transit Bus' && data.fuelType === 'Compressed Natural Gas (CNG)' // prettier-ignore
+              : data.vehicleType === "Transit Bus" && data.fuelType === "Compressed Natural Gas (CNG)" // prettier-ignore
                 ? "transitBusesCNG"
                 : data.vehicleType === "Transit Bus" &&
                     data.fuelType === "Gasoline"
@@ -773,7 +773,7 @@ export function calculateSelectedRegionsStatesVMTPercentages(options: {
 
       if (stateId === "regionTotals") return object;
 
-      const stateRegionIds = Object.keys(stateValue); // NOTE: also includes 'allRegions' key
+      const stateRegionIds = Object.keys(stateValue); // NOTE: also includes "allRegions" key
       const stateVMTData = vmtData?.[stateId];
 
       selectedGeographyRegionIds.forEach((regionId) => {
@@ -1680,9 +1680,9 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
             ? "cars"
             : data.vehicleType === "Passenger Truck"
               ? "trucks"
-              : data.vehicleType === 'Transit Bus' && data.fuelType === 'Diesel Fuel' // prettier-ignore
+              : data.vehicleType === "Transit Bus" && data.fuelType === "Diesel Fuel" // prettier-ignore
                 ? "transitBusesDiesel"
-                : data.vehicleType === 'Transit Bus' && data.fuelType === 'Compressed Natural Gas (CNG)' // prettier-ignore
+                : data.vehicleType === "Transit Bus" && data.fuelType === "Compressed Natural Gas (CNG)" // prettier-ignore
                   ? "transitBusesCNG"
                   : data.vehicleType === "Transit Bus" &&
                       data.fuelType === "Gasoline"
@@ -2123,7 +2123,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
     };
   };
 
-  const regionSelected = geographicFocus === 'regions' && selectedRegionId !== ''; // prettier-ignore
+  const regionSelected = geographicFocus === "regions" && selectedRegionId !== ""; // prettier-ignore
   const stateSelected = geographicFocus === "states" && selectedStateId !== "";
 
   const countiesByGeographyData =
@@ -2171,7 +2171,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
 
   const deploymentLocationIsRegion = evDeploymentLocation.startsWith("region-");
   const deploymentLocationIsState = evDeploymentLocation.startsWith("state-");
-  const deploymentLocationStateId = evDeploymentLocation.replace('state-', '') as StateId; // prettier-ignore
+  const deploymentLocationStateId = evDeploymentLocation.replace("state-", "") as StateId; // prettier-ignore
 
   const locationVMT = regionSelected
     ? deploymentLocationIsRegion
@@ -2298,7 +2298,7 @@ export function calculateVehicleSalesAndStock(options: {
     return result;
   }
 
-  // conditionally remove 'region-' option, as it will be added later as the sum
+  // conditionally remove "region-"" option, as it will be added later as the sum
   // of each state's data
   const stateIds = evDeploymentLocations.reduce((ids, id) => {
     return id.startsWith("region-") ? ids : ids.concat(id);
@@ -2315,8 +2315,8 @@ export function calculateVehicleSalesAndStock(options: {
 
     if (conditionalRegionMatch && stateIds.includes(stateId)) {
       const ldvsVMTShare = data["Share of State VMT - Passenger Cars"] || 0;
-      const transitBusesVMTShare = data['Share of State VMT - Transit Buses'] || 0; // prettier-ignore
-      const schoolBusesVMTShare = data['Share of State VMT - School Buses'] || 0; // prettier-ignore
+      const transitBusesVMTShare = data["Share of State VMT - Transit Buses"] || 0; // prettier-ignore
+      const schoolBusesVMTShare = data["Share of State VMT - School Buses"] || 0; // prettier-ignore
 
       const ldvsSales = stateLDVsSales[id as keyof StateLDVsSales];
 
@@ -2351,7 +2351,7 @@ export function calculateVehicleSalesAndStock(options: {
     }
   });
 
-  // conditionally add 'region-' to result as the sum of each state's data
+  // conditionally add "region-" to result as the sum of each state's data
   const resultStateIds = Object.keys(result);
   const regionId = evDeploymentLocations.find((id) => id.startsWith("region-"));
 
@@ -2473,7 +2473,7 @@ export function calculateEVDeploymentLocationHistoricalEERE(options: {
   }
 
   const deploymentLocationIsRegion = evDeploymentLocation.startsWith("region-");
-  const deploymentLocationStateId = evDeploymentLocation.replace('state-', '') as StateId; // prettier-ignore
+  const deploymentLocationStateId = evDeploymentLocation.replace("state-", "") as StateId; // prettier-ignore
 
   const fallbackEereAverage = {
     capacity_added_mw: { onshore_wind: 0, utility_pv: 0 },

@@ -8,7 +8,7 @@ import { type CombinedSectorsEmissionsData } from "@/calculations/emissions";
 import { type EmptyObject } from "@/utilities";
 
 /**
- * Round number to the nearest 10 and conditionally display '—' if number is
+ * Round number to the nearest 10 and conditionally display "—" if number is
  * within 10 of zero.
  */
 function formatNumber(number: number) {

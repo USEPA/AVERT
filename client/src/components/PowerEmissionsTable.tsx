@@ -11,7 +11,7 @@ import { type EmptyObject } from "@/utilities";
 type AnnualMonthlyData = ReturnType<typeof setAnnualMonthlyData>;
 
 /**
- * Round number to the nearest 10 and conditionally display '—' if number is
+ * Round number to the nearest 10 and conditionally display "—" if number is
  * within 10 of zero.
  */
 function formatNumber(number: number) {
@@ -141,11 +141,11 @@ function EmissionsReplacementTooltip(props: {
   const { field } = props;
 
   // prettier-ignore
-  const fieldMarkup = new Map<'generation' | 'so2' | 'nox' | 'co2', ReactNode>()
-    .set('generation', <>Generation</>)
-    .set('so2', <>SO<sub>2</sub></>)
-    .set('nox', <>NO<sub>X</sub></>)
-    .set('co2', <>CO<sub>2</sub></>);
+  const fieldMarkup = new Map<"generation" | "so2" | "nox" | "co2", ReactNode>()
+    .set("generation", <>Generation</>)
+    .set("so2", <>SO<sub>2</sub></>)
+    .set("nox", <>NO<sub>X</sub></>)
+    .set("co2", <>CO<sub>2</sub></>);
 
   return (
     <Tooltip>

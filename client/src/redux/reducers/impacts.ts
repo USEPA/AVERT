@@ -1095,8 +1095,8 @@ export function calculateHourlyEnergyProfile(): AppThunk {
     const geographicFocus = geography.focus;
 
     // select region(s), based on geographic focus:
-    // single region if geographic focus is 'regions'
-    // multiple regions if geographic focus is 'states'
+    // single region if geographic focus is "regions"
+    // multiple regions if geographic focus is "states"
     const selectedRegions: RegionState[] = [];
 
     let selectedState: StateState | undefined;

@@ -212,7 +212,7 @@ function formatCountyDownloadData(options: {
 
       if (emissionsFields) {
         array.push({
-          'Aggregation level': `${regionsConfig[regionId as RegionId].name} Region`, // prettier-ignore
+          "Aggregation level": `${regionsConfig[regionId as RegionId].name} Region`, // prettier-ignore
           State: null,
           County: null,
           "State FIPS Code": null,

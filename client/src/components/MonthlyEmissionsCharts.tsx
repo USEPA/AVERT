@@ -362,7 +362,7 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
       },
     },
     xAxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], // prettier-ignore
+      categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], // prettier-ignore
     },
   };
 
@@ -434,12 +434,12 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
 
   // prettier-ignore
   const pollutantMarkup = new Map<Pollutant, ReactNode>()
-      .set('so2', <>SO<sub>2</sub></>)
-      .set('nox', <>NO<sub>X</sub></>)
-      .set('co2', <>CO<sub>2</sub></>)
-      .set('pm25', <>PM<sub>2.5</sub></>)
-      .set('vocs', <>VOC</>)
-      .set('nh3', <>NH<sub>2</sub></>);
+      .set("so2", <>SO<sub>2</sub></>)
+      .set("nox", <>NO<sub>X</sub></>)
+      .set("co2", <>CO<sub>2</sub></>)
+      .set("pm25", <>PM<sub>2.5</sub></>)
+      .set("vocs", <>VOC</>)
+      .set("nh3", <>NH<sub>2</sub></>);
 
   const chartConfig = new Map<Pollutant, object>()
     .set("so2", so2Config)
@@ -812,7 +812,7 @@ function MonthlyEmissionsChartsContent() {
 
                         {availableCounties?.map((county, index) => (
                           <option key={index} value={county}>
-                            {/* format 'city' if found in county name */}
+                            {/* format "city" if found in county name */}
                             {county.replace(/city/, "(City)")}
                           </option>
                         ))}

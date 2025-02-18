@@ -608,7 +608,7 @@ export function fetchRegionsData(): AppThunk {
     const { api, geography } = getState();
 
     // select region(s), based on geographic focus:
-    // single region if geographic focus is 'regions'
+    // single region if geographic focus is "regions"
     // multiple regions if geographic focus is 'states'
     const selectedRegions: RegionState[] = [];
 
