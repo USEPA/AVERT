@@ -29,6 +29,13 @@ describe("Test Scenario 4", () => {
   });
 
   it("Annual Emissions Changes (Including Vehicles) table displays the correct results", () => {
+    const so2 = ["10,198,160", "-713,320", "9,484,840"];
+    const nox = ["27,454,010", "-7,581,740", "19,872,260"];
+    const co2 = ["26,790,110", "-70,639,920", "-43,849,820"];
+    const pm25 = ["3,494,900", "-757,960", "2,736,940"];
+    const vocs = ["1,097,780", "-20,950,690", "-19,852,920"];
+    const nh3 = ["1,184,260", "-8,992,520", "-7,808,260"];
+
     /* prettier-ignore */
     cy.findByText('Total Emissions')
       .parent().next().children().as('so2')
@@ -38,28 +45,28 @@ describe("Test Scenario 4", () => {
       .parent().next().children().as('vocs')
       .parent().next().children().as('nh3');
 
-    cy.get("@so2").eq(1).should("contain", "11,815,610");
-    cy.get("@so2").eq(2).should("contain", "-706,310");
-    cy.get("@so2").eq(3).should("contain", "11,109,300");
+    cy.get("@so2").eq(1).should("contain", so2[0]);
+    cy.get("@so2").eq(2).should("contain", so2[1]);
+    cy.get("@so2").eq(3).should("contain", so2[2]);
 
-    cy.get("@nox").eq(1).should("contain", "27,120,100");
-    cy.get("@nox").eq(2).should("contain", "-7,537,570");
-    cy.get("@nox").eq(3).should("contain", "19,582,530");
+    cy.get("@nox").eq(1).should("contain", nox[0]);
+    cy.get("@nox").eq(2).should("contain", nox[1]);
+    cy.get("@nox").eq(3).should("contain", nox[2]);
 
-    cy.get("@co2").eq(1).should("contain", "25,487,760");
-    cy.get("@co2").eq(2).should("contain", "-69,945,400");
-    cy.get("@co2").eq(3).should("contain", "-44,457,640");
+    cy.get("@co2").eq(1).should("contain", co2[0]);
+    cy.get("@co2").eq(2).should("contain", co2[1]);
+    cy.get("@co2").eq(3).should("contain", co2[2]);
 
-    cy.get("@pm25").eq(1).should("contain", "2,866,560");
-    cy.get("@pm25").eq(2).should("contain", "-752,090");
-    cy.get("@pm25").eq(3).should("contain", "2,114,480");
+    cy.get("@pm25").eq(1).should("contain", pm25[0]);
+    cy.get("@pm25").eq(2).should("contain", pm25[1]);
+    cy.get("@pm25").eq(3).should("contain", pm25[2]);
 
-    cy.get("@vocs").eq(1).should("contain", "1,012,290");
-    cy.get("@vocs").eq(2).should("contain", "-20,817,720");
-    cy.get("@vocs").eq(3).should("contain", "-19,805,420");
+    cy.get("@vocs").eq(1).should("contain", vocs[0]);
+    cy.get("@vocs").eq(2).should("contain", vocs[1]);
+    cy.get("@vocs").eq(3).should("contain", vocs[2]);
 
-    cy.get("@nh3").eq(1).should("contain", "1,436,780");
-    cy.get("@nh3").eq(2).should("contain", "-8,945,450");
-    cy.get("@nh3").eq(3).should("contain", "-7,508,670");
+    cy.get("@nh3").eq(1).should("contain", nh3[0]);
+    cy.get("@nh3").eq(2).should("contain", nh3[1]);
+    cy.get("@nh3").eq(3).should("contain", nh3[2]);
   });
 });

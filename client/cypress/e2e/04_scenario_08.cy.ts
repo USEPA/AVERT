@@ -20,9 +20,6 @@ describe("Test Scenario 8", () => {
     cy.findByLabelText("Onshore wind total capacity:").as("onshoreWind");
     cy.get("@onshoreWind").type("200");
 
-    // cy.findByText('Solar photovoltaic (PV)').as('toggleD');
-    // cy.get('@toggleD').click();
-
     cy.findByLabelText('Utility-scale solar PV total capacity:').as('utilitySolar'); // prettier-ignore
     cy.get("@utilitySolar").type("100");
 
@@ -54,6 +51,13 @@ describe("Test Scenario 8", () => {
   });
 
   it("Annual Emissions Changes (Including Vehicles) table displays the correct results", () => {
+    const so2 = ["-558,770", "-250", "-559,020"];
+    const nox = ["-1,005,480", "-6,770", "-1,012,260"];
+    const co2 = ["-850,220", "-24,990", "-875,210"];
+    const pm25 = ["-97,600", "-310", "-97,910"];
+    const vocs = ["-34,050", "-9,220", "-43,270"];
+    const nh3 = ["-22,590", "-3,180", "-25,770"];
+
     /* prettier-ignore */
     cy.findByText('Total Emissions')
       .parent().next().children().as('so2')
@@ -63,28 +67,28 @@ describe("Test Scenario 8", () => {
       .parent().next().children().as('vocs')
       .parent().next().children().as('nh3');
 
-    cy.get("@so2").eq(1).should("contain", "-446,600");
-    cy.get("@so2").eq(2).should("contain", "-250");
-    cy.get("@so2").eq(3).should("contain", "-446,850");
+    cy.get("@so2").eq(1).should("contain", so2[0]);
+    cy.get("@so2").eq(2).should("contain", so2[1]);
+    cy.get("@so2").eq(3).should("contain", so2[2]);
 
-    cy.get("@nox").eq(1).should("contain", "-828,450");
-    cy.get("@nox").eq(2).should("contain", "-7,260");
-    cy.get("@nox").eq(3).should("contain", "-835,710");
+    cy.get("@nox").eq(1).should("contain", nox[0]);
+    cy.get("@nox").eq(2).should("contain", nox[1]);
+    cy.get("@nox").eq(3).should("contain", nox[2]);
 
-    cy.get("@co2").eq(1).should("contain", "-787,620");
-    cy.get("@co2").eq(2).should("contain", "-25,290");
-    cy.get("@co2").eq(3).should("contain", "-812,910");
+    cy.get("@co2").eq(1).should("contain", co2[0]);
+    cy.get("@co2").eq(2).should("contain", co2[1]);
+    cy.get("@co2").eq(3).should("contain", co2[2]);
 
-    cy.get("@pm25").eq(1).should("contain", "-91,220");
-    cy.get("@pm25").eq(2).should("contain", "-310");
-    cy.get("@pm25").eq(3).should("contain", "-91,540");
+    cy.get("@pm25").eq(1).should("contain", pm25[0]);
+    cy.get("@pm25").eq(2).should("contain", pm25[1]);
+    cy.get("@pm25").eq(3).should("contain", pm25[2]);
 
-    cy.get("@vocs").eq(1).should("contain", "-27,690");
-    cy.get("@vocs").eq(2).should("contain", "-9,340");
-    cy.get("@vocs").eq(3).should("contain", "-37,030");
+    cy.get("@vocs").eq(1).should("contain", vocs[0]);
+    cy.get("@vocs").eq(2).should("contain", vocs[1]);
+    cy.get("@vocs").eq(3).should("contain", vocs[2]);
 
-    cy.get("@nh3").eq(1).should("contain", "-28,410");
-    cy.get("@nh3").eq(2).should("contain", "-3,230");
-    cy.get("@nh3").eq(3).should("contain", "-31,640");
+    cy.get("@nh3").eq(1).should("contain", nh3[0]);
+    cy.get("@nh3").eq(2).should("contain", nh3[1]);
+    cy.get("@nh3").eq(3).should("contain", nh3[2]);
   });
 });
