@@ -1,247 +1,247 @@
 {
   "AL": {
-    "annualVMTLightDutyVehicles": 63941.942557885,
-    "annualVMTBuses": 345.083726621,
-    "registeredLightDutyVehicles": 5.06765789239068
+    "annualVMTofLDVs": 63941.942557885,
+    "annualVMTofBuses": 345.083726621,
+    "registeredLDVs": 5.06765789239068
   },
   "AZ": {
-    "annualVMTLightDutyVehicles": 65312.283278795,
-    "annualVMTBuses": 700.482894121,
-    "registeredLightDutyVehicles": 5.50214033127422
+    "annualVMTofLDVs": 65312.283278795,
+    "annualVMTofBuses": 700.482894121,
+    "registeredLDVs": 5.50214033127422
   },
   "AR": {
-    "annualVMTLightDutyVehicles": 32210.563509578,
-    "annualVMTBuses": 293.516618973,
-    "registeredLightDutyVehicles": 2.93258474512089
+    "annualVMTofLDVs": 32210.563509578,
+    "annualVMTofBuses": 293.516618973,
+    "registeredLDVs": 2.93258474512089
   },
   "CA": {
-    "annualVMTLightDutyVehicles": 266758.232758616,
-    "annualVMTBuses": 3168.575973566,
-    "registeredLightDutyVehicles": 28.904612763897
+    "annualVMTofLDVs": 266758.232758616,
+    "annualVMTofBuses": 3168.575973566,
+    "registeredLDVs": 28.904612763897
   },
   "CO": {
-    "annualVMTLightDutyVehicles": 49934.20822283,
-    "annualVMTBuses": 192.762751925,
-    "registeredLightDutyVehicles": 4.64488341125976
+    "annualVMTofLDVs": 49934.20822283,
+    "annualVMTofBuses": 192.762751925,
+    "registeredLDVs": 4.64488341125976
   },
   "CT": {
-    "annualVMTLightDutyVehicles": 27027.086615997,
-    "annualVMTBuses": 210.647239966,
-    "registeredLightDutyVehicles": 2.56686377448541
+    "annualVMTofLDVs": 27027.086615997,
+    "annualVMTofBuses": 210.647239966,
+    "registeredLDVs": 2.56686377448541
   },
   "DE": {
-    "annualVMTLightDutyVehicles": 8455.979192265,
-    "annualVMTBuses": 143.211085614,
-    "registeredLightDutyVehicles": 0.417655937024796
+    "annualVMTofLDVs": 8455.979192265,
+    "annualVMTofBuses": 143.211085614,
+    "registeredLDVs": 0.417655937024796
   },
   "DC": {
-    "annualVMTLightDutyVehicles": 3283.90074431,
-    "annualVMTBuses": 44.297714888,
-    "registeredLightDutyVehicles": 0.356124767447808
+    "annualVMTofLDVs": 3283.90074431,
+    "annualVMTofBuses": 44.297714888,
+    "registeredLDVs": 0.356124767447808
   },
   "FL": {
-    "annualVMTLightDutyVehicles": 207418.9790786,
-    "annualVMTBuses": 1255.649368087,
-    "registeredLightDutyVehicles": 18.0568666472893
+    "annualVMTofLDVs": 207418.9790786,
+    "annualVMTofBuses": 1255.649368087,
+    "registeredLDVs": 18.0568666472893
   },
   "GA": {
-    "annualVMTLightDutyVehicles": 113432.069712898,
-    "annualVMTBuses": 783.234617294,
-    "registeredLightDutyVehicles": 8.45820467607153
+    "annualVMTofLDVs": 113432.069712898,
+    "annualVMTofBuses": 783.234617294,
+    "registeredLDVs": 8.45820467607153
   },
   "ID": {
-    "annualVMTLightDutyVehicles": 16759.204729144,
-    "annualVMTBuses": 62.268466972,
-    "registeredLightDutyVehicles": 1.85268664137573
+    "annualVMTofLDVs": 16759.204729144,
+    "annualVMTofBuses": 62.268466972,
+    "registeredLDVs": 1.85268664137573
   },
   "IL": {
-    "annualVMTLightDutyVehicles": 90083.278453251,
-    "annualVMTBuses": 768.147059665,
-    "registeredLightDutyVehicles": 9.49972981316683
+    "annualVMTofLDVs": 90083.278453251,
+    "annualVMTofBuses": 768.147059665,
+    "registeredLDVs": 9.49972981316683
   },
   "IN": {
-    "annualVMTLightDutyVehicles": 80322.761093105,
-    "annualVMTBuses": 388.615178976,
-    "registeredLightDutyVehicles": 5.71313285249791
+    "annualVMTofLDVs": 80322.761093105,
+    "annualVMTofBuses": 388.615178976,
+    "registeredLDVs": 5.71313285249791
   },
   "IA": {
-    "annualVMTLightDutyVehicles": 27701.595584553,
-    "annualVMTBuses": 94.936833248,
-    "registeredLightDutyVehicles": 3.37426479455765
+    "annualVMTofLDVs": 27701.595584553,
+    "annualVMTofBuses": 94.936833248,
+    "registeredLDVs": 3.37426479455765
   },
   "KS": {
-    "annualVMTLightDutyVehicles": 27112.6224548,
-    "annualVMTBuses": 35.86803922,
-    "registeredLightDutyVehicles": 2.36325546936965
+    "annualVMTofLDVs": 27112.6224548,
+    "annualVMTofBuses": 35.86803922,
+    "registeredLDVs": 2.36325546936965
   },
   "KY": {
-    "annualVMTLightDutyVehicles": 39899.48572746,
-    "annualVMTBuses": 414.79386775,
-    "registeredLightDutyVehicles": 3.95782960527953
+    "annualVMTofLDVs": 39899.48572746,
+    "annualVMTofBuses": 414.79386775,
+    "registeredLDVs": 3.95782960527953
   },
   "LA": {
-    "annualVMTLightDutyVehicles": 48312.775735722,
-    "annualVMTBuses": 283.790569879,
-    "registeredLightDutyVehicles": 4.21264621921735
+    "annualVMTofLDVs": 48312.775735722,
+    "annualVMTofBuses": 283.790569879,
+    "registeredLDVs": 4.21264621921735
   },
   "ME": {
-    "annualVMTLightDutyVehicles": 12907.982873158,
-    "annualVMTBuses": 113.397329135,
-    "registeredLightDutyVehicles": 1.17331610631918
+    "annualVMTofLDVs": 12907.982873158,
+    "annualVMTofBuses": 113.397329135,
+    "registeredLDVs": 1.17331610631918
   },
   "MD": {
-    "annualVMTLightDutyVehicles": 53283.096898372,
-    "annualVMTBuses": 211.08096442,
-    "registeredLightDutyVehicles": 4.5772249161988
+    "annualVMTofLDVs": 53283.096898372,
+    "annualVMTofBuses": 211.08096442,
+    "registeredLDVs": 4.5772249161988
   },
   "MA": {
-    "annualVMTLightDutyVehicles": 52815.438792868,
-    "annualVMTBuses": 381.564749863,
-    "registeredLightDutyVehicles": 4.77291727111307
+    "annualVMTofLDVs": 52815.438792868,
+    "annualVMTofBuses": 381.564749863,
+    "registeredLDVs": 4.77291727111307
   },
   "MI": {
-    "annualVMTLightDutyVehicles": 89045.566285757,
-    "annualVMTBuses": 201.742036341,
-    "registeredLightDutyVehicles": 8.62992635030956
+    "annualVMTofLDVs": 89045.566285757,
+    "annualVMTofBuses": 201.742036341,
+    "registeredLDVs": 8.62992635030956
   },
   "MN": {
-    "annualVMTLightDutyVehicles": 50510.815967183,
-    "annualVMTBuses": 505.069706985,
-    "registeredLightDutyVehicles": 5.13580445489845
+    "annualVMTofLDVs": 50510.815967183,
+    "annualVMTofBuses": 505.069706985,
+    "registeredLDVs": 5.13580445489845
   },
   "MS": {
-    "annualVMTLightDutyVehicles": 34595.643561795,
-    "annualVMTBuses": 228.010947581,
-    "registeredLightDutyVehicles": 2.14458335710504
+    "annualVMTofLDVs": 34595.643561795,
+    "annualVMTofBuses": 228.010947581,
+    "registeredLDVs": 2.14458335710504
   },
   "MO": {
-    "annualVMTLightDutyVehicles": 67476.247468603,
-    "annualVMTBuses": 498.804611469,
-    "registeredLightDutyVehicles": 4.94003910249589
+    "annualVMTofLDVs": 67476.247468603,
+    "annualVMTofBuses": 498.804611469,
+    "registeredLDVs": 4.94003910249589
   },
   "MT": {
-    "annualVMTLightDutyVehicles": 11907.858947094,
-    "annualVMTBuses": 74.982172119,
-    "registeredLightDutyVehicles": 1.73458101367468
+    "annualVMTofLDVs": 11907.858947094,
+    "annualVMTofBuses": 74.982172119,
+    "registeredLDVs": 1.73458101367468
   },
   "NE": {
-    "annualVMTLightDutyVehicles": 18831.397404323,
-    "annualVMTBuses": 39.746316993,
-    "registeredLightDutyVehicles": 1.80201416364178
+    "annualVMTofLDVs": 18831.397404323,
+    "annualVMTofBuses": 39.746316993,
+    "registeredLDVs": 1.80201416364178
   },
   "NV": {
-    "annualVMTLightDutyVehicles": 24299.599561126,
-    "annualVMTBuses": 129.007953765,
-    "registeredLightDutyVehicles": 2.46114935452083
+    "annualVMTofLDVs": 24299.599561126,
+    "annualVMTofBuses": 129.007953765,
+    "registeredLDVs": 2.46114935452083
   },
   "NH": {
-    "annualVMTLightDutyVehicles": 12279.727176416,
-    "annualVMTBuses": 76.699110903,
-    "registeredLightDutyVehicles": 1.27424177218044
+    "annualVMTofLDVs": 12279.727176416,
+    "annualVMTofBuses": 76.699110903,
+    "registeredLDVs": 1.27424177218044
   },
   "NJ": {
-    "annualVMTLightDutyVehicles": 70096.294173864,
-    "annualVMTBuses": 205.450413658,
-    "registeredLightDutyVehicles": 5.5483299188572
+    "annualVMTofLDVs": 70096.294173864,
+    "annualVMTofBuses": 205.450413658,
+    "registeredLDVs": 5.5483299188572
   },
   "NM": {
-    "annualVMTLightDutyVehicles": 23319.778040204,
-    "annualVMTBuses": 267.692922182,
-    "registeredLightDutyVehicles": 1.71034215171902
+    "annualVMTofLDVs": 23319.778040204,
+    "annualVMTofBuses": 267.692922182,
+    "registeredLDVs": 1.71034215171902
   },
   "NY": {
-    "annualVMTLightDutyVehicles": 106565.597412504,
-    "annualVMTBuses": 967.75041749,
-    "registeredLightDutyVehicles": 7.86598248813831
+    "annualVMTofLDVs": 106565.597412504,
+    "annualVMTofBuses": 967.75041749,
+    "registeredLDVs": 7.86598248813831
   },
   "NC": {
-    "annualVMTLightDutyVehicles": 109843.168917714,
-    "annualVMTBuses": 738.165510434,
-    "registeredLightDutyVehicles": 8.32329265972027
+    "annualVMTofLDVs": 109843.168917714,
+    "annualVMTofBuses": 738.165510434,
+    "registeredLDVs": 8.32329265972027
   },
   "ND": {
-    "annualVMTLightDutyVehicles": 7387.857372645,
-    "annualVMTBuses": 49.587744277,
-    "registeredLightDutyVehicles": 0.979386948121375
+    "annualVMTofLDVs": 7387.857372645,
+    "annualVMTofBuses": 49.587744277,
+    "registeredLDVs": 0.979386948121375
   },
   "OH": {
-    "annualVMTLightDutyVehicles": 99598.504352134,
-    "annualVMTBuses": 673.753586901,
-    "registeredLightDutyVehicles": 10.0427051532362
+    "annualVMTofLDVs": 99598.504352134,
+    "annualVMTofBuses": 673.753586901,
+    "registeredLDVs": 10.0427051532362
   },
   "OK": {
-    "annualVMTLightDutyVehicles": 38352.701981302,
-    "annualVMTBuses": 275.388050922,
-    "registeredLightDutyVehicles": 3.01812125299786
+    "annualVMTofLDVs": 38352.701981302,
+    "annualVMTofBuses": 275.388050922,
+    "registeredLDVs": 3.01812125299786
   },
   "OR": {
-    "annualVMTLightDutyVehicles": 31480.433075289,
-    "annualVMTBuses": 317.978666603,
-    "registeredLightDutyVehicles": 3.77031535421736
+    "annualVMTofLDVs": 31480.433075289,
+    "annualVMTofBuses": 317.978666603,
+    "registeredLDVs": 3.77031535421736
   },
   "PA": {
-    "annualVMTLightDutyVehicles": 88773.660555894,
-    "annualVMTBuses": 752.918950725,
-    "registeredLightDutyVehicles": 9.90490846005201
+    "annualVMTofLDVs": 88773.660555894,
+    "annualVMTofBuses": 752.918950725,
+    "registeredLDVs": 9.90490846005201
   },
   "RI": {
-    "annualVMTLightDutyVehicles": 7041.048882694,
-    "annualVMTBuses": 10.193024736,
-    "registeredLightDutyVehicles": 0.743083750899381
+    "annualVMTofLDVs": 7041.048882694,
+    "annualVMTofBuses": 10.193024736,
+    "registeredLDVs": 0.743083750899381
   },
   "SC": {
-    "annualVMTLightDutyVehicles": 53466.29321551,
-    "annualVMTBuses": 161.87532434,
-    "registeredLightDutyVehicles": 4.85195528245131
+    "annualVMTofLDVs": 53466.29321551,
+    "annualVMTofBuses": 161.87532434,
+    "registeredLDVs": 4.85195528245131
   },
   "SD": {
-    "annualVMTLightDutyVehicles": 8604.53996365,
-    "annualVMTBuses": 14.33974981,
-    "registeredLightDutyVehicles": 1.12964677413696
+    "annualVMTofLDVs": 8604.53996365,
+    "annualVMTofBuses": 14.33974981,
+    "registeredLDVs": 1.12964677413696
   },
   "TN": {
-    "annualVMTLightDutyVehicles": 72857.22212538,
-    "annualVMTBuses": 82.867513291,
-    "registeredLightDutyVehicles": 6.26209650759023
+    "annualVMTofLDVs": 72857.22212538,
+    "annualVMTofBuses": 82.867513291,
+    "registeredLDVs": 6.26209650759023
   },
   "TX": {
-    "annualVMTLightDutyVehicles": 253988.415611493,
-    "annualVMTBuses": 726.760739546,
-    "registeredLightDutyVehicles": 21.6584205107919
+    "annualVMTofLDVs": 253988.415611493,
+    "annualVMTofBuses": 726.760739546,
+    "registeredLDVs": 21.6584205107919
   },
   "UT": {
-    "annualVMTLightDutyVehicles": 27021.252667711,
-    "annualVMTBuses": 158.701610434,
-    "registeredLightDutyVehicles": 2.58513524235195
+    "annualVMTofLDVs": 27021.252667711,
+    "annualVMTofBuses": 158.701610434,
+    "registeredLDVs": 2.58513524235195
   },
   "VT": {
-    "annualVMTLightDutyVehicles": 6469.262284912,
-    "annualVMTBuses": 51.213122436,
-    "registeredLightDutyVehicles": 0.557314028747516
+    "annualVMTofLDVs": 6469.262284912,
+    "annualVMTofBuses": 51.213122436,
+    "registeredLDVs": 0.557314028747516
   },
   "VA": {
-    "annualVMTLightDutyVehicles": 75476.752150258,
-    "annualVMTBuses": 501.900957317,
-    "registeredLightDutyVehicles": 7.16704398150268
+    "annualVMTofLDVs": 75476.752150258,
+    "annualVMTofBuses": 501.900957317,
+    "registeredLDVs": 7.16704398150268
   },
   "WA": {
-    "annualVMTLightDutyVehicles": 52918.764997539,
-    "annualVMTBuses": 146.902082095,
-    "registeredLightDutyVehicles": 7.20492299384905
+    "annualVMTofLDVs": 52918.764997539,
+    "annualVMTofBuses": 146.902082095,
+    "registeredLDVs": 7.20492299384905
   },
   "WV": {
-    "annualVMTLightDutyVehicles": 13114.444105358,
-    "annualVMTBuses": 144.290827338,
-    "registeredLightDutyVehicles": 1.51364250418569
+    "annualVMTofLDVs": 13114.444105358,
+    "annualVMTofBuses": 144.290827338,
+    "registeredLDVs": 1.51364250418569
   },
   "WI": {
-    "annualVMTLightDutyVehicles": 58465.758265122,
-    "annualVMTBuses": 493.493723412,
-    "registeredLightDutyVehicles": 5.09485242957661
+    "annualVMTofLDVs": 58465.758265122,
+    "annualVMTofBuses": 493.493723412,
+    "registeredLDVs": 5.09485242957661
   },
   "WY": {
-    "annualVMTLightDutyVehicles": 7410.715636053,
-    "annualVMTBuses": 39.158809014,
-    "registeredLightDutyVehicles": 0.806230607389308
+    "annualVMTofLDVs": 7410.715636053,
+    "annualVMTofBuses": 39.158809014,
+    "registeredLDVs": 0.806230607389308
   }
 }

@@ -505,11 +505,7 @@ export function calculateVMTAllocationPerVehicle(options: {
   // initialize result object with state keys and total key
   const result = Object.entries(vmtAllocationAndRegisteredVehicles).reduce(
     (object, [key, data]) => {
-      const {
-        annualVMTLightDutyVehicles,
-        annualVMTBuses,
-        registeredLightDutyVehicles,
-      } = data;
+      const { annualVMTofLDVs, annualVMTofBuses, registeredLDVs } = data;
 
       const busSalesAndStock =
         stateBusSalesAndStock[key as keyof StateBusSalesAndStock];
@@ -521,9 +517,9 @@ export function calculateVMTAllocationPerVehicle(options: {
           1_000_000;
 
         object[key as StateId] = {
-          millionVmtLDVs: annualVMTLightDutyVehicles,
-          millionVmtBuses: annualVMTBuses,
-          millionRegisteredLDVs: registeredLightDutyVehicles,
+          millionVmtLDVs: annualVMTofLDVs,
+          millionVmtBuses: annualVMTofBuses,
+          millionRegisteredLDVs: registeredLDVs,
           millionRegisteredBuses,
           vmtPerLDV: { total: 0, percent: 0 },
           vmtPerBus: { total: 0, percent: 0 },
@@ -597,8 +593,8 @@ export function calculateNationalAverageLDVsVMTPerYear(options: {
     vmtAllocationAndRegisteredVehicles,
   ).reduce(
     (object, stateValue) => {
-      object.totalAnnualLDVsVMT += stateValue.annualVMTLightDutyVehicles;
-      object.totalRegisteredLDVs += stateValue.registeredLightDutyVehicles;
+      object.totalAnnualLDVsVMT += stateValue.annualVMTofLDVs;
+      object.totalRegisteredLDVs += stateValue.registeredLDVs;
       return object;
     },
     { totalAnnualLDVsVMT: 0, totalRegisteredLDVs: 0 },
