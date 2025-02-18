@@ -16,7 +16,7 @@ import {
   type NationalAverageBusVMTPerYear,
   type EVEfficiencyByModelYear,
   type RegionAverageTemperatures,
-  type StateLightDutyVehiclesSales,
+  type StateLDVsSales,
   type StateBusSalesAndStock,
   type RegionEereAverages,
   type StateEereAverages,
@@ -712,12 +712,12 @@ export function calculateHourlyEVChargingPercentages(options: {
   evChargingProfiles.forEach((data) => {
     result[data.hour] = {
       batteryEVs: {
-        weekday: data.lightDutyVehicles.weekday,
-        weekend: data.lightDutyVehicles.weekend,
+        weekday: data.ldvs.weekday,
+        weekend: data.ldvs.weekend,
       },
       hybridEVs: {
-        weekday: data.lightDutyVehicles.weekday,
-        weekend: data.lightDutyVehicles.weekend,
+        weekday: data.ldvs.weekday,
+        weekend: data.ldvs.weekend,
       },
       transitBuses: {
         weekday: data.buses.weekday,
@@ -2264,7 +2264,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
  */
 export function calculateVehicleSalesAndStock(options: {
   countyFips: CountyFips;
-  stateLightDutyVehiclesSales: StateLightDutyVehiclesSales;
+  stateLDVsSales: StateLDVsSales;
   stateBusSalesAndStock: StateBusSalesAndStock;
   geographicFocus: GeographicFocus;
   selectedRegionName: string;
@@ -2273,7 +2273,7 @@ export function calculateVehicleSalesAndStock(options: {
 }) {
   const {
     countyFips,
-    stateLightDutyVehiclesSales,
+    stateLDVsSales,
     stateBusSalesAndStock,
     geographicFocus,
     selectedRegionName,
@@ -2283,7 +2283,7 @@ export function calculateVehicleSalesAndStock(options: {
 
   const result: {
     [locationId: string]: {
-      lightDutyVehicles: { sales: number; stock: number };
+      ldvs: { sales: number; stock: number };
       transitBuses: { sales: number; stock: number };
       schoolBuses: { sales: number; stock: number };
     };
@@ -2314,14 +2314,13 @@ export function calculateVehicleSalesAndStock(options: {
         : true;
 
     if (conditionalRegionMatch && stateIds.includes(stateId)) {
-      const lightDutyVehiclesVMTShare = data['Share of State VMT - Passenger Cars'] || 0; // prettier-ignore
+      const ldvsVMTShare = data["Share of State VMT - Passenger Cars"] || 0;
       const transitBusesVMTShare = data['Share of State VMT - Transit Buses'] || 0; // prettier-ignore
       const schoolBusesVMTShare = data['Share of State VMT - School Buses'] || 0; // prettier-ignore
 
-      const lightDutyVehiclesSales =
-        stateLightDutyVehiclesSales[id as keyof StateLightDutyVehiclesSales];
+      const ldvsSales = stateLDVsSales[id as keyof StateLDVsSales];
 
-      const lightDutyVehiclesStock =
+      const ldvsStock =
         vmtAllocationData[id as StateId].millionRegisteredLDVs * 1_000_000;
 
       const busSalesAndStock =
@@ -2329,16 +2328,14 @@ export function calculateVehicleSalesAndStock(options: {
 
       // initialize and then increment state data by vehicle type
       result[stateId] ??= {
-        lightDutyVehicles: { sales: 0, stock: 0 },
+        ldvs: { sales: 0, stock: 0 },
         transitBuses: { sales: 0, stock: 0 },
         schoolBuses: { sales: 0, stock: 0 },
       };
 
-      result[stateId].lightDutyVehicles.sales +=
-        lightDutyVehiclesVMTShare * lightDutyVehiclesSales;
+      result[stateId].ldvs.sales += ldvsVMTShare * ldvsSales;
 
-      result[stateId].lightDutyVehicles.stock +=
-        lightDutyVehiclesVMTShare * lightDutyVehiclesStock;
+      result[stateId].ldvs.stock += ldvsVMTShare * ldvsStock;
 
       result[stateId].transitBuses.sales +=
         transitBusesVMTShare * busSalesAndStock.transitBuses.sales;
@@ -2360,14 +2357,14 @@ export function calculateVehicleSalesAndStock(options: {
 
   if (regionId) {
     result[regionId] = {
-      lightDutyVehicles: { sales: 0, stock: 0 },
+      ldvs: { sales: 0, stock: 0 },
       transitBuses: { sales: 0, stock: 0 },
       schoolBuses: { sales: 0, stock: 0 },
     };
 
     resultStateIds.forEach((id) => {
-      result[regionId].lightDutyVehicles.sales += result[id].lightDutyVehicles.sales; // prettier-ignore
-      result[regionId].lightDutyVehicles.stock += result[id].lightDutyVehicles.stock; // prettier-ignore
+      result[regionId].ldvs.sales += result[id].ldvs.sales;
+      result[regionId].ldvs.stock += result[id].ldvs.stock;
       result[regionId].transitBuses.sales += result[id].transitBuses.sales;
       result[regionId].transitBuses.stock += result[id].transitBuses.stock;
       result[regionId].schoolBuses.sales += result[id].schoolBuses.sales;

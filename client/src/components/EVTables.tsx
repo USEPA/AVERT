@@ -47,7 +47,7 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
   const locationSalesAndStock = vehicleSalesAndStock[evDeploymentLocation];
   if (!locationSalesAndStock) return null;
 
-  const totalLightDutyVehicles =
+  const totalLDVs =
     isNaN(Number(batteryEVs) + Number(hybridEVs)) ||
     Number(batteryEVs) < 0 ||
     Number(hybridEVs) < 0
@@ -64,8 +64,8 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
       ? 0
       : Number(schoolBuses);
 
-  const lightDutyVehicleSales = locationSalesAndStock.lightDutyVehicles.sales;
-  const lightDutyVehicleStock = locationSalesAndStock.lightDutyVehicles.stock;
+  const ldvsSales = locationSalesAndStock.ldvs.sales;
+  const ldvsStock = locationSalesAndStock.ldvs.stock;
   const transitBusesSales = locationSalesAndStock.transitBuses.sales;
   const transitBusesStock = locationSalesAndStock.transitBuses.stock;
   const schoolBusesSales = locationSalesAndStock.schoolBuses.sales;
@@ -116,18 +116,8 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
             <tbody>
               <tr>
                 <th scope="row">Light-duty vehicles</th>
-                <td>
-                  {calculatePercent(
-                    totalLightDutyVehicles,
-                    lightDutyVehicleSales,
-                  )}
-                </td>
-                <td>
-                  {calculatePercent(
-                    totalLightDutyVehicles,
-                    lightDutyVehicleStock,
-                  )}
-                </td>
+                <td>{calculatePercent(totalLDVs, ldvsSales)}</td>
+                <td>{calculatePercent(totalLDVs, ldvsStock)}</td>
               </tr>
 
               <tr>

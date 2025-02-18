@@ -95,7 +95,7 @@ import regionAverageTemperatures from "@/data/region-average-temperature.json";
  * Excel: "Table 11: LDV Sales and Stock" table in the "Library" sheet
  * (B485:C535).
  */
-import stateLightDutyVehiclesSales from "@/data/state-light-duty-vehicles-sales.json";
+import stateLDVsSales from "@/data/state-light-duty-vehicles-sales.json";
 /**
  * Excel: "Table 12: Transit and School Bus Sales and Stock" table in the
  * "Library" sheet (B546:F596).
@@ -1127,7 +1127,7 @@ export function setVehicleSalesAndStock(): AppThunk {
 
     const vehicleSalesAndStock = calculateVehicleSalesAndStock({
       countyFips,
-      stateLightDutyVehiclesSales,
+      stateLDVsSales,
       stateBusSalesAndStock,
       geographicFocus,
       selectedRegionName,
