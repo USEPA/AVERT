@@ -11,7 +11,7 @@ describe("Get Results – rooftopSolar", () => {
     cy.findByText("Solar photovoltaic (PV)").as("toggleD");
     cy.get("@toggleD").click();
 
-    cy.findByLabelText('Distributed (rooftop) solar PV total capacity:').as('rooftopSolar'); // prettier-ignore
+    cy.findByLabelText("Distributed (rooftop) solar PV total capacity:").as("rooftopSolar"); // prettier-ignore
     cy.get("@rooftopSolar").type("1000");
 
     cy.findByText("Calculate Energy Impacts").as("calculateBtn");
@@ -42,22 +42,22 @@ describe("Get Results – rooftopSolar", () => {
     const nh3Rates = ["0.029", "0.033"];
 
     /* prettier-ignore */
-    cy.findByText('Generation')
-      .parent().parent().children().as('generation')
-      .parent().next().next().children().as('so2Totals')
-      .parent().next().children().as('noxTotals')
-      .parent().next().children().as('ozoneNoxTotals')
-      .parent().next().children().as('co2Totals')
-      .parent().next().children().as('pm25Totals')
-      .parent().next().children().as('vocsTotals')
-      .parent().next().children().as('nh3Totals')
-      .parent().next().next().children().as('so2Rates')
-      .parent().next().children().as('noxRates')
-      .parent().next().children().as('ozoneNoxRates')
-      .parent().next().children().as('co2Rates')
-      .parent().next().children().as('pm25Rates')
-      .parent().next().children().as('vocsRates')
-      .parent().next().children().as('nh3Rates');
+    cy.findByText("Generation")
+      .parent().parent().children().as("generation")
+      .parent().next().next().children().as("so2Totals")
+      .parent().next().children().as("noxTotals")
+      .parent().next().children().as("ozoneNoxTotals")
+      .parent().next().children().as("co2Totals")
+      .parent().next().children().as("pm25Totals")
+      .parent().next().children().as("vocsTotals")
+      .parent().next().children().as("nh3Totals")
+      .parent().next().next().children().as("so2Rates")
+      .parent().next().children().as("noxRates")
+      .parent().next().children().as("ozoneNoxRates")
+      .parent().next().children().as("co2Rates")
+      .parent().next().children().as("pm25Rates")
+      .parent().next().children().as("vocsRates")
+      .parent().next().children().as("nh3Rates");
 
     cy.get("@generation").eq(1).should("contain", generation[0]);
     cy.get("@generation").eq(2).should("contain", generation[1]);
@@ -165,43 +165,43 @@ describe("Get Results – rooftopSolar", () => {
     cy.findByLabelText("All states").click({ force: true });
 
     /* prettier-ignore */
-    cy.findAllByText('Arkansas').filter('th')
-      .parent().children().as('arGen')
-      .parent().next().children().as('arVehicles')
-      .parent().next().children().as('arChange')
-      .parent().next().children().as('iaGen')
-      .parent().next().children().as('iaVehicles')
-      .parent().next().children().as('iaChange')
-      .parent().next().children().as('ksGen')
-      .parent().next().children().as('ksVehicles')
-      .parent().next().children().as('ksChange')
-      .parent().next().children().as('laGen')
-      .parent().next().children().as('laVehicles')
-      .parent().next().children().as('laChange')
-      .parent().next().children().as('moGen')
-      .parent().next().children().as('moVehicles')
-      .parent().next().children().as('moChange')
-      .parent().next().children().as('mtGen')
-      .parent().next().children().as('mtVehicles')
-      .parent().next().children().as('mtChange')
-      .parent().next().children().as('neGen')
-      .parent().next().children().as('neVehicles')
-      .parent().next().children().as('neChange')
-      .parent().next().children().as('nmGen')
-      .parent().next().children().as('nmVehicles')
-      .parent().next().children().as('nmChange')
-      .parent().next().children().as('ndGen')
-      .parent().next().children().as('ndVehicles')
-      .parent().next().children().as('ndChange')
-      .parent().next().children().as('okGen')
-      .parent().next().children().as('okVehicles')
-      .parent().next().children().as('okChange')
-      .parent().next().children().as('sdGen')
-      .parent().next().children().as('sdVehicles')
-      .parent().next().children().as('sdChange')
-      .parent().next().children().as('txGen')
-      .parent().next().children().as('txVehicles')
-      .parent().next().children().as('txChange');
+    cy.findAllByText("Arkansas").filter("th")
+      .parent().children().as("arGen")
+      .parent().next().children().as("arVehicles")
+      .parent().next().children().as("arChange")
+      .parent().next().children().as("iaGen")
+      .parent().next().children().as("iaVehicles")
+      .parent().next().children().as("iaChange")
+      .parent().next().children().as("ksGen")
+      .parent().next().children().as("ksVehicles")
+      .parent().next().children().as("ksChange")
+      .parent().next().children().as("laGen")
+      .parent().next().children().as("laVehicles")
+      .parent().next().children().as("laChange")
+      .parent().next().children().as("moGen")
+      .parent().next().children().as("moVehicles")
+      .parent().next().children().as("moChange")
+      .parent().next().children().as("mtGen")
+      .parent().next().children().as("mtVehicles")
+      .parent().next().children().as("mtChange")
+      .parent().next().children().as("neGen")
+      .parent().next().children().as("neVehicles")
+      .parent().next().children().as("neChange")
+      .parent().next().children().as("nmGen")
+      .parent().next().children().as("nmVehicles")
+      .parent().next().children().as("nmChange")
+      .parent().next().children().as("ndGen")
+      .parent().next().children().as("ndVehicles")
+      .parent().next().children().as("ndChange")
+      .parent().next().children().as("okGen")
+      .parent().next().children().as("okVehicles")
+      .parent().next().children().as("okChange")
+      .parent().next().children().as("sdGen")
+      .parent().next().children().as("sdVehicles")
+      .parent().next().children().as("sdChange")
+      .parent().next().children().as("txGen")
+      .parent().next().children().as("txVehicles")
+      .parent().next().children().as("txChange");
 
     // Arkansas
     cy.get("@arGen").eq(2).should("contain", arGen[0]);

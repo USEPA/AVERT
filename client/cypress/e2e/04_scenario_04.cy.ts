@@ -4,10 +4,10 @@ describe("Test Scenario 4", () => {
 
     cy.findAllByText("Select State").filter("button").click();
 
-    cy.findAllByText('Select State').filter('option').filter(':visible').parent().as('stateSelect'); // prettier-ignore
+    cy.findAllByText("Select State").filter("option").filter(":visible").parent().as("stateSelect"); // prettier-ignore
     cy.get("@stateSelect").select("Alabama");
 
-    cy.findAllByText('Set Energy Impacts').filter('.avert-button').as('impactsBtn'); // prettier-ignore
+    cy.findAllByText("Set Energy Impacts").filter(".avert-button").as("impactsBtn"); // prettier-ignore
     cy.get("@impactsBtn").click();
 
     cy.findByText("Electric vehicles").as("toggleE");
@@ -37,13 +37,13 @@ describe("Test Scenario 4", () => {
     const nh3 = ["1,184,260", "-8,992,520", "-7,808,260"];
 
     /* prettier-ignore */
-    cy.findByText('Total Emissions')
-      .parent().next().children().as('so2')
-      .parent().next().children().as('nox')
-      .parent().next().children().as('co2')
-      .parent().next().children().as('pm25')
-      .parent().next().children().as('vocs')
-      .parent().next().children().as('nh3');
+    cy.findByText("Total Emissions")
+      .parent().next().children().as("so2")
+      .parent().next().children().as("nox")
+      .parent().next().children().as("co2")
+      .parent().next().children().as("pm25")
+      .parent().next().children().as("vocs")
+      .parent().next().children().as("nh3");
 
     cy.get("@so2").eq(1).should("contain", so2[0]);
     cy.get("@so2").eq(2).should("contain", so2[1]);

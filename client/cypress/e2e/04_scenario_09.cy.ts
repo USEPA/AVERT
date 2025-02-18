@@ -4,16 +4,16 @@ describe("Test Scenario 9", () => {
 
     cy.findAllByText("Select State").filter("button").click();
 
-    cy.findAllByText('Select State').filter('option').filter(':visible').parent().as('stateSelect'); // prettier-ignore
+    cy.findAllByText("Select State").filter("option").filter(":visible").parent().as("stateSelect"); // prettier-ignore
     cy.get("@stateSelect").select("Florida");
 
-    cy.findAllByText('Set Energy Impacts').filter('.avert-button').as('impactsBtn'); // prettier-ignore
+    cy.findAllByText("Set Energy Impacts").filter(".avert-button").as("impactsBtn"); // prettier-ignore
     cy.get("@impactsBtn").click();
 
     cy.findByText("Solar photovoltaic (PV)").as("toggleD");
     cy.get("@toggleD").click();
 
-    cy.findByLabelText('Distributed (rooftop) solar PV total capacity:').as('rooftopSolar'); // prettier-ignore
+    cy.findByLabelText("Distributed (rooftop) solar PV total capacity:").as("rooftopSolar"); // prettier-ignore
     cy.get("@rooftopSolar").type("100");
 
     cy.findByText("Electric vehicles").as("toggleE");
@@ -22,7 +22,7 @@ describe("Test Scenario 9", () => {
     cy.findByLabelText("Electric transit buses:").as("transitBuses");
     cy.get("@transitBuses").type("100");
 
-    cy.findByLabelText('ICE vehicles being replaced:').as('iceReplacementVehicle'); // prettier-ignore
+    cy.findByLabelText("ICE vehicles being replaced:").as("iceReplacementVehicle"); // prettier-ignore
     cy.get("@iceReplacementVehicle").select("Existing");
 
     cy.findByText("Calculate Energy Impacts").as("calculateBtn");
@@ -43,13 +43,13 @@ describe("Test Scenario 9", () => {
     const nh3 = ["-4,660", "-2,110", "-6,770"];
 
     /* prettier-ignore */
-    cy.findByText('Total Emissions')
-      .parent().next().children().as('so2')
-      .parent().next().children().as('nox')
-      .parent().next().children().as('co2')
-      .parent().next().children().as('pm25')
-      .parent().next().children().as('vocs')
-      .parent().next().children().as('nh3');
+    cy.findByText("Total Emissions")
+      .parent().next().children().as("so2")
+      .parent().next().children().as("nox")
+      .parent().next().children().as("co2")
+      .parent().next().children().as("pm25")
+      .parent().next().children().as("vocs")
+      .parent().next().children().as("nh3");
 
     cy.get("@so2").eq(1).should("contain", so2[0]);
     cy.get("@so2").eq(2).should("contain", so2[1]);

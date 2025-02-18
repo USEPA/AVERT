@@ -42,22 +42,22 @@ describe("Get Results – annualGwh", () => {
     const nh3Rates = ["0.027", "0.028"];
 
     /* prettier-ignore */
-    cy.findByText('Generation')
-      .parent().parent().children().as('generation')
-      .parent().next().next().children().as('so2Totals')
-      .parent().next().children().as('noxTotals')
-      .parent().next().children().as('ozoneNoxTotals')
-      .parent().next().children().as('co2Totals')
-      .parent().next().children().as('pm25Totals')
-      .parent().next().children().as('vocsTotals')
-      .parent().next().children().as('nh3Totals')
-      .parent().next().next().children().as('so2Rates')
-      .parent().next().children().as('noxRates')
-      .parent().next().children().as('ozoneNoxRates')
-      .parent().next().children().as('co2Rates')
-      .parent().next().children().as('pm25Rates')
-      .parent().next().children().as('vocsRates')
-      .parent().next().children().as('nh3Rates');
+    cy.findByText("Generation")
+      .parent().parent().children().as("generation")
+      .parent().next().next().children().as("so2Totals")
+      .parent().next().children().as("noxTotals")
+      .parent().next().children().as("ozoneNoxTotals")
+      .parent().next().children().as("co2Totals")
+      .parent().next().children().as("pm25Totals")
+      .parent().next().children().as("vocsTotals")
+      .parent().next().children().as("nh3Totals")
+      .parent().next().next().children().as("so2Rates")
+      .parent().next().children().as("noxRates")
+      .parent().next().children().as("ozoneNoxRates")
+      .parent().next().children().as("co2Rates")
+      .parent().next().children().as("pm25Rates")
+      .parent().next().children().as("vocsRates")
+      .parent().next().children().as("nh3Rates");
 
     cy.get("@generation").eq(1).should("contain", generation[0]);
     cy.get("@generation").eq(2).should("contain", generation[1]);
@@ -133,19 +133,19 @@ describe("Get Results – annualGwh", () => {
     cy.findByLabelText("All states").click({ force: true });
 
     /* prettier-ignore */
-    cy.findAllByText('Arizona').filter('th')
-      .parent().children().as('azGen')
-      .parent().next().children().as('azVehicles')
-      .parent().next().children().as('azChange')
-      .parent().next().children().as('caGen')
-      .parent().next().children().as('caVehicles')
-      .parent().next().children().as('caChange')
-      .parent().next().children().as('nmGen')
-      .parent().next().children().as('nmVehicles')
-      .parent().next().children().as('nmChange')
-      .parent().next().children().as('txGen')
-      .parent().next().children().as('txVehicles')
-      .parent().next().children().as('txChange');
+    cy.findAllByText("Arizona").filter("th")
+      .parent().children().as("azGen")
+      .parent().next().children().as("azVehicles")
+      .parent().next().children().as("azChange")
+      .parent().next().children().as("caGen")
+      .parent().next().children().as("caVehicles")
+      .parent().next().children().as("caChange")
+      .parent().next().children().as("nmGen")
+      .parent().next().children().as("nmVehicles")
+      .parent().next().children().as("nmChange")
+      .parent().next().children().as("txGen")
+      .parent().next().children().as("txVehicles")
+      .parent().next().children().as("txChange");
 
     // Arizona
     cy.get("@azGen").eq(2).should("contain", azGen[0]);

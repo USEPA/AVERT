@@ -2,10 +2,10 @@ describe("Test Scenario 8", () => {
   beforeEach(() => {
     cy.visit("/");
 
-    cy.findAllByText('Select Region').filter('option').parent().as('regionSelect'); // prettier-ignore
+    cy.findAllByText("Select Region").filter("option").parent().as("regionSelect"); // prettier-ignore
     cy.get("@regionSelect").select("Northwest");
 
-    cy.findAllByText('Set Energy Impacts').filter('.avert-button').as('impactsBtn'); // prettier-ignore
+    cy.findAllByText("Set Energy Impacts").filter(".avert-button").as("impactsBtn"); // prettier-ignore
     cy.get("@impactsBtn").click();
 
     cy.findByText("Reductions spread evenly throughout the year").as("toggleA");
@@ -20,7 +20,7 @@ describe("Test Scenario 8", () => {
     cy.findByLabelText("Onshore wind total capacity:").as("onshoreWind");
     cy.get("@onshoreWind").type("200");
 
-    cy.findByLabelText('Utility-scale solar PV total capacity:').as('utilitySolar'); // prettier-ignore
+    cy.findByLabelText("Utility-scale solar PV total capacity:").as("utilitySolar"); // prettier-ignore
     cy.get("@utilitySolar").type("100");
 
     cy.findByText("Electric vehicles").as("toggleE");
@@ -59,13 +59,13 @@ describe("Test Scenario 8", () => {
     const nh3 = ["-22,590", "-3,180", "-25,770"];
 
     /* prettier-ignore */
-    cy.findByText('Total Emissions')
-      .parent().next().children().as('so2')
-      .parent().next().children().as('nox')
-      .parent().next().children().as('co2')
-      .parent().next().children().as('pm25')
-      .parent().next().children().as('vocs')
-      .parent().next().children().as('nh3');
+    cy.findByText("Total Emissions")
+      .parent().next().children().as("so2")
+      .parent().next().children().as("nox")
+      .parent().next().children().as("co2")
+      .parent().next().children().as("pm25")
+      .parent().next().children().as("vocs")
+      .parent().next().children().as("nh3");
 
     cy.get("@so2").eq(1).should("contain", so2[0]);
     cy.get("@so2").eq(2).should("contain", so2[1]);

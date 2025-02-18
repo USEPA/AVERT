@@ -16,7 +16,7 @@ describe("Set Energy Impacts", () => {
 
     cy.findByText("Percentage reductions in some or all hours").as("toggleB");
     cy.get("@toggleB").click();
-    cy.findByLabelText('Broad-based program:', { exact: false }).as('broadProgram'); // prettier-ignore
+    cy.findByLabelText("Broad-based program:", { exact: false }).as("broadProgram"); // prettier-ignore
     cy.findByLabelText("Targeted program:", { exact: false }).as("reduction");
     cy.findByText("% of hours").prev().as("topHours");
     cy.get("@toggleB").click();
@@ -29,8 +29,8 @@ describe("Set Energy Impacts", () => {
 
     cy.findByText("Solar photovoltaic (PV)").as("toggleD");
     cy.get("@toggleD").click();
-    cy.findByLabelText('Utility-scale solar PV total capacity:').as('utilitySolar'); // prettier-ignore
-    cy.findByLabelText('Distributed (rooftop) solar PV total capacity:').as('rooftopSolar'); // prettier-ignore
+    cy.findByLabelText("Utility-scale solar PV total capacity:").as("utilitySolar"); // prettier-ignore
+    cy.findByLabelText("Distributed (rooftop) solar PV total capacity:").as("rooftopSolar"); // prettier-ignore
     cy.get("@toggleD").click();
 
     cy.findByText("Calculate Energy Impacts").as("calculateBtn");
