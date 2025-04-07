@@ -137,6 +137,30 @@ type Action =
       payload: { value: string };
     }
   | {
+      type: "impacts/UPDATE_EV_SHORT_HAUL_TRUCKS";
+      payload: { value: string };
+    }
+  | {
+      type: "impacts/UPDATE_EV_SHORT_HAUL_TRUCKS_CALCULATIONS_INPUT";
+      payload: { value: string };
+    }
+  | {
+      type: "impacts/UPDATE_EV_COMBO_LONG_HAUL_TRUCKS";
+      payload: { value: string };
+    }
+  | {
+      type: "impacts/UPDATE_EV_COMBO_LONG_HAUL_TRUCKS_CALCULATIONS_INPUT";
+      payload: { value: string };
+    }
+  | {
+      type: "impacts/UPDATE_EV_REFUSE_TRUCKS";
+      payload: { value: string };
+    }
+  | {
+      type: "impacts/UPDATE_EV_REFUSE_TRUCKS_CALCULATIONS_INPUT";
+      payload: { value: string };
+    }
+  | {
       type: "impacts/UPDATE_EV_DEPLOYMENT_LOCATION";
       payload: { option: string };
     }
@@ -197,7 +221,10 @@ export type ElectricVehiclesFieldName =
   | "batteryEVs"
   | "hybridEVs"
   | "transitBuses"
-  | "schoolBuses";
+  | "schoolBuses"
+  | "shortHaulTrucks"
+  | "comboLongHaulTrucks"
+  | "refuseTrucks";
 
 type SelectOptionsFieldName =
   | "maxAnnualDischargeCyclesOptions"
@@ -271,6 +298,9 @@ const initialImpactsInputs = {
   hybridEVs: "",
   transitBuses: "",
   schoolBuses: "",
+  shortHaulTrucks: "",
+  comboLongHaulTrucks: "",
+  refuseTrucks: "",
   evDeploymentLocation: "",
   evModelYear: initialEVModelYear,
   iceReplacementVehicle: initialICEReplacementVehicle,
@@ -290,6 +320,9 @@ const initialState: State = {
     hybridEVs: "",
     transitBuses: "",
     schoolBuses: "",
+    shortHaulTrucks: "",
+    comboLongHaulTrucks: "",
+    refuseTrucks: "",
   },
   hourlyEnergyProfile: {
     status: "idle",
@@ -325,6 +358,9 @@ export default function reducer(
           hybridEVs: "",
           transitBuses: "",
           schoolBuses: "",
+          shortHaulTrucks: "",
+          comboLongHaulTrucks: "",
+          refuseTrucks: "",
         },
         hourlyEnergyProfile: {
           status: "idle",
@@ -579,6 +615,72 @@ export default function reducer(
         evCalculationsInputs: {
           ...state.evCalculationsInputs,
           schoolBuses: value,
+        },
+      };
+    }
+
+    case "impacts/UPDATE_EV_SHORT_HAUL_TRUCKS": {
+      const { value } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          shortHaulTrucks: value,
+        },
+      };
+    }
+
+    case "impacts/UPDATE_EV_SHORT_HAUL_TRUCKS_CALCULATIONS_INPUT": {
+      const { value } = action.payload;
+      return {
+        ...state,
+        evCalculationsInputs: {
+          ...state.evCalculationsInputs,
+          shortHaulTrucks: value,
+        },
+      };
+    }
+
+    case "impacts/UPDATE_EV_COMBO_LONG_HAUL_TRUCKS": {
+      const { value } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          comboLongHaulTrucks: value,
+        },
+      };
+    }
+
+    case "impacts/UPDATE_EV_COMBO_LONG_HAUL_TRUCKS_CALCULATIONS_INPUT": {
+      const { value } = action.payload;
+      return {
+        ...state,
+        evCalculationsInputs: {
+          ...state.evCalculationsInputs,
+          comboLongHaulTrucks: value,
+        },
+      };
+    }
+
+    case "impacts/UPDATE_EV_REFUSE_TRUCKS": {
+      const { value } = action.payload;
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          refuseTrucks: value,
+        },
+      };
+    }
+
+    case "impacts/UPDATE_EV_REFUSE_TRUCKS_CALCULATIONS_INPUT": {
+      const { value } = action.payload;
+      return {
+        ...state,
+        evCalculationsInputs: {
+          ...state.evCalculationsInputs,
+          refuseTrucks: value,
         },
       };
     }
@@ -1040,6 +1142,99 @@ export function runEVSchoolBusesCalculations(value: string): AppThunk {
 
     dispatch({
       type: "impacts/UPDATE_EV_SCHOOL_BUSES_CALCULATIONS_INPUT",
+      payload: { value },
+    });
+  };
+}
+
+export function updateEVShortHaulTrucks(value: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: "impacts/UPDATE_EV_SHORT_HAUL_TRUCKS",
+      payload: { value },
+    });
+
+    dispatch(validateInput("shortHaulTrucks", value, ["."]));
+  };
+}
+
+/**
+ * Called every time the shortHaulTrucks inputs loses focus (e.g. onBlur)
+ */
+export function runEVShortHaulTrucksCalculations(value: string): AppThunk {
+  return (dispatch, getState) => {
+    const { impacts } = getState();
+    const { shortHaulTrucks } = impacts.evCalculationsInputs;
+
+    /** only run calculations if the input has changed since the last onBlur */
+    if (value !== shortHaulTrucks) {
+      dispatch(setVehiclesDisplaced());
+    }
+
+    dispatch({
+      type: "impacts/UPDATE_EV_SHORT_HAUL_TRUCKS_CALCULATIONS_INPUT",
+      payload: { value },
+    });
+  };
+}
+
+export function updateEVComboLongHaulTrucks(value: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: "impacts/UPDATE_EV_COMBO_LONG_HAUL_TRUCKS",
+      payload: { value },
+    });
+
+    dispatch(validateInput("comboLongHaulTrucks", value, ["."]));
+  };
+}
+
+/**
+ * Called every time the comboLongHaulTrucks inputs loses focus (e.g. onBlur)
+ */
+export function runEVComboLongHaulTrucksCalculations(value: string): AppThunk {
+  return (dispatch, getState) => {
+    const { impacts } = getState();
+    const { comboLongHaulTrucks } = impacts.evCalculationsInputs;
+
+    /** only run calculations if the input has changed since the last onBlur */
+    if (value !== comboLongHaulTrucks) {
+      dispatch(setVehiclesDisplaced());
+    }
+
+    dispatch({
+      type: "impacts/UPDATE_EV_COMBO_LONG_HAUL_TRUCKS_CALCULATIONS_INPUT",
+      payload: { value },
+    });
+  };
+}
+
+export function updateEVRefuseTrucks(value: string): AppThunk {
+  return (dispatch) => {
+    dispatch({
+      type: "impacts/UPDATE_EV_REFUSE_TRUCKS",
+      payload: { value },
+    });
+
+    dispatch(validateInput("refuseTrucks", value, ["."]));
+  };
+}
+
+/**
+ * Called every time the refuseTrucks inputs loses focus (e.g. onBlur)
+ */
+export function runEVRefuseTrucksCalculations(value: string): AppThunk {
+  return (dispatch, getState) => {
+    const { impacts } = getState();
+    const { refuseTrucks } = impacts.evCalculationsInputs;
+
+    /** only run calculations if the input has changed since the last onBlur */
+    if (value !== refuseTrucks) {
+      dispatch(setVehiclesDisplaced());
+    }
+
+    dispatch({
+      type: "impacts/UPDATE_EV_REFUSE_TRUCKS_CALCULATIONS_INPUT",
       payload: { value },
     });
   };

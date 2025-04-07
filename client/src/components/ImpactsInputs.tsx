@@ -39,6 +39,12 @@ import {
   runEVTransitBusesCalculations,
   updateEVSchoolBuses,
   runEVSchoolBusesCalculations,
+  updateEVShortHaulTrucks,
+  runEVShortHaulTrucksCalculations,
+  updateEVComboLongHaulTrucks,
+  runEVComboLongHaulTrucksCalculations,
+  updateEVRefuseTrucks,
+  runEVRefuseTrucksCalculations,
   updateEVDeploymentLocation,
   updateEVModelYear,
   updateEVICEReplacementVehicle,
@@ -160,6 +166,9 @@ function ImpactsInputsContent() {
     hybridEVs,
     transitBuses,
     schoolBuses,
+    shortHaulTrucks,
+    comboLongHaulTrucks,
+    refuseTrucks,
     evDeploymentLocation,
     evModelYear,
     iceReplacementVehicle,
@@ -211,6 +220,9 @@ function ImpactsInputsContent() {
     hybridEVs,
     transitBuses,
     schoolBuses,
+    shortHaulTrucks,
+    comboLongHaulTrucks,
+    refuseTrucks,
   ];
 
   const utilityStorageMWh = isNaN(Number(utilityStorage))
@@ -905,6 +917,100 @@ function ImpactsInputsContent() {
                             errorMessage={evInputErrorMessage}
                           />
                         </div>
+                      </div>
+
+                      <div
+                        className={clsx(
+                          "tablet:display-flex",
+                          "desktop:margin-right-2",
+                        )}
+                      >
+                        <div
+                          className={clsx("flex-1", "tablet:margin-right-2")}
+                        >
+                          <ImpactsTextInput
+                            label={<>Short-haul trucks:</>}
+                            ariaLabel="Number of short-haul trucks to be added to the road"
+                            value={shortHaulTrucks}
+                            fieldName="shortHaulTrucks"
+                            onChange={(value) => {
+                              dispatch(updateEVShortHaulTrucks(value));
+                            }}
+                            onBlur={(value) => {
+                              dispatch(runEVShortHaulTrucksCalculations(value));
+                            }}
+                            tooltip={
+                              <p className={clsx("margin-0")}>
+                                Enter the number of short-haul trucks to be
+                                added to the road.
+                              </p>
+                            }
+                            errorMessage={evInputErrorMessage}
+                          />
+                        </div>
+
+                        <div className={clsx("flex-1", "tablet:margin-left-2")}>
+                          <ImpactsTextInput
+                            className={clsx(
+                              "margin-top-1",
+                              "tablet:margin-top-0",
+                            )}
+                            label={<>Combination long-haul trucks:</>}
+                            ariaLabel="Number of combination long-haul trucks to be added to the road"
+                            value={comboLongHaulTrucks}
+                            fieldName="comboLongHaulTrucks"
+                            onChange={(value) => {
+                              dispatch(updateEVComboLongHaulTrucks(value));
+                            }}
+                            onBlur={(value) => {
+                              dispatch(
+                                runEVComboLongHaulTrucksCalculations(value),
+                              );
+                            }}
+                            tooltip={
+                              <p className={clsx("margin-0")}>
+                                Enter the number of combination long-haul trucks
+                                to be added to the road.
+                              </p>
+                            }
+                            errorMessage={evInputErrorMessage}
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        className={clsx(
+                          "tablet:display-flex",
+                          "desktop:margin-right-2",
+                        )}
+                      >
+                        <div
+                          className={clsx("flex-1", "tablet:margin-right-2")}
+                        >
+                          <ImpactsTextInput
+                            label={<>Refuse trucks:</>}
+                            ariaLabel="Number of refuse to be added to the road"
+                            value={refuseTrucks}
+                            fieldName="refuseTrucks"
+                            onChange={(value) => {
+                              dispatch(updateEVRefuseTrucks(value));
+                            }}
+                            onBlur={(value) => {
+                              dispatch(runEVRefuseTrucksCalculations(value));
+                            }}
+                            tooltip={
+                              <p className={clsx("margin-0")}>
+                                Enter the number of refuse to be added to the
+                                road.
+                              </p>
+                            }
+                            errorMessage={evInputErrorMessage}
+                          />
+                        </div>
+
+                        <div
+                          className={clsx("flex-1", "tablet:margin-left-2")}
+                        />
                       </div>
                     </div>
 
