@@ -1,0 +1,20 @@
+{
+  "name": "avert-utilities",
+  "version": "1.0.0",
+  "description": "Converts data in the AVERT Excel workbook into JSON files.",
+  "license": "CC0-1.0",
+  "author": "ERG (https://www.erg.com)",
+  "contributors": [
+    "Courtney Myers <courtney.myers@erg.com>"
+  ],
+  "engines": {
+    "node": ">=20.6.0"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+  }
+}
