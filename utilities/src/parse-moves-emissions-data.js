@@ -118,6 +118,62 @@ function parseMovesEmissionsData(worksheet) {
 }
 
 /**
+ * Recursively renames all keys in an object or an array based on the provided keyMap.
+ *
+ * @param {Object|Array} data - The input data (object or array) to transform.
+ * @param {Map} keyMap - A Map where the key is the old field name and the value is the new field name.
+ * @returns {Object|Array} - A new data structure with keys renamed.
+ */
+function renameObjectKeys(data, keyMap) {
+  if (Array.isArray(data)) {
+    return data.map((item) => renameObjectKeys(item, keyMap));
+  }
+
+  if (typeof data === "object") {
+    return Object.keys(data).reduce((object, oldKey) => {
+      const newKey = keyMap.has(oldKey) ? keyMap.get(oldKey) : oldKey;
+
+      object[newKey] = renameObjectKeys(data[oldKey], keyMap);
+
+      return object;
+    }, {});
+  }
+
+  return data;
+}
+
+/**
+ * @param {{}[]} data
+ */
+function renameMovesEmissionsDataKeys(data) {
+  const keyMap = new Map([
+    ["Year", "year"],
+    ["Month", "month"],
+    ["State", "state"],
+    ["Vehicle Category", "vehicleCategory"],
+    ["Vehicle Type", "vehicleType"],
+    ["Fuel Type", "fuelType"],
+    ["First-Year State Data", "firstYear"],
+    ["Fleet Average State Data", "fleetAverage"],
+    ["VMT (miles)", "vmt"],
+    ["Atmospheric CO2 (lb/mile)", "co2"],
+    ["Oxides of Nitrogen (NOx) (lb/mile)", "nox"],
+    ["Sulfur Dioxide (SO2) (lb/mile)", "so2"],
+    ["Primary Exhaust PM2.5 - Total (lb/mile)", "pm25Exhaust"],
+    ["Primary PM2.5 - Brakewear Particulate (lb/mile)", "pm25Brakewear"],
+    ["Primary PM2.5 - Tirewear Particulate (lb/mile)", "pm25Tirewear"],
+    ["VOCs (Evaporative, Exhaust, Refueling) (lb/mile)", "vocs"],
+    ["Ammonia (NH3) (lb/mile)", "nh3"],
+    ["First-Year VMT - Electric (miles)", "vmtElectric"],
+    ["Fleet Average VMT - Electric (miles)", "vmtElectric"],
+  ]);
+
+  const result = renameObjectKeys(data, keyMap);
+
+  return result;
+}
+
+/**
  * @param {JSON} data
  * @param {string} filepath
  */
@@ -137,7 +193,8 @@ function main() {
   }
 
   const worksheet = getExcelWorksheet(filename, "MOVESEmissionRates");
-  const data = parseMovesEmissionsData(worksheet);
+  const jsonData = parseMovesEmissionsData(worksheet);
+  const data = renameMovesEmissionsDataKeys(jsonData);
 
   storeJsonData(data, "./dist/moves-emissions-data.json");
 }
