@@ -9,7 +9,7 @@ function main() {
   const filename = "avert-main-module-v4.4 (beta)_ne.xlsb";
   const filepath = resolve(__dirname, "../../../sources/excel", filename);
 
-  fork("./src/parse-moves-emissions-data.js", [filepath]);
+  fork("./src/parse-moves-emission-rates.js", [filepath]);
 }
 
 main();

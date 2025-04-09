@@ -49,7 +49,7 @@ function getExcelWorksheet(filename, sheetName) {
  *
  * @param {XLSX.WorkSheet} worksheet
  */
-function parseMovesEmissionsData(worksheet) {
+function parseMovesEmissionData(worksheet) {
   const range = XLSX.utils.decode_range(worksheet["!ref"]);
   range.s.r = 4; // start on Excel row 5 (SheetJS row 4) as that's the first double header row with "First-Year State Data"
   range.s.c = XLSX.utils.decode_col("B"); // start on Excel column B ("Year")
@@ -145,7 +145,7 @@ function renameObjectKeys(data, keyMap) {
 /**
  * @param {{}[]} data
  */
-function renameMovesEmissionsDataKeys(data) {
+function renameMovesEmissionDataKeys(data) {
   const keyMap = new Map([
     ["Year", "year"],
     ["Month", "month"],
@@ -188,15 +188,15 @@ function main() {
   const filename = process.argv[2];
 
   if (!filename) {
-    console.error(`Usage: node parse-moves-emissions-data.js <filename>`);
+    console.error(`Usage: node parse-moves-emission-rates.js <filename>`);
     exit(1);
   }
 
   const worksheet = getExcelWorksheet(filename, "MOVESEmissionRates");
-  const jsonData = parseMovesEmissionsData(worksheet);
-  const data = renameMovesEmissionsDataKeys(jsonData);
+  const jsonData = parseMovesEmissionData(worksheet);
+  const data = renameMovesEmissionDataKeys(jsonData);
 
-  storeJsonData(data, "./dist/moves-emissions-data.json");
+  storeJsonData(data, "./dist/moves-emission-rates.json");
 }
 
 main();
