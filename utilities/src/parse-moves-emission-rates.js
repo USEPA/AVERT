@@ -1,11 +1,16 @@
 import * as fs from "node:fs";
+import { dirname, resolve } from "node:path";
 import { exit } from "node:process";
 import { Readable } from "node:stream";
+import { fileURLToPath } from "node:url";
 
 import * as XLSX from "xlsx";
 
 XLSX.set_fs(fs);
 XLSX.stream.set_readable(Readable);
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 /**
  * @param {string} filename
@@ -185,18 +190,21 @@ function storeJsonData(data, filepath) {
 }
 
 function main() {
-  const filename = process.argv[2];
+  const excelFilepath = process.argv[2];
 
-  if (!filename) {
-    console.error(`Usage: node parse-moves-emission-rates.js <filename>`);
+  if (!excelFilepath) {
+    console.error(`Usage: node parse-moves-emission-rates.js <excelFilepath>`);
     exit(1);
   }
 
-  const worksheet = getExcelWorksheet(filename, "MOVESEmissionRates");
-  const jsonData = parseMovesEmissionData(worksheet);
-  const data = renameMovesEmissionDataKeys(jsonData);
+  const worksheet = getExcelWorksheet(excelFilepath, "MOVESEmissionRates");
+  const excelJsonData = parseMovesEmissionData(worksheet);
+  const formattedJsonData = renameMovesEmissionDataKeys(excelJsonData);
 
-  storeJsonData(data, "./dist/moves-emission-rates.json");
+  const jsonFilename = "moves-emission-rates.json";
+  const jsonFilepath = resolve(__dirname, "../../client/src/data", jsonFilename);
+
+  storeJsonData(formattedJsonData, jsonFilepath);
 }
 
 main();
