@@ -54,27 +54,44 @@ export type VMTAllocationAndRegisteredVehicles =
   typeof vmtAllocationAndRegisteredVehicles;
 
 /**
- * NOTE: normally we'd import 'app/data/moves-emissions-rates.json' (Excel:
+ * NOTE: normally we'd import 'app/data/moves-emission-rates.json' (Excel:
  * "MOVESEmissionRates" sheet) and export the typeof the imported JSON file,
  * but TypeScript isn't able to infer types from large JSON files
  * (https://github.com/microsoft/TypeScript/issues/42761), so that exported
  * type would just be `{}`, so we need to explicitly declare the type of the
  * MOVES emissions rates data.
  */
-export type MovesEmissionsRates = {
-  year: string;
-  month: string;
-  modelYear: string;
+export type MOVESEmissionRates = {
+  year: number;
+  month: number;
   state: string;
+  vehicleCategory: string;
   vehicleType: string;
   fuelType: string;
-  VMT: number;
-  CO2: number;
-  NOX: number;
-  SO2: number;
-  PM25: number;
-  VOCs: number;
-  NH3: number;
+  firstYear: {
+    vmt: number;
+    co2: number;
+    nox: number;
+    so2: number;
+    pm25Exhaust: number;
+    pm25Brakewear: number;
+    pm25Tirewear: number;
+    vocs: number;
+    nh3: number;
+    vmtElectric: number;
+  };
+  fleetAverage: {
+    vmt: number;
+    co2: number;
+    nox: number;
+    so2: number;
+    pm25Exhaust: number;
+    pm25Brakewear: number;
+    pm25Tirewear: number;
+    vocs: number;
+    nh3: number;
+    vmtElectric: number;
+  };
 }[];
 
 export type EVChargingProfiles = typeof evChargingProfiles;

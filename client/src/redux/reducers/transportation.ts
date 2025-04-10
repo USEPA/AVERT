@@ -57,7 +57,7 @@ import {
   calculateEVDeploymentLocationHistoricalEERE,
 } from "@/calculations/transportation";
 import { type EmptyObject } from "@/utilities";
-import { type MovesEmissionsRates, type RegionId } from "@/config";
+import { type MOVESEmissionRates, type RegionId } from "@/config";
 /**
  * Excel: "CountyFIPS" sheet.
  */
@@ -69,7 +69,7 @@ import vmtAllocationAndRegisteredVehicles from "@/data/vmt-allocation-and-regist
 /**
  * Excel: "MOVESEmissionRates" sheet.
  */
-import movesEmissionsRatesData from "@/data/moves-emissions-rates.json";
+import movesEmissionRatesData from "@/data/moves-emission-rates.json";
 /**
  * Excel: "Table B. View charging profiles or set a manual charging profile
  * for Weekdays" table in the "EV_Detail" sheet (C23:H47), which comes from
@@ -115,7 +115,7 @@ import stateEereAverages from "@/data/state-eere-averages.json";
 /**
  * Work around due to TypeScript inability to infer types from large JSON files.
  */
-const movesEmissionsRates = movesEmissionsRatesData as MovesEmissionsRates;
+const movesEmissionRates = movesEmissionRatesData as MOVESEmissionRates;
 
 type Action =
   | {
@@ -646,7 +646,7 @@ export function setVMTData(): AppThunk {
       });
 
     const monthlyVMTTotalsAndPercentages =
-      calculateMonthlyVMTTotalsAndPercentages({ movesEmissionsRates });
+      calculateMonthlyVMTTotalsAndPercentages({ movesEmissionRates });
 
     dispatch({
       type: "transportation/SET_VMT_TOTALS_BY_GEOGRAPHY",
@@ -997,7 +997,7 @@ export function setMonthlyEmissionRates(): AppThunk {
 
     const selectedRegionsMonthlyEmissionRates =
       calculateSelectedRegionsMonthlyEmissionRates({
-        movesEmissionsRates,
+        movesEmissionRates,
         selectedRegionsStatesVMTPercentages,
         evDeploymentLocation,
         evModelYear,
