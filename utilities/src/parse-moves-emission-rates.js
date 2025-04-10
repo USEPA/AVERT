@@ -1,39 +1,12 @@
 import * as fs from "node:fs";
 import { dirname, resolve } from "node:path";
 import { exit } from "node:process";
-import { Readable } from "node:stream";
 import { fileURLToPath } from "node:url";
 
-import * as XLSX from "xlsx";
-
-XLSX.set_fs(fs);
-XLSX.stream.set_readable(Readable);
+import { XLSX, getExcelWorksheet } from "./excel.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-/**
- * @param {string} filename
- * @param {string} sheetName
- */
-function getExcelWorksheet(filename, sheetName) {
-  if (!fs.existsSync(filename)) {
-    console.error(`File "${filename}" does not exist.`);
-    exit(1);
-  }
-
-  console.log(`Reading file: ${filename}`);
-
-  const workbook = XLSX.readFile(filename);
-  const worksheet = workbook.Sheets[sheetName];
-
-  if (!worksheet) {
-    console.error(`Worksheet "${sheetName}" does not exist in the workbook.`);
-    exit(1);
-  }
-
-  return worksheet;
-}
 
 /**
  * NOTE: The data we're interested in spans 26 columns (B:AA). We don't need
@@ -54,7 +27,7 @@ function getExcelWorksheet(filename, sheetName) {
  *
  * @param {XLSX.WorkSheet} worksheet
  */
-function parseMovesEmissionData(worksheet) {
+function parseMovesEmissionRatesData(worksheet) {
   const range = XLSX.utils.decode_range(worksheet["!ref"]);
   range.s.r = 4; // start on Excel row 5 (SheetJS row 4) as that's the first double header row with "First-Year State Data"
   range.s.c = XLSX.utils.decode_col("B"); // start on Excel column B ("Year")
@@ -150,7 +123,7 @@ function renameObjectKeys(data, keyMap) {
 /**
  * @param {{}[]} data
  */
-function renameMovesEmissionDataKeys(data) {
+function renameMovesEmissionRatesDataKeys(data) {
   const keyMap = new Map([
     ["Year", "year"],
     ["Month", "month"],
@@ -198,8 +171,8 @@ function main() {
   }
 
   const worksheet = getExcelWorksheet(excelFilepath, "MOVESEmissionRates");
-  const excelJsonData = parseMovesEmissionData(worksheet);
-  const formattedJsonData = renameMovesEmissionDataKeys(excelJsonData);
+  const excelJsonData = parseMovesEmissionRatesData(worksheet);
+  const formattedJsonData = renameMovesEmissionRatesDataKeys(excelJsonData);
 
   const jsonFilename = "moves-emission-rates.json";
   const jsonFilepath = resolve(__dirname, "../../client/src/data", jsonFilename);
