@@ -106,9 +106,9 @@ export type StateEereAverages = typeof stateEereAverages;
 
 /**
  * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
- * (E202).
+ * (E219).
  */
-export const percentageHybridEVMilesDrivenOnElectricity = 0.54;
+export const percentageHybridEVMilesDrivenOnElectricity = 8000 / 13500;
 
 /**
  * Additional energy consumed in climates with +/-18F differential from
@@ -223,8 +223,8 @@ export type Region = {
 };
 
 /**
- * NOTE: line loss values stored in "Table 2: T&D losses" found in the "Library"
- * sheet of the Excel workbook.
+ * NOTE: 2024 line loss values stored in "Table 2: T&D losses" found in the
+ * "Library" sheet of the Excel workbook (C85:E85).
  */
 const lineLoss = {
   texas: 0.0457913819880058,
