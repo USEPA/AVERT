@@ -29,8 +29,24 @@ import {
   states,
 } from "@/config";
 
-/** Vehicle type / fuel type combos */
-const vehicleFuelTypeCombos = [
+const vehicleTypes = [
+  "Passenger cars",
+  "Passenger trucks",
+  "Medium-duty transit buses",
+  "Heavy-duty transit buses",
+  "Medium-duty school buses",
+  "Heavy-duty school buses",
+  "Medium-duty other buses",
+  "Heavy-duty other buses",
+  "Light-duty single unit trucks",
+  "Medium-duty single unit trucks",
+  "Heavy-duty combination trucks",
+  "Combination long-haul trucks",
+  "Medium-duty refuse trucks",
+  "Heavy-duty refuse trucks",
+] as const;
+
+const vehicleTypeFuelTypeCombos = [
   "Passenger cars / Gasoline",
   "Passenger trucks / Gasoline",
   "Medium-duty transit buses / Gasoline",
@@ -83,7 +99,8 @@ const expandedVehicleTypes = [
 
 const pollutants = ["CO2", "NOX", "SO2", "PM25", "VOCs", "NH3"] as const;
 
-type VehicleFuelTypeCombo = (typeof vehicleFuelTypeCombos)[number];
+type VehicleType = (typeof vehicleTypes)[number];
+type VehicleTypeFuelTypeCombo = (typeof vehicleTypeFuelTypeCombos)[number];
 type AbridgedVehicleType = (typeof abridgedVehicleTypes)[number];
 type GeneralVehicleType = (typeof generalVehicleTypes)[number];
 type ExpandedVehicleType = (typeof expandedVehicleTypes)[number];
@@ -665,7 +682,7 @@ export function calculateMonthlyVMTTotals(options: {
    */
   const result: {
     [month: number]: {
-      [vehicleFuelTypeCombo in VehicleFuelTypeCombo]: number;
+      [vehicle in VehicleTypeFuelTypeCombo]: number;
     };
   } = {};
 
@@ -675,7 +692,7 @@ export function calculateMonthlyVMTTotals(options: {
     const { year, vehicleType, fuelType, firstYear, fleetAverage } = data;
 
     const month = Number(data.month);
-    const vehicle = `${vehicleType}/${fuelType}` as VehicleFuelTypeCombo;
+    const vehicle = `${vehicleType}/${fuelType}` as VehicleTypeFuelTypeCombo;
     const vmt = firstYear.vmt + fleetAverage.vmt;
 
     if (year === initialYear) {
@@ -748,7 +765,7 @@ export function calculateYearlyVMTTotals(options: {
 
   Object.values(monthlyVMTTotals).forEach((month) => {
     for (const key in month) {
-      const vehicle = key as VehicleFuelTypeCombo;
+      const vehicle = key as VehicleTypeFuelTypeCombo;
 
       if (result[vehicle]) {
         result[vehicle] += month[vehicle];
@@ -774,7 +791,7 @@ export function calculateMonthlyVMTPercentages(options: {
 
   const result: {
     [month: number]: {
-      [vehicleFuelTypeCombo in VehicleFuelTypeCombo]: number;
+      [vehicle in VehicleTypeFuelTypeCombo]: number;
     };
   } = {};
 
@@ -805,7 +822,7 @@ export function calculateMonthlyVMTPercentages(options: {
     };
 
     for (const key in vmtValue) {
-      const vehicle = key as VehicleFuelTypeCombo;
+      const vehicle = key as VehicleTypeFuelTypeCombo;
 
       if (result[month][vehicle] && yearlyVMTTotals[vehicle]) {
         result[month][vehicle] = vmtValue[vehicle] / yearlyVMTTotals[vehicle];
@@ -1723,7 +1740,7 @@ export function calculateSelectedRegionsMonthlyDailyEVEnergyUsage(options: {
  * "Library" sheet (G253:R288).
  */
 export function calculateSelectedRegionsMonthlyEmissionRates(options: {
-  movesEmissionsRates: MovesEmissionsRates;
+  movesEmissionRates: MOVESEmissionRates;
   selectedRegionsStatesVMTPercentages:
     | SelectedRegionsStatesVMTPercentages
     | EmptyObject;
@@ -1732,7 +1749,7 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
   iceReplacementVehicle: string;
 }) {
   const {
-    movesEmissionsRates,
+    movesEmissionRates,
     selectedRegionsStatesVMTPercentages,
     evDeploymentLocation,
     evModelYear,
@@ -1761,7 +1778,7 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
   const deploymentLocationIsRegion = evDeploymentLocation.startsWith("region-");
   const deploymentLocationIsState = evDeploymentLocation.startsWith("state-");
 
-  movesEmissionsRates.forEach((data) => {
+  movesEmissionRates.forEach((data) => {
     const month = Number(data.month);
 
     Object.entries(selectedRegionsVMTData).forEach(
