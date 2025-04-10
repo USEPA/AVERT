@@ -13,7 +13,6 @@ import {
   type MOVESEmissionRates,
   type VMTAllocationAndRegisteredVehicles,
   type EVChargingProfiles,
-  type NationalAverageBusVMTPerYear,
   type EVEfficiencyByModelYear,
   type RegionAverageTemperatures,
   type StateLDVsSales,
@@ -1011,14 +1010,12 @@ export function calculateSelectedRegionsVMTPercentagesPerVehicleType(options: {
  */
 export function calculateSelectedRegionsAverageVMTPerYear(options: {
   nationalAverageLDVsVMTPerYear: NationalAverageLDVsVMTPerYear;
-  nationalAverageBusVMTPerYear: NationalAverageBusVMTPerYear;
   selectedRegionsVMTPercentagesPerVehicleType:
     | SelectedRegionsVMTPercentagesPerVehicleType
     | EmptyObject;
 }) {
   const {
     nationalAverageLDVsVMTPerYear,
-    nationalAverageBusVMTPerYear,
     selectedRegionsVMTPercentagesPerVehicleType,
   } = options;
 
@@ -1038,10 +1035,8 @@ export function calculateSelectedRegionsAverageVMTPerYear(options: {
     };
   }
 
-  const {
-    transitBuses: nationalAverageTransitBusesVMTPerYear,
-    schoolBuses: nationalAverageSchoolBusesVMTPerYear,
-  } = nationalAverageBusVMTPerYear;
+  const nationalAverageTransitBusesVMTPerYear = 43647; // NOTE: hardcoded value in Excel
+  const nationalAverageSchoolBusesVMTPerYear = 12000; // NOTE: hardcoded value in Excel
 
   const result = Object.entries(selectedRegionsVMTData).reduce(
     (object, [regionKey, regionValue]) => {

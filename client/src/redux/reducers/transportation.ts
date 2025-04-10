@@ -82,10 +82,6 @@ import movesEmissionRatesData from "@/data/moves-emission-rates.json";
  */
 import evChargingProfiles from "@/data/ev-charging-profiles-hourly-data.json";
 /**
- * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E179:E180).
- */
-import nationalAverageBusVMTPerYear from "@/data/national-average-bus-vmt-per-year.json";
-/**
  * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
  * (E194:J200).
  */
@@ -789,7 +785,6 @@ export function setSelectedGeographyVMTData(): AppThunk {
     const selectedRegionsAverageVMTPerYear =
       calculateSelectedRegionsAverageVMTPerYear({
         nationalAverageLDVsVMTPerYear,
-        nationalAverageBusVMTPerYear,
         selectedRegionsVMTPercentagesPerVehicleType,
       });
 
