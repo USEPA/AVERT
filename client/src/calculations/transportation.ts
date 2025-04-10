@@ -105,8 +105,10 @@ export type VMTAllocationPerVehicle = ReturnType<
 export type NationalAverageLDVsVMTPerYear = ReturnType<
   typeof calculateNationalAverageLDVsVMTPerYear
 >;
-export type MonthlyVMTTotalsAndPercentages = ReturnType<
-  typeof calculateMonthlyVMTTotalsAndPercentages
+export type MonthlyVMTTotals = ReturnType<typeof calculateMonthlyVMTTotals>;
+export type YearlyVMTTotals = ReturnType<typeof calculateYearlyVMTTotals>;
+export type MonthlyVMTPercentages = ReturnType<
+  typeof calculateMonthlyVMTPercentages
 >;
 export type HourlyEVChargingPercentages = ReturnType<
   typeof calculateHourlyEVChargingPercentages
@@ -632,13 +634,13 @@ export function calculateNationalAverageLDVsVMTPerYear(options: {
 }
 
 /**
- * Vehicle miles traveled (VMT) totals for each month from MOVES data, and the
- * percentage/share of the yearly totals each month has, for each vehicle type.
+ * Total vehicle miles traveled (VMT) for each month for each vehicle type /
+ * fuel type combo.
  *
  * Excel: "Table 6: Monthly VMT and efficiency adjustments" table in the
- * "Library" sheet (totals: E245:P264, percentages: E266:P285).
+ * "Library" sheet (E245:P264).
  */
-export function calculateMonthlyVMTTotalsAndPercentages(options: {
+export function calculateMonthlyVMTTotals(options: {
   movesEmissionRates: MOVESEmissionRates;
 }) {
   const { movesEmissionRates } = options;
@@ -658,23 +660,71 @@ export function calculateMonthlyVMTTotalsAndPercentages(options: {
    * each vehicle type (e.g., "Passenger Car") and fuel type (e.g., "Gasoline")
    * combo.
    *
-   * Each row in the Excel table is a state's data for that vehicle type/fuel
+   * Each row in the Excel table is a state's data for that vehicle type / fuel
    * type combo, so we're getting the monthly sum of the two VMT values for each
-   * vehicle type/fuel type combo across all states for the initial year.
+   * vehicle type / fuel type combo across all states for the initial year.
    */
   const result: {
     [month: number]: {
-      [vehicleFuelTypeCombo in VehicleFuelTypeCombo]: {
-        total: number;
-        percent: number;
-      };
+      [vehicleFuelTypeCombo in VehicleFuelTypeCombo]: number;
     };
   } = {};
 
-  /**
-   * Yearly total VMT for each vehicle type/fuel type combo (Excel: Q245:Q264).
-   */
-  const yearlyTotals = {
+  const initialYear = movesEmissionRates[0].year;
+
+  movesEmissionRates.forEach((data) => {
+    const { year, vehicleType, fuelType, firstYear, fleetAverage } = data;
+
+    const month = Number(data.month);
+    const vehicle = `${vehicleType}/${fuelType}` as VehicleFuelTypeCombo;
+    const vmt = firstYear.vmt + fleetAverage.vmt;
+
+    if (year === initialYear) {
+      result[month] ??= {
+        "Passenger cars / Gasoline": 0,
+        "Passenger trucks / Gasoline": 0,
+        "Medium-duty transit buses / Gasoline": 0,
+        "Medium-duty transit buses / Diesel Fuel": 0,
+        "Heavy-duty transit buses / Diesel Fuel": 0,
+        "Heavy-duty transit buses / Compressed Natural Gas (CNG)": 0,
+        "Medium-duty school buses / Gasoline": 0,
+        "Medium-duty school buses / Diesel Fuel": 0,
+        "Heavy-duty school buses / Diesel Fuel": 0,
+        "Medium-duty other buses / Gasoline": 0,
+        "Medium-duty other buses / Diesel Fuel": 0,
+        "Heavy-duty other buses / Diesel Fuel": 0,
+        "Heavy-duty other buses / Compressed Natural Gas (CNG)": 0,
+        "Light-duty single unit trucks / Gasoline": 0,
+        "Medium-duty single unit trucks / Gasoline": 0,
+        "Medium-duty single unit trucks / Diesel Fuel": 0,
+        "Heavy-duty combination trucks / Diesel Fuel": 0,
+        "Combination long-haul trucks / Diesel Fuel": 0,
+        "Medium-duty refuse trucks / Diesel Fuel": 0,
+        "Heavy-duty refuse trucks / Diesel Fuel": 0,
+      };
+
+      if (result[month][vehicle]) {
+        result[month][vehicle] += vmt;
+      }
+    }
+  });
+
+  return result;
+}
+
+/**
+ * Total vehicle miles traveled (VMT) for the year for each vehicle type / fuel
+ * type combo.
+ *
+ * Excel: "Table 6: Monthly VMT and efficiency adjustments" table in the
+ * "Library" sheet (Q245:Q264).
+ */
+export function calculateYearlyVMTTotals(options: {
+  monthlyVMTTotals: MonthlyVMTTotals;
+}) {
+  const { monthlyVMTTotals } = options;
+
+  const result = {
     "Passenger cars / Gasoline": 0,
     "Passenger trucks / Gasoline": 0,
     "Medium-duty transit buses / Gasoline": 0,
@@ -697,57 +747,69 @@ export function calculateMonthlyVMTTotalsAndPercentages(options: {
     "Heavy-duty refuse trucks / Diesel Fuel": 0,
   };
 
-  const initialYear = movesEmissionRates[0].year;
+  Object.values(monthlyVMTTotals).forEach((month) => {
+    for (const key in month) {
+      const vehicle = key as VehicleFuelTypeCombo;
 
-  movesEmissionRates.forEach((data) => {
-    const { year, vehicleType, fuelType, firstYear, fleetAverage } = data;
-
-    const month = Number(data.month);
-    const vehicle = `${vehicleType}/${fuelType}` as VehicleFuelTypeCombo;
-    const vmt = firstYear.vmt + fleetAverage.vmt;
-
-    if (year === initialYear) {
-      result[month] ??= {
-        "Passenger cars / Gasoline": { total: 0, percent: 0 },
-        "Passenger trucks / Gasoline": { total: 0, percent: 0 },
-        "Medium-duty transit buses / Gasoline": { total: 0, percent: 0 },
-        "Medium-duty transit buses / Diesel Fuel": { total: 0, percent: 0 },
-        "Heavy-duty transit buses / Diesel Fuel": { total: 0, percent: 0 },
-        "Heavy-duty transit buses / Compressed Natural Gas (CNG)": { total: 0, percent: 0 }, // prettier-ignore
-        "Medium-duty school buses / Gasoline": { total: 0, percent: 0 },
-        "Medium-duty school buses / Diesel Fuel": { total: 0, percent: 0 },
-        "Heavy-duty school buses / Diesel Fuel": { total: 0, percent: 0 },
-        "Medium-duty other buses / Gasoline": { total: 0, percent: 0 },
-        "Medium-duty other buses / Diesel Fuel": { total: 0, percent: 0 },
-        "Heavy-duty other buses / Diesel Fuel": { total: 0, percent: 0 },
-        "Heavy-duty other buses / Compressed Natural Gas (CNG)": { total: 0, percent: 0 }, // prettier-ignore
-        "Light-duty single unit trucks / Gasoline": { total: 0, percent: 0 },
-        "Medium-duty single unit trucks / Gasoline": { total: 0, percent: 0 },
-        "Medium-duty single unit trucks / Diesel Fuel": { total: 0, percent: 0 }, // prettier-ignore
-        "Heavy-duty combination trucks / Diesel Fuel": { total: 0, percent: 0 },
-        "Combination long-haul trucks / Diesel Fuel": { total: 0, percent: 0 },
-        "Medium-duty refuse trucks / Diesel Fuel": { total: 0, percent: 0 },
-        "Heavy-duty refuse trucks / Diesel Fuel": { total: 0, percent: 0 },
-      };
-
-      if (result[month][vehicle]) {
-        result[month][vehicle].total += vmt;
-      }
-
-      if (yearlyTotals[vehicle]) {
-        yearlyTotals[vehicle] += vmt;
+      if (result[vehicle]) {
+        result[vehicle] += month[vehicle];
       }
     }
   });
 
-  // console.log(yearlyTotals); // NOTE: for debugging purposes
+  return result;
+}
 
-  Object.values(result).forEach((month) => {
-    for (const key in month) {
+/**
+ * Percentage/share of the yearly VMT totals each month has, for each vehicle
+ * type / fuel type combo.
+ *
+ * Excel: "Table 6: Monthly VMT and efficiency adjustments" table in the
+ * "Library" sheet (E266:P285).
+ */
+export function calculateMonthlyVMTPercentages(options: {
+  monthlyVMTTotals: MonthlyVMTTotals;
+  yearlyVMTTotals: YearlyVMTTotals;
+}) {
+  const { monthlyVMTTotals, yearlyVMTTotals } = options;
+
+  const result: {
+    [month: number]: {
+      [vehicleFuelTypeCombo in VehicleFuelTypeCombo]: number;
+    };
+  } = {};
+
+  Object.entries(monthlyVMTTotals).forEach(([vmtKey, vmtValue]) => {
+    const month = Number(vmtKey);
+
+    result[month] ??= {
+      "Passenger cars / Gasoline": 0,
+      "Passenger trucks / Gasoline": 0,
+      "Medium-duty transit buses / Gasoline": 0,
+      "Medium-duty transit buses / Diesel Fuel": 0,
+      "Heavy-duty transit buses / Diesel Fuel": 0,
+      "Heavy-duty transit buses / Compressed Natural Gas (CNG)": 0,
+      "Medium-duty school buses / Gasoline": 0,
+      "Medium-duty school buses / Diesel Fuel": 0,
+      "Heavy-duty school buses / Diesel Fuel": 0,
+      "Medium-duty other buses / Gasoline": 0,
+      "Medium-duty other buses / Diesel Fuel": 0,
+      "Heavy-duty other buses / Diesel Fuel": 0,
+      "Heavy-duty other buses / Compressed Natural Gas (CNG)": 0,
+      "Light-duty single unit trucks / Gasoline": 0,
+      "Medium-duty single unit trucks / Gasoline": 0,
+      "Medium-duty single unit trucks / Diesel Fuel": 0,
+      "Heavy-duty combination trucks / Diesel Fuel": 0,
+      "Combination long-haul trucks / Diesel Fuel": 0,
+      "Medium-duty refuse trucks / Diesel Fuel": 0,
+      "Heavy-duty refuse trucks / Diesel Fuel": 0,
+    };
+
+    for (const key in vmtValue) {
       const vehicle = key as VehicleFuelTypeCombo;
 
-      if (month[vehicle] && yearlyTotals[vehicle]) {
-        month[vehicle].percent = month[vehicle].total / yearlyTotals[vehicle];
+      if (result[month][vehicle] && yearlyVMTTotals[vehicle]) {
+        result[month][vehicle] = vmtValue[vehicle] / yearlyVMTTotals[vehicle];
       }
     }
   });
@@ -1019,10 +1081,9 @@ export function calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
   selectedRegionsAverageVMTPerYear:
     | SelectedRegionsAverageVMTPerYear
     | EmptyObject;
-  monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
+  monthlyVMTPercentages: MonthlyVMTPercentages;
 }) {
-  const { selectedRegionsAverageVMTPerYear, monthlyVMTTotalsAndPercentages } =
-    options;
+  const { selectedRegionsAverageVMTPerYear, monthlyVMTPercentages } = options;
 
   const selectedRegionsVMTData =
     Object.keys(selectedRegionsAverageVMTPerYear).length !== 0
@@ -1031,7 +1092,7 @@ export function calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
 
   if (
     !selectedRegionsVMTData ||
-    Object.keys(monthlyVMTTotalsAndPercentages).length === 0
+    Object.keys(monthlyVMTPercentages).length === 0
   ) {
     return {} as {
       [regionId in RegionId]: {
@@ -1048,37 +1109,34 @@ export function calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
 
       object[regionId] ??= {};
 
-      Object.entries(monthlyVMTTotalsAndPercentages).forEach(
-        ([vmtKey, vmtValue]) => {
-          const month = Number(vmtKey);
+      Object.entries(monthlyVMTPercentages).forEach(([vmtKey, vmtValue]) => {
+        const month = Number(vmtKey);
 
-          object[regionId][month] ??= {
-            cars: 0,
-            trucks: 0,
-            transitBusesDiesel: 0,
-            transitBusesCNG: 0,
-            transitBusesGasoline: 0,
-            schoolBuses: 0,
-          };
+        object[regionId][month] ??= {
+          cars: 0,
+          trucks: 0,
+          transitBusesDiesel: 0,
+          transitBusesCNG: 0,
+          transitBusesGasoline: 0,
+          schoolBuses: 0,
+        };
 
-          generalVehicleTypes.forEach((vehicleType) => {
-            /**
-             * NOTE: selectedRegionsVMTData's regions's vehicle types are
-             * abridged (don't include transit buses broken out by fuel type)
-             */
-            const averageVMTPerYearVehicleType =
-              vehicleType === "transitBusesDiesel" ||
-              vehicleType === "transitBusesCNG" ||
-              vehicleType === "transitBusesGasoline"
-                ? "transitBuses"
-                : vehicleType;
+        generalVehicleTypes.forEach((vehicleType) => {
+          /**
+           * NOTE: selectedRegionsVMTData's regions's vehicle types are
+           * abridged (don't include transit buses broken out by fuel type)
+           */
+          const averageVMTPerYearVehicleType =
+            vehicleType === "transitBusesDiesel" ||
+            vehicleType === "transitBusesCNG" ||
+            vehicleType === "transitBusesGasoline"
+              ? "transitBuses"
+              : vehicleType;
 
-            object[regionId][month][vehicleType] =
-              regionValue[averageVMTPerYearVehicleType] *
-              vmtValue[vehicleType].percent;
-          });
-        },
-      );
+          object[regionId][month][vehicleType] =
+            regionValue[averageVMTPerYearVehicleType] * vmtValue[vehicleType];
+        });
+      });
 
       return object;
     },
@@ -1269,15 +1327,10 @@ export function calculateVehiclesDisplaced(options: {
   hybridEVs: number;
   transitBuses: number;
   schoolBuses: number;
-  monthlyVMTTotalsAndPercentages: MonthlyVMTTotalsAndPercentages;
+  monthlyVMTTotals: MonthlyVMTTotals;
 }) {
-  const {
-    batteryEVs,
-    hybridEVs,
-    transitBuses,
-    schoolBuses,
-    monthlyVMTTotalsAndPercentages,
-  } = options;
+  const { batteryEVs, hybridEVs, transitBuses, schoolBuses, monthlyVMTTotals } =
+    options;
 
   const result = {
     batteryEVCars: 0,
@@ -1290,15 +1343,13 @@ export function calculateVehiclesDisplaced(options: {
     schoolBuses: 0,
   };
 
-  if (Object.keys(monthlyVMTTotalsAndPercentages).length === 0) return result;
+  if (Object.keys(monthlyVMTTotals).length === 0) return result;
 
-  const yearlyTransitBusesVMTTotals = Object.values(
-    monthlyVMTTotalsAndPercentages,
-  ).reduce(
+  const yearlyTransitBusesVMTTotals = Object.values(monthlyVMTTotals).reduce(
     (data, monthlyData) => {
-      data.diesel += monthlyData.transitBusesDiesel.total;
-      data.cng += monthlyData.transitBusesCNG.total;
-      data.gasoline += monthlyData.transitBusesGasoline.total;
+      data.diesel += monthlyData.transitBusesDiesel;
+      data.cng += monthlyData.transitBusesCNG;
+      data.gasoline += monthlyData.transitBusesGasoline;
       return data;
     },
     { diesel: 0, cng: 0, gasoline: 0 },
