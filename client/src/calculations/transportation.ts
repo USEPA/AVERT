@@ -28,6 +28,11 @@ import {
   regions,
   states,
 } from "@/config";
+/**
+ * Excel: "Table 6: Monthly VMT and efficiency adjustments" table in the
+ * "Library" sheet (E272:P274)
+ */
+import schoolBusMonthlyVMTPercentages from "@/data/school-bus-monthly-vmt-percentages.json";
 
 const vehicleTypes = [
   "Passenger cars",
@@ -824,8 +829,33 @@ export function calculateMonthlyVMTPercentages(options: {
     for (const key in vmtValue) {
       const vehicle = key as VehicleTypeFuelTypeCombo;
 
-      if (vehicle in result[month] && vehicle in yearlyVMTTotals) {
-        result[month][vehicle] = vmtValue[vehicle] / yearlyVMTTotals[vehicle];
+      const vehicleIsPassengerVehicle =
+        vehicle === "Passenger cars / Gasoline" ||
+        vehicle === "Passenger trucks / Gasoline";
+
+      const vehicleIsSchoolBus =
+        vehicle === "Medium-duty school buses / Gasoline" ||
+        vehicle === "Medium-duty school buses / Diesel Fuel" ||
+        vehicle === "Heavy-duty school buses / Diesel Fuel";
+
+      if (vehicle in result[month]) {
+        /**
+         * Only passenger vehicle percentages are derived from MOVES data.
+         */
+        if (vehicleIsPassengerVehicle && vehicle in yearlyVMTTotals) {
+          result[month][vehicle] = vmtValue[vehicle] / yearlyVMTTotals[vehicle];
+          /**
+           * School bus percentages are derived from ISO New England's EV forecast.
+           */
+        } else if (vehicleIsSchoolBus) {
+          const monthKey = month.toString() as keyof typeof schoolBusMonthlyVMTPercentages; // prettier-ignore
+          result[month][vehicle] = schoolBusMonthlyVMTPercentages[monthKey];
+          /**
+           * All other vehicle types assume an equal spread throughout the year.
+           */
+        } else {
+          result[month][vehicle] = 1 / 12;
+        }
       }
     }
   });
