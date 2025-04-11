@@ -9,12 +9,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 /**
- * The data we're interested in spans 45 columns (B:AT). We don't need anything
+ * The data we're interested in spans 47 columns (B:AT). We don't need anything
  * to the right of (and including) the "Notes" column (AU).
  *
- * The first 7 columns ("State and County FIPS Code", "State Name", "County
- * Name", "AVERT Region", "Postal State Code", "County Name Long", and "Key")
- * are all found within the second header row.
+ * The first 9 columns ("State and County FIPS Code", "State Name",
+ * "County Name", "AVERT Region", "Postal State Code", "County Name Long",
+ * "Key", "Passenger cars VMT - original MOVES5", and
+ * "Passenger trucks VMT - original MOVES5") are all found within the second
+ * header row.
  *
  * The next 14 columns of data fall under the first header row category of
  * "VMT".
@@ -38,16 +40,16 @@ function parseCountyFIPSWorksheet(worksheet) {
   const range = XLSX.utils.decode_range(worksheet["!ref"]);
   range.s.r = 2; // Start on Excel row 3 (SheetJS row 2) as that's the first double header row with "VMT"
   range.s.c = XLSX.utils.decode_col("B"); // Start on Excel column B ("State and County FIPS Code")
-  range.e.c = XLSX.utils.decode_col("AT"); // End on Excel column AT ("Share of State VMT - Collapsed -> Refuse trucks")
+  range.e.c = XLSX.utils.decode_col("AV"); // End on Excel column AT ("Share of State VMT - Collapsed -> Refuse trucks")
 
   const json = XLSX.utils.sheet_to_json(worksheet, {
     range: XLSX.utils.encode_range(range),
     header: 1, // Output as an array of arrays, so we can work with the double header rows
   });
 
-  const headerRow1 = json[0]; // First header row: 4 categories spanning cols 8–21, 22–35, 36–40, and 41–45 (first 7 columns are empty)
-  const headerRow2 = json[1]; // Second header row: all 45 columns
-  const dataRows = json.slice(2); // Remaining rows of data: all 45 columns
+  const headerRow1 = json[0]; // First header row: 4 categories spanning cols 10–23, 24–37, 38–42, and 43–47 (first 9 columns are empty)
+  const headerRow2 = json[1]; // Second header row: all 47 columns
+  const dataRows = json.slice(2); // Remaining rows of data: all 47 columns
 
   /** Create an array of objects with field names from header rows */
   const result = parseExcelArraysData(headerRow1, headerRow2, dataRows);
