@@ -692,7 +692,7 @@ export function calculateMonthlyVMTTotals(options: {
     const { year, vehicleType, fuelType, firstYear, fleetAverage } = data;
 
     const month = Number(data.month);
-    const vehicle = `${vehicleType}/${fuelType}` as VehicleTypeFuelTypeCombo;
+    const vehicle = `${vehicleType} / ${fuelType}` as VehicleTypeFuelTypeCombo;
     const vmt = firstYear.vmt + fleetAverage.vmt;
 
     if (year === initialYear) {
@@ -719,7 +719,7 @@ export function calculateMonthlyVMTTotals(options: {
         "Heavy-duty refuse trucks / Diesel Fuel": 0,
       };
 
-      if (result[month][vehicle]) {
+      if (vehicle in result[month]) {
         result[month][vehicle] += vmt;
       }
     }
@@ -767,7 +767,7 @@ export function calculateYearlyVMTTotals(options: {
     for (const key in month) {
       const vehicle = key as VehicleTypeFuelTypeCombo;
 
-      if (result[vehicle]) {
+      if (vehicle in result) {
         result[vehicle] += month[vehicle];
       }
     }
@@ -824,7 +824,7 @@ export function calculateMonthlyVMTPercentages(options: {
     for (const key in vmtValue) {
       const vehicle = key as VehicleTypeFuelTypeCombo;
 
-      if (result[month][vehicle] && yearlyVMTTotals[vehicle]) {
+      if (vehicle in result[month] && vehicle in yearlyVMTTotals) {
         result[month][vehicle] = vmtValue[vehicle] / yearlyVMTTotals[vehicle];
       }
     }
