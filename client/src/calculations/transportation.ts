@@ -9,7 +9,7 @@ import {
 } from "@/calculations/geography";
 import { type EmptyObject, sortObjectByKeys } from "@/utilities";
 import {
-  type CountyFips,
+  type CountyFIPS,
   type MOVESEmissionRates,
   type VMTAllocationAndRegisteredVehicles,
   type EVChargingProfiles,
@@ -196,7 +196,7 @@ export type EVDeploymentLocationHistoricalEERE = ReturnType<
  * vehicles" column in the table in the "11_VehicleCty" sheet (column H).
  */
 export function calculateVMTTotalsByGeography(options: {
-  countyFips: CountyFips;
+  countyFips: CountyFIPS;
 }) {
   const { countyFips } = options;
 
@@ -287,7 +287,7 @@ export function calculateVMTTotalsByGeography(options: {
  * Excel: First table in the "RegionStateAllocate" sheet (B6:BF108)
  */
 export function calculateVMTBillionsAndPercentages(options: {
-  countyFips: CountyFips;
+  countyFips: CountyFIPS;
 }) {
   const { countyFips } = options;
 

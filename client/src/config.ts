@@ -1,8 +1,4 @@
 /**
- * Excel: "CountyFIPS" sheet.
- */
-import countyFips from "@/data/county-fips.json";
-/**
  * Excel: Second table in the "RegionStateAllocate" sheet (B118:E167)
  */
 import vmtAllocationAndRegisteredVehicles from "@/data/vmt-allocation-and-registered-vehicles.json";
@@ -44,13 +40,72 @@ import regionEereAverages from "@/data/region-eere-averages.json";
  */
 import stateEereAverages from "@/data/state-eere-averages.json";
 
-export type CountyFips = typeof countyFips;
-
-export type VMTAllocationAndRegisteredVehicles =
-  typeof vmtAllocationAndRegisteredVehicles;
+/**
+ * NOTE: Normally we'd import 'app/data/county-fips.json' (Excel: "CountyFIPS"
+ * sheet) and export the typeof the imported JSON file, but TypeScript isn't
+ * able to infer types from large JSON files
+ * (https://github.com/microsoft/TypeScript/issues/42761), so that exported
+ * type would just be `{}`, so we need to explicitly declare the type of the
+ * MOVES emissions rates data.
+ */
+export type CountyFIPS = {
+  "State and County FIPS Code": string;
+  "State Name": string;
+  "County Name": string;
+  "AVERT Region": string;
+  "Postal State Code": string;
+  "County Name Long": string;
+  Key: string;
+  VMT: {
+    "Passenger cars": number;
+    "Passenger trucks": number;
+    "Medium-duty transit buses": number;
+    "Heavy-duty transit buses": number;
+    "Medium-duty school buses": number;
+    "Heavy-duty school buses": number;
+    "Medium-duty other buses": number;
+    "Heavy-duty other buses": number;
+    "Light-duty single unit trucks": number;
+    "Medium-duty single unit trucks": number;
+    "Heavy-duty combination trucks": number;
+    "Combination long-haul trucks": number;
+    "Medium-duty refuse trucks": number;
+    "Heavy-duty refuse trucks": number;
+  };
+  "Share of State VMT": {
+    "Passenger cars": number;
+    "Passenger trucks": number;
+    "Medium-duty transit buses": number;
+    "Heavy-duty transit buses": number;
+    "Medium-duty school buses": number;
+    "Heavy-duty school buses": number;
+    "Medium-duty other buses": number;
+    "Heavy-duty other buses": number;
+    "Light-duty single unit trucks": number;
+    "Medium-duty single unit trucks": number;
+    "Heavy-duty combination trucks": number;
+    "Combination long-haul trucks": number;
+    "Medium-duty refuse trucks": number;
+    "Heavy-duty refuse trucks": number;
+  };
+  "VMT - Collapsed": {
+    "Transit buses": number;
+    "School buses": number;
+    "Other buses": number;
+    "Short-haul trucks": number;
+    "Refuse trucks": number;
+  };
+  "Share of State VMT - Collapsed": {
+    "Transit buses": number;
+    "School buses": number;
+    "Other buses": number;
+    "Short-haul trucks": number;
+    "Refuse trucks": number;
+  };
+}[];
 
 /**
- * NOTE: normally we'd import 'app/data/moves-emission-rates.json' (Excel:
+ * NOTE: Normally we'd import 'app/data/moves-emission-rates.json' (Excel:
  * "MOVESEmissionRates" sheet) and export the typeof the imported JSON file,
  * but TypeScript isn't able to infer types from large JSON files
  * (https://github.com/microsoft/TypeScript/issues/42761), so that exported
@@ -89,6 +144,9 @@ export type MOVESEmissionRates = {
     vmtElectric: number;
   };
 }[];
+
+export type VMTAllocationAndRegisteredVehicles =
+  typeof vmtAllocationAndRegisteredVehicles;
 
 export type EVChargingProfiles = typeof evChargingProfiles;
 

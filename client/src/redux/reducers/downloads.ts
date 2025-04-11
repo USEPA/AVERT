@@ -6,6 +6,7 @@ import {
   type CombinedSectorsEmissionsData,
 } from "@/calculations/emissions";
 import {
+  type CountyFIPS,
   type RegionId,
   regions as regionsConfig,
   states as statesConfig,
@@ -13,7 +14,12 @@ import {
 /**
  * Excel: "CountyFIPS" sheet.
  */
-import countyFips from "@/data/county-fips.json";
+import countyFipsData from "@/data/county-fips.json";
+
+/**
+ * Work around due to TypeScript inability to infer types from large JSON files.
+ */
+const countyFips = countyFipsData as CountyFIPS;
 
 /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 const emissionsFields = [

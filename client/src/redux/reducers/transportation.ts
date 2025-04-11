@@ -61,11 +61,20 @@ import {
   calculateEVDeploymentLocationHistoricalEERE,
 } from "@/calculations/transportation";
 import { type EmptyObject } from "@/utilities";
-import { type MOVESEmissionRates, type RegionId } from "@/config";
+import {
+  type CountyFIPS,
+  type MOVESEmissionRates,
+  type RegionId,
+} from "@/config";
 /**
  * Excel: "CountyFIPS" sheet.
  */
-import countyFips from "@/data/county-fips.json";
+import countyFipsData from "@/data/county-fips.json";
+
+/**
+ * Work around due to TypeScript inability to infer types from large JSON files.
+ */
+const countyFips = countyFipsData as CountyFIPS;
 /**
  * Excel: Second table in the "RegionStateAllocate" sheet (B118:E167)
  */

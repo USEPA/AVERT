@@ -4,11 +4,21 @@ import {
   type StateState,
 } from "@/redux/reducers/geography";
 import { sortObjectByKeys } from "@/utilities";
-import { type RegionId, type RegionName, type StateId } from "@/config";
+import {
+  type CountyFIPS,
+  type RegionId,
+  type RegionName,
+  type StateId,
+} from "@/config";
 /**
  * Excel: "CountyFIPS" sheet.
  */
-import countyFips from "@/data/county-fips.json";
+import countyFipsData from "@/data/county-fips.json";
+
+/**
+ * Work around due to TypeScript inability to infer types from large JSON files.
+ */
+const countyFips = countyFipsData as CountyFIPS;
 
 export type CountiesByGeography = ReturnType<
   typeof organizeCountiesByGeography
