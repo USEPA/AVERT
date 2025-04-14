@@ -12,6 +12,7 @@ import {
   type CountyFIPS,
   type MOVESEmissionRates,
   type StateLevelVMT,
+  type FHWALDVStateLevelVMT,
   type VMTAllocationAndRegisteredVehicles,
   type EVChargingProfiles,
   type EVEfficiencyByModelYear,
@@ -134,6 +135,9 @@ export type VMTPercentagesByStateRegionCombo = ReturnType<
 >;
 export type VMTPerVehicleTypeByState = ReturnType<
   typeof calculateVMTPerVehicleTypeByState
+>;
+export type FhwaMovesLDVsVMTRatioByState = ReturnType<
+  typeof calculateFhwaMovesLDVsVMTRatioByState
 >;
 export type NationalAverageLDVsVMTPerYear = ReturnType<
   typeof calculateNationalAverageLDVsVMTPerYear
@@ -872,6 +876,46 @@ export function calculateVMTPerVehicleTypeByState(options: {
   );
 
   return result;
+}
+
+/**
+ * Ratio of FHWA to MOVES VMT for light duty vehicles (LDV) by state.
+ *
+ * Excel: "C. FHWA LDV State-Level VMT" table in the "MOVESsupplement" sheet
+ * (O6:P57)
+ */
+export function calculateFhwaMovesLDVsVMTRatioByState(options: {
+  fhwaLDVStateLevelVMT: FHWALDVStateLevelVMT;
+  vmtPerVehicleTypeByState: VMTPerVehicleTypeByState;
+}) {
+  const { fhwaLDVStateLevelVMT, vmtPerVehicleTypeByState } = options;
+
+  const results = Object.values(fhwaLDVStateLevelVMT).reduce(
+    (object, data) => {
+      const stateId = data["State"] as StateId;
+      const fhwaVMT = data["2023 Annual VMT (million miles) - FHWA"];
+      const movesVMT =
+        stateId in vmtPerVehicleTypeByState
+          ? vmtPerVehicleTypeByState[stateId]["Passenger cars"].vmt +
+            vmtPerVehicleTypeByState[stateId]["Passenger trucks"].vmt
+          : 0;
+
+      if (!object[stateId]) {
+        object[stateId] = { fhwaVMT, movesVMT, ratio: fhwaVMT / movesVMT };
+      }
+
+      return object;
+    },
+    {} as {
+      [stateId in StateId]: {
+        fhwaVMT: number;
+        movesVMT: number;
+        ratio: number;
+      };
+    },
+  );
+
+  return results;
 }
 
 /**

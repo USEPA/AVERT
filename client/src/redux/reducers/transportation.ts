@@ -9,6 +9,7 @@ import {
   type VMTTotalsByRegion,
   type VMTPercentagesByStateRegionCombo,
   type VMTPerVehicleTypeByState,
+  type FhwaMovesLDVsVMTRatioByState,
   type NationalAverageLDVsVMTPerYear,
   type MonthlyVMTTotals,
   type YearlyVMTTotals,
@@ -42,6 +43,7 @@ import {
   calculateVMTTotalsByRegion,
   calculateVMTPercentagesByStateRegionCombo,
   calculateVMTPerVehicleTypeByState,
+  calculateFhwaMovesLDVsVMTRatioByState,
   calculateNationalAverageLDVsVMTPerYear,
   calculateMonthlyVMTTotals,
   calculateYearlyVMTTotals,
@@ -78,6 +80,16 @@ import {
  * Excel: "CountyFIPS" sheet.
  */
 import countyFipsData from "@/data/county-fips.json";
+/**
+ * Excel: "A. State-level VMT per vehicle" table in the "MOVESsupplement" sheet
+ * (B6:E720).
+ */
+import stateLevelVMT from "@/data/state-level-vmt.json";
+/**
+ * Excel: "C. FHWA LDV State-Level VMT" table in the "MOVESsupplement" sheet
+ * (O6:P57).
+ */
+import fhwaLDVStateLevelVMT from "@/data/fhwa-ldv-state-level-vmt.json";
 
 /**
  * Work around due to TypeScript inability to infer types from large JSON files.
@@ -173,6 +185,12 @@ type Action =
       type: "transportation/SET_VMT_PER_VEHICLE_TYPE_BY_STATE";
       payload: {
         vmtPerVehicleTypeByState: VMTPerVehicleTypeByState;
+      };
+    }
+  | {
+      type: "transportation/SET_FHWA_MOVES_LDVS_VMT_RATIO_BY_STATE";
+      payload: {
+        fhwaMovesLDVsVMTRatioByState: FhwaMovesLDVsVMTRatioByState;
       };
     }
   | {
@@ -325,6 +343,7 @@ type State = {
     | VMTPercentagesByStateRegionCombo
     | EmptyObject;
   vmtPerVehicleTypeByState: VMTPerVehicleTypeByState | EmptyObject;
+  fhwaMovesLDVsVMTRatioByState: FhwaMovesLDVsVMTRatioByState | EmptyObject;
   nationalAverageLDVsVMTPerYear: NationalAverageLDVsVMTPerYear;
   monthlyVMTTotals: MonthlyVMTTotals;
   yearlyVMTTotals: YearlyVMTTotals | EmptyObject;
@@ -389,6 +408,7 @@ const initialState: State = {
   vmtTotalsByRegion: {},
   vmtPercentagesByStateRegionCombo: {},
   vmtPerVehicleTypeByState: {},
+  fhwaMovesLDVsVMTRatioByState: {},
   nationalAverageLDVsVMTPerYear: 0,
   monthlyVMTTotals: {},
   yearlyVMTTotals: {},
@@ -503,6 +523,15 @@ export default function reducer(
       return {
         ...state,
         vmtPerVehicleTypeByState,
+      };
+    }
+
+    case "transportation/SET_FHWA_MOVES_LDVS_VMT_RATIO_BY_STATE": {
+      const { fhwaMovesLDVsVMTRatioByState } = action.payload;
+
+      return {
+        ...state,
+        fhwaMovesLDVsVMTRatioByState,
       };
     }
 
@@ -775,6 +804,11 @@ export function setVMTData(): AppThunk {
       stateLevelVMT,
     });
 
+    const fhwaMovesLDVsVMTRatioByState = calculateFhwaMovesLDVsVMTRatioByState({
+      fhwaLDVStateLevelVMT,
+      vmtPerVehicleTypeByState,
+    });
+
     const nationalAverageLDVsVMTPerYear =
       calculateNationalAverageLDVsVMTPerYear({
         vmtAllocationAndRegisteredVehicles,
@@ -827,6 +861,11 @@ export function setVMTData(): AppThunk {
     dispatch({
       type: "transportation/SET_VMT_PER_VEHICLE_TYPE_BY_STATE",
       payload: { vmtPerVehicleTypeByState },
+    });
+
+    dispatch({
+      type: "transportation/SET_FHWA_MOVES_LDVS_VMT_RATIO_BY_STATE",
+      payload: { fhwaMovesLDVsVMTRatioByState },
     });
 
     dispatch({

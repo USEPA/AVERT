@@ -3,7 +3,11 @@
  * (B6:E720).
  */
 import stateLevelVMT from "@/data/state-level-vmt.json";
-
+/**
+ * Excel: "C. FHWA LDV State-Level VMT" table in the "MOVESsupplement" sheet
+ * (O6:P57).
+ */
+import fhwaLDVStateLevelVMT from "@/data/fhwa-ldv-state-level-vmt.json";
 /**
  * Excel: Second table in the "RegionStateAllocate" sheet (B118:E167)
  */
@@ -152,6 +156,8 @@ export type MOVESEmissionRates = {
 }[];
 
 export type StateLevelVMT = typeof stateLevelVMT;
+
+export type FHWALDVStateLevelVMT = typeof fhwaLDVStateLevelVMT;
 
 export type VMTAllocationAndRegisteredVehicles =
   typeof vmtAllocationAndRegisteredVehicles;
