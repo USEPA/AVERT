@@ -40,7 +40,7 @@ function parseCountyFIPSWorksheet(worksheet) {
   const range = XLSX.utils.decode_range(worksheet["!ref"]);
   range.s.r = 2; // Start on Excel row 3 (SheetJS row 2) as that's the first double header row with "VMT"
   range.s.c = XLSX.utils.decode_col("B"); // Start on Excel column B ("State and County FIPS Code")
-  range.e.c = XLSX.utils.decode_col("AV"); // End on Excel column AT ("Share of State VMT - Collapsed -> Refuse trucks")
+  range.e.c = XLSX.utils.decode_col("AV"); // End on Excel column AV ("Share of State VMT - Collapsed -> Refuse trucks")
 
   const json = XLSX.utils.sheet_to_json(worksheet, {
     range: XLSX.utils.encode_range(range),

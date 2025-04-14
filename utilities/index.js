@@ -11,6 +11,7 @@ function main() {
 
   // fork("./src/parse-moves-emission-rates.js", [excelFilepath]);
   // fork("./src/parse-county-fips.js", [excelFilepath]);
+  // fork("./src/parse-state-level-vmt.js", [excelFilepath]);
 }
 
 main();
