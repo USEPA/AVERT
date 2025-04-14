@@ -51,6 +51,13 @@ function parseCountyFIPSWorksheet(worksheet) {
   const headerRow2 = json[1]; // Second header row: all 47 columns
   const dataRows = json.slice(2); // Remaining rows of data: all 47 columns
 
+  /** 
+   * NOTE: The first column of header row 1 is "Year 2023". It's a note in Excel,
+   * not meant to be a category header, so we need to replace is with null before
+   * parsing the Excel arrays data.
+   */
+  headerRow1[0] = null;
+
   /** Create an array of objects with field names from header rows */
   const result = parseExcelArraysData(headerRow1, headerRow2, dataRows);
 
