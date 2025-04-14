@@ -20,6 +20,7 @@ import {
   type RegionEereAverages,
   type StateEereAverages,
   type RegionId,
+  type RegionName,
   type StateId,
   percentageHybridEVMilesDrivenOnElectricity,
   percentageAdditionalEnergyConsumedFactor,
@@ -122,6 +123,13 @@ export type StateVMTPercentagesByRegion = ReturnType<
 >;
 export type VMTAllocationPerVehicle = ReturnType<
   typeof calculateVMTAllocationPerVehicle
+>;
+export type VMTTotalsByStateRegionCombo = ReturnType<
+  typeof calculateVMTTotalsByStateRegionCombo
+>;
+export type VMTTotalsByRegion = ReturnType<typeof calculateVMTTotalsByRegion>;
+export type VMTPercentagesByStateRegionCombo = ReturnType<
+  typeof calculateVMTPercentagesByStateRegionCombo
 >;
 export type NationalAverageLDVsVMTPerYear = ReturnType<
   typeof calculateNationalAverageLDVsVMTPerYear
@@ -622,6 +630,193 @@ export function calculateVMTAllocationPerVehicle(options: {
       item.vmtPerBus.percent = item.vmtPerBus.total / result.total.vmtPerBus.total; // prettier-ignore
     }
   });
+
+  return result;
+}
+
+/**
+ * Total vehicle miles traveled (VMT) in billions by state and AVERT region
+ * combo for each vehicle type.
+ *
+ * Excel: Top left table in the "RegionStateAllocate" sheet (B4:R85)
+ */
+export function calculateVMTTotalsByStateRegionCombo(options: {
+  countyFips: CountyFIPS;
+}) {
+  const { countyFips } = options;
+
+  const result = countyFips.reduce(
+    (object, data) => {
+      const state = data["Postal State Code"] as StateId;
+      const region = data["AVERT Region"] as RegionName;
+      const resultKey = `${state} / ${region}`;
+
+      if (!object[resultKey]) {
+        object[resultKey] = {
+          state,
+          region,
+          vehicleTypes: {
+            "Passenger cars": 0,
+            "Passenger trucks": 0,
+            "Medium-duty transit buses": 0,
+            "Heavy-duty transit buses": 0,
+            "Medium-duty school buses": 0,
+            "Heavy-duty school buses": 0,
+            "Medium-duty other buses": 0,
+            "Heavy-duty other buses": 0,
+            "Light-duty single unit trucks": 0,
+            "Medium-duty single unit trucks": 0,
+            "Heavy-duty combination trucks": 0,
+            "Combination long-haul trucks": 0,
+            "Medium-duty refuse trucks": 0,
+            "Heavy-duty refuse trucks": 0,
+          },
+        };
+      }
+
+      Object.entries(data["VMT"]).forEach(([vmtKey, vmtValue]) => {
+        const vehicle = vmtKey as VehicleType;
+
+        if (vehicle in object[resultKey].vehicleTypes) {
+          object[resultKey].vehicleTypes[vehicle] += vmtValue / 1_000_000_000;
+        }
+      });
+
+      return object;
+    },
+    {} as {
+      [key: string]: {
+        state: StateId;
+        region: RegionName;
+        vehicleTypes: {
+          [vehicle in VehicleType]: number;
+        };
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Total vehicle miles traveled (VMT) in billions by AVERT region for each
+ * vehicle type.
+ *
+ * Excel: Bottom left table in the "RegionStateAllocate" sheet (B87:R100)
+ */
+export function calculateVMTTotalsByRegion(options: {
+  vmtTotalsByStateRegionCombo: VMTTotalsByStateRegionCombo;
+}) {
+  const { vmtTotalsByStateRegionCombo } = options;
+
+  const result = Object.values(vmtTotalsByStateRegionCombo).reduce(
+    (object, data) => {
+      const region = data.region as RegionName;
+
+      if (!object[region]) {
+        object[region] = {
+          "Passenger cars": 0,
+          "Passenger trucks": 0,
+          "Medium-duty transit buses": 0,
+          "Heavy-duty transit buses": 0,
+          "Medium-duty school buses": 0,
+          "Heavy-duty school buses": 0,
+          "Medium-duty other buses": 0,
+          "Heavy-duty other buses": 0,
+          "Light-duty single unit trucks": 0,
+          "Medium-duty single unit trucks": 0,
+          "Heavy-duty combination trucks": 0,
+          "Combination long-haul trucks": 0,
+          "Medium-duty refuse trucks": 0,
+          "Heavy-duty refuse trucks": 0,
+        };
+      }
+
+      Object.entries(data.vehicleTypes).forEach(([vmtKey, vmtValue]) => {
+        const vehicle = vmtKey as VehicleType;
+
+        if (vehicle in object[region]) {
+          object[region][vehicle] += vmtValue;
+        }
+      });
+
+      return object;
+    },
+    {} as {
+      [region in RegionName]: {
+        [vehicle in VehicleType]: number;
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Percentage/share of each AVERT region's total VMT by state for each vehicle
+ * type.
+ *
+ * Excel: Top right table in the "RegionStateAllocate" sheet (T4:AG85)
+ */
+export function calculateVMTPercentagesByStateRegionCombo(options: {
+  vmtTotalsByStateRegionCombo: VMTTotalsByStateRegionCombo;
+  vmtTotalsByRegion: VMTTotalsByRegion;
+}) {
+  const { vmtTotalsByStateRegionCombo, vmtTotalsByRegion } = options;
+
+  const result = Object.entries(vmtTotalsByStateRegionCombo).reduce(
+    (object, [key, data]) => {
+      const state = data.state as StateId;
+      const region = data.region as RegionName;
+
+      if (!object[key]) {
+        object[key] = {
+          state,
+          region,
+          vehicleTypes: {
+            "Passenger cars": 0,
+            "Passenger trucks": 0,
+            "Medium-duty transit buses": 0,
+            "Heavy-duty transit buses": 0,
+            "Medium-duty school buses": 0,
+            "Heavy-duty school buses": 0,
+            "Medium-duty other buses": 0,
+            "Heavy-duty other buses": 0,
+            "Light-duty single unit trucks": 0,
+            "Medium-duty single unit trucks": 0,
+            "Heavy-duty combination trucks": 0,
+            "Combination long-haul trucks": 0,
+            "Medium-duty refuse trucks": 0,
+            "Heavy-duty refuse trucks": 0,
+          },
+        };
+      }
+
+      Object.entries(data.vehicleTypes).forEach(([vmtKey, vmtValue]) => {
+        const vehicle = vmtKey as VehicleType;
+
+        if (
+          vehicle in object[key].vehicleTypes &&
+          vehicle in vmtTotalsByRegion[region]
+        ) {
+          const regionTotal = vmtTotalsByRegion[region][vehicle];
+
+          object[key].vehicleTypes[vehicle] = vmtValue / regionTotal;
+        }
+      });
+
+      return object;
+    },
+    {} as {
+      [key: string]: {
+        state: StateId;
+        region: RegionName;
+        vehicleTypes: {
+          [vehicle in VehicleType]: number;
+        };
+      };
+    },
+  );
 
   return result;
 }

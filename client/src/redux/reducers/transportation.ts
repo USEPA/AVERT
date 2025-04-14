@@ -5,6 +5,9 @@ import {
   type VMTBillionsAndPercentages,
   type StateVMTPercentagesByRegion,
   type VMTAllocationPerVehicle,
+  type VMTTotalsByStateRegionCombo,
+  type VMTTotalsByRegion,
+  type VMTPercentagesByStateRegionCombo,
   type NationalAverageLDVsVMTPerYear,
   type MonthlyVMTTotals,
   type YearlyVMTTotals,
@@ -34,6 +37,9 @@ import {
   calculateVMTBillionsAndPercentages,
   calculateStateVMTPercentagesByRegion,
   calculateVMTAllocationPerVehicle,
+  calculateVMTTotalsByStateRegionCombo,
+  calculateVMTTotalsByRegion,
+  calculateVMTPercentagesByStateRegionCombo,
   calculateNationalAverageLDVsVMTPerYear,
   calculateMonthlyVMTTotals,
   calculateYearlyVMTTotals,
@@ -146,6 +152,20 @@ type Action =
   | {
       type: "transportation/SET_VMT_ALLOCATION_PER_VEHICLE";
       payload: { vmtAllocationPerVehicle: VMTAllocationPerVehicle };
+    }
+  | {
+      type: "transportation/SET_VMT_TOTALS_BY_STATE_REGION_COMBO";
+      payload: { vmtTotalsByStateRegionCombo: VMTTotalsByStateRegionCombo };
+    }
+  | {
+      type: "transportation/SET_VMT_TOTALS_BY_REGION";
+      payload: { vmtTotalsByRegion: VMTTotalsByRegion };
+    }
+  | {
+      type: "transportation/SET_VMT_PERCENTAGES_BY_STATE_REGION_COMBO";
+      payload: {
+        vmtPercentagesByStateRegionCombo: VMTTotalsByStateRegionCombo;
+      };
     }
   | {
       type: "transportation/SET_NATIONAL_AVERAGE_LDVS_VMT_PER_YEAR";
@@ -291,6 +311,11 @@ type State = {
   vmtBillionsAndPercentages: VMTBillionsAndPercentages | EmptyObject;
   stateVMTPercentagesByRegion: StateVMTPercentagesByRegion | EmptyObject;
   vmtAllocationPerVehicle: VMTAllocationPerVehicle | EmptyObject;
+  vmtTotalsByStateRegionCombo: VMTTotalsByStateRegionCombo | EmptyObject;
+  vmtTotalsByRegion: VMTTotalsByRegion | EmptyObject;
+  vmtPercentagesByStateRegionCombo:
+    | VMTPercentagesByStateRegionCombo
+    | EmptyObject;
   nationalAverageLDVsVMTPerYear: NationalAverageLDVsVMTPerYear;
   monthlyVMTTotals: MonthlyVMTTotals;
   yearlyVMTTotals: YearlyVMTTotals | EmptyObject;
@@ -351,6 +376,9 @@ const initialState: State = {
   vmtBillionsAndPercentages: {},
   stateVMTPercentagesByRegion: {},
   vmtAllocationPerVehicle: {},
+  vmtTotalsByStateRegionCombo: {},
+  vmtTotalsByRegion: {},
+  vmtPercentagesByStateRegionCombo: {},
   nationalAverageLDVsVMTPerYear: 0,
   monthlyVMTTotals: {},
   yearlyVMTTotals: {},
@@ -429,6 +457,33 @@ export default function reducer(
       return {
         ...state,
         vmtAllocationPerVehicle,
+      };
+    }
+
+    case "transportation/SET_VMT_TOTALS_BY_STATE_REGION_COMBO": {
+      const { vmtTotalsByStateRegionCombo } = action.payload;
+
+      return {
+        ...state,
+        vmtTotalsByStateRegionCombo,
+      };
+    }
+
+    case "transportation/SET_VMT_TOTALS_BY_REGION": {
+      const { vmtTotalsByRegion } = action.payload;
+
+      return {
+        ...state,
+        vmtTotalsByRegion,
+      };
+    }
+
+    case "transportation/SET_VMT_PERCENTAGES_BY_STATE_REGION_COMBO": {
+      const { vmtPercentagesByStateRegionCombo } = action.payload;
+
+      return {
+        ...state,
+        vmtPercentagesByStateRegionCombo,
       };
     }
 
@@ -683,6 +738,20 @@ export function setVMTData(): AppThunk {
       stateBusSalesAndStock,
     });
 
+    const vmtTotalsByStateRegionCombo = calculateVMTTotalsByStateRegionCombo({
+      countyFips,
+    });
+
+    const vmtTotalsByRegion = calculateVMTTotalsByRegion({
+      vmtTotalsByStateRegionCombo,
+    });
+
+    const vmtPercentagesByStateRegionCombo =
+      calculateVMTPercentagesByStateRegionCombo({
+        vmtTotalsByStateRegionCombo,
+        vmtTotalsByRegion,
+      });
+
     const nationalAverageLDVsVMTPerYear =
       calculateNationalAverageLDVsVMTPerYear({
         vmtAllocationAndRegisteredVehicles,
@@ -715,6 +784,21 @@ export function setVMTData(): AppThunk {
     dispatch({
       type: "transportation/SET_VMT_ALLOCATION_PER_VEHICLE",
       payload: { vmtAllocationPerVehicle },
+    });
+
+    dispatch({
+      type: "transportation/SET_VMT_TOTALS_BY_STATE_REGION_COMBO",
+      payload: { vmtTotalsByStateRegionCombo },
+    });
+
+    dispatch({
+      type: "transportation/SET_VMT_TOTALS_BY_REGION",
+      payload: { vmtTotalsByRegion },
+    });
+
+    dispatch({
+      type: "transportation/SET_VMT_PERCENTAGES_BY_STATE_REGION_COMBO",
+      payload: { vmtPercentagesByStateRegionCombo },
     });
 
     dispatch({
