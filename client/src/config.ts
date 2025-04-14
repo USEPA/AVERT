@@ -1,4 +1,10 @@
 /**
+ * Excel: "A. State-level VMT per vehicle" table in the "MOVESsupplement" sheet
+ * (B6:E720).
+ */
+import stateLevelVMT from "@/data/state-level-vmt.json";
+
+/**
  * Excel: Second table in the "RegionStateAllocate" sheet (B118:E167)
  */
 import vmtAllocationAndRegisteredVehicles from "@/data/vmt-allocation-and-registered-vehicles.json";
@@ -144,6 +150,8 @@ export type MOVESEmissionRates = {
     vmtElectric: number;
   };
 }[];
+
+export type StateLevelVMT = typeof stateLevelVMT;
 
 export type VMTAllocationAndRegisteredVehicles =
   typeof vmtAllocationAndRegisteredVehicles;

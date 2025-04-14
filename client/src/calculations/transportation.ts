@@ -11,6 +11,7 @@ import { type EmptyObject, sortObjectByKeys } from "@/utilities";
 import {
   type CountyFIPS,
   type MOVESEmissionRates,
+  type StateLevelVMT,
   type VMTAllocationAndRegisteredVehicles,
   type EVChargingProfiles,
   type EVEfficiencyByModelYear,
@@ -130,6 +131,9 @@ export type VMTTotalsByStateRegionCombo = ReturnType<
 export type VMTTotalsByRegion = ReturnType<typeof calculateVMTTotalsByRegion>;
 export type VMTPercentagesByStateRegionCombo = ReturnType<
   typeof calculateVMTPercentagesByStateRegionCombo
+>;
+export type VMTPerVehicleTypeByState = ReturnType<
+  typeof calculateVMTPerVehicleTypeByState
 >;
 export type NationalAverageLDVsVMTPerYear = ReturnType<
   typeof calculateNationalAverageLDVsVMTPerYear
@@ -813,6 +817,55 @@ export function calculateVMTPercentagesByStateRegionCombo(options: {
         region: RegionName;
         vehicleTypes: {
           [vehicle in VehicleType]: number;
+        };
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * 2023 annual vehicle miles traveled (VMT), 2023 stock (both in millions), and
+ * VMT per vehicle type by state for each vehicle type.
+ *
+ * Excel: "A. State-level VMT per vehicle" table in the "MOVESsupplement" sheet
+ * (B6:G720)
+ */
+export function calculateVMTPerVehicleTypeByState(options: {
+  stateLevelVMT: StateLevelVMT;
+}) {
+  const { stateLevelVMT } = options;
+
+  const result = stateLevelVMT.reduce(
+    (object, data) => {
+      const state = data["State"] as StateId;
+      const vehicle = data["Vehicle Type"] as VehicleType;
+      const vmt = data["2023 Annual VMT (million miles)"];
+      const stock = data["2023 Stock (million vehicles)"];
+
+      if (!object[state]) {
+        object[state] = {} as {
+          [vehicle in VehicleType]: {
+            vmt: number;
+            stock: number;
+            vmtPerVehicle: number;
+          };
+        };
+      }
+
+      if (!object[state][vehicle]) {
+        object[state][vehicle] = { vmt, stock, vmtPerVehicle: vmt / stock };
+      }
+
+      return object;
+    },
+    {} as {
+      [stateId in StateId]: {
+        [vehicle in VehicleType]: {
+          vmt: number;
+          stock: number;
+          vmtPerVehicle: number;
         };
       };
     },

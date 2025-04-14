@@ -8,6 +8,7 @@ import {
   type VMTTotalsByStateRegionCombo,
   type VMTTotalsByRegion,
   type VMTPercentagesByStateRegionCombo,
+  type VMTPerVehicleTypeByState,
   type NationalAverageLDVsVMTPerYear,
   type MonthlyVMTTotals,
   type YearlyVMTTotals,
@@ -40,6 +41,7 @@ import {
   calculateVMTTotalsByStateRegionCombo,
   calculateVMTTotalsByRegion,
   calculateVMTPercentagesByStateRegionCombo,
+  calculateVMTPerVehicleTypeByState,
   calculateNationalAverageLDVsVMTPerYear,
   calculateMonthlyVMTTotals,
   calculateYearlyVMTTotals,
@@ -165,6 +167,12 @@ type Action =
       type: "transportation/SET_VMT_PERCENTAGES_BY_STATE_REGION_COMBO";
       payload: {
         vmtPercentagesByStateRegionCombo: VMTTotalsByStateRegionCombo;
+      };
+    }
+  | {
+      type: "transportation/SET_VMT_PER_VEHICLE_TYPE_BY_STATE";
+      payload: {
+        vmtPerVehicleTypeByState: VMTPerVehicleTypeByState;
       };
     }
   | {
@@ -316,6 +324,7 @@ type State = {
   vmtPercentagesByStateRegionCombo:
     | VMTPercentagesByStateRegionCombo
     | EmptyObject;
+  vmtPerVehicleTypeByState: VMTPerVehicleTypeByState | EmptyObject;
   nationalAverageLDVsVMTPerYear: NationalAverageLDVsVMTPerYear;
   monthlyVMTTotals: MonthlyVMTTotals;
   yearlyVMTTotals: YearlyVMTTotals | EmptyObject;
@@ -379,6 +388,7 @@ const initialState: State = {
   vmtTotalsByStateRegionCombo: {},
   vmtTotalsByRegion: {},
   vmtPercentagesByStateRegionCombo: {},
+  vmtPerVehicleTypeByState: {},
   nationalAverageLDVsVMTPerYear: 0,
   monthlyVMTTotals: {},
   yearlyVMTTotals: {},
@@ -484,6 +494,15 @@ export default function reducer(
       return {
         ...state,
         vmtPercentagesByStateRegionCombo,
+      };
+    }
+
+    case "transportation/SET_VMT_PER_VEHICLE_TYPE_BY_STATE": {
+      const { vmtPerVehicleTypeByState } = action.payload;
+
+      return {
+        ...state,
+        vmtPerVehicleTypeByState,
       };
     }
 
@@ -752,6 +771,10 @@ export function setVMTData(): AppThunk {
         vmtTotalsByRegion,
       });
 
+    const vmtPerVehicleTypeByState = calculateVMTPerVehicleTypeByState({
+      stateLevelVMT,
+    });
+
     const nationalAverageLDVsVMTPerYear =
       calculateNationalAverageLDVsVMTPerYear({
         vmtAllocationAndRegisteredVehicles,
@@ -799,6 +822,11 @@ export function setVMTData(): AppThunk {
     dispatch({
       type: "transportation/SET_VMT_PERCENTAGES_BY_STATE_REGION_COMBO",
       payload: { vmtPercentagesByStateRegionCombo },
+    });
+
+    dispatch({
+      type: "transportation/SET_VMT_PER_VEHICLE_TYPE_BY_STATE",
+      payload: { vmtPerVehicleTypeByState },
     });
 
     dispatch({
