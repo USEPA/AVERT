@@ -3,7 +3,7 @@ import { exit } from "node:process";
 import { fileURLToPath } from "node:url";
 
 import { XLSX, getExcelWorksheet } from "./excel.js";
-import { renameObjectKeys, storeJsonData } from "./json.js";
+import { storeJsonData } from "./json.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -27,22 +27,6 @@ function parseMOVESsupplementWorksheet(worksheet) {
   return json;
 }
 
-/**
- * @param {{}[]} data
- */
-function renameStateLevelVMTDataKeys(data) {
-  const keyMap = new Map([
-    ["State", "state"],
-    ["Vehicle Type", "vehicleType"],
-    ["2023 Annual VMT (million miles)", "vmt"],
-    ["2023 Stock (million vehicles)", "stock"],
-  ]);
-
-  const result = renameObjectKeys(data, keyMap);
-
-  return result;
-}
-
 function main() {
   const excelFilepath = process.argv[2];
 
@@ -53,12 +37,11 @@ function main() {
 
   const worksheet = getExcelWorksheet(excelFilepath, "MOVESsupplement");
   const excelJsonData = parseMOVESsupplementWorksheet(worksheet);
-  const formattedJsonData = renameStateLevelVMTDataKeys(excelJsonData);
 
   const jsonFilename = "state-level-vmt.json";
   const jsonFilepath = resolve(__dirname, "../../client/src/data", jsonFilename);
 
-  storeJsonData(formattedJsonData, jsonFilepath);
+  storeJsonData(excelJsonData, jsonFilepath);
 }
 
 main();
