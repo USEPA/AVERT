@@ -140,6 +140,9 @@ export type LDVsFhwaMovesVMTRatioByState = ReturnType<
 export type VMTPerVehicleTypeByState = ReturnType<
   typeof calculateVMTPerVehicleTypeByState
 >;
+export type SelectedRegionsVMTPercentagesByState = ReturnType<
+  typeof calculateSelectedRegionsVMTPercentagesByState
+>;
 export type NationalAverageLDVsVMTPerYear = ReturnType<
   typeof calculateNationalAverageLDVsVMTPerYear
 >;
@@ -930,7 +933,7 @@ export function calculateVMTPerVehicleTypeByState(options: {
   const { vmtAndStockByState, ldvsFhwaMovesVMTRatioByState } = options;
 
   const result = Object.entries(vmtAndStockByState).reduce(
-    (object, [vmtKey, vmtData]) => {
+    (object, [vmtKey, vmtValue]) => {
       const state = vmtKey as StateId;
 
       if (!object[state]) {
@@ -942,9 +945,9 @@ export function calculateVMTPerVehicleTypeByState(options: {
         };
       }
 
-      Object.entries(vmtData).forEach(([vehicleKey, vehicleData]) => {
+      Object.entries(vmtValue).forEach(([vehicleKey, vehicleValue]) => {
         const vehicle = vehicleKey as VehicleType;
-        const { vmt, stock } = vehicleData;
+        const { vmt, stock } = vehicleValue;
         const vmtPerVehicle = vmt / stock;
 
         const ldvsFhwaMovesVMTRatio =
@@ -972,6 +975,92 @@ export function calculateVMTPerVehicleTypeByState(options: {
         [vehicle in VehicleType]: {
           vmtPerVehicle: number;
           vmtPerVehicleAdjustedByFHWA: number;
+        };
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Percentage/share of selected AVERT region's total VMT by state for each
+ * vehicle type.
+ *
+ * Excel: "A. State-level VMT per vehicle" table in the "MOVESsupplement" sheet
+ * (H6:H720)
+ */
+export function calculateSelectedRegionsVMTPercentagesByState(options: {
+  selectedGeographyRegions: SelectedGeographyRegions;
+  vmtPercentagesByStateRegionCombo:
+    | VMTPercentagesByStateRegionCombo
+    | EmptyObject;
+  vmtAndStockByState: VMTandStockByState | EmptyObject;
+}) {
+  const {
+    selectedGeographyRegions,
+    vmtPercentagesByStateRegionCombo,
+    vmtAndStockByState,
+  } = options;
+
+  if (
+    Object.keys(selectedGeographyRegions).length === 0 ||
+    Object.keys(vmtPercentagesByStateRegionCombo).length === 0 ||
+    Object.keys(vmtAndStockByState).length === 0
+  ) {
+    return {} as {
+      [regionId in RegionId]: {
+        [stateId in StateId]: {
+          [vehicle in VehicleType]: number;
+        };
+      };
+    };
+  }
+
+  const result = Object.entries(selectedGeographyRegions).reduce(
+    (regionsObject, [geographyKey, geographyValue]) => {
+      const regionId = geographyKey as RegionId;
+      const regionName = geographyValue.name as RegionName;
+
+      const regionResult = Object.entries(vmtAndStockByState).reduce(
+        (statesObject, [vmtKey, vmtValue]) => {
+          const stateId = vmtKey as StateId;
+
+          if (!statesObject[stateId]) {
+            statesObject[stateId] = {} as {
+              [vehicle in VehicleType]: number;
+            };
+          }
+
+          Object.keys(vmtValue).forEach((vehicleKey) => {
+            const vehicle = vehicleKey as VehicleType;
+
+            const vehicleVMTPercentage =
+              vmtPercentagesByStateRegionCombo[`${stateId} / ${regionName}`]
+                ?.vehicleTypes?.[vehicle] || 0;
+
+            if (!statesObject[stateId][vehicle]) {
+              statesObject[stateId][vehicle] = vehicleVMTPercentage;
+            }
+          });
+
+          return statesObject;
+        },
+        {} as {
+          [stateId in StateId]: {
+            [vehicle in VehicleType]: number;
+          };
+        },
+      );
+
+      regionsObject[regionId] = regionResult;
+
+      return regionsObject;
+    },
+    {} as {
+      [regionId in RegionId]: {
+        [stateId in StateId]: {
+          [vehicle in VehicleType]: number;
         };
       };
     },
