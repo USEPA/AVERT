@@ -829,7 +829,8 @@ export function setVMTData(): AppThunk {
     });
 
     const vmtPerVehicleTypeByState = calculateVMTPerVehicleTypeByState({
-      stateLevelVMT,
+      vmtAndStockByState,
+      ldvsFhwaMovesVMTRatioByState,
     });
 
     const nationalAverageLDVsVMTPerYear =

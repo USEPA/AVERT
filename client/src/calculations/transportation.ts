@@ -918,46 +918,60 @@ export function calculateLDVsFhwaMovesVMTRatioByState(options: {
 }
 
 /**
- * 2023 annual vehicle miles traveled (VMT), 2023 stock (both in millions), and
- * VMT per vehicle type by state for each vehicle type.
+ * VMT per vehicle type (both MOVES data and FHWA adjusted data) by state.
  *
  * Excel: "A. State-level VMT per vehicle" table in the "MOVESsupplement" sheet
- * (B6:G720)
+ * (F6:G720)
  */
 export function calculateVMTPerVehicleTypeByState(options: {
-  stateLevelVMT: StateLevelVMT;
+  vmtAndStockByState: VMTandStockByState;
+  ldvsFhwaMovesVMTRatioByState: LDVsFhwaMovesVMTRatioByState;
 }) {
-  const { stateLevelVMT } = options;
+  const { vmtAndStockByState, ldvsFhwaMovesVMTRatioByState } = options;
 
-  const result = stateLevelVMT.reduce(
-    (object, data) => {
-      const state = data["State"] as StateId;
-      const vehicle = data["Vehicle Type"] as VehicleType;
-      const vmt = data["2023 Annual VMT (million miles)"];
-      const stock = data["2023 Stock (million vehicles)"];
+  const result = Object.entries(vmtAndStockByState).reduce(
+    (object, [vmtKey, vmtData]) => {
+      const state = vmtKey as StateId;
 
       if (!object[state]) {
         object[state] = {} as {
           [vehicle in VehicleType]: {
-            vmt: number;
-            stock: number;
             vmtPerVehicle: number;
+            vmtPerVehicleAdjustedByFHWA: number;
           };
         };
       }
 
-      if (!object[state][vehicle]) {
-        object[state][vehicle] = { vmt, stock, vmtPerVehicle: vmt / stock };
-      }
+      Object.entries(vmtData).forEach(([vehicleKey, vehicleData]) => {
+        const vehicle = vehicleKey as VehicleType;
+        const { vmt, stock } = vehicleData;
+        const vmtPerVehicle = vmt / stock;
+
+        const ldvsFhwaMovesVMTRatio =
+          state in ldvsFhwaMovesVMTRatioByState
+            ? ldvsFhwaMovesVMTRatioByState[state].ratio
+            : 1;
+
+        const vmtPerVehicleAdjustedByFHWA =
+          vehicle === "Passenger cars" || vehicle === "Passenger trucks"
+            ? vmtPerVehicle * ldvsFhwaMovesVMTRatio
+            : vmtPerVehicle;
+
+        if (!object[state][vehicle]) {
+          object[state][vehicle] = {
+            vmtPerVehicle,
+            vmtPerVehicleAdjustedByFHWA,
+          };
+        }
+      });
 
       return object;
     },
     {} as {
       [stateId in StateId]: {
         [vehicle in VehicleType]: {
-          vmt: number;
-          stock: number;
           vmtPerVehicle: number;
+          vmtPerVehicleAdjustedByFHWA: number;
         };
       };
     },
