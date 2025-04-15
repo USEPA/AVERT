@@ -134,11 +134,11 @@ export type VMTPercentagesByStateRegionCombo = ReturnType<
   typeof calculateVMTPercentagesByStateRegionCombo
 >;
 export type VMTandStockByState = ReturnType<typeof storeVMTandStockByState>;
+export type LDVsFhwaMovesVMTRatioByState = ReturnType<
+  typeof calculateLDVsFhwaMovesVMTRatioByState
+>;
 export type VMTPerVehicleTypeByState = ReturnType<
   typeof calculateVMTPerVehicleTypeByState
->;
-export type FhwaMovesLDVsVMTRatioByState = ReturnType<
-  typeof calculateFhwaMovesLDVsVMTRatioByState
 >;
 export type NationalAverageLDVsVMTPerYear = ReturnType<
   typeof calculateNationalAverageLDVsVMTPerYear
@@ -878,6 +878,46 @@ export function storeVMTandStockByState(options: {
 }
 
 /**
+ * Ratio of FHWA to MOVES VMT for light duty vehicles (LDV) by state.
+ *
+ * Excel: "C. FHWA LDV State-Level VMT" table in the "MOVESsupplement" sheet
+ * (O6:P57)
+ */
+export function calculateLDVsFhwaMovesVMTRatioByState(options: {
+  fhwaLDVStateLevelVMT: FHWALDVStateLevelVMT;
+  vmtAndStockByState: VMTandStockByState;
+}) {
+  const { fhwaLDVStateLevelVMT, vmtAndStockByState } = options;
+
+  const results = Object.values(fhwaLDVStateLevelVMT).reduce(
+    (object, data) => {
+      const stateId = data["State"] as StateId;
+      const vmtFHWA = data["2023 Annual VMT (million miles) - FHWA"];
+      const vmtMOVES =
+        stateId in vmtAndStockByState
+          ? vmtAndStockByState[stateId]["Passenger cars"].vmt +
+            vmtAndStockByState[stateId]["Passenger trucks"].vmt
+          : 0;
+
+      if (!object[stateId]) {
+        object[stateId] = { vmtFHWA, vmtMOVES, ratio: vmtFHWA / vmtMOVES };
+      }
+
+      return object;
+    },
+    {} as {
+      [stateId in StateId]: {
+        vmtFHWA: number;
+        vmtMOVES: number;
+        ratio: number;
+      };
+    },
+  );
+
+  return results;
+}
+
+/**
  * 2023 annual vehicle miles traveled (VMT), 2023 stock (both in millions), and
  * VMT per vehicle type by state for each vehicle type.
  *
@@ -924,46 +964,6 @@ export function calculateVMTPerVehicleTypeByState(options: {
   );
 
   return result;
-}
-
-/**
- * Ratio of FHWA to MOVES VMT for light duty vehicles (LDV) by state.
- *
- * Excel: "C. FHWA LDV State-Level VMT" table in the "MOVESsupplement" sheet
- * (O6:P57)
- */
-export function calculateFhwaMovesLDVsVMTRatioByState(options: {
-  fhwaLDVStateLevelVMT: FHWALDVStateLevelVMT;
-  vmtPerVehicleTypeByState: VMTPerVehicleTypeByState;
-}) {
-  const { fhwaLDVStateLevelVMT, vmtPerVehicleTypeByState } = options;
-
-  const results = Object.values(fhwaLDVStateLevelVMT).reduce(
-    (object, data) => {
-      const stateId = data["State"] as StateId;
-      const fhwaVMT = data["2023 Annual VMT (million miles) - FHWA"];
-      const movesVMT =
-        stateId in vmtPerVehicleTypeByState
-          ? vmtPerVehicleTypeByState[stateId]["Passenger cars"].vmt +
-            vmtPerVehicleTypeByState[stateId]["Passenger trucks"].vmt
-          : 0;
-
-      if (!object[stateId]) {
-        object[stateId] = { fhwaVMT, movesVMT, ratio: fhwaVMT / movesVMT };
-      }
-
-      return object;
-    },
-    {} as {
-      [stateId in StateId]: {
-        fhwaVMT: number;
-        movesVMT: number;
-        ratio: number;
-      };
-    },
-  );
-
-  return results;
 }
 
 /**

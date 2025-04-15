@@ -9,8 +9,8 @@ import {
   type VMTTotalsByRegion,
   type VMTPercentagesByStateRegionCombo,
   type VMTandStockByState,
+  type LDVsFhwaMovesVMTRatioByState,
   type VMTPerVehicleTypeByState,
-  type FhwaMovesLDVsVMTRatioByState,
   type NationalAverageLDVsVMTPerYear,
   type MonthlyVMTTotals,
   type YearlyVMTTotals,
@@ -44,8 +44,8 @@ import {
   calculateVMTTotalsByRegion,
   calculateVMTPercentagesByStateRegionCombo,
   storeVMTandStockByState,
+  calculateLDVsFhwaMovesVMTRatioByState,
   calculateVMTPerVehicleTypeByState,
-  calculateFhwaMovesLDVsVMTRatioByState,
   calculateNationalAverageLDVsVMTPerYear,
   calculateMonthlyVMTTotals,
   calculateYearlyVMTTotals,
@@ -190,15 +190,15 @@ type Action =
       };
     }
   | {
-      type: "transportation/SET_VMT_PER_VEHICLE_TYPE_BY_STATE";
+      type: "transportation/SET_LDVS_FHWA_MOVES_VMT_RATIO_BY_STATE";
       payload: {
-        vmtPerVehicleTypeByState: VMTPerVehicleTypeByState;
+        ldvsFhwaMovesVMTRatioByState: LDVsFhwaMovesVMTRatioByState;
       };
     }
   | {
-      type: "transportation/SET_FHWA_MOVES_LDVS_VMT_RATIO_BY_STATE";
+      type: "transportation/SET_VMT_PER_VEHICLE_TYPE_BY_STATE";
       payload: {
-        fhwaMovesLDVsVMTRatioByState: FhwaMovesLDVsVMTRatioByState;
+        vmtPerVehicleTypeByState: VMTPerVehicleTypeByState;
       };
     }
   | {
@@ -351,8 +351,8 @@ type State = {
     | VMTPercentagesByStateRegionCombo
     | EmptyObject;
   vmtAndStockByState: VMTandStockByState | EmptyObject;
+  ldvsFhwaMovesVMTRatioByState: LDVsFhwaMovesVMTRatioByState | EmptyObject;
   vmtPerVehicleTypeByState: VMTPerVehicleTypeByState | EmptyObject;
-  fhwaMovesLDVsVMTRatioByState: FhwaMovesLDVsVMTRatioByState | EmptyObject;
   nationalAverageLDVsVMTPerYear: NationalAverageLDVsVMTPerYear;
   monthlyVMTTotals: MonthlyVMTTotals;
   yearlyVMTTotals: YearlyVMTTotals | EmptyObject;
@@ -417,8 +417,8 @@ const initialState: State = {
   vmtTotalsByRegion: {},
   vmtPercentagesByStateRegionCombo: {},
   vmtAndStockByState: {},
+  ldvsFhwaMovesVMTRatioByState: {},
   vmtPerVehicleTypeByState: {},
-  fhwaMovesLDVsVMTRatioByState: {},
   nationalAverageLDVsVMTPerYear: 0,
   monthlyVMTTotals: {},
   yearlyVMTTotals: {},
@@ -536,21 +536,21 @@ export default function reducer(
       };
     }
 
+    case "transportation/SET_LDVS_FHWA_MOVES_VMT_RATIO_BY_STATE": {
+      const { ldvsFhwaMovesVMTRatioByState } = action.payload;
+
+      return {
+        ...state,
+        ldvsFhwaMovesVMTRatioByState,
+      };
+    }
+
     case "transportation/SET_VMT_PER_VEHICLE_TYPE_BY_STATE": {
       const { vmtPerVehicleTypeByState } = action.payload;
 
       return {
         ...state,
         vmtPerVehicleTypeByState,
-      };
-    }
-
-    case "transportation/SET_FHWA_MOVES_LDVS_VMT_RATIO_BY_STATE": {
-      const { fhwaMovesLDVsVMTRatioByState } = action.payload;
-
-      return {
-        ...state,
-        fhwaMovesLDVsVMTRatioByState,
       };
     }
 
@@ -823,13 +823,13 @@ export function setVMTData(): AppThunk {
       stateLevelVMT,
     });
 
-    const vmtPerVehicleTypeByState = calculateVMTPerVehicleTypeByState({
-      stateLevelVMT,
+    const ldvsFhwaMovesVMTRatioByState = calculateLDVsFhwaMovesVMTRatioByState({
+      fhwaLDVStateLevelVMT,
+      vmtAndStockByState,
     });
 
-    const fhwaMovesLDVsVMTRatioByState = calculateFhwaMovesLDVsVMTRatioByState({
-      fhwaLDVStateLevelVMT,
-      vmtPerVehicleTypeByState,
+    const vmtPerVehicleTypeByState = calculateVMTPerVehicleTypeByState({
+      stateLevelVMT,
     });
 
     const nationalAverageLDVsVMTPerYear =
@@ -887,13 +887,13 @@ export function setVMTData(): AppThunk {
     });
 
     dispatch({
-      type: "transportation/SET_VMT_PER_VEHICLE_TYPE_BY_STATE",
-      payload: { vmtPerVehicleTypeByState },
+      type: "transportation/SET_LDVS_FHWA_MOVES_VMT_RATIO_BY_STATE",
+      payload: { ldvsFhwaMovesVMTRatioByState },
     });
 
     dispatch({
-      type: "transportation/SET_FHWA_MOVES_LDVS_VMT_RATIO_BY_STATE",
-      payload: { fhwaMovesLDVsVMTRatioByState },
+      type: "transportation/SET_VMT_PER_VEHICLE_TYPE_BY_STATE",
+      payload: { vmtPerVehicleTypeByState },
     });
 
     dispatch({
