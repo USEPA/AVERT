@@ -143,9 +143,6 @@ export type VMTPerVehicleTypeByState = ReturnType<
 export type SelectedRegionsVMTPercentagesByState = ReturnType<
   typeof calculateSelectedRegionsVMTPercentagesByState
 >;
-export type NationalAverageLDVsVMTPerYear = ReturnType<
-  typeof calculateNationalAverageLDVsVMTPerYear
->;
 export type MonthlyVMTTotals = ReturnType<typeof calculateMonthlyVMTTotals>;
 export type YearlyVMTTotals = ReturnType<typeof calculateYearlyVMTTotals>;
 export type MonthlyVMTPercentages = ReturnType<
@@ -1067,34 +1064,6 @@ export function calculateSelectedRegionsVMTPercentagesByState(options: {
 }
 
 /**
- * National average vehicle miles traveled (VMT) per year for light duty
- * vehicles.
- *
- * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E177:E178).
- */
-export function calculateNationalAverageLDVsVMTPerYear(options: {
-  vmtAllocationAndRegisteredVehicles: VMTAllocationAndRegisteredVehicles;
-}) {
-  const { vmtAllocationAndRegisteredVehicles } = options;
-
-  const { totalAnnualLDVsVMT, totalRegisteredLDVs } = Object.values(
-    vmtAllocationAndRegisteredVehicles,
-  ).reduce(
-    (object, stateValue) => {
-      object.totalAnnualLDVsVMT += stateValue.annualVMTofLDVs;
-      object.totalRegisteredLDVs += stateValue.registeredLDVs;
-      return object;
-    },
-    { totalAnnualLDVsVMT: 0, totalRegisteredLDVs: 0 },
-  );
-
-  const result =
-    totalRegisteredLDVs === 0 ? 0 : totalAnnualLDVsVMT / totalRegisteredLDVs;
-
-  return result;
-}
-
-/**
  * Total vehicle miles traveled (VMT) for each month for each vehicle type /
  * fuel type combo.
  *
@@ -1496,15 +1465,11 @@ export function calculateSelectedRegionsVMTPercentagesPerVehicleType(options: {
  * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E183:E186).
  */
 export function calculateSelectedRegionsAverageVMTPerYear_OLD(options: {
-  nationalAverageLDVsVMTPerYear: NationalAverageLDVsVMTPerYear;
   selectedRegionsVMTPercentagesPerVehicleType:
     | SelectedRegionsVMTPercentagesPerVehicleType
     | EmptyObject;
 }) {
-  const {
-    nationalAverageLDVsVMTPerYear,
-    selectedRegionsVMTPercentagesPerVehicleType,
-  } = options;
+  const { selectedRegionsVMTPercentagesPerVehicleType } = options;
 
   const selectedRegionsVMTData =
     Object.keys(selectedRegionsVMTPercentagesPerVehicleType).length !== 0
@@ -1522,8 +1487,13 @@ export function calculateSelectedRegionsAverageVMTPerYear_OLD(options: {
     };
   }
 
-  const nationalAverageTransitBusesVMTPerYear = 43647; // NOTE: hardcoded value in Excel
-  const nationalAverageSchoolBusesVMTPerYear = 12000; // NOTE: hardcoded value in Excel
+  // NOTE: temporarily hard-coded values from Excel, until this function can be removed
+  const nationalAverageVMTPerYear = {
+    cars: 10916,
+    trucks: 10916,
+    transitBuses: 43647,
+    schoolBuses: 12000,
+  };
 
   const result = Object.entries(selectedRegionsVMTData).reduce(
     (object, [regionKey, regionValue]) => {
@@ -1532,10 +1502,10 @@ export function calculateSelectedRegionsAverageVMTPerYear_OLD(options: {
       const { vmtPerLDVPercent, vmtPerBusPercent } = regionValue;
 
       object[regionId] = {
-        cars: nationalAverageLDVsVMTPerYear * vmtPerLDVPercent,
-        trucks: nationalAverageLDVsVMTPerYear * vmtPerLDVPercent,
-        transitBuses: nationalAverageTransitBusesVMTPerYear * vmtPerBusPercent,
-        schoolBuses: nationalAverageSchoolBusesVMTPerYear * vmtPerBusPercent,
+        cars: nationalAverageVMTPerYear.cars * vmtPerLDVPercent,
+        trucks: nationalAverageVMTPerYear.trucks * vmtPerLDVPercent,
+        transitBuses: nationalAverageVMTPerYear.transitBuses * vmtPerBusPercent,
+        schoolBuses: nationalAverageVMTPerYear.schoolBuses * vmtPerBusPercent,
       };
 
       return object;

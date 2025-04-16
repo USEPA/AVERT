@@ -12,7 +12,6 @@ import {
   type LDVsFhwaMovesVMTRatioByState,
   type VMTPerVehicleTypeByState,
   type SelectedRegionsVMTPercentagesByState,
-  type NationalAverageLDVsVMTPerYear,
   type MonthlyVMTTotals,
   type YearlyVMTTotals,
   type MonthlyVMTPercentages,
@@ -48,7 +47,6 @@ import {
   calculateLDVsFhwaMovesVMTRatioByState,
   calculateVMTPerVehicleTypeByState,
   calculateSelectedRegionsVMTPercentagesByState,
-  calculateNationalAverageLDVsVMTPerYear,
   calculateMonthlyVMTTotals,
   calculateYearlyVMTTotals,
   calculateMonthlyVMTPercentages,
@@ -210,10 +208,6 @@ type Action =
       };
     }
   | {
-      type: "transportation/SET_NATIONAL_AVERAGE_LDVS_VMT_PER_YEAR";
-      payload: { nationalAverageLDVsVMTPerYear: NationalAverageLDVsVMTPerYear };
-    }
-  | {
       type: "transportation/SET_MONTHLY_VMT_TOTALS";
       payload: {
         monthlyVMTTotals: MonthlyVMTTotals;
@@ -248,9 +242,9 @@ type Action =
       };
     }
   | {
-      type: "transportation/SET_SELECTED_REGIONS_AVERAGE_VMT_PER_YEAR";
+      type: "transportation/SET_SELECTED_REGIONS_AVERAGE_VMT_PER_YEAR_OLD";
       payload: {
-        selectedRegionsAverageVMTPerYear: SelectedRegionsAverageVMTPerYear;
+        selectedRegionsAverageVMTPerYear_OLD: SelectedRegionsAverageVMTPerYear_OLD;
       };
     }
   | {
@@ -364,7 +358,6 @@ type State = {
   selectedRegionsVMTPercentagesByState:
     | SelectedRegionsVMTPercentagesByState
     | EmptyObject;
-  nationalAverageLDVsVMTPerYear: NationalAverageLDVsVMTPerYear;
   monthlyVMTTotals: MonthlyVMTTotals;
   yearlyVMTTotals: YearlyVMTTotals | EmptyObject;
   monthlyVMTPercentages: MonthlyVMTPercentages;
@@ -431,7 +424,6 @@ const initialState: State = {
   ldvsFhwaMovesVMTRatioByState: {},
   vmtPerVehicleTypeByState: {},
   selectedRegionsVMTPercentagesByState: {},
-  nationalAverageLDVsVMTPerYear: 0,
   monthlyVMTTotals: {},
   yearlyVMTTotals: {},
   monthlyVMTPercentages: {},
@@ -572,15 +564,6 @@ export default function reducer(
       return {
         ...state,
         selectedRegionsVMTPercentagesByState,
-      };
-    }
-
-    case "transportation/SET_NATIONAL_AVERAGE_LDVS_VMT_PER_YEAR": {
-      const { nationalAverageLDVsVMTPerYear } = action.payload;
-
-      return {
-        ...state,
-        nationalAverageLDVsVMTPerYear,
       };
     }
 
@@ -854,11 +837,6 @@ export function setVMTData(): AppThunk {
       ldvsFhwaMovesVMTRatioByState,
     });
 
-    const nationalAverageLDVsVMTPerYear =
-      calculateNationalAverageLDVsVMTPerYear({
-        vmtAllocationAndRegisteredVehicles,
-      });
-
     const monthlyVMTTotals = calculateMonthlyVMTTotals({ movesEmissionRates });
 
     const yearlyVMTTotals = calculateYearlyVMTTotals({ monthlyVMTTotals });
@@ -919,11 +897,6 @@ export function setVMTData(): AppThunk {
     });
 
     dispatch({
-      type: "transportation/SET_NATIONAL_AVERAGE_LDVS_VMT_PER_YEAR",
-      payload: { nationalAverageLDVsVMTPerYear },
-    });
-
-    dispatch({
       type: "transportation/SET_MONTHLY_VMT_TOTALS",
       payload: { monthlyVMTTotals },
     });
@@ -973,7 +946,6 @@ export function setSelectedGeographyVMTData(): AppThunk {
       vmtBillionsAndPercentages,
       vmtAllocationPerVehicle,
       vmtPercentagesByStateRegionCombo,
-      nationalAverageVMTPerYear,
       monthlyVMTPercentages,
     } = transportation;
 
@@ -1006,7 +978,6 @@ export function setSelectedGeographyVMTData(): AppThunk {
 
     const selectedRegionsAverageVMTPerYear_OLD =
       calculateSelectedRegionsAverageVMTPerYear_OLD({
-        nationalAverageVMTPerYear,
         selectedRegionsVMTPercentagesPerVehicleType,
       });
 
