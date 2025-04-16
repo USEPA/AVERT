@@ -995,18 +995,13 @@ export function calculateSelectedRegionsVMTPercentagesByState(options: {
   vmtPercentagesByStateRegionCombo:
     | VMTPercentagesByStateRegionCombo
     | EmptyObject;
-  vmtAndStockByState: VMTandStockByState | EmptyObject;
 }) {
-  const {
-    selectedGeographyRegions,
-    vmtPercentagesByStateRegionCombo,
-    vmtAndStockByState,
-  } = options;
+  const { selectedGeographyRegions, vmtPercentagesByStateRegionCombo } =
+    options;
 
   if (
     Object.keys(selectedGeographyRegions).length === 0 ||
-    Object.keys(vmtPercentagesByStateRegionCombo).length === 0 ||
-    Object.keys(vmtAndStockByState).length === 0
+    Object.keys(vmtPercentagesByStateRegionCombo).length === 0
   ) {
     return {} as {
       [regionId in RegionId]: {
@@ -1022,9 +1017,11 @@ export function calculateSelectedRegionsVMTPercentagesByState(options: {
       const regionId = geographyKey as RegionId;
       const regionName = geographyValue.name as RegionName;
 
-      const regionResult = Object.entries(vmtAndStockByState).reduce(
-        (statesObject, [vmtKey, vmtValue]) => {
-          const stateId = vmtKey as StateId;
+      const regionResult = Object.values(
+        vmtPercentagesByStateRegionCombo,
+      ).reduce(
+        (statesObject, vmtValue) => {
+          const stateId = vmtValue.state as StateId;
 
           if (!statesObject[stateId]) {
             statesObject[stateId] = {} as {
@@ -1032,17 +1029,16 @@ export function calculateSelectedRegionsVMTPercentagesByState(options: {
             };
           }
 
-          Object.keys(vmtValue).forEach((vehicleKey) => {
-            const vehicle = vehicleKey as VehicleType;
+          Object.entries(vmtValue.vehicleTypes).forEach(
+            ([vehicleKey, vehicleValue]) => {
+              const vehicle = vehicleKey as VehicleType;
+              const value = vmtValue.region === regionName ? vehicleValue : 0;
 
-            const vehicleVMTPercentage =
-              vmtPercentagesByStateRegionCombo[`${stateId} / ${regionName}`]
-                ?.vehicleTypes?.[vehicle] || 0;
-
-            if (!statesObject[stateId][vehicle]) {
-              statesObject[stateId][vehicle] = vehicleVMTPercentage;
-            }
-          });
+              if (!statesObject[stateId][vehicle]) {
+                statesObject[stateId][vehicle] = value;
+              }
+            },
+          );
 
           return statesObject;
         },

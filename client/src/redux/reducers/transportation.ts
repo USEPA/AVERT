@@ -973,7 +973,6 @@ export function setSelectedGeographyVMTData(): AppThunk {
       vmtBillionsAndPercentages,
       vmtAllocationPerVehicle,
       vmtPercentagesByStateRegionCombo,
-      vmtAndStockByState,
       nationalAverageVMTPerYear,
       monthlyVMTPercentages,
     } = transportation;
@@ -991,7 +990,6 @@ export function setSelectedGeographyVMTData(): AppThunk {
       calculateSelectedRegionsVMTPercentagesByState({
         selectedGeographyRegions,
         vmtPercentagesByStateRegionCombo,
-        vmtAndStockByState,
       });
 
     const selectedRegionsStatesVMTPercentages =
