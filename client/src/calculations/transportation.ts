@@ -1023,22 +1023,23 @@ export function calculateSelectedRegionsVMTPercentagesByState(options: {
         (statesObject, vmtValue) => {
           const stateId = vmtValue.state as StateId;
 
-          if (!statesObject[stateId]) {
-            statesObject[stateId] = {} as {
-              [vehicle in VehicleType]: number;
-            };
+          if (vmtValue.region === regionName) {
+            if (!statesObject[stateId]) {
+              statesObject[stateId] = {} as {
+                [vehicle in VehicleType]: number;
+              };
+            }
+
+            Object.entries(vmtValue.vehicleTypes).forEach(
+              ([vehicleKey, vehicleValue]) => {
+                const vehicle = vehicleKey as VehicleType;
+
+                if (!statesObject[stateId][vehicle]) {
+                  statesObject[stateId][vehicle] = vehicleValue;
+                }
+              },
+            );
           }
-
-          Object.entries(vmtValue.vehicleTypes).forEach(
-            ([vehicleKey, vehicleValue]) => {
-              const vehicle = vehicleKey as VehicleType;
-              const value = vmtValue.region === regionName ? vehicleValue : 0;
-
-              if (!statesObject[stateId][vehicle]) {
-                statesObject[stateId][vehicle] = value;
-              }
-            },
-          );
 
           return statesObject;
         },
