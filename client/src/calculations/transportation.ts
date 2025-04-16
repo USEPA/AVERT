@@ -160,8 +160,8 @@ export type SelectedRegionsStatesVMTPercentages = ReturnType<
 export type SelectedRegionsVMTPercentagesPerVehicleType = ReturnType<
   typeof calculateSelectedRegionsVMTPercentagesPerVehicleType
 >;
-export type SelectedRegionsAverageVMTPerYear = ReturnType<
-  typeof calculateSelectedRegionsAverageVMTPerYear
+export type SelectedRegionsAverageVMTPerYear_OLD = ReturnType<
+  typeof calculateSelectedRegionsAverageVMTPerYear_OLD
 >;
 export type SelectedRegionsMonthlyVMTPerVehicleType = ReturnType<
   typeof calculateSelectedRegionsMonthlyVMTPerVehicleType
@@ -1495,7 +1495,7 @@ export function calculateSelectedRegionsVMTPercentagesPerVehicleType(options: {
  *
  * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E183:E186).
  */
-export function calculateSelectedRegionsAverageVMTPerYear(options: {
+export function calculateSelectedRegionsAverageVMTPerYear_OLD(options: {
   nationalAverageLDVsVMTPerYear: NationalAverageLDVsVMTPerYear;
   selectedRegionsVMTPercentagesPerVehicleType:
     | SelectedRegionsVMTPercentagesPerVehicleType
@@ -1560,16 +1560,17 @@ export function calculateSelectedRegionsAverageVMTPerYear(options: {
  * "Library" sheet (E232:P237).
  */
 export function calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
-  selectedRegionsAverageVMTPerYear:
-    | SelectedRegionsAverageVMTPerYear
+  selectedRegionsAverageVMTPerYear_OLD:
+    | SelectedRegionsAverageVMTPerYear_OLD
     | EmptyObject;
   monthlyVMTPercentages: MonthlyVMTPercentages;
 }) {
-  const { selectedRegionsAverageVMTPerYear, monthlyVMTPercentages } = options;
+  const { selectedRegionsAverageVMTPerYear_OLD, monthlyVMTPercentages } =
+    options;
 
   const selectedRegionsVMTData =
-    Object.keys(selectedRegionsAverageVMTPerYear).length !== 0
-      ? (selectedRegionsAverageVMTPerYear as SelectedRegionsAverageVMTPerYear)
+    Object.keys(selectedRegionsAverageVMTPerYear_OLD).length !== 0
+      ? (selectedRegionsAverageVMTPerYear_OLD as SelectedRegionsAverageVMTPerYear_OLD)
       : null;
 
   if (

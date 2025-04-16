@@ -19,7 +19,7 @@ import {
   type HourlyEVChargingPercentages,
   type SelectedRegionsStatesVMTPercentages,
   type SelectedRegionsVMTPercentagesPerVehicleType,
-  type SelectedRegionsAverageVMTPerYear,
+  type SelectedRegionsAverageVMTPerYear_OLD,
   type SelectedRegionsMonthlyVMTPerVehicleType,
   type SelectedRegionsEVEfficiencyPerVehicleType,
   type DailyStats,
@@ -55,7 +55,7 @@ import {
   calculateHourlyEVChargingPercentages,
   calculateSelectedRegionsStatesVMTPercentages,
   calculateSelectedRegionsVMTPercentagesPerVehicleType,
-  calculateSelectedRegionsAverageVMTPerYear,
+  calculateSelectedRegionsAverageVMTPerYear_OLD,
   calculateSelectedRegionsMonthlyVMTPerVehicleType,
   calculateSelectedRegionsEVEfficiencyPerVehicleType,
   calculateDailyStats,
@@ -375,8 +375,8 @@ type State = {
   selectedRegionsVMTPercentagesPerVehicleType:
     | SelectedRegionsVMTPercentagesPerVehicleType
     | EmptyObject;
-  selectedRegionsAverageVMTPerYear:
-    | SelectedRegionsAverageVMTPerYear
+  selectedRegionsAverageVMTPerYear_OLD:
+    | SelectedRegionsAverageVMTPerYear_OLD
     | EmptyObject;
   selectedRegionsMonthlyVMTPerVehicleType:
     | SelectedRegionsMonthlyVMTPerVehicleType
@@ -438,7 +438,7 @@ const initialState: State = {
   hourlyEVChargingPercentages: {},
   selectedRegionsStatesVMTPercentages: {},
   selectedRegionsVMTPercentagesPerVehicleType: {},
-  selectedRegionsAverageVMTPerYear: {},
+  selectedRegionsAverageVMTPerYear_OLD: {},
   selectedRegionsMonthlyVMTPerVehicleType: {},
   selectedRegionsEVEfficiencyPerVehicleType: {},
   dailyStats: {},
@@ -638,12 +638,12 @@ export default function reducer(
       };
     }
 
-    case "transportation/SET_SELECTED_REGIONS_AVERAGE_VMT_PER_YEAR": {
-      const { selectedRegionsAverageVMTPerYear } = action.payload;
+    case "transportation/SET_SELECTED_REGIONS_AVERAGE_VMT_PER_YEAR_OLD": {
+      const { selectedRegionsAverageVMTPerYear_OLD } = action.payload;
 
       return {
         ...state,
-        selectedRegionsAverageVMTPerYear,
+        selectedRegionsAverageVMTPerYear_OLD,
       };
     }
 
@@ -1004,15 +1004,15 @@ export function setSelectedGeographyVMTData(): AppThunk {
         vmtAllocationPerVehicle,
       });
 
-    const selectedRegionsAverageVMTPerYear =
-      calculateSelectedRegionsAverageVMTPerYear({
-        nationalAverageLDVsVMTPerYear,
+    const selectedRegionsAverageVMTPerYear_OLD =
+      calculateSelectedRegionsAverageVMTPerYear_OLD({
+        nationalAverageVMTPerYear,
         selectedRegionsVMTPercentagesPerVehicleType,
       });
 
     const selectedRegionsMonthlyVMTPerVehicleType =
       calculateSelectedRegionsMonthlyVMTPerVehicleType({
-        selectedRegionsAverageVMTPerYear,
+        selectedRegionsAverageVMTPerYear_OLD,
         monthlyVMTPercentages,
       });
 
@@ -1032,8 +1032,8 @@ export function setSelectedGeographyVMTData(): AppThunk {
     });
 
     dispatch({
-      type: "transportation/SET_SELECTED_REGIONS_AVERAGE_VMT_PER_YEAR",
-      payload: { selectedRegionsAverageVMTPerYear },
+      type: "transportation/SET_SELECTED_REGIONS_AVERAGE_VMT_PER_YEAR_OLD",
+      payload: { selectedRegionsAverageVMTPerYear_OLD },
     });
 
     dispatch({
