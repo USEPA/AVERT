@@ -5,6 +5,9 @@ import {
   type VMTBillionsAndPercentages,
   type StateVMTPercentagesByRegion,
   type VMTAllocationPerVehicle,
+  type MonthlyVMTTotals,
+  type YearlyVMTTotals,
+  type MonthlyVMTPercentages,
   type VMTTotalsByStateRegionCombo,
   type VMTTotalsByRegion,
   type VMTPercentagesByStateRegionCombo,
@@ -13,9 +16,6 @@ import {
   type VMTPerVehicleTypeByState,
   type SelectedRegionsVMTPercentagesByState,
   type SelectedRegionsAverageVMTPerYear,
-  type MonthlyVMTTotals,
-  type YearlyVMTTotals,
-  type MonthlyVMTPercentages,
   type HourlyEVChargingPercentages,
   type SelectedRegionsStatesVMTPercentages,
   type SelectedRegionsVMTPercentagesPerVehicleType,
@@ -41,6 +41,9 @@ import {
   calculateVMTBillionsAndPercentages,
   calculateStateVMTPercentagesByRegion,
   calculateVMTAllocationPerVehicle,
+  calculateMonthlyVMTTotals,
+  calculateYearlyVMTTotals,
+  calculateMonthlyVMTPercentages,
   calculateVMTTotalsByStateRegionCombo,
   calculateVMTTotalsByRegion,
   calculateVMTPercentagesByStateRegionCombo,
@@ -49,9 +52,6 @@ import {
   calculateVMTPerVehicleTypeByState,
   calculateSelectedRegionsVMTPercentagesByState,
   calculateSelectedRegionsAverageVMTPerYear,
-  calculateMonthlyVMTTotals,
-  calculateYearlyVMTTotals,
-  calculateMonthlyVMTPercentages,
   calculateHourlyEVChargingPercentages,
   calculateSelectedRegionsStatesVMTPercentages,
   calculateSelectedRegionsVMTPercentagesPerVehicleType,
@@ -172,6 +172,24 @@ type Action =
       payload: { vmtAllocationPerVehicle: VMTAllocationPerVehicle };
     }
   | {
+      type: "transportation/SET_MONTHLY_VMT_TOTALS";
+      payload: {
+        monthlyVMTTotals: MonthlyVMTTotals;
+      };
+    }
+  | {
+      type: "transportation/SET_YEARLY_VMT_TOTALS";
+      payload: {
+        yearlyVMTTotals: YearlyVMTTotals;
+      };
+    }
+  | {
+      type: "transportation/SET_MONTHLY_VMT_PERCENTAGES";
+      payload: {
+        monthlyVMTPercentages: MonthlyVMTPercentages;
+      };
+    }
+  | {
       type: "transportation/SET_VMT_TOTALS_BY_STATE_REGION_COMBO";
       payload: { vmtTotalsByStateRegionCombo: VMTTotalsByStateRegionCombo };
     }
@@ -213,24 +231,6 @@ type Action =
       type: "transportation/SET_SELECTED_REGIONS_AVERAGE_VMT_PER_YEAR";
       payload: {
         selectedRegionsAverageVMTPerYear: SelectedRegionsAverageVMTPerYear;
-      };
-    }
-  | {
-      type: "transportation/SET_MONTHLY_VMT_TOTALS";
-      payload: {
-        monthlyVMTTotals: MonthlyVMTTotals;
-      };
-    }
-  | {
-      type: "transportation/SET_YEARLY_VMT_TOTALS";
-      payload: {
-        yearlyVMTTotals: YearlyVMTTotals;
-      };
-    }
-  | {
-      type: "transportation/SET_MONTHLY_VMT_PERCENTAGES";
-      payload: {
-        monthlyVMTPercentages: MonthlyVMTPercentages;
       };
     }
   | {
@@ -355,6 +355,9 @@ type State = {
   vmtBillionsAndPercentages: VMTBillionsAndPercentages | EmptyObject;
   stateVMTPercentagesByRegion: StateVMTPercentagesByRegion | EmptyObject;
   vmtAllocationPerVehicle: VMTAllocationPerVehicle | EmptyObject;
+  monthlyVMTTotals: MonthlyVMTTotals;
+  yearlyVMTTotals: YearlyVMTTotals | EmptyObject;
+  monthlyVMTPercentages: MonthlyVMTPercentages;
   vmtTotalsByStateRegionCombo: VMTTotalsByStateRegionCombo | EmptyObject;
   vmtTotalsByRegion: VMTTotalsByRegion | EmptyObject;
   vmtPercentagesByStateRegionCombo:
@@ -369,9 +372,6 @@ type State = {
   selectedRegionsAverageVMTPerYear:
     | SelectedRegionsAverageVMTPerYear
     | EmptyObject;
-  monthlyVMTTotals: MonthlyVMTTotals;
-  yearlyVMTTotals: YearlyVMTTotals | EmptyObject;
-  monthlyVMTPercentages: MonthlyVMTPercentages;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
   selectedRegionsStatesVMTPercentages:
     | SelectedRegionsStatesVMTPercentages
@@ -428,6 +428,9 @@ const initialState: State = {
   vmtBillionsAndPercentages: {},
   stateVMTPercentagesByRegion: {},
   vmtAllocationPerVehicle: {},
+  monthlyVMTTotals: {},
+  yearlyVMTTotals: {},
+  monthlyVMTPercentages: {},
   vmtTotalsByStateRegionCombo: {},
   vmtTotalsByRegion: {},
   vmtPercentagesByStateRegionCombo: {},
@@ -436,9 +439,6 @@ const initialState: State = {
   vmtPerVehicleTypeByState: {},
   selectedRegionsVMTPercentagesByState: {},
   selectedRegionsAverageVMTPerYear: {},
-  monthlyVMTTotals: {},
-  yearlyVMTTotals: {},
-  monthlyVMTPercentages: {},
   hourlyEVChargingPercentages: {},
   selectedRegionsStatesVMTPercentages: {},
   selectedRegionsVMTPercentagesPerVehicleType: {},
@@ -516,6 +516,33 @@ export default function reducer(
       };
     }
 
+    case "transportation/SET_MONTHLY_VMT_TOTALS": {
+      const { monthlyVMTTotals } = action.payload;
+
+      return {
+        ...state,
+        monthlyVMTTotals,
+      };
+    }
+
+    case "transportation/SET_YEARLY_VMT_TOTALS": {
+      const { yearlyVMTTotals } = action.payload;
+
+      return {
+        ...state,
+        yearlyVMTTotals,
+      };
+    }
+
+    case "transportation/SET_MONTHLY_VMT_PERCENTAGES": {
+      const { monthlyVMTPercentages } = action.payload;
+
+      return {
+        ...state,
+        monthlyVMTPercentages,
+      };
+    }
+
     case "transportation/SET_VMT_TOTALS_BY_STATE_REGION_COMBO": {
       const { vmtTotalsByStateRegionCombo } = action.payload;
 
@@ -585,33 +612,6 @@ export default function reducer(
       return {
         ...state,
         selectedRegionsAverageVMTPerYear,
-      };
-    }
-
-    case "transportation/SET_MONTHLY_VMT_TOTALS": {
-      const { monthlyVMTTotals } = action.payload;
-
-      return {
-        ...state,
-        monthlyVMTTotals,
-      };
-    }
-
-    case "transportation/SET_YEARLY_VMT_TOTALS": {
-      const { yearlyVMTTotals } = action.payload;
-
-      return {
-        ...state,
-        yearlyVMTTotals,
-      };
-    }
-
-    case "transportation/SET_MONTHLY_VMT_PERCENTAGES": {
-      const { monthlyVMTPercentages } = action.payload;
-
-      return {
-        ...state,
-        monthlyVMTPercentages,
       };
     }
 
@@ -830,6 +830,15 @@ export function setVMTData(): AppThunk {
       stateBusSalesAndStock,
     });
 
+    const monthlyVMTTotals = calculateMonthlyVMTTotals({ movesEmissionRates });
+
+    const yearlyVMTTotals = calculateYearlyVMTTotals({ monthlyVMTTotals });
+
+    const monthlyVMTPercentages = calculateMonthlyVMTPercentages({
+      monthlyVMTTotals,
+      yearlyVMTTotals,
+    });
+
     const vmtTotalsByStateRegionCombo = calculateVMTTotalsByStateRegionCombo({
       countyFips,
     });
@@ -858,15 +867,6 @@ export function setVMTData(): AppThunk {
       ldvsFhwaMovesVMTRatioByState,
     });
 
-    const monthlyVMTTotals = calculateMonthlyVMTTotals({ movesEmissionRates });
-
-    const yearlyVMTTotals = calculateYearlyVMTTotals({ monthlyVMTTotals });
-
-    const monthlyVMTPercentages = calculateMonthlyVMTPercentages({
-      monthlyVMTTotals,
-      yearlyVMTTotals,
-    });
-
     dispatch({
       type: "transportation/SET_VMT_TOTALS_BY_GEOGRAPHY",
       payload: { vmtTotalsByGeography },
@@ -885,6 +885,21 @@ export function setVMTData(): AppThunk {
     dispatch({
       type: "transportation/SET_VMT_ALLOCATION_PER_VEHICLE",
       payload: { vmtAllocationPerVehicle },
+    });
+
+    dispatch({
+      type: "transportation/SET_MONTHLY_VMT_TOTALS",
+      payload: { monthlyVMTTotals },
+    });
+
+    dispatch({
+      type: "transportation/SET_YEARLY_VMT_TOTALS",
+      payload: { yearlyVMTTotals },
+    });
+
+    dispatch({
+      type: "transportation/SET_MONTHLY_VMT_PERCENTAGES",
+      payload: { monthlyVMTPercentages },
     });
 
     dispatch({
@@ -915,21 +930,6 @@ export function setVMTData(): AppThunk {
     dispatch({
       type: "transportation/SET_VMT_PER_VEHICLE_TYPE_BY_STATE",
       payload: { vmtPerVehicleTypeByState },
-    });
-
-    dispatch({
-      type: "transportation/SET_MONTHLY_VMT_TOTALS",
-      payload: { monthlyVMTTotals },
-    });
-
-    dispatch({
-      type: "transportation/SET_YEARLY_VMT_TOTALS",
-      payload: { yearlyVMTTotals },
-    });
-
-    dispatch({
-      type: "transportation/SET_MONTHLY_VMT_PERCENTAGES",
-      payload: { monthlyVMTPercentages },
     });
 
     // NOTE: `vehicleSalesAndStock` uses `vmtAllocationPerVehicle`
