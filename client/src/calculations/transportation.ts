@@ -163,8 +163,8 @@ export type SelectedRegionsStatesVMTPercentages = ReturnType<
 export type SelectedRegionsVMTPercentagesPerVehicleType = ReturnType<
   typeof calculateSelectedRegionsVMTPercentagesPerVehicleType
 >;
-export type SelectedRegionsAverageVMTPerYear_OLD = ReturnType<
-  typeof calculateSelectedRegionsAverageVMTPerYear_OLD
+export type _SelectedRegionsAverageVMTPerYear = ReturnType<
+  typeof _calculateSelectedRegionsAverageVMTPerYear
 >;
 export type SelectedRegionsMonthlyVMTPerVehicleType = ReturnType<
   typeof calculateSelectedRegionsMonthlyVMTPerVehicleType
@@ -1651,7 +1651,7 @@ export function calculateSelectedRegionsVMTPercentagesPerVehicleType(options: {
  *
  * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E183:E186).
  */
-export function calculateSelectedRegionsAverageVMTPerYear_OLD(options: {
+export function _calculateSelectedRegionsAverageVMTPerYear(options: {
   selectedRegionsVMTPercentagesPerVehicleType:
     | SelectedRegionsVMTPercentagesPerVehicleType
     | EmptyObject;
@@ -1717,17 +1717,16 @@ export function calculateSelectedRegionsAverageVMTPerYear_OLD(options: {
  * "Library" sheet (E232:P237).
  */
 export function calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
-  selectedRegionsAverageVMTPerYear_OLD:
-    | SelectedRegionsAverageVMTPerYear_OLD
+  _selectedRegionsAverageVMTPerYear:
+    | _SelectedRegionsAverageVMTPerYear
     | EmptyObject;
   monthlyVMTPercentages: MonthlyVMTPercentages;
 }) {
-  const { selectedRegionsAverageVMTPerYear_OLD, monthlyVMTPercentages } =
-    options;
+  const { _selectedRegionsAverageVMTPerYear, monthlyVMTPercentages } = options;
 
   const selectedRegionsVMTData =
-    Object.keys(selectedRegionsAverageVMTPerYear_OLD).length !== 0
-      ? (selectedRegionsAverageVMTPerYear_OLD as SelectedRegionsAverageVMTPerYear_OLD)
+    Object.keys(_selectedRegionsAverageVMTPerYear).length !== 0
+      ? (_selectedRegionsAverageVMTPerYear as _SelectedRegionsAverageVMTPerYear)
       : null;
 
   if (
