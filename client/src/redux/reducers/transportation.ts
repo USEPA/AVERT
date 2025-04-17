@@ -16,6 +16,7 @@ import {
   type VMTPerVehicleTypeByState,
   type SelectedRegionsVMTPercentagesByState,
   type SelectedRegionsAverageVMTPerYear,
+  type SelectedRegionsMonthlyVMT,
   type HourlyEVChargingPercentages,
   type SelectedRegionsStatesVMTPercentages,
   type SelectedRegionsVMTPercentagesPerVehicleType,
@@ -52,6 +53,7 @@ import {
   calculateVMTPerVehicleTypeByState,
   calculateSelectedRegionsVMTPercentagesByState,
   calculateSelectedRegionsAverageVMTPerYear,
+  calculateSelectedRegionsMonthlyVMT,
   calculateHourlyEVChargingPercentages,
   calculateSelectedRegionsStatesVMTPercentages,
   calculateSelectedRegionsVMTPercentagesPerVehicleType,
@@ -234,6 +236,12 @@ type Action =
       };
     }
   | {
+      type: "transportation/SET_SELECTED_REGIONS_MONTHLY_VMT";
+      payload: {
+        selectedRegionsMonthlyVMT: SelectedRegionsMonthlyVMT;
+      };
+    }
+  | {
       type: "transportation/SET_HOURLY_EV_CHARGING_PERCENTAGES";
       payload: { hourlyEVChargingPercentages: HourlyEVChargingPercentages };
     }
@@ -355,9 +363,9 @@ type State = {
   vmtBillionsAndPercentages: VMTBillionsAndPercentages | EmptyObject;
   stateVMTPercentagesByRegion: StateVMTPercentagesByRegion | EmptyObject;
   vmtAllocationPerVehicle: VMTAllocationPerVehicle | EmptyObject;
-  monthlyVMTTotals: MonthlyVMTTotals;
+  monthlyVMTTotals: MonthlyVMTTotals | EmptyObject;
   yearlyVMTTotals: YearlyVMTTotals | EmptyObject;
-  monthlyVMTPercentages: MonthlyVMTPercentages;
+  monthlyVMTPercentages: MonthlyVMTPercentages | EmptyObject;
   vmtTotalsByStateRegionCombo: VMTTotalsByStateRegionCombo | EmptyObject;
   vmtTotalsByRegion: VMTTotalsByRegion | EmptyObject;
   vmtPercentagesByStateRegionCombo:
@@ -372,6 +380,7 @@ type State = {
   selectedRegionsAverageVMTPerYear:
     | SelectedRegionsAverageVMTPerYear
     | EmptyObject;
+  selectedRegionsMonthlyVMT: SelectedRegionsMonthlyVMT | EmptyObject;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
   selectedRegionsStatesVMTPercentages:
     | SelectedRegionsStatesVMTPercentages
@@ -439,6 +448,7 @@ const initialState: State = {
   vmtPerVehicleTypeByState: {},
   selectedRegionsVMTPercentagesByState: {},
   selectedRegionsAverageVMTPerYear: {},
+  selectedRegionsMonthlyVMT: {},
   hourlyEVChargingPercentages: {},
   selectedRegionsStatesVMTPercentages: {},
   selectedRegionsVMTPercentagesPerVehicleType: {},
@@ -612,6 +622,15 @@ export default function reducer(
       return {
         ...state,
         selectedRegionsAverageVMTPerYear,
+      };
+    }
+
+    case "transportation/SET_SELECTED_REGIONS_MONTHLY_VMT": {
+      const { selectedRegionsMonthlyVMT } = action.payload;
+
+      return {
+        ...state,
+        selectedRegionsMonthlyVMT,
       };
     }
 
@@ -1260,6 +1279,7 @@ export function setMonthlyEmissionRates(): AppThunk {
   return (dispatch, getState) => {
     const { transportation, impacts } = getState();
     const {
+      monthlyVMTPercentages,
       vmtPerVehicleTypeByState,
       selectedRegionsVMTPercentagesByState,
       selectedRegionsStatesVMTPercentages,
@@ -1274,6 +1294,11 @@ export function setMonthlyEmissionRates(): AppThunk {
         selectedRegionsVMTPercentagesByState,
       });
 
+    const selectedRegionsMonthlyVMT = calculateSelectedRegionsMonthlyVMT({
+      selectedRegionsAverageVMTPerYear,
+      monthlyVMTPercentages,
+    });
+
     const selectedRegionsMonthlyEmissionRates =
       calculateSelectedRegionsMonthlyEmissionRates({
         movesEmissionRates,
@@ -1286,6 +1311,11 @@ export function setMonthlyEmissionRates(): AppThunk {
     dispatch({
       type: "transportation/SET_SELECTED_REGIONS_AVERAGE_VMT_PER_YEAR",
       payload: { selectedRegionsAverageVMTPerYear },
+    });
+
+    dispatch({
+      type: "transportation/SET_SELECTED_REGIONS_MONTHLY_VMT",
+      payload: { selectedRegionsMonthlyVMT },
     });
 
     dispatch({
