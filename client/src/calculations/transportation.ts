@@ -143,6 +143,9 @@ export type VMTPerVehicleTypeByState = ReturnType<
 export type SelectedRegionsVMTPercentagesByState = ReturnType<
   typeof calculateSelectedRegionsVMTPercentagesByState
 >;
+export type SelectedRegionsAverageVMTPerYear = ReturnType<
+  typeof calculateSelectedRegionsAverageVMTPerYear
+>;
 export type MonthlyVMTTotals = ReturnType<typeof calculateMonthlyVMTTotals>;
 export type YearlyVMTTotals = ReturnType<typeof calculateYearlyVMTTotals>;
 export type MonthlyVMTPercentages = ReturnType<
@@ -1056,6 +1059,96 @@ export function calculateSelectedRegionsVMTPercentagesByState(options: {
         [stateId in StateId]: {
           [vehicle in VehicleType]: number;
         };
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Selected AVERT region's average vehicle miles traveled (VMT) per year for
+ * each vehicle type for the selected location of EV deployment.
+ *
+ * Excel: "Table 4: VMT per vehicle assumptions" table in the "Library" sheet
+ * (E179:E192).
+ */
+export function calculateSelectedRegionsAverageVMTPerYear(options: {
+  evDeploymentLocation: string;
+  vmtPerVehicleTypeByState: VMTPerVehicleTypeByState | EmptyObject;
+  selectedRegionsVMTPercentagesByState:
+    | SelectedRegionsVMTPercentagesByState
+    | EmptyObject;
+}) {
+  const {
+    evDeploymentLocation,
+    vmtPerVehicleTypeByState,
+    selectedRegionsVMTPercentagesByState,
+  } = options;
+
+  if (
+    evDeploymentLocation === "" ||
+    Object.keys(vmtPerVehicleTypeByState).length === 0 ||
+    Object.keys(selectedRegionsVMTPercentagesByState).length === 0
+  ) {
+    return {} as {
+      [regionId in RegionId]: {
+        [vehicle in VehicleType]: number;
+      };
+    };
+  }
+
+  const deploymentLocationIsRegion = evDeploymentLocation.startsWith("region-");
+  const deploymentLocationIsState = evDeploymentLocation.startsWith("state-");
+  const deploymentLocationStateId = evDeploymentLocation.replace("state-", "") as StateId; // prettier-ignore
+
+  const result = Object.entries(selectedRegionsVMTPercentagesByState).reduce(
+    (object, [vmtPercentagesRegionKey, vmtPercentagesRegionValue]) => {
+      const regionId = vmtPercentagesRegionKey as RegionId;
+
+      object[regionId] ??= {} as {
+        [vehicle in VehicleType]: number;
+      };
+
+      Object.entries(vmtPercentagesRegionValue).forEach(
+        ([vmtPercentagesStateKey, vmtPercentagesStateValue]) => {
+          const stateId = vmtPercentagesStateKey as StateId;
+
+          const deploymentLocationIncludesState =
+            deploymentLocationIsRegion ||
+            (deploymentLocationIsState &&
+              deploymentLocationStateId === stateId);
+
+          if (stateId in vmtPerVehicleTypeByState) {
+            Object.entries(vmtPerVehicleTypeByState[stateId]).forEach(
+              ([vehicleKey, vehicleValue]) => {
+                const vehicle = vehicleKey as VehicleType;
+
+                const stateAdjustedVMT =
+                  vehicleValue.vmtPerVehicleAdjustedByFHWA;
+
+                const stateVMTFactor = deploymentLocationIncludesState
+                  ? vmtPercentagesStateValue?.[vehicle]
+                  : 0;
+
+                const stateAverageVMT = stateAdjustedVMT * stateVMTFactor;
+
+                if (!object[regionId][vehicle]) {
+                  object[regionId][vehicle] = 0;
+                }
+
+                object[regionId][vehicle] += stateAverageVMT;
+              },
+            );
+          }
+        },
+      );
+
+      return object;
+    },
+    {} as {
+      [regionId in RegionId]: {
+        [vehicle in VehicleType]: number;
       };
     },
   );
