@@ -118,7 +118,7 @@ import movesEmissionRatesData from "@/data/moves-emission-rates.json";
 import evChargingProfiles from "@/data/ev-charging-profiles-hourly-data.json";
 /**
  * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
- * (E194:J200).
+ * (E201:J217).
  */
 import evEfficiencyByModelYear from "@/data/ev-efficiency-by-model-year.json";
 /**
