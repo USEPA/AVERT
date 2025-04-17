@@ -157,17 +157,17 @@ export type SelectedRegionsMonthlyVMT = ReturnType<
 export type HourlyEVChargingPercentages = ReturnType<
   typeof calculateHourlyEVChargingPercentages
 >;
-export type SelectedRegionsStatesVMTPercentages = ReturnType<
-  typeof calculateSelectedRegionsStatesVMTPercentages
+export type _SelectedRegionsStatesVMTPercentages = ReturnType<
+  typeof _calculateSelectedRegionsStatesVMTPercentages
 >;
-export type SelectedRegionsVMTPercentagesPerVehicleType = ReturnType<
-  typeof calculateSelectedRegionsVMTPercentagesPerVehicleType
+export type _SelectedRegionsVMTPercentagesPerVehicleType = ReturnType<
+  typeof _calculateSelectedRegionsVMTPercentagesPerVehicleType
 >;
 export type _SelectedRegionsAverageVMTPerYear = ReturnType<
   typeof _calculateSelectedRegionsAverageVMTPerYear
 >;
-export type SelectedRegionsMonthlyVMTPerVehicleType = ReturnType<
-  typeof calculateSelectedRegionsMonthlyVMTPerVehicleType
+export type _SelectedRegionsMonthlyVMTPerVehicleType = ReturnType<
+  typeof _calculateSelectedRegionsMonthlyVMTPerVehicleType
 >;
 export type SelectedRegionsEVEfficiencyPerVehicleType = ReturnType<
   typeof calculateSelectedRegionsEVEfficiencyPerVehicleType
@@ -1507,7 +1507,7 @@ export function calculateHourlyEVChargingPercentages(options: {
  *
  * Excel: First table in the "RegionStateAllocate" sheet (CI58:CN107)
  */
-export function calculateSelectedRegionsStatesVMTPercentages(options: {
+export function _calculateSelectedRegionsStatesVMTPercentages(options: {
   selectedGeographyRegionIds: RegionId[];
   vmtBillionsAndPercentages: VMTBillionsAndPercentages | EmptyObject;
 }) {
@@ -1582,18 +1582,18 @@ export function calculateSelectedRegionsStatesVMTPercentages(options: {
  *
  * Excel: Second table in the "RegionStateAllocate" sheet (H169 and J169)
  */
-export function calculateSelectedRegionsVMTPercentagesPerVehicleType(options: {
-  selectedRegionsStatesVMTPercentages:
-    | SelectedRegionsStatesVMTPercentages
+export function _calculateSelectedRegionsVMTPercentagesPerVehicleType(options: {
+  _selectedRegionsStatesVMTPercentages:
+    | _SelectedRegionsStatesVMTPercentages
     | EmptyObject;
   vmtAllocationPerVehicle: VMTAllocationPerVehicle | EmptyObject;
 }) {
-  const { selectedRegionsStatesVMTPercentages, vmtAllocationPerVehicle } =
+  const { _selectedRegionsStatesVMTPercentages, vmtAllocationPerVehicle } =
     options;
 
   const selectedRegionsVMTData =
-    Object.keys(selectedRegionsStatesVMTPercentages).length !== 0
-      ? (selectedRegionsStatesVMTPercentages as SelectedRegionsStatesVMTPercentages)
+    Object.keys(_selectedRegionsStatesVMTPercentages).length !== 0
+      ? (_selectedRegionsStatesVMTPercentages as _SelectedRegionsStatesVMTPercentages)
       : null;
 
   const statesVMTData =
@@ -1652,15 +1652,15 @@ export function calculateSelectedRegionsVMTPercentagesPerVehicleType(options: {
  * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E183:E186).
  */
 export function _calculateSelectedRegionsAverageVMTPerYear(options: {
-  selectedRegionsVMTPercentagesPerVehicleType:
-    | SelectedRegionsVMTPercentagesPerVehicleType
+  _selectedRegionsVMTPercentagesPerVehicleType:
+    | _SelectedRegionsVMTPercentagesPerVehicleType
     | EmptyObject;
 }) {
-  const { selectedRegionsVMTPercentagesPerVehicleType } = options;
+  const { _selectedRegionsVMTPercentagesPerVehicleType } = options;
 
   const selectedRegionsVMTData =
-    Object.keys(selectedRegionsVMTPercentagesPerVehicleType).length !== 0
-      ? (selectedRegionsVMTPercentagesPerVehicleType as SelectedRegionsVMTPercentagesPerVehicleType)
+    Object.keys(_selectedRegionsVMTPercentagesPerVehicleType).length !== 0
+      ? (_selectedRegionsVMTPercentagesPerVehicleType as _SelectedRegionsVMTPercentagesPerVehicleType)
       : null;
 
   if (!selectedRegionsVMTData) {
@@ -1716,7 +1716,7 @@ export function _calculateSelectedRegionsAverageVMTPerYear(options: {
  * Excel: "Table 6: Monthly VMT and efficiency adjustments" table in the
  * "Library" sheet (E232:P237).
  */
-export function calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
+export function _calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
   _selectedRegionsAverageVMTPerYear:
     | _SelectedRegionsAverageVMTPerYear
     | EmptyObject;
@@ -2035,8 +2035,8 @@ export function calculateVehiclesDisplaced(options: {
  * transportation sector" table in the "Library" sheet (G297:R304).
  */
 export function calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
-  selectedRegionsMonthlyVMTPerVehicleType:
-    | SelectedRegionsMonthlyVMTPerVehicleType
+  _selectedRegionsMonthlyVMTPerVehicleType:
+    | _SelectedRegionsMonthlyVMTPerVehicleType
     | EmptyObject;
   selectedRegionsEVEfficiencyPerVehicleType:
     | SelectedRegionsEVEfficiencyPerVehicleType
@@ -2044,7 +2044,7 @@ export function calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
   vehiclesDisplaced: VehiclesDisplaced;
 }) {
   const {
-    selectedRegionsMonthlyVMTPerVehicleType,
+    _selectedRegionsMonthlyVMTPerVehicleType,
     selectedRegionsEVEfficiencyPerVehicleType,
     vehiclesDisplaced,
   } = options;
@@ -2058,8 +2058,8 @@ export function calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
   };
 
   const selectedRegionsVMTData =
-    Object.keys(selectedRegionsMonthlyVMTPerVehicleType).length !== 0
-      ? (selectedRegionsMonthlyVMTPerVehicleType as SelectedRegionsMonthlyVMTPerVehicleType)
+    Object.keys(_selectedRegionsMonthlyVMTPerVehicleType).length !== 0
+      ? (_selectedRegionsMonthlyVMTPerVehicleType as _SelectedRegionsMonthlyVMTPerVehicleType)
       : null;
 
   const selectedRegionsEfficiencyData =
@@ -2368,8 +2368,8 @@ export function calculateSelectedRegionsMonthlyDailyEVEnergyUsage(options: {
  */
 export function calculateSelectedRegionsMonthlyEmissionRates(options: {
   movesEmissionRates: MOVESEmissionRates;
-  selectedRegionsStatesVMTPercentages:
-    | SelectedRegionsStatesVMTPercentages
+  _selectedRegionsStatesVMTPercentages:
+    | _SelectedRegionsStatesVMTPercentages
     | EmptyObject;
   evDeploymentLocation: string;
   evModelYear: string;
@@ -2377,7 +2377,7 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
 }) {
   const {
     movesEmissionRates,
-    selectedRegionsStatesVMTPercentages,
+    _selectedRegionsStatesVMTPercentages,
     evDeploymentLocation,
     evModelYear,
     iceReplacementVehicle,
@@ -2394,8 +2394,8 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
   };
 
   const selectedRegionsVMTData =
-    Object.keys(selectedRegionsStatesVMTPercentages).length !== 0
-      ? (selectedRegionsStatesVMTPercentages as SelectedRegionsStatesVMTPercentages)
+    Object.keys(_selectedRegionsStatesVMTPercentages).length !== 0
+      ? (_selectedRegionsStatesVMTPercentages as _SelectedRegionsStatesVMTPercentages)
       : null;
 
   if (!selectedRegionsVMTData || evDeploymentLocation === "") {
@@ -2505,8 +2505,8 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
   geographicFocus: GeographicFocus;
   stateVMTPercentagesByRegion: StateVMTPercentagesByRegion | EmptyObject;
   selectedStateId: StateId | "";
-  selectedRegionsMonthlyVMTPerVehicleType:
-    | SelectedRegionsMonthlyVMTPerVehicleType
+  _selectedRegionsMonthlyVMTPerVehicleType:
+    | _SelectedRegionsMonthlyVMTPerVehicleType
     | EmptyObject;
   vehiclesDisplaced: VehiclesDisplaced;
   selectedRegionsMonthlyEmissionRates:
@@ -2517,7 +2517,7 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
     geographicFocus,
     stateVMTPercentagesByRegion,
     selectedStateId,
-    selectedRegionsMonthlyVMTPerVehicleType,
+    _selectedRegionsMonthlyVMTPerVehicleType,
     vehiclesDisplaced,
     selectedRegionsMonthlyEmissionRates,
   } = options;
@@ -2528,8 +2528,8 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
       : null;
 
   const selectedRegionsVMTData =
-    Object.keys(selectedRegionsMonthlyVMTPerVehicleType).length !== 0
-      ? (selectedRegionsMonthlyVMTPerVehicleType as SelectedRegionsMonthlyVMTPerVehicleType)
+    Object.keys(_selectedRegionsMonthlyVMTPerVehicleType).length !== 0
+      ? (_selectedRegionsMonthlyVMTPerVehicleType as _SelectedRegionsMonthlyVMTPerVehicleType)
       : null;
 
   const selectedRegionsRatesData =
