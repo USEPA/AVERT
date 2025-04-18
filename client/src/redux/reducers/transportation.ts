@@ -17,6 +17,7 @@ import {
   type SelectedRegionsVMTPercentagesByState,
   type SelectedRegionsAverageVMTPerYear,
   type SelectedRegionsMonthlyVMT,
+  type SelectedRegionsEVEfficiency,
   type HourlyEVChargingPercentages,
   type _SelectedRegionsStatesVMTPercentages,
   type _SelectedRegionsVMTPercentagesPerVehicleType,
@@ -54,6 +55,7 @@ import {
   calculateSelectedRegionsVMTPercentagesByState,
   calculateSelectedRegionsAverageVMTPerYear,
   calculateSelectedRegionsMonthlyVMT,
+  calculateSelectedRegionsEVEfficiency,
   calculateHourlyEVChargingPercentages,
   _calculateSelectedRegionsStatesVMTPercentages,
   _calculateSelectedRegionsVMTPercentagesPerVehicleType,
@@ -122,7 +124,7 @@ import evChargingProfiles from "@/data/ev-charging-profiles-hourly-data.json";
  * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
  * (E201:J217).
  */
-import evEfficiencyByModelYear from "@/data/ev-efficiency-by-model-year.json";
+import evEfficiencyAssumptions from "@/data/ev-efficiency-assumptions.json";
 /**
  * Excel: "Table 11: LDV Sales and Stock" table in the "Library" sheet
  * (B485:C535).
@@ -236,6 +238,12 @@ type Action =
       type: "transportation/SET_SELECTED_REGIONS_MONTHLY_VMT";
       payload: {
         selectedRegionsMonthlyVMT: SelectedRegionsMonthlyVMT;
+      };
+    }
+  | {
+      type: "transportation/SET_SELECTED_REGIONS_EV_EFFICIENCY";
+      payload: {
+        selectedRegionsEVEfficiency: SelectedRegionsEVEfficiency;
       };
     }
   | {
@@ -378,6 +386,7 @@ type State = {
     | SelectedRegionsAverageVMTPerYear
     | EmptyObject;
   selectedRegionsMonthlyVMT: SelectedRegionsMonthlyVMT | EmptyObject;
+  selectedRegionsEVEfficiency: SelectedRegionsEVEfficiency | EmptyObject;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
   _selectedRegionsStatesVMTPercentages:
     | _SelectedRegionsStatesVMTPercentages
@@ -446,6 +455,7 @@ const initialState: State = {
   selectedRegionsVMTPercentagesByState: {},
   selectedRegionsAverageVMTPerYear: {},
   selectedRegionsMonthlyVMT: {},
+  selectedRegionsEVEfficiency: {},
   hourlyEVChargingPercentages: {},
   _selectedRegionsStatesVMTPercentages: {},
   _selectedRegionsVMTPercentagesPerVehicleType: {},
@@ -628,6 +638,15 @@ export default function reducer(
       return {
         ...state,
         selectedRegionsMonthlyVMT,
+      };
+    }
+
+    case "transportation/SET_SELECTED_REGIONS_EV_EFFICIENCY": {
+      const { selectedRegionsEVEfficiency } = action.payload;
+
+      return {
+        ...state,
+        selectedRegionsEVEfficiency,
       };
     }
 
@@ -1070,7 +1089,8 @@ export function setSelectedGeographyVMTData(): AppThunk {
 export function setEVEfficiency(): AppThunk {
   return (dispatch, getState) => {
     const { geography, impacts } = getState();
-    const { regionalScalingFactors } = geography;
+    const { climateAdjustmentFactorByRegion, regionalScalingFactors } =
+      geography;
     const { evModelYear } = impacts.inputs;
 
     const selectedGeographyRegionIds = Object.keys(
@@ -1081,14 +1101,25 @@ export function setEVEfficiency(): AppThunk {
       calculateSelectedRegionsEVEfficiencyPerVehicleType({
         percentageAdditionalEnergyConsumedFactor,
         regionAverageTemperatures,
-        evEfficiencyByModelYear,
         selectedGeographyRegionIds,
         evModelYear,
       });
 
+    const selectedRegionsEVEfficiency = calculateSelectedRegionsEVEfficiency({
+      climateAdjustmentFactorByRegion,
+      evEfficiencyAssumptions,
+      selectedGeographyRegionIds,
+      evModelYear,
+    });
+
     dispatch({
       type: "transportation/SET_SELECTED_REGIONS_EV_EFFICIENCY_PER_VEHICLE_TYPE",
       payload: { selectedRegionsEVEfficiencyPerVehicleType },
+    });
+
+    dispatch({
+      type: "transportation/SET_SELECTED_REGIONS_EV_EFFICIENCY",
+      payload: { selectedRegionsEVEfficiency },
     });
 
     // NOTE: `monthlyEVEnergyUsageGW` uses `selectedRegionsEVEfficiencyPerVehicleType`

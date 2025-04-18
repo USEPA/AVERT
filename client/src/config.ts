@@ -23,7 +23,7 @@ import evChargingProfiles from "@/data/ev-charging-profiles-hourly-data.json";
  * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
  * (E201:J217).
  */
-import evEfficiencyByModelYear from "@/data/ev-efficiency-by-model-year.json";
+import evEfficiencyAssumptions from "@/data/ev-efficiency-assumptions.json";
 /**
  * Excel: "Table 11: LDV Sales and Stock" table in the "Library" sheet
  * (B485:C535).
@@ -159,7 +159,7 @@ export type VMTAllocationAndRegisteredVehicles =
 
 export type EVChargingProfiles = typeof evChargingProfiles;
 
-export type EVEfficiencyByModelYear = typeof evEfficiencyByModelYear;
+export type EVEfficiencyAssumptions = typeof evEfficiencyAssumptions;
 
 export type RegionAverageTemperatures = typeof regionAverageTemperatures;
 

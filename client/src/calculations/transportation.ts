@@ -5,6 +5,7 @@ import {
 import {
   type CountiesByGeography,
   type RegionalScalingFactors,
+  type ClimateAdjustmentFactorByRegion,
   type SelectedGeographyRegions,
 } from "@/calculations/geography";
 import { type EmptyObject, sortObjectByKeys } from "@/utilities";
@@ -15,7 +16,7 @@ import {
   type FHWALDVStateLevelVMT,
   type VMTAllocationAndRegisteredVehicles,
   type EVChargingProfiles,
-  type EVEfficiencyByModelYear,
+  type EVEfficiencyAssumptions,
   type RegionAverageTemperatures,
   type StateLDVsSales,
   type StateBusSalesAndStock,
@@ -76,6 +77,26 @@ const vehicleTypeFuelTypeCombos = [
   "Heavy-duty refuse trucks / Diesel Fuel",
 ] as const;
 
+/** vehicle types with passenger cars and trucks broken out into BEV and PHEV */
+const expandedVehicleTypes = [
+  "BEV passenger cars",
+  "BEV passenger trucks",
+  "PHEV passenger cars",
+  "PHEV passenger trucks",
+  "Medium-duty transit buses",
+  "Heavy-duty transit buses",
+  "Medium-duty school buses",
+  "Heavy-duty school buses",
+  "Medium-duty other buses",
+  "Heavy-duty other buses",
+  "Light-duty single unit trucks",
+  "Medium-duty single unit trucks",
+  "Heavy-duty combination trucks",
+  "Combination long-haul trucks",
+  "Medium-duty refuse trucks",
+  "Heavy-duty refuse trucks",
+] as const;
+
 const _abridgedVehicleTypes = [
   "cars",
   "trucks",
@@ -108,6 +129,7 @@ const pollutants = ["CO2", "NOX", "SO2", "PM25", "VOCs", "NH3"] as const;
 
 type VehicleType = (typeof vehicleTypes)[number];
 type VehicleTypeFuelTypeCombo = (typeof vehicleTypeFuelTypeCombos)[number];
+type ExpandedVehicleType = (typeof expandedVehicleTypes)[number];
 type _AbridgedVehicleType = (typeof _abridgedVehicleTypes)[number];
 type _GeneralVehicleType = (typeof _generalVehicleTypes)[number];
 type _ExpandedVehicleType = (typeof _expandedVehicleTypes)[number];
@@ -152,6 +174,9 @@ export type SelectedRegionsAverageVMTPerYear = ReturnType<
 >;
 export type SelectedRegionsMonthlyVMT = ReturnType<
   typeof calculateSelectedRegionsMonthlyVMT
+>;
+export type SelectedRegionsEVEfficiency = ReturnType<
+  typeof calculateSelectedRegionsEVEfficiency
 >;
 export type HourlyEVChargingPercentages = ReturnType<
   typeof calculateHourlyEVChargingPercentages
@@ -873,14 +898,14 @@ export function calculateVMTTotalsByStateRegionCombo(options: {
 
   const result = countyFips.reduce(
     (object, data) => {
-      const state = data["Postal State Code"] as StateId;
-      const region = data["AVERT Region"] as RegionName;
-      const resultKey = `${state} / ${region}`;
+      const stateId = data["Postal State Code"] as StateId;
+      const regionName = data["AVERT Region"] as RegionName;
+      const resultKey = `${stateId} / ${regionName}`;
 
       if (!object[resultKey]) {
         object[resultKey] = {
-          state,
-          region,
+          state: stateId,
+          region: regionName,
           vehicleTypes: {
             "Passenger cars": 0,
             "Passenger trucks": 0,
@@ -1459,6 +1484,91 @@ export function calculateSelectedRegionsMonthlyVMT(options: {
 }
 
 /**
+ * Selected AVERT region's EV efficiency (kWh/VMT) for each vehicle type.
+ *
+ * Excel: "Table 6: Monthly VMT and efficiency adjustments" table in the
+ * "Library" sheet (E227:E242). NOTE: the Excel version duplicates these values
+ * in the columns to the right for each month, but they're the same value for
+ * all months.
+ */
+export function calculateSelectedRegionsEVEfficiency(options: {
+  climateAdjustmentFactorByRegion:
+    | ClimateAdjustmentFactorByRegion
+    | EmptyObject;
+  evEfficiencyAssumptions: EVEfficiencyAssumptions;
+  selectedGeographyRegionIds: RegionId[];
+  evModelYear: string;
+}) {
+  const {
+    climateAdjustmentFactorByRegion,
+    evEfficiencyAssumptions,
+    selectedGeographyRegionIds,
+    evModelYear,
+  } = options;
+
+  if (
+    Object.keys(climateAdjustmentFactorByRegion).length === 0 ||
+    selectedGeographyRegionIds.length === 0
+  ) {
+    return {} as {
+      [regionId in RegionId]: {
+        [expandedVehicleType in ExpandedVehicleType]: number;
+      };
+    };
+  }
+
+  const result = selectedGeographyRegionIds.reduce(
+    (object, regionId) => {
+      object[regionId] ??= {
+        "BEV passenger cars": 0,
+        "BEV passenger trucks": 0,
+        "PHEV passenger cars": 0,
+        "PHEV passenger trucks": 0,
+        "Medium-duty transit buses": 0,
+        "Heavy-duty transit buses": 0,
+        "Medium-duty school buses": 0,
+        "Heavy-duty school buses": 0,
+        "Medium-duty other buses": 0,
+        "Heavy-duty other buses": 0,
+        "Light-duty single unit trucks": 0,
+        "Medium-duty single unit trucks": 0,
+        "Heavy-duty combination trucks": 0,
+        "Combination long-haul trucks": 0,
+        "Medium-duty refuse trucks": 0,
+        "Heavy-duty refuse trucks": 0,
+      };
+
+      const regionClimateFactor =
+        regionId in climateAdjustmentFactorByRegion
+          ? climateAdjustmentFactorByRegion[regionId]
+          : 0;
+
+      Object.entries(evEfficiencyAssumptions).forEach(
+        ([vehicleKey, vehicleValue]) => {
+          const expandedVehicleType = vehicleKey as ExpandedVehicleType;
+          const year = evModelYear as keyof typeof vehicleValue;
+
+          const evEfficiency = year in vehicleValue ? vehicleValue[year] : 0;
+
+          if (expandedVehicleType in object[regionId]) {
+            object[regionId][expandedVehicleType] = evEfficiency * regionClimateFactor; // prettier-ignore
+          }
+        },
+      );
+
+      return object;
+    },
+    {} as {
+      [regionId in RegionId]: {
+        [expandedVehicleType in ExpandedVehicleType]: number;
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
  * Excel: Data in the first EV table (to the right of the "Calculate Changes"
  * table) in the "CalculateEERE" sheet (P8:X32).
  */
@@ -1802,17 +1912,67 @@ export function _calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
 export function calculateSelectedRegionsEVEfficiencyPerVehicleType(options: {
   percentageAdditionalEnergyConsumedFactor: number;
   regionAverageTemperatures: RegionAverageTemperatures;
-  evEfficiencyByModelYear: EVEfficiencyByModelYear;
   selectedGeographyRegionIds: RegionId[];
   evModelYear: string;
 }) {
   const {
     percentageAdditionalEnergyConsumedFactor,
     regionAverageTemperatures,
-    evEfficiencyByModelYear,
     selectedGeographyRegionIds,
     evModelYear,
   } = options;
+
+  // NOTE: temporarily hard-coded values from Excel, until this function is updated
+  const evEfficiencyByModelYear = {
+    "2023": {
+      batteryEVCars: 0.18638644896375,
+      hybridEVCars: 0.218301335826973,
+      batteryEVTrucks: 0.250866618661348,
+      hybridEVTrucks: 0.285954798275249,
+      transitBuses: 1.95236469969444,
+      schoolBuses: 1.17177273791504,
+    },
+    "2024": {
+      batteryEVCars: 0.167588811794783,
+      hybridEVCars: 0.196394882825251,
+      batteryEVTrucks: 0.225442775972418,
+      hybridEVTrucks: 0.257044712095876,
+      transitBuses: 1.95236469969444,
+      schoolBuses: 1.17177273791504,
+    },
+    "2025": {
+      batteryEVCars: 0.148791174625815,
+      hybridEVCars: 0.174488429823529,
+      batteryEVTrucks: 0.200018933283488,
+      hybridEVTrucks: 0.228134625916503,
+      transitBuses: 1.95236469969444,
+      schoolBuses: 1.17177273791504,
+    },
+    "2026": {
+      batteryEVCars: 0.147619927345788,
+      hybridEVCars: 0.173630798294424,
+      batteryEVTrucks: 0.198525387541494,
+      hybridEVTrucks: 0.227084482810589,
+      transitBuses: 1.95236469969444,
+      schoolBuses: 1.17177273791504,
+    },
+    "2027": {
+      batteryEVCars: 0.146448680065761,
+      hybridEVCars: 0.172773166765318,
+      batteryEVTrucks: 0.1970318417995,
+      hybridEVTrucks: 0.226034339704676,
+      transitBuses: 1.95236469969444,
+      schoolBuses: 1.17177273791504,
+    },
+    "2028": {
+      batteryEVCars: 0.145277432785733,
+      hybridEVCars: 0.171915535236212,
+      batteryEVTrucks: 0.195538296057506,
+      hybridEVTrucks: 0.224984196598763,
+      transitBuses: 1.95236469969444,
+      schoolBuses: 1.17177273791504,
+    },
+  };
 
   const evEfficiencyModelYear =
     evModelYear as keyof typeof evEfficiencyByModelYear;
