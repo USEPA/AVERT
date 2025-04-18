@@ -6,6 +6,7 @@ import {
 import { sortObjectByKeys } from "@/utilities";
 import {
   type CountyFIPS,
+  type RegionAverageTemperatures,
   type RegionId,
   type RegionName,
   type StateId,
@@ -25,6 +26,9 @@ export type CountiesByGeography = ReturnType<
 >;
 export type RegionalScalingFactors = ReturnType<
   typeof calculateRegionalScalingFactors
+>;
+export type ClimateAdjustmentFactorByRegion = ReturnType<
+  typeof calculateClimateAdjustmentFactorByRegion
 >;
 export type SelectedGeographyRegions = ReturnType<
   typeof getSelectedGeographyRegions
@@ -57,8 +61,8 @@ export function organizeCountiesByGeography(options: {
     const stateId = data["Postal State Code"] as StateId;
     const county = data["County Name Long"];
 
-    const regionId = Object.entries(regions).find(([_, region]) => {
-      return region.name === regionName;
+    const regionId = Object.entries(regions).find(([_, regionValue]) => {
+      return regionValue.name === regionName;
     })?.[0] as RegionId | undefined;
 
     if (regionId) {
@@ -122,6 +126,45 @@ export function calculateRegionalScalingFactors(options: {
 }
 
 /**
+ * Climate adjustment factor for each region: additional energy is consumed in
+ * regions whose climate is more than +/-18F different from St. Louis, MO
+ *
+ * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
+ * Lite" table in the "Library" sheet (D830:D843)
+ */
+export function calculateClimateAdjustmentFactorByRegion(options: {
+  regionAverageTemperatures: RegionAverageTemperatures;
+  percentageAdditionalEnergyConsumedFactor: number;
+}) {
+  const {
+    regionAverageTemperatures,
+    percentageAdditionalEnergyConsumedFactor,
+  } = options;
+
+  const result = Object.entries(regionAverageTemperatures).reduce(
+    (object, [regionKey, regionValue]) => {
+      const regionId = regionKey as RegionId;
+
+      const adjustment =
+        regionValue === 68
+          ? 1
+          : regionValue === 50 || regionValue === 86
+            ? 1 + percentageAdditionalEnergyConsumedFactor
+            : 1 + percentageAdditionalEnergyConsumedFactor / 2;
+
+      object[regionId] = adjustment;
+
+      return object;
+    },
+    {} as {
+      [regionId in RegionId]: number;
+    },
+  );
+
+  return result;
+}
+
+/**
  * Returns regions data for the selected geography.
  */
 export function getSelectedGeographyRegions(options: {
@@ -131,9 +174,11 @@ export function getSelectedGeographyRegions(options: {
   const { regions, selectedGeographyRegionIds } = options;
 
   const result = Object.entries(regions).reduce(
-    (object, [id, regionData]) => {
-      if (selectedGeographyRegionIds.includes(regionData.id)) {
-        object[id as RegionId] = regionData;
+    (object, [regionKey, regionValue]) => {
+      const regionId = regionKey as RegionId;
+
+      if (selectedGeographyRegionIds.includes(regionValue.id)) {
+        object[regionId] = regionValue;
       }
       return object;
     },

@@ -113,9 +113,6 @@ type GeneralVehicleType = (typeof generalVehicleTypes)[number];
 type ExpandedVehicleType = (typeof expandedVehicleTypes)[number];
 type Pollutant = (typeof pollutants)[number];
 
-export type ClimateAdjustmentFactorByRegion = ReturnType<
-  typeof calculateClimateAdjustmentFactorByRegion
->;
 export type VMTTotalsByGeography = ReturnType<
   typeof calculateVMTTotalsByGeography
 >;
@@ -213,45 +210,6 @@ export type SelectedRegionsEEREDefaultsAverages = ReturnType<
 export type EVDeploymentLocationHistoricalEERE = ReturnType<
   typeof calculateEVDeploymentLocationHistoricalEERE
 >;
-
-/**
- * Climate adjustment factor for each region: additional energy is consumed in
- * regions whose climate is more than +/-18F different from St. Louis, MO
- *
- * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
- * Lite" table in the "Library" sheet (D830:D843)
- */
-export function calculateClimateAdjustmentFactorByRegion(options: {
-  regionAverageTemperatures: RegionAverageTemperatures;
-  percentageAdditionalEnergyConsumedFactor: number;
-}) {
-  const {
-    regionAverageTemperatures,
-    percentageAdditionalEnergyConsumedFactor,
-  } = options;
-
-  const result = Object.entries(regionAverageTemperatures).reduce(
-    (object, [regionKey, regionValue]) => {
-      const regionId = regionKey as RegionId;
-
-      const adjustment =
-        regionValue === 68
-          ? 1
-          : regionValue === 50 || regionValue === 86
-            ? 1 + percentageAdditionalEnergyConsumedFactor
-            : 1 + percentageAdditionalEnergyConsumedFactor / 2;
-
-      object[regionId] = adjustment;
-
-      return object;
-    },
-    {} as {
-      [regionId in RegionId]: number;
-    },
-  );
-
-  return result;
-}
 
 /**
  * Accumulated county level VMT data per vehicle type by AVERT region, state,

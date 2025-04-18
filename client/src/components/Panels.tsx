@@ -25,7 +25,7 @@ import { COBRAConnection } from "@/components/COBRAConnection";
 import { DataDownload } from "@/components/DataDownload";
 import { useAppDispatch, useAppSelector } from "@/redux/index";
 import {
-  setCountiesByRegion,
+  setStaticGeographyData,
   selectGeography,
 } from "@/redux/reducers/geography";
 import {
@@ -135,7 +135,7 @@ export function Panels() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setCountiesByRegion());
+    dispatch(setStaticGeographyData());
     dispatch(setVMTData());
     dispatch(setHourlyEVChargingPercentages());
   }, [dispatch]);
