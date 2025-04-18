@@ -76,14 +76,14 @@ const vehicleTypeFuelTypeCombos = [
   "Heavy-duty refuse trucks / Diesel Fuel",
 ] as const;
 
-const abridgedVehicleTypes = [
+const _abridgedVehicleTypes = [
   "cars",
   "trucks",
   "transitBuses",
   "schoolBuses",
 ] as const;
 
-const generalVehicleTypes = [
+const _generalVehicleTypes = [
   "cars",
   "trucks",
   "transitBusesDiesel",
@@ -93,7 +93,7 @@ const generalVehicleTypes = [
 ] as const;
 
 /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-const expandedVehicleTypes = [
+const _expandedVehicleTypes = [
   "batteryEVCars",
   "hybridEVCars",
   "batteryEVTrucks",
@@ -108,9 +108,9 @@ const pollutants = ["CO2", "NOX", "SO2", "PM25", "VOCs", "NH3"] as const;
 
 type VehicleType = (typeof vehicleTypes)[number];
 type VehicleTypeFuelTypeCombo = (typeof vehicleTypeFuelTypeCombos)[number];
-type AbridgedVehicleType = (typeof abridgedVehicleTypes)[number];
-type GeneralVehicleType = (typeof generalVehicleTypes)[number];
-type ExpandedVehicleType = (typeof expandedVehicleTypes)[number];
+type _AbridgedVehicleType = (typeof _abridgedVehicleTypes)[number];
+type _GeneralVehicleType = (typeof _generalVehicleTypes)[number];
+type _ExpandedVehicleType = (typeof _expandedVehicleTypes)[number];
 type Pollutant = (typeof pollutants)[number];
 
 export type VMTTotalsByGeography = ReturnType<
@@ -227,7 +227,7 @@ export function calculateVMTTotalsByGeography(options: {
 }) {
   const { countyFips } = options;
 
-  type VMTPerVehicleType = { [vehicleType in AbridgedVehicleType]: number };
+  type VMTPerVehicleType = { [vehicleType in _AbridgedVehicleType]: number };
 
   const regionIds = Object.values(regions).reduce(
     (object, { id, name }) => {
@@ -259,7 +259,7 @@ export function calculateVMTTotalsByGeography(options: {
         object.counties[stateId] ??= {};
         object.counties[stateId][county] ??= { cars: 0, trucks: 0, transitBuses: 0, schoolBuses: 0 }; // prettier-ignore
 
-        abridgedVehicleTypes.forEach((vehicleType) => {
+        _abridgedVehicleTypes.forEach((vehicleType) => {
           object.regions[regionId].total[vehicleType] += vmtData[vehicleType];
           object.regions[regionId].states[stateId][vehicleType] += vmtData[vehicleType]; // prettier-ignore
           object.states[stateId][vehicleType] += vmtData[vehicleType];
@@ -1735,7 +1735,7 @@ export function _calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
     return {} as {
       [regionId in RegionId]: {
         [month: number]: {
-          [vehicleType in GeneralVehicleType]: number;
+          [vehicleType in _GeneralVehicleType]: number;
         };
       };
     };
@@ -1759,7 +1759,7 @@ export function _calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
           schoolBuses: 0,
         };
 
-        generalVehicleTypes.forEach((vehicleType) => {
+        _generalVehicleTypes.forEach((vehicleType) => {
           /**
            * NOTE: selectedRegionsVMTData's regions's vehicle types are
            * abridged (don't include transit buses broken out by fuel type)
@@ -1781,7 +1781,7 @@ export function _calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
     {} as {
       [regionId in RegionId]: {
         [month: number]: {
-          [vehicleType in GeneralVehicleType]: number;
+          [vehicleType in _GeneralVehicleType]: number;
         };
       };
     },
@@ -2053,7 +2053,7 @@ export function calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
   const result = {} as {
     [regionId in RegionId]: {
       [month: number]: {
-        [vehicleType in ExpandedVehicleType]: number;
+        [vehicleType in _ExpandedVehicleType]: number;
       };
     };
   };
@@ -2387,7 +2387,7 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
   const result = {} as {
     [regionId in RegionId]: {
       [month: number]: {
-        [vehicleType in GeneralVehicleType]: {
+        [vehicleType in _GeneralVehicleType]: {
           [pollutant in Pollutant]: number;
         };
       };
@@ -2415,7 +2415,7 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
 
         result[regionId] ??= {} as {
           [month: number]: {
-            [vehicleType in GeneralVehicleType]: {
+            [vehicleType in _GeneralVehicleType]: {
               [pollutant in Pollutant]: number;
             };
           };
@@ -2430,7 +2430,7 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
           schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
         };
 
-        const generalVehicleType: GeneralVehicleType | null =
+        const generalVehicleType: _GeneralVehicleType | null =
           data.vehicleType === "Passenger Car"
             ? "cars"
             : data.vehicleType === "Passenger Truck"
@@ -2446,7 +2446,7 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
                       ? "schoolBuses"
                       : null; // NOTE: fallback (generalVehicleType should never actually be null)
 
-        const abridgedVehicleType: AbridgedVehicleType | null =
+        const abridgedVehicleType: _AbridgedVehicleType | null =
           data.vehicleType === "Passenger Car"
             ? "cars"
             : data.vehicleType === "Passenger Truck"
@@ -2542,7 +2542,7 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
     return {} as {
       [regionId in RegionId]: {
         [month: number]: {
-          [vehicleType in ExpandedVehicleType]: {
+          [vehicleType in _ExpandedVehicleType]: {
             [pollutant in Pollutant]: number;
           };
         };
@@ -2645,7 +2645,7 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
     {} as {
       [regionId in RegionId]: {
         [month: number]: {
-          [vehicleType in ExpandedVehicleType]: {
+          [vehicleType in _ExpandedVehicleType]: {
             [pollutant in Pollutant]: number;
           };
         };
