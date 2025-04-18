@@ -193,8 +193,8 @@ export type _SelectedRegionsAverageVMTPerYear = ReturnType<
 export type _SelectedRegionsMonthlyVMTPerVehicleType = ReturnType<
   typeof _calculateSelectedRegionsMonthlyVMTPerVehicleType
 >;
-export type SelectedRegionsEVEfficiencyPerVehicleType = ReturnType<
-  typeof calculateSelectedRegionsEVEfficiencyPerVehicleType
+export type _SelectedRegionsEVEfficiencyPerVehicleType = ReturnType<
+  typeof _calculateSelectedRegionsEVEfficiencyPerVehicleType
 >;
 export type DailyStats = ReturnType<typeof calculateDailyStats>;
 export type MonthlyStats = ReturnType<typeof calculateMonthlyStats>;
@@ -1909,7 +1909,7 @@ export function _calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
  * values in the columns to the right for each month, but they're the same
  * value for all months.
  */
-export function calculateSelectedRegionsEVEfficiencyPerVehicleType(options: {
+export function _calculateSelectedRegionsEVEfficiencyPerVehicleType(options: {
   percentageAdditionalEnergyConsumedFactor: number;
   regionAverageTemperatures: RegionAverageTemperatures;
   selectedGeographyRegionIds: RegionId[];
@@ -2199,14 +2199,14 @@ export function calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
   _selectedRegionsMonthlyVMTPerVehicleType:
     | _SelectedRegionsMonthlyVMTPerVehicleType
     | EmptyObject;
-  selectedRegionsEVEfficiencyPerVehicleType:
-    | SelectedRegionsEVEfficiencyPerVehicleType
+  _selectedRegionsEVEfficiencyPerVehicleType:
+    | _SelectedRegionsEVEfficiencyPerVehicleType
     | EmptyObject;
   vehiclesDisplaced: VehiclesDisplaced;
 }) {
   const {
     _selectedRegionsMonthlyVMTPerVehicleType,
-    selectedRegionsEVEfficiencyPerVehicleType,
+    _selectedRegionsEVEfficiencyPerVehicleType,
     vehiclesDisplaced,
   } = options;
 
@@ -2224,8 +2224,8 @@ export function calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
       : null;
 
   const selectedRegionsEfficiencyData =
-    Object.keys(selectedRegionsEVEfficiencyPerVehicleType).length !== 0
-      ? (selectedRegionsEVEfficiencyPerVehicleType as SelectedRegionsEVEfficiencyPerVehicleType)
+    Object.keys(_selectedRegionsEVEfficiencyPerVehicleType).length !== 0
+      ? (_selectedRegionsEVEfficiencyPerVehicleType as _SelectedRegionsEVEfficiencyPerVehicleType)
       : null;
 
   if (!selectedRegionsVMTData || !selectedRegionsEfficiencyData) {

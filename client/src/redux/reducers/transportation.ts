@@ -23,7 +23,7 @@ import {
   type _SelectedRegionsVMTPercentagesPerVehicleType,
   type _SelectedRegionsAverageVMTPerYear,
   type _SelectedRegionsMonthlyVMTPerVehicleType,
-  type SelectedRegionsEVEfficiencyPerVehicleType,
+  type _SelectedRegionsEVEfficiencyPerVehicleType,
   type DailyStats,
   type MonthlyStats,
   type VehiclesDisplaced,
@@ -61,7 +61,7 @@ import {
   _calculateSelectedRegionsVMTPercentagesPerVehicleType,
   _calculateSelectedRegionsAverageVMTPerYear,
   _calculateSelectedRegionsMonthlyVMTPerVehicleType,
-  calculateSelectedRegionsEVEfficiencyPerVehicleType,
+  _calculateSelectedRegionsEVEfficiencyPerVehicleType,
   calculateDailyStats,
   calculateMonthlyStats,
   calculateVehiclesDisplaced,
@@ -275,9 +275,9 @@ type Action =
       };
     }
   | {
-      type: "transportation/SET_SELECTED_REGIONS_EV_EFFICIENCY_PER_VEHICLE_TYPE";
+      type: "transportation/_SET_SELECTED_REGIONS_EV_EFFICIENCY_PER_VEHICLE_TYPE";
       payload: {
-        selectedRegionsEVEfficiencyPerVehicleType: SelectedRegionsEVEfficiencyPerVehicleType;
+        _selectedRegionsEVEfficiencyPerVehicleType: _SelectedRegionsEVEfficiencyPerVehicleType;
       };
     }
   | {
@@ -400,8 +400,8 @@ type State = {
   _selectedRegionsMonthlyVMTPerVehicleType:
     | _SelectedRegionsMonthlyVMTPerVehicleType
     | EmptyObject;
-  selectedRegionsEVEfficiencyPerVehicleType:
-    | SelectedRegionsEVEfficiencyPerVehicleType
+  _selectedRegionsEVEfficiencyPerVehicleType:
+    | _SelectedRegionsEVEfficiencyPerVehicleType
     | EmptyObject;
   dailyStats: DailyStats;
   monthlyStats: MonthlyStats;
@@ -461,7 +461,7 @@ const initialState: State = {
   _selectedRegionsVMTPercentagesPerVehicleType: {},
   _selectedRegionsAverageVMTPerYear: {},
   _selectedRegionsMonthlyVMTPerVehicleType: {},
-  selectedRegionsEVEfficiencyPerVehicleType: {},
+  _selectedRegionsEVEfficiencyPerVehicleType: {},
   dailyStats: {},
   monthlyStats: {},
   vehiclesDisplaced: {
@@ -695,12 +695,12 @@ export default function reducer(
       };
     }
 
-    case "transportation/SET_SELECTED_REGIONS_EV_EFFICIENCY_PER_VEHICLE_TYPE": {
-      const { selectedRegionsEVEfficiencyPerVehicleType } = action.payload;
+    case "transportation/_SET_SELECTED_REGIONS_EV_EFFICIENCY_PER_VEHICLE_TYPE": {
+      const { _selectedRegionsEVEfficiencyPerVehicleType } = action.payload;
 
       return {
         ...state,
-        selectedRegionsEVEfficiencyPerVehicleType,
+        _selectedRegionsEVEfficiencyPerVehicleType,
       };
     }
 
@@ -1097,8 +1097,8 @@ export function setEVEfficiency(): AppThunk {
       regionalScalingFactors,
     ) as RegionId[];
 
-    const selectedRegionsEVEfficiencyPerVehicleType =
-      calculateSelectedRegionsEVEfficiencyPerVehicleType({
+    const _selectedRegionsEVEfficiencyPerVehicleType =
+      _calculateSelectedRegionsEVEfficiencyPerVehicleType({
         percentageAdditionalEnergyConsumedFactor,
         regionAverageTemperatures,
         selectedGeographyRegionIds,
@@ -1113,8 +1113,8 @@ export function setEVEfficiency(): AppThunk {
     });
 
     dispatch({
-      type: "transportation/SET_SELECTED_REGIONS_EV_EFFICIENCY_PER_VEHICLE_TYPE",
-      payload: { selectedRegionsEVEfficiencyPerVehicleType },
+      type: "transportation/_SET_SELECTED_REGIONS_EV_EFFICIENCY_PER_VEHICLE_TYPE",
+      payload: { _selectedRegionsEVEfficiencyPerVehicleType },
     });
 
     dispatch({
@@ -1122,7 +1122,7 @@ export function setEVEfficiency(): AppThunk {
       payload: { selectedRegionsEVEfficiency },
     });
 
-    // NOTE: `monthlyEVEnergyUsageGW` uses `selectedRegionsEVEfficiencyPerVehicleType`
+    // NOTE: `monthlyEVEnergyUsageGW` uses `_selectedRegionsEVEfficiencyPerVehicleType`
     dispatch(setMonthlyEVEnergyUsage());
   };
 }
@@ -1224,14 +1224,14 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
     const { transportation } = getState();
     const {
       _selectedRegionsMonthlyVMTPerVehicleType,
-      selectedRegionsEVEfficiencyPerVehicleType,
+      _selectedRegionsEVEfficiencyPerVehicleType,
       vehiclesDisplaced,
     } = transportation;
 
     const selectedRegionsMonthlyEVEnergyUsageGW =
       calculateSelectedRegionsMonthlyEVEnergyUsageGW({
         _selectedRegionsMonthlyVMTPerVehicleType,
-        selectedRegionsEVEfficiencyPerVehicleType,
+        _selectedRegionsEVEfficiencyPerVehicleType,
         vehiclesDisplaced,
       });
 
