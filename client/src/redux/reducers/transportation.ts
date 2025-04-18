@@ -1,6 +1,7 @@
 import { type AppThunk } from "@/redux/index";
 import { getSelectedGeographyRegions } from "@/calculations/geography";
 import {
+  type ClimateAdjustmentFactorByRegion,
   type VMTTotalsByGeography,
   type VMTBillionsAndPercentages,
   type StateVMTPercentagesByRegion,
@@ -38,6 +39,7 @@ import {
   type VehicleSalesAndStock,
   type SelectedRegionsEEREDefaultsAverages,
   type EVDeploymentLocationHistoricalEERE,
+  calculateClimateAdjustmentFactorByRegion,
   calculateVMTTotalsByGeography,
   calculateVMTBillionsAndPercentages,
   calculateStateVMTPercentagesByRegion,
@@ -81,6 +83,8 @@ import {
   type CountyFIPS,
   type MOVESEmissionRates,
   type RegionId,
+  percentageAdditionalEnergyConsumedFactor,
+  regionAverageTemperatures,
 } from "@/config";
 /**
  * Excel: "CountyFIPS" sheet.
@@ -122,11 +126,6 @@ import evChargingProfiles from "@/data/ev-charging-profiles-hourly-data.json";
  */
 import evEfficiencyByModelYear from "@/data/ev-efficiency-by-model-year.json";
 /**
- * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
- * Lite" table in the "Library" sheet (B432:C445)
- */
-import regionAverageTemperatures from "@/data/region-average-temperature.json";
-/**
  * Excel: "Table 11: LDV Sales and Stock" table in the "Library" sheet
  * (B485:C535).
  */
@@ -153,6 +152,12 @@ import stateEereAverages from "@/data/state-eere-averages.json";
 const movesEmissionRates = movesEmissionRatesData as MOVESEmissionRates;
 
 type Action =
+  | {
+      type: "transportation/SET_CLIMATE_ADJUSTMENT_FACTOR_BY_REGION";
+      payload: {
+        climateAdjustmentFactorByRegion: ClimateAdjustmentFactorByRegion;
+      };
+    }
   | {
       type: "transportation/SET_VMT_TOTALS_BY_GEOGRAPHY";
       payload: { vmtTotalsByGeography: VMTTotalsByGeography };
@@ -359,6 +364,9 @@ type Action =
     };
 
 type State = {
+  climateAdjustmentFactorByRegion:
+    | ClimateAdjustmentFactorByRegion
+    | EmptyObject;
   vmtTotalsByGeography: VMTTotalsByGeography | EmptyObject;
   vmtBillionsAndPercentages: VMTBillionsAndPercentages | EmptyObject;
   stateVMTPercentagesByRegion: StateVMTPercentagesByRegion | EmptyObject;
@@ -433,6 +441,7 @@ type State = {
 };
 
 const initialState: State = {
+  climateAdjustmentFactorByRegion: {},
   vmtTotalsByGeography: {},
   vmtBillionsAndPercentages: {},
   stateVMTPercentagesByRegion: {},
@@ -490,6 +499,15 @@ export default function reducer(
   action: Action,
 ): State {
   switch (action.type) {
+    case "transportation/SET_CLIMATE_ADJUSTMENT_FACTOR_BY_REGION": {
+      const { climateAdjustmentFactorByRegion } = action.payload;
+
+      return {
+        ...state,
+        climateAdjustmentFactorByRegion,
+      };
+    }
+
     case "transportation/SET_VMT_TOTALS_BY_GEOGRAPHY": {
       const { vmtTotalsByGeography } = action.payload;
 
@@ -834,6 +852,12 @@ export default function reducer(
  */
 export function setVMTData(): AppThunk {
   return (dispatch) => {
+    const climateAdjustmentFactorByRegion =
+      calculateClimateAdjustmentFactorByRegion({
+        regionAverageTemperatures,
+        percentageAdditionalEnergyConsumedFactor,
+      });
+
     const vmtTotalsByGeography = calculateVMTTotalsByGeography({ countyFips });
 
     const vmtBillionsAndPercentages = calculateVMTBillionsAndPercentages({
@@ -884,6 +908,11 @@ export function setVMTData(): AppThunk {
     const vmtPerVehicleTypeByState = calculateVMTPerVehicleTypeByState({
       vmtAndStockByState,
       ldvsFhwaMovesVMTRatioByState,
+    });
+
+    dispatch({
+      type: "transportation/SET_CLIMATE_ADJUSTMENT_FACTOR_BY_REGION",
+      payload: { climateAdjustmentFactorByRegion },
     });
 
     dispatch({
@@ -1082,8 +1111,9 @@ export function setEVEfficiency(): AppThunk {
 
     const selectedRegionsEVEfficiencyPerVehicleType =
       calculateSelectedRegionsEVEfficiencyPerVehicleType({
-        evEfficiencyByModelYear,
+        percentageAdditionalEnergyConsumedFactor,
         regionAverageTemperatures,
+        evEfficiencyByModelYear,
         selectedGeographyRegionIds,
         evModelYear,
       });

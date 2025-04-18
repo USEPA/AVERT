@@ -25,11 +25,6 @@ import evChargingProfiles from "@/data/ev-charging-profiles-hourly-data.json";
  */
 import evEfficiencyByModelYear from "@/data/ev-efficiency-by-model-year.json";
 /**
- * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
- * Lite" table in the "Library" sheet (B432:C445)
- */
-import regionAverageTemperatures from "@/data/region-average-temperature.json";
-/**
  * Excel: "Table 11: LDV Sales and Stock" table in the "Library" sheet
  * (B485:C535).
  */
@@ -187,9 +182,32 @@ export const percentageHybridEVMilesDrivenOnElectricity = 8000 / 13500;
  * St. Louis, MO
  *
  * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
- * Lite" table in the "Library" sheet (F428)
+ * Lite" table in the "Library" sheet (D827)
  */
 export const percentageAdditionalEnergyConsumedFactor = 0.0766194804959222;
+
+/**
+ * Average temperatures for each region
+ *
+ * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
+ * Lite" table in the "Library" sheet (B432:C445)
+ */
+export const regionAverageTemperatures = {
+  CA: 68,
+  NCSC: 68,
+  CENT: 50 / 68,
+  FL: 68 / 86,
+  MIDA: 50,
+  MIDW: 50 / 68,
+  NE: 50,
+  NY: 50,
+  NW: 50 / 68,
+  RM: 50,
+  SE: 68,
+  SW: 68,
+  TN: 68,
+  TE: 68,
+};
 
 /**
  * Ratio of typical weekend energy consumption as a share of typical weekday
