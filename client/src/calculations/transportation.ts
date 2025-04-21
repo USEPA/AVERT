@@ -208,8 +208,8 @@ export type SelectedRegionsMonthlyEVEnergyUsageMW = ReturnType<
 export type SelectedRegionsMonthlyDailyEVEnergyUsage = ReturnType<
   typeof calculateSelectedRegionsMonthlyDailyEVEnergyUsage
 >;
-export type SelectedRegionsMonthlyEmissionRates = ReturnType<
-  typeof calculateSelectedRegionsMonthlyEmissionRates
+export type _SelectedRegionsMonthlyEmissionRates = ReturnType<
+  typeof _calculateSelectedRegionsMonthlyEmissionRates
 >;
 export type SelectedRegionsMonthlyEmissionChanges = ReturnType<
   typeof calculateSelectedRegionsMonthlyEmissionChanges
@@ -2527,7 +2527,7 @@ export function calculateSelectedRegionsMonthlyDailyEVEnergyUsage(options: {
  * Excel: "Table 7: Emission rates of various vehicle types" table in the
  * "Library" sheet (G253:R288).
  */
-export function calculateSelectedRegionsMonthlyEmissionRates(options: {
+export function _calculateSelectedRegionsMonthlyEmissionRates(options: {
   movesEmissionRates: MOVESEmissionRates;
   _selectedRegionsStatesVMTPercentages:
     | _SelectedRegionsStatesVMTPercentages
@@ -2670,8 +2670,8 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
     | _SelectedRegionsMonthlyVMTPerVehicleType
     | EmptyObject;
   vehiclesDisplaced: VehiclesDisplaced;
-  selectedRegionsMonthlyEmissionRates:
-    | SelectedRegionsMonthlyEmissionRates
+  _selectedRegionsMonthlyEmissionRates:
+    | _SelectedRegionsMonthlyEmissionRates
     | EmptyObject;
 }) {
   const {
@@ -2680,7 +2680,7 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
     selectedStateId,
     _selectedRegionsMonthlyVMTPerVehicleType,
     vehiclesDisplaced,
-    selectedRegionsMonthlyEmissionRates,
+    _selectedRegionsMonthlyEmissionRates,
   } = options;
 
   const stateVMTPercentages =
@@ -2694,8 +2694,8 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
       : null;
 
   const selectedRegionsRatesData =
-    Object.keys(selectedRegionsMonthlyEmissionRates).length !== 0
-      ? (selectedRegionsMonthlyEmissionRates as SelectedRegionsMonthlyEmissionRates)
+    Object.keys(_selectedRegionsMonthlyEmissionRates).length !== 0
+      ? (_selectedRegionsMonthlyEmissionRates as _SelectedRegionsMonthlyEmissionRates)
       : null;
 
   if (!selectedRegionsVMTData || !selectedRegionsRatesData) {
@@ -3178,7 +3178,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
  * vehicle sales and stock" table in the "Library" sheet (C457:I474).
  */
 export function calculateVehicleSalesAndStock(options: {
-  countyFips: CountyFips;
+  countyFips: CountyFIPS;
   stateLDVsSales: StateLDVsSales;
   stateBusSalesAndStock: StateBusSalesAndStock;
   geographicFocus: GeographicFocus;
