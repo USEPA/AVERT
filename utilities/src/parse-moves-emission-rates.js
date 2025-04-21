@@ -2,7 +2,7 @@ import { dirname, resolve } from "node:path";
 import { exit } from "node:process";
 import { fileURLToPath } from "node:url";
 
-import { XLSX, getExcelWorksheet, parseExcelArraysData } from "./excel.js";
+import { XLSX, getExcelWorksheet, parseExcelDoubleHeaderRowsData } from "./excel.js";
 import { renameObjectKeys, storeJsonData } from "./json.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -43,7 +43,7 @@ function parseMOVESEmissionRatesWorksheet(worksheet) {
   const dataRows = json.slice(2); // Remaining rows of data: all 26 columns
 
   /** Create an array of objects with field names from header rows */
-  const result = parseExcelArraysData(headerRow1, headerRow2, dataRows);
+  const result = parseExcelDoubleHeaderRowsData(headerRow1, headerRow2, dataRows);
 
   return result;
 }

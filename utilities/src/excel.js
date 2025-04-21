@@ -41,7 +41,7 @@ export function getExcelWorksheet(filename, sheetName) {
  * @param {string[]} headerRow2 row of header field names for all columns
  * @param {string[][]} dataRows rows of data for all columns
  */
-export function parseExcelArraysData(headerRow1, headerRow2, dataRows) {
+export function parseExcelDoubleHeaderRowsData(headerRow1, headerRow2, dataRows) {
   /** Loop over each row of data and build up an array of objects. */
   const result = dataRows.reduce((array, row) => {
     /** Skip empty rows of data. */
