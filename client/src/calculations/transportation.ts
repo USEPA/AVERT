@@ -14,6 +14,7 @@ import {
   type MOVESEmissionRates,
   type StateLevelVMT,
   type FHWALDVStateLevelVMT,
+  type PM25BreakwearTirewearEVICERatios,
   type VMTAllocationAndRegisteredVehicles,
   type EVChargingProfiles,
   type EVEfficiencyAssumptions,
@@ -75,6 +76,23 @@ const vehicleTypeFuelTypeCombos = [
   "Combination long-haul trucks / Diesel Fuel",
   "Medium-duty refuse trucks / Diesel Fuel",
   "Heavy-duty refuse trucks / Diesel Fuel",
+] as const;
+
+const vehicleTypeEVFuelTypeCombos = [
+  "Passenger cars / Electricity",
+  "Passenger trucks / Electricity",
+  "Medium-duty transit buses / Electricity",
+  "Heavy-duty transit buses / Electricity",
+  "Medium-duty school buses / Electricity",
+  "Heavy-duty school buses / Electricity",
+  "Medium-duty other buses / Electricity",
+  "Heavy-duty other buses / Electricity",
+  "Light-duty single unit trucks / Electricity",
+  "Medium-duty single unit trucks / Electricity",
+  "Heavy-duty combination trucks / Electricity",
+  "Combination long-haul trucks / Electricity",
+  "Medium-duty refuse trucks / Electricity",
+  "Heavy-duty refuse trucks / Electricity",
 ] as const;
 
 /** vehicle types with passenger cars and trucks broken out into BEV and PHEV */
@@ -141,6 +159,7 @@ const pollutants = ["CO2", "NOX", "SO2", "PM25", "VOCs", "NH3"] as const;
 
 type VehicleType = (typeof vehicleTypes)[number];
 type VehicleTypeFuelTypeCombo = (typeof vehicleTypeFuelTypeCombos)[number];
+type VehicleTypeEVFuelTypeCombo = (typeof vehicleTypeEVFuelTypeCombos)[number];
 type ExpandedVehicleType = (typeof expandedVehicleTypes)[number];
 type MovesPollutant = (typeof movesPollutants)[number];
 type _AbridgedVehicleType = (typeof _abridgedVehicleTypes)[number];
@@ -193,6 +212,9 @@ export type SelectedRegionsEVEfficiency = ReturnType<
 >;
 export type SelectedRegionsMonthlyEmissionRates = ReturnType<
   typeof calculateSelectedRegionsMonthlyEmissionRates
+>;
+export type SelectedRegionsMonthlyElectricityPM25EmissionRates = ReturnType<
+  typeof calculateSelectedRegionsMonthlyElectricityPM25EmissionRates
 >;
 export type HourlyEVChargingPercentages = ReturnType<
   typeof calculateHourlyEVChargingPercentages
@@ -1585,11 +1607,12 @@ export function calculateSelectedRegionsEVEfficiency(options: {
 }
 
 /**
- * Selected AVERT region's monthly emission rates for each vehicle type.
+ * Selected AVERT region's monthly emission rates for each vehicle type / fuel
+ * type combo.
  *
  * Excel: "Table 7: Emission rates of vehicle types" table in the "Library"
- * sheet (G320:R537, excluding rows 445–496, which are PM2.5 electricity values
- * and total PM2.5 values for each vehicle type).
+ * sheet (G320:R537, excluding rows 446–495, which are PM2.5 electricity values
+ * and total PM2.5 values for each vehicle type / fuel type combo).
  */
 export function calculateSelectedRegionsMonthlyEmissionRates(options: {
   selectedRegionsVMTPercentagesByState:
@@ -1712,6 +1735,111 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
         [month: number]: {
           [vehicleFuelCombo in VehicleTypeFuelTypeCombo]: {
             [movesPollutant in MovesPollutant]: number;
+          };
+        };
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Selected AVERT region's monthly electricity PM2.5 emission rates for each
+ * vehicle type / electricity fuel type combo.
+ *
+ * Excel: "Table 7: Emission rates of vehicle types" table in the "Library"
+ * sheet (G446:R474).
+ */
+export function calculateSelectedRegionsMonthlyElectricityPM25EmissionRates(options: {
+  selectedRegionsMonthlyEmissionRates: SelectedRegionsMonthlyEmissionRates;
+  pm25BreakwearTirewearEVICERatios: PM25BreakwearTirewearEVICERatios;
+  evModelYear: string;
+}) {
+  const {
+    selectedRegionsMonthlyEmissionRates,
+    pm25BreakwearTirewearEVICERatios,
+    evModelYear,
+  } = options;
+
+  if (Object.keys(selectedRegionsMonthlyEmissionRates).length === 0) {
+    return {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          [vehicleEVFuelCombo in VehicleTypeEVFuelTypeCombo]: {
+            pm25Brakeware: number;
+            pm25Tirewear: number;
+          };
+        };
+      };
+    };
+  }
+
+  const result = Object.entries(selectedRegionsMonthlyEmissionRates).reduce(
+    (object, [regionKey, regionValue]) => {
+      const regionId = regionKey as RegionId;
+
+      object[regionId] ??= {} as {
+        [month: number]: {
+          [vehicleEVFuelCombo in VehicleTypeEVFuelTypeCombo]: {
+            pm25Brakeware: number;
+            pm25Tirewear: number;
+          };
+        };
+      };
+
+      Object.entries(regionValue).forEach(([monthKey, monthValue]) => {
+        const month = Number(monthKey);
+
+        object[regionId][month] ??= {} as {
+          [vehicleEVFuelCombo in VehicleTypeEVFuelTypeCombo]: {
+            pm25Brakeware: number;
+            pm25Tirewear: number;
+          };
+        };
+
+        Object.entries(monthValue).forEach(
+          ([vehicleFuelComboKey, vehicleFuelComboValue]) => {
+            const [vehicleType, fuelType] = vehicleFuelComboKey.split(" / ");
+            const vehicleEVFuelCombo = `${vehicleType} / Electricity` as VehicleTypeEVFuelTypeCombo; // prettier-ignore
+
+            object[regionId][month][vehicleEVFuelCombo] = {
+              pm25Brakeware: 0,
+              pm25Tirewear: 0,
+            };
+
+            const ratios = pm25BreakwearTirewearEVICERatios.find((data) => {
+              return (
+                evModelYear === data["Year"].toString() &&
+                vehicleType === data["Vehicle Type"] &&
+                fuelType === data["Fuel Type"]
+              );
+            });
+
+            if (ratios) {
+              const brakewear = ratios["Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio"]; // prettier-ignore
+              const tirewear = ratios["Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio"]; // prettier-ignore
+
+              const brakewearRatio = typeof brakewear === "number" ? brakewear : 0; // prettier-ignore
+              const tirewearRatio = typeof tirewear === "number" ? tirewear : 0;
+
+              object[regionId][month][vehicleEVFuelCombo] = {
+                pm25Brakeware: -1 * vehicleFuelComboValue.pm25Brakewear * brakewearRatio, // prettier-ignore
+                pm25Tirewear: -1 * vehicleFuelComboValue.pm25Tirewear * tirewearRatio, // prettier-ignore
+              };
+            }
+          },
+        );
+      });
+
+      return object;
+    },
+    {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          [vehicleEVFuelCombo in VehicleTypeEVFuelTypeCombo]: {
+            pm25Brakeware: number;
+            pm25Tirewear: number;
           };
         };
       };

@@ -19,6 +19,7 @@ import {
   type SelectedRegionsMonthlyVMT,
   type SelectedRegionsEVEfficiency,
   type SelectedRegionsMonthlyEmissionRates,
+  type SelectedRegionsMonthlyElectricityPM25EmissionRates,
   type HourlyEVChargingPercentages,
   type _SelectedRegionsStatesVMTPercentages,
   type _SelectedRegionsVMTPercentagesPerVehicleType,
@@ -58,6 +59,7 @@ import {
   calculateSelectedRegionsMonthlyVMT,
   calculateSelectedRegionsEVEfficiency,
   calculateSelectedRegionsMonthlyEmissionRates,
+  calculateSelectedRegionsMonthlyElectricityPM25EmissionRates,
   calculateHourlyEVChargingPercentages,
   _calculateSelectedRegionsStatesVMTPercentages,
   _calculateSelectedRegionsVMTPercentagesPerVehicleType,
@@ -102,6 +104,11 @@ import stateLevelVMT from "@/data/state-level-vmt.json";
  * (O6:P57).
  */
 import fhwaLDVStateLevelVMT from "@/data/fhwa-ldv-state-level-vmt.json";
+/**
+ * Excel: "Table 13: First-Year ICE to EV PM2.5 brakewear and tirewear emissions
+ * rate conversion factors" table in the "Library" sheet (B990:G1130).
+ */
+import pm25BreakwearTirewearEVICERatios from "@/data/pm25-breakwear-tirewear-ev-ice-ratios.json";
 
 /**
  * Work around due to TypeScript inability to infer types from large JSON files.
@@ -255,6 +262,12 @@ type Action =
       };
     }
   | {
+      type: "transportation/SET_SELECTED_REGIONS_MONTHLY_ELECTRICITY_PM25_EMISSION_RATES";
+      payload: {
+        selectedRegionsMonthlyElectricityPM25EmissionRates: SelectedRegionsMonthlyElectricityPM25EmissionRates;
+      };
+    }
+  | {
       type: "transportation/SET_HOURLY_EV_CHARGING_PERCENTAGES";
       payload: { hourlyEVChargingPercentages: HourlyEVChargingPercentages };
     }
@@ -398,6 +411,9 @@ type State = {
   selectedRegionsMonthlyEmissionRates:
     | SelectedRegionsMonthlyEmissionRates
     | EmptyObject;
+  selectedRegionsMonthlyElectricityPM25EmissionRates:
+    | SelectedRegionsMonthlyElectricityPM25EmissionRates
+    | EmptyObject;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
   _selectedRegionsStatesVMTPercentages:
     | _SelectedRegionsStatesVMTPercentages
@@ -468,6 +484,7 @@ const initialState: State = {
   selectedRegionsMonthlyVMT: {},
   selectedRegionsEVEfficiency: {},
   selectedRegionsMonthlyEmissionRates: {},
+  selectedRegionsMonthlyElectricityPM25EmissionRates: {},
   hourlyEVChargingPercentages: {},
   _selectedRegionsStatesVMTPercentages: {},
   _selectedRegionsVMTPercentagesPerVehicleType: {},
@@ -668,6 +685,16 @@ export default function reducer(
       return {
         ...state,
         selectedRegionsMonthlyEmissionRates,
+      };
+    }
+
+    case "transportation/SET_SELECTED_REGIONS_MONTHLY_ELECTRICITY_PM25_EMISSION_RATES": {
+      const { selectedRegionsMonthlyElectricityPM25EmissionRates } =
+        action.payload;
+
+      return {
+        ...state,
+        selectedRegionsMonthlyElectricityPM25EmissionRates,
       };
     }
 
@@ -1358,6 +1385,13 @@ export function setMonthlyEmissionRates(): AppThunk {
         iceReplacementVehicle,
       });
 
+    const selectedRegionsMonthlyElectricityPM25EmissionRates =
+      calculateSelectedRegionsMonthlyElectricityPM25EmissionRates({
+        selectedRegionsMonthlyEmissionRates,
+        pm25BreakwearTirewearEVICERatios,
+        evModelYear,
+      });
+
     const _selectedRegionsMonthlyEmissionRates =
       _calculateSelectedRegionsMonthlyEmissionRates({
         movesEmissionRates,
@@ -1380,6 +1414,11 @@ export function setMonthlyEmissionRates(): AppThunk {
     dispatch({
       type: "transportation/SET_SELECTED_REGIONS_MONTHLY_EMISSION_RATES",
       payload: { selectedRegionsMonthlyEmissionRates },
+    });
+
+    dispatch({
+      type: "transportation/SET_SELECTED_REGIONS_MONTHLY_ELECTRICITY_PM25_EMISSION_RATES",
+      payload: { selectedRegionsMonthlyElectricityPM25EmissionRates },
     });
 
     dispatch({

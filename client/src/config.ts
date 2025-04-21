@@ -9,6 +9,11 @@ import stateLevelVMT from "@/data/state-level-vmt.json";
  */
 import fhwaLDVStateLevelVMT from "@/data/fhwa-ldv-state-level-vmt.json";
 /**
+ * Excel: "Table 13: First-Year ICE to EV PM2.5 brakewear and tirewear emissions
+ * rate conversion factors" table in the "Library" sheet (B990:G1130).
+ */
+import pm25BreakwearTirewearEVICERatios from "@/data/pm25-breakwear-tirewear-ev-ice-ratios.json";
+/**
  * Excel: Second table in the "RegionStateAllocate" sheet (B118:E167)
  */
 import vmtAllocationAndRegisteredVehicles from "@/data/vmt-allocation-and-registered-vehicles.json";
@@ -153,6 +158,9 @@ export type MOVESEmissionRates = {
 export type StateLevelVMT = typeof stateLevelVMT;
 
 export type FHWALDVStateLevelVMT = typeof fhwaLDVStateLevelVMT;
+
+export type PM25BreakwearTirewearEVICERatios =
+  typeof pm25BreakwearTirewearEVICERatios;
 
 export type VMTAllocationAndRegisteredVehicles =
   typeof vmtAllocationAndRegisteredVehicles;
