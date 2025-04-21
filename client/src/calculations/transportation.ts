@@ -97,6 +97,18 @@ const expandedVehicleTypes = [
   "Heavy-duty refuse trucks",
 ] as const;
 
+/** pollutants with PM2.5 broken out into exhaust, breakwear, and tirewear */
+const movesPollutants = [
+  "co2",
+  "nox",
+  "so2",
+  "pm25Exhaust",
+  "pm25Brakewear",
+  "pm25Tirewear",
+  "vocs",
+  "nh3",
+] as const;
+
 const _abridgedVehicleTypes = [
   "cars",
   "trucks",
@@ -130,6 +142,7 @@ const pollutants = ["CO2", "NOX", "SO2", "PM25", "VOCs", "NH3"] as const;
 type VehicleType = (typeof vehicleTypes)[number];
 type VehicleTypeFuelTypeCombo = (typeof vehicleTypeFuelTypeCombos)[number];
 type ExpandedVehicleType = (typeof expandedVehicleTypes)[number];
+type MovesPollutant = (typeof movesPollutants)[number];
 type _AbridgedVehicleType = (typeof _abridgedVehicleTypes)[number];
 type _GeneralVehicleType = (typeof _generalVehicleTypes)[number];
 type _ExpandedVehicleType = (typeof _expandedVehicleTypes)[number];
@@ -177,6 +190,9 @@ export type SelectedRegionsMonthlyVMT = ReturnType<
 >;
 export type SelectedRegionsEVEfficiency = ReturnType<
   typeof calculateSelectedRegionsEVEfficiency
+>;
+export type SelectedRegionsMonthlyEmissionRates = ReturnType<
+  typeof calculateSelectedRegionsMonthlyEmissionRates
 >;
 export type HourlyEVChargingPercentages = ReturnType<
   typeof calculateHourlyEVChargingPercentages
@@ -1561,6 +1577,143 @@ export function calculateSelectedRegionsEVEfficiency(options: {
     {} as {
       [regionId in RegionId]: {
         [expandedVehicleType in ExpandedVehicleType]: number;
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Selected AVERT region's monthly emission rates for each vehicle type.
+ *
+ * Excel: "Table 7: Emission rates of vehicle types" table in the "Library"
+ * sheet (G320:R537, excluding rows 445–496, which are PM2.5 electricity values
+ * and total PM2.5 values for each vehicle type).
+ */
+export function calculateSelectedRegionsMonthlyEmissionRates(options: {
+  selectedRegionsVMTPercentagesByState:
+    | SelectedRegionsVMTPercentagesByState
+    | EmptyObject;
+  movesEmissionRates: MOVESEmissionRates;
+  evDeploymentLocation: string;
+  evModelYear: string;
+  iceReplacementVehicle: string;
+}) {
+  const {
+    selectedRegionsVMTPercentagesByState,
+    movesEmissionRates,
+    evDeploymentLocation,
+    evModelYear,
+    iceReplacementVehicle,
+  } = options;
+
+  if (Object.keys(selectedRegionsVMTPercentagesByState).length === 0) {
+    return {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          [vehicleFuelCombo in VehicleTypeFuelTypeCombo]: {
+            [movesPollutant in MovesPollutant]: number;
+          };
+        };
+      };
+    };
+  }
+
+  const deploymentLocationIsRegion = evDeploymentLocation.startsWith("region-");
+  const deploymentLocationIsState = evDeploymentLocation.startsWith("state-");
+  const deploymentLocationStateId = evDeploymentLocation.replace("state-", "") as StateId; // prettier-ignore
+
+  const result = movesEmissionRates.reduce(
+    (object, data) => {
+      const { year, state, vehicleType, fuelType, firstYear, fleetAverage } =
+        data;
+
+      if (evModelYear !== year.toString()) {
+        return object;
+      }
+
+      const month = Number(data.month);
+
+      const vehicleFuelCombo =
+        `${vehicleType} / ${fuelType}` as VehicleTypeFuelTypeCombo;
+
+      Object.entries(selectedRegionsVMTPercentagesByState).forEach(
+        ([vmtPercentagesRegionKey, vmtPercentagesRegionValue]) => {
+          const regionId = vmtPercentagesRegionKey as RegionId;
+
+          const stateVMTPercentages =
+            state in vmtPercentagesRegionValue
+              ? vmtPercentagesRegionValue[state as StateId]
+              : null;
+
+          const movesRegionalWeight =
+            stateVMTPercentages && vehicleType in stateVMTPercentages
+              ? stateVMTPercentages[vehicleType as VehicleType]
+              : 0;
+
+          object[regionId] ??= {} as {
+            [month: number]: {
+              [vehicleFuelCombo in VehicleTypeFuelTypeCombo]: {
+                [movesPollutant in MovesPollutant]: number;
+              };
+            };
+          };
+
+          object[regionId][month] ??= {} as {
+            [vehicleFuelCombo in VehicleTypeFuelTypeCombo]: {
+              [movesPollutant in MovesPollutant]: number;
+            };
+          };
+
+          object[regionId][month][vehicleFuelCombo] ??= {
+            co2: 0,
+            nox: 0,
+            so2: 0,
+            pm25Exhaust: 0,
+            pm25Brakewear: 0,
+            pm25Tirewear: 0,
+            vocs: 0,
+            nh3: 0,
+          };
+
+          if (
+            deploymentLocationIsRegion ||
+            (deploymentLocationIsState && deploymentLocationStateId === state)
+          ) {
+            for (const key in object[regionId][month][vehicleFuelCombo]) {
+              const movesPollutant = key as MovesPollutant;
+
+              const movesPollutantValue =
+                iceReplacementVehicle === "new"
+                  ? firstYear?.[movesPollutant] || 0
+                  : fleetAverage?.[movesPollutant] || 0;
+
+              /**
+               * If the EV deployment location is an AVERT region, the MOVES
+               * pollutant value needs to be multiplied by the MOVES "Regional
+               * Weight" for the state and vehicle type.
+               */
+              const emissionRate = deploymentLocationIsRegion
+                ? movesPollutantValue * movesRegionalWeight
+                : movesPollutantValue;
+
+              object[regionId][month][vehicleFuelCombo][movesPollutant] +=
+                emissionRate;
+            }
+          }
+        },
+      );
+
+      return object;
+    },
+    {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          [vehicleFuelCombo in VehicleTypeFuelTypeCombo]: {
+            [movesPollutant in MovesPollutant]: number;
+          };
+        };
       };
     },
   );
