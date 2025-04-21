@@ -1,0 +1,1122 @@
+[
+  {
+    "Year": 2024,
+    "Vehicle Category": "Long-haul trucks",
+    "Vehicle Type": "Combination long-haul trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": "NA",
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": "NA"
+  },
+  {
+    "Year": 2025,
+    "Vehicle Category": "Long-haul trucks",
+    "Vehicle Type": "Combination long-haul trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": "NA",
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": "NA"
+  },
+  {
+    "Year": 2026,
+    "Vehicle Category": "Long-haul trucks",
+    "Vehicle Type": "Combination long-haul trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": "NA",
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": "NA"
+  },
+  {
+    "Year": 2027,
+    "Vehicle Category": "Long-haul trucks",
+    "Vehicle Type": "Combination long-haul trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": "NA",
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": "NA"
+  },
+  {
+    "Year": 2028,
+    "Vehicle Category": "Long-haul trucks",
+    "Vehicle Type": "Combination long-haul trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": "NA",
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": "NA"
+  },
+  {
+    "Year": 2029,
+    "Vehicle Category": "Long-haul trucks",
+    "Vehicle Type": "Combination long-haul trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": "NA",
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": "NA"
+  },
+  {
+    "Year": 2030,
+    "Vehicle Category": "Long-haul trucks",
+    "Vehicle Type": "Combination long-haul trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2404,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0001
+  },
+  {
+    "Year": 2024,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Heavy-duty other buses",
+    "Fuel Type": "Compressed Natural Gas (CNG)",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": "NA",
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": "NA"
+  },
+  {
+    "Year": 2025,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Heavy-duty other buses",
+    "Fuel Type": "Compressed Natural Gas (CNG)",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": "NA",
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": "NA"
+  },
+  {
+    "Year": 2026,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Heavy-duty other buses",
+    "Fuel Type": "Compressed Natural Gas (CNG)",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": "NA",
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": "NA"
+  },
+  {
+    "Year": 2027,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Heavy-duty other buses",
+    "Fuel Type": "Compressed Natural Gas (CNG)",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": "NA",
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": "NA"
+  },
+  {
+    "Year": 2028,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Heavy-duty other buses",
+    "Fuel Type": "Compressed Natural Gas (CNG)",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": "NA",
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": "NA"
+  },
+  {
+    "Year": 2029,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Heavy-duty other buses",
+    "Fuel Type": "Compressed Natural Gas (CNG)",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": "NA",
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": "NA"
+  },
+  {
+    "Year": 2030,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Heavy-duty other buses",
+    "Fuel Type": "Compressed Natural Gas (CNG)",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.8613
+  },
+  {
+    "Year": 2024,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Heavy-duty other buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": "NA",
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": "NA"
+  },
+  {
+    "Year": 2025,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Heavy-duty other buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": "NA",
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": "NA"
+  },
+  {
+    "Year": 2026,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Heavy-duty other buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": "NA",
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": "NA"
+  },
+  {
+    "Year": 2027,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Heavy-duty other buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": "NA",
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": "NA"
+  },
+  {
+    "Year": 2028,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Heavy-duty other buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": "NA",
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": "NA"
+  },
+  {
+    "Year": 2029,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Heavy-duty other buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": "NA",
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": "NA"
+  },
+  {
+    "Year": 2030,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Heavy-duty other buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2024,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Medium-duty other buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.0931,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.8742
+  },
+  {
+    "Year": 2025,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Medium-duty other buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.0973,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.8778
+  },
+  {
+    "Year": 2026,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Medium-duty other buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.0982,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.8785
+  },
+  {
+    "Year": 2027,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Medium-duty other buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.0985,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.8791
+  },
+  {
+    "Year": 2028,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Medium-duty other buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.0945,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.8756
+  },
+  {
+    "Year": 2029,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Medium-duty other buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.0913,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.8729
+  },
+  {
+    "Year": 2030,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Medium-duty other buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.0889,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.8709
+  },
+  {
+    "Year": 2024,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Medium-duty other buses",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2918,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0163
+  },
+  {
+    "Year": 2025,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Medium-duty other buses",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.3049,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0205
+  },
+  {
+    "Year": 2026,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Medium-duty other buses",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.3074,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0213
+  },
+  {
+    "Year": 2027,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Medium-duty other buses",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.3099,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0219
+  },
+  {
+    "Year": 2028,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Medium-duty other buses",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2971,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0179
+  },
+  {
+    "Year": 2029,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Medium-duty other buses",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2869,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0147
+  },
+  {
+    "Year": 2030,
+    "Vehicle Category": "Other buses",
+    "Vehicle Type": "Medium-duty other buses",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2796,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0124
+  },
+  {
+    "Year": 2024,
+    "Vehicle Category": "Passenger cars",
+    "Vehicle Type": "Passenger cars",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2874,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2025,
+    "Vehicle Category": "Passenger cars",
+    "Vehicle Type": "Passenger cars",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2874,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2026,
+    "Vehicle Category": "Passenger cars",
+    "Vehicle Type": "Passenger cars",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2874,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2027,
+    "Vehicle Category": "Passenger cars",
+    "Vehicle Type": "Passenger cars",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2874,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2028,
+    "Vehicle Category": "Passenger cars",
+    "Vehicle Type": "Passenger cars",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2874,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2029,
+    "Vehicle Category": "Passenger cars",
+    "Vehicle Type": "Passenger cars",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2874,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2030,
+    "Vehicle Category": "Passenger cars",
+    "Vehicle Type": "Passenger cars",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2874,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2024,
+    "Vehicle Category": "Passenger trucks",
+    "Vehicle Type": "Passenger trucks",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2911,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9935
+  },
+  {
+    "Year": 2025,
+    "Vehicle Category": "Passenger trucks",
+    "Vehicle Type": "Passenger trucks",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2916,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9943
+  },
+  {
+    "Year": 2026,
+    "Vehicle Category": "Passenger trucks",
+    "Vehicle Type": "Passenger trucks",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2912,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9939
+  },
+  {
+    "Year": 2027,
+    "Vehicle Category": "Passenger trucks",
+    "Vehicle Type": "Passenger trucks",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2912,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.994
+  },
+  {
+    "Year": 2028,
+    "Vehicle Category": "Passenger trucks",
+    "Vehicle Type": "Passenger trucks",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.291,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9939
+  },
+  {
+    "Year": 2029,
+    "Vehicle Category": "Passenger trucks",
+    "Vehicle Type": "Passenger trucks",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2941,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9986
+  },
+  {
+    "Year": 2030,
+    "Vehicle Category": "Passenger trucks",
+    "Vehicle Type": "Passenger trucks",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2968,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0027
+  },
+  {
+    "Year": 2024,
+    "Vehicle Category": "Refuse trucks",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2025,
+    "Vehicle Category": "Refuse trucks",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2026,
+    "Vehicle Category": "Refuse trucks",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2027,
+    "Vehicle Category": "Refuse trucks",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2028,
+    "Vehicle Category": "Refuse trucks",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2029,
+    "Vehicle Category": "Refuse trucks",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2030,
+    "Vehicle Category": "Refuse trucks",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2024,
+    "Vehicle Category": "Refuse trucks",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0001
+  },
+  {
+    "Year": 2025,
+    "Vehicle Category": "Refuse trucks",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2026,
+    "Vehicle Category": "Refuse trucks",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2027,
+    "Vehicle Category": "Refuse trucks",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2028,
+    "Vehicle Category": "Refuse trucks",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2029,
+    "Vehicle Category": "Refuse trucks",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2030,
+    "Vehicle Category": "Refuse trucks",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2024,
+    "Vehicle Category": "School buses",
+    "Vehicle Type": "Heavy-duty school buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2025,
+    "Vehicle Category": "School buses",
+    "Vehicle Type": "Heavy-duty school buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2026,
+    "Vehicle Category": "School buses",
+    "Vehicle Type": "Heavy-duty school buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2027,
+    "Vehicle Category": "School buses",
+    "Vehicle Type": "Heavy-duty school buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2028,
+    "Vehicle Category": "School buses",
+    "Vehicle Type": "Heavy-duty school buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2029,
+    "Vehicle Category": "School buses",
+    "Vehicle Type": "Heavy-duty school buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2030,
+    "Vehicle Category": "School buses",
+    "Vehicle Type": "Heavy-duty school buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2403,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1
+  },
+  {
+    "Year": 2024,
+    "Vehicle Category": "School buses",
+    "Vehicle Type": "Medium-duty school buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2212,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.983
+  },
+  {
+    "Year": 2025,
+    "Vehicle Category": "School buses",
+    "Vehicle Type": "Medium-duty school buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2255,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9869
+  },
+  {
+    "Year": 2026,
+    "Vehicle Category": "School buses",
+    "Vehicle Type": "Medium-duty school buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2256,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9869
+  },
+  {
+    "Year": 2027,
+    "Vehicle Category": "School buses",
+    "Vehicle Type": "Medium-duty school buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2322,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9927
+  },
+  {
+    "Year": 2028,
+    "Vehicle Category": "School buses",
+    "Vehicle Type": "Medium-duty school buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2322,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9928
+  },
+  {
+    "Year": 2029,
+    "Vehicle Category": "School buses",
+    "Vehicle Type": "Medium-duty school buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2321,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9926
+  },
+  {
+    "Year": 2030,
+    "Vehicle Category": "School buses",
+    "Vehicle Type": "Medium-duty school buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2318,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9924
+  },
+  {
+    "Year": 2024,
+    "Vehicle Category": "School buses",
+    "Vehicle Type": "Medium-duty school buses",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2569,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0131
+  },
+  {
+    "Year": 2025,
+    "Vehicle Category": "School buses",
+    "Vehicle Type": "Medium-duty school buses",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2618,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.017
+  },
+  {
+    "Year": 2026,
+    "Vehicle Category": "School buses",
+    "Vehicle Type": "Medium-duty school buses",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2615,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0167
+  },
+  {
+    "Year": 2027,
+    "Vehicle Category": "School buses",
+    "Vehicle Type": "Medium-duty school buses",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2691,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0228
+  },
+  {
+    "Year": 2028,
+    "Vehicle Category": "School buses",
+    "Vehicle Type": "Medium-duty school buses",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2683,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0222
+  },
+  {
+    "Year": 2029,
+    "Vehicle Category": "School buses",
+    "Vehicle Type": "Medium-duty school buses",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2681,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0221
+  },
+  {
+    "Year": 2030,
+    "Vehicle Category": "School buses",
+    "Vehicle Type": "Medium-duty school buses",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2683,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0222
+  },
+  {
+    "Year": 2024,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2401,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9995
+  },
+  {
+    "Year": 2025,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2311,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9762
+  },
+  {
+    "Year": 2026,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2311,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9762
+  },
+  {
+    "Year": 2027,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2314,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9768
+  },
+  {
+    "Year": 2028,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2259,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9625
+  },
+  {
+    "Year": 2029,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2307,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9749
+  },
+  {
+    "Year": 2030,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2451,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0124
+  },
+  {
+    "Year": 2024,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2551,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9481
+  },
+  {
+    "Year": 2025,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2587,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9548
+  },
+  {
+    "Year": 2026,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2569,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9523
+  },
+  {
+    "Year": 2027,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.257,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9533
+  },
+  {
+    "Year": 2028,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2565,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.953
+  },
+  {
+    "Year": 2029,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2764,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9902
+  },
+  {
+    "Year": 2030,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2927,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0183
+  },
+  {
+    "Year": 2024,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2646,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0191
+  },
+  {
+    "Year": 2025,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2519,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0139
+  },
+  {
+    "Year": 2026,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2425,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0088
+  },
+  {
+    "Year": 2027,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.3157,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0433
+  },
+  {
+    "Year": 2028,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.3122,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0422
+  },
+  {
+    "Year": 2029,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2782,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0257
+  },
+  {
+    "Year": 2030,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2714,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0226
+  },
+  {
+    "Year": 2024,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.3499,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0434
+  },
+  {
+    "Year": 2025,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.3314,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0375
+  },
+  {
+    "Year": 2026,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.3189,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0323
+  },
+  {
+    "Year": 2027,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.4142,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.067
+  },
+  {
+    "Year": 2028,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.41,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0659
+  },
+  {
+    "Year": 2029,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.3656,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0491
+  },
+  {
+    "Year": 2030,
+    "Vehicle Category": "Short-haul trucks",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.3556,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 1.0455
+  },
+  {
+    "Year": 2024,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "Fuel Type": "Compressed Natural Gas (CNG)",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2495,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9951
+  },
+  {
+    "Year": 2025,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "Fuel Type": "Compressed Natural Gas (CNG)",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2504,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9946
+  },
+  {
+    "Year": 2026,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "Fuel Type": "Compressed Natural Gas (CNG)",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2513,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9942
+  },
+  {
+    "Year": 2027,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "Fuel Type": "Compressed Natural Gas (CNG)",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2571,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9913
+  },
+  {
+    "Year": 2028,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "Fuel Type": "Compressed Natural Gas (CNG)",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2536,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9931
+  },
+  {
+    "Year": 2029,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "Fuel Type": "Compressed Natural Gas (CNG)",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2518,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.994
+  },
+  {
+    "Year": 2030,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "Fuel Type": "Compressed Natural Gas (CNG)",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2514,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9943
+  },
+  {
+    "Year": 2024,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2495,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9951
+  },
+  {
+    "Year": 2025,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2504,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9946
+  },
+  {
+    "Year": 2026,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2513,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9942
+  },
+  {
+    "Year": 2027,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2571,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9913
+  },
+  {
+    "Year": 2028,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2536,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9931
+  },
+  {
+    "Year": 2029,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2518,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.994
+  },
+  {
+    "Year": 2030,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2514,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9943
+  },
+  {
+    "Year": 2024,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Medium-duty transit buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.082,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.8601
+  },
+  {
+    "Year": 2025,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Medium-duty transit buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.082,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.8601
+  },
+  {
+    "Year": 2026,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Medium-duty transit buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.0821,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.8601
+  },
+  {
+    "Year": 2027,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Medium-duty transit buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.0816,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.8601
+  },
+  {
+    "Year": 2028,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Medium-duty transit buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.0816,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.8601
+  },
+  {
+    "Year": 2029,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Medium-duty transit buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.0816,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.8601
+  },
+  {
+    "Year": 2030,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Medium-duty transit buses",
+    "Fuel Type": "Diesel Fuel",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.0816,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.8601
+  },
+  {
+    "Year": 2024,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Medium-duty transit buses",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2399,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9998
+  },
+  {
+    "Year": 2025,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Medium-duty transit buses",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2399,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9998
+  },
+  {
+    "Year": 2026,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Medium-duty transit buses",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2399,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9998
+  },
+  {
+    "Year": 2027,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Medium-duty transit buses",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2398,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9998
+  },
+  {
+    "Year": 2028,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Medium-duty transit buses",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2397,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9998
+  },
+  {
+    "Year": 2029,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Medium-duty transit buses",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2397,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9998
+  },
+  {
+    "Year": 2030,
+    "Vehicle Category": "Transit buses",
+    "Vehicle Type": "Medium-duty transit buses",
+    "Fuel Type": "Gasoline",
+    "Primary PM2.5 Brakewear Emissions Rate: EV/ICE Ratio": 0.2397,
+    "Primary PM2.5 Tirewear Emissions Rate: EV/ICE Ratio": 0.9998
+  }
+]

@@ -56,8 +56,9 @@ function parseExcelEVEfficiencyData(headerRow, dataRows) {
 }
 
 /**
- * The data we're interested in spans 9 columns (B:J). We don't need anything
- * to the right of (and including) the "2024-2029 Average" column (k).
+ * The data we're interested in spans 9 columns (B:J) and 17 rows (201–217). We
+ * don't need anything to the right of (and including) the "2024-2029 Average"
+ * column (K).
  *
  * @param {XLSX.WorkSheet} worksheet
  */
