@@ -11,6 +11,7 @@ import {
   type VMTTotalsByStateRegionCombo,
   type VMTTotalsByRegion,
   type VMTPercentagesByStateRegionCombo,
+  type VehicleTotalsByType,
   type VMTandStockByState,
   type LDVsFhwaMovesVMTRatioByState,
   type VMTPerVehicleTypeByState,
@@ -52,6 +53,7 @@ import {
   calculateVMTTotalsByStateRegionCombo,
   calculateVMTTotalsByRegion,
   calculateVMTPercentagesByStateRegionCombo,
+  calculateVehicleTotalsByType,
   storeVMTandStockByState,
   calculateLDVsFhwaMovesVMTRatioByState,
   calculateVMTPerVehicleTypeByState,
@@ -213,6 +215,12 @@ type Action =
       type: "transportation/SET_VMT_PERCENTAGES_BY_STATE_REGION_COMBO";
       payload: {
         vmtPercentagesByStateRegionCombo: VMTTotalsByStateRegionCombo;
+      };
+    }
+  | {
+      type: "transportation/SET_VEHICLE_TOTALS_BY_TYPE";
+      payload: {
+        vehicleTotalsByType: VehicleTotalsByType;
       };
     }
   | {
@@ -405,6 +413,7 @@ type State = {
   vmtPercentagesByStateRegionCombo:
     | VMTPercentagesByStateRegionCombo
     | EmptyObject;
+  vehicleTotalsByType: VehicleTotalsByType | EmptyObject;
   vmtAndStockByState: VMTandStockByState | EmptyObject;
   ldvsFhwaMovesVMTRatioByState: LDVsFhwaMovesVMTRatioByState | EmptyObject;
   vmtPerVehicleTypeByState: VMTPerVehicleTypeByState | EmptyObject;
@@ -487,6 +496,7 @@ const initialState: State = {
   vmtTotalsByStateRegionCombo: {},
   vmtTotalsByRegion: {},
   vmtPercentagesByStateRegionCombo: {},
+  vehicleTotalsByType: {},
   vmtAndStockByState: {},
   ldvsFhwaMovesVMTRatioByState: {},
   vmtPerVehicleTypeByState: {},
@@ -625,6 +635,15 @@ export default function reducer(
       return {
         ...state,
         vmtPercentagesByStateRegionCombo,
+      };
+    }
+
+    case "transportation/SET_VEHICLE_TOTALS_BY_TYPE": {
+      const { vehicleTotalsByType } = action.payload;
+
+      return {
+        ...state,
+        vehicleTotalsByType,
       };
     }
 
@@ -958,6 +977,10 @@ export function setVMTData(): AppThunk {
         vmtTotalsByRegion,
       });
 
+    const vehicleTotalsByType = calculateVehicleTotalsByType({
+      stateLevelVMT,
+    });
+
     const vmtAndStockByState = storeVMTandStockByState({
       stateLevelVMT,
     });
@@ -1020,6 +1043,11 @@ export function setVMTData(): AppThunk {
     dispatch({
       type: "transportation/SET_VMT_PERCENTAGES_BY_STATE_REGION_COMBO",
       payload: { vmtPercentagesByStateRegionCombo },
+    });
+
+    dispatch({
+      type: "transportation/SET_VEHICLE_TOTALS_BY_TYPE",
+      payload: { vehicleTotalsByType },
     });
 
     dispatch({

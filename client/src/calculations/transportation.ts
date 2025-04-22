@@ -28,7 +28,6 @@ import {
   type StateId,
   percentageHybridEVMilesDrivenOnElectricity,
   percentWeekendToWeekdayEVConsumption,
-  percentageLDVsDisplacedByEVs,
   regions,
   states,
 } from "@/config";
@@ -190,6 +189,9 @@ export type VMTTotalsByStateRegionCombo = ReturnType<
 export type VMTTotalsByRegion = ReturnType<typeof calculateVMTTotalsByRegion>;
 export type VMTPercentagesByStateRegionCombo = ReturnType<
   typeof calculateVMTPercentagesByStateRegionCombo
+>;
+export type VehicleTotalsByType = ReturnType<
+  typeof calculateVehicleTotalsByType
 >;
 export type VMTandStockByState = ReturnType<typeof storeVMTandStockByState>;
 export type LDVsFhwaMovesVMTRatioByState = ReturnType<
@@ -941,10 +943,10 @@ export function calculateVMTTotalsByStateRegionCombo(options: {
     (object, data) => {
       const stateId = data["Postal State Code"] as StateId;
       const regionName = data["AVERT Region"] as RegionName;
-      const resultKey = `${stateId} / ${regionName}`;
+      const stateRegionKey = `${stateId} / ${regionName}`;
 
-      if (!object[resultKey]) {
-        object[resultKey] = {
+      if (!object[stateRegionKey]) {
+        object[stateRegionKey] = {
           state: stateId,
           region: regionName,
           vehicleTypes: {
@@ -969,15 +971,15 @@ export function calculateVMTTotalsByStateRegionCombo(options: {
       Object.entries(data["VMT"]).forEach(([vmtKey, vmtValue]) => {
         const vehicle = vmtKey as VehicleType;
 
-        if (vehicle in object[resultKey].vehicleTypes) {
-          object[resultKey].vehicleTypes[vehicle] += vmtValue / 1_000_000_000;
+        if (vehicle in object[stateRegionKey].vehicleTypes) {
+          object[stateRegionKey].vehicleTypes[vehicle] += vmtValue / 1_000_000_000; // prettier-ignore
         }
       });
 
       return object;
     },
     {} as {
-      [key: string]: {
+      [stateRegionKey: string]: {
         state: StateId;
         region: RegionName;
         vehicleTypes: {
@@ -1057,12 +1059,12 @@ export function calculateVMTPercentagesByStateRegionCombo(options: {
   const { vmtTotalsByStateRegionCombo, vmtTotalsByRegion } = options;
 
   const result = Object.entries(vmtTotalsByStateRegionCombo).reduce(
-    (object, [key, data]) => {
-      const state = data.state as StateId;
-      const region = data.region as RegionName;
+    (object, [stateRegionKey, stateRegionValue]) => {
+      const state = stateRegionValue.state as StateId;
+      const region = stateRegionValue.region as RegionName;
 
-      if (!object[key]) {
-        object[key] = {
+      if (!object[stateRegionKey]) {
+        object[stateRegionKey] = {
           state,
           region,
           vehicleTypes: {
@@ -1084,29 +1086,64 @@ export function calculateVMTPercentagesByStateRegionCombo(options: {
         };
       }
 
-      Object.entries(data.vehicleTypes).forEach(([vmtKey, vmtValue]) => {
-        const vehicle = vmtKey as VehicleType;
+      Object.entries(stateRegionValue.vehicleTypes).forEach(
+        ([vmtKey, vmtValue]) => {
+          const vehicle = vmtKey as VehicleType;
 
-        if (
-          vehicle in object[key].vehicleTypes &&
-          vehicle in vmtTotalsByRegion[region]
-        ) {
-          const regionTotal = vmtTotalsByRegion[region][vehicle];
+          if (
+            vehicle in object[stateRegionKey].vehicleTypes &&
+            vehicle in vmtTotalsByRegion[region]
+          ) {
+            const regionTotal = vmtTotalsByRegion[region][vehicle];
+            const vmtPercentage = vmtValue / regionTotal;
 
-          object[key].vehicleTypes[vehicle] = vmtValue / regionTotal;
-        }
-      });
+            object[stateRegionKey].vehicleTypes[vehicle] = vmtPercentage;
+          }
+        },
+      );
 
       return object;
     },
     {} as {
-      [key: string]: {
+      [stateRegionKey: string]: {
         state: StateId;
         region: RegionName;
         vehicleTypes: {
           [vehicle in VehicleType]: number;
         };
       };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Total sales/stock (in millions) for each vehicle type.
+ *
+ * Excel: "Population" column of "Table 12: Light-duty vehicle sales by type"
+ * table in the "Library" sheet (C964:C983).
+ */
+export function calculateVehicleTotalsByType(options: {
+  stateLevelVMT: StateLevelVMT;
+}) {
+  const { stateLevelVMT } = options;
+
+  const result = stateLevelVMT.reduce(
+    (object, data) => {
+      const vehicle = data["Vehicle Type"] as VehicleType;
+      const stock = data["2023 Stock (million vehicles)"];
+
+      if (!object[vehicle]) {
+        object[vehicle] = 0;
+      }
+
+      object[vehicle] += stock;
+
+      return object;
+    },
+    {} as {
+      [vehicle in VehicleType]: number;
     },
   );
 
@@ -2543,6 +2580,15 @@ export function calculateVehiclesDisplaced(options: {
   };
 
   // console.log(percentageTransitBusesDisplacedByEVs); // NOTE: for debugging purposes
+
+  /**
+   * Excel: "Table 14: Light-duty vehicle sales by type" table in the "Library"
+   * sheet (D727:E727)
+   */
+  const percentageLDVsDisplacedByEVs = {
+    cars: 0.210961149193232,
+    trucks: 0.789038850806768,
+  };
 
   result.batteryEVCars = batteryEVs * percentageLDVsDisplacedByEVs.cars;
   result.hybridEVCars = hybridEVs * percentageLDVsDisplacedByEVs.cars;

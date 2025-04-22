@@ -227,15 +227,6 @@ export const regionAverageTemperatures = {
 export const percentWeekendToWeekdayEVConsumption = 97.3015982802952;
 
 /**
- * Excel: "Table 14: Light-duty vehicle sales by type" table in the "Library"
- * sheet (D727:E727)
- */
-export const percentageLDVsDisplacedByEVs = {
-  cars: 0.210961149193232,
-  trucks: 0.789038850806768,
-};
-
-/**
  * Excel: "Table 15: Lithium Ion Storage Defaults" table in the "Library" sheet
  * (D736)
  */
