@@ -37,7 +37,7 @@ import {
  */
 import schoolBusMonthlyVMTPercentages from "@/data/school-bus-monthly-vmt-percentages.json";
 
-export const vehicleTypesByCategory = {
+export const vehicleTypesByVehicleCategory = {
   LDVs: ["Passenger cars", "Passenger trucks"],
   "Transit Buses": ["Medium-duty transit buses", "Heavy-duty transit buses"],
   "School Buses": ["Medium-duty school buses", "Heavy-duty school buses"],
@@ -170,8 +170,8 @@ const _expandedVehicleTypes = [
 
 const pollutants = ["CO2", "NOX", "SO2", "PM25", "VOCs", "NH3"] as const;
 
-type VehicleTypesByCategory = typeof vehicleTypesByCategory;
-type VehicleCategory = keyof typeof vehicleTypesByCategory;
+type VehicleTypesByVehicleCategory = typeof vehicleTypesByVehicleCategory;
+type VehicleCategory = keyof typeof vehicleTypesByVehicleCategory;
 type VehicleType = (typeof vehicleTypes)[number];
 type VehicleTypeFuelTypeCombo = (typeof vehicleTypeFuelTypeCombos)[number];
 type VehicleTypeEVFuelTypeCombo = (typeof vehicleTypeEVFuelTypeCombos)[number];
@@ -206,14 +206,14 @@ export type VMTTotalsByRegion = ReturnType<typeof calculateVMTTotalsByRegion>;
 export type VMTPercentagesByStateRegionCombo = ReturnType<
   typeof calculateVMTPercentagesByStateRegionCombo
 >;
-export type VehicleTotalsByType = ReturnType<
-  typeof calculateVehicleTotalsByType
+export type VehicleTotalsByVehicleType = ReturnType<
+  typeof calculateVehicleTotalsByVehicleType
 >;
-export type VehicleTotalsByCategory = ReturnType<
-  typeof calculateVehicleTotalsByCategory
+export type VehicleTotalsByVehicleCategory = ReturnType<
+  typeof calculateVehicleTotalsByVehicleCategory
 >;
-export type VehiclePercentagesByType = ReturnType<
-  typeof calculateVehiclePercentagesByType
+export type VehiclePercentagesByVehicleType = ReturnType<
+  typeof calculateVehiclePercentagesByVehicleType
 >;
 export type VMTandStockByState = ReturnType<typeof storeVMTandStockByState>;
 export type LDVsFhwaMovesVMTRatioByState = ReturnType<
@@ -1146,7 +1146,7 @@ export function calculateVMTPercentagesByStateRegionCombo(options: {
  * Excel: "Population" column of "Table 12: Light-duty vehicle sales by type"
  * table in the "Library" sheet (C965:C983).
  */
-export function calculateVehicleTotalsByType(options: {
+export function calculateVehicleTotalsByVehicleType(options: {
   stateLevelVMT: StateLevelVMT;
 }) {
   const { stateLevelVMT } = options;
@@ -1178,19 +1178,19 @@ export function calculateVehicleTotalsByType(options: {
  * Excel: "Population" column of "Table 12: Light-duty vehicle sales by type"
  * table in the "Library" sheet (C964:C983).
  */
-export function calculateVehicleTotalsByCategory(options: {
-  vehicleTotalsByType: VehicleTotalsByType | EmptyObject;
-  vehicleTypesByCategory: VehicleTypesByCategory | EmptyObject;
+export function calculateVehicleTotalsByVehicleCategory(options: {
+  vehicleTotalsByVehicleType: VehicleTotalsByVehicleType | EmptyObject;
+  vehicleTypesByVehicleCategory: VehicleTypesByVehicleCategory | EmptyObject;
 }) {
-  const { vehicleTotalsByType, vehicleTypesByCategory } = options;
+  const { vehicleTotalsByVehicleType, vehicleTypesByVehicleCategory } = options;
 
-  const result = Object.entries(vehicleTypesByCategory).reduce(
+  const result = Object.entries(vehicleTypesByVehicleCategory).reduce(
     (object, [categoryKey, categoryValue]) => {
       const category = categoryKey as VehicleCategory;
 
       const total = categoryValue.reduce((number, vehicle) => {
-        if (vehicle in vehicleTotalsByType) {
-          return number + vehicleTotalsByType[vehicle];
+        if (vehicle in vehicleTotalsByVehicleType) {
+          return number + vehicleTotalsByVehicleType[vehicle];
         }
 
         return number;
@@ -1215,29 +1215,29 @@ export function calculateVehicleTotalsByCategory(options: {
  * Excel: "Vehicle Allocation" column of "Table 12: Light-duty vehicle sales by
  * type" table in the "Library" sheet (D965:D983).
  */
-export function calculateVehiclePercentagesByType(options: {
-  vehicleTotalsByType: VehicleTotalsByType | EmptyObject;
-  vehicleTotalsByCategory: VehicleTotalsByCategory | EmptyObject;
-  vehicleTypesByCategory: VehicleTypesByCategory;
+export function calculateVehiclePercentagesByVehicleType(options: {
+  vehicleTotalsByVehicleType: VehicleTotalsByVehicleType | EmptyObject;
+  vehicleTotalsByVehicleCategory: VehicleTotalsByVehicleCategory | EmptyObject;
+  vehicleTypesByVehicleCategory: VehicleTypesByVehicleCategory;
 }) {
   const {
-    vehicleTotalsByType,
-    vehicleTotalsByCategory,
-    vehicleTypesByCategory,
+    vehicleTotalsByVehicleType,
+    vehicleTotalsByVehicleCategory,
+    vehicleTypesByVehicleCategory,
   } = options;
 
-  const result = Object.entries(vehicleTotalsByType).reduce(
+  const result = Object.entries(vehicleTotalsByVehicleType).reduce(
     (object, [vehicleKey, vehicleValue]) => {
       const vehicle = vehicleKey as VehicleType;
 
-      const category = Object.keys(vehicleTypesByCategory).find(
+      const category = Object.keys(vehicleTypesByVehicleCategory).find(
         (categoryKey) => {
-          const categories = vehicleTypesByCategory[categoryKey as VehicleCategory]; // prettier-ignore
+          const categories = vehicleTypesByVehicleCategory[categoryKey as VehicleCategory]; // prettier-ignore
           return (categories as unknown as VehicleType[]).includes(vehicle);
         },
       ) as VehicleCategory;
 
-      const categoryTotal = vehicleTotalsByCategory[category];
+      const categoryTotal = vehicleTotalsByVehicleCategory[category];
 
       object[vehicle] = categoryTotal
         ? vehicleValue / categoryTotal
