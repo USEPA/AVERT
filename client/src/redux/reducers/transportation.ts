@@ -352,7 +352,7 @@ type Action =
     }
   | {
       type: "transportation/_SET_VEHICLES_DISPLACED";
-      payload: { vehiclesDisplaced: _VehiclesDisplaced };
+      payload: { _vehiclesDisplaced: _VehiclesDisplaced };
     }
   | {
       type: "transportation/SET_SELECTED_REGIONS_MONTHLY_EV_ENERGY_USAGE_GW";
@@ -873,12 +873,12 @@ export default function reducer(
       };
     }
 
-    case "transportation/SET_VEHICLES_DISPLACED": {
-      const { vehiclesDisplaced } = action.payload;
+    case "transportation/_SET_VEHICLES_DISPLACED": {
+      const { _vehiclesDisplaced } = action.payload;
 
       return {
         ...state,
-        vehiclesDisplaced,
+        _vehiclesDisplaced,
       };
     }
 
@@ -1371,13 +1371,15 @@ export function setDailyAndMonthlyStats(): AppThunk {
 
 /**
  * Called every time the `impacts` reducer's `runEVBatteryEVsCalculations()`,
- * `runEVHybridEVsCalculations()`, `runEVTransitBusesCalculations()`, or
- * `runEVSchoolBusesCalculations()` function are called.
+ * `runEVHybridEVsCalculations()`, `runEVTransitBusesCalculations()`,
+ * `runEVSchoolBusesCalculations()`, `runEVShortHaulTrucksCalculations()`,
+ * `runEVComboLongHaulTrucksCalculations()`, or `runEVRefuseTrucksCalculations()`
+ * functions are called.
  *
  * _(e.g. onBlur / whenever an EV input loses focus, but only if the input's
  * value has changed since the last time it was used in this calculation)_
  */
-export function setVehiclesDisplaced(): AppThunk {
+export function setEffectiveVehicles(): AppThunk {
   return (dispatch, getState) => {
     const { transportation, impacts } = getState();
     const { monthlyVMTTotals } = transportation;
@@ -1407,7 +1409,7 @@ export function setVehiclesDisplaced(): AppThunk {
 /**
  * Called every time this `transportation` reducer's
  * `setSelectedGeographyVMTData()`, `setEVEfficiency()`, or
- * `setVehiclesDisplaced()` functions are called.
+ * `setEffectiveVehicles()` functions are called.
  *
  * _(e.g. anytime the selected geography, EV model year, or an EV input number
  * changes)_
@@ -1589,7 +1591,7 @@ export function setMonthlyEmissionRates(): AppThunk {
 
 /**
  * Called every time this `transportation` reducer's
- * `setSelectedGeographyVMTData()`, `setVehiclesDisplaced()`, or
+ * `setSelectedGeographyVMTData()`, `setEffectiveVehicles()`, or
  * `setMonthlyEmissionRates()` function is called.
  *
  * _(e.g. anytime the selected geography, an EV input number, the EV deployment
@@ -1603,7 +1605,7 @@ export function setEmissionChanges(): AppThunk {
       stateVMTPercentagesByRegion,
       vmtTotalsByGeography,
       _selectedRegionsMonthlyVMTPerVehicleType,
-      vehiclesDisplaced,
+      _vehiclesDisplaced,
       _selectedRegionsMonthlyEmissionRates,
     } = transportation;
 
@@ -1627,7 +1629,7 @@ export function setEmissionChanges(): AppThunk {
         selectedStateId,
         stateVMTPercentagesByRegion,
         _selectedRegionsMonthlyVMTPerVehicleType,
-        vehiclesDisplaced,
+        _vehiclesDisplaced,
         _selectedRegionsMonthlyEmissionRates,
       });
 

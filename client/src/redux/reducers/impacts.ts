@@ -6,7 +6,7 @@ import {
 } from "@/redux/reducers/geography";
 import {
   setEVEfficiency,
-  setVehiclesDisplaced,
+  setEffectiveVehicles,
   setMonthlyEVEnergyUsage,
   setMonthlyEmissionRates,
   setVehicleSalesAndStock,
@@ -1044,7 +1044,7 @@ export function runEVBatteryEVsCalculations(value: string): AppThunk {
 
     /** only run calculations if the input has changed since the last onBlur */
     if (value !== batteryEVs) {
-      dispatch(setVehiclesDisplaced());
+      dispatch(setEffectiveVehicles());
     }
 
     dispatch({
@@ -1075,7 +1075,7 @@ export function runEVHybridEVsCalculations(value: string): AppThunk {
 
     /** only run calculations if the input has changed since the last onBlur */
     if (value !== hybridEVs) {
-      dispatch(setVehiclesDisplaced());
+      dispatch(setEffectiveVehicles());
     }
 
     dispatch({
@@ -1106,7 +1106,7 @@ export function runEVTransitBusesCalculations(value: string): AppThunk {
 
     /** only run calculations if the input has changed since the last onBlur */
     if (value !== transitBuses) {
-      dispatch(setVehiclesDisplaced());
+      dispatch(setEffectiveVehicles());
     }
 
     dispatch({
@@ -1137,7 +1137,7 @@ export function runEVSchoolBusesCalculations(value: string): AppThunk {
 
     /** only run calculations if the input has changed since the last onBlur */
     if (value !== schoolBuses) {
-      dispatch(setVehiclesDisplaced());
+      dispatch(setEffectiveVehicles());
     }
 
     dispatch({
@@ -1168,7 +1168,7 @@ export function runEVShortHaulTrucksCalculations(value: string): AppThunk {
 
     /** only run calculations if the input has changed since the last onBlur */
     if (value !== shortHaulTrucks) {
-      dispatch(setVehiclesDisplaced());
+      dispatch(setEffectiveVehicles());
     }
 
     dispatch({
@@ -1199,7 +1199,7 @@ export function runEVComboLongHaulTrucksCalculations(value: string): AppThunk {
 
     /** only run calculations if the input has changed since the last onBlur */
     if (value !== comboLongHaulTrucks) {
-      dispatch(setVehiclesDisplaced());
+      dispatch(setEffectiveVehicles());
     }
 
     dispatch({
@@ -1230,7 +1230,7 @@ export function runEVRefuseTrucksCalculations(value: string): AppThunk {
 
     /** only run calculations if the input has changed since the last onBlur */
     if (value !== refuseTrucks) {
-      dispatch(setVehiclesDisplaced());
+      dispatch(setEffectiveVehicles());
     }
 
     dispatch({
@@ -1528,7 +1528,7 @@ export function resetImpactsInputs(): AppThunk {
     dispatch({ type: "impacts/RESET_IMPACTS_INPUTS" });
 
     // re-run dependant transportation calculations after resetting EV inputs
-    dispatch(setVehiclesDisplaced());
+    dispatch(setEffectiveVehicles());
 
     dispatch(updateEVDeploymentLocation(evDeploymentLocation));
     dispatch(updateEVModelYear(evModelYear));
