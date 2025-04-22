@@ -996,20 +996,20 @@ export const maxAnnualDischargeCyclesOptions = [
 ];
 
 /**
- * Excel: "EV model year" select options in the "EV_Detail" sheet (E79).
+ * Excel: "EV model year" select options in the "EV_Detail" sheet (F108).
  */
 export const evModelYearOptions = [
-  { id: "2023", name: "2023" },
   { id: "2024", name: "2024" },
   { id: "2025", name: "2025" },
   { id: "2026", name: "2026" },
   { id: "2027", name: "2027" },
   { id: "2028", name: "2028" },
+  { id: "2029", name: "2029" },
 ];
 
 /**
  * Excel: "ICE vehicle being replaced" select options in the "EV_Detail" sheet
- * (E80).
+ * (F109).
  */
 export const iceReplacementVehicleOptions = [
   { id: "new", name: "New" },
