@@ -37,6 +37,20 @@ import {
  */
 import schoolBusMonthlyVMTPercentages from "@/data/school-bus-monthly-vmt-percentages.json";
 
+export const vehicleTypesByCategory = {
+  LDVs: ["Passenger cars", "Passenger trucks"],
+  "Transit Buses": ["Medium-duty transit buses", "Heavy-duty transit buses"],
+  "School Buses": ["Medium-duty school buses", "Heavy-duty school buses"],
+  "Other Buses": ["Medium-duty other buses", "Heavy-duty other buses"],
+  "Short-haul Trucks": [
+    "Light-duty single unit trucks",
+    "Medium-duty single unit trucks",
+    "Heavy-duty combination trucks",
+  ],
+  "Combination long-haul Trucks": ["Combination long-haul trucks"],
+  "Refuse Trucks": ["Medium-duty refuse trucks", "Heavy-duty refuse trucks"],
+} as const;
+
 const vehicleTypes = [
   "Passenger cars",
   "Passenger trucks",
@@ -156,6 +170,8 @@ const _expandedVehicleTypes = [
 
 const pollutants = ["CO2", "NOX", "SO2", "PM25", "VOCs", "NH3"] as const;
 
+type VehicleTypesByCategory = typeof vehicleTypesByCategory;
+type VehicleCategory = keyof typeof vehicleTypesByCategory;
 type VehicleType = (typeof vehicleTypes)[number];
 type VehicleTypeFuelTypeCombo = (typeof vehicleTypeFuelTypeCombos)[number];
 type VehicleTypeEVFuelTypeCombo = (typeof vehicleTypeEVFuelTypeCombos)[number];
@@ -192,6 +208,12 @@ export type VMTPercentagesByStateRegionCombo = ReturnType<
 >;
 export type VehicleTotalsByType = ReturnType<
   typeof calculateVehicleTotalsByType
+>;
+export type VehicleTotalsByCategory = ReturnType<
+  typeof calculateVehicleTotalsByCategory
+>;
+export type VehiclePercentagesByType = ReturnType<
+  typeof calculateVehiclePercentagesByType
 >;
 export type VMTandStockByState = ReturnType<typeof storeVMTandStockByState>;
 export type LDVsFhwaMovesVMTRatioByState = ReturnType<
@@ -1122,7 +1144,7 @@ export function calculateVMTPercentagesByStateRegionCombo(options: {
  * Total sales/stock (in millions) for each vehicle type.
  *
  * Excel: "Population" column of "Table 12: Light-duty vehicle sales by type"
- * table in the "Library" sheet (C964:C983).
+ * table in the "Library" sheet (C965:C983).
  */
 export function calculateVehicleTotalsByType(options: {
   stateLevelVMT: StateLevelVMT;
@@ -1139,6 +1161,87 @@ export function calculateVehicleTotalsByType(options: {
       }
 
       object[vehicle] += stock;
+
+      return object;
+    },
+    {} as {
+      [vehicle in VehicleType]: number;
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Total sales/stock (in millions) for each vehicle category.
+ *
+ * Excel: "Population" column of "Table 12: Light-duty vehicle sales by type"
+ * table in the "Library" sheet (C964:C983).
+ */
+export function calculateVehicleTotalsByCategory(options: {
+  vehicleTotalsByType: VehicleTotalsByType | EmptyObject;
+  vehicleTypesByCategory: VehicleTypesByCategory | EmptyObject;
+}) {
+  const { vehicleTotalsByType, vehicleTypesByCategory } = options;
+
+  const result = Object.entries(vehicleTypesByCategory).reduce(
+    (object, [categoryKey, categoryValue]) => {
+      const category = categoryKey as VehicleCategory;
+
+      const total = categoryValue.reduce((number, vehicle) => {
+        if (vehicle in vehicleTotalsByType) {
+          return number + vehicleTotalsByType[vehicle];
+        }
+
+        return number;
+      }, 0);
+
+      object[category] = total;
+
+      return object;
+    },
+    {} as {
+      [vehicleCategory in VehicleCategory]: number;
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Percentage/share of the total vehicle sales/stock each vehicle type makes up
+ * of its vehicle category (e.g. "LDVs", "Transit Buses", "School Buses", etc.).
+ *
+ * Excel: "Vehicle Allocation" column of "Table 12: Light-duty vehicle sales by
+ * type" table in the "Library" sheet (D965:D983).
+ */
+export function calculateVehiclePercentagesByType(options: {
+  vehicleTotalsByType: VehicleTotalsByType | EmptyObject;
+  vehicleTotalsByCategory: VehicleTotalsByCategory | EmptyObject;
+  vehicleTypesByCategory: VehicleTypesByCategory;
+}) {
+  const {
+    vehicleTotalsByType,
+    vehicleTotalsByCategory,
+    vehicleTypesByCategory,
+  } = options;
+
+  const result = Object.entries(vehicleTotalsByType).reduce(
+    (object, [vehicleKey, vehicleValue]) => {
+      const vehicle = vehicleKey as VehicleType;
+
+      const category = Object.keys(vehicleTypesByCategory).find(
+        (categoryKey) => {
+          const categories = vehicleTypesByCategory[categoryKey as VehicleCategory]; // prettier-ignore
+          return (categories as unknown as VehicleType[]).includes(vehicle);
+        },
+      ) as VehicleCategory;
+
+      const categoryTotal = vehicleTotalsByCategory[category];
+
+      object[vehicle] = categoryTotal
+        ? vehicleValue / categoryTotal
+        : vehicleValue;
 
       return object;
     },

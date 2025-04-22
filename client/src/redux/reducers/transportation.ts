@@ -12,6 +12,8 @@ import {
   type VMTTotalsByRegion,
   type VMTPercentagesByStateRegionCombo,
   type VehicleTotalsByType,
+  type VehicleTotalsByCategory,
+  type VehiclePercentagesByType,
   type VMTandStockByState,
   type LDVsFhwaMovesVMTRatioByState,
   type VMTPerVehicleTypeByState,
@@ -54,6 +56,8 @@ import {
   calculateVMTTotalsByRegion,
   calculateVMTPercentagesByStateRegionCombo,
   calculateVehicleTotalsByType,
+  calculateVehicleTotalsByCategory,
+  calculateVehiclePercentagesByType,
   storeVMTandStockByState,
   calculateLDVsFhwaMovesVMTRatioByState,
   calculateVMTPerVehicleTypeByState,
@@ -221,6 +225,18 @@ type Action =
       type: "transportation/SET_VEHICLE_TOTALS_BY_TYPE";
       payload: {
         vehicleTotalsByType: VehicleTotalsByType;
+      };
+    }
+  | {
+      type: "transportation/SET_VEHICLE_TOTALS_BY_CATEGORY";
+      payload: {
+        vehicleTotalsByCategory: VehicleTotalsByCategory;
+      };
+    }
+  | {
+      type: "transportation/SET_VEHICLE_PERCENTAGES_BY_TYPE";
+      payload: {
+        vehiclePercentagesByType: VehiclePercentagesByType;
       };
     }
   | {
@@ -414,6 +430,8 @@ type State = {
     | VMTPercentagesByStateRegionCombo
     | EmptyObject;
   vehicleTotalsByType: VehicleTotalsByType | EmptyObject;
+  vehicleTotalsByCategory: VehicleTotalsByCategory | EmptyObject;
+  vehiclePercentagesByType: VehiclePercentagesByType | EmptyObject;
   vmtAndStockByState: VMTandStockByState | EmptyObject;
   ldvsFhwaMovesVMTRatioByState: LDVsFhwaMovesVMTRatioByState | EmptyObject;
   vmtPerVehicleTypeByState: VMTPerVehicleTypeByState | EmptyObject;
@@ -497,6 +515,8 @@ const initialState: State = {
   vmtTotalsByRegion: {},
   vmtPercentagesByStateRegionCombo: {},
   vehicleTotalsByType: {},
+  vehicleTotalsByCategory: {},
+  vehiclePercentagesByType: {},
   vmtAndStockByState: {},
   ldvsFhwaMovesVMTRatioByState: {},
   vmtPerVehicleTypeByState: {},
@@ -644,6 +664,24 @@ export default function reducer(
       return {
         ...state,
         vehicleTotalsByType,
+      };
+    }
+
+    case "transportation/SET_VEHICLE_TOTALS_BY_CATEGORY": {
+      const { vehicleTotalsByCategory } = action.payload;
+
+      return {
+        ...state,
+        vehicleTotalsByCategory,
+      };
+    }
+
+    case "transportation/SET_VEHICLE_PERCENTAGES_BY_TYPE": {
+      const { vehiclePercentagesByType } = action.payload;
+
+      return {
+        ...state,
+        vehiclePercentagesByType,
       };
     }
 
@@ -981,6 +1019,17 @@ export function setVMTData(): AppThunk {
       stateLevelVMT,
     });
 
+    const vehicleTotalsByCategory = calculateVehicleTotalsByCategory({
+      vehicleTotalsByType,
+      vehicleTypesByCategory,
+    });
+
+    const vehiclePercentagesByType = calculateVehiclePercentagesByType({
+      vehicleTotalsByType,
+      vehicleTotalsByCategory,
+      vehicleTypesByCategory,
+    });
+
     const vmtAndStockByState = storeVMTandStockByState({
       stateLevelVMT,
     });
@@ -1048,6 +1097,16 @@ export function setVMTData(): AppThunk {
     dispatch({
       type: "transportation/SET_VEHICLE_TOTALS_BY_TYPE",
       payload: { vehicleTotalsByType },
+    });
+
+    dispatch({
+      type: "transportation/SET_VEHICLE_TOTALS_BY_CATEGORY",
+      payload: { vehicleTotalsByCategory },
+    });
+
+    dispatch({
+      type: "transportation/SET_VEHICLE_PERCENTAGES_BY_TYPE",
+      payload: { vehiclePercentagesByType },
     });
 
     dispatch({
