@@ -20,6 +20,7 @@ import {
   type SelectedRegionsEVEfficiency,
   type SelectedRegionsMonthlyEmissionRates,
   type SelectedRegionsMonthlyElectricityPM25EmissionRates,
+  type SelectedRegionsMonthlyTotalNetPM25EmissionRates,
   type HourlyEVChargingPercentages,
   type _SelectedRegionsStatesVMTPercentages,
   type _SelectedRegionsVMTPercentagesPerVehicleType,
@@ -60,6 +61,7 @@ import {
   calculateSelectedRegionsEVEfficiency,
   calculateSelectedRegionsMonthlyEmissionRates,
   calculateSelectedRegionsMonthlyElectricityPM25EmissionRates,
+  calculateSelectedRegionsMonthlyTotalNetPM25EmissionRates,
   calculateHourlyEVChargingPercentages,
   _calculateSelectedRegionsStatesVMTPercentages,
   _calculateSelectedRegionsVMTPercentagesPerVehicleType,
@@ -268,6 +270,12 @@ type Action =
       };
     }
   | {
+      type: "transportation/SET_SELECTED_REGIONS_MONTHLY_TOTAL_NET_PM25_EMISSION_RATES";
+      payload: {
+        selectedRegionsMonthlyTotalNetPM25EmissionRates: SelectedRegionsMonthlyTotalNetPM25EmissionRates;
+      };
+    }
+  | {
       type: "transportation/SET_HOURLY_EV_CHARGING_PERCENTAGES";
       payload: { hourlyEVChargingPercentages: HourlyEVChargingPercentages };
     }
@@ -414,6 +422,9 @@ type State = {
   selectedRegionsMonthlyElectricityPM25EmissionRates:
     | SelectedRegionsMonthlyElectricityPM25EmissionRates
     | EmptyObject;
+  selectedRegionsMonthlyTotalNetPM25EmissionRates:
+    | SelectedRegionsMonthlyTotalNetPM25EmissionRates
+    | EmptyObject;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
   _selectedRegionsStatesVMTPercentages:
     | _SelectedRegionsStatesVMTPercentages
@@ -485,6 +496,7 @@ const initialState: State = {
   selectedRegionsEVEfficiency: {},
   selectedRegionsMonthlyEmissionRates: {},
   selectedRegionsMonthlyElectricityPM25EmissionRates: {},
+  selectedRegionsMonthlyTotalNetPM25EmissionRates: {},
   hourlyEVChargingPercentages: {},
   _selectedRegionsStatesVMTPercentages: {},
   _selectedRegionsVMTPercentagesPerVehicleType: {},
@@ -695,6 +707,16 @@ export default function reducer(
       return {
         ...state,
         selectedRegionsMonthlyElectricityPM25EmissionRates,
+      };
+    }
+
+    case "transportation/SET_SELECTED_REGIONS_MONTHLY_TOTAL_NET_PM25_EMISSION_RATES": {
+      const { selectedRegionsMonthlyTotalNetPM25EmissionRates } =
+        action.payload;
+
+      return {
+        ...state,
+        selectedRegionsMonthlyTotalNetPM25EmissionRates,
       };
     }
 
@@ -1392,6 +1414,12 @@ export function setMonthlyEmissionRates(): AppThunk {
         evModelYear,
       });
 
+    const selectedRegionsMonthlyTotalNetPM25EmissionRates =
+      calculateSelectedRegionsMonthlyTotalNetPM25EmissionRates({
+        selectedRegionsMonthlyEmissionRates,
+        selectedRegionsMonthlyElectricityPM25EmissionRates,
+      });
+
     const _selectedRegionsMonthlyEmissionRates =
       _calculateSelectedRegionsMonthlyEmissionRates({
         movesEmissionRates,
@@ -1419,6 +1447,11 @@ export function setMonthlyEmissionRates(): AppThunk {
     dispatch({
       type: "transportation/SET_SELECTED_REGIONS_MONTHLY_ELECTRICITY_PM25_EMISSION_RATES",
       payload: { selectedRegionsMonthlyElectricityPM25EmissionRates },
+    });
+
+    dispatch({
+      type: "transportation/SET_SELECTED_REGIONS_MONTHLY_TOTAL_NET_PM25_EMISSION_RATES",
+      payload: { selectedRegionsMonthlyTotalNetPM25EmissionRates },
     });
 
     dispatch({

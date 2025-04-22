@@ -216,6 +216,9 @@ export type SelectedRegionsMonthlyEmissionRates = ReturnType<
 export type SelectedRegionsMonthlyElectricityPM25EmissionRates = ReturnType<
   typeof calculateSelectedRegionsMonthlyElectricityPM25EmissionRates
 >;
+export type SelectedRegionsMonthlyTotalNetPM25EmissionRates = ReturnType<
+  typeof calculateSelectedRegionsMonthlyTotalNetPM25EmissionRates
+>;
 export type HourlyEVChargingPercentages = ReturnType<
   typeof calculateHourlyEVChargingPercentages
 >;
@@ -1841,6 +1844,89 @@ export function calculateSelectedRegionsMonthlyElectricityPM25EmissionRates(opti
             pm25Brakeware: number;
             pm25Tirewear: number;
           };
+        };
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Selected AVERT region's monthly total net PM2.5 emission rates for each
+ * vehicle type / fuel type combo.
+ *
+ * Excel: "Table 7: Emission rates of vehicle types" table in the "Library"
+ * sheet (G476:R495).
+ */
+export function calculateSelectedRegionsMonthlyTotalNetPM25EmissionRates(options: {
+  selectedRegionsMonthlyEmissionRates: SelectedRegionsMonthlyEmissionRates;
+  selectedRegionsMonthlyElectricityPM25EmissionRates: SelectedRegionsMonthlyElectricityPM25EmissionRates;
+}) {
+  const {
+    selectedRegionsMonthlyEmissionRates,
+    selectedRegionsMonthlyElectricityPM25EmissionRates,
+  } = options;
+
+  if (
+    Object.keys(selectedRegionsMonthlyEmissionRates).length === 0 ||
+    Object.keys(selectedRegionsMonthlyElectricityPM25EmissionRates).length === 0
+  ) {
+    return {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          [vehicleFuelCombo in VehicleTypeFuelTypeCombo]: number;
+        };
+      };
+    };
+  }
+
+  const result = Object.entries(selectedRegionsMonthlyEmissionRates).reduce(
+    (object, [regionKey, regionValue]) => {
+      const regionId = regionKey as RegionId;
+
+      object[regionId] ??= {} as {
+        [month: number]: {
+          [vehicleFuelCombo in VehicleTypeFuelTypeCombo]: number;
+        };
+      };
+
+      Object.entries(regionValue).forEach(([monthKey, monthValue]) => {
+        const month = Number(monthKey);
+
+        object[regionId][month] ??= {} as {
+          [vehicleFuelCombo in VehicleTypeFuelTypeCombo]: number;
+        };
+
+        Object.entries(monthValue).forEach(
+          ([vehicleFuelComboKey, vehicleFuelComboValue]) => {
+            const vehicleFuelCombo = vehicleFuelComboKey as VehicleTypeFuelTypeCombo; // prettier-ignore
+            const vehicleType = vehicleFuelCombo.split(" / ")[0] as VehicleType;
+            const vehicleEVFuelCombo = `${vehicleType} / Electricity` as VehicleTypeEVFuelTypeCombo; // prettier-ignore
+
+            const electricityPM25EmissionRates =
+              selectedRegionsMonthlyElectricityPM25EmissionRates?.[regionId]?.[
+                month
+              ]?.[vehicleEVFuelCombo] || null;
+
+            const emissionRate =
+              vehicleFuelComboValue.pm25Exhaust +
+              vehicleFuelComboValue.pm25Brakewear +
+              vehicleFuelComboValue.pm25Tirewear +
+              (electricityPM25EmissionRates?.pm25Brakeware || 0) +
+              (electricityPM25EmissionRates?.pm25Tirewear || 0);
+
+            object[regionId][month][vehicleFuelCombo] = emissionRate;
+          },
+        );
+      });
+
+      return object;
+    },
+    {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          [vehicleFuelCombo in VehicleTypeFuelTypeCombo]: number;
         };
       };
     },
