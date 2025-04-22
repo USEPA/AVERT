@@ -33,7 +33,7 @@ import {
   type _SelectedRegionsEVEfficiencyPerVehicleType,
   type DailyStats,
   type MonthlyStats,
-  type VehiclesDisplaced,
+  type _VehiclesDisplaced,
   type SelectedRegionsMonthlyEVEnergyUsageGW,
   type SelectedRegionsMonthlyEVEnergyUsageMW,
   type SelectedRegionsTotalYearlyEVEnergyUsage,
@@ -79,7 +79,7 @@ import {
   _calculateSelectedRegionsEVEfficiencyPerVehicleType,
   calculateDailyStats,
   calculateMonthlyStats,
-  calculateVehiclesDisplaced,
+  _calculateVehiclesDisplaced,
   calculateSelectedRegionsMonthlyEVEnergyUsageGW,
   calculateSelectedRegionsMonthlyEVEnergyUsageMW,
   calculateSelectedRegionsTotalYearlyEVEnergyUsage,
@@ -351,8 +351,8 @@ type Action =
       payload: { monthlyStats: MonthlyStats };
     }
   | {
-      type: "transportation/SET_VEHICLES_DISPLACED";
-      payload: { vehiclesDisplaced: VehiclesDisplaced };
+      type: "transportation/_SET_VEHICLES_DISPLACED";
+      payload: { vehiclesDisplaced: _VehiclesDisplaced };
     }
   | {
       type: "transportation/SET_SELECTED_REGIONS_MONTHLY_EV_ENERGY_USAGE_GW";
@@ -484,7 +484,7 @@ type State = {
     | EmptyObject;
   dailyStats: DailyStats;
   monthlyStats: MonthlyStats;
-  vehiclesDisplaced: VehiclesDisplaced;
+  _vehiclesDisplaced: _VehiclesDisplaced;
   selectedRegionsMonthlyEVEnergyUsageGW:
     | SelectedRegionsMonthlyEVEnergyUsageGW
     | EmptyObject;
@@ -550,7 +550,7 @@ const initialState: State = {
   _selectedRegionsEVEfficiencyPerVehicleType: {},
   dailyStats: {},
   monthlyStats: {},
-  vehiclesDisplaced: {
+  _vehiclesDisplaced: {
     batteryEVCars: 0,
     hybridEVCars: 0,
     batteryEVTrucks: 0,
@@ -1383,7 +1383,7 @@ export function setVehiclesDisplaced(): AppThunk {
     const { monthlyVMTTotals } = transportation;
     const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = impacts.inputs;
 
-    const vehiclesDisplaced = calculateVehiclesDisplaced({
+    const _vehiclesDisplaced = _calculateVehiclesDisplaced({
       batteryEVs: Number(batteryEVs),
       hybridEVs: Number(hybridEVs),
       transitBuses: Number(transitBuses),
@@ -1392,14 +1392,14 @@ export function setVehiclesDisplaced(): AppThunk {
     });
 
     dispatch({
-      type: "transportation/SET_VEHICLES_DISPLACED",
-      payload: { vehiclesDisplaced },
+      type: "transportation/_SET_VEHICLES_DISPLACED",
+      payload: { _vehiclesDisplaced },
     });
 
-    // NOTE: `monthlyEVEnergyUsageGW` uses `vehiclesDisplaced`
+    // NOTE: `monthlyEVEnergyUsageGW` uses `_vehiclesDisplaced`
     dispatch(setMonthlyEVEnergyUsage());
 
-    // NOTE: `selectedRegionsMonthlyEmissionChanges` uses `vehiclesDisplaced`
+    // NOTE: `selectedRegionsMonthlyEmissionChanges` uses `_vehiclesDisplaced`
     dispatch(setEmissionChanges());
   };
 }
@@ -1418,14 +1418,14 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
     const {
       _selectedRegionsMonthlyVMTPerVehicleType,
       _selectedRegionsEVEfficiencyPerVehicleType,
-      vehiclesDisplaced,
+      _vehiclesDisplaced,
     } = transportation;
 
     const selectedRegionsMonthlyEVEnergyUsageGW =
       calculateSelectedRegionsMonthlyEVEnergyUsageGW({
         _selectedRegionsMonthlyVMTPerVehicleType,
         _selectedRegionsEVEfficiencyPerVehicleType,
-        vehiclesDisplaced,
+        _vehiclesDisplaced,
       });
 
     const selectedRegionsMonthlyEVEnergyUsageMW =

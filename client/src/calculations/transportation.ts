@@ -266,7 +266,7 @@ export type _SelectedRegionsEVEfficiencyPerVehicleType = ReturnType<
 >;
 export type DailyStats = ReturnType<typeof calculateDailyStats>;
 export type MonthlyStats = ReturnType<typeof calculateMonthlyStats>;
-export type VehiclesDisplaced = ReturnType<typeof calculateVehiclesDisplaced>;
+export type _VehiclesDisplaced = ReturnType<typeof _calculateVehiclesDisplaced>;
 export type SelectedRegionsMonthlyEVEnergyUsageGW = ReturnType<
   typeof calculateSelectedRegionsMonthlyEVEnergyUsageGW
 >;
@@ -2692,7 +2692,7 @@ export function calculateMonthlyStats(dailyStats: DailyStats) {
  * transportation sector" table in the "Library" sheet (E297:E304), which uses
  * "Part II. Vehicle Composition" table in the "EV_Detail" sheet (L63:O67).
  */
-export function calculateVehiclesDisplaced(options: {
+export function _calculateVehiclesDisplaced(options: {
   batteryEVs: number;
   hybridEVs: number;
   transitBuses: number;
@@ -2781,12 +2781,12 @@ export function calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
   _selectedRegionsEVEfficiencyPerVehicleType:
     | _SelectedRegionsEVEfficiencyPerVehicleType
     | EmptyObject;
-  vehiclesDisplaced: VehiclesDisplaced;
+  _vehiclesDisplaced: _VehiclesDisplaced;
 }) {
   const {
     _selectedRegionsMonthlyVMTPerVehicleType,
     _selectedRegionsEVEfficiencyPerVehicleType,
-    vehiclesDisplaced,
+    _vehiclesDisplaced,
   } = options;
 
   const result = {} as {
@@ -2826,44 +2826,44 @@ export function calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
           result[regionId] ??= {};
           result[regionId][month] = {
             batteryEVCars:
-              vehiclesDisplaced.batteryEVCars *
+              _vehiclesDisplaced.batteryEVCars *
               monthlyVmt.cars *
               regionEVEfficiency.batteryEVCars *
               KWtoGW,
             hybridEVCars:
-              vehiclesDisplaced.hybridEVCars *
+              _vehiclesDisplaced.hybridEVCars *
               monthlyVmt.cars *
               regionEVEfficiency.hybridEVCars *
               KWtoGW *
               percentageHybridEVMilesDrivenOnElectricity,
             batteryEVTrucks:
-              vehiclesDisplaced.batteryEVTrucks *
+              _vehiclesDisplaced.batteryEVTrucks *
               monthlyVmt.trucks *
               regionEVEfficiency.batteryEVTrucks *
               KWtoGW,
             hybridEVTrucks:
-              vehiclesDisplaced.hybridEVTrucks *
+              _vehiclesDisplaced.hybridEVTrucks *
               monthlyVmt.trucks *
               regionEVEfficiency.hybridEVTrucks *
               KWtoGW *
               percentageHybridEVMilesDrivenOnElectricity,
             transitBusesDiesel:
-              vehiclesDisplaced.transitBusesDiesel *
+              _vehiclesDisplaced.transitBusesDiesel *
               monthlyVmt.transitBusesDiesel *
               regionEVEfficiency.transitBuses *
               KWtoGW,
             transitBusesCNG:
-              vehiclesDisplaced.transitBusesCNG *
+              _vehiclesDisplaced.transitBusesCNG *
               monthlyVmt.transitBusesCNG *
               regionEVEfficiency.transitBuses *
               KWtoGW,
             transitBusesGasoline:
-              vehiclesDisplaced.transitBusesGasoline *
+              _vehiclesDisplaced.transitBusesGasoline *
               monthlyVmt.transitBusesGasoline *
               regionEVEfficiency.transitBuses *
               KWtoGW,
             schoolBuses:
-              vehiclesDisplaced.schoolBuses *
+              _vehiclesDisplaced.schoolBuses *
               monthlyVmt.schoolBuses *
               regionEVEfficiency.schoolBuses *
               KWtoGW,
@@ -3248,7 +3248,7 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
   _selectedRegionsMonthlyVMTPerVehicleType:
     | _SelectedRegionsMonthlyVMTPerVehicleType
     | EmptyObject;
-  vehiclesDisplaced: VehiclesDisplaced;
+  _vehiclesDisplaced: _VehiclesDisplaced;
   _selectedRegionsMonthlyEmissionRates:
     | _SelectedRegionsMonthlyEmissionRates
     | EmptyObject;
@@ -3258,7 +3258,7 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
     stateVMTPercentagesByRegion,
     selectedStateId,
     _selectedRegionsMonthlyVMTPerVehicleType,
-    vehiclesDisplaced,
+    _vehiclesDisplaced,
     _selectedRegionsMonthlyEmissionRates,
   } = options;
 
@@ -3327,51 +3327,51 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
                     (stateVMTFactors ? stateVMTFactors.cars : 1) *
                     regionRatesMonthValue.cars[pollutant] *
                     regionVMTValue[month].cars *
-                    vehiclesDisplaced.batteryEVCars;
+                    _vehiclesDisplaced.batteryEVCars;
 
                   object[regionId][month].hybridEVCars[pollutant] =
                     (stateVMTFactors ? stateVMTFactors.cars : 1) *
                     regionRatesMonthValue.cars[pollutant] *
                     regionVMTValue[month].cars *
-                    vehiclesDisplaced.hybridEVCars *
+                    _vehiclesDisplaced.hybridEVCars *
                     percentageHybridEVMilesDrivenOnElectricity;
 
                   object[regionId][month].batteryEVTrucks[pollutant] =
                     (stateVMTFactors ? stateVMTFactors.trucks : 1) *
                     regionRatesMonthValue.trucks[pollutant] *
                     regionVMTValue[month].trucks *
-                    vehiclesDisplaced.batteryEVTrucks;
+                    _vehiclesDisplaced.batteryEVTrucks;
 
                   object[regionId][month].hybridEVTrucks[pollutant] =
                     (stateVMTFactors ? stateVMTFactors.trucks : 1) *
                     regionRatesMonthValue.trucks[pollutant] *
                     regionVMTValue[month].trucks *
-                    vehiclesDisplaced.hybridEVTrucks *
+                    _vehiclesDisplaced.hybridEVTrucks *
                     percentageHybridEVMilesDrivenOnElectricity;
 
                   object[regionId][month].transitBusesDiesel[pollutant] =
                     (stateVMTFactors ? stateVMTFactors.transitBuses : 1) *
                     regionRatesMonthValue.transitBusesDiesel[pollutant] *
                     regionVMTValue[month].transitBusesDiesel *
-                    vehiclesDisplaced.transitBusesDiesel;
+                    _vehiclesDisplaced.transitBusesDiesel;
 
                   object[regionId][month].transitBusesCNG[pollutant] =
                     (stateVMTFactors ? stateVMTFactors.transitBuses : 1) *
                     regionRatesMonthValue.transitBusesCNG[pollutant] *
                     regionVMTValue[month].transitBusesCNG *
-                    vehiclesDisplaced.transitBusesCNG;
+                    _vehiclesDisplaced.transitBusesCNG;
 
                   object[regionId][month].transitBusesGasoline[pollutant] =
                     (stateVMTFactors ? stateVMTFactors.transitBuses : 1) *
                     regionRatesMonthValue.transitBusesGasoline[pollutant] *
                     regionVMTValue[month].transitBusesGasoline *
-                    vehiclesDisplaced.transitBusesGasoline;
+                    _vehiclesDisplaced.transitBusesGasoline;
 
                   object[regionId][month].schoolBuses[pollutant] =
                     (stateVMTFactors ? stateVMTFactors.schoolBuses : 1) *
                     regionRatesMonthValue.schoolBuses[pollutant] *
                     regionVMTValue[month].schoolBuses *
-                    vehiclesDisplaced.schoolBuses;
+                    _vehiclesDisplaced.schoolBuses;
                 });
               },
             );
