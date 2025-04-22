@@ -215,6 +215,9 @@ export type VehicleTotalsByVehicleCategory = ReturnType<
 export type VehiclePercentagesByVehicleType = ReturnType<
   typeof calculateVehiclePercentagesByVehicleType
 >;
+export type VehiclePercentagesByVehicleTypeFuelTypeCombo = ReturnType<
+  typeof calculateVehiclePercentagesByVehicleTypeFuelTypeCombo
+>;
 export type VMTandStockByState = ReturnType<typeof storeVMTandStockByState>;
 export type LDVsFhwaMovesVMTRatioByState = ReturnType<
   typeof calculateLDVsFhwaMovesVMTRatioByState
@@ -1247,6 +1250,66 @@ export function calculateVehiclePercentagesByVehicleType(options: {
     },
     {} as {
       [vehicle in VehicleType]: number;
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Percentage/share of the total VMT each vehicle type / fuel type combo makes
+ * up of the vehicle type's total VMT (regardless of fuel type).
+ *
+ * Excel: "Vehicle Allocation" column of "Table 12: Light-duty vehicle sales by
+ * type" table in the "Library" sheet (E965:G983).
+ */
+export function calculateVehiclePercentagesByVehicleTypeFuelTypeCombo(options: {
+  movesEmissionRates: MOVESEmissionRates;
+}) {
+  const { movesEmissionRates } = options;
+
+  const initialYear = movesEmissionRates[0].year;
+
+  const vmtTotalsByVehicleType = {} as {
+    [vehicle in VehicleType]: number;
+  };
+
+  const vmtTotalsByVehicleTypeFuelTypeCombo = {} as {
+    [vehicleFuelCombo in VehicleTypeFuelTypeCombo]: number;
+  };
+
+  movesEmissionRates.forEach((data) => {
+    const { year, vehicleType, fuelType, firstYear } = data;
+
+    const vehicleFuelCombo =
+      `${vehicleType} / ${fuelType}` as VehicleTypeFuelTypeCombo;
+
+    if (year === initialYear) {
+      vmtTotalsByVehicleType[vehicleType as VehicleType] ??= 0;
+      vmtTotalsByVehicleType[vehicleType as VehicleType] += firstYear.vmt;
+
+      vmtTotalsByVehicleTypeFuelTypeCombo[vehicleFuelCombo] ??= 0;
+      vmtTotalsByVehicleTypeFuelTypeCombo[vehicleFuelCombo] += firstYear.vmt;
+    }
+  });
+
+  const result = Object.entries(vmtTotalsByVehicleTypeFuelTypeCombo).reduce(
+    (object, [vehicleFuelComboKey, vehicleFuelComboValue]) => {
+      const vehicleFuelCombo = vehicleFuelComboKey as VehicleTypeFuelTypeCombo;
+      const vehicleType = vehicleFuelCombo.split(" / ")[0] as VehicleType;
+
+      object[vehicleFuelCombo] ??= 0;
+
+      const vehicleTypeTotal = vmtTotalsByVehicleType?.[vehicleType];
+
+      if (vehicleTypeTotal) {
+        object[vehicleFuelCombo] = vehicleFuelComboValue / vehicleTypeTotal;
+      }
+
+      return object;
+    },
+    {} as {
+      [vehicleFuelCombo in VehicleTypeFuelTypeCombo]: number;
     },
   );
 
