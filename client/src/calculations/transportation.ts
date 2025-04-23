@@ -116,16 +116,16 @@ const vehicleTypeEVFuelTypeCombos = [
 
 export const vehicleTypesByVehicleCategory = {
   LDVs: ["Passenger cars", "Passenger trucks"],
-  "Transit Buses": ["Medium-duty transit buses", "Heavy-duty transit buses"],
-  "School Buses": ["Medium-duty school buses", "Heavy-duty school buses"],
-  "Other Buses": ["Medium-duty other buses", "Heavy-duty other buses"],
-  "Short-haul Trucks": [
+  "Transit buses": ["Medium-duty transit buses", "Heavy-duty transit buses"],
+  "School buses": ["Medium-duty school buses", "Heavy-duty school buses"],
+  "Other buses": ["Medium-duty other buses", "Heavy-duty other buses"],
+  "Short-haul trucks": [
     "Light-duty single unit trucks",
     "Medium-duty single unit trucks",
     "Heavy-duty combination trucks",
   ],
-  "Combination long-haul Trucks": ["Combination long-haul trucks"],
-  "Refuse Trucks": ["Medium-duty refuse trucks", "Heavy-duty refuse trucks"],
+  "Long-haul trucks": ["Combination long-haul trucks"],
+  "Refuse trucks": ["Medium-duty refuse trucks", "Heavy-duty refuse trucks"],
 } as const;
 
 const vehicleCategoryVehicleTypeCombos = [
@@ -140,7 +140,7 @@ const vehicleCategoryVehicleTypeCombos = [
   "Short-haul trucks / Light-duty single unit trucks",
   "Short-haul trucks / Medium-duty single unit trucks",
   "Short-haul trucks / Heavy-duty combination trucks",
-  "Combination long-haul Trucks / Combination long-haul trucks",
+  "Long-haul trucks / Combination long-haul trucks",
   "Refuse trucks / Medium-duty refuse trucks",
   "Refuse trucks / Heavy-duty refuse trucks",
 ] as const;
@@ -261,6 +261,9 @@ export type VehicleTypePercentagesOfVehicleCategory = ReturnType<
 >;
 export type VehicleFuelTypePercentagesOfVehicleType = ReturnType<
   typeof calculateVehicleFuelTypePercentagesOfVehicleType
+>;
+export type TotalEffectiveVehicles = ReturnType<
+  typeof calculateTotalEffectiveVehicles
 >;
 export type VMTandStockByState = ReturnType<typeof storeVMTandStockByState>;
 export type LDVsFhwaMovesVMTRatioByState = ReturnType<
@@ -1358,6 +1361,128 @@ export function calculateVehicleFuelTypePercentagesOfVehicleType(options: {
       [vehicleFuelCombo in VehicleTypeFuelTypeCombo]: number;
     },
   );
+
+  return result;
+}
+
+/**
+ * Total number of effective vehicles by vehicle category / vehicle type / fuel
+ * type combo.
+ *
+ * Excel: "Sales Changes" data from "Table 8: Calculated changes for the
+ * transportation sector" table in the "Library" sheet (E546:E567).
+ */
+export function calculateTotalEffectiveVehicles(options: {
+  vehicleTypePercentagesOfVehicleCategory:
+    | VehicleTypePercentagesOfVehicleCategory
+    | EmptyObject;
+  vehicleFuelTypePercentagesOfVehicleType:
+    | VehicleFuelTypePercentagesOfVehicleType
+    | EmptyObject;
+  batteryEVs: number;
+  hybridEVs: number;
+  transitBuses: number;
+  schoolBuses: number;
+  shortHaulTrucks: number;
+  comboLongHaulTrucks: number;
+  refuseTrucks: number;
+}) {
+  const {
+    vehicleTypePercentagesOfVehicleCategory,
+    vehicleFuelTypePercentagesOfVehicleType,
+    batteryEVs,
+    hybridEVs,
+    transitBuses,
+    schoolBuses,
+    shortHaulTrucks,
+    comboLongHaulTrucks,
+    refuseTrucks,
+  } = options;
+
+  if (
+    Object.keys(vehicleTypePercentagesOfVehicleCategory).length === 0 ||
+    Object.keys(vehicleFuelTypePercentagesOfVehicleType).length === 0
+  ) {
+    return {} as {
+      [categoryVehicleFuelCombo in VehicleCategoryVehicleTypeFuelTypeCombo]: number;
+    };
+  }
+
+  const result = {
+    "Battery EVs / Passenger cars / Gasoline": 0,
+    "Plug-in Hybrid EVs / Passenger cars / Gasoline": 0,
+    "Battery EVs / Passenger trucks / Gasoline": 0,
+    "Plug-in Hybrid EVs / Passenger trucks / Gasoline": 0,
+    "Transit buses / Medium-duty transit buses / Gasoline": 0,
+    "Transit buses / Medium-duty transit buses / Diesel Fuel": 0,
+    "Transit buses / Heavy-duty transit buses / Diesel Fuel": 0,
+    "Transit buses / Heavy-duty transit buses / Compressed Natural Gas (CNG)": 0,
+    "School buses / Medium-duty school buses / Gasoline": 0,
+    "School buses / Medium-duty school buses / Diesel Fuel": 0,
+    "School buses / Heavy-duty school buses / Diesel Fuel": 0,
+    "Other buses / Medium-duty other buses / Gasoline": 0,
+    "Other buses / Medium-duty other buses / Diesel Fuel": 0,
+    "Other buses / Heavy-duty other buses / Diesel Fuel": 0,
+    "Other buses / Heavy-duty other buses / Compressed Natural Gas (CNG)": 0,
+    "Short-haul trucks / Light-duty single unit trucks / Gasoline": 0,
+    "Short-haul trucks / Medium-duty single unit trucks / Gasoline": 0,
+    "Short-haul trucks / Medium-duty single unit trucks / Diesel Fuel": 0,
+    "Short-haul trucks / Heavy-duty combination trucks / Diesel Fuel": 0,
+    "Long-haul trucks / Combination long-haul trucks / Diesel Fuel": 0,
+    "Refuse trucks / Medium-duty refuse trucks / Diesel Fuel": 0,
+    "Refuse trucks / Heavy-duty refuse trucks / Diesel Fuel": 0,
+  };
+
+  Object.keys(result).forEach((key) => {
+    const categoryVehicleFuelCombo =
+      key as VehicleCategoryVehicleTypeFuelTypeCombo;
+
+    const [vehicleCategory, vehicleType, fuelType] = key.split(" / ");
+
+    const vehicleInputValue =
+      vehicleCategory === "Battery EVs"
+        ? batteryEVs
+        : vehicleCategory === "Plug-in Hybrid EVs"
+          ? hybridEVs
+          : vehicleCategory === "Transit buses"
+            ? transitBuses
+            : vehicleCategory === "School buses"
+              ? schoolBuses
+              : vehicleCategory === "Short-haul trucks"
+                ? shortHaulTrucks
+                : vehicleCategory === "Long-haul trucks"
+                  ? comboLongHaulTrucks
+                  : vehicleCategory === "Refuse trucks"
+                    ? refuseTrucks
+                    : 0;
+
+    /**
+     * NOTE: We use "LDVs" as the vehicle category in the
+     * `vehicleTypePercentagesOfVehicleCategory` data, so we'll need to map any
+     * "Battery EVs" and "Plug-in Hybrid EVs" vehicle categories to "LDVs" in
+     * order to get the correct vehicle type percentage value.
+     */
+    const generalizedVehicleCategory =
+      vehicleCategory === "Battery EVs" ||
+      vehicleCategory === "Plug-in Hybrid EVs"
+        ? "LDVs"
+        : vehicleCategory;
+
+    const categoryVehicleCombo =
+      `${generalizedVehicleCategory} / ${vehicleType}` as VehicleCategoryVehicleTypeCombo;
+
+    const vehicleFuelCombo =
+      `${vehicleType} / ${fuelType}` as VehicleTypeFuelTypeCombo;
+
+    const vehicleTypePercentage =
+      vehicleTypePercentagesOfVehicleCategory?.[categoryVehicleCombo] || 0;
+
+    const vehicleFuelPercengage =
+      vehicleFuelTypePercentagesOfVehicleType?.[vehicleFuelCombo] || 0;
+
+    result[categoryVehicleFuelCombo] =
+      vehicleInputValue * vehicleTypePercentage * vehicleFuelPercengage;
+  });
 
   return result;
 }

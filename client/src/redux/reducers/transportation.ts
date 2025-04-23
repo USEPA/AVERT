@@ -15,6 +15,7 @@ import {
   type VehicleCategoryTotals,
   type VehicleTypePercentagesOfVehicleCategory,
   type VehicleFuelTypePercentagesOfVehicleType,
+  type TotalEffectiveVehicles,
   type VMTandStockByState,
   type LDVsFhwaMovesVMTRatioByState,
   type VMTPerVehicleTypeByState,
@@ -61,6 +62,7 @@ import {
   calculateVehicleCategoryTotals,
   calculateVehicleTypePercentagesOfVehicleCategory,
   calculateVehicleFuelTypePercentagesOfVehicleType,
+  calculateTotalEffectiveVehicles,
   storeVMTandStockByState,
   calculateLDVsFhwaMovesVMTRatioByState,
   calculateVMTPerVehicleTypeByState,
@@ -246,6 +248,12 @@ type Action =
       type: "transportation/SET_VEHICLE_FUEL_TYPE_PERCENTAGES_OF_VEHICLE_TYPE";
       payload: {
         vehicleFuelTypePercentagesOfVehicleType: VehicleFuelTypePercentagesOfVehicleType;
+      };
+    }
+  | {
+      type: "transportation/SET_TOTAL_EFFECTIVE_VEHICLES";
+      payload: {
+        totalEffectiveVehicles: TotalEffectiveVehicles;
       };
     }
   | {
@@ -446,6 +454,7 @@ type State = {
   vehicleFuelTypePercentagesOfVehicleType:
     | VehicleFuelTypePercentagesOfVehicleType
     | EmptyObject;
+  totalEffectiveVehicles: TotalEffectiveVehicles | EmptyObject;
   vmtAndStockByState: VMTandStockByState | EmptyObject;
   ldvsFhwaMovesVMTRatioByState: LDVsFhwaMovesVMTRatioByState | EmptyObject;
   vmtPerVehicleTypeByState: VMTPerVehicleTypeByState | EmptyObject;
@@ -532,6 +541,7 @@ const initialState: State = {
   vehicleCategoryTotals: {},
   vehicleTypePercentagesOfVehicleCategory: {},
   vehicleFuelTypePercentagesOfVehicleType: {},
+  totalEffectiveVehicles: {},
   vmtAndStockByState: {},
   ldvsFhwaMovesVMTRatioByState: {},
   vmtPerVehicleTypeByState: {},
@@ -706,6 +716,15 @@ export default function reducer(
       return {
         ...state,
         vehicleFuelTypePercentagesOfVehicleType,
+      };
+    }
+
+    case "transportation/SET_TOTAL_EFFECTIVE_VEHICLES": {
+      const { totalEffectiveVehicles } = action.payload;
+
+      return {
+        ...state,
+        totalEffectiveVehicles,
       };
     }
 
@@ -1381,8 +1400,32 @@ export function setDailyAndMonthlyStats(): AppThunk {
 export function setEffectiveVehicles(): AppThunk {
   return (dispatch, getState) => {
     const { transportation, impacts } = getState();
-    const { monthlyVMTTotals } = transportation;
-    const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = impacts.inputs;
+    const {
+      monthlyVMTTotals,
+      vehicleTypePercentagesOfVehicleCategory,
+      vehicleFuelTypePercentagesOfVehicleType,
+    } = transportation;
+    const {
+      batteryEVs,
+      hybridEVs,
+      transitBuses,
+      schoolBuses,
+      shortHaulTrucks,
+      comboLongHaulTrucks,
+      refuseTrucks,
+    } = impacts.inputs;
+
+    const totalEffectiveVehicles = calculateTotalEffectiveVehicles({
+      vehicleTypePercentagesOfVehicleCategory,
+      vehicleFuelTypePercentagesOfVehicleType,
+      batteryEVs: Number(batteryEVs),
+      hybridEVs: Number(hybridEVs),
+      transitBuses: Number(transitBuses),
+      schoolBuses: Number(schoolBuses),
+      shortHaulTrucks: Number(shortHaulTrucks),
+      comboLongHaulTrucks: Number(comboLongHaulTrucks),
+      refuseTrucks: Number(refuseTrucks),
+    });
 
     const _vehiclesDisplaced = _calculateVehiclesDisplaced({
       batteryEVs: Number(batteryEVs),
@@ -1390,6 +1433,11 @@ export function setEffectiveVehicles(): AppThunk {
       transitBuses: Number(transitBuses),
       schoolBuses: Number(schoolBuses),
       monthlyVMTTotals,
+    });
+
+    dispatch({
+      type: "transportation/SET_TOTAL_EFFECTIVE_VEHICLES",
+      payload: { totalEffectiveVehicles },
     });
 
     dispatch({
