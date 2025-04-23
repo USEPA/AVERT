@@ -296,6 +296,9 @@ export type SelectedRegionsMonthlyTotalNetPM25EmissionRates = ReturnType<
 export type SelectedRegionsMonthlySalesChanges = ReturnType<
   typeof calculateSelectedRegionsMonthlySalesChanges
 >;
+export type SelectedRegionsYearlySalesChanges = ReturnType<
+  typeof calculateSelectedRegionsYearlySalesChanges
+>;
 export type HourlyEVChargingPercentages = ReturnType<
   typeof calculateHourlyEVChargingPercentages
 >;
@@ -2409,6 +2412,60 @@ export function calculateSelectedRegionsMonthlySalesChanges(options: {
         [month: number]: {
           [categoryVehicleFuelCombo in VehicleCategoryVehicleTypeFuelTypeCombo]: number;
         };
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Selected AVERT region's retail sales (GWh) for the year for each vehicle
+ * category / vehicle type / fuel type combo.
+ *
+ * Excel: "Sales Changes" data from "Table 8: Calculated changes for the
+ * transportation sector" table in the "Library" sheet (S546:S567).
+ */
+export function calculateSelectedRegionsYearlySalesChanges(options: {
+  selectedRegionsMonthlySalesChanges:
+    | SelectedRegionsMonthlySalesChanges
+    | EmptyObject;
+}) {
+  const { selectedRegionsMonthlySalesChanges } = options;
+
+  if (Object.keys(selectedRegionsMonthlySalesChanges).length === 0) {
+    return {} as {
+      [regionId in RegionId]: {
+        [categoryVehicleFuelCombo in VehicleCategoryVehicleTypeFuelTypeCombo]: number;
+      };
+    };
+  }
+
+  const result = Object.entries(selectedRegionsMonthlySalesChanges).reduce(
+    (object, [regionKey, regionValue]) => {
+      const regionId = regionKey as RegionId;
+
+      object[regionId] ??= {} as {
+        [categoryVehicleFuelCombo in VehicleCategoryVehicleTypeFuelTypeCombo]: number;
+      };
+
+      Object.values(regionValue).forEach((monthValue) => {
+        Object.entries(monthValue).forEach(([key, value]) => {
+          const categoryVehicleFuelCombo = key as VehicleCategoryVehicleTypeFuelTypeCombo; // prettier-ignore
+
+          if (!object[regionId][categoryVehicleFuelCombo]) {
+            object[regionId][categoryVehicleFuelCombo] = 0;
+          }
+
+          object[regionId][categoryVehicleFuelCombo] += value;
+        });
+      });
+
+      return object;
+    },
+    {} as {
+      [regionId in RegionId]: {
+        [categoryVehicleFuelCombo in VehicleCategoryVehicleTypeFuelTypeCombo]: number;
       };
     },
   );
