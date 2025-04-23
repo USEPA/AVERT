@@ -320,6 +320,12 @@ export type SelectedRegionsMonthlyEmissionChangesPerVehicleCategory =
   ReturnType<
     typeof calculateSelectedRegionsMonthlyEmissionChangesPerVehicleCategory
   >;
+export type SelectedRegionsMonthlyEmissionChangesTotals = ReturnType<
+  typeof calculateSelectedRegionsMonthlyEmissionChangesTotals
+>;
+export type SelectedRegionsYearlyEmissionChangesTotals = ReturnType<
+  typeof calculateSelectedRegionsYearlyEmissionChangesTotals
+>;
 export type HourlyEVChargingPercentages = ReturnType<
   typeof calculateHourlyEVChargingPercentages
 >;
@@ -2712,6 +2718,136 @@ export function calculateSelectedRegionsMonthlyEmissionChangesPerVehicleCategory
             [pollutant in Pollutant]: number;
           };
         };
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Selected AVERT region's total avoided emissions (lbs) for each month.
+ *
+ * Excel: "Emission Changes" data from "Table 8: Calculated changes for the
+ * transportation sector" table in the "Library" sheet (G768:R773).
+ */
+export function calculateSelectedRegionsMonthlyEmissionChangesTotals(options: {
+  selectedRegionsMonthlyEmissionChangesPerVehicleCategory:
+    | SelectedRegionsMonthlyEmissionChangesPerVehicleCategory
+    | EmptyObject;
+}) {
+  const { selectedRegionsMonthlyEmissionChangesPerVehicleCategory } = options;
+
+  if (
+    Object.keys(selectedRegionsMonthlyEmissionChangesPerVehicleCategory)
+      .length === 0
+  ) {
+    return {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          [pollutant in Pollutant]: number;
+        };
+      };
+    };
+  }
+
+  const result = Object.entries(
+    selectedRegionsMonthlyEmissionChangesPerVehicleCategory,
+  ).reduce(
+    (object, [regionKey, regionValue]) => {
+      const regionId = regionKey as RegionId;
+
+      object[regionId] ??= {} as {
+        [month: number]: {
+          [pollutant in Pollutant]: number;
+        };
+      };
+
+      Object.entries(regionValue).forEach(([monthKey, monthValue]) => {
+        const month = Number(monthKey);
+
+        object[regionId][month] ??= {
+          co2: 0,
+          nox: 0,
+          so2: 0,
+          pm25: 0,
+          vocs: 0,
+          nh3: 0,
+        };
+
+        Object.values(monthValue).forEach((value) => {
+          Object.entries(value).forEach(([pollutantKey, pollutantValue]) => {
+            const pollutant = pollutantKey as Pollutant;
+
+            object[regionId][month][pollutant] += pollutantValue;
+          });
+        });
+      });
+
+      return object;
+    },
+    {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          [pollutant in Pollutant]: number;
+        };
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Selected AVERT region's total avoided emissions (lbs) for the year.
+ *
+ * Excel: "Emission Changes" data from "Table 8: Calculated changes for the
+ * transportation sector" table in the "Library" sheet (S768:S773).
+ */
+export function calculateSelectedRegionsYearlyEmissionChangesTotals(options: {
+  selectedRegionsMonthlyEmissionChangesTotals:
+    | SelectedRegionsMonthlyEmissionChangesTotals
+    | EmptyObject;
+}) {
+  const { selectedRegionsMonthlyEmissionChangesTotals } = options;
+
+  if (Object.keys(selectedRegionsMonthlyEmissionChangesTotals).length === 0) {
+    return {} as {
+      [regionId in RegionId]: {
+        [pollutant in Pollutant]: number;
+      };
+    };
+  }
+
+  const result = Object.entries(
+    selectedRegionsMonthlyEmissionChangesTotals,
+  ).reduce(
+    (object, [regionKey, regionValue]) => {
+      const regionId = regionKey as RegionId;
+
+      object[regionId] ??= {
+        co2: 0,
+        nox: 0,
+        so2: 0,
+        pm25: 0,
+        vocs: 0,
+        nh3: 0,
+      };
+
+      Object.values(regionValue).forEach((monthValue) => {
+        Object.entries(monthValue).forEach(([pollutantKey, pollutantValue]) => {
+          const pollutant = pollutantKey as Pollutant;
+
+          object[regionId][pollutant] += pollutantValue;
+        });
+      });
+
+      //
+      return object;
+    },
+    {} as {
+      [regionId in RegionId]: {
+        [pollutant in Pollutant]: number;
       };
     },
   );
