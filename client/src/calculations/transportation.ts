@@ -293,6 +293,9 @@ export type SelectedRegionsMonthlyElectricityPM25EmissionRates = ReturnType<
 export type SelectedRegionsMonthlyTotalNetPM25EmissionRates = ReturnType<
   typeof calculateSelectedRegionsMonthlyTotalNetPM25EmissionRates
 >;
+export type SelectedRegionsMonthlySalesChanges = ReturnType<
+  typeof calculateSelectedRegionsMonthlySalesChanges
+>;
 export type HourlyEVChargingPercentages = ReturnType<
   typeof calculateHourlyEVChargingPercentages
 >;
@@ -2301,6 +2304,110 @@ export function calculateSelectedRegionsMonthlyTotalNetPM25EmissionRates(options
       [regionId in RegionId]: {
         [month: number]: {
           [vehicleFuelCombo in VehicleTypeFuelTypeCombo]: number;
+        };
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Selected AVERT region's retail sales (GWh) for each month for each vehicle
+ * category / vehicle type / fuel type combo.
+ *
+ * Excel: "Sales Changes" data from "Table 8: Calculated changes for the
+ * transportation sector" table in the "Library" sheet (G546:R567).
+ */
+export function calculateSelectedRegionsMonthlySalesChanges(options: {
+  totalEffectiveVehicles: TotalEffectiveVehicles | EmptyObject;
+  selectedRegionsMonthlyVMT: SelectedRegionsMonthlyVMT | EmptyObject;
+  selectedRegionsEVEfficiency: SelectedRegionsEVEfficiency | EmptyObject;
+}) {
+  const {
+    totalEffectiveVehicles,
+    selectedRegionsMonthlyVMT,
+    selectedRegionsEVEfficiency,
+  } = options;
+
+  if (
+    Object.keys(totalEffectiveVehicles).length === 0 ||
+    Object.keys(selectedRegionsMonthlyVMT).length === 0 ||
+    Object.keys(selectedRegionsEVEfficiency).length === 0
+  ) {
+    return {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          [categoryVehicleFuelCombo in VehicleCategoryVehicleTypeFuelTypeCombo]: number;
+        };
+      };
+    };
+  }
+
+  const KWtoGW = 0.000_001;
+
+  const result = Object.entries(selectedRegionsMonthlyVMT).reduce(
+    (object, [regionKey, regionValue]) => {
+      const regionId = regionKey as RegionId;
+
+      object[regionId] ??= {} as {
+        [month: number]: {
+          [categoryVehicleFuelCombo in VehicleCategoryVehicleTypeFuelTypeCombo]: number;
+        };
+      };
+
+      Object.entries(regionValue).forEach(([monthKey, monthValue]) => {
+        const month = Number(monthKey);
+
+        object[regionId][month] ??= {} as {
+          [categoryVehicleFuelCombo in VehicleCategoryVehicleTypeFuelTypeCombo]: number;
+        };
+
+        Object.entries(totalEffectiveVehicles).forEach(
+          ([vehicleKey, vehicleValue]) => {
+            const categoryVehicleFuelCombo = vehicleKey as VehicleCategoryVehicleTypeFuelTypeCombo; // prettier-ignore
+            const [vehicleCategory, vehicleType, fuelType] = vehicleKey.split(" / "); // prettier-ignore
+            const vehicleFuelCombo = `${vehicleType} / ${fuelType}` as VehicleTypeFuelTypeCombo; // prettier-ignore
+
+            /**
+             * NOTE: We use different values as the vehicle type for battery EVs
+             * and plug-in hybrid EVs in the `selectedRegionsEVEfficiency` data,
+             * so we'll need to map any "Battery EVs" and "Plug-in Hybrid EVs"
+             * vehicle categories to their respective "expanded" vehicle types
+             * in order to get the correct EV efficiency value.
+             */
+            const expandedVehicleType =
+              vehicleCategory === "Battery EVs" &&
+              vehicleType === "Passenger cars"
+                ? "BEV passenger cars"
+                : vehicleCategory === "Battery EVs" &&
+                    vehicleType === "Passenger trucks"
+                  ? "BEV passenger trucks"
+                  : vehicleCategory === "Plug-in Hybrid EVs" &&
+                      vehicleType === "Passenger cars"
+                    ? "PHEV passenger cars"
+                    : vehicleCategory === "Plug-in Hybrid EVs" &&
+                        vehicleType === "Passenger trucks"
+                      ? "PHEV passenger trucks"
+                      : (vehicleType as ExpandedVehicleType);
+
+            const vmt = monthValue?.[vehicleFuelCombo] || 0;
+            const efficiency =
+              selectedRegionsEVEfficiency?.[regionId]?.[expandedVehicleType] ||
+              0;
+
+            object[regionId][month][categoryVehicleFuelCombo] =
+              vehicleValue * vmt * efficiency * KWtoGW;
+          },
+        );
+      });
+
+      return object;
+    },
+    {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          [categoryVehicleFuelCombo in VehicleCategoryVehicleTypeFuelTypeCombo]: number;
         };
       };
     },
