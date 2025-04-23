@@ -104,6 +104,7 @@ import {
   type CountyFIPS,
   type MOVESEmissionRates,
   type RegionId,
+  percentageHybridEVMilesDrivenOnElectricity,
   percentageAdditionalEnergyConsumedFactor,
   regionAverageTemperatures,
 } from "@/config";
@@ -1520,6 +1521,7 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
         totalEffectiveVehicles,
         selectedRegionsMonthlyVMT,
         selectedRegionsEVEfficiency,
+        percentageHybridEVMilesDrivenOnElectricity,
       });
 
     const selectedRegionsYearlySalesChanges =
@@ -1532,6 +1534,7 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
         _selectedRegionsMonthlyVMTPerVehicleType,
         _selectedRegionsEVEfficiencyPerVehicleType,
         _vehiclesDisplaced,
+        percentageHybridEVMilesDrivenOnElectricity,
       });
 
     const selectedRegionsMonthlyEVEnergyUsageMW =

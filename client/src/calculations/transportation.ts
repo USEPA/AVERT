@@ -26,7 +26,6 @@ import {
   type RegionId,
   type RegionName,
   type StateId,
-  percentageHybridEVMilesDrivenOnElectricity,
   percentWeekendToWeekdayEVConsumption,
   regions,
   states,
@@ -2326,11 +2325,13 @@ export function calculateSelectedRegionsMonthlySalesChanges(options: {
   totalEffectiveVehicles: TotalEffectiveVehicles | EmptyObject;
   selectedRegionsMonthlyVMT: SelectedRegionsMonthlyVMT | EmptyObject;
   selectedRegionsEVEfficiency: SelectedRegionsEVEfficiency | EmptyObject;
+  percentageHybridEVMilesDrivenOnElectricity: number;
 }) {
   const {
     totalEffectiveVehicles,
     selectedRegionsMonthlyVMT,
     selectedRegionsEVEfficiency,
+    percentageHybridEVMilesDrivenOnElectricity,
   } = options;
 
   if (
@@ -2395,12 +2396,19 @@ export function calculateSelectedRegionsMonthlySalesChanges(options: {
                       : (vehicleType as ExpandedVehicleType);
 
             const vmt = monthValue?.[vehicleFuelCombo] || 0;
+
             const efficiency =
               selectedRegionsEVEfficiency?.[regionId]?.[expandedVehicleType] ||
               0;
 
+            /** NOTE: Additional factor applied to plug-in hybrid EVs */
+            const vehicleCategoryFactor =
+              vehicleCategory === "Plug-in Hybrid EVs"
+                ? percentageHybridEVMilesDrivenOnElectricity
+                : 1;
+
             object[regionId][month][categoryVehicleFuelCombo] =
-              vehicleValue * vmt * efficiency * KWtoGW;
+              vehicleValue * vmt * efficiency * KWtoGW * vehicleCategoryFactor;
           },
         );
       });
@@ -3117,11 +3125,13 @@ export function _calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
     | _SelectedRegionsEVEfficiencyPerVehicleType
     | EmptyObject;
   _vehiclesDisplaced: _VehiclesDisplaced;
+  percentageHybridEVMilesDrivenOnElectricity: number;
 }) {
   const {
     _selectedRegionsMonthlyVMTPerVehicleType,
     _selectedRegionsEVEfficiencyPerVehicleType,
     _vehiclesDisplaced,
+    percentageHybridEVMilesDrivenOnElectricity,
   } = options;
 
   const result = {} as {
