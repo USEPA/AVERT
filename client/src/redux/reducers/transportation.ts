@@ -11,8 +11,8 @@ import {
   type VMTTotalsByStateRegionCombo,
   type VMTTotalsByRegion,
   type VMTPercentagesByStateRegionCombo,
-  type VehicleTotalsByVehicleType,
-  type VehicleTotalsByVehicleCategory,
+  type VehicleTypeTotals,
+  type VehicleCategoryTotals,
   type VehicleTypePercentagesOfVehicleCategory,
   type VehicleFuelTypePercentagesOfVehicleType,
   type VMTandStockByState,
@@ -57,8 +57,8 @@ import {
   calculateVMTTotalsByStateRegionCombo,
   calculateVMTTotalsByRegion,
   calculateVMTPercentagesByStateRegionCombo,
-  calculateVehicleTotalsByVehicleType,
-  calculateVehicleTotalsByVehicleCategory,
+  calculateVehicleTypeTotals,
+  calculateVehicleCategoryTotals,
   calculateVehicleTypePercentagesOfVehicleCategory,
   calculateVehicleFuelTypePercentagesOfVehicleType,
   storeVMTandStockByState,
@@ -225,15 +225,15 @@ type Action =
       };
     }
   | {
-      type: "transportation/SET_VEHICLE_TOTALS_BY_VEHICLE_TYPE";
+      type: "transportation/SET_VEHICLE_TYPE_TOTALS";
       payload: {
-        vehicleTotalsByVehicleType: VehicleTotalsByVehicleType;
+        vehicleTypeTotals: VehicleTypeTotals;
       };
     }
   | {
-      type: "transportation/SET_VEHICLE_TOTALS_BY_VEHICLE_CATEGORY";
+      type: "transportation/SET_VEHICLE_CATEGORY_TOTALS";
       payload: {
-        vehicleTotalsByVehicleCategory: VehicleTotalsByVehicleCategory;
+        vehicleCategoryTotals: VehicleCategoryTotals;
       };
     }
   | {
@@ -438,8 +438,8 @@ type State = {
   vmtPercentagesByStateRegionCombo:
     | VMTPercentagesByStateRegionCombo
     | EmptyObject;
-  vehicleTotalsByVehicleType: VehicleTotalsByVehicleType | EmptyObject;
-  vehicleTotalsByVehicleCategory: VehicleTotalsByVehicleCategory | EmptyObject;
+  vehicleTypeTotals: VehicleTypeTotals | EmptyObject;
+  vehicleCategoryTotals: VehicleCategoryTotals | EmptyObject;
   vehicleTypePercentagesOfVehicleCategory:
     | VehicleTypePercentagesOfVehicleCategory
     | EmptyObject;
@@ -528,8 +528,8 @@ const initialState: State = {
   vmtTotalsByStateRegionCombo: {},
   vmtTotalsByRegion: {},
   vmtPercentagesByStateRegionCombo: {},
-  vehicleTotalsByVehicleType: {},
-  vehicleTotalsByVehicleCategory: {},
+  vehicleTypeTotals: {},
+  vehicleCategoryTotals: {},
   vehicleTypePercentagesOfVehicleCategory: {},
   vehicleFuelTypePercentagesOfVehicleType: {},
   vmtAndStockByState: {},
@@ -673,21 +673,21 @@ export default function reducer(
       };
     }
 
-    case "transportation/SET_VEHICLE_TOTALS_BY_VEHICLE_TYPE": {
-      const { vehicleTotalsByVehicleType } = action.payload;
+    case "transportation/SET_VEHICLE_TYPE_TOTALS": {
+      const { vehicleTypeTotals } = action.payload;
 
       return {
         ...state,
-        vehicleTotalsByVehicleType,
+        vehicleTypeTotals,
       };
     }
 
-    case "transportation/SET_VEHICLE_TOTALS_BY_VEHICLE_CATEGORY": {
-      const { vehicleTotalsByVehicleCategory } = action.payload;
+    case "transportation/SET_VEHICLE_CATEGORY_TOTALS": {
+      const { vehicleCategoryTotals } = action.payload;
 
       return {
         ...state,
-        vehicleTotalsByVehicleCategory,
+        vehicleCategoryTotals,
       };
     }
 
@@ -1039,20 +1039,19 @@ export function setVMTData(): AppThunk {
         vmtTotalsByRegion,
       });
 
-    const vehicleTotalsByVehicleType = calculateVehicleTotalsByVehicleType({
+    const vehicleTypeTotals = calculateVehicleTypeTotals({
       stateLevelVMT,
     });
 
-    const vehicleTotalsByVehicleCategory =
-      calculateVehicleTotalsByVehicleCategory({
-        vehicleTotalsByVehicleType,
-        vehicleTypesByVehicleCategory,
-      });
+    const vehicleCategoryTotals = calculateVehicleCategoryTotals({
+      vehicleTypeTotals,
+      vehicleTypesByVehicleCategory,
+    });
 
     const vehicleTypePercentagesOfVehicleCategory =
       calculateVehicleTypePercentagesOfVehicleCategory({
-        vehicleTotalsByVehicleType,
-        vehicleTotalsByVehicleCategory,
+        vehicleTypeTotals,
+        vehicleCategoryTotals,
         vehicleTypesByVehicleCategory,
       });
 
@@ -1126,13 +1125,13 @@ export function setVMTData(): AppThunk {
     });
 
     dispatch({
-      type: "transportation/SET_VEHICLE_TOTALS_BY_VEHICLE_TYPE",
-      payload: { vehicleTotalsByVehicleType },
+      type: "transportation/SET_VEHICLE_TYPE_TOTALS",
+      payload: { vehicleTypeTotals },
     });
 
     dispatch({
-      type: "transportation/SET_VEHICLE_TOTALS_BY_VEHICLE_CATEGORY",
-      payload: { vehicleTotalsByVehicleCategory },
+      type: "transportation/SET_VEHICLE_CATEGORY_TOTALS",
+      payload: { vehicleCategoryTotals },
     });
 
     dispatch({
