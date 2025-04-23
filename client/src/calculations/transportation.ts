@@ -183,6 +183,18 @@ const vehicleCategoryVehicleTypeFuelTypeCombos = [
   "Refuse trucks / Heavy-duty refuse trucks / Diesel Fuel",
 ] as const;
 
+/** vehicle categories with LDVs broken out into passenger cars and trucks */
+const expandedVehicleCategories = [
+  "Passenger cars",
+  "Passenger trucks",
+  "Transit buses",
+  "School buses",
+  "Other buses",
+  "Short-haul trucks",
+  "Long-haul trucks",
+  "Refuse trucks",
+] as const;
+
 const _abridgedVehicleTypes = [
   "cars",
   "trucks",
@@ -223,6 +235,7 @@ type VehicleTypesByVehicleCategory = typeof vehicleTypesByVehicleCategory;
 type VehicleCategory = keyof typeof vehicleTypesByVehicleCategory;
 type VehicleCategoryVehicleTypeCombo = (typeof vehicleCategoryVehicleTypeCombos)[number]; // prettier-ignore
 type VehicleCategoryVehicleTypeFuelTypeCombo = (typeof vehicleCategoryVehicleTypeFuelTypeCombos)[number]; // prettier-ignore
+type ExpandedVehicleCategory = (typeof expandedVehicleCategories)[number];
 
 type _AbridgedVehicleType = (typeof _abridgedVehicleTypes)[number];
 type _GeneralVehicleType = (typeof _generalVehicleTypes)[number];
@@ -303,6 +316,10 @@ export type SelectedRegionsYearlySalesChanges = ReturnType<
 export type SelectedRegionsMonthlyEmissionChanges = ReturnType<
   typeof calculateSelectedRegionsMonthlyEmissionChanges
 >;
+export type SelectedRegionsMonthlyEmissionChangesPerVehicleCategory =
+  ReturnType<
+    typeof calculateSelectedRegionsMonthlyEmissionChangesPerVehicleCategory
+  >;
 export type HourlyEVChargingPercentages = ReturnType<
   typeof calculateHourlyEVChargingPercentages
 >;
@@ -339,8 +356,8 @@ export type _SelectedRegionsMonthlyEmissionRates = ReturnType<
 export type _SelectedRegionsMonthlyEmissionChanges = ReturnType<
   typeof _calculateSelectedRegionsMonthlyEmissionChanges
 >;
-export type SelectedRegionsTotalMonthlyEmissionChanges = ReturnType<
-  typeof calculateSelectedRegionsTotalMonthlyEmissionChanges
+export type _SelectedRegionsTotalMonthlyEmissionChanges = ReturnType<
+  typeof _calculateSelectedRegionsTotalMonthlyEmissionChanges
 >;
 export type SelectedRegionsTotalYearlyEmissionChanges = ReturnType<
   typeof calculateSelectedRegionsTotalYearlyEmissionChanges
@@ -2487,8 +2504,8 @@ export function calculateSelectedRegionsYearlySalesChanges(options: {
 }
 
 /**
- * Selected AVERT region's avoided emissions (lbs) for each month for pollutant
- * for each vehicle category / vehicle type / fuel type combo.
+ * Selected AVERT region's avoided emissions (lbs) for each month for each
+ * vehicle category / vehicle type / fuel type combo.
  *
  * Excel: "Emission Changes" data from "Table 8: Calculated changes for the
  * transportation sector" table in the "Library" sheet (G546:R567).
@@ -2596,6 +2613,102 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
       [regionId in RegionId]: {
         [month: number]: {
           [categoryVehicleFuelCombo in VehicleCategoryVehicleTypeFuelTypeCombo]: {
+            [pollutant in Pollutant]: number;
+          };
+        };
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Selected AVERT region's avoided emissions (lbs) for each month for each
+ * vehicle category.
+ *
+ * Excel: "Emission Changes" data from "Table 8: Calculated changes for the
+ * transportation sector" table in the "Library" sheet (G720:R767).
+ */
+export function calculateSelectedRegionsMonthlyEmissionChangesPerVehicleCategory(options: {
+  selectedRegionsMonthlyEmissionChanges:
+    | SelectedRegionsMonthlyEmissionChanges
+    | EmptyObject;
+}) {
+  const { selectedRegionsMonthlyEmissionChanges } = options;
+
+  if (Object.keys(selectedRegionsMonthlyEmissionChanges).length === 0) {
+    return {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          [expandedVehicleCategory in ExpandedVehicleCategory]: {
+            [pollutant in Pollutant]: number;
+          };
+        };
+      };
+    };
+  }
+
+  const result = Object.entries(selectedRegionsMonthlyEmissionChanges).reduce(
+    (object, [regionKey, regionValue]) => {
+      const regionId = regionKey as RegionId;
+
+      object[regionId] ??= {} as {
+        [month: number]: {
+          [expandedVehicleCategory in ExpandedVehicleCategory]: {
+            [pollutant in Pollutant]: number;
+          };
+        };
+      };
+
+      Object.entries(regionValue).forEach(([monthKey, monthValue]) => {
+        const month = Number(monthKey);
+
+        object[regionId][month] ??= {} as {
+          [expandedVehicleCategory in ExpandedVehicleCategory]: {
+            [pollutant in Pollutant]: number;
+          };
+        };
+
+        Object.entries(monthValue).forEach(([key, value]) => {
+          const [vehicleCategory, vehicleType, _fuelType] = key.split(" / ");
+
+          /**
+           * NOTE: For these results, we want expanded vehicle categories, so
+           * we'll use "Passenger cars" and "Passenger trucks" as the vehicle
+           * category instead of "Battery EVs" or "Plug-in Hybrid EVs".
+           */
+          const expandedVehicleCategory = (
+            vehicleType === "Passenger cars" ||
+            vehicleType === "Passenger trucks"
+              ? vehicleType
+              : vehicleCategory
+          ) as ExpandedVehicleCategory;
+
+          object[regionId][month][expandedVehicleCategory] ??= {
+            co2: 0,
+            nox: 0,
+            so2: 0,
+            pm25: 0,
+            vocs: 0,
+            nh3: 0,
+          };
+
+          Object.entries(value).forEach(([pollutantKey, pollutantValue]) => {
+            const pollutant = pollutantKey as Pollutant;
+
+            object[regionId][month][expandedVehicleCategory][pollutant] +=
+              pollutantValue;
+          });
+        });
+      });
+
+      return object;
+    },
+    {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          [expandedVehicleCategory in ExpandedVehicleCategory]: {
             [pollutant in Pollutant]: number;
           };
         };
@@ -3874,7 +3987,7 @@ export function _calculateSelectedRegionsMonthlyEmissionChanges(options: {
  * changes for the transportation sector" table in the "Library" sheet
  * (F363:R392).
  */
-export function calculateSelectedRegionsTotalMonthlyEmissionChanges(options: {
+export function _calculateSelectedRegionsTotalMonthlyEmissionChanges(options: {
   _selectedRegionsMonthlyEmissionChanges:
     | _SelectedRegionsMonthlyEmissionChanges
     | EmptyObject;
@@ -3966,15 +4079,15 @@ export function calculateSelectedRegionsTotalMonthlyEmissionChanges(options: {
  * transportation sector" table in the "Library" sheet (S363:S392).
  */
 export function calculateSelectedRegionsTotalYearlyEmissionChanges(options: {
-  selectedRegionsTotalMonthlyEmissionChanges:
-    | SelectedRegionsTotalMonthlyEmissionChanges
+  _selectedRegionsTotalMonthlyEmissionChanges:
+    | _SelectedRegionsTotalMonthlyEmissionChanges
     | EmptyObject;
 }) {
-  const { selectedRegionsTotalMonthlyEmissionChanges } = options;
+  const { _selectedRegionsTotalMonthlyEmissionChanges } = options;
 
   const selectedRegionsChangesData =
-    Object.keys(selectedRegionsTotalMonthlyEmissionChanges).length !== 0
-      ? (selectedRegionsTotalMonthlyEmissionChanges as SelectedRegionsTotalMonthlyEmissionChanges)
+    Object.keys(_selectedRegionsTotalMonthlyEmissionChanges).length !== 0
+      ? (_selectedRegionsTotalMonthlyEmissionChanges as _SelectedRegionsTotalMonthlyEmissionChanges)
       : null;
 
   if (!selectedRegionsChangesData) {
