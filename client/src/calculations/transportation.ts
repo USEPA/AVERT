@@ -128,6 +128,23 @@ export const vehicleTypesByVehicleCategory = {
   "Refuse Trucks": ["Medium-duty refuse trucks", "Heavy-duty refuse trucks"],
 } as const;
 
+const vehicleCategoryVehicleTypeCombos = [
+  "LDVs / Passenger cars",
+  "LDVs / Passenger trucks",
+  "Transit buses / Medium-duty transit buses",
+  "Transit buses / Heavy-duty transit buses",
+  "School buses / Medium-duty school buses",
+  "School buses / Heavy-duty school buses",
+  "Other buses / Medium-duty other buses",
+  "Other buses / Heavy-duty other buses",
+  "Short-haul trucks / Light-duty single unit trucks",
+  "Short-haul trucks / Medium-duty single unit trucks",
+  "Short-haul trucks / Heavy-duty combination trucks",
+  "Combination long-haul Trucks / Combination long-haul trucks",
+  "Refuse trucks / Medium-duty refuse trucks",
+  "Refuse trucks / Heavy-duty refuse trucks",
+] as const;
+
 const vehicleCategoryVehicleTypeFuelTypeCombos = [
   "Battery EVs / Passenger cars / Gasoline",
   "Plug-in Hybrid EVs / Passenger cars / Gasoline",
@@ -201,8 +218,8 @@ type VehicleTypeFuelTypeCombo = (typeof vehicleTypeFuelTypeCombos)[number];
 type VehicleTypeEVFuelTypeCombo = (typeof vehicleTypeEVFuelTypeCombos)[number];
 type VehicleTypesByVehicleCategory = typeof vehicleTypesByVehicleCategory;
 type VehicleCategory = keyof typeof vehicleTypesByVehicleCategory;
-type VehicleCategoryVehicleTypeFuelTypeCombo =
-  (typeof vehicleCategoryVehicleTypeFuelTypeCombos)[number];
+type VehicleCategoryVehicleTypeCombo = (typeof vehicleCategoryVehicleTypeCombos)[number]; // prettier-ignore
+type VehicleCategoryVehicleTypeFuelTypeCombo = (typeof vehicleCategoryVehicleTypeFuelTypeCombos)[number]; // prettier-ignore
 
 type MovesPollutant = (typeof movesPollutants)[number];
 
@@ -1267,16 +1284,18 @@ export function calculateVehicleTypePercentagesOfVehicleCategory(options: {
         },
       ) as VehicleCategory;
 
+      const categoryVehicleCombo = `${category} / ${vehicle}` as VehicleCategoryVehicleTypeCombo; // prettier-ignore
+
       const categoryTotal = vehicleCategoryTotals[category];
 
-      object[vehicle] = categoryTotal
+      object[categoryVehicleCombo] = categoryTotal
         ? vehicleValue / categoryTotal
         : vehicleValue;
 
       return object;
     },
     {} as {
-      [vehicle in VehicleType]: number;
+      [categoryVehicleCombo in VehicleCategoryVehicleTypeCombo]: number;
     },
   );
 
