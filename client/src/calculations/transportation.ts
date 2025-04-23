@@ -365,8 +365,8 @@ export type _SelectedRegionsMonthlyEmissionChanges = ReturnType<
 export type _SelectedRegionsTotalMonthlyEmissionChanges = ReturnType<
   typeof _calculateSelectedRegionsTotalMonthlyEmissionChanges
 >;
-export type SelectedRegionsTotalYearlyEmissionChanges = ReturnType<
-  typeof calculateSelectedRegionsTotalYearlyEmissionChanges
+export type _SelectedRegionsTotalYearlyEmissionChanges = ReturnType<
+  typeof _calculateSelectedRegionsTotalYearlyEmissionChanges
 >;
 export type VehicleEmissionChangesByGeography = ReturnType<
   typeof calculateVehicleEmissionChangesByGeography
@@ -4294,8 +4294,8 @@ export function calculateVehicleEmissionChangesByGeography(options: {
   countiesByGeography: CountiesByGeography | EmptyObject;
   selectedGeographyRegionIds: RegionId[];
   vmtTotalsByGeography: VMTTotalsByGeography | EmptyObject;
-  selectedRegionsTotalYearlyEmissionChanges:
-    | SelectedRegionsTotalYearlyEmissionChanges
+  _selectedRegionsTotalYearlyEmissionChanges:
+    | _SelectedRegionsTotalYearlyEmissionChanges
     | EmptyObject;
   evDeploymentLocation: string;
 }) {
@@ -4306,7 +4306,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
     countiesByGeography,
     selectedGeographyRegionIds,
     vmtTotalsByGeography,
-    selectedRegionsTotalYearlyEmissionChanges,
+    _selectedRegionsTotalYearlyEmissionChanges,
     evDeploymentLocation,
   } = options;
 

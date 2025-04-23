@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Tooltip } from "@/components/Tooltip";
 import { useAppSelector } from "@/redux/index";
-import { type SelectedRegionsTotalYearlyEmissionChanges } from "@/calculations/transportation";
+import { type _SelectedRegionsTotalYearlyEmissionChanges } from "@/calculations/transportation";
 import { type CombinedSectorsEmissionsData } from "@/calculations/emissions";
 import { type EmptyObject } from "@/utilities";
 
@@ -52,15 +52,15 @@ function setAnnualPowerEmissionsChanges(options: {
  * pollutant.
  */
 function setAnnualVehicleEmissionsChanges(options: {
-  selectedRegionsTotalYearlyEmissionChanges:
-    | SelectedRegionsTotalYearlyEmissionChanges
+  _selectedRegionsTotalYearlyEmissionChanges:
+    | _SelectedRegionsTotalYearlyEmissionChanges
     | EmptyObject;
 }) {
-  const { selectedRegionsTotalYearlyEmissionChanges } = options;
+  const { _selectedRegionsTotalYearlyEmissionChanges } = options;
 
   const selectedRegionsChangesData =
-    Object.keys(selectedRegionsTotalYearlyEmissionChanges).length !== 0
-      ? (selectedRegionsTotalYearlyEmissionChanges as SelectedRegionsTotalYearlyEmissionChanges)
+    Object.keys(_selectedRegionsTotalYearlyEmissionChanges).length !== 0
+      ? (_selectedRegionsTotalYearlyEmissionChanges as _SelectedRegionsTotalYearlyEmissionChanges)
       : null;
 
   if (!selectedRegionsChangesData) {
@@ -87,9 +87,9 @@ function setAnnualVehicleEmissionsChanges(options: {
 }
 
 function VehiclesEmissionsTableContent() {
-  const selectedRegionsTotalYearlyEmissionChanges = useAppSelector(
+  const _selectedRegionsTotalYearlyEmissionChanges = useAppSelector(
     ({ transportation }) =>
-      transportation.selectedRegionsTotalYearlyEmissionChanges,
+      transportation._selectedRegionsTotalYearlyEmissionChanges,
   );
   const inputs = useAppSelector(({ impacts }) => impacts.inputs);
   const combinedSectorsEmissionsData = useAppSelector(
@@ -109,7 +109,7 @@ function VehiclesEmissionsTableContent() {
   });
 
   const annualVehicle = setAnnualVehicleEmissionsChanges({
-    selectedRegionsTotalYearlyEmissionChanges,
+    _selectedRegionsTotalYearlyEmissionChanges,
   });
 
   if (!combinedSectorsEmissionsData) return null;
