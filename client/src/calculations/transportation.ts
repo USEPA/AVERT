@@ -37,23 +37,29 @@ import {
  */
 import schoolBusMonthlyVMTPercentages from "@/data/school-bus-monthly-vmt-percentages.json";
 
-export const vehicleTypesByVehicleCategory = {
-  LDVs: ["Passenger cars", "Passenger trucks"],
-  "Transit Buses": ["Medium-duty transit buses", "Heavy-duty transit buses"],
-  "School Buses": ["Medium-duty school buses", "Heavy-duty school buses"],
-  "Other Buses": ["Medium-duty other buses", "Heavy-duty other buses"],
-  "Short-haul Trucks": [
-    "Light-duty single unit trucks",
-    "Medium-duty single unit trucks",
-    "Heavy-duty combination trucks",
-  ],
-  "Combination long-haul Trucks": ["Combination long-haul trucks"],
-  "Refuse Trucks": ["Medium-duty refuse trucks", "Heavy-duty refuse trucks"],
-} as const;
-
 const vehicleTypes = [
   "Passenger cars",
   "Passenger trucks",
+  "Medium-duty transit buses",
+  "Heavy-duty transit buses",
+  "Medium-duty school buses",
+  "Heavy-duty school buses",
+  "Medium-duty other buses",
+  "Heavy-duty other buses",
+  "Light-duty single unit trucks",
+  "Medium-duty single unit trucks",
+  "Heavy-duty combination trucks",
+  "Combination long-haul trucks",
+  "Medium-duty refuse trucks",
+  "Heavy-duty refuse trucks",
+] as const;
+
+/** vehicle types with passenger cars and trucks broken out into BEV and PHEV */
+const expandedVehicleTypes = [
+  "BEV passenger cars",
+  "BEV passenger trucks",
+  "PHEV passenger cars",
+  "PHEV passenger trucks",
   "Medium-duty transit buses",
   "Heavy-duty transit buses",
   "Medium-duty school buses",
@@ -108,24 +114,43 @@ const vehicleTypeEVFuelTypeCombos = [
   "Heavy-duty refuse trucks / Electricity",
 ] as const;
 
-/** vehicle types with passenger cars and trucks broken out into BEV and PHEV */
-const expandedVehicleTypes = [
-  "BEV passenger cars",
-  "BEV passenger trucks",
-  "PHEV passenger cars",
-  "PHEV passenger trucks",
-  "Medium-duty transit buses",
-  "Heavy-duty transit buses",
-  "Medium-duty school buses",
-  "Heavy-duty school buses",
-  "Medium-duty other buses",
-  "Heavy-duty other buses",
-  "Light-duty single unit trucks",
-  "Medium-duty single unit trucks",
-  "Heavy-duty combination trucks",
-  "Combination long-haul trucks",
-  "Medium-duty refuse trucks",
-  "Heavy-duty refuse trucks",
+export const vehicleTypesByVehicleCategory = {
+  LDVs: ["Passenger cars", "Passenger trucks"],
+  "Transit Buses": ["Medium-duty transit buses", "Heavy-duty transit buses"],
+  "School Buses": ["Medium-duty school buses", "Heavy-duty school buses"],
+  "Other Buses": ["Medium-duty other buses", "Heavy-duty other buses"],
+  "Short-haul Trucks": [
+    "Light-duty single unit trucks",
+    "Medium-duty single unit trucks",
+    "Heavy-duty combination trucks",
+  ],
+  "Combination long-haul Trucks": ["Combination long-haul trucks"],
+  "Refuse Trucks": ["Medium-duty refuse trucks", "Heavy-duty refuse trucks"],
+} as const;
+
+const vehicleCategoryVehicleTypeFuelTypeCombos = [
+  "Battery EVs / Passenger cars / Gasoline",
+  "Plug-in Hybrid EVs / Passenger cars / Gasoline",
+  "Battery EVs / Passenger trucks / Gasoline",
+  "Plug-in Hybrid EVs / Passenger trucks / Gasoline",
+  "Transit buses / Medium-duty transit buses / Gasoline",
+  "Transit buses / Medium-duty transit buses / Diesel Fuel",
+  "Transit buses / Heavy-duty transit buses / Diesel Fuel",
+  "Transit buses / Heavy-duty transit buses / Compressed Natural Gas (CNG)",
+  "School buses / Medium-duty school buses / Gasoline",
+  "School buses / Medium-duty school buses / Diesel Fuel",
+  "School buses / Heavy-duty school buses / Diesel Fuel",
+  "Other buses / Medium-duty other buses / Gasoline",
+  "Other buses / Medium-duty other buses / Diesel Fuel",
+  "Other buses / Heavy-duty other buses / Diesel Fuel",
+  "Other buses / Heavy-duty other buses / Compressed Natural Gas (CNG)",
+  "Short-haul trucks / Light-duty single unit trucks / Gasoline",
+  "Short-haul trucks / Medium-duty single unit trucks / Gasoline",
+  "Short-haul trucks / Medium-duty single unit trucks / Diesel Fuel",
+  "Short-haul trucks / Heavy-duty combination trucks / Diesel Fuel",
+  "Long-haul trucks / Combination long-haul trucks / Diesel Fuel",
+  "Refuse trucks / Medium-duty refuse trucks / Diesel Fuel",
+  "Refuse trucks / Heavy-duty refuse trucks / Diesel Fuel",
 ] as const;
 
 /** pollutants with PM2.5 broken out into exhaust, breakwear, and tirewear */
@@ -170,13 +195,17 @@ const _expandedVehicleTypes = [
 
 const pollutants = ["CO2", "NOX", "SO2", "PM25", "VOCs", "NH3"] as const;
 
-type VehicleTypesByVehicleCategory = typeof vehicleTypesByVehicleCategory;
-type VehicleCategory = keyof typeof vehicleTypesByVehicleCategory;
 type VehicleType = (typeof vehicleTypes)[number];
+type ExpandedVehicleType = (typeof expandedVehicleTypes)[number];
 type VehicleTypeFuelTypeCombo = (typeof vehicleTypeFuelTypeCombos)[number];
 type VehicleTypeEVFuelTypeCombo = (typeof vehicleTypeEVFuelTypeCombos)[number];
-type ExpandedVehicleType = (typeof expandedVehicleTypes)[number];
+type VehicleTypesByVehicleCategory = typeof vehicleTypesByVehicleCategory;
+type VehicleCategory = keyof typeof vehicleTypesByVehicleCategory;
+type VehicleCategoryVehicleTypeFuelTypeCombo =
+  (typeof vehicleCategoryVehicleTypeFuelTypeCombos)[number];
+
 type MovesPollutant = (typeof movesPollutants)[number];
+
 type _AbridgedVehicleType = (typeof _abridgedVehicleTypes)[number];
 type _GeneralVehicleType = (typeof _generalVehicleTypes)[number];
 type _ExpandedVehicleType = (typeof _expandedVehicleTypes)[number];
@@ -212,11 +241,11 @@ export type VehicleTotalsByVehicleType = ReturnType<
 export type VehicleTotalsByVehicleCategory = ReturnType<
   typeof calculateVehicleTotalsByVehicleCategory
 >;
-export type VehiclePercentagesByVehicleType = ReturnType<
-  typeof calculateVehiclePercentagesByVehicleType
+export type VehicleTypePercentagesOfVehicleCategory = ReturnType<
+  typeof calculateVehicleTypePercentagesOfVehicleCategory
 >;
-export type VehiclePercentagesByVehicleTypeFuelTypeCombo = ReturnType<
-  typeof calculateVehiclePercentagesByVehicleTypeFuelTypeCombo
+export type VehicleFuelTypePercentagesOfVehicleType = ReturnType<
+  typeof calculateVehicleFuelTypePercentagesOfVehicleType
 >;
 export type VMTandStockByState = ReturnType<typeof storeVMTandStockByState>;
 export type LDVsFhwaMovesVMTRatioByState = ReturnType<
@@ -1218,7 +1247,7 @@ export function calculateVehicleTotalsByVehicleCategory(options: {
  * Excel: "Vehicle Allocation" column of "Table 12: Light-duty vehicle sales by
  * type" table in the "Library" sheet (D965:D983).
  */
-export function calculateVehiclePercentagesByVehicleType(options: {
+export function calculateVehicleTypePercentagesOfVehicleCategory(options: {
   vehicleTotalsByVehicleType: VehicleTotalsByVehicleType | EmptyObject;
   vehicleTotalsByVehicleCategory: VehicleTotalsByVehicleCategory | EmptyObject;
   vehicleTypesByVehicleCategory: VehicleTypesByVehicleCategory;
@@ -1263,7 +1292,7 @@ export function calculateVehiclePercentagesByVehicleType(options: {
  * Excel: "Vehicle Allocation" column of "Table 12: Light-duty vehicle sales by
  * type" table in the "Library" sheet (E965:G983).
  */
-export function calculateVehiclePercentagesByVehicleTypeFuelTypeCombo(options: {
+export function calculateVehicleFuelTypePercentagesOfVehicleType(options: {
   movesEmissionRates: MOVESEmissionRates;
 }) {
   const { movesEmissionRates } = options;

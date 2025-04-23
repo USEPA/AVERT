@@ -13,8 +13,8 @@ import {
   type VMTPercentagesByStateRegionCombo,
   type VehicleTotalsByVehicleType,
   type VehicleTotalsByVehicleCategory,
-  type VehiclePercentagesByVehicleType,
-  type VehiclePercentagesByVehicleTypeFuelTypeCombo,
+  type VehicleTypePercentagesOfVehicleCategory,
+  type VehicleFuelTypePercentagesOfVehicleType,
   type VMTandStockByState,
   type LDVsFhwaMovesVMTRatioByState,
   type VMTPerVehicleTypeByState,
@@ -59,8 +59,8 @@ import {
   calculateVMTPercentagesByStateRegionCombo,
   calculateVehicleTotalsByVehicleType,
   calculateVehicleTotalsByVehicleCategory,
-  calculateVehiclePercentagesByVehicleType,
-  calculateVehiclePercentagesByVehicleTypeFuelTypeCombo,
+  calculateVehicleTypePercentagesOfVehicleCategory,
+  calculateVehicleFuelTypePercentagesOfVehicleType,
   storeVMTandStockByState,
   calculateLDVsFhwaMovesVMTRatioByState,
   calculateVMTPerVehicleTypeByState,
@@ -237,15 +237,15 @@ type Action =
       };
     }
   | {
-      type: "transportation/SET_VEHICLE_PERCENTAGES_BY_VEHICLE_TYPE";
+      type: "transportation/SET_VEHICLE_TYPE_PERCENTAGES_OF_VEHICLE_CATEGORY";
       payload: {
-        vehiclePercentagesByVehicleType: VehiclePercentagesByVehicleType;
+        vehicleTypePercentagesOfVehicleCategory: VehicleTypePercentagesOfVehicleCategory;
       };
     }
   | {
-      type: "transportation/SET_VEHICLE_PERCENTAGES_BY_VEHICLE_TYPE_FUEL_TYPE_COMBO";
+      type: "transportation/SET_VEHICLE_FUEL_TYPE_PERCENTAGES_OF_VEHICLE_TYPE";
       payload: {
-        vehiclePercentagesByVehicleTypeFuelTypeCombo: VehiclePercentagesByVehicleTypeFuelTypeCombo;
+        vehicleFuelTypePercentagesOfVehicleType: VehicleFuelTypePercentagesOfVehicleType;
       };
     }
   | {
@@ -440,11 +440,11 @@ type State = {
     | EmptyObject;
   vehicleTotalsByVehicleType: VehicleTotalsByVehicleType | EmptyObject;
   vehicleTotalsByVehicleCategory: VehicleTotalsByVehicleCategory | EmptyObject;
-  vehiclePercentagesByVehicleType:
-    | VehiclePercentagesByVehicleType
+  vehicleTypePercentagesOfVehicleCategory:
+    | VehicleTypePercentagesOfVehicleCategory
     | EmptyObject;
-  vehiclePercentagesByVehicleTypeFuelTypeCombo:
-    | VehiclePercentagesByVehicleTypeFuelTypeCombo
+  vehicleFuelTypePercentagesOfVehicleType:
+    | VehicleFuelTypePercentagesOfVehicleType
     | EmptyObject;
   vmtAndStockByState: VMTandStockByState | EmptyObject;
   ldvsFhwaMovesVMTRatioByState: LDVsFhwaMovesVMTRatioByState | EmptyObject;
@@ -530,8 +530,8 @@ const initialState: State = {
   vmtPercentagesByStateRegionCombo: {},
   vehicleTotalsByVehicleType: {},
   vehicleTotalsByVehicleCategory: {},
-  vehiclePercentagesByVehicleType: {},
-  vehiclePercentagesByVehicleTypeFuelTypeCombo: {},
+  vehicleTypePercentagesOfVehicleCategory: {},
+  vehicleFuelTypePercentagesOfVehicleType: {},
   vmtAndStockByState: {},
   ldvsFhwaMovesVMTRatioByState: {},
   vmtPerVehicleTypeByState: {},
@@ -691,21 +691,21 @@ export default function reducer(
       };
     }
 
-    case "transportation/SET_VEHICLE_PERCENTAGES_BY_VEHICLE_TYPE": {
-      const { vehiclePercentagesByVehicleType } = action.payload;
+    case "transportation/SET_VEHICLE_TYPE_PERCENTAGES_OF_VEHICLE_CATEGORY": {
+      const { vehicleTypePercentagesOfVehicleCategory } = action.payload;
 
       return {
         ...state,
-        vehiclePercentagesByVehicleType,
+        vehicleTypePercentagesOfVehicleCategory,
       };
     }
 
-    case "transportation/SET_VEHICLE_PERCENTAGES_BY_VEHICLE_TYPE_FUEL_TYPE_COMBO": {
-      const { vehiclePercentagesByVehicleTypeFuelTypeCombo } = action.payload;
+    case "transportation/SET_VEHICLE_FUEL_TYPE_PERCENTAGES_OF_VEHICLE_TYPE": {
+      const { vehicleFuelTypePercentagesOfVehicleType } = action.payload;
 
       return {
         ...state,
-        vehiclePercentagesByVehicleTypeFuelTypeCombo,
+        vehicleFuelTypePercentagesOfVehicleType,
       };
     }
 
@@ -1049,15 +1049,15 @@ export function setVMTData(): AppThunk {
         vehicleTypesByVehicleCategory,
       });
 
-    const vehiclePercentagesByVehicleType =
-      calculateVehiclePercentagesByVehicleType({
+    const vehicleTypePercentagesOfVehicleCategory =
+      calculateVehicleTypePercentagesOfVehicleCategory({
         vehicleTotalsByVehicleType,
         vehicleTotalsByVehicleCategory,
         vehicleTypesByVehicleCategory,
       });
 
-    const vehiclePercentagesByVehicleTypeFuelTypeCombo =
-      calculateVehiclePercentagesByVehicleTypeFuelTypeCombo({
+    const vehicleFuelTypePercentagesOfVehicleType =
+      calculateVehicleFuelTypePercentagesOfVehicleType({
         movesEmissionRates,
       });
 
@@ -1136,13 +1136,13 @@ export function setVMTData(): AppThunk {
     });
 
     dispatch({
-      type: "transportation/SET_VEHICLE_PERCENTAGES_BY_VEHICLE_TYPE",
-      payload: { vehiclePercentagesByVehicleType },
+      type: "transportation/SET_VEHICLE_TYPE_PERCENTAGES_OF_VEHICLE_CATEGORY",
+      payload: { vehicleTypePercentagesOfVehicleCategory },
     });
 
     dispatch({
-      type: "transportation/SET_VEHICLE_PERCENTAGES_BY_VEHICLE_TYPE_FUEL_TYPE_COMBO",
-      payload: { vehiclePercentagesByVehicleTypeFuelTypeCombo },
+      type: "transportation/SET_VEHICLE_FUEL_TYPE_PERCENTAGES_OF_VEHICLE_TYPE",
+      payload: { vehicleFuelTypePercentagesOfVehicleType },
     });
 
     dispatch({
