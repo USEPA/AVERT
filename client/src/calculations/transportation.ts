@@ -317,8 +317,8 @@ export type _SelectedRegionsEVEfficiencyPerVehicleType = ReturnType<
 export type DailyStats = ReturnType<typeof calculateDailyStats>;
 export type MonthlyStats = ReturnType<typeof calculateMonthlyStats>;
 export type _VehiclesDisplaced = ReturnType<typeof _calculateVehiclesDisplaced>;
-export type SelectedRegionsMonthlyEVEnergyUsageGW = ReturnType<
-  typeof calculateSelectedRegionsMonthlyEVEnergyUsageGW
+export type _SelectedRegionsMonthlyEVEnergyUsageGW = ReturnType<
+  typeof _calculateSelectedRegionsMonthlyEVEnergyUsageGW
 >;
 export type SelectedRegionsMonthlyEVEnergyUsageMW = ReturnType<
   typeof calculateSelectedRegionsMonthlyEVEnergyUsageMW
@@ -3052,7 +3052,7 @@ export function _calculateVehiclesDisplaced(options: {
  * Excel: "Sales Changes" data from "Table 8: Calculated changes for the
  * transportation sector" table in the "Library" sheet (G297:R304).
  */
-export function calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
+export function _calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
   _selectedRegionsMonthlyVMTPerVehicleType:
     | _SelectedRegionsMonthlyVMTPerVehicleType
     | EmptyObject;
@@ -3162,15 +3162,15 @@ export function calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
  * table) in the "CalculateEERE" sheet (T49:W61).
  */
 export function calculateSelectedRegionsMonthlyEVEnergyUsageMW(options: {
-  selectedRegionsMonthlyEVEnergyUsageGW:
-    | SelectedRegionsMonthlyEVEnergyUsageGW
+  _selectedRegionsMonthlyEVEnergyUsageGW:
+    | _SelectedRegionsMonthlyEVEnergyUsageGW
     | EmptyObject;
 }) {
-  const { selectedRegionsMonthlyEVEnergyUsageGW } = options;
+  const { _selectedRegionsMonthlyEVEnergyUsageGW } = options;
 
   const selectedRegionsEnergyData =
-    Object.keys(selectedRegionsMonthlyEVEnergyUsageGW).length !== 0
-      ? (selectedRegionsMonthlyEVEnergyUsageGW as SelectedRegionsMonthlyEVEnergyUsageGW)
+    Object.keys(_selectedRegionsMonthlyEVEnergyUsageGW).length !== 0
+      ? (_selectedRegionsMonthlyEVEnergyUsageGW as _SelectedRegionsMonthlyEVEnergyUsageGW)
       : null;
 
   if (!selectedRegionsEnergyData) {
@@ -3242,15 +3242,15 @@ export function calculateSelectedRegionsMonthlyEVEnergyUsageMW(options: {
  * transportation sector" table in the "Library" sheet (S309).
  */
 export function calculateSelectedRegionsTotalYearlyEVEnergyUsage(options: {
-  selectedRegionsMonthlyEVEnergyUsageGW:
-    | SelectedRegionsMonthlyEVEnergyUsageGW
+  _selectedRegionsMonthlyEVEnergyUsageGW:
+    | _SelectedRegionsMonthlyEVEnergyUsageGW
     | EmptyObject;
 }) {
-  const { selectedRegionsMonthlyEVEnergyUsageGW } = options;
+  const { _selectedRegionsMonthlyEVEnergyUsageGW } = options;
 
   const selectedRegionsEnergyData =
-    Object.keys(selectedRegionsMonthlyEVEnergyUsageGW).length !== 0
-      ? (selectedRegionsMonthlyEVEnergyUsageGW as SelectedRegionsMonthlyEVEnergyUsageGW)
+    Object.keys(_selectedRegionsMonthlyEVEnergyUsageGW).length !== 0
+      ? (_selectedRegionsMonthlyEVEnergyUsageGW as _SelectedRegionsMonthlyEVEnergyUsageGW)
       : null;
 
   if (!selectedRegionsEnergyData) {
