@@ -343,8 +343,8 @@ export type SelectedRegionsTotalYearlyEmissionChanges = ReturnType<
 export type VehicleEmissionChangesByGeography = ReturnType<
   typeof calculateVehicleEmissionChangesByGeography
 >;
-export type SelectedRegionsTotalYearlyEVEnergyUsage = ReturnType<
-  typeof calculateSelectedRegionsTotalYearlyEVEnergyUsage
+export type _SelectedRegionsTotalYearlyEVEnergyUsage = ReturnType<
+  typeof _calculateSelectedRegionsTotalYearlyEVEnergyUsage
 >;
 export type VehicleSalesAndStock = ReturnType<
   typeof calculateVehicleSalesAndStock
@@ -3308,7 +3308,7 @@ export function calculateSelectedRegionsMonthlyEVEnergyUsageMW(options: {
  * Excel: "Sales Changes" data from "Table 8: Calculated changes for the
  * transportation sector" table in the "Library" sheet (S309).
  */
-export function calculateSelectedRegionsTotalYearlyEVEnergyUsage(options: {
+export function _calculateSelectedRegionsTotalYearlyEVEnergyUsage(options: {
   _selectedRegionsMonthlyEVEnergyUsageGW:
     | _SelectedRegionsMonthlyEVEnergyUsageGW
     | EmptyObject;
@@ -3597,6 +3597,7 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
   _selectedRegionsMonthlyEmissionRates:
     | _SelectedRegionsMonthlyEmissionRates
     | EmptyObject;
+  percentageHybridEVMilesDrivenOnElectricity: number;
 }) {
   const {
     geographicFocus,
@@ -3605,6 +3606,7 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
     _selectedRegionsMonthlyVMTPerVehicleType,
     _vehiclesDisplaced,
     _selectedRegionsMonthlyEmissionRates,
+    percentageHybridEVMilesDrivenOnElectricity,
   } = options;
 
   const stateVMTPercentages =

@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Tooltip } from "@/components/Tooltip";
 import { useAppSelector } from "@/redux/index";
-import { type SelectedRegionsTotalYearlyEVEnergyUsage } from "@/calculations/transportation";
+import { type _SelectedRegionsTotalYearlyEVEnergyUsage } from "@/calculations/transportation";
 
 function calculatePercent(numerator: number, denominator: number) {
   return denominator !== 0
@@ -149,9 +149,9 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
   const regionalLineLoss = useAppSelector(
     ({ geography }) => geography.regionalLineLoss,
   );
-  const selectedRegionsTotalYearlyEVEnergyUsage = useAppSelector(
+  const _selectedRegionsTotalYearlyEVEnergyUsage = useAppSelector(
     ({ transportation }) =>
-      transportation.selectedRegionsTotalYearlyEVEnergyUsage,
+      transportation._selectedRegionsTotalYearlyEVEnergyUsage,
   );
   const evDeploymentLocationHistoricalEERE = useAppSelector(
     ({ transportation }) => transportation.evDeploymentLocationHistoricalEERE,
@@ -167,8 +167,8 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
   })?.name;
 
   const selectedRegionsEnergyData =
-    Object.keys(selectedRegionsTotalYearlyEVEnergyUsage).length !== 0
-      ? (selectedRegionsTotalYearlyEVEnergyUsage as SelectedRegionsTotalYearlyEVEnergyUsage)
+    Object.keys(_selectedRegionsTotalYearlyEVEnergyUsage).length !== 0
+      ? (_selectedRegionsTotalYearlyEVEnergyUsage as _SelectedRegionsTotalYearlyEVEnergyUsage)
       : null;
 
   const totalYearlyEVEnergyUsage = selectedRegionsEnergyData
