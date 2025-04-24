@@ -18,12 +18,10 @@ import pm25BreakwearTirewearEVICERatios from "@/data/pm25-breakwear-tirewear-ev-
  */
 import vmtAllocationAndRegisteredVehicles from "@/data/vmt-allocation-and-registered-vehicles.json";
 /**
- * Excel: "Table B. View charging profiles or set a manual charging profile
- * for Weekdays" table in the "EV_Detail" sheet (C23:H47), which comes from
- * "Table 9: Default EV load profiles and related values from EVI-Pro Lite"
- * table in the "Library" sheet).
+ * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
+ * Lite" table in the "Library" sheet (B782:N807).
  */
-import evChargingProfiles from "@/data/ev-charging-profiles-hourly-data.json";
+import defaultEVLoadProfiles from "@/data/default-ev-load-profiles.json";
 /**
  * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
  * (E201:J217).
@@ -165,7 +163,7 @@ export type PM25BreakwearTirewearEVICERatios =
 export type VMTAllocationAndRegisteredVehicles =
   typeof vmtAllocationAndRegisteredVehicles;
 
-export type EVChargingProfiles = typeof evChargingProfiles;
+export type DefaultEVLoadProfiles = typeof defaultEVLoadProfiles;
 
 export type EVEfficiencyAssumptions = typeof evEfficiencyAssumptions;
 

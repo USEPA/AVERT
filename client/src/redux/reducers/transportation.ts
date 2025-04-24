@@ -149,12 +149,10 @@ import vmtAllocationAndRegisteredVehicles from "@/data/vmt-allocation-and-regist
  */
 import movesEmissionRatesData from "@/data/moves-emission-rates.json";
 /**
- * Excel: "Table B. View charging profiles or set a manual charging profile
- * for Weekdays" table in the "EV_Detail" sheet (C23:H47), which comes from
- * "Table 9: Default EV load profiles and related values from EVI-Pro Lite"
- * table in the "Library" sheet).
+ * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
+ * Lite" table in the "Library" sheet (B782:N807).
  */
-import evChargingProfiles from "@/data/ev-charging-profiles-hourly-data.json";
+import defaultEVLoadProfiles from "@/data/default-ev-load-profiles.json";
 /**
  * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
  * (E201:J217).
@@ -1317,7 +1315,7 @@ export function setVMTData(): AppThunk {
 export function setHourlyEVChargingPercentages(): AppThunk {
   return (dispatch) => {
     const hourlyEVChargingPercentages = calculateHourlyEVChargingPercentages({
-      evChargingProfiles,
+      defaultEVLoadProfiles,
     });
 
     dispatch({

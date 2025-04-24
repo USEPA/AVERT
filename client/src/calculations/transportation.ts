@@ -16,7 +16,7 @@ import {
   type FHWALDVStateLevelVMT,
   type PM25BreakwearTirewearEVICERatios,
   type VMTAllocationAndRegisteredVehicles,
-  type EVChargingProfiles,
+  type DefaultEVLoadProfiles,
   type EVEfficiencyAssumptions,
   type RegionAverageTemperatures,
   type StateLDVsSales,
@@ -2860,9 +2860,9 @@ export function calculateSelectedRegionsYearlyEmissionChangesTotals(options: {
  * table) in the "CalculateEERE" sheet (P8:X32).
  */
 export function calculateHourlyEVChargingPercentages(options: {
-  evChargingProfiles: EVChargingProfiles;
+  defaultEVLoadProfiles: DefaultEVLoadProfiles;
 }) {
-  const { evChargingProfiles } = options;
+  const { defaultEVLoadProfiles } = options;
 
   const result: {
     [hour: number]: {
@@ -2873,23 +2873,23 @@ export function calculateHourlyEVChargingPercentages(options: {
     };
   } = {};
 
-  evChargingProfiles.forEach((data) => {
-    result[data.hour] = {
+  defaultEVLoadProfiles.forEach((data) => {
+    result[data["Hour Ending"]] = {
       batteryEVs: {
-        weekday: data.ldvs.weekday,
-        weekend: data.ldvs.weekend,
+        weekday: data["LDVs"]["Weekday"],
+        weekend: data["LDVs"]["Weekend"],
       },
       hybridEVs: {
-        weekday: data.ldvs.weekday,
-        weekend: data.ldvs.weekend,
+        weekday: data["LDVs"]["Weekday"],
+        weekend: data["LDVs"]["Weekend"],
       },
       transitBuses: {
-        weekday: data.buses.weekday,
-        weekend: data.buses.weekend,
+        weekday: data["Transit Buses"]["Weekday"],
+        weekend: data["Transit Buses"]["Weekend"],
       },
       schoolBuses: {
-        weekday: data.buses.weekday,
-        weekend: data.buses.weekend,
+        weekday: data["School Buses"]["Weekday"],
+        weekend: data["School Buses"]["Weekend"],
       },
     };
   });
@@ -3296,13 +3296,6 @@ export function _calculateSelectedRegionsEVEfficiencyPerVehicleType(options: {
         if (Object.hasOwn(object[regionId], vehicleType)) {
           const regionAverageTemperature = regionAverageTemperatures[regionId];
 
-          /**
-           * Climate adjustment factor for regions whose climate is more than
-           * +/-18F different from St. Louis, MO
-           *
-           * Excel: "Table 9: Default EV load profiles and related values from
-           * EVI-Pro Lite" table in the "Library" sheet (D432:D445)
-           */
           const climateAdjustmentFactor =
             regionAverageTemperature === 68
               ? 1
@@ -4214,7 +4207,7 @@ export function _calculateSelectedRegionsTotalMonthlyEmissionChanges(options: {
  * Excel: Yearly pollutant totals from the "Table 8: Calculated changes for the
  * transportation sector" table in the "Library" sheet (S363:S392).
  */
-export function calculateSelectedRegionsTotalYearlyEmissionChanges(options: {
+export function _calculateSelectedRegionsTotalYearlyEmissionChanges(options: {
   _selectedRegionsTotalMonthlyEmissionChanges:
     | _SelectedRegionsTotalMonthlyEmissionChanges
     | EmptyObject;
@@ -4352,8 +4345,8 @@ export function calculateVehicleEmissionChangesByGeography(options: {
       : null;
 
   const selectedRegionsChangesData =
-    Object.keys(selectedRegionsTotalYearlyEmissionChanges).length !== 0
-      ? (selectedRegionsTotalYearlyEmissionChanges as SelectedRegionsTotalYearlyEmissionChanges)
+    Object.keys(_selectedRegionsTotalYearlyEmissionChanges).length !== 0
+      ? (_selectedRegionsTotalYearlyEmissionChanges as _SelectedRegionsTotalYearlyEmissionChanges)
       : null;
 
   if (
