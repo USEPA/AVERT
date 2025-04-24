@@ -1,0 +1,3062 @@
+[
+  {
+    "State": "AL",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 2232799.99051152,
+    "Sales (2023)": 94934.4153069214
+  },
+  {
+    "State": "AL",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 3486392.95162245,
+    "Sales (2023)": 225860.495543752
+  },
+  {
+    "State": "AL",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 590254.3724236145,
+    "Sales (2023)": 34899.189901496204
+  },
+  {
+    "State": "AL",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 8596.21824275713,
+    "Sales (2023)": 450.655433332018
+  },
+  {
+    "State": "AL",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 2430.81731045492,
+    "Sales (2023)": 127.435227615007
+  },
+  {
+    "State": "AL",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 11951.5138850719,
+    "Sales (2023)": 626.55629682143
+  },
+  {
+    "State": "AL",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 1293.07515829186,
+    "Sales (2023)": 67.7143896944092
+  },
+  {
+    "State": "AL",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 590254.3724236145,
+    "Sales (2023)": 34899.189901496204
+  },
+  {
+    "State": "AL",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 590254.3724236145,
+    "Sales (2023)": 34899.189901496204
+  },
+  {
+    "State": "AL",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 34733.6992057472,
+    "Sales (2023)": 1824.10919567899
+  },
+  {
+    "State": "AK",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 173461.109466507,
+    "Sales (2023)": 7375.23695614143
+  },
+  {
+    "State": "AK",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 273852.940027919,
+    "Sales (2023)": 17741.132912753
+  },
+  {
+    "State": "AK",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 46967.84619055444,
+    "Sales (2023)": 2770.7273900255473
+  },
+  {
+    "State": "AK",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 690.806432001425,
+    "Sales (2023)": 36.2154220810356
+  },
+  {
+    "State": "AK",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 195.122364735624,
+    "Sales (2023)": 10.2292602804483
+  },
+  {
+    "State": "AK",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 962.851471716596,
+    "Sales (2023)": 50.4773418923391
+  },
+  {
+    "State": "AK",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 104.930517927563,
+    "Sales (2023)": 5.49489017418697
+  },
+  {
+    "State": "AK",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 46967.84619055444,
+    "Sales (2023)": 2770.7273900255473
+  },
+  {
+    "State": "AK",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 46967.84619055444,
+    "Sales (2023)": 2770.7273900255473
+  },
+  {
+    "State": "AK",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 3233.92080290894,
+    "Sales (2023)": 169.835773602475
+  },
+  {
+    "State": "AZ",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 2302433.69596405,
+    "Sales (2023)": 97895.1082220429
+  },
+  {
+    "State": "AZ",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 3353347.7956783,
+    "Sales (2023)": 217241.37392774
+  },
+  {
+    "State": "AZ",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 583602.9955895668,
+    "Sales (2023)": 34637.34316216437
+  },
+  {
+    "State": "AZ",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 8452.85477018519,
+    "Sales (2023)": 443.139625097353
+  },
+  {
+    "State": "AZ",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 2463.90318930487,
+    "Sales (2023)": 129.169749779199
+  },
+  {
+    "State": "AZ",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 11198.4810031879,
+    "Sales (2023)": 587.078662573997
+  },
+  {
+    "State": "AZ",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 1248.37907468282,
+    "Sales (2023)": 65.3737925497586
+  },
+  {
+    "State": "AZ",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 583602.9955895668,
+    "Sales (2023)": 34637.34316216437
+  },
+  {
+    "State": "AZ",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 583602.9955895668,
+    "Sales (2023)": 34637.34316216437
+  },
+  {
+    "State": "AZ",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 36283.0899145109,
+    "Sales (2023)": 1905.47852587367
+  },
+  {
+    "State": "AR",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 1098892.21369639,
+    "Sales (2023)": 46722.8100304211
+  },
+  {
+    "State": "AR",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 1748210.33023353,
+    "Sales (2023)": 113255.062461477
+  },
+  {
+    "State": "AR",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 300384.99006947334,
+    "Sales (2023)": 17711.55334663566
+  },
+  {
+    "State": "AR",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 4357.82364371264,
+    "Sales (2023)": 228.458241412905
+  },
+  {
+    "State": "AR",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 1240.24976151042,
+    "Sales (2023)": 65.0199050244383
+  },
+  {
+    "State": "AR",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 6127.02074825592,
+    "Sales (2023)": 321.208130408509
+  },
+  {
+    "State": "AR",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 673.75384465996,
+    "Sales (2023)": 35.2824274001815
+  },
+  {
+    "State": "AR",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 300384.99006947334,
+    "Sales (2023)": 17711.55334663566
+  },
+  {
+    "State": "AR",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 300384.99006947334,
+    "Sales (2023)": 17711.55334663566
+  },
+  {
+    "State": "AR",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 19982.0965334464,
+    "Sales (2023)": 1049.39948433634
+  },
+  {
+    "State": "CA",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 11474010.7264452,
+    "Sales (2023)": 487853.145901739
+  },
+  {
+    "State": "CA",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 16331512.6990097,
+    "Sales (2023)": 1058011.41820828
+  },
+  {
+    "State": "CA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 2883643.2299210774,
+    "Sales (2023)": 171373.91511050682
+  },
+  {
+    "State": "CA",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 40678.936992075,
+    "Sales (2023)": 2132.58708189447
+  },
+  {
+    "State": "CA",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 12184.0437025055,
+    "Sales (2023)": 638.746637117462
+  },
+  {
+    "State": "CA",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 53313.7167796798,
+    "Sales (2023)": 2794.96348968695
+  },
+  {
+    "State": "CA",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 6121.20348081872,
+    "Sales (2023)": 320.548697607394
+  },
+  {
+    "State": "CA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 2883643.2299210774,
+    "Sales (2023)": 171373.91511050682
+  },
+  {
+    "State": "CA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 2883643.2299210774,
+    "Sales (2023)": 171373.91511050682
+  },
+  {
+    "State": "CA",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 169071.291956595,
+    "Sales (2023)": 8879.11467639825
+  },
+  {
+    "State": "CO",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 1632375.53124833,
+    "Sales (2023)": 69405.5075595389
+  },
+  {
+    "State": "CO",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 2436848.82986519,
+    "Sales (2023)": 157867.426855149
+  },
+  {
+    "State": "CO",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 423308.39966707816,
+    "Sales (2023)": 25077.18938603124
+  },
+  {
+    "State": "CO",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 6084.60731840345,
+    "Sales (2023)": 318.984612802338
+  },
+  {
+    "State": "CO",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 1771.65593426149,
+    "Sales (2023)": 92.8787927694326
+  },
+  {
+    "State": "CO",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 8219.40679994204,
+    "Sales (2023)": 430.901150779993
+  },
+  {
+    "State": "CO",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 918.237761579125,
+    "Sales (2023)": 48.0853020963042
+  },
+  {
+    "State": "CO",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 423308.39966707816,
+    "Sales (2023)": 25077.18938603124
+  },
+  {
+    "State": "CO",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 423308.39966707816,
+    "Sales (2023)": 25077.18938603124
+  },
+  {
+    "State": "CO",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 26211.0358970821,
+    "Sales (2023)": 1376.524605828
+  },
+  {
+    "State": "CT",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 1069851.76172175,
+    "Sales (2023)": 45488.0651629107
+  },
+  {
+    "State": "CT",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 1484455.28102223,
+    "Sales (2023)": 96168.1055568318
+  },
+  {
+    "State": "CT",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 260706.20944257372,
+    "Sales (2023)": 15541.30842929734
+  },
+  {
+    "State": "CT",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 3634.35544365002,
+    "Sales (2023)": 190.530531111244
+  },
+  {
+    "State": "CT",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 1099.20539589034,
+    "Sales (2023)": 57.6256756188375
+  },
+  {
+    "State": "CT",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 4686.09187003401,
+    "Sales (2023)": 245.667653226831
+  },
+  {
+    "State": "CT",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 539.371353467738,
+    "Sales (2023)": 28.2452274985793
+  },
+  {
+    "State": "CT",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 260706.20944257372,
+    "Sales (2023)": 15541.30842929734
+  },
+  {
+    "State": "CT",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 260706.20944257372,
+    "Sales (2023)": 15541.30842929734
+  },
+  {
+    "State": "CT",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 13007.2737219074,
+    "Sales (2023)": 683.102812237148
+  },
+  {
+    "State": "DE",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 281528.464880973,
+    "Sales (2023)": 11970.0556786581
+  },
+  {
+    "State": "DE",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 418951.487539762,
+    "Sales (2023)": 27141.1145839105
+  },
+  {
+    "State": "DE",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 71344.28360770331,
+    "Sales (2023)": 4235.135575655458
+  },
+  {
+    "State": "DE",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 1025.70039557073,
+    "Sales (2023)": 53.7721871619788
+  },
+  {
+    "State": "DE",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 295.859340566008,
+    "Sales (2023)": 15.5103809097028
+  },
+  {
+    "State": "DE",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 1384.891607269,
+    "Sales (2023)": 72.6027317788887
+  },
+  {
+    "State": "DE",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 151.717007900889,
+    "Sales (2023)": 7.94495550424278
+  },
+  {
+    "State": "DE",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 71344.28360770331,
+    "Sales (2023)": 4235.135575655458
+  },
+  {
+    "State": "DE",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 71344.28360770331,
+    "Sales (2023)": 4235.135575655458
+  },
+  {
+    "State": "DE",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 3742.75586369642,
+    "Sales (2023)": 196.558257377332
+  },
+  {
+    "State": "DC",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 108742.883272514,
+    "Sales (2023)": 4623.54088415235
+  },
+  {
+    "State": "DC",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 148350.880785281,
+    "Sales (2023)": 9610.67897780227
+  },
+  {
+    "State": "DC",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 24845.63135841748,
+    "Sales (2023)": 1489.2443177608595
+  },
+  {
+    "State": "DC",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 357.761965545779,
+    "Sales (2023)": 18.7556166048474
+  },
+  {
+    "State": "DC",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 104.093402514154,
+    "Sales (2023)": 5.45708078742013
+  },
+  {
+    "State": "DC",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 452.236961453253,
+    "Sales (2023)": 23.7084538894982
+  },
+  {
+    "State": "DC",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 48.6083371707945,
+    "Sales (2023)": 2.54546989358949
+  },
+  {
+    "State": "DC",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 24845.63135841748,
+    "Sales (2023)": 1489.2443177608595
+  },
+  {
+    "State": "DC",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 24845.63135841748,
+    "Sales (2023)": 1489.2443177608595
+  },
+  {
+    "State": "DC",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 858.109362828487,
+    "Sales (2023)": 45.0653174129717
+  },
+  {
+    "State": "FL",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 7173946.21085066,
+    "Sales (2023)": 305022.568911059
+  },
+  {
+    "State": "FL",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 10296651.6050288,
+    "Sales (2023)": 667052.41383388
+  },
+  {
+    "State": "FL",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 1749644.033072352,
+    "Sales (2023)": 104208.72287448395
+  },
+  {
+    "State": "FL",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 25341.5615694306,
+    "Sales (2023)": 1328.52750917581
+  },
+  {
+    "State": "FL",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 7322.31583954728,
+    "Sales (2023)": 383.871293687245
+  },
+  {
+    "State": "FL",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 33271.0647778562,
+    "Sales (2023)": 1744.23050828376
+  },
+  {
+    "State": "FL",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 3621.55841752055,
+    "Sales (2023)": 189.64993365815
+  },
+  {
+    "State": "FL",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 1749644.033072352,
+    "Sales (2023)": 104208.72287448395
+  },
+  {
+    "State": "FL",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 1749644.033072352,
+    "Sales (2023)": 104208.72287448395
+  },
+  {
+    "State": "FL",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 86364.5391438779,
+    "Sales (2023)": 4535.60529501156
+  },
+  {
+    "State": "GA",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 3925244.55130022,
+    "Sales (2023)": 166893.943925983
+  },
+  {
+    "State": "GA",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 5785469.86047753,
+    "Sales (2023)": 374802.584726659
+  },
+  {
+    "State": "GA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 989967.5617707472,
+    "Sales (2023)": 58790.644991385394
+  },
+  {
+    "State": "GA",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 14243.1087336844,
+    "Sales (2023)": 746.69280805915
+  },
+  {
+    "State": "GA",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 4124.23117889705,
+    "Sales (2023)": 216.212191989572
+  },
+  {
+    "State": "GA",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 19089.1405701626,
+    "Sales (2023)": 1000.74528968953
+  },
+  {
+    "State": "GA",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 2100.45125486795,
+    "Sales (2023)": 109.994205591362
+  },
+  {
+    "State": "GA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 989967.5617707472,
+    "Sales (2023)": 58790.644991385394
+  },
+  {
+    "State": "GA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 989967.5617707472,
+    "Sales (2023)": 58790.644991385394
+  },
+  {
+    "State": "GA",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 53267.7903086715,
+    "Sales (2023)": 2797.46379906089
+  },
+  {
+    "State": "HI",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 304100.857608477,
+    "Sales (2023)": 12929.7909504112
+  },
+  {
+    "State": "HI",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 438425.464638688,
+    "Sales (2023)": 28402.7056262295
+  },
+  {
+    "State": "HI",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 74083.56382048481,
+    "Sales (2023)": 4414.759830245395
+  },
+  {
+    "State": "HI",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 1051.90233152061,
+    "Sales (2023)": 55.1458196671306
+  },
+  {
+    "State": "HI",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 306.415857784482,
+    "Sales (2023)": 16.0638047185477
+  },
+  {
+    "State": "HI",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 1393.38882454565,
+    "Sales (2023)": 73.0481971016373
+  },
+  {
+    "State": "HI",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 152.488031916924,
+    "Sales (2023)": 7.98533167290609
+  },
+  {
+    "State": "HI",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 74083.56382048481,
+    "Sales (2023)": 4414.759830245395
+  },
+  {
+    "State": "HI",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 74083.56382048481,
+    "Sales (2023)": 4414.759830245395
+  },
+  {
+    "State": "HI",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 3081.27477599566,
+    "Sales (2023)": 161.819264340764
+  },
+  {
+    "State": "ID",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 554946.865852718,
+    "Sales (2023)": 23595.2868416426
+  },
+  {
+    "State": "ID",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 905558.872693781,
+    "Sales (2023)": 58665.2103101223
+  },
+  {
+    "State": "ID",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 154334.732512628,
+    "Sales (2023)": 9083.96347000269
+  },
+  {
+    "State": "ID",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 2273.64708832522,
+    "Sales (2023)": 119.195602635682
+  },
+  {
+    "State": "ID",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 635.681749543714,
+    "Sales (2023)": 33.3255189912436
+  },
+  {
+    "State": "ID",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 3234.37614463759,
+    "Sales (2023)": 169.561677223412
+  },
+  {
+    "State": "ID",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 350.17070819293,
+    "Sales (2023)": 18.3373685915256
+  },
+  {
+    "State": "ID",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 154334.732512628,
+    "Sales (2023)": 9083.96347000269
+  },
+  {
+    "State": "ID",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 154334.732512628,
+    "Sales (2023)": 9083.96347000269
+  },
+  {
+    "State": "ID",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 10794.9008976206,
+    "Sales (2023)": 566.915659548727
+  },
+  {
+    "State": "IL",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 3179993.18268365,
+    "Sales (2023)": 135207.271032327
+  },
+  {
+    "State": "IL",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 4683251.57880261,
+    "Sales (2023)": 303397.103258878
+  },
+  {
+    "State": "IL",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 807638.4962775903,
+    "Sales (2023)": 47925.801912817
+  },
+  {
+    "State": "IL",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 11696.526097385,
+    "Sales (2023)": 613.188600852191
+  },
+  {
+    "State": "IL",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 3387.22031151947,
+    "Sales (2023)": 177.574509414645
+  },
+  {
+    "State": "IL",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 15629.4120095328,
+    "Sales (2023)": 819.369546348509
+  },
+  {
+    "State": "IL",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 1726.77970628857,
+    "Sales (2023)": 90.4261698929253
+  },
+  {
+    "State": "IL",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 807638.4962775903,
+    "Sales (2023)": 47925.801912817
+  },
+  {
+    "State": "IL",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 807638.4962775903,
+    "Sales (2023)": 47925.801912817
+  },
+  {
+    "State": "IL",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 47820.329047144,
+    "Sales (2023)": 2511.37955213411
+  },
+  {
+    "State": "IN",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 2540259.29582712,
+    "Sales (2023)": 108007.001075842
+  },
+  {
+    "State": "IN",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 3894538.5795483,
+    "Sales (2023)": 252301.569472166
+  },
+  {
+    "State": "IN",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 661200.6250428597,
+    "Sales (2023)": 39143.36068592092
+  },
+  {
+    "State": "IN",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 9664.76363720089,
+    "Sales (2023)": 506.673763040401
+  },
+  {
+    "State": "IN",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 2740.61157474582,
+    "Sales (2023)": 143.676144780578
+  },
+  {
+    "State": "IN",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 13258.781826003,
+    "Sales (2023)": 695.08961970417
+  },
+  {
+    "State": "IN",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 1435.40186081892,
+    "Sales (2023)": 75.1676036371846
+  },
+  {
+    "State": "IN",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 661200.6250428597,
+    "Sales (2023)": 39143.36068592092
+  },
+  {
+    "State": "IN",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 661200.6250428597,
+    "Sales (2023)": 39143.36068592092
+  },
+  {
+    "State": "IN",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 39130.9772697631,
+    "Sales (2023)": 2055.04098630155
+  },
+  {
+    "State": "IA",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 938377.930287702,
+    "Sales (2023)": 39898.0475310613
+  },
+  {
+    "State": "IA",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 1560755.63221122,
+    "Sales (2023)": 101111.104056667
+  },
+  {
+    "State": "IA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 265917.1950286316,
+    "Sales (2023)": 15628.14780201066
+  },
+  {
+    "State": "IA",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 3911.7297285083,
+    "Sales (2023)": 205.07183578825
+  },
+  {
+    "State": "IA",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 1090.68632535293,
+    "Sales (2023)": 57.1790646422192
+  },
+  {
+    "State": "IA",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 5629.9988813978,
+    "Sales (2023)": 295.151834667861
+  },
+  {
+    "State": "IA",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 609.902692672052,
+    "Sales (2023)": 31.9387379321558
+  },
+  {
+    "State": "IA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 265917.1950286316,
+    "Sales (2023)": 15628.14780201066
+  },
+  {
+    "State": "IA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 265917.1950286316,
+    "Sales (2023)": 15628.14780201066
+  },
+  {
+    "State": "IA",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 18971.3929088897,
+    "Sales (2023)": 996.320376213165
+  },
+  {
+    "State": "KS",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 898118.246342728,
+    "Sales (2023)": 38186.2822265112
+  },
+  {
+    "State": "KS",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 1426448.78234865,
+    "Sales (2023)": 92410.245580355
+  },
+  {
+    "State": "KS",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 247385.23034283728,
+    "Sales (2023)": 14573.840803937515
+  },
+  {
+    "State": "KS",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 3626.97372867692,
+    "Sales (2023)": 190.143545827018
+  },
+  {
+    "State": "KS",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 1031.06821343284,
+    "Sales (2023)": 54.0535941966051
+  },
+  {
+    "State": "KS",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 5072.0865531937,
+    "Sales (2023)": 265.903365756553
+  },
+  {
+    "State": "KS",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 559.465231247846,
+    "Sales (2023)": 29.297482397878
+  },
+  {
+    "State": "KS",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 247385.23034283728,
+    "Sales (2023)": 14573.840803937515
+  },
+  {
+    "State": "KS",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 247385.23034283728,
+    "Sales (2023)": 14573.840803937515
+  },
+  {
+    "State": "KS",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 18207.942602641,
+    "Sales (2023)": 956.226267151446
+  },
+  {
+    "State": "KY",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 1503451.86417274,
+    "Sales (2023)": 63923.9180732181
+  },
+  {
+    "State": "KY",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 2405315.65530868,
+    "Sales (2023)": 155824.599632221
+  },
+  {
+    "State": "KY",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 418444.48835256544,
+    "Sales (2023)": 24625.094771434684
+  },
+  {
+    "State": "KY",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 6190.75910888467,
+    "Sales (2023)": 324.549604265716
+  },
+  {
+    "State": "KY",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 1751.06402773324,
+    "Sales (2023)": 91.7992652030587
+  },
+  {
+    "State": "KY",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 8668.43693096357,
+    "Sales (2023)": 454.441487072076
+  },
+  {
+    "State": "KY",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 954.266118475137,
+    "Sales (2023)": 49.9719969131226
+  },
+  {
+    "State": "KY",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 418444.48835256544,
+    "Sales (2023)": 24625.094771434684
+  },
+  {
+    "State": "KY",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 418444.48835256544,
+    "Sales (2023)": 24625.094771434684
+  },
+  {
+    "State": "KY",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 32809.4420030834,
+    "Sales (2023)": 1723.05300706405
+  },
+  {
+    "State": "LA",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 1593014.50699905,
+    "Sales (2023)": 67731.9515586133
+  },
+  {
+    "State": "LA",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 2448952.37346783,
+    "Sales (2023)": 158651.535931166
+  },
+  {
+    "State": "LA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 423045.7529517077,
+    "Sales (2023)": 25001.36439957569
+  },
+  {
+    "State": "LA",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 6178.54746453886,
+    "Sales (2023)": 323.909410669073
+  },
+  {
+    "State": "LA",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 1767.41924970656,
+    "Sales (2023)": 92.6566852263161
+  },
+  {
+    "State": "LA",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 8477.82767700255,
+    "Sales (2023)": 444.448825937248
+  },
+  {
+    "State": "LA",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 933.708502468171,
+    "Sales (2023)": 48.8954574617556
+  },
+  {
+    "State": "LA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 423045.7529517077,
+    "Sales (2023)": 25001.36439957569
+  },
+  {
+    "State": "LA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 423045.7529517077,
+    "Sales (2023)": 25001.36439957569
+  },
+  {
+    "State": "LA",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 28432.1204506875,
+    "Sales (2023)": 1493.16927228327
+  },
+  {
+    "State": "ME",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 409533.323779991,
+    "Sales (2023)": 17412.5791862112
+  },
+  {
+    "State": "ME",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 704875.104582375,
+    "Sales (2023)": 45664.2273623636
+  },
+  {
+    "State": "ME",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 119877.45883867808,
+    "Sales (2023)": 7028.344688911934
+  },
+  {
+    "State": "ME",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 1749.77134706356,
+    "Sales (2023)": 91.7314966156517
+  },
+  {
+    "State": "ME",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 486.665154393975,
+    "Sales (2023)": 25.5133466656457
+  },
+  {
+    "State": "ME",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 2574.72373247128,
+    "Sales (2023)": 134.979499891677
+  },
+  {
+    "State": "ME",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 279.618629797067,
+    "Sales (2023)": 14.6427721099422
+  },
+  {
+    "State": "ME",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 119877.45883867808,
+    "Sales (2023)": 7028.344688911934
+  },
+  {
+    "State": "ME",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 119877.45883867808,
+    "Sales (2023)": 7028.344688911934
+  },
+  {
+    "State": "ME",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 8595.36114278115,
+    "Sales (2023)": 451.402460989086
+  },
+  {
+    "State": "MD",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 1744862.3924914,
+    "Sales (2023)": 74188.2352768455
+  },
+  {
+    "State": "MD",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 2495035.27280036,
+    "Sales (2023)": 161636.944238194
+  },
+  {
+    "State": "MD",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 435541.0415804597,
+    "Sales (2023)": 25900.67200736098
+  },
+  {
+    "State": "MD",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 6137.48871813395,
+    "Sales (2023)": 321.756912136505
+  },
+  {
+    "State": "MD",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 1827.89582526582,
+    "Sales (2023)": 95.8271604975853
+  },
+  {
+    "State": "MD",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 8079.150013904,
+    "Sales (2023)": 423.548210114138
+  },
+  {
+    "State": "MD",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 917.752042609648,
+    "Sales (2023)": 48.0598664799982
+  },
+  {
+    "State": "MD",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 435541.0415804597,
+    "Sales (2023)": 25900.67200736098
+  },
+  {
+    "State": "MD",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 435541.0415804597,
+    "Sales (2023)": 25900.67200736098
+  },
+  {
+    "State": "MD",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 23366.2066963781,
+    "Sales (2023)": 1227.12275045978
+  },
+  {
+    "State": "MA",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 1899922.92213863,
+    "Sales (2023)": 80781.114523441
+  },
+  {
+    "State": "MA",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 2607275.11339164,
+    "Sales (2023)": 168908.226152616
+  },
+  {
+    "State": "MA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 450042.14274309314,
+    "Sales (2023)": 26892.894630427636
+  },
+  {
+    "State": "MA",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 6349.93428915791,
+    "Sales (2023)": 332.894338870632
+  },
+  {
+    "State": "MA",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 1895.27512522938,
+    "Sales (2023)": 99.3595100453962
+  },
+  {
+    "State": "MA",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 8096.95214468045,
+    "Sales (2023)": 424.481484111231
+  },
+  {
+    "State": "MA",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 909.559952946096,
+    "Sales (2023)": 47.6308718091687
+  },
+  {
+    "State": "MA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 450042.14274309314,
+    "Sales (2023)": 26892.894630427636
+  },
+  {
+    "State": "MA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 450042.14274309314,
+    "Sales (2023)": 26892.894630427636
+  },
+  {
+    "State": "MA",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 19752.4615319468,
+    "Sales (2023)": 1037.33974617244
+  },
+  {
+    "State": "MI",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 2899209.39019074,
+    "Sales (2023)": 123268.877409409
+  },
+  {
+    "State": "MI",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 4363684.27475579,
+    "Sales (2023)": 282694.437020981
+  },
+  {
+    "State": "MI",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 749294.3010623875,
+    "Sales (2023)": 44398.97951914803
+  },
+  {
+    "State": "MI",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 10806.4017189481,
+    "Sales (2023)": 566.52396575851
+  },
+  {
+    "State": "MI",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 3117.39219150831,
+    "Sales (2023)": 163.428811281486
+  },
+  {
+    "State": "MI",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 14681.9232308878,
+    "Sales (2023)": 769.697591302782
+  },
+  {
+    "State": "MI",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 1618.83157278806,
+    "Sales (2023)": 84.7732564240028
+  },
+  {
+    "State": "MI",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 749294.3010623875,
+    "Sales (2023)": 44398.97951914803
+  },
+  {
+    "State": "MI",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 749294.3010623875,
+    "Sales (2023)": 44398.97951914803
+  },
+  {
+    "State": "MI",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 43824.8346278423,
+    "Sales (2023)": 2301.54822756485
+  },
+  {
+    "State": "MN",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 1694711.39478114,
+    "Sales (2023)": 72055.9100954974
+  },
+  {
+    "State": "MN",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 2657558.50115899,
+    "Sales (2023)": 172165.756510307
+  },
+  {
+    "State": "MN",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 454957.84152415517,
+    "Sales (2023)": 26875.3163445436
+  },
+  {
+    "State": "MN",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 6501.05376591847,
+    "Sales (2023)": 340.816754444692
+  },
+  {
+    "State": "MN",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 1868.20587347686,
+    "Sales (2023)": 97.940408641266
+  },
+  {
+    "State": "MN",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 9103.64509743091,
+    "Sales (2023)": 477.257208975626
+  },
+  {
+    "State": "MN",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 1005.6601273161,
+    "Sales (2023)": 52.6633439089247
+  },
+  {
+    "State": "MN",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 454957.84152415517,
+    "Sales (2023)": 26875.3163445436
+  },
+  {
+    "State": "MN",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 454957.84152415517,
+    "Sales (2023)": 26875.3163445436
+  },
+  {
+    "State": "MN",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 26830.8314703403,
+    "Sales (2023)": 1409.07440128527
+  },
+  {
+    "State": "MS",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 1257399.49425281,
+    "Sales (2023)": 53462.2385799823
+  },
+  {
+    "State": "MS",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 2085124.94291756,
+    "Sales (2023)": 135081.546863166
+  },
+  {
+    "State": "MS",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 354793.2054880983,
+    "Sales (2023)": 20863.860290104323
+  },
+  {
+    "State": "MS",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 5161.40290072352,
+    "Sales (2023)": 270.585761684972
+  },
+  {
+    "State": "MS",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 1448.18328099185,
+    "Sales (2023)": 75.9207881430245
+  },
+  {
+    "State": "MS",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 7443.87145233064,
+    "Sales (2023)": 390.24382819089
+  },
+  {
+    "State": "MS",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 810.010640273546,
+    "Sales (2023)": 42.4177788896323
+  },
+  {
+    "State": "MS",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 354793.2054880983,
+    "Sales (2023)": 20863.860290104323
+  },
+  {
+    "State": "MS",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 354793.2054880983,
+    "Sales (2023)": 20863.860290104323
+  },
+  {
+    "State": "MS",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 23845.8816327645,
+    "Sales (2023)": 1252.31383238907
+  },
+  {
+    "State": "MO",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 2370858.75978715,
+    "Sales (2023)": 100804.4119904
+  },
+  {
+    "State": "MO",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 3698304.90677914,
+    "Sales (2023)": 239588.878966815
+  },
+  {
+    "State": "MO",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 645789.0695073535,
+    "Sales (2023)": 38085.71187109135
+  },
+  {
+    "State": "MO",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 9401.77223975556,
+    "Sales (2023)": 492.886479047445
+  },
+  {
+    "State": "MO",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 2701.7501730805,
+    "Sales (2023)": 141.638841711623
+  },
+  {
+    "State": "MO",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 13018.2983083476,
+    "Sales (2023)": 682.482307884288
+  },
+  {
+    "State": "MO",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 1450.65854573841,
+    "Sales (2023)": 75.9665495464448
+  },
+  {
+    "State": "MO",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 645789.0695073535,
+    "Sales (2023)": 38085.71187109135
+  },
+  {
+    "State": "MO",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 645789.0695073535,
+    "Sales (2023)": 38085.71187109135
+  },
+  {
+    "State": "MO",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 46969.1764272893,
+    "Sales (2023)": 2466.67958189466
+  },
+  {
+    "State": "MT",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 373117.588241969,
+    "Sales (2023)": 15864.2512679181
+  },
+  {
+    "State": "MT",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 639822.240110444,
+    "Sales (2023)": 41449.8796367771
+  },
+  {
+    "State": "MT",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 109438.72275893255,
+    "Sales (2023)": 6412.2999712600995
+  },
+  {
+    "State": "MT",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 1631.1196158196,
+    "Sales (2023)": 85.5111976598413
+  },
+  {
+    "State": "MT",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 449.921421436468,
+    "Sales (2023)": 23.5870620564627
+  },
+  {
+    "State": "MT",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 2376.40233988228,
+    "Sales (2023)": 124.582531062796
+  },
+  {
+    "State": "MT",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 256.699643550334,
+    "Sales (2023)": 13.4425749240631
+  },
+  {
+    "State": "MT",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 109438.72275893255,
+    "Sales (2023)": 6412.2999712600995
+  },
+  {
+    "State": "MT",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 109438.72275893255,
+    "Sales (2023)": 6412.2999712600995
+  },
+  {
+    "State": "MT",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 8758.42969007855,
+    "Sales (2023)": 459.966329608124
+  },
+  {
+    "State": "NE",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 616644.794182317,
+    "Sales (2023)": 26218.5655842572
+  },
+  {
+    "State": "NE",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 1003244.65539353,
+    "Sales (2023)": 64993.6304263566
+  },
+  {
+    "State": "NE",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 173272.6290662925,
+    "Sales (2023)": 10188.833145054341
+  },
+  {
+    "State": "NE",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 2565.44532009561,
+    "Sales (2023)": 134.493080534734
+  },
+  {
+    "State": "NE",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 720.520797696676,
+    "Sales (2023)": 37.7731931811193
+  },
+  {
+    "State": "NE",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 3630.74753051117,
+    "Sales (2023)": 190.341386813938
+  },
+  {
+    "State": "NE",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 396.901086026476,
+    "Sales (2023)": 20.7844955005041
+  },
+  {
+    "State": "NE",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 173272.6290662925,
+    "Sales (2023)": 10188.833145054341
+  },
+  {
+    "State": "NE",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 173272.6290662925,
+    "Sales (2023)": 10188.833145054341
+  },
+  {
+    "State": "NE",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 13362.838178166,
+    "Sales (2023)": 701.775985816383
+  },
+  {
+    "State": "NV",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 838791.852987812,
+    "Sales (2023)": 35663.8366472602
+  },
+  {
+    "State": "NV",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 1216792.86459747,
+    "Sales (2023)": 78828.0159998009
+  },
+  {
+    "State": "NV",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 209551.8553204802,
+    "Sales (2023)": 12452.558534769467
+  },
+  {
+    "State": "NV",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 3044.18553538095,
+    "Sales (2023)": 159.590963473509
+  },
+  {
+    "State": "NV",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 881.963657752359,
+    "Sales (2023)": 46.2368105535673
+  },
+  {
+    "State": "NV",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 4021.35004767894,
+    "Sales (2023)": 210.818664340382
+  },
+  {
+    "State": "NV",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 442.954760803707,
+    "Sales (2023)": 23.1961855408916
+  },
+  {
+    "State": "NV",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 209551.8553204802,
+    "Sales (2023)": 12452.558534769467
+  },
+  {
+    "State": "NV",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 209551.8553204802,
+    "Sales (2023)": 12452.558534769467
+  },
+  {
+    "State": "NV",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 12097.5151459005,
+    "Sales (2023)": 635.325033817639
+  },
+  {
+    "State": "NH",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 404361.713906651,
+    "Sales (2023)": 17192.6921557529
+  },
+  {
+    "State": "NH",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 624857.669208374,
+    "Sales (2023)": 40480.4233974945
+  },
+  {
+    "State": "NH",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 108296.58213995596,
+    "Sales (2023)": 6398.324202796892
+  },
+  {
+    "State": "NH",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 1550.27528155624,
+    "Sales (2023)": 81.2729457377717
+  },
+  {
+    "State": "NH",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 449.057000852814,
+    "Sales (2023)": 23.5417449388992
+  },
+  {
+    "State": "NH",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 2146.16826298372,
+    "Sales (2023)": 112.512544614984
+  },
+  {
+    "State": "NH",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 239.671683311835,
+    "Sales (2023)": 12.5508727458125
+  },
+  {
+    "State": "NH",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 108296.58213995596,
+    "Sales (2023)": 6398.324202796892
+  },
+  {
+    "State": "NH",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 108296.58213995596,
+    "Sales (2023)": 6398.324202796892
+  },
+  {
+    "State": "NH",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 6877.30924444824,
+    "Sales (2023)": 361.175553459345
+  },
+  {
+    "State": "NJ",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 1992140.50081161,
+    "Sales (2023)": 84702.0308390728
+  },
+  {
+    "State": "NJ",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 3506056.08029146,
+    "Sales (2023)": 227134.340473669
+  },
+  {
+    "State": "NJ",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 611513.9346937821,
+    "Sales (2023)": 35693.78263995974
+  },
+  {
+    "State": "NJ",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 9242.09784661262,
+    "Sales (2023)": 484.515573283799
+  },
+  {
+    "State": "NJ",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 2544.16597626849,
+    "Sales (2023)": 133.377514172571
+  },
+  {
+    "State": "NJ",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 13543.425480451,
+    "Sales (2023)": 710.01201997577
+  },
+  {
+    "State": "NJ",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 1478.00592856712,
+    "Sales (2023)": 77.3986483120194
+  },
+  {
+    "State": "NJ",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 611513.9346937821,
+    "Sales (2023)": 35693.78263995974
+  },
+  {
+    "State": "NJ",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 611513.9346937821,
+    "Sales (2023)": 35693.78263995974
+  },
+  {
+    "State": "NJ",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 58299.0837008021,
+    "Sales (2023)": 3061.69216380776
+  },
+  {
+    "State": "NM",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 748885.700288118,
+    "Sales (2023)": 31841.1977744049
+  },
+  {
+    "State": "NM",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 1239414.4860245,
+    "Sales (2023)": 80293.5222397483
+  },
+  {
+    "State": "NM",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 212883.7796853712,
+    "Sales (2023)": 12507.298617589
+  },
+  {
+    "State": "NM",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 3141.10894191141,
+    "Sales (2023)": 164.672158312507
+  },
+  {
+    "State": "NM",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 878.785718094909,
+    "Sales (2023)": 46.0702075505971
+  },
+  {
+    "State": "NM",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 4498.23820608438,
+    "Sales (2023)": 235.819453479046
+  },
+  {
+    "State": "NM",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 490.155354417836,
+    "Sales (2023)": 25.667936211608
+  },
+  {
+    "State": "NM",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 212883.7796853712,
+    "Sales (2023)": 12507.298617589
+  },
+  {
+    "State": "NM",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 212883.7796853712,
+    "Sales (2023)": 12507.298617589
+  },
+  {
+    "State": "NM",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 16047.37076892,
+    "Sales (2023)": 842.759546360489
+  },
+  {
+    "State": "NY",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 3534653.04921116,
+    "Sales (2023)": 150286.735025833
+  },
+  {
+    "State": "NY",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 5124943.17092188,
+    "Sales (2023)": 332011.399827812
+  },
+  {
+    "State": "NY",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 886379.8079601445,
+    "Sales (2023)": 52679.555978451055
+  },
+  {
+    "State": "NY",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 12598.9106789601,
+    "Sales (2023)": 660.49597522981
+  },
+  {
+    "State": "NY",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 3706.0068316765,
+    "Sales (2023)": 194.28684422569
+  },
+  {
+    "State": "NY",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 16727.8347900997,
+    "Sales (2023)": 876.9541934781
+  },
+  {
+    "State": "NY",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 1873.19595047832,
+    "Sales (2023)": 98.0935406200482
+  },
+  {
+    "State": "NY",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 886379.8079601445,
+    "Sales (2023)": 52679.555978451055
+  },
+  {
+    "State": "NY",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 886379.8079601445,
+    "Sales (2023)": 52679.555978451055
+  },
+  {
+    "State": "NY",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 47353.739568342,
+    "Sales (2023)": 2486.87567899788
+  },
+  {
+    "State": "NC",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 3531853.08606237,
+    "Sales (2023)": 150167.68591013
+  },
+  {
+    "State": "NC",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 5370874.76595997,
+    "Sales (2023)": 347943.692227416
+  },
+  {
+    "State": "NC",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 919749.7551614294,
+    "Sales (2023)": 54464.70532000359
+  },
+  {
+    "State": "NC",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 13246.3330740417,
+    "Sales (2023)": 694.436995776861
+  },
+  {
+    "State": "NC",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 3811.66882324581,
+    "Sales (2023)": 199.826158055642
+  },
+  {
+    "State": "NC",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 18134.87935925,
+    "Sales (2023)": 950.718290912708
+  },
+  {
+    "State": "NC",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 1995.73417036243,
+    "Sales (2023)": 104.510492272458
+  },
+  {
+    "State": "NC",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 919749.7551614294,
+    "Sales (2023)": 54464.70532000359
+  },
+  {
+    "State": "NC",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 919749.7551614294,
+    "Sales (2023)": 54464.70532000359
+  },
+  {
+    "State": "NC",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 53339.7825121215,
+    "Sales (2023)": 2801.24461260316
+  },
+  {
+    "State": "ND",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 272462.42116947,
+    "Sales (2023)": 11584.584717284
+  },
+  {
+    "State": "ND",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 465418.92349974,
+    "Sales (2023)": 30151.434492825
+  },
+  {
+    "State": "ND",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 78971.60158821031,
+    "Sales (2023)": 4632.714453798268
+  },
+  {
+    "State": "ND",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 1163.33163363463,
+    "Sales (2023)": 60.9874838748058
+  },
+  {
+    "State": "ND",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 321.875788624687,
+    "Sales (2023)": 16.8742892403833
+  },
+  {
+    "State": "ND",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 1700.06613952725,
+    "Sales (2023)": 89.1257086739592
+  },
+  {
+    "State": "ND",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 183.383958200841,
+    "Sales (2023)": 9.60325680196242
+  },
+  {
+    "State": "ND",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 78971.60158821031,
+    "Sales (2023)": 4632.714453798268
+  },
+  {
+    "State": "ND",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 78971.60158821031,
+    "Sales (2023)": 4632.714453798268
+  },
+  {
+    "State": "ND",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 5732.31665995908,
+    "Sales (2023)": 301.043993904486
+  },
+  {
+    "State": "OH",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 3462596.15542372,
+    "Sales (2023)": 147223.012744566
+  },
+  {
+    "State": "OH",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 5179025.05577991,
+    "Sales (2023)": 335515.009857854
+  },
+  {
+    "State": "OH",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 892262.1318923096,
+    "Sales (2023)": 52892.43570405755
+  },
+  {
+    "State": "OH",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 12775.0477641056,
+    "Sales (2023)": 669.729935116647
+  },
+  {
+    "State": "OH",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 3711.86553804159,
+    "Sales (2023)": 194.593986015389
+  },
+  {
+    "State": "OH",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 17311.8974693681,
+    "Sales (2023)": 907.573590564784
+  },
+  {
+    "State": "OH",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 1922.72936255144,
+    "Sales (2023)": 100.687453855875
+  },
+  {
+    "State": "OH",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 892262.1318923096,
+    "Sales (2023)": 52892.43570405755
+  },
+  {
+    "State": "OH",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 892262.1318923096,
+    "Sales (2023)": 52892.43570405755
+  },
+  {
+    "State": "OH",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 51071.204060251,
+    "Sales (2023)": 2682.10570975657
+  },
+  {
+    "State": "OK",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 1356407.81293308,
+    "Sales (2023)": 57671.8842644935
+  },
+  {
+    "State": "OK",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 2168479.10829637,
+    "Sales (2023)": 140481.515644462
+  },
+  {
+    "State": "OK",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 373393.0058330307,
+    "Sales (2023)": 22004.12212062368
+  },
+  {
+    "State": "OK",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 5409.11473473221,
+    "Sales (2023)": 283.572016889779
+  },
+  {
+    "State": "OK",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 1541.0810275651,
+    "Sales (2023)": 80.7909383713313
+  },
+  {
+    "State": "OK",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 7629.49090578716,
+    "Sales (2023)": 399.974899793542
+  },
+  {
+    "State": "OK",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 841.281003043086,
+    "Sales (2023)": 44.0553121117996
+  },
+  {
+    "State": "OK",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 373393.0058330307,
+    "Sales (2023)": 22004.12212062368
+  },
+  {
+    "State": "OK",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 373393.0058330307,
+    "Sales (2023)": 22004.12212062368
+  },
+  {
+    "State": "OK",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 25236.4026359954,
+    "Sales (2023)": 1325.33980447898
+  },
+  {
+    "State": "OR",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 1058623.44836486,
+    "Sales (2023)": 45010.6586025607
+  },
+  {
+    "State": "OR",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 1637164.69495119,
+    "Sales (2023)": 106061.145263712
+  },
+  {
+    "State": "OR",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 281510.5252395113,
+    "Sales (2023)": 16636.00978908884
+  },
+  {
+    "State": "OR",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 4099.51082023705,
+    "Sales (2023)": 214.916230948398
+  },
+  {
+    "State": "OR",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 1170.67599450129,
+    "Sales (2023)": 61.3725108756847
+  },
+  {
+    "State": "OR",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 5654.48943007886,
+    "Sales (2023)": 296.435747955858
+  },
+  {
+    "State": "OR",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 620.994367955279,
+    "Sales (2023)": 32.5195750301976
+  },
+  {
+    "State": "OR",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 281510.5252395113,
+    "Sales (2023)": 16636.00978908884
+  },
+  {
+    "State": "OR",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 281510.5252395113,
+    "Sales (2023)": 16636.00978908884
+  },
+  {
+    "State": "OR",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 18273.07987657,
+    "Sales (2023)": 959.647080455884
+  },
+  {
+    "State": "PA",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 2841929.37791242,
+    "Sales (2023)": 120833.440067272
+  },
+  {
+    "State": "PA",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 4306288.87305125,
+    "Sales (2023)": 278976.166002538
+  },
+  {
+    "State": "PA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 746013.0865697921,
+    "Sales (2023)": 44138.86935452681
+  },
+  {
+    "State": "PA",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 10821.5279061637,
+    "Sales (2023)": 567.316953821613
+  },
+  {
+    "State": "PA",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 3120.8490248813,
+    "Sales (2023)": 163.610035245056
+  },
+  {
+    "State": "PA",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 14732.6101097382,
+    "Sales (2023)": 772.354843213736
+  },
+  {
+    "State": "PA",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 1633.12635258602,
+    "Sales (2023)": 85.5218303051321
+  },
+  {
+    "State": "PA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 746013.0865697921,
+    "Sales (2023)": 44138.86935452681
+  },
+  {
+    "State": "PA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 746013.0865697921,
+    "Sales (2023)": 44138.86935452681
+  },
+  {
+    "State": "PA",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 48455.2495112534,
+    "Sales (2023)": 2544.7236612728
+  },
+  {
+    "State": "RI",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 239892.187279498,
+    "Sales (2023)": 10199.7602261097
+  },
+  {
+    "State": "RI",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 335646.01713713,
+    "Sales (2023)": 21744.3004302197
+  },
+  {
+    "State": "RI",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 58376.88014759062,
+    "Sales (2023)": 3479.3563661038143
+  },
+  {
+    "State": "RI",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 825.983722398878,
+    "Sales (2023)": 43.3020709608543
+  },
+  {
+    "State": "RI",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 246.028155548336,
+    "Sales (2023)": 12.8979886177193
+  },
+  {
+    "State": "RI",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 1068.52968026778,
+    "Sales (2023)": 56.0175058950987
+  },
+  {
+    "State": "RI",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 120.719445771764,
+    "Sales (2023)": 6.32170801694211
+  },
+  {
+    "State": "RI",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 58376.88014759062,
+    "Sales (2023)": 3479.3563661038143
+  },
+  {
+    "State": "RI",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 58376.88014759062,
+    "Sales (2023)": 3479.3563661038143
+  },
+  {
+    "State": "RI",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 2950.6446540835,
+    "Sales (2023)": 154.958964054257
+  },
+  {
+    "State": "SC",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 1739023.76669964,
+    "Sales (2023)": 73939.9879962596
+  },
+  {
+    "State": "SC",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 2764322.80155287,
+    "Sales (2023)": 179082.314146795
+  },
+  {
+    "State": "SC",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 474176.6325324035,
+    "Sales (2023)": 27955.53479742489
+  },
+  {
+    "State": "SC",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 6981.80174046664,
+    "Sales (2023)": 366.019893857309
+  },
+  {
+    "State": "SC",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 1968.50162617175,
+    "Sales (2023)": 103.19839821478
+  },
+  {
+    "State": "SC",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 9769.17754321372,
+    "Sales (2023)": 512.14764617497
+  },
+  {
+    "State": "SC",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 1064.20878530254,
+    "Sales (2023)": 55.7293579898197
+  },
+  {
+    "State": "SC",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 474176.6325324035,
+    "Sales (2023)": 27955.53479742489
+  },
+  {
+    "State": "SC",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 474176.6325324035,
+    "Sales (2023)": 27955.53479742489
+  },
+  {
+    "State": "SC",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 33178.6920791346,
+    "Sales (2023)": 1742.44490814663
+  },
+  {
+    "State": "SD",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 299017.390180927,
+    "Sales (2023)": 12713.6515693573
+  },
+  {
+    "State": "SD",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 509103.081570861,
+    "Sales (2023)": 32981.4441120113
+  },
+  {
+    "State": "SD",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 88698.90319175177,
+    "Sales (2023)": 5191.461866186818
+  },
+  {
+    "State": "SD",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 1333.74532268838,
+    "Sales (2023)": 69.92139559243
+  },
+  {
+    "State": "SD",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 370.024909817771,
+    "Sales (2023)": 19.3984995923142
+  },
+  {
+    "State": "SD",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 1924.47115842063,
+    "Sales (2023)": 100.890107642829
+  },
+  {
+    "State": "SD",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 210.349409200198,
+    "Sales (2023)": 11.0153549662083
+  },
+  {
+    "State": "SD",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 88698.90319175177,
+    "Sales (2023)": 5191.461866186818
+  },
+  {
+    "State": "SD",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 88698.90319175177,
+    "Sales (2023)": 5191.461866186818
+  },
+  {
+    "State": "SD",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 7996.38589840835,
+    "Sales (2023)": 419.946086452863
+  },
+  {
+    "State": "TN",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 2566197.81210769,
+    "Sales (2023)": 109109.857528498
+  },
+  {
+    "State": "TN",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 3841099.92337566,
+    "Sales (2023)": 248839.630002971
+  },
+  {
+    "State": "TN",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 661436.1862923945,
+    "Sales (2023)": 39195.42778494335
+  },
+  {
+    "State": "TN",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 9616.47920265008,
+    "Sales (2023)": 504.142458906281
+  },
+  {
+    "State": "TN",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 2767.79176128606,
+    "Sales (2023)": 145.101061924074
+  },
+  {
+    "State": "TN",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 12983.1202459678,
+    "Sales (2023)": 680.638103316899
+  },
+  {
+    "State": "TN",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 1429.19318515343,
+    "Sales (2023)": 74.8424742888994
+  },
+  {
+    "State": "TN",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 661436.1862923945,
+    "Sales (2023)": 39195.42778494335
+  },
+  {
+    "State": "TN",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 661436.1862923945,
+    "Sales (2023)": 39195.42778494335
+  },
+  {
+    "State": "TN",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 40672.3952713892,
+    "Sales (2023)": 2135.99161394694
+  },
+  {
+    "State": "TX",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 8718128.78612411,
+    "Sales (2023)": 370678.279468965
+  },
+  {
+    "State": "TX",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 13111605.6361056,
+    "Sales (2023)": 849414.792720638
+  },
+  {
+    "State": "TX",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 2271780.204657277,
+    "Sales (2023)": 134531.9697091059
+  },
+  {
+    "State": "TX",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 32581.3975974609,
+    "Sales (2023)": 1708.07481129482
+  },
+  {
+    "State": "TX",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 9473.96574752319,
+    "Sales (2023)": 496.67121270683
+  },
+  {
+    "State": "TX",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 44274.8146128762,
+    "Sales (2023)": 2321.10041899784
+  },
+  {
+    "State": "TX",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 4939.5979319411,
+    "Sales (2023)": 258.671630301059
+  },
+  {
+    "State": "TX",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 2271780.204657277,
+    "Sales (2023)": 134531.9697091059
+  },
+  {
+    "State": "TX",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 2271780.204657277,
+    "Sales (2023)": 134531.9697091059
+  },
+  {
+    "State": "TX",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 138427.133818175,
+    "Sales (2023)": 7269.77585178831
+  },
+  {
+    "State": "UT",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 1015491.44072714,
+    "Sales (2023)": 43176.7675493983
+  },
+  {
+    "State": "UT",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 1505469.40832985,
+    "Sales (2023)": 97529.4728131851
+  },
+  {
+    "State": "UT",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 261401.7475775297,
+    "Sales (2023)": 15493.40001330967
+  },
+  {
+    "State": "UT",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 3783.61655295315,
+    "Sales (2023)": 198.355522054126
+  },
+  {
+    "State": "UT",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 1098.33728701126,
+    "Sales (2023)": 57.5801651429478
+  },
+  {
+    "State": "UT",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 5077.16576549775,
+    "Sales (2023)": 266.169642688715
+  },
+  {
+    "State": "UT",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 564.826154762089,
+    "Sales (2023)": 29.5782175598194
+  },
+  {
+    "State": "UT",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 261401.7475775297,
+    "Sales (2023)": 15493.40001330967
+  },
+  {
+    "State": "UT",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 261401.7475775297,
+    "Sales (2023)": 15493.40001330967
+  },
+  {
+    "State": "UT",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 16451.4278260359,
+    "Sales (2023)": 863.97940518112
+  },
+  {
+    "State": "VT",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 184447.012465847,
+    "Sales (2023)": 7842.33668844747
+  },
+  {
+    "State": "VT",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 319126.912070625,
+    "Sales (2023)": 20674.1361349059
+  },
+  {
+    "State": "VT",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 54379.46792453405,
+    "Sales (2023)": 3186.10346906672
+  },
+  {
+    "State": "VT",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 797.602704068677,
+    "Sales (2023)": 41.8142003934944
+  },
+  {
+    "State": "VT",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 221.25279121538,
+    "Sales (2023)": 11.5991439125102
+  },
+  {
+    "State": "VT",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 1174.69079738362,
+    "Sales (2023)": 61.5829863058783
+  },
+  {
+    "State": "VT",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 127.491748682267,
+    "Sales (2023)": 6.67635279955177
+  },
+  {
+    "State": "VT",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 54379.46792453405,
+    "Sales (2023)": 3186.10346906672
+  },
+  {
+    "State": "VT",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 54379.46792453405,
+    "Sales (2023)": 3186.10346906672
+  },
+  {
+    "State": "VT",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 4051.48866324498,
+    "Sales (2023)": 212.771973495742
+  },
+  {
+    "State": "VA",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 2521644.67763515,
+    "Sales (2023)": 107215.542861167
+  },
+  {
+    "State": "VA",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 3838433.62343184,
+    "Sales (2023)": 248666.897945817
+  },
+  {
+    "State": "VA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 666354.1210812851,
+    "Sales (2023)": 39404.247042316405
+  },
+  {
+    "State": "VA",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 9652.78953768799,
+    "Sales (2023)": 506.046022695477
+  },
+  {
+    "State": "VA",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 2786.55295427317,
+    "Sales (2023)": 146.084614611624
+  },
+  {
+    "State": "VA",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 13183.7637218157,
+    "Sales (2023)": 691.15680700729
+  },
+  {
+    "State": "VA",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 1465.38309357989,
+    "Sales (2023)": 76.7376290650774
+  },
+  {
+    "State": "VA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 666354.1210812851,
+    "Sales (2023)": 39404.247042316405
+  },
+  {
+    "State": "VA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 666354.1210812851,
+    "Sales (2023)": 39404.247042316405
+  },
+  {
+    "State": "VA",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 43986.1850480518,
+    "Sales (2023)": 2310.02186532763
+  },
+  {
+    "State": "WA",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 1801652.15507729,
+    "Sales (2023)": 76602.8281330894
+  },
+  {
+    "State": "WA",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 2664780.07874195,
+    "Sales (2023)": 172633.595079891
+  },
+  {
+    "State": "WA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 464651.38139011443,
+    "Sales (2023)": 27537.75352348008
+  },
+  {
+    "State": "WA",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 6699.71805175117,
+    "Sales (2023)": 351.231699399697
+  },
+  {
+    "State": "WA",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 1954.15689812725,
+    "Sales (2023)": 102.446378029815
+  },
+  {
+    "State": "WA",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 8982.1132187131,
+    "Sales (2023)": 470.885918726757
+  },
+  {
+    "State": "WA",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 1005.47492855484,
+    "Sales (2023)": 52.6536456164391
+  },
+  {
+    "State": "WA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 464651.38139011443,
+    "Sales (2023)": 27537.75352348008
+  },
+  {
+    "State": "WA",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 464651.38139011443,
+    "Sales (2023)": 27537.75352348008
+  },
+  {
+    "State": "WA",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 29502.3714874711,
+    "Sales (2023)": 1549.37563102202
+  },
+  {
+    "State": "WV",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 494780.269367361,
+    "Sales (2023)": 21037.1174209072
+  },
+  {
+    "State": "WV",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 803358.598361946,
+    "Sales (2023)": 52044.3259389118
+  },
+  {
+    "State": "WV",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 138393.24517953309,
+    "Sales (2023)": 8144.178913851947
+  },
+  {
+    "State": "WV",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 2012.17609612009,
+    "Sales (2023)": 105.488025656092
+  },
+  {
+    "State": "WV",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 570.585668650304,
+    "Sales (2023)": 29.9128668557592
+  },
+  {
+    "State": "WV",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 2861.51705193263,
+    "Sales (2023)": 150.014596024501
+  },
+  {
+    "State": "WV",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 315.042953375473,
+    "Sales (2023)": 16.4978355500425
+  },
+  {
+    "State": "WV",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 138393.24517953309,
+    "Sales (2023)": 8144.178913851947
+  },
+  {
+    "State": "WV",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 138393.24517953309,
+    "Sales (2023)": 8144.178913851947
+  },
+  {
+    "State": "WV",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 9751.60086084538,
+    "Sales (2023)": 512.124686100694
+  },
+  {
+    "State": "WI",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 1776574.70551421,
+    "Sales (2023)": 75536.5826020179
+  },
+  {
+    "State": "WI",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 2910956.26273815,
+    "Sales (2023)": 188581.732791269
+  },
+  {
+    "State": "WI",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 499660.7935375386,
+    "Sales (2023)": 29390.640519380602
+  },
+  {
+    "State": "WI",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 7268.08539208789,
+    "Sales (2023)": 381.028270731169
+  },
+  {
+    "State": "WI",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 2053.24160835084,
+    "Sales (2023)": 107.64087888605
+  },
+  {
+    "State": "WI",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 10395.792437111,
+    "Sales (2023)": 544.99783663861
+  },
+  {
+    "State": "WI",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 1140.45993375511,
+    "Sales (2023)": 59.7223973331661
+  },
+  {
+    "State": "WI",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 499660.7935375386,
+    "Sales (2023)": 29390.640519380602
+  },
+  {
+    "State": "WI",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 499660.7935375386,
+    "Sales (2023)": 29390.640519380602
+  },
+  {
+    "State": "WI",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 34928.9541978805,
+    "Sales (2023)": 1834.36339937157
+  },
+  {
+    "State": "WY",
+    "Vehicle Category": "Passenger cars",
+    "Stock (2023)": 299131.025646307,
+    "Sales (2023)": 12718.4831335412
+  },
+  {
+    "State": "WY",
+    "Vehicle Category": "Passenger trucks",
+    "Stock (2023)": 515871.651605633,
+    "Sales (2023)": 33419.9352985727
+  },
+  {
+    "State": "WY",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 89176.83655613253,
+    "Sales (2023)": 5217.214203980342
+  },
+  {
+    "State": "WY",
+    "Vehicle Category": "Other buses",
+    "Stock (2023)": 1343.3803153862,
+    "Sales (2023)": 70.4265086185034
+  },
+  {
+    "State": "WY",
+    "Vehicle Category": "Transit buses",
+    "Stock (2023)": 370.006044137029,
+    "Sales (2023)": 19.3975105618721
+  },
+  {
+    "State": "WY",
+    "Vehicle Category": "School buses",
+    "Stock (2023)": 1952.9334926734,
+    "Sales (2023)": 102.382241185056
+  },
+  {
+    "State": "WY",
+    "Vehicle Category": "Refuse trucks",
+    "Stock (2023)": 211.812351973472,
+    "Sales (2023)": 11.0919648031655
+  },
+  {
+    "State": "WY",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 89176.83655613253,
+    "Sales (2023)": 5217.214203980342
+  },
+  {
+    "State": "WY",
+    "Vehicle Category": "Short-haul trucks",
+    "Stock (2023)": 89176.83655613253,
+    "Sales (2023)": 5217.214203980342
+  },
+  {
+    "State": "WY",
+    "Vehicle Category": "Combination long-haul trucks",
+    "Stock (2023)": 7890.65284300627,
+    "Sales (2023)": 414.393305060253
+  }
+]

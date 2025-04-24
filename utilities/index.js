@@ -9,13 +9,14 @@ function main() {
   const excelFilename = "avert-main-module-v4.4 (beta).xlsb";
   const excelFilepath = resolve(__dirname, "../../../sources/excel", excelFilename);
 
-  // fork("./src/parse-moves-emission-rates.js", [excelFilepath]);
   // fork("./src/parse-county-fips.js", [excelFilepath]);
-  // fork("./src/parse-state-level-vmt.js", [excelFilepath]);
-  // fork("./src/parse-fhwa-ldv-state-level-vmt.js", [excelFilepath]);
-  // fork("./src/parse-ev-efficiency-assumptions.js", [excelFilepath]);
-  // fork("./src/parse-pm25-brakewear-tirewear-ev-ice-ratios.js", [excelFilepath]);
   // fork("./src/parse-default-ev-load-profiles.js", [excelFilepath]);
+  // fork("./src/parse-ev-efficiency-assumptions.js", [excelFilepath]);
+  // fork("./src/parse-fhwa-ldv-state-level-vmt.js", [excelFilepath]);
+  // fork("./src/parse-moves-emission-rates.js", [excelFilepath]);
+  // fork("./src/parse-pm25-brakewear-tirewear-ev-ice-ratios.js", [excelFilepath]);
+  // fork("./src/parse-state-level-sales.js", [excelFilepath]);
+  // fork("./src/parse-state-level-vmt.js", [excelFilepath]);
 }
 
 main();
