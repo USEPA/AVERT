@@ -1226,8 +1226,8 @@ export function calculateVMTPercentagesByStateRegionCombo(options: {
 /**
  * Total sales/stock (in millions) for each vehicle type.
  *
- * Excel: "Population" column of "Table 12: Light-duty vehicle sales by type"
- * table in the "Library" sheet (C965:C983).
+ * Excel: "Population" column of "Table 12: Vehicle sales by type" table in the
+ * "Library" sheet (C965:C983).
  */
 export function calculateVehicleTypeTotals(options: {
   stateLevelVMT: StateLevelVMT;
@@ -1258,8 +1258,8 @@ export function calculateVehicleTypeTotals(options: {
 /**
  * Total sales/stock (in millions) for each vehicle category.
  *
- * Excel: "Population" column of "Table 12: Light-duty vehicle sales by type"
- * table in the "Library" sheet (C964:C983).
+ * Excel: "Population" column of "Table 12: Vehicle sales by type" table in the
+ * "Library" sheet (C964:C983).
  */
 export function calculateVehicleCategoryTotals(options: {
   vehicleTypeTotals: VehicleTypeTotals | EmptyObject;
@@ -1295,8 +1295,8 @@ export function calculateVehicleCategoryTotals(options: {
  * Percentage/share of the total vehicle sales/stock each vehicle type makes up
  * of its vehicle category (e.g. "LDVs", "Transit Buses", "School Buses", etc.).
  *
- * Excel: "Vehicle Allocation" column of "Table 12: Light-duty vehicle sales by
- * type" table in the "Library" sheet (D965:D983).
+ * Excel: "Vehicle Allocation" column of "Table 12: Vehicle sales by type" table
+ * in the "Library" sheet (D965:D983).
  */
 export function calculateVehicleTypePercentagesOfVehicleCategory(options: {
   vehicleTypeTotals: VehicleTypeTotals | EmptyObject;
@@ -1342,8 +1342,8 @@ export function calculateVehicleTypePercentagesOfVehicleCategory(options: {
  * Percentage/share of the total VMT each vehicle type / fuel type combo makes
  * up of the vehicle type's total VMT (regardless of fuel type).
  *
- * Excel: "Vehicle Allocation" column of "Table 12: Light-duty vehicle sales by
- * type" table in the "Library" sheet (E965:G983).
+ * Excel: "Vehicle Allocation" column of "Table 12: Vehicle sales by type" table
+ * in the "Library" sheet (E965:G983).
  */
 export function calculateVehicleFuelTypePercentagesOfVehicleType(options: {
   movesEmissionRates: MOVESEmissionRates;
