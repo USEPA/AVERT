@@ -12,16 +12,16 @@ const __dirname = dirname(__filename);
  * The data we're interested in spans 26 columns (B:AA). We don't need anything
  * to the right of (and including) the "Regional Weight" column (AB).
  *
- * The first 6 columns ("Year", "Month", "State", "Vehicle Category", "Vehicle
- * Type", and "Fuel Type") are all found within the second header row.
+ * The first 6 column headers ("Year", "Month", "State", "Vehicle Category",
+ * "Vehicle Type", and "Fuel Type") are all found within the second header row.
  *
- * The next 10 columns of data fall under the first header row category of
+ * The next 10 column headers fall under the first header row category of
  * "First-Year State Data".
  *
- * The final 10 columns of data fall under the second header row category of
+ * The final 10 column headers fall under the second header row category of
  * "Fleet Average State Data".
  *
- * Those last 20 columns of data found within those two categories also all have
+ * Those last 20 column headers found within those two categories also all have
  * a header in the second header row. When we parse the data, we'll want to nest
  * those columns under their category header.
  *

@@ -12,27 +12,26 @@ const __dirname = dirname(__filename);
  * The data we're interested in spans 47 columns (B:AT). We don't need anything
  * to the right of (and including) the "Notes" column (AU).
  *
- * The first 9 columns ("State and County FIPS Code", "State Name",
+ * The first 9 column headers ("State and County FIPS Code", "State Name",
  * "County Name", "AVERT Region", "Postal State Code", "County Name Long",
  * "Key", "Passenger cars VMT - original MOVES5", and
  * "Passenger trucks VMT - original MOVES5") are all found within the second
  * header row.
  *
- * The next 14 columns of data fall under the first header row category of
- * "VMT".
+ * The next 14 column headers fall under the first header row category of "VMT".
  * 
- * The next 14 columns of data fall under the second header row category of
+ * The next 14 column headers fall under the second header row category of
  * "Share of State VMT".
  * 
- * The next 5 columns of data fall under the third header row category of
- * "VMT - Collapsed".
+ * The next 5 column headers fall under the third header row category of "VMT -
+ * Collapsed".
  *
- * The final 5 columns of data fall under the fourth header row category of
+ * The final 5 column headers fall under the fourth header row category of
  * "Share of State VMT - Collapsed".
  *
- * Those last 38 columns of data found within those four categories also all
- * have a header in the second header row. When we parse the data, we'll want to
- * nest those columns under their category header.
+ * Those last 38 column headers found within those four categories also all have
+ * a header in the second header row. When we parse the data, we'll want to nest
+ * those columns under their category header.
  *
  * @param {XLSX.WorkSheet} worksheet
  */
