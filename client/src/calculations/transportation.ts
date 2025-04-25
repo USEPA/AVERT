@@ -330,6 +330,9 @@ export type SelectedRegionsYearlyEmissionChangesTotals = ReturnType<
 export type SelectedGeographySalesAndStockByState = ReturnType<
   typeof calculateSelectedGeographySalesAndStockByState
 >;
+export type SelectedGeographySalesAndStockByRegion = ReturnType<
+  typeof calculateSelectedGeographySalesAndStockByRegion
+>;
 export type HourlyEVChargingPercentages = ReturnType<
   typeof calculateHourlyEVChargingPercentages
 >;
@@ -2988,6 +2991,61 @@ export function calculateSelectedGeographySalesAndStockByState(options: {
           sales: number;
           stock: number;
         };
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Total vehicle sales and stock for the selected region (empty if a single
+ * state is selected).
+ *
+ * Excel: "Table 10: List of states in region for purposes of calculating
+ * vehicle sales and stock" table in the "Library" sheet (C856:Q856).
+ */
+export function calculateSelectedGeographySalesAndStockByRegion(options: {
+  geographicFocus: GeographicFocus;
+  selectedGeographySalesAndStockByState: SelectedGeographySalesAndStockByState;
+}) {
+  const { geographicFocus, selectedGeographySalesAndStockByState } = options;
+
+  type SalesAndStockVehicleCategory =
+    keyof SelectedGeographySalesAndStockByState[StateId];
+
+  if (
+    geographicFocus === "states" ||
+    Object.keys(selectedGeographySalesAndStockByState).length === 0
+  ) {
+    return {} as {
+      [vehicleCategory in SalesAndStockVehicleCategory]: {
+        sales: number;
+        stock: number;
+      };
+    };
+  }
+
+  const result = Object.values(selectedGeographySalesAndStockByState).reduce(
+    (object, stateData) => {
+      Object.entries(stateData).forEach(([key, value]) => {
+        const vehicleCategory = key as SalesAndStockVehicleCategory;
+
+        object[vehicleCategory] ??= {
+          sales: 0,
+          stock: 0,
+        };
+
+        object[vehicleCategory].sales += value.sales;
+        object[vehicleCategory].stock += value.stock;
+      });
+
+      return object;
+    },
+    {} as {
+      [vehicleCategory in SalesAndStockVehicleCategory]: {
+        sales: number;
+        stock: number;
       };
     },
   );

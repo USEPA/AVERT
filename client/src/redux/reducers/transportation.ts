@@ -33,6 +33,7 @@ import {
   type SelectedRegionsMonthlyEmissionChangesTotals,
   type SelectedRegionsYearlyEmissionChangesTotals,
   type SelectedGeographySalesAndStockByState,
+  type SelectedGeographySalesAndStockByRegion,
   type HourlyEVChargingPercentages,
   type _SelectedRegionsStatesVMTPercentages,
   type _SelectedRegionsVMTPercentagesPerVehicleType,
@@ -87,6 +88,7 @@ import {
   calculateSelectedRegionsMonthlyEmissionChangesTotals,
   calculateSelectedRegionsYearlyEmissionChangesTotals,
   calculateSelectedGeographySalesAndStockByState,
+  calculateSelectedGeographySalesAndStockByRegion,
   calculateHourlyEVChargingPercentages,
   _calculateSelectedRegionsStatesVMTPercentages,
   _calculateSelectedRegionsVMTPercentagesPerVehicleType,
@@ -376,6 +378,12 @@ type Action =
       };
     }
   | {
+      type: "transportation/SET_SELECTED_GEOGRAPHY_SALES_AND_STOCK_BY_REGION";
+      payload: {
+        selectedGeographySalesAndStockByRegion: SelectedGeographySalesAndStockByRegion;
+      };
+    }
+  | {
       type: "transportation/SET_HOURLY_EV_CHARGING_PERCENTAGES";
       payload: { hourlyEVChargingPercentages: HourlyEVChargingPercentages };
     }
@@ -555,6 +563,9 @@ type State = {
   selectedGeographySalesAndStockByState:
     | SelectedGeographySalesAndStockByState
     | EmptyObject;
+  selectedGeographySalesAndStockByRegion:
+    | SelectedGeographySalesAndStockByRegion
+    | EmptyObject;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
   _selectedRegionsStatesVMTPercentages:
     | _SelectedRegionsStatesVMTPercentages
@@ -639,6 +650,7 @@ const initialState: State = {
   selectedRegionsMonthlyEmissionChangesTotals: {},
   selectedRegionsYearlyEmissionChangesTotals: {},
   selectedGeographySalesAndStockByState: {},
+  selectedGeographySalesAndStockByRegion: {},
   hourlyEVChargingPercentages: {},
   _selectedRegionsStatesVMTPercentages: {},
   _selectedRegionsVMTPercentagesPerVehicleType: {},
@@ -968,6 +980,15 @@ export default function reducer(
       return {
         ...state,
         selectedGeographySalesAndStockByState,
+      };
+    }
+
+    case "transportation/SET_SELECTED_GEOGRAPHY_SALES_AND_STOCK_BY_REGION": {
+      const { selectedGeographySalesAndStockByRegion } = action.payload;
+
+      return {
+        ...state,
+        selectedGeographySalesAndStockByRegion,
       };
     }
 
@@ -1992,6 +2013,12 @@ export function setVehicleSalesAndStock(): AppThunk {
         selectedGeographyStates,
       });
 
+    const selectedGeographySalesAndStockByRegion =
+      calculateSelectedGeographySalesAndStockByRegion({
+        geographicFocus,
+        selectedGeographySalesAndStockByState,
+      });
+
     const vehicleSalesAndStock = calculateVehicleSalesAndStock({
       countyFips,
       stateLDVsSales,
@@ -2005,6 +2032,11 @@ export function setVehicleSalesAndStock(): AppThunk {
     dispatch({
       type: "transportation/SET_SELECTED_GEOGRAPHY_SALES_AND_STOCK_BY_STATE",
       payload: { selectedGeographySalesAndStockByState },
+    });
+
+    dispatch({
+      type: "transportation/SET_SELECTED_GEOGRAPHY_SALES_AND_STOCK_BY_REGION",
+      payload: { selectedGeographySalesAndStockByRegion },
     });
 
     dispatch({
