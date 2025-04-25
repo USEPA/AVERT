@@ -381,8 +381,8 @@ export type VehicleEmissionChangesByGeography = ReturnType<
 export type _SelectedRegionsTotalYearlyEVEnergyUsage = ReturnType<
   typeof _calculateSelectedRegionsTotalYearlyEVEnergyUsage
 >;
-export type VehicleSalesAndStock = ReturnType<
-  typeof calculateVehicleSalesAndStock
+export type _VehicleSalesAndStock = ReturnType<
+  typeof _calculateVehicleSalesAndStock
 >;
 export type SelectedRegionsEEREDefaultsAverages = ReturnType<
   typeof calculateSelectedRegionsEEREDefaultsAverages
@@ -4668,7 +4668,7 @@ export function calculateVehicleEmissionChangesByGeography(options: {
  * Excel: "Table 10: List of states in region for purposes of calculating
  * vehicle sales and stock" table in the "Library" sheet (C457:I474).
  */
-export function calculateVehicleSalesAndStock(options: {
+export function _calculateVehicleSalesAndStock(options: {
   countyFips: CountyFIPS;
   stateLDVsSales: StateLDVsSales;
   stateBusSalesAndStock: StateBusSalesAndStock;

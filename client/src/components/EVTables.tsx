@@ -26,8 +26,8 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
 
   const inputs = useAppSelector(({ impacts }) => impacts.inputs);
   const selectOptions = useAppSelector(({ impacts }) => impacts.selectOptions);
-  const vehicleSalesAndStock = useAppSelector(
-    ({ transportation }) => transportation.vehicleSalesAndStock,
+  const _vehicleSalesAndStock = useAppSelector(
+    ({ transportation }) => transportation._vehicleSalesAndStock,
   );
 
   const {
@@ -44,7 +44,7 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
     return opt.id === evDeploymentLocation;
   })?.name;
 
-  const locationSalesAndStock = vehicleSalesAndStock[evDeploymentLocation];
+  const locationSalesAndStock = _vehicleSalesAndStock[evDeploymentLocation];
   if (!locationSalesAndStock) return null;
 
   const totalLDVs =

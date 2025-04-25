@@ -52,7 +52,7 @@ import {
   type _SelectedRegionsTotalMonthlyEmissionChanges,
   type _SelectedRegionsTotalYearlyEmissionChanges,
   type VehicleEmissionChangesByGeography,
-  type VehicleSalesAndStock,
+  type _VehicleSalesAndStock,
   type SelectedRegionsEEREDefaultsAverages,
   type EVDeploymentLocationHistoricalEERE,
   vehicleTypesByVehicleCategory,
@@ -107,7 +107,7 @@ import {
   _calculateSelectedRegionsTotalMonthlyEmissionChanges,
   _calculateSelectedRegionsTotalYearlyEmissionChanges,
   calculateVehicleEmissionChangesByGeography,
-  calculateVehicleSalesAndStock,
+  _calculateVehicleSalesAndStock,
   calculateSelectedRegionsEEREDefaultsAverages,
   calculateEVDeploymentLocationHistoricalEERE,
 } from "@/calculations/transportation";
@@ -484,8 +484,8 @@ type Action =
       };
     }
   | {
-      type: "transportation/SET_VEHICLE_SALES_AND_STOCK";
-      payload: { vehicleSalesAndStock: VehicleSalesAndStock };
+      type: "transportation/_SET_VEHICLE_SALES_AND_STOCK";
+      payload: { _vehicleSalesAndStock: _VehicleSalesAndStock };
     }
   | {
       type: "transportation/SET_SELECTED_REGIONS_EERE_DEFAULTS_AVERAGES";
@@ -612,7 +612,7 @@ type State = {
   vehicleEmissionChangesByGeography:
     | VehicleEmissionChangesByGeography
     | EmptyObject;
-  vehicleSalesAndStock: VehicleSalesAndStock;
+  _vehicleSalesAndStock: _VehicleSalesAndStock;
   selectedRegionsEEREDefaultsAverages: SelectedRegionsEEREDefaultsAverages;
   evDeploymentLocationHistoricalEERE: EVDeploymentLocationHistoricalEERE;
 };
@@ -678,7 +678,7 @@ const initialState: State = {
   _selectedRegionsTotalMonthlyEmissionChanges: {},
   _selectedRegionsTotalYearlyEmissionChanges: {},
   vehicleEmissionChangesByGeography: {},
-  vehicleSalesAndStock: {},
+  _vehicleSalesAndStock: {},
   selectedRegionsEEREDefaultsAverages: {},
   evDeploymentLocationHistoricalEERE: {
     eeRetail: { mw: 0, gwh: 0 },
@@ -1154,12 +1154,12 @@ export default function reducer(
       };
     }
 
-    case "transportation/SET_VEHICLE_SALES_AND_STOCK": {
-      const { vehicleSalesAndStock } = action.payload;
+    case "transportation/_SET_VEHICLE_SALES_AND_STOCK": {
+      const { _vehicleSalesAndStock } = action.payload;
 
       return {
         ...state,
-        vehicleSalesAndStock,
+        _vehicleSalesAndStock,
       };
     }
 
@@ -1350,7 +1350,7 @@ export function setVMTData(): AppThunk {
       payload: { vmtPerVehicleTypeByState },
     });
 
-    // NOTE: `vehicleSalesAndStock` uses `vmtAllocationPerVehicle`
+    // NOTE: `_vehicleSalesAndStock` uses `vmtAllocationPerVehicle`
     dispatch(setVehicleSalesAndStock());
   };
 }
@@ -2019,7 +2019,7 @@ export function setVehicleSalesAndStock(): AppThunk {
         selectedGeographySalesAndStockByState,
       });
 
-    const vehicleSalesAndStock = calculateVehicleSalesAndStock({
+    const _vehicleSalesAndStock = _calculateVehicleSalesAndStock({
       countyFips,
       stateLDVsSales,
       stateBusSalesAndStock,
@@ -2040,8 +2040,8 @@ export function setVehicleSalesAndStock(): AppThunk {
     });
 
     dispatch({
-      type: "transportation/SET_VEHICLE_SALES_AND_STOCK",
-      payload: { vehicleSalesAndStock },
+      type: "transportation/_SET_VEHICLE_SALES_AND_STOCK",
+      payload: { _vehicleSalesAndStock },
     });
   };
 }

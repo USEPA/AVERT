@@ -858,7 +858,11 @@ export function setEVDeploymentLocationOptions(): AppThunk {
       payload: { evDeploymentLocationOptions },
     });
 
-    // NOTE: `vehicleSalesAndStock` uses `evDeploymentLocationOptions`
+    /**
+     * NOTE: `selectedGeographySalesAndStockByState` uses
+     * `selectedGeographyStates` which is derived from
+     * `evDeploymentLocationOptions`
+     */
     dispatch(setVehicleSalesAndStock());
   };
 }
