@@ -32,6 +32,7 @@ import {
   type SelectedRegionsMonthlyEmissionChangesPerVehicleCategory,
   type SelectedRegionsMonthlyEmissionChangesTotals,
   type SelectedRegionsYearlyEmissionChangesTotals,
+  type SelectedGeographySalesAndStockByState,
   type HourlyEVChargingPercentages,
   type _SelectedRegionsStatesVMTPercentages,
   type _SelectedRegionsVMTPercentagesPerVehicleType,
@@ -85,6 +86,7 @@ import {
   calculateSelectedRegionsMonthlyEmissionChangesPerVehicleCategory,
   calculateSelectedRegionsMonthlyEmissionChangesTotals,
   calculateSelectedRegionsYearlyEmissionChangesTotals,
+  calculateSelectedGeographySalesAndStockByState,
   calculateHourlyEVChargingPercentages,
   _calculateSelectedRegionsStatesVMTPercentages,
   _calculateSelectedRegionsVMTPercentagesPerVehicleType,
@@ -112,6 +114,7 @@ import {
   type CountyFIPS,
   type MOVESEmissionRates,
   type RegionId,
+  type StateId,
   percentageHybridEVMilesDrivenOnElectricity,
   percentageAdditionalEnergyConsumedFactor,
   regionAverageTemperatures,
@@ -126,6 +129,9 @@ import countyFipsData from "@/data/county-fips.json";
  */
 import stateLevelVMT from "@/data/state-level-vmt.json";
 /**
+ * Excel: "B. State-Level Sales" table in the "MOVESsupplement" sheet (J6:M516).
+ */
+import stateLevelSales from "@/data/state-level-sales.json"; /**
  * Excel: "C. FHWA LDV State-Level VMT" table in the "MOVESsupplement" sheet
  * (O6:P57).
  */
@@ -364,6 +370,12 @@ type Action =
       };
     }
   | {
+      type: "transportation/SET_SELECTED_GEOGRAPHY_SALES_AND_STOCK_BY_STATE";
+      payload: {
+        selectedGeographySalesAndStockByState: SelectedGeographySalesAndStockByState;
+      };
+    }
+  | {
       type: "transportation/SET_HOURLY_EV_CHARGING_PERCENTAGES";
       payload: { hourlyEVChargingPercentages: HourlyEVChargingPercentages };
     }
@@ -540,6 +552,9 @@ type State = {
   selectedRegionsYearlyEmissionChangesTotals:
     | SelectedRegionsYearlyEmissionChangesTotals
     | EmptyObject;
+  selectedGeographySalesAndStockByState:
+    | SelectedGeographySalesAndStockByState
+    | EmptyObject;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
   _selectedRegionsStatesVMTPercentages:
     | _SelectedRegionsStatesVMTPercentages
@@ -623,6 +638,7 @@ const initialState: State = {
   selectedRegionsMonthlyEmissionChangesPerVehicleCategory: {},
   selectedRegionsMonthlyEmissionChangesTotals: {},
   selectedRegionsYearlyEmissionChangesTotals: {},
+  selectedGeographySalesAndStockByState: {},
   hourlyEVChargingPercentages: {},
   _selectedRegionsStatesVMTPercentages: {},
   _selectedRegionsVMTPercentagesPerVehicleType: {},
@@ -943,6 +959,15 @@ export default function reducer(
       return {
         ...state,
         selectedRegionsYearlyEmissionChangesTotals,
+      };
+    }
+
+    case "transportation/SET_SELECTED_GEOGRAPHY_SALES_AND_STOCK_BY_STATE": {
+      const { selectedGeographySalesAndStockByState } = action.payload;
+
+      return {
+        ...state,
+        selectedGeographySalesAndStockByState,
       };
     }
 
@@ -1949,6 +1974,24 @@ export function setVehicleSalesAndStock(): AppThunk {
     const selectedRegionName =
       geographicFocus === "regions" ? selectedRegion?.name || "" : "";
 
+    const selectedGeographyStates = evDeploymentLocationOptions.reduce(
+      (array, option) => {
+        const stateId = option.id.split("state-")[1] as StateId;
+        if (stateId) array.push(stateId);
+        return array;
+      },
+      [] as StateId[],
+    );
+
+    const selectedGeographySalesAndStockByState =
+      calculateSelectedGeographySalesAndStockByState({
+        countyFips,
+        stateLevelSales,
+        geographicFocus,
+        selectedRegionName,
+        selectedGeographyStates,
+      });
+
     const vehicleSalesAndStock = calculateVehicleSalesAndStock({
       countyFips,
       stateLDVsSales,
@@ -1957,6 +2000,11 @@ export function setVehicleSalesAndStock(): AppThunk {
       selectedRegionName,
       evDeploymentLocations,
       vmtAllocationPerVehicle,
+    });
+
+    dispatch({
+      type: "transportation/SET_SELECTED_GEOGRAPHY_SALES_AND_STOCK_BY_STATE",
+      payload: { selectedGeographySalesAndStockByState },
     });
 
     dispatch({

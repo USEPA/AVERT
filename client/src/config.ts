@@ -4,6 +4,10 @@
  */
 import stateLevelVMT from "@/data/state-level-vmt.json";
 /**
+ * Excel: "B. State-Level Sales" table in the "MOVESsupplement" sheet (J6:M516).
+ */
+import stateLevelSales from "@/data/state-level-sales.json";
+/**
  * Excel: "C. FHWA LDV State-Level VMT" table in the "MOVESsupplement" sheet
  * (O6:P57).
  */
@@ -154,6 +158,8 @@ export type MOVESEmissionRates = {
 }[];
 
 export type StateLevelVMT = typeof stateLevelVMT;
+
+export type StateLevelSales = typeof stateLevelSales;
 
 export type FHWALDVStateLevelVMT = typeof fhwaLDVStateLevelVMT;
 

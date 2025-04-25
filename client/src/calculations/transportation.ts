@@ -13,6 +13,7 @@ import {
   type CountyFIPS,
   type MOVESEmissionRates,
   type StateLevelVMT,
+  type StateLevelSales,
   type FHWALDVStateLevelVMT,
   type PM25BreakwearTirewearEVICERatios,
   type VMTAllocationAndRegisteredVehicles,
@@ -325,6 +326,9 @@ export type SelectedRegionsMonthlyEmissionChangesTotals = ReturnType<
 >;
 export type SelectedRegionsYearlyEmissionChangesTotals = ReturnType<
   typeof calculateSelectedRegionsYearlyEmissionChangesTotals
+>;
+export type SelectedGeographySalesAndStockByState = ReturnType<
+  typeof calculateSelectedGeographySalesAndStockByState
 >;
 export type HourlyEVChargingPercentages = ReturnType<
   typeof calculateHourlyEVChargingPercentages
@@ -2848,6 +2852,142 @@ export function calculateSelectedRegionsYearlyEmissionChangesTotals(options: {
     {} as {
       [regionId in RegionId]: {
         [pollutant in Pollutant]: number;
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Total vehicle sales and stock for each state in the selected region (or the
+ * single state if a state is selected).
+ *
+ * Excel: "Table 10: List of states in region for purposes of calculating
+ * vehicle sales and stock" table in the "Library" sheet (C857:Q857 and down
+ * as many rows as needed, as the table is dynamically populated with a row
+ * for each state within the selected region).
+ */
+export function calculateSelectedGeographySalesAndStockByState(options: {
+  countyFips: CountyFIPS;
+  stateLevelSales: StateLevelSales;
+  geographicFocus: GeographicFocus;
+  selectedRegionName: string;
+  selectedGeographyStates: StateId[];
+}) {
+  const {
+    countyFips,
+    stateLevelSales,
+    geographicFocus,
+    selectedRegionName,
+    selectedGeographyStates,
+  } = options;
+
+  /**
+   * The vehicle categories used in the Excel Table 10 are slightly different
+   * than the typical `VehicleCategory` values used elsewhere. Instead of using
+   * "Long-haul trucks" we'll use "Combination long-haul trucks" as that's a
+   * value used in the `stateLevelSales` data.
+   */
+  type SalesAndStockVehicleCategory =
+    | Exclude<VehicleCategory, "Long-haul trucks">
+    | "Combination long-haul trucks";
+
+  /**
+   * Additionally, when accessing `stateLevelSales` data, instead of using the
+   * vehicle category "LDVs" used elsewhere, we'll use "Passenger cars" and
+   * "Passenger trucks" as those are values used in the `stateLevelSales` data.
+   * This results in a type similar to `ExpandedVehicleCategory`, but with the
+   * additional "Long-haul trucks" change (mentioned above) also applied.
+   */
+  type StateLevelSalesVehicleCategory =
+    | Exclude<SalesAndStockVehicleCategory, "LDVs">
+    | "Passenger cars"
+    | "Passenger trucks";
+
+  const result = countyFips.reduce(
+    (object, countyData) => {
+      const regionName = countyData["AVERT Region"] as RegionName;
+      const stateId = countyData["Postal State Code"] as StateId;
+
+      /**
+       * If an AVERT region is selected, limit the matched county level data to
+       * be within the selected AVERT region.
+       */
+      const conditionalRegionMatch =
+        geographicFocus === "regions"
+          ? selectedRegionName === regionName
+          : true;
+
+      /**
+       * Regardless of the geographic focus (selected AVERT region or a selected
+       * state) limit the matched county level data to be within one of the
+       * selected states.
+       */
+      const stateMatch = selectedGeographyStates.includes(stateId);
+
+      if (conditionalRegionMatch && stateMatch) {
+        object[stateId] ??= {} as {
+          [vehicleCategory in SalesAndStockVehicleCategory]: {
+            sales: number;
+            stock: number;
+          };
+        };
+
+        stateLevelSales.forEach((stateData) => {
+          if (stateId === stateData["State"]) {
+            const stateCategory = stateData["Vehicle Category"] as StateLevelSalesVehicleCategory; // prettier-ignore
+
+            /**
+             * Depending on the state level sales vehicle category, we'll access
+             * the VMT factor data from either the "Share of State VMT" or
+             * "Share of State VMT - Collapsed" fields from the countyFIPS data.
+             */
+            const vmtFactor =
+              stateCategory === "Passenger cars" ||
+              stateCategory === "Passenger trucks" ||
+              stateCategory === "Combination long-haul trucks"
+                ? countyData["Share of State VMT"][stateCategory]
+                : stateCategory === "Transit buses" ||
+                    stateCategory === "School buses" ||
+                    stateCategory === "Other buses" ||
+                    stateCategory === "Short-haul trucks" ||
+                    stateCategory === "Refuse trucks"
+                  ? countyData["Share of State VMT - Collapsed"][stateCategory]
+                  : 0;
+
+            const sales = vmtFactor * stateData["Sales (2023)"];
+            const stock = vmtFactor * stateData["Stock (2023)"];
+
+            /**
+             * For the data returned, we'll combine "Passenger cars" and
+             * "Passenger trucks" results into a common "LDVs" vehicle category.
+             */
+            const vehicleCategory =
+              stateCategory === "Passenger cars" ||
+              stateCategory === "Passenger trucks"
+                ? "LDVs"
+                : stateCategory;
+
+            object[stateId][vehicleCategory] ??= {
+              sales: 0,
+              stock: 0,
+            };
+
+            object[stateId][vehicleCategory].sales += sales;
+            object[stateId][vehicleCategory].stock += stock;
+          }
+        });
+      }
+
+      return object;
+    },
+    {} as {
+      [stateId in StateId]: {
+        [vehicleCategory in SalesAndStockVehicleCategory]: {
+          sales: number;
+          stock: number;
+        };
       };
     },
   );
