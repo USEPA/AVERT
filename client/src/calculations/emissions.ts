@@ -1,6 +1,6 @@
 import { type RDFJSON } from "@/redux/reducers/geography";
 import {
-  type SelectedRegionsTotalMonthlyEmissionChanges,
+  type _SelectedRegionsTotalMonthlyEmissionChanges,
   type VehicleEmissionChangesByGeography,
 } from "@/calculations/transportation";
 import { type EmptyObject, sortObjectByKeys } from "@/utilities";
@@ -478,8 +478,8 @@ export function calculateAggregatedEmissionsData(egus: EmissionsChanges) {
  */
 export function createCombinedSectorsEmissionsData(options: {
   aggregatedEmissionsData: AggregatedEmissionsData;
-  selectedRegionsTotalMonthlyEmissionChanges:
-    | SelectedRegionsTotalMonthlyEmissionChanges
+  _selectedRegionsTotalMonthlyEmissionChanges:
+    | _SelectedRegionsTotalMonthlyEmissionChanges
     | EmptyObject;
   vehicleEmissionChangesByGeography:
     | VehicleEmissionChangesByGeography
@@ -487,13 +487,13 @@ export function createCombinedSectorsEmissionsData(options: {
 }) {
   const {
     aggregatedEmissionsData,
-    selectedRegionsTotalMonthlyEmissionChanges,
+    _selectedRegionsTotalMonthlyEmissionChanges,
     vehicleEmissionChangesByGeography,
   } = options;
 
   const selectedRegionsChangesData =
-    Object.keys(selectedRegionsTotalMonthlyEmissionChanges).length !== 0
-      ? (selectedRegionsTotalMonthlyEmissionChanges as SelectedRegionsTotalMonthlyEmissionChanges)
+    Object.keys(_selectedRegionsTotalMonthlyEmissionChanges).length !== 0
+      ? (_selectedRegionsTotalMonthlyEmissionChanges as _SelectedRegionsTotalMonthlyEmissionChanges)
       : null;
 
   const vehicleEmissionChanges =

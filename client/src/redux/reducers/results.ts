@@ -144,7 +144,7 @@ export function fetchEmissionsChanges(): AppThunk {
   return (dispatch, getState) => {
     const { api, transportation, impacts } = getState();
     const {
-      selectedRegionsTotalMonthlyEmissionChanges,
+      _selectedRegionsTotalMonthlyEmissionChanges,
       vehicleEmissionChangesByGeography,
     } = transportation;
     const { hourlyEnergyProfile } = impacts;
@@ -190,7 +190,7 @@ export function fetchEmissionsChanges(): AppThunk {
         // prettier-ignore
         const combinedSectorsEmissionsData = createCombinedSectorsEmissionsData({
           aggregatedEmissionsData,
-          selectedRegionsTotalMonthlyEmissionChanges,
+          _selectedRegionsTotalMonthlyEmissionChanges,
           vehicleEmissionChangesByGeography,
         });
 
