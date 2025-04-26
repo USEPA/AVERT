@@ -52,7 +52,6 @@ import {
   type _SelectedRegionsTotalMonthlyEmissionChanges,
   type _SelectedRegionsTotalYearlyEmissionChanges,
   type VehicleEmissionChangesByGeography,
-  type _VehicleSalesAndStock,
   type SelectedRegionsEEREDefaultsAverages,
   type EVDeploymentLocationHistoricalEERE,
   vehicleTypesByVehicleCategory,
@@ -107,7 +106,6 @@ import {
   _calculateSelectedRegionsTotalMonthlyEmissionChanges,
   _calculateSelectedRegionsTotalYearlyEmissionChanges,
   calculateVehicleEmissionChangesByGeography,
-  _calculateVehicleSalesAndStock,
   calculateSelectedRegionsEEREDefaultsAverages,
   calculateEVDeploymentLocationHistoricalEERE,
 } from "@/calculations/transportation";
@@ -166,11 +164,6 @@ import defaultEVLoadProfiles from "@/data/default-ev-load-profiles.json";
  * (E201:J217).
  */
 import evEfficiencyAssumptions from "@/data/ev-efficiency-assumptions.json";
-/**
- * Excel: "Table 11: LDV Sales and Stock" table in the "Library" sheet
- * (B485:C535).
- */
-import stateLDVsSales from "@/data/state-light-duty-vehicles-sales.json";
 /**
  * Excel: "Table 12: Transit and School Bus Sales and Stock" table in the
  * "Library" sheet (B546:F596).
@@ -484,10 +477,6 @@ type Action =
       };
     }
   | {
-      type: "transportation/_SET_VEHICLE_SALES_AND_STOCK";
-      payload: { _vehicleSalesAndStock: _VehicleSalesAndStock };
-    }
-  | {
       type: "transportation/SET_SELECTED_REGIONS_EERE_DEFAULTS_AVERAGES";
       payload: {
         selectedRegionsEEREDefaultsAverages: SelectedRegionsEEREDefaultsAverages;
@@ -612,7 +601,6 @@ type State = {
   vehicleEmissionChangesByGeography:
     | VehicleEmissionChangesByGeography
     | EmptyObject;
-  _vehicleSalesAndStock: _VehicleSalesAndStock;
   selectedRegionsEEREDefaultsAverages: SelectedRegionsEEREDefaultsAverages;
   evDeploymentLocationHistoricalEERE: EVDeploymentLocationHistoricalEERE;
 };
@@ -678,7 +666,6 @@ const initialState: State = {
   _selectedRegionsTotalMonthlyEmissionChanges: {},
   _selectedRegionsTotalYearlyEmissionChanges: {},
   vehicleEmissionChangesByGeography: {},
-  _vehicleSalesAndStock: {},
   selectedRegionsEEREDefaultsAverages: {},
   evDeploymentLocationHistoricalEERE: {
     eeRetail: { mw: 0, gwh: 0 },
@@ -1154,15 +1141,6 @@ export default function reducer(
       };
     }
 
-    case "transportation/_SET_VEHICLE_SALES_AND_STOCK": {
-      const { _vehicleSalesAndStock } = action.payload;
-
-      return {
-        ...state,
-        _vehicleSalesAndStock,
-      };
-    }
-
     case "transportation/SET_SELECTED_REGIONS_EERE_DEFAULTS_AVERAGES": {
       const { selectedRegionsEEREDefaultsAverages } = action.payload;
 
@@ -1349,9 +1327,6 @@ export function setVMTData(): AppThunk {
       type: "transportation/SET_VMT_PER_VEHICLE_TYPE_BY_STATE",
       payload: { vmtPerVehicleTypeByState },
     });
-
-    // NOTE: `_vehicleSalesAndStock` uses `vmtAllocationPerVehicle`
-    dispatch(setVehicleSalesAndStock());
   };
 }
 
@@ -1982,15 +1957,13 @@ export function setEmissionChanges(): AppThunk {
  */
 export function setVehicleSalesAndStock(): AppThunk {
   return (dispatch, getState) => {
-    const { geography, transportation, impacts } = getState();
+    const { geography, impacts } = getState();
     const { regions } = geography;
-    const { vmtAllocationPerVehicle } = transportation;
     const { evDeploymentLocationOptions } = impacts.selectOptions;
 
     const geographicFocus = geography.focus;
 
     const selectedRegion = Object.values(regions).find((r) => r.selected);
-    const evDeploymentLocations = evDeploymentLocationOptions.map((o) => o.id);
 
     const selectedRegionName =
       geographicFocus === "regions" ? selectedRegion?.name || "" : "";
@@ -2019,16 +1992,6 @@ export function setVehicleSalesAndStock(): AppThunk {
         selectedGeographySalesAndStockByState,
       });
 
-    const _vehicleSalesAndStock = _calculateVehicleSalesAndStock({
-      countyFips,
-      stateLDVsSales,
-      stateBusSalesAndStock,
-      geographicFocus,
-      selectedRegionName,
-      evDeploymentLocations,
-      vmtAllocationPerVehicle,
-    });
-
     dispatch({
       type: "transportation/SET_SELECTED_GEOGRAPHY_SALES_AND_STOCK_BY_STATE",
       payload: { selectedGeographySalesAndStockByState },
@@ -2037,11 +2000,6 @@ export function setVehicleSalesAndStock(): AppThunk {
     dispatch({
       type: "transportation/SET_SELECTED_GEOGRAPHY_SALES_AND_STOCK_BY_REGION",
       payload: { selectedGeographySalesAndStockByRegion },
-    });
-
-    dispatch({
-      type: "transportation/_SET_VEHICLE_SALES_AND_STOCK",
-      payload: { _vehicleSalesAndStock },
     });
   };
 }

@@ -20,7 +20,6 @@ import {
   type DefaultEVLoadProfiles,
   type EVEfficiencyAssumptions,
   type RegionAverageTemperatures,
-  type StateLDVsSales,
   type StateBusSalesAndStock,
   type RegionEereAverages,
   type StateEereAverages,
@@ -380,9 +379,6 @@ export type VehicleEmissionChangesByGeography = ReturnType<
 >;
 export type _SelectedRegionsTotalYearlyEVEnergyUsage = ReturnType<
   typeof _calculateSelectedRegionsTotalYearlyEVEnergyUsage
->;
-export type _VehicleSalesAndStock = ReturnType<
-  typeof _calculateVehicleSalesAndStock
 >;
 export type SelectedRegionsEEREDefaultsAverages = ReturnType<
   typeof calculateSelectedRegionsEEREDefaultsAverages
@@ -4657,126 +4653,6 @@ export function calculateVehicleEmissionChangesByGeography(options: {
       });
     }
   });
-
-  return result;
-}
-
-/**
- * Vehicle sales and stock for each state in the selected region, and the region
- * as a whole (sum of each state's sales and stock), for each vehicle type.
- *
- * Excel: "Table 10: List of states in region for purposes of calculating
- * vehicle sales and stock" table in the "Library" sheet (C457:I474).
- */
-export function _calculateVehicleSalesAndStock(options: {
-  countyFips: CountyFIPS;
-  stateLDVsSales: StateLDVsSales;
-  stateBusSalesAndStock: StateBusSalesAndStock;
-  geographicFocus: GeographicFocus;
-  selectedRegionName: string;
-  evDeploymentLocations: string[];
-  vmtAllocationPerVehicle: VMTAllocationPerVehicle | EmptyObject;
-}) {
-  const {
-    countyFips,
-    stateLDVsSales,
-    stateBusSalesAndStock,
-    geographicFocus,
-    selectedRegionName,
-    evDeploymentLocations,
-    vmtAllocationPerVehicle,
-  } = options;
-
-  const result: {
-    [locationId: string]: {
-      ldvs: { sales: number; stock: number };
-      transitBuses: { sales: number; stock: number };
-      schoolBuses: { sales: number; stock: number };
-    };
-  } = {};
-
-  const vmtAllocationData =
-    Object.keys(vmtAllocationPerVehicle).length !== 0
-      ? (vmtAllocationPerVehicle as VMTAllocationPerVehicle)
-      : null;
-
-  if (evDeploymentLocations[0] === "" || !vmtAllocationData) {
-    return result;
-  }
-
-  // conditionally remove "region-"" option, as it will be added later as the sum
-  // of each state's data
-  const stateIds = evDeploymentLocations.reduce((ids, id) => {
-    return id.startsWith("region-") ? ids : ids.concat(id);
-  }, [] as string[]);
-
-  countyFips.forEach((data) => {
-    const id = data["Postal State Code"];
-    const stateId = `state-${id}`;
-
-    const conditionalRegionMatch =
-      geographicFocus === "regions"
-        ? data["AVERT Region"] === selectedRegionName
-        : true;
-
-    if (conditionalRegionMatch && stateIds.includes(stateId)) {
-      const ldvsVMTShare = data["Share of State VMT - Passenger Cars"] || 0;
-      const transitBusesVMTShare = data["Share of State VMT - Transit Buses"] || 0; // prettier-ignore
-      const schoolBusesVMTShare = data["Share of State VMT - School Buses"] || 0; // prettier-ignore
-
-      const ldvsSales = stateLDVsSales[id as keyof StateLDVsSales];
-
-      const ldvsStock =
-        vmtAllocationData[id as StateId].millionRegisteredLDVs * 1_000_000;
-
-      const busSalesAndStock =
-        stateBusSalesAndStock[id as keyof StateBusSalesAndStock];
-
-      // initialize and then increment state data by vehicle type
-      result[stateId] ??= {
-        ldvs: { sales: 0, stock: 0 },
-        transitBuses: { sales: 0, stock: 0 },
-        schoolBuses: { sales: 0, stock: 0 },
-      };
-
-      result[stateId].ldvs.sales += ldvsVMTShare * ldvsSales;
-
-      result[stateId].ldvs.stock += ldvsVMTShare * ldvsStock;
-
-      result[stateId].transitBuses.sales +=
-        transitBusesVMTShare * busSalesAndStock.transitBuses.sales;
-
-      result[stateId].transitBuses.stock +=
-        transitBusesVMTShare * busSalesAndStock.transitBuses.stock;
-
-      result[stateId].schoolBuses.sales +=
-        schoolBusesVMTShare * busSalesAndStock.schoolBuses.sales;
-
-      result[stateId].schoolBuses.stock +=
-        schoolBusesVMTShare * busSalesAndStock.schoolBuses.stock;
-    }
-  });
-
-  // conditionally add "region-" to result as the sum of each state's data
-  const resultStateIds = Object.keys(result);
-  const regionId = evDeploymentLocations.find((id) => id.startsWith("region-"));
-
-  if (regionId) {
-    result[regionId] = {
-      ldvs: { sales: 0, stock: 0 },
-      transitBuses: { sales: 0, stock: 0 },
-      schoolBuses: { sales: 0, stock: 0 },
-    };
-
-    resultStateIds.forEach((id) => {
-      result[regionId].ldvs.sales += result[id].ldvs.sales;
-      result[regionId].ldvs.stock += result[id].ldvs.stock;
-      result[regionId].transitBuses.sales += result[id].transitBuses.sales;
-      result[regionId].transitBuses.stock += result[id].transitBuses.stock;
-      result[regionId].schoolBuses.sales += result[id].schoolBuses.sales;
-      result[regionId].schoolBuses.stock += result[id].schoolBuses.stock;
-    });
-  }
 
   return result;
 }
