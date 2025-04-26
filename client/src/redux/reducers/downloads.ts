@@ -240,9 +240,9 @@ function formatCountyDownloadData(options: {
    */
   Object.entries(states).forEach(([stateId, stateData]) => {
     const fipsCode =
-      countyFips.find((data) => {
-        return data["Postal State Code"] === stateId;
-      })?.["State and County FIPS Code"] || "";
+      countyFips
+        .find((data) => data["Postal State Code"] === stateId)
+        ?.["State and County FIPS Code"]?.toString() || "";
 
     const statesRows = [...pollutantsRows].reduce((array, row) => {
       const { pollutant, unit } = row;
