@@ -4,21 +4,42 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Tooltip } from "@/components/Tooltip";
 import { useAppSelector } from "@/redux/index";
 import { type _SelectedRegionsTotalYearlyEVEnergyUsage } from "@/calculations/transportation";
+import { type StateId } from "@/config";
 
+/**
+ * Format a string to a number. If attempting to cast the string to a number
+ * results in NaN, or if the number is less than 0, return 0.
+ */
+function stringToNumber(value: string) {
+  return isNaN(Number(value)) || Number(value) < 0 ? 0 : Number(value);
+}
+
+/**
+ * Calculate the value of one number divided by another, shown as a percentage.
+ * Format the result as a string with zero to one decimal places percent sign
+ * appended. If the provided denominator is 0, return "-".
+ */
 function calculatePercent(numerator: number, denominator: number) {
+  const numberFormatOptions = {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 1,
+  };
+
   return denominator !== 0
-    ? `${((numerator / denominator) * 100).toLocaleString(undefined, {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 1,
-      })}%`
+    ? `${((numerator / denominator) * 100).toLocaleString(undefined, numberFormatOptions)}%`
     : "-";
 }
 
+/**
+ * Format a number to a string with zero decimal places and thousands separator.
+ */
 function formatNumber(number: number) {
-  return number.toLocaleString(undefined, {
+  const numberFormatOptions = {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
-  });
+  };
+
+  return number.toLocaleString(undefined, numberFormatOptions);
 }
 
 function EVSalesAndStockTableContent(props: { className?: string }) {
@@ -26,50 +47,55 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
 
   const inputs = useAppSelector(({ impacts }) => impacts.inputs);
   const selectOptions = useAppSelector(({ impacts }) => impacts.selectOptions);
-  const _vehicleSalesAndStock = useAppSelector(
-    ({ transportation }) => transportation._vehicleSalesAndStock,
+  const salesAndStockByState = useAppSelector(
+    ({ transportation }) =>
+      transportation.selectedGeographySalesAndStockByState,
+  );
+  const salesAndStockByRegion = useAppSelector(
+    ({ transportation }) =>
+      transportation.selectedGeographySalesAndStockByRegion,
   );
 
-  const {
-    batteryEVs,
-    hybridEVs,
-    transitBuses,
-    schoolBuses,
-    evDeploymentLocation,
-  } = inputs;
-
+  const { evDeploymentLocation } = inputs;
   const { evDeploymentLocationOptions } = selectOptions;
 
   const evDeploymentLocationName = evDeploymentLocationOptions.find((opt) => {
     return opt.id === evDeploymentLocation;
   })?.name;
 
-  const locationSalesAndStock = _vehicleSalesAndStock[evDeploymentLocation];
-  if (!locationSalesAndStock) return null;
+  const deploymentLocationIsRegion = evDeploymentLocation.startsWith("region-");
+  const deploymentLocationIsState = evDeploymentLocation.startsWith("state-");
+  const deploymentLocationStateId = evDeploymentLocation.replace("state-", "") as StateId; // prettier-ignore
 
-  const totalLDVs =
-    isNaN(Number(batteryEVs) + Number(hybridEVs)) ||
-    Number(batteryEVs) < 0 ||
-    Number(hybridEVs) < 0
-      ? 0
-      : Number(batteryEVs) + Number(hybridEVs);
+  const salesAndStock = deploymentLocationIsRegion
+    ? salesAndStockByRegion
+    : deploymentLocationIsState
+      ? salesAndStockByState?.[deploymentLocationStateId]
+      : null;
 
-  const totalTransitBuses =
-    isNaN(Number(transitBuses)) || Number(transitBuses) < 0
-      ? 0
-      : Number(transitBuses);
+  if (!salesAndStock) return null;
 
-  const totalSchoolBuses =
-    isNaN(Number(schoolBuses)) || Number(schoolBuses) < 0
-      ? 0
-      : Number(schoolBuses);
+  const batteryEVs = stringToNumber(inputs.batteryEVs);
+  const hybridEVs = stringToNumber(inputs.hybridEVs);
+  const ldvs = batteryEVs + hybridEVs;
+  const transitBuses = stringToNumber(inputs.transitBuses);
+  const schoolBuses = stringToNumber(inputs.schoolBuses);
+  const shortHaulTrucks = stringToNumber(inputs.shortHaulTrucks);
+  const comboLongHaulTrucks = stringToNumber(inputs.comboLongHaulTrucks);
+  const refuseTrucks = stringToNumber(inputs.refuseTrucks);
 
-  const ldvsSales = locationSalesAndStock.ldvs.sales;
-  const ldvsStock = locationSalesAndStock.ldvs.stock;
-  const transitBusesSales = locationSalesAndStock.transitBuses.sales;
-  const transitBusesStock = locationSalesAndStock.transitBuses.stock;
-  const schoolBusesSales = locationSalesAndStock.schoolBuses.sales;
-  const schoolBusesStock = locationSalesAndStock.schoolBuses.stock;
+  const ldvsSales = calculatePercent(ldvs, salesAndStock["LDVs"].sales);
+  const ldvsStock = calculatePercent(ldvs, salesAndStock["LDVs"].stock);
+  const transitBusesSales = calculatePercent(transitBuses, salesAndStock["Transit buses"].sales); // prettier-ignore
+  const transitBusesStock = calculatePercent(transitBuses, salesAndStock["Transit buses"].stock); // prettier-ignore
+  const schoolBusesSales = calculatePercent(schoolBuses, salesAndStock["School buses"].sales); // prettier-ignore
+  const schoolBusesStock = calculatePercent(schoolBuses, salesAndStock["School buses"].stock); // prettier-ignore
+  const shortHaulTrucksSales = calculatePercent(shortHaulTrucks, salesAndStock["Short-haul trucks"].sales); // prettier-ignore
+  const shortHaulTrucksStock = calculatePercent(shortHaulTrucks, salesAndStock["Short-haul trucks"].stock); // prettier-ignore
+  const comboLongHaulTrucksSales = calculatePercent(comboLongHaulTrucks, salesAndStock["Combination long-haul trucks"].sales); // prettier-ignore
+  const comboLongHaulTrucksStock = calculatePercent(comboLongHaulTrucks, salesAndStock["Combination long-haul trucks"].stock); // prettier-ignore
+  const refuseTrucksSales = calculatePercent(refuseTrucks, salesAndStock["Refuse trucks"].sales); // prettier-ignore
+  const refuseTrucksStock = calculatePercent(refuseTrucks, salesAndStock["Refuse trucks"].stock); // prettier-ignore
 
   return (
     <>
@@ -116,24 +142,38 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
             <tbody>
               <tr>
                 <th scope="row">Light-duty vehicles</th>
-                <td>{calculatePercent(totalLDVs, ldvsSales)}</td>
-                <td>{calculatePercent(totalLDVs, ldvsStock)}</td>
+                <td>{ldvsSales}</td>
+                <td>{ldvsStock}</td>
               </tr>
 
               <tr>
                 <th scope="row">Transit buses</th>
-                <td>
-                  {calculatePercent(totalTransitBuses, transitBusesSales)}
-                </td>
-                <td>
-                  {calculatePercent(totalTransitBuses, transitBusesStock)}
-                </td>
+                <td>{transitBusesSales}</td>
+                <td>{transitBusesStock}</td>
               </tr>
 
               <tr>
                 <th scope="row">School buses</th>
-                <td>{calculatePercent(totalSchoolBuses, schoolBusesSales)}</td>
-                <td>{calculatePercent(totalSchoolBuses, schoolBusesStock)}</td>
+                <td>{schoolBusesSales}</td>
+                <td>{schoolBusesStock}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">Short-haul trucks</th>
+                <td>{shortHaulTrucksSales}</td>
+                <td>{shortHaulTrucksStock}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">Comb. long-haul trucks</th>
+                <td>{comboLongHaulTrucksSales}</td>
+                <td>{comboLongHaulTrucksStock}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">Refuse trucks</th>
+                <td>{refuseTrucksSales}</td>
+                <td>{refuseTrucksStock}</td>
               </tr>
             </tbody>
           </table>
