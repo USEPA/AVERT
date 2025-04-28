@@ -37,15 +37,15 @@ import evEfficiencyAssumptions from "@/data/ev-efficiency-assumptions.json";
  */
 import stateBusSalesAndStock from "@/data/state-bus-sales-and-stock.json";
 /**
- * Excel: "Table 13: Historical renewable and energy efficiency addition data"
- * table in the "Library" sheet (B606:E619).
+ * Excel: "Table 11: Historical renewable and energy efficiency addition data"
+ * table in the "Library" sheet (B882:J895).
  */
-import regionEereAverages from "@/data/region-eere-averages.json";
+import historicalRegionEEREData from "@/data/historical-region-eere-data.json";
 /**
- * Excel: "Table 13: Historical renewable and energy efficiency addition data"
- * table in the "Library" sheet (B626:E674).
+ * Excel: "Table 11: Historical renewable and energy efficiency addition data"
+ * table in the "Library" sheet (B902:H950).
  */
-import stateEereAverages from "@/data/state-eere-averages.json";
+import historicalStateEEREData from "@/data/historical-state-eere-data.json";
 
 /**
  * NOTE: Normally we'd import 'app/data/county-fips.json' (Excel: "CountyFIPS"
@@ -172,9 +172,9 @@ export type RegionAverageTemperatures = typeof regionAverageTemperatures;
 
 export type StateBusSalesAndStock = typeof stateBusSalesAndStock;
 
-export type RegionEereAverages = typeof regionEereAverages;
+export type HistoricalRegionEEREData = typeof historicalRegionEEREData;
 
-export type StateEereAverages = typeof stateEereAverages;
+export type HistoricalStateEEREData = typeof historicalStateEEREData;
 
 /**
  * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet

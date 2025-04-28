@@ -170,15 +170,15 @@ import evEfficiencyAssumptions from "@/data/ev-efficiency-assumptions.json";
  */
 import stateBusSalesAndStock from "@/data/state-bus-sales-and-stock.json";
 /**
- * Excel: "Table 13: Historical renewable and energy efficiency addition data"
- * table in the "Library" sheet (B606:E619).
+ * Excel: "Table 11: Historical renewable and energy efficiency addition data"
+ * table in the "Library" sheet (B882:J895).
  */
-import regionEereAverages from "@/data/region-eere-averages.json";
+import historicalRegionEEREData from "@/data/historical-region-eere-data.json";
 /**
- * Excel: "Table 13: Historical renewable and energy efficiency addition data"
- * table in the "Library" sheet (B626:E674).
+ * Excel: "Table 11: Historical renewable and energy efficiency addition data"
+ * table in the "Library" sheet (B902:H950).
  */
-import stateEereAverages from "@/data/state-eere-averages.json";
+import historicalStateEEREData from "@/data/historical-state-eere-data.json";
 
 /**
  * Work around due to TypeScript inability to infer types from large JSON files.
@@ -668,9 +668,8 @@ const initialState: State = {
   vehicleEmissionChangesByGeography: {},
   selectedRegionsEEREDefaultsAverages: {},
   evDeploymentLocationHistoricalEERE: {
-    eeRetail: { mw: 0, gwh: 0 },
-    onshoreWind: { mw: 0, gwh: 0 },
-    utilitySolar: { mw: 0, gwh: 0 },
+    averageAnnualCapacityAddedMW: { wind: 0, upv: 0, ee: 0 },
+    estimatedAnnualRetailImpactsGWh: { wind: 0, upv: 0, ee: 0 },
   },
 };
 
@@ -2027,8 +2026,8 @@ export function setSelectedRegionsEEREDefaultsAverages(): AppThunk {
 
     const selectedRegionsEEREDefaultsAverages =
       calculateSelectedRegionsEEREDefaultsAverages({
-        regionalScalingFactors,
         selectedGeographyRegions,
+        regionalScalingFactors,
       });
 
     dispatch({
@@ -2052,21 +2051,18 @@ export function setSelectedRegionsEEREDefaultsAverages(): AppThunk {
 export function setEVDeploymentLocationHistoricalEERE(): AppThunk {
   return (dispatch, getState) => {
     const { geography, impacts, transportation } = getState();
-    const { regionalLineLoss } = geography;
+    const { regions, regionalLineLoss } = geography;
     const { evDeploymentLocation } = impacts.inputs;
     const { selectedRegionsEEREDefaultsAverages } = transportation;
 
-    const selectedRegionId =
-      Object.values(geography.regions).find((r) => r.selected)?.id || "";
-
     const evDeploymentLocationHistoricalEERE =
       calculateEVDeploymentLocationHistoricalEERE({
-        regionEereAverages,
-        stateEereAverages,
         selectedRegionsEEREDefaultsAverages,
+        historicalRegionEEREData,
+        historicalStateEEREData,
         evDeploymentLocation,
         regionalLineLoss,
-        selectedRegionId,
+        regions,
       });
 
     dispatch({
