@@ -314,6 +314,9 @@ export type SelectedRegionsMonthlySalesChanges = ReturnType<
 export type SelectedRegionsYearlySalesChanges = ReturnType<
   typeof calculateSelectedRegionsYearlySalesChanges
 >;
+export type SelectedRegionsTotalYearlySalesChanges = ReturnType<
+  typeof calculateSelectedRegionsTotalYearlySalesChanges
+>;
 export type SelectedRegionsMonthlyEmissionChanges = ReturnType<
   typeof calculateSelectedRegionsMonthlyEmissionChanges
 >;
@@ -2507,6 +2510,45 @@ export function calculateSelectedRegionsYearlySalesChanges(options: {
       [regionId in RegionId]: {
         [categoryVehicleFuelCombo in VehicleCategoryVehicleTypeFuelTypeCombo]: number;
       };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Selected AVERT region's retail sales (GWh) for the year – total of all
+ * vehicle category / vehicle type / fuel type combos combined.
+ *
+ * Excel: "Sales Changes" data from "Table 8: Calculated changes for the
+ * transportation sector" table in the "Library" sheet (S577).
+ */
+export function calculateSelectedRegionsTotalYearlySalesChanges(options: {
+  selectedRegionsYearlySalesChanges:
+    | SelectedRegionsYearlySalesChanges
+    | EmptyObject;
+}) {
+  const { selectedRegionsYearlySalesChanges } = options;
+
+  if (Object.keys(selectedRegionsYearlySalesChanges).length === 0) {
+    return {} as {
+      [regionId in RegionId]: number;
+    };
+  }
+
+  const result = Object.entries(selectedRegionsYearlySalesChanges).reduce(
+    (object, [regionKey, regionValue]) => {
+      const regionId = regionKey as RegionId;
+
+      object[regionId] = Object.values(regionValue).reduce(
+        (sum, value) => sum + value,
+        0,
+      );
+
+      return object;
+    },
+    {} as {
+      [regionId in RegionId]: number;
     },
   );
 
