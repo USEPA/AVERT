@@ -1,4 +1,3 @@
-// TODO – this will parse Table B data from the MOVESsupplement worksheet
 import { dirname, resolve } from "node:path";
 import { exit } from "node:process";
 import { fileURLToPath } from "node:url";

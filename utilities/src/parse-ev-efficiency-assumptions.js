@@ -75,7 +75,7 @@ function parseLibraryWorksheet(worksheet) {
   });
 
   /** The second and third columns (C and D) don't contain data we need, so remove them */
-  const allRows = json.map(row => [row[0], ...row.slice(3)]);
+  const allRows = json.map((row) => [row[0], ...row.slice(3)]);
 
   const headerRow = allRows[0];
   const dataRows = allRows.slice(1);

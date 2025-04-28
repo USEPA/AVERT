@@ -13,6 +13,8 @@ function main() {
   // fork("./src/parse-default-ev-load-profiles.js", [excelFilepath]);
   // fork("./src/parse-ev-efficiency-assumptions.js", [excelFilepath]);
   // fork("./src/parse-fhwa-ldv-state-level-vmt.js", [excelFilepath]);
+  // fork("./src/parse-historical-region-eere-data.js", [excelFilepath]);
+  // fork("./src/parse-historical-state-eere-data.js", [excelFilepath]);
   // fork("./src/parse-moves-emission-rates.js", [excelFilepath]);
   // fork("./src/parse-pm25-brakewear-tirewear-ev-ice-ratios.js", [excelFilepath]);
   // fork("./src/parse-state-level-sales.js", [excelFilepath]);
