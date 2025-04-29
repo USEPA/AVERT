@@ -29,6 +29,7 @@ import {
   type SelectedRegionsMonthlySalesChanges,
   type SelectedRegionsYearlySalesChanges,
   type SelectedRegionsTotalYearlySalesChanges,
+  type SelectedRegionsMonthlyEnergyUsage,
   type SelectedRegionsMonthlyEmissionChanges,
   type SelectedRegionsMonthlyEmissionChangesPerVehicleCategory,
   type SelectedRegionsMonthlyEmissionChangesTotals,
@@ -83,6 +84,7 @@ import {
   calculateSelectedRegionsMonthlySalesChanges,
   calculateSelectedRegionsYearlySalesChanges,
   calculateSelectedRegionsTotalYearlySalesChanges,
+  calculateSelectedRegionsMonthlyEnergyUsage,
   calculateSelectedRegionsMonthlyEmissionChanges,
   calculateSelectedRegionsMonthlyEmissionChangesPerVehicleCategory,
   calculateSelectedRegionsMonthlyEmissionChangesTotals,
@@ -337,6 +339,12 @@ type Action =
       };
     }
   | {
+      type: "transportation/SET_SELECTED_REGIONS_MONTHLY_ENERGY_USAGE";
+      payload: {
+        selectedRegionsMonthlyEnergyUsage: SelectedRegionsMonthlyEnergyUsage;
+      };
+    }
+  | {
       type: "transportation/SET_SELECTED_REGIONS_MONTHLY_EMISSION_CHANGES";
       payload: {
         selectedRegionsMonthlyEmissionChanges: SelectedRegionsMonthlyEmissionChanges;
@@ -530,6 +538,9 @@ type State = {
   selectedRegionsTotalYearlySalesChanges:
     | SelectedRegionsTotalYearlySalesChanges
     | EmptyObject;
+  selectedRegionsMonthlyEnergyUsage:
+    | SelectedRegionsMonthlyEnergyUsage
+    | EmptyObject;
   selectedRegionsMonthlyEmissionChanges:
     | SelectedRegionsMonthlyEmissionChanges
     | EmptyObject;
@@ -624,6 +635,7 @@ const initialState: State = {
   selectedRegionsMonthlySalesChanges: {},
   selectedRegionsYearlySalesChanges: {},
   selectedRegionsTotalYearlySalesChanges: {},
+  selectedRegionsMonthlyEnergyUsage: {},
   selectedRegionsMonthlyEmissionChanges: {},
   selectedRegionsMonthlyEmissionChangesPerVehicleCategory: {},
   selectedRegionsMonthlyEmissionChangesTotals: {},
@@ -919,6 +931,15 @@ export default function reducer(
       return {
         ...state,
         selectedRegionsTotalYearlySalesChanges,
+      };
+    }
+
+    case "transportation/SET_SELECTED_REGIONS_MONTHLY_ENERGY_USAGE": {
+      const { selectedRegionsMonthlyEnergyUsage } = action.payload;
+
+      return {
+        ...state,
+        selectedRegionsMonthlyEnergyUsage,
       };
     }
 
@@ -1624,6 +1645,11 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
         selectedRegionsYearlySalesChanges,
       });
 
+    const selectedRegionsMonthlyEnergyUsage =
+      calculateSelectedRegionsMonthlyEnergyUsage({
+        selectedRegionsMonthlySalesChanges,
+      });
+
     const _selectedRegionsMonthlyEVEnergyUsageGW =
       _calculateSelectedRegionsMonthlyEVEnergyUsageGW({
         _selectedRegionsMonthlyVMTPerVehicleType,
@@ -1650,6 +1676,11 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
     dispatch({
       type: "transportation/SET_SELECTED_REGIONS_TOTAL_YEARLY_SALES_CHANGES",
       payload: { selectedRegionsTotalYearlySalesChanges },
+    });
+
+    dispatch({
+      type: "transportation/SET_SELECTED_REGIONS_MONTHLY_ENERGY_USAGE",
+      payload: { selectedRegionsMonthlyEnergyUsage },
     });
 
     dispatch({

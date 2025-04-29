@@ -315,6 +315,9 @@ export type SelectedRegionsYearlySalesChanges = ReturnType<
 export type SelectedRegionsTotalYearlySalesChanges = ReturnType<
   typeof calculateSelectedRegionsTotalYearlySalesChanges
 >;
+export type SelectedRegionsMonthlyEnergyUsage = ReturnType<
+  typeof calculateSelectedRegionsMonthlyEnergyUsage
+>;
 export type SelectedRegionsMonthlyEmissionChanges = ReturnType<
   typeof calculateSelectedRegionsMonthlyEmissionChanges
 >;
@@ -3300,6 +3303,93 @@ export function calculateSelectedRegionsTotalYearlySalesChanges(options: {
     },
     {} as {
       [regionId in RegionId]: number;
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Selected AVERT region's energy usage for each month for each vehicle category.
+ *
+ * Excel: Data from the bottom of the middle table in the "CalculateEERE" sheet
+ * (Y50:AE61).
+ */
+export function calculateSelectedRegionsMonthlyEnergyUsage(options: {
+  selectedRegionsMonthlySalesChanges:
+    | SelectedRegionsMonthlySalesChanges
+    | EmptyObject;
+}) {
+  const { selectedRegionsMonthlySalesChanges } = options;
+
+  /**
+   * The vehicle categories used in the Excel "CalculateEERE" sheet are slightly
+   * different than the typical `VehicleCategory` values used elsewhere. We'll
+   * omit "Other buses" entirely and instead of using "LDVs" we'll use "Battery
+   * EVs" and "Plug-in Hybrid EVs".
+   */
+  type AlternateVehicleCategory =
+    | Exclude<VehicleCategory, "LDVs" | "Other buses">
+    | "Battery EVs"
+    | "Plug-in Hybrid EVs";
+
+  if (Object.keys(selectedRegionsMonthlySalesChanges).length === 0) {
+    return {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          [vehicleCategory in AlternateVehicleCategory]: number;
+        };
+      };
+    };
+  }
+
+  const GWtoMW = 1_000;
+
+  const result = Object.entries(selectedRegionsMonthlySalesChanges).reduce(
+    (object, [regionKey, regionValue]) => {
+      const regionId = regionKey as keyof typeof selectedRegionsMonthlySalesChanges; // prettier-ignore
+
+      object[regionId] ??= {} as {
+        [month: number]: {
+          [vehicleCategory in AlternateVehicleCategory]: number;
+        };
+      };
+
+      Object.entries(regionValue).forEach(
+        ([regionMonthKey, regionMonthValue]) => {
+          const month = Number(regionMonthKey);
+
+          object[regionId][month] ??= {
+            "Battery EVs": 0,
+            "Plug-in Hybrid EVs": 0,
+            "Transit buses": 0,
+            "School buses": 0,
+            "Short-haul trucks": 0,
+            "Long-haul trucks": 0,
+            "Refuse trucks": 0,
+          };
+
+          Object.entries(regionMonthValue).forEach(
+            ([vehicleKey, vehicleValue]) => {
+              const vehicleCategory = vehicleKey.split(" / ")[0] as AlternateVehicleCategory; // prettier-ignore
+
+              if (vehicleCategory in object[regionId][month]) {
+                object[regionId][month][vehicleCategory] +=
+                  vehicleValue * GWtoMW;
+              }
+            },
+          );
+        },
+      );
+
+      return object;
+    },
+    {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          [vehicleCategory in AlternateVehicleCategory]: number;
+        };
+      };
     },
   );
 
