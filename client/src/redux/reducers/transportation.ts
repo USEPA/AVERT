@@ -141,15 +141,6 @@ import fhwaLDVStateLevelVMT from "@/data/fhwa-ldv-state-level-vmt.json";
  * rate conversion factors" table in the "Library" sheet (B990:G1130).
  */
 import pm25BreakwearTirewearEVICERatios from "@/data/pm25-breakwear-tirewear-ev-ice-ratios.json";
-
-/**
- * Work around due to TypeScript inability to infer types from large JSON files.
- */
-const countyFips = countyFipsData as CountyFIPS;
-/**
- * Excel: Second table in the "RegionStateAllocate" sheet (B118:E167)
- */
-import vmtAllocationAndRegisteredVehicles from "@/data/vmt-allocation-and-registered-vehicles.json";
 /**
  * Excel: "MOVESEmissionRates" sheet.
  */
@@ -180,6 +171,10 @@ import historicalRegionEEREData from "@/data/historical-region-eere-data.json";
  */
 import historicalStateEEREData from "@/data/historical-state-eere-data.json";
 
+/**
+ * Work around due to TypeScript inability to infer types from large JSON files.
+ */
+const countyFips = countyFipsData as CountyFIPS;
 /**
  * Work around due to TypeScript inability to infer types from large JSON files.
  */
@@ -1180,7 +1175,6 @@ export function setVMTData(): AppThunk {
     });
 
     const vmtAllocationPerVehicle = calculateVMTAllocationPerVehicle({
-      vmtAllocationAndRegisteredVehicles,
       stateBusSalesAndStock,
     });
 

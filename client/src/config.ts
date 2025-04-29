@@ -18,10 +18,6 @@ import fhwaLDVStateLevelVMT from "@/data/fhwa-ldv-state-level-vmt.json";
  */
 import pm25BreakwearTirewearEVICERatios from "@/data/pm25-breakwear-tirewear-ev-ice-ratios.json";
 /**
- * Excel: Second table in the "RegionStateAllocate" sheet (B118:E167)
- */
-import vmtAllocationAndRegisteredVehicles from "@/data/vmt-allocation-and-registered-vehicles.json";
-/**
  * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
  * Lite" table in the "Library" sheet (B782:N807).
  */
@@ -160,9 +156,6 @@ export type FHWALDVStateLevelVMT = typeof fhwaLDVStateLevelVMT;
 
 export type PM25BreakwearTirewearEVICERatios =
   typeof pm25BreakwearTirewearEVICERatios;
-
-export type VMTAllocationAndRegisteredVehicles =
-  typeof vmtAllocationAndRegisteredVehicles;
 
 export type DefaultEVLoadProfiles = typeof defaultEVLoadProfiles;
 
