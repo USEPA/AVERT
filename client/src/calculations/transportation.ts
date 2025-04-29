@@ -381,9 +381,6 @@ export type _SelectedRegionsTotalYearlyEmissionChanges = ReturnType<
 export type VehicleEmissionChangesByGeography = ReturnType<
   typeof calculateVehicleEmissionChangesByGeography
 >;
-export type _SelectedRegionsTotalYearlyEVEnergyUsage = ReturnType<
-  typeof _calculateSelectedRegionsTotalYearlyEVEnergyUsage
->;
 export type SelectedRegionsEEREDefaultsAverages = ReturnType<
   typeof calculateSelectedRegionsEEREDefaultsAverages
 >;
@@ -3899,51 +3896,6 @@ export function calculateSelectedRegionsMonthlyEVEnergyUsageMW(options: {
           schoolBuses: number;
         };
       };
-    },
-  );
-
-  return result;
-}
-
-/**
- * Totals the energy usage from each EV type for all months in the year to a
- * single total EV energy usage value for the year in GW.
- *
- * Excel: "Sales Changes" data from "Table 8: Calculated changes for the
- * transportation sector" table in the "Library" sheet (S309).
- */
-export function _calculateSelectedRegionsTotalYearlyEVEnergyUsage(options: {
-  _selectedRegionsMonthlyEVEnergyUsageGW:
-    | _SelectedRegionsMonthlyEVEnergyUsageGW
-    | EmptyObject;
-}) {
-  const { _selectedRegionsMonthlyEVEnergyUsageGW } = options;
-
-  const selectedRegionsEnergyData =
-    Object.keys(_selectedRegionsMonthlyEVEnergyUsageGW).length !== 0
-      ? (_selectedRegionsMonthlyEVEnergyUsageGW as _SelectedRegionsMonthlyEVEnergyUsageGW)
-      : null;
-
-  if (!selectedRegionsEnergyData) {
-    return {} as {
-      [regionId in RegionId]: number;
-    };
-  }
-
-  const result = Object.entries(selectedRegionsEnergyData).reduce(
-    (object, [regionKey, regionValue]) => {
-      const regionId = regionKey as keyof typeof selectedRegionsEnergyData;
-
-      object[regionId] = Object.values(regionValue).reduce(
-        (number, regionMonthValue) =>
-          number + Object.values(regionMonthValue).reduce((a, b) => a + b, 0),
-        0,
-      );
-
-      return object;
-    },
-    {} as {
-      [regionId in RegionId]: number;
     },
   );
 
