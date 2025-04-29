@@ -279,7 +279,9 @@ export type RegionName =
  * workbook. Even though we're only dealing with SO2 for now, this data
  * structure was set up to be flexible enough to handle a future scenario where
  * any of the other pollutants AVERT deals with have "infrequent emissions
- * events."
+ * events" and are stored in each region's `actualEmissions` field. These
+ * `actualEmissions` values were last updated to use the 2024 data found in the
+ * Excel workbook.
  *
  * NOTE: each region's percentage by state isn't stored in the Excel workbook,
  * but are stored in a separate Excel file titled:
@@ -346,7 +348,7 @@ export const regions: { [regionId in RegionId]: Region } = {
       FL: 100,
     },
     actualEmissions: {
-      so2: 21_572_126,
+      so2: 13_987_388,
     },
   },
   MIDA: {
@@ -371,7 +373,7 @@ export const regions: { [regionId in RegionId]: Region } = {
       WV: 4.4088,
     },
     actualEmissions: {
-      so2: 208_740_162,
+      so2: 216_297_528,
     },
   },
   MIDW: {
@@ -408,7 +410,7 @@ export const regions: { [regionId in RegionId]: Region } = {
       SC: 38.3013,
     },
     actualEmissions: {
-      so2: 26_475_452,
+      so2: 29_306_406,
     },
   },
   NE: {
@@ -451,7 +453,7 @@ export const regions: { [regionId in RegionId]: Region } = {
       NY: 100,
     },
     actualEmissions: {
-      so2: 1_262_108,
+      so2: 1_390_608,
     },
   },
   RM: {
@@ -481,7 +483,9 @@ export const regions: { [regionId in RegionId]: Region } = {
       GA: 59.8372,
       MS: 5.1415,
     },
-    actualEmissions: {},
+    actualEmissions: {
+      so2: 24_202_830,
+    },
   },
   SW: {
     id: "SW",
