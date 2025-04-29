@@ -1700,7 +1700,7 @@ export function calculateYearlyVMTTotals(options: {
 
   Object.values(monthlyVMTTotals).forEach((monthValue) => {
     for (const key in monthValue) {
-      const vehicleFuelCombo = key as VehicleTypeFuelTypeCombo;
+      const vehicleFuelCombo = key as keyof typeof monthValue;
 
       if (vehicleFuelCombo in result) {
         result[vehicleFuelCombo] += monthValue[vehicleFuelCombo];
@@ -1757,7 +1757,7 @@ export function calculateMonthlyVMTPercentages(options: {
     };
 
     for (const key in vmtValue) {
-      const vehicleFuelCombo = key as VehicleTypeFuelTypeCombo;
+      const vehicleFuelCombo = key as keyof typeof vmtValue;
 
       const vehicleIsPassengerVehicle =
         vehicleFuelCombo === "Passenger cars / Gasoline" ||
@@ -1834,7 +1834,7 @@ export function calculateVMTTotalsByStateRegionCombo(options: {
       }
 
       Object.entries(data["VMT"]).forEach(([vmtKey, vmtValue]) => {
-        const vehicle = vmtKey as VehicleType;
+        const vehicle = vmtKey as keyof (typeof data)["VMT"];
 
         if (vehicle in object[stateRegionKey].vehicleTypes) {
           object[stateRegionKey].vehicleTypes[vehicle] += vmtValue / 1_000_000_000; // prettier-ignore
@@ -1870,7 +1870,7 @@ export function calculateVMTTotalsByRegion(options: {
 
   const result = Object.values(vmtTotalsByStateRegionCombo).reduce(
     (object, data) => {
-      const region = data.region as RegionName;
+      const region = data.region;
 
       if (!object[region]) {
         object[region] = {
@@ -1892,7 +1892,7 @@ export function calculateVMTTotalsByRegion(options: {
       }
 
       Object.entries(data.vehicleTypes).forEach(([vmtKey, vmtValue]) => {
-        const vehicle = vmtKey as VehicleType;
+        const vehicle = vmtKey as keyof typeof data.vehicleTypes;
 
         if (vehicle in object[region]) {
           object[region][vehicle] += vmtValue;
@@ -1925,8 +1925,7 @@ export function calculateVMTPercentagesByStateRegionCombo(options: {
 
   const result = Object.entries(vmtTotalsByStateRegionCombo).reduce(
     (object, [stateRegionKey, stateRegionValue]) => {
-      const state = stateRegionValue.state as StateId;
-      const region = stateRegionValue.region as RegionName;
+      const { state, region } = stateRegionValue;
 
       if (!object[stateRegionKey]) {
         object[stateRegionKey] = {
@@ -1953,7 +1952,7 @@ export function calculateVMTPercentagesByStateRegionCombo(options: {
 
       Object.entries(stateRegionValue.vehicleTypes).forEach(
         ([vmtKey, vmtValue]) => {
-          const vehicle = vmtKey as VehicleType;
+          const vehicle = vmtKey as keyof typeof stateRegionValue.vehicleTypes;
 
           if (
             vehicle in object[stateRegionKey].vehicleTypes &&
@@ -2029,7 +2028,7 @@ export function calculateVehicleCategoryTotals(options: {
 
   const result = Object.entries(vehicleTypesByVehicleCategory).reduce(
     (object, [categoryKey, categoryValue]) => {
-      const category = categoryKey as VehicleCategory;
+      const category = categoryKey as keyof typeof vehicleTypesByVehicleCategory; // prettier-ignore
 
       const total = categoryValue.reduce((number, vehicle) => {
         if (vehicle in vehicleTypeTotals) {
@@ -2071,7 +2070,7 @@ export function calculateVehicleTypePercentagesOfVehicleCategory(options: {
 
   const result = Object.entries(vehicleTypeTotals).reduce(
     (object, [vehicleKey, vehicleValue]) => {
-      const vehicle = vehicleKey as VehicleType;
+      const vehicle = vehicleKey as keyof typeof vehicleTypeTotals;
 
       const category = Object.keys(vehicleTypesByVehicleCategory).find(
         (categoryKey) => {
@@ -2137,7 +2136,7 @@ export function calculateVehicleFuelTypePercentagesOfVehicleType(options: {
 
   const result = Object.entries(vmtTotalsByVehicleTypeFuelTypeCombo).reduce(
     (object, [vehicleFuelComboKey, vehicleFuelComboValue]) => {
-      const vehicleFuelCombo = vehicleFuelComboKey as VehicleTypeFuelTypeCombo;
+      const vehicleFuelCombo = vehicleFuelComboKey as keyof typeof vmtTotalsByVehicleTypeFuelTypeCombo; // prettier-ignore
       const vehicleType = vehicleFuelCombo.split(" / ")[0] as VehicleType;
 
       object[vehicleFuelCombo] ??= 0;
@@ -2227,8 +2226,7 @@ export function calculateTotalEffectiveVehicles(options: {
   };
 
   Object.keys(result).forEach((key) => {
-    const categoryVehicleFuelCombo =
-      key as VehicleCategoryVehicleTypeFuelTypeCombo;
+    const categoryVehicleFuelCombo = key as keyof typeof result;
 
     const [vehicleCategory, vehicleType, fuelType] = key.split(" / ");
 
@@ -2381,7 +2379,7 @@ export function calculateVMTPerVehicleTypeByState(options: {
 
   const result = Object.entries(vmtAndStockByState).reduce(
     (object, [vmtKey, vmtValue]) => {
-      const state = vmtKey as StateId;
+      const state = vmtKey as keyof typeof vmtAndStockByState;
 
       if (!object[state]) {
         object[state] = {} as {
@@ -2393,7 +2391,7 @@ export function calculateVMTPerVehicleTypeByState(options: {
       }
 
       Object.entries(vmtValue).forEach(([vehicleKey, vehicleValue]) => {
-        const vehicle = vehicleKey as VehicleType;
+        const vehicle = vehicleKey as keyof typeof vmtValue;
         const { vmt, stock } = vehicleValue;
         const vmtPerVehicle = vmt / stock;
 
@@ -2461,14 +2459,14 @@ export function calculateSelectedRegionsVMTPercentagesByState(options: {
 
   const result = Object.entries(selectedGeographyRegions).reduce(
     (regionsObject, [geographyKey, geographyValue]) => {
-      const regionId = geographyKey as RegionId;
-      const regionName = geographyValue.name as RegionName;
+      const regionId = geographyKey as keyof typeof selectedGeographyRegions;
+      const regionName = geographyValue.name;
 
       const regionResult = Object.values(
         vmtPercentagesByStateRegionCombo,
       ).reduce(
         (statesObject, vmtValue) => {
-          const stateId = vmtValue.state as StateId;
+          const stateId = vmtValue.state;
 
           if (vmtValue.region === regionName) {
             if (!statesObject[stateId]) {
@@ -2479,7 +2477,7 @@ export function calculateSelectedRegionsVMTPercentagesByState(options: {
 
             Object.entries(vmtValue.vehicleTypes).forEach(
               ([vehicleKey, vehicleValue]) => {
-                const vehicle = vehicleKey as VehicleType;
+                const vehicle = vehicleKey as keyof typeof vmtValue.vehicleTypes; // prettier-ignore
 
                 if (!statesObject[stateId][vehicle]) {
                   statesObject[stateId][vehicle] = vehicleValue;
@@ -2551,7 +2549,7 @@ export function calculateSelectedRegionsAverageVMTPerYear(options: {
 
   const result = Object.entries(selectedRegionsVMTPercentagesByState).reduce(
     (object, [vmtPercentagesRegionKey, vmtPercentagesRegionValue]) => {
-      const regionId = vmtPercentagesRegionKey as RegionId;
+      const regionId = vmtPercentagesRegionKey as keyof typeof selectedRegionsVMTPercentagesByState; // prettier-ignore
 
       object[regionId] ??= {} as {
         [vehicle in VehicleType]: number;
@@ -2559,7 +2557,7 @@ export function calculateSelectedRegionsAverageVMTPerYear(options: {
 
       Object.entries(vmtPercentagesRegionValue).forEach(
         ([vmtPercentagesStateKey, vmtPercentagesStateValue]) => {
-          const stateId = vmtPercentagesStateKey as StateId;
+          const stateId = vmtPercentagesStateKey as keyof typeof vmtPercentagesRegionValue; // prettier-ignore
 
           const deploymentLocationIncludesState =
             deploymentLocationIsRegion ||
@@ -2569,7 +2567,7 @@ export function calculateSelectedRegionsAverageVMTPerYear(options: {
           if (stateId in vmtPerVehicleTypeByState) {
             Object.entries(vmtPerVehicleTypeByState[stateId]).forEach(
               ([vehicleKey, vehicleValue]) => {
-                const vehicle = vehicleKey as VehicleType;
+                const vehicle = vehicleKey as keyof (typeof vmtPerVehicleTypeByState)[typeof stateId]; // prettier-ignore
 
                 const stateAdjustedVMT =
                   vehicleValue.vmtPerVehicleAdjustedByFHWA;
@@ -2633,7 +2631,7 @@ export function calculateSelectedRegionsMonthlyVMT(options: {
 
   const result = Object.entries(selectedRegionsAverageVMTPerYear).reduce(
     (object, [averageVMTKey, averageVMTValue]) => {
-      const regionId = averageVMTKey as RegionId;
+      const regionId = averageVMTKey as keyof typeof selectedRegionsAverageVMTPerYear; // prettier-ignore
 
       object[regionId] ??= {};
 
@@ -2664,7 +2662,7 @@ export function calculateSelectedRegionsMonthlyVMT(options: {
         };
 
         for (const key in vmtValue) {
-          const vehicleFuelCombo = key as VehicleTypeFuelTypeCombo;
+          const vehicleFuelCombo = key as keyof typeof vmtValue;
           const vehicle = vehicleFuelCombo.split(" / ")[0] as VehicleType;
 
           if (
@@ -2753,7 +2751,7 @@ export function calculateSelectedRegionsEVEfficiency(options: {
 
       Object.entries(evEfficiencyAssumptions).forEach(
         ([vehicleKey, vehicleValue]) => {
-          const expandedVehicleType = vehicleKey as ExpandedVehicleType;
+          const expandedVehicleType = vehicleKey as keyof typeof evEfficiencyAssumptions; // prettier-ignore
           const year = evModelYear as keyof typeof vehicleValue;
 
           const evEfficiency = year in vehicleValue ? vehicleValue[year] : 0;
@@ -2833,7 +2831,7 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
 
       Object.entries(selectedRegionsVMTPercentagesByState).forEach(
         ([vmtPercentagesRegionKey, vmtPercentagesRegionValue]) => {
-          const regionId = vmtPercentagesRegionKey as RegionId;
+          const regionId = vmtPercentagesRegionKey as keyof typeof selectedRegionsVMTPercentagesByState; // prettier-ignore
 
           const stateVMTPercentages =
             state in vmtPercentagesRegionValue
@@ -2875,7 +2873,7 @@ export function calculateSelectedRegionsMonthlyEmissionRates(options: {
             (deploymentLocationIsState && deploymentLocationStateId === state)
           ) {
             for (const key in object[regionId][month][vehicleFuelCombo]) {
-              const movesPollutant = key as MovesPollutant;
+              const movesPollutant = key as keyof (typeof object)[typeof regionId][typeof month][typeof vehicleFuelCombo]; // prettier-ignore
 
               const movesPollutantValue =
                 iceReplacementVehicle === "new"
@@ -2947,7 +2945,7 @@ export function calculateSelectedRegionsMonthlyElectricityPM25EmissionRates(opti
 
   const result = Object.entries(selectedRegionsMonthlyEmissionRates).reduce(
     (object, [regionKey, regionValue]) => {
-      const regionId = regionKey as RegionId;
+      const regionId = regionKey as keyof typeof selectedRegionsMonthlyEmissionRates; // prettier-ignore
 
       object[regionId] ??= {} as {
         [month: number]: {
@@ -3050,7 +3048,7 @@ export function calculateSelectedRegionsMonthlyTotalNetPM25EmissionRates(options
 
   const result = Object.entries(selectedRegionsMonthlyEmissionRates).reduce(
     (object, [regionKey, regionValue]) => {
-      const regionId = regionKey as RegionId;
+      const regionId = regionKey as keyof typeof selectedRegionsMonthlyEmissionRates; // prettier-ignore
 
       object[regionId] ??= {} as {
         [month: number]: {
@@ -3067,7 +3065,7 @@ export function calculateSelectedRegionsMonthlyTotalNetPM25EmissionRates(options
 
         Object.entries(monthValue).forEach(
           ([vehicleFuelComboKey, vehicleFuelComboValue]) => {
-            const vehicleFuelCombo = vehicleFuelComboKey as VehicleTypeFuelTypeCombo; // prettier-ignore
+            const vehicleFuelCombo = vehicleFuelComboKey as keyof typeof monthValue; // prettier-ignore
             const vehicleType = vehicleFuelCombo.split(" / ")[0] as VehicleType;
             const vehicleEVFuelCombo = `${vehicleType} / Electricity` as VehicleTypeEVFuelTypeCombo; // prettier-ignore
 
@@ -3140,7 +3138,7 @@ export function calculateSelectedRegionsMonthlySalesChanges(options: {
 
   const result = Object.entries(selectedRegionsMonthlyVMT).reduce(
     (object, [regionKey, regionValue]) => {
-      const regionId = regionKey as RegionId;
+      const regionId = regionKey as keyof typeof selectedRegionsMonthlyVMT;
 
       object[regionId] ??= {} as {
         [month: number]: {
@@ -3157,7 +3155,7 @@ export function calculateSelectedRegionsMonthlySalesChanges(options: {
 
         Object.entries(totalEffectiveVehicles).forEach(
           ([vehicleKey, vehicleValue]) => {
-            const categoryVehicleFuelCombo = vehicleKey as VehicleCategoryVehicleTypeFuelTypeCombo; // prettier-ignore
+            const categoryVehicleFuelCombo = vehicleKey as keyof typeof totalEffectiveVehicles; // prettier-ignore
             const [vehicleCategory, vehicleType, fuelType] = vehicleKey.split(" / "); // prettier-ignore
             const vehicleFuelCombo = `${vehicleType} / ${fuelType}` as VehicleTypeFuelTypeCombo; // prettier-ignore
 
@@ -3239,7 +3237,7 @@ export function calculateSelectedRegionsYearlySalesChanges(options: {
 
   const result = Object.entries(selectedRegionsMonthlySalesChanges).reduce(
     (object, [regionKey, regionValue]) => {
-      const regionId = regionKey as RegionId;
+      const regionId = regionKey as keyof typeof selectedRegionsMonthlySalesChanges; // prettier-ignore
 
       object[regionId] ??= {} as {
         [categoryVehicleFuelCombo in VehicleCategoryVehicleTypeFuelTypeCombo]: number;
@@ -3247,7 +3245,7 @@ export function calculateSelectedRegionsYearlySalesChanges(options: {
 
       Object.values(regionValue).forEach((monthValue) => {
         Object.entries(monthValue).forEach(([key, value]) => {
-          const categoryVehicleFuelCombo = key as VehicleCategoryVehicleTypeFuelTypeCombo; // prettier-ignore
+          const categoryVehicleFuelCombo = key as keyof typeof monthValue;
 
           if (!object[regionId][categoryVehicleFuelCombo]) {
             object[regionId][categoryVehicleFuelCombo] = 0;
@@ -3291,7 +3289,7 @@ export function calculateSelectedRegionsTotalYearlySalesChanges(options: {
 
   const result = Object.entries(selectedRegionsYearlySalesChanges).reduce(
     (object, [regionKey, regionValue]) => {
-      const regionId = regionKey as RegionId;
+      const regionId = regionKey as keyof typeof selectedRegionsYearlySalesChanges; // prettier-ignore
 
       object[regionId] = Object.values(regionValue).reduce(
         (sum, value) => sum + value,
@@ -3353,7 +3351,7 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
 
   const result = Object.entries(selectedRegionsMonthlyVMT).reduce(
     (object, [regionKey, regionValue]) => {
-      const regionId = regionKey as RegionId;
+      const regionId = regionKey as keyof typeof selectedRegionsMonthlyVMT;
 
       object[regionId] ??= {} as {
         [month: number]: {
@@ -3374,7 +3372,7 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
 
         Object.entries(totalEffectiveVehicles).forEach(
           ([vehicleKey, vehicleValue]) => {
-            const categoryVehicleFuelCombo = vehicleKey as VehicleCategoryVehicleTypeFuelTypeCombo; // prettier-ignore
+            const categoryVehicleFuelCombo = vehicleKey as keyof typeof totalEffectiveVehicles; // prettier-ignore
             const [vehicleCategory, vehicleType, fuelType] = vehicleKey.split(" / "); // prettier-ignore
             const vehicleFuelCombo = `${vehicleType} / ${fuelType}` as VehicleTypeFuelTypeCombo; // prettier-ignore
 
@@ -3396,7 +3394,7 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
             for (const key in object[regionId][month][
               categoryVehicleFuelCombo
             ]) {
-              const pollutant = key as Pollutant;
+              const pollutant = key as keyof (typeof object)[typeof regionId][typeof month][typeof categoryVehicleFuelCombo]; // prettier-ignore
 
               const vmt = monthValue?.[vehicleFuelCombo] || 0;
 
@@ -3456,7 +3454,7 @@ export function calculateSelectedRegionsMonthlyEmissionChangesPerVehicleCategory
 
   const result = Object.entries(selectedRegionsMonthlyEmissionChanges).reduce(
     (object, [regionKey, regionValue]) => {
-      const regionId = regionKey as RegionId;
+      const regionId = regionKey as keyof typeof selectedRegionsMonthlyEmissionChanges; // prettier-ignore
 
       object[regionId] ??= {} as {
         [month: number]: {
@@ -3500,7 +3498,7 @@ export function calculateSelectedRegionsMonthlyEmissionChangesPerVehicleCategory
           };
 
           Object.entries(value).forEach(([pollutantKey, pollutantValue]) => {
-            const pollutant = pollutantKey as Pollutant;
+            const pollutant = pollutantKey as keyof typeof value;
 
             object[regionId][month][expandedVehicleCategory][pollutant] +=
               pollutantValue;
@@ -3554,7 +3552,7 @@ export function calculateSelectedRegionsMonthlyEmissionChangesTotals(options: {
     selectedRegionsMonthlyEmissionChangesPerVehicleCategory,
   ).reduce(
     (object, [regionKey, regionValue]) => {
-      const regionId = regionKey as RegionId;
+      const regionId = regionKey as keyof typeof selectedRegionsMonthlyEmissionChangesPerVehicleCategory; // prettier-ignore
 
       object[regionId] ??= {} as {
         [month: number]: {
@@ -3576,7 +3574,7 @@ export function calculateSelectedRegionsMonthlyEmissionChangesTotals(options: {
 
         Object.values(monthValue).forEach((value) => {
           Object.entries(value).forEach(([pollutantKey, pollutantValue]) => {
-            const pollutant = pollutantKey as Pollutant;
+            const pollutant = pollutantKey as keyof typeof value;
 
             object[regionId][month][pollutant] += pollutantValue;
           });
@@ -3622,7 +3620,7 @@ export function calculateSelectedRegionsYearlyEmissionChangesTotals(options: {
     selectedRegionsMonthlyEmissionChangesTotals,
   ).reduce(
     (object, [regionKey, regionValue]) => {
-      const regionId = regionKey as RegionId;
+      const regionId = regionKey as keyof typeof selectedRegionsMonthlyEmissionChangesTotals; // prettier-ignore
 
       object[regionId] ??= {
         co2: 0,
@@ -3635,7 +3633,7 @@ export function calculateSelectedRegionsYearlyEmissionChangesTotals(options: {
 
       Object.values(regionValue).forEach((monthValue) => {
         Object.entries(monthValue).forEach(([pollutantKey, pollutantValue]) => {
-          const pollutant = pollutantKey as Pollutant;
+          const pollutant = pollutantKey as keyof typeof monthValue;
 
           object[regionId][pollutant] += pollutantValue;
         });
@@ -3821,7 +3819,7 @@ export function calculateSelectedGeographySalesAndStockByRegion(options: {
   const result = Object.values(selectedGeographySalesAndStockByState).reduce(
     (object, stateData) => {
       Object.entries(stateData).forEach(([key, value]) => {
-        const vehicleCategory = key as SalesAndStockVehicleCategory;
+        const vehicleCategory = key as keyof typeof stateData;
 
         object[vehicleCategory] ??= {
           sales: 0,
@@ -5440,7 +5438,7 @@ export function calculateSelectedRegionsEEREDefaultsAverages(options: {
    */
   Object.entries(regionalScalingFactors).forEach(
     ([scalingFactorKey, scalingFactorValue]) => {
-      const regionId = scalingFactorKey as RegionId;
+      const regionId = scalingFactorKey as keyof typeof regionalScalingFactors;
 
       result[regionId] ??= {
         wind: scalingFactorValue,
@@ -5515,7 +5513,7 @@ export function calculateEVDeploymentLocationHistoricalEERE(options: {
     selectedRegionsEEREDefaultsAverages,
   ).reduce(
     (object, [eereDefaultsKey, eereDefaultsValue]) => {
-      const regionId = eereDefaultsKey as RegionId;
+      const regionId = eereDefaultsKey as keyof typeof selectedRegionsEEREDefaultsAverages; // prettier-ignore
       const { wind, upv } = eereDefaultsValue;
 
       const regionName = Object.values(regions).find((region) => {
