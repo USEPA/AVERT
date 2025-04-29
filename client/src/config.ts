@@ -224,8 +224,8 @@ export const regionAverageTemperatures = {
 export const percentWeekendToWeekdayEVConsumption = 97.3015982802952;
 
 /**
- * Excel: "Table 15: Lithium Ion Storage Defaults" table in the "Library" sheet
- * (D736)
+ * Excel: "Table 14: Lithium Ion Storage Defaults" table in the "Library" sheet
+ * (D1138)
  */
 export const batteryRoundTripEfficiency = 0.85;
 
