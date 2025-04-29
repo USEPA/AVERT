@@ -28,11 +28,6 @@ import defaultEVLoadProfiles from "@/data/default-ev-load-profiles.json";
  */
 import evEfficiencyAssumptions from "@/data/ev-efficiency-assumptions.json";
 /**
- * Excel: "Table 12: Transit and School Bus Sales and Stock" table in the
- * "Library" sheet (B546:F596).
- */
-import stateBusSalesAndStock from "@/data/state-bus-sales-and-stock.json";
-/**
  * Excel: "Table 11: Historical renewable and energy efficiency addition data"
  * table in the "Library" sheet (B882:J895).
  */
@@ -162,8 +157,6 @@ export type DefaultEVLoadProfiles = typeof defaultEVLoadProfiles;
 export type EVEfficiencyAssumptions = typeof evEfficiencyAssumptions;
 
 export type RegionAverageTemperatures = typeof regionAverageTemperatures;
-
-export type StateBusSalesAndStock = typeof stateBusSalesAndStock;
 
 export type HistoricalRegionEEREData = typeof historicalRegionEEREData;
 

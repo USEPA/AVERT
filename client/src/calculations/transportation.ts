@@ -20,7 +20,6 @@ import {
   type DefaultEVLoadProfiles,
   type EVEfficiencyAssumptions,
   type RegionAverageTemperatures,
-  type StateBusSalesAndStock,
   type HistoricalRegionEEREData,
   type HistoricalStateEEREData,
   type RegionId,
@@ -742,11 +741,7 @@ export function calculateStateVMTPercentagesByRegion(options: {
  *
  * Excel: Second table in the "RegionStateAllocate" sheet (B118:J168)
  */
-export function calculateVMTAllocationPerVehicle(options: {
-  stateBusSalesAndStock: StateBusSalesAndStock;
-}) {
-  const { stateBusSalesAndStock } = options;
-
+export function calculateVMTAllocationPerVehicle() {
   // NOTE: TEMPORARILY hardcoding, as this function will be removed
   const vmtAllocationAndRegisteredVehicles = {
     AL: {
@@ -996,13 +991,527 @@ export function calculateVMTAllocationPerVehicle(options: {
     },
   };
 
+  // NOTE: TEMPORARILY hardcoding, as this function will be removed
+  const stateBusSalesAndStock = {
+    AK: {
+      transitBuses: {
+        sales: 2.75,
+        stock: 108,
+      },
+      schoolBuses: {
+        sales: 68.3091779556805,
+        stock: 962,
+      },
+    },
+    AL: {
+      transitBuses: {
+        sales: 12.5,
+        stock: 179,
+      },
+      schoolBuses: {
+        sales: 555.278348870501,
+        stock: 7820,
+      },
+    },
+    AR: {
+      transitBuses: {
+        sales: 6.25,
+        stock: 97,
+      },
+      schoolBuses: {
+        sales: 497.05223044674,
+        stock: 7000,
+      },
+    },
+    AZ: {
+      transitBuses: {
+        sales: 111.5,
+        stock: 1097,
+      },
+      schoolBuses: {
+        sales: 508.839469054477,
+        stock: 7166,
+      },
+    },
+    CA: {
+      transitBuses: {
+        sales: 611.25,
+        stock: 9945,
+      },
+      schoolBuses: {
+        sales: 1443.79471452479,
+        stock: 20333,
+      },
+    },
+    CO: {
+      transitBuses: {
+        sales: 86.5,
+        stock: 1367,
+      },
+      schoolBuses: {
+        sales: 878.987536969088,
+        stock: 12378.8052479988,
+      },
+    },
+    CT: {
+      transitBuses: {
+        sales: 44.25,
+        stock: 688,
+      },
+      schoolBuses: {
+        sales: 610.664168834566,
+        stock: 8600,
+      },
+    },
+    DC: {
+      transitBuses: {
+        sales: 113.25,
+        stock: 1665,
+      },
+      schoolBuses: {
+        sales: 511.522953632906,
+        stock: 7203.79158587041,
+      },
+    },
+    DE: {
+      transitBuses: {
+        sales: 15,
+        stock: 118,
+      },
+      schoolBuses: {
+        sales: 108.570408621866,
+        stock: 1529,
+      },
+    },
+    FL: {
+      transitBuses: {
+        sales: 318,
+        stock: 3053,
+      },
+      schoolBuses: {
+        sales: 1264.92691902546,
+        stock: 17814,
+      },
+    },
+    GA: {
+      transitBuses: {
+        sales: 116.25,
+        stock: 895,
+      },
+      schoolBuses: {
+        sales: 1440.17333398868,
+        stock: 20282,
+      },
+    },
+    HI: {
+      transitBuses: {
+        sales: 16.5,
+        stock: 507,
+      },
+      schoolBuses: {
+        sales: 55.7408572715272,
+        stock: 785,
+      },
+    },
+    IA: {
+      transitBuses: {
+        sales: 30.5,
+        stock: 485,
+      },
+      schoolBuses: {
+        sales: 426.044768954348,
+        stock: 6000,
+      },
+    },
+    ID: {
+      transitBuses: {
+        sales: 7.5,
+        stock: 109,
+      },
+      schoolBuses: {
+        sales: 212.738354631205,
+        stock: 2996,
+      },
+    },
+    IL: {
+      transitBuses: {
+        sales: 84.25,
+        stock: 3192,
+      },
+      schoolBuses: {
+        sales: 1876.30116247495,
+        stock: 26424,
+      },
+    },
+    IN: {
+      transitBuses: {
+        sales: 47,
+        stock: 489,
+      },
+      schoolBuses: {
+        sales: 1194.62953214799,
+        stock: 16824,
+      },
+    },
+    KS: {
+      transitBuses: {
+        sales: 8.25,
+        stock: 199,
+      },
+      schoolBuses: {
+        sales: 305.687121724745,
+        stock: 4305,
+      },
+    },
+    KY: {
+      transitBuses: {
+        sales: 31.25,
+        stock: 443,
+      },
+      schoolBuses: {
+        sales: 673.71879463981,
+        stock: 9488,
+      },
+    },
+    LA: {
+      transitBuses: {
+        sales: 34,
+        stock: 377,
+      },
+      schoolBuses: {
+        sales: 485.76204406945,
+        stock: 6841,
+      },
+    },
+    MA: {
+      transitBuses: {
+        sales: 116.25,
+        stock: 1752,
+      },
+      schoolBuses: {
+        sales: 639.067153431523,
+        stock: 9000,
+      },
+    },
+    MD: {
+      transitBuses: {
+        sales: 126.25,
+        stock: 1464,
+      },
+      schoolBuses: {
+        sales: 502.306782597177,
+        stock: 7074,
+      },
+    },
+    ME: {
+      transitBuses: {
+        sales: 26,
+        stock: 206,
+      },
+      schoolBuses: {
+        sales: 199.886004101082,
+        stock: 2815,
+      },
+    },
+    MI: {
+      transitBuses: {
+        sales: 164.25,
+        stock: 1841,
+      },
+      schoolBuses: {
+        sales: 1196.04968137784,
+        stock: 16844,
+      },
+    },
+    MN: {
+      transitBuses: {
+        sales: 62,
+        stock: 1042,
+      },
+      schoolBuses: {
+        sales: 1342.18303712918,
+        stock: 18902,
+      },
+    },
+    MO: {
+      transitBuses: {
+        sales: 66,
+        stock: 710,
+      },
+      schoolBuses: {
+        sales: 829.225135308147,
+        stock: 11678,
+      },
+    },
+    MS: {
+      transitBuses: {
+        sales: 9.25,
+        stock: 138,
+      },
+      schoolBuses: {
+        sales: 393.665366513818,
+        stock: 5544,
+      },
+    },
+    MT: {
+      transitBuses: {
+        sales: 13.25,
+        stock: 135,
+      },
+      schoolBuses: {
+        sales: 262.230555291401,
+        stock: 3693,
+      },
+    },
+    NC: {
+      transitBuses: {
+        sales: 84,
+        stock: 1304,
+      },
+      schoolBuses: {
+        sales: 1001.48923688869,
+        stock: 14104,
+      },
+    },
+    ND: {
+      transitBuses: {
+        sales: 4.75,
+        stock: 64,
+      },
+      schoolBuses: {
+        sales: 166.938541968612,
+        stock: 2351,
+      },
+    },
+    NE: {
+      transitBuses: {
+        sales: 20.75,
+        stock: 187,
+      },
+      schoolBuses: {
+        sales: 405.168575275585,
+        stock: 5706,
+      },
+    },
+    NH: {
+      transitBuses: {
+        sales: 11.5,
+        stock: 69,
+      },
+      schoolBuses: {
+        sales: 227.223876775652,
+        stock: 3200,
+      },
+    },
+    NJ: {
+      transitBuses: {
+        sales: 264.75,
+        stock: 1550,
+      },
+      schoolBuses: {
+        sales: 1186.10863676891,
+        stock: 16704,
+      },
+    },
+    NM: {
+      transitBuses: {
+        sales: 13.5,
+        stock: 252,
+      },
+      schoolBuses: {
+        sales: 142.51197521523,
+        stock: 2007,
+      },
+    },
+    NV: {
+      transitBuses: {
+        sales: 58.75,
+        stock: 498,
+      },
+      schoolBuses: {
+        sales: 209.258989018077,
+        stock: 2947,
+      },
+    },
+    NY: {
+      transitBuses: {
+        sales: 514.5,
+        stock: 7046,
+      },
+      schoolBuses: {
+        sales: 3237.94024405305,
+        stock: 45600,
+      },
+    },
+    OH: {
+      transitBuses: {
+        sales: 130,
+        stock: 1586,
+      },
+      schoolBuses: {
+        sales: 1051.54949724082,
+        stock: 14809,
+      },
+    },
+    OK: {
+      transitBuses: {
+        sales: 14.5,
+        stock: 212,
+      },
+      schoolBuses: {
+        sales: 39.906193358724,
+        stock: 562,
+      },
+    },
+    OR: {
+      transitBuses: {
+        sales: 73.75,
+        stock: 1016,
+      },
+      schoolBuses: {
+        sales: 348.859658312119,
+        stock: 4913,
+      },
+    },
+    PA: {
+      transitBuses: {
+        sales: 274.5,
+        stock: 3080,
+      },
+      schoolBuses: {
+        sales: 2149.75089668215,
+        stock: 30275,
+      },
+    },
+    RI: {
+      transitBuses: {
+        sales: 15,
+        stock: 252,
+      },
+      schoolBuses: {
+        sales: 120.073617383634,
+        stock: 1691,
+      },
+    },
+    SC: {
+      transitBuses: {
+        sales: 30.5,
+        stock: 291,
+      },
+      schoolBuses: {
+        sales: 406.162679736479,
+        stock: 5720,
+      },
+    },
+    SD: {
+      transitBuses: {
+        sales: 2.5,
+        stock: 50,
+      },
+      schoolBuses: {
+        sales: 142.014922984783,
+        stock: 2000,
+      },
+    },
+    TN: {
+      transitBuses: {
+        sales: 46,
+        stock: 513,
+      },
+      schoolBuses: {
+        sales: 582.261184237609,
+        stock: 8200,
+      },
+    },
+    TX: {
+      transitBuses: {
+        sales: 154.5,
+        stock: 3066,
+      },
+      schoolBuses: {
+        sales: 3573.59251452758,
+        stock: 50327,
+      },
+    },
+    UT: {
+      transitBuses: {
+        sales: 35,
+        stock: 568,
+      },
+      schoolBuses: {
+        sales: 230.064175235348,
+        stock: 3240,
+      },
+    },
+    VA: {
+      transitBuses: {
+        sales: 102.25,
+        stock: 1256,
+      },
+      schoolBuses: {
+        sales: 892.705805882345,
+        stock: 12572,
+      },
+    },
+    VT: {
+      transitBuses: {
+        sales: 7.75,
+        stock: 106,
+      },
+      schoolBuses: {
+        sales: 92.3096999401088,
+        stock: 1300,
+      },
+    },
+    WA: {
+      transitBuses: {
+        sales: 212.5,
+        stock: 3113,
+      },
+      schoolBuses: {
+        sales: 2033.30982639641,
+        stock: 28635.1572589915,
+      },
+    },
+    WI: {
+      transitBuses: {
+        sales: 62.5,
+        stock: 986,
+      },
+      schoolBuses: {
+        sales: 713.980025305995,
+        stock: 10055,
+      },
+    },
+    WV: {
+      transitBuses: {
+        sales: 17.75,
+        stock: 188,
+      },
+      schoolBuses: {
+        sales: 272.100592438844,
+        stock: 3832,
+      },
+    },
+    WY: {
+      transitBuses: {
+        sales: 4.25,
+        stock: 59,
+      },
+      schoolBuses: {
+        sales: 95.3630207842816,
+        stock: 1343,
+      },
+    },
+  };
+
   // initialize result object with state keys and total key
   const result = Object.entries(vmtAllocationAndRegisteredVehicles).reduce(
     (object, [key, data]) => {
       const { annualVMTofLDVs, annualVMTofBuses, registeredLDVs } = data;
 
       const busSalesAndStock =
-        stateBusSalesAndStock[key as keyof StateBusSalesAndStock];
+        stateBusSalesAndStock[key as keyof typeof stateBusSalesAndStock];
 
       if (busSalesAndStock) {
         const millionRegisteredBuses =
