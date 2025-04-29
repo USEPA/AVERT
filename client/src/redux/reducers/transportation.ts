@@ -46,7 +46,7 @@ import {
   type MonthlyStats,
   type _VehiclesDisplaced,
   type _SelectedRegionsMonthlyEVEnergyUsageGW,
-  type SelectedRegionsMonthlyEVEnergyUsageMW,
+  type _SelectedRegionsMonthlyEVEnergyUsageMW,
   type SelectedRegionsMonthlyDailyEVEnergyUsage,
   type _SelectedRegionsMonthlyEmissionRates,
   type _SelectedRegionsMonthlyEmissionChanges,
@@ -101,7 +101,7 @@ import {
   calculateMonthlyStats,
   _calculateVehiclesDisplaced,
   _calculateSelectedRegionsMonthlyEVEnergyUsageGW,
-  calculateSelectedRegionsMonthlyEVEnergyUsageMW,
+  _calculateSelectedRegionsMonthlyEVEnergyUsageMW,
   calculateSelectedRegionsMonthlyDailyEVEnergyUsage,
   _calculateSelectedRegionsMonthlyEmissionRates,
   _calculateSelectedRegionsMonthlyEmissionChanges,
@@ -433,9 +433,9 @@ type Action =
       };
     }
   | {
-      type: "transportation/SET_SELECTED_REGIONS_MONTHLY_EV_ENERGY_USAGE_MW";
+      type: "transportation/_SET_SELECTED_REGIONS_MONTHLY_EV_ENERGY_USAGE_MW";
       payload: {
-        selectedRegionsMonthlyEVEnergyUsageMW: SelectedRegionsMonthlyEVEnergyUsageMW;
+        _selectedRegionsMonthlyEVEnergyUsageMW: _SelectedRegionsMonthlyEVEnergyUsageMW;
       };
     }
   | {
@@ -581,8 +581,8 @@ type State = {
   _selectedRegionsMonthlyEVEnergyUsageGW:
     | _SelectedRegionsMonthlyEVEnergyUsageGW
     | EmptyObject;
-  selectedRegionsMonthlyEVEnergyUsageMW:
-    | SelectedRegionsMonthlyEVEnergyUsageMW
+  _selectedRegionsMonthlyEVEnergyUsageMW:
+    | _SelectedRegionsMonthlyEVEnergyUsageMW
     | EmptyObject;
   selectedRegionsMonthlyDailyEVEnergyUsage:
     | SelectedRegionsMonthlyDailyEVEnergyUsage
@@ -661,7 +661,7 @@ const initialState: State = {
     schoolBuses: 0,
   },
   _selectedRegionsMonthlyEVEnergyUsageGW: {},
-  selectedRegionsMonthlyEVEnergyUsageMW: {},
+  _selectedRegionsMonthlyEVEnergyUsageMW: {},
   selectedRegionsMonthlyDailyEVEnergyUsage: {},
   _selectedRegionsMonthlyEmissionRates: {},
   _selectedRegionsMonthlyEmissionChanges: {},
@@ -1088,12 +1088,12 @@ export default function reducer(
       };
     }
 
-    case "transportation/SET_SELECTED_REGIONS_MONTHLY_EV_ENERGY_USAGE_MW": {
-      const { selectedRegionsMonthlyEVEnergyUsageMW } = action.payload;
+    case "transportation/_SET_SELECTED_REGIONS_MONTHLY_EV_ENERGY_USAGE_MW": {
+      const { _selectedRegionsMonthlyEVEnergyUsageMW } = action.payload;
 
       return {
         ...state,
-        selectedRegionsMonthlyEVEnergyUsageMW,
+        _selectedRegionsMonthlyEVEnergyUsageMW,
       };
     }
 
@@ -1658,8 +1658,8 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
         percentageHybridEVMilesDrivenOnElectricity,
       });
 
-    const selectedRegionsMonthlyEVEnergyUsageMW =
-      calculateSelectedRegionsMonthlyEVEnergyUsageMW({
+    const _selectedRegionsMonthlyEVEnergyUsageMW =
+      _calculateSelectedRegionsMonthlyEVEnergyUsageMW({
         _selectedRegionsMonthlyEVEnergyUsageGW,
       });
 
@@ -1689,11 +1689,11 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
     });
 
     dispatch({
-      type: "transportation/SET_SELECTED_REGIONS_MONTHLY_EV_ENERGY_USAGE_MW",
-      payload: { selectedRegionsMonthlyEVEnergyUsageMW },
+      type: "transportation/_SET_SELECTED_REGIONS_MONTHLY_EV_ENERGY_USAGE_MW",
+      payload: { _selectedRegionsMonthlyEVEnergyUsageMW },
     });
 
-    // NOTE: `selectedRegionsMonthlyDailyEVEnergyUsage` uses `selectedRegionsMonthlyEVEnergyUsageMW`
+    // NOTE: `selectedRegionsMonthlyDailyEVEnergyUsage` uses `_selectedRegionsMonthlyEVEnergyUsageMW`
     dispatch(setMonthlyDailyEVEnergyUsage());
   };
 }
@@ -1712,12 +1712,12 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
 export function setMonthlyDailyEVEnergyUsage(): AppThunk {
   return (dispatch, getState) => {
     const { transportation } = getState();
-    const { monthlyStats, selectedRegionsMonthlyEVEnergyUsageMW } =
+    const { monthlyStats, _selectedRegionsMonthlyEVEnergyUsageMW } =
       transportation;
 
     const selectedRegionsMonthlyDailyEVEnergyUsage =
       calculateSelectedRegionsMonthlyDailyEVEnergyUsage({
-        selectedRegionsMonthlyEVEnergyUsageMW,
+        _selectedRegionsMonthlyEVEnergyUsageMW,
         monthlyStats,
       });
 

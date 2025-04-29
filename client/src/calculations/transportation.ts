@@ -361,8 +361,8 @@ export type _VehiclesDisplaced = ReturnType<typeof _calculateVehiclesDisplaced>;
 export type _SelectedRegionsMonthlyEVEnergyUsageGW = ReturnType<
   typeof _calculateSelectedRegionsMonthlyEVEnergyUsageGW
 >;
-export type SelectedRegionsMonthlyEVEnergyUsageMW = ReturnType<
-  typeof calculateSelectedRegionsMonthlyEVEnergyUsageMW
+export type _SelectedRegionsMonthlyEVEnergyUsageMW = ReturnType<
+  typeof _calculateSelectedRegionsMonthlyEVEnergyUsageMW
 >;
 export type SelectedRegionsMonthlyDailyEVEnergyUsage = ReturnType<
   typeof calculateSelectedRegionsMonthlyDailyEVEnergyUsage
@@ -4673,7 +4673,7 @@ export function _calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
  * Excel: Data in the third EV table (to the right of the "Calculate Changes"
  * table) in the "CalculateEERE" sheet (T49:W61).
  */
-export function calculateSelectedRegionsMonthlyEVEnergyUsageMW(options: {
+export function _calculateSelectedRegionsMonthlyEVEnergyUsageMW(options: {
   _selectedRegionsMonthlyEVEnergyUsageGW:
     | _SelectedRegionsMonthlyEVEnergyUsageGW
     | EmptyObject;
@@ -4753,16 +4753,16 @@ export function calculateSelectedRegionsMonthlyEVEnergyUsageMW(options: {
  * table) in the "CalculateEERE" sheet (P35:X47).
  */
 export function calculateSelectedRegionsMonthlyDailyEVEnergyUsage(options: {
-  selectedRegionsMonthlyEVEnergyUsageMW:
-    | SelectedRegionsMonthlyEVEnergyUsageMW
+  _selectedRegionsMonthlyEVEnergyUsageMW:
+    | _SelectedRegionsMonthlyEVEnergyUsageMW
     | EmptyObject;
   monthlyStats: MonthlyStats;
 }) {
-  const { selectedRegionsMonthlyEVEnergyUsageMW, monthlyStats } = options;
+  const { _selectedRegionsMonthlyEVEnergyUsageMW, monthlyStats } = options;
 
   const selectedRegionsEnergyData =
-    Object.keys(selectedRegionsMonthlyEVEnergyUsageMW).length !== 0
-      ? (selectedRegionsMonthlyEVEnergyUsageMW as SelectedRegionsMonthlyEVEnergyUsageMW)
+    Object.keys(_selectedRegionsMonthlyEVEnergyUsageMW).length !== 0
+      ? (_selectedRegionsMonthlyEVEnergyUsageMW as _SelectedRegionsMonthlyEVEnergyUsageMW)
       : null;
 
   if (!selectedRegionsEnergyData || Object.keys(monthlyStats).length === 0) {
