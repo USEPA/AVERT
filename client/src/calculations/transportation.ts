@@ -182,18 +182,6 @@ const vehicleCategoryVehicleTypeFuelTypeCombos = [
   "Refuse trucks / Heavy-duty refuse trucks / Diesel Fuel",
 ] as const;
 
-/** vehicle categories with LDVs broken out into passenger cars and trucks */
-const expandedVehicleCategories = [
-  "Passenger cars",
-  "Passenger trucks",
-  "Transit buses",
-  "School buses",
-  "Other buses",
-  "Short-haul trucks",
-  "Long-haul trucks",
-  "Refuse trucks",
-] as const;
-
 const _abridgedVehicleTypes = [
   "cars",
   "trucks",
@@ -234,13 +222,31 @@ type VehicleTypesByVehicleCategory = typeof vehicleTypesByVehicleCategory;
 type VehicleCategory = keyof typeof vehicleTypesByVehicleCategory;
 type VehicleCategoryVehicleTypeCombo = (typeof vehicleCategoryVehicleTypeCombos)[number]; // prettier-ignore
 type VehicleCategoryVehicleTypeFuelTypeCombo = (typeof vehicleCategoryVehicleTypeFuelTypeCombos)[number]; // prettier-ignore
-type ExpandedVehicleCategory = (typeof expandedVehicleCategories)[number];
+/**
+ * Vehicle categories with LDVs broken out into passenger cars and trucks.
+ */
+type ExpandedVehicleCategory =
+  | Exclude<VehicleCategory, "LDVs">
+  | "Passenger cars"
+  | "Passenger trucks";
+/**
+ * Vehicle categories used in the Excel "CalculateEERE" sheet are slightly
+ * different than the typical `VehicleCategory` values used elsewhere. We'll
+ * omit "Other buses" entirely and instead of using "LDVs" we'll use "Battery
+ * EVs" and "Plug-in Hybrid EVs".
+ */
+type AlternateVehicleCategory =
+  | Exclude<VehicleCategory, "LDVs" | "Other buses">
+  | "Battery EVs"
+  | "Plug-in Hybrid EVs";
 
 type _AbridgedVehicleType = (typeof _abridgedVehicleTypes)[number];
 type _GeneralVehicleType = (typeof _generalVehicleTypes)[number];
 type _ExpandedVehicleType = (typeof _expandedVehicleTypes)[number];
 type _Pollutant = (typeof _pollutants)[number];
 
+export type DailyStats = ReturnType<typeof calculateDailyStats>;
+export type MonthlyStats = ReturnType<typeof calculateMonthlyStats>;
 export type VMTTotalsByGeography = ReturnType<
   typeof calculateVMTTotalsByGeography
 >;
@@ -355,8 +361,6 @@ export type _SelectedRegionsMonthlyVMTPerVehicleType = ReturnType<
 export type _SelectedRegionsEVEfficiencyPerVehicleType = ReturnType<
   typeof _calculateSelectedRegionsEVEfficiencyPerVehicleType
 >;
-export type DailyStats = ReturnType<typeof calculateDailyStats>;
-export type MonthlyStats = ReturnType<typeof calculateMonthlyStats>;
 export type _VehiclesDisplaced = ReturnType<typeof _calculateVehiclesDisplaced>;
 export type _SelectedRegionsMonthlyEVEnergyUsageGW = ReturnType<
   typeof _calculateSelectedRegionsMonthlyEVEnergyUsageGW
@@ -388,6 +392,88 @@ export type SelectedRegionsEEREDefaultsAverages = ReturnType<
 export type EVDeploymentLocationHistoricalEERE = ReturnType<
   typeof calculateEVDeploymentLocationHistoricalEERE
 >;
+
+/**
+ * Build up daily stats object by looping through every hour of the year,
+ * (only creates objects and sets their keys in the first hour of each month).
+ *
+ * NOTE: Not in Excel, but used to build up the monthly stats object.
+ */
+export function calculateDailyStats(options: {
+  regionalLoad?: RegionalLoadData[];
+}) {
+  const { regionalLoad } = options;
+
+  const result: {
+    [month: number]: {
+      [day: number]: {
+        dayOfWeek: number;
+        isWeekend: boolean;
+      };
+    };
+  } = {};
+
+  if (!regionalLoad || regionalLoad.length === 0) {
+    return result;
+  }
+
+  regionalLoad.forEach((data) => {
+    if (!result[data.month]?.[data.day]) {
+      const datetime = new Date(data.year, data.month - 1, data.day, data.hour);
+      const dayOfWeek = datetime.getDay();
+      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+
+      result[data.month] ??= {};
+      result[data.month][data.day] = {
+        dayOfWeek,
+        isWeekend,
+      };
+    }
+  });
+
+  return result;
+}
+
+/**
+ * Build up monthly stats object from daily stats object.
+ *
+ * Excel: Data from the bottom of the middle table in the "CalculateEERE" sheet
+ * (U50:X61).
+ */
+export function calculateMonthlyStats(options: { dailyStats: DailyStats }) {
+  const { dailyStats } = options;
+
+  const result: {
+    [month: number]: {
+      totalDays: number;
+      weekdays: number;
+      weekends: number;
+    };
+  } = {};
+
+  if (Object.keys(dailyStats).length === 0) {
+    return result;
+  }
+
+  [...Array(12)].forEach((_item, index) => {
+    const month = index + 1;
+
+    const totalDays = Object.keys(dailyStats[month]).length;
+    const weekends = Object.values(dailyStats[month]).reduce(
+      (total, day) => (day.isWeekend ? ++total : total),
+      0,
+    );
+    const weekdays = totalDays - weekends;
+
+    result[month] = {
+      totalDays,
+      weekdays,
+      weekends,
+    };
+  });
+
+  return result;
+}
 
 /**
  * Accumulated county level VMT data per vehicle type by AVERT region, state,
@@ -4404,76 +4490,6 @@ export function _calculateSelectedRegionsEVEfficiencyPerVehicleType(options: {
 }
 
 /**
- * Build up daily stats object by looping through every hour of the year,
- * (only creates objects and sets their keys in the first hour of each month).
- */
-export function calculateDailyStats(regionalLoad?: RegionalLoadData[]) {
-  const result: {
-    [month: number]: {
-      [day: number]: { _done: boolean; dayOfWeek: number; isWeekend: boolean };
-    };
-  } = {};
-
-  if (!regionalLoad || regionalLoad.length === 0) return result;
-
-  regionalLoad.forEach((data) => {
-    result[data.month] ??= {};
-    // NOTE: initial values to keep same object shape – will be mutated next
-    result[data.month][data.day] ??= {
-      _done: false,
-      dayOfWeek: -1,
-      isWeekend: false,
-    };
-
-    if (result[data.month][data.day]._done === false) {
-      const datetime = new Date(data.year, data.month - 1, data.day, data.hour);
-      const dayOfWeek = datetime.getDay();
-      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-      result[data.month][data.day] = { _done: true, dayOfWeek, isWeekend };
-    }
-  });
-
-  return result;
-}
-
-/**
- * Build up monthly stats object from daily stats object.
- *
- * Excel: Data in the third EV table (to the right of the "Calculate Changes"
- * table) in the "CalculateEERE" sheet (P49:S61).
- */
-export function calculateMonthlyStats(dailyStats: DailyStats) {
-  const result: {
-    [month: number]: {
-      totalDays: number;
-      weekdayDays: number;
-      weekendDays: number;
-    };
-  } = {};
-
-  if (Object.keys(dailyStats).length === 0) return result;
-
-  [...Array(12)].forEach((_item, index) => {
-    const month = index + 1;
-
-    const totalDays = Object.keys(dailyStats[month]).length;
-    const weekendDays = Object.values(dailyStats[month]).reduce(
-      (total, day) => (day.isWeekend ? ++total : total),
-      0,
-    );
-    const weekdayDays = totalDays - weekendDays;
-
-    result[month] = {
-      totalDays,
-      weekdayDays,
-      weekendDays,
-    };
-  });
-
-  return result;
-}
-
-/**
  * Number of vehicles displaced by new EVs.
  *
  * Excel: "Sales Changes" data from "Table 8: Calculated changes for the
@@ -4789,12 +4805,11 @@ export function calculateSelectedRegionsMonthlyDailyEVEnergyUsage(options: {
       [...Array(12)].forEach((_item, index) => {
         const month = index + 1;
 
-        const weekdayDays = monthlyStats[month].weekdayDays;
-        const weekendDays = monthlyStats[month].weekendDays;
+        const weekdays = monthlyStats[month].weekdays;
+        const weekends = monthlyStats[month].weekends;
         const weekenedToWeekdayRatio =
           percentWeekendToWeekdayEVConsumption / 100;
-        const scaledWeekdayDays =
-          weekdayDays + weekenedToWeekdayRatio * weekendDays;
+        const scaledWeekdayDays = weekdays + weekenedToWeekdayRatio * weekends;
 
         if (scaledWeekdayDays !== 0) {
           const batteryEVsWeekday =

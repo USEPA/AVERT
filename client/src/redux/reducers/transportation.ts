@@ -1,6 +1,8 @@
 import { type AppThunk } from "@/redux/index";
 import { getSelectedGeographyRegions } from "@/calculations/geography";
 import {
+  type DailyStats,
+  type MonthlyStats,
   type VMTTotalsByGeography,
   type VMTBillionsAndPercentages,
   type StateVMTPercentagesByRegion,
@@ -42,8 +44,6 @@ import {
   type _SelectedRegionsAverageVMTPerYear,
   type _SelectedRegionsMonthlyVMTPerVehicleType,
   type _SelectedRegionsEVEfficiencyPerVehicleType,
-  type DailyStats,
-  type MonthlyStats,
   type _VehiclesDisplaced,
   type _SelectedRegionsMonthlyEVEnergyUsageGW,
   type _SelectedRegionsMonthlyEVEnergyUsageMW,
@@ -56,6 +56,8 @@ import {
   type SelectedRegionsEEREDefaultsAverages,
   type EVDeploymentLocationHistoricalEERE,
   vehicleTypesByVehicleCategory,
+  calculateDailyStats,
+  calculateMonthlyStats,
   calculateVMTTotalsByGeography,
   calculateVMTBillionsAndPercentages,
   calculateStateVMTPercentagesByRegion,
@@ -97,8 +99,6 @@ import {
   _calculateSelectedRegionsAverageVMTPerYear,
   _calculateSelectedRegionsMonthlyVMTPerVehicleType,
   _calculateSelectedRegionsEVEfficiencyPerVehicleType,
-  calculateDailyStats,
-  calculateMonthlyStats,
   _calculateVehiclesDisplaced,
   _calculateSelectedRegionsMonthlyEVEnergyUsageGW,
   _calculateSelectedRegionsMonthlyEVEnergyUsageMW,
@@ -178,6 +178,14 @@ const countyFips = countyFipsData as CountyFIPS;
 const movesEmissionRates = movesEmissionRatesData as MOVESEmissionRates;
 
 type Action =
+  | {
+      type: "transportation/SET_DAILY_STATS";
+      payload: { dailyStats: DailyStats };
+    }
+  | {
+      type: "transportation/SET_MONTHLY_STATS";
+      payload: { monthlyStats: MonthlyStats };
+    }
   | {
       type: "transportation/SET_VMT_TOTALS_BY_GEOGRAPHY";
       payload: { vmtTotalsByGeography: VMTTotalsByGeography };
@@ -415,14 +423,6 @@ type Action =
       };
     }
   | {
-      type: "transportation/SET_DAILY_STATS";
-      payload: { dailyStats: DailyStats };
-    }
-  | {
-      type: "transportation/SET_MONTHLY_STATS";
-      payload: { monthlyStats: MonthlyStats };
-    }
-  | {
       type: "transportation/_SET_VEHICLES_DISPLACED";
       payload: { _vehiclesDisplaced: _VehiclesDisplaced };
     }
@@ -488,6 +488,8 @@ type Action =
     };
 
 type State = {
+  dailyStats: DailyStats;
+  monthlyStats: MonthlyStats;
   vmtTotalsByGeography: VMTTotalsByGeography | EmptyObject;
   vmtBillionsAndPercentages: VMTBillionsAndPercentages | EmptyObject;
   stateVMTPercentagesByRegion: StateVMTPercentagesByRegion | EmptyObject;
@@ -575,8 +577,6 @@ type State = {
   _selectedRegionsEVEfficiencyPerVehicleType:
     | _SelectedRegionsEVEfficiencyPerVehicleType
     | EmptyObject;
-  dailyStats: DailyStats;
-  monthlyStats: MonthlyStats;
   _vehiclesDisplaced: _VehiclesDisplaced;
   _selectedRegionsMonthlyEVEnergyUsageGW:
     | _SelectedRegionsMonthlyEVEnergyUsageGW
@@ -607,6 +607,8 @@ type State = {
 };
 
 const initialState: State = {
+  dailyStats: {},
+  monthlyStats: {},
   vmtTotalsByGeography: {},
   vmtBillionsAndPercentages: {},
   stateVMTPercentagesByRegion: {},
@@ -648,8 +650,6 @@ const initialState: State = {
   _selectedRegionsAverageVMTPerYear: {},
   _selectedRegionsMonthlyVMTPerVehicleType: {},
   _selectedRegionsEVEfficiencyPerVehicleType: {},
-  dailyStats: {},
-  monthlyStats: {},
   _vehiclesDisplaced: {
     batteryEVCars: 0,
     hybridEVCars: 0,
@@ -680,6 +680,24 @@ export default function reducer(
   action: Action,
 ): State {
   switch (action.type) {
+    case "transportation/SET_DAILY_STATS": {
+      const { dailyStats } = action.payload;
+
+      return {
+        ...state,
+        dailyStats,
+      };
+    }
+
+    case "transportation/SET_MONTHLY_STATS": {
+      const { monthlyStats } = action.payload;
+
+      return {
+        ...state,
+        monthlyStats,
+      };
+    }
+
     case "transportation/SET_VMT_TOTALS_BY_GEOGRAPHY": {
       const { vmtTotalsByGeography } = action.payload;
 
@@ -1049,24 +1067,6 @@ export default function reducer(
       return {
         ...state,
         _selectedRegionsEVEfficiencyPerVehicleType,
-      };
-    }
-
-    case "transportation/SET_DAILY_STATS": {
-      const { dailyStats } = action.payload;
-
-      return {
-        ...state,
-        dailyStats,
-      };
-    }
-
-    case "transportation/SET_MONTHLY_STATS": {
-      const { monthlyStats } = action.payload;
-
-      return {
-        ...state,
-        monthlyStats,
       };
     }
 
@@ -1521,10 +1521,12 @@ export function setDailyAndMonthlyStats(): AppThunk {
 
     // all RDFs for a given year have the same number of hours, so no need to
     // re-calculate daily and monthly stats again if it's already been set
-    if (Object.keys(transportation.dailyStats).length !== 0) return;
+    if (Object.keys(transportation.dailyStats).length !== 0) {
+      return;
+    }
 
-    const dailyStats = calculateDailyStats(regionalLoad);
-    const monthlyStats = calculateMonthlyStats(dailyStats);
+    const dailyStats = calculateDailyStats({ regionalLoad });
+    const monthlyStats = calculateMonthlyStats({ dailyStats });
 
     dispatch({
       type: "transportation/SET_DAILY_STATS",
