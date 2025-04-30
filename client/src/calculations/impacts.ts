@@ -6,7 +6,7 @@ import {
 } from "@/redux/reducers/geography";
 import {
   type DailyStats,
-  type HourlyEVChargingPercentages,
+  type _HourlyEVChargingPercentages,
   type _SelectedRegionsMonthlyDailyEVEnergyUsage,
 } from "@/calculations/transportation";
 import { type EmptyObject } from "@/utilities";
@@ -441,7 +441,7 @@ export function calculateHourlyEVLoad(options: {
   regionalScalingFactor: number;
   regionalLoad: RegionalLoadData[];
   dailyStats: DailyStats;
-  hourlyEVChargingPercentages: HourlyEVChargingPercentages;
+  _hourlyEVChargingPercentages: _HourlyEVChargingPercentages;
   _selectedRegionsMonthlyDailyEVEnergyUsage:
     | _SelectedRegionsMonthlyDailyEVEnergyUsage
     | EmptyObject;
@@ -451,7 +451,7 @@ export function calculateHourlyEVLoad(options: {
     regionalScalingFactor,
     regionalLoad,
     dailyStats,
-    hourlyEVChargingPercentages,
+    _hourlyEVChargingPercentages,
     _selectedRegionsMonthlyDailyEVEnergyUsage,
   } = options;
 
@@ -465,7 +465,7 @@ export function calculateHourlyEVLoad(options: {
   if (
     regionalLoad.length === 0 ||
     Object.keys(dailyStats).length === 0 ||
-    Object.keys(hourlyEVChargingPercentages).length === 0 ||
+    Object.keys(_hourlyEVChargingPercentages).length === 0 ||
     !monthlyDailyEVEnergyUsage
   ) {
     return [];
@@ -481,13 +481,13 @@ export function calculateHourlyEVLoad(options: {
     }
 
     // NOTE: `regionalLoad` data's hour value is zero indexed, so to match it
-    // with the hours stored as keys in `hourlyEVChargingPercentages`, we need
+    // with the hours stored as keys in `_hourlyEVChargingPercentages`, we need
     // to add 1 to `regionalLoad` data's hour value
     const hour = data.hour + 1;
     const day = data.day;
     const month = data.month;
 
-    const evChargingPercentage = hourlyEVChargingPercentages[hour];
+    const evChargingPercentage = _hourlyEVChargingPercentages[hour];
     const dayTypeField = dailyStats[month][day].isWeekend
       ? "weekend"
       : "weekday";
