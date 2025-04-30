@@ -252,8 +252,12 @@ type State = {
     | ElectricVehiclesFieldName
   )[];
   inputs: ImpactsInputs;
-  selectOptions: { [field in SelectOptionsFieldName]: SelectOption[] };
-  evCalculationsInputs: { [field in ElectricVehiclesFieldName]: string };
+  selectOptions: {
+    [field in SelectOptionsFieldName]: SelectOption[];
+  };
+  evCalculationsInputs: {
+    [field in ElectricVehiclesFieldName]: string;
+  };
   hourlyEnergyProfile: {
     status: "idle" | "pending" | "success";
     inputs: ImpactsInputs;
@@ -268,16 +272,30 @@ type State = {
           hourlyImpacts: HourlyImpacts;
         };
       }>;
-      total: { hourlyChanges: { [hour: number]: number } };
+      total: {
+        hourlyChanges: {
+          [hour: number]: number;
+        };
+      };
     };
     validation: HourlyChangesValidation;
   };
 };
 
-/** NOTE: Default to the third option (150) */
+/**
+ * Default to 150 annual cycles (the third option)
+ *
+ * Excel: "Table 16: Default ES Annual Discharge Cyles" table in the "Library"
+ * sheet (C1182).
+ */
 const initialMaxAnnualDischargeCycles = maxAnnualDischargeCyclesOptions[2].id;
 
-/** NOTE: Excel version defaults EV model year to 2023 */
+/**
+ * Default to 2024
+ *
+ * Excel: "Part III. Model Year and ICE Replacement" section in the "EV_Detail"
+ * sheet (F108).
+ */
 const initialEVModelYear = evModelYearOptions[0].id;
 
 const initialICEReplacementVehicle = iceReplacementVehicleOptions[0].id;

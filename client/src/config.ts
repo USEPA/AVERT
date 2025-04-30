@@ -1027,8 +1027,9 @@ export const states: { [stateId in StateId]: State } = {
 };
 
 /**
- * NOTE: Options determined for the web version. In the Excel version, user can
- * set the value in the "ES_Detail" sheet (D58).
+ * Options determined for the web version. In the Excel version, user can set
+ * the value in the "Part II. Charging Characteristics" section in the
+ * "ES_Detail" sheet (D61).
  */
 export const maxAnnualDischargeCyclesOptions = [
   { id: "75", name: "75" },
@@ -1037,7 +1038,8 @@ export const maxAnnualDischargeCyclesOptions = [
 ];
 
 /**
- * Excel: "EV model year" select options in the "EV_Detail" sheet (F108).
+ * Excel: "EV model year" select options from the "Part III. Model Year and ICE
+ * Replacement" section in the "EV_Detail" sheet (F108).
  */
 export const evModelYearOptions = [
   { id: "2024", name: "2024" },
@@ -1049,8 +1051,8 @@ export const evModelYearOptions = [
 ];
 
 /**
- * Excel: "ICE vehicle being replaced" select options in the "EV_Detail" sheet
- * (F109).
+ * Excel: "ICE vehicle being replaced" select options from the "Part III. Model
+ * Year and ICE Replacement" section in the "EV_Detail" sheet (F109).
  */
 export const iceReplacementVehicleOptions = [
   { id: "new", name: "New" },
