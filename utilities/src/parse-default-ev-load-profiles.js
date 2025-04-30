@@ -38,7 +38,7 @@ function parseLibraryWorksheet(worksheet) {
     header: 1, // Output as an array of arrays, so we can work with the double header rows
   });
 
-  const headerRow1 = json[0]; // First header row: 6 categories spanning cols 2–3, 4–5, 6–7, 8–9, 10–11 and 12–13 (first column is empty)
+  const headerRow1 = json[0]; // First header row: 6 categories spanning cols 2–3, 4–5, 6–7, 8–9, 10–11, and 12–13 (first column is empty)
   const headerRow2 = json[1]; // Second header row: all 13 columns
   const dataRows = json.slice(2); // Remaining rows of data: all 13 columns
 

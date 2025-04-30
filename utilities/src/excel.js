@@ -62,7 +62,7 @@ export function parseExcelDoubleHeaderRowsData(headerRow1, headerRow2, dataRows)
        * label...it just might get nested under a header category as well. We'll
        * replace any new line characters (\n) with spaces.
        */
-      const headerFieldName = headerRow2[index].replace(/\n/g, " ");
+      const headerFieldName = headerRow2[index].toString().replace(/\n/g, " ");
 
       /**
        * If a header row 1 value exists, its the start of a new category. As
@@ -70,8 +70,8 @@ export function parseExcelDoubleHeaderRowsData(headerRow1, headerRow2, dataRows)
        * with spaces.
        */
       if (headerRow1[index]) {
-        headerCategoryName = headerRow1[index].replace(/\n/g, " ");
-        object[headerCategoryName] = {};
+        headerCategoryName = headerRow1[index].toString().replace(/\n/g, " ");
+        object[headerCategoryName] ??= {};
       }
 
       /**
