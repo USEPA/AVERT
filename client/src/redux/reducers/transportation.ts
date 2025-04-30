@@ -122,6 +122,7 @@ import {
   type RegionId,
   type StateId,
   percentageHybridEVMilesDrivenOnElectricity,
+  schoolBusMonthlyVMTPercentages,
   weekendToWeekdayEVConsumption,
   percentageAdditionalEnergyConsumedFactor,
   regionAverageTemperatures,
@@ -1238,6 +1239,7 @@ export function setVMTData(): AppThunk {
     const monthlyVMTPercentages = calculateMonthlyVMTPercentages({
       monthlyVMTTotals,
       yearlyVMTTotals,
+      schoolBusMonthlyVMTPercentages,
     });
 
     const vmtTotalsByStateRegionCombo = calculateVMTTotalsByStateRegionCombo({

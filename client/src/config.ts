@@ -156,6 +156,12 @@ export type DefaultEVLoadProfiles = typeof defaultEVLoadProfiles;
 
 export type EVEfficiencyAssumptions = typeof evEfficiencyAssumptions;
 
+export type PercentageHybridEVMilesDrivenOnElectricity =
+  typeof percentageHybridEVMilesDrivenOnElectricity;
+
+export type SchoolBusMonthlyVMTPercentages =
+  typeof schoolBusMonthlyVMTPercentages;
+
 export type WeekendToWeekdayEVConsumption =
   typeof weekendToWeekdayEVConsumption;
 
@@ -172,6 +178,25 @@ export type HistoricalStateEEREData = typeof historicalStateEEREData;
  * (E219).
  */
 export const percentageHybridEVMilesDrivenOnElectricity = 8000 / 13500;
+
+/**
+ * Excel: "Table 6: Monthly VMT and efficiency adjustments" table in the
+ * "Library" sheet (E272:P274)
+ */
+export const schoolBusMonthlyVMTPercentages = {
+  "1": 0.103225721256179,
+  "2": 0.103225721256179,
+  "3": 0.103225721256179,
+  "4": 0.103225721256179,
+  "5": 0.103225721256179,
+  "6": 0.0236561695647958,
+  "7": 0.0236561695647958,
+  "8": 0.0236561695647958,
+  "9": 0.103225721256179,
+  "10": 0.103225721256179,
+  "11": 0.103225721256179,
+  "12": 0.103225721256179,
+};
 
 /**
  * Ratio of typical weekend energy consumption as a share of typical weekday

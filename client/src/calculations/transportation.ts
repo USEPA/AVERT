@@ -19,6 +19,8 @@ import {
   type PM25BreakwearTirewearEVICERatios,
   type DefaultEVLoadProfiles,
   type EVEfficiencyAssumptions,
+  type PercentageHybridEVMilesDrivenOnElectricity,
+  type SchoolBusMonthlyVMTPercentages,
   type WeekendToWeekdayEVConsumption,
   type RegionAverageTemperatures,
   type HistoricalRegionEEREData,
@@ -29,11 +31,6 @@ import {
   regions,
   states,
 } from "@/config";
-/**
- * Excel: "Table 6: Monthly VMT and efficiency adjustments" table in the
- * "Library" sheet (E272:P274)
- */
-import schoolBusMonthlyVMTPercentages from "@/data/school-bus-monthly-vmt-percentages.json";
 
 const pollutants = ["co2", "nox", "so2", "pm25", "vocs", "nh3"] as const;
 
@@ -1868,8 +1865,10 @@ export function calculateYearlyVMTTotals(options: {
 export function calculateMonthlyVMTPercentages(options: {
   monthlyVMTTotals: MonthlyVMTTotals | EmptyObject;
   yearlyVMTTotals: YearlyVMTTotals;
+  schoolBusMonthlyVMTPercentages: SchoolBusMonthlyVMTPercentages;
 }) {
-  const { monthlyVMTTotals, yearlyVMTTotals } = options;
+  const { monthlyVMTTotals, yearlyVMTTotals, schoolBusMonthlyVMTPercentages } =
+    options;
 
   const result: {
     [month: number]: {
@@ -1925,7 +1924,7 @@ export function calculateMonthlyVMTPercentages(options: {
            * School bus percentages are derived from ISO New England's EV forecast.
            */
         } else if (vehicleIsSchoolBus) {
-          const monthKey = month.toString() as keyof typeof schoolBusMonthlyVMTPercentages; // prettier-ignore
+          const monthKey = month.toString() as keyof SchoolBusMonthlyVMTPercentages; // prettier-ignore
           result[month][vehicleFuelCombo] = schoolBusMonthlyVMTPercentages[monthKey]; // prettier-ignore
           /**
            * All other vehicle types assume an equal spread throughout the year.
@@ -3258,7 +3257,7 @@ export function calculateSelectedRegionsMonthlySalesChanges(options: {
   totalEffectiveVehicles: TotalEffectiveVehicles | EmptyObject;
   selectedRegionsMonthlyVMT: SelectedRegionsMonthlyVMT | EmptyObject;
   selectedRegionsEVEfficiency: SelectedRegionsEVEfficiency | EmptyObject;
-  percentageHybridEVMilesDrivenOnElectricity: number;
+  percentageHybridEVMilesDrivenOnElectricity: PercentageHybridEVMilesDrivenOnElectricity;
 }) {
   const {
     totalEffectiveVehicles,
@@ -3646,7 +3645,7 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
     | SelectedRegionsMonthlyTotalNetPM25EmissionRates
     | EmptyObject;
   selectedRegionsMonthlyVMT: SelectedRegionsMonthlyVMT | EmptyObject;
-  percentageHybridEVMilesDrivenOnElectricity: number;
+  percentageHybridEVMilesDrivenOnElectricity: PercentageHybridEVMilesDrivenOnElectricity;
 }) {
   const {
     totalEffectiveVehicles,
@@ -4735,7 +4734,7 @@ export function _calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
     | _SelectedRegionsEVEfficiencyPerVehicleType
     | EmptyObject;
   _vehiclesDisplaced: _VehiclesDisplaced;
-  percentageHybridEVMilesDrivenOnElectricity: number;
+  percentageHybridEVMilesDrivenOnElectricity: PercentageHybridEVMilesDrivenOnElectricity;
 }) {
   const {
     _selectedRegionsMonthlyVMTPerVehicleType,
@@ -5163,7 +5162,7 @@ export function _calculateSelectedRegionsMonthlyEmissionChanges(options: {
   _selectedRegionsMonthlyEmissionRates:
     | _SelectedRegionsMonthlyEmissionRates
     | EmptyObject;
-  percentageHybridEVMilesDrivenOnElectricity: number;
+  percentageHybridEVMilesDrivenOnElectricity: PercentageHybridEVMilesDrivenOnElectricity;
 }) {
   const {
     geographicFocus,
