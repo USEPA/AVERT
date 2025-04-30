@@ -31,6 +31,7 @@ import {
 import {
   type RegionId,
   type StateId,
+  regionEVHourlyLimits,
   maxAnnualDischargeCyclesOptions,
   evModelYearOptions,
   iceReplacementVehicleOptions,
@@ -1509,6 +1510,7 @@ export function calculateHourlyEnergyProfile(): AppThunk {
     const hourlyChangesValidation = calculateHourlyChangesValidation({
       regions,
       regionalHourlyImpacts,
+      regionEVHourlyLimits,
     });
 
     dispatch({

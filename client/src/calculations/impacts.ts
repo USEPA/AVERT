@@ -10,13 +10,11 @@ import {
   type _SelectedRegionsMonthlyDailyEVEnergyUsage,
 } from "@/calculations/transportation";
 import { type EmptyObject } from "@/utilities";
-import { type RegionId, type RegionName } from "@/config";
-/**
- * EV hourly limits by region
- *
- * (NOTE: not in Excel file, but sent by Pat via email 03/06/24)
- */
-import regionEvHourlyLimits from "@/data/region-ev-hourly-limits.json";
+import {
+  type RegionEVHourlyLimits,
+  type RegionId,
+  type RegionName,
+} from "@/config";
 
 export type HourlyRenewableEnergyProfiles = ReturnType<
   typeof calculateHourlyRenewableEnergyProfiles
@@ -679,8 +677,9 @@ export function calculateHourlyChangesValidation(options: {
       hourlyImpacts: HourlyImpacts;
     };
   }>;
+  regionEVHourlyLimits: RegionEVHourlyLimits;
 }) {
-  const { regions, regionalHourlyImpacts } = options;
+  const { regions, regionalHourlyImpacts, regionEVHourlyLimits } = options;
 
   type ExceedanceData = {
     regionId: RegionId;
@@ -714,7 +713,7 @@ export function calculateHourlyChangesValidation(options: {
       return region.id === regionId;
     })?.[1].name as RegionName | undefined;
 
-    const regionHourlyLimit = regionEvHourlyLimits[regionId];
+    const regionHourlyLimit = regionEVHourlyLimits[regionId];
 
     if (regionName && regionHourlyLimit) {
       Object.entries(hourlyImpacts).forEach(([hourKey, hourValue]) => {

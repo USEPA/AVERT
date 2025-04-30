@@ -161,6 +161,8 @@ export type WeekendToWeekdayEVConsumption =
 
 export type RegionAverageTemperatures = typeof regionAverageTemperatures;
 
+export type RegionEVHourlyLimits = typeof regionEVHourlyLimits;
+
 export type HistoricalRegionEEREData = typeof historicalRegionEEREData;
 
 export type HistoricalStateEEREData = typeof historicalStateEEREData;
@@ -220,6 +222,29 @@ export const regionAverageTemperatures = {
   SW: 68,
   TN: 68,
   TE: 68,
+};
+
+/**
+ * EV hourly limits by region (RDF max values)
+ *
+ * NOTE: not in Excel file, but sent by Synapse with the list of annual updates
+ * in the "Detailed list of changes in AVERT 4.4" document (emailed 04/11/25)
+ */
+export const regionEVHourlyLimits = {
+  CA: 31090,
+  NCSC: 29064,
+  CENT: 48429,
+  FL: 45407,
+  MIDA: 129390,
+  MIDW: 122268,
+  NE: 19101,
+  NY: 25660,
+  NW: 24618,
+  RM: 11840,
+  SE: 47346,
+  SW: 19102,
+  TN: 21868,
+  TE: 68009,
 };
 
 /**
