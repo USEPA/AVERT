@@ -7,7 +7,7 @@ import {
 import {
   type DailyStats,
   type HourlyEVChargingPercentages,
-  type SelectedRegionsMonthlyDailyEVEnergyUsage,
+  type _SelectedRegionsMonthlyDailyEVEnergyUsage,
 } from "@/calculations/transportation";
 import { type EmptyObject } from "@/utilities";
 import { type RegionId, type RegionName } from "@/config";
@@ -442,8 +442,8 @@ export function calculateHourlyEVLoad(options: {
   regionalLoad: RegionalLoadData[];
   dailyStats: DailyStats;
   hourlyEVChargingPercentages: HourlyEVChargingPercentages;
-  selectedRegionsMonthlyDailyEVEnergyUsage:
-    | SelectedRegionsMonthlyDailyEVEnergyUsage
+  _selectedRegionsMonthlyDailyEVEnergyUsage:
+    | _SelectedRegionsMonthlyDailyEVEnergyUsage
     | EmptyObject;
 }) {
   const {
@@ -452,12 +452,12 @@ export function calculateHourlyEVLoad(options: {
     regionalLoad,
     dailyStats,
     hourlyEVChargingPercentages,
-    selectedRegionsMonthlyDailyEVEnergyUsage,
+    _selectedRegionsMonthlyDailyEVEnergyUsage,
   } = options;
 
   const selectedRegionsEnergyData =
-    Object.keys(selectedRegionsMonthlyDailyEVEnergyUsage).length !== 0
-      ? (selectedRegionsMonthlyDailyEVEnergyUsage as SelectedRegionsMonthlyDailyEVEnergyUsage)
+    Object.keys(_selectedRegionsMonthlyDailyEVEnergyUsage).length !== 0
+      ? (_selectedRegionsMonthlyDailyEVEnergyUsage as _SelectedRegionsMonthlyDailyEVEnergyUsage)
       : null;
 
   const monthlyDailyEVEnergyUsage = selectedRegionsEnergyData?.[regionId];

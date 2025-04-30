@@ -371,8 +371,8 @@ export type _SelectedRegionsMonthlyEVEnergyUsageGW = ReturnType<
 export type _SelectedRegionsMonthlyEVEnergyUsageMW = ReturnType<
   typeof _calculateSelectedRegionsMonthlyEVEnergyUsageMW
 >;
-export type SelectedRegionsMonthlyDailyEVEnergyUsage = ReturnType<
-  typeof calculateSelectedRegionsMonthlyDailyEVEnergyUsage
+export type _SelectedRegionsMonthlyDailyEVEnergyUsage = ReturnType<
+  typeof _calculateSelectedRegionsMonthlyDailyEVEnergyUsage
 >;
 export type _SelectedRegionsMonthlyEmissionRates = ReturnType<
   typeof _calculateSelectedRegionsMonthlyEmissionRates
@@ -3908,7 +3908,6 @@ export function calculateSelectedRegionsYearlyEmissionChangesTotals(options: {
         });
       });
 
-      //
       return object;
     },
     {} as {
@@ -4861,7 +4860,7 @@ export function _calculateSelectedRegionsMonthlyEVEnergyUsageMW(options: {
  * Excel: Data in the second EV table (to the right of the "Calculate Changes"
  * table) in the "CalculateEERE" sheet (P35:X47).
  */
-export function calculateSelectedRegionsMonthlyDailyEVEnergyUsage(options: {
+export function _calculateSelectedRegionsMonthlyDailyEVEnergyUsage(options: {
   _selectedRegionsMonthlyEVEnergyUsageMW:
     | _SelectedRegionsMonthlyEVEnergyUsageMW
     | EmptyObject;
