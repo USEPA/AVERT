@@ -245,6 +245,7 @@ type _GeneralVehicleType = (typeof _generalVehicleTypes)[number];
 type _ExpandedVehicleType = (typeof _expandedVehicleTypes)[number];
 type _Pollutant = (typeof _pollutants)[number];
 
+export type HourlyEVLoadProfiles = ReturnType<typeof storeHourlyEVLoadProfiles>;
 export type DailyStats = ReturnType<typeof calculateDailyStats>;
 export type MonthlyStats = ReturnType<typeof calculateMonthlyStats>;
 export type VMTTotalsByGeography = ReturnType<
@@ -395,6 +396,60 @@ export type SelectedRegionsEEREDefaultsAverages = ReturnType<
 export type EVDeploymentLocationHistoricalEERE = ReturnType<
   typeof calculateEVDeploymentLocationHistoricalEERE
 >;
+
+/**
+ * Hourly weekday and weekend load profiles for each vehicle category.
+ *
+ * Excel: Data from the top of the middle table in the "CalculateEERE" sheet
+ * (V9:AI32).
+ */
+export function storeHourlyEVLoadProfiles(options: {
+  defaultEVLoadProfiles: DefaultEVLoadProfiles;
+}) {
+  const { defaultEVLoadProfiles } = options;
+
+  const result = Object.values(defaultEVLoadProfiles).reduce(
+    (object, data) => {
+      const hour = data["Hour Ending"];
+
+      object[hour] ??= {} as {
+        [vehicleCategory in AlternateVehicleCategory]: {
+          weekday: number;
+          weekend: number;
+        };
+      };
+
+      Object.entries(data).forEach(([key, value]) => {
+        if (key !== "Hour Ending" && typeof value === "object") {
+          const vehicleCategory = key as Exclude<keyof typeof data, "Hour Ending">; // prettier-ignore
+
+          /**
+           * NOTE: "Battery EVs" and "Plug-in Hybrid EVs" use a single
+           * "LDVs" default EV Load Profile.
+           */
+          if (vehicleCategory === "LDVs") {
+            object[hour]["Battery EVs"] = value;
+            object[hour]["Plug-in Hybrid EVs"] = value;
+          } else {
+            object[hour][vehicleCategory] = value;
+          }
+        }
+      });
+
+      return object;
+    },
+    {} as {
+      [hour: number]: {
+        [vehicleCategory in AlternateVehicleCategory]: {
+          weekday: number;
+          weekend: number;
+        };
+      };
+    },
+  );
+
+  return result;
+}
 
 /**
  * Build up daily stats object by looping through every hour of the year,

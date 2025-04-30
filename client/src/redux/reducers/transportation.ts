@@ -1,6 +1,7 @@
 import { type AppThunk } from "@/redux/index";
 import { getSelectedGeographyRegions } from "@/calculations/geography";
 import {
+  type HourlyEVLoadProfiles,
   type DailyStats,
   type MonthlyStats,
   type VMTTotalsByGeography,
@@ -57,6 +58,7 @@ import {
   type SelectedRegionsEEREDefaultsAverages,
   type EVDeploymentLocationHistoricalEERE,
   vehicleTypesByVehicleCategory,
+  storeHourlyEVLoadProfiles,
   calculateDailyStats,
   calculateMonthlyStats,
   calculateVMTTotalsByGeography,
@@ -181,6 +183,10 @@ const countyFips = countyFipsData as CountyFIPS;
 const movesEmissionRates = movesEmissionRatesData as MOVESEmissionRates;
 
 type Action =
+  | {
+      type: "transportation/SET_HOURLY_EV_LOAD_PROFILES";
+      payload: { hourlyEVLoadProfiles: HourlyEVLoadProfiles };
+    }
   | {
       type: "transportation/SET_DAILY_STATS";
       payload: { dailyStats: DailyStats };
@@ -497,6 +503,7 @@ type Action =
     };
 
 type State = {
+  hourlyEVLoadProfiles: HourlyEVLoadProfiles;
   dailyStats: DailyStats;
   monthlyStats: MonthlyStats;
   vmtTotalsByGeography: VMTTotalsByGeography | EmptyObject;
@@ -619,6 +626,7 @@ type State = {
 };
 
 const initialState: State = {
+  hourlyEVLoadProfiles: {},
   dailyStats: {},
   monthlyStats: {},
   vmtTotalsByGeography: {},
@@ -693,6 +701,15 @@ export default function reducer(
   action: Action,
 ): State {
   switch (action.type) {
+    case "transportation/SET_HOURLY_EV_LOAD_PROFILES": {
+      const { hourlyEVLoadProfiles } = action.payload;
+
+      return {
+        ...state,
+        hourlyEVLoadProfiles,
+      };
+    }
+
     case "transportation/SET_DAILY_STATS": {
       const { dailyStats } = action.payload;
 
@@ -1362,10 +1379,19 @@ export function setVMTData(): AppThunk {
 /**
  * Called when the app starts.
  */
-export function setHourlyEVChargingPercentages(): AppThunk {
+export function setHourlyEVLoadProfiles(): AppThunk {
   return (dispatch) => {
+    const hourlyEVLoadProfiles = storeHourlyEVLoadProfiles({
+      defaultEVLoadProfiles,
+    });
+
     const hourlyEVChargingPercentages = calculateHourlyEVChargingPercentages({
       defaultEVLoadProfiles,
+    });
+
+    dispatch({
+      type: "transportation/SET_HOURLY_EV_LOAD_PROFILES",
+      payload: { hourlyEVLoadProfiles },
     });
 
     dispatch({

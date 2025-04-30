@@ -30,7 +30,7 @@ import {
 } from "@/redux/reducers/geography";
 import {
   setVMTData,
-  setHourlyEVChargingPercentages,
+  setHourlyEVLoadProfiles,
 } from "@/redux/reducers/transportation";
 import {
   useSelectedRegion,
@@ -137,7 +137,7 @@ export function Panels() {
   useEffect(() => {
     dispatch(setStaticGeographyData());
     dispatch(setVMTData());
-    dispatch(setHourlyEVChargingPercentages());
+    dispatch(setHourlyEVLoadProfiles());
   }, [dispatch]);
 
   const activeStep = useAppSelector(({ panel }) => panel.activeStep);
