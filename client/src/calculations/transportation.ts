@@ -19,13 +19,13 @@ import {
   type PM25BreakwearTirewearEVICERatios,
   type DefaultEVLoadProfiles,
   type EVEfficiencyAssumptions,
+  type WeekendToWeekdayEVConsumption,
   type RegionAverageTemperatures,
   type HistoricalRegionEEREData,
   type HistoricalStateEEREData,
   type RegionId,
   type RegionName,
   type StateId,
-  percentWeekendToWeekdayEVConsumption,
   regions,
   states,
 } from "@/config";
@@ -4777,6 +4777,8 @@ export function calculateSelectedRegionsMonthlyDailyEVEnergyUsage(options: {
       };
     };
   }
+
+  const percentWeekendToWeekdayEVConsumption = 97.3015982802952; // NOTE: hardcoding as this function is being replaced
 
   const result = Object.entries(selectedRegionsEnergyData).reduce(
     (object, [regionKey, regionValue]) => {

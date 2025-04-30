@@ -156,6 +156,9 @@ export type DefaultEVLoadProfiles = typeof defaultEVLoadProfiles;
 
 export type EVEfficiencyAssumptions = typeof evEfficiencyAssumptions;
 
+export type WeekendToWeekdayEVConsumption =
+  typeof weekendToWeekdayEVConsumption;
+
 export type RegionAverageTemperatures = typeof regionAverageTemperatures;
 
 export type HistoricalRegionEEREData = typeof historicalRegionEEREData;
@@ -169,11 +172,29 @@ export type HistoricalStateEEREData = typeof historicalStateEEREData;
 export const percentageHybridEVMilesDrivenOnElectricity = 8000 / 13500;
 
 /**
+ * Ratio of typical weekend energy consumption as a share of typical weekday
+ * energy consumption.
+ *
+ * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
+ * Lite" table in the "Library" sheet – "Weekend energy consumption as a share
+ * of weekday energy consumption (ISO-NE 2024)" (D819:D824)
+ */
+export const weekendToWeekdayEVConsumption = {
+  LDVs: 0.972479619166432,
+  "Transit buses": 1,
+  "School buses": 0.12,
+  "Short-haul trucks": 0.174070360467419,
+  "Long-haul trucks": 0.174070360467419,
+  "Refuse trucks": 0.174070360467419,
+};
+
+/**
  * Additional energy consumed in climates with +/-18F differential from
  * St. Louis, MO
  *
  * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
- * Lite" table in the "Library" sheet (D827)
+ * Lite" table in the "Library" sheet – "Additional energy consumed in climates
+ * with +/-18F differential from St. Louis, MO" (D827)
  */
 export const percentageAdditionalEnergyConsumedFactor = 0.0766194804959222;
 
@@ -181,7 +202,8 @@ export const percentageAdditionalEnergyConsumedFactor = 0.0766194804959222;
  * Average temperatures for each region
  *
  * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
- * Lite" table in the "Library" sheet (B432:C445)
+ * Lite" table in the "Library" sheet – "Climate Adjustments to Energy
+ * Consumption" (B432:C445)
  */
 export const regionAverageTemperatures = {
   CA: 68,
@@ -199,15 +221,6 @@ export const regionAverageTemperatures = {
   TN: 68,
   TE: 68,
 };
-
-/**
- * Ratio of typical weekend energy consumption as a share of typical weekday
- * energy consumption.
- *
- * Excel: "Table C. Set ratio of weekend to weekday energy" table in the
- * "EV_Detail" sheet (D53).
- */
-export const percentWeekendToWeekdayEVConsumption = 97.3015982802952;
 
 /**
  * Excel: "Table 14: Lithium Ion Storage Defaults" table in the "Library" sheet
