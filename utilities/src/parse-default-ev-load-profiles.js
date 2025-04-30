@@ -3,7 +3,7 @@ import { exit } from "node:process";
 import { fileURLToPath } from "node:url";
 
 import { XLSX, getExcelWorksheet, parseExcelDoubleHeaderRowsData } from "./excel.js";
-import { storeJsonData } from "./json.js";
+import { renameObjectKeys, storeJsonData } from "./json.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -48,6 +48,23 @@ function parseLibraryWorksheet(worksheet) {
   return result;
 }
 
+/**
+ * @param {{}[]} data
+ */
+function renameDefaultEVLoadProfilesDataKeys(data) {
+  const keyMap = new Map([
+    ["Transit Buses", "Transit buses"],
+    ["School Buses", "School buses"],
+    ["Comb. long-haul trucks", "Long-haul trucks"],
+    ["Weekday", "weekday"],
+    ["Weekend", "weekend"],
+  ]);
+
+  const result = renameObjectKeys(data, keyMap);
+
+  return result;
+}
+
 function main() {
   const excelFilepath = process.argv[2];
 
@@ -58,11 +75,12 @@ function main() {
 
   const worksheet = getExcelWorksheet(excelFilepath, "Library");
   const excelJsonData = parseLibraryWorksheet(worksheet);
+  const formattedJsonData = renameDefaultEVLoadProfilesDataKeys(excelJsonData);
 
   const jsonFilename = "default-ev-load-profiles.json";
   const jsonFilepath = resolve(__dirname, "../../client/src/data", jsonFilename);
 
-  storeJsonData(excelJsonData, jsonFilepath);
+  storeJsonData(formattedJsonData, jsonFilepath);
 }
 
 main();
