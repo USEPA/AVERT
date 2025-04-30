@@ -12358,7 +12358,7 @@
       "hour": 1545,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -12366,7 +12366,7 @@
       "hour": 1546,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -12374,7 +12374,7 @@
       "hour": 1547,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -12382,7 +12382,7 @@
       "hour": 1548,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -12422,7 +12422,7 @@
       "hour": 1553,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -12430,7 +12430,7 @@
       "hour": 1554,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -12438,7 +12438,7 @@
       "hour": 1555,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -12446,7 +12446,7 @@
       "hour": 1556,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -22342,7 +22342,7 @@
       "hour": 2793,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -22350,7 +22350,7 @@
       "hour": 2794,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -22358,7 +22358,7 @@
       "hour": 2795,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -22366,7 +22366,7 @@
       "hour": 2796,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -22406,7 +22406,7 @@
       "hour": 2801,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -22414,7 +22414,7 @@
       "hour": 2802,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -22422,7 +22422,7 @@
       "hour": 2803,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -22430,7 +22430,7 @@
       "hour": 2804,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -22726,7 +22726,7 @@
       "hour": 2841,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -22734,7 +22734,7 @@
       "hour": 2842,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -22742,7 +22742,7 @@
       "hour": 2843,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -22750,7 +22750,7 @@
       "hour": 2844,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -22790,7 +22790,7 @@
       "hour": 2849,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -22798,7 +22798,7 @@
       "hour": 2850,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -22806,7 +22806,7 @@
       "hour": 2851,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -22814,7 +22814,7 @@
       "hour": 2852,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -24454,7 +24454,7 @@
       "hour": 3057,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -24462,7 +24462,7 @@
       "hour": 3058,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -24470,7 +24470,7 @@
       "hour": 3059,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -24478,7 +24478,7 @@
       "hour": 3060,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -24518,7 +24518,7 @@
       "hour": 3065,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -24526,7 +24526,7 @@
       "hour": 3066,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -24534,7 +24534,7 @@
       "hour": 3067,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -24542,7 +24542,7 @@
       "hour": 3068,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -25606,7 +25606,7 @@
       "hour": 3201,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -25614,7 +25614,7 @@
       "hour": 3202,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -25622,7 +25622,7 @@
       "hour": 3203,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -25630,7 +25630,7 @@
       "hour": 3204,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -25670,7 +25670,7 @@
       "hour": 3209,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -25678,7 +25678,7 @@
       "hour": 3210,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -25686,7 +25686,7 @@
       "hour": 3211,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -25694,7 +25694,7 @@
       "hour": 3212,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -27142,7 +27142,7 @@
       "hour": 3393,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -27150,7 +27150,7 @@
       "hour": 3394,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -27158,7 +27158,7 @@
       "hour": 3395,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -27166,7 +27166,7 @@
       "hour": 3396,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -27206,7 +27206,7 @@
       "hour": 3401,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -27214,7 +27214,7 @@
       "hour": 3402,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -27222,7 +27222,7 @@
       "hour": 3403,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -27230,7 +27230,7 @@
       "hour": 3404,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -27526,7 +27526,7 @@
       "hour": 3441,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -27534,7 +27534,7 @@
       "hour": 3442,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -27542,7 +27542,7 @@
       "hour": 3443,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -27550,7 +27550,7 @@
       "hour": 3444,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -27590,7 +27590,7 @@
       "hour": 3449,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -27598,7 +27598,7 @@
       "hour": 3450,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -27606,7 +27606,7 @@
       "hour": 3451,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -27614,7 +27614,7 @@
       "hour": 3452,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -27718,7 +27718,7 @@
       "hour": 3465,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -27726,7 +27726,7 @@
       "hour": 3466,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -27734,7 +27734,7 @@
       "hour": 3467,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -27742,7 +27742,7 @@
       "hour": 3468,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -27782,7 +27782,7 @@
       "hour": 3473,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -27790,7 +27790,7 @@
       "hour": 3474,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -27798,7 +27798,7 @@
       "hour": 3475,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -27806,7 +27806,7 @@
       "hour": 3476,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -27910,7 +27910,7 @@
       "hour": 3489,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -27918,7 +27918,7 @@
       "hour": 3490,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -27926,7 +27926,7 @@
       "hour": 3491,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -27934,7 +27934,7 @@
       "hour": 3492,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -27974,7 +27974,7 @@
       "hour": 3497,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -27982,7 +27982,7 @@
       "hour": 3498,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -27990,7 +27990,7 @@
       "hour": 3499,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -27998,7 +27998,7 @@
       "hour": 3500,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -28102,7 +28102,7 @@
       "hour": 3513,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -28110,7 +28110,7 @@
       "hour": 3514,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -28118,7 +28118,7 @@
       "hour": 3515,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -28126,7 +28126,7 @@
       "hour": 3516,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -28166,7 +28166,7 @@
       "hour": 3521,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -28174,7 +28174,7 @@
       "hour": 3522,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -28182,7 +28182,7 @@
       "hour": 3523,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -28190,7 +28190,7 @@
       "hour": 3524,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -28293,32 +28293,32 @@
       "date": "5/28/2023 8:00:00 AM",
       "hour": 3537,
       "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_100": 0.8,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "5/28/2023 9:00:00 AM",
       "hour": 3538,
       "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_100": 0.8,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "5/28/2023 10:00:00 AM",
       "hour": 3539,
       "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_100": 0.8,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "5/28/2023 11:00:00 AM",
       "hour": 3540,
       "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_100": 0.8,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -28357,32 +28357,32 @@
       "date": "5/28/2023 4:00:00 PM",
       "hour": 3545,
       "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_100": -0.68,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "5/28/2023 5:00:00 PM",
       "hour": 3546,
       "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_100": -0.68,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "5/28/2023 6:00:00 PM",
       "hour": 3547,
       "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_100": -0.68,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "5/28/2023 7:00:00 PM",
       "hour": 3548,
       "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_100": -0.68,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -28484,33 +28484,33 @@
     {
       "date": "5/29/2023 8:00:00 AM",
       "hour": 3561,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "5/29/2023 9:00:00 AM",
       "hour": 3562,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "5/29/2023 10:00:00 AM",
       "hour": 3563,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "5/29/2023 11:00:00 AM",
       "hour": 3564,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -28548,33 +28548,33 @@
     {
       "date": "5/29/2023 4:00:00 PM",
       "hour": 3569,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "5/29/2023 5:00:00 PM",
       "hour": 3570,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "5/29/2023 6:00:00 PM",
       "hour": 3571,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "5/29/2023 7:00:00 PM",
       "hour": 3572,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -28677,7 +28677,7 @@
       "date": "5/30/2023 8:00:00 AM",
       "hour": 3585,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -28685,7 +28685,7 @@
       "date": "5/30/2023 9:00:00 AM",
       "hour": 3586,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -28693,7 +28693,7 @@
       "date": "5/30/2023 10:00:00 AM",
       "hour": 3587,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -28701,7 +28701,7 @@
       "date": "5/30/2023 11:00:00 AM",
       "hour": 3588,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -28741,7 +28741,7 @@
       "date": "5/30/2023 4:00:00 PM",
       "hour": 3593,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -28749,7 +28749,7 @@
       "date": "5/30/2023 5:00:00 PM",
       "hour": 3594,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -28757,7 +28757,7 @@
       "date": "5/30/2023 6:00:00 PM",
       "hour": 3595,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -28765,7 +28765,7 @@
       "date": "5/30/2023 7:00:00 PM",
       "hour": 3596,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -29638,7 +29638,7 @@
       "hour": 3705,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -29646,7 +29646,7 @@
       "hour": 3706,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -29654,7 +29654,7 @@
       "hour": 3707,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -29662,7 +29662,7 @@
       "hour": 3708,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -29702,7 +29702,7 @@
       "hour": 3713,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -29710,7 +29710,7 @@
       "hour": 3714,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -29718,7 +29718,7 @@
       "hour": 3715,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -29726,7 +29726,7 @@
       "hour": 3716,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -30020,32 +30020,32 @@
     {
       "date": "6/6/2023 8:00:00 AM",
       "hour": 3753,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/6/2023 9:00:00 AM",
       "hour": 3754,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/6/2023 10:00:00 AM",
       "hour": 3755,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/6/2023 11:00:00 AM",
       "hour": 3756,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -30084,32 +30084,32 @@
     {
       "date": "6/6/2023 4:00:00 PM",
       "hour": 3761,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/6/2023 5:00:00 PM",
       "hour": 3762,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/6/2023 6:00:00 PM",
       "hour": 3763,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/6/2023 7:00:00 PM",
       "hour": 3764,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -30212,32 +30212,32 @@
     {
       "date": "6/7/2023 8:00:00 AM",
       "hour": 3777,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/7/2023 9:00:00 AM",
       "hour": 3778,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/7/2023 10:00:00 AM",
       "hour": 3779,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/7/2023 11:00:00 AM",
       "hour": 3780,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -30276,32 +30276,32 @@
     {
       "date": "6/7/2023 4:00:00 PM",
       "hour": 3785,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/7/2023 5:00:00 PM",
       "hour": 3786,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/7/2023 6:00:00 PM",
       "hour": 3787,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/7/2023 7:00:00 PM",
       "hour": 3788,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -30404,32 +30404,32 @@
     {
       "date": "6/8/2023 8:00:00 AM",
       "hour": 3801,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/8/2023 9:00:00 AM",
       "hour": 3802,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/8/2023 10:00:00 AM",
       "hour": 3803,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/8/2023 11:00:00 AM",
       "hour": 3804,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -30468,32 +30468,32 @@
     {
       "date": "6/8/2023 4:00:00 PM",
       "hour": 3809,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/8/2023 5:00:00 PM",
       "hour": 3810,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/8/2023 6:00:00 PM",
       "hour": 3811,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/8/2023 7:00:00 PM",
       "hour": 3812,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -30788,32 +30788,32 @@
     {
       "date": "6/10/2023 8:00:00 AM",
       "hour": 3849,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/10/2023 9:00:00 AM",
       "hour": 3850,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/10/2023 10:00:00 AM",
       "hour": 3851,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/10/2023 11:00:00 AM",
       "hour": 3852,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -30852,32 +30852,32 @@
     {
       "date": "6/10/2023 4:00:00 PM",
       "hour": 3857,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/10/2023 5:00:00 PM",
       "hour": 3858,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/10/2023 6:00:00 PM",
       "hour": 3859,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/10/2023 7:00:00 PM",
       "hour": 3860,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -30980,7 +30980,7 @@
     {
       "date": "6/11/2023 8:00:00 AM",
       "hour": 3873,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -30988,7 +30988,7 @@
     {
       "date": "6/11/2023 9:00:00 AM",
       "hour": 3874,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -30996,7 +30996,7 @@
     {
       "date": "6/11/2023 10:00:00 AM",
       "hour": 3875,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -31004,7 +31004,7 @@
     {
       "date": "6/11/2023 11:00:00 AM",
       "hour": 3876,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -31044,7 +31044,7 @@
     {
       "date": "6/11/2023 4:00:00 PM",
       "hour": 3881,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -31052,7 +31052,7 @@
     {
       "date": "6/11/2023 5:00:00 PM",
       "hour": 3882,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -31060,7 +31060,7 @@
     {
       "date": "6/11/2023 6:00:00 PM",
       "hour": 3883,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -31068,7 +31068,7 @@
     {
       "date": "6/11/2023 7:00:00 PM",
       "hour": 3884,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -31172,32 +31172,32 @@
     {
       "date": "6/12/2023 8:00:00 AM",
       "hour": 3897,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/12/2023 9:00:00 AM",
       "hour": 3898,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/12/2023 10:00:00 AM",
       "hour": 3899,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/12/2023 11:00:00 AM",
       "hour": 3900,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -31236,32 +31236,32 @@
     {
       "date": "6/12/2023 4:00:00 PM",
       "hour": 3905,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/12/2023 5:00:00 PM",
       "hour": 3906,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/12/2023 6:00:00 PM",
       "hour": 3907,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/12/2023 7:00:00 PM",
       "hour": 3908,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -31364,32 +31364,32 @@
     {
       "date": "6/13/2023 8:00:00 AM",
       "hour": 3921,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/13/2023 9:00:00 AM",
       "hour": 3922,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/13/2023 10:00:00 AM",
       "hour": 3923,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/13/2023 11:00:00 AM",
       "hour": 3924,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -31428,32 +31428,32 @@
     {
       "date": "6/13/2023 4:00:00 PM",
       "hour": 3929,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/13/2023 5:00:00 PM",
       "hour": 3930,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/13/2023 6:00:00 PM",
       "hour": 3931,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/13/2023 7:00:00 PM",
       "hour": 3932,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -31556,32 +31556,32 @@
     {
       "date": "6/14/2023 8:00:00 AM",
       "hour": 3945,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/14/2023 9:00:00 AM",
       "hour": 3946,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/14/2023 10:00:00 AM",
       "hour": 3947,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/14/2023 11:00:00 AM",
       "hour": 3948,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -31620,32 +31620,32 @@
     {
       "date": "6/14/2023 4:00:00 PM",
       "hour": 3953,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/14/2023 5:00:00 PM",
       "hour": 3954,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/14/2023 6:00:00 PM",
       "hour": 3955,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/14/2023 7:00:00 PM",
       "hour": 3956,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -31748,32 +31748,32 @@
     {
       "date": "6/15/2023 8:00:00 AM",
       "hour": 3969,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/15/2023 9:00:00 AM",
       "hour": 3970,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/15/2023 10:00:00 AM",
       "hour": 3971,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/15/2023 11:00:00 AM",
       "hour": 3972,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -31812,32 +31812,32 @@
     {
       "date": "6/15/2023 4:00:00 PM",
       "hour": 3977,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/15/2023 5:00:00 PM",
       "hour": 3978,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/15/2023 6:00:00 PM",
       "hour": 3979,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/15/2023 7:00:00 PM",
       "hour": 3980,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -31940,33 +31940,33 @@
     {
       "date": "6/16/2023 8:00:00 AM",
       "hour": 3993,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
-      "battery_150": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
       "date": "6/16/2023 9:00:00 AM",
       "hour": 3994,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
-      "battery_150": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
       "date": "6/16/2023 10:00:00 AM",
       "hour": 3995,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
-      "battery_150": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
       "date": "6/16/2023 11:00:00 AM",
       "hour": 3996,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
-      "battery_150": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -32004,33 +32004,33 @@
     {
       "date": "6/16/2023 4:00:00 PM",
       "hour": 4001,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
-      "battery_150": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
       "date": "6/16/2023 5:00:00 PM",
       "hour": 4002,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
-      "battery_150": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
       "date": "6/16/2023 6:00:00 PM",
       "hour": 4003,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
-      "battery_150": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
       "date": "6/16/2023 7:00:00 PM",
       "hour": 4004,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
-      "battery_150": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -32133,7 +32133,7 @@
       "date": "6/17/2023 8:00:00 AM",
       "hour": 4017,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -32141,7 +32141,7 @@
       "date": "6/17/2023 9:00:00 AM",
       "hour": 4018,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -32149,7 +32149,7 @@
       "date": "6/17/2023 10:00:00 AM",
       "hour": 4019,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -32157,7 +32157,7 @@
       "date": "6/17/2023 11:00:00 AM",
       "hour": 4020,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -32197,7 +32197,7 @@
       "date": "6/17/2023 4:00:00 PM",
       "hour": 4025,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -32205,7 +32205,7 @@
       "date": "6/17/2023 5:00:00 PM",
       "hour": 4026,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -32213,7 +32213,7 @@
       "date": "6/17/2023 6:00:00 PM",
       "hour": 4027,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -32221,7 +32221,7 @@
       "date": "6/17/2023 7:00:00 PM",
       "hour": 4028,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -32325,7 +32325,7 @@
       "date": "6/18/2023 8:00:00 AM",
       "hour": 4041,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -32333,7 +32333,7 @@
       "date": "6/18/2023 9:00:00 AM",
       "hour": 4042,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -32341,7 +32341,7 @@
       "date": "6/18/2023 10:00:00 AM",
       "hour": 4043,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -32349,7 +32349,7 @@
       "date": "6/18/2023 11:00:00 AM",
       "hour": 4044,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -32389,7 +32389,7 @@
       "date": "6/18/2023 4:00:00 PM",
       "hour": 4049,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -32397,7 +32397,7 @@
       "date": "6/18/2023 5:00:00 PM",
       "hour": 4050,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -32405,7 +32405,7 @@
       "date": "6/18/2023 6:00:00 PM",
       "hour": 4051,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -32413,7 +32413,7 @@
       "date": "6/18/2023 7:00:00 PM",
       "hour": 4052,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -32709,7 +32709,7 @@
       "date": "6/20/2023 8:00:00 AM",
       "hour": 4089,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -32717,7 +32717,7 @@
       "date": "6/20/2023 9:00:00 AM",
       "hour": 4090,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -32725,7 +32725,7 @@
       "date": "6/20/2023 10:00:00 AM",
       "hour": 4091,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -32733,7 +32733,7 @@
       "date": "6/20/2023 11:00:00 AM",
       "hour": 4092,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -32773,7 +32773,7 @@
       "date": "6/20/2023 4:00:00 PM",
       "hour": 4097,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -32781,7 +32781,7 @@
       "date": "6/20/2023 5:00:00 PM",
       "hour": 4098,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -32789,7 +32789,7 @@
       "date": "6/20/2023 6:00:00 PM",
       "hour": 4099,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -32797,7 +32797,7 @@
       "date": "6/20/2023 7:00:00 PM",
       "hour": 4100,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -32901,7 +32901,7 @@
       "date": "6/21/2023 8:00:00 AM",
       "hour": 4113,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -32909,7 +32909,7 @@
       "date": "6/21/2023 9:00:00 AM",
       "hour": 4114,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -32917,7 +32917,7 @@
       "date": "6/21/2023 10:00:00 AM",
       "hour": 4115,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -32925,7 +32925,7 @@
       "date": "6/21/2023 11:00:00 AM",
       "hour": 4116,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -32965,7 +32965,7 @@
       "date": "6/21/2023 4:00:00 PM",
       "hour": 4121,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -32973,7 +32973,7 @@
       "date": "6/21/2023 5:00:00 PM",
       "hour": 4122,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -32981,7 +32981,7 @@
       "date": "6/21/2023 6:00:00 PM",
       "hour": 4123,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -32989,7 +32989,7 @@
       "date": "6/21/2023 7:00:00 PM",
       "hour": 4124,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -33092,32 +33092,32 @@
     {
       "date": "6/22/2023 8:00:00 AM",
       "hour": 4137,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/22/2023 9:00:00 AM",
       "hour": 4138,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/22/2023 10:00:00 AM",
       "hour": 4139,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/22/2023 11:00:00 AM",
       "hour": 4140,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -33156,32 +33156,32 @@
     {
       "date": "6/22/2023 4:00:00 PM",
       "hour": 4145,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/22/2023 5:00:00 PM",
       "hour": 4146,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/22/2023 6:00:00 PM",
       "hour": 4147,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/22/2023 7:00:00 PM",
       "hour": 4148,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -33284,7 +33284,7 @@
     {
       "date": "6/23/2023 8:00:00 AM",
       "hour": 4161,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -33292,7 +33292,7 @@
     {
       "date": "6/23/2023 9:00:00 AM",
       "hour": 4162,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -33300,7 +33300,7 @@
     {
       "date": "6/23/2023 10:00:00 AM",
       "hour": 4163,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -33308,7 +33308,7 @@
     {
       "date": "6/23/2023 11:00:00 AM",
       "hour": 4164,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -33348,7 +33348,7 @@
     {
       "date": "6/23/2023 4:00:00 PM",
       "hour": 4169,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -33356,7 +33356,7 @@
     {
       "date": "6/23/2023 5:00:00 PM",
       "hour": 4170,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -33364,7 +33364,7 @@
     {
       "date": "6/23/2023 6:00:00 PM",
       "hour": 4171,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -33372,7 +33372,7 @@
     {
       "date": "6/23/2023 7:00:00 PM",
       "hour": 4172,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -33477,7 +33477,7 @@
       "date": "6/24/2023 8:00:00 AM",
       "hour": 4185,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -33485,7 +33485,7 @@
       "date": "6/24/2023 9:00:00 AM",
       "hour": 4186,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -33493,7 +33493,7 @@
       "date": "6/24/2023 10:00:00 AM",
       "hour": 4187,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -33501,7 +33501,7 @@
       "date": "6/24/2023 11:00:00 AM",
       "hour": 4188,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -33541,7 +33541,7 @@
       "date": "6/24/2023 4:00:00 PM",
       "hour": 4193,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -33549,7 +33549,7 @@
       "date": "6/24/2023 5:00:00 PM",
       "hour": 4194,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -33557,7 +33557,7 @@
       "date": "6/24/2023 6:00:00 PM",
       "hour": 4195,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -33565,7 +33565,7 @@
       "date": "6/24/2023 7:00:00 PM",
       "hour": 4196,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -33668,32 +33668,32 @@
     {
       "date": "6/25/2023 8:00:00 AM",
       "hour": 4209,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/25/2023 9:00:00 AM",
       "hour": 4210,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/25/2023 10:00:00 AM",
       "hour": 4211,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/25/2023 11:00:00 AM",
       "hour": 4212,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -33732,32 +33732,32 @@
     {
       "date": "6/25/2023 4:00:00 PM",
       "hour": 4217,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/25/2023 5:00:00 PM",
       "hour": 4218,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/25/2023 6:00:00 PM",
       "hour": 4219,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/25/2023 7:00:00 PM",
       "hour": 4220,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -34436,7 +34436,7 @@
     {
       "date": "6/29/2023 8:00:00 AM",
       "hour": 4305,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -34444,7 +34444,7 @@
     {
       "date": "6/29/2023 9:00:00 AM",
       "hour": 4306,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -34452,7 +34452,7 @@
     {
       "date": "6/29/2023 10:00:00 AM",
       "hour": 4307,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -34460,7 +34460,7 @@
     {
       "date": "6/29/2023 11:00:00 AM",
       "hour": 4308,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -34500,7 +34500,7 @@
     {
       "date": "6/29/2023 4:00:00 PM",
       "hour": 4313,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -34508,7 +34508,7 @@
     {
       "date": "6/29/2023 5:00:00 PM",
       "hour": 4314,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -34516,7 +34516,7 @@
     {
       "date": "6/29/2023 6:00:00 PM",
       "hour": 4315,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -34524,7 +34524,7 @@
     {
       "date": "6/29/2023 7:00:00 PM",
       "hour": 4316,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -34628,32 +34628,32 @@
     {
       "date": "6/30/2023 8:00:00 AM",
       "hour": 4329,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/30/2023 9:00:00 AM",
       "hour": 4330,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/30/2023 10:00:00 AM",
       "hour": 4331,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "6/30/2023 11:00:00 AM",
       "hour": 4332,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -34692,32 +34692,32 @@
     {
       "date": "6/30/2023 4:00:00 PM",
       "hour": 4337,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/30/2023 5:00:00 PM",
       "hour": 4338,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/30/2023 6:00:00 PM",
       "hour": 4339,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "6/30/2023 7:00:00 PM",
       "hour": 4340,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -34821,7 +34821,7 @@
       "date": "7/1/2023 8:00:00 AM",
       "hour": 4353,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -34829,7 +34829,7 @@
       "date": "7/1/2023 9:00:00 AM",
       "hour": 4354,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -34837,7 +34837,7 @@
       "date": "7/1/2023 10:00:00 AM",
       "hour": 4355,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -34845,7 +34845,7 @@
       "date": "7/1/2023 11:00:00 AM",
       "hour": 4356,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -34885,7 +34885,7 @@
       "date": "7/1/2023 4:00:00 PM",
       "hour": 4361,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -34893,7 +34893,7 @@
       "date": "7/1/2023 5:00:00 PM",
       "hour": 4362,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -34901,7 +34901,7 @@
       "date": "7/1/2023 6:00:00 PM",
       "hour": 4363,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -34909,7 +34909,7 @@
       "date": "7/1/2023 7:00:00 PM",
       "hour": 4364,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -35012,32 +35012,32 @@
     {
       "date": "7/2/2023 8:00:00 AM",
       "hour": 4377,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "7/2/2023 9:00:00 AM",
       "hour": 4378,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "7/2/2023 10:00:00 AM",
       "hour": 4379,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "7/2/2023 11:00:00 AM",
       "hour": 4380,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -35076,32 +35076,32 @@
     {
       "date": "7/2/2023 4:00:00 PM",
       "hour": 4385,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "7/2/2023 5:00:00 PM",
       "hour": 4386,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "7/2/2023 6:00:00 PM",
       "hour": 4387,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "7/2/2023 7:00:00 PM",
       "hour": 4388,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -36164,7 +36164,7 @@
     {
       "date": "7/8/2023 8:00:00 AM",
       "hour": 4521,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -36172,7 +36172,7 @@
     {
       "date": "7/8/2023 9:00:00 AM",
       "hour": 4522,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -36180,7 +36180,7 @@
     {
       "date": "7/8/2023 10:00:00 AM",
       "hour": 4523,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -36188,7 +36188,7 @@
     {
       "date": "7/8/2023 11:00:00 AM",
       "hour": 4524,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -36228,7 +36228,7 @@
     {
       "date": "7/8/2023 4:00:00 PM",
       "hour": 4529,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -36236,7 +36236,7 @@
     {
       "date": "7/8/2023 5:00:00 PM",
       "hour": 4530,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -36244,7 +36244,7 @@
     {
       "date": "7/8/2023 6:00:00 PM",
       "hour": 4531,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -36252,7 +36252,7 @@
     {
       "date": "7/8/2023 7:00:00 PM",
       "hour": 4532,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -36932,32 +36932,32 @@
     {
       "date": "7/12/2023 8:00:00 AM",
       "hour": 4617,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "7/12/2023 9:00:00 AM",
       "hour": 4618,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "7/12/2023 10:00:00 AM",
       "hour": 4619,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "7/12/2023 11:00:00 AM",
       "hour": 4620,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -36996,32 +36996,32 @@
     {
       "date": "7/12/2023 4:00:00 PM",
       "hour": 4625,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "7/12/2023 5:00:00 PM",
       "hour": 4626,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "7/12/2023 6:00:00 PM",
       "hour": 4627,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "7/12/2023 7:00:00 PM",
       "hour": 4628,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -37124,7 +37124,7 @@
     {
       "date": "7/13/2023 8:00:00 AM",
       "hour": 4641,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -37132,7 +37132,7 @@
     {
       "date": "7/13/2023 9:00:00 AM",
       "hour": 4642,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -37140,7 +37140,7 @@
     {
       "date": "7/13/2023 10:00:00 AM",
       "hour": 4643,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -37148,7 +37148,7 @@
     {
       "date": "7/13/2023 11:00:00 AM",
       "hour": 4644,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -37188,7 +37188,7 @@
     {
       "date": "7/13/2023 4:00:00 PM",
       "hour": 4649,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -37196,7 +37196,7 @@
     {
       "date": "7/13/2023 5:00:00 PM",
       "hour": 4650,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -37204,7 +37204,7 @@
     {
       "date": "7/13/2023 6:00:00 PM",
       "hour": 4651,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -37212,7 +37212,7 @@
     {
       "date": "7/13/2023 7:00:00 PM",
       "hour": 4652,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -39044,7 +39044,7 @@
     {
       "date": "7/23/2023 8:00:00 AM",
       "hour": 4881,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -39052,7 +39052,7 @@
     {
       "date": "7/23/2023 9:00:00 AM",
       "hour": 4882,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -39060,7 +39060,7 @@
     {
       "date": "7/23/2023 10:00:00 AM",
       "hour": 4883,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -39068,7 +39068,7 @@
     {
       "date": "7/23/2023 11:00:00 AM",
       "hour": 4884,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -39108,7 +39108,7 @@
     {
       "date": "7/23/2023 4:00:00 PM",
       "hour": 4889,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -39116,7 +39116,7 @@
     {
       "date": "7/23/2023 5:00:00 PM",
       "hour": 4890,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -39124,7 +39124,7 @@
     {
       "date": "7/23/2023 6:00:00 PM",
       "hour": 4891,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -39132,7 +39132,7 @@
     {
       "date": "7/23/2023 7:00:00 PM",
       "hour": 4892,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -39812,7 +39812,7 @@
     {
       "date": "7/27/2023 8:00:00 AM",
       "hour": 4977,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -39820,7 +39820,7 @@
     {
       "date": "7/27/2023 9:00:00 AM",
       "hour": 4978,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -39828,7 +39828,7 @@
     {
       "date": "7/27/2023 10:00:00 AM",
       "hour": 4979,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -39836,7 +39836,7 @@
     {
       "date": "7/27/2023 11:00:00 AM",
       "hour": 4980,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -39876,7 +39876,7 @@
     {
       "date": "7/27/2023 4:00:00 PM",
       "hour": 4985,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -39884,7 +39884,7 @@
     {
       "date": "7/27/2023 5:00:00 PM",
       "hour": 4986,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -39892,7 +39892,7 @@
     {
       "date": "7/27/2023 6:00:00 PM",
       "hour": 4987,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -39900,7 +39900,7 @@
     {
       "date": "7/27/2023 7:00:00 PM",
       "hour": 4988,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -40004,7 +40004,7 @@
     {
       "date": "7/28/2023 8:00:00 AM",
       "hour": 5001,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -40012,7 +40012,7 @@
     {
       "date": "7/28/2023 9:00:00 AM",
       "hour": 5002,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -40020,7 +40020,7 @@
     {
       "date": "7/28/2023 10:00:00 AM",
       "hour": 5003,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -40028,7 +40028,7 @@
     {
       "date": "7/28/2023 11:00:00 AM",
       "hour": 5004,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -40068,7 +40068,7 @@
     {
       "date": "7/28/2023 4:00:00 PM",
       "hour": 5009,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -40076,7 +40076,7 @@
     {
       "date": "7/28/2023 5:00:00 PM",
       "hour": 5010,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -40084,7 +40084,7 @@
     {
       "date": "7/28/2023 6:00:00 PM",
       "hour": 5011,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -40092,7 +40092,7 @@
     {
       "date": "7/28/2023 7:00:00 PM",
       "hour": 5012,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -40196,7 +40196,7 @@
     {
       "date": "7/29/2023 8:00:00 AM",
       "hour": 5025,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -40204,7 +40204,7 @@
     {
       "date": "7/29/2023 9:00:00 AM",
       "hour": 5026,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -40212,7 +40212,7 @@
     {
       "date": "7/29/2023 10:00:00 AM",
       "hour": 5027,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -40220,7 +40220,7 @@
     {
       "date": "7/29/2023 11:00:00 AM",
       "hour": 5028,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -40260,7 +40260,7 @@
     {
       "date": "7/29/2023 4:00:00 PM",
       "hour": 5033,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -40268,7 +40268,7 @@
     {
       "date": "7/29/2023 5:00:00 PM",
       "hour": 5034,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -40276,7 +40276,7 @@
     {
       "date": "7/29/2023 6:00:00 PM",
       "hour": 5035,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -40284,7 +40284,7 @@
     {
       "date": "7/29/2023 7:00:00 PM",
       "hour": 5036,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -40772,7 +40772,7 @@
     {
       "date": "8/1/2023 8:00:00 AM",
       "hour": 5097,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -40780,7 +40780,7 @@
     {
       "date": "8/1/2023 9:00:00 AM",
       "hour": 5098,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -40788,7 +40788,7 @@
     {
       "date": "8/1/2023 10:00:00 AM",
       "hour": 5099,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -40796,7 +40796,7 @@
     {
       "date": "8/1/2023 11:00:00 AM",
       "hour": 5100,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -40836,7 +40836,7 @@
     {
       "date": "8/1/2023 4:00:00 PM",
       "hour": 5105,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -40844,7 +40844,7 @@
     {
       "date": "8/1/2023 5:00:00 PM",
       "hour": 5106,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -40852,7 +40852,7 @@
     {
       "date": "8/1/2023 6:00:00 PM",
       "hour": 5107,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -40860,7 +40860,7 @@
     {
       "date": "8/1/2023 7:00:00 PM",
       "hour": 5108,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -41348,7 +41348,7 @@
     {
       "date": "8/4/2023 8:00:00 AM",
       "hour": 5169,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -41356,7 +41356,7 @@
     {
       "date": "8/4/2023 9:00:00 AM",
       "hour": 5170,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -41364,7 +41364,7 @@
     {
       "date": "8/4/2023 10:00:00 AM",
       "hour": 5171,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -41372,7 +41372,7 @@
     {
       "date": "8/4/2023 11:00:00 AM",
       "hour": 5172,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -41412,7 +41412,7 @@
     {
       "date": "8/4/2023 4:00:00 PM",
       "hour": 5177,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -41420,7 +41420,7 @@
     {
       "date": "8/4/2023 5:00:00 PM",
       "hour": 5178,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -41428,7 +41428,7 @@
     {
       "date": "8/4/2023 6:00:00 PM",
       "hour": 5179,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -41436,7 +41436,7 @@
     {
       "date": "8/4/2023 7:00:00 PM",
       "hour": 5180,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -41540,32 +41540,32 @@
     {
       "date": "8/5/2023 8:00:00 AM",
       "hour": 5193,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/5/2023 9:00:00 AM",
       "hour": 5194,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/5/2023 10:00:00 AM",
       "hour": 5195,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/5/2023 11:00:00 AM",
       "hour": 5196,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -41604,32 +41604,32 @@
     {
       "date": "8/5/2023 4:00:00 PM",
       "hour": 5201,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/5/2023 5:00:00 PM",
       "hour": 5202,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/5/2023 6:00:00 PM",
       "hour": 5203,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/5/2023 7:00:00 PM",
       "hour": 5204,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -41732,32 +41732,32 @@
     {
       "date": "8/6/2023 8:00:00 AM",
       "hour": 5217,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/6/2023 9:00:00 AM",
       "hour": 5218,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/6/2023 10:00:00 AM",
       "hour": 5219,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/6/2023 11:00:00 AM",
       "hour": 5220,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -41796,32 +41796,32 @@
     {
       "date": "8/6/2023 4:00:00 PM",
       "hour": 5225,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/6/2023 5:00:00 PM",
       "hour": 5226,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/6/2023 6:00:00 PM",
       "hour": 5227,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/6/2023 7:00:00 PM",
       "hour": 5228,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -43845,7 +43845,7 @@
       "date": "8/17/2023 8:00:00 AM",
       "hour": 5481,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -43853,7 +43853,7 @@
       "date": "8/17/2023 9:00:00 AM",
       "hour": 5482,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -43861,7 +43861,7 @@
       "date": "8/17/2023 10:00:00 AM",
       "hour": 5483,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -43869,7 +43869,7 @@
       "date": "8/17/2023 11:00:00 AM",
       "hour": 5484,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -43909,7 +43909,7 @@
       "date": "8/17/2023 4:00:00 PM",
       "hour": 5489,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -43917,7 +43917,7 @@
       "date": "8/17/2023 5:00:00 PM",
       "hour": 5490,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -43925,7 +43925,7 @@
       "date": "8/17/2023 6:00:00 PM",
       "hour": 5491,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -43933,7 +43933,7 @@
       "date": "8/17/2023 7:00:00 PM",
       "hour": 5492,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -44037,7 +44037,7 @@
       "date": "8/18/2023 8:00:00 AM",
       "hour": 5505,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -44045,7 +44045,7 @@
       "date": "8/18/2023 9:00:00 AM",
       "hour": 5506,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -44053,7 +44053,7 @@
       "date": "8/18/2023 10:00:00 AM",
       "hour": 5507,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -44061,7 +44061,7 @@
       "date": "8/18/2023 11:00:00 AM",
       "hour": 5508,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -44101,7 +44101,7 @@
       "date": "8/18/2023 4:00:00 PM",
       "hour": 5513,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -44109,7 +44109,7 @@
       "date": "8/18/2023 5:00:00 PM",
       "hour": 5514,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -44117,7 +44117,7 @@
       "date": "8/18/2023 6:00:00 PM",
       "hour": 5515,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -44125,7 +44125,7 @@
       "date": "8/18/2023 7:00:00 PM",
       "hour": 5516,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -44228,32 +44228,32 @@
     {
       "date": "8/19/2023 8:00:00 AM",
       "hour": 5529,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/19/2023 9:00:00 AM",
       "hour": 5530,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/19/2023 10:00:00 AM",
       "hour": 5531,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/19/2023 11:00:00 AM",
       "hour": 5532,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -44292,32 +44292,32 @@
     {
       "date": "8/19/2023 4:00:00 PM",
       "hour": 5537,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/19/2023 5:00:00 PM",
       "hour": 5538,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/19/2023 6:00:00 PM",
       "hour": 5539,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/19/2023 7:00:00 PM",
       "hour": 5540,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -44420,7 +44420,7 @@
     {
       "date": "8/20/2023 8:00:00 AM",
       "hour": 5553,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -44428,7 +44428,7 @@
     {
       "date": "8/20/2023 9:00:00 AM",
       "hour": 5554,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -44436,7 +44436,7 @@
     {
       "date": "8/20/2023 10:00:00 AM",
       "hour": 5555,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -44444,7 +44444,7 @@
     {
       "date": "8/20/2023 11:00:00 AM",
       "hour": 5556,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -44484,7 +44484,7 @@
     {
       "date": "8/20/2023 4:00:00 PM",
       "hour": 5561,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -44492,7 +44492,7 @@
     {
       "date": "8/20/2023 5:00:00 PM",
       "hour": 5562,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -44500,7 +44500,7 @@
     {
       "date": "8/20/2023 6:00:00 PM",
       "hour": 5563,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -44508,7 +44508,7 @@
     {
       "date": "8/20/2023 7:00:00 PM",
       "hour": 5564,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -44804,7 +44804,7 @@
     {
       "date": "8/22/2023 8:00:00 AM",
       "hour": 5601,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -44812,7 +44812,7 @@
     {
       "date": "8/22/2023 9:00:00 AM",
       "hour": 5602,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -44820,7 +44820,7 @@
     {
       "date": "8/22/2023 10:00:00 AM",
       "hour": 5603,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -44828,7 +44828,7 @@
     {
       "date": "8/22/2023 11:00:00 AM",
       "hour": 5604,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -44868,7 +44868,7 @@
     {
       "date": "8/22/2023 4:00:00 PM",
       "hour": 5609,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -44876,7 +44876,7 @@
     {
       "date": "8/22/2023 5:00:00 PM",
       "hour": 5610,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -44884,7 +44884,7 @@
     {
       "date": "8/22/2023 6:00:00 PM",
       "hour": 5611,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -44892,7 +44892,7 @@
     {
       "date": "8/22/2023 7:00:00 PM",
       "hour": 5612,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -44996,32 +44996,32 @@
     {
       "date": "8/23/2023 8:00:00 AM",
       "hour": 5625,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/23/2023 9:00:00 AM",
       "hour": 5626,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/23/2023 10:00:00 AM",
       "hour": 5627,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/23/2023 11:00:00 AM",
       "hour": 5628,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -45060,32 +45060,32 @@
     {
       "date": "8/23/2023 4:00:00 PM",
       "hour": 5633,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/23/2023 5:00:00 PM",
       "hour": 5634,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/23/2023 6:00:00 PM",
       "hour": 5635,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/23/2023 7:00:00 PM",
       "hour": 5636,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -45188,32 +45188,32 @@
     {
       "date": "8/24/2023 8:00:00 AM",
       "hour": 5649,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/24/2023 9:00:00 AM",
       "hour": 5650,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/24/2023 10:00:00 AM",
       "hour": 5651,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/24/2023 11:00:00 AM",
       "hour": 5652,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -45252,32 +45252,32 @@
     {
       "date": "8/24/2023 4:00:00 PM",
       "hour": 5657,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/24/2023 5:00:00 PM",
       "hour": 5658,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/24/2023 6:00:00 PM",
       "hour": 5659,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/24/2023 7:00:00 PM",
       "hour": 5660,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -45380,32 +45380,32 @@
     {
       "date": "8/25/2023 8:00:00 AM",
       "hour": 5673,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/25/2023 9:00:00 AM",
       "hour": 5674,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/25/2023 10:00:00 AM",
       "hour": 5675,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/25/2023 11:00:00 AM",
       "hour": 5676,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -45444,32 +45444,32 @@
     {
       "date": "8/25/2023 4:00:00 PM",
       "hour": 5681,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/25/2023 5:00:00 PM",
       "hour": 5682,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/25/2023 6:00:00 PM",
       "hour": 5683,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/25/2023 7:00:00 PM",
       "hour": 5684,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -45572,32 +45572,32 @@
     {
       "date": "8/26/2023 8:00:00 AM",
       "hour": 5697,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/26/2023 9:00:00 AM",
       "hour": 5698,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/26/2023 10:00:00 AM",
       "hour": 5699,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/26/2023 11:00:00 AM",
       "hour": 5700,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -45636,32 +45636,32 @@
     {
       "date": "8/26/2023 4:00:00 PM",
       "hour": 5705,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/26/2023 5:00:00 PM",
       "hour": 5706,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/26/2023 6:00:00 PM",
       "hour": 5707,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/26/2023 7:00:00 PM",
       "hour": 5708,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -46340,32 +46340,32 @@
     {
       "date": "8/30/2023 8:00:00 AM",
       "hour": 5793,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/30/2023 9:00:00 AM",
       "hour": 5794,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/30/2023 10:00:00 AM",
       "hour": 5795,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "8/30/2023 11:00:00 AM",
       "hour": 5796,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -46404,32 +46404,32 @@
     {
       "date": "8/30/2023 4:00:00 PM",
       "hour": 5801,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/30/2023 5:00:00 PM",
       "hour": 5802,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/30/2023 6:00:00 PM",
       "hour": 5803,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "8/30/2023 7:00:00 PM",
       "hour": 5804,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -46532,7 +46532,7 @@
     {
       "date": "8/31/2023 8:00:00 AM",
       "hour": 5817,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -46540,7 +46540,7 @@
     {
       "date": "8/31/2023 9:00:00 AM",
       "hour": 5818,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -46548,7 +46548,7 @@
     {
       "date": "8/31/2023 10:00:00 AM",
       "hour": 5819,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -46556,7 +46556,7 @@
     {
       "date": "8/31/2023 11:00:00 AM",
       "hour": 5820,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -46596,7 +46596,7 @@
     {
       "date": "8/31/2023 4:00:00 PM",
       "hour": 5825,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -46604,7 +46604,7 @@
     {
       "date": "8/31/2023 5:00:00 PM",
       "hour": 5826,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -46612,7 +46612,7 @@
     {
       "date": "8/31/2023 6:00:00 PM",
       "hour": 5827,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -46620,7 +46620,7 @@
     {
       "date": "8/31/2023 7:00:00 PM",
       "hour": 5828,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -46724,7 +46724,7 @@
     {
       "date": "9/1/2023 8:00:00 AM",
       "hour": 5841,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -46732,7 +46732,7 @@
     {
       "date": "9/1/2023 9:00:00 AM",
       "hour": 5842,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -46740,7 +46740,7 @@
     {
       "date": "9/1/2023 10:00:00 AM",
       "hour": 5843,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -46748,7 +46748,7 @@
     {
       "date": "9/1/2023 11:00:00 AM",
       "hour": 5844,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -46788,7 +46788,7 @@
     {
       "date": "9/1/2023 4:00:00 PM",
       "hour": 5849,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -46796,7 +46796,7 @@
     {
       "date": "9/1/2023 5:00:00 PM",
       "hour": 5850,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -46804,7 +46804,7 @@
     {
       "date": "9/1/2023 6:00:00 PM",
       "hour": 5851,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -46812,7 +46812,7 @@
     {
       "date": "9/1/2023 7:00:00 PM",
       "hour": 5852,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -46917,7 +46917,7 @@
       "date": "9/2/2023 8:00:00 AM",
       "hour": 5865,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -46925,7 +46925,7 @@
       "date": "9/2/2023 9:00:00 AM",
       "hour": 5866,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -46933,7 +46933,7 @@
       "date": "9/2/2023 10:00:00 AM",
       "hour": 5867,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -46941,7 +46941,7 @@
       "date": "9/2/2023 11:00:00 AM",
       "hour": 5868,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -46981,7 +46981,7 @@
       "date": "9/2/2023 4:00:00 PM",
       "hour": 5873,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -46989,7 +46989,7 @@
       "date": "9/2/2023 5:00:00 PM",
       "hour": 5874,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -46997,7 +46997,7 @@
       "date": "9/2/2023 6:00:00 PM",
       "hour": 5875,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -47005,7 +47005,7 @@
       "date": "9/2/2023 7:00:00 PM",
       "hour": 5876,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -47300,7 +47300,7 @@
     {
       "date": "9/4/2023 8:00:00 AM",
       "hour": 5913,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -47308,7 +47308,7 @@
     {
       "date": "9/4/2023 9:00:00 AM",
       "hour": 5914,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -47316,7 +47316,7 @@
     {
       "date": "9/4/2023 10:00:00 AM",
       "hour": 5915,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -47324,7 +47324,7 @@
     {
       "date": "9/4/2023 11:00:00 AM",
       "hour": 5916,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -47364,7 +47364,7 @@
     {
       "date": "9/4/2023 4:00:00 PM",
       "hour": 5921,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -47372,7 +47372,7 @@
     {
       "date": "9/4/2023 5:00:00 PM",
       "hour": 5922,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -47380,7 +47380,7 @@
     {
       "date": "9/4/2023 6:00:00 PM",
       "hour": 5923,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -47388,7 +47388,7 @@
     {
       "date": "9/4/2023 7:00:00 PM",
       "hour": 5924,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -47492,7 +47492,7 @@
     {
       "date": "9/5/2023 8:00:00 AM",
       "hour": 5937,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -47500,7 +47500,7 @@
     {
       "date": "9/5/2023 9:00:00 AM",
       "hour": 5938,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -47508,7 +47508,7 @@
     {
       "date": "9/5/2023 10:00:00 AM",
       "hour": 5939,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -47516,7 +47516,7 @@
     {
       "date": "9/5/2023 11:00:00 AM",
       "hour": 5940,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -47556,7 +47556,7 @@
     {
       "date": "9/5/2023 4:00:00 PM",
       "hour": 5945,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -47564,7 +47564,7 @@
     {
       "date": "9/5/2023 5:00:00 PM",
       "hour": 5946,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -47572,7 +47572,7 @@
     {
       "date": "9/5/2023 6:00:00 PM",
       "hour": 5947,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -47580,7 +47580,7 @@
     {
       "date": "9/5/2023 7:00:00 PM",
       "hour": 5948,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -48068,32 +48068,32 @@
     {
       "date": "9/8/2023 8:00:00 AM",
       "hour": 6009,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "9/8/2023 9:00:00 AM",
       "hour": 6010,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "9/8/2023 10:00:00 AM",
       "hour": 6011,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "9/8/2023 11:00:00 AM",
       "hour": 6012,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -48132,32 +48132,32 @@
     {
       "date": "9/8/2023 4:00:00 PM",
       "hour": 6017,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "9/8/2023 5:00:00 PM",
       "hour": 6018,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "9/8/2023 6:00:00 PM",
       "hour": 6019,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "9/8/2023 7:00:00 PM",
       "hour": 6020,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -48260,32 +48260,32 @@
     {
       "date": "9/9/2023 8:00:00 AM",
       "hour": 6033,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "9/9/2023 9:00:00 AM",
       "hour": 6034,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "9/9/2023 10:00:00 AM",
       "hour": 6035,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "9/9/2023 11:00:00 AM",
       "hour": 6036,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -48324,32 +48324,32 @@
     {
       "date": "9/9/2023 4:00:00 PM",
       "hour": 6041,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "9/9/2023 5:00:00 PM",
       "hour": 6042,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "9/9/2023 6:00:00 PM",
       "hour": 6043,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "9/9/2023 7:00:00 PM",
       "hour": 6044,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -48452,7 +48452,7 @@
     {
       "date": "9/10/2023 8:00:00 AM",
       "hour": 6057,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -48460,7 +48460,7 @@
     {
       "date": "9/10/2023 9:00:00 AM",
       "hour": 6058,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -48468,7 +48468,7 @@
     {
       "date": "9/10/2023 10:00:00 AM",
       "hour": 6059,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -48476,7 +48476,7 @@
     {
       "date": "9/10/2023 11:00:00 AM",
       "hour": 6060,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -48516,7 +48516,7 @@
     {
       "date": "9/10/2023 4:00:00 PM",
       "hour": 6065,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -48524,7 +48524,7 @@
     {
       "date": "9/10/2023 5:00:00 PM",
       "hour": 6066,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -48532,7 +48532,7 @@
     {
       "date": "9/10/2023 6:00:00 PM",
       "hour": 6067,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -48540,7 +48540,7 @@
     {
       "date": "9/10/2023 7:00:00 PM",
       "hour": 6068,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -49412,7 +49412,7 @@
     {
       "date": "9/15/2023 8:00:00 AM",
       "hour": 6177,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -49420,7 +49420,7 @@
     {
       "date": "9/15/2023 9:00:00 AM",
       "hour": 6178,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -49428,7 +49428,7 @@
     {
       "date": "9/15/2023 10:00:00 AM",
       "hour": 6179,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -49436,7 +49436,7 @@
     {
       "date": "9/15/2023 11:00:00 AM",
       "hour": 6180,
-      "battery_75": 0.8,
+      "battery_75": 0,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -49476,7 +49476,7 @@
     {
       "date": "9/15/2023 4:00:00 PM",
       "hour": 6185,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -49484,7 +49484,7 @@
     {
       "date": "9/15/2023 5:00:00 PM",
       "hour": 6186,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -49492,7 +49492,7 @@
     {
       "date": "9/15/2023 6:00:00 PM",
       "hour": 6187,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -49500,7 +49500,7 @@
     {
       "date": "9/15/2023 7:00:00 PM",
       "hour": 6188,
-      "battery_75": -0.68,
+      "battery_75": 0,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -49796,7 +49796,7 @@
     {
       "date": "9/17/2023 8:00:00 AM",
       "hour": 6225,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -49804,7 +49804,7 @@
     {
       "date": "9/17/2023 9:00:00 AM",
       "hour": 6226,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -49812,7 +49812,7 @@
     {
       "date": "9/17/2023 10:00:00 AM",
       "hour": 6227,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -49820,7 +49820,7 @@
     {
       "date": "9/17/2023 11:00:00 AM",
       "hour": 6228,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -49860,7 +49860,7 @@
     {
       "date": "9/17/2023 4:00:00 PM",
       "hour": 6233,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -49868,7 +49868,7 @@
     {
       "date": "9/17/2023 5:00:00 PM",
       "hour": 6234,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -49876,7 +49876,7 @@
     {
       "date": "9/17/2023 6:00:00 PM",
       "hour": 6235,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -49884,7 +49884,7 @@
     {
       "date": "9/17/2023 7:00:00 PM",
       "hour": 6236,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -49988,7 +49988,7 @@
     {
       "date": "9/18/2023 8:00:00 AM",
       "hour": 6249,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -49996,7 +49996,7 @@
     {
       "date": "9/18/2023 9:00:00 AM",
       "hour": 6250,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -50004,7 +50004,7 @@
     {
       "date": "9/18/2023 10:00:00 AM",
       "hour": 6251,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -50012,7 +50012,7 @@
     {
       "date": "9/18/2023 11:00:00 AM",
       "hour": 6252,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -50052,7 +50052,7 @@
     {
       "date": "9/18/2023 4:00:00 PM",
       "hour": 6257,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -50060,7 +50060,7 @@
     {
       "date": "9/18/2023 5:00:00 PM",
       "hour": 6258,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -50068,7 +50068,7 @@
     {
       "date": "9/18/2023 6:00:00 PM",
       "hour": 6259,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -50076,7 +50076,7 @@
     {
       "date": "9/18/2023 7:00:00 PM",
       "hour": 6260,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -50180,32 +50180,32 @@
     {
       "date": "9/19/2023 8:00:00 AM",
       "hour": 6273,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "9/19/2023 9:00:00 AM",
       "hour": 6274,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "9/19/2023 10:00:00 AM",
       "hour": 6275,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "9/19/2023 11:00:00 AM",
       "hour": 6276,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -50244,32 +50244,32 @@
     {
       "date": "9/19/2023 4:00:00 PM",
       "hour": 6281,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "9/19/2023 5:00:00 PM",
       "hour": 6282,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "9/19/2023 6:00:00 PM",
       "hour": 6283,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "9/19/2023 7:00:00 PM",
       "hour": 6284,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -50373,7 +50373,7 @@
       "date": "9/20/2023 8:00:00 AM",
       "hour": 6297,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -50381,7 +50381,7 @@
       "date": "9/20/2023 9:00:00 AM",
       "hour": 6298,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -50389,7 +50389,7 @@
       "date": "9/20/2023 10:00:00 AM",
       "hour": 6299,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -50397,7 +50397,7 @@
       "date": "9/20/2023 11:00:00 AM",
       "hour": 6300,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -50437,7 +50437,7 @@
       "date": "9/20/2023 4:00:00 PM",
       "hour": 6305,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -50445,7 +50445,7 @@
       "date": "9/20/2023 5:00:00 PM",
       "hour": 6306,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -50453,7 +50453,7 @@
       "date": "9/20/2023 6:00:00 PM",
       "hour": 6307,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -50461,7 +50461,7 @@
       "date": "9/20/2023 7:00:00 PM",
       "hour": 6308,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -50565,7 +50565,7 @@
       "date": "9/21/2023 8:00:00 AM",
       "hour": 6321,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -50573,7 +50573,7 @@
       "date": "9/21/2023 9:00:00 AM",
       "hour": 6322,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -50581,7 +50581,7 @@
       "date": "9/21/2023 10:00:00 AM",
       "hour": 6323,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -50589,7 +50589,7 @@
       "date": "9/21/2023 11:00:00 AM",
       "hour": 6324,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -50629,7 +50629,7 @@
       "date": "9/21/2023 4:00:00 PM",
       "hour": 6329,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -50637,7 +50637,7 @@
       "date": "9/21/2023 5:00:00 PM",
       "hour": 6330,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -50645,7 +50645,7 @@
       "date": "9/21/2023 6:00:00 PM",
       "hour": 6331,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -50653,7 +50653,7 @@
       "date": "9/21/2023 7:00:00 PM",
       "hour": 6332,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -50949,32 +50949,32 @@
       "date": "9/23/2023 8:00:00 AM",
       "hour": 6369,
       "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_100": 0.8,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "9/23/2023 9:00:00 AM",
       "hour": 6370,
       "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_100": 0.8,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "9/23/2023 10:00:00 AM",
       "hour": 6371,
       "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_100": 0.8,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "9/23/2023 11:00:00 AM",
       "hour": 6372,
       "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_100": 0.8,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -51013,32 +51013,32 @@
       "date": "9/23/2023 4:00:00 PM",
       "hour": 6377,
       "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_100": -0.68,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "9/23/2023 5:00:00 PM",
       "hour": 6378,
       "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_100": -0.68,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "9/23/2023 6:00:00 PM",
       "hour": 6379,
       "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_100": -0.68,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "9/23/2023 7:00:00 PM",
       "hour": 6380,
       "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
+      "battery_100": -0.68,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -51140,32 +51140,32 @@
     {
       "date": "9/24/2023 8:00:00 AM",
       "hour": 6393,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "9/24/2023 9:00:00 AM",
       "hour": 6394,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "9/24/2023 10:00:00 AM",
       "hour": 6395,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "9/24/2023 11:00:00 AM",
       "hour": 6396,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -51204,32 +51204,32 @@
     {
       "date": "9/24/2023 4:00:00 PM",
       "hour": 6401,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "9/24/2023 5:00:00 PM",
       "hour": 6402,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "9/24/2023 6:00:00 PM",
       "hour": 6403,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "9/24/2023 7:00:00 PM",
       "hour": 6404,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -51332,7 +51332,7 @@
     {
       "date": "9/25/2023 8:00:00 AM",
       "hour": 6417,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -51340,7 +51340,7 @@
     {
       "date": "9/25/2023 9:00:00 AM",
       "hour": 6418,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -51348,7 +51348,7 @@
     {
       "date": "9/25/2023 10:00:00 AM",
       "hour": 6419,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -51356,7 +51356,7 @@
     {
       "date": "9/25/2023 11:00:00 AM",
       "hour": 6420,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -51396,7 +51396,7 @@
     {
       "date": "9/25/2023 4:00:00 PM",
       "hour": 6425,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -51404,7 +51404,7 @@
     {
       "date": "9/25/2023 5:00:00 PM",
       "hour": 6426,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -51412,7 +51412,7 @@
     {
       "date": "9/25/2023 6:00:00 PM",
       "hour": 6427,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -51420,7 +51420,7 @@
     {
       "date": "9/25/2023 7:00:00 PM",
       "hour": 6428,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -51524,7 +51524,7 @@
     {
       "date": "9/26/2023 8:00:00 AM",
       "hour": 6441,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -51532,7 +51532,7 @@
     {
       "date": "9/26/2023 9:00:00 AM",
       "hour": 6442,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -51540,7 +51540,7 @@
     {
       "date": "9/26/2023 10:00:00 AM",
       "hour": 6443,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -51548,7 +51548,7 @@
     {
       "date": "9/26/2023 11:00:00 AM",
       "hour": 6444,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -51588,7 +51588,7 @@
     {
       "date": "9/26/2023 4:00:00 PM",
       "hour": 6449,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -51596,7 +51596,7 @@
     {
       "date": "9/26/2023 5:00:00 PM",
       "hour": 6450,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -51604,7 +51604,7 @@
     {
       "date": "9/26/2023 6:00:00 PM",
       "hour": 6451,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -51612,7 +51612,7 @@
     {
       "date": "9/26/2023 7:00:00 PM",
       "hour": 6452,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -51717,7 +51717,7 @@
       "date": "9/27/2023 8:00:00 AM",
       "hour": 6465,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -51725,7 +51725,7 @@
       "date": "9/27/2023 9:00:00 AM",
       "hour": 6466,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -51733,7 +51733,7 @@
       "date": "9/27/2023 10:00:00 AM",
       "hour": 6467,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -51741,7 +51741,7 @@
       "date": "9/27/2023 11:00:00 AM",
       "hour": 6468,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -51781,7 +51781,7 @@
       "date": "9/27/2023 4:00:00 PM",
       "hour": 6473,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -51789,7 +51789,7 @@
       "date": "9/27/2023 5:00:00 PM",
       "hour": 6474,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -51797,7 +51797,7 @@
       "date": "9/27/2023 6:00:00 PM",
       "hour": 6475,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -51805,7 +51805,7 @@
       "date": "9/27/2023 7:00:00 PM",
       "hour": 6476,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -52101,7 +52101,7 @@
       "date": "9/29/2023 8:00:00 AM",
       "hour": 6513,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -52109,7 +52109,7 @@
       "date": "9/29/2023 9:00:00 AM",
       "hour": 6514,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -52117,7 +52117,7 @@
       "date": "9/29/2023 10:00:00 AM",
       "hour": 6515,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -52125,7 +52125,7 @@
       "date": "9/29/2023 11:00:00 AM",
       "hour": 6516,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -52165,7 +52165,7 @@
       "date": "9/29/2023 4:00:00 PM",
       "hour": 6521,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -52173,7 +52173,7 @@
       "date": "9/29/2023 5:00:00 PM",
       "hour": 6522,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -52181,7 +52181,7 @@
       "date": "9/29/2023 6:00:00 PM",
       "hour": 6523,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -52189,7 +52189,7 @@
       "date": "9/29/2023 7:00:00 PM",
       "hour": 6524,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -52292,7 +52292,7 @@
     {
       "date": "9/30/2023 8:00:00 AM",
       "hour": 6537,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -52300,7 +52300,7 @@
     {
       "date": "9/30/2023 9:00:00 AM",
       "hour": 6538,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -52308,7 +52308,7 @@
     {
       "date": "9/30/2023 10:00:00 AM",
       "hour": 6539,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -52316,7 +52316,7 @@
     {
       "date": "9/30/2023 11:00:00 AM",
       "hour": 6540,
-      "battery_75": 0,
+      "battery_75": 0.8,
       "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
@@ -52356,7 +52356,7 @@
     {
       "date": "9/30/2023 4:00:00 PM",
       "hour": 6545,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -52364,7 +52364,7 @@
     {
       "date": "9/30/2023 5:00:00 PM",
       "hour": 6546,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -52372,7 +52372,7 @@
     {
       "date": "9/30/2023 6:00:00 PM",
       "hour": 6547,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -52380,7 +52380,7 @@
     {
       "date": "9/30/2023 7:00:00 PM",
       "hour": 6548,
-      "battery_75": 0,
+      "battery_75": -0.68,
       "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
@@ -52484,32 +52484,32 @@
     {
       "date": "10/1/2023 8:00:00 AM",
       "hour": 6561,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "10/1/2023 9:00:00 AM",
       "hour": 6562,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "10/1/2023 10:00:00 AM",
       "hour": 6563,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "10/1/2023 11:00:00 AM",
       "hour": 6564,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -52548,32 +52548,32 @@
     {
       "date": "10/1/2023 4:00:00 PM",
       "hour": 6569,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "10/1/2023 5:00:00 PM",
       "hour": 6570,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "10/1/2023 6:00:00 PM",
       "hour": 6571,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "10/1/2023 7:00:00 PM",
       "hour": 6572,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -52676,32 +52676,32 @@
     {
       "date": "10/2/2023 8:00:00 AM",
       "hour": 6585,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "10/2/2023 9:00:00 AM",
       "hour": 6586,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "10/2/2023 10:00:00 AM",
       "hour": 6587,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "10/2/2023 11:00:00 AM",
       "hour": 6588,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -52740,32 +52740,32 @@
     {
       "date": "10/2/2023 4:00:00 PM",
       "hour": 6593,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "10/2/2023 5:00:00 PM",
       "hour": 6594,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "10/2/2023 6:00:00 PM",
       "hour": 6595,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "10/2/2023 7:00:00 PM",
       "hour": 6596,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -52869,7 +52869,7 @@
       "date": "10/3/2023 8:00:00 AM",
       "hour": 6609,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -52877,7 +52877,7 @@
       "date": "10/3/2023 9:00:00 AM",
       "hour": 6610,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -52885,7 +52885,7 @@
       "date": "10/3/2023 10:00:00 AM",
       "hour": 6611,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -52893,7 +52893,7 @@
       "date": "10/3/2023 11:00:00 AM",
       "hour": 6612,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -52933,7 +52933,7 @@
       "date": "10/3/2023 4:00:00 PM",
       "hour": 6617,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -52941,7 +52941,7 @@
       "date": "10/3/2023 5:00:00 PM",
       "hour": 6618,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -52949,7 +52949,7 @@
       "date": "10/3/2023 6:00:00 PM",
       "hour": 6619,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -52957,7 +52957,7 @@
       "date": "10/3/2023 7:00:00 PM",
       "hour": 6620,
       "battery_75": 0,
-      "battery_100": 0,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -53060,32 +53060,32 @@
     {
       "date": "10/4/2023 8:00:00 AM",
       "hour": 6633,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "10/4/2023 9:00:00 AM",
       "hour": 6634,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "10/4/2023 10:00:00 AM",
       "hour": 6635,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
     {
       "date": "10/4/2023 11:00:00 AM",
       "hour": 6636,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": 0.8,
+      "battery_100": 0.8,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -53124,32 +53124,32 @@
     {
       "date": "10/4/2023 4:00:00 PM",
       "hour": 6641,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "10/4/2023 5:00:00 PM",
       "hour": 6642,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "10/4/2023 6:00:00 PM",
       "hour": 6643,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
     {
       "date": "10/4/2023 7:00:00 PM",
       "hour": 6644,
-      "battery_75": 0,
-      "battery_100": 0,
+      "battery_75": -0.68,
+      "battery_100": -0.68,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -53445,7 +53445,7 @@
       "date": "10/6/2023 8:00:00 AM",
       "hour": 6681,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -53453,7 +53453,7 @@
       "date": "10/6/2023 9:00:00 AM",
       "hour": 6682,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -53461,7 +53461,7 @@
       "date": "10/6/2023 10:00:00 AM",
       "hour": 6683,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -53469,7 +53469,7 @@
       "date": "10/6/2023 11:00:00 AM",
       "hour": 6684,
       "battery_75": 0,
-      "battery_100": 0.8,
+      "battery_100": 0,
       "battery_150": 0.8,
       "battery_200": null
     },
@@ -53509,7 +53509,7 @@
       "date": "10/6/2023 4:00:00 PM",
       "hour": 6689,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -53517,7 +53517,7 @@
       "date": "10/6/2023 5:00:00 PM",
       "hour": 6690,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -53525,7 +53525,7 @@
       "date": "10/6/2023 6:00:00 PM",
       "hour": 6691,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -53533,7 +53533,7 @@
       "date": "10/6/2023 7:00:00 PM",
       "hour": 6692,
       "battery_75": 0,
-      "battery_100": -0.68,
+      "battery_100": 0,
       "battery_150": -0.68,
       "battery_200": null
     },
@@ -53638,7 +53638,7 @@
       "hour": 6705,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -53646,7 +53646,7 @@
       "hour": 6706,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -53654,7 +53654,7 @@
       "hour": 6707,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -53662,7 +53662,7 @@
       "hour": 6708,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -53702,7 +53702,7 @@
       "hour": 6713,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -53710,7 +53710,7 @@
       "hour": 6714,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -53718,7 +53718,7 @@
       "hour": 6715,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -53726,7 +53726,7 @@
       "hour": 6716,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -54406,7 +54406,7 @@
       "hour": 6801,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -54414,7 +54414,7 @@
       "hour": 6802,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -54422,7 +54422,7 @@
       "hour": 6803,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -54430,7 +54430,7 @@
       "hour": 6804,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -54470,7 +54470,7 @@
       "hour": 6809,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -54478,7 +54478,7 @@
       "hour": 6810,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -54486,7 +54486,7 @@
       "hour": 6811,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -54494,7 +54494,7 @@
       "hour": 6812,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -54596,33 +54596,33 @@
     {
       "date": "10/12/2023 8:00:00 AM",
       "hour": 6825,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
-      "battery_150": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
       "date": "10/12/2023 9:00:00 AM",
       "hour": 6826,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
-      "battery_150": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
       "date": "10/12/2023 10:00:00 AM",
       "hour": 6827,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
-      "battery_150": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
       "date": "10/12/2023 11:00:00 AM",
       "hour": 6828,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
-      "battery_150": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -54660,33 +54660,33 @@
     {
       "date": "10/12/2023 4:00:00 PM",
       "hour": 6833,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
-      "battery_150": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
       "date": "10/12/2023 5:00:00 PM",
       "hour": 6834,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
-      "battery_150": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
       "date": "10/12/2023 6:00:00 PM",
       "hour": 6835,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
-      "battery_150": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
       "date": "10/12/2023 7:00:00 PM",
       "hour": 6836,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
-      "battery_150": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -54788,33 +54788,33 @@
     {
       "date": "10/13/2023 8:00:00 AM",
       "hour": 6849,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
-      "battery_150": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
       "date": "10/13/2023 9:00:00 AM",
       "hour": 6850,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
-      "battery_150": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
       "date": "10/13/2023 10:00:00 AM",
       "hour": 6851,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
-      "battery_150": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
       "date": "10/13/2023 11:00:00 AM",
       "hour": 6852,
-      "battery_75": 0.8,
-      "battery_100": 0.8,
-      "battery_150": 0.8,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -54852,33 +54852,33 @@
     {
       "date": "10/13/2023 4:00:00 PM",
       "hour": 6857,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
-      "battery_150": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
       "date": "10/13/2023 5:00:00 PM",
       "hour": 6858,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
-      "battery_150": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
       "date": "10/13/2023 6:00:00 PM",
       "hour": 6859,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
-      "battery_150": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
       "date": "10/13/2023 7:00:00 PM",
       "hour": 6860,
-      "battery_75": -0.68,
-      "battery_100": -0.68,
-      "battery_150": -0.68,
+      "battery_75": 0,
+      "battery_100": 0,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -54982,7 +54982,7 @@
       "hour": 6873,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -54990,7 +54990,7 @@
       "hour": 6874,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -54998,7 +54998,7 @@
       "hour": 6875,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -55006,7 +55006,7 @@
       "hour": 6876,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -55046,7 +55046,7 @@
       "hour": 6881,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -55054,7 +55054,7 @@
       "hour": 6882,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -55062,7 +55062,7 @@
       "hour": 6883,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -55070,7 +55070,7 @@
       "hour": 6884,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -57094,7 +57094,7 @@
       "hour": 7137,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -57102,7 +57102,7 @@
       "hour": 7138,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -57110,7 +57110,7 @@
       "hour": 7139,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -57118,7 +57118,7 @@
       "hour": 7140,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -57158,7 +57158,7 @@
       "hour": 7145,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -57166,7 +57166,7 @@
       "hour": 7146,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -57174,7 +57174,7 @@
       "hour": 7147,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -57182,7 +57182,7 @@
       "hour": 7148,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -58054,7 +58054,7 @@
       "hour": 7257,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -58062,7 +58062,7 @@
       "hour": 7258,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -58070,7 +58070,7 @@
       "hour": 7259,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -58078,7 +58078,7 @@
       "hour": 7260,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -58118,7 +58118,7 @@
       "hour": 7265,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -58126,7 +58126,7 @@
       "hour": 7266,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -58134,7 +58134,7 @@
       "hour": 7267,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -58142,7 +58142,7 @@
       "hour": 7268,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -59590,7 +59590,7 @@
       "hour": 7449,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -59598,7 +59598,7 @@
       "hour": 7450,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -59606,7 +59606,7 @@
       "hour": 7451,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -59614,7 +59614,7 @@
       "hour": 7452,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -59654,7 +59654,7 @@
       "hour": 7457,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -59662,7 +59662,7 @@
       "hour": 7458,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -59670,7 +59670,7 @@
       "hour": 7459,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -59678,7 +59678,7 @@
       "hour": 7460,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -59782,7 +59782,7 @@
       "hour": 7473,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -59790,7 +59790,7 @@
       "hour": 7474,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -59798,7 +59798,7 @@
       "hour": 7475,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -59806,7 +59806,7 @@
       "hour": 7476,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -59846,7 +59846,7 @@
       "hour": 7481,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -59854,7 +59854,7 @@
       "hour": 7482,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -59862,7 +59862,7 @@
       "hour": 7483,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -59870,7 +59870,7 @@
       "hour": 7484,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -59974,7 +59974,7 @@
       "hour": 7497,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -59982,7 +59982,7 @@
       "hour": 7498,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -59990,7 +59990,7 @@
       "hour": 7499,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -59998,7 +59998,7 @@
       "hour": 7500,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": 0.8,
       "battery_200": null
     },
     {
@@ -60038,7 +60038,7 @@
       "hour": 7505,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -60046,7 +60046,7 @@
       "hour": 7506,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -60054,7 +60054,7 @@
       "hour": 7507,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -60062,7 +60062,7 @@
       "hour": 7508,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0,
+      "battery_150": -0.68,
       "battery_200": null
     },
     {
@@ -60358,7 +60358,7 @@
       "hour": 7545,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -60366,7 +60366,7 @@
       "hour": 7546,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -60374,7 +60374,7 @@
       "hour": 7547,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -60382,7 +60382,7 @@
       "hour": 7548,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": 0.8,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -60422,7 +60422,7 @@
       "hour": 7553,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -60430,7 +60430,7 @@
       "hour": 7554,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -60438,7 +60438,7 @@
       "hour": 7555,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -60446,7 +60446,7 @@
       "hour": 7556,
       "battery_75": 0,
       "battery_100": 0,
-      "battery_150": -0.68,
+      "battery_150": 0,
       "battery_200": null
     },
     {
@@ -70076,198 +70076,6 @@
     {
       "date": "12/31/2023 11:00:00 PM",
       "hour": 8760,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8761,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8762,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8763,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8764,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8765,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8766,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8767,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8768,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8769,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8770,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8771,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8772,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8773,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8774,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8775,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8776,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8777,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8778,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8779,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8780,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8781,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8782,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8783,
-      "battery_75": 0,
-      "battery_100": 0,
-      "battery_150": 0,
-      "battery_200": null
-    },
-    {
-      "date": "",
-      "hour": 8784,
       "battery_75": 0,
       "battery_100": 0,
       "battery_150": 0,
