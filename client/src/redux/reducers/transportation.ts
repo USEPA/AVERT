@@ -32,6 +32,7 @@ import {
   type SelectedRegionsYearlySalesChanges,
   type SelectedRegionsTotalYearlySalesChanges,
   type SelectedRegionsMonthlyEnergyUsage,
+  type SelectedRegionsMonthlyDailyEnergyUsage,
   type SelectedRegionsMonthlyEmissionChanges,
   type SelectedRegionsMonthlyEmissionChangesPerVehicleCategory,
   type SelectedRegionsMonthlyEmissionChangesTotals,
@@ -87,6 +88,7 @@ import {
   calculateSelectedRegionsYearlySalesChanges,
   calculateSelectedRegionsTotalYearlySalesChanges,
   calculateSelectedRegionsMonthlyEnergyUsage,
+  calculateSelectedRegionsMonthlyDailyEnergyUsage,
   calculateSelectedRegionsMonthlyEmissionChanges,
   calculateSelectedRegionsMonthlyEmissionChangesPerVehicleCategory,
   calculateSelectedRegionsMonthlyEmissionChangesTotals,
@@ -118,6 +120,7 @@ import {
   type RegionId,
   type StateId,
   percentageHybridEVMilesDrivenOnElectricity,
+  weekendToWeekdayEVConsumption,
   percentageAdditionalEnergyConsumedFactor,
   regionAverageTemperatures,
 } from "@/config";
@@ -353,6 +356,12 @@ type Action =
       };
     }
   | {
+      type: "transportation/SET_SELECTED_REGIONS_MONTHLY_DAILY_ENERGY_USAGE";
+      payload: {
+        selectedRegionsMonthlyDailyEnergyUsage: SelectedRegionsMonthlyDailyEnergyUsage;
+      };
+    }
+  | {
       type: "transportation/SET_SELECTED_REGIONS_MONTHLY_EMISSION_CHANGES";
       payload: {
         selectedRegionsMonthlyEmissionChanges: SelectedRegionsMonthlyEmissionChanges;
@@ -543,6 +552,9 @@ type State = {
   selectedRegionsMonthlyEnergyUsage:
     | SelectedRegionsMonthlyEnergyUsage
     | EmptyObject;
+  selectedRegionsMonthlyDailyEnergyUsage:
+    | SelectedRegionsMonthlyDailyEnergyUsage
+    | EmptyObject;
   selectedRegionsMonthlyEmissionChanges:
     | SelectedRegionsMonthlyEmissionChanges
     | EmptyObject;
@@ -638,6 +650,7 @@ const initialState: State = {
   selectedRegionsYearlySalesChanges: {},
   selectedRegionsTotalYearlySalesChanges: {},
   selectedRegionsMonthlyEnergyUsage: {},
+  selectedRegionsMonthlyDailyEnergyUsage: {},
   selectedRegionsMonthlyEmissionChanges: {},
   selectedRegionsMonthlyEmissionChangesPerVehicleCategory: {},
   selectedRegionsMonthlyEmissionChangesTotals: {},
@@ -958,6 +971,15 @@ export default function reducer(
       return {
         ...state,
         selectedRegionsMonthlyEnergyUsage,
+      };
+    }
+
+    case "transportation/SET_SELECTED_REGIONS_MONTHLY_DAILY_ENERGY_USAGE": {
+      const { selectedRegionsMonthlyDailyEnergyUsage } = action.payload;
+
+      return {
+        ...state,
+        selectedRegionsMonthlyDailyEnergyUsage,
       };
     }
 
@@ -1539,7 +1561,7 @@ export function setDailyAndMonthlyStats(): AppThunk {
     });
 
     // NOTE: `selectedRegionsMonthlyDailyEVEnergyUsage` uses `monthlyStats`
-    dispatch(setMonthlyDailyEVEnergyUsage());
+    dispatch(setMonthlyDailyEnergyUsage());
   };
 }
 
@@ -1696,7 +1718,7 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
     });
 
     // NOTE: `selectedRegionsMonthlyDailyEVEnergyUsage` uses `_selectedRegionsMonthlyEVEnergyUsageMW`
-    dispatch(setMonthlyDailyEVEnergyUsage());
+    dispatch(setMonthlyDailyEnergyUsage());
   };
 }
 
@@ -1711,17 +1733,32 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
  * Geography" page or anytime the selected geography, EV model year, or an EV
  * input number changes)_
  */
-export function setMonthlyDailyEVEnergyUsage(): AppThunk {
+export function setMonthlyDailyEnergyUsage(): AppThunk {
   return (dispatch, getState) => {
     const { transportation } = getState();
-    const { monthlyStats, _selectedRegionsMonthlyEVEnergyUsageMW } =
-      transportation;
+    const {
+      monthlyStats,
+      selectedRegionsMonthlyEnergyUsage,
+      _selectedRegionsMonthlyEVEnergyUsageMW,
+    } = transportation;
+
+    const selectedRegionsMonthlyDailyEnergyUsage =
+      calculateSelectedRegionsMonthlyDailyEnergyUsage({
+        selectedRegionsMonthlyEnergyUsage,
+        weekendToWeekdayEVConsumption,
+        monthlyStats,
+      });
 
     const selectedRegionsMonthlyDailyEVEnergyUsage =
       calculateSelectedRegionsMonthlyDailyEVEnergyUsage({
         _selectedRegionsMonthlyEVEnergyUsageMW,
         monthlyStats,
       });
+
+    dispatch({
+      type: "transportation/SET_SELECTED_REGIONS_MONTHLY_DAILY_ENERGY_USAGE",
+      payload: { selectedRegionsMonthlyDailyEnergyUsage },
+    });
 
     dispatch({
       type: "transportation/SET_SELECTED_REGIONS_MONTHLY_DAILY_EV_ENERGY_USAGE",

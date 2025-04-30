@@ -324,6 +324,9 @@ export type SelectedRegionsTotalYearlySalesChanges = ReturnType<
 export type SelectedRegionsMonthlyEnergyUsage = ReturnType<
   typeof calculateSelectedRegionsMonthlyEnergyUsage
 >;
+export type SelectedRegionsMonthlyDailyEnergyUsage = ReturnType<
+  typeof calculateSelectedRegionsMonthlyDailyEnergyUsage
+>;
 export type SelectedRegionsMonthlyEmissionChanges = ReturnType<
   typeof calculateSelectedRegionsMonthlyEmissionChanges
 >;
@@ -3408,17 +3411,6 @@ export function calculateSelectedRegionsMonthlyEnergyUsage(options: {
 }) {
   const { selectedRegionsMonthlySalesChanges } = options;
 
-  /**
-   * The vehicle categories used in the Excel "CalculateEERE" sheet are slightly
-   * different than the typical `VehicleCategory` values used elsewhere. We'll
-   * omit "Other buses" entirely and instead of using "LDVs" we'll use "Battery
-   * EVs" and "Plug-in Hybrid EVs".
-   */
-  type AlternateVehicleCategory =
-    | Exclude<VehicleCategory, "LDVs" | "Other buses">
-    | "Battery EVs"
-    | "Plug-in Hybrid EVs";
-
   if (Object.keys(selectedRegionsMonthlySalesChanges).length === 0) {
     return {} as {
       [regionId in RegionId]: {
@@ -3474,6 +3466,107 @@ export function calculateSelectedRegionsMonthlyEnergyUsage(options: {
       [regionId in RegionId]: {
         [month: number]: {
           [vehicleCategory in AlternateVehicleCategory]: number;
+        };
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Selected AVERT region's energy usage for a typical weekday day or weekend day
+ * for each month for each vehicle category.
+ *
+ * Excel: Data from the middle of the middle table in the "CalculateEERE" sheet
+ * (V36:AI47).
+ */
+export function calculateSelectedRegionsMonthlyDailyEnergyUsage(options: {
+  selectedRegionsMonthlyEnergyUsage:
+    | SelectedRegionsMonthlyEnergyUsage
+    | EmptyObject;
+  weekendToWeekdayEVConsumption: WeekendToWeekdayEVConsumption;
+  monthlyStats: MonthlyStats;
+}) {
+  const {
+    selectedRegionsMonthlyEnergyUsage,
+    weekendToWeekdayEVConsumption,
+    monthlyStats,
+  } = options;
+
+  if (
+    Object.keys(selectedRegionsMonthlyEnergyUsage).length === 0 ||
+    Object.keys(monthlyStats).length === 0
+  ) {
+    return {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          [vehicleCategory in AlternateVehicleCategory]: {
+            weekday: number;
+            weekend: number;
+          };
+        };
+      };
+    };
+  }
+
+  const result = Object.entries(selectedRegionsMonthlyEnergyUsage).reduce(
+    (object, [regionKey, regionValue]) => {
+      const regionId = regionKey as keyof typeof selectedRegionsMonthlyEnergyUsage; // prettier-ignore
+
+      object[regionId] ??= {};
+
+      Object.entries(regionValue).forEach(
+        ([regionMonthKey, regionMonthValue]) => {
+          const month = Number(regionMonthKey);
+          const weekdays = monthlyStats[month]?.weekdays || 0;
+          const weekends = monthlyStats[month]?.weekends || 0;
+
+          object[regionId][month] ??= {} as {
+            [vehicleCategory in AlternateVehicleCategory]: {
+              weekday: number;
+              weekend: number;
+            };
+          };
+
+          Object.entries(regionMonthValue).forEach(
+            ([vehicleKey, vehicleValue]) => {
+              const vehicleCategory = vehicleKey as keyof typeof regionMonthValue; // prettier-ignore
+
+              /**
+               * NOTE: "Battery EVs" and "Plug-in Hybrid EVs" use a single
+               * "LDVs" weekend to weekday EV consumption ratio.
+               */
+              const ratioVehicleCategory =
+                vehicleCategory === "Battery EVs" ||
+                vehicleCategory === "Plug-in Hybrid EVs"
+                  ? "LDVs"
+                  : vehicleCategory;
+
+              const weekendWeekdayRatio =
+                weekendToWeekdayEVConsumption[ratioVehicleCategory] || 0;
+
+              const weekday = vehicleValue / (weekdays + weekends * weekendWeekdayRatio); // prettier-ignore
+              const weekend = weekday * weekendWeekdayRatio;
+
+              object[regionId][month][vehicleCategory] = {
+                weekday,
+                weekend,
+              };
+            },
+          );
+        },
+      );
+
+      return object;
+    },
+    {} as {
+      [regionId in RegionId]: {
+        [month: number]: {
+          [vehicleCategory in AlternateVehicleCategory]: {
+            weekday: number;
+            weekend: number;
+          };
         };
       };
     },
