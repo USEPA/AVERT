@@ -47,6 +47,23 @@ function parseNEIEmissionRatesWorksheet(worksheet) {
   return result;
 }
 
+/**
+ * @param {{}[]} data
+ */
+function renameNEIEmissionRatesDataKeys(data) {
+  const keyMap = new Map([
+    ["Generation", "generation"],
+    ["Heat Input", "heat"],
+    ["PM2.5", "pm25"],
+    ["VOCs", "vocs"],
+    ["NH3", "nh3"],
+  ]);
+
+  const result = renameObjectKeys(data, keyMap);
+
+  return result;
+}
+
 function main() {
   const excelFilepath = process.argv[2];
 
@@ -57,11 +74,12 @@ function main() {
 
   const worksheet = getExcelWorksheet(excelFilepath, "NEI_EmissionRates");
   const excelJsonData = parseNEIEmissionRatesWorksheet(worksheet);
+  const formattedJsonData = renameNEIEmissionRatesDataKeys(excelJsonData);
 
   const jsonFilename = "nei-emission-rates.json";
   const jsonFilepath = resolve(__dirname, "../../server/app/data", jsonFilename);
 
-  storeJsonData(excelJsonData, jsonFilepath);
+  storeJsonData(formattedJsonData, jsonFilepath);
 }
 
 main();
