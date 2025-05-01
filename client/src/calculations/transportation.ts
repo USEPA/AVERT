@@ -366,9 +366,6 @@ export type _SelectedRegionsMonthlyEVEnergyUsageGW = ReturnType<
 export type _SelectedRegionsMonthlyEVEnergyUsageMW = ReturnType<
   typeof _calculateSelectedRegionsMonthlyEVEnergyUsageMW
 >;
-export type _SelectedRegionsMonthlyDailyEVEnergyUsage = ReturnType<
-  typeof _calculateSelectedRegionsMonthlyDailyEVEnergyUsage
->;
 export type _SelectedRegionsMonthlyEmissionRates = ReturnType<
   typeof _calculateSelectedRegionsMonthlyEmissionRates
 >;
@@ -4855,106 +4852,6 @@ export function _calculateSelectedRegionsMonthlyEVEnergyUsageMW(options: {
           hybridEVs: number;
           transitBuses: number;
           schoolBuses: number;
-        };
-      };
-    },
-  );
-
-  return result;
-}
-
-/**
- * Monthly EV energy usage (MWh) for a typical weekday day or weekend day.
- *
- * Excel: Data in the second EV table (to the right of the "Calculate Changes"
- * table) in the "CalculateEERE" sheet (P35:X47).
- */
-export function _calculateSelectedRegionsMonthlyDailyEVEnergyUsage(options: {
-  _selectedRegionsMonthlyEVEnergyUsageMW:
-    | _SelectedRegionsMonthlyEVEnergyUsageMW
-    | EmptyObject;
-  monthlyStats: MonthlyStats;
-}) {
-  const { _selectedRegionsMonthlyEVEnergyUsageMW, monthlyStats } = options;
-
-  const selectedRegionsEnergyData =
-    Object.keys(_selectedRegionsMonthlyEVEnergyUsageMW).length !== 0
-      ? (_selectedRegionsMonthlyEVEnergyUsageMW as _SelectedRegionsMonthlyEVEnergyUsageMW)
-      : null;
-
-  if (!selectedRegionsEnergyData || Object.keys(monthlyStats).length === 0) {
-    return {} as {
-      [regionId in RegionId]: {
-        [month: number]: {
-          batteryEVs: { weekday: number; weekend: number };
-          hybridEVs: { weekday: number; weekend: number };
-          transitBuses: { weekday: number; weekend: number };
-          schoolBuses: { weekday: number; weekend: number };
-        };
-      };
-    };
-  }
-
-  const percentWeekendToWeekdayEVConsumption = 97.3015982802952; // NOTE: hardcoding as this function is being replaced
-
-  const result = Object.entries(selectedRegionsEnergyData).reduce(
-    (object, [regionKey, regionValue]) => {
-      const regionId = regionKey as keyof typeof selectedRegionsEnergyData;
-
-      object[regionId] ??= {};
-
-      [...Array(12)].forEach((_item, index) => {
-        const month = index + 1;
-
-        const weekdays = monthlyStats[month].weekdays;
-        const weekends = monthlyStats[month].weekends;
-        const weekenedToWeekdayRatio =
-          percentWeekendToWeekdayEVConsumption / 100;
-        const scaledWeekdayDays = weekdays + weekenedToWeekdayRatio * weekends;
-
-        if (scaledWeekdayDays !== 0) {
-          const batteryEVsWeekday =
-            regionValue[month].batteryEVs / scaledWeekdayDays;
-
-          const hybridEVsWeekday =
-            regionValue[month].hybridEVs / scaledWeekdayDays;
-
-          const transitBusesWeekday =
-            regionValue[month].transitBuses / scaledWeekdayDays;
-
-          const schoolBusesWeekday =
-            regionValue[month].schoolBuses / scaledWeekdayDays;
-
-          object[regionId][month] = {
-            batteryEVs: {
-              weekday: batteryEVsWeekday,
-              weekend: batteryEVsWeekday * weekenedToWeekdayRatio,
-            },
-            hybridEVs: {
-              weekday: hybridEVsWeekday,
-              weekend: hybridEVsWeekday * weekenedToWeekdayRatio,
-            },
-            transitBuses: {
-              weekday: transitBusesWeekday,
-              weekend: transitBusesWeekday * weekenedToWeekdayRatio,
-            },
-            schoolBuses: {
-              weekday: schoolBusesWeekday,
-              weekend: schoolBusesWeekday * weekenedToWeekdayRatio,
-            },
-          };
-        }
-      });
-
-      return object;
-    },
-    {} as {
-      [regionId in RegionId]: {
-        [month: number]: {
-          batteryEVs: { weekday: number; weekend: number };
-          hybridEVs: { weekday: number; weekend: number };
-          transitBuses: { weekday: number; weekend: number };
-          schoolBuses: { weekday: number; weekend: number };
         };
       };
     },
