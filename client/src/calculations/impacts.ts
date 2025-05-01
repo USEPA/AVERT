@@ -6,8 +6,8 @@ import {
 } from "@/redux/reducers/geography";
 import {
   type DailyStats,
-  type _HourlyEVChargingPercentages,
-  type _SelectedRegionsMonthlyDailyEVEnergyUsage,
+  type HourlyEVLoadProfiles,
+  type SelectedRegionsMonthlyDailyEnergyUsage,
 } from "@/calculations/transportation";
 import { type EmptyObject } from "@/utilities";
 import {
@@ -438,16 +438,17 @@ export function calculateHourlyEnergyStorageData(options: {
 }
 
 /**
- * Excel: Data in column Y of the "CalculateEERE" sheet (Y5:Y8788).
+ * Excel: Data from the "Total EV" column of middle table in the "CalculateEERE"
+ * sheet (AJ5:AJ8788).
  */
 export function calculateHourlyEVLoad(options: {
   regionId: RegionId;
   regionalScalingFactor: number;
   regionalLoad: RegionalLoadData[];
   dailyStats: DailyStats;
-  _hourlyEVChargingPercentages: _HourlyEVChargingPercentages;
-  _selectedRegionsMonthlyDailyEVEnergyUsage:
-    | _SelectedRegionsMonthlyDailyEVEnergyUsage
+  hourlyEVLoadProfiles: HourlyEVLoadProfiles;
+  selectedRegionsMonthlyDailyEnergyUsage:
+    | SelectedRegionsMonthlyDailyEnergyUsage
     | EmptyObject;
 }) {
   const {
@@ -455,22 +456,17 @@ export function calculateHourlyEVLoad(options: {
     regionalScalingFactor,
     regionalLoad,
     dailyStats,
-    _hourlyEVChargingPercentages,
-    _selectedRegionsMonthlyDailyEVEnergyUsage,
+    hourlyEVLoadProfiles,
+    selectedRegionsMonthlyDailyEnergyUsage,
   } = options;
 
-  const selectedRegionsEnergyData =
-    Object.keys(_selectedRegionsMonthlyDailyEVEnergyUsage).length !== 0
-      ? (_selectedRegionsMonthlyDailyEVEnergyUsage as _SelectedRegionsMonthlyDailyEVEnergyUsage)
-      : null;
-
-  const monthlyDailyEVEnergyUsage = selectedRegionsEnergyData?.[regionId];
+  const monthlyDailyEnergyUsage = selectedRegionsMonthlyDailyEnergyUsage?.[regionId]; // prettier-ignore
 
   if (
     regionalLoad.length === 0 ||
     Object.keys(dailyStats).length === 0 ||
-    Object.keys(_hourlyEVChargingPercentages).length === 0 ||
-    !monthlyDailyEVEnergyUsage
+    Object.keys(hourlyEVLoadProfiles).length === 0 ||
+    !monthlyDailyEnergyUsage
   ) {
     return [];
   }
@@ -485,26 +481,33 @@ export function calculateHourlyEVLoad(options: {
     }
 
     // NOTE: `regionalLoad` data's hour value is zero indexed, so to match it
-    // with the hours stored as keys in `_hourlyEVChargingPercentages`, we need
+    // with the hours stored as keys in `hourlyEVLoadProfiles`, we need
     // to add 1 to `regionalLoad` data's hour value
     const hour = data.hour + 1;
     const day = data.day;
     const month = data.month;
 
-    const evChargingPercentage = _hourlyEVChargingPercentages[hour];
+    const hourlyEVLoadProfile = hourlyEVLoadProfiles[hour];
     const dayTypeField = dailyStats[month][day].isWeekend
       ? "weekend"
       : "weekday";
 
-    const evLoad =
-      evChargingPercentage.batteryEVs[dayTypeField] *
-        monthlyDailyEVEnergyUsage[month].batteryEVs[dayTypeField] +
-      evChargingPercentage.hybridEVs[dayTypeField] *
-        monthlyDailyEVEnergyUsage[month].hybridEVs[dayTypeField] +
-      evChargingPercentage.transitBuses[dayTypeField] *
-        monthlyDailyEVEnergyUsage[month].transitBuses[dayTypeField] +
-      evChargingPercentage.schoolBuses[dayTypeField] *
-        monthlyDailyEVEnergyUsage[month].schoolBuses[dayTypeField];
+    const evLoad = Object.entries(hourlyEVLoadProfile).reduce(
+      (total, [hourlyEVLoadProfileKey, hourlyEVLoadProfileValue]) => {
+        const vehicleCategory = hourlyEVLoadProfileKey as keyof typeof hourlyEVLoadProfile; // prettier-ignore
+
+        const evLoadProfile = hourlyEVLoadProfileValue?.[dayTypeField] || 0;
+
+        const energyUsage =
+          monthlyDailyEnergyUsage[month]?.[vehicleCategory]?.[dayTypeField] ||
+          0;
+
+        total += evLoadProfile * energyUsage;
+
+        return total;
+      },
+      0,
+    );
 
     return evLoad * regionalScalingFactor;
   });

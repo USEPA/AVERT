@@ -1305,8 +1305,8 @@ export function calculateHourlyEnergyProfile(): AppThunk {
     const { regions, states, regionalScalingFactors } = geography;
     const {
       dailyStats,
-      _hourlyEVChargingPercentages,
-      _selectedRegionsMonthlyDailyEVEnergyUsage,
+      hourlyEVLoadProfiles,
+      selectedRegionsMonthlyDailyEnergyUsage,
     } = transportation;
     const { inputs } = impacts;
 
@@ -1463,8 +1463,8 @@ export function calculateHourlyEnergyProfile(): AppThunk {
         regionalScalingFactor,
         regionalLoad,
         dailyStats,
-        _hourlyEVChargingPercentages,
-        _selectedRegionsMonthlyDailyEVEnergyUsage,
+        hourlyEVLoadProfiles,
+        selectedRegionsMonthlyDailyEnergyUsage,
       });
 
       const topPercentGeneration = calculateTopPercentGeneration({
