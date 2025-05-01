@@ -360,9 +360,6 @@ export type _SelectedRegionsEVEfficiencyPerVehicleType = ReturnType<
   typeof _calculateSelectedRegionsEVEfficiencyPerVehicleType
 >;
 export type _VehiclesDisplaced = ReturnType<typeof _calculateVehiclesDisplaced>;
-export type _SelectedRegionsMonthlyEVEnergyUsageGW = ReturnType<
-  typeof _calculateSelectedRegionsMonthlyEVEnergyUsageGW
->;
 export type _SelectedRegionsMonthlyEmissionRates = ReturnType<
   typeof _calculateSelectedRegionsMonthlyEmissionRates
 >;
@@ -4663,116 +4660,6 @@ export function _calculateVehiclesDisplaced(options: {
   result.transitBusesCNG = transitBuses * percentageTransitBusesDisplacedByEVs.cng; // prettier-ignore
   result.transitBusesGasoline = transitBuses * percentageTransitBusesDisplacedByEVs.gasoline; // prettier-ignore
   result.schoolBuses = schoolBuses * 1;
-
-  return result;
-}
-
-/**
- * Monthly EV energy use in GW for all the EV types we have data for.
- *
- * Excel: "Sales Changes" data from "Table 8: Calculated changes for the
- * transportation sector" table in the "Library" sheet (G297:R304).
- */
-export function _calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
-  _selectedRegionsMonthlyVMTPerVehicleType:
-    | _SelectedRegionsMonthlyVMTPerVehicleType
-    | EmptyObject;
-  _selectedRegionsEVEfficiencyPerVehicleType:
-    | _SelectedRegionsEVEfficiencyPerVehicleType
-    | EmptyObject;
-  _vehiclesDisplaced: _VehiclesDisplaced;
-  percentageHybridEVMilesDrivenOnElectricity: PercentageHybridEVMilesDrivenOnElectricity;
-}) {
-  const {
-    _selectedRegionsMonthlyVMTPerVehicleType,
-    _selectedRegionsEVEfficiencyPerVehicleType,
-    _vehiclesDisplaced,
-    percentageHybridEVMilesDrivenOnElectricity,
-  } = options;
-
-  const result = {} as {
-    [regionId in RegionId]: {
-      [month: number]: {
-        [vehicleType in _ExpandedVehicleType]: number;
-      };
-    };
-  };
-
-  const selectedRegionsVMTData =
-    Object.keys(_selectedRegionsMonthlyVMTPerVehicleType).length !== 0
-      ? (_selectedRegionsMonthlyVMTPerVehicleType as _SelectedRegionsMonthlyVMTPerVehicleType)
-      : null;
-
-  const selectedRegionsEfficiencyData =
-    Object.keys(_selectedRegionsEVEfficiencyPerVehicleType).length !== 0
-      ? (_selectedRegionsEVEfficiencyPerVehicleType as _SelectedRegionsEVEfficiencyPerVehicleType)
-      : null;
-
-  if (!selectedRegionsVMTData || !selectedRegionsEfficiencyData) {
-    return result;
-  }
-
-  const KWtoGW = 0.000_001;
-
-  [...Array(12)].forEach((_item, index) => {
-    const month = index + 1;
-
-    Object.entries(selectedRegionsVMTData).forEach(
-      ([regionKey, regionValue]) => {
-        const regionId = regionKey as keyof typeof selectedRegionsVMTData;
-        const monthlyVmt = regionValue[month];
-        const regionEVEfficiency = selectedRegionsEfficiencyData[regionId];
-
-        if (monthlyVmt && regionEVEfficiency) {
-          result[regionId] ??= {};
-          result[regionId][month] = {
-            batteryEVCars:
-              _vehiclesDisplaced.batteryEVCars *
-              monthlyVmt.cars *
-              regionEVEfficiency.batteryEVCars *
-              KWtoGW,
-            hybridEVCars:
-              _vehiclesDisplaced.hybridEVCars *
-              monthlyVmt.cars *
-              regionEVEfficiency.hybridEVCars *
-              KWtoGW *
-              percentageHybridEVMilesDrivenOnElectricity,
-            batteryEVTrucks:
-              _vehiclesDisplaced.batteryEVTrucks *
-              monthlyVmt.trucks *
-              regionEVEfficiency.batteryEVTrucks *
-              KWtoGW,
-            hybridEVTrucks:
-              _vehiclesDisplaced.hybridEVTrucks *
-              monthlyVmt.trucks *
-              regionEVEfficiency.hybridEVTrucks *
-              KWtoGW *
-              percentageHybridEVMilesDrivenOnElectricity,
-            transitBusesDiesel:
-              _vehiclesDisplaced.transitBusesDiesel *
-              monthlyVmt.transitBusesDiesel *
-              regionEVEfficiency.transitBuses *
-              KWtoGW,
-            transitBusesCNG:
-              _vehiclesDisplaced.transitBusesCNG *
-              monthlyVmt.transitBusesCNG *
-              regionEVEfficiency.transitBuses *
-              KWtoGW,
-            transitBusesGasoline:
-              _vehiclesDisplaced.transitBusesGasoline *
-              monthlyVmt.transitBusesGasoline *
-              regionEVEfficiency.transitBuses *
-              KWtoGW,
-            schoolBuses:
-              _vehiclesDisplaced.schoolBuses *
-              monthlyVmt.schoolBuses *
-              regionEVEfficiency.schoolBuses *
-              KWtoGW,
-          };
-        }
-      },
-    );
-  });
 
   return result;
 }

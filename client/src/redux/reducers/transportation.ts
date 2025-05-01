@@ -46,7 +46,6 @@ import {
   type _SelectedRegionsMonthlyVMTPerVehicleType,
   type _SelectedRegionsEVEfficiencyPerVehicleType,
   type _VehiclesDisplaced,
-  type _SelectedRegionsMonthlyEVEnergyUsageGW,
   type _SelectedRegionsMonthlyEmissionRates,
   type _SelectedRegionsMonthlyEmissionChanges,
   type _SelectedRegionsTotalMonthlyEmissionChanges,
@@ -100,7 +99,6 @@ import {
   _calculateSelectedRegionsMonthlyVMTPerVehicleType,
   _calculateSelectedRegionsEVEfficiencyPerVehicleType,
   _calculateVehiclesDisplaced,
-  _calculateSelectedRegionsMonthlyEVEnergyUsageGW,
   _calculateSelectedRegionsMonthlyEmissionRates,
   _calculateSelectedRegionsMonthlyEmissionChanges,
   _calculateSelectedRegionsTotalMonthlyEmissionChanges,
@@ -433,12 +431,6 @@ type Action =
       payload: { _vehiclesDisplaced: _VehiclesDisplaced };
     }
   | {
-      type: "transportation/_SET_SELECTED_REGIONS_MONTHLY_EV_ENERGY_USAGE_GW";
-      payload: {
-        _selectedRegionsMonthlyEVEnergyUsageGW: _SelectedRegionsMonthlyEVEnergyUsageGW;
-      };
-    }
-  | {
       type: "transportation/_SET_SELECTED_REGIONS_MONTHLY_EMISSION_RATES";
       payload: {
         _selectedRegionsMonthlyEmissionRates: _SelectedRegionsMonthlyEmissionRates;
@@ -575,9 +567,6 @@ type State = {
     | _SelectedRegionsEVEfficiencyPerVehicleType
     | EmptyObject;
   _vehiclesDisplaced: _VehiclesDisplaced;
-  _selectedRegionsMonthlyEVEnergyUsageGW:
-    | _SelectedRegionsMonthlyEVEnergyUsageGW
-    | EmptyObject;
   _selectedRegionsMonthlyEmissionRates:
     | _SelectedRegionsMonthlyEmissionRates
     | EmptyObject;
@@ -652,7 +641,6 @@ const initialState: State = {
     transitBusesGasoline: 0,
     schoolBuses: 0,
   },
-  _selectedRegionsMonthlyEVEnergyUsageGW: {},
   _selectedRegionsMonthlyEmissionRates: {},
   _selectedRegionsMonthlyEmissionChanges: {},
   _selectedRegionsTotalMonthlyEmissionChanges: {},
@@ -1075,15 +1063,6 @@ export default function reducer(
       return {
         ...state,
         _vehiclesDisplaced,
-      };
-    }
-
-    case "transportation/_SET_SELECTED_REGIONS_MONTHLY_EV_ENERGY_USAGE_GW": {
-      const { _selectedRegionsMonthlyEVEnergyUsageGW } = action.payload;
-
-      return {
-        ...state,
-        _selectedRegionsMonthlyEVEnergyUsageGW,
       };
     }
 
@@ -1606,9 +1585,6 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
       totalEffectiveVehicles,
       selectedRegionsMonthlyVMT,
       selectedRegionsEVEfficiency,
-      _selectedRegionsMonthlyVMTPerVehicleType,
-      _selectedRegionsEVEfficiencyPerVehicleType,
-      _vehiclesDisplaced,
     } = transportation;
 
     const selectedRegionsMonthlySalesChanges =
@@ -1634,14 +1610,6 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
         selectedRegionsMonthlySalesChanges,
       });
 
-    const _selectedRegionsMonthlyEVEnergyUsageGW =
-      _calculateSelectedRegionsMonthlyEVEnergyUsageGW({
-        _selectedRegionsMonthlyVMTPerVehicleType,
-        _selectedRegionsEVEfficiencyPerVehicleType,
-        _vehiclesDisplaced,
-        percentageHybridEVMilesDrivenOnElectricity,
-      });
-
     dispatch({
       type: "transportation/SET_SELECTED_REGIONS_MONTHLY_SALES_CHANGES",
       payload: { selectedRegionsMonthlySalesChanges },
@@ -1660,11 +1628,6 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
     dispatch({
       type: "transportation/SET_SELECTED_REGIONS_MONTHLY_ENERGY_USAGE",
       payload: { selectedRegionsMonthlyEnergyUsage },
-    });
-
-    dispatch({
-      type: "transportation/_SET_SELECTED_REGIONS_MONTHLY_EV_ENERGY_USAGE_GW",
-      payload: { _selectedRegionsMonthlyEVEnergyUsageGW },
     });
 
     // NOTE: `selectedRegionsMonthlyDailyEnergyUsage` uses `selectedRegionsMonthlyEnergyUsage`
