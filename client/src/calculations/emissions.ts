@@ -495,8 +495,8 @@ export function createCombinedSectorsEmissionsData(options: {
 
   if (
     !aggregatedEmissionsData ||
-    Object.keys(selectedRegionsMonthlyEmissionChangesTotals).length !== 0 ||
-    Object.keys(vehicleEmissionChangesByGeography).length !== 0
+    Object.keys(selectedRegionsMonthlyEmissionChangesTotals).length === 0 ||
+    Object.keys(vehicleEmissionChangesByGeography).length === 0
   ) {
     return null;
   }
