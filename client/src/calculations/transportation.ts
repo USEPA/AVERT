@@ -363,9 +363,6 @@ export type _VehiclesDisplaced = ReturnType<typeof _calculateVehiclesDisplaced>;
 export type _SelectedRegionsMonthlyEVEnergyUsageGW = ReturnType<
   typeof _calculateSelectedRegionsMonthlyEVEnergyUsageGW
 >;
-export type _SelectedRegionsMonthlyEVEnergyUsageMW = ReturnType<
-  typeof _calculateSelectedRegionsMonthlyEVEnergyUsageMW
->;
 export type _SelectedRegionsMonthlyEmissionRates = ReturnType<
   typeof _calculateSelectedRegionsMonthlyEmissionRates
 >;
@@ -4776,86 +4773,6 @@ export function _calculateSelectedRegionsMonthlyEVEnergyUsageGW(options: {
       },
     );
   });
-
-  return result;
-}
-
-/**
- * Monthly EV energy usage (total for each month) in MW, combined into the four
- * AVERT EV input types.
- *
- * Excel: Data in the third EV table (to the right of the "Calculate Changes"
- * table) in the "CalculateEERE" sheet (T49:W61).
- */
-export function _calculateSelectedRegionsMonthlyEVEnergyUsageMW(options: {
-  _selectedRegionsMonthlyEVEnergyUsageGW:
-    | _SelectedRegionsMonthlyEVEnergyUsageGW
-    | EmptyObject;
-}) {
-  const { _selectedRegionsMonthlyEVEnergyUsageGW } = options;
-
-  const selectedRegionsEnergyData =
-    Object.keys(_selectedRegionsMonthlyEVEnergyUsageGW).length !== 0
-      ? (_selectedRegionsMonthlyEVEnergyUsageGW as _SelectedRegionsMonthlyEVEnergyUsageGW)
-      : null;
-
-  if (!selectedRegionsEnergyData) {
-    return {} as {
-      [regionId in RegionId]: {
-        [month: number]: {
-          batteryEVs: number;
-          hybridEVs: number;
-          transitBuses: number;
-          schoolBuses: number;
-        };
-      };
-    };
-  }
-
-  const GWtoMW = 1_000;
-
-  const result = Object.entries(selectedRegionsEnergyData).reduce(
-    (object, [regionKey, regionValue]) => {
-      const regionId = regionKey as keyof typeof selectedRegionsEnergyData;
-
-      object[regionId] ??= {};
-
-      Object.entries(regionValue).forEach(
-        ([regionMonthKey, regionMonthValue]) => {
-          const month = Number(regionMonthKey);
-          const {
-            batteryEVCars,
-            batteryEVTrucks,
-            hybridEVCars,
-            hybridEVTrucks,
-            transitBusesDiesel,
-            transitBusesCNG,
-            transitBusesGasoline,
-            schoolBuses,
-          } = regionMonthValue;
-
-          object[regionId][month] = {
-            batteryEVs: (batteryEVCars + batteryEVTrucks) * GWtoMW,
-            hybridEVs: (hybridEVCars + hybridEVTrucks) * GWtoMW,
-            transitBuses: (transitBusesDiesel + transitBusesCNG + transitBusesGasoline) * GWtoMW, // prettier-ignore
-            schoolBuses: schoolBuses * GWtoMW,
-          };
-        },
-      );
-
-      return object;
-    },
-    {} as {
-      [regionId in RegionId]: {
-        [month: number]: {
-          batteryEVs: number;
-          hybridEVs: number;
-          transitBuses: number;
-          schoolBuses: number;
-        };
-      };
-    },
-  );
 
   return result;
 }
