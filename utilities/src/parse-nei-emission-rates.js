@@ -52,6 +52,14 @@ function parseNEIEmissionRatesWorksheet(worksheet) {
  */
 function renameNEIEmissionRatesDataKeys(data) {
   const keyMap = new Map([
+    ["Region", "region"],
+    ["State", "state"],
+    ["Plant", "plant"],
+    ["ORSPL", "orspl"],
+    ["Unit", "unit"],
+    ["Full Name", "name"],
+    ["County", "county"],
+    ["ORSPL|Unit|Region", "orspl|unit|region"],
     ["Generation", "generation"],
     ["Heat Input", "heat"],
     ["PM2.5", "pm25"],
@@ -60,6 +68,60 @@ function renameNEIEmissionRatesDataKeys(data) {
   ]);
 
   const result = renameObjectKeys(data, keyMap);
+
+  return result;
+}
+
+/**
+ * @typedef {{
+ *  "2017": { "generation": number; "heat": number; "pm25": number; "vocs": number; "nh3": number },
+ *  "2018": { "generation": number; "heat": number; "pm25": number; "vocs": number; "nh3": number },
+ *  "2019": { "generation": number; "heat": number; "pm25": number; "vocs": number; "nh3": number },
+ *  "2020": { "generation": number; "heat": number; "pm25": number; "vocs": number; "nh3": number },
+ *  "2021": { "generation": number; "heat": number; "pm25": number; "vocs": number; "nh3": number },
+ *  "2022": { "generation": number; "heat": number; "pm25": number; "vocs": number; "nh3": number },
+ *  "2023": { "generation": number; "heat": number; "pm25": number; "vocs": number; "nh3": number },
+ *  "2024": { "generation": number; "heat": number; "pm25": number; "vocs": number; "nh3": number },
+ *  "region": string;
+ *  "state": string;
+ *  "plant": string;
+ *  "orspl": number;
+ *  "unit": string;
+ *  "name": string;
+ *  "county": string;
+ *  "orspl|unit|region": string;
+ * }} NEIEmissionRatesData
+ */
+
+/**
+ * Moves the years keys (2017–2024) into a nested object under the key "years".
+ * 
+ * @param {NEIEmissionRatesData[]} data
+ */
+function modifyNEIEmissionRatesData(data) {
+  const nonYearFields = [
+    "region",
+    "state",
+    "plant",
+    "orspl",
+    "unit",
+    "name",
+    "county",
+    "orspl|unit|region",
+  ];
+
+  const result = data.map((neiData) => {
+    const years = Object.keys(neiData).reduce((object, neiDataKey) => {
+      if (!nonYearFields.includes(neiDataKey)) {
+        object[neiDataKey] = neiData[neiDataKey];
+        /** Remove the year field from the top level neiData object */
+        delete neiData[neiDataKey];
+      }
+      return object;
+    }, {});
+
+    return { ...neiData, years };
+  });
 
   return result;
 }
@@ -75,11 +137,12 @@ function main() {
   const worksheet = getExcelWorksheet(excelFilepath, "NEI_EmissionRates");
   const excelJsonData = parseNEIEmissionRatesWorksheet(worksheet);
   const formattedJsonData = renameNEIEmissionRatesDataKeys(excelJsonData);
+  const modifiedJsonData = modifyNEIEmissionRatesData(formattedJsonData);
 
   const jsonFilename = "nei-emission-rates.json";
   const jsonFilepath = resolve(__dirname, "../../server/app/data", jsonFilename);
 
-  storeJsonData(formattedJsonData, jsonFilepath);
+  storeJsonData(modifiedJsonData, jsonFilepath);
 }
 
 main();

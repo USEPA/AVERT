@@ -9,8 +9,38 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 /**
- * @param {(string|number)[]} headerRow 
- * @param {(string|number)[][]} dataRows 
+ * The data we're interested in spans 9 columns (B:J) and 17 rows (201–217). We
+ * don't need anything to the right of (and including) the "2024-2029 Average"
+ * column (K).
+ *
+ * @param {XLSX.WorkSheet} worksheet
+ */
+function parseLibraryWorksheet(worksheet) {
+  const range = XLSX.utils.decode_range(worksheet["!ref"]);
+  range.s.r = 200; // Start on Excel row 201 (SheetJS row 200)
+  range.e.r = 216; // End on Excel row 217 (SheetJS row 216)
+  range.s.c = XLSX.utils.decode_col("B"); // Start on Excel column B ("National average")
+  range.e.c = XLSX.utils.decode_col("J"); // End on Excel column J ("2029")
+
+  const json = XLSX.utils.sheet_to_json(worksheet, {
+    range: XLSX.utils.encode_range(range),
+    header: 1, // Output as an array of arrays, so we can transpose the rows and columns
+  });
+
+  /** The second and third columns (C and D) don't contain data we need, so remove them */
+  const allRows = json.map((row) => [row[0], ...row.slice(3)]);
+
+  const headerRow = allRows[0];
+  const dataRows = allRows.slice(1);
+
+  const result = parseExcelEVEfficiencyData(headerRow, dataRows);
+
+  return result;
+}
+
+/**
+ * @param {(string|number)[]} headerRow
+ * @param {(string|number)[][]} dataRows
  */
 function parseExcelEVEfficiencyData(headerRow, dataRows) {
   /**
@@ -51,36 +81,6 @@ function parseExcelEVEfficiencyData(headerRow, dataRows) {
 
     return object;
   }, {});
-
-  return result;
-}
-
-/**
- * The data we're interested in spans 9 columns (B:J) and 17 rows (201–217). We
- * don't need anything to the right of (and including) the "2024-2029 Average"
- * column (K).
- *
- * @param {XLSX.WorkSheet} worksheet
- */
-function parseLibraryWorksheet(worksheet) {
-  const range = XLSX.utils.decode_range(worksheet["!ref"]);
-  range.s.r = 200; // Start on Excel row 201 (SheetJS row 200)
-  range.e.r = 216; // End on Excel row 217 (SheetJS row 216)
-  range.s.c = XLSX.utils.decode_col("B"); // Start on Excel column B ("National average")
-  range.e.c = XLSX.utils.decode_col("J"); // End on Excel column J ("2029")
-
-  const json = XLSX.utils.sheet_to_json(worksheet, {
-    range: XLSX.utils.encode_range(range),
-    header: 1, // Output as an array of arrays, so we can transpose the rows and columns
-  });
-
-  /** The second and third columns (C and D) don't contain data we need, so remove them */
-  const allRows = json.map((row) => [row[0], ...row.slice(3)]);
-
-  const headerRow = allRows[0];
-  const dataRows = allRows.slice(1);
-
-  const result = parseExcelEVEfficiencyData(headerRow, dataRows);
 
   return result;
 }
