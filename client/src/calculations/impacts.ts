@@ -34,6 +34,20 @@ export type HourlyChangesValidation = ReturnType<
   typeof calculateHourlyChangesValidation
 >;
 
+type ExceedanceData = {
+  regionId: RegionId;
+  regionName: RegionName;
+  regionHourlyLimit: number;
+  hourOfYear: number;
+  month: number;
+  day: number;
+  hour: number;
+  originalLoad: number;
+  impactsLoad: number;
+  percentChange: number;
+  postImpactsLoad: number;
+};
+
 /**
  * Hourly renewable energy profiles data (onshore wind, offshore wind, utility
  * solar, rooftop solar).
@@ -76,7 +90,7 @@ export function calculateHourlyRenewableEnergyProfiles(options: {
 }
 
 /**
- * Returns hourly energy storage data
+ * Hourly energy storage data.
  *
  * Excel: Data from the "Utility Scale" and "Distributed" tables (rightmost/last
  * table) in the "CalculateEERE" sheet (columns B, C, F, and AQ–BO. More info on
@@ -438,6 +452,8 @@ export function calculateHourlyEnergyStorageData(options: {
 }
 
 /**
+ * Hourly EV load data.
+ *
  * Excel: Data from the "Total EV" column of middle table in the "CalculateEERE"
  * sheet (AJ5:AJ8788).
  */
@@ -516,7 +532,14 @@ export function calculateHourlyEVLoad(options: {
 }
 
 /**
- * Excel: "CalculateEERE" sheet (N9).
+ * Top percent generation in MW.
+ *
+ * Excel: "Top 0.0% gen (MW)" value from the narrow box to the right of the
+ * left/first table in the "CalculateEERE" sheet (S9).
+ *
+ * NOTE: The "0.0%" label is dynamic and based on the value from the row above
+ * for "Choose fraction of hours to apply" which corresponds to the `topHours`
+ * impacts input.
  */
 export function calculateTopPercentGeneration(options: {
   regionalLoad: RegionalLoadData[];
@@ -534,13 +557,12 @@ export function calculateTopPercentGeneration(options: {
 }
 
 /**
- *
- * Excel: Used to calculate data in column I of "CalculateEERE" sheet
+ * Excel: Used to calculate data in "Final Distributed" column (M) of the left/
+ * first table in the "CalculateEERE" sheet.
  *
  * NOTE: The result is not broken out into its own cell, but the relevant part
  * of the formula is below (using row 5 as an example):
- *
- * `IF(Data!F4>=TopPrctGen,Data!F4*-$N$10,0)`
+ * `IF(Data!F4>=TopPrctGen,Data!F4*-$S$10,0)`
  */
 export function calculateHourlyTopPercentReduction(options: {
   regionalLoad: RegionalLoadData[];
@@ -571,7 +593,10 @@ export function calculateHourlyTopPercentReduction(options: {
 }
 
 /**
- * Calculates regional hourly impacts of the entered energy impacts inputs.
+ * Regional hourly impacts of the entered energy impacts inputs.
+ *
+ * Excel: Data from the left/first table in the "CalculateEERE" sheet (columns
+ * B, C, F, and I–O. More info on the specific columns in the comments below).
  */
 export function calculateHourlyImpacts(options: {
   lineLoss: number; // region.lineLoss
@@ -689,20 +714,6 @@ export function calculateHourlyChangesValidation(options: {
   regionEVHourlyLimits: RegionEVHourlyLimits;
 }) {
   const { regions, regionalHourlyImpacts, regionEVHourlyLimits } = options;
-
-  type ExceedanceData = {
-    regionId: RegionId;
-    regionName: RegionName;
-    regionHourlyLimit: number;
-    hourOfYear: number;
-    month: number;
-    day: number;
-    hour: number;
-    originalLoad: number;
-    impactsLoad: number;
-    percentChange: number;
-    postImpactsLoad: number;
-  };
 
   const result = {
     upperError: null,
