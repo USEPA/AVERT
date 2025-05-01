@@ -35,11 +35,14 @@ export type HourlyChangesValidation = ReturnType<
 >;
 
 /**
- * Excel: Data in columns I, J, and K of the "CalculateEERE" sheet (I5:K8788).
+ * Hourly renewable energy profiles data (onshore wind, offshore wind, utility
+ * solar, rooftop solar).
  *
- * NOTE: The Excel version actually combines onshore and offshore wind profiles
- * into one value (column I), but we're keeping them separate for consistency
- * with the two solar profiles.
+ * Excel: Hourly data from the "Wind Energy Profile", "Utility Scale Solar", and
+ * "Rooftop Solar" columns (I, J, and K) of the left/first table in the
+ * "CalculateEERE" sheet. NOTE: The Excel version actually combines onshore and
+ * offshore wind profiles into one value (column I), but we're keeping them
+ * separate for consistency with the two solar profiles.
  */
 export function calculateHourlyRenewableEnergyProfiles(options: {
   eereDefaults: RegionState["eereDefaults"]["data"];
@@ -56,7 +59,9 @@ export function calculateHourlyRenewableEnergyProfiles(options: {
     rooftopSolar: rooftopSolarInput,
   } = options;
 
-  if (eereDefaults.length === 0) return [];
+  if (eereDefaults.length === 0) {
+    return [];
+  }
 
   const result = eereDefaults.map((data) => {
     return {
@@ -73,8 +78,9 @@ export function calculateHourlyRenewableEnergyProfiles(options: {
 /**
  * Returns hourly energy storage data
  *
- * Excel: Data from the "Utility Scale" and "Distributed" tables in the
- * "CalculateEERE" sheet (columns indicated in comments below).
+ * Excel: Data from the "Utility Scale" and "Distributed" tables (rightmost/last
+ * table) in the "CalculateEERE" sheet (columns B, C, F, and AQ–BO. More info on
+ * the specific columns in the comments below).
  */
 export function calculateHourlyEnergyStorageData(options: {
   storageDefaults: RegionState["storageDefaults"]["data"];
@@ -169,52 +175,52 @@ export function calculateHourlyEnergyStorageData(options: {
         /* column C */ hourOfDay: hour % 24 || 24,
         hourOfYear: hour,
         esProfileUnpaired: {
-          /* column AK */ utility: esProfileUnpaired.utility,
-          /* column AX */ rooftop: esProfileUnpaired.rooftop,
+          /* column AQ */ utility: esProfileUnpaired.utility,
+          /* column BD */ rooftop: esProfileUnpaired.rooftop,
         },
         solarUnpaired: {
-          /* column AL */ utility: solarUnpaired.utility,
-          /* column AY */ rooftop: solarUnpaired.rooftop,
+          /* column AR */ utility: solarUnpaired.utility,
+          /* column BE */ rooftop: solarUnpaired.rooftop,
         },
         dailyChargingNeeded: {
-          /* column AM */ utility: 0,
-          /* column AZ */ rooftop: 0,
+          /* column AS */ utility: 0,
+          /* column BF */ rooftop: 0,
         },
         dailyDischargingNeeded: {
-          /* column AN */ utility: 0,
-          /* column BA */ rooftop: 0,
-        },
-        dailyAvailableSolar: {
-          /* column AO */ utility: 0,
-          /* column BB */ rooftop: 0,
-        },
-        dailyAllowableCharging: {
-          /* column AP */ utility: 0,
-          /* column BC */ rooftop: 0,
-        },
-        dailyAllowableDischarging: {
-          /* column AQ */ utility: 0,
-          /* column BD */ rooftop: 0,
-        },
-        overloadedHour: {
-          /* column AR */ utility: false,
-          /* column BE */ rooftop: false,
-        },
-        overloadedDay: {
-          /* column AS */ utility: false,
-          /* column BF */ rooftop: false,
-        },
-        dailyCumulativeAvailableCharge: {
           /* column AT */ utility: 0,
           /* column BG */ rooftop: 0,
         },
-        dailyMaxAllowableCharge: {
+        dailyAvailableSolar: {
           /* column AU */ utility: 0,
           /* column BH */ rooftop: 0,
         },
-        esProfilePaired: {
+        dailyAllowableCharging: {
           /* column AV */ utility: 0,
           /* column BI */ rooftop: 0,
+        },
+        dailyAllowableDischarging: {
+          /* column AW */ utility: 0,
+          /* column BJ */ rooftop: 0,
+        },
+        overloadedHour: {
+          /* column AX */ utility: false,
+          /* column BK */ rooftop: false,
+        },
+        overloadedDay: {
+          /* column AY */ utility: false,
+          /* column BL */ rooftop: false,
+        },
+        dailyCumulativeAvailableCharge: {
+          /* column AZ */ utility: 0,
+          /* column BM */ rooftop: 0,
+        },
+        dailyMaxAllowableCharge: {
+          /* column BA */ utility: 0,
+          /* column BN */ rooftop: 0,
+        },
+        esProfilePaired: {
+          /* column BB */ utility: 0,
+          /* column BO */ rooftop: 0,
         },
       });
 
