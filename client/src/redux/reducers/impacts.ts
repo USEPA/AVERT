@@ -1374,52 +1374,58 @@ export function calculateHourlyEnergyProfile(): AppThunk {
 
       const regionalPercent = selectedState?.percentageByRegion[region.id] || 0;
 
-      // the regional scaling factor is a number between 0 and 1, representing
-      // the proportion the selected geography exists within a given region.
-      // - if a region is selected, the regional scaling factor will always be 1
-      // - if a state is selected, the regional scaling factor comes from the
-      //   selected state's percentage by region value for the given region, as
-      //   defined in the config file (`app/config.ts`). for example, if the
-      //   state falls exactly equally between the two regions, the regional
-      //   scaling factor would be 0.5 for each of those two regions.
+      /**
+       * The regional scaling factor is a number between 0 and 1, representing
+       * the proportion the selected geography exists within a given region.
+       * - If a region is selected, the regional scaling factor will always be 1.
+       * - If a state is selected, the regional scaling factor comes from the
+       *   selected state's percentage by region value for the given region, as
+       *   defined in the config file (`app/config.ts`). for example, if the
+       *   state falls exactly equally between the two regions, the regional
+       *   scaling factor would be 0.5 for each of those two regions.
+       */
       const regionalScalingFactor = regionalScalingFactors[region.id] || 0;
 
-      // the percent reduction factor also is a number between 0 and 1, and
-      // is used to scale the user's input for broad-based program reduction
-      // (percent reduction across all hours) or targed program reduction
-      // (percent reduction across a specified peak percentage of hours) to
-      // each region, since a selected state represents only a percentage of
-      // a region's emissions sales
-      // - if a region is selected, the percent reduction factor will always be 1
-      // - if a state is selected, the percent reduction factor comes from the
-      //   given region's percentage by state value for the selected state, as
-      //   defined in the config file (`app/config.ts`)
+      /**
+       * The percent reduction factor also is a number between 0 and 1, and
+       * is used to scale the user's input for broad-based program reduction
+       * (percent reduction across all hours) or targed program reduction
+       * (percent reduction across a specified peak percentage of hours) to
+       * each region, since a selected state represents only a percentage of
+       * a region's emissions sales.
+       * - If a region is selected, the percent reduction factor will always be 1.
+       * - If a state is selected, the percent reduction factor comes from the
+       *   given region's percentage by state value for the selected state, as
+       *   defined in the config file (`app/config.ts`).
+       */
       const percentReductionFactor = !selectedState
         ? 1
         : (regions[region.id].percentageByState[selectedState?.id] || 0) / 100;
 
-      // the offshore wind factor is also a number between 0 and 1, representing
-      // the proportion the selected geography's offshore wind value should be
-      // allocated to each region. regions either support offshore wind or they
-      // don't, and some states are within at least one region that supports it,
-      // and at least one region that doesn't.
-      // - if a region is selected, the offshore wind factor will always be 1
-      //   (if the region doesn't support offshore wind, the input will be
-      //   disabled and 0 will be used in the calculations for offshore wind –
-      //   see `app/calculations.ts`)
-      // - if a is state is selected and it's within a region that supports
-      //   offshore wind, the offshore wind factor will be set to an integer
-      //   equal to the proportion the state exists within the region divided
-      //   by the proprtion the state exists within all regions that support
-      //   offshore wind
-      // - if a state is selected and it's within a region that doesn't support
-      //   offshore wind, the offshore wind factor will always be 0
-      //
-      // for example:
-      // Kentucky is selected...it's within the Tennessee, Mid-Atlantic, and
-      // Midwest regions, but only the Mid-Atlantic region supports offshore
-      // wind. so the Tennessee and Midwest regions' `offshoreWindFactor` would
-      // be 0, and the Mid-Atlantic region's `offshoreWindFactor` would be 1
+      /**
+       * The offshore wind factor is also a number between 0 and 1, representing
+       * the proportion the selected geography's offshore wind value should be
+       * allocated to each region. Regions either support offshore wind or they
+       * don't, and some states are within at least one region that supports it,
+       * and at least one region that doesn't.
+       * - If a region is selected, the offshore wind factor will always be 1
+       *   (if the region doesn't support offshore wind, the input will be
+       *   disabled and 0 will be used in the calculations for offshore wind –
+       *   see `app/calculations.ts`).
+       * - If a state is selected and it's within a region that supports
+       *   offshore wind, the offshore wind factor will be set to an integer
+       *   equal to the proportion the state exists within the region divided
+       *   by the proportion the state exists within all regions that support
+       *   offshore wind.
+       * - If a state is selected and it's within a region that doesn't support
+       *   offshore wind, the offshore wind factor will always be 0.
+       *
+       *  For example:
+       *  Kentucky is selected...it's within the Tennessee, Mid-Atlantic, and
+       *  Midwest regions, but only the Mid-Atlantic region supports offshore
+       *  wind. So the Tennessee and Midwest regions' `offshoreWindFactor` would
+       *  be 0, and the Mid-Atlantic region's `offshoreWindFactor` would be 1.
+       */
       const offshoreWindFactor = !selectedState
         ? 1
         : region.offshoreWind
