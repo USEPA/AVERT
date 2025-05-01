@@ -71,11 +71,16 @@ const emissions = {
     const rdfFileData = await readFile(rdfFileName, { encoding: "utf8" });
     const rdf = JSON.parse(rdfFileData);
 
-    const neiFileName = "app/data/annual-emission-factors.json";
+    const neiFileName = "app/data/nei-emission-rates.json";
     const neiFileData = await readFile(neiFileName, { encoding: "utf8" });
-    const neiData = JSON.parse(neiFileData);
+    const neiEmissionRates = JSON.parse(neiFileData);
 
-    ctx.body = calculateEmissionsChanges({ year, rdf, neiData, hourlyChanges });
+    ctx.body = calculateEmissionsChanges({
+      year,
+      rdf,
+      neiEmissionRates,
+      hourlyChanges
+    });
   },
 };
 

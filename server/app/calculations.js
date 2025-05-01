@@ -60,26 +60,36 @@
  */
 
 /**
- * @typedef {Object} NEIData
- * @property {{
+ * @typedef {{
+ *  generation: number,
+ *  heat: number,
+ *  pm25: number,
+ *  vocs: number,
+ *  nh3: number
+ * }} NEIPollutantsEmissionRates
+ */
+
+/**
+ * @typedef {{
+ *  region: string,
+ *  state: string,
+ *  plant: string,
+ *  orspl: number,
+ *  unit: string,
  *  name: string,
- *  egus: {
- *    state: string,
- *    county: string,
- *    plant: string,
- *    orispl_code: number,
- *    unit_code: string,
- *    full_name: string,
- *    annual_data: {
- *      year: number,
- *      generation: number,
- *      heat: number,
- *      pm25: number,
- *      vocs: number,
- *      nh3: number
- *    }[]
- *  }[]
- * }[]} regions
+ *  county: string,
+ *  "orspl|unit|region": string,
+ *  years: {
+ *    "2017": NEIPollutantsEmissionRates,
+ *    "2018": NEIPollutantsEmissionRates,
+ *    "2019": NEIPollutantsEmissionRates,
+ *    "2020": NEIPollutantsEmissionRates,
+ *    "2021": NEIPollutantsEmissionRates,
+ *    "2022": NEIPollutantsEmissionRates,
+ *    "2023": NEIPollutantsEmissionRates,
+ *    "2024": NEIPollutantsEmissionRates
+ *  }
+ * }} NEIEmissionRatesByEGU
  */
 
 /**
@@ -122,12 +132,12 @@ function calculateLinear(options) {
  * @param {{
  *  year: number,
  *  rdf: RDFJSON,
- *  neiData: NEIData
+ *  neiEmissionRates: NEIEmissionRatesByEGU[],
  *  hourlyChanges: number[]
  * }} options
  */
 function calculateEmissionsChanges(options) {
-  const { year, rdf, neiData, hourlyChanges } = options;
+  const { year, rdf, neiEmissionRates, hourlyChanges } = options;
 
   /**
    * NOTE: Emissions rates for generation, so2, nox, and co2 are calculated with
@@ -138,9 +148,9 @@ function calculateEmissionsChanges(options) {
    * uses `data.generation`, regardless of ozone season.
    *
    * Emissions rates for pm2.5, vocs, and nh3 are calculated with both annual
-   * point-source data from the National Emissions Inventory (`neiData`) and the
-   * `heat` and `heat_not` fields in the RDF's `data` object (for ozone and
-   * non-ozone season respectively).
+   * point-source data from the National Emissions Inventory
+   * (`neiEmissionRates`) and the `heat` and `heat_not` fields in the RDF's
+   * `data` object (for ozone and non-ozone season respectively).
    *
    * @type {{
    *  [eguId: string]: {
@@ -172,10 +182,6 @@ function calculateEmissionsChanges(options) {
 
   /** @type {("pm25" | "vocs" | "nh3")[]} */
   const neiFields = ["pm25", "vocs", "nh3"];
-
-  const regionalNeiEgus = neiData.regions.find((region) => {
-    return region.name === rdf.region.region_name;
-  })?.egus;
 
   const regionId = rdf.region.region_abbv;
 
@@ -291,12 +297,14 @@ function calculateEmissionsChanges(options) {
          * Conditionally multiply NEI factor to calculated original and postEere
          * values
          */
-        const matchedEgu = regionalNeiEgus?.find((neiEgu) => {
-          const orisplCodeMatches = neiEgu.orispl_code === orispl_code;
-          const unitCodeMatches = neiEgu.unit_code === unit_code;
-          return orisplCodeMatches && unitCodeMatches;
+        const matchedEgu = neiEmissionRates.find((item) => {
+          return item.orspl === orispl_code && item.unit === unit_code;
         });
-        const neiEguData = matchedEgu?.annual_data.find((d) => d.year === year);
+
+        /** @type NEIPollutantsEmissionRates | undefined */
+        const neiEguData = matchedEgu?.years?.[year.toString()];
+
+        /** @type number | undefined */
         const neiFieldData = neiEguData?.[field];
 
         const original =
