@@ -40,7 +40,6 @@ import {
   type SelectedRegionsYearlyEmissionChangesTotals,
   type SelectedGeographySalesAndStockByState,
   type SelectedGeographySalesAndStockByRegion,
-  type _HourlyEVChargingPercentages,
   type _SelectedRegionsStatesVMTPercentages,
   type _SelectedRegionsVMTPercentagesPerVehicleType,
   type _SelectedRegionsAverageVMTPerYear,
@@ -97,7 +96,6 @@ import {
   calculateSelectedRegionsYearlyEmissionChangesTotals,
   calculateSelectedGeographySalesAndStockByState,
   calculateSelectedGeographySalesAndStockByRegion,
-  _calculateHourlyEVChargingPercentages,
   _calculateSelectedRegionsStatesVMTPercentages,
   _calculateSelectedRegionsVMTPercentagesPerVehicleType,
   _calculateSelectedRegionsAverageVMTPerYear,
@@ -405,10 +403,6 @@ type Action =
       };
     }
   | {
-      type: "transportation/_SET_HOURLY_EV_CHARGING_PERCENTAGES";
-      payload: { _hourlyEVChargingPercentages: _HourlyEVChargingPercentages };
-    }
-  | {
       type: "transportation/_SET_SELECTED_REGIONS_STATES_VMT_PERCENTAGES";
       payload: {
         _selectedRegionsStatesVMTPercentages: _SelectedRegionsStatesVMTPercentages;
@@ -581,7 +575,6 @@ type State = {
   selectedGeographySalesAndStockByRegion:
     | SelectedGeographySalesAndStockByRegion
     | EmptyObject;
-  _hourlyEVChargingPercentages: _HourlyEVChargingPercentages;
   _selectedRegionsStatesVMTPercentages:
     | _SelectedRegionsStatesVMTPercentages
     | EmptyObject;
@@ -666,7 +659,6 @@ const initialState: State = {
   selectedRegionsYearlyEmissionChangesTotals: {},
   selectedGeographySalesAndStockByState: {},
   selectedGeographySalesAndStockByRegion: {},
-  _hourlyEVChargingPercentages: {},
   _selectedRegionsStatesVMTPercentages: {},
   _selectedRegionsVMTPercentagesPerVehicleType: {},
   _selectedRegionsAverageVMTPerYear: {},
@@ -1056,15 +1048,6 @@ export default function reducer(
       };
     }
 
-    case "transportation/_SET_HOURLY_EV_CHARGING_PERCENTAGES": {
-      const { _hourlyEVChargingPercentages } = action.payload;
-
-      return {
-        ...state,
-        _hourlyEVChargingPercentages,
-      };
-    }
-
     case "transportation/_SET_SELECTED_REGIONS_STATES_VMT_PERCENTAGES": {
       const { _selectedRegionsStatesVMTPercentages } = action.payload;
 
@@ -1387,18 +1370,9 @@ export function setHourlyEVLoadProfiles(): AppThunk {
       defaultEVLoadProfiles,
     });
 
-    const _hourlyEVChargingPercentages = _calculateHourlyEVChargingPercentages({
-      defaultEVLoadProfiles,
-    });
-
     dispatch({
       type: "transportation/SET_HOURLY_EV_LOAD_PROFILES",
       payload: { hourlyEVLoadProfiles },
-    });
-
-    dispatch({
-      type: "transportation/_SET_HOURLY_EV_CHARGING_PERCENTAGES",
-      payload: { _hourlyEVChargingPercentages },
     });
   };
 }

@@ -344,9 +344,6 @@ export type SelectedGeographySalesAndStockByState = ReturnType<
 export type SelectedGeographySalesAndStockByRegion = ReturnType<
   typeof calculateSelectedGeographySalesAndStockByRegion
 >;
-export type _HourlyEVChargingPercentages = ReturnType<
-  typeof _calculateHourlyEVChargingPercentages
->;
 export type _SelectedRegionsStatesVMTPercentages = ReturnType<
   typeof _calculateSelectedRegionsStatesVMTPercentages
 >;
@@ -4161,50 +4158,6 @@ export function calculateSelectedGeographySalesAndStockByRegion(options: {
       };
     },
   );
-
-  return result;
-}
-
-/**
- * Excel: Data in the first EV table (to the right of the "Calculate Changes"
- * table) in the "CalculateEERE" sheet (P8:X32).
- */
-export function _calculateHourlyEVChargingPercentages(options: {
-  defaultEVLoadProfiles: DefaultEVLoadProfiles;
-}) {
-  const { defaultEVLoadProfiles } = options;
-
-  const result: {
-    [hour: number]: {
-      batteryEVs: { weekday: number; weekend: number };
-      hybridEVs: { weekday: number; weekend: number };
-      transitBuses: { weekday: number; weekend: number };
-      schoolBuses: { weekday: number; weekend: number };
-    };
-  } = {};
-
-  defaultEVLoadProfiles.forEach((data) => {
-    const hour = data["Hour Ending"];
-
-    result[hour] = {
-      batteryEVs: {
-        weekday: data["LDVs"]["weekday"],
-        weekend: data["LDVs"]["weekend"],
-      },
-      hybridEVs: {
-        weekday: data["LDVs"]["weekday"],
-        weekend: data["LDVs"]["weekend"],
-      },
-      transitBuses: {
-        weekday: data["Transit buses"]["weekday"],
-        weekend: data["Transit buses"]["weekend"],
-      },
-      schoolBuses: {
-        weekday: data["School buses"]["weekday"],
-        weekend: data["School buses"]["weekend"],
-      },
-    };
-  });
 
   return result;
 }
