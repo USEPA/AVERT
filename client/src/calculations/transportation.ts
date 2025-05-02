@@ -365,9 +365,6 @@ export type _SelectedRegionsMonthlyEmissionRates = ReturnType<
 export type _SelectedRegionsMonthlyEmissionChanges = ReturnType<
   typeof _calculateSelectedRegionsMonthlyEmissionChanges
 >;
-export type _SelectedRegionsTotalMonthlyEmissionChanges = ReturnType<
-  typeof _calculateSelectedRegionsTotalMonthlyEmissionChanges
->;
 export type VehicleEmissionChangesByGeography = ReturnType<
   typeof calculateVehicleEmissionChangesByGeography
 >;
@@ -4950,96 +4947,6 @@ export function _calculateSelectedRegionsMonthlyEmissionChanges(options: {
             [pollutant in _Pollutant]: number;
           };
         };
-      };
-    },
-  );
-
-  return result;
-}
-
-/**
- * Totals monthly emission changes from each EV type.
- *
- * Excel: Bottom half of the "Emission Changes" data from "Table 8: Calculated
- * changes for the transportation sector" table in the "Library" sheet
- * (F363:R392).
- */
-export function _calculateSelectedRegionsTotalMonthlyEmissionChanges(options: {
-  _selectedRegionsMonthlyEmissionChanges:
-    | _SelectedRegionsMonthlyEmissionChanges
-    | EmptyObject;
-}) {
-  const { _selectedRegionsMonthlyEmissionChanges } = options;
-
-  type MonthlyData = {
-    [field in "cars" | "trucks" | "transitBuses" | "schoolBuses" | "total"]: {
-      [pollutant in _Pollutant]: number;
-    };
-  };
-
-  const selectedRegionsChangesData =
-    Object.keys(_selectedRegionsMonthlyEmissionChanges).length !== 0
-      ? (_selectedRegionsMonthlyEmissionChanges as _SelectedRegionsMonthlyEmissionChanges)
-      : null;
-
-  if (!selectedRegionsChangesData) {
-    return {} as {
-      [regionId in RegionId]: {
-        [month: number]: MonthlyData;
-      };
-    };
-  }
-
-  const result = Object.entries(selectedRegionsChangesData).reduce(
-    (object, [regionKey, regionValue]) => {
-      const regionId = regionKey as keyof typeof selectedRegionsChangesData;
-
-      object[regionId] ??= {};
-
-      Object.entries(regionValue).forEach(
-        ([regionMonthKey, regionMonthValue]) => {
-          const month = Number(regionMonthKey);
-
-          object[regionId][month] ??= {
-            cars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-            trucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-            transitBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-            schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-            total: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-          };
-
-          _pollutants.forEach((pollutant) => {
-            const monthlyCars =
-              regionMonthValue.batteryEVCars[pollutant] +
-              regionMonthValue.hybridEVCars[pollutant];
-            const monthlyTrucks =
-              regionMonthValue.batteryEVTrucks[pollutant] +
-              regionMonthValue.hybridEVTrucks[pollutant];
-            const monthlyTransitBuses =
-              regionMonthValue.transitBusesDiesel[pollutant] +
-              regionMonthValue.transitBusesCNG[pollutant] +
-              regionMonthValue.transitBusesGasoline[pollutant];
-            const monthlySchoolBuses = regionMonthValue.schoolBuses[pollutant];
-            const monthlyTotal =
-              monthlyCars +
-              monthlyTrucks +
-              monthlyTransitBuses +
-              monthlySchoolBuses;
-
-            object[regionId][month].cars[pollutant] += monthlyCars;
-            object[regionId][month].trucks[pollutant] += monthlyTrucks;
-            object[regionId][month].transitBuses[pollutant] += monthlyTransitBuses; // prettier-ignore
-            object[regionId][month].schoolBuses[pollutant] += monthlySchoolBuses; // prettier-ignore
-            object[regionId][month].total[pollutant] += monthlyTotal;
-          });
-        },
-      );
-
-      return object;
-    },
-    {} as {
-      [regionId in RegionId]: {
-        [month: number]: MonthlyData;
       };
     },
   );
