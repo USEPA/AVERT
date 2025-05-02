@@ -1141,7 +1141,20 @@ export default function reducer(
  */
 export function setVMTData(): AppThunk {
   return (dispatch) => {
-    const vmtTotalsByGeography = calculateVMTTotalsByGeography({ countyFips });
+    const regionIdsByRegionName = Object.values(regions).reduce(
+      (object, { id, name }) => {
+        object[name] = id;
+        return object;
+      },
+      {} as {
+        [regionName: string]: RegionId;
+      },
+    );
+
+    const vmtTotalsByGeography = calculateVMTTotalsByGeography({
+      regionIdsByRegionName,
+      countyFips,
+    });
 
     const vmtBillionsAndPercentages = calculateVMTBillionsAndPercentages({
       countyFips,
@@ -1840,15 +1853,33 @@ export function setEmissionChanges(): AppThunk {
         _selectedRegionsTotalMonthlyEmissionChanges,
       });
 
+    const countiesByRegions = countiesByGeography?.regions || {};
+
+    const selectedRegionsCounties = Object.entries(countiesByRegions).reduce(
+      (object, [countiesByRegionKey, countiesByRegionValue]) => {
+        const regionId = countiesByRegionKey as keyof typeof countiesByRegions;
+
+        if (selectedGeographyRegionIds.includes(regionId)) {
+          object[regionId] = countiesByRegionValue;
+        }
+
+        return object;
+      },
+      {} as Partial<{
+        [regionId in RegionId]: Partial<{
+          [stateId in StateId]: string[];
+        }>;
+      }>,
+    );
+
     const vehicleEmissionChangesByGeography =
       calculateVehicleEmissionChangesByGeography({
         geographicFocus,
         selectedRegionId,
         selectedStateId,
-        countiesByGeography,
-        selectedGeographyRegionIds,
+        selectedRegionsCounties,
         vmtTotalsByGeography,
-        _selectedRegionsTotalYearlyEmissionChanges,
+        selectedRegionsYearlyEmissionChangesPerVehicleCategory,
         evDeploymentLocation,
       });
 
