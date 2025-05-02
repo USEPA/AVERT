@@ -177,13 +177,6 @@ const vehicleCategoryVehicleTypeFuelTypeCombos = [
   "Refuse trucks / Heavy-duty refuse trucks / Diesel Fuel",
 ] as const;
 
-const _abridgedVehicleTypes = [
-  "cars",
-  "trucks",
-  "transitBuses",
-  "schoolBuses",
-] as const;
-
 const _generalVehicleTypes = [
   "cars",
   "trucks",
@@ -192,8 +185,6 @@ const _generalVehicleTypes = [
   "transitBusesGasoline",
   "schoolBuses",
 ] as const;
-
-const _pollutants = ["CO2", "NOX", "SO2", "PM25", "VOCs", "NH3"] as const;
 
 type Pollutant = (typeof pollutants)[number];
 type MovesPollutant = (typeof movesPollutants)[number];
@@ -223,9 +214,7 @@ type AlternateVehicleCategory =
   | "Battery EVs"
   | "Plug-in Hybrid EVs";
 
-type _AbridgedVehicleType = (typeof _abridgedVehicleTypes)[number];
 type _GeneralVehicleType = (typeof _generalVehicleTypes)[number];
-type _Pollutant = (typeof _pollutants)[number];
 
 export type HourlyEVLoadProfiles = ReturnType<typeof storeHourlyEVLoadProfiles>;
 export type DailyStats = ReturnType<typeof calculateDailyStats>;
@@ -343,9 +332,6 @@ export type _SelectedRegionsAverageVMTPerYear = ReturnType<
 >;
 export type _SelectedRegionsMonthlyVMTPerVehicleType = ReturnType<
   typeof _calculateSelectedRegionsMonthlyVMTPerVehicleType
->;
-export type _SelectedRegionsMonthlyEmissionRates = ReturnType<
-  typeof _calculateSelectedRegionsMonthlyEmissionRates
 >;
 export type VehicleEmissionChangesByGeography = ReturnType<
   typeof calculateVehicleEmissionChangesByGeography
@@ -4552,140 +4538,6 @@ export function _calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
       };
     },
   );
-
-  return result;
-}
-
-/**
- * Monthly emission rates by vehicle type.
- *
- * Excel: "Table 7: Emission rates of various vehicle types" table in the
- * "Library" sheet (G253:R288).
- */
-export function _calculateSelectedRegionsMonthlyEmissionRates(options: {
-  movesEmissionRates: MOVESEmissionRates;
-  _selectedRegionsStatesVMTPercentages:
-    | _SelectedRegionsStatesVMTPercentages
-    | EmptyObject;
-  evDeploymentLocation: string;
-  evModelYear: string;
-  iceReplacementVehicle: string;
-}) {
-  const {
-    movesEmissionRates,
-    _selectedRegionsStatesVMTPercentages,
-    evDeploymentLocation,
-    evModelYear,
-    iceReplacementVehicle,
-  } = options;
-
-  const result = {} as {
-    [regionId in RegionId]: {
-      [month: number]: {
-        [vehicleType in _GeneralVehicleType]: {
-          [pollutant in _Pollutant]: number;
-        };
-      };
-    };
-  };
-
-  const selectedRegionsVMTData =
-    Object.keys(_selectedRegionsStatesVMTPercentages).length !== 0
-      ? (_selectedRegionsStatesVMTPercentages as _SelectedRegionsStatesVMTPercentages)
-      : null;
-
-  if (!selectedRegionsVMTData || evDeploymentLocation === "") {
-    return result;
-  }
-
-  const deploymentLocationIsRegion = evDeploymentLocation.startsWith("region-");
-  const deploymentLocationIsState = evDeploymentLocation.startsWith("state-");
-
-  movesEmissionRates.forEach((data) => {
-    const month = Number(data.month);
-
-    Object.entries(selectedRegionsVMTData).forEach(
-      ([regionKey, regionValue]) => {
-        const regionId = regionKey as keyof typeof selectedRegionsVMTData;
-
-        result[regionId] ??= {} as {
-          [month: number]: {
-            [vehicleType in _GeneralVehicleType]: {
-              [pollutant in _Pollutant]: number;
-            };
-          };
-        };
-
-        result[regionId][month] ??= {
-          cars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-          trucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-          transitBusesDiesel: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
-          transitBusesCNG: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-          transitBusesGasoline: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
-          schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-        };
-
-        const generalVehicleType: _GeneralVehicleType | null =
-          data.vehicleType === "Passenger Car"
-            ? "cars"
-            : data.vehicleType === "Passenger Truck"
-              ? "trucks"
-              : data.vehicleType === "Transit Bus" && data.fuelType === "Diesel Fuel" // prettier-ignore
-                ? "transitBusesDiesel"
-                : data.vehicleType === "Transit Bus" && data.fuelType === "Compressed Natural Gas (CNG)" // prettier-ignore
-                  ? "transitBusesCNG"
-                  : data.vehicleType === "Transit Bus" &&
-                      data.fuelType === "Gasoline"
-                    ? "transitBusesGasoline"
-                    : data.vehicleType === "School Bus"
-                      ? "schoolBuses"
-                      : null; // NOTE: fallback (generalVehicleType should never actually be null)
-
-        const abridgedVehicleType: _AbridgedVehicleType | null =
-          data.vehicleType === "Passenger Car"
-            ? "cars"
-            : data.vehicleType === "Passenger Truck"
-              ? "trucks"
-              : data.vehicleType === "Transit Bus"
-                ? "transitBuses"
-                : data.vehicleType === "School Bus"
-                  ? "schoolBuses"
-                  : null; // NOTE: fallback (abridgedVehicleType should never actually be null)
-
-        if (generalVehicleType && abridgedVehicleType) {
-          const modelYearMatch =
-            iceReplacementVehicle === "new"
-              ? data.modelYear === evModelYear
-              : data.modelYear === "Fleet Average";
-
-          const conditionalYearMatch =
-            iceReplacementVehicle === "new"
-              ? true //
-              : data.year === evModelYear;
-
-          const conditionalStateMatch = deploymentLocationIsState
-            ? data.state === evDeploymentLocation.replace("state-", "")
-            : true;
-
-          const movesRegionalWeightPercentage =
-            regionValue?.[data.state as StateId]?.[abridgedVehicleType] || 0;
-
-          const locationFactor = deploymentLocationIsRegion
-            ? movesRegionalWeightPercentage
-            : 1; // location is state, so no MOVES regional weight factor is applied
-
-          if (modelYearMatch && conditionalYearMatch && conditionalStateMatch) {
-            result[regionId][month][generalVehicleType].CO2 += data.CO2 * locationFactor; // prettier-ignore
-            result[regionId][month][generalVehicleType].NOX += data.NOX * locationFactor; // prettier-ignore
-            result[regionId][month][generalVehicleType].SO2 += data.SO2 * locationFactor; // prettier-ignore
-            result[regionId][month][generalVehicleType].PM25 += data.PM25 * locationFactor; // prettier-ignore
-            result[regionId][month][generalVehicleType].VOCs += data.VOCs * locationFactor; // prettier-ignore
-            result[regionId][month][generalVehicleType].NH3 += data.NH3 * locationFactor; // prettier-ignore
-          }
-        }
-      },
-    );
-  });
 
   return result;
 }
