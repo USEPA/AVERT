@@ -344,7 +344,6 @@ export type _SelectedRegionsAverageVMTPerYear = ReturnType<
 export type _SelectedRegionsMonthlyVMTPerVehicleType = ReturnType<
   typeof _calculateSelectedRegionsMonthlyVMTPerVehicleType
 >;
-export type _VehiclesDisplaced = ReturnType<typeof _calculateVehiclesDisplaced>;
 export type _SelectedRegionsMonthlyEmissionRates = ReturnType<
   typeof _calculateSelectedRegionsMonthlyEmissionRates
 >;
@@ -4553,89 +4552,6 @@ export function _calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
       };
     },
   );
-
-  return result;
-}
-
-/**
- * Number of vehicles displaced by new EVs.
- *
- * Excel: "Sales Changes" data from "Table 8: Calculated changes for the
- * transportation sector" table in the "Library" sheet (E297:E304), which uses
- * "Part II. Vehicle Composition" table in the "EV_Detail" sheet (L63:O67).
- */
-export function _calculateVehiclesDisplaced(options: {
-  batteryEVs: number;
-  hybridEVs: number;
-  transitBuses: number;
-  schoolBuses: number;
-  monthlyVMTTotals: MonthlyVMTTotals;
-}) {
-  const { batteryEVs, hybridEVs, transitBuses, schoolBuses, monthlyVMTTotals } =
-    options;
-
-  const result = {
-    batteryEVCars: 0,
-    hybridEVCars: 0,
-    batteryEVTrucks: 0,
-    hybridEVTrucks: 0,
-    transitBusesDiesel: 0,
-    transitBusesCNG: 0,
-    transitBusesGasoline: 0,
-    schoolBuses: 0,
-  };
-
-  if (Object.keys(monthlyVMTTotals).length === 0) return result;
-
-  const yearlyTransitBusesVMTTotals = Object.values(monthlyVMTTotals).reduce(
-    (data, monthlyData) => {
-      data.diesel += monthlyData.transitBusesDiesel;
-      data.cng += monthlyData.transitBusesCNG;
-      data.gasoline += monthlyData.transitBusesGasoline;
-      return data;
-    },
-    { diesel: 0, cng: 0, gasoline: 0 },
-  );
-
-  // console.log(yearlyTransitBusesVMTTotals); // NOTE: for debugging purposes
-
-  const totalYearlyTransitBusesVMT =
-    yearlyTransitBusesVMTTotals.diesel +
-    yearlyTransitBusesVMTTotals.cng +
-    yearlyTransitBusesVMTTotals.gasoline;
-
-  if (totalYearlyTransitBusesVMT === 0) return result;
-
-  /**
-   * Excel: "Part II. Vehicle Composition" table in the "EV_Detail" sheet
-   * (F65:F67), which comes from "Table 6: Monthly VMT and efficiency
-   * adjustments" (Q220:Q222)
-   */
-  const percentageTransitBusesDisplacedByEVs = {
-    diesel: yearlyTransitBusesVMTTotals.diesel / totalYearlyTransitBusesVMT,
-    cng: yearlyTransitBusesVMTTotals.cng / totalYearlyTransitBusesVMT,
-    gasoline: yearlyTransitBusesVMTTotals.gasoline / totalYearlyTransitBusesVMT,
-  };
-
-  // console.log(percentageTransitBusesDisplacedByEVs); // NOTE: for debugging purposes
-
-  /**
-   * Excel: "Table 14: Light-duty vehicle sales by type" table in the "Library"
-   * sheet (D727:E727)
-   */
-  const percentageLDVsDisplacedByEVs = {
-    cars: 0.210961149193232,
-    trucks: 0.789038850806768,
-  };
-
-  result.batteryEVCars = batteryEVs * percentageLDVsDisplacedByEVs.cars;
-  result.hybridEVCars = hybridEVs * percentageLDVsDisplacedByEVs.cars;
-  result.batteryEVTrucks = batteryEVs * percentageLDVsDisplacedByEVs.trucks;
-  result.hybridEVTrucks = hybridEVs * percentageLDVsDisplacedByEVs.trucks;
-  result.transitBusesDiesel = transitBuses * percentageTransitBusesDisplacedByEVs.diesel; // prettier-ignore
-  result.transitBusesCNG = transitBuses * percentageTransitBusesDisplacedByEVs.cng; // prettier-ignore
-  result.transitBusesGasoline = transitBuses * percentageTransitBusesDisplacedByEVs.gasoline; // prettier-ignore
-  result.schoolBuses = schoolBuses * 1;
 
   return result;
 }
