@@ -214,9 +214,6 @@ export type VMTTotalsByGeography = ReturnType<
 export type VMTBillionsAndPercentages = ReturnType<
   typeof calculateVMTBillionsAndPercentages
 >;
-export type StateVMTPercentagesByRegion = ReturnType<
-  typeof calculateStateVMTPercentagesByRegion
->;
 export type MonthlyVMTTotals = ReturnType<typeof calculateMonthlyVMTTotals>;
 export type YearlyVMTTotals = ReturnType<typeof calculateYearlyVMTTotals>;
 export type MonthlyVMTPercentages = ReturnType<
@@ -778,87 +775,6 @@ export function calculateVMTBillionsAndPercentages(options: {
       });
     }
   });
-
-  return result;
-}
-
-/**
- * Regional share of state VMT per vehicle type.
- *
- * (NOTE: not in the Excel version, but derived from `vmtBillionsAndPercentages`
- * which is data from the first table in the "RegionStateAllocate" sheet).
- */
-export function calculateStateVMTPercentagesByRegion(options: {
-  vmtBillionsAndPercentages: VMTBillionsAndPercentages | EmptyObject;
-}) {
-  const { vmtBillionsAndPercentages } = options;
-
-  const vmtData =
-    Object.keys(vmtBillionsAndPercentages).length !== 0
-      ? (vmtBillionsAndPercentages as VMTBillionsAndPercentages)
-      : null;
-
-  if (!vmtData) {
-    return {} as {
-      [stateId in StateId]: Partial<{
-        [regionId in RegionId]: {
-          cars: number;
-          trucks: number;
-          transitBuses: number;
-          schoolBuses: number;
-        };
-      }>;
-    };
-  }
-
-  const result = Object.entries(vmtData).reduce(
-    (object, [stateKey, stateValue]) => {
-      const stateId = stateKey as keyof typeof vmtData;
-      // NOTE: stateData is really "regionTotals" on the first loop, so skip it
-      if (stateId !== "regionTotals") {
-        Object.entries(stateValue).forEach(([regionKey, regionValue]) => {
-          const regionId = regionKey as keyof typeof stateValue;
-          // NOTE: regionId is really "allRegions" on the first loop, so skip it
-          if (regionId !== "allRegions") {
-            object[stateId] ??= {};
-            object[stateId][regionId] ??= {
-              cars: 0,
-              trucks: 0,
-              transitBuses: 0,
-              schoolBuses: 0,
-            };
-
-            const stateTotals = stateValue.allRegions;
-            const stateRegionData = object[stateId][regionId];
-
-            if (stateTotals && stateRegionData) {
-              Object.keys(regionValue).forEach((key) => {
-                const vehicleType = key as keyof typeof regionValue;
-
-                if (vehicleType !== "allLDVs" && vehicleType !== "allBuses") {
-                  stateRegionData[vehicleType] =
-                    regionValue[vehicleType].total /
-                    stateTotals[vehicleType].total;
-                }
-              });
-            }
-          }
-        });
-      }
-
-      return object;
-    },
-    {} as {
-      [stateId in StateId]: Partial<{
-        [regionId in RegionId]: {
-          cars: number;
-          trucks: number;
-          transitBuses: number;
-          schoolBuses: number;
-        };
-      }>;
-    },
-  );
 
   return result;
 }
