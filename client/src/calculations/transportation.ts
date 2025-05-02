@@ -519,58 +519,110 @@ export function calculateMonthlyStats(options: { dailyStats: DailyStats }) {
 }
 
 /**
- * Accumulated county level VMT data per vehicle type by AVERT region, state,
- * and county.
- *
- * Aggregates totals of cars, trucks, transit buses and school buses for each
- * county, state, region (region total, as well as state totals within each
- * region) from County FIPs data.
+ * Aggregates total county level VMT data per vehicle category by county, state,
+ * and AVERT region (region total, as well as state totals within each region)
+ * from County FIPS data.
  *
  * Excel: Not stored in any table, but used in calculating values in the "From
  * vehicles" column in the table in the "11_VehicleCty" sheet (column H).
+ *
+ * The formula for the "From vehicles" column is incredibly long and complex, so
+ * this function is used to break out and store the results of lot of those
+ * individual of those calculations (which are added, subtracted, multiplied,
+ * and divided). For example, the following is a tiny snippet from the Excel
+ * formula that sums the VMT of all passenger cars for the AVERT region that the
+ * particular county falls within:
+ * `SUMIFS(CountyFIPS!$K:$K,CountyFIPS!$E:$E,regionNameLibrary`
+ *
+ * It's also more efficient to calculate these values once and store them, as
+ * there's no reason to loop through the entire County FIPS data set and
+ * re-calculate them every time the EV deployment location changes.
  */
 export function calculateVMTTotalsByGeography(options: {
+  regionIdsByRegionName: {
+    [regionName: string]: RegionId;
+  };
   countyFips: CountyFIPS;
 }) {
-  const { countyFips } = options;
-
-  type VMTPerVehicleType = { [vehicleType in _AbridgedVehicleType]: number };
-
-  const regionIds = Object.values(regions).reduce(
-    (object, { id, name }) => {
-      object[name] = id;
-      return object;
-    },
-    {} as { [regionName: string]: RegionId },
-  );
+  const { regionIdsByRegionName, countyFips } = options;
 
   const result = countyFips.reduce(
     (object, data) => {
-      const regionId = regionIds[data["AVERT Region"]];
+      const regionId = regionIdsByRegionName[data["AVERT Region"]];
       const stateId = data["Postal State Code"] as StateId;
       const county = data["County Name Long"];
+
       const vmtData = {
-        cars: data["Passenger Cars VMT"] || 0,
-        trucks: data["Passenger Trucks and Light Commercial Trucks VMT"] || 0,
-        transitBuses: data["Transit Buses VMT"] || 0,
-        schoolBuses: data["School Buses VMT"] || 0,
+        "Passenger cars": data["VMT"]["Passenger cars"] || 0,
+        "Passenger trucks": data["VMT"]["Passenger trucks"] || 0,
+        "Transit buses": data["VMT - Collapsed"]["Transit buses"] || 0,
+        "School buses": data["VMT - Collapsed"]["School buses"] || 0,
+        "Other buses": data["VMT - Collapsed"]["Other buses"] || 0,
+        "Short-haul trucks": data["VMT - Collapsed"]["Short-haul trucks"] || 0,
+        "Long-haul trucks": data["VMT"]["Combination long-haul trucks"] || 0,
+        "Refuse trucks": data["VMT - Collapsed"]["Refuse trucks"] || 0,
       };
 
       if (regionId) {
         object.regions[regionId] ??= {
-          total: { cars: 0, trucks: 0, transitBuses: 0, schoolBuses: 0 },
-          states: {} as { [stateId in StateId]: VMTPerVehicleType },
+          total: {
+            "Passenger cars": 0,
+            "Passenger trucks": 0,
+            "Transit buses": 0,
+            "School buses": 0,
+            "Other buses": 0,
+            "Short-haul trucks": 0,
+            "Long-haul trucks": 0,
+            "Refuse trucks": 0,
+          },
+          states: {} as {
+            [stateId in StateId]: {
+              [expandedVehicleCategory in ExpandedVehicleCategory]: number;
+            };
+          },
         };
-        object.regions[regionId].states[stateId] ??= { cars: 0, trucks: 0, transitBuses: 0, schoolBuses: 0 } // prettier-ignore
-        object.states[stateId] ??= { cars: 0, trucks: 0, transitBuses: 0, schoolBuses: 0 }; // prettier-ignore
-        object.counties[stateId] ??= {};
-        object.counties[stateId][county] ??= { cars: 0, trucks: 0, transitBuses: 0, schoolBuses: 0 }; // prettier-ignore
 
-        _abridgedVehicleTypes.forEach((vehicleType) => {
-          object.regions[regionId].total[vehicleType] += vmtData[vehicleType];
-          object.regions[regionId].states[stateId][vehicleType] += vmtData[vehicleType]; // prettier-ignore
-          object.states[stateId][vehicleType] += vmtData[vehicleType];
-          object.counties[stateId][county][vehicleType] += vmtData[vehicleType];
+        object.regions[regionId].states[stateId] ??= {
+          "Passenger cars": 0,
+          "Passenger trucks": 0,
+          "Transit buses": 0,
+          "School buses": 0,
+          "Other buses": 0,
+          "Short-haul trucks": 0,
+          "Long-haul trucks": 0,
+          "Refuse trucks": 0,
+        };
+
+        object.states[stateId] ??= {
+          "Passenger cars": 0,
+          "Passenger trucks": 0,
+          "Transit buses": 0,
+          "School buses": 0,
+          "Other buses": 0,
+          "Short-haul trucks": 0,
+          "Long-haul trucks": 0,
+          "Refuse trucks": 0,
+        };
+
+        object.counties[stateId] ??= {};
+        object.counties[stateId][county] ??= {
+          "Passenger cars": 0,
+          "Passenger trucks": 0,
+          "Transit buses": 0,
+          "School buses": 0,
+          "Other buses": 0,
+          "Short-haul trucks": 0,
+          "Long-haul trucks": 0,
+          "Refuse trucks": 0,
+        };
+
+        Object.entries(vmtData).forEach(([vmtDataKey, vmtDataValue]) => {
+          const vehicleType = vmtDataKey as keyof typeof vmtData;
+
+          object.regions[regionId].total[vehicleType] += vmtDataValue;
+          object.regions[regionId].states[stateId][vehicleType] += vmtDataValue;
+          object.states[stateId][vehicleType] += vmtDataValue;
+          object.counties[stateId][county][vehicleType] += vmtDataValue;
         });
       }
 
@@ -583,18 +635,26 @@ export function calculateVMTTotalsByGeography(options: {
     } as {
       regions: {
         [regionId in RegionId]: {
-          total: VMTPerVehicleType;
+          total: {
+            [expandedVehicleCategory in ExpandedVehicleCategory]: number;
+          };
           states: {
-            [stateId in StateId]: VMTPerVehicleType;
+            [stateId in StateId]: {
+              [expandedVehicleCategory in ExpandedVehicleCategory]: number;
+            };
           };
         };
       };
       states: {
-        [stateId in StateId]: VMTPerVehicleType;
+        [stateId in StateId]: {
+          [expandedVehicleCategory in ExpandedVehicleCategory]: number;
+        };
       };
       counties: {
         [stateId in StateId]: {
-          [county: string]: VMTPerVehicleType;
+          [county: string]: {
+            [expandedVehicleCategory in ExpandedVehicleCategory]: number;
+          };
         };
       };
     },
