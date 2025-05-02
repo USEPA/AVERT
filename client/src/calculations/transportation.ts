@@ -313,9 +313,6 @@ export type SelectedGeographySalesAndStockByRegion = ReturnType<
 export type _SelectedRegionsStatesVMTPercentages = ReturnType<
   typeof _calculateSelectedRegionsStatesVMTPercentages
 >;
-export type _SelectedRegionsVMTPercentagesPerVehicleType = ReturnType<
-  typeof _calculateSelectedRegionsVMTPercentagesPerVehicleType
->;
 export type VehicleEmissionChangesByGeography = ReturnType<
   typeof calculateVehicleEmissionChangesByGeography
 >;
@@ -4304,74 +4301,6 @@ export function _calculateSelectedRegionsStatesVMTPercentages(options: {
     {} as {
       [regionId in RegionId]: {
         [stateId in StateId]: StateVMTPercentages;
-      };
-    },
-  );
-
-  return result;
-}
-
-/**
- * VMT allocation percentages per vehicle type for the selected regions.
- *
- * Excel: Second table in the "RegionStateAllocate" sheet (H169 and J169)
- */
-export function _calculateSelectedRegionsVMTPercentagesPerVehicleType(options: {
-  _selectedRegionsStatesVMTPercentages:
-    | _SelectedRegionsStatesVMTPercentages
-    | EmptyObject;
-  vmtAllocationPerVehicle: VMTAllocationPerVehicle | EmptyObject;
-}) {
-  const { _selectedRegionsStatesVMTPercentages, vmtAllocationPerVehicle } =
-    options;
-
-  const selectedRegionsVMTData =
-    Object.keys(_selectedRegionsStatesVMTPercentages).length !== 0
-      ? (_selectedRegionsStatesVMTPercentages as _SelectedRegionsStatesVMTPercentages)
-      : null;
-
-  const statesVMTData =
-    Object.keys(vmtAllocationPerVehicle).length !== 0
-      ? (vmtAllocationPerVehicle as VMTAllocationPerVehicle)
-      : null;
-
-  if (!selectedRegionsVMTData) {
-    return {} as {
-      [regionId in RegionId]: {
-        vmtPerLDVPercent: 0;
-        vmtPerBusPercent: 0;
-      };
-    };
-  }
-
-  const result = Object.entries(selectedRegionsVMTData).reduce(
-    (object, [regionKey, regionValue]) => {
-      const regionId = regionKey as keyof typeof selectedRegionsVMTData;
-
-      Object.entries(regionValue).forEach(([stateKey, stateValue]) => {
-        const stateId = stateKey as StateId;
-        const stateVMTData = statesVMTData?.[stateId];
-
-        if (stateVMTData) {
-          const allLDVsPercent = stateValue.allLDVs;
-          const allBusesPercent = stateValue.allBuses;
-
-          const vmtPerLDVPercent = stateVMTData.vmtPerLDV.percent;
-          const vmtPerBusPercent = stateVMTData.vmtPerBus.percent;
-
-          object[regionId] ??= { vmtPerLDVPercent: 0, vmtPerBusPercent: 0 };
-
-          object[regionId].vmtPerLDVPercent += allLDVsPercent * vmtPerLDVPercent; // prettier-ignore
-          object[regionId].vmtPerBusPercent += allBusesPercent * vmtPerBusPercent; // prettier-ignore
-        }
-      });
-
-      return object;
-    },
-    {} as {
-      [regionId in RegionId]: {
-        vmtPerLDVPercent: 0;
-        vmtPerBusPercent: 0;
       };
     },
   );
