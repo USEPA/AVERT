@@ -310,9 +310,6 @@ export type SelectedGeographySalesAndStockByState = ReturnType<
 export type SelectedGeographySalesAndStockByRegion = ReturnType<
   typeof calculateSelectedGeographySalesAndStockByRegion
 >;
-export type _SelectedRegionsStatesVMTPercentages = ReturnType<
-  typeof _calculateSelectedRegionsStatesVMTPercentages
->;
 export type VehicleEmissionChangesByGeography = ReturnType<
   typeof calculateVehicleEmissionChangesByGeography
 >;
@@ -4225,82 +4222,6 @@ export function calculateSelectedGeographySalesAndStockByRegion(options: {
       [vehicleCategory in SalesAndStockVehicleCategory]: {
         sales: number;
         stock: number;
-      };
-    },
-  );
-
-  return result;
-}
-
-/**
- * VMT allocation percentages for the selected state or the selected region's
- * states.
- *
- * Excel: First table in the "RegionStateAllocate" sheet (CI58:CN107)
- */
-export function _calculateSelectedRegionsStatesVMTPercentages(options: {
-  selectedGeographyRegionIds: RegionId[];
-  vmtBillionsAndPercentages: VMTBillionsAndPercentages | EmptyObject;
-}) {
-  const { selectedGeographyRegionIds, vmtBillionsAndPercentages } = options;
-
-  type StateVMTPercentages = {
-    cars: number;
-    trucks: number;
-    transitBuses: number;
-    schoolBuses: number;
-    allLDVs: number;
-    allBuses: number;
-  };
-
-  const vmtData =
-    Object.keys(vmtBillionsAndPercentages).length !== 0
-      ? (vmtBillionsAndPercentages as VMTBillionsAndPercentages)
-      : null;
-
-  if (selectedGeographyRegionIds.length === 0 || !vmtData) {
-    return {} as {
-      [regionId in RegionId]: {
-        [stateId in StateId]: StateVMTPercentages;
-      };
-    };
-  }
-
-  const result = Object.entries(vmtData).reduce(
-    (object, [stateKey, stateValue]) => {
-      const stateId = stateKey as keyof typeof vmtData;
-
-      if (stateId === "regionTotals") return object;
-
-      const stateRegionIds = Object.keys(stateValue); // NOTE: also includes "allRegions" key
-      const stateVMTData = vmtData?.[stateId];
-
-      selectedGeographyRegionIds.forEach((regionId) => {
-        if (stateVMTData && stateRegionIds.includes(regionId)) {
-          const selectedRegionData = stateVMTData[regionId];
-
-          if (selectedRegionData) {
-            object[regionId] ??= {} as {
-              [stateId in StateId]: StateVMTPercentages;
-            };
-
-            object[regionId][stateId] = {
-              cars: selectedRegionData.cars.percent,
-              trucks: selectedRegionData.trucks.percent,
-              transitBuses: selectedRegionData.transitBuses.percent,
-              schoolBuses: selectedRegionData.schoolBuses.percent,
-              allLDVs: selectedRegionData.allLDVs.percent,
-              allBuses: selectedRegionData.allBuses.percent,
-            };
-          }
-        }
-      });
-
-      return object;
-    },
-    {} as {
-      [regionId in RegionId]: {
-        [stateId in StateId]: StateVMTPercentages;
       };
     },
   );
