@@ -38,9 +38,9 @@ import {
   type SelectedRegionsYearlyEmissionChangesTotals,
   type SelectedGeographySalesAndStockByState,
   type SelectedGeographySalesAndStockByRegion,
-  type VehicleEmissionChangesByGeography,
   type SelectedRegionsEEREDefaultsAverages,
   type EVDeploymentLocationHistoricalEERE,
+  type VehicleEmissionChangesByGeography,
   vehicleTypesByVehicleCategory,
   storeHourlyEVLoadProfiles,
   calculateDailyStats,
@@ -79,9 +79,9 @@ import {
   calculateSelectedRegionsYearlyEmissionChangesTotals,
   calculateSelectedGeographySalesAndStockByState,
   calculateSelectedGeographySalesAndStockByRegion,
-  calculateVehicleEmissionChangesByGeography,
   calculateSelectedRegionsEEREDefaultsAverages,
   calculateEVDeploymentLocationHistoricalEERE,
+  calculateVehicleEmissionChangesByGeography,
 } from "@/calculations/transportation";
 import { type EmptyObject } from "@/utilities";
 import {
@@ -362,12 +362,6 @@ type Action =
       };
     }
   | {
-      type: "transportation/SET_VEHICLE_EMISSION_CHANGES_BY_GEOGRAPHY";
-      payload: {
-        vehicleEmissionChangesByGeography: VehicleEmissionChangesByGeography;
-      };
-    }
-  | {
       type: "transportation/SET_SELECTED_REGIONS_EERE_DEFAULTS_AVERAGES";
       payload: {
         selectedRegionsEEREDefaultsAverages: SelectedRegionsEEREDefaultsAverages;
@@ -377,6 +371,12 @@ type Action =
       type: "transportation/SET_EV_DEPLOYMENT_LOCATION_HISTORICAL_EERE";
       payload: {
         evDeploymentLocationHistoricalEERE: EVDeploymentLocationHistoricalEERE;
+      };
+    }
+  | {
+      type: "transportation/SET_VEHICLE_EMISSION_CHANGES_BY_GEOGRAPHY";
+      payload: {
+        vehicleEmissionChangesByGeography: VehicleEmissionChangesByGeography;
       };
     };
 
@@ -458,11 +458,11 @@ type State = {
   selectedGeographySalesAndStockByRegion:
     | SelectedGeographySalesAndStockByRegion
     | EmptyObject;
+  selectedRegionsEEREDefaultsAverages: SelectedRegionsEEREDefaultsAverages;
+  evDeploymentLocationHistoricalEERE: EVDeploymentLocationHistoricalEERE;
   vehicleEmissionChangesByGeography:
     | VehicleEmissionChangesByGeography
     | EmptyObject;
-  selectedRegionsEEREDefaultsAverages: SelectedRegionsEEREDefaultsAverages;
-  evDeploymentLocationHistoricalEERE: EVDeploymentLocationHistoricalEERE;
 };
 
 const initialState: State = {
@@ -503,12 +503,12 @@ const initialState: State = {
   selectedRegionsYearlyEmissionChangesTotals: {},
   selectedGeographySalesAndStockByState: {},
   selectedGeographySalesAndStockByRegion: {},
-  vehicleEmissionChangesByGeography: {},
   selectedRegionsEEREDefaultsAverages: {},
   evDeploymentLocationHistoricalEERE: {
     averageAnnualCapacityAddedMW: { wind: 0, upv: 0, ee: 0 },
     estimatedAnnualRetailImpactsGWh: { wind: 0, upv: 0, ee: 0 },
   },
+  vehicleEmissionChangesByGeography: {},
 };
 
 export default function reducer(
@@ -853,15 +853,6 @@ export default function reducer(
       };
     }
 
-    case "transportation/SET_VEHICLE_EMISSION_CHANGES_BY_GEOGRAPHY": {
-      const { vehicleEmissionChangesByGeography } = action.payload;
-
-      return {
-        ...state,
-        vehicleEmissionChangesByGeography,
-      };
-    }
-
     case "transportation/SET_SELECTED_REGIONS_EERE_DEFAULTS_AVERAGES": {
       const { selectedRegionsEEREDefaultsAverages } = action.payload;
 
@@ -877,6 +868,15 @@ export default function reducer(
       return {
         ...state,
         evDeploymentLocationHistoricalEERE,
+      };
+    }
+
+    case "transportation/SET_VEHICLE_EMISSION_CHANGES_BY_GEOGRAPHY": {
+      const { vehicleEmissionChangesByGeography } = action.payload;
+
+      return {
+        ...state,
+        vehicleEmissionChangesByGeography,
       };
     }
 

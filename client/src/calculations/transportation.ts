@@ -299,14 +299,14 @@ export type SelectedGeographySalesAndStockByState = ReturnType<
 export type SelectedGeographySalesAndStockByRegion = ReturnType<
   typeof calculateSelectedGeographySalesAndStockByRegion
 >;
-export type VehicleEmissionChangesByGeography = ReturnType<
-  typeof calculateVehicleEmissionChangesByGeography
->;
 export type SelectedRegionsEEREDefaultsAverages = ReturnType<
   typeof calculateSelectedRegionsEEREDefaultsAverages
 >;
 export type EVDeploymentLocationHistoricalEERE = ReturnType<
   typeof calculateEVDeploymentLocationHistoricalEERE
+>;
+export type VehicleEmissionChangesByGeography = ReturnType<
+  typeof calculateVehicleEmissionChangesByGeography
 >;
 
 /**
@@ -3121,6 +3121,173 @@ export function calculateSelectedGeographySalesAndStockByRegion(options: {
 }
 
 /**
+ * Calculates averages of the selected region(s)' hourly EERE Defaults for both
+ * onshore wind and utility solar. These average RE values are used in setting
+ * the historical RE data for Onshore Wind and Unitity Solar's GWh values in the
+ * `EEREEVComparisonTable` component.
+ *
+ * Excel: Used in calculating values for cells F680 and G680 of the "Table 13:
+ * Historical renewable and energy efficiency addition data" table in the
+ * "Library" sheet.
+ */
+export function calculateSelectedRegionsEEREDefaultsAverages(options: {
+  selectedGeographyRegions: SelectedGeographyRegions;
+  regionalScalingFactors: RegionalScalingFactors;
+}) {
+  const { selectedGeographyRegions, regionalScalingFactors } = options;
+
+  const result: Partial<{
+    [regionId in RegionId]: {
+      wind: number;
+      upv: number;
+    };
+  }> = {};
+
+  if (Object.keys(selectedGeographyRegions).length === 0) {
+    return result;
+  }
+
+  /**
+   * Build up results by region, using the regional scaling factor.
+   */
+  Object.entries(regionalScalingFactors).forEach(
+    ([scalingFactorKey, scalingFactorValue]) => {
+      const regionId = scalingFactorKey as keyof typeof regionalScalingFactors;
+
+      result[regionId] ??= {
+        wind: scalingFactorValue,
+        upv: scalingFactorValue,
+      };
+
+      const regionEEREDefaults =
+        selectedGeographyRegions[regionId]?.eereDefaults.data;
+
+      if (!regionEEREDefaults) {
+        return result;
+      }
+
+      const totalHours = regionEEREDefaults.length;
+
+      const eereDefaultsTotals = regionEEREDefaults.reduce(
+        (total, hourlyEereDefault) => {
+          total.wind += hourlyEereDefault.onshore_wind;
+          total.upv += hourlyEereDefault.utility_pv;
+          return total;
+        },
+        { wind: 0, upv: 0 },
+      );
+
+      result[regionId].wind *= eereDefaultsTotals.wind / totalHours;
+      result[regionId].upv *= eereDefaultsTotals.upv / totalHours;
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Historical EERE data for the EV deployment location (entire region or state).
+ *
+ * Excel: "Table 13: Historical renewable and energy efficiency addition data"
+ * table in the "Library" sheet (C956:H956).
+ */
+export function calculateEVDeploymentLocationHistoricalEERE(options: {
+  selectedRegionsEEREDefaultsAverages: SelectedRegionsEEREDefaultsAverages;
+  historicalRegionEEREData: HistoricalRegionEEREData;
+  historicalStateEEREData: HistoricalStateEEREData;
+  evDeploymentLocation: string;
+  regionalLineLoss: number;
+  regions: { [regionId in RegionId]: RegionState };
+}) {
+  const {
+    selectedRegionsEEREDefaultsAverages,
+    historicalRegionEEREData,
+    historicalStateEEREData,
+    evDeploymentLocation,
+    regionalLineLoss,
+    regions,
+  } = options;
+
+  const result = {
+    averageAnnualCapacityAddedMW: { wind: 0, upv: 0, ee: 0 },
+    estimatedAnnualRetailImpactsGWh: { wind: 0, upv: 0, ee: 0 },
+  };
+
+  if (Object.keys(selectedRegionsEEREDefaultsAverages).length === 0) {
+    return result;
+  }
+
+  const deploymentLocationIsRegion = evDeploymentLocation.startsWith("region-");
+  const deploymentLocationStateId = evDeploymentLocation.replace("state-", "") as StateId; // prettier-ignore
+
+  const GWtoMW = 1_000;
+  const hoursInYear = 8_760;
+
+  const retailImpacts = Object.entries(
+    selectedRegionsEEREDefaultsAverages,
+  ).reduce(
+    (object, [eereDefaultsKey, eereDefaultsValue]) => {
+      const regionId = eereDefaultsKey as keyof typeof selectedRegionsEEREDefaultsAverages; // prettier-ignore
+      const { wind, upv } = eereDefaultsValue;
+
+      const regionName = Object.values(regions).find((region) => {
+        return region.id === regionId;
+      })?.name;
+
+      const regionEEREAverage = historicalRegionEEREData.find((data) => {
+        return data["Region"] === regionName;
+      });
+
+      const regionEEREAverageWind = regionEEREAverage?.["Wind"] || 0;
+      const regionEEREAverageUPV = regionEEREAverage?.["UPV"] || 0;
+
+      object.wind += (wind * hoursInYear * regionEEREAverageWind) / GWtoMW;
+      object.upv += (upv * hoursInYear * regionEEREAverageUPV) / GWtoMW;
+
+      return object;
+    },
+    { wind: 0, upv: 0 },
+  );
+
+  const selectedRegion = Object.values(regions).find((r) => r.selected);
+  const selectedRegionName = selectedRegion?.name || "";
+
+  const regionEEREAverage = historicalRegionEEREData.find((data) => {
+    return data["Region"] === selectedRegionName;
+  });
+
+  const stateEEREAverage = historicalStateEEREData.find((data) => {
+    return data["State"] === deploymentLocationStateId;
+  });
+
+  const windCapacityAdded = deploymentLocationIsRegion
+    ? regionEEREAverage?.["Wind"] || 0
+    : stateEEREAverage?.["Wind"] || 0;
+
+  const upvCapacityAdded = deploymentLocationIsRegion
+    ? regionEEREAverage?.["UPV"] || 0
+    : stateEEREAverage?.["UPV"] || 0;
+
+  const eeRetailImpacts = deploymentLocationIsRegion
+    ? regionEEREAverage?.["EE"] || 0
+    : stateEEREAverage?.["EE"] || 0;
+
+  const eeCapacityAdded = deploymentLocationIsRegion
+    ? ((eeRetailImpacts / 1 - regionalLineLoss) * GWtoMW) / hoursInYear
+    : (eeRetailImpacts * GWtoMW) / hoursInYear;
+
+  result.averageAnnualCapacityAddedMW.wind = windCapacityAdded;
+  result.averageAnnualCapacityAddedMW.upv = upvCapacityAdded;
+  result.averageAnnualCapacityAddedMW.ee = eeCapacityAdded;
+
+  result.estimatedAnnualRetailImpactsGWh.wind = retailImpacts.wind;
+  result.estimatedAnnualRetailImpactsGWh.upv = retailImpacts.upv;
+  result.estimatedAnnualRetailImpactsGWh.ee = eeRetailImpacts;
+
+  return result;
+}
+
+/**
  * Calculates vehicle emission changes at the county, state, and total levels
  * for the selected geography.
  *
@@ -3287,173 +3454,6 @@ export function calculateVehicleEmissionChangesByGeography(options: {
       });
     }
   }
-
-  return result;
-}
-
-/**
- * Calculates averages of the selected region(s)' hourly EERE Defaults for both
- * onshore wind and utility solar. These average RE values are used in setting
- * the historical RE data for Onshore Wind and Unitity Solar's GWh values in the
- * `EEREEVComparisonTable` component.
- *
- * Excel: Used in calculating values for cells F680 and G680 of the "Table 13:
- * Historical renewable and energy efficiency addition data" table in the
- * "Library" sheet.
- */
-export function calculateSelectedRegionsEEREDefaultsAverages(options: {
-  selectedGeographyRegions: SelectedGeographyRegions;
-  regionalScalingFactors: RegionalScalingFactors;
-}) {
-  const { selectedGeographyRegions, regionalScalingFactors } = options;
-
-  const result: Partial<{
-    [regionId in RegionId]: {
-      wind: number;
-      upv: number;
-    };
-  }> = {};
-
-  if (Object.keys(selectedGeographyRegions).length === 0) {
-    return result;
-  }
-
-  /**
-   * Build up results by region, using the regional scaling factor.
-   */
-  Object.entries(regionalScalingFactors).forEach(
-    ([scalingFactorKey, scalingFactorValue]) => {
-      const regionId = scalingFactorKey as keyof typeof regionalScalingFactors;
-
-      result[regionId] ??= {
-        wind: scalingFactorValue,
-        upv: scalingFactorValue,
-      };
-
-      const regionEEREDefaults =
-        selectedGeographyRegions[regionId]?.eereDefaults.data;
-
-      if (!regionEEREDefaults) {
-        return result;
-      }
-
-      const totalHours = regionEEREDefaults.length;
-
-      const eereDefaultsTotals = regionEEREDefaults.reduce(
-        (total, hourlyEereDefault) => {
-          total.wind += hourlyEereDefault.onshore_wind;
-          total.upv += hourlyEereDefault.utility_pv;
-          return total;
-        },
-        { wind: 0, upv: 0 },
-      );
-
-      result[regionId].wind *= eereDefaultsTotals.wind / totalHours;
-      result[regionId].upv *= eereDefaultsTotals.upv / totalHours;
-    },
-  );
-
-  return result;
-}
-
-/**
- * Historical EERE data for the EV deployment location (entire region or state).
- *
- * Excel: "Table 13: Historical renewable and energy efficiency addition data"
- * table in the "Library" sheet (C956:H956).
- */
-export function calculateEVDeploymentLocationHistoricalEERE(options: {
-  selectedRegionsEEREDefaultsAverages: SelectedRegionsEEREDefaultsAverages;
-  historicalRegionEEREData: HistoricalRegionEEREData;
-  historicalStateEEREData: HistoricalStateEEREData;
-  evDeploymentLocation: string;
-  regionalLineLoss: number;
-  regions: { [regionId in RegionId]: RegionState };
-}) {
-  const {
-    selectedRegionsEEREDefaultsAverages,
-    historicalRegionEEREData,
-    historicalStateEEREData,
-    evDeploymentLocation,
-    regionalLineLoss,
-    regions,
-  } = options;
-
-  const result = {
-    averageAnnualCapacityAddedMW: { wind: 0, upv: 0, ee: 0 },
-    estimatedAnnualRetailImpactsGWh: { wind: 0, upv: 0, ee: 0 },
-  };
-
-  if (Object.keys(selectedRegionsEEREDefaultsAverages).length === 0) {
-    return result;
-  }
-
-  const deploymentLocationIsRegion = evDeploymentLocation.startsWith("region-");
-  const deploymentLocationStateId = evDeploymentLocation.replace("state-", "") as StateId; // prettier-ignore
-
-  const GWtoMW = 1_000;
-  const hoursInYear = 8_760;
-
-  const retailImpacts = Object.entries(
-    selectedRegionsEEREDefaultsAverages,
-  ).reduce(
-    (object, [eereDefaultsKey, eereDefaultsValue]) => {
-      const regionId = eereDefaultsKey as keyof typeof selectedRegionsEEREDefaultsAverages; // prettier-ignore
-      const { wind, upv } = eereDefaultsValue;
-
-      const regionName = Object.values(regions).find((region) => {
-        return region.id === regionId;
-      })?.name;
-
-      const regionEEREAverage = historicalRegionEEREData.find((data) => {
-        return data["Region"] === regionName;
-      });
-
-      const regionEEREAverageWind = regionEEREAverage?.["Wind"] || 0;
-      const regionEEREAverageUPV = regionEEREAverage?.["UPV"] || 0;
-
-      object.wind += (wind * hoursInYear * regionEEREAverageWind) / GWtoMW;
-      object.upv += (upv * hoursInYear * regionEEREAverageUPV) / GWtoMW;
-
-      return object;
-    },
-    { wind: 0, upv: 0 },
-  );
-
-  const selectedRegion = Object.values(regions).find((r) => r.selected);
-  const selectedRegionName = selectedRegion?.name || "";
-
-  const regionEEREAverage = historicalRegionEEREData.find((data) => {
-    return data["Region"] === selectedRegionName;
-  });
-
-  const stateEEREAverage = historicalStateEEREData.find((data) => {
-    return data["State"] === deploymentLocationStateId;
-  });
-
-  const windCapacityAdded = deploymentLocationIsRegion
-    ? regionEEREAverage?.["Wind"] || 0
-    : stateEEREAverage?.["Wind"] || 0;
-
-  const upvCapacityAdded = deploymentLocationIsRegion
-    ? regionEEREAverage?.["UPV"] || 0
-    : stateEEREAverage?.["UPV"] || 0;
-
-  const eeRetailImpacts = deploymentLocationIsRegion
-    ? regionEEREAverage?.["EE"] || 0
-    : stateEEREAverage?.["EE"] || 0;
-
-  const eeCapacityAdded = deploymentLocationIsRegion
-    ? ((eeRetailImpacts / 1 - regionalLineLoss) * GWtoMW) / hoursInYear
-    : (eeRetailImpacts * GWtoMW) / hoursInYear;
-
-  result.averageAnnualCapacityAddedMW.wind = windCapacityAdded;
-  result.averageAnnualCapacityAddedMW.upv = upvCapacityAdded;
-  result.averageAnnualCapacityAddedMW.ee = eeCapacityAdded;
-
-  result.estimatedAnnualRetailImpactsGWh.wind = retailImpacts.wind;
-  result.estimatedAnnualRetailImpactsGWh.upv = retailImpacts.upv;
-  result.estimatedAnnualRetailImpactsGWh.ee = eeRetailImpacts;
 
   return result;
 }
