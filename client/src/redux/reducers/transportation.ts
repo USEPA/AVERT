@@ -5,7 +5,6 @@ import {
   type DailyStats,
   type MonthlyStats,
   type VMTTotalsByGeography,
-  type VMTBillionsAndPercentages,
   type MonthlyVMTTotals,
   type YearlyVMTTotals,
   type MonthlyVMTPercentages,
@@ -47,7 +46,6 @@ import {
   calculateDailyStats,
   calculateMonthlyStats,
   calculateVMTTotalsByGeography,
-  calculateVMTBillionsAndPercentages,
   calculateMonthlyVMTTotals,
   calculateYearlyVMTTotals,
   calculateMonthlyVMTPercentages,
@@ -168,12 +166,6 @@ type Action =
   | {
       type: "transportation/SET_VMT_TOTALS_BY_GEOGRAPHY";
       payload: { vmtTotalsByGeography: VMTTotalsByGeography };
-    }
-  | {
-      type: "transportation/SET_VMT_BILLIONS_AND_PERCENTAGES";
-      payload: {
-        vmtBillionsAndPercentages: VMTBillionsAndPercentages;
-      };
     }
   | {
       type: "transportation/SET_MONTHLY_VMT_TOTALS";
@@ -393,7 +385,6 @@ type State = {
   dailyStats: DailyStats;
   monthlyStats: MonthlyStats;
   vmtTotalsByGeography: VMTTotalsByGeography | EmptyObject;
-  vmtBillionsAndPercentages: VMTBillionsAndPercentages | EmptyObject;
   monthlyVMTTotals: MonthlyVMTTotals | EmptyObject;
   yearlyVMTTotals: YearlyVMTTotals | EmptyObject;
   monthlyVMTPercentages: MonthlyVMTPercentages | EmptyObject;
@@ -479,7 +470,6 @@ const initialState: State = {
   dailyStats: {},
   monthlyStats: {},
   vmtTotalsByGeography: {},
-  vmtBillionsAndPercentages: {},
   monthlyVMTTotals: {},
   yearlyVMTTotals: {},
   monthlyVMTPercentages: {},
@@ -559,15 +549,6 @@ export default function reducer(
       return {
         ...state,
         vmtTotalsByGeography,
-      };
-    }
-
-    case "transportation/SET_VMT_BILLIONS_AND_PERCENTAGES": {
-      const { vmtBillionsAndPercentages } = action.payload;
-
-      return {
-        ...state,
-        vmtBillionsAndPercentages,
       };
     }
 
@@ -925,10 +906,6 @@ export function setVMTData(): AppThunk {
       countyFips,
     });
 
-    const vmtBillionsAndPercentages = calculateVMTBillionsAndPercentages({
-      countyFips,
-    });
-
     const monthlyVMTTotals = calculateMonthlyVMTTotals({ movesEmissionRates });
 
     const yearlyVMTTotals = calculateYearlyVMTTotals({ monthlyVMTTotals });
@@ -991,11 +968,6 @@ export function setVMTData(): AppThunk {
     dispatch({
       type: "transportation/SET_VMT_TOTALS_BY_GEOGRAPHY",
       payload: { vmtTotalsByGeography },
-    });
-
-    dispatch({
-      type: "transportation/SET_VMT_BILLIONS_AND_PERCENTAGES",
-      payload: { vmtBillionsAndPercentages },
     });
 
     dispatch({

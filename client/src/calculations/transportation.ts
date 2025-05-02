@@ -26,8 +26,6 @@ import {
   type RegionId,
   type RegionName,
   type StateId,
-  regions,
-  states,
 } from "@/config";
 
 const pollutants = ["co2", "nox", "so2", "pm25", "vocs", "nh3"] as const;
@@ -210,9 +208,6 @@ export type DailyStats = ReturnType<typeof calculateDailyStats>;
 export type MonthlyStats = ReturnType<typeof calculateMonthlyStats>;
 export type VMTTotalsByGeography = ReturnType<
   typeof calculateVMTTotalsByGeography
->;
-export type VMTBillionsAndPercentages = ReturnType<
-  typeof calculateVMTBillionsAndPercentages
 >;
 export type MonthlyVMTTotals = ReturnType<typeof calculateMonthlyVMTTotals>;
 export type YearlyVMTTotals = ReturnType<typeof calculateYearlyVMTTotals>;
@@ -603,178 +598,6 @@ export function calculateVMTTotalsByGeography(options: {
     },
     {} as typeof result.counties,
   );
-
-  return result;
-}
-
-/**
- * VMT allocation by state and AVERT region (in billions and percentages).
- *
- * Excel: First table in the "RegionStateAllocate" sheet (B6:BF108)
- */
-export function calculateVMTBillionsAndPercentages(options: {
-  countyFips: CountyFIPS;
-}) {
-  const { countyFips } = options;
-
-  // initialize result object with state keys and regionTotals key
-  const result = Object.keys(states).reduce(
-    (data, stateId) => {
-      data[stateId as StateId] = {};
-      return data;
-    },
-    { regionTotals: {} } as {
-      [stateId in StateId | "regionTotals"]: Partial<{
-        [regionId in RegionId | "allRegions"]: {
-          cars: { total: number; percent: number };
-          trucks: { total: number; percent: number };
-          transitBuses: { total: number; percent: number };
-          schoolBuses: { total: number; percent: number };
-          allLDVs: { total: number; percent: number };
-          allBuses: { total: number; percent: number };
-        };
-      }>;
-    },
-  );
-
-  const regionIds = Object.values(regions).reduce(
-    (object, { id, name }) => {
-      object[name] = id;
-      return object;
-    },
-    {} as { [regionName: string]: RegionId },
-  );
-
-  // populate vmt totals data for each state, organized by region, and initialize
-  // allRegions object for storing totals of all region data in the state
-  countyFips.forEach((data) => {
-    const stateId = data["Postal State Code"] as StateId;
-    const regionId = regionIds[data["AVERT Region"]];
-    const carsVMT = data["Passenger Cars VMT"] || 0;
-    const trucksVMT = data["Passenger Trucks and Light Commercial Trucks VMT"] || 0; // prettier-ignore
-    const transitBusesVMT = data["Transit Buses VMT"] || 0;
-    const schoolBusesVMT = data["School Buses VMT"] || 0;
-
-    if (result[stateId]) {
-      result[stateId].allRegions ??= {
-        cars: { total: 0, percent: 0 },
-        trucks: { total: 0, percent: 0 },
-        transitBuses: { total: 0, percent: 0 },
-        schoolBuses: { total: 0, percent: 0 },
-        allLDVs: { total: 0, percent: 0 },
-        allBuses: { total: 0, percent: 0 },
-      };
-
-      result[stateId][regionId] ??= {
-        cars: { total: 0, percent: 0 },
-        trucks: { total: 0, percent: 0 },
-        transitBuses: { total: 0, percent: 0 },
-        schoolBuses: { total: 0, percent: 0 },
-        allLDVs: { total: 0, percent: 0 },
-        allBuses: { total: 0, percent: 0 },
-      };
-
-      const regionValues = result[stateId][regionId];
-
-      if (regionValues) {
-        const cars = carsVMT / 1_000_000_000;
-        const trucks = trucksVMT / 1_000_000_000;
-        const transitBuses = transitBusesVMT / 1_000_000_000;
-        const schoolBuses = schoolBusesVMT / 1_000_000_000;
-
-        regionValues.cars.total += cars;
-        regionValues.trucks.total += trucks;
-        regionValues.transitBuses.total += transitBuses;
-        regionValues.schoolBuses.total += schoolBuses;
-        regionValues.allLDVs.total += cars + trucks;
-        regionValues.allBuses.total += transitBuses + schoolBuses;
-      }
-    }
-  });
-
-  // build up the currently empty result.regionTotals object to be the total vmt
-  // data for each region, across all states
-  Object.entries(result).forEach(([stateId, stateData]) => {
-    // NOTE: stateData is really "regionTotals" on the first loop, so skip it
-    if (stateId !== "regionTotals") {
-      Object.entries(stateData).forEach(([regionId, regionData]) => {
-        // NOTE: regionId is really "allRegions" on the first loop, so skip it
-        if (regionId !== "allRegions") {
-          result.regionTotals[regionId as RegionId] ??= {
-            cars: { total: 0, percent: 1 },
-            trucks: { total: 0, percent: 1 },
-            transitBuses: { total: 0, percent: 1 },
-            schoolBuses: { total: 0, percent: 1 },
-            allLDVs: { total: 0, percent: 1 },
-            allBuses: { total: 0, percent: 1 },
-          };
-
-          const regionTotalData = result.regionTotals[regionId as RegionId];
-
-          if (regionTotalData) {
-            regionTotalData.cars.total += regionData.cars.total;
-            regionTotalData.trucks.total += regionData.trucks.total;
-            regionTotalData.transitBuses.total += regionData.transitBuses.total;
-            regionTotalData.schoolBuses.total += regionData.schoolBuses.total;
-            regionTotalData.allLDVs.total += regionData.allLDVs.total;
-            regionTotalData.allBuses.total += regionData.allBuses.total;
-          }
-        }
-      });
-    }
-  });
-
-  // calculate percentages of vmt data for each state across all states,
-  // and build up each state's "allRegions" data with values from each region
-  Object.entries(result).forEach(([stateId, stateData]) => {
-    // NOTE: stateData is really "regionTotals" on the first loop, so skip it
-    if (stateId !== "regionTotals") {
-      Object.entries(stateData).forEach(([regionId, regionData]) => {
-        // NOTE: regionId is really "allRegions" on the first loop, so skip it
-        if (regionId !== "allRegions") {
-          const regionTotalData = result.regionTotals[regionId as RegionId];
-          const allRegionsData = result[stateId as StateId].allRegions;
-
-          if (regionTotalData && allRegionsData) {
-            const carsTotal = regionData.cars.total;
-            const trucksTotal = regionData.trucks.total;
-            const transitBusesTotal = regionData.transitBuses.total;
-            const schoolBusesTotal = regionData.schoolBuses.total;
-            const allLDVsTotal = regionData.allLDVs.total;
-            const allBusesTotal = regionData.allBuses.total;
-
-            const carsPercent = carsTotal / regionTotalData.cars.total;
-            const trucksPercent = trucksTotal / regionTotalData.trucks.total;
-            const transitBusesPercent = transitBusesTotal / regionTotalData.transitBuses.total; // prettier-ignore
-            const schoolBusesPercent = schoolBusesTotal / regionTotalData.schoolBuses.total; // prettier-ignore
-            const allLDVsPercent = allLDVsTotal / regionTotalData.allLDVs.total;
-            const allBusesPercent = allBusesTotal / regionTotalData.allBuses.total; // prettier-ignore
-
-            regionData.cars.percent = carsPercent;
-            regionData.trucks.percent = trucksPercent;
-            regionData.transitBuses.percent = transitBusesPercent;
-            regionData.schoolBuses.percent = schoolBusesPercent;
-            regionData.allLDVs.percent = allLDVsPercent;
-            regionData.allBuses.percent = allBusesPercent;
-
-            allRegionsData.cars.total += carsTotal;
-            allRegionsData.trucks.total += trucksTotal;
-            allRegionsData.transitBuses.total += transitBusesTotal;
-            allRegionsData.schoolBuses.total += schoolBusesTotal;
-            allRegionsData.allLDVs.total += allLDVsTotal;
-            allRegionsData.allBuses.total += allBusesTotal;
-
-            allRegionsData.cars.percent += carsPercent;
-            allRegionsData.trucks.percent += trucksPercent;
-            allRegionsData.transitBuses.percent += transitBusesPercent;
-            allRegionsData.schoolBuses.percent += schoolBusesPercent;
-            allRegionsData.allLDVs.percent += allLDVsPercent;
-            allRegionsData.allBuses.percent += allBusesPercent;
-          }
-        }
-      });
-    }
-  });
 
   return result;
 }
