@@ -4,7 +4,6 @@ import {
   type RegionState,
 } from "@/redux/reducers/geography";
 import {
-  type CountiesByGeography,
   type RegionalScalingFactors,
   type ClimateAdjustmentFactorByRegion,
   type SelectedGeographyRegions,
@@ -194,18 +193,6 @@ const _generalVehicleTypes = [
   "schoolBuses",
 ] as const;
 
-/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-const _expandedVehicleTypes = [
-  "batteryEVCars",
-  "hybridEVCars",
-  "batteryEVTrucks",
-  "hybridEVTrucks",
-  "transitBusesDiesel",
-  "transitBusesCNG",
-  "transitBusesGasoline",
-  "schoolBuses",
-] as const;
-
 const _pollutants = ["CO2", "NOX", "SO2", "PM25", "VOCs", "NH3"] as const;
 
 type Pollutant = (typeof pollutants)[number];
@@ -238,7 +225,6 @@ type AlternateVehicleCategory =
 
 type _AbridgedVehicleType = (typeof _abridgedVehicleTypes)[number];
 type _GeneralVehicleType = (typeof _generalVehicleTypes)[number];
-type _ExpandedVehicleType = (typeof _expandedVehicleTypes)[number];
 type _Pollutant = (typeof _pollutants)[number];
 
 export type HourlyEVLoadProfiles = ReturnType<typeof storeHourlyEVLoadProfiles>;
@@ -361,9 +347,6 @@ export type _SelectedRegionsMonthlyVMTPerVehicleType = ReturnType<
 export type _VehiclesDisplaced = ReturnType<typeof _calculateVehiclesDisplaced>;
 export type _SelectedRegionsMonthlyEmissionRates = ReturnType<
   typeof _calculateSelectedRegionsMonthlyEmissionRates
->;
-export type _SelectedRegionsMonthlyEmissionChanges = ReturnType<
-  typeof _calculateSelectedRegionsMonthlyEmissionChanges
 >;
 export type VehicleEmissionChangesByGeography = ReturnType<
   typeof calculateVehicleEmissionChangesByGeography
@@ -4787,169 +4770,6 @@ export function _calculateSelectedRegionsMonthlyEmissionRates(options: {
       },
     );
   });
-
-  return result;
-}
-
-/**
- * Monthly emission changes by EV type.
- *
- * Excel: Top half of the "Emission Changes" data from "Table 8: Calculated
- * changes for the transportation sector" table in the "Library" sheet
- * (F314:R361).
- */
-export function _calculateSelectedRegionsMonthlyEmissionChanges(options: {
-  geographicFocus: GeographicFocus;
-  stateVMTPercentagesByRegion: StateVMTPercentagesByRegion | EmptyObject;
-  selectedStateId: StateId | "";
-  _selectedRegionsMonthlyVMTPerVehicleType:
-    | _SelectedRegionsMonthlyVMTPerVehicleType
-    | EmptyObject;
-  _vehiclesDisplaced: _VehiclesDisplaced;
-  _selectedRegionsMonthlyEmissionRates:
-    | _SelectedRegionsMonthlyEmissionRates
-    | EmptyObject;
-  percentageHybridEVMilesDrivenOnElectricity: PercentageHybridEVMilesDrivenOnElectricity;
-}) {
-  const {
-    geographicFocus,
-    stateVMTPercentagesByRegion,
-    selectedStateId,
-    _selectedRegionsMonthlyVMTPerVehicleType,
-    _vehiclesDisplaced,
-    _selectedRegionsMonthlyEmissionRates,
-    percentageHybridEVMilesDrivenOnElectricity,
-  } = options;
-
-  const stateVMTPercentages =
-    Object.keys(stateVMTPercentagesByRegion).length !== 0
-      ? (stateVMTPercentagesByRegion as StateVMTPercentagesByRegion)
-      : null;
-
-  const selectedRegionsVMTData =
-    Object.keys(_selectedRegionsMonthlyVMTPerVehicleType).length !== 0
-      ? (_selectedRegionsMonthlyVMTPerVehicleType as _SelectedRegionsMonthlyVMTPerVehicleType)
-      : null;
-
-  const selectedRegionsRatesData =
-    Object.keys(_selectedRegionsMonthlyEmissionRates).length !== 0
-      ? (_selectedRegionsMonthlyEmissionRates as _SelectedRegionsMonthlyEmissionRates)
-      : null;
-
-  if (!selectedRegionsVMTData || !selectedRegionsRatesData) {
-    return {} as {
-      [regionId in RegionId]: {
-        [month: number]: {
-          [vehicleType in _ExpandedVehicleType]: {
-            [pollutant in _Pollutant]: number;
-          };
-        };
-      };
-    };
-  }
-
-  const result = Object.entries(selectedRegionsVMTData).reduce(
-    (object, [regionVMTKey, regionVMTValue]) => {
-      const regionId = regionVMTKey as keyof typeof selectedRegionsVMTData;
-
-      object[regionId] ??= {};
-
-      /**
-       * NOTE: if a state is selected, we'll need to multiply each monthly
-       * result by the percentage of that state's VMT in the given region
-       */
-      const stateVMTFactors =
-        geographicFocus === "states" && selectedStateId !== ""
-          ? stateVMTPercentages?.[selectedStateId][regionId] || null
-          : null;
-
-      Object.entries(selectedRegionsRatesData).forEach(
-        ([regionRatesKey, regionRatesValue]) => {
-          if (regionRatesKey === regionVMTKey) {
-            Object.entries(regionRatesValue).forEach(
-              ([regionRatesMonthkey, regionRatesMonthValue]) => {
-                const month = Number(regionRatesMonthkey);
-
-                object[regionId][month] ??= {
-                  batteryEVCars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
-                  hybridEVCars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
-                  batteryEVTrucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
-                  hybridEVTrucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
-                  transitBusesDiesel: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
-                  transitBusesCNG: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
-                  transitBusesGasoline: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
-                  schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 }, // prettier-ignore
-                };
-
-                _pollutants.forEach((pollutant) => {
-                  object[regionId][month].batteryEVCars[pollutant] =
-                    (stateVMTFactors ? stateVMTFactors.cars : 1) *
-                    regionRatesMonthValue.cars[pollutant] *
-                    regionVMTValue[month].cars *
-                    _vehiclesDisplaced.batteryEVCars;
-
-                  object[regionId][month].hybridEVCars[pollutant] =
-                    (stateVMTFactors ? stateVMTFactors.cars : 1) *
-                    regionRatesMonthValue.cars[pollutant] *
-                    regionVMTValue[month].cars *
-                    _vehiclesDisplaced.hybridEVCars *
-                    percentageHybridEVMilesDrivenOnElectricity;
-
-                  object[regionId][month].batteryEVTrucks[pollutant] =
-                    (stateVMTFactors ? stateVMTFactors.trucks : 1) *
-                    regionRatesMonthValue.trucks[pollutant] *
-                    regionVMTValue[month].trucks *
-                    _vehiclesDisplaced.batteryEVTrucks;
-
-                  object[regionId][month].hybridEVTrucks[pollutant] =
-                    (stateVMTFactors ? stateVMTFactors.trucks : 1) *
-                    regionRatesMonthValue.trucks[pollutant] *
-                    regionVMTValue[month].trucks *
-                    _vehiclesDisplaced.hybridEVTrucks *
-                    percentageHybridEVMilesDrivenOnElectricity;
-
-                  object[regionId][month].transitBusesDiesel[pollutant] =
-                    (stateVMTFactors ? stateVMTFactors.transitBuses : 1) *
-                    regionRatesMonthValue.transitBusesDiesel[pollutant] *
-                    regionVMTValue[month].transitBusesDiesel *
-                    _vehiclesDisplaced.transitBusesDiesel;
-
-                  object[regionId][month].transitBusesCNG[pollutant] =
-                    (stateVMTFactors ? stateVMTFactors.transitBuses : 1) *
-                    regionRatesMonthValue.transitBusesCNG[pollutant] *
-                    regionVMTValue[month].transitBusesCNG *
-                    _vehiclesDisplaced.transitBusesCNG;
-
-                  object[regionId][month].transitBusesGasoline[pollutant] =
-                    (stateVMTFactors ? stateVMTFactors.transitBuses : 1) *
-                    regionRatesMonthValue.transitBusesGasoline[pollutant] *
-                    regionVMTValue[month].transitBusesGasoline *
-                    _vehiclesDisplaced.transitBusesGasoline;
-
-                  object[regionId][month].schoolBuses[pollutant] =
-                    (stateVMTFactors ? stateVMTFactors.schoolBuses : 1) *
-                    regionRatesMonthValue.schoolBuses[pollutant] *
-                    regionVMTValue[month].schoolBuses *
-                    _vehiclesDisplaced.schoolBuses;
-                });
-              },
-            );
-          }
-        },
-      );
-
-      return object;
-    },
-    {} as {
-      [regionId in RegionId]: {
-        [month: number]: {
-          [vehicleType in _ExpandedVehicleType]: {
-            [pollutant in _Pollutant]: number;
-          };
-        };
-      };
-    },
-  );
 
   return result;
 }
