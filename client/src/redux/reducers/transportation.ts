@@ -44,7 +44,6 @@ import {
   type _SelectedRegionsStatesVMTPercentages,
   type _SelectedRegionsVMTPercentagesPerVehicleType,
   type _SelectedRegionsAverageVMTPerYear,
-  type _SelectedRegionsMonthlyVMTPerVehicleType,
   type VehicleEmissionChangesByGeography,
   type SelectedRegionsEEREDefaultsAverages,
   type EVDeploymentLocationHistoricalEERE,
@@ -92,7 +91,6 @@ import {
   _calculateSelectedRegionsStatesVMTPercentages,
   _calculateSelectedRegionsVMTPercentagesPerVehicleType,
   _calculateSelectedRegionsAverageVMTPerYear,
-  _calculateSelectedRegionsMonthlyVMTPerVehicleType,
   calculateVehicleEmissionChangesByGeography,
   calculateSelectedRegionsEEREDefaultsAverages,
   calculateEVDeploymentLocationHistoricalEERE,
@@ -410,12 +408,6 @@ type Action =
       };
     }
   | {
-      type: "transportation/_SET_SELECTED_REGIONS_MONTHLY_VMT_PER_VEHICLE_TYPE";
-      payload: {
-        _selectedRegionsMonthlyVMTPerVehicleType: _SelectedRegionsMonthlyVMTPerVehicleType;
-      };
-    }
-  | {
       type: "transportation/SET_VEHICLE_EMISSION_CHANGES_BY_GEOGRAPHY";
       payload: {
         vehicleEmissionChangesByGeography: VehicleEmissionChangesByGeography;
@@ -524,9 +516,6 @@ type State = {
   _selectedRegionsAverageVMTPerYear:
     | _SelectedRegionsAverageVMTPerYear
     | EmptyObject;
-  _selectedRegionsMonthlyVMTPerVehicleType:
-    | _SelectedRegionsMonthlyVMTPerVehicleType
-    | EmptyObject;
   vehicleEmissionChangesByGeography:
     | VehicleEmissionChangesByGeography
     | EmptyObject;
@@ -578,7 +567,6 @@ const initialState: State = {
   _selectedRegionsStatesVMTPercentages: {},
   _selectedRegionsVMTPercentagesPerVehicleType: {},
   _selectedRegionsAverageVMTPerYear: {},
-  _selectedRegionsMonthlyVMTPerVehicleType: {},
   vehicleEmissionChangesByGeography: {},
   selectedRegionsEEREDefaultsAverages: {},
   evDeploymentLocationHistoricalEERE: {
@@ -983,15 +971,6 @@ export default function reducer(
       };
     }
 
-    case "transportation/_SET_SELECTED_REGIONS_MONTHLY_VMT_PER_VEHICLE_TYPE": {
-      const { _selectedRegionsMonthlyVMTPerVehicleType } = action.payload;
-
-      return {
-        ...state,
-        _selectedRegionsMonthlyVMTPerVehicleType,
-      };
-    }
-
     case "transportation/SET_VEHICLE_EMISSION_CHANGES_BY_GEOGRAPHY": {
       const { vehicleEmissionChangesByGeography } = action.payload;
 
@@ -1231,7 +1210,6 @@ export function setSelectedGeographyVMTData(): AppThunk {
       vmtBillionsAndPercentages,
       vmtAllocationPerVehicle,
       vmtPercentagesByStateRegionCombo,
-      monthlyVMTPercentages,
     } = transportation;
 
     const selectedGeographyRegionIds = Object.keys(
@@ -1266,12 +1244,6 @@ export function setSelectedGeographyVMTData(): AppThunk {
         _selectedRegionsVMTPercentagesPerVehicleType,
       });
 
-    const _selectedRegionsMonthlyVMTPerVehicleType =
-      _calculateSelectedRegionsMonthlyVMTPerVehicleType({
-        _selectedRegionsAverageVMTPerYear,
-        monthlyVMTPercentages,
-      });
-
     dispatch({
       type: "transportation/SET_SELECTED_REGIONS_VMT_PERCENTAGES_BY_STATE",
       payload: { selectedRegionsVMTPercentagesByState },
@@ -1290,11 +1262,6 @@ export function setSelectedGeographyVMTData(): AppThunk {
     dispatch({
       type: "transportation/_SET_SELECTED_REGIONS_AVERAGE_VMT_PER_YEAR",
       payload: { _selectedRegionsAverageVMTPerYear },
-    });
-
-    dispatch({
-      type: "transportation/_SET_SELECTED_REGIONS_MONTHLY_VMT_PER_VEHICLE_TYPE",
-      payload: { _selectedRegionsMonthlyVMTPerVehicleType },
     });
 
     // NOTE: `selectedRegionsMonthlyEmissionRates` uses `selectedRegionsVMTPercentagesByState`

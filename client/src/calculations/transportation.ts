@@ -177,15 +177,6 @@ const vehicleCategoryVehicleTypeFuelTypeCombos = [
   "Refuse trucks / Heavy-duty refuse trucks / Diesel Fuel",
 ] as const;
 
-const _generalVehicleTypes = [
-  "cars",
-  "trucks",
-  "transitBusesDiesel",
-  "transitBusesCNG",
-  "transitBusesGasoline",
-  "schoolBuses",
-] as const;
-
 type Pollutant = (typeof pollutants)[number];
 type MovesPollutant = (typeof movesPollutants)[number];
 type VehicleType = (typeof vehicleTypes)[number];
@@ -213,8 +204,6 @@ type AlternateVehicleCategory =
   | Exclude<VehicleCategory, "LDVs" | "Other buses">
   | "Battery EVs"
   | "Plug-in Hybrid EVs";
-
-type _GeneralVehicleType = (typeof _generalVehicleTypes)[number];
 
 export type HourlyEVLoadProfiles = ReturnType<typeof storeHourlyEVLoadProfiles>;
 export type DailyStats = ReturnType<typeof calculateDailyStats>;
@@ -329,9 +318,6 @@ export type _SelectedRegionsVMTPercentagesPerVehicleType = ReturnType<
 >;
 export type _SelectedRegionsAverageVMTPerYear = ReturnType<
   typeof _calculateSelectedRegionsAverageVMTPerYear
->;
-export type _SelectedRegionsMonthlyVMTPerVehicleType = ReturnType<
-  typeof _calculateSelectedRegionsMonthlyVMTPerVehicleType
 >;
 export type VehicleEmissionChangesByGeography = ReturnType<
   typeof calculateVehicleEmissionChangesByGeography
@@ -4454,87 +4440,6 @@ export function _calculateSelectedRegionsAverageVMTPerYear(options: {
         trucks: number;
         transitBuses: number;
         schoolBuses: number;
-      };
-    },
-  );
-
-  return result;
-}
-
-/**
- * Monthly vehicle miles traveled (VMT) for each vehicle type.
- *
- * Excel: "Table 6: Monthly VMT and efficiency adjustments" table in the
- * "Library" sheet (E232:P237).
- */
-export function _calculateSelectedRegionsMonthlyVMTPerVehicleType(options: {
-  _selectedRegionsAverageVMTPerYear:
-    | _SelectedRegionsAverageVMTPerYear
-    | EmptyObject;
-  monthlyVMTPercentages: MonthlyVMTPercentages;
-}) {
-  const { _selectedRegionsAverageVMTPerYear, monthlyVMTPercentages } = options;
-
-  const selectedRegionsVMTData =
-    Object.keys(_selectedRegionsAverageVMTPerYear).length !== 0
-      ? (_selectedRegionsAverageVMTPerYear as _SelectedRegionsAverageVMTPerYear)
-      : null;
-
-  if (
-    !selectedRegionsVMTData ||
-    Object.keys(monthlyVMTPercentages).length === 0
-  ) {
-    return {} as {
-      [regionId in RegionId]: {
-        [month: number]: {
-          [vehicleType in _GeneralVehicleType]: number;
-        };
-      };
-    };
-  }
-
-  const result = Object.entries(selectedRegionsVMTData).reduce(
-    (object, [regionKey, regionValue]) => {
-      const regionId = regionKey as keyof typeof selectedRegionsVMTData;
-
-      object[regionId] ??= {};
-
-      Object.entries(monthlyVMTPercentages).forEach(([vmtKey, vmtValue]) => {
-        const month = Number(vmtKey);
-
-        object[regionId][month] ??= {
-          cars: 0,
-          trucks: 0,
-          transitBusesDiesel: 0,
-          transitBusesCNG: 0,
-          transitBusesGasoline: 0,
-          schoolBuses: 0,
-        };
-
-        _generalVehicleTypes.forEach((vehicleType) => {
-          /**
-           * NOTE: selectedRegionsVMTData's regions's vehicle types are
-           * abridged (don't include transit buses broken out by fuel type)
-           */
-          const averageVMTPerYearVehicleType =
-            vehicleType === "transitBusesDiesel" ||
-            vehicleType === "transitBusesCNG" ||
-            vehicleType === "transitBusesGasoline"
-              ? "transitBuses"
-              : vehicleType;
-
-          object[regionId][month][vehicleType] =
-            regionValue[averageVMTPerYearVehicleType] * vmtValue[vehicleType];
-        });
-      });
-
-      return object;
-    },
-    {} as {
-      [regionId in RegionId]: {
-        [month: number]: {
-          [vehicleType in _GeneralVehicleType]: number;
-        };
       };
     },
   );
