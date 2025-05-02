@@ -316,9 +316,6 @@ export type _SelectedRegionsStatesVMTPercentages = ReturnType<
 export type _SelectedRegionsVMTPercentagesPerVehicleType = ReturnType<
   typeof _calculateSelectedRegionsVMTPercentagesPerVehicleType
 >;
-export type _SelectedRegionsAverageVMTPerYear = ReturnType<
-  typeof _calculateSelectedRegionsAverageVMTPerYear
->;
 export type VehicleEmissionChangesByGeography = ReturnType<
   typeof calculateVehicleEmissionChangesByGeography
 >;
@@ -4375,71 +4372,6 @@ export function _calculateSelectedRegionsVMTPercentagesPerVehicleType(options: {
       [regionId in RegionId]: {
         vmtPerLDVPercent: 0;
         vmtPerBusPercent: 0;
-      };
-    },
-  );
-
-  return result;
-}
-
-/**
- * Average vehicle miles traveled (VMT) per vehicle type per year for the
- * selected regions.
- *
- * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E183:E186).
- */
-export function _calculateSelectedRegionsAverageVMTPerYear(options: {
-  _selectedRegionsVMTPercentagesPerVehicleType:
-    | _SelectedRegionsVMTPercentagesPerVehicleType
-    | EmptyObject;
-}) {
-  const { _selectedRegionsVMTPercentagesPerVehicleType } = options;
-
-  const selectedRegionsVMTData =
-    Object.keys(_selectedRegionsVMTPercentagesPerVehicleType).length !== 0
-      ? (_selectedRegionsVMTPercentagesPerVehicleType as _SelectedRegionsVMTPercentagesPerVehicleType)
-      : null;
-
-  if (!selectedRegionsVMTData) {
-    return {} as {
-      [regionId in RegionId]: {
-        cars: number;
-        trucks: number;
-        transitBuses: number;
-        schoolBuses: number;
-      };
-    };
-  }
-
-  // NOTE: temporarily hard-coded values from Excel, until this function can be removed
-  const nationalAverageVMTPerYear = {
-    cars: 10916,
-    trucks: 10916,
-    transitBuses: 43647,
-    schoolBuses: 12000,
-  };
-
-  const result = Object.entries(selectedRegionsVMTData).reduce(
-    (object, [regionKey, regionValue]) => {
-      const regionId = regionKey as keyof typeof selectedRegionsVMTData;
-
-      const { vmtPerLDVPercent, vmtPerBusPercent } = regionValue;
-
-      object[regionId] = {
-        cars: nationalAverageVMTPerYear.cars * vmtPerLDVPercent,
-        trucks: nationalAverageVMTPerYear.trucks * vmtPerLDVPercent,
-        transitBuses: nationalAverageVMTPerYear.transitBuses * vmtPerBusPercent,
-        schoolBuses: nationalAverageVMTPerYear.schoolBuses * vmtPerBusPercent,
-      };
-
-      return object;
-    },
-    {} as {
-      [regionId in RegionId]: {
-        cars: number;
-        trucks: number;
-        transitBuses: number;
-        schoolBuses: number;
       };
     },
   );
