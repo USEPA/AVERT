@@ -49,7 +49,6 @@ import {
   type _SelectedRegionsMonthlyEmissionRates,
   type _SelectedRegionsMonthlyEmissionChanges,
   type _SelectedRegionsTotalMonthlyEmissionChanges,
-  type _SelectedRegionsTotalYearlyEmissionChanges,
   type VehicleEmissionChangesByGeography,
   type SelectedRegionsEEREDefaultsAverages,
   type EVDeploymentLocationHistoricalEERE,
@@ -102,7 +101,6 @@ import {
   _calculateSelectedRegionsMonthlyEmissionRates,
   _calculateSelectedRegionsMonthlyEmissionChanges,
   _calculateSelectedRegionsTotalMonthlyEmissionChanges,
-  _calculateSelectedRegionsTotalYearlyEmissionChanges,
   calculateVehicleEmissionChangesByGeography,
   calculateSelectedRegionsEEREDefaultsAverages,
   calculateEVDeploymentLocationHistoricalEERE,
@@ -116,8 +114,7 @@ import {
   percentageHybridEVMilesDrivenOnElectricity,
   schoolBusMonthlyVMTPercentages,
   weekendToWeekdayEVConsumption,
-  percentageAdditionalEnergyConsumedFactor,
-  regionAverageTemperatures,
+  regions,
 } from "@/config";
 /**
  * Excel: "CountyFIPS" sheet.
@@ -449,12 +446,6 @@ type Action =
       };
     }
   | {
-      type: "transportation/_SET_SELECTED_REGIONS_TOTAL_YEARLY_EMISSION_CHANGES";
-      payload: {
-        _selectedRegionsTotalYearlyEmissionChanges: _SelectedRegionsTotalYearlyEmissionChanges;
-      };
-    }
-  | {
       type: "transportation/SET_VEHICLE_EMISSION_CHANGES_BY_GEOGRAPHY";
       payload: {
         vehicleEmissionChangesByGeography: VehicleEmissionChangesByGeography;
@@ -576,9 +567,6 @@ type State = {
   _selectedRegionsTotalMonthlyEmissionChanges:
     | _SelectedRegionsTotalMonthlyEmissionChanges
     | EmptyObject;
-  _selectedRegionsTotalYearlyEmissionChanges:
-    | _SelectedRegionsTotalYearlyEmissionChanges
-    | EmptyObject;
   vehicleEmissionChangesByGeography:
     | VehicleEmissionChangesByGeography
     | EmptyObject;
@@ -644,7 +632,6 @@ const initialState: State = {
   _selectedRegionsMonthlyEmissionRates: {},
   _selectedRegionsMonthlyEmissionChanges: {},
   _selectedRegionsTotalMonthlyEmissionChanges: {},
-  _selectedRegionsTotalYearlyEmissionChanges: {},
   vehicleEmissionChangesByGeography: {},
   selectedRegionsEEREDefaultsAverages: {},
   evDeploymentLocationHistoricalEERE: {
@@ -1091,15 +1078,6 @@ export default function reducer(
       return {
         ...state,
         _selectedRegionsTotalMonthlyEmissionChanges,
-      };
-    }
-
-    case "transportation/_SET_SELECTED_REGIONS_TOTAL_YEARLY_EMISSION_CHANGES": {
-      const { _selectedRegionsTotalYearlyEmissionChanges } = action.payload;
-
-      return {
-        ...state,
-        _selectedRegionsTotalYearlyEmissionChanges,
       };
     }
 
@@ -1848,11 +1826,6 @@ export function setEmissionChanges(): AppThunk {
         _selectedRegionsMonthlyEmissionChanges,
       });
 
-    const _selectedRegionsTotalYearlyEmissionChanges =
-      _calculateSelectedRegionsTotalYearlyEmissionChanges({
-        _selectedRegionsTotalMonthlyEmissionChanges,
-      });
-
     const countiesByRegions = countiesByGeography?.regions || {};
 
     const selectedRegionsCounties = Object.entries(countiesByRegions).reduce(
@@ -1916,11 +1889,6 @@ export function setEmissionChanges(): AppThunk {
     dispatch({
       type: "transportation/_SET_SELECTED_REGIONS_TOTAL_MONTHLY_EMISSION_CHANGES",
       payload: { _selectedRegionsTotalMonthlyEmissionChanges },
-    });
-
-    dispatch({
-      type: "transportation/_SET_SELECTED_REGIONS_TOTAL_YEARLY_EMISSION_CHANGES",
-      payload: { _selectedRegionsTotalYearlyEmissionChanges },
     });
 
     dispatch({

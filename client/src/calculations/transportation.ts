@@ -368,9 +368,6 @@ export type _SelectedRegionsMonthlyEmissionChanges = ReturnType<
 export type _SelectedRegionsTotalMonthlyEmissionChanges = ReturnType<
   typeof _calculateSelectedRegionsTotalMonthlyEmissionChanges
 >;
-export type _SelectedRegionsTotalYearlyEmissionChanges = ReturnType<
-  typeof _calculateSelectedRegionsTotalYearlyEmissionChanges
->;
 export type VehicleEmissionChangesByGeography = ReturnType<
   typeof calculateVehicleEmissionChangesByGeography
 >;
@@ -5043,78 +5040,6 @@ export function _calculateSelectedRegionsTotalMonthlyEmissionChanges(options: {
     {} as {
       [regionId in RegionId]: {
         [month: number]: MonthlyData;
-      };
-    },
-  );
-
-  return result;
-}
-
-/**
- * Totals monthly emission changes to yearly total values for each EV type and
- * each pollutant, and also an overall yearly total value for each pollutant
- * (across all EV types).
- *
- * Excel: Yearly pollutant totals from the "Table 8: Calculated changes for the
- * transportation sector" table in the "Library" sheet (S363:S392).
- */
-export function _calculateSelectedRegionsTotalYearlyEmissionChanges(options: {
-  _selectedRegionsTotalMonthlyEmissionChanges:
-    | _SelectedRegionsTotalMonthlyEmissionChanges
-    | EmptyObject;
-}) {
-  const { _selectedRegionsTotalMonthlyEmissionChanges } = options;
-
-  const selectedRegionsChangesData =
-    Object.keys(_selectedRegionsTotalMonthlyEmissionChanges).length !== 0
-      ? (_selectedRegionsTotalMonthlyEmissionChanges as _SelectedRegionsTotalMonthlyEmissionChanges)
-      : null;
-
-  if (!selectedRegionsChangesData) {
-    return {} as {
-      [regionId in RegionId]: {
-        cars: { CO2: 0; NOX: 0; SO2: 0; PM25: 0; VOCs: 0; NH3: 0 };
-        trucks: { CO2: 0; NOX: 0; SO2: 0; PM25: 0; VOCs: 0; NH3: 0 };
-        transitBuses: { CO2: 0; NOX: 0; SO2: 0; PM25: 0; VOCs: 0; NH3: 0 };
-        schoolBuses: { CO2: 0; NOX: 0; SO2: 0; PM25: 0; VOCs: 0; NH3: 0 };
-        total: { CO2: 0; NOX: 0; SO2: 0; PM25: 0; VOCs: 0; NH3: 0 };
-      };
-    };
-  }
-
-  const result = Object.entries(selectedRegionsChangesData).reduce(
-    (object, [regionKey, regionValue]) => {
-      const regionId = regionKey as keyof typeof selectedRegionsChangesData;
-
-      object[regionId] ??= {
-        cars: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-        trucks: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-        transitBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-        schoolBuses: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-        total: { CO2: 0, NOX: 0, SO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
-      };
-
-      Object.values(regionValue).forEach((regionMonthData) => {
-        Object.entries(regionMonthData).forEach(
-          ([regionMonthKey, regionMonthValue]) => {
-            const field = regionMonthKey as keyof typeof regionMonthData;
-
-            _pollutants.forEach((pollutant) => {
-              object[regionId][field][pollutant] += regionMonthValue[pollutant];
-            });
-          },
-        );
-      });
-
-      return object;
-    },
-    {} as {
-      [regionId in RegionId]: {
-        cars: { CO2: 0; NOX: 0; SO2: 0; PM25: 0; VOCs: 0; NH3: 0 };
-        trucks: { CO2: 0; NOX: 0; SO2: 0; PM25: 0; VOCs: 0; NH3: 0 };
-        transitBuses: { CO2: 0; NOX: 0; SO2: 0; PM25: 0; VOCs: 0; NH3: 0 };
-        schoolBuses: { CO2: 0; NOX: 0; SO2: 0; PM25: 0; VOCs: 0; NH3: 0 };
-        total: { CO2: 0; NOX: 0; SO2: 0; PM25: 0; VOCs: 0; NH3: 0 };
       };
     },
   );
