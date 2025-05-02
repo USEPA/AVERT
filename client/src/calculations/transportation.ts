@@ -332,6 +332,9 @@ export type SelectedRegionsMonthlyEmissionChangesPerVehicleCategory =
   ReturnType<
     typeof calculateSelectedRegionsMonthlyEmissionChangesPerVehicleCategory
   >;
+export type SelectedRegionsYearlyEmissionChangesPerVehicleCategory = ReturnType<
+  typeof calculateSelectedRegionsYearlyEmissionChangesPerVehicleCategory
+>;
 export type SelectedRegionsMonthlyEmissionChangesTotals = ReturnType<
   typeof calculateSelectedRegionsMonthlyEmissionChangesTotals
 >;
@@ -3822,6 +3825,84 @@ export function calculateSelectedRegionsMonthlyEmissionChangesPerVehicleCategory
           [expandedVehicleCategory in ExpandedVehicleCategory]: {
             [pollutant in Pollutant]: number;
           };
+        };
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Selected AVERT region's avoided emissions (lbs) for the year for each
+ * vehicle category.
+ *
+ * Excel: "Emission Changes" data from "Table 8: Calculated changes for the
+ * transportation sector" table in the "Library" sheet (S720:S767).
+ */
+export function calculateSelectedRegionsYearlyEmissionChangesPerVehicleCategory(options: {
+  selectedRegionsMonthlyEmissionChangesPerVehicleCategory:
+    | SelectedRegionsMonthlyEmissionChangesPerVehicleCategory
+    | EmptyObject;
+}) {
+  const { selectedRegionsMonthlyEmissionChangesPerVehicleCategory } = options;
+
+  if (
+    Object.keys(selectedRegionsMonthlyEmissionChangesPerVehicleCategory)
+      .length === 0
+  ) {
+    return {} as {
+      [regionId in RegionId]: {
+        [expandedVehicleCategory in ExpandedVehicleCategory]: {
+          [pollutant in Pollutant]: number;
+        };
+      };
+    };
+  }
+
+  const result = Object.entries(
+    selectedRegionsMonthlyEmissionChangesPerVehicleCategory,
+  ).reduce(
+    (object, [regionKey, regionValue]) => {
+      const regionId = regionKey as keyof typeof selectedRegionsMonthlyEmissionChangesPerVehicleCategory; // prettier-ignore
+
+      object[regionId] ??= {} as {
+        [expandedVehicleCategory in ExpandedVehicleCategory]: {
+          [pollutant in Pollutant]: number;
+        };
+      };
+
+      Object.values(regionValue).forEach((monthValue) => {
+        Object.entries(monthValue).forEach(
+          ([vehicleCategoryKey, vehicleCategoryValue]) => {
+            const vehicleCategory = vehicleCategoryKey as keyof typeof monthValue; // prettier-ignore
+
+            object[regionId][vehicleCategory] ??= {
+              co2: 0,
+              nox: 0,
+              so2: 0,
+              pm25: 0,
+              vocs: 0,
+              nh3: 0,
+            };
+
+            Object.entries(vehicleCategoryValue).forEach(
+              ([pollutantKey, pollutantValue]) => {
+                const pollutant = pollutantKey as keyof typeof vehicleCategoryValue; // prettier-ignore
+
+                object[regionId][vehicleCategory][pollutant] += pollutantValue;
+              },
+            );
+          },
+        );
+      });
+
+      return object;
+    },
+    {} as {
+      [regionId in RegionId]: {
+        [expandedVehicleCategory in ExpandedVehicleCategory]: {
+          [pollutant in Pollutant]: number;
         };
       };
     },
