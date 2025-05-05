@@ -406,18 +406,18 @@ function createEmissionsFields(options: {
 
   if (powerData) {
     const annualData = powerData.annual;
-    const annualEmissionsChange = annualData.postEere - annualData.original;
-    const annualPercentChange = (annualEmissionsChange / annualData.original) * 100 || 0; // prettier-ignore
+    const annualEmissionsChange = annualData.post - annualData.pre;
+    const annualPercentChange = (annualEmissionsChange / annualData.pre) * 100 || 0; // prettier-ignore
     const annualPowerData =
       unit === "percent" ? annualPercentChange : annualEmissionsChange;
 
     const monthlyPowerData = Object.entries(powerData.monthly).reduce(
       (object, [key, values]) => {
         const month = Number(key);
-        const { original, postEere } = values;
+        const { pre, post } = values;
 
-        const monthlyEmissionsChange = postEere - original;
-        const monthlyPercentChange = (monthlyEmissionsChange / original) * 100 || 0; // prettier-ignore
+        const monthlyEmissionsChange = post - pre;
+        const monthlyPercentChange = (monthlyEmissionsChange / pre) * 100 || 0;
 
         object[month] =
           unit === "percent"
@@ -508,7 +508,7 @@ function formatCobraDownloadData(
 
               object.power ??= { so2: 0, nox: 0, pm25: 0, vocs: 0, nh3: 0 };
               object.power[pollutant] = Object.values(monthlyPowerData).reduce(
-                (total, data) => (total += data.postEere - data.original),
+                (total, data) => (total += data.post - data.pre),
                 0,
               );
             }

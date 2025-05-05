@@ -21,8 +21,8 @@ type EguData = EmissionsChanges[string];
 export type EmissionsData = {
   [field in (typeof emissionsFields)[number]]: {
     power: {
-      annual: { original: number; postEere: number };
-      monthly: { [month: number]: { original: number; postEere: number } };
+      annual: { pre: number; post: number };
+      monthly: { [month: number]: { pre: number; post: number } };
     } | null;
     vehicle: {
       annual: number;
@@ -149,8 +149,8 @@ function calculateEmissionsChanges(options: {
         monthly: {
           [month: number]: {
             [field in (typeof emissionsFields)[number]]: {
-              original: number;
-              postEere: number;
+              pre: number;
+              post: number;
             };
           };
         };
@@ -177,18 +177,18 @@ function calculateEmissionsChanges(options: {
   for (const [i, hourlyLoad] of rdf.regional_load.entries()) {
     const month = hourlyLoad.month; // numeric month of load
 
-    const originalLoad = hourlyLoad.regional_load_mw; // original regional load (mwh) for the hour
-    const postEereLoad = originalLoad + hourlyChanges[i]; // merged regional energy profile (mwh) for the hour
+    const preLoad = hourlyLoad.regional_load_mw; // original regional load (mwh) for the hour
+    const postLoad = preLoad + hourlyChanges[i]; // merged regional energy profile (mwh) for the hour
 
-    const originalLoadInBounds = originalLoad >= firstLoadBinEdge && originalLoad <= lastLoadBinEdge; // prettier-ignore
-    const postEereLoadInBounds = postEereLoad >= firstLoadBinEdge && postEereLoad <= lastLoadBinEdge; // prettier-ignore
+    const preLoadInBounds = preLoad >= firstLoadBinEdge && preLoad <= lastLoadBinEdge; // prettier-ignore
+    const postLoadInBounds = postLoad >= firstLoadBinEdge && postLoad <= lastLoadBinEdge; // prettier-ignore
 
     // filter out outliers
-    if (!(originalLoadInBounds && postEereLoadInBounds)) continue;
+    if (!(preLoadInBounds && postLoadInBounds)) continue;
 
-    // get index of load bin edge closest to originalLoad or postEereLoad
-    const originalLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, originalLoad); // prettier-ignore
-    const postEereLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, postEereLoad); // prettier-ignore
+    // get index of load bin edge closest to preLoad or postLoad
+    const preLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, preLoad);
+    const postLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, postLoad);
 
     /**
      * Iterate over each data field: generation, so2, nox, co2...
@@ -196,7 +196,7 @@ function calculateEmissionsChanges(options: {
     dataFields.forEach((field) => {
       /**
        * NOTE: PM2.5, VOCs, and NH3 always use the `heat` or `heat_not` fields
-       * of the RDF's `data` object
+       * of the RDF's `data` object.
        */
       const ozoneSeasonData = neiFields.includes(field)
         ? rdf.data.heat
@@ -217,7 +217,7 @@ function calculateEmissionsChanges(options: {
 
       /**
        * Ozone season is between May and September, so use the correct medians
-       * dataset for the current month
+       * dataset for the current month.
        */
       const datasetMedians = !nonOzoneSeasonMedians
         ? ozoneSeasonMedians
@@ -228,7 +228,7 @@ function calculateEmissionsChanges(options: {
       /**
        * Iterate over each electric generating unit (EGU). The total number of
        * EGUs varries per region (less than 100 for the RM region; more than
-       * 1000 for the SE region)
+       * 1000 for the SE region).
        */
       ozoneSeasonData.forEach((egu, eguIndex) => {
         const {
@@ -246,12 +246,12 @@ function calculateEmissionsChanges(options: {
         const eguId = `${regionId}_${state}_${orispl_code}_${unit_code}`;
         const medians = datasetMedians[eguIndex];
 
-        const calculatedOriginal = calculateLinear({
-          load: originalLoad,
-          genA: medians[originalLoadBinEdgeIndex],
-          genB: medians[originalLoadBinEdgeIndex + 1],
-          edgeA: loadBinEdges[originalLoadBinEdgeIndex],
-          edgeB: loadBinEdges[originalLoadBinEdgeIndex + 1],
+        const calculatedPre = calculateLinear({
+          load: preLoad,
+          genA: medians[preLoadBinEdgeIndex],
+          genB: medians[preLoadBinEdgeIndex + 1],
+          edgeA: loadBinEdges[preLoadBinEdgeIndex],
+          edgeB: loadBinEdges[preLoadBinEdgeIndex + 1],
         });
 
         /**
@@ -259,22 +259,21 @@ function calculateEmissionsChanges(options: {
          * (specifically added for errors with SO2 reporting, but the RDFs were
          * updated to include the `infreq_emissions_flag` for all pollutants for
          * consistency, which allows other pollutants at specific EGUs to be
-         * excluded in the future)
+         * excluded in the future).
          */
-        const calculatedPostEere =
+        const calculatedPost =
           infreq_emissions_flag === 1
-            ? calculatedOriginal
+            ? calculatedPre
             : calculateLinear({
-                load: postEereLoad,
-                genA: medians[postEereLoadBinEdgeIndex],
-                genB: medians[postEereLoadBinEdgeIndex + 1],
-                edgeA: loadBinEdges[postEereLoadBinEdgeIndex],
-                edgeB: loadBinEdges[postEereLoadBinEdgeIndex + 1],
+                load: postLoad,
+                genA: medians[postLoadBinEdgeIndex],
+                genB: medians[postLoadBinEdgeIndex + 1],
+                edgeA: loadBinEdges[postLoadBinEdgeIndex],
+                edgeB: loadBinEdges[postLoadBinEdgeIndex + 1],
               });
 
         /**
-         * Conditionally multiply NEI factor to calculated original and postEere
-         * values
+         * Conditionally multiply NEI factor to calculated pre and post values.
          */
         const matchedEgu = neiEmissionRates.find((item) => {
           return item.orspl === orispl_code && item.unit === unit_code;
@@ -288,18 +287,18 @@ function calculateEmissionsChanges(options: {
         const neiFieldData =
           neiEguData?.[field as keyof NEIPollutantsEmissionRates];
 
-        const original =
+        const pre =
           neiFields.includes(field) && neiFieldData !== undefined
-            ? calculatedOriginal * neiFieldData
-            : calculatedOriginal;
+            ? calculatedPre * neiFieldData
+            : calculatedPre;
 
-        const postEere =
+        const post =
           neiFields.includes(field) && neiFieldData !== undefined
-            ? calculatedPostEere * neiFieldData
-            : calculatedPostEere;
+            ? calculatedPost * neiFieldData
+            : calculatedPost;
 
         /**
-         * Conditionally initialize each EGU's metadata
+         * Conditionally initialize each EGU's metadata.
          */
         result[eguId] ??= {
           region: regionId,
@@ -329,24 +328,22 @@ function calculateEmissionsChanges(options: {
         }
 
         /**
-         * Conditionally initialize the field's monthly data
+         * Conditionally initialize the field's monthly data.
          */
         result[eguId].data.monthly[month] ??= {} as {
           [field in (typeof emissionsFields)[number]]: {
-            original: number;
-            postEere: number;
+            pre: number;
+            post: number;
           };
         };
-        result[eguId].data.monthly[month][field] ??= {
-          original: 0,
-          postEere: 0,
-        };
+
+        result[eguId].data.monthly[month][field] ??= { pre: 0, post: 0 };
 
         /**
-         * Increment the field's monthly original and postEere values
+         * Increment the field's monthly pre and post values.
          */
-        result[eguId].data.monthly[month][field].original += original;
-        result[eguId].data.monthly[month][field].postEere += postEere;
+        result[eguId].data.monthly[month][field].pre += pre;
+        result[eguId].data.monthly[month][field].post += post;
       });
     });
   }
@@ -360,7 +357,7 @@ function calculateEmissionsChanges(options: {
 function createEmptyMonthlyPowerData() {
   const result = [...Array(12)].reduce(
     (object, _item, index) => {
-      object[index + 1] = { original: 0, postEere: 0 };
+      object[index + 1] = { pre: 0, post: 0 };
       return object;
     },
     {} as EguData["data"][keyof EguData["data"]],
@@ -392,7 +389,7 @@ function createInitialEmissionsData() {
   const result = emissionsFields.reduce((object, field) => {
     object[field] = {
       power: {
-        annual: { original: 0, postEere: 0 },
+        annual: { pre: 0, post: 0 },
         monthly: createEmptyMonthlyPowerData(),
       },
       vehicle: {
@@ -408,8 +405,8 @@ function createInitialEmissionsData() {
 }
 
 /**
- * Sum the provided EGUs emissions data into monthly and annual original and
- * post-EERE values for each pollutant.
+ * Sum the provided EGUs emissions data into monthly and annual pre and post
+ * values for each pollutant.
  */
 export function calculateAggregatedEmissionsData(egus: EmissionsChanges) {
   if (Object.keys(egus).length === 0) return null;
@@ -430,7 +427,7 @@ export function calculateAggregatedEmissionsData(egus: EmissionsChanges) {
 
         Object.entries(monthValue).forEach(([fieldKey, fieldValue]) => {
           const field = fieldKey as keyof typeof monthValue;
-          const { original, postEere } = fieldValue;
+          const { pre, post } = fieldValue;
 
           const powerTotal = object.total[field].power;
           const powerRegions = object.regions[regionId][field].power;
@@ -438,25 +435,25 @@ export function calculateAggregatedEmissionsData(egus: EmissionsChanges) {
           const powerCounties = object.counties[stateId][county][field].power;
 
           if (powerTotal && powerRegions && powerStates && powerCounties) {
-            powerTotal.annual.original += original;
-            powerTotal.annual.postEere += postEere;
-            powerTotal.monthly[month].original += original;
-            powerTotal.monthly[month].postEere += postEere;
+            powerTotal.annual.pre += pre;
+            powerTotal.annual.post += post;
+            powerTotal.monthly[month].pre += pre;
+            powerTotal.monthly[month].post += post;
 
-            powerRegions.annual.original += original;
-            powerRegions.annual.postEere += postEere;
-            powerRegions.monthly[month].original += original;
-            powerRegions.monthly[month].postEere += postEere;
+            powerRegions.annual.pre += pre;
+            powerRegions.annual.post += post;
+            powerRegions.monthly[month].pre += pre;
+            powerRegions.monthly[month].post += post;
 
-            powerStates.annual.original += original;
-            powerStates.annual.postEere += postEere;
-            powerStates.monthly[month].original += original;
-            powerStates.monthly[month].postEere += postEere;
+            powerStates.annual.pre += pre;
+            powerStates.annual.post += post;
+            powerStates.monthly[month].pre += pre;
+            powerStates.monthly[month].post += post;
 
-            powerCounties.annual.original += original;
-            powerCounties.annual.postEere += postEere;
-            powerCounties.monthly[month].original += original;
-            powerCounties.monthly[month].postEere += postEere;
+            powerCounties.annual.pre += pre;
+            powerCounties.annual.post += post;
+            powerCounties.monthly[month].pre += pre;
+            powerCounties.monthly[month].post += post;
           }
         });
       });

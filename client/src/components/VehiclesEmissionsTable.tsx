@@ -35,8 +35,8 @@ function setAnnualPowerEmissionsChanges(options: {
       const totalPowerData = value.power;
 
       if (totalPowerData) {
-        const { original, postEere } = totalPowerData.annual;
-        object[pollutant] += postEere - original;
+        const { pre, post } = totalPowerData.annual;
+        object[pollutant] += post - pre;
       }
 
       return object;
@@ -72,8 +72,8 @@ function setAnnualVehicleEmissionsChanges(options: {
           const pollutant = regionChangesKey as keyof typeof regionChanges;
           const value = -1 * regionChangesValue;
 
-          /** conditionally convert co2 pounds into tons */
-          const result = pollutant === "co2" ? value / 2_000 : value;
+          /** Conditionally convert CO2 pounds into tons. */
+          const result = pollutant === "co2" ? value / 2000 : value;
 
           object[pollutant] += result;
         },

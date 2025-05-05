@@ -28,8 +28,8 @@ function calculateFraction(numerator: number, denominator: number) {
 }
 
 /**
- * Sum the the total annual original, post-EERE, and impacts (difference between
- * the two) values from the monthly values for each field (pollutant).
+ * Sum the the total annual pre, post, and impacts (difference between the two)
+ * values from the monthly values for each field (pollutant).
  *
  * NOTE: normally we'd just use the annual data from each field, but we need
  * to use the monthly data for ozone season generation and ozone season nox, so
@@ -40,15 +40,15 @@ function setAnnualMonthlyData(
 ) {
   if (!combinedSectorsEmissionsData) {
     return {
-      generation: { original: 0, postEere: 0, impacts: 0 },
-      ozoneGeneration: { original: 0, postEere: 0, impacts: 0 },
-      so2: { original: 0, postEere: 0, impacts: 0 },
-      nox: { original: 0, postEere: 0, impacts: 0 },
-      ozoneNox: { original: 0, postEere: 0, impacts: 0 },
-      co2: { original: 0, postEere: 0, impacts: 0 },
-      pm25: { original: 0, postEere: 0, impacts: 0 },
-      vocs: { original: 0, postEere: 0, impacts: 0 },
-      nh3: { original: 0, postEere: 0, impacts: 0 },
+      generation: { pre: 0, post: 0, impacts: 0 },
+      ozoneGeneration: { pre: 0, post: 0, impacts: 0 },
+      so2: { pre: 0, post: 0, impacts: 0 },
+      nox: { pre: 0, post: 0, impacts: 0 },
+      ozoneNox: { pre: 0, post: 0, impacts: 0 },
+      co2: { pre: 0, post: 0, impacts: 0 },
+      pm25: { pre: 0, post: 0, impacts: 0 },
+      vocs: { pre: 0, post: 0, impacts: 0 },
+      nh3: { pre: 0, post: 0, impacts: 0 },
     };
   }
 
@@ -61,7 +61,7 @@ function setAnnualMonthlyData(
         Object.entries(totalPowerData.monthly).forEach(
           ([monthlyKey, monthlyData]) => {
             const month = Number(monthlyKey);
-            const { original, postEere } = monthlyData;
+            const { pre, post } = monthlyData;
 
             /**
              * Build up ozone season generation and ozone season nox
@@ -69,21 +69,21 @@ function setAnnualMonthlyData(
              */
             if (month >= 5 && month <= 9) {
               if (field === "generation") {
-                object.ozoneGeneration.original += original;
-                object.ozoneGeneration.postEere += postEere;
-                object.ozoneGeneration.impacts += postEere - original;
+                object.ozoneGeneration.pre += pre;
+                object.ozoneGeneration.post += post;
+                object.ozoneGeneration.impacts += post - pre;
               }
 
               if (field === "nox") {
-                object.ozoneNox.original += original;
-                object.ozoneNox.postEere += postEere;
-                object.ozoneNox.impacts += postEere - original;
+                object.ozoneNox.pre += pre;
+                object.ozoneNox.post += post;
+                object.ozoneNox.impacts += post - pre;
               }
             }
 
-            object[field].original += original;
-            object[field].postEere += postEere;
-            object[field].impacts += postEere - original;
+            object[field].pre += pre;
+            object[field].post += post;
+            object[field].impacts += post - pre;
           },
         );
       }
@@ -91,15 +91,15 @@ function setAnnualMonthlyData(
       return object;
     },
     {
-      generation: { original: 0, postEere: 0, impacts: 0 },
-      ozoneGeneration: { original: 0, postEere: 0, impacts: 0 },
-      so2: { original: 0, postEere: 0, impacts: 0 },
-      nox: { original: 0, postEere: 0, impacts: 0 },
-      ozoneNox: { original: 0, postEere: 0, impacts: 0 },
-      co2: { original: 0, postEere: 0, impacts: 0 },
-      pm25: { original: 0, postEere: 0, impacts: 0 },
-      vocs: { original: 0, postEere: 0, impacts: 0 },
-      nh3: { original: 0, postEere: 0, impacts: 0 },
+      generation: { pre: 0, post: 0, impacts: 0 },
+      ozoneGeneration: { pre: 0, post: 0, impacts: 0 },
+      so2: { pre: 0, post: 0, impacts: 0 },
+      nox: { pre: 0, post: 0, impacts: 0 },
+      ozoneNox: { pre: 0, post: 0, impacts: 0 },
+      co2: { pre: 0, post: 0, impacts: 0 },
+      pm25: { pre: 0, post: 0, impacts: 0 },
+      vocs: { pre: 0, post: 0, impacts: 0 },
+      nh3: { pre: 0, post: 0, impacts: 0 },
     },
   );
 
@@ -107,10 +107,10 @@ function setAnnualMonthlyData(
 }
 
 /**
- * If "replacement" is needed for a pollutant, we'll change the calculated
- * `original` value for that pollutant to the pollutant's replacement value for
- * the region (found in the config file), and change the `postEere` value to be
- * the sum of the replaced `original` value and the calculated `impacts` value.
+ * If "replacement" is needed for a pollutant, we'll change the calculated `pre`
+ * value for that pollutant to the pollutant's replacement value for the region
+ * (found in the config file), and change the `post` value to be the sum of the
+ * replaced `pre` value and the calculated `impacts` value.
  */
 function applyEmissionsReplacement(options: {
   annualMonthlyData: AnnualMonthlyData;
@@ -127,8 +127,8 @@ function applyEmissionsReplacement(options: {
     const pollutantData = annualMonthlyData[pollutant];
 
     if (pollutantData) {
-      pollutantData.original = replacementValue;
-      pollutantData.postEere = replacementValue + pollutantData.impacts;
+      pollutantData.pre = replacementValue;
+      pollutantData.post = replacementValue + pollutantData.impacts;
     }
   });
 
@@ -269,10 +269,10 @@ function PowerEmissionsTableContent() {
                   </span>
                 </th>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(generation.original)}
+                  {formatNumber(generation.pre)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(generation.postEere)}
+                  {formatNumber(generation.post)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(generation.impacts)}
@@ -295,10 +295,10 @@ function PowerEmissionsTableContent() {
                   </span>
                 </th>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(so2.original)}
+                  {formatNumber(so2.pre)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(so2.postEere)}
+                  {formatNumber(so2.post)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(so2.impacts)}
@@ -315,10 +315,10 @@ function PowerEmissionsTableContent() {
                   </span>
                 </th>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(nox.original)}
+                  {formatNumber(nox.pre)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(nox.postEere)}
+                  {formatNumber(nox.post)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(nox.impacts)}
@@ -338,10 +338,10 @@ function PowerEmissionsTableContent() {
                   </span>
                 </th>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(ozoneNox.original)}
+                  {formatNumber(ozoneNox.pre)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(ozoneNox.postEere)}
+                  {formatNumber(ozoneNox.post)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(ozoneNox.impacts)}
@@ -358,10 +358,10 @@ function PowerEmissionsTableContent() {
                   </span>
                 </th>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(co2.original)}
+                  {formatNumber(co2.pre)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(co2.postEere)}
+                  {formatNumber(co2.post)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(co2.impacts)}
@@ -375,10 +375,10 @@ function PowerEmissionsTableContent() {
                   </span>
                 </th>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(pm25.original)}
+                  {formatNumber(pm25.pre)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(pm25.postEere)}
+                  {formatNumber(pm25.post)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(pm25.impacts)}
@@ -392,10 +392,10 @@ function PowerEmissionsTableContent() {
                   </span>
                 </th>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(vocs.original)}
+                  {formatNumber(vocs.pre)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(vocs.postEere)}
+                  {formatNumber(vocs.post)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(vocs.impacts)}
@@ -409,10 +409,10 @@ function PowerEmissionsTableContent() {
                   </span>
                 </th>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(nh3.original)}
+                  {formatNumber(nh3.pre)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(nh3.postEere)}
+                  {formatNumber(nh3.post)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
                   {formatNumber(nh3.impacts)}
@@ -437,7 +437,7 @@ function PowerEmissionsTableContent() {
                   </span>
                 </th>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {calculateFraction(so2.original, generation.original)}
+                  {calculateFraction(so2.pre, generation.pre)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>&nbsp;</td>
                 <td className={clsx("font-mono-xs text-right")}>
@@ -456,7 +456,7 @@ function PowerEmissionsTableContent() {
                   </span>
                 </th>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {calculateFraction(nox.original, generation.original)}
+                  {calculateFraction(nox.pre, generation.pre)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>&nbsp;</td>
                 <td className={clsx("font-mono-xs text-right")}>
@@ -481,10 +481,7 @@ function PowerEmissionsTableContent() {
                   </span>
                 </th>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {calculateFraction(
-                    ozoneNox.original,
-                    ozoneGeneration.original,
-                  )}
+                  {calculateFraction(ozoneNox.pre, ozoneGeneration.pre)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>&nbsp;</td>
                 <td className={clsx("font-mono-xs text-right")}>
@@ -503,7 +500,7 @@ function PowerEmissionsTableContent() {
                   </span>
                 </th>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {calculateFraction(co2.original, generation.original)}
+                  {calculateFraction(co2.pre, generation.pre)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>&nbsp;</td>
                 <td className={clsx("font-mono-xs text-right")}>
@@ -522,7 +519,7 @@ function PowerEmissionsTableContent() {
                   </span>
                 </th>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {calculateFraction(pm25.original, generation.original)}
+                  {calculateFraction(pm25.pre, generation.pre)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>&nbsp;</td>
                 <td className={clsx("font-mono-xs text-right")}>
@@ -541,7 +538,7 @@ function PowerEmissionsTableContent() {
                   </span>
                 </th>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {calculateFraction(vocs.original, generation.original)}
+                  {calculateFraction(vocs.pre, generation.pre)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>&nbsp;</td>
                 <td className={clsx("font-mono-xs text-right")}>
@@ -560,7 +557,7 @@ function PowerEmissionsTableContent() {
                   </span>
                 </th>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {calculateFraction(nh3.original, generation.original)}
+                  {calculateFraction(nh3.pre, generation.pre)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>&nbsp;</td>
                 <td className={clsx("font-mono-xs text-right")}>
