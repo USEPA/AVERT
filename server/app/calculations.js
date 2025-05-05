@@ -166,8 +166,8 @@ function calculateEmissionsChanges(options) {
    *    emissionsFlags: ('generation' | 'so2' | 'nox' | 'co2' | 'heat')[];
    *    data: {
    *      monthly: {
-   *        [month: number]: {
-   *          [emissionsField: string]: {
+   *        [emissionsField: string]: {
+   *          [month: number]: {
    *            pre: number,
    *            post: number
    *          }
@@ -332,7 +332,15 @@ function calculateEmissionsChanges(options) {
           name: full_name,
           emissionsFlags: [],
           data: {
-            monthly: {},
+            monthly: {
+              generation: {},
+              so2: {},
+              nox: {},
+              co2: {},
+              pm25: {},
+              vocs: {},
+              nh3: {},
+            },
           },
         };
 
@@ -350,14 +358,13 @@ function calculateEmissionsChanges(options) {
         /**
          * Conditionally initialize the field's monthly data.
          */
-        result[eguId].data.monthly[month] ??= {};
-        result[eguId].data.monthly[month][field] ??= { pre: 0, post: 0 };
+        result[eguId].data.monthly[field][month] ??= { pre: 0, post: 0 };
 
         /**
          * Increment the field's monthly pre and post values.
          */
-        result[eguId].data.monthly[month][field].pre += pre;
-        result[eguId].data.monthly[month][field].post += post;
+        result[eguId].data.monthly[field][month].pre += pre;
+        result[eguId].data.monthly[field][month].post += post;
       });
     });
   }

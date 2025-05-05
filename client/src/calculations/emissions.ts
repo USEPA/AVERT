@@ -147,8 +147,8 @@ function calculateEmissionsChanges(options: {
       emissionsFlags: ("generation" | "so2" | "nox" | "co2" | "heat")[];
       data: {
         monthly: {
-          [month: number]: {
-            [field in (typeof emissionsFields)[number]]: {
+          [field in (typeof emissionsFields)[number]]: {
+            [month: number]: {
               pre: number;
               post: number;
             };
@@ -312,7 +312,15 @@ function calculateEmissionsChanges(options: {
           name: full_name,
           emissionsFlags: [],
           data: {
-            monthly: {},
+            monthly: {
+              generation: {},
+              so2: {},
+              nox: {},
+              co2: {},
+              pm25: {},
+              vocs: {},
+              nh3: {},
+            },
           },
         };
 
@@ -330,20 +338,13 @@ function calculateEmissionsChanges(options: {
         /**
          * Conditionally initialize the field's monthly data.
          */
-        result[eguId].data.monthly[month] ??= {} as {
-          [field in (typeof emissionsFields)[number]]: {
-            pre: number;
-            post: number;
-          };
-        };
-
-        result[eguId].data.monthly[month][field] ??= { pre: 0, post: 0 };
+        result[eguId].data.monthly[field][month] ??= { pre: 0, post: 0 };
 
         /**
          * Increment the field's monthly pre and post values.
          */
-        result[eguId].data.monthly[month][field].pre += pre;
-        result[eguId].data.monthly[month][field].post += post;
+        result[eguId].data.monthly[field][month].pre += pre;
+        result[eguId].data.monthly[field][month].post += post;
       });
     });
   }
@@ -422,12 +423,12 @@ export function calculateAggregatedEmissionsData(egus: EmissionsChanges) {
       object.counties[stateId] ??= {};
       object.counties[stateId][county] ??= createInitialEmissionsData();
 
-      Object.entries(eguData.data.monthly).forEach(([monthKey, monthValue]) => {
-        const month = Number(monthKey);
+      Object.entries(eguData.data.monthly).forEach(([fieldKey, fieldValue]) => {
+        const field = fieldKey as keyof typeof eguData.data.monthly;
 
-        Object.entries(monthValue).forEach(([fieldKey, fieldValue]) => {
-          const field = fieldKey as keyof typeof monthValue;
-          const { pre, post } = fieldValue;
+        Object.entries(fieldValue).forEach(([monthKey, monthValue]) => {
+          const month = Number(monthKey);
+          const { pre, post } = monthValue;
 
           const powerTotal = object.total[field].power;
           const powerRegions = object.regions[regionId][field].power;
