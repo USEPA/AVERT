@@ -165,14 +165,15 @@ function calculateEmissionsChanges(options) {
    *    name: string,
    *    emissionsFlags: ('generation' | 'so2' | 'nox' | 'co2' | 'heat')[];
    *    data: {
-   *      generation: { [month: number]: { original: number; postEere: number } },
-   *      so2: { [month: number]: { original: number; postEere: number } },
-   *      nox: { [month: number]: { original: number; postEere: number } },
-   *      co2: { [month: number]: { original: number; postEere: number } },
-   *      pm25: { [month: number]: { original: number; postEere: number } },
-   *      vocs: { [month: number]: { original: number; postEere: number } },
-   *      nh3: { [month: number]: { original: number; postEere: number } }
-   *    }}
+   *      monthly: {
+   *        [month: number]: {
+   *          [emissionsField: string]: {
+   *            original: number,
+   *            postEere: number
+   *          }
+   *        }
+   *      }
+   *    }
    * }}
    */
   const result = {};
@@ -332,13 +333,7 @@ function calculateEmissionsChanges(options) {
           name: full_name,
           emissionsFlags: [],
           data: {
-            generation: {},
-            so2: {},
-            nox: {},
-            co2: {},
-            pm25: {},
-            vocs: {},
-            nh3: {},
+            monthly: {},
           },
         };
 
@@ -356,13 +351,17 @@ function calculateEmissionsChanges(options) {
         /**
          * Conditionally initialize the field's monthly data
          */
-        result[eguId].data[field][month] ??= { original: 0, postEere: 0 };
+        result[eguId].data.monthly[month] ??= {};
+        result[eguId].data.monthly[month][field] ??= {
+          original: 0,
+          postEere: 0,
+        };
 
         /**
          * Increment the field's monthly original and postEere values
          */
-        result[eguId].data[field][month].original += original;
-        result[eguId].data[field][month].postEere += postEere;
+        result[eguId].data.monthly[month][field].original += original;
+        result[eguId].data.monthly[month][field].postEere += postEere;
       });
     });
   }

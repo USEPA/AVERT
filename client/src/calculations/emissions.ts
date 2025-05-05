@@ -22,7 +22,7 @@ export type EmissionsData = {
   [field in (typeof emissionsFields)[number]]: {
     power: {
       annual: { original: number; postEere: number };
-      monthly: EguData["data"][keyof EguData["data"]];
+      monthly: { [month: number]: { original: number; postEere: number } };
     } | null;
     vehicle: {
       annual: number;
@@ -146,13 +146,14 @@ function calculateEmissionsChanges(options: {
       name: string;
       emissionsFlags: ("generation" | "so2" | "nox" | "co2" | "heat")[];
       data: {
-        generation: { [month: number]: { original: number; postEere: number } };
-        so2: { [month: number]: { original: number; postEere: number } };
-        nox: { [month: number]: { original: number; postEere: number } };
-        co2: { [month: number]: { original: number; postEere: number } };
-        pm25: { [month: number]: { original: number; postEere: number } };
-        vocs: { [month: number]: { original: number; postEere: number } };
-        nh3: { [month: number]: { original: number; postEere: number } };
+        monthly: {
+          [month: number]: {
+            [field in (typeof emissionsFields)[number]]: {
+              original: number;
+              postEere: number;
+            };
+          };
+        };
       };
     };
   };
@@ -312,13 +313,7 @@ function calculateEmissionsChanges(options: {
           name: full_name,
           emissionsFlags: [],
           data: {
-            generation: {},
-            so2: {},
-            nox: {},
-            co2: {},
-            pm25: {},
-            vocs: {},
-            nh3: {},
+            monthly: {},
           },
         };
 
@@ -336,13 +331,22 @@ function calculateEmissionsChanges(options: {
         /**
          * Conditionally initialize the field's monthly data
          */
-        result[eguId].data[field][month] ??= { original: 0, postEere: 0 };
+        result[eguId].data.monthly[month] ??= {} as {
+          [field in (typeof emissionsFields)[number]]: {
+            original: number;
+            postEere: number;
+          };
+        };
+        result[eguId].data.monthly[month][field] ??= {
+          original: 0,
+          postEere: 0,
+        };
 
         /**
          * Increment the field's monthly original and postEere values
          */
-        result[eguId].data[field][month].original += original;
-        result[eguId].data[field][month].postEere += postEere;
+        result[eguId].data.monthly[month][field].original += original;
+        result[eguId].data.monthly[month][field].postEere += postEere;
       });
     });
   }
@@ -421,17 +425,17 @@ export function calculateAggregatedEmissionsData(egus: EmissionsChanges) {
       object.counties[stateId] ??= {};
       object.counties[stateId][county] ??= createInitialEmissionsData();
 
-      Object.entries(eguData.data).forEach(([annualKey, annualData]) => {
-        const pollutant = annualKey as keyof typeof eguData.data;
+      Object.entries(eguData.data.monthly).forEach(([monthKey, monthValue]) => {
+        const month = Number(monthKey);
 
-        Object.entries(annualData).forEach(([monthlyKey, monthlyData]) => {
-          const month = Number(monthlyKey);
-          const { original, postEere } = monthlyData;
+        Object.entries(monthValue).forEach(([fieldKey, fieldValue]) => {
+          const field = fieldKey as keyof typeof monthValue;
+          const { original, postEere } = fieldValue;
 
-          const powerTotal = object.total[pollutant].power;
-          const powerRegions = object.regions[regionId][pollutant].power;
-          const powerStates = object.states[stateId][pollutant].power;
-          const powerCounties = object.counties[stateId][county][pollutant].power; // prettier-ignore
+          const powerTotal = object.total[field].power;
+          const powerRegions = object.regions[regionId][field].power;
+          const powerStates = object.states[stateId][field].power;
+          const powerCounties = object.counties[stateId][county][field].power;
 
           if (powerTotal && powerRegions && powerStates && powerCounties) {
             powerTotal.annual.original += original;
