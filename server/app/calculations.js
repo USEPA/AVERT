@@ -167,6 +167,21 @@ function calculateEmissionsChanges(options) {
   const hourlyImpacts = {};
 
   /**
+   * Total yearly emissions impacts from all electric generating units for each
+   * pollutant/emissions field.
+   * 
+   * NOTE: This value isn't in Excel, but is the sum of the hourly impacts, and
+   * can be calculated in Excel via: `=SUM(K4:K8787)`.
+   * 
+   * @type {{
+   *  [regionId: string]: {
+   *    [emissionsField: string]: number
+   *  }
+   * }}
+   */
+  const yearlyImpacts = {};
+
+  /**
    * Monthly emissions changes data for each electric generating unit.
    * 
    * NOTE: Emissions rates for generation, so2, nox, and co2 are calculated with
@@ -367,6 +382,26 @@ function calculateEmissionsChanges(options) {
         hourlyImpacts[regionId][field][hour] = roundToThreeDecimals(hourlyImpacts[regionId][field][hour]);
 
         /**
+         * Conditionally initialize the field's yearly impacts.
+         */
+        yearlyImpacts[regionId] ??= {
+          generation: 0,
+          so2: 0,
+          nox: 0,
+          co2: 0,
+          pm25: 0,
+          vocs: 0,
+          nh3: 0,
+        };
+
+        /**
+         * Add the rounded difference between the calculated post and pre values
+         * and then round the accumulated value.
+         */
+        yearlyImpacts[regionId][field] += roundToThreeDecimals(post - pre);
+        yearlyImpacts[regionId][field] = roundToThreeDecimals(yearlyImpacts[regionId][field]);
+
+        /**
          * Conditionally initialize each EGU's metadata.
          */
         egus[eguId] ??= {
@@ -416,7 +451,7 @@ function calculateEmissionsChanges(options) {
     });
   }
 
-  return { hourlyImpacts, egus };
+  return { hourlyImpacts, yearlyImpacts, egus };
 }
 
 module.exports = { calculateEmissionsChanges };
