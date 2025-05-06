@@ -14,12 +14,22 @@ export type CombinedSectorsEmissionsData = ReturnType<
   typeof createCombinedSectorsEmissionsData
 >;
 
-const emissionsFields = ["generation", "so2", "nox", "co2", "pm25", "vocs", "nh3"] as const; // prettier-ignore
+const emissionsFields = [
+  "generation",
+  "so2",
+  "nox",
+  "co2",
+  "pm25",
+  "vocs",
+  "nh3",
+] as const;
+
+type EmissionsFields = (typeof emissionsFields)[number];
 
 type EguData = EmissionsChanges["egus"][string];
 
 export type EmissionsData = {
-  [field in (typeof emissionsFields)[number]]: {
+  [field in EmissionsFields]: {
     power: {
       annual: { pre: number; post: number };
       monthly: { [month: number]: { pre: number; post: number } };
@@ -127,8 +137,26 @@ function calculateEmissionsChanges(options: {
 }) {
   const { year, rdf, neiEmissionRates, hourlyChanges } = options;
 
+  type OzoneSeasonDataField = (RDFDataField & EmissionsFields) | "heat";
+
   /**
-   * Monthly emissions changes data for each electric generating unit (EGU).
+   * Cumulative hourly emissions impacts from all electric generating units
+   * (EGUs) for each pollutant/emissions field.
+   *
+   * Excel: "Sum: All Units (lb)" (or in the case of the "CO2" Excel sheet,
+   * "Sum: All Units (tons)") column (K) of the various pollutant/emissions
+   * sheets: "Generation", "SO2", "NOx", "CO2", "PM25", "VOCs", and "NH3".
+   */
+  const hourlyImpacts = {} as {
+    [regionId in RegionId]: {
+      [emissionsField in EmissionsFields]: {
+        [hour: number]: number;
+      };
+    };
+  };
+
+  /**
+   * Monthly emissions changes data for each electric generating unit.
    *
    * NOTE: Emissions rates for generation, so2, nox, and co2 are calculated with
    * data in the RDF's `data` object under it's corresponding key: ozone season
@@ -155,7 +183,7 @@ function calculateEmissionsChanges(options: {
       name: string;
       emissionsFlags: ("generation" | "so2" | "nox" | "co2" | "heat")[];
       monthly: {
-        [field in (typeof emissionsFields)[number]]: {
+        [field in EmissionsFields]: {
           [month: number]: {
             pre: number;
             post: number;
@@ -165,23 +193,7 @@ function calculateEmissionsChanges(options: {
     };
   };
 
-  /**
-   * Cumulative hourly emissions changes data for all electric generating units.
-   */
-  const hourly = {} as {
-    [regionId in RegionId]: {
-      [emissionsField in (typeof emissionsFields)[number]]: {
-        [hour: number]: number;
-      };
-    };
-  };
-
-  const dataFields = ["generation", "so2", "nox", "co2", "pm25", "vocs", "nh3"] as const; // prettier-ignore
   const neiFields = ["pm25", "vocs", "nh3"];
-
-  type OzoneSeasonDataField =
-    | (RDFDataField & (typeof dataFields)[number])
-    | "heat";
 
   const regionId = rdf.region.region_abbv as RegionId;
 
@@ -210,9 +222,9 @@ function calculateEmissionsChanges(options: {
     const postLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, postLoad);
 
     /**
-     * Iterate over each data field: generation, so2, nox, co2...
+     * Iterate over each emissions field: generation, so2, nox, co2...
      */
-    dataFields.forEach((field) => {
+    emissionsFields.forEach((field) => {
       /**
        * NOTE: PM2.5, VOCs, and NH3 always use the `heat` or `heat_not` fields
        * of the RDF's `data` object.
@@ -317,9 +329,9 @@ function calculateEmissionsChanges(options: {
             : calculatedPost;
 
         /**
-         * Conditionally initialize the field's hourly results.
+         * Conditionally initialize the field's hourly impacts.
          */
-        hourly[regionId] ??= {
+        hourlyImpacts[regionId] ??= {
           generation: {},
           so2: {},
           nox: {},
@@ -328,14 +340,14 @@ function calculateEmissionsChanges(options: {
           vocs: {},
           nh3: {},
         };
-        hourly[regionId][field][hour] ??= 0;
+        hourlyImpacts[regionId][field][hour] ??= 0;
 
         /**
          * Add the rounded difference between the calculated post and pre values
          * and then round the accumulated value.
          */
-        hourly[regionId][field][hour] += roundToThreeDecimals(post - pre);
-        hourly[regionId][field][hour] = roundToThreeDecimals(hourly[regionId][field][hour]); // prettier-ignore
+        hourlyImpacts[regionId][field][hour] += roundToThreeDecimals(post - pre); // prettier-ignore
+        hourlyImpacts[regionId][field][hour] = roundToThreeDecimals(hourlyImpacts[regionId][field][hour]); // prettier-ignore
 
         /**
          * Conditionally initialize each EGU's metadata.
@@ -387,7 +399,7 @@ function calculateEmissionsChanges(options: {
     });
   }
 
-  return { egus, hourly };
+  return { hourlyImpacts, egus };
 }
 
 /**

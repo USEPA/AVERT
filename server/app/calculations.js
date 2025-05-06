@@ -149,7 +149,25 @@ function calculateEmissionsChanges(options) {
   const { year, rdf, neiEmissionRates, hourlyChanges } = options;
 
   /**
-   * Monthly emissions changes data for each electric generating unit (EGU).
+   * Cumulative hourly emissions impacts from all electric generating units
+   * (EGUs) for each pollutant/emissions field.
+   *
+   * Excel: "Sum: All Units (lb)" (or in the case of the "CO2" Excel sheet,
+   * "Sum: All Units (tons)") column (K) of the various pollutant/emissions
+   * sheets: "Generation", "SO2", "NOx", "CO2", "PM25", "VOCs", and "NH3".
+   *
+   * @type {{
+   *  [regionId: string]: {
+   *    [emissionsField: string]: {
+   *      [hour: number]: number
+   *    }
+   *  }
+   * }}
+   */
+  const hourlyImpacts = {};
+
+  /**
+   * Monthly emissions changes data for each electric generating unit.
    * 
    * NOTE: Emissions rates for generation, so2, nox, and co2 are calculated with
    * data in the RDF's `data` object under it's corresponding key: ozone season
@@ -174,9 +192,9 @@ function calculateEmissionsChanges(options) {
    *    orisplCode: number,
    *    unitCode: string,
    *    name: string,
-   *    emissionsFlags: ('generation' | 'so2' | 'nox' | 'co2' | 'heat')[];
+   *    emissionsFlags: ("generation" | "so2" | "nox" | "co2" | "heat")[];
    *    monthly: {
-   *      [emissionsField: string]: {
+   *      [field: "generation" | "so2" | "nox" | "co2" | "pm25" | "vocs" | "nh3"]: {
    *        [month: number]: {
    *          pre: number,
    *          post: number
@@ -187,21 +205,8 @@ function calculateEmissionsChanges(options) {
    */
   const egus = {};
 
-  /**
-   * Cumulative hourly emissions changes data for all electric generating units.
-   * 
-   * @type {{
-   *  [regionId: string]: {
-   *    [emissionsField: string]: {
-   *      [hour: number]: number
-   *    }
-   *  }
-   * }}
-   */
-  const hourly = {};
-
   /** @type {("generation" | "so2" | "nox" | "co2" | "pm25" | "vocs" | "nh3")[]} */
-  const dataFields = ["generation", "so2", "nox", "co2", "pm25", "vocs", "nh3"];
+  const emissionsFields = ["generation", "so2", "nox", "co2", "pm25", "vocs", "nh3"];
 
   /** @type {("pm25" | "vocs" | "nh3")[]} */
   const neiFields = ["pm25", "vocs", "nh3"];
@@ -233,9 +238,9 @@ function calculateEmissionsChanges(options) {
     const postLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, postLoad);
 
     /**
-     * Iterate over each data field: generation, so2, nox, co2...
+     * Iterate over each emissions field: generation, so2, nox, co2...
      */
-    dataFields.forEach((field) => {
+    emissionsFields.forEach((field) => {
       /**
        * NOTE: PM2.5, VOCs, and NH3 always use the `heat` or `heat_not` fields
        * of the RDF's `data` object.
@@ -341,9 +346,9 @@ function calculateEmissionsChanges(options) {
             : calculatedPost;
 
         /**
-         * Conditionally initialize the field's hourly results.
+         * Conditionally initialize the field's hourly impacts.
          */
-        hourly[regionId] ??= {
+        hourlyImpacts[regionId] ??= {
           generation: {},
           so2: {},
           nox: {},
@@ -352,14 +357,14 @@ function calculateEmissionsChanges(options) {
           vocs: {},
           nh3: {},
         };
-        hourly[regionId][field][hour] ??= 0;
+        hourlyImpacts[regionId][field][hour] ??= 0;
 
         /**
          * Add the rounded difference between the calculated post and pre values
          * and then round the accumulated value.
          */
-        hourly[regionId][field][hour] += roundToThreeDecimals(post - pre);
-        hourly[regionId][field][hour] = roundToThreeDecimals(hourly[regionId][field][hour]);
+        hourlyImpacts[regionId][field][hour] += roundToThreeDecimals(post - pre);
+        hourlyImpacts[regionId][field][hour] = roundToThreeDecimals(hourlyImpacts[regionId][field][hour]);
 
         /**
          * Conditionally initialize each EGU's metadata.
@@ -411,7 +416,7 @@ function calculateEmissionsChanges(options) {
     });
   }
 
-  return { hourly, egus };
+  return { hourlyImpacts, egus };
 }
 
 module.exports = { calculateEmissionsChanges };
