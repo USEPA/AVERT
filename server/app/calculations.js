@@ -127,6 +127,15 @@ function calculateLinear(options) {
 }
 
 /**
+ * Rounds a number to three decimal places.
+ * 
+ * @param {number} num 
+ */
+function roundToThreeDecimals(num) {
+  return Math.round(num * 1000) / 1000;
+}
+
+/**
  * Calculates emissions changes for a provided region.
  *
  * @param {{
@@ -140,6 +149,8 @@ function calculateEmissionsChanges(options) {
   const { year, rdf, neiEmissionRates, hourlyChanges } = options;
 
   /**
+   * Monthly emissions changes data for each electric generating unit (EGU).
+   * 
    * NOTE: Emissions rates for generation, so2, nox, and co2 are calculated with
    * data in the RDF's `data` object under it's corresponding key: ozone season
    * data matches the field exactly (e.g. `data.so2`, `data.nox`) and non-ozone
@@ -164,19 +175,30 @@ function calculateEmissionsChanges(options) {
    *    unitCode: string,
    *    name: string,
    *    emissionsFlags: ('generation' | 'so2' | 'nox' | 'co2' | 'heat')[];
-   *    data: {
-   *      monthly: {
-   *        [emissionsField: string]: {
-   *          [month: number]: {
-   *            pre: number,
-   *            post: number
-   *          }
+   *    monthly: {
+   *      [emissionsField: string]: {
+   *        [month: number]: {
+   *          pre: number,
+   *          post: number
    *        }
    *      }
    *    }
    * }}
    */
-  const result = {};
+  const egus = {};
+
+  /**
+   * Cumulative hourly emissions changes data for all electric generating units.
+   * 
+   * @type {{
+   *  [regionId: string]: {
+   *    [emissionsField: string]: {
+   *      [hour: number]: number
+   *    }
+   *  }
+   * }}
+   */
+  const hourly = {};
 
   /** @type {("generation" | "so2" | "nox" | "co2" | "pm25" | "vocs" | "nh3")[]} */
   const dataFields = ["generation", "so2", "nox", "co2", "pm25", "vocs", "nh3"];
@@ -194,6 +216,7 @@ function calculateEmissionsChanges(options) {
    * Iterate over each hour in the year (8760 in non-leap years)
    */
   for (const [i, hourlyLoad] of rdf.regional_load.entries()) {
+    const hour = hourlyLoad.hour_of_year;
     const month = hourlyLoad.month; // numeric month of load
 
     const preLoad = hourlyLoad.regional_load_mw; // original regional load (mwh) for the hour
@@ -318,9 +341,30 @@ function calculateEmissionsChanges(options) {
             : calculatedPost;
 
         /**
+         * Conditionally initialize the field's hourly results.
+         */
+        hourly[regionId] ??= {
+          generation: {},
+          so2: {},
+          nox: {},
+          co2: {},
+          pm25: {},
+          vocs: {},
+          nh3: {},
+        };
+        hourly[regionId][field][hour] ??= 0;
+
+        /**
+         * Add the rounded difference between the calculated post and pre values
+         * and then round the accumulated value.
+         */
+        hourly[regionId][field][hour] += roundToThreeDecimals(post - pre);
+        hourly[regionId][field][hour] = roundToThreeDecimals(hourly[regionId][field][hour]);
+
+        /**
          * Conditionally initialize each EGU's metadata.
          */
-        result[eguId] ??= {
+        egus[eguId] ??= {
           region: regionId,
           state: state,
           county: county,
@@ -331,16 +375,14 @@ function calculateEmissionsChanges(options) {
           unitCode: unit_code,
           name: full_name,
           emissionsFlags: [],
-          data: {
-            monthly: {
-              generation: {},
-              so2: {},
-              nox: {},
-              co2: {},
-              pm25: {},
-              vocs: {},
-              nh3: {},
-            },
+          monthly: {
+            generation: {},
+            so2: {},
+            nox: {},
+            co2: {},
+            pm25: {},
+            vocs: {},
+            nh3: {},
           },
         };
 
@@ -350,26 +392,26 @@ function calculateEmissionsChanges(options) {
          */
         if (
           infreq_emissions_flag === 1 &&
-          !result[eguId].emissionsFlags.includes(field)
+          !egus[eguId].emissionsFlags.includes(field)
         ) {
-          result[eguId].emissionsFlags.push(field);
+          egus[eguId].emissionsFlags.push(field);
         }
 
         /**
          * Conditionally initialize the field's monthly data.
          */
-        result[eguId].data.monthly[field][month] ??= { pre: 0, post: 0 };
+        egus[eguId].monthly[field][month] ??= { pre: 0, post: 0 };
 
         /**
          * Increment the field's monthly pre and post values.
          */
-        result[eguId].data.monthly[field][month].pre += pre;
-        result[eguId].data.monthly[field][month].post += post;
+        egus[eguId].monthly[field][month].pre += pre;
+        egus[eguId].monthly[field][month].post += post;
       });
     });
   }
 
-  return result;
+  return { hourly, egus };
 }
 
 module.exports = { calculateEmissionsChanges };

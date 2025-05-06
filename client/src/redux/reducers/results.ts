@@ -180,9 +180,16 @@ export function fetchEmissionsChanges(): AppThunk {
       .then((responses) => Promise.all(responses.map((res) => res.json())))
       .then((regionsData: EmissionsChanges[]) => {
         // flatten array of regionData objects into a single object
-        const emissionsChanges = regionsData.reduce((result, regionData) => {
-          return { ...result, ...regionData };
-        }, {});
+        const emissionsChanges = regionsData.reduce(
+          (object, regionData) => {
+            return {
+              ...object,
+              hourly: { ...object.hourly, ...regionData.hourly },
+              egus: { ...object.egus, ...regionData.egus },
+            };
+          },
+          { hourly: {}, egus: {} } as EmissionsChanges,
+        );
 
         const aggregatedEmissionsData =
           calculateAggregatedEmissionsData(emissionsChanges);
@@ -237,16 +244,19 @@ export function fetchEmissionsChanges(): AppThunk {
  * will have the `infreq_emissions_flag` property's value of 1 for the given
  * given in the region's RDF.
  */
-function setEgusNeedingEmissionsReplacement(egus: EmissionsChanges) {
-  if (Object.keys(egus).length === 0) return {};
+function setEgusNeedingEmissionsReplacement(emissionChanges: EmissionsChanges) {
+  if (Object.keys(emissionChanges.egus).length === 0) return {};
 
-  const result = Object.entries(egus).reduce((object, [eguId, eguData]) => {
-    if (eguData.emissionsFlags.length !== 0) {
-      object[eguId] = eguData;
-    }
+  const result = Object.entries(emissionChanges.egus).reduce(
+    (object, [eguId, eguData]) => {
+      if (eguData.emissionsFlags.length !== 0) {
+        object[eguId] = eguData;
+      }
 
-    return object;
-  }, {} as EmissionsChanges);
+      return object;
+    },
+    {} as EmissionsChanges["egus"],
+  );
 
   return result;
 }
@@ -256,7 +266,7 @@ function setEgusNeedingEmissionsReplacement(egus: EmissionsChanges) {
  * needing emissions replacement, and the region's actual emissions value for
  * that particular pollutant.
  */
-function setEmissionsReplacements(egus: EmissionsChanges) {
+function setEmissionsReplacements(egus: EmissionsChanges["egus"]) {
   if (Object.keys(egus).length === 0) {
     return {} as { [pollutant in EmissionsFlagsField]: number };
   }
@@ -285,7 +295,9 @@ function setEmissionsReplacements(egus: EmissionsChanges) {
       object[pollutant] = Object.values(regionData).reduce((a, b) => (a += b));
       return object;
     },
-    {} as { [pollutant in EmissionsFlagsField]: number },
+    {} as {
+      [pollutant in EmissionsFlagsField]: number;
+    },
   );
 
   return result;
