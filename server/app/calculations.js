@@ -96,20 +96,24 @@
  * Adds a number to an array of numbers, sorts it, and returns the index of the
  * number directly before the one that was inserted
  *
+ * Excel: Functionaly similar to the code associated with "matchedArray" in the
+ * "m_3_displaced_gen_emissions" Visual Basic module.
+ *
  * @param {number[]} array
  * @param {number} number
  */
 function getPrecedingIndex(array, number) {
-  // insert provided number into the provided array and sort it
+  /** Insert the provided number into the provided array and sort it. */
   const sortedArray = array.concat(number).sort((a, b) => a - b);
   const numberIndex = sortedArray.indexOf(number);
-  // return the index of the number directly before the inserted number
+  /** Return the index of the number directly before the inserted number. */
   if (array[numberIndex] === number) return numberIndex;
   return numberIndex - 1;
 }
 
 /**
- * Excel: "Pre" and "Post" calculation from "m_3_displaced_gen_emissions" module
+ * Excel: "pre" and "post" calculation from the "m_3_displaced_gen_emissions"
+ * Visual Basic module before the "delta" is determined.
  *
  * @param {{
  *  load: number,
@@ -118,7 +122,7 @@ function getPrecedingIndex(array, number) {
  *  edgeA: number,
  *  edgeB: number
  * }} options
- */
+*/
 function calculateLinear(options) {
   const { load, genA, genB, edgeA, edgeB } = options;
   const slope = (genA - genB) / (edgeA - edgeB);
@@ -127,16 +131,31 @@ function calculateLinear(options) {
 }
 
 /**
- * Rounds a number to three decimal places.
- * 
- * @param {number} num 
+ * Rounds a number a specified number of decimal places.
+ *
+ * @param {{
+ *  number: number,
+ *  decimalPlaces: number,
+ * }} options
  */
-function roundToThreeDecimals(num) {
-  return Math.round(num * 1000) / 1000;
+function roundToDecimalPlaces(options) {
+  const { number, decimalPlaces } = options;
+  const factor = Math.pow(10, decimalPlaces);
+  return Math.round(number * factor) / factor;
 }
 
 /**
  * Calculates emissions changes for a provided region.
+ *
+ * Excel: "m_3_displaced_gen_emissions" Visual Basic module, starting on line 82
+ * which begins with the following code:  
+ * ```vb
+ *  'This gets the dimensions of various arrays
+ *  Sheets("Data").Activate
+ *  Dim lastColRow2 As Double
+ *  Dim lastRowColA As Double
+ *  Dim lastRowColJ As Double
+ * ```
  *
  * @param {{
  *  year: number,
@@ -152,14 +171,21 @@ function calculateEmissionsChanges(options) {
    * Cumulative hourly emissions impacts from all electric generating units
    * (EGUs) for each pollutant/emissions field.
    *
-   * Excel: "Sum: All Units (lb)" (or in the case of the "CO2" Excel sheet,
-   * "Sum: All Units (tons)") column (K) of the various pollutant/emissions
-   * sheets: "Generation", "SO2", "NOx", "CO2", "PM25", "VOCs", and "NH3".
+   * Excel: Columns I, J, and K of the various pollutant/emissions sheets
+   * ("Generation", "SO2", "NOx", "CO2", "PM25", "VOCs", and "NH3"). For example,
+   * for the "SO2" sheet, those columns are:
+   *   - "Orig SO2 (lb)" (column I) which is the hourly "pre" value.
+   *   - "Post Change SO2 (lb)" (column J) which is the hourly "post" value.
+   *   - "Sum: All Units (lb)" (column K) which is the hourly "impacts" value.
    *
    * @type {{
    *  [regionId: string]: {
    *    [emissionsField: string]: {
-   *      [hour: number]: number
+   *      [hour: number]: {
+   *        pre: number,
+   *        post: number,
+   *        impacts: number
+   *      }
    *    }
    *  }
    * }}
@@ -169,13 +195,17 @@ function calculateEmissionsChanges(options) {
   /**
    * Total yearly emissions impacts from all electric generating units for each
    * pollutant/emissions field.
-   * 
+   *
    * NOTE: This value isn't in Excel, but is the sum of the hourly impacts, and
    * can be calculated in Excel via: `=SUM(K4:K8787)`.
-   * 
+   *
    * @type {{
    *  [regionId: string]: {
-   *    [emissionsField: string]: number
+   *    [emissionsField: string]: {
+   *      pre: number,
+   *      post: number,
+   *      impacts: number
+   *    }
    *  }
    * }}
    */
@@ -183,7 +213,7 @@ function calculateEmissionsChanges(options) {
 
   /**
    * Monthly emissions changes data for each electric generating unit.
-   * 
+   *
    * NOTE: Emissions rates for generation, so2, nox, and co2 are calculated with
    * data in the RDF's `data` object under it's corresponding key: ozone season
    * data matches the field exactly (e.g. `data.so2`, `data.nox`) and non-ozone
@@ -233,34 +263,53 @@ function calculateEmissionsChanges(options) {
   const lastLoadBinEdge = loadBinEdges[loadBinEdges.length - 1];
 
   /**
-   * Iterate over each hour in the year (8760 in non-leap years)
+   * Iterate over each hour in the year (8760 hours for non-leap years or 8784
+   * hours for leap years).
    */
   for (const [i, hourlyLoad] of rdf.regional_load.entries()) {
     const hour = hourlyLoad.hour_of_year;
-    const month = hourlyLoad.month; // numeric month of load
+    const month = hourlyLoad.month;
 
-    const preLoad = hourlyLoad.regional_load_mw; // original regional load (mwh) for the hour
-    const postLoad = preLoad + hourlyChanges[i]; // merged regional energy profile (mwh) for the hour
+    /**
+     * Original regional load (mwh) for the hour.
+     *
+     * Excel: "Regional Load (MW)" (column D) of the various pollutant/emissions
+     * sheets ("Generation", "SO2", "NOx", etc.) and also the first item in the
+     * "loadArray" variable in the "m_3_displaced_gen_emissions" Visual Basic
+     * module.
+     */
+    const preLoad = hourlyLoad.regional_load_mw;
 
+    /**
+     * Post impacts regional load (mwh) for the hour.
+     *
+     * Excel: "Load after Energy Change" (column F) of the various pollutant/
+     * emissions sheets ("Generation", "SO2", "NOx", etc.) and also the third
+     * item in the "loadArray" variable in the "m_3_displaced_gen_emissions"
+     * Visual Basic module.
+     *
+     * NOTE: `hourlyChanges[i]` is the "Energy Change Profile" (column E) and
+     * also the second item in the "loadArray" variable in the
+     * "m_3_displaced_gen_emissions" Visual Basic module.
+     */
+    const postLoad = preLoad + hourlyChanges[i];
+
+    /** Ensure the pre and post load is in bounds. */
     const preLoadInBounds = preLoad >= firstLoadBinEdge && preLoad <= lastLoadBinEdge; // prettier-ignore
     const postLoadInBounds = postLoad >= firstLoadBinEdge && postLoad <= lastLoadBinEdge; // prettier-ignore
 
-    // filter out outliers
     if (!(preLoadInBounds && postLoadInBounds)) continue;
 
-    // get index of load bin edge closest to preLoad or postLoad
+    /** Get the index of the load bin edge closest to the preLoad and postLoad values. */
     const preLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, preLoad);
     const postLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, postLoad);
 
-    /**
-     * Iterate over each emissions field: generation, so2, nox, co2...
-     */
+    /** Iterate over each emissions field (generation, so2, nox, co2, etc.) */
     emissionsFields.forEach((field) => {
       /**
        * NOTE: PM2.5, VOCs, and NH3 always use the `heat` or `heat_not` fields
        * of the RDF's `data` object.
        */
-
       /** @type {EGUData[]} */
       const ozoneSeasonData = neiFields.includes(field)
         ? rdf.data.heat
@@ -283,6 +332,9 @@ function calculateEmissionsChanges(options) {
       /**
        * Ozone season is between May and September, so use the correct medians
        * dataset for the current month.
+       *
+       * Excel: "plantDataArray" in the "m_3_displaced_gen_emissions" Visual
+       * Basic module.
        */
       const datasetMedians = !nonOzoneSeasonMedians
         ? ozoneSeasonMedians
@@ -311,6 +363,10 @@ function calculateEmissionsChanges(options) {
         const eguId = `${regionId}_${state}_${orispl_code}_${unit_code}`;
         const medians = datasetMedians[eguIndex];
 
+        /**
+         * Excel: "pre" calculation from the "m_3_displaced_gen_emissions"
+         * Visual Basic module before the "delta" is determined.
+         */
         const calculatedPre = calculateLinear({
           load: preLoad,
           genA: medians[preLoadBinEdgeIndex],
@@ -325,6 +381,9 @@ function calculateEmissionsChanges(options) {
          * updated to include the `infreq_emissions_flag` for all pollutants for
          * consistency, which allows other pollutants at specific EGUs to be
          * excluded in the future).
+         *
+         * Excel: "post" calculation from the "m_3_displaced_gen_emissions"
+         * Visual Basic module before the "delta" is determined.
          */
         const calculatedPost =
           infreq_emissions_flag === 1
@@ -361,6 +420,20 @@ function calculateEmissionsChanges(options) {
             : calculatedPost;
 
         /**
+         * Determine the number of decimal places to round the difference in pre
+         * and post values to, based on the pollution/emissions field.
+         */
+        const decimalPlaces =
+        field === "generation" ||
+        field === "co2" ||
+        field === "so2" ||
+        field === "nox"
+          ? 3
+          : field === "pm25" || field === "vocs" || field === "nh3"
+            ? 6
+            : 0;
+
+        /**
          * Conditionally initialize the field's hourly impacts.
          */
         hourlyImpacts[regionId] ??= {
@@ -372,34 +445,56 @@ function calculateEmissionsChanges(options) {
           vocs: {},
           nh3: {},
         };
-        hourlyImpacts[regionId][field][hour] ??= 0;
+        hourlyImpacts[regionId][field][hour] ??= {
+          pre: 0,
+          post: 0,
+          impacts: 0,
+        };
 
         /**
-         * Add the rounded difference between the calculated post and pre values
-         * and then round the accumulated value.
+         * Increment the field's hourly pre and post, and impacts values and
+         * round the accumulated impacts value.
          */
-        hourlyImpacts[regionId][field][hour] += roundToThreeDecimals(post - pre);
-        hourlyImpacts[regionId][field][hour] = roundToThreeDecimals(hourlyImpacts[regionId][field][hour]);
+        hourlyImpacts[regionId][field][hour].pre += pre;
+        hourlyImpacts[regionId][field][hour].post += post;
+        hourlyImpacts[regionId][field][hour].impacts += roundToDecimalPlaces({
+          number: post - pre,
+          decimalPlaces,
+        });
+
+        hourlyImpacts[regionId][field][hour].impacts = roundToDecimalPlaces({
+          number: hourlyImpacts[regionId][field][hour].impacts,
+          decimalPlaces,
+        });
 
         /**
          * Conditionally initialize the field's yearly impacts.
          */
         yearlyImpacts[regionId] ??= {
-          generation: 0,
-          so2: 0,
-          nox: 0,
-          co2: 0,
-          pm25: 0,
-          vocs: 0,
-          nh3: 0,
+          generation: { pre: 0, post: 0, impacts: 0 },
+          so2: { pre: 0, post: 0, impacts: 0 },
+          nox: { pre: 0, post: 0, impacts: 0 },
+          co2: { pre: 0, post: 0, impacts: 0 },
+          pm25: { pre: 0, post: 0, impacts: 0 },
+          vocs: { pre: 0, post: 0, impacts: 0 },
+          nh3: { pre: 0, post: 0, impacts: 0 },
         };
 
         /**
-         * Add the rounded difference between the calculated post and pre values
-         * and then round the accumulated value.
+         * Increment the field's yearly pre and post, and impacts values and
+         * round the accumulated impacts value.
          */
-        yearlyImpacts[regionId][field] += roundToThreeDecimals(post - pre);
-        yearlyImpacts[regionId][field] = roundToThreeDecimals(yearlyImpacts[regionId][field]);
+        yearlyImpacts[regionId][field].pre += pre;
+        yearlyImpacts[regionId][field].post += post;
+        yearlyImpacts[regionId][field].impacts += roundToDecimalPlaces({
+          number: post - pre,
+          decimalPlaces,
+        });
+
+        yearlyImpacts[regionId][field].impacts = roundToDecimalPlaces({
+          number: yearlyImpacts[regionId][field].impacts,
+          decimalPlaces,
+        });
 
         /**
          * Conditionally initialize each EGU's metadata.
