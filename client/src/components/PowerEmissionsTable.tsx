@@ -41,6 +41,7 @@ function setAnnualMonthlyData(
   if (!combinedSectorsEmissionsData) {
     return {
       generation: { pre: 0, post: 0, impacts: 0 },
+      heat: { pre: 0, post: 0, impacts: 0 },
       ozoneGeneration: { pre: 0, post: 0, impacts: 0 },
       so2: { pre: 0, post: 0, impacts: 0 },
       nox: { pre: 0, post: 0, impacts: 0 },
@@ -92,6 +93,7 @@ function setAnnualMonthlyData(
     },
     {
       generation: { pre: 0, post: 0, impacts: 0 },
+      heat: { pre: 0, post: 0, impacts: 0 },
       ozoneGeneration: { pre: 0, post: 0, impacts: 0 },
       so2: { pre: 0, post: 0, impacts: 0 },
       nox: { pre: 0, post: 0, impacts: 0 },

@@ -253,8 +253,8 @@ function calculateEmissionsChanges(options) {
    */
   const egus = {};
 
-  /** @type {("generation" | "so2" | "nox" | "co2" | "pm25" | "vocs" | "nh3")[]} */
-  const emissionsFields = ["generation", "so2", "nox", "co2", "pm25", "vocs", "nh3"];
+  /** @type {("generation" | "heat" | "so2" | "nox" | "co2" | "pm25" | "vocs" | "nh3")[]} */
+  const emissionsFields = ["generation", "heat", "so2", "nox", "co2", "pm25", "vocs", "nh3"];
 
   /** @type {("pm25" | "vocs" | "nh3")[]} */
   const neiFields = ["pm25", "vocs", "nh3"];
@@ -313,7 +313,7 @@ function calculateEmissionsChanges(options) {
     const preLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, preLoad);
     const postLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, postLoad);
 
-    /** Iterate over each emissions field (generation, so2, nox, co2, etc.) */
+    /** Iterate over each emissions field (generation, heat, so2, nox, co2, etc.) */
     emissionsFields.forEach((field) => {
       /**
        * NOTE: PM2.5, VOCs, and NH3 always use the `heat` or `heat_not` fields
@@ -411,6 +411,7 @@ function calculateEmissionsChanges(options) {
          */
         const decimalPlaces =
         field === "generation" ||
+        field === "heat" ||
         field === "co2" ||
         field === "so2" ||
         field === "nox"
@@ -457,6 +458,7 @@ function calculateEmissionsChanges(options) {
          */
         hourlyImpacts[regionId] ??= {
           generation: {},
+          heat: {},
           so2: {},
           nox: {},
           co2: {},
@@ -491,6 +493,7 @@ function calculateEmissionsChanges(options) {
          */
         yearlyImpacts[regionId] ??= {
           generation: { pre: 0, post: 0, impacts: 0 },
+          heat: { pre: 0, post: 0, impacts: 0 },
           so2: { pre: 0, post: 0, impacts: 0 },
           nox: { pre: 0, post: 0, impacts: 0 },
           co2: { pre: 0, post: 0, impacts: 0 },
@@ -531,6 +534,7 @@ function calculateEmissionsChanges(options) {
           emissionsFlags: [],
           monthly: {
             generation: {},
+            heat: {},
             so2: {},
             nox: {},
             co2: {},

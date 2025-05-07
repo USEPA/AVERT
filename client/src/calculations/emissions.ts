@@ -16,6 +16,7 @@ export type CombinedSectorsEmissionsData = ReturnType<
 
 const emissionsFields = [
   "generation",
+  "heat",
   "so2",
   "nox",
   "co2",
@@ -295,7 +296,7 @@ function calculateEmissionsChanges(options: {
     const preLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, preLoad);
     const postLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, postLoad);
 
-    /** Iterate over each emissions field (generation, so2, nox, co2, etc.) */
+    /** Iterate over each emissions field (generation, heat, so2, nox, co2, etc.) */
     emissionsFields.forEach((field) => {
       /**
        * NOTE: PM2.5, VOCs, and NH3 always use the `heat` or `heat_not` fields
@@ -391,6 +392,7 @@ function calculateEmissionsChanges(options: {
          */
         const decimalPlaces =
           field === "generation" ||
+          field === "heat" ||
           field === "co2" ||
           field === "so2" ||
           field === "nox"
@@ -439,6 +441,7 @@ function calculateEmissionsChanges(options: {
          */
         hourlyImpacts[regionId] ??= {
           generation: {},
+          heat: {},
           so2: {},
           nox: {},
           co2: {},
@@ -473,6 +476,7 @@ function calculateEmissionsChanges(options: {
          */
         yearlyImpacts[regionId] ??= {
           generation: { pre: 0, post: 0, impacts: 0 },
+          heat: { pre: 0, post: 0, impacts: 0 },
           so2: { pre: 0, post: 0, impacts: 0 },
           nox: { pre: 0, post: 0, impacts: 0 },
           co2: { pre: 0, post: 0, impacts: 0 },
@@ -513,6 +517,7 @@ function calculateEmissionsChanges(options: {
           emissionsFlags: [],
           monthly: {
             generation: {},
+            heat: {},
             so2: {},
             nox: {},
             co2: {},
@@ -764,12 +769,15 @@ export function createCombinedSectorsEmissionsData(options: {
 
     const annualVehicleData =
       pollutant !== "generation" &&
+      pollutant !== "heat" &&
       pollutant in vehicleEmissionChangesByGeography.total
         ? vehicleEmissionChangesByGeography.total[pollutant]
         : 0;
 
     const monthlyVehicleData =
-      pollutant !== "generation" && pollutant in monthlyChangesData.regionTotals
+      pollutant !== "generation" &&
+      pollutant !== "heat" &&
+      pollutant in monthlyChangesData.regionTotals
         ? monthlyChangesData.regionTotals[pollutant]
         : null;
 
@@ -784,6 +792,7 @@ export function createCombinedSectorsEmissionsData(options: {
     /** initialize region data if it doesn't already exist */
     result.regions[regionId] ??= {
       generation: { power: null, vehicle: { annual: 0, monthly: null } },
+      heat: { power: null, vehicle: { annual: 0, monthly: null } },
       so2: { power: null, vehicle: { annual: 0, monthly: null } },
       nox: { power: null, vehicle: { annual: 0, monthly: null } },
       co2: { power: null, vehicle: { annual: 0, monthly: null } },
@@ -799,12 +808,14 @@ export function createCombinedSectorsEmissionsData(options: {
 
       const annualVehicleData =
         pollutant !== "generation" &&
+        pollutant !== "heat" &&
         pollutant in vehicleEmissionChangesByGeography.regions[regionId]
           ? vehicleEmissionChangesByGeography.regions[regionId][pollutant]
           : 0;
 
       const monthlyVehicleData =
         pollutant !== "generation" &&
+        pollutant !== "heat" &&
         pollutant in monthlyChangesData[regionId][pollutant]
           ? monthlyChangesData[regionId][pollutant]
           : null;
@@ -821,6 +832,7 @@ export function createCombinedSectorsEmissionsData(options: {
     /** initialize state data if it doesn't already exist */
     result.states[stateId] ??= {
       generation: { power: null, vehicle: { annual: 0, monthly: null } },
+      heat: { power: null, vehicle: { annual: 0, monthly: null } },
       so2: { power: null, vehicle: { annual: 0, monthly: null } },
       nox: { power: null, vehicle: { annual: 0, monthly: null } },
       co2: { power: null, vehicle: { annual: 0, monthly: null } },
@@ -836,6 +848,7 @@ export function createCombinedSectorsEmissionsData(options: {
 
       const annualVehicleData =
         pollutant !== "generation" &&
+        pollutant !== "heat" &&
         pollutant in vehicleEmissionChangesByGeography.states[stateId]
           ? vehicleEmissionChangesByGeography.states[stateId][pollutant]
           : 0;
@@ -870,6 +883,7 @@ export function createCombinedSectorsEmissionsData(options: {
         /** initialize county data if it doesn't already exist */
         result.counties[stateId][countyName] ??= {
           generation: { power: null, vehicle: { annual: 0, monthly: null } },
+          heat: { power: null, vehicle: { annual: 0, monthly: null } },
           so2: { power: null, vehicle: { annual: 0, monthly: null } },
           nox: { power: null, vehicle: { annual: 0, monthly: null } },
           co2: { power: null, vehicle: { annual: 0, monthly: null } },
@@ -885,6 +899,7 @@ export function createCombinedSectorsEmissionsData(options: {
 
           const annualVehicleData =
             pollutant !== "generation" &&
+            pollutant !== "heat" &&
             pollutant in vehicleEmissionChangesByGeography.counties[stateId][countyName] // prettier-ignore
               ? vehicleEmissionChangesByGeography.counties[stateId][countyName][pollutant] // prettier-ignore
               : 0;
