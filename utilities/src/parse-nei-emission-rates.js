@@ -94,7 +94,8 @@ function renameNEIEmissionRatesDataKeys(data) {
  */
 
 /**
- * Moves the years keys (2017–2024) into a nested object under the key "years".
+ * Moves the years keys (2017–2024) into a nested object under the key "years"
+ * and ensures the unit field's value is a string.
  * 
  * @param {NEIEmissionRatesData[]} data
  */
@@ -111,14 +112,18 @@ function modifyNEIEmissionRatesData(data) {
   ];
 
   const result = data.map((neiData) => {
+    /** Create a new object with the year fields nested under "years" */
     const years = Object.keys(neiData).reduce((object, neiDataKey) => {
       if (!nonYearFields.includes(neiDataKey)) {
         object[neiDataKey] = neiData[neiDataKey];
-        /** Remove the year field from the top level neiData object */
+        /** Remove each year field from the top level neiData object */
         delete neiData[neiDataKey];
       }
       return object;
     }, {});
+
+    /** Ensure the unit field is a string */
+    neiData.unit = String(neiData.unit);
 
     return { ...neiData, years };
   });
