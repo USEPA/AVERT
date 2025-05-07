@@ -228,9 +228,18 @@ function calculateEmissionsChanges(options: {
       unitCode: string;
       name: string;
       emissionsFlags: ("generation" | "so2" | "nox" | "co2" | "heat")[];
-      monthly: {
-        [field in EmissionsFields]: {
-          [month: number]: {
+      data: {
+        monthly: {
+          [field in EmissionsFields]: {
+            [month: number]: {
+              pre: number;
+              post: number;
+              impacts: number;
+            };
+          };
+        };
+        yearly: {
+          [field in EmissionsFields]: {
             pre: number;
             post: number;
             impacts: number;
@@ -515,15 +524,27 @@ function calculateEmissionsChanges(options: {
           unitCode: unit_code,
           name: full_name,
           emissionsFlags: [],
-          monthly: {
-            generation: {},
-            heat: {},
-            so2: {},
-            nox: {},
-            co2: {},
-            pm25: {},
-            vocs: {},
-            nh3: {},
+          data: {
+            monthly: {
+              generation: {},
+              heat: {},
+              so2: {},
+              nox: {},
+              co2: {},
+              pm25: {},
+              vocs: {},
+              nh3: {},
+            },
+            yearly: {
+              generation: { pre: 0, post: 0, impacts: 0 },
+              heat: { pre: 0, post: 0, impacts: 0 },
+              so2: { pre: 0, post: 0, impacts: 0 },
+              nox: { pre: 0, post: 0, impacts: 0 },
+              co2: { pre: 0, post: 0, impacts: 0 },
+              pm25: { pre: 0, post: 0, impacts: 0 },
+              vocs: { pre: 0, post: 0, impacts: 0 },
+              nh3: { pre: 0, post: 0, impacts: 0 },
+            },
           },
         };
 
@@ -541,21 +562,33 @@ function calculateEmissionsChanges(options: {
         /**
          * Conditionally initialize the field's monthly data.
          */
-        egus[eguId].monthly[field][month] ??= { pre: 0, post: 0, impacts: 0 };
+        egus[eguId].data.monthly[field][month] ??= { pre: 0, post: 0, impacts: 0 }; // prettier-ignore
 
         /**
-         * Increment the field's monthly pre and post, and impacts values and
-         * round the accumulated impacts value.
+         * Increment the field's monthly and yearly pre, post, and impacts
+         * values and round the accumulated impacts values.
          */
-        egus[eguId].monthly[field][month].pre += pre;
-        egus[eguId].monthly[field][month].post += post;
-        egus[eguId].monthly[field][month].impacts += roundToDecimalPlaces({
+        egus[eguId].data.monthly[field][month].pre += pre;
+        egus[eguId].data.monthly[field][month].post += post;
+        egus[eguId].data.monthly[field][month].impacts += roundToDecimalPlaces({
           number: post - pre,
           decimalPlaces,
         });
 
-        egus[eguId].monthly[field][month].impacts = roundToDecimalPlaces({
-          number: egus[eguId].monthly[field][month].impacts,
+        egus[eguId].data.monthly[field][month].impacts = roundToDecimalPlaces({
+          number: egus[eguId].data.monthly[field][month].impacts,
+          decimalPlaces,
+        });
+
+        egus[eguId].data.yearly[field].pre += pre;
+        egus[eguId].data.yearly[field].post += post;
+        egus[eguId].data.yearly[field].impacts += roundToDecimalPlaces({
+          number: post - pre,
+          decimalPlaces,
+        });
+
+        egus[eguId].data.yearly[field].impacts = roundToDecimalPlaces({
+          number: egus[eguId].data.yearly[field].impacts,
           decimalPlaces,
         });
       });
@@ -574,7 +607,7 @@ function createEmptyMonthlyPowerData() {
       object[index + 1] = { pre: 0, post: 0 };
       return object;
     },
-    {} as EguData["monthly"][keyof EguData["monthly"]],
+    {} as EguData["data"]["monthly"][keyof EguData["data"]["monthly"]],
   );
 
   return result;
@@ -638,8 +671,8 @@ export function calculateAggregatedEmissionsData(
       object.counties[stateId] ??= {};
       object.counties[stateId][county] ??= createInitialEmissionsData();
 
-      Object.entries(eguData.monthly).forEach(([fieldKey, fieldValue]) => {
-        const field = fieldKey as keyof typeof eguData.monthly;
+      Object.entries(eguData.data.monthly).forEach(([fieldKey, fieldValue]) => {
+        const field = fieldKey as keyof typeof eguData.data.monthly;
 
         Object.entries(fieldValue).forEach(([monthKey, monthValue]) => {
           const month = Number(monthKey);

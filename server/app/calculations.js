@@ -240,9 +240,18 @@ function calculateEmissionsChanges(options) {
    *    unitCode: string,
    *    name: string,
    *    emissionsFlags: ("generation" | "so2" | "nox" | "co2" | "heat")[];
-   *    monthly: {
-   *      [field: "generation" | "so2" | "nox" | "co2" | "pm25" | "vocs" | "nh3"]: {
-   *        [month: number]: {
+   *    data: {
+   *      monthly: {
+   *        [field: "generation" | "so2" | "nox" | "co2" | "pm25" | "vocs" | "nh3"]: {
+   *          [month: number]: {
+   *            pre: number,
+   *            post: number,
+   *            impacts: number
+   *          }
+   *        }
+   *      }
+   *      yearly: {
+   *        [field: "generation" | "so2" | "nox" | "co2" | "pm25" | "vocs" | "nh3"]: {
    *          pre: number,
    *          post: number,
    *          impacts: number
@@ -304,8 +313,8 @@ function calculateEmissionsChanges(options) {
     const postLoad = preLoad + hourlyChanges[i];
 
     /** Ensure the pre and post load is in bounds. */
-    const preLoadInBounds = preLoad >= firstLoadBinEdge && preLoad <= lastLoadBinEdge; // prettier-ignore
-    const postLoadInBounds = postLoad >= firstLoadBinEdge && postLoad <= lastLoadBinEdge; // prettier-ignore
+    const preLoadInBounds = preLoad >= firstLoadBinEdge && preLoad <= lastLoadBinEdge;
+    const postLoadInBounds = postLoad >= firstLoadBinEdge && postLoad <= lastLoadBinEdge;
 
     if (!(preLoadInBounds && postLoadInBounds)) continue;
 
@@ -532,15 +541,27 @@ function calculateEmissionsChanges(options) {
           unitCode: unit_code,
           name: full_name,
           emissionsFlags: [],
-          monthly: {
-            generation: {},
-            heat: {},
-            so2: {},
-            nox: {},
-            co2: {},
-            pm25: {},
-            vocs: {},
-            nh3: {},
+          data: {
+            monthly: {
+              generation: {},
+              heat: {},
+              so2: {},
+              nox: {},
+              co2: {},
+              pm25: {},
+              vocs: {},
+              nh3: {},
+            },
+            yearly: {
+              generation: { pre: 0, post: 0, impacts: 0 },
+              heat: { pre: 0, post: 0, impacts: 0 },
+              so2: { pre: 0, post: 0, impacts: 0 },
+              nox: { pre: 0, post: 0, impacts: 0 },
+              co2: { pre: 0, post: 0, impacts: 0 },
+              pm25: { pre: 0, post: 0, impacts: 0 },
+              vocs: { pre: 0, post: 0, impacts: 0 },
+              nh3: { pre: 0, post: 0, impacts: 0 },
+            },
           },
         };
 
@@ -558,21 +579,33 @@ function calculateEmissionsChanges(options) {
         /**
          * Conditionally initialize the field's monthly data.
          */
-        egus[eguId].monthly[field][month] ??= { pre: 0, post: 0, impacts: 0 };
+        egus[eguId].data.monthly[field][month] ??= { pre: 0, post: 0, impacts: 0 };
 
         /**
-         * Increment the field's monthly pre and post, and impacts values and
-         * round the accumulated impacts value.
+         * Increment the field's monthly and yearly pre, post, and impacts
+         * values and round the accumulated impacts values.
          */
-        egus[eguId].monthly[field][month].pre += pre;
-        egus[eguId].monthly[field][month].post += post;
-        egus[eguId].monthly[field][month].impacts += roundToDecimalPlaces({
+        egus[eguId].data.monthly[field][month].pre += pre;
+        egus[eguId].data.monthly[field][month].post += post;
+        egus[eguId].data.monthly[field][month].impacts += roundToDecimalPlaces({
           number: post - pre,
           decimalPlaces,
         });
 
-        egus[eguId].monthly[field][month].impacts = roundToDecimalPlaces({
-          number: egus[eguId].monthly[field][month].impacts,
+        egus[eguId].data.monthly[field][month].impacts = roundToDecimalPlaces({
+          number: egus[eguId].data.monthly[field][month].impacts,
+          decimalPlaces,
+        });
+
+        egus[eguId].data.yearly[field].pre += pre;
+        egus[eguId].data.yearly[field].post += post;
+        egus[eguId].data.yearly[field].impacts += roundToDecimalPlaces({
+          number: post - pre,
+          decimalPlaces,
+        });
+
+        egus[eguId].data.yearly[field].impacts = roundToDecimalPlaces({
+          number: egus[eguId].data.yearly[field].impacts,
           decimalPlaces,
         });
       });
