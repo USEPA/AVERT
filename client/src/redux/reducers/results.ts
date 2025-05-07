@@ -158,10 +158,18 @@ export function fetchEmissionsChanges(): AppThunk {
       const regionalProfile = hourlyEnergyProfile.data.regions[regionId as RegionId]; // prettier-ignore
 
       if (regionalProfile) {
+        /**
+         * Excel: Data from the "Final (MW)" column (N) of the left/first table
+         * in the "CalculateEERE" sheet.
+         */
         const hourlyChanges = Object.values(regionalProfile.hourlyImpacts).map(
           (d) => d.impactsLoad,
         );
 
+        /**
+         * NOTE: The server app's emissions controller responds to the request
+         * by calling the server app's `calculateEmissionsChanges()` function.
+         */
         requests.push(
           fetch(`${api.baseUrl}/api/v1/emissions`, {
             method: "POST",

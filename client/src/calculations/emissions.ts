@@ -108,13 +108,6 @@ function calculateLinear(options: {
 }
 
 /**
- * Rounds a number to three decimal places.
- */
-function roundToThreeDecimals(num: number) {
-  return Math.round(num * 1000) / 1000;
-}
-
-/**
  * Rounds a number a specified number of decimal places.
  */
 function roundToDecimalPlaces(options: {
@@ -175,6 +168,8 @@ function calculateEmissionsChanges(options: {
    *   - "Orig SO2 (lb)" (column I) which is the hourly "pre" value.
    *   - "Post Change SO2 (lb)" (column J) which is the hourly "post" value.
    *   - "Sum: All Units (lb)" (column K) which is the hourly "impacts" value.
+   * Also the "totalArray" variable in the "m_3_displaced_gen_emissions" Visual
+   * Basic module.
    */
   const hourlyImpacts = {} as {
     [regionId in RegionId]: {
@@ -237,6 +232,7 @@ function calculateEmissionsChanges(options: {
           [month: number]: {
             pre: number;
             post: number;
+            impacts: number;
           };
         };
       };
@@ -246,8 +242,14 @@ function calculateEmissionsChanges(options: {
   const neiFields = ["pm25", "vocs", "nh3"];
 
   const regionId = rdf.region.region_abbv as RegionId;
+  const regionName = rdf.region.region_name;
 
+  /**
+   * Excel: "genBlockArray" variable in the "m_3_displaced_gen_emissions" Visual
+   * Basic module.
+   */
   const loadBinEdges = rdf.load_bin_edges;
+
   const firstLoadBinEdge = loadBinEdges[0];
   const lastLoadBinEdge = loadBinEdges[loadBinEdges.length - 1];
 
@@ -384,31 +386,6 @@ function calculateEmissionsChanges(options: {
               });
 
         /**
-         * Conditionally multiply NEI factor to calculated pre and post values.
-         */
-        const matchedEgu = neiEmissionRates.find((item) => {
-          return item.orspl === orispl_code && item.unit === unit_code;
-        });
-
-        const neiEguData =
-          matchedEgu?.years?.[
-            year.toString() as keyof NEIEmissionRatesByEGU["years"]
-          ];
-
-        const neiFieldData =
-          neiEguData?.[field as keyof NEIPollutantsEmissionRates];
-
-        const pre =
-          neiFields.includes(field) && neiFieldData !== undefined
-            ? calculatedPre * neiFieldData
-            : calculatedPre;
-
-        const post =
-          neiFields.includes(field) && neiFieldData !== undefined
-            ? calculatedPost * neiFieldData
-            : calculatedPost;
-
-        /**
          * Determine the number of decimal places to round the difference in pre
          * and post values to, based on the pollution/emissions field.
          */
@@ -421,6 +398,41 @@ function calculateEmissionsChanges(options: {
             : field === "pm25" || field === "vocs" || field === "nh3"
               ? 6
               : 0;
+
+        /**
+         * Conditionally multiply NEI factor to calculated pre and post values.
+         */
+        const matchedEgu = neiEmissionRates.find((item) => {
+          return (
+            item.region === regionName &&
+            item.orspl === orispl_code &&
+            item.unit === unit_code
+          );
+        });
+
+        const neiEguData =
+          matchedEgu?.years?.[
+            year.toString() as keyof NEIEmissionRatesByEGU["years"]
+          ];
+
+        const neiFieldData =
+          neiEguData?.[field as keyof NEIPollutantsEmissionRates];
+
+        const pre =
+          neiFields.includes(field) && neiFieldData !== undefined
+            ? roundToDecimalPlaces({
+                number: calculatedPre * neiFieldData,
+                decimalPlaces,
+              })
+            : calculatedPre;
+
+        const post =
+          neiFields.includes(field) && neiFieldData !== undefined
+            ? roundToDecimalPlaces({
+                number: calculatedPost * neiFieldData,
+                decimalPlaces,
+              })
+            : calculatedPost;
 
         /**
          * Conditionally initialize the field's hourly impacts.
@@ -524,13 +536,23 @@ function calculateEmissionsChanges(options: {
         /**
          * Conditionally initialize the field's monthly data.
          */
-        egus[eguId].monthly[field][month] ??= { pre: 0, post: 0 };
+        egus[eguId].monthly[field][month] ??= { pre: 0, post: 0, impacts: 0 };
 
         /**
-         * Increment the field's monthly pre and post values.
+         * Increment the field's monthly pre and post, and impacts values and
+         * round the accumulated impacts value.
          */
         egus[eguId].monthly[field][month].pre += pre;
         egus[eguId].monthly[field][month].post += post;
+        egus[eguId].monthly[field][month].impacts += roundToDecimalPlaces({
+          number: post - pre,
+          decimalPlaces,
+        });
+
+        egus[eguId].monthly[field][month].impacts = roundToDecimalPlaces({
+          number: egus[eguId].monthly[field][month].impacts,
+          decimalPlaces,
+        });
       });
     });
   }
