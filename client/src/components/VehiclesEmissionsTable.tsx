@@ -26,7 +26,7 @@ function setAnnualPowerEmissionsChanges(options: {
   const { combinedSectorsEmissionsData } = options;
 
   if (!combinedSectorsEmissionsData) {
-    return { generation: 0, so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 };
+    return { generation: 0, heat: 0, so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 }; // prettier-ignore
   }
 
   const result = Object.entries(combinedSectorsEmissionsData.total).reduce(
@@ -41,7 +41,7 @@ function setAnnualPowerEmissionsChanges(options: {
 
       return object;
     },
-    { generation: 0, so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 },
+    { generation: 0, heat: 0, so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 }, // prettier-ignore
   );
 
   return result;

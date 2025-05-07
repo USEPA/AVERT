@@ -752,10 +752,10 @@ export function createCombinedSectorsEmissionsData(options: {
   }
 
   /**
-   * Format `selectedRegionsChangesData` for storing regional and total monthly
-   * emission changes per pollutant.
+   * Format `selectedRegionsMonthlyEmissionChangesTotals` for storing regional
+   * and total monthly emission changes per pollutant.
    */
-  const monthlyChangesData = Object.entries(
+  const monthlyVehicleEmissionChangesData = Object.entries(
     selectedRegionsMonthlyEmissionChangesTotals,
   ).reduce(
     (object, [regionKey, regionValue]) => {
@@ -793,10 +793,10 @@ export function createCombinedSectorsEmissionsData(options: {
     },
   );
 
-  /** start with power sector emissions data */
+  /** Start with power sector emissions data. */
   const result = { ...aggregatedEmissionsData };
 
-  /** add total transportation sector emissions data */
+  /** Add total transportation sector emissions data. */
   Object.keys(result.total).forEach((key) => {
     const pollutant = key as keyof typeof result.total;
 
@@ -810,19 +810,19 @@ export function createCombinedSectorsEmissionsData(options: {
     const monthlyVehicleData =
       pollutant !== "generation" &&
       pollutant !== "heat" &&
-      pollutant in monthlyChangesData.regionTotals
-        ? monthlyChangesData.regionTotals[pollutant]
+      pollutant in monthlyVehicleEmissionChangesData.regionTotals
+        ? monthlyVehicleEmissionChangesData.regionTotals[pollutant]
         : null;
 
     result.total[pollutant].vehicle.annual = annualVehicleData;
     result.total[pollutant].vehicle.monthly = monthlyVehicleData;
   });
 
-  /** add region level transportation sector emissions data */
+  /** Add region level transportation sector emissions data. */
   Object.keys(vehicleEmissionChangesByGeography.regions).forEach((key) => {
     const regionId = key as keyof typeof vehicleEmissionChangesByGeography.regions; // prettier-ignore
 
-    /** initialize region data if it doesn't already exist */
+    /** Initialize region data if it doesn't already exist. */
     result.regions[regionId] ??= {
       generation: { power: null, vehicle: { annual: 0, monthly: null } },
       heat: { power: null, vehicle: { annual: 0, monthly: null } },
@@ -849,8 +849,8 @@ export function createCombinedSectorsEmissionsData(options: {
       const monthlyVehicleData =
         pollutant !== "generation" &&
         pollutant !== "heat" &&
-        pollutant in monthlyChangesData[regionId][pollutant]
-          ? monthlyChangesData[regionId][pollutant]
+        pollutant in monthlyVehicleEmissionChangesData[regionId][pollutant]
+          ? monthlyVehicleEmissionChangesData[regionId][pollutant]
           : null;
 
       region[pollutant].vehicle.annual = annualVehicleData;
@@ -858,11 +858,11 @@ export function createCombinedSectorsEmissionsData(options: {
     });
   });
 
-  /** add state level transportation sector annual emissions data */
+  /** Add state level transportation sector annual emissions data. */
   Object.keys(vehicleEmissionChangesByGeography.states).forEach((key) => {
     const stateId = key as keyof typeof vehicleEmissionChangesByGeography.states; // prettier-ignore
 
-    /** initialize state data if it doesn't already exist */
+    /** Initialize state data if it doesn't already exist. */
     result.states[stateId] ??= {
       generation: { power: null, vehicle: { annual: 0, monthly: null } },
       heat: { power: null, vehicle: { annual: 0, monthly: null } },
@@ -890,7 +890,7 @@ export function createCombinedSectorsEmissionsData(options: {
     });
   });
 
-  /** update state level transportation sector monthly emissions data */
+  /** Update state level transportation sector monthly emissions data. */
   Object.keys(result.states).forEach((key) => {
     const stateId = key as keyof typeof result.states;
     const state = result.states[stateId];
@@ -905,7 +905,7 @@ export function createCombinedSectorsEmissionsData(options: {
     });
   });
 
-  /** add county level transportation sector annual emissions data */
+  /** Add county level transportation sector annual emissions data. */
   Object.entries(vehicleEmissionChangesByGeography.counties).forEach(
     ([key, value]) => {
       const stateId = key as keyof typeof vehicleEmissionChangesByGeography.counties; // prettier-ignore
@@ -913,7 +913,7 @@ export function createCombinedSectorsEmissionsData(options: {
       Object.keys(value).forEach((countyName) => {
         result.counties[stateId] ??= {};
 
-        /** initialize county data if it doesn't already exist */
+        /** Initialize county data if it doesn't already exist. */
         result.counties[stateId][countyName] ??= {
           generation: { power: null, vehicle: { annual: 0, monthly: null } },
           heat: { power: null, vehicle: { annual: 0, monthly: null } },
@@ -943,7 +943,7 @@ export function createCombinedSectorsEmissionsData(options: {
     },
   );
 
-  /** update county level transportation sector monthly emissions data */
+  /** Update county level transportation sector monthly emissions data. */
   Object.entries(result.counties).forEach(([key, value]) => {
     const stateId = key as keyof typeof result.counties;
 
@@ -961,7 +961,7 @@ export function createCombinedSectorsEmissionsData(options: {
     });
   });
 
-  // sort results alphabetically
+  /** Sort results alphabetically. */
   result.regions = sortObjectByKeys(result.regions);
   result.states = sortObjectByKeys(result.states);
   result.counties = sortObjectByKeys(result.counties);

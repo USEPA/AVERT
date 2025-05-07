@@ -502,7 +502,11 @@ function formatCobraDownloadData(
           const countyPowerData = countyDataValue.power;
           const countyVehicleData = countyDataValue.vehicle;
 
-          if (pollutant !== "generation" && pollutant !== "co2") {
+          if (
+            pollutant !== "generation" &&
+            pollutant !== "heat" &&
+            pollutant !== "co2"
+          ) {
             if (countyPowerData !== null) {
               const monthlyPowerData = countyPowerData.monthly;
 
