@@ -196,6 +196,10 @@ export function fetchEmissionsChanges(): AppThunk {
                 ...object.hourlyImpacts,
                 ...regionData.hourlyImpacts,
               },
+              monthlyImpacts: {
+                ...object.monthlyImpacts,
+                ...regionData.monthlyImpacts,
+              },
               yearlyImpacts: {
                 ...object.yearlyImpacts,
                 ...regionData.yearlyImpacts,
