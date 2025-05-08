@@ -29,20 +29,14 @@ function setAnnualPowerEmissionsChanges(options: {
     return { generation: 0, heat: 0, so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 }; // prettier-ignore
   }
 
-  const result = Object.entries(combinedSectorsEmissionsData.total).reduce(
-    (object, [key, value]) => {
+  const result = Object.fromEntries(
+    Object.entries(combinedSectorsEmissionsData.total).map(([key, value]) => {
       const pollutant = key as keyof typeof combinedSectorsEmissionsData.total;
-      const totalPowerData = value.power;
-
-      if (totalPowerData) {
-        const { pre, post } = totalPowerData.annual;
-        object[pollutant] += post - pre;
-      }
-
-      return object;
-    },
-    { generation: 0, heat: 0, so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 }, // prettier-ignore
-  );
+      return [pollutant, value.power ? value.power.annual.impacts : 0];
+    }),
+  ) as {
+    [Pollutant in keyof typeof combinedSectorsEmissionsData.total]: number;
+  };
 
   return result;
 }

@@ -39,8 +39,7 @@ function setAnnualStateEmissionsChanges(
 
           if (pollutant !== "generation" && pollutant !== "heat") {
             if (statePowerData !== null) {
-              const { pre, post } = statePowerData.annual;
-              object.power[pollutant] += post - pre;
+              object.power[pollutant] += statePowerData.annual.impacts;
             }
 
             if (stateVehicleData !== null) {

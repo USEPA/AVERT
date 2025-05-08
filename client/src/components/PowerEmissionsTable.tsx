@@ -62,7 +62,7 @@ function setAnnualMonthlyData(
         Object.entries(totalPowerData.monthly).forEach(
           ([monthlyKey, monthlyData]) => {
             const month = Number(monthlyKey);
-            const { pre, post } = monthlyData;
+            const { pre, post, impacts } = monthlyData;
 
             /**
              * Build up ozone season generation and ozone season nox
@@ -72,19 +72,19 @@ function setAnnualMonthlyData(
               if (field === "generation") {
                 object.ozoneGeneration.pre += pre;
                 object.ozoneGeneration.post += post;
-                object.ozoneGeneration.impacts += post - pre;
+                object.ozoneGeneration.impacts += impacts;
               }
 
               if (field === "nox") {
                 object.ozoneNox.pre += pre;
                 object.ozoneNox.post += post;
-                object.ozoneNox.impacts += post - pre;
+                object.ozoneNox.impacts += impacts;
               }
             }
 
             object[field].pre += pre;
             object[field].post += post;
-            object[field].impacts += post - pre;
+            object[field].impacts += impacts;
           },
         );
       }

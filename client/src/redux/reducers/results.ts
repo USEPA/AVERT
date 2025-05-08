@@ -192,17 +192,17 @@ export function fetchEmissionsChanges(): AppThunk {
           (object, regionData) => {
             return {
               ...object,
-              hourlyImpacts: {
-                ...object.hourlyImpacts,
-                ...regionData.hourlyImpacts,
+              hourly: {
+                ...object.hourly,
+                ...regionData.hourly,
               },
-              monthlyImpacts: {
-                ...object.monthlyImpacts,
-                ...regionData.monthlyImpacts,
+              monthly: {
+                ...object.monthly,
+                ...regionData.monthly,
               },
-              yearlyImpacts: {
-                ...object.yearlyImpacts,
-                ...regionData.yearlyImpacts,
+              yearly: {
+                ...object.yearly,
+                ...regionData.yearly,
               },
               egus: {
                 ...object.egus,
@@ -211,8 +211,9 @@ export function fetchEmissionsChanges(): AppThunk {
             };
           },
           {
-            hourlyImpacts: {},
-            yearlyImpacts: {},
+            hourly: {},
+            monthly: {},
+            yearly: {},
             egus: {},
           } as EmissionsChanges,
         );

@@ -32,12 +32,16 @@ type EguData = EmissionsChanges["egus"][string];
 export type EmissionsData = {
   [field in EmissionsFields]: {
     power: {
-      annual: { pre: number; post: number };
-      monthly: { [month: number]: { pre: number; post: number } };
+      annual: { pre: number; post: number; impacts: number };
+      monthly: {
+        [month: number]: { pre: number; post: number; impacts: number };
+      };
     } | null;
     vehicle: {
       annual: number;
-      monthly: { [month: number]: number } | null;
+      monthly: {
+        [month: number]: number;
+      } | null;
     };
   };
 };
@@ -658,7 +662,7 @@ function calculateEmissionsChanges(options: {
 function createEmptyMonthlyPowerData() {
   const result = [...Array(12)].reduce(
     (object, _item, index) => {
-      object[index + 1] = { pre: 0, post: 0 };
+      object[index + 1] = { pre: 0, post: 0, impacts: 0 };
       return object;
     },
     {} as EguData["data"]["monthly"][keyof EguData["data"]["monthly"]],
@@ -690,7 +694,7 @@ function createInitialEmissionsData() {
   const result = emissionsFields.reduce((object, field) => {
     object[field] = {
       power: {
-        annual: { pre: 0, post: 0 },
+        annual: { pre: 0, post: 0, impacts: 0 },
         monthly: createEmptyMonthlyPowerData(),
       },
       vehicle: {
@@ -712,7 +716,9 @@ function createInitialEmissionsData() {
 export function calculateAggregatedEmissionsData(
   emissionChanges: EmissionsChanges,
 ) {
-  if (Object.keys(emissionChanges.egus).length === 0) return null;
+  if (Object.keys(emissionChanges.egus).length === 0) {
+    return null;
+  }
 
   const result = Object.values(emissionChanges.egus).reduce(
     (object, eguData) => {
@@ -730,33 +736,46 @@ export function calculateAggregatedEmissionsData(
 
         Object.entries(fieldValue).forEach(([monthKey, monthValue]) => {
           const month = Number(monthKey);
-          const { pre, post } = monthValue;
+          const { pre, post, impacts } = monthValue;
 
-          const powerTotal = object.total[field].power;
-          const powerRegions = object.regions[regionId][field].power;
-          const powerStates = object.states[stateId][field].power;
-          const powerCounties = object.counties[stateId][county][field].power;
+          if (object.total[field].power) {
+            object.total[field].power.annual.pre += pre;
+            object.total[field].power.annual.post += post;
+            object.total[field].power.annual.impacts += impacts;
 
-          if (powerTotal && powerRegions && powerStates && powerCounties) {
-            powerTotal.annual.pre += pre;
-            powerTotal.annual.post += post;
-            powerTotal.monthly[month].pre += pre;
-            powerTotal.monthly[month].post += post;
+            object.total[field].power.monthly[month].pre += pre;
+            object.total[field].power.monthly[month].post += post;
+            object.total[field].power.monthly[month].impacts += impacts;
+          }
 
-            powerRegions.annual.pre += pre;
-            powerRegions.annual.post += post;
-            powerRegions.monthly[month].pre += pre;
-            powerRegions.monthly[month].post += post;
+          if (object.regions[regionId][field].power) {
+            object.regions[regionId][field].power.annual.pre += pre;
+            object.regions[regionId][field].power.annual.post += post;
+            object.regions[regionId][field].power.annual.impacts += impacts;
 
-            powerStates.annual.pre += pre;
-            powerStates.annual.post += post;
-            powerStates.monthly[month].pre += pre;
-            powerStates.monthly[month].post += post;
+            object.regions[regionId][field].power.monthly[month].pre += pre;
+            object.regions[regionId][field].power.monthly[month].post += post;
+            object.regions[regionId][field].power.monthly[month].impacts += impacts; // prettier-ignore
+          }
 
-            powerCounties.annual.pre += pre;
-            powerCounties.annual.post += post;
-            powerCounties.monthly[month].pre += pre;
-            powerCounties.monthly[month].post += post;
+          if (object.states[stateId][field].power) {
+            object.states[stateId][field].power.annual.pre += pre;
+            object.states[stateId][field].power.annual.post += post;
+            object.states[stateId][field].power.annual.impacts += impacts;
+
+            object.states[stateId][field].power.monthly[month].pre += pre;
+            object.states[stateId][field].power.monthly[month].post += post;
+            object.states[stateId][field].power.monthly[month].impacts += impacts; // prettier-ignore
+          }
+
+          if (object.counties[stateId][county][field].power) {
+            object.counties[stateId][county][field].power.annual.pre += pre;
+            object.counties[stateId][county][field].power.annual.post += post;
+            object.counties[stateId][county][field].power.annual.impacts += impacts; // prettier-ignore
+
+            object.counties[stateId][county][field].power.monthly[month].pre += pre; // prettier-ignore
+            object.counties[stateId][county][field].power.monthly[month].post += post; // prettier-ignore
+            object.counties[stateId][county][field].power.monthly[month].impacts += impacts; // prettier-ignore
           }
         });
       });
