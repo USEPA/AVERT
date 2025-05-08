@@ -192,7 +192,7 @@ function calculateEmissionsChanges(options) {
    *  }
    * }}
    */
-  const hourlyImpacts = {};
+  const hourly = {};
 
   /**
    * Cumulative monthly emissions impacts from all electric generating units
@@ -216,7 +216,7 @@ function calculateEmissionsChanges(options) {
    *  }
    * }}
    */
-  const monthlyImpacts = {};
+  const monthly = {};
 
   /**
    * Total yearly emissions impacts from all electric generating units for each
@@ -236,7 +236,7 @@ function calculateEmissionsChanges(options) {
    *  }
    * }}
    */
-  const yearlyImpacts = {};
+  const yearly = {};
 
   /**
    * Monthly emissions changes data for each electric generating unit.
@@ -503,7 +503,7 @@ function calculateEmissionsChanges(options) {
          * Conditionally initialize the emissions field's hourly impacts from
          * all EGUs.
          */
-        hourlyImpacts[regionId] ??= {
+        hourly[regionId] ??= {
           generation: {},
           heat: {},
           so2: {},
@@ -513,7 +513,7 @@ function calculateEmissionsChanges(options) {
           vocs: {},
           nh3: {},
         };
-        hourlyImpacts[regionId][field][hour] ??= {
+        hourly[regionId][field][hour] ??= {
           pre: 0,
           post: 0,
           impacts: 0,
@@ -523,12 +523,12 @@ function calculateEmissionsChanges(options) {
          * Increment the emissions field's hourly pre, post, and impacts values
          * from all EGUs and round the accumulated impacts value.
          */
-        hourlyImpacts[regionId][field][hour].pre += pre;
-        hourlyImpacts[regionId][field][hour].post += post;
-        hourlyImpacts[regionId][field][hour].impacts += impacts;
+        hourly[regionId][field][hour].pre += pre;
+        hourly[regionId][field][hour].post += post;
+        hourly[regionId][field][hour].impacts += impacts;
 
-        hourlyImpacts[regionId][field][hour].impacts = roundToDecimalPlaces({
-          number: hourlyImpacts[regionId][field][hour].impacts,
+        hourly[regionId][field][hour].impacts = roundToDecimalPlaces({
+          number: hourly[regionId][field][hour].impacts,
           decimalPlaces,
         });
 
@@ -536,7 +536,7 @@ function calculateEmissionsChanges(options) {
          * Conditionally initialize the emissions field's monthly impacts from
          * all EGUs.
          */
-        monthlyImpacts[regionId] ??= {
+        monthly[regionId] ??= {
           generation: {},
           heat: {},
           so2: {},
@@ -546,7 +546,7 @@ function calculateEmissionsChanges(options) {
           vocs: {},
           nh3: {},
         };
-        monthlyImpacts[regionId][field][month] ??= {
+        monthly[regionId][field][month] ??= {
           pre: 0,
           post: 0,
           impacts: 0,
@@ -556,12 +556,12 @@ function calculateEmissionsChanges(options) {
          * Increment the emissions field's monthly pre, post, and impacts values
          * from all EGUs and round the accumulated impacts value.
          */
-        monthlyImpacts[regionId][field][month].pre += pre;
-        monthlyImpacts[regionId][field][month].post += post;
-        monthlyImpacts[regionId][field][month].impacts += impacts;
+        monthly[regionId][field][month].pre += pre;
+        monthly[regionId][field][month].post += post;
+        monthly[regionId][field][month].impacts += impacts;
 
-        monthlyImpacts[regionId][field][month].impacts = roundToDecimalPlaces({
-          number: monthlyImpacts[regionId][field][month].impacts,
+        monthly[regionId][field][month].impacts = roundToDecimalPlaces({
+          number: monthly[regionId][field][month].impacts,
           decimalPlaces,
         });
 
@@ -569,7 +569,7 @@ function calculateEmissionsChanges(options) {
          * Conditionally initialize the emissions field's yearly impacts from
          * all EGUs.
          */
-        yearlyImpacts[regionId] ??= {
+        yearly[regionId] ??= {
           generation: { pre: 0, post: 0, impacts: 0 },
           heat: { pre: 0, post: 0, impacts: 0 },
           so2: { pre: 0, post: 0, impacts: 0 },
@@ -584,12 +584,12 @@ function calculateEmissionsChanges(options) {
          * Increment the emissions field's yearly pre, post, and impacts values
          * from all EGUs and round the accumulated impacts value.
          */
-        yearlyImpacts[regionId][field].pre += pre;
-        yearlyImpacts[regionId][field].post += post;
-        yearlyImpacts[regionId][field].impacts += impacts;
+        yearly[regionId][field].pre += pre;
+        yearly[regionId][field].post += post;
+        yearly[regionId][field].impacts += impacts;
 
-        yearlyImpacts[regionId][field].impacts = roundToDecimalPlaces({
-          number: yearlyImpacts[regionId][field].impacts,
+        yearly[regionId][field].impacts = roundToDecimalPlaces({
+          number: yearly[regionId][field].impacts,
           decimalPlaces,
         });
 
@@ -669,7 +669,7 @@ function calculateEmissionsChanges(options) {
     });
   }
 
-  return { hourlyImpacts, monthlyImpacts, yearlyImpacts, egus };
+  return { hourly, monthly, yearly, egus };
 }
 
 module.exports = { calculateEmissionsChanges };
