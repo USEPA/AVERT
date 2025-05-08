@@ -494,10 +494,7 @@ function calculateEmissionsChanges(options) {
               })
             : calculatedPost;
 
-        const impacts = roundToDecimalPlaces({
-          number: post - pre,
-          decimalPlaces,
-        });
+        const impacts = post - pre;
 
         /**
          * Conditionally initialize the emissions field's hourly impacts from
@@ -651,20 +648,6 @@ function calculateEmissionsChanges(options) {
         egus[eguId].data.monthly[field][month].pre += pre;
         egus[eguId].data.monthly[field][month].post += post;
         egus[eguId].data.monthly[field][month].impacts += impacts;
-
-        /**
-         * After the last hour of each month's impacts are added, round the
-         * EGU's monthly impacts value for the emissions field to three decimal
-         * places.
-         */
-        if (isLastHourOfMonth) {
-          egus[eguId].data.monthly[field][month].impacts = roundToDecimalPlaces(
-            {
-              number: egus[eguId].data.monthly[field][month].impacts,
-              decimalPlaces: 3,
-            },
-          );
-        }
       });
     });
   }
