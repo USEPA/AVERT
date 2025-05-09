@@ -187,23 +187,31 @@ export function fetchEmissionsChanges(): AppThunk {
     Promise.all(requests)
       .then((responses) => Promise.all(responses.map((res) => res.json())))
       .then((regionsData: EmissionsChanges[]) => {
-        // flatten array of regionData objects into a single object
+        /**
+         * NOTE: The code for calculating and storing `hourly`, `monthly`, and
+         * `yearly` values is commented out in `calculateEmissionsChanges()` as
+         * the data isn't used in the app. If it's ever needed for debugging/
+         * testing in local development, it should be uncommented out in
+         * `calculateEmissionsChanges()` and in the code below, so it can be
+         * inspected in the redux store.
+         */
+
         const emissionsChanges = regionsData.reduce(
           (object, regionData) => {
             return {
               ...object,
-              hourly: {
-                ...object.hourly,
-                ...regionData.hourly,
-              },
-              monthly: {
-                ...object.monthly,
-                ...regionData.monthly,
-              },
-              yearly: {
-                ...object.yearly,
-                ...regionData.yearly,
-              },
+              // hourly: {
+              //   ...object.hourly,
+              //   ...regionData.hourly,
+              // },
+              // monthly: {
+              //   ...object.monthly,
+              //   ...regionData.monthly,
+              // },
+              // yearly: {
+              //   ...object.yearly,
+              //   ...regionData.yearly,
+              // },
               egus: {
                 ...object.egus,
                 ...regionData.egus,
@@ -211,9 +219,9 @@ export function fetchEmissionsChanges(): AppThunk {
             };
           },
           {
-            hourly: {},
-            monthly: {},
-            yearly: {},
+            // hourly: {},
+            // monthly: {},
+            // yearly: {},
             egus: {},
           } as EmissionsChanges,
         );
