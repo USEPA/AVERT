@@ -21,6 +21,7 @@ import {
   type PercentageHybridEVMilesDrivenOnElectricity,
   type SchoolBusMonthlyVMTPercentages,
   type WeekendToWeekdayEVConsumption,
+  type LDVsPercentagesByVehicleCategory,
   type HistoricalRegionEEREData,
   type HistoricalStateEEREData,
   type RegionId,
@@ -120,7 +121,8 @@ const vehicleTypeEVFuelTypeCombos = [
 ] as const;
 
 export const vehicleTypesByVehicleCategory = {
-  LDVs: ["Passenger cars", "Passenger trucks"],
+  "Battery EVs": ["Passenger cars", "Passenger trucks"],
+  "Plug-in Hybrid EVs": ["Passenger cars", "Passenger trucks"],
   "Transit buses": ["Medium-duty transit buses", "Heavy-duty transit buses"],
   "School buses": ["Medium-duty school buses", "Heavy-duty school buses"],
   "Other buses": ["Medium-duty other buses", "Heavy-duty other buses"],
@@ -134,8 +136,10 @@ export const vehicleTypesByVehicleCategory = {
 } as const;
 
 const vehicleCategoryVehicleTypeCombos = [
-  "LDVs / Passenger cars",
-  "LDVs / Passenger trucks",
+  "Battery EVs / Passenger cars",
+  "Battery EVs / Passenger trucks",
+  "Plug-in Hybrid EVs / Passenger cars",
+  "Plug-in Hybrid EVs / Passenger trucks",
   "Transit buses / Medium-duty transit buses",
   "Transit buses / Heavy-duty transit buses",
   "School buses / Medium-duty school buses",
@@ -182,26 +186,25 @@ type ExpandedVehicleType = (typeof expandedVehicleTypes)[number];
 type VehicleTypeFuelTypeCombo = (typeof vehicleTypeFuelTypeCombos)[number];
 type VehicleTypeEVFuelTypeCombo = (typeof vehicleTypeEVFuelTypeCombos)[number];
 type VehicleTypesByVehicleCategory = typeof vehicleTypesByVehicleCategory;
-type VehicleCategory = keyof typeof vehicleTypesByVehicleCategory;
+type VehicleCategoryKey = keyof typeof vehicleTypesByVehicleCategory;
 type VehicleCategoryVehicleTypeCombo = (typeof vehicleCategoryVehicleTypeCombos)[number]; // prettier-ignore
 type VehicleCategoryVehicleTypeFuelTypeCombo = (typeof vehicleCategoryVehicleTypeFuelTypeCombos)[number]; // prettier-ignore
 /**
- * Vehicle categories with LDVs broken out into passenger cars and trucks.
+ * Vehicle categories with "Battery EVs" and "Plug-in Hybrid EVs" replaced with
+ * "Passenger cars" and "Passenger trucks" vehicle types.
  */
-type ExpandedVehicleCategory =
-  | Exclude<VehicleCategory, "LDVs">
+type VehicleCategoryWithLDVTypes =
+  | Exclude<VehicleCategoryKey, "Battery EVs" | "Plug-in Hybrid EVs">
   | "Passenger cars"
   | "Passenger trucks";
 /**
- * Vehicle categories used in the Excel "CalculateEERE" sheet are slightly
- * different than the typical `VehicleCategory` values used elsewhere. We'll
- * omit "Other buses" entirely and instead of using "LDVs" we'll use "Battery
- * EVs" and "Plug-in Hybrid EVs".
+ * Vehicle categories used in the Excel "CalculateEERE" sheet don't include the
+ * vehicle category of "Other buses".
  */
-type AlternateVehicleCategory =
-  | Exclude<VehicleCategory, "LDVs" | "Other buses">
-  | "Battery EVs"
-  | "Plug-in Hybrid EVs";
+type VehicleCategoryExcludingOtherBuses = Exclude<
+  VehicleCategoryKey,
+  "Other buses"
+>;
 
 export type HourlyEVLoadProfiles = ReturnType<typeof storeHourlyEVLoadProfiles>;
 export type DailyStats = ReturnType<typeof calculateDailyStats>;
@@ -325,7 +328,7 @@ export function storeHourlyEVLoadProfiles(options: {
       const hour = data["Hour Ending"];
 
       object[hour] ??= {} as {
-        [vehicleCategory in AlternateVehicleCategory]: {
+        [vehicleCategory in VehicleCategoryExcludingOtherBuses]: {
           weekday: number;
           weekend: number;
         };
@@ -352,7 +355,7 @@ export function storeHourlyEVLoadProfiles(options: {
     },
     {} as {
       [hour: number]: {
-        [vehicleCategory in AlternateVehicleCategory]: {
+        [vehicleCategory in VehicleCategoryExcludingOtherBuses]: {
           weekday: number;
           weekend: number;
         };
@@ -504,7 +507,7 @@ export function calculateVMTTotalsByGeography(options: {
           },
           states: {} as {
             [stateId in StateId]: {
-              [expandedVehicleCategory in ExpandedVehicleCategory]: number;
+              [vehicleCategory in VehicleCategoryWithLDVTypes]: number;
             };
           },
         };
@@ -563,24 +566,24 @@ export function calculateVMTTotalsByGeography(options: {
       regions: {
         [regionId in RegionId]: {
           total: {
-            [expandedVehicleCategory in ExpandedVehicleCategory]: number;
+            [vehicleCategory in VehicleCategoryWithLDVTypes]: number;
           };
           states: {
             [stateId in StateId]: {
-              [expandedVehicleCategory in ExpandedVehicleCategory]: number;
+              [vehicleCategory in VehicleCategoryWithLDVTypes]: number;
             };
           };
         };
       };
       states: {
         [stateId in StateId]: {
-          [expandedVehicleCategory in ExpandedVehicleCategory]: number;
+          [vehicleCategory in VehicleCategoryWithLDVTypes]: number;
         };
       };
       counties: {
         [stateId in StateId]: {
           [county: string]: {
-            [expandedVehicleCategory in ExpandedVehicleCategory]: number;
+            [vehicleCategory in VehicleCategoryWithLDVTypes]: number;
           };
         };
       };
@@ -1010,6 +1013,9 @@ export function calculateVMTPercentagesByStateRegionCombo(options: {
  *
  * Excel: "Population" column of "Table 12: Vehicle sales by type" table in the
  * "Library" sheet (C965:C983).
+ *
+ * NOTE: In the Excel file, values for "Passenger cars" and "Passenger trucks"
+ * under "Battery EVs" and "Plug-in Hybrid EVs" (C965:C970) are omitted.
  */
 export function calculateVehicleTypeTotals(options: {
   stateLevelVMT: StateLevelVMT;
@@ -1021,6 +1027,10 @@ export function calculateVehicleTypeTotals(options: {
       const vehicle = data["Vehicle Type"] as VehicleType;
       const stock = data["2023 Stock (million vehicles)"];
 
+      if (vehicle === "Passenger cars" || vehicle === "Passenger trucks") {
+        return object;
+      }
+
       if (!object[vehicle]) {
         object[vehicle] = 0;
       }
@@ -1030,7 +1040,10 @@ export function calculateVehicleTypeTotals(options: {
       return object;
     },
     {} as {
-      [vehicle in VehicleType]: number;
+      [vehicle in Exclude<
+        VehicleType,
+        "Passenger cars" | "Passenger trucks"
+      >]: number;
     },
   );
 
@@ -1042,6 +1055,9 @@ export function calculateVehicleTypeTotals(options: {
  *
  * Excel: "Population" column of "Table 12: Vehicle sales by type" table in the
  * "Library" sheet (C964:C983).
+ *
+ * NOTE: In the Excel file, values for "Passenger cars" and "Passenger trucks"
+ * under "Battery EVs" and "Plug-in Hybrid EVs" (C965:C970) are omitted.
  */
 export function calculateVehicleCategoryTotals(options: {
   vehicleTypeTotals: VehicleTypeTotals | EmptyObject;
@@ -1053,7 +1069,15 @@ export function calculateVehicleCategoryTotals(options: {
     (object, [categoryKey, categoryValue]) => {
       const category = categoryKey as keyof typeof vehicleTypesByVehicleCategory; // prettier-ignore
 
+      if (category === "Battery EVs" || category === "Plug-in Hybrid EVs") {
+        return object;
+      }
+
       const total = categoryValue.reduce((number, vehicle) => {
+        if (vehicle === "Passenger cars" || vehicle === "Passenger trucks") {
+          return number;
+        }
+
         if (vehicle in vehicleTypeTotals) {
           return number + vehicleTypeTotals[vehicle];
         }
@@ -1066,7 +1090,10 @@ export function calculateVehicleCategoryTotals(options: {
       return object;
     },
     {} as {
-      [vehicleCategory in VehicleCategory]: number;
+      [vehicleCategory in Exclude<
+        keyof typeof vehicleTypesByVehicleCategory,
+        "Battery EVs" | "Plug-in Hybrid EVs"
+      >]: number;
     },
   );
 
@@ -1075,7 +1102,8 @@ export function calculateVehicleCategoryTotals(options: {
 
 /**
  * Percentage/share of the total vehicle sales/stock each vehicle type makes up
- * of its vehicle category (e.g. "LDVs", "Transit Buses", "School Buses", etc.).
+ * of its vehicle category (e.g. "Battery EVs", "Plug-in Hybrid EVs", "Transit
+ * Buses", "School Buses", etc.).
  *
  * Excel: "Vehicle Allocation" column of "Table 12: Vehicle sales by type" table
  * in the "Library" sheet (D965:D983).
@@ -1084,23 +1112,58 @@ export function calculateVehicleTypePercentagesOfVehicleCategory(options: {
   vehicleTypeTotals: VehicleTypeTotals | EmptyObject;
   vehicleCategoryTotals: VehicleCategoryTotals | EmptyObject;
   vehicleTypesByVehicleCategory: VehicleTypesByVehicleCategory;
+  ldvsPercentagesByVehicleCategory: LDVsPercentagesByVehicleCategory;
 }) {
   const {
     vehicleTypeTotals,
     vehicleCategoryTotals,
     vehicleTypesByVehicleCategory,
+    ldvsPercentagesByVehicleCategory,
   } = options;
 
-  const result = Object.entries(vehicleTypeTotals).reduce(
+  const ldvsResult = Object.entries(ldvsPercentagesByVehicleCategory).reduce(
+    (object, [categoryKey, categoryValue]) => {
+      const category = categoryKey as keyof typeof ldvsPercentagesByVehicleCategory; // prettier-ignore
+
+      Object.entries(categoryValue).forEach(([vehicleKey, vehicleValue]) => {
+        const vehicle = vehicleKey as keyof typeof categoryValue;
+
+        const categoryVehicleCombo = `${category} / ${vehicle}` as keyof typeof object; // prettier-ignore
+
+        if (categoryVehicleCombo in object) {
+          object[categoryVehicleCombo] = vehicleValue;
+        }
+      });
+
+      return object;
+    },
+    {
+      "Battery EVs / Passenger cars": 0,
+      "Battery EVs / Passenger trucks": 0,
+      "Plug-in Hybrid EVs / Passenger cars": 0,
+      "Plug-in Hybrid EVs / Passenger trucks": 0,
+    },
+  );
+
+  const otherVehicleCategoriesResult = Object.entries(vehicleTypeTotals).reduce(
     (object, [vehicleKey, vehicleValue]) => {
       const vehicle = vehicleKey as keyof typeof vehicleTypeTotals;
 
       const category = Object.keys(vehicleTypesByVehicleCategory).find(
         (categoryKey) => {
-          const categories = vehicleTypesByVehicleCategory[categoryKey as VehicleCategory]; // prettier-ignore
-          return (categories as unknown as VehicleType[]).includes(vehicle);
+          const vehicleCategory = categoryKey as VehicleCategoryKey;
+
+          if (
+            vehicleCategory === "Battery EVs" ||
+            vehicleCategory === "Plug-in Hybrid EVs"
+          ) {
+            return false;
+          }
+
+          const vehicleTypes = vehicleTypesByVehicleCategory[vehicleCategory];
+          return (vehicleTypes as unknown as VehicleType[]).includes(vehicle);
         },
-      ) as VehicleCategory;
+      ) as Exclude<VehicleCategoryKey, "Battery EVs" | "Plug-in Hybrid EVs">;
 
       const categoryVehicleCombo = `${category} / ${vehicle}` as VehicleCategoryVehicleTypeCombo; // prettier-ignore
 
@@ -1116,6 +1179,11 @@ export function calculateVehicleTypePercentagesOfVehicleCategory(options: {
       [categoryVehicleCombo in VehicleCategoryVehicleTypeCombo]: number;
     },
   );
+
+  const result = {
+    ...ldvsResult,
+    ...otherVehicleCategoriesResult,
+  };
 
   return result;
 }
@@ -1270,20 +1338,8 @@ export function calculateTotalEffectiveVehicles(options: {
                     ? refuseTrucks
                     : 0;
 
-    /**
-     * NOTE: We use "LDVs" as the vehicle category in the
-     * `vehicleTypePercentagesOfVehicleCategory` data, so we'll need to map any
-     * "Battery EVs" and "Plug-in Hybrid EVs" vehicle categories to "LDVs" in
-     * order to get the correct vehicle type percentage value.
-     */
-    const generalizedVehicleCategory =
-      vehicleCategory === "Battery EVs" ||
-      vehicleCategory === "Plug-in Hybrid EVs"
-        ? "LDVs"
-        : vehicleCategory;
-
     const categoryVehicleCombo =
-      `${generalizedVehicleCategory} / ${vehicleType}` as VehicleCategoryVehicleTypeCombo;
+      `${vehicleCategory} / ${vehicleType}` as VehicleCategoryVehicleTypeCombo;
 
     const vehicleFuelCombo =
       `${vehicleType} / ${fuelType}` as VehicleTypeFuelTypeCombo;
@@ -2346,7 +2402,7 @@ export function calculateSelectedRegionsMonthlyEnergyUsage(options: {
     return {} as {
       [regionId in RegionId]: {
         [month: number]: {
-          [vehicleCategory in AlternateVehicleCategory]: number;
+          [vehicleCategory in VehicleCategoryExcludingOtherBuses]: number;
         };
       };
     };
@@ -2360,7 +2416,7 @@ export function calculateSelectedRegionsMonthlyEnergyUsage(options: {
 
       object[regionId] ??= {} as {
         [month: number]: {
-          [vehicleCategory in AlternateVehicleCategory]: number;
+          [vehicleCategory in VehicleCategoryExcludingOtherBuses]: number;
         };
       };
 
@@ -2380,7 +2436,7 @@ export function calculateSelectedRegionsMonthlyEnergyUsage(options: {
 
           Object.entries(regionMonthValue).forEach(
             ([vehicleKey, vehicleValue]) => {
-              const vehicleCategory = vehicleKey.split(" / ")[0] as AlternateVehicleCategory; // prettier-ignore
+              const vehicleCategory = vehicleKey.split(" / ")[0] as VehicleCategoryExcludingOtherBuses; // prettier-ignore
 
               if (vehicleCategory in object[regionId][month]) {
                 object[regionId][month][vehicleCategory] +=
@@ -2396,7 +2452,7 @@ export function calculateSelectedRegionsMonthlyEnergyUsage(options: {
     {} as {
       [regionId in RegionId]: {
         [month: number]: {
-          [vehicleCategory in AlternateVehicleCategory]: number;
+          [vehicleCategory in VehicleCategoryExcludingOtherBuses]: number;
         };
       };
     },
@@ -2432,7 +2488,7 @@ export function calculateSelectedRegionsMonthlyDailyEnergyUsage(options: {
     return {} as {
       [regionId in RegionId]: {
         [month: number]: {
-          [vehicleCategory in AlternateVehicleCategory]: {
+          [vehicleCategory in VehicleCategoryExcludingOtherBuses]: {
             weekday: number;
             weekend: number;
           };
@@ -2454,7 +2510,7 @@ export function calculateSelectedRegionsMonthlyDailyEnergyUsage(options: {
           const weekends = monthlyStats[month]?.weekends || 0;
 
           object[regionId][month] ??= {} as {
-            [vehicleCategory in AlternateVehicleCategory]: {
+            [vehicleCategory in VehicleCategoryExcludingOtherBuses]: {
               weekday: number;
               weekend: number;
             };
@@ -2494,7 +2550,7 @@ export function calculateSelectedRegionsMonthlyDailyEnergyUsage(options: {
     {} as {
       [regionId in RegionId]: {
         [month: number]: {
-          [vehicleCategory in AlternateVehicleCategory]: {
+          [vehicleCategory in VehicleCategoryExcludingOtherBuses]: {
             weekday: number;
             weekend: number;
           };
@@ -2644,7 +2700,7 @@ export function calculateSelectedRegionsMonthlyEmissionChangesPerVehicleCategory
     return {} as {
       [regionId in RegionId]: {
         [month: number]: {
-          [expandedVehicleCategory in ExpandedVehicleCategory]: {
+          [vehicleCategory in VehicleCategoryWithLDVTypes]: {
             [pollutant in Pollutant]: number;
           };
         };
@@ -2658,7 +2714,7 @@ export function calculateSelectedRegionsMonthlyEmissionChangesPerVehicleCategory
 
       object[regionId] ??= {} as {
         [month: number]: {
-          [expandedVehicleCategory in ExpandedVehicleCategory]: {
+          [vehicleCategory in VehicleCategoryWithLDVTypes]: {
             [pollutant in Pollutant]: number;
           };
         };
@@ -2668,27 +2724,27 @@ export function calculateSelectedRegionsMonthlyEmissionChangesPerVehicleCategory
         const month = Number(monthKey);
 
         object[regionId][month] ??= {} as {
-          [expandedVehicleCategory in ExpandedVehicleCategory]: {
+          [vehicleCategory in VehicleCategoryWithLDVTypes]: {
             [pollutant in Pollutant]: number;
           };
         };
 
         Object.entries(monthValue).forEach(([key, value]) => {
-          const [vehicleCategory, vehicleType, _fuelType] = key.split(" / ");
+          const [category, vehicleType, _fuelType] = key.split(" / ");
 
           /**
-           * NOTE: For these results, we want expanded vehicle categories, so
-           * we'll use "Passenger cars" and "Passenger trucks" as the vehicle
-           * category instead of "Battery EVs" or "Plug-in Hybrid EVs".
+           * For these results, we want vehicle categories with LDV vehicle
+           * types, so we'll use "Passenger cars" and "Passenger trucks" as the
+           * vehicle category instead of "Battery EVs" or "Plug-in Hybrid EVs".
            */
-          const expandedVehicleCategory = (
+          const vehicleCategory = (
             vehicleType === "Passenger cars" ||
             vehicleType === "Passenger trucks"
               ? vehicleType
-              : vehicleCategory
-          ) as ExpandedVehicleCategory;
+              : category
+          ) as VehicleCategoryWithLDVTypes;
 
-          object[regionId][month][expandedVehicleCategory] ??= {
+          object[regionId][month][vehicleCategory] ??= {
             co2: 0,
             nox: 0,
             so2: 0,
@@ -2700,7 +2756,7 @@ export function calculateSelectedRegionsMonthlyEmissionChangesPerVehicleCategory
           Object.entries(value).forEach(([pollutantKey, pollutantValue]) => {
             const pollutant = pollutantKey as keyof typeof value;
 
-            object[regionId][month][expandedVehicleCategory][pollutant] +=
+            object[regionId][month][vehicleCategory][pollutant] +=
               pollutantValue;
           });
         });
@@ -2711,7 +2767,7 @@ export function calculateSelectedRegionsMonthlyEmissionChangesPerVehicleCategory
     {} as {
       [regionId in RegionId]: {
         [month: number]: {
-          [expandedVehicleCategory in ExpandedVehicleCategory]: {
+          [vehicleCategory in VehicleCategoryWithLDVTypes]: {
             [pollutant in Pollutant]: number;
           };
         };
@@ -2742,7 +2798,7 @@ export function calculateSelectedRegionsYearlyEmissionChangesPerVehicleCategory(
   ) {
     return {} as {
       [regionId in RegionId]: {
-        [expandedVehicleCategory in ExpandedVehicleCategory]: {
+        [vehicleCategory in VehicleCategoryWithLDVTypes]: {
           [pollutant in Pollutant]: number;
         };
       };
@@ -2756,7 +2812,7 @@ export function calculateSelectedRegionsYearlyEmissionChangesPerVehicleCategory(
       const regionId = regionKey as keyof typeof selectedRegionsMonthlyEmissionChangesPerVehicleCategory; // prettier-ignore
 
       object[regionId] ??= {} as {
-        [expandedVehicleCategory in ExpandedVehicleCategory]: {
+        [vehicleCategory in VehicleCategoryWithLDVTypes]: {
           [pollutant in Pollutant]: number;
         };
       };
@@ -2790,7 +2846,7 @@ export function calculateSelectedRegionsYearlyEmissionChangesPerVehicleCategory(
     },
     {} as {
       [regionId in RegionId]: {
-        [expandedVehicleCategory in ExpandedVehicleCategory]: {
+        [vehicleCategory in VehicleCategoryWithLDVTypes]: {
           [pollutant in Pollutant]: number;
         };
       };
@@ -2954,26 +3010,27 @@ export function calculateSelectedGeographySalesAndStockByState(options: {
   } = options;
 
   /**
-   * The vehicle categories used in the Excel Table 10 are slightly different
-   * than the typical `VehicleCategory` values used elsewhere. Instead of using
-   * "Long-haul trucks" we'll use "Combination long-haul trucks" as that's a
-   * value used in the `stateLevelSales` data.
+   * When accessing vehicle categories in the `stateLevelSales` data, instead of
+   * using "Long-haul trucks" we'll use "Combination long-haul trucks" as that's
+   * the value used in the data.
    */
-  type SalesAndStockVehicleCategory =
-    | Exclude<VehicleCategory, "Long-haul trucks">
+  type StateLevelSalesVehicleCategory =
+    | Exclude<VehicleCategoryWithLDVTypes, "Long-haul trucks">
     | "Combination long-haul trucks";
 
   /**
-   * Additionally, when accessing `stateLevelSales` data, instead of using the
-   * vehicle category "LDVs" used elsewhere, we'll use "Passenger cars" and
-   * "Passenger trucks" as those are values used in the `stateLevelSales` data.
-   * This results in a type similar to `ExpandedVehicleCategory`, but with the
-   * additional "Long-haul trucks" change (mentioned above) also applied.
+   * The vehicle categories used in the Excel Table 10 are slightly different
+   * than the values used elsewhere. So for the returned data, in addition to
+   * using "Combination long-haul trucks" instead of "Long-haul trucks" (see
+   * above) we'll also use a single "LDVs" vehicle category instead of
+   * "Passenger cars" and "Passenger trucks".
    */
-  type StateLevelSalesVehicleCategory =
-    | Exclude<SalesAndStockVehicleCategory, "LDVs">
-    | "Passenger cars"
-    | "Passenger trucks";
+  type SalesAndStockVehicleCategory =
+    | Exclude<
+        StateLevelSalesVehicleCategory,
+        "Passenger cars" | "Passenger trucks"
+      >
+    | "LDVs";
 
   const result = countyFips.reduce(
     (object, countyData) => {
@@ -3078,8 +3135,7 @@ export function calculateSelectedGeographySalesAndStockByRegion(options: {
 }) {
   const { geographicFocus, selectedGeographySalesAndStockByState } = options;
 
-  type SalesAndStockVehicleCategory =
-    keyof SelectedGeographySalesAndStockByState[StateId];
+  type SalesAndStockVehicleCategory = keyof SelectedGeographySalesAndStockByState[StateId]; // prettier-ignore
 
   if (
     geographicFocus === "states" ||

@@ -92,6 +92,7 @@ import {
   percentageHybridEVMilesDrivenOnElectricity,
   schoolBusMonthlyVMTPercentages,
   weekendToWeekdayEVConsumption,
+  ldvsPercentagesByVehicleCategory,
   regions,
 } from "@/config";
 /**
@@ -944,6 +945,7 @@ export function setVMTData(): AppThunk {
         vehicleTypeTotals,
         vehicleCategoryTotals,
         vehicleTypesByVehicleCategory,
+        ldvsPercentagesByVehicleCategory,
       });
 
     const vehicleFuelTypePercentagesOfVehicleType =

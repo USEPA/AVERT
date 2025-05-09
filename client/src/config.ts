@@ -167,6 +167,9 @@ export type WeekendToWeekdayEVConsumption =
 
 export type RegionAverageTemperatures = typeof regionAverageTemperatures;
 
+export type LDVsPercentagesByVehicleCategory =
+  typeof ldvsPercentagesByVehicleCategory;
+
 export type RegionEVHourlyLimits = typeof regionEVHourlyLimits;
 
 export type HistoricalRegionEEREData = typeof historicalRegionEEREData;
@@ -247,6 +250,24 @@ export const regionAverageTemperatures = {
   SW: 68,
   TN: 68,
   TE: 68,
+};
+
+/**
+ * Percentage/share of the total vehicle sales/stock Passenger cars and
+ * Passenger trucks make up of Battery EVs and Plug-in Hybrid EVs.
+ *
+ * Excel: "Table 12: Vehicle sales by type" table in the "Library" sheet
+ * (D966:D967 and D969:D970).
+ */
+export const ldvsPercentagesByVehicleCategory = {
+  "Battery EVs": {
+    "Passenger cars": 0.726758263799148,
+    "Passenger trucks": 0.273241736200852,
+  },
+  "Plug-in Hybrid EVs": {
+    "Passenger cars": 0.106267047645846,
+    "Passenger trucks": 0.893732952354154,
+  },
 };
 
 /**
