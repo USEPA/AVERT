@@ -111,17 +111,17 @@ function calculateLinear(options: {
   return load * slope + intercept;
 }
 
-/**
- * Rounds a number a specified number of decimal places.
- */
-function roundToDecimalPlaces(options: {
-  number: number;
-  decimalPlaces: number;
-}) {
-  const { number, decimalPlaces } = options;
-  const factor = Math.pow(10, decimalPlaces);
-  return Math.round(number * factor) / factor;
-}
+// /**
+//  * Rounds a number a specified number of decimal places.
+//  */
+// function roundToDecimalPlaces(options: {
+//   number: number;
+//   decimalPlaces: number;
+// }) {
+//   const { number, decimalPlaces } = options;
+//   const factor = Math.pow(10, decimalPlaces);
+//   return Math.round(number * factor) / factor;
+// }
 
 /**
  * *****************************************************************************
@@ -427,19 +427,19 @@ function calculateEmissionsChanges(options: {
                 edgeB: loadBinEdges[postLoadBinEdgeIndex + 1],
               });
 
-        /**
-         * Determine the number of decimal places to values to, based on the
-         * pollution/emissions field.
-         */
-        const decimalPlaces =
-          field === "generation" ||
-          field === "co2" ||
-          field === "so2" ||
-          field === "nox"
-            ? 3
-            : field === "pm25" || field === "vocs" || field === "nh3"
-              ? 6
-              : 0;
+        // /**
+        //  * Determine the number of decimal places to values to, based on the
+        //  * pollution/emissions field.
+        //  */
+        // const decimalPlaces =
+        //   field === "generation" ||
+        //   field === "co2" ||
+        //   field === "so2" ||
+        //   field === "nox"
+        //     ? 3
+        //     : field === "pm25" || field === "vocs" || field === "nh3"
+        //       ? 6
+        //       : 0;
 
         /**
          * Conditionally multiply NEI factor to calculated pre and post values.
@@ -462,19 +462,29 @@ function calculateEmissionsChanges(options: {
 
         const pre =
           neiFields.includes(field) && neiFieldData !== undefined
-            ? roundToDecimalPlaces({
-                number: calculatedPre * neiFieldData,
-                decimalPlaces,
-              })
+            ? calculatedPre * neiFieldData
             : calculatedPre;
 
         const post =
           neiFields.includes(field) && neiFieldData !== undefined
-            ? roundToDecimalPlaces({
-                number: calculatedPost * neiFieldData,
-                decimalPlaces,
-              })
+            ? calculatedPost * neiFieldData
             : calculatedPost;
+
+        // const pre =
+        //   neiFields.includes(field) && neiFieldData !== undefined
+        //     ? roundToDecimalPlaces({
+        //         number: calculatedPre * neiFieldData,
+        //         decimalPlaces,
+        //       })
+        //     : calculatedPre;
+
+        // const post =
+        //   neiFields.includes(field) && neiFieldData !== undefined
+        //     ? roundToDecimalPlaces({
+        //         number: calculatedPost * neiFieldData,
+        //         decimalPlaces,
+        //       })
+        //     : calculatedPost;
 
         // const impacts = post - pre;
 
