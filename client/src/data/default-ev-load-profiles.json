@@ -3,648 +3,648 @@
     "Hour Ending": 1,
     "LDVs": {
       "weekday": 0.04,
-      "weekend": 0.051
+      "weekend": 0.0433
     },
     "Transit buses": {
-      "weekday": 0.057,
-      "weekend": 0.05
+      "weekday": 0.1268,
+      "weekend": 0.1168
     },
     "School buses": {
-      "weekday": 0.022,
-      "weekend": 0.04
+      "weekday": 0.0513,
+      "weekend": 0.0594
     },
     "Short-haul trucks": {
-      "weekday": 0.07,
-      "weekend": 0.06
+      "weekday": 0.0586,
+      "weekend": 0.0481
     },
     "Long-haul trucks": {
-      "weekday": 0.135,
-      "weekend": 0.135
+      "weekday": 0.0568,
+      "weekend": 0.0456
     },
     "Refuse trucks": {
-      "weekday": 0.209,
-      "weekend": 0.209
+      "weekday": 0.0573,
+      "weekend": 0.0492
     }
   },
   {
     "Hour Ending": 2,
     "LDVs": {
-      "weekday": 0.029,
-      "weekend": 0.04
+      "weekday": 0.03,
+      "weekend": 0.0314
     },
     "Transit buses": {
-      "weekday": 0.056,
-      "weekend": 0.06
+      "weekday": 0.1246,
+      "weekend": 0.1221
     },
     "School buses": {
-      "weekday": 0.017,
-      "weekend": 0.043
+      "weekday": 0.0513,
+      "weekend": 0.0612
     },
     "Short-haul trucks": {
-      "weekday": 0.084,
-      "weekend": 0.071
+      "weekday": 0.0586,
+      "weekend": 0.047
     },
     "Long-haul trucks": {
-      "weekday": 0.104,
-      "weekend": 0.104
+      "weekday": 0.0555,
+      "weekend": 0.0462
     },
     "Refuse trucks": {
-      "weekday": 0.147,
-      "weekend": 0.147
+      "weekday": 0.0573,
+      "weekend": 0.0493
     }
   },
   {
     "Hour Ending": 3,
     "LDVs": {
-      "weekday": 0.0225,
-      "weekend": 0.031
+      "weekday": 0.022,
+      "weekend": 0.0243
     },
     "Transit buses": {
-      "weekday": 0.052,
-      "weekend": 0.07
+      "weekday": 0.1083,
+      "weekend": 0.1112
     },
     "School buses": {
-      "weekday": 0.009,
-      "weekend": 0.044
+      "weekday": 0.051,
+      "weekend": 0.0607
     },
     "Short-haul trucks": {
-      "weekday": 0.09,
-      "weekend": 0.084
+      "weekday": 0.058,
+      "weekend": 0.0457
     },
     "Long-haul trucks": {
-      "weekday": 0.078,
-      "weekend": 0.078
+      "weekday": 0.0539,
+      "weekend": 0.0456
     },
     "Refuse trucks": {
-      "weekday": 0.084,
-      "weekend": 0.084
+      "weekday": 0.0566,
+      "weekend": 0.0485
     }
   },
   {
     "Hour Ending": 4,
     "LDVs": {
-      "weekday": 0.0175,
-      "weekend": 0.024
+      "weekday": 0.0166,
+      "weekend": 0.0185
     },
     "Transit buses": {
-      "weekday": 0.05,
-      "weekend": 0.065
+      "weekday": 0.0794,
+      "weekend": 0.0839
     },
     "School buses": {
-      "weekday": 0.007,
-      "weekend": 0.042
+      "weekday": 0.0505,
+      "weekend": 0.0553
     },
     "Short-haul trucks": {
-      "weekday": 0.079,
-      "weekend": 0.072
+      "weekday": 0.0551,
+      "weekend": 0.0408
     },
     "Long-haul trucks": {
-      "weekday": 0.063,
-      "weekend": 0.063
+      "weekday": 0.0516,
+      "weekend": 0.0468
     },
     "Refuse trucks": {
-      "weekday": 0.08,
-      "weekend": 0.08
+      "weekday": 0.0555,
+      "weekend": 0.0473
     }
   },
   {
     "Hour Ending": 5,
     "LDVs": {
-      "weekday": 0.015,
-      "weekend": 0.02
+      "weekday": 0.0126,
+      "weekend": 0.0135
     },
     "Transit buses": {
-      "weekday": 0.044,
-      "weekend": 0.064
+      "weekday": 0.0392,
+      "weekend": 0.053
     },
     "School buses": {
-      "weekday": 0.008,
-      "weekend": 0.035
+      "weekday": 0.0487,
+      "weekend": 0.0521
     },
     "Short-haul trucks": {
-      "weekday": 0.06,
-      "weekend": 0.061
+      "weekday": 0.0504,
+      "weekend": 0.0374
     },
     "Long-haul trucks": {
-      "weekday": 0.059,
-      "weekend": 0.059
+      "weekday": 0.0463,
+      "weekend": 0.0433
     },
     "Refuse trucks": {
-      "weekday": 0.062,
-      "weekend": 0.062
+      "weekday": 0.0534,
+      "weekend": 0.0447
     }
   },
   {
     "Hour Ending": 6,
     "LDVs": {
-      "weekday": 0.016,
-      "weekend": 0.017
+      "weekday": 0.0109,
+      "weekend": 0.0106
     },
     "Transit buses": {
-      "weekday": 0.042,
-      "weekend": 0.055
+      "weekday": 0.0161,
+      "weekend": 0.0291
     },
     "School buses": {
-      "weekday": 0.009,
-      "weekend": 0.035
+      "weekday": 0.0412,
+      "weekend": 0.0489
     },
     "Short-haul trucks": {
-      "weekday": 0.05,
-      "weekend": 0.051
+      "weekday": 0.0439,
+      "weekend": 0.0358
     },
     "Long-haul trucks": {
-      "weekday": 0.047,
-      "weekend": 0.047
+      "weekday": 0.039,
+      "weekend": 0.0412
     },
     "Refuse trucks": {
-      "weekday": 0.058,
-      "weekend": 0.058
+      "weekday": 0.0495,
+      "weekend": 0.0426
     }
   },
   {
     "Hour Ending": 7,
     "LDVs": {
-      "weekday": 0.022,
-      "weekend": 0.016
+      "weekday": 0.0125,
+      "weekend": 0.0108
     },
     "Transit buses": {
-      "weekday": 0.043,
-      "weekend": 0.054
+      "weekday": 0.0091,
+      "weekend": 0.0174
     },
     "School buses": {
-      "weekday": 0.035,
-      "weekend": 0.035
+      "weekday": 0.0328,
+      "weekend": 0.0436
     },
     "Short-haul trucks": {
-      "weekday": 0.042,
-      "weekend": 0.046
+      "weekday": 0.0347,
+      "weekend": 0.0324
     },
     "Long-haul trucks": {
-      "weekday": 0.062,
-      "weekend": 0.062
+      "weekday": 0.0298,
+      "weekend": 0.0374
     },
     "Refuse trucks": {
-      "weekday": 0.054,
-      "weekend": 0.054
+      "weekday": 0.0424,
+      "weekend": 0.0394
     }
   },
   {
     "Hour Ending": 8,
     "LDVs": {
-      "weekday": 0.03,
-      "weekend": 0.017
+      "weekday": 0.0195,
+      "weekend": 0.0132
     },
     "Transit buses": {
-      "weekday": 0.044,
-      "weekend": 0.052
+      "weekday": 0.0063,
+      "weekend": 0.0113
     },
     "School buses": {
-      "weekday": 0.054,
-      "weekend": 0.04
+      "weekday": 0.0222,
+      "weekend": 0.0358
     },
     "Short-haul trucks": {
-      "weekday": 0.039,
-      "weekend": 0.043
+      "weekday": 0.0223,
+      "weekend": 0.0281
     },
     "Long-haul trucks": {
-      "weekday": 0.054,
-      "weekend": 0.054
+      "weekday": 0.0225,
+      "weekend": 0.0328
     },
     "Refuse trucks": {
-      "weekday": 0.045,
-      "weekend": 0.045
+      "weekday": 0.0288,
+      "weekend": 0.0338
     }
   },
   {
     "Hour Ending": 9,
     "LDVs": {
-      "weekday": 0.044,
-      "weekend": 0.02
+      "weekday": 0.0276,
+      "weekend": 0.0168
     },
     "Transit buses": {
-      "weekday": 0.044,
-      "weekend": 0.05
+      "weekday": 0.0058,
+      "weekend": 0.0077
     },
     "School buses": {
-      "weekday": 0.069,
-      "weekend": 0.041
+      "weekday": 0.0205,
+      "weekend": 0.0322
     },
     "Short-haul trucks": {
-      "weekday": 0.036,
-      "weekend": 0.041
+      "weekday": 0.0155,
+      "weekend": 0.0275
     },
     "Long-haul trucks": {
-      "weekday": 0.005,
-      "weekend": 0.005
+      "weekday": 0.0183,
+      "weekend": 0.0305
     },
     "Refuse trucks": {
-      "weekday": 0.002,
-      "weekend": 0.002
+      "weekday": 0.0176,
+      "weekend": 0.0302
     }
   },
   {
     "Hour Ending": 10,
     "LDVs": {
-      "weekday": 0.05,
-      "weekend": 0.024
+      "weekday": 0.0289,
+      "weekend": 0.0204
     },
     "Transit buses": {
-      "weekday": 0.043,
-      "weekend": 0.045
+      "weekday": 0.0065,
+      "weekend": 0.0065
     },
     "School buses": {
-      "weekday": 0.08,
-      "weekend": 0.044
+      "weekday": 0.0304,
+      "weekend": 0.0288
     },
     "Short-haul trucks": {
-      "weekday": 0.034,
-      "weekend": 0.038
+      "weekday": 0.0144,
+      "weekend": 0.029
     },
     "Long-haul trucks": {
-      "weekday": 0.03,
-      "weekend": 0.03
+      "weekday": 0.0167,
+      "weekend": 0.0307
     },
     "Refuse trucks": {
-      "weekday": 0.02,
-      "weekend": 0.02
+      "weekday": 0.0149,
+      "weekend": 0.0297
     }
   },
   {
     "Hour Ending": 11,
     "LDVs": {
-      "weekday": 0.045,
-      "weekend": 0.03
+      "weekday": 0.0273,
+      "weekend": 0.0258
     },
     "Transit buses": {
-      "weekday": 0.041,
-      "weekend": 0.043
+      "weekday": 0.0065,
+      "weekend": 0.0059
     },
     "School buses": {
-      "weekday": 0.07,
-      "weekend": 0.043
+      "weekday": 0.0377,
+      "weekend": 0.0322
     },
     "Short-haul trucks": {
-      "weekday": 0.032,
-      "weekend": 0.034
+      "weekday": 0.015,
+      "weekend": 0.0303
     },
     "Long-haul trucks": {
-      "weekday": 0.034,
-      "weekend": 0.034
+      "weekday": 0.0175,
+      "weekend": 0.032
     },
     "Refuse trucks": {
-      "weekday": 0.012,
-      "weekend": 0.012
+      "weekday": 0.0153,
+      "weekend": 0.0309
     }
   },
   {
     "Hour Ending": 12,
     "LDVs": {
-      "weekday": 0.038,
-      "weekend": 0.038
+      "weekday": 0.0245,
+      "weekend": 0.0322
     },
     "Transit buses": {
-      "weekday": 0.041,
-      "weekend": 0.041
+      "weekday": 0.0064,
+      "weekend": 0.0055
     },
     "School buses": {
-      "weekday": 0.056,
-      "weekend": 0.042
+      "weekday": 0.0395,
+      "weekend": 0.0362
     },
     "Short-haul trucks": {
-      "weekday": 0.031,
-      "weekend": 0.033
+      "weekday": 0.0168,
+      "weekend": 0.0328
     },
     "Long-haul trucks": {
-      "weekday": 0.033,
-      "weekend": 0.033
+      "weekday": 0.0196,
+      "weekend": 0.0332
     },
     "Refuse trucks": {
-      "weekday": 0.01,
-      "weekend": 0.01
+      "weekday": 0.0165,
+      "weekend": 0.0324
     }
   },
   {
     "Hour Ending": 13,
     "LDVs": {
-      "weekday": 0.036,
-      "weekend": 0.044
+      "weekday": 0.0263,
+      "weekend": 0.041
     },
     "Transit buses": {
-      "weekday": 0.04,
-      "weekend": 0.04
+      "weekday": 0.0062,
+      "weekend": 0.0057
     },
     "School buses": {
-      "weekday": 0.042,
-      "weekend": 0.042
+      "weekday": 0.0388,
+      "weekend": 0.035
     },
     "Short-haul trucks": {
-      "weekday": 0.03,
-      "weekend": 0.032
+      "weekday": 0.0202,
+      "weekend": 0.0368
     },
     "Long-haul trucks": {
-      "weekday": 0.02,
-      "weekend": 0.02
+      "weekday": 0.0235,
+      "weekend": 0.0354
     },
     "Refuse trucks": {
-      "weekday": 0.001,
-      "weekend": 0.001
+      "weekday": 0.019,
+      "weekend": 0.0343
     }
   },
   {
     "Hour Ending": 14,
     "LDVs": {
-      "weekday": 0.034,
-      "weekend": 0.048
+      "weekday": 0.029,
+      "weekend": 0.0463
     },
     "Transit buses": {
-      "weekday": 0.039,
-      "weekend": 0.04
+      "weekday": 0.0063,
+      "weekend": 0.0062
     },
     "School buses": {
-      "weekday": 0.029,
-      "weekend": 0.042
+      "weekday": 0.036,
+      "weekend": 0.0281
     },
     "Short-haul trucks": {
-      "weekday": 0.03,
-      "weekend": 0.032
+      "weekday": 0.0243,
+      "weekend": 0.0412
     },
     "Long-haul trucks": {
-      "weekday": 0.019,
-      "weekend": 0.019
+      "weekday": 0.0288,
+      "weekend": 0.0376
     },
     "Refuse trucks": {
-      "weekday": 0.001,
-      "weekend": 0.001
+      "weekday": 0.0212,
+      "weekend": 0.0358
     }
   },
   {
     "Hour Ending": 15,
     "LDVs": {
-      "weekday": 0.035,
-      "weekend": 0.051
+      "weekday": 0.0325,
+      "weekend": 0.0496
     },
     "Transit buses": {
-      "weekday": 0.038,
-      "weekend": 0.036
+      "weekday": 0.007,
+      "weekend": 0.0077
     },
     "School buses": {
-      "weekday": 0.022,
-      "weekend": 0.043
+      "weekday": 0.0349,
+      "weekend": 0.0292
     },
     "Short-haul trucks": {
-      "weekday": 0.029,
-      "weekend": 0.033
+      "weekday": 0.0303,
+      "weekend": 0.0442
     },
     "Long-haul trucks": {
-      "weekday": 0.021,
-      "weekend": 0.021
+      "weekday": 0.0352,
+      "weekend": 0.0409
     },
     "Refuse trucks": {
-      "weekday": 0.001,
-      "weekend": 0.001
+      "weekday": 0.0268,
+      "weekend": 0.0378
     }
   },
   {
     "Hour Ending": 16,
     "LDVs": {
-      "weekday": 0.037,
-      "weekend": 0.053
+      "weekday": 0.0442,
+      "weekend": 0.0532
     },
     "Transit buses": {
-      "weekday": 0.038,
-      "weekend": 0.035
+      "weekday": 0.0078,
+      "weekend": 0.0096
     },
     "School buses": {
-      "weekday": 0.026,
-      "weekend": 0.043
+      "weekday": 0.0382,
+      "weekend": 0.0304
     },
     "Short-haul trucks": {
-      "weekday": 0.028,
-      "weekend": 0.033
+      "weekday": 0.0375,
+      "weekend": 0.0455
     },
     "Long-haul trucks": {
-      "weekday": 0.017,
-      "weekend": 0.017
+      "weekday": 0.042,
+      "weekend": 0.0422
     },
     "Refuse trucks": {
-      "weekday": 0.001,
-      "weekend": 0.001
+      "weekday": 0.0349,
+      "weekend": 0.0404
     }
   },
   {
     "Hour Ending": 17,
     "LDVs": {
-      "weekday": 0.042,
-      "weekend": 0.056
+      "weekday": 0.0565,
+      "weekend": 0.0628
     },
     "Transit buses": {
-      "weekday": 0.032,
-      "weekend": 0.034
+      "weekday": 0.0096,
+      "weekend": 0.012
     },
     "School buses": {
-      "weekday": 0.04,
-      "weekend": 0.044
+      "weekday": 0.0426,
+      "weekend": 0.0303
     },
     "Short-haul trucks": {
-      "weekday": 0.027,
-      "weekend": 0.033
+      "weekday": 0.0448,
+      "weekend": 0.046
     },
     "Long-haul trucks": {
-      "weekday": 0.019,
-      "weekend": 0.019
+      "weekday": 0.0476,
+      "weekend": 0.0437
     },
     "Refuse trucks": {
-      "weekday": 0.001,
-      "weekend": 0.001
+      "weekday": 0.044,
+      "weekend": 0.0422
     }
   },
   {
     "Hour Ending": 18,
     "LDVs": {
-      "weekday": 0.052,
-      "weekend": 0.058
+      "weekday": 0.0753,
+      "weekend": 0.07
     },
     "Transit buses": {
-      "weekday": 0.028,
-      "weekend": 0.03
+      "weekday": 0.0133,
+      "weekend": 0.0151
     },
     "School buses": {
-      "weekday": 0.06,
-      "weekend": 0.044
+      "weekday": 0.0449,
+      "weekend": 0.0293
     },
     "Short-haul trucks": {
-      "weekday": 0.026,
-      "weekend": 0.033
+      "weekday": 0.0522,
+      "weekend": 0.0471
     },
     "Long-haul trucks": {
-      "weekday": 0.017,
-      "weekend": 0.017
+      "weekday": 0.052,
+      "weekend": 0.0458
     },
     "Refuse trucks": {
-      "weekday": 0.001,
-      "weekend": 0.001
+      "weekday": 0.0513,
+      "weekend": 0.0439
     }
   },
   {
     "Hour Ending": 19,
     "LDVs": {
-      "weekday": 0.064,
-      "weekend": 0.061
+      "weekday": 0.0908,
+      "weekend": 0.0751
     },
     "Transit buses": {
-      "weekday": 0.026,
-      "weekend": 0.025
+      "weekday": 0.0273,
+      "weekend": 0.0205
     },
     "School buses": {
-      "weekday": 0.077,
-      "weekend": 0.045
+      "weekday": 0.0462,
+      "weekend": 0.0328
     },
     "Short-haul trucks": {
-      "weekday": 0.025,
-      "weekend": 0.032
+      "weekday": 0.0555,
+      "weekend": 0.0488
     },
     "Long-haul trucks": {
-      "weekday": 0.015,
-      "weekend": 0.015
+      "weekday": 0.0549,
+      "weekend": 0.0475
     },
     "Refuse trucks": {
-      "weekday": 0.001,
-      "weekend": 0.001
+      "weekday": 0.0542,
+      "weekend": 0.0451
     }
   },
   {
     "Hour Ending": 20,
     "LDVs": {
-      "weekday": 0.068,
-      "weekend": 0.065
+      "weekday": 0.0903,
+      "weekend": 0.0772
     },
     "Transit buses": {
-      "weekday": 0.03,
-      "weekend": 0.021
+      "weekday": 0.0455,
+      "weekend": 0.0354
     },
     "School buses": {
-      "weekday": 0.076,
-      "weekend": 0.044
+      "weekday": 0.0471,
+      "weekend": 0.0377
     },
     "Short-haul trucks": {
-      "weekday": 0.024,
-      "weekend": 0.028
+      "weekday": 0.0573,
+      "weekend": 0.0503
     },
     "Long-haul trucks": {
-      "weekday": 0.014,
-      "weekend": 0.014
+      "weekday": 0.0567,
+      "weekend": 0.0476
     },
     "Refuse trucks": {
-      "weekday": 0.001,
-      "weekend": 0.001
+      "weekday": 0.0556,
+      "weekend": 0.0465
     }
   },
   {
     "Hour Ending": 21,
     "LDVs": {
-      "weekday": 0.069,
-      "weekend": 0.067
+      "weekday": 0.0835,
+      "weekend": 0.0747
     },
     "Transit buses": {
-      "weekday": 0.035,
-      "weekend": 0.02
+      "weekday": 0.0606,
+      "weekend": 0.0506
     },
     "School buses": {
-      "weekday": 0.063,
-      "weekend": 0.043
+      "weekday": 0.0475,
+      "weekend": 0.0453
     },
     "Short-haul trucks": {
-      "weekday": 0.025,
-      "weekend": 0.026
+      "weekday": 0.0582,
+      "weekend": 0.0511
     },
     "Long-haul trucks": {
-      "weekday": 0.01,
-      "weekend": 0.01
+      "weekday": 0.0575,
+      "weekend": 0.0482
     },
     "Refuse trucks": {
-      "weekday": 0.001,
-      "weekend": 0.001
+      "weekday": 0.0566,
+      "weekend": 0.048
     }
   },
   {
     "Hour Ending": 22,
     "LDVs": {
-      "weekday": 0.068,
-      "weekend": 0.064
+      "weekday": 0.0756,
+      "weekend": 0.0699
     },
     "Transit buses": {
-      "weekday": 0.039,
-      "weekend": 0.02
+      "weekday": 0.0726,
+      "weekend": 0.0682
     },
     "School buses": {
-      "weekday": 0.055,
-      "weekend": 0.042
+      "weekday": 0.0484,
+      "weekend": 0.0523
     },
     "Short-haul trucks": {
-      "weekday": 0.027,
-      "weekend": 0.024
+      "weekday": 0.0587,
+      "weekend": 0.0512
     },
     "Long-haul trucks": {
-      "weekday": 0.004,
-      "weekend": 0.004
+      "weekday": 0.0581,
+      "weekend": 0.0484
     },
     "Refuse trucks": {
-      "weekday": 0.001,
-      "weekend": 0.001
+      "weekday": 0.0569,
+      "weekend": 0.0489
     }
   },
   {
     "Hour Ending": 23,
     "LDVs": {
-      "weekday": 0.066,
-      "weekend": 0.058
+      "weekday": 0.0682,
+      "weekend": 0.0637
     },
     "Transit buses": {
-      "weekday": 0.048,
-      "weekend": 0.02
+      "weekday": 0.0928,
+      "weekend": 0.0909
     },
     "School buses": {
-      "weekday": 0.042,
-      "weekend": 0.042
+      "weekday": 0.049,
+      "weekend": 0.0528
     },
     "Short-haul trucks": {
-      "weekday": 0.032,
-      "weekend": 0.022
+      "weekday": 0.0589,
+      "weekend": 0.0514
     },
     "Long-haul trucks": {
-      "weekday": 0.006,
-      "weekend": 0.006
+      "weekday": 0.0584,
+      "weekend": 0.0488
     },
     "Refuse trucks": {
-      "weekday": 0.001,
-      "weekend": 0.001
+      "weekday": 0.057,
+      "weekend": 0.0494
     }
   },
   {
     "Hour Ending": 24,
     "LDVs": {
-      "weekday": 0.06,
-      "weekend": 0.047
+      "weekday": 0.0554,
+      "weekend": 0.0557
     },
     "Transit buses": {
-      "weekday": 0.05,
-      "weekend": 0.03
+      "weekday": 0.116,
+      "weekend": 0.1077
     },
     "School buses": {
-      "weekday": 0.032,
-      "weekend": 0.042
+      "weekday": 0.0493,
+      "weekend": 0.0504
     },
     "Short-haul trucks": {
-      "weekday": 0.05,
-      "weekend": 0.038
+      "weekday": 0.0588,
+      "weekend": 0.0515
     },
     "Long-haul trucks": {
-      "weekday": 0.134,
-      "weekend": 0.134
+      "weekday": 0.0578,
+      "weekend": 0.0486
     },
     "Refuse trucks": {
-      "weekday": 0.206,
-      "weekend": 0.206
+      "weekday": 0.0574,
+      "weekend": 0.0497
     }
   }
 ]
