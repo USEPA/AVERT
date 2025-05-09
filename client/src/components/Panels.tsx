@@ -85,8 +85,8 @@ function ExcelAppText() {
         "desktop:font-sans-sm",
       )}
     >
-      AVERT Web Edition completes analyses using 2023 power sector emissions and
-      generation data and AVERT Main Module v4.3. The{" "}
+      AVERT Web Edition completes analyses using 2024 power sector emissions and
+      generation data and AVERT Main Module v4.4. The{" "}
       <a
         className={clsx("usa-link")}
         href="https://www.epa.gov/avert/download-avert"
@@ -95,7 +95,7 @@ function ExcelAppText() {
       >
         AVERT Main Module
       </a>{" "}
-      v4.3 in Excel allows analyses for years 2017–2023 or for a future year
+      v4.4 in Excel allows analyses for years 2017–2024 or for a future year
       scenario.
     </p>
   );
