@@ -271,7 +271,7 @@ function calculateEmissionsChanges(options) {
    *    emissionsFlags: ("generation" | "so2" | "nox" | "co2" | "heat")[];
    *    data: {
    *      monthly: {
-   *        [field: "generation" | "heat" | "so2" | "nox" | "co2" | "pm25" | "vocs" | "nh3"]: {
+   *        [field: "generation" | "so2" | "nox" | "co2" | "pm25" | "vocs" | "nh3"]: {
    *          [month: number]: {
    *            pre: number,
    *            post: number,
@@ -285,8 +285,8 @@ function calculateEmissionsChanges(options) {
    */
   const egus = {};
 
-  /** @type {("generation" | "heat" | "so2" | "nox" | "co2" | "pm25" | "vocs" | "nh3")[]} */
-  const emissionsFields = ["generation", "heat", "so2", "nox", "co2", "pm25", "vocs", "nh3"];
+  /** @type {("generation" | "so2" | "nox" | "co2" | "pm25" | "vocs" | "nh3")[]} */
+  const emissionsFields = ["generation", "so2", "nox", "co2", "pm25", "vocs", "nh3"];
 
   /** @type {("pm25" | "vocs" | "nh3")[]} */
   const neiFields = ["pm25", "vocs", "nh3"];
@@ -310,15 +310,6 @@ function calculateEmissionsChanges(options) {
   for (const [i, hourlyLoad] of rdf.regional_load.entries()) {
     const hour = hourlyLoad.hour_of_year;
     const month = hourlyLoad.month;
-
-    /**
-     * Determine if it's the last hour of the month by checking if the next hour
-     * is not in the current month, or if the current hour is the last hour of
-     * the dataset (since in that case there won't be a next hour).
-     */
-    const isLastHourOfMonth =
-      rdf.regional_load[i + 1]?.month !== month ||
-      i === rdf.regional_load.length - 1;
 
     /**
      * Original regional load (mwh) for the hour.
@@ -354,7 +345,7 @@ function calculateEmissionsChanges(options) {
     const preLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, preLoad);
     const postLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, postLoad);
 
-    /** Iterate over each emissions field (generation, heat, so2, nox, co2, etc.) */
+    /** Iterate over each emissions field (generation, so2, nox, co2, etc.) */
     emissionsFields.forEach((field) => {
       /**
        * NOTE: PM2.5, VOCs, and NH3 always use the `heat` or `heat_not` fields
@@ -447,12 +438,11 @@ function calculateEmissionsChanges(options) {
               });
 
         /**
-         * Determine the number of decimal places to round the impacts values to,
-         * based on the pollution/emissions field.
+         * Determine the number of decimal places to values to, based on the
+         * pollution/emissions field.
          */
         const decimalPlaces =
         field === "generation" ||
-        field === "heat" ||
         field === "co2" ||
         field === "so2" ||
         field === "nox"
@@ -502,7 +492,6 @@ function calculateEmissionsChanges(options) {
          */
         hourly[regionId] ??= {
           generation: {},
-          heat: {},
           so2: {},
           nox: {},
           co2: {},
@@ -535,7 +524,6 @@ function calculateEmissionsChanges(options) {
          */
         monthly[regionId] ??= {
           generation: {},
-          heat: {},
           so2: {},
           nox: {},
           co2: {},
@@ -568,7 +556,6 @@ function calculateEmissionsChanges(options) {
          */
         yearly[regionId] ??= {
           generation: { pre: 0, post: 0, impacts: 0 },
-          heat: { pre: 0, post: 0, impacts: 0 },
           so2: { pre: 0, post: 0, impacts: 0 },
           nox: { pre: 0, post: 0, impacts: 0 },
           co2: { pre: 0, post: 0, impacts: 0 },
@@ -608,7 +595,6 @@ function calculateEmissionsChanges(options) {
           data: {
             monthly: {
               generation: {},
-              heat: {},
               so2: {},
               nox: {},
               co2: {},
