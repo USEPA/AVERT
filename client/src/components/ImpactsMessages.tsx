@@ -185,7 +185,7 @@ export function EVWarningMessage() {
           <p className={clsx("margin-top-0")}>
             <strong>
               You have entered a quantity of EVs, but have not entered any
-              energy efficiency or renewable energy.
+              energy efficiency or renewable energy generation.
             </strong>
           </p>
 
