@@ -61,7 +61,8 @@ function setAnnualMonthlyData(
         Object.entries(totalPowerData.monthly).forEach(
           ([monthlyKey, monthlyData]) => {
             const month = Number(monthlyKey);
-            const { pre, post, impacts } = monthlyData;
+            const { pre, post } = monthlyData;
+            const impacts = post - pre;
 
             /**
              * Build up ozone season generation and ozone season nox

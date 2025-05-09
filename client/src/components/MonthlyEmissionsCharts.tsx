@@ -56,11 +56,10 @@ function setMonthlyPowerData(
   for (const key in powerData.monthly) {
     const month = Number(key);
     const { pre, post } = powerData.monthly[month];
+    const impacts = post - pre;
+    const percentChange = (impacts / pre) * 100 || 0;
 
-    const emissionsChange = post - pre;
-    const percentChange = (emissionsChange / pre) * 100 || 0;
-
-    monthlyEmissionsChanges.push(emissionsChange);
+    monthlyEmissionsChanges.push(impacts);
     monthlyPercentageChanges.push(percentChange);
   }
 

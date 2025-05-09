@@ -275,7 +275,6 @@ function calculateEmissionsChanges(options) {
    *          [month: number]: {
    *            pre: number,
    *            post: number,
-   *            impacts: number
    *          }
    *        }
    *      }
@@ -624,16 +623,14 @@ function calculateEmissionsChanges(options) {
         egus[eguId].data.monthly[field][month] ??= {
           pre: 0,
           post: 0,
-          impacts: 0,
         };
 
         /**
-         * Increment the EGU's monthly pre, post, and impacts values for the
-         * emissions field.
+         * Increment the EGU's monthly pre and post values for the emissions
+         * field.
          */
         egus[eguId].data.monthly[field][month].pre += pre;
         egus[eguId].data.monthly[field][month].post += post;
-        egus[eguId].data.monthly[field][month].impacts += impacts;
       });
     });
   }

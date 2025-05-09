@@ -31,9 +31,9 @@ type EguData = EmissionsChanges["egus"][string];
 export type EmissionsData = {
   [field in EmissionsFields]: {
     power: {
-      annual: { pre: number; post: number; impacts: number };
+      annual: { pre: number; post: number };
       monthly: {
-        [month: number]: { pre: number; post: number; impacts: number };
+        [month: number]: { pre: number; post: number };
       };
     } | null;
     vehicle: {
@@ -264,7 +264,6 @@ function calculateEmissionsChanges(options: {
             [month: number]: {
               pre: number;
               post: number;
-              impacts: number;
             };
           };
         };
@@ -607,16 +606,14 @@ function calculateEmissionsChanges(options: {
         egus[eguId].data.monthly[field][month] ??= {
           pre: 0,
           post: 0,
-          impacts: 0,
         };
 
         /**
-         * Increment the EGU's monthly pre, post, and impacts values for the
-         * emissions field.
+         * Increment the EGU's monthly pre and post values for the emissions
+         * field.
          */
         egus[eguId].data.monthly[field][month].pre += pre;
         egus[eguId].data.monthly[field][month].post += post;
-        egus[eguId].data.monthly[field][month].impacts += impacts;
       });
     });
   }
@@ -630,7 +627,7 @@ function calculateEmissionsChanges(options: {
 function createEmptyMonthlyPowerData() {
   const result = [...Array(12)].reduce(
     (object, _item, index) => {
-      object[index + 1] = { pre: 0, post: 0, impacts: 0 };
+      object[index + 1] = { pre: 0, post: 0 };
       return object;
     },
     {} as EguData["data"]["monthly"][keyof EguData["data"]["monthly"]],
@@ -662,7 +659,7 @@ function createInitialEmissionsData() {
   const result = emissionsFields.reduce((object, field) => {
     object[field] = {
       power: {
-        annual: { pre: 0, post: 0, impacts: 0 },
+        annual: { pre: 0, post: 0 },
         monthly: createEmptyMonthlyPowerData(),
       },
       vehicle: {
@@ -704,46 +701,38 @@ export function calculateAggregatedEmissionsData(
 
         Object.entries(fieldValue).forEach(([monthKey, monthValue]) => {
           const month = Number(monthKey);
-          const { pre, post, impacts } = monthValue;
+          const { pre, post } = monthValue;
 
           if (object.total[field].power) {
             object.total[field].power.annual.pre += pre;
             object.total[field].power.annual.post += post;
-            object.total[field].power.annual.impacts += impacts;
 
             object.total[field].power.monthly[month].pre += pre;
             object.total[field].power.monthly[month].post += post;
-            object.total[field].power.monthly[month].impacts += impacts;
           }
 
           if (object.regions[regionId][field].power) {
             object.regions[regionId][field].power.annual.pre += pre;
             object.regions[regionId][field].power.annual.post += post;
-            object.regions[regionId][field].power.annual.impacts += impacts;
 
             object.regions[regionId][field].power.monthly[month].pre += pre;
             object.regions[regionId][field].power.monthly[month].post += post;
-            object.regions[regionId][field].power.monthly[month].impacts += impacts; // prettier-ignore
           }
 
           if (object.states[stateId][field].power) {
             object.states[stateId][field].power.annual.pre += pre;
             object.states[stateId][field].power.annual.post += post;
-            object.states[stateId][field].power.annual.impacts += impacts;
 
             object.states[stateId][field].power.monthly[month].pre += pre;
             object.states[stateId][field].power.monthly[month].post += post;
-            object.states[stateId][field].power.monthly[month].impacts += impacts; // prettier-ignore
           }
 
           if (object.counties[stateId][county][field].power) {
             object.counties[stateId][county][field].power.annual.pre += pre;
             object.counties[stateId][county][field].power.annual.post += post;
-            object.counties[stateId][county][field].power.annual.impacts += impacts; // prettier-ignore
 
             object.counties[stateId][county][field].power.monthly[month].pre += pre; // prettier-ignore
             object.counties[stateId][county][field].power.monthly[month].post += post; // prettier-ignore
-            object.counties[stateId][county][field].power.monthly[month].impacts += impacts; // prettier-ignore
           }
         });
       });

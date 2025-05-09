@@ -405,7 +405,7 @@ function createEmissionsFields(options: {
   } as { [field in (typeof emissionsFields)[number]]: number | null };
 
   if (powerData) {
-    const annualEmissionsChange = powerData.annual.impacts;
+    const annualEmissionsChange = powerData.annual.post - powerData.annual.pre;
     const annualPercentChange = (annualEmissionsChange / powerData.annual.pre) * 100 || 0; // prettier-ignore
     const annualPowerData =
       unit === "percent" ? annualPercentChange : annualEmissionsChange;
@@ -413,7 +413,8 @@ function createEmissionsFields(options: {
     const monthlyPowerData = Object.entries(powerData.monthly).reduce(
       (object, [key, values]) => {
         const month = Number(key);
-        const { pre, impacts } = values;
+        const { post, pre } = values;
+        const impacts = post - pre;
 
         const monthlyEmissionsChange = impacts;
         const monthlyPercentChange = (monthlyEmissionsChange / pre) * 100 || 0;
@@ -501,17 +502,13 @@ function formatCobraDownloadData(
           const countyPowerData = countyDataValue.power;
           const countyVehicleData = countyDataValue.vehicle;
 
-          if (
-            pollutant !== "generation" &&
-            pollutant !== "heat" &&
-            pollutant !== "co2"
-          ) {
+          if (pollutant !== "generation" && pollutant !== "co2") {
             if (countyPowerData !== null) {
               const monthlyPowerData = countyPowerData.monthly;
 
               object.power ??= { so2: 0, nox: 0, pm25: 0, vocs: 0, nh3: 0 };
               object.power[pollutant] = Object.values(monthlyPowerData).reduce(
-                (total, data) => (total += data.impacts),
+                (total, data) => (total += data.post - data.pre),
                 0,
               );
             }

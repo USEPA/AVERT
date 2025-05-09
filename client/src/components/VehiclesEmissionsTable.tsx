@@ -32,7 +32,10 @@ function setAnnualPowerEmissionsChanges(options: {
   const result = Object.fromEntries(
     Object.entries(combinedSectorsEmissionsData.total).map(([key, value]) => {
       const pollutant = key as keyof typeof combinedSectorsEmissionsData.total;
-      return [pollutant, value.power ? value.power.annual.impacts : 0];
+      const pollutantValue = value.power
+        ? value.power.annual.post - value.power.annual.pre
+        : 0;
+      return [pollutant, pollutantValue];
     }),
   ) as {
     [Pollutant in keyof typeof combinedSectorsEmissionsData.total]: number;
