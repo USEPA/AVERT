@@ -360,8 +360,8 @@ export type Region = {
 };
 
 /**
- * NOTE: 2024 line loss values stored in "Table 2: T&D losses" found in the
- * "Library" sheet of the Excel workbook (C85:E85).
+ * NOTE: 2024 line loss values stored in "Table 2: Transmission & Distributuion\
+ * (T&D) losses" found in the "Library" sheet of the Excel workbook (C85:E85).
  */
 const lineLoss = {
   texas: 0.0457913819880058,
