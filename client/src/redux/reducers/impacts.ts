@@ -846,8 +846,9 @@ export default function reducer(
 export function setEVDeploymentLocationOptions(): AppThunk {
   return (dispatch, getState) => {
     const { geography } = getState();
-    const { focus, regions, states } = geography;
+    const { focus, regions, states, countiesByGeography } = geography;
 
+    const countiesByRegions = countiesByGeography?.regions || {};
     const selectedRegion = Object.values(regions).find((r) => r.selected);
     const selectedState = Object.values(states).find((s) => s.selected);
 
@@ -858,7 +859,7 @@ export function setEVDeploymentLocationOptions(): AppThunk {
               id: `region-${selectedRegion.id}`,
               name: `${selectedRegion.name} Region`,
             },
-            ...Object.keys(selectedRegion.percentageByState).map((id) => ({
+            ...Object.keys(countiesByRegions[selectedRegion.id]).map((id) => ({
               id: `state-${id}`,
               name: states[id as StateId].name || id,
             })),
