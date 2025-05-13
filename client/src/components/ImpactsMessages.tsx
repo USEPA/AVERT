@@ -156,6 +156,9 @@ export function EVWarningMessage() {
     hybridEVs,
     transitBuses,
     schoolBuses,
+    shortHaulTrucks,
+    comboLongHaulTrucks,
+    refuseTrucks,
   } = inputs;
 
   const eeInputsEmpty =
@@ -175,7 +178,10 @@ export function EVWarningMessage() {
     (batteryEVs === "" || batteryEVs === "0") &&
     (hybridEVs === "" || hybridEVs === "0") &&
     (transitBuses === "" || transitBuses === "0") &&
-    (schoolBuses === "" || schoolBuses === "0");
+    (schoolBuses === "" || schoolBuses === "0") &&
+    (shortHaulTrucks === "" || shortHaulTrucks === "0") &&
+    (comboLongHaulTrucks === "" || comboLongHaulTrucks === "0") &&
+    (refuseTrucks === "" || refuseTrucks === "0");
 
   if (eeInputsEmpty && reInputsEmpty && !evInputsEmpty) {
     return (

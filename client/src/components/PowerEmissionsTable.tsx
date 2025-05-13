@@ -199,6 +199,9 @@ function PowerEmissionsTableContent() {
     hybridEVs,
     transitBuses,
     schoolBuses,
+    shortHaulTrucks,
+    comboLongHaulTrucks,
+    refuseTrucks,
   } = inputs;
 
   const eeInputsEmpty =
@@ -218,7 +221,10 @@ function PowerEmissionsTableContent() {
     (batteryEVs === "" || batteryEVs === "0") &&
     (hybridEVs === "" || hybridEVs === "0") &&
     (transitBuses === "" || transitBuses === "0") &&
-    (schoolBuses === "" || schoolBuses === "0");
+    (schoolBuses === "" || schoolBuses === "0") &&
+    (shortHaulTrucks === "" || shortHaulTrucks === "0") &&
+    (comboLongHaulTrucks === "" || comboLongHaulTrucks === "0") &&
+    (refuseTrucks === "" || refuseTrucks === "0");
 
   const eereAndEvInputsEntered =
     (!eeInputsEmpty || !reInputsEmpty) && !evInputsEmpty;

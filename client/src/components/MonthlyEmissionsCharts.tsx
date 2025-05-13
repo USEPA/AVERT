@@ -587,13 +587,24 @@ function MonthlyEmissionsChartsContent() {
     return monthlyEmissions.statesAndCounties[currentStateId as StateId]?.sort(); // prettier-ignore
   });
 
-  const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = inputs;
+  const {
+    batteryEVs,
+    hybridEVs,
+    transitBuses,
+    schoolBuses,
+    shortHaulTrucks,
+    comboLongHaulTrucks,
+    refuseTrucks,
+  } = inputs;
 
   const evInputsEmpty =
     (batteryEVs === "" || batteryEVs === "0") &&
     (hybridEVs === "" || hybridEVs === "0") &&
     (transitBuses === "" || transitBuses === "0") &&
-    (schoolBuses === "" || schoolBuses === "0");
+    (schoolBuses === "" || schoolBuses === "0") &&
+    (shortHaulTrucks === "" || shortHaulTrucks === "0") &&
+    (comboLongHaulTrucks === "" || comboLongHaulTrucks === "0") &&
+    (refuseTrucks === "" || refuseTrucks === "0");
 
   const selectedRegion = useSelectedRegion();
   const selectedStateRegions = useSelectedStateRegions();
