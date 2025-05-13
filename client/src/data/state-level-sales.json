@@ -43,18 +43,6 @@
   },
   {
     "State": "AL",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 590254.3724236145,
-    "Sales (2023)": 34899.189901496204
-  },
-  {
-    "State": "AL",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 590254.3724236145,
-    "Sales (2023)": 34899.189901496204
-  },
-  {
-    "State": "AL",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 34733.6992057472,
     "Sales (2023)": 1824.10919567899
@@ -100,18 +88,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 104.930517927563,
     "Sales (2023)": 5.49489017418697
-  },
-  {
-    "State": "AK",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 46967.84619055444,
-    "Sales (2023)": 2770.7273900255473
-  },
-  {
-    "State": "AK",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 46967.84619055444,
-    "Sales (2023)": 2770.7273900255473
   },
   {
     "State": "AK",
@@ -163,18 +139,6 @@
   },
   {
     "State": "AZ",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 583602.9955895668,
-    "Sales (2023)": 34637.34316216437
-  },
-  {
-    "State": "AZ",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 583602.9955895668,
-    "Sales (2023)": 34637.34316216437
-  },
-  {
-    "State": "AZ",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 36283.0899145109,
     "Sales (2023)": 1905.47852587367
@@ -220,18 +184,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 673.75384465996,
     "Sales (2023)": 35.2824274001815
-  },
-  {
-    "State": "AR",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 300384.99006947334,
-    "Sales (2023)": 17711.55334663566
-  },
-  {
-    "State": "AR",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 300384.99006947334,
-    "Sales (2023)": 17711.55334663566
   },
   {
     "State": "AR",
@@ -283,18 +235,6 @@
   },
   {
     "State": "CA",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 2883643.2299210774,
-    "Sales (2023)": 171373.91511050682
-  },
-  {
-    "State": "CA",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 2883643.2299210774,
-    "Sales (2023)": 171373.91511050682
-  },
-  {
-    "State": "CA",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 169071.291956595,
     "Sales (2023)": 8879.11467639825
@@ -340,18 +280,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 918.237761579125,
     "Sales (2023)": 48.0853020963042
-  },
-  {
-    "State": "CO",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 423308.39966707816,
-    "Sales (2023)": 25077.18938603124
-  },
-  {
-    "State": "CO",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 423308.39966707816,
-    "Sales (2023)": 25077.18938603124
   },
   {
     "State": "CO",
@@ -403,18 +331,6 @@
   },
   {
     "State": "CT",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 260706.20944257372,
-    "Sales (2023)": 15541.30842929734
-  },
-  {
-    "State": "CT",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 260706.20944257372,
-    "Sales (2023)": 15541.30842929734
-  },
-  {
-    "State": "CT",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 13007.2737219074,
     "Sales (2023)": 683.102812237148
@@ -460,18 +376,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 151.717007900889,
     "Sales (2023)": 7.94495550424278
-  },
-  {
-    "State": "DE",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 71344.28360770331,
-    "Sales (2023)": 4235.135575655458
-  },
-  {
-    "State": "DE",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 71344.28360770331,
-    "Sales (2023)": 4235.135575655458
   },
   {
     "State": "DE",
@@ -523,18 +427,6 @@
   },
   {
     "State": "DC",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 24845.63135841748,
-    "Sales (2023)": 1489.2443177608595
-  },
-  {
-    "State": "DC",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 24845.63135841748,
-    "Sales (2023)": 1489.2443177608595
-  },
-  {
-    "State": "DC",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 858.109362828487,
     "Sales (2023)": 45.0653174129717
@@ -580,18 +472,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 3621.55841752055,
     "Sales (2023)": 189.64993365815
-  },
-  {
-    "State": "FL",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 1749644.033072352,
-    "Sales (2023)": 104208.72287448395
-  },
-  {
-    "State": "FL",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 1749644.033072352,
-    "Sales (2023)": 104208.72287448395
   },
   {
     "State": "FL",
@@ -643,18 +523,6 @@
   },
   {
     "State": "GA",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 989967.5617707472,
-    "Sales (2023)": 58790.644991385394
-  },
-  {
-    "State": "GA",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 989967.5617707472,
-    "Sales (2023)": 58790.644991385394
-  },
-  {
-    "State": "GA",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 53267.7903086715,
     "Sales (2023)": 2797.46379906089
@@ -700,18 +568,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 152.488031916924,
     "Sales (2023)": 7.98533167290609
-  },
-  {
-    "State": "HI",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 74083.56382048481,
-    "Sales (2023)": 4414.759830245395
-  },
-  {
-    "State": "HI",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 74083.56382048481,
-    "Sales (2023)": 4414.759830245395
   },
   {
     "State": "HI",
@@ -763,18 +619,6 @@
   },
   {
     "State": "ID",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 154334.732512628,
-    "Sales (2023)": 9083.96347000269
-  },
-  {
-    "State": "ID",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 154334.732512628,
-    "Sales (2023)": 9083.96347000269
-  },
-  {
-    "State": "ID",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 10794.9008976206,
     "Sales (2023)": 566.915659548727
@@ -820,18 +664,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 1726.77970628857,
     "Sales (2023)": 90.4261698929253
-  },
-  {
-    "State": "IL",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 807638.4962775903,
-    "Sales (2023)": 47925.801912817
-  },
-  {
-    "State": "IL",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 807638.4962775903,
-    "Sales (2023)": 47925.801912817
   },
   {
     "State": "IL",
@@ -883,18 +715,6 @@
   },
   {
     "State": "IN",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 661200.6250428597,
-    "Sales (2023)": 39143.36068592092
-  },
-  {
-    "State": "IN",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 661200.6250428597,
-    "Sales (2023)": 39143.36068592092
-  },
-  {
-    "State": "IN",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 39130.9772697631,
     "Sales (2023)": 2055.04098630155
@@ -940,18 +760,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 609.902692672052,
     "Sales (2023)": 31.9387379321558
-  },
-  {
-    "State": "IA",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 265917.1950286316,
-    "Sales (2023)": 15628.14780201066
-  },
-  {
-    "State": "IA",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 265917.1950286316,
-    "Sales (2023)": 15628.14780201066
   },
   {
     "State": "IA",
@@ -1003,18 +811,6 @@
   },
   {
     "State": "KS",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 247385.23034283728,
-    "Sales (2023)": 14573.840803937515
-  },
-  {
-    "State": "KS",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 247385.23034283728,
-    "Sales (2023)": 14573.840803937515
-  },
-  {
-    "State": "KS",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 18207.942602641,
     "Sales (2023)": 956.226267151446
@@ -1060,18 +856,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 954.266118475137,
     "Sales (2023)": 49.9719969131226
-  },
-  {
-    "State": "KY",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 418444.48835256544,
-    "Sales (2023)": 24625.094771434684
-  },
-  {
-    "State": "KY",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 418444.48835256544,
-    "Sales (2023)": 24625.094771434684
   },
   {
     "State": "KY",
@@ -1123,18 +907,6 @@
   },
   {
     "State": "LA",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 423045.7529517077,
-    "Sales (2023)": 25001.36439957569
-  },
-  {
-    "State": "LA",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 423045.7529517077,
-    "Sales (2023)": 25001.36439957569
-  },
-  {
-    "State": "LA",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 28432.1204506875,
     "Sales (2023)": 1493.16927228327
@@ -1180,18 +952,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 279.618629797067,
     "Sales (2023)": 14.6427721099422
-  },
-  {
-    "State": "ME",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 119877.45883867808,
-    "Sales (2023)": 7028.344688911934
-  },
-  {
-    "State": "ME",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 119877.45883867808,
-    "Sales (2023)": 7028.344688911934
   },
   {
     "State": "ME",
@@ -1243,18 +1003,6 @@
   },
   {
     "State": "MD",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 435541.0415804597,
-    "Sales (2023)": 25900.67200736098
-  },
-  {
-    "State": "MD",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 435541.0415804597,
-    "Sales (2023)": 25900.67200736098
-  },
-  {
-    "State": "MD",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 23366.2066963781,
     "Sales (2023)": 1227.12275045978
@@ -1300,18 +1048,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 909.559952946096,
     "Sales (2023)": 47.6308718091687
-  },
-  {
-    "State": "MA",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 450042.14274309314,
-    "Sales (2023)": 26892.894630427636
-  },
-  {
-    "State": "MA",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 450042.14274309314,
-    "Sales (2023)": 26892.894630427636
   },
   {
     "State": "MA",
@@ -1363,18 +1099,6 @@
   },
   {
     "State": "MI",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 749294.3010623875,
-    "Sales (2023)": 44398.97951914803
-  },
-  {
-    "State": "MI",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 749294.3010623875,
-    "Sales (2023)": 44398.97951914803
-  },
-  {
-    "State": "MI",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 43824.8346278423,
     "Sales (2023)": 2301.54822756485
@@ -1420,18 +1144,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 1005.6601273161,
     "Sales (2023)": 52.6633439089247
-  },
-  {
-    "State": "MN",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 454957.84152415517,
-    "Sales (2023)": 26875.3163445436
-  },
-  {
-    "State": "MN",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 454957.84152415517,
-    "Sales (2023)": 26875.3163445436
   },
   {
     "State": "MN",
@@ -1483,18 +1195,6 @@
   },
   {
     "State": "MS",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 354793.2054880983,
-    "Sales (2023)": 20863.860290104323
-  },
-  {
-    "State": "MS",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 354793.2054880983,
-    "Sales (2023)": 20863.860290104323
-  },
-  {
-    "State": "MS",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 23845.8816327645,
     "Sales (2023)": 1252.31383238907
@@ -1540,18 +1240,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 1450.65854573841,
     "Sales (2023)": 75.9665495464448
-  },
-  {
-    "State": "MO",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 645789.0695073535,
-    "Sales (2023)": 38085.71187109135
-  },
-  {
-    "State": "MO",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 645789.0695073535,
-    "Sales (2023)": 38085.71187109135
   },
   {
     "State": "MO",
@@ -1603,18 +1291,6 @@
   },
   {
     "State": "MT",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 109438.72275893255,
-    "Sales (2023)": 6412.2999712600995
-  },
-  {
-    "State": "MT",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 109438.72275893255,
-    "Sales (2023)": 6412.2999712600995
-  },
-  {
-    "State": "MT",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 8758.42969007855,
     "Sales (2023)": 459.966329608124
@@ -1660,18 +1336,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 396.901086026476,
     "Sales (2023)": 20.7844955005041
-  },
-  {
-    "State": "NE",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 173272.6290662925,
-    "Sales (2023)": 10188.833145054341
-  },
-  {
-    "State": "NE",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 173272.6290662925,
-    "Sales (2023)": 10188.833145054341
   },
   {
     "State": "NE",
@@ -1723,18 +1387,6 @@
   },
   {
     "State": "NV",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 209551.8553204802,
-    "Sales (2023)": 12452.558534769467
-  },
-  {
-    "State": "NV",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 209551.8553204802,
-    "Sales (2023)": 12452.558534769467
-  },
-  {
-    "State": "NV",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 12097.5151459005,
     "Sales (2023)": 635.325033817639
@@ -1780,18 +1432,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 239.671683311835,
     "Sales (2023)": 12.5508727458125
-  },
-  {
-    "State": "NH",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 108296.58213995596,
-    "Sales (2023)": 6398.324202796892
-  },
-  {
-    "State": "NH",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 108296.58213995596,
-    "Sales (2023)": 6398.324202796892
   },
   {
     "State": "NH",
@@ -1843,18 +1483,6 @@
   },
   {
     "State": "NJ",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 611513.9346937821,
-    "Sales (2023)": 35693.78263995974
-  },
-  {
-    "State": "NJ",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 611513.9346937821,
-    "Sales (2023)": 35693.78263995974
-  },
-  {
-    "State": "NJ",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 58299.0837008021,
     "Sales (2023)": 3061.69216380776
@@ -1900,18 +1528,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 490.155354417836,
     "Sales (2023)": 25.667936211608
-  },
-  {
-    "State": "NM",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 212883.7796853712,
-    "Sales (2023)": 12507.298617589
-  },
-  {
-    "State": "NM",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 212883.7796853712,
-    "Sales (2023)": 12507.298617589
   },
   {
     "State": "NM",
@@ -1963,18 +1579,6 @@
   },
   {
     "State": "NY",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 886379.8079601445,
-    "Sales (2023)": 52679.555978451055
-  },
-  {
-    "State": "NY",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 886379.8079601445,
-    "Sales (2023)": 52679.555978451055
-  },
-  {
-    "State": "NY",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 47353.739568342,
     "Sales (2023)": 2486.87567899788
@@ -2020,18 +1624,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 1995.73417036243,
     "Sales (2023)": 104.510492272458
-  },
-  {
-    "State": "NC",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 919749.7551614294,
-    "Sales (2023)": 54464.70532000359
-  },
-  {
-    "State": "NC",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 919749.7551614294,
-    "Sales (2023)": 54464.70532000359
   },
   {
     "State": "NC",
@@ -2083,18 +1675,6 @@
   },
   {
     "State": "ND",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 78971.60158821031,
-    "Sales (2023)": 4632.714453798268
-  },
-  {
-    "State": "ND",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 78971.60158821031,
-    "Sales (2023)": 4632.714453798268
-  },
-  {
-    "State": "ND",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 5732.31665995908,
     "Sales (2023)": 301.043993904486
@@ -2140,18 +1720,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 1922.72936255144,
     "Sales (2023)": 100.687453855875
-  },
-  {
-    "State": "OH",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 892262.1318923096,
-    "Sales (2023)": 52892.43570405755
-  },
-  {
-    "State": "OH",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 892262.1318923096,
-    "Sales (2023)": 52892.43570405755
   },
   {
     "State": "OH",
@@ -2203,18 +1771,6 @@
   },
   {
     "State": "OK",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 373393.0058330307,
-    "Sales (2023)": 22004.12212062368
-  },
-  {
-    "State": "OK",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 373393.0058330307,
-    "Sales (2023)": 22004.12212062368
-  },
-  {
-    "State": "OK",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 25236.4026359954,
     "Sales (2023)": 1325.33980447898
@@ -2260,18 +1816,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 620.994367955279,
     "Sales (2023)": 32.5195750301976
-  },
-  {
-    "State": "OR",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 281510.5252395113,
-    "Sales (2023)": 16636.00978908884
-  },
-  {
-    "State": "OR",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 281510.5252395113,
-    "Sales (2023)": 16636.00978908884
   },
   {
     "State": "OR",
@@ -2323,18 +1867,6 @@
   },
   {
     "State": "PA",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 746013.0865697921,
-    "Sales (2023)": 44138.86935452681
-  },
-  {
-    "State": "PA",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 746013.0865697921,
-    "Sales (2023)": 44138.86935452681
-  },
-  {
-    "State": "PA",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 48455.2495112534,
     "Sales (2023)": 2544.7236612728
@@ -2380,18 +1912,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 120.719445771764,
     "Sales (2023)": 6.32170801694211
-  },
-  {
-    "State": "RI",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 58376.88014759062,
-    "Sales (2023)": 3479.3563661038143
-  },
-  {
-    "State": "RI",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 58376.88014759062,
-    "Sales (2023)": 3479.3563661038143
   },
   {
     "State": "RI",
@@ -2443,18 +1963,6 @@
   },
   {
     "State": "SC",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 474176.6325324035,
-    "Sales (2023)": 27955.53479742489
-  },
-  {
-    "State": "SC",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 474176.6325324035,
-    "Sales (2023)": 27955.53479742489
-  },
-  {
-    "State": "SC",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 33178.6920791346,
     "Sales (2023)": 1742.44490814663
@@ -2500,18 +2008,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 210.349409200198,
     "Sales (2023)": 11.0153549662083
-  },
-  {
-    "State": "SD",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 88698.90319175177,
-    "Sales (2023)": 5191.461866186818
-  },
-  {
-    "State": "SD",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 88698.90319175177,
-    "Sales (2023)": 5191.461866186818
   },
   {
     "State": "SD",
@@ -2563,18 +2059,6 @@
   },
   {
     "State": "TN",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 661436.1862923945,
-    "Sales (2023)": 39195.42778494335
-  },
-  {
-    "State": "TN",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 661436.1862923945,
-    "Sales (2023)": 39195.42778494335
-  },
-  {
-    "State": "TN",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 40672.3952713892,
     "Sales (2023)": 2135.99161394694
@@ -2620,18 +2104,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 4939.5979319411,
     "Sales (2023)": 258.671630301059
-  },
-  {
-    "State": "TX",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 2271780.204657277,
-    "Sales (2023)": 134531.9697091059
-  },
-  {
-    "State": "TX",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 2271780.204657277,
-    "Sales (2023)": 134531.9697091059
   },
   {
     "State": "TX",
@@ -2683,18 +2155,6 @@
   },
   {
     "State": "UT",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 261401.7475775297,
-    "Sales (2023)": 15493.40001330967
-  },
-  {
-    "State": "UT",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 261401.7475775297,
-    "Sales (2023)": 15493.40001330967
-  },
-  {
-    "State": "UT",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 16451.4278260359,
     "Sales (2023)": 863.97940518112
@@ -2740,18 +2200,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 127.491748682267,
     "Sales (2023)": 6.67635279955177
-  },
-  {
-    "State": "VT",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 54379.46792453405,
-    "Sales (2023)": 3186.10346906672
-  },
-  {
-    "State": "VT",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 54379.46792453405,
-    "Sales (2023)": 3186.10346906672
   },
   {
     "State": "VT",
@@ -2803,18 +2251,6 @@
   },
   {
     "State": "VA",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 666354.1210812851,
-    "Sales (2023)": 39404.247042316405
-  },
-  {
-    "State": "VA",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 666354.1210812851,
-    "Sales (2023)": 39404.247042316405
-  },
-  {
-    "State": "VA",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 43986.1850480518,
     "Sales (2023)": 2310.02186532763
@@ -2860,18 +2296,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 1005.47492855484,
     "Sales (2023)": 52.6536456164391
-  },
-  {
-    "State": "WA",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 464651.38139011443,
-    "Sales (2023)": 27537.75352348008
-  },
-  {
-    "State": "WA",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 464651.38139011443,
-    "Sales (2023)": 27537.75352348008
   },
   {
     "State": "WA",
@@ -2923,18 +2347,6 @@
   },
   {
     "State": "WV",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 138393.24517953309,
-    "Sales (2023)": 8144.178913851947
-  },
-  {
-    "State": "WV",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 138393.24517953309,
-    "Sales (2023)": 8144.178913851947
-  },
-  {
-    "State": "WV",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 9751.60086084538,
     "Sales (2023)": 512.124686100694
@@ -2983,18 +2395,6 @@
   },
   {
     "State": "WI",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 499660.7935375386,
-    "Sales (2023)": 29390.640519380602
-  },
-  {
-    "State": "WI",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 499660.7935375386,
-    "Sales (2023)": 29390.640519380602
-  },
-  {
-    "State": "WI",
     "Vehicle Category": "Combination long-haul trucks",
     "Stock (2023)": 34928.9541978805,
     "Sales (2023)": 1834.36339937157
@@ -3040,18 +2440,6 @@
     "Vehicle Category": "Refuse trucks",
     "Stock (2023)": 211.812351973472,
     "Sales (2023)": 11.0919648031655
-  },
-  {
-    "State": "WY",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 89176.83655613253,
-    "Sales (2023)": 5217.214203980342
-  },
-  {
-    "State": "WY",
-    "Vehicle Category": "Short-haul trucks",
-    "Stock (2023)": 89176.83655613253,
-    "Sales (2023)": 5217.214203980342
   },
   {
     "State": "WY",

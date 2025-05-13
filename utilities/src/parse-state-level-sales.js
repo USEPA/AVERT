@@ -3,7 +3,7 @@ import { exit } from "node:process";
 import { fileURLToPath } from "node:url";
 
 import { XLSX, getExcelWorksheet } from "./excel.js";
-import { storeJsonData } from "./json.js";
+import { renameObjectKeys, storeJsonData } from "./json.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -26,6 +26,19 @@ function parseMOVESsupplementWorksheet(worksheet) {
   return json;
 }
 
+/**
+ * @param {{}[]} data
+ */
+function renameStateLevelSalesDataKeys(data) {
+  const keyMap = new Map([
+    ["stateAbbr", "State"],
+  ]);
+
+  const result = renameObjectKeys(data, keyMap);
+
+  return result;
+}
+
 function main() {
   const excelFilepath = process.argv[2];
 
@@ -36,11 +49,12 @@ function main() {
 
   const worksheet = getExcelWorksheet(excelFilepath, "MOVESsupplement");
   const excelJsonData = parseMOVESsupplementWorksheet(worksheet);
+  const formattedJsonData = renameStateLevelSalesDataKeys(excelJsonData);
 
   const jsonFilename = "state-level-sales.json";
   const jsonFilepath = resolve(__dirname, "../../client/src/data", jsonFilename);
 
-  storeJsonData(excelJsonData, jsonFilepath);
+  storeJsonData(formattedJsonData, jsonFilepath);
 }
 
 main();
