@@ -1,4 +1,4 @@
 {
-  "editor.formatOnSave": true,
-  "editor.rulers": [80],
+  "prettier.ignorePath": "./client/.prettierignore",
+  "prettier.configPath": "./client/prettier.config.cjs"
 }

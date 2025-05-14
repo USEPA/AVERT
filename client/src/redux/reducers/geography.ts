@@ -3,8 +3,10 @@ import { setEVDeploymentLocationOptions } from "@/redux/reducers/impacts";
 import {
   type CountiesByGeography,
   type RegionalScalingFactors,
+  type ClimateAdjustmentFactorByRegion,
   organizeCountiesByGeography,
   calculateRegionalScalingFactors,
+  calculateClimateAdjustmentFactorByRegion,
   getSelectedGeographyRegions,
 } from "@/calculations/geography";
 import {
@@ -20,6 +22,8 @@ import {
   type Region,
   type StateId,
   type State,
+  percentageAdditionalEnergyConsumedFactor,
+  regionAverageTemperatures,
   regions,
   states,
 } from "@/config";
@@ -113,6 +117,12 @@ type GeographyAction =
       payload: { countiesByGeography: CountiesByGeography };
     }
   | {
+      type: "geography/SET_CLIMATE_ADJUSTMENT_FACTOR_BY_REGION";
+      payload: {
+        climateAdjustmentFactorByRegion: ClimateAdjustmentFactorByRegion;
+      };
+    }
+  | {
       type: "geography/SELECT_GEOGRAPHY";
       payload: { focus: GeographicFocus };
     }
@@ -185,6 +195,9 @@ type GeographyState = {
   regions: { [regionId in RegionId]: RegionState };
   states: { [stateId in StateId]: StateState };
   countiesByGeography: CountiesByGeography | EmptyObject;
+  climateAdjustmentFactorByRegion:
+    | ClimateAdjustmentFactorByRegion
+    | EmptyObject;
   regionSelect: {
     stateId: StateId | "";
     stateRegionIds: RegionId[];
@@ -271,6 +284,7 @@ const initialState: GeographyState = {
   regions: updatedRegions,
   states: updatedStates,
   countiesByGeography: {},
+  climateAdjustmentFactorByRegion: {},
   regionSelect: {
     stateId: "",
     stateRegionIds: [],
@@ -291,6 +305,15 @@ export default function reducer(
       return {
         ...state,
         countiesByGeography,
+      };
+    }
+
+    case "geography/SET_CLIMATE_ADJUSTMENT_FACTOR_BY_REGION": {
+      const { climateAdjustmentFactorByRegion } = action.payload;
+
+      return {
+        ...state,
+        climateAdjustmentFactorByRegion,
       };
     }
 
@@ -428,15 +451,26 @@ export default function reducer(
 /**
  * Called when the app starts.
  */
-export function setCountiesByRegion(): AppThunk {
+export function setStaticGeographyData(): AppThunk {
   return (dispatch, getState) => {
     const { geography } = getState();
     const { regions } = geography;
     const countiesByGeography = organizeCountiesByGeography({ regions });
 
+    const climateAdjustmentFactorByRegion =
+      calculateClimateAdjustmentFactorByRegion({
+        regionAverageTemperatures,
+        percentageAdditionalEnergyConsumedFactor,
+      });
+
     dispatch({
       type: "geography/SET_COUNTIES_BY_GEOGRAPHY",
       payload: { countiesByGeography },
+    });
+
+    dispatch({
+      type: "geography/SET_CLIMATE_ADJUSTMENT_FACTOR_BY_REGION",
+      payload: { climateAdjustmentFactorByRegion },
     });
   };
 }
@@ -608,7 +642,7 @@ export function fetchRegionsData(): AppThunk {
     const { api, geography } = getState();
 
     // select region(s), based on geographic focus:
-    // single region if geographic focus is 'regions'
+    // single region if geographic focus is "regions"
     // multiple regions if geographic focus is 'states'
     const selectedRegions: RegionState[] = [];
 

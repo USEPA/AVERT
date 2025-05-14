@@ -1,134 +1,301 @@
 /**
- * Excel: "CountyFIPS" sheet.
+ * Excel: "A. State-level VMT per vehicle" table in the "MOVESsupplement" sheet
+ * (B6:E720).
  */
-import countyFips from "@/data/county-fips.json";
+import stateLevelVMT from "@/data/state-level-vmt.json";
 /**
- * Excel: Second table in the "RegionStateAllocate" sheet (B118:E167)
+ * Excel: "B. State-Level Sales" table in the "MOVESsupplement" sheet (J6:M516).
  */
-import vmtAllocationAndRegisteredVehicles from "@/data/vmt-allocation-and-registered-vehicles.json";
+import stateLevelSales from "@/data/state-level-sales.json";
 /**
- * Excel: "Table B. View charging profiles or set a manual charging profile
- * for Weekdays" table in the "EV_Detail" sheet (C23:H47), which comes from
- * "Table 9: Default EV load profiles and related values from EVI-Pro Lite"
- * table in the "Library" sheet).
+ * Excel: "C. FHWA LDV State-Level VMT" table in the "MOVESsupplement" sheet
+ * (O6:P57).
  */
-import evChargingProfiles from "@/data/ev-charging-profiles-hourly-data.json";
+import fhwaLDVStateLevelVMT from "@/data/fhwa-ldv-state-level-vmt.json";
 /**
- * Excel: "Table 4: VMT assumptions" table in the "Library" sheet (E179:E180).
+ * Excel: "Table 13: First-Year ICE to EV PM2.5 brakewear and tirewear emissions
+ * rate conversion factors" table in the "Library" sheet (B990:G1130).
  */
-import nationalAverageVMTBusPerYear from "@/data/national-average-bus-vmt-per-year.json";
-/**
- * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
- * (E194:J200).
- */
-import evEfficiencyByModelYear from "@/data/ev-efficiency-by-model-year.json";
+import pm25BreakwearTirewearEVICERatios from "@/data/pm25-breakwear-tirewear-ev-ice-ratios.json";
 /**
  * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
- * Lite" table in the "Library" sheet (B432:C445)
+ * Lite" table in the "Library" sheet (B782:N807).
  */
-import regionAverageTemperatures from "@/data/region-average-temperature.json";
+import defaultEVLoadProfiles from "@/data/default-ev-load-profiles.json";
 /**
- * Excel: "Table 11: LDV Sales and Stock" table in the "Library" sheet
- * (B485:C535).
+ * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
+ * (E201:J217).
  */
-import stateLightDutyVehiclesSales from "@/data/state-light-duty-vehicles-sales.json";
+import evEfficiencyAssumptions from "@/data/ev-efficiency-assumptions.json";
 /**
- * Excel: "Table 12: Transit and School Bus Sales and Stock" table in the
- * "Library" sheet (B546:F596).
+ * Excel: "Table 11: Historical renewable and energy efficiency addition data"
+ * table in the "Library" sheet (B882:J895).
  */
-import stateBusSalesAndStock from "@/data/state-bus-sales-and-stock.json";
+import historicalRegionEEREData from "@/data/historical-region-eere-data.json";
 /**
- * Excel: "Table 13: Historical renewable and energy efficiency addition data"
- * table in the "Library" sheet (B606:E619).
+ * Excel: "Table 11: Historical renewable and energy efficiency addition data"
+ * table in the "Library" sheet (B902:H950).
  */
-import regionEereAverages from "@/data/region-eere-averages.json";
-/**
- * Excel: "Table 13: Historical renewable and energy efficiency addition data"
- * table in the "Library" sheet (B626:E674).
- */
-import stateEereAverages from "@/data/state-eere-averages.json";
-
-export type CountyFips = typeof countyFips;
-
-export type VMTAllocationAndRegisteredVehicles =
-  typeof vmtAllocationAndRegisteredVehicles;
+import historicalStateEEREData from "@/data/historical-state-eere-data.json";
 
 /**
- * NOTE: normally we'd import 'app/data/moves-emissions-rates.json' (Excel:
+ * NOTE: Normally we'd import 'app/data/county-fips.json' (Excel: "CountyFIPS"
+ * sheet) and export the typeof the imported JSON file, but TypeScript isn't
+ * able to infer types from large JSON files
+ * (https://github.com/microsoft/TypeScript/issues/42761), so that exported
+ * type would just be `{}`, so we need to explicitly declare the type of the
+ * MOVES emissions rates data.
+ */
+export type CountyFIPS = {
+  "State and County FIPS Code": string;
+  "State Name": string;
+  "County Name": string;
+  "AVERT Region": string;
+  "Postal State Code": string;
+  "County Name Long": string;
+  Key: string;
+  VMT: {
+    "Passenger cars": number;
+    "Passenger trucks": number;
+    "Medium-duty transit buses": number;
+    "Heavy-duty transit buses": number;
+    "Medium-duty school buses": number;
+    "Heavy-duty school buses": number;
+    "Medium-duty other buses": number;
+    "Heavy-duty other buses": number;
+    "Light-duty single unit trucks": number;
+    "Medium-duty single unit trucks": number;
+    "Heavy-duty combination trucks": number;
+    "Combination long-haul trucks": number;
+    "Medium-duty refuse trucks": number;
+    "Heavy-duty refuse trucks": number;
+  };
+  "Share of State VMT": {
+    "Passenger cars": number;
+    "Passenger trucks": number;
+    "Medium-duty transit buses": number;
+    "Heavy-duty transit buses": number;
+    "Medium-duty school buses": number;
+    "Heavy-duty school buses": number;
+    "Medium-duty other buses": number;
+    "Heavy-duty other buses": number;
+    "Light-duty single unit trucks": number;
+    "Medium-duty single unit trucks": number;
+    "Heavy-duty combination trucks": number;
+    "Combination long-haul trucks": number;
+    "Medium-duty refuse trucks": number;
+    "Heavy-duty refuse trucks": number;
+  };
+  "VMT - Collapsed": {
+    "Transit buses": number;
+    "School buses": number;
+    "Other buses": number;
+    "Short-haul trucks": number;
+    "Refuse trucks": number;
+  };
+  "Share of State VMT - Collapsed": {
+    "Transit buses": number;
+    "School buses": number;
+    "Other buses": number;
+    "Short-haul trucks": number;
+    "Refuse trucks": number;
+  };
+}[];
+
+/**
+ * NOTE: Normally we'd import 'app/data/moves-emission-rates.json' (Excel:
  * "MOVESEmissionRates" sheet) and export the typeof the imported JSON file,
  * but TypeScript isn't able to infer types from large JSON files
  * (https://github.com/microsoft/TypeScript/issues/42761), so that exported
  * type would just be `{}`, so we need to explicitly declare the type of the
  * MOVES emissions rates data.
  */
-export type MovesEmissionsRates = {
-  year: string;
-  month: string;
-  modelYear: string;
+export type MOVESEmissionRates = {
+  year: number;
+  month: number;
   state: string;
+  vehicleCategory: string;
   vehicleType: string;
   fuelType: string;
-  VMT: number;
-  CO2: number;
-  NOX: number;
-  SO2: number;
-  PM25: number;
-  VOCs: number;
-  NH3: number;
+  firstYear: {
+    vmt: number;
+    co2: number;
+    nox: number;
+    so2: number;
+    pm25Exhaust: number;
+    pm25Brakewear: number;
+    pm25Tirewear: number;
+    vocs: number;
+    nh3: number;
+    vmtElectric: number;
+  };
+  fleetAverage: {
+    vmt: number;
+    co2: number;
+    nox: number;
+    so2: number;
+    pm25Exhaust: number;
+    pm25Brakewear: number;
+    pm25Tirewear: number;
+    vocs: number;
+    nh3: number;
+    vmtElectric: number;
+  };
 }[];
 
-export type EVChargingProfiles = typeof evChargingProfiles;
+export type StateLevelVMT = typeof stateLevelVMT;
 
-export type NationalAverageBusVMTPerYear = typeof nationalAverageVMTBusPerYear;
+export type StateLevelSales = typeof stateLevelSales;
 
-export type EVEfficiencyByModelYear = typeof evEfficiencyByModelYear;
+export type FHWALDVStateLevelVMT = typeof fhwaLDVStateLevelVMT;
+
+export type PM25BreakwearTirewearEVICERatios =
+  typeof pm25BreakwearTirewearEVICERatios;
+
+export type DefaultEVLoadProfiles = typeof defaultEVLoadProfiles;
+
+export type EVEfficiencyAssumptions = typeof evEfficiencyAssumptions;
+
+export type PercentageHybridEVMilesDrivenOnElectricity =
+  typeof percentageHybridEVMilesDrivenOnElectricity;
+
+export type SchoolBusMonthlyVMTPercentages =
+  typeof schoolBusMonthlyVMTPercentages;
+
+export type WeekendToWeekdayEVConsumption =
+  typeof weekendToWeekdayEVConsumption;
 
 export type RegionAverageTemperatures = typeof regionAverageTemperatures;
 
-export type StateLightDutyVehiclesSales = typeof stateLightDutyVehiclesSales;
+export type LDVsPercentagesByVehicleCategory =
+  typeof ldvsPercentagesByVehicleCategory;
 
-export type StateBusSalesAndStock = typeof stateBusSalesAndStock;
+export type RegionEVHourlyLimits = typeof regionEVHourlyLimits;
 
-export type RegionEereAverages = typeof regionEereAverages;
+export type HistoricalRegionEEREData = typeof historicalRegionEEREData;
 
-export type StateEereAverages = typeof stateEereAverages;
+export type HistoricalStateEEREData = typeof historicalStateEEREData;
 
 /**
  * Excel: "Table 5: EV efficiency assumptions" table in the "Library" sheet
- * (E202).
+ * (E219).
  */
-export const percentageHybridEVMilesDrivenOnElectricity = 0.54;
+export const percentageHybridEVMilesDrivenOnElectricity = 8000 / 13500;
+
+/**
+ * Excel: "Table 6: Monthly VMT and efficiency adjustments" table in the
+ * "Library" sheet (E272:P274)
+ */
+export const schoolBusMonthlyVMTPercentages = {
+  "1": 0.103225721256179,
+  "2": 0.103225721256179,
+  "3": 0.103225721256179,
+  "4": 0.103225721256179,
+  "5": 0.103225721256179,
+  "6": 0.0236561695647958,
+  "7": 0.0236561695647958,
+  "8": 0.0236561695647958,
+  "9": 0.103225721256179,
+  "10": 0.103225721256179,
+  "11": 0.103225721256179,
+  "12": 0.103225721256179,
+};
+
+/**
+ * Ratio of typical weekend energy consumption as a share of typical weekday
+ * energy consumption.
+ *
+ * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
+ * Lite" table in the "Library" sheet – "Weekend energy consumption as a share
+ * of weekday energy consumption (ISO-NE 2024)" (D819:D824)
+ */
+export const weekendToWeekdayEVConsumption = {
+  LDVs: 0.972479619166432,
+  "Transit buses": 1,
+  "School buses": 0.12,
+  "Short-haul trucks": 0.174070360467419,
+  "Long-haul trucks": 0.174070360467419,
+  "Refuse trucks": 0.174070360467419,
+};
 
 /**
  * Additional energy consumed in climates with +/-18F differential from
  * St. Louis, MO
  *
  * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
- * Lite" table in the "Library" sheet (F428)
+ * Lite" table in the "Library" sheet – "Additional energy consumed in climates
+ * with +/-18F differential from St. Louis, MO" (D827)
  */
 export const percentageAdditionalEnergyConsumedFactor = 0.0766194804959222;
 
 /**
- * Ratio of typical weekend energy consumption as a share of typical weekday
- * energy consumption.
+ * Average temperatures for each region
  *
- * Excel: "Table C. Set ratio of weekend to weekday energy" table in the
- * "EV_Detail" sheet (D53).
+ * Excel: "Table 9: Default EV load profiles and related values from EVI-Pro
+ * Lite" table in the "Library" sheet – "Climate Adjustments to Energy
+ * Consumption" (B432:C445)
  */
-export const percentWeekendToWeekdayEVConsumption = 97.3015982802952;
-
-/**
- * Excel: "Table 14: Light-duty vehicle sales by type" table in the "Library"
- * sheet (D727:E727)
- */
-export const percentageLDVsDisplacedByEVs = {
-  cars: 0.210961149193232,
-  trucks: 0.789038850806768,
+export const regionAverageTemperatures = {
+  CA: 68,
+  NCSC: 68,
+  CENT: 50 / 68,
+  FL: 68 / 86,
+  MIDA: 50,
+  MIDW: 50 / 68,
+  NE: 50,
+  NY: 50,
+  NW: 50 / 68,
+  RM: 50,
+  SE: 68,
+  SW: 68,
+  TN: 68,
+  TE: 68,
 };
 
 /**
- * Excel: "Table 15: Lithium Ion Storage Defaults" table in the "Library" sheet
- * (D736)
+ * Percentage/share of the total vehicle sales/stock Passenger cars and
+ * Passenger trucks make up of Battery EVs and Plug-in Hybrid EVs.
+ *
+ * Excel: "Table 12: Vehicle sales by type" table in the "Library" sheet
+ * (D966:D967 and D969:D970).
+ */
+export const ldvsPercentagesByVehicleCategory = {
+  "Battery EVs": {
+    "Passenger cars": 0.726758263799148,
+    "Passenger trucks": 0.273241736200852,
+  },
+  "Plug-in Hybrid EVs": {
+    "Passenger cars": 0.106267047645846,
+    "Passenger trucks": 0.893732952354154,
+  },
+};
+
+/**
+ * EV hourly limits by region (RDF max values)
+ *
+ * NOTE: not in Excel file, but sent by Synapse with the list of annual updates
+ * in the "Detailed list of changes in AVERT 4.4" document (emailed 04/11/25)
+ */
+export const regionEVHourlyLimits = {
+  CA: 31090,
+  NCSC: 29064,
+  CENT: 48429,
+  FL: 45407,
+  MIDA: 129390,
+  MIDW: 122268,
+  NE: 19101,
+  NY: 25660,
+  NW: 24618,
+  RM: 11840,
+  SE: 47346,
+  SW: 19102,
+  TN: 21868,
+  TE: 68009,
+};
+
+/**
+ * Excel: "Table 14: Lithium Ion Storage Defaults" table in the "Library" sheet
+ * (D1138)
  */
 export const batteryRoundTripEfficiency = 0.85;
 
@@ -196,7 +363,9 @@ export type RegionName =
  * workbook. Even though we're only dealing with SO2 for now, this data
  * structure was set up to be flexible enough to handle a future scenario where
  * any of the other pollutants AVERT deals with have "infrequent emissions
- * events."
+ * events" and are stored in each region's `actualEmissions` field. These
+ * `actualEmissions` values were last updated to use the 2024 data found in the
+ * Excel workbook.
  *
  * NOTE: each region's percentage by state isn't stored in the Excel workbook,
  * but are stored in a separate Excel file titled:
@@ -212,8 +381,8 @@ export type Region = {
 };
 
 /**
- * NOTE: line loss values stored in "Table 2: T&D losses" found in the "Library"
- * sheet of the Excel workbook.
+ * NOTE: 2024 line loss values stored in "Table 2: Transmission & Distributuion\
+ * (T&D) losses" found in the "Library" sheet of the Excel workbook (C85:E85).
  */
 const lineLoss = {
   texas: 0.0457913819880058,
@@ -263,7 +432,7 @@ export const regions: { [regionId in RegionId]: Region } = {
       FL: 100,
     },
     actualEmissions: {
-      so2: 21_572_126,
+      so2: 13_987_388,
     },
   },
   MIDA: {
@@ -288,7 +457,7 @@ export const regions: { [regionId in RegionId]: Region } = {
       WV: 4.4088,
     },
     actualEmissions: {
-      so2: 208_740_162,
+      so2: 216_297_528,
     },
   },
   MIDW: {
@@ -325,7 +494,7 @@ export const regions: { [regionId in RegionId]: Region } = {
       SC: 38.3013,
     },
     actualEmissions: {
-      so2: 26_475_452,
+      so2: 29_306_406,
     },
   },
   NE: {
@@ -368,7 +537,7 @@ export const regions: { [regionId in RegionId]: Region } = {
       NY: 100,
     },
     actualEmissions: {
-      so2: 1_262_108,
+      so2: 1_390_608,
     },
   },
   RM: {
@@ -398,7 +567,9 @@ export const regions: { [regionId in RegionId]: Region } = {
       GA: 59.8372,
       MS: 5.1415,
     },
-    actualEmissions: {},
+    actualEmissions: {
+      so2: 24_202_830,
+    },
   },
   SW: {
     id: "SW",
@@ -877,8 +1048,9 @@ export const states: { [stateId in StateId]: State } = {
 };
 
 /**
- * NOTE: Options determined for the web version. In the Excel version, user can
- * set the value in the "ES_Detail" sheet (D58).
+ * Options determined for the web version. In the Excel version, user can set
+ * the value in the "Part II. Charging Characteristics" section in the
+ * "ES_Detail" sheet (D61).
  */
 export const maxAnnualDischargeCyclesOptions = [
   { id: "75", name: "75" },
@@ -887,20 +1059,21 @@ export const maxAnnualDischargeCyclesOptions = [
 ];
 
 /**
- * Excel: "EV model year" select options in the "EV_Detail" sheet (E79).
+ * Excel: "EV model year" select options from the "Part III. Model Year and ICE
+ * Replacement" section in the "EV_Detail" sheet (F108).
  */
 export const evModelYearOptions = [
-  { id: "2023", name: "2023" },
   { id: "2024", name: "2024" },
   { id: "2025", name: "2025" },
   { id: "2026", name: "2026" },
   { id: "2027", name: "2027" },
   { id: "2028", name: "2028" },
+  { id: "2029", name: "2029" },
 ];
 
 /**
- * Excel: "ICE vehicle being replaced" select options in the "EV_Detail" sheet
- * (E80).
+ * Excel: "ICE vehicle being replaced" select options from the "Part III. Model
+ * Year and ICE Replacement" section in the "EV_Detail" sheet (F109).
  */
 export const iceReplacementVehicleOptions = [
   { id: "new", name: "New" },

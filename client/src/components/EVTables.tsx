@@ -3,22 +3,42 @@ import clsx from "clsx";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Tooltip } from "@/components/Tooltip";
 import { useAppSelector } from "@/redux/index";
-import { type SelectedRegionsTotalYearlyEVEnergyUsage } from "@/calculations/transportation";
+import { type StateId } from "@/config";
 
+/**
+ * Format a string to a number. If attempting to cast the string to a number
+ * results in NaN, or if the number is less than 0, return 0.
+ */
+function stringToNumber(value: string) {
+  return isNaN(Number(value)) || Number(value) < 0 ? 0 : Number(value);
+}
+
+/**
+ * Calculate the value of one number divided by another, shown as a percentage.
+ * Format the result as a string with zero to one decimal places percent sign
+ * appended. If the provided denominator is 0, return "-".
+ */
 function calculatePercent(numerator: number, denominator: number) {
+  const numberFormatOptions = {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 1,
+  };
+
   return denominator !== 0
-    ? `${((numerator / denominator) * 100).toLocaleString(undefined, {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 1,
-      })}%`
+    ? `${((numerator / denominator) * 100).toLocaleString(undefined, numberFormatOptions)}%`
     : "-";
 }
 
+/**
+ * Format a number to a string with zero decimal places and thousands separator.
+ */
 function formatNumber(number: number) {
-  return number.toLocaleString(undefined, {
+  const numberFormatOptions = {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
-  });
+  };
+
+  return number.toLocaleString(undefined, numberFormatOptions);
 }
 
 function EVSalesAndStockTableContent(props: { className?: string }) {
@@ -26,50 +46,57 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
 
   const inputs = useAppSelector(({ impacts }) => impacts.inputs);
   const selectOptions = useAppSelector(({ impacts }) => impacts.selectOptions);
-  const vehicleSalesAndStock = useAppSelector(
-    ({ transportation }) => transportation.vehicleSalesAndStock,
+  const salesAndStockByState = useAppSelector(
+    ({ transportation }) =>
+      transportation.selectedGeographySalesAndStockByState,
+  );
+  const salesAndStockByRegion = useAppSelector(
+    ({ transportation }) =>
+      transportation.selectedGeographySalesAndStockByRegion,
   );
 
-  const {
-    batteryEVs,
-    hybridEVs,
-    transitBuses,
-    schoolBuses,
-    evDeploymentLocation,
-  } = inputs;
-
+  const { evDeploymentLocation } = inputs;
   const { evDeploymentLocationOptions } = selectOptions;
 
   const evDeploymentLocationName = evDeploymentLocationOptions.find((opt) => {
     return opt.id === evDeploymentLocation;
   })?.name;
 
-  const locationSalesAndStock = vehicleSalesAndStock[evDeploymentLocation];
-  if (!locationSalesAndStock) return null;
+  const deploymentLocationIsRegion = evDeploymentLocation.startsWith("region-");
+  const deploymentLocationIsState = evDeploymentLocation.startsWith("state-");
+  const deploymentLocationStateId = evDeploymentLocation.replace("state-", "") as StateId; // prettier-ignore
 
-  const totalLightDutyVehicles =
-    isNaN(Number(batteryEVs) + Number(hybridEVs)) ||
-    Number(batteryEVs) < 0 ||
-    Number(hybridEVs) < 0
-      ? 0
-      : Number(batteryEVs) + Number(hybridEVs);
+  const salesAndStock = deploymentLocationIsRegion
+    ? salesAndStockByRegion
+    : deploymentLocationIsState
+      ? salesAndStockByState?.[deploymentLocationStateId]
+      : null;
 
-  const totalTransitBuses =
-    isNaN(Number(transitBuses)) || Number(transitBuses) < 0
-      ? 0
-      : Number(transitBuses);
+  if (!salesAndStock || Object.keys(salesAndStock).length === 0) {
+    return null;
+  }
 
-  const totalSchoolBuses =
-    isNaN(Number(schoolBuses)) || Number(schoolBuses) < 0
-      ? 0
-      : Number(schoolBuses);
+  const batteryEVs = stringToNumber(inputs.batteryEVs);
+  const hybridEVs = stringToNumber(inputs.hybridEVs);
+  const ldvs = batteryEVs + hybridEVs;
+  const transitBuses = stringToNumber(inputs.transitBuses);
+  const schoolBuses = stringToNumber(inputs.schoolBuses);
+  const shortHaulTrucks = stringToNumber(inputs.shortHaulTrucks);
+  const comboLongHaulTrucks = stringToNumber(inputs.comboLongHaulTrucks);
+  const refuseTrucks = stringToNumber(inputs.refuseTrucks);
 
-  const lightDutyVehicleSales = locationSalesAndStock.lightDutyVehicles.sales;
-  const lightDutyVehicleStock = locationSalesAndStock.lightDutyVehicles.stock;
-  const transitBusesSales = locationSalesAndStock.transitBuses.sales;
-  const transitBusesStock = locationSalesAndStock.transitBuses.stock;
-  const schoolBusesSales = locationSalesAndStock.schoolBuses.sales;
-  const schoolBusesStock = locationSalesAndStock.schoolBuses.stock;
+  const ldvsSales = calculatePercent(ldvs, salesAndStock["LDVs"].sales);
+  const ldvsStock = calculatePercent(ldvs, salesAndStock["LDVs"].stock);
+  const transitBusesSales = calculatePercent(transitBuses, salesAndStock["Transit buses"].sales); // prettier-ignore
+  const transitBusesStock = calculatePercent(transitBuses, salesAndStock["Transit buses"].stock); // prettier-ignore
+  const schoolBusesSales = calculatePercent(schoolBuses, salesAndStock["School buses"].sales); // prettier-ignore
+  const schoolBusesStock = calculatePercent(schoolBuses, salesAndStock["School buses"].stock); // prettier-ignore
+  const shortHaulTrucksSales = calculatePercent(shortHaulTrucks, salesAndStock["Short-haul trucks"].sales); // prettier-ignore
+  const shortHaulTrucksStock = calculatePercent(shortHaulTrucks, salesAndStock["Short-haul trucks"].stock); // prettier-ignore
+  const comboLongHaulTrucksSales = calculatePercent(comboLongHaulTrucks, salesAndStock["Combination long-haul trucks"].sales); // prettier-ignore
+  const comboLongHaulTrucksStock = calculatePercent(comboLongHaulTrucks, salesAndStock["Combination long-haul trucks"].stock); // prettier-ignore
+  const refuseTrucksSales = calculatePercent(refuseTrucks, salesAndStock["Refuse trucks"].sales); // prettier-ignore
+  const refuseTrucksStock = calculatePercent(refuseTrucks, salesAndStock["Refuse trucks"].stock); // prettier-ignore
 
   return (
     <>
@@ -116,34 +143,38 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
             <tbody>
               <tr>
                 <th scope="row">Light-duty vehicles</th>
-                <td>
-                  {calculatePercent(
-                    totalLightDutyVehicles,
-                    lightDutyVehicleSales,
-                  )}
-                </td>
-                <td>
-                  {calculatePercent(
-                    totalLightDutyVehicles,
-                    lightDutyVehicleStock,
-                  )}
-                </td>
+                <td>{ldvsSales}</td>
+                <td>{ldvsStock}</td>
               </tr>
 
               <tr>
                 <th scope="row">Transit buses</th>
-                <td>
-                  {calculatePercent(totalTransitBuses, transitBusesSales)}
-                </td>
-                <td>
-                  {calculatePercent(totalTransitBuses, transitBusesStock)}
-                </td>
+                <td>{transitBusesSales}</td>
+                <td>{transitBusesStock}</td>
               </tr>
 
               <tr>
                 <th scope="row">School buses</th>
-                <td>{calculatePercent(totalSchoolBuses, schoolBusesSales)}</td>
-                <td>{calculatePercent(totalSchoolBuses, schoolBusesStock)}</td>
+                <td>{schoolBusesSales}</td>
+                <td>{schoolBusesStock}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">Short-haul trucks</th>
+                <td>{shortHaulTrucksSales}</td>
+                <td>{shortHaulTrucksStock}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">Comb. long-haul trucks</th>
+                <td>{comboLongHaulTrucksSales}</td>
+                <td>{comboLongHaulTrucksStock}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">Refuse trucks</th>
+                <td>{refuseTrucksSales}</td>
+                <td>{refuseTrucksStock}</td>
               </tr>
             </tbody>
           </table>
@@ -159,9 +190,9 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
   const regionalLineLoss = useAppSelector(
     ({ geography }) => geography.regionalLineLoss,
   );
-  const selectedRegionsTotalYearlyEVEnergyUsage = useAppSelector(
+  const selectedRegionsTotalYearlySalesChanges = useAppSelector(
     ({ transportation }) =>
-      transportation.selectedRegionsTotalYearlyEVEnergyUsage,
+      transportation.selectedRegionsTotalYearlySalesChanges,
   );
   const evDeploymentLocationHistoricalEERE = useAppSelector(
     ({ transportation }) => transportation.evDeploymentLocationHistoricalEERE,
@@ -169,92 +200,78 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
   const inputs = useAppSelector(({ impacts }) => impacts.inputs);
   const selectOptions = useAppSelector(({ impacts }) => impacts.selectOptions);
 
+  const { averageAnnualCapacityAddedMW, estimatedAnnualRetailImpactsGWh } =
+    evDeploymentLocationHistoricalEERE;
   const { evDeploymentLocation } = inputs;
   const { evDeploymentLocationOptions } = selectOptions;
+
+  const totalYearlySalesChanges = Object.values(
+    selectedRegionsTotalYearlySalesChanges,
+  ).reduce((total, regionTotal) => total + (regionTotal || 0), 0);
 
   const evDeploymentLocationName = evDeploymentLocationOptions.find((opt) => {
     return opt.id === evDeploymentLocation;
   })?.name;
 
-  const selectedRegionsEnergyData =
-    Object.keys(selectedRegionsTotalYearlyEVEnergyUsage).length !== 0
-      ? (selectedRegionsTotalYearlyEVEnergyUsage as SelectedRegionsTotalYearlyEVEnergyUsage)
-      : null;
+  const eeCapacityAdded = averageAnnualCapacityAddedMW.ee;
+  const eeRetailImpacts = estimatedAnnualRetailImpactsGWh.ee;
 
-  const totalYearlyEVEnergyUsage = selectedRegionsEnergyData
-    ? Object.values(selectedRegionsEnergyData).reduce((a, b) => (a || 0) + (b || 0), 0) // prettier-ignore
-    : 0;
+  const windCapacityAdded = averageAnnualCapacityAddedMW.wind;
+  const windRetailImpacts = estimatedAnnualRetailImpactsGWh.wind;
 
-  const historicalEERetailMw = evDeploymentLocationHistoricalEERE.eeRetail.mw;
-  const historicalEERetailGWh = evDeploymentLocationHistoricalEERE.eeRetail.gwh;
+  const solarCapacityAdded = averageAnnualCapacityAddedMW.upv;
+  const solarRetailImpacts = estimatedAnnualRetailImpactsGWh.upv;
 
-  const historicalOnshoreWindMw = evDeploymentLocationHistoricalEERE.onshoreWind.mw; // prettier-ignore
-  const historicalOnshoreWindGWh = evDeploymentLocationHistoricalEERE.onshoreWind.gwh; // prettier-ignore
+  const totalCapacityAdded =
+    eeCapacityAdded / (1 - regionalLineLoss) +
+    windCapacityAdded +
+    solarCapacityAdded;
 
-  const historicalUtilitySolarMw = evDeploymentLocationHistoricalEERE.utilitySolar.mw; // prettier-ignore
-  const historicalUtilitySolarGWh = evDeploymentLocationHistoricalEERE.utilitySolar.gwh; // prettier-ignore
+  const totalRetailImpacts =
+    eeRetailImpacts / (1 - regionalLineLoss) +
+    windRetailImpacts +
+    solarRetailImpacts;
 
-  const historicalTotalMw =
-    historicalEERetailMw / (1 - regionalLineLoss) +
-    historicalOnshoreWindMw +
-    historicalUtilitySolarMw;
+  const totalOffsetRequiredGWh =
+    totalYearlySalesChanges / (1 - regionalLineLoss);
 
-  const historicalTotalGWh =
-    historicalEERetailGWh / (1 - regionalLineLoss) +
-    historicalOnshoreWindGWh +
-    historicalUtilitySolarGWh;
+  const eeOffsetRequiredGWh =
+    (eeRetailImpacts / (1 - regionalLineLoss) / (totalRetailImpacts || 1)) *
+    totalOffsetRequiredGWh;
 
-  const requiredOffsetTotalGWh =
-    totalYearlyEVEnergyUsage / (1 - regionalLineLoss);
+  const eeOffsetRequiredMw =
+    (eeCapacityAdded * eeOffsetRequiredGWh) / (eeRetailImpacts || 1);
 
-  const requiredOffsetEERetailGWh =
-    (historicalEERetailGWh /
-      (1 - regionalLineLoss) /
-      (historicalTotalGWh || 1)) *
-    requiredOffsetTotalGWh;
+  const windOffsetRequiredGWh =
+    (windRetailImpacts / (totalRetailImpacts || 1)) * totalOffsetRequiredGWh;
 
-  const requiredOffsetEERetailMw =
-    (historicalEERetailMw * requiredOffsetEERetailGWh) /
-    (historicalEERetailGWh || 1);
+  const windOffsetRequiredMw =
+    (windCapacityAdded * windOffsetRequiredGWh) / (windRetailImpacts || 1);
 
-  const requiredOffsetOnshoreWindGWh =
-    (historicalOnshoreWindGWh / (historicalTotalGWh || 1)) *
-    requiredOffsetTotalGWh;
+  const solarOffsetRequiredGWh =
+    (solarRetailImpacts / (totalRetailImpacts || 1)) * totalOffsetRequiredGWh;
 
-  const requiredOffsetOnshoreWindMw =
-    (historicalOnshoreWindMw * requiredOffsetOnshoreWindGWh) /
-    (historicalOnshoreWindGWh || 1);
+  const solarOffsetRequiredMw =
+    (solarCapacityAdded * solarOffsetRequiredGWh) / (solarRetailImpacts || 1);
 
-  const requiredOffsetUtilitySolarGWh =
-    (historicalUtilitySolarGWh / (historicalTotalGWh || 1)) *
-    requiredOffsetTotalGWh;
+  const totalOffsetRequiredMw =
+    eeOffsetRequiredMw + windOffsetRequiredMw + solarOffsetRequiredMw;
 
-  const requiredOffsetUtilitySolarMw =
-    (historicalUtilitySolarMw * requiredOffsetUtilitySolarGWh) /
-    (historicalUtilitySolarGWh || 1);
+  const eePrecentDifferenceMw = eeOffsetRequiredMw / (eeCapacityAdded || 1);
 
-  const requiredOffsetTotalMw =
-    requiredOffsetEERetailMw +
-    requiredOffsetOnshoreWindMw +
-    requiredOffsetUtilitySolarMw;
+  const eePrecentDifferenceGWh = eeOffsetRequiredGWh / (eeRetailImpacts || 1);
 
-  const precentDifferenceEERetailMw =
-    requiredOffsetEERetailMw / (historicalEERetailMw || 1);
+  const windPrecentDifferenceMw =
+    windOffsetRequiredMw / (windCapacityAdded || 1);
 
-  const precentDifferenceEERetailGWh =
-    requiredOffsetEERetailGWh / (historicalEERetailGWh || 1);
+  const windPrecentDifferenceGWh =
+    windOffsetRequiredGWh / (windRetailImpacts || 1);
 
-  const precentDifferenceOnshoreWindMw =
-    requiredOffsetOnshoreWindMw / (historicalOnshoreWindMw || 1);
+  const solarPrecentDifferenceMw =
+    solarOffsetRequiredMw / (solarCapacityAdded || 1);
 
-  const precentDifferenceOnshoreWindGWh =
-    requiredOffsetOnshoreWindGWh / (historicalOnshoreWindGWh || 1);
-
-  const precentDifferenceUtilitySolarMw =
-    requiredOffsetUtilitySolarMw / (historicalUtilitySolarMw || 1);
-
-  const precentDifferenceUtilitySolarGWh =
-    requiredOffsetUtilitySolarGWh / (historicalUtilitySolarGWh || 1);
+  const solarPrecentDifferenceGWh =
+    solarOffsetRequiredGWh / (solarRetailImpacts || 1);
 
   return (
     <div className={clsx("margin-top-2")}>
@@ -329,90 +346,88 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
             <tbody>
               <tr>
                 <th scope="row">EE&nbsp;(retail)</th>
-                <td>{formatNumber(historicalEERetailMw)}</td>
-                <td>{formatNumber(historicalEERetailGWh)}</td>
+                <td>{formatNumber(eeCapacityAdded)}</td>
+                <td>{formatNumber(eeRetailImpacts)}</td>
                 <td>
-                  {historicalEERetailGWh === 0
+                  {eeRetailImpacts === 0
                     ? "-"
-                    : formatNumber(requiredOffsetEERetailMw)}
+                    : formatNumber(eeOffsetRequiredMw)}
                 </td>
                 <td>
-                  {historicalEERetailGWh === 0
+                  {eeRetailImpacts === 0
                     ? "-"
-                    : formatNumber(requiredOffsetEERetailGWh)}
+                    : formatNumber(eeOffsetRequiredGWh)}
                 </td>
                 <td>
-                  {historicalEERetailMw === 0
+                  {eeCapacityAdded === 0
                     ? "-"
-                    : `${formatNumber(precentDifferenceEERetailMw * 100)}%`}
+                    : `${formatNumber(eePrecentDifferenceMw * 100)}%`}
                 </td>
                 <td>
-                  {historicalEERetailGWh === 0
+                  {eeRetailImpacts === 0
                     ? "-"
-                    : `${formatNumber(precentDifferenceEERetailGWh * 100)}%`}
+                    : `${formatNumber(eePrecentDifferenceGWh * 100)}%`}
                 </td>
               </tr>
 
               <tr>
                 <th scope="row">Onshore&nbsp;Wind</th>
-                <td>{formatNumber(historicalOnshoreWindMw)}</td>
-                <td>{formatNumber(historicalOnshoreWindGWh)}</td>
+                <td>{formatNumber(windCapacityAdded)}</td>
+                <td>{formatNumber(windRetailImpacts)}</td>
                 <td>
-                  {historicalOnshoreWindGWh === 0
+                  {windRetailImpacts === 0
                     ? "-"
-                    : formatNumber(requiredOffsetOnshoreWindMw)}
+                    : formatNumber(windOffsetRequiredMw)}
                 </td>
                 <td>
-                  {historicalOnshoreWindGWh === 0
+                  {windRetailImpacts === 0
                     ? "-"
-                    : formatNumber(requiredOffsetOnshoreWindGWh)}
+                    : formatNumber(windOffsetRequiredGWh)}
                 </td>
                 <td>
-                  {historicalOnshoreWindMw === 0
+                  {windCapacityAdded === 0
                     ? "-"
-                    : `${formatNumber(precentDifferenceOnshoreWindMw * 100)}%`}
+                    : `${formatNumber(windPrecentDifferenceMw * 100)}%`}
                 </td>
                 <td>
-                  {historicalOnshoreWindGWh === 0
+                  {windRetailImpacts === 0
                     ? "-"
-                    : `${formatNumber(precentDifferenceOnshoreWindGWh * 100)}%`}
+                    : `${formatNumber(windPrecentDifferenceGWh * 100)}%`}
                 </td>
               </tr>
 
               <tr>
                 <th scope="row">Utility&nbsp;Solar</th>
-                <td>{formatNumber(historicalUtilitySolarMw)}</td>
-                <td>{formatNumber(historicalUtilitySolarGWh)}</td>
+                <td>{formatNumber(solarCapacityAdded)}</td>
+                <td>{formatNumber(solarRetailImpacts)}</td>
                 <td>
-                  {historicalUtilitySolarGWh === 0
+                  {solarRetailImpacts === 0
                     ? "-"
-                    : formatNumber(requiredOffsetUtilitySolarMw)}
+                    : formatNumber(solarOffsetRequiredMw)}
                 </td>
                 <td>
-                  {historicalUtilitySolarGWh === 0
+                  {solarRetailImpacts === 0
                     ? "-"
-                    : formatNumber(requiredOffsetUtilitySolarGWh)}
+                    : formatNumber(solarOffsetRequiredGWh)}
                 </td>
                 <td>
-                  {historicalUtilitySolarMw === 0
+                  {solarCapacityAdded === 0
                     ? "-"
-                    : `${formatNumber(precentDifferenceUtilitySolarMw * 100)}%`}
+                    : `${formatNumber(solarPrecentDifferenceMw * 100)}%`}
                 </td>
                 <td>
-                  {historicalUtilitySolarGWh === 0
+                  {solarRetailImpacts === 0
                     ? "-"
-                    : `${formatNumber(
-                        precentDifferenceUtilitySolarGWh * 100,
-                      )}%`}
+                    : `${formatNumber(solarPrecentDifferenceGWh * 100)}%`}
                 </td>
               </tr>
 
               <tr>
                 <th scope="row">Total</th>
-                <td>{formatNumber(historicalTotalMw)}</td>
-                <td>{formatNumber(historicalTotalGWh)}</td>
-                <td>{formatNumber(requiredOffsetTotalMw)}</td>
-                <td>{formatNumber(requiredOffsetTotalGWh)}</td>
+                <td>{formatNumber(totalCapacityAdded)}</td>
+                <td>{formatNumber(totalRetailImpacts)}</td>
+                <td>{formatNumber(totalOffsetRequiredMw)}</td>
+                <td>{formatNumber(totalOffsetRequiredGWh)}</td>
                 <td>{"-"}</td>
                 <td>{"-"}</td>
               </tr>

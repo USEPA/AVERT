@@ -3,12 +3,12 @@ import clsx from "clsx";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Tooltip } from "@/components/Tooltip";
 import { useAppSelector } from "@/redux/index";
-import { type SelectedRegionsTotalYearlyEmissionChanges } from "@/calculations/transportation";
+import { type SelectedRegionsYearlyEmissionChangesTotals } from "@/calculations/transportation";
 import { type CombinedSectorsEmissionsData } from "@/calculations/emissions";
 import { type EmptyObject } from "@/utilities";
 
 /**
- * Round number to the nearest 10 and conditionally display '—' if number is
+ * Round number to the nearest 10 and conditionally display "—" if number is
  * within 10 of zero.
  */
 function formatNumber(number: number) {
@@ -29,87 +29,96 @@ function setAnnualPowerEmissionsChanges(options: {
     return { generation: 0, so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 };
   }
 
-  const result = Object.entries(combinedSectorsEmissionsData.total).reduce(
-    (object, [key, value]) => {
+  const result = Object.fromEntries(
+    Object.entries(combinedSectorsEmissionsData.total).map(([key, value]) => {
       const pollutant = key as keyof typeof combinedSectorsEmissionsData.total;
-      const totalPowerData = value.power;
-
-      if (totalPowerData) {
-        const { original, postEere } = totalPowerData.annual;
-        object[pollutant] += postEere - original;
-      }
-
-      return object;
-    },
-    { generation: 0, so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 },
-  );
+      const pollutantValue = value.power
+        ? value.power.annual.post - value.power.annual.pre
+        : 0;
+      return [pollutant, pollutantValue];
+    }),
+  ) as {
+    [Pollutant in keyof typeof combinedSectorsEmissionsData.total]: number;
+  };
 
   return result;
 }
 
 /**
- * Calculate the annual transportation sector emissions changes for each
- * pollutant.
+ * Build up the annual transportation sector emissions changes for each
+ * pollutant by summing each pollutant's emissions changes for each selected
+ * AVERT region.
  */
 function setAnnualVehicleEmissionsChanges(options: {
-  selectedRegionsTotalYearlyEmissionChanges:
-    | SelectedRegionsTotalYearlyEmissionChanges
+  selectedRegionsYearlyEmissionChangesTotals:
+    | SelectedRegionsYearlyEmissionChangesTotals
     | EmptyObject;
 }) {
-  const { selectedRegionsTotalYearlyEmissionChanges } = options;
+  const { selectedRegionsYearlyEmissionChangesTotals } = options;
 
-  const selectedRegionsChangesData =
-    Object.keys(selectedRegionsTotalYearlyEmissionChanges).length !== 0
-      ? (selectedRegionsTotalYearlyEmissionChanges as SelectedRegionsTotalYearlyEmissionChanges)
-      : null;
-
-  if (!selectedRegionsChangesData) {
-    return { SO2: 0, NOX: 0, CO2: 0, PM25: 0, VOCs: 0, NH3: 0 };
+  if (Object.keys(selectedRegionsYearlyEmissionChangesTotals).length === 0) {
+    return { so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 };
   }
 
-  const result = Object.values(selectedRegionsChangesData).reduce(
+  const result = Object.values(
+    selectedRegionsYearlyEmissionChangesTotals,
+  ).reduce(
     (object, regionChanges) => {
-      ["CO2", "NOX", "SO2", "PM25", "VOCs", "NH3"].forEach((item) => {
-        const pollutant = item as keyof typeof regionChanges.total;
-        const value = -1 * regionChanges.total[pollutant];
-        // conditionally convert CO2 pounds into tons
-        const result = pollutant === "CO2" ? value / 2_000 : value;
+      Object.entries(regionChanges).forEach(
+        ([regionChangesKey, regionChangesValue]) => {
+          const pollutant = regionChangesKey as keyof typeof regionChanges;
+          const value = -1 * regionChangesValue;
 
-        object[pollutant] += result;
-      });
+          /** Conditionally convert CO2 pounds into tons. */
+          const result = pollutant === "co2" ? value / 2000 : value;
+
+          object[pollutant] += result;
+        },
+      );
 
       return object;
     },
-    { SO2: 0, NOX: 0, CO2: 0, PM25: 0, VOCs: 0, NH3: 0 },
+    { so2: 0, nox: 0, co2: 0, pm25: 0, vocs: 0, nh3: 0 },
   );
 
   return result;
 }
 
 function VehiclesEmissionsTableContent() {
-  const selectedRegionsTotalYearlyEmissionChanges = useAppSelector(
+  const selectedRegionsYearlyEmissionChangesTotals = useAppSelector(
     ({ transportation }) =>
-      transportation.selectedRegionsTotalYearlyEmissionChanges,
+      transportation.selectedRegionsYearlyEmissionChangesTotals,
   );
   const inputs = useAppSelector(({ impacts }) => impacts.inputs);
   const combinedSectorsEmissionsData = useAppSelector(
     ({ results }) => results.combinedSectorsEmissionsData,
   );
 
-  const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = inputs;
+  const {
+    batteryEVs,
+    hybridEVs,
+    transitBuses,
+    schoolBuses,
+    shortHaulTrucks,
+    comboLongHaulTrucks,
+    refuseTrucks,
+  } = inputs;
 
   const evInputsEmpty =
     (batteryEVs === "" || batteryEVs === "0") &&
     (hybridEVs === "" || hybridEVs === "0") &&
     (transitBuses === "" || transitBuses === "0") &&
-    (schoolBuses === "" || schoolBuses === "0");
+    (schoolBuses === "" || schoolBuses === "0") &&
+    (shortHaulTrucks === "" || shortHaulTrucks === "0") &&
+    (comboLongHaulTrucks === "" || comboLongHaulTrucks === "0") &&
+    (refuseTrucks === "" || refuseTrucks === "0");
 
   const annualPower = setAnnualPowerEmissionsChanges({
     combinedSectorsEmissionsData,
   });
 
   const annualVehicle = setAnnualVehicleEmissionsChanges({
-    selectedRegionsTotalYearlyEmissionChanges,
+    selectedRegionsYearlyEmissionChangesTotals,
   });
 
   if (!combinedSectorsEmissionsData) return null;
@@ -185,10 +194,10 @@ function VehiclesEmissionsTableContent() {
                   {formatNumber(annualPower.so2)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(annualVehicle.SO2)}
+                  {formatNumber(annualVehicle.so2)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(annualPower.so2 + annualVehicle.SO2)}
+                  {formatNumber(annualPower.so2 + annualVehicle.so2)}
                 </td>
               </tr>
 
@@ -202,10 +211,10 @@ function VehiclesEmissionsTableContent() {
                   {formatNumber(annualPower.nox)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(annualVehicle.NOX)}
+                  {formatNumber(annualVehicle.nox)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(annualPower.nox + annualVehicle.NOX)}
+                  {formatNumber(annualPower.nox + annualVehicle.nox)}
                 </td>
               </tr>
 
@@ -219,10 +228,10 @@ function VehiclesEmissionsTableContent() {
                   {formatNumber(annualPower.co2)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(annualVehicle.CO2)}
+                  {formatNumber(annualVehicle.co2)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(annualPower.co2 + annualVehicle.CO2)}
+                  {formatNumber(annualPower.co2 + annualVehicle.co2)}
                 </td>
               </tr>
 
@@ -236,10 +245,10 @@ function VehiclesEmissionsTableContent() {
                   {formatNumber(annualPower.pm25)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(annualVehicle.PM25)}
+                  {formatNumber(annualVehicle.pm25)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(annualPower.pm25 + annualVehicle.PM25)}
+                  {formatNumber(annualPower.pm25 + annualVehicle.pm25)}
                 </td>
               </tr>
 
@@ -253,10 +262,10 @@ function VehiclesEmissionsTableContent() {
                   {formatNumber(annualPower.vocs)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(annualVehicle.VOCs)}
+                  {formatNumber(annualVehicle.vocs)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(annualPower.vocs + annualVehicle.VOCs)}
+                  {formatNumber(annualPower.vocs + annualVehicle.vocs)}
                 </td>
               </tr>
 
@@ -270,10 +279,10 @@ function VehiclesEmissionsTableContent() {
                   {formatNumber(annualPower.nh3)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(annualVehicle.NH3)}
+                  {formatNumber(annualVehicle.nh3)}
                 </td>
                 <td className={clsx("font-mono-xs text-right")}>
-                  {formatNumber(annualPower.nh3 + annualVehicle.NH3)}
+                  {formatNumber(annualPower.nh3 + annualVehicle.nh3)}
                 </td>
               </tr>
             </tbody>

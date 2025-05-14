@@ -60,46 +60,60 @@
  */
 
 /**
- * @typedef {Object} NEIData
- * @property {{
+ * @typedef {{
+ *  generation: number,
+ *  heat: number,
+ *  pm25: number,
+ *  vocs: number,
+ *  nh3: number
+ * }} NEIPollutantsEmissionRates
+ */
+
+/**
+ * @typedef {{
+ *  region: string,
+ *  state: string,
+ *  plant: string,
+ *  orspl: number,
+ *  unit: string,
  *  name: string,
- *  egus: {
- *    state: string,
- *    county: string,
- *    plant: string,
- *    orispl_code: number,
- *    unit_code: string,
- *    full_name: string,
- *    annual_data: {
- *      year: number,
- *      generation: number,
- *      heat: number,
- *      pm25: number,
- *      vocs: number,
- *      nh3: number
- *    }[]
- *  }[]
- * }[]} regions
+ *  county: string,
+ *  "orspl|unit|region": string,
+ *  years: {
+ *    "2017": NEIPollutantsEmissionRates,
+ *    "2018": NEIPollutantsEmissionRates,
+ *    "2019": NEIPollutantsEmissionRates,
+ *    "2020": NEIPollutantsEmissionRates,
+ *    "2021": NEIPollutantsEmissionRates,
+ *    "2022": NEIPollutantsEmissionRates,
+ *    "2023": NEIPollutantsEmissionRates,
+ *    "2024": NEIPollutantsEmissionRates
+ *  }
+ * }} NEIEmissionRatesByEGU
  */
 
 /**
  * Adds a number to an array of numbers, sorts it, and returns the index of the
  * number directly before the one that was inserted
  *
+ * Excel: Functionaly similar to the code associated with "matchedArray" in the
+ * "m_3_displaced_gen_emissions" Visual Basic module.
+ *
  * @param {number[]} array
  * @param {number} number
  */
 function getPrecedingIndex(array, number) {
-  // insert provided number into the provided array and sort it
+  /** Insert the provided number into the provided array and sort it. */
   const sortedArray = array.concat(number).sort((a, b) => a - b);
   const numberIndex = sortedArray.indexOf(number);
-  // return the index of the number directly before the inserted number
+  /** Return the index of the number directly before the inserted number. */
   if (array[numberIndex] === number) return numberIndex;
   return numberIndex - 1;
 }
 
 /**
- * Excel: "Pre" and "Post" calculation from "m_3_displaced_gen_emissions" module
+ * Excel: "pre" and "post" calculation from the "m_3_displaced_gen_emissions"
+ * Visual Basic module before the "delta" is determined.
  *
  * @param {{
  *  load: number,
@@ -116,20 +130,127 @@ function calculateLinear(options) {
   return load * slope + intercept;
 }
 
+// /**
+//  * Rounds a number a specified number of decimal places.
+//  *
+//  * @param {{
+//  *  number: number,
+//  *  decimalPlaces: number,
+//  * }} options
+//  */
+// function roundToDecimalPlaces(options) {
+//   const { number, decimalPlaces } = options;
+//   const factor = Math.pow(10, decimalPlaces);
+//   return Math.round(number * factor) / factor;
+// }
+
 /**
  * Calculates emissions changes for a provided region.
+ *
+ * Excel: "m_3_displaced_gen_emissions" Visual Basic module, starting on line 82
+ * which begins with the following code:  
+ * ```vb
+ *  'This gets the dimensions of various arrays
+ *  Sheets("Data").Activate
+ *  Dim lastColRow2 As Double
+ *  Dim lastRowColA As Double
+ *  Dim lastRowColJ As Double
+ * ```
  *
  * @param {{
  *  year: number,
  *  rdf: RDFJSON,
- *  neiData: NEIData
+ *  neiEmissionRates: NEIEmissionRatesByEGU[],
  *  hourlyChanges: number[]
  * }} options
  */
 function calculateEmissionsChanges(options) {
-  const { year, rdf, neiData, hourlyChanges } = options;
+  const { year, rdf, neiEmissionRates, hourlyChanges } = options;
 
   /**
+   * NOTE: `hourly`, `monthly`, and `yearly` values are commented out below and
+   * not returned from this function, as their values are not used, as we really
+   * need at a minimum, monthly data at the county level (which we can then
+   * build up to state, region, and total monthly and annual values). We'll
+   * leave the `hourly`, `monthly`, and `yearly` calculations here (commented
+   * out) as they can be useful in validating/testing values with the Excel app
+   * when developing locally.
+   */
+
+  // /**
+  //  * Cumulative hourly emissions impacts from all electric generating units
+  //  * (EGUs) for each pollutant/emissions field.
+  //  *
+  //  * Excel: Columns I, J, and K of the various pollutant/emissions sheets
+  //  * ("Generation", "SO2", "NOx", "CO2", "PM25", "VOCs", and "NH3"). For example,
+  //  * for the "SO2" sheet, those columns are:
+  //  *   - "Orig SO2 (lb)" (column I) which is the hourly "pre" value.
+  //  *   - "Post Change SO2 (lb)" (column J) which is the hourly "post" value.
+  //  *   - "Sum: All Units (lb)" (column K) which is the hourly "impacts" value.
+  //  * Also the "totalArray" variable in the "m_3_displaced_gen_emissions" Visual
+  //  * Basic module.
+  //  *
+  //  * @type {{
+  //  *  [regionId: string]: {
+  //  *    [field: string]: {
+  //  *      [hour: number]: {
+  //  *        pre: number,
+  //  *        post: number,
+  //  *        impacts: number
+  //  *      }
+  //  *    }
+  //  *  }
+  //  * }}
+  //  */
+  // const hourly = {};
+
+  // /**
+  //  * Cumulative monthly emissions impacts from all electric generating units
+  //  * (EGUs) for each pollutant/emissions field.
+  //  *
+  //  * Excel: This value isn't stored in Excel, but each EGU's monthly impacts
+  //  * values are – see the 12 rows of monthly data for each EGU below the last
+  //  * hourly row and below the EGU annual totals row and NEI emission rates row
+  //  * (emissions rates row shown for NEI pollutants only). So this monthly value
+  //  * could be calculated as the sum of each EGU's the monthly impacts values.
+  //  * 
+  //  * @type {{
+  //  *  [regionId: string]: {
+  //  *    [field: string]: {
+  //  *      [month: number]: {
+  //  *        pre: number,
+  //  *        post: number,
+  //  *        impacts: number
+  //  *      }
+  //  *    }
+  //  *  }
+  //  * }}
+  //  */
+  // const monthly = {};
+
+  // /**
+  //  * Total yearly emissions impacts from all electric generating units for each
+  //  * pollutant/emissions field.
+  //  *
+  //  * NOTE: This value isn't stored in Excel, but the yearly impacts value could
+  //  * be calculated as the sum of the hourly impacts (which are stored in Excel):
+  //  * `=SUM(K4:K8787)`.
+  //  *
+  //  * @type {{
+  //  *  [regionId: string]: {
+  //  *    [field: string]: {
+  //  *      pre: number,
+  //  *      post: number,
+  //  *      impacts: number
+  //  *    }
+  //  *  }
+  //  * }}
+  //  */
+  // const yearly = {};
+
+  /**
+   * Monthly emissions changes data for each electric generating unit.
+   *
    * NOTE: Emissions rates for generation, so2, nox, and co2 are calculated with
    * data in the RDF's `data` object under it's corresponding key: ozone season
    * data matches the field exactly (e.g. `data.so2`, `data.nox`) and non-ozone
@@ -138,9 +259,13 @@ function calculateEmissionsChanges(options) {
    * uses `data.generation`, regardless of ozone season.
    *
    * Emissions rates for pm2.5, vocs, and nh3 are calculated with both annual
-   * point-source data from the National Emissions Inventory (`neiData`) and the
-   * `heat` and `heat_not` fields in the RDF's `data` object (for ozone and
-   * non-ozone season respectively).
+   * point-source data from the National Emissions Inventory
+   * (`neiEmissionRates`) and the `heat` and `heat_not` fields in the RDF's
+   * `data` object (for ozone and non-ozone season respectively).
+   * 
+   * Excel: The "Total, Post Change" row below the last hourly row store the
+   * monthly impacts value for each EGU (pre and post values are not stored in
+   * Excel).
    *
    * @type {{
    *  [eguId: string]: {
@@ -153,64 +278,88 @@ function calculateEmissionsChanges(options) {
    *    orisplCode: number,
    *    unitCode: string,
    *    name: string,
-   *    emissionsFlags: ('generation' | 'so2' | 'nox' | 'co2' | 'heat')[];
+   *    emissionsFlags: ("generation" | "so2" | "nox" | "co2" | "heat")[];
    *    data: {
-   *      generation: { [month: number]: { original: number; postEere: number } },
-   *      so2: { [month: number]: { original: number; postEere: number } },
-   *      nox: { [month: number]: { original: number; postEere: number } },
-   *      co2: { [month: number]: { original: number; postEere: number } },
-   *      pm25: { [month: number]: { original: number; postEere: number } },
-   *      vocs: { [month: number]: { original: number; postEere: number } },
-   *      nh3: { [month: number]: { original: number; postEere: number } }
-   *    }}
+   *      monthly: {
+   *        [field: "generation" | "so2" | "nox" | "co2" | "pm25" | "vocs" | "nh3"]: {
+   *          [month: number]: {
+   *            pre: number,
+   *            post: number,
+   *          }
+   *        }
+   *      }
+   *    }
+   *  }
    * }}
    */
-  const result = {};
+  const egus = {};
 
   /** @type {("generation" | "so2" | "nox" | "co2" | "pm25" | "vocs" | "nh3")[]} */
-  const dataFields = ["generation", "so2", "nox", "co2", "pm25", "vocs", "nh3"];
+  const emissionsFields = ["generation", "so2", "nox", "co2", "pm25", "vocs", "nh3"];
 
   /** @type {("pm25" | "vocs" | "nh3")[]} */
   const neiFields = ["pm25", "vocs", "nh3"];
 
-  const regionalNeiEgus = neiData.regions.find((region) => {
-    return region.name === rdf.region.region_name;
-  })?.egus;
-
   const regionId = rdf.region.region_abbv;
+  const regionName = rdf.region.region_name;
 
+  /**
+   * Excel: "genBlockArray" variable in the "m_3_displaced_gen_emissions" Visual
+   * Basic module.
+   */
   const loadBinEdges = rdf.load_bin_edges;
+
   const firstLoadBinEdge = loadBinEdges[0];
   const lastLoadBinEdge = loadBinEdges[loadBinEdges.length - 1];
 
   /**
-   * Iterate over each hour in the year (8760 in non-leap years)
+   * Iterate over each hour in the year (8760 hours for non-leap years or 8784
+   * hours for leap years).
    */
   for (const [i, hourlyLoad] of rdf.regional_load.entries()) {
-    const month = hourlyLoad.month; // numeric month of load
-
-    const originalLoad = hourlyLoad.regional_load_mw; // original regional load (mwh) for the hour
-    const postEereLoad = originalLoad + hourlyChanges[i]; // merged regional energy profile (mwh) for the hour
-
-    const originalLoadInBounds = originalLoad >= firstLoadBinEdge && originalLoad <= lastLoadBinEdge; // prettier-ignore
-    const postEereLoadInBounds = postEereLoad >= firstLoadBinEdge && postEereLoad <= lastLoadBinEdge; // prettier-ignore
-
-    // filter out outliers
-    if (!(originalLoadInBounds && postEereLoadInBounds)) continue;
-
-    // get index of load bin edge closest to originalLoad or postEereLoad
-    const originalLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, originalLoad); // prettier-ignore
-    const postEereLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, postEereLoad); // prettier-ignore
+    // const hour = hourlyLoad.hour_of_year;
+    const month = hourlyLoad.month;
 
     /**
-     * Iterate over each data field: generation, so2, nox, co2...
+     * Original regional load (mwh) for the hour.
+     *
+     * Excel: "Regional Load (MW)" (column D) of the various pollutant/emissions
+     * sheets ("Generation", "SO2", "NOx", etc.) and also the first item in the
+     * "loadArray" variable in the "m_3_displaced_gen_emissions" Visual Basic
+     * module.
      */
-    dataFields.forEach((field) => {
+    const preLoad = hourlyLoad.regional_load_mw;
+
+    /**
+     * Post impacts regional load (mwh) for the hour.
+     *
+     * Excel: "Load after Energy Change" (column F) of the various pollutant/
+     * emissions sheets ("Generation", "SO2", "NOx", etc.) and also the third
+     * item in the "loadArray" variable in the "m_3_displaced_gen_emissions"
+     * Visual Basic module.
+     *
+     * NOTE: `hourlyChanges[i]` is the "Energy Change Profile" (column E) and
+     * also the second item in the "loadArray" variable in the
+     * "m_3_displaced_gen_emissions" Visual Basic module.
+     */
+    const postLoad = preLoad + hourlyChanges[i];
+
+    /** Ensure the pre and post load is in bounds. */
+    const preLoadInBounds = preLoad >= firstLoadBinEdge && preLoad <= lastLoadBinEdge;
+    const postLoadInBounds = postLoad >= firstLoadBinEdge && postLoad <= lastLoadBinEdge;
+
+    if (!(preLoadInBounds && postLoadInBounds)) continue;
+
+    /** Get the index of the load bin edge closest to the preLoad and postLoad values. */
+    const preLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, preLoad);
+    const postLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, postLoad);
+
+    /** Iterate over each emissions field (generation, so2, nox, co2, etc.) */
+    emissionsFields.forEach((field) => {
       /**
        * NOTE: PM2.5, VOCs, and NH3 always use the `heat` or `heat_not` fields
-       * of the RDF's `data` object
+       * of the RDF's `data` object.
        */
-
       /** @type {EGUData[]} */
       const ozoneSeasonData = neiFields.includes(field)
         ? rdf.data.heat
@@ -232,7 +381,10 @@ function calculateEmissionsChanges(options) {
 
       /**
        * Ozone season is between May and September, so use the correct medians
-       * dataset for the current month
+       * dataset for the current month.
+       *
+       * Excel: "plantDataArray" in the "m_3_displaced_gen_emissions" Visual
+       * Basic module.
        */
       const datasetMedians = !nonOzoneSeasonMedians
         ? ozoneSeasonMedians
@@ -243,7 +395,7 @@ function calculateEmissionsChanges(options) {
       /**
        * Iterate over each electric generating unit (EGU). The total number of
        * EGUs varries per region (less than 100 for the RM region; more than
-       * 1000 for the SE region)
+       * 1000 for the SE region).
        */
       ozoneSeasonData.forEach((egu, eguIndex) => {
         const {
@@ -261,12 +413,16 @@ function calculateEmissionsChanges(options) {
         const eguId = `${regionId}_${state}_${orispl_code}_${unit_code}`;
         const medians = datasetMedians[eguIndex];
 
-        const calculatedOriginal = calculateLinear({
-          load: originalLoad,
-          genA: medians[originalLoadBinEdgeIndex],
-          genB: medians[originalLoadBinEdgeIndex + 1],
-          edgeA: loadBinEdges[originalLoadBinEdgeIndex],
-          edgeB: loadBinEdges[originalLoadBinEdgeIndex + 1],
+        /**
+         * Excel: "pre" calculation from the "m_3_displaced_gen_emissions"
+         * Visual Basic module before the "delta" is determined.
+         */
+        const calculatedPre = calculateLinear({
+          load: preLoad,
+          genA: medians[preLoadBinEdgeIndex],
+          genB: medians[preLoadBinEdgeIndex + 1],
+          edgeA: loadBinEdges[preLoadBinEdgeIndex],
+          edgeB: loadBinEdges[preLoadBinEdgeIndex + 1],
         });
 
         /**
@@ -274,45 +430,177 @@ function calculateEmissionsChanges(options) {
          * (specifically added for errors with SO2 reporting, but the RDFs were
          * updated to include the `infreq_emissions_flag` for all pollutants for
          * consistency, which allows other pollutants at specific EGUs to be
-         * excluded in the future)
+         * excluded in the future).
+         *
+         * Excel: "post" calculation from the "m_3_displaced_gen_emissions"
+         * Visual Basic module before the "delta" is determined.
          */
-        const calculatedPostEere =
+        const calculatedPost =
           infreq_emissions_flag === 1
-            ? calculatedOriginal
+            ? calculatedPre
             : calculateLinear({
-                load: postEereLoad,
-                genA: medians[postEereLoadBinEdgeIndex],
-                genB: medians[postEereLoadBinEdgeIndex + 1],
-                edgeA: loadBinEdges[postEereLoadBinEdgeIndex],
-                edgeB: loadBinEdges[postEereLoadBinEdgeIndex + 1],
+                load: postLoad,
+                genA: medians[postLoadBinEdgeIndex],
+                genB: medians[postLoadBinEdgeIndex + 1],
+                edgeA: loadBinEdges[postLoadBinEdgeIndex],
+                edgeB: loadBinEdges[postLoadBinEdgeIndex + 1],
               });
 
+        // /**
+        //  * Determine the number of decimal places to values to, based on the
+        //  * pollution/emissions field.
+        //  */
+        // const decimalPlaces =
+        // field === "generation" ||
+        // field === "co2" ||
+        // field === "so2" ||
+        // field === "nox"
+        //   ? 3
+        //   : field === "pm25" || field === "vocs" || field === "nh3"
+        //     ? 6
+        //     : 0;
+
         /**
-         * Conditionally multiply NEI factor to calculated original and postEere
-         * values
+         * Conditionally multiply NEI factor to calculated pre and post values.
          */
-        const matchedEgu = regionalNeiEgus?.find((neiEgu) => {
-          const orisplCodeMatches = neiEgu.orispl_code === orispl_code;
-          const unitCodeMatches = neiEgu.unit_code === unit_code;
-          return orisplCodeMatches && unitCodeMatches;
+        const matchedEgu = neiEmissionRates.find((item) => {
+          return (
+            item.region === regionName &&
+            item.orspl === orispl_code &&
+            item.unit === unit_code
+          );
         });
-        const neiEguData = matchedEgu?.annual_data.find((d) => d.year === year);
+
+        /** @type NEIPollutantsEmissionRates | undefined */
+        const neiEguData = matchedEgu?.years?.[year.toString()];
+
+        /** @type number | undefined */
         const neiFieldData = neiEguData?.[field];
 
-        const original =
-          neiFields.includes(field) && neiFieldData !== undefined
-            ? calculatedOriginal * neiFieldData
-            : calculatedOriginal;
+        const pre =
+        neiFields.includes(field) && neiFieldData !== undefined
+          ? calculatedPre * neiFieldData
+          : calculatedPre;
 
-        const postEere =
-          neiFields.includes(field) && neiFieldData !== undefined
-            ? calculatedPostEere * neiFieldData
-            : calculatedPostEere;
+      const post =
+        neiFields.includes(field) && neiFieldData !== undefined
+          ? calculatedPost * neiFieldData
+          : calculatedPost;
+
+        // const pre =
+        //   neiFields.includes(field) && neiFieldData !== undefined
+        //     ? roundToDecimalPlaces({
+        //         number: calculatedPre * neiFieldData,
+        //         decimalPlaces,
+        //       })
+        //     : calculatedPre;
+
+        // const post =
+        //   neiFields.includes(field) && neiFieldData !== undefined
+        //     ? roundToDecimalPlaces({
+        //         number: calculatedPost * neiFieldData,
+        //         decimalPlaces,
+        //       })
+        //     : calculatedPost;
+
+        // const impacts = post - pre;
+
+        // /**
+        //  * Conditionally initialize the emissions field's hourly impacts from
+        //  * all EGUs.
+        //  */
+        // hourly[regionId] ??= {
+        //   generation: {},
+        //   so2: {},
+        //   nox: {},
+        //   co2: {},
+        //   pm25: {},
+        //   vocs: {},
+        //   nh3: {},
+        // };
+        // hourly[regionId][field][hour] ??= {
+        //   pre: 0,
+        //   post: 0,
+        //   impacts: 0,
+        // };
+
+        // /**
+        //  * Increment the emissions field's hourly pre, post, and impacts values
+        //  * from all EGUs and round the accumulated impacts value.
+        //  */
+        // hourly[regionId][field][hour].pre += pre;
+        // hourly[regionId][field][hour].post += post;
+        // hourly[regionId][field][hour].impacts += impacts;
+
+        // hourly[regionId][field][hour].impacts = roundToDecimalPlaces({
+        //   number: hourly[regionId][field][hour].impacts,
+        //   decimalPlaces,
+        // });
+
+        // /**
+        //  * Conditionally initialize the emissions field's monthly impacts from
+        //  * all EGUs.
+        //  */
+        // monthly[regionId] ??= {
+        //   generation: {},
+        //   so2: {},
+        //   nox: {},
+        //   co2: {},
+        //   pm25: {},
+        //   vocs: {},
+        //   nh3: {},
+        // };
+        // monthly[regionId][field][month] ??= {
+        //   pre: 0,
+        //   post: 0,
+        //   impacts: 0,
+        // };
+
+        // /**
+        //  * Increment the emissions field's monthly pre, post, and impacts values
+        //  * from all EGUs and round the accumulated impacts value.
+        //  */
+        // monthly[regionId][field][month].pre += pre;
+        // monthly[regionId][field][month].post += post;
+        // monthly[regionId][field][month].impacts += impacts;
+
+        // monthly[regionId][field][month].impacts = roundToDecimalPlaces({
+        //   number: monthly[regionId][field][month].impacts,
+        //   decimalPlaces,
+        // });
+
+        // /**
+        //  * Conditionally initialize the emissions field's yearly impacts from
+        //  * all EGUs.
+        //  */
+        // yearly[regionId] ??= {
+        //   generation: { pre: 0, post: 0, impacts: 0 },
+        //   so2: { pre: 0, post: 0, impacts: 0 },
+        //   nox: { pre: 0, post: 0, impacts: 0 },
+        //   co2: { pre: 0, post: 0, impacts: 0 },
+        //   pm25: { pre: 0, post: 0, impacts: 0 },
+        //   vocs: { pre: 0, post: 0, impacts: 0 },
+        //   nh3: { pre: 0, post: 0, impacts: 0 },
+        // };
+
+        // /**
+        //  * Increment the emissions field's yearly pre, post, and impacts values
+        //  * from all EGUs and round the accumulated impacts value.
+        //  */
+        // yearly[regionId][field].pre += pre;
+        // yearly[regionId][field].post += post;
+        // yearly[regionId][field].impacts += impacts;
+
+        // yearly[regionId][field].impacts = roundToDecimalPlaces({
+        //   number: yearly[regionId][field].impacts,
+        //   decimalPlaces,
+        // });
 
         /**
-         * Conditionally initialize each EGU's metadata
+         * Conditionally initialize each EGU's metadata and monthly data
+         * structure for each emissions field.
          */
-        result[eguId] ??= {
+        egus[eguId] ??= {
           region: regionId,
           state: state,
           county: county,
@@ -324,42 +612,51 @@ function calculateEmissionsChanges(options) {
           name: full_name,
           emissionsFlags: [],
           data: {
-            generation: {},
-            so2: {},
-            nox: {},
-            co2: {},
-            pm25: {},
-            vocs: {},
-            nh3: {},
+            monthly: {
+              generation: {},
+              so2: {},
+              nox: {},
+              co2: {},
+              pm25: {},
+              vocs: {},
+              nh3: {},
+            },
           },
         };
 
         /**
-         * Conditionally add field (e.g. so2, nox, co2) to EGU's emissions
-         * flags, as emissions "replacement" will be needed for that pollutant
+         * Conditionally add emissions field (e.g. so2, nox, co2) to EGU's
+         * emissions flags, as emissions "replacement" will be needed for that
+         * emissions field/pollutant.
          */
         if (
           infreq_emissions_flag === 1 &&
-          !result[eguId].emissionsFlags.includes(field)
+          !egus[eguId].emissionsFlags.includes(field)
         ) {
-          result[eguId].emissionsFlags.push(field);
+          egus[eguId].emissionsFlags.push(field);
         }
 
         /**
-         * Conditionally initialize the field's monthly data
+         * Conditionally initialize the EGU's monthly data for the emissions
+         * field.
          */
-        result[eguId].data[field][month] ??= { original: 0, postEere: 0 };
+        egus[eguId].data.monthly[field][month] ??= {
+          pre: 0,
+          post: 0,
+        };
 
         /**
-         * Increment the field's monthly original and postEere values
+         * Increment the EGU's monthly pre and post values for the emissions
+         * field.
          */
-        result[eguId].data[field][month].original += original;
-        result[eguId].data[field][month].postEere += postEere;
+        egus[eguId].data.monthly[field][month].pre += pre;
+        egus[eguId].data.monthly[field][month].post += post;
       });
     });
   }
 
-  return result;
+  // return { hourly, monthly, yearly, egus };
+  return {  egus };
 }
 
 module.exports = { calculateEmissionsChanges };

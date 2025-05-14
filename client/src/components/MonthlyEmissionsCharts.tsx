@@ -55,12 +55,11 @@ function setMonthlyPowerData(
 
   for (const key in powerData.monthly) {
     const month = Number(key);
-    const { original, postEere } = powerData.monthly[month];
+    const { pre, post } = powerData.monthly[month];
+    const impacts = post - pre;
+    const percentChange = (impacts / pre) * 100 || 0;
 
-    const emissionsChange = postEere - original;
-    const percentChange = (emissionsChange / original) * 100 || 0;
-
-    monthlyEmissionsChanges.push(emissionsChange);
+    monthlyEmissionsChanges.push(impacts);
     monthlyPercentageChanges.push(percentChange);
   }
 
@@ -362,7 +361,7 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
       },
     },
     xAxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], // prettier-ignore
+      categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], // prettier-ignore
     },
   };
 
@@ -434,12 +433,12 @@ function Chart(props: { pollutant: Pollutant; data: EmissionsData }) {
 
   // prettier-ignore
   const pollutantMarkup = new Map<Pollutant, ReactNode>()
-      .set('so2', <>SO<sub>2</sub></>)
-      .set('nox', <>NO<sub>X</sub></>)
-      .set('co2', <>CO<sub>2</sub></>)
-      .set('pm25', <>PM<sub>2.5</sub></>)
-      .set('vocs', <>VOC</>)
-      .set('nh3', <>NH<sub>2</sub></>);
+      .set("so2", <>SO<sub>2</sub></>)
+      .set("nox", <>NO<sub>X</sub></>)
+      .set("co2", <>CO<sub>2</sub></>)
+      .set("pm25", <>PM<sub>2.5</sub></>)
+      .set("vocs", <>VOC</>)
+      .set("nh3", <>NH<sub>2</sub></>);
 
   const chartConfig = new Map<Pollutant, object>()
     .set("so2", so2Config)
@@ -588,13 +587,24 @@ function MonthlyEmissionsChartsContent() {
     return monthlyEmissions.statesAndCounties[currentStateId as StateId]?.sort(); // prettier-ignore
   });
 
-  const { batteryEVs, hybridEVs, transitBuses, schoolBuses } = inputs;
+  const {
+    batteryEVs,
+    hybridEVs,
+    transitBuses,
+    schoolBuses,
+    shortHaulTrucks,
+    comboLongHaulTrucks,
+    refuseTrucks,
+  } = inputs;
 
   const evInputsEmpty =
     (batteryEVs === "" || batteryEVs === "0") &&
     (hybridEVs === "" || hybridEVs === "0") &&
     (transitBuses === "" || transitBuses === "0") &&
-    (schoolBuses === "" || schoolBuses === "0");
+    (schoolBuses === "" || schoolBuses === "0") &&
+    (shortHaulTrucks === "" || shortHaulTrucks === "0") &&
+    (comboLongHaulTrucks === "" || comboLongHaulTrucks === "0") &&
+    (refuseTrucks === "" || refuseTrucks === "0");
 
   const selectedRegion = useSelectedRegion();
   const selectedStateRegions = useSelectedStateRegions();
@@ -812,7 +822,7 @@ function MonthlyEmissionsChartsContent() {
 
                         {availableCounties?.map((county, index) => (
                           <option key={index} value={county}>
-                            {/* format 'city' if found in county name */}
+                            {/* format "city" if found in county name */}
                             {county.replace(/city/, "(City)")}
                           </option>
                         ))}

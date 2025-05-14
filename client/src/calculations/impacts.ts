@@ -6,17 +6,15 @@ import {
 } from "@/redux/reducers/geography";
 import {
   type DailyStats,
-  type HourlyEVChargingPercentages,
-  type SelectedRegionsMonthlyDailyEVEnergyUsage,
+  type HourlyEVLoadProfiles,
+  type SelectedRegionsMonthlyDailyEnergyUsage,
 } from "@/calculations/transportation";
 import { type EmptyObject } from "@/utilities";
-import { type RegionId, type RegionName } from "@/config";
-/**
- * EV hourly limits by region
- *
- * (NOTE: not in Excel file, but sent by Pat via email 03/06/24)
- */
-import regionEvHourlyLimits from "@/data/region-ev-hourly-limits.json";
+import {
+  type RegionEVHourlyLimits,
+  type RegionId,
+  type RegionName,
+} from "@/config";
 
 export type HourlyRenewableEnergyProfiles = ReturnType<
   typeof calculateHourlyRenewableEnergyProfiles
@@ -36,12 +34,29 @@ export type HourlyChangesValidation = ReturnType<
   typeof calculateHourlyChangesValidation
 >;
 
+type ExceedanceData = {
+  regionId: RegionId;
+  regionName: RegionName;
+  regionHourlyLimit: number;
+  hourOfYear: number;
+  month: number;
+  day: number;
+  hour: number;
+  originalLoad: number;
+  impactsLoad: number;
+  percentChange: number;
+  postImpactsLoad: number;
+};
+
 /**
- * Excel: Data in columns I, J, and K of the "CalculateEERE" sheet (I5:K8788).
+ * Hourly renewable energy profiles data (onshore wind, offshore wind, utility
+ * solar, rooftop solar).
  *
- * NOTE: The Excel version actually combines onshore and offshore wind profiles
- * into one value (column I), but we're keeping them separate for consistency
- * with the two solar profiles.
+ * Excel: Hourly data from the "Wind Energy Profile", "Utility Scale Solar", and
+ * "Rooftop Solar" columns (I, J, and K) of the left/first table in the
+ * "CalculateEERE" sheet. NOTE: The Excel version actually combines onshore and
+ * offshore wind profiles into one value (column I), but we're keeping them
+ * separate for consistency with the two solar profiles.
  */
 export function calculateHourlyRenewableEnergyProfiles(options: {
   eereDefaults: RegionState["eereDefaults"]["data"];
@@ -58,7 +73,9 @@ export function calculateHourlyRenewableEnergyProfiles(options: {
     rooftopSolar: rooftopSolarInput,
   } = options;
 
-  if (eereDefaults.length === 0) return [];
+  if (eereDefaults.length === 0) {
+    return [];
+  }
 
   const result = eereDefaults.map((data) => {
     return {
@@ -73,10 +90,11 @@ export function calculateHourlyRenewableEnergyProfiles(options: {
 }
 
 /**
- * Returns hourly energy storage data
+ * Hourly energy storage data.
  *
- * Excel: Data from the "Utility Scale" and "Distributed" tables in the
- * "CalculateEERE" sheet (columns indicated in comments below).
+ * Excel: Data from the "Utility Scale" and "Distributed" tables (rightmost/last
+ * table) in the "CalculateEERE" sheet (columns B, C, F, and AQ–BO. More info on
+ * the specific columns in the comments below).
  */
 export function calculateHourlyEnergyStorageData(options: {
   storageDefaults: RegionState["storageDefaults"]["data"];
@@ -171,52 +189,52 @@ export function calculateHourlyEnergyStorageData(options: {
         /* column C */ hourOfDay: hour % 24 || 24,
         hourOfYear: hour,
         esProfileUnpaired: {
-          /* column AK */ utility: esProfileUnpaired.utility,
-          /* column AX */ rooftop: esProfileUnpaired.rooftop,
+          /* column AQ */ utility: esProfileUnpaired.utility,
+          /* column BD */ rooftop: esProfileUnpaired.rooftop,
         },
         solarUnpaired: {
-          /* column AL */ utility: solarUnpaired.utility,
-          /* column AY */ rooftop: solarUnpaired.rooftop,
+          /* column AR */ utility: solarUnpaired.utility,
+          /* column BE */ rooftop: solarUnpaired.rooftop,
         },
         dailyChargingNeeded: {
-          /* column AM */ utility: 0,
-          /* column AZ */ rooftop: 0,
+          /* column AS */ utility: 0,
+          /* column BF */ rooftop: 0,
         },
         dailyDischargingNeeded: {
-          /* column AN */ utility: 0,
-          /* column BA */ rooftop: 0,
-        },
-        dailyAvailableSolar: {
-          /* column AO */ utility: 0,
-          /* column BB */ rooftop: 0,
-        },
-        dailyAllowableCharging: {
-          /* column AP */ utility: 0,
-          /* column BC */ rooftop: 0,
-        },
-        dailyAllowableDischarging: {
-          /* column AQ */ utility: 0,
-          /* column BD */ rooftop: 0,
-        },
-        overloadedHour: {
-          /* column AR */ utility: false,
-          /* column BE */ rooftop: false,
-        },
-        overloadedDay: {
-          /* column AS */ utility: false,
-          /* column BF */ rooftop: false,
-        },
-        dailyCumulativeAvailableCharge: {
           /* column AT */ utility: 0,
           /* column BG */ rooftop: 0,
         },
-        dailyMaxAllowableCharge: {
+        dailyAvailableSolar: {
           /* column AU */ utility: 0,
           /* column BH */ rooftop: 0,
         },
-        esProfilePaired: {
+        dailyAllowableCharging: {
           /* column AV */ utility: 0,
           /* column BI */ rooftop: 0,
+        },
+        dailyAllowableDischarging: {
+          /* column AW */ utility: 0,
+          /* column BJ */ rooftop: 0,
+        },
+        overloadedHour: {
+          /* column AX */ utility: false,
+          /* column BK */ rooftop: false,
+        },
+        overloadedDay: {
+          /* column AY */ utility: false,
+          /* column BL */ rooftop: false,
+        },
+        dailyCumulativeAvailableCharge: {
+          /* column AZ */ utility: 0,
+          /* column BM */ rooftop: 0,
+        },
+        dailyMaxAllowableCharge: {
+          /* column BA */ utility: 0,
+          /* column BN */ rooftop: 0,
+        },
+        esProfilePaired: {
+          /* column BB */ utility: 0,
+          /* column BO */ rooftop: 0,
         },
       });
 
@@ -434,16 +452,19 @@ export function calculateHourlyEnergyStorageData(options: {
 }
 
 /**
- * Excel: Data in column Y of the "CalculateEERE" sheet (Y5:Y8788).
+ * Hourly EV load data.
+ *
+ * Excel: Data from the "Total EV" column of middle table in the "CalculateEERE"
+ * sheet (AJ5:AJ8788).
  */
 export function calculateHourlyEVLoad(options: {
   regionId: RegionId;
   regionalScalingFactor: number;
   regionalLoad: RegionalLoadData[];
   dailyStats: DailyStats;
-  hourlyEVChargingPercentages: HourlyEVChargingPercentages;
-  selectedRegionsMonthlyDailyEVEnergyUsage:
-    | SelectedRegionsMonthlyDailyEVEnergyUsage
+  hourlyEVLoadProfiles: HourlyEVLoadProfiles;
+  selectedRegionsMonthlyDailyEnergyUsage:
+    | SelectedRegionsMonthlyDailyEnergyUsage
     | EmptyObject;
 }) {
   const {
@@ -451,22 +472,17 @@ export function calculateHourlyEVLoad(options: {
     regionalScalingFactor,
     regionalLoad,
     dailyStats,
-    hourlyEVChargingPercentages,
-    selectedRegionsMonthlyDailyEVEnergyUsage,
+    hourlyEVLoadProfiles,
+    selectedRegionsMonthlyDailyEnergyUsage,
   } = options;
 
-  const selectedRegionsEnergyData =
-    Object.keys(selectedRegionsMonthlyDailyEVEnergyUsage).length !== 0
-      ? (selectedRegionsMonthlyDailyEVEnergyUsage as SelectedRegionsMonthlyDailyEVEnergyUsage)
-      : null;
-
-  const monthlyDailyEVEnergyUsage = selectedRegionsEnergyData?.[regionId];
+  const monthlyDailyEnergyUsage = selectedRegionsMonthlyDailyEnergyUsage?.[regionId]; // prettier-ignore
 
   if (
     regionalLoad.length === 0 ||
     Object.keys(dailyStats).length === 0 ||
-    Object.keys(hourlyEVChargingPercentages).length === 0 ||
-    !monthlyDailyEVEnergyUsage
+    Object.keys(hourlyEVLoadProfiles).length === 0 ||
+    !monthlyDailyEnergyUsage
   ) {
     return [];
   }
@@ -481,26 +497,33 @@ export function calculateHourlyEVLoad(options: {
     }
 
     // NOTE: `regionalLoad` data's hour value is zero indexed, so to match it
-    // with the hours stored as keys in `hourlyEVChargingPercentages`, we need
+    // with the hours stored as keys in `hourlyEVLoadProfiles`, we need
     // to add 1 to `regionalLoad` data's hour value
     const hour = data.hour + 1;
     const day = data.day;
     const month = data.month;
 
-    const evChargingPercentage = hourlyEVChargingPercentages[hour];
+    const hourlyEVLoadProfile = hourlyEVLoadProfiles[hour];
     const dayTypeField = dailyStats[month][day].isWeekend
       ? "weekend"
       : "weekday";
 
-    const evLoad =
-      evChargingPercentage.batteryEVs[dayTypeField] *
-        monthlyDailyEVEnergyUsage[month].batteryEVs[dayTypeField] +
-      evChargingPercentage.hybridEVs[dayTypeField] *
-        monthlyDailyEVEnergyUsage[month].hybridEVs[dayTypeField] +
-      evChargingPercentage.transitBuses[dayTypeField] *
-        monthlyDailyEVEnergyUsage[month].transitBuses[dayTypeField] +
-      evChargingPercentage.schoolBuses[dayTypeField] *
-        monthlyDailyEVEnergyUsage[month].schoolBuses[dayTypeField];
+    const evLoad = Object.entries(hourlyEVLoadProfile).reduce(
+      (total, [hourlyEVLoadProfileKey, hourlyEVLoadProfileValue]) => {
+        const vehicleCategory = hourlyEVLoadProfileKey as keyof typeof hourlyEVLoadProfile; // prettier-ignore
+
+        const evLoadProfile = hourlyEVLoadProfileValue?.[dayTypeField] || 0;
+
+        const energyUsage =
+          monthlyDailyEnergyUsage[month]?.[vehicleCategory]?.[dayTypeField] ||
+          0;
+
+        total += evLoadProfile * energyUsage;
+
+        return total;
+      },
+      0,
+    );
 
     return evLoad * regionalScalingFactor;
   });
@@ -509,7 +532,14 @@ export function calculateHourlyEVLoad(options: {
 }
 
 /**
- * Excel: "CalculateEERE" sheet (N9).
+ * Top percent generation in MW.
+ *
+ * Excel: "Top 0.0% gen (MW)" value from the narrow box to the right of the
+ * left/first table in the "CalculateEERE" sheet (S9).
+ *
+ * NOTE: The "0.0%" label is dynamic and based on the value from the row above
+ * for "Choose fraction of hours to apply" which corresponds to the `topHours`
+ * impacts input.
  */
 export function calculateTopPercentGeneration(options: {
   regionalLoad: RegionalLoadData[];
@@ -527,13 +557,12 @@ export function calculateTopPercentGeneration(options: {
 }
 
 /**
- *
- * Excel: Used to calculate data in column I of "CalculateEERE" sheet
+ * Excel: Used to calculate data in "Final Distributed" column (M) of the left/
+ * first table in the "CalculateEERE" sheet.
  *
  * NOTE: The result is not broken out into its own cell, but the relevant part
  * of the formula is below (using row 5 as an example):
- *
- * `IF(Data!F4>=TopPrctGen,Data!F4*-$N$10,0)`
+ * `IF(Data!F4>=TopPrctGen,Data!F4*-$S$10,0)`
  */
 export function calculateHourlyTopPercentReduction(options: {
   regionalLoad: RegionalLoadData[];
@@ -564,7 +593,10 @@ export function calculateHourlyTopPercentReduction(options: {
 }
 
 /**
- * Calculates regional hourly impacts of the entered energy impacts inputs.
+ * Regional hourly impacts of the entered energy impacts inputs.
+ *
+ * Excel: Data from the left/first table in the "CalculateEERE" sheet (columns
+ * B, C, F, and I–O. More info on the specific columns in the comments below).
  */
 export function calculateHourlyImpacts(options: {
   lineLoss: number; // region.lineLoss
@@ -679,22 +711,9 @@ export function calculateHourlyChangesValidation(options: {
       hourlyImpacts: HourlyImpacts;
     };
   }>;
+  regionEVHourlyLimits: RegionEVHourlyLimits;
 }) {
-  const { regions, regionalHourlyImpacts } = options;
-
-  type ExceedanceData = {
-    regionId: RegionId;
-    regionName: RegionName;
-    regionHourlyLimit: number;
-    hourOfYear: number;
-    month: number;
-    day: number;
-    hour: number;
-    originalLoad: number;
-    impactsLoad: number;
-    percentChange: number;
-    postImpactsLoad: number;
-  };
+  const { regions, regionalHourlyImpacts, regionEVHourlyLimits } = options;
 
   const result = {
     upperError: null,
@@ -714,7 +733,7 @@ export function calculateHourlyChangesValidation(options: {
       return region.id === regionId;
     })?.[1].name as RegionName | undefined;
 
-    const regionHourlyLimit = regionEvHourlyLimits[regionId];
+    const regionHourlyLimit = regionEVHourlyLimits[regionId];
 
     if (regionName && regionHourlyLimit) {
       Object.entries(hourlyImpacts).forEach(([hourKey, hourValue]) => {

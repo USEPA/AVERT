@@ -235,7 +235,7 @@ export function setStatesAndCounties(): AppThunk {
 
     const statesAndCounties: StatesAndCounties = {};
 
-    Object.values(emissionsChanges.data).forEach((egu) => {
+    Object.values(emissionsChanges.data.egus).forEach((egu) => {
       statesAndCounties[egu.state as StateId] ??= [];
       const state = statesAndCounties[egu.state as StateId];
       if (state && !state.includes(egu.county)) state.push(egu.county);

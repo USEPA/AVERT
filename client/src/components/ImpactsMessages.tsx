@@ -156,6 +156,9 @@ export function EVWarningMessage() {
     hybridEVs,
     transitBuses,
     schoolBuses,
+    shortHaulTrucks,
+    comboLongHaulTrucks,
+    refuseTrucks,
   } = inputs;
 
   const eeInputsEmpty =
@@ -175,7 +178,10 @@ export function EVWarningMessage() {
     (batteryEVs === "" || batteryEVs === "0") &&
     (hybridEVs === "" || hybridEVs === "0") &&
     (transitBuses === "" || transitBuses === "0") &&
-    (schoolBuses === "" || schoolBuses === "0");
+    (schoolBuses === "" || schoolBuses === "0") &&
+    (shortHaulTrucks === "" || shortHaulTrucks === "0") &&
+    (comboLongHaulTrucks === "" || comboLongHaulTrucks === "0") &&
+    (refuseTrucks === "" || refuseTrucks === "0");
 
   if (eeInputsEmpty && reInputsEmpty && !evInputsEmpty) {
     return (
@@ -185,7 +191,7 @@ export function EVWarningMessage() {
           <p className={clsx("margin-top-0")}>
             <strong>
               You have entered a quantity of EVs, but have not entered any
-              energy efficiency or renewable energy.
+              energy efficiency or renewable energy generation.
             </strong>
           </p>
 

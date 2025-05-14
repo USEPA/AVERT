@@ -144,7 +144,7 @@ export function fetchEmissionsChanges(): AppThunk {
   return (dispatch, getState) => {
     const { api, transportation, impacts } = getState();
     const {
-      selectedRegionsTotalMonthlyEmissionChanges,
+      selectedRegionsMonthlyEmissionChangesTotals,
       vehicleEmissionChangesByGeography,
     } = transportation;
     const { hourlyEnergyProfile } = impacts;
@@ -158,10 +158,18 @@ export function fetchEmissionsChanges(): AppThunk {
       const regionalProfile = hourlyEnergyProfile.data.regions[regionId as RegionId]; // prettier-ignore
 
       if (regionalProfile) {
+        /**
+         * Excel: Data from the "Final (MW)" column (N) of the left/first table
+         * in the "CalculateEERE" sheet.
+         */
         const hourlyChanges = Object.values(regionalProfile.hourlyImpacts).map(
           (d) => d.impactsLoad,
         );
 
+        /**
+         * NOTE: The server app's emissions controller responds to the request
+         * by calling the server app's `calculateEmissionsChanges()` function.
+         */
         requests.push(
           fetch(`${api.baseUrl}/api/v1/emissions`, {
             method: "POST",
@@ -179,10 +187,44 @@ export function fetchEmissionsChanges(): AppThunk {
     Promise.all(requests)
       .then((responses) => Promise.all(responses.map((res) => res.json())))
       .then((regionsData: EmissionsChanges[]) => {
-        // flatten array of regionData objects into a single object
-        const emissionsChanges = regionsData.reduce((result, regionData) => {
-          return { ...result, ...regionData };
-        }, {});
+        /**
+         * NOTE: The code for calculating and storing `hourly`, `monthly`, and
+         * `yearly` values is commented out in `calculateEmissionsChanges()` as
+         * the data isn't used in the app. If it's ever needed for debugging/
+         * testing in local development, it should be uncommented out in
+         * `calculateEmissionsChanges()` and in the code below, so it can be
+         * inspected in the redux store.
+         */
+
+        const emissionsChanges = regionsData.reduce(
+          (object, regionData) => {
+            return {
+              ...object,
+              // hourly: {
+              //   ...object.hourly,
+              //   ...regionData.hourly,
+              // },
+              // monthly: {
+              //   ...object.monthly,
+              //   ...regionData.monthly,
+              // },
+              // yearly: {
+              //   ...object.yearly,
+              //   ...regionData.yearly,
+              // },
+              egus: {
+                ...object.egus,
+                ...regionData.egus,
+              },
+            };
+          },
+          {
+            // hourly: {},
+            // monthly: {},
+            // yearly: {},
+            egus: {},
+          } as EmissionsChanges,
+        );
 
         const aggregatedEmissionsData =
           calculateAggregatedEmissionsData(emissionsChanges);
@@ -190,7 +232,7 @@ export function fetchEmissionsChanges(): AppThunk {
         // prettier-ignore
         const combinedSectorsEmissionsData = createCombinedSectorsEmissionsData({
           aggregatedEmissionsData,
-          selectedRegionsTotalMonthlyEmissionChanges,
+          selectedRegionsMonthlyEmissionChangesTotals,
           vehicleEmissionChangesByGeography,
         });
 
@@ -237,16 +279,19 @@ export function fetchEmissionsChanges(): AppThunk {
  * will have the `infreq_emissions_flag` property's value of 1 for the given
  * given in the region's RDF.
  */
-function setEgusNeedingEmissionsReplacement(egus: EmissionsChanges) {
-  if (Object.keys(egus).length === 0) return {};
+function setEgusNeedingEmissionsReplacement(emissionChanges: EmissionsChanges) {
+  if (Object.keys(emissionChanges.egus).length === 0) return {};
 
-  const result = Object.entries(egus).reduce((object, [eguId, eguData]) => {
-    if (eguData.emissionsFlags.length !== 0) {
-      object[eguId] = eguData;
-    }
+  const result = Object.entries(emissionChanges.egus).reduce(
+    (object, [eguId, eguData]) => {
+      if (eguData.emissionsFlags.length !== 0) {
+        object[eguId] = eguData;
+      }
 
-    return object;
-  }, {} as EmissionsChanges);
+      return object;
+    },
+    {} as EmissionsChanges["egus"],
+  );
 
   return result;
 }
@@ -256,7 +301,7 @@ function setEgusNeedingEmissionsReplacement(egus: EmissionsChanges) {
  * needing emissions replacement, and the region's actual emissions value for
  * that particular pollutant.
  */
-function setEmissionsReplacements(egus: EmissionsChanges) {
+function setEmissionsReplacements(egus: EmissionsChanges["egus"]) {
   if (Object.keys(egus).length === 0) {
     return {} as { [pollutant in EmissionsFlagsField]: number };
   }
@@ -285,7 +330,9 @@ function setEmissionsReplacements(egus: EmissionsChanges) {
       object[pollutant] = Object.values(regionData).reduce((a, b) => (a += b));
       return object;
     },
-    {} as { [pollutant in EmissionsFlagsField]: number },
+    {} as {
+      [pollutant in EmissionsFlagsField]: number;
+    },
   );
 
   return result;

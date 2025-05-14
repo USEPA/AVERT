@@ -1,0 +1,4286 @@
+[
+  {
+    "State": "AL",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 23047.79751594144,
+    "2023 Stock (million vehicles)": 2.213973984952166
+  },
+  {
+    "State": "AL",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 38775.25127980492,
+    "2023 Stock (million vehicles)": 3.381332134545914
+  },
+  {
+    "State": "AL",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 3660.7876388083487,
+    "2023 Stock (million vehicles)": 0.30062457104226337
+  },
+  {
+    "State": "AL",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 57.68259267960911,
+    "2023 Stock (million vehicles)": 0.002023528573485782
+  },
+  {
+    "State": "AL",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 164.24102879243466,
+    "2023 Stock (million vehicles)": 0.006188314024866088
+  },
+  {
+    "State": "AL",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 20.925111257563398,
+    "2023 Stock (million vehicles)": 0.0006572338617570089
+  },
+  {
+    "State": "AL",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 54.85043486973585,
+    "2023 Stock (million vehicles)": 0.0016912456778029892
+  },
+  {
+    "State": "AL",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 112.97800697002175,
+    "2023 Stock (million vehicles)": 0.011095868477349695
+  },
+  {
+    "State": "AL",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 6.185632705676368,
+    "2023 Stock (million vehicles)": 0.0006041034621639625
+  },
+  {
+    "State": "AL",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 4.7845054664197315,
+    "2023 Stock (million vehicles)": 0.00025287264045401655
+  },
+  {
+    "State": "AL",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 17.837613049275674,
+    "2023 Stock (million vehicles)": 0.0009407979307255045
+  },
+  {
+    "State": "AL",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 2540.9860919345633,
+    "2023 Stock (million vehicles)": 0.2011871443040459
+  },
+  {
+    "State": "AL",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 1741.2505837639544,
+    "2023 Stock (million vehicles)": 0.03955469150954698
+  },
+  {
+    "State": "AL",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 2519.1946489205848,
+    "2023 Stock (million vehicles)": 0.033915674164314874
+  },
+  {
+    "State": "AK",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 1790.5305199140275,
+    "2023 Stock (million vehicles)": 0.17199856027937707
+  },
+  {
+    "State": "AK",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 3045.760105255579,
+    "2023 Stock (million vehicles)": 0.2656005100702585
+  },
+  {
+    "State": "AK",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 285.50376692801234,
+    "2023 Stock (million vehicles)": 0.023445623164206
+  },
+  {
+    "State": "AK",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 4.635469332245763,
+    "2023 Stock (million vehicles)": 0.00016261413035673417
+  },
+  {
+    "State": "AK",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 13.198682942227666,
+    "2023 Stock (million vehicles)": 0.000497303233921966
+  },
+  {
+    "State": "AK",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 1.6796643554293587,
+    "2023 Stock (million vehicles)": 0.00005275634032174702
+  },
+  {
+    "State": "AK",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 4.402859282155277,
+    "2023 Stock (million vehicles)": 0.0001357567492145528
+  },
+  {
+    "State": "AK",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 9.101862854258671,
+    "2023 Stock (million vehicles)": 0.0008939179919904853
+  },
+  {
+    "State": "AK",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 0.4983339860900768,
+    "2023 Stock (million vehicles)": 0.000048668471057895567
+  },
+  {
+    "State": "AK",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 0.38825325302967667,
+    "2023 Stock (million vehicles)": 0.000020520119779890945
+  },
+  {
+    "State": "AK",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 1.447487382190888,
+    "2023 Stock (million vehicles)": 0.00007634391048592468
+  },
+  {
+    "State": "AK",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 205.96015064679364,
+    "2023 Stock (million vehicles)": 0.016307265388261927
+  },
+  {
+    "State": "AK",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 145.78691112466714,
+    "2023 Stock (million vehicles)": 0.0033117325842905105
+  },
+  {
+    "State": "AK",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 234.55249996444743,
+    "2023 Stock (million vehicles)": 0.0031577576455349378
+  },
+  {
+    "State": "AZ",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 23766.58269615232,
+    "2023 Stock (million vehicles)": 2.2830205690630954
+  },
+  {
+    "State": "AZ",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 37295.538744562786,
+    "2023 Stock (million vehicles)": 3.2522962320007647
+  },
+  {
+    "State": "AZ",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 3740.6253899430308,
+    "2023 Stock (million vehicles)": 0.30718086221671004
+  },
+  {
+    "State": "AZ",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 56.720590952806766,
+    "2023 Stock (million vehicles)": 0.0019897811656197834
+  },
+  {
+    "State": "AZ",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 161.50189821646174,
+    "2023 Stock (million vehicles)": 0.0060851083868847565
+  },
+  {
+    "State": "AZ",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 21.20992315725315,
+    "2023 Stock (million vehicles)": 0.0006661794784566463
+  },
+  {
+    "State": "AZ",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 55.59700469016686,
+    "2023 Stock (million vehicles)": 0.0017142652397258956
+  },
+  {
+    "State": "AZ",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 105.85956532352812,
+    "2023 Stock (million vehicles)": 0.010396747521054732
+  },
+  {
+    "State": "AZ",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 5.795892554978876,
+    "2023 Stock (million vehicles)": 0.0005660405208961101
+  },
+  {
+    "State": "AZ",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 4.6191255540583365,
+    "2023 Stock (million vehicles)": 0.0002441319136620005
+  },
+  {
+    "State": "AZ",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 17.221042976667274,
+    "2023 Stock (million vehicles)": 0.0009082785657827379
+  },
+  {
+    "State": "AZ",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 2419.5478934679845,
+    "2023 Stock (million vehicles)": 0.1915720565094024
+  },
+  {
+    "State": "AZ",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 1624.8909437001846,
+    "2023 Stock (million vehicles)": 0.03691143630561459
+  },
+  {
+    "State": "AZ",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 2631.570147985154,
+    "2023 Stock (million vehicles)": 0.035428574650968186
+  },
+  {
+    "State": "AR",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 11343.176881381516,
+    "2023 Stock (million vehicles)": 1.0896268289722397
+  },
+  {
+    "State": "AR",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 19443.38913753538,
+    "2023 Stock (million vehicles)": 1.6955288315428865
+  },
+  {
+    "State": "AR",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1817.8639754667176,
+    "2023 Stock (million vehicles)": 0.1492833323748218
+  },
+  {
+    "State": "AR",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 29.24199445746295,
+    "2023 Stock (million vehicles)": 0.0010258209380263606
+  },
+  {
+    "State": "AR",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 83.2614317513879,
+    "2023 Stock (million vehicles)": 0.0031371447781705472
+  },
+  {
+    "State": "AR",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 10.676394369560885,
+    "2023 Stock (million vehicles)": 0.00033533336166186625
+  },
+  {
+    "State": "AR",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 27.98574721076082,
+    "2023 Stock (million vehicles)": 0.0008629060849324547
+  },
+  {
+    "State": "AR",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 57.91890462232915,
+    "2023 Stock (million vehicles)": 0.00568836860621956
+  },
+  {
+    "State": "AR",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 3.171104538991327,
+    "2023 Stock (million vehicles)": 0.0003096975397731841
+  },
+  {
+    "State": "AR",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 2.4929555966841024,
+    "2023 Stock (million vehicles)": 0.00013175870916913354
+  },
+  {
+    "State": "AR",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 9.29424735634235,
+    "2023 Stock (million vehicles)": 0.0004902006034295574
+  },
+  {
+    "State": "AR",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1322.0188159616412,
+    "2023 Stock (million vehicles)": 0.10467321767079864
+  },
+  {
+    "State": "AR",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 944.3046075493563,
+    "2023 Stock (million vehicles)": 0.02145106384511173
+  },
+  {
+    "State": "AR",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 1449.2781308172157,
+    "2023 Stock (million vehicles)": 0.019511491451970564
+  },
+  {
+    "State": "CA",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 118439.0348632458,
+    "2023 Stock (million vehicles)": 11.377266821643117
+  },
+  {
+    "State": "CA",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 181637.15836699578,
+    "2023 Stock (million vehicles)": 15.839370220504671
+  },
+  {
+    "State": "CA",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 18691.95747749505,
+    "2023 Stock (million vehicles)": 1.5349870719191325
+  },
+  {
+    "State": "CA",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 272.96498144755674,
+    "2023 Stock (million vehicles)": 0.00957572144144284
+  },
+  {
+    "State": "CA",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 777.2197346653371,
+    "2023 Stock (million vehicles)": 0.029284277015279834
+  },
+  {
+    "State": "CA",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 104.8834352731466,
+    "2023 Stock (million vehicles)": 0.003294268993384471
+  },
+  {
+    "State": "CA",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 274.92814564053975,
+    "2023 Stock (million vehicles)": 0.008477071132165353
+  },
+  {
+    "State": "CA",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 503.97610912336444,
+    "2023 Stock (million vehicles)": 0.04949682484700876
+  },
+  {
+    "State": "CA",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 27.593079282237646,
+    "2023 Stock (million vehicles)": 0.0026948051265423103
+  },
+  {
+    "State": "CA",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 22.649055878339073,
+    "2023 Stock (million vehicles)": 0.001197057167965146
+  },
+  {
+    "State": "CA",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 84.4403037105429,
+    "2023 Stock (million vehicles)": 0.0044535814731073405
+  },
+  {
+    "State": "CA",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 11779.221297548656,
+    "2023 Stock (million vehicles)": 0.9326410335347226
+  },
+  {
+    "State": "CA",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 7922.653563706172,
+    "2023 Stock (million vehicles)": 0.1799730151257152
+  },
+  {
+    "State": "CA",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 12262.543400867244,
+    "2023 Stock (million vehicles)": 0.16508943704996468
+  },
+  {
+    "State": "CO",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 16849.991434105017,
+    "2023 Stock (million vehicles)": 1.6186120455098754
+  },
+  {
+    "State": "CO",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 27102.34532368161,
+    "2023 Stock (million vehicles)": 2.3634155328415405
+  },
+  {
+    "State": "CO",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 2670.2993974687306,
+    "2023 Stock (million vehicles)": 0.21928548993346245
+  },
+  {
+    "State": "CO",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 40.82910829521507,
+    "2023 Stock (million vehicles)": 0.001432301556280758
+  },
+  {
+    "State": "CO",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 116.25369872554941,
+    "2023 Stock (million vehicles)": 0.004380235557188691
+  },
+  {
+    "State": "CO",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 15.250877708948902,
+    "2023 Stock (million vehicles)": 0.0004790126622726277
+  },
+  {
+    "State": "CO",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 39.97671812514975,
+    "2023 Stock (million vehicles)": 0.0012326329208232492
+  },
+  {
+    "State": "CO",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 77.69829058167946,
+    "2023 Stock (million vehicles)": 0.007630954345282238
+  },
+  {
+    "State": "CO",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 4.254041120806025,
+    "2023 Stock (million vehicles)": 0.000415459677537672
+  },
+  {
+    "State": "CO",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 3.397570173377888,
+    "2023 Stock (million vehicles)": 0.0001795697688924965
+  },
+  {
+    "State": "CO",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 12.666835159000438,
+    "2023 Stock (million vehicles)": 0.0006680788664665306
+  },
+  {
+    "State": "CO",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1784.7709717403857,
+    "2023 Stock (million vehicles)": 0.14131245195751035
+  },
+  {
+    "State": "CO",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 1224.9009863491224,
+    "2023 Stock (million vehicles)": 0.027825162613899435
+  },
+  {
+    "State": "CO",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 1901.0558300588004,
+    "2023 Stock (million vehicles)": 0.02559373096797889
+  },
+  {
+    "State": "CT",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 11043.41046265737,
+    "2023 Stock (million vehicles)": 1.0608312335510928
+  },
+  {
+    "State": "CT",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 16509.936583162234,
+    "2023 Stock (million vehicles)": 1.4397219170836664
+  },
+  {
+    "State": "CT",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1733.8424543370272,
+    "2023 Stock (million vehicles)": 0.14238346921964737
+  },
+  {
+    "State": "CT",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 24.387357182982043,
+    "2023 Stock (million vehicles)": 0.0008555183080217654
+  },
+  {
+    "State": "CT",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 69.43870667376315,
+    "2023 Stock (million vehicles)": 0.002616328730629609
+  },
+  {
+    "State": "CT",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 9.46224757615159,
+    "2023 Stock (million vehicles)": 0.0002971983966454269
+  },
+  {
+    "State": "CT",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 24.803136671945925,
+    "2023 Stock (million vehicles)": 0.0007647742044709043
+  },
+  {
+    "State": "CT",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 44.29776219531019,
+    "2023 Stock (million vehicles)": 0.004350600230454584
+  },
+  {
+    "State": "CT",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 2.425336523207498,
+    "2023 Stock (million vehicles)": 0.0002368640784697462
+  },
+  {
+    "State": "CT",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 1.9957271412634408,
+    "2023 Stock (million vehicles)": 0.00010547898740612703
+  },
+  {
+    "State": "CT",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 7.440478174316575,
+    "2023 Stock (million vehicles)": 0.000392428429222461
+  },
+  {
+    "State": "CT",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1034.751474058785,
+    "2023 Stock (million vehicles)": 0.08192830916748282
+  },
+  {
+    "State": "CT",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 667.7108575769926,
+    "2023 Stock (million vehicles)": 0.015167889811667298
+  },
+  {
+    "State": "CT",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 943.4023759799437,
+    "2023 Stock (million vehicles)": 0.01270093504020653
+  },
+  {
+    "State": "DE",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 2906.0422255125554,
+    "2023 Stock (million vehicles)": 0.27915473840861255
+  },
+  {
+    "State": "DE",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 4659.529040133712,
+    "2023 Stock (million vehicles)": 0.4063265808791755
+  },
+  {
+    "State": "DE",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 458.02203596538146,
+    "2023 Stock (million vehicles)": 0.03761285594124717
+  },
+  {
+    "State": "DE",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 6.882684508256988,
+    "2023 Stock (million vehicles)": 0.00024144734343172657
+  },
+  {
+    "State": "DE",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 19.59723257878952,
+    "2023 Stock (million vehicles)": 0.0007383893665763007
+  },
+  {
+    "State": "DE",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 2.546834593988654,
+    "2023 Stock (million vehicles)": 0.00007999316777149675
+  },
+  {
+    "State": "DE",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 6.675949451454982,
+    "2023 Stock (million vehicles)": 0.00020584468804702588
+  },
+  {
+    "State": "DE",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 13.091420481399535,
+    "2023 Stock (million vehicles)": 0.001285742984312298
+  },
+  {
+    "State": "DE",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 0.7167653321676468,
+    "2023 Stock (million vehicles)": 0.00007000099089689352
+  },
+  {
+    "State": "DE",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 0.561367874864707,
+    "2023 Stock (million vehicles)": 0.00002966964460160265
+  },
+  {
+    "State": "DE",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 2.092894030618374,
+    "2023 Stock (million vehicles)": 0.00011038418468851622
+  },
+  {
+    "State": "DE",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 296.00115332613416,
+    "2023 Stock (million vehicles)": 0.023436423732272244
+  },
+  {
+    "State": "DE",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 195.0185923705928,
+    "2023 Stock (million vehicles)": 0.004430091987777087
+  },
+  {
+    "State": "DE",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 271.4577128162613,
+    "2023 Stock (million vehicles)": 0.003654608960530832
+  },
+  {
+    "State": "DC",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 1122.4847570831441,
+    "2023 Stock (million vehicles)": 0.10782601022802833
+  },
+  {
+    "State": "DC",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 1649.9410020183548,
+    "2023 Stock (million vehicles)": 0.14388039654394774
+  },
+  {
+    "State": "DC",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 172.75124999857437,
+    "2023 Stock (million vehicles)": 0.014186365217497592
+  },
+  {
+    "State": "DC",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 2.4006647053454238,
+    "2023 Stock (million vehicles)": 0.0000842162843408831
+  },
+  {
+    "State": "DC",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 6.835470159631051,
+    "2023 Stock (million vehicles)": 0.0002575485319740452
+  },
+  {
+    "State": "DC",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 0.8960632374217241,
+    "2023 Stock (million vehicles)": 0.000028144323567039607
+  },
+  {
+    "State": "DC",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 2.3488266149887194,
+    "2023 Stock (million vehicles)": 0.0000724231789582423
+  },
+  {
+    "State": "DC",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 4.275009097130752,
+    "2023 Stock (million vehicles)": 0.0004198599351626293
+  },
+  {
+    "State": "DC",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 0.2340600334301584,
+    "2023 Stock (million vehicles)": 0.000022858854263948812
+  },
+  {
+    "State": "DC",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 0.1798556359357,
+    "2023 Stock (million vehicles)": 0.00000950580365699325
+  },
+  {
+    "State": "DC",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 0.6705385250511856,
+    "2023 Stock (million vehicles)": 0.00003536578885847641
+  },
+  {
+    "State": "DC",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 94.10611220364427,
+    "2023 Stock (million vehicles)": 0.007451020702515074
+  },
+  {
+    "State": "DC",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 52.779214604913896,
+    "2023 Stock (million vehicles)": 0.00119894607432134
+  },
+  {
+    "State": "DC",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 62.237670172156115,
+    "2023 Stock (million vehicles)": 0.0008378997403830579
+  },
+  {
+    "State": "FL",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 74052.15888596553,
+    "2023 Stock (million vehicles)": 7.11345859358897
+  },
+  {
+    "State": "FL",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 114518.14493251473,
+    "2023 Stock (million vehicles)": 9.986366836275645
+  },
+  {
+    "State": "FL",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 11552.057678596497,
+    "2023 Stock (million vehicles)": 0.9486571543969775
+  },
+  {
+    "State": "FL",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 170.04768057236555,
+    "2023 Stock (million vehicles)": 0.00596534109353242
+  },
+  {
+    "State": "FL",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 484.18083694850077,
+    "2023 Stock (million vehicles)": 0.018243085092010947
+  },
+  {
+    "State": "FL",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 63.03241010607676,
+    "2023 Stock (million vehicles)": 0.001979776059489028
+  },
+  {
+    "State": "FL",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 165.22517193098227,
+    "2023 Stock (million vehicles)": 0.005094514903230258
+  },
+  {
+    "State": "FL",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 314.5123391495822,
+    "2023 Stock (million vehicles)": 0.030889087560496364
+  },
+  {
+    "State": "FL",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 17.219792272478774,
+    "2023 Stock (million vehicles)": 0.0016817254797561096
+  },
+  {
+    "State": "FL",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 13.400122904282435,
+    "2023 Stock (million vehicles)": 0.0007082287782920844
+  },
+  {
+    "State": "FL",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 49.95839358047402,
+    "2023 Stock (million vehicles)": 0.002634923920204044
+  },
+  {
+    "State": "FL",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 7040.861557099407,
+    "2023 Stock (million vehicles)": 0.5574728781905679
+  },
+  {
+    "State": "FL",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 4424.063024608699,
+    "2023 Stock (million vehicles)": 0.10049814184637348
+  },
+  {
+    "State": "FL",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 6263.91918634884,
+    "2023 Stock (million vehicles)": 0.08433053881201094
+  },
+  {
+    "State": "GA",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 40517.843964247884,
+    "2023 Stock (million vehicles)": 3.892148583878766
+  },
+  {
+    "State": "GA",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 64345.31354457805,
+    "2023 Stock (million vehicles)": 5.611127438625573
+  },
+  {
+    "State": "GA",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 6377.805020646776,
+    "2023 Stock (million vehicles)": 0.5237465506595873
+  },
+  {
+    "State": "GA",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 95.57452083871165,
+    "2023 Stock (million vehicles)": 0.003352792668119984
+  },
+  {
+    "State": "GA",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 272.13162411201654,
+    "2023 Stock (million vehicles)": 0.010253442507537121
+  },
+  {
+    "State": "GA",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 35.502460797509116,
+    "2023 Stock (million vehicles)": 0.0011150917729715723
+  },
+  {
+    "State": "GA",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 93.06165160700226,
+    "2023 Stock (million vehicles)": 0.002869441535392297
+  },
+  {
+    "State": "GA",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 180.45019878873467,
+    "2023 Stock (million vehicles)": 0.01772249065256299
+  },
+  {
+    "State": "GA",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 9.879787060410596,
+    "2023 Stock (million vehicles)": 0.0009648832791445461
+  },
+  {
+    "State": "GA",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 7.771876558311826,
+    "2023 Stock (million vehicles)": 0.00041076239966209596
+  },
+  {
+    "State": "GA",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 28.975142297755895,
+    "2023 Stock (million vehicles)": 0.0015282175838718917
+  },
+  {
+    "State": "GA",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 4089.4112685232176,
+    "2023 Stock (million vehicles)": 0.32378649281491517
+  },
+  {
+    "State": "GA",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 2691.18837762522,
+    "2023 Stock (million vehicles)": 0.061133720248891174
+  },
+  {
+    "State": "GA",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 3863.4506365283764,
+    "2023 Stock (million vehicles)": 0.052013262649059325
+  },
+  {
+    "State": "HI",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 3139.0429148912003,
+    "2023 Stock (million vehicles)": 0.3015368104657547
+  },
+  {
+    "State": "HI",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 4876.116316985749,
+    "2023 Stock (million vehicles)": 0.4252137188081825
+  },
+  {
+    "State": "HI",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 491.30196956442865,
+    "2023 Stock (million vehicles)": 0.04034581036243982
+  },
+  {
+    "State": "HI",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 7.058505497921566,
+    "2023 Stock (million vehicles)": 0.00024761521453247465
+  },
+  {
+    "State": "HI",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 20.097851897102814,
+    "2023 Stock (million vehicles)": 0.0007572518248269275
+  },
+  {
+    "State": "HI",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 2.6377078555615725,
+    "2023 Stock (million vehicles)": 0.00008284739319944702
+  },
+  {
+    "State": "HI",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 6.914153103227891,
+    "2023 Stock (million vehicles)": 0.00021318940459220107
+  },
+  {
+    "State": "HI",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 13.17174492246525,
+    "2023 Stock (million vehicles)": 0.0012936318598331623
+  },
+  {
+    "State": "HI",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 0.7211631570456628,
+    "2023 Stock (million vehicles)": 0.00007043049283488635
+  },
+  {
+    "State": "HI",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 0.5642207396775553,
+    "2023 Stock (million vehicles)": 0.000029820425379918527
+  },
+  {
+    "State": "HI",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 2.1035300930015484,
+    "2023 Stock (million vehicles)": 0.00011094515579230217
+  },
+  {
+    "State": "HI",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 296.6491127257298,
+    "2023 Stock (million vehicles)": 0.02348772708322069
+  },
+  {
+    "State": "HI",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 184.886796458593,
+    "2023 Stock (million vehicles)": 0.004199935532713329
+  },
+  {
+    "State": "HI",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 223.48126185931332,
+    "2023 Stock (million vehicles)": 0.0030087066365824715
+  },
+  {
+    "State": "ID",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 5728.369334751564,
+    "2023 Stock (million vehicles)": 0.5502677934655423
+  },
+  {
+    "State": "ID",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 10071.518995303619,
+    "2023 Stock (million vehicles)": 0.8782702806170192
+  },
+  {
+    "State": "ID",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 919.2090359217648,
+    "2023 Stock (million vehicles)": 0.07548561932210465
+  },
+  {
+    "State": "ID",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 15.256692558212485,
+    "2023 Stock (million vehicles)": 0.0005352109170943053
+  },
+  {
+    "State": "ID",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 43.440746424986784,
+    "2023 Stock (million vehicles)": 0.0016367711669179458
+  },
+  {
+    "State": "ID",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 5.472114780651844,
+    "2023 Stock (million vehicles)": 0.00017187287967061453
+  },
+  {
+    "State": "ID",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 14.34390822019521,
+    "2023 Stock (million vehicles)": 0.0004422767629430968
+  },
+  {
+    "State": "ID",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 30.574651389474443,
+    "2023 Stock (million vehicles)": 0.0030028172708733026
+  },
+  {
+    "State": "ID",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 1.6739856603203265,
+    "2023 Stock (million vehicles)": 0.00016348538316611225
+  },
+  {
+    "State": "ID",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 1.295666115604845,
+    "2023 Stock (million vehicles)": 0.00006847907565355333
+  },
+  {
+    "State": "ID",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 4.83050776583433,
+    "2023 Stock (million vehicles)": 0.0002547724125361583
+  },
+  {
+    "State": "ID",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 690.4717728285534,
+    "2023 Stock (million vehicles)": 0.054669344566214036
+  },
+  {
+    "State": "ID",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 497.39288391827705,
+    "2023 Stock (million vehicles)": 0.011298903366282188
+  },
+  {
+    "State": "ID",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 782.9415581630382,
+    "2023 Stock (million vehicles)": 0.010540666552993964
+  },
+  {
+    "State": "IL",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 32825.08029739663,
+    "2023 Stock (million vehicles)": 3.1531808530570333
+  },
+  {
+    "State": "IL",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 52086.57179337934,
+    "2023 Stock (million vehicles)": 4.542123988117502
+  },
+  {
+    "State": "IL",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 5169.035107086082,
+    "2023 Stock (million vehicles)": 0.4244821374768382
+  },
+  {
+    "State": "IL",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 78.48636825971069,
+    "2023 Stock (million vehicles)": 0.0027533333961736943
+  },
+  {
+    "State": "IL",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 223.47611766961413,
+    "2023 Stock (million vehicles)": 0.008420188325447229
+  },
+  {
+    "State": "IL",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 29.15807846504053,
+    "2023 Stock (million vehicles)": 0.0009158219650595998
+  },
+  {
+    "State": "IL",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 76.43129176650253,
+    "2023 Stock (million vehicles)": 0.002356664849713326
+  },
+  {
+    "State": "IL",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 147.74528448282175,
+    "2023 Stock (million vehicles)": 0.014510454633927151
+  },
+  {
+    "State": "IL",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 8.089167868299354,
+    "2023 Stock (million vehicles)": 0.0007900071904981926
+  },
+  {
+    "State": "IL",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 6.389255018211012,
+    "2023 Stock (million vehicles)": 0.00033768752033595405
+  },
+  {
+    "State": "IL",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 23.820446959019684,
+    "2023 Stock (million vehicles)": 0.0012563467514456693
+  },
+  {
+    "State": "IL",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 3357.377665108892,
+    "2023 Stock (million vehicles)": 0.26582641555475245
+  },
+  {
+    "State": "IL",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 2242.229904035839,
+    "2023 Stock (million vehicles)": 0.050935065276992784
+  },
+  {
+    "State": "IL",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 3468.352631592242,
+    "2023 Stock (million vehicles)": 0.046694096381329146
+  },
+  {
+    "State": "IN",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 26221.50758554897,
+    "2023 Stock (million vehicles)": 2.5188409261439135
+  },
+  {
+    "State": "IN",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 43314.59882357887,
+    "2023 Stock (million vehicles)": 3.7771784853245416
+  },
+  {
+    "State": "IN",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 4146.373018358364,
+    "2023 Stock (million vehicles)": 0.3405009339550101
+  },
+  {
+    "State": "IN",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 64.85277694049658,
+    "2023 Stock (million vehicles)": 0.002275061523983565
+  },
+  {
+    "State": "IN",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 184.65686630827793,
+    "2023 Stock (million vehicles)": 0.00695754699032899
+  },
+  {
+    "State": "IN",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 23.591901320050212,
+    "2023 Stock (million vehicles)": 0.0007409946938830455
+  },
+  {
+    "State": "IN",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 61.84082038469072,
+    "2023 Stock (million vehicles)": 0.0019067856150235657
+  },
+  {
+    "State": "IN",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 125.3356486849075,
+    "2023 Stock (million vehicles)": 0.012309545110846773
+  },
+  {
+    "State": "IN",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 6.862223086465368,
+    "2023 Stock (million vehicles)": 0.0006701808726649744
+  },
+  {
+    "State": "IN",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 5.31112828636296,
+    "2023 Stock (million vehicles)": 0.0002807059251972437
+  },
+  {
+    "State": "IN",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 19.80097042257073,
+    "2023 Stock (million vehicles)": 0.0010443500455162044
+  },
+  {
+    "State": "IN",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 2814.105609596046,
+    "2023 Stock (million vehicles)": 0.2228118733753399
+  },
+  {
+    "State": "IN",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 1903.9370499949746,
+    "2023 Stock (million vehicles)": 0.043250318689545576
+  },
+  {
+    "State": "IN",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 2838.1240927171007,
+    "2023 Stock (million vehicles)": 0.038209390452511816
+  },
+  {
+    "State": "IA",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 9686.288347638529,
+    "2023 Stock (million vehicles)": 0.9304659327028556
+  },
+  {
+    "State": "IA",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 17358.540091471197,
+    "2023 Stock (million vehicles)": 1.5137229929613618
+  },
+  {
+    "State": "IA",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1562.1801453580354,
+    "2023 Stock (million vehicles)": 0.12828652804396837
+  },
+  {
+    "State": "IA",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 26.24860214459746,
+    "2023 Stock (million vehicles)": 0.0009208115305890054
+  },
+  {
+    "State": "IA",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 74.73827406714274,
+    "2023 Stock (million vehicles)": 0.002816007139047393
+  },
+  {
+    "State": "IA",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 9.388913188561226,
+    "2023 Stock (million vehicles)": 0.00029489504723130203
+  },
+  {
+    "State": "IA",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 24.61090720177842,
+    "2023 Stock (million vehicles)": 0.0007588470452544053
+  },
+  {
+    "State": "IA",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 53.22054251706592,
+    "2023 Stock (million vehicles)": 0.005226930053910892
+  },
+  {
+    "State": "IA",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 2.9138656030173684,
+    "2023 Stock (million vehicles)": 0.0002845749792818964
+  },
+  {
+    "State": "IA",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 2.256700044356502,
+    "2023 Stock (million vehicles)": 0.00011927203405541328
+  },
+  {
+    "State": "IA",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 8.413438429956884,
+    "2023 Stock (million vehicles)": 0.00044374465593148896
+  },
+  {
+    "State": "IA",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1204.6731846613498,
+    "2023 Stock (million vehicles)": 0.09538216624285197
+  },
+  {
+    "State": "IA",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 880.3243883812427,
+    "2023 Stock (million vehicles)": 0.019997672899830645
+  },
+  {
+    "State": "IA",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 1375.9729770083602,
+    "2023 Stock (million vehicles)": 0.01852459124868083
+  },
+  {
+    "State": "KS",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 9270.71281576698,
+    "2023 Stock (million vehicles)": 0.8905457010317005
+  },
+  {
+    "State": "KS",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 15864.795145252003,
+    "2023 Stock (million vehicles)": 1.3834634170525106
+  },
+  {
+    "State": "KS",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1485.4021562204093,
+    "2023 Stock (million vehicles)": 0.1219815051015561
+  },
+  {
+    "State": "KS",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 24.337824185325868,
+    "2023 Stock (million vehicles)": 0.0008537806705226271
+  },
+  {
+    "State": "KS",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 69.2976701822274,
+    "2023 Stock (million vehicles)": 0.002611014722887411
+  },
+  {
+    "State": "KS",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 8.875704886346046,
+    "2023 Stock (million vehicles)": 0.00027877576020821727
+  },
+  {
+    "State": "KS",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 23.26564799580471,
+    "2023 Stock (million vehicles)": 0.0007173676326840036
+  },
+  {
+    "State": "KS",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 47.94658111680902,
+    "2023 Stock (million vehicles)": 0.004708960374490033
+  },
+  {
+    "State": "KS",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 2.625112163292055,
+    "2023 Stock (million vehicles)": 0.00025637463811231177
+  },
+  {
+    "State": "KS",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 2.0700764684962794,
+    "2023 Stock (million vehicles)": 0.00010940852846847976
+  },
+  {
+    "State": "KS",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 7.717667643314245,
+    "2023 Stock (million vehicles)": 0.0004070480578763354
+  },
+  {
+    "State": "KS",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1096.063994962763,
+    "2023 Stock (million vehicles)": 0.08678283829296965
+  },
+  {
+    "State": "KS",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 793.5662570371937,
+    "2023 Stock (million vehicles)": 0.01802685310326778
+  },
+  {
+    "State": "KS",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 1320.6008176876428,
+    "2023 Stock (million vehicles)": 0.017779121217573628
+  },
+  {
+    "State": "KY",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 15519.193070437006,
+    "2023 Stock (million vehicles)": 1.4907754071352082
+  },
+  {
+    "State": "KY",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 26751.637074770788,
+    "2023 Stock (million vehicles)": 2.332832595716644
+  },
+  {
+    "State": "KY",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 2488.4330399680825,
+    "2023 Stock (million vehicles)": 0.204350590369485
+  },
+  {
+    "State": "KY",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 41.54141111485308,
+    "2023 Stock (million vehicles)": 0.0014572894259577975
+  },
+  {
+    "State": "KY",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 118.28185561785271,
+    "2023 Stock (million vehicles)": 0.004456652953216652
+  },
+  {
+    "State": "KY",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 15.073617191156899,
+    "2023 Stock (million vehicles)": 0.00047344511172479594
+  },
+  {
+    "State": "KY",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 39.51206986753954,
+    "2023 Stock (million vehicles)": 0.0012183060634474016
+  },
+  {
+    "State": "KY",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 81.94298541784288,
+    "2023 Stock (million vehicles)": 0.008047837036805127
+  },
+  {
+    "State": "KY",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 4.4864414251515905,
+    "2023 Stock (million vehicles)": 0.0004381564387492259
+  },
+  {
+    "State": "KY",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 3.53087864304395,
+    "2023 Stock (million vehicles)": 0.0001866154426733998
+  },
+  {
+    "State": "KY",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 13.163836346434284,
+    "2023 Stock (million vehicles)": 0.0006942918854065774
+  },
+  {
+    "State": "KY",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1870.5187237010268,
+    "2023 Stock (million vehicles)": 0.1481016844535922
+  },
+  {
+    "State": "KY",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 1368.8708630638355,
+    "2023 Stock (million vehicles)": 0.031095618981993332
+  },
+  {
+    "State": "KY",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 2379.6305207411287,
+    "2023 Stock (million vehicles)": 0.03203673579074011
+  },
+  {
+    "State": "LA",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 16443.692204092204,
+    "2023 Stock (million vehicles)": 1.5795828964238363
+  },
+  {
+    "State": "LA",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 27236.959508336244,
+    "2023 Stock (million vehicles)": 2.3751543418322023
+  },
+  {
+    "State": "LA",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 2613.0904120295977,
+    "2023 Stock (million vehicles)": 0.21458747726398086
+  },
+  {
+    "State": "LA",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 41.459468185200144,
+    "2023 Stock (million vehicles)": 0.0014544148349963822
+  },
+  {
+    "State": "LA",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 118.04853755007436,
+    "2023 Stock (million vehicles)": 0.004447861937465567
+  },
+  {
+    "State": "LA",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 15.214407220075158,
+    "2023 Stock (million vehicles)": 0.00047786716584263876
+  },
+  {
+    "State": "LA",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 39.88111900741908,
+    "2023 Stock (million vehicles)": 0.001229685239641731
+  },
+  {
+    "State": "LA",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 80.14115061853292,
+    "2023 Stock (million vehicles)": 0.007870874081914623
+  },
+  {
+    "State": "LA",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 4.387789585171843,
+    "2023 Stock (million vehicles)": 0.00042852186765257507
+  },
+  {
+    "State": "LA",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 3.454813438688913,
+    "2023 Stock (million vehicles)": 0.000182595213371347
+  },
+  {
+    "State": "LA",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 12.880249737259703,
+    "2023 Stock (million vehicles)": 0.0006793348564388623
+  },
+  {
+    "State": "LA",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1824.3223736842567,
+    "2023 Stock (million vehicles)": 0.1444440053475765
+  },
+  {
+    "State": "LA",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 1275.9517953324278,
+    "2023 Stock (million vehicles)": 0.028984845786141307
+  },
+  {
+    "State": "LA",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 2062.1484994315233,
+    "2023 Stock (million vehicles)": 0.02776250601164052
+  },
+  {
+    "State": "ME",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 4227.35630715824,
+    "2023 Stock (million vehicles)": 0.40608031560058166
+  },
+  {
+    "State": "ME",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 7839.537791728575,
+    "2023 Stock (million vehicles)": 0.6836340237713683
+  },
+  {
+    "State": "ME",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 688.6189055269438,
+    "2023 Stock (million vehicles)": 0.056549514342497546
+  },
+  {
+    "State": "ME",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 11.741366382846275,
+    "2023 Stock (million vehicles)": 0.0004118918596364286
+  },
+  {
+    "State": "ME",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 33.43147394325211,
+    "2023 Stock (million vehicles)": 0.0012596393276154503
+  },
+  {
+    "State": "ME",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 4.189340950088655,
+    "2023 Stock (million vehicles)": 0.0001315824177445332
+  },
+  {
+    "State": "ME",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 10.981407463097641,
+    "2023 Stock (million vehicles)": 0.0003385981889161793
+  },
+  {
+    "State": "ME",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 24.3389380282906,
+    "2023 Stock (million vehicles)": 0.0023903913910601833
+  },
+  {
+    "State": "ME",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 1.3325755616238908,
+    "2023 Stock (million vehicles)": 0.0001301424686327305
+  },
+  {
+    "State": "ME",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 1.034616475460037,
+    "2023 Stock (million vehicles)": 0.00005468197326621179
+  },
+  {
+    "State": "ME",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 3.857261418800639,
+    "2023 Stock (million vehicles)": 0.00020344109668991416
+  },
+  {
+    "State": "ME",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 553.9158932528962,
+    "2023 Stock (million vehicles)": 0.043857287177565825
+  },
+  {
+    "State": "ME",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 413.73334667621344,
+    "2023 Stock (million vehicles)": 0.009398472022111066
+  },
+  {
+    "State": "ME",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 623.4115078894695,
+    "2023 Stock (million vehicles)": 0.008392928899290466
+  },
+  {
+    "State": "MD",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 18011.122933635386,
+    "2023 Stock (million vehicles)": 1.730150466102585
+  },
+  {
+    "State": "MD",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 27749.488080449522,
+    "2023 Stock (million vehicles)": 2.4198485545983237
+  },
+  {
+    "State": "MD",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 2838.561684024929,
+    "2023 Stock (million vehicles)": 0.23310322062679847
+  },
+  {
+    "State": "MD",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 41.18395459562777,
+    "2023 Stock (million vehicles)": 0.0014447497073558826
+  },
+  {
+    "State": "MD",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 117.26406110240487,
+    "2023 Stock (million vehicles)": 0.004418304240226439
+  },
+  {
+    "State": "MD",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 15.735005401851788,
+    "2023 Stock (million vehicles)": 0.0004942185605483211
+  },
+  {
+    "State": "MD",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 41.245749107176465,
+    "2023 Stock (million vehicles)": 0.0012717619298903218
+  },
+  {
+    "State": "MD",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 76.3724391202683,
+    "2023 Stock (million vehicles)": 0.007500738971238474
+  },
+  {
+    "State": "MD",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 4.181449734371413,
+    "2023 Stock (million vehicles)": 0.00040837023172751404
+  },
+  {
+    "State": "MD",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 3.3957729653426867,
+    "2023 Stock (million vehicles)": 0.0001794747821181064
+  },
+  {
+    "State": "MD",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 12.660134800577595,
+    "2023 Stock (million vehicles)": 0.0006677254737047342
+  },
+  {
+    "State": "MD",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1770.9001483073725,
+    "2023 Stock (million vehicles)": 0.14021420456273256
+  },
+  {
+    "State": "MD",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 1170.5789709659437,
+    "2023 Stock (million vehicles)": 0.02659116988436723
+  },
+  {
+    "State": "MD",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 1694.7236897055907,
+    "2023 Stock (million vehicles)": 0.022815901297356327
+  },
+  {
+    "State": "MA",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 19611.715779036393,
+    "2023 Stock (million vehicles)": 1.8839035923076966
+  },
+  {
+    "State": "MA",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 28997.806351775514,
+    "2023 Stock (million vehicles)": 2.5287061002146376
+  },
+  {
+    "State": "MA",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 3052.87546443273,
+    "2023 Stock (million vehicles)": 0.25070270867700195
+  },
+  {
+    "State": "MA",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 42.609513020727945,
+    "2023 Stock (million vehicles)": 0.0014947588708202576
+  },
+  {
+    "State": "MA",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 121.32308777692768,
+    "2023 Stock (million vehicles)": 0.004571241249218268
+  },
+  {
+    "State": "MA",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 16.31502404090384,
+    "2023 Stock (million vehicles)": 0.0005124362839975782
+  },
+  {
+    "State": "MA",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 42.76613646344721,
+    "2023 Stock (million vehicles)": 0.0013186412035184325
+  },
+  {
+    "State": "MA",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 76.54072317819461,
+    "2023 Stock (million vehicles)": 0.007517266593062079
+  },
+  {
+    "State": "MA",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 4.190663415869878,
+    "2023 Stock (million vehicles)": 0.00040927006156826626
+  },
+  {
+    "State": "MA",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 3.365461426585383,
+    "2023 Stock (million vehicles)": 0.0001778727442699778
+  },
+  {
+    "State": "MA",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 12.547127196536644,
+    "2023 Stock (million vehicles)": 0.0006617651851984045
+  },
+  {
+    "State": "MA",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1749.3157441547635,
+    "2023 Stock (million vehicles)": 0.13850522054005288
+  },
+  {
+    "State": "MA",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 1070.1395851201892,
+    "2023 Stock (million vehicles)": 0.024309563227874784
+  },
+  {
+    "State": "MA",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 1432.622972276347,
+    "2023 Stock (million vehicles)": 0.019287264661686964
+  },
+  {
+    "State": "MI",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 29926.724859096852,
+    "2023 Stock (million vehicles)": 2.874764508280401
+  },
+  {
+    "State": "MI",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 48532.3819223096,
+    "2023 Stock (million vehicles)": 4.232186694955862
+  },
+  {
+    "State": "MI",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 4736.025483964238,
+    "2023 Stock (million vehicles)": 0.38892330559372124
+  },
+  {
+    "State": "MI",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 72.51342986917729,
+    "2023 Stock (million vehicles)": 0.002543800312804036
+  },
+  {
+    "State": "MI",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 206.46922701849735,
+    "2023 Stock (million vehicles)": 0.007779398501433894
+  },
+  {
+    "State": "MI",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 26.835327426791572,
+    "2023 Stock (million vehicles)": 0.0008428670060164709
+  },
+  {
+    "State": "MI",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 70.34272655058108,
+    "2023 Stock (million vehicles)": 0.0021689314319217694
+  },
+  {
+    "State": "MI",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 138.78864561119875,
+    "2023 Stock (million vehicles)": 0.013630799472856593
+  },
+  {
+    "State": "MI",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 7.598785006863836,
+    "2023 Stock (million vehicles)": 0.0007421152450053383
+  },
+  {
+    "State": "MI",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 5.989836290296366,
+    "2023 Stock (million vehicles)": 0.0003165772783091763
+  },
+  {
+    "State": "MI",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 22.33133240722738,
+    "2023 Stock (million vehicles)": 0.0011778073255107428
+  },
+  {
+    "State": "MI",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 3157.480594679337,
+    "2023 Stock (million vehicles)": 0.2499992054483607
+  },
+  {
+    "State": "MI",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 2139.619310615772,
+    "2023 Stock (million vehicles)": 0.04860413691654466
+  },
+  {
+    "State": "MI",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 3178.564086431136,
+    "2023 Stock (million vehicles)": 0.04279270119598842
+  },
+  {
+    "State": "MN",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 17493.44555753349,
+    "2023 Stock (million vehicles)": 1.680422319953472
+  },
+  {
+    "State": "MN",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 29557.052260923894,
+    "2023 Stock (million vehicles)": 2.5774742216659043
+  },
+  {
+    "State": "MN",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 2799.146360637704,
+    "2023 Stock (million vehicles)": 0.22986642683953734
+  },
+  {
+    "State": "MN",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 43.623559311523266,
+    "2023 Stock (million vehicles)": 0.0015303320229436191
+  },
+  {
+    "State": "MN",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 124.2104060874699,
+    "2023 Stock (million vehicles)": 0.004680030341242041
+  },
+  {
+    "State": "MN",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 16.082004841088082,
+    "2023 Stock (million vehicles)": 0.0005051174168874648
+  },
+  {
+    "State": "MN",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 42.155329462921834,
+    "2023 Stock (million vehicles)": 0.001299807721121006
+  },
+  {
+    "State": "MN",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 86.05702082267725,
+    "2023 Stock (million vehicles)": 0.008451887320461796
+  },
+  {
+    "State": "MN",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 4.711688025219574,
+    "2023 Stock (million vehicles)": 0.0004601545523483184
+  },
+  {
+    "State": "MN",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 3.7210415385755997,
+    "2023 Stock (million vehicles)": 0.00019666600983169225
+  },
+  {
+    "State": "MN",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 13.872802439300232,
+    "2023 Stock (million vehicles)": 0.0007316844351429284
+  },
+  {
+    "State": "MN",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1970.4454384798457,
+    "2023 Stock (million vehicles)": 0.1560135618345218
+  },
+  {
+    "State": "MN",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 1380.921072896825,
+    "2023 Stock (million vehicles)": 0.031369354616033344
+  },
+  {
+    "State": "MN",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 1946.0088793245202,
+    "2023 Stock (million vehicles)": 0.02619892952706674
+  },
+  {
+    "State": "MS",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 12979.348380213289,
+    "2023 Stock (million vehicles)": 1.2467976445709181
+  },
+  {
+    "State": "MS",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 23190.51372961037,
+    "2023 Stock (million vehicles)": 2.022290680328874
+  },
+  {
+    "State": "MS",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 2095.7350170375908,
+    "2023 Stock (million vehicles)": 0.17210215469375356
+  },
+  {
+    "State": "MS",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 34.634195267045264,
+    "2023 Stock (million vehicles)": 0.0012149815132586205
+  },
+  {
+    "State": "MS",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 98.61477436794252,
+    "2023 Stock (million vehicles)": 0.00371563181116808
+  },
+  {
+    "State": "MS",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 12.466340496162774,
+    "2023 Stock (million vehicles)": 0.0003915535265462145
+  },
+  {
+    "State": "MS",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 32.67768515216722,
+    "2023 Stock (million vehicles)": 0.0010075762189572584
+  },
+  {
+    "State": "MS",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 70.36713247480745,
+    "2023 Stock (million vehicles)": 0.006910941943557954
+  },
+  {
+    "State": "MS",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 3.852654580429324,
+    "2023 Stock (million vehicles)": 0.00037625932241715807
+  },
+  {
+    "State": "MS",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 2.9971191631013943,
+    "2023 Stock (million vehicles)": 0.00015840496825598053
+  },
+  {
+    "State": "MS",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 11.173872047841364,
+    "2023 Stock (million vehicles)": 0.0005893364584017365
+  },
+  {
+    "State": "MS",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1599.086541801504,
+    "2023 Stock (million vehicles)": 0.1266105532262634
+  },
+  {
+    "State": "MS",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 1163.2936847857125,
+    "2023 Stock (million vehicles)": 0.026425675468971264
+  },
+  {
+    "State": "MS",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 1729.5139527814622,
+    "2023 Stock (million vehicles)": 0.023284279247856313
+  },
+  {
+    "State": "MO",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 24472.891824919792,
+    "2023 Stock (million vehicles)": 2.350868702289003
+  },
+  {
+    "State": "MO",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 41132.111055628986,
+    "2023 Stock (million vehicles)": 3.586858222284333
+  },
+  {
+    "State": "MO",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 3915.628537792714,
+    "2023 Stock (million vehicles)": 0.32155215371027573
+  },
+  {
+    "State": "MO",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 63.088044446663,
+    "2023 Stock (million vehicles)": 0.0022131539976408105
+  },
+  {
+    "State": "MO",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 179.63210117782396,
+    "2023 Stock (million vehicles)": 0.006768222649407181
+  },
+  {
+    "State": "MO",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 23.257372209214026,
+    "2023 Stock (million vehicles)": 0.0007304875163259599
+  },
+  {
+    "State": "MO",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 60.96392816748365,
+    "2023 Stock (million vehicles)": 0.0018797477223291392
+  },
+  {
+    "State": "MO",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 123.06235102612445,
+    "2023 Stock (million vehicles)": 0.012086278543235794
+  },
+  {
+    "State": "MO",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 6.737758292608295,
+    "2023 Stock (million vehicles)": 0.000658025347682449
+  },
+  {
+    "State": "MO",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 5.3675795235,
+    "2023 Stock (million vehicles)": 0.00028368950907899006
+  },
+  {
+    "State": "MO",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 20.011432158119113,
+    "2023 Stock (million vehicles)": 0.0010554502955751005
+  },
+  {
+    "State": "MO",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 2831.9687184874274,
+    "2023 Stock (million vehicles)": 0.22422621715221355
+  },
+  {
+    "State": "MO",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 2041.5735665920174,
+    "2023 Stock (million vehicles)": 0.04637690483700069
+  },
+  {
+    "State": "MO",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 3406.619525865405,
+    "2023 Stock (million vehicles)": 0.04586298954332451
+  },
+  {
+    "State": "MT",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 3851.4594500097724,
+    "2023 Stock (million vehicles)": 0.36997162182295
+  },
+  {
+    "State": "MT",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 7116.027504342193,
+    "2023 Stock (million vehicles)": 0.6205414968716576
+  },
+  {
+    "State": "MT",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 624.9402936395285,
+    "2023 Stock (million vehicles)": 0.05132021472940859
+  },
+  {
+    "State": "MT",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 10.945186098586692,
+    "2023 Stock (million vehicles)": 0.00038396153473244993
+  },
+  {
+    "State": "MT",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 31.164490735382664,
+    "2023 Stock (million vehicles)": 0.0011742233747165938
+  },
+  {
+    "State": "MT",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 3.8730412854256047,
+    "2023 Stock (million vehicles)": 0.00012164780628559521
+  },
+  {
+    "State": "MT",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 10.15229960592201,
+    "2023 Stock (million vehicles)": 0.0003130336681751691
+  },
+  {
+    "State": "MT",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 22.46420015912316,
+    "2023 Stock (million vehicles)": 0.002206268433117507
+  },
+  {
+    "State": "MT",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 1.2299322225431335,
+    "2023 Stock (million vehicles)": 0.00012011807833069194
+  },
+  {
+    "State": "MT",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 0.9498139685994573,
+    "2023 Stock (million vehicles)": 0.00005019995647733736
+  },
+  {
+    "State": "MT",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 3.5411003623227284,
+    "2023 Stock (million vehicles)": 0.00018676601427340854
+  },
+  {
+    "State": "MT",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 508.23855763910257,
+    "2023 Stock (million vehicles)": 0.04024070197045824
+  },
+  {
+    "State": "MT",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 381.7990007595682,
+    "2023 Stock (million vehicles)": 0.008673043291134521
+  },
+  {
+    "State": "MT",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 635.2386792289079,
+    "2023 Stock (million vehicles)": 0.008552156964341251
+  },
+  {
+    "State": "NE",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 6365.238452154174,
+    "2023 Stock (million vehicles)": 0.611445511500143
+  },
+  {
+    "State": "NE",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 11157.968751027389,
+    "2023 Stock (million vehicles)": 0.9730123480529974
+  },
+  {
+    "State": "NE",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1022.9574275115891,
+    "2023 Stock (million vehicles)": 0.0840054567984374
+  },
+  {
+    "State": "NE",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 17.21472550625017,
+    "2023 Stock (million vehicles)": 0.0006038995011908634
+  },
+  {
+    "State": "NE",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 49.015900572121254,
+    "2023 Stock (million vehicles)": 0.0018468332010708394
+  },
+  {
+    "State": "NE",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 6.202431499210277,
+    "2023 Stock (million vehicles)": 0.0001948112942546892
+  },
+  {
+    "State": "NE",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 16.25826791522861,
+    "2023 Stock (million vehicles)": 0.000501303688940577
+  },
+  {
+    "State": "NE",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 34.32156158232263,
+    "2023 Stock (million vehicles)": 0.0033708112177599416
+  },
+  {
+    "State": "NE",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 1.8791318728948136,
+    "2023 Stock (million vehicles)": 0.00018352044557005113
+  },
+  {
+    "State": "NE",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 1.4685731169950857,
+    "2023 Stock (million vehicles)": 0.00007761762723457075
+  },
+  {
+    "State": "NE",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 5.475140362861677,
+    "2023 Stock (million vehicles)": 0.0002887718614358618
+  },
+  {
+    "State": "NE",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 780.4044566471391,
+    "2023 Stock (million vehicles)": 0.06178992656959095
+  },
+  {
+    "State": "NE",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 572.3371353310116,
+    "2023 Stock (million vehicles)": 0.013001356059011045
+  },
+  {
+    "State": "NE",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 969.19105084141,
+    "2023 Stock (million vehicles)": 0.013048125478271997
+  },
+  {
+    "State": "NV",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 8658.32357033265,
+    "2023 Stock (million vehicles)": 0.8317195222127335
+  },
+  {
+    "State": "NV",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 13533.026751411924,
+    "2023 Stock (million vehicles)": 1.18012538209008
+  },
+  {
+    "State": "NV",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1357.4164187273416,
+    "2023 Stock (million vehicles)": 0.11147129221034718
+  },
+  {
+    "State": "NV",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 20.427181967662243,
+    "2023 Stock (million vehicles)": 0.0007165937671516965
+  },
+  {
+    "State": "NV",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 58.16280485750607,
+    "2023 Stock (million vehicles)": 0.002191472518600254
+  },
+  {
+    "State": "NV",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 7.5921738685256415,
+    "2023 Stock (million vehicles)": 0.00023846151589460143
+  },
+  {
+    "State": "NV",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 19.90116244398723,
+    "2023 Stock (million vehicles)": 0.0006136278599537532
+  },
+  {
+    "State": "NV",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 38.01393849218075,
+    "2023 Stock (million vehicles)": 0.0037334493068834312
+  },
+  {
+    "State": "NV",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 2.081292346316539,
+    "2023 Stock (million vehicles)": 0.00020326391365452071
+  },
+  {
+    "State": "NV",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 1.638976250414985,
+    "2023 Stock (million vehicles)": 0.0000866238433611823
+  },
+  {
+    "State": "NV",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 6.110438028976149,
+    "2023 Stock (million vehicles)": 0.00032227896398507385
+  },
+  {
+    "State": "NV",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 860.0626843617747,
+    "2023 Stock (million vehicles)": 0.0680970100302593
+  },
+  {
+    "State": "NV",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 563.3677433182369,
+    "2023 Stock (million vehicles)": 0.012797605066820943
+  },
+  {
+    "State": "NV",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 877.418648680693,
+    "2023 Stock (million vehicles)": 0.011812602494649844
+  },
+  {
+    "State": "NH",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 4173.973013670813,
+    "2023 Stock (million vehicles)": 0.40095231050896885
+  },
+  {
+    "State": "NH",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 6949.59331144599,
+    "2023 Stock (million vehicles)": 0.6060278762979024
+  },
+  {
+    "State": "NH",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 667.2290842600321,
+    "2023 Stock (million vehicles)": 0.05479297818758161
+  },
+  {
+    "State": "NH",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 10.40270210480291,
+    "2023 Stock (million vehicles)": 0.00036493097783329417
+  },
+  {
+    "State": "NH",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 29.619863056502844,
+    "2023 Stock (million vehicles)": 0.0011160245117486282
+  },
+  {
+    "State": "NH",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 3.865600126927807,
+    "2023 Stock (million vehicles)": 0.00012141408799013413
+  },
+  {
+    "State": "NH",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 10.132794296033106,
+    "2023 Stock (million vehicles)": 0.00031243224594174144
+  },
+  {
+    "State": "NH",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 20.28779076072299,
+    "2023 Stock (million vehicles)": 0.0019925175174731577
+  },
+  {
+    "State": "NH",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 1.1107721354010616,
+    "2023 Stock (million vehicles)": 0.00010848062350279265
+  },
+  {
+    "State": "NH",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 0.886808838293887,
+    "2023 Stock (million vehicles)": 0.000046869983552373546
+  },
+  {
+    "State": "NH",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 3.3062043751830292,
+    "2023 Stock (million vehicles)": 0.00017437704395398975
+  },
+  {
+    "State": "NH",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 467.73232522782496,
+    "2023 Stock (million vehicles)": 0.03703354816068021
+  },
+  {
+    "State": "NH",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 330.26467951341823,
+    "2023 Stock (million vehicles)": 0.007502376531248059
+  },
+  {
+    "State": "NH",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 498.8032096713528,
+    "2023 Stock (million vehicles)": 0.006715339419515154
+  },
+  {
+    "State": "NJ",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 20563.62015457264,
+    "2023 Stock (million vehicles)": 1.975343632170145
+  },
+  {
+    "State": "NJ",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 38993.94227811393,
+    "2023 Stock (million vehicles)": 3.400402724051111
+  },
+  {
+    "State": "NJ",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 3366.132787618486,
+    "2023 Stock (million vehicles)": 0.2764274591132827
+  },
+  {
+    "State": "NJ",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 62.016592708127845,
+    "2023 Stock (million vehicles)": 0.0021755670393000296
+  },
+  {
+    "State": "NJ",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 176.58133095992,
+    "2023 Stock (million vehicles)": 0.00665327497607059
+  },
+  {
+    "State": "NJ",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 21.900846222442897,
+    "2023 Stock (million vehicles)": 0.0006878805833502951
+  },
+  {
+    "State": "NJ",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 57.408102854507185,
+    "2023 Stock (million vehicles)": 0.0017701082234650712
+  },
+  {
+    "State": "NJ",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 128.02639339603257,
+    "2023 Stock (million vehicles)": 0.012573810256085954
+  },
+  {
+    "State": "NJ",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 7.009543427247943,
+    "2023 Stock (million vehicles)": 0.0006845685242033956
+  },
+  {
+    "State": "NJ",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 5.4687675339549,
+    "2023 Stock (million vehicles)": 0.0002890375392078312
+  },
+  {
+    "State": "NJ",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 20.388681716801532,
+    "2023 Stock (million vehicles)": 0.001075347330183662
+  },
+  {
+    "State": "NJ",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 2922.3372985940073,
+    "2023 Stock (million vehicles)": 0.23138131202823933
+  },
+  {
+    "State": "NJ",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 2288.3067722620385,
+    "2023 Stock (million vehicles)": 0.051981759144841246
+  },
+  {
+    "State": "NJ",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 4228.36447180761,
+    "2023 Stock (million vehicles)": 0.05692606235696764
+  },
+  {
+    "State": "NM",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 7730.278599145975,
+    "2023 Stock (million vehicles)": 0.7425714193776658
+  },
+  {
+    "State": "NM",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 13784.621757299436,
+    "2023 Stock (million vehicles)": 1.2020653115610649
+  },
+  {
+    "State": "NM",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1246.8927534291392,
+    "2023 Stock (million vehicles)": 0.10239506797978601
+  },
+  {
+    "State": "NM",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 21.077560217973282,
+    "2023 Stock (million vehicles)": 0.0007394092980066984
+  },
+  {
+    "State": "NM",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 60.01464243922885,
+    "2023 Stock (million vehicles)": 0.002261246512120675
+  },
+  {
+    "State": "NM",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 7.564817332674106,
+    "2023 Stock (million vehicles)": 0.00023760227832684427
+  },
+  {
+    "State": "NM",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 19.82945348772338,
+    "2023 Stock (million vehicles)": 0.0006114168025094658
+  },
+  {
+    "State": "NM",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 42.521976068202584,
+    "2023 Stock (million vehicles)": 0.00417619558446435
+  },
+  {
+    "State": "NM",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 2.3281108680493396,
+    "2023 Stock (million vehicles)": 0.00022736879194258086
+  },
+  {
+    "State": "NM",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 1.813623096514316,
+    "2023 Stock (million vehicles)": 0.00009585434992660785
+  },
+  {
+    "State": "NM",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 6.761557122236859,
+    "2023 Stock (million vehicles)": 0.00035662052604852585
+  },
+  {
+    "State": "NM",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 966.2045169003461,
+    "2023 Stock (million vehicles)": 0.07650098053895868
+  },
+  {
+    "State": "NM",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 711.9028902405435,
+    "2023 Stock (million vehicles)": 0.016171767275075247
+  },
+  {
+    "State": "NM",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 1163.8970652345233,
+    "2023 Stock (million vehicles)": 0.015669433738361677
+  },
+  {
+    "State": "NY",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 36486.01223285588,
+    "2023 Stock (million vehicles)": 3.504850380706318
+  },
+  {
+    "State": "NY",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 56999.01359505035,
+    "2023 Stock (million vehicles)": 4.970505411185899
+  },
+  {
+    "State": "NY",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 5747.828438381053,
+    "2023 Stock (million vehicles)": 0.47201275495873923
+  },
+  {
+    "State": "NY",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 84.54157542051198,
+    "2023 Stock (million vehicles)": 0.0029657525011247176
+  },
+  {
+    "State": "NY",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 240.7172541623032,
+    "2023 Stock (million vehicles)": 0.009069804122101626
+  },
+  {
+    "State": "NY",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 31.902276218202353,
+    "2023 Stock (million vehicles)": 0.0010020140844005927
+  },
+  {
+    "State": "NY",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 83.62458399213283,
+    "2023 Stock (million vehicles)": 0.002578461165725463
+  },
+  {
+    "State": "NY",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 158.12870684690557,
+    "2023 Stock (million vehicles)": 0.015530237970406225
+  },
+  {
+    "State": "NY",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 8.657668222436175,
+    "2023 Stock (million vehicles)": 0.0008455282743576224
+  },
+  {
+    "State": "NY",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 6.931009545166679,
+    "2023 Stock (million vehicles)": 0.0003663205522492208
+  },
+  {
+    "State": "NY",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 25.840218424922046,
+    "2023 Stock (million vehicles)": 0.0013628742790027558
+  },
+  {
+    "State": "NY",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 3629.2873665407587,
+    "2023 Stock (million vehicles)": 0.2873553552499679
+  },
+  {
+    "State": "NY",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 2393.55803567815,
+    "2023 Stock (million vehicles)": 0.05437267363712251
+  },
+  {
+    "State": "NY",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 3434.5114414766163,
+    "2023 Stock (million vehicles)": 0.04623849570839748
+  },
+  {
+    "State": "NC",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 36457.109964860654,
+    "2023 Stock (million vehicles)": 3.5020740256379725
+  },
+  {
+    "State": "NC",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 59734.2357939156,
+    "2023 Stock (million vehicles)": 5.209025972907269
+  },
+  {
+    "State": "NC",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 5781.603648038344,
+    "2023 Stock (million vehicles)": 0.4747863815432058
+  },
+  {
+    "State": "NC",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 88.88592793140973,
+    "2023 Stock (million vehicles)": 0.003118154136188599
+  },
+  {
+    "State": "NC",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 253.08703320101606,
+    "2023 Stock (million vehicles)": 0.009535875710136438
+  },
+  {
+    "State": "NC",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 32.81184228051976,
+    "2023 Stock (million vehicles)": 0.001030582516286178
+  },
+  {
+    "State": "NC",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 86.00880520112784,
+    "2023 Stock (million vehicles)": 0.002651975693444619
+  },
+  {
+    "State": "NC",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 171.42953991870112,
+    "2023 Stock (million vehicles)": 0.016836547918350254
+  },
+  {
+    "State": "NC",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 9.385899054862461,
+    "2023 Stock (million vehicles)": 0.0009166490130202261
+  },
+  {
+    "State": "NC",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 7.384413029969018,
+    "2023 Stock (million vehicles)": 0.0003902840187344658
+  },
+  {
+    "State": "NC",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 27.53059917040572,
+    "2023 Stock (million vehicles)": 0.0014520289603548026
+  },
+  {
+    "State": "NC",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 3898.979317891937,
+    "2023 Stock (million vehicles)": 0.30870870059347527
+  },
+  {
+    "State": "NC",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 2656.306622999208,
+    "2023 Stock (million vehicles)": 0.06034133743138687
+  },
+  {
+    "State": "NC",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 3868.672146987733,
+    "2023 Stock (million vehicles)": 0.052083559339893074
+  },
+  {
+    "State": "ND",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 2812.459127778157,
+    "2023 Stock (million vehicles)": 0.2701651356636259
+  },
+  {
+    "State": "ND",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 5176.334383271496,
+    "2023 Stock (million vehicles)": 0.4513937424417608
+  },
+  {
+    "State": "ND",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 456.09288677795513,
+    "2023 Stock (million vehicles)": 0.03745443384628638
+  },
+  {
+    "State": "ND",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 7.806221629004173,
+    "2023 Stock (million vehicles)": 0.0002738453974319469
+  },
+  {
+    "State": "ND",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 22.226841959942362,
+    "2023 Stock (million vehicles)": 0.000837468437944473
+  },
+  {
+    "State": "ND",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 2.770790984217177,
+    "2023 Stock (million vehicles)": 0.00008702738237629844
+  },
+  {
+    "State": "ND",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 7.263000351432905,
+    "2023 Stock (million vehicles)": 0.00022394568031073214
+  },
+  {
+    "State": "ND",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 16.070774464891297,
+    "2023 Stock (million vehicles)": 0.0015783532085045565
+  },
+  {
+    "State": "ND",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 0.8798872524097348,
+    "2023 Stock (million vehicles)": 0.00008593186191072679
+  },
+  {
+    "State": "ND",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 0.6785387104835008,
+    "2023 Stock (million vehicles)": 0.00003586240554525345
+  },
+  {
+    "State": "ND",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 2.529730824117189,
+    "2023 Stock (million vehicles)": 0.00013342399109384325
+  },
+  {
+    "State": "ND",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 363.3900348651987,
+    "2023 Stock (million vehicles)": 0.028772059640600218
+  },
+  {
+    "State": "ND",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 269.1763196523613,
+    "2023 Stock (million vehicles)": 0.006114677798131157
+  },
+  {
+    "State": "ND",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 415.75823439208466,
+    "2023 Stock (million vehicles)": 0.005597312940790274
+  },
+  {
+    "State": "OH",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 35742.213995352264,
+    "2023 Stock (million vehicles)": 3.433401039538366
+  },
+  {
+    "State": "OH",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 57600.505940908835,
+    "2023 Stock (million vehicles)": 5.022957563798866
+  },
+  {
+    "State": "OH",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 5659.919477332837,
+    "2023 Stock (million vehicles)": 0.46479365450458326
+  },
+  {
+    "State": "OH",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 85.7234955918369,
+    "2023 Stock (million vehicles)": 0.0030072147365609652
+  },
+  {
+    "State": "OH",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 244.0825637968261,
+    "2023 Stock (million vehicles)": 0.00919660308921996
+  },
+  {
+    "State": "OH",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 31.95270949510375,
+    "2023 Stock (million vehicles)": 0.001003598136066124
+  },
+  {
+    "State": "OH",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 83.75678339293397,
+    "2023 Stock (million vehicles)": 0.0025825373716068583
+  },
+  {
+    "State": "OH",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 163.64986827330347,
+    "2023 Stock (million vehicles)": 0.01607248581733263
+  },
+  {
+    "State": "OH",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 8.959956053566955,
+    "2023 Stock (million vehicles)": 0.0008750504160762158
+  },
+  {
+    "State": "OH",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 7.114288049370019,
+    "2023 Stock (million vehicles)": 0.0003760072627403352
+  },
+  {
+    "State": "OH",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 26.523518101591804,
+    "2023 Stock (million vehicles)": 0.001398913121201008
+  },
+  {
+    "State": "OH",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 3743.5160667395094,
+    "2023 Stock (million vehicles)": 0.296399618051522
+  },
+  {
+    "State": "OH",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 2535.2061526184393,
+    "2023 Stock (million vehicles)": 0.057590388319158664
+  },
+  {
+    "State": "OH",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 3704.134800626908,
+    "2023 Stock (million vehicles)": 0.049868408942750964
+  },
+  {
+    "State": "OK",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 14001.349316720845,
+    "2023 Stock (million vehicles)": 1.3449711678526743
+  },
+  {
+    "State": "OK",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 24117.568927527027,
+    "2023 Stock (million vehicles)": 2.103133007012805
+  },
+  {
+    "State": "OK",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 2248.4432322231473,
+    "2023 Stock (million vehicles)": 0.1846425821138298
+  },
+  {
+    "State": "OK",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 36.29639839166714,
+    "2023 Stock (million vehicles)": 0.0012732922680523927
+  },
+  {
+    "State": "OK",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 103.34760516780348,
+    "2023 Stock (million vehicles)": 0.0038939565783193708
+  },
+  {
+    "State": "OK",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 13.266028598704036,
+    "2023 Stock (million vehicles)": 0.00041667081712426973
+  },
+  {
+    "State": "OK",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 34.773886201931745,
+    "2023 Stock (million vehicles)": 0.0010722099994120483
+  },
+  {
+    "State": "OK",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 72.12179854540253,
+    "2023 Stock (million vehicles)": 0.0070832723330129434
+  },
+  {
+    "State": "OK",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 3.9487238962625737,
+    "2023 Stock (million vehicles)": 0.00038564167812174603
+  },
+  {
+    "State": "OK",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 3.112822585789852,
+    "2023 Stock (million vehicles)": 0.0001645201728910566
+  },
+  {
+    "State": "OK",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 11.605238026390001,
+    "2023 Stock (million vehicles)": 0.0006120877210781299
+  },
+  {
+    "State": "OK",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1650.6648332608675,
+    "2023 Stock (million vehicles)": 0.1306943572265016
+  },
+  {
+    "State": "OK",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 1187.802124498891,
+    "2023 Stock (million vehicles)": 0.026982415424308213
+  },
+  {
+    "State": "OK",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 1830.3668175972857,
+    "2023 Stock (million vehicles)": 0.0246420516228877
+  },
+  {
+    "State": "OR",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 10927.507608037626,
+    "2023 Stock (million vehicles)": 1.0496975924848564
+  },
+  {
+    "State": "OR",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 18208.352676830425,
+    "2023 Stock (million vehicles)": 1.587829504418407
+  },
+  {
+    "State": "OR",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1738.0838777897845,
+    "2023 Stock (million vehicles)": 0.1427317757131944
+  },
+  {
+    "State": "OR",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 27.50865626621628,
+    "2023 Stock (million vehicles)": 0.0009650147364573093
+  },
+  {
+    "State": "OR",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 78.32605637121353,
+    "2023 Stock (million vehicles)": 0.002951188486325163
+  },
+  {
+    "State": "OR",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 10.07748518415549,
+    "2023 Stock (million vehicles)": 0.0003165223077123456
+  },
+  {
+    "State": "OR",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 26.41584257022554,
+    "2023 Stock (million vehicles)": 0.0008145000067641825
+  },
+  {
+    "State": "OR",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 53.45205238319638,
+    "2023 Stock (million vehicles)": 0.005249667249358804
+  },
+  {
+    "State": "OR",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 2.9265409461043017,
+    "2023 Stock (million vehicles)": 0.0002858128831483686
+  },
+  {
+    "State": "OR",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 2.297740335544562,
+    "2023 Stock (million vehicles)": 0.00012144111231659726
+  },
+  {
+    "State": "OR",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 8.566445013140923,
+    "2023 Stock (million vehicles)": 0.0004518145852684065
+  },
+  {
+    "State": "OR",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1215.0639022521248,
+    "2023 Stock (million vehicles)": 0.09620486999789926
+  },
+  {
+    "State": "OR",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 847.7183600284509,
+    "2023 Stock (million vehicles)": 0.019256986059652623
+  },
+  {
+    "State": "OR",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 1325.32514811255,
+    "2023 Stock (million vehicles)": 0.017842724421638978
+  },
+  {
+    "State": "PA",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 29335.459125349313,
+    "2023 Stock (million vehicles)": 2.817967456336275
+  },
+  {
+    "State": "PA",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 47894.037032826156,
+    "2023 Stock (million vehicles)": 4.176520876773071
+  },
+  {
+    "State": "PA",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 4654.675895309999,
+    "2023 Stock (million vehicles)": 0.38224286203715213
+  },
+  {
+    "State": "PA",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 72.61493004882772,
+    "2023 Stock (million vehicles)": 0.0025473609799688676
+  },
+  {
+    "State": "PA",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 206.7582309129825,
+    "2023 Stock (million vehicles)": 0.007790287661509386
+  },
+  {
+    "State": "PA",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 26.865084752698998,
+    "2023 Stock (million vehicles)": 0.0008438016496597454
+  },
+  {
+    "State": "PA",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 70.42072863365209,
+    "2023 Stock (million vehicles)": 0.0021713365301888454
+  },
+  {
+    "State": "PA",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 139.2677901452813,
+    "2023 Stock (million vehicles)": 0.013677857523130315
+  },
+  {
+    "State": "PA",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 7.6250185383294085,
+    "2023 Stock (million vehicles)": 0.000744677273489279
+  },
+  {
+    "State": "PA",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 6.042728383726508,
+    "2023 Stock (million vehicles)": 0.00031937275287153026
+  },
+  {
+    "State": "PA",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 22.52852492850149,
+    "2023 Stock (million vehicles)": 0.0011882077258029101
+  },
+  {
+    "State": "PA",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 3182.9162640255418,
+    "2023 Stock (million vehicles)": 0.2520131203200192
+  },
+  {
+    "State": "PA",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 2206.5390927314947,
+    "2023 Stock (million vehicles)": 0.05012430372203194
+  },
+  {
+    "State": "PA",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 3514.4026715318323,
+    "2023 Stock (million vehicles)": 0.04731406361987269
+  },
+  {
+    "State": "RI",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 2476.256978488927,
+    "2023 Stock (million vehicles)": 0.2378695199243562
+  },
+  {
+    "State": "RI",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 3733.0154219997708,
+    "2023 Stock (million vehicles)": 0.32553148177114355
+  },
+  {
+    "State": "RI",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 387.6663069952225,
+    "2023 Stock (million vehicles)": 0.031835230214532044
+  },
+  {
+    "State": "RI",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 5.542539902272215,
+    "2023 Stock (million vehicles)": 0.00019443453112844608
+  },
+  {
+    "State": "RI",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 15.781406718809054,
+    "2023 Stock (million vehicles)": 0.0005946157379076312
+  },
+  {
+    "State": "RI",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 2.117874718597659,
+    "2023 Stock (million vehicles)": 0.00006652002767814961
+  },
+  {
+    "State": "RI",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 5.5515283949906244,
+    "2023 Stock (million vehicles)": 0.00017117454812393685
+  },
+  {
+    "State": "RI",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 10.100842021005814,
+    "2023 Stock (million vehicles)": 0.0009920303745958895
+  },
+  {
+    "State": "RI",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 0.5530288631891223,
+    "2023 Stock (million vehicles)": 0.00005401010160570433
+  },
+  {
+    "State": "RI",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 0.4466738414193549,
+    "2023 Stock (million vehicles)": 0.00002360778861978666
+  },
+  {
+    "State": "RI",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 1.6652912612166322,
+    "2023 Stock (million vehicles)": 0.00008783140256938654
+  },
+  {
+    "State": "RI",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 232.49416101534115,
+    "2023 Stock (million vehicles)": 0.018408143385952067
+  },
+  {
+    "State": "RI",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 148.5921799011959,
+    "2023 Stock (million vehicles)": 0.003375457783920928
+  },
+  {
+    "State": "RI",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 214.00681163851695,
+    "2023 Stock (million vehicles)": 0.0028811530286418476
+  },
+  {
+    "State": "SC",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 17950.854452091262,
+    "2023 Stock (million vehicles)": 1.7243610690828073
+  },
+  {
+    "State": "SC",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 30744.472219869913,
+    "2023 Stock (million vehicles)": 2.6810212299215634
+  },
+  {
+    "State": "SC",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 2866.6155544329717,
+    "2023 Stock (million vehicles)": 0.2354070097535118
+  },
+  {
+    "State": "SC",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 46.84948829730417,
+    "2023 Stock (million vehicles)": 0.0016434989104831817
+  },
+  {
+    "State": "SC",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 133.39567101442762,
+    "2023 Stock (million vehicles)": 0.005026115020493767
+  },
+  {
+    "State": "SC",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 16.94537691548255,
+    "2023 Stock (million vehicles)": 0.0005322349483358256
+  },
+  {
+    "State": "SC",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 44.41846360601052,
+    "2023 Stock (million vehicles)": 0.0013695886781339675
+  },
+  {
+    "State": "SC",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 92.34831831197224,
+    "2023 Stock (million vehicles)": 0.009069772264313046
+  },
+  {
+    "State": "SC",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 5.056141397646728,
+    "2023 Stock (million vehicles)": 0.0004937946801635932
+  },
+  {
+    "State": "SC",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 3.937677340749469,
+    "2023 Stock (million vehicles)": 0.00020811573388302145
+  },
+  {
+    "State": "SC",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 14.680464932094628,
+    "2023 Stock (million vehicles)": 0.0007742824666086025
+  },
+  {
+    "State": "SC",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 2090.3042665006788,
+    "2023 Stock (million vehicles)": 0.16550360013330775
+  },
+  {
+    "State": "SC",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 1488.708737714475,
+    "2023 Stock (million vehicles)": 0.03381788664821242
+  },
+  {
+    "State": "SC",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 2406.411797627057,
+    "2023 Stock (million vehicles)": 0.0323972895339598
+  },
+  {
+    "State": "SD",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 3086.569460731875,
+    "2023 Stock (million vehicles)": 0.2964962046408828
+  },
+  {
+    "State": "SD",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 5662.184437943678,
+    "2023 Stock (million vehicles)": 0.4937614988897904
+  },
+  {
+    "State": "SD",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 501.2987248804471,
+    "2023 Stock (million vehicles)": 0.04116674579361132
+  },
+  {
+    "State": "SD",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 8.949736502070477,
+    "2023 Stock (million vehicles)": 0.00031396035954379427
+  },
+  {
+    "State": "SD",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 25.482799268155574,
+    "2023 Stock (million vehicles)": 0.0009601472011190805
+  },
+  {
+    "State": "SD",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 3.1852712142146435,
+    "2023 Stock (million vehicles)": 0.00010004573333415568
+  },
+  {
+    "State": "SD",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 8.349466300427647,
+    "2023 Stock (million vehicles)": 0.00025744552119041377
+  },
+  {
+    "State": "SD",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 18.19208160911101,
+    "2023 Stock (million vehicles)": 0.0017866923862223038
+  },
+  {
+    "State": "SD",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 0.9960304487891166,
+    "2023 Stock (million vehicles)": 0.00009727468007954353
+  },
+  {
+    "State": "SD",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 0.7783135355457373,
+    "2023 Stock (million vehicles)": 0.000041135745421528145
+  },
+  {
+    "State": "SD",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 2.901711739179482,
+    "2023 Stock (million vehicles)": 0.00015304314496792027
+  },
+  {
+    "State": "SD",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 414.80656720258776,
+    "2023 Stock (million vehicles)": 0.03284305607139934
+  },
+  {
+    "State": "SD",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 317.8968992284479,
+    "2023 Stock (million vehicles)": 0.007221426885980816
+  },
+  {
+    "State": "SD",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 579.9685327683476,
+    "2023 Stock (million vehicles)": 0.007808060322514253
+  },
+  {
+    "State": "TN",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 26489.25466259972,
+    "2023 Stock (million vehicles)": 2.5445607400535675
+  },
+  {
+    "State": "TN",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 42720.260391307645,
+    "2023 Stock (million vehicles)": 3.7253501780021003
+  },
+  {
+    "State": "TN",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 4182.940613194119,
+    "2023 Stock (million vehicles)": 0.3435038717367614
+  },
+  {
+    "State": "TN",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 64.52877732900403,
+    "2023 Stock (million vehicles)": 0.0022636954871742424
+  },
+  {
+    "State": "TN",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 183.73433444818167,
+    "2023 Stock (million vehicles)": 0.00692278760718219
+  },
+  {
+    "State": "TN",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 23.825875475536805,
+    "2023 Stock (million vehicles)": 0.0007483435550608426
+  },
+  {
+    "State": "TN",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 62.45413058499284,
+    "2023 Stock (million vehicles)": 0.0019256962805064687
+  },
+  {
+    "State": "TN",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 122.72981178340123,
+    "2023 Stock (million vehicles)": 0.012053618985860213
+  },
+  {
+    "State": "TN",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 6.719551513511409,
+    "2023 Stock (million vehicles)": 0.0006562472307442749
+  },
+  {
+    "State": "TN",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 5.28815557478447,
+    "2023 Stock (million vehicles)": 0.0002794917620457922
+  },
+  {
+    "State": "TN",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 19.71532346434152,
+    "2023 Stock (million vehicles)": 0.001039832822227841
+  },
+  {
+    "State": "TN",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 2785.4244325262453,
+    "2023 Stock (million vehicles)": 0.22054098959196605
+  },
+  {
+    "State": "TN",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 1887.396283061981,
+    "2023 Stock (million vehicles)": 0.04287457441731585
+  },
+  {
+    "State": "TN",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 2949.9213406417853,
+    "2023 Stock (million vehicles)": 0.039714505999937005
+  },
+  {
+    "State": "TX",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 89991.7896069393,
+    "2023 Stock (million vehicles)": 8.644621288053425
+  },
+  {
+    "State": "TX",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 145825.7317165311,
+    "2023 Stock (million vehicles)": 12.716493547356812
+  },
+  {
+    "State": "TX",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 14284.281959893324,
+    "2023 Stock (million vehicles)": 1.173027927464679
+  },
+  {
+    "State": "TX",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 218.62863802117022,
+    "2023 Stock (million vehicles)": 0.007669580638917924
+  },
+  {
+    "State": "TX",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 622.5065615814341,
+    "2023 Stock (million vehicles)": 0.023454955889700247
+  },
+  {
+    "State": "TX",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 81.55437533895369,
+    "2023 Stock (million vehicles)": 0.002561529847437602
+  },
+  {
+    "State": "TX",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 213.77630435558174,
+    "2023 Stock (million vehicles)": 0.006591529340044701
+  },
+  {
+    "State": "TX",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 418.5311050993971,
+    "2023 Stock (million vehicles)": 0.041105045312889964
+  },
+  {
+    "State": "TX",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 22.91489964708489,
+    "2023 Stock (million vehicles)": 0.0022379230825070617
+  },
+  {
+    "State": "TX",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 18.276998947615194,
+    "2023 Stock (million vehicles)": 0.0009659834262698047
+  },
+  {
+    "State": "TX",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 68.14038299626804,
+    "2023 Stock (million vehicles)": 0.0035938850755782904
+  },
+  {
+    "State": "TX",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 9612.985683475876,
+    "2023 Stock (million vehicles)": 0.7611254323795779
+  },
+  {
+    "State": "TX",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 6614.783152932586,
+    "2023 Stock (million vehicles)": 0.15026309794608306
+  },
+  {
+    "State": "TX",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 10039.958390681822,
+    "2023 Stock (million vehicles)": 0.13516698979475258
+  },
+  {
+    "State": "UT",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 10482.282875542727,
+    "2023 Stock (million vehicles)": 1.006929255314279
+  },
+  {
+    "State": "UT",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 16743.653229015286,
+    "2023 Stock (million vehicles)": 1.4601027935168984
+  },
+  {
+    "State": "UT",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1656.0827687759067,
+    "2023 Stock (million vehicles)": 0.13599782918186495
+  },
+  {
+    "State": "UT",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 25.388933402628748,
+    "2023 Stock (million vehicles)": 0.0008906540050289399
+  },
+  {
+    "State": "UT",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 72.29051865181542,
+    "2023 Stock (million vehicles)": 0.0027237800062932826
+  },
+  {
+    "State": "UT",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 9.454774667842031,
+    "2023 Stock (million vehicles)": 0.00029696368112461555
+  },
+  {
+    "State": "UT",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 24.783548137123987,
+    "2023 Stock (million vehicles)": 0.0007641702160990576
+  },
+  {
+    "State": "UT",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 47.994595057855115,
+    "2023 Stock (million vehicles)": 0.004713675950461104
+  },
+  {
+    "State": "UT",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 2.627740963463246,
+    "2023 Stock (million vehicles)": 0.0002566313729299638
+  },
+  {
+    "State": "UT",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 2.089912413603169,
+    "2023 Stock (million vehicles)": 0.00011045690595499002
+  },
+  {
+    "State": "UT",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 7.791620095823015,
+    "2023 Stock (million vehicles)": 0.0004109484852541534
+  },
+  {
+    "State": "UT",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1097.4845375232142,
+    "2023 Stock (million vehicles)": 0.08689531230532528
+  },
+  {
+    "State": "UT",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 747.5913760984674,
+    "2023 Stock (million vehicles)": 0.016982476004603172
+  },
+  {
+    "State": "UT",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 1193.2028518170434,
+    "2023 Stock (million vehicles)": 0.016063974711719022
+  },
+  {
+    "State": "VT",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 1903.9311240588465,
+    "2023 Stock (million vehicles)": 0.18289183488754016
+  },
+  {
+    "State": "VT",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 3549.2918834430643,
+    "2023 Stock (million vehicles)": 0.3095101721911884
+  },
+  {
+    "State": "VT",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 310.4080390970551,
+    "2023 Stock (million vehicles)": 0.02549076668976038
+  },
+  {
+    "State": "VT",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 5.35209677089257,
+    "2023 Stock (million vehicles)": 0.00018775370940964244
+  },
+  {
+    "State": "VT",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 15.239153425896587,
+    "2023 Stock (million vehicles)": 0.000574184584484933
+  },
+  {
+    "State": "VT",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 1.9046019017207905,
+    "2023 Stock (million vehicles)": 0.00005982137191864369
+  },
+  {
+    "State": "VT",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 4.992482060297351,
+    "2023 Stock (million vehicles)": 0.00015393704217731954
+  },
+  {
+    "State": "VT",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 11.104386136403596,
+    "2023 Stock (million vehicles)": 0.0010905910928658332
+  },
+  {
+    "State": "VT",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 0.6079736747349714,
+    "2023 Stock (million vehicles)": 0.00005937614134038417
+  },
+  {
+    "State": "VT",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 0.47173202932728325,
+    "2023 Stock (million vehicles)": 0.000024932174219457096
+  },
+  {
+    "State": "VT",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 1.758713300914315,
+    "2023 Stock (million vehicles)": 0.0000927587020566521
+  },
+  {
+    "State": "VT",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 252.61589371051022,
+    "2023 Stock (million vehicles)": 0.020001317765079962
+  },
+  {
+    "State": "VT",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 189.87941512235597,
+    "2023 Stock (million vehicles)": 0.004313349129188956
+  },
+  {
+    "State": "VT",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 293.8497422963903,
+    "2023 Stock (million vehicles)": 0.003956070689997103
+  },
+  {
+    "State": "VA",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 26029.360526811804,
+    "2023 Stock (million vehicles)": 2.500383258376093
+  },
+  {
+    "State": "VA",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 42690.6061177521,
+    "2023 Stock (million vehicles)": 3.722764225757038
+  },
+  {
+    "State": "VA",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 4137.820580090993,
+    "2023 Stock (million vehicles)": 0.33979860611216073
+  },
+  {
+    "State": "VA",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 64.77242799106295,
+    "2023 Stock (million vehicles)": 0.0022722428504899543
+  },
+  {
+    "State": "VA",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 184.42808681858546,
+    "2023 Stock (million vehicles)": 0.006948926980243349
+  },
+  {
+    "State": "VA",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 23.987376732291565,
+    "2023 Stock (million vehicles)": 0.0007534161252063037
+  },
+  {
+    "State": "VA",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 62.87746951284711,
+    "2023 Stock (million vehicles)": 0.0019387494155213446
+  },
+  {
+    "State": "VA",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 124.62650037288194,
+    "2023 Stock (million vehicles)": 0.012239897782024094
+  },
+  {
+    "State": "VA",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 6.823396671398528,
+    "2023 Stock (million vehicles)": 0.0006663889935021914
+  },
+  {
+    "State": "VA",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 5.422061801027596,
+    "2023 Stock (million vehicles)": 0.0002865690287018742
+  },
+  {
+    "State": "VA",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 20.21455321031591,
+    "2023 Stock (million vehicles)": 0.0010661633806199242
+  },
+  {
+    "State": "VA",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 2855.9883213083463,
+    "2023 Stock (million vehicles)": 0.22612801240965194
+  },
+  {
+    "State": "VA",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 1995.5136081307296,
+    "2023 Stock (million vehicles)": 0.04533059509567646
+  },
+  {
+    "State": "VA",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 3190.266644018947,
+    "2023 Stock (million vehicles)": 0.0429502515981407
+  },
+  {
+    "State": "WA",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 18597.3281264965,
+    "2023 Stock (million vehicles)": 1.7864614019280443
+  },
+  {
+    "State": "WA",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 29637.369795206894,
+    "2023 Stock (million vehicles)": 2.584478180394083
+  },
+  {
+    "State": "WA",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 2941.5717285929272,
+    "2023 Stock (million vehicles)": 0.241562424906503
+  },
+  {
+    "State": "WA",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 44.95664215749777,
+    "2023 Stock (million vehicles)": 0.0015770971058627643
+  },
+  {
+    "State": "WA",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 128.00612482890227,
+    "2023 Stock (million vehicles)": 0.004823046368934715
+  },
+  {
+    "State": "WA",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 16.82189374420536,
+    "2023 Stock (million vehicles)": 0.0005283564828633348
+  },
+  {
+    "State": "WA",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 44.094780469501586,
+    "2023 Stock (million vehicles)": 0.0013596083068406729
+  },
+  {
+    "State": "WA",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 84.90817645259186,
+    "2023 Stock (million vehicles)": 0.008339056280392266
+  },
+  {
+    "State": "WA",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 4.648787913065731,
+    "2023 Stock (million vehicles)": 0.00045401157921514605
+  },
+  {
+    "State": "WA",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 3.720356284915025,
+    "2023 Stock (million vehicles)": 0.00019662979252485738
+  },
+  {
+    "State": "WA",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 13.87024767377144,
+    "2023 Stock (million vehicles)": 0.0007315496907622566
+  },
+  {
+    "State": "WA",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 1951.105320597906,
+    "2023 Stock (million vehicles)": 0.1544822732141231
+  },
+  {
+    "State": "WA",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 1335.9724793054302,
+    "2023 Stock (million vehicles)": 0.030348290922000115
+  },
+  {
+    "State": "WA",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 2139.772557522661,
+    "2023 Stock (million vehicles)": 0.028807551206008065
+  },
+  {
+    "State": "WV",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 5107.307198012581,
+    "2023 Stock (million vehicles)": 0.4906084957461895
+  },
+  {
+    "State": "WV",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 8934.859596013106,
+    "2023 Stock (million vehicles)": 0.7791497636377666
+  },
+  {
+    "State": "WV",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 822.8784716553406,
+    "2023 Stock (million vehicles)": 0.06757493522400165
+  },
+  {
+    "State": "WV",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 13.5021623316667,
+    "2023 Stock (million vehicles)": 0.00047366129039531424
+  },
+  {
+    "State": "WV",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 38.445030454730606,
+    "2023 Stock (million vehicles)": 0.001448541347424708
+  },
+  {
+    "State": "WV",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 4.911750688596321,
+    "2023 Stock (million vehicles)": 0.00015427248310983214
+  },
+  {
+    "State": "WV",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 12.875040802655416,
+    "2023 Stock (million vehicles)": 0.00039698604324179274
+  },
+  {
+    "State": "WV",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 27.05000358505921,
+    "2023 Stock (million vehicles)": 0.0026566523002242103
+  },
+  {
+    "State": "WV",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 1.4810084843221152,
+    "2023 Stock (million vehicles)": 0.00014463877754205648
+  },
+  {
+    "State": "WV",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 1.1656899623476802,
+    "2023 Stock (million vehicles)": 0.00006160952282288431
+  },
+  {
+    "State": "WV",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 4.345930134205122,
+    "2023 Stock (million vehicles)": 0.00022921464133362978
+  },
+  {
+    "State": "WV",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 619.1077235702282,
+    "2023 Stock (million vehicles)": 0.04901896760357406
+  },
+  {
+    "State": "WV",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 451.4041460830763,
+    "2023 Stock (million vehicles)": 0.01025421149082987
+  },
+  {
+    "State": "WV",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 707.2722246349789,
+    "2023 Stock (million vehicles)": 0.009521937626561793
+  },
+  {
+    "State": "WI",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 18338.469302507685,
+    "2023 Stock (million vehicles)": 1.7615953945930645
+  },
+  {
+    "State": "WI",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 32375.312283621406,
+    "2023 Stock (million vehicles)": 2.8232359604999786
+  },
+  {
+    "State": "WI",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 2958.5671689119513,
+    "2023 Stock (million vehicles)": 0.24295809366953566
+  },
+  {
+    "State": "WI",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 48.77051714987118,
+    "2023 Stock (million vehicles)": 0.0017108893760132452
+  },
+  {
+    "State": "WI",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 138.86546251353766,
+    "2023 Stock (million vehicles)": 0.0052322071747861855
+  },
+  {
+    "State": "WI",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 17.67484084822441,
+    "2023 Stock (million vehicles)": 0.0005551465778907275
+  },
+  {
+    "State": "WI",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 46.330587916375585,
+    "2023 Stock (million vehicles)": 0.001428546678795346
+  },
+  {
+    "State": "WI",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 98.2717270559201,
+    "2023 Stock (million vehicles)": 0.009651525882766136
+  },
+  {
+    "State": "WI",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 5.380452578542105,
+    "2023 Stock (million vehicles)": 0.0005254676741028536
+  },
+  {
+    "State": "WI",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 4.219814101519047,
+    "2023 Stock (million vehicles)": 0.00022302734139725277
+  },
+  {
+    "State": "WI",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 15.732328369372635,
+    "2023 Stock (million vehicles)": 0.0008297602338672199
+  },
+  {
+    "State": "WI",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 2244.811487251424,
+    "2023 Stock (million vehicles)": 0.17773698724859546
+  },
+  {
+    "State": "WI",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 1639.4142947306066,
+    "2023 Stock (million vehicles)": 0.0372413524446527
+  },
+  {
+    "State": "WI",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 2533.35626552363,
+    "2023 Stock (million vehicles)": 0.03410633064040522
+  },
+  {
+    "State": "WY",
+    "Vehicle Type": "Passenger cars",
+    "2023 Annual VMT (million miles)": 3087.742448553362,
+    "2023 Stock (million vehicles)": 0.2966088819810774
+  },
+  {
+    "State": "WY",
+    "Vehicle Type": "Passenger trucks",
+    "2023 Annual VMT (million miles)": 5737.463675695996,
+    "2023 Stock (million vehicles)": 0.5003261012398628
+  },
+  {
+    "State": "WY",
+    "Vehicle Type": "Light-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 501.9566481451147,
+    "2023 Stock (million vehicles)": 0.04122077457613963
+  },
+  {
+    "State": "WY",
+    "Vehicle Type": "Medium-duty other buses",
+    "2023 Annual VMT (million miles)": 9.014389509191094,
+    "2023 Stock (million vehicles)": 0.00031622841306207103
+  },
+  {
+    "State": "WY",
+    "Vehicle Type": "Heavy-duty other buses",
+    "2023 Annual VMT (million miles)": 25.666887325067197,
+    "2023 Stock (million vehicles)": 0.000967083316368555
+  },
+  {
+    "State": "WY",
+    "Vehicle Type": "Medium-duty transit buses",
+    "2023 Annual VMT (million miles)": 3.1851088134999603,
+    "2023 Stock (million vehicles)": 0.00010004063251306329
+  },
+  {
+    "State": "WY",
+    "Vehicle Type": "Heavy-duty transit buses",
+    "2023 Annual VMT (million miles)": 8.34904060377477,
+    "2023 Stock (million vehicles)": 0.0002574323953578483
+  },
+  {
+    "State": "WY",
+    "Vehicle Type": "Medium-duty school buses",
+    "2023 Annual VMT (million miles)": 18.46113687930642,
+    "2023 Stock (million vehicles)": 0.0018131170149734378
+  },
+  {
+    "State": "WY",
+    "Vehicle Type": "Heavy-duty school buses",
+    "2023 Annual VMT (million miles)": 1.0107614316024074,
+    "2023 Stock (million vehicles)": 0.00009871334256437245
+  },
+  {
+    "State": "WY",
+    "Vehicle Type": "Medium-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 0.7837265679212397,
+    "2023 Stock (million vehicles)": 0.00004142183722333783
+  },
+  {
+    "State": "WY",
+    "Vehicle Type": "Heavy-duty refuse trucks",
+    "2023 Annual VMT (million miles)": 2.9218926288482425,
+    "2023 Stock (million vehicles)": 0.00015410753285368292
+  },
+  {
+    "State": "WY",
+    "Vehicle Type": "Medium-duty single unit trucks",
+    "2023 Annual VMT (million miles)": 418.83871626277056,
+    "2023 Stock (million vehicles)": 0.03316230872587133
+  },
+  {
+    "State": "WY",
+    "Vehicle Type": "Heavy-duty combination trucks",
+    "2023 Annual VMT (million miles)": 320.3462739967343,
+    "2023 Stock (million vehicles)": 0.007277067506724447
+  },
+  {
+    "State": "WY",
+    "Vehicle Type": "Combination long-haul trucks",
+    "2023 Annual VMT (million miles)": 572.2998377121389,
+    "2023 Stock (million vehicles)": 0.007704817421889918
+  }
+]

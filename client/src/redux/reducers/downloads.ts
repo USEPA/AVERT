@@ -6,6 +6,7 @@ import {
   type CombinedSectorsEmissionsData,
 } from "@/calculations/emissions";
 import {
+  type CountyFIPS,
   type RegionId,
   regions as regionsConfig,
   states as statesConfig,
@@ -13,7 +14,12 @@ import {
 /**
  * Excel: "CountyFIPS" sheet.
  */
-import countyFips from "@/data/county-fips.json";
+import countyFipsData from "@/data/county-fips.json";
+
+/**
+ * Work around due to TypeScript inability to infer types from large JSON files.
+ */
+const countyFips = countyFipsData as CountyFIPS;
 
 /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 const emissionsFields = [
@@ -212,7 +218,7 @@ function formatCountyDownloadData(options: {
 
       if (emissionsFields) {
         array.push({
-          'Aggregation level': `${regionsConfig[regionId as RegionId].name} Region`, // prettier-ignore
+          "Aggregation level": `${regionsConfig[regionId as RegionId].name} Region`, // prettier-ignore
           State: null,
           County: null,
           "State FIPS Code": null,
@@ -234,9 +240,9 @@ function formatCountyDownloadData(options: {
    */
   Object.entries(states).forEach(([stateId, stateData]) => {
     const fipsCode =
-      countyFips.find((data) => {
-        return data["Postal State Code"] === stateId;
-      })?.["State and County FIPS Code"] || "";
+      countyFips
+        .find((data) => data["Postal State Code"] === stateId)
+        ?.["State and County FIPS Code"]?.toString() || "";
 
     const statesRows = [...pollutantsRows].reduce((array, row) => {
       const { pollutant, unit } = row;
@@ -399,19 +405,19 @@ function createEmissionsFields(options: {
   } as { [field in (typeof emissionsFields)[number]]: number | null };
 
   if (powerData) {
-    const annualData = powerData.annual;
-    const annualEmissionsChange = annualData.postEere - annualData.original;
-    const annualPercentChange = (annualEmissionsChange / annualData.original) * 100 || 0; // prettier-ignore
+    const annualEmissionsChange = powerData.annual.post - powerData.annual.pre;
+    const annualPercentChange = (annualEmissionsChange / powerData.annual.pre) * 100 || 0; // prettier-ignore
     const annualPowerData =
       unit === "percent" ? annualPercentChange : annualEmissionsChange;
 
     const monthlyPowerData = Object.entries(powerData.monthly).reduce(
       (object, [key, values]) => {
         const month = Number(key);
-        const { original, postEere } = values;
+        const { post, pre } = values;
+        const impacts = post - pre;
 
-        const monthlyEmissionsChange = postEere - original;
-        const monthlyPercentChange = (monthlyEmissionsChange / original) * 100 || 0; // prettier-ignore
+        const monthlyEmissionsChange = impacts;
+        const monthlyPercentChange = (monthlyEmissionsChange / pre) * 100 || 0;
 
         object[month] =
           unit === "percent"
@@ -502,7 +508,7 @@ function formatCobraDownloadData(
 
               object.power ??= { so2: 0, nox: 0, pm25: 0, vocs: 0, nh3: 0 };
               object.power[pollutant] = Object.values(monthlyPowerData).reduce(
-                (total, data) => (total += data.postEere - data.original),
+                (total, data) => (total += data.post - data.pre),
                 0,
               );
             }

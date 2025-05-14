@@ -32,6 +32,9 @@ function ResultsImpactsInputsContent() {
     hybridEVs,
     transitBuses,
     schoolBuses,
+    shortHaulTrucks,
+    comboLongHaulTrucks,
+    refuseTrucks,
     evDeploymentLocation,
     evModelYear,
     iceReplacementVehicle,
@@ -48,7 +51,10 @@ function ResultsImpactsInputsContent() {
     inputExists(batteryEVs) ||
     inputExists(hybridEVs) ||
     inputExists(transitBuses) ||
-    inputExists(schoolBuses);
+    inputExists(schoolBuses) ||
+    inputExists(shortHaulTrucks) ||
+    inputExists(comboLongHaulTrucks) ||
+    inputExists(refuseTrucks);
 
   const esInputsNotEmpty =
     inputExists(utilityStorage) || inputExists(rooftopStorage);
@@ -221,6 +227,35 @@ function ResultsImpactsInputsContent() {
             </span>{" "}
             <span className={clsx("font-mono-xs text-bold")}>
               {schoolBuses}
+            </span>
+          </p>
+        )}
+
+        {inputExists(shortHaulTrucks) && (
+          <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
+            <span className={clsx("font-sans-2xs")}>Short-haul trucks:</span>{" "}
+            <span className={clsx("font-mono-xs text-bold")}>
+              {shortHaulTrucks}
+            </span>
+          </p>
+        )}
+
+        {inputExists(comboLongHaulTrucks) && (
+          <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
+            <span className={clsx("font-sans-2xs")}>
+              Combination long-haul trucks:
+            </span>{" "}
+            <span className={clsx("font-mono-xs text-bold")}>
+              {comboLongHaulTrucks}
+            </span>
+          </p>
+        )}
+
+        {inputExists(refuseTrucks) && (
+          <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
+            <span className={clsx("font-sans-2xs")}>Refuse trucks:</span>{" "}
+            <span className={clsx("font-mono-xs text-bold")}>
+              {refuseTrucks}
             </span>
           </p>
         )}
