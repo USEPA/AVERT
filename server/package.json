@@ -20,9 +20,9 @@
   "dependencies": {
     "@koa/bodyparser": "5.1.1",
     "@koa/cors": "5.0.0",
-    "@sentry/node": "8.53.0",
-    "dotenv": "16.4.7",
-    "koa": "2.15.3",
+    "@sentry/node": "9.19.0",
+    "dotenv": "16.5.0",
+    "koa": "3.0.0",
     "koa-basic-auth": "4.0.0",
     "koa-logger": "3.2.1",
     "koa-route": "4.0.1",
