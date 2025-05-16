@@ -1638,11 +1638,6 @@ export function calculateSelectedRegionsAverageVMTPerYear(options: {
         ([vmtPercentagesStateKey, vmtPercentagesStateValue]) => {
           const stateId = vmtPercentagesStateKey as keyof typeof vmtPercentagesRegionValue; // prettier-ignore
 
-          const deploymentLocationIncludesState =
-            deploymentLocationIsRegion ||
-            (deploymentLocationIsState &&
-              deploymentLocationStateId === stateId);
-
           if (stateId in vmtPerVehicleTypeByState) {
             Object.entries(vmtPerVehicleTypeByState[stateId]).forEach(
               ([vehicleKey, vehicleValue]) => {
@@ -1651,9 +1646,28 @@ export function calculateSelectedRegionsAverageVMTPerYear(options: {
                 const stateAdjustedVMT =
                   vehicleValue.vmtPerVehicleAdjustedByFHWA;
 
-                const stateVMTFactor = deploymentLocationIncludesState
-                  ? vmtPercentagesStateValue?.[vehicle]
-                  : 0;
+                /** If the EV deployment location is an AVERT region **/
+                const stateVMTFactor = deploymentLocationIsRegion
+                  ? /**
+                     * Use the state/vehicle type row's "Share of Selected AVERT
+                     * Region" (column H) value (from the "A. State-level VMT
+                     * per vehicle" table in the "MOVESsupplement" sheet)
+                     */
+                    vmtPercentagesStateValue[vehicle]
+                  : /** Else, the EV deployment location is a state */
+                    deploymentLocationIsState
+                    ? /**
+                       * If the EV deployment location is the state, use 1.
+                       * Otherwise use 0 (as the state is in the AVERT region,
+                       * but wasn't selected for EV deployment). This ensures we
+                       * only use the stateAdjustedVMT value for the state that
+                       * was selected for EV deployment.
+                       */
+                      deploymentLocationStateId === stateId
+                      ? 1
+                      : 0
+                    : /** Fallback (EV deployment location will always be an AVERT region or state) */
+                      0;
 
                 const stateAverageVMT = stateAdjustedVMT * stateVMTFactor;
 
