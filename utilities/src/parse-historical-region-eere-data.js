@@ -10,16 +10,16 @@ const __dirname = dirname(__filename);
 
 /**
  * The data we're interested in spans 9 columns (B:J) and 16 rows (880–895).
- * 
+ *
  * The first column header ("AVERT Regions: Totals") is really the first header
  * row category.
  *
  * The next 3 column headers fall under the second header row category of "Avg.
  * Annual Capacity added 2021-2023 (MW)".
- * 
+ *
  * The next 4 column headers fall under the third header row category of
  * "Estimated Annual Wholesale Impacts (GWh)".
- * 
+ *
  * The last column header falls under the fourth header row category of "Retail
  * Impacts (GWh)".
  *

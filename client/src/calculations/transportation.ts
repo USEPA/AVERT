@@ -3332,20 +3332,23 @@ export function calculateEVDeploymentLocationHistoricalEERE(options: {
   const regionRetailImpacts = regionEEREAverage?.["Retail Impacts (GWh)"];
 
   const stateEEREAverage = historicalStateEEREData.find((data) => {
-    return data["State"] === deploymentLocationStateId;
+    return data["States: Totals"] === deploymentLocationStateId;
   });
+
+  const stateCapacityAdded = stateEEREAverage?.["Avg. Annual Capacity added 2021-2023 (MW)"]; // prettier-ignore
+  const stateAnnualImpacts = stateEEREAverage?.["Estimated Annual Impacts (GWh)"]; // prettier-ignore
 
   const windCapacityAdded = deploymentLocationIsRegion
     ? regionCapacityAdded?.["Wind"] || 0
-    : stateEEREAverage?.["Wind"] || 0;
+    : stateCapacityAdded?.["Wind"] || 0;
 
   const upvCapacityAdded = deploymentLocationIsRegion
     ? regionCapacityAdded?.["UPV"] || 0
-    : stateEEREAverage?.["UPV"] || 0;
+    : stateCapacityAdded?.["UPV"] || 0;
 
   const eeRetailImpacts = deploymentLocationIsRegion
     ? regionRetailImpacts?.["EE"] || 0
-    : stateEEREAverage?.["EE"] || 0;
+    : stateAnnualImpacts?.["EE (Retail)"] || 0;
 
   const eeCapacityAdded = deploymentLocationIsRegion
     ? ((eeRetailImpacts / 1 - regionalLineLoss) * GWtoMW) / hoursInYear

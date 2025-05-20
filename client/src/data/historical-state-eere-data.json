@@ -1,296 +1,590 @@
 [
   {
-    "State": "AL",
-    "Wind": 0,
-    "UPV": 75.66666666666667,
-    "EE": 11.368505666666666
+    "States: Totals": "AL",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 75.66666666666667
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 37.61966666666667,
+      "EE (Retail)": 11.368505666666666
+    }
   },
   {
-    "State": "AR",
-    "Wind": 0,
-    "UPV": 73.73333333333333,
-    "EE": 365.7383096666667
+    "States: Totals": "AR",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 73.73333333333333
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 151.35566666666668,
+      "EE (Retail)": 365.7383096666667
+    }
   },
   {
-    "State": "AZ",
-    "Wind": 0,
-    "UPV": 270.06666666666666,
-    "EE": 1081.1036723333334
+    "States: Totals": "AZ",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 270.06666666666666
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 413.586,
+      "EE (Retail)": 1081.1036723333334
+    }
   },
   {
-    "State": "CA",
-    "Wind": 144.4,
-    "UPV": 1849.3999999999996,
-    "EE": 2977.0913766666667
+    "States: Totals": "CA",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 144.4,
+      "UPV": 1849.3999999999996
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 278.70013666666665,
+      "UPV": 1922.65633,
+      "EE (Retail)": 2977.0913766666667
+    }
   },
   {
-    "State": "CO",
-    "Wind": 199.86666666666667,
-    "UPV": 282.9666666666667,
-    "EE": 665.2920016666667
+    "States: Totals": "CO",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 199.86666666666667,
+      "UPV": 282.9666666666667
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 386.0246666666667,
+      "UPV": 129.18398333333334,
+      "EE (Retail)": 665.2920016666667
+    }
   },
   {
-    "State": "CT",
-    "Wind": 0,
-    "UPV": 46.833333333333336,
-    "EE": 335.6691316666667
+    "States: Totals": "CT",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 46.833333333333336
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 19.678,
+      "EE (Retail)": 335.6691316666667
+    }
   },
   {
-    "State": "DC",
-    "Wind": 0,
-    "UPV": 2.8000000000000003,
-    "EE": 72.53532333333334
+    "States: Totals": "DC",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 2.8000000000000003
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 2.667666666666667,
+      "EE (Retail)": 72.53532333333334
+    }
   },
   {
-    "State": "DE",
-    "Wind": 0,
-    "UPV": 34.766666666666666,
-    "EE": 58.921095333333334
+    "States: Totals": "DE",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 34.766666666666666
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 2.3306666666666667,
+      "EE (Retail)": 58.921095333333334
+    }
   },
   {
-    "State": "FL",
-    "Wind": 0,
-    "UPV": 1135.7,
-    "EE": 239.13456200000005
+    "States: Totals": "FL",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 1135.7
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 1513.7626666666667,
+      "EE (Retail)": 239.13456200000005
+    }
   },
   {
-    "State": "GA",
-    "Wind": 0,
-    "UPV": 660.5666666666666,
-    "EE": 418.918083
+    "States: Totals": "GA",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 660.5666666666666
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 299.366,
+      "EE (Retail)": 418.918083
+    }
   },
   {
-    "State": "IA",
-    "Wind": 590.8666666666667,
-    "UPV": 129,
-    "EE": 239.3844436666667
+    "States: Totals": "IA",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 590.8666666666667,
+      "UPV": 129
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 1219.3733333333332,
+      "UPV": 165.72292333333334,
+      "EE (Retail)": 239.3844436666667
+    }
   },
   {
-    "State": "ID",
-    "Wind": 0,
-    "UPV": 80,
-    "EE": 195.62752
+    "States: Totals": "ID",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 80
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 3.0380000000000003,
+      "EE (Retail)": 195.62752
+    }
   },
   {
-    "State": "IL",
-    "Wind": 360.79999999999995,
-    "UPV": 333.20000000000005,
-    "EE": 2437.557027666667
+    "States: Totals": "IL",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 360.79999999999995,
+      "UPV": 333.20000000000005
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 376.3076666666666,
+      "UPV": 249.38333333333333,
+      "EE (Retail)": 2437.557027666667
+    }
   },
   {
-    "State": "IN",
-    "Wind": 167.46666666666667,
-    "UPV": 128.56666666666666,
-    "EE": 565.0239703333333
+    "States: Totals": "IN",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 167.46666666666667,
+      "UPV": 128.56666666666666
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 101.611,
+      "UPV": 67.06166666666668,
+      "EE (Retail)": 565.0239703333333
+    }
   },
   {
-    "State": "KS",
-    "Wind": 606.9666666666668,
-    "UPV": 2.1999999999999997,
-    "EE": 0.15025233333333332
+    "States: Totals": "KS",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 606.9666666666668,
+      "UPV": 2.1999999999999997
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 998.4063333333334,
+      "UPV": 3.422,
+      "EE (Retail)": 0.15025233333333332
+    }
   },
   {
-    "State": "KY",
-    "Wind": 0,
-    "UPV": 33.333333333333336,
-    "EE": 86.82408866666667
+    "States: Totals": "KY",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 33.333333333333336
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 2.284666666666667,
+      "EE (Retail)": 86.82408866666667
+    }
   },
   {
-    "State": "LA",
-    "Wind": 0,
-    "UPV": 33.333333333333336,
-    "EE": 141.246495
+    "States: Totals": "LA",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 33.333333333333336
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 20.517333333333333,
+      "EE (Retail)": 141.246495
+    }
   },
   {
-    "State": "MA",
-    "Wind": 0,
-    "UPV": 99.66666666666667,
-    "EE": 781.9999913333335
+    "States: Totals": "MA",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 99.66666666666667
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 45.84795333333333,
+      "EE (Retail)": 781.9999913333335
+    }
   },
   {
-    "State": "MD",
-    "Wind": 0,
-    "UPV": 88.2,
-    "EE": 841.3212266666666
+    "States: Totals": "MD",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 88.2
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 32.46268666666666,
+      "EE (Retail)": 841.3212266666666
+    }
   },
   {
-    "State": "ME",
-    "Wind": 18.433333333333334,
-    "UPV": 129.03333333333333,
-    "EE": 173.58340866666666
+    "States: Totals": "ME",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 18.433333333333334,
+      "UPV": 129.03333333333333
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 10.898000000000001,
+      "UPV": 72.11233333333332,
+      "EE (Retail)": 173.58340866666666
+    }
   },
   {
-    "State": "MI",
-    "Wind": 226.36666666666665,
-    "UPV": 279.5,
-    "EE": 1590.5827080000001
+    "States: Totals": "MI",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 226.36666666666665,
+      "UPV": 279.5
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 371.3586666666667,
+      "UPV": 159.03766666666667,
+      "EE (Retail)": 1590.5827080000001
+    }
   },
   {
-    "State": "MN",
-    "Wind": 296.6666666666667,
-    "UPV": 59.36666666666667,
-    "EE": 903.7999573333335
+    "States: Totals": "MN",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 296.6666666666667,
+      "UPV": 59.36666666666667
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 427.7466666666666,
+      "UPV": 42.918,
+      "EE (Retail)": 903.7999573333335
+    }
   },
   {
-    "State": "MO",
-    "Wind": 149.46666666666667,
-    "UPV": 13.233333333333334,
-    "EE": 451.6868153333333
+    "States: Totals": "MO",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 149.46666666666667,
+      "UPV": 13.233333333333334
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 337.663,
+      "UPV": 21.359333333333336,
+      "EE (Retail)": 451.6868153333333
+    }
   },
   {
-    "State": "MS",
-    "Wind": 0,
-    "UPV": 67.06666666666666,
-    "EE": 84.45051600000001
+    "States: Totals": "MS",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 67.06666666666666
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 27.83666666666667,
+      "EE (Retail)": 84.45051600000001
+    }
   },
   {
-    "State": "MT",
-    "Wind": 323.59999999999997,
-    "UPV": 0,
-    "EE": 80.14420600000001
+    "States: Totals": "MT",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 323.59999999999997,
+      "UPV": 0
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 366.46733333333333,
+      "UPV": 0,
+      "EE (Retail)": 80.14420600000001
+    }
   },
   {
-    "State": "NC",
-    "Wind": 0,
-    "UPV": 369.5999999999999,
-    "EE": 953.7756606666667
+    "States: Totals": "NC",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 369.5999999999999
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 348.7429133333333,
+      "EE (Retail)": 953.7756606666667
+    }
   },
   {
-    "State": "ND",
-    "Wind": 99.60000000000001,
-    "UPV": 0,
-    "EE": 0.28353333333333336
+    "States: Totals": "ND",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 99.60000000000001,
+      "UPV": 0
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 242.17999999999998,
+      "UPV": 0,
+      "EE (Retail)": 0.28353333333333336
+    }
   },
   {
-    "State": "NE",
-    "Wind": 530.9666666666666,
-    "UPV": 7.133333333333333,
-    "EE": 36.13545233333333
+    "States: Totals": "NE",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 530.9666666666666,
+      "UPV": 7.133333333333333
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 908.0243333333333,
+      "UPV": 4.842999999999999,
+      "EE (Retail)": 36.13545233333333
+    }
   },
   {
-    "State": "NH",
-    "Wind": 0,
-    "UPV": 0,
-    "EE": 116.98990099999999
+    "States: Totals": "NH",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 0
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 0,
+      "EE (Retail)": 116.98990099999999
+    }
   },
   {
-    "State": "NJ",
-    "Wind": 0,
-    "UPV": 51.23333333333333,
-    "EE": 1289.4493456666667
+    "States: Totals": "NJ",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 51.23333333333333
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 39.089940000000006,
+      "EE (Retail)": 1289.4493456666667
+    }
   },
   {
-    "State": "NM",
-    "Wind": 666,
-    "UPV": 63,
-    "EE": 183.76009033333335
+    "States: Totals": "NM",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 666,
+      "UPV": 63
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 933.1406666666668,
+      "UPV": 110.94966666666666,
+      "EE (Retail)": 183.76009033333335
+    }
   },
   {
-    "State": "NV",
-    "Wind": 0,
-    "UPV": 417.8999999999999,
-    "EE": 201.47433333333333
+    "States: Totals": "NV",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 417.8999999999999
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 709.2669999999999,
+      "EE (Retail)": 201.47433333333333
+    }
   },
   {
-    "State": "NY",
-    "Wind": 67.89999999999999,
-    "UPV": 253.4666666666667,
-    "EE": 2113.173957333333
+    "States: Totals": "NY",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 67.89999999999999,
+      "UPV": 253.4666666666667
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 48.099333333333334,
+      "UPV": 130.056,
+      "EE (Retail)": 2113.173957333333
+    }
   },
   {
-    "State": "OH",
-    "Wind": 83.26666666666667,
-    "UPV": 124.76666666666665,
-    "EE": 19.230659666666668
+    "States: Totals": "OH",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 83.26666666666667,
+      "UPV": 124.76666666666665
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 93.842,
+      "UPV": 163.63166666666666,
+      "EE (Retail)": 19.230659666666668
+    }
   },
   {
-    "State": "OK",
-    "Wind": 1233.3999999999999,
-    "UPV": 4,
-    "EE": 298.549562
+    "States: Totals": "OK",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 1233.3999999999999,
+      "UPV": 4
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 2609.3886666666667,
+      "UPV": 4.3116666666666665,
+      "EE (Retail)": 298.549562
+    }
   },
   {
-    "State": "OR",
-    "Wind": 139.53333333333333,
-    "UPV": 91.73333333333333,
-    "EE": 433.33634366666666
+    "States: Totals": "OR",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 139.53333333333333,
+      "UPV": 91.73333333333333
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 275.06,
+      "UPV": 141.24666666666667,
+      "EE (Retail)": 433.33634366666666
+    }
   },
   {
-    "State": "PA",
-    "Wind": 0,
-    "UPV": 15.433333333333332,
-    "EE": 721.9056486666667
+    "States: Totals": "PA",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 15.433333333333332
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 1.6243333333333334,
+      "EE (Retail)": 721.9056486666667
+    }
   },
   {
-    "State": "RI",
-    "Wind": 1.5,
-    "UPV": 44.63333333333333,
-    "EE": 128.40255166666665
+    "States: Totals": "RI",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 1.5,
+      "UPV": 44.63333333333333
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0.0006666666666666666,
+      "UPV": 13.868666666666668,
+      "EE (Retail)": 128.40255166666665
+    }
   },
   {
-    "State": "SC",
-    "Wind": 0,
-    "UPV": 141.70000000000002,
-    "EE": 367.71730499999995
+    "States: Totals": "SC",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 141.70000000000002
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 55.337733333333325,
+      "EE (Retail)": 367.71730499999995
+    }
   },
   {
-    "State": "SD",
-    "Wind": 202.53333333333333,
-    "UPV": 0,
-    "EE": 22.776692666666673
+    "States: Totals": "SD",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 202.53333333333333,
+      "UPV": 0
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 598.3706666666667,
+      "UPV": 0,
+      "EE (Retail)": 22.776692666666673
+    }
   },
   {
-    "State": "TN",
-    "Wind": 0,
-    "UPV": 116.80000000000003,
-    "EE": 26.45933333333333
+    "States: Totals": "TN",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 116.80000000000003
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 206.00133333333335,
+      "EE (Retail)": 26.45933333333333
+    }
   },
   {
-    "State": "TX",
-    "Wind": 4721.966666666667,
-    "UPV": 3004.7999999999997,
-    "EE": 1038.7015233333332
+    "States: Totals": "TX",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 4721.966666666667,
+      "UPV": 3004.7999999999997
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 7381.307216666667,
+      "UPV": 2416.7123333333334,
+      "EE (Retail)": 1038.7015233333332
+    }
   },
   {
-    "State": "UT",
-    "Wind": 0,
-    "UPV": 141.5,
-    "EE": 307.14340666666664
+    "States: Totals": "UT",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 141.5
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 211.27466666666666,
+      "EE (Retail)": 307.14340666666664
+    }
   },
   {
-    "State": "VA",
-    "Wind": 4,
-    "UPV": 727.1666666666666,
-    "EE": 312.8509143333333
+    "States: Totals": "VA",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 4,
+      "UPV": 727.1666666666666
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 16.527666666666665,
+      "UPV": 662.3969766666668,
+      "EE (Retail)": 312.8509143333333
+    }
   },
   {
-    "State": "VT",
-    "Wind": 0,
-    "UPV": 6.3999999999999995,
-    "EE": 88.52866666666667
+    "States: Totals": "VT",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 6.3999999999999995
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 1.5866666666666667,
+      "EE (Retail)": 88.52866666666667
+    }
   },
   {
-    "State": "WA",
-    "Wind": 0,
-    "UPV": 110,
-    "EE": 587.9907609999999
+    "States: Totals": "WA",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 110
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 27.640666666666664,
+      "EE (Retail)": 587.9907609999999
+    }
   },
   {
-    "State": "WI",
-    "Wind": 0,
-    "UPV": 278.5,
-    "EE": 649.7270843333333
+    "States: Totals": "WI",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 0,
+      "UPV": 278.5
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 0,
+      "UPV": 66.17933333333333,
+      "EE (Retail)": 649.7270843333333
+    }
   },
   {
-    "State": "WV",
-    "Wind": 76.66666666666667,
-    "UPV": 0,
-    "EE": 3.6407666666666665
+    "States: Totals": "WV",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 76.66666666666667,
+      "UPV": 0
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 178.024,
+      "UPV": 0,
+      "EE (Retail)": 3.6407666666666665
+    }
   },
   {
-    "State": "WY",
-    "Wind": 167.73333333333332,
-    "UPV": 0,
-    "EE": 43.48007666666666
+    "States: Totals": "WY",
+    "Avg. Annual Capacity added 2021-2023 (MW)": {
+      "Wind": 167.73333333333332,
+      "UPV": 0
+    },
+    "Estimated Annual Impacts (GWh)": {
+      "Wind": 147.756,
+      "UPV": 0,
+      "EE (Retail)": 43.48007666666666
+    }
   }
 ]
