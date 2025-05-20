@@ -895,7 +895,7 @@ export function createCombinedSectorsEmissionsData(options: {
 
       const monthlyVehicleData =
         pollutant !== "generation" &&
-        pollutant in monthlyVehicleEmissionChangesData[regionId][pollutant]
+        pollutant in monthlyVehicleEmissionChangesData[regionId]
           ? monthlyVehicleEmissionChangesData[regionId][pollutant]
           : null;
 
