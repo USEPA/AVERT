@@ -3305,11 +3305,13 @@ export function calculateEVDeploymentLocationHistoricalEERE(options: {
       })?.name;
 
       const regionEEREAverage = historicalRegionEEREData.find((data) => {
-        return data["Region"] === regionName;
+        return data["AVERT Regions: Totals"] === regionName;
       });
 
-      const regionEEREAverageWind = regionEEREAverage?.["Wind"] || 0;
-      const regionEEREAverageUPV = regionEEREAverage?.["UPV"] || 0;
+      const regionCapacityAdded = regionEEREAverage?.["Avg. Annual Capacity added 2021-2023 (MW)"]; // prettier-ignore
+
+      const regionEEREAverageWind = regionCapacityAdded?.["Wind"] || 0;
+      const regionEEREAverageUPV = regionCapacityAdded?.["UPV"] || 0;
 
       object.wind += (wind * hoursInYear * regionEEREAverageWind) / GWtoMW;
       object.upv += (upv * hoursInYear * regionEEREAverageUPV) / GWtoMW;
@@ -3323,23 +3325,26 @@ export function calculateEVDeploymentLocationHistoricalEERE(options: {
   const selectedRegionName = selectedRegion?.name || "";
 
   const regionEEREAverage = historicalRegionEEREData.find((data) => {
-    return data["Region"] === selectedRegionName;
+    return data["AVERT Regions: Totals"] === selectedRegionName;
   });
+
+  const regionCapacityAdded = regionEEREAverage?.["Avg. Annual Capacity added 2021-2023 (MW)"]; // prettier-ignore
+  const regionRetailImpacts = regionEEREAverage?.["Retail Impacts (GWh)"];
 
   const stateEEREAverage = historicalStateEEREData.find((data) => {
     return data["State"] === deploymentLocationStateId;
   });
 
   const windCapacityAdded = deploymentLocationIsRegion
-    ? regionEEREAverage?.["Wind"] || 0
+    ? regionCapacityAdded?.["Wind"] || 0
     : stateEEREAverage?.["Wind"] || 0;
 
   const upvCapacityAdded = deploymentLocationIsRegion
-    ? regionEEREAverage?.["UPV"] || 0
+    ? regionCapacityAdded?.["UPV"] || 0
     : stateEEREAverage?.["UPV"] || 0;
 
   const eeRetailImpacts = deploymentLocationIsRegion
-    ? regionEEREAverage?.["EE"] || 0
+    ? regionRetailImpacts?.["EE"] || 0
     : stateEEREAverage?.["EE"] || 0;
 
   const eeCapacityAdded = deploymentLocationIsRegion
