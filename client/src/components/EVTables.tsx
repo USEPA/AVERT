@@ -306,7 +306,7 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
                     {evDeploymentLocationName && (
                       <>for {evDeploymentLocationName} </>
                     )}
-                    (Annual Avg. 2019&ndash;2021)
+                    (Annual Avg. 2019&ndash;2023)
                   </small>
                 </th>
                 <th scope="col" colSpan={2}>
