@@ -3258,7 +3258,7 @@ export function calculateSelectedRegionsEEREDefaultsAverages(options: {
 /**
  * Historical EERE data for the EV deployment location (entire region or state).
  *
- * Excel: "Table 13: Historical renewable and energy efficiency addition data"
+ * Excel: "Table 11: Historical renewable and energy efficiency addition data"
  * table in the "Library" sheet (C956:H956).
  */
 export function calculateEVDeploymentLocationHistoricalEERE(options: {
