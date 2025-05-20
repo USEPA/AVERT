@@ -904,7 +904,7 @@ function ImpactsInputsContent() {
                         >
                           <ImpactsTextInput
                             className={clsx("margin-top-1")}
-                            label={<>Electric transit buses:</>}
+                            label={<>Transit buses:</>}
                             ariaLabel="Number of electric transit buses to be added to the road"
                             value={transitBuses}
                             fieldName="transitBuses"
@@ -965,7 +965,7 @@ function ImpactsInputsContent() {
                         <div className={clsx("flex-1", "tablet:margin-left-2")}>
                           <ImpactsTextInput
                             className={clsx("margin-top-1")}
-                            label={<>Electric school buses:</>}
+                            label={<>School buses:</>}
                             ariaLabel="Number of electric school buses to be added to the road"
                             value={schoolBuses}
                             fieldName="schoolBuses"
