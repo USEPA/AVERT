@@ -58,11 +58,16 @@ export function parseExcelDoubleHeaderRowsData(headerRow1, headerRow2, dataRows)
      */
     row.forEach((value, index) => {
       /**
-       * Header row 2 will always have the value needed for the header field's
-       * label...it just might get nested under a header category as well. We'll
-       * replace any new line characters (\n) with spaces.
+       * Header row 2 will usually exist at a given column/index and contain the
+       * value needed for the header field's label. If it doesn't exist in a
+       * column/index, header row 1's value (the header category) will be used
+       * instead. If it does exist at a given column/index, it might also be
+       * nested under a header category as well. We'll replace any new line
+       * characters (\n) with spaces.
        */
-      const headerFieldName = headerRow2[index].toString().replace(/\n/g, " ");
+      const headerFieldName = headerRow2[index]
+        ? headerRow2[index].toString().replace(/\n/g, " ")
+        : null;
 
       /**
        * If a header row 1 value exists, its the start of a new category. As
@@ -75,19 +80,25 @@ export function parseExcelDoubleHeaderRowsData(headerRow1, headerRow2, dataRows)
       }
 
       /**
-       * If the category has not yet been set, we're still within the first few
-       * columns of data, so there isn't a category to nest the header field
-       * under.
+       * If the category has not yet been set, there isn't a category to nest
+       * any potential the header field under. We'll just ensure the header
+       * field name exists before using it.
        */
       if (!headerCategoryName) {
-        object[headerFieldName] = value;
+        if (headerFieldName !== null) {
+          object[headerFieldName] = value;
+        }
         /**
-         * Else, the category has been set and we're within a column that has
-         * two header rows, so we'll nest the header field under the last set
-         * category.
+         * Else the category has been set, so we'll check if the header field
+         * exits. If it does, we'll nest the header field under the category.
+         * Otherwise, we'll just use the category name as the header field.
          */
       } else {
-        object[headerCategoryName][headerFieldName] = value;
+        if (headerFieldName !== null) {
+          object[headerCategoryName][headerFieldName] = value;
+        } else {
+          object[headerCategoryName] = value;
+        }
       }
     });
 

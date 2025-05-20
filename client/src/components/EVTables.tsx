@@ -200,7 +200,7 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
   const inputs = useAppSelector(({ impacts }) => impacts.inputs);
   const selectOptions = useAppSelector(({ impacts }) => impacts.selectOptions);
 
-  const { averageAnnualCapacityAddedMW, estimatedAnnualRetailImpactsGWh } =
+  const { averageAnnualCapacityAddedMW, estimatedAnnualImpactsGWh } =
     evDeploymentLocationHistoricalEERE;
   const { evDeploymentLocation } = inputs;
   const { evDeploymentLocationOptions } = selectOptions;
@@ -213,65 +213,63 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
     return opt.id === evDeploymentLocation;
   })?.name;
 
-  const eeCapacityAdded = averageAnnualCapacityAddedMW.ee;
-  const eeRetailImpacts = estimatedAnnualRetailImpactsGWh.ee;
+  const eeRetailCapacityAdded = averageAnnualCapacityAddedMW.eeRetail;
+  const eeRetailImpacts = estimatedAnnualImpactsGWh.eeRetail;
 
   const windCapacityAdded = averageAnnualCapacityAddedMW.wind;
-  const windRetailImpacts = estimatedAnnualRetailImpactsGWh.wind;
+  const windImpacts = estimatedAnnualImpactsGWh.wind;
 
   const solarCapacityAdded = averageAnnualCapacityAddedMW.upv;
-  const solarRetailImpacts = estimatedAnnualRetailImpactsGWh.upv;
+  const solarImpacts = estimatedAnnualImpactsGWh.upv;
 
   const totalCapacityAdded =
-    eeCapacityAdded / (1 - regionalLineLoss) +
+    eeRetailCapacityAdded / (1 - regionalLineLoss) +
     windCapacityAdded +
     solarCapacityAdded;
 
-  const totalRetailImpacts =
-    eeRetailImpacts / (1 - regionalLineLoss) +
-    windRetailImpacts +
-    solarRetailImpacts;
+  const totalImpacts =
+    eeRetailImpacts / (1 - regionalLineLoss) + windImpacts + solarImpacts;
 
   const totalOffsetRequiredGWh =
     totalYearlySalesChanges / (1 - regionalLineLoss);
 
   const eeOffsetRequiredGWh =
-    (eeRetailImpacts / (1 - regionalLineLoss) / (totalRetailImpacts || 1)) *
+    (eeRetailImpacts / (1 - regionalLineLoss) / (totalImpacts || 1)) *
     totalOffsetRequiredGWh;
 
   const eeOffsetRequiredMw =
-    (eeCapacityAdded * eeOffsetRequiredGWh) / (eeRetailImpacts || 1);
+    (eeRetailCapacityAdded * eeOffsetRequiredGWh) / (eeRetailImpacts || 1);
 
   const windOffsetRequiredGWh =
-    (windRetailImpacts / (totalRetailImpacts || 1)) * totalOffsetRequiredGWh;
+    (windImpacts / (totalImpacts || 1)) * totalOffsetRequiredGWh;
 
   const windOffsetRequiredMw =
-    (windCapacityAdded * windOffsetRequiredGWh) / (windRetailImpacts || 1);
+    (windCapacityAdded * windOffsetRequiredGWh) / (windImpacts || 1);
 
   const solarOffsetRequiredGWh =
-    (solarRetailImpacts / (totalRetailImpacts || 1)) * totalOffsetRequiredGWh;
+    (solarImpacts / (totalImpacts || 1)) * totalOffsetRequiredGWh;
 
   const solarOffsetRequiredMw =
-    (solarCapacityAdded * solarOffsetRequiredGWh) / (solarRetailImpacts || 1);
+    (solarCapacityAdded * solarOffsetRequiredGWh) / (solarImpacts || 1);
 
   const totalOffsetRequiredMw =
     eeOffsetRequiredMw + windOffsetRequiredMw + solarOffsetRequiredMw;
 
-  const eePrecentDifferenceMw = eeOffsetRequiredMw / (eeCapacityAdded || 1);
+  const eePercentDifferenceMw =
+    eeOffsetRequiredMw / (eeRetailCapacityAdded || 1);
 
-  const eePrecentDifferenceGWh = eeOffsetRequiredGWh / (eeRetailImpacts || 1);
+  const eePercentDifferenceGWh = eeOffsetRequiredGWh / (eeRetailImpacts || 1);
 
-  const windPrecentDifferenceMw =
+  const windPercentDifferenceMw =
     windOffsetRequiredMw / (windCapacityAdded || 1);
 
-  const windPrecentDifferenceGWh =
-    windOffsetRequiredGWh / (windRetailImpacts || 1);
+  const windPercentDifferenceGWh = windOffsetRequiredGWh / (windImpacts || 1);
 
-  const solarPrecentDifferenceMw =
+  const solarPercentDifferenceMw =
     solarOffsetRequiredMw / (solarCapacityAdded || 1);
 
-  const solarPrecentDifferenceGWh =
-    solarOffsetRequiredGWh / (solarRetailImpacts || 1);
+  const solarPercentDifferenceGWh =
+    solarOffsetRequiredGWh / (solarImpacts || 1);
 
   return (
     <div className={clsx("margin-top-2")}>
@@ -306,7 +304,7 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
                     {evDeploymentLocationName && (
                       <>for {evDeploymentLocationName} </>
                     )}
-                    (Annual Avg. 2019&ndash;2023)
+                    (Annual Avg. 2021&ndash;2023)
                   </small>
                 </th>
                 <th scope="col" colSpan={2}>
@@ -346,7 +344,7 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
             <tbody>
               <tr>
                 <th scope="row">EE&nbsp;(retail)</th>
-                <td>{formatNumber(eeCapacityAdded)}</td>
+                <td>{formatNumber(eeRetailCapacityAdded)}</td>
                 <td>{formatNumber(eeRetailImpacts)}</td>
                 <td>
                   {eeRetailImpacts === 0
@@ -359,73 +357,71 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
                     : formatNumber(eeOffsetRequiredGWh)}
                 </td>
                 <td>
-                  {eeCapacityAdded === 0
+                  {eeRetailCapacityAdded === 0
                     ? "-"
-                    : `${formatNumber(eePrecentDifferenceMw * 100)}%`}
+                    : `${formatNumber(eePercentDifferenceMw * 100)}%`}
                 </td>
                 <td>
                   {eeRetailImpacts === 0
                     ? "-"
-                    : `${formatNumber(eePrecentDifferenceGWh * 100)}%`}
+                    : `${formatNumber(eePercentDifferenceGWh * 100)}%`}
                 </td>
               </tr>
 
               <tr>
                 <th scope="row">Onshore&nbsp;Wind</th>
                 <td>{formatNumber(windCapacityAdded)}</td>
-                <td>{formatNumber(windRetailImpacts)}</td>
+                <td>{formatNumber(windImpacts)}</td>
                 <td>
-                  {windRetailImpacts === 0
-                    ? "-"
-                    : formatNumber(windOffsetRequiredMw)}
+                  {windImpacts === 0 ? "-" : formatNumber(windOffsetRequiredMw)}
                 </td>
                 <td>
-                  {windRetailImpacts === 0
+                  {windImpacts === 0
                     ? "-"
                     : formatNumber(windOffsetRequiredGWh)}
                 </td>
                 <td>
                   {windCapacityAdded === 0
                     ? "-"
-                    : `${formatNumber(windPrecentDifferenceMw * 100)}%`}
+                    : `${formatNumber(windPercentDifferenceMw * 100)}%`}
                 </td>
                 <td>
-                  {windRetailImpacts === 0
+                  {windImpacts === 0
                     ? "-"
-                    : `${formatNumber(windPrecentDifferenceGWh * 100)}%`}
+                    : `${formatNumber(windPercentDifferenceGWh * 100)}%`}
                 </td>
               </tr>
 
               <tr>
                 <th scope="row">Utility&nbsp;Solar</th>
                 <td>{formatNumber(solarCapacityAdded)}</td>
-                <td>{formatNumber(solarRetailImpacts)}</td>
+                <td>{formatNumber(solarImpacts)}</td>
                 <td>
-                  {solarRetailImpacts === 0
+                  {solarImpacts === 0
                     ? "-"
                     : formatNumber(solarOffsetRequiredMw)}
                 </td>
                 <td>
-                  {solarRetailImpacts === 0
+                  {solarImpacts === 0
                     ? "-"
                     : formatNumber(solarOffsetRequiredGWh)}
                 </td>
                 <td>
                   {solarCapacityAdded === 0
                     ? "-"
-                    : `${formatNumber(solarPrecentDifferenceMw * 100)}%`}
+                    : `${formatNumber(solarPercentDifferenceMw * 100)}%`}
                 </td>
                 <td>
-                  {solarRetailImpacts === 0
+                  {solarImpacts === 0
                     ? "-"
-                    : `${formatNumber(solarPrecentDifferenceGWh * 100)}%`}
+                    : `${formatNumber(solarPercentDifferenceGWh * 100)}%`}
                 </td>
               </tr>
 
               <tr>
                 <th scope="row">Total</th>
                 <td>{formatNumber(totalCapacityAdded)}</td>
-                <td>{formatNumber(totalRetailImpacts)}</td>
+                <td>{formatNumber(totalImpacts)}</td>
                 <td>{formatNumber(totalOffsetRequiredMw)}</td>
                 <td>{formatNumber(totalOffsetRequiredGWh)}</td>
                 <td>{"-"}</td>

@@ -33,7 +33,7 @@ function parseLibraryWorksheet(worksheet) {
   const headerRow = allRows[0];
   const dataRows = allRows.slice(1);
 
-  const result = parseExcelEVEfficiencyData(headerRow, dataRows);
+  const result = parseExcelEVEfficiencyAssumptionsData(headerRow, dataRows);
 
   return result;
 }
@@ -42,7 +42,7 @@ function parseLibraryWorksheet(worksheet) {
  * @param {(string|number)[]} headerRow
  * @param {(string|number)[][]} dataRows
  */
-function parseExcelEVEfficiencyData(headerRow, dataRows) {
+function parseExcelEVEfficiencyAssumptionsData(headerRow, dataRows) {
   /**
    * Extract the years columns from headerRow, skipping the first column
    * ("National average")

@@ -506,8 +506,8 @@ const initialState: State = {
   selectedGeographySalesAndStockByRegion: {},
   selectedRegionsEEREDefaultsAverages: {},
   evDeploymentLocationHistoricalEERE: {
-    averageAnnualCapacityAddedMW: { wind: 0, upv: 0, ee: 0 },
-    estimatedAnnualRetailImpactsGWh: { wind: 0, upv: 0, ee: 0 },
+    averageAnnualCapacityAddedMW: { wind: 0, upv: 0, eeRetail: 0 },
+    estimatedAnnualImpactsGWh: { wind: 0, upv: 0, eeRetail: 0 },
   },
   vehicleEmissionChangesByGeography: {},
 };
