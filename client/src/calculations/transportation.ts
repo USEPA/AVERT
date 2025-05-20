@@ -3293,7 +3293,12 @@ export function calculateEVDeploymentLocationHistoricalEERE(options: {
   const GWtoMW = 1_000;
   const hoursInYear = 8_760;
 
-  const retailImpacts = Object.entries(
+  /**
+   * Excel: "Wind" column (F) and "UPV" column (G) from the "Table 11:
+   * Historical renewable and energy efficiency addition data" table in the
+   * "Library" sheet (F822:G895).
+   */
+  const regionAnnualWholesaleImpacts = Object.entries(
     selectedRegionsEEREDefaultsAverages,
   ).reduce(
     (object, [eereDefaultsKey, eereDefaultsValue]) => {
@@ -3313,12 +3318,12 @@ export function calculateEVDeploymentLocationHistoricalEERE(options: {
       const regionEEREAverageWind = regionCapacityAdded?.["Wind"] || 0;
       const regionEEREAverageUPV = regionCapacityAdded?.["UPV"] || 0;
 
-      object.wind += (wind * hoursInYear * regionEEREAverageWind) / GWtoMW;
-      object.upv += (upv * hoursInYear * regionEEREAverageUPV) / GWtoMW;
+      object.Wind += (wind * hoursInYear * regionEEREAverageWind) / GWtoMW;
+      object.UPV += (upv * hoursInYear * regionEEREAverageUPV) / GWtoMW;
 
       return object;
     },
-    { wind: 0, upv: 0 },
+    { Wind: 0, UPV: 0 },
   );
 
   const selectedRegion = Object.values(regions).find((r) => r.selected);
@@ -3338,29 +3343,37 @@ export function calculateEVDeploymentLocationHistoricalEERE(options: {
   const stateCapacityAdded = stateEEREAverage?.["Avg. Annual Capacity added 2021-2023 (MW)"]; // prettier-ignore
   const stateAnnualImpacts = stateEEREAverage?.["Estimated Annual Impacts (GWh)"]; // prettier-ignore
 
-  const windCapacityAdded = deploymentLocationIsRegion
+  const windAnnualCapacityAdded = deploymentLocationIsRegion
     ? regionCapacityAdded?.["Wind"] || 0
     : stateCapacityAdded?.["Wind"] || 0;
 
-  const upvCapacityAdded = deploymentLocationIsRegion
+  const upvAnnualCapacityAdded = deploymentLocationIsRegion
     ? regionCapacityAdded?.["UPV"] || 0
     : stateCapacityAdded?.["UPV"] || 0;
 
-  const eeRetailImpacts = deploymentLocationIsRegion
+  const windAnnualImpacts = deploymentLocationIsRegion
+    ? regionAnnualWholesaleImpacts["Wind"]
+    : stateAnnualImpacts?.["Wind"] || 0;
+
+  const upvAnnualImpacts = deploymentLocationIsRegion
+    ? regionAnnualWholesaleImpacts["UPV"]
+    : stateAnnualImpacts?.["UPV"] || 0;
+
+  const eeRetailAnnualImpacts = deploymentLocationIsRegion
     ? regionRetailImpacts?.["EE"] || 0
     : stateAnnualImpacts?.["EE (Retail)"] || 0;
 
-  const eeCapacityAdded = deploymentLocationIsRegion
-    ? ((eeRetailImpacts / 1 - regionalLineLoss) * GWtoMW) / hoursInYear
-    : (eeRetailImpacts * GWtoMW) / hoursInYear;
+  const eeRetailAnnualCapacityAdded = deploymentLocationIsRegion
+    ? ((eeRetailAnnualImpacts / 1 - regionalLineLoss) * GWtoMW) / hoursInYear
+    : (eeRetailAnnualImpacts * GWtoMW) / hoursInYear;
 
-  result.averageAnnualCapacityAddedMW.wind = windCapacityAdded;
-  result.averageAnnualCapacityAddedMW.upv = upvCapacityAdded;
-  result.averageAnnualCapacityAddedMW.ee = eeCapacityAdded;
+  result.averageAnnualCapacityAddedMW.wind = windAnnualCapacityAdded;
+  result.averageAnnualCapacityAddedMW.upv = upvAnnualCapacityAdded;
+  result.averageAnnualCapacityAddedMW.ee = eeRetailAnnualCapacityAdded;
 
-  result.estimatedAnnualRetailImpactsGWh.wind = retailImpacts.wind;
-  result.estimatedAnnualRetailImpactsGWh.upv = retailImpacts.upv;
-  result.estimatedAnnualRetailImpactsGWh.ee = eeRetailImpacts;
+  result.estimatedAnnualRetailImpactsGWh.wind = windAnnualImpacts;
+  result.estimatedAnnualRetailImpactsGWh.upv = upvAnnualImpacts;
+  result.estimatedAnnualRetailImpactsGWh.ee = eeRetailAnnualImpacts;
 
   return result;
 }
