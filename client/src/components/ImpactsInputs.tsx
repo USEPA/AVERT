@@ -13,11 +13,6 @@ import {
 } from "@/components/EVTables";
 import { Tooltip } from "@/components/Tooltip";
 import { useAppDispatch, useAppSelector } from "@/redux/index";
-import { displayModalDialog } from "@/redux/reducers/panel";
-import {
-  type GeographicFocus,
-  type RegionState,
-} from "@/redux/reducers/geography";
 import {
   updateEEAnnualGwhReduction,
   updateEEHourlyMwReduction,
@@ -93,50 +88,10 @@ const inputsSummaryStyles = css`
 `;
 
 /**
- * Checks the conditions necessary that would require displaying a transit buses
- * warning modal dialog.
- */
-function checkTransitBusesWarningScenario(options: {
-  geographicFocus: GeographicFocus;
-  selectedRegion: RegionState | undefined;
-  evDeploymentLocation: string;
-  transitBuses: string;
-}) {
-  const {
-    geographicFocus,
-    selectedRegion,
-    evDeploymentLocation,
-    transitBuses,
-  } = options;
-
-  return (
-    geographicFocus === "regions" &&
-    selectedRegion?.id === "RM" &&
-    ["state-MT", "state-UT"].includes(evDeploymentLocation) &&
-    transitBuses !== "" &&
-    transitBuses !== "0"
-  );
-}
-
-/**
  * Checks if the input is not an empty string or zero.
  */
 function nonZeroInput(input: string) {
   return input !== "" && Number(input) !== 0;
-}
-
-/**
- * Warning dialog text to display when under the transit buses warning scenario.
- */
-function TransitBusesWarningText() {
-  return (
-    <p className={clsx("margin-0")}>
-      <strong>Error:</strong> You have entered a quantity of transit buses in a
-      region/state combination that does not currently have transit buses.
-      Please select a different region or state, or change the modeled quantity
-      of transit buses to zero.
-    </p>
-  );
 }
 
 function ImpactsInputsContent() {
@@ -913,21 +868,6 @@ function ImpactsInputsContent() {
                             }}
                             onBlur={(value) => {
                               dispatch(runEVTransitBusesCalculations(value));
-
-                              if (
-                                checkTransitBusesWarningScenario({
-                                  geographicFocus,
-                                  selectedRegion,
-                                  evDeploymentLocation,
-                                  transitBuses: value,
-                                })
-                              ) {
-                                dispatch(
-                                  displayModalDialog(
-                                    <TransitBusesWarningText />,
-                                  ),
-                                );
-                              }
                             }}
                             tooltip={
                               <>
@@ -1193,19 +1133,6 @@ function ImpactsInputsContent() {
                         fieldName="evDeploymentLocation"
                         onChange={(option) => {
                           dispatch(updateEVDeploymentLocation(option));
-
-                          if (
-                            checkTransitBusesWarningScenario({
-                              geographicFocus,
-                              selectedRegion,
-                              evDeploymentLocation: option,
-                              transitBuses,
-                            })
-                          ) {
-                            dispatch(
-                              displayModalDialog(<TransitBusesWarningText />),
-                            );
-                          }
                         }}
                         tooltip={
                           <p className={clsx("margin-0")}>
