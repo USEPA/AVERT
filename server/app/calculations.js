@@ -294,14 +294,12 @@ function calculateEmissionsChanges(options) {
    */
   const egus = {};
 
-  /** @type {("generation" | "so2" | "nox" | "co2" | "pm25" | "vocs" | "nh3")[]} */
-  const emissionsFields = ["generation", "so2", "nox", "co2", "pm25", "vocs", "nh3"];
-
-  /** @type {("pm25" | "vocs" | "nh3")[]} */
-  const neiFields = ["pm25", "vocs", "nh3"];
-
   const regionId = rdf.region.region_abbv;
   const regionName = rdf.region.region_name;
+
+  const regionalNeiEmissionRates = neiEmissionRates.filter((item) => {
+    return item.region === regionName;
+  });
 
   /**
    * Excel: "genBlockArray" variable in the "m_3_displaced_gen_emissions" Visual
@@ -338,7 +336,8 @@ function calculateEmissionsChanges(options) {
      * item in the "loadArray" variable in the "m_3_displaced_gen_emissions"
      * Visual Basic module.
      *
-     * NOTE: `hourlyChanges[i]` is the "Energy Change Profile" (column E) and
+     * NOTE: `hourlyChanges[i]` is the "Energy Change Profile" (column E) of the
+     * various pollutant/emissions sheets ("Generation", "SO2", "NOx", etc.) and
      * also the second item in the "loadArray" variable in the
      * "m_3_displaced_gen_emissions" Visual Basic module.
      */
@@ -354,23 +353,15 @@ function calculateEmissionsChanges(options) {
     const preLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, preLoad);
     const postLoadBinEdgeIndex = getPrecedingIndex(loadBinEdges, postLoad);
 
-    /** Iterate over each emissions field (generation, so2, nox, co2, etc.) */
-    emissionsFields.forEach((field) => {
-      /**
-       * NOTE: PM2.5, VOCs, and NH3 always use the `heat` or `heat_not` fields
-       * of the RDF's `data` object.
-       */
+    /** Iterate over each of the RDF's ozone data fields */
+    ["generation", "so2", "nox", "co2", "heat"].forEach((field) => {
       /** @type {EGUData[]} */
-      const ozoneSeasonData = neiFields.includes(field)
-        ? rdf.data.heat
-        : rdf.data[field];
+      const ozoneSeasonData = rdf.data[field];
 
       /** @type {?EGUData[]} */
       const nonOzoneSeasonData =
         field === "generation"
           ? null // NOTE: there's no non-ozone season for generation
-          : neiFields.includes(field)
-          ? rdf.data.heat_not
           : rdf.data[`${field}_not`];
 
       const ozoneSeasonMedians = ozoneSeasonData.map((egu) => egu.medians);
@@ -461,196 +452,205 @@ function calculateEmissionsChanges(options) {
         //     : 0;
 
         /**
-         * Conditionally multiply NEI factor to calculated pre and post values.
+         * NOTE: PM2.5, VOCs, and NH3 always use the `heat` or `heat_not` fields
+         * of the RDF's `data` object, and their calculated `pre` and `post`
+         * values need to be multiplied by the NEI emission rates for the EGU.
          */
-        const matchedEgu = neiEmissionRates.find((item) => {
-          return (
-            item.region === regionName &&
-            item.orspl === orispl_code &&
-            item.unit === unit_code
-          );
-        });
+        (field === "heat"
+          ? ["pm25", "vocs", "nh3"]
+          : [field]
+        ).forEach((emissionsField) => {
+          /**
+           * Conditionally multiply NEI factor to calculated pre and post values.
+           */
+          const conditionallyMatchedEgu =
+            field === "heat"
+              ? regionalNeiEmissionRates.find((item) => {
+                  return item.orspl === orispl_code && item.unit === unit_code;
+                })
+              : null;
 
-        /** @type NEIPollutantsEmissionRates | undefined */
-        const neiEguData = matchedEgu?.years?.[year.toString()];
+          /** @type NEIPollutantsEmissionRates | undefined */
+          const neiEguData = conditionallyMatchedEgu?.years?.[year.toString()];
 
-        /** @type number | undefined */
-        const neiFieldData = neiEguData?.[field];
+          /** @type number | undefined */
+          const neiFieldData = neiEguData?.[emissionsField];
 
-        const pre =
-        neiFields.includes(field) && neiFieldData !== undefined
-          ? calculatedPre * neiFieldData
-          : calculatedPre;
+          const pre =
+            neiFieldData !== undefined
+              ? calculatedPre * neiFieldData
+              : calculatedPre;
 
-      const post =
-        neiFields.includes(field) && neiFieldData !== undefined
-          ? calculatedPost * neiFieldData
-          : calculatedPost;
+          const post =
+            neiFieldData !== undefined
+              ? calculatedPost * neiFieldData
+              : calculatedPost;
 
-        // const pre =
-        //   neiFields.includes(field) && neiFieldData !== undefined
-        //     ? roundToDecimalPlaces({
-        //         number: calculatedPre * neiFieldData,
-        //         decimalPlaces,
-        //       })
-        //     : calculatedPre;
+          // const pre =
+          //   neiFieldData !== undefined
+          //     ? roundToDecimalPlaces({
+          //         number: calculatedPre * neiFieldData,
+          //         decimalPlaces,
+          //       })
+          //     : calculatedPre;
 
-        // const post =
-        //   neiFields.includes(field) && neiFieldData !== undefined
-        //     ? roundToDecimalPlaces({
-        //         number: calculatedPost * neiFieldData,
-        //         decimalPlaces,
-        //       })
-        //     : calculatedPost;
+          // const post =
+          //   neiFieldData !== undefined
+          //     ? roundToDecimalPlaces({
+          //         number: calculatedPost * neiFieldData,
+          //         decimalPlaces,
+          //       })
+          //     : calculatedPost;
 
-        // const impacts = post - pre;
+          // const impacts = post - pre;
 
-        // /**
-        //  * Conditionally initialize the emissions field's hourly impacts from
-        //  * all EGUs.
-        //  */
-        // hourly[regionId] ??= {
-        //   generation: {},
-        //   so2: {},
-        //   nox: {},
-        //   co2: {},
-        //   pm25: {},
-        //   vocs: {},
-        //   nh3: {},
-        // };
-        // hourly[regionId][field][hour] ??= {
-        //   pre: 0,
-        //   post: 0,
-        //   impacts: 0,
-        // };
+          // /**
+          //  * Conditionally initialize the emissionsField's hourly impacts from
+          //  * all EGUs.
+          //  */
+          // hourly[regionId] ??= {
+          //   generation: {},
+          //   so2: {},
+          //   nox: {},
+          //   co2: {},
+          //   pm25: {},
+          //   vocs: {},
+          //   nh3: {},
+          // };
+          // hourly[regionId][emissionsField][hour] ??= {
+          //   pre: 0,
+          //   post: 0,
+          //   impacts: 0,
+          // };
 
-        // /**
-        //  * Increment the emissions field's hourly pre, post, and impacts values
-        //  * from all EGUs and round the accumulated impacts value.
-        //  */
-        // hourly[regionId][field][hour].pre += pre;
-        // hourly[regionId][field][hour].post += post;
-        // hourly[regionId][field][hour].impacts += impacts;
+          // /**
+          //  * Increment the emissionsField's hourly pre, post, and impacts values
+          //  * from all EGUs and round the accumulated impacts value.
+          //  */
+          // hourly[regionId][emissionsField][hour].pre += pre;
+          // hourly[regionId][emissionsField][hour].post += post;
+          // hourly[regionId][emissionsField][hour].impacts += impacts;
 
-        // hourly[regionId][field][hour].impacts = roundToDecimalPlaces({
-        //   number: hourly[regionId][field][hour].impacts,
-        //   decimalPlaces,
-        // });
+          // hourly[regionId][emissionsField][hour].impacts = roundToDecimalPlaces({
+          //   number: hourly[regionId][emissionsField][hour].impacts,
+          //   decimalPlaces,
+          // });
 
-        // /**
-        //  * Conditionally initialize the emissions field's monthly impacts from
-        //  * all EGUs.
-        //  */
-        // monthly[regionId] ??= {
-        //   generation: {},
-        //   so2: {},
-        //   nox: {},
-        //   co2: {},
-        //   pm25: {},
-        //   vocs: {},
-        //   nh3: {},
-        // };
-        // monthly[regionId][field][month] ??= {
-        //   pre: 0,
-        //   post: 0,
-        //   impacts: 0,
-        // };
+          // /**
+          //  * Conditionally initialize the emissionsField's monthly impacts from
+          //  * all EGUs.
+          //  */
+          // monthly[regionId] ??= {
+          //   generation: {},
+          //   so2: {},
+          //   nox: {},
+          //   co2: {},
+          //   pm25: {},
+          //   vocs: {},
+          //   nh3: {},
+          // };
+          // monthly[regionId][emissionsField][month] ??= {
+          //   pre: 0,
+          //   post: 0,
+          //   impacts: 0,
+          // };
 
-        // /**
-        //  * Increment the emissions field's monthly pre, post, and impacts values
-        //  * from all EGUs and round the accumulated impacts value.
-        //  */
-        // monthly[regionId][field][month].pre += pre;
-        // monthly[regionId][field][month].post += post;
-        // monthly[regionId][field][month].impacts += impacts;
+          // /**
+          //  * Increment the emissionsField's monthly pre, post, and impacts values
+          //  * from all EGUs and round the accumulated impacts value.
+          //  */
+          // monthly[regionId][emissionsField][month].pre += pre;
+          // monthly[regionId][emissionsField][month].post += post;
+          // monthly[regionId][emissionsField][month].impacts += impacts;
 
-        // monthly[regionId][field][month].impacts = roundToDecimalPlaces({
-        //   number: monthly[regionId][field][month].impacts,
-        //   decimalPlaces,
-        // });
+          // monthly[regionId][emissionsField][month].impacts = roundToDecimalPlaces({
+          //   number: monthly[regionId][emissionsField][month].impacts,
+          //   decimalPlaces,
+          // });
 
-        // /**
-        //  * Conditionally initialize the emissions field's yearly impacts from
-        //  * all EGUs.
-        //  */
-        // yearly[regionId] ??= {
-        //   generation: { pre: 0, post: 0, impacts: 0 },
-        //   so2: { pre: 0, post: 0, impacts: 0 },
-        //   nox: { pre: 0, post: 0, impacts: 0 },
-        //   co2: { pre: 0, post: 0, impacts: 0 },
-        //   pm25: { pre: 0, post: 0, impacts: 0 },
-        //   vocs: { pre: 0, post: 0, impacts: 0 },
-        //   nh3: { pre: 0, post: 0, impacts: 0 },
-        // };
+          // /**
+          //  * Conditionally initialize the emissionsField's yearly impacts from
+          //  * all EGUs.
+          //  */
+          // yearly[regionId] ??= {
+          //   generation: { pre: 0, post: 0, impacts: 0 },
+          //   so2: { pre: 0, post: 0, impacts: 0 },
+          //   nox: { pre: 0, post: 0, impacts: 0 },
+          //   co2: { pre: 0, post: 0, impacts: 0 },
+          //   pm25: { pre: 0, post: 0, impacts: 0 },
+          //   vocs: { pre: 0, post: 0, impacts: 0 },
+          //   nh3: { pre: 0, post: 0, impacts: 0 },
+          // };
 
-        // /**
-        //  * Increment the emissions field's yearly pre, post, and impacts values
-        //  * from all EGUs and round the accumulated impacts value.
-        //  */
-        // yearly[regionId][field].pre += pre;
-        // yearly[regionId][field].post += post;
-        // yearly[regionId][field].impacts += impacts;
+          // /**
+          //  * Increment the emissionsField's yearly pre, post, and impacts values
+          //  * from all EGUs and round the accumulated impacts value.
+          //  */
+          // yearly[regionId][emissionsField].pre += pre;
+          // yearly[regionId][emissionsField].post += post;
+          // yearly[regionId][emissionsField].impacts += impacts;
 
-        // yearly[regionId][field].impacts = roundToDecimalPlaces({
-        //   number: yearly[regionId][field].impacts,
-        //   decimalPlaces,
-        // });
+          // yearly[regionId][emissionsField].impacts = roundToDecimalPlaces({
+          //   number: yearly[regionId][emissionsField].impacts,
+          //   decimalPlaces,
+          // });
 
-        /**
-         * Conditionally initialize each EGU's metadata and monthly data
-         * structure for each emissions field.
-         */
-        egus[eguId] ??= {
-          region: regionId,
-          state: state,
-          county: county,
-          lat: lat,
-          lon: lon,
-          fuelType: fuel_type,
-          orisplCode: orispl_code,
-          unitCode: unit_code,
-          name: full_name,
-          emissionsFlags: [],
-          data: {
-            monthly: {
-              generation: {},
-              so2: {},
-              nox: {},
-              co2: {},
-              pm25: {},
-              vocs: {},
-              nh3: {},
+          /**
+           * Conditionally initialize each EGU's metadata and monthly data
+           * structure for each emissionsField.
+           */
+          egus[eguId] ??= {
+            region: regionId,
+            state: state,
+            county: county,
+            lat: lat,
+            lon: lon,
+            fuelType: fuel_type,
+            orisplCode: orispl_code,
+            unitCode: unit_code,
+            name: full_name,
+            emissionsFlags: [],
+            data: {
+              monthly: {
+                generation: {},
+                so2: {},
+                nox: {},
+                co2: {},
+                pm25: {},
+                vocs: {},
+                nh3: {},
+              },
             },
-          },
-        };
+          };
 
-        /**
-         * Conditionally add emissions field (e.g. so2, nox, co2) to EGU's
-         * emissions flags, as emissions "replacement" will be needed for that
-         * emissions field/pollutant.
-         */
-        if (
-          infreq_emissions_flag === 1 &&
-          !egus[eguId].emissionsFlags.includes(field)
-        ) {
-          egus[eguId].emissionsFlags.push(field);
-        }
+          /**
+           * Conditionally add emissionsField (e.g. so2, nox, co2) to EGU's
+           * emissions flags, as emissions "replacement" will be needed for that
+           * emissions field/pollutant.
+           */
+          if (
+            infreq_emissions_flag === 1 &&
+            !egus[eguId].emissionsFlags.includes(emissionsField)
+          ) {
+            egus[eguId].emissionsFlags.push(emissionsField);
+          }
 
-        /**
-         * Conditionally initialize the EGU's monthly data for the emissions
-         * field.
-         */
-        egus[eguId].data.monthly[field][month] ??= {
-          pre: 0,
-          post: 0,
-        };
+          /**
+           * Conditionally initialize the EGU's monthly data for the
+           * emissionsField.
+           */
+          egus[eguId].data.monthly[emissionsField][month] ??= {
+            pre: 0,
+            post: 0,
+          };
 
-        /**
-         * Increment the EGU's monthly pre and post values for the emissions
-         * field.
-         */
-        egus[eguId].data.monthly[field][month].pre += pre;
-        egus[eguId].data.monthly[field][month].post += post;
+          /**
+           * Increment the EGU's monthly pre and post values for the
+           * emissionsField.
+           */
+          egus[eguId].data.monthly[emissionsField][month].pre += pre;
+          egus[eguId].data.monthly[emissionsField][month].post += post;
+        });
       });
     });
   }
