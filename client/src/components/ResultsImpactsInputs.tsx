@@ -211,9 +211,7 @@ function ResultsImpactsInputsContent() {
 
         {inputExists(transitBuses) && (
           <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
-            <span className={clsx("font-sans-2xs")}>
-              Electric transit buses:
-            </span>{" "}
+            <span className={clsx("font-sans-2xs")}>Transit buses:</span>{" "}
             <span className={clsx("font-mono-xs text-bold")}>
               {transitBuses}
             </span>
@@ -222,9 +220,7 @@ function ResultsImpactsInputsContent() {
 
         {inputExists(schoolBuses) && (
           <p className={clsx("margin-0 padding-top-1 line-height-sans-2")}>
-            <span className={clsx("font-sans-2xs")}>
-              Electric school buses:
-            </span>{" "}
+            <span className={clsx("font-sans-2xs")}>School buses:</span>{" "}
             <span className={clsx("font-mono-xs text-bold")}>
               {schoolBuses}
             </span>
