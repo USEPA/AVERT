@@ -1282,15 +1282,6 @@ export function calculateTotalEffectiveVehicles(options: {
     refuseTrucks,
   } = options;
 
-  if (
-    Object.keys(vehicleTypePercentagesOfVehicleCategory).length === 0 ||
-    Object.keys(vehicleFuelTypePercentagesOfVehicleType).length === 0
-  ) {
-    return {} as {
-      [categoryVehicleFuelCombo in VehicleCategoryVehicleTypeFuelTypeCombo]: number;
-    };
-  }
-
   const result = {
     "Battery EVs / Passenger cars / Gasoline": 0,
     "Plug-in Hybrid EVs / Passenger cars / Gasoline": 0,
@@ -1315,6 +1306,13 @@ export function calculateTotalEffectiveVehicles(options: {
     "Refuse trucks / Medium-duty refuse trucks / Diesel Fuel": 0,
     "Refuse trucks / Heavy-duty refuse trucks / Diesel Fuel": 0,
   };
+
+  if (
+    Object.keys(vehicleTypePercentagesOfVehicleCategory).length === 0 ||
+    Object.keys(vehicleFuelTypePercentagesOfVehicleType).length === 0
+  ) {
+    return result;
+  }
 
   Object.keys(result).forEach((key) => {
     const categoryVehicleFuelCombo = key as keyof typeof result;
@@ -2201,7 +2199,7 @@ export function calculateSelectedRegionsMonthlyTotalNetPM25EmissionRates(options
  * transportation sector" table in the "Library" sheet (G546:R567).
  */
 export function calculateSelectedRegionsMonthlySalesChanges(options: {
-  totalEffectiveVehicles: TotalEffectiveVehicles | EmptyObject;
+  totalEffectiveVehicles: TotalEffectiveVehicles;
   selectedRegionsMonthlyVMT: SelectedRegionsMonthlyVMT | EmptyObject;
   selectedRegionsEVEfficiency: SelectedRegionsEVEfficiency | EmptyObject;
   percentageHybridEVMilesDrivenOnElectricity: PercentageHybridEVMilesDrivenOnElectricity;
@@ -2214,7 +2212,6 @@ export function calculateSelectedRegionsMonthlySalesChanges(options: {
   } = options;
 
   if (
-    Object.keys(totalEffectiveVehicles).length === 0 ||
     Object.keys(selectedRegionsMonthlyVMT).length === 0 ||
     Object.keys(selectedRegionsEVEfficiency).length === 0
   ) {
@@ -2584,7 +2581,7 @@ export function calculateSelectedRegionsMonthlyDailyEnergyUsage(options: {
  * transportation sector" table in the "Library" sheet (G546:R567).
  */
 export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
-  totalEffectiveVehicles: TotalEffectiveVehicles | EmptyObject;
+  totalEffectiveVehicles: TotalEffectiveVehicles;
   selectedRegionsMonthlyEmissionRates:
     | SelectedRegionsMonthlyEmissionRates
     | EmptyObject;
@@ -2603,7 +2600,6 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
   } = options;
 
   if (
-    Object.keys(totalEffectiveVehicles).length === 0 ||
     Object.keys(selectedRegionsMonthlyEmissionRates).length === 0 ||
     Object.keys(selectedRegionsMonthlyTotalNetPM25EmissionRates).length === 0 ||
     Object.keys(selectedRegionsMonthlyVMT).length === 0

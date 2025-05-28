@@ -1,5 +1,3 @@
-import { percentile } from "stats-lite";
-// ---
 import {
   type RegionalLoadData,
   type RegionState,
@@ -532,6 +530,55 @@ export function calculateHourlyEVLoad(options: {
 }
 
 /**
+ * Calculates the k-th percentile of an array of numbers.
+ *
+ * @param array - Array of numbers to calculate the percentile from.
+ * @param k - Percentile to calculate (between 0 and 1).
+ * @returns The k-th percentile value or undefined if input is invalid.
+ */
+function percentile(array: number[], k: number) {
+  /** Validate input array: must be non-empty. */
+  if (!Array.isArray(array) || array.length === 0) {
+    return undefined;
+  }
+
+  /** Validate percentile k: must be between 0 and 1 inclusive. */
+  if (k < 0 || k > 1) {
+    return undefined;
+  }
+
+  /** Create a sorted copy of the array in ascending order. */
+  const sorted = array.slice().sort((a, b) => a - b);
+  const total = sorted.length;
+
+  /**
+   * Calculate the exact position in the sorted array.
+   * For example, for k = 0.5 (median), position = (total - 1 ) * 0.5
+   */
+  const position = (total - 1) * k;
+
+  /** Find the indices surrounding the position. */
+  const lower = Math.floor(position);
+  const upper = Math.ceil(position);
+
+  /** Calculate the fractional part for interpolation. */
+  const weight = position - lower;
+
+  /** If upper index is out of bounds, return the lower index value. */
+  if (upper >= total) {
+    return sorted[lower];
+  }
+
+  /**
+   * Interpolate between the values at the lower and upper indices.
+   * - weight represents how far position is from the lower index towards the upper index
+   * - (1 - weight) is the complementary fraction towards the lower index
+   * - The final result is a weighted average of sorted[lower] and sorted[upper]
+   */
+  return sorted[lower] * (1 - weight) + sorted[upper] * weight;
+}
+
+/**
  * Top percent generation in MW.
  *
  * Excel: "Top 0.0% gen (MW)" value from the narrow box to the right of the
@@ -577,7 +624,9 @@ export function calculateHourlyTopPercentReduction(options: {
     targetedProgramReduction,
   } = options;
 
-  if (regionalLoad.length === 0) return [];
+  if (regionalLoad.length === 0 || topPercentGeneration === undefined) {
+    return [];
+  }
 
   const result = regionalLoad.map((data) => {
     const hourlyLoad = data.regional_load_mw;
