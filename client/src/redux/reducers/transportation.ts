@@ -402,7 +402,7 @@ type State = {
   vehicleFuelTypePercentagesOfVehicleType:
     | VehicleFuelTypePercentagesOfVehicleType
     | EmptyObject;
-  totalEffectiveVehicles: TotalEffectiveVehicles | EmptyObject;
+  totalEffectiveVehicles: TotalEffectiveVehicles;
   vmtAndStockByState: VMTandStockByState | EmptyObject;
   ldvsFhwaMovesVMTRatioByState: LDVsFhwaMovesVMTRatioByState | EmptyObject;
   vmtPerVehicleTypeByState: VMTPerVehicleTypeByState | EmptyObject;
@@ -481,7 +481,30 @@ const initialState: State = {
   vehicleCategoryTotals: {},
   vehicleTypePercentagesOfVehicleCategory: {},
   vehicleFuelTypePercentagesOfVehicleType: {},
-  totalEffectiveVehicles: {},
+  totalEffectiveVehicles: {
+    "Battery EVs / Passenger cars / Gasoline": 0,
+    "Plug-in Hybrid EVs / Passenger cars / Gasoline": 0,
+    "Battery EVs / Passenger trucks / Gasoline": 0,
+    "Plug-in Hybrid EVs / Passenger trucks / Gasoline": 0,
+    "Transit buses / Medium-duty transit buses / Gasoline": 0,
+    "Transit buses / Medium-duty transit buses / Diesel Fuel": 0,
+    "Transit buses / Heavy-duty transit buses / Diesel Fuel": 0,
+    "Transit buses / Heavy-duty transit buses / Compressed Natural Gas (CNG)": 0,
+    "School buses / Medium-duty school buses / Gasoline": 0,
+    "School buses / Medium-duty school buses / Diesel Fuel": 0,
+    "School buses / Heavy-duty school buses / Diesel Fuel": 0,
+    "Other buses / Medium-duty other buses / Gasoline": 0,
+    "Other buses / Medium-duty other buses / Diesel Fuel": 0,
+    "Other buses / Heavy-duty other buses / Diesel Fuel": 0,
+    "Other buses / Heavy-duty other buses / Compressed Natural Gas (CNG)": 0,
+    "Short-haul trucks / Light-duty single unit trucks / Gasoline": 0,
+    "Short-haul trucks / Medium-duty single unit trucks / Gasoline": 0,
+    "Short-haul trucks / Medium-duty single unit trucks / Diesel Fuel": 0,
+    "Short-haul trucks / Heavy-duty combination trucks / Diesel Fuel": 0,
+    "Long-haul trucks / Combination long-haul trucks / Diesel Fuel": 0,
+    "Refuse trucks / Medium-duty refuse trucks / Diesel Fuel": 0,
+    "Refuse trucks / Heavy-duty refuse trucks / Diesel Fuel": 0,
+  },
   vmtAndStockByState: {},
   ldvsFhwaMovesVMTRatioByState: {},
   vmtPerVehicleTypeByState: {},
