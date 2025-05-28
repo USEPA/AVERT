@@ -2191,8 +2191,6 @@ export function calculateSelectedRegionsMonthlyTotalNetPM25EmissionRates(options
   return result;
 }
 
-// TODO: investigate – the early return here is problematic.
-
 /**
  * Selected AVERT region's retail sales (GWh) for each month for each vehicle
  * category / vehicle type / fuel type combo.
