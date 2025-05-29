@@ -17,7 +17,7 @@ describe("Test Scenario 1", () => {
     cy.findByText("Electric vehicles").as("toggleE");
     cy.get("@toggleE").click();
 
-    cy.findByLabelText("Electric school buses:").as("schoolBuses");
+    cy.findByLabelText("School buses:").as("schoolBuses");
     cy.get("@schoolBuses").type("200");
 
     cy.findByLabelText("ICE vehicles being replaced:").as("iceReplacementVehicle"); // prettier-ignore
@@ -33,12 +33,12 @@ describe("Test Scenario 1", () => {
   });
 
   it("Annual Emissions Changes (Including Vehicles) table displays the correct results", () => {
-    const so2 = ["-52,110", "-10", "-52,130"];
-    const nox = ["-217,850", "-10,530", "-228,380"];
-    const co2 = ["-324,320", "-1,960", "-326,280"];
-    const pm25 = ["-66,210", "-350", "-66,560"];
-    const vocs = ["-37,490", "-1,130", "-38,620"];
-    const nh3 = ["-38,730", "-160", "-38,890"];
+    const so2 = ["-24,400", "-30", "-24,430"];
+    const nox = ["-257,570", "-11,950", "-269,520"];
+    const co2 = ["-325,220", "-2,860", "-328,080"];
+    const pm25 = ["-81,270", "-440", "-81,700"];
+    const vocs = ["-19,530", "-2,320", "-21,850"];
+    const nh3 = ["-39,220", "-310", "-39,530"];
 
     /* prettier-ignore */
     cy.findByText("Total Emissions")

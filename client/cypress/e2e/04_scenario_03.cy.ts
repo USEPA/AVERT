@@ -32,12 +32,12 @@ describe("Test Scenario 3", () => {
   });
 
   it("Annual Emissions Changes (Including Vehicles) table displays the correct results", () => {
-    const so2 = ["-579,420", "-240", "-579,660"];
-    const nox = ["-607,310", "-2,950", "-610,260"];
-    const co2 = ["-579,620", "-23,210", "-602,830"];
-    const pm25 = ["-60,040", "-230", "-60,270"];
-    const vocs = ["-20,040", "-7,040", "-27,070"];
-    const nh3 = ["-24,820", "-2,880", "-27,700"];
+    const so2 = ["-569,940", "-1,870", "-571,810"];
+    const nox = ["-572,930", "-12,940", "-585,870"];
+    const co2 = ["-554,160", "-119,240", "-673,400"];
+    const pm25 = ["-60,740", "-2,260", "-63,000"];
+    const vocs = ["-22,080", "-32,030", "-54,110"];
+    const nh3 = ["-20,330", "-13,550", "-33,880"];
 
     /* prettier-ignore */
     cy.findByText("Total Emissions")
