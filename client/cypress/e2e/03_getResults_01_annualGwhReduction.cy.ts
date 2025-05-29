@@ -24,22 +24,22 @@ describe("Get Results – annualGwhReduction", () => {
   });
 
   it("Annual Emissions Changes (Power Sector Only) table displays the correct results", () => {
-    const generation = ["83,154,460", "77,698,330", "-5,456,130"];
-    const so2Totals = ["18,903,060", "17,752,370", "-1,150,690"];
-    const noxTotals = ["39,995,770", "37,516,980", "-2,478,790"];
-    const ozoneNoxTotals = ["19,482,170", "18,192,350", "-1,289,820"];
-    const co2Totals = ["52,249,930", "48,916,370", "-3,333,560"];
-    const pm25Totals = ["6,060,890", "5,690,910", "-369,980"];
-    const vocsTotals = ["2,084,640", "1,956,270", "-128,370"];
-    const nh3Totals = ["2,222,920", "2,068,100", "-154,820"];
+    const generation = ["81,798,850", "76,337,090", "-5,461,760"];
+    const so2Totals = ["13,644,700", "12,763,500", "-881,210"];
+    const noxTotals = ["35,616,540", "33,065,810", "-2,550,720"];
+    const ozoneNoxTotals = ["17,646,690", "16,335,170", "-1,311,520"];
+    const co2Totals = ["51,070,160", "47,787,420", "-3,282,740"];
+    const pm25Totals = ["6,386,980", "5,934,700", "-452,270"];
+    const vocsTotals = ["2,095,190", "1,908,310", "-186,880"];
+    const nh3Totals = ["1,948,770", "1,800,010", "-148,760"];
 
-    const so2Rates = ["0.227", "0.211"];
-    const noxRates = ["0.481", "0.454"];
-    const ozoneNoxRates = ["0.486", "0.566"];
-    const co2Rates = ["0.628", "0.611"];
-    const pm25Rates = ["0.073", "0.068"];
-    const vocsRates = ["0.025", "0.024"];
-    const nh3Rates = ["0.027", "0.028"];
+    const so2Rates = ["0.167", "0.161"];
+    const noxRates = ["0.435", "0.467"];
+    const ozoneNoxRates = ["0.437", "0.575"];
+    const co2Rates = ["0.624", "0.601"];
+    const pm25Rates = ["0.078", "0.083"];
+    const vocsRates = ["0.026", "0.034"];
+    const nh3Rates = ["0.024", "0.027"];
 
     /* prettier-ignore */
     cy.findByText("Generation")
@@ -114,21 +114,21 @@ describe("Get Results – annualGwhReduction", () => {
   });
 
   it("Annual Emissions Changes By State table displays the correct results", () => {
-    const azGen = ["-921,800", "-1,707,710", "-2,498,980", "-235,960", "-84,990", "-110,550"]; // prettier-ignore
+    const azGen = ["-721,500", "-1,838,490", "-2,463,270", "-333,820", "-153,230", "-107,210"]; // prettier-ignore
     const azVehicles = ["0", "0", "0", "0", "0", "0"];
-    const azChange = ["-921,800", "-1,707,710", "-2,498,980", "-235,960", "-84,990", "-110,550"]; // prettier-ignore
+    const azChange = ["-721,500", "-1,838,490", "-2,463,270", "-333,820", "-153,230", "-107,210"]; // prettier-ignore
 
-    const caGen = ["-830", "-9,960", "-83,020", "-7,500", "-2,300", "-5,260"]; // prettier-ignore
+    const caGen = ["-670", "-8,740", "-67,280", "-6,460", "-1,090", "-4,010"]; // prettier-ignore
     const caVehicles = ["0", "0", "0", "0", "0", "0"];
-    const caChange = ["-830", "-9,960", "-83,020", "-7,500", "-2,300", "-5,260"]; // prettier-ignore
+    const caChange = ["-670", "-8,740", "-67,280", "-6,460", "-1,090", "-4,010"]; // prettier-ignore
 
-    const nmGen = ["-226,570", "-611,470", "-588,190", "-109,650", "-25,600", "-27,120"]; // prettier-ignore
+    const nmGen = ["-157,610", "-460,010", "-567,120", "-97,480", "-20,200", "-26,310"]; // prettier-ignore
     const nmVehicles = ["0", "0", "0", "0", "0", "0"];
-    const nmChange = ["-226,570", "-611,470", "-588,190", "-109,650", "-25,600", "-27,120"]; // prettier-ignore
+    const nmChange = ["-157,610", "-460,010", "-567,120", "-97,480", "-20,200", "-26,310"]; // prettier-ignore
 
-    const txGen = ["-1,500", "-149,650", "-163,370", "-16,880", "-15,480", "-11,890"]; // prettier-ignore
+    const txGen = ["-1,430", "-243,480", "-185,070", "-14,510", "-12,350", "-11,220"]; // prettier-ignore
     const txVehicles = ["0", "0", "0", "0", "0", "0"];
-    const txChange = ["-1,500", "-149,650", "-163,370", "-16,880", "-15,480", "-11,890"]; // prettier-ignore
+    const txChange = ["-1,430", "-243,480", "-185,070", "-14,510", "-12,350", "-11,220"]; // prettier-ignore
 
     cy.findByLabelText("All states").click({ force: true });
 

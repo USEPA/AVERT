@@ -24,22 +24,22 @@ describe("Get Results – utilitySolar", () => {
   });
 
   it("Annual Emissions Changes (Power Sector Only) table displays the correct results", () => {
-    const generation = ["144,790,400", "142,538,380", "-2,252,020"];
-    const so2Totals = ["211,742,450", "208,997,780", "-2,744,670"];
-    const noxTotals = ["160,595,520", "157,746,640", "-2,848,880"];
-    const ozoneNoxTotals = ["85,890,940", "84,245,720", "-1,645,220"];
-    const co2Totals = ["121,943,750", "120,117,500", "-1,826,250"];
-    const pm25Totals = ["9,428,260", "9,288,340", "-139,920"];
-    const vocsTotals = ["4,039,140", "3,974,910", "-64,230"];
-    const nh3Totals = ["4,199,100", "4,124,190", "-74,900"];
+    const generation = ["143,498,520", "141,240,490", "-2,258,030"];
+    const so2Totals = ["198,075,040", "195,672,670", "-2,402,370"];
+    const noxTotals = ["158,602,970", "155,828,950", "-2,774,030"];
+    const ozoneNoxTotals = ["80,073,160", "78,608,890", "-1,464,270"];
+    const co2Totals = ["119,047,210", "117,228,550", "-1,818,660"];
+    const pm25Totals = ["9,357,500", "9,222,870", "-134,640"];
+    const vocsTotals = ["4,726,610", "4,641,150", "-85,460"];
+    const nh3Totals = ["4,344,240", "4,272,050", "-72,190"];
 
-    const so2Rates = ["1.462", "1.219"];
-    const noxRates = ["1.109", "1.265"];
-    const ozoneNoxRates = ["1.110", "1.533"];
-    const co2Rates = ["0.842", "0.811"];
-    const pm25Rates = ["0.065", "0.062"];
-    const vocsRates = ["0.028", "0.029"];
-    const nh3Rates = ["0.029", "0.033"];
+    const so2Rates = ["1.380", "1.064"];
+    const noxRates = ["1.105", "1.229"];
+    const ozoneNoxRates = ["1.089", "1.365"];
+    const co2Rates = ["0.830", "0.805"];
+    const pm25Rates = ["0.065", "0.060"];
+    const vocsRates = ["0.033", "0.038"];
+    const nh3Rates = ["0.030", "0.032"];
 
     /* prettier-ignore */
     cy.findByText("Generation")
@@ -114,53 +114,53 @@ describe("Get Results – utilitySolar", () => {
   });
 
   it("Annual Emissions Changes By State table displays the correct results", () => {
-    const arGen = ["-18,630", "-65,040", "-55,470", "-2,600", "-1,260", "-2,800"]; // prettier-ignore
+    const arGen = ["-26,640", "-61,580", "-69,150", "-2,330", "-3,050", "-3,710"]; // prettier-ignore
     const arVehicles = ["0", "0", "0", "0", "0", "0"];
-    const arChange = ["-18,630", "-65,040", "-55,470", "-2,600", "-1,260", "-2,800"]; // prettier-ignore
+    const arChange = ["-26,640", "-61,580", "-69,150", "-2,330", "-3,050", "-3,710"]; // prettier-ignore
 
-    const iaGen = ["-10", "-960", "-950", "-870", "-70", "-80"]; // prettier-ignore
+    const iaGen = ["-10", "-970", "-660", "-210", "-90", "-50"]; // prettier-ignore
     const iaVehicles = ["0", "0", "0", "0", "0", "0"];
-    const iaChange = ["-10", "-960", "-950", "-870", "-70", "-80"]; // prettier-ignore
+    const iaChange = ["-10", "-970", "-660", "-210", "-90", "-50"]; // prettier-ignore
 
-    const ksGen = ["-125,280", "-445,660", "-367,940", "-32,360", "-13,960", "-13,120"]; // prettier-ignore
+    const ksGen = ["-110,610", "-462,520", "-368,460", "-31,750", "-15,820", "-12,120"]; // prettier-ignore
     const ksVehicles = ["0", "0", "0", "0", "0", "0"];
-    const ksChange = ["-125,280", "-445,660", "-367,940", "-32,360", "-13,960", "-13,120"]; // prettier-ignore
+    const ksChange = ["-110,610", "-462,520", "-368,460", "-31,750", "-15,820", "-12,120"]; // prettier-ignore
 
-    const laGen = ["-80", "-17,460", "-12,140", "-1,100", "-510", "-710"]; // prettier-ignore
+    const laGen = ["-110", "-20,040", "-16,080", "-1,770", "-610", "-1,020"]; // prettier-ignore
     const laVehicles = ["0", "0", "0", "0", "0", "0"];
-    const laChange = ["-80", "-17,460", "-12,140", "-1,100", "-510", "-710"]; // prettier-ignore
+    const laChange = ["-110", "-20,040", "-16,080", "-1,770", "-610", "-1,020"]; // prettier-ignore
 
-    const moGen = ["-176,980", "-348,540", "-277,030", "-23,970", "-3,500", "-10,910"]; // prettier-ignore
+    const moGen = ["-140,850", "-339,920", "-285,210", "-18,630", "-11,120", "-11,480"]; // prettier-ignore
     const moVehicles = ["0", "0", "0", "0", "0", "0"];
-    const moChange = ["-176,980", "-348,540", "-277,030", "-23,970", "-3,500", "-10,910"]; // prettier-ignore
+    const moChange = ["-140,850", "-339,920", "-285,210", "-18,630", "-11,120", "-11,480"]; // prettier-ignore
 
-    const mtGen = ["0", "-1,750", "-1,220", "-310", "-70", "-170"]; // prettier-ignore
+    const mtGen = ["0", "-3,060", "-2,170", "-570", "-180", "-300"]; // prettier-ignore
     const mtVehicles = ["0", "0", "0", "0", "0", "0"];
-    const mtChange = ["0", "-1,750", "-1,220", "-310", "-70", "-170"]; // prettier-ignore
+    const mtChange = ["0", "-3,060", "-2,170", "-570", "-180", "-300"]; // prettier-ignore
 
-    const neGen = ["-904,270", "-492,440", "-228,880", "-13,620", "-8,380", "-8,440"]; // prettier-ignore
+    const neGen = ["-911,090", "-484,910", "-221,370", "-10,340", "-10,460", "-9,330"]; // prettier-ignore
     const neVehicles = ["0", "0", "0", "0", "0", "0"];
-    const neChange = ["-904,270", "-492,440", "-228,880", "-13,620", "-8,380", "-8,440"]; // prettier-ignore
+    const neChange = ["-911,090", "-484,910", "-221,370", "-10,340", "-10,460", "-9,330"]; // prettier-ignore
 
-    const nmGen = ["-310", "-18,640", "-22,530", "-1,770", "-760", "-2,130"]; // prettier-ignore
+    const nmGen = ["-160", "-27,260", "-14,340", "-1,400", "-900", "-1,470"]; // prettier-ignore
     const nmVehicles = ["0", "0", "0", "0", "0", "0"];
-    const nmChange = ["-310", "-18,640", "-22,530", "-1,770", "-760", "-2,130"]; // prettier-ignore
+    const nmChange = ["-160", "-27,260", "-14,340", "-1,400", "-900", "-1,470"]; // prettier-ignore
 
-    const ndGen = ["-125,330", "-106,550", "-73,640", "-9,570", "-2,940", "-2,080"]; // prettier-ignore
+    const ndGen = ["-95,170", "-109,050", "-76,710", "-10,090", "-1,140", "-2,450"]; // prettier-ignore
     const ndVehicles = ["0", "0", "0", "0", "0", "0"];
-    const ndChange = ["-125,330", "-106,550", "-73,640", "-9,570", "-2,940", "-2,080"]; // prettier-ignore
+    const ndChange = ["-95,170", "-109,050", "-76,710", "-10,090", "-1,140", "-2,450"]; // prettier-ignore
 
-    const okGen = ["-411,110", "-872,440", "-464,570", "-32,030", "-22,330", "-21,050"]; // prettier-ignore
+    const okGen = ["-259,040", "-788,990", "-447,760", "-35,600", "-26,250", "-16,490"]; // prettier-ignore
     const okVehicles = ["0", "0", "0", "0", "0", "0"];
-    const okChange = ["-411,110", "-872,440", "-464,570", "-32,030", "-22,330", "-21,050"]; // prettier-ignore
+    const okChange = ["-259,040", "-788,990", "-447,760", "-35,600", "-26,250", "-16,490"]; // prettier-ignore
 
-    const sdGen = ["-80", "-12,530", "-11,470", "-1,160", "-380", "-890"]; // prettier-ignore
+    const sdGen = ["-100", "-14,120", "-14,260", "-730", "-440", "-1,110"]; // prettier-ignore
     const sdVehicles = ["0", "0", "0", "0", "0", "0"];
-    const sdChange = ["-80", "-12,530", "-11,470", "-1,160", "-380", "-890"]; // prettier-ignore
+    const sdChange = ["-100", "-14,120", "-14,260", "-730", "-440", "-1,110"]; // prettier-ignore
 
-    const txGen = ["-982,600", "-466,860", "-310,410", "-20,560", "-10,080", "-12,520"]; // prettier-ignore
+    const txGen = ["-858,620", "-461,590", "-302,490", "-21,210", "-15,410", "-12,650"]; // prettier-ignore
     const txVehicles = ["0", "0", "0", "0", "0", "0"];
-    const txChange = ["-982,600", "-466,860", "-310,410", "-20,560", "-10,080", "-12,520"]; // prettier-ignore
+    const txChange = ["-858,620", "-461,590", "-302,490", "-21,210", "-15,410", "-12,650"]; // prettier-ignore
 
     cy.findByLabelText("All states").click({ force: true });
 

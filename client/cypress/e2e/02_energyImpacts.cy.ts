@@ -35,6 +35,27 @@ describe("Set Energy Impacts", () => {
 
     cy.findByText("Calculate Energy Impacts").as("calculateBtn");
     cy.findAllByText("Get Results").filter(".avert-button").as("resultsBtn");
+
+    cy.findByText("Electric vehicles").as("toggleE");
+    cy.get("@toggleE").click();
+    cy.findByLabelText("Light-duty battery EVs:").as("batteryEVs");
+    cy.findByLabelText("Light-duty plug-in hybrid EVs:").as("hybridEVs");
+    cy.findByLabelText("Transit buses:").as("transitBuses");
+    cy.findByLabelText("School buses:").as("schoolBuses");
+    cy.findByLabelText("Short-haul trucks:").as("shortHaulTrucks");
+    cy.findByLabelText("Combination long-haul trucks:").as("comboLongHaulTrucks"); // prettier-ignore
+    cy.findByLabelText("Refuse trucks:").as("refuseTrucks");
+    cy.findByLabelText("Location of EV deployment:").as("evDeploymentLocation");
+    cy.findByLabelText("EV model year:").as("evModelYear");
+    cy.findByLabelText("ICE vehicles being replaced:").as("iceReplacementVehicle"); // prettier-ignore
+    cy.get("@toggleE").click();
+
+    cy.findByText("PV-plus-storage").as("toggleF");
+    cy.get("@toggleF").click();
+    cy.findByLabelText("Utility-scale storage capacity:").as("utilityStorage");
+    cy.findByLabelText("Distributed storage capacity:").as("rooftopStorage");
+    cy.findByLabelText("Maximum allowable discharge cycles per year:").as("maxAnnualDischargeCycles"); // prettier-ignore
+    cy.get("@toggleF").click();
   });
 
   it("Entering a value for onshore wind capacity displays the electric power load profile chart and enables the “Get Results” button", () => {
@@ -53,8 +74,8 @@ describe("Set Energy Impacts", () => {
     cy.get("@onshoreWind").type("1000");
     cy.get("@calculateBtn").click();
     cy.findAllByText("WARNING").filter(":visible");
-    cy.findByText("22.84");
-    cy.findByText("December 26 at 4:00 AM");
+    cy.findByText("24.8");
+    cy.findByText("April 7 at 1:00 PM");
   });
 
   it("Entering a value over the 30% threshold for annual generation and onshore wind capacity displays the error message below the chart", () => {
@@ -64,8 +85,8 @@ describe("Set Energy Impacts", () => {
     cy.get("@onshoreWind").type("1000");
     cy.get("@calculateBtn").click();
     cy.findAllByText("ERROR").filter(":visible");
-    cy.findByText("33.71");
-    cy.findByText("April 9 at 1:00 PM");
+    cy.findByText("38.83");
+    cy.findByText("April 7 at 1:00 PM");
   });
 
   it("Entering a negative value for annual generation displays the error message below the input", () => {

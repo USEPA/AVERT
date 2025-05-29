@@ -24,22 +24,22 @@ describe("Get Results – hourlyMwReduction", () => {
   });
 
   it("Annual Emissions Changes (Power Sector Only) table displays the correct results", () => {
-    const generation = ["83,154,460", "78,378,140", "-4,776,320"];
-    const so2Totals = ["18,903,060", "17,894,050", "-1,009,010"];
-    const noxTotals = ["39,995,770", "37,820,830", "-2,174,940"];
-    const ozoneNoxTotals = ["19,482,170", "18,349,800", "-1,132,370"];
-    const co2Totals = ["52,249,930", "49,327,890", "-2,922,040"];
-    const pm25Totals = ["6,060,890", "5,736,070", "-324,820"];
-    const vocsTotals = ["2,084,640", "1,971,960", "-112,680"];
-    const nh3Totals = ["2,222,920", "2,087,040", "-135,870"];
+    const generation = ["81,798,850", "77,003,270", "-4,795,580"];
+    const so2Totals = ["13,644,700", "12,862,250", "-782,450"];
+    const noxTotals = ["35,616,540", "33,363,500", "-2,253,040"];
+    const ozoneNoxTotals = ["17,646,690", "16,486,830", "-1,159,860"];
+    const co2Totals = ["51,070,160", "48,181,910", "-2,888,260"];
+    const pm25Totals = ["6,386,980", "5,987,000", "-399,980"];
+    const vocsTotals = ["2,095,190", "1,930,050", "-165,140"];
+    const nh3Totals = ["1,948,770", "1,817,730", "-131,030"];
 
-    const so2Rates = ["0.227", "0.211"];
-    const noxRates = ["0.481", "0.455"];
-    const ozoneNoxRates = ["0.486", "0.568"];
-    const co2Rates = ["0.628", "0.612"];
-    const pm25Rates = ["0.073", "0.068"];
-    const vocsRates = ["0.025", "0.024"];
-    const nh3Rates = ["0.027", "0.028"];
+    const so2Rates = ["0.167", "0.163"];
+    const noxRates = ["0.435", "0.470"];
+    const ozoneNoxRates = ["0.437", "0.579"];
+    const co2Rates = ["0.624", "0.602"];
+    const pm25Rates = ["0.078", "0.083"];
+    const vocsRates = ["0.026", "0.034"];
+    const nh3Rates = ["0.024", "0.027"];
 
     /* prettier-ignore */
     cy.findByText("Generation")
@@ -114,21 +114,21 @@ describe("Get Results – hourlyMwReduction", () => {
   });
 
   it("Annual Emissions Changes By State table displays the correct results", () => {
-    const azGen = ["-807,930", "-1,499,150", "-2,190,540", "-207,300", "-74,680", "-97,160"]; // prettier-ignore
+    const azGen = ["-640,490", "-1,628,000", "-2,165,950", "-295,300", "-135,600", "-94,430"]; // prettier-ignore
     const azVehicles = ["0", "0", "0", "0", "0", "0"];
-    const azChange = ["-807,930", "-1,499,150", "-2,190,540", "-207,300", "-74,680", "-97,160"]; // prettier-ignore
+    const azChange = ["-640,490", "-1,628,000", "-2,165,950", "-295,300", "-135,600", "-94,430"]; // prettier-ignore
 
-    const caGen = ["-730", "-8,710", "-72,910", "-6,580", "-2,020", "-4,620"]; // prettier-ignore
+    const caGen = ["-600", "-7,830", "-59,880", "-5,750", "-970", "-3,570"]; // prettier-ignore
     const caVehicles = ["0", "0", "0", "0", "0", "0"];
-    const caChange = ["-730", "-8,710", "-72,910", "-6,580", "-2,020", "-4,620"]; // prettier-ignore
+    const caChange = ["-600", "-7,830", "-59,880", "-5,750", "-970", "-3,570"]; // prettier-ignore
 
-    const nmGen = ["-199,040", "-535,270", "-515,120", "-96,110", "-22,400", "-23,640"]; // prettier-ignore
+    const nmGen = ["-140,110", "-404,990", "-500,330", "-86,160", "-17,760", "-23,200"]; // prettier-ignore
     const nmVehicles = ["0", "0", "0", "0", "0", "0"];
-    const nmChange = ["-199,040", "-535,270", "-515,120", "-96,110", "-22,400", "-23,640"]; // prettier-ignore
+    const nmChange = ["-140,110", "-404,990", "-500,330", "-86,160", "-17,760", "-23,200"]; // prettier-ignore
 
-    const txGen = ["-1,320", "-131,810", "-143,470", "-14,830", "-13,580", "-10,450"]; // prettier-ignore
+    const txGen = ["-1,250", "-212,220", "-162,090", "-12,780", "-10,800", "-9,830"]; // prettier-ignore
     const txVehicles = ["0", "0", "0", "0", "0", "0"];
-    const txChange = ["-1,320", "-131,810", "-143,470", "-14,830", "-13,580", "-10,450"]; // prettier-ignore
+    const txChange = ["-1,250", "-212,220", "-162,090", "-12,780", "-10,800", "-9,830"]; // prettier-ignore
     cy.findByLabelText("All states").click({ force: true });
 
     /* prettier-ignore */
