@@ -13,6 +13,7 @@ import {
   setSelectedGeographyVMTData,
   setEVEfficiency,
   setDailyAndMonthlyStats,
+  setEffectiveVehicles,
   setSelectedRegionsEEREDefaultsAverages,
 } from "@/redux/reducers/transportation";
 import { type EmptyObject } from "@/utilities";
@@ -490,6 +491,7 @@ export function selectGeography(focus: GeographicFocus): AppThunk {
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
     dispatch(setEVEfficiency());
+    dispatch(setEffectiveVehicles());
   };
 }
 
@@ -508,6 +510,7 @@ export function selectRegion(regionId: RegionId): AppThunk {
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
     dispatch(setEVEfficiency());
+    dispatch(setEffectiveVehicles());
   };
 }
 
@@ -526,6 +529,7 @@ export function selectState(stateId: string): AppThunk {
     dispatch(setEVDeploymentLocationOptions());
     dispatch(setSelectedGeographyVMTData());
     dispatch(setEVEfficiency());
+    dispatch(setEffectiveVehicles());
   };
 }
 

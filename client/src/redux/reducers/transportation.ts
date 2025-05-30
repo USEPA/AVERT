@@ -1239,14 +1239,17 @@ export function setDailyAndMonthlyStats(): AppThunk {
 }
 
 /**
- * Called every time the `impacts` reducer's `runEVBatteryEVsCalculations()`,
+ * Called every time the `geography` reducer's `selectGeography()`,
+ * `selectRegion()`, or `selectState()` functions are called and every time the
+ * `impacts` reducer's `runEVBatteryEVsCalculations()`,
  * `runEVHybridEVsCalculations()`, `runEVTransitBusesCalculations()`,
  * `runEVSchoolBusesCalculations()`, `runEVShortHaulTrucksCalculations()`,
  * `runEVComboLongHaulTrucksCalculations()`, or `runEVRefuseTrucksCalculations()`
  * functions are called.
  *
- * _(e.g. onBlur / whenever an EV input loses focus, but only if the input's
- * value has changed since the last time it was used in this calculation)_
+ * _(e.g. anytime the selected geography changes, and onBlur / whenever an EV
+ * input loses focus, but only if the input's value has changed since the last
+ * time it was used in this calculation)_
  */
 export function setEffectiveVehicles(): AppThunk {
   return (dispatch, getState) => {
