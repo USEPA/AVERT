@@ -300,7 +300,7 @@ export const regionEVHourlyLimits = {
 export const batteryRoundTripEfficiency = 0.85;
 
 /**
- * Excel: Total battery storage duration in hours "CalculateEERE" sheet (AG34)
+ * Excel: Total battery storage duration in hours "CalculateEERE" sheet (AM34)
  */
 export const batteryStorageDuration = 4;
 
@@ -381,7 +381,7 @@ export type Region = {
 };
 
 /**
- * NOTE: 2024 line loss values stored in "Table 2: Transmission & Distributuion\
+ * NOTE: 2024 line loss values stored in "Table 2: Transmission & Distributuion
  * (T&D) losses" found in the "Library" sheet of the Excel workbook (C85:E85).
  */
 const lineLoss = {
