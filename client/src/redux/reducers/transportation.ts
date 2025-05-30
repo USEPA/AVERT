@@ -1254,8 +1254,9 @@ export function setDailyAndMonthlyStats(): AppThunk {
 export function setEffectiveVehicles(): AppThunk {
   return (dispatch, getState) => {
     const { geography, transportation, impacts } = getState();
-    const { regionalScalingFactors } = geography;
+    const { regions, regionalScalingFactors } = geography;
     const {
+      vmtStatePercentagesByStateRegionCombo,
       vehicleTypePercentagesOfVehicleCategory,
       vehicleFuelTypePercentagesOfVehicleType,
     } = transportation;
@@ -1269,13 +1270,26 @@ export function setEffectiveVehicles(): AppThunk {
       refuseTrucks,
     } = impacts.inputs;
 
+    const geographicFocus = geography.focus;
+
+    const selectedStateId =
+      Object.values(geography.states).find((s) => s.selected)?.id || "";
+
     const selectedGeographyRegionIds = Object.keys(
       regionalScalingFactors,
     ) as RegionId[];
 
+    const selectedGeographyRegions = getSelectedGeographyRegions({
+      regions,
+      selectedGeographyRegionIds,
+    });
+
     const selectedRegionsTotalEffectiveVehicles =
       calculateSelectedRegionsTotalEffectiveVehicles({
-        selectedGeographyRegionIds,
+        geographicFocus,
+        selectedStateId,
+        selectedGeographyRegions,
+        vmtStatePercentagesByStateRegionCombo,
         vehicleTypePercentagesOfVehicleCategory,
         vehicleFuelTypePercentagesOfVehicleType,
         batteryEVs: Number(batteryEVs),

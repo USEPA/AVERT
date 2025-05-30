@@ -1539,7 +1539,12 @@ export function calculateVMTPerVehicleTypeByState(options: {
  * transportation sector" table in the "Library" sheet (E546:E567).
  */
 export function calculateSelectedRegionsTotalEffectiveVehicles(options: {
-  selectedGeographyRegionIds: RegionId[];
+  geographicFocus: GeographicFocus;
+  selectedStateId: StateId | "";
+  selectedGeographyRegions: SelectedGeographyRegions;
+  vmtStatePercentagesByStateRegionCombo:
+    | VMTStatePercentagesByStateRegionCombo
+    | EmptyObject;
   vehicleTypePercentagesOfVehicleCategory:
     | VehicleTypePercentagesOfVehicleCategory
     | EmptyObject;
@@ -1555,7 +1560,10 @@ export function calculateSelectedRegionsTotalEffectiveVehicles(options: {
   refuseTrucks: number;
 }) {
   const {
-    selectedGeographyRegionIds,
+    geographicFocus,
+    selectedStateId,
+    selectedGeographyRegions,
+    vmtStatePercentagesByStateRegionCombo,
     vehicleTypePercentagesOfVehicleCategory,
     vehicleFuelTypePercentagesOfVehicleType,
     batteryEVs,
@@ -1568,7 +1576,8 @@ export function calculateSelectedRegionsTotalEffectiveVehicles(options: {
   } = options;
 
   if (
-    selectedGeographyRegionIds.length === 0 ||
+    Object.keys(selectedGeographyRegions).length === 0 ||
+    Object.keys(vmtStatePercentagesByStateRegionCombo).length === 0 ||
     Object.keys(vehicleTypePercentagesOfVehicleCategory).length === 0 ||
     Object.keys(vehicleFuelTypePercentagesOfVehicleType).length === 0
   ) {
@@ -1579,8 +1588,17 @@ export function calculateSelectedRegionsTotalEffectiveVehicles(options: {
     };
   }
 
-  const result = selectedGeographyRegionIds.reduce(
-    (object, regionId) => {
+  const stateSelected = geographicFocus === "states" && selectedStateId !== "";
+
+  const result = Object.entries(selectedGeographyRegions).reduce(
+    (object, [geographyKey, geographyValue]) => {
+      const regionId = geographyKey as keyof typeof selectedGeographyRegions;
+      const regionName = geographyValue.name;
+
+      const stateRegionKey = `${selectedStateId} / ${regionName}`;
+      const vmtStatePercentages =
+        vmtStatePercentagesByStateRegionCombo?.[stateRegionKey]?.vehicleTypes;
+
       object[regionId] ??= {
         "Battery EVs / Passenger cars / Gasoline": 0,
         "Plug-in Hybrid EVs / Passenger cars / Gasoline": 0,
@@ -1640,8 +1658,20 @@ export function calculateSelectedRegionsTotalEffectiveVehicles(options: {
         const vehicleFuelPercengage =
           vehicleFuelTypePercentagesOfVehicleType?.[vehicleFuelCombo] || 0;
 
-        object[regionId][categoryVehicleFuelCombo] =
+        const vehicleTotal =
           vehicleInputValue * vehicleTypePercentage * vehicleFuelPercengage;
+
+        /**
+         * If a state is selected, multiply the vehicle total by the percentage/
+         * share of the state's total VMT by it's AVERT region for the vehicle
+         * type.
+         */
+        const stateFactor =
+          stateSelected && vehicleType in vmtStatePercentages
+            ? vmtStatePercentages[vehicleType as VehicleType]
+            : 1;
+
+        object[regionId][categoryVehicleFuelCombo] = vehicleTotal * stateFactor;
       });
 
       return object;
