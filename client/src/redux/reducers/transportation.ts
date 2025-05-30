@@ -17,7 +17,7 @@ import {
   type VehicleCategoryTotals,
   type VehicleTypePercentagesOfVehicleCategory,
   type VehicleFuelTypePercentagesOfVehicleType,
-  type TotalEffectiveVehicles,
+  type SelectedRegionsTotalEffectiveVehicles,
   type VMTandStockByState,
   type LDVsFhwaMovesVMTRatioByState,
   type VMTPerVehicleTypeByState,
@@ -60,7 +60,7 @@ import {
   calculateVehicleCategoryTotals,
   calculateVehicleTypePercentagesOfVehicleCategory,
   calculateVehicleFuelTypePercentagesOfVehicleType,
-  calculateTotalEffectiveVehicles,
+  calculateSelectedRegionsTotalEffectiveVehicles,
   storeVMTandStockByState,
   calculateLDVsFhwaMovesVMTRatioByState,
   calculateVMTPerVehicleTypeByState,
@@ -239,9 +239,9 @@ type Action =
       };
     }
   | {
-      type: "transportation/SET_TOTAL_EFFECTIVE_VEHICLES";
+      type: "transportation/SET_SELECTED_REGIONS_TOTAL_EFFECTIVE_VEHICLES";
       payload: {
-        totalEffectiveVehicles: TotalEffectiveVehicles;
+        selectedRegionsTotalEffectiveVehicles: SelectedRegionsTotalEffectiveVehicles;
       };
     }
   | {
@@ -420,7 +420,9 @@ type State = {
   vehicleFuelTypePercentagesOfVehicleType:
     | VehicleFuelTypePercentagesOfVehicleType
     | EmptyObject;
-  totalEffectiveVehicles: TotalEffectiveVehicles;
+  selectedRegionsTotalEffectiveVehicles:
+    | SelectedRegionsTotalEffectiveVehicles
+    | EmptyObject;
   vmtAndStockByState: VMTandStockByState | EmptyObject;
   ldvsFhwaMovesVMTRatioByState: LDVsFhwaMovesVMTRatioByState | EmptyObject;
   vmtPerVehicleTypeByState: VMTPerVehicleTypeByState | EmptyObject;
@@ -501,30 +503,7 @@ const initialState: State = {
   vehicleCategoryTotals: {},
   vehicleTypePercentagesOfVehicleCategory: {},
   vehicleFuelTypePercentagesOfVehicleType: {},
-  totalEffectiveVehicles: {
-    "Battery EVs / Passenger cars / Gasoline": 0,
-    "Plug-in Hybrid EVs / Passenger cars / Gasoline": 0,
-    "Battery EVs / Passenger trucks / Gasoline": 0,
-    "Plug-in Hybrid EVs / Passenger trucks / Gasoline": 0,
-    "Transit buses / Medium-duty transit buses / Gasoline": 0,
-    "Transit buses / Medium-duty transit buses / Diesel Fuel": 0,
-    "Transit buses / Heavy-duty transit buses / Diesel Fuel": 0,
-    "Transit buses / Heavy-duty transit buses / Compressed Natural Gas (CNG)": 0,
-    "School buses / Medium-duty school buses / Gasoline": 0,
-    "School buses / Medium-duty school buses / Diesel Fuel": 0,
-    "School buses / Heavy-duty school buses / Diesel Fuel": 0,
-    "Other buses / Medium-duty other buses / Gasoline": 0,
-    "Other buses / Medium-duty other buses / Diesel Fuel": 0,
-    "Other buses / Heavy-duty other buses / Diesel Fuel": 0,
-    "Other buses / Heavy-duty other buses / Compressed Natural Gas (CNG)": 0,
-    "Short-haul trucks / Light-duty single unit trucks / Gasoline": 0,
-    "Short-haul trucks / Medium-duty single unit trucks / Gasoline": 0,
-    "Short-haul trucks / Medium-duty single unit trucks / Diesel Fuel": 0,
-    "Short-haul trucks / Heavy-duty combination trucks / Diesel Fuel": 0,
-    "Long-haul trucks / Combination long-haul trucks / Diesel Fuel": 0,
-    "Refuse trucks / Medium-duty refuse trucks / Diesel Fuel": 0,
-    "Refuse trucks / Heavy-duty refuse trucks / Diesel Fuel": 0,
-  },
+  selectedRegionsTotalEffectiveVehicles: {},
   vmtAndStockByState: {},
   ldvsFhwaMovesVMTRatioByState: {},
   vmtPerVehicleTypeByState: {},
@@ -704,12 +683,12 @@ export default function reducer(
       };
     }
 
-    case "transportation/SET_TOTAL_EFFECTIVE_VEHICLES": {
-      const { totalEffectiveVehicles } = action.payload;
+    case "transportation/SET_SELECTED_REGIONS_TOTAL_EFFECTIVE_VEHICLES": {
+      const { selectedRegionsTotalEffectiveVehicles } = action.payload;
 
       return {
         ...state,
-        totalEffectiveVehicles,
+        selectedRegionsTotalEffectiveVehicles,
       };
     }
 
@@ -1271,7 +1250,8 @@ export function setDailyAndMonthlyStats(): AppThunk {
  */
 export function setEffectiveVehicles(): AppThunk {
   return (dispatch, getState) => {
-    const { transportation, impacts } = getState();
+    const { geography, transportation, impacts } = getState();
+    const { regionalScalingFactors } = geography;
     const {
       vehicleTypePercentagesOfVehicleCategory,
       vehicleFuelTypePercentagesOfVehicleType,
@@ -1286,27 +1266,33 @@ export function setEffectiveVehicles(): AppThunk {
       refuseTrucks,
     } = impacts.inputs;
 
-    const totalEffectiveVehicles = calculateTotalEffectiveVehicles({
-      vehicleTypePercentagesOfVehicleCategory,
-      vehicleFuelTypePercentagesOfVehicleType,
-      batteryEVs: Number(batteryEVs),
-      hybridEVs: Number(hybridEVs),
-      transitBuses: Number(transitBuses),
-      schoolBuses: Number(schoolBuses),
-      shortHaulTrucks: Number(shortHaulTrucks),
-      comboLongHaulTrucks: Number(comboLongHaulTrucks),
-      refuseTrucks: Number(refuseTrucks),
-    });
+    const selectedGeographyRegionIds = Object.keys(
+      regionalScalingFactors,
+    ) as RegionId[];
+
+    const selectedRegionsTotalEffectiveVehicles =
+      calculateSelectedRegionsTotalEffectiveVehicles({
+        selectedGeographyRegionIds,
+        vehicleTypePercentagesOfVehicleCategory,
+        vehicleFuelTypePercentagesOfVehicleType,
+        batteryEVs: Number(batteryEVs),
+        hybridEVs: Number(hybridEVs),
+        transitBuses: Number(transitBuses),
+        schoolBuses: Number(schoolBuses),
+        shortHaulTrucks: Number(shortHaulTrucks),
+        comboLongHaulTrucks: Number(comboLongHaulTrucks),
+        refuseTrucks: Number(refuseTrucks),
+      });
 
     dispatch({
-      type: "transportation/SET_TOTAL_EFFECTIVE_VEHICLES",
-      payload: { totalEffectiveVehicles },
+      type: "transportation/SET_SELECTED_REGIONS_TOTAL_EFFECTIVE_VEHICLES",
+      payload: { selectedRegionsTotalEffectiveVehicles },
     });
 
-    // NOTE: `selectedRegionsMonthlySalesChanges` uses `totalEffectiveVehicles`
+    // NOTE: `selectedRegionsMonthlySalesChanges` uses `selectedRegionsTotalEffectiveVehicles`
     dispatch(setMonthlyEVEnergyUsage());
 
-    // NOTE: `selectedRegionsMonthlyEmissionChanges` uses `totalEffectiveVehicles`
+    // NOTE: `selectedRegionsMonthlyEmissionChanges` uses `selectedRegionsTotalEffectiveVehicles`
     dispatch(setEmissionChanges());
   };
 }
@@ -1323,14 +1309,14 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
   return (dispatch, getState) => {
     const { transportation } = getState();
     const {
-      totalEffectiveVehicles,
+      selectedRegionsTotalEffectiveVehicles,
       selectedRegionsMonthlyVMT,
       selectedRegionsEVEfficiency,
     } = transportation;
 
     const selectedRegionsMonthlySalesChanges =
       calculateSelectedRegionsMonthlySalesChanges({
-        totalEffectiveVehicles,
+        selectedRegionsTotalEffectiveVehicles,
         selectedRegionsMonthlyVMT,
         selectedRegionsEVEfficiency,
         percentageHybridEVMilesDrivenOnElectricity,
@@ -1510,7 +1496,7 @@ export function setEmissionChanges(): AppThunk {
     const { countiesByGeography, regionalScalingFactors } = geography;
     const {
       vmtTotalsByGeography,
-      totalEffectiveVehicles,
+      selectedRegionsTotalEffectiveVehicles,
       selectedRegionsMonthlyVMT,
       selectedRegionsMonthlyEmissionRates,
       selectedRegionsMonthlyTotalNetPM25EmissionRates,
@@ -1532,7 +1518,7 @@ export function setEmissionChanges(): AppThunk {
 
     const selectedRegionsMonthlyEmissionChanges =
       calculateSelectedRegionsMonthlyEmissionChanges({
-        totalEffectiveVehicles,
+        selectedRegionsTotalEffectiveVehicles,
         selectedRegionsMonthlyEmissionRates,
         selectedRegionsMonthlyTotalNetPM25EmissionRates,
         selectedRegionsMonthlyVMT,

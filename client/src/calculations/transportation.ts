@@ -238,8 +238,8 @@ export type VehicleTypePercentagesOfVehicleCategory = ReturnType<
 export type VehicleFuelTypePercentagesOfVehicleType = ReturnType<
   typeof calculateVehicleFuelTypePercentagesOfVehicleType
 >;
-export type TotalEffectiveVehicles = ReturnType<
-  typeof calculateTotalEffectiveVehicles
+export type SelectedRegionsTotalEffectiveVehicles = ReturnType<
+  typeof calculateSelectedRegionsTotalEffectiveVehicles
 >;
 export type VMTandStockByState = ReturnType<typeof storeVMTandStockByState>;
 export type LDVsFhwaMovesVMTRatioByState = ReturnType<
@@ -1382,13 +1382,14 @@ export function calculateVehicleFuelTypePercentagesOfVehicleType(options: {
 }
 
 /**
- * Total number of effective vehicles by vehicle category / vehicle type / fuel
- * type combo.
+ * Selected AVERT region's total number of effective vehicles by vehicle
+ * category / vehicle type / fuel type combo.
  *
  * Excel: "Sales Changes" data from "Table 8: Calculated changes for the
  * transportation sector" table in the "Library" sheet (E546:E567).
  */
-export function calculateTotalEffectiveVehicles(options: {
+export function calculateSelectedRegionsTotalEffectiveVehicles(options: {
+  selectedGeographyRegionIds: RegionId[];
   vehicleTypePercentagesOfVehicleCategory:
     | VehicleTypePercentagesOfVehicleCategory
     | EmptyObject;
@@ -1404,6 +1405,7 @@ export function calculateTotalEffectiveVehicles(options: {
   refuseTrucks: number;
 }) {
   const {
+    selectedGeographyRegionIds,
     vehicleTypePercentagesOfVehicleCategory,
     vehicleFuelTypePercentagesOfVehicleType,
     batteryEVs,
@@ -1415,75 +1417,91 @@ export function calculateTotalEffectiveVehicles(options: {
     refuseTrucks,
   } = options;
 
-  const result = {
-    "Battery EVs / Passenger cars / Gasoline": 0,
-    "Plug-in Hybrid EVs / Passenger cars / Gasoline": 0,
-    "Battery EVs / Passenger trucks / Gasoline": 0,
-    "Plug-in Hybrid EVs / Passenger trucks / Gasoline": 0,
-    "Transit buses / Medium-duty transit buses / Gasoline": 0,
-    "Transit buses / Medium-duty transit buses / Diesel Fuel": 0,
-    "Transit buses / Heavy-duty transit buses / Diesel Fuel": 0,
-    "Transit buses / Heavy-duty transit buses / Compressed Natural Gas (CNG)": 0,
-    "School buses / Medium-duty school buses / Gasoline": 0,
-    "School buses / Medium-duty school buses / Diesel Fuel": 0,
-    "School buses / Heavy-duty school buses / Diesel Fuel": 0,
-    "Other buses / Medium-duty other buses / Gasoline": 0,
-    "Other buses / Medium-duty other buses / Diesel Fuel": 0,
-    "Other buses / Heavy-duty other buses / Diesel Fuel": 0,
-    "Other buses / Heavy-duty other buses / Compressed Natural Gas (CNG)": 0,
-    "Short-haul trucks / Light-duty single unit trucks / Gasoline": 0,
-    "Short-haul trucks / Medium-duty single unit trucks / Gasoline": 0,
-    "Short-haul trucks / Medium-duty single unit trucks / Diesel Fuel": 0,
-    "Short-haul trucks / Heavy-duty combination trucks / Diesel Fuel": 0,
-    "Long-haul trucks / Combination long-haul trucks / Diesel Fuel": 0,
-    "Refuse trucks / Medium-duty refuse trucks / Diesel Fuel": 0,
-    "Refuse trucks / Heavy-duty refuse trucks / Diesel Fuel": 0,
-  };
-
   if (
+    selectedGeographyRegionIds.length === 0 ||
     Object.keys(vehicleTypePercentagesOfVehicleCategory).length === 0 ||
     Object.keys(vehicleFuelTypePercentagesOfVehicleType).length === 0
   ) {
-    return result;
+    return {} as {
+      [regionId in RegionId]: {
+        [categoryVehicleFuelCombo in VehicleCategoryVehicleTypeFuelTypeCombo]: number;
+      };
+    };
   }
 
-  Object.keys(result).forEach((key) => {
-    const categoryVehicleFuelCombo = key as keyof typeof result;
+  const result = selectedGeographyRegionIds.reduce(
+    (object, regionId) => {
+      object[regionId] ??= {
+        "Battery EVs / Passenger cars / Gasoline": 0,
+        "Plug-in Hybrid EVs / Passenger cars / Gasoline": 0,
+        "Battery EVs / Passenger trucks / Gasoline": 0,
+        "Plug-in Hybrid EVs / Passenger trucks / Gasoline": 0,
+        "Transit buses / Medium-duty transit buses / Gasoline": 0,
+        "Transit buses / Medium-duty transit buses / Diesel Fuel": 0,
+        "Transit buses / Heavy-duty transit buses / Diesel Fuel": 0,
+        "Transit buses / Heavy-duty transit buses / Compressed Natural Gas (CNG)": 0,
+        "School buses / Medium-duty school buses / Gasoline": 0,
+        "School buses / Medium-duty school buses / Diesel Fuel": 0,
+        "School buses / Heavy-duty school buses / Diesel Fuel": 0,
+        "Other buses / Medium-duty other buses / Gasoline": 0,
+        "Other buses / Medium-duty other buses / Diesel Fuel": 0,
+        "Other buses / Heavy-duty other buses / Diesel Fuel": 0,
+        "Other buses / Heavy-duty other buses / Compressed Natural Gas (CNG)": 0,
+        "Short-haul trucks / Light-duty single unit trucks / Gasoline": 0,
+        "Short-haul trucks / Medium-duty single unit trucks / Gasoline": 0,
+        "Short-haul trucks / Medium-duty single unit trucks / Diesel Fuel": 0,
+        "Short-haul trucks / Heavy-duty combination trucks / Diesel Fuel": 0,
+        "Long-haul trucks / Combination long-haul trucks / Diesel Fuel": 0,
+        "Refuse trucks / Medium-duty refuse trucks / Diesel Fuel": 0,
+        "Refuse trucks / Heavy-duty refuse trucks / Diesel Fuel": 0,
+      };
 
-    const [vehicleCategory, vehicleType, fuelType] = key.split(" / ");
+      Object.keys(object[regionId]).forEach((key) => {
+        const categoryVehicleFuelCombo = key as keyof typeof object[typeof regionId]; // prettier-ignore
 
-    const vehicleInputValue =
-      vehicleCategory === "Battery EVs"
-        ? batteryEVs
-        : vehicleCategory === "Plug-in Hybrid EVs"
-          ? hybridEVs
-          : vehicleCategory === "Transit buses"
-            ? transitBuses
-            : vehicleCategory === "School buses"
-              ? schoolBuses
-              : vehicleCategory === "Short-haul trucks"
-                ? shortHaulTrucks
-                : vehicleCategory === "Long-haul trucks"
-                  ? comboLongHaulTrucks
-                  : vehicleCategory === "Refuse trucks"
-                    ? refuseTrucks
-                    : 0;
+        const [vehicleCategory, vehicleType, fuelType] = key.split(" / ");
 
-    const categoryVehicleCombo =
-      `${vehicleCategory} / ${vehicleType}` as VehicleCategoryVehicleTypeCombo;
+        const vehicleInputValue =
+          vehicleCategory === "Battery EVs"
+            ? batteryEVs
+            : vehicleCategory === "Plug-in Hybrid EVs"
+              ? hybridEVs
+              : vehicleCategory === "Transit buses"
+                ? transitBuses
+                : vehicleCategory === "School buses"
+                  ? schoolBuses
+                  : vehicleCategory === "Short-haul trucks"
+                    ? shortHaulTrucks
+                    : vehicleCategory === "Long-haul trucks"
+                      ? comboLongHaulTrucks
+                      : vehicleCategory === "Refuse trucks"
+                        ? refuseTrucks
+                        : 0;
 
-    const vehicleFuelCombo =
-      `${vehicleType} / ${fuelType}` as VehicleTypeFuelTypeCombo;
+        const categoryVehicleCombo =
+          `${vehicleCategory} / ${vehicleType}` as VehicleCategoryVehicleTypeCombo;
 
-    const vehicleTypePercentage =
-      vehicleTypePercentagesOfVehicleCategory?.[categoryVehicleCombo] || 0;
+        const vehicleFuelCombo =
+          `${vehicleType} / ${fuelType}` as VehicleTypeFuelTypeCombo;
 
-    const vehicleFuelPercengage =
-      vehicleFuelTypePercentagesOfVehicleType?.[vehicleFuelCombo] || 0;
+        const vehicleTypePercentage =
+          vehicleTypePercentagesOfVehicleCategory?.[categoryVehicleCombo] || 0;
 
-    result[categoryVehicleFuelCombo] =
-      vehicleInputValue * vehicleTypePercentage * vehicleFuelPercengage;
-  });
+        const vehicleFuelPercengage =
+          vehicleFuelTypePercentagesOfVehicleType?.[vehicleFuelCombo] || 0;
+
+        object[regionId][categoryVehicleFuelCombo] =
+          vehicleInputValue * vehicleTypePercentage * vehicleFuelPercengage;
+      });
+
+      return object;
+    },
+    {} as {
+      [regionId in RegionId]: {
+        [categoryVehicleFuelCombo in VehicleCategoryVehicleTypeFuelTypeCombo]: number;
+      };
+    },
+  );
 
   return result;
 }
@@ -2332,19 +2350,22 @@ export function calculateSelectedRegionsMonthlyTotalNetPM25EmissionRates(options
  * transportation sector" table in the "Library" sheet (G546:R567).
  */
 export function calculateSelectedRegionsMonthlySalesChanges(options: {
-  totalEffectiveVehicles: TotalEffectiveVehicles;
+  selectedRegionsTotalEffectiveVehicles:
+    | SelectedRegionsTotalEffectiveVehicles
+    | EmptyObject;
   selectedRegionsMonthlyVMT: SelectedRegionsMonthlyVMT | EmptyObject;
   selectedRegionsEVEfficiency: SelectedRegionsEVEfficiency | EmptyObject;
   percentageHybridEVMilesDrivenOnElectricity: PercentageHybridEVMilesDrivenOnElectricity;
 }) {
   const {
-    totalEffectiveVehicles,
+    selectedRegionsTotalEffectiveVehicles,
     selectedRegionsMonthlyVMT,
     selectedRegionsEVEfficiency,
     percentageHybridEVMilesDrivenOnElectricity,
   } = options;
 
   if (
+    Object.keys(selectedRegionsTotalEffectiveVehicles).length === 0 ||
     Object.keys(selectedRegionsMonthlyVMT).length === 0 ||
     Object.keys(selectedRegionsEVEfficiency).length === 0
   ) {
@@ -2375,6 +2396,13 @@ export function calculateSelectedRegionsMonthlySalesChanges(options: {
         object[regionId][month] ??= {} as {
           [categoryVehicleFuelCombo in VehicleCategoryVehicleTypeFuelTypeCombo]: number;
         };
+
+        const totalEffectiveVehicles =
+          selectedRegionsTotalEffectiveVehicles?.[regionId];
+
+        if (!totalEffectiveVehicles) {
+          return object;
+        }
 
         Object.entries(totalEffectiveVehicles).forEach(
           ([vehicleKey, vehicleValue]) => {
@@ -2714,7 +2742,9 @@ export function calculateSelectedRegionsMonthlyDailyEnergyUsage(options: {
  * transportation sector" table in the "Library" sheet (G546:R567).
  */
 export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
-  totalEffectiveVehicles: TotalEffectiveVehicles;
+  selectedRegionsTotalEffectiveVehicles:
+    | SelectedRegionsTotalEffectiveVehicles
+    | EmptyObject;
   selectedRegionsMonthlyEmissionRates:
     | SelectedRegionsMonthlyEmissionRates
     | EmptyObject;
@@ -2725,7 +2755,7 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
   percentageHybridEVMilesDrivenOnElectricity: PercentageHybridEVMilesDrivenOnElectricity;
 }) {
   const {
-    totalEffectiveVehicles,
+    selectedRegionsTotalEffectiveVehicles,
     selectedRegionsMonthlyEmissionRates,
     selectedRegionsMonthlyTotalNetPM25EmissionRates,
     selectedRegionsMonthlyVMT,
@@ -2733,6 +2763,7 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
   } = options;
 
   if (
+    Object.keys(selectedRegionsTotalEffectiveVehicles).length === 0 ||
     Object.keys(selectedRegionsMonthlyEmissionRates).length === 0 ||
     Object.keys(selectedRegionsMonthlyTotalNetPM25EmissionRates).length === 0 ||
     Object.keys(selectedRegionsMonthlyVMT).length === 0
@@ -2768,6 +2799,13 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
             [pollutant in Pollutant]: number;
           };
         };
+
+        const totalEffectiveVehicles =
+          selectedRegionsTotalEffectiveVehicles?.[regionId];
+
+        if (!totalEffectiveVehicles) {
+          return object;
+        }
 
         Object.entries(totalEffectiveVehicles).forEach(
           ([vehicleKey, vehicleValue]) => {
