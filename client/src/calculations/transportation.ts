@@ -221,6 +221,7 @@ export type VMTTotalsByStateRegionCombo = ReturnType<
   typeof calculateVMTTotalsByStateRegionCombo
 >;
 export type VMTTotalsByRegion = ReturnType<typeof calculateVMTTotalsByRegion>;
+export type VMTTotalsByState = ReturnType<typeof calculateVMTTotalsByState>;
 export type VMTPercentagesByStateRegionCombo = ReturnType<
   typeof calculateVMTPercentagesByStateRegionCombo
 >;
@@ -929,6 +930,62 @@ export function calculateVMTTotalsByRegion(options: {
     },
     {} as {
       [region in RegionName]: {
+        [vehicle in VehicleType]: number;
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Total vehicle miles traveled (VMT) in billions by state for each vehicle
+ * type.
+ *
+ * NOTE: not in Excel file, but follows the same structure as the bottom left
+ * table in the "RegionStateAllocate" sheet (B87:R100), only for each state
+ * instead of each AVERT region.
+ */
+export function calculateVMTTotalsByState(options: {
+  vmtTotalsByStateRegionCombo: VMTTotalsByStateRegionCombo;
+}) {
+  const { vmtTotalsByStateRegionCombo } = options;
+
+  const result = Object.values(vmtTotalsByStateRegionCombo).reduce(
+    (object, data) => {
+      const state = data.state as StateId;
+
+      if (!object[state]) {
+        object[state] = {
+          "Passenger cars": 0,
+          "Passenger trucks": 0,
+          "Medium-duty transit buses": 0,
+          "Heavy-duty transit buses": 0,
+          "Medium-duty school buses": 0,
+          "Heavy-duty school buses": 0,
+          "Medium-duty other buses": 0,
+          "Heavy-duty other buses": 0,
+          "Light-duty single unit trucks": 0,
+          "Medium-duty single unit trucks": 0,
+          "Heavy-duty combination trucks": 0,
+          "Combination long-haul trucks": 0,
+          "Medium-duty refuse trucks": 0,
+          "Heavy-duty refuse trucks": 0,
+        };
+      }
+
+      Object.entries(data.vehicleTypes).forEach(([vmtKey, vmtValue]) => {
+        const vehicle = vmtKey as keyof typeof data.vehicleTypes;
+
+        if (vehicle in object[state]) {
+          object[state][vehicle] += vmtValue;
+        }
+      });
+
+      return object;
+    },
+    {} as {
+      [state in StateId]: {
         [vehicle in VehicleType]: number;
       };
     },
