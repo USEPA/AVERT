@@ -222,8 +222,11 @@ export type VMTTotalsByStateRegionCombo = ReturnType<
 >;
 export type VMTTotalsByRegion = ReturnType<typeof calculateVMTTotalsByRegion>;
 export type VMTTotalsByState = ReturnType<typeof calculateVMTTotalsByState>;
-export type VMTPercentagesByStateRegionCombo = ReturnType<
-  typeof calculateVMTPercentagesByStateRegionCombo
+export type VMTRegionPercentagesByStateRegionCombo = ReturnType<
+  typeof calculateVMTRegionPercentagesByStateRegionCombo
+>;
+export type VMTStatePercentagesByStateRegionCombo = ReturnType<
+  typeof calculateVMTStatePercentagesByStateRegionCombo
 >;
 export type VehicleTypeTotals = ReturnType<typeof calculateVehicleTypeTotals>;
 export type VehicleCategoryTotals = ReturnType<
@@ -1000,7 +1003,7 @@ export function calculateVMTTotalsByState(options: {
  *
  * Excel: Top right table in the "RegionStateAllocate" sheet (T4:AG85)
  */
-export function calculateVMTPercentagesByStateRegionCombo(options: {
+export function calculateVMTRegionPercentagesByStateRegionCombo(options: {
   vmtTotalsByStateRegionCombo: VMTTotalsByStateRegionCombo;
   vmtTotalsByRegion: VMTTotalsByRegion;
 }) {
@@ -1043,6 +1046,79 @@ export function calculateVMTPercentagesByStateRegionCombo(options: {
           ) {
             const regionTotal = vmtTotalsByRegion[region][vehicle];
             const vmtPercentage = vmtValue / regionTotal;
+
+            object[stateRegionKey].vehicleTypes[vehicle] = vmtPercentage;
+          }
+        },
+      );
+
+      return object;
+    },
+    {} as {
+      [stateRegionKey: string]: {
+        state: StateId;
+        region: RegionName;
+        vehicleTypes: {
+          [vehicle in VehicleType]: number;
+        };
+      };
+    },
+  );
+
+  return result;
+}
+
+/**
+ * Percentage/share of each state's total VMT by AVERT region for each vehicle
+ * type.
+ *
+ * NOTE: not in Excel file, but follows the same structure as the top right
+ * table in the "RegionStateAllocate" sheet (T4:AG85), only for each state
+ * instead of each AVERT region.
+ */
+export function calculateVMTStatePercentagesByStateRegionCombo(options: {
+  vmtTotalsByStateRegionCombo: VMTTotalsByStateRegionCombo;
+  vmtTotalsByState: VMTTotalsByState;
+}) {
+  const { vmtTotalsByStateRegionCombo, vmtTotalsByState } = options;
+
+  const result = Object.entries(vmtTotalsByStateRegionCombo).reduce(
+    (object, [stateRegionKey, stateRegionValue]) => {
+      const { state, region } = stateRegionValue;
+
+      if (!object[stateRegionKey]) {
+        object[stateRegionKey] = {
+          state,
+          region,
+          vehicleTypes: {
+            "Passenger cars": 0,
+            "Passenger trucks": 0,
+            "Medium-duty transit buses": 0,
+            "Heavy-duty transit buses": 0,
+            "Medium-duty school buses": 0,
+            "Heavy-duty school buses": 0,
+            "Medium-duty other buses": 0,
+            "Heavy-duty other buses": 0,
+            "Light-duty single unit trucks": 0,
+            "Medium-duty single unit trucks": 0,
+            "Heavy-duty combination trucks": 0,
+            "Combination long-haul trucks": 0,
+            "Medium-duty refuse trucks": 0,
+            "Heavy-duty refuse trucks": 0,
+          },
+        };
+      }
+
+      Object.entries(stateRegionValue.vehicleTypes).forEach(
+        ([vmtKey, vmtValue]) => {
+          const vehicle = vmtKey as keyof typeof stateRegionValue.vehicleTypes;
+
+          if (
+            vehicle in object[stateRegionKey].vehicleTypes &&
+            vehicle in vmtTotalsByState[state]
+          ) {
+            const stateTotal = vmtTotalsByState[state][vehicle];
+            const vmtPercentage = vmtValue / stateTotal;
 
             object[stateRegionKey].vehicleTypes[vehicle] = vmtPercentage;
           }
@@ -1571,16 +1647,16 @@ export function calculateVMTPerVehicleTypeByState(options: {
  */
 export function calculateSelectedRegionsVMTPercentagesByState(options: {
   selectedGeographyRegions: SelectedGeographyRegions;
-  vmtPercentagesByStateRegionCombo:
-    | VMTPercentagesByStateRegionCombo
+  vmtRegionPercentagesByStateRegionCombo:
+    | VMTRegionPercentagesByStateRegionCombo
     | EmptyObject;
 }) {
-  const { selectedGeographyRegions, vmtPercentagesByStateRegionCombo } =
+  const { selectedGeographyRegions, vmtRegionPercentagesByStateRegionCombo } =
     options;
 
   if (
     Object.keys(selectedGeographyRegions).length === 0 ||
-    Object.keys(vmtPercentagesByStateRegionCombo).length === 0
+    Object.keys(vmtRegionPercentagesByStateRegionCombo).length === 0
   ) {
     return {} as {
       [regionId in RegionId]: {
@@ -1597,7 +1673,7 @@ export function calculateSelectedRegionsVMTPercentagesByState(options: {
       const regionName = geographyValue.name;
 
       const regionResult = Object.values(
-        vmtPercentagesByStateRegionCombo,
+        vmtRegionPercentagesByStateRegionCombo,
       ).reduce(
         (statesObject, vmtValue) => {
           const stateId = vmtValue.state;

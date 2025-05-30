@@ -11,7 +11,8 @@ import {
   type VMTTotalsByStateRegionCombo,
   type VMTTotalsByRegion,
   type VMTTotalsByState,
-  type VMTPercentagesByStateRegionCombo,
+  type VMTRegionPercentagesByStateRegionCombo,
+  type VMTStatePercentagesByStateRegionCombo,
   type VehicleTypeTotals,
   type VehicleCategoryTotals,
   type VehicleTypePercentagesOfVehicleCategory,
@@ -53,7 +54,8 @@ import {
   calculateVMTTotalsByStateRegionCombo,
   calculateVMTTotalsByRegion,
   calculateVMTTotalsByState,
-  calculateVMTPercentagesByStateRegionCombo,
+  calculateVMTRegionPercentagesByStateRegionCombo,
+  calculateVMTStatePercentagesByStateRegionCombo,
   calculateVehicleTypeTotals,
   calculateVehicleCategoryTotals,
   calculateVehicleTypePercentagesOfVehicleCategory,
@@ -201,9 +203,15 @@ type Action =
       payload: { vmtTotalsByState: VMTTotalsByState };
     }
   | {
-      type: "transportation/SET_VMT_PERCENTAGES_BY_STATE_REGION_COMBO";
+      type: "transportation/SET_VMT_REGION_PERCENTAGES_BY_STATE_REGION_COMBO";
       payload: {
-        vmtPercentagesByStateRegionCombo: VMTTotalsByStateRegionCombo;
+        vmtRegionPercentagesByStateRegionCombo: VMTRegionPercentagesByStateRegionCombo;
+      };
+    }
+  | {
+      type: "transportation/SET_VMT_STATE_PERCENTAGES_BY_STATE_REGION_COMBO";
+      payload: {
+        vmtStatePercentagesByStateRegionCombo: VMTStatePercentagesByStateRegionCombo;
       };
     }
   | {
@@ -398,8 +406,11 @@ type State = {
   vmtTotalsByStateRegionCombo: VMTTotalsByStateRegionCombo | EmptyObject;
   vmtTotalsByRegion: VMTTotalsByRegion | EmptyObject;
   vmtTotalsByState: VMTTotalsByState | EmptyObject;
-  vmtPercentagesByStateRegionCombo:
-    | VMTPercentagesByStateRegionCombo
+  vmtRegionPercentagesByStateRegionCombo:
+    | VMTRegionPercentagesByStateRegionCombo
+    | EmptyObject;
+  vmtStatePercentagesByStateRegionCombo:
+    | VMTStatePercentagesByStateRegionCombo
     | EmptyObject;
   vehicleTypeTotals: VehicleTypeTotals | EmptyObject;
   vehicleCategoryTotals: VehicleCategoryTotals | EmptyObject;
@@ -484,7 +495,8 @@ const initialState: State = {
   vmtTotalsByStateRegionCombo: {},
   vmtTotalsByRegion: {},
   vmtTotalsByState: {},
-  vmtPercentagesByStateRegionCombo: {},
+  vmtRegionPercentagesByStateRegionCombo: {},
+  vmtStatePercentagesByStateRegionCombo: {},
   vehicleTypeTotals: {},
   vehicleCategoryTotals: {},
   vehicleTypePercentagesOfVehicleCategory: {},
@@ -638,12 +650,21 @@ export default function reducer(
       };
     }
 
-    case "transportation/SET_VMT_PERCENTAGES_BY_STATE_REGION_COMBO": {
-      const { vmtPercentagesByStateRegionCombo } = action.payload;
+    case "transportation/SET_VMT_REGION_PERCENTAGES_BY_STATE_REGION_COMBO": {
+      const { vmtRegionPercentagesByStateRegionCombo } = action.payload;
 
       return {
         ...state,
-        vmtPercentagesByStateRegionCombo,
+        vmtRegionPercentagesByStateRegionCombo,
+      };
+    }
+
+    case "transportation/SET_VMT_STATE_PERCENTAGES_BY_STATE_REGION_COMBO": {
+      const { vmtStatePercentagesByStateRegionCombo } = action.payload;
+
+      return {
+        ...state,
+        vmtStatePercentagesByStateRegionCombo,
       };
     }
 
@@ -969,10 +990,16 @@ export function setVMTData(): AppThunk {
       vmtTotalsByStateRegionCombo,
     });
 
-    const vmtPercentagesByStateRegionCombo =
-      calculateVMTPercentagesByStateRegionCombo({
+    const vmtRegionPercentagesByStateRegionCombo =
+      calculateVMTRegionPercentagesByStateRegionCombo({
         vmtTotalsByStateRegionCombo,
         vmtTotalsByRegion,
+      });
+
+    const vmtStatePercentagesByStateRegionCombo =
+      calculateVMTStatePercentagesByStateRegionCombo({
+        vmtTotalsByStateRegionCombo,
+        vmtTotalsByState,
       });
 
     const vehicleTypeTotals = calculateVehicleTypeTotals({
@@ -1047,8 +1074,13 @@ export function setVMTData(): AppThunk {
     });
 
     dispatch({
-      type: "transportation/SET_VMT_PERCENTAGES_BY_STATE_REGION_COMBO",
-      payload: { vmtPercentagesByStateRegionCombo },
+      type: "transportation/SET_VMT_REGION_PERCENTAGES_BY_STATE_REGION_COMBO",
+      payload: { vmtRegionPercentagesByStateRegionCombo },
+    });
+
+    dispatch({
+      type: "transportation/SET_VMT_STATE_PERCENTAGES_BY_STATE_REGION_COMBO",
+      payload: { vmtStatePercentagesByStateRegionCombo },
     });
 
     dispatch({
@@ -1114,7 +1146,7 @@ export function setSelectedGeographyVMTData(): AppThunk {
   return (dispatch, getState) => {
     const { geography, transportation } = getState();
     const { regions, regionalScalingFactors } = geography;
-    const { vmtPercentagesByStateRegionCombo } = transportation;
+    const { vmtRegionPercentagesByStateRegionCombo } = transportation;
 
     const selectedGeographyRegionIds = Object.keys(
       regionalScalingFactors,
@@ -1128,7 +1160,7 @@ export function setSelectedGeographyVMTData(): AppThunk {
     const selectedRegionsVMTPercentagesByState =
       calculateSelectedRegionsVMTPercentagesByState({
         selectedGeographyRegions,
-        vmtPercentagesByStateRegionCombo,
+        vmtRegionPercentagesByStateRegionCombo,
       });
 
     dispatch({
