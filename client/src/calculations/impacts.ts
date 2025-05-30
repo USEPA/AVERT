@@ -90,7 +90,7 @@ export function calculateHourlyRenewableEnergyProfiles(options: {
 /**
  * Hourly energy storage data.
  *
- * Excel: Data from the "Utility Scale" and "Distributed" tables (rightmost/last
+ * Excel: Data from the "Utility Scale" and "Distributed" columns (rightmost/last
  * table) in the "CalculateEERE" sheet (columns B, C, F, and AQ–BO. More info on
  * the specific columns in the comments below).
  */
