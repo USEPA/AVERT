@@ -10,15 +10,17 @@ import {
   type MonthlyVMTPercentages,
   type VMTTotalsByStateRegionCombo,
   type VMTTotalsByRegion,
-  type VMTPercentagesByStateRegionCombo,
+  type VMTTotalsByState,
+  type VMTRegionPercentagesByStateRegionCombo,
+  type VMTStatePercentagesByStateRegionCombo,
   type VehicleTypeTotals,
   type VehicleCategoryTotals,
   type VehicleTypePercentagesOfVehicleCategory,
   type VehicleFuelTypePercentagesOfVehicleType,
-  type TotalEffectiveVehicles,
   type VMTandStockByState,
   type LDVsFhwaMovesVMTRatioByState,
   type VMTPerVehicleTypeByState,
+  type SelectedRegionsTotalEffectiveVehicles,
   type SelectedRegionsVMTPercentagesByState,
   type SelectedRegionsAverageVMTPerYear,
   type SelectedRegionsMonthlyVMT,
@@ -51,15 +53,17 @@ import {
   calculateMonthlyVMTPercentages,
   calculateVMTTotalsByStateRegionCombo,
   calculateVMTTotalsByRegion,
-  calculateVMTPercentagesByStateRegionCombo,
+  calculateVMTTotalsByState,
+  calculateVMTRegionPercentagesByStateRegionCombo,
+  calculateVMTStatePercentagesByStateRegionCombo,
   calculateVehicleTypeTotals,
   calculateVehicleCategoryTotals,
   calculateVehicleTypePercentagesOfVehicleCategory,
   calculateVehicleFuelTypePercentagesOfVehicleType,
-  calculateTotalEffectiveVehicles,
   storeVMTandStockByState,
   calculateLDVsFhwaMovesVMTRatioByState,
   calculateVMTPerVehicleTypeByState,
+  calculateSelectedRegionsTotalEffectiveVehicles,
   calculateSelectedRegionsVMTPercentagesByState,
   calculateSelectedRegionsAverageVMTPerYear,
   calculateSelectedRegionsMonthlyVMT,
@@ -195,9 +199,19 @@ type Action =
       payload: { vmtTotalsByRegion: VMTTotalsByRegion };
     }
   | {
-      type: "transportation/SET_VMT_PERCENTAGES_BY_STATE_REGION_COMBO";
+      type: "transportation/SET_VMT_TOTALS_BY_STATE";
+      payload: { vmtTotalsByState: VMTTotalsByState };
+    }
+  | {
+      type: "transportation/SET_VMT_REGION_PERCENTAGES_BY_STATE_REGION_COMBO";
       payload: {
-        vmtPercentagesByStateRegionCombo: VMTTotalsByStateRegionCombo;
+        vmtRegionPercentagesByStateRegionCombo: VMTRegionPercentagesByStateRegionCombo;
+      };
+    }
+  | {
+      type: "transportation/SET_VMT_STATE_PERCENTAGES_BY_STATE_REGION_COMBO";
+      payload: {
+        vmtStatePercentagesByStateRegionCombo: VMTStatePercentagesByStateRegionCombo;
       };
     }
   | {
@@ -225,12 +239,6 @@ type Action =
       };
     }
   | {
-      type: "transportation/SET_TOTAL_EFFECTIVE_VEHICLES";
-      payload: {
-        totalEffectiveVehicles: TotalEffectiveVehicles;
-      };
-    }
-  | {
       type: "transportation/SET_VMT_AND_STOCK_BY_STATE";
       payload: {
         vmtAndStockByState: VMTandStockByState;
@@ -246,6 +254,12 @@ type Action =
       type: "transportation/SET_VMT_PER_VEHICLE_TYPE_BY_STATE";
       payload: {
         vmtPerVehicleTypeByState: VMTPerVehicleTypeByState;
+      };
+    }
+  | {
+      type: "transportation/SET_SELECTED_REGIONS_TOTAL_EFFECTIVE_VEHICLES";
+      payload: {
+        selectedRegionsTotalEffectiveVehicles: SelectedRegionsTotalEffectiveVehicles;
       };
     }
   | {
@@ -391,8 +405,12 @@ type State = {
   monthlyVMTPercentages: MonthlyVMTPercentages | EmptyObject;
   vmtTotalsByStateRegionCombo: VMTTotalsByStateRegionCombo | EmptyObject;
   vmtTotalsByRegion: VMTTotalsByRegion | EmptyObject;
-  vmtPercentagesByStateRegionCombo:
-    | VMTPercentagesByStateRegionCombo
+  vmtTotalsByState: VMTTotalsByState | EmptyObject;
+  vmtRegionPercentagesByStateRegionCombo:
+    | VMTRegionPercentagesByStateRegionCombo
+    | EmptyObject;
+  vmtStatePercentagesByStateRegionCombo:
+    | VMTStatePercentagesByStateRegionCombo
     | EmptyObject;
   vehicleTypeTotals: VehicleTypeTotals | EmptyObject;
   vehicleCategoryTotals: VehicleCategoryTotals | EmptyObject;
@@ -402,10 +420,12 @@ type State = {
   vehicleFuelTypePercentagesOfVehicleType:
     | VehicleFuelTypePercentagesOfVehicleType
     | EmptyObject;
-  totalEffectiveVehicles: TotalEffectiveVehicles;
   vmtAndStockByState: VMTandStockByState | EmptyObject;
   ldvsFhwaMovesVMTRatioByState: LDVsFhwaMovesVMTRatioByState | EmptyObject;
   vmtPerVehicleTypeByState: VMTPerVehicleTypeByState | EmptyObject;
+  selectedRegionsTotalEffectiveVehicles:
+    | SelectedRegionsTotalEffectiveVehicles
+    | EmptyObject;
   selectedRegionsVMTPercentagesByState:
     | SelectedRegionsVMTPercentagesByState
     | EmptyObject;
@@ -476,38 +496,17 @@ const initialState: State = {
   monthlyVMTPercentages: {},
   vmtTotalsByStateRegionCombo: {},
   vmtTotalsByRegion: {},
-  vmtPercentagesByStateRegionCombo: {},
+  vmtTotalsByState: {},
+  vmtRegionPercentagesByStateRegionCombo: {},
+  vmtStatePercentagesByStateRegionCombo: {},
   vehicleTypeTotals: {},
   vehicleCategoryTotals: {},
   vehicleTypePercentagesOfVehicleCategory: {},
   vehicleFuelTypePercentagesOfVehicleType: {},
-  totalEffectiveVehicles: {
-    "Battery EVs / Passenger cars / Gasoline": 0,
-    "Plug-in Hybrid EVs / Passenger cars / Gasoline": 0,
-    "Battery EVs / Passenger trucks / Gasoline": 0,
-    "Plug-in Hybrid EVs / Passenger trucks / Gasoline": 0,
-    "Transit buses / Medium-duty transit buses / Gasoline": 0,
-    "Transit buses / Medium-duty transit buses / Diesel Fuel": 0,
-    "Transit buses / Heavy-duty transit buses / Diesel Fuel": 0,
-    "Transit buses / Heavy-duty transit buses / Compressed Natural Gas (CNG)": 0,
-    "School buses / Medium-duty school buses / Gasoline": 0,
-    "School buses / Medium-duty school buses / Diesel Fuel": 0,
-    "School buses / Heavy-duty school buses / Diesel Fuel": 0,
-    "Other buses / Medium-duty other buses / Gasoline": 0,
-    "Other buses / Medium-duty other buses / Diesel Fuel": 0,
-    "Other buses / Heavy-duty other buses / Diesel Fuel": 0,
-    "Other buses / Heavy-duty other buses / Compressed Natural Gas (CNG)": 0,
-    "Short-haul trucks / Light-duty single unit trucks / Gasoline": 0,
-    "Short-haul trucks / Medium-duty single unit trucks / Gasoline": 0,
-    "Short-haul trucks / Medium-duty single unit trucks / Diesel Fuel": 0,
-    "Short-haul trucks / Heavy-duty combination trucks / Diesel Fuel": 0,
-    "Long-haul trucks / Combination long-haul trucks / Diesel Fuel": 0,
-    "Refuse trucks / Medium-duty refuse trucks / Diesel Fuel": 0,
-    "Refuse trucks / Heavy-duty refuse trucks / Diesel Fuel": 0,
-  },
   vmtAndStockByState: {},
   ldvsFhwaMovesVMTRatioByState: {},
   vmtPerVehicleTypeByState: {},
+  selectedRegionsTotalEffectiveVehicles: {},
   selectedRegionsVMTPercentagesByState: {},
   selectedRegionsAverageVMTPerYear: {},
   selectedRegionsMonthlyVMT: {},
@@ -621,12 +620,30 @@ export default function reducer(
       };
     }
 
-    case "transportation/SET_VMT_PERCENTAGES_BY_STATE_REGION_COMBO": {
-      const { vmtPercentagesByStateRegionCombo } = action.payload;
+    case "transportation/SET_VMT_TOTALS_BY_STATE": {
+      const { vmtTotalsByState } = action.payload;
 
       return {
         ...state,
-        vmtPercentagesByStateRegionCombo,
+        vmtTotalsByState,
+      };
+    }
+
+    case "transportation/SET_VMT_REGION_PERCENTAGES_BY_STATE_REGION_COMBO": {
+      const { vmtRegionPercentagesByStateRegionCombo } = action.payload;
+
+      return {
+        ...state,
+        vmtRegionPercentagesByStateRegionCombo,
+      };
+    }
+
+    case "transportation/SET_VMT_STATE_PERCENTAGES_BY_STATE_REGION_COMBO": {
+      const { vmtStatePercentagesByStateRegionCombo } = action.payload;
+
+      return {
+        ...state,
+        vmtStatePercentagesByStateRegionCombo,
       };
     }
 
@@ -666,15 +683,6 @@ export default function reducer(
       };
     }
 
-    case "transportation/SET_TOTAL_EFFECTIVE_VEHICLES": {
-      const { totalEffectiveVehicles } = action.payload;
-
-      return {
-        ...state,
-        totalEffectiveVehicles,
-      };
-    }
-
     case "transportation/SET_VMT_AND_STOCK_BY_STATE": {
       const { vmtAndStockByState } = action.payload;
 
@@ -699,6 +707,15 @@ export default function reducer(
       return {
         ...state,
         vmtPerVehicleTypeByState,
+      };
+    }
+
+    case "transportation/SET_SELECTED_REGIONS_TOTAL_EFFECTIVE_VEHICLES": {
+      const { selectedRegionsTotalEffectiveVehicles } = action.payload;
+
+      return {
+        ...state,
+        selectedRegionsTotalEffectiveVehicles,
       };
     }
 
@@ -948,10 +965,20 @@ export function setVMTData(): AppThunk {
       vmtTotalsByStateRegionCombo,
     });
 
-    const vmtPercentagesByStateRegionCombo =
-      calculateVMTPercentagesByStateRegionCombo({
+    const vmtTotalsByState = calculateVMTTotalsByState({
+      vmtTotalsByStateRegionCombo,
+    });
+
+    const vmtRegionPercentagesByStateRegionCombo =
+      calculateVMTRegionPercentagesByStateRegionCombo({
         vmtTotalsByStateRegionCombo,
         vmtTotalsByRegion,
+      });
+
+    const vmtStatePercentagesByStateRegionCombo =
+      calculateVMTStatePercentagesByStateRegionCombo({
+        vmtTotalsByStateRegionCombo,
+        vmtTotalsByState,
       });
 
     const vehicleTypeTotals = calculateVehicleTypeTotals({
@@ -1021,8 +1048,18 @@ export function setVMTData(): AppThunk {
     });
 
     dispatch({
-      type: "transportation/SET_VMT_PERCENTAGES_BY_STATE_REGION_COMBO",
-      payload: { vmtPercentagesByStateRegionCombo },
+      type: "transportation/SET_VMT_TOTALS_BY_STATE",
+      payload: { vmtTotalsByState },
+    });
+
+    dispatch({
+      type: "transportation/SET_VMT_REGION_PERCENTAGES_BY_STATE_REGION_COMBO",
+      payload: { vmtRegionPercentagesByStateRegionCombo },
+    });
+
+    dispatch({
+      type: "transportation/SET_VMT_STATE_PERCENTAGES_BY_STATE_REGION_COMBO",
+      payload: { vmtStatePercentagesByStateRegionCombo },
     });
 
     dispatch({
@@ -1088,7 +1125,7 @@ export function setSelectedGeographyVMTData(): AppThunk {
   return (dispatch, getState) => {
     const { geography, transportation } = getState();
     const { regions, regionalScalingFactors } = geography;
-    const { vmtPercentagesByStateRegionCombo } = transportation;
+    const { vmtRegionPercentagesByStateRegionCombo } = transportation;
 
     const selectedGeographyRegionIds = Object.keys(
       regionalScalingFactors,
@@ -1102,7 +1139,7 @@ export function setSelectedGeographyVMTData(): AppThunk {
     const selectedRegionsVMTPercentagesByState =
       calculateSelectedRegionsVMTPercentagesByState({
         selectedGeographyRegions,
-        vmtPercentagesByStateRegionCombo,
+        vmtRegionPercentagesByStateRegionCombo,
       });
 
     dispatch({
@@ -1202,19 +1239,24 @@ export function setDailyAndMonthlyStats(): AppThunk {
 }
 
 /**
- * Called every time the `impacts` reducer's `runEVBatteryEVsCalculations()`,
+ * Called every time the `geography` reducer's `selectGeography()`,
+ * `selectRegion()`, or `selectState()` functions are called and every time the
+ * `impacts` reducer's `runEVBatteryEVsCalculations()`,
  * `runEVHybridEVsCalculations()`, `runEVTransitBusesCalculations()`,
  * `runEVSchoolBusesCalculations()`, `runEVShortHaulTrucksCalculations()`,
  * `runEVComboLongHaulTrucksCalculations()`, or `runEVRefuseTrucksCalculations()`
  * functions are called.
  *
- * _(e.g. onBlur / whenever an EV input loses focus, but only if the input's
- * value has changed since the last time it was used in this calculation)_
+ * _(e.g. anytime the selected geography changes, and onBlur / whenever an EV
+ * input loses focus, but only if the input's value has changed since the last
+ * time it was used in this calculation)_
  */
 export function setEffectiveVehicles(): AppThunk {
   return (dispatch, getState) => {
-    const { transportation, impacts } = getState();
+    const { geography, transportation, impacts } = getState();
+    const { regions, regionalScalingFactors } = geography;
     const {
+      vmtStatePercentagesByStateRegionCombo,
       vehicleTypePercentagesOfVehicleCategory,
       vehicleFuelTypePercentagesOfVehicleType,
     } = transportation;
@@ -1228,27 +1270,46 @@ export function setEffectiveVehicles(): AppThunk {
       refuseTrucks,
     } = impacts.inputs;
 
-    const totalEffectiveVehicles = calculateTotalEffectiveVehicles({
-      vehicleTypePercentagesOfVehicleCategory,
-      vehicleFuelTypePercentagesOfVehicleType,
-      batteryEVs: Number(batteryEVs),
-      hybridEVs: Number(hybridEVs),
-      transitBuses: Number(transitBuses),
-      schoolBuses: Number(schoolBuses),
-      shortHaulTrucks: Number(shortHaulTrucks),
-      comboLongHaulTrucks: Number(comboLongHaulTrucks),
-      refuseTrucks: Number(refuseTrucks),
+    const geographicFocus = geography.focus;
+
+    const selectedStateId =
+      Object.values(geography.states).find((s) => s.selected)?.id || "";
+
+    const selectedGeographyRegionIds = Object.keys(
+      regionalScalingFactors,
+    ) as RegionId[];
+
+    const selectedGeographyRegions = getSelectedGeographyRegions({
+      regions,
+      selectedGeographyRegionIds,
     });
+
+    const selectedRegionsTotalEffectiveVehicles =
+      calculateSelectedRegionsTotalEffectiveVehicles({
+        geographicFocus,
+        selectedStateId,
+        selectedGeographyRegions,
+        vmtStatePercentagesByStateRegionCombo,
+        vehicleTypePercentagesOfVehicleCategory,
+        vehicleFuelTypePercentagesOfVehicleType,
+        batteryEVs: Number(batteryEVs),
+        hybridEVs: Number(hybridEVs),
+        transitBuses: Number(transitBuses),
+        schoolBuses: Number(schoolBuses),
+        shortHaulTrucks: Number(shortHaulTrucks),
+        comboLongHaulTrucks: Number(comboLongHaulTrucks),
+        refuseTrucks: Number(refuseTrucks),
+      });
 
     dispatch({
-      type: "transportation/SET_TOTAL_EFFECTIVE_VEHICLES",
-      payload: { totalEffectiveVehicles },
+      type: "transportation/SET_SELECTED_REGIONS_TOTAL_EFFECTIVE_VEHICLES",
+      payload: { selectedRegionsTotalEffectiveVehicles },
     });
 
-    // NOTE: `selectedRegionsMonthlySalesChanges` uses `totalEffectiveVehicles`
+    // NOTE: `selectedRegionsMonthlySalesChanges` uses `selectedRegionsTotalEffectiveVehicles`
     dispatch(setMonthlyEVEnergyUsage());
 
-    // NOTE: `selectedRegionsMonthlyEmissionChanges` uses `totalEffectiveVehicles`
+    // NOTE: `selectedRegionsMonthlyEmissionChanges` uses `selectedRegionsTotalEffectiveVehicles`
     dispatch(setEmissionChanges());
   };
 }
@@ -1265,14 +1326,14 @@ export function setMonthlyEVEnergyUsage(): AppThunk {
   return (dispatch, getState) => {
     const { transportation } = getState();
     const {
-      totalEffectiveVehicles,
+      selectedRegionsTotalEffectiveVehicles,
       selectedRegionsMonthlyVMT,
       selectedRegionsEVEfficiency,
     } = transportation;
 
     const selectedRegionsMonthlySalesChanges =
       calculateSelectedRegionsMonthlySalesChanges({
-        totalEffectiveVehicles,
+        selectedRegionsTotalEffectiveVehicles,
         selectedRegionsMonthlyVMT,
         selectedRegionsEVEfficiency,
         percentageHybridEVMilesDrivenOnElectricity,
@@ -1452,7 +1513,7 @@ export function setEmissionChanges(): AppThunk {
     const { countiesByGeography, regionalScalingFactors } = geography;
     const {
       vmtTotalsByGeography,
-      totalEffectiveVehicles,
+      selectedRegionsTotalEffectiveVehicles,
       selectedRegionsMonthlyVMT,
       selectedRegionsMonthlyEmissionRates,
       selectedRegionsMonthlyTotalNetPM25EmissionRates,
@@ -1474,7 +1535,7 @@ export function setEmissionChanges(): AppThunk {
 
     const selectedRegionsMonthlyEmissionChanges =
       calculateSelectedRegionsMonthlyEmissionChanges({
-        totalEffectiveVehicles,
+        selectedRegionsTotalEffectiveVehicles,
         selectedRegionsMonthlyEmissionRates,
         selectedRegionsMonthlyTotalNetPM25EmissionRates,
         selectedRegionsMonthlyVMT,
