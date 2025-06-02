@@ -1667,7 +1667,9 @@ export function calculateSelectedRegionsTotalEffectiveVehicles(options: {
          * type.
          */
         const stateFactor =
-          stateSelected && vehicleType in vmtStatePercentages
+          stateSelected &&
+          vmtStatePercentages &&
+          vehicleType in vmtStatePercentages
             ? vmtStatePercentages[vehicleType as VehicleType]
             : 1;
 

@@ -18,7 +18,7 @@ Part II. Charging Characteristics
 
 "From vehicles" column  
 [calculateVMTTotalsByGeography()](../client/src/calculations/transportation.ts#L475)  
-[calculateVehicleEmissionChangesByGeography()](../client/src/calculations/transportation.ts#L3587)
+[calculateVehicleEmissionChangesByGeography()](../client/src/calculations/transportation.ts#L3589)
 
 ## CalculateEERE
 
@@ -47,11 +47,11 @@ Data from the top of the middle table
 [storeHourlyEVLoadProfiles()](../client/src/calculations/transportation.ts#L325)
 
 Data from the middle of the middle table  
-[calculateSelectedRegionsMonthlyDailyEnergyUsage()](../client/src/calculations/transportation.ts#L2673)
+[calculateSelectedRegionsMonthlyDailyEnergyUsage()](../client/src/calculations/transportation.ts#L2675)
 
 Data from the bottom of the middle table  
 [calculateMonthlyStats()](../client/src/calculations/transportation.ts#L420)  
-[calculateSelectedRegionsMonthlyEnergyUsage()](../client/src/calculations/transportation.ts#L2596)
+[calculateSelectedRegionsMonthlyEnergyUsage()](../client/src/calculations/transportation.ts#L2598)
 
 "Utility Scale" and "Distributed" columns of right/last table  
 [calculateHourlyEnergyStorageData()](../client/src/calculations/impacts.ts#L97)
@@ -67,7 +67,7 @@ Table 3: EGUs with infrequent SO2 emission events
 [regions[:regionId].actualEmissions](../client/src/config.ts#L393)
 
 Table 4: VMT per vehicle assumptions  
-[calculateSelectedRegionsAverageVMTPerYear()](../client/src/calculations/transportation.ts#L1779)
+[calculateSelectedRegionsAverageVMTPerYear()](../client/src/calculations/transportation.ts#L1781)
 
 Table 5: EV efficiency assumptions  
 [evEfficiencyAssumptions - ev-efficiency-assumptions.json](../client/src/data/ev-efficiency-assumptions.json)  
@@ -78,24 +78,24 @@ Table 6: Monthly VMT and efficiency adjustments
 [calculateMonthlyVMTTotals()](../client/src/calculations/transportation.ts#L619)  
 [calculateYearlyVMTTotals()](../client/src/calculations/transportation.ts#L701)  
 [calculateMonthlyVMTPercentages()](../client/src/calculations/transportation.ts#L749)  
-[calculateSelectedRegionsMonthlyVMT()](../client/src/calculations/transportation.ts#L1883)  
-[calculateSelectedRegionsEVEfficiency()](../client/src/calculations/transportation.ts#L1972)
+[calculateSelectedRegionsMonthlyVMT()](../client/src/calculations/transportation.ts#L1885)  
+[calculateSelectedRegionsEVEfficiency()](../client/src/calculations/transportation.ts#L1974)
 
 Table 7: Emission rates of vehicle types  
-[calculateSelectedRegionsMonthlyEmissionRates()](../client/src/calculations/transportation.ts#L2057)  
-[calculateSelectedRegionsMonthlyElectricityPM25EmissionRates()](../client/src/calculations/transportation.ts#L2194)  
-[calculateSelectedRegionsMonthlyTotalNetPM25EmissionRates()](../client/src/calculations/transportation.ts#L2299)
+[calculateSelectedRegionsMonthlyEmissionRates()](../client/src/calculations/transportation.ts#L2059)  
+[calculateSelectedRegionsMonthlyElectricityPM25EmissionRates()](../client/src/calculations/transportation.ts#L2196)  
+[calculateSelectedRegionsMonthlyTotalNetPM25EmissionRates()](../client/src/calculations/transportation.ts#L2301)
 
 Table 8: Calculated changes for the transportation sector 
 [calculateSelectedRegionsTotalEffectiveVehicles()](../client/src/calculations/transportation.ts#L1541)  
-[calculateSelectedRegionsMonthlySalesChanges()](../client/src/calculations/transportation.ts#L2382)  
-[calculateSelectedRegionsYearlySalesChanges()](../client/src/calculations/transportation.ts#L2504)  
-[calculateSelectedRegionsTotalYearlySalesChanges()](../client/src/calculations/transportation.ts#L2558)  
-[calculateSelectedRegionsMonthlyEmissionChanges()](../client/src/calculations/transportation.ts#L2774)  
-[calculateSelectedRegionsMonthlyEmissionChangesPerVehicleCategory()](../client/src/calculations/transportation.ts#L2903)  
-[calculateSelectedRegionsYearlyEmissionChangesPerVehicleCategory()](../client/src/calculations/transportation.ts#L2999)  
-[calculateSelectedRegionsMonthlyEmissionChangesTotals()](../client/src/calculations/transportation.ts#L3076)  
-[calculateSelectedRegionsYearlyEmissionChangesTotals()](../client/src/calculations/transportation.ts#L3149)
+[calculateSelectedRegionsMonthlySalesChanges()](../client/src/calculations/transportation.ts#L2384)  
+[calculateSelectedRegionsYearlySalesChanges()](../client/src/calculations/transportation.ts#L2506)  
+[calculateSelectedRegionsTotalYearlySalesChanges()](../client/src/calculations/transportation.ts#L2560)  
+[calculateSelectedRegionsMonthlyEmissionChanges()](../client/src/calculations/transportation.ts#L2776)  
+[calculateSelectedRegionsMonthlyEmissionChangesPerVehicleCategory()](../client/src/calculations/transportation.ts#L2905)  
+[calculateSelectedRegionsYearlyEmissionChangesPerVehicleCategory()](../client/src/calculations/transportation.ts#L3001)  
+[calculateSelectedRegionsMonthlyEmissionChangesTotals()](../client/src/calculations/transportation.ts#L3078)  
+[calculateSelectedRegionsYearlyEmissionChangesTotals()](../client/src/calculations/transportation.ts#L3151)
 
 Table 9: Default EV load profiles and related values from EVI-Pro Lite  
 [defaultEVLoadProfiles - default-ev-load-profiles.json](../client/src/data/default-ev-load-profiles.json)  
@@ -105,14 +105,14 @@ Table 9: Default EV load profiles and related values from EVI-Pro Lite
 [calculateClimateAdjustmentFactorByRegion()](../client/src/calculations/geography.ts#L135)
 
 Table 10: List of states in region for purposes of calculating vehicle sales and stock  
-[calculateSelectedGeographySalesAndStockByState()](../client/src/calculations/transportation.ts#L3208)  
-[calculateSelectedGeographySalesAndStockByRegion()](../client/src/calculations/transportation.ts#L3343)
+[calculateSelectedGeographySalesAndStockByState()](../client/src/calculations/transportation.ts#L3210)  
+[calculateSelectedGeographySalesAndStockByRegion()](../client/src/calculations/transportation.ts#L3345)
 
 Table 11: Historical renewable and energy efficiency addition data  
 [historicalRegionEEREData - historical-region-eere-data.json](../client/src/data/historical-region-eere-data.json)  
 [historicalStateEEREData - historical-state-eere-data.json](../client/src/data/historical-state-eere-data.json)  
-[calculateEVDeploymentLocationHistoricalEERE()](../client/src/calculations/transportation.ts#L3461)  
-[regionAnnualWholesaleImpacts](../client/src/calculations/transportation.ts#L3498)
+[calculateEVDeploymentLocationHistoricalEERE()](../client/src/calculations/transportation.ts#L3463)  
+[regionAnnualWholesaleImpacts](../client/src/calculations/transportation.ts#L3500)
 
 Table 12: Vehicle sales by type  
 [ldvsPercentagesByVehicleCategory](../client/src/config.ts#L262)  
@@ -123,7 +123,7 @@ Table 12: Vehicle sales by type
 
 Table 13: First-Year ICE to EV PM2.5 brakewear and tirewear emissions rate conversion factors  
 [pm25BreakwearTirewearEVICERatios - pm25-breakwear-tirewear-ev-ice-ratios.json](../client/src/data/pm25-breakwear-tirewear-ev-ice-ratios.json)  
-[calculateSelectedRegionsEEREDefaultsAverages()](../client/src/calculations/transportation.ts#L3400)
+[calculateSelectedRegionsEEREDefaultsAverages()](../client/src/calculations/transportation.ts#L3402)
 
 Table 14: Lithium Ion Storage Defaults  
 [batteryRoundTripEfficiency](../client/src/config.ts#L300)
@@ -159,7 +159,7 @@ A. State-level VMT per vehicle
 [stateLevelVMT - state-level-vmt.json](../client/src/data/state-level-vmt.json)  
 [storeVMTandStockByState()](../client/src/calculations/transportation.ts#L1391)  
 [calculateVMTPerVehicleTypeByState()](../client/src/calculations/transportation.ts#L1477)  
-[calculateSelectedRegionsVMTPercentagesByState()](../client/src/calculations/transportation.ts#L1696)
+[calculateSelectedRegionsVMTPercentagesByState()](../client/src/calculations/transportation.ts#L1698)
 
 B. State-Level Sales  
 [stateLevelSales - state-level-sales.json](../client/src/data/state-level-sales.json)
