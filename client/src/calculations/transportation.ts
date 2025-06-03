@@ -245,8 +245,11 @@ export type LDVsFhwaMovesVMTRatioByState = ReturnType<
 export type VMTPerVehicleTypeByState = ReturnType<
   typeof calculateVMTPerVehicleTypeByState
 >;
-export type SelectedRegionsTotalEffectiveVehicles = ReturnType<
-  typeof calculateSelectedRegionsTotalEffectiveVehicles
+export type TotalEffectiveVehicles = ReturnType<
+  typeof calculateTotalEffectiveVehicles
+>;
+export type SelectedRegionsVMTAdjustedTotalEffectiveVehicles = ReturnType<
+  typeof calculateSelectedRegionsVMTAdjustedTotalEffectiveVehicles
 >;
 export type SelectedRegionsVMTPercentagesByState = ReturnType<
   typeof calculateSelectedRegionsVMTPercentagesByState
@@ -1532,19 +1535,13 @@ export function calculateVMTPerVehicleTypeByState(options: {
 }
 
 /**
- * Selected AVERT region's total number of effective vehicles by vehicle
- * category / vehicle type / fuel type combo.
+ * Total number of effective vehicles by vehicle category / vehicle type / fuel
+ * type combo.
  *
  * Excel: "Sales Changes" data from "Table 8: Calculated changes for the
  * transportation sector" table in the "Library" sheet (E546:E567).
  */
-export function calculateSelectedRegionsTotalEffectiveVehicles(options: {
-  geographicFocus: GeographicFocus;
-  selectedStateId: StateId | "";
-  selectedGeographyRegions: SelectedGeographyRegions;
-  vmtStatePercentagesByStateRegionCombo:
-    | VMTStatePercentagesByStateRegionCombo
-    | EmptyObject;
+export function calculateTotalEffectiveVehicles(options: {
   vehicleTypePercentagesOfVehicleCategory:
     | VehicleTypePercentagesOfVehicleCategory
     | EmptyObject;
@@ -1560,10 +1557,6 @@ export function calculateSelectedRegionsTotalEffectiveVehicles(options: {
   refuseTrucks: number;
 }) {
   const {
-    geographicFocus,
-    selectedStateId,
-    selectedGeographyRegions,
-    vmtStatePercentagesByStateRegionCombo,
     vehicleTypePercentagesOfVehicleCategory,
     vehicleFuelTypePercentagesOfVehicleType,
     batteryEVs,
@@ -1575,11 +1568,115 @@ export function calculateSelectedRegionsTotalEffectiveVehicles(options: {
     refuseTrucks,
   } = options;
 
+  const result = {
+    "Battery EVs / Passenger cars / Gasoline": 0,
+    "Plug-in Hybrid EVs / Passenger cars / Gasoline": 0,
+    "Battery EVs / Passenger trucks / Gasoline": 0,
+    "Plug-in Hybrid EVs / Passenger trucks / Gasoline": 0,
+    "Transit buses / Medium-duty transit buses / Gasoline": 0,
+    "Transit buses / Medium-duty transit buses / Diesel Fuel": 0,
+    "Transit buses / Heavy-duty transit buses / Diesel Fuel": 0,
+    "Transit buses / Heavy-duty transit buses / Compressed Natural Gas (CNG)": 0,
+    "School buses / Medium-duty school buses / Gasoline": 0,
+    "School buses / Medium-duty school buses / Diesel Fuel": 0,
+    "School buses / Heavy-duty school buses / Diesel Fuel": 0,
+    "Other buses / Medium-duty other buses / Gasoline": 0,
+    "Other buses / Medium-duty other buses / Diesel Fuel": 0,
+    "Other buses / Heavy-duty other buses / Diesel Fuel": 0,
+    "Other buses / Heavy-duty other buses / Compressed Natural Gas (CNG)": 0,
+    "Short-haul trucks / Light-duty single unit trucks / Gasoline": 0,
+    "Short-haul trucks / Medium-duty single unit trucks / Gasoline": 0,
+    "Short-haul trucks / Medium-duty single unit trucks / Diesel Fuel": 0,
+    "Short-haul trucks / Heavy-duty combination trucks / Diesel Fuel": 0,
+    "Long-haul trucks / Combination long-haul trucks / Diesel Fuel": 0,
+    "Refuse trucks / Medium-duty refuse trucks / Diesel Fuel": 0,
+    "Refuse trucks / Heavy-duty refuse trucks / Diesel Fuel": 0,
+  };
+
+  if (
+    Object.keys(vehicleTypePercentagesOfVehicleCategory).length === 0 ||
+    Object.keys(vehicleFuelTypePercentagesOfVehicleType).length === 0
+  ) {
+    return result;
+  }
+
+  Object.keys(result).forEach((key) => {
+    const categoryVehicleFuelCombo = key as keyof typeof result;
+
+    const [vehicleCategory, vehicleType, fuelType] = key.split(" / ");
+
+    const vehicleInputValue =
+      vehicleCategory === "Battery EVs"
+        ? batteryEVs
+        : vehicleCategory === "Plug-in Hybrid EVs"
+          ? hybridEVs
+          : vehicleCategory === "Transit buses"
+            ? transitBuses
+            : vehicleCategory === "School buses"
+              ? schoolBuses
+              : vehicleCategory === "Short-haul trucks"
+                ? shortHaulTrucks
+                : vehicleCategory === "Long-haul trucks"
+                  ? comboLongHaulTrucks
+                  : vehicleCategory === "Refuse trucks"
+                    ? refuseTrucks
+                    : 0;
+
+    const categoryVehicleCombo =
+      `${vehicleCategory} / ${vehicleType}` as VehicleCategoryVehicleTypeCombo;
+
+    const vehicleFuelCombo =
+      `${vehicleType} / ${fuelType}` as VehicleTypeFuelTypeCombo;
+
+    const vehicleTypePercentage =
+      vehicleTypePercentagesOfVehicleCategory?.[categoryVehicleCombo] || 0;
+
+    const vehicleFuelPercengage =
+      vehicleFuelTypePercentagesOfVehicleType?.[vehicleFuelCombo] || 0;
+
+    const vehicleTotal =
+      vehicleInputValue * vehicleTypePercentage * vehicleFuelPercengage;
+
+    result[categoryVehicleFuelCombo] = vehicleTotal;
+  });
+
+  return result;
+}
+
+/**
+ * Selected AVERT region's VMT adjusted total number of effective vehicles by
+ * vehicle category / vehicle type / fuel type combo.
+ *
+ * If a region was selected, this is the exact same vehicle type values as
+ * `totalEffectiveVehicles`, just stored for the selected AVERT region. But if
+ * a state was selected, each vehicle type in `totalEffectiveVehicles` is
+ * multiplied by the percentage/share of the selected state's total VMT for the
+ * vehicle type for each AVERT region that the state is a part of.
+ *
+ * Excel: "Emission Changes" data from "Table 8: Calculated changes for the
+ * transportation sector" table in the "Library" sheet (E582:E603).
+ */
+export function calculateSelectedRegionsVMTAdjustedTotalEffectiveVehicles(options: {
+  geographicFocus: GeographicFocus;
+  selectedStateId: StateId | "";
+  selectedGeographyRegions: SelectedGeographyRegions;
+  vmtStatePercentagesByStateRegionCombo:
+    | VMTStatePercentagesByStateRegionCombo
+    | EmptyObject;
+  totalEffectiveVehicles: TotalEffectiveVehicles | EmptyObject;
+}) {
+  const {
+    geographicFocus,
+    selectedStateId,
+    selectedGeographyRegions,
+    vmtStatePercentagesByStateRegionCombo,
+    totalEffectiveVehicles,
+  } = options;
+
   if (
     Object.keys(selectedGeographyRegions).length === 0 ||
     Object.keys(vmtStatePercentagesByStateRegionCombo).length === 0 ||
-    Object.keys(vehicleTypePercentagesOfVehicleCategory).length === 0 ||
-    Object.keys(vehicleFuelTypePercentagesOfVehicleType).length === 0
+    Object.keys(totalEffectiveVehicles).length === 0
   ) {
     return {} as {
       [regionId in RegionId]: {
@@ -1599,82 +1696,33 @@ export function calculateSelectedRegionsTotalEffectiveVehicles(options: {
       const vmtStatePercentages =
         vmtStatePercentagesByStateRegionCombo?.[stateRegionKey]?.vehicleTypes;
 
-      object[regionId] ??= {
-        "Battery EVs / Passenger cars / Gasoline": 0,
-        "Plug-in Hybrid EVs / Passenger cars / Gasoline": 0,
-        "Battery EVs / Passenger trucks / Gasoline": 0,
-        "Plug-in Hybrid EVs / Passenger trucks / Gasoline": 0,
-        "Transit buses / Medium-duty transit buses / Gasoline": 0,
-        "Transit buses / Medium-duty transit buses / Diesel Fuel": 0,
-        "Transit buses / Heavy-duty transit buses / Diesel Fuel": 0,
-        "Transit buses / Heavy-duty transit buses / Compressed Natural Gas (CNG)": 0,
-        "School buses / Medium-duty school buses / Gasoline": 0,
-        "School buses / Medium-duty school buses / Diesel Fuel": 0,
-        "School buses / Heavy-duty school buses / Diesel Fuel": 0,
-        "Other buses / Medium-duty other buses / Gasoline": 0,
-        "Other buses / Medium-duty other buses / Diesel Fuel": 0,
-        "Other buses / Heavy-duty other buses / Diesel Fuel": 0,
-        "Other buses / Heavy-duty other buses / Compressed Natural Gas (CNG)": 0,
-        "Short-haul trucks / Light-duty single unit trucks / Gasoline": 0,
-        "Short-haul trucks / Medium-duty single unit trucks / Gasoline": 0,
-        "Short-haul trucks / Medium-duty single unit trucks / Diesel Fuel": 0,
-        "Short-haul trucks / Heavy-duty combination trucks / Diesel Fuel": 0,
-        "Long-haul trucks / Combination long-haul trucks / Diesel Fuel": 0,
-        "Refuse trucks / Medium-duty refuse trucks / Diesel Fuel": 0,
-        "Refuse trucks / Heavy-duty refuse trucks / Diesel Fuel": 0,
+      object[regionId] ??= {} as {
+        [categoryVehicleFuelCombo in VehicleCategoryVehicleTypeFuelTypeCombo]: number;
       };
 
-      Object.keys(object[regionId]).forEach((key) => {
-        const categoryVehicleFuelCombo = key as keyof typeof object[typeof regionId]; // prettier-ignore
+      Object.entries(totalEffectiveVehicles).forEach(
+        ([vehicleKey, vehicleValue]) => {
+          const categoryVehicleFuelCombo = vehicleKey as keyof typeof totalEffectiveVehicles; // prettier-ignore
+          const [_vehicleCategory, vehicleType, _fuelType] = vehicleKey.split(" / "); // prettier-ignore
 
-        const [vehicleCategory, vehicleType, fuelType] = key.split(" / ");
+          /**
+           * If a state is selected, we need to multiply the total effective
+           * vehicles value for the vehicle type (vehicleValue) by the
+           * percentage/share of the state's total VMT of it's AVERT region
+           * for the vehicle type.
+           */
+          const stateFactor =
+            stateSelected &&
+            vmtStatePercentages &&
+            vehicleType in vmtStatePercentages
+              ? vmtStatePercentages[vehicleType as VehicleType]
+              : 1;
 
-        const vehicleInputValue =
-          vehicleCategory === "Battery EVs"
-            ? batteryEVs
-            : vehicleCategory === "Plug-in Hybrid EVs"
-              ? hybridEVs
-              : vehicleCategory === "Transit buses"
-                ? transitBuses
-                : vehicleCategory === "School buses"
-                  ? schoolBuses
-                  : vehicleCategory === "Short-haul trucks"
-                    ? shortHaulTrucks
-                    : vehicleCategory === "Long-haul trucks"
-                      ? comboLongHaulTrucks
-                      : vehicleCategory === "Refuse trucks"
-                        ? refuseTrucks
-                        : 0;
+          const vehicleTypeTotal = vehicleValue * stateFactor;
 
-        const categoryVehicleCombo =
-          `${vehicleCategory} / ${vehicleType}` as VehicleCategoryVehicleTypeCombo;
-
-        const vehicleFuelCombo =
-          `${vehicleType} / ${fuelType}` as VehicleTypeFuelTypeCombo;
-
-        const vehicleTypePercentage =
-          vehicleTypePercentagesOfVehicleCategory?.[categoryVehicleCombo] || 0;
-
-        const vehicleFuelPercengage =
-          vehicleFuelTypePercentagesOfVehicleType?.[vehicleFuelCombo] || 0;
-
-        const vehicleTotal =
-          vehicleInputValue * vehicleTypePercentage * vehicleFuelPercengage;
-
-        /**
-         * If a state is selected, multiply the vehicle total by the percentage/
-         * share of the state's total VMT by it's AVERT region for the vehicle
-         * type.
-         */
-        const stateFactor =
-          stateSelected &&
-          vmtStatePercentages &&
-          vehicleType in vmtStatePercentages
-            ? vmtStatePercentages[vehicleType as VehicleType]
-            : 1;
-
-        object[regionId][categoryVehicleFuelCombo] = vehicleTotal * stateFactor;
-      });
+          object[regionId][categoryVehicleFuelCombo] = vehicleTypeTotal;
+        },
+      );
 
       return object;
     },
@@ -2382,22 +2430,20 @@ export function calculateSelectedRegionsMonthlyTotalNetPM25EmissionRates(options
  * transportation sector" table in the "Library" sheet (G546:R567).
  */
 export function calculateSelectedRegionsMonthlySalesChanges(options: {
-  selectedRegionsTotalEffectiveVehicles:
-    | SelectedRegionsTotalEffectiveVehicles
-    | EmptyObject;
+  totalEffectiveVehicles: TotalEffectiveVehicles | EmptyObject;
   selectedRegionsMonthlyVMT: SelectedRegionsMonthlyVMT | EmptyObject;
   selectedRegionsEVEfficiency: SelectedRegionsEVEfficiency | EmptyObject;
   percentageHybridEVMilesDrivenOnElectricity: PercentageHybridEVMilesDrivenOnElectricity;
 }) {
   const {
-    selectedRegionsTotalEffectiveVehicles,
+    totalEffectiveVehicles,
     selectedRegionsMonthlyVMT,
     selectedRegionsEVEfficiency,
     percentageHybridEVMilesDrivenOnElectricity,
   } = options;
 
   if (
-    Object.keys(selectedRegionsTotalEffectiveVehicles).length === 0 ||
+    Object.keys(totalEffectiveVehicles).length === 0 ||
     Object.keys(selectedRegionsMonthlyVMT).length === 0 ||
     Object.keys(selectedRegionsEVEfficiency).length === 0
   ) {
@@ -2428,13 +2474,6 @@ export function calculateSelectedRegionsMonthlySalesChanges(options: {
         object[regionId][month] ??= {} as {
           [categoryVehicleFuelCombo in VehicleCategoryVehicleTypeFuelTypeCombo]: number;
         };
-
-        const totalEffectiveVehicles =
-          selectedRegionsTotalEffectiveVehicles?.[regionId];
-
-        if (!totalEffectiveVehicles) {
-          return object;
-        }
 
         Object.entries(totalEffectiveVehicles).forEach(
           ([vehicleKey, vehicleValue]) => {
@@ -2774,8 +2813,8 @@ export function calculateSelectedRegionsMonthlyDailyEnergyUsage(options: {
  * transportation sector" table in the "Library" sheet (G546:R567).
  */
 export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
-  selectedRegionsTotalEffectiveVehicles:
-    | SelectedRegionsTotalEffectiveVehicles
+  selectedRegionsVMTAdjustedTotalEffectiveVehicles:
+    | SelectedRegionsVMTAdjustedTotalEffectiveVehicles
     | EmptyObject;
   selectedRegionsMonthlyEmissionRates:
     | SelectedRegionsMonthlyEmissionRates
@@ -2787,7 +2826,7 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
   percentageHybridEVMilesDrivenOnElectricity: PercentageHybridEVMilesDrivenOnElectricity;
 }) {
   const {
-    selectedRegionsTotalEffectiveVehicles,
+    selectedRegionsVMTAdjustedTotalEffectiveVehicles,
     selectedRegionsMonthlyEmissionRates,
     selectedRegionsMonthlyTotalNetPM25EmissionRates,
     selectedRegionsMonthlyVMT,
@@ -2795,7 +2834,7 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
   } = options;
 
   if (
-    Object.keys(selectedRegionsTotalEffectiveVehicles).length === 0 ||
+    Object.keys(selectedRegionsVMTAdjustedTotalEffectiveVehicles).length === 0 || // prettier-ignore
     Object.keys(selectedRegionsMonthlyEmissionRates).length === 0 ||
     Object.keys(selectedRegionsMonthlyTotalNetPM25EmissionRates).length === 0 ||
     Object.keys(selectedRegionsMonthlyVMT).length === 0
@@ -2833,7 +2872,7 @@ export function calculateSelectedRegionsMonthlyEmissionChanges(options: {
         };
 
         const totalEffectiveVehicles =
-          selectedRegionsTotalEffectiveVehicles?.[regionId];
+          selectedRegionsVMTAdjustedTotalEffectiveVehicles?.[regionId];
 
         if (!totalEffectiveVehicles) {
           return object;
