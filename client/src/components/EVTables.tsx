@@ -101,7 +101,7 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
   return (
     <>
       <h4 className={clsx("avert-blue", "margin-bottom-1 font-serif-md")}>
-        EV Sales and Stock Comparison{" "}
+        Entered EVs Compared to Total Sales and Stock{" "}
         <Tooltip>
           <span className={clsx("text-normal")}>
             This table translates the user-specified number of EVs into shares
@@ -120,7 +120,7 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
               <tr>
                 <th scope="col">Electric Vehicle Type</th>
                 <th scope="col">
-                  % of Annual Vehicle Sales
+                  % of Total Annual Vehicle Sales
                   {evDeploymentLocationName && (
                     <>
                       <br />
@@ -129,7 +129,7 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
                   )}
                 </th>
                 <th scope="col">
-                  % of Vehicles on the Road
+                  % of Registered Vehicles
                   {evDeploymentLocationName && (
                     <>
                       <br />
@@ -274,7 +274,7 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
   return (
     <div className={clsx("margin-top-2")}>
       <h4 className={clsx("avert-blue", "margin-bottom-1 font-serif-md")}>
-        EE/RE and EV Comparison{" "}
+        EV Demand Relative to EE/RE Growth{" "}
         <Tooltip>
           <span className={clsx("text-normal")}>
             This table provides a comparison between the total annual energy
