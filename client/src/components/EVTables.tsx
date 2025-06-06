@@ -101,7 +101,7 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
   return (
     <>
       <h4 className={clsx("avert-blue", "margin-bottom-1 font-serif-md")}>
-        EV Sales and Stock Comparison{" "}
+        Entered EVs Compared to Total Sales and Stock{" "}
         <Tooltip>
           <span className={clsx("text-normal")}>
             This table translates the user-specified number of EVs into shares
@@ -120,7 +120,7 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
               <tr>
                 <th scope="col">Electric Vehicle Type</th>
                 <th scope="col">
-                  % of Annual Vehicle Sales
+                  % of Total Annual Vehicle Sales
                   {evDeploymentLocationName && (
                     <>
                       <br />
@@ -129,7 +129,7 @@ function EVSalesAndStockTableContent(props: { className?: string }) {
                   )}
                 </th>
                 <th scope="col">
-                  % of Vehicles on the Road
+                  % of Registered Vehicles
                   {evDeploymentLocationName && (
                     <>
                       <br />
@@ -274,7 +274,7 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
   return (
     <div className={clsx("margin-top-2")}>
       <h4 className={clsx("avert-blue", "margin-bottom-1 font-serif-md")}>
-        EE/RE and EV Comparison{" "}
+        EV Demand Relative to EE/RE Growth{" "}
         <Tooltip>
           <span className={clsx("text-normal")}>
             This table provides a comparison between the total annual energy
@@ -282,8 +282,8 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
             installation and EE programs in the location of EV deployment. AVERT
             compares the generation required to power the EVs entered against
             the average first-year GWh generation from wind, solar, and EE
-            resources deployed in the selected state or region between 2019 and
-            2021. This table helps users build more likely scenarios combining
+            resources deployed in the selected state or region between 2021 and
+            2023. This table helps users build more likely scenarios combining
             EVs, EE, and RE.
           </span>
         </Tooltip>
