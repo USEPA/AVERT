@@ -775,23 +775,21 @@ function ImpactsInputsContent() {
                                 </p>
 
                                 <p>
-                                  Light duty passenger vehicles are smaller than
-                                  8,500 lb.
+                                  Light-duty passenger vehicles are smaller than
+                                  8,500 lb. This category of vehicles includes
+                                  passenger cars (hatchbacks, sedans, small
+                                  SUVs, etc.) and passenger trucks (medium and
+                                  large SUVs, pickup trucks, vans, etc.).
                                 </p>
 
                                 <p>
-                                  By default, AVERT assumes that light duty
-                                  vehicle efficiencies are a weighted average of
-                                  40% passenger cars (which include hatchbacks,
-                                  sedans, and small SUVs ) and 60% passenger
-                                  trucks (which include medium and large SUVs,
-                                  pickup trucks, and vans).
-                                </p>
-
-                                <p>
-                                  By default, AVERT assumes that 100% of
-                                  non-electric miles travelled are powered by
-                                  gasoline.
+                                  See the EV Detailed Inputs page in the{" "}
+                                  <a href="https://www.epa.gov/avert/download-avert">
+                                    Excel version
+                                  </a>{" "}
+                                  of the tool to view the default composition of
+                                  light-duty passenger vehicle subtypes in
+                                  AVERT.
                                 </p>
                               </>
                             }
@@ -823,23 +821,21 @@ function ImpactsInputsContent() {
                                 </p>
 
                                 <p>
-                                  Light duty passenger vehicles are smaller than
-                                  8,500 lb.
+                                  Light-duty passenger vehicles are smaller than
+                                  8,500 lb. This category of vehicles includes
+                                  passenger cars (hatchbacks, sedans, small
+                                  SUVs, etc.) and passenger trucks (medium and
+                                  large SUVs, pickup trucks, vans, etc.).
                                 </p>
 
                                 <p>
-                                  By default, AVERT assumes that light duty
-                                  vehicle efficiencies are a weighted average of
-                                  40% passenger cars (which include hatchbacks,
-                                  sedans, and small SUVs) and 60% passenger
-                                  trucks (which include medium and large SUVs,
-                                  pickup trucks, and vans).
-                                </p>
-
-                                <p>
-                                  By default, AVERT assumes that 100% of
-                                  non-electric miles travelled are powered by
-                                  gasoline.
+                                  See the EV Detailed Inputs page in the{" "}
+                                  <a href="https://www.epa.gov/avert/download-avert">
+                                    Excel version
+                                  </a>{" "}
+                                  of the tool to view the default composition of
+                                  light-duty passenger vehicle subtypes in
+                                  AVERT.
                                 </p>
                               </>
                             }
@@ -877,24 +873,19 @@ function ImpactsInputsContent() {
                                 </p>
 
                                 <p>
-                                  Transit buses are any buses primarily
+                                  Transit buses (which include medium- and
+                                  heavy-duty vehicles) are any buses primarily
                                   transporting passengers on fixed routes and
                                   schedules.
                                 </p>
 
                                 <p>
-                                  By default, AVERT assumes that transit bus
-                                  efficiencies are a weighted average of 28%
-                                  medium-duty buses and 72% heavy-duty buses.
-                                </p>
-
-                                <p>
-                                  By default, AVERT assumes that heavy-duty
-                                  transit bus attributes are a weighted average
-                                  of 81% gasoline and 19% diesel. By default,
-                                  AVERT assumes that heavy-duty transit bus
-                                  attributes are a weighted average of 80%
-                                  diesel and 20% compressed natural gas.
+                                  See the EV Detailed Inputs page in the{" "}
+                                  <a href="https://www.epa.gov/avert/download-avert">
+                                    Excel version
+                                  </a>{" "}
+                                  of the tool to view the default composition of
+                                  transit bus subtypes in AVERT.
                                 </p>
                               </>
                             }
@@ -923,23 +914,19 @@ function ImpactsInputsContent() {
                                 </p>
 
                                 <p>
-                                  School buses are buses primarily transporting
-                                  K-12 students between their home and school.
+                                  School buses (which include medium- and
+                                  heavy-duty vehicles) are buses primarily
+                                  transporting K-12 students between their home
+                                  and school.
                                 </p>
 
                                 <p>
-                                  By default, AVERT assumes that school bus
-                                  efficiencies are a weighted average of 95%
-                                  medium-duty buses and 5% heavy-duty buses.
-                                </p>
-
-                                <p>
-                                  By default, AVERT assumes that medium-duty
-                                  transit bus attributes are a weighted average
-                                  of 77% diesel and 23% gasoline. By default,
-                                  AVERT assumes that 100% of non-electric miles
-                                  travelled by heavy-duty transit buses are
-                                  powered by diesel.
+                                  See the EV Detailed Inputs page in the{" "}
+                                  <a href="https://www.epa.gov/avert/download-avert">
+                                    Excel version
+                                  </a>{" "}
+                                  of the tool to view the default composition of
+                                  school bus subtypes in AVERT.
                                 </p>
                               </>
                             }
@@ -976,35 +963,24 @@ function ImpactsInputsContent() {
                                 </p>
 
                                 <p>
-                                  Short-haul trucks are trucks larger than 8,500
-                                  lb that drive less than or equal to 200 miles
-                                  per day. Single unit trucks are vehicles on a
+                                  Short-haul trucks (which include light-,
+                                  medium-, and heavy-duty vehicles) are trucks
+                                  larger than 8,500 lb that drive less than or
+                                  equal to 200 miles per day. This category
+                                  includes single unit trucks and combination
+                                  trucks. Single unit trucks are vehicles on a
                                   single frame, such as a beverage or box truck.
                                   Combination trucks are vehicles with both a
                                   tractor and trailer, such as a “semi-truck.”
                                 </p>
 
                                 <p>
-                                  By default, AVERT assumes that short-haul
-                                  truck efficiencies are a weighted average of
-                                  56% light-duty single unit trucks (e.g., those
-                                  larger than 8,500 lb up to 10,000 lb), 37%
-                                  medium-duty single unit trucks (e.g., those
-                                  larger than 10,000 lb and up to 33,000 lb),
-                                  and 7% heavy-duty combination trucks (those
-                                  larger than 33,000 lb).
-                                </p>
-
-                                <p>
-                                  By default, AVERT assumes that 100% of
-                                  non-electric miles travelled by light-duty
-                                  short-haul trucks are powered by gasoline. By
-                                  default, AVERT assumes that 100% of
-                                  non-electric miles travelled by heavy-duty
-                                  short-haul trucks are powered by diesel. By
-                                  default, AVERT assumes that medium-duty
-                                  short-haul truck attributes are a weighted
-                                  average of 31% gasoline and 69% diesel.
+                                  See the EV Detailed Inputs page in the{" "}
+                                  <a href="https://www.epa.gov/avert/download-avert">
+                                    Excel version
+                                  </a>{" "}
+                                  of the tool to view the default composition of
+                                  short-haul truck subtypes in AVERT.
                                 </p>
                               </>
                             }
@@ -1033,22 +1009,22 @@ function ImpactsInputsContent() {
                             tooltip={
                               <>
                                 <p className={clsx("margin-0")}>
-                                  Enter the number of electric long-haul,
-                                  combination trucks to be added to the road.
+                                  Enter the number of electric combination
+                                  long-haul trucks to be added to the road.
                                 </p>
 
                                 <p>
                                   Combination long-haul trucks are heavy-duty
                                   trucks larger than 33,000 lb that drive more
-                                  than 200 miles per day. Combination trucks are
-                                  vehicles with both a tractor and trailer, such
-                                  as a “semi-truck.”
+                                  than 200 miles per day. They are vehicles with
+                                  both a tractor and trailer, such as a
+                                  “semi-truck.”
                                 </p>
 
                                 <p>
-                                  By default, AVERT assumes that 100% of
-                                  non-electric miles travelled by long-haul
-                                  trucks are powered by diesel.
+                                  By default, AVERT assumes that 100 percent of
+                                  non-electric miles travelled by combination
+                                  long-haul trucks are powered by diesel.
                                 </p>
                               </>
                             }
@@ -1085,19 +1061,18 @@ function ImpactsInputsContent() {
                                 </p>
 
                                 <p>
-                                  Refuse trucks are trucks that collect and haul
-                                  refuse to a central location.
+                                  Refuse trucks (which include medium- and
+                                  heavy-duty vehicles) are trucks that collect
+                                  and haul refuse to a central location.
                                 </p>
 
                                 <p>
-                                  By default, AVERT assumes that refuse truck
-                                  efficiencies are a weighted average of 21%
-                                  medium-duty trucks (e.g., those up to 33,000
-                                  lb) and 79% heavy-duty trucks (e.g., those
-                                  larger than 33,000 lb). By default, AVERT
-                                  assumes that 100% of non-electric miles
-                                  travelled by medium- and heavy-duty refuse
-                                  trucks are powered by diesel.
+                                  See the EV Detailed Inputs page in the{" "}
+                                  <a href="https://www.epa.gov/avert/download-avert">
+                                    Excel version
+                                  </a>{" "}
+                                  of the tool to view the default composition of
+                                  refuse truck subtypes in AVERT.
                                 </p>
                               </>
                             }
@@ -1139,9 +1114,15 @@ function ImpactsInputsContent() {
                             Select the location of EV deployment. While AVERT’s
                             power sector modeling algorithm is agnostic to where
                             electricity load changes occur within an AVERT
-                            region, this parameter determines where emission
+                            region, this parameter determines where net emission
                             decreases from displaced internal combustion engine
-                            vehicles occur.
+                            (ICE) vehicles occur. These are “net” emission
+                            decreases because AVERT takes into account
+                            vehicle-specific emissions from EVs, including
+                            particulate matter (PM) emissions from EV brake wear
+                            and tire wear. In general, PM emissions from these
+                            sources are equal to or less than the avoided
+                            emissions from an EV’s ICE counterpart.
                           </p>
                         }
                       />

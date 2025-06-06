@@ -282,8 +282,8 @@ function EEREEVComparisonTableContent(props: { className?: string }) {
             installation and EE programs in the location of EV deployment. AVERT
             compares the generation required to power the EVs entered against
             the average first-year GWh generation from wind, solar, and EE
-            resources deployed in the selected state or region between 2019 and
-            2021. This table helps users build more likely scenarios combining
+            resources deployed in the selected state or region between 2021 and
+            2023. This table helps users build more likely scenarios combining
             EVs, EE, and RE.
           </span>
         </Tooltip>
