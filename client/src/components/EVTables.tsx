@@ -442,8 +442,8 @@ export function EVSalesAndStockTable(props: { className?: string }) {
     <ErrorBoundary
       message={
         <>
-          Error loading EV Sales and Stock Comparison table. Please contact
-          AVERT support at{" "}
+          Error loading “Entered EVs Compared to Total Sales and Stock” table.
+          Please contact AVERT support at{" "}
           <a
             className={clsx("usa-link")}
             href="mailto:avert@epa.gov"
@@ -467,8 +467,8 @@ export function EEREEVComparisonTable(props: { className?: string }) {
     <ErrorBoundary
       message={
         <>
-          Error loading EE/RE and EV Comparison table. Please contact AVERT
-          support at{" "}
+          Error loading “EV Demand Relative to EE/RE Growth” table. Please
+          contact AVERT support at{" "}
           <a
             className={clsx("usa-link")}
             href="mailto:avert@epa.gov"
