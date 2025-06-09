@@ -199,9 +199,10 @@ export function EVWarningMessage() {
             Recent trends show significant amounts of energy efficiency and
             renewables coming online. Consider adding these resources alongside
             EVs in order to examine the portfolio effects of adding multiple
-            resources at the same time. The “EE/RE and EV Comparison” table
-            above summarizes recent historical EE/RE additions and compares
-            these with the EE/RE required to offset your entered EV demand.
+            resources at the same time. The “EV Demand Relative to EE/RE Growth”
+            table above summarizes recent historical EE/RE additions and
+            compares these with the EE/RE required to offset your entered EV
+            demand.
           </p>
 
           <p className={clsx("margin-top-0")}>
