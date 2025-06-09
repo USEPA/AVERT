@@ -10,6 +10,13 @@ import {
   calculateHourlyEnergyProfile,
 } from "@/redux/reducers/impacts";
 
+/**
+ * Checks if the input is not an empty string or zero.
+ */
+function nonZeroInput(input: string) {
+  return input !== "" && Number(input) !== 0;
+}
+
 export function ImpactsTextInput(props: {
   className?: string;
   label?: ReactNode;
@@ -42,12 +49,25 @@ export function ImpactsTextInput(props: {
     ({ impacts }) => impacts.hourlyEnergyProfile,
   );
   const errors = useAppSelector(({ impacts }) => impacts.errors);
+  const inputs = useAppSelector(({ impacts }) => impacts.inputs);
 
-  const inputsAreValid = errors.length === 0;
-  const inputIsEmpty = value.length === 0;
+  const { utilitySolar, rooftopSolar, utilityStorage, rooftopStorage } = inputs;
+
+  const textInputsAreValid = errors.length === 0;
+  const textInputIsEmpty = value.length === 0;
+
+  const utilityStorageError =
+    nonZeroInput(utilityStorage) && !nonZeroInput(utilitySolar);
+
+  const rooftopStorageError =
+    nonZeroInput(rooftopStorage) && !nonZeroInput(rooftopSolar);
 
   const hourlyEnergyProfileCalculationDisabled =
-    !inputsAreValid || inputIsEmpty || hourlyEnergyProfile.status === "pending";
+    !textInputsAreValid ||
+    textInputIsEmpty ||
+    utilityStorageError ||
+    rooftopStorageError ||
+    hourlyEnergyProfile.status === "pending";
 
   return (
     <div className={clsx(className)}>
