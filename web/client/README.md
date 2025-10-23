@@ -4,11 +4,11 @@ Front end of the AVERT web app built with React and Redux (bootstrapped with [Vi
 
 ## Local Development
 
-Running the **client app** locally depends on a running local instance of the [server app](/server). Please view the 'Local Development' section of the [repository’s README](../README.md) to get started.
+Running the **client app** locally depends on a running local instance of the [server app](/web/server). Please view the 'Local Development' section of the [web folder’s README](/web/README.md) to get started.
 
 ## Cloud.gov Deployment
 
-**NOTE:** See the _server_ app’s ['Cloud.gov Deployment' section](/server#cloudgov-deployment) after following the client app’s build steps below.
+**NOTE:** See the _server_ app’s ['Cloud.gov Deployment' section](/web/server/README.md#cloudgov-deployment) after following the client app’s build steps below.
 
 ### Development Deployment
 
@@ -16,10 +16,10 @@ Running the **client app** locally depends on a running local instance of the [s
 
   If that route ever changes, update the `VITE_APP_URL` environment variable set in the `.env.development` file to reflect the updated route.
 
-- Ensure you're in this directory ([client](/client)) and run:  
+- Ensure you're in this directory ([client](/web/client)) and run:  
   `npm run build:dev`
 
-- Follow the 'Development Deployment' instructions found in the [server app’s README](/server#development-deployment).
+- Follow the 'Development Deployment' instructions found in the [server app’s README](/web/server/README.md#development-deployment).
 
 ### Production Deployment
 
@@ -27,7 +27,7 @@ Running the **client app** locally depends on a running local instance of the [s
 
   If that route ever changes, update the `VITE_APP_URL` environment variable set in the `.env.production` file to reflect the updated route.
 
-- Ensure you're in this directory ([client](/client)) and run:  
+- Ensure you're in this directory ([client](/web/client)) and run:  
   `npm run build:prod`
 
-- Follow the 'Production Deployment' instructions found in the [server app’s README](/server#production-deployment).
+- Follow the 'Production Deployment' instructions found in the [server app’s README](/web/server/README.md#production-deployment).
