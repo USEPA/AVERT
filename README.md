@@ -1,28 +1,9 @@
-# EPA’s Avoided Emissions and Generation Tool (AVERT)
+# AVoided Emissions and geneRation Tool (AVERT)
 
-The AVERT app is composed of two apps working together: a [client app](/client), and [server app](/server).
+AVERT is a free tool with a simple user interface designed to meet the needs of state air quality planners and other interested stakeholders. Anyone can use AVERT to evaluate county, state, and regional changes in emissions from electric power plants and displaced fuel-burning vehicles resulting from energy policies and programs such as energy efficiency, renewable energy, electric vehicles, and energy storage. AVERT is designed to use public data that are accessible and auditable.
 
-The client app is a single page JavaScript app, which is ultimately built to static files that are served by the server app on [Cloud.gov](https://cloud.gov/). In addition to serving the client app’s static files, the server app is responsible for performing calculations and returning the results of those calculations to the client app. This offloading of the calculations keeps the client app fast and always responsive to user input.
+[AVERT Web Edition](/web)
 
-View each app’s README files for more info on the individual apps.
+## Disclaimer
 
-## Local Development
-
-Local development uses [Node.js](https://nodejs.org/en/) (v18 or higher).
-
-If this is your first time running AVERT locally, download all dependencies by running:  
-`npm run setup`
-
-Running the [client app](/client) locally depends on a running local instance of the [server app](/server). Instead of starting both apps individually, running the following command will start both concurrently:  
-`npm start`
-
-The _server app_ will run on port `3001` and the _client app_ will run on port `3000`. Your browser will open the app at http://localhost:3000.
-
-### Embedded iframe Testing
-
-The deployed Cloud.gov app is displayed in an iframe [on a page in EPA’s AVERT web area](https://www.epa.gov/avert/avert-web-edition). To test and replicate this locally, first run the app as described above, then navigate into the [docs](/docs) directory, and start a simple web server from that directory with following command:  
-`npx serve --listen 8000`
-
-_(NOTE: port 8000 used because the client app is running on port 3000)._
-
-Then open a web browser to: http://localhost:8000/epa-drupal-iframe-testing to view the AVERT web application, rendered in an iframe on an page that uses [EPA’s Standard Template](https://www.epa.gov/themes/epa_theme/pattern-lab/?p=pages-standalone-template), which resembles EPA’s Drupal template.
+This United States Environmental Protection Agency (EPA) GitHub project code is provided on an "as is" basis and the user assumes responsibility for its use. EPA has relinquished control of the information and no longer has responsibility to protect the integrity, confidentiality, or availability of the information. Any reference to specific commercial products, processes, or services by service mark, trademark, manufacturer, or otherwise, does not constitute or imply their endorsement, recommendation or favoring by EPA. The EPA seal and logo shall not be used in any manner to imply endorsement of any commercial product or activity by EPA or the United States Government.
