@@ -6,6 +6,10 @@ The client app is a single page JavaScript app, which is ultimately built to sta
 
 View each app’s README files for more info on the individual apps.
 
+## Update Process
+
+Documentation on the process for applying annual updates exist for both the [code changes](/web/docs/avert_annual_updates.md) and also as a [high level checklist (PDF)](/web/docs/Checklist_for_AVERT_Web_Edition_updates_08-27-2025.pdf).
+
 ## Local Development
 
 Local development uses [Node.js](https://nodejs.org/en/) (v18 or higher).
