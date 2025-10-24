@@ -1,0 +1,68 @@
+
+
+```{r setup}
+# This code reformats the 2024 CAMD data to match the 2021 data so it can be imported into AVERT.
+
+library(tidyverse)
+library(here)
+library(zip)
+
+```
+
+```{r}
+
+# set up correctly formatted lists of months and states
+months <- c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+months_num <- c("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12")
+states <- c("al", "ar", "az", "ca", "co", "ct", "dc", "de", "fl", "ga", "ia", "id", "il", "in", "ks", "ky", "la", "ma", "md", "me", "mi", "mn", "mo", "ms", "mt", "nc", "nd", "ne", "nh", "nj", "nm", "nv", "ny", "oh", "ok", "or", "pa", "ri", "sc", "sd", "tn", "tx", "ut", "va", "vt", "wa", "wi", "wv", "wy")
+
+
+# Loop through each state in each month. Rename the columns, drop unnecessary columns, and save each month to an individual file.
+# To test VT only, set x equal to 45
+
+for(x in 1:49){ 
+  raw_data <- read.csv(here("Data from CAMD website", str_c("emissions-hourly-2024-", states[[x]], ".csv")))
+  data <- raw_data %>%
+  select(
+    "STATE" = State,
+    "FACILITY_NAME" = `Facility.Name`,
+    "ORISPL_CODE" = `Facility.ID`,           
+    "UNITID" = `Unit.ID`,               
+    "OP_DATE" = Date,             
+    "OP_HOUR" = Hour,            
+    "OP_TIME" = `Operating.Time`,               
+    "GLOAD (MW)" = `Gross.Load..MW.`,           
+    "SLOAD (1000lb/hr)" = `Steam.Load..1000.lb.hr.`,     
+    "SO2_MASS (lbs)" = `SO2.Mass..lbs.`,       
+    "SO2_MASS_MEASURE_FLG" = `SO2.Mass.Measure.Indicator`,  
+    "SO2_RATE (lbs/mmBtu)" = `SO2.Rate..lbs.mmBtu.`, 
+    "SO2_RATE_MEASURE_FLG" = `SO2.Rate.Measure.Indicator`, 
+    "NOX_RATE (lbs/mmBtu)" = `NOx.Rate..lbs.mmBtu.`,  
+    "NOX_RATE_MEASURE_FLG"  = `NOx.Rate.Measure.Indicator`, 
+    "NOX_MASS (lbs)" = NOx.Mass..lbs.,       
+    "NOX_MASS_MEASURE_FLG" = `NOx.Mass.Measure.Indicator`,  
+    "CO2_MASS (tons)" = `CO2.Mass..short.tons.`,      
+    "CO2_MASS_MEASURE_FLG" = `CO2.Mass.Measure.Indicator`, 
+    "CO2_RATE (tons/mmBtu)" = `CO2.Rate..short.tons.mmBtu.`,
+    "CO2_RATE_MEASURE_FLG" = `CO2.Rate.Measure.Indicator`, 
+    "HEAT_INPUT (mmBtu)" = `Heat.Input..mmBtu.`    
+  ) %>%
+  mutate(
+    OP_DATE2 = as.POSIXct(OP_DATE),
+    month = months(OP_DATE2)
+  ) 
+  
+  for(i in 1:12){
+      data %>%
+      filter(month == months[[i]]) %>%
+      select(-c(month, OP_DATE2)) %>%
+      write_csv(here("Reformatted data files", str_c("2024", states[[x]], months_num[[i]], ".csv")), na = "")
+      
+    
+}}
+
+
+
+```
+
+
